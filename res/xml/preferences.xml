@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+    <PreferenceCategory 
+        android:title="Security">
+        <CheckBoxPreference
+            android:key="trust_unknown_tls_certificates"
+            android:title="Trust TLS certificates"
+            android:summary="Accounts with untrusted certificates simply will not connect to server"
+            />
+        <ListPreference
+            android:key="default_conversation_encryption_type"
+            android:title="Default conversation encryption"
+            android:dialogTitle="Default conversation encryption"
+            android:entries="@array/conversation_encryption_type_entries"
+            android:entryValues="@array/conversation_encryption_type_values"
+            android:defaultValue="pgp"/>
+    </PreferenceCategory>
+    <PreferenceCategory 
+        android:title="Notification settings">
+        <CheckBoxPreference 
+            android:key="show_notification"
+            android:title="Notification"
+            android:summary="Show notification in status bar when a new message arrives"
+            />
+        <CheckBoxPreference
+            android:key="vibrate_on_notification"
+            android:dependency="show_notification"
+            android:title="Vibrate"
+            android:summary="Also vibrate when a new message arrives"/>
+        <RingtonePreference 
+            android:key="notification_ringtone"
+            android:title="Sound"
+            android:ringtoneType="notification"
+            android:dependency="show_notification"
+            android:summary="Play ringtone with notification"/>
+    </PreferenceCategory>
+    <PreferenceCategory 
+        android:title="Advanced settings">
+        
+    </PreferenceCategory>
+</PreferenceScreen>
