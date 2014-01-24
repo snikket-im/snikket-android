@@ -1,4 +1,4 @@
-package de.gultsch.chat;
+package de.gultsch.chat.entities;
 
 import java.io.Serializable;
 

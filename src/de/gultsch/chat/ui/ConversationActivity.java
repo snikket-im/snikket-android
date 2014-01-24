@@ -1,15 +1,20 @@
 package de.gultsch.chat.ui;
 
 import java.util.HashMap;
+import java.util.List;
 
-import de.gultsch.chat.Contact;
-import de.gultsch.chat.Conversation;
 import de.gultsch.chat.ConversationCursor;
 import de.gultsch.chat.ConversationList;
 import de.gultsch.chat.R;
 import de.gultsch.chat.R.id;
+import de.gultsch.chat.entities.Account;
+import de.gultsch.chat.entities.Contact;
+import de.gultsch.chat.entities.Conversation;
+import de.gultsch.chat.persistance.DatabaseBackend;
+import android.net.Uri;
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
@@ -17,14 +22,18 @@ import android.support.v4.widget.SlidingPaneLayout;
 import android.support.v4.widget.SlidingPaneLayout.PanelSlideListener;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
+import android.widget.ImageView;
 
 public class ConversationActivity extends Activity {
 
@@ -34,34 +43,51 @@ public class ConversationActivity extends Activity {
 	protected SlidingPaneLayout spl;
 
 	protected HashMap<Conversation, ConversationFragment> conversationFragments = new HashMap<Conversation, ConversationFragment>();
+	private DatabaseBackend dbb;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		
+		dbb = DatabaseBackend.getInstance(this);
+		
 		super.onCreate(savedInstanceState);
+
+		final List<Conversation> conversationList = dbb.getConversations(Conversation.STATUS_AVAILABLE);
+
+		if (getIntent().getAction().equals(Intent.ACTION_MAIN)) {
+			if (conversationList.size() < 0) {
+				Log.d("gultsch",
+						"no conversations detected. redirect to new conversation activity");
+				startActivity(new Intent(this, NewConversationActivity.class));
+				finish();
+			}
+		}
 
 		setContentView(R.layout.fragment_conversations_overview);
 
-		final ConversationList conversationList = new ConversationList();
-
-		String[] fromColumns = { ConversationCursor.NAME,
-				ConversationCursor.LAST_MSG };
-		int[] toViews = { R.id.conversation_name, R.id.conversation_lastmsg };
-
-		final SimpleCursorAdapter adapter = new SimpleCursorAdapter(this,
-				R.layout.conversation_list_row, conversationList.getCursor(),
-				fromColumns, toViews, 0);
 		final ListView listView = (ListView) findViewById(R.id.list);
-		listView.setAdapter(adapter);
-
+		
+		listView.setAdapter(new ArrayAdapter<Conversation>(this, R.layout.conversation_list_row, conversationList) {
+			@Override
+			public View getView (int position, View view, ViewGroup parent) {
+				if (view == null) {
+					LayoutInflater  inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+					view = (View) inflater.inflate(R.layout.conversation_list_row,null);
+					((TextView) view.findViewById(R.id.conversation_name)).setText(getItem(position).getName());
+					((ImageView) view.findViewById(R.id.conversation_image)).setImageURI(getItem(position).getProfilePhotoUri());
+				}
+				return view;
+			}
+			
+		});
+		
 		listView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View clickedView,
 					int position, long arg3) {
-				conversationList.setSelectedConversationPosition(position);
-				swapConversationFragment(conversationList);
-				getActionBar().setTitle(
-						conversationList.getSelectedConversation().getName());
+				swapConversationFragment(conversationList.get(position));
+				getActionBar().setTitle(conversationList.get(position).getName());
 				spl.closePane();
 			}
 		});
@@ -95,9 +121,8 @@ public class ConversationActivity extends Activity {
 			public void onPanelClosed(View arg0) {
 				if (conversationList.size() > 0) {
 					getActionBar().setDisplayHomeAsUpEnabled(true);
-					getActionBar().setTitle(
-							conversationList.getSelectedConversation()
-									.getName());
+					ConversationFragment convFrag = (ConversationFragment) getFragmentManager().findFragmentById(R.id.selected_conversation);
+					getActionBar().setTitle(convFrag.getConversation().getName());
 					invalidateOptionsMenu();
 				}
 			}
@@ -116,25 +141,26 @@ public class ConversationActivity extends Activity {
 						ConversationActivity.CONVERSATION_CONTACT);
 				Log.d("gultsch",
 						"start conversation with " + contact.getDisplayName());
-				int pos = conversationList
-						.addAndReturnPosition(new Conversation(contact
-								.getDisplayName()));
-				conversationList.setSelectedConversationPosition(pos);
-				swapConversationFragment(conversationList);
+
+				// start new conversation
+				Conversation conversation = new Conversation(
+						contact.getDisplayName(), contact.getProfilePhoto(),
+						new Account(), contact.getJid());
+
+				//@TODO don't write to database here; always go through service
+				dbb.addConversation(conversation);
+				conversationList.add(0, conversation);
+				swapConversationFragment(conversationList.get(0));
 				spl.closePane();
 
 				// why do i even need this
 				getActionBar().setDisplayHomeAsUpEnabled(true);
-				getActionBar().setTitle(
-						conversationList.getSelectedConversation().getName());
+				getActionBar().setTitle(conversationList.get(0).getName());
 			}
 		} else {
 			// normal startup
 			if (conversationList.size() >= 1) {
-				conversationList.setSelectedConversationPosition(0);
-				swapConversationFragment(conversationList);
-			} else {
-				startActivity(new Intent(this, NewConversationActivity.class));
+				swapConversationFragment(conversationList.get(0));
 			}
 		}
 	}
@@ -168,24 +194,22 @@ public class ConversationActivity extends Activity {
 			break;
 		case R.id.action_add:
 			startActivity(new Intent(this, NewConversationActivity.class));
+		case R.id.action_archive:
+			
 		default:
 			break;
 		}
 		return super.onOptionsItemSelected(item);
 	}
 
-	protected void swapConversationFragment(
-			final ConversationList conversationList) {
+	protected void swapConversationFragment(Conversation conv) {
 		ConversationFragment selectedFragment;
-		if (conversationFragments.containsKey(conversationList
-				.getSelectedConversation())) {
-			selectedFragment = conversationFragments.get(conversationList
-					.getSelectedConversation());
+		if (conversationFragments.containsKey(conv)) {
+			selectedFragment = conversationFragments.get(conv);
 		} else {
 			selectedFragment = new ConversationFragment();
-			conversationFragments.put(
-					conversationList.getSelectedConversation(),
-					selectedFragment);
+			selectedFragment.setConversation(conv);
+			conversationFragments.put(conv,selectedFragment);
 		}
 		FragmentTransaction transaction = getFragmentManager()
 				.beginTransaction();

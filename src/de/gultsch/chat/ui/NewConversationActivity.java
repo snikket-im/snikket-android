@@ -5,8 +5,9 @@ import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import de.gultsch.chat.Contact;
 import de.gultsch.chat.R;
+import de.gultsch.chat.entities.Contact;
+import de.gultsch.chat.persistance.DatabaseBackend;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.Editable;
@@ -48,15 +49,14 @@ public class NewConversationActivity extends Activity {
 			+ "\") AND (" + ContactsContract.CommonDataKinds.Im.PROTOCOL
 			+ "=\"" + ContactsContract.CommonDataKinds.Im.PROTOCOL_JABBER
 			+ "\")";
+	protected static final String DEFAULT_PROFILE_PHOTO = "android.resource://de.gultsch.chat/" + R.drawable.ic_profile;
 
 	protected View getViewForContact(Contact contact) {
 		LayoutInflater  inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View view = (View) inflater.inflate(R.layout.contact,null);
 		((TextView) view.findViewById(R.id.contact_display_name)).setText(contact.getDisplayName());
 		((TextView) view.findViewById(R.id.contact_jid)).setText(contact.getJid());
-		if (contact.getProfilePhoto() != null) {
 		((ImageView) view.findViewById(R.id.contact_photo)).setImageURI(contact.getProfilePhoto());
-		}
 		view.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -93,6 +93,12 @@ public class NewConversationActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		
 		super.onCreate(savedInstanceState);
+		
+		if (DatabaseBackend.getInstance(this).getConversationCount() < 1) {
+			getActionBar().setDisplayHomeAsUpEnabled(false);
+			getActionBar().setHomeButtonEnabled(false);
+		}
+		
 		setContentView(R.layout.activity_new_conversation);
 		CursorLoader mCursorLoader = new CursorLoader(this,
 				ContactsContract.Data.CONTENT_URI, PROJECTION, SELECTION, null,
@@ -102,13 +108,17 @@ public class NewConversationActivity extends Activity {
 			@Override
 			public void onLoadComplete(Loader<Cursor> arg0, Cursor cursor) {
 				while (cursor.moveToNext()) {
+					String profilePhoto = cursor.getString(cursor.getColumnIndex(ContactsContract.Data.PHOTO_THUMBNAIL_URI));
+					if (profilePhoto == null) {
+						profilePhoto = DEFAULT_PROFILE_PHOTO;
+					}
 					Contact contact = new Contact(
 							cursor.getString(cursor
 									.getColumnIndex(ContactsContract.Data.DISPLAY_NAME)),
 							cursor.getString(cursor
 									.getColumnIndex(ContactsContract.CommonDataKinds.Im.DATA)),
-									cursor.getString(cursor
-											.getColumnIndex(ContactsContract.Data.PHOTO_THUMBNAIL_URI)));
+									profilePhoto
+									);
 					View contactView = getViewForContact(contact);
 					availablePhoneContacts.put(contact, getViewForContact(contact));
 					((LinearLayout) findViewById(R.id.phone_contacts)).addView(contactView);
@@ -166,7 +176,7 @@ public class NewConversationActivity extends Activity {
 		if (matcher.find()) {
 			createNewContact.removeAllViews();
 			String name = search.split("@")[0];
-			newContact = new Contact(name,search,null);
+			newContact = new Contact(name,search,DEFAULT_PROFILE_PHOTO);
 			newContactView = getViewForContact(newContact);
 			newContactView.findViewById(R.id.contact_divider).setVisibility(View.GONE);
 			createNewContact.addView(newContactView);

@@ -3,6 +3,9 @@ package de.gultsch.chat;
 
 import java.util.ArrayList;
 
+import de.gultsch.chat.entities.Conversation;
+import de.gultsch.chat.entities.Message;
+
 
 import android.database.AbstractCursor;
 

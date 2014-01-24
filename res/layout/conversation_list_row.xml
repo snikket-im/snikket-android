@@ -2,61 +2,53 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="5dip">
+    android:padding="8dp">
  
-    <!--  ListRow Left sied Thumbnail image -->
-    <LinearLayout android:id="@+id/thumbnail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="3dip"
-        android:layout_alignParentLeft="true"
-        android:layout_marginRight="5dip">
 
-        <ImageView
-            android:id="@+id/imageView1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_profile" />
- 
-    </LinearLayout>
- 
-    <!-- Title Of Song-->
-    <TextView
-        android:id="@+id/conversation_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/thumbnail"
-        android:layout_toRightOf="@+id/thumbnail"
-        android:text="Rihanna Love the way lie"
-        android:textColor="#636363"
-        android:typeface="sans"
-        android:textSize="20dip"/>
- 
-    <!-- Artist Name -->
-    <TextView
-        android:id="@+id/conversation_lastmsg"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/conversation_name"
-        android:textColor="#636363"
-        android:textSize="12dip"
-        android:layout_marginTop="1dip"
-        android:layout_toRightOf="@+id/thumbnail"
-        android:text="Just gona stand there and ..." />
- 
-    <!-- Rightend Duration -->
-    <TextView
-        android:id="@+id/duration"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignBottom="@id/conversation_name"
-        android:gravity="right"
-        android:text="5:45"
-        android:layout_marginRight="5dip"
-        android:textSize="10dip"
-        android:textColor="#636363"/>
- 
+	<ImageView
+            android:id="@+id/conversation_image"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_alignParentLeft="true"/>
+
+	<RelativeLayout
+	    android:layout_toRightOf="@+id/conversation_image"
+	    android:layout_centerVertical="true"
+	    android:layout_height="wrap_content"
+	    android:layout_width="fill_parent"
+	    android:paddingLeft="8dp">
+
+	    <TextView
+	        android:id="@+id/conversation_name"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="Mein Contact"
+	        android:textColor="#636363"
+	        android:textSize="20sp"
+	        android:typeface="sans" />
+	 
+	    <TextView
+	        android:id="@+id/conversation_lastmsg"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_below="@id/conversation_name"
+	        android:textColor="#636363"
+	        android:textSize="14sp"
+	        android:text="This is my last message"
+	        android:paddingTop="3dp"/>
+
+	    <TextView
+	        android:id="@+id/duration"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignBaseline="@+id/conversation_name"
+	        android:layout_alignParentRight="true"
+	        android:gravity="right"
+	        android:text="2 min"
+	        android:textColor="#636363"
+	        android:textSize="12sp" />
+
+ 	</RelativeLayout>
  
  
 </RelativeLayout>

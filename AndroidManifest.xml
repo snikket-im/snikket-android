@@ -17,7 +17,8 @@
         android:theme="@android:style/Theme.Holo.Light" >
         <activity
             android:name="de.gultsch.chat.ui.ConversationActivity"
-            android:label="Secure Conversations">
+            android:label="Secure Conversations"
+            android:windowSoftInputMode="stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
