@@ -38,7 +38,8 @@
             android:name="de.gultsch.chat.ui.NewConversationActivity"
             android:label="@string/title_activity_new_conversation"
             android:parentActivityName="de.gultsch.chat.ui.ConversationActivity"
-            android:windowSoftInputMode="stateHidden">
+            android:windowSoftInputMode="stateHidden"
+            android:noHistory="true">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="de.gultsch.chat.ui.ConversationActivity" />

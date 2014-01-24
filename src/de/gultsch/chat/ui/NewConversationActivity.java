@@ -82,6 +82,7 @@ public class NewConversationActivity extends Activity {
 				startConversationIntent.setAction(Intent.ACTION_VIEW);
 				startConversationIntent.putExtra(ConversationActivity.CONVERSATION_CONTACT, clickedContact);
 				startConversationIntent.setType(ConversationActivity.START_CONVERSATION);
+				startConversationIntent.setFlags(startConversationIntent.getFlags() | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(startConversationIntent);
 			}
 		});

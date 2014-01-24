@@ -38,4 +38,9 @@ public class ConversationList extends ArrayList<Conversation> {
 		
 		this.selectedConversationPosition = this.indexOf(selectedConversation);
 	}
+	
+	public synchronized int addAndReturnPosition(Conversation conversation) {
+		this.add(conversation);
+		return size() - 1;
+	}
 }
