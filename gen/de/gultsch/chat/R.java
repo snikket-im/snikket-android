@@ -74,6 +74,7 @@ public final class R {
     }
     public static final class menu {
         public static final int conversations=0x7f090000;
+        public static final int newconversation=0x7f090001;
     }
     public static final class string {
         public static final int action_accounts=0x7f070003;

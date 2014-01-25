@@ -15,6 +15,7 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@android:style/Theme.Holo.Light" >
+        <service android:name="de.gultsch.chat.services.XmppConnectionService"/>
         <activity
             android:name="de.gultsch.chat.ui.ConversationActivity"
             android:label="Secure Conversations"

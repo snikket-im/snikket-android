@@ -1,11 +1,18 @@
 package de.gultsch.chat.entities;
 
-public class Account {
+import android.content.ContentValues;
 
-	private String uuid;
+public class Account  extends AbstractEntity{
 
-	public String getUuid() {
-		return this.uuid;
+	private static final long serialVersionUID = 6174825093869578035L;
+	
+	public Account() {
+		this.uuid = "";
+	}
+	@Override
+	public ContentValues getContentValues() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

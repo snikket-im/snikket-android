@@ -8,7 +8,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 public class DatabaseBackend extends SQLiteOpenHelper {
 	
@@ -23,7 +22,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		db.execSQL("create table conversations (uuid TEXT, name TEXT, profilePhotoUri TEXT, accountUuid TEXT, contactJid TEXT)");
+		db.execSQL("create table conversations (uuid TEXT, name TEXT, profilePhotoUri TEXT, accountUuid TEXT, contactJid TEXT, created NUMBER, status NUMBER)");
 	}
 
 	@Override
@@ -34,7 +33,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 	
 	public static synchronized DatabaseBackend getInstance(Context context) {
 		if (instance == null) {
-			instance = new DatabaseBackend(context.getApplicationContext());
+			instance = new DatabaseBackend(context);
 		}
 		return instance;
 	}
@@ -56,10 +55,8 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		List<Conversation> list = new ArrayList<Conversation>();
 		SQLiteDatabase db = this.getReadableDatabase();
 		String[] selectionArgs = {""+status};
-		Cursor cursor = db.rawQuery("select * from conversations where status = ?", selectionArgs);
-		Log.d("gultsch","getConversations has found "+cursor.getCount()+" rows");
+		Cursor cursor = db.rawQuery("select * from conversations where status = ? order by created desc", selectionArgs);
 		while(cursor.moveToNext()) {
-			Log.d("gultsch","converting row #"+cursor.getPosition());
 			list.add(Conversation.fromCursor(cursor));
 		}
 		return list;

@@ -1,29 +1,49 @@
 package de.gultsch.chat.services;
 
+import java.util.List;
+
+import de.gultsch.chat.entities.Conversation;
+import de.gultsch.chat.entities.Message;
+import de.gultsch.chat.persistance.DatabaseBackend;
 import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
+import android.util.Log;
 
 public class XmppConnectionService extends Service {
+	
+	protected static final String LOGTAG = "xmppConnection";
+	protected DatabaseBackend databaseBackend;
 
-	// Binder given to clients
     private final IBinder mBinder = new XmppConnectionBinder();
 
-    /**
-     * Class used for the client Binder.  Because we know this service always
-     * runs in the same process as its clients, we don't need to deal with IPC.
-     */
     public class XmppConnectionBinder extends Binder {
-        XmppConnectionService getService() {
-            // Return this instance of LocalService so clients can call public methods
-            return XmppConnectionService.this;
+        public XmppConnectionService getService() {
+        	return XmppConnectionService.this;
         }
     }
-
+    
+    @Override
+    public void onCreate() {
+    	databaseBackend = DatabaseBackend.getInstance(getApplicationContext());
+    }
+    
     @Override
     public IBinder onBind(Intent intent) {
         return mBinder;
+    }
+    
+    public void sendMessage(Message message) {
+    	Log.d(LOGTAG,"sending message");
+    }
+    
+    public void addConversation(Conversation conversation) {
+    	databaseBackend.addConversation(conversation);
+    }
+    
+    public List<Conversation> getConversations(int status) {
+    	return databaseBackend.getConversations(status);
     }
 
 }

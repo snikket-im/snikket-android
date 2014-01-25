@@ -6,7 +6,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import de.gultsch.chat.R;
+import de.gultsch.chat.entities.Account;
 import de.gultsch.chat.entities.Contact;
+import de.gultsch.chat.entities.Conversation;
 import de.gultsch.chat.persistance.DatabaseBackend;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -14,12 +16,13 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ImageView;
-import android.app.Activity;
 import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
@@ -27,7 +30,7 @@ import android.content.Loader;
 import android.content.Loader.OnLoadCompleteListener;
 import android.database.Cursor;
 
-public class NewConversationActivity extends Activity {
+public class NewConversationActivity extends XmppActivity {
 
 	final protected LinkedHashMap<Contact, View> availablePhoneContacts = new LinkedHashMap<Contact, View>();
 	final protected LinkedHashMap<Contact, View> availableJabberContacts = new LinkedHashMap<Contact, View>();
@@ -78,12 +81,20 @@ public class NewConversationActivity extends Activity {
 					clickedContact = newContact;
 				}
 				Log.d("gultsch","clicked on "+clickedContact.getDisplayName());
-				Intent startConversationIntent = new Intent(v.getContext(),ConversationActivity.class);
-				startConversationIntent.setAction(Intent.ACTION_VIEW);
-				startConversationIntent.putExtra(ConversationActivity.CONVERSATION_CONTACT, clickedContact);
-				startConversationIntent.setType(ConversationActivity.START_CONVERSATION);
-				startConversationIntent.setFlags(startConversationIntent.getFlags() | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				startActivity(startConversationIntent);
+				
+				
+				Account account = new Account();
+				
+				Conversation conversation = new Conversation(clickedContact.getDisplayName(), clickedContact.getProfilePhoto(), account, clickedContact.getJid());
+			
+				xmppConnectionService.addConversation(conversation);
+				
+				Intent viewConversationIntent = new Intent(v.getContext(),ConversationActivity.class);
+				viewConversationIntent.setAction(Intent.ACTION_VIEW);
+				viewConversationIntent.putExtra(ConversationActivity.CONVERSATION, conversation.getUuid());
+				viewConversationIntent.setType(ConversationActivity.VIEW_CONVERSATION);
+				viewConversationIntent.setFlags(viewConversationIntent.getFlags() | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				startActivity(viewConversationIntent);
 			}
 		});
 		return view;
@@ -205,4 +216,33 @@ public class NewConversationActivity extends Activity {
 			lastContact.findViewById(R.id.contact_divider).setVisibility(View.GONE);
 		}
 	}
+
+	@Override
+	void servConnected() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.newconversation, menu);
+		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.action_settings:
+			startActivity(new Intent(this, SettingsActivity.class));
+			break;
+		case R.id.action_accounts:
+			startActivity(new Intent(this, ManageAccountActivity.class));
+			break;
+		default:
+			break;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+	
 }

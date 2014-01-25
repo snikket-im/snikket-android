@@ -1,56 +1,62 @@
 package de.gultsch.chat.entities;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.UUID;
+import java.util.List;
 
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
 
-public class Conversation implements Serializable {
+public class Conversation extends AbstractEntity {
 
 	private static final long serialVersionUID = -6727528868973996739L;
 	public static final int STATUS_AVAILABLE = 0;
 	public static final int STATUS_ARCHIVED = 1;
 	public static final int STATUS_DELETED = 2;
-	private String uuid;
+
+	public static final String NAME = "name";
+	public static final String PHOTO_URI = "profilePhotoUri";
+	public static final String ACCOUNT = "accountUuid";
+	public static final String CONTACT = "contactJid";
+	public static final String STATUS = "status";
+	public static final String CREATED = "created";
+
 	private String name;
 	private String profilePhotoUri;
 	private String accountUuid;
 	private String contactJid;
 	private int status;
+	private long created;
 
-	// legacy. to be removed
-	private ArrayList<Message> msgs = new ArrayList<Message>();
+	private transient List<Message> messages;
 
 	public Conversation(String name, Uri profilePhoto, Account account,
 			String contactJid) {
-		this(UUID.randomUUID().toString(), name, profilePhoto.toString(),
-				account.getUuid(), contactJid, STATUS_AVAILABLE);
+		this(java.util.UUID.randomUUID().toString(), name, profilePhoto
+				.toString(), account.getUuid(), contactJid, System
+				.currentTimeMillis(), STATUS_AVAILABLE);
 	}
 
 	public Conversation(String uuid, String name, String profilePhoto,
-			String accountUuid, String contactJid, int status) {
+			String accountUuid, String contactJid, long created, int status) {
 		this.uuid = uuid;
 		this.name = name;
 		this.profilePhotoUri = profilePhoto;
 		this.accountUuid = accountUuid;
 		this.contactJid = contactJid;
+		this.created = created;
 		this.status = status;
 	}
 
-	public ArrayList<Message> getLastMessages(int count, int offset) {
-		msgs.add(new Message("this is my last message"));
-		return msgs;
+	public List<Message> getMessages() {
+		return messages;
+	}
+
+	public void setMessages(List<Message> msgs) {
+		this.messages = msgs;
 	}
 
 	public String getName() {
 		return this.name;
-	}
-
-	public String getUuid() {
-		return this.uuid;
 	}
 
 	public String getProfilePhotoString() {
@@ -78,22 +84,23 @@ public class Conversation implements Serializable {
 
 	public ContentValues getContentValues() {
 		ContentValues values = new ContentValues();
-		values.put("uuid", this.uuid);
-		values.put("name", this.name);
-		values.put("profilePhotoUri", this.profilePhotoUri);
-		values.put("accountUuid", this.accountUuid);
-		values.put("contactJid", this.contactJid);
-		values.put("status", this.status);
+		values.put(UUID, uuid);
+		values.put(NAME, name);
+		values.put(PHOTO_URI, profilePhotoUri);
+		values.put(ACCOUNT, accountUuid);
+		values.put(CONTACT, contactJid);
+		values.put(CREATED, created);
+		values.put(STATUS, status);
 		return values;
 	}
 
 	public static Conversation fromCursor(Cursor cursor) {
-		return new Conversation(
-				cursor.getString(cursor.getColumnIndex("uuid")),
-				cursor.getString(cursor.getColumnIndex("name")),
-				cursor.getString(cursor.getColumnIndex("profilePhotoUri")),
-				cursor.getString(cursor.getColumnIndex("accountUuid")),
-				cursor.getString(cursor.getColumnIndex("contactJid")),
-				cursor.getInt(cursor.getColumnIndex("status")));
+		return new Conversation(cursor.getString(cursor.getColumnIndex(UUID)),
+				cursor.getString(cursor.getColumnIndex(NAME)),
+				cursor.getString(cursor.getColumnIndex(PHOTO_URI)),
+				cursor.getString(cursor.getColumnIndex(ACCOUNT)),
+				cursor.getString(cursor.getColumnIndex(CONTACT)),
+				cursor.getLong(cursor.getColumnIndex(CREATED)),
+				cursor.getInt(cursor.getColumnIndex(STATUS)));
 	}
 }
