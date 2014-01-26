@@ -32,29 +32,33 @@ public final class R {
         public static final int ic_action_unsecure=0x7f020004;
         public static final int ic_launcher=0x7f020005;
         public static final int ic_profile=0x7f020006;
-        public static final int section_header=0x7f020007;
+        public static final int message_border=0x7f020007;
+        public static final int profilemock=0x7f020008;
+        public static final int section_header=0x7f020009;
     }
     public static final class id {
-        public static final int action_accounts=0x7f0a001b;
-        public static final int action_add=0x7f0a0017;
-        public static final int action_archive=0x7f0a001a;
-        public static final int action_details=0x7f0a0019;
-        public static final int action_security=0x7f0a0018;
-        public static final int action_settings=0x7f0a001c;
+        public static final int action_accounts=0x7f0a001e;
+        public static final int action_add=0x7f0a001a;
+        public static final int action_archive=0x7f0a001d;
+        public static final int action_details=0x7f0a001c;
+        public static final int action_security=0x7f0a001b;
+        public static final int action_settings=0x7f0a001f;
         public static final int contact_display_name=0x7f0a0009;
         public static final int contact_divider=0x7f0a000b;
         public static final int contact_jid=0x7f0a000a;
         public static final int contact_photo=0x7f0a0008;
         public static final int conversation_image=0x7f0a000c;
         public static final int conversation_lastmsg=0x7f0a000e;
+        public static final int conversation_lastupdate=0x7f0a000f;
         public static final int conversation_name=0x7f0a000d;
         public static final int create_new_contact=0x7f0a0007;
-        public static final int duration=0x7f0a000f;
-        public static final int editText1=0x7f0a0011;
-        public static final int imageButton1=0x7f0a0012;
         public static final int jabber_contacts=0x7f0a0005;
         public static final int jabber_contacts_header=0x7f0a0004;
         public static final int list=0x7f0a0015;
+        public static final int message_body=0x7f0a0018;
+        public static final int message_photo=0x7f0a0017;
+        public static final int message_time=0x7f0a0019;
+        public static final int messages_view=0x7f0a0013;
         public static final int new_contact_header=0x7f0a0006;
         public static final int new_conversation_search=0x7f0a0000;
         public static final int phone_contacts=0x7f0a0003;
@@ -62,7 +66,8 @@ public final class R {
         public static final int scrollView1=0x7f0a0001;
         public static final int selected_conversation=0x7f0a0016;
         public static final int slidingpanelayout=0x7f0a0014;
-        public static final int textView1=0x7f0a0013;
+        public static final int textSendButton=0x7f0a0012;
+        public static final int textinput=0x7f0a0011;
         public static final int textsend=0x7f0a0010;
     }
     public static final class layout {
@@ -71,6 +76,7 @@ public final class R {
         public static final int conversation_list_row=0x7f030002;
         public static final int fragment_conversation=0x7f030003;
         public static final int fragment_conversations_overview=0x7f030004;
+        public static final int message_sent=0x7f030005;
     }
     public static final class menu {
         public static final int conversations=0x7f090000;
@@ -84,6 +90,8 @@ public final class R {
         public static final int action_secure=0x7f070006;
         public static final int action_settings=0x7f070001;
         public static final int app_name=0x7f070000;
+        public static final int just_now=0x7f070008;
+        public static final int sending=0x7f070009;
         public static final int title_activity_new_conversation=0x7f070007;
     }
     public static final class style {

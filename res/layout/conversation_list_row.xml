@@ -38,7 +38,7 @@
 	        android:paddingTop="3dp"/>
 
 	    <TextView
-	        android:id="@+id/duration"
+	        android:id="@+id/conversation_lastupdate"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_alignBaseline="@+id/conversation_name"

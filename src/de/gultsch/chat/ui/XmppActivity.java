@@ -10,8 +10,8 @@ import android.content.ServiceConnection;
 import android.os.IBinder;
 
 public abstract class XmppActivity extends Activity {
-	protected XmppConnectionService xmppConnectionService;
-	protected boolean xmppConnectionServiceBound = false;
+	public XmppConnectionService xmppConnectionService;
+	public boolean xmppConnectionServiceBound = false;
 	protected boolean handledViewIntent = false;
 	protected ServiceConnection mConnection = new ServiceConnection() {
 

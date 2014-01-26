@@ -9,6 +9,7 @@ import de.gultsch.chat.entities.Account;
 import de.gultsch.chat.entities.Contact;
 import de.gultsch.chat.entities.Conversation;
 import de.gultsch.chat.persistance.DatabaseBackend;
+import de.gultsch.chat.utils.Beautifier;
 import android.os.Bundle;
 import android.app.FragmentTransaction;
 import android.content.Context;
@@ -60,6 +61,8 @@ public class ConversationActivity extends XmppActivity {
 				}
 				((TextView) view.findViewById(R.id.conversation_name))
 						.setText(getItem(position).getName());
+				((TextView) view.findViewById(R.id.conversation_lastupdate))
+				.setText(Beautifier.readableTimeDifference(getItem(position).getCreated()));
 				((ImageView) view.findViewById(R.id.conversation_image))
 						.setImageURI(getItem(position).getProfilePhotoUri());
 				return view;

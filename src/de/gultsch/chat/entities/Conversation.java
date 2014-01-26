@@ -1,5 +1,6 @@
 package de.gultsch.chat.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.content.ContentValues;
@@ -9,6 +10,9 @@ import android.net.Uri;
 public class Conversation extends AbstractEntity {
 
 	private static final long serialVersionUID = -6727528868973996739L;
+	
+	public static final String TABLENAME = "conversations";
+	
 	public static final int STATUS_AVAILABLE = 0;
 	public static final int STATUS_ARCHIVED = 1;
 	public static final int STATUS_DELETED = 2;
@@ -27,7 +31,7 @@ public class Conversation extends AbstractEntity {
 	private int status;
 	private long created;
 
-	private transient List<Message> messages;
+	private transient List<Message> messages = null;
 
 	public Conversation(String name, Uri profilePhoto, Account account,
 			String contactJid) {
@@ -48,6 +52,7 @@ public class Conversation extends AbstractEntity {
 	}
 
 	public List<Message> getMessages() {
+		if (messages == null) this.messages = new ArrayList<Message>(); //prevent null pointer
 		return messages;
 	}
 
@@ -80,6 +85,10 @@ public class Conversation extends AbstractEntity {
 
 	public int getStatus() {
 		return this.status;
+	}
+	
+	public long getCreated() {
+		return this.created;
 	}
 
 	public ContentValues getContentValues() {

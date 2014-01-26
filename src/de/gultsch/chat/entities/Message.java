@@ -6,6 +6,8 @@ import android.database.Cursor;
 public class Message extends AbstractEntity {
 
 	private static final long serialVersionUID = 7222081895167103025L;
+	
+	public static final String TABLENAME = "messages";
 
 	public static final int STATUS_RECIEVED = 0;
 	public static final int STATUS_UNSEND = 1;

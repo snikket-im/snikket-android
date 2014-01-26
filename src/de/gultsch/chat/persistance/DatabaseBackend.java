@@ -4,15 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.gultsch.chat.entities.Conversation;
+import de.gultsch.chat.entities.Message;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class DatabaseBackend extends SQLiteOpenHelper {
-	
+
 	private static DatabaseBackend instance = null;
-	
+
 	private static final String DATABASE_NAME = "history";
 	private static final int DATABASE_VERSION = 1;
 
@@ -22,7 +23,13 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		db.execSQL("create table conversations (uuid TEXT, name TEXT, profilePhotoUri TEXT, accountUuid TEXT, contactJid TEXT, created NUMBER, status NUMBER)");
+		db.execSQL("create table " + Conversation.TABLENAME + " ("
+				+ Conversation.UUID + " TEXT, " + Conversation.NAME + " TEXT, "
+				+ Conversation.PHOTO_URI + " TEXT, " + Conversation.ACCOUNT
+				+ " TEXT, " + Conversation.CONTACT + " TEXT, "
+				+ Conversation.CREATED + " NUMBER, " + Conversation.STATUS
+				+ " NUMBER)");
+		db.execSQL("create table "+Message.TABLENAME+ "()");
 	}
 
 	@Override
@@ -30,23 +37,23 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		// TODO Auto-generated method stub
 
 	}
-	
+
 	public static synchronized DatabaseBackend getInstance(Context context) {
 		if (instance == null) {
 			instance = new DatabaseBackend(context);
 		}
 		return instance;
 	}
-	
+
 	public void addConversation(Conversation conversation) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.insert("conversations", null, conversation.getContentValues());
 	}
-	
-	
+
 	public int getConversationCount() {
 		SQLiteDatabase db = this.getReadableDatabase();
-		Cursor cursor = db.rawQuery("select count(uuid) as count from conversations",null);
+		Cursor cursor = db.rawQuery(
+				"select count(uuid) as count from conversations", null);
 		cursor.moveToFirst();
 		return cursor.getInt(0);
 	}
@@ -54,9 +61,12 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 	public List<Conversation> getConversations(int status) {
 		List<Conversation> list = new ArrayList<Conversation>();
 		SQLiteDatabase db = this.getReadableDatabase();
-		String[] selectionArgs = {""+status};
-		Cursor cursor = db.rawQuery("select * from conversations where status = ? order by created desc", selectionArgs);
-		while(cursor.moveToNext()) {
+		String[] selectionArgs = { "" + status };
+		Cursor cursor = db
+				.rawQuery(
+						"select * from conversations where status = ? order by created desc",
+						selectionArgs);
+		while (cursor.moveToNext()) {
 			list.add(Conversation.fromCursor(cursor));
 		}
 		return list;
