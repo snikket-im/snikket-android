@@ -49,7 +49,9 @@
         android:background="#e5e5e5"
         tools:listitem="@layout/message_sent"
         android:divider="@null"
-		android:dividerHeight="0dp">
+		android:dividerHeight="0dp"
+		android:transcriptMode="alwaysScroll"
+		android:listSelector="@android:color/transparent">
     </ListView>
 
 </RelativeLayout>

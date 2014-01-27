@@ -53,7 +53,30 @@ public class Conversation extends AbstractEntity {
 
 	public List<Message> getMessages() {
 		if (messages == null) this.messages = new ArrayList<Message>(); //prevent null pointer
+		
+		//populate with Conversation (this)
+		
+		for(Message msg : messages) {
+			msg.setConversation(this);
+		}
+		
 		return messages;
+	}
+	
+	public String getLatestMessage() {
+		if ((this.messages == null)||(this.messages.size()==0)) {
+			return null;
+		} else {
+			return this.messages.get(this.messages.size() - 1).getBody();
+		}
+	}
+	
+	public long getLatestMessageDate() {
+		if ((this.messages == null)||(this.messages.size()==0)) {
+			return this.getCreated();
+		} else {
+			return this.messages.get(this.messages.size() - 1).getTimeSent();
+		}
 	}
 
 	public void setMessages(List<Message> msgs) {
@@ -111,5 +134,9 @@ public class Conversation extends AbstractEntity {
 				cursor.getString(cursor.getColumnIndex(CONTACT)),
 				cursor.getLong(cursor.getColumnIndex(CREATED)),
 				cursor.getInt(cursor.getColumnIndex(STATUS)));
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
 	}
 }

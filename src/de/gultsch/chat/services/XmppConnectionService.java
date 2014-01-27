@@ -2,6 +2,8 @@ package de.gultsch.chat.services;
 
 import java.util.List;
 
+import de.gultsch.chat.entities.Account;
+import de.gultsch.chat.entities.Contact;
 import de.gultsch.chat.entities.Conversation;
 import de.gultsch.chat.entities.Message;
 import de.gultsch.chat.persistance.DatabaseBackend;
@@ -35,15 +37,39 @@ public class XmppConnectionService extends Service {
     }
     
     public void sendMessage(Message message) {
-    	Log.d(LOGTAG,"sending message");
+    	databaseBackend.createMessage(message);
     }
     
     public void addConversation(Conversation conversation) {
-    	databaseBackend.addConversation(conversation);
+    	databaseBackend.createConversation(conversation);
     }
     
     public List<Conversation> getConversations(int status) {
     	return databaseBackend.getConversations(status);
     }
+    
+    public List<Message> getMessages(Conversation conversation) {
+    	return databaseBackend.getMessages(conversation, 100);
+    }
 
+    public Conversation findOrCreateConversation(Account account, Contact contact) {
+    	Conversation conversation = databaseBackend.findConversation(account, contact);
+    	if (conversation!=null) {
+    		Log.d("gultsch","found one. unarchive it");
+    		conversation.setStatus(Conversation.STATUS_AVAILABLE);
+    		this.databaseBackend.updateConversation(conversation);
+    	} else {
+    		conversation = new Conversation(contact.getDisplayName(), contact.getProfilePhoto(), account, contact.getJid());
+    		this.databaseBackend.createConversation(conversation);
+    	}
+    	return conversation;
+    }
+    
+    public void updateConversation(Conversation conversation) {
+    	this.databaseBackend.updateConversation(conversation);
+    }
+    
+    public int getConversationCount() {
+    	return this.databaseBackend.getConversationCount();
+    }
 }

@@ -20,7 +20,7 @@ public abstract class XmppActivity extends Activity {
 			XmppConnectionBinder binder = (XmppConnectionBinder) service;
 			xmppConnectionService = binder.getService();
 			xmppConnectionServiceBound = true;
-			servConnected();
+			onBackendConnected();
 		}
 
 		@Override
@@ -47,5 +47,5 @@ public abstract class XmppActivity extends Activity {
 		}
 	}
 	
-	abstract void servConnected();
+	abstract void onBackendConnected();
 }

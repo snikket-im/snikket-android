@@ -35,8 +35,9 @@ public class Message extends AbstractEntity {
 
 	public Message(Conversation conversation, String body, int encryption) {
 		this(java.util.UUID.randomUUID().toString(), conversation.getUuid(),
-				conversation.getContactJid(), body, 0, encryption,
+				conversation.getContactJid(), body, System.currentTimeMillis(), encryption,
 				Message.STATUS_UNSEND);
+		this.conversation = conversation;
 	}
 
 	public Message(String uuid, String conversationUUid, String counterpart,
@@ -65,6 +66,10 @@ public class Message extends AbstractEntity {
 
 	public String getConversationUuid() {
 		return conversationUuid;
+	}
+	
+	public Conversation getConversation() {
+		return this.conversation;
 	}
 
 	public String getCounterpart() {
@@ -95,6 +100,10 @@ public class Message extends AbstractEntity {
 				cursor.getLong(cursor.getColumnIndex(TIME_SENT)),
 				cursor.getInt(cursor.getColumnIndex(ENCRYPTION)),
 				cursor.getInt(cursor.getColumnIndex(STATUS)));
+	}
+
+	public void setConversation(Conversation conv) {
+		this.conversation = conv;
 	}
 
 }

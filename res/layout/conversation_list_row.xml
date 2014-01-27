@@ -22,7 +22,6 @@
 	        android:id="@+id/conversation_name"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:text="Mein Contact"
 	        android:textColor="#636363"
 	        android:textSize="20sp"
 	        android:typeface="sans" />
@@ -34,7 +33,8 @@
 	        android:layout_below="@id/conversation_name"
 	        android:textColor="#636363"
 	        android:textSize="14sp"
-	        android:text="This is my last message"
+	        android:singleLine="true"
+	        android:scrollHorizontally="false"
 	        android:paddingTop="3dp"/>
 
 	    <TextView
@@ -44,7 +44,6 @@
 	        android:layout_alignBaseline="@+id/conversation_name"
 	        android:layout_alignParentRight="true"
 	        android:gravity="right"
-	        android:text="2 min"
 	        android:textColor="#636363"
 	        android:textSize="12sp" />
 

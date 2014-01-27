@@ -9,7 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/message_border"
-        android:layout_toLeftOf="@+id/message_photo"
+        android:layout_toRightOf="@+id/message_photo"
      	android:layout_alignParentBottom="true"
      	android:minHeight="48dp"
      	>
@@ -42,9 +42,9 @@
         android:id="@+id/message_photo"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginLeft="-1.5dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginRight="-1.5dp"
         android:padding="0dp"
         android:src="@drawable/ic_profile"
         android:scaleType="fitXY"/>

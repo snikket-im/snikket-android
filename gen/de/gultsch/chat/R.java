@@ -76,7 +76,8 @@ public final class R {
         public static final int conversation_list_row=0x7f030002;
         public static final int fragment_conversation=0x7f030003;
         public static final int fragment_conversations_overview=0x7f030004;
-        public static final int message_sent=0x7f030005;
+        public static final int message_recieved=0x7f030005;
+        public static final int message_sent=0x7f030006;
     }
     public static final class menu {
         public static final int conversations=0x7f090000;

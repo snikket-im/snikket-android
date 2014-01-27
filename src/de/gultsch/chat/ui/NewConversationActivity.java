@@ -85,9 +85,7 @@ public class NewConversationActivity extends XmppActivity {
 				
 				Account account = new Account();
 				
-				Conversation conversation = new Conversation(clickedContact.getDisplayName(), clickedContact.getProfilePhoto(), account, clickedContact.getJid());
-			
-				xmppConnectionService.addConversation(conversation);
+				Conversation conversation = xmppConnectionService.findOrCreateConversation(account, clickedContact);
 				
 				Intent viewConversationIntent = new Intent(v.getContext(),ConversationActivity.class);
 				viewConversationIntent.setAction(Intent.ACTION_VIEW);
@@ -218,9 +216,10 @@ public class NewConversationActivity extends XmppActivity {
 	}
 
 	@Override
-	void servConnected() {
-		// TODO Auto-generated method stub
+	void onBackendConnected() {
 		
+		getActionBar().setDisplayHomeAsUpEnabled(false);
+		getActionBar().setHomeButtonEnabled(false);
 	}
 	
 	@Override
