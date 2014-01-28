@@ -26,18 +26,23 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
+		db.execSQL("PRAGMA foreign_keys=ON;");
+		db.execSQL("create table " + Account.TABLENAME + "(" + Account.UUID
+				+ " TEXT PRIMARY KEY," + Account.USERNAME + " TEXT," + Account.SERVER
+				+ " TEXT," + Account.PASSWORD + " TEXT)");
 		db.execSQL("create table " + Conversation.TABLENAME + " ("
 				+ Conversation.UUID + " TEXT PRIMARY KEY, " + Conversation.NAME
 				+ " TEXT, " + Conversation.PHOTO_URI + " TEXT, "
 				+ Conversation.ACCOUNT + " TEXT, " + Conversation.CONTACT
 				+ " TEXT, " + Conversation.CREATED + " NUMBER, "
-				+ Conversation.STATUS + " NUMBER)");
+				+ Conversation.STATUS + " NUMBER,"
+				+ "FOREIGN KEY("+Conversation.ACCOUNT+") REFERENCES "+Account.TABLENAME+"("+Account.UUID+") ON DELETE CASCADE);");
 		db.execSQL("create table " + Message.TABLENAME + "( " + Message.UUID
-				+ " TEXT PRIMARY KEY, " + Message.CONVERSATION + " TEXT, " + Message.TIME_SENT +" NUMBER, "
-				+ Message.COUNTERPART + " TEXT, " + Message.BODY + " TEXT, "
-				+ Message.ENCRYPTION + " NUMBER, " + Message.STATUS
-				+ " NUMBER)");
-		db.execSQL("create table "+Account.TABLENAME+"("+Account.UUID+" TEXT,"+Account.USERNAME+" TEXT,"+Account.SERVER+" TEXT,"+Account.PASSWORD+" TEXT)");
+				+ " TEXT PRIMARY KEY, " + Message.CONVERSATION + " TEXT, "
+				+ Message.TIME_SENT + " NUMBER, " + Message.COUNTERPART
+				+ " TEXT, " + Message.BODY + " TEXT, " + Message.ENCRYPTION
+				+ " NUMBER, " + Message.STATUS + " NUMBER,"
+				+ "FOREIGN KEY("+Message.CONVERSATION+") REFERENCES "+Conversation.TABLENAME+"("+Message.UUID+") ON DELETE CASCADE);");
 	}
 
 	@Override
@@ -62,16 +67,17 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.insert(Message.TABLENAME, null, message.getContentValues());
 	}
-	
+
 	public void createAccount(Account account) {
 		SQLiteDatabase db = this.getWritableDatabase();
-		db.insert(Account.TABLENAME,null, account.getContentValues());
+		db.insert(Account.TABLENAME, null, account.getContentValues());
 	}
 
 	public int getConversationCount() {
 		SQLiteDatabase db = this.getReadableDatabase();
-		Cursor cursor = db.rawQuery(
-				"select count(uuid) as count from "+Conversation.TABLENAME+" where "+Conversation.STATUS+"="+Conversation.STATUS_AVAILABLE, null);
+		Cursor cursor = db.rawQuery("select count(uuid) as count from "
+				+ Conversation.TABLENAME + " where " + Conversation.STATUS
+				+ "=" + Conversation.STATUS_AVAILABLE, null);
 		cursor.moveToFirst();
 		return cursor.getInt(0);
 	}
@@ -93,9 +99,10 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		List<Message> list = new ArrayList<Message>();
 		SQLiteDatabase db = this.getReadableDatabase();
 		String[] selectionArgs = { conversation.getUuid() };
-		Cursor cursor = db.query(Message.TABLENAME, null,Message.CONVERSATION +"=?", selectionArgs, null, null,
-				Message.TIME_SENT+" DESC",String.valueOf(limit));
-		if (cursor.getCount() > 0 ) {
+		Cursor cursor = db.query(Message.TABLENAME, null, Message.CONVERSATION
+				+ "=?", selectionArgs, null, null, Message.TIME_SENT + " DESC",
+				String.valueOf(limit));
+		if (cursor.getCount() > 0) {
 			cursor.moveToLast();
 			do {
 				list.add(Message.fromCursor(cursor));
@@ -106,24 +113,29 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 
 	public Conversation findConversation(Account account, Contact contact) {
 		SQLiteDatabase db = this.getReadableDatabase();
-		String[] selectionArgs = { account.getUuid() , contact.getJid() };
-		Cursor cursor = db.query(Conversation.TABLENAME, null,Conversation.ACCOUNT+"=? AND "+Conversation.CONTACT+"=?", selectionArgs, null, null, null);
-		if (cursor.getCount() == 0) return null;
+		String[] selectionArgs = { account.getUuid(), contact.getJid() };
+		Cursor cursor = db.query(Conversation.TABLENAME, null,
+				Conversation.ACCOUNT + "=? AND " + Conversation.CONTACT + "=?",
+				selectionArgs, null, null, null);
+		if (cursor.getCount() == 0)
+			return null;
 		cursor.moveToFirst();
 		return Conversation.fromCursor(cursor);
 	}
 
 	public void updateConversation(Conversation conversation) {
 		SQLiteDatabase db = this.getWritableDatabase();
-		String[] args = {conversation.getUuid()};
-		db.update(Conversation.TABLENAME, conversation.getContentValues(),Conversation.UUID+"=?",args);
+		String[] args = { conversation.getUuid() };
+		db.update(Conversation.TABLENAME, conversation.getContentValues(),
+				Conversation.UUID + "=?", args);
 	}
-	
+
 	public List<Account> getAccounts() {
 		List<Account> list = new ArrayList<Account>();
 		SQLiteDatabase db = this.getReadableDatabase();
-		Cursor cursor = db.query(Account.TABLENAME, null, null, null, null, null, null);
-		Log.d("gultsch","found "+cursor.getCount()+" accounts");
+		Cursor cursor = db.query(Account.TABLENAME, null, null, null, null,
+				null, null);
+		Log.d("gultsch", "found " + cursor.getCount() + " accounts");
 		while (cursor.moveToNext()) {
 			list.add(Account.fromCursor(cursor));
 		}
@@ -132,15 +144,23 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 
 	public void updateAccount(Account account) {
 		SQLiteDatabase db = this.getWritableDatabase();
-		String[] args = {account.getUuid()};
-		db.update(Account.TABLENAME, account.getContentValues(),Account.UUID+"=?",args);
+		String[] args = { account.getUuid() };
+		db.update(Account.TABLENAME, account.getContentValues(), Account.UUID
+				+ "=?", args);
 	}
 
 	public void deleteAccount(Account account) {
 		SQLiteDatabase db = this.getWritableDatabase();
-		String[] args = {account.getUuid()};
-		Log.d("gultsch","backend trying to delete account with uuid:"+account.getUuid());
-		db.delete(Account.TABLENAME,Account.UUID+"=?",args);
+		String[] args = { account.getUuid() };
+		Log.d("gultsch", "backend trying to delete account with uuid:"
+				+ account.getUuid());
+		db.delete(Account.TABLENAME, Account.UUID + "=?", args);
 	}
 
+	@Override
+	public SQLiteDatabase getWritableDatabase() {
+		SQLiteDatabase db = super.getWritableDatabase();
+		db.execSQL("PRAGMA foreign_keys=ON;");
+		return db;
+	}
 }
