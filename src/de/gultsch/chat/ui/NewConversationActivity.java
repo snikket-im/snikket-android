@@ -2,14 +2,13 @@ package de.gultsch.chat.ui;
 
 import java.util.LinkedHashMap;
 import java.util.Map.Entry;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import de.gultsch.chat.R;
 import de.gultsch.chat.entities.Account;
 import de.gultsch.chat.entities.Contact;
 import de.gultsch.chat.entities.Conversation;
 import de.gultsch.chat.persistance.DatabaseBackend;
+import de.gultsch.chat.utils.Validator;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.Editable;
@@ -36,9 +35,6 @@ public class NewConversationActivity extends XmppActivity {
 	final protected LinkedHashMap<Contact, View> availableJabberContacts = new LinkedHashMap<Contact, View>();
 	protected View newContactView;
 	protected Contact newContact;
-	
-	public static final Pattern VALID_JID = 
-		    Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
 
 	static final String[] PROJECTION = new String[] {
 			ContactsContract.Data.CONTACT_ID,
@@ -181,8 +177,7 @@ public class NewConversationActivity extends XmppActivity {
 		}
 		
 		LinearLayout createNewContact = (LinearLayout) findViewById(R.id.create_new_contact);
-		Matcher matcher = VALID_JID.matcher(search);
-		if (matcher.find()) {
+		if (Validator.isValidJid(search)) {
 			createNewContact.removeAllViews();
 			String name = search.split("@")[0];
 			newContact = new Contact(name,search,DEFAULT_PROFILE_PHOTO);
@@ -217,9 +212,10 @@ public class NewConversationActivity extends XmppActivity {
 
 	@Override
 	void onBackendConnected() {
-		
-		getActionBar().setDisplayHomeAsUpEnabled(false);
-		getActionBar().setHomeButtonEnabled(false);
+		if (xmppConnectionService.getConversationCount()==0) {
+			getActionBar().setDisplayHomeAsUpEnabled(false);
+			getActionBar().setHomeButtonEnabled(false);
+		}
 	}
 	
 	@Override

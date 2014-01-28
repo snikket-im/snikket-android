@@ -11,6 +11,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 public class DatabaseBackend extends SQLiteOpenHelper {
 
@@ -36,6 +37,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 				+ Message.COUNTERPART + " TEXT, " + Message.BODY + " TEXT, "
 				+ Message.ENCRYPTION + " NUMBER, " + Message.STATUS
 				+ " NUMBER)");
+		db.execSQL("create table "+Account.TABLENAME+"("+Account.UUID+" TEXT,"+Account.USERNAME+" TEXT,"+Account.SERVER+" TEXT,"+Account.PASSWORD+" TEXT)");
 	}
 
 	@Override
@@ -59,6 +61,11 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 	public void createMessage(Message message) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.insert(Message.TABLENAME, null, message.getContentValues());
+	}
+	
+	public void createAccount(Account account) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.insert(Account.TABLENAME,null, account.getContentValues());
 	}
 
 	public int getConversationCount() {
@@ -107,9 +114,33 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 	}
 
 	public void updateConversation(Conversation conversation) {
-		SQLiteDatabase db = this.getReadableDatabase();
+		SQLiteDatabase db = this.getWritableDatabase();
 		String[] args = {conversation.getUuid()};
 		db.update(Conversation.TABLENAME, conversation.getContentValues(),Conversation.UUID+"=?",args);
+	}
+	
+	public List<Account> getAccounts() {
+		List<Account> list = new ArrayList<Account>();
+		SQLiteDatabase db = this.getReadableDatabase();
+		Cursor cursor = db.query(Account.TABLENAME, null, null, null, null, null, null);
+		Log.d("gultsch","found "+cursor.getCount()+" accounts");
+		while (cursor.moveToNext()) {
+			list.add(Account.fromCursor(cursor));
+		}
+		return list;
+	}
+
+	public void updateAccount(Account account) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		String[] args = {account.getUuid()};
+		db.update(Account.TABLENAME, account.getContentValues(),Account.UUID+"=?",args);
+	}
+
+	public void deleteAccount(Account account) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		String[] args = {account.getUuid()};
+		Log.d("gultsch","backend trying to delete account with uuid:"+account.getUuid());
+		db.delete(Account.TABLENAME,Account.UUID+"=?",args);
 	}
 
 }

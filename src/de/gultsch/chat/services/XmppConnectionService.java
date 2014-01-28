@@ -48,6 +48,10 @@ public class XmppConnectionService extends Service {
     	return databaseBackend.getConversations(status);
     }
     
+    public List<Account> getAccounts() {
+    	return databaseBackend.getAccounts();
+    }
+    
     public List<Message> getMessages(Conversation conversation) {
     	return databaseBackend.getMessages(conversation, 100);
     }
@@ -72,4 +76,16 @@ public class XmppConnectionService extends Service {
     public int getConversationCount() {
     	return this.databaseBackend.getConversationCount();
     }
+
+	public void createAccount(Account account) {
+		databaseBackend.createAccount(account);
+	}
+	
+	public void updateAccount(Account account) {
+		databaseBackend.updateAccount(account);
+	}
+
+	public void deleteAccount(Account account) {
+		databaseBackend.deleteAccount(account);
+	}
 }

@@ -154,17 +154,15 @@ public class ConversationFragment extends Fragment {
 			this.conversation = activity.getConversationList().get(activity.getSelectedConversation());
 			this.messageList.clear();
 			this.messageList.addAll(this.conversation.getMessages());
+			// rendering complete. now go tell activity to close pane
+			if (!activity.shouldPaneBeOpen()) {
+				activity.getSlidingPaneLayout().closePane();
+			}
+			
+			int size = this.messageList.size();
+			if (size >= 1)
+				messagesView.setSelection(size - 1);
 		}
-		
-		
-		// rendering complete. now go tell activity to close pane
-		if (!activity.shouldPaneBeOpen()) {
-			activity.getSlidingPaneLayout().closePane();
-		}
-		
-		int size = this.messageList.size();
-		if (size >= 1)
-			messagesView.setSelection(size - 1);
 	}
 	
 	public void onBackendConnected() {
@@ -172,5 +170,9 @@ public class ConversationFragment extends Fragment {
 		this.conversation = activity.getConversationList().get(activity.getSelectedConversation());
 		this.messageList.clear();
 		this.messageList.addAll(this.conversation.getMessages());
+		// rendering complete. now go tell activity to close pane
+		if (!activity.shouldPaneBeOpen()) {
+			activity.getSlidingPaneLayout().closePane();
+		}
 	}
 }

@@ -54,7 +54,7 @@ public class Message extends AbstractEntity {
 	@Override
 	public ContentValues getContentValues() {
 		ContentValues values = new ContentValues();
-		values.put(UUID, this.uuid);
+		values.put(UUID, uuid);
 		values.put(CONVERSATION, conversationUuid);
 		values.put(COUNTERPART, counterpart);
 		values.put(BODY, body);
