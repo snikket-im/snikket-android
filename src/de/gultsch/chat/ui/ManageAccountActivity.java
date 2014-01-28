@@ -6,6 +6,8 @@ import java.util.List;
 import de.gultsch.chat.R;
 import de.gultsch.chat.entities.Account;
 import de.gultsch.chat.ui.EditAccount.EditAccountListener;
+import android.app.ActionBar;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -87,11 +89,13 @@ public class ManageAccountActivity extends XmppActivity {
 	public void onStart() {
 		super.onStart();
 		if (xmppConnectionServiceBound) {
-			Log.d("gultsch","already bound");
 			this.accountList.clear();
 			this.accountList.addAll(xmppConnectionService
 					.getAccounts());
 			accountListViewAdapter.notifyDataSetChanged();
+			if (this.accountList.size() == 0) {
+				getActionBar().setDisplayHomeAsUpEnabled(false);
+			}
 		}
 	}
 	
@@ -101,6 +105,10 @@ public class ManageAccountActivity extends XmppActivity {
 		this.accountList.clear();
 		this.accountList.addAll(xmppConnectionService.getAccounts());
 		accountListViewAdapter.notifyDataSetChanged();
+		if (this.accountList.size() == 0) {
+			getActionBar().setDisplayHomeAsUpEnabled(false);
+			addAccount();
+		}
 	}
 	
 	@Override
@@ -117,26 +125,35 @@ public class ManageAccountActivity extends XmppActivity {
 			startActivity(new Intent(this, SettingsActivity.class));
 			break;
 		case R.id.action_add_account:
-			EditAccount dialog = new EditAccount();
-			dialog.setEditAccountListener(new EditAccountListener() {
-				
-				@Override
-				public void onAccountEdited(Account account) {
-					xmppConnectionService.createAccount(account);
-					accountList.add(account);
-					accountListViewAdapter.notifyDataSetChanged();
-				}
-
-				@Override
-				public void onAccountDelete(Account account) {
-					//this will never be called
-				}
-			});
-			dialog.show(getFragmentManager(),"add_account");
+			addAccount();
 			break;
 		default:
 			break;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	protected void addAccount() {
+		final Activity activity = this;
+		EditAccount dialog = new EditAccount();
+		dialog.setEditAccountListener(new EditAccountListener() {
+			
+			@Override
+			public void onAccountEdited(Account account) {
+				xmppConnectionService.createAccount(account);
+				accountList.add(account);
+				accountListViewAdapter.notifyDataSetChanged();
+				activity.getActionBar().setDisplayHomeAsUpEnabled(true);
+				if (accountList.size() == 1) {
+					activity.startActivity(new Intent(activity,NewConversationActivity.class));
+				}
+			}
+
+			@Override
+			public void onAccountDelete(Account account) {
+				//this will never be called
+			}
+		});
+		dialog.show(getFragmentManager(),"add_account");
 	}
 }

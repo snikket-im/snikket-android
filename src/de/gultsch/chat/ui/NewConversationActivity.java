@@ -27,8 +27,12 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.ImageView;
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.CursorLoader;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.Loader;
 import android.content.Loader.OnLoadCompleteListener;
@@ -152,33 +156,55 @@ public class NewConversationActivity extends XmppActivity {
 			}
 		};
 		contactsView.setAdapter(contactsAdapter);
+		final Activity activity = this;
 		contactsView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View view, int pos,
+			public void onItemClick(AdapterView<?> arg0, final View view, int pos,
 					long arg3) {
-				Contact clickedContact = aggregatedContacts.get(pos);
+				final Contact clickedContact = aggregatedContacts.get(pos);
 				Log.d("gultsch",
 						"clicked on " + clickedContact.getDisplayName());
-
-				Account account = new Account();
-
-				Conversation conversation = xmppConnectionService
-						.findOrCreateConversation(account, clickedContact);
-
-				Intent viewConversationIntent = new Intent(view.getContext(),
-						ConversationActivity.class);
-				viewConversationIntent.setAction(Intent.ACTION_VIEW);
-				viewConversationIntent.putExtra(
-						ConversationActivity.CONVERSATION,
-						conversation.getUuid());
-				viewConversationIntent
-						.setType(ConversationActivity.VIEW_CONVERSATION);
-				viewConversationIntent.setFlags(viewConversationIntent
-						.getFlags() | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				startActivity(viewConversationIntent);
+				
+				final List<Account> accounts = xmppConnectionService.getAccounts();
+				if (accounts.size() == 1) {
+					startConversation(clickedContact, accounts.get(0));
+				} else {
+					String[] accountList = new String[accounts.size()];
+					for(int i = 0; i < accounts.size(); ++i) {
+						accountList[i] = accounts.get(i).getJid();
+					}
+	
+					AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+					builder.setTitle("Choose account");
+					builder.setSingleChoiceItems(accountList,0,new OnClickListener() {
+						
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							Account account = accounts.get(which);
+							startConversation(clickedContact, account);
+						}
+					});
+					builder.create().show();
+				}
 			}
 		});
+	}
+	
+	public void startConversation(Contact contact, Account account) {
+		Conversation conversation = xmppConnectionService
+				.findOrCreateConversation(account, contact);
+
+		Intent viewConversationIntent = new Intent(this,ConversationActivity.class);
+		viewConversationIntent.setAction(Intent.ACTION_VIEW);
+		viewConversationIntent.putExtra(
+				ConversationActivity.CONVERSATION,
+				conversation.getUuid());
+		viewConversationIntent
+				.setType(ConversationActivity.VIEW_CONVERSATION);
+		viewConversationIntent.setFlags(viewConversationIntent
+				.getFlags() | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		startActivity(viewConversationIntent);
 	}
 
 	@Override

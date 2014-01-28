@@ -280,7 +280,10 @@ public class ConversationActivity extends XmppActivity {
 				swapConversationFragment();
 			}
 		} else {
-			if (conversationList.size() <= 0) {
+			if (xmppConnectionService.getAccounts().size() == 0) {
+				startActivity(new Intent(this, ManageAccountActivity.class));
+				finish();
+			} else if (conversationList.size() <= 0) {
 				//add no history
 				startActivity(new Intent(this, NewConversationActivity.class));
 				finish();
