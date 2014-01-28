@@ -129,7 +129,6 @@ public class ConversationActivity extends XmppActivity {
 		});
 		spl = (SlidingPaneLayout) findViewById(id.slidingpanelayout);
 		spl.setParallaxDistance(150);
-		spl.openPane();
 		spl.setShadowResource(R.drawable.es_slidingpane_shadow);
 		spl.setSliderFadeColor(0);
 		spl.setPanelSlideListener(new PanelSlideListener() {
@@ -286,6 +285,7 @@ public class ConversationActivity extends XmppActivity {
 				startActivity(new Intent(this, NewConversationActivity.class));
 				finish();
 			} else {
+				spl.openPane();
 				//find currently loaded fragment
 				ConversationFragment selectedFragment = (ConversationFragment) getFragmentManager().findFragmentByTag("conversation");
 				if (selectedFragment!=null) {

@@ -157,6 +157,9 @@ public class ConversationFragment extends Fragment {
 			// rendering complete. now go tell activity to close pane
 			if (!activity.shouldPaneBeOpen()) {
 				activity.getSlidingPaneLayout().closePane();
+				activity.getActionBar().setDisplayHomeAsUpEnabled(true);
+				activity.getActionBar().setTitle(conversation.getName());
+				activity.invalidateOptionsMenu();
 			}
 			
 			int size = this.messageList.size();
@@ -173,6 +176,9 @@ public class ConversationFragment extends Fragment {
 		// rendering complete. now go tell activity to close pane
 		if (!activity.shouldPaneBeOpen()) {
 			activity.getSlidingPaneLayout().closePane();
+			activity.getActionBar().setDisplayHomeAsUpEnabled(true);
+			activity.getActionBar().setTitle(conversation.getName());
+			activity.invalidateOptionsMenu();
 		}
 	}
 }

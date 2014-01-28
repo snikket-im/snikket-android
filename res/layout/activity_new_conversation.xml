@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#f9f9f9">
+    android:background="#e5e5e5" >
 
     <EditText
         android:id="@+id/new_conversation_search"
@@ -11,72 +11,36 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
+        android:background="#eee"
         android:ems="10"
-        android:inputType="textEmailAddress"
         android:hint="Search or enter Jabber ID"
-        android:background="#ffffff"
-        android:layout_marginTop="12dp"
-        android:layout_marginBottom="12dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"/>
+        android:inputType="textEmailAddress"
+        android:paddingBottom="12dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingTop="12dp" />
+    
+    <TextView
+                android:id="@+id/contacts_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Contacts"
+                style="@style/sectionHeader"
+                android:layout_below="@+id/new_conversation_search"
+                android:paddingLeft="8dp"
+                android:paddingTop="8dp"
+                android:paddingRight="8dp"/>
 
-    <ScrollView
-        android:id="@+id/scrollView1"
+    <ListView
+        android:id="@+id/contactList"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/new_conversation_search"
-        android:background="#e5e5e5" >
+        android:layout_below="@+id/contacts_header"
+        tools:listitem="@layout/contact" >
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="380dp"
-            android:orientation="vertical"
-            android:padding="8dp" >
+    </ListView>
 
-            <TextView
-                android:id="@+id/phone_contacts_header"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Phone Contacts"
-                style="@style/sectionHeader"/>
-            <LinearLayout
-                android:id="@+id/phone_contacts"
-                android:layout_height="fill_parent"
-                android:layout_width="fill_parent"
-                android:orientation="vertical">
-                
-            </LinearLayout>
-            <TextView
-                android:id="@+id/jabber_contacts_header"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Jabber Contacts"
-                style="@style/sectionHeader"/>
-            <LinearLayout
-                android:id="@+id/jabber_contacts"
-                android:layout_height="fill_parent"
-                android:layout_width="fill_parent"
-                android:orientation="vertical">
-                
-            </LinearLayout>
-            <TextView
-                android:id="@+id/new_contact_header"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="create new contact"
-                style="@style/sectionHeader"
-                android:visibility="gone"/>
-            <LinearLayout
-                android:id="@+id/create_new_contact"
-                android:layout_height="fill_parent"
-                android:layout_width="fill_parent"
-                android:orientation="vertical"
-                android:visibility="gone">
-                
-            </LinearLayout>
-        </LinearLayout>
-    </ScrollView>
 </RelativeLayout>

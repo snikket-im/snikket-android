@@ -1,13 +1,14 @@
 package de.gultsch.chat.ui;
 
-import java.util.LinkedHashMap;
-import java.util.Map.Entry;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 import de.gultsch.chat.R;
 import de.gultsch.chat.entities.Account;
 import de.gultsch.chat.entities.Contact;
 import de.gultsch.chat.entities.Conversation;
-import de.gultsch.chat.persistance.DatabaseBackend;
 import de.gultsch.chat.utils.Validator;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -18,8 +19,12 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.LinearLayout;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.ImageView;
 import android.content.Context;
@@ -31,10 +36,53 @@ import android.database.Cursor;
 
 public class NewConversationActivity extends XmppActivity {
 
-	final protected LinkedHashMap<Contact, View> availablePhoneContacts = new LinkedHashMap<Contact, View>();
-	final protected LinkedHashMap<Contact, View> availableJabberContacts = new LinkedHashMap<Contact, View>();
-	protected View newContactView;
-	protected Contact newContact;
+	protected List<Contact> phoneContacts = new ArrayList<Contact>();
+	protected List<Contact> rosterContacts = new ArrayList<Contact>();
+	protected List<Contact> aggregatedContacts = new ArrayList<Contact>();
+	protected ListView contactsView;
+	protected ArrayAdapter<Contact> contactsAdapter;
+
+	protected EditText search;
+	protected String searchString = "";
+	private TextView contactsHeader;
+
+	protected void updateAggregatedContacts() {
+
+		aggregatedContacts.clear();
+		for (Contact contact : phoneContacts) {
+			if (contact.match(searchString))
+				aggregatedContacts.add(contact);
+		}
+		for (Contact contact : rosterContacts) {
+			if (contact.match(searchString))
+				aggregatedContacts.add(contact);
+		}
+
+		Collections.sort(aggregatedContacts, new Comparator<Contact>() {
+
+			@Override
+			public int compare(Contact lhs, Contact rhs) {
+				return lhs.getDisplayName().compareTo(rhs.getDisplayName());
+			}
+		});
+
+		if (aggregatedContacts.size() == 0) {
+
+			if (Validator.isValidJid(searchString)) {
+				String name = searchString.split("@")[0];
+				Contact newContact = new Contact(name, searchString,
+						DEFAULT_PROFILE_PHOTO);
+				aggregatedContacts.add(newContact);
+				contactsHeader.setText("Create new contact");
+			} else {
+				contactsHeader.setText("Contacts");
+			}
+		} else {
+			contactsHeader.setText("Contacts");
+		}
+
+		contactsAdapter.notifyDataSetChanged();
+	}
 
 	static final String[] PROJECTION = new String[] {
 			ContactsContract.Data.CONTACT_ID,
@@ -48,63 +96,95 @@ public class NewConversationActivity extends XmppActivity {
 			+ "\") AND (" + ContactsContract.CommonDataKinds.Im.PROTOCOL
 			+ "=\"" + ContactsContract.CommonDataKinds.Im.PROTOCOL_JABBER
 			+ "\")";
-	protected static final String DEFAULT_PROFILE_PHOTO = "android.resource://de.gultsch.chat/" + R.drawable.ic_profile;
+	protected static final String DEFAULT_PROFILE_PHOTO = "android.resource://de.gultsch.chat/"
+			+ R.drawable.ic_profile;
 
-	protected View getViewForContact(Contact contact) {
-		LayoutInflater  inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		View view = (View) inflater.inflate(R.layout.contact,null);
-		((TextView) view.findViewById(R.id.contact_display_name)).setText(contact.getDisplayName());
-		((TextView) view.findViewById(R.id.contact_jid)).setText(contact.getJid());
-		((ImageView) view.findViewById(R.id.contact_photo)).setImageURI(contact.getProfilePhoto());
-		view.setOnClickListener(new OnClickListener() {
-			
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+
+		super.onCreate(savedInstanceState);
+
+		setContentView(R.layout.activity_new_conversation);
+
+		contactsHeader = (TextView) findViewById(R.id.contacts_header);
+
+		search = (EditText) findViewById(R.id.new_conversation_search);
+		search.addTextChangedListener(new TextWatcher() {
+
 			@Override
-			public void onClick(View v) {
-				Contact clickedContact = null;
-				for(Entry<Contact, View> entry  : availablePhoneContacts.entrySet()) {
-					if (entry.getValue() == v) {
-						clickedContact = entry.getKey();
-						break;
-					}
+			public void onTextChanged(CharSequence s, int start, int before,
+					int count) {
+				searchString = search.getText().toString();
+				updateAggregatedContacts();
+			}
+
+			@Override
+			public void afterTextChanged(Editable s) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
+				// TODO Auto-generated method stub
+
+			}
+		});
+
+		contactsView = (ListView) findViewById(R.id.contactList);
+		contactsAdapter = new ArrayAdapter<Contact>(getApplicationContext(),
+				R.layout.contact, aggregatedContacts) {
+			@Override
+			public View getView(int position, View view, ViewGroup parent) {
+				LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+				if (view == null) {
+					view = (View) inflater.inflate(R.layout.contact, null);
 				}
-				for(Entry<Contact, View> entry  : availableJabberContacts.entrySet()) {
-					if (entry.getValue() == v) {
-						clickedContact = entry.getKey();
-						break;
-					}
-				}
-				if (newContactView==v) {
-					clickedContact = newContact;
-				}
-				Log.d("gultsch","clicked on "+clickedContact.getDisplayName());
-				
-				
+
+				((TextView) view.findViewById(R.id.contact_display_name))
+						.setText(getItem(position).getDisplayName());
+				((TextView) view.findViewById(R.id.contact_jid))
+						.setText(getItem(position).getJid());
+				((ImageView) view.findViewById(R.id.contact_photo))
+						.setImageURI(getItem(position).getProfilePhoto());
+				return view;
+			}
+		};
+		contactsView.setAdapter(contactsAdapter);
+		contactsView.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View view, int pos,
+					long arg3) {
+				Contact clickedContact = aggregatedContacts.get(pos);
+				Log.d("gultsch",
+						"clicked on " + clickedContact.getDisplayName());
+
 				Account account = new Account();
-				
-				Conversation conversation = xmppConnectionService.findOrCreateConversation(account, clickedContact);
-				
-				Intent viewConversationIntent = new Intent(v.getContext(),ConversationActivity.class);
+
+				Conversation conversation = xmppConnectionService
+						.findOrCreateConversation(account, clickedContact);
+
+				Intent viewConversationIntent = new Intent(view.getContext(),
+						ConversationActivity.class);
 				viewConversationIntent.setAction(Intent.ACTION_VIEW);
-				viewConversationIntent.putExtra(ConversationActivity.CONVERSATION, conversation.getUuid());
-				viewConversationIntent.setType(ConversationActivity.VIEW_CONVERSATION);
-				viewConversationIntent.setFlags(viewConversationIntent.getFlags() | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				viewConversationIntent.putExtra(
+						ConversationActivity.CONVERSATION,
+						conversation.getUuid());
+				viewConversationIntent
+						.setType(ConversationActivity.VIEW_CONVERSATION);
+				viewConversationIntent.setFlags(viewConversationIntent
+						.getFlags() | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(viewConversationIntent);
 			}
 		});
-		return view;
 	}
-	
+
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		
-		super.onCreate(savedInstanceState);
-		
-		if (DatabaseBackend.getInstance(this).getConversationCount() < 1) {
-			getActionBar().setDisplayHomeAsUpEnabled(false);
-			getActionBar().setHomeButtonEnabled(false);
-		}
-		
-		setContentView(R.layout.activity_new_conversation);
+	public void onStart() {
+		super.onStart();
+
 		CursorLoader mCursorLoader = new CursorLoader(this,
 				ContactsContract.Data.CONTENT_URI, PROJECTION, SELECTION, null,
 				null);
@@ -112,8 +192,10 @@ public class NewConversationActivity extends XmppActivity {
 
 			@Override
 			public void onLoadComplete(Loader<Cursor> arg0, Cursor cursor) {
+				phoneContacts.clear();
 				while (cursor.moveToNext()) {
-					String profilePhoto = cursor.getString(cursor.getColumnIndex(ContactsContract.Data.PHOTO_THUMBNAIL_URI));
+					String profilePhoto = cursor.getString(cursor
+							.getColumnIndex(ContactsContract.Data.PHOTO_THUMBNAIL_URI));
 					if (profilePhoto == null) {
 						profilePhoto = DEFAULT_PROFILE_PHOTO;
 					}
@@ -122,109 +204,31 @@ public class NewConversationActivity extends XmppActivity {
 									.getColumnIndex(ContactsContract.Data.DISPLAY_NAME)),
 							cursor.getString(cursor
 									.getColumnIndex(ContactsContract.CommonDataKinds.Im.DATA)),
-									profilePhoto
-									);
-					View contactView = getViewForContact(contact);
-					availablePhoneContacts.put(contact, getViewForContact(contact));
-					((LinearLayout) findViewById(R.id.phone_contacts)).addView(contactView);
+							profilePhoto);
+					phoneContacts.add(contact);
 				}
-				updateAvailableContacts();
+				updateAggregatedContacts();
 			}
 		});
 		mCursorLoader.startLoading();
 
-		((TextView) findViewById(R.id.new_conversation_search)).addTextChangedListener(new TextWatcher() {
-			
-			@Override
-			public void onTextChanged(CharSequence s, int start, int before, int count) {
-				updateAvailableContacts();
-			}
-			
-			@Override
-			public void afterTextChanged(Editable s) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count,
-					int after) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
-		
-	}
-	
-	protected void updateAvailableContacts() {
-		String search = ((TextView) findViewById(R.id.new_conversation_search)).getText().toString();
-		
-		LinearLayout phoneContacts = (LinearLayout) findViewById(R.id.phone_contacts);
-		filterAvailableContacts(phoneContacts,this.availablePhoneContacts,search);
-		
-		if (phoneContacts.getChildCount() == 0) {
-			findViewById(R.id.phone_contacts_header).setVisibility(View.GONE);
-		} else {
-			findViewById(R.id.phone_contacts_header).setVisibility(View.VISIBLE);
-		}
-		
-		LinearLayout jabberContacts = (LinearLayout) findViewById(R.id.jabber_contacts);
-		filterAvailableContacts(jabberContacts,this.availableJabberContacts,search);
-		if (jabberContacts.getChildCount() == 0) {
-			findViewById(R.id.jabber_contacts_header).setVisibility(View.GONE);
-		} else {
-			findViewById(R.id.jabber_contacts_header).setVisibility(View.VISIBLE);
-		}
-		
-		LinearLayout createNewContact = (LinearLayout) findViewById(R.id.create_new_contact);
-		if (Validator.isValidJid(search)) {
-			createNewContact.removeAllViews();
-			String name = search.split("@")[0];
-			newContact = new Contact(name,search,DEFAULT_PROFILE_PHOTO);
-			newContactView = getViewForContact(newContact);
-			newContactView.findViewById(R.id.contact_divider).setVisibility(View.GONE);
-			createNewContact.addView(newContactView);
-			createNewContact.setVisibility(View.VISIBLE);
-			((TextView) findViewById(R.id.new_contact_header)).setVisibility(View.VISIBLE);
-		} else {
-			createNewContact.setVisibility(View.GONE);
-			((TextView) findViewById(R.id.new_contact_header)).setVisibility(View.GONE);
-		}
-	}
-
-	private void filterAvailableContacts(
-			LinearLayout layout, LinkedHashMap<Contact, View> contacts, String search) {
-		layout.removeAllViews();
-		for(Entry<Contact, View> entry  : contacts.entrySet()) {		
-			
-			if (entry.getKey().match(search)) {
-				entry.getValue().setVisibility(View.VISIBLE);
-				entry.getValue().findViewById(R.id.contact_divider).setVisibility(View.VISIBLE);
-				layout.addView(entry.getValue());
-			}
-		}
-		int contactsCount = layout.getChildCount();
-		if (contactsCount>=1) {
-			View lastContact = layout.getChildAt(contactsCount - 1);
-			lastContact.findViewById(R.id.contact_divider).setVisibility(View.GONE);
-		}
 	}
 
 	@Override
 	void onBackendConnected() {
-		if (xmppConnectionService.getConversationCount()==0) {
+		if (xmppConnectionService.getConversationCount() == 0) {
 			getActionBar().setDisplayHomeAsUpEnabled(false);
 			getActionBar().setHomeButtonEnabled(false);
 		}
 	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.newconversation, menu);
 		return true;
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
@@ -239,5 +243,5 @@ public class NewConversationActivity extends XmppActivity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	
+
 }
