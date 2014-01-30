@@ -31,6 +31,7 @@ public abstract class XmppActivity extends Activity {
 	
 	@Override
 	protected void onStart() {
+		startService(new Intent(this, XmppConnectionService.class));
 		super.onStart();
 		if (!xmppConnectionServiceBound) {
 			Intent intent = new Intent(this, XmppConnectionService.class);
