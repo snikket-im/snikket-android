@@ -50,6 +50,7 @@ public class XmlReader {
 			//Log.d(LOGTAG,"there was a wake lock. releasing it till next event");
 			wakeLock.release(); //release wake look while waiting on next parser event
 		}
+		//Log.d(LOGTAG,"waiting for new event...");
 		while(parser.next() != XmlPullParser.END_DOCUMENT) {
 				//Log.d(LOGTAG,"found new event. acquiring wake lock");
 				wakeLock.acquire();
@@ -75,17 +76,21 @@ public class XmlReader {
 
 	public Element readElement(Tag currentTag) throws XmlPullParserException, IOException {
 		Element element = new Element(currentTag.getName());
+		//Log.d(LOGTAG,"trying to read element "+element.getName());
 		element.setAttributes(currentTag.getAttributes());
 		Tag nextTag = this.readTag();
+		//Log.d(LOGTAG,"next Tag is: "+nextTag.toString());
 		if(nextTag.isNo()) {
 			element.setContent(nextTag.getName());
 			nextTag = this.readTag();
 		}
+		//Log.d(LOGTAG,"reading till the end of "+element.getName());
 		while(!nextTag.isEnd(element.getName())) {
 			Element child = this.readElement(nextTag);
 			element.addChild(child);
 			nextTag = this.readTag();
 		}
+		//Log.d(LOGTAG,"return with element"+element);
 		return element;
 	}
 }

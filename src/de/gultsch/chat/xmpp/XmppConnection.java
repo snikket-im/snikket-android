@@ -35,8 +35,12 @@ public class XmppConnection implements Runnable {
 	private XmlReader tagReader;
 	private TagWriter tagWriter;
 
-	private boolean isTlsEncrypted = false;
+	private boolean isTlsEncrypted = true;
 	private boolean isAuthenticated = false;
+	
+	private static final int PACKET_IQ = 0;
+	private static final int PACKET_MESSAGE = 1;
+	private static final int PACKET_PRESENCE = 2;
 
 	public XmppConnection(Account account, PowerManager pm) {
 		this.account = account;
@@ -112,7 +116,11 @@ public class XmppConnection implements Runnable {
 				sendStartStream();
 				processStream(tagReader.readTag());
 			} else if (nextTag.isStart("iq")) {
-				processIq(nextTag);
+				Log.d(LOGTAG,processIq(nextTag).toString());
+			} else if (nextTag.isStart("message")) {
+				Log.d(LOGTAG,processMessage(nextTag).toString());
+			} else if (nextTag.isStart("presence")) {
+				Log.d(LOGTAG,processPresence(nextTag).toString());
 			} else if (nextTag.isEnd("stream")) {
 				break;
 			} else {
@@ -121,20 +129,45 @@ public class XmppConnection implements Runnable {
 			}
 		}
 	}
-
-	private void processIq(Tag currentTag) throws XmlPullParserException, IOException {
-		int typ = -1;
-		if (currentTag.getAttribute("type").equals("result")) {
-			typ = IqPacket.TYPE_RESULT;
+	
+	private Element processPacket(Tag currentTag, int packetType) throws XmlPullParserException, IOException {
+		Element element;
+		switch (packetType) {
+		case PACKET_IQ:
+			element = new IqPacket();
+			break;
+		case PACKET_MESSAGE:
+			element = new MessagePacket();
+			break;
+		case PACKET_PRESENCE:
+			element = new PresencePacket();
+			break;
+		default:
+			return null;
 		}
-		IqPacket iq = new IqPacket(currentTag.getAttribute("id"),typ);
+		element.setAttributes(currentTag.getAttributes());
 		Tag nextTag = tagReader.readTag();
-		while(!nextTag.isEnd("iq")) {
-			Element element = tagReader.readElement(nextTag);
-			iq.addChild(element);
+		while(!nextTag.isEnd(element.getName())) {
+			if (!nextTag.isNo()) {
+				Element child = tagReader.readElement(nextTag);
+				element.addChild(child);
+			}
 			nextTag = tagReader.readTag();
 		}
-		Log.d(LOGTAG,"this is what i understood: "+iq.toString());
+		return element;
+	}
+	
+
+	private IqPacket processIq(Tag currentTag) throws XmlPullParserException, IOException {
+		return (IqPacket) processPacket(currentTag,PACKET_IQ);
+	}
+	
+	private MessagePacket processMessage(Tag currentTag) throws XmlPullParserException, IOException {
+		return (MessagePacket) processPacket(currentTag, PACKET_MESSAGE);
+	}
+	
+	private PresencePacket processPresence(Tag currentTag) throws XmlPullParserException, IOException {
+		return (PresencePacket) processPacket(currentTag, PACKET_PRESENCE);
 	}
 
 	private void sendStartTLS() throws XmlPullParserException, IOException {
@@ -188,7 +221,8 @@ public class XmppConnection implements Runnable {
 			Element element = tagReader.readElement(nextTag);
 			streamFeatures.addChild(element);
 			nextTag = tagReader.readTag();
-		}	
+		}
+		Log.d(LOGTAG,streamFeatures.toString());
 	}
 
 	private void sendBindRequest() throws IOException {
@@ -196,9 +230,29 @@ public class XmppConnection implements Runnable {
 		Element bind = new Element("bind");
 		bind.setAttribute("xmlns","urn:ietf:params:xml:ns:xmpp-bind");
 		iq.addChild(bind);
+		//Element resource = new Element("resource");
+		//resource.setContent("mobile");
+		//bind.addChild(resource);
 		Log.d(LOGTAG,"sending bind request: "+iq.toString());
 		tagWriter.writeElement(iq);
 		tagWriter.flush();
+		
+		
+		//technically not bind stuff
+		IqPacket startSession = new IqPacket(this.nextRandomId(), IqPacket.TYPE_SET);
+		Element session = new Element("session");
+		session.setAttribute("xmlns","urn:ietf:params:xml:ns:xmpp-session");
+		session.setContent("");
+		startSession.addChild(session);
+		
+		tagWriter.writeElement(startSession);
+		tagWriter.flush();
+		
+		Element presence = new Element("presence");
+		
+		tagWriter.writeElement(presence);
+		tagWriter.flush();
+		
 	}
 
 	private void processStreamError(Tag currentTag) {
