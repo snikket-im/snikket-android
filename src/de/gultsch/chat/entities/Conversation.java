@@ -33,10 +33,9 @@ public class Conversation extends AbstractEntity {
 
 	private transient List<Message> messages = null;
 
-	public Conversation(String name, Uri profilePhoto, Account account,
+	public Conversation(String name, String profilePhoto, Account account,
 			String contactJid) {
-		this(java.util.UUID.randomUUID().toString(), name, profilePhoto
-				.toString(), account.getUuid(), contactJid, System
+		this(java.util.UUID.randomUUID().toString(), name, profilePhoto, account.getUuid(), contactJid, System
 				.currentTimeMillis(), STATUS_AVAILABLE);
 	}
 

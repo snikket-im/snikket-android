@@ -12,9 +12,8 @@ public class IqPacket extends Element {
 		super(name);
 	}
 
-	public IqPacket(String id, int type) {
+	public IqPacket(int type) {
 		super("iq");
-		this.setAttribute("id",id);
 		switch (type) {
 		case TYPE_SET:
 			this.setAttribute("type", "set");
@@ -32,6 +31,10 @@ public class IqPacket extends Element {
 	
 	public IqPacket() {
 		super("iq");
+	}
+
+	public String getId() {
+		return this.getAttribute("id");
 	}
 
 }

@@ -34,8 +34,7 @@ public final class R {
         public static final int ic_launcher=0x7f020006;
         public static final int ic_profile=0x7f020007;
         public static final int message_border=0x7f020008;
-        public static final int profilemock=0x7f020009;
-        public static final int section_header=0x7f02000a;
+        public static final int section_header=0x7f020009;
     }
     public static final class id {
         public static final int account_confirm_password_desc=0x7f0a0011;

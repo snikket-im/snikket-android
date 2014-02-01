@@ -20,9 +20,8 @@ public class Contact implements Serializable {
 		return this.display_name;
 	}
 
-	public Uri getProfilePhoto() {
-		if (photo == null) return null;
-		return Uri.parse(photo);
+	public String getProfilePhoto() {
+		return photo;
 	}
 
 	public String getJid() {

@@ -9,7 +9,9 @@ import de.gultsch.chat.R;
 import de.gultsch.chat.entities.Account;
 import de.gultsch.chat.entities.Contact;
 import de.gultsch.chat.entities.Conversation;
+import de.gultsch.chat.utils.Beautifier;
 import de.gultsch.chat.utils.Validator;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.Editable;
@@ -74,8 +76,7 @@ public class NewConversationActivity extends XmppActivity {
 
 			if (Validator.isValidJid(searchString)) {
 				String name = searchString.split("@")[0];
-				Contact newContact = new Contact(name, searchString,
-						DEFAULT_PROFILE_PHOTO);
+				Contact newContact = new Contact(name, searchString,null);
 				aggregatedContacts.add(newContact);
 				contactsHeader.setText("Create new contact");
 			} else {
@@ -100,8 +101,6 @@ public class NewConversationActivity extends XmppActivity {
 			+ "\") AND (" + ContactsContract.CommonDataKinds.Im.PROTOCOL
 			+ "=\"" + ContactsContract.CommonDataKinds.Im.PROTOCOL_JABBER
 			+ "\")";
-	protected static final String DEFAULT_PROFILE_PHOTO = "android.resource://de.gultsch.chat/"
-			+ R.drawable.ic_profile;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -150,8 +149,13 @@ public class NewConversationActivity extends XmppActivity {
 						.setText(getItem(position).getDisplayName());
 				((TextView) view.findViewById(R.id.contact_jid))
 						.setText(getItem(position).getJid());
-				((ImageView) view.findViewById(R.id.contact_photo))
-						.setImageURI(getItem(position).getProfilePhoto());
+				String profilePhoto = getItem(position).getProfilePhoto();
+				ImageView imageView = (ImageView) view.findViewById(R.id.contact_photo);
+				if (profilePhoto!=null) {
+					imageView.setImageURI(Uri.parse(profilePhoto));
+				} else {
+					imageView.setImageBitmap(Beautifier.getUnknownContactPicture(getItem(position).getDisplayName(),90));
+				}
 				return view;
 			}
 		};
@@ -222,9 +226,9 @@ public class NewConversationActivity extends XmppActivity {
 				while (cursor.moveToNext()) {
 					String profilePhoto = cursor.getString(cursor
 							.getColumnIndex(ContactsContract.Data.PHOTO_THUMBNAIL_URI));
-					if (profilePhoto == null) {
+					/*if (profilePhoto == null) {
 						profilePhoto = DEFAULT_PROFILE_PHOTO;
-					}
+					}*/
 					Contact contact = new Contact(
 							cursor.getString(cursor
 									.getColumnIndex(ContactsContract.Data.DISPLAY_NAME)),

@@ -7,6 +7,7 @@ import java.math.BigInteger;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.security.SecureRandom;
+import java.util.Hashtable;
 
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
@@ -35,12 +36,19 @@ public class XmppConnection implements Runnable {
 	private XmlReader tagReader;
 	private TagWriter tagWriter;
 
-	private boolean isTlsEncrypted = true;
+	private boolean isTlsEncrypted = false;
 	private boolean isAuthenticated = false;
+	private boolean shouldUseTLS = false;
+	private boolean shouldReConnect = true;
+	private boolean shouldBind = true;
+	private boolean shouldAuthenticate = true;
+	private Element streamFeatures;
 	
 	private static final int PACKET_IQ = 0;
 	private static final int PACKET_MESSAGE = 1;
 	private static final int PACKET_PRESENCE = 2;
+	
+	private Hashtable<String, OnIqPacketReceived> iqPacketCallbacks = new Hashtable<String, OnIqPacketReceived>();
 
 	public XmppConnection(Account account, PowerManager pm) {
 		this.account = account;
@@ -58,17 +66,6 @@ public class XmppConnection implements Runnable {
 			tagWriter.setOutputStream(out);
 			InputStream in = socket.getInputStream();
 			tagReader.setInputStream(in);
-		} catch (UnknownHostException e) {
-			Log.d(LOGTAG, "error during connect. unknown host");
-		} catch (IOException e) {
-			Log.d(LOGTAG, "error during connect. io exception. falscher port?");
-		}
-	}
-
-	@Override
-	public void run() {
-		connect();
-		try {
 			tagWriter.beginDocument();
 			sendStartStream();
 			Tag nextTag;
@@ -77,14 +74,25 @@ public class XmppConnection implements Runnable {
 					processStream(nextTag);
 				} else {
 					Log.d(LOGTAG, "found unexpected tag: " + nextTag.getName());
+					return;
 				}
 			}
-		} catch (XmlPullParserException e) {
-			Log.d(LOGTAG,
-					"xml error during normal read. maybe missformed xml? "
-							+ e.getMessage());
+		} catch (UnknownHostException e) {
+			Log.d(LOGTAG, "error during connect. unknown host");
+			return;
 		} catch (IOException e) {
-			Log.d(LOGTAG, "io exception during read. connection lost?");
+			Log.d(LOGTAG, "error during connect. io exception. falscher port?");
+			return;
+		} catch (XmlPullParserException e) {
+			Log.d(LOGTAG,"xml exception "+e.getMessage());
+			return;
+		}
+	}
+
+	@Override
+	public void run() {
+		while(shouldReConnect) {
+			connect();
 		}
 	}
 
@@ -92,20 +100,11 @@ public class XmppConnection implements Runnable {
 			IOException {
 		Log.d(LOGTAG, "process Stream");
 		Tag nextTag;
-		while ((nextTag = tagReader.readTag()) != null) {
+		while (!(nextTag = tagReader.readTag()).isEnd("stream")) {
 			if (nextTag.isStart("error")) {
 				processStreamError(nextTag);
 			} else if (nextTag.isStart("features")) {
 				processStreamFeatures(nextTag);
-				if (!isTlsEncrypted) {
-					sendStartTLS();
-				}
-				if ((!isAuthenticated) && (isTlsEncrypted)) {
-					sendSaslAuth();
-				}
-				if ((isAuthenticated)&&(isTlsEncrypted)) {
-					sendBindRequest();
-				}
 			} else if (nextTag.isStart("proceed")) {
 				switchOverToTls(nextTag);
 			} else if (nextTag.isStart("success")) {
@@ -121,8 +120,6 @@ public class XmppConnection implements Runnable {
 				Log.d(LOGTAG,processMessage(nextTag).toString());
 			} else if (nextTag.isStart("presence")) {
 				Log.d(LOGTAG,processPresence(nextTag).toString());
-			} else if (nextTag.isEnd("stream")) {
-				break;
 			} else {
 				Log.d(LOGTAG, "found unexpected tag: " + nextTag.getName()
 						+ " as child of " + currentTag.getName());
@@ -159,7 +156,12 @@ public class XmppConnection implements Runnable {
 	
 
 	private IqPacket processIq(Tag currentTag) throws XmlPullParserException, IOException {
-		return (IqPacket) processPacket(currentTag,PACKET_IQ);
+		IqPacket packet = (IqPacket) processPacket(currentTag,PACKET_IQ);
+		if (iqPacketCallbacks.containsKey(packet.getId())) {
+			iqPacketCallbacks.get(packet.getId()).onIqPacketReceived(packet);
+			iqPacketCallbacks.remove(packet.getId());
+		}
+		return packet;
 	}
 	
 	private MessagePacket processMessage(Tag currentTag) throws XmlPullParserException, IOException {
@@ -212,47 +214,44 @@ public class XmppConnection implements Runnable {
 
 	private void processStreamFeatures(Tag currentTag)
 			throws XmlPullParserException, IOException {
-		Log.d(LOGTAG, "processStreamFeatures");
-		
-		Element streamFeatures = new Element("features");
-		
-		Tag nextTag = tagReader.readTag();
-		while(!nextTag.isEnd("features")) {
-			Element element = tagReader.readElement(nextTag);
-			streamFeatures.addChild(element);
-			nextTag = tagReader.readTag();
+		this.streamFeatures = tagReader.readElement(currentTag);
+		Log.d(LOGTAG,"process stream features "+streamFeatures);
+		if (this.streamFeatures.hasChild("starttls")&&shouldUseTLS) {
+			sendStartTLS();
 		}
-		Log.d(LOGTAG,streamFeatures.toString());
+		if (this.streamFeatures.hasChild("mechanisms")&&shouldAuthenticate) {
+			sendSaslAuth();
+		}
+		if (this.streamFeatures.hasChild("bind")&&shouldBind) {
+			sendBindRequest();
+			if (this.streamFeatures.hasChild("session")) {
+				IqPacket startSession = new IqPacket(IqPacket.TYPE_SET);
+				Element session = new Element("session");
+				session.setAttribute("xmlns","urn:ietf:params:xml:ns:xmpp-session");
+				session.setContent("");
+				startSession.addChild(session);
+				sendIqPacket(startSession, null);
+				tagWriter.writeElement(startSession);
+				tagWriter.flush();
+			}
+			Element presence = new Element("presence");
+			
+			tagWriter.writeElement(presence);
+			tagWriter.flush();
+		}
 	}
 
 	private void sendBindRequest() throws IOException {
-		IqPacket iq = new IqPacket(nextRandomId(),IqPacket.TYPE_SET);
+		IqPacket iq = new IqPacket(IqPacket.TYPE_SET);
 		Element bind = new Element("bind");
 		bind.setAttribute("xmlns","urn:ietf:params:xml:ns:xmpp-bind");
 		iq.addChild(bind);
-		//Element resource = new Element("resource");
-		//resource.setContent("mobile");
-		//bind.addChild(resource);
-		Log.d(LOGTAG,"sending bind request: "+iq.toString());
-		tagWriter.writeElement(iq);
-		tagWriter.flush();
-		
-		
-		//technically not bind stuff
-		IqPacket startSession = new IqPacket(this.nextRandomId(), IqPacket.TYPE_SET);
-		Element session = new Element("session");
-		session.setAttribute("xmlns","urn:ietf:params:xml:ns:xmpp-session");
-		session.setContent("");
-		startSession.addChild(session);
-		
-		tagWriter.writeElement(startSession);
-		tagWriter.flush();
-		
-		Element presence = new Element("presence");
-		
-		tagWriter.writeElement(presence);
-		tagWriter.flush();
-		
+		this.sendIqPacket(iq, new OnIqPacketReceived() {	
+			@Override
+			public void onIqPacketReceived(IqPacket packet) {
+				Log.d(LOGTAG,"answer for our bind was: "+packet.toString());
+			}
+		});
 	}
 
 	private void processStreamError(Tag currentTag) {
@@ -272,5 +271,16 @@ public class XmppConnection implements Runnable {
 
 	private String nextRandomId() {
 		return new BigInteger(50, random).toString(32);
+	}
+	
+	public void sendIqPacket(IqPacket packet, OnIqPacketReceived callback) throws IOException {
+		String id = nextRandomId();
+		packet.setAttribute("id",id);
+		tagWriter.writeElement(packet);
+		tagWriter.flush();
+		if (callback != null) {
+			iqPacketCallbacks.put(id, callback);
+		}
+		Log.d(LOGTAG,"sending: "+packet.toString());
 	}
 }

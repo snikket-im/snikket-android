@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 
+import android.util.Log;
+
 public class Element {
 	protected String name;
 	protected Hashtable<String, String> attributes = new Hashtable<String, String>();
@@ -26,6 +28,15 @@ public class Element {
 		return this;
 	}
 	
+	public boolean hasChild(String name) {
+		for(Element child : this.children) {
+			if (child.getName().equals(name)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public Element setAttribute(String name, String value) {
 		this.attributes.put(name, value);
 		return this;
@@ -34,6 +45,14 @@ public class Element {
 	public Element setAttributes(Hashtable<String, String> attributes) {
 		this.attributes = attributes;
 		return this;
+	}
+	
+	public String getAttribute(String name) {
+		if (this.attributes.containsKey(name)) {
+			return this.attributes.get(name);
+		} else {
+			return null;
+		}
 	}
 	
 	public String toString() {
