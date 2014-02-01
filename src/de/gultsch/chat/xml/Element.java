@@ -28,6 +28,15 @@ public class Element {
 		return this;
 	}
 	
+	public Element findChild(String name) {
+		for(Element child : this.children) {
+			if (child.getName().equals(name)) {
+				return child;
+			}
+		}
+		return null;
+	}
+	
 	public boolean hasChild(String name) {
 		for(Element child : this.children) {
 			if (child.getName().equals(name)) {
@@ -35,6 +44,10 @@ public class Element {
 			}
 		}
 		return false;
+	}
+	
+	public String getContent() {
+		return content;
 	}
 	
 	public Element setAttribute(String name, String value) {

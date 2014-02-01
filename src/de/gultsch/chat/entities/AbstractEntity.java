@@ -18,4 +18,8 @@ public abstract class AbstractEntity implements Serializable {
 	
 	public abstract ContentValues getContentValues();
 	
+	public boolean equals(AbstractEntity entity) {
+		return this.getUuid().equals(entity.getUuid());
+	}
+	
 }

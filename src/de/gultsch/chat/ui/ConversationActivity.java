@@ -43,6 +43,37 @@ public class ConversationActivity extends XmppActivity {
 	private ListView listView;
 	
 	private boolean paneShouldBeOpen = true;
+	private ArrayAdapter<Conversation> listAdapter;
+	
+	private OnConversationListChangedListener onConvChanged = new OnConversationListChangedListener() {
+		
+		@Override
+		public void onConversationListChanged() {
+			Log.d("xmppService","on conversation list changed event received");
+			conversationList.clear();
+			conversationList.addAll(xmppConnectionService
+					.getConversations());
+			runOnUiThread(new Runnable() {
+				
+				@Override
+				public void run() {
+					listAdapter.notifyDataSetChanged();
+					if(paneShouldBeOpen) {
+						selectedConversation = 0;
+						if (conversationList.size() >= 1) {
+							updateConversationList();
+							swapConversationFragment();
+						} else {
+							startActivity(new Intent(getApplicationContext(), NewConversationActivity.class));
+							finish();
+						}
+					} else {
+						Log.d("xmppService","pane wasnt open. dont swap fragment");
+					}
+				}
+			});
+		}
+	};
 	
 	
 	public List<Conversation> getConversationList() {
@@ -93,7 +124,7 @@ public class ConversationActivity extends XmppActivity {
 
 		listView = (ListView) findViewById(R.id.list);
 
-		listView.setAdapter(new ArrayAdapter<Conversation>(this,
+		this.listAdapter = new ArrayAdapter<Conversation>(this,
 				R.layout.conversation_list_row, conversationList) {
 			@Override
 			public View getView(int position, View view, ViewGroup parent) {
@@ -122,7 +153,9 @@ public class ConversationActivity extends XmppActivity {
 				return view;
 			}
 
-		});
+		};
+		
+		listView.setAdapter(this.listAdapter);
 
 		listView.setOnItemClickListener(new OnItemClickListener() {
 
@@ -212,19 +245,9 @@ public class ConversationActivity extends XmppActivity {
 		case R.id.action_archive:
 			Conversation conv = getConversationList().get(selectedConversation);
 			conv.setStatus(Conversation.STATUS_ARCHIVED);
-			xmppConnectionService.updateConversation(conv);
-			conversationList.remove(selectedConversation);
-			selectedConversation = 0;
-			if (conversationList.size() >= 1) {
-				paneShouldBeOpen = true;
-				swapConversationFragment();
-				((ArrayAdapter) listView.getAdapter()).notifyDataSetChanged();
-				spl.openPane();
-			} else {
-				startActivity(new Intent(this, NewConversationActivity.class));
-				finish();
-			}
-			//goto new 
+			paneShouldBeOpen = true;
+			spl.openPane();
+			xmppConnectionService.archiveConversation(conv);
 			break;
 		default:
 			break;
@@ -259,15 +282,39 @@ public class ConversationActivity extends XmppActivity {
 		if (xmppConnectionServiceBound) {
 			conversationList.clear();
 			conversationList.addAll(xmppConnectionService
-					.getConversations(Conversation.STATUS_AVAILABLE));
+					.getConversations());
 		}
 	}
+	
+	@Override
+	public void onPause() {
+		super.onPause();
+		if (xmppConnectionServiceBound) {
+        	Log.d("xmppService","called on pause. remove listener");
+        	xmppConnectionService.removeOnConversationListChangedListener();
+		}
+	}
+	
+	@Override
+    protected void onStop() {
+        super.onStop();
+        if (xmppConnectionServiceBound) {
+        	Log.d("xmppService","called on stop. remove listener");
+        	xmppConnectionService.removeOnConversationListChangedListener();
+            unbindService(mConnection);
+            xmppConnectionServiceBound = false;
+        }
+    }
+
 
 	@Override
 	void onBackendConnected() {
+		
+		xmppConnectionService.setOnConversationListChangedListener(this.onConvChanged);
+		
 		conversationList.clear();
 		conversationList.addAll(xmppConnectionService
-				.getConversations(Conversation.STATUS_AVAILABLE));
+				.getConversations());
 		
 		for(Conversation conversation : conversationList) {
 			conversation.setMessages(xmppConnectionService.getMessages(conversation));

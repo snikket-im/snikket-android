@@ -32,11 +32,13 @@ public class Conversation extends AbstractEntity {
 	private long created;
 
 	private transient List<Message> messages = null;
+	private transient Account account = null;
 
 	public Conversation(String name, String profilePhoto, Account account,
 			String contactJid) {
 		this(java.util.UUID.randomUUID().toString(), name, profilePhoto, account.getUuid(), contactJid, System
 				.currentTimeMillis(), STATUS_AVAILABLE);
+		this.account = account;
 	}
 
 	public Conversation(String uuid, String name, String profilePhoto,
@@ -93,7 +95,15 @@ public class Conversation extends AbstractEntity {
 	public String getAccountUuid() {
 		return this.accountUuid;
 	}
+	
+	public Account getAccount() {
+		return this.account;
+	}
 
+	public void setAccount(Account account) {
+		this.account = account;
+	}
+	
 	public String getContactJid() {
 		return this.contactJid;
 	}

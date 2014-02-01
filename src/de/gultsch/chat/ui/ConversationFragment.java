@@ -116,13 +116,16 @@ public class ConversationFragment extends Fragment {
 				} else {
 					Log.d("gultsch", "recylecd a view");
 				}
+				ImageView imageView = (ImageView) view.findViewById(R.id.message_photo);
 				if (type == RECIEVED) {
-					((ImageView) view.findViewById(R.id.message_photo))
-							.setImageURI(item.getConversation()
-									.getProfilePhotoUri());
+					Uri uri = item.getConversation().getProfilePhotoUri();
+					if (uri!=null) {
+						imageView.setImageURI(uri);
+					} else {
+						imageView.setImageBitmap(Beautifier.getUnknownContactPicture(item.getConversation().getName(), 200));
+					}
 				} else {
-					((ImageView) view.findViewById(R.id.message_photo))
-							.setImageURI(profilePicture);
+					imageView.setImageURI(profilePicture);
 				}
 				((TextView) view.findViewById(R.id.message_body)).setText(item
 						.getBody());

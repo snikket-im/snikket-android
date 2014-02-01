@@ -111,9 +111,9 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		return list;
 	}
 
-	public Conversation findConversation(Account account, Contact contact) {
+	public Conversation findConversation(Account account, String contactJid) {
 		SQLiteDatabase db = this.getReadableDatabase();
-		String[] selectionArgs = { account.getUuid(), contact.getJid() };
+		String[] selectionArgs = { account.getUuid(), contactJid };
 		Cursor cursor = db.query(Conversation.TABLENAME, null,
 				Conversation.ACCOUNT + "=? AND " + Conversation.CONTACT + "=?",
 				selectionArgs, null, null, null);

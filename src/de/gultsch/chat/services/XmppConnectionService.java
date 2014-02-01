@@ -1,24 +1,17 @@
 package de.gultsch.chat.services;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.Socket;
-import java.net.UnknownHostException;
+import java.util.Hashtable;
 import java.util.List;
 
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
 
 import de.gultsch.chat.entities.Account;
 import de.gultsch.chat.entities.Contact;
 import de.gultsch.chat.entities.Conversation;
 import de.gultsch.chat.entities.Message;
 import de.gultsch.chat.persistance.DatabaseBackend;
-import de.gultsch.chat.xml.Tag;
-import de.gultsch.chat.xml.XmlReader;
+import de.gultsch.chat.ui.OnConversationListChangedListener;
+import de.gultsch.chat.xmpp.MessagePacket;
+import de.gultsch.chat.xmpp.OnMessagePacketReceived;
 import de.gultsch.chat.xmpp.XmppConnection;
 import android.app.Service;
 import android.content.Context;
@@ -36,10 +29,32 @@ public class XmppConnectionService extends Service {
 	public long startDate;
 	
 	private List<Account> accounts;
+	private List<Conversation> conversations = null;
 	
-	public boolean connectionRunnig = false;
+	private Hashtable<Account,XmppConnection> connections = new Hashtable<Account, XmppConnection>();
 
+	private OnConversationListChangedListener convChangedListener = null;
+	
     private final IBinder mBinder = new XmppConnectionBinder();
+	private OnMessagePacketReceived messageListener = new OnMessagePacketReceived() {
+		
+		@Override
+		public void onMessagePacketReceived(Account account, MessagePacket packet) {
+			String fullJid = packet.getFrom();
+			String jid = fullJid.split("/")[0];
+			String name = jid.split("@")[0];
+			Log.d(LOGTAG,"message received for "+account.getJid()+" from "+jid);
+			Log.d(LOGTAG,packet.toString());
+			Contact contact = new Contact(name,jid,null); //dummy contact
+			Conversation conversation = findOrCreateConversation(account, contact);
+			Message message = new Message(conversation, fullJid, packet.getBody(), Message.ENCRYPTION_NONE, Message.STATUS_RECIEVED);
+			conversation.getMessages().add(message);
+			databaseBackend.createMessage(message);
+			if (convChangedListener != null) {
+				convChangedListener.onConversationListChanged();
+			}
+		}
+	};
 
     public class XmppConnectionBinder extends Binder {
         public XmppConnectionService getService() {
@@ -49,16 +64,15 @@ public class XmppConnectionService extends Service {
     
     @Override 
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d(LOGTAG,"recieved start command. been running for "+((System.currentTimeMillis() - startDate) / 1000)+"s");
         PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-        if (!connectionRunnig) {
-	        for(Account account : accounts) {
-	        	Log.d(LOGTAG,"connection wasnt running");
-	        	XmppConnection connection = new XmppConnection(account, pm);
-	        	Thread thread = new Thread(connection);
-	        	thread.start();
-	        }
-	        connectionRunnig = true;
+        for(Account account : accounts) {
+        	if (!connections.containsKey(account)) {
+        		XmppConnection connection = new XmppConnection(account, pm);
+        		connection.setOnMessagePacketReceivedListener(this.messageListener );
+        		Thread thread = new Thread(connection);
+        		thread.start();
+        		this.connections.put(account, connection);
+        	}
         }
         return START_STICKY;
     }
@@ -67,7 +81,6 @@ public class XmppConnectionService extends Service {
     public void onCreate() {
     	databaseBackend = DatabaseBackend.getInstance(getApplicationContext());
     	this.accounts = databaseBackend.getAccounts();
-    	startDate = System.currentTimeMillis();
     }
     
     @Override
@@ -83,8 +96,18 @@ public class XmppConnectionService extends Service {
     	databaseBackend.createConversation(conversation);
     }
     
-    public List<Conversation> getConversations(int status) {
-    	return databaseBackend.getConversations(status);
+    public List<Conversation> getConversations() {
+    	if (this.conversations == null) {
+	    	Hashtable<String, Account> accountLookupTable = new Hashtable<String, Account>();
+	    	for(Account account : this.accounts) {
+	    		accountLookupTable.put(account.getUuid(), account);
+	    	}
+	    	this.conversations = databaseBackend.getConversations(Conversation.STATUS_AVAILABLE);
+	    	for(Conversation conv : this.conversations) {
+	    		conv.setAccount(accountLookupTable.get(conv.getAccountUuid()));
+	    	}
+    	}
+    	return this.conversations;
     }
     
     public List<Account> getAccounts() {
@@ -96,20 +119,37 @@ public class XmppConnectionService extends Service {
     }
 
     public Conversation findOrCreateConversation(Account account, Contact contact) {
-    	Conversation conversation = databaseBackend.findConversation(account, contact);
+    	Log.d(LOGTAG,"was asked to find conversation for "+contact.getJid());
+    	for(Conversation conv : this.getConversations()) {
+    		if ((conv.getAccount().equals(account))&&(conv.getContactJid().equals(contact.getJid()))) {
+    			Log.d(LOGTAG,"found one in memory");
+    			return conv;
+    		}
+    	}
+    	Conversation conversation = databaseBackend.findConversation(account, contact.getJid());
     	if (conversation!=null) {
     		Log.d("gultsch","found one. unarchive it");
     		conversation.setStatus(Conversation.STATUS_AVAILABLE);
+    		conversation.setAccount(account);
     		this.databaseBackend.updateConversation(conversation);
     	} else {
+    		Log.d(LOGTAG,"didnt find one in archive. create new one");
     		conversation = new Conversation(contact.getDisplayName(), contact.getProfilePhoto(), account, contact.getJid());
     		this.databaseBackend.createConversation(conversation);
+    	}
+    	this.conversations.add(conversation);
+    	if (this.convChangedListener != null) {
+    		this.convChangedListener.onConversationListChanged();
     	}
     	return conversation;
     }
     
-    public void updateConversation(Conversation conversation) {
+    public void archiveConversation(Conversation conversation) {
     	this.databaseBackend.updateConversation(conversation);
+    	this.conversations.remove(conversation);
+    	if (this.convChangedListener != null) {
+    		this.convChangedListener.onConversationListChanged();
+    	}
     }
     
     public int getConversationCount() {
@@ -126,5 +166,13 @@ public class XmppConnectionService extends Service {
 
 	public void deleteAccount(Account account) {
 		databaseBackend.deleteAccount(account);
+	}
+	
+	public void setOnConversationListChangedListener(OnConversationListChangedListener listener) {
+		this.convChangedListener = listener;
+	}
+	
+	public void removeOnConversationListChangedListener() {
+		this.convChangedListener = null;
 	}
 }

@@ -39,7 +39,12 @@ public class Message extends AbstractEntity {
 				Message.STATUS_UNSEND);
 		this.conversation = conversation;
 	}
-
+	
+	public Message(Conversation conversation, String counterpart, String body, int encryption, int status) {
+		this(java.util.UUID.randomUUID().toString(), conversation.getUuid(),counterpart, body, System.currentTimeMillis(), encryption,status);
+		this.conversation = conversation;
+	}
+	
 	public Message(String uuid, String conversationUUid, String counterpart,
 			String body, long timeSent, int encryption, int status) {
 		this.uuid = uuid;

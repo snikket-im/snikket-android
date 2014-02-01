@@ -49,6 +49,9 @@ public class XmppConnection implements Runnable {
 	private static final int PACKET_PRESENCE = 2;
 	
 	private Hashtable<String, OnIqPacketReceived> iqPacketCallbacks = new Hashtable<String, OnIqPacketReceived>();
+	private OnPresencePacketReceived presenceListener = null;
+	private OnIqPacketReceived unregisteredIqListener = null;
+	private OnMessagePacketReceived messageListener = null;
 
 	public XmppConnection(Account account, PowerManager pm) {
 		this.account = account;
@@ -115,11 +118,11 @@ public class XmppConnection implements Runnable {
 				sendStartStream();
 				processStream(tagReader.readTag());
 			} else if (nextTag.isStart("iq")) {
-				Log.d(LOGTAG,processIq(nextTag).toString());
+				processIq(nextTag);
 			} else if (nextTag.isStart("message")) {
-				Log.d(LOGTAG,processMessage(nextTag).toString());
+				processMessage(nextTag);
 			} else if (nextTag.isStart("presence")) {
-				Log.d(LOGTAG,processPresence(nextTag).toString());
+				processPresence(nextTag);
 			} else {
 				Log.d(LOGTAG, "found unexpected tag: " + nextTag.getName()
 						+ " as child of " + currentTag.getName());
@@ -158,18 +161,26 @@ public class XmppConnection implements Runnable {
 	private IqPacket processIq(Tag currentTag) throws XmlPullParserException, IOException {
 		IqPacket packet = (IqPacket) processPacket(currentTag,PACKET_IQ);
 		if (iqPacketCallbacks.containsKey(packet.getId())) {
-			iqPacketCallbacks.get(packet.getId()).onIqPacketReceived(packet);
+			iqPacketCallbacks.get(packet.getId()).onIqPacketReceived(account,packet);
 			iqPacketCallbacks.remove(packet.getId());
+		} else if (this.unregisteredIqListener != null) {
+			this.unregisteredIqListener.onIqPacketReceived(account,packet);
 		}
 		return packet;
 	}
 	
-	private MessagePacket processMessage(Tag currentTag) throws XmlPullParserException, IOException {
-		return (MessagePacket) processPacket(currentTag, PACKET_MESSAGE);
+	private void processMessage(Tag currentTag) throws XmlPullParserException, IOException {
+		MessagePacket packet = (MessagePacket) processPacket(currentTag, PACKET_MESSAGE);
+		if (this.messageListener != null) {
+			this.messageListener.onMessagePacketReceived(account,packet);
+		}
 	}
 	
-	private PresencePacket processPresence(Tag currentTag) throws XmlPullParserException, IOException {
-		return (PresencePacket) processPacket(currentTag, PACKET_PRESENCE);
+	private void processPresence(Tag currentTag) throws XmlPullParserException, IOException {
+		PresencePacket packet = (PresencePacket) processPacket(currentTag, PACKET_PRESENCE);
+		if (this.presenceListener != null) {
+			this.presenceListener.onPresencePacketReceived(account,packet);
+		}
 	}
 
 	private void sendStartTLS() throws XmlPullParserException, IOException {
@@ -248,7 +259,7 @@ public class XmppConnection implements Runnable {
 		iq.addChild(bind);
 		this.sendIqPacket(iq, new OnIqPacketReceived() {	
 			@Override
-			public void onIqPacketReceived(IqPacket packet) {
+			public void onIqPacketReceived(Account account, IqPacket packet) {
 				Log.d(LOGTAG,"answer for our bind was: "+packet.toString());
 			}
 		});
@@ -277,10 +288,29 @@ public class XmppConnection implements Runnable {
 		String id = nextRandomId();
 		packet.setAttribute("id",id);
 		tagWriter.writeElement(packet);
-		tagWriter.flush();
 		if (callback != null) {
 			iqPacketCallbacks.put(id, callback);
 		}
 		Log.d(LOGTAG,"sending: "+packet.toString());
+	}
+	
+	public void sendMessagePacket(MessagePacket packet) throws IOException {
+		tagWriter.writeElement(packet);
+	}
+	
+	public void sendPresencePacket(PresencePacket packet) throws IOException {
+		tagWriter.writeElement(packet);
+	}
+	
+	public void setOnMessagePacketReceivedListener(OnMessagePacketReceived listener) {
+		this.messageListener = listener;
+	}
+	
+	public void setOnUnregisteredIqPacketReceivedListener(OnIqPacketReceived listener) {
+		this.unregisteredIqListener = listener;
+	}
+	
+	public void setOnPresencePacketReceivedListener(OnPresencePacketReceived listener) {
+		this.presenceListener = listener;
 	}
 }

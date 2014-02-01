@@ -10,4 +10,12 @@ public class MessagePacket extends Element {
 	public MessagePacket() {
 		super("message");
 	}
+
+	public String getFrom() {
+		return getAttribute("from");
+	}
+	
+	public String getBody() {
+		return this.findChild("body").getContent();
+	}
 }
