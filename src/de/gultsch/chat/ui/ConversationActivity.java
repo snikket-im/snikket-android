@@ -73,6 +73,10 @@ public class ConversationActivity extends XmppActivity {
 							finish();
 						}
 					}
+					ConversationFragment selectedFragment = (ConversationFragment) getFragmentManager().findFragmentByTag("conversation");
+					if (selectedFragment!=null) {
+						selectedFragment.updateMessages();
+					}
 				}
 			});
 		}

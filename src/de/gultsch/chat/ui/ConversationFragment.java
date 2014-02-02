@@ -31,7 +31,8 @@ public class ConversationFragment extends Fragment {
 	protected ListView messagesView;
 	protected LayoutInflater inflater;
 	protected List<Message> messageList = new ArrayList<Message>();
-
+	protected ArrayAdapter<Message> messageListAdapter;
+	
 	@Override
 	public View onCreateView(final LayoutInflater inflater,
 			ViewGroup container, Bundle savedInstanceState) {
@@ -76,7 +77,7 @@ public class ConversationFragment extends Fragment {
 		mProfileCursor.moveToFirst();
 		final Uri profilePicture = Uri.parse(mProfileCursor.getString(1));
 		
-		messagesView.setAdapter(new ArrayAdapter<Message>(this.getActivity()
+		messageListAdapter = new ArrayAdapter<Message>(this.getActivity()
 				.getApplicationContext(), R.layout.message_sent, this.messageList) {
 
 			private static final int SENT = 0;
@@ -134,7 +135,8 @@ public class ConversationFragment extends Fragment {
 				}
 				return view;
 			}
-		});
+		};
+		messagesView.setAdapter(messageListAdapter);
 
 		return view;
 	}
@@ -179,5 +181,11 @@ public class ConversationFragment extends Fragment {
 			activity.getActionBar().setTitle(conversation.getName());
 			activity.invalidateOptionsMenu();
 		}
+	}
+
+	public void updateMessages() {
+		this.messageList.clear();
+		this.messageList.addAll(this.conversation.getMessages());
+		this.messageListAdapter.notifyDataSetChanged();
 	}
 }
