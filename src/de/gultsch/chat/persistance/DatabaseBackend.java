@@ -28,21 +28,35 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase db) {
 		db.execSQL("PRAGMA foreign_keys=ON;");
 		db.execSQL("create table " + Account.TABLENAME + "(" + Account.UUID
-				+ " TEXT PRIMARY KEY," + Account.USERNAME + " TEXT," + Account.SERVER
-				+ " TEXT," + Account.PASSWORD + " TEXT)");
+				+ " TEXT PRIMARY KEY," + Account.USERNAME + " TEXT,"
+				+ Account.SERVER + " TEXT," + Account.PASSWORD + " TEXT,"
+				+ Account.ROSTERVERSION + " TEXT," + Account.OPTIONS
+				+ " NUMBER)");
 		db.execSQL("create table " + Conversation.TABLENAME + " ("
 				+ Conversation.UUID + " TEXT PRIMARY KEY, " + Conversation.NAME
 				+ " TEXT, " + Conversation.PHOTO_URI + " TEXT, "
 				+ Conversation.ACCOUNT + " TEXT, " + Conversation.CONTACT
 				+ " TEXT, " + Conversation.CREATED + " NUMBER, "
-				+ Conversation.STATUS + " NUMBER,"
-				+ "FOREIGN KEY("+Conversation.ACCOUNT+") REFERENCES "+Account.TABLENAME+"("+Account.UUID+") ON DELETE CASCADE);");
+				+ Conversation.STATUS + " NUMBER," + "FOREIGN KEY("
+				+ Conversation.ACCOUNT + ") REFERENCES " + Account.TABLENAME
+				+ "(" + Account.UUID + ") ON DELETE CASCADE);");
 		db.execSQL("create table " + Message.TABLENAME + "( " + Message.UUID
 				+ " TEXT PRIMARY KEY, " + Message.CONVERSATION + " TEXT, "
 				+ Message.TIME_SENT + " NUMBER, " + Message.COUNTERPART
 				+ " TEXT, " + Message.BODY + " TEXT, " + Message.ENCRYPTION
-				+ " NUMBER, " + Message.STATUS + " NUMBER,"
-				+ "FOREIGN KEY("+Message.CONVERSATION+") REFERENCES "+Conversation.TABLENAME+"("+Message.UUID+") ON DELETE CASCADE);");
+				+ " NUMBER, " + Message.STATUS + " NUMBER," + "FOREIGN KEY("
+				+ Message.CONVERSATION + ") REFERENCES "
+				+ Conversation.TABLENAME + "(" + Conversation.UUID
+				+ ") ON DELETE CASCADE);");
+		db.execSQL("create table " + Contact.TABLENAME + "(" + Contact.UUID
+				+ " TEXT PRIMARY KEY, " + Contact.ACCOUNT + " TEXT, "
+				+ Contact.DISPLAYNAME + " TEXT," + Contact.JID + " TEXT,"
+				+ Contact.LASTONLINEPRESENCE + " NUMBER, " + Contact.OPENPGPKEY
+				+ " TEXT," + Contact.PHOTOURI + " TEXT," + Contact.SUBSCRIPTION
+				+ " TEXT," + Contact.SYSTEMACCOUNT + " NUMBER, "
+				+ "FOREIGN KEY(" + Contact.ACCOUNT + ") REFERENCES "
+				+ Account.TABLENAME + "(" + Account.UUID
+				+ ") ON DELETE CASCADE);");
 	}
 
 	@Override
@@ -162,5 +176,12 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		SQLiteDatabase db = super.getWritableDatabase();
 		db.execSQL("PRAGMA foreign_keys=ON;");
 		return db;
+	}
+
+	public void updateMessage(Message message) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		String[] args = { message.getUuid() };
+		db.update(Message.TABLENAME, message.getContentValues(), Message.UUID
+				+ "=?", args);
 	}
 }

@@ -1,5 +1,7 @@
 package de.gultsch.chat.services;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 
@@ -10,7 +12,11 @@ import de.gultsch.chat.entities.Conversation;
 import de.gultsch.chat.entities.Message;
 import de.gultsch.chat.persistance.DatabaseBackend;
 import de.gultsch.chat.ui.OnConversationListChangedListener;
+import de.gultsch.chat.ui.OnRosterFetchedListener;
+import de.gultsch.chat.xml.Element;
+import de.gultsch.chat.xmpp.IqPacket;
 import de.gultsch.chat.xmpp.MessagePacket;
+import de.gultsch.chat.xmpp.OnIqPacketReceived;
 import de.gultsch.chat.xmpp.OnMessagePacketReceived;
 import de.gultsch.chat.xmpp.XmppConnection;
 import android.app.Service;
@@ -45,7 +51,7 @@ public class XmppConnectionService extends Service {
 			String name = jid.split("@")[0];
 			Log.d(LOGTAG,"message received for "+account.getJid()+" from "+jid);
 			Log.d(LOGTAG,packet.toString());
-			Contact contact = new Contact(name,jid,null); //dummy contact
+			Contact contact = new Contact(account,name,jid,null); //dummy contact
 			Conversation conversation = findOrCreateConversation(account, contact);
 			Message message = new Message(conversation, fullJid, packet.getBody(), Message.ENCRYPTION_NONE, Message.STATUS_RECIEVED);
 			conversation.getMessages().add(message);
@@ -88,8 +94,59 @@ public class XmppConnectionService extends Service {
         return mBinder;
     }
     
-    public void sendMessage(Message message) {
-    	databaseBackend.createMessage(message);
+    public void sendMessage(final Account account, final Message message) {
+    	new Thread() {
+    		@Override
+    		public void run() {
+    			Log.d(LOGTAG,"sending message for "+account.getJid()+" to: "+message.getCounterpart());
+    			databaseBackend.createMessage(message);
+    			MessagePacket packet = new MessagePacket();
+    			packet.setType(MessagePacket.TYPE_CHAT);
+    			packet.setTo(message.getCounterpart());
+    			packet.setFrom(account.getJid());
+    			packet.setBody(message.getBody());
+    			try {
+					connections.get(account).sendMessagePacket(packet);
+					message.setStatus(Message.STATUS_SEND);
+					databaseBackend.updateMessage(message);
+				} catch (IOException e) {
+					Log.d(LOGTAG,"io exception during send. message is in database. will try again later");
+				}
+    		}
+    	}.start();
+    }
+    
+    public void getRoster(final Account account, final OnRosterFetchedListener listener) {
+    	IqPacket iqPacket = new IqPacket(IqPacket.TYPE_GET);
+    	Element query = new Element("query");
+    	query.setAttribute("xmlns", "jabber:iq:roster");
+    	query.setAttribute("ver", "");
+    	iqPacket.addChild(query);
+    	try {
+    		connections.get(account).sendIqPacket(iqPacket, new OnIqPacketReceived() {
+				
+				@Override
+				public void onIqPacketReceived(Account account, IqPacket packet) {
+					Element roster = packet.findChild("query");
+					Log.d(LOGTAG,roster.toString());
+					List<Contact> contacts = new ArrayList<Contact>();
+					for(Element item : roster.getChildren()) {
+						String name = item.getAttribute("name");
+						String jid = item.getAttribute("jid");
+						if (name==null) {
+							name = jid.split("@")[0];
+						}
+						Contact contact = new Contact(account, name, jid, null);
+						contacts.add(contact);
+					}
+					if (listener != null) {
+						listener.onRosterFetched(contacts);
+					}
+				}
+			});
+		} catch (IOException e) {
+			Log.d(LOGTAG,"io error during roster fetch");
+		}
     }
     
     public void addConversation(Conversation conversation) {
@@ -111,7 +168,7 @@ public class XmppConnectionService extends Service {
     }
     
     public List<Account> getAccounts() {
-    	return databaseBackend.getAccounts();
+    	return this.accounts;
     }
     
     public List<Message> getMessages(Conversation conversation) {

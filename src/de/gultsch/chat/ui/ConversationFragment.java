@@ -54,7 +54,7 @@ public class ConversationFragment extends Fragment {
 							return;
 						Message message = new Message(conversation, chatMsg
 								.getText().toString(), Message.ENCRYPTION_NONE);
-						activity.xmppConnectionService.sendMessage(message);
+						activity.xmppConnectionService.sendMessage(conversation.getAccount(),message);
 						conversation.getMessages().add(message);
 						chatMsg.setText("");
 						
@@ -105,16 +105,12 @@ public class ConversationFragment extends Fragment {
 					case SENT:
 						view = (View) inflater.inflate(R.layout.message_sent,
 								null);
-						Log.d("gultsch", "inflated new message_sent view");
 						break;
 					case RECIEVED:
 						view = (View) inflater.inflate(
 								R.layout.message_recieved, null);
-						Log.d("gultsch", "inflated new message_recieved view");
 						break;
 					}
-				} else {
-					Log.d("gultsch", "recylecd a view");
 				}
 				ImageView imageView = (ImageView) view.findViewById(R.id.message_photo);
 				if (type == RECIEVED) {
@@ -128,7 +124,7 @@ public class ConversationFragment extends Fragment {
 					imageView.setImageURI(profilePicture);
 				}
 				((TextView) view.findViewById(R.id.message_body)).setText(item
-						.getBody());
+						.getBody().trim());
 				TextView time = (TextView) view.findViewById(R.id.message_time);
 				if (item.getStatus() == Message.STATUS_UNSEND) {
 					time.setTypeface(null, Typeface.ITALIC);

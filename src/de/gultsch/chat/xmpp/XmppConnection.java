@@ -52,6 +52,8 @@ public class XmppConnection implements Runnable {
 	private OnPresencePacketReceived presenceListener = null;
 	private OnIqPacketReceived unregisteredIqListener = null;
 	private OnMessagePacketReceived messageListener = null;
+	
+	private String resource = null;
 
 	public XmppConnection(Account account, PowerManager pm) {
 		this.account = account;
@@ -96,6 +98,12 @@ public class XmppConnection implements Runnable {
 	public void run() {
 		while(shouldReConnect) {
 			connect();
+			try {
+				Thread.sleep(30000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -260,7 +268,9 @@ public class XmppConnection implements Runnable {
 		this.sendIqPacket(iq, new OnIqPacketReceived() {	
 			@Override
 			public void onIqPacketReceived(Account account, IqPacket packet) {
+				resource = packet.findChild("bind").findChild("jid").getContent().split("/")[1];
 				Log.d(LOGTAG,"answer for our bind was: "+packet.toString());
+				Log.d(LOGTAG,"new resource is "+resource);
 			}
 		});
 	}
@@ -291,15 +301,18 @@ public class XmppConnection implements Runnable {
 		if (callback != null) {
 			iqPacketCallbacks.put(id, callback);
 		}
+		tagWriter.flush();
 		Log.d(LOGTAG,"sending: "+packet.toString());
 	}
 	
 	public void sendMessagePacket(MessagePacket packet) throws IOException {
 		tagWriter.writeElement(packet);
+		tagWriter.flush();
 	}
 	
 	public void sendPresencePacket(PresencePacket packet) throws IOException {
 		tagWriter.writeElement(packet);
+		tagWriter.flush();
 	}
 	
 	public void setOnMessagePacketReceivedListener(OnMessagePacketReceived listener) {

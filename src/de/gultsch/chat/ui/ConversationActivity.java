@@ -49,26 +49,29 @@ public class ConversationActivity extends XmppActivity {
 		
 		@Override
 		public void onConversationListChanged() {
-			Log.d("xmppService","on conversation list changed event received");
+			final Conversation currentConv = conversationList.get(selectedConversation);
 			conversationList.clear();
 			conversationList.addAll(xmppConnectionService
 					.getConversations());
 			runOnUiThread(new Runnable() {
 				
 				@Override
-				public void run() {
-					listAdapter.notifyDataSetChanged();
+				public void run() {	
+					updateConversationList();
+					for(int i = 0; i < conversationList.size(); ++i) {
+						if (currentConv.equals(conversationList.get(i))) {
+							selectedConversation = i;
+							break;
+						}
+					}
 					if(paneShouldBeOpen) {
 						selectedConversation = 0;
 						if (conversationList.size() >= 1) {
-							updateConversationList();
 							swapConversationFragment();
 						} else {
 							startActivity(new Intent(getApplicationContext(), NewConversationActivity.class));
 							finish();
 						}
-					} else {
-						Log.d("xmppService","pane wasnt open. dont swap fragment");
 					}
 				}
 			});
@@ -98,19 +101,12 @@ public class ConversationActivity extends XmppActivity {
 	
 	public void updateConversationList() {
 		if (conversationList.size() >= 1) {
-			Conversation currentConv = conversationList.get(selectedConversation);
 			Collections.sort(this.conversationList, new Comparator<Conversation>() {
 				@Override
 				public int compare(Conversation lhs, Conversation rhs) {
 					return (int) (rhs.getLatestMessageDate() - lhs.getLatestMessageDate());
 				}
 			});
-			for(int i = 0; i < conversationList.size(); ++i) {
-				if (currentConv == conversationList.get(i)) {
-					selectedConversation = i;
-					break;
-				}
-			}
 		}
 		this.listView.invalidateViews();
 	}
@@ -198,6 +194,7 @@ public class ConversationActivity extends XmppActivity {
 
 			@Override
 			public void onPanelClosed(View arg0) {
+				paneShouldBeOpen = false;
 				if (conversationList.size() > 0) {
 					getActionBar().setDisplayHomeAsUpEnabled(true);
 					getActionBar().setTitle(conversationList.get(selectedConversation).getName());
@@ -248,6 +245,7 @@ public class ConversationActivity extends XmppActivity {
 			paneShouldBeOpen = true;
 			spl.openPane();
 			xmppConnectionService.archiveConversation(conv);
+			selectedConversation = 0;
 			break;
 		default:
 			break;
@@ -275,52 +273,35 @@ public class ConversationActivity extends XmppActivity {
 		}
 		return super.onKeyDown(keyCode, event);
 	}
-
-	@Override
-	public void onStart() {
-		super.onStart();
-		if (xmppConnectionServiceBound) {
-			conversationList.clear();
-			conversationList.addAll(xmppConnectionService
-					.getConversations());
-		}
-	}
 	
 	@Override
-	public void onPause() {
+	protected void onPause() {
 		super.onPause();
 		if (xmppConnectionServiceBound) {
-        	Log.d("xmppService","called on pause. remove listener");
-        	xmppConnectionService.removeOnConversationListChangedListener();
-		}
-	}
-	
-	@Override
-    protected void onStop() {
-        super.onStop();
-        if (xmppConnectionServiceBound) {
         	Log.d("xmppService","called on stop. remove listener");
         	xmppConnectionService.removeOnConversationListChangedListener();
             unbindService(mConnection);
             xmppConnectionServiceBound = false;
         }
-    }
-
+	}
 
 	@Override
 	void onBackendConnected() {
 		
 		xmppConnectionService.setOnConversationListChangedListener(this.onConvChanged);
 		
-		conversationList.clear();
-		conversationList.addAll(xmppConnectionService
-				.getConversations());
-		
-		for(Conversation conversation : conversationList) {
-			conversation.setMessages(xmppConnectionService.getMessages(conversation));
+		if (conversationList.size()==0) {
+			Log.d("gultsch","conversation list is empty fetch new");
+			conversationList.clear();
+			conversationList.addAll(xmppConnectionService
+					.getConversations());
+			
+			for(Conversation conversation : conversationList) {
+				conversation.setMessages(xmppConnectionService.getMessages(conversation));
+			}
+	
+			this.updateConversationList();
 		}
-
-		this.updateConversationList();
 
 		if ((getIntent().getAction().equals(Intent.ACTION_VIEW) && (!handledViewIntent))) {
 			if (getIntent().getType().equals(
@@ -354,6 +335,7 @@ public class ConversationActivity extends XmppActivity {
 					selectedFragment.onBackendConnected();
 				} else {
 					Log.d("gultsch","conversationactivity. no old fragment found. creating new one");
+					selectedConversation = 0;
 					Log.d("gultsch","selected conversation is #"+selectedConversation);
 					swapConversationFragment();
 				}

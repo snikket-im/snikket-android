@@ -51,6 +51,7 @@ public class NewConversationActivity extends XmppActivity {
 	protected EditText search;
 	protected String searchString = "";
 	private TextView contactsHeader;
+	private List<Account> accounts;
 
 	protected void updateAggregatedContacts() {
 
@@ -76,7 +77,7 @@ public class NewConversationActivity extends XmppActivity {
 
 			if (Validator.isValidJid(searchString)) {
 				String name = searchString.split("@")[0];
-				Contact newContact = new Contact(name, searchString,null);
+				Contact newContact = new Contact(null,name, searchString,null);
 				aggregatedContacts.add(newContact);
 				contactsHeader.setText("Create new contact");
 			} else {
@@ -87,6 +88,7 @@ public class NewConversationActivity extends XmppActivity {
 		}
 
 		contactsAdapter.notifyDataSetChanged();
+		contactsView.setScrollX(0);
 	}
 
 	static final String[] PROJECTION = new String[] {
@@ -229,7 +231,7 @@ public class NewConversationActivity extends XmppActivity {
 					/*if (profilePhoto == null) {
 						profilePhoto = DEFAULT_PROFILE_PHOTO;
 					}*/
-					Contact contact = new Contact(
+					Contact contact = new Contact(null,
 							cursor.getString(cursor
 									.getColumnIndex(ContactsContract.Data.DISPLAY_NAME)),
 							cursor.getString(cursor
@@ -249,6 +251,25 @@ public class NewConversationActivity extends XmppActivity {
 		if (xmppConnectionService.getConversationCount() == 0) {
 			getActionBar().setDisplayHomeAsUpEnabled(false);
 			getActionBar().setHomeButtonEnabled(false);
+		}
+		this.accounts = xmppConnectionService.getAccounts();
+		this.rosterContacts.clear();
+		for(Account account : this.accounts) {
+			xmppConnectionService.getRoster(account, new OnRosterFetchedListener() {
+				
+				@Override
+				public void onRosterFetched(List<Contact> roster) {
+					rosterContacts.addAll(roster);
+					runOnUiThread(new Runnable() {
+						
+						@Override
+						public void run() {
+							updateAggregatedContacts();
+						}
+					});
+	
+				}
+			});
 		}
 	}
 

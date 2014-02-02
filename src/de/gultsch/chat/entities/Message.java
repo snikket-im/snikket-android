@@ -111,4 +111,8 @@ public class Message extends AbstractEntity {
 		this.conversation = conv;
 	}
 
+	public void setStatus(int status) {
+		this.status = status;
+	}
+
 }

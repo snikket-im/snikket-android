@@ -46,6 +46,10 @@ public class Element {
 		return false;
 	}
 	
+	public List<Element> getChildren() {
+		return this.children;
+	}
+	
 	public String getContent() {
 		return content;
 	}
