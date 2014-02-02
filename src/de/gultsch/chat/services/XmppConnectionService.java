@@ -46,18 +46,19 @@ public class XmppConnectionService extends Service {
 		
 		@Override
 		public void onMessagePacketReceived(Account account, MessagePacket packet) {
-			String fullJid = packet.getFrom();
-			String jid = fullJid.split("/")[0];
-			String name = jid.split("@")[0];
-			Log.d(LOGTAG,"message received for "+account.getJid()+" from "+jid);
-			Log.d(LOGTAG,packet.toString());
-			Contact contact = new Contact(account,name,jid,null); //dummy contact
-			Conversation conversation = findOrCreateConversation(account, contact);
-			Message message = new Message(conversation, fullJid, packet.getBody(), Message.ENCRYPTION_NONE, Message.STATUS_RECIEVED);
-			conversation.getMessages().add(message);
-			databaseBackend.createMessage(message);
-			if (convChangedListener != null) {
-				convChangedListener.onConversationListChanged();
+			if (packet.getType()==MessagePacket.TYPE_CHAT) {
+				Log.d(LOGTAG,account.getJid()+": message of type chat");
+				String fullJid = packet.getFrom();
+				String jid = fullJid.split("/")[0];
+				String name = jid.split("@")[0];
+				Contact contact = new Contact(account,name,jid,null); //dummy contact
+				Conversation conversation = findOrCreateConversation(account, contact);
+				Message message = new Message(conversation, fullJid, packet.getBody(), Message.ENCRYPTION_NONE, Message.STATUS_RECIEVED);
+				conversation.getMessages().add(message);
+				databaseBackend.createMessage(message);
+				if (convChangedListener != null) {
+					convChangedListener.onConversationListChanged();
+				}
 			}
 		}
 	};
@@ -117,36 +118,41 @@ public class XmppConnectionService extends Service {
     }
     
     public void getRoster(final Account account, final OnRosterFetchedListener listener) {
-    	IqPacket iqPacket = new IqPacket(IqPacket.TYPE_GET);
-    	Element query = new Element("query");
-    	query.setAttribute("xmlns", "jabber:iq:roster");
-    	query.setAttribute("ver", "");
-    	iqPacket.addChild(query);
-    	try {
-    		connections.get(account).sendIqPacket(iqPacket, new OnIqPacketReceived() {
-				
-				@Override
-				public void onIqPacketReceived(Account account, IqPacket packet) {
-					Element roster = packet.findChild("query");
-					Log.d(LOGTAG,roster.toString());
-					List<Contact> contacts = new ArrayList<Contact>();
-					for(Element item : roster.getChildren()) {
-						String name = item.getAttribute("name");
-						String jid = item.getAttribute("jid");
-						if (name==null) {
-							name = jid.split("@")[0];
-						}
-						Contact contact = new Contact(account, name, jid, null);
-						contacts.add(contact);
-					}
-					if (listener != null) {
-						listener.onRosterFetched(contacts);
-					}
-				}
-			});
-		} catch (IOException e) {
-			Log.d(LOGTAG,"io error during roster fetch");
-		}
+    	new Thread() {
+    		@Override
+    		public void run() {
+    			IqPacket iqPacket = new IqPacket(IqPacket.TYPE_GET);
+    	    	Element query = new Element("query");
+    	    	query.setAttribute("xmlns", "jabber:iq:roster");
+    	    	query.setAttribute("ver", "");
+    	    	iqPacket.addChild(query);
+    	    	try {
+    	    		connections.get(account).sendIqPacket(iqPacket, new OnIqPacketReceived() {
+    					
+    					@Override
+    					public void onIqPacketReceived(Account account, IqPacket packet) {
+    						Element roster = packet.findChild("query");
+    						Log.d(LOGTAG,roster.toString());
+    						List<Contact> contacts = new ArrayList<Contact>();
+    						for(Element item : roster.getChildren()) {
+    							String name = item.getAttribute("name");
+    							String jid = item.getAttribute("jid");
+    							if (name==null) {
+    								name = jid.split("@")[0];
+    							}
+    							Contact contact = new Contact(account, name, jid, null);
+    							contacts.add(contact);
+    						}
+    						if (listener != null) {
+    							listener.onRosterFetched(contacts);
+    						}
+    					}
+    				});
+    			} catch (IOException e) {
+    				Log.d(LOGTAG,"io error during roster fetch");
+    			}
+    		}
+    	}.start();
     }
     
     public void addConversation(Conversation conversation) {

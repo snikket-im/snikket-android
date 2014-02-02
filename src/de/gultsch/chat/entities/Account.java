@@ -16,6 +16,8 @@ public class Account  extends AbstractEntity{
 	public static final String OPTIONS = "options";
 	public static final String ROSTERVERSION = "rosterversion";
 	
+	public static final int OPTION_USETLS = 0;
+	
 	protected String username;
 	protected String server;
 	protected String password;
@@ -38,6 +40,10 @@ public class Account  extends AbstractEntity{
 		this.password = password;
 		this.options = options;
 		this.rosterVersion = rosterVersion;
+	}
+	
+	public boolean isOptionSet(int option) {
+		return ((options & (1 << option)) != 0);
 	}
 	
 	public String getUsername() {

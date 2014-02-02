@@ -4,6 +4,8 @@ import de.gultsch.chat.xml.Element;
 
 public class MessagePacket extends Element {
 	public static final int TYPE_CHAT = 0;
+	public static final int TYPE_UNKNOWN = 1;
+	public static final int TYPE_NO = 2;
 
 	private MessagePacket(String name) {
 		super(name);
@@ -22,7 +24,12 @@ public class MessagePacket extends Element {
 	}
 	
 	public String getBody() {
-		return this.findChild("body").getContent();
+		Element body = this.findChild("body");
+		if (body!=null) {
+			return body.getContent();
+		} else {
+			return null;
+		}
 	}
 	
 	public void setTo(String to) {
@@ -48,6 +55,18 @@ public class MessagePacket extends Element {
 		default:
 			this.setAttribute("type","chat");
 			break;
+		}
+	}
+	
+	public int getType() {
+		String type = getAttribute("type");
+		if (type==null) {
+			return TYPE_NO;
+		}
+		if (type.equals("chat")) {
+			return TYPE_CHAT;
+		} else {
+			return TYPE_UNKNOWN;
 		}
 	}
 }

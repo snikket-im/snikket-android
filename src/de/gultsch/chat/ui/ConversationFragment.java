@@ -124,8 +124,11 @@ public class ConversationFragment extends Fragment {
 				} else {
 					imageView.setImageURI(profilePicture);
 				}
-				((TextView) view.findViewById(R.id.message_body)).setText(item
-						.getBody().trim());
+				TextView messageBody = (TextView) view.findViewById(R.id.message_body);
+				String body = item.getBody();
+				if (body!=null) {
+					messageBody.setText(body.trim());
+				}
 				TextView time = (TextView) view.findViewById(R.id.message_time);
 				if (item.getStatus() == Message.STATUS_UNSEND) {
 					time.setTypeface(null, Typeface.ITALIC);

@@ -38,7 +38,7 @@ public class XmppConnection implements Runnable {
 
 	private boolean isTlsEncrypted = false;
 	private boolean isAuthenticated = false;
-	private boolean shouldUseTLS = false;
+	//private boolean shouldUseTLS = false;
 	private boolean shouldReConnect = true;
 	private boolean shouldBind = true;
 	private boolean shouldAuthenticate = true;
@@ -83,10 +83,10 @@ public class XmppConnection implements Runnable {
 				}
 			}
 		} catch (UnknownHostException e) {
-			Log.d(LOGTAG, "error during connect. unknown host");
+			Log.d(LOGTAG,account.getJid()+": error during connect. unknown host");
 			return;
 		} catch (IOException e) {
-			Log.d(LOGTAG, "error during connect. io exception. falscher port?");
+			Log.d(LOGTAG, account.getJid()+": error during connect. io exception. falscher port?");
 			return;
 		} catch (XmlPullParserException e) {
 			Log.d(LOGTAG,"xml exception "+e.getMessage());
@@ -109,7 +109,6 @@ public class XmppConnection implements Runnable {
 
 	private void processStream(Tag currentTag) throws XmlPullParserException,
 			IOException {
-		Log.d(LOGTAG, "process Stream");
 		Tag nextTag;
 		while (!(nextTag = tagReader.readTag()).isEnd("stream")) {
 			if (nextTag.isStart("error")) {
@@ -120,7 +119,7 @@ public class XmppConnection implements Runnable {
 				switchOverToTls(nextTag);
 			} else if (nextTag.isStart("success")) {
 				isAuthenticated = true;
-				Log.d(LOGTAG,"read success tag in stream. reset again");
+				Log.d(LOGTAG,account.getJid()+": read success tag in stream. reset again");
 				tagReader.readTag();
 				tagReader.reset();
 				sendStartStream();
@@ -194,14 +193,14 @@ public class XmppConnection implements Runnable {
 	private void sendStartTLS() throws XmlPullParserException, IOException {
 		Tag startTLS = Tag.empty("starttls");
 		startTLS.setAttribute("xmlns", "urn:ietf:params:xml:ns:xmpp-tls");
-		Log.d(LOGTAG, "sending starttls");
+		Log.d(LOGTAG,account.getJid()+": sending starttls");
 		tagWriter.writeTag(startTLS).flush();
 	}
 
 	private void switchOverToTls(Tag currentTag) throws XmlPullParserException,
 			IOException {
 		Tag nextTag = tagReader.readTag(); // should be proceed end tag
-		Log.d(LOGTAG, "now switch to ssl");
+		Log.d(LOGTAG,account.getJid()+": now switch to ssl");
 		SSLSocket sslSocket;
 		try {
 			sslSocket = (SSLSocket) ((SSLSocketFactory) SSLSocketFactory
@@ -215,7 +214,7 @@ public class XmppConnection implements Runnable {
 			sendStartStream();
 			processStream(tagReader.readTag());
 		} catch (IOException e) {
-			Log.d(LOGTAG, "error on ssl" + e.getMessage());
+			Log.d(LOGTAG, account.getJid()+": error on ssl '" + e.getMessage()+"'");
 		}
 	}
 
@@ -226,7 +225,7 @@ public class XmppConnection implements Runnable {
 		auth.setAttribute("xmlns", "urn:ietf:params:xml:ns:xmpp-sasl");
 		auth.setAttribute("mechanism", "PLAIN");
 		auth.setContent(saslString);
-		Log.d(LOGTAG,"sending sasl "+auth.toString());
+		Log.d(LOGTAG,account.getJid()+": sending sasl "+auth.toString());
 		tagWriter.writeElement(auth);
 		tagWriter.flush();
 	}
@@ -234,11 +233,10 @@ public class XmppConnection implements Runnable {
 	private void processStreamFeatures(Tag currentTag)
 			throws XmlPullParserException, IOException {
 		this.streamFeatures = tagReader.readElement(currentTag);
-		Log.d(LOGTAG,"process stream features "+streamFeatures);
-		if (this.streamFeatures.hasChild("starttls")&&shouldUseTLS) {
+		Log.d(LOGTAG,account.getJid()+": process stream features "+streamFeatures);
+		if (this.streamFeatures.hasChild("starttls")&&account.isOptionSet(Account.OPTION_USETLS)) {
 			sendStartTLS();
-		}
-		if (this.streamFeatures.hasChild("mechanisms")&&shouldAuthenticate) {
+		} else if (this.streamFeatures.hasChild("mechanisms")&&shouldAuthenticate) {
 			sendSaslAuth();
 		}
 		if (this.streamFeatures.hasChild("bind")&&shouldBind) {
@@ -269,8 +267,7 @@ public class XmppConnection implements Runnable {
 			@Override
 			public void onIqPacketReceived(Account account, IqPacket packet) {
 				resource = packet.findChild("bind").findChild("jid").getContent().split("/")[1];
-				Log.d(LOGTAG,"answer for our bind was: "+packet.toString());
-				Log.d(LOGTAG,"new resource is "+resource);
+				Log.d(LOGTAG,account.getJid()+": new resource is "+resource);
 			}
 		});
 	}
