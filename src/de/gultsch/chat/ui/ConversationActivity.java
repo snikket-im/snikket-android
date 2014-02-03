@@ -8,7 +8,7 @@ import java.util.List;
 import de.gultsch.chat.R;
 import de.gultsch.chat.R.id;
 import de.gultsch.chat.entities.Conversation;
-import de.gultsch.chat.utils.Beautifier;
+import de.gultsch.chat.utils.UIHelper;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.FragmentTransaction;
@@ -34,7 +34,7 @@ import android.widget.ImageView;
 public class ConversationActivity extends XmppActivity {
 
 	public static final String VIEW_CONVERSATION = "viewConversation";
-	protected static final String CONVERSATION = "conversationUuid";
+	public static final String CONVERSATION = "conversationUuid";
 
 	protected SlidingPaneLayout spl;
 
@@ -137,14 +137,14 @@ public class ConversationActivity extends XmppActivity {
 						.setText(getItem(position).getName());
 				((TextView) view.findViewById(R.id.conversation_lastmsg)).setText(getItem(position).getLatestMessage());
 				((TextView) view.findViewById(R.id.conversation_lastupdate))
-				.setText(Beautifier.readableTimeDifference(getItem(position).getLatestMessageDate()));
+				.setText(UIHelper.readableTimeDifference(getItem(position).getLatestMessageDate()));
 				
 				Uri profilePhoto = getItem(position).getProfilePhotoUri();
 				ImageView imageView = (ImageView) view.findViewById(R.id.conversation_image);
 				if (profilePhoto!=null) {
 					imageView.setImageURI(profilePhoto);
 				} else {
-					imageView.setImageBitmap(Beautifier.getUnknownContactPicture(getItem(position).getName(),200));
+					imageView.setImageBitmap(UIHelper.getUnknownContactPicture(getItem(position).getName(),200));
 				}
 				
 				

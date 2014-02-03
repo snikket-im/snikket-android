@@ -6,7 +6,7 @@ import java.util.List;
 import de.gultsch.chat.R;
 import de.gultsch.chat.entities.Conversation;
 import de.gultsch.chat.entities.Message;
-import de.gultsch.chat.utils.Beautifier;
+import de.gultsch.chat.utils.UIHelper;
 import android.app.Fragment;
 import android.database.Cursor;
 import android.graphics.Typeface;
@@ -119,7 +119,7 @@ public class ConversationFragment extends Fragment {
 					if (uri!=null) {
 						imageView.setImageURI(uri);
 					} else {
-						imageView.setImageBitmap(Beautifier.getUnknownContactPicture(item.getConversation().getName(), 200));
+						imageView.setImageBitmap(UIHelper.getUnknownContactPicture(item.getConversation().getName(), 200));
 					}
 				} else {
 					imageView.setImageURI(profilePicture);
@@ -133,7 +133,7 @@ public class ConversationFragment extends Fragment {
 				if (item.getStatus() == Message.STATUS_UNSEND) {
 					time.setTypeface(null, Typeface.ITALIC);
 				} else {
-					time.setText(Beautifier.readableTimeDifference(item
+					time.setText(UIHelper.readableTimeDifference(item
 							.getTimeSent()));
 				}
 				return view;

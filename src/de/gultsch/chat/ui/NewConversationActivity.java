@@ -9,7 +9,7 @@ import de.gultsch.chat.R;
 import de.gultsch.chat.entities.Account;
 import de.gultsch.chat.entities.Contact;
 import de.gultsch.chat.entities.Conversation;
-import de.gultsch.chat.utils.Beautifier;
+import de.gultsch.chat.utils.UIHelper;
 import de.gultsch.chat.utils.Validator;
 import android.net.Uri;
 import android.os.Bundle;
@@ -158,7 +158,7 @@ public class NewConversationActivity extends XmppActivity {
 				if (profilePhoto!=null) {
 					imageView.setImageURI(Uri.parse(profilePhoto));
 				} else {
-					imageView.setImageBitmap(Beautifier.getUnknownContactPicture(getItem(position).getDisplayName(),90));
+					imageView.setImageBitmap(UIHelper.getUnknownContactPicture(getItem(position).getDisplayName(),90));
 				}
 				return view;
 			}
