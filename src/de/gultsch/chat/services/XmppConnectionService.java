@@ -47,7 +47,6 @@ public class XmppConnectionService extends Service {
 		@Override
 		public void onMessagePacketReceived(Account account, MessagePacket packet) {
 			if (packet.getType()==MessagePacket.TYPE_CHAT) {
-				Log.d(LOGTAG,account.getJid()+": message of type chat");
 				String fullJid = packet.getFrom();
 				String jid = fullJid.split("/")[0];
 				String name = jid.split("@")[0];
@@ -132,7 +131,6 @@ public class XmppConnectionService extends Service {
     					@Override
     					public void onIqPacketReceived(Account account, IqPacket packet) {
     						Element roster = packet.findChild("query");
-    						Log.d(LOGTAG,roster.toString());
     						List<Contact> contacts = new ArrayList<Contact>();
     						for(Element item : roster.getChildren()) {
     							String name = item.getAttribute("name");
@@ -182,10 +180,10 @@ public class XmppConnectionService extends Service {
     }
 
     public Conversation findOrCreateConversation(Account account, Contact contact) {
-    	Log.d(LOGTAG,"was asked to find conversation for "+contact.getJid());
+    	//Log.d(LOGTAG,"was asked to find conversation for "+contact.getJid());
     	for(Conversation conv : this.getConversations()) {
     		if ((conv.getAccount().equals(account))&&(conv.getContactJid().equals(contact.getJid()))) {
-    			Log.d(LOGTAG,"found one in memory");
+    			//Log.d(LOGTAG,"found one in memory");
     			return conv;
     		}
     	}

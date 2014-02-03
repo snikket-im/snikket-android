@@ -29,6 +29,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.ImageView;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -67,9 +68,10 @@ public class NewConversationActivity extends XmppActivity {
 
 		Collections.sort(aggregatedContacts, new Comparator<Contact>() {
 
+			@SuppressLint("DefaultLocale")
 			@Override
 			public int compare(Contact lhs, Contact rhs) {
-				return lhs.getDisplayName().compareTo(rhs.getDisplayName());
+				return lhs.getDisplayName().toLowerCase().compareTo(rhs.getDisplayName().toLowerCase());
 			}
 		});
 

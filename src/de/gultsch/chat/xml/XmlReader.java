@@ -86,8 +86,10 @@ public class XmlReader {
 		}
 		//Log.d(LOGTAG,"reading till the end of "+element.getName());
 		while(!nextTag.isEnd(element.getName())) {
-			Element child = this.readElement(nextTag);
-			element.addChild(child);
+			if (!nextTag.isNo()) {
+				Element child = this.readElement(nextTag);
+				element.addChild(child);
+			}
 			nextTag = this.readTag();
 		}
 		//Log.d(LOGTAG,"return with element"+element);

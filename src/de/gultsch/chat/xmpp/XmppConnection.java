@@ -299,7 +299,7 @@ public class XmppConnection implements Runnable {
 			iqPacketCallbacks.put(id, callback);
 		}
 		tagWriter.flush();
-		Log.d(LOGTAG,"sending: "+packet.toString());
+		Log.d(LOGTAG,account.getJid()+": sending: "+packet.toString());
 	}
 	
 	public void sendMessagePacket(MessagePacket packet) throws IOException {
