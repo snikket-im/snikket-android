@@ -2,7 +2,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
     <item android:id="@+id/action_add_account"
         android:showAsAction="always"
-        android:title="@string/action_add_account"/>
+        android:title="@string/action_add_account"
+        android:icon="@drawable/ic_action_add_person"/>
  <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"

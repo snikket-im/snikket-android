@@ -11,6 +11,7 @@ public final class R {
     public static final class array {
         public static final int conversation_encryption_type_entries=0x7f050000;
         public static final int conversation_encryption_type_values=0x7f050001;
+        public static final int manage_account_options=0x7f050002;
     }
     public static final class attr {
     }
@@ -28,17 +29,20 @@ public final class R {
         public static final int es_slidingpane_shadow=0x7f020000;
         public static final int ic_action_add=0x7f020001;
         public static final int ic_action_add_person=0x7f020002;
-        public static final int ic_action_send=0x7f020003;
-        public static final int ic_action_send_now=0x7f020004;
-        public static final int ic_action_unsecure=0x7f020005;
-        public static final int ic_launcher=0x7f020006;
-        public static final int ic_profile=0x7f020007;
-        public static final int message_border=0x7f020008;
-        public static final int notification=0x7f020009;
-        public static final int section_header=0x7f02000a;
+        public static final int ic_action_delete=0x7f020003;
+        public static final int ic_action_send=0x7f020004;
+        public static final int ic_action_send_now=0x7f020005;
+        public static final int ic_action_unsecure=0x7f020006;
+        public static final int ic_launcher=0x7f020007;
+        public static final int ic_profile=0x7f020008;
+        public static final int message_border=0x7f020009;
+        public static final int notification=0x7f02000a;
+        public static final int section_header=0x7f02000b;
     }
     public static final class id {
         public static final int account_confirm_password_desc=0x7f0a0011;
+        public static final int account_disable=0x7f0a002c;
+        public static final int account_enable=0x7f0a002d;
         public static final int account_jid=0x7f0a0000;
         public static final int account_list=0x7f0a0021;
         public static final int account_password=0x7f0a000f;
@@ -98,7 +102,8 @@ public final class R {
     public static final class menu {
         public static final int conversations=0x7f090000;
         public static final int manageaccounts=0x7f090001;
-        public static final int newconversation=0x7f090002;
+        public static final int manageaccounts_context=0x7f090002;
+        public static final int newconversation=0x7f090003;
     }
     public static final class string {
         public static final int action_accounts=0x7f070003;

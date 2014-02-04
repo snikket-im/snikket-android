@@ -17,7 +17,9 @@ public class Account  extends AbstractEntity{
 	public static final String ROSTERVERSION = "rosterversion";
 	
 	public static final int OPTION_USETLS = 0;
+	public static final int OPTION_DISABLED = 1;
 	
+	public static final int STATUS_DISABLED = -1;
 	public static final int STATUS_OFFLINE = 0;
 	public static final int STATUS_ONLINE = 1;
 	public static final int STATUS_UNAUTHORIZED = 2;
@@ -55,6 +57,20 @@ public class Account  extends AbstractEntity{
 		return ((options & (1 << option)) != 0);
 	}
 	
+	public void setOption(int option, boolean value) {
+		if (value) {
+			Log.d("xmppService","options: "+options);
+			this.options = (this.options | 1 << option);
+			Log.d("xmppService","setting option "+option+" to 1");
+			Log.d("xmppService","options: "+options);
+		} else {
+			Log.d("xmppService","options: "+options);
+			Log.d("xmppService","setting option "+option+" to 0");
+			this.options = (this.options ^ 1 << option);
+			Log.d("xmppService","options: "+options);
+		}
+	}
+	
 	public String getUsername() {
 		return username;
 	}
@@ -84,7 +100,11 @@ public class Account  extends AbstractEntity{
 	}
 	
 	public int getStatus() {
-		return this.status;
+		if (isOptionSet(OPTION_DISABLED)) {
+			return STATUS_DISABLED;
+		} else {
+			return this.status;
+		}
 	}
 	
 	public void setResource(String resource) {
@@ -102,6 +122,7 @@ public class Account  extends AbstractEntity{
 		values.put(USERNAME, username);
 		values.put(SERVER, server);
 		values.put(PASSWORD, password);
+		values.put(OPTIONS,options);
 		return values;
 	}
 	

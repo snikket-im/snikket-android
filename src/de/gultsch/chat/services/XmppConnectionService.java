@@ -95,8 +95,11 @@ public class XmppConnectionService extends Service {
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		for (Account account : accounts) {
 			if (!connections.containsKey(account)) {
-				
-				this.connections.put(account, this.createConnection(account));
+				if (!account.isOptionSet(Account.OPTION_DISABLED)) {
+					this.connections.put(account, this.createConnection(account));
+				} else {
+					Log.d(LOGTAG,account.getJid()+": not starting because it's disabled");
+				}
 			}
 		}
 		return START_STICKY;
@@ -253,7 +256,11 @@ public class XmppConnectionService extends Service {
 			connection.disconnect();
 			this.connections.remove(account);
 		}
-		this.connections.put(account, this.createConnection(account));
+		if (!account.isOptionSet(Account.OPTION_DISABLED)) {
+			this.connections.put(account, this.createConnection(account));
+		} else {
+			Log.d(LOGTAG,account.getJid()+": not starting because it's disabled");
+		}
 		if (accountChangedListener!=null) accountChangedListener.onAccountListChangedListener();
 	}
 

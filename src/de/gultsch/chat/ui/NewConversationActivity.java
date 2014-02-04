@@ -185,7 +185,7 @@ public class NewConversationActivity extends XmppActivity {
 	
 					AlertDialog.Builder builder = new AlertDialog.Builder(activity);
 					builder.setTitle("Choose account");
-					builder.setSingleChoiceItems(accountList,0,new OnClickListener() {
+					builder.setItems(accountList,new OnClickListener() {
 						
 						@Override
 						public void onClick(DialogInterface dialog, int which) {

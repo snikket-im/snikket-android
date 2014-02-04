@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item android:icon="@drawable/ic_action_delete"
+        android:title="Delete"
+        android:showAsAction="always"
+        />
+    <item
+        android:id="@+id/account_disable"
+        android:title="Temporarily disable"
+        android:showAsAction="always"/>
+    <item
+        android:id="@+id/account_enable"
+        android:title="Enable"
+        android:showAsAction="always"
+        android:visible="false"/>
+
+</menu>

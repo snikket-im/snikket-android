@@ -92,7 +92,7 @@ public class EditAccount extends DialogFragment {
 			usernameText.setText(account.getUsername());
 			serverText.setText(account.getServer());
 			okButtonDesc = "Edit";
-			builder.setNegativeButton("Delete Account", new OnClickListener() {
+			/*builder.setNegativeButton("Delete Account", new OnClickListener() {
 				
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
@@ -112,7 +112,7 @@ public class EditAccount extends DialogFragment {
 					builder.setNegativeButton("Cancel",null);
 					builder.create().show();
 				}
-			});
+			});*/
 		} else {
 			builder.setTitle("Add account");
 			okButtonDesc = "Add";

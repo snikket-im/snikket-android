@@ -10,4 +10,8 @@
         <item>pgp</item>
         <item>otr</item>
     </array>
+    <array name="manage_account_options">
+        <item>Delete</item>
+        <item>Disable</item>
+    </array>
 </resources>

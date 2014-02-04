@@ -7,23 +7,32 @@ import de.gultsch.chat.R;
 import de.gultsch.chat.entities.Account;
 import de.gultsch.chat.ui.EditAccount.EditAccountListener;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ActionMode;
+import android.view.ActionMode.Callback;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class ManageAccountActivity extends XmppActivity {
+public class ManageAccountActivity extends XmppActivity implements ActionMode.Callback {
 
+	protected boolean isActionMode = false;
+	protected ActionMode actionMode;
+	protected Account selectedAccountForActionMode = null;
+	
 	protected List<Account> accountList = new ArrayList<Account>();
 	protected ListView accountListView;
 	protected ArrayAdapter<Account> accountListViewAdapter;
@@ -70,6 +79,10 @@ public class ManageAccountActivity extends XmppActivity {
 				TextView statusView = (TextView) view
 						.findViewById(R.id.account_status);
 				switch (account.getStatus()) {
+				case Account.STATUS_DISABLED:
+					statusView.setText("temporarily disabled");
+					statusView.setTextColor(0xFF1da9da);
+					break;
 				case Account.STATUS_ONLINE:
 					statusView.setText("online");
 					statusView.setTextColor(0xFF83b600);
@@ -93,27 +106,49 @@ public class ManageAccountActivity extends XmppActivity {
 				return view;
 			}
 		};
+		final Activity activity = this;
 		accountListView.setAdapter(this.accountListViewAdapter);
 		accountListView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View view,
 					int position, long arg3) {
-				EditAccount dialog = new EditAccount();
-				dialog.setAccount(accountList.get(position));
-				dialog.setEditAccountListener(new EditAccountListener() {
+				if (!isActionMode) {
+					EditAccount dialog = new EditAccount();
+					dialog.setAccount(accountList.get(position));
+					dialog.setEditAccountListener(new EditAccountListener() {
+	
+						@Override
+						public void onAccountEdited(Account account) {
+							xmppConnectionService.updateAccount(account);
+						}
+	
+						@Override
+						public void onAccountDelete(Account account) {
+							xmppConnectionService.deleteAccount(account);
+						}
+					});
+					dialog.show(getFragmentManager(), "edit_account");
+				} else {
+					selectedAccountForActionMode = accountList.get(position);
+					actionMode.invalidate();
+				}
+			}
+		});
+		accountListView.setOnItemLongClickListener(new OnItemLongClickListener() {
 
-					@Override
-					public void onAccountEdited(Account account) {
-						xmppConnectionService.updateAccount(account);
-					}
-
-					@Override
-					public void onAccountDelete(Account account) {
-						xmppConnectionService.deleteAccount(account);
-					}
-				});
-				dialog.show(getFragmentManager(), "edit_account");
+			@Override
+			public boolean onItemLongClick(AdapterView<?> arg0, View view,
+					int position, long arg3) {
+				if (!isActionMode) {
+					accountListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+					accountListView.setItemChecked(position,true);
+					selectedAccountForActionMode = accountList.get(position);
+					actionMode = activity.startActionMode((Callback) activity);
+					return true;
+				} else {
+					return false;
+				}
 			}
 		});
 	}
@@ -179,5 +214,64 @@ public class ManageAccountActivity extends XmppActivity {
 			}
 		});
 		dialog.show(getFragmentManager(), "add_account");
+	}
+
+	@Override
+	public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+		if (item.getItemId()==R.id.account_disable) {
+			selectedAccountForActionMode.setOption(Account.OPTION_DISABLED, true);
+			xmppConnectionService.updateAccount(selectedAccountForActionMode);
+			mode.finish();
+		} else if (item.getItemId()==R.id.account_enable) {
+			selectedAccountForActionMode.setOption(Account.OPTION_DISABLED, false);
+			xmppConnectionService.updateAccount(selectedAccountForActionMode);
+			mode.finish();
+		}
+		return true;
+	}
+
+	@Override
+	public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+		MenuInflater inflater = mode.getMenuInflater();
+        inflater.inflate(R.menu.manageaccounts_context, menu);
+		return true;
+	}
+
+	@Override
+	public void onDestroyActionMode(ActionMode mode) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+		if (selectedAccountForActionMode.isOptionSet(Account.OPTION_DISABLED)) {
+        	menu.findItem(R.id.account_enable).setVisible(true);
+        	menu.findItem(R.id.account_disable).setVisible(false);
+        } else {
+        	menu.findItem(R.id.account_disable).setVisible(true);
+        	menu.findItem(R.id.account_enable).setVisible(false);
+        }
+		return true;
+	}
+	
+	@Override
+	public void onActionModeStarted(ActionMode mode) {
+		super.onActionModeStarted(mode);
+		this.isActionMode = true;
+	}
+	
+	@Override
+	public void onActionModeFinished(ActionMode mode) {
+		super.onActionModeFinished(mode);
+		this.isActionMode = false;
+		accountListView.clearChoices();
+		accountListView.requestLayout();
+		accountListView.post(new Runnable() {
+            @Override
+            public void run() {
+                accountListView.setChoiceMode(ListView.CHOICE_MODE_NONE);
+            }
+        });
 	}
 }
