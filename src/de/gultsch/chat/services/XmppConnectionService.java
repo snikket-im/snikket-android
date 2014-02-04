@@ -1,6 +1,5 @@
 package de.gultsch.chat.services;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
@@ -10,7 +9,7 @@ import de.gultsch.chat.entities.Contact;
 import de.gultsch.chat.entities.Conversation;
 import de.gultsch.chat.entities.Message;
 import de.gultsch.chat.persistance.DatabaseBackend;
-import de.gultsch.chat.ui.ConversationActivity;
+import de.gultsch.chat.ui.OnAccountListChangedListener;
 import de.gultsch.chat.ui.OnConversationListChangedListener;
 import de.gultsch.chat.ui.OnRosterFetchedListener;
 import de.gultsch.chat.utils.UIHelper;
@@ -19,20 +18,15 @@ import de.gultsch.chat.xmpp.IqPacket;
 import de.gultsch.chat.xmpp.MessagePacket;
 import de.gultsch.chat.xmpp.OnIqPacketReceived;
 import de.gultsch.chat.xmpp.OnMessagePacketReceived;
+import de.gultsch.chat.xmpp.OnStatusChanged;
 import de.gultsch.chat.xmpp.XmppConnection;
-import android.R;
-import android.R.dimen;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Binder;
 import android.os.IBinder;
 import android.os.PowerManager;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 
 public class XmppConnectionService extends Service {
@@ -48,6 +42,7 @@ public class XmppConnectionService extends Service {
 	private Hashtable<Account, XmppConnection> connections = new Hashtable<Account, XmppConnection>();
 
 	private OnConversationListChangedListener convChangedListener = null;
+	private OnAccountListChangedListener accountChangedListener = null;
 
 	private final IBinder mBinder = new XmppConnectionBinder();
 	private OnMessagePacketReceived messageListener = new OnMessagePacketReceived() {
@@ -79,6 +74,16 @@ public class XmppConnectionService extends Service {
 			}
 		}
 	};
+	private OnStatusChanged statusListener = new OnStatusChanged() {
+		
+		@Override
+		public void onStatusChanged(Account account) {
+			Log.d(LOGTAG,account.getJid()+" changed status to "+account.getStatus());
+			if (accountChangedListener != null) {
+				accountChangedListener.onAccountListChangedListener();
+			}
+		}
+	};
 
 	public class XmppConnectionBinder extends Binder {
 		public XmppConnectionService getService() {
@@ -88,15 +93,10 @@ public class XmppConnectionService extends Service {
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
 		for (Account account : accounts) {
 			if (!connections.containsKey(account)) {
-				XmppConnection connection = new XmppConnection(account, pm);
-				connection
-						.setOnMessagePacketReceivedListener(this.messageListener);
-				Thread thread = new Thread(connection);
-				thread.start();
-				this.connections.put(account, connection);
+				
+				this.connections.put(account, this.createConnection(account));
 			}
 		}
 		return START_STICKY;
@@ -107,6 +107,17 @@ public class XmppConnectionService extends Service {
 		databaseBackend = DatabaseBackend.getInstance(getApplicationContext());
 		this.accounts = databaseBackend.getAccounts();
 	}
+	
+	public XmppConnection createConnection(Account account) {
+		PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+		XmppConnection connection = new XmppConnection(account, pm);
+		connection
+				.setOnMessagePacketReceivedListener(this.messageListener);
+		connection.setOnStatusChangedListener(this.statusListener );
+		Thread thread = new Thread(connection);
+		thread.start();
+		return connection;
+	}
 
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -114,68 +125,49 @@ public class XmppConnectionService extends Service {
 	}
 
 	public void sendMessage(final Account account, final Message message) {
-		new Thread() {
-			@Override
-			public void run() {
-				Log.d(LOGTAG, "sending message for " + account.getJid()
-						+ " to: " + message.getCounterpart());
-				databaseBackend.createMessage(message);
-				MessagePacket packet = new MessagePacket();
-				packet.setType(MessagePacket.TYPE_CHAT);
-				packet.setTo(message.getCounterpart());
-				packet.setFrom(account.getJid());
-				packet.setBody(message.getBody());
-				try {
-					connections.get(account).sendMessagePacket(packet);
-					message.setStatus(Message.STATUS_SEND);
-					databaseBackend.updateMessage(message);
-				} catch (IOException e) {
-					Log.d(LOGTAG,
-							"io exception during send. message is in database. will try again later");
-				}
-			}
-		}.start();
+		Log.d(LOGTAG, "sending message for " + account.getJid() + " to: "
+				+ message.getCounterpart());
+		databaseBackend.createMessage(message);
+		MessagePacket packet = new MessagePacket();
+		packet.setType(MessagePacket.TYPE_CHAT);
+		packet.setTo(message.getCounterpart());
+		packet.setFrom(account.getJid());
+		packet.setBody(message.getBody());
+		connections.get(account).sendMessagePacket(packet);
+		message.setStatus(Message.STATUS_SEND);
+		databaseBackend.updateMessage(message);
 	}
 
 	public void getRoster(final Account account,
 			final OnRosterFetchedListener listener) {
-		new Thread() {
-			@Override
-			public void run() {
-				IqPacket iqPacket = new IqPacket(IqPacket.TYPE_GET);
-				Element query = new Element("query");
-				query.setAttribute("xmlns", "jabber:iq:roster");
-				query.setAttribute("ver", "");
-				iqPacket.addChild(query);
-				try {
-					connections.get(account).sendIqPacket(iqPacket,
-							new OnIqPacketReceived() {
+		IqPacket iqPacket = new IqPacket(IqPacket.TYPE_GET);
+		Element query = new Element("query");
+		query.setAttribute("xmlns", "jabber:iq:roster");
+		query.setAttribute("ver", "");
+		iqPacket.addChild(query);
+		connections.get(account).sendIqPacket(iqPacket,
+				new OnIqPacketReceived() {
 
-								@Override
-								public void onIqPacketReceived(Account account,
-										IqPacket packet) {
-									Element roster = packet.findChild("query");
-									List<Contact> contacts = new ArrayList<Contact>();
-									for (Element item : roster.getChildren()) {
-										String name = item.getAttribute("name");
-										String jid = item.getAttribute("jid");
-										if (name == null) {
-											name = jid.split("@")[0];
-										}
-										Contact contact = new Contact(account,
-												name, jid, null);
-										contacts.add(contact);
-									}
-									if (listener != null) {
-										listener.onRosterFetched(contacts);
-									}
-								}
-							});
-				} catch (IOException e) {
-					Log.d(LOGTAG, "io error during roster fetch");
-				}
-			}
-		}.start();
+					@Override
+					public void onIqPacketReceived(Account account,
+							IqPacket packet) {
+						Element roster = packet.findChild("query");
+						List<Contact> contacts = new ArrayList<Contact>();
+						for (Element item : roster.getChildren()) {
+							String name = item.getAttribute("name");
+							String jid = item.getAttribute("jid");
+							if (name == null) {
+								name = jid.split("@")[0];
+							}
+							Contact contact = new Contact(account, name, jid,
+									null);
+							contacts.add(contact);
+						}
+						if (listener != null) {
+							listener.onRosterFetched(contacts);
+						}
+					}
+				});
 	}
 
 	public void addConversation(Conversation conversation) {
@@ -249,14 +241,32 @@ public class XmppConnectionService extends Service {
 
 	public void createAccount(Account account) {
 		databaseBackend.createAccount(account);
+		this.accounts.add(account);
+		this.connections.put(account, this.createConnection(account));
+		if (accountChangedListener!=null) accountChangedListener.onAccountListChangedListener();
 	}
 
 	public void updateAccount(Account account) {
 		databaseBackend.updateAccount(account);
+		XmppConnection connection = this.connections.get(account);
+		if (connection != null) {
+			connection.disconnect();
+			this.connections.remove(account);
+		}
+		this.connections.put(account, this.createConnection(account));
+		if (accountChangedListener!=null) accountChangedListener.onAccountListChangedListener();
 	}
 
 	public void deleteAccount(Account account) {
+		Log.d(LOGTAG,"called delete account");
+		if (this.connections.containsKey(account)) {
+			Log.d(LOGTAG,"found connection. disconnecting");
+			this.connections.get(account).disconnect();
+			this.connections.remove(account);
+			this.accounts.remove(account);
+		}
 		databaseBackend.deleteAccount(account);
+		if (accountChangedListener!=null) accountChangedListener.onAccountListChangedListener();
 	}
 
 	public void setOnConversationListChangedListener(
@@ -266,5 +276,13 @@ public class XmppConnectionService extends Service {
 
 	public void removeOnConversationListChangedListener() {
 		this.convChangedListener = null;
+	}
+	
+	public void setOnAccountListChangedListener(OnAccountListChangedListener listener) {
+		this.accountChangedListener = listener;
+	}
+	
+	public void removeOnAccountListChangedListener() {
+		this.accountChangedListener = null;
 	}
 }

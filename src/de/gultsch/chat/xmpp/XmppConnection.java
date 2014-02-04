@@ -39,7 +39,7 @@ public class XmppConnection implements Runnable {
 	private boolean isTlsEncrypted = false;
 	private boolean isAuthenticated = false;
 	//private boolean shouldUseTLS = false;
-	private boolean shouldReConnect = true;
+	private boolean shouldConnect = true;
 	private boolean shouldBind = true;
 	private boolean shouldAuthenticate = true;
 	private Element streamFeatures;
@@ -52,8 +52,7 @@ public class XmppConnection implements Runnable {
 	private OnPresencePacketReceived presenceListener = null;
 	private OnIqPacketReceived unregisteredIqListener = null;
 	private OnMessagePacketReceived messageListener = null;
-	
-	private String resource = null;
+	private OnStatusChanged statusListener = null;
 
 	public XmppConnection(Account account, PowerManager pm) {
 		this.account = account;
@@ -66,7 +65,6 @@ public class XmppConnection implements Runnable {
 	protected void connect() {
 		try {
 			socket = new Socket(account.getServer(), 5222);
-			Log.d(LOGTAG, "starting new socket");
 			OutputStream out = socket.getOutputStream();
 			tagWriter.setOutputStream(out);
 			InputStream in = socket.getInputStream();
@@ -77,40 +75,54 @@ public class XmppConnection implements Runnable {
 			while ((nextTag = tagReader.readTag()) != null) {
 				if (nextTag.isStart("stream")) {
 					processStream(nextTag);
+					break;
 				} else {
 					Log.d(LOGTAG, "found unexpected tag: " + nextTag.getName());
 					return;
 				}
 			}
+			if (socket.isConnected()) {
+				socket.close();
+			}
 		} catch (UnknownHostException e) {
-			Log.d(LOGTAG,account.getJid()+": error during connect. unknown host");
+			account.setStatus(Account.STATUS_SERVER_NOT_FOUND);
 			return;
 		} catch (IOException e) {
-			Log.d(LOGTAG, account.getJid()+": error during connect. io exception. falscher port?");
-			return;
+			if (shouldConnect) {
+				Log.d(LOGTAG,account.getJid()+": connection lost");
+				account.setStatus(Account.STATUS_OFFLINE);
+				if (statusListener!=null) {
+					statusListener.onStatusChanged(account);
+				}
+			}
 		} catch (XmlPullParserException e) {
 			Log.d(LOGTAG,"xml exception "+e.getMessage());
 			return;
 		}
+		
 	}
 
 	@Override
 	public void run() {
-		while(shouldReConnect) {
+		shouldConnect = true;
+		while(shouldConnect) {
 			connect();
 			try {
-				Thread.sleep(30000);
+				if (shouldConnect) {
+					Thread.sleep(30000);
+				}
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
+		Log.d(LOGTAG,"end run");
 	}
 
 	private void processStream(Tag currentTag) throws XmlPullParserException,
 			IOException {
-		Tag nextTag;
-		while (!(nextTag = tagReader.readTag()).isEnd("stream")) {
+		Tag nextTag = tagReader.readTag();
+		while ((nextTag != null) && (!nextTag.isEnd("stream"))) {
 			if (nextTag.isStart("error")) {
 				processStreamError(nextTag);
 			} else if (nextTag.isStart("features")) {
@@ -124,6 +136,12 @@ public class XmppConnection implements Runnable {
 				tagReader.reset();
 				sendStartStream();
 				processStream(tagReader.readTag());
+				break;
+			} else if(nextTag.isStart("failure")) {
+				Element failure = tagReader.readElement(nextTag);
+				Log.d(LOGTAG,"read failure element"+failure.toString());
+				account.setStatus(Account.STATUS_UNAUTHORIZED);
+				tagWriter.writeTag(Tag.end("stream"));
 			} else if (nextTag.isStart("iq")) {
 				processIq(nextTag);
 			} else if (nextTag.isStart("message")) {
@@ -133,6 +151,13 @@ public class XmppConnection implements Runnable {
 			} else {
 				Log.d(LOGTAG, "found unexpected tag: " + nextTag.getName()
 						+ " as child of " + currentTag.getName());
+			}
+			nextTag = tagReader.readTag();
+		}
+		if (account.getStatus() == Account.STATUS_ONLINE) {
+			account.setStatus(Account.STATUS_OFFLINE);
+			if (statusListener!=null) {
+				statusListener.onStatusChanged(account);
 			}
 		}
 	}
@@ -190,11 +215,11 @@ public class XmppConnection implements Runnable {
 		}
 	}
 
-	private void sendStartTLS() throws XmlPullParserException, IOException {
+	private void sendStartTLS() {
 		Tag startTLS = Tag.empty("starttls");
 		startTLS.setAttribute("xmlns", "urn:ietf:params:xml:ns:xmpp-tls");
 		Log.d(LOGTAG,account.getJid()+": sending starttls");
-		tagWriter.writeTag(startTLS).flush();
+		tagWriter.writeTag(startTLS);
 	}
 
 	private void switchOverToTls(Tag currentTag) throws XmlPullParserException,
@@ -213,6 +238,7 @@ public class XmppConnection implements Runnable {
 			isTlsEncrypted = true;
 			sendStartStream();
 			processStream(tagReader.readTag());
+			sslSocket.close();
 		} catch (IOException e) {
 			Log.d(LOGTAG, account.getJid()+": error on ssl '" + e.getMessage()+"'");
 		}
@@ -227,7 +253,6 @@ public class XmppConnection implements Runnable {
 		auth.setContent(saslString);
 		Log.d(LOGTAG,account.getJid()+": sending sasl "+auth.toString());
 		tagWriter.writeElement(auth);
-		tagWriter.flush();
 	}
 
 	private void processStreamFeatures(Tag currentTag)
@@ -249,12 +274,10 @@ public class XmppConnection implements Runnable {
 				startSession.addChild(session);
 				sendIqPacket(startSession, null);
 				tagWriter.writeElement(startSession);
-				tagWriter.flush();
 			}
 			Element presence = new Element("presence");
 			
 			tagWriter.writeElement(presence);
-			tagWriter.flush();
 		}
 	}
 
@@ -266,8 +289,12 @@ public class XmppConnection implements Runnable {
 		this.sendIqPacket(iq, new OnIqPacketReceived() {	
 			@Override
 			public void onIqPacketReceived(Account account, IqPacket packet) {
-				resource = packet.findChild("bind").findChild("jid").getContent().split("/")[1];
-				Log.d(LOGTAG,account.getJid()+": new resource is "+resource);
+				String resource = packet.findChild("bind").findChild("jid").getContent().split("/")[1];
+				account.setResource(resource);
+				account.setStatus(Account.STATUS_ONLINE);
+				if (statusListener!=null) {
+					statusListener.onStatusChanged(account);
+				}
 			}
 		});
 	}
@@ -276,7 +303,7 @@ public class XmppConnection implements Runnable {
 		Log.d(LOGTAG, "processStreamError");
 	}
 
-	private void sendStartStream() throws IOException {
+	private void sendStartStream() {
 		Tag stream = Tag.start("stream");
 		stream.setAttribute("from", account.getJid());
 		stream.setAttribute("to", account.getServer());
@@ -284,32 +311,29 @@ public class XmppConnection implements Runnable {
 		stream.setAttribute("xml:lang", "en");
 		stream.setAttribute("xmlns", "jabber:client");
 		stream.setAttribute("xmlns:stream", "http://etherx.jabber.org/streams");
-		tagWriter.writeTag(stream).flush();
+		tagWriter.writeTag(stream);
 	}
 
 	private String nextRandomId() {
 		return new BigInteger(50, random).toString(32);
 	}
 	
-	public void sendIqPacket(IqPacket packet, OnIqPacketReceived callback) throws IOException {
+	public void sendIqPacket(IqPacket packet, OnIqPacketReceived callback) {
 		String id = nextRandomId();
 		packet.setAttribute("id",id);
 		tagWriter.writeElement(packet);
 		if (callback != null) {
 			iqPacketCallbacks.put(id, callback);
 		}
-		tagWriter.flush();
 		Log.d(LOGTAG,account.getJid()+": sending: "+packet.toString());
 	}
 	
-	public void sendMessagePacket(MessagePacket packet) throws IOException {
+	public void sendMessagePacket(MessagePacket packet){
 		tagWriter.writeElement(packet);
-		tagWriter.flush();
 	}
 	
-	public void sendPresencePacket(PresencePacket packet) throws IOException {
+	public void sendPresencePacket(PresencePacket packet)  {
 		tagWriter.writeElement(packet);
-		tagWriter.flush();
 	}
 	
 	public void setOnMessagePacketReceivedListener(OnMessagePacketReceived listener) {
@@ -322,5 +346,14 @@ public class XmppConnection implements Runnable {
 	
 	public void setOnPresencePacketReceivedListener(OnPresencePacketReceived listener) {
 		this.presenceListener = listener;
+	}
+	
+	public void setOnStatusChangedListener(OnStatusChanged listener) {
+		this.statusListener = listener;
+	}
+
+	public void disconnect() {
+		shouldConnect = false;
+		tagWriter.writeTag(Tag.end("stream"));
 	}
 }

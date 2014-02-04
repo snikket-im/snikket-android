@@ -35,16 +35,16 @@
                 android:layout_height="wrap_content"
                 android:text="Status: "
                 android:textStyle="bold"
-               	android:textSize="14sp" />
+               	android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/account_status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#669900"
-                android:text="Online"
+                android:text="unknown"
                 android:textStyle="bold"
-                android:textSize="14sp"/>
+                android:textSize="16sp"/>
 
         </LinearLayout>
 

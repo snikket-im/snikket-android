@@ -3,12 +3,37 @@ package de.gultsch.chat.xml;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 import android.util.Log;
 
 public class TagWriter {
 	
-	OutputStreamWriter writer;
+	private OutputStreamWriter outputStream;
+	private LinkedBlockingQueue<String> writeQueue = new LinkedBlockingQueue<String>();
+	private Thread writer = new Thread() {
+		public boolean shouldStop = false;
+		@Override
+		public void run() {
+			while(!shouldStop) {
+				try {
+					String output = writeQueue.take();
+					outputStream.write(output);
+					outputStream.flush();
+				} catch (IOException e) {
+					Log.d("xmppService", "error writing to stream");
+				} catch (InterruptedException e) {
+					
+				}
+			}
+		}
+	};
+	
 	
 	public TagWriter() {
 		
@@ -16,31 +41,29 @@ public class TagWriter {
 	
 	public TagWriter(OutputStream out) {
 		this.setOutputStream(out);
+		writer.start();
 	}
 	
 	public void setOutputStream(OutputStream out) {
-		this.writer = new OutputStreamWriter(out);
+		this.outputStream = new OutputStreamWriter(out);
+		if (!writer.isAlive()) writer.start();
 	}
 	
-	public TagWriter beginDocument() throws IOException {
-		writer.write("<?xml version='1.0'?>");
+	public TagWriter beginDocument() {
+		writeQueue.add("<?xml version='1.0'?>");
 		return this;
 	}
 	
-	public TagWriter writeTag(Tag tag) throws IOException {
-		writer.write(tag.toString());
+	public TagWriter writeTag(Tag tag) {
+		writeQueue.add(tag.toString());
 		return this;
 	}
-	
-	public void flush() throws IOException {
-		writer.flush();
+
+	public void writeString(String string) {
+		writeQueue.add(string);
 	}
 
-	public void writeString(String string) throws IOException {
-		writer.write(string);
-	}
-
-	public void writeElement(Element element) throws IOException {
-		writer.write(element.toString());
+	public void writeElement(Element element) {
+		writeQueue.add(element.toString());
 	}
 }

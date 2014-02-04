@@ -18,11 +18,20 @@ public class Account  extends AbstractEntity{
 	
 	public static final int OPTION_USETLS = 0;
 	
+	public static final int STATUS_OFFLINE = 0;
+	public static final int STATUS_ONLINE = 1;
+	public static final int STATUS_UNAUTHORIZED = 2;
+	public static final int STATUS_NOINTERNET = 3;
+	public static final int STATUS_TLS_ERROR = 4;
+	public static final int STATUS_SERVER_NOT_FOUND = 5;
+	
 	protected String username;
 	protected String server;
 	protected String password;
 	protected int options;
 	protected String rosterVersion;
+	protected String resource;
+	protected int status = 0;
 	
 	protected boolean online = false;
 	
@@ -70,8 +79,16 @@ public class Account  extends AbstractEntity{
 		this.password = password;
 	}
 	
-	public boolean isOnline() {
-		return online;
+	public void setStatus(int status) {
+		this.status = status;
+	}
+	
+	public int getStatus() {
+		return this.status;
+	}
+	
+	public void setResource(String resource) {
+		this.resource = resource;
 	}
 	
 	public String getJid() {
