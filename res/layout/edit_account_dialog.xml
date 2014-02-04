@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?><LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -12,15 +11,7 @@
         android:textSize="14sp"
         android:text="Jabber ID:" />
 
-    <EditText
-        android:id="@+id/account_username"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textEmailAddress"
-        android:visibility="gone"
-        android:hint="Username">
-        </EditText>
+
     
    <EditText
         android:id="@+id/account_jid"
@@ -51,7 +42,16 @@
         android:hint="Password" 
         android:fontFamily="sans-serif" />
 
-  
+
+
+    <CheckBox
+        android:id="@+id/account_usetls"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Use Transport Layer Security (TLS)"
+        android:checked="true"/>
+    
+      
     <CheckBox
         android:id="@+id/edit_account_register_new"
         android:layout_width="wrap_content"
@@ -78,66 +78,4 @@
         android:visibility="gone"
         android:fontFamily="sans-serif" />
 
-    <CheckBox
-        android:id="@+id/account_show_advanced"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Show advanced options" />
-    
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/advanced_options"
-        android:visibility="gone">
-
-         <LinearLayout
-             android:id="@+id/server_input_layout"
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             android:orientation="vertical" >
-             
-                <TextView
-        android:paddingTop="8dp"
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Server:"
-        android:textSize="14sp"/>
-             
-        <EditText
-            android:id="@+id/account_server"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Server"
-            android:inputType="textUri"/>
-
-        </LinearLayout>
-        
-         <LinearLayout
-             android:layout_alignParentRight="true"
-             android:layout_width="144dp"
-             android:layout_height="wrap_content"
-             android:orientation="vertical"
-             android:layout_toRightOf="@+id/server_input_layout">
-             
-                <TextView
-        android:paddingTop="8dp"
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Port:"
-        android:textSize="14sp"/>
-        
-        <EditText
-            android:id="@+id/editText3"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Port"
-            android:inputType="number"
-            android:text="5222"/>
-
-        </LinearLayout>
-    </RelativeLayout>
 </LinearLayout>

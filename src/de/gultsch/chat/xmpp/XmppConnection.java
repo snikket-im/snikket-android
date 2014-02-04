@@ -86,6 +86,9 @@ public class XmppConnection implements Runnable {
 			}
 		} catch (UnknownHostException e) {
 			account.setStatus(Account.STATUS_SERVER_NOT_FOUND);
+			if (statusListener!=null) {
+				statusListener.onStatusChanged(account);
+			}
 			return;
 		} catch (IOException e) {
 			if (shouldConnect) {
