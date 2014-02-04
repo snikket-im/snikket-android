@@ -29,8 +29,6 @@ public class EditAccount extends DialogFragment {
 
 	public interface EditAccountListener {
 		public void onAccountEdited(Account account);
-
-		public void onAccountDelete(Account account);
 	}
 
 	protected EditAccountListener listener = null;
@@ -92,27 +90,6 @@ public class EditAccount extends DialogFragment {
 			usernameText.setText(account.getUsername());
 			serverText.setText(account.getServer());
 			okButtonDesc = "Edit";
-			/*builder.setNegativeButton("Delete Account", new OnClickListener() {
-				
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-					builder.setTitle("Are you sure?");
-					builder.setIconAttribute(android.R.attr.alertDialogIcon);
-					builder.setMessage("If you delete your account your entire conversation history will be lost");
-					builder.setPositiveButton("Delete", new OnClickListener() {
-						
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							if (listener!=null) {
-								listener.onAccountDelete(account);
-							}
-						}
-					});
-					builder.setNegativeButton("Cancel",null);
-					builder.create().show();
-				}
-			});*/
 		} else {
 			builder.setTitle("Add account");
 			okButtonDesc = "Add";

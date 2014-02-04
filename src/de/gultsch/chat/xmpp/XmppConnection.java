@@ -141,6 +141,9 @@ public class XmppConnection implements Runnable {
 				Element failure = tagReader.readElement(nextTag);
 				Log.d(LOGTAG,"read failure element"+failure.toString());
 				account.setStatus(Account.STATUS_UNAUTHORIZED);
+				if (statusListener!=null) {
+					statusListener.onStatusChanged(account);
+				}
 				tagWriter.writeTag(Tag.end("stream"));
 			} else if (nextTag.isStart("iq")) {
 				processIq(nextTag);

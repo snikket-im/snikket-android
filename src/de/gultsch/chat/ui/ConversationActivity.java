@@ -12,6 +12,7 @@ import de.gultsch.chat.utils.UIHelper;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.FragmentTransaction;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.widget.SlidingPaneLayout;
@@ -276,6 +277,12 @@ public class ConversationActivity extends XmppActivity {
 			}
 		}
 		return super.onKeyDown(keyCode, event);
+	}
+	
+	public void onStart() {
+		super.onStart();
+		NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+		nm.cancelAll();
 	}
 	
 	@Override

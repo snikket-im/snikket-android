@@ -9,6 +9,8 @@ import de.gultsch.chat.ui.EditAccount.EditAccountListener;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -122,11 +124,6 @@ public class ManageAccountActivity extends XmppActivity implements ActionMode.Ca
 						public void onAccountEdited(Account account) {
 							xmppConnectionService.updateAccount(account);
 						}
-	
-						@Override
-						public void onAccountDelete(Account account) {
-							xmppConnectionService.deleteAccount(account);
-						}
 					});
 					dialog.show(getFragmentManager(), "edit_account");
 				} else {
@@ -177,7 +174,6 @@ public class ManageAccountActivity extends XmppActivity implements ActionMode.Ca
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.manageaccounts, menu);
 		return true;
 	}
@@ -207,17 +203,12 @@ public class ManageAccountActivity extends XmppActivity implements ActionMode.Ca
 				xmppConnectionService.createAccount(account);
 				activity.getActionBar().setDisplayHomeAsUpEnabled(true);
 			}
-
-			@Override
-			public void onAccountDelete(Account account) {
-				// this will never be called
-			}
 		});
 		dialog.show(getFragmentManager(), "add_account");
 	}
 
 	@Override
-	public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+	public boolean onActionItemClicked(final ActionMode mode, MenuItem item) {
 		if (item.getItemId()==R.id.account_disable) {
 			selectedAccountForActionMode.setOption(Account.OPTION_DISABLED, true);
 			xmppConnectionService.updateAccount(selectedAccountForActionMode);
@@ -226,6 +217,22 @@ public class ManageAccountActivity extends XmppActivity implements ActionMode.Ca
 			selectedAccountForActionMode.setOption(Account.OPTION_DISABLED, false);
 			xmppConnectionService.updateAccount(selectedAccountForActionMode);
 			mode.finish();
+		} else if (item.getItemId()==R.id.account_delete) {
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setTitle("Are you sure?");
+			builder.setIconAttribute(android.R.attr.alertDialogIcon);
+			builder.setMessage("If you delete your account your entire conversation history will be lost");
+			builder.setPositiveButton("Delete", new OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					xmppConnectionService.deleteAccount(selectedAccountForActionMode);
+					selectedAccountForActionMode = null;
+					mode.finish();
+				}
+			});
+			builder.setNegativeButton("Cancel",null);
+			builder.create().show();
 		}
 		return true;
 	}

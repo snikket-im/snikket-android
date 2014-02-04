@@ -84,6 +84,7 @@ public class UIHelper {
 		mBuilder.setContentTitle(conversation.getName());
 		mBuilder.setContentText(conversation.getLatestMessage());
 		mBuilder.setSmallIcon(R.drawable.notification);
+		mBuilder.setLights(0xffffffff, 2000, 4000);
 		if (ringtone!=null) {
 			mBuilder.setSound(Uri.parse(ringtone));
 		}

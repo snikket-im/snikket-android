@@ -41,8 +41,9 @@ public final class R {
     }
     public static final class id {
         public static final int account_confirm_password_desc=0x7f0a0011;
-        public static final int account_disable=0x7f0a002c;
-        public static final int account_enable=0x7f0a002d;
+        public static final int account_delete=0x7f0a002c;
+        public static final int account_disable=0x7f0a002d;
+        public static final int account_enable=0x7f0a002e;
         public static final int account_jid=0x7f0a0000;
         public static final int account_list=0x7f0a0021;
         public static final int account_password=0x7f0a000f;
