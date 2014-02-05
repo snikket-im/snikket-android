@@ -115,11 +115,19 @@ public class ConversationFragment extends Fragment {
 				}
 				ImageView imageView = (ImageView) view.findViewById(R.id.message_photo);
 				if (type == RECIEVED) {
-					Uri uri = item.getConversation().getProfilePhotoUri();
-					if (uri!=null) {
-						imageView.setImageURI(uri);
-					} else {
-						imageView.setImageBitmap(UIHelper.getUnknownContactPicture(item.getConversation().getName(), 200));
+					if(item.getConversation().getMode()==Conversation.MODE_SINGLE) {
+						Uri uri = item.getConversation().getProfilePhotoUri();
+						if (uri!=null) {
+							imageView.setImageURI(uri);
+						} else {
+							imageView.setImageBitmap(UIHelper.getUnknownContactPicture(item.getConversation().getName(), 200));
+						}
+					} else if (item.getConversation().getMode()==Conversation.MODE_MULTI) {
+						if (item.getCounterpart()!=null) {
+							imageView.setImageBitmap(UIHelper.getUnknownContactPicture(item.getCounterpart(), 200));
+						} else {
+							imageView.setImageBitmap(UIHelper.getUnknownContactPicture(item.getConversation().getName(), 200));
+						}
 					}
 				} else {
 					imageView.setImageURI(profilePicture);
@@ -152,12 +160,9 @@ public class ConversationFragment extends Fragment {
 
 		final ConversationActivity activity = (ConversationActivity) getActivity();
 		
-		// TODO check if bond and get data back
-		
 		if (activity.xmppConnectionServiceBound) {
 			this.conversation = activity.getConversationList().get(activity.getSelectedConversation());
-			this.messageList.clear();
-			this.messageList.addAll(this.conversation.getMessages());
+			updateMessages();
 			// rendering complete. now go tell activity to close pane
 			if (!activity.shouldPaneBeOpen()) {
 				activity.getSlidingPaneLayout().closePane();
@@ -165,18 +170,14 @@ public class ConversationFragment extends Fragment {
 				activity.getActionBar().setTitle(conversation.getName());
 				activity.invalidateOptionsMenu();
 			}
-			
-			int size = this.messageList.size();
-			if (size >= 1)
-				messagesView.setSelection(size - 1);
 		}
 	}
 	
 	public void onBackendConnected() {
+		Log.d("gultsch","calling on backend connected in conversation fragment");
 		final ConversationActivity activity = (ConversationActivity) getActivity();
 		this.conversation = activity.getConversationList().get(activity.getSelectedConversation());
-		this.messageList.clear();
-		this.messageList.addAll(this.conversation.getMessages());
+		updateMessages();
 		// rendering complete. now go tell activity to close pane
 		if (!activity.shouldPaneBeOpen()) {
 			activity.getSlidingPaneLayout().closePane();
@@ -190,5 +191,8 @@ public class ConversationFragment extends Fragment {
 		this.messageList.clear();
 		this.messageList.addAll(this.conversation.getMessages());
 		this.messageListAdapter.notifyDataSetChanged();
+		int size = this.messageList.size();
+		if (size >= 1)
+			messagesView.setSelection(size - 1);
 	}
 }

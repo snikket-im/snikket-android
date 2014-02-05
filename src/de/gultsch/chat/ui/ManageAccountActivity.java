@@ -152,12 +152,10 @@ public class ManageAccountActivity extends XmppActivity implements ActionMode.Ca
 
 	@Override
 	protected void onStop() {
-		super.onStop();
 		if (xmppConnectionServiceBound) {
 			xmppConnectionService.removeOnAccountListChangedListener();
-			unbindService(mConnection);
-			xmppConnectionServiceBound = false;
 		}
+		super.onStop();
 	}
 
 	@Override

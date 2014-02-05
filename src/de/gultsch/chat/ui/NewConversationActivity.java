@@ -57,10 +57,6 @@ public class NewConversationActivity extends XmppActivity {
 	protected void updateAggregatedContacts() {
 
 		aggregatedContacts.clear();
-		for (Contact contact : phoneContacts) {
-			if (contact.match(searchString))
-				aggregatedContacts.add(contact);
-		}
 		for (Contact contact : rosterContacts) {
 			if (contact.match(searchString))
 				aggregatedContacts.add(contact);
@@ -71,7 +67,8 @@ public class NewConversationActivity extends XmppActivity {
 			@SuppressLint("DefaultLocale")
 			@Override
 			public int compare(Contact lhs, Contact rhs) {
-				return lhs.getDisplayName().toLowerCase().compareTo(rhs.getDisplayName().toLowerCase());
+				return lhs.getDisplayName().toLowerCase()
+						.compareTo(rhs.getDisplayName().toLowerCase());
 			}
 		});
 
@@ -79,7 +76,7 @@ public class NewConversationActivity extends XmppActivity {
 
 			if (Validator.isValidJid(searchString)) {
 				String name = searchString.split("@")[0];
-				Contact newContact = new Contact(null,name, searchString,null);
+				Contact newContact = new Contact(null, name, searchString, null);
 				aggregatedContacts.add(newContact);
 				contactsHeader.setText("Create new contact");
 			} else {
@@ -92,19 +89,6 @@ public class NewConversationActivity extends XmppActivity {
 		contactsAdapter.notifyDataSetChanged();
 		contactsView.setScrollX(0);
 	}
-
-	static final String[] PROJECTION = new String[] {
-			ContactsContract.Data.CONTACT_ID,
-			ContactsContract.Data.DISPLAY_NAME,
-			ContactsContract.Data.PHOTO_THUMBNAIL_URI,
-			ContactsContract.CommonDataKinds.Im.DATA };
-
-	// This is the select criteria
-	static final String SELECTION = "(" + ContactsContract.Data.MIMETYPE
-			+ "=\"" + ContactsContract.CommonDataKinds.Im.CONTENT_ITEM_TYPE
-			+ "\") AND (" + ContactsContract.CommonDataKinds.Im.PROTOCOL
-			+ "=\"" + ContactsContract.CommonDataKinds.Im.PROTOCOL_JABBER
-			+ "\")";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -154,11 +138,13 @@ public class NewConversationActivity extends XmppActivity {
 				((TextView) view.findViewById(R.id.contact_jid))
 						.setText(getItem(position).getJid());
 				String profilePhoto = getItem(position).getProfilePhoto();
-				ImageView imageView = (ImageView) view.findViewById(R.id.contact_photo);
-				if (profilePhoto!=null) {
+				ImageView imageView = (ImageView) view
+						.findViewById(R.id.contact_photo);
+				if (profilePhoto != null) {
 					imageView.setImageURI(Uri.parse(profilePhoto));
 				} else {
-					imageView.setImageBitmap(UIHelper.getUnknownContactPicture(getItem(position).getDisplayName(),90));
+					imageView.setImageBitmap(UIHelper.getUnknownContactPicture(
+							getItem(position).getDisplayName(), 90));
 				}
 				return view;
 			}
@@ -168,25 +154,27 @@ public class NewConversationActivity extends XmppActivity {
 		contactsView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> arg0, final View view, int pos,
-					long arg3) {
+			public void onItemClick(AdapterView<?> arg0, final View view,
+					int pos, long arg3) {
 				final Contact clickedContact = aggregatedContacts.get(pos);
 				Log.d("gultsch",
 						"clicked on " + clickedContact.getDisplayName());
-				
-				final List<Account> accounts = xmppConnectionService.getAccounts();
+
+				final List<Account> accounts = xmppConnectionService
+						.getAccounts();
 				if (accounts.size() == 1) {
 					startConversation(clickedContact, accounts.get(0));
 				} else {
 					String[] accountList = new String[accounts.size()];
-					for(int i = 0; i < accounts.size(); ++i) {
+					for (int i = 0; i < accounts.size(); ++i) {
 						accountList[i] = accounts.get(i).getJid();
 					}
-	
-					AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+
+					AlertDialog.Builder builder = new AlertDialog.Builder(
+							activity);
 					builder.setTitle("Choose account");
-					builder.setItems(accountList,new OnClickListener() {
-						
+					builder.setItems(accountList, new OnClickListener() {
+
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
 							Account account = accounts.get(which);
@@ -198,54 +186,20 @@ public class NewConversationActivity extends XmppActivity {
 			}
 		});
 	}
-	
+
 	public void startConversation(Contact contact, Account account) {
 		Conversation conversation = xmppConnectionService
 				.findOrCreateConversation(account, contact);
 
-		Intent viewConversationIntent = new Intent(this,ConversationActivity.class);
+		Intent viewConversationIntent = new Intent(this,
+				ConversationActivity.class);
 		viewConversationIntent.setAction(Intent.ACTION_VIEW);
-		viewConversationIntent.putExtra(
-				ConversationActivity.CONVERSATION,
+		viewConversationIntent.putExtra(ConversationActivity.CONVERSATION,
 				conversation.getUuid());
-		viewConversationIntent
-				.setType(ConversationActivity.VIEW_CONVERSATION);
-		viewConversationIntent.setFlags(viewConversationIntent
-				.getFlags() | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		viewConversationIntent.setType(ConversationActivity.VIEW_CONVERSATION);
+		viewConversationIntent.setFlags(viewConversationIntent.getFlags()
+				| Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(viewConversationIntent);
-	}
-
-	@Override
-	public void onStart() {
-		super.onStart();
-
-		CursorLoader mCursorLoader = new CursorLoader(this,
-				ContactsContract.Data.CONTENT_URI, PROJECTION, SELECTION, null,
-				null);
-		mCursorLoader.registerListener(0, new OnLoadCompleteListener<Cursor>() {
-
-			@Override
-			public void onLoadComplete(Loader<Cursor> arg0, Cursor cursor) {
-				phoneContacts.clear();
-				while (cursor.moveToNext()) {
-					String profilePhoto = cursor.getString(cursor
-							.getColumnIndex(ContactsContract.Data.PHOTO_THUMBNAIL_URI));
-					/*if (profilePhoto == null) {
-						profilePhoto = DEFAULT_PROFILE_PHOTO;
-					}*/
-					Contact contact = new Contact(null,
-							cursor.getString(cursor
-									.getColumnIndex(ContactsContract.Data.DISPLAY_NAME)),
-							cursor.getString(cursor
-									.getColumnIndex(ContactsContract.CommonDataKinds.Im.DATA)),
-							profilePhoto);
-					phoneContacts.add(contact);
-				}
-				updateAggregatedContacts();
-			}
-		});
-		mCursorLoader.startLoading();
-
 	}
 
 	@Override
@@ -256,23 +210,21 @@ public class NewConversationActivity extends XmppActivity {
 		}
 		this.accounts = xmppConnectionService.getAccounts();
 		this.rosterContacts.clear();
-		for(Account account : this.accounts) {
-			xmppConnectionService.getRoster(account, new OnRosterFetchedListener() {
-				
-				@Override
-				public void onRosterFetched(List<Contact> roster) {
-					rosterContacts.addAll(roster);
-					runOnUiThread(new Runnable() {
-						
-						@Override
-						public void run() {
-							updateAggregatedContacts();
-						}
-					});
-	
-				}
-			});
-		}
+		xmppConnectionService.getRoster(new OnRosterFetchedListener() {
+
+			@Override
+			public void onRosterFetched(List<Contact> roster) {
+				rosterContacts.addAll(roster);
+				runOnUiThread(new Runnable() {
+
+					@Override
+					public void run() {
+						updateAggregatedContacts();
+					}
+				});
+
+			}
+		});
 	}
 
 	@Override

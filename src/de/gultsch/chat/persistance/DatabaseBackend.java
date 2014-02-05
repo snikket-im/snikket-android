@@ -2,6 +2,7 @@ package de.gultsch.chat.persistance;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import de.gultsch.chat.entities.Account;
 import de.gultsch.chat.entities.Contact;
@@ -37,9 +38,10 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 				+ " TEXT, " + Conversation.PHOTO_URI + " TEXT, "
 				+ Conversation.ACCOUNT + " TEXT, " + Conversation.CONTACT
 				+ " TEXT, " + Conversation.CREATED + " NUMBER, "
-				+ Conversation.STATUS + " NUMBER," + "FOREIGN KEY("
-				+ Conversation.ACCOUNT + ") REFERENCES " + Account.TABLENAME
-				+ "(" + Account.UUID + ") ON DELETE CASCADE);");
+				+ Conversation.STATUS + " NUMBER," + Conversation.MODE
+				+ " NUMBER," + "FOREIGN KEY(" + Conversation.ACCOUNT
+				+ ") REFERENCES " + Account.TABLENAME + "(" + Account.UUID
+				+ ") ON DELETE CASCADE);");
 		db.execSQL("create table " + Message.TABLENAME + "( " + Message.UUID
 				+ " TEXT PRIMARY KEY, " + Message.CONVERSATION + " TEXT, "
 				+ Message.TIME_SENT + " NUMBER, " + Message.COUNTERPART
@@ -85,6 +87,11 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 	public void createAccount(Account account) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.insert(Account.TABLENAME, null, account.getContentValues());
+	}
+	
+	public void createContact(Contact contact) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.insert(Contact.TABLENAME, null, contact.getContentValues());
 	}
 
 	public int getConversationCount() {
@@ -183,5 +190,53 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		String[] args = { message.getUuid() };
 		db.update(Message.TABLENAME, message.getContentValues(), Message.UUID
 				+ "=?", args);
+	}
+	
+	public void updateContact(Contact contact) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		String[] args = { contact.getUuid() };
+		db.update(Contact.TABLENAME, contact.getContentValues(), Contact.UUID
+				+ "=?", args);
+	}
+	
+	public void mergeContacts(List<Contact> contacts) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		for (int i = 0; i < contacts.size(); i++) {
+			Contact contact = contacts.get(i);
+			String[] columns = {Contact.UUID};
+			String[] args = {contact.getAccount().getUuid(), contact.getJid()};
+			Cursor cursor = db.query(Contact.TABLENAME, columns,Contact.ACCOUNT+"=? AND "+Contact.JID+"=?", args, null, null, null);
+			if (cursor.getCount()>=1) {
+				cursor.moveToFirst();
+				contact.setUuid(cursor.getString(0));
+				updateContact(contact);
+			} else {
+				contact.setUuid(UUID.randomUUID().toString());
+				createContact(contact);
+			}
+		}
+	}
+
+	public List<Contact> getContacts() {
+		List<Contact> list = new ArrayList<Contact>();
+		SQLiteDatabase db = this.getReadableDatabase();
+		Cursor cursor = db.query(Contact.TABLENAME, null, null, null, null,
+				null, null);
+		while (cursor.moveToNext()) {
+			list.add(Contact.fromCursor(cursor));
+		}
+		return list;
+	}
+
+	public Contact findContact(Account account, String jid) {
+		SQLiteDatabase db = this.getReadableDatabase();
+		String[] selectionArgs = { account.getUuid(), jid };
+		Cursor cursor = db.query(Contact.TABLENAME, null,
+				Contact.ACCOUNT + "=? AND " + Contact.JID + "=?",
+				selectionArgs, null, null, null);
+		if (cursor.getCount() == 0)
+			return null;
+		cursor.moveToFirst();
+		return Contact.fromCursor(cursor);
 	}
 }

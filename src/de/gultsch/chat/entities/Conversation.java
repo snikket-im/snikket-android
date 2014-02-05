@@ -16,6 +16,9 @@ public class Conversation extends AbstractEntity {
 	public static final int STATUS_AVAILABLE = 0;
 	public static final int STATUS_ARCHIVED = 1;
 	public static final int STATUS_DELETED = 2;
+	
+	public static final int MODE_MULTI = 1;
+	public static final int MODE_SINGLE = 0;
 
 	public static final String NAME = "name";
 	public static final String PHOTO_URI = "profilePhotoUri";
@@ -23,6 +26,7 @@ public class Conversation extends AbstractEntity {
 	public static final String CONTACT = "contactJid";
 	public static final String STATUS = "status";
 	public static final String CREATED = "created";
+	public static final String MODE = "mode";
 
 	private String name;
 	private String profilePhotoUri;
@@ -30,19 +34,20 @@ public class Conversation extends AbstractEntity {
 	private String contactJid;
 	private int status;
 	private long created;
+	private int mode;
 
 	private transient List<Message> messages = null;
 	private transient Account account = null;
 
 	public Conversation(String name, String profilePhoto, Account account,
-			String contactJid) {
+			String contactJid, int mode) {
 		this(java.util.UUID.randomUUID().toString(), name, profilePhoto, account.getUuid(), contactJid, System
-				.currentTimeMillis(), STATUS_AVAILABLE);
+				.currentTimeMillis(), STATUS_AVAILABLE,mode);
 		this.account = account;
 	}
 
 	public Conversation(String uuid, String name, String profilePhoto,
-			String accountUuid, String contactJid, long created, int status) {
+			String accountUuid, String contactJid, long created, int status, int mode) {
 		this.uuid = uuid;
 		this.name = name;
 		this.profilePhotoUri = profilePhoto;
@@ -50,6 +55,7 @@ public class Conversation extends AbstractEntity {
 		this.contactJid = contactJid;
 		this.created = created;
 		this.status = status;
+		this.mode = mode;
 	}
 
 	public List<Message> getMessages() {
@@ -132,6 +138,7 @@ public class Conversation extends AbstractEntity {
 		values.put(CONTACT, contactJid);
 		values.put(CREATED, created);
 		values.put(STATUS, status);
+		values.put(MODE,mode);
 		return values;
 	}
 
@@ -142,10 +149,15 @@ public class Conversation extends AbstractEntity {
 				cursor.getString(cursor.getColumnIndex(ACCOUNT)),
 				cursor.getString(cursor.getColumnIndex(CONTACT)),
 				cursor.getLong(cursor.getColumnIndex(CREATED)),
-				cursor.getInt(cursor.getColumnIndex(STATUS)));
+				cursor.getInt(cursor.getColumnIndex(STATUS)),
+				cursor.getInt(cursor.getColumnIndex(MODE)));
 	}
 
 	public void setStatus(int status) {
 		this.status = status;
+	}
+
+	public int getMode() {
+		return this.mode;
 	}
 }

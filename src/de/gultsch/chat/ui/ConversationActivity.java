@@ -283,17 +283,28 @@ public class ConversationActivity extends XmppActivity {
 		super.onStart();
 		NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 		nm.cancelAll();
+		if (conversationList.size()>=1) {
+			onConvChanged.onConversationListChanged();
+		}
 	}
 	
-	@Override
+	/*@Override
 	protected void onPause() {
 		super.onPause();
 		if (xmppConnectionServiceBound) {
-        	Log.d("xmppService","called on stop. remove listener");
         	xmppConnectionService.removeOnConversationListChangedListener();
             unbindService(mConnection);
             xmppConnectionServiceBound = false;
         }
+	}*/
+	
+	@Override
+	protected void onStop() {
+		Log.d("gultsch","called on stop in conversation activity");
+		if (xmppConnectionServiceBound) {
+        	xmppConnectionService.removeOnConversationListChangedListener();
+		}
+		super.onStop();
 	}
 
 	@Override
@@ -302,7 +313,6 @@ public class ConversationActivity extends XmppActivity {
 		xmppConnectionService.setOnConversationListChangedListener(this.onConvChanged);
 		
 		if (conversationList.size()==0) {
-			Log.d("gultsch","conversation list is empty fetch new");
 			conversationList.clear();
 			conversationList.addAll(xmppConnectionService
 					.getConversations());

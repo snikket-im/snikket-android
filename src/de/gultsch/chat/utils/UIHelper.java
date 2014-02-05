@@ -46,13 +46,11 @@ public class UIHelper {
 
 	public static Bitmap getUnknownContactPicture(String name, int size) {
 		String firstLetter = name.substring(0, 1).toUpperCase();
-		String centerLetter = name.substring(name.length() / 2,
-				(name.length() / 2) + 1);
 
 		int holoColors[] = { 0xFF1da9da, 0xFFb368d9, 0xFF83b600, 0xFFffa713,
 				0xFFe92727 };
 
-		int color = holoColors[centerLetter.charAt(0) % holoColors.length];
+		int color = holoColors[Math.abs(name.hashCode()) % holoColors.length];
 
 		Bitmap bitmap = Bitmap
 				.createBitmap(size, size, Bitmap.Config.ARGB_8888);

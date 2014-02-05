@@ -6,6 +6,7 @@ public class MessagePacket extends Element {
 	public static final int TYPE_CHAT = 0;
 	public static final int TYPE_UNKNOWN = 1;
 	public static final int TYPE_NO = 2;
+	public static final int TYPE_GROUPCHAT = 3;
 
 	private MessagePacket(String name) {
 		super(name);
@@ -51,7 +52,9 @@ public class MessagePacket extends Element {
 		case TYPE_CHAT:
 			this.setAttribute("type","chat");
 			break;
-
+		case TYPE_GROUPCHAT:
+			this.setAttribute("type", "groupchat");
+			break;
 		default:
 			this.setAttribute("type","chat");
 			break;
@@ -65,6 +68,8 @@ public class MessagePacket extends Element {
 		}
 		if (type.equals("chat")) {
 			return TYPE_CHAT;
+		} else if (type.equals("groupchat")) {
+			return TYPE_GROUPCHAT;
 		} else {
 			return TYPE_UNKNOWN;
 		}

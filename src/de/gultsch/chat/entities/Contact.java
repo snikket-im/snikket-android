@@ -28,6 +28,9 @@ public class Contact extends AbstractEntity implements Serializable {
 	protected String photoUri;
 	protected String openPGPKey;
 	protected long lastOnlinePresence;
+
+
+	protected Account account;
 	
 	public Contact(Account account, String displayName, String jid, String photoUri) {
 		if (account == null) {
@@ -94,5 +97,26 @@ public class Contact extends AbstractEntity implements Serializable {
 				cursor.getString(cursor.getColumnIndex(OPENPGPKEY)),
 				cursor.getLong(cursor.getColumnIndex(LASTONLINEPRESENCE))
 				);
+	}
+
+	public void setSubscription(String subscription) {
+		this.subscription = subscription;
+	}
+
+	public void setSystemAccount(int account) {
+		this.systemAccount = account;
+	}
+
+	public void setAccount(Account account) {
+		this.account = account;
+		this.accountUuid = account.getUuid();
+	}
+
+	public Account getAccount() {
+		return this.account;
+	}
+
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
 	}
 }

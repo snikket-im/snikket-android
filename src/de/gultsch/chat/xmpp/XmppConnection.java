@@ -340,6 +340,7 @@ public class XmppConnection implements Runnable {
 	
 	public void sendPresencePacket(PresencePacket packet)  {
 		tagWriter.writeElement(packet);
+		Log.d(LOGTAG,account.getJid()+": sending: "+packet.toString());
 	}
 	
 	public void setOnMessagePacketReceivedListener(OnMessagePacketReceived listener) {
