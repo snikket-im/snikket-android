@@ -160,4 +160,8 @@ public class Conversation extends AbstractEntity {
 	public int getMode() {
 		return this.mode;
 	}
+
+	public void setMode(int mode) {
+		this.mode = mode;
+	}
 }

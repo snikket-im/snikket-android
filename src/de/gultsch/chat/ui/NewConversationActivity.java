@@ -130,14 +130,16 @@ public class NewConversationActivity extends XmppActivity {
 			@Override
 			public View getView(int position, View view, ViewGroup parent) {
 				LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+				Contact contact = getItem(position);
 				if (view == null) {
 					view = (View) inflater.inflate(R.layout.contact, null);
 				}
 
 				((TextView) view.findViewById(R.id.contact_display_name))
 						.setText(getItem(position).getDisplayName());
-				((TextView) view.findViewById(R.id.contact_jid))
-						.setText(getItem(position).getJid());
+				TextView contactJid = (TextView) view
+						.findViewById(R.id.contact_jid);
+				contactJid.setText(contact.getJid());
 				String profilePhoto = getItem(position).getProfilePhoto();
 				ImageView imageView = (ImageView) view
 						.findViewById(R.id.contact_photo);
@@ -158,39 +160,61 @@ public class NewConversationActivity extends XmppActivity {
 			public void onItemClick(AdapterView<?> arg0, final View view,
 					int pos, long arg3) {
 				final Contact clickedContact = aggregatedContacts.get(pos);
-				Log.d("gultsch",
-						"clicked on " + clickedContact.getDisplayName());
-
-				final List<Account> accounts = xmppConnectionService
-						.getAccounts();
-				if (accounts.size() == 1) {
-					startConversation(clickedContact, accounts.get(0));
-				} else {
+				
+				if ((clickedContact.getAccount()==null)&&(accounts.size()>1)) {
 					String[] accountList = new String[accounts.size()];
 					for (int i = 0; i < accounts.size(); ++i) {
-						accountList[i] = accounts.get(i).getJid();
+					accountList[i] = accounts.get(i).getJid();
 					}
 
-					AlertDialog.Builder builder = new AlertDialog.Builder(
-							activity);
-					builder.setTitle("Choose account");
-					builder.setItems(accountList, new OnClickListener() {
+					AlertDialog.Builder accountChooser = new AlertDialog.Builder(
+					activity);
+					accountChooser.setTitle("Choose account");
+					accountChooser.setItems(accountList, new OnClickListener() {
 
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							Account account = accounts.get(which);
-							startConversation(clickedContact, account);
-						}
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						clickedContact.setAccount(accounts.get(which));
+						showIsMucDialogIfNeeded(clickedContact);
+					}
 					});
-					builder.create().show();
+					accountChooser.create().show();
+				} else {
+					clickedContact.setAccount(accounts.get(0));
+					showIsMucDialogIfNeeded(clickedContact);
 				}
 			}
 		});
 	}
+	
+	public void showIsMucDialogIfNeeded(final Contact clickedContact) {
+		if (clickedContact.couldBeMuc()) {
+			AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+			dialog.setTitle("Multi User Conference");
+			dialog.setMessage("Are you trying to join a conference?");
+			dialog.setPositiveButton("Yes", new OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					startConversation(clickedContact, clickedContact.getAccount(),true);
+				}
+			});
+			dialog.setNegativeButton("No", new OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					startConversation(clickedContact, clickedContact.getAccount(),false);
+				}
+			});
+			dialog.create().show();
+		} else {
+			startConversation(clickedContact, clickedContact.getAccount(),false);
+		}
+	}
 
-	public void startConversation(Contact contact, Account account) {
+	public void startConversation(Contact contact, Account account, boolean muc) {
 		Conversation conversation = xmppConnectionService
-				.findOrCreateConversation(account, contact);
+				.findOrCreateConversation(account, contact, muc);
 
 		Intent viewConversationIntent = new Intent(this,
 				ConversationActivity.class);
@@ -211,24 +235,25 @@ public class NewConversationActivity extends XmppActivity {
 		}
 		this.accounts = xmppConnectionService.getAccounts();
 		this.rosterContacts.clear();
-		for(int i = 0; i < accounts.size(); ++i) {
-				if (accounts.get(i).getStatus()==Account.STATUS_ONLINE) {
-				xmppConnectionService.getRoster(accounts.get(i),new OnRosterFetchedListener() {
-		
-					@Override
-					public void onRosterFetched(List<Contact> roster) {
-						rosterContacts.addAll(roster);
-						runOnUiThread(new Runnable() {
-		
+		for (int i = 0; i < accounts.size(); ++i) {
+			if (accounts.get(i).getStatus() == Account.STATUS_ONLINE) {
+				xmppConnectionService.getRoster(accounts.get(i),
+						new OnRosterFetchedListener() {
+
 							@Override
-							public void run() {
-								updateAggregatedContacts();
+							public void onRosterFetched(List<Contact> roster) {
+								rosterContacts.addAll(roster);
+								runOnUiThread(new Runnable() {
+
+									@Override
+									public void run() {
+										updateAggregatedContacts();
+									}
+								});
+
 							}
 						});
-		
-					}
-				});
-				}
+			}
 		}
 	}
 
@@ -269,26 +294,27 @@ public class NewConversationActivity extends XmppActivity {
 		this.accounts = xmppConnectionService.getAccounts();
 		this.rosterContacts.clear();
 		for (int i = 0; i < accounts.size(); ++i) {
-			if (accounts.get(i).getStatus()==Account.STATUS_ONLINE) {
-			xmppConnectionService.updateRoster(accounts.get(i),
-					new OnRosterFetchedListener() {
+			if (accounts.get(i).getStatus() == Account.STATUS_ONLINE) {
+				xmppConnectionService.updateRoster(accounts.get(i),
+						new OnRosterFetchedListener() {
 
-						@Override
-						public void onRosterFetched(final List<Contact> roster) {
-							runOnUiThread(new Runnable() {
+							@Override
+							public void onRosterFetched(
+									final List<Contact> roster) {
+								runOnUiThread(new Runnable() {
 
-								@Override
-								public void run() {
-									rosterContacts.addAll(roster);
-									progress.setVisibility(View.GONE);
-									searchBar.setVisibility(View.VISIBLE);
-									contactList.setVisibility(View.VISIBLE);
-									contactList.setVisibility(View.VISIBLE);
-									updateAggregatedContacts();
-								}
-							});
-						}
-					});
+									@Override
+									public void run() {
+										rosterContacts.addAll(roster);
+										progress.setVisibility(View.GONE);
+										searchBar.setVisibility(View.VISIBLE);
+										contactList.setVisibility(View.VISIBLE);
+										contactList.setVisibility(View.VISIBLE);
+										updateAggregatedContacts();
+									}
+								});
+							}
+						});
 			}
 		}
 	}

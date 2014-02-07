@@ -65,7 +65,7 @@ public class XmppConnectionService extends Service {
 				String jid = fullJid.split("/")[0];
 				counterPart = fullJid;
 				Contact contact = findOrCreateContact(account,jid);
-				conversation = findOrCreateConversation(account, contact);
+				conversation = findOrCreateConversation(account, contact,false);
 			} else if (packet.getType() == MessagePacket.TYPE_GROUPCHAT) {
 				String[] fromParts = fullJid.split("/");
 				if (fromParts.length != 2) {
@@ -201,6 +201,9 @@ public class XmppConnectionService extends Service {
 	
 	public void getRoster(Account account, final OnRosterFetchedListener listener) {
 		List<Contact> contacts = databaseBackend.getContacts(account);
+		for(int i=0; i < contacts.size(); ++i) {
+			contacts.get(i).setAccount(account);
+		}
 		if (listener != null) {
 			listener.onRosterFetched(contacts);
 		}
@@ -339,27 +342,40 @@ public class XmppConnectionService extends Service {
 	}
 
 	public Conversation findOrCreateConversation(Account account,
-			Contact contact) {
-		// Log.d(LOGTAG,"was asked to find conversation for "+contact.getJid());
+			Contact contact,boolean muc) {
 		for (Conversation conv : this.getConversations()) {
 			if ((conv.getAccount().equals(account))
 					&& (conv.getContactJid().equals(contact.getJid()))) {
-				// Log.d(LOGTAG,"found one in memory");
 				return conv;
 			}
 		}
 		Conversation conversation = databaseBackend.findConversation(account,
 				contact.getJid());
 		if (conversation != null) {
-			Log.d("gultsch", "found one. unarchive it");
 			conversation.setStatus(Conversation.STATUS_AVAILABLE);
 			conversation.setAccount(account);
+			if (muc) {
+				conversation.setMode(Conversation.MODE_MULTI);
+				if (account.getStatus()==Account.STATUS_ONLINE) {
+					joinMuc(account, conversation);
+				}
+			} else {
+				conversation.setMode(Conversation.MODE_SINGLE);
+			}
 			this.databaseBackend.updateConversation(conversation);
 		} else {
-			Log.d(LOGTAG, "didnt find one in archive. create new one");
-			conversation = new Conversation(contact.getDisplayName(),
-					contact.getProfilePhoto(), account, contact.getJid(),
-					Conversation.MODE_SINGLE);
+			if (muc) {
+				conversation = new Conversation(contact.getDisplayName(),
+						contact.getProfilePhoto(), account, contact.getJid(),
+						Conversation.MODE_MULTI);
+				if (account.getStatus()==Account.STATUS_ONLINE) {
+					joinMuc(account, conversation);
+				}
+			} else {
+				conversation = new Conversation(contact.getDisplayName(),
+						contact.getProfilePhoto(), account, contact.getJid(),
+						Conversation.MODE_SINGLE);
+			}
 			this.databaseBackend.createConversation(conversation);
 		}
 		this.conversations.add(conversation);
@@ -443,19 +459,20 @@ public class XmppConnectionService extends Service {
 			Conversation conversation = conversations.get(i);
 			if ((conversation.getMode() == Conversation.MODE_MULTI)
 					&& (conversation.getAccount() == account)) {
-				String muc = conversation.getContactJid();
-				Log.d(LOGTAG,
-						"join muc " + muc + " with account " + account.getJid());
-				PresencePacket packet = new PresencePacket();
-				packet.setAttribute("to", muc + "/" + account.getUsername());
-				Element x = new Element("x");
-				x.setAttribute("xmlns", "http://jabber.org/protocol/muc");
-				packet.addChild(x);
-				connections.get(conversation.getAccount()).sendPresencePacket(
-						packet);
-
+				joinMuc(account, conversation);
 			}
 		}
+	}
+	
+	public void joinMuc(Account account, Conversation conversation) {
+		String muc = conversation.getContactJid();
+		PresencePacket packet = new PresencePacket();
+		packet.setAttribute("to", muc + "/" + account.getUsername());
+		Element x = new Element("x");
+		x.setAttribute("xmlns", "http://jabber.org/protocol/muc");
+		packet.addChild(x);
+		connections.get(conversation.getAccount()).sendPresencePacket(
+				packet);
 	}
 
 	public void disconnectMultiModeConversations() {

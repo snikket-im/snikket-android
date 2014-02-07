@@ -321,7 +321,7 @@ public class XmppConnection implements Runnable {
 	}
 
 	private void sendStartStream() {
-		Tag stream = Tag.start("stream");
+		Tag stream = Tag.start("stream:stream");
 		stream.setAttribute("from", account.getJid());
 		stream.setAttribute("to", account.getServer());
 		stream.setAttribute("version", "1.0");
