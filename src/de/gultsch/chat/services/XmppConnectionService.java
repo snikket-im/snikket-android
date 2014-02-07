@@ -132,7 +132,7 @@ public class XmppConnectionService extends Service {
 			String jid = packet.getAttribute("from");
 			String type = packet.getAttribute("type");
 			if (type==null) {
-				Log.d(LOGTAG,"online presence from "+jid);
+				//Log.d(LOGTAG,"online presence from "+jid);
 			}
 		}
 	};

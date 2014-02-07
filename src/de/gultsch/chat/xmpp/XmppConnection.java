@@ -14,9 +14,11 @@ import javax.net.ssl.SSLSocketFactory;
 
 import org.xmlpull.v1.XmlPullParserException;
 
+import android.os.Bundle;
 import android.os.PowerManager;
 import android.util.Log;
 import de.gultsch.chat.entities.Account;
+import de.gultsch.chat.utils.DNSHelper;
 import de.gultsch.chat.utils.SASL;
 import de.gultsch.chat.xml.Element;
 import de.gultsch.chat.xml.Tag;
@@ -64,7 +66,15 @@ public class XmppConnection implements Runnable {
 
 	protected void connect() {
 		try {
-			socket = new Socket(account.getServer(), 5222);
+			Bundle namePort = DNSHelper.getSRVRecord(account.getServer());
+			String srvRecordServer = namePort.getString("name");
+			int srvRecordPort = namePort.getInt("port");
+			if (srvRecordServer!=null) {
+				Log.d(LOGTAG,account.getJid()+": using values from dns "+srvRecordServer+":"+srvRecordPort);
+				socket = new Socket(srvRecordServer,srvRecordPort);
+			} else {
+				socket = new Socket(account.getServer(), 5222);
+			}
 			OutputStream out = socket.getOutputStream();
 			tagWriter.setOutputStream(out);
 			InputStream in = socket.getInputStream();
@@ -91,6 +101,7 @@ public class XmppConnection implements Runnable {
 			}
 			return;
 		} catch (IOException e) {
+			Log.d(LOGTAG,"bla "+e.getMessage());
 			if (shouldConnect) {
 				Log.d(LOGTAG,account.getJid()+": connection lost");
 				account.setStatus(Account.STATUS_OFFLINE);
