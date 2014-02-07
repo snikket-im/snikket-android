@@ -17,7 +17,7 @@ public class Contact extends AbstractEntity implements Serializable {
 	public static final String SYSTEMACCOUNT = "systemaccount";
 	public static final String PHOTOURI = "photouri";
 	public static final String OPENPGPKEY = "pgpkey";
-	public static final String LASTONLINEPRESENCE = "presence";
+	public static final String LASTPRESENCE = "presence";
 	public static final String ACCOUNT = "accountUuid";
 	
 	protected String accountUuid;
@@ -27,7 +27,7 @@ public class Contact extends AbstractEntity implements Serializable {
 	protected int systemAccount;
 	protected String photoUri;
 	protected String openPGPKey;
-	protected long lastOnlinePresence;
+	protected long lastPresence;
 
 
 	protected Account account;
@@ -52,7 +52,7 @@ public class Contact extends AbstractEntity implements Serializable {
 		this.photoUri = photoUri;
 		this.systemAccount = systemAccount;
 		this.openPGPKey = pgpKey;
-		this.lastOnlinePresence = lastseen;
+		this.lastPresence = lastseen;
 	}
 
 	public String getDisplayName() {
@@ -82,7 +82,7 @@ public class Contact extends AbstractEntity implements Serializable {
 		values.put(SYSTEMACCOUNT, systemAccount);
 		values.put(PHOTOURI,photoUri);
 		values.put(OPENPGPKEY,openPGPKey);
-		values.put(LASTONLINEPRESENCE,lastOnlinePresence);
+		values.put(LASTPRESENCE,lastPresence);
 		return values;
 	}
 	
@@ -95,7 +95,7 @@ public class Contact extends AbstractEntity implements Serializable {
 				cursor.getString(cursor.getColumnIndex(PHOTOURI)),
 				cursor.getInt(cursor.getColumnIndex(SYSTEMACCOUNT)),
 				cursor.getString(cursor.getColumnIndex(OPENPGPKEY)),
-				cursor.getLong(cursor.getColumnIndex(LASTONLINEPRESENCE))
+				cursor.getLong(cursor.getColumnIndex(LASTPRESENCE))
 				);
 	}
 

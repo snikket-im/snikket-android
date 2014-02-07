@@ -18,6 +18,7 @@ import de.gultsch.chat.xmpp.IqPacket;
 import de.gultsch.chat.xmpp.MessagePacket;
 import de.gultsch.chat.xmpp.OnIqPacketReceived;
 import de.gultsch.chat.xmpp.OnMessagePacketReceived;
+import de.gultsch.chat.xmpp.OnPresencePacketReceived;
 import de.gultsch.chat.xmpp.OnStatusChanged;
 import de.gultsch.chat.xmpp.PresencePacket;
 import de.gultsch.chat.xmpp.XmppConnection;
@@ -123,6 +124,18 @@ public class XmppConnectionService extends Service {
 			}
 		}
 	};
+	
+	private OnPresencePacketReceived presenceListener = new OnPresencePacketReceived() {
+		
+		@Override
+		public void onPresencePacketReceived(Account account, PresencePacket packet) {
+			String jid = packet.getAttribute("from");
+			String type = packet.getAttribute("type");
+			if (type==null) {
+				Log.d(LOGTAG,"online presence from "+jid);
+			}
+		}
+	};
 
 	public class XmppConnectionBinder extends Binder {
 		public XmppConnectionService getService() {
@@ -157,6 +170,7 @@ public class XmppConnectionService extends Service {
 		XmppConnection connection = new XmppConnection(account, pm);
 		connection.setOnMessagePacketReceivedListener(this.messageListener);
 		connection.setOnStatusChangedListener(this.statusListener);
+		connection.setOnPresencePacketReceivedListener(this.presenceListener);
 		Thread thread = new Thread(connection);
 		thread.start();
 		return connection;
@@ -185,8 +199,8 @@ public class XmppConnectionService extends Service {
 		databaseBackend.updateMessage(message);
 	}
 	
-	public void getRoster(final OnRosterFetchedListener listener) {
-		List<Contact> contacts = databaseBackend.getContacts();
+	public void getRoster(Account account, final OnRosterFetchedListener listener) {
+		List<Contact> contacts = databaseBackend.getContacts(account);
 		if (listener != null) {
 			listener.onRosterFetched(contacts);
 		}
@@ -249,7 +263,6 @@ public class XmppConnectionService extends Service {
 								if (roster != null) {
 									for (Element item : roster.getChildren()) {
 										Contact contact;
-										Log.d(LOGTAG, item.toString());
 										String name = item.getAttribute("name");
 										String jid = item.getAttribute("jid");
 										if (phoneContacts.containsKey(jid)) {

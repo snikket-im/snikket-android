@@ -27,6 +27,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.ImageView;
 import android.annotation.SuppressLint;
@@ -210,21 +211,25 @@ public class NewConversationActivity extends XmppActivity {
 		}
 		this.accounts = xmppConnectionService.getAccounts();
 		this.rosterContacts.clear();
-		xmppConnectionService.getRoster(new OnRosterFetchedListener() {
-
-			@Override
-			public void onRosterFetched(List<Contact> roster) {
-				rosterContacts.addAll(roster);
-				runOnUiThread(new Runnable() {
-
+		for(int i = 0; i < accounts.size(); ++i) {
+				if (accounts.get(i).getStatus()==Account.STATUS_ONLINE) {
+				xmppConnectionService.getRoster(accounts.get(i),new OnRosterFetchedListener() {
+		
 					@Override
-					public void run() {
-						updateAggregatedContacts();
+					public void onRosterFetched(List<Contact> roster) {
+						rosterContacts.addAll(roster);
+						runOnUiThread(new Runnable() {
+		
+							@Override
+							public void run() {
+								updateAggregatedContacts();
+							}
+						});
+		
 					}
 				});
-
-			}
-		});
+				}
+		}
 	}
 
 	@Override
@@ -243,10 +248,48 @@ public class NewConversationActivity extends XmppActivity {
 		case R.id.action_accounts:
 			startActivity(new Intent(this, ManageAccountActivity.class));
 			break;
+		case R.id.action_refresh_contacts:
+			refreshContacts();
+			break;
 		default:
 			break;
 		}
 		return super.onOptionsItemSelected(item);
 	}
 
+	private void refreshContacts() {
+		final ProgressBar progress = (ProgressBar) findViewById(R.id.progressBar1);
+		final EditText searchBar = (EditText) findViewById(R.id.new_conversation_search);
+		final TextView contactsHeader = (TextView) findViewById(R.id.contacts_header);
+		final ListView contactList = (ListView) findViewById(R.id.contactList);
+		searchBar.setVisibility(View.GONE);
+		contactsHeader.setVisibility(View.GONE);
+		contactList.setVisibility(View.GONE);
+		progress.setVisibility(View.VISIBLE);
+		this.accounts = xmppConnectionService.getAccounts();
+		this.rosterContacts.clear();
+		for (int i = 0; i < accounts.size(); ++i) {
+			if (accounts.get(i).getStatus()==Account.STATUS_ONLINE) {
+			xmppConnectionService.updateRoster(accounts.get(i),
+					new OnRosterFetchedListener() {
+
+						@Override
+						public void onRosterFetched(final List<Contact> roster) {
+							runOnUiThread(new Runnable() {
+
+								@Override
+								public void run() {
+									rosterContacts.addAll(roster);
+									progress.setVisibility(View.GONE);
+									searchBar.setVisibility(View.VISIBLE);
+									contactList.setVisibility(View.VISIBLE);
+									contactList.setVisibility(View.VISIBLE);
+									updateAggregatedContacts();
+								}
+							});
+						}
+					});
+			}
+		}
+	}
 }

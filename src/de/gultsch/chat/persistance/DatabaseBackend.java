@@ -53,7 +53,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		db.execSQL("create table " + Contact.TABLENAME + "(" + Contact.UUID
 				+ " TEXT PRIMARY KEY, " + Contact.ACCOUNT + " TEXT, "
 				+ Contact.DISPLAYNAME + " TEXT," + Contact.JID + " TEXT,"
-				+ Contact.LASTONLINEPRESENCE + " NUMBER, " + Contact.OPENPGPKEY
+				+ Contact.LASTPRESENCE + " NUMBER, " + Contact.OPENPGPKEY
 				+ " TEXT," + Contact.PHOTOURI + " TEXT," + Contact.SUBSCRIPTION
 				+ " TEXT," + Contact.SYSTEMACCOUNT + " NUMBER, "
 				+ "FOREIGN KEY(" + Contact.ACCOUNT + ") REFERENCES "
@@ -217,10 +217,11 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		}
 	}
 
-	public List<Contact> getContacts() {
+	public List<Contact> getContacts(Account account) {
 		List<Contact> list = new ArrayList<Contact>();
 		SQLiteDatabase db = this.getReadableDatabase();
-		Cursor cursor = db.query(Contact.TABLENAME, null, null, null, null,
+		String args[] = {account.getUuid()};
+		Cursor cursor = db.query(Contact.TABLENAME, null, Contact.ACCOUNT+"=?", args, null,
 				null, null);
 		while (cursor.moveToNext()) {
 			list.add(Contact.fromCursor(cursor));

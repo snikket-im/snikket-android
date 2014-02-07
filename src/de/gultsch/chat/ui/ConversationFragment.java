@@ -161,7 +161,7 @@ public class ConversationFragment extends Fragment {
 		final ConversationActivity activity = (ConversationActivity) getActivity();
 		
 		if (activity.xmppConnectionServiceBound) {
-			this.conversation = activity.getConversationList().get(activity.getSelectedConversation());
+			this.conversation = activity.getSelectedConversation();
 			updateMessages();
 			// rendering complete. now go tell activity to close pane
 			if (!activity.shouldPaneBeOpen()) {
@@ -176,7 +176,7 @@ public class ConversationFragment extends Fragment {
 	public void onBackendConnected() {
 		Log.d("gultsch","calling on backend connected in conversation fragment");
 		final ConversationActivity activity = (ConversationActivity) getActivity();
-		this.conversation = activity.getConversationList().get(activity.getSelectedConversation());
+		this.conversation = activity.getSelectedConversation();
 		updateMessages();
 		// rendering complete. now go tell activity to close pane
 		if (!activity.shouldPaneBeOpen()) {

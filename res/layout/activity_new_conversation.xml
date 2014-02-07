@@ -4,6 +4,16 @@
     android:layout_height="match_parent"
     android:background="#e5e5e5" >
 
+    
+    <ProgressBar
+        android:id="@+id/progressBar1"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+       />
+    
     <EditText
         android:id="@+id/new_conversation_search"
         android:layout_width="wrap_content"
@@ -42,5 +52,4 @@
         tools:listitem="@layout/contact" >
 
     </ListView>
-
 </RelativeLayout>

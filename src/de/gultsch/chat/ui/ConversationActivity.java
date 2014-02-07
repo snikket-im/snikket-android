@@ -40,7 +40,7 @@ public class ConversationActivity extends XmppActivity {
 	protected SlidingPaneLayout spl;
 
 	private List<Conversation> conversationList = new ArrayList<Conversation>();
-	private int selectedConversation = 0;
+	private Conversation selectedConversation = null;
 	private ListView listView;
 	
 	private boolean paneShouldBeOpen = true;
@@ -50,7 +50,7 @@ public class ConversationActivity extends XmppActivity {
 		
 		@Override
 		public void onConversationListChanged() {
-			final Conversation currentConv = conversationList.get(selectedConversation);
+			final Conversation currentConv = getSelectedConversation();
 			conversationList.clear();
 			conversationList.addAll(xmppConnectionService
 					.getConversations());
@@ -59,14 +59,14 @@ public class ConversationActivity extends XmppActivity {
 				@Override
 				public void run() {	
 					updateConversationList();
-					for(int i = 0; i < conversationList.size(); ++i) {
-						if (currentConv.equals(conversationList.get(i))) {
-							selectedConversation = i;
+					/*for(int i = 0; i < conversationList.size(); ++i) {
+						if (currentConv == conversationList.get(i)) {
+							selectedConversation = conversationList.get(i);
 							break;
 						}
-					}
+					}*/
 					if(paneShouldBeOpen) {
-						selectedConversation = 0;
+						selectedConversation = conversationList.get(0);
 						if (conversationList.size() >= 1) {
 							swapConversationFragment();
 						} else {
@@ -88,7 +88,7 @@ public class ConversationActivity extends XmppActivity {
 		return this.conversationList;
 	}
 
-	public int getSelectedConversation() {
+	public Conversation getSelectedConversation() {
 		return this.selectedConversation;
 	}
 	
@@ -164,8 +164,8 @@ public class ConversationActivity extends XmppActivity {
 			public void onItemClick(AdapterView<?> arg0, View clickedView,
 					int position, long arg3) {
 				paneShouldBeOpen = false;
-				if (selectedConversation != position) {
-					selectedConversation = position;
+				if (selectedConversation != conversationList.get(position)) {
+					selectedConversation = conversationList.get(position);
 					swapConversationFragment(); //.onBackendConnected(conversationList.get(position));
 				} else {
 					spl.closePane();
@@ -202,7 +202,7 @@ public class ConversationActivity extends XmppActivity {
 				paneShouldBeOpen = false;
 				if (conversationList.size() > 0) {
 					getActionBar().setDisplayHomeAsUpEnabled(true);
-					getActionBar().setTitle(conversationList.get(selectedConversation).getName());
+					getActionBar().setTitle(getSelectedConversation().getName());
 					invalidateOptionsMenu();
 				}
 			}
@@ -225,6 +225,11 @@ public class ConversationActivity extends XmppActivity {
 			((MenuItem) menu.findItem(R.id.action_security)).setVisible(false);
 		} else {
 			((MenuItem) menu.findItem(R.id.action_add)).setVisible(false);
+			if (this.getSelectedConversation()!=null) {
+				if (this.getSelectedConversation().getMode() == Conversation.MODE_MULTI) {
+					((MenuItem) menu.findItem(R.id.action_security)).setVisible(false);
+				}
+			}
 		}
 		return true;
 	}
@@ -245,12 +250,12 @@ public class ConversationActivity extends XmppActivity {
 			startActivity(new Intent(this, NewConversationActivity.class));
 			break;
 		case R.id.action_archive:
-			Conversation conv = getConversationList().get(selectedConversation);
+			Conversation conv = getSelectedConversation();
 			conv.setStatus(Conversation.STATUS_ARCHIVED);
 			paneShouldBeOpen = true;
 			spl.openPane();
 			xmppConnectionService.archiveConversation(conv);
-			selectedConversation = 0;
+			selectedConversation = conversationList.get(0);
 			break;
 		default:
 			break;
@@ -333,7 +338,7 @@ public class ConversationActivity extends XmppActivity {
 
 				for(int i = 0; i < conversationList.size(); ++i) {
 					if (conversationList.get(i).getUuid().equals(convToView)) {
-						selectedConversation = i;
+						selectedConversation = conversationList.get(i);
 					}
 				}
 				paneShouldBeOpen = false;
@@ -356,7 +361,7 @@ public class ConversationActivity extends XmppActivity {
 					selectedFragment.onBackendConnected();
 				} else {
 					Log.d("gultsch","conversationactivity. no old fragment found. creating new one");
-					selectedConversation = 0;
+					selectedConversation = conversationList.get(0);
 					Log.d("gultsch","selected conversation is #"+selectedConversation);
 					swapConversationFragment();
 				}
