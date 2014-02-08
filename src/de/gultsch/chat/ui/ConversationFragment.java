@@ -59,7 +59,9 @@ public class ConversationFragment extends Fragment {
 						conversation.getMessages().add(message);
 						chatMsg.setText("");
 						
-						messageList.add(message);
+						if (conversation.getMode()==Conversation.MODE_SINGLE) {
+							messageList.add(message);
+						}
 						
 						activity.updateConversationList();
 						
@@ -155,9 +157,6 @@ public class ConversationFragment extends Fragment {
 	@Override
 	public void onStart() {
 		super.onStart();
-		
-		Log.d("gultsch","conversationfragment onStart");
-
 		final ConversationActivity activity = (ConversationActivity) getActivity();
 		
 		if (activity.xmppConnectionServiceBound) {
@@ -174,7 +173,6 @@ public class ConversationFragment extends Fragment {
 	}
 	
 	public void onBackendConnected() {
-		Log.d("gultsch","calling on backend connected in conversation fragment");
 		final ConversationActivity activity = (ConversationActivity) getActivity();
 		this.conversation = activity.getSelectedConversation();
 		updateMessages();

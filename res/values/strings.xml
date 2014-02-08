@@ -6,7 +6,7 @@
     <string name="action_add">New conversation</string>
     <string name="action_accounts">Manage accounts</string>
     <string name="action_archive">Archive conversation</string>
-    <string name="action_details">Show details</string>
+    <string name="action_details">Contact details</string>
     <string name="action_secure">Secure conversation</string>
     <string name="action_add_account">Add account</string>
     <string name="title_activity_new_conversation">New Conversation</string>

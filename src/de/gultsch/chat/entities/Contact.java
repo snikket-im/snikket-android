@@ -1,6 +1,7 @@
 package de.gultsch.chat.entities;
 
 import java.io.Serializable;
+import java.util.Hashtable;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -16,7 +17,7 @@ public class Contact extends AbstractEntity implements Serializable {
 	public static final String SYSTEMACCOUNT = "systemaccount";
 	public static final String PHOTOURI = "photouri";
 	public static final String OPENPGPKEY = "pgpkey";
-	public static final String LASTPRESENCE = "presence";
+	public static final String PRESENCES = "presences";
 	public static final String ACCOUNT = "accountUuid";
 
 	protected String accountUuid;
@@ -26,7 +27,7 @@ public class Contact extends AbstractEntity implements Serializable {
 	protected int systemAccount;
 	protected String photoUri;
 	protected String openPGPKey;
-	protected long lastPresence;
+	protected Presences presences = new Presences();
 
 	protected Account account;
 
@@ -44,7 +45,7 @@ public class Contact extends AbstractEntity implements Serializable {
 
 	public Contact(String uuid, String account, String displayName, String jid,
 			String subscription, String photoUri, int systemAccount,
-			String pgpKey, long lastseen) {
+			String pgpKey,String presences) {
 		this.uuid = uuid;
 		this.accountUuid = account;
 		this.displayName = displayName;
@@ -53,7 +54,7 @@ public class Contact extends AbstractEntity implements Serializable {
 		this.photoUri = photoUri;
 		this.systemAccount = systemAccount;
 		this.openPGPKey = pgpKey;
-		this.lastPresence = lastseen;
+		this.presences = Presences.fromJsonString(presences);
 	}
 
 	public String getDisplayName() {
@@ -84,7 +85,7 @@ public class Contact extends AbstractEntity implements Serializable {
 		values.put(SYSTEMACCOUNT, systemAccount);
 		values.put(PHOTOURI, photoUri);
 		values.put(OPENPGPKEY, openPGPKey);
-		values.put(LASTPRESENCE, lastPresence);
+		values.put(PRESENCES, presences.toJsonString());
 		return values;
 	}
 
@@ -97,11 +98,15 @@ public class Contact extends AbstractEntity implements Serializable {
 				cursor.getString(cursor.getColumnIndex(PHOTOURI)),
 				cursor.getInt(cursor.getColumnIndex(SYSTEMACCOUNT)),
 				cursor.getString(cursor.getColumnIndex(OPENPGPKEY)),
-				cursor.getLong(cursor.getColumnIndex(LASTPRESENCE)));
+				cursor.getString(cursor.getColumnIndex(PRESENCES)));
 	}
 
 	public void setSubscription(String subscription) {
 		this.subscription = subscription;
+	}
+	
+	public String getSubscription() {
+		return this.subscription;
 	}
 
 	public void setSystemAccount(int account) {
@@ -135,5 +140,21 @@ public class Contact extends AbstractEntity implements Serializable {
 							.equals("muc"));
 			}
 		}
+	}
+	
+	public Hashtable<String, Integer> getPresences() {
+		return this.presences.getPresences();
+	}
+	
+	public void updatePresence(String resource, int status) {
+		this.presences.updatePresence(resource, status);
+	}
+
+	public void removePresence(String resource) {
+		this.presences.removePresence(resource);
+	}
+	
+	public int getMostAvailableStatus() {
+		return this.presences.getMostAvailableStatus();
 	}
 }

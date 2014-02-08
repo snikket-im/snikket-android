@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Jabber ID"
+         android:textColor="#636363"
+	        android:textSize="20sp"/>
+
+    <TextView
+        android:id="@+id/details_contact_jid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="something@jabber.example.com"
+        android:paddingLeft="8dp"
+        android:textSize="14sp"/>
+
+    <TextView
+        android:paddingTop="8dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Status"
+         android:textColor="#636363"
+	        android:textSize="20sp"/>
+
+    <TextView
+        android:paddingLeft="8dp"
+        android:id="@+id/details_contact_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="online"
+        android:textSize="14sp"/>
+    
+     <TextView
+        android:paddingTop="8dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Your account"
+         android:textColor="#636363"
+	        android:textSize="20sp"/>
+
+    <TextView
+        android:paddingLeft="8dp"
+        android:id="@+id/details_account"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:text="julia@jabber.example.com" />
+    
+         <TextView
+        android:paddingTop="8dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Subscription"
+         android:textColor="#636363"
+	        android:textSize="20sp"/>
+
+         <CheckBox
+             android:id="@+id/details_send_presence"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:text="Send presence updates"
+             android:textSize="14sp"/>
+
+         <CheckBox
+             android:id="@+id/details_receive_presence"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:text="Receive presence updates"
+             android:textSize="14sp"/>
+
+</LinearLayout>

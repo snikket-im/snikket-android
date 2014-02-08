@@ -24,6 +24,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -183,6 +184,18 @@ public class NewConversationActivity extends XmppActivity {
 					clickedContact.setAccount(accounts.get(0));
 					showIsMucDialogIfNeeded(clickedContact);
 				}
+			}
+		});
+		contactsView.setOnItemLongClickListener(new OnItemLongClickListener() {
+
+			@Override
+			public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
+					int pos, long arg3) {
+				Contact clickedContact = aggregatedContacts.get(pos);
+				DialogContactDetails dialog = new DialogContactDetails();
+				dialog.setContact(clickedContact);
+				dialog.show(getFragmentManager(), "details");
+				return true;
 			}
 		});
 	}

@@ -8,10 +8,12 @@ import de.gultsch.chat.entities.Account;
 import de.gultsch.chat.entities.Contact;
 import de.gultsch.chat.entities.Conversation;
 import de.gultsch.chat.entities.Message;
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Bundle;
 import android.util.Log;
 
 public class DatabaseBackend extends SQLiteOpenHelper {
@@ -53,7 +55,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		db.execSQL("create table " + Contact.TABLENAME + "(" + Contact.UUID
 				+ " TEXT PRIMARY KEY, " + Contact.ACCOUNT + " TEXT, "
 				+ Contact.DISPLAYNAME + " TEXT," + Contact.JID + " TEXT,"
-				+ Contact.LASTPRESENCE + " NUMBER, " + Contact.OPENPGPKEY
+				+ Contact.PRESENCES + " TEXT, " + Contact.OPENPGPKEY
 				+ " TEXT," + Contact.PHOTOURI + " TEXT," + Contact.SUBSCRIPTION
 				+ " TEXT," + Contact.SYSTEMACCOUNT + " NUMBER, "
 				+ "FOREIGN KEY(" + Contact.ACCOUNT + ") REFERENCES "
@@ -196,6 +198,15 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getWritableDatabase();
 		String[] args = { contact.getUuid() };
 		db.update(Contact.TABLENAME, contact.getContentValues(), Contact.UUID
+				+ "=?", args);
+	}
+	
+	public void clearPresences(Account account) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		String[] args = { account.getUuid() };
+		ContentValues values = new ContentValues();
+		values.put(Contact.PRESENCES,"[]");
+		db.update(Contact.TABLENAME, values, Contact.ACCOUNT
 				+ "=?", args);
 	}
 	

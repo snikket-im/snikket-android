@@ -7,6 +7,7 @@ import java.util.List;
 
 import de.gultsch.chat.R;
 import de.gultsch.chat.R.id;
+import de.gultsch.chat.entities.Contact;
 import de.gultsch.chat.entities.Conversation;
 import de.gultsch.chat.utils.UIHelper;
 import android.net.Uri;
@@ -256,6 +257,12 @@ public class ConversationActivity extends XmppActivity {
 			spl.openPane();
 			xmppConnectionService.archiveConversation(conv);
 			selectedConversation = conversationList.get(0);
+			break;
+		case R.id.action_details:
+			DialogContactDetails details = new DialogContactDetails();
+			Contact contact = xmppConnectionService.findOrCreateContact(this.getSelectedConversation().getAccount(),this.getSelectedConversation().getContactJid());
+			details.setContact(contact);
+			details.show(getFragmentManager(), "details");
 			break;
 		default:
 			break;
