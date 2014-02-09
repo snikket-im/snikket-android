@@ -157,4 +157,8 @@ public class Contact extends AbstractEntity implements Serializable {
 	public int getMostAvailableStatus() {
 		return this.presences.getMostAvailableStatus();
 	}
+
+	public void setPresences(Presences pres) {
+		this.presences = pres;	
+	}
 }

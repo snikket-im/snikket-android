@@ -38,13 +38,15 @@ public class DialogContactDetails extends DialogFragment {
 		
 		boolean subscriptionSend = false;
 		boolean subscriptionReceive = false;
-		if (contact.getSubscription().equals("both")) {
-			subscriptionReceive = true;
-			subscriptionSend = true;
-		} else if (contact.getSubscription().equals("from")) {
-			subscriptionSend = true;
-		} else if (contact.getSubscription().equals("to")) {
-			subscriptionReceive = true;
+		if (contact.getSubscription()!=null) {
+			if (contact.getSubscription().equals("both")) {
+				subscriptionReceive = true;
+				subscriptionSend = true;
+			} else if (contact.getSubscription().equals("from")) {
+				subscriptionSend = true;
+			} else if (contact.getSubscription().equals("to")) {
+				subscriptionReceive = true;
+			}
 		}
 		
 		switch (contact.getMostAvailableStatus()) {

@@ -8,6 +8,7 @@ import de.gultsch.chat.entities.Account;
 import de.gultsch.chat.entities.Contact;
 import de.gultsch.chat.entities.Conversation;
 import de.gultsch.chat.entities.Message;
+import de.gultsch.chat.entities.Presences;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -214,12 +215,13 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getWritableDatabase();
 		for (int i = 0; i < contacts.size(); i++) {
 			Contact contact = contacts.get(i);
-			String[] columns = {Contact.UUID};
+			String[] columns = {Contact.UUID, Contact.PRESENCES};
 			String[] args = {contact.getAccount().getUuid(), contact.getJid()};
 			Cursor cursor = db.query(Contact.TABLENAME, columns,Contact.ACCOUNT+"=? AND "+Contact.JID+"=?", args, null, null, null);
 			if (cursor.getCount()>=1) {
 				cursor.moveToFirst();
 				contact.setUuid(cursor.getString(0));
+				contact.setPresences(Presences.fromJsonString(cursor.getString(1)));
 				updateContact(contact);
 			} else {
 				contact.setUuid(UUID.randomUUID().toString());

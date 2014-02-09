@@ -181,7 +181,9 @@ public class NewConversationActivity extends XmppActivity {
 					});
 					accountChooser.create().show();
 				} else {
-					clickedContact.setAccount(accounts.get(0));
+					if (clickedContact.getAccount()==null) {
+						clickedContact.setAccount(accounts.get(0));
+					}
 					showIsMucDialogIfNeeded(clickedContact);
 				}
 			}
@@ -226,6 +228,7 @@ public class NewConversationActivity extends XmppActivity {
 	}
 
 	public void startConversation(Contact contact, Account account, boolean muc) {
+		Log.d("xmppService","starting conversation for account:"+account.getJid()+" and contact:"+contact.getJid());
 		Conversation conversation = xmppConnectionService
 				.findOrCreateConversation(account, contact, muc);
 

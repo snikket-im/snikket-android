@@ -62,20 +62,49 @@ public class XmppConnectionService extends Service {
 			if ((packet.getType() == MessagePacket.TYPE_CHAT)
 					|| (packet.getType() == MessagePacket.TYPE_GROUPCHAT)) {
 				boolean notify = true;
+				int status = Message.STATUS_RECIEVED;
+				String body;
+				String fullJid;
 				if (!packet.hasChild("body")) {
-					return;
+					Element forwarded;
+					if (packet.hasChild("received")) {
+						forwarded = packet.findChild("received").findChild(
+								"forwarded");
+					} else if (packet.hasChild("sent")) {
+						forwarded = packet.findChild("sent").findChild(
+								"forwarded");
+						status = Message.STATUS_SEND;
+					} else {
+						return; // massage has no body and is not carbon. just
+								// skip
+					}
+					if (forwarded != null) {
+						Element message = forwarded.findChild("message");
+						if ((message == null) || (!message.hasChild("body")))
+							return; // either malformed or boring
+						if (status == Message.STATUS_RECIEVED) {
+							fullJid = message.getAttribute("from");
+						} else {
+							fullJid = message.getAttribute("to");
+						}
+						body = message.findChild("body").getContent();
+					} else {
+						return; // packet malformed. has no forwarded element
+					}
+				} else {
+					fullJid = packet.getFrom();
+					body = packet.getBody();
 				}
 				Conversation conversation = null;
-				String fullJid = packet.getFrom();
 				String[] fromParts = fullJid.split("/");
 				String jid = fromParts[0];
 				Contact contact = findOrCreateContact(account, jid);
 				boolean muc = (packet.getType() == MessagePacket.TYPE_GROUPCHAT);
 				String counterPart = null;
-				int status = Message.STATUS_RECIEVED;
 				conversation = findOrCreateConversation(account, contact, muc);
 				if (muc) {
-					if ((fromParts.length==1)||(packet.hasChild("subject"))||(packet.hasChild("delay"))) {
+					if ((fromParts.length == 1) || (packet.hasChild("subject"))
+							|| (packet.hasChild("delay"))) {
 						return;
 					}
 					counterPart = fromParts[1];
@@ -86,8 +115,8 @@ public class XmppConnectionService extends Service {
 				} else {
 					counterPart = fullJid;
 				}
-				Message message = new Message(conversation, counterPart,
-						packet.getBody(), Message.ENCRYPTION_NONE, status);
+				Message message = new Message(conversation, counterPart, body,
+						Message.ENCRYPTION_NONE, status);
 				conversation.getMessages().add(message);
 				databaseBackend.createMessage(message);
 				if (convChangedListener != null) {
@@ -124,28 +153,28 @@ public class XmppConnectionService extends Service {
 				PresencePacket packet) {
 			String[] fromParts = packet.getAttribute("from").split("/");
 			Contact contact = findOrCreateContact(account, fromParts[0]);
-			if (contact.getUuid()==null) {
-				//most likely muc, self or roster not synced
-				Log.d(LOGTAG,"got presence for non contact "+packet.toString());
+			if (contact.getUuid() == null) {
+				// most likely muc, self or roster not synced
+				// Log.d(LOGTAG,"got presence for non contact "+packet.toString());
 			}
 			String type = packet.getAttribute("type");
 			if (type == null) {
 				Element show = packet.findChild("show");
-				if (show==null) {
-					contact.updatePresence(fromParts[1],Presences.ONLINE);
+				if (show == null) {
+					contact.updatePresence(fromParts[1], Presences.ONLINE);
 				} else if (show.getContent().equals("away")) {
-					contact.updatePresence(fromParts[1],Presences.AWAY);
+					contact.updatePresence(fromParts[1], Presences.AWAY);
 				} else if (show.getContent().equals("xa")) {
-					contact.updatePresence(fromParts[1],Presences.XA);
+					contact.updatePresence(fromParts[1], Presences.XA);
 				} else if (show.getContent().equals("chat")) {
-					contact.updatePresence(fromParts[1],Presences.CHAT);
+					contact.updatePresence(fromParts[1], Presences.CHAT);
 				} else if (show.getContent().equals("dnd")) {
-					contact.updatePresence(fromParts[1],Presences.DND);
+					contact.updatePresence(fromParts[1], Presences.DND);
 				}
 				databaseBackend.updateContact(contact);
 			} else if (type.equals("unavailable")) {
-				if (fromParts.length!=2) {
-					Log.d(LOGTAG,"received presence with no resource "+packet.toString());
+				if (fromParts.length != 2) {
+					// Log.d(LOGTAG,"received presence with no resource "+packet.toString());
 				} else {
 					contact.removePresence(fromParts[1]);
 					databaseBackend.updateContact(contact);
@@ -194,7 +223,7 @@ public class XmppConnectionService extends Service {
 	}
 
 	public void sendMessage(final Account account, final Message message) {
-		if (message.getConversation().getMode()==Conversation.MODE_SINGLE) {
+		if (message.getConversation().getMode() == Conversation.MODE_SINGLE) {
 			databaseBackend.createMessage(message);
 		}
 		MessagePacket packet = new MessagePacket();
@@ -206,9 +235,9 @@ public class XmppConnectionService extends Service {
 		packet.setTo(message.getCounterpart());
 		packet.setFrom(account.getJid());
 		packet.setBody(message.getBody());
-		if (account.getStatus()==Account.STATUS_ONLINE) {
+		if (account.getStatus() == Account.STATUS_ONLINE) {
 			connections.get(account).sendMessagePacket(packet);
-			if (message.getConversation().getMode()==Conversation.MODE_SINGLE) {
+			if (message.getConversation().getMode() == Conversation.MODE_SINGLE) {
 				message.setStatus(Message.STATUS_SEND);
 				databaseBackend.updateMessage(message);
 			}
