@@ -7,14 +7,15 @@
 
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="96dp" >
+        android:layout_height="90dp"
+        android:padding="0dp">
 
         <ImageView
             android:id="@+id/details_contact_picture"
             android:layout_width="96dp"
             android:layout_height="96dp"
             android:layout_centerVertical="true"
-            android:paddingRight="8dp" />
+            android:paddingRight="8dp"/>
 
         <LinearLayout
             android:id="@+id/details_jidbox"
@@ -36,20 +37,22 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="something@jabber.example.com"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:paddingLeft="8dp"/>
 
          
         </LinearLayout>
            <TextView
                 android:id="@+id/details_contactstatus"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingTop="3dp"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
                 android:text="online"
                 android:textSize="24sp"
                  android:textStyle="bold"
+                 android:gravity="center_vertical"
                  android:layout_below="@+id/details_jidbox"
-                 android:layout_toRightOf="@id/details_contact_picture"/>
+                 android:layout_toRightOf="@id/details_contact_picture"
+                 android:paddingLeft="8dp"/>
     </RelativeLayout>
 
     <TextView
