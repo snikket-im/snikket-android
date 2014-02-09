@@ -56,10 +56,10 @@ public class ConversationFragment extends Fragment {
 						Message message = new Message(conversation, chatMsg
 								.getText().toString(), Message.ENCRYPTION_NONE);
 						activity.xmppConnectionService.sendMessage(conversation.getAccount(),message);
-						conversation.getMessages().add(message);
 						chatMsg.setText("");
 						
 						if (conversation.getMode()==Conversation.MODE_SINGLE) {
+							conversation.getMessages().add(message);
 							messageList.add(message);
 						}
 						

@@ -194,9 +194,9 @@ public class XmppConnectionService extends Service {
 	}
 
 	public void sendMessage(final Account account, final Message message) {
-		Log.d(LOGTAG, "sending message for " + account.getJid() + " to: "
-				+ message.getCounterpart());
-		databaseBackend.createMessage(message);
+		if (message.getConversation().getMode()==Conversation.MODE_SINGLE) {
+			databaseBackend.createMessage(message);
+		}
 		MessagePacket packet = new MessagePacket();
 		if (message.getConversation().getMode() == Conversation.MODE_SINGLE) {
 			packet.setType(MessagePacket.TYPE_CHAT);
@@ -208,8 +208,10 @@ public class XmppConnectionService extends Service {
 		packet.setBody(message.getBody());
 		if (account.getStatus()==Account.STATUS_ONLINE) {
 			connections.get(account).sendMessagePacket(packet);
-			message.setStatus(Message.STATUS_SEND);
-			databaseBackend.updateMessage(message);
+			if (message.getConversation().getMode()==Conversation.MODE_SINGLE) {
+				message.setStatus(Message.STATUS_SEND);
+				databaseBackend.updateMessage(message);
+			}
 		}
 	}
 
