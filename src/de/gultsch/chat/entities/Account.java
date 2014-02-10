@@ -60,10 +60,8 @@ public class Account  extends AbstractEntity{
 	public void setOption(int option, boolean value) {
 		if (value) {
 			this.options = (this.options | 1 << option);
-			Log.d("xmppService","enabling option "+this.options);
 		} else {
 			this.options = (this.options & 0 << option);
-			Log.d("xmppService","disabeling option "+this.options);
 		}
 	}
 	

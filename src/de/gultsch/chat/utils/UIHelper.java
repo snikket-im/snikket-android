@@ -4,39 +4,31 @@ import java.io.FileDescriptor;
 import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import de.gultsch.chat.R;
 import de.gultsch.chat.entities.Contact;
 import de.gultsch.chat.entities.Conversation;
+import de.gultsch.chat.entities.Message;
 import de.gultsch.chat.ui.ConversationActivity;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.AssetFileDescriptor;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.preference.PreferenceManager;
-import android.provider.ContactsContract;
-import android.provider.ContactsContract.CommonDataKinds;
 import android.provider.ContactsContract.Contacts;
-import android.provider.ContactsContract.Intents;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
-import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.QuickContactBadge;
 
 public class UIHelper {
@@ -100,7 +92,25 @@ public class UIHelper {
 				.getName(), (int) res
 				.getDimension(android.R.dimen.notification_large_icon_width)));
 		mBuilder.setContentTitle(conversation.getName());
-		mBuilder.setContentText(conversation.getLatestMessage());
+		mBuilder.setTicker(conversation.getLatestMessage().trim());
+		StringBuilder bigText = new StringBuilder();
+		List<Message> messages = conversation.getMessages();
+		String firstLine = "";
+		for(int i = messages.size() -1; i >= 0; --i) {
+			if (!messages.get(i).isRead()) {
+				if (i == messages.size() -1 ) {
+					firstLine = messages.get(i).getBody().trim();
+					bigText.append(firstLine);
+				} else {
+					firstLine = messages.get(i).getBody().trim();
+					bigText.insert(0, firstLine+"\n");
+				}
+			} else {
+				break;
+			}
+		}
+		mBuilder.setContentText(firstLine);
+		mBuilder.setStyle(new NotificationCompat.BigTextStyle().bigText(bigText.toString()));
 		mBuilder.setSmallIcon(R.drawable.notification);
 		mBuilder.setLights(0xffffffff, 2000, 4000);
 		if (ringtone != null) {

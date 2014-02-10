@@ -180,6 +180,10 @@ public class ConversationFragment extends Fragment {
 				activity.getActionBar().setDisplayHomeAsUpEnabled(true);
 				activity.getActionBar().setTitle(conversation.getName());
 				activity.invalidateOptionsMenu();
+				if (!conversation.isRead()) {
+					conversation.markRead();
+					activity.updateConversationList();
+				}
 			}
 		}
 	}
@@ -194,6 +198,10 @@ public class ConversationFragment extends Fragment {
 			activity.getActionBar().setDisplayHomeAsUpEnabled(true);
 			activity.getActionBar().setTitle(conversation.getName());
 			activity.invalidateOptionsMenu();
+			if (!conversation.isRead()) {
+				conversation.markRead();
+				activity.updateConversationList();
+			}
 		}
 	}
 

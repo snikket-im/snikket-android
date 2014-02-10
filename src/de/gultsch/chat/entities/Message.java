@@ -30,6 +30,7 @@ public class Message extends AbstractEntity {
 	protected long timeSent;
 	protected int encryption;
 	protected int status;
+	protected boolean read = true;
 
 	protected transient Conversation conversation = null;
 
@@ -115,4 +116,16 @@ public class Message extends AbstractEntity {
 		this.status = status;
 	}
 
+	public boolean isRead() {
+		return this.read;
+	}
+	
+	public void markRead() {
+		this.read = true;
+	}
+	
+	public void markUnread() {
+		this.read = false;
+	}
+	
 }

@@ -6,6 +6,7 @@ import java.util.List;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
+import android.util.Log;
 
 public class Conversation extends AbstractEntity {
 
@@ -71,6 +72,20 @@ public class Conversation extends AbstractEntity {
 		return messages;
 	}
 	
+	public boolean isRead() {
+		if (this.messages == null) return true;
+		return this.messages.get(this.messages.size() - 1).isRead();
+	}
+	
+	public void markRead() {
+		Log.d("xmppService", "inside mark read method");
+		if (this.messages == null) return;
+		for(int i = this.messages.size() -1; i >= 0; --i) {
+			if (messages.get(i).isRead()) return;
+			this.messages.get(i).markRead();
+		}
+	}
+	
 	public String getLatestMessage() {
 		if ((this.messages == null)||(this.messages.size()==0)) {
 			return null;
@@ -121,7 +136,9 @@ public class Conversation extends AbstractEntity {
 	
 	public void setContact(Contact contact) {
 		this.contact = contact;
-		this.contactUuid = contact.getUuid();
+		if (contact!=null) {
+			this.contactUuid = contact.getUuid();
+		}
 	}
 
 	public void setAccount(Account account) {
@@ -151,7 +168,7 @@ public class Conversation extends AbstractEntity {
 		ContentValues values = new ContentValues();
 		values.put(UUID, uuid);
 		values.put(NAME, name);
-		values.put(CONTACT, contact.getUuid());
+		values.put(CONTACT, contactUuid);
 		values.put(ACCOUNT, accountUuid);
 		values.put(CONTACTJID, contactJid);
 		values.put(CREATED, created);

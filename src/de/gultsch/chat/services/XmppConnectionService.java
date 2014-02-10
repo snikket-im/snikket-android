@@ -86,6 +86,7 @@ public class XmppConnectionService extends Service {
 						forwarded = packet.findChild("sent").findChild(
 								"forwarded");
 						status = Message.STATUS_SEND;
+						notify = false;
 					} else {
 						return; // massage has no body and is not carbon. just
 						// skip
@@ -128,6 +129,9 @@ public class XmppConnectionService extends Service {
 				}
 				Message message = new Message(conversation, counterPart, body,
 						Message.ENCRYPTION_NONE, status);
+				if(notify) {
+					message.markUnread();
+				}
 				conversation.getMessages().add(message);
 				databaseBackend.createMessage(message);
 				if (convChangedListener != null) {
@@ -398,6 +402,7 @@ public class XmppConnectionService extends Service {
 				Account account = accountLookupTable.get(conv.getAccountUuid());
 				conv.setAccount(account);
 				conv.setContact(findContact(account, conv.getContactJid()));
+				conv.setMessages(databaseBackend.getMessages(conv, 50));
 			}
 		}
 		return this.conversations;
@@ -406,11 +411,7 @@ public class XmppConnectionService extends Service {
 	public List<Account> getAccounts() {
 		return this.accounts;
 	}
-
-	public List<Message> getMessages(Conversation conversation) {
-		return databaseBackend.getMessages(conversation, 100);
-	}
-
+	
 	public Contact findContact(Account account, String jid) {
 		return databaseBackend.findContact(account, jid);
 	}

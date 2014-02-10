@@ -16,6 +16,7 @@ import android.app.FragmentTransaction;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.support.v4.widget.SlidingPaneLayout;
 import android.support.v4.widget.SlidingPaneLayout.PanelSlideListener;
 import android.util.Log;
@@ -138,9 +139,20 @@ public class ConversationActivity extends XmppActivity {
 					view = (View) inflater.inflate(
 							R.layout.conversation_list_row, null);
 				}
-				((TextView) view.findViewById(R.id.conversation_name))
-						.setText(getItem(position).getName());
-				((TextView) view.findViewById(R.id.conversation_lastmsg)).setText(getItem(position).getLatestMessage());
+				Conversation conv = getItem(position);
+				TextView convName = (TextView) view.findViewById(R.id.conversation_name);
+				convName.setText(conv.getName());
+				TextView convLastMsg = (TextView) view.findViewById(R.id.conversation_lastmsg);
+				convLastMsg.setText(conv.getLatestMessage());
+				
+				if(!conv.isRead()) {
+					convName.setTypeface(null,Typeface.BOLD);
+					convLastMsg.setTypeface(null,Typeface.BOLD);
+				} else {
+					convName.setTypeface(null,Typeface.NORMAL);
+					convLastMsg.setTypeface(null,Typeface.NORMAL);
+				}
+				
 				((TextView) view.findViewById(R.id.conversation_lastupdate))
 				.setText(UIHelper.readableTimeDifference(getItem(position).getLatestMessageDate()));
 				
@@ -208,6 +220,10 @@ public class ConversationActivity extends XmppActivity {
 					getActionBar().setDisplayHomeAsUpEnabled(true);
 					getActionBar().setTitle(getSelectedConversation().getName());
 					invalidateOptionsMenu();
+					if (!getSelectedConversation().isRead()) {
+						getSelectedConversation().markRead();
+						updateConversationList();
+					}
 				}
 			}
 
@@ -310,16 +326,6 @@ public class ConversationActivity extends XmppActivity {
 		}
 	}
 	
-	/*@Override
-	protected void onPause() {
-		super.onPause();
-		if (xmppConnectionServiceBound) {
-        	xmppConnectionService.removeOnConversationListChangedListener();
-            unbindService(mConnection);
-            xmppConnectionServiceBound = false;
-        }
-	}*/
-	
 	@Override
 	protected void onStop() {
 		Log.d("gultsch","called on stop in conversation activity");
@@ -346,10 +352,6 @@ public class ConversationActivity extends XmppActivity {
 			conversationList.addAll(xmppConnectionService
 					.getConversations());
 			
-			for(Conversation conversation : conversationList) {
-				conversation.setMessages(xmppConnectionService.getMessages(conversation));
-			}
-	
 			this.updateConversationList();
 		}
 
