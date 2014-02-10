@@ -11,13 +11,10 @@ import de.gultsch.chat.utils.PhoneHelper;
 import de.gultsch.chat.utils.UIHelper;
 import android.app.Fragment;
 import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.provider.ContactsContract.Profile;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -212,5 +209,10 @@ public class ConversationFragment extends Fragment {
 		int size = this.messageList.size();
 		if (size >= 1)
 			messagesView.setSelection(size - 1);
+		ConversationActivity activity = (ConversationActivity) getActivity();
+		if (!activity.shouldPaneBeOpen()) {
+			conversation.markRead();
+			activity.updateConversationList();
+		}
 	}
 }
