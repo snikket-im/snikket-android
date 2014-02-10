@@ -69,7 +69,7 @@ public final class R {
         public static final int conversation_lastupdate=0x7f0a000d;
         public static final int conversation_name=0x7f0a000b;
         public static final int details_account=0x7f0a0012;
-        public static final int details_contact_picture=0x7f0a000e;
+        public static final int details_contact_badge=0x7f0a000e;
         public static final int details_contactjid=0x7f0a0010;
         public static final int details_contactstatus=0x7f0a0011;
         public static final int details_jidbox=0x7f0a000f;

@@ -21,15 +21,15 @@ public class Conversation extends AbstractEntity {
 	public static final int MODE_SINGLE = 0;
 
 	public static final String NAME = "name";
-	public static final String PHOTO_URI = "profilePhotoUri";
 	public static final String ACCOUNT = "accountUuid";
-	public static final String CONTACT = "contactJid";
+	public static final String CONTACT = "contactUuid";
+	public static final String CONTACTJID = "contactJid";
 	public static final String STATUS = "status";
 	public static final String CREATED = "created";
 	public static final String MODE = "mode";
 
 	private String name;
-	private String profilePhotoUri;
+	private String contactUuid;
 	private String accountUuid;
 	private String contactJid;
 	private int status;
@@ -38,19 +38,20 @@ public class Conversation extends AbstractEntity {
 
 	private transient List<Message> messages = null;
 	private transient Account account = null;
+	private transient Contact contact;
 
-	public Conversation(String name, String profilePhoto, Account account,
+	public Conversation(String name, Account account,
 			String contactJid, int mode) {
-		this(java.util.UUID.randomUUID().toString(), name, profilePhoto, account.getUuid(), contactJid, System
+		this(java.util.UUID.randomUUID().toString(), name, null, account.getUuid(), contactJid, System
 				.currentTimeMillis(), STATUS_AVAILABLE,mode);
 		this.account = account;
 	}
 
-	public Conversation(String uuid, String name, String profilePhoto,
+	public Conversation(String uuid, String name, String contactUuid,
 			String accountUuid, String contactJid, long created, int status, int mode) {
 		this.uuid = uuid;
 		this.name = name;
-		this.profilePhotoUri = profilePhoto;
+		this.contactUuid = contactUuid;
 		this.accountUuid = accountUuid;
 		this.contactJid = contactJid;
 		this.created = created;
@@ -91,11 +92,19 @@ public class Conversation extends AbstractEntity {
 	}
 
 	public String getName() {
-		return this.name;
+		if (this.contact!=null) {
+			return this.contact.getDisplayName();
+		} else {
+			return this.name;
+		}
 	}
 
 	public String getProfilePhotoString() {
-		return this.profilePhotoUri;
+		if (this.contact==null) {
+			return null;
+		} else {
+			return this.contact.getProfilePhoto();
+		}
 	}
 
 	public String getAccountUuid() {
@@ -104,6 +113,15 @@ public class Conversation extends AbstractEntity {
 	
 	public Account getAccount() {
 		return this.account;
+	}
+	
+	public Contact getContact() {
+		return this.contact;
+	}
+	
+	public void setContact(Contact contact) {
+		this.contact = contact;
+		this.contactUuid = contact.getUuid();
 	}
 
 	public void setAccount(Account account) {
@@ -115,8 +133,8 @@ public class Conversation extends AbstractEntity {
 	}
 
 	public Uri getProfilePhotoUri() {
-		if (this.profilePhotoUri != null) {
-			return Uri.parse(profilePhotoUri);
+		if (this.getProfilePhotoString() != null) {
+			return Uri.parse(this.getProfilePhotoString());
 		}
 		return null;
 	}
@@ -133,9 +151,9 @@ public class Conversation extends AbstractEntity {
 		ContentValues values = new ContentValues();
 		values.put(UUID, uuid);
 		values.put(NAME, name);
-		values.put(PHOTO_URI, profilePhotoUri);
+		values.put(CONTACT, contact.getUuid());
 		values.put(ACCOUNT, accountUuid);
-		values.put(CONTACT, contactJid);
+		values.put(CONTACTJID, contactJid);
 		values.put(CREATED, created);
 		values.put(STATUS, status);
 		values.put(MODE,mode);
@@ -145,9 +163,9 @@ public class Conversation extends AbstractEntity {
 	public static Conversation fromCursor(Cursor cursor) {
 		return new Conversation(cursor.getString(cursor.getColumnIndex(UUID)),
 				cursor.getString(cursor.getColumnIndex(NAME)),
-				cursor.getString(cursor.getColumnIndex(PHOTO_URI)),
-				cursor.getString(cursor.getColumnIndex(ACCOUNT)),
 				cursor.getString(cursor.getColumnIndex(CONTACT)),
+				cursor.getString(cursor.getColumnIndex(ACCOUNT)),
+				cursor.getString(cursor.getColumnIndex(CONTACTJID)),
 				cursor.getLong(cursor.getColumnIndex(CREATED)),
 				cursor.getInt(cursor.getColumnIndex(STATUS)),
 				cursor.getInt(cursor.getColumnIndex(MODE)));

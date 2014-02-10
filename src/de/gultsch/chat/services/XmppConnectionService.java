@@ -32,6 +32,7 @@ import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
 import android.content.Loader.OnLoadCompleteListener;
+import android.database.ContentObserver;
 import android.database.Cursor;
 import android.os.Binder;
 import android.os.Bundle;
@@ -54,6 +55,15 @@ public class XmppConnectionService extends Service {
 
 	private OnConversationListChangedListener convChangedListener = null;
 	private OnAccountListChangedListener accountChangedListener = null;
+	
+	private ContentObserver contactObserver = new ContentObserver(null) {
+		@Override
+        public void onChange(boolean selfChange) {
+            super.onChange(selfChange);
+            Log.d(LOGTAG,"contact list has changed");
+            mergePhoneContactsWithRoster();
+        }
+	};
 
 	private final IBinder mBinder = new XmppConnectionBinder();
 	private OnMessagePacketReceived messageListener = new OnMessagePacketReceived() {
@@ -100,10 +110,9 @@ public class XmppConnectionService extends Service {
 				Conversation conversation = null;
 				String[] fromParts = fullJid.split("/");
 				String jid = fromParts[0];
-				Contact contact = findOrCreateContact(account, jid);
 				boolean muc = (packet.getType() == MessagePacket.TYPE_GROUPCHAT);
 				String counterPart = null;
-				conversation = findOrCreateConversation(account, contact, muc);
+				conversation = findOrCreateConversation(account, jid, muc);
 				if (muc) {
 					if ((fromParts.length == 1) || (packet.hasChild("subject"))
 							|| (packet.hasChild("delay"))) {
@@ -154,10 +163,11 @@ public class XmppConnectionService extends Service {
 		public void onPresencePacketReceived(Account account,
 				PresencePacket packet) {
 			String[] fromParts = packet.getAttribute("from").split("/");
-			Contact contact = findOrCreateContact(account, fromParts[0]);
-			if (contact.getUuid() == null) {
+			Contact contact = findContact(account, fromParts[0]);
+			if (contact == null) {
 				// most likely muc, self or roster not synced
 				// Log.d(LOGTAG,"got presence for non contact "+packet.toString());
+				return;
 			}
 			String type = packet.getAttribute("type");
 			if (type == null) {
@@ -211,6 +221,10 @@ public class XmppConnectionService extends Service {
 	public void onCreate() {
 		databaseBackend = DatabaseBackend.getInstance(getApplicationContext());
 		this.accounts = databaseBackend.getAccounts();
+		
+		getContentResolver()
+        .registerContentObserver(
+                ContactsContract.Contacts.CONTENT_URI, true,contactObserver);   
 	}
 
 	public XmppConnection createConnection(Account account) {
@@ -381,7 +395,9 @@ public class XmppConnectionService extends Service {
 			this.conversations = databaseBackend
 					.getConversations(Conversation.STATUS_AVAILABLE);
 			for (Conversation conv : this.conversations) {
-				conv.setAccount(accountLookupTable.get(conv.getAccountUuid()));
+				Account account = accountLookupTable.get(conv.getAccountUuid());
+				conv.setAccount(account);
+				conv.setContact(findContact(account, conv.getContactJid()));
 			}
 		}
 		return this.conversations;
@@ -395,26 +411,19 @@ public class XmppConnectionService extends Service {
 		return databaseBackend.getMessages(conversation, 100);
 	}
 
-	public Contact findOrCreateContact(Account account, String jid) {
-		Contact contact = databaseBackend.findContact(account, jid);
-		if (contact != null) {
-			contact.setAccount(account);
-			return contact;
-		} else {
-			return new Contact(account, jid.split("@")[0], jid, null);
-		}
+	public Contact findContact(Account account, String jid) {
+		return databaseBackend.findContact(account, jid);
 	}
 
 	public Conversation findOrCreateConversation(Account account,
-			Contact contact, boolean muc) {
+			String jid, boolean muc) {
 		for (Conversation conv : this.getConversations()) {
 			if ((conv.getAccount().equals(account))
-					&& (conv.getContactJid().equals(contact.getJid()))) {
+					&& (conv.getContactJid().equals(jid))) {
 				return conv;
 			}
 		}
-		Conversation conversation = databaseBackend.findConversation(account,
-				contact.getJid());
+		Conversation conversation = databaseBackend.findConversation(account,jid);
 		if (conversation != null) {
 			conversation.setStatus(Conversation.STATUS_AVAILABLE);
 			conversation.setAccount(account);
@@ -428,18 +437,24 @@ public class XmppConnectionService extends Service {
 			}
 			this.databaseBackend.updateConversation(conversation);
 		} else {
+			String conversationName;
+			Contact contact = findContact(account, jid);
+			if (contact!=null) {
+				conversationName = contact.getDisplayName();
+			} else {
+				conversationName = jid.split("@")[0];
+			}
 			if (muc) {
-				conversation = new Conversation(contact.getDisplayName(),
-						contact.getProfilePhoto(), account, contact.getJid(),
+				conversation = new Conversation(conversationName,account, jid,
 						Conversation.MODE_MULTI);
 				if (account.getStatus() == Account.STATUS_ONLINE) {
 					joinMuc(account, conversation);
 				}
 			} else {
-				conversation = new Conversation(contact.getDisplayName(),
-						contact.getProfilePhoto(), account, contact.getJid(),
+				conversation = new Conversation(conversationName, account, jid,
 						Conversation.MODE_SINGLE);
 			}
+			conversation.setContact(contact);
 			this.databaseBackend.createConversation(conversation);
 		}
 		this.conversations.add(conversation);

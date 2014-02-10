@@ -230,7 +230,7 @@ public class NewConversationActivity extends XmppActivity {
 	public void startConversation(Contact contact, Account account, boolean muc) {
 		Log.d("xmppService","starting conversation for account:"+account.getJid()+" and contact:"+contact.getJid());
 		Conversation conversation = xmppConnectionService
-				.findOrCreateConversation(account, contact, muc);
+				.findOrCreateConversation(account, contact.getJid(), muc);
 
 		Intent viewConversationIntent = new Intent(this,
 				ConversationActivity.class);

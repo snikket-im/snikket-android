@@ -38,8 +38,8 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 				+ " NUMBER)");
 		db.execSQL("create table " + Conversation.TABLENAME + " ("
 				+ Conversation.UUID + " TEXT PRIMARY KEY, " + Conversation.NAME
-				+ " TEXT, " + Conversation.PHOTO_URI + " TEXT, "
-				+ Conversation.ACCOUNT + " TEXT, " + Conversation.CONTACT
+				+ " TEXT, " + Conversation.CONTACT + " TEXT, "
+				+ Conversation.ACCOUNT + " TEXT, " + Conversation.CONTACTJID
 				+ " TEXT, " + Conversation.CREATED + " NUMBER, "
 				+ Conversation.STATUS + " NUMBER," + Conversation.MODE
 				+ " NUMBER," + "FOREIGN KEY(" + Conversation.ACCOUNT
@@ -139,7 +139,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getReadableDatabase();
 		String[] selectionArgs = { account.getUuid(), contactJid };
 		Cursor cursor = db.query(Conversation.TABLENAME, null,
-				Conversation.ACCOUNT + "=? AND " + Conversation.CONTACT + "=?",
+				Conversation.ACCOUNT + "=? AND " + Conversation.CONTACTJID + "=?",
 				selectionArgs, null, null, null);
 		if (cursor.getCount() == 0)
 			return null;

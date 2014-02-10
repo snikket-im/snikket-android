@@ -7,12 +7,16 @@ import de.gultsch.chat.R;
 import de.gultsch.chat.entities.Contact;
 import de.gultsch.chat.entities.Conversation;
 import de.gultsch.chat.entities.Message;
+import de.gultsch.chat.utils.PhoneHelper;
 import de.gultsch.chat.utils.UIHelper;
 import android.app.Fragment;
+import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.ContactsContract.Profile;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -72,13 +76,16 @@ public class ConversationFragment extends Fragment {
 
 		messagesView = (ListView) view.findViewById(R.id.messages_view);
 		
-		String[] mProjection = new String[] { Profile._ID,
-				Profile.PHOTO_THUMBNAIL_URI };
-		Cursor mProfileCursor = getActivity().getContentResolver().query(
-				Profile.CONTENT_URI, mProjection, null, null, null);
-
-		mProfileCursor.moveToFirst();
-		final Uri profilePicture = Uri.parse(mProfileCursor.getString(1));
+		SharedPreferences sharedPref = PreferenceManager
+				.getDefaultSharedPreferences(getActivity().getApplicationContext());
+		boolean showPhoneSelfContactPicture = sharedPref.getBoolean("show_phone_selfcontact_picture",true);
+		
+		final Uri selfiUri;
+		if (showPhoneSelfContactPicture) {
+			selfiUri =  PhoneHelper.getSefliUri(getActivity());
+		} else {
+			selfiUri = null;
+		}
 		
 		messageListAdapter = new ArrayAdapter<Message>(this.getActivity()
 				.getApplicationContext(), R.layout.message_sent, this.messageList) {
@@ -133,7 +140,11 @@ public class ConversationFragment extends Fragment {
 						}
 					}
 				} else {
-					imageView.setImageURI(profilePicture);
+					if (selfiUri!=null) {
+						imageView.setImageURI(selfiUri);
+					} else {
+						imageView.setImageBitmap(UIHelper.getUnknownContactPicture(conversation.getAccount().getJid(),200));
+					}
 				}
 				TextView messageBody = (TextView) view.findViewById(R.id.message_body);
 				String body = item.getBody();

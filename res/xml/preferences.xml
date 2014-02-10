@@ -36,6 +36,10 @@
     </PreferenceCategory>
     <PreferenceCategory 
         android:title="Advanced settings">
-        
+        <CheckBoxPreference 
+            android:key="show_phone_selfcontact_picture"
+            android:title="Use Phones self contact picture"
+            android:summary="You may no longer be able to distinguish which account you are using in a conversation"
+            android:defaultValue="true"/>
     </PreferenceCategory>
 </PreferenceScreen>

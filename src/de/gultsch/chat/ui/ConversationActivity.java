@@ -265,9 +265,14 @@ public class ConversationActivity extends XmppActivity {
 			break;
 		case R.id.action_details:
 			DialogContactDetails details = new DialogContactDetails();
-			Contact contact = xmppConnectionService.findOrCreateContact(this.getSelectedConversation().getAccount(),this.getSelectedConversation().getContactJid());
-			details.setContact(contact);
-			details.show(getFragmentManager(), "details");
+			Contact contact = this.getSelectedConversation().getContact();
+			if (contact != null) {
+				contact.setAccount(this.selectedConversation.getAccount());
+				details.setContact(contact);
+				details.show(getFragmentManager(), "details");
+			} else {
+				Log.d("xmppService","contact was null - means not in roster");
+			}
 			break;
 		default:
 			break;
