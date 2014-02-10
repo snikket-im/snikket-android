@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.gultsch.chat.R;
+import de.gultsch.chat.entities.Contact;
 import de.gultsch.chat.entities.Conversation;
 import de.gultsch.chat.entities.Message;
 import de.gultsch.chat.utils.UIHelper;
@@ -32,13 +33,13 @@ public class ConversationFragment extends Fragment {
 	protected LayoutInflater inflater;
 	protected List<Message> messageList = new ArrayList<Message>();
 	protected ArrayAdapter<Message> messageListAdapter;
+	protected Contact contact;
 	
 	@Override
 	public View onCreateView(final LayoutInflater inflater,
 			ViewGroup container, Bundle savedInstanceState) {
 
 		this.inflater = inflater;
-
 
 
 		final View view = inflater.inflate(R.layout.fragment_conversation,

@@ -7,12 +7,19 @@ import de.gultsch.chat.utils.UIHelper;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract.CommonDataKinds;
+import android.provider.ContactsContract.Contacts;
+import android.provider.ContactsContract.Intents;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.QuickContactBadge;
 import android.widget.TextView;
 
 public class DialogContactDetails extends DialogFragment {
@@ -34,7 +41,8 @@ public class DialogContactDetails extends DialogFragment {
 		TextView status = (TextView) view.findViewById(R.id.details_contactstatus);
 		CheckBox send = (CheckBox) view.findViewById(R.id.details_send_presence);
 		CheckBox receive = (CheckBox) view.findViewById(R.id.details_receive_presence);
-		ImageView contactPhoto = (ImageView) view.findViewById(R.id.details_contact_picture);
+		//ImageView contactPhoto = (ImageView) view.findViewById(R.id.details_contact_picture);
+		QuickContactBadge badge = (QuickContactBadge) view.findViewById(R.id.details_contact_badge);
 		
 		boolean subscriptionSend = false;
 		boolean subscriptionReceive = false;
@@ -84,11 +92,35 @@ public class DialogContactDetails extends DialogFragment {
 		receive.setChecked(subscriptionReceive);
 		contactJid.setText(contact.getJid());
 		accountJid.setText(contact.getAccount().getJid());
+
+		UIHelper.prepareContactBadge(getActivity(), badge, contact);
 		
-		if (contact.getProfilePhoto()!=null) {
-			contactPhoto.setImageURI(Uri.parse(contact.getProfilePhoto()));
-		} else {
-			contactPhoto.setImageBitmap(UIHelper.getUnknownContactPicture(contact.getDisplayName(), 300));
+		if (contact.getSystemAccount()==null) {
+			final DialogContactDetails details = this;
+			badge.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+					builder.setTitle("Add to contacts");
+					builder.setMessage("Do you want to add "+contact.getJid()+" to your contact list?");
+					builder.setNegativeButton("Cancel", null);
+					builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+						
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							Intent intent = new Intent(Intent.ACTION_INSERT_OR_EDIT);
+							intent.setType(Contacts.CONTENT_ITEM_TYPE);
+							intent.putExtra(Intents.Insert.IM_HANDLE,contact.getJid());
+							intent.putExtra(Intents.Insert.IM_PROTOCOL,CommonDataKinds.Im.PROTOCOL_JABBER);
+							intent.putExtra("finishActivityOnSaveCompleted", true);
+							getActivity().startActivityForResult(intent,ConversationActivity.INSERT_CONTACT);
+							details.dismiss();
+						}
+					});
+					builder.create().show();
+				}
+			});
 		}
 		
 		builder.setView(view);

@@ -37,6 +37,8 @@ public class ConversationActivity extends XmppActivity {
 
 	public static final String VIEW_CONVERSATION = "viewConversation";
 	public static final String CONVERSATION = "conversationUuid";
+	
+	public static final int INSERT_CONTACT = 0x9889;
 
 	protected SlidingPaneLayout spl;
 
@@ -83,6 +85,7 @@ public class ConversationActivity extends XmppActivity {
 			});
 		}
 	};
+	private boolean contactInserted = false;
 	
 	
 	public List<Conversation> getConversationList() {
@@ -229,6 +232,8 @@ public class ConversationActivity extends XmppActivity {
 			if (this.getSelectedConversation()!=null) {
 				if (this.getSelectedConversation().getMode() == Conversation.MODE_MULTI) {
 					((MenuItem) menu.findItem(R.id.action_security)).setVisible(false);
+					((MenuItem) menu.findItem(R.id.action_details)).setVisible(false);
+					((MenuItem) menu.findItem(R.id.action_archive)).setTitle("Leave conference");
 				}
 			}
 		}
@@ -322,6 +327,13 @@ public class ConversationActivity extends XmppActivity {
 	@Override
 	void onBackendConnected() {
 		
+		
+		if (contactInserted) {
+			Log.d("xmppService","merge phone contacts with roster");
+			contactInserted = false;
+			xmppConnectionService.mergePhoneContactsWithRoster();
+		}
+		
 		xmppConnectionService.setOnConversationListChangedListener(this.onConvChanged);
 		
 		if (conversationList.size()==0) {
@@ -373,6 +385,13 @@ public class ConversationActivity extends XmppActivity {
 					swapConversationFragment();
 				}
 			}
+		}
+	}
+	
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode==INSERT_CONTACT) {
+			Log.d("xmppService","contact inserted");
+			this.contactInserted  = true;
 		}
 	}
 }

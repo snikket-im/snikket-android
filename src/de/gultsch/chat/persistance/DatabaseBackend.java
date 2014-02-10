@@ -233,9 +233,15 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 	public List<Contact> getContacts(Account account) {
 		List<Contact> list = new ArrayList<Contact>();
 		SQLiteDatabase db = this.getReadableDatabase();
-		String args[] = {account.getUuid()};
-		Cursor cursor = db.query(Contact.TABLENAME, null, Contact.ACCOUNT+"=?", args, null,
-				null, null);
+		Cursor cursor;
+		if (account==null) {
+			cursor = db.query(Contact.TABLENAME, null, null, null, null,
+					null, null);
+		} else {
+			String args[] = {account.getUuid()};
+			cursor = db.query(Contact.TABLENAME, null, Contact.ACCOUNT+"=?", args, null,
+					null, null);
+		}
 		while (cursor.moveToNext()) {
 			list.add(Contact.fromCursor(cursor));
 		}

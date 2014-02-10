@@ -1,28 +1,43 @@
 package de.gultsch.chat.utils;
 
+import java.io.FileDescriptor;
+import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import de.gultsch.chat.R;
+import de.gultsch.chat.entities.Contact;
 import de.gultsch.chat.entities.Conversation;
 import de.gultsch.chat.ui.ConversationActivity;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.AssetFileDescriptor;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.preference.PreferenceManager;
+import android.provider.ContactsContract;
+import android.provider.ContactsContract.CommonDataKinds;
+import android.provider.ContactsContract.Contacts;
+import android.provider.ContactsContract.Intents;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.QuickContactBadge;
 
 public class UIHelper {
 	public static String readableTimeDifference(long time) {
@@ -70,44 +85,62 @@ public class UIHelper {
 
 		return bitmap;
 	}
-	
-	public static Notification getUnreadMessageNotification(Context context, Conversation conversation) {
-		
-		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
-		String ringtone = sharedPref.getString("notification_ringtone",null);
-		
+
+	public static Notification getUnreadMessageNotification(Context context,
+			Conversation conversation) {
+
+		SharedPreferences sharedPref = PreferenceManager
+				.getDefaultSharedPreferences(context);
+		String ringtone = sharedPref.getString("notification_ringtone", null);
+
 		Resources res = context.getResources();
-		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context);
-		mBuilder.setLargeIcon(UIHelper.getUnknownContactPicture(conversation.getName(),(int) res.getDimension(android.R.dimen.notification_large_icon_width)));
+		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
+				context);
+		mBuilder.setLargeIcon(UIHelper.getUnknownContactPicture(conversation
+				.getName(), (int) res
+				.getDimension(android.R.dimen.notification_large_icon_width)));
 		mBuilder.setContentTitle(conversation.getName());
 		mBuilder.setContentText(conversation.getLatestMessage());
 		mBuilder.setSmallIcon(R.drawable.notification);
 		mBuilder.setLights(0xffffffff, 2000, 4000);
-		if (ringtone!=null) {
+		if (ringtone != null) {
 			mBuilder.setSound(Uri.parse(ringtone));
 		}
-		
+
 		TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
 		stackBuilder.addParentStack(ConversationActivity.class);
-		
-		Intent viewConversationIntent = new Intent(context,ConversationActivity.class);
-		viewConversationIntent.setAction(Intent.ACTION_VIEW);
-		viewConversationIntent.putExtra(
-				ConversationActivity.CONVERSATION,
-				conversation.getUuid());
-		viewConversationIntent
-				.setType(ConversationActivity.VIEW_CONVERSATION);
-		
-		stackBuilder.addNextIntent(viewConversationIntent);
-		
-		PendingIntent resultPendingIntent =
-		        stackBuilder.getPendingIntent(
-		            0,
-		            PendingIntent.FLAG_UPDATE_CURRENT
-		        );
 
-		
+		Intent viewConversationIntent = new Intent(context,
+				ConversationActivity.class);
+		viewConversationIntent.setAction(Intent.ACTION_VIEW);
+		viewConversationIntent.putExtra(ConversationActivity.CONVERSATION,
+				conversation.getUuid());
+		viewConversationIntent.setType(ConversationActivity.VIEW_CONVERSATION);
+
+		stackBuilder.addNextIntent(viewConversationIntent);
+
+		PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0,
+				PendingIntent.FLAG_UPDATE_CURRENT);
+
 		mBuilder.setContentIntent(resultPendingIntent);
 		return mBuilder.build();
+	}
+
+	public static void prepareContactBadge(final Activity activity,
+			QuickContactBadge badge, final Contact contact) {
+		if (contact.getSystemAccount()!=null) {
+			String[] systemAccount = contact.getSystemAccount().split("#");
+			long id = Long.parseLong(systemAccount[0]);
+			badge.assignContactUri(Contacts.getLookupUri(id, systemAccount[1]));
+	
+			if (contact.getProfilePhoto() != null) {
+				badge.setImageURI(Uri.parse(contact.getProfilePhoto()));
+			} else {
+				badge.setImageBitmap(UIHelper.getUnknownContactPicture(contact.getDisplayName(), 400));
+			}
+		} else {
+			badge.setImageBitmap(UIHelper.getUnknownContactPicture(contact.getDisplayName(), 400));
+		}
+
 	}
 }

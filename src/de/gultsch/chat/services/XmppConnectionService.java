@@ -13,6 +13,8 @@ import de.gultsch.chat.persistance.DatabaseBackend;
 import de.gultsch.chat.ui.OnAccountListChangedListener;
 import de.gultsch.chat.ui.OnConversationListChangedListener;
 import de.gultsch.chat.ui.OnRosterFetchedListener;
+import de.gultsch.chat.utils.OnPhoneContactsLoadedListener;
+import de.gultsch.chat.utils.PhoneHelper;
 import de.gultsch.chat.utils.UIHelper;
 import de.gultsch.chat.xml.Element;
 import de.gultsch.chat.xmpp.IqPacket;
@@ -76,7 +78,7 @@ public class XmppConnectionService extends Service {
 						status = Message.STATUS_SEND;
 					} else {
 						return; // massage has no body and is not carbon. just
-								// skip
+						// skip
 					}
 					if (forwarded != null) {
 						Element message = forwarded.findChild("message");
@@ -258,98 +260,112 @@ public class XmppConnectionService extends Service {
 	public void updateRoster(final Account account,
 			final OnRosterFetchedListener listener) {
 
-		final Hashtable<String, Bundle> phoneContacts = new Hashtable<String, Bundle>();
-		final List<Contact> contacts = new ArrayList<Contact>();
+		PhoneHelper.loadPhoneContacts(this,
+				new OnPhoneContactsLoadedListener() {
 
-		final String[] PROJECTION = new String[] {
-				ContactsContract.Data.CONTACT_ID,
-				ContactsContract.Data.DISPLAY_NAME,
-				ContactsContract.Data.PHOTO_THUMBNAIL_URI,
-				ContactsContract.CommonDataKinds.Im.DATA };
+					@Override
+					public void onPhoneContactsLoaded(
+							final Hashtable<String, Bundle> phoneContacts) {
+						IqPacket iqPacket = new IqPacket(IqPacket.TYPE_GET);
+						Element query = new Element("query");
+						query.setAttribute("xmlns", "jabber:iq:roster");
+						query.setAttribute("ver", "");
+						iqPacket.addChild(query);
+						connections.get(account).sendIqPacket(iqPacket,
+								new OnIqPacketReceived() {
 
-		final String SELECTION = "(" + ContactsContract.Data.MIMETYPE + "=\""
-				+ ContactsContract.CommonDataKinds.Im.CONTENT_ITEM_TYPE
-				+ "\") AND (" + ContactsContract.CommonDataKinds.Im.PROTOCOL
-				+ "=\"" + ContactsContract.CommonDataKinds.Im.PROTOCOL_JABBER
-				+ "\")";
+									@Override
+									public void onIqPacketReceived(
+											Account account, IqPacket packet) {
+										List<Contact> contacts = new ArrayList<Contact>();
+										Element roster = packet
+												.findChild("query");
+										if (roster != null) {
+											for (Element item : roster
+													.getChildren()) {
+												Contact contact;
+												String name = item
+														.getAttribute("name");
+												String jid = item
+														.getAttribute("jid");
+												if (phoneContacts
+														.containsKey(jid)) {
+													Bundle phoneContact = phoneContacts
+															.get(jid);
+													String systemAccount = phoneContact
+															.getInt("phoneid")
+															+ "#"
+															+ phoneContact
+																	.getString("lookup");
+													contact = new Contact(
+															account,
+															phoneContact
+																	.getString("displayname"),
+															jid,
+															phoneContact
+																	.getString("photouri"));
+													contact.setSystemAccount(systemAccount);
+												} else {
+													if (name == null) {
+														name = jid.split("@")[0];
+													}
+													contact = new Contact(
+															account, name, jid,
+															null);
 
-		CursorLoader mCursorLoader = new CursorLoader(this,
-				ContactsContract.Data.CONTENT_URI, PROJECTION, SELECTION, null,
-				null);
-		mCursorLoader.registerListener(0, new OnLoadCompleteListener<Cursor>() {
-
-			@Override
-			public void onLoadComplete(Loader<Cursor> arg0, Cursor cursor) {
-				while (cursor.moveToNext()) {
-					Bundle contact = new Bundle();
-					contact.putInt("phoneid", cursor.getInt(cursor
-							.getColumnIndex(ContactsContract.Data.CONTACT_ID)));
-					contact.putString(
-							"displayname",
-							cursor.getString(cursor
-									.getColumnIndex(ContactsContract.Data.DISPLAY_NAME)));
-					contact.putString(
-							"photouri",
-							cursor.getString(cursor
-									.getColumnIndex(ContactsContract.Data.PHOTO_THUMBNAIL_URI)));
-					phoneContacts.put(
-							cursor.getString(cursor
-									.getColumnIndex(ContactsContract.CommonDataKinds.Im.DATA)),
-							contact);
-				}
-				IqPacket iqPacket = new IqPacket(IqPacket.TYPE_GET);
-				Element query = new Element("query");
-				query.setAttribute("xmlns", "jabber:iq:roster");
-				query.setAttribute("ver", "");
-				iqPacket.addChild(query);
-				connections.get(account).sendIqPacket(iqPacket,
-						new OnIqPacketReceived() {
-
-							@Override
-							public void onIqPacketReceived(Account account,
-									IqPacket packet) {
-								Element roster = packet.findChild("query");
-								if (roster != null) {
-									for (Element item : roster.getChildren()) {
-										Contact contact;
-										String name = item.getAttribute("name");
-										String jid = item.getAttribute("jid");
-										if (phoneContacts.containsKey(jid)) {
-											Bundle phoneContact = phoneContacts
-													.get(jid);
-											contact = new Contact(
-													account,
-													phoneContact
-															.getString("displayname"),
-													jid,
-													phoneContact
-															.getString("photouri"));
-											contact.setSystemAccount(phoneContact
-													.getInt("phoneid"));
-										} else {
-											if (name == null) {
-												name = jid.split("@")[0];
+												}
+												contact.setAccount(account);
+												contact.setSubscription(item
+														.getAttribute("subscription"));
+												contacts.add(contact);
 											}
-											contact = new Contact(account,
-													name, jid, null);
-
+											databaseBackend
+													.mergeContacts(contacts);
+											if (listener != null) {
+												listener.onRosterFetched(contacts);
+											}
 										}
-										contact.setAccount(account);
-										contact.setSubscription(item
-												.getAttribute("subscription"));
-										contacts.add(contact);
 									}
-									databaseBackend.mergeContacts(contacts);
-									if (listener != null) {
-										listener.onRosterFetched(contacts);
-									}
+								});
+
+					}
+				});
+	}
+
+	public void mergePhoneContactsWithRoster() {
+		PhoneHelper.loadPhoneContacts(this,
+				new OnPhoneContactsLoadedListener() {
+					@Override
+					public void onPhoneContactsLoaded(
+							Hashtable<String, Bundle> phoneContacts) {
+						List<Contact> contacts = databaseBackend
+								.getContacts(null);
+						for (int i = 0; i < contacts.size(); ++i) {
+							Contact contact = contacts.get(i);
+							if (phoneContacts.containsKey(contact.getJid())) {
+								Bundle phoneContact = phoneContacts.get(contact
+										.getJid());
+								String systemAccount = phoneContact
+										.getInt("phoneid")
+										+ "#"
+										+ phoneContact.getString("lookup");
+								contact.setSystemAccount(systemAccount);
+								contact.setPhotoUri(phoneContact
+										.getString("photouri"));
+								contact.setDisplayName(phoneContact
+										.getString("displayname"));
+								databaseBackend.updateContact(contact);
+							} else {
+								if ((contact.getSystemAccount() != null)
+										|| (contact.getProfilePhoto() != null)) {
+									contact.setSystemAccount(null);
+									contact.setPhotoUri(null);
+									databaseBackend.updateContact(contact);
 								}
 							}
-						});
-
-			}
-		});
-		mCursorLoader.startLoading();
+						}
+					}
+				});
 	}
 
 	public void addConversation(Conversation conversation) {

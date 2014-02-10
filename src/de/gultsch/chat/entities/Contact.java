@@ -24,7 +24,7 @@ public class Contact extends AbstractEntity implements Serializable {
 	protected String displayName;
 	protected String jid;
 	protected String subscription;
-	protected int systemAccount;
+	protected String systemAccount;
 	protected String photoUri;
 	protected String openPGPKey;
 	protected Presences presences = new Presences();
@@ -44,7 +44,7 @@ public class Contact extends AbstractEntity implements Serializable {
 	}
 
 	public Contact(String uuid, String account, String displayName, String jid,
-			String subscription, String photoUri, int systemAccount,
+			String subscription, String photoUri, String systemAccount,
 			String pgpKey,String presences) {
 		this.uuid = uuid;
 		this.accountUuid = account;
@@ -96,7 +96,7 @@ public class Contact extends AbstractEntity implements Serializable {
 				cursor.getString(cursor.getColumnIndex(JID)),
 				cursor.getString(cursor.getColumnIndex(SUBSCRIPTION)),
 				cursor.getString(cursor.getColumnIndex(PHOTOURI)),
-				cursor.getInt(cursor.getColumnIndex(SYSTEMACCOUNT)),
+				cursor.getString(cursor.getColumnIndex(SYSTEMACCOUNT)),
 				cursor.getString(cursor.getColumnIndex(OPENPGPKEY)),
 				cursor.getString(cursor.getColumnIndex(PRESENCES)));
 	}
@@ -109,7 +109,7 @@ public class Contact extends AbstractEntity implements Serializable {
 		return this.subscription;
 	}
 
-	public void setSystemAccount(int account) {
+	public void setSystemAccount(String account) {
 		this.systemAccount = account;
 	}
 
@@ -160,5 +160,17 @@ public class Contact extends AbstractEntity implements Serializable {
 
 	public void setPresences(Presences pres) {
 		this.presences = pres;	
+	}
+	
+	public void setPhotoUri(String uri) {
+		this.photoUri = uri;
+	}
+	
+	public void setDisplayName(String name) {
+		this.displayName = name;
+	}
+
+	public String getSystemAccount() {
+		return systemAccount;
 	}
 }
