@@ -229,6 +229,10 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 			}
 		}
 	}
+	
+	public void mergeMessageIntoConversation(Message message) {
+		// select counterpart,body,(timeSent/1000)-180 as min,(timeSent/1000)+180 as max from messages where min<1392035670 and max>1392035670;
+	}
 
 	public List<Contact> getContacts(Account account) {
 		List<Contact> list = new ArrayList<Contact>();

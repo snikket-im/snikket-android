@@ -1,6 +1,9 @@
 package de.gultsch.chat.services;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
 
@@ -28,12 +31,8 @@ import de.gultsch.chat.xmpp.XmppConnection;
 import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Context;
-import android.content.CursorLoader;
 import android.content.Intent;
-import android.content.Loader;
-import android.content.Loader.OnLoadCompleteListener;
 import android.database.ContentObserver;
-import android.database.Cursor;
 import android.os.Binder;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -115,8 +114,7 @@ public class XmppConnectionService extends Service {
 				String counterPart = null;
 				conversation = findOrCreateConversation(account, jid, muc);
 				if (muc) {
-					if ((fromParts.length == 1) || (packet.hasChild("subject"))
-							|| (packet.hasChild("delay"))) {
+					if ((fromParts.length == 1) || (packet.hasChild("subject"))) {
 						return;
 					}
 					counterPart = fromParts[1];
@@ -129,6 +127,16 @@ public class XmppConnectionService extends Service {
 				}
 				Message message = new Message(conversation, counterPart, body,
 						Message.ENCRYPTION_NONE, status);
+				if (packet.hasChild("delay")) {
+					try {
+						String stamp = packet.findChild("delay").getAttribute("stamp");
+						stamp = stamp.replace("Z","+0000");
+						Date date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").parse(stamp);
+						message.setTime(date.getTime());
+					} catch (ParseException e) {
+						Log.d(LOGTAG,"error trying to parse date"+e.getMessage());
+					}
+				}
 				if(notify) {
 					message.markUnread();
 				}
@@ -550,7 +558,15 @@ public class XmppConnectionService extends Service {
 		packet.setAttribute("to", muc + "/" + account.getUsername());
 		Element x = new Element("x");
 		x.setAttribute("xmlns", "http://jabber.org/protocol/muc");
+		if (conversation.getMessages().size()!=0) {
+			Element history = new Element("history");
+			history.setAttribute("seconds",(System.currentTimeMillis() - conversation.getLatestMessageDate()) / 1000+"");
+			x.addChild(history);
+		} else {
+			Log.d(LOGTAG,"conversation had no prior messages"+conversation.getMessages().size());
+		}
 		packet.addChild(x);
+		Log.d(LOGTAG,packet.toString());
 		connections.get(conversation.getAccount()).sendPresencePacket(packet);
 	}
 

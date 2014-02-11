@@ -127,5 +127,9 @@ public class Message extends AbstractEntity {
 	public void markUnread() {
 		this.read = false;
 	}
+
+	public void setTime(long time) {
+		this.timeSent = time;
+	}
 	
 }

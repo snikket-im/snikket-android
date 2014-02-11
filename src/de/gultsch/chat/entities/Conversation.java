@@ -73,7 +73,7 @@ public class Conversation extends AbstractEntity {
 	}
 	
 	public boolean isRead() {
-		if (this.messages == null) return true;
+		if ((this.messages == null)||(this.messages.size() == 0)) return true;
 		return this.messages.get(this.messages.size() - 1).isRead();
 	}
 	
