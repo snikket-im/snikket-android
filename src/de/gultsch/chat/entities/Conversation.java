@@ -78,7 +78,6 @@ public class Conversation extends AbstractEntity {
 	}
 	
 	public void markRead() {
-		Log.d("xmppService", "inside mark read method");
 		if (this.messages == null) return;
 		for(int i = this.messages.size() -1; i >= 0; --i) {
 			if (messages.get(i).isRead()) return;

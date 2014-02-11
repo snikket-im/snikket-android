@@ -252,7 +252,6 @@ public class NewConversationActivity extends XmppActivity {
 		this.accounts = xmppConnectionService.getAccounts();
 		this.rosterContacts.clear();
 		for (int i = 0; i < accounts.size(); ++i) {
-			if (accounts.get(i).getStatus() == Account.STATUS_ONLINE) {
 				xmppConnectionService.getRoster(accounts.get(i),
 						new OnRosterFetchedListener() {
 
@@ -271,7 +270,6 @@ public class NewConversationActivity extends XmppActivity {
 						});
 			}
 		}
-	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

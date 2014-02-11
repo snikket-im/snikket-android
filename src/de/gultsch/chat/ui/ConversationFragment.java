@@ -60,14 +60,14 @@ public class ConversationFragment extends Fragment {
 						activity.xmppConnectionService.sendMessage(conversation.getAccount(),message);
 						chatMsg.setText("");
 						
-						if (conversation.getMode()==Conversation.MODE_SINGLE) {
+						/*if (conversation.getMode()==Conversation.MODE_SINGLE) {
 							conversation.getMessages().add(message);
 							messageList.add(message);
-						}
+						}*/
 						
-						activity.updateConversationList();
+						//activity.updateConversationList();
 						
-						messagesView.setSelection(messageList.size() - 1);
+						//messagesView.setSelection(messageList.size() - 1);
 					}
 				});
 
@@ -151,9 +151,16 @@ public class ConversationFragment extends Fragment {
 				TextView time = (TextView) view.findViewById(R.id.message_time);
 				if (item.getStatus() == Message.STATUS_UNSEND) {
 					time.setTypeface(null, Typeface.ITALIC);
+					time.setText("sending\u2026");
 				} else {
-					time.setText(UIHelper.readableTimeDifference(item
+					time.setTypeface(null,Typeface.NORMAL);
+					if ((item.getConversation().getMode()==Conversation.MODE_SINGLE)||(type != RECIEVED)) {
+						time.setText(UIHelper.readableTimeDifference(item
 							.getTimeSent()));
+					} else {
+						time.setText(item.getCounterpart()+" \u00B7 "+UIHelper.readableTimeDifference(item
+								.getTimeSent()));
+					}
 				}
 				return view;
 			}

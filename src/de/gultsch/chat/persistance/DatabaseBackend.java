@@ -176,8 +176,6 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 	public void deleteAccount(Account account) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		String[] args = { account.getUuid() };
-		Log.d("gultsch", "backend trying to delete account with uuid:"
-				+ account.getUuid());
 		db.delete(Account.TABLENAME, Account.UUID + "=?", args);
 	}
 
@@ -262,5 +260,11 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 			return null;
 		cursor.moveToFirst();
 		return Contact.fromCursor(cursor);
+	}
+
+	public void deleteMessage(Message message) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		String[] args = { message.getUuid() };
+		db.delete(Message.TABLENAME, Message.UUID + "=?", args);
 	}
 }
