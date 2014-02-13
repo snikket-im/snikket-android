@@ -15,7 +15,6 @@ import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -36,38 +35,30 @@ public class ConversationFragment extends Fragment {
 	protected ArrayAdapter<Message> messageListAdapter;
 	protected Contact contact;
 	
+	private EditText chatMsg;
+	private int nextMessageEncryption = Message.ENCRYPTION_NONE;
+	
 	@Override
 	public View onCreateView(final LayoutInflater inflater,
 			ViewGroup container, Bundle savedInstanceState) {
 
 		this.inflater = inflater;
 
-
 		final View view = inflater.inflate(R.layout.fragment_conversation,
 				container, false);
+		chatMsg = (EditText) view.findViewById(R.id.textinput);
 		((ImageButton) view.findViewById(R.id.textSendButton))
 				.setOnClickListener(new OnClickListener() {
 
 					@Override
 					public void onClick(View v) {
 						ConversationActivity activity = (ConversationActivity) getActivity();
-						EditText chatMsg = (EditText) view
-								.findViewById(R.id.textinput);
 						if (chatMsg.getText().length() < 1)
 							return;
 						Message message = new Message(conversation, chatMsg
-								.getText().toString(), Message.ENCRYPTION_NONE);
+								.getText().toString(), nextMessageEncryption);
 						activity.xmppConnectionService.sendMessage(conversation.getAccount(),message);
 						chatMsg.setText("");
-						
-						/*if (conversation.getMode()==Conversation.MODE_SINGLE) {
-							conversation.getMessages().add(message);
-							messageList.add(message);
-						}*/
-						
-						//activity.updateConversationList();
-						
-						//messagesView.setSelection(messageList.size() - 1);
 					}
 				});
 
@@ -213,6 +204,22 @@ public class ConversationFragment extends Fragment {
 		this.messageList.clear();
 		this.messageList.addAll(this.conversation.getMessages());
 		this.messageListAdapter.notifyDataSetChanged();
+		if (messageList.size()>=1) {
+			nextMessageEncryption = this.conversation.getLatestMessage().getEncryption();
+		}
+		getActivity().invalidateOptionsMenu();
+		switch (nextMessageEncryption) {
+		case Message.ENCRYPTION_NONE:
+			chatMsg.setHint("Send plain text message");
+			break;
+		case Message.ENCRYPTION_OTR:
+			chatMsg.setHint("Send OTR encrypted message");
+			break;
+		case Message.ENCRYPTION_PGP:
+			chatMsg.setHint("Send openPGP encryted messeage");
+		default:
+			break;
+		}
 		int size = this.messageList.size();
 		if (size >= 1)
 			messagesView.setSelection(size - 1);

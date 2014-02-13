@@ -31,14 +31,15 @@ public final class R {
         public static final int ic_action_add_person=0x7f020002;
         public static final int ic_action_delete=0x7f020003;
         public static final int ic_action_refresh=0x7f020004;
-        public static final int ic_action_send=0x7f020005;
-        public static final int ic_action_send_now=0x7f020006;
-        public static final int ic_action_unsecure=0x7f020007;
-        public static final int ic_launcher=0x7f020008;
-        public static final int ic_profile=0x7f020009;
-        public static final int message_border=0x7f02000a;
-        public static final int notification=0x7f02000b;
-        public static final int section_header=0x7f02000c;
+        public static final int ic_action_secure=0x7f020005;
+        public static final int ic_action_send=0x7f020006;
+        public static final int ic_action_send_now=0x7f020007;
+        public static final int ic_action_unsecure=0x7f020008;
+        public static final int ic_launcher=0x7f020009;
+        public static final int ic_profile=0x7f02000a;
+        public static final int message_border=0x7f02000b;
+        public static final int notification=0x7f02000c;
+        public static final int section_header=0x7f02000d;
     }
     public static final class id {
         public static final int account_confirm_password_desc=0x7f0a0019;

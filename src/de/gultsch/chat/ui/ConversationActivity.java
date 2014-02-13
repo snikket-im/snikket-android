@@ -9,6 +9,7 @@ import de.gultsch.chat.R;
 import de.gultsch.chat.R.id;
 import de.gultsch.chat.entities.Contact;
 import de.gultsch.chat.entities.Conversation;
+import de.gultsch.chat.entities.Message;
 import de.gultsch.chat.utils.UIHelper;
 import android.net.Uri;
 import android.os.Bundle;
@@ -114,7 +115,7 @@ public class ConversationActivity extends XmppActivity {
 			Collections.sort(this.conversationList, new Comparator<Conversation>() {
 				@Override
 				public int compare(Conversation lhs, Conversation rhs) {
-					return (int) (rhs.getLatestMessageDate() - lhs.getLatestMessageDate());
+					return (int) (rhs.getLatestMessage().getTimeSent() - lhs.getLatestMessage().getTimeSent());
 				}
 			});
 		}
@@ -143,7 +144,7 @@ public class ConversationActivity extends XmppActivity {
 				TextView convName = (TextView) view.findViewById(R.id.conversation_name);
 				convName.setText(conv.getName());
 				TextView convLastMsg = (TextView) view.findViewById(R.id.conversation_lastmsg);
-				convLastMsg.setText(conv.getLatestMessage());
+				convLastMsg.setText(conv.getLatestMessage().getBody());
 				
 				if(!conv.isRead()) {
 					convName.setTypeface(null,Typeface.BOLD);
@@ -154,7 +155,7 @@ public class ConversationActivity extends XmppActivity {
 				}
 				
 				((TextView) view.findViewById(R.id.conversation_lastupdate))
-				.setText(UIHelper.readableTimeDifference(getItem(position).getLatestMessageDate()));
+				.setText(UIHelper.readableTimeDifference(getItem(position).getLatestMessage().getTimeSent()));
 				
 				Uri profilePhoto = getItem(position).getProfilePhotoUri();
 				ImageView imageView = (ImageView) view.findViewById(R.id.conversation_image);
@@ -238,18 +239,23 @@ public class ConversationActivity extends XmppActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.conversations, menu);
-
+		MenuItem menuSecure = (MenuItem) menu.findItem(R.id.action_security);
+		
 		if (spl.isOpen()) {
 			((MenuItem) menu.findItem(R.id.action_archive)).setVisible(false);
 			((MenuItem) menu.findItem(R.id.action_details)).setVisible(false);
-			((MenuItem) menu.findItem(R.id.action_security)).setVisible(false);
+			menuSecure.setVisible(false);
 		} else {
 			((MenuItem) menu.findItem(R.id.action_add)).setVisible(false);
 			if (this.getSelectedConversation()!=null) {
 				if (this.getSelectedConversation().getMode() == Conversation.MODE_MULTI) {
 					((MenuItem) menu.findItem(R.id.action_security)).setVisible(false);
-					((MenuItem) menu.findItem(R.id.action_details)).setVisible(false);
+					menuSecure.setVisible(false);
 					((MenuItem) menu.findItem(R.id.action_archive)).setTitle("Leave conference");
+				} else {
+					if (this.getSelectedConversation().getLatestMessage().getEncryption() != Message.ENCRYPTION_NONE) {
+						menuSecure.setIcon(R.drawable.ic_action_secure);
+					}
 				}
 			}
 		}

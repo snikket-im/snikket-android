@@ -1,7 +1,14 @@
 package de.gultsch.chat.entities;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import de.gultsch.chat.crypto.OtrEngine;
+import de.gultsch.chat.xmpp.XmppConnection;
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
+import android.util.JsonReader;
 import android.util.Log;
 
 public class Account  extends AbstractEntity{
@@ -15,6 +22,7 @@ public class Account  extends AbstractEntity{
 	public static final String PASSWORD = "password";
 	public static final String OPTIONS = "options";
 	public static final String ROSTERVERSION = "rosterversion";
+	public static final String KEYS = "keys";
 	
 	public static final int OPTION_USETLS = 0;
 	public static final int OPTION_DISABLED = 1;
@@ -34,23 +42,32 @@ public class Account  extends AbstractEntity{
 	protected String rosterVersion;
 	protected String resource;
 	protected int status = 0;
+	protected JSONObject keys = new JSONObject();
 	
 	protected boolean online = false;
+	
+	transient OtrEngine otrEngine = null;
+	transient XmppConnection xmppConnection = null;
 	
 	public Account() {
 		this.uuid = "0";
 	}
 	
 	public Account(String username, String server, String password) {
-		this(java.util.UUID.randomUUID().toString(),username,server,password,0,null);
+		this(java.util.UUID.randomUUID().toString(),username,server,password,0,null,"");
 	}
-	public Account(String uuid, String username, String server,String password, int options, String rosterVersion) {
+	public Account(String uuid, String username, String server,String password, int options, String rosterVersion, String keys) {
 		this.uuid = uuid;
 		this.username = username;
 		this.server = server;
 		this.password = password;
 		this.options = options;
 		this.rosterVersion = rosterVersion;
+		try {
+			this.keys = new JSONObject(keys);
+		} catch (JSONException e) {
+			
+		}
 	}
 	
 	public boolean isOptionSet(int option) {
@@ -108,6 +125,14 @@ public class Account  extends AbstractEntity{
 	public String getJid() {
 		return username+"@"+server;
 	}
+	
+	public JSONObject getKeys() {
+		return keys;
+	}
+	
+	public void setKey(String keyName, String keyValue) throws JSONException {
+		this.keys.put(keyName, keyValue);
+	}
 
 	@Override
 	public ContentValues getContentValues() {
@@ -117,6 +142,8 @@ public class Account  extends AbstractEntity{
 		values.put(SERVER, server);
 		values.put(PASSWORD, password);
 		values.put(OPTIONS,options);
+		values.put(KEYS,this.keys.toString());
+		values.put(ROSTERVERSION,rosterVersion);
 		return values;
 	}
 	
@@ -126,8 +153,28 @@ public class Account  extends AbstractEntity{
 				cursor.getString(cursor.getColumnIndex(SERVER)),
 				cursor.getString(cursor.getColumnIndex(PASSWORD)),
 				cursor.getInt(cursor.getColumnIndex(OPTIONS)),
-				cursor.getString(cursor.getColumnIndex(ROSTERVERSION))
+				cursor.getString(cursor.getColumnIndex(ROSTERVERSION)),
+				cursor.getString(cursor.getColumnIndex(KEYS))
 				);
 	}
 
+	
+	public OtrEngine getOtrEngine(Context context) {
+		if (otrEngine==null) {
+			otrEngine = new OtrEngine(context,this);
+		}
+		return this.otrEngine;
+	}
+
+	public XmppConnection getXmppConnection() {
+		return this.xmppConnection;
+	}
+
+	public void setXmppConnection(XmppConnection connection) {
+		this.xmppConnection = connection;
+	}
+
+	public String getFullJid() {
+		return this.getJid()+"/"+this.resource;
+	}
 }

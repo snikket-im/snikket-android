@@ -411,6 +411,7 @@ public class XmppConnection implements Runnable {
 	}
 
 	public void sendMessagePacket(MessagePacket packet) {
+		Log.d(LOGTAG,"sending message packet "+packet.toString());
 		tagWriter.writeElement(packet);
 	}
 
@@ -440,6 +441,6 @@ public class XmppConnection implements Runnable {
 
 	public void disconnect() {
 		shouldConnect = false;
-		tagWriter.writeTag(Tag.end("stream"));
+		tagWriter.writeTag(Tag.end("stream:stream"));
 	}
 }

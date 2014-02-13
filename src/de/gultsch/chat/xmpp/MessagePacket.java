@@ -42,6 +42,7 @@ public class MessagePacket extends Element {
 	}
 	
 	public void setBody(String text) {
+		this.children.remove(findChild("body"));
 		Element body = new Element("body");
 		body.setContent(text);
 		this.children.add(body);

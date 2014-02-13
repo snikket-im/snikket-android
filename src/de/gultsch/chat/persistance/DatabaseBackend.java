@@ -35,7 +35,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 				+ " TEXT PRIMARY KEY," + Account.USERNAME + " TEXT,"
 				+ Account.SERVER + " TEXT," + Account.PASSWORD + " TEXT,"
 				+ Account.ROSTERVERSION + " TEXT," + Account.OPTIONS
-				+ " NUMBER)");
+				+ " NUMBER, "+Account.KEYS+" TEXT)");
 		db.execSQL("create table " + Conversation.TABLENAME + " ("
 				+ Conversation.UUID + " TEXT PRIMARY KEY, " + Conversation.NAME
 				+ " TEXT, " + Conversation.CONTACT + " TEXT, "

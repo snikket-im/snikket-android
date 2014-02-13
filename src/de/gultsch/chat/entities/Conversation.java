@@ -3,7 +3,16 @@ package de.gultsch.chat.entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.gultsch.chat.crypto.OtrEngine;
+import de.gultsch.chat.xmpp.XmppConnection;
+
+import net.java.otr4j.OtrException;
+import net.java.otr4j.session.SessionID;
+import net.java.otr4j.session.SessionImpl;
+import net.java.otr4j.session.SessionStatus;
+
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.util.Log;
@@ -40,6 +49,9 @@ public class Conversation extends AbstractEntity {
 	private transient List<Message> messages = null;
 	private transient Account account = null;
 	private transient Contact contact;
+	
+	private transient SessionImpl otrSession;
+	private transient String foreignOtrPresence;
 
 	public Conversation(String name, Account account,
 			String contactJid, int mode) {
@@ -85,19 +97,13 @@ public class Conversation extends AbstractEntity {
 		}
 	}
 	
-	public String getLatestMessage() {
+	public Message getLatestMessage() {
 		if ((this.messages == null)||(this.messages.size()==0)) {
-			return null;
+			Message message = new Message(this,"",Message.ENCRYPTION_NONE);
+			message.setTime(0);
+			return message;
 		} else {
-			return this.messages.get(this.messages.size() - 1).getBody();
-		}
-	}
-	
-	public long getLatestMessageDate() {
-		if ((this.messages == null)||(this.messages.size()==0)) {
-			return this.getCreated();
-		} else {
-			return this.messages.get(this.messages.size() - 1).getTimeSent();
+			return this.messages.get(this.messages.size() - 1);
 		}
 	}
 
@@ -197,5 +203,31 @@ public class Conversation extends AbstractEntity {
 
 	public void setMode(int mode) {
 		this.mode = mode;
+	}
+	
+	public void startOtrSession(Context context, String presence) {
+		Log.d("xmppService","starting otr session with "+presence);
+		SessionID sessionId = new SessionID(this.getContactJid(),presence,"xmpp");
+		this.otrSession = new SessionImpl(sessionId, getAccount().getOtrEngine(context));
+	}
+	
+	public SessionImpl getOtrSession() {
+		return this.otrSession;
+	}
+
+	public void resetOtrSession() {
+		this.otrSession = null;
+	}
+	
+	public void endOtrIfNeeded() throws OtrException {
+		if (this.otrSession!=null) {
+			if (this.otrSession.getSessionStatus() == SessionStatus.ENCRYPTED) {
+				this.otrSession.endSession();
+			}
+		}
+	}
+
+	public boolean hasOtrSession() {
+		return (this.otrSession!=null);
 	}
 }

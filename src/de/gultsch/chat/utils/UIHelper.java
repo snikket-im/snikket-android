@@ -92,7 +92,7 @@ public class UIHelper {
 				.getName(), (int) res
 				.getDimension(android.R.dimen.notification_large_icon_width)));
 		mBuilder.setContentTitle(conversation.getName());
-		mBuilder.setTicker(conversation.getLatestMessage().trim());
+		mBuilder.setTicker(conversation.getLatestMessage().getBody().trim());
 		StringBuilder bigText = new StringBuilder();
 		List<Message> messages = conversation.getMessages();
 		String firstLine = "";

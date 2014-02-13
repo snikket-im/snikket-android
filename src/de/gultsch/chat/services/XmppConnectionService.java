@@ -6,6 +6,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Set;
+
+import net.java.otr4j.OtrException;
+import net.java.otr4j.session.Session;
+import net.java.otr4j.session.SessionImpl;
+import net.java.otr4j.session.SessionStatus;
 
 import de.gultsch.chat.entities.Account;
 import de.gultsch.chat.entities.Contact;
@@ -50,8 +56,6 @@ public class XmppConnectionService extends Service {
 	private List<Account> accounts;
 	private List<Conversation> conversations = null;
 
-	private Hashtable<Account, XmppConnection> connections = new Hashtable<Account, XmppConnection>();
-
 	private OnConversationListChangedListener convChangedListener = null;
 	private OnAccountListChangedListener accountChangedListener = null;
 
@@ -73,7 +77,9 @@ public class XmppConnectionService extends Service {
 			if ((packet.getType() == MessagePacket.TYPE_CHAT)
 					|| (packet.getType() == MessagePacket.TYPE_GROUPCHAT)) {
 				boolean notify = true;
+				boolean runOtrCheck = false;
 				int status = Message.STATUS_RECIEVED;
+				int encryption = Message.ENCRYPTION_NONE;
 				String body;
 				String fullJid;
 				if (!packet.hasChild("body")) {
@@ -106,6 +112,7 @@ public class XmppConnectionService extends Service {
 				} else {
 					fullJid = packet.getFrom();
 					body = packet.getBody();
+					runOtrCheck = true;
 				}
 				Conversation conversation = null;
 				String[] fromParts = fullJid.split("/");
@@ -124,9 +131,51 @@ public class XmppConnectionService extends Service {
 					}
 				} else {
 					counterPart = fullJid;
+					if ((runOtrCheck) && body.startsWith("?OTR")) {
+						if (!conversation.hasOtrSession()) {
+							conversation.startOtrSession(
+									getApplicationContext(), fromParts[1]);
+						}
+						try {
+							Session otrSession = conversation.getOtrSession();
+							SessionStatus before = otrSession
+									.getSessionStatus();
+							body = otrSession.transformReceiving(body);
+							SessionStatus after = otrSession.getSessionStatus();
+							if ((before != after)
+									&& (after == SessionStatus.ENCRYPTED)) {
+								Log.d(LOGTAG, "otr session etablished");
+								List<Message> messages = conversation
+										.getMessages();
+								for (int i = 0; i < messages.size(); ++i) {
+									Message msg = messages.get(i);
+									if ((msg.getStatus() == Message.STATUS_UNSEND)
+											&& (msg.getEncryption() == Message.ENCRYPTION_OTR)) {
+										MessagePacket outPacket = prepareMessagePacket(
+												account, msg, otrSession);
+										msg.setStatus(Message.STATUS_SEND);
+										databaseBackend.updateMessage(msg);
+										account.getXmppConnection()
+												.sendMessagePacket(outPacket);
+									}
+								}
+								if (convChangedListener!=null) {
+									convChangedListener.onConversationListChanged();
+								}
+							}
+						} catch (Exception e) {
+							Log.d(LOGTAG, "error receiving otr. resetting");
+							conversation.resetOtrSession();
+							return;
+						}
+						if (body == null) {
+							return;
+						}
+						encryption = Message.ENCRYPTION_OTR;
+					}
 				}
 				Message message = new Message(conversation, counterPart, body,
-						Message.ENCRYPTION_NONE, status);
+						encryption, status);
 				if (packet.hasChild("delay")) {
 					try {
 						String stamp = packet.findChild("delay").getAttribute(
@@ -169,14 +218,14 @@ public class XmppConnectionService extends Service {
 				databaseBackend.clearPresences(account);
 				connectMultiModeConversations(account);
 				List<Conversation> conversations = getConversations();
- 				for(int i = 0; i < conversations.size(); ++i) {
- 					if (conversations.get(i).getAccount()==account) {
- 						sendUnsendMessages(conversations.get(i));
- 					}
- 				}
- 				if (convChangedListener!=null) {
- 					convChangedListener.onConversationListChanged();
- 				}
+				for (int i = 0; i < conversations.size(); ++i) {
+					if (conversations.get(i).getAccount() == account) {
+						sendUnsendMessages(conversations.get(i));
+					}
+				}
+				if (convChangedListener != null) {
+					convChangedListener.onConversationListChanged();
+				}
 			}
 		}
 	};
@@ -216,8 +265,19 @@ public class XmppConnectionService extends Service {
 					databaseBackend.updateContact(contact);
 				}
 			}
+			replaceContactInConversation(contact);
 		}
 	};
+	
+	private void replaceContactInConversation(Contact contact) {
+		List<Conversation> conversations = getConversations();
+		for(int i = 0; i < conversations.size(); ++i) {
+			if (conversations.get(i).getContact().equals(contact)) {
+				conversations.get(i).setContact(contact);
+				break;
+			}
+		}
+	}
 
 	public class XmppConnectionBinder extends Binder {
 		public XmppConnectionService getService() {
@@ -228,13 +288,9 @@ public class XmppConnectionService extends Service {
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		for (Account account : accounts) {
-			if (!connections.containsKey(account)) {
+			if (account.getXmppConnection() == null) {
 				if (!account.isOptionSet(Account.OPTION_DISABLED)) {
-					this.connections.put(account,
-							this.createConnection(account));
-				} else {
-					Log.d(LOGTAG, account.getJid()
-							+ ": not starting because it's disabled");
+					account.setXmppConnection(this.createConnection(account));
 				}
 			}
 		}
@@ -250,6 +306,16 @@ public class XmppConnectionService extends Service {
 				ContactsContract.Contacts.CONTENT_URI, true, contactObserver);
 	}
 
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		for (Account account : accounts) {
+			if (account.getXmppConnection() != null) {
+				disconnect(account);
+			}
+		}
+	}
+
 	public XmppConnection createConnection(Account account) {
 		PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
 		XmppConnection connection = new XmppConnection(account, pm);
@@ -261,40 +327,105 @@ public class XmppConnectionService extends Service {
 		return connection;
 	}
 
-	public void sendMessage(Account account, Message message) {
-
-		if (account.getStatus() == Account.STATUS_ONLINE) {
-			MessagePacket packet = prepareMessagePacket(account, message);
-			connections.get(account).sendMessagePacket(packet);
-			if (message.getConversation().getMode() == Conversation.MODE_SINGLE) {
-				message.setStatus(Message.STATUS_SEND);
-				if (message.getConversation().getMode() == Conversation.MODE_SINGLE) {
-					databaseBackend.createMessage(message);
-					message.getConversation().getMessages().add(message);
-					if (convChangedListener!=null) {
-						convChangedListener.onConversationListChanged();
+	private void startOtrSession(Conversation conv) {
+		Set<String> presences = conv.getContact().getPresences()
+				.keySet();
+		if (presences.size() == 0) {
+			Log.d(LOGTAG, "counter part isnt online. cant use otr");
+			return;
+		} else if (presences.size() == 1) {
+			conv.startOtrSession(getApplicationContext(),
+					(String) presences.toArray()[0]);
+			try {
+				conv.getOtrSession().startSession();
+			} catch (OtrException e) {
+				Log.d(LOGTAG, "couldnt actually start");
+			}
+		} else {
+			String latestCounterpartPresence = null;
+			List<Message> messages = conv.getMessages();
+			for (int i = messages.size() - 1; i >= 0; --i) {
+				if (messages.get(i).getStatus() == Message.STATUS_RECIEVED) {
+					String[] parts = messages.get(i).getCounterpart()
+							.split("/");
+					if (parts.length == 2) {
+						latestCounterpartPresence = parts[1];
+						break;
 					}
 				}
 			}
+			if (presences.contains(latestCounterpartPresence)) {
+				conv.startOtrSession(getApplicationContext(),
+						latestCounterpartPresence);
+				try {
+					conv.getOtrSession().startSession();
+				} catch (OtrException e) {
+					// TODO Auto-generated catch block
+					Log.d(LOGTAG, "couldnt actually start");
+				}
+			} else {
+				Log.d(LOGTAG,
+						"could not decide where to send otr connection to");
+			}
+		}
+	}
+	
+	public void sendMessage(Account account, Message message) {
+		Conversation conv = message.getConversation();
+		boolean saveInDb = false;
+		boolean addToConversation = false;
+		if (account.getStatus() == Account.STATUS_ONLINE) {
+			MessagePacket packet;
+			if (message.getEncryption() == Message.ENCRYPTION_OTR) {
+				if (!conv.hasOtrSession()) {
+					//starting otr session. messages will be send later
+					startOtrSession(conv);
+				} else {
+					//otr session aleary exists, creating message packet accordingly
+					packet = prepareMessagePacket(account, message,
+							conv.getOtrSession());
+					account.getXmppConnection().sendMessagePacket(packet);
+					message.setStatus(Message.STATUS_SEND);
+				}
+				saveInDb = true;
+				addToConversation = true;
+			} else {
+				// don't encrypt
+				if (message.getConversation().getMode() == Conversation.MODE_SINGLE) {
+					message.setStatus(Message.STATUS_SEND);
+					saveInDb = true;
+					addToConversation = true;
+				}
+				
+				packet = prepareMessagePacket(account, message, null);
+				account.getXmppConnection().sendMessagePacket(packet);
+			}
 		} else {
-			message.getConversation().getMessages().add(message);
+			// account is offline
+			saveInDb = true;
+			addToConversation = true;
+
+		}
+		if (saveInDb) {
 			databaseBackend.createMessage(message);
-			if (convChangedListener!=null) {
+		}
+		if (addToConversation) {
+			conv.getMessages().add(message);
+			if (convChangedListener != null) {
 				convChangedListener.onConversationListChanged();
 			}
 		}
-		
+
 	}
 
 	private void sendUnsendMessages(Conversation conversation) {
 		for (int i = 0; i < conversation.getMessages().size(); ++i) {
 			if (conversation.getMessages().get(i).getStatus() == Message.STATUS_UNSEND) {
-				Message message = conversation.getMessages()
-						.get(i);
+				Message message = conversation.getMessages().get(i);
 				MessagePacket packet = prepareMessagePacket(
-						conversation.getAccount(),message);
-				connections.get(conversation.getAccount()).sendMessagePacket(
-						packet);
+						conversation.getAccount(), message, null);
+				conversation.getAccount().getXmppConnection()
+						.sendMessagePacket(packet);
 				message.setStatus(Message.STATUS_SEND);
 				if (conversation.getMode() == Conversation.MODE_SINGLE) {
 					databaseBackend.updateMessage(message);
@@ -307,16 +438,37 @@ public class XmppConnectionService extends Service {
 		}
 	}
 
-	private MessagePacket prepareMessagePacket(Account account, Message message) {
+	private MessagePacket prepareMessagePacket(Account account,
+			Message message, Session otrSession) {
 		MessagePacket packet = new MessagePacket();
 		if (message.getConversation().getMode() == Conversation.MODE_SINGLE) {
 			packet.setType(MessagePacket.TYPE_CHAT);
+			if (otrSession != null) {
+				try {
+					packet.setBody(otrSession.transformSending(message
+							.getBody()));
+				} catch (OtrException e) {
+					Log.d(LOGTAG,
+							account.getJid()
+									+ ": could not encrypt message to "
+									+ message.getCounterpart());
+				}
+				Element privateMarker = new Element("private");
+				privateMarker.setAttribute("xmlns", "urn:xmpp:carbons:2");
+				packet.addChild(privateMarker);
+				packet.setTo(otrSession.getSessionID().getAccountID()+"/"+otrSession.getSessionID().getUserID());
+				packet.setFrom(account.getFullJid());
+			} else {
+				packet.setBody(message.getBody());
+				packet.setTo(message.getCounterpart());
+				packet.setFrom(account.getJid());
+			}
 		} else if (message.getConversation().getMode() == Conversation.MODE_MULTI) {
 			packet.setType(MessagePacket.TYPE_GROUPCHAT);
+			packet.setBody(message.getBody());
+			packet.setTo(message.getCounterpart());
+			packet.setFrom(account.getJid());
 		}
-		packet.setTo(message.getCounterpart());
-		packet.setFrom(account.getJid());
-		packet.setBody(message.getBody());
 		return packet;
 	}
 
@@ -345,7 +497,7 @@ public class XmppConnectionService extends Service {
 						query.setAttribute("xmlns", "jabber:iq:roster");
 						query.setAttribute("ver", "");
 						iqPacket.addChild(query);
-						connections.get(account).sendIqPacket(iqPacket,
+						account.getXmppConnection().sendIqPacket(iqPacket,
 								new OnIqPacketReceived() {
 
 									@Override
@@ -488,7 +640,7 @@ public class XmppConnectionService extends Service {
 			if (muc) {
 				conversation.setMode(Conversation.MODE_MULTI);
 				if (account.getStatus() == Account.STATUS_ONLINE) {
-					joinMuc(account, conversation);
+					joinMuc(conversation);
 				}
 			} else {
 				conversation.setMode(Conversation.MODE_SINGLE);
@@ -506,7 +658,7 @@ public class XmppConnectionService extends Service {
 				conversation = new Conversation(conversationName, account, jid,
 						Conversation.MODE_MULTI);
 				if (account.getStatus() == Account.STATUS_ONLINE) {
-					joinMuc(account, conversation);
+					joinMuc(conversation);
 				}
 			} else {
 				conversation = new Conversation(conversationName, account, jid,
@@ -523,6 +675,17 @@ public class XmppConnectionService extends Service {
 	}
 
 	public void archiveConversation(Conversation conversation) {
+		if (conversation.getMode() == Conversation.MODE_MULTI) {
+			leaveMuc(conversation);
+		} else {
+			try {
+				conversation.endOtrIfNeeded();
+			} catch (OtrException e) {
+				Log.d(LOGTAG,
+						"error ending otr session for "
+								+ conversation.getName());
+			}
+		}
 		this.databaseBackend.updateConversation(conversation);
 		this.conversations.remove(conversation);
 		if (this.convChangedListener != null) {
@@ -537,23 +700,18 @@ public class XmppConnectionService extends Service {
 	public void createAccount(Account account) {
 		databaseBackend.createAccount(account);
 		this.accounts.add(account);
-		this.connections.put(account, this.createConnection(account));
+		account.setXmppConnection(this.createConnection(account));
 		if (accountChangedListener != null)
 			accountChangedListener.onAccountListChangedListener();
 	}
 
 	public void updateAccount(Account account) {
 		databaseBackend.updateAccount(account);
-		XmppConnection connection = this.connections.get(account);
-		if (connection != null) {
-			connection.disconnect();
-			this.connections.remove(account);
+		if (account.getXmppConnection() != null) {
+			disconnect(account);
 		}
 		if (!account.isOptionSet(Account.OPTION_DISABLED)) {
-			this.connections.put(account, this.createConnection(account));
-		} else {
-			Log.d(LOGTAG, account.getJid()
-					+ ": not starting because it's disabled");
+			account.setXmppConnection(this.createConnection(account));
 		}
 		if (accountChangedListener != null)
 			accountChangedListener.onAccountListChangedListener();
@@ -561,10 +719,8 @@ public class XmppConnectionService extends Service {
 
 	public void deleteAccount(Account account) {
 		Log.d(LOGTAG, "called delete account");
-		if (this.connections.containsKey(account)) {
-			Log.d(LOGTAG, "found connection. disconnecting");
-			this.connections.get(account).disconnect();
-			this.connections.remove(account);
+		if (account.getXmppConnection() != null) {
+			this.disconnect(account);
 		}
 		databaseBackend.deleteAccount(account);
 		this.accounts.remove(account);
@@ -596,31 +752,54 @@ public class XmppConnectionService extends Service {
 			Conversation conversation = conversations.get(i);
 			if ((conversation.getMode() == Conversation.MODE_MULTI)
 					&& (conversation.getAccount() == account)) {
-				joinMuc(account, conversation);
+				joinMuc(conversation);
 			}
 		}
 	}
 
-	public void joinMuc(Account account, Conversation conversation) {
+	public void joinMuc(Conversation conversation) {
 		String muc = conversation.getContactJid();
 		PresencePacket packet = new PresencePacket();
-		packet.setAttribute("to", muc + "/" + account.getUsername());
+		packet.setAttribute("to", muc + "/"
+				+ conversation.getAccount().getUsername());
 		Element x = new Element("x");
 		x.setAttribute("xmlns", "http://jabber.org/protocol/muc");
 		if (conversation.getMessages().size() != 0) {
 			Element history = new Element("history");
-			history.setAttribute(
-					"seconds",
+			history.setAttribute("seconds",
 					(System.currentTimeMillis() - conversation
-							.getLatestMessageDate()) / 1000 + "");
+							.getLatestMessage().getTimeSent() / 1000) + "");
 			x.addChild(history);
 		}
 		packet.addChild(x);
-		connections.get(conversation.getAccount()).sendPresencePacket(packet);
+		conversation.getAccount().getXmppConnection()
+				.sendPresencePacket(packet);
 	}
 
-	public void disconnectMultiModeConversations() {
+	public void leaveMuc(Conversation conversation) {
 
+	}
+
+	public void disconnect(Account account) {
+		List<Conversation> conversations = getConversations();
+		for (int i = 0; i < conversations.size(); i++) {
+			Conversation conversation = conversations.get(i);
+			if (conversation.getAccount() == account) {
+				if (conversation.getMode() == Conversation.MODE_MULTI) {
+					leaveMuc(conversation);
+				} else {
+					try {
+						conversation.endOtrIfNeeded();
+					} catch (OtrException e) {
+						Log.d(LOGTAG, "error ending otr session for "
+								+ conversation.getName());
+					}
+				}
+			}
+		}
+		account.getXmppConnection().disconnect();
+		Log.d(LOGTAG, "disconnected account: " + account.getJid());
+		account.setXmppConnection(null);
 	}
 
 	@Override
