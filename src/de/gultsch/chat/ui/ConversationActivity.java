@@ -66,14 +66,7 @@ public class ConversationActivity extends XmppActivity {
 				@Override
 				public void run() {	
 					updateConversationList();
-					/*for(int i = 0; i < conversationList.size(); ++i) {
-						if (currentConv == conversationList.get(i)) {
-							selectedConversation = conversationList.get(i);
-							break;
-						}
-					}*/
 					if(paneShouldBeOpen) {
-						selectedConversation = conversationList.get(0);
 						if (conversationList.size() >= 1) {
 							swapConversationFragment();
 						} else {

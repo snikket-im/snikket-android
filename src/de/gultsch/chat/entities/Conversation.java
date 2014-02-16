@@ -106,7 +106,7 @@ public class Conversation extends AbstractEntity {
 	public Message getLatestMessage() {
 		if ((this.messages == null)||(this.messages.size()==0)) {
 			Message message = new Message(this,"",Message.ENCRYPTION_NONE);
-			message.setTime(0);
+			message.setTime(getCreated());
 			return message;
 		} else {
 			return this.messages.get(this.messages.size() - 1);

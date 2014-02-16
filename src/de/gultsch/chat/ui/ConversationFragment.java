@@ -54,49 +54,12 @@ public class ConversationFragment extends Fragment {
 			final XmppConnectionService xmppService = activity.xmppConnectionService;
 			if (chatMsg.getText().length() < 1)
 				return;
-			final Message message = new Message(conversation, chatMsg.getText()
+			Message message = new Message(conversation, chatMsg.getText()
 					.toString(), conversation.nextMessageEncryption);
 			if (conversation.nextMessageEncryption == Message.ENCRYPTION_OTR) {
-				if (conversation.hasValidOtrSession()) {
-					activity.xmppConnectionService.sendMessage(
-							conversation.getAccount(), message, null);
-					chatMsg.setText("");
-				} else {
-					Hashtable<String, Integer> presences = conversation
-							.getContact().getPresences();
-					if (presences.size() == 0) {
-						AlertDialog.Builder builder = new AlertDialog.Builder(
-								getActivity());
-						builder.setTitle("Contact is offline");
-						builder.setIconAttribute(android.R.attr.alertDialogIcon);
-						builder.setMessage("Sending OTR encrypted messages to an offline contact is impossible.");
-						builder.setPositiveButton("Send plain text",
-								new DialogInterface.OnClickListener() {
-
-									@Override
-									public void onClick(DialogInterface dialog,
-											int which) {
-										conversation.nextMessageEncryption = Message.ENCRYPTION_NONE;
-										message.setEncryption(Message.ENCRYPTION_NONE);
-										xmppService.sendMessage(
-												conversation.getAccount(),
-												message, null);
-										chatMsg.setText("");
-									}
-								});
-						builder.setNegativeButton("Cancel", null);
-						builder.create().show();
-					} else if (presences.size() == 1) {
-						xmppService.sendMessage(conversation.getAccount(),
-								message,
-								(String) presences.keySet().toArray()[0]);
-						chatMsg.setText("");
-					}
-				}
+				sendOtrMessage(message);
 			} else {
-				xmppService.sendMessage(conversation.getAccount(), message,
-						null);
-				chatMsg.setText("");
+				sendPlainTextMessage(message);
 			}
 		}
 	};
@@ -332,6 +295,69 @@ public class ConversationFragment extends Fragment {
 			});
 		} else {
 			fingerprintWarning.setVisibility(View.GONE);
+		}
+	}
+
+	protected void sendPlainTextMessage(Message message) {
+		ConversationActivity activity = (ConversationActivity) getActivity();
+		activity.xmppConnectionService.sendMessage(conversation.getAccount(), message,
+				null);
+		chatMsg.setText("");
+	}
+	
+	protected void sendOtrMessage(final Message message) {
+		ConversationActivity activity = (ConversationActivity) getActivity();
+		final XmppConnectionService xmppService = activity.xmppConnectionService;
+		if (conversation.hasValidOtrSession()) {
+			activity.xmppConnectionService.sendMessage(
+					conversation.getAccount(), message, null);
+			chatMsg.setText("");
+		} else {
+			Hashtable<String, Integer> presences = conversation
+					.getContact().getPresences();
+			if (presences.size() == 0) {
+				AlertDialog.Builder builder = new AlertDialog.Builder(
+						getActivity());
+				builder.setTitle("Contact is offline");
+				builder.setIconAttribute(android.R.attr.alertDialogIcon);
+				builder.setMessage("Sending OTR encrypted messages to an offline contact is impossible.");
+				builder.setPositiveButton("Send plain text",
+						new DialogInterface.OnClickListener() {
+
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								conversation.nextMessageEncryption = Message.ENCRYPTION_NONE;
+								message.setEncryption(Message.ENCRYPTION_NONE);
+								xmppService.sendMessage(
+										conversation.getAccount(),
+										message, null);
+								chatMsg.setText("");
+							}
+						});
+				builder.setNegativeButton("Cancel", null);
+				builder.create().show();
+			} else if (presences.size() == 1) {
+				xmppService.sendMessage(conversation.getAccount(),
+						message,
+						(String) presences.keySet().toArray()[0]);
+				chatMsg.setText("");
+			} else {
+				AlertDialog.Builder builder = new AlertDialog.Builder(
+						getActivity());
+				builder.setTitle("Choose Presence");
+				final String[] presencesArray = new String[presences.size()];
+				presences.keySet().toArray(presencesArray);
+				builder.setItems(presencesArray, new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						xmppService.sendMessage(conversation.getAccount(), message, presencesArray[which]);
+						chatMsg.setText("");
+					}
+				});
+				builder.create().show();
+			}
 		}
 	}
 }
