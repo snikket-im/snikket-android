@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="8dp">
+    
+ <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="8dp"
+        android:text="Jabber ID"
+        android:textColor="#33B5E5"
+        android:textSize="20sp"/>
+
+    <TextView
+        android:id="@+id/verify_otr_jid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="8dp"
+        android:text="julia@jabber.example.com"
+        android:textSize="14sp" />
+     <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="8dp"
+        android:text="OTR fingerprint"
+        android:textColor="#33B5E5"
+        android:textSize="20sp"/>
+
+    <TextView
+        android:id="@+id/verify_otr_fingerprint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="8dp"
+        android:text="2674D6A0 0B1421B1 BFC42AEC C56F3719 672437D8"
+        android:textSize="14sp" />
+     <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="8dp"
+        android:text="Your fingerprint"
+        android:textColor="#33B5E5"
+        android:textSize="20sp"/>
+
+    <TextView
+        android:id="@+id/verify_otr_yourprint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="8dp"
+        android:text="2674D6A0 0B1421B1 BFC42AEC C56F3719 672437D8"
+        android:textSize="14sp" />
+</LinearLayout>

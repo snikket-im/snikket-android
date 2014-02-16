@@ -1,7 +1,13 @@
 package de.gultsch.chat.entities;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Hashtable;
+import java.util.Set;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -16,7 +22,7 @@ public class Contact extends AbstractEntity implements Serializable {
 	public static final String SUBSCRIPTION = "subscription";
 	public static final String SYSTEMACCOUNT = "systemaccount";
 	public static final String PHOTOURI = "photouri";
-	public static final String OPENPGPKEY = "pgpkey";
+	public static final String KEYS = "pgpkey";
 	public static final String PRESENCES = "presences";
 	public static final String ACCOUNT = "accountUuid";
 
@@ -26,7 +32,7 @@ public class Contact extends AbstractEntity implements Serializable {
 	protected String subscription;
 	protected String systemAccount;
 	protected String photoUri;
-	protected String openPGPKey;
+	protected JSONObject keys;
 	protected Presences presences = new Presences();
 
 	protected Account account;
@@ -45,7 +51,7 @@ public class Contact extends AbstractEntity implements Serializable {
 
 	public Contact(String uuid, String account, String displayName, String jid,
 			String subscription, String photoUri, String systemAccount,
-			String pgpKey,String presences) {
+			String keys, String presences) {
 		this.uuid = uuid;
 		this.accountUuid = account;
 		this.displayName = displayName;
@@ -53,7 +59,14 @@ public class Contact extends AbstractEntity implements Serializable {
 		this.subscription = subscription;
 		this.photoUri = photoUri;
 		this.systemAccount = systemAccount;
-		this.openPGPKey = pgpKey;
+		if (keys == null) {
+			keys = "";
+		}
+		try {
+			this.keys = new JSONObject(keys);
+		} catch (JSONException e) {
+			this.keys = new JSONObject();
+		}
 		this.presences = Presences.fromJsonString(presences);
 	}
 
@@ -84,7 +97,7 @@ public class Contact extends AbstractEntity implements Serializable {
 		values.put(SUBSCRIPTION, subscription);
 		values.put(SYSTEMACCOUNT, systemAccount);
 		values.put(PHOTOURI, photoUri);
-		values.put(OPENPGPKEY, openPGPKey);
+		values.put(KEYS, keys.toString());
 		values.put(PRESENCES, presences.toJsonString());
 		return values;
 	}
@@ -97,14 +110,14 @@ public class Contact extends AbstractEntity implements Serializable {
 				cursor.getString(cursor.getColumnIndex(SUBSCRIPTION)),
 				cursor.getString(cursor.getColumnIndex(PHOTOURI)),
 				cursor.getString(cursor.getColumnIndex(SYSTEMACCOUNT)),
-				cursor.getString(cursor.getColumnIndex(OPENPGPKEY)),
+				cursor.getString(cursor.getColumnIndex(KEYS)),
 				cursor.getString(cursor.getColumnIndex(PRESENCES)));
 	}
 
 	public void setSubscription(String subscription) {
 		this.subscription = subscription;
 	}
-	
+
 	public String getSubscription() {
 		return this.subscription;
 	}
@@ -141,11 +154,11 @@ public class Contact extends AbstractEntity implements Serializable {
 			}
 		}
 	}
-	
+
 	public Hashtable<String, Integer> getPresences() {
 		return this.presences.getPresences();
 	}
-	
+
 	public void updatePresence(String resource, int status) {
 		this.presences.updatePresence(resource, status);
 	}
@@ -153,24 +166,56 @@ public class Contact extends AbstractEntity implements Serializable {
 	public void removePresence(String resource) {
 		this.presences.removePresence(resource);
 	}
-	
+
 	public int getMostAvailableStatus() {
 		return this.presences.getMostAvailableStatus();
 	}
 
 	public void setPresences(Presences pres) {
-		this.presences = pres;	
+		this.presences = pres;
 	}
-	
+
 	public void setPhotoUri(String uri) {
 		this.photoUri = uri;
 	}
-	
+
 	public void setDisplayName(String name) {
 		this.displayName = name;
 	}
 
 	public String getSystemAccount() {
 		return systemAccount;
+	}
+
+	public Set<String> getOtrFingerprints() {
+		Set<String> set = new HashSet<String>();
+		try {
+			if (this.keys.has("otr_fingerprints")) {
+				JSONArray fingerprints = this.keys.getJSONArray("otr_fingerprints");
+				for (int i = 0; i < fingerprints.length(); ++i) {
+					set.add(fingerprints.getString(i));
+				}
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return set;
+	}
+
+	public void addOtrFingerprint(String print) {
+		try {
+			JSONArray fingerprints;
+			if (!this.keys.has("otr_fingerprints")) {
+				fingerprints = new JSONArray();
+
+			} else {
+				fingerprints = this.keys.getJSONArray("otr_fingerprints");
+			}
+			fingerprints.put(print);
+			this.keys.put("otr_fingerprints", fingerprints);
+		} catch (JSONException e) {
+
+		}
 	}
 }

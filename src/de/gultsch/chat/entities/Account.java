@@ -1,5 +1,10 @@
 package de.gultsch.chat.entities;
 
+import java.security.interfaces.DSAPublicKey;
+
+import net.java.otr4j.crypto.OtrCryptoEngineImpl;
+import net.java.otr4j.crypto.OtrCryptoException;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -48,6 +53,8 @@ public class Account  extends AbstractEntity{
 	
 	transient OtrEngine otrEngine = null;
 	transient XmppConnection xmppConnection = null;
+
+	private String otrFingerprint;
 	
 	public Account() {
 		this.uuid = "0";
@@ -176,5 +183,22 @@ public class Account  extends AbstractEntity{
 
 	public String getFullJid() {
 		return this.getJid()+"/"+this.resource;
+	}
+	
+	public String getOtrFingerprint() {
+		if (this.otrFingerprint == null) {
+			try {
+				DSAPublicKey pubkey = (DSAPublicKey) this.otrEngine.getPublicKey();
+				StringBuilder builder = new StringBuilder(new OtrCryptoEngineImpl().getFingerprint(pubkey));
+				builder.insert(8, " ");
+				builder.insert(17, " ");
+				builder.insert(26, " ");
+				builder.insert(35, " ");
+				this.otrFingerprint = builder.toString();
+			} catch (OtrCryptoException e) {
+				
+			}
+		}
+		return this.otrFingerprint;
 	}
 }

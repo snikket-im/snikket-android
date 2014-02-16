@@ -32,6 +32,8 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.PopupMenu;
+import android.widget.PopupMenu.OnMenuItemClickListener;
 import android.widget.TextView;
 import android.widget.ImageView;
 
@@ -296,6 +298,56 @@ public class ConversationActivity extends XmppActivity {
 				Log.d("xmppService","contact was null - means not in roster");
 			}
 			break;
+		case R.id.action_security:
+			final Conversation selConv = getSelectedConversation();
+			View menuItemView = findViewById(R.id.action_security);
+			PopupMenu popup = new PopupMenu(this, menuItemView);
+			final ConversationFragment fragment = (ConversationFragment) getFragmentManager().findFragmentByTag("conversation");
+		    if (fragment!=null) {
+				popup.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+					
+					@Override
+					public boolean onMenuItemClick(MenuItem item) {
+						switch (item.getItemId()) {
+						case R.id.encryption_choice_none:
+							selConv.nextMessageEncryption = Message.ENCRYPTION_NONE;
+							item.setChecked(true);
+							break;
+						case R.id.encryption_choice_otr:
+							selConv.nextMessageEncryption = Message.ENCRYPTION_OTR;
+							item.setChecked(true);
+							break;
+						case R.id.encryption_choice_pgp:
+							selConv.nextMessageEncryption = Message.ENCRYPTION_PGP;
+							item.setChecked(true);
+							break;
+						default:
+							selConv.nextMessageEncryption = Message.ENCRYPTION_NONE;
+							break;
+						}
+						fragment.updateChatMsgHint();
+						return true;
+					}
+				});
+			    popup.inflate(R.menu.encryption_choices);
+			    switch (selConv.nextMessageEncryption) {
+				case Message.ENCRYPTION_NONE:
+					popup.getMenu().findItem(R.id.encryption_choice_none).setChecked(true);
+					break;
+				case Message.ENCRYPTION_OTR:
+					popup.getMenu().findItem(R.id.encryption_choice_otr).setChecked(true);
+					break;
+				case Message.ENCRYPTION_PGP:
+					popup.getMenu().findItem(R.id.encryption_choice_pgp).setChecked(true);
+					break;
+				default:
+					popup.getMenu().findItem(R.id.encryption_choice_none).setChecked(true);
+					break;
+				}
+			    popup.show();
+		    }
+
+			break;
 		default:
 			break;
 		}
@@ -343,13 +395,6 @@ public class ConversationActivity extends XmppActivity {
 
 	@Override
 	void onBackendConnected() {
-		
-		
-		if (contactInserted) {
-			Log.d("xmppService","merge phone contacts with roster");
-			contactInserted = false;
-			xmppConnectionService.mergePhoneContactsWithRoster();
-		}
 		
 		xmppConnectionService.setOnConversationListChangedListener(this.onConvChanged);
 		

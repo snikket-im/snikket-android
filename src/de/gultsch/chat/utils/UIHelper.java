@@ -7,15 +7,19 @@ import java.util.Date;
 import java.util.List;
 
 import de.gultsch.chat.R;
+import de.gultsch.chat.entities.Account;
 import de.gultsch.chat.entities.Contact;
 import de.gultsch.chat.entities.Conversation;
 import de.gultsch.chat.entities.Message;
 import de.gultsch.chat.ui.ConversationActivity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
@@ -29,7 +33,11 @@ import android.provider.ContactsContract.Contacts;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.QuickContactBadge;
+import android.widget.TextView;
 
 public class UIHelper {
 	public static String readableTimeDifference(long time) {
@@ -152,5 +160,34 @@ public class UIHelper {
 			badge.setImageBitmap(UIHelper.getUnknownContactPicture(contact.getDisplayName(), 400));
 		}
 
+	}
+	
+	public static AlertDialog getVerifyFingerprintDialog(final ConversationActivity activity,final Conversation conversation, final LinearLayout msg) {
+		final Contact contact = conversation.getContact();
+		final Account account = conversation.getAccount();
+		
+		AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+		builder.setTitle("Verify fingerprint");
+		LayoutInflater inflater = activity.getLayoutInflater();
+		View view = inflater.inflate(R.layout.dialog_verify_otr, null);
+		TextView jid = (TextView) view.findViewById(R.id.verify_otr_jid);
+		TextView fingerprint = (TextView) view.findViewById(R.id.verify_otr_fingerprint);
+		TextView yourprint = (TextView) view.findViewById(R.id.verify_otr_yourprint);
+		
+		jid.setText(contact.getJid());
+		fingerprint.setText(conversation.getOtrFingerprint());
+		yourprint.setText(account.getOtrFingerprint());
+		builder.setNegativeButton("Cancel", null);
+		builder.setPositiveButton("Verify", new OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				contact.addOtrFingerprint(conversation.getOtrFingerprint());
+				msg.setVisibility(View.GONE);
+				activity.xmppConnectionService.updateContact(contact);
+			}
+		});
+		builder.setView(view);
+		return builder.create();
 	}
 }

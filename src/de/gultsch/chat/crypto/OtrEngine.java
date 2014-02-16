@@ -124,6 +124,10 @@ public class OtrEngine implements OtrEngineHost {
 		return null;
 	}
 
+	public PublicKey getPublicKey() {
+		return this.keyPair.getPublic();
+	}
+	
 	@Override
 	public KeyPair getLocalKeyPair(SessionID arg0) throws OtrException {
 		if (this.keyPair==null) {

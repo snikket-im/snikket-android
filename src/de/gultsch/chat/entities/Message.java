@@ -131,5 +131,9 @@ public class Message extends AbstractEntity {
 	public void setTime(long time) {
 		this.timeSent = time;
 	}
+
+	public void setEncryption(int encryption) {
+		this.encryption = encryption;
+	}
 	
 }

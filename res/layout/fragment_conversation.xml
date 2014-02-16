@@ -53,5 +53,35 @@
 		android:transcriptMode="alwaysScroll"
 		android:listSelector="@android:color/transparent">
     </ListView>
+    <LinearLayout
+        android:id="@+id/new_fingerprint"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignTop="@+id/messages_view"
+        android:background="#cc0000"
+        android:orientation="vertical"
+        android:visibility="gone"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Unknown OTR Fingerprint"
+            android:textColor="#eee"
+            android:textStyle="bold"
+            android:padding="8dp"
+            android:textSize="20sp"/>
+        <TextView 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/otr_fingerprint"
+            android:textColor="#eee"
+            android:text="2674D6A0 0B1421B1 BFC42AEC C56F3719 672437D8"
+            android:paddingLeft="8dp"
+            android:paddingBottom="8dp"
+            android:textSize="14sp"/>
+        
+    </LinearLayout>
 
 </RelativeLayout>

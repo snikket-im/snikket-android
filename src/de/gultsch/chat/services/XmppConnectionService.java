@@ -132,7 +132,7 @@ public class XmppConnectionService extends Service {
 				} else {
 					counterPart = fullJid;
 					if ((runOtrCheck) && body.startsWith("?OTR")) {
-						if (!conversation.hasOtrSession()) {
+						if (!conversation.hasValidOtrSession()) {
 							conversation.startOtrSession(
 									getApplicationContext(), fromParts[1]);
 						}
@@ -162,6 +162,9 @@ public class XmppConnectionService extends Service {
 								if (convChangedListener!=null) {
 									convChangedListener.onConversationListChanged();
 								}
+							} else if ((before != after) && (after == SessionStatus.FINISHED)) {
+								conversation.resetOtrSession();
+								Log.d(LOGTAG,"otr session stoped");
 							}
 						} catch (Exception e) {
 							Log.d(LOGTAG, "error receiving otr. resetting");
@@ -326,61 +329,18 @@ public class XmppConnectionService extends Service {
 		thread.start();
 		return connection;
 	}
-
-	private void startOtrSession(Conversation conv) {
-		Set<String> presences = conv.getContact().getPresences()
-				.keySet();
-		if (presences.size() == 0) {
-			Log.d(LOGTAG, "counter part isnt online. cant use otr");
-			return;
-		} else if (presences.size() == 1) {
-			conv.startOtrSession(getApplicationContext(),
-					(String) presences.toArray()[0]);
-			try {
-				conv.getOtrSession().startSession();
-			} catch (OtrException e) {
-				Log.d(LOGTAG, "couldnt actually start");
-			}
-		} else {
-			String latestCounterpartPresence = null;
-			List<Message> messages = conv.getMessages();
-			for (int i = messages.size() - 1; i >= 0; --i) {
-				if (messages.get(i).getStatus() == Message.STATUS_RECIEVED) {
-					String[] parts = messages.get(i).getCounterpart()
-							.split("/");
-					if (parts.length == 2) {
-						latestCounterpartPresence = parts[1];
-						break;
-					}
-				}
-			}
-			if (presences.contains(latestCounterpartPresence)) {
-				conv.startOtrSession(getApplicationContext(),
-						latestCounterpartPresence);
-				try {
-					conv.getOtrSession().startSession();
-				} catch (OtrException e) {
-					// TODO Auto-generated catch block
-					Log.d(LOGTAG, "couldnt actually start");
-				}
-			} else {
-				Log.d(LOGTAG,
-						"could not decide where to send otr connection to");
-			}
-		}
-	}
 	
-	public void sendMessage(Account account, Message message) {
+	public void sendMessage(Account account, Message message, String presence) {
 		Conversation conv = message.getConversation();
 		boolean saveInDb = false;
 		boolean addToConversation = false;
 		if (account.getStatus() == Account.STATUS_ONLINE) {
 			MessagePacket packet;
 			if (message.getEncryption() == Message.ENCRYPTION_OTR) {
-				if (!conv.hasOtrSession()) {
+				if (!conv.hasValidOtrSession()) {
 					//starting otr session. messages will be send later
-					startOtrSession(conv);
-				} else {
+					conv.startOtrSession(getApplicationContext(), presence);
+				} else if (conv.getOtrSession().getSessionStatus() == SessionStatus.ENCRYPTED){
 					//otr session aleary exists, creating message packet accordingly
 					packet = prepareMessagePacket(account, message,
 							conv.getOtrSession());
@@ -646,6 +606,7 @@ public class XmppConnectionService extends Service {
 				conversation.setMode(Conversation.MODE_SINGLE);
 			}
 			this.databaseBackend.updateConversation(conversation);
+			conversation.setContact(findContact(account, conversation.getContactJid()));
 		} else {
 			String conversationName;
 			Contact contact = findContact(account, jid);
@@ -766,9 +727,9 @@ public class XmppConnectionService extends Service {
 		x.setAttribute("xmlns", "http://jabber.org/protocol/muc");
 		if (conversation.getMessages().size() != 0) {
 			Element history = new Element("history");
-			history.setAttribute("seconds",
-					(System.currentTimeMillis() - conversation
-							.getLatestMessage().getTimeSent() / 1000) + "");
+			long lastMsgTime = conversation.getLatestMessage().getTimeSent();
+			long diff = (System.currentTimeMillis() - lastMsgTime) / 1000;
+			history.setAttribute("seconds",diff+"");
 			x.addChild(history);
 		}
 		packet.addChild(x);
@@ -805,5 +766,9 @@ public class XmppConnectionService extends Service {
 	@Override
 	public IBinder onBind(Intent intent) {
 		return mBinder;
+	}
+
+	public void updateContact(Contact contact) {
+		databaseBackend.updateContact(contact);
 	}
 }

@@ -1,5 +1,6 @@
 package de.gultsch.chat.entities;
 
+import java.security.interfaces.DSAPublicKey;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,6 +8,8 @@ import de.gultsch.chat.crypto.OtrEngine;
 import de.gultsch.chat.xmpp.XmppConnection;
 
 import net.java.otr4j.OtrException;
+import net.java.otr4j.crypto.OtrCryptoEngineImpl;
+import net.java.otr4j.crypto.OtrCryptoException;
 import net.java.otr4j.session.SessionID;
 import net.java.otr4j.session.SessionImpl;
 import net.java.otr4j.session.SessionStatus;
@@ -51,7 +54,10 @@ public class Conversation extends AbstractEntity {
 	private transient Contact contact;
 	
 	private transient SessionImpl otrSession;
-	private transient String foreignOtrPresence;
+	
+	private transient String otrFingerprint = null;
+	
+	public int nextMessageEncryption = Message.ENCRYPTION_NONE;
 
 	public Conversation(String name, Account account,
 			String contactJid, int mode) {
@@ -209,6 +215,11 @@ public class Conversation extends AbstractEntity {
 		Log.d("xmppService","starting otr session with "+presence);
 		SessionID sessionId = new SessionID(this.getContactJid(),presence,"xmpp");
 		this.otrSession = new SessionImpl(sessionId, getAccount().getOtrEngine(context));
+		try {
+			this.otrSession.startSession();
+		} catch (OtrException e) {
+			Log.d("xmppServic","couldnt start otr");
+		}
 	}
 	
 	public SessionImpl getOtrSession() {
@@ -225,9 +236,36 @@ public class Conversation extends AbstractEntity {
 				this.otrSession.endSession();
 			}
 		}
+		this.resetOtrSession();
 	}
 
-	public boolean hasOtrSession() {
-		return (this.otrSession!=null);
+	public boolean hasValidOtrSession() {
+		if (this.otrSession == null) {
+			return false;
+		} else {
+			String foreignPresence = this.otrSession.getSessionID().getUserID();
+			if (!getContact().getPresences().containsKey(foreignPresence)) {
+				this.resetOtrSession();
+				return false;
+			}
+			return true;
+		}
+	}
+	
+	public String getOtrFingerprint() {
+		if (this.otrFingerprint == null) {
+			try {
+				DSAPublicKey remotePubKey = (DSAPublicKey) getOtrSession().getRemotePublicKey();
+				StringBuilder builder = new StringBuilder(new OtrCryptoEngineImpl().getFingerprint(remotePubKey));
+				builder.insert(8, " ");
+				builder.insert(17, " ");
+				builder.insert(26, " ");
+				builder.insert(35, " ");
+				this.otrFingerprint = builder.toString();
+			} catch (OtrCryptoException e) {
+				
+			}
+		}
+		return this.otrFingerprint;
 	}
 }
