@@ -32,7 +32,7 @@ public class Contact extends AbstractEntity implements Serializable {
 	protected String subscription;
 	protected String systemAccount;
 	protected String photoUri;
-	protected JSONObject keys;
+	protected JSONObject keys = new JSONObject();
 	protected Presences presences = new Presences();
 
 	protected Account account;
@@ -47,6 +47,7 @@ public class Contact extends AbstractEntity implements Serializable {
 		this.displayName = displayName;
 		this.jid = jid;
 		this.photoUri = photoUri;
+		this.uuid = java.util.UUID.randomUUID().toString();
 	}
 
 	public Contact(String uuid, String account, String displayName, String jid,

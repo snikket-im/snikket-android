@@ -80,7 +80,8 @@
             android:text="2674D6A0 0B1421B1 BFC42AEC C56F3719 672437D8"
             android:paddingLeft="8dp"
             android:paddingBottom="8dp"
-            android:textSize="14sp"/>
+            android:textSize="14sp"
+            android:typeface="monospace"/>
         
     </LinearLayout>
 

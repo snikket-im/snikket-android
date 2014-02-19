@@ -59,6 +59,10 @@ public class XmlReader {
 					for(int i = 0; i < parser.getAttributeCount(); ++i) {
 						tag.setAttribute(parser.getAttributeName(i), parser.getAttributeValue(i));
 					}
+					String xmlns = 	parser.getNamespace();
+					if (xmlns!=null) {
+						tag.setAttribute("xmlns",xmlns);
+					}
 					return tag;
 				} else if (parser.getEventType() == XmlPullParser.END_TAG) {
 					Tag tag = Tag.end(parser.getName());

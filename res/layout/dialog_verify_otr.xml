@@ -3,7 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingLeft="8dp">
+    android:paddingLeft="8dp"
+    android:paddingBottom="16dp"
+    android:paddingRight="8dp">
     
  <TextView
         android:layout_width="wrap_content"
@@ -34,7 +36,8 @@
         android:layout_height="wrap_content"
         android:paddingLeft="8dp"
         android:text="2674D6A0 0B1421B1 BFC42AEC C56F3719 672437D8"
-        android:textSize="14sp" />
+        android:textSize="14sp"
+        android:typeface="monospace"/>
      <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -49,5 +52,6 @@
         android:layout_height="wrap_content"
         android:paddingLeft="8dp"
         android:text="2674D6A0 0B1421B1 BFC42AEC C56F3719 672437D8"
-        android:textSize="14sp" />
+        android:textSize="14sp"
+        android:typeface="monospace"/>
 </LinearLayout>

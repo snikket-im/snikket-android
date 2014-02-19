@@ -1,6 +1,5 @@
 package de.gultsch.chat.utils;
 
-import java.util.ArrayList;
 import java.util.Hashtable;
 
 import android.app.Activity;
@@ -11,14 +10,19 @@ import android.content.Loader.OnLoadCompleteListener;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Looper;
 import android.provider.ContactsContract;
 import android.provider.ContactsContract.Profile;
 
 public class PhoneHelper {
 	
 	public static void loadPhoneContacts(Context context, final OnPhoneContactsLoadedListener listener) {
+		if (Looper.myLooper()==null) {
+			Looper.prepare();
+		}
+		final Looper mLooper = Looper.myLooper();
 		final Hashtable<String, Bundle> phoneContacts = new Hashtable<String, Bundle>();
-
+		
 		final String[] PROJECTION = new String[] {
 				ContactsContract.Data._ID,
 				ContactsContract.Data.DISPLAY_NAME,
@@ -31,7 +35,7 @@ public class PhoneHelper {
 				+ "\") AND (" + ContactsContract.CommonDataKinds.Im.PROTOCOL
 				+ "=\"" + ContactsContract.CommonDataKinds.Im.PROTOCOL_JABBER
 				+ "\")";
-
+		
 		CursorLoader mCursorLoader = new CursorLoader(context,
 				ContactsContract.Data.CONTENT_URI, PROJECTION, SELECTION, null,
 				null);
@@ -61,6 +65,7 @@ public class PhoneHelper {
 				if (listener!=null) {
 					listener.onPhoneContactsLoaded(phoneContacts);
 				}
+				mLooper.quit();
 			}
 		});
 		mCursorLoader.startLoading();

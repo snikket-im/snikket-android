@@ -201,4 +201,16 @@ public class Account  extends AbstractEntity{
 		}
 		return this.otrFingerprint;
 	}
+
+	public String getRosterVersion() {
+		if (this.rosterVersion==null) {
+			return "";
+		} else {
+			return this.rosterVersion;
+		}
+	}
+	
+	public void setRosterVersion(String version) {
+		this.rosterVersion = version;
+	}
 }
