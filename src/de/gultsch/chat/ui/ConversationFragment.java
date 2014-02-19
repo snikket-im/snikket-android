@@ -157,18 +157,14 @@ public class ConversationFragment extends Fragment {
 				int type = getItemViewType(position);
 				ViewHolder viewHolder;
 				if (view == null) {
+					viewHolder = new ViewHolder();
 					switch (type) {
 					case SENT:
-						viewHolder = new ViewHolder();
 						view = (View) inflater.inflate(R.layout.message_sent,
 								null);
 						viewHolder.imageView = (ImageView) view
 								.findViewById(R.id.message_photo);
-						viewHolder.messageBody = (TextView) view
-								.findViewById(R.id.message_body);
-						viewHolder.time = (TextView) view
-								.findViewById(R.id.message_time);
-						view.setTag(viewHolder);
+						viewHolder.imageView.setImageBitmap(selfBitmap);
 						break;
 					case RECIEVED:
 						viewHolder = new ViewHolder();
@@ -176,36 +172,43 @@ public class ConversationFragment extends Fragment {
 								R.layout.message_recieved, null);
 						viewHolder.imageView = (ImageView) view
 								.findViewById(R.id.message_photo);
-						viewHolder.messageBody = (TextView) view
-								.findViewById(R.id.message_body);
-						viewHolder.time = (TextView) view
-								.findViewById(R.id.message_time);
-						view.setTag(viewHolder);
+						if (item.getConversation().getMode() == Conversation.MODE_SINGLE) {
+							Uri uri = item.getConversation().getProfilePhotoUri();
+							if (uri != null) {
+								viewHolder.imageView
+										.setImageBitmap(mBitmapCache.get(item
+												.getConversation().getName(), uri));
+							} else {
+								viewHolder.imageView
+										.setImageBitmap(mBitmapCache.get(item
+												.getConversation().getName(), null));
+							}
+						}
 						break;
 					default:
 						viewHolder = null;
 						break;
 					}
+					viewHolder.messageBody = (TextView) view
+							.findViewById(R.id.message_body);
+					viewHolder.time = (TextView) view
+							.findViewById(R.id.message_time);
+					
+					view.setTag(viewHolder);
 				} else {
 					viewHolder = (ViewHolder) view.getTag();
 				}
 				if (type == RECIEVED) {
-					if (item.getConversation().getMode() == Conversation.MODE_SINGLE) {
-						Uri uri = item.getConversation().getProfilePhotoUri();
-						if (uri != null) {
-							viewHolder.imageView.setImageBitmap(mBitmapCache.get(item.getConversation().getName(), uri));
-						} else {
-							viewHolder.imageView.setImageBitmap(mBitmapCache.get(item.getConversation().getName(),null));
-						}
-					} else if (item.getConversation().getMode() == Conversation.MODE_MULTI) {
+					 if (item.getConversation().getMode() == Conversation.MODE_MULTI) {
 						if (item.getCounterpart() != null) {
-							viewHolder.imageView.setImageBitmap(mBitmapCache.get(item.getCounterpart(),null));
+							viewHolder.imageView.setImageBitmap(mBitmapCache
+									.get(item.getCounterpart(), null));
 						} else {
-							viewHolder.imageView.setImageBitmap(mBitmapCache.get(item.getConversation().getName(),null));
+							viewHolder.imageView
+									.setImageBitmap(mBitmapCache.get(item
+											.getConversation().getName(), null));
 						}
 					}
-				} else {
-					viewHolder.imageView.setImageBitmap(selfBitmap);
 				}
 				String body = item.getBody();
 				if (body != null) {
@@ -406,15 +409,16 @@ public class ConversationFragment extends Fragment {
 		protected ImageView imageView;
 
 	}
-	
+
 	private class BitmapCache {
 		private HashMap<String, Bitmap> bitmaps = new HashMap<String, Bitmap>();
+
 		public Bitmap get(String name, Uri uri) {
 			if (bitmaps.containsKey(name)) {
 				return bitmaps.get(name);
 			} else {
 				Bitmap bm;
-				if (uri!=null) {
+				if (uri != null) {
 					try {
 						bm = BitmapFactory.decodeStream(getActivity()
 								.getContentResolver().openInputStream(uri));
