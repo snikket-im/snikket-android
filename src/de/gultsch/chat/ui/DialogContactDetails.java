@@ -9,7 +9,6 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract.CommonDataKinds;
 import android.provider.ContactsContract.Contacts;
@@ -18,7 +17,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.CheckBox;
-import android.widget.ImageView;
 import android.widget.QuickContactBadge;
 import android.widget.TextView;
 
@@ -27,13 +25,53 @@ public class DialogContactDetails extends DialogFragment {
 	private Contact contact = null;
 	boolean displayingInRoster = false;
 	
+	private DialogContactDetails mDetailsDialog = this;
+	private XmppActivity activity;
+	
+	private DialogInterface.OnClickListener askRemoveFromRoster = new DialogInterface.OnClickListener() {
+		
+		@Override
+		public void onClick(DialogInterface dialog, int which) {
+			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+			builder.setTitle("Delete from roster");
+			builder.setMessage("Do you want to delete "+contact.getJid()+" from your roster. The conversation assoziated with this account will not be removed.");
+			builder.setNegativeButton("Cancel", null);
+			builder.setPositiveButton("Delete",removeFromRoster);
+			builder.create().show();
+		}
+	};
+	
+	private DialogInterface.OnClickListener removeFromRoster = new DialogInterface.OnClickListener() {
+		
+		@Override
+		public void onClick(DialogInterface dialog, int which) {
+			activity.xmppConnectionService.deleteContact(contact);
+			mDetailsDialog.dismiss();
+		}
+	};
+	
+	private DialogInterface.OnClickListener addToPhonebook = new DialogInterface.OnClickListener() {
+		
+		@Override
+		public void onClick(DialogInterface dialog, int which) {
+			Intent intent = new Intent(Intent.ACTION_INSERT_OR_EDIT);
+			intent.setType(Contacts.CONTENT_ITEM_TYPE);
+			intent.putExtra(Intents.Insert.IM_HANDLE,contact.getJid());
+			intent.putExtra(Intents.Insert.IM_PROTOCOL,CommonDataKinds.Im.PROTOCOL_JABBER);
+			intent.putExtra("finishActivityOnSaveCompleted", true);
+			getActivity().startActivityForResult(intent,ConversationActivity.INSERT_CONTACT);
+			mDetailsDialog.dismiss();
+		}
+	};
+	
 	public void setContact(Contact contact) {
 		this.contact = contact;
 	}
 	
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
-		final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+		this.activity = (XmppActivity) getActivity();
+		AlertDialog.Builder builder = new AlertDialog.Builder(this.activity);
 		LayoutInflater inflater = getActivity().getLayoutInflater();
 		View view = inflater.inflate(R.layout.dialog_contact_details, null);
 		TextView contactJid = (TextView) view.findViewById(R.id.details_contactjid);
@@ -96,28 +134,15 @@ public class DialogContactDetails extends DialogFragment {
 		UIHelper.prepareContactBadge(getActivity(), badge, contact);
 		
 		if (contact.getSystemAccount()==null) {
-			final DialogContactDetails details = this;
 			badge.setOnClickListener(new OnClickListener() {
 				
 				@Override
 				public void onClick(View v) {
 					AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-					builder.setTitle("Add to contacts");
-					builder.setMessage("Do you want to add "+contact.getJid()+" to your contact list?");
+					builder.setTitle("Add to phone book");
+					builder.setMessage("Do you want to add "+contact.getJid()+" to your phones contact list?");
 					builder.setNegativeButton("Cancel", null);
-					builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
-						
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							Intent intent = new Intent(Intent.ACTION_INSERT_OR_EDIT);
-							intent.setType(Contacts.CONTENT_ITEM_TYPE);
-							intent.putExtra(Intents.Insert.IM_HANDLE,contact.getJid());
-							intent.putExtra(Intents.Insert.IM_PROTOCOL,CommonDataKinds.Im.PROTOCOL_JABBER);
-							intent.putExtra("finishActivityOnSaveCompleted", true);
-							getActivity().startActivityForResult(intent,ConversationActivity.INSERT_CONTACT);
-							details.dismiss();
-						}
-					});
+					builder.setPositiveButton("Add",addToPhonebook);
 					builder.create().show();
 				}
 			});
@@ -127,7 +152,7 @@ public class DialogContactDetails extends DialogFragment {
 		builder.setTitle(contact.getDisplayName());
 		
 		builder.setNeutralButton("Done", null);
-		builder.setPositiveButton("Remove from roster", null);
+		builder.setPositiveButton("Remove from roster", this.askRemoveFromRoster);
 		return builder.create();
 	}
 }

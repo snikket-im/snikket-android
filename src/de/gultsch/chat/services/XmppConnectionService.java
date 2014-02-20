@@ -103,6 +103,8 @@ public class XmppConnectionService extends Service {
 				if (message != null) {
 					notify = (message.getStatus() == Message.STATUS_RECIEVED);
 				}
+			} else if (packet.getType() == MessagePacket.TYPE_ERROR) {
+				message = MessageParser.parseError(packet,account,service);
 			} else {
 				Log.d(LOGTAG, "unparsed message " + packet.toString());
 			}
@@ -126,7 +128,9 @@ public class XmppConnectionService extends Service {
 			}
 			Conversation conversation = message.getConversation();
 			conversation.getMessages().add(message);
-			databaseBackend.createMessage(message);
+			if (packet.getType() != MessagePacket.TYPE_ERROR) {
+				databaseBackend.createMessage(message);
+			}
 			if (convChangedListener != null) {
 				convChangedListener.onConversationListChanged();
 			} else {
@@ -171,7 +175,7 @@ public class XmppConnectionService extends Service {
 			Contact contact = findContact(account, fromParts[0]);
 			if (contact == null) {
 				// most likely muc, self or roster not synced
-				// Log.d(LOGTAG,"got presence for non contact "+packet.toString());
+				Log.d(LOGTAG,"got presence for non contact "+packet.toString());
 				return;
 			}
 			String type = packet.getAttribute("type");
@@ -197,7 +201,7 @@ public class XmppConnectionService extends Service {
 					databaseBackend.updateContact(contact);
 				}
 			}
-			replaceContactInConversation(contact);
+			replaceContactInConversation(contact.getJid(),contact);
 		}
 	};
 
@@ -233,21 +237,21 @@ public class XmppConnectionService extends Service {
 				} else {
 					if (subscription.equals("remove")) {
 						databaseBackend.deleteContact(contact);
+						replaceContactInConversation(contact.getJid(), null);
 					} else {
 						contact.setSubscription(subscription);
 						databaseBackend.updateContact(contact);
-						replaceContactInConversation(contact);
+						replaceContactInConversation(contact.getJid(),contact);
 					}
 				}
 			}
 		}
 	}
 
-	private void replaceContactInConversation(Contact contact) {
+	private void replaceContactInConversation(String jid, Contact contact) {
 		List<Conversation> conversations = getConversations();
 		for (int i = 0; i < conversations.size(); ++i) {
-			if ((conversations.get(i).getContact() != null)
-					&& (conversations.get(i).getContact().equals(contact))) {
+			if ((conversations.get(i).getContactJid().equals(jid))) {
 				conversations.get(i).setContact(contact);
 				break;
 			}
@@ -458,6 +462,7 @@ public class XmppConnectionService extends Service {
 								List<Contact> contactsToDelete = databaseBackend.getContats(mWhere.toString());
 								for(Contact contact : contactsToDelete) {
 									databaseBackend.deleteContact(contact);
+									replaceContactInConversation(contact.getJid(), null);
 								}
 							}
 							mergePhoneContactsWithRoster(new OnPhoneContactsMerged() {
@@ -515,10 +520,6 @@ public class XmppConnectionService extends Service {
 						}
 					}
 				});
-	}
-
-	public void addConversation(Conversation conversation) {
-		databaseBackend.createConversation(conversation);
 	}
 
 	public List<Conversation> getConversations() {
@@ -629,6 +630,20 @@ public class XmppConnectionService extends Service {
 		if (accountChangedListener != null)
 			accountChangedListener.onAccountListChangedListener();
 	}
+	
+	public void deleteContact(Contact contact) {
+		IqPacket iq = new IqPacket(IqPacket.TYPE_SET);
+		Element query = new Element("query");
+		query.setAttribute("xmlns", "jabber:iq:roster");
+		Element item = new Element("item");
+		item.setAttribute("jid", contact.getJid());
+		item.setAttribute("subscription", "remove");
+		query.addChild(item);
+		iq.addChild(query);
+		contact.getAccount().getXmppConnection().sendIqPacket(iq, null);
+		replaceContactInConversation(contact.getJid(), null);
+		databaseBackend.deleteContact(contact);
+	}
 
 	public void updateAccount(Account account) {
 		databaseBackend.updateAccount(account);
@@ -734,5 +749,21 @@ public class XmppConnectionService extends Service {
 
 	public void updateContact(Contact contact) {
 		databaseBackend.updateContact(contact);
+	}
+
+	public void createContact(Contact contact) {
+		IqPacket iq = new IqPacket(IqPacket.TYPE_SET);
+		Element query = new Element("query");
+		query.setAttribute("xmlns", "jabber:iq:roster");
+		Element item = new Element("item");
+		item.setAttribute("jid", contact.getJid());
+		item.setAttribute("name", contact.getJid());
+		query.addChild(item);
+		iq.addChild(query);
+		Account account = contact.getAccount();
+		Log.d(LOGTAG,account.getJid()+": adding "+contact.getJid()+" to roster");
+		account.getXmppConnection().sendIqPacket(iq, null);
+		replaceContactInConversation(contact.getJid(), contact);
+		databaseBackend.createContact(contact);
 	}
 }

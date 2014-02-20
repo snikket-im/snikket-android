@@ -8,6 +8,8 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Set;
 
+import javax.crypto.spec.PSource;
+
 import net.java.otr4j.OtrException;
 import net.java.otr4j.session.SessionStatus;
 
@@ -53,6 +55,8 @@ public class ConversationFragment extends Fragment {
 	protected BitmapCache mBitmapCache = new BitmapCache();
 
 	private EditText chatMsg;
+	
+	protected Bitmap selfBitmap;
 
 	private OnClickListener sendMsgListener = new OnClickListener() {
 
@@ -105,47 +109,26 @@ public class ConversationFragment extends Fragment {
 		sendButton.setOnClickListener(this.sendMsgListener);
 
 		messagesView = (ListView) view.findViewById(R.id.messages_view);
-
-		SharedPreferences sharedPref = PreferenceManager
-				.getDefaultSharedPreferences(getActivity()
-						.getApplicationContext());
-		boolean showPhoneSelfContactPicture = sharedPref.getBoolean(
-				"show_phone_selfcontact_picture", true);
-
-		Bitmap self;
-
-		if (showPhoneSelfContactPicture) {
-			Uri selfiUri = PhoneHelper.getSefliUri(getActivity());
-			try {
-				self = BitmapFactory.decodeStream(getActivity()
-						.getContentResolver().openInputStream(selfiUri));
-			} catch (FileNotFoundException e) {
-				self = UIHelper.getUnknownContactPicture(conversation
-						.getAccount().getJid(), 200);
-			}
-		} else {
-			self = UIHelper.getUnknownContactPicture(conversation.getAccount()
-					.getJid(), 200);
-		}
-
-		final Bitmap selfBitmap = self;
-
+		
 		messageListAdapter = new ArrayAdapter<Message>(this.getActivity()
 				.getApplicationContext(), R.layout.message_sent,
 				this.messageList) {
 
 			private static final int SENT = 0;
 			private static final int RECIEVED = 1;
+			private static final int ERROR = 2;
 
 			@Override
 			public int getViewTypeCount() {
-				return 2;
+				return 3;
 			}
 
 			@Override
 			public int getItemViewType(int position) {
 				if (getItem(position).getStatus() == Message.STATUS_RECIEVED) {
 					return RECIEVED;
+				} else if (getItem(position).getStatus() == Message.STATUS_ERROR) {
+					return ERROR;
 				} else {
 					return SENT;
 				}
@@ -167,7 +150,6 @@ public class ConversationFragment extends Fragment {
 						viewHolder.imageView.setImageBitmap(selfBitmap);
 						break;
 					case RECIEVED:
-						viewHolder = new ViewHolder();
 						view = (View) inflater.inflate(
 								R.layout.message_recieved, null);
 						viewHolder.imageView = (ImageView) view
@@ -185,6 +167,12 @@ public class ConversationFragment extends Fragment {
 							}
 						}
 						break;
+					case ERROR:
+						view = (View) inflater.inflate(R.layout.message_error, null);
+						viewHolder.imageView = (ImageView) view
+								.findViewById(R.id.message_photo);
+						viewHolder.imageView.setImageBitmap(mBitmapCache.getError());
+						break;
 					default:
 						viewHolder = null;
 						break;
@@ -193,7 +181,6 @@ public class ConversationFragment extends Fragment {
 							.findViewById(R.id.message_body);
 					viewHolder.time = (TextView) view
 							.findViewById(R.id.message_time);
-					
 					view.setTag(viewHolder);
 				} else {
 					viewHolder = (ViewHolder) view.getTag();
@@ -238,31 +225,47 @@ public class ConversationFragment extends Fragment {
 		return view;
 	}
 
+	protected Bitmap findSelfPicture() {
+		SharedPreferences sharedPref = PreferenceManager
+				.getDefaultSharedPreferences(getActivity()
+						.getApplicationContext());
+		boolean showPhoneSelfContactPicture = sharedPref.getBoolean(
+				"show_phone_selfcontact_picture", true);
+
+		Bitmap self;
+
+		if (showPhoneSelfContactPicture) {
+			Uri selfiUri = PhoneHelper.getSefliUri(getActivity());
+			try {
+				self = BitmapFactory.decodeStream(getActivity()
+						.getContentResolver().openInputStream(selfiUri));
+			} catch (FileNotFoundException e) {
+				self = UIHelper.getUnknownContactPicture(conversation
+						.getAccount().getJid(), 200);
+			}
+		} else {
+			self = UIHelper.getUnknownContactPicture(conversation.getAccount()
+					.getJid(), 200);
+		}
+
+		final Bitmap selfBitmap = self;
+		return selfBitmap;
+	}
+
 	@Override
 	public void onStart() {
 		super.onStart();
-		final ConversationActivity activity = (ConversationActivity) getActivity();
+		ConversationActivity activity = (ConversationActivity) getActivity();
 
 		if (activity.xmppConnectionServiceBound) {
-			this.conversation = activity.getSelectedConversation();
-			updateMessages();
-			// rendering complete. now go tell activity to close pane
-			if (!activity.shouldPaneBeOpen()) {
-				activity.getSlidingPaneLayout().closePane();
-				activity.getActionBar().setDisplayHomeAsUpEnabled(true);
-				activity.getActionBar().setTitle(conversation.getName());
-				activity.invalidateOptionsMenu();
-				if (!conversation.isRead()) {
-					conversation.markRead();
-					activity.updateConversationList();
-				}
-			}
+			this.onBackendConnected();
 		}
 	}
 
 	public void onBackendConnected() {
 		final ConversationActivity activity = (ConversationActivity) getActivity();
 		this.conversation = activity.getSelectedConversation();
+		this.selfBitmap = findSelfPicture();
 		updateMessages();
 		// rendering complete. now go tell activity to close pane
 		if (!activity.shouldPaneBeOpen()) {
@@ -353,7 +356,7 @@ public class ConversationFragment extends Fragment {
 			} else {
 				presences = null;
 			}
-			if ((presences != null) && (presences.size() == 0)) {
+			if ((presences == null) || (presences.size() == 0)) {
 				AlertDialog.Builder builder = new AlertDialog.Builder(
 						getActivity());
 				builder.setTitle("Contact is offline");
@@ -412,6 +415,7 @@ public class ConversationFragment extends Fragment {
 
 	private class BitmapCache {
 		private HashMap<String, Bitmap> bitmaps = new HashMap<String, Bitmap>();
+		private Bitmap error = null;
 
 		public Bitmap get(String name, Uri uri) {
 			if (bitmaps.containsKey(name)) {
@@ -431,6 +435,13 @@ public class ConversationFragment extends Fragment {
 				bitmaps.put(name, bm);
 				return bm;
 			}
+		}
+		
+		public Bitmap getError() {
+			if (error == null) {
+				error = UIHelper.getErrorPicture(200);
+			}
+			return error;
 		}
 	}
 }

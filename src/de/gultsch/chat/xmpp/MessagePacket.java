@@ -7,6 +7,7 @@ public class MessagePacket extends Element {
 	public static final int TYPE_UNKNOWN = 1;
 	public static final int TYPE_NO = 2;
 	public static final int TYPE_GROUPCHAT = 3;
+	public static final int TYPE_ERROR = 4;
 
 	private MessagePacket(String name) {
 		super(name);
@@ -71,6 +72,8 @@ public class MessagePacket extends Element {
 			return TYPE_CHAT;
 		} else if (type.equals("groupchat")) {
 			return TYPE_GROUPCHAT;
+		} else if (type.equals("error")) {
+			return TYPE_ERROR;
 		} else {
 			return TYPE_UNKNOWN;
 		}

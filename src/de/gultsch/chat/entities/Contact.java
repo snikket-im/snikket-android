@@ -44,6 +44,7 @@ public class Contact extends AbstractEntity implements Serializable {
 		} else {
 			this.accountUuid = account.getUuid();
 		}
+		this.account = account;
 		this.displayName = displayName;
 		this.jid = jid;
 		this.photoUri = photoUri;

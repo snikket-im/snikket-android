@@ -116,4 +116,19 @@ public class MessageParser {
 		Conversation conversation = service.findOrCreateConversation(account, parts[0],false);
 		return new Message(conversation,fullJid, message.findChild("body").getContent(), Message.ENCRYPTION_NONE,status);
 	}
+
+	public static Message parseError(MessagePacket packet, Account account, XmppConnectionService service) {
+		
+			String[] fromParts = packet.getFrom().split("/");
+	Conversation conversation = service.findOrCreateConversation(account, fromParts[0],false);
+	Element error = packet.findChild("error");
+	String errorName = error.getChildren().get(0).getName();
+	String displayError;
+	if (errorName.equals("service-unavailable")) {
+		displayError = "Contact is offline and does not have offline storage";
+	} else {
+		displayError = errorName.replace("-", " ");
+	}
+	return new Message(conversation, packet.getFrom(), displayError, Message.ENCRYPTION_NONE, Message.STATUS_ERROR);
+	}
 }

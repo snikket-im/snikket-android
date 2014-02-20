@@ -22,7 +22,8 @@
         <activity
             android:name="de.gultsch.chat.ui.ConversationActivity"
             android:label="Secure Conversations"
-            android:windowSoftInputMode="stateHidden">
+            android:windowSoftInputMode="stateHidden"
+            android:configChanges="orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

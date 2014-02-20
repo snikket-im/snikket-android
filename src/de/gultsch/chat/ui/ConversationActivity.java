@@ -7,15 +7,18 @@ import java.util.List;
 
 import de.gultsch.chat.R;
 import de.gultsch.chat.R.id;
+import de.gultsch.chat.entities.Account;
 import de.gultsch.chat.entities.Contact;
 import de.gultsch.chat.entities.Conversation;
 import de.gultsch.chat.entities.Message;
 import de.gultsch.chat.utils.UIHelper;
 import android.net.Uri;
 import android.os.Bundle;
+import android.app.AlertDialog;
 import android.app.FragmentTransaction;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.v4.widget.SlidingPaneLayout;
@@ -80,6 +83,18 @@ public class ConversationActivity extends XmppActivity {
 					}
 				}
 			});
+		}
+	};
+	
+	private DialogInterface.OnClickListener addToRoster = new DialogInterface.OnClickListener() {
+		
+		@Override
+		public void onClick(DialogInterface dialog, int which) {
+			String jid = getSelectedConversation().getContactJid();
+			Account account = getSelectedConversation().getAccount();
+			String name = jid.split("@")[0];
+			Contact contact = new Contact(account, name, jid, null);
+			xmppConnectionService.createContact(contact);
 		}
 	};
 	private boolean contactInserted = false;
@@ -288,7 +303,13 @@ public class ConversationActivity extends XmppActivity {
 				details.setContact(contact);
 				details.show(getFragmentManager(), "details");
 			} else {
-				Log.d("xmppService","contact was null - means not in roster");
+				String jid = getSelectedConversation().getContactJid();
+				AlertDialog.Builder builder = new AlertDialog.Builder(this);
+				builder.setTitle(jid);
+				builder.setMessage("The contact is not in your roster. Would you like to add it.");
+				builder.setNegativeButton("Cancel", null);
+				builder.setPositiveButton("Add",addToRoster);
+				builder.create().show();
 			}
 			break;
 		case R.id.action_security:

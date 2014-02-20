@@ -111,8 +111,9 @@ public final class R {
         public static final int fragment_conversation=0x7f030007;
         public static final int fragment_conversations_overview=0x7f030008;
         public static final int manage_accounts=0x7f030009;
-        public static final int message_recieved=0x7f03000a;
-        public static final int message_sent=0x7f03000b;
+        public static final int message_error=0x7f03000a;
+        public static final int message_recieved=0x7f03000b;
+        public static final int message_sent=0x7f03000c;
     }
     public static final class menu {
         public static final int conversations=0x7f090000;

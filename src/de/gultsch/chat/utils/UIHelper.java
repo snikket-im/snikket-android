@@ -54,7 +54,7 @@ public class UIHelper {
 			SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
 			return sdf.format(date);
 		} else {
-			SimpleDateFormat sdf = new SimpleDateFormat("M/D");
+			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd");
 			return sdf.format(date);
 		}
 	}
@@ -81,6 +81,26 @@ public class UIHelper {
 		paint.getTextBounds(firstLetter, 0, 1, rect);
 		float width = paint.measureText(firstLetter);
 		canvas.drawText(firstLetter, (size / 2) - (width / 2), (size / 2)
+				+ (rect.height() / 2), paint);
+
+		return bitmap;
+	}
+	
+	public static Bitmap getErrorPicture(int size) {
+		Bitmap bitmap = Bitmap
+				.createBitmap(size, size, Bitmap.Config.ARGB_8888);
+		Canvas canvas = new Canvas(bitmap);
+
+		bitmap.eraseColor(0xFFe92727);
+
+		Paint paint = new Paint();
+		paint.setColor(0xffe5e5e5);
+		paint.setTextSize((float) (size * 0.9));
+		paint.setAntiAlias(true);
+		Rect rect = new Rect();
+		paint.getTextBounds("!", 0, 1, rect);
+		float width = paint.measureText("!");
+		canvas.drawText("!", (size / 2) - (width / 2), (size / 2)
 				+ (rect.height() / 2), paint);
 
 		return bitmap;
