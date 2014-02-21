@@ -58,7 +58,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 				+ Contact.DISPLAYNAME + " TEXT," + Contact.JID + " TEXT,"
 				+ Contact.PRESENCES + " TEXT, " + Contact.KEYS
 				+ " TEXT," + Contact.PHOTOURI + " TEXT," + Contact.SUBSCRIPTION
-				+ " TEXT," + Contact.SYSTEMACCOUNT + " NUMBER, "
+				+ " NUMBER," + Contact.SYSTEMACCOUNT + " NUMBER, "
 				+ "FOREIGN KEY(" + Contact.ACCOUNT + ") REFERENCES "
 				+ Account.TABLENAME + "(" + Account.UUID
 				+ ") ON DELETE CASCADE);");

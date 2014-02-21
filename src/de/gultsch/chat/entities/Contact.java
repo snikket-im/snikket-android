@@ -9,6 +9,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import de.gultsch.chat.xml.Element;
+
 import android.content.ContentValues;
 import android.database.Cursor;
 
@@ -29,7 +31,7 @@ public class Contact extends AbstractEntity implements Serializable {
 	protected String accountUuid;
 	protected String displayName;
 	protected String jid;
-	protected String subscription;
+	protected int subscription = 0;
 	protected String systemAccount;
 	protected String photoUri;
 	protected JSONObject keys = new JSONObject();
@@ -52,7 +54,7 @@ public class Contact extends AbstractEntity implements Serializable {
 	}
 
 	public Contact(String uuid, String account, String displayName, String jid,
-			String subscription, String photoUri, String systemAccount,
+			int subscription, String photoUri, String systemAccount,
 			String keys, String presences) {
 		this.uuid = uuid;
 		this.accountUuid = account;
@@ -109,18 +111,14 @@ public class Contact extends AbstractEntity implements Serializable {
 				cursor.getString(cursor.getColumnIndex(ACCOUNT)),
 				cursor.getString(cursor.getColumnIndex(DISPLAYNAME)),
 				cursor.getString(cursor.getColumnIndex(JID)),
-				cursor.getString(cursor.getColumnIndex(SUBSCRIPTION)),
+				cursor.getInt(cursor.getColumnIndex(SUBSCRIPTION)),
 				cursor.getString(cursor.getColumnIndex(PHOTOURI)),
 				cursor.getString(cursor.getColumnIndex(SYSTEMACCOUNT)),
 				cursor.getString(cursor.getColumnIndex(KEYS)),
 				cursor.getString(cursor.getColumnIndex(PRESENCES)));
 	}
-
-	public void setSubscription(String subscription) {
-		this.subscription = subscription;
-	}
-
-	public String getSubscription() {
+	
+	public int getSubscription() {
 		return this.subscription;
 	}
 
@@ -219,5 +217,49 @@ public class Contact extends AbstractEntity implements Serializable {
 		} catch (JSONException e) {
 
 		}
+	}
+	
+	public void setSubscriptionOption(int option) {
+		this.subscription |= 1 << option;
+	}
+	
+	public void resetSubscriptionOption(int option) {
+		this.subscription &= ~(1 << option);
+	}
+	
+	public boolean getSubscriptionOption(int option) {
+		return ((this.subscription & (1 << option)) != 0);
+	}
+	
+	public void parseSubscriptionFromElement(Element item) {
+		String ask = item.getAttribute("ask");
+		String subscription = item.getAttribute("subscription");
+		
+		if (subscription!=null) {
+			if (subscription.equals("to")) {
+				this.resetSubscriptionOption(Contact.Subscription.FROM);
+				this.setSubscriptionOption(Contact.Subscription.TO);
+			} else if (subscription.equals("from")) {
+				this.resetSubscriptionOption(Contact.Subscription.TO);
+				this.setSubscriptionOption(Contact.Subscription.FROM);
+			} else if (subscription.equals("both")) {
+				this.setSubscriptionOption(Contact.Subscription.TO);
+				this.setSubscriptionOption(Contact.Subscription.FROM);
+			}
+		}
+		
+		if ((ask!=null)&&(ask.equals("subscribe"))) {
+			this.setSubscriptionOption(Contact.Subscription.ASKING);
+		} else {
+			this.resetSubscriptionOption(Contact.Subscription.ASKING);
+		}
+	}
+	
+	
+	public class Subscription {
+		public static final int TO = 0;
+		public static final int FROM = 1;
+		public static final int ASKING = 2;
+		public static final int PREEMPTIVE_GRANT = 4;
 	}
 }

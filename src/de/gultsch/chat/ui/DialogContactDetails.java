@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.provider.ContactsContract.CommonDataKinds;
 import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.Intents;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -27,6 +28,9 @@ public class DialogContactDetails extends DialogFragment {
 	
 	private DialogContactDetails mDetailsDialog = this;
 	private XmppActivity activity;
+	
+	private CheckBox send;
+	private CheckBox receive;
 	
 	private DialogInterface.OnClickListener askRemoveFromRoster = new DialogInterface.OnClickListener() {
 		
@@ -64,6 +68,58 @@ public class DialogContactDetails extends DialogFragment {
 		}
 	};
 	
+	private DialogInterface.OnClickListener updateSubscriptions = new DialogInterface.OnClickListener() {
+		
+		@Override
+		public void onClick(DialogInterface dialog, int which) {
+			boolean needsUpdating = false;
+			if (contact.getSubscriptionOption(Contact.Subscription.FROM)) {
+				if (!send.isChecked()) {
+					contact.resetSubscriptionOption(Contact.Subscription.FROM);
+					contact.resetSubscriptionOption(Contact.Subscription.PREEMPTIVE_GRANT);
+					activity.xmppConnectionService.stopPresenceUpdatesTo(contact);
+					needsUpdating=true;
+				}
+			} else {
+				if (contact.getSubscriptionOption(Contact.Subscription.PREEMPTIVE_GRANT)) {
+					if (!send.isChecked()) {
+						contact.resetSubscriptionOption(Contact.Subscription.PREEMPTIVE_GRANT);
+						needsUpdating=true;
+					}
+				} else {
+					if (send.isChecked()) {
+						contact.setSubscriptionOption(Contact.Subscription.PREEMPTIVE_GRANT);
+						needsUpdating=true;
+					}
+				}
+			}
+			if (contact.getSubscriptionOption(Contact.Subscription.TO)) {
+				if (!receive.isChecked()) {
+					contact.resetSubscriptionOption(Contact.Subscription.TO);
+					activity.xmppConnectionService.stopPresenceUpdatesFrom(contact);
+					needsUpdating=true;
+				}
+			} else {
+				if (contact.getSubscriptionOption(Contact.Subscription.ASKING)) {
+					if (!receive.isChecked()) {
+						contact.resetSubscriptionOption(Contact.Subscription.ASKING);
+						activity.xmppConnectionService.stopPresenceUpdatesFrom(contact);
+						needsUpdating=true;
+					}
+				} else {
+					if (receive.isChecked()) {
+						contact.setSubscriptionOption(Contact.Subscription.ASKING);
+						activity.xmppConnectionService.requestPresenceUpdatesFrom(contact);
+						needsUpdating=true;
+					}
+				}
+			}
+			if (needsUpdating) {
+				activity.xmppConnectionService.updateContact(contact);
+			}
+		}
+	};
+
 	public void setContact(Contact contact) {
 		this.contact = contact;
 	}
@@ -77,21 +133,29 @@ public class DialogContactDetails extends DialogFragment {
 		TextView contactJid = (TextView) view.findViewById(R.id.details_contactjid);
 		TextView accountJid = (TextView) view.findViewById(R.id.details_account);
 		TextView status = (TextView) view.findViewById(R.id.details_contactstatus);
-		CheckBox send = (CheckBox) view.findViewById(R.id.details_send_presence);
-		CheckBox receive = (CheckBox) view.findViewById(R.id.details_receive_presence);
+		send = (CheckBox) view.findViewById(R.id.details_send_presence);
+		receive = (CheckBox) view.findViewById(R.id.details_receive_presence);
 		//ImageView contactPhoto = (ImageView) view.findViewById(R.id.details_contact_picture);
 		QuickContactBadge badge = (QuickContactBadge) view.findViewById(R.id.details_contact_badge);
 		
-		boolean subscriptionSend = false;
-		boolean subscriptionReceive = false;
-		if (contact.getSubscription()!=null) {
-			if (contact.getSubscription().equals("both")) {
-				subscriptionReceive = true;
-				subscriptionSend = true;
-			} else if (contact.getSubscription().equals("from")) {
-				subscriptionSend = true;
-			} else if (contact.getSubscription().equals("to")) {
-				subscriptionReceive = true;
+		if (contact.getSubscriptionOption(Contact.Subscription.FROM)) {
+			send.setChecked(true);
+		} else {
+			send.setText("Preemptively grant subscription request");
+			if (contact.getSubscriptionOption(Contact.Subscription.PREEMPTIVE_GRANT)) {
+				send.setChecked(true);
+			} else {
+				send.setChecked(false);
+			}
+		}
+		if (contact.getSubscriptionOption(Contact.Subscription.TO)) {
+			receive.setChecked(true);
+		} else {
+			receive.setText("Request presence updates");
+			if (contact.getSubscriptionOption(Contact.Subscription.ASKING)) {
+				receive.setChecked(true);
+			} else {
+				receive.setChecked(false);
 			}
 		}
 		
@@ -125,9 +189,6 @@ public class DialogContactDetails extends DialogFragment {
 			status.setTextColor(0xFFe92727);
 			break;
 		}
-		
-		send.setChecked(subscriptionSend);
-		receive.setChecked(subscriptionReceive);
 		contactJid.setText(contact.getJid());
 		accountJid.setText(contact.getAccount().getJid());
 
@@ -151,7 +212,7 @@ public class DialogContactDetails extends DialogFragment {
 		builder.setView(view);
 		builder.setTitle(contact.getDisplayName());
 		
-		builder.setNeutralButton("Done", null);
+		builder.setNeutralButton("Done", this.updateSubscriptions);
 		builder.setPositiveButton("Remove from roster", this.askRemoveFromRoster);
 		return builder.create();
 	}
