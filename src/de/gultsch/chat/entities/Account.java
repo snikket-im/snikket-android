@@ -83,9 +83,9 @@ public class Account  extends AbstractEntity{
 	
 	public void setOption(int option, boolean value) {
 		if (value) {
-			this.options = (this.options | 1 << option);
+			this.options |= 1 << option;
 		} else {
-			this.options = (this.options & 0 << option);
+			this.options &= ~(1 << option);
 		}
 	}
 	
