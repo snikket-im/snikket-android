@@ -464,17 +464,15 @@ public class XmppConnectionService extends Service {
 								mWhere.append("jid NOT IN(");
 								List<Element> items = roster.getChildren();
 								for(int i = 0; i < items.size(); ++i) {
-									mWhere.append("\"");
 									mWhere.append(DatabaseUtils.sqlEscapeString(items.get(i).getAttribute("jid")));
 									if (i != items.size() - 1) {
-										mWhere.append("\",");
-									} else {
-										mWhere.append("\"");
+										mWhere.append(",");
 									}
 								}
 								mWhere.append(") and accountUuid = \"");
 								mWhere.append(account.getUuid());
 								mWhere.append("\"");
+								Log.d(LOGTAG,mWhere.toString());
 								List<Contact> contactsToDelete = databaseBackend.getContats(mWhere.toString());
 								for(Contact contact : contactsToDelete) {
 									databaseBackend.deleteContact(contact);

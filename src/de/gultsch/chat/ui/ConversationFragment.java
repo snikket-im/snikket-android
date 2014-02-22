@@ -232,18 +232,20 @@ public class ConversationFragment extends Fragment {
 		boolean showPhoneSelfContactPicture = sharedPref.getBoolean(
 				"show_phone_selfcontact_picture", true);
 
-		Bitmap self;
+		Bitmap self = null;
 
 		if (showPhoneSelfContactPicture) {
 			Uri selfiUri = PhoneHelper.getSefliUri(getActivity());
-			try {
-				self = BitmapFactory.decodeStream(getActivity()
-						.getContentResolver().openInputStream(selfiUri));
-			} catch (FileNotFoundException e) {
-				self = UIHelper.getUnknownContactPicture(conversation
-						.getAccount().getJid(), 200);
+			if (selfiUri!=null) {
+				try {
+					self = BitmapFactory.decodeStream(getActivity()
+							.getContentResolver().openInputStream(selfiUri));
+				} catch (FileNotFoundException e) {
+					self = null;
+				}
 			}
-		} else {
+		}
+		if (self==null){
 			self = UIHelper.getUnknownContactPicture(conversation.getAccount()
 					.getJid(), 200);
 		}

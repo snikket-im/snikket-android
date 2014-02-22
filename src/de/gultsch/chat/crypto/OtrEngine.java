@@ -164,6 +164,7 @@ public class OtrEngine implements OtrEngineHost {
 		Element privateTag = new Element("private");
 		privateTag.setAttribute("xmlns","urn:xmpp:carbons:2");
 		packet.addChild(privateTag);
+		packet.setType(MessagePacket.TYPE_CHAT);
 		account.getXmppConnection().sendMessagePacket(packet);
 	}
 
