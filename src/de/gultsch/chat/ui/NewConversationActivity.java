@@ -79,6 +79,7 @@ public class NewConversationActivity extends XmppActivity {
 			if (Validator.isValidJid(searchString)) {
 				String name = searchString.split("@")[0];
 				Contact newContact = new Contact(null, name, searchString, null);
+				newContact.flagAsNotInRoster();
 				aggregatedContacts.add(newContact);
 				contactsHeader.setText("Create new contact");
 			} else {
@@ -228,7 +229,9 @@ public class NewConversationActivity extends XmppActivity {
 	}
 
 	public void startConversation(Contact contact, Account account, boolean muc) {
-		Log.d("xmppService","starting conversation for account:"+account.getJid()+" and contact:"+contact.getJid());
+		if (!contact.isInRoster()) {
+			xmppConnectionService.createContact(contact);
+		}
 		Conversation conversation = xmppConnectionService
 				.findOrCreateConversation(account, contact.getJid(), muc);
 

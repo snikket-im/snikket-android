@@ -38,6 +38,8 @@ public class Contact extends AbstractEntity implements Serializable {
 	protected Presences presences = new Presences();
 
 	protected Account account;
+	
+	protected boolean inRoster = true;
 
 	public Contact(Account account, String displayName, String jid,
 			String photoUri) {
@@ -261,5 +263,14 @@ public class Contact extends AbstractEntity implements Serializable {
 		public static final int FROM = 1;
 		public static final int ASKING = 2;
 		public static final int PREEMPTIVE_GRANT = 4;
+	}
+
+
+	public void flagAsNotInRoster() {
+		this.inRoster = false;
+	}
+	
+	public boolean isInRoster() {
+		return this.inRoster;
 	}
 }

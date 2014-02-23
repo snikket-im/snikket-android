@@ -1,22 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
     <PreferenceCategory 
-        android:title="Security">
-        <CheckBoxPreference
-            android:key="trust_unknown_tls_certificates"
-            android:title="Trust TLS certificates"
-            android:summary="Accounts with untrusted certificates simply will not connect to server"
-            />
+        android:title="Security and Privacy Options">
         <ListPreference
             android:key="default_conversation_encryption_type"
             android:title="Default conversation encryption"
             android:dialogTitle="Default conversation encryption"
             android:entries="@array/conversation_encryption_type_entries"
             android:entryValues="@array/conversation_encryption_type_values"
-            android:defaultValue="pgp"/>
+            android:defaultValue="none"/>
+        <CheckBoxPreference 
+            android:key="grant_new_contacts"
+            android:title="Grant presence updates"
+            android:summary="Preemptivly grant and ask for presence subscription for contacts you created"
+            android:defaultValue="true"
+            />
     </PreferenceCategory>
     <PreferenceCategory 
-        android:title="Notification settings">
+        android:title="Notification Settings">
         <CheckBoxPreference 
             android:key="show_notification"
             android:title="Notification"
@@ -33,9 +34,13 @@
             android:ringtoneType="notification"
             android:dependency="show_notification"
             android:summary="Play ringtone with notification"/>
+        <CheckBoxPreference 
+            android:key="notify_in_conversation_when_highlighted"
+            android:title="Conference notification"
+            android:summary="Always notify when a new conference message arrives instead of only when highlighted"/>
     </PreferenceCategory>
     <PreferenceCategory 
-        android:title="Advanced settings">
+        android:title="UI Options">
         <CheckBoxPreference 
             android:key="show_phone_selfcontact_picture"
             android:title="Use Phones self contact picture"

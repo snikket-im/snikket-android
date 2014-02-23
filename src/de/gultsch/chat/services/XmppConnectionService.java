@@ -40,12 +40,14 @@ import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.ContentObserver;
 import android.database.DatabaseUtils;
 import android.os.Binder;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.PowerManager;
+import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.util.Log;
 
@@ -104,7 +106,7 @@ public class XmppConnectionService extends Service {
 					notify = (message.getStatus() == Message.STATUS_RECIEVED);
 				}
 			} else if (packet.getType() == MessagePacket.TYPE_ERROR) {
-				message = MessageParser.parseError(packet,account,service);
+				message = MessageParser.parseError(packet, account, service);
 			} else {
 				Log.d(LOGTAG, "unparsed message " + packet.toString());
 			}
@@ -175,7 +177,8 @@ public class XmppConnectionService extends Service {
 			Contact contact = findContact(account, fromParts[0]);
 			if (contact == null) {
 				// most likely muc, self or roster not synced
-				Log.d(LOGTAG,"got presence for non contact "+packet.toString());
+				Log.d(LOGTAG,
+						"got presence for non contact " + packet.toString());
 				return;
 			}
 			String type = packet.getAttribute("type");
@@ -201,21 +204,26 @@ public class XmppConnectionService extends Service {
 					databaseBackend.updateContact(contact);
 				}
 			} else if (type.equals("subscribe")) {
-				Log.d(LOGTAG,account.getJid()+": "+contact.getJid()+" asked to subscribe");
-				if (contact.getSubscriptionOption(Contact.Subscription.PREEMPTIVE_GRANT)) {
-					Log.d(LOGTAG,"preemptive grant existed. granting");
+				if (contact
+						.getSubscriptionOption(Contact.Subscription.PREEMPTIVE_GRANT)) {
 					sendPresenceUpdatesTo(contact);
 					contact.setSubscriptionOption(Contact.Subscription.FROM);
 					contact.resetSubscriptionOption(Contact.Subscription.PREEMPTIVE_GRANT);
 					replaceContactInConversation(contact.getJid(), contact);
 					databaseBackend.updateContact(contact);
+					if ((contact
+							.getSubscriptionOption(Contact.Subscription.ASKING))
+							&& (!contact
+									.getSubscriptionOption(Contact.Subscription.TO))) {
+						requestPresenceUpdatesFrom(contact);
+					}
 				} else {
-					//TODO: ask user to handle it maybe
+					// TODO: ask user to handle it maybe
 				}
 			} else {
-				Log.d(LOGTAG,packet.toString());
+				Log.d(LOGTAG, packet.toString());
 			}
-			replaceContactInConversation(contact.getJid(),contact);
+			replaceContactInConversation(contact.getJid(), contact);
 		}
 	};
 
@@ -257,7 +265,7 @@ public class XmppConnectionService extends Service {
 					} else {
 						contact.parseSubscriptionFromElement(item);
 						databaseBackend.updateContact(contact);
-						replaceContactInConversation(contact.getJid(),contact);
+						replaceContactInConversation(contact.getJid(), contact);
 					}
 				}
 			}
@@ -456,48 +464,44 @@ public class XmppConnectionService extends Service {
 						if (roster != null) {
 							String version = roster.getAttribute("ver");
 							processRosterItems(account, roster);
-							if (version!=null) {
-								account.setRosterVersion(version);
-								databaseBackend.updateAccount(account);
-							} else {
-								StringBuilder mWhere = new StringBuilder();
-								mWhere.append("jid NOT IN(");
-								List<Element> items = roster.getChildren();
-								for(int i = 0; i < items.size(); ++i) {
-									mWhere.append(DatabaseUtils.sqlEscapeString(items.get(i).getAttribute("jid")));
-									if (i != items.size() - 1) {
-										mWhere.append(",");
-									}
-								}
-								mWhere.append(") and accountUuid = \"");
-								mWhere.append(account.getUuid());
-								mWhere.append("\"");
-								Log.d(LOGTAG,mWhere.toString());
-								List<Contact> contactsToDelete = databaseBackend.getContats(mWhere.toString());
-								for(Contact contact : contactsToDelete) {
-									databaseBackend.deleteContact(contact);
-									replaceContactInConversation(contact.getJid(), null);
+							StringBuilder mWhere = new StringBuilder();
+							mWhere.append("jid NOT IN(");
+							List<Element> items = roster.getChildren();
+							for (int i = 0; i < items.size(); ++i) {
+								mWhere.append(DatabaseUtils
+										.sqlEscapeString(items.get(i)
+												.getAttribute("jid")));
+								if (i != items.size() - 1) {
+									mWhere.append(",");
 								}
 							}
-							mergePhoneContactsWithRoster(new OnPhoneContactsMerged() {
-								
-								@Override
-								public void phoneContactsMerged() {
-									if (listener != null) {
-										getRoster(account, listener);
-									}
-								}
-							});
-						} else {
-							if (listener != null) {
-								getRoster(account, listener);
+							mWhere.append(") and accountUuid = \"");
+							mWhere.append(account.getUuid());
+							mWhere.append("\"");
+							List<Contact> contactsToDelete = databaseBackend
+									.getContats(mWhere.toString());
+							for (Contact contact : contactsToDelete) {
+								databaseBackend.deleteContact(contact);
+								replaceContactInConversation(contact.getJid(),
+										null);
 							}
+
 						}
+						mergePhoneContactsWithRoster(new OnPhoneContactsMerged() {
+
+							@Override
+							public void phoneContactsMerged() {
+								if (listener != null) {
+									getRoster(account, listener);
+								}
+							}
+						});
 					}
 				});
 	}
 
-	public void mergePhoneContactsWithRoster(final OnPhoneContactsMerged listener) {
+	public void mergePhoneContactsWithRoster(
+			final OnPhoneContactsMerged listener) {
 		PhoneHelper.loadPhoneContacts(getApplicationContext(),
 				new OnPhoneContactsLoadedListener() {
 					@Override
@@ -520,18 +524,20 @@ public class XmppConnectionService extends Service {
 								contact.setDisplayName(phoneContact
 										.getString("displayname"));
 								databaseBackend.updateContact(contact);
-								replaceContactInConversation(contact.getJid(), contact);
+								replaceContactInConversation(contact.getJid(),
+										contact);
 							} else {
 								if ((contact.getSystemAccount() != null)
 										|| (contact.getProfilePhoto() != null)) {
 									contact.setSystemAccount(null);
 									contact.setPhotoUri(null);
 									databaseBackend.updateContact(contact);
-									replaceContactInConversation(contact.getJid(), contact);
+									replaceContactInConversation(
+											contact.getJid(), contact);
 								}
 							}
 						}
-						if (listener!=null) {
+						if (listener != null) {
 							listener.phoneContactsMerged();
 						}
 					}
@@ -562,7 +568,7 @@ public class XmppConnectionService extends Service {
 
 	public Contact findContact(Account account, String jid) {
 		Contact contact = databaseBackend.findContact(account, jid);
-		if (contact!=null) {
+		if (contact != null) {
 			contact.setAccount(account);
 		}
 		return contact;
@@ -650,7 +656,7 @@ public class XmppConnectionService extends Service {
 		if (accountChangedListener != null)
 			accountChangedListener.onAccountListChangedListener();
 	}
-	
+
 	public void deleteContact(Contact contact) {
 		IqPacket iq = new IqPacket(IqPacket.TYPE_SET);
 		Element query = new Element("query");
@@ -772,6 +778,14 @@ public class XmppConnectionService extends Service {
 	}
 
 	public void createContact(Contact contact) {
+		SharedPreferences sharedPref = PreferenceManager
+				.getDefaultSharedPreferences(getApplicationContext());
+		boolean autoGrant = sharedPref.getBoolean("grant_new_contacts", true);
+		if (autoGrant) {
+			contact.setSubscriptionOption(Contact.Subscription.PREEMPTIVE_GRANT);
+			contact.setSubscriptionOption(Contact.Subscription.ASKING);
+		}
+		databaseBackend.createContact(contact);
 		IqPacket iq = new IqPacket(IqPacket.TYPE_SET);
 		Element query = new Element("query");
 		query.setAttribute("xmlns", "jabber:iq:roster");
@@ -781,49 +795,50 @@ public class XmppConnectionService extends Service {
 		query.addChild(item);
 		iq.addChild(query);
 		Account account = contact.getAccount();
-		Log.d(LOGTAG,account.getJid()+": adding "+contact.getJid()+" to roster");
 		account.getXmppConnection().sendIqPacket(iq, null);
+		if (autoGrant) {
+			requestPresenceUpdatesFrom(contact);
+		}
 		replaceContactInConversation(contact.getJid(), contact);
-		databaseBackend.createContact(contact);
 	}
 
 	public void requestPresenceUpdatesFrom(Contact contact) {
-		//Requesting a Subscription type=subscribe
+		// Requesting a Subscription type=subscribe
 		PresencePacket packet = new PresencePacket();
 		packet.setAttribute("type", "subscribe");
 		packet.setAttribute("to", contact.getJid());
-		packet.setAttribute("from",contact.getAccount().getJid());
-		Log.d(LOGTAG,packet.toString());
+		packet.setAttribute("from", contact.getAccount().getJid());
+		Log.d(LOGTAG, packet.toString());
 		contact.getAccount().getXmppConnection().sendPresencePacket(packet);
 	}
-	
+
 	public void stopPresenceUpdatesFrom(Contact contact) {
-		//Unsubscribing  type='unsubscribe'
+		// Unsubscribing type='unsubscribe'
 		PresencePacket packet = new PresencePacket();
 		packet.setAttribute("type", "unsubscribe");
 		packet.setAttribute("to", contact.getJid());
-		packet.setAttribute("from",contact.getAccount().getJid());
-		Log.d(LOGTAG,packet.toString());
+		packet.setAttribute("from", contact.getAccount().getJid());
+		Log.d(LOGTAG, packet.toString());
 		contact.getAccount().getXmppConnection().sendPresencePacket(packet);
 	}
-	
+
 	public void stopPresenceUpdatesTo(Contact contact) {
-		//Canceling a Subscription type=unsubscribed
+		// Canceling a Subscription type=unsubscribed
 		PresencePacket packet = new PresencePacket();
 		packet.setAttribute("type", "unsubscribed");
 		packet.setAttribute("to", contact.getJid());
-		packet.setAttribute("from",contact.getAccount().getJid());
-		Log.d(LOGTAG,packet.toString());
+		packet.setAttribute("from", contact.getAccount().getJid());
+		Log.d(LOGTAG, packet.toString());
 		contact.getAccount().getXmppConnection().sendPresencePacket(packet);
 	}
-	
+
 	public void sendPresenceUpdatesTo(Contact contact) {
-		//type='subscribed'
+		// type='subscribed'
 		PresencePacket packet = new PresencePacket();
 		packet.setAttribute("type", "subscribed");
 		packet.setAttribute("to", contact.getJid());
-		packet.setAttribute("from",contact.getAccount().getJid());
-		Log.d(LOGTAG,packet.toString());
+		packet.setAttribute("from", contact.getAccount().getJid());
+		Log.d(LOGTAG, packet.toString());
 		contact.getAccount().getXmppConnection().sendPresencePacket(packet);
 	}
 }
