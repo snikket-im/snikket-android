@@ -15,5 +15,11 @@
         android:title="Enable"
         android:showAsAction="always"
         android:visible="false"/>
+    
+        <item
+        android:id="@+id/announce_pgp"
+        android:orderInCategory="75"
+        android:showAsAction="never"
+        android:title="@string/announce_pgp" />
 
 </menu>

@@ -3,17 +3,16 @@ package de.gultsch.chat.ui;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Hashtable;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import javax.crypto.spec.PSource;
-
-import net.java.otr4j.OtrException;
 import net.java.otr4j.session.SessionStatus;
 
 import de.gultsch.chat.R;
+import de.gultsch.chat.crypto.PgpEngine.OpenPgpException;
+import de.gultsch.chat.crypto.PgpEngine.UserInputRequiredException;
 import de.gultsch.chat.entities.Contact;
 import de.gultsch.chat.entities.Conversation;
 import de.gultsch.chat.entities.Message;
@@ -23,18 +22,20 @@ import de.gultsch.chat.utils.UIHelper;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.DialogInterface;
+import android.content.IntentSender;
 import android.content.SharedPreferences;
+import android.content.IntentSender.SendIntentException;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnLayoutChangeListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -42,6 +43,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class ConversationFragment extends Fragment {
@@ -54,24 +56,42 @@ public class ConversationFragment extends Fragment {
 	protected Contact contact;
 	protected BitmapCache mBitmapCache = new BitmapCache();
 
+	protected String queuedPqpMessage = null;
+
 	private EditText chatMsg;
-	
+
 	protected Bitmap selfBitmap;
+	
+	private IntentSender askForPassphraseIntent = null;
 
 	private OnClickListener sendMsgListener = new OnClickListener() {
 
 		@Override
 		public void onClick(View v) {
-			ConversationActivity activity = (ConversationActivity) getActivity();
-			final XmppConnectionService xmppService = activity.xmppConnectionService;
 			if (chatMsg.getText().length() < 1)
 				return;
 			Message message = new Message(conversation, chatMsg.getText()
 					.toString(), conversation.nextMessageEncryption);
 			if (conversation.nextMessageEncryption == Message.ENCRYPTION_OTR) {
 				sendOtrMessage(message);
+			} else if (conversation.nextMessageEncryption == Message.ENCRYPTION_PGP) {
+				sendPgpMessage(message);
 			} else {
 				sendPlainTextMessage(message);
+			}
+		}
+	};
+	protected OnClickListener clickToDecryptListener = new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			Log.d("gultsch","clicked to decrypt");
+			if (askForPassphraseIntent!=null) {
+				try {
+					getActivity().startIntentSenderForResult(askForPassphraseIntent, ConversationActivity.REQUEST_DECRYPT_PGP, null, 0, 0, 0);
+				} catch (SendIntentException e) {
+					Log.d("gultsch","couldnt fire intent");
+				}
 			}
 		}
 	};
@@ -89,6 +109,10 @@ public class ConversationFragment extends Fragment {
 				break;
 			case Message.ENCRYPTION_PGP:
 				chatMsg.setHint("Send openPGP encryted messeage");
+				break;
+			case Message.ENCRYPTION_DECRYPTED:
+				chatMsg.setHint("Send openPGP encryted messeage");
+				break;
 			default:
 				break;
 			}
@@ -107,9 +131,9 @@ public class ConversationFragment extends Fragment {
 		ImageButton sendButton = (ImageButton) view
 				.findViewById(R.id.textSendButton);
 		sendButton.setOnClickListener(this.sendMsgListener);
-
-		messagesView = (ListView) view.findViewById(R.id.messages_view);
 		
+		messagesView = (ListView) view.findViewById(R.id.messages_view);
+
 		messageListAdapter = new ArrayAdapter<Message>(this.getActivity()
 				.getApplicationContext(), R.layout.message_sent,
 				this.messageList) {
@@ -155,23 +179,28 @@ public class ConversationFragment extends Fragment {
 						viewHolder.imageView = (ImageView) view
 								.findViewById(R.id.message_photo);
 						if (item.getConversation().getMode() == Conversation.MODE_SINGLE) {
-							Uri uri = item.getConversation().getProfilePhotoUri();
+							Uri uri = item.getConversation()
+									.getProfilePhotoUri();
 							if (uri != null) {
 								viewHolder.imageView
 										.setImageBitmap(mBitmapCache.get(item
-												.getConversation().getName(), uri));
+												.getConversation().getName(),
+												uri));
 							} else {
 								viewHolder.imageView
 										.setImageBitmap(mBitmapCache.get(item
-												.getConversation().getName(), null));
+												.getConversation().getName(),
+												null));
 							}
 						}
 						break;
 					case ERROR:
-						view = (View) inflater.inflate(R.layout.message_error, null);
+						view = (View) inflater.inflate(R.layout.message_error,
+								null);
 						viewHolder.imageView = (ImageView) view
 								.findViewById(R.id.message_photo);
-						viewHolder.imageView.setImageBitmap(mBitmapCache.getError());
+						viewHolder.imageView.setImageBitmap(mBitmapCache
+								.getError());
 						break;
 					default:
 						viewHolder = null;
@@ -186,7 +215,7 @@ public class ConversationFragment extends Fragment {
 					viewHolder = (ViewHolder) view.getTag();
 				}
 				if (type == RECIEVED) {
-					 if (item.getConversation().getMode() == Conversation.MODE_MULTI) {
+					if (item.getConversation().getMode() == Conversation.MODE_MULTI) {
 						if (item.getCounterpart() != null) {
 							viewHolder.imageView.setImageBitmap(mBitmapCache
 									.get(item.getCounterpart(), null));
@@ -199,7 +228,15 @@ public class ConversationFragment extends Fragment {
 				}
 				String body = item.getBody();
 				if (body != null) {
-					viewHolder.messageBody.setText(body.trim());
+					if (item.getEncryption() == Message.ENCRYPTION_PGP) {
+						viewHolder.messageBody.setText(getString(R.string.encrypted_message));
+						viewHolder.messageBody.setTextColor(0xff33B5E5);
+						viewHolder.messageBody.setOnClickListener(clickToDecryptListener);
+					} else {
+						viewHolder.messageBody.setText(body.trim());
+						viewHolder.messageBody.setTextColor(0xff000000);
+						viewHolder.messageBody.setOnClickListener(null);
+					}
 				}
 				if (item.getStatus() == Message.STATUS_UNSEND) {
 					viewHolder.time.setTypeface(null, Typeface.ITALIC);
@@ -236,7 +273,7 @@ public class ConversationFragment extends Fragment {
 
 		if (showPhoneSelfContactPicture) {
 			Uri selfiUri = PhoneHelper.getSefliUri(getActivity());
-			if (selfiUri!=null) {
+			if (selfiUri != null) {
 				try {
 					self = BitmapFactory.decodeStream(getActivity()
 							.getContentResolver().openInputStream(selfiUri));
@@ -245,7 +282,7 @@ public class ConversationFragment extends Fragment {
 				}
 			}
 		}
-		if (self==null){
+		if (self == null) {
 			self = UIHelper.getUnknownContactPicture(conversation.getAccount()
 					.getJid(), 200);
 		}
@@ -280,17 +317,38 @@ public class ConversationFragment extends Fragment {
 				activity.updateConversationList();
 			}
 		}
+		if (queuedPqpMessage != null) {
+			this.conversation.nextMessageEncryption = Message.ENCRYPTION_PGP;
+			Message message = new Message(conversation, queuedPqpMessage,
+					Message.ENCRYPTION_PGP);
+			sendPgpMessage(message);
+		}
 	}
 
 	public void updateMessages() {
 		ConversationActivity activity = (ConversationActivity) getActivity();
+		List<Message> encryptedMessages = new LinkedList<Message>();
+		for(Message message : this.conversation.getMessages()) {
+			if (message.getEncryption() == Message.ENCRYPTION_PGP) {
+				encryptedMessages.add(message);
+			}
+		}
+		if (encryptedMessages.size() > 0) {
+			DecryptMessage task = new DecryptMessage();
+			Message[] msgs = new Message[encryptedMessages.size()];
+			task.execute(encryptedMessages.toArray(msgs));
+		}
 		this.messageList.clear();
 		this.messageList.addAll(this.conversation.getMessages());
 		this.messageListAdapter.notifyDataSetChanged();
 		if (messageList.size() >= 1) {
 			int latestEncryption = this.conversation.getLatestMessage()
 					.getEncryption();
-			conversation.nextMessageEncryption = latestEncryption;
+			if (latestEncryption== Message.ENCRYPTION_DECRYPTED) {
+				conversation.nextMessageEncryption = Message.ENCRYPTION_PGP;
+			} else {
+				conversation.nextMessageEncryption = latestEncryption;
+			}
 			makeFingerprintWarning(latestEncryption);
 		}
 		getActivity().invalidateOptionsMenu();
@@ -339,17 +397,47 @@ public class ConversationFragment extends Fragment {
 
 	protected void sendPlainTextMessage(Message message) {
 		ConversationActivity activity = (ConversationActivity) getActivity();
-		activity.xmppConnectionService.sendMessage(conversation.getAccount(),
-				message, null);
+		activity.xmppConnectionService.sendMessage(message, null);
 		chatMsg.setText("");
+	}
+
+	protected void sendPgpMessage(final Message message) {
+		ConversationActivity activity = (ConversationActivity) getActivity();
+		final XmppConnectionService xmppService = activity.xmppConnectionService;
+		Contact contact = message.getConversation().getContact();
+		if (contact.getPgpKeyId() != 0) {
+			xmppService.sendMessage(message, null);
+			chatMsg.setText("");
+		} else {
+			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+			builder.setTitle("No openPGP key found");
+			builder.setIconAttribute(android.R.attr.alertDialogIcon);
+			builder.setMessage("There is no openPGP key assoziated with this contact");
+			builder.setNegativeButton("Cancel", null);
+			builder.setPositiveButton("Send plain text",
+					new DialogInterface.OnClickListener() {
+
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							conversation.nextMessageEncryption = Message.ENCRYPTION_NONE;
+							message.setEncryption(Message.ENCRYPTION_NONE);
+							xmppService.sendMessage(message, null);
+							chatMsg.setText("");
+						}
+					});
+			builder.create().show();
+		}
+	}
+
+	public void resendPgpMessage(String msg) {
+		this.queuedPqpMessage = msg;
 	}
 
 	protected void sendOtrMessage(final Message message) {
 		ConversationActivity activity = (ConversationActivity) getActivity();
 		final XmppConnectionService xmppService = activity.xmppConnectionService;
 		if (conversation.hasValidOtrSession()) {
-			activity.xmppConnectionService.sendMessage(
-					conversation.getAccount(), message, null);
+			activity.xmppConnectionService.sendMessage(message, null);
 			chatMsg.setText("");
 		} else {
 			Hashtable<String, Integer> presences;
@@ -372,17 +460,15 @@ public class ConversationFragment extends Fragment {
 									int which) {
 								conversation.nextMessageEncryption = Message.ENCRYPTION_NONE;
 								message.setEncryption(Message.ENCRYPTION_NONE);
-								xmppService.sendMessage(
-										conversation.getAccount(), message,
-										null);
+								xmppService.sendMessage(message, null);
 								chatMsg.setText("");
 							}
 						});
 				builder.setNegativeButton("Cancel", null);
 				builder.create().show();
 			} else if (presences.size() == 1) {
-				xmppService.sendMessage(conversation.getAccount(), message,
-						(String) presences.keySet().toArray()[0]);
+				xmppService.sendMessage(message, (String) presences.keySet()
+						.toArray()[0]);
 				chatMsg.setText("");
 			} else {
 				AlertDialog.Builder builder = new AlertDialog.Builder(
@@ -396,8 +482,7 @@ public class ConversationFragment extends Fragment {
 							@Override
 							public void onClick(DialogInterface dialog,
 									int which) {
-								xmppService.sendMessage(
-										conversation.getAccount(), message,
+								xmppService.sendMessage(message,
 										presencesArray[which]);
 								chatMsg.setText("");
 							}
@@ -438,12 +523,56 @@ public class ConversationFragment extends Fragment {
 				return bm;
 			}
 		}
-		
+
 		public Bitmap getError() {
 			if (error == null) {
 				error = UIHelper.getErrorPicture(200);
 			}
 			return error;
 		}
+	}
+	
+	class DecryptMessage extends AsyncTask<Message, Void, Boolean> {
+
+		@Override
+		protected Boolean doInBackground(Message... params) {
+			XmppActivity activity = (XmppActivity) getActivity();
+			askForPassphraseIntent = null;
+			for(int i = 0; i < params.length; ++i) {
+				if (params[i].getEncryption() == Message.ENCRYPTION_PGP) {
+					String body = params[i].getBody();
+					String decrypted = null;
+					try {
+						if (activity==null) {
+							return false;
+						}
+						Log.d("gultsch","calling to decrypt message id #"+params[i].getUuid());
+						decrypted = activity.xmppConnectionService.getPgpEngine().decrypt(body);
+					} catch (UserInputRequiredException e) {
+						askForPassphraseIntent = e.getPendingIntent().getIntentSender();
+						return false;
+		
+					} catch (OpenPgpException e) {
+						Log.d("gultsch","error decrypting pgp");
+					}
+					if (decrypted!=null) {
+						params[i].setBody(decrypted);
+						params[i].setEncryption(Message.ENCRYPTION_DECRYPTED);
+						activity.xmppConnectionService.updateMessage(params[i]);
+					}
+					if (activity!=null) {
+						activity.runOnUiThread(new Runnable() {
+							
+							@Override
+							public void run() {
+								messageListAdapter.notifyDataSetChanged();
+							}
+						});
+					}
+				}
+			}
+			return true;
+		}
+		
 	}
 }

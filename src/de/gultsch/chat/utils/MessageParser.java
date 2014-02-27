@@ -23,6 +23,12 @@ public class MessageParser {
 		return new Message(conversation, packet.getFrom(), body, Message.ENCRYPTION_NONE, Message.STATUS_RECIEVED);
 	}
 	
+	public static Message parsePgpChat(String pgpBody, MessagePacket packet, Account account, XmppConnectionService service) {
+		String[] fromParts = packet.getFrom().split("/");
+		Conversation conversation = service.findOrCreateConversation(account, fromParts[0],false);
+		return new Message(conversation, packet.getFrom(), pgpBody, Message.ENCRYPTION_PGP, Message.STATUS_RECIEVED);
+	}
+	
 	public static Message parseOtrChat(MessagePacket packet, Account account, XmppConnectionService service) {
 		String[] fromParts = packet.getFrom().split("/");
 		Conversation conversation = service.findOrCreateConversation(account, fromParts[0],false);
@@ -130,5 +136,14 @@ public class MessageParser {
 		displayError = errorName.replace("-", " ");
 	}
 	return new Message(conversation, packet.getFrom(), displayError, Message.ENCRYPTION_NONE, Message.STATUS_ERROR);
+	}
+
+	public static String getPgpBody(MessagePacket packet) {
+		for(Element child : packet.getChildren()) {
+			if (child.getName().equals("x")&&child.getAttribute("xmlns").equals("jabber:x:encrypted")) {
+				return child.getContent();
+			}
+		}
+		return null;
 	}
 }

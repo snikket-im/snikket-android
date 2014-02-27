@@ -221,6 +221,26 @@ public class Contact extends AbstractEntity implements Serializable {
 		}
 	}
 	
+	public void setPgpKeyId(long keyId) {
+		try {
+			this.keys.put("pgp_keyid", keyId);
+		} catch (JSONException e) {
+			
+		}
+	}
+	
+	public long getPgpKeyId() {
+		if (this.keys.has("pgp_keyid")) {
+			try {
+				return this.keys.getLong("pgp_keyid");
+			} catch (JSONException e) {
+				return 0;
+			}
+		} else {
+			return 0;
+		}
+	}
+	
 	public void setSubscriptionOption(int option) {
 		this.subscription |= 1 << option;
 	}

@@ -24,6 +24,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Hi, how are you?"
+        android:autoLink="all"
         android:textSize="16sp"
         android:id="@+id/message_body"
         android:textColor="#333333"/>

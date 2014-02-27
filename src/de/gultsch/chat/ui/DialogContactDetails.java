@@ -63,7 +63,7 @@ public class DialogContactDetails extends DialogFragment {
 			intent.putExtra(Intents.Insert.IM_HANDLE,contact.getJid());
 			intent.putExtra(Intents.Insert.IM_PROTOCOL,CommonDataKinds.Im.PROTOCOL_JABBER);
 			intent.putExtra("finishActivityOnSaveCompleted", true);
-			getActivity().startActivityForResult(intent,ConversationActivity.INSERT_CONTACT);
+			getActivity().startActivityForResult(intent,0);
 			mDetailsDialog.dismiss();
 		}
 	};

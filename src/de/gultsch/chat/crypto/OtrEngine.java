@@ -93,8 +93,6 @@ public class OtrEngine implements OtrEngineHost {
 			e.printStackTrace();
 		} catch (InvalidKeySpecException e) {
 			e.printStackTrace();
-		} catch (JSONException e) {
-			e.printStackTrace();
 		}
 		
 	}

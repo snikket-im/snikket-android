@@ -5,8 +5,13 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import org.openintents.openpgp.OpenPgpSignatureResult;
+import org.openintents.openpgp.util.OpenPgpConstants;
+
 import de.gultsch.chat.R;
 import de.gultsch.chat.R.id;
+import de.gultsch.chat.crypto.PgpEngine;
+import de.gultsch.chat.crypto.PgpEngine.UserInputRequiredException;
 import de.gultsch.chat.entities.Account;
 import de.gultsch.chat.entities.Contact;
 import de.gultsch.chat.entities.Conversation;
@@ -20,6 +25,7 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentSender.SendIntentException;
 import android.graphics.Typeface;
 import android.support.v4.widget.SlidingPaneLayout;
 import android.support.v4.widget.SlidingPaneLayout.PanelSlideListener;
@@ -45,7 +51,8 @@ public class ConversationActivity extends XmppActivity {
 	public static final String VIEW_CONVERSATION = "viewConversation";
 	public static final String CONVERSATION = "conversationUuid";
 	
-	public static final int INSERT_CONTACT = 0x9889;
+	public static final int REQUEST_SEND_MESSAGE = 0x75441;
+	public static final int REQUEST_DECRYPT_PGP = 0x76783;
 
 	protected SlidingPaneLayout spl;
 
@@ -354,6 +361,9 @@ public class ConversationActivity extends XmppActivity {
 				case Message.ENCRYPTION_PGP:
 					popup.getMenu().findItem(R.id.encryption_choice_pgp).setChecked(true);
 					break;
+				case Message.ENCRYPTION_DECRYPTED:
+					popup.getMenu().findItem(R.id.encryption_choice_pgp).setChecked(true);
+					break;
 				default:
 					popup.getMenu().findItem(R.id.encryption_choice_none).setChecked(true);
 					break;
@@ -457,13 +467,6 @@ public class ConversationActivity extends XmppActivity {
 					swapConversationFragment();
 				}
 			}
-		}
-	}
-	
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (requestCode==INSERT_CONTACT) {
-			Log.d("xmppService","contact inserted");
-			this.contactInserted  = true;
 		}
 	}
 }

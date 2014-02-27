@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.gultsch.chat.R;
+import de.gultsch.chat.crypto.PgpEngine;
+import de.gultsch.chat.crypto.PgpEngine.UserInputRequiredException;
 import de.gultsch.chat.entities.Account;
 import de.gultsch.chat.ui.EditAccount.EditAccountListener;
 import android.app.Activity;
@@ -12,6 +14,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.content.IntentSender.SendIntentException;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ActionMode;
@@ -31,6 +34,8 @@ import android.widget.TextView;
 
 public class ManageAccountActivity extends XmppActivity implements ActionMode.Callback {
 
+	public static final int REQUEST_ANNOUNCE_PGP = 0x73731;
+	
 	protected boolean isActionMode = false;
 	protected ActionMode actionMode;
 	protected Account selectedAccountForActionMode = null;
@@ -231,6 +236,17 @@ public class ManageAccountActivity extends XmppActivity implements ActionMode.Ca
 			});
 			builder.setNegativeButton("Cancel",null);
 			builder.create().show();
+		} else if (item.getItemId()==R.id.announce_pgp) {
+			mode.finish();
+			try {
+				xmppConnectionService.generatePgpAnnouncement(selectedAccountForActionMode);
+			} catch (PgpEngine.UserInputRequiredException e) {
+				try {
+					startIntentSenderForResult(e.getPendingIntent().getIntentSender(), REQUEST_ANNOUNCE_PGP, null, 0, 0, 0);
+				} catch (SendIntentException e1) {
+					Log.d("gultsch","sending intent failed");
+				}
+			}
 		}
 		return true;
 	}
@@ -279,4 +295,18 @@ public class ManageAccountActivity extends XmppActivity implements ActionMode.Ca
             }
         });
 	}
+	
+	 @Override
+	 protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		 super.onActivityResult(requestCode, resultCode, data);
+		 if (resultCode == RESULT_OK) {
+			if (requestCode == REQUEST_ANNOUNCE_PGP) {
+				 try {
+					xmppConnectionService.generatePgpAnnouncement(selectedAccountForActionMode);
+				} catch (UserInputRequiredException e) {
+					Log.d("gultsch","already came back. ignoring");
+				}
+			 }
+		 }
+	 }
 }

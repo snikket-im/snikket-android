@@ -137,8 +137,13 @@ public class Account  extends AbstractEntity{
 		return keys;
 	}
 	
-	public void setKey(String keyName, String keyValue) throws JSONException {
-		this.keys.put(keyName, keyValue);
+	public boolean setKey(String keyName, String keyValue) {
+		try {
+			this.keys.put(keyName, keyValue);
+			return true;
+		} catch (JSONException e) {
+			return false;
+		}
 	}
 
 	@Override

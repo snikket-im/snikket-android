@@ -12,4 +12,6 @@
     <string name="title_activity_new_conversation">New Conversation</string>
     <string name="just_now">just now</string>
     <string name="sending">sending&#8230;</string>
+    <string name="announce_pgp">Renew PGP announcement</string>
+    <string name="encrypted_message">This message is encrypted. Click to decrypt.</string>
 </resources>
