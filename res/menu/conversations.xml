@@ -15,10 +15,17 @@
         android:title="@string/action_secure" />
     
     <item
-        android:id="@+id/action_details"
+        android:id="@+id/action_contact_details"
         android:orderInCategory="40"
-        android:showAsAction="never"
-        android:title="@string/action_details" />
+        android:showAsAction="ifRoom"
+        android:icon="@drawable/ic_action_person"
+        android:title="@string/action_contact_details" />
+      <item
+        android:id="@+id/action_muc_details"
+        android:orderInCategory="40"
+        android:showAsAction="ifRoom"
+        android:icon="@drawable/ic_action_group"
+        android:title="@string/action_muc_details" />
     
     <item
         android:id="@+id/action_archive"

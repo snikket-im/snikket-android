@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="de.gultsch.chat"
+    package="eu.siacs.conversations"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -18,10 +18,10 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@android:style/Theme.Holo.Light" >
-        <service android:name="de.gultsch.chat.services.XmppConnectionService"/>
+        <service android:name="eu.siacs.conversations.services.XmppConnectionService"/>
         <activity
-            android:name="de.gultsch.chat.ui.ConversationActivity"
-            android:label="Secure Conversations"
+            android:name="eu.siacs.conversations.ui.ConversationActivity"
+            android:label="Conversations"
             android:windowSoftInputMode="stateHidden"
             android:configChanges="orientation|screenSize">
             <intent-filter>
@@ -36,19 +36,19 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="de.gultsch.chat.ui.SettingsActivity"
+            android:name="eu.siacs.conversations.ui.SettingsActivity"
             android:label="Settings"
-            android:parentActivityName="de.gultsch.chat.ui.ConversationActivity" >
+            android:parentActivityName="eu.siacs.conversations.ui.ConversationActivity" >
         </activity>
         <activity
-            android:name="de.gultsch.chat.ui.ManageAccountActivity"
+            android:name="eu.siacs.conversations.ui.ManageAccountActivity"
             android:label="Manage Accounts"
-            android:parentActivityName="de.gultsch.chat.ui.ConversationActivity" >
+            android:parentActivityName="eu.siacs.conversations.ui.ConversationActivity" >
         </activity>
         <activity
-            android:name="de.gultsch.chat.ui.NewConversationActivity"
+            android:name="eu.siacs.conversations.ui.NewConversationActivity"
             android:label="@string/title_activity_new_conversation"
-            android:parentActivityName="de.gultsch.chat.ui.ConversationActivity"
+            android:parentActivityName="eu.siacs.conversations.ui.ConversationActivity"
             android:windowSoftInputMode="stateHidden">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
