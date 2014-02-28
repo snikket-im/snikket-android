@@ -45,14 +45,16 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/textsend"
-        android:layout_below="@+id/info_box"
         android:layout_alignParentLeft="true"
+        android:layout_below="@+id/info_box"
         android:background="#e5e5e5"
-        tools:listitem="@layout/message_sent"
         android:divider="@null"
-		android:dividerHeight="0dp"
-		android:transcriptMode="alwaysScroll"
-		android:listSelector="@android:color/transparent">
+        android:dividerHeight="0dp"
+        android:listSelector="@android:color/transparent"
+        android:transcriptMode="alwaysScroll"
+        tools:listitem="@layout/message_sent"
+        android:stackFromBottom="true">
+
     </ListView>
     <LinearLayout
         android:id="@+id/info_box"

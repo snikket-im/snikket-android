@@ -210,16 +210,18 @@ public class XmppConnectionService extends Service {
 				} else if (show.getContent().equals("dnd")) {
 					contact.updatePresence(fromParts[1], Presences.DND);
 				}
-				Element x = packet.findChild("x");
-				if ((x != null)
-						&& (x.getAttribute("xmlns").equals("jabber:x:signed"))) {
-					try {
-						Log.d(LOGTAG,"pgp signature for contact" +packet.getAttribute("from"));
-						contact.setPgpKeyId(getPgpEngine().fetchKeyId(packet.findChild("status")
-								.getContent(), x.getContent()));
-						databaseBackend.updateContact(contact);
-					} catch (OpenPgpException e) {
-						Log.d(LOGTAG,"faulty pgp. just ignore");
+				PgpEngine pgp = getPgpEngine();
+				if (pgp!=null) {
+					Element x = packet.findChild("x");
+					if ((x != null)
+							&& (x.getAttribute("xmlns").equals("jabber:x:signed"))) {
+						try {
+							Log.d(LOGTAG,"pgp signature for contact" +packet.getAttribute("from"));
+							contact.setPgpKeyId(pgp.fetchKeyId(packet.findChild("status")
+									.getContent(), x.getContent()));
+						} catch (OpenPgpException e) {
+							Log.d(LOGTAG,"faulty pgp. just ignore");
+						}
 					}
 				}
 				databaseBackend.updateContact(contact);
