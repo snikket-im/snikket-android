@@ -1,5 +1,5 @@
-#Secure Conversation
-Secure Conversation is an open source XMPP (Jabber) client for Android 4.0+ smart phones
+#Conversations
+Conversations is an open source XMPP client for Android 4.0+ smart phones
 
 ##Design principles
 * Be as beautiful and easy to use as possible without sacrificing security or
@@ -9,18 +9,18 @@ Secure Conversation is an open source XMPP (Jabber) client for Android 4.0+ smar
 * Require as little permissons as possible
 
 ##Features
-* End-to-end encryption with both OTR or PGP
+* End-to-end encryption with either OTR or openPGP
 * Holo UI
 * Multiple Accounts
 * Group Chats
 * Contact list integration
 
 ###XMPP Features
-SC works with every XMPP server out there. However XMPP is an extensible
-protocol. These extensions are standardized as well in so called XEP’s. SC
-supports a couple of those to make the overall userexperience better. There is a
+Conversations works with every XMPP server out there. However XMPP is an extensible
+protocol. These extensions are standardized as well in so called XEP’s.
+Conversations supports a couple of those to make the overall userexperience better. There is a
 chance that your current XMPP server does not support these extensions.
-Therefore to get the most out of SC you should consider either switching to an
+Therefore to get the most out of Conversations you should consider either switching to an
 XMPP server that does or - even better - run your own XMPP server for you and
 your friends.
 These XEPs are - as of now:
