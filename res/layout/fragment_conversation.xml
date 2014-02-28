@@ -45,6 +45,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/textsend"
+        android:layout_below="@+id/info_box"
         android:layout_alignParentLeft="true"
         android:background="#e5e5e5"
         tools:listitem="@layout/message_sent"
@@ -54,12 +55,16 @@
 		android:listSelector="@android:color/transparent">
     </ListView>
     <LinearLayout
+        android:id="@+id/info_box"
+         android:layout_height="wrap_content"
+         android:layout_width="fill_parent"
+         android:orientation="vertical"
+        >
+    <LinearLayout
         android:id="@+id/new_fingerprint"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignTop="@+id/messages_view"
-        android:background="#cc0000"
+        android:background="#e92727"
         android:orientation="vertical"
         android:visibility="gone"
         >
@@ -77,11 +82,38 @@
             android:layout_height="wrap_content"
             android:id="@+id/otr_fingerprint"
             android:textColor="#eee"
-            android:text="2674D6A0 0B1421B1 BFC42AEC C56F3719 672437D8"
             android:paddingLeft="8dp"
             android:paddingBottom="8dp"
             android:textSize="14sp"
             android:typeface="monospace"/>
         
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/pgp_keyentry"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffa713"
+        android:orientation="vertical"
+        android:visibility="gone"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="OpenPGP encrypted messages found"
+            android:textColor="#000"
+            android:textStyle="bold"
+            android:padding="8dp"
+            android:textSize="20sp"/>
+        <TextView 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#000"
+            android:text="Click here to enter passphrase and decrypt messages"
+            android:paddingLeft="8dp"
+            android:paddingBottom="8dp"
+            android:textSize="14sp"/>
+        
+    </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

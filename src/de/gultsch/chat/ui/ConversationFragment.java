@@ -43,7 +43,6 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class ConversationFragment extends Fragment {
@@ -95,6 +94,11 @@ public class ConversationFragment extends Fragment {
 			}
 		}
 	};
+	private LinearLayout pgpInfo;
+	
+	public void hidePgpPassphraseBox() {
+		pgpInfo.setVisibility(View.GONE);
+	}
 
 	public void updateChatMsgHint() {
 		if (conversation.getMode() == Conversation.MODE_MULTI) {
@@ -131,6 +135,9 @@ public class ConversationFragment extends Fragment {
 		ImageButton sendButton = (ImageButton) view
 				.findViewById(R.id.textSendButton);
 		sendButton.setOnClickListener(this.sendMsgListener);
+		
+		pgpInfo = (LinearLayout) view.findViewById(R.id.pgp_keyentry);
+		pgpInfo.setOnClickListener(clickToDecryptListener);
 		
 		messagesView = (ListView) view.findViewById(R.id.messages_view);
 
@@ -231,11 +238,11 @@ public class ConversationFragment extends Fragment {
 					if (item.getEncryption() == Message.ENCRYPTION_PGP) {
 						viewHolder.messageBody.setText(getString(R.string.encrypted_message));
 						viewHolder.messageBody.setTextColor(0xff33B5E5);
-						viewHolder.messageBody.setOnClickListener(clickToDecryptListener);
+						viewHolder.messageBody.setTypeface(null,Typeface.ITALIC);
 					} else {
 						viewHolder.messageBody.setText(body.trim());
 						viewHolder.messageBody.setTextColor(0xff000000);
-						viewHolder.messageBody.setOnClickListener(null);
+						viewHolder.messageBody.setTypeface(null, Typeface.NORMAL);
 					}
 				}
 				if (item.getStatus() == Message.STATUS_UNSEND) {
@@ -536,7 +543,7 @@ public class ConversationFragment extends Fragment {
 
 		@Override
 		protected Boolean doInBackground(Message... params) {
-			XmppActivity activity = (XmppActivity) getActivity();
+			final ConversationActivity activity = (ConversationActivity) getActivity();
 			askForPassphraseIntent = null;
 			for(int i = 0; i < params.length; ++i) {
 				if (params[i].getEncryption() == Message.ENCRYPTION_PGP) {
@@ -550,6 +557,14 @@ public class ConversationFragment extends Fragment {
 						decrypted = activity.xmppConnectionService.getPgpEngine().decrypt(body);
 					} catch (UserInputRequiredException e) {
 						askForPassphraseIntent = e.getPendingIntent().getIntentSender();
+						activity.runOnUiThread(new Runnable() {
+							
+							@Override
+							public void run() {
+								pgpInfo.setVisibility(View.VISIBLE);
+							}
+						});
+						
 						return false;
 		
 					} catch (OpenPgpException e) {
@@ -569,6 +584,15 @@ public class ConversationFragment extends Fragment {
 							}
 						});
 					}
+				}
+				if (activity!=null) {
+					activity.runOnUiThread(new Runnable() {
+						
+						@Override
+						public void run() {
+							activity.updateConversationList();
+						}
+					});
 				}
 			}
 			return true;

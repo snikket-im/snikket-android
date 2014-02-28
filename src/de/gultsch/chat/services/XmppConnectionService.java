@@ -1,39 +1,21 @@
 package de.gultsch.chat.services;
 
-import java.io.BufferedOutputStream;
-import java.io.BufferedWriter;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
-import java.io.Writer;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
-import java.util.Set;
 
 import org.json.JSONException;
-import org.openintents.openpgp.IOpenPgpService;
-import org.openintents.openpgp.OpenPgpSignatureResult;
 import org.openintents.openpgp.util.OpenPgpApi;
 import org.openintents.openpgp.util.OpenPgpServiceConnection;
-import org.openintents.openpgp.OpenPgpError;
 
 import net.java.otr4j.OtrException;
 import net.java.otr4j.session.Session;
-import net.java.otr4j.session.SessionImpl;
 import net.java.otr4j.session.SessionStatus;
 
 import de.gultsch.chat.crypto.PgpEngine;
 import de.gultsch.chat.crypto.PgpEngine.OpenPgpException;
-import de.gultsch.chat.crypto.PgpEngine.UserInputRequiredException;
 import de.gultsch.chat.entities.Account;
 import de.gultsch.chat.entities.Contact;
 import de.gultsch.chat.entities.Conversation;
@@ -67,9 +49,7 @@ import android.database.DatabaseUtils;
 import android.os.Binder;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.os.ParcelFileDescriptor;
 import android.os.PowerManager;
-import android.os.RemoteException;
 import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.util.Log;
@@ -307,6 +287,11 @@ public class XmppConnectionService extends Service {
 	}
 
 	private void processRosterItems(Account account, Element elements) {
+		String version = elements.getAttribute("ver");
+		if (version != null) {
+			account.setRosterVersion(version);
+			databaseBackend.updateAccount(account);
+		}
 		for (Element item : elements.getChildren()) {
 			if (item.getName().equals("item")) {
 				String jid = item.getAttribute("jid");
@@ -549,7 +534,6 @@ public class XmppConnectionService extends Service {
 							IqPacket packet) {
 						Element roster = packet.findChild("query");
 						if (roster != null) {
-							String version = roster.getAttribute("ver");
 							processRosterItems(account, roster);
 							StringBuilder mWhere = new StringBuilder();
 							mWhere.append("jid NOT IN(");

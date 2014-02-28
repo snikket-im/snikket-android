@@ -469,4 +469,16 @@ public class ConversationActivity extends XmppActivity {
 			}
 		}
 	}
+	 @Override
+	 protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		 super.onActivityResult(requestCode, resultCode, data);
+		 if (resultCode == RESULT_OK) {
+			if (requestCode == REQUEST_DECRYPT_PGP) {
+				ConversationFragment selectedFragment = (ConversationFragment) getFragmentManager().findFragmentByTag("conversation");
+				if (selectedFragment!=null) {
+					selectedFragment.hidePgpPassphraseBox();
+				}
+			}
+		 }
+	 }
 }
