@@ -66,7 +66,7 @@
         android:id="@+id/new_fingerprint"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="#e92727"
+        android:background="@drawable/redbackground"
         android:orientation="vertical"
         android:visibility="gone"
         >
@@ -94,7 +94,7 @@
         android:id="@+id/pgp_keyentry"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="#ffa713"
+        android:background="@drawable/bluebackground"
         android:orientation="vertical"
         android:visibility="gone"
         >
@@ -103,14 +103,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="OpenPGP encrypted messages found"
-            android:textColor="#000"
+            android:textColor="#eee"
             android:textStyle="bold"
             android:padding="8dp"
             android:textSize="20sp"/>
         <TextView 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#000"
+            android:textColor="#eee"
             android:text="Click here to enter passphrase and decrypt messages"
             android:paddingLeft="8dp"
             android:paddingBottom="8dp"

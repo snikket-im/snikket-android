@@ -26,23 +26,29 @@ public final class R {
         public static final int activity_vertical_margin=0x7f070001;
     }
     public static final class drawable {
-        public static final int es_slidingpane_shadow=0x7f020000;
-        public static final int ic_action_add=0x7f020001;
-        public static final int ic_action_add_person=0x7f020002;
-        public static final int ic_action_cancel_launchersize=0x7f020003;
-        public static final int ic_action_delete=0x7f020004;
-        public static final int ic_action_group=0x7f020005;
-        public static final int ic_action_person=0x7f020006;
-        public static final int ic_action_refresh=0x7f020007;
-        public static final int ic_action_secure=0x7f020008;
-        public static final int ic_action_send=0x7f020009;
-        public static final int ic_action_send_now=0x7f02000a;
-        public static final int ic_action_unsecure=0x7f02000b;
-        public static final int ic_launcher=0x7f02000c;
-        public static final int ic_profile=0x7f02000d;
-        public static final int message_border=0x7f02000e;
-        public static final int notification=0x7f02000f;
-        public static final int section_header=0x7f020010;
+        public static final int blue=0x7f020000;
+        public static final int bluebackground=0x7f020001;
+        public static final int darkblue=0x7f020002;
+        public static final int darkred=0x7f020003;
+        public static final int es_slidingpane_shadow=0x7f020004;
+        public static final int ic_action_add=0x7f020005;
+        public static final int ic_action_add_person=0x7f020006;
+        public static final int ic_action_cancel_launchersize=0x7f020007;
+        public static final int ic_action_delete=0x7f020008;
+        public static final int ic_action_group=0x7f020009;
+        public static final int ic_action_person=0x7f02000a;
+        public static final int ic_action_refresh=0x7f02000b;
+        public static final int ic_action_secure=0x7f02000c;
+        public static final int ic_action_send=0x7f02000d;
+        public static final int ic_action_send_now=0x7f02000e;
+        public static final int ic_action_unsecure=0x7f02000f;
+        public static final int ic_launcher=0x7f020010;
+        public static final int ic_profile=0x7f020011;
+        public static final int message_border=0x7f020012;
+        public static final int notification=0x7f020013;
+        public static final int red=0x7f020014;
+        public static final int redbackground=0x7f020015;
+        public static final int section_header=0x7f020016;
     }
     public static final class id {
         public static final int account_confirm_password_desc=0x7f0a001c;
