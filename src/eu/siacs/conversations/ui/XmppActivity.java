@@ -3,6 +3,8 @@ package eu.siacs.conversations.ui;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.services.XmppConnectionService.XmppConnectionBinder;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -60,6 +62,19 @@ public abstract class XmppActivity extends Activity {
 			inputManager.hideSoftInputFromWindow(
 					focus.getWindowToken(),
 					InputMethodManager.HIDE_NOT_ALWAYS);
+		}
+	}
+	
+	public boolean hasPgp() {
+		if (xmppConnectionService.getPgpEngine()!=null) {
+			return true;
+		} else {
+			Builder builder = new AlertDialog.Builder(getApplicationContext());
+			builder.setTitle("OpenKeychain not found");
+			builder.setIconAttribute(android.R.attr.alertDialogIcon);
+			builder.setMessage("Please make sure you have installed OpenKeychain");
+			builder.create().show();
+			return false;
 		}
 	}
 	

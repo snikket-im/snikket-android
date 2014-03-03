@@ -237,14 +237,16 @@ public class ManageAccountActivity extends XmppActivity implements ActionMode.Ca
 			builder.setNegativeButton("Cancel",null);
 			builder.create().show();
 		} else if (item.getItemId()==R.id.announce_pgp) {
-			mode.finish();
-			try {
-				xmppConnectionService.generatePgpAnnouncement(selectedAccountForActionMode);
-			} catch (PgpEngine.UserInputRequiredException e) {
+			if (this.hasPgp()) {
+				mode.finish();
 				try {
-					startIntentSenderForResult(e.getPendingIntent().getIntentSender(), REQUEST_ANNOUNCE_PGP, null, 0, 0, 0);
-				} catch (SendIntentException e1) {
-					Log.d("gultsch","sending intent failed");
+					xmppConnectionService.generatePgpAnnouncement(selectedAccountForActionMode);
+				} catch (PgpEngine.UserInputRequiredException e) {
+					try {
+						startIntentSenderForResult(e.getPendingIntent().getIntentSender(), REQUEST_ANNOUNCE_PGP, null, 0, 0, 0);
+					} catch (SendIntentException e1) {
+						Log.d("gultsch","sending intent failed");
+					}
 				}
 			}
 		}

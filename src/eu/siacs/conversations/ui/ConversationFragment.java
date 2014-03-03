@@ -439,34 +439,32 @@ public class ConversationFragment extends Fragment {
 		ConversationActivity activity = (ConversationActivity) getActivity();
 		final XmppConnectionService xmppService = activity.xmppConnectionService;
 		Contact contact = message.getConversation().getContact();
-		if (contact.getPgpKeyId() != 0) {
-			xmppService.sendMessage(message, null);
-			chatMsg.setText("");
-		} else {
-			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-			builder.setTitle("No openPGP key found");
-			builder.setIconAttribute(android.R.attr.alertDialogIcon);
-			builder.setMessage("There is no openPGP key assoziated with this contact");
-			builder.setNegativeButton("Cancel", null);
-			builder.setPositiveButton("Send plain text",
-					new DialogInterface.OnClickListener() {
-
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							conversation.nextMessageEncryption = Message.ENCRYPTION_NONE;
-							message.setEncryption(Message.ENCRYPTION_NONE);
-							xmppService.sendMessage(message, null);
-							chatMsg.setText("");
-						}
-					});
-			builder.create().show();
+		if (activity.hasPgp()) {
+			if (contact.getPgpKeyId() != 0) {
+				xmppService.sendMessage(message, null);
+				chatMsg.setText("");
+			} else {
+				AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+				builder.setTitle("No openPGP key found");
+				builder.setIconAttribute(android.R.attr.alertDialogIcon);
+				builder.setMessage("There is no openPGP key assoziated with this contact");
+				builder.setNegativeButton("Cancel", null);
+				builder.setPositiveButton("Send plain text",
+						new DialogInterface.OnClickListener() {
+	
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								conversation.nextMessageEncryption = Message.ENCRYPTION_NONE;
+								message.setEncryption(Message.ENCRYPTION_NONE);
+								xmppService.sendMessage(message, null);
+								chatMsg.setText("");
+							}
+						});
+				builder.create().show();
+			}
 		}
 	}
-
-	public void resendPgpMessage(String msg) {
-		this.queuedPqpMessage = msg;
-	}
-
+	
 	protected void sendOtrMessage(final Message message) {
 		ConversationActivity activity = (ConversationActivity) getActivity();
 		final XmppConnectionService xmppService = activity.xmppConnectionService;
