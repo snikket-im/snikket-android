@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?><LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="8dp">
+     <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Your nickname"
+                android:textColor="#33B5E5"
+                android:textSize="20sp" />
+
+     <EditText
+         android:id="@+id/muc_your_nick"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:ems="10"
+         android:inputType="textEmailAddress"
+         android:padding="8dp"
+         />
+
+     <TextView
+         		android:paddingTop="16dp"
+         		android:id="@+id/muc_moderators_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Moderators"
+                android:textColor="#33B5E5"
+                android:textSize="20sp" />
+      <TextView
+                android:id="@+id/muc_moderators"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Romeo"
+                android:singleLine="true"
+                android:textSize="16sp"
+                android:paddingLeft="8dp"
+                android:paddingBottom="8dp"/>
+     
+     <TextView
+         		android:id="@+id/muc_participants_header"
+         		android:paddingTop="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Participants"
+                android:textColor="#33B5E5"
+                android:textSize="20sp" />
+      <TextView
+                android:id="@+id/muc_participants"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Juilett"
+                android:singleLine="true"
+                android:textSize="16sp"
+                android:paddingLeft="8dp"
+                android:paddingBottom="8dp"/>
+     <TextView
+         		android:id="@+id/muc_visitors_header"
+         		android:paddingTop="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Visitors"
+                android:textColor="#33B5E5"
+                android:textSize="20sp" />
+      <TextView
+                android:id="@+id/muc_visitors"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Benvolio"
+                android:singleLine="true"
+                android:textSize="16sp"
+                android:paddingLeft="8dp"
+                android:paddingBottom="8dp"/>
+
+   
+</LinearLayout>

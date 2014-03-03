@@ -85,7 +85,7 @@ public class MessageParser {
 			return null;
 		}
 		String counterPart = fromParts[1];
-		if (counterPart.equals(account.getUsername())) {
+		if (counterPart.equals(conversation.getMucOptions().getNick())) {
 			status = Message.STATUS_SEND;
 		} else {
 			status = Message.STATUS_RECIEVED;

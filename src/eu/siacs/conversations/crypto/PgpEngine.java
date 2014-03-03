@@ -7,11 +7,9 @@ import java.io.InputStream;
 import org.openintents.openpgp.OpenPgpError;
 import org.openintents.openpgp.OpenPgpSignatureResult;
 import org.openintents.openpgp.util.OpenPgpApi;
-import org.openintents.openpgp.util.OpenPgpConstants;
 
 import android.app.PendingIntent;
-import android.os.Bundle;
-import android.util.Log;
+import android.content.Intent;
 
 public class PgpEngine {
 	private OpenPgpApi api;
@@ -22,34 +20,34 @@ public class PgpEngine {
 
 	public String decrypt(String message) throws UserInputRequiredException,
 			OpenPgpException {
+		Intent params = new Intent();
+		params.setAction(OpenPgpApi.ACTION_DECRYPT_VERIFY);
 		InputStream is = new ByteArrayInputStream(message.getBytes());
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
-		Bundle result = api.decryptAndVerify(is, os);
-		switch (result.getInt(OpenPgpConstants.RESULT_CODE)) {
-		case OpenPgpConstants.RESULT_CODE_SUCCESS:
+		Intent result = api.executeApi(params, is, os);
+		switch (result.getIntExtra(OpenPgpApi.RESULT_CODE, 0)) {
+		case OpenPgpApi.RESULT_CODE_SUCCESS:
 			return os.toString();
-		case OpenPgpConstants.RESULT_CODE_USER_INTERACTION_REQUIRED:
-			throw new UserInputRequiredException(
-					(PendingIntent) result
-							.getParcelable(OpenPgpConstants.RESULT_INTENT));
-		case OpenPgpConstants.RESULT_CODE_ERROR:
+		case OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED:
+			throw new UserInputRequiredException((PendingIntent) result.getParcelableExtra(OpenPgpApi.RESULT_INTENT));
+		case OpenPgpApi.RESULT_CODE_ERROR:
 			throw new OpenPgpException(
-					(OpenPgpError) result
-							.getParcelable(OpenPgpConstants.RESULT_ERRORS));
+					(OpenPgpError) result.getParcelableExtra(OpenPgpApi.RESULT_ERRORS));
 		default:
 			return null;
 		}
 	}
 
 	public String encrypt(long keyId, String message) {
-		Bundle params = new Bundle();
-		params.putBoolean(OpenPgpConstants.PARAMS_REQUEST_ASCII_ARMOR, true);
-		long[] keyIds = { keyId };
-		params.putLongArray(OpenPgpConstants.PARAMS_KEY_IDS, keyIds);
-
+		Long[] keys = {keyId};
+		Intent params = new Intent();
+		params.setAction(OpenPgpApi.ACTION_ENCRYPT);
+		params.putExtra(OpenPgpApi.EXTRA_KEY_IDS,keys);
+		params.putExtra(OpenPgpApi.EXTRA_REQUEST_ASCII_ARMOR, true);
+		
 		InputStream is = new ByteArrayInputStream(message.getBytes());
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
-		Bundle result = api.encrypt(params, is, os);
+		Intent result = api.executeApi(params, is, os);
 		StringBuilder encryptedMessageBody = new StringBuilder();
 		String[] lines = os.toString().split("\n");
 		for (int i = 3; i < lines.length - 1; ++i) {
@@ -74,47 +72,45 @@ public class PgpEngine {
 		pgpSig.append(signature.replace("\n", "").trim());
 		pgpSig.append('\n');
 		pgpSig.append("-----END PGP SIGNATURE-----");
-		Bundle params = new Bundle();
-		params.putBoolean(OpenPgpConstants.PARAMS_REQUEST_ASCII_ARMOR, true);
+		Intent params = new Intent();
+		params.setAction(OpenPgpApi.ACTION_DECRYPT_VERIFY);
+		params.putExtra(OpenPgpApi.EXTRA_REQUEST_ASCII_ARMOR, true);
 		InputStream is = new ByteArrayInputStream(pgpSig.toString().getBytes());
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
-		Bundle result = api.decryptAndVerify(params, is, os);
-		switch (result.getInt(OpenPgpConstants.RESULT_CODE)) {
-		case OpenPgpConstants.RESULT_CODE_SUCCESS:
-			OpenPgpSignatureResult sigResult = result
-					.getParcelable(OpenPgpConstants.RESULT_SIGNATURE);
+		Intent result = api.executeApi(params, is, os);
+		switch (result.getIntExtra(OpenPgpApi.RESULT_CODE, 0)) {
+		case OpenPgpApi.RESULT_CODE_SUCCESS:
+			OpenPgpSignatureResult sigResult
+            = result.getParcelableExtra(OpenPgpApi.RESULT_SIGNATURE);
 			return sigResult.getKeyId();
-		case OpenPgpConstants.RESULT_CODE_USER_INTERACTION_REQUIRED:
+		case OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED:
 			break;
-		case OpenPgpConstants.RESULT_CODE_ERROR:
+		case OpenPgpApi.RESULT_CODE_ERROR:
 			throw new OpenPgpException(
-					(OpenPgpError) result
-							.getParcelable(OpenPgpConstants.RESULT_ERRORS));
+					(OpenPgpError) result.getParcelableExtra(OpenPgpApi.RESULT_ERRORS));
 		}
 		return 0;
 	}
 
 	public String generateSignature(String status)
 			throws UserInputRequiredException {
-		Bundle params = new Bundle();
-		params.putBoolean(OpenPgpConstants.PARAMS_REQUEST_ASCII_ARMOR, true);
+		Intent params = new Intent();
+		params.putExtra(OpenPgpApi.EXTRA_REQUEST_ASCII_ARMOR, true);
+		params.setAction(OpenPgpApi.ACTION_SIGN);
 		InputStream is = new ByteArrayInputStream(status.getBytes());
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
-		Bundle result = api.sign(params, is, os);
+		Intent result = api.executeApi(params, is, os);
 		StringBuilder signatureBuilder = new StringBuilder();
-		switch (result.getInt(OpenPgpConstants.RESULT_CODE)) {
-		case OpenPgpConstants.RESULT_CODE_SUCCESS:
+		switch (result.getIntExtra(OpenPgpApi.RESULT_CODE, 0)) {
+		case OpenPgpApi.RESULT_CODE_SUCCESS:
 			String[] lines = os.toString().split("\n");
 			for (int i = 7; i < lines.length - 1; ++i) {
 				signatureBuilder.append(lines[i].trim());
 			}
 			break;
-		case OpenPgpConstants.RESULT_CODE_USER_INTERACTION_REQUIRED:
-			UserInputRequiredException exception = new UserInputRequiredException(
-					(PendingIntent) result
-							.getParcelable(OpenPgpConstants.RESULT_INTENT));
-			throw exception;
-		case OpenPgpConstants.RESULT_CODE_ERROR:
+		case OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED:
+			throw new UserInputRequiredException((PendingIntent) result.getParcelableExtra(OpenPgpApi.RESULT_INTENT));
+		case OpenPgpApi.RESULT_CODE_ERROR:
 			break;
 		}
 		return signatureBuilder.toString();

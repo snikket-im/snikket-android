@@ -53,7 +53,7 @@ public class XmppConnection implements Runnable {
 	private static final int PACKET_MESSAGE = 1;
 	private static final int PACKET_PRESENCE = 2;
 
-	private Hashtable<String, OnIqPacketReceived> iqPacketCallbacks = new Hashtable<String, OnIqPacketReceived>();
+	private Hashtable<String, PacketReceived> packetCallbacks = new Hashtable<String, PacketReceived>();
 	private OnPresencePacketReceived presenceListener = null;
 	private OnIqPacketReceived unregisteredIqListener = null;
 	private OnMessagePacketReceived messageListener = null;
@@ -212,24 +212,33 @@ public class XmppConnection implements Runnable {
 		return element;
 	}
 
-	private IqPacket processIq(Tag currentTag) throws XmlPullParserException,
+	private void processIq(Tag currentTag) throws XmlPullParserException,
 			IOException {
 		IqPacket packet = (IqPacket) processPacket(currentTag, PACKET_IQ);
-		if (iqPacketCallbacks.containsKey(packet.getId())) {
-			iqPacketCallbacks.get(packet.getId()).onIqPacketReceived(account,
-					packet);
-			iqPacketCallbacks.remove(packet.getId());
+		if (packetCallbacks.containsKey(packet.getId())) {
+			if (packetCallbacks.get(packet.getId()) instanceof OnIqPacketReceived) {
+				((OnIqPacketReceived) packetCallbacks.get(packet.getId())).onIqPacketReceived(account,
+						packet);
+			}
+			
+			packetCallbacks.remove(packet.getId());
 		} else if (this.unregisteredIqListener != null) {
 			this.unregisteredIqListener.onIqPacketReceived(account, packet);
 		}
-		return packet;
 	}
 
 	private void processMessage(Tag currentTag) throws XmlPullParserException,
 			IOException {
 		MessagePacket packet = (MessagePacket) processPacket(currentTag,
 				PACKET_MESSAGE);
-		if (this.messageListener != null) {
+		String id = packet.getAttribute("id");
+		if ((id!=null)&&(packetCallbacks.containsKey(id))) {
+			if (packetCallbacks.get(id) instanceof OnMessagePacketReceived) {
+				((OnMessagePacketReceived) packetCallbacks.get(id)).onMessagePacketReceived(account,
+						packet);
+			}
+			packetCallbacks.remove(id);
+		} else if (this.messageListener != null) {
 			this.messageListener.onMessagePacketReceived(account, packet);
 		}
 	}
@@ -238,7 +247,14 @@ public class XmppConnection implements Runnable {
 			IOException {
 		PresencePacket packet = (PresencePacket) processPacket(currentTag,
 				PACKET_PRESENCE);
-		if (this.presenceListener != null) {
+		String id = packet.getAttribute("id");
+		if ((id!=null)&&(packetCallbacks.containsKey(id))) {
+			if (packetCallbacks.get(id) instanceof OnPresencePacketReceived) {
+				((OnPresencePacketReceived) packetCallbacks.get(id)).onPresencePacketReceived(account,
+						packet);
+			}
+			packetCallbacks.remove(id);
+		} else if (this.presenceListener != null) {
 			this.presenceListener.onPresencePacketReceived(account, packet);
 		}
 	}
@@ -405,19 +421,34 @@ public class XmppConnection implements Runnable {
 		packet.setAttribute("id", id);
 		tagWriter.writeElement(packet);
 		if (callback != null) {
-			iqPacketCallbacks.put(id, callback);
+			packetCallbacks.put(id, callback);
 		}
-		//Log.d(LOGTAG, account.getJid() + ": sending: " + packet.toString());
 	}
 
 	public void sendMessagePacket(MessagePacket packet) {
-		Log.d(LOGTAG,"sending message packet "+packet.toString());
+		this.sendMessagePacket(packet, null);
+	}
+	
+	public void sendMessagePacket(MessagePacket packet, OnMessagePacketReceived callback) {
+		String id = nextRandomId();
+		packet.setAttribute("id", id);
 		tagWriter.writeElement(packet);
+		if (callback != null) {
+			packetCallbacks.put(id, callback);
+		}
 	}
 
 	public void sendPresencePacket(PresencePacket packet) {
+		this.sendPresencePacket(packet, null);
+	}
+	
+	public void sendPresencePacket(PresencePacket packet, OnPresencePacketReceived callback) {
+		String id = nextRandomId();
+		packet.setAttribute("id", id);
 		tagWriter.writeElement(packet);
-		Log.d(LOGTAG, account.getJid() + ": sending: " + packet.toString());
+		if (callback != null) {
+			packetCallbacks.put(id, callback);
+		}
 	}
 
 	public void setOnMessagePacketReceivedListener(

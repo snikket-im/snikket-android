@@ -62,6 +62,36 @@
          android:layout_width="fill_parent"
          android:orientation="vertical"
         >
+        
+        <LinearLayout
+        android:id="@+id/muc_error"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/redbackground"
+        android:orientation="vertical"
+        android:visibility="gone"
+        >
+
+        <TextView
+            android:id="@+id/muc_error_msg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#eee"
+            android:textStyle="bold"
+            android:padding="8dp"
+            android:textSize="20sp"/>
+        <TextView 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Click to edit conference details"
+            android:textColor="#eee"
+            android:paddingLeft="8dp"
+            android:paddingBottom="8dp"
+            android:textSize="14sp"/>
+        
+    </LinearLayout>
+        
+        
     <LinearLayout
         android:id="@+id/new_fingerprint"
         android:layout_width="fill_parent"

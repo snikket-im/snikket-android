@@ -13,9 +13,11 @@ import net.java.otr4j.session.SessionStatus;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.PgpEngine.OpenPgpException;
 import eu.siacs.conversations.crypto.PgpEngine.UserInputRequiredException;
+import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
+import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.PhoneHelper;
 import eu.siacs.conversations.utils.UIHelper;
@@ -95,6 +97,17 @@ public class ConversationFragment extends Fragment {
 		}
 	};
 	private LinearLayout pgpInfo;
+	private LinearLayout mucError;
+	private TextView mucErrorText;
+	private OnClickListener clickToMuc = new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			DialogMucDetails mucDetails = new DialogMucDetails();
+			mucDetails.setConversation(conversation);
+			mucDetails.show(getFragmentManager(), "details");
+		}
+	};
 	
 	public void hidePgpPassphraseBox() {
 		pgpInfo.setVisibility(View.GONE);
@@ -138,6 +151,9 @@ public class ConversationFragment extends Fragment {
 		
 		pgpInfo = (LinearLayout) view.findViewById(R.id.pgp_keyentry);
 		pgpInfo.setOnClickListener(clickToDecryptListener);
+		mucError = (LinearLayout) view.findViewById(R.id.muc_error);
+		mucError.setOnClickListener(clickToMuc );
+		mucErrorText = (TextView) view.findViewById(R.id.muc_error_msg);
 		
 		messagesView = (ListView) view.findViewById(R.id.messages_view);
 
@@ -348,15 +364,26 @@ public class ConversationFragment extends Fragment {
 		this.messageList.clear();
 		this.messageList.addAll(this.conversation.getMessages());
 		this.messageListAdapter.notifyDataSetChanged();
-		if (messageList.size() >= 1) {
-			int latestEncryption = this.conversation.getLatestMessage()
-					.getEncryption();
-			if (latestEncryption== Message.ENCRYPTION_DECRYPTED) {
-				conversation.nextMessageEncryption = Message.ENCRYPTION_PGP;
-			} else {
-				conversation.nextMessageEncryption = latestEncryption;
+		if (conversation.getMode() == Conversation.MODE_SINGLE) {
+			if (messageList.size() >= 1) {
+				int latestEncryption = this.conversation.getLatestMessage()
+						.getEncryption();
+				if (latestEncryption== Message.ENCRYPTION_DECRYPTED) {
+					conversation.nextMessageEncryption = Message.ENCRYPTION_PGP;
+				} else {
+					conversation.nextMessageEncryption = latestEncryption;
+				}
+				makeFingerprintWarning(latestEncryption);
 			}
-			makeFingerprintWarning(latestEncryption);
+		} else {
+			if (conversation.getMucOptions().getError() != 0) {
+				mucError.setVisibility(View.VISIBLE);
+				if (conversation.getMucOptions().getError() == MucOptions.ERROR_NICK_IN_USE) {
+					mucErrorText.setText(getString(R.string.nick_in_use));
+				}
+			} else {
+				mucError.setVisibility(View.GONE);
+			}
 		}
 		getActivity().invalidateOptionsMenu();
 		updateChatMsgHint();

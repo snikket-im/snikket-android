@@ -20,12 +20,15 @@ import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
+import eu.siacs.conversations.entities.MucOptions;
+import eu.siacs.conversations.entities.MucOptions.OnRenameListener;
 import eu.siacs.conversations.entities.Presences;
 import eu.siacs.conversations.persistance.DatabaseBackend;
 import eu.siacs.conversations.persistance.OnPhoneContactsMerged;
 import eu.siacs.conversations.ui.OnAccountListChangedListener;
 import eu.siacs.conversations.ui.OnConversationListChangedListener;
 import eu.siacs.conversations.ui.OnRosterFetchedListener;
+import eu.siacs.conversations.ui.XmppActivity;
 import eu.siacs.conversations.utils.MessageParser;
 import eu.siacs.conversations.utils.OnPhoneContactsLoadedListener;
 import eu.siacs.conversations.utils.PhoneHelper;
@@ -53,6 +56,7 @@ import android.os.PowerManager;
 import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.util.Log;
+import android.widget.Toast;
 
 public class XmppConnectionService extends Service {
 
@@ -116,7 +120,7 @@ public class XmppConnectionService extends Service {
 			} else if (packet.getType() == MessagePacket.TYPE_ERROR) {
 				message = MessageParser.parseError(packet, account, service);
 			} else {
-				Log.d(LOGTAG, "unparsed message " + packet.toString());
+				//Log.d(LOGTAG, "unparsed message " + packet.toString());
 			}
 			if (message == null) {
 				return;
@@ -188,8 +192,15 @@ public class XmppConnectionService extends Service {
 		@Override
 		public void onPresencePacketReceived(Account account,
 				PresencePacket packet) {
+			Log.d(LOGTAG, packet.toString());
 			if (packet.hasChild("x")&&(packet.findChild("x").getAttribute("xmlns").startsWith("http://jabber.org/protocol/muc"))) {
-				Log.d(LOGTAG,"got muc presence "+packet.toString());
+				Conversation muc = findMuc(packet.getAttribute("from").split("/")[0]);
+				if (muc!=null) {
+					muc.getMucOptions().processPacket(packet);
+					if (convChangedListener!=null) {
+						convChangedListener.onConversationListChanged();
+					}
+				}
 			} else {
 				String[] fromParts = packet.getAttribute("from").split("/");
 				Contact contact = findContact(account, fromParts[0]);
@@ -288,6 +299,15 @@ public class XmppConnectionService extends Service {
 			return null;
 		}
 
+	}
+
+	protected Conversation findMuc(String name) {
+		for(Conversation conversation : this.conversations) {
+			if (conversation.getContactJid().split("/")[0].equals(name)) {
+				return conversation;
+			}
+		}
+		return null;
 	}
 
 	private void processRosterItems(Account account, Element elements) {
@@ -506,7 +526,7 @@ public class XmppConnectionService extends Service {
 		} else if (message.getConversation().getMode() == Conversation.MODE_MULTI) {
 			packet.setType(MessagePacket.TYPE_GROUPCHAT);
 			packet.setBody(message.getBody());
-			packet.setTo(message.getCounterpart());
+			packet.setTo(message.getCounterpart().split("/")[0]);
 			packet.setFrom(account.getJid());
 		}
 		return packet;
@@ -653,7 +673,7 @@ public class XmppConnectionService extends Service {
 			boolean muc) {
 		for (Conversation conv : this.getConversations()) {
 			if ((conv.getAccount().equals(account))
-					&& (conv.getContactJid().equals(jid))) {
+					&& (conv.getContactJid().split("/")[0].equals(jid))) {
 				return conv;
 			}
 		}
@@ -799,10 +819,19 @@ public class XmppConnectionService extends Service {
 	}
 
 	public void joinMuc(Conversation conversation) {
-		String muc = conversation.getContactJid();
+		String[] mucParts = conversation.getContactJid().split("/");
+		String muc;
+		String nick;
+		if (mucParts.length == 2) {
+			muc = mucParts[0];
+			nick = mucParts[1];
+		} else {
+			muc = mucParts[0];
+			nick = conversation.getAccount().getUsername();
+		}
 		PresencePacket packet = new PresencePacket();
 		packet.setAttribute("to", muc + "/"
-				+ conversation.getAccount().getUsername());
+				+ nick);
 		Element x = new Element("x");
 		x.setAttribute("xmlns", "http://jabber.org/protocol/muc");
 		if (conversation.getMessages().size() != 0) {
@@ -816,9 +845,55 @@ public class XmppConnectionService extends Service {
 		conversation.getAccount().getXmppConnection()
 				.sendPresencePacket(packet);
 	}
+	
+	public void renameInMuc(final Conversation conversation, final String nick, final XmppActivity activity) {
+		final MucOptions options = conversation.getMucOptions();
+		if (options.online()) {
+			options.setOnRenameListener(new OnRenameListener() {
+				
+				@Override
+				public void onRename(final boolean success) {
+					activity.runOnUiThread(new Runnable() {
+						
+						@Override
+						public void run() {
+							if (success) {
+								databaseBackend.updateConversation(conversation);
+								Toast.makeText(activity, "Your nickname has been changed", Toast.LENGTH_SHORT).show();
+							} else {
+								Toast.makeText(activity, "Nickname already in use",Toast.LENGTH_SHORT).show();
+							}
+						}
+					});
+				}
+			});
+			PresencePacket packet = new PresencePacket();
+			packet.setAttribute("to", conversation.getContactJid().split("/")[0]+"/"+nick);
+			conversation.getAccount().getXmppConnection().sendPresencePacket(packet, new OnPresencePacketReceived() {
+				
+				@Override
+				public void onPresencePacketReceived(Account account, PresencePacket packet) {
+					final boolean changed;
+					String type = packet.getAttribute("type");
+					changed = (!"error".equals(type));
+					if (!changed) {
+						options.getOnRenameListener().onRename(changed);
+					}
+					options.processPacket(packet);
+				}
+			});
+		} else {
+			String jid = conversation.getContactJid().split("/")[0]+"/"+nick;
+			conversation.setContactJid(jid);
+			databaseBackend.updateConversation(conversation);
+			if (conversation.getAccount().getStatus() == Account.STATUS_ONLINE) {
+				joinMuc(conversation);
+			}
+		}
+	}
 
 	public void leaveMuc(Conversation conversation) {
-
+		conversation.getMucOptions().setOffline();
 	}
 
 	public void disconnect(Account account) {
@@ -942,5 +1017,9 @@ public class XmppConnectionService extends Service {
 			databaseBackend.updateAccount(account);
 			sendPgpPresence(account, signature);
 		}
+	}
+
+	public void updateConversation(Conversation conversation) {
+		this.databaseBackend.updateConversation(conversation);
 	}
 }

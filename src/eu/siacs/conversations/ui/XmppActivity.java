@@ -8,6 +8,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 public abstract class XmppActivity extends Activity {
 	public XmppConnectionService xmppConnectionService;
@@ -45,6 +47,19 @@ public abstract class XmppActivity extends Activity {
 		if (xmppConnectionServiceBound) {
 			unbindService(mConnection);
 			xmppConnectionServiceBound = false;
+		}
+	}
+	
+	protected void hideKeyboard() {
+		InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+
+		View focus = getCurrentFocus();
+
+		if (focus != null) {
+
+			inputManager.hideSoftInputFromWindow(
+					focus.getWindowToken(),
+					InputMethodManager.HIDE_NOT_ALWAYS);
 		}
 	}
 	

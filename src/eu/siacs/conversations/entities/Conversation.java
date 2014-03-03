@@ -275,10 +275,15 @@ public class Conversation extends AbstractEntity {
 		if (this.mucOptions == null) {
 			this.mucOptions = new MucOptions();
 		}
+		this.mucOptions.setConversation(this);
 		return this.mucOptions ;
 	}
 	
 	public void resetMucOptions() {
 		this.mucOptions = null;
+	}
+
+	public void setContactJid(String jid) {
+		this.contactJid = jid;
 	}
 }

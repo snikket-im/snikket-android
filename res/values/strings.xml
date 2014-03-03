@@ -15,4 +15,6 @@
     <string name="sending">sending&#8230;</string>
     <string name="announce_pgp">Renew PGP announcement</string>
     <string name="encrypted_message">Decrypting message. please wait&#8230;</string>
+    <string name="conference_details">Conference Details</string>
+    <string name="nick_in_use">Nickname is already in use</string>
 </resources>

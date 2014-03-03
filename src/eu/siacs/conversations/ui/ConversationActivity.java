@@ -208,17 +208,7 @@ public class ConversationActivity extends XmppActivity {
 				getActionBar().setDisplayHomeAsUpEnabled(false);
 				getActionBar().setTitle(R.string.app_name);
 				invalidateOptionsMenu();
-
-				InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-
-				View focus = getCurrentFocus();
-
-				if (focus != null) {
-
-					inputManager.hideSoftInputFromWindow(
-							focus.getWindowToken(),
-							InputMethodManager.HIDE_NOT_ALWAYS);
-				}
+				hideKeyboard();
 			}
 
 			@Override
@@ -315,6 +305,11 @@ public class ConversationActivity extends XmppActivity {
 				builder.setPositiveButton("Add",addToRoster);
 				builder.create().show();
 			}
+			break;
+		case R.id.action_muc_details:
+			DialogMucDetails mucDetails = new DialogMucDetails();
+			mucDetails.setConversation(getSelectedConversation());
+			mucDetails.show(getFragmentManager(), "details");
 			break;
 		case R.id.action_security:
 			final Conversation selConv = getSelectedConversation();
