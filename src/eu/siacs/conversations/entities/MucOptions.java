@@ -99,7 +99,6 @@ public class MucOptions {
 		}
 	
 	public void processPacket(PresencePacket packet) {
-		Log.d("xmppService","process Packet for muc options: "+packet.toString());
 		String name = packet.getAttribute("from").split("/")[1];
 			String type = packet.getAttribute("type");
 			if (type==null) {
@@ -109,8 +108,6 @@ public class MucOptions {
 				user.setAffiliation(item.getAttribute("affiliation"));
 				user.setRole(item.getAttribute("role"));
 				user.setName(name);
-				Log.d("xmppService","nick: "+getNick());
-				Log.d("xmppService","name: "+name);
 				if (name.equals(getNick())) {
 					this.isOnline = true;
 					this.error = 0;
@@ -119,10 +116,8 @@ public class MucOptions {
 					addUser(user);
 				}
 			} else if (type.equals("unavailable")) {
-				Log.d("xmppService","name: "+name);
 				if (name.equals(getNick())) {
 					Element item = packet.findChild("x").findChild("item");
-					Log.d("xmppService","nick equals name");
 					String nick = item.getAttribute("nick");
 					if (nick!=null) {
 						if (renameListener!=null) {

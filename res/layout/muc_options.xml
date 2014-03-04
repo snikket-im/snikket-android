@@ -28,7 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="48dp"
             android:layout_alignParentLeft="true"
-            android:layout_toLeftOf="@+id/imageView1"
+            android:layout_toLeftOf="@+id/muc_edit_nick"
             android:background="#eee"
             android:ems="10"
             android:hint="Search or enter Jabber ID"

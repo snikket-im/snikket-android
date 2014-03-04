@@ -18,6 +18,7 @@ import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.MucOptions;
+import eu.siacs.conversations.entities.MucOptions.OnRenameListener;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.PhoneHelper;
 import eu.siacs.conversations.utils.UIHelper;
@@ -49,6 +50,7 @@ import android.widget.ListView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class ConversationFragment extends Fragment {
 
@@ -350,6 +352,25 @@ public class ConversationFragment extends Fragment {
 			Message message = new Message(conversation, queuedPqpMessage,
 					Message.ENCRYPTION_PGP);
 			sendPgpMessage(message);
+		}
+		if (conversation.getMode() == Conversation.MODE_MULTI) {
+			activity.xmppConnectionService.setOnRenameListener(new OnRenameListener() {
+				
+				@Override
+				public void onRename(final boolean success) {
+					getActivity().runOnUiThread(new Runnable() {
+						
+						@Override
+						public void run() {
+							if (success) {
+								Toast.makeText(getActivity(), "Your nickname has been changed",Toast.LENGTH_SHORT).show();
+							} else {
+								Toast.makeText(getActivity(), "Nichname is already in use",Toast.LENGTH_SHORT).show();
+							}
+						}
+					});
+				}
+			});
 		}
 	}
 

@@ -442,13 +442,14 @@ public class XmppConnection implements Runnable {
 		this.sendPresencePacket(packet, null);
 	}
 	
-	public void sendPresencePacket(PresencePacket packet, OnPresencePacketReceived callback) {
+	public PresencePacket sendPresencePacket(PresencePacket packet, OnPresencePacketReceived callback) {
 		String id = nextRandomId();
 		packet.setAttribute("id", id);
 		tagWriter.writeElement(packet);
 		if (callback != null) {
 			packetCallbacks.put(id, callback);
 		}
+		return packet;
 	}
 
 	public void setOnMessagePacketReceivedListener(

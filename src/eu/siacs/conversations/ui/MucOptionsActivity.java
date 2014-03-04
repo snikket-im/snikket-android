@@ -20,7 +20,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 public class MucOptionsActivity extends XmppActivity {
@@ -44,7 +43,7 @@ public class MucOptionsActivity extends XmppActivity {
 			String nick = mYourNick.getText().toString();
 			if (!options.getNick().equals(nick)) {
 				Log.d("gultsch","call to change muc");
-				xmppConnectionService.renameInMuc(conversation, nick, activity);
+				xmppConnectionService.renameInMuc(conversation, nick);
 				finish();
 			}
 		}

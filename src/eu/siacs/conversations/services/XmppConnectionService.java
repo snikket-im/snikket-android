@@ -192,12 +192,13 @@ public class XmppConnectionService extends Service {
 		@Override
 		public void onPresencePacketReceived(Account account,
 				PresencePacket packet) {
-			Log.d(LOGTAG, packet.toString());
 			if (packet.hasChild("x")&&(packet.findChild("x").getAttribute("xmlns").startsWith("http://jabber.org/protocol/muc"))) {
 				Conversation muc = findMuc(packet.getAttribute("from").split("/")[0]);
+				int error = muc.getMucOptions().getError();
 				if (muc!=null) {
 					muc.getMucOptions().processPacket(packet);
-					if (convChangedListener!=null) {
+					if ((muc.getMucOptions().getError()!=error)&&(convChangedListener!=null)) {
+						Log.d(LOGTAG,"muc error status changed");
 						convChangedListener.onConversationListChanged();
 					}
 				}
@@ -846,30 +847,31 @@ public class XmppConnectionService extends Service {
 				.sendPresencePacket(packet);
 	}
 	
-	public void renameInMuc(final Conversation conversation, final String nick, final XmppActivity activity) {
+	private OnRenameListener renameListener = null;
+	public void setOnRenameListener(OnRenameListener listener) {
+		this.renameListener = listener;
+	}
+	
+	public void renameInMuc(final Conversation conversation, final String nick) {
 		final MucOptions options = conversation.getMucOptions();
 		if (options.online()) {
 			options.setOnRenameListener(new OnRenameListener() {
 				
 				@Override
-				public void onRename(final boolean success) {
-					activity.runOnUiThread(new Runnable() {
-						
-						@Override
-						public void run() {
-							if (success) {
-								databaseBackend.updateConversation(conversation);
-								Toast.makeText(activity, "Your nickname has been changed", Toast.LENGTH_SHORT).show();
-							} else {
-								Toast.makeText(activity, "Nickname already in use",Toast.LENGTH_SHORT).show();
-							}
-						}
-					});
+				public void onRename(boolean success) {
+					if (renameListener!=null) {
+						renameListener.onRename(success);
+					}
+					if (success) {
+						databaseBackend.updateConversation(conversation);
+					}
 				}
 			});
 			PresencePacket packet = new PresencePacket();
 			packet.setAttribute("to", conversation.getContactJid().split("/")[0]+"/"+nick);
-			conversation.getAccount().getXmppConnection().sendPresencePacket(packet, new OnPresencePacketReceived() {
+			packet.setAttribute("from", conversation.getAccount().getFullJid());
+			
+			packet = conversation.getAccount().getXmppConnection().sendPresencePacket(packet, new OnPresencePacketReceived() {
 				
 				@Override
 				public void onPresencePacketReceived(Account account, PresencePacket packet) {
@@ -877,9 +879,15 @@ public class XmppConnectionService extends Service {
 					String type = packet.getAttribute("type");
 					changed = (!"error".equals(type));
 					if (!changed) {
-						options.getOnRenameListener().onRename(changed);
+						options.getOnRenameListener().onRename(false);
+					} else {
+						if (type==null) {
+							options.getOnRenameListener().onRename(true);
+							options.setNick(packet.getAttribute("from").split("/")[1]);
+						} else {
+							options.processPacket(packet);
+						}
 					}
-					options.processPacket(packet);
 				}
 			});
 		} else {
