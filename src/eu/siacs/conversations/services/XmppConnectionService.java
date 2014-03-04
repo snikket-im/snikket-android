@@ -194,8 +194,8 @@ public class XmppConnectionService extends Service {
 				PresencePacket packet) {
 			if (packet.hasChild("x")&&(packet.findChild("x").getAttribute("xmlns").startsWith("http://jabber.org/protocol/muc"))) {
 				Conversation muc = findMuc(packet.getAttribute("from").split("/")[0]);
-				int error = muc.getMucOptions().getError();
 				if (muc!=null) {
+					int error = muc.getMucOptions().getError();
 					muc.getMucOptions().processPacket(packet);
 					if ((muc.getMucOptions().getError()!=error)&&(convChangedListener!=null)) {
 						Log.d(LOGTAG,"muc error status changed");
@@ -901,6 +901,11 @@ public class XmppConnectionService extends Service {
 	}
 
 	public void leaveMuc(Conversation conversation) {
+		PresencePacket packet = new PresencePacket();
+		packet.setAttribute("to", conversation.getContactJid());
+		packet.setAttribute("from", conversation.getAccount().getFullJid());
+		packet.setAttribute("type","unavailable");
+		conversation.getAccount().getXmppConnection().sendPresencePacket(packet);
 		conversation.getMucOptions().setOffline();
 	}
 
