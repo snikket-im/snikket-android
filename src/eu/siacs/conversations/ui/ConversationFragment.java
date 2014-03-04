@@ -24,6 +24,7 @@ import eu.siacs.conversations.utils.UIHelper;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.content.IntentSender.SendIntentException;
@@ -36,8 +37,10 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -96,6 +99,7 @@ public class ConversationFragment extends Fragment {
 			}
 		}
 	};
+	
 	private LinearLayout pgpInfo;
 	private LinearLayout mucError;
 	private TextView mucErrorText;
@@ -103,9 +107,10 @@ public class ConversationFragment extends Fragment {
 		
 		@Override
 		public void onClick(View v) {
-			DialogMucDetails mucDetails = new DialogMucDetails();
-			mucDetails.setConversation(conversation);
-			mucDetails.show(getFragmentManager(), "details");
+			Intent intent = new Intent(getActivity(),MucOptionsActivity.class);
+			intent.setAction(MucOptionsActivity.ACTION_VIEW_MUC);
+			intent.putExtra("uuid", conversation.getUuid());
+			startActivity(intent);
 		}
 	};
 	

@@ -17,4 +17,7 @@
     <string name="encrypted_message">Decrypting message. please wait&#8230;</string>
     <string name="conference_details">Conference Details</string>
     <string name="nick_in_use">Nickname is already in use</string>
+    <string name="moderator">Moderator</string>
+    <string name="participant">Participant</string>
+    <string name="visitor">Visitor</string>
 </resources>

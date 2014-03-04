@@ -3,6 +3,7 @@ package eu.siacs.conversations.entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import eu.siacs.conversations.entities.MucOptions.User;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.PresencePacket;
 import android.annotation.SuppressLint;
@@ -75,6 +76,7 @@ public class MucOptions {
 	private boolean isOnline = false;
 	private int error = 0;
 	private OnRenameListener renameListener = null;
+	private User self = new User();
 
 	
 	public void deleteUser(String name) {
@@ -107,12 +109,14 @@ public class MucOptions {
 				user.setAffiliation(item.getAttribute("affiliation"));
 				user.setRole(item.getAttribute("role"));
 				user.setName(name);
-				addUser(user);
 				Log.d("xmppService","nick: "+getNick());
 				Log.d("xmppService","name: "+name);
 				if (name.equals(getNick())) {
 					this.isOnline = true;
 					this.error = 0;
+					self = user;
+				} else {
+					addUser(user);
 				}
 			} else if (type.equals("unavailable")) {
 				Log.d("xmppService","name: "+name);
@@ -178,5 +182,9 @@ public class MucOptions {
 		this.users.clear();
 		this.error = 0;
 		this.isOnline = false;
+	}
+
+	public User getSelf() {
+		return self;
 	}
 }

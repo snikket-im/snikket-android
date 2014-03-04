@@ -307,9 +307,10 @@ public class ConversationActivity extends XmppActivity {
 			}
 			break;
 		case R.id.action_muc_details:
-			DialogMucDetails mucDetails = new DialogMucDetails();
-			mucDetails.setConversation(getSelectedConversation());
-			mucDetails.show(getFragmentManager(), "details");
+			Intent intent = new Intent(this,MucOptionsActivity.class);
+			intent.setAction(MucOptionsActivity.ACTION_VIEW_MUC);
+			intent.putExtra("uuid", getSelectedConversation().getUuid());
+			startActivity(intent);
 			break;
 		case R.id.action_security:
 			final Conversation selConv = getSelectedConversation();
