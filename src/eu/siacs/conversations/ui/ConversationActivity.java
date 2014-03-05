@@ -417,7 +417,7 @@ public class ConversationActivity extends XmppActivity {
 			this.updateConversationList();
 		}
 
-		if ((getIntent().getAction().equals(Intent.ACTION_VIEW) && (!handledViewIntent))) {
+		if ((getIntent().getAction()!=null)&&(getIntent().getAction().equals(Intent.ACTION_VIEW) && (!handledViewIntent))) {
 			if (getIntent().getType().equals(
 					ConversationActivity.VIEW_CONVERSATION)) {
 				handledViewIntent = true;

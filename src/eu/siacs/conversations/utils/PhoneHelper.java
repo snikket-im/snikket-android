@@ -81,7 +81,12 @@ public class PhoneHelper {
 			return null;
 		} else {
 			mProfileCursor.moveToFirst();
-			return Uri.parse(mProfileCursor.getString(1));
+			String uri = mProfileCursor.getString(1);
+			if (uri==null) {
+				return null;
+			} else {
+				return Uri.parse(uri);
+			}
 		}
 	}
 }
