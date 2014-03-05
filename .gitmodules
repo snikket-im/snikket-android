@@ -1,0 +1,3 @@
+[submodule "libs/openpgp-keychain"]
+	path = libs/openpgp-keychain
+	url = https://github.com/siacs/openpgp-keychain.git
