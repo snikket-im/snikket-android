@@ -109,8 +109,8 @@ public class ConversationFragment extends Fragment {
 		
 		@Override
 		public void onClick(View v) {
-			Intent intent = new Intent(getActivity(),MucOptionsActivity.class);
-			intent.setAction(MucOptionsActivity.ACTION_VIEW_MUC);
+			Intent intent = new Intent(getActivity(),MucDetailsActivity.class);
+			intent.setAction(MucDetailsActivity.ACTION_VIEW_MUC);
 			intent.putExtra("uuid", conversation.getUuid());
 			startActivity(intent);
 		}

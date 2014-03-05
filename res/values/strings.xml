@@ -20,4 +20,6 @@
     <string name="moderator">Moderator</string>
     <string name="participant">Participant</string>
     <string name="visitor">Visitor</string>
+    <string name="enter_new_name">Enter a new name:</string>
+    <string name="remove_contact_text">Do you want to delete %s from your roster. The conversation assoziated with this account will not be removed.</string>
 </resources>

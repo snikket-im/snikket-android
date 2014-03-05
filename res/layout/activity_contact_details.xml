@@ -3,12 +3,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="8dp" >
+    android:background="#e5e5e5">
 
+     <TextView
+        style="@style/sectionHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:text="Contact Details" />
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="72dp"
-        android:padding="0dp">
+        android:layout_height="88dp"
+        android:padding="8dp">
 
         <QuickContactBadge
             android:id="@+id/details_contact_badge"
@@ -21,78 +27,69 @@
             android:id="@+id/details_jidbox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/details_contact_badge"
             android:orientation="vertical"
-            android:layout_alignParentTop="true"
-            android:paddingLeft="8dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Jabber ID"
-                android:textColor="#33B5E5"
-                android:textSize="20sp" />
+            android:paddingLeft="8dp" >
 
             <TextView
                 android:id="@+id/details_contactjid"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="something@jabber.example.com"
+                android:paddingLeft="8dp"
                 android:singleLine="true"
-                android:textSize="14sp"
-                android:paddingLeft="8dp"/>
+                android:text="something@jabber.example.com"
+                android:textColor="#5b5b5b"
+                android:textSize="18sp" />
 
-         
-        </LinearLayout>
-           <TextView
+            <TextView
                 android:id="@+id/details_contactstatus"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
+                android:paddingLeft="16dp"
                 android:text="online"
                 android:textSize="24sp"
-                 android:textStyle="bold"
-                 android:gravity="center_vertical"
-                 android:layout_below="@+id/details_jidbox"
-                 android:layout_toRightOf="@id/details_contact_badge"
-                 android:paddingLeft="16dp"/>
+                android:textStyle="bold" />
+        </LinearLayout>
+          
     </RelativeLayout>
 
-    <TextView
+  
+   <TextView
+        style="@style/sectionHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingTop="8dp"
-        android:text="Your account"
-        android:textColor="#33B5E5"
-        android:textSize="20sp"/>
-
+        android:padding="8dp"
+        android:text="Your account" />
     <TextView
         android:id="@+id/details_account"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="8dp"
         android:text="julia@jabber.example.com"
-        android:textSize="14sp" />
-
-    <TextView
+        android:textSize="18sp"
+        android:textColor="#5b5b5b" />
+   <TextView
+        style="@style/sectionHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingTop="8dp"
-        android:text="Subscription"
-        android:textColor="#33B5E5"
-        android:textSize="20sp" />
+        android:padding="8dp"
+        android:text="Subscription" />
 
     <CheckBox
         android:id="@+id/details_send_presence"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Send presence updates"
-        android:textSize="14sp" />
+        android:textSize="18sp"
+        android:textColor="#5b5b5b" />
 
     <CheckBox
         android:id="@+id/details_receive_presence"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Receive presence updates"
-        android:textSize="14sp" />
+        android:textSize="18sp"
+        android:textColor="#5b5b5b" />
 
 </LinearLayout>

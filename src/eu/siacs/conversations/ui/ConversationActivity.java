@@ -162,9 +162,9 @@ public class ConversationActivity extends XmppActivity {
 				}
 				
 				((TextView) view.findViewById(R.id.conversation_lastupdate))
-				.setText(UIHelper.readableTimeDifference(getItem(position).getLatestMessage().getTimeSent()));
+				.setText(UIHelper.readableTimeDifference(conv.getLatestMessage().getTimeSent()));
 				
-				Uri profilePhoto = getItem(position).getProfilePhotoUri();
+				Uri profilePhoto = conv.getProfilePhotoUri();
 				ImageView imageView = (ImageView) view.findViewById(R.id.conversation_image);
 				if (profilePhoto!=null) {
 					imageView.setImageURI(profilePhoto);
@@ -272,12 +272,6 @@ public class ConversationActivity extends XmppActivity {
 		case android.R.id.home:
 			spl.openPane();
 			break;
-		case R.id.action_settings:
-			startActivity(new Intent(this, SettingsActivity.class));
-			break;
-		case R.id.action_accounts:
-			startActivity(new Intent(this, ManageAccountActivity.class));
-			break;
 		case R.id.action_add:
 			startActivity(new Intent(this, NewConversationActivity.class));
 			break;
@@ -290,12 +284,12 @@ public class ConversationActivity extends XmppActivity {
 			selectedConversation = conversationList.get(0);
 			break;
 		case R.id.action_contact_details:
-			DialogContactDetails details = new DialogContactDetails();
 			Contact contact = this.getSelectedConversation().getContact();
 			if (contact != null) {
-				contact.setAccount(this.selectedConversation.getAccount());
-				details.setContact(contact);
-				details.show(getFragmentManager(), "details");
+				Intent intent = new Intent(this,ContactDetailsActivity.class);
+				intent.setAction(ContactDetailsActivity.ACTION_VIEW_CONTACT);
+				intent.putExtra("uuid", contact.getUuid());
+				startActivity(intent);
 			} else {
 				String jid = getSelectedConversation().getContactJid();
 				AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -307,8 +301,8 @@ public class ConversationActivity extends XmppActivity {
 			}
 			break;
 		case R.id.action_muc_details:
-			Intent intent = new Intent(this,MucOptionsActivity.class);
-			intent.setAction(MucOptionsActivity.ACTION_VIEW_MUC);
+			Intent intent = new Intent(this,MucDetailsActivity.class);
+			intent.setAction(MucDetailsActivity.ACTION_VIEW_MUC);
 			intent.putExtra("uuid", getSelectedConversation().getUuid());
 			startActivity(intent);
 			break;

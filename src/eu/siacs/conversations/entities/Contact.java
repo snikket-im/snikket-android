@@ -293,4 +293,8 @@ public class Contact extends AbstractEntity implements Serializable {
 	public boolean isInRoster() {
 		return this.inRoster;
 	}
+
+	public String getAccountUuid() {
+		return this.accountUuid;
+	}
 }

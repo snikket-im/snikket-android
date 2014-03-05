@@ -1,5 +1,6 @@
 package eu.siacs.conversations.ui;
 
+import eu.siacs.conversations.R;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.services.XmppConnectionService.XmppConnectionBinder;
 import android.app.Activity;
@@ -10,6 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
@@ -79,4 +81,16 @@ public abstract class XmppActivity extends Activity {
 	}
 	
 	abstract void onBackendConnected();
+	
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.action_settings:
+			startActivity(new Intent(this, SettingsActivity.class));
+			break;
+		case R.id.action_accounts:
+			startActivity(new Intent(this, ManageAccountActivity.class));
+			break;
+		}
+		return super.onOptionsItemSelected(item);
+	}
 }

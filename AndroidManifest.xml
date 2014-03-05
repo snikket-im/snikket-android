@@ -46,9 +46,13 @@
             android:parentActivityName="eu.siacs.conversations.ui.ConversationActivity" >
         </activity>
          <activity
-            android:name="eu.siacs.conversations.ui.MucOptionsActivity"
+            android:name="eu.siacs.conversations.ui.MucDetailsActivity"
             android:label="Conference Details"
-            android:parentActivityName="eu.siacs.conversations.ui.ConversationActivity" 
+            android:windowSoftInputMode="stateHidden">
+        </activity>
+        <activity
+            android:name="eu.siacs.conversations.ui.ContactDetailsActivity"
+            android:label="Contact Details"
             android:windowSoftInputMode="stateHidden">
         </activity>
         <activity

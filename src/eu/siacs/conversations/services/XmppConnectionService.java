@@ -535,7 +535,7 @@ public class XmppConnectionService extends Service {
 
 	public void getRoster(Account account,
 			final OnRosterFetchedListener listener) {
-		List<Contact> contacts = databaseBackend.getContacts(account);
+		List<Contact> contacts = databaseBackend.getContactsByAccount(account);
 		for (int i = 0; i < contacts.size(); ++i) {
 			contacts.get(i).setAccount(account);
 		}
@@ -575,7 +575,7 @@ public class XmppConnectionService extends Service {
 							mWhere.append(account.getUuid());
 							mWhere.append("\"");
 							List<Contact> contactsToDelete = databaseBackend
-									.getContats(mWhere.toString());
+									.getContacts(mWhere.toString());
 							for (Contact contact : contactsToDelete) {
 								databaseBackend.deleteContact(contact);
 								replaceContactInConversation(contact.getJid(),
@@ -604,7 +604,7 @@ public class XmppConnectionService extends Service {
 					public void onPhoneContactsLoaded(
 							Hashtable<String, Bundle> phoneContacts) {
 						List<Contact> contacts = databaseBackend
-								.getContacts(null);
+								.getContactsByAccount(null);
 						for (int i = 0; i < contacts.size(); ++i) {
 							Contact contact = contacts.get(i);
 							if (phoneContacts.containsKey(contact.getJid())) {
@@ -938,6 +938,7 @@ public class XmppConnectionService extends Service {
 
 	public void updateContact(Contact contact) {
 		databaseBackend.updateContact(contact);
+		replaceContactInConversation(contact.getJid(), contact);
 	}
 
 	public void updateMessage(Message message) {
@@ -1034,5 +1035,15 @@ public class XmppConnectionService extends Service {
 
 	public void updateConversation(Conversation conversation) {
 		this.databaseBackend.updateConversation(conversation);
+	}
+
+	public Contact findContact(String uuid) {
+		Contact contact = this.databaseBackend.getContact(uuid);
+		for(Account account : getAccounts()) {
+			if (contact.getAccountUuid().equals(account.getUuid())) {
+				contact.setAccount(account);
+			}
+		}
+		return contact;
 	}
 }

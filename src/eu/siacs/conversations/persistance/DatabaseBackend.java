@@ -228,7 +228,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		}
 	}
 
-	public List<Contact> getContacts(Account account) {
+	public List<Contact> getContactsByAccount(Account account) {
 		List<Contact> list = new ArrayList<Contact>();
 		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor cursor;
@@ -246,7 +246,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		return list;
 	}
 	
-	public List<Contact> getContats(String where) {
+	public List<Contact> getContacts(String where) {
 		List<Contact> list = new ArrayList<Contact>();
 		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor cursor = db.query(Contact.TABLENAME, null, where, null, null, null, null);
@@ -278,6 +278,16 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getWritableDatabase();
 		String[] args = { contact.getUuid() };
 		db.delete(Contact.TABLENAME, Contact.UUID + "=?", args);
+	}
+
+	public Contact getContact(String uuid) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		String[] args = { uuid };
+		Cursor cursor = db.query(Contact.TABLENAME, null, Contact.UUID + "=?", args, null, null, null);
+		if (cursor.getCount() == 0)
+			return null;
+		cursor.moveToFirst();
+		return Contact.fromCursor(cursor);
 	}
 
 	

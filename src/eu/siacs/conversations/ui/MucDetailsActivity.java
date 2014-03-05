@@ -12,6 +12,8 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -22,15 +24,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class MucOptionsActivity extends XmppActivity {
+public class MucDetailsActivity extends XmppActivity {
 	public static final String ACTION_VIEW_MUC = "view_muc";
-	private XmppActivity activity = this;
 	private Conversation conversation;
 	private EditText mYourNick;
 	private TextView mRoleAffiliaton;
 	private TextView mFullJid;
 	private LinearLayout membersView;
-	private TextView mTextParticipantsHead;
 	private LinearLayout mMoreDetails;
 	private String uuid = null;
 	private ArrayAdapter<User> contactsAdapter;
@@ -56,9 +56,8 @@ public class MucOptionsActivity extends XmppActivity {
 		if (getIntent().getAction().equals(ACTION_VIEW_MUC)) {
 			this.uuid = getIntent().getExtras().getString("uuid");
 		}
-		setContentView(R.layout.muc_options);
+		setContentView(R.layout.activity_muc_details);
 		mYourNick = (EditText) findViewById(R.id.muc_your_nick);
-		mTextParticipantsHead = (TextView) findViewById(R.id.muc_participants_header);
 		mFullJid = (TextView) findViewById(R.id.muc_jabberid);
 		ImageButton imageButton = (ImageButton) findViewById(R.id.muc_edit_nick);
 		imageButton.setOnClickListener(this.changeNickListener);
@@ -86,10 +85,18 @@ public class MucOptionsActivity extends XmppActivity {
 				return view;
 			}
 		};
+		getActionBar().setHomeButtonEnabled(true);
+		getActionBar().setDisplayHomeAsUpEnabled(true);
+		
 	}
-
-	public void setConversation(Conversation conversation) {
-		this.conversation = conversation;
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem menuItem) {
+	    switch (menuItem.getItemId()) {
+	    case android.R.id.home:
+	      finish();
+	    }
+	    return super.onOptionsItemSelected(menuItem);
 	}
 
 	public String getReadableRole(int role) {
@@ -104,6 +111,12 @@ public class MucOptionsActivity extends XmppActivity {
 			return "";
 		}
 	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.muc_details, menu);
+		return true;
+	}
 
 	@Override
 	void onBackendConnected() {
@@ -114,6 +127,7 @@ public class MucOptionsActivity extends XmppActivity {
 				}
 			}
 			if (this.conversation != null) {
+				setTitle(conversation.getName());
 				mFullJid.setText(conversation.getContactJid().split("/")[0]);
 				mYourNick.setText(conversation.getMucOptions().getNick());
 				mRoleAffiliaton = (TextView) findViewById(R.id.muc_role);
@@ -139,6 +153,7 @@ public class MucOptionsActivity extends XmppActivity {
 				this.users.addAll(conversation.getMucOptions().getUsers());
 				contactsAdapter.notifyDataSetChanged();
 				LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+				membersView.removeAllViews();
 				for(User contact : conversation.getMucOptions().getUsers()) {
 					View view = (View) inflater.inflate(R.layout.contact, null);
 

@@ -39,7 +39,6 @@ import android.content.Intent;
 
 public class NewConversationActivity extends XmppActivity {
 
-	protected List<Contact> phoneContacts = new ArrayList<Contact>();
 	protected List<Contact> rosterContacts = new ArrayList<Contact>();
 	protected List<Contact> aggregatedContacts = new ArrayList<Contact>();
 	protected ListView contactsView;
@@ -188,10 +187,10 @@ public class NewConversationActivity extends XmppActivity {
 			@Override
 			public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
 					int pos, long arg3) {
-				Contact clickedContact = aggregatedContacts.get(pos);
-				DialogContactDetails dialog = new DialogContactDetails();
-				dialog.setContact(clickedContact);
-				dialog.show(getFragmentManager(), "details");
+				Intent intent = new Intent(activity,ContactDetailsActivity.class);
+				intent.setAction(ContactDetailsActivity.ACTION_VIEW_CONTACT);
+				intent.putExtra("uuid", aggregatedContacts.get(pos).getUuid());
+				startActivity(intent);
 				return true;
 			}
 		});
@@ -278,12 +277,6 @@ public class NewConversationActivity extends XmppActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case R.id.action_settings:
-			startActivity(new Intent(this, SettingsActivity.class));
-			break;
-		case R.id.action_accounts:
-			startActivity(new Intent(this, ManageAccountActivity.class));
-			break;
 		case R.id.action_refresh_contacts:
 			refreshContacts();
 			break;
