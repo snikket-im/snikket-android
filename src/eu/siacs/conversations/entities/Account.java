@@ -32,11 +32,12 @@ public class Account  extends AbstractEntity{
 	public static final int OPTION_USETLS = 0;
 	public static final int OPTION_DISABLED = 1;
 	
-	public static final int STATUS_DISABLED = -1;
-	public static final int STATUS_OFFLINE = 0;
+	public static final int STATUS_CONNECTING = 0;
+	public static final int STATUS_DISABLED = -2;
+	public static final int STATUS_OFFLINE = -1;
 	public static final int STATUS_ONLINE = 1;
 	public static final int STATUS_UNAUTHORIZED = 2;
-	public static final int STATUS_NOINTERNET = 3;
+	public static final int STATUS_NO_INTERNET = 3;
 	public static final int STATUS_TLS_ERROR = 4;
 	public static final int STATUS_SERVER_NOT_FOUND = 5;
 	
@@ -46,7 +47,7 @@ public class Account  extends AbstractEntity{
 	protected int options = 0;
 	protected String rosterVersion;
 	protected String resource;
-	protected int status = 0;
+	protected int status = -1;
 	protected JSONObject keys = new JSONObject();
 	
 	protected boolean online = false;

@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Random;
 
 import org.json.JSONException;
 import org.openintents.openpgp.util.OpenPgpApi;
@@ -42,17 +43,22 @@ import eu.siacs.conversations.xmpp.OnPresencePacketReceived;
 import eu.siacs.conversations.xmpp.OnStatusChanged;
 import eu.siacs.conversations.xmpp.PresencePacket;
 import eu.siacs.conversations.xmpp.XmppConnection;
+import android.app.AlarmManager;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.ContentObserver;
 import android.database.DatabaseUtils;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Binder;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.PowerManager;
+import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.util.Log;
@@ -70,6 +76,8 @@ public class XmppConnectionService extends Service {
 
 	public OnConversationListChangedListener convChangedListener = null;
 	private OnAccountListChangedListener accountChangedListener = null;
+	
+	private Random mRandom = new Random(System.currentTimeMillis());
 
 	private ContentObserver contactObserver = new ContentObserver(null) {
 		@Override
@@ -183,6 +191,14 @@ public class XmppConnectionService extends Service {
 						//
 					}
 				}
+			} else if (account.getStatus() == Account.STATUS_OFFLINE) {
+				Log.d(LOGTAG,"onStatusChanged offline");
+				databaseBackend.clearPresences(account);
+				if (!account.isOptionSet(Account.OPTION_DISABLED)) {
+					int timeToReconnect = mRandom.nextInt(50)+10;
+					scheduleWakeupCall(timeToReconnect);
+				}
+
 			}
 		}
 	};
@@ -364,10 +380,29 @@ public class XmppConnectionService extends Service {
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
+		ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+
+		NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+		boolean isConnected = activeNetwork != null
+				&& activeNetwork.isConnected();
 		for (Account account : accounts) {
-			if (account.getXmppConnection() == null) {
-				if (!account.isOptionSet(Account.OPTION_DISABLED)) {
+			if (!isConnected) {
+				account.setStatus(Account.STATUS_NO_INTERNET);
+			} else {
+				if (account.getStatus() == Account.STATUS_NO_INTERNET) {
+					account.setStatus(Account.STATUS_OFFLINE);
+				}
+			}
+			if (accountChangedListener!=null) {
+				accountChangedListener.onAccountListChangedListener();
+			}
+			if ((!account.isOptionSet(Account.OPTION_DISABLED))&&(isConnected)) {
+				if (account.getXmppConnection() == null) {
 					account.setXmppConnection(this.createConnection(account));
+				}
+				if (account.getStatus()==Account.STATUS_OFFLINE) {
+					Thread thread = new Thread(account.getXmppConnection());
+					thread.start();
 				}
 			}
 		}
@@ -384,6 +419,8 @@ public class XmppConnectionService extends Service {
 		this.pgpServiceConnection = new OpenPgpServiceConnection(
 				getApplicationContext(), "org.sufficientlysecure.keychain");
 		this.pgpServiceConnection.bindToService();
+		
+		
 	}
 
 	@Override
@@ -395,6 +432,17 @@ public class XmppConnectionService extends Service {
 			}
 		}
 	}
+	
+	protected void scheduleWakeupCall(int seconds) {
+		Context context = getApplicationContext();
+		AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+		Intent intent = new Intent(context, EventReceiver.class);
+		PendingIntent alarmIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
+		alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+		        SystemClock.elapsedRealtime() +
+		        seconds * 1000, alarmIntent);
+		Log.d(LOGTAG,"wake up call scheduled in "+seconds+" seconds");
+	}
 
 	public XmppConnection createConnection(Account account) {
 		PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
@@ -404,8 +452,6 @@ public class XmppConnectionService extends Service {
 		connection.setOnPresencePacketReceivedListener(this.presenceListener);
 		connection
 				.setOnUnregisteredIqPacketReceivedListener(this.unknownIqListener);
-		Thread thread = new Thread(connection);
-		thread.start();
 		return connection;
 	}
 

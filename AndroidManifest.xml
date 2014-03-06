@@ -9,28 +9,41 @@
         android:targetSdkVersion="19" />
 
     <uses-permission android:name="android.permission.READ_CONTACTS" />
-    <uses-permission android:name="android.permission.READ_PROFILE"/>
+    <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
-    
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@android:style/Theme.Holo.Light" >
-        <service android:name="eu.siacs.conversations.services.XmppConnectionService"/>
+        <service android:name="eu.siacs.conversations.services.XmppConnectionService" />
+
+        <receiver android:name="eu.siacs.conversations.services.EventReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+            </intent-filter>
+        </receiver>
+
         <activity
             android:name="eu.siacs.conversations.ui.ConversationActivity"
+            android:configChanges="orientation|screenSize"
             android:label="Conversations"
-            android:windowSoftInputMode="stateHidden"
-            android:configChanges="orientation|screenSize">
+            android:windowSoftInputMode="stateHidden" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-             <intent-filter>
+            <intent-filter>
                 <action android:name="android.intent.action.SENDTO" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data android:scheme="imto" />
                 <data android:host="jabber" />
             </intent-filter>
@@ -45,21 +58,21 @@
             android:label="Manage Accounts"
             android:parentActivityName="eu.siacs.conversations.ui.ConversationActivity" >
         </activity>
-         <activity
+        <activity
             android:name="eu.siacs.conversations.ui.MucDetailsActivity"
             android:label="Conference Details"
-            android:windowSoftInputMode="stateHidden">
+            android:windowSoftInputMode="stateHidden" >
         </activity>
         <activity
             android:name="eu.siacs.conversations.ui.ContactDetailsActivity"
             android:label="Contact Details"
-            android:windowSoftInputMode="stateHidden">
+            android:windowSoftInputMode="stateHidden" >
         </activity>
         <activity
             android:name="eu.siacs.conversations.ui.NewConversationActivity"
             android:label="@string/title_activity_new_conversation"
             android:parentActivityName="eu.siacs.conversations.ui.ConversationActivity"
-            android:windowSoftInputMode="stateHidden">
+            android:windowSoftInputMode="stateHidden" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="de.gultsch.chat.ui.ConversationActivity" />
