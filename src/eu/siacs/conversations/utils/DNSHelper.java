@@ -8,12 +8,10 @@ import java.net.InetAddress;
 import java.util.Random;
 
 import android.os.Bundle;
-import android.util.Log;
 
 public class DNSHelper {
-	public static Bundle getSRVRecord(String host) {
+	public static Bundle getSRVRecord(String host) throws IOException {
 		Bundle namePort = new Bundle();
-		try {
 			String[] hostParts = host.split("\\.");
 			byte[] transId = new byte[2];
 			Random random = new Random();
@@ -70,9 +68,6 @@ public class DNSHelper {
 			}
 			builder.replace(0, 1, "");
 			namePort.putString("name",builder.toString());
-		} catch (IOException e) {
-			Log.d("xmppService","gut" + e.getMessage());
-		}
 		return namePort;
 	}
 

@@ -69,6 +69,7 @@ public class XmppConnection implements Runnable {
 
 	protected void connect() {
 		try {
+			account.setStatus(Account.STATUS_CONNECTING);
 			Bundle namePort = DNSHelper.getSRVRecord(account.getServer());
 			String srvRecordServer = namePort.getString("name");
 			int srvRecordPort = namePort.getInt("port");
@@ -103,18 +104,24 @@ public class XmppConnection implements Runnable {
 			if (statusListener != null) {
 				statusListener.onStatusChanged(account);
 			}
+			if (wakeLock.isHeld()) {
+				wakeLock.release();
+			}
 			return;
 		} catch (IOException e) {
-			Log.d(LOGTAG, "bla " + e.getMessage());
-			if (shouldConnect) {
-				Log.d(LOGTAG, account.getJid() + ": connection lost");
-				account.setStatus(Account.STATUS_OFFLINE);
-				if (statusListener != null) {
-					statusListener.onStatusChanged(account);
-				}
+			account.setStatus(Account.STATUS_OFFLINE);
+			if (statusListener != null) {
+				statusListener.onStatusChanged(account);
 			}
+			if (wakeLock.isHeld()) {
+				wakeLock.release();
+			}
+			return;
 		} catch (XmlPullParserException e) {
 			Log.d(LOGTAG, "xml exception " + e.getMessage());
+			if (wakeLock.isHeld()) {
+				wakeLock.release();
+			}
 			return;
 		}
 
@@ -122,18 +129,7 @@ public class XmppConnection implements Runnable {
 
 	@Override
 	public void run() {
-		shouldConnect = true;
-		while (shouldConnect) {
-			connect();
-			try {
-				if (shouldConnect) {
-					Thread.sleep(30000);
-				}
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+		connect();
 		Log.d(LOGTAG, "end run");
 	}
 

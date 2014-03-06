@@ -32,7 +32,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class ManageAccountActivity extends XmppActivity implements ActionMode.Callback {
+public class ManageAccountActivity extends XmppActivity {
 
 	public static final int REQUEST_ANNOUNCE_PGP = 0x73731;
 	
@@ -54,10 +54,6 @@ public class ManageAccountActivity extends XmppActivity implements ActionMode.Ca
 
 				@Override
 				public void run() {
-					if (accountList.size() == 1) {
-						startActivity(new Intent(getApplicationContext(),
-								NewConversationActivity.class));
-					}
 					accountListViewAdapter.notifyDataSetChanged();
 				}
 			});
@@ -113,7 +109,7 @@ public class ManageAccountActivity extends XmppActivity implements ActionMode.Ca
 				return view;
 			}
 		};
-		final Activity activity = this;
+		final XmppActivity activity = this;
 		accountListView.setAdapter(this.accountListViewAdapter);
 		accountListView.setOnItemClickListener(new OnItemClickListener() {
 
@@ -146,7 +142,76 @@ public class ManageAccountActivity extends XmppActivity implements ActionMode.Ca
 					accountListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 					accountListView.setItemChecked(position,true);
 					selectedAccountForActionMode = accountList.get(position);
-					actionMode = activity.startActionMode((Callback) activity);
+					actionMode = activity.startActionMode((new ActionMode.Callback() {
+						
+						@Override
+						public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+							if (selectedAccountForActionMode.isOptionSet(Account.OPTION_DISABLED)) {
+					        	menu.findItem(R.id.account_enable).setVisible(true);
+					        	menu.findItem(R.id.account_disable).setVisible(false);
+					        } else {
+					        	menu.findItem(R.id.account_disable).setVisible(true);
+					        	menu.findItem(R.id.account_enable).setVisible(false);
+					        }
+							return true;
+						}
+						
+						@Override
+						public void onDestroyActionMode(ActionMode mode) {
+							// TODO Auto-generated method stub
+							
+						}
+						
+						@Override
+						public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+							MenuInflater inflater = mode.getMenuInflater();
+					        inflater.inflate(R.menu.manageaccounts_context, menu);
+							return true;
+						}
+						
+						@Override
+						public boolean onActionItemClicked(final ActionMode mode, MenuItem item) {
+							if (item.getItemId()==R.id.account_disable) {
+								selectedAccountForActionMode.setOption(Account.OPTION_DISABLED, true);
+								xmppConnectionService.updateAccount(selectedAccountForActionMode);
+								mode.finish();
+							} else if (item.getItemId()==R.id.account_enable) {
+								selectedAccountForActionMode.setOption(Account.OPTION_DISABLED, false);
+								xmppConnectionService.updateAccount(selectedAccountForActionMode);
+								mode.finish();
+							} else if (item.getItemId()==R.id.account_delete) {
+								AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+								builder.setTitle("Are you sure?");
+								builder.setIconAttribute(android.R.attr.alertDialogIcon);
+								builder.setMessage("If you delete your account your entire conversation history will be lost");
+								builder.setPositiveButton("Delete", new OnClickListener() {
+									
+									@Override
+									public void onClick(DialogInterface dialog, int which) {
+										xmppConnectionService.deleteAccount(selectedAccountForActionMode);
+										selectedAccountForActionMode = null;
+										mode.finish();
+									}
+								});
+								builder.setNegativeButton("Cancel",null);
+								builder.create().show();
+							} else if (item.getItemId()==R.id.announce_pgp) {
+								if (activity.hasPgp()) {
+									mode.finish();
+									try {
+										xmppConnectionService.generatePgpAnnouncement(selectedAccountForActionMode);
+									} catch (PgpEngine.UserInputRequiredException e) {
+										try {
+											startIntentSenderForResult(e.getPendingIntent().getIntentSender(), REQUEST_ANNOUNCE_PGP, null, 0, 0, 0);
+										} catch (SendIntentException e1) {
+											Log.d("gultsch","sending intent failed");
+										}
+									}
+								}
+							}
+							return true;
+						}
+					}));
 					return true;
 				} else {
 					return false;
@@ -210,73 +275,6 @@ public class ManageAccountActivity extends XmppActivity implements ActionMode.Ca
 		dialog.show(getFragmentManager(), "add_account");
 	}
 
-	@Override
-	public boolean onActionItemClicked(final ActionMode mode, MenuItem item) {
-		if (item.getItemId()==R.id.account_disable) {
-			selectedAccountForActionMode.setOption(Account.OPTION_DISABLED, true);
-			xmppConnectionService.updateAccount(selectedAccountForActionMode);
-			mode.finish();
-		} else if (item.getItemId()==R.id.account_enable) {
-			selectedAccountForActionMode.setOption(Account.OPTION_DISABLED, false);
-			xmppConnectionService.updateAccount(selectedAccountForActionMode);
-			mode.finish();
-		} else if (item.getItemId()==R.id.account_delete) {
-			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			builder.setTitle("Are you sure?");
-			builder.setIconAttribute(android.R.attr.alertDialogIcon);
-			builder.setMessage("If you delete your account your entire conversation history will be lost");
-			builder.setPositiveButton("Delete", new OnClickListener() {
-				
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					xmppConnectionService.deleteAccount(selectedAccountForActionMode);
-					selectedAccountForActionMode = null;
-					mode.finish();
-				}
-			});
-			builder.setNegativeButton("Cancel",null);
-			builder.create().show();
-		} else if (item.getItemId()==R.id.announce_pgp) {
-			if (this.hasPgp()) {
-				mode.finish();
-				try {
-					xmppConnectionService.generatePgpAnnouncement(selectedAccountForActionMode);
-				} catch (PgpEngine.UserInputRequiredException e) {
-					try {
-						startIntentSenderForResult(e.getPendingIntent().getIntentSender(), REQUEST_ANNOUNCE_PGP, null, 0, 0, 0);
-					} catch (SendIntentException e1) {
-						Log.d("gultsch","sending intent failed");
-					}
-				}
-			}
-		}
-		return true;
-	}
-
-	@Override
-	public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-		MenuInflater inflater = mode.getMenuInflater();
-        inflater.inflate(R.menu.manageaccounts_context, menu);
-		return true;
-	}
-
-	@Override
-	public void onDestroyActionMode(ActionMode mode) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-		if (selectedAccountForActionMode.isOptionSet(Account.OPTION_DISABLED)) {
-        	menu.findItem(R.id.account_enable).setVisible(true);
-        	menu.findItem(R.id.account_disable).setVisible(false);
-        } else {
-        	menu.findItem(R.id.account_disable).setVisible(true);
-        	menu.findItem(R.id.account_enable).setVisible(false);
-        }
-		return true;
-	}
 	
 	@Override
 	public void onActionModeStarted(ActionMode mode) {
