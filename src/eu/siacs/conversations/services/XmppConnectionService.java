@@ -388,27 +388,21 @@ public class XmppConnectionService extends Service {
 		for (Account account : accounts) {
 			if (!isConnected) {
 				account.setStatus(Account.STATUS_NO_INTERNET);
-				Log.d(LOGTAG,"set no internet status to account");
-				break;
 			} else {
 				if (account.getStatus() == Account.STATUS_NO_INTERNET) {
 					account.setStatus(Account.STATUS_OFFLINE);
 				}
 			}
-			if (account.getXmppConnection() == null) {
-				if ((!account.isOptionSet(Account.OPTION_DISABLED))&&(isConnected)) {
+			if (accountChangedListener!=null) {
+				accountChangedListener.onAccountListChangedListener();
+			}
+			if ((!account.isOptionSet(Account.OPTION_DISABLED))&&(isConnected)) {
+				if (account.getXmppConnection() == null) {
 					account.setXmppConnection(this.createConnection(account));
+				}
+				if (account.getStatus()==Account.STATUS_OFFLINE) {
 					Thread thread = new Thread(account.getXmppConnection());
 					thread.start();
-				}
-			} else {
-				if ((!account.isOptionSet(Account.OPTION_DISABLED))&&(isConnected)) {
-					if (account.getStatus()==Account.STATUS_OFFLINE) {
-						Thread thread = new Thread(account.getXmppConnection());
-						thread.start();
-					}
-				} else {
-					disconnect(account);
 				}
 			}
 		}
