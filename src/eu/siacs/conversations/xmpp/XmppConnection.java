@@ -66,10 +66,17 @@ public class XmppConnection implements Runnable {
 		tagReader = new XmlReader(wakeLock);
 		tagWriter = new TagWriter();
 	}
+	
+	protected void changeStatus(int nextStatus) {
+		account.setStatus(nextStatus);
+		if (statusListener != null) {
+			statusListener.onStatusChanged(account);
+		}
+	}
 
 	protected void connect() {
 		try {
-			account.setStatus(Account.STATUS_CONNECTING);
+			this.changeStatus(Account.STATUS_CONNECTING);
 			Bundle namePort = DNSHelper.getSRVRecord(account.getServer());
 			String srvRecordServer = namePort.getString("name");
 			int srvRecordPort = namePort.getInt("port");
@@ -100,24 +107,19 @@ public class XmppConnection implements Runnable {
 				socket.close();
 			}
 		} catch (UnknownHostException e) {
-			account.setStatus(Account.STATUS_SERVER_NOT_FOUND);
-			if (statusListener != null) {
-				statusListener.onStatusChanged(account);
-			}
+			this.changeStatus(Account.STATUS_SERVER_NOT_FOUND);
 			if (wakeLock.isHeld()) {
 				wakeLock.release();
 			}
 			return;
 		} catch (IOException e) {
-			account.setStatus(Account.STATUS_OFFLINE);
-			if (statusListener != null) {
-				statusListener.onStatusChanged(account);
-			}
+			this.changeStatus(Account.STATUS_OFFLINE);
 			if (wakeLock.isHeld()) {
 				wakeLock.release();
 			}
 			return;
 		} catch (XmlPullParserException e) {
+			this.changeStatus(Account.STATUS_OFFLINE);
 			Log.d(LOGTAG, "xml exception " + e.getMessage());
 			if (wakeLock.isHeld()) {
 				wakeLock.release();

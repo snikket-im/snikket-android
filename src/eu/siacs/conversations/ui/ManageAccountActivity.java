@@ -90,6 +90,10 @@ public class ManageAccountActivity extends XmppActivity {
 					statusView.setText("online");
 					statusView.setTextColor(0xFF83b600);
 					break;
+				case Account.STATUS_CONNECTING:
+					statusView.setText("connecting\u2026");
+					statusView.setTextColor(0xFF1da9da);
+					break;
 				case Account.STATUS_OFFLINE:
 					statusView.setText("offline");
 					statusView.setTextColor(0xFFe92727);
@@ -100,6 +104,10 @@ public class ManageAccountActivity extends XmppActivity {
 					break;
 				case Account.STATUS_SERVER_NOT_FOUND:
 					statusView.setText("server not found");
+					statusView.setTextColor(0xFFe92727);
+					break;
+				case Account.STATUS_NO_INTERNET:
+					statusView.setText("no internet");
 					statusView.setTextColor(0xFFe92727);
 					break;
 				default:
