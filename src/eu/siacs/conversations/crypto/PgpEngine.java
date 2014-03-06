@@ -10,6 +10,7 @@ import org.openintents.openpgp.util.OpenPgpApi;
 
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.util.Log;
 
 public class PgpEngine {
 	private OpenPgpApi api;
@@ -39,7 +40,8 @@ public class PgpEngine {
 	}
 
 	public String encrypt(long keyId, String message) {
-		Long[] keys = {keyId};
+		Log.d("xmppService","encrypt message: "+message+" for key "+keyId);
+		long[] keys = {keyId};
 		Intent params = new Intent();
 		params.setAction(OpenPgpApi.ACTION_ENCRYPT);
 		params.putExtra(OpenPgpApi.EXTRA_KEY_IDS,keys);
@@ -49,6 +51,8 @@ public class PgpEngine {
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
 		Intent result = api.executeApi(params, is, os);
 		StringBuilder encryptedMessageBody = new StringBuilder();
+		Log.d("xmppService","intent: "+result.toString());
+		Log.d("xmppService","output: "+os.toString());
 		String[] lines = os.toString().split("\n");
 		for (int i = 3; i < lines.length - 1; ++i) {
 			encryptedMessageBody.append(lines[i].trim());
