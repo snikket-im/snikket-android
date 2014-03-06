@@ -1,6 +1,11 @@
 package eu.siacs.conversations.ui;
 
+import java.math.BigInteger;
+import java.util.Iterator;
+import java.util.zip.Inflater;
+
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -8,12 +13,15 @@ import android.os.Bundle;
 import android.provider.ContactsContract.CommonDataKinds;
 import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.Intents;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.QuickContactBadge;
 import android.widget.TextView;
 import eu.siacs.conversations.R;
@@ -83,6 +91,8 @@ public class ContactDetailsActivity extends XmppActivity {
 		}
 	};
 
+	private LinearLayout keys;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -97,7 +107,7 @@ public class ContactDetailsActivity extends XmppActivity {
 		send = (CheckBox) findViewById(R.id.details_send_presence);
 		receive = (CheckBox) findViewById(R.id.details_receive_presence);
 		badge = (QuickContactBadge) findViewById(R.id.details_contact_badge);
-
+		keys = (LinearLayout) findViewById(R.id.details_contact_keys);
 		getActionBar().setHomeButtonEnabled(true);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -210,6 +220,31 @@ public class ContactDetailsActivity extends XmppActivity {
 
 		if (contact.getSystemAccount() == null) {
 			badge.setOnClickListener(onBadgeClick);
+		}
+		
+		keys.removeAllViews();
+		LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		for (Iterator<String> iterator = contact.getOtrFingerprints().iterator(); iterator
+				.hasNext();) {
+			String otrFingerprint = iterator.next();
+			View view = (View) inflater.inflate(R.layout.contact_key, null);
+			TextView key = (TextView) view.findViewById(R.id.key);
+			TextView keyType =(TextView) view.findViewById(R.id.key_type);
+			keyType.setText("OTR Fingerprint");
+			key.setText(otrFingerprint);
+			keys.addView(view);
+		}
+		Log.d("gultsch","pgp key id "+contact.getPgpKeyId());
+		if (contact.getPgpKeyId()!=0) {
+			View view = (View) inflater.inflate(R.layout.contact_key, null);
+			TextView key = (TextView) view.findViewById(R.id.key);
+			TextView keyType =(TextView) view.findViewById(R.id.key_type);
+			keyType.setText("PGP Key ID");
+			BigInteger bi = new BigInteger(""+contact.getPgpKeyId());
+			StringBuilder builder = new StringBuilder(bi.toString(16).toUpperCase());
+			builder.insert(8, " ");
+			key.setText(builder.toString());
+			keys.addView(view);
 		}
 	}
 

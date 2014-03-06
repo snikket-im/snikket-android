@@ -91,5 +91,20 @@
         android:text="Receive presence updates"
         android:textSize="18sp"
         android:textColor="#5b5b5b" />
+ <TextView
+        style="@style/sectionHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:text="Keys" />
 
+ <LinearLayout
+     android:id="@+id/details_contact_keys"
+     android:layout_width="match_parent"
+     android:layout_height="wrap_content"
+     android:orientation="vertical"
+     android:divider="?android:dividerHorizontal"
+        android:showDividers="middle">
+ </LinearLayout>
+    
 </LinearLayout>
