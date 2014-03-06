@@ -490,6 +490,7 @@ public class XmppConnectionService extends Service {
 				x.setContent(this.getPgpEngine().encrypt(keyId,
 						message.getBody()));
 				packet.addChild(x);
+				Log.d(LOGTAG,"pgp message"+packet.toString());
 				account.getXmppConnection().sendMessagePacket(packet);
 				message.setStatus(Message.STATUS_SEND);
 				message.setEncryption(Message.ENCRYPTION_DECRYPTED);

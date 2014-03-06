@@ -6,14 +6,26 @@ import java.io.OutputStream;
 import java.math.BigInteger;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.security.KeyManagementException;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.cert.CertPathValidatorException;
+import java.security.cert.CertificateException;
+import java.security.cert.CertificateExpiredException;
+import java.security.cert.X509Certificate;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
 
+import javax.net.ssl.ManagerFactoryParameters;
+import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.TrustManagerFactory;
+import javax.net.ssl.X509TrustManager;
 
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -270,11 +282,51 @@ public class XmppConnection implements Runnable {
 			IOException {
 		Tag nextTag = tagReader.readTag(); // should be proceed end tag
 		Log.d(LOGTAG, account.getJid() + ": now switch to ssl");
-		SSLSocket sslSocket;
 		try {
-			sslSocket = (SSLSocket) ((SSLSocketFactory) SSLSocketFactory
-					.getDefault()).createSocket(socket, socket.getInetAddress()
-					.getHostAddress(), socket.getPort(), true);
+			SSLContext sc = SSLContext.getInstance("TLS");
+			TrustManagerFactory tmf = TrustManagerFactory
+					.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+			// Initialise the TMF as you normally would, for example:
+			// tmf.in
+			try {
+				tmf.init((KeyStore) null);
+			} catch (KeyStoreException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
+			TrustManager[] trustManagers = tmf.getTrustManagers();
+			final X509TrustManager origTrustmanager = (X509TrustManager) trustManagers[0];
+
+			TrustManager[] wrappedTrustManagers = new TrustManager[] { new X509TrustManager() {
+
+				@Override
+				public void checkClientTrusted(X509Certificate[] chain,
+						String authType) throws CertificateException {
+					origTrustmanager.checkClientTrusted(chain, authType);
+				}
+
+				@Override
+				public void checkServerTrusted(X509Certificate[] chain,
+						String authType) throws CertificateException {
+					try {
+						origTrustmanager.checkServerTrusted(chain, authType);
+					} catch (CertificateException e) {
+						Log.d(LOGTAG,"cert exeption");
+					}
+				}
+
+				@Override
+				public X509Certificate[] getAcceptedIssuers() {
+					return origTrustmanager.getAcceptedIssuers();
+				}
+
+			} };
+			sc.init(null, wrappedTrustManagers, null);
+			SSLSocketFactory factory = sc.getSocketFactory();
+			SSLSocket sslSocket = (SSLSocket) factory.createSocket(socket,
+					socket.getInetAddress().getHostAddress(), socket.getPort(),
+					true);
 			tagReader.setInputStream(sslSocket.getInputStream());
 			Log.d(LOGTAG, "reset inputstream");
 			tagWriter.setOutputStream(sslSocket.getOutputStream());
@@ -283,10 +335,12 @@ public class XmppConnection implements Runnable {
 			sendStartStream();
 			processStream(tagReader.readTag());
 			sslSocket.close();
-		} catch (IOException e) {
-			Log.d(LOGTAG,
-					account.getJid() + ": error on ssl '" + e.getMessage()
-							+ "'");
+		} catch (NoSuchAlgorithmException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (KeyManagementException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 
