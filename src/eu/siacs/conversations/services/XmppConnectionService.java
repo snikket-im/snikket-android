@@ -819,7 +819,11 @@ public class XmppConnectionService extends Service {
 			disconnect(account);
 		}
 		if (!account.isOptionSet(Account.OPTION_DISABLED)) {
-			account.setXmppConnection(this.createConnection(account));
+			if (account.getXmppConnection()==null) {
+				account.setXmppConnection(this.createConnection(account));
+			}
+			Thread thread = new Thread(account.getXmppConnection());
+			thread.start();
 		}
 		if (accountChangedListener != null)
 			accountChangedListener.onAccountListChangedListener();

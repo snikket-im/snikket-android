@@ -7,6 +7,7 @@ import java.math.BigInteger;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.security.SecureRandom;
+import java.security.cert.CertPathValidatorException;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
@@ -66,7 +67,7 @@ public class XmppConnection implements Runnable {
 		tagReader = new XmlReader(wakeLock);
 		tagWriter = new TagWriter();
 	}
-	
+
 	protected void changeStatus(int nextStatus) {
 		account.setStatus(nextStatus);
 		if (statusListener != null) {
@@ -75,6 +76,7 @@ public class XmppConnection implements Runnable {
 	}
 
 	protected void connect() {
+		Log.d(LOGTAG, "connecting");
 		try {
 			this.changeStatus(Account.STATUS_CONNECTING);
 			Bundle namePort = DNSHelper.getSRVRecord(account.getServer());
@@ -143,6 +145,11 @@ public class XmppConnection implements Runnable {
 				processStreamError(nextTag);
 			} else if (nextTag.isStart("features")) {
 				processStreamFeatures(nextTag);
+				if ((streamFeatures.getChildren().size() == 1)
+						&& (streamFeatures.hasChild("starttls"))
+						&& (!account.isOptionSet(Account.OPTION_USETLS))) {
+					changeStatus(Account.STATUS_SERVER_REQUIRES_TLS);
+				}
 			} else if (nextTag.isStart("proceed")) {
 				switchOverToTls(nextTag);
 			} else if (nextTag.isStart("success")) {
@@ -156,12 +163,7 @@ public class XmppConnection implements Runnable {
 				break;
 			} else if (nextTag.isStart("failure")) {
 				Element failure = tagReader.readElement(nextTag);
-				Log.d(LOGTAG, "read failure element" + failure.toString());
-				account.setStatus(Account.STATUS_UNAUTHORIZED);
-				if (statusListener != null) {
-					statusListener.onStatusChanged(account);
-				}
-				tagWriter.writeTag(Tag.end("stream"));
+				changeStatus(Account.STATUS_UNAUTHORIZED);
 			} else if (nextTag.isStart("iq")) {
 				processIq(nextTag);
 			} else if (nextTag.isStart("message")) {
@@ -215,10 +217,10 @@ public class XmppConnection implements Runnable {
 		IqPacket packet = (IqPacket) processPacket(currentTag, PACKET_IQ);
 		if (packetCallbacks.containsKey(packet.getId())) {
 			if (packetCallbacks.get(packet.getId()) instanceof OnIqPacketReceived) {
-				((OnIqPacketReceived) packetCallbacks.get(packet.getId())).onIqPacketReceived(account,
-						packet);
+				((OnIqPacketReceived) packetCallbacks.get(packet.getId()))
+						.onIqPacketReceived(account, packet);
 			}
-			
+
 			packetCallbacks.remove(packet.getId());
 		} else if (this.unregisteredIqListener != null) {
 			this.unregisteredIqListener.onIqPacketReceived(account, packet);
@@ -230,10 +232,10 @@ public class XmppConnection implements Runnable {
 		MessagePacket packet = (MessagePacket) processPacket(currentTag,
 				PACKET_MESSAGE);
 		String id = packet.getAttribute("id");
-		if ((id!=null)&&(packetCallbacks.containsKey(id))) {
+		if ((id != null) && (packetCallbacks.containsKey(id))) {
 			if (packetCallbacks.get(id) instanceof OnMessagePacketReceived) {
-				((OnMessagePacketReceived) packetCallbacks.get(id)).onMessagePacketReceived(account,
-						packet);
+				((OnMessagePacketReceived) packetCallbacks.get(id))
+						.onMessagePacketReceived(account, packet);
 			}
 			packetCallbacks.remove(id);
 		} else if (this.messageListener != null) {
@@ -246,10 +248,10 @@ public class XmppConnection implements Runnable {
 		PresencePacket packet = (PresencePacket) processPacket(currentTag,
 				PACKET_PRESENCE);
 		String id = packet.getAttribute("id");
-		if ((id!=null)&&(packetCallbacks.containsKey(id))) {
+		if ((id != null) && (packetCallbacks.containsKey(id))) {
 			if (packetCallbacks.get(id) instanceof OnPresencePacketReceived) {
-				((OnPresencePacketReceived) packetCallbacks.get(id)).onPresencePacketReceived(account,
-						packet);
+				((OnPresencePacketReceived) packetCallbacks.get(id))
+						.onPresencePacketReceived(account, packet);
 			}
 			packetCallbacks.remove(id);
 		} else if (this.presenceListener != null) {
@@ -375,21 +377,23 @@ public class XmppConnection implements Runnable {
 			}
 		});
 	}
-	
+
 	private void sendEnableCarbons() {
-		Log.d(LOGTAG,account.getJid()+": enable carbons");
+		Log.d(LOGTAG, account.getJid() + ": enable carbons");
 		IqPacket iq = new IqPacket(IqPacket.TYPE_SET);
 		Element enable = new Element("enable");
 		enable.setAttribute("xmlns", "urn:xmpp:carbons:2");
 		iq.addChild(enable);
 		this.sendIqPacket(iq, new OnIqPacketReceived() {
-			
+
 			@Override
 			public void onIqPacketReceived(Account account, IqPacket packet) {
 				if (!packet.hasChild("error")) {
-					Log.d(LOGTAG,account.getJid()+": successfully enabled carbons");
+					Log.d(LOGTAG, account.getJid()
+							+ ": successfully enabled carbons");
 				} else {
-					Log.d(LOGTAG,account.getJid()+": error enableing carbons "+packet.toString());
+					Log.d(LOGTAG, account.getJid()
+							+ ": error enableing carbons " + packet.toString());
 				}
 			}
 		});
@@ -426,8 +430,9 @@ public class XmppConnection implements Runnable {
 	public void sendMessagePacket(MessagePacket packet) {
 		this.sendMessagePacket(packet, null);
 	}
-	
-	public void sendMessagePacket(MessagePacket packet, OnMessagePacketReceived callback) {
+
+	public void sendMessagePacket(MessagePacket packet,
+			OnMessagePacketReceived callback) {
 		String id = nextRandomId();
 		packet.setAttribute("id", id);
 		tagWriter.writeElement(packet);
@@ -439,8 +444,9 @@ public class XmppConnection implements Runnable {
 	public void sendPresencePacket(PresencePacket packet) {
 		this.sendPresencePacket(packet, null);
 	}
-	
-	public PresencePacket sendPresencePacket(PresencePacket packet, OnPresencePacketReceived callback) {
+
+	public PresencePacket sendPresencePacket(PresencePacket packet,
+			OnPresencePacketReceived callback) {
 		String id = nextRandomId();
 		packet.setAttribute("id", id);
 		tagWriter.writeElement(packet);

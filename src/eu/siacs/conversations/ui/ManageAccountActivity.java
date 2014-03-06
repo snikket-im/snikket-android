@@ -110,6 +110,10 @@ public class ManageAccountActivity extends XmppActivity {
 					statusView.setText("no internet");
 					statusView.setTextColor(0xFFe92727);
 					break;
+				case Account.STATUS_SERVER_REQUIRES_TLS:
+					statusView.setText("server requires TLS");
+					statusView.setTextColor(0xFFe92727);
+					break;
 				default:
 					break;
 				}

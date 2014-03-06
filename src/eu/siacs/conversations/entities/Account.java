@@ -13,8 +13,6 @@ import eu.siacs.conversations.xmpp.XmppConnection;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.util.JsonReader;
-import android.util.Log;
 
 public class Account  extends AbstractEntity{
 
@@ -40,6 +38,8 @@ public class Account  extends AbstractEntity{
 	public static final int STATUS_NO_INTERNET = 3;
 	public static final int STATUS_TLS_ERROR = 4;
 	public static final int STATUS_SERVER_NOT_FOUND = 5;
+
+	public static final int STATUS_SERVER_REQUIRES_TLS = 6;
 	
 	protected String username;
 	protected String server;
