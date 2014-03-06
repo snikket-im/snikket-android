@@ -33,7 +33,7 @@ public class PgpEngine {
 			throw new UserInputRequiredException((PendingIntent) result.getParcelableExtra(OpenPgpApi.RESULT_INTENT));
 		case OpenPgpApi.RESULT_CODE_ERROR:
 			throw new OpenPgpException(
-					(OpenPgpError) result.getParcelableExtra(OpenPgpApi.RESULT_ERRORS));
+					(OpenPgpError) result.getParcelableExtra(OpenPgpApi.RESULT_ERROR));
 		default:
 			return null;
 		}
@@ -91,7 +91,7 @@ public class PgpEngine {
 			break;
 		case OpenPgpApi.RESULT_CODE_ERROR:
 			throw new OpenPgpException(
-					(OpenPgpError) result.getParcelableExtra(OpenPgpApi.RESULT_ERRORS));
+					(OpenPgpError) result.getParcelableExtra(OpenPgpApi.RESULT_ERROR));
 		}
 		return 0;
 	}
