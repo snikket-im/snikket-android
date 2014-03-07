@@ -28,6 +28,7 @@
             android:ems="10"
             android:inputType="textMultiLine"
             android:minLines="1" >
+                    <requestFocus />
         </EditText>
 
         <ImageButton
