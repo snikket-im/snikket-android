@@ -89,7 +89,6 @@ public class ManageAccountActivity extends XmppActivity {
 					hint.setText(getString(R.string.untrusted_cert_hint,account.getServer()));
 					sha.setText(humanReadableSha.toString());
 					builder.setView(view);
-					//builder.setMessage(server+" presented you with an unstrusted, possible self signed, certificate. The SHA1 fingerprint is "+fingerprint+" Do not connect unless you know exactly what you are doing");
 					builder.setNegativeButton("Don't connect", null);
 					builder.setPositiveButton("Trust certificate", new OnClickListener() {
 						

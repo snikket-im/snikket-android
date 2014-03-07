@@ -24,6 +24,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.QuickContactBadge;
 import android.widget.TextView;
+import android.widget.Toast;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Presences;
@@ -123,18 +124,20 @@ public class ContactDetailsActivity extends XmppActivity {
 			break;
 		case R.id.action_delete_contact:
 			builder.setTitle("Delete from roster")
-					.setMessage(getString(R.string.remove_contact_text, contact.getJid()))
+					.setMessage(
+							getString(R.string.remove_contact_text,
+									contact.getJid()))
 					.setPositiveButton("Delete", removeFromRoster).create()
 					.show();
 			break;
 		case R.id.action_edit_contact:
 			if (contact.getSystemAccount() == null) {
-				
-				View view = (View) getLayoutInflater().inflate(R.layout.edit_contact_name, null);
+
+				View view = (View) getLayoutInflater().inflate(
+						R.layout.edit_contact_name, null);
 				name = (EditText) view.findViewById(R.id.editText1);
 				name.setText(contact.getDisplayName());
-				builder.setView(view)
-			.setTitle(contact.getJid())
+				builder.setView(view).setTitle(contact.getJid())
 						.setPositiveButton("Edit", editContactNameListener)
 						.create().show();
 
@@ -143,9 +146,9 @@ public class ContactDetailsActivity extends XmppActivity {
 				String[] systemAccount = contact.getSystemAccount().split("#");
 				long id = Long.parseLong(systemAccount[0]);
 				Uri uri = Contacts.getLookupUri(id, systemAccount[1]);
-				intent.setDataAndType(uri,Contacts.CONTENT_ITEM_TYPE);
+				intent.setDataAndType(uri, Contacts.CONTENT_ITEM_TYPE);
 				intent.putExtra("finishActivityOnSaveCompleted", true);
-			    startActivity(intent);
+				startActivity(intent);
 			}
 			break;
 		}
@@ -157,7 +160,7 @@ public class ContactDetailsActivity extends XmppActivity {
 		getMenuInflater().inflate(R.menu.contact_details, menu);
 		return true;
 	}
-	
+
 	private void populateView() {
 		setTitle(contact.getDisplayName());
 		if (contact.getSubscriptionOption(Contact.Subscription.FROM)) {
@@ -175,8 +178,7 @@ public class ContactDetailsActivity extends XmppActivity {
 			receive.setChecked(true);
 		} else {
 			receive.setText("Request presence updates");
-			if (contact
-					.getSubscriptionOption(Contact.Subscription.ASKING)) {
+			if (contact.getSubscriptionOption(Contact.Subscription.ASKING)) {
 				receive.setChecked(true);
 			} else {
 				receive.setChecked(false);
@@ -221,27 +223,28 @@ public class ContactDetailsActivity extends XmppActivity {
 		if (contact.getSystemAccount() == null) {
 			badge.setOnClickListener(onBadgeClick);
 		}
-		
+
 		keys.removeAllViews();
 		LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		for (Iterator<String> iterator = contact.getOtrFingerprints().iterator(); iterator
-				.hasNext();) {
+		for (Iterator<String> iterator = contact.getOtrFingerprints()
+				.iterator(); iterator.hasNext();) {
 			String otrFingerprint = iterator.next();
 			View view = (View) inflater.inflate(R.layout.contact_key, null);
 			TextView key = (TextView) view.findViewById(R.id.key);
-			TextView keyType =(TextView) view.findViewById(R.id.key_type);
+			TextView keyType = (TextView) view.findViewById(R.id.key_type);
 			keyType.setText("OTR Fingerprint");
 			key.setText(otrFingerprint);
 			keys.addView(view);
 		}
-		Log.d("gultsch","pgp key id "+contact.getPgpKeyId());
-		if (contact.getPgpKeyId()!=0) {
+		Log.d("gultsch", "pgp key id " + contact.getPgpKeyId());
+		if (contact.getPgpKeyId() != 0) {
 			View view = (View) inflater.inflate(R.layout.contact_key, null);
 			TextView key = (TextView) view.findViewById(R.id.key);
-			TextView keyType =(TextView) view.findViewById(R.id.key_type);
+			TextView keyType = (TextView) view.findViewById(R.id.key_type);
 			keyType.setText("PGP Key ID");
-			BigInteger bi = new BigInteger(""+contact.getPgpKeyId());
-			StringBuilder builder = new StringBuilder(bi.toString(16).toUpperCase());
+			BigInteger bi = new BigInteger("" + contact.getPgpKeyId());
+			StringBuilder builder = new StringBuilder(bi.toString(16)
+					.toUpperCase());
 			builder.insert(8, " ");
 			key.setText(builder.toString());
 			keys.addView(view);
@@ -255,6 +258,60 @@ public class ContactDetailsActivity extends XmppActivity {
 			if (this.contact != null) {
 				populateView();
 			}
+		}
+	}
+
+	@Override
+	protected void onStop() {
+		super.onStop();
+		boolean needsUpdating = false;
+		if (contact.getSubscriptionOption(Contact.Subscription.FROM)) {
+			if (!send.isChecked()) {
+				contact.resetSubscriptionOption(Contact.Subscription.FROM);
+				contact.resetSubscriptionOption(Contact.Subscription.PREEMPTIVE_GRANT);
+				activity.xmppConnectionService.stopPresenceUpdatesTo(contact);
+				needsUpdating = true;
+			}
+		} else {
+			if (contact
+					.getSubscriptionOption(Contact.Subscription.PREEMPTIVE_GRANT)) {
+				if (!send.isChecked()) {
+					contact.resetSubscriptionOption(Contact.Subscription.PREEMPTIVE_GRANT);
+					needsUpdating = true;
+				}
+			} else {
+				if (send.isChecked()) {
+					contact.setSubscriptionOption(Contact.Subscription.PREEMPTIVE_GRANT);
+					needsUpdating = true;
+				}
+			}
+		}
+		if (contact.getSubscriptionOption(Contact.Subscription.TO)) {
+			if (!receive.isChecked()) {
+				contact.resetSubscriptionOption(Contact.Subscription.TO);
+				activity.xmppConnectionService.stopPresenceUpdatesFrom(contact);
+				needsUpdating = true;
+			}
+		} else {
+			if (contact.getSubscriptionOption(Contact.Subscription.ASKING)) {
+				if (!receive.isChecked()) {
+					contact.resetSubscriptionOption(Contact.Subscription.ASKING);
+					activity.xmppConnectionService
+							.stopPresenceUpdatesFrom(contact);
+					needsUpdating = true;
+				}
+			} else {
+				if (receive.isChecked()) {
+					contact.setSubscriptionOption(Contact.Subscription.ASKING);
+					activity.xmppConnectionService
+							.requestPresenceUpdatesFrom(contact);
+					needsUpdating = true;
+				}
+			}
+		}
+		if (needsUpdating) {
+			Toast.makeText(getApplicationContext(), "Subscription updated", Toast.LENGTH_SHORT).show();
+			activity.xmppConnectionService.updateContact(contact);
 		}
 	}
 
