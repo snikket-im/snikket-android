@@ -2,6 +2,7 @@ package eu.siacs.conversations.utils;
 
 import java.util.List;
 
+import net.java.otr4j.OtrException;
 import net.java.otr4j.session.Session;
 import net.java.otr4j.session.SessionStatus;
 import android.util.Log;
@@ -35,6 +36,17 @@ public class MessageParser {
 		String body = packet.getBody();
 		if (!conversation.hasValidOtrSession()) {
 			conversation.startOtrSession(service.getApplicationContext(), fromParts[1]);
+		} else {
+			if (body.startsWith("?OTRv")) {
+				Log.d("xmppService","new otr during existing otr session requested. ending old one");
+				try {
+					conversation.getOtrSession().endSession();
+				} catch (OtrException e) {
+					Log.d("xmppService","couldnt end old session");
+				}
+				Log.d("xmppService","starting new one with "+fromParts[1]);
+				conversation.startOtrSession(service.getApplicationContext(), fromParts[1]);
+			}
 		}
 		try {
 			Session otrSession = conversation.getOtrSession();
