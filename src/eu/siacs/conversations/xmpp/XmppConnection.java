@@ -9,6 +9,7 @@ import java.net.UnknownHostException;
 import java.security.KeyManagementException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
+import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.cert.CertPathValidatorException;
@@ -33,6 +34,7 @@ import android.os.Bundle;
 import android.os.PowerManager;
 import android.util.Log;
 import eu.siacs.conversations.entities.Account;
+import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.DNSHelper;
 import eu.siacs.conversations.utils.SASL;
 import eu.siacs.conversations.xml.Element;
@@ -71,6 +73,7 @@ public class XmppConnection implements Runnable {
 	private OnIqPacketReceived unregisteredIqListener = null;
 	private OnMessagePacketReceived messageListener = null;
 	private OnStatusChanged statusListener = null;
+	private OnTLSExceptionReceived tlsListener;
 
 	public XmppConnection(Account account, PowerManager pm) {
 		this.account = account;
@@ -127,7 +130,9 @@ public class XmppConnection implements Runnable {
 			}
 			return;
 		} catch (IOException e) {
-			this.changeStatus(Account.STATUS_OFFLINE);
+			if (account.getStatus() != Account.STATUS_TLS_ERROR) {
+				this.changeStatus(Account.STATUS_OFFLINE);
+			}
 			if (wakeLock.isHeld()) {
 				wakeLock.release();
 			}
@@ -312,7 +317,26 @@ public class XmppConnection implements Runnable {
 					try {
 						origTrustmanager.checkServerTrusted(chain, authType);
 					} catch (CertificateException e) {
-						Log.d(LOGTAG,"cert exeption");
+						if (e.getCause() instanceof CertPathValidatorException) {
+							String sha;
+							try {
+								MessageDigest sha1 = MessageDigest.getInstance("SHA1");
+								sha1.update(chain[0].getEncoded());
+								sha = CryptoHelper.bytesToHex(sha1.digest());
+								if (!sha.equals(account.getSSLFingerprint())) {
+									changeStatus(Account.STATUS_TLS_ERROR);
+									if (tlsListener!=null) {
+										tlsListener.onTLSExceptionReceived(sha,account);
+									}
+									throw new CertificateException();
+								}
+							} catch (NoSuchAlgorithmException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+						} else {
+							throw new CertificateException();
+						}
 					}
 				}
 
@@ -325,8 +349,8 @@ public class XmppConnection implements Runnable {
 			sc.init(null, wrappedTrustManagers, null);
 			SSLSocketFactory factory = sc.getSocketFactory();
 			SSLSocket sslSocket = (SSLSocket) factory.createSocket(socket,
-					socket.getInetAddress().getHostAddress(), socket.getPort(),
-					true);
+						socket.getInetAddress().getHostAddress(), socket.getPort(),
+						true);
 			tagReader.setInputStream(sslSocket.getInputStream());
 			Log.d(LOGTAG, "reset inputstream");
 			tagWriter.setOutputStream(sslSocket.getOutputStream());
@@ -527,6 +551,10 @@ public class XmppConnection implements Runnable {
 
 	public void setOnStatusChangedListener(OnStatusChanged listener) {
 		this.statusListener = listener;
+	}
+	
+	public void setOnTLSExceptionReceivedListener(OnTLSExceptionReceived listener) {
+		this.tlsListener = listener;
 	}
 
 	public void disconnect() {

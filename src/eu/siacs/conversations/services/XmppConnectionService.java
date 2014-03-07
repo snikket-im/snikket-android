@@ -41,6 +41,7 @@ import eu.siacs.conversations.xmpp.OnIqPacketReceived;
 import eu.siacs.conversations.xmpp.OnMessagePacketReceived;
 import eu.siacs.conversations.xmpp.OnPresencePacketReceived;
 import eu.siacs.conversations.xmpp.OnStatusChanged;
+import eu.siacs.conversations.xmpp.OnTLSExceptionReceived;
 import eu.siacs.conversations.xmpp.PresencePacket;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import android.app.AlarmManager;
@@ -76,6 +77,11 @@ public class XmppConnectionService extends Service {
 
 	public OnConversationListChangedListener convChangedListener = null;
 	private OnAccountListChangedListener accountChangedListener = null;
+	private OnTLSExceptionReceived tlsException = null;
+	
+	public void setOnTLSExceptionReceivedListener(OnTLSExceptionReceived listener) {
+		tlsException = listener;
+	}
 	
 	private Random mRandom = new Random(System.currentTimeMillis());
 
@@ -169,7 +175,9 @@ public class XmppConnectionService extends Service {
 
 		@Override
 		public void onStatusChanged(Account account) {
+			Log.d(LOGTAG,account.getJid()+" status switched to " + account.getStatus());
 			if (accountChangedListener != null) {
+				Log.d(LOGTAG,"notifiy ui");
 				accountChangedListener.onAccountListChangedListener();
 			}
 			if (account.getStatus() == Account.STATUS_ONLINE) {
@@ -452,6 +460,16 @@ public class XmppConnectionService extends Service {
 		connection.setOnPresencePacketReceivedListener(this.presenceListener);
 		connection
 				.setOnUnregisteredIqPacketReceivedListener(this.unknownIqListener);
+		connection.setOnTLSExceptionReceivedListener(new OnTLSExceptionReceived() {
+			
+			@Override
+			public void onTLSExceptionReceived(String fingerprint, Account account) {
+				Log.d(LOGTAG,"tls exception arrived in service");
+				if (tlsException!=null) {
+					tlsException.onTLSExceptionReceived(fingerprint,account);
+				}
+			}
+		});
 		return connection;
 	}
 
@@ -816,16 +834,7 @@ public class XmppConnectionService extends Service {
 
 	public void updateAccount(Account account) {
 		databaseBackend.updateAccount(account);
-		if (account.getXmppConnection() != null) {
-			disconnect(account);
-		}
-		if (!account.isOptionSet(Account.OPTION_DISABLED)) {
-			if (account.getXmppConnection()==null) {
-				account.setXmppConnection(this.createConnection(account));
-			}
-			Thread thread = new Thread(account.getXmppConnection());
-			thread.start();
-		}
+		reconnectAccount(account);
 		if (accountChangedListener != null)
 			accountChangedListener.onAccountListChangedListener();
 	}
@@ -1096,5 +1105,22 @@ public class XmppConnectionService extends Service {
 			}
 		}
 		return contact;
+	}
+
+	public void removeOnTLSExceptionReceivedListener() {
+		this.tlsException = null;
+	}
+
+	public void reconnectAccount(Account account) {
+		if (account.getXmppConnection() != null) {
+			disconnect(account);
+		}
+		if (!account.isOptionSet(Account.OPTION_DISABLED)) {
+			if (account.getXmppConnection()==null) {
+				account.setXmppConnection(this.createConnection(account));
+			}
+			Thread thread = new Thread(account.getXmppConnection());
+			thread.start();
+		}
 	}
 }

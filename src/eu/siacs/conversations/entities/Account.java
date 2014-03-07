@@ -138,6 +138,22 @@ public class Account  extends AbstractEntity{
 		return keys;
 	}
 	
+	public String getSSLFingerprint() {
+		if (keys.has("ssl_cert")) {
+			try {
+				return keys.getString("ssl_cert");
+			} catch (JSONException e) {
+				return null;
+			}
+		} else {
+			return null;
+		}
+	}
+	
+	public void setSSLCertFingerprint(String fingerprint) {
+		this.setKey("ssl_cert", fingerprint);
+	}
+	
 	public boolean setKey(String keyName, String keyValue) {
 		try {
 			this.keys.put(keyName, keyValue);

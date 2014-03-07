@@ -8,6 +8,7 @@ import eu.siacs.conversations.crypto.PgpEngine;
 import eu.siacs.conversations.crypto.PgpEngine.UserInputRequiredException;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.ui.EditAccount.EditAccountListener;
+import eu.siacs.conversations.xmpp.OnTLSExceptionReceived;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -18,7 +19,6 @@ import android.content.IntentSender.SendIntentException;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ActionMode;
-import android.view.ActionMode.Callback;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -39,6 +39,7 @@ public class ManageAccountActivity extends XmppActivity {
 	protected boolean isActionMode = false;
 	protected ActionMode actionMode;
 	protected Account selectedAccountForActionMode = null;
+	protected ManageAccountActivity activity = this;
 	
 	protected List<Account> accountList = new ArrayList<Account>();
 	protected ListView accountListView;
@@ -57,6 +58,45 @@ public class ManageAccountActivity extends XmppActivity {
 					accountListViewAdapter.notifyDataSetChanged();
 				}
 			});
+		}
+	};
+	
+	protected OnTLSExceptionReceived tlsExceptionReceived = new OnTLSExceptionReceived() {
+		
+		@Override
+		public void onTLSExceptionReceived(final String fingerprint, final Account account) {
+			activity.runOnUiThread(new Runnable() {
+				
+				@Override
+				public void run() {
+					AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+					builder.setTitle("Untrusted Certificate");
+					builder.setIconAttribute(android.R.attr.alertDialogIcon);
+					View view = (View) getLayoutInflater().inflate(R.layout.cert_warning, null);
+					TextView sha = (TextView) view.findViewById(R.id.sha);
+					TextView hint = (TextView) view.findViewById(R.id.hint);
+					StringBuilder humanReadableSha = new StringBuilder();
+					humanReadableSha.append(fingerprint);
+					for(int i = 2; i < 58; i += 3) {
+						humanReadableSha.insert(i, ":");
+					}
+					hint.setText(account.getServer()+" presented you with an unstrusted, possible self signed, certificate.\nThe SHA1 fingerprint is");
+					sha.setText(humanReadableSha.toString());
+					builder.setView(view);
+					//builder.setMessage(server+" presented you with an unstrusted, possible self signed, certificate. The SHA1 fingerprint is "+fingerprint+" Do not connect unless you know exactly what you are doing");
+					builder.setNegativeButton("Don't connect", null);
+					builder.setPositiveButton("Trust certificate", new OnClickListener() {
+						
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							account.setSSLCertFingerprint(fingerprint);
+							activity.xmppConnectionService.updateAccount(account);
+						}
+					});
+					builder.create().show();
+				}
+			});
+			
 		}
 	};
 
@@ -114,6 +154,10 @@ public class ManageAccountActivity extends XmppActivity {
 					statusView.setText("server requires TLS");
 					statusView.setTextColor(0xFFe92727);
 					break;
+				case Account.STATUS_TLS_ERROR:
+					statusView.setText("untrusted cerficate");
+					statusView.setTextColor(0xFFe92727);
+					break;
 				default:
 					break;
 				}
@@ -129,16 +173,14 @@ public class ManageAccountActivity extends XmppActivity {
 			public void onItemClick(AdapterView<?> arg0, View view,
 					int position, long arg3) {
 				if (!isActionMode) {
-					EditAccount dialog = new EditAccount();
-					dialog.setAccount(accountList.get(position));
-					dialog.setEditAccountListener(new EditAccountListener() {
-	
-						@Override
-						public void onAccountEdited(Account account) {
-							xmppConnectionService.updateAccount(account);
-						}
-					});
-					dialog.show(getFragmentManager(), "edit_account");
+					Account account = accountList.get(position);
+					if ((account.getStatus() != Account.STATUS_ONLINE)&&(account.getStatus() != Account.STATUS_CONNECTING)&&(!account.isOptionSet(Account.OPTION_DISABLED))) {
+						activity.xmppConnectionService.reconnectAccount(accountList.get(position));
+					} else if (account.getStatus() == Account.STATUS_ONLINE) {
+						activity.startActivity(new Intent(activity.getApplicationContext(),NewConversationActivity.class));
+					}
+					
+					Log.d("gultsch","clicked on account "+accountList.get(position).getJid());
 				} else {
 					selectedAccountForActionMode = accountList.get(position);
 					actionMode.invalidate();
@@ -159,11 +201,11 @@ public class ManageAccountActivity extends XmppActivity {
 						@Override
 						public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
 							if (selectedAccountForActionMode.isOptionSet(Account.OPTION_DISABLED)) {
-					        	menu.findItem(R.id.account_enable).setVisible(true);
-					        	menu.findItem(R.id.account_disable).setVisible(false);
+					        	menu.findItem(R.id.mgmt_account_enable).setVisible(true);
+					        	menu.findItem(R.id.mgmt_account_disable).setVisible(false);
 					        } else {
-					        	menu.findItem(R.id.account_disable).setVisible(true);
-					        	menu.findItem(R.id.account_enable).setVisible(false);
+					        	menu.findItem(R.id.mgmt_account_disable).setVisible(true);
+					        	menu.findItem(R.id.mgmt_account_enable).setVisible(false);
 					        }
 							return true;
 						}
@@ -183,15 +225,27 @@ public class ManageAccountActivity extends XmppActivity {
 						
 						@Override
 						public boolean onActionItemClicked(final ActionMode mode, MenuItem item) {
-							if (item.getItemId()==R.id.account_disable) {
+							if (item.getItemId()==R.id.mgmt_account_edit) {
+								EditAccount dialog = new EditAccount();
+								dialog.setAccount(selectedAccountForActionMode);
+								dialog.setEditAccountListener(new EditAccountListener() {
+				
+									@Override
+									public void onAccountEdited(Account account) {
+										xmppConnectionService.updateAccount(account);
+										actionMode.finish();
+									}
+								});
+								dialog.show(getFragmentManager(), "edit_account");
+							} else if (item.getItemId()==R.id.mgmt_account_disable) {
 								selectedAccountForActionMode.setOption(Account.OPTION_DISABLED, true);
 								xmppConnectionService.updateAccount(selectedAccountForActionMode);
 								mode.finish();
-							} else if (item.getItemId()==R.id.account_enable) {
+							} else if (item.getItemId()==R.id.mgmt_account_enable) {
 								selectedAccountForActionMode.setOption(Account.OPTION_DISABLED, false);
 								xmppConnectionService.updateAccount(selectedAccountForActionMode);
 								mode.finish();
-							} else if (item.getItemId()==R.id.account_delete) {
+							} else if (item.getItemId()==R.id.mgmt_account_delete) {
 								AlertDialog.Builder builder = new AlertDialog.Builder(activity);
 								builder.setTitle("Are you sure?");
 								builder.setIconAttribute(android.R.attr.alertDialogIcon);
@@ -207,7 +261,7 @@ public class ManageAccountActivity extends XmppActivity {
 								});
 								builder.setNegativeButton("Cancel",null);
 								builder.create().show();
-							} else if (item.getItemId()==R.id.announce_pgp) {
+							} else if (item.getItemId()==R.id.mgmt_account_announce_pgp) {
 								if (activity.hasPgp()) {
 									mode.finish();
 									try {
@@ -236,6 +290,7 @@ public class ManageAccountActivity extends XmppActivity {
 	protected void onStop() {
 		if (xmppConnectionServiceBound) {
 			xmppConnectionService.removeOnAccountListChangedListener();
+			xmppConnectionService.removeOnTLSExceptionReceivedListener();
 		}
 		super.onStop();
 	}
@@ -243,6 +298,7 @@ public class ManageAccountActivity extends XmppActivity {
 	@Override
 	void onBackendConnected() {
 		xmppConnectionService.setOnAccountListChangedListener(accountChanged);
+		xmppConnectionService.setOnTLSExceptionReceivedListener(tlsExceptionReceived);
 		this.accountList.clear();
 		this.accountList.addAll(xmppConnectionService.getAccounts());
 		accountListViewAdapter.notifyDataSetChanged();
