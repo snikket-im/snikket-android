@@ -10,23 +10,32 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="18sp"/>
+    
+     <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#FFe92727"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:text="Do not connect unless you know exactly what you are doing"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"/>
+     
+     <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:text="The SHA1 fingerprint is:" />
 
     <TextView
+        android:layout_gravity="center_horizontal"
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
         android:id="@+id/sha"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:typeface="monospace"
-        android:textSize="18sp"/>
-
-    <TextView
-        android:id="@+id/dont"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="#FFe92727"
         android:textStyle="bold"
-        android:textSize="18sp"
-        android:text="Do not connect unless you know exactly what you are doing" />
-    
+        android:textSize="20sp"/>
+
 </LinearLayout>

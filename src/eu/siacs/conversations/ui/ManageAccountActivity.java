@@ -77,10 +77,16 @@ public class ManageAccountActivity extends XmppActivity {
 					TextView hint = (TextView) view.findViewById(R.id.hint);
 					StringBuilder humanReadableSha = new StringBuilder();
 					humanReadableSha.append(fingerprint);
-					for(int i = 2; i < 58; i += 3) {
-						humanReadableSha.insert(i, ":");
+					for(int i = 2; i < 59; i += 3) {
+						Log.d("gultsch","insert into "+i);
+						if ((i==14)||(i==29)||(i==44)) {
+							humanReadableSha.insert(i, "\n");
+						} else {
+							humanReadableSha.insert(i, ":");
+						}
+						
 					}
-					hint.setText(account.getServer()+" presented you with an unstrusted, possible self signed, certificate.\nThe SHA1 fingerprint is");
+					hint.setText(getString(R.string.untrusted_cert_hint,account.getServer()));
 					sha.setText(humanReadableSha.toString());
 					builder.setView(view);
 					//builder.setMessage(server+" presented you with an unstrusted, possible self signed, certificate. The SHA1 fingerprint is "+fingerprint+" Do not connect unless you know exactly what you are doing");
