@@ -253,7 +253,6 @@ public class XmppConnectionService extends Service {
 						if ((x != null)
 								&& (x.getAttribute("xmlns").equals("jabber:x:signed"))) {
 							try {
-								Log.d(LOGTAG,"pgp signature for contact" +packet.getAttribute("from"));
 								contact.setPgpKeyId(pgp.fetchKeyId(packet.findChild("status")
 										.getContent(), x.getContent()));
 							} catch (OpenPgpException e) {
@@ -287,7 +286,7 @@ public class XmppConnectionService extends Service {
 						// TODO: ask user to handle it maybe
 					}
 				} else {
-					//Log.d(LOGTAG, packet.toString());
+					Log.d(LOGTAG, packet.toString());
 				}
 				replaceContactInConversation(contact.getJid(), contact);
 			}
@@ -508,7 +507,6 @@ public class XmppConnectionService extends Service {
 				x.setContent(this.getPgpEngine().encrypt(keyId,
 						message.getBody()));
 				packet.addChild(x);
-				Log.d(LOGTAG,"pgp message"+packet.toString());
 				account.getXmppConnection().sendMessagePacket(packet);
 				message.setStatus(Message.STATUS_SEND);
 				message.setEncryption(Message.ENCRYPTION_DECRYPTED);

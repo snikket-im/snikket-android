@@ -40,7 +40,6 @@ public class PgpEngine {
 	}
 
 	public String encrypt(long keyId, String message) {
-		Log.d("xmppService","encrypt message: "+message+" for key "+keyId);
 		long[] keys = {keyId};
 		Intent params = new Intent();
 		params.setAction(OpenPgpApi.ACTION_ENCRYPT);
@@ -51,8 +50,6 @@ public class PgpEngine {
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
 		Intent result = api.executeApi(params, is, os);
 		StringBuilder encryptedMessageBody = new StringBuilder();
-		Log.d("xmppService","intent: "+result.toString());
-		Log.d("xmppService","output: "+os.toString());
 		String[] lines = os.toString().split("\n");
 		for (int i = 3; i < lines.length - 1; ++i) {
 			encryptedMessageBody.append(lines[i].trim());
@@ -62,10 +59,14 @@ public class PgpEngine {
 
 	public long fetchKeyId(String status, String signature)
 			throws OpenPgpException {
+		if (signature==null) {
+			return 0;
+		}
+		if (status==null) {
+			status="";
+		}
 		StringBuilder pgpSig = new StringBuilder();
 		pgpSig.append("-----BEGIN PGP SIGNED MESSAGE-----");
-		pgpSig.append('\n');
-		pgpSig.append("Hash: SHA1");
 		pgpSig.append('\n');
 		pgpSig.append('\n');
 		pgpSig.append(status);
@@ -86,7 +87,11 @@ public class PgpEngine {
 		case OpenPgpApi.RESULT_CODE_SUCCESS:
 			OpenPgpSignatureResult sigResult
             = result.getParcelableExtra(OpenPgpApi.RESULT_SIGNATURE);
-			return sigResult.getKeyId();
+			if (sigResult==null) {
+				return 0;
+			} else {
+				return sigResult.getKeyId();
+			}
 		case OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED:
 			break;
 		case OpenPgpApi.RESULT_CODE_ERROR:

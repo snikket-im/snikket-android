@@ -71,7 +71,7 @@ public abstract class XmppActivity extends Activity {
 		if (xmppConnectionService.getPgpEngine()!=null) {
 			return true;
 		} else {
-			Builder builder = new AlertDialog.Builder(getApplicationContext());
+			Builder builder = new AlertDialog.Builder(this);
 			builder.setTitle("OpenKeychain not found");
 			builder.setIconAttribute(android.R.attr.alertDialogIcon);
 			builder.setMessage("Please make sure you have installed OpenKeychain");
