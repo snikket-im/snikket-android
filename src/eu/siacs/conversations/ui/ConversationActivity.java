@@ -19,6 +19,7 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.v4.widget.SlidingPaneLayout;
 import android.support.v4.widget.SlidingPaneLayout.PanelSlideListener;
@@ -29,7 +30,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
@@ -148,6 +148,13 @@ public class ConversationActivity extends XmppActivity {
 							R.layout.conversation_list_row, null);
 				}
 				Conversation conv = getItem(position);
+				if (!spl.isSlideable()) {
+					if (conv==getSelectedConversation()) {
+						view.setBackgroundColor(0xffdddddd);
+					} else {
+						view.setBackgroundColor(Color.TRANSPARENT);
+					}
+				}
 				TextView convName = (TextView) view.findViewById(R.id.conversation_name);
 				convName.setText(conv.getName());
 				TextView convLastMsg = (TextView) view.findViewById(R.id.conversation_lastmsg);
@@ -241,13 +248,13 @@ public class ConversationActivity extends XmppActivity {
 		MenuItem menuMucDetails = (MenuItem) menu.findItem(R.id.action_muc_details);
 		MenuItem menuContactDetails = (MenuItem) menu.findItem(R.id.action_contact_details);
 		
-		if (spl.isOpen()) {
+		if ((spl.isOpen()&&(spl.isSlideable()))) {
 			menuArchive.setVisible(false);
 			menuMucDetails.setVisible(false);
 			menuContactDetails.setVisible(false);
 			menuSecure.setVisible(false);
 		} else {
-			((MenuItem) menu.findItem(R.id.action_add)).setVisible(false);
+			((MenuItem) menu.findItem(R.id.action_add)).setVisible(!spl.isSlideable());
 			if (this.getSelectedConversation()!=null) {
 				if (this.getSelectedConversation().getMode() == Conversation.MODE_MULTI) {
 					menuMucDetails.setVisible(true);

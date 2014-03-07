@@ -337,15 +337,18 @@ public class ConversationFragment extends Fragment {
 		this.selfBitmap = findSelfPicture();
 		updateMessages();
 		// rendering complete. now go tell activity to close pane
-		if (!activity.shouldPaneBeOpen()) {
-			activity.getSlidingPaneLayout().closePane();
-			activity.getActionBar().setDisplayHomeAsUpEnabled(true);
-			activity.getActionBar().setTitle(conversation.getName());
-			activity.invalidateOptionsMenu();
-			if (!conversation.isRead()) {
-				conversation.markRead();
-				activity.updateConversationList();
+		if (activity.getSlidingPaneLayout().isSlideable()) {
+			if (!activity.shouldPaneBeOpen()) {
+				activity.getSlidingPaneLayout().closePane();
+				activity.getActionBar().setDisplayHomeAsUpEnabled(true);
+				activity.getActionBar().setTitle(conversation.getName());
+				activity.invalidateOptionsMenu();
+				
 			}
+		}
+		if (!conversation.isRead()) {
+			conversation.markRead();
+			activity.updateConversationList();
 		}
 		if (queuedPqpMessage != null) {
 			this.conversation.nextMessageEncryption = Message.ENCRYPTION_PGP;
