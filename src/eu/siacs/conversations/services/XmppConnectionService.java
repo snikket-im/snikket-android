@@ -164,7 +164,7 @@ public class XmppConnectionService extends Service {
 					NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 					mNotificationManager.notify(2342, UIHelper
 							.getUnreadMessageNotification(
-									getApplicationContext(), conversation));
+									getApplicationContext(),getConversations()));
 				}
 			}
 		}

@@ -1,6 +1,7 @@
 package eu.siacs.conversations.utils;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -29,7 +30,10 @@ import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.provider.ContactsContract.Contacts;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationCompat.InboxStyle;
 import android.support.v4.app.TaskStackBuilder;
+import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -104,8 +108,16 @@ public class UIHelper {
 	}
 
 	public static Notification getUnreadMessageNotification(Context context,
-			Conversation conversation) {
+			List<Conversation> conversations) {
 
+		String targetUuid = "";
+		List<Conversation> unread = new ArrayList<Conversation>();
+		for(Conversation conversation : conversations) {
+			if (!conversation.isRead()) {
+				unread.add(conversation);
+			}
+		}
+		
 		SharedPreferences sharedPref = PreferenceManager
 				.getDefaultSharedPreferences(context);
 		String ringtone = sharedPref.getString("notification_ringtone", null);
@@ -113,29 +125,49 @@ public class UIHelper {
 		Resources res = context.getResources();
 		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
 				context);
-		mBuilder.setLargeIcon(UIHelper.getUnknownContactPicture(conversation
-				.getName(), (int) res
-				.getDimension(android.R.dimen.notification_large_icon_width)));
-		mBuilder.setContentTitle(conversation.getName());
-		mBuilder.setTicker(conversation.getLatestMessage().getBody().trim());
-		StringBuilder bigText = new StringBuilder();
-		List<Message> messages = conversation.getMessages();
-		String firstLine = "";
-		for(int i = messages.size() -1; i >= 0; --i) {
-			if (!messages.get(i).isRead()) {
-				if (i == messages.size() -1 ) {
-					firstLine = messages.get(i).getBody().trim();
-					bigText.append(firstLine);
+		if (unread.size() == 1) {
+			Conversation conversation = unread.get(0);
+			targetUuid = conversation.getUuid();
+			mBuilder.setLargeIcon(UIHelper.getUnknownContactPicture(conversation
+					.getName(), (int) res
+					.getDimension(android.R.dimen.notification_large_icon_width)));
+			mBuilder.setContentTitle(conversation.getName());
+			mBuilder.setTicker(conversation.getLatestMessage().getBody().trim());
+			StringBuilder bigText = new StringBuilder();
+			List<Message> messages = conversation.getMessages();
+			String firstLine = "";
+			for(int i = messages.size() -1; i >= 0; --i) {
+				if (!messages.get(i).isRead()) {
+					if (i == messages.size() -1 ) {
+						firstLine = messages.get(i).getBody().trim();
+						bigText.append(firstLine);
+					} else {
+						firstLine = messages.get(i).getBody().trim();
+						bigText.insert(0, firstLine+"\n");
+					}
 				} else {
-					firstLine = messages.get(i).getBody().trim();
-					bigText.insert(0, firstLine+"\n");
+					break;
 				}
-			} else {
-				break;
 			}
+			mBuilder.setContentText(firstLine);
+			mBuilder.setStyle(new NotificationCompat.BigTextStyle().bigText(bigText.toString()));
+		} else {
+			NotificationCompat.InboxStyle style = new NotificationCompat.InboxStyle();
+			style.setBigContentTitle(unread.size()+" unread Conversations");
+			StringBuilder names = new StringBuilder();
+			for(int i = 0; i < unread.size(); ++i) {
+				targetUuid = conversations.get(0).getUuid();
+				if (i< unread.size()-1) {
+					names.append(unread.get(i).getName()+", ");
+				} else {
+					names.append(unread.get(i).getName());
+				}
+				style.addLine(Html.fromHtml("<b>"+unread.get(i).getName()+"</b> "+unread.get(i).getLatestMessage().getBody()));
+			}
+			mBuilder.setContentTitle(unread.size()+" unread Conversations");
+			mBuilder.setContentText(names.toString());
+			mBuilder.setStyle(style);
 		}
-		mBuilder.setContentText(firstLine);
-		mBuilder.setStyle(new NotificationCompat.BigTextStyle().bigText(bigText.toString()));
 		mBuilder.setSmallIcon(R.drawable.notification);
 		mBuilder.setLights(0xffffffff, 2000, 4000);
 		if (ringtone != null) {
@@ -149,7 +181,7 @@ public class UIHelper {
 				ConversationActivity.class);
 		viewConversationIntent.setAction(Intent.ACTION_VIEW);
 		viewConversationIntent.putExtra(ConversationActivity.CONVERSATION,
-				conversation.getUuid());
+				targetUuid);
 		viewConversationIntent.setType(ConversationActivity.VIEW_CONVERSATION);
 
 		stackBuilder.addNextIntent(viewConversationIntent);
