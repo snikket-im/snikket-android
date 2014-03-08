@@ -14,13 +14,11 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.cert.CertPathValidatorException;
 import java.security.cert.CertificateException;
-import java.security.cert.CertificateExpiredException;
 import java.security.cert.X509Certificate;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
 
-import javax.net.ssl.ManagerFactoryParameters;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
@@ -55,10 +53,6 @@ public class XmppConnection implements Runnable {
 	private XmlReader tagReader;
 	private TagWriter tagWriter;
 
-	private boolean isTlsEncrypted = false;
-	private boolean isAuthenticated = false;
-	// private boolean shouldUseTLS = false;
-	private boolean shouldConnect = true;
 	private boolean shouldBind = true;
 	private boolean shouldAuthenticate = true;
 	private Element streamFeatures;
@@ -170,9 +164,8 @@ public class XmppConnection implements Runnable {
 			} else if (nextTag.isStart("proceed")) {
 				switchOverToTls(nextTag);
 			} else if (nextTag.isStart("success")) {
-				isAuthenticated = true;
 				Log.d(LOGTAG, account.getJid()
-						+ ": read success tag in stream. reset again");
+						+ ": logged in");
 				tagReader.readTag();
 				tagReader.reset();
 				sendStartStream();
@@ -279,14 +272,12 @@ public class XmppConnection implements Runnable {
 	private void sendStartTLS() {
 		Tag startTLS = Tag.empty("starttls");
 		startTLS.setAttribute("xmlns", "urn:ietf:params:xml:ns:xmpp-tls");
-		Log.d(LOGTAG, account.getJid() + ": sending starttls");
 		tagWriter.writeTag(startTLS);
 	}
 
 	private void switchOverToTls(Tag currentTag) throws XmlPullParserException,
 			IOException {
 		Tag nextTag = tagReader.readTag(); // should be proceed end tag
-		Log.d(LOGTAG, account.getJid() + ": now switch to ssl");
 		try {
 			SSLContext sc = SSLContext.getInstance("TLS");
 			TrustManagerFactory tmf = TrustManagerFactory
@@ -352,11 +343,9 @@ public class XmppConnection implements Runnable {
 						socket.getInetAddress().getHostAddress(), socket.getPort(),
 						true);
 			tagReader.setInputStream(sslSocket.getInputStream());
-			Log.d(LOGTAG, "reset inputstream");
 			tagWriter.setOutputStream(sslSocket.getOutputStream());
-			Log.d(LOGTAG, "switch over seemed to work");
-			isTlsEncrypted = true;
 			sendStartStream();
+			Log.d(LOGTAG,account.getJid()+": TLS connection established");
 			processStream(tagReader.readTag());
 			sslSocket.close();
 		} catch (NoSuchAlgorithmException e1) {
@@ -375,15 +364,12 @@ public class XmppConnection implements Runnable {
 		auth.setAttribute("xmlns", "urn:ietf:params:xml:ns:xmpp-sasl");
 		auth.setAttribute("mechanism", "PLAIN");
 		auth.setContent(saslString);
-		Log.d(LOGTAG, account.getJid() + ": sending sasl " + auth.toString());
 		tagWriter.writeElement(auth);
 	}
 
 	private void processStreamFeatures(Tag currentTag)
 			throws XmlPullParserException, IOException {
 		this.streamFeatures = tagReader.readElement(currentTag);
-		Log.d(LOGTAG, account.getJid() + ": process stream features "
-				+ streamFeatures);
 		if (this.streamFeatures.hasChild("starttls")
 				&& account.isOptionSet(Account.OPTION_USETLS)) {
 			sendStartTLS();
@@ -457,7 +443,6 @@ public class XmppConnection implements Runnable {
 	}
 
 	private void sendEnableCarbons() {
-		Log.d(LOGTAG, account.getJid() + ": enable carbons");
 		IqPacket iq = new IqPacket(IqPacket.TYPE_SET);
 		Element enable = new Element("enable");
 		enable.setAttribute("xmlns", "urn:xmpp:carbons:2");
@@ -558,7 +543,14 @@ public class XmppConnection implements Runnable {
 	}
 
 	public void disconnect() {
-		shouldConnect = false;
 		tagWriter.writeTag(Tag.end("stream:stream"));
+	}
+	
+	public boolean hasFeatureRosterManagment() {
+		if (this.streamFeatures==null) {
+			return false;
+		} else {
+			return this.streamFeatures.hasChild("ver");
+		}
 	}
 }

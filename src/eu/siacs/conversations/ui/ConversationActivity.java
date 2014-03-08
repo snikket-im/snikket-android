@@ -147,7 +147,12 @@ public class ConversationActivity extends XmppActivity {
 					view = (View) inflater.inflate(
 							R.layout.conversation_list_row, null);
 				}
-				Conversation conv = getItem(position);
+				Conversation conv;
+				if (conversationList.size() > position) {
+					conv = getItem(position);
+				} else {
+					return view;
+				}
 				if (!spl.isSlideable()) {
 					if (conv==getSelectedConversation()) {
 						view.setBackgroundColor(0xffdddddd);
@@ -181,7 +186,7 @@ public class ConversationActivity extends XmppActivity {
 				
 				
 				((ImageView) view.findViewById(R.id.conversation_image))
-						.setImageURI(getItem(position).getProfilePhotoUri());
+						.setImageURI(conv.getProfilePhotoUri());
 				return view;
 			}
 
@@ -417,7 +422,6 @@ public class ConversationActivity extends XmppActivity {
 		xmppConnectionService.setOnConversationListChangedListener(this.onConvChanged);
 		
 		if (conversationList.size()==0) {
-			conversationList.clear();
 			conversationList.addAll(xmppConnectionService
 					.getConversations());
 			
@@ -452,12 +456,9 @@ public class ConversationActivity extends XmppActivity {
 				//find currently loaded fragment
 				ConversationFragment selectedFragment = (ConversationFragment) getFragmentManager().findFragmentByTag("conversation");
 				if (selectedFragment!=null) {
-					Log.d("gultsch","ConversationActivity. found old fragment.");
 					selectedFragment.onBackendConnected();
 				} else {
-					Log.d("gultsch","conversationactivity. no old fragment found. creating new one");
 					selectedConversation = conversationList.get(0);
-					Log.d("gultsch","selected conversation is #"+selectedConversation);
 					swapConversationFragment();
 				}
 			}

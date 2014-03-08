@@ -175,10 +175,11 @@ public class XmppConnectionService extends Service {
 
 		@Override
 		public void onStatusChanged(Account account) {
-			Log.d(LOGTAG,account.getJid()+" status switched to " + account.getStatus());
 			if (accountChangedListener != null) {
-				Log.d(LOGTAG,"notifiy ui");
 				accountChangedListener.onAccountListChangedListener();
+			}
+			if (account.getXmppConnection().hasFeatureRosterManagment()) {
+				updateRoster(account, null);
 			}
 			if (account.getStatus() == Account.STATUS_ONLINE) {
 				databaseBackend.clearPresences(account);
@@ -612,7 +613,12 @@ public class XmppConnectionService extends Service {
 		IqPacket iqPacket = new IqPacket(IqPacket.TYPE_GET);
 		Element query = new Element("query");
 		query.setAttribute("xmlns", "jabber:iq:roster");
-		query.setAttribute("ver", account.getRosterVersion());
+		if (!"".equals(account.getRosterVersion())) {
+			Log.d(LOGTAG,account.getJid()+ ": fetching roster version "+account.getRosterVersion());
+			query.setAttribute("ver", account.getRosterVersion());
+		} else {
+			Log.d(LOGTAG,account.getJid()+": fetching roster");
+		}
 		iqPacket.addChild(query);
 		account.getXmppConnection().sendIqPacket(iqPacket,
 				new OnIqPacketReceived() {
@@ -622,6 +628,7 @@ public class XmppConnectionService extends Service {
 							IqPacket packet) {
 						Element roster = packet.findChild("query");
 						if (roster != null) {
+							Log.d(LOGTAG,account.getJid()+": processing roster");
 							processRosterItems(account, roster);
 							StringBuilder mWhere = new StringBuilder();
 							mWhere.append("jid NOT IN(");
@@ -645,6 +652,8 @@ public class XmppConnectionService extends Service {
 										null);
 							}
 
+						} else {
+							Log.d(LOGTAG,account.getJid()+": empty roster returend");
 						}
 						mergePhoneContactsWithRoster(new OnPhoneContactsMerged() {
 
