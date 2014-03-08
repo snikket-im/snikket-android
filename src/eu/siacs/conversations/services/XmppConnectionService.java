@@ -29,7 +29,6 @@ import eu.siacs.conversations.persistance.OnPhoneContactsMerged;
 import eu.siacs.conversations.ui.OnAccountListChangedListener;
 import eu.siacs.conversations.ui.OnConversationListChangedListener;
 import eu.siacs.conversations.ui.OnRosterFetchedListener;
-import eu.siacs.conversations.ui.XmppActivity;
 import eu.siacs.conversations.utils.MessageParser;
 import eu.siacs.conversations.utils.OnPhoneContactsLoadedListener;
 import eu.siacs.conversations.utils.PhoneHelper;
@@ -63,7 +62,6 @@ import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.util.Log;
-import android.widget.Toast;
 
 public class XmppConnectionService extends Service {
 

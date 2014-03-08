@@ -10,7 +10,6 @@ import org.openintents.openpgp.util.OpenPgpApi;
 
 import android.app.PendingIntent;
 import android.content.Intent;
-import android.util.Log;
 
 public class PgpEngine {
 	private OpenPgpApi api;
