@@ -176,11 +176,11 @@ public class XmppConnectionService extends Service {
 			if (accountChangedListener != null) {
 				accountChangedListener.onAccountListChangedListener();
 			}
-			if (account.getXmppConnection().hasFeatureRosterManagment()) {
-				updateRoster(account, null);
-			}
 			if (account.getStatus() == Account.STATUS_ONLINE) {
 				databaseBackend.clearPresences(account);
+				if (account.getXmppConnection().hasFeatureRosterManagment()) {
+					updateRoster(account, null);
+				}
 				connectMultiModeConversations(account);
 				List<Conversation> conversations = getConversations();
 				for (int i = 0; i < conversations.size(); ++i) {
@@ -613,10 +613,10 @@ public class XmppConnectionService extends Service {
 		query.setAttribute("xmlns", "jabber:iq:roster");
 		if (!"".equals(account.getRosterVersion())) {
 			Log.d(LOGTAG,account.getJid()+ ": fetching roster version "+account.getRosterVersion());
-			query.setAttribute("ver", account.getRosterVersion());
 		} else {
 			Log.d(LOGTAG,account.getJid()+": fetching roster");
 		}
+		query.setAttribute("ver", account.getRosterVersion());
 		iqPacket.addChild(query);
 		account.getXmppConnection().sendIqPacket(iqPacket,
 				new OnIqPacketReceived() {
