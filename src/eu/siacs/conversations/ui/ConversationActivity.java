@@ -159,6 +159,8 @@ public class ConversationActivity extends XmppActivity {
 					} else {
 						view.setBackgroundColor(Color.TRANSPARENT);
 					}
+				} else {
+					view.setBackgroundColor(Color.TRANSPARENT);
 				}
 				TextView convName = (TextView) view.findViewById(R.id.conversation_name);
 				convName.setText(conv.getName());
@@ -294,7 +296,11 @@ public class ConversationActivity extends XmppActivity {
 			paneShouldBeOpen = true;
 			spl.openPane();
 			xmppConnectionService.archiveConversation(conv);
-			selectedConversation = conversationList.get(0);
+			if (conversationList.size() > 0) {
+				selectedConversation = conversationList.get(0);
+			} else {
+				selectedConversation = null;
+			}
 			break;
 		case R.id.action_contact_details:
 			Contact contact = this.getSelectedConversation().getContact();
