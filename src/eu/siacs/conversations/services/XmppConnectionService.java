@@ -164,10 +164,7 @@ public class XmppConnectionService extends Service {
 			if (convChangedListener != null) {
 				convChangedListener.onConversationListChanged();
 			} else {
-					NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-					mNotificationManager.notify(2342, UIHelper
-							.getNotification(
-									getApplicationContext(),getConversations(),notify));
+					UIHelper.updateNotification(getApplicationContext(), getConversations(), notify);
 			}
 		}
 	};

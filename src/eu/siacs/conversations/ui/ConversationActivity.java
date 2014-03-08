@@ -232,6 +232,7 @@ public class ConversationActivity extends XmppActivity {
 					invalidateOptionsMenu();
 					if (!getSelectedConversation().isRead()) {
 						getSelectedConversation().markRead();
+						UIHelper.updateNotification(getApplicationContext(), getConversationList(), false);
 						updateConversationList();
 					}
 				}
@@ -400,8 +401,6 @@ public class ConversationActivity extends XmppActivity {
 	
 	public void onStart() {
 		super.onStart();
-		NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-		nm.cancelAll();
 		if (conversationList.size()>=1) {
 			onConvChanged.onConversationListChanged();
 		}

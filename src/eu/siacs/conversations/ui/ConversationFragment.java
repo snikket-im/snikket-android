@@ -24,6 +24,8 @@ import eu.siacs.conversations.utils.PhoneHelper;
 import eu.siacs.conversations.utils.UIHelper;
 import android.app.AlertDialog;
 import android.app.Fragment;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
@@ -346,10 +348,6 @@ public class ConversationFragment extends Fragment {
 				
 			}
 		}
-		if (!conversation.isRead()) {
-			conversation.markRead();
-			activity.updateConversationList();
-		}
 		if (queuedPqpMessage != null) {
 			this.conversation.nextMessageEncryption = Message.ENCRYPTION_PGP;
 			Message message = new Message(conversation, queuedPqpMessage,
@@ -421,6 +419,8 @@ public class ConversationFragment extends Fragment {
 			messagesView.setSelection(size - 1);
 		if (!activity.shouldPaneBeOpen()) {
 			conversation.markRead();
+			//TODO update notifications
+			UIHelper.updateNotification(getActivity(), activity.getConversationList(), false);
 			activity.updateConversationList();
 		}
 	}
