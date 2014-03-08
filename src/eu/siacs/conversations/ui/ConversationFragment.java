@@ -378,6 +378,7 @@ public class ConversationFragment extends Fragment {
 	public void updateMessages() {
 		ConversationActivity activity = (ConversationActivity) getActivity();
 		List<Message> encryptedMessages = new LinkedList<Message>();
+		// TODO this.conversation could be null?!
 		for(Message message : this.conversation.getMessages()) {
 			if (message.getEncryption() == Message.ENCRYPTION_PGP) {
 				encryptedMessages.add(message);

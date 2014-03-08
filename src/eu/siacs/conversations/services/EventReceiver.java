@@ -8,6 +8,7 @@ public class EventReceiver extends BroadcastReceiver {
 	public void onReceive(Context context, Intent intent) {
 		Intent mIntentForService = new Intent(context,
 				XmppConnectionService.class);
+		mIntentForService.putExtra("ping", intent.getBooleanExtra("ping",false));
 		if ((intent.getAction() != null)
 				&& (intent.getAction()
 						.equals("android.intent.action.BOOT_COMPLETED"))) {

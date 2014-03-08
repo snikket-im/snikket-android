@@ -87,6 +87,9 @@ public class XmppConnection implements Runnable {
 	protected void connect() {
 		Log.d(LOGTAG, "connecting");
 		try {
+			tagReader = new XmlReader(wakeLock);
+			tagWriter = new TagWriter();
+			packetCallbacks.clear();
 			this.changeStatus(Account.STATUS_CONNECTING);
 			Bundle namePort = DNSHelper.getSRVRecord(account.getServer());
 			String srvRecordServer = namePort.getString("name");

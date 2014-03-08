@@ -64,16 +64,12 @@ public class OtrEngine implements OtrEngineHost {
 			PrivateKey privateKey = keyFactory.generatePrivate(privateKeySpec);
 			return new KeyPair(publicKey, privateKey);
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			return null;
 		} catch (NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			return null;
 		} catch (InvalidKeySpecException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			return null;
 		}
-		return null;
 	}
 	
 	private void saveKey() {

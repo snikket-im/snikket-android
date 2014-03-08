@@ -44,7 +44,6 @@ import eu.siacs.conversations.xmpp.OnTLSExceptionReceived;
 import eu.siacs.conversations.xmpp.PresencePacket;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import android.app.AlarmManager;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
@@ -70,6 +69,9 @@ public class XmppConnectionService extends Service {
 
 	public long startDate;
 
+	private static final int PING_INTERVAL = 300;
+	private static final int PING_TIMEOUT = 2;
+	
 	private List<Account> accounts;
 	private List<Conversation> conversations = null;
 
@@ -112,7 +114,9 @@ public class XmppConnectionService extends Service {
 						&& (packet.getBody().startsWith("?OTR"))) {
 					message = MessageParser.parseOtrChat(packet, account,
 							service);
-					message.markUnread();
+					if (message!=null) {
+						message.markUnread();
+					}
 				} else if (packet.hasChild("body")) {
 					message = MessageParser.parsePlainTextChat(packet, account,
 							service);
@@ -197,12 +201,13 @@ public class XmppConnectionService extends Service {
 						//
 					}
 				}
+				scheduleWakeupCall(PING_INTERVAL, true);
 			} else if (account.getStatus() == Account.STATUS_OFFLINE) {
 				Log.d(LOGTAG,"onStatusChanged offline");
 				databaseBackend.clearPresences(account);
 				if (!account.isOptionSet(Account.OPTION_DISABLED)) {
 					int timeToReconnect = mRandom.nextInt(50)+10;
-					scheduleWakeupCall(timeToReconnect);
+					scheduleWakeupCall(timeToReconnect,false);
 				}
 
 			}
@@ -408,6 +413,11 @@ public class XmppConnectionService extends Service {
 				if (account.getStatus()==Account.STATUS_OFFLINE) {
 					Thread thread = new Thread(account.getXmppConnection());
 					thread.start();
+				} else {
+					if (intent.getBooleanExtra("ping", false)) {
+						Log.d(LOGTAG,"start service ping");
+						ping(account,PING_TIMEOUT);
+					}
 				}
 			}
 		}
@@ -438,15 +448,21 @@ public class XmppConnectionService extends Service {
 		}
 	}
 	
-	protected void scheduleWakeupCall(int seconds) {
+	protected void scheduleWakeupCall(int seconds,boolean ping) {
 		Context context = getApplicationContext();
 		AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 		Intent intent = new Intent(context, EventReceiver.class);
+		intent.putExtra("ping", ping);
 		PendingIntent alarmIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
 		alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,
 		        SystemClock.elapsedRealtime() +
 		        seconds * 1000, alarmIntent);
-		Log.d(LOGTAG,"wake up call scheduled in "+seconds+" seconds");
+		if (ping) {
+			Log.d(LOGTAG,"schedule ping in "+seconds+" seconds");
+		} else {
+			Log.d(LOGTAG,"schedule reconnect in "+seconds+" seconds");
+		}
+		
 	}
 
 	public XmppConnection createConnection(Account account) {
@@ -912,6 +928,7 @@ public class XmppConnectionService extends Service {
 	}
 	
 	private OnRenameListener renameListener = null;
+	private boolean pongReceived;
 	public void setOnRenameListener(OnRenameListener listener) {
 		this.renameListener = listener;
 	}
@@ -1126,5 +1143,46 @@ public class XmppConnectionService extends Service {
 			Thread thread = new Thread(account.getXmppConnection());
 			thread.start();
 		}
+	}
+	
+	public void ping(final Account account,final int timeout) {
+		Log.d(LOGTAG,account.getJid()+": sending ping");
+		IqPacket iq = new IqPacket(IqPacket.TYPE_GET);
+		Element ping = new Element("ping");
+		iq.setAttribute("from",account.getFullJid());
+		ping.setAttribute("xmlns", "urn:xmpp:ping");
+		iq.addChild(ping);
+		pongReceived = false;
+		account.getXmppConnection().sendIqPacket(iq, new OnIqPacketReceived() {
+			
+			@Override
+			public void onIqPacketReceived(Account account, IqPacket packet) {
+				pongReceived = true;
+			}
+		});
+		new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				int i = 0;
+				while(i <= (5 * timeout)) {
+					if (pongReceived) {
+						scheduleWakeupCall(PING_INTERVAL,true);
+						break;
+					}
+					try {
+						Thread.sleep(200);
+					} catch (InterruptedException e) {
+						
+					}
+					++i;
+				}
+				if (!pongReceived) {
+					Log.d("xmppService",account.getJid()+" no pong after "+timeout+" seconds");
+					reconnectAccount(account);
+				}
+				
+			}
+		}).start();
 	}
 }
