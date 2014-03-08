@@ -131,6 +131,9 @@ public class XmppConnectionService extends Service {
 				if (message != null) {
 					if (message.getStatus() == Message.STATUS_RECIEVED) {
 						message.markUnread();
+					} else {
+						message.getConversation().markRead();
+						notify = false;
 					}
 				}
 			} else if (packet.getType() == MessagePacket.TYPE_ERROR) {
