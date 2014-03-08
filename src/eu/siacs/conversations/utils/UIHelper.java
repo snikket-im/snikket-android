@@ -107,8 +107,8 @@ public class UIHelper {
 		return bitmap;
 	}
 
-	public static Notification getUnreadMessageNotification(Context context,
-			List<Conversation> conversations) {
+	public static Notification getNotification(Context context,
+			List<Conversation> conversations, boolean notify) {
 
 		String targetUuid = "";
 		List<Conversation> unread = new ArrayList<Conversation>();
@@ -169,9 +169,11 @@ public class UIHelper {
 			mBuilder.setStyle(style);
 		}
 		mBuilder.setSmallIcon(R.drawable.notification);
-		mBuilder.setLights(0xffffffff, 2000, 4000);
-		if (ringtone != null) {
-			mBuilder.setSound(Uri.parse(ringtone));
+		if (notify) {
+			mBuilder.setLights(0xffffffff, 2000, 4000);
+			if (ringtone != null) {
+				mBuilder.setSound(Uri.parse(ringtone));
+			}
 		}
 
 		TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);

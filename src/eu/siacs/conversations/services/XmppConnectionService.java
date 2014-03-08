@@ -101,33 +101,37 @@ public class XmppConnectionService extends Service {
 		public void onMessagePacketReceived(Account account,
 				MessagePacket packet) {
 			Message message = null;
-			boolean notify = false;
+			boolean notify = true;
 			if ((packet.getType() == MessagePacket.TYPE_CHAT)) {
 				String pgpBody = MessageParser.getPgpBody(packet);
 				if (pgpBody != null) {
 					message = MessageParser.parsePgpChat(pgpBody, packet,
 							account, service);
-					notify = false;
+					message.markUnread();
 				} else if (packet.hasChild("body")
 						&& (packet.getBody().startsWith("?OTR"))) {
 					message = MessageParser.parseOtrChat(packet, account,
 							service);
-					notify = true;
+					message.markUnread();
 				} else if (packet.hasChild("body")) {
 					message = MessageParser.parsePlainTextChat(packet, account,
 							service);
-					notify = true;
+					message.markUnread();
 				} else if (packet.hasChild("received")
 						|| (packet.hasChild("sent"))) {
 					message = MessageParser.parseCarbonMessage(packet, account,
 							service);
+					message.getConversation().markRead();
+					notify = false;
 				}
 
 			} else if (packet.getType() == MessagePacket.TYPE_GROUPCHAT) {
 				message = MessageParser
 						.parseGroupchat(packet, account, service);
 				if (message != null) {
-					notify = (message.getStatus() == Message.STATUS_RECIEVED);
+					if (message.getStatus() == Message.STATUS_RECIEVED) {
+						message.markUnread();
+					}
 				}
 			} else if (packet.getType() == MessagePacket.TYPE_ERROR) {
 				message = MessageParser.parseError(packet, account, service);
@@ -149,9 +153,6 @@ public class XmppConnectionService extends Service {
 					Log.d(LOGTAG, "error trying to parse date" + e.getMessage());
 				}
 			}
-			if (notify) {
-				message.markUnread();
-			}
 			Conversation conversation = message.getConversation();
 			conversation.getMessages().add(message);
 			if (packet.getType() != MessagePacket.TYPE_ERROR) {
@@ -160,12 +161,10 @@ public class XmppConnectionService extends Service {
 			if (convChangedListener != null) {
 				convChangedListener.onConversationListChanged();
 			} else {
-				if (notify) {
 					NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 					mNotificationManager.notify(2342, UIHelper
-							.getUnreadMessageNotification(
-									getApplicationContext(),getConversations()));
-				}
+							.getNotification(
+									getApplicationContext(),getConversations(),notify));
 			}
 		}
 	};
