@@ -21,7 +21,8 @@
         <CheckBoxPreference 
             android:key="show_notification"
             android:title="Notification"
-            android:summary="Show notification in status bar when a new message arrives"
+            android:summary="Notify when a new message arrives"
+            android:defaultValue="true"
             />
         <CheckBoxPreference
             android:key="vibrate_on_notification"
@@ -33,7 +34,8 @@
             android:title="Sound"
             android:ringtoneType="notification"
             android:dependency="show_notification"
-            android:summary="Play ringtone with notification"/>
+            android:summary="Play ringtone with notification"
+            android:defaultValue="content://settings/system/notification_sound"/>
         <CheckBoxPreference 
             android:key="notify_in_conversation_when_highlighted"
             android:title="Conference notification"
