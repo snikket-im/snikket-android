@@ -3,6 +3,7 @@ package eu.siacs.conversations.ui;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.services.XmppConnectionService.XmppConnectionBinder;
+import eu.siacs.conversations.utils.ExceptionHelper;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
@@ -10,6 +11,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,6 +21,7 @@ public abstract class XmppActivity extends Activity {
 	public XmppConnectionService xmppConnectionService;
 	public boolean xmppConnectionServiceBound = false;
 	protected boolean handledViewIntent = false;
+	
 	protected ServiceConnection mConnection = new ServiceConnection() {
 
 		@Override
@@ -92,5 +95,11 @@ public abstract class XmppActivity extends Activity {
 			break;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		ExceptionHelper.init(getApplicationContext());
 	}
 }

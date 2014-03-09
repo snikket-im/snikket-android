@@ -29,6 +29,7 @@ import eu.siacs.conversations.persistance.OnPhoneContactsMerged;
 import eu.siacs.conversations.ui.OnAccountListChangedListener;
 import eu.siacs.conversations.ui.OnConversationListChangedListener;
 import eu.siacs.conversations.ui.OnRosterFetchedListener;
+import eu.siacs.conversations.utils.ExceptionHelper;
 import eu.siacs.conversations.utils.MessageParser;
 import eu.siacs.conversations.utils.OnPhoneContactsLoadedListener;
 import eu.siacs.conversations.utils.PhoneHelper;
@@ -426,6 +427,7 @@ public class XmppConnectionService extends Service {
 
 	@Override
 	public void onCreate() {
+		ExceptionHelper.init(getApplicationContext());
 		databaseBackend = DatabaseBackend.getInstance(getApplicationContext());
 		this.accounts = databaseBackend.getAccounts();
 
