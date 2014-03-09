@@ -610,7 +610,6 @@ public class ConversationFragment extends Fragment {
 						return false;
 					}
 					try {
-						Log.d("gultsch","calling to decrypt message id #"+params[i].getUuid());
 						decrypted = activity.xmppConnectionService.getPgpEngine().decrypt(body);
 					} catch (UserInputRequiredException e) {
 						askForPassphraseIntent = e.getPendingIntent().getIntentSender();

@@ -34,7 +34,6 @@ import android.util.Log;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.DNSHelper;
-import eu.siacs.conversations.utils.SASL;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Tag;
 import eu.siacs.conversations.xml.TagWriter;
@@ -361,7 +360,7 @@ public class XmppConnection implements Runnable {
 	}
 
 	private void sendSaslAuth() throws IOException, XmlPullParserException {
-		String saslString = SASL.plain(account.getUsername(),
+		String saslString = CryptoHelper.saslPlain(account.getUsername(),
 				account.getPassword());
 		Element auth = new Element("auth");
 		auth.setAttribute("xmlns", "urn:ietf:params:xml:ns:xmpp-sasl");
