@@ -604,10 +604,12 @@ public class ConversationFragment extends Fragment {
 				if (params[i].getEncryption() == Message.ENCRYPTION_PGP) {
 					String body = params[i].getBody();
 					String decrypted = null;
+					if (activity==null) {
+						return false;
+					} else if (!activity.xmppConnectionServiceBound) {
+						return false;
+					}
 					try {
-						if (activity==null) {
-							return false;
-						}
 						Log.d("gultsch","calling to decrypt message id #"+params[i].getUuid());
 						decrypted = activity.xmppConnectionService.getPgpEngine().decrypt(body);
 					} catch (UserInputRequiredException e) {
