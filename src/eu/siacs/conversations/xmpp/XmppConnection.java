@@ -402,6 +402,9 @@ public class XmppConnection implements Runnable {
 		IqPacket iq = new IqPacket(IqPacket.TYPE_SET);
 		Element bind = new Element("bind");
 		bind.setAttribute("xmlns", "urn:ietf:params:xml:ns:xmpp-bind");
+		Element resource = new Element("resource");
+		resource.setContent("Conversations");
+		bind.addChild(resource);
 		iq.addChild(bind);
 		this.sendIqPacket(iq, new OnIqPacketReceived() {
 			@Override
