@@ -407,9 +407,8 @@ public class ConversationActivity extends XmppActivity {
 	
 	public void onStart() {
 		super.onStart();
-		if (xmppConnectionServiceBound) {
-			xmppConnectionService.setOnConversationListChangedListener(this.onConvChanged);
-		}
+		this.registerListener();
+		xmppConnectionService.setOnConversationListChangedListener(this.onConvChanged);
 		if (conversationList.size()>=1) {
 			onConvChanged.onConversationListChanged();
 		}
@@ -427,8 +426,7 @@ public class ConversationActivity extends XmppActivity {
 	@Override
 	void onBackendConnected() {
 		
-		xmppConnectionService.setOnConversationListChangedListener(this.onConvChanged);
-		
+		this.registerListener();
 		if (conversationList.size()==0) {
 			conversationList.addAll(xmppConnectionService
 					.getConversations());
@@ -472,7 +470,13 @@ public class ConversationActivity extends XmppActivity {
 			}
 		}
 	}
-	 @Override
+	public void registerListener() {
+		 if (xmppConnectionServiceBound) {
+			 xmppConnectionService.setOnConversationListChangedListener(this.onConvChanged);
+		 }
+	}
+
+	@Override
 	 protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		 super.onActivityResult(requestCode, resultCode, data);
 		 if (resultCode == RESULT_OK) {
