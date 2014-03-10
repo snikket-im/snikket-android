@@ -11,7 +11,7 @@ import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xml.Element;
-import eu.siacs.conversations.xmpp.MessagePacket;
+import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
 
 public class MessageParser {
 	

@@ -5,7 +5,7 @@ import java.util.List;
 
 import eu.siacs.conversations.entities.MucOptions.User;
 import eu.siacs.conversations.xml.Element;
-import eu.siacs.conversations.xmpp.PresencePacket;
+import eu.siacs.conversations.xmpp.stanzas.PresencePacket;
 import android.annotation.SuppressLint;
 import android.util.Log;
 

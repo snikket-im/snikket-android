@@ -5,25 +5,29 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import android.util.Log;
+import eu.siacs.conversations.xmpp.stanzas.AbstractStanza;
 
 public class TagWriter {
 	
 	private OutputStreamWriter outputStream;
-	private LinkedBlockingQueue<String> writeQueue = new LinkedBlockingQueue<String>();
-	private Thread writer = new Thread() {
-		public boolean shouldStop = false;
+	private boolean finshed = false;
+	private LinkedBlockingQueue<AbstractStanza> writeQueue = new LinkedBlockingQueue<AbstractStanza>();
+	private Thread asyncStanzaWriter = new Thread() {
+		private boolean shouldStop = false;
 		@Override
 		public void run() {
 			while(!shouldStop) {
+				if ((finshed)&&(writeQueue.size() == 0)) {
+					return;
+				}
 				try {
-					String output = writeQueue.take();
-					outputStream.write(output);
+					AbstractStanza output = writeQueue.take();
+					outputStream.write(output.toString());
 					outputStream.flush();
 				} catch (IOException e) {
-					Log.d("xmppService", "error writing to stream");
+					shouldStop = true;
 				} catch (InterruptedException e) {
-					
+					shouldStop = true;
 				}
 			}
 		}
@@ -31,34 +35,49 @@ public class TagWriter {
 	
 	
 	public TagWriter() {
-		
 	}
 	
 	public TagWriter(OutputStream out) {
 		this.setOutputStream(out);
-		writer.start();
 	}
 	
 	public void setOutputStream(OutputStream out) {
 		this.outputStream = new OutputStreamWriter(out);
-		if (!writer.isAlive()) writer.start();
 	}
 	
-	public TagWriter beginDocument() {
-		writeQueue.add("<?xml version='1.0'?>");
+	public TagWriter beginDocument() throws IOException {
+		outputStream.write("<?xml version='1.0'?>");
+		outputStream.flush();
 		return this;
 	}
 	
-	public TagWriter writeTag(Tag tag) {
-		writeQueue.add(tag.toString());
+	public TagWriter writeTag(Tag tag) throws IOException {
+		outputStream.write(tag.toString());
+		outputStream.flush();
 		return this;
 	}
 
-	public void writeString(String string) {
-		writeQueue.add(string);
+	public TagWriter writeElement(Element element) throws IOException {
+		outputStream.write(element.toString());
+		outputStream.flush();
+		return this;
 	}
-
-	public void writeElement(Element element) {
-		writeQueue.add(element.toString());
+	
+	public TagWriter writeStanzaAsync(AbstractStanza stanza) {
+		if (finshed) {
+			return this;
+		} else {
+			if (!asyncStanzaWriter.isAlive()) asyncStanzaWriter.start();
+			writeQueue.add(stanza);
+			return this;
+		}
+	}
+	
+	public void finish() {
+		this.finshed = true;
+	}
+	
+	public boolean finished() {
+		return (this.writeQueue.size() == 0);
 	}
 }

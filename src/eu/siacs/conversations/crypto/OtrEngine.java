@@ -20,7 +20,7 @@ import android.util.Log;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.persistance.DatabaseBackend;
 import eu.siacs.conversations.xml.Element;
-import eu.siacs.conversations.xmpp.MessagePacket;
+import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
 
 import net.java.otr4j.OtrEngineHost;
 import net.java.otr4j.OtrException;
