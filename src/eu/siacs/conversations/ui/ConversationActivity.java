@@ -408,7 +408,6 @@ public class ConversationActivity extends XmppActivity {
 	public void onStart() {
 		super.onStart();
 		this.registerListener();
-		xmppConnectionService.setOnConversationListChangedListener(this.onConvChanged);
 		if (conversationList.size()>=1) {
 			onConvChanged.onConversationListChanged();
 		}
