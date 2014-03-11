@@ -95,14 +95,16 @@ public class XmppConnection implements Runnable {
 	}
 
 	protected void changeStatus(int nextStatus) {
-		account.setStatus(nextStatus);
-		if (statusListener != null) {
-			statusListener.onStatusChanged(account);
+		if (account.getStatus() != nextStatus) {
+			account.setStatus(nextStatus);
+			if (statusListener != null) {
+				statusListener.onStatusChanged(account);
+			}
 		}
 	}
 
 	protected void connect() {
-		Log.d(LOGTAG, "connecting");
+		Log.d(LOGTAG,account.getJid()+ ": connecting");
 		try {
 			tagReader = new XmlReader(wakeLock);
 			tagWriter = new TagWriter();
@@ -165,7 +167,6 @@ public class XmppConnection implements Runnable {
 	@Override
 	public void run() {
 		connect();
-		Log.d(LOGTAG, "end run");
 	}
 
 	private void processStream(Tag currentTag) throws XmlPullParserException,
@@ -598,10 +599,10 @@ public class XmppConnection implements Runnable {
 	
 	public void sendPing() {
 		if (streamFeatures.hasChild("sm")) {
-			Log.d(LOGTAG,"sending r as ping");
+			Log.d(LOGTAG,account.getJid()+": sending r as ping");
 			tagWriter.writeStanzaAsync(new RequestPacket());
 		} else {
-			Log.d(LOGTAG,"sending iq as ping");
+			Log.d(LOGTAG,account.getJid()+": sending iq as ping");
 			IqPacket iq = new IqPacket(IqPacket.TYPE_GET);
 			Element ping = new Element("ping");
 			iq.setAttribute("from",account.getFullJid());

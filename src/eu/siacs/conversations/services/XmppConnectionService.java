@@ -69,7 +69,7 @@ public class XmppConnectionService extends Service {
 
 	public long startDate;
 
-	private static final int PING_MAX_INTERVAL = 30;
+	private static final int PING_MAX_INTERVAL = 300;
 	private static final int PING_MIN_INTERVAL = 10;
 	private static final int PING_TIMEOUT = 2;
 
@@ -201,7 +201,6 @@ public class XmppConnectionService extends Service {
 				}
 				scheduleWakeupCall(PING_MAX_INTERVAL, true);
 			} else if (account.getStatus() == Account.STATUS_OFFLINE) {
-				Log.d(LOGTAG, "onStatusChanged offline");
 				databaseBackend.clearPresences(account);
 				if (!account.isOptionSet(Account.OPTION_DISABLED)) {
 					int timeToReconnect = mRandom.nextInt(50) + 10;
@@ -493,7 +492,7 @@ public class XmppConnectionService extends Service {
 				this.pendingPingIntent = PendingIntent.getBroadcast(context, 0,
 						this.pingIntent, 0);
 				alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,timeToWake, pendingPingIntent);
-				Log.d(LOGTAG,"schedule ping in "+seconds+" seconds");
+				//Log.d(LOGTAG,"schedule ping in "+seconds+" seconds");
 			} else {
 				long scheduledTime = this.pingIntent.getLongExtra("time", 0);
 				if (scheduledTime<SystemClock.elapsedRealtime() || (scheduledTime > timeToWake)) {
@@ -502,7 +501,7 @@ public class XmppConnectionService extends Service {
 					this.pendingPingIntent = PendingIntent.getBroadcast(context, 0,
 							this.pingIntent, 0);
 					alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,timeToWake, pendingPingIntent);
-					Log.d(LOGTAG,"reschedule old ping to ping in "+seconds+" seconds");
+					//Log.d(LOGTAG,"reschedule old ping to ping in "+seconds+" seconds");
 				}
 			}
 		} else {
@@ -1078,13 +1077,13 @@ public class XmppConnectionService extends Service {
 					public void run() {
 						account.getXmppConnection().disconnect(false);
 						Log.d(LOGTAG, "disconnected account: " + account.getJid());
-						account.setXmppConnection(null);
+						//account.setXmppConnection(null);
 					}
 				}).start();
 			} else {
 				account.getXmppConnection().disconnect(false);
 				Log.d(LOGTAG, "disconnected account: " + account.getJid());
-				account.setXmppConnection(null);
+				//account.setXmppConnection(null);
 			}
 		}
 	}
