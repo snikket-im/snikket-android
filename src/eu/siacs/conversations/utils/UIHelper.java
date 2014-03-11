@@ -1,9 +1,11 @@
 package eu.siacs.conversations.utils;
 
+import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
@@ -24,6 +26,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
@@ -53,16 +56,16 @@ public class UIHelper {
 		} else if (difference < 60 * 10) {
 			return difference / 60 + " min ago";
 		} else if (difference < 60 * 60 * 24) {
-			SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+			SimpleDateFormat sdf = new SimpleDateFormat("HH:mm",Locale.US);
 			return sdf.format(date);
 		} else {
-			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd");
+			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd",Locale.US);
 			return sdf.format(date);
 		}
 	}
 
 	public static Bitmap getUnknownContactPicture(String name, int size) {
-		String firstLetter = name.substring(0, 1).toUpperCase();
+		String firstLetter = name.substring(0, 1).toUpperCase(Locale.US);
 
 		int holoColors[] = { 0xFF1da9da, 0xFFb368d9, 0xFF83b600, 0xFFffa713,
 				0xFFe92727 };
@@ -86,6 +89,19 @@ public class UIHelper {
 				+ (rect.height() / 2), paint);
 
 		return bitmap;
+	}
+	
+	public static Bitmap getContactPicture(Contact contact, int size, Context context) {
+		String uri = contact.getProfilePhoto();
+		if (uri==null) {
+			return getUnknownContactPicture(contact.getDisplayName(), size);
+		}
+		try {
+			Bitmap bm = BitmapFactory.decodeStream(context.getContentResolver().openInputStream(Uri.parse(uri)));
+			return Bitmap.createScaledBitmap(bm, size, size, false);
+		} catch (FileNotFoundException e) {
+			return getUnknownContactPicture(contact.getDisplayName(), size);
+		}
 	}
 
 	public static Bitmap getErrorPicture(int size) {
@@ -134,10 +150,12 @@ public class UIHelper {
 		} else if (unread.size() == 1) {
 			Conversation conversation = unread.get(0);
 			targetUuid = conversation.getUuid();
-			mBuilder.setLargeIcon(UIHelper.getUnknownContactPicture(
+			/*mBuilder.setLargeIcon(UIHelper.getUnknownContactPicture(
 					conversation.getName(),
 					(int) res
-							.getDimension(android.R.dimen.notification_large_icon_width)));
+							.getDimension(android.R.dimen.notification_large_icon_width)));*/
+			mBuilder.setLargeIcon(UIHelper.getContactPicture(conversation.getContact(), (int) res
+							.getDimension(android.R.dimen.notification_large_icon_width), context));
 			mBuilder.setContentTitle(conversation.getName());
 			if (notify) {
 				mBuilder.setTicker(conversation.getLatestMessage().getBody().trim());

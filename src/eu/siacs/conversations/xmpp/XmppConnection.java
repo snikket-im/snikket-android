@@ -193,7 +193,7 @@ public class XmppConnection implements Runnable {
 				processStream(tagReader.readTag());
 				break;
 			} else if (nextTag.isStart("failure")) {
-				Element failure = tagReader.readElement(nextTag);
+				tagReader.readElement(nextTag);
 				changeStatus(Account.STATUS_UNAUTHORIZED);
 			} else if (nextTag.isStart("enabled")) {
 				this.stanzasSent = 0;
@@ -224,6 +224,12 @@ public class XmppConnection implements Runnable {
 					this.stanzasSent = serverSequence;
 				}
 				//Log.d(LOGTAG,"server ack"+ack.toString()+" ("+this.stanzasSent+")");
+			} else if (nextTag.isStart("failed")) {
+				Log.d(LOGTAG,account.getJid()+": resumption failed");
+				streamId = null;
+				if (account.getStatus() != Account.STATUS_ONLINE) {
+					sendBindRequest();
+				}
 			} else if (nextTag.isStart("iq")) {
 				processIq(nextTag);
 			} else if (nextTag.isStart("message")) {
