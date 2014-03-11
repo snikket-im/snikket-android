@@ -292,7 +292,7 @@ public class XmppConnectionService extends Service {
 						// TODO: ask user to handle it maybe
 					}
 				} else {
-					Log.d(LOGTAG, packet.toString());
+					//Log.d(LOGTAG, packet.toString());
 				}
 				replaceContactInConversation(contact.getJid(), contact);
 			}
@@ -414,9 +414,15 @@ public class XmppConnectionService extends Service {
 			if (!account.isOptionSet(Account.OPTION_DISABLED)) {
 				if (!isConnected) {
 					account.setStatus(Account.STATUS_NO_INTERNET);
+					if (statusListener!=null) {
+						statusListener.onStatusChanged(account);
+					}
 				} else {
 					if (account.getStatus() == Account.STATUS_NO_INTERNET) {
 						account.setStatus(Account.STATUS_OFFLINE);
+						if (statusListener!=null) {
+							statusListener.onStatusChanged(account);
+						}
 					}
 
 					// TODO 3 remaining cases
@@ -440,6 +446,7 @@ public class XmppConnectionService extends Service {
 						new Thread(account.getXmppConnection()).start();
 					} else {
 						Log.d(LOGTAG,account.getJid()+": status="+account.getStatus());
+						// TODO notify user of ssl cert problem or auth problem or what ever
 					}
 					//in any case. reschedule wakup call
 					this.scheduleWakeupCall(PING_MAX_INTERVAL, true);
@@ -1053,7 +1060,7 @@ public class XmppConnectionService extends Service {
 	}
 
 	public void disconnect(final Account account, boolean blocking) {
-		if (account.getStatus() == Account.STATUS_ONLINE) {
+		if ((account.getStatus() == Account.STATUS_ONLINE)||(account.getStatus() == Account.STATUS_DISABLED)) {
 			List<Conversation> conversations = getConversations();
 			for (int i = 0; i < conversations.size(); i++) {
 				Conversation conversation = conversations.get(i);
