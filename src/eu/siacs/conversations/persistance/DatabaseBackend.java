@@ -3,6 +3,7 @@ package eu.siacs.conversations.persistance;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
@@ -120,7 +121,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 	}
 
 	public List<Message> getMessages(Conversation conversation, int limit) {
-		List<Message> list = new ArrayList<Message>();
+		List<Message> list = new CopyOnWriteArrayList<Message>();
 		SQLiteDatabase db = this.getReadableDatabase();
 		String[] selectionArgs = { conversation.getUuid() };
 		Cursor cursor = db.query(Message.TABLENAME, null, Message.CONVERSATION
