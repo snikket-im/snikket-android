@@ -1,8 +1,7 @@
-package eu.siacs.conversations.xmpp;
+package eu.siacs.conversations.xmpp.stanzas;
 
-import eu.siacs.conversations.xml.Element;
 
-public class IqPacket extends Element {
+public class IqPacket extends AbstractStanza {
 	
 	public static final int TYPE_SET = 0;
 	public static final int TYPE_RESULT = 1;
@@ -31,10 +30,6 @@ public class IqPacket extends Element {
 	
 	public IqPacket() {
 		super("iq");
-	}
-
-	public String getId() {
-		return this.getAttribute("id");
 	}
 
 }

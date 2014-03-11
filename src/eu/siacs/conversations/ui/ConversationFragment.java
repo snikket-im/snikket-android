@@ -332,6 +332,9 @@ public class ConversationFragment extends Fragment {
 		final ConversationActivity activity = (ConversationActivity) getActivity();
 		activity.registerListener();
 		this.conversation = activity.getSelectedConversation();
+		if (this.conversation==null) {
+			return;
+		}
 		this.selfBitmap = findSelfPicture();
 		updateMessages();
 		// rendering complete. now go tell activity to close pane
@@ -374,7 +377,6 @@ public class ConversationFragment extends Fragment {
 	public void updateMessages() {
 		ConversationActivity activity = (ConversationActivity) getActivity();
 		List<Message> encryptedMessages = new LinkedList<Message>();
-		// TODO this.conversation could be null?!
 		for(Message message : this.conversation.getMessages()) {
 			if (message.getEncryption() == Message.ENCRYPTION_PGP) {
 				encryptedMessages.add(message);

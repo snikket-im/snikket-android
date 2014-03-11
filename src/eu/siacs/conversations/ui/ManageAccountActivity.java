@@ -48,7 +48,6 @@ public class ManageAccountActivity extends XmppActivity {
 
 		@Override
 		public void onAccountListChangedListener() {
-			Log.d("xmppService", "ui on account list changed listener");
 			accountList.clear();
 			accountList.addAll(xmppConnectionService.getAccounts());
 			runOnUiThread(new Runnable() {
