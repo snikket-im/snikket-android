@@ -29,9 +29,9 @@ import javax.net.ssl.X509TrustManager;
 import org.json.JSONException;
 import org.xmlpull.v1.XmlPullParserException;
 
-import android.content.IntentSender.SendIntentException;
 import android.os.Bundle;
 import android.os.PowerManager;
+import android.os.SystemClock;
 import android.util.Log;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.utils.CryptoHelper;
@@ -71,6 +71,9 @@ public class XmppConnection implements Runnable {
 	
 	private int stanzasReceived = 0;
 	private int stanzasSent = 0;
+	
+	public long lastPaketReceived = 0;
+	public long lastPingSent = 0;
 
 	private static final int PACKET_IQ = 0;
 	private static final int PACKET_MESSAGE = 1;
@@ -214,6 +217,7 @@ public class XmppConnection implements Runnable {
 				tagWriter.writeStanzaAsync(ack);
 			} else if (nextTag.isStart("a")) {
 				Element ack = tagReader.readElement(nextTag);
+				lastPaketReceived = SystemClock.elapsedRealtime();
 				int serverSequence = Integer.parseInt(ack.getAttribute("h"));
 				if (serverSequence>this.stanzasSent) {
 					this.stanzasSent = serverSequence;
@@ -265,6 +269,7 @@ public class XmppConnection implements Runnable {
 			nextTag = tagReader.readTag();
 		}
 		++stanzasReceived;
+		lastPaketReceived = SystemClock.elapsedRealtime();
 		return element;
 	}
 
@@ -580,6 +585,7 @@ public class XmppConnection implements Runnable {
 	}
 	
 	private synchronized void sendPacket(final AbstractStanza packet, PacketReceived callback) {
+		// TODO dont increment stanza count if packet = request packet or ack;
 		++stanzasSent;
 		tagWriter.writeStanzaAsync(packet);
 		if (callback != null) {
@@ -587,6 +593,21 @@ public class XmppConnection implements Runnable {
 				packet.setId(nextRandomId());
 			}
 			packetCallbacks.put(packet.getId(), callback);
+		}
+	}
+	
+	public void sendPing() {
+		if (streamFeatures.hasChild("sm")) {
+			Log.d(LOGTAG,"sending r as ping");
+			tagWriter.writeStanzaAsync(new RequestPacket());
+		} else {
+			Log.d(LOGTAG,"sending iq as ping");
+			IqPacket iq = new IqPacket(IqPacket.TYPE_GET);
+			Element ping = new Element("ping");
+			iq.setAttribute("from",account.getFullJid());
+			ping.setAttribute("xmlns", "urn:xmpp:ping");
+			iq.addChild(ping);
+			this.sendIqPacket(iq, null);
 		}
 	}
 

@@ -144,7 +144,11 @@ public class MucOptions {
 		if (split.length == 2) {
 			return split[1];
 		} else {
-			return conversation.getAccount().getUsername();
+			if (conversation.getAccount()!=null) {
+				return conversation.getAccount().getUsername();
+			} else {
+				return null;
+			}
 		}
 	}
 	
