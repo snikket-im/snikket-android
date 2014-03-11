@@ -2,7 +2,7 @@ package eu.siacs.conversations.ui;
 
 import java.math.BigInteger;
 import java.util.Iterator;
-import java.util.zip.Inflater;
+import java.util.Locale;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -244,7 +244,7 @@ public class ContactDetailsActivity extends XmppActivity {
 			keyType.setText("PGP Key ID");
 			BigInteger bi = new BigInteger("" + contact.getPgpKeyId());
 			StringBuilder builder = new StringBuilder(bi.toString(16)
-					.toUpperCase());
+					.toUpperCase(Locale.US));
 			builder.insert(8, " ");
 			key.setText(builder.toString());
 			keys.addView(view);
