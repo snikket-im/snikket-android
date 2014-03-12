@@ -232,13 +232,17 @@ public class Conversation extends AbstractEntity {
 		this.otrSession = null;
 	}
 	
-	public void endOtrIfNeeded() throws OtrException {
+	public void endOtrIfNeeded() {
 		if (this.otrSession!=null) {
 			if (this.otrSession.getSessionStatus() == SessionStatus.ENCRYPTED) {
-				this.otrSession.endSession();
+				try {
+					this.otrSession.endSession();
+					this.resetOtrSession();
+				} catch (OtrException e) {
+					this.resetOtrSession();
+				}
 			}
 		}
-		this.resetOtrSession();
 	}
 
 	public boolean hasValidOtrSession() {

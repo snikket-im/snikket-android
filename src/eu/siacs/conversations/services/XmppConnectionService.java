@@ -567,6 +567,7 @@ public class XmppConnectionService extends Service {
 				saveInDb = true;
 				addToConversation = true;
 			} else if (message.getEncryption() == Message.ENCRYPTION_PGP) {
+				message.getConversation().endOtrIfNeeded();
 				long keyId = message.getConversation().getContact()
 						.getPgpKeyId();
 				packet = new MessagePacket();
@@ -586,6 +587,7 @@ public class XmppConnectionService extends Service {
 				saveInDb = true;
 				addToConversation = true;
 			} else {
+				message.getConversation().endOtrIfNeeded();
 				// don't encrypt
 				if (message.getConversation().getMode() == Conversation.MODE_SINGLE) {
 					message.setStatus(Message.STATUS_SEND);
@@ -873,13 +875,7 @@ public class XmppConnectionService extends Service {
 		if (conversation.getMode() == Conversation.MODE_MULTI) {
 			leaveMuc(conversation);
 		} else {
-			try {
-				conversation.endOtrIfNeeded();
-			} catch (OtrException e) {
-				Log.d(LOGTAG,
-						"error ending otr session for "
-								+ conversation.getName());
-			}
+			conversation.endOtrIfNeeded();
 		}
 		this.databaseBackend.updateConversation(conversation);
 		this.conversations.remove(conversation);
@@ -1068,12 +1064,7 @@ public class XmppConnectionService extends Service {
 					if (conversation.getMode() == Conversation.MODE_MULTI) {
 						leaveMuc(conversation);
 					} else {
-						try {
-							conversation.endOtrIfNeeded();
-						} catch (OtrException e) {
-							Log.d(LOGTAG, "error ending otr session for "
-									+ conversation.getName());
-						}
+						conversation.endOtrIfNeeded();
 					}
 				}
 			}
