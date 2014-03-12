@@ -72,6 +72,7 @@ public class XmppConnectionService extends Service {
 	private static final int PING_MAX_INTERVAL = 300;
 	private static final int PING_MIN_INTERVAL = 10;
 	private static final int PING_TIMEOUT = 2;
+	private static final int CONNECT_TIMEOUT = 60;
 
 	private List<Account> accounts;
 	private List<Conversation> conversations = null;
@@ -395,15 +396,7 @@ public class XmppConnectionService extends Service {
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		Log.d(LOGTAG,"calling start service. caller was:"+intent.getAction());
-		
-		// internet and online last_received - list_ping >= max_ping : ping
-		// internet and online last_ping - last_received >= ping_timeout :
-		// reconnect
-		// internet and offline and enabled : connect (Threat start)
-
-		// no internet - set no internet
-
+		//Log.d(LOGTAG,"calling start service. caller was:"+intent.getAction());
 		ConnectivityManager cm = (ConnectivityManager) getApplicationContext()
 				.getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
@@ -431,7 +424,7 @@ public class XmppConnectionService extends Service {
 						long lastSent = account.getXmppConnection().lastPingSent;
 						if (lastSent - lastReceived >= PING_TIMEOUT * 1000) {
 							Log.d(LOGTAG, account.getJid() + ": ping timeout");
-							this.reconnectAccount(account);
+							this.reconnectAccount(account,true);
 						} else if (SystemClock.elapsedRealtime() - lastReceived >= PING_MIN_INTERVAL * 1000) {
 							account.getXmppConnection().sendPing();
 							account.getXmppConnection().lastPingSent = SystemClock.elapsedRealtime();
@@ -444,6 +437,9 @@ public class XmppConnectionService extends Service {
 						}
 						account.getXmppConnection().lastPingSent = SystemClock.elapsedRealtime();
 						new Thread(account.getXmppConnection()).start();
+					} else if ((account.getStatus() == Account.STATUS_CONNECTING)&&((SystemClock.elapsedRealtime() - account.getXmppConnection().lastConnect) / 1000 >= CONNECT_TIMEOUT)) {
+						Log.d(LOGTAG,account.getJid()+": time out during connect reconnecting");
+						reconnectAccount(account,true);
 					} else {
 						Log.d(LOGTAG,account.getJid()+": status="+account.getStatus());
 						// TODO notify user of ssl cert problem or auth problem or what ever
@@ -912,7 +908,7 @@ public class XmppConnectionService extends Service {
 
 	public void updateAccount(Account account) {
 		databaseBackend.updateAccount(account);
-		reconnectAccount(account);
+		reconnectAccount(account,false);
 		if (accountChangedListener != null)
 			accountChangedListener.onAccountListChangedListener();
 	}
@@ -1055,7 +1051,7 @@ public class XmppConnectionService extends Service {
 		conversation.getMucOptions().setOffline();
 	}
 
-	public void disconnect(final Account account, boolean blocking) {
+	public void disconnect(Account account, boolean force) {
 		if ((account.getStatus() == Account.STATUS_ONLINE)||(account.getStatus() == Account.STATUS_DISABLED)) {
 			List<Conversation> conversations = getConversations();
 			for (int i = 0; i < conversations.size(); i++) {
@@ -1068,21 +1064,7 @@ public class XmppConnectionService extends Service {
 					}
 				}
 			}
-			if (!blocking) {
-				new Thread(new Runnable() {
-	
-					@Override
-					public void run() {
-						account.getXmppConnection().disconnect(false);
-						Log.d(LOGTAG, "disconnected account: " + account.getJid());
-						//account.setXmppConnection(null);
-					}
-				}).start();
-			} else {
-				account.getXmppConnection().disconnect(false);
-				Log.d(LOGTAG, "disconnected account: " + account.getJid());
-				//account.setXmppConnection(null);
-			}
+			account.getXmppConnection().disconnect(force);
 		}
 	}
 
@@ -1207,13 +1189,13 @@ public class XmppConnectionService extends Service {
 	}
 
 	//TODO dont let thread sleep but schedule wake up
-	public void reconnectAccount(final Account account) {
+	public void reconnectAccount(final Account account,final boolean force) {
 		new Thread(new Runnable() {
 
 			@Override
 			public void run() {
 				if (account.getXmppConnection() != null) {
-					disconnect(account, true);
+					disconnect(account, force);
 				}
 				if (!account.isOptionSet(Account.OPTION_DISABLED)) {
 					if (account.getXmppConnection() == null) {
@@ -1221,6 +1203,7 @@ public class XmppConnectionService extends Service {
 					}
 					Thread thread = new Thread(account.getXmppConnection());
 					thread.start();
+					scheduleWakeupCall((int) (CONNECT_TIMEOUT * 1.2),false);
 				}
 			}
 		}).start();

@@ -9,6 +9,7 @@ import eu.siacs.conversations.crypto.PgpEngine.UserInputRequiredException;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.ui.EditAccount.EditAccountListener;
 import eu.siacs.conversations.xmpp.OnTLSExceptionReceived;
+import eu.siacs.conversations.xmpp.XmppConnection;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -17,6 +18,7 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.IntentSender.SendIntentException;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
@@ -179,12 +181,10 @@ public class ManageAccountActivity extends XmppActivity {
 				if (!isActionMode) {
 					Account account = accountList.get(position);
 					if ((account.getStatus() != Account.STATUS_ONLINE)&&(account.getStatus() != Account.STATUS_CONNECTING)&&(!account.isOptionSet(Account.OPTION_DISABLED))) {
-						activity.xmppConnectionService.reconnectAccount(accountList.get(position));
+						activity.xmppConnectionService.reconnectAccount(accountList.get(position),true);
 					} else if (account.getStatus() == Account.STATUS_ONLINE) {
 						activity.startActivity(new Intent(activity.getApplicationContext(),NewConversationActivity.class));
 					}
-					
-					Log.d("gultsch","clicked on account "+accountList.get(position).getJid());
 				} else {
 					selectedAccountForActionMode = accountList.get(position);
 					actionMode.invalidate();
@@ -278,6 +278,28 @@ public class ManageAccountActivity extends XmppActivity {
 										}
 									}
 								}
+							} else if (item.getItemId() == R.id.mgmt_account_info) {
+								AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+								builder.setTitle(getString(R.string.account_info));
+								if (selectedAccountForActionMode.getStatus() == Account.STATUS_ONLINE) {
+									XmppConnection xmpp = selectedAccountForActionMode.getXmppConnection();
+									long connectionAge = (SystemClock.elapsedRealtime() - xmpp.lastConnect) / 60000;
+									long sessionAge = (SystemClock.elapsedRealtime() - xmpp.lastSessionStarted) / 60000;
+									View view = (View) getLayoutInflater().inflate(R.layout.server_info, null);
+									TextView connection = (TextView) view.findViewById(R.id.connection);
+									TextView session = (TextView) view.findViewById(R.id.session);
+									TextView pcks_sent = (TextView) view.findViewById(R.id.pcks_sent);
+									TextView pcks_received = (TextView) view.findViewById(R.id.pcks_received);
+									pcks_received.setText(""+xmpp.getReceivedStanzas());
+									pcks_sent.setText(""+xmpp.getSentStanzas());
+									connection.setText(connectionAge+" mins");
+									session.setText(sessionAge+" mins");
+									builder.setView(view);
+								} else {
+									builder.setMessage("Account is offline");
+								}
+								builder.setPositiveButton("Hide", null);
+								builder.create().show();
 							}
 							return true;
 						}

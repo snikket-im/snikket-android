@@ -74,6 +74,8 @@ public class XmppConnection implements Runnable {
 	
 	public long lastPaketReceived = 0;
 	public long lastPingSent = 0;
+	public long lastConnect = 0;
+	public long lastSessionStarted = 0;
 
 	private static final int PACKET_IQ = 0;
 	private static final int PACKET_MESSAGE = 1;
@@ -105,6 +107,7 @@ public class XmppConnection implements Runnable {
 
 	protected void connect() {
 		Log.d(LOGTAG,account.getJid()+ ": connecting");
+		lastConnect = SystemClock.elapsedRealtime();
 		try {
 			tagReader = new XmlReader(wakeLock);
 			tagWriter = new TagWriter();
@@ -204,6 +207,7 @@ public class XmppConnection implements Runnable {
 				} else {
 					Log.d(LOGTAG,account.getJid()+": stream managment enabled");
 				}
+				this.lastSessionStarted = SystemClock.elapsedRealtime();
 				this.stanzasReceived = 0;
 				RequestPacket r = new RequestPacket();
 				tagWriter.writeStanzaAsync(r);
@@ -647,10 +651,11 @@ public class XmppConnection implements Runnable {
 		try {
 		if (force) {
 				socket.close();
+				return;
 		}
 		tagWriter.finish();
 		while(!tagWriter.finished()) {
-			Log.d(LOGTAG,"not yet finished");
+			//Log.d(LOGTAG,"not yet finished");
 			Thread.sleep(100);
 		}
 		tagWriter.writeTag(Tag.end("stream:stream"));
@@ -671,5 +676,13 @@ public class XmppConnection implements Runnable {
 
 	public void r() {
 		this.tagWriter.writeStanzaAsync(new RequestPacket());
+	}
+
+	public int getReceivedStanzas() {
+		return this.stanzasReceived;
+	}
+	
+	public int getSentStanzas() {
+		return this.stanzasSent;
 	}
 }

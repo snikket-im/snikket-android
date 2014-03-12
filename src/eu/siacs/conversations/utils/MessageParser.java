@@ -31,7 +31,6 @@ public class MessageParser {
 	}
 	
 	public static Message parseOtrChat(MessagePacket packet, Account account, XmppConnectionService service) {
-		Log.d(LOGTAG,"otr message received: "+packet.toString());
 		String[] fromParts = packet.getFrom().split("/");
 		Conversation conversation = service.findOrCreateConversation(account, fromParts[0],false);
 		String body = packet.getBody();

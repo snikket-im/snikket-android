@@ -126,10 +126,6 @@ public class UIHelper {
 
 	public static void updateNotification(Context context,
 			List<Conversation> conversations, Conversation currentCon, boolean notify) {
-
-		
-		Log.d("xmppService","called to update notifications");
-		
 		NotificationManager mNotificationManager = (NotificationManager) context
 				.getSystemService(Context.NOTIFICATION_SERVICE);
 		
@@ -139,7 +135,6 @@ public class UIHelper {
 		boolean alwaysNotify = preferences.getBoolean("notify_in_conversation_when_highlighted", false);
 
 		if (!showNofifications) {
-			Log.d("xmppService","notification disabled in settings. not showing");
 			return;
 		}
 		
