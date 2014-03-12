@@ -225,6 +225,7 @@ public class XmppConnection implements Runnable {
 				}
 				//Log.d(LOGTAG,"server ack"+ack.toString()+" ("+this.stanzasSent+")");
 			} else if (nextTag.isStart("failed")) {
+				tagReader.readElement(nextTag);
 				Log.d(LOGTAG,account.getJid()+": resumption failed");
 				streamId = null;
 				if (account.getStatus() != Account.STATUS_ONLINE) {

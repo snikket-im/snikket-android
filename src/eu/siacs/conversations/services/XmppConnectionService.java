@@ -173,7 +173,7 @@ public class XmppConnectionService extends Service {
 				convChangedListener.onConversationListChanged();
 			} else {
 				UIHelper.updateNotification(getApplicationContext(),
-						getConversations(), notify);
+						getConversations(), message.getConversation(), notify);
 			}
 		}
 	};

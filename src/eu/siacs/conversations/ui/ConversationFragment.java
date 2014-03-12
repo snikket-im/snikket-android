@@ -419,7 +419,7 @@ public class ConversationFragment extends Fragment {
 		if (!activity.shouldPaneBeOpen()) {
 			conversation.markRead();
 			//TODO update notifications
-			UIHelper.updateNotification(getActivity(), activity.getConversationList(), false);
+			UIHelper.updateNotification(getActivity(), activity.getConversationList(), null, false);
 			activity.updateConversationList();
 		}
 	}

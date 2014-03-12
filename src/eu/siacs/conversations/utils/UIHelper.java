@@ -125,22 +125,41 @@ public class UIHelper {
 	}
 
 	public static void updateNotification(Context context,
-			List<Conversation> conversations, boolean notify) {
+			List<Conversation> conversations, Conversation currentCon, boolean notify) {
 
+		
+		Log.d("xmppService","called to update notifications");
+		
 		NotificationManager mNotificationManager = (NotificationManager) context
 				.getSystemService(Context.NOTIFICATION_SERVICE);
+		
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+		boolean showNofifications = preferences.getBoolean("show_notification",true);
+		boolean vibrate = preferences.getBoolean("vibrate_on_notification", true);
+		boolean alwaysNotify = preferences.getBoolean("notify_in_conversation_when_highlighted", false);
 
+		if (!showNofifications) {
+			Log.d("xmppService","notification disabled in settings. not showing");
+			return;
+		}
+		
 		String targetUuid = "";
+		
+		if ((currentCon != null) &&(currentCon.getMode() == Conversation.MODE_MULTI)&&(!alwaysNotify)) {
+			String nick = currentCon.getMucOptions().getNick();
+			notify = currentCon.getLatestMessage().getBody().contains(nick);
+			if (!notify) {
+				return;
+			}
+		}
+		
 		List<Conversation> unread = new ArrayList<Conversation>();
 		for (Conversation conversation : conversations) {
 			if (!conversation.isRead()) {
 				unread.add(conversation);
 			}
 		}
-
-		SharedPreferences sharedPref = PreferenceManager
-				.getDefaultSharedPreferences(context);
-		String ringtone = sharedPref.getString("notification_ringtone", null);
+		String ringtone = preferences.getString("notification_ringtone", null);
 
 		Resources res = context.getResources();
 		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
@@ -184,7 +203,7 @@ public class UIHelper {
 			style.setBigContentTitle(unread.size() + " unread Conversations");
 			StringBuilder names = new StringBuilder();
 			for (int i = 0; i < unread.size(); ++i) {
-				targetUuid = conversations.get(0).getUuid();
+				targetUuid = unread.get(i).getUuid();
 				if (i < unread.size() - 1) {
 					names.append(unread.get(i).getName() + ", ");
 				} else {
@@ -200,9 +219,11 @@ public class UIHelper {
 		if (unread.size() != 0) {
 			mBuilder.setSmallIcon(R.drawable.notification);
 			if (notify) {
-				int dat = 110;
-				long[] pattern = {0,3*dat,dat,dat,dat,3*dat,dat,dat};
-				mBuilder.setVibrate(pattern);
+				if (vibrate) {
+					int dat = 110;
+					long[] pattern = {0,3*dat,dat,dat,dat,3*dat,dat,dat};
+					mBuilder.setVibrate(pattern);
+				}
 				mBuilder.setLights(0xffffffff, 2000, 4000);
 				if (ringtone != null) {
 					mBuilder.setSound(Uri.parse(ringtone));
@@ -219,17 +240,18 @@ public class UIHelper {
 					targetUuid);
 			viewConversationIntent
 					.setType(ConversationActivity.VIEW_CONVERSATION);
-
+			
 			stackBuilder.addNextIntent(viewConversationIntent);
 
 			PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(
 					0, PendingIntent.FLAG_UPDATE_CURRENT);
-
+			
 			mBuilder.setContentIntent(resultPendingIntent);
-			mNotificationManager.notify(2342, mBuilder.build());
+			Notification notification = mBuilder.build();
+			mNotificationManager.notify(2342, notification);
 		}
 	}
-
+	
 	public static void prepareContactBadge(final Activity activity,
 			QuickContactBadge badge, final Contact contact) {
 		if (contact.getSystemAccount() != null) {

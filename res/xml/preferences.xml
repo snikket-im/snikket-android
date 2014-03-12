@@ -28,7 +28,8 @@
             android:key="vibrate_on_notification"
             android:dependency="show_notification"
             android:title="Vibrate"
-            android:summary="Also vibrate when a new message arrives"/>
+            android:summary="Also vibrate when a new message arrives"
+            android:defaultValue="true"/>
         <RingtonePreference 
             android:key="notification_ringtone"
             android:title="Sound"

@@ -233,7 +233,7 @@ public class ConversationActivity extends XmppActivity {
 					invalidateOptionsMenu();
 					if (!getSelectedConversation().isRead()) {
 						getSelectedConversation().markRead();
-						UIHelper.updateNotification(getApplicationContext(), getConversationList(), false);
+						UIHelper.updateNotification(getApplicationContext(), getConversationList(), null, false);
 						updateConversationList();
 					}
 				}
