@@ -31,14 +31,16 @@ public class MessageParser {
 	}
 	
 	public static Message parseOtrChat(MessagePacket packet, Account account, XmppConnectionService service) {
+		Log.d(LOGTAG,"otr message received: "+packet.toString());
 		String[] fromParts = packet.getFrom().split("/");
 		Conversation conversation = service.findOrCreateConversation(account, fromParts[0],false);
 		String body = packet.getBody();
 		if (!conversation.hasValidOtrSession()) {
 			conversation.startOtrSession(service.getApplicationContext(), fromParts[1]);
 		} else {
-			if (body.startsWith("?OTRv")) {
-				Log.d("xmppService","new otr during existing otr session requested. ending old one");
+			String foreignPresence = conversation.getOtrSession().getSessionID().getUserID();
+			if (!foreignPresence.equals(fromParts[1])) {
+				Log.d(LOGTAG,"new otr during existing otr session requested. ending old one");
 				try {
 					conversation.getOtrSession().endSession();
 				} catch (OtrException e) {
