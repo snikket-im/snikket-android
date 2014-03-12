@@ -200,6 +200,9 @@ public class UIHelper {
 		if (unread.size() != 0) {
 			mBuilder.setSmallIcon(R.drawable.notification);
 			if (notify) {
+				int dat = 110;
+				long[] pattern = {0,3*dat,dat,dat,dat,3*dat,dat,dat};
+				mBuilder.setVibrate(pattern);
 				mBuilder.setLights(0xffffffff, 2000, 4000);
 				if (ringtone != null) {
 					mBuilder.setSound(Uri.parse(ringtone));
