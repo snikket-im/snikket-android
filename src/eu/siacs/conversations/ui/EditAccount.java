@@ -65,9 +65,10 @@ public class EditAccount extends DialogFragment {
 			Log.d("xmppService","mein debugger. account != null");
 			if (account.isOptionSet(Account.OPTION_REGISTER)) {
 				registerAccount.setChecked(true);
-				builder.setTitle("Add account");
+				builder.setTitle(getString(R.string.register_account));
 				okButtonDesc = "Register";
 				passwordConfirm.setVisibility(View.VISIBLE);
+				passwordConfirm.setText(account.getPassword());
 			} else {
 				registerAccount.setVisibility(View.GONE);
 				builder.setTitle("Edit account");
@@ -88,10 +89,12 @@ public class EditAccount extends DialogFragment {
 						Button positiveButton = (Button) d
 								.getButton(Dialog.BUTTON_POSITIVE);
 						if (isChecked) {
+							d.setTitle(getString(R.string.register_account));
 							positiveButton.setText("Register");
 							passwordConfirm.setVisibility(View.VISIBLE);
 							confirmPwDesc.setVisibility(View.VISIBLE);
 						} else {
+							d.setTitle("Add account");
 							passwordConfirm.setVisibility(View.GONE);
 							positiveButton.setText("Add");
 							confirmPwDesc.setVisibility(View.GONE);
