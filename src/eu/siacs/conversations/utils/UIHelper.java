@@ -91,9 +91,9 @@ public class UIHelper {
 		return bitmap;
 	}
 	
-	public static Bitmap getContactPicture(Contact contact, int size, Context context) {
+	public static Bitmap getContactPicture(Contact contact, String fallback, int size, Context context) {
 		if (contact==null) {
-			return getUnknownContactPicture(contact.getDisplayName(), size);
+			return getUnknownContactPicture(fallback, size);
 		}
 		String uri = contact.getProfilePhoto();
 		if (uri==null) {
@@ -171,7 +171,7 @@ public class UIHelper {
 					conversation.getName(),
 					(int) res
 							.getDimension(android.R.dimen.notification_large_icon_width)));*/
-			mBuilder.setLargeIcon(UIHelper.getContactPicture(conversation.getContact(), (int) res
+			mBuilder.setLargeIcon(UIHelper.getContactPicture(conversation.getContact(), conversation.getName(), (int) res
 							.getDimension(android.R.dimen.notification_large_icon_width), context));
 			mBuilder.setContentTitle(conversation.getName());
 			if (notify) {
@@ -314,9 +314,5 @@ public class UIHelper {
 			}
 		}
 		return getUnknownContactPicture(account.getJid(), size);
-	}
-
-	public static Bitmap getContactPictureByName(String name, int size) {
-		return getUnknownContactPicture(name, size);
 	}
 }

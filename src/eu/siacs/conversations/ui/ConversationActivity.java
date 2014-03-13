@@ -179,7 +179,7 @@ public class ConversationActivity extends XmppActivity {
 				.setText(UIHelper.readableTimeDifference(conv.getLatestMessage().getTimeSent()));
 				
 				ImageView imageView = (ImageView) view.findViewById(R.id.conversation_image);
-				imageView.setImageBitmap(UIHelper.getContactPicture(getItem(position).getContact(), 200, activity.getApplicationContext()));
+				imageView.setImageBitmap(UIHelper.getContactPicture(conv.getContact(), conv.getName(),200, activity.getApplicationContext()));
 				return view;
 			}
 
