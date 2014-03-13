@@ -5,12 +5,22 @@
     android:padding="8dp" >
 
     <TextView
+        android:id="@+id/stats_header"
+        style="@style/sectionHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingBottom="8dp"
+        android:text="Statistics" />
+    
+    <TextView
+        android:layout_below="@+id/stats_header"
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Connection age"
         android:textSize="18sp"/>
-    
      <TextView
         android:id="@+id/connection"
         android:layout_width="wrap_content"
@@ -28,7 +38,6 @@
         android:layout_below="@+id/textView1"
         android:text="Session age"
         android:textSize="18sp"/>
-    
         <TextView
         android:id="@+id/session"
         android:layout_width="wrap_content"
@@ -46,7 +55,6 @@
         android:layout_below="@+id/textView2"
         android:text="Packets sent"
         android:textSize="18sp"/>
-
        <TextView
         android:id="@+id/pcks_sent"
         android:layout_width="wrap_content"
@@ -55,8 +63,7 @@
         android:layout_alignBottom="@+id/textView3"
         android:layout_alignParentRight="true"
         android:textSize="18sp"/>
-
-
+       
     <TextView
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
@@ -64,9 +71,6 @@
         android:layout_below="@+id/textView3"
         android:text="Packets received"
         android:textSize="18sp"/>
-
- 
-
     <TextView
         android:id="@+id/pcks_received"
         android:layout_width="wrap_content"
@@ -75,5 +79,63 @@
         android:layout_alignBottom="@+id/textView4"
         android:layout_alignParentRight="true"
         android:textSize="18sp"/>
+    
+    <TextView
+        android:id="@+id/features_header"
+        android:layout_below="@+id/textView4"
+        style="@style/sectionHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:text="Server Features" />
 
+    <TextView
+        android:layout_below="@+id/features_header"
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Roster Versioning"
+        android:textSize="18sp"/>
+     <TextView
+        android:id="@+id/roster"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/textView5"
+        android:layout_alignBottom="@+id/textView5"
+        android:layout_alignParentRight="true"
+        android:textSize="18sp"/>
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/textView5"
+        android:text="Carbon Messages"
+        android:textSize="18sp"/>
+        <TextView
+        android:id="@+id/carbon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/textView6"
+        android:layout_alignBottom="@+id/textView6"
+        android:layout_alignParentRight="true"
+        android:textSize="18sp"/>
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/textView6"
+        android:text="Stream Managment"
+        android:textSize="18sp"/>
+       <TextView
+        android:id="@+id/stream"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/textView7"
+        android:layout_alignBottom="@+id/textView7"
+        android:layout_alignParentRight="true"
+        android:textSize="18sp"/>
 </RelativeLayout>

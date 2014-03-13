@@ -58,7 +58,7 @@ public class PgpEngine {
 
 	public long fetchKeyId(String status, String signature)
 			throws OpenPgpException {
-		if (signature==null) {
+		if ((signature==null)||(api==null)) {
 			return 0;
 		}
 		if (status==null) {

@@ -1,8 +1,12 @@
 package eu.siacs.conversations.xmpp.stanzas;
 
+import android.graphics.YuvImage;
+import eu.siacs.conversations.xml.Element;
+
 
 public class IqPacket extends AbstractStanza {
 	
+	public static final int TYPE_ERROR = -1;
 	public static final int TYPE_SET = 0;
 	public static final int TYPE_RESULT = 1;
 	public static final int TYPE_GET = 2;
@@ -30,6 +34,36 @@ public class IqPacket extends AbstractStanza {
 	
 	public IqPacket() {
 		super("iq");
+	}
+	
+	public Element query() {
+		Element query = findChild("query");
+		if (query==null) {
+			query = new Element("query");
+			addChild(query);
+		}
+		return query;
+	}
+	
+	public Element query(String xmlns) {
+		Element query = query();
+		query.setAttribute("xmlns", xmlns);
+		return query();
+	}
+	
+	public int getType() {
+		String type = getAttribute("type");
+		if ("error".equals(type)) {
+			return TYPE_ERROR;
+		} else if ("result".equals(type)) {
+			return TYPE_RESULT;
+		} else if ("set".equals(type)) {
+			return TYPE_SET;
+		} else if ("get".equals(type)) {
+			return TYPE_GET;
+		} else {
+			return 1000;
+		}
 	}
 
 }

@@ -98,6 +98,9 @@ public class XmppConnection implements Runnable {
 
 	protected void changeStatus(int nextStatus) {
 		if (account.getStatus() != nextStatus) {
+			if ((nextStatus == Account.STATUS_OFFLINE)&&(account.getStatus() != Account.STATUS_CONNECTING)&&(account.getStatus() != Account.STATUS_ONLINE)) {
+				return;
+			}
 			account.setStatus(nextStatus);
 			if (statusListener != null) {
 				statusListener.onStatusChanged(account);
@@ -185,9 +188,6 @@ public class XmppConnection implements Runnable {
 						&& (streamFeatures.hasChild("starttls"))
 						&& (!account.isOptionSet(Account.OPTION_USETLS))) {
 					changeStatus(Account.STATUS_SERVER_REQUIRES_TLS);
-				}
-				if (account.isOptionSet(Account.OPTION_REGISTER)) {
-					Log.d(LOGTAG,account.getJid()+": trying to register");
 				}
 			} else if (nextTag.isStart("proceed")) {
 				switchOverToTls(nextTag);
@@ -440,6 +440,43 @@ public class XmppConnection implements Runnable {
 		if (this.streamFeatures.hasChild("starttls")
 				&& account.isOptionSet(Account.OPTION_USETLS)) {
 			sendStartTLS();
+		} else if (this.streamFeatures.hasChild("register")&&(account.isOptionSet(Account.OPTION_REGISTER))) {
+				IqPacket register = new IqPacket(IqPacket.TYPE_GET);
+				register.query("jabber:iq:register");
+				register.setTo(account.getServer());
+				sendIqPacket(register, new OnIqPacketReceived() {
+					
+					@Override
+					public void onIqPacketReceived(Account account, IqPacket packet) {
+						Element instructions = packet.query().findChild("instructions");
+						if (packet.query().hasChild("username")&&(packet.query().hasChild("password"))) {
+							IqPacket register = new IqPacket(IqPacket.TYPE_SET);
+							Element username = new Element("username").setContent(account.getUsername());
+							Element password = new Element("password").setContent(account.getPassword());
+							register.query("jabber:iq:register").addChild(username).addChild(password);
+							sendIqPacket(register, new OnIqPacketReceived() {
+								
+								@Override
+								public void onIqPacketReceived(Account account, IqPacket packet) {
+									if (packet.getType()==IqPacket.TYPE_RESULT) {
+										account.setOption(Account.OPTION_REGISTER, false);
+										changeStatus(Account.STATUS_REGISTRATION_SUCCESSFULL);
+										Log.d(LOGTAG,"successfull");
+									} else if (packet.hasChild("error")&&(packet.findChild("error").hasChild("conflict"))){
+										changeStatus(Account.STATUS_REGISTRATION_CONFLICT);
+									} else {
+										changeStatus(Account.STATUS_REGISTRATION_FAILED);
+										Log.d(LOGTAG,packet.toString());
+									}
+									disconnect(true);
+								}
+							});
+							Log.d(LOGTAG,"registering: "+register.toString());
+						} else {
+							Log.d(LOGTAG,account.getJid()+": could not register. instructions are"+instructions.getContent());
+						}
+					}
+				});
 		} else if (this.streamFeatures.hasChild("mechanisms")
 				&& shouldAuthenticate) {
 			sendSaslAuth();
@@ -651,6 +688,7 @@ public class XmppConnection implements Runnable {
 	}
 
 	public void disconnect(boolean force) {
+		changeStatus(Account.STATUS_OFFLINE);
 		Log.d(LOGTAG,"disconnecting");
 		try {
 		if (force) {
@@ -676,6 +714,18 @@ public class XmppConnection implements Runnable {
 		} else {
 			return this.streamFeatures.hasChild("ver");
 		}
+	}
+	
+	public boolean hasFeatureStreamManagment() {
+		if (this.streamFeatures==null) {
+			return false;
+		} else {
+			return this.streamFeatures.hasChild("has");
+		}
+	}
+	
+	public boolean hasFeaturesCarbon() {
+		return discoFeatures.contains("urn:xmpp:carbons:2");
 	}
 
 	public void r() {

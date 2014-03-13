@@ -208,6 +208,9 @@ public class XmppConnectionService extends Service {
 					scheduleWakeupCall(timeToReconnect, false);
 				}
 
+			} else if (account.getStatus() == Account.STATUS_REGISTRATION_SUCCESSFULL) {
+				databaseBackend.updateAccount(account);
+				reconnectAccount(account, true);
 			}
 		}
 	};

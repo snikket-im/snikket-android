@@ -163,7 +163,20 @@ public class ManageAccountActivity extends XmppActivity {
 					statusView.setText("untrusted cerficate");
 					statusView.setTextColor(0xFFe92727);
 					break;
+				case Account.STATUS_REGISTRATION_FAILED:
+					statusView.setText("registration failed");
+					statusView.setTextColor(0xFFe92727);
+					break;
+				case Account.STATUS_REGISTRATION_CONFLICT:
+					statusView.setText("username already in use");
+					statusView.setTextColor(0xFFe92727);
+					break;
+				case  Account.STATUS_REGISTRATION_SUCCESSFULL:
+					statusView.setText("registration completed");
+					statusView.setTextColor(0xFF83b600);
+					break;
 				default:
+					statusView.setText("");
 					break;
 				}
 
@@ -179,7 +192,7 @@ public class ManageAccountActivity extends XmppActivity {
 					int position, long arg3) {
 				if (!isActionMode) {
 					Account account = accountList.get(position);
-					if ((account.getStatus() != Account.STATUS_ONLINE)&&(account.getStatus() != Account.STATUS_CONNECTING)&&(!account.isOptionSet(Account.OPTION_DISABLED))) {
+					if ((account.getStatus() == Account.STATUS_OFFLINE)||(account.getStatus() == Account.STATUS_TLS_ERROR)) {
 						activity.xmppConnectionService.reconnectAccount(accountList.get(position),true);
 					} else if (account.getStatus() == Account.STATUS_ONLINE) {
 						activity.startActivity(new Intent(activity.getApplicationContext(),NewConversationActivity.class));
@@ -281,10 +294,29 @@ public class ManageAccountActivity extends XmppActivity {
 									TextView session = (TextView) view.findViewById(R.id.session);
 									TextView pcks_sent = (TextView) view.findViewById(R.id.pcks_sent);
 									TextView pcks_received = (TextView) view.findViewById(R.id.pcks_received);
+									TextView carbon = (TextView) view.findViewById(R.id.carbon);
+									TextView stream = (TextView) view.findViewById(R.id.stream);
+									TextView roster = (TextView) view.findViewById(R.id.roster);
 									pcks_received.setText(""+xmpp.getReceivedStanzas());
 									pcks_sent.setText(""+xmpp.getSentStanzas());
 									connection.setText(connectionAge+" mins");
-									session.setText(sessionAge+" mins");
+									if (xmpp.hasFeatureStreamManagment()) {
+										session.setText(sessionAge+" mins");
+										stream.setText("Yes");
+									} else {
+										stream.setText("No");
+										session.setText(connectionAge+" mins");
+									}
+									if (xmpp.hasFeaturesCarbon()) {
+										carbon.setText("Yes");
+									} else {
+										carbon.setText("No");
+									}
+									if (xmpp.hasFeatureRosterManagment()) {
+										roster.setText("Yes");
+									} else {
+										roster.setText("No");
+									}
 									builder.setView(view);
 								} else {
 									builder.setMessage("Account is offline");
@@ -356,7 +388,9 @@ public class ManageAccountActivity extends XmppActivity {
 				@Override
 				public void onAccountEdited(Account account) {
 					xmppConnectionService.updateAccount(account);
-					actionMode.finish();
+					if (actionMode != null) { 
+						actionMode.finish();
+					}
 				}
 			});
 			dialog.show(getFragmentManager(), "edit_account");

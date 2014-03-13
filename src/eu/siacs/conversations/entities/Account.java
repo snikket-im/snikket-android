@@ -41,6 +41,10 @@ public class Account  extends AbstractEntity{
 	public static final int STATUS_SERVER_NOT_FOUND = 5;
 
 	public static final int STATUS_SERVER_REQUIRES_TLS = 6;
+
+	public static final int STATUS_REGISTRATION_FAILED = 7;
+	public static final int STATUS_REGISTRATION_CONFLICT = 8;
+	public static final int STATUS_REGISTRATION_SUCCESSFULL = 9;
 	
 	protected String username;
 	protected String server;
