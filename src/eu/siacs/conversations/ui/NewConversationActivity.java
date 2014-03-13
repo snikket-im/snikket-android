@@ -1,9 +1,12 @@
 package eu.siacs.conversations.ui;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
@@ -15,6 +18,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -151,23 +155,14 @@ public class NewConversationActivity extends XmppActivity {
 				final Contact clickedContact = aggregatedContacts.get(pos);
 				
 				if ((clickedContact.getAccount()==null)&&(accounts.size()>1)) {
-					String[] accountList = new String[accounts.size()];
-					for (int i = 0; i < accounts.size(); ++i) {
-					accountList[i] = accounts.get(i).getJid();
-					}
+					getAccountChooser(new OnClickListener() {
 
-					AlertDialog.Builder accountChooser = new AlertDialog.Builder(
-					activity);
-					accountChooser.setTitle("Choose account");
-					accountChooser.setItems(accountList, new OnClickListener() {
-
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						clickedContact.setAccount(accounts.get(which));
-						showIsMucDialogIfNeeded(clickedContact);
-					}
-					});
-					accountChooser.create().show();
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							clickedContact.setAccount(accounts.get(which));
+							showIsMucDialogIfNeeded(clickedContact);
+						}
+						}).show();
 				} else {
 					if (clickedContact.getAccount()==null) {
 						clickedContact.setAccount(accounts.get(0));
@@ -188,6 +183,19 @@ public class NewConversationActivity extends XmppActivity {
 				return true;
 			}
 		});
+	}
+	
+	protected AlertDialog getAccountChooser(OnClickListener listener) {
+		String[] accountList = new String[accounts.size()];
+		for (int i = 0; i < accounts.size(); ++i) {
+		accountList[i] = accounts.get(i).getJid();
+		}
+
+		AlertDialog.Builder accountChooser = new AlertDialog.Builder(
+		this);
+		accountChooser.setTitle("Choose account");
+		accountChooser.setItems(accountList, listener);
+		return accountChooser.create();
 	}
 	
 	public void showIsMucDialogIfNeeded(final Contact clickedContact) {
@@ -222,6 +230,10 @@ public class NewConversationActivity extends XmppActivity {
 		Conversation conversation = xmppConnectionService
 				.findOrCreateConversation(account, contact.getJid(), muc);
 
+		switchToConversation(conversation);
+	}
+	
+	public void switchToConversation(Conversation conversation) {
 		Intent viewConversationIntent = new Intent(this,
 				ConversationActivity.class);
 		viewConversationIntent.setAction(Intent.ACTION_VIEW);
@@ -235,11 +247,39 @@ public class NewConversationActivity extends XmppActivity {
 
 	@Override
 	void onBackendConnected() {
+		this.accounts = xmppConnectionService.getAccounts();
+		if (Intent.ACTION_SENDTO.equals(getIntent().getAction())) {
+			getActionBar().setDisplayHomeAsUpEnabled(false);
+			getActionBar().setHomeButtonEnabled(false);
+			String jid;
+			try {
+				jid = URLDecoder.decode(getIntent().getData().getEncodedPath(),"UTF-8").split("/")[1];
+			} catch (UnsupportedEncodingException e) {
+				jid = null;
+			}
+			if (jid!=null) {
+				final String finalJid = jid;
+				if (this.accounts.size() > 1) {
+					getAccountChooser(new OnClickListener() {
+						
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							Conversation conversation = xmppConnectionService.findOrCreateConversation(accounts.get(which), finalJid, false);
+							switchToConversation(conversation);
+						}
+					}).show();
+				} else {
+					Conversation conversation = xmppConnectionService.findOrCreateConversation(this.accounts.get(0), jid, false);
+					switchToConversation(conversation);
+				}
+			}
+		}
+		
+		
 		if (xmppConnectionService.getConversationCount() == 0) {
 			getActionBar().setDisplayHomeAsUpEnabled(false);
 			getActionBar().setHomeButtonEnabled(false);
 		}
-		this.accounts = xmppConnectionService.getAccounts();
 		this.rosterContacts.clear();
 		for (int i = 0; i < accounts.size(); ++i) {
 				xmppConnectionService.getRoster(accounts.get(i),
