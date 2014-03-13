@@ -25,12 +25,14 @@
         android:layout_height="wrap_content"
         android:textSize="18sp"
         android:textColor="#5b5b5b"
+        android:singleLine="true"
         />
     <TextView 
         android:id="@+id/contact_jid"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="#5b5b5b"
+        android:singleLine="true"
         />
     </LinearLayout>
 

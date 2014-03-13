@@ -22,6 +22,9 @@
 	        android:id="@+id/conversation_name"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
+	        android:layout_alignLeft="@+id/conversation_lastmsg"
+	        android:layout_toLeftOf="@+id/conversation_lastupdate"
+	        android:singleLine="true"
 	        android:textColor="#636363"
 	        android:textSize="20sp"
 	        android:typeface="sans" />
