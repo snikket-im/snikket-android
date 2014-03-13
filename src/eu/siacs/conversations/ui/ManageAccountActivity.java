@@ -79,7 +79,6 @@ public class ManageAccountActivity extends XmppActivity {
 					StringBuilder humanReadableSha = new StringBuilder();
 					humanReadableSha.append(fingerprint);
 					for(int i = 2; i < 59; i += 3) {
-						Log.d("gultsch","insert into "+i);
 						if ((i==14)||(i==29)||(i==44)) {
 							humanReadableSha.insert(i, "\n");
 						} else {
@@ -184,6 +183,8 @@ public class ManageAccountActivity extends XmppActivity {
 						activity.xmppConnectionService.reconnectAccount(accountList.get(position),true);
 					} else if (account.getStatus() == Account.STATUS_ONLINE) {
 						activity.startActivity(new Intent(activity.getApplicationContext(),NewConversationActivity.class));
+					} else if (account.isOptionSet(Account.OPTION_REGISTER)) {
+						editAccount(account);
 					}
 				} else {
 					selectedAccountForActionMode = accountList.get(position);
@@ -230,17 +231,7 @@ public class ManageAccountActivity extends XmppActivity {
 						@Override
 						public boolean onActionItemClicked(final ActionMode mode, MenuItem item) {
 							if (item.getItemId()==R.id.mgmt_account_edit) {
-								EditAccount dialog = new EditAccount();
-								dialog.setAccount(selectedAccountForActionMode);
-								dialog.setEditAccountListener(new EditAccountListener() {
-				
-									@Override
-									public void onAccountEdited(Account account) {
-										xmppConnectionService.updateAccount(account);
-										actionMode.finish();
-									}
-								});
-								dialog.show(getFragmentManager(), "edit_account");
+								editAccount(selectedAccountForActionMode);
 							} else if (item.getItemId()==R.id.mgmt_account_disable) {
 								selectedAccountForActionMode.setOption(Account.OPTION_DISABLED, true);
 								xmppConnectionService.updateAccount(selectedAccountForActionMode);
@@ -303,6 +294,8 @@ public class ManageAccountActivity extends XmppActivity {
 							}
 							return true;
 						}
+
+						
 					}));
 					return true;
 				} else {
@@ -355,6 +348,21 @@ public class ManageAccountActivity extends XmppActivity {
 		return super.onOptionsItemSelected(item);
 	}
 
+	private void editAccount(Account account) {
+			EditAccount dialog = new EditAccount();
+			dialog.setAccount(account);
+			dialog.setEditAccountListener(new EditAccountListener() {
+
+				@Override
+				public void onAccountEdited(Account account) {
+					xmppConnectionService.updateAccount(account);
+					actionMode.finish();
+				}
+			});
+			dialog.show(getFragmentManager(), "edit_account");
+		
+	}
+	
 	protected void addAccount() {
 		final Activity activity = this;
 		EditAccount dialog = new EditAccount();
