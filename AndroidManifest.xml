@@ -69,17 +69,22 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="de.gultsch.chat.ui.ConversationActivity" />
-
-            <intent-filter>
-                <action android:name="android.intent.action.SEND" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <data android:mimeType="text/plain" />
-            </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.SENDTO" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:scheme="imto" />
                 <data android:host="jabber" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="eu.siacs.conversations.ui.ShareWithActivity"
+            android:label="Conversations"
+            android:theme="@android:style/Theme.Holo.Light.DialogWhenLarge"
+            android:icon="@drawable/ic_launcher">
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
             </intent-filter>
         </activity>
     </application>
