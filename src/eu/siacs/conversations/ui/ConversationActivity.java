@@ -95,6 +95,7 @@ public class ConversationActivity extends XmppActivity {
 			xmppConnectionService.createContact(contact);
 		}
 	};
+	protected ConversationActivity activity = this;
 	
 	public List<Conversation> getConversationList() {
 		return this.conversationList;
@@ -177,17 +178,8 @@ public class ConversationActivity extends XmppActivity {
 				((TextView) view.findViewById(R.id.conversation_lastupdate))
 				.setText(UIHelper.readableTimeDifference(conv.getLatestMessage().getTimeSent()));
 				
-				Uri profilePhoto = conv.getProfilePhotoUri();
 				ImageView imageView = (ImageView) view.findViewById(R.id.conversation_image);
-				if (profilePhoto!=null) {
-					imageView.setImageURI(profilePhoto);
-				} else {
-					imageView.setImageBitmap(UIHelper.getUnknownContactPicture(getItem(position).getName(),200));
-				}
-				
-				
-				((ImageView) view.findViewById(R.id.conversation_image))
-						.setImageURI(conv.getProfilePhotoUri());
+				imageView.setImageBitmap(UIHelper.getContactPicture(getItem(position).getContact(), 200, activity.getApplicationContext()));
 				return view;
 			}
 

@@ -396,7 +396,7 @@ public class XmppConnectionService extends Service {
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		//Log.d(LOGTAG,"calling start service. caller was:"+intent.getAction());
+		Log.d(LOGTAG,"calling start service. caller was:"+intent.getAction());
 		ConnectivityManager cm = (ConnectivityManager) getApplicationContext()
 				.getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
@@ -441,6 +441,7 @@ public class XmppConnectionService extends Service {
 						Log.d(LOGTAG,account.getJid()+": time out during connect reconnecting");
 						reconnectAccount(account,true);
 					} else {
+						Log.d(LOGTAG,"seconds since last connect:"+((SystemClock.elapsedRealtime() - account.getXmppConnection().lastConnect) / 1000));
 						Log.d(LOGTAG,account.getJid()+": status="+account.getStatus());
 						// TODO notify user of ssl cert problem or auth problem or what ever
 					}
@@ -836,6 +837,7 @@ public class XmppConnectionService extends Service {
 			} else {
 				conversation.setMode(Conversation.MODE_SINGLE);
 			}
+			conversation.setMessages(databaseBackend.getMessages(conversation, 50));
 			this.databaseBackend.updateConversation(conversation);
 			conversation.setContact(findContact(account,
 					conversation.getContactJid()));
@@ -887,7 +889,7 @@ public class XmppConnectionService extends Service {
 	public void createAccount(Account account) {
 		databaseBackend.createAccount(account);
 		this.accounts.add(account);
-		account.setXmppConnection(this.createConnection(account));
+		this.reconnectAccount(account, false);
 		if (accountChangedListener != null)
 			accountChangedListener.onAccountListChangedListener();
 	}

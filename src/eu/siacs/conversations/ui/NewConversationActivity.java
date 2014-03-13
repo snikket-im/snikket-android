@@ -135,15 +135,9 @@ public class NewConversationActivity extends XmppActivity {
 				TextView contactJid = (TextView) view
 						.findViewById(R.id.contact_jid);
 				contactJid.setText(contact.getJid());
-				String profilePhoto = getItem(position).getProfilePhoto();
 				ImageView imageView = (ImageView) view
 						.findViewById(R.id.contact_photo);
-				if (profilePhoto != null) {
-					imageView.setImageURI(Uri.parse(profilePhoto));
-				} else {
-					imageView.setImageBitmap(UIHelper.getUnknownContactPicture(
-							getItem(position).getDisplayName(), 90));
-				}
+					imageView.setImageBitmap(UIHelper.getContactPicture(contact,90,this.getContext()));
 				return view;
 			}
 		};

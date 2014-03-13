@@ -64,7 +64,7 @@ public class UIHelper {
 		}
 	}
 
-	public static Bitmap getUnknownContactPicture(String name, int size) {
+	private static Bitmap getUnknownContactPicture(String name, int size) {
 		String firstLetter = name.substring(0, 1).toUpperCase(Locale.US);
 
 		int holoColors[] = { 0xFF1da9da, 0xFFb368d9, 0xFF83b600, 0xFFffa713,
@@ -92,6 +92,9 @@ public class UIHelper {
 	}
 	
 	public static Bitmap getContactPicture(Contact contact, int size, Context context) {
+		if (contact==null) {
+			return getUnknownContactPicture(contact.getDisplayName(), size);
+		}
 		String uri = contact.getProfilePhoto();
 		if (uri==null) {
 			return getUnknownContactPicture(contact.getDisplayName(), size);
@@ -298,5 +301,22 @@ public class UIHelper {
 		});
 		builder.setView(view);
 		return builder.create();
+	}
+
+	public static Bitmap getSelfContactPicture(Account account, int size, boolean showPhoneSelfContactPicture, Activity activity) {
+		Uri selfiUri = PhoneHelper.getSefliUri(activity);
+		if (selfiUri != null) {
+			try {
+				return BitmapFactory.decodeStream(activity
+						.getContentResolver().openInputStream(selfiUri));
+			} catch (FileNotFoundException e) {
+				return getUnknownContactPicture(account.getJid(), size);
+			}
+		}
+		return getUnknownContactPicture(account.getJid(), size);
+	}
+
+	public static Bitmap getContactPictureByName(String name, int size) {
+		return getUnknownContactPicture(name, size);
 	}
 }

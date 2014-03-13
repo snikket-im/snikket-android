@@ -54,15 +54,21 @@ public class EditAccount extends DialogFragment {
 		final String okButtonDesc;
 
 		if (account != null) {
-			builder.setTitle("Edit account");
-			registerAccount.setVisibility(View.GONE);
 			jidText.setText(account.getJid());
 			password.setText(account.getPassword());
-			okButtonDesc = "Edit";
 			if (account.isOptionSet(Account.OPTION_USETLS)) {
 				useTLS.setChecked(true);
 			} else {
 				useTLS.setChecked(false);
+			}
+			if (account.isOptionSet(Account.OPTION_REGISTER)) {
+				registerAccount.setChecked(true);
+				builder.setTitle("Add account");
+				okButtonDesc = "Register";
+			} else {
+				registerAccount.setVisibility(View.GONE);
+				builder.setTitle("Edit account");
+				okButtonDesc = "Edit";
 			}
 		} else {
 			builder.setTitle("Add account");
@@ -110,6 +116,7 @@ public class EditAccount extends DialogFragment {
 						.findViewById(R.id.account_password);
 				String password = passwordEdit.getText().toString();
 				CheckBox useTLS = (CheckBox) d.findViewById(R.id.account_usetls);
+				CheckBox register = (CheckBox) d.findViewById(R.id.edit_account_register_new);
 				String username;
 				String server;
 				if (Validator.isValidJid(jid)) {
@@ -128,6 +135,7 @@ public class EditAccount extends DialogFragment {
 					account = new Account(username, server, password);
 				}
 				account.setOption(Account.OPTION_USETLS, useTLS.isChecked());
+				account.setOption(Account.OPTION_REGISTER, register.isChecked());
 				if (listener != null) {
 					listener.onAccountEdited(account);
 					d.dismiss();

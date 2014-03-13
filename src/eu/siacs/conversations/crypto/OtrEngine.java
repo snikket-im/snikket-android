@@ -209,8 +209,7 @@ public class OtrEngine implements OtrEngineHost {
 
 	@Override
 	public void unreadableMessageReceived(SessionID arg0) throws OtrException {
-		// TODO Auto-generated method stub
-
+		throw new OtrException(new Exception("unreadable message received"));
 	}
 
 	@Override

@@ -64,7 +64,7 @@ public class MucDetailsActivity extends XmppActivity {
 		membersView = (LinearLayout) findViewById(R.id.muc_members);
 		mMoreDetails = (LinearLayout) findViewById(R.id.muc_more_details);
 		mMoreDetails.setVisibility(View.GONE);
-		contactsAdapter = new ArrayAdapter<MucOptions.User>(this,
+		/*contactsAdapter = new ArrayAdapter<MucOptions.User>(this,
 				R.layout.contact, users) {
 			@Override
 			public View getView(int position, View view, ViewGroup parent) {
@@ -80,11 +80,10 @@ public class MucDetailsActivity extends XmppActivity {
 				role.setText(getReadableRole(contact.getRole()));
 				ImageView imageView = (ImageView) view
 						.findViewById(R.id.contact_photo);
-				imageView.setImageBitmap(UIHelper.getUnknownContactPicture(
-						getItem(position).getName(), 90));
+				imageView.setImageBitmap(UIHelper.getContactPictureByName(contact.getName(), 90));
 				return view;
 			}
-		};
+		};*/
 		getActionBar().setHomeButtonEnabled(true);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		
@@ -151,7 +150,7 @@ public class MucDetailsActivity extends XmppActivity {
 				}
 				this.users.clear();
 				this.users.addAll(conversation.getMucOptions().getUsers());
-				contactsAdapter.notifyDataSetChanged();
+				//contactsAdapter.notifyDataSetChanged();
 				LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 				membersView.removeAllViews();
 				for(User contact : conversation.getMucOptions().getUsers()) {
@@ -163,7 +162,7 @@ public class MucDetailsActivity extends XmppActivity {
 					role.setText(getReadableRole(contact.getRole()));
 					ImageView imageView = (ImageView) view
 							.findViewById(R.id.contact_photo);
-					imageView.setImageBitmap(UIHelper.getUnknownContactPicture(contact.getName(), 90));
+					imageView.setImageBitmap(UIHelper.getContactPictureByName(contact.getName(), 90));
 					membersView.addView(view);
 				}
 			}

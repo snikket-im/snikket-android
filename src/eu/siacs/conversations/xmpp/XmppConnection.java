@@ -109,6 +109,7 @@ public class XmppConnection implements Runnable {
 		Log.d(LOGTAG,account.getJid()+ ": connecting");
 		lastConnect = SystemClock.elapsedRealtime();
 		try {
+			shouldAuthenticate = shouldBind = !account.isOptionSet(Account.OPTION_REGISTER);
 			tagReader = new XmlReader(wakeLock);
 			tagWriter = new TagWriter();
 			packetCallbacks.clear();
@@ -184,6 +185,9 @@ public class XmppConnection implements Runnable {
 						&& (streamFeatures.hasChild("starttls"))
 						&& (!account.isOptionSet(Account.OPTION_USETLS))) {
 					changeStatus(Account.STATUS_SERVER_REQUIRES_TLS);
+				}
+				if (account.isOptionSet(Account.OPTION_REGISTER)) {
+					Log.d(LOGTAG,account.getJid()+": trying to register");
 				}
 			} else if (nextTag.isStart("proceed")) {
 				switchOverToTls(nextTag);
