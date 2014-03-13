@@ -926,7 +926,6 @@ public class XmppConnectionService extends Service {
 	}
 
 	public void deleteAccount(Account account) {
-		Log.d(LOGTAG, "called delete account");
 		if (account.getXmppConnection() != null) {
 			this.disconnect(account, true);
 		}
