@@ -1,6 +1,7 @@
 package eu.siacs.conversations.ui;
 
 import eu.siacs.conversations.R;
+import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.services.XmppConnectionService.XmppConnectionBinder;
 import eu.siacs.conversations.utils.ExceptionHelper;
@@ -102,5 +103,20 @@ public abstract class XmppActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		ExceptionHelper.init(getApplicationContext());
+	}
+	
+	public void switchToConversation(Conversation conversation, String text) {
+		Intent viewConversationIntent = new Intent(this,
+				ConversationActivity.class);
+		viewConversationIntent.setAction(Intent.ACTION_VIEW);
+		viewConversationIntent.putExtra(ConversationActivity.CONVERSATION,
+				conversation.getUuid());
+		if (text!=null) {
+			viewConversationIntent.putExtra(ConversationActivity.TEXT, text);
+		}
+		viewConversationIntent.setType(ConversationActivity.VIEW_CONVERSATION);
+		viewConversationIntent.setFlags(viewConversationIntent.getFlags()
+				| Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		startActivity(viewConversationIntent);
 	}
 }

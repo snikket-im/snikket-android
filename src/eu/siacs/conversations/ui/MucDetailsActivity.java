@@ -64,26 +64,6 @@ public class MucDetailsActivity extends XmppActivity {
 		membersView = (LinearLayout) findViewById(R.id.muc_members);
 		mMoreDetails = (LinearLayout) findViewById(R.id.muc_more_details);
 		mMoreDetails.setVisibility(View.GONE);
-		/*contactsAdapter = new ArrayAdapter<MucOptions.User>(this,
-				R.layout.contact, users) {
-			@Override
-			public View getView(int position, View view, ViewGroup parent) {
-				LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-				User contact = getItem(position);
-				if (view == null) {
-					view = (View) inflater.inflate(R.layout.contact, null);
-				}
-
-				((TextView) view.findViewById(R.id.contact_display_name))
-						.setText(getItem(position).getName());
-				TextView role = (TextView) view.findViewById(R.id.contact_jid);
-				role.setText(getReadableRole(contact.getRole()));
-				ImageView imageView = (ImageView) view
-						.findViewById(R.id.contact_photo);
-				imageView.setImageBitmap(UIHelper.getContactPictureByName(contact.getName(), 90));
-				return view;
-			}
-		};*/
 		getActionBar().setHomeButtonEnabled(true);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		

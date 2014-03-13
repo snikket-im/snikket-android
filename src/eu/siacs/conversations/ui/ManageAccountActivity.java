@@ -289,6 +289,8 @@ public class ManageAccountActivity extends XmppActivity {
 									XmppConnection xmpp = selectedAccountForActionMode.getXmppConnection();
 									long connectionAge = (SystemClock.elapsedRealtime() - xmpp.lastConnect) / 60000;
 									long sessionAge = (SystemClock.elapsedRealtime() - xmpp.lastSessionStarted) / 60000;
+									long connectionAgeHours = connectionAge / 60;
+									long sessionAgeHours = sessionAge / 60;
 									View view = (View) getLayoutInflater().inflate(R.layout.server_info, null);
 									TextView connection = (TextView) view.findViewById(R.id.connection);
 									TextView session = (TextView) view.findViewById(R.id.session);
@@ -299,13 +301,21 @@ public class ManageAccountActivity extends XmppActivity {
 									TextView roster = (TextView) view.findViewById(R.id.roster);
 									pcks_received.setText(""+xmpp.getReceivedStanzas());
 									pcks_sent.setText(""+xmpp.getSentStanzas());
-									connection.setText(connectionAge+" mins");
+									if (connectionAgeHours >= 2) {
+										connection.setText(connectionAgeHours+" hours");
+									} else {
+										connection.setText(connectionAge+" mins");
+									}
 									if (xmpp.hasFeatureStreamManagment()) {
-										session.setText(sessionAge+" mins");
+										if (sessionAgeHours >= 2) {
+											session.setText(sessionAgeHours+" hours");
+										} else {
+											session.setText(sessionAge+" mins");
+										}
 										stream.setText("Yes");
 									} else {
 										stream.setText("No");
-										session.setText(connectionAge+" mins");
+										session.setText(connection.getText());
 									}
 									if (xmpp.hasFeaturesCarbon()) {
 										carbon.setText("Yes");

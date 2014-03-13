@@ -720,7 +720,7 @@ public class XmppConnection implements Runnable {
 		if (this.streamFeatures==null) {
 			return false;
 		} else {
-			return this.streamFeatures.hasChild("has");
+			return this.streamFeatures.hasChild("sm");
 		}
 	}
 	

@@ -1,6 +1,5 @@
 package eu.siacs.conversations.ui;
 
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -19,7 +18,6 @@ import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.entities.MucOptions.OnRenameListener;
 import eu.siacs.conversations.services.XmppConnectionService;
-import eu.siacs.conversations.utils.PhoneHelper;
 import eu.siacs.conversations.utils.UIHelper;
 import android.app.AlertDialog;
 import android.app.Fragment;
@@ -30,9 +28,7 @@ import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.content.IntentSender.SendIntentException;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -63,6 +59,7 @@ public class ConversationFragment extends Fragment {
 	protected String queuedPqpMessage = null;
 
 	private EditText chatMsg;
+	private String pastedText = null;
 
 	protected Bitmap selfBitmap;
 
@@ -153,6 +150,11 @@ public class ConversationFragment extends Fragment {
 		final View view = inflater.inflate(R.layout.fragment_conversation,
 				container, false);
 		chatMsg = (EditText) view.findViewById(R.id.textinput);
+		
+		if (pastedText!=null) {
+			chatMsg.setText(pastedText);
+		}
+		
 		ImageButton sendButton = (ImageButton) view
 				.findViewById(R.id.textSendButton);
 		sendButton.setOnClickListener(this.sendMsgListener);
@@ -639,5 +641,9 @@ public class ConversationFragment extends Fragment {
 			return true;
 		}
 
+	}
+
+	public void setText(String text) {
+		this.pastedText = text;
 	}
 }

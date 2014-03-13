@@ -398,7 +398,7 @@ public class XmppConnectionService extends Service {
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		Log.d(LOGTAG,"calling start service. caller was:"+intent.getAction());
+		//Log.d(LOGTAG,"calling start service. caller was:"+intent.getAction());
 		ConnectivityManager cm = (ConnectivityManager) getApplicationContext()
 				.getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
@@ -670,7 +670,7 @@ public class XmppConnectionService extends Service {
 		return packet;
 	}
 
-	public void getRoster(Account account,
+	private void getRoster(Account account,
 			final OnRosterFetchedListener listener) {
 		List<Contact> contacts = databaseBackend.getContactsByAccount(account);
 		for (int i = 0; i < contacts.size(); ++i) {
@@ -679,6 +679,14 @@ public class XmppConnectionService extends Service {
 		if (listener != null) {
 			listener.onRosterFetched(contacts);
 		}
+	}
+	
+	public List<Contact> getRoster(Account account) {
+		List<Contact> contacts = databaseBackend.getContactsByAccount(account);
+		for (int i = 0; i < contacts.size(); ++i) {
+			contacts.get(i).setAccount(account);
+		}
+		return contacts;
 	}
 
 	public void updateRoster(final Account account,

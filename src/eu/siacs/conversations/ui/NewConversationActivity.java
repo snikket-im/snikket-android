@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Locale;
 
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
@@ -14,11 +13,9 @@ import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.utils.Validator;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -230,19 +227,7 @@ public class NewConversationActivity extends XmppActivity {
 		Conversation conversation = xmppConnectionService
 				.findOrCreateConversation(account, contact.getJid(), muc);
 
-		switchToConversation(conversation);
-	}
-	
-	public void switchToConversation(Conversation conversation) {
-		Intent viewConversationIntent = new Intent(this,
-				ConversationActivity.class);
-		viewConversationIntent.setAction(Intent.ACTION_VIEW);
-		viewConversationIntent.putExtra(ConversationActivity.CONVERSATION,
-				conversation.getUuid());
-		viewConversationIntent.setType(ConversationActivity.VIEW_CONVERSATION);
-		viewConversationIntent.setFlags(viewConversationIntent.getFlags()
-				| Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		startActivity(viewConversationIntent);
+		switchToConversation(conversation,null);
 	}
 
 	@Override
@@ -265,12 +250,14 @@ public class NewConversationActivity extends XmppActivity {
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
 							Conversation conversation = xmppConnectionService.findOrCreateConversation(accounts.get(which), finalJid, false);
-							switchToConversation(conversation);
+							switchToConversation(conversation,null);
+							finish();
 						}
 					}).show();
 				} else {
 					Conversation conversation = xmppConnectionService.findOrCreateConversation(this.accounts.get(0), jid, false);
-					switchToConversation(conversation);
+					switchToConversation(conversation,null);
+					finish();
 				}
 			}
 		}
@@ -282,24 +269,10 @@ public class NewConversationActivity extends XmppActivity {
 		}
 		this.rosterContacts.clear();
 		for (int i = 0; i < accounts.size(); ++i) {
-				xmppConnectionService.getRoster(accounts.get(i),
-						new OnRosterFetchedListener() {
-
-							@Override
-							public void onRosterFetched(List<Contact> roster) {
-								rosterContacts.addAll(roster);
-								runOnUiThread(new Runnable() {
-
-									@Override
-									public void run() {
-										updateAggregatedContacts();
-									}
-								});
-
-							}
-						});
-			}
+			rosterContacts.addAll(xmppConnectionService.getRoster(accounts.get(i)));
 		}
+		updateAggregatedContacts();
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

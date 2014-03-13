@@ -11,7 +11,6 @@ import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.utils.UIHelper;
-import android.net.Uri;
 import android.os.Bundle;
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
@@ -42,6 +41,7 @@ public class ConversationActivity extends XmppActivity {
 
 	public static final String VIEW_CONVERSATION = "viewConversation";
 	public static final String CONVERSATION = "conversationUuid";
+	public static final String TEXT = "text";
 	
 	public static final int REQUEST_SEND_MESSAGE = 0x75441;
 	public static final int REQUEST_DECRYPT_PGP = 0x76783;
@@ -437,7 +437,8 @@ public class ConversationActivity extends XmppActivity {
 					}
 				}
 				paneShouldBeOpen = false;
-				swapConversationFragment();
+				String text = getIntent().getExtras().getString(TEXT, null);
+				swapConversationFragment().setText(text);
 			}
 		} else {
 			if (xmppConnectionService.getAccounts().size() == 0) {
