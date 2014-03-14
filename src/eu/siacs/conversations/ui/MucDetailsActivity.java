@@ -30,12 +30,12 @@ public class MucDetailsActivity extends XmppActivity {
 	public static final String ACTION_VIEW_MUC = "view_muc";
 	private Conversation conversation;
 	private EditText mYourNick;
+	private EditText mSubject;
 	private TextView mRoleAffiliaton;
 	private TextView mFullJid;
 	private LinearLayout membersView;
 	private LinearLayout mMoreDetails;
 	private String uuid = null;
-	private ArrayAdapter<User> contactsAdapter;
 	private OnClickListener changeNickListener = new OnClickListener() {
 
 		@Override
@@ -50,6 +50,20 @@ public class MucDetailsActivity extends XmppActivity {
 			}
 		}
 	};
+	
+	private OnClickListener changeSubjectListener = new OnClickListener() {
+
+		@Override
+		public void onClick(View arg0) {
+			String subject = mSubject.getText().toString();
+			MucOptions options = conversation.getMucOptions();
+			if (!subject.equals(options.getSubject())) {
+				xmppConnectionService.sendConversationSubject(conversation,subject);
+				finish();
+			}
+		}
+	};
+	
 	private List<User> users = new ArrayList<MucOptions.User>();
 
 	@Override
@@ -61,11 +75,14 @@ public class MucDetailsActivity extends XmppActivity {
 		setContentView(R.layout.activity_muc_details);
 		mYourNick = (EditText) findViewById(R.id.muc_your_nick);
 		mFullJid = (TextView) findViewById(R.id.muc_jabberid);
-		ImageButton imageButton = (ImageButton) findViewById(R.id.muc_edit_nick);
-		imageButton.setOnClickListener(this.changeNickListener);
+		ImageButton editNickButton = (ImageButton) findViewById(R.id.muc_edit_nick);
+		editNickButton.setOnClickListener(this.changeNickListener);
+		ImageButton editSubjectButton = (ImageButton) findViewById(R.id.muc_edit_subject);
+		editSubjectButton.setOnClickListener(this.changeSubjectListener);
 		membersView = (LinearLayout) findViewById(R.id.muc_members);
 		mMoreDetails = (LinearLayout) findViewById(R.id.muc_more_details);
 		mMoreDetails.setVisibility(View.GONE);
+		mSubject = (EditText) findViewById(R.id.muc_subject);
 		getActionBar().setHomeButtonEnabled(true);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		
@@ -110,6 +127,7 @@ public class MucDetailsActivity extends XmppActivity {
 				}
 			}
 			if (this.conversation != null) {
+				mSubject.setText(conversation.getMucOptions().getSubject());
 				setTitle(conversation.getName(useSubject));
 				mFullJid.setText(conversation.getContactJid().split("/")[0]);
 				mYourNick.setText(conversation.getMucOptions().getNick());

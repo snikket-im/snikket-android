@@ -1231,4 +1231,19 @@ public class XmppConnectionService extends Service {
 			convChangedListener.onConversationListChanged();
 		}
 	}
+
+	public void sendConversationSubject(Conversation conversation,
+			String subject) {
+		MessagePacket packet = new MessagePacket();
+		packet.setType(MessagePacket.TYPE_GROUPCHAT);
+		packet.setTo(conversation.getContactJid().split("/")[0]);
+		Element subjectChild = new Element("subject");
+		subjectChild.setContent(subject);
+		packet.addChild(subjectChild);
+		packet.setFrom(conversation.getAccount().getJid());
+		Account account = conversation.getAccount();
+		if (account.getStatus() == Account.STATUS_ONLINE) {
+			account.getXmppConnection().sendMessagePacket(packet);
+		}
+	}
 }

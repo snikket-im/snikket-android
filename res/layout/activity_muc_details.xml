@@ -8,6 +8,53 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical" >
+    
+     <TextView
+        style="@style/sectionHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:text="Conference" />
+       <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#eee" >
+        
+
+        <EditText
+            android:id="@+id/muc_subject"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@+id/muc_edit_subject"
+            android:background="#eee"
+            android:ems="10"
+            android:hint="Conferenece Subject"
+            android:inputType="textEmailAddress"
+            android:paddingBottom="12dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:paddingTop="12dp" />
+
+        <ImageButton
+            android:id="@+id/muc_edit_subject"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_centerVertical="true"
+            android:background="?android:selectableItemBackground"
+            android:padding="8dp"
+            android:src="@drawable/ic_action_edit" />
+    </RelativeLayout>
+    <TextView
+        android:id="@+id/muc_jabberid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:singleLine="true"
+        android:textColor="#5b5b5b"
+        android:textSize="18sp"/>
 
     <TextView
         style="@style/sectionHeader"
@@ -16,12 +63,13 @@
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
         android:paddingTop="8dp"
-        android:text="Your nickname" />
+        android:text="Your Nickname" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#eee" >
+        
 
         <EditText
             android:id="@+id/muc_your_nick"
@@ -31,7 +79,7 @@
             android:layout_toLeftOf="@+id/muc_edit_nick"
             android:background="#eee"
             android:ems="10"
-            android:hint="Search or enter Jabber ID"
+            android:hint="Your nickname"
             android:inputType="textEmailAddress"
             android:paddingBottom="12dp"
             android:paddingLeft="8dp"
@@ -49,35 +97,6 @@
             android:padding="8dp"
             android:src="@drawable/ic_action_edit" />
     </RelativeLayout>
-
-    <TextView
-        style="@style/sectionHeader"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:text="Jabber ID" />
-    <TextView
-        android:id="@+id/muc_jabberid"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:singleLine="true"
-        android:textColor="#5b5b5b"
-        android:textSize="18sp"/>
-    
-    <LinearLayout
-        android:id="@+id/muc_more_details"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:orientation="vertical">
-
-    <TextView
-        style="@style/sectionHeader"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:text="Your role" />
-
     <TextView
         android:id="@+id/muc_role"
         android:layout_width="wrap_content"
@@ -86,7 +105,12 @@
         android:singleLine="true"
         android:textSize="18sp"
         android:textColor="#5b5b5b"/>
-
+    
+    <LinearLayout
+        android:id="@+id/muc_more_details"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical">
 
     <TextView
         android:id="@+id/muc_participants_header"
