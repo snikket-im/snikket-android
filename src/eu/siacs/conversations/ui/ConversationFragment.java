@@ -347,6 +347,7 @@ public class ConversationFragment extends Fragment {
 
 						@Override
 						public void onRename(final boolean success) {
+							activity.xmppConnectionService.updateConversation(conversation);
 							getActivity().runOnUiThread(new Runnable() {
 
 								@Override
