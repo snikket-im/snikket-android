@@ -992,7 +992,6 @@ public class XmppConnectionService extends Service {
 	}
 
 	private OnRenameListener renameListener = null;
-	private boolean pongReceived;
 
 	public void setOnRenameListener(OnRenameListener listener) {
 		this.renameListener = listener;

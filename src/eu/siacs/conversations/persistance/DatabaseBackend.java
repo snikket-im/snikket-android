@@ -138,9 +138,9 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 
 	public Conversation findConversation(Account account, String contactJid) {
 		SQLiteDatabase db = this.getReadableDatabase();
-		String[] selectionArgs = { account.getUuid(), contactJid };
+		String[] selectionArgs = { account.getUuid(), contactJid+"%" };
 		Cursor cursor = db.query(Conversation.TABLENAME, null,
-				Conversation.ACCOUNT + "=? AND " + Conversation.CONTACTJID + "=?",
+				Conversation.ACCOUNT + "=? AND " + Conversation.CONTACTJID + " like ?",
 				selectionArgs, null, null, null);
 		if (cursor.getCount() == 0)
 			return null;

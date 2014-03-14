@@ -443,7 +443,6 @@ public class XmppConnection implements Runnable {
 		} else if (this.streamFeatures.hasChild("register")&&(account.isOptionSet(Account.OPTION_REGISTER))) {
 				sendRegistryRequest();
 		} else if (!this.streamFeatures.hasChild("register")&&(account.isOptionSet(Account.OPTION_REGISTER))) {
-			//Log.d(LOGTAG,"registration not supported. stream features where"+this.streamFeatures.toString());
 			changeStatus(Account.STATUS_REGISTRATION_NOT_SUPPORTED);
 			disconnect(true);
 		} else if (this.streamFeatures.hasChild("mechanisms")
