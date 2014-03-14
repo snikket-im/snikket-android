@@ -175,6 +175,10 @@ public class ManageAccountActivity extends XmppActivity {
 					statusView.setText("registration completed");
 					statusView.setTextColor(0xFF83b600);
 					break;
+				case Account.STATUS_REGISTRATION_NOT_SUPPORTED:
+					statusView.setText("server does not support registration");
+					statusView.setTextColor(0xFFe92727);
+					break;
 				default:
 					statusView.setText("");
 					break;

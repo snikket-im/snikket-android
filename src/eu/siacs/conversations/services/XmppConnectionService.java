@@ -150,7 +150,7 @@ public class XmppConnectionService extends Service {
 			} else {
 				// Log.d(LOGTAG, "unparsed message " + packet.toString());
 			}
-			if (message == null) {
+			if ((message == null)||(message.getBody() == null)) {
 				return;
 			}
 			if (packet.hasChild("delay")) {

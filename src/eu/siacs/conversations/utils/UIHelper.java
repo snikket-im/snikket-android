@@ -218,7 +218,7 @@ public class UIHelper {
 			mBuilder.setSmallIcon(R.drawable.notification);
 			if (notify) {
 				if (vibrate) {
-					int dat = 110;
+					int dat = 70;
 					long[] pattern = {0,3*dat,dat,dat,dat,3*dat,dat,dat};
 					mBuilder.setVibrate(pattern);
 				}

@@ -26,4 +26,5 @@
     <string name="account_info">Server Info</string>
     <string name="register_account">Register new account on server</string>
     <string name="share_with">Share with</string>
+    <string name="ask_again"><u>Click to ask again</u></string>
 </resources>

@@ -88,13 +88,25 @@
         android:textSize="18sp"
         android:textColor="#5b5b5b" />
 
-    <CheckBox
+        <CheckBox
         android:id="@+id/details_receive_presence"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Receive presence updates"
         android:textSize="18sp"
         android:textColor="#5b5b5b" />
+        
+	<TextView 
+	    android:id="@+id/ask_again"
+	    android:paddingTop="8dp"
+	    android:paddingLeft="32dp"
+	    android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/ask_again"
+        android:textColor="#33B5E5"
+        android:textSize="18sp"
+        android:visibility="gone"
+	    />
  <TextView
         style="@style/sectionHeader"
         android:layout_width="wrap_content"

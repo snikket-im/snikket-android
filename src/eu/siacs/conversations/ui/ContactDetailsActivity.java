@@ -42,6 +42,7 @@ public class ContactDetailsActivity extends XmppActivity {
 	private TextView contactJid;
 	private TextView accountJid;
 	private TextView status;
+	private TextView askAgain;
 	private CheckBox send;
 	private CheckBox receive;
 	private QuickContactBadge badge;
@@ -107,6 +108,7 @@ public class ContactDetailsActivity extends XmppActivity {
 		status = (TextView) findViewById(R.id.details_contactstatus);
 		send = (CheckBox) findViewById(R.id.details_send_presence);
 		receive = (CheckBox) findViewById(R.id.details_receive_presence);
+		askAgain = (TextView) findViewById(R.id.ask_again);
 		badge = (QuickContactBadge) findViewById(R.id.details_contact_badge);
 		keys = (LinearLayout) findViewById(R.id.details_contact_keys);
 		getActionBar().setHomeButtonEnabled(true);
@@ -177,7 +179,17 @@ public class ContactDetailsActivity extends XmppActivity {
 		if (contact.getSubscriptionOption(Contact.Subscription.TO)) {
 			receive.setChecked(true);
 		} else {
-			receive.setText("Request presence updates");
+			receive.setText("Ask for presence updates");
+			askAgain.setVisibility(View.VISIBLE);
+			askAgain.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					Toast.makeText(getApplicationContext(), "Asked for presence updates",Toast.LENGTH_SHORT).show();
+					xmppConnectionService.requestPresenceUpdatesFrom(contact);
+					
+				}
+			});
 			if (contact.getSubscriptionOption(Contact.Subscription.ASKING)) {
 				receive.setChecked(true);
 			} else {

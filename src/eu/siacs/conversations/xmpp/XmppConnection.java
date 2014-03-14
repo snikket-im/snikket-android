@@ -441,42 +441,11 @@ public class XmppConnection implements Runnable {
 				&& account.isOptionSet(Account.OPTION_USETLS)) {
 			sendStartTLS();
 		} else if (this.streamFeatures.hasChild("register")&&(account.isOptionSet(Account.OPTION_REGISTER))) {
-				IqPacket register = new IqPacket(IqPacket.TYPE_GET);
-				register.query("jabber:iq:register");
-				register.setTo(account.getServer());
-				sendIqPacket(register, new OnIqPacketReceived() {
-					
-					@Override
-					public void onIqPacketReceived(Account account, IqPacket packet) {
-						Element instructions = packet.query().findChild("instructions");
-						if (packet.query().hasChild("username")&&(packet.query().hasChild("password"))) {
-							IqPacket register = new IqPacket(IqPacket.TYPE_SET);
-							Element username = new Element("username").setContent(account.getUsername());
-							Element password = new Element("password").setContent(account.getPassword());
-							register.query("jabber:iq:register").addChild(username).addChild(password);
-							sendIqPacket(register, new OnIqPacketReceived() {
-								
-								@Override
-								public void onIqPacketReceived(Account account, IqPacket packet) {
-									if (packet.getType()==IqPacket.TYPE_RESULT) {
-										account.setOption(Account.OPTION_REGISTER, false);
-										changeStatus(Account.STATUS_REGISTRATION_SUCCESSFULL);
-										Log.d(LOGTAG,"successfull");
-									} else if (packet.hasChild("error")&&(packet.findChild("error").hasChild("conflict"))){
-										changeStatus(Account.STATUS_REGISTRATION_CONFLICT);
-									} else {
-										changeStatus(Account.STATUS_REGISTRATION_FAILED);
-										Log.d(LOGTAG,packet.toString());
-									}
-									disconnect(true);
-								}
-							});
-							Log.d(LOGTAG,"registering: "+register.toString());
-						} else {
-							Log.d(LOGTAG,account.getJid()+": could not register. instructions are"+instructions.getContent());
-						}
-					}
-				});
+				sendRegistryRequest();
+		} else if (!this.streamFeatures.hasChild("register")&&(account.isOptionSet(Account.OPTION_REGISTER))) {
+			//Log.d(LOGTAG,"registration not supported. stream features where"+this.streamFeatures.toString());
+			changeStatus(Account.STATUS_REGISTRATION_NOT_SUPPORTED);
+			disconnect(true);
 		} else if (this.streamFeatures.hasChild("mechanisms")
 				&& shouldAuthenticate) {
 			sendSaslAuth();
@@ -497,6 +466,45 @@ public class XmppConnection implements Runnable {
 				this.sendIqPacket(startSession, null);
 			}
 		}
+	}
+
+	private void sendRegistryRequest() {
+		IqPacket register = new IqPacket(IqPacket.TYPE_GET);
+		register.query("jabber:iq:register");
+		register.setTo(account.getServer());
+		sendIqPacket(register, new OnIqPacketReceived() {
+			
+			@Override
+			public void onIqPacketReceived(Account account, IqPacket packet) {
+				Element instructions = packet.query().findChild("instructions");
+				if (packet.query().hasChild("username")&&(packet.query().hasChild("password"))) {
+					IqPacket register = new IqPacket(IqPacket.TYPE_SET);
+					Element username = new Element("username").setContent(account.getUsername());
+					Element password = new Element("password").setContent(account.getPassword());
+					register.query("jabber:iq:register").addChild(username).addChild(password);
+					sendIqPacket(register, new OnIqPacketReceived() {
+						
+						@Override
+						public void onIqPacketReceived(Account account, IqPacket packet) {
+							if (packet.getType()==IqPacket.TYPE_RESULT) {
+								account.setOption(Account.OPTION_REGISTER, false);
+								changeStatus(Account.STATUS_REGISTRATION_SUCCESSFULL);
+							} else if (packet.hasChild("error")&&(packet.findChild("error").hasChild("conflict"))){
+								changeStatus(Account.STATUS_REGISTRATION_CONFLICT);
+							} else {
+								changeStatus(Account.STATUS_REGISTRATION_FAILED);
+								Log.d(LOGTAG,packet.toString());
+							}
+							disconnect(true);
+						}
+					});
+				} else {
+					changeStatus(Account.STATUS_REGISTRATION_FAILED);
+					disconnect(true);
+					Log.d(LOGTAG,account.getJid()+": could not register. instructions are"+instructions.getContent());
+				}
+			}
+		});
 	}
 
 	private void sendInitialPresence() {
