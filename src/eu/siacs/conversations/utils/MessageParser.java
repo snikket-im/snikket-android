@@ -84,7 +84,9 @@ public class MessageParser {
 			conversation.resetOtrSession();
 			return null;
 		}
-		if (body == null) {
+		
+		//isEmpty is a work around for some weird clients which send emtpty strings over otr
+		if ((body == null)||(body.isEmpty())) {
 			return null;
 		}
 		return new Message(conversation, packet.getFrom(), body, Message.ENCRYPTION_OTR,Message.STATUS_RECIEVED);
