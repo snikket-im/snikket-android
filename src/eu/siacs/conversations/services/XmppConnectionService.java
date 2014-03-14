@@ -34,6 +34,7 @@ import eu.siacs.conversations.utils.OnPhoneContactsLoadedListener;
 import eu.siacs.conversations.utils.PhoneHelper;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xml.Element;
+import eu.siacs.conversations.xmpp.OnBindListener;
 import eu.siacs.conversations.xmpp.OnIqPacketReceived;
 import eu.siacs.conversations.xmpp.OnMessagePacketReceived;
 import eu.siacs.conversations.xmpp.OnPresencePacketReceived;
@@ -186,7 +187,6 @@ public class XmppConnectionService extends Service {
 				accountChangedListener.onAccountListChangedListener();
 			}
 			if (account.getStatus() == Account.STATUS_ONLINE) {
-				databaseBackend.clearPresences(account);
 				if (account.getXmppConnection().hasFeatureRosterManagment()) {
 					updateRoster(account, null);
 				}
@@ -541,6 +541,13 @@ public class XmppConnectionService extends Service {
 						}
 					}
 				});
+		connection.setOnBindListener(new OnBindListener() {
+			
+			@Override
+			public void onBind(Account account) {
+				databaseBackend.clearPresences(account);
+			}
+		});
 		return connection;
 	}
 

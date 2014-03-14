@@ -86,7 +86,8 @@ public class XmppConnection implements Runnable {
 	private OnIqPacketReceived unregisteredIqListener = null;
 	private OnMessagePacketReceived messageListener = null;
 	private OnStatusChanged statusListener = null;
-	private OnTLSExceptionReceived tlsListener;
+	private OnTLSExceptionReceived tlsListener = null;
+	private OnBindListener bindListener = null;
 
 	public XmppConnection(Account account, PowerManager pm) {
 		this.account = account;
@@ -540,6 +541,9 @@ public class XmppConnection implements Runnable {
 				String resource = packet.findChild("bind").findChild("jid")
 						.getContent().split("/")[1];
 				account.setResource(resource);
+				if (bindListener !=null) {
+					bindListener.onBind(account);
+				}
 				account.setStatus(Account.STATUS_ONLINE);
 				if (streamFeatures.hasChild("sm")) {
 					EnablePacket enable = new EnablePacket();
@@ -692,6 +696,10 @@ public class XmppConnection implements Runnable {
 	
 	public void setOnTLSExceptionReceivedListener(OnTLSExceptionReceived listener) {
 		this.tlsListener = listener;
+	}
+	
+	public void setOnBindListener(OnBindListener listener) {
+		this.bindListener = listener;
 	}
 
 	public void disconnect(boolean force) {
