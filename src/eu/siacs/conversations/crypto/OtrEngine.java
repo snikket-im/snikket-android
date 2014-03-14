@@ -119,6 +119,9 @@ public class OtrEngine implements OtrEngineHost {
 	}
 
 	public PublicKey getPublicKey() {
+		if (this.keyPair == null) {
+			return null;
+		}
 		return this.keyPair.getPublic();
 	}
 	

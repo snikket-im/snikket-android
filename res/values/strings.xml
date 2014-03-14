@@ -27,4 +27,6 @@
     <string name="register_account">Register new account on server</string>
     <string name="share_with">Share with</string>
     <string name="ask_again"><u>Click to ask again</u></string>
+    <string name="show_otr_key">OTR fingerprint</string>
+    <string name="no_otr_fingerprint">No OTR Fingerprint generated. Just go ahead an start an encrypted conversation</string>
 </resources>

@@ -12,6 +12,7 @@ import eu.siacs.conversations.xmpp.OnTLSExceptionReceived;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ClipData.Item;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
@@ -286,6 +287,18 @@ public class ManageAccountActivity extends XmppActivity {
 										}
 									}
 								}
+							} else if (item.getItemId() == R.id.mgmt_otr_key) {
+								AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+								builder.setTitle("OTR Fingerprint");
+								String fingerprintTxt = selectedAccountForActionMode.getOtrFingerprint(getApplicationContext());
+								View view = (View) getLayoutInflater().inflate(R.layout.otr_fingerprint, null);
+								if (fingerprintTxt!=null) {
+									TextView fingerprint = (TextView) view.findViewById(R.id.otr_fingerprint);
+									fingerprint.setText(fingerprintTxt);
+								}
+								builder.setView(view);
+								builder.setPositiveButton("Done", null);
+								builder.create().show();
 							} else if (item.getItemId() == R.id.mgmt_account_info) {
 								AlertDialog.Builder builder = new AlertDialog.Builder(activity);
 								builder.setTitle(getString(R.string.account_info));

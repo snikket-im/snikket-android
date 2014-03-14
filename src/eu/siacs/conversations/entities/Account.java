@@ -217,6 +217,9 @@ public class Account  extends AbstractEntity{
 		if (this.otrFingerprint == null) {
 			try {
 				DSAPublicKey pubkey = (DSAPublicKey) this.otrEngine.getPublicKey();
+				if (pubkey == null) {
+					return null;
+				}
 				StringBuilder builder = new StringBuilder(new OtrCryptoEngineImpl().getFingerprint(pubkey));
 				builder.insert(8, " ");
 				builder.insert(17, " ");
@@ -240,5 +243,10 @@ public class Account  extends AbstractEntity{
 	
 	public void setRosterVersion(String version) {
 		this.rosterVersion = version;
+	}
+
+	public String getOtrFingerprint(Context applicationContext) {
+		this.getOtrEngine(applicationContext);
+		return this.getOtrFingerprint();
 	}
 }

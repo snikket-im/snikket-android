@@ -1,34 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
     <item
         android:id="@+id/mgmt_account_edit"
         android:icon="@drawable/ic_action_edit"
-        android:title="Edit Account"
-        android:showAsAction="always" />
+        android:showAsAction="always"
+        android:title="Edit Account"/>
     <item
         android:id="@+id/mgmt_account_delete"
         android:icon="@drawable/ic_action_delete"
-        android:title="Delete"
         android:showAsAction="always"
-        />
+        android:title="Delete"/>
     <item
         android:id="@+id/mgmt_account_disable"
-        android:title="Temporarily disable"
-        android:showAsAction="never"/>
+        android:showAsAction="never"
+        android:title="Temporarily disable"/>
     <item
         android:id="@+id/mgmt_account_enable"
-        android:title="Enable"
         android:showAsAction="never"
+        android:title="Enable"
         android:visible="false"/>
-    
-        <item
+    <item
         android:id="@+id/mgmt_account_announce_pgp"
         android:showAsAction="never"
-        android:title="@string/announce_pgp" />
-        <item
-            android:id="@+id/mgmt_account_info"
-            android:title="@string/account_info"
-            android:showAsAction="never"
-            />
+        android:title="@string/announce_pgp"/>
+    <item
+        android:id="@+id/mgmt_otr_key"
+        android:showAsAction="never"
+        android:title="@string/show_otr_key"/>
+    <item
+        android:id="@+id/mgmt_account_info"
+        android:showAsAction="never"
+        android:title="@string/account_info"/>
 
 </menu>
