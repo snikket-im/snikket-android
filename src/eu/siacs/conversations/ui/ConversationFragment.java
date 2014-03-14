@@ -239,6 +239,7 @@ public class ConversationFragment extends Fragment {
 							.findViewById(R.id.message_body);
 					viewHolder.time = (TextView) view
 							.findViewById(R.id.message_time);
+					viewHolder.indicator = (ImageView) view.findViewById(R.id.security_indicator);
 					view.setTag(viewHolder);
 				} else {
 					viewHolder = (ViewHolder) view.getTag();
@@ -266,12 +267,22 @@ public class ConversationFragment extends Fragment {
 						viewHolder.messageBody.setTextColor(0xff33B5E5);
 						viewHolder.messageBody.setTypeface(null,
 								Typeface.ITALIC);
+						viewHolder.indicator.setVisibility(View.VISIBLE);
+					} else if ((item.getEncryption() == Message.ENCRYPTION_OTR)||(item.getEncryption() == Message.ENCRYPTION_DECRYPTED)) {
+						viewHolder.messageBody.setText(body.trim());
+						viewHolder.messageBody.setTextColor(0xff000000);
+						viewHolder.messageBody.setTypeface(null,
+								Typeface.NORMAL);
+						viewHolder.indicator.setVisibility(View.VISIBLE);
 					} else {
 						viewHolder.messageBody.setText(body.trim());
 						viewHolder.messageBody.setTextColor(0xff000000);
 						viewHolder.messageBody.setTypeface(null,
 								Typeface.NORMAL);
+						viewHolder.indicator.setVisibility(View.GONE);
 					}
+				} else {
+					viewHolder.indicator.setVisibility(View.GONE);
 				}
 				if (item.getStatus() == Message.STATUS_UNSEND) {
 					viewHolder.time.setTypeface(null, Typeface.ITALIC);
@@ -554,6 +565,7 @@ public class ConversationFragment extends Fragment {
 
 	private static class ViewHolder {
 
+		protected ImageView indicator;
 		protected TextView time;
 		protected TextView messageBody;
 		protected ImageView imageView;

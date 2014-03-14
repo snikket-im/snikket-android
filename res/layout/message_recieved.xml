@@ -23,20 +23,37 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hi, how are you?"
-        android:autoLink="all"
+        android:autoLink="web"
         android:textSize="16sp"
         android:id="@+id/message_body"
         android:textColor="#333333"/>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="1dp"
+        android:paddingRight="8dp"
         android:text="@string/sending"
         android:textColor="#8e8e8e"
         android:textSize="12sp"
-        android:id="@+id/message_time"/>
+        android:id="@+id/message_time"
+        android:layout_gravity="center_vertical"
+        android:gravity="center_vertical"/>
 
+    <ImageView
+        android:id="@+id/security_indicator"
+        android:layout_width="14sp"
+        android:layout_height="14sp"
+        android:layout_gravity="center_vertical"
+        android:gravity="center_vertical"
+        android:paddingTop="2dp"
+        android:src="@drawable/ic_indicator"
+        android:visibility="gone"/>
+
+</LinearLayout>
 	</LinearLayout>
 </LinearLayout>
     <ImageView
