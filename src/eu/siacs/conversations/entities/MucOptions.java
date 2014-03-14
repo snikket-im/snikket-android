@@ -77,6 +77,7 @@ public class MucOptions {
 	private int error = 0;
 	private OnRenameListener renameListener = null;
 	private User self = new User();
+	private String subject = null;
 
 	
 	public void deleteUser(String name) {
@@ -185,5 +186,13 @@ public class MucOptions {
 
 	public User getSelf() {
 		return self;
+	}
+
+	public void setSubject(String content) {
+		this.subject = content;
+	}
+	
+	public String getSubject() {
+		return this.subject;
 	}
 }

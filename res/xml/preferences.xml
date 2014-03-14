@@ -49,5 +49,10 @@
             android:title="Use Phones self contact picture"
             android:summary="You may no longer be able to distinguish which account you are using in a conversation"
             android:defaultValue="true"/>
+        <CheckBoxPreference 
+            android:key="use_subject_in_muc"
+            android:title="Conference Name"
+            android:summary="Use room’s subject to identify Conferences"
+            android:defaultValue="true"/>
     </PreferenceCategory>
 </PreferenceScreen>

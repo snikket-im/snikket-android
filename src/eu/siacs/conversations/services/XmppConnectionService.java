@@ -1225,4 +1225,10 @@ public class XmppConnectionService extends Service {
 			}
 		}).start();
 	}
+
+	public void updateConversationInGui() {
+		if (convChangedListener!=null) {
+			convChangedListener.onConversationListChanged();
+		}
+	}
 }

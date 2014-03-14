@@ -9,7 +9,9 @@ import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.entities.MucOptions.User;
 import eu.siacs.conversations.utils.UIHelper;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -99,6 +101,8 @@ public class MucDetailsActivity extends XmppActivity {
 
 	@Override
 	void onBackendConnected() {
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+		boolean useSubject = preferences.getBoolean("use_subject_in_muc", true);
 		if (uuid != null) {
 			for (Conversation mConv : xmppConnectionService.getConversations()) {
 				if (mConv.getUuid().equals(uuid)) {
@@ -106,7 +110,7 @@ public class MucDetailsActivity extends XmppActivity {
 				}
 			}
 			if (this.conversation != null) {
-				setTitle(conversation.getName());
+				setTitle(conversation.getName(useSubject));
 				mFullJid.setText(conversation.getContactJid().split("/")[0]);
 				mYourNick.setText(conversation.getMucOptions().getNick());
 				mRoleAffiliaton = (TextView) findViewById(R.id.muc_role);

@@ -133,6 +133,7 @@ public class UIHelper {
 				.getSystemService(Context.NOTIFICATION_SERVICE);
 		
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+		boolean useSubject = preferences.getBoolean("use_subject_in_muc", true);
 		boolean showNofifications = preferences.getBoolean("show_notification",true);
 		boolean vibrate = preferences.getBoolean("vibrate_on_notification", true);
 		boolean alwaysNotify = preferences.getBoolean("notify_in_conversation_when_highlighted", false);
@@ -171,9 +172,9 @@ public class UIHelper {
 					conversation.getName(),
 					(int) res
 							.getDimension(android.R.dimen.notification_large_icon_width)));*/
-			mBuilder.setLargeIcon(UIHelper.getContactPicture(conversation.getContact(), conversation.getName(), (int) res
+			mBuilder.setLargeIcon(UIHelper.getContactPicture(conversation.getContact(), conversation.getName(useSubject), (int) res
 							.getDimension(android.R.dimen.notification_large_icon_width), context));
-			mBuilder.setContentTitle(conversation.getName());
+			mBuilder.setContentTitle(conversation.getName(useSubject));
 			if (notify) {
 				mBuilder.setTicker(conversation.getLatestMessage().getBody().trim());
 			}
@@ -203,11 +204,11 @@ public class UIHelper {
 			for (int i = 0; i < unread.size(); ++i) {
 				targetUuid = unread.get(i).getUuid();
 				if (i < unread.size() - 1) {
-					names.append(unread.get(i).getName() + ", ");
+					names.append(unread.get(i).getName(useSubject) + ", ");
 				} else {
-					names.append(unread.get(i).getName());
+					names.append(unread.get(i).getName(useSubject));
 				}
-				style.addLine(Html.fromHtml("<b>" + unread.get(i).getName()
+				style.addLine(Html.fromHtml("<b>" + unread.get(i).getName(useSubject)
 						+ "</b> " + unread.get(i).getLatestMessage().getBody().trim()));
 			}
 			mBuilder.setContentTitle(unread.size() + " unread Conversations");

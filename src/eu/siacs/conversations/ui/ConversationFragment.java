@@ -62,6 +62,8 @@ public class ConversationFragment extends Fragment {
 	private String pastedText = null;
 
 	protected Bitmap selfBitmap;
+	
+	private boolean useSubject = true;
 
 	private IntentSender askForPassphraseIntent = null;
 
@@ -214,7 +216,7 @@ public class ConversationFragment extends Fragment {
 						if (item.getConversation().getMode() == Conversation.MODE_SINGLE) {
 
 							viewHolder.imageView.setImageBitmap(mBitmapCache
-									.get(item.getConversation().getName(), item
+									.get(item.getConversation().getName(useSubject), item
 											.getConversation().getContact(),
 											getActivity()
 													.getApplicationContext()));
@@ -250,7 +252,7 @@ public class ConversationFragment extends Fragment {
 													.getApplicationContext()));
 						} else {
 							viewHolder.imageView.setImageBitmap(mBitmapCache
-									.get(item.getConversation().getName(),
+									.get(item.getConversation().getName(useSubject),
 											null, getActivity()
 													.getApplicationContext()));
 						}
@@ -330,7 +332,7 @@ public class ConversationFragment extends Fragment {
 			if (!activity.shouldPaneBeOpen()) {
 				activity.getSlidingPaneLayout().closePane();
 				activity.getActionBar().setDisplayHomeAsUpEnabled(true);
-				activity.getActionBar().setTitle(conversation.getName());
+				activity.getActionBar().setTitle(conversation.getName(useSubject));
 				activity.invalidateOptionsMenu();
 
 			}

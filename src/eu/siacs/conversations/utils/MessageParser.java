@@ -96,7 +96,12 @@ public class MessageParser {
 		int status;
 		String[] fromParts = packet.getFrom().split("/");
 		Conversation conversation = service.findOrCreateConversation(account, fromParts[0],true);
-		if ((fromParts.length == 1) || (packet.hasChild("subject"))) {
+		if (packet.hasChild("subject")) {
+			conversation.getMucOptions().setSubject(packet.findChild("subject").getContent());
+			service.updateConversationInGui();
+			return null;
+		}
+		if ((fromParts.length == 1)) {
 			return null;
 		}
 		String counterPart = fromParts[1];

@@ -12,11 +12,13 @@ import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.utils.UIHelper;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.v4.widget.SlidingPaneLayout;
@@ -53,6 +55,7 @@ public class ConversationActivity extends XmppActivity {
 	private ListView listView;
 	
 	private boolean paneShouldBeOpen = true;
+	private boolean useSubject = true;
 	private ArrayAdapter<Conversation> listAdapter;
 	
 	private OnConversationListChangedListener onConvChanged = new OnConversationListChangedListener() {
@@ -163,7 +166,7 @@ public class ConversationActivity extends XmppActivity {
 					view.setBackgroundColor(Color.TRANSPARENT);
 				}
 				TextView convName = (TextView) view.findViewById(R.id.conversation_name);
-				convName.setText(conv.getName());
+				convName.setText(conv.getName(useSubject));
 				TextView convLastMsg = (TextView) view.findViewById(R.id.conversation_lastmsg);
 				convLastMsg.setText(conv.getLatestMessage().getBody());
 				
@@ -179,7 +182,7 @@ public class ConversationActivity extends XmppActivity {
 				.setText(UIHelper.readableTimeDifference(conv.getLatestMessage().getTimeSent()));
 				
 				ImageView imageView = (ImageView) view.findViewById(R.id.conversation_image);
-				imageView.setImageBitmap(UIHelper.getContactPicture(conv.getContact(), conv.getName(),200, activity.getApplicationContext()));
+				imageView.setImageBitmap(UIHelper.getContactPicture(conv.getContact(), conv.getName(useSubject),200, activity.getApplicationContext()));
 				return view;
 			}
 
@@ -221,7 +224,7 @@ public class ConversationActivity extends XmppActivity {
 				paneShouldBeOpen = false;
 				if (conversationList.size() > 0) {
 					getActionBar().setDisplayHomeAsUpEnabled(true);
-					getActionBar().setTitle(getSelectedConversation().getName());
+					getActionBar().setTitle(getSelectedConversation().getName(useSubject));
 					invalidateOptionsMenu();
 					if (!getSelectedConversation().isRead()) {
 						getSelectedConversation().markRead();
@@ -399,6 +402,8 @@ public class ConversationActivity extends XmppActivity {
 	public void onStart() {
 		super.onStart();
 		this.registerListener();
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+		this.useSubject = preferences.getBoolean("use_subject_in_muc", true);
 		if (conversationList.size()>=1) {
 			onConvChanged.onConversationListChanged();
 		}

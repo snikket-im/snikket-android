@@ -13,8 +13,10 @@ import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.utils.UIHelper;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -66,6 +68,9 @@ public class ShareWithActivity extends XmppActivity {
 	
 	@Override
 	void onBackendConnected() {
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+		boolean useSubject = preferences.getBoolean("use_subject_in_muc", true);
+		
 		Set<String> displayedContacts = new HashSet<String>();
 		conversations.removeAllViews();
 		List<Conversation> convList = xmppConnectionService.getConversations();
@@ -76,7 +81,7 @@ public class ShareWithActivity extends XmppActivity {
 			}
 		});
 		for(final Conversation conversation : convList) {
-			View view = createContactView(conversation.getName(), conversation.getLatestMessage().getBody().trim(), UIHelper.getContactPicture(conversation.getContact(),conversation.getName(), 90,this.getApplicationContext()));
+			View view = createContactView(conversation.getName(useSubject), conversation.getLatestMessage().getBody().trim(), UIHelper.getContactPicture(conversation.getContact(),conversation.getName(useSubject), 90,this.getApplicationContext()));
 			view.setOnClickListener(new OnClickListener() {
 				
 				@Override
