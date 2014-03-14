@@ -31,7 +31,8 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal" >
+                android:orientation="horizontal"
+                android:layout_gravity="right">
 
                 <TextView
                     android:id="@+id/message_time"
@@ -39,21 +40,21 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:gravity="center_vertical"
-                    android:paddingRight="8dp"
                     android:paddingTop="1dp"
                     android:text="@string/sending"
                     android:textColor="#8e8e8e"
                     android:textSize="12sp" />
-
-                <ImageView
+                
+                 <ImageView
                     android:id="@+id/security_indicator"
-                    android:layout_width="14sp"
-                    android:layout_height="14sp"
+                    android:layout_width="12sp"
+                    android:layout_height="12sp"
                     android:layout_gravity="center_vertical"
                     android:gravity="center_vertical"
-                    android:paddingTop="2dp"
+                    android:layout_marginTop="2sp"
                     android:src="@drawable/ic_indicator"
-                    android:visibility="gone"/>
+                    android:layout_marginLeft="6sp"/>
+
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
