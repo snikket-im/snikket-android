@@ -207,12 +207,14 @@ public class ConversationFragment extends Fragment {
 						viewHolder.imageView = (ImageView) view
 								.findViewById(R.id.message_photo);
 						viewHolder.imageView.setImageBitmap(selfBitmap);
+						viewHolder.indicator = (ImageView) view.findViewById(R.id.security_indicator);
 						break;
 					case RECIEVED:
 						view = (View) inflater.inflate(
 								R.layout.message_recieved, null);
 						viewHolder.imageView = (ImageView) view
 								.findViewById(R.id.message_photo);
+						viewHolder.indicator = (ImageView) view.findViewById(R.id.security_indicator);
 						if (item.getConversation().getMode() == Conversation.MODE_SINGLE) {
 
 							viewHolder.imageView.setImageBitmap(mBitmapCache
@@ -239,7 +241,6 @@ public class ConversationFragment extends Fragment {
 							.findViewById(R.id.message_body);
 					viewHolder.time = (TextView) view
 							.findViewById(R.id.message_time);
-					viewHolder.indicator = (ImageView) view.findViewById(R.id.security_indicator);
 					view.setTag(viewHolder);
 				} else {
 					viewHolder = (ViewHolder) view.getTag();
@@ -279,7 +280,9 @@ public class ConversationFragment extends Fragment {
 						viewHolder.messageBody.setTextColor(0xff000000);
 						viewHolder.messageBody.setTypeface(null,
 								Typeface.NORMAL);
-						viewHolder.indicator.setVisibility(View.GONE);
+						if (item.getStatus() != Message.STATUS_ERROR) {
+							viewHolder.indicator.setVisibility(View.GONE);
+						}
 					}
 				} else {
 					viewHolder.indicator.setVisibility(View.GONE);

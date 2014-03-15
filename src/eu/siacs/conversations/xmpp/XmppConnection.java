@@ -15,6 +15,7 @@ import java.security.SecureRandom;
 import java.security.cert.CertPathValidatorException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
@@ -66,6 +67,7 @@ public class XmppConnection implements Runnable {
 	private boolean shouldAuthenticate = true;
 	private Element streamFeatures;
 	private HashSet<String> discoFeatures = new HashSet<String>();
+	private List<String> discoItems = new ArrayList<String>();
 	
 	private String streamId = null;
 	
@@ -550,7 +552,8 @@ public class XmppConnection implements Runnable {
 					tagWriter.writeStanzaAsync(enable);
 				}
 				sendInitialPresence();
-				sendServiceDiscovery();
+				sendServiceDiscoveryInfo();
+				sendServiceDiscoveryItems();
 				if (statusListener != null) {
 					statusListener.onStatusChanged(account);
 				}
@@ -558,29 +561,42 @@ public class XmppConnection implements Runnable {
 		});
 	}
 
-	private void sendServiceDiscovery() {
+	private void sendServiceDiscoveryInfo() {
 		IqPacket iq = new IqPacket(IqPacket.TYPE_GET);
-		iq.setAttribute("to", account.getServer());
-		Element query = new Element("query");
-		query.setAttribute("xmlns", "http://jabber.org/protocol/disco#info");
-		iq.addChild(query);
+		iq.setTo(account.getServer());
+		iq.query("http://jabber.org/protocol/disco#info");
 		this.sendIqPacket(iq, new OnIqPacketReceived() {
 
 			@Override
 			public void onIqPacketReceived(Account account, IqPacket packet) {
-				if (packet.hasChild("query")) {
-					List<Element> elements = packet.findChild("query")
-							.getChildren();
+					List<Element> elements = packet.query().getChildren();
 					for (int i = 0; i < elements.size(); ++i) {
 						if (elements.get(i).getName().equals("feature")) {
 							discoFeatures.add(elements.get(i).getAttribute(
 									"var"));
 						}
 					}
-				}
 				if (discoFeatures.contains("urn:xmpp:carbons:2")) {
 					sendEnableCarbons();
 				}
+			}
+		});
+	}
+	private void sendServiceDiscoveryItems() {
+		IqPacket iq = new IqPacket(IqPacket.TYPE_GET);
+		iq.setTo(account.getServer());
+		iq.query("http://jabber.org/protocol/disco#items");
+		this.sendIqPacket(iq, new OnIqPacketReceived() {
+
+			@Override
+			public void onIqPacketReceived(Account account, IqPacket packet) {
+					List<Element> elements = packet.query().getChildren();
+					for (int i = 0; i < elements.size(); ++i) {
+						if (elements.get(i).getName().equals("item")) {
+							discoItems.add(elements.get(i).getAttribute(
+									"jid"));
+						}
+					}
 			}
 		});
 	}
@@ -753,5 +769,18 @@ public class XmppConnection implements Runnable {
 	
 	public int getSentStanzas() {
 		return this.stanzasSent;
+	}
+
+	public String getMucServer() {
+		for(int i = 0; i < discoItems.size(); ++i) {
+			if (discoItems.get(i).contains("conference.")) {
+				return discoItems.get(i);
+			} else if (discoItems.get(i).contains("conf.")) {
+				return discoItems.get(i);
+			} else if (discoItems.get(i).contains("muc.")) {
+				return discoItems.get(i);
+			}
+		}
+		return null;
 	}
 }

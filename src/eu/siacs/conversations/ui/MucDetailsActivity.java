@@ -40,11 +40,9 @@ public class MucDetailsActivity extends XmppActivity {
 
 		@Override
 		public void onClick(View arg0) {
-			Log.d("gultsch","on click change muc");
 			MucOptions options = conversation.getMucOptions();
 			String nick = mYourNick.getText().toString();
 			if (!options.getNick().equals(nick)) {
-				Log.d("gultsch","call to change muc");
 				xmppConnectionService.renameInMuc(conversation, nick);
 				finish();
 			}

@@ -5,7 +5,7 @@ import eu.siacs.conversations.xml.Element;
 public class MessagePacket extends AbstractStanza {
 	public static final int TYPE_CHAT = 0;
 	public static final int TYPE_UNKNOWN = 1;
-	public static final int TYPE_NO = 2;
+	public static final int TYPE_NORMAL = 2;
 	public static final int TYPE_GROUPCHAT = 3;
 	public static final int TYPE_ERROR = 4;
 	
@@ -46,9 +46,10 @@ public class MessagePacket extends AbstractStanza {
 	public int getType() {
 		String type = getAttribute("type");
 		if (type==null) {
-			return TYPE_NO;
-		}
-		if (type.equals("chat")) {
+			return TYPE_NORMAL;
+		} else if (type.equals("normal")) {
+			return TYPE_NORMAL;
+		} else if (type.equals("chat")) {
 			return TYPE_CHAT;
 		} else if (type.equals("groupchat")) {
 			return TYPE_GROUPCHAT;

@@ -1,7 +1,9 @@
 package eu.siacs.conversations.ui;
 
 import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
 import java.net.URLDecoder;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -16,11 +18,16 @@ import eu.siacs.conversations.utils.Validator;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
+import android.util.SparseBooleanArray;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
@@ -49,6 +56,110 @@ public class NewConversationActivity extends XmppActivity {
 	protected String searchString = "";
 	private TextView contactsHeader;
 	private List<Account> accounts;
+	private List<Contact> selectedContacts = new ArrayList<Contact>();
+	
+	private boolean isActionMode = false;
+	private ActionMode actionMode = null;
+	private AbsListView.MultiChoiceModeListener actionModeCallback = new AbsListView.MultiChoiceModeListener() {
+		
+		@Override
+		public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+			menu.clear();
+			MenuInflater inflater = mode.getMenuInflater();
+	        inflater.inflate(R.menu.newconversation_context, menu);
+	        SparseBooleanArray checkedItems = contactsView.getCheckedItemPositions();
+	        selectedContacts.clear();
+	        for(int i = 0; i < aggregatedContacts.size(); ++i) {
+	        	if (checkedItems.get(i, false)) {
+	        		selectedContacts.add(aggregatedContacts.get(i));
+	        	}
+	        }
+	        if (selectedContacts.size() == 0) {
+	        	menu.findItem(R.id.action_start_conversation).setVisible(false);
+	        	menu.findItem(R.id.action_contact_details).setVisible(false);
+	        } else if (selectedContacts.size() == 1) {
+	        	menu.findItem(R.id.action_start_conversation).setVisible(true);
+	        	menu.findItem(R.id.action_contact_details).setVisible(true);
+	        } else {
+	        	menu.findItem(R.id.action_start_conversation).setVisible(true);
+	        	menu.findItem(R.id.action_contact_details).setVisible(false);
+	        }
+			return true;
+		}
+		
+		@Override
+		public void onDestroyActionMode(ActionMode mode) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+		@Override
+		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+			return true;
+		}
+		
+		@Override
+		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+			switch (item.getItemId()) {
+			case R.id.action_start_conversation:
+				if (selectedContacts.size() == 1) {
+					startConversation(selectedContacts.get(0));
+				} else {
+					startConference();
+				}
+				break;
+			case R.id.action_contact_details:
+				Intent intent = new Intent(getApplicationContext(),ContactDetailsActivity.class);
+				intent.setAction(ContactDetailsActivity.ACTION_VIEW_CONTACT);
+				intent.putExtra("uuid", selectedContacts.get(0).getUuid());
+				startActivity(intent);
+				break;
+			default:
+				break;
+			}
+			// TODO Auto-generated method stub
+			return false;
+		}
+		
+		@Override
+		public void onItemCheckedStateChanged(ActionMode mode, int position,
+				long id, boolean checked) {
+		}
+	};
+	
+	private void startConference() {
+		if (accounts.size()>1) {
+			getAccountChooser(new OnClickListener() {
+
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					startConference(accounts.get(which), selectedContacts);
+				}
+				}).show();
+		} else {
+			startConference(accounts.get(0), selectedContacts);
+		}
+		
+	}
+	
+	private void startConference(Account account, List<Contact> contacts) {
+		SecureRandom random = new SecureRandom();
+		String mucName = new BigInteger(100,random).toString(32);
+		String serverName = account.getXmppConnection().getMucServer();
+		String jid = mucName+"@"+serverName;
+		Conversation conversation = xmppConnectionService.findOrCreateConversation(account, jid , true);
+		StringBuilder subject = new StringBuilder();
+		for(int i = 0; i < selectedContacts.size(); ++i) {
+			if (i+1!=selectedContacts.size()) {
+				subject.append(selectedContacts.get(i).getDisplayName()+", ");
+			} else {
+				subject.append(selectedContacts.get(i).getDisplayName());
+			}
+		}
+		xmppConnectionService.sendConversationSubject(conversation, subject.toString());
+		xmppConnectionService.inviteToConference(conversation, contacts);
+		switchToConversation(conversation, null);
+	}
 
 	protected void updateAggregatedContacts() {
 
@@ -86,6 +197,20 @@ public class NewConversationActivity extends XmppActivity {
 		contactsAdapter.notifyDataSetChanged();
 		contactsView.setScrollX(0);
 	}
+	
+	private OnItemLongClickListener onLongClickListener = new OnItemLongClickListener() {
+
+		@Override
+		public boolean onItemLongClick(AdapterView<?> arg0, View view,
+				int position, long arg3) {
+			if (!isActionMode) {
+				contactsView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+				contactsView.setItemChecked(position,true);
+				actionMode = contactsView.startActionMode(actionModeCallback);
+			}
+			return true;
+		}
+	};
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -143,43 +268,40 @@ public class NewConversationActivity extends XmppActivity {
 			}
 		};
 		contactsView.setAdapter(contactsAdapter);
-		final Activity activity = this;
+		contactsView.setMultiChoiceModeListener(actionModeCallback);
 		contactsView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> arg0, final View view,
 					int pos, long arg3) {
-				final Contact clickedContact = aggregatedContacts.get(pos);
-				
-				if ((clickedContact.getAccount()==null)&&(accounts.size()>1)) {
-					getAccountChooser(new OnClickListener() {
-
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							clickedContact.setAccount(accounts.get(which));
-							showIsMucDialogIfNeeded(clickedContact);
-						}
-						}).show();
+				if (!isActionMode) {
+					Contact clickedContact = aggregatedContacts.get(pos);
+					startConversation(clickedContact);
+					
 				} else {
-					if (clickedContact.getAccount()==null) {
-						clickedContact.setAccount(accounts.get(0));
-					}
-					showIsMucDialogIfNeeded(clickedContact);
+					actionMode.invalidate();
 				}
 			}
 		});
-		contactsView.setOnItemLongClickListener(new OnItemLongClickListener() {
+		contactsView.setOnItemLongClickListener(this.onLongClickListener);
+	}
+	
+	public void startConversation(final Contact contact) {
+		if ((contact.getAccount()==null)&&(accounts.size()>1)) {
+			getAccountChooser(new OnClickListener() {
 
-			@Override
-			public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
-					int pos, long arg3) {
-				Intent intent = new Intent(activity,ContactDetailsActivity.class);
-				intent.setAction(ContactDetailsActivity.ACTION_VIEW_CONTACT);
-				intent.putExtra("uuid", aggregatedContacts.get(pos).getUuid());
-				startActivity(intent);
-				return true;
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					contact.setAccount(accounts.get(which));
+					showIsMucDialogIfNeeded(contact);
+				}
+				}).show();
+		} else {
+			if (contact.getAccount()==null) {
+				contact.setAccount(accounts.get(0));
 			}
-		});
+			showIsMucDialogIfNeeded(contact);
+		}
 	}
 	
 	protected AlertDialog getAccountChooser(OnClickListener listener) {
@@ -329,4 +451,27 @@ public class NewConversationActivity extends XmppActivity {
 			}
 		}
 	}
+	
+	@Override
+	public void onActionModeStarted(ActionMode mode) {
+		super.onActionModeStarted(mode);
+		this.isActionMode = true;
+		search.setEnabled(false);
+	}
+	
+	@Override
+	public void onActionModeFinished(ActionMode mode) {
+		super.onActionModeFinished(mode);
+		this.isActionMode = false;
+		contactsView.clearChoices();
+		contactsView.requestLayout();
+		contactsView.post(new Runnable() {
+            @Override
+            public void run() {
+                contactsView.setChoiceMode(ListView.CHOICE_MODE_NONE);
+            }
+        });
+		search.setEnabled(true);
+	}
+	
 }

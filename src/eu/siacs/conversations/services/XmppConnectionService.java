@@ -148,8 +148,20 @@ public class XmppConnectionService extends Service {
 				}
 			} else if (packet.getType() == MessagePacket.TYPE_ERROR) {
 				message = MessageParser.parseError(packet, account, service);
-			} else {
-				// Log.d(LOGTAG, "unparsed message " + packet.toString());
+			} else if (packet.getType() == MessagePacket.TYPE_NORMAL) {
+				if (packet.hasChild("x")) {
+					Element x = packet.findChild("x");
+					if (x.hasChild("invite")) {
+						findOrCreateConversation(account, packet.getFrom(), true);
+						if (convChangedListener != null) {
+							convChangedListener.onConversationListChanged();
+						}
+						Log.d(LOGTAG,"invitation received to "+packet.getFrom());
+					}
+					
+				} else {
+					Log.d(LOGTAG, "unparsed message " + packet.toString());
+				}
 			}
 			if ((message == null)||(message.getBody() == null)) {
 				return;
@@ -223,7 +235,7 @@ public class XmppConnectionService extends Service {
 					&& (packet.findChild("x").getAttribute("xmlns")
 							.startsWith("http://jabber.org/protocol/muc"))) {
 				Conversation muc = findMuc(packet.getAttribute("from").split(
-						"/")[0]);
+						"/")[0],account);
 				if (muc != null) {
 					int error = muc.getMucOptions().getError();
 					muc.getMucOptions().processPacket(packet);
@@ -336,9 +348,9 @@ public class XmppConnectionService extends Service {
 
 	}
 
-	protected Conversation findMuc(String name) {
+	protected Conversation findMuc(String name, Account account) {
 		for (Conversation conversation : this.conversations) {
-			if (conversation.getContactJid().split("/")[0].equals(name)) {
+			if (conversation.getContactJid().split("/")[0].equals(name)&&(conversation.getAccount() == account)) {
 				return conversation;
 			}
 		}
@@ -1245,5 +1257,22 @@ public class XmppConnectionService extends Service {
 		if (account.getStatus() == Account.STATUS_ONLINE) {
 			account.getXmppConnection().sendMessagePacket(packet);
 		}
+	}
+
+	public void inviteToConference(Conversation conversation,
+			List<Contact> contacts) {
+		for(Contact contact : contacts) {
+			MessagePacket packet = new MessagePacket();
+			packet.setTo(conversation.getContactJid().split("/")[0]);
+			packet.setFrom(conversation.getAccount().getFullJid());
+			Element x = new Element("x");
+			x.setAttribute("xmlns", "http://jabber.org/protocol/muc#user");
+			Element invite = new Element("invite");
+			invite.setAttribute("to", contact.getJid());
+			x.addChild(invite);
+			packet.addChild(x);
+			conversation.getAccount().getXmppConnection().sendMessagePacket(packet);
+		}
+		
 	}
 }
