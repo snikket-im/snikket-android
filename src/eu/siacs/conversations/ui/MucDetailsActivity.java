@@ -9,6 +9,7 @@ import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.entities.MucOptions.User;
 import eu.siacs.conversations.utils.UIHelper;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -20,6 +21,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -35,6 +37,7 @@ public class MucDetailsActivity extends XmppActivity {
 	private TextView mFullJid;
 	private LinearLayout membersView;
 	private LinearLayout mMoreDetails;
+	private Button mInviteButton;
 	private String uuid = null;
 	private OnClickListener changeNickListener = new OnClickListener() {
 
@@ -62,6 +65,18 @@ public class MucDetailsActivity extends XmppActivity {
 		}
 	};
 	
+	private OnClickListener inviteListener = new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			Intent intent = new Intent(getApplicationContext(),
+					NewConversationActivity.class);
+			intent.setAction("invite");
+			intent.putExtra("uuid",conversation.getUuid());
+			startActivity(intent);
+		}
+	};
+	
 	private List<User> users = new ArrayList<MucOptions.User>();
 
 	@Override
@@ -81,6 +96,8 @@ public class MucDetailsActivity extends XmppActivity {
 		mMoreDetails = (LinearLayout) findViewById(R.id.muc_more_details);
 		mMoreDetails.setVisibility(View.GONE);
 		mSubject = (EditText) findViewById(R.id.muc_subject);
+		mInviteButton = (Button) findViewById(R.id.invite);
+		mInviteButton.setOnClickListener(inviteListener);
 		getActionBar().setHomeButtonEnabled(true);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		

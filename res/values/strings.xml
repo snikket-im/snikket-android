@@ -30,4 +30,5 @@
     <string name="show_otr_key">OTR fingerprint</string>
     <string name="no_otr_fingerprint">No OTR Fingerprint generated. Just go ahead an start an encrypted conversation</string>
     <string name="start_conversation">Start Conversation</string>
+    <string name="invite_contacts">Invite Contacts</string>
 </resources>

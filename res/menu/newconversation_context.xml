@@ -11,4 +11,8 @@
         android:showAsAction="ifRoom"
         android:icon="@drawable/ic_action_chat"
         android:title="@string/start_conversation" />
+ <item
+        android:id="@+id/action_invite"
+        android:showAsAction="ifRoom"
+        android:title="@string/invite_contacts" />
 </menu>

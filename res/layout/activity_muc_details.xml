@@ -8,7 +8,6 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical" >
-    
      <TextView
         style="@style/sectionHeader"
         android:layout_width="wrap_content"
@@ -134,5 +133,13 @@
     </LinearLayout>
     </LinearLayout>
 
+    <Button
+        android:layout_marginTop="24dp"
+        android:id="@+id/invite"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/invite_contacts"
+        android:layout_gravity="center_horizontal"/>
 </LinearLayout>
 </ScrollView>

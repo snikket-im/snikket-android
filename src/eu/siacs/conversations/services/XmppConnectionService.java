@@ -1271,6 +1271,7 @@ public class XmppConnectionService extends Service {
 			invite.setAttribute("to", contact.getJid());
 			x.addChild(invite);
 			packet.addChild(x);
+			Log.d(LOGTAG,packet.toString());
 			conversation.getAccount().getXmppConnection().sendMessagePacket(packet);
 		}
 		

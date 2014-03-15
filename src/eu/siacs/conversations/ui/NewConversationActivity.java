@@ -38,7 +38,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.ImageView;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -57,47 +56,56 @@ public class NewConversationActivity extends XmppActivity {
 	private TextView contactsHeader;
 	private List<Account> accounts;
 	private List<Contact> selectedContacts = new ArrayList<Contact>();
-	
+
 	private boolean isActionMode = false;
+	private boolean inviteIntent = false;
 	private ActionMode actionMode = null;
 	private AbsListView.MultiChoiceModeListener actionModeCallback = new AbsListView.MultiChoiceModeListener() {
-		
+
 		@Override
 		public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
 			menu.clear();
 			MenuInflater inflater = mode.getMenuInflater();
-	        inflater.inflate(R.menu.newconversation_context, menu);
-	        SparseBooleanArray checkedItems = contactsView.getCheckedItemPositions();
-	        selectedContacts.clear();
-	        for(int i = 0; i < aggregatedContacts.size(); ++i) {
-	        	if (checkedItems.get(i, false)) {
-	        		selectedContacts.add(aggregatedContacts.get(i));
-	        	}
-	        }
-	        if (selectedContacts.size() == 0) {
-	        	menu.findItem(R.id.action_start_conversation).setVisible(false);
-	        	menu.findItem(R.id.action_contact_details).setVisible(false);
-	        } else if (selectedContacts.size() == 1) {
-	        	menu.findItem(R.id.action_start_conversation).setVisible(true);
-	        	menu.findItem(R.id.action_contact_details).setVisible(true);
-	        } else {
-	        	menu.findItem(R.id.action_start_conversation).setVisible(true);
-	        	menu.findItem(R.id.action_contact_details).setVisible(false);
-	        }
+			inflater.inflate(R.menu.newconversation_context, menu);
+			SparseBooleanArray checkedItems = contactsView
+					.getCheckedItemPositions();
+			selectedContacts.clear();
+			for (int i = 0; i < aggregatedContacts.size(); ++i) {
+				if (checkedItems.get(i, false)) {
+					selectedContacts.add(aggregatedContacts.get(i));
+				}
+			}
+			if (selectedContacts.size() == 0) {
+				menu.findItem(R.id.action_start_conversation).setVisible(false);
+				menu.findItem(R.id.action_contact_details).setVisible(false);
+				menu.findItem(R.id.action_invite).setVisible(false);
+			} else if ((selectedContacts.size() == 1)&&(!inviteIntent)) {
+				menu.findItem(R.id.action_start_conversation).setVisible(true);
+				menu.findItem(R.id.action_contact_details).setVisible(true);
+				menu.findItem(R.id.action_invite).setVisible(false);
+			} else if (!inviteIntent){
+				menu.findItem(R.id.action_start_conversation).setVisible(true);
+				menu.findItem(R.id.action_contact_details).setVisible(false);
+				menu.findItem(R.id.action_invite).setVisible(false);
+			} else {
+				menu.findItem(R.id.action_invite).setVisible(true);
+				menu.findItem(R.id.action_start_conversation).setVisible(false);
+				menu.findItem(R.id.action_contact_details).setVisible(false);
+			}
 			return true;
 		}
-		
+
 		@Override
 		public void onDestroyActionMode(ActionMode mode) {
 			// TODO Auto-generated method stub
-			
+
 		}
-		
+
 		@Override
 		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
 			return true;
 		}
-		
+
 		@Override
 		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
 			switch (item.getItemId()) {
@@ -109,54 +117,77 @@ public class NewConversationActivity extends XmppActivity {
 				}
 				break;
 			case R.id.action_contact_details:
-				Intent intent = new Intent(getApplicationContext(),ContactDetailsActivity.class);
+				Intent intent = new Intent(getApplicationContext(),
+						ContactDetailsActivity.class);
 				intent.setAction(ContactDetailsActivity.ACTION_VIEW_CONTACT);
 				intent.putExtra("uuid", selectedContacts.get(0).getUuid());
 				startActivity(intent);
 				break;
+			case R.id.action_invite:
+				invite();
+		break;
 			default:
 				break;
 			}
 			// TODO Auto-generated method stub
 			return false;
 		}
-		
+
 		@Override
 		public void onItemCheckedStateChanged(ActionMode mode, int position,
 				long id, boolean checked) {
 		}
 	};
+
+	private void invite() {
+		List<Conversation> conversations = xmppConnectionService
+				.getConversations();
+		Conversation conversation = null;
+		for (Conversation tmpConversation : conversations) {
+			if (tmpConversation.getUuid().equals(
+					getIntent().getStringExtra("uuid"))) {
+				conversation = tmpConversation;
+				break;
+			}
+		}
+		if (conversation != null) {
+			xmppConnectionService.inviteToConference(conversation, selectedContacts);
+		}
+		finish();
+	}
 	
 	private void startConference() {
-		if (accounts.size()>1) {
+		if (accounts.size() > 1) {
 			getAccountChooser(new OnClickListener() {
 
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					startConference(accounts.get(which), selectedContacts);
 				}
-				}).show();
+			}).show();
 		} else {
 			startConference(accounts.get(0), selectedContacts);
 		}
-		
+
 	}
-	
+
 	private void startConference(Account account, List<Contact> contacts) {
 		SecureRandom random = new SecureRandom();
-		String mucName = new BigInteger(100,random).toString(32);
+		String mucName = new BigInteger(100, random).toString(32);
 		String serverName = account.getXmppConnection().getMucServer();
-		String jid = mucName+"@"+serverName;
-		Conversation conversation = xmppConnectionService.findOrCreateConversation(account, jid , true);
+		String jid = mucName + "@" + serverName;
+		Conversation conversation = xmppConnectionService
+				.findOrCreateConversation(account, jid, true);
 		StringBuilder subject = new StringBuilder();
-		for(int i = 0; i < selectedContacts.size(); ++i) {
-			if (i+1!=selectedContacts.size()) {
-				subject.append(selectedContacts.get(i).getDisplayName()+", ");
+		for (int i = 0; i < selectedContacts.size(); ++i) {
+			if (i + 1 != selectedContacts.size()) {
+				subject.append(selectedContacts.get(i).getDisplayName() + ", ");
 			} else {
 				subject.append(selectedContacts.get(i).getDisplayName());
 			}
 		}
-		xmppConnectionService.sendConversationSubject(conversation, subject.toString());
+		xmppConnectionService.sendConversationSubject(conversation,
+				subject.toString());
 		xmppConnectionService.inviteToConference(conversation, contacts);
 		switchToConversation(conversation, null);
 	}
@@ -197,7 +228,7 @@ public class NewConversationActivity extends XmppActivity {
 		contactsAdapter.notifyDataSetChanged();
 		contactsView.setScrollX(0);
 	}
-	
+
 	private OnItemLongClickListener onLongClickListener = new OnItemLongClickListener() {
 
 		@Override
@@ -205,12 +236,23 @@ public class NewConversationActivity extends XmppActivity {
 				int position, long arg3) {
 			if (!isActionMode) {
 				contactsView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-				contactsView.setItemChecked(position,true);
+				contactsView.setItemChecked(position, true);
 				actionMode = contactsView.startActionMode(actionModeCallback);
 			}
 			return true;
 		}
 	};
+
+	@Override
+	protected void onStart() {
+		super.onStart();
+		inviteIntent = "invite".equals(getIntent().getAction());
+		if (inviteIntent) {
+			contactsHeader.setVisibility(View.GONE);
+			actionMode = contactsView.startActionMode(actionModeCallback);
+			search.setVisibility(View.GONE);
+		}
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -263,7 +305,8 @@ public class NewConversationActivity extends XmppActivity {
 				contactJid.setText(contact.getJid());
 				ImageView imageView = (ImageView) view
 						.findViewById(R.id.contact_photo);
-					imageView.setImageBitmap(UIHelper.getContactPicture(contact,null,90,this.getContext()));
+				imageView.setImageBitmap(UIHelper.getContactPicture(contact,
+						null, 90, this.getContext()));
 				return view;
 			}
 		};
@@ -277,7 +320,7 @@ public class NewConversationActivity extends XmppActivity {
 				if (!isActionMode) {
 					Contact clickedContact = aggregatedContacts.get(pos);
 					startConversation(clickedContact);
-					
+
 				} else {
 					actionMode.invalidate();
 				}
@@ -285,9 +328,9 @@ public class NewConversationActivity extends XmppActivity {
 		});
 		contactsView.setOnItemLongClickListener(this.onLongClickListener);
 	}
-	
+
 	public void startConversation(final Contact contact) {
-		if ((contact.getAccount()==null)&&(accounts.size()>1)) {
+		if ((contact.getAccount() == null) && (accounts.size() > 1)) {
 			getAccountChooser(new OnClickListener() {
 
 				@Override
@@ -295,50 +338,52 @@ public class NewConversationActivity extends XmppActivity {
 					contact.setAccount(accounts.get(which));
 					showIsMucDialogIfNeeded(contact);
 				}
-				}).show();
+			}).show();
 		} else {
-			if (contact.getAccount()==null) {
+			if (contact.getAccount() == null) {
 				contact.setAccount(accounts.get(0));
 			}
 			showIsMucDialogIfNeeded(contact);
 		}
 	}
-	
+
 	protected AlertDialog getAccountChooser(OnClickListener listener) {
 		String[] accountList = new String[accounts.size()];
 		for (int i = 0; i < accounts.size(); ++i) {
-		accountList[i] = accounts.get(i).getJid();
+			accountList[i] = accounts.get(i).getJid();
 		}
 
-		AlertDialog.Builder accountChooser = new AlertDialog.Builder(
-		this);
+		AlertDialog.Builder accountChooser = new AlertDialog.Builder(this);
 		accountChooser.setTitle("Choose account");
 		accountChooser.setItems(accountList, listener);
 		return accountChooser.create();
 	}
-	
+
 	public void showIsMucDialogIfNeeded(final Contact clickedContact) {
 		if (clickedContact.couldBeMuc()) {
 			AlertDialog.Builder dialog = new AlertDialog.Builder(this);
 			dialog.setTitle("Multi User Conference");
 			dialog.setMessage("Are you trying to join a conference?");
 			dialog.setPositiveButton("Yes", new OnClickListener() {
-				
+
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					startConversation(clickedContact, clickedContact.getAccount(),true);
+					startConversation(clickedContact,
+							clickedContact.getAccount(), true);
 				}
 			});
 			dialog.setNegativeButton("No", new OnClickListener() {
-				
+
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					startConversation(clickedContact, clickedContact.getAccount(),false);
+					startConversation(clickedContact,
+							clickedContact.getAccount(), false);
 				}
 			});
 			dialog.create().show();
 		} else {
-			startConversation(clickedContact, clickedContact.getAccount(),false);
+			startConversation(clickedContact, clickedContact.getAccount(),
+					false);
 		}
 	}
 
@@ -349,7 +394,7 @@ public class NewConversationActivity extends XmppActivity {
 		Conversation conversation = xmppConnectionService
 				.findOrCreateConversation(account, contact.getJid(), muc);
 
-		switchToConversation(conversation,null);
+		switchToConversation(conversation, null);
 	}
 
 	@Override
@@ -360,38 +405,44 @@ public class NewConversationActivity extends XmppActivity {
 			getActionBar().setHomeButtonEnabled(false);
 			String jid;
 			try {
-				jid = URLDecoder.decode(getIntent().getData().getEncodedPath(),"UTF-8").split("/")[1];
+				jid = URLDecoder.decode(getIntent().getData().getEncodedPath(),
+						"UTF-8").split("/")[1];
 			} catch (UnsupportedEncodingException e) {
 				jid = null;
 			}
-			if (jid!=null) {
+			if (jid != null) {
 				final String finalJid = jid;
 				if (this.accounts.size() > 1) {
 					getAccountChooser(new OnClickListener() {
-						
+
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
-							Conversation conversation = xmppConnectionService.findOrCreateConversation(accounts.get(which), finalJid, false);
-							switchToConversation(conversation,null);
+							Conversation conversation = xmppConnectionService
+									.findOrCreateConversation(
+											accounts.get(which), finalJid,
+											false);
+							switchToConversation(conversation, null);
 							finish();
 						}
 					}).show();
 				} else {
-					Conversation conversation = xmppConnectionService.findOrCreateConversation(this.accounts.get(0), jid, false);
-					switchToConversation(conversation,null);
+					Conversation conversation = xmppConnectionService
+							.findOrCreateConversation(this.accounts.get(0),
+									jid, false);
+					switchToConversation(conversation, null);
 					finish();
 				}
 			}
 		}
-		
-		
+
 		if (xmppConnectionService.getConversationCount() == 0) {
 			getActionBar().setDisplayHomeAsUpEnabled(false);
 			getActionBar().setHomeButtonEnabled(false);
 		}
 		this.rosterContacts.clear();
 		for (int i = 0; i < accounts.size(); ++i) {
-			rosterContacts.addAll(xmppConnectionService.getRoster(accounts.get(i)));
+			rosterContacts.addAll(xmppConnectionService.getRoster(accounts
+					.get(i)));
 		}
 		updateAggregatedContacts();
 	}
@@ -451,27 +502,31 @@ public class NewConversationActivity extends XmppActivity {
 			}
 		}
 	}
-	
+
 	@Override
 	public void onActionModeStarted(ActionMode mode) {
 		super.onActionModeStarted(mode);
 		this.isActionMode = true;
 		search.setEnabled(false);
 	}
-	
+
 	@Override
 	public void onActionModeFinished(ActionMode mode) {
 		super.onActionModeFinished(mode);
-		this.isActionMode = false;
-		contactsView.clearChoices();
-		contactsView.requestLayout();
-		contactsView.post(new Runnable() {
-            @Override
-            public void run() {
-                contactsView.setChoiceMode(ListView.CHOICE_MODE_NONE);
-            }
-        });
-		search.setEnabled(true);
+		if (inviteIntent) {
+			finish();
+		} else {
+			this.isActionMode = false;
+			contactsView.clearChoices();
+			contactsView.requestLayout();
+			contactsView.post(new Runnable() {
+				@Override
+				public void run() {
+					contactsView.setChoiceMode(ListView.CHOICE_MODE_NONE);
+				}
+			});
+			search.setEnabled(true);
+		}
 	}
-	
+
 }
