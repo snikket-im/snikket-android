@@ -74,7 +74,7 @@ public class ConversationActivity extends XmppActivity {
 						if (conversationList.size() >= 1) {
 							swapConversationFragment();
 						} else {
-							startActivity(new Intent(getApplicationContext(), NewConversationActivity.class));
+							startActivity(new Intent(getApplicationContext(), ContactsActivity.class));
 							finish();
 						}
 					}
@@ -249,12 +249,14 @@ public class ConversationActivity extends XmppActivity {
 		MenuItem menuArchive = (MenuItem) menu.findItem(R.id.action_archive);
 		MenuItem menuMucDetails = (MenuItem) menu.findItem(R.id.action_muc_details);
 		MenuItem menuContactDetails = (MenuItem) menu.findItem(R.id.action_contact_details);
+		MenuItem menuInviteContacts = (MenuItem) menu.findItem(R.id.action_invite);
 		
 		if ((spl.isOpen()&&(spl.isSlideable()))) {
 			menuArchive.setVisible(false);
 			menuMucDetails.setVisible(false);
 			menuContactDetails.setVisible(false);
 			menuSecure.setVisible(false);
+			menuInviteContacts.setVisible(false);
 		} else {
 			((MenuItem) menu.findItem(R.id.action_add)).setVisible(!spl.isSlideable());
 			if (this.getSelectedConversation()!=null) {
@@ -263,9 +265,11 @@ public class ConversationActivity extends XmppActivity {
 					menuContactDetails.setVisible(false);
 					menuSecure.setVisible(false);
 					menuArchive.setTitle("Leave conference");
+					menuInviteContacts.setVisible(true);
 				} else {
 					menuContactDetails.setVisible(true);
 					menuMucDetails.setVisible(false);
+					menuInviteContacts.setVisible(false);
 					if (this.getSelectedConversation().getLatestMessage().getEncryption() != Message.ENCRYPTION_NONE) {
 						menuSecure.setIcon(R.drawable.ic_action_secure);
 					}
@@ -282,7 +286,7 @@ public class ConversationActivity extends XmppActivity {
 			spl.openPane();
 			break;
 		case R.id.action_add:
-			startActivity(new Intent(this, NewConversationActivity.class));
+			startActivity(new Intent(this, ContactsActivity.class));
 			break;
 		case R.id.action_archive:
 			Conversation conv = getSelectedConversation();
@@ -318,6 +322,13 @@ public class ConversationActivity extends XmppActivity {
 			intent.setAction(MucDetailsActivity.ACTION_VIEW_MUC);
 			intent.putExtra("uuid", getSelectedConversation().getUuid());
 			startActivity(intent);
+			break;
+		case R.id.action_invite:
+			Intent inviteIntent = new Intent(getApplicationContext(),
+					ContactsActivity.class);
+			inviteIntent.setAction("invite");
+			inviteIntent.putExtra("uuid",selectedConversation.getUuid());
+			startActivity(inviteIntent);
 			break;
 		case R.id.action_security:
 			final Conversation selConv = getSelectedConversation();
@@ -451,7 +462,7 @@ public class ConversationActivity extends XmppActivity {
 				finish();
 			} else if (conversationList.size() <= 0) {
 				//add no history
-				startActivity(new Intent(this, NewConversationActivity.class));
+				startActivity(new Intent(this, ContactsActivity.class));
 				finish();
 			} else {
 				spl.openPane();

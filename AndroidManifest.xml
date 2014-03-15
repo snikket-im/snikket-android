@@ -62,8 +62,8 @@
             android:windowSoftInputMode="stateHidden" >
         </activity>
         <activity
-            android:name="eu.siacs.conversations.ui.NewConversationActivity"
-            android:label="@string/title_activity_new_conversation"
+            android:name="eu.siacs.conversations.ui.ContactsActivity"
+            android:label="@string/title_activity_contacts"
             android:parentActivityName="eu.siacs.conversations.ui.ConversationActivity"
             android:windowSoftInputMode="stateHidden" >
             <meta-data

@@ -326,7 +326,8 @@ public class ConversationFragment extends Fragment {
 	public void onStart() {
 		super.onStart();
 		ConversationActivity activity = (ConversationActivity) getActivity();
-
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(activity);
+		this.useSubject = preferences.getBoolean("use_subject_in_muc", true);
 		if (activity.xmppConnectionServiceBound) {
 			this.onBackendConnected();
 		}

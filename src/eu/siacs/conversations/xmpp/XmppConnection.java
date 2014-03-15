@@ -220,6 +220,7 @@ public class XmppConnection implements Runnable {
 				tagWriter.writeStanzaAsync(r);
 			} else if (nextTag.isStart("resumed")) {
 				tagReader.readElement(nextTag);
+				sendPing();
 				changeStatus(Account.STATUS_ONLINE);
 				Log.d(LOGTAG,account.getJid()+": session resumed");
 			} else if (nextTag.isStart("r")) {
@@ -543,10 +544,6 @@ public class XmppConnection implements Runnable {
 				String resource = packet.findChild("bind").findChild("jid")
 						.getContent().split("/")[1];
 				account.setResource(resource);
-				if (bindListener !=null) {
-					bindListener.onBind(account);
-				}
-				account.setStatus(Account.STATUS_ONLINE);
 				if (streamFeatures.hasChild("sm")) {
 					EnablePacket enable = new EnablePacket();
 					tagWriter.writeStanzaAsync(enable);
@@ -554,9 +551,10 @@ public class XmppConnection implements Runnable {
 				sendInitialPresence();
 				sendServiceDiscoveryInfo();
 				sendServiceDiscoveryItems();
-				if (statusListener != null) {
-					statusListener.onStatusChanged(account);
+				if (bindListener !=null) {
+					bindListener.onBind(account);
 				}
+				account.setStatus(Account.STATUS_ONLINE);
 			}
 		});
 	}

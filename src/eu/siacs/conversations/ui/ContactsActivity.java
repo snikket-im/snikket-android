@@ -1,9 +1,7 @@
 package eu.siacs.conversations.ui;
 
 import java.io.UnsupportedEncodingException;
-import java.math.BigInteger;
 import java.net.URLDecoder;
-import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -13,9 +11,11 @@ import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
+import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.utils.Validator;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -37,14 +37,17 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.ImageView;
+import android.widget.Toast;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 
-public class NewConversationActivity extends XmppActivity {
+public class ContactsActivity extends XmppActivity {
 
 	protected List<Contact> rosterContacts = new ArrayList<Contact>();
 	protected List<Contact> aggregatedContacts = new ArrayList<Contact>();
@@ -56,7 +59,10 @@ public class NewConversationActivity extends XmppActivity {
 	private TextView contactsHeader;
 	private List<Account> accounts;
 	private List<Contact> selectedContacts = new ArrayList<Contact>();
+	
+	private ContactsActivity activity = this;
 
+	private boolean useSubject = true;
 	private boolean isActionMode = false;
 	private boolean inviteIntent = false;
 	private ActionMode actionMode = null;
@@ -79,18 +85,22 @@ public class NewConversationActivity extends XmppActivity {
 				menu.findItem(R.id.action_start_conversation).setVisible(false);
 				menu.findItem(R.id.action_contact_details).setVisible(false);
 				menu.findItem(R.id.action_invite).setVisible(false);
-			} else if ((selectedContacts.size() == 1)&&(!inviteIntent)) {
+				menu.findItem(R.id.action_invite_to_existing).setVisible(false);
+			} else if ((selectedContacts.size() == 1) && (!inviteIntent)) {
 				menu.findItem(R.id.action_start_conversation).setVisible(true);
 				menu.findItem(R.id.action_contact_details).setVisible(true);
 				menu.findItem(R.id.action_invite).setVisible(false);
-			} else if (!inviteIntent){
+				menu.findItem(R.id.action_invite_to_existing).setVisible(true);
+			} else if (!inviteIntent) {
 				menu.findItem(R.id.action_start_conversation).setVisible(true);
 				menu.findItem(R.id.action_contact_details).setVisible(false);
 				menu.findItem(R.id.action_invite).setVisible(false);
+				menu.findItem(R.id.action_invite_to_existing).setVisible(true);
 			} else {
 				menu.findItem(R.id.action_invite).setVisible(true);
 				menu.findItem(R.id.action_start_conversation).setVisible(false);
 				menu.findItem(R.id.action_contact_details).setVisible(false);
+				menu.findItem(R.id.action_invite_to_existing).setVisible(false);
 			}
 			return true;
 		}
@@ -125,11 +135,42 @@ public class NewConversationActivity extends XmppActivity {
 				break;
 			case R.id.action_invite:
 				invite();
-		break;
+				break;
+			case R.id.action_invite_to_existing:
+				final List<Conversation> mucs = new ArrayList<Conversation>();
+				for(Conversation conv : xmppConnectionService.getConversations()) {
+					if (conv.getMode() == Conversation.MODE_MULTI) {
+						mucs.add(conv);
+					}
+				}
+				AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+				builder.setTitle(getString(R.string.invite_contacts_to_existing));
+				if (mucs.size() >= 1) {
+					String[] options = new String[mucs.size()];
+					for(int i = 0; i < options.length; ++i) {
+						options[i] = mucs.get(i).getName(useSubject);
+					}
+					builder.setItems(options, new OnClickListener() {
+						
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							Conversation conversation = mucs.get(which);
+							if (isOnline(conversation.getAccount())) {
+								xmppConnectionService.inviteToConference(conversation, selectedContacts);
+								Toast.makeText(activity, getString(R.string.invitation_sent), Toast.LENGTH_SHORT).show();
+								actionMode.finish();
+							}
+						}
+					});
+				} else {
+					builder.setMessage(getString(R.string.no_open_mucs));
+				}
+				builder.setNegativeButton(getString(R.string.cancel),null);
+				builder.create().show();
+				break;
 			default:
 				break;
 			}
-			// TODO Auto-generated method stub
 			return false;
 		}
 
@@ -139,6 +180,20 @@ public class NewConversationActivity extends XmppActivity {
 		}
 	};
 
+	private boolean isOnline(Account account) {
+		if (account.getStatus() == Account.STATUS_ONLINE) {
+			return true;
+		} else {
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setTitle(getString(R.string.account_offline));
+			builder.setMessage(getString(R.string.cant_invite_while_offline));
+			builder.setNegativeButton("OK", null);
+			builder.setIconAttribute(android.R.attr.alertDialogIcon);
+			builder.create().show();
+			return false;
+		}
+	}
+	
 	private void invite() {
 		List<Conversation> conversations = xmppConnectionService
 				.getConversations();
@@ -151,45 +206,64 @@ public class NewConversationActivity extends XmppActivity {
 			}
 		}
 		if (conversation != null) {
-			xmppConnectionService.inviteToConference(conversation, selectedContacts);
+			xmppConnectionService.inviteToConference(conversation,
+					selectedContacts);
 		}
 		finish();
 	}
-	
+
 	private void startConference() {
 		if (accounts.size() > 1) {
 			getAccountChooser(new OnClickListener() {
 
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					startConference(accounts.get(which), selectedContacts);
+					startConference(accounts.get(which));
 				}
 			}).show();
 		} else {
-			startConference(accounts.get(0), selectedContacts);
+			startConference(accounts.get(0));
 		}
 
 	}
 
-	private void startConference(Account account, List<Contact> contacts) {
-		SecureRandom random = new SecureRandom();
-		String mucName = new BigInteger(100, random).toString(32);
-		String serverName = account.getXmppConnection().getMucServer();
-		String jid = mucName + "@" + serverName;
-		Conversation conversation = xmppConnectionService
-				.findOrCreateConversation(account, jid, true);
-		StringBuilder subject = new StringBuilder();
-		for (int i = 0; i < selectedContacts.size(); ++i) {
-			if (i + 1 != selectedContacts.size()) {
-				subject.append(selectedContacts.get(i).getDisplayName() + ", ");
-			} else {
-				subject.append(selectedContacts.get(i).getDisplayName());
-			}
+	private void startConference(final Account account) {
+		if (isOnline(account)) {
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setTitle(getString(R.string.new_conference));
+			builder.setMessage(getString(R.string.new_conference_explained));
+			builder.setNegativeButton(getString(R.string.cancel), null);
+			builder.setPositiveButton(getString(R.string.create_invite),
+					new OnClickListener() {
+	
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							String mucName = CryptoHelper.randomMucName();
+							String serverName = account.getXmppConnection()
+									.getMucServer();
+							String jid = mucName + "@" + serverName;
+							Conversation conversation = xmppConnectionService
+									.findOrCreateConversation(account, jid, true);
+							StringBuilder subject = new StringBuilder();
+							subject.append(account.getUsername() + ", ");
+							for (int i = 0; i < selectedContacts.size(); ++i) {
+								if (i + 1 != selectedContacts.size()) {
+									subject.append(selectedContacts.get(i)
+											.getDisplayName() + ", ");
+								} else {
+									subject.append(selectedContacts.get(i)
+											.getDisplayName());
+								}
+							}
+							xmppConnectionService.sendConversationSubject(
+									conversation, subject.toString());
+							xmppConnectionService.inviteToConference(conversation,
+									selectedContacts);
+							switchToConversation(conversation, null);
+						}
+					});
+			builder.create().show();
 		}
-		xmppConnectionService.sendConversationSubject(conversation,
-				subject.toString());
-		xmppConnectionService.inviteToConference(conversation, contacts);
-		switchToConversation(conversation, null);
 	}
 
 	protected void updateAggregatedContacts() {
@@ -246,6 +320,8 @@ public class NewConversationActivity extends XmppActivity {
 	@Override
 	protected void onStart() {
 		super.onStart();
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(activity);
+		this.useSubject = preferences.getBoolean("use_subject_in_muc", true);
 		inviteIntent = "invite".equals(getIntent().getAction());
 		if (inviteIntent) {
 			contactsHeader.setVisibility(View.GONE);

@@ -200,7 +200,7 @@ public class ManageAccountActivity extends XmppActivity {
 					if ((account.getStatus() == Account.STATUS_OFFLINE)||(account.getStatus() == Account.STATUS_TLS_ERROR)) {
 						activity.xmppConnectionService.reconnectAccount(accountList.get(position),true);
 					} else if (account.getStatus() == Account.STATUS_ONLINE) {
-						activity.startActivity(new Intent(activity.getApplicationContext(),NewConversationActivity.class));
+						activity.startActivity(new Intent(activity.getApplicationContext(),ContactsActivity.class));
 					} else if (account.isOptionSet(Account.OPTION_REGISTER)) {
 						editAccount(account);
 					}

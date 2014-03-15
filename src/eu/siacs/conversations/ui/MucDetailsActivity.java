@@ -70,7 +70,7 @@ public class MucDetailsActivity extends XmppActivity {
 		@Override
 		public void onClick(View v) {
 			Intent intent = new Intent(getApplicationContext(),
-					NewConversationActivity.class);
+					ContactsActivity.class);
 			intent.setAction("invite");
 			intent.putExtra("uuid",conversation.getUuid());
 			startActivity(intent);

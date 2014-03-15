@@ -72,7 +72,7 @@ public class XmppConnectionService extends Service {
 
 	private static final int PING_MAX_INTERVAL = 300;
 	private static final int PING_MIN_INTERVAL = 10;
-	private static final int PING_TIMEOUT = 2;
+	private static final int PING_TIMEOUT = 5;
 	private static final int CONNECT_TIMEOUT = 60;
 
 	private List<Account> accounts;
@@ -160,7 +160,7 @@ public class XmppConnectionService extends Service {
 					}
 					
 				} else {
-					Log.d(LOGTAG, "unparsed message " + packet.toString());
+					//Log.d(LOGTAG, "unparsed message " + packet.toString());
 				}
 			}
 			if ((message == null)||(message.getBody() == null)) {
@@ -199,19 +199,6 @@ public class XmppConnectionService extends Service {
 				accountChangedListener.onAccountListChangedListener();
 			}
 			if (account.getStatus() == Account.STATUS_ONLINE) {
-				if (account.getXmppConnection().hasFeatureRosterManagment()) {
-					updateRoster(account, null);
-				}
-				connectMultiModeConversations(account);
-				List<Conversation> conversations = getConversations();
-				for (int i = 0; i < conversations.size(); ++i) {
-					if (conversations.get(i).getAccount() == account) {
-						sendUnsendMessages(conversations.get(i));
-					}
-				}
-				if (convChangedListener != null) {
-					convChangedListener.onConversationListChanged();
-				}
 				scheduleWakeupCall(PING_MAX_INTERVAL, true);
 			} else if (account.getStatus() == Account.STATUS_OFFLINE) {
 				if (!account.isOptionSet(Account.OPTION_DISABLED)) {
@@ -558,6 +545,19 @@ public class XmppConnectionService extends Service {
 			@Override
 			public void onBind(Account account) {
 				databaseBackend.clearPresences(account);
+				if (account.getXmppConnection().hasFeatureRosterManagment()) {
+					updateRoster(account, null);
+				}
+				connectMultiModeConversations(account);
+				List<Conversation> conversations = getConversations();
+				for (int i = 0; i < conversations.size(); ++i) {
+					if (conversations.get(i).getAccount() == account) {
+						sendUnsendMessages(conversations.get(i));
+					}
+				}
+				if (convChangedListener != null) {
+					convChangedListener.onConversationListChanged();
+				}
 			}
 		});
 		return connection;

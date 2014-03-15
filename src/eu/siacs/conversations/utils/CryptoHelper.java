@@ -1,9 +1,14 @@
 package eu.siacs.conversations.utils;
 
+import java.security.SecureRandom;
+import java.util.Random;
+
 import android.util.Base64;
 
 public class CryptoHelper {
 	final protected static char[] hexArray = "0123456789ABCDEF".toCharArray();
+	final protected static char[] vowels = "aeiou".toCharArray();
+	final protected static char[] consonants ="bcdfghjklmnpqrstvwxyz".toCharArray();
 	public static String bytesToHex(byte[] bytes) {
 	    char[] hexChars = new char[bytes.length * 2];
 	    for ( int j = 0; j < bytes.length; j++ ) {
@@ -30,5 +35,22 @@ public class CryptoHelper {
 		}
 		
 		return Base64.encodeToString(saslBytes, Base64.DEFAULT);
+	}
+	
+	public static String randomMucName() {
+		Random random = new SecureRandom();
+		return randomWord(3,random)+"."+randomWord(7,random);
+	}
+	
+	protected static String randomWord(int lenght,Random random) {
+		StringBuilder builder = new StringBuilder(lenght);
+		for(int i = 0; i < lenght; ++i) {
+			if (i % 2 == 0) {
+				builder.append(consonants[random.nextInt(consonants.length)]);
+			} else {
+				builder.append(vowels[random.nextInt(vowels.length)]);
+			}
+		}
+		return builder.toString();
 	}
 }
