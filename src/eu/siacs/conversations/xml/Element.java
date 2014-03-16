@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 
-import android.util.Log;
-
 public class Element {
 	protected String name;
 	protected Hashtable<String, String> attributes = new Hashtable<String, String>();
@@ -83,7 +81,7 @@ public class Element {
 			startTag.setAtttributes(this.attributes);
 			elementOutput.append(startTag);
 			if (content!=null) {
-				elementOutput.append(content);
+				elementOutput.append(encodeEntities(content));
 			} else {
 				for(Element child : children) {
 					elementOutput.append(child.toString());
@@ -97,5 +95,14 @@ public class Element {
 
 	public String getName() {
 		return name;
+	}
+	
+	private String encodeEntities(String content) {
+		content = content.replace("&","&amp;");
+		content = content.replace("<","&lt;");
+		content = content.replace(">","&gt;");
+		content = content.replace("\"","&quot;");
+		content = content.replace("'","&apos;");
+		return content;
 	}
 }

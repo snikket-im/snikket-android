@@ -676,10 +676,8 @@ public class XmppConnection implements Runnable {
 	
 	public void sendPing() {
 		if (streamFeatures.hasChild("sm")) {
-			Log.d(LOGTAG,account.getJid()+": sending r as ping");
 			tagWriter.writeStanzaAsync(new RequestPacket());
 		} else {
-			Log.d(LOGTAG,account.getJid()+": sending iq as ping");
 			IqPacket iq = new IqPacket(IqPacket.TYPE_GET);
 			Element ping = new Element("ping");
 			iq.setAttribute("from",account.getFullJid());

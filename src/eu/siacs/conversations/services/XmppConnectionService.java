@@ -1082,14 +1082,16 @@ public class XmppConnectionService extends Service {
 
 	public void disconnect(Account account, boolean force) {
 		if ((account.getStatus() == Account.STATUS_ONLINE)||(account.getStatus() == Account.STATUS_DISABLED)) {
-			List<Conversation> conversations = getConversations();
-			for (int i = 0; i < conversations.size(); i++) {
-				Conversation conversation = conversations.get(i);
-				if (conversation.getAccount() == account) {
-					if (conversation.getMode() == Conversation.MODE_MULTI) {
-						leaveMuc(conversation);
-					} else {
-						conversation.endOtrIfNeeded();
+			if (!force) {
+				List<Conversation> conversations = getConversations();
+				for (int i = 0; i < conversations.size(); i++) {
+					Conversation conversation = conversations.get(i);
+					if (conversation.getAccount() == account) {
+						if (conversation.getMode() == Conversation.MODE_MULTI) {
+							leaveMuc(conversation);
+						} else {
+							conversation.endOtrIfNeeded();
+						}
 					}
 				}
 			}
