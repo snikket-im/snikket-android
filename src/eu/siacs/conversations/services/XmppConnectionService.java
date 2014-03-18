@@ -241,34 +241,38 @@ public class XmppConnectionService extends Service {
 				}
 				String type = packet.getAttribute("type");
 				if (type == null) {
-					Element show = packet.findChild("show");
-					if (show == null) {
-						contact.updatePresence(fromParts[1], Presences.ONLINE);
-					} else if (show.getContent().equals("away")) {
-						contact.updatePresence(fromParts[1], Presences.AWAY);
-					} else if (show.getContent().equals("xa")) {
-						contact.updatePresence(fromParts[1], Presences.XA);
-					} else if (show.getContent().equals("chat")) {
-						contact.updatePresence(fromParts[1], Presences.CHAT);
-					} else if (show.getContent().equals("dnd")) {
-						contact.updatePresence(fromParts[1], Presences.DND);
-					}
-					PgpEngine pgp = getPgpEngine();
-					if (pgp != null) {
-						Element x = packet.findChild("x");
-						if ((x != null)
-								&& (x.getAttribute("xmlns")
-										.equals("jabber:x:signed"))) {
-							try {
-								contact.setPgpKeyId(pgp.fetchKeyId(packet
-										.findChild("status").getContent(), x
-										.getContent()));
-							} catch (OpenPgpException e) {
-								Log.d(LOGTAG, "faulty pgp. just ignore");
+					if (fromParts.length == 2) {
+						Element show = packet.findChild("show");
+						if (show == null) {
+							contact.updatePresence(fromParts[1], Presences.ONLINE);
+						} else if (show.getContent().equals("away")) {
+							contact.updatePresence(fromParts[1], Presences.AWAY);
+						} else if (show.getContent().equals("xa")) {
+							contact.updatePresence(fromParts[1], Presences.XA);
+						} else if (show.getContent().equals("chat")) {
+							contact.updatePresence(fromParts[1], Presences.CHAT);
+						} else if (show.getContent().equals("dnd")) {
+							contact.updatePresence(fromParts[1], Presences.DND);
+						}
+						PgpEngine pgp = getPgpEngine();
+						if (pgp != null) {
+							Element x = packet.findChild("x");
+							if ((x != null)
+									&& (x.getAttribute("xmlns")
+											.equals("jabber:x:signed"))) {
+								try {
+									contact.setPgpKeyId(pgp.fetchKeyId(packet
+											.findChild("status").getContent(), x
+											.getContent()));
+								} catch (OpenPgpException e) {
+									Log.d(LOGTAG, "faulty pgp. just ignore");
+								}
 							}
 						}
+						databaseBackend.updateContact(contact);
+					} else {
+						//Log.d(LOGTAG,"presence without resource "+packet.toString());
 					}
-					databaseBackend.updateContact(contact);
 				} else if (type.equals("unavailable")) {
 					if (fromParts.length != 2) {
 						// Log.d(LOGTAG,"received presence with no resource "+packet.toString());
