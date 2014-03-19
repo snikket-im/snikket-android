@@ -40,11 +40,7 @@ public class MessageParser {
 			String foreignPresence = conversation.getOtrSession().getSessionID().getUserID();
 			if (!foreignPresence.equals(fromParts[1])) {
 				Log.d(LOGTAG,"new otr during existing otr session requested. ending old one");
-				try {
-					conversation.getOtrSession().endSession();
-				} catch (OtrException e) {
-					Log.d("xmppService","couldnt end old session");
-				}
+				conversation.resetOtrSession();
 				Log.d("xmppService","starting new one with "+fromParts[1]);
 				conversation.startOtrSession(service.getApplicationContext(), fromParts[1]);
 			}
@@ -80,7 +76,6 @@ public class MessageParser {
 				Log.d(LOGTAG,"otr session stoped");
 			}
 		} catch (Exception e) {
-			Log.d(LOGTAG, "error receiving otr. resetting");
 			conversation.resetOtrSession();
 			return null;
 		}

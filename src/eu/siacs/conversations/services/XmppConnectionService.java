@@ -1035,34 +1035,14 @@ public class XmppConnectionService extends Service {
 					}
 				}
 			});
+			options.flagAboutToRename();
 			PresencePacket packet = new PresencePacket();
 			packet.setAttribute("to",
 					conversation.getContactJid().split("/")[0] + "/" + nick);
 			packet.setAttribute("from", conversation.getAccount().getFullJid());
 
 			conversation.getAccount().getXmppConnection()
-					.sendPresencePacket(packet, new OnPresencePacketReceived() {
-
-						@Override
-						public void onPresencePacketReceived(Account account,
-								PresencePacket packet) {
-							final boolean changed;
-							String type = packet.getAttribute("type");
-							changed = (!"error".equals(type));
-							if (!changed) {
-								options.getOnRenameListener().onRename(false);
-							} else {
-								if (type == null) {
-									options.getOnRenameListener()
-											.onRename(true);
-									options.setNick(packet.getAttribute("from")
-											.split("/")[1]);
-								} else {
-									options.processPacket(packet);
-								}
-							}
-						}
-					});
+					.sendPresencePacket(packet, null);
 		} else {
 			String jid = conversation.getContactJid().split("/")[0] + "/"
 					+ nick;

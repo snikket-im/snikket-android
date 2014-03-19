@@ -43,11 +43,15 @@ public abstract class XmppActivity extends Activity {
 	protected void onStart() {
 		super.onStart();
 		if (!xmppConnectionServiceBound) {
-			Intent intent = new Intent(this, XmppConnectionService.class);
-			intent.setAction("ui");
-			startService(intent);
-			bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+			connectToBackend();
 		}
+	}
+	
+	public void connectToBackend() {
+		Intent intent = new Intent(this, XmppConnectionService.class);
+		intent.setAction("ui");
+		startService(intent);
+		bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
 	}
 	
 	@Override

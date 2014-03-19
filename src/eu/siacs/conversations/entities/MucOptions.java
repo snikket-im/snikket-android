@@ -76,6 +76,7 @@ public class MucOptions {
 	private boolean isOnline = false;
 	private int error = 0;
 	private OnRenameListener renameListener = null;
+	private boolean aboutToRename = false;
 	private User self = new User();
 	private String subject = null;
 
@@ -121,6 +122,7 @@ public class MucOptions {
 					Element item = packet.findChild("x").findChild("item");
 					String nick = item.getAttribute("nick");
 					if (nick!=null) {
+						aboutToRename = false;
 						if (renameListener!=null) {
 							renameListener.onRename(true);
 						}
@@ -131,7 +133,14 @@ public class MucOptions {
 			} else if (type.equals("error")) {
 				Element error = packet.findChild("error");
 				if (error.hasChild("conflict")) {
-					this.error  = ERROR_NICK_IN_USE;
+					if (aboutToRename) {
+						if (renameListener!=null) {
+							renameListener.onRename(false);
+						}
+						aboutToRename = false;
+					} else {
+						this.error  = ERROR_NICK_IN_USE;
+					}
 				}
 			}
 	}
@@ -194,5 +203,9 @@ public class MucOptions {
 	
 	public String getSubject() {
 		return this.subject;
+	}
+
+	public void flagAboutToRename() {
+		this.aboutToRename = true;
 	}
 }
