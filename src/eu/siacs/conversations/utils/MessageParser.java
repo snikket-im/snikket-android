@@ -31,18 +31,26 @@ public class MessageParser {
 	}
 	
 	public static Message parseOtrChat(MessagePacket packet, Account account, XmppConnectionService service) {
+		boolean properlyAddressed = (packet.getTo().split("/").length == 2) || (account.countPresences() == 1);
 		String[] fromParts = packet.getFrom().split("/");
 		Conversation conversation = service.findOrCreateConversation(account, fromParts[0],false);
 		String body = packet.getBody();
 		if (!conversation.hasValidOtrSession()) {
-			conversation.startOtrSession(service.getApplicationContext(), fromParts[1]);
+			if (properlyAddressed) {
+				conversation.startOtrSession(service.getApplicationContext(), fromParts[1]);
+			} else {
+				Log.d("xmppService",account.getJid()+": ignoring otr session with "+fromParts[0]);
+				return null;
+			}
 		} else {
 			String foreignPresence = conversation.getOtrSession().getSessionID().getUserID();
 			if (!foreignPresence.equals(fromParts[1])) {
-				Log.d(LOGTAG,"new otr during existing otr session requested. ending old one");
 				conversation.resetOtrSession();
-				Log.d("xmppService","starting new one with "+fromParts[1]);
-				conversation.startOtrSession(service.getApplicationContext(), fromParts[1]);
+				if (properlyAddressed) {
+					conversation.startOtrSession(service.getApplicationContext(), fromParts[1]);
+				} else {
+					return null;
+				}
 			}
 		}
 		try {

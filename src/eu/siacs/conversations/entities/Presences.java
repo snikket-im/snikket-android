@@ -8,6 +8,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import eu.siacs.conversations.xml.Element;
+
 public class Presences {
 
 	public static final int CHAT = -1;
@@ -72,5 +74,25 @@ public class Presences {
 			
 		}
 		return presences;
+	}
+
+	public static int parseShow(Element show) {
+		if (show == null) {
+			return Presences.ONLINE;
+		} else if (show.getContent().equals("away")) {
+			return Presences.AWAY;
+		} else if (show.getContent().equals("xa")) {
+			return Presences.XA;
+		} else if (show.getContent().equals("chat")) {
+			return Presences.CHAT;
+		} else if (show.getContent().equals("dnd")) {
+			return 	Presences.DND;
+		} else {
+			return Presences.OFFLINE;
+		}
+	}
+	
+	public int size() {
+		return presences.size();
 	}
 }

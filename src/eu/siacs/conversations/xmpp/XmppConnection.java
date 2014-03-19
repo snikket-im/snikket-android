@@ -554,7 +554,7 @@ public class XmppConnection implements Runnable {
 				if (bindListener !=null) {
 					bindListener.onBind(account);
 				}
-				account.setStatus(Account.STATUS_ONLINE);
+				changeStatus(Account.STATUS_ONLINE);
 			}
 		});
 	}

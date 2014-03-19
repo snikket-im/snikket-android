@@ -1,8 +1,6 @@
 package eu.siacs.conversations.ui;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import eu.siacs.conversations.R;
@@ -62,9 +60,6 @@ public class ConversationActivity extends XmppActivity {
 		
 		@Override
 		public void onConversationListChanged() {
-			conversationList.clear();
-			conversationList.addAll(xmppConnectionService
-					.getConversations());
 			runOnUiThread(new Runnable() {
 				
 				@Override
@@ -118,18 +113,6 @@ public class ConversationActivity extends XmppActivity {
 	
 	public boolean shouldPaneBeOpen() {
 		return paneShouldBeOpen;
-	}
-	
-	public void updateConversationList() {
-		if (conversationList.size() >= 1) {
-			Collections.sort(this.conversationList, new Comparator<Conversation>() {
-				@Override
-				public int compare(Conversation lhs, Conversation rhs) {
-					return (int) (rhs.getLatestMessage().getTimeSent() - lhs.getLatestMessage().getTimeSent());
-				}
-			});
-		}
-		this.listView.invalidateViews();
 	}
 	
 	@Override
@@ -229,7 +212,7 @@ public class ConversationActivity extends XmppActivity {
 					if (!getSelectedConversation().isRead()) {
 						getSelectedConversation().markRead();
 						UIHelper.updateNotification(getApplicationContext(), getConversationList(), null, false);
-						updateConversationList();
+						listView.invalidateViews();
 					}
 				}
 			}
@@ -434,10 +417,7 @@ public class ConversationActivity extends XmppActivity {
 		
 		this.registerListener();
 		if (conversationList.size()==0) {
-			conversationList.addAll(xmppConnectionService
-					.getConversations());
-			
-			this.updateConversationList();
+			updateConversationList();
 		}
 
 		if ((getIntent().getAction()!=null)&&(getIntent().getAction().equals(Intent.ACTION_VIEW) && (!handledViewIntent))) {
@@ -495,4 +475,11 @@ public class ConversationActivity extends XmppActivity {
 			}
 		 }
 	 }
+
+	public void updateConversationList() {
+		conversationList.clear();
+		conversationList.addAll(xmppConnectionService
+				.getConversations());
+		listView.invalidateViews();
+	}
 }

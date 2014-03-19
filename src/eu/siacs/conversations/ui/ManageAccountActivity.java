@@ -316,6 +316,8 @@ public class ManageAccountActivity extends XmppActivity {
 									TextView carbon = (TextView) view.findViewById(R.id.carbon);
 									TextView stream = (TextView) view.findViewById(R.id.stream);
 									TextView roster = (TextView) view.findViewById(R.id.roster);
+									TextView presences = (TextView) view.findViewById(R.id.number_presences);
+									presences.setText(selectedAccountForActionMode.countPresences()+"");
 									pcks_received.setText(""+xmpp.getReceivedStanzas());
 									pcks_sent.setText(""+xmpp.getSentStanzas());
 									if (connectionAgeHours >= 2) {

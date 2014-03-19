@@ -81,8 +81,24 @@
         android:textSize="18sp"/>
     
     <TextView
-        android:id="@+id/features_header"
+        android:id="@+id/textView10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/textView4"
+        android:text="Connected accounts"
+        android:textSize="18sp"/>
+    <TextView
+        android:id="@+id/number_presences"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/textView10"
+        android:layout_alignBottom="@+id/textView10"
+        android:layout_alignParentRight="true"
+        android:textSize="18sp"/>
+    
+    <TextView
+        android:id="@+id/features_header"
+        android:layout_below="@+id/textView10"
         style="@style/sectionHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

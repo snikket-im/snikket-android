@@ -60,6 +60,7 @@ public class Account  extends AbstractEntity{
 	
 	transient OtrEngine otrEngine = null;
 	transient XmppConnection xmppConnection = null;
+	transient protected Presences presences = new Presences();
 
 	private String otrFingerprint;
 	
@@ -248,5 +249,21 @@ public class Account  extends AbstractEntity{
 	public String getOtrFingerprint(Context applicationContext) {
 		this.getOtrEngine(applicationContext);
 		return this.getOtrFingerprint();
+	}
+	
+	public void updatePresence(String resource, int status) {
+		this.presences.updatePresence(resource, status);
+	}
+
+	public void removePresence(String resource) {
+		this.presences.removePresence(resource);
+	}
+	
+	public void clearPresences() {
+		this.presences = new Presences();
+	}
+
+	public int countPresences() {
+		return this.presences.size();
 	}
 }
