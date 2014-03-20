@@ -619,11 +619,8 @@ public class XmppConnectionService extends Service {
 						.getFullJid());
 				packet.setTo(message.getCounterpart());
 				packet.setBody("This is an XEP-0027 encryted message");
-				Element x = new Element("x");
-				x.setAttribute("xmlns", "jabber:x:encrypted");
-				x.setContent(this.getPgpEngine().encrypt(keyId,
+				packet.addChild("x","jabber:x:encrypted").setContent(this.getPgpEngine().encrypt(keyId,
 						message.getBody()));
-				packet.addChild(x);
 				account.getXmppConnection().sendMessagePacket(packet);
 				message.setStatus(Message.STATUS_SEND);
 				message.setEncryption(Message.ENCRYPTION_DECRYPTED);
@@ -694,9 +691,8 @@ public class XmppConnectionService extends Service {
 									+ ": could not encrypt message to "
 									+ message.getCounterpart());
 				}
-				Element privateMarker = new Element("private");
-				privateMarker.setAttribute("xmlns", "urn:xmpp:carbons:2");
-				packet.addChild(privateMarker);
+				packet.addChild("private","urn:xmpp:carbons:2");
+				packet.addChild("no-copy","urn:xmpp:hints");
 				packet.setTo(otrSession.getSessionID().getAccountID() + "/"
 						+ otrSession.getSessionID().getUserID());
 				packet.setFrom(account.getFullJid());
@@ -736,16 +732,13 @@ public class XmppConnectionService extends Service {
 	public void updateRoster(final Account account,
 			final OnRosterFetchedListener listener) {
 		IqPacket iqPacket = new IqPacket(IqPacket.TYPE_GET);
-		Element query = new Element("query");
-		query.setAttribute("xmlns", "jabber:iq:roster");
 		if (!"".equals(account.getRosterVersion())) {
 			Log.d(LOGTAG, account.getJid() + ": fetching roster version "
 					+ account.getRosterVersion());
 		} else {
 			Log.d(LOGTAG, account.getJid() + ": fetching roster");
 		}
-		query.setAttribute("ver", account.getRosterVersion());
-		iqPacket.addChild(query);
+		iqPacket.query("jabber:iq:roster").setAttribute("ver", account.getRosterVersion());
 		account.getXmppConnection().sendIqPacket(iqPacket,
 				new OnIqPacketReceived() {
 
@@ -958,13 +951,8 @@ public class XmppConnectionService extends Service {
 
 	public void deleteContact(Contact contact) {
 		IqPacket iq = new IqPacket(IqPacket.TYPE_SET);
-		Element query = new Element("query");
-		query.setAttribute("xmlns", "jabber:iq:roster");
-		Element item = new Element("item");
-		item.setAttribute("jid", contact.getJid());
-		item.setAttribute("subscription", "remove");
-		query.addChild(item);
-		iq.addChild(query);
+		Element query = iq.query("jabber:iq:roster");
+		query.addChild("item").setAttribute("jid", contact.getJid()).setAttribute("subscription", "remove");
 		contact.getAccount().getXmppConnection().sendIqPacket(iq, null);
 		replaceContactInConversation(contact.getJid(), null);
 		databaseBackend.deleteContact(contact);
@@ -1035,8 +1023,7 @@ public class XmppConnectionService extends Service {
 			Element history = new Element("history");
 			long lastMsgTime = conversation.getLatestMessage().getTimeSent();
 			long diff = (System.currentTimeMillis() - lastMsgTime) / 1000 - 1;
-			history.setAttribute("seconds", diff + "");
-			x.addChild(history);
+			x.addChild("history").setAttribute("seconds", diff + "");
 		}
 		packet.addChild(x);
 		conversation.getAccount().getXmppConnection()

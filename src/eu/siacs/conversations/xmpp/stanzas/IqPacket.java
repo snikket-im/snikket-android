@@ -39,8 +39,7 @@ public class IqPacket extends AbstractStanza {
 	public Element query() {
 		Element query = findChild("query");
 		if (query==null) {
-			query = new Element("query");
-			addChild(query);
+			query = addChild("query");
 		}
 		return query;
 	}

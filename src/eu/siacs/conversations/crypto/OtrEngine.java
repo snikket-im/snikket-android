@@ -158,9 +158,8 @@ public class OtrEngine implements OtrEngineHost {
 		packet.setFrom(account.getFullJid()); //sender
 		packet.setTo(session.getAccountID()+"/"+session.getUserID()); //reciepient
 		packet.setBody(body);
-		Element privateTag = new Element("private");
-		privateTag.setAttribute("xmlns","urn:xmpp:carbons:2");
-		packet.addChild(privateTag);
+		packet.addChild("private","urn:xmpp:carbons:2");
+		packet.addChild("no-copy","urn:xmpp:hints");
 		packet.setType(MessagePacket.TYPE_CHAT);
 		Log.d(LOGTAG,packet.toString());
 		account.getXmppConnection().sendMessagePacket(packet);
