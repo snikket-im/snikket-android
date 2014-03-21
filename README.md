@@ -15,6 +15,8 @@ Conversations is an open source XMPP client for Android 4.0+ smart phones
 * Group Chats
 * Contact list integration
 
+![alt tag](https://raw.githubusercontent.com/siacs/Conversations/master/screenshots.png)
+
 ###XMPP Features
 Conversations works with every XMPP server out there. However XMPP is an extensible
 protocol. These extensions are standardized as well in so called XEP’s.
