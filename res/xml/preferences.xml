@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
     <PreferenceCategory 
-        android:title="Security and Privacy Options">
-        <ListPreference
-            android:key="default_conversation_encryption_type"
-            android:title="Default conversation encryption"
-            android:dialogTitle="Default conversation encryption"
-            android:entries="@array/conversation_encryption_type_entries"
-            android:entryValues="@array/conversation_encryption_type_values"
-            android:defaultValue="none"/>
+        android:title="General">
         <CheckBoxPreference 
             android:key="grant_new_contacts"
             android:title="Grant presence updates"
             android:summary="Preemptivly grant and ask for presence subscription for contacts you created"
             android:defaultValue="true"
             />
+        <ListPreference 
+            android:key="resource"
+            android:title="XMPP Resource"
+            android:summary="The name this client identifies itself"
+            android:entries="@array/resources"
+            android:entryValues="@array/resources"
+            android:defaultValue="Mobile"/>
     </PreferenceCategory>
     <PreferenceCategory 
         android:title="Notification Settings">

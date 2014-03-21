@@ -388,52 +388,54 @@ public class ConversationFragment extends Fragment {
 
 	public void updateMessages() {
 		ConversationActivity activity = (ConversationActivity) getActivity();
-		List<Message> encryptedMessages = new LinkedList<Message>();
-		for (Message message : this.conversation.getMessages()) {
-			if (message.getEncryption() == Message.ENCRYPTION_PGP) {
-				encryptedMessages.add(message);
-			}
-		}
-		if (encryptedMessages.size() > 0) {
-			DecryptMessage task = new DecryptMessage();
-			Message[] msgs = new Message[encryptedMessages.size()];
-			task.execute(encryptedMessages.toArray(msgs));
-		}
-		this.messageList.clear();
-		this.messageList.addAll(this.conversation.getMessages());
-		this.messageListAdapter.notifyDataSetChanged();
-		if (conversation.getMode() == Conversation.MODE_SINGLE) {
-			if (messageList.size() >= 1) {
-				int latestEncryption = this.conversation.getLatestMessage()
-						.getEncryption();
-				if (latestEncryption == Message.ENCRYPTION_DECRYPTED) {
-					conversation.nextMessageEncryption = Message.ENCRYPTION_PGP;
-				} else {
-					conversation.nextMessageEncryption = latestEncryption;
+		if (this.conversation != null) {
+			List<Message> encryptedMessages = new LinkedList<Message>();
+			for (Message message : this.conversation.getMessages()) {
+				if (message.getEncryption() == Message.ENCRYPTION_PGP) {
+					encryptedMessages.add(message);
 				}
-				makeFingerprintWarning(latestEncryption);
 			}
-		} else {
-			if (conversation.getMucOptions().getError() != 0) {
-				mucError.setVisibility(View.VISIBLE);
-				if (conversation.getMucOptions().getError() == MucOptions.ERROR_NICK_IN_USE) {
-					mucErrorText.setText(getString(R.string.nick_in_use));
+			if (encryptedMessages.size() > 0) {
+				DecryptMessage task = new DecryptMessage();
+				Message[] msgs = new Message[encryptedMessages.size()];
+				task.execute(encryptedMessages.toArray(msgs));
+			}
+			this.messageList.clear();
+			this.messageList.addAll(this.conversation.getMessages());
+			this.messageListAdapter.notifyDataSetChanged();
+			if (conversation.getMode() == Conversation.MODE_SINGLE) {
+				if (messageList.size() >= 1) {
+					int latestEncryption = this.conversation.getLatestMessage()
+							.getEncryption();
+					if (latestEncryption == Message.ENCRYPTION_DECRYPTED) {
+						conversation.nextMessageEncryption = Message.ENCRYPTION_PGP;
+					} else {
+						conversation.nextMessageEncryption = latestEncryption;
+					}
+					makeFingerprintWarning(latestEncryption);
 				}
 			} else {
-				mucError.setVisibility(View.GONE);
+				if (conversation.getMucOptions().getError() != 0) {
+					mucError.setVisibility(View.VISIBLE);
+					if (conversation.getMucOptions().getError() == MucOptions.ERROR_NICK_IN_USE) {
+						mucErrorText.setText(getString(R.string.nick_in_use));
+					}
+				} else {
+					mucError.setVisibility(View.GONE);
+				}
 			}
-		}
-		getActivity().invalidateOptionsMenu();
-		updateChatMsgHint();
-		int size = this.messageList.size();
-		if (size >= 1)
-			messagesView.setSelection(size - 1);
-		if (!activity.shouldPaneBeOpen()) {
-			conversation.markRead();
-			// TODO update notifications
-			UIHelper.updateNotification(getActivity(),
-					activity.getConversationList(), null, false);
-			activity.updateConversationList();
+			getActivity().invalidateOptionsMenu();
+			updateChatMsgHint();
+			int size = this.messageList.size();
+			if (size >= 1)
+				messagesView.setSelection(size - 1);
+			if (!activity.shouldPaneBeOpen()) {
+				conversation.markRead();
+				// TODO update notifications
+				UIHelper.updateNotification(getActivity(),
+						activity.getConversationList(), null, false);
+				activity.updateConversationList();
+			}
 		}
 	}
 

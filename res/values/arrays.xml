@@ -1,17 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <array name="conversation_encryption_type_entries">
-        <item>None</item>
-        <item>OpenPGP</item>
-        <item>Off the record</item>
-    </array>
-    <array name="conversation_encryption_type_values">
-        <item>none</item>
-        <item>pgp</item>
-        <item>otr</item>
-    </array>
-    <array name="manage_account_options">
-        <item>Delete</item>
-        <item>Disable</item>
+    <array name="resources">
+        <item>Mobile</item>
+        <item>Phone</item>
+        <item>Tablet</item>
+        <item>Conversations</item>
+        <item>Android</item>
     </array>
 </resources>

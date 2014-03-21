@@ -52,7 +52,7 @@ public class Account  extends AbstractEntity{
 	protected String password;
 	protected int options = 0;
 	protected String rosterVersion;
-	protected String resource;
+	protected String resource = "mobile";
 	protected int status = -1;
 	protected JSONObject keys = new JSONObject();
 	
@@ -135,6 +135,10 @@ public class Account  extends AbstractEntity{
 	
 	public void setResource(String resource) {
 		this.resource = resource;
+	}
+	
+	public String getResource() {
+		return this.resource;
 	}
 	
 	public String getJid() {

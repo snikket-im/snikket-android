@@ -461,11 +461,7 @@ public class XmppConnection implements Runnable {
 			if (this.streamFeatures.hasChild("session")) {
 				Log.d(LOGTAG,"sending session");
 				IqPacket startSession = new IqPacket(IqPacket.TYPE_SET);
-				Element session = new Element("session");
-				session.setAttribute("xmlns",
-						"urn:ietf:params:xml:ns:xmpp-session");
-				session.setContent("");
-				startSession.addChild(session);
+				startSession.addChild("session","urn:ietf:params:xml:ns:xmpp-session"); //setContent("")
 				this.sendIqPacket(startSession, null);
 			}
 		}
@@ -484,7 +480,8 @@ public class XmppConnection implements Runnable {
 					IqPacket register = new IqPacket(IqPacket.TYPE_SET);
 					Element username = new Element("username").setContent(account.getUsername());
 					Element password = new Element("password").setContent(account.getPassword());
-					register.query("jabber:iq:register").addChild(username).addChild(password);
+					register.query("jabber:iq:register").addChild(username);
+					register.query().addChild(password);
 					sendIqPacket(register, new OnIqPacketReceived() {
 						
 						@Override
@@ -515,14 +512,9 @@ public class XmppConnection implements Runnable {
 		packet.setAttribute("from", account.getFullJid());
 		if (account.getKeys().has("pgp_signature")) {
 			try {
-				String signature = account.getKeys().getString("pgp_signature");	
-				Element status = new Element("status");
-				status.setContent("online");
-				packet.addChild(status);
-				Element x = new Element("x");
-				x.setAttribute("xmlns", "jabber:x:signed");
-				x.setContent(signature);
-				packet.addChild(x);
+				String signature = account.getKeys().getString("pgp_signature");
+				packet.addChild("status").setContent("online");
+				packet.addChild("x","jabber:x:signed").setContent(signature);
 			} catch (JSONException e) {
 				//
 			}
@@ -532,12 +524,7 @@ public class XmppConnection implements Runnable {
 
 	private void sendBindRequest() throws IOException {
 		IqPacket iq = new IqPacket(IqPacket.TYPE_SET);
-		Element bind = new Element("bind");
-		bind.setAttribute("xmlns", "urn:ietf:params:xml:ns:xmpp-bind");
-		Element resource = new Element("resource");
-		resource.setContent("Conversations");
-		bind.addChild(resource);
-		iq.addChild(bind);
+		iq.addChild("bind", "urn:ietf:params:xml:ns:xmpp-bind").addChild("resource").setContent(account.getResource());
 		this.sendIqPacket(iq, new OnIqPacketReceived() {
 			@Override
 			public void onIqPacketReceived(Account account, IqPacket packet) {
@@ -601,9 +588,7 @@ public class XmppConnection implements Runnable {
 
 	private void sendEnableCarbons() {
 		IqPacket iq = new IqPacket(IqPacket.TYPE_SET);
-		Element enable = new Element("enable");
-		enable.setAttribute("xmlns", "urn:xmpp:carbons:2");
-		iq.addChild(enable);
+		iq.addChild("enable","urn:xmpp:carbons:2");
 		this.sendIqPacket(iq, new OnIqPacketReceived() {
 
 			@Override
@@ -679,10 +664,8 @@ public class XmppConnection implements Runnable {
 			tagWriter.writeStanzaAsync(new RequestPacket());
 		} else {
 			IqPacket iq = new IqPacket(IqPacket.TYPE_GET);
-			Element ping = new Element("ping");
-			iq.setAttribute("from",account.getFullJid());
-			ping.setAttribute("xmlns", "urn:xmpp:ping");
-			iq.addChild(ping);
+			iq.setFrom(account.getFullJid());
+			iq.addChild("ping","urn:xmpp:ping");
 			this.sendIqPacket(iq, null);
 		}
 	}

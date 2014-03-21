@@ -17,7 +17,22 @@ public class Element {
 	public Element addChild(Element child) {
 		this.content = null;
 		children.add(child);
-		return this;
+		return child;
+	}
+	
+	public Element addChild(String name) {
+		this.content = null;
+		Element child = new Element(name);
+		children.add(child);
+		return child;
+	}
+	
+	public Element addChild(String name, String xmlns) {
+		this.content = null;
+		Element child = new Element(name);
+		child.setAttribute("xmlns", xmlns);
+		children.add(child);
+		return child;
 	}
 	
 	public Element setContent(String content) {

@@ -7,6 +7,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
 import org.openintents.openpgp.util.OpenPgpApi;
@@ -203,6 +204,12 @@ public class XmppConnectionService extends Service {
 				accountChangedListener.onAccountListChangedListener();
 			}
 			if (account.getStatus() == Account.STATUS_ONLINE) {
+				List<Conversation> conversations = getConversations();
+				for (int i = 0; i < conversations.size(); ++i) {
+					if (conversations.get(i).getAccount() == account) {
+						sendUnsendMessages(conversations.get(i));
+					}
+				}
 				scheduleWakeupCall(PING_MAX_INTERVAL, true);
 			} else if (account.getStatus() == Account.STATUS_OFFLINE) {
 				if (!account.isOptionSet(Account.OPTION_DISABLED)) {
@@ -544,6 +551,9 @@ public class XmppConnectionService extends Service {
 	}
 
 	public XmppConnection createConnection(Account account) {
+		SharedPreferences sharedPref = PreferenceManager
+				.getDefaultSharedPreferences(getApplicationContext());
+		account.setResource(sharedPref.getString("resource", "mobile").toLowerCase(Locale.getDefault()));
 		PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
 		XmppConnection connection = new XmppConnection(account, pm);
 		connection.setOnMessagePacketReceivedListener(this.messageListener);
@@ -574,12 +584,6 @@ public class XmppConnectionService extends Service {
 					updateRoster(account, null);
 				}
 				connectMultiModeConversations(account);
-				List<Conversation> conversations = getConversations();
-				for (int i = 0; i < conversations.size(); ++i) {
-					if (conversations.get(i).getAccount() == account) {
-						sendUnsendMessages(conversations.get(i));
-					}
-				}
 				if (convChangedListener != null) {
 					convChangedListener.onConversationListChanged();
 				}
@@ -588,7 +592,7 @@ public class XmppConnectionService extends Service {
 		return connection;
 	}
 
-	public void sendMessage(Message message, String presence) {
+	synchronized public void sendMessage(Message message, String presence) {
 		Account account = message.getConversation().getAccount();
 		Conversation conv = message.getConversation();
 		boolean saveInDb = false;
@@ -619,11 +623,8 @@ public class XmppConnectionService extends Service {
 						.getFullJid());
 				packet.setTo(message.getCounterpart());
 				packet.setBody("This is an XEP-0027 encryted message");
-				Element x = new Element("x");
-				x.setAttribute("xmlns", "jabber:x:encrypted");
-				x.setContent(this.getPgpEngine().encrypt(keyId,
+				packet.addChild("x","jabber:x:encrypted").setContent(this.getPgpEngine().encrypt(keyId,
 						message.getBody()));
-				packet.addChild(x);
 				account.getXmppConnection().sendMessagePacket(packet);
 				message.setStatus(Message.STATUS_SEND);
 				message.setEncryption(Message.ENCRYPTION_DECRYPTED);
@@ -661,7 +662,7 @@ public class XmppConnectionService extends Service {
 
 	private void sendUnsendMessages(Conversation conversation) {
 		for (int i = 0; i < conversation.getMessages().size(); ++i) {
-			if (conversation.getMessages().get(i).getStatus() == Message.STATUS_UNSEND) {
+			if ((conversation.getMessages().get(i).getStatus() == Message.STATUS_UNSEND)&&(conversation.getMessages().get(i).getEncryption() == Message.ENCRYPTION_NONE)) {
 				Message message = conversation.getMessages().get(i);
 				MessagePacket packet = prepareMessagePacket(
 						conversation.getAccount(), message, null);
@@ -694,9 +695,8 @@ public class XmppConnectionService extends Service {
 									+ ": could not encrypt message to "
 									+ message.getCounterpart());
 				}
-				Element privateMarker = new Element("private");
-				privateMarker.setAttribute("xmlns", "urn:xmpp:carbons:2");
-				packet.addChild(privateMarker);
+				packet.addChild("private","urn:xmpp:carbons:2");
+				packet.addChild("no-copy","urn:xmpp:hints");
 				packet.setTo(otrSession.getSessionID().getAccountID() + "/"
 						+ otrSession.getSessionID().getUserID());
 				packet.setFrom(account.getFullJid());
@@ -736,16 +736,13 @@ public class XmppConnectionService extends Service {
 	public void updateRoster(final Account account,
 			final OnRosterFetchedListener listener) {
 		IqPacket iqPacket = new IqPacket(IqPacket.TYPE_GET);
-		Element query = new Element("query");
-		query.setAttribute("xmlns", "jabber:iq:roster");
 		if (!"".equals(account.getRosterVersion())) {
 			Log.d(LOGTAG, account.getJid() + ": fetching roster version "
 					+ account.getRosterVersion());
 		} else {
 			Log.d(LOGTAG, account.getJid() + ": fetching roster");
 		}
-		query.setAttribute("ver", account.getRosterVersion());
-		iqPacket.addChild(query);
+		iqPacket.query("jabber:iq:roster").setAttribute("ver", account.getRosterVersion());
 		account.getXmppConnection().sendIqPacket(iqPacket,
 				new OnIqPacketReceived() {
 
@@ -958,13 +955,8 @@ public class XmppConnectionService extends Service {
 
 	public void deleteContact(Contact contact) {
 		IqPacket iq = new IqPacket(IqPacket.TYPE_SET);
-		Element query = new Element("query");
-		query.setAttribute("xmlns", "jabber:iq:roster");
-		Element item = new Element("item");
-		item.setAttribute("jid", contact.getJid());
-		item.setAttribute("subscription", "remove");
-		query.addChild(item);
-		iq.addChild(query);
+		Element query = iq.query("jabber:iq:roster");
+		query.addChild("item").setAttribute("jid", contact.getJid()).setAttribute("subscription", "remove");
 		contact.getAccount().getXmppConnection().sendIqPacket(iq, null);
 		replaceContactInConversation(contact.getJid(), null);
 		databaseBackend.deleteContact(contact);
@@ -1032,11 +1024,9 @@ public class XmppConnectionService extends Service {
 		Element x = new Element("x");
 		x.setAttribute("xmlns", "http://jabber.org/protocol/muc");
 		if (conversation.getMessages().size() != 0) {
-			Element history = new Element("history");
 			long lastMsgTime = conversation.getLatestMessage().getTimeSent();
 			long diff = (System.currentTimeMillis() - lastMsgTime) / 1000 - 1;
-			history.setAttribute("seconds", diff + "");
-			x.addChild(history);
+			x.addChild("history").setAttribute("seconds", diff + "");
 		}
 		packet.addChild(x);
 		conversation.getAccount().getXmppConnection()
