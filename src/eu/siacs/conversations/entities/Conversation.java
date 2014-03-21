@@ -219,7 +219,6 @@ public class Conversation extends AbstractEntity {
 	}
 
 	public void startOtrSession(Context context, String presence) {
-		Log.d("xmppService", "starting otr session with " + presence);
 		SessionID sessionId = new SessionID(this.getContactJid(), presence,
 				"xmpp");
 		this.otrSession = new SessionImpl(sessionId, getAccount().getOtrEngine(

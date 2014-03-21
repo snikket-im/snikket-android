@@ -37,6 +37,7 @@ public class MessageParser {
 		String body = packet.getBody();
 		if (!conversation.hasValidOtrSession()) {
 			if (properlyAddressed) {
+				Log.d("xmppService","starting new otr session with "+packet.getFrom()+" because no valid otr session has been found");
 				conversation.startOtrSession(service.getApplicationContext(), fromParts[1]);
 			} else {
 				Log.d("xmppService",account.getJid()+": ignoring otr session with "+fromParts[0]);
@@ -47,6 +48,7 @@ public class MessageParser {
 			if (!foreignPresence.equals(fromParts[1])) {
 				conversation.resetOtrSession();
 				if (properlyAddressed) {
+					Log.d("xmppService","replacing otr session with "+packet.getFrom());
 					conversation.startOtrSession(service.getApplicationContext(), fromParts[1]);
 				} else {
 					return null;

@@ -305,15 +305,19 @@ public class UIHelper {
 	}
 
 	public static Bitmap getSelfContactPicture(Account account, int size, boolean showPhoneSelfContactPicture, Activity activity) {
-		Uri selfiUri = PhoneHelper.getSefliUri(activity);
-		if (selfiUri != null) {
-			try {
-				return BitmapFactory.decodeStream(activity
-						.getContentResolver().openInputStream(selfiUri));
-			} catch (FileNotFoundException e) {
-				return getUnknownContactPicture(account.getJid(), size);
+		if (showPhoneSelfContactPicture) {
+			Uri selfiUri = PhoneHelper.getSefliUri(activity);
+			if (selfiUri != null) {
+				try {
+					return BitmapFactory.decodeStream(activity
+							.getContentResolver().openInputStream(selfiUri));
+				} catch (FileNotFoundException e) {
+					return getUnknownContactPicture(account.getJid(), size);
+				}
 			}
+			return getUnknownContactPicture(account.getJid(), size);
+		} else {
+			return getUnknownContactPicture(account.getJid(), size);
 		}
-		return getUnknownContactPicture(account.getJid(), size);
 	}
 }
