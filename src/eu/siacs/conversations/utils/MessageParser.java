@@ -2,7 +2,6 @@ package eu.siacs.conversations.utils;
 
 import java.util.List;
 
-import net.java.otr4j.OtrException;
 import net.java.otr4j.session.Session;
 import net.java.otr4j.session.SessionStatus;
 import android.util.Log;
@@ -89,11 +88,7 @@ public class MessageParser {
 				Log.d(LOGTAG,"otr session stoped");
 			}
 		} catch (Exception e) {
-			Log.d(LOGTAG,"otr execption");
-			if (justStarted) {
-				Log.d(LOGTAG,"ran into safeguard");
-			} else {
-				Log.d(LOGTAG,"resett otr session");
+			if (!justStarted) {
 				conversation.resetOtrSession();
 			}
 			return null;

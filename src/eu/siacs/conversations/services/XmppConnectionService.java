@@ -7,6 +7,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
 import org.openintents.openpgp.util.OpenPgpApi;
@@ -550,6 +551,9 @@ public class XmppConnectionService extends Service {
 	}
 
 	public XmppConnection createConnection(Account account) {
+		SharedPreferences sharedPref = PreferenceManager
+				.getDefaultSharedPreferences(getApplicationContext());
+		account.setResource(sharedPref.getString("resource", "mobile").toLowerCase(Locale.getDefault()));
 		PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
 		XmppConnection connection = new XmppConnection(account, pm);
 		connection.setOnMessagePacketReceivedListener(this.messageListener);
@@ -588,7 +592,7 @@ public class XmppConnectionService extends Service {
 		return connection;
 	}
 
-	public void sendMessage(Message message, String presence) {
+	synchronized public void sendMessage(Message message, String presence) {
 		Account account = message.getConversation().getAccount();
 		Conversation conv = message.getConversation();
 		boolean saveInDb = false;

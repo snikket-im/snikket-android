@@ -1,6 +1,5 @@
 package eu.siacs.conversations.xmpp.stanzas;
 
-import android.graphics.YuvImage;
 import eu.siacs.conversations.xml.Element;
 
 
