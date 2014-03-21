@@ -203,6 +203,12 @@ public class XmppConnectionService extends Service {
 				accountChangedListener.onAccountListChangedListener();
 			}
 			if (account.getStatus() == Account.STATUS_ONLINE) {
+				List<Conversation> conversations = getConversations();
+				for (int i = 0; i < conversations.size(); ++i) {
+					if (conversations.get(i).getAccount() == account) {
+						sendUnsendMessages(conversations.get(i));
+					}
+				}
 				scheduleWakeupCall(PING_MAX_INTERVAL, true);
 			} else if (account.getStatus() == Account.STATUS_OFFLINE) {
 				if (!account.isOptionSet(Account.OPTION_DISABLED)) {
@@ -574,12 +580,6 @@ public class XmppConnectionService extends Service {
 					updateRoster(account, null);
 				}
 				connectMultiModeConversations(account);
-				List<Conversation> conversations = getConversations();
-				for (int i = 0; i < conversations.size(); ++i) {
-					if (conversations.get(i).getAccount() == account) {
-						sendUnsendMessages(conversations.get(i));
-					}
-				}
 				if (convChangedListener != null) {
 					convChangedListener.onConversationListChanged();
 				}
@@ -658,7 +658,7 @@ public class XmppConnectionService extends Service {
 
 	private void sendUnsendMessages(Conversation conversation) {
 		for (int i = 0; i < conversation.getMessages().size(); ++i) {
-			if (conversation.getMessages().get(i).getStatus() == Message.STATUS_UNSEND) {
+			if ((conversation.getMessages().get(i).getStatus() == Message.STATUS_UNSEND)&&(conversation.getMessages().get(i).getEncryption() == Message.ENCRYPTION_NONE)) {
 				Message message = conversation.getMessages().get(i);
 				MessagePacket packet = prepareMessagePacket(
 						conversation.getAccount(), message, null);
@@ -1020,7 +1020,6 @@ public class XmppConnectionService extends Service {
 		Element x = new Element("x");
 		x.setAttribute("xmlns", "http://jabber.org/protocol/muc");
 		if (conversation.getMessages().size() != 0) {
-			Element history = new Element("history");
 			long lastMsgTime = conversation.getLatestMessage().getTimeSent();
 			long diff = (System.currentTimeMillis() - lastMsgTime) / 1000 - 1;
 			x.addChild("history").setAttribute("seconds", diff + "");
