@@ -218,22 +218,32 @@ public class Conversation extends AbstractEntity {
 		this.mode = mode;
 	}
 
-	public void startOtrSession(Context context, String presence) {
-		SessionID sessionId = new SessionID(this.getContactJid(), presence,
-				"xmpp");
-		this.otrSession = new SessionImpl(sessionId, getAccount().getOtrEngine(
-				context));
-		try {
-			this.otrSession.startSession();
-		} catch (OtrException e) {
-			Log.d("xmppServic", "couldnt start otr");
+	public SessionImpl startOtrSession(Context context, String presence, boolean sendStart) {
+		if (this.otrSession != null) {
+			return this.otrSession;
+		} else {
+			SessionID sessionId = new SessionID(this.getContactJid(), presence,
+					"xmpp");
+			this.otrSession = new SessionImpl(sessionId, getAccount().getOtrEngine(
+					context));
+			try {
+				if (sendStart) {
+					this.otrSession.startSession();
+					return this.otrSession;
+				}
+				return this.otrSession;
+			} catch (OtrException e) {
+				Log.d("xmppServic", "couldnt start otr");
+				return null;
+			}
 		}
+		
 	}
 
 	public SessionImpl getOtrSession() {
 		return this.otrSession;
 	}
-
+	
 	public void resetOtrSession() {
 		this.otrSession = null;
 	}

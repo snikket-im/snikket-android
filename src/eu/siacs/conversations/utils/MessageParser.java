@@ -30,7 +30,6 @@ public class MessageParser {
 	}
 	
 	public static Message parseOtrChat(MessagePacket packet, Account account, XmppConnectionService service) {
-		boolean justStarted = false;
 		boolean properlyAddressed = (packet.getTo().split("/").length == 2) || (account.countPresences() == 1);
 		String[] fromParts = packet.getFrom().split("/");
 		Conversation conversation = service.findOrCreateConversation(account, fromParts[0],false);
@@ -38,8 +37,7 @@ public class MessageParser {
 		if (!conversation.hasValidOtrSession()) {
 			if (properlyAddressed) {
 				Log.d("xmppService","starting new otr session with "+packet.getFrom()+" because no valid otr session has been found");
-				conversation.startOtrSession(service.getApplicationContext(), fromParts[1]);
-				justStarted = true;
+				conversation.startOtrSession(service.getApplicationContext(), fromParts[1],false);
 			} else {
 				Log.d("xmppService",account.getJid()+": ignoring otr session with "+fromParts[0]);
 				return null;
@@ -50,8 +48,7 @@ public class MessageParser {
 				conversation.resetOtrSession();
 				if (properlyAddressed) {
 					Log.d("xmppService","replacing otr session with "+packet.getFrom());
-					conversation.startOtrSession(service.getApplicationContext(), fromParts[1]);
-					justStarted = true;
+					conversation.startOtrSession(service.getApplicationContext(), fromParts[1],false);
 				} else {
 					return null;
 				}
@@ -88,9 +85,7 @@ public class MessageParser {
 				Log.d(LOGTAG,"otr session stoped");
 			}
 		} catch (Exception e) {
-			if (!justStarted) {
-				conversation.resetOtrSession();
-			}
+			conversation.resetOtrSession();
 			return null;
 		}
 		

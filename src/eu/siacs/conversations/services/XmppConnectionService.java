@@ -602,7 +602,7 @@ public class XmppConnectionService extends Service {
 			if (message.getEncryption() == Message.ENCRYPTION_OTR) {
 				if (!conv.hasValidOtrSession()) {
 					// starting otr session. messages will be send later
-					conv.startOtrSession(getApplicationContext(), presence);
+					conv.startOtrSession(getApplicationContext(), presence,true);
 				} else if (conv.getOtrSession().getSessionStatus() == SessionStatus.ENCRYPTED) {
 					// otr session aleary exists, creating message packet
 					// accordingly
