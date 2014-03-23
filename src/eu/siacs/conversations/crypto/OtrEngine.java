@@ -19,7 +19,6 @@ import android.util.Log;
 
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.persistance.DatabaseBackend;
-import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
 
 import net.java.otr4j.OtrEngineHost;
@@ -199,15 +198,13 @@ public class OtrEngine implements OtrEngineHost {
 	@Override
 	public void smpError(SessionID arg0, int arg1, boolean arg2)
 			throws OtrException {
-		// TODO Auto-generated method stub
-
+		throw new OtrException(new Exception("smp error"));
 	}
 
 	@Override
 	public void unencryptedMessageReceived(SessionID arg0, String arg1)
 			throws OtrException {
-		// TODO Auto-generated method stub
-
+		throw new OtrException(new Exception("unencrypted message received"));
 	}
 
 	@Override

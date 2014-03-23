@@ -61,6 +61,7 @@ import android.os.Binder;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.PowerManager;
+import android.os.PowerManager.WakeLock;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
@@ -337,6 +338,7 @@ public class XmppConnectionService extends Service {
 	private PgpEngine mPgpEngine = null;
 	private Intent pingIntent;
 	private PendingIntent pendingPingIntent = null;
+	private WakeLock wakeLock;
 
 	public PgpEngine getPgpEngine() {
 		if (pgpServiceConnection.isBound()) {
@@ -415,6 +417,7 @@ public class XmppConnectionService extends Service {
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
+		this.wakeLock.acquire();
 		// Log.d(LOGTAG,"calling start service. caller was:"+intent.getAction());
 		ConnectivityManager cm = (ConnectivityManager) getApplicationContext()
 				.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -483,6 +486,9 @@ public class XmppConnectionService extends Service {
 				}
 			}
 		}
+		if (wakeLock.isHeld()) {
+			wakeLock.release();
+		}
 		return START_STICKY;
 	}
 
@@ -498,6 +504,9 @@ public class XmppConnectionService extends Service {
 				getApplicationContext(), "org.sufficientlysecure.keychain");
 		this.pgpServiceConnection.bindToService();
 
+		PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+		this.wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
+				"XmppConnection");
 	}
 
 	@Override
@@ -554,8 +563,7 @@ public class XmppConnectionService extends Service {
 		SharedPreferences sharedPref = PreferenceManager
 				.getDefaultSharedPreferences(getApplicationContext());
 		account.setResource(sharedPref.getString("resource", "mobile").toLowerCase(Locale.getDefault()));
-		PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-		XmppConnection connection = new XmppConnection(account, pm);
+		XmppConnection connection = new XmppConnection(account, this.wakeLock);
 		connection.setOnMessagePacketReceivedListener(this.messageListener);
 		connection.setOnStatusChangedListener(this.statusListener);
 		connection.setOnPresencePacketReceivedListener(this.presenceListener);

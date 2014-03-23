@@ -32,6 +32,7 @@ import org.xmlpull.v1.XmlPullParserException;
 
 import android.os.Bundle;
 import android.os.PowerManager;
+import android.os.PowerManager.WakeLock;
 import android.os.SystemClock;
 import android.util.Log;
 import eu.siacs.conversations.entities.Account;
@@ -91,10 +92,9 @@ public class XmppConnection implements Runnable {
 	private OnTLSExceptionReceived tlsListener = null;
 	private OnBindListener bindListener = null;
 
-	public XmppConnection(Account account, PowerManager pm) {
+	public XmppConnection(Account account, WakeLock wakeLock) {
 		this.account = account;
-		wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
-				"XmppConnection");
+		this.wakeLock = wakeLock;
 		tagReader = new XmlReader(wakeLock);
 		tagWriter = new TagWriter();
 	}

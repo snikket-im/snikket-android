@@ -84,16 +84,15 @@ public class MessageParser {
 				conversation.resetOtrSession();
 				Log.d(LOGTAG,"otr session stoped");
 			}
+			//isEmpty is a work around for some weird clients which send emtpty strings over otr
+			if ((body == null)||(body.isEmpty())) {
+				return null;
+			}
+			return new Message(conversation, packet.getFrom(), body, Message.ENCRYPTION_OTR,Message.STATUS_RECIEVED);
 		} catch (Exception e) {
 			conversation.resetOtrSession();
 			return null;
 		}
-		
-		//isEmpty is a work around for some weird clients which send emtpty strings over otr
-		if ((body == null)||(body.isEmpty())) {
-			return null;
-		}
-		return new Message(conversation, packet.getFrom(), body, Message.ENCRYPTION_OTR,Message.STATUS_RECIEVED);
 	}
 	
 	public static Message parseGroupchat(MessagePacket packet, Account account, XmppConnectionService service) {
