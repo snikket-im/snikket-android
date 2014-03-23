@@ -8,8 +8,7 @@ which make the life on mobile devices a lot easier but states that they are
 currently very few implementations of those XEPs. So I went ahead and
 implemented all of them in my Android XMPP client.
 
-General observations
---------------------
+###General observations
 The first thing I noticed is that XMPP is actually okish designed. If you were
 to design a new chat protocol today you probably wouldn’t choose XML again
 however the protocol basically consists of only three different packages which
@@ -17,8 +16,7 @@ are quickly hidden under some sort of abstraction layer within your library.
 Getting from zero to sending messages to other users actually was very simple
 and straight forward. But then came the XEPs.
 
-Multi-User Chat
----------------
+###Multi-User Chat
 The first one was XEP-0045 Multi-User Chat. This is the one XEP of the XEPs I’m
 going to mention in my article which is actually wildly adopted. Most clients
 and servers I know of support MUC. However  the level of completeness varies.
@@ -36,8 +34,7 @@ userMobile but just user. Both ejabberd and prosody support this but with
 strange side effects. prosody for example doesn’t allow a user to change its
 name once two clients are “merged” by having the same nick.
 
-Carbons and Stream Management
------------------------------
+###Carbons and Stream Management
 Two of the other XEPs Lukas’ mentions - Carbons (XEP-0280) and Stream Management
 (XEP-0198) - were actually fairly easy to implement. The only challenges were to
 find a server to support them (I ended up running my own prosody server) and a
@@ -47,8 +44,7 @@ mobile device. I had sessions running for up to 24 hours with a walking outside,
 loosing mobile coverage for a few minutes and so on. The only limitation was
 that I had to keep on developing and reinstalling my app.
 
-Off the record
---------------
+###Off the record
 And then came OTR... This is were I spend the most time debugging stuff and
 trying to get things right and compatible with other clients. This is the part
 were I want to help other developers not to make the same mistakes and maybe
@@ -77,17 +73,15 @@ honor the private tag on outgoing messages. While this is easily fixed I presume
 that having both the private and the no-copy tag will make it more compatible
 with servers or clients I don’t know about yet)
 
-
+####Rules to follow when implementing OTR
 To summarize my observations on implementing OTR in XMPP let me make the
 following three statements.
-
 
 1. While it is good practice for unencrypted messages to be send to the raw jid
 and have the receiving server or user decide how they should be routed OTR
 messages must be send to a specific resource. To make this work the user should
 be given the option to select the presence (which can be assisted with some
 educated guessing by the client based on previous messages).
-
 Furthermore a client should encourage a user to choose meaningful presences
 instead of the clients name or even random ones. Something like /mobile,
 /notebook, /desktop is a greater assist to any one who wants to start an otr
