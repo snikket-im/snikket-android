@@ -33,6 +33,24 @@ These XEPs are - as of now:
 * XEP-0237: Roster Versioning mainly to save bandwith on poor mobile connections
 
 ##FAQ
+###General
+####How do I install Conversations?
+Conversations is entirely open source and licensed under GPLv3. So if you are a
+software developer you can check out the sources from github and use ant to
+build your apk file.
+
+The more convenient way which not only gives you automatic updates but also
+supports the further development of Conversations is to buy the App in the Google
+Play Store.
+####How do I create an account?
+XMPP like email for example is a federated protocol which means that there is
+not one company you can create your 'official xmpp account' with but there are
+hundreds or even thousands of provider out there. To find one use a web search
+engine of your choice. Or maybe your univeristy has one. Or you can run your own.
+Or ask a friend to run one. Once you found one you can use Conversations to
+create an account. Just select 'register new account on server' within the
+create account dialog.
+
 ###Security
 ####Why are there to end-to-end encryption methods and which one should I choose?
 In most cases OTR should be the encryption method of choice. It works out of the box with most contacts as long as they are online.
@@ -42,6 +60,6 @@ more flexible.
 Before you continue reading you should notice that the openPGP support in
 Conversations is marked as experimental. This is not because it will make the app
 unstable but because the fundamental concepts of PGP aren't ready for a
-widespread use. The way PGP works is that you trust Key IDs instead of XMPP- or email addresses. So in theory your contact list should consist of Public-Key-IDs instead of email addresses. But of course no email or xmpp client out there implements these concepts. Plus openPGG in the context of instant messaging has a couple of downsides. It is vulnerable for replay attacs, it is rather verbose, decryping and encrypting takes longer than OTR. It is however asynchronous and works well with carbonated messages.
+widespread use. The way PGP works is that you trust Key IDs instead of XMPP- or email addresses. So in theory your contact list should consist of Public-Key-IDs instead of email addresses. But of course no email or xmpp client out there implements these concepts. Plus PGP in the context of instant messaging has a couple of downsides. It is vulnerable to replay attacs, it is rather verbose, decryping and encrypting takes longer than OTR. It is however asynchronous and works well with carbonated messages.
 
 To use openpgp you have to install the opensource app OpenKeychain (www.openkeychain.org) and then long press on the account in manage accounts and choose renew PGP announcement from the contextual menu.
