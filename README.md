@@ -1,5 +1,7 @@
 #Conversations
-Conversations is an open source XMPP client for Android 4.0+ smart phones
+Conversations is an open source XMPP (formally known as Jabber) client for Android 4.0+ smart phones.
+
+[Link to Play  Store](https://play.google.com/store/apps/details?id=eu.siacs.conversations)
 
 ![alt tag](https://raw.githubusercontent.com/siacs/Conversations/master/screenshots.png)
 
@@ -41,9 +43,7 @@ build your apk file.
 
 The more convenient way - which not only gives you automatic updates but also
 supports the further development of Conversations - is to buy the App in the Google
-Play Store.
-
-https://play.google.com/store/apps/details?id=eu.siacs.conversations
+[Play Store](https://play.google.com/store/apps/details?id=eu.siacs.conversations).
 
 
 ####How do I create an account?
