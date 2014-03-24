@@ -15,9 +15,10 @@ Conversations is an open source XMPP (formally known as Jabber) client for Andro
 ##Features
 * End-to-end encryption with either OTR or openPGP
 * Holo UI
-* Multiple Accounts
+* Syncs with your desktop client
 * Group Chats
 * Address book integration
+* Multiple Accounts / unified inbox
 
 ###XMPP Features
 Conversations works with every XMPP server out there. However XMPP is an extensible
