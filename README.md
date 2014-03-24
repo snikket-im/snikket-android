@@ -42,6 +42,10 @@ build your apk file.
 The more convenient way - which not only gives you automatic updates but also
 supports the further development of Conversations - is to buy the App in the Google
 Play Store.
+
+https://play.google.com/store/apps/details?id=eu.siacs.conversations
+
+
 ####How do I create an account?
 XMPP like email for example is a federated protocol which means that there is
 not one company you can create your 'official xmpp account' with but there are
