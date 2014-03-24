@@ -15,7 +15,7 @@ Conversations is an open source XMPP client for Android 4.0+ smart phones
 * Holo UI
 * Multiple Accounts
 * Group Chats
-* Contact list integration
+* Address book integration
 
 ###XMPP Features
 Conversations works with every XMPP server out there. However XMPP is an extensible
@@ -39,8 +39,8 @@ Conversations is entirely open source and licensed under GPLv3. So if you are a
 software developer you can check out the sources from github and use ant to
 build your apk file.
 
-The more convenient way which not only gives you automatic updates but also
-supports the further development of Conversations is to buy the App in the Google
+The more convenient way - which not only gives you automatic updates but also
+supports the further development of Conversations - is to buy the App in the Google
 Play Store.
 ####How do I create an account?
 XMPP like email for example is a federated protocol which means that there is
@@ -50,7 +50,17 @@ engine of your choice. Or maybe your univeristy has one. Or you can run your own
 Or ask a friend to run one. Once you found one you can use Conversations to
 create an account. Just select 'register new account on server' within the
 create account dialog.
-
+####How does the address book integration work?
+The address bock integration was designed to protect your privacy. Conversations
+neither uploads contacts from your address book to your server nor fills your
+address book with unnecessary contacts from your online roster. If you manually
+add a Jabber ID to your phones address book Conversations will use the name and
+the profile picture of this contact. To make the process of adding Jabber IDs to
+your address book easier you can click on the profile picture in the contact
+detais within Conversations. This will start an add to address book intent with the jabber ID
+as payload. This doesn’t require Conversations to have write permissions on your
+address book but also doesn’t require you to copy past Jabber ID from one app to
+another.
 ###Security
 ####Why are there to end-to-end encryption methods and which one should I choose?
 In most cases OTR should be the encryption method of choice. It works out of the box with most contacts as long as they are online.
