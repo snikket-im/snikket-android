@@ -33,12 +33,7 @@ public class TagWriter {
 		}
 	};
 	
-	
 	public TagWriter() {
-	}
-	
-	public TagWriter(OutputStream out) {
-		this.setOutputStream(out);
 	}
 	
 	public void setOutputStream(OutputStream out) {
