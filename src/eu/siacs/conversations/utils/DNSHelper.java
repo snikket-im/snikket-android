@@ -96,12 +96,23 @@ public class DNSHelper {
 				++i;
 			}
 			builder.replace(0, 1, "");
+			
+			//TODO: workaround. speak proper dns later
+			if (!builder.toString().contains(".")) {
+				namePort.putString("error", "nosrv");
+				return namePort;
+			}
 			namePort.putString("name",builder.toString());
 		return namePort;
 	}
 
 	static int calcPort(byte hb, byte lb) {
-		return ((int) hb << 8) | ((int) lb & 0xFF);
+		int port = ((int) hb << 8) | ((int) lb & 0xFF);
+		if (port>=0) {
+			return port;
+		} else {
+			return 65536 + port;
+		}
 	}
 	
 	final protected static char[] hexArray = "0123456789ABCDEF".toCharArray();
