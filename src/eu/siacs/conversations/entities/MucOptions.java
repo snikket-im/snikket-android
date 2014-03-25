@@ -101,7 +101,9 @@ public class MucOptions {
 		}
 	
 	public void processPacket(PresencePacket packet) {
-		String name = packet.getAttribute("from").split("/")[1];
+		String[] fromParts = packet.getFrom().split("/");
+		if (fromParts.length>=2) {
+			String name = fromParts[1];
 			String type = packet.getAttribute("type");
 			if (type==null) {
 				User user = new User();
@@ -143,6 +145,7 @@ public class MucOptions {
 					}
 				}
 			}
+		}
 	}
 	
 	public List<User> getUsers() {
