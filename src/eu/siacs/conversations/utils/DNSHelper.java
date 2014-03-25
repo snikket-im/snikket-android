@@ -2,15 +2,45 @@ package eu.siacs.conversations.utils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.util.ArrayList;
 import java.util.Random;
 
 import android.os.Bundle;
+import android.util.Log;
 
 public class DNSHelper {
 	public static Bundle getSRVRecord(String host) throws IOException {
+		InetAddress ip = InetAddress.getByName("8.8.8.8");
+		try {
+			Class<?> SystemProperties = Class.forName("android.os.SystemProperties");
+			Method method = SystemProperties.getMethod("get", new Class[] { String.class });
+			ArrayList<String> servers = new ArrayList<String>();
+			for (String name : new String[] { "net.dns1", "net.dns2", "net.dns3", "net.dns4", }) {
+			    String value = (String) method.invoke(null, name);
+			    
+				if (value != null && !"".equals(value) && !servers.contains(value))
+			    	ip = InetAddress.getByName(value);
+			        servers.add(value);
+			}
+		} catch (ClassNotFoundException e) {
+			ip = InetAddress.getByName("8.8.8.8");
+		} catch (NoSuchMethodException e) {
+			ip = InetAddress.getByName("8.8.8.8");
+		} catch (IllegalAccessException e) {
+			ip = InetAddress.getByName("8.8.8.8");
+		} catch (IllegalArgumentException e) {
+			ip = InetAddress.getByName("8.8.8.8");
+		} catch (InvocationTargetException e) {
+			ip = InetAddress.getByName("8.8.8.8");
+		}
+		
+		Log.d("xmppService","using dns server: "+ip.toString()+" to look up SRV records");
+		
 		Bundle namePort = new Bundle();
 			String[] hostParts = host.split("\\.");
 			byte[] transId = new byte[2];
@@ -35,10 +65,9 @@ public class DNSHelper {
 			}
 			output.write(rest);
 			byte[] sendPaket = output.toByteArray();
-			byte[] addr = { 0x8, 0x8, 0x8, 0x8 };
 			int realLenght = sendPaket.length - 11;
 			DatagramPacket packet = new DatagramPacket(sendPaket,
-					sendPaket.length, InetAddress.getByAddress(addr), 53);
+					sendPaket.length, ip, 53);
 			DatagramSocket datagramSocket = new DatagramSocket();
 			datagramSocket.send(packet);
 			byte[] receiveData = new byte[1024];
