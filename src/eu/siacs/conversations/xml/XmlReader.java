@@ -47,12 +47,9 @@ public class XmlReader {
 	
 	public Tag readTag() throws XmlPullParserException, IOException {
 		if (wakeLock.isHeld()) {
-			//Log.d(LOGTAG,"there was a wake lock. releasing it till next event");
 			wakeLock.release(); //release wake look while waiting on next parser event
 		}
-		//Log.d(LOGTAG,"waiting for new event...");
 		while(parser.next() != XmlPullParser.END_DOCUMENT) {
-				//Log.d(LOGTAG,"found new event. acquiring wake lock");
 				wakeLock.acquire();
 				if (parser.getEventType() == XmlPullParser.START_TAG) {
 					Tag tag = Tag.start(parser.getName());

@@ -96,9 +96,8 @@ public class DNSHelper {
 				++i;
 			}
 			builder.replace(0, 1, "");
-			
-			//TODO: workaround. speak proper dns later
-			if (!builder.toString().contains(".")) {
+			byte type = receiveData[i+1];
+			if (type!=-64) {
 				namePort.putString("error", "nosrv");
 				return namePort;
 			}
