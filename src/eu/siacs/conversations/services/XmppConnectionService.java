@@ -1083,9 +1083,10 @@ public class XmppConnectionService extends Service {
 
 	public void leaveMuc(Conversation conversation) {
 		PresencePacket packet = new PresencePacket();
-		packet.setAttribute("to", conversation.getContactJid());
+		packet.setAttribute("to", conversation.getContactJid().split("/")[0] + "/" + conversation.getMucOptions().getNick());
 		packet.setAttribute("from", conversation.getAccount().getFullJid());
 		packet.setAttribute("type", "unavailable");
+		Log.d(LOGTAG,"send leaving muc " + packet);
 		conversation.getAccount().getXmppConnection()
 				.sendPresencePacket(packet);
 		conversation.getMucOptions().setOffline();
