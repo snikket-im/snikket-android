@@ -55,4 +55,12 @@
             android:summary="Use room’s subject to identify Conferences"
             android:defaultValue="true"/>
     </PreferenceCategory>
+    <PreferenceCategory
+        android:title="Advanced Options">
+        <CheckBoxPreference 
+            android:key="never_send"
+            android:title="Never send crash reports"
+            android:summary="By sending in stack traces you are helping the ongoing development of Conversations"
+            android:defaultValue="false"/>
+    </PreferenceCategory>
 </PreferenceScreen>

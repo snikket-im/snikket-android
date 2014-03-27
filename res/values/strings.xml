@@ -40,4 +40,8 @@
     <string name="invitation_sent">Invitation sent</string>
     <string name="account_offline">Account offline</string>
     <string name="cant_invite_while_offline">You have to be online to invite people to conferences</string>
+    <string name="crash_report_title">Conversations has crashed</string>
+    <string name="crash_report_message">By sending in stack traces you are helping the ongoing development of Conversations\n<b>Warning:</b> This will use your XMPP account to send the stack trace to the developer.</string>
+    <string name="send_now">Send now</string>
+    <string name="send_never">Never ask again</string>
 </resources>

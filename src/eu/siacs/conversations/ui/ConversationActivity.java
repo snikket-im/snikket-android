@@ -8,6 +8,7 @@ import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
+import eu.siacs.conversations.utils.ExceptionHelper;
 import eu.siacs.conversations.utils.UIHelper;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -454,6 +455,7 @@ public class ConversationActivity extends XmppActivity {
 					selectedConversation = conversationList.get(0);
 					swapConversationFragment();
 				}
+				ExceptionHelper.checkForCrash(this,this.xmppConnectionService);
 			}
 		}
 	}
