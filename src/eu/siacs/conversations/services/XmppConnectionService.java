@@ -278,9 +278,14 @@ public class XmppConnectionService extends Service {
 								Element x = packet.findChild("x","jabber:x:signed");
 								if (x != null) {
 									try {
-										contact.setPgpKeyId(pgp.fetchKeyId(
-												packet.findChild("status")
-														.getContent(), x
+										Element status = packet.findChild("status");
+										String msg;
+										if (status!=null) {
+											msg = status.getContent();
+										} else {
+											msg = "";
+										}
+										contact.setPgpKeyId(pgp.fetchKeyId(msg, x
 														.getContent()));
 									} catch (OpenPgpException e) {
 										Log.d(LOGTAG, "faulty pgp. just ignore");
