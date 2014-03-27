@@ -293,7 +293,7 @@ public class Conversation extends AbstractEntity {
 		return this.otrFingerprint;
 	}
 
-	public MucOptions getMucOptions() {
+	public synchronized MucOptions getMucOptions() {
 		if (this.mucOptions == null) {
 			this.mucOptions = new MucOptions();
 		}

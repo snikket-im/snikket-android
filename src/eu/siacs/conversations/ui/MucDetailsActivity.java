@@ -82,9 +82,6 @@ public class MucDetailsActivity extends XmppActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		if (getIntent().getAction().equals(ACTION_VIEW_MUC)) {
-			this.uuid = getIntent().getExtras().getString("uuid");
-		}
 		setContentView(R.layout.activity_muc_details);
 		mYourNick = (EditText) findViewById(R.id.muc_your_nick);
 		mFullJid = (TextView) findViewById(R.id.muc_jabberid);
@@ -135,6 +132,9 @@ public class MucDetailsActivity extends XmppActivity {
 	void onBackendConnected() {
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
 		boolean useSubject = preferences.getBoolean("use_subject_in_muc", true);
+		if (getIntent().getAction().equals(ACTION_VIEW_MUC)) {
+			this.uuid = getIntent().getExtras().getString("uuid");
+		}
 		if (uuid != null) {
 			for (Conversation mConv : xmppConnectionService.getConversations()) {
 				if (mConv.getUuid().equals(uuid)) {
@@ -183,6 +183,8 @@ public class MucDetailsActivity extends XmppActivity {
 					membersView.addView(view);
 				}
 			}
+		} else {
+			Log.d("xmppService","uuid in muc details was null");
 		}
 	}
 }

@@ -39,6 +39,7 @@ import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.OnBindListener;
 import eu.siacs.conversations.xmpp.OnIqPacketReceived;
+import eu.siacs.conversations.xmpp.OnJinglePacketReceived;
 import eu.siacs.conversations.xmpp.OnMessagePacketReceived;
 import eu.siacs.conversations.xmpp.OnPresencePacketReceived;
 import eu.siacs.conversations.xmpp.OnStatusChanged;
@@ -47,6 +48,7 @@ import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
 import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
 import eu.siacs.conversations.xmpp.stanzas.PresencePacket;
+import eu.siacs.conversations.xmpp.stanzas.jingle.JinglePacket;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -230,12 +232,18 @@ public class XmppConnectionService extends Service {
 		@Override
 		public void onPresencePacketReceived(Account account,
 				PresencePacket packet) {
-			if (packet.hasChild("x")
-					&& (packet.findChild("x").getAttribute("xmlns")
-							.startsWith("http://jabber.org/protocol/muc"))) {
+			if (packet.hasChild("x","http://jabber.org/protocol/muc#user")) {
 				Conversation muc = findMuc(
 						packet.getAttribute("from").split("/")[0], account);
 				if (muc != null) {
+					muc.getMucOptions().processPacket(packet);
+				} else {
+					Log.d(LOGTAG,account.getJid()+": could not find muc for received muc package "+packet.toString());
+				}
+			} else if (packet.hasChild("x","http://jabber.org/protocol/muc")) {
+				Conversation muc = findMuc(packet.getAttribute("from").split("/")[0], account);
+				if (muc != null) {
+					Log.d(LOGTAG,account.getJid()+": reading muc status packet "+packet.toString());
 					int error = muc.getMucOptions().getError();
 					muc.getMucOptions().processPacket(packet);
 					if ((muc.getMucOptions().getError() != error)
@@ -267,10 +275,8 @@ public class XmppConnectionService extends Service {
 							contact.updatePresence(fromParts[1], Presences.parseShow(packet.findChild("show")));
 							PgpEngine pgp = getPgpEngine();
 							if (pgp != null) {
-								Element x = packet.findChild("x");
-								if ((x != null)
-										&& (x.getAttribute("xmlns")
-												.equals("jabber:x:signed"))) {
+								Element x = packet.findChild("x","jabber:x:signed");
+								if (x != null) {
 									try {
 										contact.setPgpKeyId(pgp.fetchKeyId(
 												packet.findChild("status")
@@ -311,7 +317,7 @@ public class XmppConnectionService extends Service {
 							// TODO: ask user to handle it maybe
 						}
 					} else {
-						// Log.d(LOGTAG, packet.toString());
+						//Log.d(LOGTAG, packet.toString());
 					}
 					replaceContactInConversation(contact.getJid(), contact);
 				}
@@ -331,6 +337,14 @@ public class XmppConnectionService extends Service {
 					mergePhoneContactsWithRoster(null);
 				}
 			}
+		}
+	};
+	
+	private OnJinglePacketReceived jingleListener = new OnJinglePacketReceived() {
+		
+		@Override
+		public void onJinglePacketReceived(Account account, JinglePacket packet) {
+			Log.d(LOGTAG,account.getJid()+": jingle packet received"+packet.toString());
 		}
 	};
 
@@ -498,6 +512,8 @@ public class XmppConnectionService extends Service {
 		databaseBackend = DatabaseBackend.getInstance(getApplicationContext());
 		this.accounts = databaseBackend.getAccounts();
 
+		this.getConversations();
+		
 		getContentResolver().registerContentObserver(
 				ContactsContract.Contacts.CONTENT_URI, true, contactObserver);
 		this.pgpServiceConnection = new OpenPgpServiceConnection(
@@ -569,6 +585,7 @@ public class XmppConnectionService extends Service {
 		connection.setOnPresencePacketReceivedListener(this.presenceListener);
 		connection
 				.setOnUnregisteredIqPacketReceivedListener(this.unknownIqListener);
+		connection.setOnJinglePacketReceivedListener(this.jingleListener);
 		connection
 				.setOnTLSExceptionReceivedListener(new OnTLSExceptionReceived() {
 
@@ -897,9 +914,6 @@ public class XmppConnectionService extends Service {
 			conversation.setAccount(account);
 			if (muc) {
 				conversation.setMode(Conversation.MODE_MULTI);
-				if (account.getStatus() == Account.STATUS_ONLINE) {
-					joinMuc(conversation);
-				}
 			} else {
 				conversation.setMode(Conversation.MODE_SINGLE);
 			}
@@ -919,9 +933,6 @@ public class XmppConnectionService extends Service {
 			if (muc) {
 				conversation = new Conversation(conversationName, account, jid,
 						Conversation.MODE_MULTI);
-				if (account.getStatus() == Account.STATUS_ONLINE) {
-					joinMuc(conversation);
-				}
 			} else {
 				conversation = new Conversation(conversationName, account, jid,
 						Conversation.MODE_SINGLE);
@@ -930,6 +941,9 @@ public class XmppConnectionService extends Service {
 			this.databaseBackend.createConversation(conversation);
 		}
 		this.conversations.add(conversation);
+		if ((account.getStatus() == Account.STATUS_ONLINE)&&(conversation.getMode() == Conversation.MODE_MULTI)) {
+			joinMuc(conversation);
+		}
 		if (this.convChangedListener != null) {
 			this.convChangedListener.onConversationListChanged();
 		}
@@ -1037,6 +1051,7 @@ public class XmppConnectionService extends Service {
 			x.addChild("history").setAttribute("seconds", diff + "");
 		}
 		packet.addChild(x);
+		Log.d(LOGTAG,conversation.getAccount().getJid()+": joining muc "+packet.toString());
 		conversation.getAccount().getXmppConnection()
 				.sendPresencePacket(packet);
 	}

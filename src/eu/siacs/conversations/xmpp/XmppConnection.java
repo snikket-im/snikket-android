@@ -46,6 +46,7 @@ import eu.siacs.conversations.xmpp.stanzas.AbstractStanza;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
 import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
 import eu.siacs.conversations.xmpp.stanzas.PresencePacket;
+import eu.siacs.conversations.xmpp.stanzas.jingle.JinglePacket;
 import eu.siacs.conversations.xmpp.stanzas.streammgmt.AckPacket;
 import eu.siacs.conversations.xmpp.stanzas.streammgmt.EnablePacket;
 import eu.siacs.conversations.xmpp.stanzas.streammgmt.RequestPacket;
@@ -86,6 +87,7 @@ public class XmppConnection implements Runnable {
 
 	private Hashtable<String, PacketReceived> packetCallbacks = new Hashtable<String, PacketReceived>();
 	private OnPresencePacketReceived presenceListener = null;
+	private OnJinglePacketReceived jingleListener = null;
 	private OnIqPacketReceived unregisteredIqListener = null;
 	private OnMessagePacketReceived messageListener = null;
 	private OnStatusChanged statusListener = null;
@@ -284,6 +286,10 @@ public class XmppConnection implements Runnable {
 		while (!nextTag.isEnd(element.getName())) {
 			if (!nextTag.isNo()) {
 				Element child = tagReader.readElement(nextTag);
+				if ((packetType == PACKET_IQ)&&("jingle".equals(child.getName()))) {
+					element = new JinglePacket();
+					element.setAttributes(currentTag.getAttributes());
+				}
 				element.addChild(child);
 			}
 			nextTag = tagReader.readTag();
@@ -296,15 +302,22 @@ public class XmppConnection implements Runnable {
 	private void processIq(Tag currentTag) throws XmlPullParserException,
 			IOException {
 		IqPacket packet = (IqPacket) processPacket(currentTag, PACKET_IQ);
-		if (packetCallbacks.containsKey(packet.getId())) {
-			if (packetCallbacks.get(packet.getId()) instanceof OnIqPacketReceived) {
-				((OnIqPacketReceived) packetCallbacks.get(packet.getId()))
-						.onIqPacketReceived(account, packet);
+		
+		if (packet instanceof JinglePacket) {
+			if (this.jingleListener !=null) {
+				this.jingleListener.onJinglePacketReceived(account, (JinglePacket) packet);
 			}
-
-			packetCallbacks.remove(packet.getId());
-		} else if (this.unregisteredIqListener != null) {
-			this.unregisteredIqListener.onIqPacketReceived(account, packet);
+		} else {
+			if (packetCallbacks.containsKey(packet.getId())) {
+				if (packetCallbacks.get(packet.getId()) instanceof OnIqPacketReceived) {
+					((OnIqPacketReceived) packetCallbacks.get(packet.getId()))
+							.onIqPacketReceived(account, packet);
+				}
+	
+				packetCallbacks.remove(packet.getId());
+			} else if (this.unregisteredIqListener != null) {
+				this.unregisteredIqListener.onIqPacketReceived(account, packet);
+			}
 		}
 	}
 
@@ -683,6 +696,10 @@ public class XmppConnection implements Runnable {
 	public void setOnPresencePacketReceivedListener(
 			OnPresencePacketReceived listener) {
 		this.presenceListener = listener;
+	}
+	
+	public void setOnJinglePacketReceivedListener(OnJinglePacketReceived listener) {
+		this.jingleListener = listener;
 	}
 
 	public void setOnStatusChangedListener(OnStatusChanged listener) {

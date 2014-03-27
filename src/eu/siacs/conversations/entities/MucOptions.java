@@ -107,7 +107,7 @@ public class MucOptions {
 			String type = packet.getAttribute("type");
 			if (type==null) {
 				User user = new User();
-				Element item = packet.findChild("x").findChild("item");
+				Element item = packet.findChild("x","http://jabber.org/protocol/muc#user").findChild("item");
 				user.setName(name);
 				user.setAffiliation(item.getAttribute("affiliation"));
 				user.setRole(item.getAttribute("role"));
@@ -121,7 +121,7 @@ public class MucOptions {
 				}
 			} else if (type.equals("unavailable")) {
 				if (name.equals(getNick())) {
-					Element item = packet.findChild("x").findChild("item");
+					Element item = packet.findChild("x","http://jabber.org/protocol/muc#user").findChild("item");
 					String nick = item.getAttribute("nick");
 					if (nick!=null) {
 						aboutToRename = false;

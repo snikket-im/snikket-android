@@ -50,17 +50,32 @@ public class Element {
 		return null;
 	}
 	
-	public boolean hasChild(String name) {
+	public Element findChild(String name, String xmlns) {
 		for(Element child : this.children) {
-			if (child.getName().equals(name)) {
-				return true;
+			if (child.getName().equals(name)&&(child.getAttribute("xmlns").equals(xmlns))) {
+				return child;
 			}
 		}
-		return false;
+		return null;
 	}
+	
+	public boolean hasChild(String name) {
+		return findChild(name) != null;
+	}
+	
+	public boolean hasChild(String name, String xmlns) {
+		return findChild(name, xmlns) != null;
+	}
+	
+	
 	
 	public List<Element> getChildren() {
 		return this.children;
+	}
+	
+	public Element setChildren(List<Element> children) {
+		this.children = children;
+		return this;
 	}
 	
 	public String getContent() {
@@ -83,6 +98,10 @@ public class Element {
 		} else {
 			return null;
 		}
+	}
+	
+	public Hashtable<String, String> getAttributes() {
+		return this.attributes;
 	}
 	
 	public String toString() {
