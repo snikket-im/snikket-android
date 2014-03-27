@@ -464,7 +464,7 @@ public class ContactsActivity extends XmppActivity {
 	}
 
 	public void startConversation(Contact contact, Account account, boolean muc) {
-		if (!contact.isInRoster()) {
+		if (!contact.isInRoster()&&(!muc)) {
 			xmppConnectionService.createContact(contact);
 		}
 		Conversation conversation = xmppConnectionService
