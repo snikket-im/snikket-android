@@ -29,24 +29,17 @@ public class DNSHelper {
 				if (value != null && !"".equals(value)
 						&& !servers.contains(value)) {
 					ip = InetAddress.getByName(value);
-				servers.add(value);
-				Bundle result = queryDNS(host, ip);
-				if (!result.containsKey("error")) {
-					return result;
-				}
+					servers.add(value);
+					Bundle result = queryDNS(host, ip);
+					if (!result.containsKey("error")) {
+						return result;
+					}
 				}
 			}
-		} catch (ClassNotFoundException e) {
-			ip = InetAddress.getByName("8.8.8.8");
-		} catch (NoSuchMethodException e) {
-			ip = InetAddress.getByName("8.8.8.8");
-		} catch (IllegalAccessException e) {
-			ip = InetAddress.getByName("8.8.8.8");
-		} catch (IllegalArgumentException e) {
-			ip = InetAddress.getByName("8.8.8.8");
-		} catch (InvocationTargetException e) {
-			ip = InetAddress.getByName("8.8.8.8");
+		} catch (Exception e) {
+			Log.d("xmppService","error during system calls");
 		}
+		ip = InetAddress.getByName("8.8.8.8");
 		return queryDNS(host, ip);
 	}
 
@@ -90,7 +83,6 @@ public class DNSHelper {
 			datagramSocket.setSoTimeout(3000);
 			datagramSocket.receive(receivePacket);
 			if (receiveData[3] != -128) {
-				Log.d("xmppService", "not the right count");
 				namePort.putString("error", "nosrv");
 				return namePort;
 			}
