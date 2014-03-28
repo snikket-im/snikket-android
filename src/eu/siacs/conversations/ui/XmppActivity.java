@@ -19,6 +19,9 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 public abstract class XmppActivity extends Activity {
+	
+	protected final static String LOGTAG = "xmppService";
+	
 	public XmppConnectionService xmppConnectionService;
 	public boolean xmppConnectionServiceBound = false;
 	protected boolean handledViewIntent = false;

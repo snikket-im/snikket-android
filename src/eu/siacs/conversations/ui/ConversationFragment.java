@@ -115,6 +115,7 @@ public class ConversationFragment extends Fragment {
 			startActivity(intent);
 		}
 	};
+	private ConversationActivity activity;
 
 	public void hidePgpPassphraseBox() {
 		pgpInfo.setVisibility(View.GONE);
@@ -325,16 +326,21 @@ public class ConversationFragment extends Fragment {
 	@Override
 	public void onStart() {
 		super.onStart();
-		ConversationActivity activity = (ConversationActivity) getActivity();
+		this.activity = (ConversationActivity) getActivity();
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(activity);
 		this.useSubject = preferences.getBoolean("use_subject_in_muc", true);
 		if (activity.xmppConnectionServiceBound) {
 			this.onBackendConnected();
 		}
 	}
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		activity.registerListener();
+	}
 
 	public void onBackendConnected() {
-		final ConversationActivity activity = (ConversationActivity) getActivity();
 		activity.registerListener();
 		this.conversation = activity.getSelectedConversation();
 		if (this.conversation == null) {

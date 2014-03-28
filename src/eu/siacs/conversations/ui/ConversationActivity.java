@@ -394,11 +394,14 @@ public class ConversationActivity extends XmppActivity {
 		return super.onKeyDown(keyCode, event);
 	}
 	
+	@Override
 	public void onStart() {
 		super.onStart();
-		this.registerListener();
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
 		this.useSubject = preferences.getBoolean("use_subject_in_muc", true);
+		if (this.xmppConnectionServiceBound) {
+			this.onBackendConnected();
+		}
 		if (conversationList.size()>=1) {
 			onConvChanged.onConversationListChanged();
 		}
@@ -406,7 +409,6 @@ public class ConversationActivity extends XmppActivity {
 	
 	@Override
 	protected void onStop() {
-		Log.d("gultsch","called on stop in conversation activity");
 		if (xmppConnectionServiceBound) {
         	xmppConnectionService.removeOnConversationListChangedListener();
 		}
