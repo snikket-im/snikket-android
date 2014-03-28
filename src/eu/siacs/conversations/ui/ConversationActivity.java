@@ -206,7 +206,7 @@ public class ConversationActivity extends XmppActivity {
 			@Override
 			public void onPanelClosed(View arg0) {
 				paneShouldBeOpen = false;
-				if (conversationList.size() > 0) {
+				if ((conversationList.size() > 0)&&(getSelectedConversation()!=null)) {
 					getActionBar().setDisplayHomeAsUpEnabled(true);
 					getActionBar().setTitle(getSelectedConversation().getName(useSubject));
 					invalidateOptionsMenu();
