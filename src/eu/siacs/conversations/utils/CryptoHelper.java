@@ -1,9 +1,11 @@
 package eu.siacs.conversations.utils;
 
+import java.nio.charset.Charset;
 import java.security.SecureRandom;
 import java.util.Random;
 
 import android.util.Base64;
+import android.util.Log;
 
 public class CryptoHelper {
 	final protected static char[] hexArray = "0123456789ABCDEF".toCharArray();
@@ -19,22 +21,8 @@ public class CryptoHelper {
 	    return new String(hexChars);
 	}
 	public static String saslPlain(String username, String password) {
-		byte[] userBytes = username.getBytes();
-		int userLenght = userBytes.length;
-		byte[] passwordBytes = password.getBytes();
-		byte[] saslBytes = new byte[userBytes.length+passwordBytes.length+2];
-		saslBytes[0] = 0x0;
-		for(int i = 1; i < saslBytes.length; ++i) {
-			if (i<=userLenght) {
-				saslBytes[i] = userBytes[i-1];
-			} else if (i==userLenght+1) {
-				saslBytes[i] = 0x0;
-			} else {
-				saslBytes[i] = passwordBytes[i-(userLenght+2)];
-			}
-		}
-		
-		return Base64.encodeToString(saslBytes, Base64.DEFAULT);
+		String sasl = '\u0000'+username + '\u0000' + password;
+		return Base64.encodeToString(sasl.getBytes(Charset.defaultCharset()),Base64.DEFAULT);
 	}
 	
 	public static String randomMucName() {
