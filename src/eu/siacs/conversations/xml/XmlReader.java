@@ -85,6 +85,9 @@ public class XmlReader {
 			element.setContent(nextTag.getName());
 			nextTag = this.readTag();
 		}
+		if (nextTag == null) {
+			throw new IOException("unterupted mid tag");
+		}
 		//Log.d(LOGTAG,"reading till the end of "+element.getName());
 		while(!nextTag.isEnd(element.getName())) {
 			if (!nextTag.isNo()) {
