@@ -123,6 +123,11 @@ public class XmppConnection implements Runnable {
 			packetCallbacks.clear();
 			this.changeStatus(Account.STATUS_CONNECTING);
 			Bundle namePort = DNSHelper.getSRVRecord(account.getServer());
+			if ("timeout".equals(namePort.getString("error"))) {
+				Log.d(LOGTAG,account.getJid()+": dns timeout");
+				this.changeStatus(Account.STATUS_OFFLINE);
+				return;
+			}
 			String srvRecordServer = namePort.getString("name");
 			int srvRecordPort = namePort.getInt("port");
 			if (srvRecordServer != null) {

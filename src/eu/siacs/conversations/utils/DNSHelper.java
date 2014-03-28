@@ -31,7 +31,7 @@ public class DNSHelper {
 					ip = InetAddress.getByName(value);
 					servers.add(value);
 					Bundle result = queryDNS(host, ip);
-					if (!result.containsKey("error")) {
+					if (!result.containsKey("error")||("nosrv".equals(result.getString("error")))) {
 						return result;
 					}
 				}
@@ -80,7 +80,7 @@ public class DNSHelper {
 
 			DatagramPacket receivePacket = new DatagramPacket(receiveData,
 					receiveData.length);
-			datagramSocket.setSoTimeout(3000);
+			datagramSocket.setSoTimeout(7000); //die sieben ist meine zahl
 			datagramSocket.receive(receivePacket);
 			if (receiveData[3] != -128) {
 				namePort.putString("error", "nosrv");
@@ -117,7 +117,7 @@ public class DNSHelper {
 			}
 		} catch (IOException e) {
 			Log.d("xmppService", "io execpiton during dns");
-			namePort.putString("error", "nosrv");
+			namePort.putString("error", "timeout");
 			return namePort;
 		}
 	}
