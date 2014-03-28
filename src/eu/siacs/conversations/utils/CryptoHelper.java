@@ -5,7 +5,6 @@ import java.security.SecureRandom;
 import java.util.Random;
 
 import android.util.Base64;
-import android.util.Log;
 
 public class CryptoHelper {
 	final protected static char[] hexArray = "0123456789ABCDEF".toCharArray();
@@ -22,7 +21,7 @@ public class CryptoHelper {
 	}
 	public static String saslPlain(String username, String password) {
 		String sasl = '\u0000'+username + '\u0000' + password;
-		return Base64.encodeToString(sasl.getBytes(Charset.defaultCharset()),Base64.DEFAULT);
+		return Base64.encodeToString(sasl.getBytes(Charset.defaultCharset()),Base64.NO_WRAP);
 	}
 	
 	public static String randomMucName() {
