@@ -85,6 +85,7 @@ public class XmppConnectionService extends Service {
 	private List<Conversation> conversations = null;
 
 	public OnConversationListChangedListener convChangedListener = null;
+	private int convChangedListenerCount = 0;
 	private OnAccountListChangedListener accountChangedListener = null;
 	private OnTLSExceptionReceived tlsException = null;
 
@@ -1009,10 +1010,16 @@ public class XmppConnectionService extends Service {
 	public void setOnConversationListChangedListener(
 			OnConversationListChangedListener listener) {
 		this.convChangedListener = listener;
+		this.convChangedListenerCount++;
+		Log.d(LOGTAG,"registered on conv changed in backend ("+convChangedListenerCount+")");
 	}
 
 	public void removeOnConversationListChangedListener() {
-		this.convChangedListener = null;
+		this.convChangedListenerCount--;
+		Log.d(LOGTAG,"someone on conv changed listener removed listener ("+convChangedListenerCount+")");
+		if (this.convChangedListenerCount==0) {
+			this.convChangedListener = null;
+		}
 	}
 
 	public void setOnAccountListChangedListener(

@@ -417,7 +417,6 @@ public class ConversationActivity extends XmppActivity {
 
 	@Override
 	void onBackendConnected() {
-		
 		this.registerListener();
 		if (conversationList.size()==0) {
 			updateConversationList();

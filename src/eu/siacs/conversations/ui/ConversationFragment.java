@@ -333,15 +333,8 @@ public class ConversationFragment extends Fragment {
 			this.onBackendConnected();
 		}
 	}
-	
-	@Override
-	public void onResume() {
-		super.onResume();
-		activity.registerListener();
-	}
 
 	public void onBackendConnected() {
-		activity.registerListener();
 		this.conversation = activity.getSelectedConversation();
 		if (this.conversation == null) {
 			return;
