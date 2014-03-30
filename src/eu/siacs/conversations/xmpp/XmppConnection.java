@@ -212,6 +212,9 @@ public class XmppConnection implements Runnable {
 			} else if (nextTag.isStart("failure")) {
 				tagReader.readElement(nextTag);
 				changeStatus(Account.STATUS_UNAUTHORIZED);
+			} else if (nextTag.isStart("challenge")) {
+				String challange = tagReader.readElement(nextTag).getContent();
+				Log.d(LOGTAG,"a challange arrived! "+challange);
 			} else if (nextTag.isStart("enabled")) {
 				this.stanzasSent = 0;
 				Element enabled = tagReader.readElement(nextTag);
@@ -446,13 +449,20 @@ public class XmppConnection implements Runnable {
 		}
 	}
 
-	private void sendSaslAuth() throws IOException, XmlPullParserException {
+	private void sendSaslAuthPlain() throws IOException {
 		String saslString = CryptoHelper.saslPlain(account.getUsername(),
 				account.getPassword());
 		Element auth = new Element("auth");
 		auth.setAttribute("xmlns", "urn:ietf:params:xml:ns:xmpp-sasl");
 		auth.setAttribute("mechanism", "PLAIN");
 		auth.setContent(saslString);
+		tagWriter.writeElement(auth);
+	}
+	
+	private void sendSaslAuthDigestMd5() throws IOException {
+		Element auth = new Element("auth");
+		auth.setAttribute("xmlns", "urn:ietf:params:xml:ns:xmpp-sasl");
+		auth.setAttribute("mechanism", "DIGEST-MD5");
 		tagWriter.writeElement(auth);
 	}
 
@@ -469,7 +479,13 @@ public class XmppConnection implements Runnable {
 			disconnect(true);
 		} else if (this.streamFeatures.hasChild("mechanisms")
 				&& shouldAuthenticate) {
-			sendSaslAuth();
+			List<String> mechanisms = extractMechanisms( streamFeatures.findChild("mechanisms"));
+			Log.d(LOGTAG,account.getJid()+": "+mechanisms.toString());
+			if (mechanisms.contains("PLAIN")) {
+				sendSaslAuthPlain();
+			} else if (mechanisms.contains("DIGEST-MD5")) {
+				sendSaslAuthDigestMd5();
+			}
 		} else if (this.streamFeatures.hasChild("sm") && streamId != null) {
 			Log.d(LOGTAG,"found old stream id. trying to remuse");
 			ResumePacket resume = new ResumePacket(this.streamId,stanzasReceived);
@@ -483,6 +499,14 @@ public class XmppConnection implements Runnable {
 				this.sendIqPacket(startSession, null);
 			}
 		}
+	}
+
+	private List<String> extractMechanisms(Element stream) {
+		ArrayList<String> mechanisms = new ArrayList<String>(stream.getChildren().size());
+		for(Element child : stream.getChildren()) {
+			mechanisms.add(child.getContent());
+		}
+		return mechanisms;
 	}
 
 	private void sendRegistryRequest() {
