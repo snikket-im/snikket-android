@@ -56,11 +56,11 @@ public class Tag {
 	}
 	
 	public boolean isStart(String needle) {
-		return (this.type == START) && (this.name.equals(needle));
+		return (this.type == START) && (needle.equals(this.name));
 	}
 	
 	public boolean isEnd(String needle) {
-		return (this.type == END) && (this.name.equals(needle));
+		return (this.type == END) && (needle.equals(this.name));
 	}
 	
 	public boolean isNo() {
