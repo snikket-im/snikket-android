@@ -210,11 +210,16 @@ public class XmppConnection implements Runnable {
 				processStream(tagReader.readTag());
 				break;
 			} else if (nextTag.isStart("failure")) {
-				tagReader.readElement(nextTag);
+				Element failure = tagReader.readElement(nextTag);
+				Log.d(LOGTAG,"login failure"+failure);
 				changeStatus(Account.STATUS_UNAUTHORIZED);
 			} else if (nextTag.isStart("challenge")) {
 				String challange = tagReader.readElement(nextTag).getContent();
-				Log.d(LOGTAG,"a challange arrived! "+challange);
+				Element response = new Element("response");
+				response.setAttribute("xmlns", "urn:ietf:params:xml:ns:xmpp-sasl");
+				response.setContent(CryptoHelper.saslDigestMd5(account, challange));
+				Log.d(LOGTAG,response.toString());
+				tagWriter.writeElement(response);
 			} else if (nextTag.isStart("enabled")) {
 				this.stanzasSent = 0;
 				Element enabled = tagReader.readElement(nextTag);
