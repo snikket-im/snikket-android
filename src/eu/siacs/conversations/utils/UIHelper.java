@@ -70,7 +70,7 @@ public class UIHelper {
 		int holoColors[] = { 0xFF1da9da, 0xFFb368d9, 0xFF83b600, 0xFFffa713,
 				0xFFe92727 };
 
-		int color = holoColors[Math.abs(name.hashCode()) % holoColors.length];
+		int color = holoColors[Math.abs(name.toLowerCase(Locale.getDefault()).hashCode()) % holoColors.length];
 
 		Bitmap bitmap = Bitmap
 				.createBitmap(size, size, Bitmap.Config.ARGB_8888);
