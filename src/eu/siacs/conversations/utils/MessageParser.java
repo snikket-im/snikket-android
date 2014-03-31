@@ -133,6 +133,9 @@ public class MessageParser {
 		} else {
 			return null;
 		}
+		if (forwarded==null) {
+			return null;
+		}
 		Element message = forwarded.findChild("message");
 		if ((message == null) || (!message.hasChild("body")))
 			return null; // either malformed or boring
