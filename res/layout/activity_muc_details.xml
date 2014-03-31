@@ -29,7 +29,7 @@
             android:background="#eee"
             android:ems="10"
             android:hint="Conferenece Subject"
-            android:inputType="textEmailAddress"
+            android:inputType="textAutoComplete"
             android:paddingBottom="12dp"
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
