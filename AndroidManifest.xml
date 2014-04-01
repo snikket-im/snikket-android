@@ -49,6 +49,7 @@
         <activity
             android:name="eu.siacs.conversations.ui.ManageAccountActivity"
             android:label="Manage Accounts"
+            android:configChanges="orientation|screenSize"
             android:parentActivityName="eu.siacs.conversations.ui.ConversationActivity" >
         </activity>
         <activity

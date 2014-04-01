@@ -12,7 +12,6 @@ import eu.siacs.conversations.xmpp.OnTLSExceptionReceived;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.ClipData.Item;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
@@ -43,6 +42,8 @@ public class ManageAccountActivity extends XmppActivity {
 	protected ActionMode actionMode;
 	protected Account selectedAccountForActionMode = null;
 	protected ManageAccountActivity activity = this;
+	
+	protected boolean firstrun = true;
 	
 	protected List<Account> accountList = new ArrayList<Account>();
 	protected ListView accountListView;
@@ -201,7 +202,7 @@ public class ManageAccountActivity extends XmppActivity {
 						activity.xmppConnectionService.reconnectAccount(accountList.get(position),true);
 					} else if (account.getStatus() == Account.STATUS_ONLINE) {
 						activity.startActivity(new Intent(activity.getApplicationContext(),ContactsActivity.class));
-					} else if (account.isOptionSet(Account.OPTION_REGISTER)) {
+					} else if (account.getStatus() != Account.STATUS_DISABLED) {
 						editAccount(account);
 					}
 				} else {
@@ -382,9 +383,10 @@ public class ManageAccountActivity extends XmppActivity {
 		this.accountList.clear();
 		this.accountList.addAll(xmppConnectionService.getAccounts());
 		accountListViewAdapter.notifyDataSetChanged();
-		if (this.accountList.size() == 0) {
+		if ((this.accountList.size() == 0)&&(this.firstrun)) {
 			getActionBar().setDisplayHomeAsUpEnabled(false);
 			addAccount();
+			this.firstrun = false;
 		}
 	}
 
