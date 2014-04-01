@@ -82,7 +82,7 @@ public class CryptoHelper {
 					+ "\",realm=\"" + account.getServer() + "\",nonce=\""
 					+ nonce + "\",cnonce=\"" + cNonce
 					+ "\",nc="+nonceCount+",qop=auth,digest-uri=\""+digestUri+"\",response=" + response
-					+ ",charset=utf-8,authzid=\"" + account.getJid() + "\"";
+					+ ",charset=utf-8";
 			Log.d("xmppService", "saslString=" + saslString);
 			return Base64.encodeToString(
 					saslString.getBytes(Charset.defaultCharset()),
