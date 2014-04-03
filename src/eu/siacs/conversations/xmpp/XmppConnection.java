@@ -678,6 +678,7 @@ public class XmppConnection implements Runnable {
 	public void sendIqPacket(IqPacket packet, OnIqPacketReceived callback) {
 		String id = nextRandomId();
 		packet.setAttribute("id", id);
+		packet.setFrom(account.getFullJid());
 		this.sendPacket(packet, callback);
 	}
 
@@ -761,12 +762,14 @@ public class XmppConnection implements Runnable {
 				socket.close();
 				return;
 		}
-		tagWriter.finish();
-		while(!tagWriter.finished()) {
-			//Log.d(LOGTAG,"not yet finished");
-			Thread.sleep(100);
+		if (tagWriter.isActive()) {
+			tagWriter.finish();
+			while(!tagWriter.finished()) {
+				//Log.d(LOGTAG,"not yet finished");
+				Thread.sleep(100);
+			}
+			tagWriter.writeTag(Tag.end("stream:stream"));
 		}
-		tagWriter.writeTag(Tag.end("stream:stream"));
 		} catch (IOException e) {
 			Log.d(LOGTAG,"io exception during disconnect");
 		} catch (InterruptedException e) {

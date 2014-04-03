@@ -75,4 +75,8 @@ public class TagWriter {
 	public boolean finished() {
 		return (this.writeQueue.size() == 0);
 	}
+
+	public boolean isActive() {
+		return outputStream != null;
+	}
 }
