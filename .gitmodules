@@ -1,3 +1,7 @@
 [submodule "libs/openpgp-keychain"]
 	path = libs/openpgp-keychain
 	url = https://github.com/openpgp-keychain/openpgp-keychain.git
+[submodule "libs/minidns"]
+	path = libs/minidns
+	url = https://github.com/rtreffer/minidns.git
+
