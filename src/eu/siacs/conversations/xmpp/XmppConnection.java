@@ -59,7 +59,7 @@ public class XmppConnection implements Runnable {
 	protected Account account;
 	private static final String LOGTAG = "xmppService";
 
-	private PowerManager.WakeLock wakeLock;
+	private WakeLock wakeLock;
 
 	private SecureRandom random = new SecureRandom();
 
