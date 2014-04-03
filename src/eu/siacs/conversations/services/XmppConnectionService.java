@@ -288,7 +288,7 @@ public class XmppConnectionService extends Service {
 										} else {
 											msg = "";
 										}
-										contact.setPgpKeyId(pgp.fetchKeyId(msg, x
+										contact.setPgpKeyId(pgp.fetchKeyId(account,msg, x
 														.getContent()));
 									} catch (OpenPgpException e) {
 										Log.d(LOGTAG, "faulty pgp. just ignore");
@@ -657,8 +657,7 @@ public class XmppConnectionService extends Service {
 						.getFullJid());
 				packet.setTo(message.getCounterpart());
 				packet.setBody("This is an XEP-0027 encryted message");
-				packet.addChild("x","jabber:x:encrypted").setContent(this.getPgpEngine().encrypt(keyId,
-						message.getBody()));
+				packet.addChild("x", "jabber:x:encrypted").setContent(message.getEncryptedBody());
 				account.getXmppConnection().sendMessagePacket(packet);
 				message.setStatus(Message.STATUS_SEND);
 				message.setEncryption(Message.ENCRYPTION_DECRYPTED);

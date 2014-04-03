@@ -1,6 +1,5 @@
 package eu.siacs.conversations.utils;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -80,11 +79,9 @@ public class ExceptionHelper {
 			});
 			builder.create().show();
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			return;
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			return;
 		}
 		
 	}

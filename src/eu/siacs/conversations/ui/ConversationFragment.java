@@ -12,6 +12,7 @@ import net.java.otr4j.session.SessionStatus;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.PgpEngine.OpenPgpException;
 import eu.siacs.conversations.crypto.PgpEngine.UserInputRequiredException;
+import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
@@ -481,10 +482,24 @@ public class ConversationFragment extends Fragment {
 		ConversationActivity activity = (ConversationActivity) getActivity();
 		final XmppConnectionService xmppService = activity.xmppConnectionService;
 		Contact contact = message.getConversation().getContact();
+		Account account = message.getConversation().getAccount();
 		if (activity.hasPgp()) {
 			if (contact.getPgpKeyId() != 0) {
-				xmppService.sendMessage(message, null);
-				chatMsg.setText("");
+				try {
+					message.setEncryptedBody(xmppService.getPgpEngine().encrypt(account, contact.getPgpKeyId(), message.getBody()));
+					xmppService.sendMessage(message, null);
+					chatMsg.setText("");
+				} catch (UserInputRequiredException e) {
+					try {
+						getActivity().startIntentSenderForResult(e.getPendingIntent().getIntentSender(),
+								ConversationActivity.REQUEST_SEND_MESSAGE, null, 0,
+								0, 0);
+					} catch (SendIntentException e1) {
+						Log.d("xmppService","failed to start intent to send message");
+					}
+				} catch (OpenPgpException e) {
+					Log.d("xmppService","error encrypting with pgp: "+e.getOpenPgpError().getMessage());
+				}
 			} else {
 				AlertDialog.Builder builder = new AlertDialog.Builder(
 						getActivity());
@@ -616,7 +631,7 @@ public class ConversationFragment extends Fragment {
 					}
 					try {
 						decrypted = activity.xmppConnectionService
-								.getPgpEngine().decrypt(body);
+								.getPgpEngine().decrypt(conversation.getAccount(),body);
 					} catch (UserInputRequiredException e) {
 						askForPassphraseIntent = e.getPendingIntent()
 								.getIntentSender();

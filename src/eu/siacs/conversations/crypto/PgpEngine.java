@@ -8,8 +8,11 @@ import org.openintents.openpgp.OpenPgpError;
 import org.openintents.openpgp.OpenPgpSignatureResult;
 import org.openintents.openpgp.util.OpenPgpApi;
 
+import eu.siacs.conversations.entities.Account;
+
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.util.Log;
 
 public class PgpEngine {
 	private OpenPgpApi api;
@@ -18,14 +21,15 @@ public class PgpEngine {
 		this.api = api;
 	}
 
-	public String decrypt(String message) throws UserInputRequiredException,
+	public String decrypt(Account account, String message) throws UserInputRequiredException,
 			OpenPgpException {
 		Intent params = new Intent();
 		params.setAction(OpenPgpApi.ACTION_DECRYPT_VERIFY);
+		params.putExtra(OpenPgpApi.EXTRA_ACCOUNT_NAME, account.getJid());
 		InputStream is = new ByteArrayInputStream(message.getBytes());
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
 		Intent result = api.executeApi(params, is, os);
-		switch (result.getIntExtra(OpenPgpApi.RESULT_CODE, 0)) {
+		switch (result.getIntExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_ERROR)) {
 		case OpenPgpApi.RESULT_CODE_SUCCESS:
 			return os.toString();
 		case OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED:
@@ -38,25 +42,39 @@ public class PgpEngine {
 		}
 	}
 
-	public String encrypt(long keyId, String message) {
+	public String encrypt(Account account, long keyId, String message) throws UserInputRequiredException, OpenPgpException {
+		Log.d("xmppService","called to pgpengine::encrypt");
 		long[] keys = {keyId};
 		Intent params = new Intent();
 		params.setAction(OpenPgpApi.ACTION_ENCRYPT);
 		params.putExtra(OpenPgpApi.EXTRA_KEY_IDS,keys);
 		params.putExtra(OpenPgpApi.EXTRA_REQUEST_ASCII_ARMOR, true);
+		params.putExtra(OpenPgpApi.EXTRA_ACCOUNT_NAME, account.getJid());
 		
 		InputStream is = new ByteArrayInputStream(message.getBytes());
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
 		Intent result = api.executeApi(params, is, os);
-		StringBuilder encryptedMessageBody = new StringBuilder();
-		String[] lines = os.toString().split("\n");
-		for (int i = 3; i < lines.length - 1; ++i) {
-			encryptedMessageBody.append(lines[i].trim());
+		switch (result.getIntExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_ERROR)) {
+		case OpenPgpApi.RESULT_CODE_SUCCESS:
+			StringBuilder encryptedMessageBody = new StringBuilder();
+			String[] lines = os.toString().split("\n");
+			for (int i = 3; i < lines.length - 1; ++i) {
+				encryptedMessageBody.append(lines[i].trim());
+			}
+			Log.d("xmppService","encrpyted message: "+encryptedMessageBody.toString());
+			return encryptedMessageBody.toString();
+		case OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED:
+			Log.d("xmppService","user input required");
+			throw new UserInputRequiredException((PendingIntent) result.getParcelableExtra(OpenPgpApi.RESULT_INTENT));
+		case OpenPgpApi.RESULT_CODE_ERROR:
+			OpenPgpError error = (OpenPgpError) result.getParcelableExtra(OpenPgpApi.RESULT_ERROR);
+			throw new OpenPgpException(error);
+		default:
+			return null;
 		}
-		return encryptedMessageBody.toString();
 	}
 
-	public long fetchKeyId(String status, String signature)
+	public long fetchKeyId(Account account, String status, String signature)
 			throws OpenPgpException {
 		if ((signature==null)||(api==null)) {
 			return 0;
@@ -82,7 +100,7 @@ public class PgpEngine {
 		InputStream is = new ByteArrayInputStream(pgpSig.toString().getBytes());
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
 		Intent result = api.executeApi(params, is, os);
-		switch (result.getIntExtra(OpenPgpApi.RESULT_CODE, 0)) {
+		switch (result.getIntExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_ERROR)) {
 		case OpenPgpApi.RESULT_CODE_SUCCESS:
 			OpenPgpSignatureResult sigResult
             = result.getParcelableExtra(OpenPgpApi.RESULT_SIGNATURE);

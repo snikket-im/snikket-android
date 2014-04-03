@@ -29,6 +29,7 @@ public class Message extends AbstractEntity {
 	protected String conversationUuid;
 	protected String counterpart;
 	protected String body;
+	protected String encryptedBody;
 	protected long timeSent;
 	protected int encryption;
 	protected int status;
@@ -140,5 +141,13 @@ public class Message extends AbstractEntity {
 
 	public void setBody(String body) {
 		this.body = body;
+	}
+
+	public String getEncryptedBody() {
+		return this.encryptedBody;
+	}
+	
+	public void setEncryptedBody(String body) {
+		this.encryptedBody = body;
 	}
 }
