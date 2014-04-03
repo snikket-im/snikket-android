@@ -583,7 +583,8 @@ public class XmppConnection implements Runnable {
 						.getContent().split("/")[1];
 				account.setResource(resource);
 				if (streamFeatures.hasChild("sm")) {
-					EnablePacket enable = new EnablePacket();
+					String xmlns = streamFeatures.findChild("sm").getAttribute("xmlns");
+					EnablePacket enable = new EnablePacket(xmlns);
 					tagWriter.writeStanzaAsync(enable);
 				}
 				sendInitialPresence();

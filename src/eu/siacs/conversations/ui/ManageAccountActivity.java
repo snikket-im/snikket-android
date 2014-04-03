@@ -468,7 +468,11 @@ public class ManageAccountActivity extends XmppActivity {
 				 try {
 					xmppConnectionService.generatePgpAnnouncement(selectedAccountForActionMode);
 				} catch (UserInputRequiredException e) {
-					Log.d("gultsch","already came back. ignoring");
+					try {
+						startIntentSenderForResult(e.getPendingIntent().getIntentSender(), REQUEST_ANNOUNCE_PGP, null, 0, 0, 0);
+					} catch (SendIntentException e1) {
+						Log.d(LOGTAG,"sending intent failed");
+					}
 				}
 			 }
 		 }

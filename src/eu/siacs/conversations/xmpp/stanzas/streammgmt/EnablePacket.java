@@ -9,5 +9,11 @@ public class EnablePacket extends AbstractStanza {
 		this.setAttribute("xmlns","urn:xmpp:sm:3");
 		this.setAttribute("resume", "true");
 	}
+	
+	public EnablePacket(String xmlns) {
+		super("enable");
+		this.setAttribute("xmlns",xmlns);
+		this.setAttribute("resume", "true");
+	}
 
 }
