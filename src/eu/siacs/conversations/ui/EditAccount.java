@@ -45,8 +45,6 @@ public class EditAccount extends DialogFragment {
 				.findViewById(R.id.account_confirm_password_desc);
 		final CheckBox useTLS = (CheckBox) view.findViewById(R.id.account_usetls);
 
-		final CheckBox useCompression = (CheckBox) view.findViewById(R.id.account_usecompression);
-
 		final EditText password = (EditText) view
 				.findViewById(R.id.account_password);
 		final EditText passwordConfirm = (EditText) view
@@ -60,7 +58,6 @@ public class EditAccount extends DialogFragment {
 			jidText.setText(account.getJid());
 			password.setText(account.getPassword());
 			useTLS.setChecked(account.isOptionSet(Account.OPTION_USETLS));
-			useCompression.setChecked(account.isOptionSet(Account.OPTION_USETLS));
 			Log.d("xmppService","mein debugger. account != null");
 			if (account.isOptionSet(Account.OPTION_REGISTER)) {
 				registerAccount.setChecked(true);
@@ -121,7 +118,6 @@ public class EditAccount extends DialogFragment {
 						.findViewById(R.id.account_password);
 				String password = passwordEdit.getText().toString();
 				CheckBox useTLS = (CheckBox) d.findViewById(R.id.account_usetls);
-				CheckBox useCompression = (CheckBox) d.findViewById(R.id.account_usecompression);
 				CheckBox register = (CheckBox) d.findViewById(R.id.edit_account_register_new);
 				String username;
 				String server;
@@ -141,7 +137,7 @@ public class EditAccount extends DialogFragment {
 					account = new Account(username, server, password);
 				}
 				account.setOption(Account.OPTION_USETLS, useTLS.isChecked());
-				account.setOption(Account.OPTION_USECOMPRESSION, useCompression.isChecked());
+				account.setOption(Account.OPTION_USECOMPRESSION, true);
 				account.setOption(Account.OPTION_REGISTER, register.isChecked());
 				if (listener != null) {
 					listener.onAccountEdited(account);

@@ -52,13 +52,6 @@
         android:checked="true"/>
 
     <CheckBox
-    	android:id="@+id/account_usecompression"
-	android:layout_width="wrap_content"
-	android:layout_height="wrap_content"
-	android:text="Use Compression (zlib)"
-	android:checked="true"/>
-      
-    <CheckBox
         android:id="@+id/edit_account_register_new"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
