@@ -43,7 +43,6 @@ public class EditAccount extends DialogFragment {
 		final EditText jidText = (EditText) view.findViewById(R.id.account_jid);
 		final TextView confirmPwDesc = (TextView) view
 				.findViewById(R.id.account_confirm_password_desc);
-		CheckBox useTLS = (CheckBox) view.findViewById(R.id.account_usetls);
 
 		final EditText password = (EditText) view
 				.findViewById(R.id.account_password);
@@ -57,11 +56,6 @@ public class EditAccount extends DialogFragment {
 		if (account != null) {
 			jidText.setText(account.getJid());
 			password.setText(account.getPassword());
-			if (account.isOptionSet(Account.OPTION_USETLS)) {
-				useTLS.setChecked(true);
-			} else {
-				useTLS.setChecked(false);
-			}
 			Log.d("xmppService","mein debugger. account != null");
 			if (account.isOptionSet(Account.OPTION_REGISTER)) {
 				registerAccount.setChecked(true);
@@ -121,7 +115,6 @@ public class EditAccount extends DialogFragment {
 				EditText passwordEdit = (EditText) d
 						.findViewById(R.id.account_password);
 				String password = passwordEdit.getText().toString();
-				CheckBox useTLS = (CheckBox) d.findViewById(R.id.account_usetls);
 				CheckBox register = (CheckBox) d.findViewById(R.id.edit_account_register_new);
 				String username;
 				String server;
@@ -139,8 +132,9 @@ public class EditAccount extends DialogFragment {
 					account.setServer(server);
 				} else {
 					account = new Account(username, server, password);
+					account.setOption(Account.OPTION_USETLS, true);
+					account.setOption(Account.OPTION_USECOMPRESSION, true);
 				}
-				account.setOption(Account.OPTION_USETLS, useTLS.isChecked());
 				account.setOption(Account.OPTION_REGISTER, register.isChecked());
 				if (listener != null) {
 					listener.onAccountEdited(account);

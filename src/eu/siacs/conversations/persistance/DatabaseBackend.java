@@ -23,7 +23,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 	private static DatabaseBackend instance = null;
 
 	private static final String DATABASE_NAME = "history";
-	private static final int DATABASE_VERSION = 1;
+	private static final int DATABASE_VERSION = 2;
 
 	public DatabaseBackend(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -66,9 +66,12 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 	}
 
 	@Override
-	public void onUpgrade(SQLiteDatabase db, int arg1, int arg2) {
-		// TODO Auto-generated method stub
-
+	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+		if (oldVersion < 2 && newVersion >= 2) {
+			// enable compression by default.
+			db.execSQL("update " + Account.TABLENAME
+				+ " set " + Account.OPTIONS + " = " + Account.OPTIONS + " | 8");
+		}
 	}
 
 	public static synchronized DatabaseBackend getInstance(Context context) {

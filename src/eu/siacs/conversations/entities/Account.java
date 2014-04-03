@@ -30,6 +30,7 @@ public class Account  extends AbstractEntity{
 	public static final int OPTION_USETLS = 0;
 	public static final int OPTION_DISABLED = 1;
 	public static final int OPTION_REGISTER = 2;
+	public static final int OPTION_USECOMPRESSION = 3;
 	
 	public static final int STATUS_CONNECTING = 0;
 	public static final int STATUS_DISABLED = -2;
