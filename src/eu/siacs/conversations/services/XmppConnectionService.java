@@ -994,6 +994,7 @@ public class XmppConnectionService extends Service {
 	}
 
 	public void updateAccount(Account account) {
+		this.statusListener.onStatusChanged(account);
 		databaseBackend.updateAccount(account);
 		reconnectAccount(account, false);
 		if (accountChangedListener != null)
