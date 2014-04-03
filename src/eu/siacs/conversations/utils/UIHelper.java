@@ -66,7 +66,7 @@ public class UIHelper {
 	}
 
 	private static Bitmap getUnknownContactPicture(String name, int size) {
-		String firstLetter = name.substring(0, 1).toUpperCase(Locale.US);
+		String firstLetter = (name.length() > 0) ? name.substring(0, 1).toUpperCase(Locale.US) : " ";
 
 		int holoColors[] = { 0xFF1da9da, 0xFFb368d9, 0xFF83b600, 0xFFffa713,
 				0xFFe92727 };
