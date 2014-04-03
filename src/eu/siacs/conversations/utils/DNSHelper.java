@@ -6,7 +6,10 @@ import de.measite.minidns.Record;
 import de.measite.minidns.Record.TYPE;
 import de.measite.minidns.Record.CLASS;
 import de.measite.minidns.record.SRV;
+import de.measite.minidns.record.A;
+import de.measite.minidns.record.AAAA;
 import de.measite.minidns.record.Data;
+import de.measite.minidns.util.NameUtil;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -43,12 +46,13 @@ public class DNSHelper {
 	public static Bundle queryDNS(String host, InetAddress dnsServer) {
 		Bundle namePort = new Bundle();
 		try {
+			String qname = "_xmpp-client._tcp." + host;
 			Log.d("xmppService", "using dns server: " + dnsServer.getHostAddress()
 					+ " to look up " + host);
 			DNSMessage message =
 					client.query(
-							"_xmpp-client._tcp." + host,
-							TYPE.SRV,
+							qname,
+							TYPE.ANY,
 							CLASS.IN,
 							dnsServer.getHostAddress());
 
@@ -62,15 +66,36 @@ public class DNSHelper {
 
 			TreeMap<Integer, ArrayList<SRV>> priorities =
 					new TreeMap<Integer, ArrayList<SRV>>();
+			TreeMap<String, ArrayList<String>> ips4 =
+					new TreeMap<String, ArrayList<String>>();
+			TreeMap<String, ArrayList<String>> ips6 =
+					new TreeMap<String, ArrayList<String>>();
 
-			for (Record rr : message.getAnswers()) {
-				Data d = rr.getPayload();
-				if (d instanceof SRV) {
-					SRV srv = (SRV) d;
-					if (!priorities.containsKey(srv.getPriority())) {
-						priorities.put(srv.getPriority(), new ArrayList<SRV>(2));
+			for (Record[] rrset : new Record[][]{ message.getAnswers(),
+					message.getAdditionalResourceRecords()}) {
+				for (Record rr : rrset) {
+					Data d = rr.getPayload();
+					if (d instanceof SRV && NameUtil.idnEquals(qname,rr.getName())) {
+						SRV srv = (SRV) d;
+						if (!priorities.containsKey(srv.getPriority())) {
+							priorities.put(srv.getPriority(), new ArrayList<SRV>(2));
+						}
+						priorities.get(srv.getPriority()).add(srv);
 					}
-					priorities.get(srv.getPriority()).add(srv);
+					if (d instanceof A) {
+						A arecord = (A) d;
+						if (!ips4.containsKey(rr.getName())) {
+							ips4.put(rr.getName(), new ArrayList<String>(3));
+						}
+						ips4.get(rr.getName()).add(arecord.toString());
+					}
+					if (d instanceof AAAA) {
+						AAAA aaaa = (AAAA) d;
+						if (!ips6.containsKey(rr.getName())) {
+							ips6.put(rr.getName(), new ArrayList<String>(3));
+						}
+						ips6.get(rr.getName()).add("[" + aaaa.toString() + "]");
+					}
 				}
 			}
 
@@ -114,8 +139,21 @@ public class DNSHelper {
 			// we now have a list of servers to try :-)
 
 			// classic name/port pair
-			namePort.putString("name", result.get(0).getName());
+			String resultName = result.get(0).getName();
+			namePort.putString("name", resultName);
 			namePort.putInt("port", result.get(0).getPort());
+
+			if (ips4.containsKey(resultName)) {
+				// we have an ip!
+				ArrayList<String> ip = ips4.get(resultName);
+				Collections.shuffle(ip, rnd);
+				namePort.putString("ipv4", ip.get(0));
+			}
+			if (ips6.containsKey(resultName)) {
+				ArrayList<String> ip = ips6.get(resultName);
+				Collections.shuffle(ip, rnd);
+				namePort.putString("ipv6", ip.get(0));
+			}
 
 			// add all other records
 			int i = 0;
