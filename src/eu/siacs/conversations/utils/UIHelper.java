@@ -187,10 +187,10 @@ public class UIHelper {
 		if ((currentCon != null) &&(currentCon.getMode() == Conversation.MODE_MULTI)&&(!alwaysNotify)) {
 			String nick = currentCon.getMucOptions().getNick();
 			notify = currentCon.getLatestMessage().getBody().contains(nick);
-			if (!notify) {
-				mNotificationManager.cancel(2342);
+			/*if (!notify) {
+				//mNotificationManager.cancel(2342);
 				return;
-			}
+			}*/
 		}
 		
 		List<Conversation> unread = new ArrayList<Conversation>();
