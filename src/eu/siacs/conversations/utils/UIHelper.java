@@ -13,6 +13,7 @@ import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.ui.ConversationActivity;
+import eu.siacs.conversations.ui.ManageAccountActivity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -126,6 +127,44 @@ public class UIHelper {
 
 		return bitmap;
 	}
+	
+	public static void showErrorNotification(Context context, List<Account> accounts) {
+		NotificationManager mNotificationManager = (NotificationManager) context
+				.getSystemService(Context.NOTIFICATION_SERVICE);
+		List<Account> accountsWproblems = new ArrayList<Account>();
+		for(Account account : accounts) {
+			if (account.hasErrorStatus()) {
+				accountsWproblems.add(account);
+			}
+		}
+		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context);
+		if (accountsWproblems.size() == 0) {
+			mNotificationManager.cancel(1111);
+			return;
+		} else if (accountsWproblems.size() == 1) {
+			mBuilder.setContentTitle(context.getString(R.string.problem_connecting_to_account));
+			mBuilder.setContentText(accountsWproblems.get(0).getJid());
+		} else {
+			mBuilder.setContentTitle(context.getString(R.string.problem_connecting_to_accounts));
+			mBuilder.setContentText(context.getString(R.string.touch_to_fix));
+		}
+		mBuilder.setOngoing(true);
+		mBuilder.setLights(0xffffffff, 2000, 4000);
+		mBuilder.setSmallIcon(R.drawable.notification);
+		TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+		stackBuilder.addParentStack(ConversationActivity.class);
+
+		Intent manageAccountsIntent = new Intent(context,
+				ManageAccountActivity.class);
+		stackBuilder.addNextIntent(manageAccountsIntent);
+
+		PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(
+				0, PendingIntent.FLAG_UPDATE_CURRENT);
+		
+		mBuilder.setContentIntent(resultPendingIntent);
+		Notification notification = mBuilder.build();
+		mNotificationManager.notify(1111, notification);
+	}
 
 	public static void updateNotification(Context context,
 			List<Conversation> conversations, Conversation currentCon, boolean notify) {
@@ -139,6 +178,7 @@ public class UIHelper {
 		boolean alwaysNotify = preferences.getBoolean("notify_in_conversation_when_highlighted", false);
 
 		if (!showNofifications) {
+			mNotificationManager.cancel(2342);
 			return;
 		}
 		
@@ -148,6 +188,7 @@ public class UIHelper {
 			String nick = currentCon.getMucOptions().getNick();
 			notify = currentCon.getLatestMessage().getBody().contains(nick);
 			if (!notify) {
+				mNotificationManager.cancel(2342);
 				return;
 			}
 		}
@@ -164,14 +205,11 @@ public class UIHelper {
 		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
 				context);
 		if (unread.size() == 0) {
-			mNotificationManager.cancelAll();
+			mNotificationManager.cancel(2342);
+			return;
 		} else if (unread.size() == 1) {
 			Conversation conversation = unread.get(0);
 			targetUuid = conversation.getUuid();
-			/*mBuilder.setLargeIcon(UIHelper.getUnknownContactPicture(
-					conversation.getName(),
-					(int) res
-							.getDimension(android.R.dimen.notification_large_icon_width)));*/
 			mBuilder.setLargeIcon(UIHelper.getContactPicture(conversation.getContact(), conversation.getName(useSubject), (int) res
 							.getDimension(android.R.dimen.notification_large_icon_width), context));
 			mBuilder.setContentTitle(conversation.getName(useSubject));

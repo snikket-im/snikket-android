@@ -211,14 +211,12 @@ public class XmppConnection implements Runnable {
 				break;
 			} else if (nextTag.isStart("failure")) {
 				Element failure = tagReader.readElement(nextTag);
-				Log.d(LOGTAG,"login failure"+failure);
 				changeStatus(Account.STATUS_UNAUTHORIZED);
 			} else if (nextTag.isStart("challenge")) {
 				String challange = tagReader.readElement(nextTag).getContent();
 				Element response = new Element("response");
 				response.setAttribute("xmlns", "urn:ietf:params:xml:ns:xmpp-sasl");
 				response.setContent(CryptoHelper.saslDigestMd5(account, challange));
-				Log.d(LOGTAG,response.toString());
 				tagWriter.writeElement(response);
 			} else if (nextTag.isStart("enabled")) {
 				this.stanzasSent = 0;
@@ -485,7 +483,6 @@ public class XmppConnection implements Runnable {
 		} else if (this.streamFeatures.hasChild("mechanisms")
 				&& shouldAuthenticate) {
 			List<String> mechanisms = extractMechanisms( streamFeatures.findChild("mechanisms"));
-			Log.d(LOGTAG,account.getJid()+": "+mechanisms.toString());
 			if (mechanisms.contains("PLAIN")) {
 				sendSaslAuthPlain();
 			} else if (mechanisms.contains("DIGEST-MD5")) {

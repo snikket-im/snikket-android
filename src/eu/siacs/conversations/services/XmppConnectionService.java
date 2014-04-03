@@ -224,6 +224,8 @@ public class XmppConnectionService extends Service {
 			} else if (account.getStatus() == Account.STATUS_REGISTRATION_SUCCESSFULL) {
 				databaseBackend.updateAccount(account);
 				reconnectAccount(account, true);
+			} else {
+				UIHelper.showErrorNotification(getApplicationContext(), getAccounts());
 			}
 		}
 	};

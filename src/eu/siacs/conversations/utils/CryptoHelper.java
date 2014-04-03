@@ -44,10 +44,6 @@ public class CryptoHelper {
 	public static String saslDigestMd5(Account account, String challenge) {
 		try {
 			Random random = new SecureRandom();
-			Log.d("xmppService",
-					"challenge="
-							+ new String(Base64.decode(challenge,
-									Base64.DEFAULT)));
 			String[] challengeParts = new String(Base64.decode(challenge,
 					Base64.DEFAULT)).split(",");
 			String nonce = "";
@@ -67,7 +63,6 @@ public class CryptoHelper {
 			byte[] y = md
 					.digest(x.getBytes(Charset.defaultCharset()));
 			String cNonce = new BigInteger(100, random).toString(32);
-			Log.d("xmppService", "conce=" + cNonce);
 			byte[] a1 = concatenateByteArrays(y,(":"+nonce+":"+cNonce).getBytes(Charset.defaultCharset()));
 			String a2 = "AUTHENTICATE:"+digestUri;
 			String ha1 = bytesToHex(md.digest(a1));
@@ -75,7 +70,6 @@ public class CryptoHelper {
 					.defaultCharset())));
 			String kd = ha1 + ":" + nonce + ":"+nonceCount+":" + cNonce + ":auth:"
 					+ ha2;
-			Log.d("xmppService", "kd=" + kd);
 			String response = bytesToHex(md.digest(kd.getBytes(Charset
 					.defaultCharset())));
 			String saslString = "username=\"" + account.getUsername()
@@ -83,7 +77,6 @@ public class CryptoHelper {
 					+ nonce + "\",cnonce=\"" + cNonce
 					+ "\",nc="+nonceCount+",qop=auth,digest-uri=\""+digestUri+"\",response=" + response
 					+ ",charset=utf-8";
-			Log.d("xmppService", "saslString=" + saslString);
 			return Base64.encodeToString(
 					saslString.getBytes(Charset.defaultCharset()),
 					Base64.NO_WRAP);

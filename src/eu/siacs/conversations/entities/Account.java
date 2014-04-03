@@ -35,8 +35,8 @@ public class Account  extends AbstractEntity{
 	public static final int STATUS_DISABLED = -2;
 	public static final int STATUS_OFFLINE = -1;
 	public static final int STATUS_ONLINE = 1;
-	public static final int STATUS_UNAUTHORIZED = 2;
-	public static final int STATUS_NO_INTERNET = 3;
+	public static final int STATUS_NO_INTERNET = 2;
+	public static final int STATUS_UNAUTHORIZED = 3;
 	public static final int STATUS_TLS_ERROR = 4;
 	public static final int STATUS_SERVER_NOT_FOUND = 5;
 
@@ -131,6 +131,10 @@ public class Account  extends AbstractEntity{
 		} else {
 			return this.status;
 		}
+	}
+	
+	public boolean hasErrorStatus() {
+		return getStatus() > STATUS_NO_INTERNET;
 	}
 	
 	public void setResource(String resource) {

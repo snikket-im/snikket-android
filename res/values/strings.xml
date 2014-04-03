@@ -44,4 +44,7 @@
     <string name="crash_report_message">By sending in stack traces you are helping the ongoing development of Conversations\n<b>Warning:</b> This will use your XMPP account to send the stack trace to the developer.</string>
     <string name="send_now">Send now</string>
     <string name="send_never">Never ask again</string>
+    <string name="problem_connecting_to_account">Unable to connect to account</string>
+    <string name="problem_connecting_to_accounts">Unable to connect to multiple accounts</string>
+    <string name="touch_to_fix">Touch here to manage your accounts</string>
 </resources>
