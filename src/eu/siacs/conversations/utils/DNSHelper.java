@@ -10,6 +10,7 @@ import de.measite.minidns.record.Data;
 
 import java.io.IOException;
 import java.net.InetAddress;
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
@@ -124,20 +125,14 @@ public class DNSHelper {
 				i++;
 			}
 
+		} catch (SocketTimeoutException e) {
+			Log.d("xmppService", "timeout during dns");
+			namePort.putString("error", "timeout");
 		} catch (IOException e) {
-			Log.e("xmppService", "io execpiton during dns", e);
+			Log.d("xmppService","io exception during dns");
 			namePort.putString("error", "timeout");
 		}
 		return namePort;
-	}
-
-	static int calcPort(byte hb, byte lb) {
-		int port = ((int) hb << 8) | ((int) lb & 0xFF);
-		if (port >= 0) {
-			return port;
-		} else {
-			return 65536 + port;
-		}
 	}
 
 	final protected static char[] hexArray = "0123456789ABCDEF".toCharArray();
