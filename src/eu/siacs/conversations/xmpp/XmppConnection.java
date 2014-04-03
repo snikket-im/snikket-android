@@ -94,10 +94,9 @@ public class XmppConnection implements Runnable {
 	private OnTLSExceptionReceived tlsListener = null;
 	private OnBindListener bindListener = null;
 
-	public XmppConnection(Account account, WakeLock wakeLock) {
+	public XmppConnection(Account account, PowerManager pm) {
 		this.account = account;
-		this.wakeLock = wakeLock;
-		tagReader = new XmlReader(wakeLock);
+		this.wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,account.getJid());
 		tagWriter = new TagWriter();
 	}
 

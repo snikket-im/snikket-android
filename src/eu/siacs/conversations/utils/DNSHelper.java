@@ -128,9 +128,9 @@ public class DNSHelper {
 		} catch (SocketTimeoutException e) {
 			Log.d("xmppService", "timeout during dns");
 			namePort.putString("error", "timeout");
-		} catch (IOException e) {
-			Log.d("xmppService","io exception during dns");
-			namePort.putString("error", "timeout");
+		} catch (Exception e) {
+			Log.d("xmppService","unhandled exception in sub project");
+			namePort.putString("error", "unhandled");
 		}
 		return namePort;
 	}

@@ -361,6 +361,7 @@ public class XmppConnectionService extends Service {
 	private Intent pingIntent;
 	private PendingIntent pendingPingIntent = null;
 	private WakeLock wakeLock;
+	private PowerManager pm;
 
 	public PgpEngine getPgpEngine() {
 		if (pgpServiceConnection.isBound()) {
@@ -528,9 +529,9 @@ public class XmppConnectionService extends Service {
 				getApplicationContext(), "org.sufficientlysecure.keychain");
 		this.pgpServiceConnection.bindToService();
 
-		PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+		this.pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
 		this.wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
-				"XmppConnection");
+				"XmppConnectionService");
 	}
 
 	@Override
@@ -587,7 +588,7 @@ public class XmppConnectionService extends Service {
 		SharedPreferences sharedPref = PreferenceManager
 				.getDefaultSharedPreferences(getApplicationContext());
 		account.setResource(sharedPref.getString("resource", "mobile").toLowerCase(Locale.getDefault()));
-		XmppConnection connection = new XmppConnection(account, this.wakeLock);
+		XmppConnection connection = new XmppConnection(account, this.pm);
 		connection.setOnMessagePacketReceivedListener(this.messageListener);
 		connection.setOnStatusChangedListener(this.statusListener);
 		connection.setOnPresencePacketReceivedListener(this.presenceListener);
