@@ -9,6 +9,7 @@ import eu.siacs.conversations.xmpp.stanzas.AbstractStanza;
 
 public class TagWriter {
 	
+	private OutputStream plainOutputStream;
 	private OutputStreamWriter outputStream;
 	private boolean finshed = false;
 	private LinkedBlockingQueue<AbstractStanza> writeQueue = new LinkedBlockingQueue<AbstractStanza>();
@@ -37,9 +38,14 @@ public class TagWriter {
 	}
 	
 	public void setOutputStream(OutputStream out) {
+		this.plainOutputStream = out;
 		this.outputStream = new OutputStreamWriter(out);
 	}
-	
+
+	public OutputStream getOutputStream() {
+		return this.plainOutputStream;
+	}
+
 	public TagWriter beginDocument() throws IOException {
 		outputStream.write("<?xml version='1.0'?>");
 		outputStream.flush();

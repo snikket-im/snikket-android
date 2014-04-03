@@ -38,6 +38,8 @@ import android.util.Log;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.DNSHelper;
+import eu.siacs.conversations.utils.zlib.ZLibOutputStream;
+import eu.siacs.conversations.utils.zlib.ZLibInputStream;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Tag;
 import eu.siacs.conversations.xml.TagWriter;
@@ -177,6 +179,13 @@ public class XmppConnection implements Runnable {
 				wakeLock.release();
 			}
 			return;
+		} catch (NoSuchAlgorithmException e) {
+			this.changeStatus(Account.STATUS_OFFLINE);
+			Log.d(LOGTAG, "compression exception " + e.getMessage());
+			if (wakeLock.isHeld()) {
+				wakeLock.release();
+			}
+			return;
 		} catch (XmlPullParserException e) {
 			this.changeStatus(Account.STATUS_OFFLINE);
 			Log.d(LOGTAG, "xml exception " + e.getMessage());
@@ -194,7 +203,7 @@ public class XmppConnection implements Runnable {
 	}
 
 	private void processStream(Tag currentTag) throws XmlPullParserException,
-			IOException {
+			IOException, NoSuchAlgorithmException {
 		Tag nextTag = tagReader.readTag();
 		while ((nextTag != null) && (!nextTag.isEnd("stream"))) {
 			if (nextTag.isStart("error")) {
@@ -208,6 +217,8 @@ public class XmppConnection implements Runnable {
 				}
 			} else if (nextTag.isStart("proceed")) {
 				switchOverToTls(nextTag);
+			} else if (nextTag.isStart("compressed")) {
+				switchOverToZLib(nextTag);
 			} else if (nextTag.isStart("success")) {
 				Log.d(LOGTAG, account.getJid()
 						+ ": logged in");
@@ -375,6 +386,33 @@ public class XmppConnection implements Runnable {
 		}
 	}
 
+	private void sendCompressionZlib() throws IOException {
+		tagWriter.writeElement(new Element("compress") {
+			public String toString() {
+				return
+					"<compress xmlns='http://jabber.org/protocol/compress'>"
+					+ "<method>zlib</method>"
+					+ "</compress>";
+			}
+		});
+	}
+
+	private void switchOverToZLib(Tag currentTag) throws XmlPullParserException,
+			IOException, NoSuchAlgorithmException {
+
+		Log.d(LOGTAG,account.getJid()+": Starting zlib compressed stream");
+
+		tagReader.readTag(); // read tag close
+
+		tagWriter.setOutputStream(new ZLibOutputStream(tagWriter.getOutputStream()));
+		tagReader.setInputStream(new ZLibInputStream(tagReader.getInputStream()));
+
+		sendStartStream();
+		processStream(tagReader.readTag());
+
+		Log.d(LOGTAG,account.getJid()+": zlib compressed stream established");
+	}
+
 	private void sendStartTLS() throws IOException {
 		Tag startTLS = Tag.empty("starttls");
 		startTLS.setAttribute("xmlns", "urn:ietf:params:xml:ns:xmpp-tls");
@@ -486,6 +524,8 @@ public class XmppConnection implements Runnable {
 		if (this.streamFeatures.hasChild("starttls")
 				&& account.isOptionSet(Account.OPTION_USETLS)) {
 			sendStartTLS();
+		} else if (compressionAvailable()) {
+			sendCompressionZlib();
 		} else if (this.streamFeatures.hasChild("register")&&(account.isOptionSet(Account.OPTION_REGISTER))) {
 				sendRegistryRequest();
 		} else if (!this.streamFeatures.hasChild("register")&&(account.isOptionSet(Account.OPTION_REGISTER))) {
@@ -512,6 +552,24 @@ public class XmppConnection implements Runnable {
 				this.sendIqPacket(startSession, null);
 			}
 		}
+	}
+
+	private boolean compressionAvailable() {
+		if (!this.streamFeatures.hasChild("compression", "http://jabber.org/features/compress")) return false;
+		if (!ZLibOutputStream.SUPPORTED) return false;
+		if (!account.isOptionSet(Account.OPTION_USECOMPRESSION)) return false;
+
+		Element compression = this.streamFeatures.findChild("compression", "http://jabber.org/features/compress");
+		for (Element child : compression.getChildren()) {
+			if (!"method".equals(child.getName())) continue;
+
+			if ("zlib".equalsIgnoreCase(child.getContent())) {
+				Log.d(LOGTAG, account.getJid() + ": compression available");
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	private List<String> extractMechanisms(Element stream) {

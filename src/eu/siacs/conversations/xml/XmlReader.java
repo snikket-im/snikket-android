@@ -36,7 +36,11 @@ public class XmlReader {
 			Log.d(LOGTAG,"error setting input stream");
 		}
 	}
-	
+
+	public InputStream getInputStream() {
+		return is;
+	}
+
 	public void reset() {
 		try {
 			parser.setInput(new InputStreamReader(this.is));
