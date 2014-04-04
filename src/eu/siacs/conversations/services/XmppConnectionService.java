@@ -136,10 +136,12 @@ public class XmppConnectionService extends Service {
 						|| (packet.hasChild("sent"))) {
 					message = MessageParser.parseCarbonMessage(packet, account,
 							service);
-					if (message != null) {
+					if ((message != null)&&(message.getStatus() == Message.STATUS_SEND)) {
 						message.getConversation().markRead();
+						notify = false;
+					} else {
+						notify = true;
 					}
-					notify = false;
 				}
 
 			} else if (packet.getType() == MessagePacket.TYPE_GROUPCHAT) {

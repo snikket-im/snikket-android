@@ -191,8 +191,14 @@ public class UIHelper {
 		
 		List<Conversation> unread = new ArrayList<Conversation>();
 		for (Conversation conversation : conversations) {
-			if ((!conversation.isRead())&&((wasHighlighted(conversation)||(alwaysNotify)))) {
-				unread.add(conversation);
+			if (conversation.getMode() == Conversation.MODE_MULTI) {
+				if ((!conversation.isRead())&&((wasHighlighted(conversation)||(alwaysNotify)))) {
+					unread.add(conversation);
+				}
+			} else {
+				if (!conversation.isRead()) {
+					unread.add(conversation);
+				}
 			}
 		}
 		String ringtone = preferences.getString("notification_ringtone", null);
