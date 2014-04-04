@@ -29,6 +29,7 @@ Therefore to get the most out of Conversations you should consider either switch
 XMPP server that does or - even better - run your own XMPP server for you and
 your friends.
 These XEPs are - as of now:
+* XEP-0138: Stream Compression saves bandwith
 * XEP-0198: Stream Management allows XMPP to surive small network outages and changes of the underlying TCP connection.
 * XEP-0280: Message Carbons which automatically syncs the messages you send to
   your desktop client and thus allows you to switch seamlessly from your mobile
