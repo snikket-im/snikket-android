@@ -187,15 +187,11 @@ public class UIHelper {
 		if ((currentCon != null) &&(currentCon.getMode() == Conversation.MODE_MULTI)&&(!alwaysNotify)) {
 			String nick = currentCon.getMucOptions().getNick();
 			notify = currentCon.getLatestMessage().getBody().contains(nick);
-			/*if (!notify) {
-				//mNotificationManager.cancel(2342);
-				return;
-			}*/
 		}
 		
 		List<Conversation> unread = new ArrayList<Conversation>();
 		for (Conversation conversation : conversations) {
-			if (!conversation.isRead()) {
+			if ((!conversation.isRead())&&((wasHighlighted(conversation)||(alwaysNotify)))) {
 				unread.add(conversation);
 			}
 		}
@@ -289,6 +285,21 @@ public class UIHelper {
 		}
 	}
 	
+	private static boolean wasHighlighted(Conversation conversation) {
+		List<Message> messages = conversation.getMessages();
+		String nick = conversation.getMucOptions().getNick();
+		for(int i = messages.size() - 1; i >= 0; --i) {
+			if (messages.get(i).isRead()) {
+				break;
+			} else {
+				if (messages.get(i).getBody().contains(nick)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
 	public static void prepareContactBadge(final Activity activity,
 			QuickContactBadge badge, final Contact contact) {
 		if (contact.getSystemAccount() != null) {
