@@ -136,11 +136,13 @@ public class XmppConnectionService extends Service {
 						|| (packet.hasChild("sent"))) {
 					message = MessageParser.parseCarbonMessage(packet, account,
 							service);
-					if ((message != null)&&(message.getStatus() == Message.STATUS_SEND)) {
-						message.getConversation().markRead();
-						notify = false;
-					} else {
-						notify = true;
+					if (message != null) {
+						if (message.getStatus() == Message.STATUS_SEND) {
+							notify = false;
+							message.getConversation().markRead();
+						} else {
+							message.markUnread();
+						}
 					}
 				}
 
