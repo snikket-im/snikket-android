@@ -4,9 +4,9 @@ import eu.siacs.conversations.xmpp.stanzas.AbstractStanza;
 
 public class AckPacket extends AbstractStanza {
 
-	public AckPacket(int sequence) {
+	public AckPacket(int sequence, int smVersion) {
 		super("a");
-		this.setAttribute("xmlns","urn:xmpp:sm:3");
+		this.setAttribute("xmlns","urn:xmpp:sm:"+smVersion);
 		this.setAttribute("h", ""+sequence);
 	}
 

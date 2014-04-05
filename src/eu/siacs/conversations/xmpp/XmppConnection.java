@@ -74,6 +74,7 @@ public class XmppConnection implements Runnable {
 	private List<String> discoItems = new ArrayList<String>();
 	
 	private String streamId = null;
+	private int smVersion = 3;
 	
 	private int stanzasReceived = 0;
 	private int stanzasSent = 0;
@@ -241,13 +242,13 @@ public class XmppConnection implements Runnable {
 				Element enabled = tagReader.readElement(nextTag);
 				if ("true".equals(enabled.getAttribute("resume"))) {
 					this.streamId = enabled.getAttribute("id");
-					Log.d(LOGTAG,account.getJid()+": stream managment enabled (resumable)");
+					Log.d(LOGTAG,account.getJid()+": stream managment("+smVersion+") enabled (resumable)");
 				} else {
-					Log.d(LOGTAG,account.getJid()+": stream managment enabled");
+					Log.d(LOGTAG,account.getJid()+": stream managment("+smVersion+") enabled");
 				}
 				this.lastSessionStarted = SystemClock.elapsedRealtime();
 				this.stanzasReceived = 0;
-				RequestPacket r = new RequestPacket();
+				RequestPacket r = new RequestPacket(smVersion);
 				tagWriter.writeStanzaAsync(r);
 			} else if (nextTag.isStart("resumed")) {
 				tagReader.readElement(nextTag);
@@ -256,7 +257,7 @@ public class XmppConnection implements Runnable {
 				Log.d(LOGTAG,account.getJid()+": session resumed");
 			} else if (nextTag.isStart("r")) {
 				tagReader.readElement(nextTag);
-				AckPacket ack = new AckPacket(this.stanzasReceived);
+				AckPacket ack = new AckPacket(this.stanzasReceived,smVersion);
 				//Log.d(LOGTAG,ack.toString());
 				tagWriter.writeStanzaAsync(ack);
 			} else if (nextTag.isStart("a")) {
@@ -531,8 +532,8 @@ public class XmppConnection implements Runnable {
 			} else if (mechanisms.contains("DIGEST-MD5")) {
 				sendSaslAuthDigestMd5();
 			}
-		} else if (this.streamFeatures.hasChild("sm") && streamId != null) {
-			ResumePacket resume = new ResumePacket(this.streamId,stanzasReceived);
+		} else if (this.streamFeatures.hasChild("sm","urn:xmpp:sm:"+smVersion) && streamId != null) {
+			ResumePacket resume = new ResumePacket(this.streamId,stanzasReceived,smVersion);
 			this.tagWriter.writeStanzaAsync(resume);
 		} else if (this.streamFeatures.hasChild("bind") && shouldBind) {
 			sendBindRequest();
@@ -633,9 +634,13 @@ public class XmppConnection implements Runnable {
 				String resource = packet.findChild("bind").findChild("jid")
 						.getContent().split("/")[1];
 				account.setResource(resource);
-				if (streamFeatures.hasChild("sm")) {
-					String xmlns = streamFeatures.findChild("sm").getAttribute("xmlns");
-					EnablePacket enable = new EnablePacket(xmlns);
+				if (streamFeatures.hasChild("sm","urn:xmpp:sm:3")) {
+					smVersion = 3;
+					EnablePacket enable = new EnablePacket(smVersion);
+					tagWriter.writeStanzaAsync(enable);
+				} else if (streamFeatures.hasChild("sm","urn:xmpp:sm:2")) {
+					smVersion = 2;
+					EnablePacket enable = new EnablePacket(smVersion);
 					tagWriter.writeStanzaAsync(enable);
 				}
 				sendInitialPresence();
@@ -765,7 +770,7 @@ public class XmppConnection implements Runnable {
 	
 	public void sendPing() {
 		if (streamFeatures.hasChild("sm")) {
-			tagWriter.writeStanzaAsync(new RequestPacket());
+			tagWriter.writeStanzaAsync(new RequestPacket(smVersion));
 		} else {
 			IqPacket iq = new IqPacket(IqPacket.TYPE_GET);
 			iq.setFrom(account.getFullJid());
@@ -849,7 +854,7 @@ public class XmppConnection implements Runnable {
 	}
 
 	public void r() {
-		this.tagWriter.writeStanzaAsync(new RequestPacket());
+		this.tagWriter.writeStanzaAsync(new RequestPacket(smVersion));
 	}
 
 	public int getReceivedStanzas() {

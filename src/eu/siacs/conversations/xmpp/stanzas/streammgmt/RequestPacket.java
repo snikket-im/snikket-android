@@ -4,9 +4,9 @@ import eu.siacs.conversations.xmpp.stanzas.AbstractStanza;
 
 public class RequestPacket extends AbstractStanza {
 
-	public RequestPacket() {
+	public RequestPacket(int smVersion) {
 		super("r");
-		this.setAttribute("xmlns","urn:xmpp:sm:3");
+		this.setAttribute("xmlns","urn:xmpp:sm:"+smVersion);
 	}
 
 }

@@ -4,15 +4,9 @@ import eu.siacs.conversations.xmpp.stanzas.AbstractStanza;
 
 public class EnablePacket extends AbstractStanza {
 
-	public EnablePacket() {
+	public EnablePacket(int smVersion) {
 		super("enable");
-		this.setAttribute("xmlns","urn:xmpp:sm:3");
-		this.setAttribute("resume", "true");
-	}
-	
-	public EnablePacket(String xmlns) {
-		super("enable");
-		this.setAttribute("xmlns",xmlns);
+		this.setAttribute("xmlns","urn:xmpp:sm:"+smVersion);
 		this.setAttribute("resume", "true");
 	}
 
