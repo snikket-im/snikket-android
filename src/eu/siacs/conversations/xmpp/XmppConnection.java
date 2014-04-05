@@ -387,14 +387,10 @@ public class XmppConnection implements Runnable {
 	}
 
 	private void sendCompressionZlib() throws IOException {
-		tagWriter.writeElement(new Element("compress") {
-			public String toString() {
-				return
-					"<compress xmlns='http://jabber.org/protocol/compress'>"
-					+ "<method>zlib</method>"
-					+ "</compress>";
-			}
-		});
+		Element compress = new Element("compress");
+		compress.setAttribute("xmlns", "http://jabber.org/protocol/compress");
+		compress.addChild("method").setContent("zlib");
+		tagWriter.writeElement(compress);
 	}
 
 	private void switchOverToZLib(Tag currentTag) throws XmlPullParserException,
@@ -408,9 +404,8 @@ public class XmppConnection implements Runnable {
 		tagReader.setInputStream(new ZLibInputStream(tagReader.getInputStream()));
 
 		sendStartStream();
+		Log.d(LOGTAG,account.getJid()+": compression enabled");
 		processStream(tagReader.readTag());
-
-		Log.d(LOGTAG,account.getJid()+": zlib compressed stream established");
 	}
 
 	private void sendStartTLS() throws IOException {
@@ -568,7 +563,6 @@ public class XmppConnection implements Runnable {
 				return true;
 			}
 		}
-
 		return false;
 	}
 
