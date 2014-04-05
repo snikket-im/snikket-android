@@ -63,18 +63,13 @@ public class ZLibOutputStream extends DeflaterOutputStream {
             super.flush();
             return;
         }
-        int count = 0;
-        if (!def.needsInput()) {
-            do {
-                count = def.deflate(buf, 0, buf.length);
-                out.write(buf, 0, count);
-            } while (count > 0);
-            out.flush();
-        }
         try {
+	    int count = 0;
             do {
-                count = (Integer) method.invoke(def, buf, 0, buf.length, 2);
-                out.write(buf, 0, count);
+                count = (Integer) method.invoke(def, buf, 0, buf.length, 3);
+		if (count > 0) {
+                    out.write(buf, 0, count);
+		}
             } while (count > 0);
         } catch (IllegalArgumentException e) {
             throw new IOException("Can't flush");
