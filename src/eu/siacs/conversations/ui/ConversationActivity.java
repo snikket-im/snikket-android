@@ -1,5 +1,8 @@
 package eu.siacs.conversations.ui;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,8 +11,11 @@ import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
+import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.utils.ExceptionHelper;
+import eu.siacs.conversations.utils.PhoneHelper;
 import eu.siacs.conversations.utils.UIHelper;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.app.AlertDialog;
@@ -18,6 +24,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.v4.widget.SlidingPaneLayout;
@@ -46,6 +53,7 @@ public class ConversationActivity extends XmppActivity {
 	
 	public static final int REQUEST_SEND_MESSAGE = 0x75441;
 	public static final int REQUEST_DECRYPT_PGP = 0x76783;
+	private static final int ATTACH_FILE = 0x48502;
 
 	protected SlidingPaneLayout spl;
 
@@ -272,6 +280,13 @@ public class ConversationActivity extends XmppActivity {
 		case android.R.id.home:
 			spl.openPane();
 			break;
+		case R.id.action_attach_file:
+			Intent attachFileIntent = new Intent();
+            attachFileIntent.setType("image/*");
+            attachFileIntent.setAction(Intent.ACTION_GET_CONTENT);
+            startActivityForResult(Intent.createChooser(attachFileIntent,
+                    "Attach File"), ATTACH_FILE);
+			break;
 		case R.id.action_add:
 			startActivity(new Intent(this, ContactsActivity.class));
 			break;
@@ -478,6 +493,11 @@ public class ConversationActivity extends XmppActivity {
 				if (selectedFragment!=null) {
 					selectedFragment.hidePgpPassphraseBox();
 				}
+			} else if (requestCode == ATTACH_FILE) {
+				FileBackend backend = xmppConnectionService.getFileBackend();
+				File file = backend.copyImageToPrivateStorage(getSelectedConversation(), data.getData());
+				Log.d(LOGTAG,"new file"+file.getAbsolutePath());
+				
 			}
 		 }
 	 }

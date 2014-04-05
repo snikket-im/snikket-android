@@ -27,6 +27,7 @@ import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.entities.MucOptions.OnRenameListener;
 import eu.siacs.conversations.entities.Presences;
 import eu.siacs.conversations.persistance.DatabaseBackend;
+import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.persistance.OnPhoneContactsMerged;
 import eu.siacs.conversations.ui.OnAccountListChangedListener;
 import eu.siacs.conversations.ui.OnConversationListChangedListener;
@@ -73,6 +74,7 @@ public class XmppConnectionService extends Service {
 
 	protected static final String LOGTAG = "xmppService";
 	public DatabaseBackend databaseBackend;
+	private FileBackend fileBackend;
 
 	public long startDate;
 
@@ -381,6 +383,11 @@ public class XmppConnectionService extends Service {
 
 	}
 
+	public FileBackend getFileBackend() {
+		return this.fileBackend;
+	}
+	
+	
 	protected Conversation findMuc(String name, Account account) {
 		for (Conversation conversation : this.conversations) {
 			if (conversation.getContactJid().split("/")[0].equals(name)
@@ -522,7 +529,8 @@ public class XmppConnectionService extends Service {
 	@Override
 	public void onCreate() {
 		ExceptionHelper.init(getApplicationContext());
-		databaseBackend = DatabaseBackend.getInstance(getApplicationContext());
+		this.databaseBackend = DatabaseBackend.getInstance(getApplicationContext());
+		this.fileBackend = new FileBackend(getApplicationContext());
 		this.accounts = databaseBackend.getAccounts();
 
 		this.getConversations();

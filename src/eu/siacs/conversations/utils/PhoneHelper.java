@@ -13,18 +13,19 @@ import android.os.Bundle;
 import android.os.Looper;
 import android.provider.ContactsContract;
 import android.provider.ContactsContract.Profile;
+import android.provider.MediaStore;
 
 public class PhoneHelper {
-	
-	public static void loadPhoneContacts(Context context, final OnPhoneContactsLoadedListener listener) {
-		if (Looper.myLooper()==null) {
+
+	public static void loadPhoneContacts(Context context,
+			final OnPhoneContactsLoadedListener listener) {
+		if (Looper.myLooper() == null) {
 			Looper.prepare();
 		}
 		final Looper mLooper = Looper.myLooper();
 		final Hashtable<String, Bundle> phoneContacts = new Hashtable<String, Bundle>();
-		
-		final String[] PROJECTION = new String[] {
-				ContactsContract.Data._ID,
+
+		final String[] PROJECTION = new String[] { ContactsContract.Data._ID,
 				ContactsContract.Data.DISPLAY_NAME,
 				ContactsContract.Data.PHOTO_THUMBNAIL_URI,
 				ContactsContract.Data.LOOKUP_KEY,
@@ -35,7 +36,7 @@ public class PhoneHelper {
 				+ "\") AND (" + ContactsContract.CommonDataKinds.Im.PROTOCOL
 				+ "=\"" + ContactsContract.CommonDataKinds.Im.PROTOCOL_JABBER
 				+ "\")";
-		
+
 		CursorLoader mCursorLoader = new CursorLoader(context,
 				ContactsContract.Data.CONTENT_URI, PROJECTION, SELECTION, null,
 				null);
@@ -55,14 +56,14 @@ public class PhoneHelper {
 							"photouri",
 							cursor.getString(cursor
 									.getColumnIndex(ContactsContract.Data.PHOTO_THUMBNAIL_URI)));
-					contact.putString("lookup",cursor.getString(cursor
+					contact.putString("lookup", cursor.getString(cursor
 							.getColumnIndex(ContactsContract.Data.LOOKUP_KEY)));
 					phoneContacts.put(
 							cursor.getString(cursor
 									.getColumnIndex(ContactsContract.CommonDataKinds.Im.DATA)),
 							contact);
 				}
-				if (listener!=null) {
+				if (listener != null) {
 					listener.onPhoneContactsLoaded(phoneContacts);
 				}
 				mLooper.quit();
@@ -77,12 +78,12 @@ public class PhoneHelper {
 		Cursor mProfileCursor = activity.getContentResolver().query(
 				Profile.CONTENT_URI, mProjection, null, null, null);
 
-		if (mProfileCursor.getCount()==0) {
+		if (mProfileCursor.getCount() == 0) {
 			return null;
 		} else {
 			mProfileCursor.moveToFirst();
 			String uri = mProfileCursor.getString(1);
-			if (uri==null) {
+			if (uri == null) {
 				return null;
 			} else {
 				return Uri.parse(uri);
