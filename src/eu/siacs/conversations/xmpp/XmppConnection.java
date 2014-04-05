@@ -395,9 +395,6 @@ public class XmppConnection implements Runnable {
 
 	private void switchOverToZLib(Tag currentTag) throws XmlPullParserException,
 			IOException, NoSuchAlgorithmException {
-
-		Log.d(LOGTAG,account.getJid()+": Starting zlib compressed stream");
-
 		tagReader.readTag(); // read tag close
 
 		tagWriter.setOutputStream(new ZLibOutputStream(tagWriter.getOutputStream()));
@@ -535,13 +532,12 @@ public class XmppConnection implements Runnable {
 				sendSaslAuthDigestMd5();
 			}
 		} else if (this.streamFeatures.hasChild("sm") && streamId != null) {
-			Log.d(LOGTAG,"found old stream id. trying to remuse");
 			ResumePacket resume = new ResumePacket(this.streamId,stanzasReceived);
 			this.tagWriter.writeStanzaAsync(resume);
 		} else if (this.streamFeatures.hasChild("bind") && shouldBind) {
 			sendBindRequest();
 			if (this.streamFeatures.hasChild("session")) {
-				Log.d(LOGTAG,"sending session");
+				Log.d(LOGTAG,account.getJid()+": sending deprecated session");
 				IqPacket startSession = new IqPacket(IqPacket.TYPE_SET);
 				startSession.addChild("session","urn:ietf:params:xml:ns:xmpp-session"); //setContent("")
 				this.sendIqPacket(startSession, null);
@@ -559,7 +555,6 @@ public class XmppConnection implements Runnable {
 			if (!"method".equals(child.getName())) continue;
 
 			if ("zlib".equalsIgnoreCase(child.getContent())) {
-				Log.d(LOGTAG, account.getJid() + ": compression available");
 				return true;
 			}
 		}

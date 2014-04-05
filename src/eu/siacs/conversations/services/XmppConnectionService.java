@@ -1070,7 +1070,6 @@ public class XmppConnectionService extends Service {
 			x.addChild("history").setAttribute("seconds", diff + "");
 		}
 		packet.addChild(x);
-		Log.d(LOGTAG,conversation.getAccount().getJid()+": joining muc "+packet.toString());
 		conversation.getAccount().getXmppConnection()
 				.sendPresencePacket(packet);
 	}
