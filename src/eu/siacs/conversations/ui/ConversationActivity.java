@@ -234,6 +234,7 @@ public class ConversationActivity extends XmppActivity {
 		MenuItem menuMucDetails = (MenuItem) menu.findItem(R.id.action_muc_details);
 		MenuItem menuContactDetails = (MenuItem) menu.findItem(R.id.action_contact_details);
 		MenuItem menuInviteContacts = (MenuItem) menu.findItem(R.id.action_invite);
+		MenuItem menuAttach = (MenuItem) menu.findItem(R.id.action_attach_file);
 		
 		if ((spl.isOpen()&&(spl.isSlideable()))) {
 			menuArchive.setVisible(false);
@@ -241,6 +242,7 @@ public class ConversationActivity extends XmppActivity {
 			menuContactDetails.setVisible(false);
 			menuSecure.setVisible(false);
 			menuInviteContacts.setVisible(false);
+			menuAttach.setVisible(false);
 		} else {
 			((MenuItem) menu.findItem(R.id.action_add)).setVisible(!spl.isSlideable());
 			if (this.getSelectedConversation()!=null) {
@@ -249,10 +251,12 @@ public class ConversationActivity extends XmppActivity {
 					menuContactDetails.setVisible(false);
 					menuSecure.setVisible(false);
 					menuInviteContacts.setVisible(true);
+					menuAttach.setVisible(false);
 				} else {
 					menuContactDetails.setVisible(true);
 					menuMucDetails.setVisible(false);
 					menuInviteContacts.setVisible(false);
+					menuAttach.setVisible(true);
 					if (this.getSelectedConversation().getLatestMessage().getEncryption() != Message.ENCRYPTION_NONE) {
 						menuSecure.setIcon(R.drawable.ic_action_secure);
 					}

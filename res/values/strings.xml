@@ -47,4 +47,5 @@
     <string name="problem_connecting_to_account">Unable to connect to account</string>
     <string name="problem_connecting_to_accounts">Unable to connect to multiple accounts</string>
     <string name="touch_to_fix">Touch here to manage your accounts</string>
+    <string name="action_attach_file">Attach file</string>
 </resources>

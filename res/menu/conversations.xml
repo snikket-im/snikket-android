@@ -15,6 +15,13 @@
         android:title="@string/action_secure" />
     
     <item
+        android:id="@+id/action_attach_file"
+        android:orderInCategory="30"
+        android:showAsAction="ifRoom"
+        android:icon="@drawable/ic_action_new_attachment"
+        android:title="@string/action_attach_file" />
+    
+    <item
         android:id="@+id/action_contact_details"
         android:orderInCategory="40"
         android:showAsAction="ifRoom"
