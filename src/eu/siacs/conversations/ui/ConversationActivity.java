@@ -248,7 +248,6 @@ public class ConversationActivity extends XmppActivity {
 					menuMucDetails.setVisible(true);
 					menuContactDetails.setVisible(false);
 					menuSecure.setVisible(false);
-					menuArchive.setTitle("Leave conference");
 					menuInviteContacts.setVisible(true);
 				} else {
 					menuContactDetails.setVisible(true);

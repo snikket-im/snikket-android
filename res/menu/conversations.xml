@@ -35,7 +35,7 @@
         android:id="@+id/action_archive"
         android:orderInCategory="50"
         android:showAsAction="never"
-        android:title="@string/action_archive"/>
+        android:title="@string/action_end_conversation"/>
     
     <item
         android:id="@+id/action_accounts"
