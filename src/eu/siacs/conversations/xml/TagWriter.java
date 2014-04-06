@@ -47,18 +47,27 @@ public class TagWriter {
 	}
 
 	public TagWriter beginDocument() throws IOException {
+		if (outputStream==null) {
+			throw new IOException("output stream was null");
+		}
 		outputStream.write("<?xml version='1.0'?>");
 		outputStream.flush();
 		return this;
 	}
 	
 	public TagWriter writeTag(Tag tag) throws IOException {
+		if (outputStream==null) {
+			throw new IOException("output stream was null");
+		}
 		outputStream.write(tag.toString());
 		outputStream.flush();
 		return this;
 	}
 
 	public TagWriter writeElement(Element element) throws IOException {
+		if (outputStream==null) {
+			throw new IOException("output stream was null");
+		}
 		outputStream.write(element.toString());
 		outputStream.flush();
 		return this;
