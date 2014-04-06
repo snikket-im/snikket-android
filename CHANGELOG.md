@@ -1,11 +1,12 @@
 ###Changelog
 
 ####Version 0.1.3
-* switched to minidns library to resolve SRV records
-* faster DNS in some cases
-* enabled stream compression
-* added permanent notification when an account fails to connect
+* Switched to minidns library to resolve SRV records
+* Faster DNS in some cases
+* Enabled stream compression
+* Added permanent notification when an account fails to connect
 * Various bug fixes involving message notifications
+* Added support for DIGEST-MD5 auth
 
 ####Version 0.1.2
 * Various bug fixes relating to conferences
@@ -15,4 +16,4 @@
 * Fixed the 'server not found' bug
 
 ####Version 0.1
-* initial release
+* Initial release
