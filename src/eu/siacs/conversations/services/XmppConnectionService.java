@@ -1,5 +1,6 @@
 package eu.siacs.conversations.services;
 
+import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
@@ -60,6 +61,7 @@ import android.database.ContentObserver;
 import android.database.DatabaseUtils;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Binder;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -385,6 +387,15 @@ public class XmppConnectionService extends Service {
 
 	public FileBackend getFileBackend() {
 		return this.fileBackend;
+	}
+	
+	public void attachImageToConversation(Conversation conversation, Uri uri) {
+		Message message = new Message(conversation, "", Message.ENCRYPTION_NONE);
+		message.setType(Message.TYPE_IMAGE);
+		File file = this.fileBackend.copyImageToPrivateStorage(message, uri);
+		Log.d(LOGTAG,"new file"+file.getAbsolutePath());
+		conversation.getMessages().add(message);
+		databaseBackend.createMessage(message);
 	}
 	
 	

@@ -19,6 +19,14 @@
             android:background="#ededed"
             android:orientation="vertical"
             android:padding="5dp" >
+            
+            <ImageView 
+                android:id="@+id/message_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:maxHeight="300dp"
+                />
 
             <TextView
                 android:id="@+id/message_body"

@@ -494,10 +494,7 @@ public class ConversationActivity extends XmppActivity {
 					selectedFragment.hidePgpPassphraseBox();
 				}
 			} else if (requestCode == ATTACH_FILE) {
-				FileBackend backend = xmppConnectionService.getFileBackend();
-				File file = backend.copyImageToPrivateStorage(getSelectedConversation(), data.getData());
-				Log.d(LOGTAG,"new file"+file.getAbsolutePath());
-				
+				xmppConnectionService.attachImageToConversation(getSelectedConversation(), data.getData());
 			}
 		 }
 	 }

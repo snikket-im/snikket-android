@@ -18,6 +18,9 @@ public class Message extends AbstractEntity {
 	public static final int ENCRYPTION_PGP = 1;
 	public static final int ENCRYPTION_OTR = 2;
 	public static final int ENCRYPTION_DECRYPTED = 3;
+	
+	public static final int TYPE_TEXT = 0;
+	public static final int TYPE_IMAGE = 1;
 
 	public static String CONVERSATION = "conversationUuid";
 	public static String COUNTERPART = "counterpart";
@@ -25,6 +28,7 @@ public class Message extends AbstractEntity {
 	public static String TIME_SENT = "timeSent";
 	public static String ENCRYPTION = "encryption";
 	public static String STATUS = "status";
+	public static String TYPE = "type";
 
 	protected String conversationUuid;
 	protected String counterpart;
@@ -33,6 +37,7 @@ public class Message extends AbstractEntity {
 	protected long timeSent;
 	protected int encryption;
 	protected int status;
+	protected int type;
 	protected boolean read = true;
 
 	protected transient Conversation conversation = null;
@@ -40,17 +45,17 @@ public class Message extends AbstractEntity {
 	public Message(Conversation conversation, String body, int encryption) {
 		this(java.util.UUID.randomUUID().toString(), conversation.getUuid(),
 				conversation.getContactJid(), body, System.currentTimeMillis(), encryption,
-				Message.STATUS_UNSEND);
+				Message.STATUS_UNSEND,TYPE_TEXT);
 		this.conversation = conversation;
 	}
 	
 	public Message(Conversation conversation, String counterpart, String body, int encryption, int status) {
-		this(java.util.UUID.randomUUID().toString(), conversation.getUuid(),counterpart, body, System.currentTimeMillis(), encryption,status);
+		this(java.util.UUID.randomUUID().toString(), conversation.getUuid(),counterpart, body, System.currentTimeMillis(), encryption,status,TYPE_TEXT);
 		this.conversation = conversation;
 	}
 	
 	public Message(String uuid, String conversationUUid, String counterpart,
-			String body, long timeSent, int encryption, int status) {
+			String body, long timeSent, int encryption, int status, int type) {
 		this.uuid = uuid;
 		this.conversationUuid = conversationUUid;
 		this.counterpart = counterpart;
@@ -58,6 +63,7 @@ public class Message extends AbstractEntity {
 		this.timeSent = timeSent;
 		this.encryption = encryption;
 		this.status = status;
+		this.type = type;
 	}
 
 	@Override
@@ -70,6 +76,7 @@ public class Message extends AbstractEntity {
 		values.put(TIME_SENT, timeSent);
 		values.put(ENCRYPTION, encryption);
 		values.put(STATUS, status);
+		values.put(TYPE, type);
 		return values;
 	}
 
@@ -108,7 +115,8 @@ public class Message extends AbstractEntity {
 				cursor.getString(cursor.getColumnIndex(BODY)),
 				cursor.getLong(cursor.getColumnIndex(TIME_SENT)),
 				cursor.getInt(cursor.getColumnIndex(ENCRYPTION)),
-				cursor.getInt(cursor.getColumnIndex(STATUS)));
+				cursor.getInt(cursor.getColumnIndex(STATUS)),
+				cursor.getInt(cursor.getColumnIndex(TYPE)));
 	}
 
 	public void setConversation(Conversation conv) {
@@ -149,5 +157,13 @@ public class Message extends AbstractEntity {
 	
 	public void setEncryptedBody(String body) {
 		this.encryptedBody = body;
+	}
+
+	public void setType(int type) {
+		this.type = type;
+	}
+	
+	public int getType() {
+		return this.type;
 	}
 }

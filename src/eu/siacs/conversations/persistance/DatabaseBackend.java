@@ -23,7 +23,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 	private static DatabaseBackend instance = null;
 
 	private static final String DATABASE_NAME = "history";
-	private static final int DATABASE_VERSION = 2;
+	private static final int DATABASE_VERSION = 3;
 
 	public DatabaseBackend(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -50,7 +50,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 				+ " TEXT PRIMARY KEY, " + Message.CONVERSATION + " TEXT, "
 				+ Message.TIME_SENT + " NUMBER, " + Message.COUNTERPART
 				+ " TEXT, " + Message.BODY + " TEXT, " + Message.ENCRYPTION
-				+ " NUMBER, " + Message.STATUS + " NUMBER," + "FOREIGN KEY("
+				+ " NUMBER, " + Message.STATUS + " NUMBER," +Message.TYPE +" NUMBER, FOREIGN KEY("
 				+ Message.CONVERSATION + ") REFERENCES "
 				+ Conversation.TABLENAME + "(" + Conversation.UUID
 				+ ") ON DELETE CASCADE);");
@@ -71,6 +71,10 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 			// enable compression by default.
 			db.execSQL("update " + Account.TABLENAME
 				+ " set " + Account.OPTIONS + " = " + Account.OPTIONS + " | 8");
+		}
+		if (oldVersion < 3 && newVersion >= 3) {
+			//add field type to message
+			db.execSQL("ALTER TABLE "+Message.TABLENAME+" ADD COLUMN "+Message.TYPE+" NUMBER");;
 		}
 	}
 

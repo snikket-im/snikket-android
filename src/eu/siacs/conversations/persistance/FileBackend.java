@@ -15,6 +15,7 @@ import android.net.Uri;
 import android.util.Log;
 
 import eu.siacs.conversations.entities.Conversation;
+import eu.siacs.conversations.entities.Message;
 
 
 public class FileBackend {
@@ -27,14 +28,18 @@ public class FileBackend {
 		this.context = context;
 	}
 	
+	private File getImageFile(Message message) {
+		Conversation conversation = message.getConversation();
+		String prefix =  context.getFilesDir().getAbsolutePath();
+		String path = prefix+"/"+conversation.getAccount().getJid()+"/"+conversation.getContactJid();
+		String filename = message.getUuid() + ".webp";
+		return new File(path+"/"+filename);
+	}
 	
-	public File copyImageToPrivateStorage(Conversation conversation, Uri image) {
+	public File copyImageToPrivateStorage(Message message, Uri image) {
 		try {
 			InputStream is = context.getContentResolver().openInputStream(image);
-			String prefix =  context.getFilesDir().getAbsolutePath();
-			String path = prefix+"/"+conversation.getAccount().getJid()+"/"+conversation.getContactJid();
-			String filename =new BigInteger(""+System.currentTimeMillis()).toString(32) + ".webp";
-			File file = new File(path+"/"+filename);
+			File file = getImageFile(message);
 			file.getParentFile().mkdirs();
 			file.createNewFile();
 			OutputStream os = new FileOutputStream(file);
@@ -72,5 +77,10 @@ public class FileBackend {
 		}
 		
 		return null;
+	}
+	
+	
+	public Bitmap getImageFromMessage(Message message) {
+		return BitmapFactory.decodeFile(getImageFile(message).getAbsolutePath());
 	}
 }

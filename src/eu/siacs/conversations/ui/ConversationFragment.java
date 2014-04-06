@@ -89,7 +89,6 @@ public class ConversationFragment extends Fragment {
 
 		@Override
 		public void onClick(View v) {
-			Log.d("gultsch", "clicked to decrypt");
 			if (askForPassphraseIntent != null) {
 				try {
 					getActivity().startIntentSenderForResult(
@@ -97,7 +96,7 @@ public class ConversationFragment extends Fragment {
 							ConversationActivity.REQUEST_DECRYPT_PGP, null, 0,
 							0, 0);
 				} catch (SendIntentException e) {
-					Log.d("gultsch", "couldnt fire intent");
+					Log.d("xmppService", "couldnt fire intent");
 				}
 			}
 		}
@@ -210,6 +209,7 @@ public class ConversationFragment extends Fragment {
 								.findViewById(R.id.message_photo);
 						viewHolder.imageView.setImageBitmap(selfBitmap);
 						viewHolder.indicator = (ImageView) view.findViewById(R.id.security_indicator);
+						viewHolder.image = (ImageView) view.findViewById(R.id.message_image);
 						break;
 					case RECIEVED:
 						view = (View) inflater.inflate(
@@ -262,32 +262,40 @@ public class ConversationFragment extends Fragment {
 						}
 					}
 				}
-				String body = item.getBody();
-				if (body != null) {
-					if (item.getEncryption() == Message.ENCRYPTION_PGP) {
-						viewHolder.messageBody
-								.setText(getString(R.string.encrypted_message));
-						viewHolder.messageBody.setTextColor(0xff33B5E5);
-						viewHolder.messageBody.setTypeface(null,
-								Typeface.ITALIC);
-						viewHolder.indicator.setVisibility(View.VISIBLE);
-					} else if ((item.getEncryption() == Message.ENCRYPTION_OTR)||(item.getEncryption() == Message.ENCRYPTION_DECRYPTED)) {
-						viewHolder.messageBody.setText(body.trim());
-						viewHolder.messageBody.setTextColor(0xff000000);
-						viewHolder.messageBody.setTypeface(null,
-								Typeface.NORMAL);
-						viewHolder.indicator.setVisibility(View.VISIBLE);
-					} else {
-						viewHolder.messageBody.setText(body.trim());
-						viewHolder.messageBody.setTextColor(0xff000000);
-						viewHolder.messageBody.setTypeface(null,
-								Typeface.NORMAL);
-						if (item.getStatus() != Message.STATUS_ERROR) {
-							viewHolder.indicator.setVisibility(View.GONE);
-						}
-					}
+				if (item.getType() == Message.TYPE_IMAGE) {
+					viewHolder.image.setVisibility(View.VISIBLE);
+					viewHolder.image.setImageBitmap(activity.xmppConnectionService.getFileBackend().getImageFromMessage(item));
+					viewHolder.messageBody.setVisibility(View.GONE);
 				} else {
-					viewHolder.indicator.setVisibility(View.GONE);
+					if (viewHolder.image != null) viewHolder.image.setVisibility(View.GONE);
+					viewHolder.messageBody.setVisibility(View.VISIBLE);
+					String body = item.getBody();
+					if (body != null) {
+						if (item.getEncryption() == Message.ENCRYPTION_PGP) {
+							viewHolder.messageBody
+									.setText(getString(R.string.encrypted_message));
+							viewHolder.messageBody.setTextColor(0xff33B5E5);
+							viewHolder.messageBody.setTypeface(null,
+									Typeface.ITALIC);
+							viewHolder.indicator.setVisibility(View.VISIBLE);
+						} else if ((item.getEncryption() == Message.ENCRYPTION_OTR)||(item.getEncryption() == Message.ENCRYPTION_DECRYPTED)) {
+							viewHolder.messageBody.setText(body.trim());
+							viewHolder.messageBody.setTextColor(0xff000000);
+							viewHolder.messageBody.setTypeface(null,
+									Typeface.NORMAL);
+							viewHolder.indicator.setVisibility(View.VISIBLE);
+						} else {
+							viewHolder.messageBody.setText(body.trim());
+							viewHolder.messageBody.setTextColor(0xff000000);
+							viewHolder.messageBody.setTypeface(null,
+									Typeface.NORMAL);
+							if (item.getStatus() != Message.STATUS_ERROR) {
+								viewHolder.indicator.setVisibility(View.GONE);
+							}
+						}
+					} else {
+						viewHolder.indicator.setVisibility(View.GONE);
+					}
 				}
 				if (item.getStatus() == Message.STATUS_UNSEND) {
 					viewHolder.time.setTypeface(null, Typeface.ITALIC);
@@ -585,6 +593,7 @@ public class ConversationFragment extends Fragment {
 
 	private static class ViewHolder {
 
+		protected ImageView image;
 		protected ImageView indicator;
 		protected TextView time;
 		protected TextView messageBody;
