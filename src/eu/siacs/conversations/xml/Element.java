@@ -139,4 +139,8 @@ public class Element {
 		content = content.replace("'","&apos;");
 		return content;
 	}
+
+	public void clearChildren() {
+		this.children.clear();
+	}
 }

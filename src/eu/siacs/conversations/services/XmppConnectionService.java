@@ -87,7 +87,8 @@ public class XmppConnectionService extends Service {
 
 	private List<Account> accounts;
 	private List<Conversation> conversations = null;
-
+	private JingleConnectionManager mJingleConnectionManager = new JingleConnectionManager(this);
+	
 	public OnConversationListChangedListener convChangedListener = null;
 	private int convChangedListenerCount = 0;
 	private OnAccountListChangedListener accountChangedListener = null;
@@ -389,13 +390,15 @@ public class XmppConnectionService extends Service {
 		return this.fileBackend;
 	}
 	
-	public void attachImageToConversation(Conversation conversation, Uri uri) {
+	public Message attachImageToConversation(Conversation conversation, Uri uri) {
 		Message message = new Message(conversation, "", Message.ENCRYPTION_NONE);
 		message.setType(Message.TYPE_IMAGE);
 		File file = this.fileBackend.copyImageToPrivateStorage(message, uri);
 		Log.d(LOGTAG,"new file"+file.getAbsolutePath());
 		conversation.getMessages().add(message);
 		databaseBackend.createMessage(message);
+		sendMessage(message, null);
+		return message;
 	}
 	
 	
@@ -655,48 +658,52 @@ public class XmppConnectionService extends Service {
 		boolean saveInDb = false;
 		boolean addToConversation = false;
 		if (account.getStatus() == Account.STATUS_ONLINE) {
-			MessagePacket packet;
-			if (message.getEncryption() == Message.ENCRYPTION_OTR) {
-				if (!conv.hasValidOtrSession()) {
-					// starting otr session. messages will be send later
-					conv.startOtrSession(getApplicationContext(), presence,true);
-				} else if (conv.getOtrSession().getSessionStatus() == SessionStatus.ENCRYPTED) {
-					// otr session aleary exists, creating message packet
-					// accordingly
-					packet = prepareMessagePacket(account, message,
-							conv.getOtrSession());
-					account.getXmppConnection().sendMessagePacket(packet);
-					message.setStatus(Message.STATUS_SEND);
-				}
-				saveInDb = true;
-				addToConversation = true;
-			} else if (message.getEncryption() == Message.ENCRYPTION_PGP) {
-				message.getConversation().endOtrIfNeeded();
-				long keyId = message.getConversation().getContact()
-						.getPgpKeyId();
-				packet = new MessagePacket();
-				packet.setType(MessagePacket.TYPE_CHAT);
-				packet.setFrom(message.getConversation().getAccount()
-						.getFullJid());
-				packet.setTo(message.getCounterpart());
-				packet.setBody("This is an XEP-0027 encryted message");
-				packet.addChild("x", "jabber:x:encrypted").setContent(message.getEncryptedBody());
-				account.getXmppConnection().sendMessagePacket(packet);
-				message.setStatus(Message.STATUS_SEND);
-				message.setEncryption(Message.ENCRYPTION_DECRYPTED);
-				saveInDb = true;
-				addToConversation = true;
+			if (message.getType() == Message.TYPE_IMAGE) {
+				mJingleConnectionManager.createNewConnection(message);
 			} else {
-				message.getConversation().endOtrIfNeeded();
-				// don't encrypt
-				if (message.getConversation().getMode() == Conversation.MODE_SINGLE) {
-					message.setStatus(Message.STATUS_SEND);
+				MessagePacket packet;
+				if (message.getEncryption() == Message.ENCRYPTION_OTR) {
+					if (!conv.hasValidOtrSession()) {
+						// starting otr session. messages will be send later
+						conv.startOtrSession(getApplicationContext(), presence,true);
+					} else if (conv.getOtrSession().getSessionStatus() == SessionStatus.ENCRYPTED) {
+						// otr session aleary exists, creating message packet
+						// accordingly
+						packet = prepareMessagePacket(account, message,
+								conv.getOtrSession());
+						account.getXmppConnection().sendMessagePacket(packet);
+						message.setStatus(Message.STATUS_SEND);
+					}
 					saveInDb = true;
 					addToConversation = true;
+				} else if (message.getEncryption() == Message.ENCRYPTION_PGP) {
+					message.getConversation().endOtrIfNeeded();
+					long keyId = message.getConversation().getContact()
+							.getPgpKeyId();
+					packet = new MessagePacket();
+					packet.setType(MessagePacket.TYPE_CHAT);
+					packet.setFrom(message.getConversation().getAccount()
+							.getFullJid());
+					packet.setTo(message.getCounterpart());
+					packet.setBody("This is an XEP-0027 encryted message");
+					packet.addChild("x", "jabber:x:encrypted").setContent(message.getEncryptedBody());
+					account.getXmppConnection().sendMessagePacket(packet);
+					message.setStatus(Message.STATUS_SEND);
+					message.setEncryption(Message.ENCRYPTION_DECRYPTED);
+					saveInDb = true;
+					addToConversation = true;
+				} else {
+					message.getConversation().endOtrIfNeeded();
+					// don't encrypt
+					if (message.getConversation().getMode() == Conversation.MODE_SINGLE) {
+						message.setStatus(Message.STATUS_SEND);
+						saveInDb = true;
+						addToConversation = true;
+					}
+	
+					packet = prepareMessagePacket(account, message, null);
+					account.getXmppConnection().sendMessagePacket(packet);
 				}
-
-				packet = prepareMessagePacket(account, message, null);
-				account.getXmppConnection().sendMessagePacket(packet);
 			}
 		} else {
 			// account is offline

@@ -33,6 +33,7 @@ import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -148,6 +149,8 @@ public class ConversationFragment extends Fragment {
 	public View onCreateView(final LayoutInflater inflater,
 			ViewGroup container, Bundle savedInstanceState) {
 
+		final DisplayMetrics metrics = getResources().getDisplayMetrics();
+		
 		this.inflater = inflater;
 
 		final View view = inflater.inflate(R.layout.fragment_conversation,
@@ -264,7 +267,7 @@ public class ConversationFragment extends Fragment {
 				}
 				if (item.getType() == Message.TYPE_IMAGE) {
 					viewHolder.image.setVisibility(View.VISIBLE);
-					viewHolder.image.setImageBitmap(activity.xmppConnectionService.getFileBackend().getImageFromMessage(item));
+					viewHolder.image.setImageBitmap(activity.xmppConnectionService.getFileBackend().getThumbnailFromMessage(item,(int) (metrics.density * 288)));
 					viewHolder.messageBody.setVisibility(View.GONE);
 				} else {
 					if (viewHolder.image != null) viewHolder.image.setVisibility(View.GONE);
