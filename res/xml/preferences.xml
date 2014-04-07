@@ -41,6 +41,11 @@
             android:key="notify_in_conversation_when_highlighted"
             android:title="Conference notification"
             android:summary="Always notify when a new conference message arrives instead of only when highlighted"/>
+        <CheckBoxPreference
+            android:key="notification_grace_period_after_carbon_received"
+            android:title="Notification grace period"
+            android:summary="Disable notifications for a short time after a carbon copy was received"
+            android:defaultValue="true"/>
     </PreferenceCategory>
     <PreferenceCategory 
         android:title="UI Options">
