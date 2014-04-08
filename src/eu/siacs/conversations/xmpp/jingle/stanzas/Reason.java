@@ -1,4 +1,4 @@
-package eu.siacs.conversations.xmpp.stanzas.jingle;
+package eu.siacs.conversations.xmpp.jingle.stanzas;
 
 import eu.siacs.conversations.xml.Element;
 

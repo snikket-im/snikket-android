@@ -16,9 +16,13 @@ import java.security.cert.CertPathValidatorException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocket;
@@ -44,11 +48,12 @@ import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Tag;
 import eu.siacs.conversations.xml.TagWriter;
 import eu.siacs.conversations.xml.XmlReader;
+import eu.siacs.conversations.xmpp.jingle.OnJinglePacketReceived;
+import eu.siacs.conversations.xmpp.jingle.stanzas.JinglePacket;
 import eu.siacs.conversations.xmpp.stanzas.AbstractStanza;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
 import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
 import eu.siacs.conversations.xmpp.stanzas.PresencePacket;
-import eu.siacs.conversations.xmpp.stanzas.jingle.JinglePacket;
 import eu.siacs.conversations.xmpp.stanzas.streammgmt.AckPacket;
 import eu.siacs.conversations.xmpp.stanzas.streammgmt.EnablePacket;
 import eu.siacs.conversations.xmpp.stanzas.streammgmt.RequestPacket;
@@ -70,8 +75,7 @@ public class XmppConnection implements Runnable {
 	private boolean shouldBind = true;
 	private boolean shouldAuthenticate = true;
 	private Element streamFeatures;
-	private HashSet<String> discoFeatures = new HashSet<String>();
-	private List<String> discoItems = new ArrayList<String>();
+	private HashMap<String, List<String>> disco = new HashMap<String, List<String>>();
 	
 	private String streamId = null;
 	private int smVersion = 3;
@@ -644,8 +648,8 @@ public class XmppConnection implements Runnable {
 					tagWriter.writeStanzaAsync(enable);
 				}
 				sendInitialPresence();
-				sendServiceDiscoveryInfo();
-				sendServiceDiscoveryItems();
+				sendServiceDiscoveryInfo(account.getServer());
+				sendServiceDiscoveryItems(account.getServer());
 				if (bindListener !=null) {
 					bindListener.onBind(account);
 				}
@@ -654,42 +658,54 @@ public class XmppConnection implements Runnable {
 		});
 	}
 
-	private void sendServiceDiscoveryInfo() {
+	private void sendServiceDiscoveryInfo(final String server) {
 		IqPacket iq = new IqPacket(IqPacket.TYPE_GET);
-		iq.setTo(account.getServer());
+		iq.setTo(server);
 		iq.query("http://jabber.org/protocol/disco#info");
 		this.sendIqPacket(iq, new OnIqPacketReceived() {
 
 			@Override
 			public void onIqPacketReceived(Account account, IqPacket packet) {
-					List<Element> elements = packet.query().getChildren();
-					for (int i = 0; i < elements.size(); ++i) {
-						if (elements.get(i).getName().equals("feature")) {
-							discoFeatures.add(elements.get(i).getAttribute(
-									"var"));
-						}
+				List<Element> elements = packet.query().getChildren();
+				List<String> features = new ArrayList<String>();
+				for (int i = 0; i < elements.size(); ++i) {
+					if (elements.get(i).getName().equals("feature")) {
+						features.add(elements.get(i).getAttribute(
+								"var"));
 					}
-				if (discoFeatures.contains("urn:xmpp:carbons:2")) {
-					sendEnableCarbons();
+				}
+				Log.d(LOGTAG,"put "+server+" "+features.toString());
+				disco.put(server, features);
+				
+				if (account.getServer().equals(server)) {
+					enableAdvancedStreamFeatures();
 				}
 			}
 		});
 	}
-	private void sendServiceDiscoveryItems() {
+	
+	private void enableAdvancedStreamFeatures() {
+		if (hasFeaturesCarbon()) {
+			sendEnableCarbons();
+		}
+	}
+	
+	private void sendServiceDiscoveryItems(final String server) {
 		IqPacket iq = new IqPacket(IqPacket.TYPE_GET);
-		iq.setTo(account.getServer());
+		iq.setTo(server);
 		iq.query("http://jabber.org/protocol/disco#items");
 		this.sendIqPacket(iq, new OnIqPacketReceived() {
 
 			@Override
 			public void onIqPacketReceived(Account account, IqPacket packet) {
-					List<Element> elements = packet.query().getChildren();
-					for (int i = 0; i < elements.size(); ++i) {
-						if (elements.get(i).getName().equals("item")) {
-							discoItems.add(elements.get(i).getAttribute(
-									"jid"));
-						}
+				List<Element> elements = packet.query().getChildren();
+				for (int i = 0; i < elements.size(); ++i) {
+					if (elements.get(i).getName().equals("item")) {
+						String jid = elements.get(i).getAttribute(
+								"jid");
+						sendServiceDiscoveryInfo(jid);
 					}
+				}
 			}
 		});
 	}
@@ -850,7 +866,26 @@ public class XmppConnection implements Runnable {
 	}
 	
 	public boolean hasFeaturesCarbon() {
-		return discoFeatures.contains("urn:xmpp:carbons:2");
+		return hasDiscoFeature(account.getServer(), "urn:xmpp:carbons:2");
+	}
+	
+	public boolean hasDiscoFeature(String server, String feature) {
+		if (!disco.containsKey(server)) {
+			return false;
+		}
+		return disco.get(server).contains(feature);
+	}
+	
+	public String findDiscoItemByFeature(String feature) {
+		Iterator<Entry<String, List<String>>> it = this.disco.entrySet().iterator();
+	    while (it.hasNext()) {
+	    	Entry<String, List<String>> pairs = it.next();
+	        if (pairs.getValue().contains(feature)) {
+	        	return pairs.getKey();
+	        }
+	        it.remove();
+	    }
+		return null;
 	}
 
 	public void r() {
@@ -866,15 +901,6 @@ public class XmppConnection implements Runnable {
 	}
 
 	public String getMucServer() {
-		for(int i = 0; i < discoItems.size(); ++i) {
-			if (discoItems.get(i).contains("conference.")) {
-				return discoItems.get(i);
-			} else if (discoItems.get(i).contains("conf.")) {
-				return discoItems.get(i);
-			} else if (discoItems.get(i).contains("muc.")) {
-				return discoItems.get(i);
-			}
-		}
-		return null;
+		return findDiscoItemByFeature("http://jabber.org/protocol/muc");
 	}
 }

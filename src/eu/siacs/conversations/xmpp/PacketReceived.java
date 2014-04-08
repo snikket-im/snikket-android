@@ -1,5 +1,5 @@
 package eu.siacs.conversations.xmpp;
 
-abstract interface PacketReceived {
+public abstract interface PacketReceived {
 
 }
