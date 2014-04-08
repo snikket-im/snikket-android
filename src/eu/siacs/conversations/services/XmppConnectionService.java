@@ -1289,9 +1289,11 @@ public class XmppConnectionService extends Service {
 
 	public Contact findContact(String uuid) {
 		Contact contact = this.databaseBackend.getContact(uuid);
-		for (Account account : getAccounts()) {
-			if (contact.getAccountUuid().equals(account.getUuid())) {
-				contact.setAccount(account);
+		if (contact!=null) {
+			for (Account account : getAccounts()) {
+				if (contact.getAccountUuid().equals(account.getUuid())) {
+					contact.setAccount(account);
+				}
 			}
 		}
 		return contact;
