@@ -34,6 +34,18 @@ public class ExceptionHelper {
 			if (neverSend) {
 				return;
 			}
+			List<Account> accounts = service.getAccounts();
+			Account account = null;
+			for(int i = 0; i < accounts.size(); ++i) {
+				if (!accounts.get(i).isOptionSet(Account.OPTION_DISABLED)) {
+					account = accounts.get(i);
+					break;
+				}
+			}
+			if (account==null) {
+				return;
+			}
+			final Account finalAccount = account;
 			FileInputStream file = context.openFileInput("stacktrace.txt");
 			InputStreamReader inputStreamReader = new InputStreamReader(
                     file);
@@ -54,20 +66,11 @@ public class ExceptionHelper {
 				
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					List<Account> accounts = service.getAccounts();
-					Account account = null;
-					for(int i = 0; i < accounts.size(); ++i) {
-						if (!accounts.get(i).isOptionSet(Account.OPTION_DISABLED)) {
-							account = accounts.get(i);
-							break;
-						}
-					}
-					if (account!=null) {
-						Log.d("xmppService","using account="+account.getJid()+" to send in stack trace");
-						Conversation conversation = service.findOrCreateConversation(account, "bugs@siacs.eu", false);
+					
+						Log.d("xmppService","using account="+finalAccount.getJid()+" to send in stack trace");
+						Conversation conversation = service.findOrCreateConversation(finalAccount, "bugs@siacs.eu", false);
 						Message message = new Message(conversation, stacktrace.toString(), Message.ENCRYPTION_NONE);
 						service.sendMessage(message, null);
-					}
 				}
 			});
 			builder.setNegativeButton(context.getText(R.string.send_never),new OnClickListener() {
