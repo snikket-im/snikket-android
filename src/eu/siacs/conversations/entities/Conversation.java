@@ -45,6 +45,8 @@ public class Conversation extends AbstractEntity {
 	private int status;
 	private long created;
 	private int mode;
+	
+	private String nextPresence;
 
 	private transient List<Message> messages = null;
 	private transient Account account = null;
@@ -307,5 +309,13 @@ public class Conversation extends AbstractEntity {
 
 	public void setContactJid(String jid) {
 		this.contactJid = jid;
+	}
+	
+	public void setNextPresence(String presence) {
+		this.nextPresence = presence;
+	}
+	
+	public String getNextPresence() {
+		return this.nextPresence;
 	}
 }

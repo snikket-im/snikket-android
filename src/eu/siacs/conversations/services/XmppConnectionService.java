@@ -372,7 +372,7 @@ public class XmppConnectionService extends Service {
 		
 		@Override
 		public void onJinglePacketReceived(Account account, JinglePacket packet) {
-			Log.d(LOGTAG,account.getJid()+": jingle packet received"+packet.toString());
+			mJingleConnectionManager.deliverPacket(account, packet);
 		}
 	};
 
@@ -401,8 +401,9 @@ public class XmppConnectionService extends Service {
 		return this.fileBackend;
 	}
 	
-	public Message attachImageToConversation(Conversation conversation, Uri uri) {
+	public Message attachImageToConversation(Conversation conversation, String presence, Uri uri) {
 		Message message = new Message(conversation, "", Message.ENCRYPTION_NONE);
+		message.setPresence(presence);
 		message.setType(Message.TYPE_IMAGE);
 		File file = this.fileBackend.copyImageToPrivateStorage(message, uri);
 		Log.d(LOGTAG,"new file"+file.getAbsolutePath());

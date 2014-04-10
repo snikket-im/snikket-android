@@ -19,6 +19,11 @@ public class JingleConnection {
 	private JingleConnectionManager mJingleConnectionManager;
 	private XmppConnectionService mXmppConnectionService;
 	
+	public static final int STATUS_INITIATED = 0;
+	public static final int STATUS_ACCEPTED = 1;
+	public static final int STATUS_FAILED = 99;
+	
+	private int status = -1;
 	private Message message;
 	private String sessionId;
 	private Account account;
@@ -30,7 +35,9 @@ public class JingleConnection {
 		
 		@Override
 		public void onIqPacketReceived(Account account, IqPacket packet) {
-			Log.d("xmppService",packet.toString());
+			if (packet.getType() == IqPacket.TYPE_ERROR) {
+				status = STATUS_FAILED;
+			}
 		}
 	};
 	
@@ -42,6 +49,21 @@ public class JingleConnection {
 	
 	public String getSessionId() {
 		return this.sessionId;
+	}
+	
+	public String getAccountJid() {
+		return this.account.getJid();
+	}
+	
+	public String getCounterPart() {
+		return this.message.getCounterpart();
+	}
+	
+	public void deliverPacket(JinglePacket packet) {
+		Log.d("xmppService","packet arrived in connection");
+		if (packet.isAction("")) {
+			
+		}
 	}
 	
 	public void init(Message message) {
@@ -78,13 +100,14 @@ public class JingleConnection {
 			packet.setContent(content);
 			Log.d("xmppService",packet.toString());
 			account.getXmppConnection().sendIqPacket(packet, this.responseListener);
+			this.status = STATUS_INITIATED;
 		}
 	}
 	
 	private JinglePacket bootstrapPacket() {
 		JinglePacket packet = new JinglePacket();
 		packet.setFrom(account.getFullJid());
-		packet.setTo(this.message.getCounterpart()+"/Gajim"); //fixme, not right in all cases;
+		packet.setTo(this.message.getCounterpart()); //fixme, not right in all cases;
 		packet.setSessionId(this.sessionId);
 		return packet;
 	}

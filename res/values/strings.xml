@@ -48,4 +48,6 @@
     <string name="problem_connecting_to_accounts">Unable to connect to multiple accounts</string>
     <string name="touch_to_fix">Touch here to manage your accounts</string>
     <string name="action_attach_file">Attach file</string>
+    <string name="not_in_roster">The contact is not in your roster. Would you like to add it?</string>
+    <string name="add_contact">Add contact</string>
 </resources>

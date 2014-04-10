@@ -70,7 +70,15 @@ public class JinglePacket extends IqPacket {
 		this.jingle.setAttribute("action", action);
 	}
 	
+	public String getAction() {
+		return this.jingle.getAttribute("action");
+	}
+	
 	public void setInitiator(String initiator) {
 		this.jingle.setAttribute("initiator", initiator);
+	}
+
+	public boolean isAction(String action) {
+		return action.equalsIgnoreCase(this.getAction());
 	}
 }

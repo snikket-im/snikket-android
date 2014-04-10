@@ -166,4 +166,8 @@ public class Message extends AbstractEntity {
 	public int getType() {
 		return this.type;
 	}
+
+	public void setPresence(String presence) {
+		this.counterpart = this.counterpart.split("/")[0] + "/" + presence;
+	}
 }
