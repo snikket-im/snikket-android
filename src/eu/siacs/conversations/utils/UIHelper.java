@@ -260,7 +260,7 @@ public class UIHelper {
 			if (notify) {
 				if (vibrate) {
 					int dat = 70;
-					long[] pattern = {0,3*dat,dat,dat,dat,3*dat,dat,dat};
+					long[] pattern = {0,3*dat,dat,dat};
 					mBuilder.setVibrate(pattern);
 				}
 				mBuilder.setLights(0xffffffff, 2000, 4000);
@@ -307,23 +307,13 @@ public class UIHelper {
 	}
 
 	public static void prepareContactBadge(final Activity activity,
-			QuickContactBadge badge, final Contact contact) {
+			QuickContactBadge badge, final Contact contact, Context context) {
 		if (contact.getSystemAccount() != null) {
 			String[] systemAccount = contact.getSystemAccount().split("#");
 			long id = Long.parseLong(systemAccount[0]);
 			badge.assignContactUri(Contacts.getLookupUri(id, systemAccount[1]));
-
-			if (contact.getProfilePhoto() != null) {
-				badge.setImageURI(Uri.parse(contact.getProfilePhoto()));
-			} else {
-				badge.setImageBitmap(UIHelper.getUnknownContactPicture(
-						contact.getDisplayName(), 400));
-			}
-		} else {
-			badge.setImageBitmap(UIHelper.getUnknownContactPicture(
-					contact.getDisplayName(), 400));
 		}
-
+		badge.setImageBitmap(UIHelper.getContactPicture(contact, "", 400, context));
 	}
 
 	public static AlertDialog getVerifyFingerprintDialog(
