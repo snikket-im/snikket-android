@@ -44,7 +44,6 @@ public class JingleConnectionManager {
 	}
 
 	public JingleConnection createNewConnection(Message message) {
-		Account account = message.getConversation().getAccount();
 		JingleConnection connection = new JingleConnection(this);
 		connection.init(message);
 		connections.add(connection);
@@ -55,12 +54,6 @@ public class JingleConnectionManager {
 		JingleConnection connection = new JingleConnection(this);
 		connections.add(connection);
 		return connection;
-	}
-
-	private String generateInternalId(String account, String counterpart,
-			String sid) {
-		return account + "#" + counterpart + "#" + sid;
-
 	}
 
 	public XmppConnectionService getXmppConnectionService() {

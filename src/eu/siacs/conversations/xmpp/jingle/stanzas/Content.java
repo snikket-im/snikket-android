@@ -43,4 +43,17 @@ public class Content extends Element {
 			return transport.getChildren();
 		}
 	}
+	
+	public String getUsedCandidate() {
+		Element transport = this.findChild("transport", "urn:xmpp:jingle:transports:s5b:1");
+		if (transport==null) {
+			return null;
+		}
+		Element usedCandidate = transport.findChild("candidate-used");
+		if (usedCandidate==null) {
+			return null;
+		} else {
+			return usedCandidate.getAttribute("cid");
+		}
+	}
 }

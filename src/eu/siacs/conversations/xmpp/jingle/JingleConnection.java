@@ -1,5 +1,6 @@
 package eu.siacs.conversations.xmpp.jingle;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -72,6 +73,8 @@ public class JingleConnection {
 			status = STATUS_TERMINATED;
 		} else if (packet.isAction("session-accept")) {
 			accept(packet);
+		} else if (packet.isAction("transport-info")) {
+			transportInfo(packet);
 		} else {
 			Log.d("xmppService","packet arrived in connection. action was "+packet.getAction());
 		}
@@ -135,11 +138,40 @@ public class JingleConnection {
 		account.getXmppConnection().sendIqPacket(response, null);
 	}
 	
+	private void transportInfo(JinglePacket packet) {
+		Content content = packet.getJingleContent();
+		Log.d("xmppService","transport info : "+content.toString());
+		String cid = content.getUsedCandidate();
+		if (cid!=null) {
+			final File file = this.mXmppConnectionService.getFileBackend().getImageFile(this.message);
+			final SocksConnection connection = this.connections.get(cid);
+			if (connection.isProxy()) {
+				IqPacket activation = new IqPacket(IqPacket.TYPE_SET);
+				activation.setTo(connection.getJid());
+				activation.query("http://jabber.org/protocol/bytestreams").setAttribute("sid", this.getSessionId());
+				activation.query().addChild("activate").setContent(this.getResponder());
+				Log.d("xmppService","connection is proxy. need to activate "+activation.toString());
+				this.account.getXmppConnection().sendIqPacket(activation, new OnIqPacketReceived() {
+					
+					@Override
+					public void onIqPacketReceived(Account account, IqPacket packet) {
+						Log.d("xmppService","activation result: "+packet.toString());
+						connection.send(file);
+					}
+				});
+			} else {
+				connection.send(file);
+			}
+		}
+	}
+	
 	private void connectWithCandidates() {
 		for(Element canditate : this.candidates) {
 			String host = canditate.getAttribute("host");
 			int port = Integer.parseInt(canditate.getAttribute("port"));
-			SocksConnection socksConnection = new SocksConnection(this, host, port);
+			String type = canditate.getAttribute("type");
+			String jid = canditate.getAttribute("jid");
+			SocksConnection socksConnection = new SocksConnection(this, host, jid, port,type);
 			socksConnection.connect();
 			this.connections.put(canditate.getAttribute("cid"), socksConnection);
 		}
