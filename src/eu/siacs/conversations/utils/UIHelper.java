@@ -91,23 +91,39 @@ public class UIHelper {
 
 		return bitmap;
 	}
-	
-	public static Bitmap getContactPicture(Contact contact, String fallback, int size, Context context) {
-		if (contact==null) {
-			return getUnknownContactPicture(fallback, size);
+
+	public static Bitmap getContactPicture(Conversation conversation, int size, Context context) {
+		if(conversation.getMode() == Conversation.MODE_SINGLE) {
+			if (conversation.getContact() != null){
+				return getContactPicture(conversation.getContact(), size, context);
+			} else {
+				return getContactPicture(conversation.getName(false), size);
+			}
+		} else{
+			return getContactPicture(conversation.getName(false), size);
 		}
+	}
+
+	public static Bitmap getContactPicture(Contact contact, int size, Context context) {
 		String uri = contact.getProfilePhoto();
 		if (uri==null) {
-			return getUnknownContactPicture(contact.getDisplayName(), size);
+			return getContactPicture(contact.getDisplayName(), size);
 		}
 		try {
 			Bitmap bm = BitmapFactory.decodeStream(context.getContentResolver().openInputStream(Uri.parse(uri)));
 			return Bitmap.createScaledBitmap(bm, size, size, false);
 		} catch (FileNotFoundException e) {
-			return getUnknownContactPicture(contact.getDisplayName(), size);
+			return getContactPicture(contact.getDisplayName(), size);
 		}
 	}
 
+	public static Bitmap getContactPicture(String name, int size, Context context) {
+		return getContactPicture(name, size);
+	}
+
+	public static Bitmap getContactPicture(String name, int size) {
+		return getUnknownContactPicture(name, size);
+	}
 	public static Bitmap getErrorPicture(int size) {
 		Bitmap bitmap = Bitmap
 				.createBitmap(size, size, Bitmap.Config.ARGB_8888);
@@ -212,7 +228,7 @@ public class UIHelper {
 		} else if (unread.size() == 1) {
 			Conversation conversation = unread.get(0);
 			targetUuid = conversation.getUuid();
-			mBuilder.setLargeIcon(UIHelper.getContactPicture(conversation.getContact(), conversation.getName(useSubject), (int) res
+			mBuilder.setLargeIcon(UIHelper.getContactPicture(conversation, (int) res
 							.getDimension(android.R.dimen.notification_large_icon_width), context));
 			mBuilder.setContentTitle(conversation.getName(useSubject));
 			if (notify) {
@@ -313,7 +329,7 @@ public class UIHelper {
 			long id = Long.parseLong(systemAccount[0]);
 			badge.assignContactUri(Contacts.getLookupUri(id, systemAccount[1]));
 		}
-		badge.setImageBitmap(UIHelper.getContactPicture(contact, "", 400, context));
+		badge.setImageBitmap(UIHelper.getContactPicture(contact, 400, context));
 	}
 
 	public static AlertDialog getVerifyFingerprintDialog(
@@ -357,12 +373,12 @@ public class UIHelper {
 					return BitmapFactory.decodeStream(activity
 							.getContentResolver().openInputStream(selfiUri));
 				} catch (FileNotFoundException e) {
-					return getUnknownContactPicture(account.getJid(), size);
+					return getContactPicture(account.getJid(), size);
 				}
 			}
-			return getUnknownContactPicture(account.getJid(), size);
+			return getContactPicture(account.getJid(), size);
 		} else {
-			return getUnknownContactPicture(account.getJid(), size);
+			return getContactPicture(account.getJid(), size);
 		}
 	}
 }

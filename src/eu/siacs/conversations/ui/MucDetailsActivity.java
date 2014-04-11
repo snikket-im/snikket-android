@@ -179,7 +179,7 @@ public class MucDetailsActivity extends XmppActivity {
 					role.setText(getReadableRole(contact.getRole()));
 					ImageView imageView = (ImageView) view
 							.findViewById(R.id.contact_photo);
-					imageView.setImageBitmap(UIHelper.getContactPicture(null,contact.getName(), 90,this.getApplicationContext()));
+					imageView.setImageBitmap(UIHelper.getContactPicture(contact.getName(), 89,this.getApplicationContext()));
 					membersView.addView(view);
 				}
 			}
