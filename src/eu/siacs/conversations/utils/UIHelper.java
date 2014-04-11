@@ -255,6 +255,9 @@ public class UIHelper {
 			mBuilder.setContentText(names.toString());
 			mBuilder.setStyle(style);
 		}
+		if (currentCon!=null) {
+			targetUuid=currentCon.getUuid();
+		}
 		if (unread.size() != 0) {
 			mBuilder.setSmallIcon(R.drawable.notification);
 			if (notify) {
