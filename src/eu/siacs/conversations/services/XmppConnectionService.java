@@ -174,7 +174,8 @@ public class XmppConnectionService extends Service {
 					}
 				}
 			} else if (packet.getType() == MessagePacket.TYPE_ERROR) {
-				message = MessageParser.parseError(packet, account, service);
+				MessageParser.parseError(packet, account, service);
+				return;
 			} else if (packet.getType() == MessagePacket.TYPE_NORMAL) {
 				if (packet.hasChild("x")) {
 					Element x = packet.findChild("x");
@@ -667,13 +668,14 @@ public class XmppConnectionService extends Service {
 	synchronized public void sendMessage(Message message, String presence) {
 		Account account = message.getConversation().getAccount();
 		Conversation conv = message.getConversation();
+		MessagePacket packet = null;
 		boolean saveInDb = false;
 		boolean addToConversation = false;
+		boolean send = false;
 		if (account.getStatus() == Account.STATUS_ONLINE) {
 			if (message.getType() == Message.TYPE_IMAGE) {
 				mJingleConnectionManager.createNewConnection(message);
 			} else {
-				MessagePacket packet;
 				if (message.getEncryption() == Message.ENCRYPTION_OTR) {
 					if (!conv.hasValidOtrSession()) {
 						// starting otr session. messages will be send later
@@ -683,7 +685,7 @@ public class XmppConnectionService extends Service {
 						// accordingly
 						packet = prepareMessagePacket(account, message,
 								conv.getOtrSession());
-						account.getXmppConnection().sendMessagePacket(packet);
+						send = true;
 						message.setStatus(Message.STATUS_SEND);
 					}
 					saveInDb = true;
@@ -699,11 +701,11 @@ public class XmppConnectionService extends Service {
 					packet.setTo(message.getCounterpart());
 					packet.setBody("This is an XEP-0027 encryted message");
 					packet.addChild("x", "jabber:x:encrypted").setContent(message.getEncryptedBody());
-					account.getXmppConnection().sendMessagePacket(packet);
 					message.setStatus(Message.STATUS_SEND);
 					message.setEncryption(Message.ENCRYPTION_DECRYPTED);
 					saveInDb = true;
 					addToConversation = true;
+					send = true;
 				} else {
 					message.getConversation().endOtrIfNeeded();
 					// don't encrypt
@@ -712,9 +714,8 @@ public class XmppConnectionService extends Service {
 						saveInDb = true;
 						addToConversation = true;
 					}
-	
 					packet = prepareMessagePacket(account, message, null);
-					account.getXmppConnection().sendMessagePacket(packet);
+					send = true;
 				}
 			}
 		} else {
@@ -731,6 +732,9 @@ public class XmppConnectionService extends Service {
 			if (convChangedListener != null) {
 				convChangedListener.onConversationListChanged();
 			}
+		}
+		if ((send)&&(packet!=null)) {
+			account.getXmppConnection().sendMessagePacket(packet);
 		}
 
 	}
@@ -786,6 +790,7 @@ public class XmppConnectionService extends Service {
 			packet.setTo(message.getCounterpart().split("/")[0]);
 			packet.setFrom(account.getJid());
 		}
+		packet.setId(message.getUuid());
 		return packet;
 	}
 
@@ -1364,5 +1369,28 @@ public class XmppConnectionService extends Service {
 					.sendMessagePacket(packet);
 		}
 
+	}
+	
+	public boolean markMessage(Account account, String recipient, String uuid, int status) {
+		boolean marked = false;
+		for(Conversation conversation : getConversations()) {
+			if (conversation.getContactJid().equals(recipient)&&conversation.getAccount().equals(account)) {
+				for(Message message : conversation.getMessages()) {
+					if (message.getUuid().equals(uuid)) {
+						markMessage(message, status);
+						marked = true;
+						break;
+					}
+				}
+				break;
+			}
+		}
+		return marked;
+	}
+	
+	public void markMessage(Message message, int status) {
+		message.setStatus(status);
+		databaseBackend.updateMessage(message);
+		convChangedListener.onConversationListChanged();
 	}
 }

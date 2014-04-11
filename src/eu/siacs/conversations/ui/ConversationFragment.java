@@ -179,19 +179,16 @@ public class ConversationFragment extends Fragment {
 
 			private static final int SENT = 0;
 			private static final int RECIEVED = 1;
-			private static final int ERROR = 2;
 
 			@Override
 			public int getViewTypeCount() {
-				return 3;
+				return 2;
 			}
 
 			@Override
 			public int getItemViewType(int position) {
-				if (getItem(position).getStatus() == Message.STATUS_RECIEVED) {
+				if (getItem(position).getStatus() <= Message.STATUS_RECIEVED) {
 					return RECIEVED;
-				} else if (getItem(position).getStatus() == Message.STATUS_ERROR) {
-					return ERROR;
 				} else {
 					return SENT;
 				}
@@ -229,14 +226,6 @@ public class ConversationFragment extends Fragment {
 													.getApplicationContext()));
 
 						}
-						break;
-					case ERROR:
-						view = (View) inflater.inflate(R.layout.message_error,
-								null);
-						viewHolder.imageView = (ImageView) view
-								.findViewById(R.id.message_photo);
-						viewHolder.imageView.setImageBitmap(mBitmapCache
-								.getError());
 						break;
 					default:
 						viewHolder = null;
@@ -283,30 +272,42 @@ public class ConversationFragment extends Fragment {
 							viewHolder.indicator.setVisibility(View.VISIBLE);
 						} else if ((item.getEncryption() == Message.ENCRYPTION_OTR)||(item.getEncryption() == Message.ENCRYPTION_DECRYPTED)) {
 							viewHolder.messageBody.setText(body.trim());
-							viewHolder.messageBody.setTextColor(0xff000000);
+							viewHolder.messageBody.setTextColor(0xff333333);
 							viewHolder.messageBody.setTypeface(null,
 									Typeface.NORMAL);
 							viewHolder.indicator.setVisibility(View.VISIBLE);
 						} else {
 							viewHolder.messageBody.setText(body.trim());
-							viewHolder.messageBody.setTextColor(0xff000000);
+							viewHolder.messageBody.setTextColor(0xff333333);
 							viewHolder.messageBody.setTypeface(null,
 									Typeface.NORMAL);
-							if (item.getStatus() != Message.STATUS_ERROR) {
-								viewHolder.indicator.setVisibility(View.GONE);
-							}
+							viewHolder.indicator.setVisibility(View.GONE);
 						}
 					} else {
 						viewHolder.indicator.setVisibility(View.GONE);
 					}
 				}
-				if (item.getStatus() == Message.STATUS_UNSEND) {
+				switch (item.getStatus()) {
+				case Message.STATUS_UNSEND:
 					viewHolder.time.setTypeface(null, Typeface.ITALIC);
+					viewHolder.time.setTextColor(0xFF8e8e8e);
 					viewHolder.time.setText("sending\u2026");
-				} else {
+					break;
+				case Message.STATUS_SEND_FAILED:
+					viewHolder.time.setText(getString(R.string.send_failed) + " \u00B7 " + UIHelper.readableTimeDifference(item
+							.getTimeSent()));
+					viewHolder.time.setTextColor(0xFFe92727);
+					viewHolder.time.setTypeface(null,Typeface.NORMAL);
+					break;
+				case Message.STATUS_SEND_REJECTED:
+					viewHolder.time.setText(getString(R.string.send_rejected));
+					viewHolder.time.setTextColor(0xFFe92727);
+					viewHolder.time.setTypeface(null,Typeface.NORMAL);
+					break;
+				default:
 					viewHolder.time.setTypeface(null, Typeface.NORMAL);
-					if ((item.getConversation().getMode() == Conversation.MODE_SINGLE)
-							|| (type != RECIEVED)) {
+					viewHolder.time.setTextColor(0xFF8e8e8e);
+					if (item.getConversation().getMode() == Conversation.MODE_SINGLE) {
 						viewHolder.time.setText(UIHelper
 								.readableTimeDifference(item.getTimeSent()));
 					} else {
@@ -315,6 +316,7 @@ public class ConversationFragment extends Fragment {
 								+ UIHelper.readableTimeDifference(item
 										.getTimeSent()));
 					}
+					break;
 				}
 				return view;
 			}

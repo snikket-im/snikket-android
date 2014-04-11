@@ -50,4 +50,6 @@
     <string name="action_attach_file">Attach file</string>
     <string name="not_in_roster">The contact is not in your roster. Would you like to add it?</string>
     <string name="add_contact">Add contact</string>
+    <string name="send_failed">unsuccessful delivery</string>
+    <string name="send_rejected">rejected</string>
 </resources>
