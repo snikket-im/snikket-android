@@ -1,6 +1,7 @@
 package eu.siacs.conversations.xmpp.jingle.stanzas;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import eu.siacs.conversations.xml.Element;
@@ -22,14 +23,24 @@ public class Content extends Element {
 		file.addChild("name").setContent(actualFile.getName());
 	}
 
-	public void setCanditates(List<Element> canditates) {
+	public void setCandidates(String transportId, List<Element> canditates) {
 		Element transport = this.findChild("transport", "urn:xmpp:jingle:transports:s5b:1");
 		if (transport==null) {
 			transport = this.addChild("transport", "urn:xmpp:jingle:transports:s5b:1");
 		}
+		transport.setAttribute("sid", transportId);
 		transport.clearChildren();
 		for(Element canditate : canditates) {
 			transport.addChild(canditate);
+		}
+	}
+	
+	public List<Element> getCanditates() {
+		Element transport = this.findChild("transport", "urn:xmpp:jingle:transports:s5b:1");
+		if (transport==null) {
+			return new ArrayList<Element>();
+		} else {
+			return transport.getChildren();
 		}
 	}
 }

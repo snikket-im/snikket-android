@@ -1,6 +1,7 @@
 package eu.siacs.conversations.xmpp.jingle;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import android.util.Log;
@@ -21,6 +22,7 @@ public class JingleConnection {
 	
 	public static final int STATUS_INITIATED = 0;
 	public static final int STATUS_ACCEPTED = 1;
+	public static final int STATUS_TERMINATED = 2;
 	public static final int STATUS_FAILED = 99;
 	
 	private int status = -1;
@@ -29,13 +31,15 @@ public class JingleConnection {
 	private Account account;
 	private String initiator;
 	private String responder;
-	private List<Element> canditates = new ArrayList<Element>();
+	private List<Element> candidates = new ArrayList<Element>();
+	private HashMap<String, SocksConnection> connections = new HashMap<String, SocksConnection>();
 	
 	private OnIqPacketReceived responseListener = new OnIqPacketReceived() {
 		
 		@Override
 		public void onIqPacketReceived(Account account, IqPacket packet) {
 			if (packet.getType() == IqPacket.TYPE_ERROR) {
+				mXmppConnectionService.markMessage(message, Message.STATUS_SEND_FAILED);
 				status = STATUS_FAILED;
 			}
 		}
@@ -60,9 +64,16 @@ public class JingleConnection {
 	}
 	
 	public void deliverPacket(JinglePacket packet) {
-		Log.d("xmppService","packet arrived in connection");
-		if (packet.isAction("")) {
-			
+		
+		if (packet.isAction("session-terminate")) {
+			if (status == STATUS_INITIATED) {
+				mXmppConnectionService.markMessage(message, Message.STATUS_SEND_REJECTED);
+			}
+			status = STATUS_TERMINATED;
+		} else if (packet.isAction("session-accept")) {
+			accept(packet);
+		} else {
+			Log.d("xmppService","packet arrived in connection. action was "+packet.getAction());
 		}
 	}
 	
@@ -70,15 +81,16 @@ public class JingleConnection {
 		this.message = message;
 		this.account = message.getConversation().getAccount();
 		this.initiator = this.account.getFullJid();
-		if (this.canditates.size() > 0) {
+		this.responder = this.message.getCounterpart();
+		if (this.candidates.size() > 0) {
 			this.sendInitRequest();
 		} else {
-			this.mJingleConnectionManager.getPrimaryCanditate(account, new OnPrimaryCanditateFound() {
+			this.mJingleConnectionManager.getPrimaryCandidate(account, new OnPrimaryCandidateFound() {
 				
 				@Override
-				public void onPrimaryCanditateFound(boolean success, Element canditate) {
+				public void onPrimaryCandidateFound(boolean success, Element canditate) {
 					if (success) {
-						canditates.add(canditate);
+						candidates.add(canditate);
 					}
 					sendInitRequest();
 				}
@@ -96,7 +108,7 @@ public class JingleConnection {
 			content.setAttribute("creator", "initiator");
 			content.setAttribute("name", "a-file-offer");
 			content.offerFile(this.mXmppConnectionService.getFileBackend().getImageFile(message));
-			content.setCanditates(this.canditates);
+			content.setCandidates(this.mJingleConnectionManager.nextRandomId(),this.candidates);
 			packet.setContent(content);
 			Log.d("xmppService",packet.toString());
 			account.getXmppConnection().sendIqPacket(packet, this.responseListener);
@@ -111,5 +123,37 @@ public class JingleConnection {
 		packet.setSessionId(this.sessionId);
 		return packet;
 	}
+	
+	private void accept(JinglePacket packet) {
+		Log.d("xmppService","session-accept: "+packet.toString());
+		Content content = packet.getJingleContent();
+		this.candidates.addAll(content.getCanditates());
+		this.status = STATUS_ACCEPTED;
+		this.connectWithCandidates();
+		IqPacket response = packet.generateRespone(IqPacket.TYPE_RESULT);
+		Log.d("xmppService","response "+response.toString());
+		account.getXmppConnection().sendIqPacket(response, null);
+	}
+	
+	private void connectWithCandidates() {
+		for(Element canditate : this.candidates) {
+			String host = canditate.getAttribute("host");
+			int port = Integer.parseInt(canditate.getAttribute("port"));
+			SocksConnection socksConnection = new SocksConnection(this, host, port);
+			socksConnection.connect();
+			this.connections.put(canditate.getAttribute("cid"), socksConnection);
+		}
+	}
+	
+	private void sendCandidateUsed(String cid) {
+		
+	}
 
+	public String getInitiator() {
+		return this.initiator;
+	}
+	
+	public String getResponder() {
+		return this.responder;
+	}
 }

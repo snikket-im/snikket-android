@@ -33,6 +33,13 @@ public class JinglePacket extends IqPacket {
 		return this;
 	}
 	
+	public Content getJingleContent() {
+		if (this.content==null) {
+			this.content = new Content();
+		}
+		return this.content;
+	}
+	
 	public JinglePacket setReason(Reason reason) {
 		this.reason = reason;
 		return this;

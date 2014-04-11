@@ -748,8 +748,10 @@ public class XmppConnection implements Runnable {
 	}
 
 	public void sendIqPacket(IqPacket packet, OnIqPacketReceived callback) {
-		String id = nextRandomId();
-		packet.setAttribute("id", id);
+		if (packet.getId()==null) {
+			String id = nextRandomId();
+			packet.setAttribute("id", id);
+		}
 		packet.setFrom(account.getFullJid());
 		this.sendPacket(packet, callback);
 	}

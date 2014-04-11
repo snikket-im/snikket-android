@@ -23,7 +23,7 @@ public class JingleConnectionManager {
 	private List<JingleConnection> connections = new ArrayList<JingleConnection>(); // make
 																					// concurrent
 
-	private ConcurrentHashMap<String, Element> primaryCanditates = new ConcurrentHashMap<String, Element>();
+	private ConcurrentHashMap<String, Element> primaryCandidates = new ConcurrentHashMap<String, Element>();
 
 	private SecureRandom random = new SecureRandom();
 
@@ -67,9 +67,9 @@ public class JingleConnectionManager {
 		return this.xmppConnectionService;
 	}
 
-	public void getPrimaryCanditate(Account account,
-			final OnPrimaryCanditateFound listener) {
-		if (!this.primaryCanditates.containsKey(account.getJid())) {
+	public void getPrimaryCandidate(Account account,
+			final OnPrimaryCandidateFound listener) {
+		if (!this.primaryCandidates.containsKey(account.getJid())) {
 			String xmlns = "http://jabber.org/protocol/bytestreams";
 			final String proxy = account.getXmppConnection()
 					.findDiscoItemByFeature(xmlns);
@@ -90,34 +90,34 @@ public class JingleConnectionManager {
 								if (streamhost != null) {
 									Log.d("xmppService", "streamhost found "
 											+ streamhost.toString());
-									Element canditate = new Element("canditate");
-									canditate.setAttribute("cid",
+									Element candidate = new Element("candidate");
+									candidate.setAttribute("cid",
 											nextRandomId());
-									canditate.setAttribute("host",
+									candidate.setAttribute("host",
 											streamhost.getAttribute("host"));
-									canditate.setAttribute("port",
+									candidate.setAttribute("port",
 											streamhost.getAttribute("port"));
-									canditate.setAttribute("type", "proxy");
-									canditate.setAttribute("jid", proxy);
-									canditate
+									candidate.setAttribute("type", "proxy");
+									candidate.setAttribute("jid", proxy);
+									candidate
 											.setAttribute("priority", "655360");
-									primaryCanditates.put(account.getJid(),
-											canditate);
-									listener.onPrimaryCanditateFound(true,
-											canditate);
+									primaryCandidates.put(account.getJid(),
+											candidate);
+									listener.onPrimaryCandidateFound(true,
+											candidate);
 								} else {
-									listener.onPrimaryCanditateFound(false,
+									listener.onPrimaryCandidateFound(false,
 											null);
 								}
 							}
 						});
 			} else {
-				listener.onPrimaryCanditateFound(false, null);
+				listener.onPrimaryCandidateFound(false, null);
 			}
 
 		} else {
-			listener.onPrimaryCanditateFound(true,
-					this.primaryCanditates.get(account.getJid()));
+			listener.onPrimaryCandidateFound(true,
+					this.primaryCandidates.get(account.getJid()));
 		}
 	}
 
