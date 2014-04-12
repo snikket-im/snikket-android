@@ -81,7 +81,9 @@ public class ShareWithActivity extends XmppActivity {
 			}
 		});
 		for(final Conversation conversation : convList) {
-			View view = createContactView(conversation.getName(useSubject), conversation.getLatestMessage().getBody().trim(), UIHelper.getContactPicture(conversation.getContact(),conversation.getName(useSubject), 90,this.getApplicationContext()));
+			View view = createContactView(conversation.getName(useSubject),
+					conversation.getLatestMessage().getBody().trim(),
+					UIHelper.getContactPicture(conversation, 90,this.getApplicationContext()));
 			view.setOnClickListener(new OnClickListener() {
 				
 				@Override
@@ -115,7 +117,8 @@ public class ShareWithActivity extends XmppActivity {
 		
 		for(int i = 0; i < contactsList.size(); ++i) {
 			final Contact con = contactsList.get(i);
-			View view = createContactView(con.getDisplayName(), con.getJid(), UIHelper.getContactPicture(con,null, 90,this.getApplicationContext()));
+			View view = createContactView(con.getDisplayName(), con.getJid(), 
+					UIHelper.getContactPicture(con, 90, this.getApplicationContext()));
 			view.setOnClickListener(new OnClickListener() {
 				
 				@Override

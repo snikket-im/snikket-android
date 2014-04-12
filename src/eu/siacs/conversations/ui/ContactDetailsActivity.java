@@ -230,7 +230,7 @@ public class ContactDetailsActivity extends XmppActivity {
 		contactJid.setText(contact.getJid());
 		accountJid.setText(contact.getAccount().getJid());
 
-		UIHelper.prepareContactBadge(this, badge, contact);
+		UIHelper.prepareContactBadge(this, badge, contact, getApplicationContext());
 
 		if (contact.getSystemAccount() == null) {
 			badge.setOnClickListener(onBadgeClick);

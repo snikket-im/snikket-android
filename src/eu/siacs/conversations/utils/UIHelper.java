@@ -12,6 +12,8 @@ import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
+import eu.siacs.conversations.entities.MucOptions;
+import eu.siacs.conversations.entities.MucOptions.User;
 import eu.siacs.conversations.ui.ConversationActivity;
 import eu.siacs.conversations.ui.ManageAccountActivity;
 
@@ -65,47 +67,209 @@ public class UIHelper {
 		}
 	}
 
-	private static Bitmap getUnknownContactPicture(String name, int size) {
-		String firstLetter = (name.length() > 0) ? name.substring(0, 1).toUpperCase(Locale.US) : " ";
-
+	private static int getNameColor(String name) {
 		int holoColors[] = { 0xFF1da9da, 0xFFb368d9, 0xFF83b600, 0xFFffa713,
 				0xFFe92727 };
-
 		int color = holoColors[Math.abs(name.toLowerCase(Locale.getDefault()).hashCode()) % holoColors.length];
+		return color;
+	}
 
+	private static Bitmap getUnknownContactPicture(String[] names, int size) {
+		final int fgColor = 0xffe5e5e5;
+		int tiles = (names.length > 4)? 4 : names.length;
 		Bitmap bitmap = Bitmap
 				.createBitmap(size, size, Bitmap.Config.ARGB_8888);
 		Canvas canvas = new Canvas(bitmap);
 
-		bitmap.eraseColor(color);
+		String[] letters = new String[tiles];
+		int[] colors = new int[tiles];
+		for(int i = 0; i < tiles; ++i) {
+			letters[i] = (names[i].length() > 0) ?
+					names[i].substring(0, 1).toUpperCase(Locale.US) : " ";
+			colors[i] = getNameColor(names[i]);
+		}
+		Paint textPaint = new Paint(), tilePaint = new Paint();
+		textPaint.setColor(fgColor);
+		Rect rect, left, right, topLeft, bottomLeft, topRight, bottomRight; 
+		float width;
 
-		Paint paint = new Paint();
-		paint.setColor(0xffe5e5e5);
-		paint.setTextSize((float) (size * 0.9));
-		paint.setAntiAlias(true);
-		Rect rect = new Rect();
-		paint.getTextBounds(firstLetter, 0, 1, rect);
-		float width = paint.measureText(firstLetter);
-		canvas.drawText(firstLetter, (size / 2) - (width / 2), (size / 2)
-				+ (rect.height() / 2), paint);
+		switch(tiles) {
+			case 1:
+				bitmap.eraseColor(colors[0]);
 
+				textPaint.setTextSize((float) (size * 0.9));
+				textPaint.setAntiAlias(true);
+				rect = new Rect();
+				textPaint.getTextBounds(letters[0], 0, 1, rect);
+				width = textPaint.measureText(letters[0]);
+				canvas.drawText(letters[0], (size / 2) - (width / 2), (size / 2)
+						+ (rect.height() / 2), textPaint);
+				break;
+
+			case 2:
+				bitmap.eraseColor(fgColor);
+
+				tilePaint.setColor(colors[0]);
+				left = new Rect(0, 0, (size/2)-2, size);
+				canvas.drawRect(left, tilePaint);
+
+				tilePaint.setColor(colors[1]);
+				right = new Rect((size/2)+2, 0, size, size);
+				canvas.drawRect(right, tilePaint);
+
+				textPaint.setTextSize((float) (size * 0.9*0.5));
+				textPaint.setAntiAlias(true);
+				rect = new Rect();
+				textPaint.getTextBounds(letters[0], 0, 1, rect);
+				width = textPaint.measureText(letters[0]);
+				canvas.drawText(letters[0], (size / 4) - (width / 2), (size / 2)
+						+ (rect.height() / 2), textPaint);
+				textPaint.getTextBounds(letters[1], 0, 1, rect);
+				width = textPaint.measureText(letters[1]);
+				canvas.drawText(letters[1], (3 * size / 4) - (width / 2), (size / 2)
+						+ (rect.height() / 2), textPaint);
+				break;
+
+			case 3:
+				bitmap.eraseColor(fgColor);
+
+				tilePaint.setColor(colors[0]);
+				left = new Rect(0, 0, (size/2)-2, size);
+				canvas.drawRect(left, tilePaint);
+
+				tilePaint.setColor(colors[1]);
+				topRight = new Rect((size/2)+2, 0, size, (size/2 - 2));
+				canvas.drawRect(topRight, tilePaint);
+
+				tilePaint.setColor(colors[2]);
+				bottomRight = new Rect((size/2)+2, (size/2 + 2), size, size);
+				canvas.drawRect(bottomRight, tilePaint);
+
+				textPaint.setTextSize((float) (size * 0.9*0.5));
+				textPaint.setAntiAlias(true);
+				rect = new Rect();
+
+				textPaint.getTextBounds(letters[0], 0, 1, rect);
+				width = textPaint.measureText(letters[0]);
+				canvas.drawText(letters[0], (size / 4) - (width / 2), (size / 2)
+						+ (rect.height() / 2), textPaint);
+
+				textPaint.getTextBounds(letters[1], 0, 1, rect);
+				width = textPaint.measureText(letters[1]);
+				canvas.drawText(letters[1], (3 * size / 4) - (width / 2), (size / 4)
+						+ (rect.height() / 2), textPaint);
+
+				textPaint.getTextBounds(letters[2], 0, 1, rect);
+				width = textPaint.measureText(letters[2]);
+				canvas.drawText(letters[2], (3 * size / 4) - (width / 2), (3* size / 4)
+						+ (rect.height() / 2), textPaint);
+				break;
+
+			case 4:
+				bitmap.eraseColor(fgColor);
+
+				tilePaint.setColor(colors[0]);
+				topLeft = new Rect(0, 0, (size/2)-2, (size/2)-2);
+				canvas.drawRect(topLeft, tilePaint);
+
+				tilePaint.setColor(colors[1]);
+				bottomLeft = new Rect(0, (size/2)+2, (size/2)-2, size);
+				canvas.drawRect(bottomLeft, tilePaint);
+
+				tilePaint.setColor(colors[2]);
+				topRight = new Rect((size/2)+2, 0, size, (size/2 - 2));
+				canvas.drawRect(topRight, tilePaint);
+
+				tilePaint.setColor(colors[3]);
+				bottomRight = new Rect((size/2)+2, (size/2 + 2), size, size);
+				canvas.drawRect(bottomRight, tilePaint);
+
+				textPaint.setTextSize((float) (size * 0.9*0.5));
+				textPaint.setAntiAlias(true);
+				rect = new Rect();
+
+				textPaint.getTextBounds(letters[0], 0, 1, rect);
+				width = textPaint.measureText(letters[0]);
+				canvas.drawText(letters[0], (size / 4) - (width / 2), (size / 4)
+						+ (rect.height() / 2), textPaint);
+
+				textPaint.getTextBounds(letters[1], 0, 1, rect);
+				width = textPaint.measureText(letters[1]);
+				canvas.drawText(letters[1], (size / 4) - (width / 2), (3* size / 4)
+						+ (rect.height() / 2), textPaint);
+
+				textPaint.getTextBounds(letters[2], 0, 1, rect);
+				width = textPaint.measureText(letters[2]);
+				canvas.drawText(letters[2], (3 * size / 4) - (width / 2), (size / 4)
+						+ (rect.height() / 2), textPaint);
+
+				textPaint.getTextBounds(letters[3], 0, 1, rect);
+				width = textPaint.measureText(letters[3]);
+				canvas.drawText(letters[3], (3 * size / 4) - (width / 2), (3* size / 4)
+						+ (rect.height() / 2), textPaint);
+				break;
+
+			default:
+				bitmap.eraseColor(colors[0]);
+
+				textPaint.setTextSize((float) (size * 0.9));
+				textPaint.setAntiAlias(true);
+				rect = new Rect();
+				textPaint.getTextBounds(letters[0], 0, 1, rect);
+				width = textPaint.measureText(letters[0]);
+				canvas.drawText(letters[0], (size / 2) - (width / 2), (size / 2)
+						+ (rect.height() / 2), textPaint);
+				break;
+
+		}
 		return bitmap;
 	}
-	
-	public static Bitmap getContactPicture(Contact contact, String fallback, int size, Context context) {
-		if (contact==null) {
-			return getUnknownContactPicture(fallback, size);
+
+	private static Bitmap getMucContactPicture(Conversation conversation, int size) {
+		List<User> members = conversation.getMucOptions().getUsers();
+		if (members.size() == 0) {
+			return getUnknownContactPicture(new String[]{conversation.getName(false)}, size);
 		}
+		String[] names = new String[members.size()+1];
+		names[0] = conversation.getMucOptions().getNick();
+		for(int i = 0; i < members.size(); ++i) {
+			names[i+1] = members.get(i).getName();
+		}
+
+		return getUnknownContactPicture(names, size);
+	}
+
+	public static Bitmap getContactPicture(Conversation conversation, int size, Context context) {
+		if(conversation.getMode() == Conversation.MODE_SINGLE) {
+			if (conversation.getContact() != null){
+				return getContactPicture(conversation.getContact(), size, context);
+			} else {
+				return getContactPicture(conversation.getName(false), size);
+			}
+		} else{
+			return getMucContactPicture(conversation, size);
+		}
+	}
+
+	public static Bitmap getContactPicture(Contact contact, int size, Context context) {
 		String uri = contact.getProfilePhoto();
 		if (uri==null) {
-			return getUnknownContactPicture(contact.getDisplayName(), size);
+			return getContactPicture(contact.getDisplayName(), size);
 		}
 		try {
 			Bitmap bm = BitmapFactory.decodeStream(context.getContentResolver().openInputStream(Uri.parse(uri)));
 			return Bitmap.createScaledBitmap(bm, size, size, false);
 		} catch (FileNotFoundException e) {
-			return getUnknownContactPicture(contact.getDisplayName(), size);
+			return getContactPicture(contact.getDisplayName(), size);
 		}
+	}
+
+	public static Bitmap getContactPicture(String name, int size, Context context) {
+		return getContactPicture(name, size);
+	}
+
+	public static Bitmap getContactPicture(String name, int size) {
+		return getUnknownContactPicture(new String[]{name}, size);
 	}
 
 	public static Bitmap getErrorPicture(int size) {
@@ -212,7 +376,7 @@ public class UIHelper {
 		} else if (unread.size() == 1) {
 			Conversation conversation = unread.get(0);
 			targetUuid = conversation.getUuid();
-			mBuilder.setLargeIcon(UIHelper.getContactPicture(conversation.getContact(), conversation.getName(useSubject), (int) res
+			mBuilder.setLargeIcon(UIHelper.getContactPicture(conversation, (int) res
 							.getDimension(android.R.dimen.notification_large_icon_width), context));
 			mBuilder.setContentTitle(conversation.getName(useSubject));
 			if (notify) {
@@ -263,7 +427,7 @@ public class UIHelper {
 			if (notify) {
 				if (vibrate) {
 					int dat = 70;
-					long[] pattern = {0,3*dat,dat,dat,dat,3*dat,dat,dat};
+					long[] pattern = {0,3*dat,dat,dat};
 					mBuilder.setVibrate(pattern);
 				}
 				mBuilder.setLights(0xffffffff, 2000, 4000);
@@ -310,23 +474,13 @@ public class UIHelper {
 	}
 
 	public static void prepareContactBadge(final Activity activity,
-			QuickContactBadge badge, final Contact contact) {
+			QuickContactBadge badge, final Contact contact, Context context) {
 		if (contact.getSystemAccount() != null) {
 			String[] systemAccount = contact.getSystemAccount().split("#");
 			long id = Long.parseLong(systemAccount[0]);
 			badge.assignContactUri(Contacts.getLookupUri(id, systemAccount[1]));
-
-			if (contact.getProfilePhoto() != null) {
-				badge.setImageURI(Uri.parse(contact.getProfilePhoto()));
-			} else {
-				badge.setImageBitmap(UIHelper.getUnknownContactPicture(
-						contact.getDisplayName(), 400));
-			}
-		} else {
-			badge.setImageBitmap(UIHelper.getUnknownContactPicture(
-					contact.getDisplayName(), 400));
 		}
-
+		badge.setImageBitmap(UIHelper.getContactPicture(contact, 400, context));
 	}
 
 	public static AlertDialog getVerifyFingerprintDialog(
@@ -370,12 +524,12 @@ public class UIHelper {
 					return BitmapFactory.decodeStream(activity
 							.getContentResolver().openInputStream(selfiUri));
 				} catch (FileNotFoundException e) {
-					return getUnknownContactPicture(account.getJid(), size);
+					return getContactPicture(account.getJid(), size);
 				}
 			}
-			return getUnknownContactPicture(account.getJid(), size);
+			return getContactPicture(account.getJid(), size);
 		} else {
-			return getUnknownContactPicture(account.getJid(), size);
+			return getContactPicture(account.getJid(), size);
 		}
 	}
 }

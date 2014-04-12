@@ -614,7 +614,12 @@ public class ConversationFragment extends Fragment {
 			if (bitmaps.containsKey(name)) {
 				return bitmaps.get(name);
 			} else {
-				Bitmap bm = UIHelper.getContactPicture(contact, name, 200, context);
+				Bitmap bm;
+				if (contact != null){
+					bm = UIHelper.getContactPicture(contact, 200, context);
+				} else {
+					bm = UIHelper.getContactPicture(name, 200, context);
+				}
 				bitmaps.put(name, bm);
 				return bm;
 			}
