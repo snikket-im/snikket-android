@@ -381,8 +381,7 @@ public class ContactsActivity extends XmppActivity {
 				contactJid.setText(contact.getJid());
 				ImageView imageView = (ImageView) view
 						.findViewById(R.id.contact_photo);
-				imageView.setImageBitmap(UIHelper.getContactPicture(contact,
-						null, 90, this.getContext()));
+				imageView.setImageBitmap(UIHelper.getContactPicture(contact, 90, this.getContext()));
 				return view;
 			}
 		};
