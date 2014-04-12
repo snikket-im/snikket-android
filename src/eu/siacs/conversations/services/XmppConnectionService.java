@@ -407,7 +407,6 @@ public class XmppConnectionService extends Service {
 		message.setPresence(presence);
 		message.setType(Message.TYPE_IMAGE);
 		File file = this.fileBackend.copyImageToPrivateStorage(message, uri);
-		Log.d(LOGTAG,"new file"+file.getAbsolutePath());
 		conversation.getMessages().add(message);
 		databaseBackend.createMessage(message);
 		sendMessage(message, null);

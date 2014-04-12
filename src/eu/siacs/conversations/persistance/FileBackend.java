@@ -1,11 +1,15 @@
 package eu.siacs.conversations.persistance;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -16,6 +20,7 @@ import android.util.LruCache;
 
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
+import eu.siacs.conversations.utils.CryptoHelper;
 
 public class FileBackend {
 
@@ -84,6 +89,7 @@ public class FileBackend {
 				Log.d("xmppService", "couldnt compress");
 			}
 			os.close();
+			message.setBody(this.createSha1(file));
 			return file;
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -111,5 +117,44 @@ public class FileBackend {
 			this.thumbnailCache.put(message.getUuid(), thumbnail);
 		}
 		return thumbnail;
+	}
+	
+	private String createSha1(final File file) {
+		InputStream fis = null;
+		try {
+			MessageDigest digest = MessageDigest.getInstance("SHA-1");
+			fis = new FileInputStream(file);
+		    int n = 0;
+		    byte[] buffer = new byte[8192];
+		    while (n != -1) {
+		        n = fis.read(buffer);
+		        if (n > 0) {
+		            digest.update(buffer, 0, n);
+		        }
+		    }
+		    fis.close();
+		    return CryptoHelper.bytesToHex(digest.digest());
+		} catch (NoSuchAlgorithmException e) {
+			return null;
+		} catch (FileNotFoundException e) {
+			if (fis!=null) {
+				try {
+					fis.close();
+					return null;
+				} catch (IOException e1) {
+					return null;
+				}
+			}
+		} catch (IOException e) {
+			if (fis!=null) {
+				try {
+					fis.close();
+					return null;
+				} catch (IOException e1) {
+					return null;
+				}
+			}
+		}
+		return null;
 	}
 }

@@ -15,12 +15,13 @@ public class Content extends Element {
 		super("content");
 	}
 
-	public void offerFile(File actualFile) {
+	public void offerFile(File actualFile, String hash) {
 		Element description = this.addChild("description", "urn:xmpp:jingle:apps:file-transfer:3");
 		Element offer = description.addChild("offer");
 		Element file = offer.addChild("file");
 		file.addChild("size").setContent(""+actualFile.length());
 		file.addChild("name").setContent(actualFile.getName());
+		file.addChild("hash","urn:xmpp:hashes:1").setAttribute("algo", "sha-1").setContent(hash);
 	}
 
 	public void setCandidates(String transportId, List<Element> canditates) {

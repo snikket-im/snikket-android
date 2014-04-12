@@ -34,6 +34,7 @@ public class JingleConnection {
 	private String responder;
 	private List<Element> candidates = new ArrayList<Element>();
 	private HashMap<String, SocksConnection> connections = new HashMap<String, SocksConnection>();
+	private File file = null;
 	
 	private OnIqPacketReceived responseListener = new OnIqPacketReceived() {
 		
@@ -110,7 +111,8 @@ public class JingleConnection {
 		if (message.getType() == Message.TYPE_IMAGE) {
 			content.setAttribute("creator", "initiator");
 			content.setAttribute("name", "a-file-offer");
-			content.offerFile(this.mXmppConnectionService.getFileBackend().getImageFile(message));
+			this.file = this.mXmppConnectionService.getFileBackend().getImageFile(message);
+			content.offerFile(file,message.getBody());
 			content.setCandidates(this.mJingleConnectionManager.nextRandomId(),this.candidates);
 			packet.setContent(content);
 			Log.d("xmppService",packet.toString());
