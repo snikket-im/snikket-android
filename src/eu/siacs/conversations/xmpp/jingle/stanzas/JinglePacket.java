@@ -45,6 +45,10 @@ public class JinglePacket extends IqPacket {
 		return this;
 	}
 	
+	public Reason getReason() {
+		return this.reason;
+	}
+	
 	private void build() {
 		this.children.clear();
 		this.jingle.clearChildren();

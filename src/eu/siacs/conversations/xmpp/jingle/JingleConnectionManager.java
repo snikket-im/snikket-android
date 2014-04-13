@@ -32,15 +32,20 @@ public class JingleConnectionManager {
 	}
 
 	public void deliverPacket(Account account, JinglePacket packet) {
-		for (JingleConnection connection : connections) {
-			if (connection.getAccountJid().equals(account.getJid()) && connection
-					.getSessionId().equals(packet.getSessionId()) && connection
-					.getCounterPart().equals(packet.getFrom())) {
-				connection.deliverPacket(packet);
-				return;
+		if (packet.isAction("session-initiate")) {
+			JingleConnection connection = new JingleConnection(this);
+			connection.init(account,packet);
+		} else {
+			for (JingleConnection connection : connections) {
+				if (connection.getAccountJid().equals(account.getJid()) && connection
+						.getSessionId().equals(packet.getSessionId()) && connection
+						.getCounterPart().equals(packet.getFrom())) {
+					connection.deliverPacket(packet);
+					return;
+				}
 			}
+			Log.d("xmppService","delivering packet failed "+packet.toString());
 		}
-		Log.d("xmppService","delivering packet failed "+packet.toString());
 	}
 
 	public JingleConnection createNewConnection(Message message) {

@@ -1,19 +1,23 @@
 package eu.siacs.conversations.xmpp.jingle;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import android.util.Log;
 
 import eu.siacs.conversations.entities.Account;
+import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.OnIqPacketReceived;
 import eu.siacs.conversations.xmpp.jingle.stanzas.Content;
 import eu.siacs.conversations.xmpp.jingle.stanzas.JinglePacket;
+import eu.siacs.conversations.xmpp.jingle.stanzas.Reason;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
 
 public class JingleConnection {
@@ -24,6 +28,8 @@ public class JingleConnection {
 	public static final int STATUS_INITIATED = 0;
 	public static final int STATUS_ACCEPTED = 1;
 	public static final int STATUS_TERMINATED = 2;
+	public static final int STATUS_CANCELED = 3;
+	public static final int STATUS_FINISHED = 4;
 	public static final int STATUS_FAILED = 99;
 	
 	private int status = -1;
@@ -34,7 +40,7 @@ public class JingleConnection {
 	private String responder;
 	private List<Element> candidates = new ArrayList<Element>();
 	private HashMap<String, SocksConnection> connections = new HashMap<String, SocksConnection>();
-	private File file = null;
+	private JingleFile file = null;
 	
 	private OnIqPacketReceived responseListener = new OnIqPacketReceived() {
 		
@@ -50,7 +56,6 @@ public class JingleConnection {
 	public JingleConnection(JingleConnectionManager mJingleConnectionManager) {
 		this.mJingleConnectionManager = mJingleConnectionManager;
 		this.mXmppConnectionService = mJingleConnectionManager.getXmppConnectionService();
-		this.sessionId = this.mJingleConnectionManager.nextRandomId();
 	}
 	
 	public String getSessionId() {
@@ -68,10 +73,12 @@ public class JingleConnection {
 	public void deliverPacket(JinglePacket packet) {
 		
 		if (packet.isAction("session-terminate")) {
-			if (status == STATUS_INITIATED) {
-				mXmppConnectionService.markMessage(message, Message.STATUS_SEND_REJECTED);
+			Reason reason = packet.getReason();
+			if (reason.hasChild("cancel")) {
+				this.cancel();
+			} else if (reason.hasChild("success")) {
+				this.finish();
 			}
-			status = STATUS_TERMINATED;
 		} else if (packet.isAction("session-accept")) {
 			accept(packet);
 		} else if (packet.isAction("transport-info")) {
@@ -86,6 +93,7 @@ public class JingleConnection {
 		this.account = message.getConversation().getAccount();
 		this.initiator = this.account.getFullJid();
 		this.responder = this.message.getCounterpart();
+		this.sessionId = this.mJingleConnectionManager.nextRandomId();
 		if (this.candidates.size() > 0) {
 			this.sendInitRequest();
 		} else {
@@ -101,6 +109,19 @@ public class JingleConnection {
 			});
 		}
 		
+	}
+	
+	public void init(Account account, JinglePacket packet) {
+		Conversation conversation = this.mXmppConnectionService.findOrCreateConversation(account, packet.getFrom().split("/")[0], false);
+		this.message = new Message(conversation, "receiving image file", Message.ENCRYPTION_NONE);
+		this.message.setType(Message.TYPE_IMAGE);
+		this.message.setStatus(Message.STATUS_RECIEVING);
+		this.account = account;
+		this.initiator = packet.getFrom();
+		this.responder = this.account.getFullJid();
+		this.sessionId = packet.getSessionId();
+		this.candidates.addAll(packet.getJingleContent().getCanditates());
+		Log.d("xmppService","new incomming jingle session "+this.sessionId+" num canditaes:"+this.candidates.size());
 	}
 	
 	private void sendInitRequest() {
@@ -145,8 +166,16 @@ public class JingleConnection {
 		Log.d("xmppService","transport info : "+content.toString());
 		String cid = content.getUsedCandidate();
 		if (cid!=null) {
-			final File file = this.mXmppConnectionService.getFileBackend().getImageFile(this.message);
+			final JingleFile file = this.mXmppConnectionService.getFileBackend().getImageFile(this.message);
 			final SocksConnection connection = this.connections.get(cid);
+			final OnFileTransmitted callback = new OnFileTransmitted() {
+				
+				@Override
+				public void onFileTransmitted(JingleFile file) {
+					Log.d("xmppService","sucessfully transmitted file. sha1:"+file.getSha1Sum());
+				}
+			};
+			final IqPacket response = packet.generateRespone(IqPacket.TYPE_RESULT);
 			if (connection.isProxy()) {
 				IqPacket activation = new IqPacket(IqPacket.TYPE_SET);
 				activation.setTo(connection.getJid());
@@ -157,14 +186,28 @@ public class JingleConnection {
 					
 					@Override
 					public void onIqPacketReceived(Account account, IqPacket packet) {
+						account.getXmppConnection().sendIqPacket(response, null);
 						Log.d("xmppService","activation result: "+packet.toString());
-						connection.send(file);
+						connection.send(file,callback);
 					}
 				});
 			} else {
-				connection.send(file);
+				account.getXmppConnection().sendIqPacket(response, null);
+				connection.send(file,callback);
 			}
 		}
+	}
+	
+	private void finish() {
+		this.status = STATUS_FINISHED;
+		this.mXmppConnectionService.markMessage(this.message, Message.STATUS_SEND);
+		this.disconnect();
+	}
+	
+	public void cancel() {
+		this.disconnect();
+		this.status = STATUS_CANCELED;
+		this.mXmppConnectionService.markMessage(this.message, Message.STATUS_SEND_REJECTED);
 	}
 	
 	private void connectWithCandidates() {
@@ -179,6 +222,15 @@ public class JingleConnection {
 		}
 	}
 	
+	private void disconnect() {
+		Iterator<Entry<String, SocksConnection>> it = this.connections.entrySet().iterator();
+	    while (it.hasNext()) {
+	        Entry<String, SocksConnection> pairs = it.next();
+	        pairs.getValue().disconnect();
+	        it.remove();
+	    }
+	}
+	
 	private void sendCandidateUsed(String cid) {
 		
 	}
@@ -189,5 +241,9 @@ public class JingleConnection {
 	
 	public String getResponder() {
 		return this.responder;
+	}
+	
+	public int getStatus() {
+		return this.status;
 	}
 }

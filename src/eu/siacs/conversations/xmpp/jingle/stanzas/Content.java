@@ -1,10 +1,10 @@
 package eu.siacs.conversations.xmpp.jingle.stanzas;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import eu.siacs.conversations.xml.Element;
+import eu.siacs.conversations.xmpp.jingle.JingleFile;
 
 public class Content extends Element {
 	private Content(String name) {
@@ -15,13 +15,12 @@ public class Content extends Element {
 		super("content");
 	}
 
-	public void offerFile(File actualFile, String hash) {
+	public void offerFile(JingleFile actualFile, String hash) {
 		Element description = this.addChild("description", "urn:xmpp:jingle:apps:file-transfer:3");
 		Element offer = description.addChild("offer");
 		Element file = offer.addChild("file");
-		file.addChild("size").setContent(""+actualFile.length());
+		file.addChild("size").setContent(""+actualFile.getSize());
 		file.addChild("name").setContent(actualFile.getName());
-		file.addChild("hash","urn:xmpp:hashes:1").setAttribute("algo", "sha-1").setContent(hash);
 	}
 
 	public void setCandidates(String transportId, List<Element> canditates) {

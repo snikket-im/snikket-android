@@ -365,6 +365,8 @@ public class XmppConnectionService extends Service {
 					processRosterItems(account, query);
 					mergePhoneContactsWithRoster(null);
 				}
+			} else {
+				Log.d(LOGTAG,"iq packet arrived "+packet.toString());
 			}
 		}
 	};
@@ -1390,6 +1392,8 @@ public class XmppConnectionService extends Service {
 	public void markMessage(Message message, int status) {
 		message.setStatus(status);
 		databaseBackend.updateMessage(message);
-		convChangedListener.onConversationListChanged();
+		if (convChangedListener!=null) {
+			convChangedListener.onConversationListChanged();
+		}
 	}
 }

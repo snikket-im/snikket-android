@@ -9,6 +9,7 @@ public class Message extends AbstractEntity {
 	
 	public static final String TABLENAME = "messages";
 
+	public static final int STATUS_RECIEVING = -1;
 	public static final int STATUS_RECIEVED = 0;
 	public static final int STATUS_UNSEND = 1;
 	public static final int STATUS_SEND = 2;
