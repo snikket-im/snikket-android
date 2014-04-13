@@ -83,6 +83,24 @@ public class UIHelper {
 		return color;
 	}
 
+	private static void drawTile(Canvas canvas, String letter, int tileColor, int textColor, int left, int top, int right, int bottom) {
+		int size = canvas.getWidth();
+		Paint tilePaint = new Paint(), textPaint = new Paint();
+		tilePaint.setColor(tileColor);
+		textPaint.setColor(textColor);
+		textPaint.setTypeface(Typeface.create("sans-serif-light", Typeface.NORMAL));
+		textPaint.setTextSize((float) ((right - left) * 0.8));
+		Rect rect = new Rect();
+
+		canvas.drawRect(new Rect(left, top, right, bottom), tilePaint);
+		textPaint.getTextBounds(letter, 0, 1, rect);
+		float width = textPaint.measureText(letter);
+		canvas.drawText(letter,
+				(right+left)/2 - width/2,
+				(top+bottom)/2 + rect.height()/2,
+				textPaint);
+	}
+
 	private static Bitmap getUnknownContactPicture(String[] names, int size, int bgColor, int fgColor) {
 		int tiles = (names.length > 4)? 4 :
 					(names.length < 1)? 1 :
@@ -108,128 +126,43 @@ public class UIHelper {
 				colors[3] = 0xFF444444;
 			}
 		}
-		Paint textPaint = new Paint(), tilePaint = new Paint();
-		textPaint.setColor(fgColor);
-		textPaint.setTypeface(Typeface.create("sans-serif-light", Typeface.NORMAL));
-		Rect rect, left, right, topLeft, bottomLeft, topRight, bottomRight;
-		float width;
+
+		bitmap.eraseColor(bgColor);
 
 		switch(tiles) {
 			case 1:
-				bitmap.eraseColor(colors[0]);
-
-				textPaint.setTextSize((float) (size * 0.8));
-				textPaint.setAntiAlias(true);
-				rect = new Rect();
-				textPaint.getTextBounds(letters[0], 0, 1, rect);
-				width = textPaint.measureText(letters[0]);
-				canvas.drawText(letters[0], (size / 2) - (width / 2), (size / 2)
-						+ (rect.height() / 2), textPaint);
+				drawTile(canvas, letters[0], colors[0], fgColor,
+						0, 0, size, size);
 				break;
 
 			case 2:
-				bitmap.eraseColor(bgColor);
-
-				tilePaint.setColor(colors[0]);
-				left = new Rect(0, 0, (size/2)-1, size);
-				canvas.drawRect(left, tilePaint);
-
-				tilePaint.setColor(colors[1]);
-				right = new Rect((size/2)+1, 0, size, size);
-				canvas.drawRect(right, tilePaint);
-
-				textPaint.setTextSize((float) (size * 0.8*0.5));
-				textPaint.setAntiAlias(true);
-				rect = new Rect();
-				textPaint.getTextBounds(letters[0], 0, 1, rect);
-				width = textPaint.measureText(letters[0]);
-				canvas.drawText(letters[0], (size / 4) - (width / 2), (size / 2)
-						+ (rect.height() / 2), textPaint);
-				textPaint.getTextBounds(letters[1], 0, 1, rect);
-				width = textPaint.measureText(letters[1]);
-				canvas.drawText(letters[1], (3 * size / 4) - (width / 2), (size / 2)
-						+ (rect.height() / 2), textPaint);
+				drawTile(canvas, letters[0], colors[0], fgColor,
+						0, 0, size/2 - 1, size);
+				drawTile(canvas, letters[1], colors[1], fgColor,
+						size/2 + 1, 0, size, size);
 				break;
 
 			case 3:
-				bitmap.eraseColor(bgColor);
-
-				tilePaint.setColor(colors[0]);
-				left = new Rect(0, 0, (size/2)-1, size);
-				canvas.drawRect(left, tilePaint);
-
-				tilePaint.setColor(colors[1]);
-				topRight = new Rect((size/2)+1, 0, size, (size/2 - 1));
-				canvas.drawRect(topRight, tilePaint);
-
-				tilePaint.setColor(colors[2]);
-				bottomRight = new Rect((size/2)+1, (size/2 + 1), size, size);
-				canvas.drawRect(bottomRight, tilePaint);
-
-				textPaint.setTextSize((float) (size * 0.8*0.5));
-				textPaint.setAntiAlias(true);
-				rect = new Rect();
-
-				textPaint.getTextBounds(letters[0], 0, 1, rect);
-				width = textPaint.measureText(letters[0]);
-				canvas.drawText(letters[0], (size / 4) - (width / 2), (size / 2)
-						+ (rect.height() / 2), textPaint);
-
-				textPaint.getTextBounds(letters[1], 0, 1, rect);
-				width = textPaint.measureText(letters[1]);
-				canvas.drawText(letters[1], (3 * size / 4) - (width / 2), (size / 4)
-						+ (rect.height() / 2), textPaint);
-
-				textPaint.getTextBounds(letters[2], 0, 1, rect);
-				width = textPaint.measureText(letters[2]);
-				canvas.drawText(letters[2], (3 * size / 4) - (width / 2), (3* size / 4)
-						+ (rect.height() / 2), textPaint);
+				drawTile(canvas, letters[0], colors[0], fgColor,
+						0, 0, size/2 - 1, size);
+				drawTile(canvas, letters[1], colors[1], fgColor,
+						size/2 + 1, 0, size, size/2 - 1);
+				drawTile(canvas, letters[2], colors[2], fgColor,
+						size/2 + 1, size/2 + 1, size, size);
 				break;
 
 			case 4:
-				bitmap.eraseColor(bgColor);
-
-				tilePaint.setColor(colors[0]);
-				topLeft = new Rect(0, 0, (size/2)-1, (size/2)-1);
-				canvas.drawRect(topLeft, tilePaint);
-
-				tilePaint.setColor(colors[1]);
-				bottomLeft = new Rect(0, (size/2)+1, (size/2)-1, size);
-				canvas.drawRect(bottomLeft, tilePaint);
-
-				tilePaint.setColor(colors[2]);
-				topRight = new Rect((size/2)+1, 0, size, (size/2 - 1));
-				canvas.drawRect(topRight, tilePaint);
-
-				tilePaint.setColor(colors[3]);
-				bottomRight = new Rect((size/2)+1, (size/2 + 1), size, size);
-				canvas.drawRect(bottomRight, tilePaint);
-
-				textPaint.setTextSize((float) (size * 0.8*0.5));
-				textPaint.setAntiAlias(true);
-				rect = new Rect();
-
-				textPaint.getTextBounds(letters[0], 0, 1, rect);
-				width = textPaint.measureText(letters[0]);
-				canvas.drawText(letters[0], (size / 4) - (width / 2), (size / 4)
-						+ (rect.height() / 2), textPaint);
-
-				textPaint.getTextBounds(letters[1], 0, 1, rect);
-				width = textPaint.measureText(letters[1]);
-				canvas.drawText(letters[1], (size / 4) - (width / 2), (3* size / 4)
-						+ (rect.height() / 2), textPaint);
-
-				textPaint.getTextBounds(letters[2], 0, 1, rect);
-				width = textPaint.measureText(letters[2]);
-				canvas.drawText(letters[2], (3 * size / 4) - (width / 2), (size / 4)
-						+ (rect.height() / 2), textPaint);
-
-				textPaint.getTextBounds(letters[3], 0, 1, rect);
-				width = textPaint.measureText(letters[3]);
-				canvas.drawText(letters[3], (3 * size / 4) - (width / 2), (3* size / 4)
-						+ (rect.height() / 2), textPaint);
+				drawTile(canvas, letters[0], colors[0], fgColor,
+						0, 0, size/2 - 1, size/2 - 1);
+				drawTile(canvas, letters[0], colors[0], fgColor,
+						0, size/2 + 1, size/2 - 1, size);
+				drawTile(canvas, letters[2], colors[2], fgColor,
+						size/2 + 1, 0, size, size/2 - 1);
+				drawTile(canvas, letters[3], colors[3], fgColor,
+						size/2 + 1, size/2 + 1, size, size);
 				break;
 		}
+
 		return bitmap;
 	}
 	
