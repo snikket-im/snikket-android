@@ -35,13 +35,16 @@ public class JingleConnectionManager {
 		if (packet.isAction("session-initiate")) {
 			JingleConnection connection = new JingleConnection(this);
 			connection.init(account,packet);
+			connections.add(connection);
 		} else {
 			for (JingleConnection connection : connections) {
-				if (connection.getAccountJid().equals(account.getJid()) && connection
+				if (connection.getAccountJid().equals(account.getFullJid()) && connection
 						.getSessionId().equals(packet.getSessionId()) && connection
 						.getCounterPart().equals(packet.getFrom())) {
 					connection.deliverPacket(packet);
 					return;
+				} else {
+					Log.d("xmppService","no match sid:"+connection.getSessionId()+"="+packet.getSessionId()+" counterpart:"+connection.getCounterPart()+"="+packet.getFrom()+" account:"+connection.getAccountJid()+"="+packet.getTo());
 				}
 			}
 			Log.d("xmppService","delivering packet failed "+packet.toString());
@@ -116,6 +119,14 @@ public class JingleConnectionManager {
 		} else {
 			listener.onPrimaryCandidateFound(true,
 					this.primaryCandidates.get(account.getJid()));
+		}
+	}
+	
+	public String getPrimaryCandidateId(Account account) {
+		if (this.primaryCandidates.containsKey(account.getJid())) {
+			return this.primaryCandidates.get(account.getJid()).getAttribute("cid");
+		} else {
+			return null;
 		}
 	}
 

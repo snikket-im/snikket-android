@@ -1059,12 +1059,10 @@ public class XmppConnectionService extends Service {
 			OnConversationListChangedListener listener) {
 		this.convChangedListener = listener;
 		this.convChangedListenerCount++;
-		Log.d(LOGTAG,"registered on conv changed in backend ("+convChangedListenerCount+")");
 	}
 
 	public void removeOnConversationListChangedListener() {
 		this.convChangedListenerCount--;
-		Log.d(LOGTAG,"someone on conv changed listener removed listener ("+convChangedListenerCount+")");
 		if (this.convChangedListenerCount==0) {
 			this.convChangedListener = null;
 		}

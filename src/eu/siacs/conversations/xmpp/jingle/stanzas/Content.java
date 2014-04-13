@@ -56,6 +56,14 @@ public class Content extends Element {
 		}
 	}
 	
+	public String getTransportId() {
+		Element transport = this.findChild("transport", "urn:xmpp:jingle:transports:s5b:1");
+		if (transport==null) {
+			return null;
+		}
+		return transport.getAttribute("sid");
+	}
+	
 	public String getUsedCandidate() {
 		Element transport = this.findChild("transport", "urn:xmpp:jingle:transports:s5b:1");
 		if (transport==null) {
@@ -67,6 +75,17 @@ public class Content extends Element {
 		} else {
 			return usedCandidate.getAttribute("cid");
 		}
+	}
+	
+	public void setUsedCandidate(String transportId, String cid) {
+		Element transport = this.findChild("transport", "urn:xmpp:jingle:transports:s5b:1");
+		if (transport==null) {
+			transport = this.addChild("transport", "urn:xmpp:jingle:transports:s5b:1");
+		}
+		transport.setAttribute("sid", transportId);
+		transport.clearChildren();
+		Element usedCandidate = transport.addChild("candidate-used");
+		usedCandidate.setAttribute("cid",cid);
 	}
 
 	public void addCandidate(Element candidate) {

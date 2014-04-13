@@ -10,7 +10,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.util.Log;
 import android.util.LruCache;
 
 import eu.siacs.conversations.entities.Conversation;
@@ -81,7 +80,7 @@ public class FileBackend {
 			Bitmap scalledBitmap = resize(originalBitmap, IMAGE_SIZE);
 			boolean success = scalledBitmap.compress(Bitmap.CompressFormat.WEBP,75,os);
 			if (!success) {
-				Log.d("xmppService", "couldnt compress");
+				//Log.d("xmppService", "couldnt compress");
 			}
 			os.close();
 			return file;
@@ -104,7 +103,6 @@ public class FileBackend {
 	public Bitmap getThumbnailFromMessage(Message message, int size) {
 		Bitmap thumbnail = thumbnailCache.get(message.getUuid());
 		if (thumbnail==null) {
-			Log.d("xmppService","creating new thumbnail" + message.getUuid());
 			Bitmap fullsize = BitmapFactory.decodeFile(getJingleFile(message)
 					.getAbsolutePath());
 			thumbnail = resize(fullsize, size);
