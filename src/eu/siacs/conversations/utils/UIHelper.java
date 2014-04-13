@@ -84,18 +84,30 @@ public class UIHelper {
 		return color;
 	}
 
-		int tiles = (names.length > 4)? 4 : names.length;
 	private static Bitmap getUnknownContactPicture(String[] names, int size, int bgColor, int fgColor) {
+		int tiles = (names.length > 4)? 4 :
+					(names.length < 1)? 1 :
+						names.length;
 		Bitmap bitmap = Bitmap
 				.createBitmap(size, size, Bitmap.Config.ARGB_8888);
 		Canvas canvas = new Canvas(bitmap);
 
 		String[] letters = new String[tiles];
 		int[] colors = new int[tiles];
-		for(int i = 0; i < tiles; ++i) {
-			letters[i] = (names[i].length() > 0) ?
-					names[i].substring(0, 1).toUpperCase(Locale.US) : " ";
-			colors[i] = getNameColor(names[i]);
+		if (names.length < 1) {
+			letters[0] = "?";
+			colors[0] = 0xFFe92727;
+		} else {
+			for(int i = 0; i < tiles; ++i) {
+				letters[i] = (names[i].length() > 0) ?
+						names[i].substring(0, 1).toUpperCase(Locale.US) : " ";
+				colors[i] = getNameColor(names[i]);
+			}
+
+			if (names.length > 4) {
+				letters[3] = "\u2026"; // Unicode ellipsis
+				colors[3] = 0xFF444444;
+			}
 		}
 		Paint textPaint = new Paint(), tilePaint = new Paint();
 		textPaint.setColor(fgColor);
