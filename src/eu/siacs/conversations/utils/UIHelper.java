@@ -33,6 +33,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.provider.ContactsContract.Contacts;
@@ -111,14 +112,15 @@ public class UIHelper {
 		}
 		Paint textPaint = new Paint(), tilePaint = new Paint();
 		textPaint.setColor(fgColor);
-		Rect rect, left, right, topLeft, bottomLeft, topRight, bottomRight; 
+		textPaint.setTypeface(Typeface.create("sans-serif-light", Typeface.NORMAL));
+		Rect rect, left, right, topLeft, bottomLeft, topRight, bottomRight;
 		float width;
 
 		switch(tiles) {
 			case 1:
 				bitmap.eraseColor(colors[0]);
 
-				textPaint.setTextSize((float) (size * 0.9));
+				textPaint.setTextSize((float) (size * 0.8));
 				textPaint.setAntiAlias(true);
 				rect = new Rect();
 				textPaint.getTextBounds(letters[0], 0, 1, rect);
@@ -131,14 +133,14 @@ public class UIHelper {
 				bitmap.eraseColor(bgColor);
 
 				tilePaint.setColor(colors[0]);
-				left = new Rect(0, 0, (size/2)-2, size);
+				left = new Rect(0, 0, (size/2)-1, size);
 				canvas.drawRect(left, tilePaint);
 
 				tilePaint.setColor(colors[1]);
-				right = new Rect((size/2)+2, 0, size, size);
+				right = new Rect((size/2)+1, 0, size, size);
 				canvas.drawRect(right, tilePaint);
 
-				textPaint.setTextSize((float) (size * 0.9*0.5));
+				textPaint.setTextSize((float) (size * 0.8*0.5));
 				textPaint.setAntiAlias(true);
 				rect = new Rect();
 				textPaint.getTextBounds(letters[0], 0, 1, rect);
@@ -155,18 +157,18 @@ public class UIHelper {
 				bitmap.eraseColor(bgColor);
 
 				tilePaint.setColor(colors[0]);
-				left = new Rect(0, 0, (size/2)-2, size);
+				left = new Rect(0, 0, (size/2)-1, size);
 				canvas.drawRect(left, tilePaint);
 
 				tilePaint.setColor(colors[1]);
-				topRight = new Rect((size/2)+2, 0, size, (size/2 - 2));
+				topRight = new Rect((size/2)+1, 0, size, (size/2 - 1));
 				canvas.drawRect(topRight, tilePaint);
 
 				tilePaint.setColor(colors[2]);
-				bottomRight = new Rect((size/2)+2, (size/2 + 2), size, size);
+				bottomRight = new Rect((size/2)+1, (size/2 + 1), size, size);
 				canvas.drawRect(bottomRight, tilePaint);
 
-				textPaint.setTextSize((float) (size * 0.9*0.5));
+				textPaint.setTextSize((float) (size * 0.8*0.5));
 				textPaint.setAntiAlias(true);
 				rect = new Rect();
 
@@ -190,22 +192,22 @@ public class UIHelper {
 				bitmap.eraseColor(bgColor);
 
 				tilePaint.setColor(colors[0]);
-				topLeft = new Rect(0, 0, (size/2)-2, (size/2)-2);
+				topLeft = new Rect(0, 0, (size/2)-1, (size/2)-1);
 				canvas.drawRect(topLeft, tilePaint);
 
 				tilePaint.setColor(colors[1]);
-				bottomLeft = new Rect(0, (size/2)+2, (size/2)-2, size);
+				bottomLeft = new Rect(0, (size/2)+1, (size/2)-1, size);
 				canvas.drawRect(bottomLeft, tilePaint);
 
 				tilePaint.setColor(colors[2]);
-				topRight = new Rect((size/2)+2, 0, size, (size/2 - 2));
+				topRight = new Rect((size/2)+1, 0, size, (size/2 - 1));
 				canvas.drawRect(topRight, tilePaint);
 
 				tilePaint.setColor(colors[3]);
-				bottomRight = new Rect((size/2)+2, (size/2 + 2), size, size);
+				bottomRight = new Rect((size/2)+1, (size/2 + 1), size, size);
 				canvas.drawRect(bottomRight, tilePaint);
 
-				textPaint.setTextSize((float) (size * 0.9*0.5));
+				textPaint.setTextSize((float) (size * 0.8*0.5));
 				textPaint.setAntiAlias(true);
 				rect = new Rect();
 
