@@ -122,4 +122,8 @@ public class JingleConnectionManager {
 	public String nextRandomId() {
 		return new BigInteger(50, random).toString(32);
 	}
+	
+	public long getAutoAcceptFileSize() {
+		return this.xmppConnectionService.getPreferences().getLong("auto_accept_file_size", 0);
+	}
 }

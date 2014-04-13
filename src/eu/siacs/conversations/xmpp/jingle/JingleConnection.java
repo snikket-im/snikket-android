@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 
 import android.util.Log;
@@ -39,7 +38,9 @@ public class JingleConnection {
 	private String initiator;
 	private String responder;
 	private List<Element> candidates = new ArrayList<Element>();
+	private List<String> candidatesUsedByCounterpart = new ArrayList<String>();
 	private HashMap<String, SocksConnection> connections = new HashMap<String, SocksConnection>();
+	private Content content = new Content();
 	private JingleFile file = null;
 	
 	private OnIqPacketReceived responseListener = new OnIqPacketReceived() {
@@ -100,9 +101,9 @@ public class JingleConnection {
 			this.mJingleConnectionManager.getPrimaryCandidate(account, new OnPrimaryCandidateFound() {
 				
 				@Override
-				public void onPrimaryCandidateFound(boolean success, Element canditate) {
+				public void onPrimaryCandidateFound(boolean success, Element candidate) {
 					if (success) {
-						candidates.add(canditate);
+						mergeCandidate(candidate);
 					}
 					sendInitRequest();
 				}
@@ -116,24 +117,40 @@ public class JingleConnection {
 		this.message = new Message(conversation, "receiving image file", Message.ENCRYPTION_NONE);
 		this.message.setType(Message.TYPE_IMAGE);
 		this.message.setStatus(Message.STATUS_RECIEVING);
+		String[] fromParts = packet.getFrom().split("/");
+		this.message.setPresence(fromParts[1]);
 		this.account = account;
 		this.initiator = packet.getFrom();
 		this.responder = this.account.getFullJid();
 		this.sessionId = packet.getSessionId();
-		this.candidates.addAll(packet.getJingleContent().getCanditates());
-		Log.d("xmppService","new incomming jingle session "+this.sessionId+" num canditaes:"+this.candidates.size());
+		this.content = packet.getJingleContent();
+		this.mergeCandidates(this.content.getCanditates());
+		Element fileOffer = packet.getJingleContent().getFileOffer();
+		if (fileOffer!=null) {
+			this.file = this.mXmppConnectionService.getFileBackend().getJingleFile(message);
+			Element fileSize = fileOffer.findChild("size");
+			Element fileName = fileOffer.findChild("name");
+			this.file.setExpectedSize(Long.parseLong(fileSize.getContent()));
+			if (this.file.getExpectedSize()>=this.mJingleConnectionManager.getAutoAcceptFileSize()) {
+				Log.d("xmppService","auto accepting file from "+packet.getFrom());
+				this.sendAccept();
+			} else {
+				Log.d("xmppService","not auto accepting new file offer with size: "+this.file.getExpectedSize()+" allowed size:"+this.mJingleConnectionManager.getAutoAcceptFileSize());
+			}
+		} else {
+			Log.d("xmppService","no file offer was attached. aborting");
+		}
 	}
 	
 	private void sendInitRequest() {
 		JinglePacket packet = this.bootstrapPacket();
 		packet.setAction("session-initiate");
-		packet.setInitiator(this.account.getFullJid());
-		Content content = new Content();
+		this.content = new Content();
 		if (message.getType() == Message.TYPE_IMAGE) {
 			content.setAttribute("creator", "initiator");
 			content.setAttribute("name", "a-file-offer");
-			this.file = this.mXmppConnectionService.getFileBackend().getImageFile(message);
-			content.offerFile(file,message.getBody());
+			this.file = this.mXmppConnectionService.getFileBackend().getJingleFile(message);
+			content.setFileOffer(this.file);
 			content.setCandidates(this.mJingleConnectionManager.nextRandomId(),this.candidates);
 			packet.setContent(content);
 			Log.d("xmppService",packet.toString());
@@ -142,58 +159,103 @@ public class JingleConnection {
 		}
 	}
 	
+	private void sendAccept() {
+		this.mJingleConnectionManager.getPrimaryCandidate(this.account, new OnPrimaryCandidateFound() {
+			
+			@Override
+			public void onPrimaryCandidateFound(boolean success, Element candidate) {
+				if (success) {
+					if (mergeCandidate(candidate)) {
+						content.addCandidate(candidate);
+					}
+				}
+				JinglePacket packet = bootstrapPacket();
+				packet.setAction("session-accept");
+				packet.setContent(content);
+				Log.d("xmppService","sending session accept: "+packet.toString());
+				account.getXmppConnection().sendIqPacket(packet, new OnIqPacketReceived() {
+					
+					@Override
+					public void onIqPacketReceived(Account account, IqPacket packet) {
+						if (packet.getType() != IqPacket.TYPE_ERROR) {
+							Log.d("xmppService","opsing side has acked our session-accept");
+							connectWithCandidates();
+						}
+					}
+				});
+			}
+		});
+		
+	}
+	
 	private JinglePacket bootstrapPacket() {
 		JinglePacket packet = new JinglePacket();
 		packet.setFrom(account.getFullJid());
 		packet.setTo(this.message.getCounterpart()); //fixme, not right in all cases;
 		packet.setSessionId(this.sessionId);
+		packet.setInitiator(this.initiator);
 		return packet;
 	}
 	
 	private void accept(JinglePacket packet) {
 		Log.d("xmppService","session-accept: "+packet.toString());
 		Content content = packet.getJingleContent();
-		this.candidates.addAll(content.getCanditates());
+		this.mergeCandidates(content.getCanditates());
 		this.status = STATUS_ACCEPTED;
 		this.connectWithCandidates();
 		IqPacket response = packet.generateRespone(IqPacket.TYPE_RESULT);
-		Log.d("xmppService","response "+response.toString());
 		account.getXmppConnection().sendIqPacket(response, null);
 	}
-	
+
 	private void transportInfo(JinglePacket packet) {
 		Content content = packet.getJingleContent();
 		Log.d("xmppService","transport info : "+content.toString());
 		String cid = content.getUsedCandidate();
 		if (cid!=null) {
-			final JingleFile file = this.mXmppConnectionService.getFileBackend().getImageFile(this.message);
-			final SocksConnection connection = this.connections.get(cid);
-			final OnFileTransmitted callback = new OnFileTransmitted() {
+			Log.d("xmppService","candidate used by counterpart:"+cid);
+			this.candidatesUsedByCounterpart.add(cid);
+			if (this.connections.containsKey(cid)) {
+				this.connect(this.connections.get(cid));
+			}
+		}
+		IqPacket response = packet.generateRespone(IqPacket.TYPE_RESULT);
+		account.getXmppConnection().sendIqPacket(response, null);
+	}
+
+	private void connect(final SocksConnection connection) {
+		final OnFileTransmitted callback = new OnFileTransmitted() {
+			
+			@Override
+			public void onFileTransmitted(JingleFile file) {
+				Log.d("xmppService","sucessfully transmitted file. sha1:"+file.getSha1Sum());
+			}
+		};
+		if (connection.isProxy()) {
+			IqPacket activation = new IqPacket(IqPacket.TYPE_SET);
+			activation.setTo(connection.getJid());
+			activation.query("http://jabber.org/protocol/bytestreams").setAttribute("sid", this.getSessionId());
+			activation.query().addChild("activate").setContent(this.getResponder());
+			Log.d("xmppService","connection is proxy. need to activate "+activation.toString());
+			this.account.getXmppConnection().sendIqPacket(activation, new OnIqPacketReceived() {
 				
 				@Override
-				public void onFileTransmitted(JingleFile file) {
-					Log.d("xmppService","sucessfully transmitted file. sha1:"+file.getSha1Sum());
-				}
-			};
-			final IqPacket response = packet.generateRespone(IqPacket.TYPE_RESULT);
-			if (connection.isProxy()) {
-				IqPacket activation = new IqPacket(IqPacket.TYPE_SET);
-				activation.setTo(connection.getJid());
-				activation.query("http://jabber.org/protocol/bytestreams").setAttribute("sid", this.getSessionId());
-				activation.query().addChild("activate").setContent(this.getResponder());
-				Log.d("xmppService","connection is proxy. need to activate "+activation.toString());
-				this.account.getXmppConnection().sendIqPacket(activation, new OnIqPacketReceived() {
-					
-					@Override
-					public void onIqPacketReceived(Account account, IqPacket packet) {
-						account.getXmppConnection().sendIqPacket(response, null);
-						Log.d("xmppService","activation result: "+packet.toString());
+				public void onIqPacketReceived(Account account, IqPacket packet) {
+					Log.d("xmppService","activation result: "+packet.toString());
+					if (initiator.equals(account.getFullJid())) {
+						Log.d("xmppService","we were initiating. sending file");
 						connection.send(file,callback);
+					} else {
+						Log.d("xmppService","we were responding. receiving file");
 					}
-				});
-			} else {
-				account.getXmppConnection().sendIqPacket(response, null);
+					
+				}
+			});
+		} else {
+			if (initiator.equals(account.getFullJid())) {
+				Log.d("xmppService","we were initiating. sending file");
 				connection.send(file,callback);
+			} else {
+				Log.d("xmppService","we were responding. receiving file");
 			}
 		}
 	}
@@ -212,13 +274,25 @@ public class JingleConnection {
 	
 	private void connectWithCandidates() {
 		for(Element canditate : this.candidates) {
+			
 			String host = canditate.getAttribute("host");
 			int port = Integer.parseInt(canditate.getAttribute("port"));
 			String type = canditate.getAttribute("type");
 			String jid = canditate.getAttribute("jid");
 			SocksConnection socksConnection = new SocksConnection(this, host, jid, port,type);
-			socksConnection.connect();
-			this.connections.put(canditate.getAttribute("cid"), socksConnection);
+			connections.put(canditate.getAttribute("cid"), socksConnection);
+			socksConnection.connect(new OnSocksConnection() {
+				
+				@Override
+				public void failed() {
+					Log.d("xmppService","socks5 failed");
+				}
+				
+				@Override
+				public void established() {
+					Log.d("xmppService","established socks5");
+				}
+			});
 		}
 	}
 	
@@ -245,5 +319,21 @@ public class JingleConnection {
 	
 	public int getStatus() {
 		return this.status;
+	}
+	
+	private boolean mergeCandidate(Element candidate) {
+		for(Element c : this.candidates) {
+			if (c.getAttribute("host").equals(candidate.getAttribute("host"))&&(c.getAttribute("port").equals(candidate.getAttribute("port")))) {
+				return false;
+			}
+		}
+		this.candidates.add(candidate);
+		return true;
+	}
+	
+	private void mergeCandidates(List<Element> canditates) {
+		for(Element c : canditates) {
+			this.mergeCandidate(c);
+		}
 	}
 }

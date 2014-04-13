@@ -15,12 +15,24 @@ public class Content extends Element {
 		super("content");
 	}
 
-	public void offerFile(JingleFile actualFile, String hash) {
+	public void setFileOffer(JingleFile actualFile) {
 		Element description = this.addChild("description", "urn:xmpp:jingle:apps:file-transfer:3");
 		Element offer = description.addChild("offer");
 		Element file = offer.addChild("file");
 		file.addChild("size").setContent(""+actualFile.getSize());
 		file.addChild("name").setContent(actualFile.getName());
+	}
+	
+	public Element getFileOffer() {
+		Element description = this.findChild("description", "urn:xmpp:jingle:apps:file-transfer:3");
+		if (description==null) {
+			return null;
+		}
+		Element offer = description.findChild("offer");
+		if (offer==null) {
+			return null;
+		}
+		return offer.findChild("file");
 	}
 
 	public void setCandidates(String transportId, List<Element> canditates) {
@@ -55,5 +67,13 @@ public class Content extends Element {
 		} else {
 			return usedCandidate.getAttribute("cid");
 		}
+	}
+
+	public void addCandidate(Element candidate) {
+		Element transport = this.findChild("transport", "urn:xmpp:jingle:transports:s5b:1");
+		if (transport==null) {
+			transport = this.addChild("transport", "urn:xmpp:jingle:transports:s5b:1");
+		}
+		transport.addChild(candidate);
 	}
 }

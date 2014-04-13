@@ -38,7 +38,7 @@ public class FileBackend {
 
 	}
 
-	public JingleFile getImageFile(Message message) {
+	public JingleFile getJingleFile(Message message) {
 		Conversation conversation = message.getConversation();
 		String prefix = context.getFilesDir().getAbsolutePath();
 		String path = prefix + "/" + conversation.getAccount().getJid() + "/"
@@ -72,7 +72,7 @@ public class FileBackend {
 		try {
 			InputStream is = context.getContentResolver()
 					.openInputStream(image);
-			JingleFile file = getImageFile(message);
+			JingleFile file = getJingleFile(message);
 			file.getParentFile().mkdirs();
 			file.createNewFile();
 			OutputStream os = new FileOutputStream(file);
@@ -98,14 +98,14 @@ public class FileBackend {
 
 	public Bitmap getImageFromMessage(Message message) {
 		return BitmapFactory
-				.decodeFile(getImageFile(message).getAbsolutePath());
+				.decodeFile(getJingleFile(message).getAbsolutePath());
 	}
 
 	public Bitmap getThumbnailFromMessage(Message message, int size) {
 		Bitmap thumbnail = thumbnailCache.get(message.getUuid());
 		if (thumbnail==null) {
 			Log.d("xmppService","creating new thumbnail" + message.getUuid());
-			Bitmap fullsize = BitmapFactory.decodeFile(getImageFile(message)
+			Bitmap fullsize = BitmapFactory.decodeFile(getJingleFile(message)
 					.getAbsolutePath());
 			thumbnail = resize(fullsize, size);
 			this.thumbnailCache.put(message.getUuid(), thumbnail);

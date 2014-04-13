@@ -419,7 +419,7 @@ public class UIHelper {
 			mBuilder.setContentText(names.toString());
 			mBuilder.setStyle(style);
 		}
-		if (currentCon!=null) {
+		if ((currentCon!=null)&&(notify)) {
 			targetUuid=currentCon.getUuid();
 		}
 		if (unread.size() != 0) {

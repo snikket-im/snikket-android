@@ -124,9 +124,7 @@ public class XmppConnectionService extends Service {
 				MessagePacket packet) {
 			Message message = null;
 			boolean notify = true;
-			if(PreferenceManager
-					.getDefaultSharedPreferences(getApplicationContext())
-					.getBoolean("notification_grace_period_after_carbon_received", true)){
+			if(getPreferences().getBoolean("notification_grace_period_after_carbon_received", true)){
 				notify=(SystemClock.elapsedRealtime() - lastCarbonMessageReceived) > CARBON_GRACE_PERIOD;
 			}
 
@@ -625,8 +623,7 @@ public class XmppConnectionService extends Service {
 	}
 
 	public XmppConnection createConnection(Account account) {
-		SharedPreferences sharedPref = PreferenceManager
-				.getDefaultSharedPreferences(getApplicationContext());
+		SharedPreferences sharedPref = getPreferences();
 		account.setResource(sharedPref.getString("resource", "mobile").toLowerCase(Locale.getDefault()));
 		XmppConnection connection = new XmppConnection(account, this.pm);
 		connection.setOnMessagePacketReceivedListener(this.messageListener);
@@ -1204,8 +1201,7 @@ public class XmppConnectionService extends Service {
 	}
 
 	public void createContact(Contact contact) {
-		SharedPreferences sharedPref = PreferenceManager
-				.getDefaultSharedPreferences(getApplicationContext());
+		SharedPreferences sharedPref = getPreferences();
 		boolean autoGrant = sharedPref.getBoolean("grant_new_contacts", true);
 		if (autoGrant) {
 			contact.setSubscriptionOption(Contact.Subscription.PREEMPTIVE_GRANT);
@@ -1395,5 +1391,9 @@ public class XmppConnectionService extends Service {
 		if (convChangedListener!=null) {
 			convChangedListener.onConversationListChanged();
 		}
+	}
+	
+	public SharedPreferences getPreferences() {
+		return PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 	}
 }

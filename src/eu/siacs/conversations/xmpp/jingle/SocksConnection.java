@@ -25,6 +25,7 @@ public class SocksConnection {
 	private boolean isProxy = false;
 	private String destination;
 	private OutputStream outputStream;
+	private boolean isEstablished = false;
 
 	public SocksConnection(JingleConnection jingleConnection, String host,
 			String jid, int port, String type) {
@@ -42,40 +43,52 @@ public class SocksConnection {
 			mDigest.reset();
 			this.destination = CryptoHelper.bytesToHex(mDigest
 					.digest(destBuilder.toString().getBytes()));
-			Log.d("xmppService", "host=" + host + ", port=" + port
-					+ ", destination: " + destination);
 		} catch (NoSuchAlgorithmException e) {
 
 		}
 	}
 
-	public boolean connect() {
-		try {
-			this.socket = new Socket(this.host, this.port);
-			InputStream is = socket.getInputStream();
-			this.outputStream = socket.getOutputStream();
-			byte[] login = { 0x05, 0x01, 0x00 };
-			byte[] expectedReply = { 0x05, 0x00 };
-			byte[] reply = new byte[2];
-			this.outputStream.write(login);
-			is.read(reply);
-			if (Arrays.equals(reply, expectedReply)) {
-				String connect = "" + '\u0005' + '\u0001' + '\u0000' + '\u0003'
-						+ '\u0028' + this.destination + '\u0000' + '\u0000';
-				this.outputStream.write(connect.getBytes());
-				byte[] result = new byte[2];
-				is.read(result);
-				int status = result[0];
-				return (status == 0);
-			} else {
-				socket.close();
-				return false;
+	public void connect(final OnSocksConnection callback) {
+		new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				try {
+					socket = new Socket(host, port);
+					InputStream is = socket.getInputStream();
+					outputStream = socket.getOutputStream();
+					byte[] login = { 0x05, 0x01, 0x00 };
+					byte[] expectedReply = { 0x05, 0x00 };
+					byte[] reply = new byte[2];
+					outputStream.write(login);
+					is.read(reply);
+					if (Arrays.equals(reply, expectedReply)) {
+						String connect = "" + '\u0005' + '\u0001' + '\u0000' + '\u0003'
+								+ '\u0028' + destination + '\u0000' + '\u0000';
+						outputStream.write(connect.getBytes());
+						byte[] result = new byte[2];
+						is.read(result);
+						int status = result[1];
+						if (status == 0) {
+							Log.d("xmppService", "established connection with "+host + ":" + port
+									+ "/" + destination);
+							isEstablished = true;
+							callback.established();
+						} else {
+							callback.failed();
+						}
+					} else {
+						socket.close();
+						callback.failed();
+					}
+				} catch (UnknownHostException e) {
+					callback.failed();
+				} catch (IOException e) {
+					callback.failed();
+				}
 			}
-		} catch (UnknownHostException e) {
-			return false;
-		} catch (IOException e) {
-			return false;
-		}
+		}).start();
+		
 	}
 
 	public void send(final JingleFile file, final OnFileTransmitted callback) {
@@ -140,5 +153,9 @@ public class SocksConnection {
 				Log.d("xmppService","error closing socket with "+this.host);
 			}
 		}
+	}
+	
+	public boolean isEstablished() {
+		return this.isEstablished;
 	}
 }
