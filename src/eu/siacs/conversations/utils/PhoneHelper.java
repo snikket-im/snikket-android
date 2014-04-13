@@ -72,10 +72,10 @@ public class PhoneHelper {
 		mCursorLoader.startLoading();
 	}
 
-	public static Uri getSefliUri(Activity activity) {
+	public static Uri getSefliUri(Context context) {
 		String[] mProjection = new String[] { Profile._ID,
 				Profile.PHOTO_THUMBNAIL_URI };
-		Cursor mProfileCursor = activity.getContentResolver().query(
+		Cursor mProfileCursor = context.getContentResolver().query(
 				Profile.CONTENT_URI, mProjection, null, null, null);
 
 		if (mProfileCursor.getCount() == 0) {

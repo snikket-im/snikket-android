@@ -40,6 +40,7 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationCompat.InboxStyle;
 import android.support.v4.app.TaskStackBuilder;
 import android.text.Html;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,6 +49,10 @@ import android.widget.QuickContactBadge;
 import android.widget.TextView;
 
 public class UIHelper {
+	private static final int BG_COLOR = 0xFF181818;
+	private static final int FG_COLOR = 0xFFE5E5E5;
+	private static final int TRANSPARENT = 0x00000000;
+
 	public static String readableTimeDifference(long time) {
 		if (time == 0) {
 			return "just now";
@@ -67,6 +72,11 @@ public class UIHelper {
 		}
 	}
 
+	public static int getRealPx(int dp, Context context) {
+		final DisplayMetrics metrics = context.getResources().getDisplayMetrics();
+		return ((int) (dp * metrics.density));
+	}
+
 	private static int getNameColor(String name) {
 		int holoColors[] = { 0xFF1da9da, 0xFFb368d9, 0xFF83b600, 0xFFffa713,
 				0xFFe92727 };
@@ -74,9 +84,8 @@ public class UIHelper {
 		return color;
 	}
 
-	private static Bitmap getUnknownContactPicture(String[] names, int size) {
-		final int fgColor = 0xffe5e5e5;
 		int tiles = (names.length > 4)? 4 : names.length;
+	private static Bitmap getUnknownContactPicture(String[] names, int size, int bgColor, int fgColor) {
 		Bitmap bitmap = Bitmap
 				.createBitmap(size, size, Bitmap.Config.ARGB_8888);
 		Canvas canvas = new Canvas(bitmap);
@@ -107,7 +116,7 @@ public class UIHelper {
 				break;
 
 			case 2:
-				bitmap.eraseColor(fgColor);
+				bitmap.eraseColor(bgColor);
 
 				tilePaint.setColor(colors[0]);
 				left = new Rect(0, 0, (size/2)-2, size);
@@ -131,7 +140,7 @@ public class UIHelper {
 				break;
 
 			case 3:
-				bitmap.eraseColor(fgColor);
+				bitmap.eraseColor(bgColor);
 
 				tilePaint.setColor(colors[0]);
 				left = new Rect(0, 0, (size/2)-2, size);
@@ -166,7 +175,7 @@ public class UIHelper {
 				break;
 
 			case 4:
-				bitmap.eraseColor(fgColor);
+				bitmap.eraseColor(bgColor);
 
 				tilePaint.setColor(colors[0]);
 				topLeft = new Rect(0, 0, (size/2)-2, (size/2)-2);
@@ -208,27 +217,18 @@ public class UIHelper {
 				canvas.drawText(letters[3], (3 * size / 4) - (width / 2), (3* size / 4)
 						+ (rect.height() / 2), textPaint);
 				break;
-
-			default:
-				bitmap.eraseColor(colors[0]);
-
-				textPaint.setTextSize((float) (size * 0.9));
-				textPaint.setAntiAlias(true);
-				rect = new Rect();
-				textPaint.getTextBounds(letters[0], 0, 1, rect);
-				width = textPaint.measureText(letters[0]);
-				canvas.drawText(letters[0], (size / 2) - (width / 2), (size / 2)
-						+ (rect.height() / 2), textPaint);
-				break;
-
 		}
 		return bitmap;
 	}
 
-	private static Bitmap getMucContactPicture(Conversation conversation, int size) {
+	private static Bitmap getUnknownContactPicture(String[] names, int size) {
+		return getUnknownContactPicture(names, size, UIHelper.BG_COLOR, UIHelper.FG_COLOR);
+	}
+
+	private static Bitmap getMucContactPicture(Conversation conversation, int size, int bgColor, int fgColor) {
 		List<User> members = conversation.getMucOptions().getUsers();
 		if (members.size() == 0) {
-			return getUnknownContactPicture(new String[]{conversation.getName(false)}, size);
+			return getUnknownContactPicture(new String[]{conversation.getName(false)}, size, bgColor, fgColor);
 		}
 		String[] names = new String[members.size()+1];
 		names[0] = conversation.getMucOptions().getNick();
@@ -236,40 +236,56 @@ public class UIHelper {
 			names[i+1] = members.get(i).getName();
 		}
 
-		return getUnknownContactPicture(names, size);
+		return getUnknownContactPicture(names, size, bgColor, fgColor);
 	}
 
-	public static Bitmap getContactPicture(Conversation conversation, int size, Context context) {
+	public static Bitmap getContactPicture(Conversation conversation, int dpSize, Context context, boolean notification) {
 		if(conversation.getMode() == Conversation.MODE_SINGLE) {
 			if (conversation.getContact() != null){
-				return getContactPicture(conversation.getContact(), size, context);
+				return getContactPicture(conversation.getContact(), dpSize,
+						context, notification);
 			} else {
-				return getContactPicture(conversation.getName(false), size);
+				return getContactPicture(conversation.getName(false), dpSize,
+						context, notification);
 			}
 		} else{
-			return getMucContactPicture(conversation, size);
+			int fgColor = UIHelper.FG_COLOR,
+				bgColor = (notification) ?
+					UIHelper.BG_COLOR : UIHelper.TRANSPARENT;
+
+			return getMucContactPicture(conversation, getRealPx(dpSize, context),
+					bgColor, fgColor);
 		}
 	}
 
-	public static Bitmap getContactPicture(Contact contact, int size, Context context) {
+	public static Bitmap getContactPicture(Contact contact, int dpSize, Context context, boolean notification) {
+		int fgColor = UIHelper.FG_COLOR,
+			bgColor = (notification) ?
+				UIHelper.BG_COLOR : UIHelper.TRANSPARENT;
+
 		String uri = contact.getProfilePhoto();
 		if (uri==null) {
-			return getContactPicture(contact.getDisplayName(), size);
+			return getContactPicture(contact.getDisplayName(), dpSize,
+					context, notification);
 		}
 		try {
-			Bitmap bm = BitmapFactory.decodeStream(context.getContentResolver().openInputStream(Uri.parse(uri)));
-			return Bitmap.createScaledBitmap(bm, size, size, false);
+			Bitmap bm = BitmapFactory.decodeStream(context.getContentResolver()
+					.openInputStream(Uri.parse(uri)));
+			return Bitmap.createScaledBitmap(bm, getRealPx(dpSize, context),
+					getRealPx(dpSize, context), false);
 		} catch (FileNotFoundException e) {
-			return getContactPicture(contact.getDisplayName(), size);
+			return getContactPicture(contact.getDisplayName(), dpSize,
+					context, notification);
 		}
 	}
 
-	public static Bitmap getContactPicture(String name, int size, Context context) {
-		return getContactPicture(name, size);
-	}
+	public static Bitmap getContactPicture(String name, int dpSize, Context context, boolean notification) {
+		int fgColor = UIHelper.FG_COLOR,
+			bgColor = (notification) ?
+				UIHelper.BG_COLOR : UIHelper.TRANSPARENT;
 
-	public static Bitmap getContactPicture(String name, int size) {
-		return getUnknownContactPicture(new String[]{name}, size);
+		return getUnknownContactPicture(new String[]{name}, getRealPx(dpSize, context),
+				bgColor, fgColor);
 	}
 
 	public static Bitmap getErrorPicture(int size) {
@@ -367,7 +383,6 @@ public class UIHelper {
 		}
 		String ringtone = preferences.getString("notification_ringtone", null);
 
-		Resources res = context.getResources();
 		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
 				context);
 		if (unread.size() == 0) {
@@ -376,8 +391,8 @@ public class UIHelper {
 		} else if (unread.size() == 1) {
 			Conversation conversation = unread.get(0);
 			targetUuid = conversation.getUuid();
-			mBuilder.setLargeIcon(UIHelper.getContactPicture(conversation, (int) res
-							.getDimension(android.R.dimen.notification_large_icon_width), context));
+			mBuilder.setLargeIcon(UIHelper.getContactPicture(conversation, 64,
+							context, true));
 			mBuilder.setContentTitle(conversation.getName(useSubject));
 			if (notify) {
 				mBuilder.setTicker(conversation.getLatestMessage().getBody().trim());
@@ -480,7 +495,7 @@ public class UIHelper {
 			long id = Long.parseLong(systemAccount[0]);
 			badge.assignContactUri(Contacts.getLookupUri(id, systemAccount[1]));
 		}
-		badge.setImageBitmap(UIHelper.getContactPicture(contact, 400, context));
+		badge.setImageBitmap(UIHelper.getContactPicture(contact, 72, context, false));
 	}
 
 	public static AlertDialog getVerifyFingerprintDialog(
@@ -516,20 +531,20 @@ public class UIHelper {
 		return builder.create();
 	}
 
-	public static Bitmap getSelfContactPicture(Account account, int size, boolean showPhoneSelfContactPicture, Activity activity) {
+	public static Bitmap getSelfContactPicture(Account account, int size, boolean showPhoneSelfContactPicture, Context context) {
 		if (showPhoneSelfContactPicture) {
-			Uri selfiUri = PhoneHelper.getSefliUri(activity);
+			Uri selfiUri = PhoneHelper.getSefliUri(context);
 			if (selfiUri != null) {
 				try {
-					return BitmapFactory.decodeStream(activity
+					return BitmapFactory.decodeStream(context
 							.getContentResolver().openInputStream(selfiUri));
 				} catch (FileNotFoundException e) {
-					return getContactPicture(account.getJid(), size);
+					return getContactPicture(account.getJid(), size, context, false);
 				}
 			}
-			return getContactPicture(account.getJid(), size);
+			return getContactPicture(account.getJid(), size, context, false);
 		} else {
-			return getContactPicture(account.getJid(), size);
+			return getContactPicture(account.getJid(), size, context, false);
 		}
 	}
 }

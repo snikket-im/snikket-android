@@ -333,7 +333,7 @@ public class ConversationFragment extends Fragment {
 		boolean showPhoneSelfContactPicture = sharedPref.getBoolean(
 				"show_phone_selfcontact_picture", true);
 
-		return UIHelper.getSelfContactPicture(conversation.getAccount(), 200,
+		return UIHelper.getSelfContactPicture(conversation.getAccount(), 48,
 				showPhoneSelfContactPicture, getActivity());
 	}
 
@@ -616,9 +616,9 @@ public class ConversationFragment extends Fragment {
 			} else {
 				Bitmap bm;
 				if (contact != null){
-					bm = UIHelper.getContactPicture(contact, 200, context);
+					bm = UIHelper.getContactPicture(contact, 48, context, false);
 				} else {
-					bm = UIHelper.getContactPicture(name, 200, context);
+					bm = UIHelper.getContactPicture(name, 48, context, false);
 				}
 				bitmaps.put(name, bm);
 				return bm;
