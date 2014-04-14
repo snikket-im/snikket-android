@@ -209,7 +209,6 @@ public class ConversationFragment extends Fragment {
 								.findViewById(R.id.message_photo);
 						viewHolder.imageView.setImageBitmap(selfBitmap);
 						viewHolder.indicator = (ImageView) view.findViewById(R.id.security_indicator);
-						viewHolder.image = (ImageView) view.findViewById(R.id.message_image);
 						break;
 					case RECIEVED:
 						view = (View) inflater.inflate(
@@ -231,6 +230,7 @@ public class ConversationFragment extends Fragment {
 						viewHolder = null;
 						break;
 					}
+					viewHolder.image = (ImageView) view.findViewById(R.id.message_image);
 					viewHolder.messageBody = (TextView) view
 							.findViewById(R.id.message_body);
 					viewHolder.time = (TextView) view
@@ -256,8 +256,13 @@ public class ConversationFragment extends Fragment {
 				}
 				if (item.getType() == Message.TYPE_IMAGE) {
 					viewHolder.image.setVisibility(View.VISIBLE);
-					viewHolder.image.setImageBitmap(activity.xmppConnectionService.getFileBackend().getThumbnailFromMessage(item,(int) (metrics.density * 288)));
-					viewHolder.messageBody.setVisibility(View.GONE);
+					if (item.getStatus() != Message.STATUS_RECIEVING) {
+						viewHolder.image.setImageBitmap(activity.xmppConnectionService.getFileBackend().getThumbnailFromMessage(item,(int) (metrics.density * 288)));
+						viewHolder.messageBody.setVisibility(View.GONE);
+					} else {
+						viewHolder.messageBody.setVisibility(View.VISIBLE);
+						viewHolder.messageBody.setText("receiving image file");
+					}
 				} else {
 					if (viewHolder.image != null) viewHolder.image.setVisibility(View.GONE);
 					viewHolder.messageBody.setVisibility(View.VISIBLE);

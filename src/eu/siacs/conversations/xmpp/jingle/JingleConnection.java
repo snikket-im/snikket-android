@@ -133,6 +133,11 @@ public class JingleConnection {
 			Element fileSize = fileOffer.findChild("size");
 			Element fileName = fileOffer.findChild("name");
 			this.file.setExpectedSize(Long.parseLong(fileSize.getContent()));
+			conversation.getMessages().add(message);
+			this.mXmppConnectionService.databaseBackend.createMessage(message);
+			if (this.mXmppConnectionService.convChangedListener!=null) {
+				this.mXmppConnectionService.convChangedListener.onConversationListChanged();
+			}
 			if (this.file.getExpectedSize()>=this.mJingleConnectionManager.getAutoAcceptFileSize()) {
 				Log.d("xmppService","auto accepting file from "+packet.getFrom());
 				this.sendAccept();
@@ -181,7 +186,7 @@ public class JingleConnection {
 					public void onIqPacketReceived(Account account, IqPacket packet) {
 						if (packet.getType() != IqPacket.TYPE_ERROR) {
 							status = STATUS_ACCEPTED;
-							connectWithCandidates();
+							connectNextCandidate();
 						}
 					}
 				});
@@ -204,7 +209,7 @@ public class JingleConnection {
 		Content content = packet.getJingleContent();
 		mergeCandidates(content.getCanditates());
 		this.status = STATUS_ACCEPTED;
-		this.connectWithCandidates();
+		this.connectNextCandidate();
 		IqPacket response = packet.generateRespone(IqPacket.TYPE_RESULT);
 		account.getXmppConnection().sendIqPacket(response, null);
 	}
@@ -240,6 +245,11 @@ public class JingleConnection {
 			
 			@Override
 			public void onFileTransmitted(JingleFile file) {
+				if (initiator.equals(account.getFullJid())) {
+					mXmppConnectionService.markMessage(message, Message.STATUS_SEND);
+				} else {
+					mXmppConnectionService.markMessage(message, Message.STATUS_RECIEVED);
+				}
 				Log.d("xmppService","sucessfully transmitted file. sha1:"+file.getSha1Sum());
 			}
 		};
@@ -286,33 +296,41 @@ public class JingleConnection {
 		this.mXmppConnectionService.markMessage(this.message, Message.STATUS_SEND_REJECTED);
 	}
 	
-	private void connectWithCandidates() {
+	private void connectNextCandidate() {
 		for(Element candidate : this.candidates) {
-			final SocksConnection socksConnection = new SocksConnection(this,candidate);
-			connections.put(socksConnection.getCid(), socksConnection);
-			socksConnection.connect(new OnSocksConnection() {
-				
-				@Override
-				public void failed() {
-					Log.d("xmppService","socks5 failed");
-				}
-				
-				@Override
-				public void established() {
-					if (candidatesUsedByCounterpart.contains(socksConnection.getCid())) {
-						if (status!=STATUS_TRANSMITTING) {
-							connect(socksConnection);
-						} else {
-							Log.d("xmppService","ignoring cuz already transmitting");
-						}
-					} else {
-						sendCandidateUsed(socksConnection.getCid());
-					}
-				}
-			});
+			String cid = candidate.getAttribute("cid");
+			if (!connections.containsKey(cid)) {
+				this.connectWithCandidate(candidate);
+				break;
+			}
 		}
 	}
 	
+	private void connectWithCandidate(Element candidate) {
+		final SocksConnection socksConnection = new SocksConnection(this,candidate);
+		connections.put(socksConnection.getCid(), socksConnection);
+		socksConnection.connect(new OnSocksConnection() {
+			
+			@Override
+			public void failed() {
+				connectNextCandidate();
+			}
+			
+			@Override
+			public void established() {
+				if (candidatesUsedByCounterpart.contains(socksConnection.getCid())) {
+					if (status!=STATUS_TRANSMITTING) {
+						connect(socksConnection);
+					} else {
+						Log.d("xmppService","ignoring cuz already transmitting");
+					}
+				} else {
+					sendCandidateUsed(socksConnection.getCid());
+				}
+			}
+		});
+	}
+
 	private void disconnect() {
 		Iterator<Entry<String, SocksConnection>> it = this.connections.entrySet().iterator();
 	    while (it.hasNext()) {
@@ -377,5 +395,14 @@ public class JingleConnection {
 		for(Element c : candidates) {
 			mergeCandidate(c);
 		}
+	}
+	
+	private Element getCandidate(String cid) {
+		for(Element c : this.candidates) {
+			if (c.getAttribute("cid").equals(cid)) {
+				return c;
+			}
+		}
+		return null;
 	}
 }
