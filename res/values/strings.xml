@@ -21,7 +21,7 @@
     <string name="participant">Participant</string>
     <string name="visitor">Visitor</string>
     <string name="enter_new_name">Enter a new name:</string>
-    <string name="remove_contact_text">Do you want to delete %s from your roster. The conversation assoziated with this account will not be removed.</string>
+    <string name="remove_contact_text">Do you want to delete %s from your roster. The conversation associated with this account will not be removed.</string>
     <string name="untrusted_cert_hint">The server %s presented you with an untrusted, possible self signed, certificate.</string>
     <string name="account_info">Server Info</string>
     <string name="register_account">Register new account on server</string>

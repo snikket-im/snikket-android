@@ -518,7 +518,7 @@ public class ConversationFragment extends Fragment {
 						getActivity());
 				builder.setTitle("No openPGP key found");
 				builder.setIconAttribute(android.R.attr.alertDialogIcon);
-				builder.setMessage("There is no openPGP key assoziated with this contact");
+				builder.setMessage("There is no openPGP key associated with this contact");
 				builder.setNegativeButton("Cancel", null);
 				builder.setPositiveButton("Send plain text",
 						new DialogInterface.OnClickListener() {
