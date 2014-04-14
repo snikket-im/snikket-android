@@ -43,8 +43,6 @@ public class JingleConnectionManager {
 						.getCounterPart().equals(packet.getFrom())) {
 					connection.deliverPacket(packet);
 					return;
-				} else {
-					Log.d("xmppService","no match sid:"+connection.getSessionId()+"="+packet.getSessionId()+" counterpart:"+connection.getCounterPart()+"="+packet.getFrom()+" account:"+connection.getAccountJid()+"="+packet.getTo());
 				}
 			}
 			Log.d("xmppService","delivering packet failed "+packet.toString());
@@ -135,6 +133,11 @@ public class JingleConnectionManager {
 	}
 	
 	public long getAutoAcceptFileSize() {
-		return this.xmppConnectionService.getPreferences().getLong("auto_accept_file_size", 0);
+		String config = this.xmppConnectionService.getPreferences().getString("auto_accept_file_size", "0");
+		try {
+			return Long.parseLong(config);
+		} catch (NumberFormatException e) {
+			return 0;
+		}
 	}
 }

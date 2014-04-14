@@ -160,9 +160,13 @@ public class SocksConnection {
 							count = (int) remainingSize;
 						}
 						count = inputStream.read(buffer, 0, count);
-						fileOutputStream.write(buffer, 0, count);
-						digest.update(buffer, 0, count);
-						remainingSize-=count;
+						if (count==-1) {
+							Log.d("xmppService","end of stream");
+						} else {
+							fileOutputStream.write(buffer, 0, count);
+							digest.update(buffer, 0, count);
+							remainingSize-=count;
+						}
 					}
 					fileOutputStream.flush();
 					fileOutputStream.close();

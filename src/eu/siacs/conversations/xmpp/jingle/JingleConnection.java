@@ -142,7 +142,6 @@ public class JingleConnection {
 		} else {
 			Log.d("xmppService","no file offer was attached. aborting");
 		}
-		Log.d("xmppService","session Id "+getSessionId());
 	}
 	
 	private void sendInitRequest() {
@@ -168,7 +167,8 @@ public class JingleConnection {
 			@Override
 			public void onPrimaryCandidateFound(boolean success, Element candidate) {
 				if (success) {
-					if (mergeCandidate(candidate)) {
+					if (!equalCandidateExists(candidate)) {
+						mergeCandidate(candidate);
 						content.addCandidate(candidate);
 					}
 				}
@@ -202,7 +202,7 @@ public class JingleConnection {
 	private void accept(JinglePacket packet) {
 		Log.d("xmppService","session-accept: "+packet.toString());
 		Content content = packet.getJingleContent();
-		this.mergeCandidates(content.getCanditates());
+		mergeCandidates(content.getCanditates());
 		this.status = STATUS_ACCEPTED;
 		this.connectWithCandidates();
 		IqPacket response = packet.generateRespone(IqPacket.TYPE_RESULT);
@@ -322,14 +322,25 @@ public class JingleConnection {
 	    }
 	}
 	
-	private void sendCandidateUsed(String cid) {
+	private void sendCandidateUsed(final String cid) {
 		JinglePacket packet = bootstrapPacket();
 		packet.setAction("transport-info");
 		Content content = new Content();
 		content.setUsedCandidate(this.content.getTransportId(), cid);
 		packet.setContent(content);
-		Log.d("xmppService","send using candidate: "+packet.toString());
-		this.account.getXmppConnection().sendIqPacket(packet, responseListener);
+		Log.d("xmppService","send using candidate: "+cid);
+		this.account.getXmppConnection().sendIqPacket(packet, new OnIqPacketReceived() {
+			
+			@Override
+			public void onIqPacketReceived(Account account, IqPacket packet) {
+				Log.d("xmppService","got ack for our candidate used");
+				if (status!=STATUS_TRANSMITTING) {
+					connect(connections.get(cid));
+				} else {
+					Log.d("xmppService","ignoring cuz already transmitting");
+				}
+			}
+		});
 	}
 
 	public String getInitiator() {
@@ -344,19 +355,27 @@ public class JingleConnection {
 		return this.status;
 	}
 	
-	private boolean mergeCandidate(Element candidate) {
+	private boolean equalCandidateExists(Element candidate) {
 		for(Element c : this.candidates) {
 			if (c.getAttribute("host").equals(candidate.getAttribute("host"))&&(c.getAttribute("port").equals(candidate.getAttribute("port")))) {
-				return false;
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	private void mergeCandidate(Element candidate) {
+		for(Element c : this.candidates) {
+			if (c.getAttribute("cid").equals(candidate.getAttribute("cid"))) {
+				return;
 			}
 		}
 		this.candidates.add(candidate);
-		return true;
 	}
 	
-	private void mergeCandidates(List<Element> canditates) {
-		for(Element c : canditates) {
-			this.mergeCandidate(c);
+	private void mergeCandidates(List<Element> candidates) {
+		for(Element c : candidates) {
+			mergeCandidate(c);
 		}
 	}
 }

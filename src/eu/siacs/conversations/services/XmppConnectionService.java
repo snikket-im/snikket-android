@@ -134,8 +134,7 @@ public class XmppConnectionService extends Service {
 					message = MessageParser.parsePgpChat(pgpBody, packet,
 							account, service);
 					message.markUnread();
-				} else if (packet.hasChild("body")
-						&& (packet.getBody().startsWith("?OTR"))) {
+				} else if ((packet.getBody()!=null) && (packet.getBody().startsWith("?OTR"))) {
 					message = MessageParser.parseOtrChat(packet, account,
 							service);
 					if (message != null) {
