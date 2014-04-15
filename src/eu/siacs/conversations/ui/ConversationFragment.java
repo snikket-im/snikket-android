@@ -205,20 +205,19 @@ public class ConversationFragment extends Fragment {
 					case SENT:
 						view = (View) inflater.inflate(R.layout.message_sent,
 								null);
-						viewHolder.imageView = (ImageView) view
+						viewHolder.contact_picture = (ImageView) view
 								.findViewById(R.id.message_photo);
-						viewHolder.imageView.setImageBitmap(selfBitmap);
-						viewHolder.indicator = (ImageView) view.findViewById(R.id.security_indicator);
+						viewHolder.contact_picture.setImageBitmap(selfBitmap);
 						break;
 					case RECIEVED:
 						view = (View) inflater.inflate(
 								R.layout.message_recieved, null);
-						viewHolder.imageView = (ImageView) view
+						viewHolder.contact_picture = (ImageView) view
 								.findViewById(R.id.message_photo);
-						viewHolder.indicator = (ImageView) view.findViewById(R.id.security_indicator);
+						
 						if (item.getConversation().getMode() == Conversation.MODE_SINGLE) {
 
-							viewHolder.imageView.setImageBitmap(mBitmapCache
+							viewHolder.contact_picture.setImageBitmap(mBitmapCache
 									.get(item.getConversation().getName(useSubject), item
 											.getConversation().getContact(),
 											getActivity()
@@ -230,6 +229,7 @@ public class ConversationFragment extends Fragment {
 						viewHolder = null;
 						break;
 					}
+					viewHolder.indicator = (ImageView) view.findViewById(R.id.security_indicator);
 					viewHolder.image = (ImageView) view.findViewById(R.id.message_image);
 					viewHolder.messageBody = (TextView) view
 							.findViewById(R.id.message_body);
@@ -242,29 +242,47 @@ public class ConversationFragment extends Fragment {
 				if (type == RECIEVED) {
 					if (item.getConversation().getMode() == Conversation.MODE_MULTI) {
 						if (item.getCounterpart() != null) {
-							viewHolder.imageView.setImageBitmap(mBitmapCache
+							viewHolder.contact_picture.setImageBitmap(mBitmapCache
 									.get(item.getCounterpart(), null,
 											getActivity()
 													.getApplicationContext()));
 						} else {
-							viewHolder.imageView.setImageBitmap(mBitmapCache
+							viewHolder.contact_picture.setImageBitmap(mBitmapCache
 									.get(item.getConversation().getName(useSubject),
 											null, getActivity()
 													.getApplicationContext()));
 						}
 					}
 				}
+				
+				if (item.getEncryption() == Message.ENCRYPTION_NONE) {
+					viewHolder.indicator.setVisibility(View.GONE);
+				} else {
+					viewHolder.indicator.setVisibility(View.VISIBLE);
+				}
+				
+				
 				if (item.getType() == Message.TYPE_IMAGE) {
-					viewHolder.image.setVisibility(View.VISIBLE);
-					if (item.getStatus() != Message.STATUS_RECIEVING) {
+					if (item.getStatus() == Message.STATUS_PREPARING) {
+						viewHolder.image.setVisibility(View.GONE);
+						viewHolder.messageBody.setVisibility(View.VISIBLE);
+						viewHolder.messageBody.setText(getString(R.string.preparing_image));
+						viewHolder.messageBody.setTextColor(0xff33B5E5);
+						viewHolder.messageBody.setTypeface(null,Typeface.ITALIC);
+					} else if (item.getStatus() == Message.STATUS_RECIEVING) {
+						viewHolder.image.setVisibility(View.GONE);
+						viewHolder.messageBody.setVisibility(View.GONE);
+						viewHolder.messageBody.setVisibility(View.VISIBLE);
+						viewHolder.messageBody.setText(getString(R.string.receiving_image));
+						viewHolder.messageBody.setTextColor(0xff33B5E5);
+						viewHolder.messageBody.setTypeface(null,Typeface.ITALIC);
+					} else {
 						viewHolder.image.setImageBitmap(activity.xmppConnectionService.getFileBackend().getThumbnailFromMessage(item,(int) (metrics.density * 288)));
 						viewHolder.messageBody.setVisibility(View.GONE);
-					} else {
-						viewHolder.messageBody.setVisibility(View.VISIBLE);
-						viewHolder.messageBody.setText("receiving image file");
+						viewHolder.image.setVisibility(View.VISIBLE);
 					}
 				} else {
-					if (viewHolder.image != null) viewHolder.image.setVisibility(View.GONE);
+					viewHolder.image.setVisibility(View.GONE);
 					viewHolder.messageBody.setVisibility(View.VISIBLE);
 					String body = item.getBody();
 					if (body != null) {
@@ -274,22 +292,17 @@ public class ConversationFragment extends Fragment {
 							viewHolder.messageBody.setTextColor(0xff33B5E5);
 							viewHolder.messageBody.setTypeface(null,
 									Typeface.ITALIC);
-							viewHolder.indicator.setVisibility(View.VISIBLE);
 						} else if ((item.getEncryption() == Message.ENCRYPTION_OTR)||(item.getEncryption() == Message.ENCRYPTION_DECRYPTED)) {
 							viewHolder.messageBody.setText(body.trim());
 							viewHolder.messageBody.setTextColor(0xff333333);
 							viewHolder.messageBody.setTypeface(null,
 									Typeface.NORMAL);
-							viewHolder.indicator.setVisibility(View.VISIBLE);
 						} else {
 							viewHolder.messageBody.setText(body.trim());
 							viewHolder.messageBody.setTextColor(0xff333333);
 							viewHolder.messageBody.setTypeface(null,
 									Typeface.NORMAL);
-							viewHolder.indicator.setVisibility(View.GONE);
 						}
-					} else {
-						viewHolder.indicator.setVisibility(View.GONE);
 					}
 				}
 				switch (item.getStatus()) {
@@ -607,7 +620,7 @@ public class ConversationFragment extends Fragment {
 		protected ImageView indicator;
 		protected TextView time;
 		protected TextView messageBody;
-		protected ImageView imageView;
+		protected ImageView contact_picture;
 
 	}
 

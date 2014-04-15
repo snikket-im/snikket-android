@@ -401,15 +401,28 @@ public class XmppConnectionService extends Service {
 		return this.fileBackend;
 	}
 	
-	public Message attachImageToConversation(Conversation conversation, String presence, Uri uri) {
-		Message message = new Message(conversation, "", Message.ENCRYPTION_NONE);
-		message.setPresence(presence);
-		message.setType(Message.TYPE_IMAGE);
-		File file = this.fileBackend.copyImageToPrivateStorage(message, uri);
-		conversation.getMessages().add(message);
-		databaseBackend.createMessage(message);
-		sendMessage(message, null);
-		return message;
+	public void attachImageToConversation(final Conversation conversation, final String presence, final Uri uri) {
+		new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				Message message = new Message(conversation, "", Message.ENCRYPTION_NONE);
+				message.setPresence(presence);
+				message.setType(Message.TYPE_IMAGE);
+				message.setStatus(Message.STATUS_PREPARING);
+				conversation.getMessages().add(message);
+				if (convChangedListener!=null) {
+					convChangedListener.onConversationListChanged();
+				}
+				getFileBackend().copyImageToPrivateStorage(message, uri);
+				message.setStatus(Message.STATUS_UNSEND);
+				databaseBackend.createMessage(message);
+				if (convChangedListener!=null) {
+					convChangedListener.onConversationListChanged();
+				}
+				sendMessage(message, null);
+			}
+		}).start();
 	}
 	
 	

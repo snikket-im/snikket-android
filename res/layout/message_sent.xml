@@ -27,6 +27,7 @@
                 android:adjustViewBounds="true"
                 android:maxHeight="288dp"
                 android:maxWidth="288dp"
+                android:paddingBottom="2dp"
                 />
 
             <TextView

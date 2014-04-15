@@ -14,7 +14,7 @@
     <string name="just_now">just now</string>
     <string name="sending">sending&#8230;</string>
     <string name="announce_pgp">Renew PGP announcement</string>
-    <string name="encrypted_message">Decrypting message. please wait&#8230;</string>
+    <string name="encrypted_message">Decrypting message. Please wait&#8230;</string>
     <string name="conference_details">Conference Details</string>
     <string name="nick_in_use">Nickname is already in use</string>
     <string name="moderator">Moderator</string>
@@ -52,4 +52,6 @@
     <string name="add_contact">Add contact</string>
     <string name="send_failed">unsuccessful delivery</string>
     <string name="send_rejected">rejected</string>
+    <string name="receiving_image">Receiving image file. Please wait&#8230;</string>
+    <string name="preparing_image">Preparing image for transmission. Please wait&#8230;</string>
 </resources>
