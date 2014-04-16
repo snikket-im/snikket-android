@@ -1033,6 +1033,10 @@ public class XmppConnectionService extends Service {
 			this.convChangedListener.onConversationListChanged();
 		}
 	}
+	
+	public void clearConversationHistory(Conversation conversation) {
+		
+	}
 
 	public int getConversationCount() {
 		return this.databaseBackend.getConversationCount();

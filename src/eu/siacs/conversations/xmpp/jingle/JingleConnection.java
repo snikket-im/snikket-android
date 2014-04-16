@@ -261,7 +261,7 @@ public class JingleConnection {
 			IqPacket activation = new IqPacket(IqPacket.TYPE_SET);
 			activation.setTo(connection.getJid());
 			activation.query("http://jabber.org/protocol/bytestreams").setAttribute("sid", this.getSessionId());
-			activation.query().addChild("activate").setContent(this.getResponder());
+			activation.query().addChild("activate").setContent(this.getCounterPart());
 			this.account.getXmppConnection().sendIqPacket(activation, new OnIqPacketReceived() {
 				
 				@Override
@@ -322,7 +322,8 @@ public class JingleConnection {
 	}
 	
 	private void connectWithCandidate(Element candidate) {
-		final SocksConnection socksConnection = new SocksConnection(this,candidate);
+		boolean initating = candidate.getAttribute("cid").equals(mJingleConnectionManager.getPrimaryCandidateId(account));
+		final SocksConnection socksConnection = new SocksConnection(this,candidate,initating);
 		connections.put(socksConnection.getCid(), socksConnection);
 		socksConnection.connect(new OnSocksConnection() {
 			

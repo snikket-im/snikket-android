@@ -30,7 +30,7 @@ public class SocksConnection {
 	private InputStream inputStream;
 	private boolean isEstablished = false;
 
-	public SocksConnection(JingleConnection jingleConnection, Element candidate) {
+	public SocksConnection(JingleConnection jingleConnection, Element candidate, boolean initating) {
 		this.cid = candidate.getAttribute("cid");
 		this.host = candidate.getAttribute("host");
 		this.port = Integer.parseInt(candidate.getAttribute("port"));
@@ -41,8 +41,13 @@ public class SocksConnection {
 			MessageDigest mDigest = MessageDigest.getInstance("SHA-1");
 			StringBuilder destBuilder = new StringBuilder();
 			destBuilder.append(jingleConnection.getSessionId());
-			destBuilder.append(jingleConnection.getInitiator());
-			destBuilder.append(jingleConnection.getResponder());
+			if (initating) {
+				destBuilder.append(jingleConnection.getAccountJid());
+				destBuilder.append(jingleConnection.getCounterPart());
+			} else {
+				destBuilder.append(jingleConnection.getCounterPart());
+				destBuilder.append(jingleConnection.getAccountJid());
+			}
 			mDigest.reset();
 			this.destination = CryptoHelper.bytesToHex(mDigest
 					.digest(destBuilder.toString().getBytes()));
