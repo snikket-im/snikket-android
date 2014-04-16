@@ -33,6 +33,10 @@ public class Presences {
 		this.presences.remove(resource);
 	}
 	
+	public void clearPresences() {
+		this.presences.clear();
+	}
+	
 	public int getMostAvailableStatus() {
 		int status = OFFLINE;
 		Iterator<Entry<String, Integer>> it = presences.entrySet().iterator();
@@ -54,7 +58,7 @@ public class Presences {
 				jObj.put("resource", entry.getKey());
 				jObj.put("status", entry.getValue());
 			} catch (JSONException e) {
-
+				
 			}
 			json.put(jObj);
 		}
@@ -71,7 +75,7 @@ public class Presences {
 						jObj.getInt("status"));
 			}
 		} catch (JSONException e1) {
-			
+
 		}
 		return presences;
 	}

@@ -674,7 +674,6 @@ public class XmppConnection implements Runnable {
 								"var"));
 					}
 				}
-				Log.d(LOGTAG,"put "+server+" "+features.toString());
 				disco.put(server, features);
 				
 				if (account.getServer().equals(server)) {

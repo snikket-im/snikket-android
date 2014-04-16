@@ -227,7 +227,11 @@ public class ContactDetailsActivity extends XmppActivity {
 			status.setTextColor(0xFFe92727);
 			break;
 		}
-		contactJid.setText(contact.getJid());
+		if (contact.getPresences().size() > 1) {
+			contactJid.setText(contact.getJid()+" ("+contact.getPresences().size()+")");
+		} else {
+			contactJid.setText(contact.getJid());
+		}
 		accountJid.setText(contact.getAccount().getJid());
 
 		UIHelper.prepareContactBadge(this, badge, contact, getApplicationContext());

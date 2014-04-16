@@ -13,6 +13,7 @@ import eu.siacs.conversations.xml.Element;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.util.Log;
 
 public class Contact extends AbstractEntity implements Serializable {
 	private static final long serialVersionUID = -4570817093119419962L;
@@ -163,10 +164,15 @@ public class Contact extends AbstractEntity implements Serializable {
 
 	public void updatePresence(String resource, int status) {
 		this.presences.updatePresence(resource, status);
+		Log.d("xmppService","updatingPresence for contact="+this.jid+" resource="+resource+" num="+presences.size());
 	}
 
 	public void removePresence(String resource) {
 		this.presences.removePresence(resource);
+	}
+	
+	public void clearPresences() {
+		this.presences.clearPresences();
 	}
 
 	public int getMostAvailableStatus() {

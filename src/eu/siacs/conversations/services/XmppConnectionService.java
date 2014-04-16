@@ -1,6 +1,5 @@
 package eu.siacs.conversations.services;
 
-import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
@@ -288,8 +287,7 @@ public class XmppConnectionService extends Service {
 				} else {
 					Contact contact = findContact(account, fromParts[0]);
 					if (contact == null) {
-						//Log.d(LOGTAG,"contact was null");
-						// most likely roster not synced
+						Log.d(LOGTAG,packet.getFrom()+ " could not be found");
 						return;
 					}
 					if (type == null) {
@@ -314,17 +312,19 @@ public class XmppConnectionService extends Service {
 									}
 								}
 							}
+							replaceContactInConversation(contact.getJid(), contact);
 							databaseBackend.updateContact(contact);
 						} else {
-							// Log.d(LOGTAG,"presence without resource "+packet.toString());
+							//Log.d(LOGTAG,"presence without resource "+packet.toString());
 						}
 					} else if (type.equals("unavailable")) {
 						if (fromParts.length != 2) {
-							// Log.d(LOGTAG,"received presence with no resource "+packet.toString());
+							contact.clearPresences();
 						} else {
 							contact.removePresence(fromParts[1]);
-							databaseBackend.updateContact(contact);
 						}
+						replaceContactInConversation(contact.getJid(), contact);
+						databaseBackend.updateContact(contact);
 					} else if (type.equals("subscribe")) {
 						Log.d(LOGTAG,"received subscribe packet from "+packet.getFrom());
 						if (contact
@@ -348,7 +348,6 @@ public class XmppConnectionService extends Service {
 					} else {
 						//Log.d(LOGTAG, packet.toString());
 					}
-					replaceContactInConversation(contact.getJid(), contact);
 				}
 			}
 		}
