@@ -43,7 +43,11 @@
         android:orderInCategory="50"
         android:showAsAction="never"
         android:title="@string/action_end_conversation"/>
-    
+    <item 
+        android:id="@+id/action_clear_history"
+        android:orderInCategory="60"
+        android:showAsAction="never"
+        android:title="@string/action_clear_history"/>
     <item
         android:id="@+id/action_accounts"
         android:orderInCategory="90"

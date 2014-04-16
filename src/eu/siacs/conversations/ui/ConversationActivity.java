@@ -14,9 +14,11 @@ import eu.siacs.conversations.utils.UIHelper;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -239,6 +241,7 @@ public class ConversationActivity extends XmppActivity {
 		MenuItem menuInviteContacts = (MenuItem) menu
 				.findItem(R.id.action_invite);
 		MenuItem menuAttach = (MenuItem) menu.findItem(R.id.action_attach_file);
+		MenuItem menuClearHistory = (MenuItem) menu.findItem(R.id.action_clear_history);
 
 		if ((spl.isOpen() && (spl.isSlideable()))) {
 			menuArchive.setVisible(false);
@@ -247,21 +250,18 @@ public class ConversationActivity extends XmppActivity {
 			menuSecure.setVisible(false);
 			menuInviteContacts.setVisible(false);
 			menuAttach.setVisible(false);
+			menuClearHistory.setVisible(false);
 		} else {
 			((MenuItem) menu.findItem(R.id.action_add)).setVisible(!spl
 					.isSlideable());
 			if (this.getSelectedConversation() != null) {
 				if (this.getSelectedConversation().getMode() == Conversation.MODE_MULTI) {
-					menuMucDetails.setVisible(true);
 					menuContactDetails.setVisible(false);
 					menuSecure.setVisible(false);
-					menuInviteContacts.setVisible(true);
 					menuAttach.setVisible(false);
 				} else {
-					menuContactDetails.setVisible(true);
 					menuMucDetails.setVisible(false);
 					menuInviteContacts.setVisible(false);
-					menuAttach.setVisible(true);
 					if (this.getSelectedConversation().getLatestMessage()
 							.getEncryption() != Message.ENCRYPTION_NONE) {
 						menuSecure.setIcon(R.drawable.ic_action_secure);
@@ -391,10 +391,30 @@ public class ConversationActivity extends XmppActivity {
 			}
 
 			break;
+		case R.id.action_clear_history:
+			clearHistoryDialog(getSelectedConversation());
+			break;
 		default:
 			break;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+	
+	protected void clearHistoryDialog(Conversation conversation) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle(getString(R.string.clear_conversation_history));
+		View dialogView = getLayoutInflater().inflate(R.layout.dialog_clear_history, null);
+		builder.setView(dialogView);
+		builder.setNegativeButton(getString(R.string.cancel), null);
+		builder.setPositiveButton(getString(R.string.delete_messages), new OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		builder.create().show();
 	}
 
 	protected ConversationFragment swapConversationFragment() {
