@@ -287,7 +287,11 @@ public class XmppConnectionService extends Service {
 				} else {
 					Contact contact = findContact(account, fromParts[0]);
 					if (contact == null) {
-						Log.d(LOGTAG,packet.getFrom()+ " could not be found");
+						if ("subscribe".equals(type)) {
+							account.getXmppConnection().addPendingSubscription(fromParts[0]);
+						} else {
+							Log.d(LOGTAG,packet.getFrom()+ " could not be found");
+						}
 						return;
 					}
 					if (type == null) {
@@ -343,7 +347,7 @@ public class XmppConnectionService extends Service {
 								requestPresenceUpdatesFrom(contact);
 							}
 						} else {
-							// TODO: ask user to handle it maybe
+							account.getXmppConnection().addPendingSubscription(fromParts[0]);
 						}
 					} else {
 						//Log.d(LOGTAG, packet.toString());
@@ -1232,6 +1236,10 @@ public class XmppConnectionService extends Service {
 		account.getXmppConnection().sendIqPacket(iq, null);
 		if (autoGrant) {
 			requestPresenceUpdatesFrom(contact);
+			if (account.getXmppConnection().hasPendingSubscription(contact.getJid())) {
+				Log.d("xmppService","contact had pending subscription");
+				sendPresenceUpdatesTo(contact);
+			}
 		}
 		replaceContactInConversation(contact.getJid(), contact);
 	}
