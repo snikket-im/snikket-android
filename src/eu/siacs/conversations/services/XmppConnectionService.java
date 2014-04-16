@@ -288,6 +288,7 @@ public class XmppConnectionService extends Service {
 				} else {
 					Contact contact = findContact(account, fromParts[0]);
 					if (contact == null) {
+						//Log.d(LOGTAG,"contact was null");
 						// most likely roster not synced
 						return;
 					}
@@ -325,8 +326,10 @@ public class XmppConnectionService extends Service {
 							databaseBackend.updateContact(contact);
 						}
 					} else if (type.equals("subscribe")) {
+						Log.d(LOGTAG,"received subscribe packet from "+packet.getFrom());
 						if (contact
 								.getSubscriptionOption(Contact.Subscription.PREEMPTIVE_GRANT)) {
+							Log.d(LOGTAG,"preemptive grant; granting");
 							sendPresenceUpdatesTo(contact);
 							contact.setSubscriptionOption(Contact.Subscription.FROM);
 							contact.resetSubscriptionOption(Contact.Subscription.PREEMPTIVE_GRANT);

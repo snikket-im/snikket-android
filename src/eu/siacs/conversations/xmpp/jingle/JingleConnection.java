@@ -76,12 +76,17 @@ public class JingleConnection {
 		
 		if (packet.isAction("session-terminate")) {
 			Reason reason = packet.getReason();
-			if (reason.hasChild("cancel")) {
+			if (reason!=null) {
+				if (reason.hasChild("cancel")) {
+					this.cancel();
+				} else if (reason.hasChild("success")) {
+					this.finish();
+				}
+			} else {
+				Log.d("xmppService","remote terminated for no reason");
 				this.cancel();
-			} else if (reason.hasChild("success")) {
-				this.finish();
 			}
-		} else if (packet.isAction("session-accept")) {
+			} else if (packet.isAction("session-accept")) {
 			accept(packet);
 		} else if (packet.isAction("transport-info")) {
 			transportInfo(packet);
@@ -150,8 +155,7 @@ public class JingleConnection {
 	}
 	
 	private void sendInitRequest() {
-		JinglePacket packet = this.bootstrapPacket();
-		packet.setAction("session-initiate");
+		JinglePacket packet = this.bootstrapPacket("session-initiate");
 		this.content = new Content();
 		if (message.getType() == Message.TYPE_IMAGE) {
 			content.setAttribute("creator", "initiator");
@@ -177,8 +181,7 @@ public class JingleConnection {
 						content.addCandidate(candidate);
 					}
 				}
-				JinglePacket packet = bootstrapPacket();
-				packet.setAction("session-accept");
+				JinglePacket packet = bootstrapPacket("session-accept");
 				packet.setContent(content);
 				account.getXmppConnection().sendIqPacket(packet, new OnIqPacketReceived() {
 					
@@ -195,8 +198,9 @@ public class JingleConnection {
 		
 	}
 	
-	private JinglePacket bootstrapPacket() {
+	private JinglePacket bootstrapPacket(String action) {
 		JinglePacket packet = new JinglePacket();
+		packet.setAction(action);
 		packet.setFrom(account.getFullJid());
 		packet.setTo(this.message.getCounterpart()); //fixme, not right in all cases;
 		packet.setSessionId(this.sessionId);
@@ -224,7 +228,7 @@ public class JingleConnection {
 			if (this.connections.containsKey(cid)) {
 				SocksConnection connection = this.connections.get(cid);
 				if (connection.isEstablished()) {
-					if (status!=STATUS_TRANSMITTING) {
+					if (status==STATUS_ACCEPTED) {
 						this.connect(connection);
 					} else {
 						Log.d("xmppService","ignoring canditate used because we are already transmitting");
@@ -245,10 +249,9 @@ public class JingleConnection {
 			
 			@Override
 			public void onFileTransmitted(JingleFile file) {
-				if (initiator.equals(account.getFullJid())) {
+				if (responder.equals(account.getFullJid())) {
+					sendSuccess();
 					mXmppConnectionService.markMessage(message, Message.STATUS_SEND);
-				} else {
-					mXmppConnectionService.markMessage(message, Message.STATUS_RECIEVED);
 				}
 				Log.d("xmppService","sucessfully transmitted file. sha1:"+file.getSha1Sum());
 			}
@@ -282,6 +285,18 @@ public class JingleConnection {
 				connection.receive(file,callback);
 			}
 		}
+	}
+	
+	private void sendSuccess() {
+		JinglePacket packet = bootstrapPacket("session-terminate");
+		Reason reason = new Reason();
+		reason.addChild("success");
+		packet.setReason(reason);
+		Log.d("xmppService","sending success. "+packet.toString());
+		this.account.getXmppConnection().sendIqPacket(packet, responseListener);
+		this.disconnect();
+		this.status = STATUS_FINISHED;
+		this.mXmppConnectionService.markMessage(this.message, Message.STATUS_RECIEVED);
 	}
 	
 	private void finish() {
@@ -319,7 +334,7 @@ public class JingleConnection {
 			@Override
 			public void established() {
 				if (candidatesUsedByCounterpart.contains(socksConnection.getCid())) {
-					if (status!=STATUS_TRANSMITTING) {
+					if (status==STATUS_ACCEPTED) {
 						connect(socksConnection);
 					} else {
 						Log.d("xmppService","ignoring cuz already transmitting");
@@ -341,8 +356,7 @@ public class JingleConnection {
 	}
 	
 	private void sendCandidateUsed(final String cid) {
-		JinglePacket packet = bootstrapPacket();
-		packet.setAction("transport-info");
+		JinglePacket packet = bootstrapPacket("transport-info");
 		Content content = new Content();
 		content.setUsedCandidate(this.content.getTransportId(), cid);
 		packet.setContent(content);
@@ -352,7 +366,7 @@ public class JingleConnection {
 			@Override
 			public void onIqPacketReceived(Account account, IqPacket packet) {
 				Log.d("xmppService","got ack for our candidate used");
-				if (status!=STATUS_TRANSMITTING) {
+				if (status==STATUS_ACCEPTED) {
 					connect(connections.get(cid));
 				} else {
 					Log.d("xmppService","ignoring cuz already transmitting");
