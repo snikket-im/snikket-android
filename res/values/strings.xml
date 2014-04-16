@@ -47,7 +47,7 @@
     <string name="problem_connecting_to_account">Unable to connect to account</string>
     <string name="problem_connecting_to_accounts">Unable to connect to multiple accounts</string>
     <string name="touch_to_fix">Touch here to manage your accounts</string>
-    <string name="action_attach_file">Attach file</string>
+    <string name="attach_file">Attach file</string>
     <string name="not_in_roster">The contact is not in your roster. Would you like to add it?</string>
     <string name="add_contact">Add contact</string>
     <string name="send_failed">unsuccessful delivery</string>
@@ -59,4 +59,10 @@
     <string name="clear_histor_msg">Do you want to delete all messages within this Conversation?\n\n<b>Warning:</b> This will not influence messages stored on other devices or servers.</string>
     <string name="delete_messages">Delete messages</string>
     <string name="also_end_conversation">End this conversations afterwards</string>
+    <string name="choose_presence">Choose presence to contact</string>
+    <string name="send_message_to_conference">Send message to conference</string>
+    <string name="send_plain_text_message">Send plain text message</string>
+    <string name="send_otr_message">Send OTR encrypted message</string>
+    <string name="send_pgp_message">Send openPGP encrypted message</string>
+    <string name="your_nick_has_been_changed">Your nickname has been changed</string>
 </resources>

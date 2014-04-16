@@ -287,7 +287,7 @@ public class ConversationActivity extends XmppActivity {
 						Intent attachFileIntent = new Intent();
 						attachFileIntent.setType("image/*");
 						attachFileIntent.setAction(Intent.ACTION_GET_CONTENT);
-						Intent chooser = Intent.createChooser(attachFileIntent, "Attach File");
+						Intent chooser = Intent.createChooser(attachFileIntent, getString(R.string.attach_file));
 						startActivityForResult(chooser,	ATTACH_FILE);
 					}
 				}
@@ -557,7 +557,7 @@ public class ConversationActivity extends XmppActivity {
 				listener.onPresenceSelected(true, presence);
 			} else {
 				AlertDialog.Builder builder = new AlertDialog.Builder(this);
-				builder.setTitle("Choose Presence");
+				builder.setTitle(getString(R.string.choose_presence));
 				final String[] presencesArray = new String[presences.size()];
 				presences.keySet().toArray(presencesArray);
 				builder.setItems(presencesArray,

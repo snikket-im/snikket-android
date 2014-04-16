@@ -124,20 +124,20 @@ public class ConversationFragment extends Fragment {
 
 	public void updateChatMsgHint() {
 		if (conversation.getMode() == Conversation.MODE_MULTI) {
-			chatMsg.setHint("Send message to conference");
+			chatMsg.setHint(getString(R.string.send_message_to_conference));
 		} else {
 			switch (conversation.nextMessageEncryption) {
 			case Message.ENCRYPTION_NONE:
-				chatMsg.setHint("Send plain text message");
+				chatMsg.setHint(getString(R.string.send_plain_text_message));
 				break;
 			case Message.ENCRYPTION_OTR:
-				chatMsg.setHint("Send OTR encrypted message");
+				chatMsg.setHint(getString(R.string.send_otr_message));
 				break;
 			case Message.ENCRYPTION_PGP:
-				chatMsg.setHint("Send openPGP encryted messeage");
+				chatMsg.setHint(getString(R.string.send_pgp_message));
 				break;
 			case Message.ENCRYPTION_DECRYPTED:
-				chatMsg.setHint("Send openPGP encryted messeage");
+				chatMsg.setHint(getString(R.string.send_pgp_message));
 				break;
 			default:
 				break;
@@ -403,11 +403,11 @@ public class ConversationFragment extends Fragment {
 									if (success) {
 										Toast.makeText(
 												getActivity(),
-												"Your nickname has been changed",
+												getString(R.string.your_nick_has_been_changed),
 												Toast.LENGTH_SHORT).show();
 									} else {
 										Toast.makeText(getActivity(),
-												"Nichname is already in use",
+												getString(R.string.nick_in_use),
 												Toast.LENGTH_SHORT).show();
 									}
 								}

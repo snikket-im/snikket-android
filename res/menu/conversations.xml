@@ -19,7 +19,7 @@
         android:orderInCategory="30"
         android:showAsAction="ifRoom"
         android:icon="@drawable/ic_action_new_attachment"
-        android:title="@string/action_attach_file" />
+        android:title="@string/attach_file" />
     
     <item
         android:id="@+id/action_contact_details"
