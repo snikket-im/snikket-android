@@ -23,7 +23,7 @@ public class JingleConnectionManager {
 	private List<JingleConnection> connections = new ArrayList<JingleConnection>(); // make
 																					// concurrent
 
-	private ConcurrentHashMap<String, Element> primaryCandidates = new ConcurrentHashMap<String, Element>();
+	private ConcurrentHashMap<String, JingleCandidate> primaryCandidates = new ConcurrentHashMap<String, JingleCandidate>();
 
 	private SecureRandom random = new SecureRandom();
 
@@ -89,17 +89,12 @@ public class JingleConnectionManager {
 								if (streamhost != null) {
 									Log.d("xmppService", "streamhost found "
 											+ streamhost.toString());
-									Element candidate = new Element("candidate");
-									candidate.setAttribute("cid",
-											nextRandomId());
-									candidate.setAttribute("host",
-											streamhost.getAttribute("host"));
-									candidate.setAttribute("port",
-											streamhost.getAttribute("port"));
-									candidate.setAttribute("type", "proxy");
-									candidate.setAttribute("jid", proxy);
-									candidate
-											.setAttribute("priority", "655360");
+									JingleCandidate candidate = new JingleCandidate(nextRandomId(),true);
+									candidate.setHost(streamhost.getAttribute("host"));
+									candidate.setPort(Integer.parseInt(streamhost.getAttribute("port")));
+									candidate.setType(JingleCandidate.TYPE_PROXY);
+									candidate.setJid(proxy);
+									candidate.setPriority(655360+65535);
 									primaryCandidates.put(account.getJid(),
 											candidate);
 									listener.onPrimaryCandidateFound(true,
@@ -117,14 +112,6 @@ public class JingleConnectionManager {
 		} else {
 			listener.onPrimaryCandidateFound(true,
 					this.primaryCandidates.get(account.getJid()));
-		}
-	}
-	
-	public String getPrimaryCandidateId(Account account) {
-		if (this.primaryCandidates.containsKey(account.getJid())) {
-			return this.primaryCandidates.get(account.getJid()).getAttribute("cid");
-		} else {
-			return null;
 		}
 	}
 

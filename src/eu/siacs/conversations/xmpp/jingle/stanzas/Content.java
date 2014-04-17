@@ -77,6 +77,14 @@ public class Content extends Element {
 		}
 	}
 	
+	public boolean hasCandidateError() {
+		Element transport = this.findChild("transport", "urn:xmpp:jingle:transports:s5b:1");
+		if (transport==null) {
+			return false;
+		}
+		return transport.hasChild("candidate-error");
+	}
+	
 	public void setUsedCandidate(String transportId, String cid) {
 		Element transport = this.findChild("transport", "urn:xmpp:jingle:transports:s5b:1");
 		if (transport==null) {
@@ -94,5 +102,23 @@ public class Content extends Element {
 			transport = this.addChild("transport", "urn:xmpp:jingle:transports:s5b:1");
 		}
 		transport.addChild(candidate);
+	}
+
+	public void setFileOffer(Element fileOffer) {
+		Element description = this.findChild("description", "urn:xmpp:jingle:apps:file-transfer:3");
+		if (description==null) {
+			description = this.addChild("description", "urn:xmpp:jingle:apps:file-transfer:3");
+		}
+		description.addChild(fileOffer);
+	}
+
+	public void setCandidateError(String transportId) {
+		Element transport = this.findChild("transport", "urn:xmpp:jingle:transports:s5b:1");
+		if (transport==null) {
+			transport = this.addChild("transport", "urn:xmpp:jingle:transports:s5b:1");
+		}
+		transport.setAttribute("sid", transportId);
+		transport.clearChildren();
+		transport.addChild("candidate-error");
 	}
 }

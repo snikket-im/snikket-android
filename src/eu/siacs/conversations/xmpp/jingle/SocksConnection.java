@@ -19,29 +19,20 @@ import android.util.Log;
 import android.widget.Button;
 
 public class SocksConnection {
-	private Socket socket;
-	private String host;
-	private String jid;
-	private String cid;
-	private int port;
-	private boolean isProxy = false;
+	private JingleCandidate candidate;
 	private String destination;
 	private OutputStream outputStream;
 	private InputStream inputStream;
 	private boolean isEstablished = false;
+	protected Socket socket;
 
-	public SocksConnection(JingleConnection jingleConnection, Element candidate, boolean initating) {
-		this.cid = candidate.getAttribute("cid");
-		this.host = candidate.getAttribute("host");
-		this.port = Integer.parseInt(candidate.getAttribute("port"));
-		String type = candidate.getAttribute("type");
-		this.jid = candidate.getAttribute("jid");
-		this.isProxy = "proxy".equalsIgnoreCase(type);
+	public SocksConnection(JingleConnection jingleConnection, JingleCandidate candidate) {
+		this.candidate = candidate;
 		try {
 			MessageDigest mDigest = MessageDigest.getInstance("SHA-1");
 			StringBuilder destBuilder = new StringBuilder();
 			destBuilder.append(jingleConnection.getSessionId());
-			if (initating) {
+			if (candidate.isOurs()) {
 				destBuilder.append(jingleConnection.getAccountJid());
 				destBuilder.append(jingleConnection.getCounterPart());
 			} else {
@@ -62,7 +53,7 @@ public class SocksConnection {
 			@Override
 			public void run() {
 				try {
-					socket = new Socket(host, port);
+					socket = new Socket(candidate.getHost(), candidate.getPort());
 					inputStream = socket.getInputStream();
 					outputStream = socket.getOutputStream();
 					byte[] login = { 0x05, 0x01, 0x00 };
@@ -78,8 +69,7 @@ public class SocksConnection {
 						inputStream.read(result);
 						int status = result[1];
 						if (status == 0) {
-							Log.d("xmppService", "established connection with "+host + ":" + port
-									+ "/" + destination);
+							Log.d("xmppService", "established connection with "+candidate.getHost()+":"+candidate.getPort()+ "/" + destination);
 							isEstablished = true;
 							callback.established();
 						} else {
@@ -193,29 +183,25 @@ public class SocksConnection {
 	}
 
 	public boolean isProxy() {
-		return this.isProxy;
-	}
-
-	public String getJid() {
-		return this.jid;
-	}
-	
-	public String getCid() {
-		return this.cid;
+		return this.candidate.getType() == JingleCandidate.TYPE_PROXY;
 	}
 
 	public void disconnect() {
 		if (this.socket!=null) {
 			try {
 				this.socket.close();
-				Log.d("xmppService","cloesd socket with "+this.host);
+				Log.d("xmppService","cloesd socket with "+candidate.getHost()+":"+candidate.getPort());
 			} catch (IOException e) {
-				Log.d("xmppService","error closing socket with "+this.host);
+				Log.d("xmppService","error closing socket with "+candidate.getHost()+":"+candidate.getPort());
 			}
 		}
 	}
 	
 	public boolean isEstablished() {
 		return this.isEstablished;
+	}
+	
+	public JingleCandidate getCandidate() {
+		return this.candidate;
 	}
 }
