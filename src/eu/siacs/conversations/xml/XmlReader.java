@@ -51,32 +51,36 @@ public class XmlReader {
 	
 	public Tag readTag() throws XmlPullParserException, IOException {
 		if (wakeLock.isHeld()) {
-			wakeLock.release(); //release wake look while waiting on next parser event
-		}
-		while(parser.next() != XmlPullParser.END_DOCUMENT) {
-				wakeLock.acquire();
-				if (parser.getEventType() == XmlPullParser.START_TAG) {
-					Tag tag = Tag.start(parser.getName());
-					for(int i = 0; i < parser.getAttributeCount(); ++i) {
-						tag.setAttribute(parser.getAttributeName(i), parser.getAttributeValue(i));
-					}
-					String xmlns = 	parser.getNamespace();
-					if (xmlns!=null) {
-						tag.setAttribute("xmlns",xmlns);
-					}
-					return tag;
-				} else if (parser.getEventType() == XmlPullParser.END_TAG) {
-					Tag tag = Tag.end(parser.getName());
-					return tag;
-				} else if (parser.getEventType() == XmlPullParser.TEXT) {
-					Tag tag = Tag.no(parser.getText());
-					return tag;
-				}
-			}
-		if (wakeLock.isHeld()) {
 			wakeLock.release();
 		}
-		return null; //end document;
+		try {
+			while(parser.next() != XmlPullParser.END_DOCUMENT) {
+					wakeLock.acquire();
+					if (parser.getEventType() == XmlPullParser.START_TAG) {
+						Tag tag = Tag.start(parser.getName());
+						for(int i = 0; i < parser.getAttributeCount(); ++i) {
+							tag.setAttribute(parser.getAttributeName(i), parser.getAttributeValue(i));
+						}
+						String xmlns = 	parser.getNamespace();
+						if (xmlns!=null) {
+							tag.setAttribute("xmlns",xmlns);
+						}
+						return tag;
+					} else if (parser.getEventType() == XmlPullParser.END_TAG) {
+						Tag tag = Tag.end(parser.getName());
+						return tag;
+					} else if (parser.getEventType() == XmlPullParser.TEXT) {
+						Tag tag = Tag.no(parser.getText());
+						return tag;
+					}
+				}
+			if (wakeLock.isHeld()) {
+				wakeLock.release();
+			}
+		} catch (ArrayIndexOutOfBoundsException e) {
+			throw new IOException("xml parser mishandled ArrayIndexOufOfBounds", e);
+		}
+		return null;
 	}
 
 	public Element readElement(Tag currentTag) throws XmlPullParserException, IOException {
