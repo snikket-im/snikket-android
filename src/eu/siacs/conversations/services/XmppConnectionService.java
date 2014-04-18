@@ -290,7 +290,7 @@ public class XmppConnectionService extends Service {
 						if ("subscribe".equals(type)) {
 							account.getXmppConnection().addPendingSubscription(fromParts[0]);
 						} else {
-							Log.d(LOGTAG,packet.getFrom()+ " could not be found");
+							//Log.d(LOGTAG,packet.getFrom()+ " could not be found");
 						}
 						return;
 					}
@@ -667,7 +667,6 @@ public class XmppConnectionService extends Service {
 
 			@Override
 			public void onBind(Account account) {
-				Log.d("xmppService","bount. cleaning presences");
 				databaseBackend.clearPresences(account);
 				account.clearPresences(); // self presences
 				if (account.getXmppConnection().hasFeatureRosterManagment()) {

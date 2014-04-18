@@ -164,7 +164,6 @@ public class Contact extends AbstractEntity implements Serializable {
 
 	public void updatePresence(String resource, int status) {
 		this.presences.updatePresence(resource, status);
-		Log.d("xmppService","updatingPresence for contact="+this.jid+" resource="+resource+" num="+presences.size());
 	}
 
 	public void removePresence(String resource) {

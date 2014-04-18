@@ -92,4 +92,22 @@ public class JinglePacket extends IqPacket {
 	public boolean isAction(String action) {
 		return action.equalsIgnoreCase(this.getAction());
 	}
+	
+	public String toPrettyString() {
+		StringBuilder output = new StringBuilder();
+		output.append("["+getAction()+ " to:"+getTo()+" ");
+		if (this.content!=null) {
+			if (this.content.getUsedCandidate()!=null) {
+				output.append("used-candidate="+this.content.getUsedCandidate());
+			} else if (this.content.hasCandidateError()) {
+				output.append("candidate-error");
+			} else {
+				for(Element c : this.content.getCanditates()) {
+					output.append("["+c.getAttribute("host")+":"+c.getAttribute("port")+"]");
+				}
+			}
+		}
+		output.append("]");
+		return output.toString();
+	}
 }

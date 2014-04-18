@@ -69,7 +69,6 @@ public class SocksConnection {
 						inputStream.read(result);
 						int status = result[1];
 						if (status == 0) {
-							Log.d("xmppService", "established connection with "+candidate.getHost()+":"+candidate.getPort()+ "/" + destination);
 							isEstablished = true;
 							callback.established();
 						} else {
