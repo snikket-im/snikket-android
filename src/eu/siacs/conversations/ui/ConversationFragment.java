@@ -1,5 +1,6 @@
 package eu.siacs.conversations.ui;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -277,9 +278,16 @@ public class ConversationFragment extends Fragment {
 						viewHolder.messageBody.setTextColor(0xff33B5E5);
 						viewHolder.messageBody.setTypeface(null,Typeface.ITALIC);
 					} else {
-						viewHolder.image.setImageBitmap(activity.xmppConnectionService.getFileBackend().getThumbnailFromMessage(item,(int) (metrics.density * 288)));
-						viewHolder.messageBody.setVisibility(View.GONE);
-						viewHolder.image.setVisibility(View.VISIBLE);
+						try {
+							Bitmap thumbnail = activity.xmppConnectionService.getFileBackend().getThumbnailFromMessage(item,(int) (metrics.density * 288));
+							viewHolder.image.setImageBitmap(thumbnail);
+							viewHolder.messageBody.setVisibility(View.GONE);
+							viewHolder.image.setVisibility(View.VISIBLE);
+						} catch (FileNotFoundException e) {
+							viewHolder.image.setVisibility(View.GONE);
+							viewHolder.messageBody.setText("error loading image file");
+							viewHolder.messageBody.setVisibility(View.VISIBLE);
+						}
 					}
 				} else {
 					viewHolder.image.setVisibility(View.GONE);

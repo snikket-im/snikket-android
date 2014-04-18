@@ -100,11 +100,14 @@ public class FileBackend {
 				.decodeFile(getJingleFile(message).getAbsolutePath());
 	}
 
-	public Bitmap getThumbnailFromMessage(Message message, int size) {
+	public Bitmap getThumbnailFromMessage(Message message, int size) throws FileNotFoundException {
 		Bitmap thumbnail = thumbnailCache.get(message.getUuid());
 		if (thumbnail==null) {
 			Bitmap fullsize = BitmapFactory.decodeFile(getJingleFile(message)
 					.getAbsolutePath());
+			if (fullsize==null) {
+				throw new FileNotFoundException();
+			}
 			thumbnail = resize(fullsize, size);
 			this.thumbnailCache.put(message.getUuid(), thumbnail);
 		}

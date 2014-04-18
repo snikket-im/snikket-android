@@ -45,7 +45,8 @@ public class JingleConnection {
 	private Element fileOffer;
 	private JingleFile file = null;
 	
-	private boolean receivedCandidateError = false;
+	private boolean receivedCandidate = false;
+	private boolean sentCandidate = false;
 	
 	private OnIqPacketReceived responseListener = new OnIqPacketReceived() {
 		
@@ -110,12 +111,27 @@ public class JingleConnection {
 			this.mJingleConnectionManager.getPrimaryCandidate(account, new OnPrimaryCandidateFound() {
 				
 				@Override
-				public void onPrimaryCandidateFound(boolean success, JingleCandidate candidate) {
+				public void onPrimaryCandidateFound(boolean success, final JingleCandidate candidate) {
 					if (success) {
+						final SocksConnection socksConnection = new SocksConnection(JingleConnection.this, candidate);
+						connections.put(candidate.getCid(), socksConnection);
+						socksConnection.connect(new OnSocksConnection() {
+							
+							@Override
+							public void failed() {
+								sendInitRequest();
+							}
+							
+							@Override
+							public void established() {
+								mergeCandidate(candidate);
+								sendInitRequest();
+							}
+						});
 						mergeCandidate(candidate);
+					} else {
+						sendInitRequest();
 					}
-					openOurCandidates();
-					sendInitRequest();
 				}
 			});
 		}
@@ -148,7 +164,7 @@ public class JingleConnection {
 			if (this.mXmppConnectionService.convChangedListener!=null) {
 				this.mXmppConnectionService.convChangedListener.onConversationListChanged();
 			}
-			if (this.file.getExpectedSize()>=this.mJingleConnectionManager.getAutoAcceptFileSize()) {
+			if (this.file.getExpectedSize()<=this.mJingleConnectionManager.getAutoAcceptFileSize()) {
 				Log.d("xmppService","auto accepting file from "+packet.getFrom());
 				this.sendAccept();
 			} else {
@@ -185,31 +201,40 @@ public class JingleConnection {
 	}
 	
 	private void sendAccept() {
+		status = STATUS_ACCEPTED;
+		connectNextCandidate();
 		this.mJingleConnectionManager.getPrimaryCandidate(this.account, new OnPrimaryCandidateFound() {
 			
 			@Override
-			public void onPrimaryCandidateFound(boolean success, JingleCandidate candidate) {
-				Content content = new Content();
+			public void onPrimaryCandidateFound(boolean success,final JingleCandidate candidate) {
+				final JinglePacket packet = bootstrapPacket("session-accept");
+				final Content content = new Content();
 				content.setFileOffer(fileOffer);
-				if (success) {
-					if (!equalCandidateExists(candidate)) {
-						mergeCandidate(candidate);
-					}
-				}
-				openOurCandidates();
-				content.setCandidates(transportId, getCandidatesAsElements());
-				JinglePacket packet = bootstrapPacket("session-accept");
-				packet.setContent(content);
-				account.getXmppConnection().sendIqPacket(packet, new OnIqPacketReceived() {
-					
-					@Override
-					public void onIqPacketReceived(Account account, IqPacket packet) {
-						if (packet.getType() != IqPacket.TYPE_ERROR) {
-							status = STATUS_ACCEPTED;
-							connectNextCandidate();
+				if ((success)&&(!equalCandidateExists(candidate))) {
+					final SocksConnection socksConnection = new SocksConnection(JingleConnection.this, candidate);
+					connections.put(candidate.getCid(), socksConnection);
+					socksConnection.connect(new OnSocksConnection() {
+						
+						@Override
+						public void failed() {
+							content.setCandidates(transportId, getCandidatesAsElements());
+							packet.setContent(content);
+							account.getXmppConnection().sendIqPacket(packet,responseListener);
 						}
-					}
-				});
+						
+						@Override
+						public void established() {
+							mergeCandidate(candidate);
+							content.setCandidates(transportId, getCandidatesAsElements());
+							packet.setContent(content);
+							account.getXmppConnection().sendIqPacket(packet,responseListener);
+						}
+					});
+				} else {
+					content.setCandidates(transportId, getCandidatesAsElements());
+					packet.setContent(content);
+					account.getXmppConnection().sendIqPacket(packet,responseListener);
+				}
 			}
 		});
 		
@@ -219,7 +244,7 @@ public class JingleConnection {
 		JinglePacket packet = new JinglePacket();
 		packet.setAction(action);
 		packet.setFrom(account.getFullJid());
-		packet.setTo(this.message.getCounterpart()); //fixme, not right in all cases;
+		packet.setTo(this.message.getCounterpart());
 		packet.setSessionId(this.sessionId);
 		packet.setInitiator(this.initiator);
 		return packet;
@@ -243,14 +268,15 @@ public class JingleConnection {
 			Log.d("xmppService","candidate used by counterpart:"+cid);
 			JingleCandidate candidate = getCandidate(cid);
 			candidate.flagAsUsedByCounterpart();
-			if (status == STATUS_ACCEPTED) {
+			this.receivedCandidate = true;
+			if ((status == STATUS_ACCEPTED)&&(this.sentCandidate)) {
 				this.connect();
 			} else {
-				Log.d("xmppService","ignoring because file is already in transmission");
+				Log.d("xmppService","ignoring because file is already in transmission or we havent sent our candidate yet");
 			}
 		} else if (content.hasCandidateError()) {
 			Log.d("xmppService","received candidate error");
-			this.receivedCandidateError = true;
+			this.receivedCandidate = true;
 			if (status == STATUS_ACCEPTED) {
 				this.connect();
 			}
@@ -334,7 +360,11 @@ public class JingleConnection {
 	        }
 	        it.remove();
 	    }
-	    Log.d("xmppService","chose candidate: "+connection.getCandidate().getHost());
+	    if (connection!=null) {
+	    	Log.d("xmppService","chose candidate: "+connection.getCandidate().getHost());
+	    } else {
+	    	Log.d("xmppService","couldn't find candidate");
+	    }
 		return connection;
 	}
 
@@ -362,7 +392,7 @@ public class JingleConnection {
 		this.mXmppConnectionService.markMessage(this.message, Message.STATUS_SEND_REJECTED);
 	}
 	
-	private void openOurCandidates() {
+	/*private void openOurCandidates() {
 		for(JingleCandidate candidate : this.candidates) {
 			if (candidate.isOurs()) {
 				final SocksConnection socksConnection = new SocksConnection(this,candidate);
@@ -381,7 +411,7 @@ public class JingleConnection {
 				});
 			}
 		}
-	}
+	}*/
 	
 	private void connectNextCandidate() {
 		for(JingleCandidate candidate : this.candidates) {
@@ -406,8 +436,7 @@ public class JingleConnection {
 			@Override
 			public void established() {
 				sendCandidateUsed(candidate.getCid());
-				if ((receivedCandidateError)&&(status == STATUS_ACCEPTED)) {
-					Log.d("xmppService","received candidate error before. trying to connect");
+				if ((receivedCandidate)&&(status == STATUS_ACCEPTED)) {
 					connect();
 				}
 			}
@@ -433,6 +462,7 @@ public class JingleConnection {
 		packet.setContent(content);
 		Log.d("xmppService","send using candidate: "+cid);
 		this.account.getXmppConnection().sendIqPacket(packet,responseListener);
+		this.sentCandidate = true;
 	}
 	
 	private void sendCandidateError() {
@@ -445,6 +475,7 @@ public class JingleConnection {
 		packet.setContent(content);
 		Log.d("xmppService","send candidate error");
 		this.account.getXmppConnection().sendIqPacket(packet,responseListener);
+		this.sentCandidate = true;
 	}
 
 	public String getInitiator() {
