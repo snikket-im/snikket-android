@@ -201,9 +201,13 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 				+ "=?", args);
 	}
 	
-	public void updateContact(Contact contact) {
+	public void updateContact(Contact contact, boolean updatePresences) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		String[] args = { contact.getUuid() };
+		ContentValues values = contact.getContentValues();
+		if (!updatePresences) {
+			values.remove(Contact.PRESENCES);
+		}
 		db.update(Contact.TABLENAME, contact.getContentValues(), Contact.UUID
 				+ "=?", args);
 	}
@@ -227,8 +231,8 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 			if (cursor.getCount()>=1) {
 				cursor.moveToFirst();
 				contact.setUuid(cursor.getString(0));
-				contact.setPresences(Presences.fromJsonString(cursor.getString(1)));
-				updateContact(contact);
+				//contact.setPresences(Presences.fromJsonString(cursor.getString(1)));
+				updateContact(contact,false);
 			} else {
 				contact.setUuid(UUID.randomUUID().toString());
 				createContact(contact);

@@ -317,7 +317,7 @@ public class XmppConnectionService extends Service {
 								}
 							}
 							replaceContactInConversation(contact.getJid(), contact);
-							databaseBackend.updateContact(contact);
+							databaseBackend.updateContact(contact,true);
 						} else {
 							//Log.d(LOGTAG,"presence without resource "+packet.toString());
 						}
@@ -328,7 +328,7 @@ public class XmppConnectionService extends Service {
 							contact.removePresence(fromParts[1]);
 						}
 						replaceContactInConversation(contact.getJid(), contact);
-						databaseBackend.updateContact(contact);
+						databaseBackend.updateContact(contact,true);
 					} else if (type.equals("subscribe")) {
 						Log.d(LOGTAG,"received subscribe packet from "+packet.getFrom());
 						if (contact
@@ -339,7 +339,7 @@ public class XmppConnectionService extends Service {
 							contact.resetSubscriptionOption(Contact.Subscription.PREEMPTIVE_GRANT);
 							replaceContactInConversation(contact.getJid(),
 									contact);
-							databaseBackend.updateContact(contact);
+							databaseBackend.updateContact(contact,false);
 							if ((contact
 									.getSubscriptionOption(Contact.Subscription.ASKING))
 									&& (!contact
@@ -469,7 +469,7 @@ public class XmppConnectionService extends Service {
 						replaceContactInConversation(contact.getJid(), null);
 					} else {
 						contact.parseSubscriptionFromElement(item);
-						databaseBackend.updateContact(contact);
+						databaseBackend.updateContact(contact,false);
 						replaceContactInConversation(contact.getJid(), contact);
 					}
 				}
@@ -667,6 +667,7 @@ public class XmppConnectionService extends Service {
 
 			@Override
 			public void onBind(Account account) {
+				Log.d("xmppService","bount. cleaning presences");
 				databaseBackend.clearPresences(account);
 				account.clearPresences(); // self presences
 				if (account.getXmppConnection().hasFeatureRosterManagment()) {
@@ -912,7 +913,7 @@ public class XmppConnectionService extends Service {
 										.getString("photouri"));
 								contact.setDisplayName(phoneContact
 										.getString("displayname"));
-								databaseBackend.updateContact(contact);
+								databaseBackend.updateContact(contact,false);
 								replaceContactInConversation(contact.getJid(),
 										contact);
 							} else {
@@ -920,7 +921,7 @@ public class XmppConnectionService extends Service {
 										|| (contact.getProfilePhoto() != null)) {
 									contact.setSystemAccount(null);
 									contact.setPhotoUri(null);
-									databaseBackend.updateContact(contact);
+									databaseBackend.updateContact(contact,false);
 									replaceContactInConversation(
 											contact.getJid(), contact);
 								}
@@ -1212,7 +1213,7 @@ public class XmppConnectionService extends Service {
 	}
 
 	public void updateContact(Contact contact) {
-		databaseBackend.updateContact(contact);
+		databaseBackend.updateContact(contact,false);
 		replaceContactInConversation(contact.getJid(), contact);
 	}
 
