@@ -302,7 +302,7 @@ public class JingleConnection {
 				public void onFileTransmitted(JingleFile file) {
 					if (responder.equals(account.getFullJid())) {
 						sendSuccess();
-						mXmppConnectionService.markMessage(message, Message.STATUS_SEND);
+						mXmppConnectionService.markMessage(message, Message.STATUS_RECIEVED);
 					}
 					Log.d("xmppService","sucessfully transmitted file. sha1:"+file.getSha1Sum());
 				}

@@ -120,11 +120,11 @@ public class JingleConnectionManager {
 	}
 	
 	public long getAutoAcceptFileSize() {
-		String config = this.xmppConnectionService.getPreferences().getString("auto_accept_file_size", "0");
+		String config = this.xmppConnectionService.getPreferences().getString("auto_accept_file_size", "524288");
 		try {
 			return Long.parseLong(config);
 		} catch (NumberFormatException e) {
-			return 0;
+			return 524288;
 		}
 	}
 }
