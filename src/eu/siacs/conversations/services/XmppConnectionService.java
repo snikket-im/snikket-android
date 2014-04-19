@@ -316,7 +316,7 @@ public class XmppConnectionService extends Service {
 									}
 								}
 							}
-							replaceContactInConversation(contact.getJid(), contact);
+							replaceContactInConversation(account,contact.getJid(), contact);
 							databaseBackend.updateContact(contact,true);
 						} else {
 							//Log.d(LOGTAG,"presence without resource "+packet.toString());
@@ -327,7 +327,7 @@ public class XmppConnectionService extends Service {
 						} else {
 							contact.removePresence(fromParts[1]);
 						}
-						replaceContactInConversation(contact.getJid(), contact);
+						replaceContactInConversation(account,contact.getJid(), contact);
 						databaseBackend.updateContact(contact,true);
 					} else if (type.equals("subscribe")) {
 						Log.d(LOGTAG,"received subscribe packet from "+packet.getFrom());
@@ -337,7 +337,7 @@ public class XmppConnectionService extends Service {
 							sendPresenceUpdatesTo(contact);
 							contact.setSubscriptionOption(Contact.Subscription.FROM);
 							contact.resetSubscriptionOption(Contact.Subscription.PREEMPTIVE_GRANT);
-							replaceContactInConversation(contact.getJid(),
+							replaceContactInConversation(account,contact.getJid(),
 									contact);
 							databaseBackend.updateContact(contact,false);
 							if ((contact
@@ -466,22 +466,22 @@ public class XmppConnectionService extends Service {
 				} else {
 					if (subscription.equals("remove")) {
 						databaseBackend.deleteContact(contact);
-						replaceContactInConversation(contact.getJid(), null);
+						replaceContactInConversation(account,contact.getJid(), null);
 					} else {
 						contact.parseSubscriptionFromElement(item);
 						databaseBackend.updateContact(contact,false);
-						replaceContactInConversation(contact.getJid(), contact);
+						replaceContactInConversation(account,contact.getJid(), contact);
 					}
 				}
 			}
 		}
 	}
 
-	private void replaceContactInConversation(String jid, Contact contact) {
+	private void replaceContactInConversation(Account account, String jid, Contact contact) {
 		List<Conversation> conversations = getConversations();
-		for (int i = 0; i < conversations.size(); ++i) {
-			if ((conversations.get(i).getContactJid().equals(jid))) {
-				conversations.get(i).setContact(contact);
+		for (Conversation c : conversations) {
+			if (c.getContactJid().equals(jid)&&(c.getAccount()==account)) {
+				c.setContact(contact);
 				break;
 			}
 		}
@@ -868,7 +868,7 @@ public class XmppConnectionService extends Service {
 									.getContacts(mWhere.toString());
 							for (Contact contact : contactsToDelete) {
 								databaseBackend.deleteContact(contact);
-								replaceContactInConversation(contact.getJid(),
+								replaceContactInConversation(account,contact.getJid(),
 										null);
 							}
 
@@ -913,7 +913,7 @@ public class XmppConnectionService extends Service {
 								contact.setDisplayName(phoneContact
 										.getString("displayname"));
 								databaseBackend.updateContact(contact,false);
-								replaceContactInConversation(contact.getJid(),
+								replaceContactInConversation(contact.getAccount(),contact.getJid(),
 										contact);
 							} else {
 								if ((contact.getSystemAccount() != null)
@@ -921,7 +921,7 @@ public class XmppConnectionService extends Service {
 									contact.setSystemAccount(null);
 									contact.setPhotoUri(null);
 									databaseBackend.updateContact(contact,false);
-									replaceContactInConversation(
+									replaceContactInConversation(contact.getAccount(),
 											contact.getJid(), contact);
 								}
 							}
@@ -1055,7 +1055,7 @@ public class XmppConnectionService extends Service {
 		Element query = iq.query("jabber:iq:roster");
 		query.addChild("item").setAttribute("jid", contact.getJid()).setAttribute("subscription", "remove");
 		contact.getAccount().getXmppConnection().sendIqPacket(iq, null);
-		replaceContactInConversation(contact.getJid(), null);
+		replaceContactInConversation(contact.getAccount(),contact.getJid(), null);
 		databaseBackend.deleteContact(contact);
 	}
 
@@ -1213,7 +1213,7 @@ public class XmppConnectionService extends Service {
 
 	public void updateContact(Contact contact) {
 		databaseBackend.updateContact(contact,false);
-		replaceContactInConversation(contact.getJid(), contact);
+		replaceContactInConversation(contact.getAccount(),contact.getJid(), contact);
 	}
 
 	public void updateMessage(Message message) {
@@ -1245,7 +1245,7 @@ public class XmppConnectionService extends Service {
 				sendPresenceUpdatesTo(contact);
 			}
 		}
-		replaceContactInConversation(contact.getJid(), contact);
+		replaceContactInConversation(contact.getAccount(),contact.getJid(), contact);
 	}
 
 	public void requestPresenceUpdatesFrom(Contact contact) {
