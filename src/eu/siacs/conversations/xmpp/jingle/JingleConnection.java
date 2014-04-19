@@ -119,17 +119,20 @@ public class JingleConnection {
 							
 							@Override
 							public void failed() {
+								Log.d("xmppService","connection to our own primary candidete failed");
 								sendInitRequest();
 							}
 							
 							@Override
 							public void established() {
+								Log.d("xmppService","succesfully connected to our own primary candidate");
 								mergeCandidate(candidate);
 								sendInitRequest();
 							}
 						});
 						mergeCandidate(candidate);
 					} else {
+						Log.d("xmppService","no primary candidate of our own was found");
 						sendInitRequest();
 					}
 				}
@@ -216,6 +219,7 @@ public class JingleConnection {
 						
 						@Override
 						public void failed() {
+							Log.d("xmppService","connection to our own primary candidate failed");
 							content.setCandidates(transportId, getCandidatesAsElements());
 							packet.setContent(content);
 							sendJinglePacket(packet);
@@ -223,6 +227,7 @@ public class JingleConnection {
 						
 						@Override
 						public void established() {
+							Log.d("xmppService","connected to primary candidate");
 							mergeCandidate(candidate);
 							content.setCandidates(transportId, getCandidatesAsElements());
 							packet.setContent(content);
@@ -230,6 +235,7 @@ public class JingleConnection {
 						}
 					});
 				} else {
+					Log.d("xmppService","did not find a primary candidate for ourself");
 					content.setCandidates(transportId, getCandidatesAsElements());
 					packet.setContent(content);
 					sendJinglePacket(packet);

@@ -3,8 +3,8 @@ package eu.siacs.conversations.xmpp.jingle;
 import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
 
 import android.util.Log;
 
@@ -20,10 +20,9 @@ public class JingleConnectionManager {
 
 	private XmppConnectionService xmppConnectionService;
 
-	private List<JingleConnection> connections = new ArrayList<JingleConnection>(); // make
-																					// concurrent
+	private List<JingleConnection> connections = new ArrayList<JingleConnection>();
 
-	private ConcurrentHashMap<String, JingleCandidate> primaryCandidates = new ConcurrentHashMap<String, JingleCandidate>();
+	private HashMap<String, JingleCandidate> primaryCandidates = new HashMap<String, JingleCandidate>();
 
 	private SecureRandom random = new SecureRandom();
 
@@ -110,6 +109,7 @@ public class JingleConnectionManager {
 			}
 
 		} else {
+			Log.d("xmppService","found primary candidate in archive");
 			listener.onPrimaryCandidateFound(true,
 					this.primaryCandidates.get(account.getJid()));
 		}
