@@ -86,8 +86,6 @@ public class JingleConnectionManager {
 										.findChild("streamhost",
 												"http://jabber.org/protocol/bytestreams");
 								if (streamhost != null) {
-									Log.d("xmppService", "streamhost found "
-											+ streamhost.toString());
 									JingleCandidate candidate = new JingleCandidate(nextRandomId(),true);
 									candidate.setHost(streamhost.getAttribute("host"));
 									candidate.setPort(Integer.parseInt(streamhost.getAttribute("port")));
@@ -109,7 +107,6 @@ public class JingleConnectionManager {
 			}
 
 		} else {
-			Log.d("xmppService","found primary candidate in archive");
 			listener.onPrimaryCandidateFound(true,
 					this.primaryCandidates.get(account.getJid()));
 		}

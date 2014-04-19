@@ -95,15 +95,15 @@ public class JinglePacket extends IqPacket {
 	
 	public String toPrettyString() {
 		StringBuilder output = new StringBuilder();
-		output.append("["+getAction()+ " to:"+getTo()+" ");
+		output.append("["+getAction()+ " to:"+getTo());
 		if (this.content!=null) {
 			if (this.content.getUsedCandidate()!=null) {
-				output.append("used-candidate="+this.content.getUsedCandidate());
+				output.append(" [used-candidate="+this.content.getUsedCandidate()+"]");
 			} else if (this.content.hasCandidateError()) {
-				output.append("candidate-error");
+				output.append(" [candidate-error]");
 			} else {
 				for(Element c : this.content.getCanditates()) {
-					output.append("["+c.getAttribute("host")+":"+c.getAttribute("port")+"]");
+					output.append(" ["+c.getAttribute("host")+":"+c.getAttribute("port")+"]");
 				}
 			}
 		}

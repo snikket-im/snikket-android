@@ -426,9 +426,6 @@ public class JingleConnection {
 			public void established() {
 				Log.d("xmppService", "established connection with "+candidate.getHost()+":"+candidate.getPort());
 				sendCandidateUsed(candidate.getCid());
-				if ((receivedCandidate)&&(status == STATUS_ACCEPTED)) {
-					connect();
-				}
 			}
 		});
 	}
@@ -450,9 +447,11 @@ public class JingleConnection {
 		content.setAttribute("name", "a-file-offer");
 		content.setUsedCandidate(this.transportId, cid);
 		packet.setContent(content);
-		Log.d("xmppService","send using candidate: "+cid);
 		this.sendJinglePacket(packet);
 		this.sentCandidate = true;
+		if ((receivedCandidate)&&(status == STATUS_ACCEPTED)) {
+			connect();
+		}
 	}
 	
 	private void sendCandidateError() {
@@ -463,9 +462,11 @@ public class JingleConnection {
 		content.setAttribute("name", "a-file-offer");
 		content.setCandidateError(this.transportId);
 		packet.setContent(content);
-		Log.d("xmppService","send candidate error");
 		this.sendJinglePacket(packet);
 		this.sentCandidate = true;
+		if ((receivedCandidate)&&(status == STATUS_ACCEPTED)) {
+			connect();
+		}
 	}
 
 	public String getInitiator() {
