@@ -288,6 +288,12 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		String[] args = { message.getUuid() };
 		db.delete(Message.TABLENAME, Message.UUID + "=?", args);
 	}
+	
+	public void deleteMessagesInConversation(Conversation conversation) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		String[] args = { conversation.getUuid() };
+		db.delete(Message.TABLENAME, Message.CONVERSATION + "=?", args);
+	}
 
 	public void deleteContact(Contact contact) {
 		SQLiteDatabase db = this.getWritableDatabase();

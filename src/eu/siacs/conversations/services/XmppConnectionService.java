@@ -1035,7 +1035,12 @@ public class XmppConnectionService extends Service {
 	}
 	
 	public void clearConversationHistory(Conversation conversation) {
-		
+		this.databaseBackend.deleteMessagesInConversation(conversation);
+		this.fileBackend.removeFiles(conversation);
+		conversation.getMessages().clear();
+		if (this.convChangedListener != null) {
+			this.convChangedListener.onConversationListChanged();
+		}
 	}
 
 	public int getConversationCount() {

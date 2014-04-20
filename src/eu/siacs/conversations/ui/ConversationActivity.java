@@ -34,6 +34,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.PopupMenu.OnMenuItemClickListener;
@@ -297,16 +298,7 @@ public class ConversationActivity extends XmppActivity {
 			startActivity(new Intent(this, ContactsActivity.class));
 			break;
 		case R.id.action_archive:
-			Conversation conv = getSelectedConversation();
-			conv.setStatus(Conversation.STATUS_ARCHIVED);
-			paneShouldBeOpen = true;
-			spl.openPane();
-			xmppConnectionService.archiveConversation(conv);
-			if (conversationList.size() > 0) {
-				selectedConversation = conversationList.get(0);
-			} else {
-				selectedConversation = null;
-			}
+			this.endConversation(getSelectedConversation());
 			break;
 		case R.id.action_contact_details:
 			Contact contact = this.getSelectedConversation().getContact();
@@ -400,18 +392,33 @@ public class ConversationActivity extends XmppActivity {
 		return super.onOptionsItemSelected(item);
 	}
 	
-	protected void clearHistoryDialog(Conversation conversation) {
+	private void endConversation(Conversation conversation) {
+		conversation.setStatus(Conversation.STATUS_ARCHIVED);
+		paneShouldBeOpen = true;
+		spl.openPane();
+		xmppConnectionService.archiveConversation(conversation);
+		if (conversationList.size() > 0) {
+			selectedConversation = conversationList.get(0);
+		} else {
+			selectedConversation = null;
+		}
+	}
+
+	protected void clearHistoryDialog(final Conversation conversation) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(getString(R.string.clear_conversation_history));
 		View dialogView = getLayoutInflater().inflate(R.layout.dialog_clear_history, null);
+		final CheckBox endConversationCheckBox = (CheckBox) dialogView.findViewById(R.id.end_conversation_checkbox);
 		builder.setView(dialogView);
 		builder.setNegativeButton(getString(R.string.cancel), null);
 		builder.setPositiveButton(getString(R.string.delete_messages), new OnClickListener() {
 			
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				// TODO Auto-generated method stub
-				
+				activity.xmppConnectionService.clearConversationHistory(conversation);
+				if (endConversationCheckBox.isChecked()) {
+					endConversation(conversation);
+				}
 			}
 		});
 		builder.create().show();
