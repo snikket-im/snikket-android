@@ -48,6 +48,8 @@ public class JingleConnection {
 	private boolean receivedCandidate = false;
 	private boolean sentCandidate = false;
 	
+	private JingleTransport transport = null;
+	
 	private OnIqPacketReceived responseListener = new OnIqPacketReceived() {
 		
 		@Override
@@ -56,6 +58,37 @@ public class JingleConnection {
 				mXmppConnectionService.markMessage(message, Message.STATUS_SEND_FAILED);
 				status = STATUS_FAILED;
 			}
+		}
+	};
+	
+	final OnFileTransmitted onFileTransmitted = new OnFileTransmitted() {
+		
+		@Override
+		public void onFileTransmitted(JingleFile file) {
+			if (responder.equals(account.getFullJid())) {
+				sendSuccess();
+				mXmppConnectionService.markMessage(message, Message.STATUS_RECIEVED);
+			}
+			Log.d("xmppService","sucessfully transmitted file. sha1:"+file.getSha1Sum());
+		}
+	};
+	
+	private OnProxyActivated onProxyActivated = new OnProxyActivated() {
+		
+		@Override
+		public void success() {
+			if (initiator.equals(account.getFullJid())) {
+				Log.d("xmppService","we were initiating. sending file");
+				transport.send(file,onFileTransmitted);
+			} else {
+				transport.receive(file,onFileTransmitted);
+				Log.d("xmppService","we were responding. receiving file");
+			}
+		}
+		
+		@Override
+		public void failed() {
+			Log.d("xmppService","proxy activation failed");
 		}
 	};
 	
@@ -155,7 +188,7 @@ public class JingleConnection {
 		this.sessionId = packet.getSessionId();
 		Content content = packet.getJingleContent();
 		this.transportId = content.getTransportId();
-		this.mergeCandidates(JingleCandidate.parse(content.getCanditates()));
+		this.mergeCandidates(JingleCandidate.parse(content.socks5transport().getChildren()));
 		this.fileOffer = packet.getJingleContent().getFileOffer();
 		if (fileOffer!=null) {
 			this.file = this.mXmppConnectionService.getFileBackend().getJingleFile(message);
@@ -184,10 +217,11 @@ public class JingleConnection {
 		if (message.getType() == Message.TYPE_IMAGE) {
 			content.setAttribute("creator", "initiator");
 			content.setAttribute("name", "a-file-offer");
+			content.setTransportId(this.transportId);
 			this.file = this.mXmppConnectionService.getFileBackend().getJingleFile(message);
 			content.setFileOffer(this.file);
 			this.transportId = this.mJingleConnectionManager.nextRandomId();
-			content.setCandidates(this.transportId,getCandidatesAsElements());
+			content.socks5transport().setChildren(getCandidatesAsElements());
 			packet.setContent(content);
 			this.sendJinglePacket(packet);
 			this.status = STATUS_INITIATED;
@@ -212,6 +246,7 @@ public class JingleConnection {
 				final JinglePacket packet = bootstrapPacket("session-accept");
 				final Content content = new Content();
 				content.setFileOffer(fileOffer);
+				content.setTransportId(transportId);
 				if ((success)&&(!equalCandidateExists(candidate))) {
 					final SocksConnection socksConnection = new SocksConnection(JingleConnection.this, candidate);
 					connections.put(candidate.getCid(), socksConnection);
@@ -220,7 +255,7 @@ public class JingleConnection {
 						@Override
 						public void failed() {
 							Log.d("xmppService","connection to our own primary candidate failed");
-							content.setCandidates(transportId, getCandidatesAsElements());
+							content.socks5transport().setChildren(getCandidatesAsElements());
 							packet.setContent(content);
 							sendJinglePacket(packet);
 						}
@@ -229,14 +264,14 @@ public class JingleConnection {
 						public void established() {
 							Log.d("xmppService","connected to primary candidate");
 							mergeCandidate(candidate);
-							content.setCandidates(transportId, getCandidatesAsElements());
+							content.socks5transport().setChildren(getCandidatesAsElements());
 							packet.setContent(content);
 							sendJinglePacket(packet);
 						}
 					});
 				} else {
 					Log.d("xmppService","did not find a primary candidate for ourself");
-					content.setCandidates(transportId, getCandidatesAsElements());
+					content.socks5transport().setChildren(getCandidatesAsElements());
 					packet.setContent(content);
 					sendJinglePacket(packet);
 				}
@@ -256,13 +291,13 @@ public class JingleConnection {
 	}
 	
 	private void sendJinglePacket(JinglePacket packet) {
-		Log.d("xmppService",packet.toPrettyString());
+		//Log.d("xmppService",packet.toString());
 		account.getXmppConnection().sendIqPacket(packet,responseListener);
 	}
 	
 	private void accept(JinglePacket packet) {
 		Content content = packet.getJingleContent();
-		mergeCandidates(JingleCandidate.parse(content.getCanditates()));
+		mergeCandidates(JingleCandidate.parse(content.socks5transport().getChildren()));
 		this.status = STATUS_ACCEPTED;
 		this.connectNextCandidate();
 		IqPacket response = packet.generateRespone(IqPacket.TYPE_RESULT);
@@ -271,30 +306,44 @@ public class JingleConnection {
 
 	private void transportInfo(JinglePacket packet) {
 		Content content = packet.getJingleContent();
-		String cid = content.getUsedCandidate();
-		IqPacket response = packet.generateRespone(IqPacket.TYPE_RESULT);
-		if (cid!=null) {
-			Log.d("xmppService","candidate used by counterpart:"+cid);
-			JingleCandidate candidate = getCandidate(cid);
-			candidate.flagAsUsedByCounterpart();
-			this.receivedCandidate = true;
-			if ((status == STATUS_ACCEPTED)&&(this.sentCandidate)) {
-				this.connect();
+		if (content.hasSocks5Transport()) {
+			if (content.socks5transport().hasChild("activated")) {
+				onProxyActivated.success();
+			} else if (content.socks5transport().hasChild("activated")) {
+				onProxyActivated.failed();
+			} else if (content.socks5transport().hasChild("candidate-error")) {
+				Log.d("xmppService","received candidate error");
+				this.receivedCandidate = true;
+				if (status == STATUS_ACCEPTED) {
+					this.connect();
+				}
+			} else if (content.socks5transport().hasChild("candidate-used")){
+				String cid = content.socks5transport().findChild("candidate-used").getAttribute("cid");
+				if (cid!=null) {
+					Log.d("xmppService","candidate used by counterpart:"+cid);
+					JingleCandidate candidate = getCandidate(cid);
+					candidate.flagAsUsedByCounterpart();
+					this.receivedCandidate = true;
+					if ((status == STATUS_ACCEPTED)&&(this.sentCandidate)) {
+						this.connect();
+					} else {
+						Log.d("xmppService","ignoring because file is already in transmission or we havent sent our candidate yet");
+					}
+				} else {
+					Log.d("xmppService","couldn't read used candidate");
+				}
 			} else {
-				Log.d("xmppService","ignoring because file is already in transmission or we havent sent our candidate yet");
-			}
-		} else if (content.hasCandidateError()) {
-			Log.d("xmppService","received candidate error");
-			this.receivedCandidate = true;
-			if (status == STATUS_ACCEPTED) {
-				this.connect();
+				Log.d("xmppService","empty transport");
 			}
 		}
+		
+		IqPacket response = packet.generateRespone(IqPacket.TYPE_RESULT);
 		account.getXmppConnection().sendIqPacket(response, null);
 	}
 
 	private void connect() {
 		final SocksConnection connection = chooseConnection();
+		this.transport = connection;
 		if (connection==null) {
 			Log.d("xmppService","could not find suitable candidate");
 			this.disconnect();
@@ -302,44 +351,33 @@ public class JingleConnection {
 			this.mXmppConnectionService.markMessage(this.message, Message.STATUS_SEND_FAILED);
 		} else {
 			this.status = STATUS_TRANSMITTING;
-			final OnFileTransmitted callback = new OnFileTransmitted() {
-				
-				@Override
-				public void onFileTransmitted(JingleFile file) {
-					if (responder.equals(account.getFullJid())) {
-						sendSuccess();
-						mXmppConnectionService.markMessage(message, Message.STATUS_RECIEVED);
-					}
-					Log.d("xmppService","sucessfully transmitted file. sha1:"+file.getSha1Sum());
-				}
-			};
-			if (connection.isProxy()&&(connection.getCandidate().isOurs())) {
-				Log.d("xmppService","candidate "+connection.getCandidate().getCid()+" was our proxy and needs activation");
-				IqPacket activation = new IqPacket(IqPacket.TYPE_SET);
-				activation.setTo(connection.getCandidate().getJid());
-				activation.query("http://jabber.org/protocol/bytestreams").setAttribute("sid", this.getSessionId());
-				activation.query().addChild("activate").setContent(this.getCounterPart());
-				this.account.getXmppConnection().sendIqPacket(activation, new OnIqPacketReceived() {
-					
-					@Override
-					public void onIqPacketReceived(Account account, IqPacket packet) {
-						Log.d("xmppService","activation result: "+packet.toString());
-						if (initiator.equals(account.getFullJid())) {
-							Log.d("xmppService","we were initiating. sending file");
-							connection.send(file,callback);
-						} else {
-							connection.receive(file,callback);
-							Log.d("xmppService","we were responding. receiving file");
+			if (connection.isProxy()) {
+				if (connection.getCandidate().isOurs()) {
+					Log.d("xmppService","candidate "+connection.getCandidate().getCid()+" was our proxy and needs activation");
+					IqPacket activation = new IqPacket(IqPacket.TYPE_SET);
+					activation.setTo(connection.getCandidate().getJid());
+					activation.query("http://jabber.org/protocol/bytestreams").setAttribute("sid", this.getSessionId());
+					activation.query().addChild("activate").setContent(this.getCounterPart());
+					this.account.getXmppConnection().sendIqPacket(activation, new OnIqPacketReceived() {
+						
+						@Override
+						public void onIqPacketReceived(Account account, IqPacket packet) {
+							if (packet.getType()==IqPacket.TYPE_ERROR) {
+								onProxyActivated.failed();
+							} else {
+								onProxyActivated.success();
+								sendProxyActivated(connection.getCandidate().getCid());
+							}
 						}
-					}
-				});
+					});
+				}
 			} else {
 				if (initiator.equals(account.getFullJid())) {
 					Log.d("xmppService","we were initiating. sending file");
-					connection.send(file,callback);
+					connection.send(file,onFileTransmitted);
 				} else {
 					Log.d("xmppService","we were responding. receiving file");
-					connection.receive(file,callback);
+					connection.receive(file,onFileTransmitted);
 				}
 			}
 		}
@@ -439,13 +477,26 @@ public class JingleConnection {
 	    }
 	}
 	
+	private void sendProxyActivated(String cid) {
+		JinglePacket packet = bootstrapPacket("transport-info");
+		Content content = new Content();
+		//TODO: put these into actual variables
+		content.setAttribute("creator", "initiator");
+		content.setAttribute("name", "a-file-offer");
+		content.setTransportId(this.transportId);
+		content.socks5transport().addChild("activated").setAttribute("cid", cid);
+		packet.setContent(content);
+		this.sendJinglePacket(packet);
+	}
+	
 	private void sendCandidateUsed(final String cid) {
 		JinglePacket packet = bootstrapPacket("transport-info");
 		Content content = new Content();
 		//TODO: put these into actual variables
 		content.setAttribute("creator", "initiator");
 		content.setAttribute("name", "a-file-offer");
-		content.setUsedCandidate(this.transportId, cid);
+		content.setTransportId(this.transportId);
+		content.setUsedCandidate(cid);
 		packet.setContent(content);
 		this.sendJinglePacket(packet);
 		this.sentCandidate = true;
@@ -460,7 +511,8 @@ public class JingleConnection {
 		//TODO: put these into actual variables
 		content.setAttribute("creator", "initiator");
 		content.setAttribute("name", "a-file-offer");
-		content.setCandidateError(this.transportId);
+		content.setTransportId(this.transportId);
+		content.setCandidateError();
 		packet.setContent(content);
 		this.sendJinglePacket(packet);
 		this.sentCandidate = true;
@@ -512,5 +564,10 @@ public class JingleConnection {
 			}
 		}
 		return null;
+	}
+	
+	interface OnProxyActivated {
+		public void success();
+		public void failed();
 	}
 }

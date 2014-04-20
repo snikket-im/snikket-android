@@ -18,7 +18,7 @@ import eu.siacs.conversations.xml.Element;
 import android.util.Log;
 import android.widget.Button;
 
-public class SocksConnection {
+public class SocksConnection extends JingleTransport {
 	private JingleCandidate candidate;
 	private String destination;
 	private OutputStream outputStream;

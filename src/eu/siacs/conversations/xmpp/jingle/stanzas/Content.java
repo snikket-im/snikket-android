@@ -1,12 +1,12 @@
 package eu.siacs.conversations.xmpp.jingle.stanzas;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.jingle.JingleFile;
 
 public class Content extends Element {
+	
+	private String transportId;
+	
 	private Content(String name) {
 		super(name);
 	}
@@ -15,6 +15,10 @@ public class Content extends Element {
 		super("content");
 	}
 
+	public void setTransportId(String sid) {
+		this.transportId = sid;
+	}
+	
 	public void setFileOffer(JingleFile actualFile) {
 		Element description = this.addChild("description", "urn:xmpp:jingle:apps:file-transfer:3");
 		Element offer = description.addChild("offer");
@@ -34,76 +38,7 @@ public class Content extends Element {
 		}
 		return offer.findChild("file");
 	}
-
-	public void setCandidates(String transportId, List<Element> canditates) {
-		Element transport = this.findChild("transport", "urn:xmpp:jingle:transports:s5b:1");
-		if (transport==null) {
-			transport = this.addChild("transport", "urn:xmpp:jingle:transports:s5b:1");
-		}
-		transport.setAttribute("sid", transportId);
-		transport.clearChildren();
-		for(Element canditate : canditates) {
-			transport.addChild(canditate);
-		}
-	}
 	
-	public List<Element> getCanditates() {
-		Element transport = this.findChild("transport", "urn:xmpp:jingle:transports:s5b:1");
-		if (transport==null) {
-			return new ArrayList<Element>();
-		} else {
-			return transport.getChildren();
-		}
-	}
-	
-	public String getTransportId() {
-		Element transport = this.findChild("transport", "urn:xmpp:jingle:transports:s5b:1");
-		if (transport==null) {
-			return null;
-		}
-		return transport.getAttribute("sid");
-	}
-	
-	public String getUsedCandidate() {
-		Element transport = this.findChild("transport", "urn:xmpp:jingle:transports:s5b:1");
-		if (transport==null) {
-			return null;
-		}
-		Element usedCandidate = transport.findChild("candidate-used");
-		if (usedCandidate==null) {
-			return null;
-		} else {
-			return usedCandidate.getAttribute("cid");
-		}
-	}
-	
-	public boolean hasCandidateError() {
-		Element transport = this.findChild("transport", "urn:xmpp:jingle:transports:s5b:1");
-		if (transport==null) {
-			return false;
-		}
-		return transport.hasChild("candidate-error");
-	}
-	
-	public void setUsedCandidate(String transportId, String cid) {
-		Element transport = this.findChild("transport", "urn:xmpp:jingle:transports:s5b:1");
-		if (transport==null) {
-			transport = this.addChild("transport", "urn:xmpp:jingle:transports:s5b:1");
-		}
-		transport.setAttribute("sid", transportId);
-		transport.clearChildren();
-		Element usedCandidate = transport.addChild("candidate-used");
-		usedCandidate.setAttribute("cid",cid);
-	}
-
-	public void addCandidate(Element candidate) {
-		Element transport = this.findChild("transport", "urn:xmpp:jingle:transports:s5b:1");
-		if (transport==null) {
-			transport = this.addChild("transport", "urn:xmpp:jingle:transports:s5b:1");
-		}
-		transport.addChild(candidate);
-	}
-
 	public void setFileOffer(Element fileOffer) {
 		Element description = this.findChild("description", "urn:xmpp:jingle:apps:file-transfer:3");
 		if (description==null) {
@@ -111,14 +46,50 @@ public class Content extends Element {
 		}
 		description.addChild(fileOffer);
 	}
+	
+	public String getTransportId() {
+		if (hasSocks5Transport()) {
+			this.transportId = socks5transport().getAttribute("sid");
+		} else if (hasIbbTransport()) {
+			this.transportId = ibbTransport().getAttribute("sid");
+		}
+		return this.transportId;
+	}
+	
+	public void setUsedCandidate(String cid) {
+		socks5transport().clearChildren();
+		Element usedCandidate = socks5transport().addChild("candidate-used");
+		usedCandidate.setAttribute("cid",cid);
+	}
 
-	public void setCandidateError(String transportId) {
+	public void setCandidateError() {
+		socks5transport().clearChildren();
+		socks5transport().addChild("candidate-error");
+	}
+	
+	public Element socks5transport() {
 		Element transport = this.findChild("transport", "urn:xmpp:jingle:transports:s5b:1");
 		if (transport==null) {
 			transport = this.addChild("transport", "urn:xmpp:jingle:transports:s5b:1");
+			transport.setAttribute("sid", this.transportId);
 		}
-		transport.setAttribute("sid", transportId);
-		transport.clearChildren();
-		transport.addChild("candidate-error");
+		return transport;
+	}
+	
+	public Element ibbTransport() {
+		Element transport = this.findChild("transport", "urn:xmpp:jingle:transports:ibb:1");
+		if (transport==null) {
+			transport = this.addChild("transport", "urn:xmpp:jingle:transports:ibb:1");
+			transport.setAttribute("sid", this.transportId);
+		}
+		return transport;
+	}
+	
+	public boolean hasSocks5Transport() {
+		return this.hasChild("transport", "urn:xmpp:jingle:transports:s5b:1");
+	}
+	
+	public boolean hasIbbTransport() {
+		return this.hasChild("transport","urn:xmpp:jingle:transports:ibb:1");
 	}
 }
