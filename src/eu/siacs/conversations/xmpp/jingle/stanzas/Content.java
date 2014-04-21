@@ -14,6 +14,12 @@ public class Content extends Element {
 	public Content() {
 		super("content");
 	}
+	
+	public Content(String creator, String name) {
+		super("content");
+		this.setAttribute("creator", creator);
+		this.setAttribute("name", name);
+	}
 
 	public void setTransportId(String sid) {
 		this.transportId = sid;
@@ -54,17 +60,6 @@ public class Content extends Element {
 			this.transportId = ibbTransport().getAttribute("sid");
 		}
 		return this.transportId;
-	}
-	
-	public void setUsedCandidate(String cid) {
-		socks5transport().clearChildren();
-		Element usedCandidate = socks5transport().addChild("candidate-used");
-		usedCandidate.setAttribute("cid",cid);
-	}
-
-	public void setCandidateError() {
-		socks5transport().clearChildren();
-		socks5transport().addChild("candidate-error");
 	}
 	
 	public Element socks5transport() {

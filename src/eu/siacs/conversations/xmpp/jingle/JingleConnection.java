@@ -239,7 +239,6 @@ public class JingleConnection {
 	
 	private void sendAccept() {
 		status = STATUS_ACCEPTED;
-		connectNextCandidate();
 		this.mJingleConnectionManager.getPrimaryCandidate(this.account, new OnPrimaryCandidateFound() {
 			
 			@Override
@@ -259,6 +258,7 @@ public class JingleConnection {
 							content.socks5transport().setChildren(getCandidatesAsElements());
 							packet.setContent(content);
 							sendJinglePacket(packet);
+							connectNextCandidate();
 						}
 						
 						@Override
@@ -268,6 +268,7 @@ public class JingleConnection {
 							content.socks5transport().setChildren(getCandidatesAsElements());
 							packet.setContent(content);
 							sendJinglePacket(packet);
+							connectNextCandidate();
 						}
 					});
 				} else {
@@ -275,6 +276,7 @@ public class JingleConnection {
 					content.socks5transport().setChildren(getCandidatesAsElements());
 					packet.setContent(content);
 					sendJinglePacket(packet);
+					connectNextCandidate();
 				}
 			}
 		});
@@ -480,10 +482,7 @@ public class JingleConnection {
 	
 	private void sendProxyActivated(String cid) {
 		JinglePacket packet = bootstrapPacket("transport-info");
-		Content content = new Content();
-		//TODO: put these into actual variables
-		content.setAttribute("creator", "initiator");
-		content.setAttribute("name", "a-file-offer");
+		Content content = new Content("inititaor","a-file-offer");
 		content.setTransportId(this.transportId);
 		content.socks5transport().addChild("activated").setAttribute("cid", cid);
 		packet.setContent(content);
@@ -492,34 +491,28 @@ public class JingleConnection {
 	
 	private void sendCandidateUsed(final String cid) {
 		JinglePacket packet = bootstrapPacket("transport-info");
-		Content content = new Content();
-		//TODO: put these into actual variables
-		content.setAttribute("creator", "initiator");
-		content.setAttribute("name", "a-file-offer");
+		Content content = new Content("initiator","a-file-offer");
 		content.setTransportId(this.transportId);
-		content.setUsedCandidate(cid);
+		content.socks5transport().addChild("candidate-used").setAttribute("cid", cid);
 		packet.setContent(content);
-		this.sendJinglePacket(packet);
 		this.sentCandidate = true;
 		if ((receivedCandidate)&&(status == STATUS_ACCEPTED)) {
 			connect();
 		}
+		this.sendJinglePacket(packet);
 	}
 	
 	private void sendCandidateError() {
 		JinglePacket packet = bootstrapPacket("transport-info");
-		Content content = new Content();
-		//TODO: put these into actual variables
-		content.setAttribute("creator", "initiator");
-		content.setAttribute("name", "a-file-offer");
+		Content content = new Content("initiator","a-file-offer");
 		content.setTransportId(this.transportId);
-		content.setCandidateError();
+		content.socks5transport().addChild("candidate-error");
 		packet.setContent(content);
-		this.sendJinglePacket(packet);
 		this.sentCandidate = true;
 		if ((receivedCandidate)&&(status == STATUS_ACCEPTED)) {
 			connect();
 		}
+		this.sendJinglePacket(packet);
 	}
 
 	public String getInitiator() {
