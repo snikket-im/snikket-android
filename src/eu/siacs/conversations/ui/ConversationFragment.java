@@ -31,6 +31,7 @@ import android.content.SharedPreferences;
 import android.content.IntentSender.SendIntentException;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -197,7 +198,7 @@ public class ConversationFragment extends Fragment {
 
 			@Override
 			public View getView(int position, View view, ViewGroup parent) {
-				Message item = getItem(position);
+				final Message item = getItem(position);
 				int type = getItemViewType(position);
 				ViewHolder viewHolder;
 				if (view == null) {
@@ -283,6 +284,17 @@ public class ConversationFragment extends Fragment {
 							viewHolder.image.setImageBitmap(thumbnail);
 							viewHolder.messageBody.setVisibility(View.GONE);
 							viewHolder.image.setVisibility(View.VISIBLE);
+							viewHolder.image.setOnClickListener(new OnClickListener() {
+								
+								@Override
+								public void onClick(View v) {
+									Uri uri = Uri.parse("content://eu.siacs.conversations.images/"+item.getConversationUuid()+"/"+item.getUuid());
+									Log.d("xmppService","staring intent with uri:"+uri.toString());
+									Intent intent = new Intent(Intent.ACTION_VIEW);
+								    intent.setDataAndType(uri, "image/*");
+								    startActivity(intent);
+								}
+							});
 						} catch (FileNotFoundException e) {
 							viewHolder.image.setVisibility(View.GONE);
 							viewHolder.messageBody.setText("error loading image file");

@@ -305,11 +305,43 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getWritableDatabase();
 		String[] args = { uuid };
 		Cursor cursor = db.query(Contact.TABLENAME, null, Contact.UUID + "=?", args, null, null, null);
-		if (cursor.getCount() == 0)
+		if (cursor.getCount() == 0) {
 			return null;
+		}
 		cursor.moveToFirst();
 		return Contact.fromCursor(cursor);
 	}
 
+	public Conversation findConversationByUuid(String conversationUuid) {
+		SQLiteDatabase db = this.getReadableDatabase();
+		String[] selectionArgs = { conversationUuid };
+		Cursor cursor = db.query(Conversation.TABLENAME, null, Conversation.UUID + "=?", selectionArgs, null, null, null);
+		if (cursor.getCount() == 0) {
+			return null;
+		}
+		cursor.moveToFirst();
+		return Conversation.fromCursor(cursor);
+	}
+
+	public Message findMessageByUuid(String messageUuid) {
+		SQLiteDatabase db = this.getReadableDatabase();
+		String[] selectionArgs = { messageUuid };
+		Cursor cursor = db.query(Message.TABLENAME, null, Message.UUID + "=?", selectionArgs, null, null, null);
+		if (cursor.getCount() == 0) {
+			return null;
+		}
+		cursor.moveToFirst();
+		return Message.fromCursor(cursor);
+	}
 	
+	public Account findAccountByUuid(String accountUuid) {
+		SQLiteDatabase db = this.getReadableDatabase();
+		String[] selectionArgs = { accountUuid };
+		Cursor cursor = db.query(Account.TABLENAME, null, Account.UUID + "=?", selectionArgs, null, null, null);
+		if (cursor.getCount() == 0) {
+			return null;
+		}
+		cursor.moveToFirst();
+		return Account.fromCursor(cursor);
+	}
 }

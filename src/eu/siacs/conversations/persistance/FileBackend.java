@@ -14,8 +14,10 @@ import android.net.Uri;
 import android.util.Log;
 import android.util.LruCache;
 
+import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
+import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xmpp.jingle.JingleFile;
 
 public class FileBackend {
@@ -27,7 +29,6 @@ public class FileBackend {
 
 	public FileBackend(Context context) {
 		this.context = context;
-
 		int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
 		int cacheSize = maxMemory / 8;
 		thumbnailCache = new LruCache<String, Bitmap>(cacheSize) {

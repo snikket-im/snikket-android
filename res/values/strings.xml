@@ -55,7 +55,7 @@
     <string name="receiving_image">Receiving image file. Please wait&#8230;</string>
     <string name="preparing_image">Preparing image for transmission. Please wait&#8230;</string>
     <string name="action_clear_history">Clear history</string>
-    <string name="clear_conversation_history">Clear Conversation history</string>
+    <string name="clear_conversation_history">Clear Conversation History</string>
     <string name="clear_histor_msg">Do you want to delete all messages within this Conversation?\n\n<b>Warning:</b> This will not influence messages stored on other devices or servers.</string>
     <string name="delete_messages">Delete messages</string>
     <string name="also_end_conversation">End this conversations afterwards</string>
@@ -65,4 +65,5 @@
     <string name="send_otr_message">Send OTR encrypted message</string>
     <string name="send_pgp_message">Send openPGP encrypted message</string>
     <string name="your_nick_has_been_changed">Your nickname has been changed</string>
+    <string name="download_image">Download Image</string>
 </resources>

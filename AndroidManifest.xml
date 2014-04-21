@@ -23,6 +23,11 @@
         android:theme="@android:style/Theme.Holo.Light" >
         <service android:name="eu.siacs.conversations.services.XmppConnectionService" />
 
+         <provider
+             android:name="eu.siacs.conversations.services.ImageProvider"
+             android:authorities="eu.siacs.conversations.images"
+             android:exported="true"/>
+        
         <receiver android:name="eu.siacs.conversations.services.EventReceiver" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
