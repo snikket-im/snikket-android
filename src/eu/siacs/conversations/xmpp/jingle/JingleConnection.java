@@ -221,6 +221,7 @@ public class JingleConnection {
 			this.file = this.mXmppConnectionService.getFileBackend().getJingleFile(message);
 			content.setFileOffer(this.file);
 			this.transportId = this.mJingleConnectionManager.nextRandomId();
+			content.setTransportId(this.transportId);
 			content.socks5transport().setChildren(getCandidatesAsElements());
 			packet.setContent(content);
 			this.sendJinglePacket(packet);
