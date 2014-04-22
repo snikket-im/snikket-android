@@ -120,6 +120,7 @@ public class JingleInbandTransport extends JingleTransport {
 			int count = fileInputStream.read(buffer);
 			if (count==-1) {
 				file.setSha1Sum(CryptoHelper.bytesToHex(digest.digest()));
+				fileInputStream.close();
 				this.onFileTransmitted.onFileTransmitted(file);
 			} else {
 				this.digest.update(buffer);
@@ -155,6 +156,7 @@ public class JingleInbandTransport extends JingleTransport {
 				file.setSha1Sum(CryptoHelper.bytesToHex(digest.digest()));
 				Log.d("xmppService","file name: "+file.getAbsolutePath());
 				fileOutputStream.flush();
+				fileOutputStream.close();
 				this.onFileTransmitted.onFileTransmitted(file);
 			}
 		} catch (IOException e) {

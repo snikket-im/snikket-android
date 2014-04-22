@@ -50,6 +50,8 @@ public class JingleConnection {
 	private boolean receivedCandidate = false;
 	private boolean sentCandidate = false;
 	
+	private boolean acceptedAutomatically = false;
+	
 	private JingleTransport transport = null;
 	
 	private OnIqPacketReceived responseListener = new OnIqPacketReceived() {
@@ -69,8 +71,12 @@ public class JingleConnection {
 		public void onFileTransmitted(JingleFile file) {
 			if (responder.equals(account.getFullJid())) {
 				sendSuccess();
+				if (acceptedAutomatically) {
+					message.markUnread();
+				}
 				mXmppConnectionService.markMessage(message, Message.STATUS_RECIEVED);
 			}
+			mXmppConnectionService.databaseBackend.createMessage(message);
 			Log.d("xmppService","sucessfully transmitted file. sha1:"+file.getSha1Sum());
 		}
 	};
@@ -126,7 +132,7 @@ public class JingleConnection {
 				this.cancel();
 			}
 			} else if (packet.isAction("session-accept")) {
-			accept(packet);
+			receiveAccept(packet);
 		} else if (packet.isAction("transport-info")) {
 			receiveTransportInfo(packet);
 		} else if (packet.isAction("transport-replace")) {
@@ -189,7 +195,8 @@ public class JingleConnection {
 		Conversation conversation = this.mXmppConnectionService.findOrCreateConversation(account, packet.getFrom().split("/")[0], false);
 		this.message = new Message(conversation, "receiving image file", Message.ENCRYPTION_NONE);
 		this.message.setType(Message.TYPE_IMAGE);
-		this.message.setStatus(Message.STATUS_RECIEVING);
+		this.message.setStatus(Message.STATUS_RECEIVED_OFFER);
+		this.message.setJingleConnection(this);
 		String[] fromParts = packet.getFrom().split("/");
 		this.message.setPresence(fromParts[1]);
 		this.account = account;
@@ -206,15 +213,16 @@ public class JingleConnection {
 			Element fileName = fileOffer.findChild("name");
 			this.file.setExpectedSize(Long.parseLong(fileSize.getContent()));
 			conversation.getMessages().add(message);
-			this.mXmppConnectionService.databaseBackend.createMessage(message);
-			if (this.mXmppConnectionService.convChangedListener!=null) {
-				this.mXmppConnectionService.convChangedListener.onConversationListChanged();
-			}
 			if (this.file.getExpectedSize()<=this.mJingleConnectionManager.getAutoAcceptFileSize()) {
 				Log.d("xmppService","auto accepting file from "+packet.getFrom());
+				this.acceptedAutomatically = true;
 				this.sendAccept();
 			} else {
+				message.markUnread();
 				Log.d("xmppService","not auto accepting new file offer with size: "+this.file.getExpectedSize()+" allowed size:"+this.mJingleConnectionManager.getAutoAcceptFileSize());
+				if (this.mXmppConnectionService.convChangedListener!=null) {
+					this.mXmppConnectionService.convChangedListener.onConversationListChanged();
+				}
 			}
 		} else {
 			Log.d("xmppService","no file offer was attached. aborting");
@@ -249,6 +257,7 @@ public class JingleConnection {
 	
 	private void sendAccept() {
 		status = STATUS_ACCEPTED;
+		mXmppConnectionService.markMessage(message, Message.STATUS_RECIEVING);
 		this.mJingleConnectionManager.getPrimaryCandidate(this.account, new OnPrimaryCandidateFound() {
 			
 			@Override
@@ -308,10 +317,11 @@ public class JingleConnection {
 		account.getXmppConnection().sendIqPacket(packet,responseListener);
 	}
 	
-	private void accept(JinglePacket packet) {
+	private void receiveAccept(JinglePacket packet) {
 		Content content = packet.getJingleContent();
 		mergeCandidates(JingleCandidate.parse(content.socks5transport().getChildren()));
 		this.status = STATUS_ACCEPTED;
+		mXmppConnectionService.markMessage(message, Message.STATUS_UNSEND);
 		this.connectNextCandidate();
 		IqPacket response = packet.generateRespone(IqPacket.TYPE_RESULT);
 		account.getXmppConnection().sendIqPacket(response, null);
@@ -638,5 +648,19 @@ public class JingleConnection {
 	
 	public JingleTransport getTransport() {
 		return this.transport;
+	}
+
+	public void accept() {
+		if (status==STATUS_INITIATED) {
+			new Thread(new Runnable() {
+				
+				@Override
+				public void run() {
+					sendAccept();
+				}
+			}).start();
+		} else {
+			Log.d("xmppService","status ("+status+") was not ok");
+		}
 	}
 }

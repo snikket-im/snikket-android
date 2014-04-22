@@ -1,5 +1,6 @@
 package eu.siacs.conversations.entities;
 
+import eu.siacs.conversations.xmpp.jingle.JingleConnection;
 import android.content.ContentValues;
 import android.database.Cursor;
 
@@ -9,6 +10,7 @@ public class Message extends AbstractEntity {
 	
 	public static final String TABLENAME = "messages";
 
+	public static final int STATUS_RECEIVED_OFFER = -2;
 	public static final int STATUS_RECIEVING = -1;
 	public static final int STATUS_RECIEVED = 0;
 	public static final int STATUS_UNSEND = 1;
@@ -16,6 +18,7 @@ public class Message extends AbstractEntity {
 	public static final int STATUS_SEND_FAILED = 3;
 	public static final int STATUS_SEND_REJECTED = 4;
 	public static final int STATUS_PREPARING = 5;
+	public static final int STATUS_OFFERED = 6;
 
 	public static final int ENCRYPTION_NONE = 0;
 	public static final int ENCRYPTION_PGP = 1;
@@ -44,6 +47,8 @@ public class Message extends AbstractEntity {
 	protected boolean read = true;
 
 	protected transient Conversation conversation = null;
+	
+	protected transient JingleConnection jingleConnection = null;
 
 	public Message(Conversation conversation, String body, int encryption) {
 		this(java.util.UUID.randomUUID().toString(), conversation.getUuid(),
@@ -172,5 +177,13 @@ public class Message extends AbstractEntity {
 
 	public void setPresence(String presence) {
 		this.counterpart = this.counterpart.split("/")[0] + "/" + presence;
+	}
+	
+	public void setJingleConnection(JingleConnection connection) {
+		this.jingleConnection = connection;
+	}
+	
+	public JingleConnection getJingleConnection() {
+		return this.jingleConnection;
 	}
 }

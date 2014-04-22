@@ -21,6 +21,7 @@ import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.entities.MucOptions.OnRenameListener;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.UIHelper;
+import eu.siacs.conversations.xmpp.jingle.JingleConnection;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Context;
@@ -42,6 +43,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -217,6 +219,8 @@ public class ConversationFragment extends Fragment {
 						viewHolder.contact_picture = (ImageView) view
 								.findViewById(R.id.message_photo);
 						
+						viewHolder.download_button = (Button) view.findViewById(R.id.download_button);
+						
 						if (item.getConversation().getMode() == Conversation.MODE_SINGLE) {
 
 							viewHolder.contact_picture.setImageBitmap(mBitmapCache
@@ -265,19 +269,33 @@ public class ConversationFragment extends Fragment {
 				
 				
 				if (item.getType() == Message.TYPE_IMAGE) {
-					if (item.getStatus() == Message.STATUS_PREPARING) {
+					if ((item.getStatus() == Message.STATUS_PREPARING)||(item.getStatus() == Message.STATUS_RECIEVING)) {
 						viewHolder.image.setVisibility(View.GONE);
 						viewHolder.messageBody.setVisibility(View.VISIBLE);
-						viewHolder.messageBody.setText(getString(R.string.preparing_image));
+						if (item.getStatus() == Message.STATUS_PREPARING) {
+							viewHolder.messageBody.setText(getString(R.string.preparing_image));
+						} else if (item.getStatus() == Message.STATUS_RECIEVING) {
+							viewHolder.download_button.setVisibility(View.GONE);
+							viewHolder.messageBody.setText(getString(R.string.receiving_image));
+						}
 						viewHolder.messageBody.setTextColor(0xff33B5E5);
 						viewHolder.messageBody.setTypeface(null,Typeface.ITALIC);
-					} else if (item.getStatus() == Message.STATUS_RECIEVING) {
+					} else if (item.getStatus() == Message.STATUS_RECEIVED_OFFER) {
 						viewHolder.image.setVisibility(View.GONE);
 						viewHolder.messageBody.setVisibility(View.GONE);
-						viewHolder.messageBody.setVisibility(View.VISIBLE);
-						viewHolder.messageBody.setText(getString(R.string.receiving_image));
-						viewHolder.messageBody.setTextColor(0xff33B5E5);
-						viewHolder.messageBody.setTypeface(null,Typeface.ITALIC);
+						viewHolder.download_button.setVisibility(View.VISIBLE);
+						viewHolder.download_button.setOnClickListener(new OnClickListener() {
+							
+							@Override
+							public void onClick(View v) {
+								JingleConnection connection = item.getJingleConnection();
+								if (connection!=null) {
+									connection.accept();
+								} else {
+									Log.d("xmppService","attached jingle connection was null");
+								}
+							}
+						});
 					} else {
 						try {
 							Bitmap thumbnail = activity.xmppConnectionService.getFileBackend().getThumbnailFromMessage(item,(int) (metrics.density * 288));
@@ -330,6 +348,11 @@ public class ConversationFragment extends Fragment {
 					viewHolder.time.setTypeface(null, Typeface.ITALIC);
 					viewHolder.time.setTextColor(0xFF8e8e8e);
 					viewHolder.time.setText("sending\u2026");
+					break;
+				case Message.STATUS_OFFERED:
+					viewHolder.time.setTypeface(null, Typeface.ITALIC);
+					viewHolder.time.setTextColor(0xFF8e8e8e);
+					viewHolder.time.setText("offering\u2026");
 					break;
 				case Message.STATUS_SEND_FAILED:
 					viewHolder.time.setText(getString(R.string.send_failed) + " \u00B7 " + UIHelper.readableTimeDifference(item
@@ -636,6 +659,7 @@ public class ConversationFragment extends Fragment {
 
 	private static class ViewHolder {
 
+		protected Button download_button;
 		protected ImageView image;
 		protected ImageView indicator;
 		protected TextView time;
