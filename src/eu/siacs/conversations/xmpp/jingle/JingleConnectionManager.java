@@ -124,4 +124,31 @@ public class JingleConnectionManager {
 			return 524288;
 		}
 	}
+
+	public void deliverIbbPacket(Account account, IqPacket packet) {
+		String sid = null;
+		Element payload = null;
+		if (packet.hasChild("open","http://jabber.org/protocol/ibb")) {
+			payload = packet.findChild("open","http://jabber.org/protocol/ibb");
+			sid = payload.getAttribute("sid");
+		} else if (packet.hasChild("data","http://jabber.org/protocol/ibb")) {
+			payload = packet.findChild("data","http://jabber.org/protocol/ibb");
+			sid = payload.getAttribute("sid");
+		}
+		if (sid!=null) {
+			for (JingleConnection connection : connections) {
+				if (connection.hasTransportId(sid)) {
+					JingleTransport transport = connection.getTransport();
+					if (transport instanceof JingleInbandTransport) {
+						JingleInbandTransport inbandTransport = (JingleInbandTransport) transport;
+						inbandTransport.deliverPayload(packet,payload);
+						return;
+					}
+				}
+			}
+			Log.d("xmppService","couldnt deliver payload: "+payload.toString());
+		} else {
+			Log.d("xmppService","no sid found in incomming ibb packet");
+		}
+	}
 }

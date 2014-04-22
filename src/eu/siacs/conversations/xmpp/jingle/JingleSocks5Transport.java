@@ -18,7 +18,7 @@ import eu.siacs.conversations.xml.Element;
 import android.util.Log;
 import android.widget.Button;
 
-public class SocksConnection extends JingleTransport {
+public class JingleSocks5Transport extends JingleTransport {
 	private JingleCandidate candidate;
 	private String destination;
 	private OutputStream outputStream;
@@ -26,7 +26,7 @@ public class SocksConnection extends JingleTransport {
 	private boolean isEstablished = false;
 	protected Socket socket;
 
-	public SocksConnection(JingleConnection jingleConnection, JingleCandidate candidate) {
+	public JingleSocks5Transport(JingleConnection jingleConnection, JingleCandidate candidate) {
 		this.candidate = candidate;
 		try {
 			MessageDigest mDigest = MessageDigest.getInstance("SHA-1");
@@ -47,7 +47,7 @@ public class SocksConnection extends JingleTransport {
 		}
 	}
 
-	public void connect(final OnSocksConnection callback) {
+	public void connect(final OnTransportConnected callback) {
 		new Thread(new Runnable() {
 			
 			@Override

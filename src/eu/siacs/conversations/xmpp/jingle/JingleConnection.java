@@ -32,6 +32,8 @@ public class JingleConnection {
 	public static final int STATUS_TRANSMITTING = 5;
 	public static final int STATUS_FAILED = 99;
 	
+	private int ibbBlockSize = 4096;
+	
 	private int status = -1;
 	private Message message;
 	private String sessionId;
@@ -39,7 +41,7 @@ public class JingleConnection {
 	private String initiator;
 	private String responder;
 	private List<JingleCandidate> candidates = new ArrayList<JingleCandidate>();
-	private HashMap<String, SocksConnection> connections = new HashMap<String, SocksConnection>();
+	private HashMap<String, JingleSocks5Transport> connections = new HashMap<String, JingleSocks5Transport>();
 	
 	private String transportId;
 	private Element fileOffer;
@@ -126,7 +128,15 @@ public class JingleConnection {
 			} else if (packet.isAction("session-accept")) {
 			accept(packet);
 		} else if (packet.isAction("transport-info")) {
-			transportInfo(packet);
+			receiveTransportInfo(packet);
+		} else if (packet.isAction("transport-replace")) {
+			if (packet.getJingleContent().hasIbbTransport()) {
+				this.receiveFallbackToIbb(packet);
+			} else {
+				Log.d("xmppService","trying to fallback to something unknown"+packet.toString());
+			}
+		} else if (packet.isAction("transport-accept")) {
+			this.receiveTransportAccept(packet);
 		} else {
 			Log.d("xmppService","packet arrived in connection. action was "+packet.getAction());
 		}
@@ -146,9 +156,9 @@ public class JingleConnection {
 				@Override
 				public void onPrimaryCandidateFound(boolean success, final JingleCandidate candidate) {
 					if (success) {
-						final SocksConnection socksConnection = new SocksConnection(JingleConnection.this, candidate);
+						final JingleSocks5Transport socksConnection = new JingleSocks5Transport(JingleConnection.this, candidate);
 						connections.put(candidate.getCid(), socksConnection);
-						socksConnection.connect(new OnSocksConnection() {
+						socksConnection.connect(new OnTransportConnected() {
 							
 							@Override
 							public void failed() {
@@ -248,9 +258,9 @@ public class JingleConnection {
 				content.setFileOffer(fileOffer);
 				content.setTransportId(transportId);
 				if ((success)&&(!equalCandidateExists(candidate))) {
-					final SocksConnection socksConnection = new SocksConnection(JingleConnection.this, candidate);
+					final JingleSocks5Transport socksConnection = new JingleSocks5Transport(JingleConnection.this, candidate);
 					connections.put(candidate.getCid(), socksConnection);
-					socksConnection.connect(new OnSocksConnection() {
+					socksConnection.connect(new OnTransportConnected() {
 						
 						@Override
 						public void failed() {
@@ -307,7 +317,7 @@ public class JingleConnection {
 		account.getXmppConnection().sendIqPacket(response, null);
 	}
 
-	private void transportInfo(JinglePacket packet) {
+	private void receiveTransportInfo(JinglePacket packet) {
 		Content content = packet.getJingleContent();
 		if (content.hasSocks5Transport()) {
 			if (content.socks5transport().hasChild("activated")) {
@@ -345,13 +355,14 @@ public class JingleConnection {
 	}
 
 	private void connect() {
-		final SocksConnection connection = chooseConnection();
+		final JingleSocks5Transport connection = chooseConnection();
 		this.transport = connection;
 		if (connection==null) {
 			Log.d("xmppService","could not find suitable candidate");
 			this.disconnect();
-			this.status = STATUS_FAILED;
-			this.mXmppConnectionService.markMessage(this.message, Message.STATUS_SEND_FAILED);
+			if (this.initiator.equals(account.getFullJid())) {
+				this.sendFallbackToIbb();
+			}
 		} else {
 			this.status = STATUS_TRANSMITTING;
 			if (connection.isProxy()) {
@@ -386,12 +397,12 @@ public class JingleConnection {
 		}
 	}
 	
-	private SocksConnection chooseConnection() {
-		SocksConnection connection = null;
-		Iterator<Entry<String, SocksConnection>> it = this.connections.entrySet().iterator();
+	private JingleSocks5Transport chooseConnection() {
+		JingleSocks5Transport connection = null;
+		Iterator<Entry<String, JingleSocks5Transport>> it = this.connections.entrySet().iterator();
 	    while (it.hasNext()) {
-	    	Entry<String, SocksConnection> pairs = it.next();
-	    	SocksConnection currentConnection = pairs.getValue();
+	    	Entry<String, JingleSocks5Transport> pairs = it.next();
+	    	JingleSocks5Transport currentConnection = pairs.getValue();
 	    	//Log.d("xmppService","comparing candidate: "+currentConnection.getCandidate().toString());
 	        if (currentConnection.isEstablished()&&(currentConnection.getCandidate().isUsedByCounterpart()||(!currentConnection.getCandidate().isOurs()))) {
 	        	//Log.d("xmppService","is usable");
@@ -430,6 +441,62 @@ public class JingleConnection {
 		this.mXmppConnectionService.markMessage(this.message, Message.STATUS_RECIEVED);
 	}
 	
+	private void sendFallbackToIbb() {
+		JinglePacket packet = this.bootstrapPacket("transport-replace");
+		Content content = new Content("initiator","a-file-offer");
+		this.transportId = this.mJingleConnectionManager.nextRandomId();
+		content.setTransportId(this.transportId);
+		content.ibbTransport().setAttribute("block-size",""+this.ibbBlockSize);
+		packet.setContent(content);
+		this.sendJinglePacket(packet);
+	}
+	
+	private void receiveFallbackToIbb(JinglePacket packet) {
+		String receivedBlockSize = packet.getJingleContent().ibbTransport().getAttribute("block-size");
+		if (receivedBlockSize!=null) {
+			int bs = Integer.parseInt(receivedBlockSize);
+			if (bs>this.ibbBlockSize) {
+				this.ibbBlockSize = bs;
+			}
+		}
+		this.transportId = packet.getJingleContent().getTransportId();
+		this.transport = new JingleInbandTransport(this.account,this.responder,this.transportId,this.ibbBlockSize);
+		this.transport.receive(file, onFileTransmitted);
+		JinglePacket answer = bootstrapPacket("transport-accept");
+		Content content = new Content("initiator", "a-file-offer");
+		content.setTransportId(this.transportId);
+		content.ibbTransport().setAttribute("block-size", ""+this.ibbBlockSize);
+		answer.setContent(content);
+		this.sendJinglePacket(answer);
+	}
+	
+	private void receiveTransportAccept(JinglePacket packet) {
+		if (packet.getJingleContent().hasIbbTransport()) {
+			String receivedBlockSize = packet.getJingleContent().ibbTransport().getAttribute("block-size");
+			if (receivedBlockSize!=null) {
+				int bs = Integer.parseInt(receivedBlockSize);
+				if (bs>this.ibbBlockSize) {
+					this.ibbBlockSize = bs;
+				}
+			}
+			this.transport = new JingleInbandTransport(this.account,this.responder,this.transportId,this.ibbBlockSize);
+			this.transport.connect(new OnTransportConnected() {
+				
+				@Override
+				public void failed() {
+					Log.d("xmppService","ibb open failed");
+				}
+				
+				@Override
+				public void established() {
+					JingleConnection.this.transport.send(file, onFileTransmitted);
+				}
+			});
+		} else {
+			Log.d("xmppService","invalid transport accept");
+		}
+	}
+	
 	private void finish() {
 		this.status = STATUS_FINISHED;
 		this.mXmppConnectionService.markMessage(this.message, Message.STATUS_SEND);
@@ -453,9 +520,9 @@ public class JingleConnection {
 	}
 	
 	private void connectWithCandidate(final JingleCandidate candidate) {
-		final SocksConnection socksConnection = new SocksConnection(this,candidate);
+		final JingleSocks5Transport socksConnection = new JingleSocks5Transport(this,candidate);
 		connections.put(candidate.getCid(), socksConnection);
-		socksConnection.connect(new OnSocksConnection() {
+		socksConnection.connect(new OnTransportConnected() {
 			
 			@Override
 			public void failed() {
@@ -472,9 +539,9 @@ public class JingleConnection {
 	}
 
 	private void disconnect() {
-		Iterator<Entry<String, SocksConnection>> it = this.connections.entrySet().iterator();
+		Iterator<Entry<String, JingleSocks5Transport>> it = this.connections.entrySet().iterator();
 	    while (it.hasNext()) {
-	        Entry<String, SocksConnection> pairs = it.next();
+	        Entry<String, JingleSocks5Transport> pairs = it.next();
 	        pairs.getValue().disconnect();
 	        it.remove();
 	    }
@@ -563,5 +630,13 @@ public class JingleConnection {
 	interface OnProxyActivated {
 		public void success();
 		public void failed();
+	}
+
+	public boolean hasTransportId(String sid) {
+		return sid.equals(this.transportId);
+	}
+	
+	public JingleTransport getTransport() {
+		return this.transport;
 	}
 }

@@ -368,6 +368,8 @@ public class XmppConnectionService extends Service {
 					processRosterItems(account, query);
 					mergePhoneContactsWithRoster(null);
 				}
+			} else if (packet.hasChild("open","http://jabber.org/protocol/ibb")||packet.hasChild("data","http://jabber.org/protocol/ibb")) {
+				XmppConnectionService.this.mJingleConnectionManager.deliverIbbPacket(account,packet);
 			} else {
 				Log.d(LOGTAG,"iq packet arrived "+packet.toString());
 			}
