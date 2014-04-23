@@ -72,6 +72,7 @@ public class FileBackend {
 
 	public JingleFile copyImageToPrivateStorage(Message message, Uri image) {
 		try {
+			Log.d("xmppService","copying file: "+image.toString()+ " to internal storage");
 			InputStream is = context.getContentResolver()
 					.openInputStream(image);
 			JingleFile file = getJingleFile(message);

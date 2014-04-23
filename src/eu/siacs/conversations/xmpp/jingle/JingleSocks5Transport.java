@@ -24,6 +24,7 @@ public class JingleSocks5Transport extends JingleTransport {
 	private OutputStream outputStream;
 	private InputStream inputStream;
 	private boolean isEstablished = false;
+	private boolean activated = false;
 	protected Socket socket;
 
 	public JingleSocks5Transport(JingleConnection jingleConnection, JingleCandidate candidate) {
@@ -184,6 +185,10 @@ public class JingleSocks5Transport extends JingleTransport {
 	public boolean isProxy() {
 		return this.candidate.getType() == JingleCandidate.TYPE_PROXY;
 	}
+	
+	public boolean needsActivation() {
+		return (this.isProxy() && !this.activated);
+	}
 
 	public void disconnect() {
 		if (this.socket!=null) {
@@ -202,5 +207,9 @@ public class JingleSocks5Transport extends JingleTransport {
 	
 	public JingleCandidate getCandidate() {
 		return this.candidate;
+	}
+
+	public void setActivated(boolean activated) {
+		this.activated = activated;
 	}
 }
