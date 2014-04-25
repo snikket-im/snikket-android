@@ -297,27 +297,38 @@ public class ConversationFragment extends Fragment {
 							}
 						});
 					} else {
-						try {
-							Bitmap thumbnail = activity.xmppConnectionService.getFileBackend().getThumbnailFromMessage(item,(int) (metrics.density * 288));
-							viewHolder.image.setImageBitmap(thumbnail);
-							viewHolder.messageBody.setVisibility(View.GONE);
-							viewHolder.image.setVisibility(View.VISIBLE);
-							viewHolder.image.setOnClickListener(new OnClickListener() {
-								
-								@Override
-								public void onClick(View v) {
-									Uri uri = Uri.parse("content://eu.siacs.conversations.images/"+item.getConversationUuid()+"/"+item.getUuid());
-									Log.d("xmppService","staring intent with uri:"+uri.toString());
-									Intent intent = new Intent(Intent.ACTION_VIEW);
-								    intent.setDataAndType(uri, "image/*");
-								    startActivity(intent);
-								}
-							});
-						} catch (FileNotFoundException e) {
-							viewHolder.image.setVisibility(View.GONE);
-							viewHolder.messageBody.setText("error loading image file");
-							viewHolder.messageBody.setVisibility(View.VISIBLE);
-						}
+						viewHolder.messageBody.setVisibility(View.GONE);
+						viewHolder.image.setVisibility(View.VISIBLE);
+						String[] params = item.getBody().split(",");
+			        	if (params.length==3) {
+			        		int target = (int) (metrics.density * 288);
+			        		int w = Integer.parseInt(params[1]);
+			        		int h = Integer.parseInt(params[2]);
+			        		int scalledW;
+			    			int scalledH;
+			    			if (w <= h) {
+			    				scalledW = (int) (w / ((double) h / target));
+			    				scalledH = target;
+			    			} else {
+			    				scalledW = target;
+			    				scalledH = (int) (h / ((double) w / target));
+			    			}
+			        		viewHolder.image.setLayoutParams(new LinearLayout.LayoutParams(scalledW, scalledH));
+			        	} else {
+			        		Log.d("xmppService","message body has less than 3 params");
+			        	}
+						activity.loadBitmap(item, viewHolder.image);
+						viewHolder.image.setOnClickListener(new OnClickListener() {
+							
+							@Override
+							public void onClick(View v) {
+								Uri uri = Uri.parse("content://eu.siacs.conversations.images/"+item.getConversationUuid()+"/"+item.getUuid());
+								Log.d("xmppService","staring intent with uri:"+uri.toString());
+								Intent intent = new Intent(Intent.ACTION_VIEW);
+							    intent.setDataAndType(uri, "image/*");
+							    startActivity(intent);
+							}
+						});
 					}
 				} else {
 					viewHolder.image.setVisibility(View.GONE);
@@ -685,13 +696,6 @@ public class ConversationFragment extends Fragment {
 				bitmaps.put(name, bm);
 				return bm;
 			}
-		}
-
-		public Bitmap getError() {
-			if (error == null) {
-				error = UIHelper.getErrorPicture(200);
-			}
-			return error;
 		}
 	}
 

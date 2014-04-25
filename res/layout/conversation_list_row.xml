@@ -22,24 +22,39 @@
 	        android:id="@+id/conversation_name"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:layout_alignLeft="@+id/conversation_lastmsg"
+	        android:layout_alignLeft="@+id/conversation_lastwrapper"
 	        android:layout_toLeftOf="@+id/conversation_lastupdate"
 	        android:singleLine="true"
 	        android:textColor="#636363"
 	        android:textSize="20sp"
 	        android:typeface="sans" />
 	 
+	    <LinearLayout
+	        android:orientation="vertical"
+	        android:id="@+id/conversation_lastwrapper"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_below="@id/conversation_name"
+	        android:paddingTop="3dp"
+	        >
 	    <TextView
 	        android:id="@+id/conversation_lastmsg"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
-	        android:layout_below="@id/conversation_name"
+	        
 	        android:textColor="#636363"
 	        android:textSize="14sp"
 	        android:singleLine="true"
 	        android:scrollHorizontally="false"
-	        android:paddingTop="3dp"/>
+	        />
+	    
+	    <ImageView
+	        android:id="@+id/conversation_lastimage"
+	        android:layout_width="fill_parent"
+	        android:layout_height="36dp"
+	        android:scaleType="centerCrop" />
 
+	</LinearLayout>
 	    <TextView
 	        android:id="@+id/conversation_lastupdate"
 	        android:layout_width="wrap_content"

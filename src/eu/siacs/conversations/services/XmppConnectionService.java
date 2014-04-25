@@ -423,8 +423,8 @@ public class XmppConnectionService extends Service {
 					convChangedListener.onConversationListChanged();
 				}
 				getFileBackend().copyImageToPrivateStorage(message, uri);
-				databaseBackend.createMessage(message);
 				message.setStatus(Message.STATUS_OFFERED);
+				databaseBackend.createMessage(message);
 				if (convChangedListener!=null) {
 					convChangedListener.onConversationListChanged();
 				}

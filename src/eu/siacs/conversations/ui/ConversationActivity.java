@@ -1,5 +1,7 @@
 package eu.siacs.conversations.ui;
 
+import java.io.FileNotFoundException;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
@@ -11,20 +13,26 @@ import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.utils.ExceptionHelper;
 import eu.siacs.conversations.utils.UIHelper;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.support.v4.widget.SlidingPaneLayout;
 import android.support.v4.widget.SlidingPaneLayout.PanelSlideListener;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -57,7 +65,7 @@ public class ConversationActivity extends XmppActivity {
 	private List<Conversation> conversationList = new ArrayList<Conversation>();
 	private Conversation selectedConversation = null;
 	private ListView listView;
-
+	
 	private boolean paneShouldBeOpen = true;
 	private boolean useSubject = true;
 	private ArrayAdapter<Conversation> listAdapter;
@@ -91,6 +99,7 @@ public class ConversationActivity extends XmppActivity {
 	};
 	
 	protected ConversationActivity activity = this;
+	private DisplayMetrics metrics;
 
 	public List<Conversation> getConversationList() {
 		return this.conversationList;
@@ -115,6 +124,8 @@ public class ConversationActivity extends XmppActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
+		metrics = getResources().getDisplayMetrics();
+		
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.fragment_conversations_overview);
@@ -150,7 +161,35 @@ public class ConversationActivity extends XmppActivity {
 				convName.setText(conv.getName(useSubject));
 				TextView convLastMsg = (TextView) view
 						.findViewById(R.id.conversation_lastmsg);
-				convLastMsg.setText(conv.getLatestMessage().getBody());
+				ImageView imagePreview = (ImageView) view.findViewById(R.id.conversation_lastimage);
+				
+				Message latestMessage = conv.getLatestMessage();
+				
+				if (latestMessage.getType() == Message.TYPE_TEXT) {
+					convLastMsg.setText(conv.getLatestMessage().getBody());
+					convLastMsg.setVisibility(View.VISIBLE);
+					imagePreview.setVisibility(View.GONE);
+				} else if (latestMessage.getType() == Message.TYPE_IMAGE) {
+					if ((latestMessage.getStatus() >= Message.STATUS_RECIEVED)&&(latestMessage.getStatus() != Message.STATUS_PREPARING)) {
+						convLastMsg.setVisibility(View.GONE);
+						imagePreview.setVisibility(View.VISIBLE);
+						loadBitmap(latestMessage, imagePreview);
+					} else {
+						convLastMsg.setVisibility(View.VISIBLE);
+						imagePreview.setVisibility(View.GONE);
+						if (latestMessage.getStatus() == Message.STATUS_PREPARING) {
+							convLastMsg.setText(getText(R.string.preparing_image));
+						} else  if (latestMessage.getStatus() == Message.STATUS_RECEIVED_OFFER) {
+							convLastMsg.setText(getText(R.string.image_offered_for_download));
+						} else if (latestMessage.getStatus() == Message.STATUS_RECIEVING) {
+							convLastMsg.setText(getText(R.string.receiving_image));
+						} else {
+							convLastMsg.setText("");
+						}
+					}
+				}
+				
+				
 
 				if (!conv.isRead()) {
 					convName.setTypeface(null, Typeface.BOLD);
@@ -164,10 +203,11 @@ public class ConversationActivity extends XmppActivity {
 						.setText(UIHelper.readableTimeDifference(conv
 								.getLatestMessage().getTimeSent()));
 
-				ImageView imageView = (ImageView) view
+				ImageView profilePicture = (ImageView) view
 						.findViewById(R.id.conversation_image);
-				imageView.setImageBitmap(UIHelper.getContactPicture(
+				profilePicture.setImageBitmap(UIHelper.getContactPicture(
 						conv, 56, activity.getApplicationContext(), false));
+				
 				return view;
 			}
 
@@ -601,5 +641,93 @@ public class ConversationActivity extends XmppActivity {
 			}
 		});
 		builder.create().show();
+	}
+	
+	
+	class BitmapWorkerTask extends AsyncTask<Message, Void, Bitmap> {
+	    private final WeakReference<ImageView> imageViewReference;
+	    private Message message = null;
+
+	    public BitmapWorkerTask(ImageView imageView) {
+	        // Use a WeakReference to ensure the ImageView can be garbage collected
+	        imageViewReference = new WeakReference<ImageView>(imageView);
+	    }
+
+	    // Decode image in background.
+	    @Override
+	    protected Bitmap doInBackground(Message... params) {
+	        message = params[0];
+	        try {
+				return xmppConnectionService.getFileBackend().getThumbnail(message, (int) (metrics.density * 288));
+			} catch (FileNotFoundException e) {
+				Log.d("xmppService","file not found!");
+				return null;
+			}
+	    }
+
+	    // Once complete, see if ImageView is still around and set bitmap.
+	    @Override
+	    protected void onPostExecute(Bitmap bitmap) {
+	        if (imageViewReference != null && bitmap != null) {
+	            final ImageView imageView = imageViewReference.get();
+	            if (imageView != null) {
+	                imageView.setImageBitmap(bitmap);
+	            }
+	        }
+	    }
+	}
+	
+	public void loadBitmap(Message message, ImageView imageView) {
+	    if (cancelPotentialWork(message, imageView)) {
+	        final BitmapWorkerTask task = new BitmapWorkerTask(imageView);
+	        final AsyncDrawable asyncDrawable =
+	                new AsyncDrawable(getResources(), null, task);
+	        imageView.setImageDrawable(asyncDrawable);
+	        task.execute(message);
+	    }
+	}
+	
+	public static boolean cancelPotentialWork(Message message, ImageView imageView) {
+	    final BitmapWorkerTask bitmapWorkerTask = getBitmapWorkerTask(imageView);
+
+	    if (bitmapWorkerTask != null) {
+	        final Message oldMessage = bitmapWorkerTask.message;
+	        // If bitmapData is not yet set or it differs from the new data
+	        if (oldMessage == null || message != oldMessage) {
+	            // Cancel previous task
+	            bitmapWorkerTask.cancel(true);
+	        } else {
+	            // The same work is already in progress
+	            return false;
+	        }
+	    }
+	    // No task associated with the ImageView, or an existing task was cancelled
+	    return true;
+	}
+	
+	private static BitmapWorkerTask getBitmapWorkerTask(ImageView imageView) {
+		   if (imageView != null) {
+		       final Drawable drawable = imageView.getDrawable();
+		       if (drawable instanceof AsyncDrawable) {
+		           final AsyncDrawable asyncDrawable = (AsyncDrawable) drawable;
+		           return asyncDrawable.getBitmapWorkerTask();
+		       }
+		    }
+		    return null;
+	}
+	
+	static class AsyncDrawable extends BitmapDrawable {
+	    private final WeakReference<BitmapWorkerTask> bitmapWorkerTaskReference;
+
+	    public AsyncDrawable(Resources res, Bitmap bitmap,
+	            BitmapWorkerTask bitmapWorkerTask) {
+	        super(res, bitmap);
+	        bitmapWorkerTaskReference =
+	            new WeakReference<BitmapWorkerTask>(bitmapWorkerTask);
+	    }
+
+	    public BitmapWorkerTask getBitmapWorkerTask() {
+	        return bitmapWorkerTaskReference.get();
+	    }
 	}
 }

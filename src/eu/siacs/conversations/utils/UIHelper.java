@@ -302,26 +302,6 @@ public class UIHelper {
 				bgColor, fgColor);
 	}
 
-	public static Bitmap getErrorPicture(int size) {
-		Bitmap bitmap = Bitmap
-				.createBitmap(size, size, Bitmap.Config.ARGB_8888);
-		Canvas canvas = new Canvas(bitmap);
-
-		bitmap.eraseColor(0xFFe92727);
-
-		Paint paint = new Paint();
-		paint.setColor(0xffe5e5e5);
-		paint.setTextSize((float) (size * 0.9));
-		paint.setAntiAlias(true);
-		Rect rect = new Rect();
-		paint.getTextBounds("!", 0, 1, rect);
-		float width = paint.measureText("!");
-		canvas.drawText("!", (size / 2) - (width / 2),
-				(size / 2) + (rect.height() / 2), paint);
-
-		return bitmap;
-	}
-	
 	public static void showErrorNotification(Context context, List<Account> accounts) {
 		NotificationManager mNotificationManager = (NotificationManager) context
 				.getSystemService(Context.NOTIFICATION_SERVICE);

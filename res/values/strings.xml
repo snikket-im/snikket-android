@@ -66,4 +66,6 @@
     <string name="send_pgp_message">Send openPGP encrypted message</string>
     <string name="your_nick_has_been_changed">Your nickname has been changed</string>
     <string name="download_image">Download Image</string>
+    <string name="error_loading_image">Error loading image (File not found)</string>
+    <string name="image_offered_for_download"><i>Image file offered for download</i></string>
 </resources>

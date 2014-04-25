@@ -116,7 +116,9 @@ public class Conversation extends AbstractEntity {
 			message.setTime(getCreated());
 			return message;
 		} else {
-			return this.messages.get(this.messages.size() - 1);
+			Message message = this.messages.get(this.messages.size() - 1);
+			message.setConversation(this);
+			return message;
 		}
 	}
 
