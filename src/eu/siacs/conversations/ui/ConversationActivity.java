@@ -684,6 +684,7 @@ public class ConversationActivity extends XmppActivity {
 		}
 		if (bm!=null) {
 			imageView.setImageBitmap(bm);
+			imageView.setBackgroundColor(0x00000000);
 		} else {
 		    if (cancelPotentialWork(message, imageView)) {
 		    	imageView.setBackgroundColor(0xff333333);
