@@ -1311,7 +1311,7 @@ public class XmppConnectionService extends Service {
 	public void generatePgpAnnouncement(Account account)
 			throws PgpEngine.UserInputRequiredException {
 		if (account.getStatus() == Account.STATUS_ONLINE) {
-			String signature = getPgpEngine().generateSignature("online");
+			String signature = getPgpEngine().generateSignature(account,"online");
 			account.setKey("pgp_signature", signature);
 			databaseBackend.updateAccount(account);
 			sendPgpPresence(account, signature);

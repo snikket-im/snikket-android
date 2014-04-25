@@ -118,11 +118,12 @@ public class PgpEngine {
 		return 0;
 	}
 
-	public String generateSignature(String status)
+	public String generateSignature(Account account, String status)
 			throws UserInputRequiredException {
 		Intent params = new Intent();
 		params.putExtra(OpenPgpApi.EXTRA_REQUEST_ASCII_ARMOR, true);
 		params.setAction(OpenPgpApi.ACTION_SIGN);
+		params.putExtra(OpenPgpApi.EXTRA_ACCOUNT_NAME, account.getJid());
 		InputStream is = new ByteArrayInputStream(status.getBytes());
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
 		Intent result = api.executeApi(params, is, os);
