@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 
+import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import eu.siacs.conversations.entities.Account;
@@ -78,10 +79,16 @@ public class JingleConnection {
 				if (acceptedAutomatically) {
 					message.markUnread();
 				}
+				BitmapFactory.Options options = new BitmapFactory.Options();
+				options.inJustDecodeBounds = true;
+				BitmapFactory.decodeFile(file.getAbsolutePath(),options);
+				int imageHeight = options.outHeight;
+				int imageWidth = options.outWidth;
+				message.setBody(""+file.getSize()+","+imageWidth+","+imageHeight);
 				mXmppConnectionService.databaseBackend.createMessage(message);
 				mXmppConnectionService.markMessage(message, Message.STATUS_RECIEVED);
 			}
-			Log.d("xmppService","sucessfully transmitted file. sha1:"+file.getSha1Sum());
+			Log.d("xmppService","sucessfully transmitted file. sha1:"+file.getSha1Sum()+" "+message.getBody());
 		}
 	};
 	
@@ -197,7 +204,7 @@ public class JingleConnection {
 	public void init(Account account, JinglePacket packet) {
 		this.status = STATUS_INITIATED;
 		Conversation conversation = this.mXmppConnectionService.findOrCreateConversation(account, packet.getFrom().split("/")[0], false);
-		this.message = new Message(conversation, "receiving image file", Message.ENCRYPTION_NONE);
+		this.message = new Message(conversation, "", Message.ENCRYPTION_NONE);
 		this.message.setType(Message.TYPE_IMAGE);
 		this.message.setStatus(Message.STATUS_RECEIVED_OFFER);
 		this.message.setJingleConnection(this);
@@ -230,6 +237,7 @@ public class JingleConnection {
 				}
 				if (supportedFile) {
 					this.file.setExpectedSize(Long.parseLong(fileSize.getContent()));
+					message.setBody(""+this.file.getExpectedSize());
 					conversation.getMessages().add(message);
 					if (this.file.getExpectedSize()<=this.mJingleConnectionManager.getAutoAcceptFileSize()) {
 						Log.d("xmppService","auto accepting file from "+packet.getFrom());
@@ -413,7 +421,7 @@ public class JingleConnection {
 			this.status = STATUS_TRANSMITTING;
 			if (connection.needsActivation()) {
 				if (connection.getCandidate().isOurs()) {
-					Log.d("xmppService","candidate "+connection.getCandidate().getCid()+" was our proxy and needs activation");
+					Log.d("xmppService","candidate "+connection.getCandidate().getCid()+" was our proxy. going to activate");
 					IqPacket activation = new IqPacket(IqPacket.TYPE_SET);
 					activation.setTo(connection.getCandidate().getJid());
 					activation.query("http://jabber.org/protocol/bytestreams").setAttribute("sid", this.getSessionId());
@@ -430,6 +438,8 @@ public class JingleConnection {
 							}
 						}
 					});
+				} else {
+					Log.d("xmppService","candidate "+connection.getCandidate().getCid()+" was a proxy. waiting for other party to activate");
 				}
 			} else {
 				if (initiator.equals(account.getFullJid())) {

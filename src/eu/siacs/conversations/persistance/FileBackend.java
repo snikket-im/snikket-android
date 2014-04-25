@@ -118,10 +118,10 @@ public class FileBackend {
 				.getAbsolutePath());
 	}
 
-	public Bitmap getThumbnail(Message message, int size)
+	public Bitmap getThumbnail(Message message, int size, boolean cacheOnly)
 			throws FileNotFoundException {
 		Bitmap thumbnail = thumbnailCache.get(message.getUuid());
-		if (thumbnail == null) {
+		if ((thumbnail == null)&&(!cacheOnly)) {
 			Bitmap fullsize = BitmapFactory.decodeFile(getJingleFile(message)
 					.getAbsolutePath());
 			if (fullsize == null) {
@@ -131,45 +131,6 @@ public class FileBackend {
 			this.thumbnailCache.put(message.getUuid(), thumbnail);
 		}
 		return thumbnail;
-	}
-	
-	public void getThumbnailAsync(final Message message, final int size, ImageView imageView, TextView textView) {
-		
-		Bitmap thumbnail = thumbnailCache.get(message.getUuid());
-		if (thumbnail == null) {
-			final WeakReference<ImageView> image = new WeakReference<ImageView>(imageView);
-			final WeakReference<TextView> text = new WeakReference<TextView>(textView);
-			new Thread(new Runnable() {
-				
-				@Override
-				public void run() {
-					if (image.get()!=null) {
-						image.get().setVisibility(View.GONE);
-					}
-					if (text.get()!=null) {
-						text.get().setVisibility(View.VISIBLE);
-						text.get().setText("loading image");
-					}
-					Bitmap fullsize = BitmapFactory.decodeFile(getJingleFile(message)
-							.getAbsolutePath());
-					if (fullsize!=null) {
-						Bitmap thumbnail = resize(fullsize, size);
-						thumbnailCache.put(message.getUuid(), thumbnail);
-						if (image.get()!=null) {
-							image.get().setVisibility(View.VISIBLE);
-							image.get().setImageBitmap(thumbnail);
-						}
-						if (text.get()!=null) {
-							text.get().setVisibility(View.GONE);
-						}
-					}
-				}
-			}).start();
-		} else {
-			textView.setVisibility(View.GONE);
-			imageView.setVisibility(View.VISIBLE);
-			imageView.setImageBitmap(thumbnail);
-		}
 	}
 
 	public void removeFiles(Conversation conversation) {

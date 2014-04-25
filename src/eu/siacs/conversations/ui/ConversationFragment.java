@@ -301,16 +301,16 @@ public class ConversationFragment extends Fragment {
 						viewHolder.image.setVisibility(View.VISIBLE);
 						String[] params = item.getBody().split(",");
 			        	if (params.length==3) {
-			        		int target = (int) (metrics.density * 288);
+			        		double target = metrics.density * 288;
 			        		int w = Integer.parseInt(params[1]);
 			        		int h = Integer.parseInt(params[2]);
 			        		int scalledW;
 			    			int scalledH;
 			    			if (w <= h) {
 			    				scalledW = (int) (w / ((double) h / target));
-			    				scalledH = target;
+			    				scalledH = (int) target;
 			    			} else {
-			    				scalledW = target;
+			    				scalledW = (int)  target;
 			    				scalledH = (int) (h / ((double) w / target));
 			    			}
 			        		viewHolder.image.setLayoutParams(new LinearLayout.LayoutParams(scalledW, scalledH));

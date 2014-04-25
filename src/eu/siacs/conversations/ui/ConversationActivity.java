@@ -649,42 +649,51 @@ public class ConversationActivity extends XmppActivity {
 	    private Message message = null;
 
 	    public BitmapWorkerTask(ImageView imageView) {
-	        // Use a WeakReference to ensure the ImageView can be garbage collected
 	        imageViewReference = new WeakReference<ImageView>(imageView);
 	    }
 
-	    // Decode image in background.
 	    @Override
 	    protected Bitmap doInBackground(Message... params) {
 	        message = params[0];
 	        try {
-				return xmppConnectionService.getFileBackend().getThumbnail(message, (int) (metrics.density * 288));
+				return xmppConnectionService.getFileBackend().getThumbnail(message, (int) (metrics.density * 288),false);
 			} catch (FileNotFoundException e) {
 				Log.d("xmppService","file not found!");
 				return null;
 			}
 	    }
 
-	    // Once complete, see if ImageView is still around and set bitmap.
 	    @Override
 	    protected void onPostExecute(Bitmap bitmap) {
 	        if (imageViewReference != null && bitmap != null) {
 	            final ImageView imageView = imageViewReference.get();
 	            if (imageView != null) {
 	                imageView.setImageBitmap(bitmap);
+	                imageView.setBackgroundColor(0x00000000);
 	            }
 	        }
 	    }
 	}
 	
 	public void loadBitmap(Message message, ImageView imageView) {
-	    if (cancelPotentialWork(message, imageView)) {
-	        final BitmapWorkerTask task = new BitmapWorkerTask(imageView);
-	        final AsyncDrawable asyncDrawable =
-	                new AsyncDrawable(getResources(), null, task);
-	        imageView.setImageDrawable(asyncDrawable);
-	        task.execute(message);
-	    }
+		Bitmap bm;
+		try {
+			bm = xmppConnectionService.getFileBackend().getThumbnail(message, (int) (metrics.density * 288), true);
+		} catch (FileNotFoundException e) {
+			bm = null;
+		}
+		if (bm!=null) {
+			imageView.setImageBitmap(bm);
+		} else {
+		    if (cancelPotentialWork(message, imageView)) {
+		    	imageView.setBackgroundColor(0xff333333);
+		        final BitmapWorkerTask task = new BitmapWorkerTask(imageView);
+		        final AsyncDrawable asyncDrawable =
+		                new AsyncDrawable(getResources(), null, task);
+		        imageView.setImageDrawable(asyncDrawable);
+		        task.execute(message);
+		    }
+		}
 	}
 	
 	public static boolean cancelPotentialWork(Message message, ImageView imageView) {
@@ -692,16 +701,12 @@ public class ConversationActivity extends XmppActivity {
 
 	    if (bitmapWorkerTask != null) {
 	        final Message oldMessage = bitmapWorkerTask.message;
-	        // If bitmapData is not yet set or it differs from the new data
 	        if (oldMessage == null || message != oldMessage) {
-	            // Cancel previous task
 	            bitmapWorkerTask.cancel(true);
 	        } else {
-	            // The same work is already in progress
 	            return false;
 	        }
 	    }
-	    // No task associated with the ImageView, or an existing task was cancelled
 	    return true;
 	}
 	
