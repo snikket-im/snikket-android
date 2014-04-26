@@ -68,4 +68,14 @@
     <string name="download_image">Download Image</string>
     <string name="error_loading_image">Error loading image (File not found)</string>
     <string name="image_offered_for_download"><i>Image file offered for download</i></string>
+    <string name="not_connected">Not Connected</string>
+    <string name="you_are_offline">You have to be online to send %s but your account assoziated with this Conversation is currently offline.</string>
+    <string name="you_are_offline_blank">You can not perform this action while being offline</string>
+    <string name="files">files</string>
+    <string name="otr_messages">OTR encrypted messages</string>
+    <string name="manage_account">Manage account</string>
+    <string name="contact_offline">Your Contact is Offline</string>
+    <string name="contact_offline_otr">Sending OTR encrypted messages to an offline contact is unfortunately not supported.\nWould you like to send the message in plain text?</string>
+    <string name="contact_offline_file">Sending files to an offline contact is unfortunately not supported.</string>
+    <string name="send_unencrypted">Send unencrypted</string>
 </resources>

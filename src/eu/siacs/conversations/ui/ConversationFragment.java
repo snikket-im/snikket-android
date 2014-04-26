@@ -616,55 +616,23 @@ public class ConversationFragment extends Fragment {
 			activity.xmppConnectionService.sendMessage(message, null);
 			chatMsg.setText("");
 		} else {
-			Hashtable<String, Integer> presences;
-			if (conversation.getContact() != null) {
-				presences = conversation.getContact().getPresences();
-			} else {
-				presences = null;
-			}
-			if ((presences == null) || (presences.size() == 0)) {
-				AlertDialog.Builder builder = new AlertDialog.Builder(
-						getActivity());
-				builder.setTitle("Contact is offline");
-				builder.setIconAttribute(android.R.attr.alertDialogIcon);
-				builder.setMessage("Sending OTR encrypted messages to an offline contact is impossible.");
-				builder.setPositiveButton("Send plain text",
-						new DialogInterface.OnClickListener() {
+			activity.selectPresence(message.getConversation(), new OnPresenceSelected() {
+				
+				@Override
+				public void onPresenceSelected(boolean success, String presence) {
+					if (success) {
+						xmppService.sendMessage(message,presence);
+						chatMsg.setText("");
+					}
+				}
 
-							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
-								conversation.nextMessageEncryption = Message.ENCRYPTION_NONE;
-								message.setEncryption(Message.ENCRYPTION_NONE);
-								xmppService.sendMessage(message, null);
-								chatMsg.setText("");
-							}
-						});
-				builder.setNegativeButton("Cancel", null);
-				builder.create().show();
-			} else if (presences.size() == 1) {
-				xmppService.sendMessage(message, (String) presences.keySet()
-						.toArray()[0]);
-				chatMsg.setText("");
-			} else {
-				AlertDialog.Builder builder = new AlertDialog.Builder(
-						getActivity());
-				builder.setTitle("Choose Presence");
-				final String[] presencesArray = new String[presences.size()];
-				presences.keySet().toArray(presencesArray);
-				builder.setItems(presencesArray,
-						new DialogInterface.OnClickListener() {
-
-							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
-								xmppService.sendMessage(message,
-										presencesArray[which]);
-								chatMsg.setText("");
-							}
-						});
-				builder.create().show();
-			}
+				@Override
+				public void onSendPlainTextInstead() {
+					message.setEncryption(Message.ENCRYPTION_NONE);
+					xmppService.sendMessage(message,null);
+					chatMsg.setText("");
+				}
+			},"otr");
 		}
 	}
 
