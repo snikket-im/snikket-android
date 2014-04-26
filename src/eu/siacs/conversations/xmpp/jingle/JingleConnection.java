@@ -381,7 +381,7 @@ public class JingleConnection {
 			} else if (content.socks5transport().hasChild("candidate-error")) {
 				Log.d("xmppService","received candidate error");
 				this.receivedCandidate = true;
-				if (status == STATUS_ACCEPTED) {
+				if ((status == STATUS_ACCEPTED)&&(this.sentCandidate)) {
 					this.connect();
 				}
 			} else if (content.socks5transport().hasChild("candidate-used")){
