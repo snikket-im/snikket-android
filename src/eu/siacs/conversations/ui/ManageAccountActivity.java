@@ -3,15 +3,18 @@ package eu.siacs.conversations.ui;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.openintents.openpgp.OpenPgpError;
+
 import eu.siacs.conversations.R;
+import eu.siacs.conversations.crypto.OnPgpEngineResult;
 import eu.siacs.conversations.crypto.PgpEngine;
-import eu.siacs.conversations.crypto.PgpEngine.UserInputRequiredException;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.ui.EditAccount.EditAccountListener;
 import eu.siacs.conversations.xmpp.OnTLSExceptionReceived;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
@@ -278,15 +281,7 @@ public class ManageAccountActivity extends XmppActivity {
 							} else if (item.getItemId()==R.id.mgmt_account_announce_pgp) {
 								if (activity.hasPgp()) {
 									mode.finish();
-									try {
-										xmppConnectionService.generatePgpAnnouncement(selectedAccountForActionMode);
-									} catch (PgpEngine.UserInputRequiredException e) {
-										try {
-											startIntentSenderForResult(e.getPendingIntent().getIntentSender(), REQUEST_ANNOUNCE_PGP, null, 0, 0, 0);
-										} catch (SendIntentException e1) {
-											Log.d("gultsch","sending intent failed");
-										}
-									}
+									announcePgp();
 								}
 							} else if (item.getItemId() == R.id.mgmt_otr_key) {
 								AlertDialog.Builder builder = new AlertDialog.Builder(activity);
@@ -367,6 +362,33 @@ public class ManageAccountActivity extends XmppActivity {
 		});
 	}
 
+	private void announcePgp() {
+		final Account account = selectedAccountForActionMode;
+		xmppConnectionService.getPgpEngine().generateSignature(account, "online", new OnPgpEngineResult() {
+			
+			@Override
+			public void userInputRequried(PendingIntent pi) {
+				try {
+					startIntentSenderForResult(pi.getIntentSender(), REQUEST_ANNOUNCE_PGP, null, 0, 0, 0);
+				} catch (SendIntentException e) {
+					Log.d("xmppService","coulnd start intent for pgp anncouncment");
+				}
+			}
+			
+			@Override
+			public void success() {
+				xmppConnectionService.databaseBackend.updateAccount(account);
+				xmppConnectionService.sendPgpPresence(account, account.getPgpSignature());
+			}
+			
+			@Override
+			public void error(OpenPgpError openPgpError) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+	}
+	
 	@Override
 	protected void onStop() {
 		if (xmppConnectionServiceBound) {
@@ -465,15 +487,7 @@ public class ManageAccountActivity extends XmppActivity {
 		 super.onActivityResult(requestCode, resultCode, data);
 		 if (resultCode == RESULT_OK) {
 			if (requestCode == REQUEST_ANNOUNCE_PGP) {
-				 try {
-					xmppConnectionService.generatePgpAnnouncement(selectedAccountForActionMode);
-				} catch (UserInputRequiredException e) {
-					try {
-						startIntentSenderForResult(e.getPendingIntent().getIntentSender(), REQUEST_ANNOUNCE_PGP, null, 0, 0, 0);
-					} catch (SendIntentException e1) {
-						Log.d(LOGTAG,"sending intent failed");
-					}
-				}
+				announcePgp();
 			 }
 		 }
 	 }

@@ -275,4 +275,16 @@ public class Account  extends AbstractEntity{
 	public int countPresences() {
 		return this.presences.size();
 	}
+
+	public String getPgpSignature() {
+		if (keys.has("pgp_signature")) {
+			try {
+				return keys.getString("pgp_signature");
+			} catch (JSONException e) {
+				return null;
+			}
+		} else {
+			return null;
+		}
+	}
 }

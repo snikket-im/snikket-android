@@ -44,7 +44,7 @@ public class JingleConnectionManager {
 					return;
 				}
 			}
-			Log.d("xmppService","delivering packet failed "+packet.toString());
+			account.getXmppConnection().sendIqPacket(packet.generateRespone(IqPacket.TYPE_ERROR), null);
 		}
 	}
 

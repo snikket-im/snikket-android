@@ -78,4 +78,5 @@
     <string name="contact_offline_otr">Sending OTR encrypted messages to an offline contact is unfortunately not supported.\nWould you like to send the message in plain text?</string>
     <string name="contact_offline_file">Sending files to an offline contact is unfortunately not supported.</string>
     <string name="send_unencrypted">Send unencrypted</string>
+    <string name="decryption_failed">Decrpytion failed. Maybe you don’t have the proper private key.</string>
 </resources>

@@ -1,18 +1,17 @@
 package eu.siacs.conversations.ui;
 
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+
+import org.openintents.openpgp.OpenPgpError;
 
 import net.java.otr4j.session.SessionStatus;
 
 import eu.siacs.conversations.R;
-import eu.siacs.conversations.crypto.PgpEngine.OpenPgpException;
-import eu.siacs.conversations.crypto.PgpEngine.UserInputRequiredException;
+import eu.siacs.conversations.crypto.OnPgpEngineResult;
+import eu.siacs.conversations.crypto.PgpEngine;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
@@ -24,6 +23,7 @@ import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.jingle.JingleConnection;
 import android.app.AlertDialog;
 import android.app.Fragment;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -33,7 +33,6 @@ import android.content.IntentSender.SendIntentException;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
@@ -245,6 +244,7 @@ public class ConversationFragment extends Fragment {
 				} else {
 					viewHolder = (ViewHolder) view.getTag();
 				}
+				
 				if (type == RECIEVED) {
 					if (item.getConversation().getMode() == Conversation.MODE_MULTI) {
 						if (item.getCounterpart() != null) {
@@ -267,8 +267,14 @@ public class ConversationFragment extends Fragment {
 					viewHolder.indicator.setVisibility(View.VISIBLE);
 				}
 				
+				String filesize = "";
 				
 				if (item.getType() == Message.TYPE_IMAGE) {
+					String[] fileParams = item.getBody().split(",");
+					if (fileParams.length>=1) {
+						long size = Long.parseLong(fileParams[0]);
+						filesize = size/1024+" KB \u00B7 ";
+					}
 					if ((item.getStatus() == Message.STATUS_PREPARING)||(item.getStatus() == Message.STATUS_RECIEVING)) {
 						viewHolder.image.setVisibility(View.GONE);
 						viewHolder.messageBody.setVisibility(View.VISIBLE);
@@ -299,11 +305,10 @@ public class ConversationFragment extends Fragment {
 					} else {
 						viewHolder.messageBody.setVisibility(View.GONE);
 						viewHolder.image.setVisibility(View.VISIBLE);
-						String[] params = item.getBody().split(",");
-			        	if (params.length==3) {
+			        	if (fileParams.length==3) {
 			        		double target = metrics.density * 288;
-			        		int w = Integer.parseInt(params[1]);
-			        		int h = Integer.parseInt(params[2]);
+			        		int w = Integer.parseInt(fileParams[1]);
+			        		int h = Integer.parseInt(fileParams[2]);
 			        		int scalledW;
 			    			int scalledH;
 			    			if (w <= h) {
@@ -341,11 +346,10 @@ public class ConversationFragment extends Fragment {
 							viewHolder.messageBody.setTextColor(0xff33B5E5);
 							viewHolder.messageBody.setTypeface(null,
 									Typeface.ITALIC);
-						} else if ((item.getEncryption() == Message.ENCRYPTION_OTR)||(item.getEncryption() == Message.ENCRYPTION_DECRYPTED)) {
-							viewHolder.messageBody.setText(body.trim());
-							viewHolder.messageBody.setTextColor(0xff333333);
-							viewHolder.messageBody.setTypeface(null,
-									Typeface.NORMAL);
+						} else if (item.getEncryption() == Message.ENCRYPTION_DECRYPTION_FAILED) {
+							viewHolder.messageBody.setText(getString(R.string.decryption_failed));
+							viewHolder.messageBody.setTextColor(0xFFe92727);
+							viewHolder.messageBody.setTypeface(null,Typeface.NORMAL);
 						} else {
 							viewHolder.messageBody.setText(body.trim());
 							viewHolder.messageBody.setTextColor(0xff333333);
@@ -358,21 +362,21 @@ public class ConversationFragment extends Fragment {
 				case Message.STATUS_UNSEND:
 					viewHolder.time.setTypeface(null, Typeface.ITALIC);
 					viewHolder.time.setTextColor(0xFF8e8e8e);
-					viewHolder.time.setText("sending\u2026");
+					viewHolder.time.setText(filesize+"sending\u2026");
 					break;
 				case Message.STATUS_OFFERED:
 					viewHolder.time.setTypeface(null, Typeface.ITALIC);
 					viewHolder.time.setTextColor(0xFF8e8e8e);
-					viewHolder.time.setText("offering\u2026");
+					viewHolder.time.setText(filesize+"offering\u2026");
 					break;
 				case Message.STATUS_SEND_FAILED:
-					viewHolder.time.setText(getString(R.string.send_failed) + " \u00B7 " + UIHelper.readableTimeDifference(item
+					viewHolder.time.setText(filesize+getString(R.string.send_failed) + " \u00B7 " + UIHelper.readableTimeDifference(item
 							.getTimeSent()));
 					viewHolder.time.setTextColor(0xFFe92727);
 					viewHolder.time.setTypeface(null,Typeface.NORMAL);
 					break;
 				case Message.STATUS_SEND_REJECTED:
-					viewHolder.time.setText(getString(R.string.send_rejected));
+					viewHolder.time.setText(filesize+getString(R.string.send_rejected));
 					viewHolder.time.setTextColor(0xFFe92727);
 					viewHolder.time.setTypeface(null,Typeface.NORMAL);
 					break;
@@ -380,7 +384,7 @@ public class ConversationFragment extends Fragment {
 					viewHolder.time.setTypeface(null, Typeface.NORMAL);
 					viewHolder.time.setTextColor(0xFF8e8e8e);
 					if (item.getConversation().getMode() == Conversation.MODE_SINGLE) {
-						viewHolder.time.setText(UIHelper
+						viewHolder.time.setText(filesize+UIHelper
 								.readableTimeDifference(item.getTimeSent()));
 					} else {
 						viewHolder.time.setText(item.getCounterpart()
@@ -470,20 +474,46 @@ public class ConversationFragment extends Fragment {
 					});
 		}
 	}
-
+	
+	private void decryptMessage(final Message message) {
+		Log.d("xmppService","called to decrypt");
+		PgpEngine engine = activity.xmppConnectionService.getPgpEngine();
+		if (engine!=null) {
+			engine.decrypt(message,new OnPgpEngineResult() {
+				
+				@Override
+				public void userInputRequried(PendingIntent pi) {
+					askForPassphraseIntent = pi.getIntentSender();
+					pgpInfo.setVisibility(View.VISIBLE);
+				}
+				
+				@Override
+				public void success() {
+					Log.d("xmppService","successfully decrypted");
+					activity.xmppConnectionService.databaseBackend.updateMessage(message);
+					updateMessages();
+				}
+				
+				@Override
+				public void error(OpenPgpError openPgpError) {
+					Log.d("xmppService","decryption error"+openPgpError.getMessage());
+					message.setEncryption(Message.ENCRYPTION_DECRYPTION_FAILED);
+					//updateMessages();
+				}
+			});
+		} else {
+			Log.d("xmppService","engine was null");
+		}
+	}
+	
 	public void updateMessages() {
 		ConversationActivity activity = (ConversationActivity) getActivity();
 		if (this.conversation != null) {
-			List<Message> encryptedMessages = new LinkedList<Message>();
 			for (Message message : this.conversation.getMessages()) {
 				if (message.getEncryption() == Message.ENCRYPTION_PGP) {
-					encryptedMessages.add(message);
+					decryptMessage(message);
+					break;
 				}
-			}
-			if (encryptedMessages.size() > 0) {
-				DecryptMessage task = new DecryptMessage();
-				Message[] msgs = new Message[encryptedMessages.size()];
-				task.execute(encryptedMessages.toArray(msgs));
 			}
 			this.messageList.clear();
 			this.messageList.addAll(this.conversation.getMessages());
@@ -492,7 +522,7 @@ public class ConversationFragment extends Fragment {
 				if (messageList.size() >= 1) {
 					int latestEncryption = this.conversation.getLatestMessage()
 							.getEncryption();
-					if (latestEncryption == Message.ENCRYPTION_DECRYPTED) {
+					if ((latestEncryption == Message.ENCRYPTION_DECRYPTED)||(latestEncryption == Message.ENCRYPTION_DECRYPTION_FAILED)) {
 						conversation.nextMessageEncryption = Message.ENCRYPTION_PGP;
 					} else {
 						conversation.nextMessageEncryption = latestEncryption;
@@ -566,25 +596,63 @@ public class ConversationFragment extends Fragment {
 	protected void sendPgpMessage(final Message message) {
 		ConversationActivity activity = (ConversationActivity) getActivity();
 		final XmppConnectionService xmppService = activity.xmppConnectionService;
-		Contact contact = message.getConversation().getContact();
-		Account account = message.getConversation().getAccount();
+		final Contact contact = message.getConversation().getContact();
+		final Account account = message.getConversation().getAccount();
 		if (activity.hasPgp()) {
 			if (contact.getPgpKeyId() != 0) {
-				try {
-					message.setEncryptedBody(xmppService.getPgpEngine().encrypt(account, contact.getPgpKeyId(), message.getBody()));
-					xmppService.sendMessage(message, null);
-					chatMsg.setText("");
-				} catch (UserInputRequiredException e) {
-					try {
-						getActivity().startIntentSenderForResult(e.getPendingIntent().getIntentSender(),
-								ConversationActivity.REQUEST_SEND_MESSAGE, null, 0,
-								0, 0);
-					} catch (SendIntentException e1) {
-						Log.d("xmppService","failed to start intent to send message");
+				xmppService.getPgpEngine().hasKey(account,contact.getPgpKeyId(), new OnPgpEngineResult() {
+					
+					@Override
+					public void userInputRequried(PendingIntent pi) {
+						Log.d("xmppService","hasKey returned user input required");
+						try {
+							getActivity().startIntentSenderForResult(pi.getIntentSender(),
+									ConversationActivity.REQUEST_SEND_MESSAGE, null, 0,
+									0, 0);
+						} catch (SendIntentException e1) {
+							Log.d("xmppService","failed to start intent to send message");
+						}
 					}
-				} catch (OpenPgpException e) {
-					Log.d("xmppService","error encrypting with pgp: "+e.getOpenPgpError().getMessage());
-				}
+					
+					@Override
+					public void success() {
+						Log.d("xmppService","hasKey returned success");
+						xmppService.getPgpEngine().encrypt(account, contact.getPgpKeyId(), message,new OnPgpEngineResult() {
+							
+							@Override
+							public void userInputRequried(PendingIntent pi) {
+								try {
+									getActivity().startIntentSenderForResult(pi.getIntentSender(),
+											ConversationActivity.REQUEST_SEND_MESSAGE, null, 0,
+											0, 0);
+								} catch (SendIntentException e1) {
+									Log.d("xmppService","failed to start intent to send message");
+								}
+							}
+							
+							@Override
+							public void success() {
+								xmppService.sendMessage(message, null);
+								chatMsg.setText("");
+							}
+							
+							@Override
+							public void error(OpenPgpError openPgpError) {
+								// TODO Auto-generated method stub
+								
+							}
+						});
+					}
+					
+					@Override
+					public void error(OpenPgpError openPgpError) {
+						Log.d("xmppService","openpgp error"+openPgpError.getMessage());
+					}
+				});
+				
+				
+					
+					
 			} else {
 				AlertDialog.Builder builder = new AlertDialog.Builder(
 						getActivity());
@@ -667,7 +735,7 @@ public class ConversationFragment extends Fragment {
 		}
 	}
 
-	class DecryptMessage extends AsyncTask<Message, Void, Boolean> {
+	/*class DecryptMessage extends AsyncTask<Message, Void, Boolean> {
 
 		@Override
 		protected Boolean doInBackground(Message... params) {
@@ -729,7 +797,7 @@ public class ConversationFragment extends Fragment {
 			return true;
 		}
 
-	}
+	}*/
 
 	public void setText(String text) {
 		this.pastedText = text;
