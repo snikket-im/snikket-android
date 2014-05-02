@@ -271,7 +271,7 @@ public class ConversationFragment extends Fragment {
 				
 				if (item.getType() == Message.TYPE_IMAGE) {
 					String[] fileParams = item.getBody().split(",");
-					if (fileParams.length>=1) {
+					if ((fileParams.length>=1)&&(item.getStatus() != Message.STATUS_PREPARING)) {
 						long size = Long.parseLong(fileParams[0]);
 						filesize = size/1024+" KB \u00B7 ";
 					}

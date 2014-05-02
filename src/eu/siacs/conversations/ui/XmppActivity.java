@@ -10,8 +10,11 @@ import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.view.MenuItem;
@@ -84,9 +87,27 @@ public abstract class XmppActivity extends Activity {
 			return true;
 		} else {
 			Builder builder = new AlertDialog.Builder(this);
-			builder.setTitle("OpenKeychain not found");
+			builder.setTitle(getString(R.string.openkeychain_required));
 			builder.setIconAttribute(android.R.attr.alertDialogIcon);
-			builder.setMessage("Please make sure you have installed OpenKeychain");
+			builder.setMessage(getText(R.string.openkeychain_required_long));
+			builder.setNegativeButton(getString(R.string.cancel), null);
+			builder.setNeutralButton(getString(R.string.restart), new OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					// TODO Auto-generated method stub
+					
+				}
+			});
+			builder.setPositiveButton(getString(R.string.install), new OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					Uri uri = Uri.parse("market://details?id=org.sufficientlysecure.keychain");
+					Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+					startActivity(intent);
+				}
+			});
 			builder.create().show();
 			return false;
 		}
