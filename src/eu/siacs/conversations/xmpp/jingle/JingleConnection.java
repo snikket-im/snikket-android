@@ -52,6 +52,9 @@ public class JingleConnection {
 	private Element fileOffer;
 	private JingleFile file = null;
 	
+	private String contentName;
+	private String contentCreator;
+	
 	private boolean receivedCandidate = false;
 	private boolean sentCandidate = false;
 	
@@ -160,6 +163,8 @@ public class JingleConnection {
 	}
 	
 	public void init(Message message) {
+		this.contentCreator = "initiator";
+		this.contentName = this.mJingleConnectionManager.nextRandomId();
 		this.message = message;
 		this.account = message.getConversation().getAccount();
 		this.initiator = this.account.getFullJid();
@@ -215,6 +220,8 @@ public class JingleConnection {
 		this.responder = this.account.getFullJid();
 		this.sessionId = packet.getSessionId();
 		Content content = packet.getJingleContent();
+		this.contentCreator = content.getAttribute("creator");
+		this.contentName = content.getAttribute("name");
 		this.transportId = content.getTransportId();
 		this.mergeCandidates(JingleCandidate.parse(content.socks5transport().getChildren()));
 		this.fileOffer = packet.getJingleContent().getFileOffer();
@@ -263,10 +270,8 @@ public class JingleConnection {
 	
 	private void sendInitRequest() {
 		JinglePacket packet = this.bootstrapPacket("session-initiate");
-		Content content = new Content();
+		Content content = new Content(this.contentCreator,this.contentName);
 		if (message.getType() == Message.TYPE_IMAGE) {
-			content.setAttribute("creator", "initiator");
-			content.setAttribute("name", "a-file-offer");
 			content.setTransportId(this.transportId);
 			this.file = this.mXmppConnectionService.getFileBackend().getJingleFile(message);
 			content.setFileOffer(this.file);
@@ -295,7 +300,7 @@ public class JingleConnection {
 			@Override
 			public void onPrimaryCandidateFound(boolean success,final JingleCandidate candidate) {
 				final JinglePacket packet = bootstrapPacket("session-accept");
-				final Content content = new Content();
+				final Content content = new Content(contentCreator,contentName);
 				content.setFileOffer(fileOffer);
 				content.setTransportId(transportId);
 				if ((success)&&(!equalCandidateExists(candidate))) {
@@ -499,7 +504,7 @@ public class JingleConnection {
 	
 	private void sendFallbackToIbb() {
 		JinglePacket packet = this.bootstrapPacket("transport-replace");
-		Content content = new Content("initiator","a-file-offer");
+		Content content = new Content(this.contentCreator,this.contentName);
 		this.transportId = this.mJingleConnectionManager.nextRandomId();
 		content.setTransportId(this.transportId);
 		content.ibbTransport().setAttribute("block-size",""+this.ibbBlockSize);
@@ -613,7 +618,7 @@ public class JingleConnection {
 	
 	private void sendProxyActivated(String cid) {
 		JinglePacket packet = bootstrapPacket("transport-info");
-		Content content = new Content("inititaor","a-file-offer");
+		Content content = new Content(this.contentCreator,this.contentName);
 		content.setTransportId(this.transportId);
 		content.socks5transport().addChild("activated").setAttribute("cid", cid);
 		packet.setContent(content);
@@ -622,7 +627,7 @@ public class JingleConnection {
 	
 	private void sendCandidateUsed(final String cid) {
 		JinglePacket packet = bootstrapPacket("transport-info");
-		Content content = new Content("initiator","a-file-offer");
+		Content content = new Content(this.contentCreator,this.contentName);
 		content.setTransportId(this.transportId);
 		content.socks5transport().addChild("candidate-used").setAttribute("cid", cid);
 		packet.setContent(content);
@@ -635,7 +640,7 @@ public class JingleConnection {
 	
 	private void sendCandidateError() {
 		JinglePacket packet = bootstrapPacket("transport-info");
-		Content content = new Content("initiator","a-file-offer");
+		Content content = new Content(this.contentCreator,this.contentName);
 		content.setTransportId(this.transportId);
 		content.socks5transport().addChild("candidate-error");
 		packet.setContent(content);

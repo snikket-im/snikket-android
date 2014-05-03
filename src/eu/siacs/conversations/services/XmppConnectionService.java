@@ -399,7 +399,6 @@ public class XmppConnectionService extends Service {
 				query.addChild("feature").setAttribute("var", "urn:xmpp:jingle:apps:file-transfer:3");
 				query.addChild("feature").setAttribute("var", "urn:xmpp:jingle:transports:s5b:1");
 				query.addChild("feature").setAttribute("var", "urn:xmpp:jingle:transports:ibb:1");
-				Log.d(LOGTAG,"replying to disco from "+packet.getFrom()+"with: "+iqResponse);
 				account.getXmppConnection().sendIqPacket(iqResponse, null);
 			} else {
 				if ((packet.getType() == IqPacket.TYPE_GET)||(packet.getType() == IqPacket.TYPE_SET)) {
