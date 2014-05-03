@@ -392,8 +392,23 @@ public class XmppConnectionService extends Service {
 							.hasChild("data", "http://jabber.org/protocol/ibb")) {
 				XmppConnectionService.this.mJingleConnectionManager
 						.deliverIbbPacket(account, packet);
+			} else if (packet.hasChild("query","http://jabber.org/protocol/disco#info")) {
+				IqPacket iqResponse = packet.generateRespone(IqPacket.TYPE_RESULT);
+				Element query = iqResponse.addChild("query", "http://jabber.org/protocol/disco#info");
+				query.addChild("feature").setAttribute("var", "urn:xmpp:jingle:1");
+				query.addChild("feature").setAttribute("var", "urn:xmpp:jingle:apps:file-transfer:3");
+				query.addChild("feature").setAttribute("var", "urn:xmpp:jingle:transports:s5b:1");
+				query.addChild("feature").setAttribute("var", "urn:xmpp:jingle:transports:ibb:1");
+				Log.d(LOGTAG,"replying to disco from "+packet.getFrom()+"with: "+iqResponse);
+				account.getXmppConnection().sendIqPacket(iqResponse, null);
 			} else {
-				Log.d(LOGTAG, "iq packet arrived " + packet.toString());
+				if ((packet.getType() == IqPacket.TYPE_GET)||(packet.getType() == IqPacket.TYPE_SET)) {
+					IqPacket response = packet.generateRespone(IqPacket.TYPE_ERROR);
+					Element error = response.addChild("error");
+					error.setAttribute("type","cancel");
+					error.addChild("feature-not-implemented","urn:ietf:params:xml:ns:xmpp-stanzas");
+					account.getXmppConnection().sendIqPacket(response, null);
+				}
 			}
 		}
 	};
