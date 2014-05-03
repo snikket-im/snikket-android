@@ -377,12 +377,14 @@ public class XmppConnectionService extends Service {
 
 		@Override
 		public void onIqPacketReceived(Account account, IqPacket packet) {
-			if (packet.hasChild("query")) {
-				Element query = packet.findChild("query");
-				String xmlns = query.getAttribute("xmlns");
-				if ((xmlns != null) && (xmlns.equals("jabber:iq:roster"))) {
+			if (packet.hasChild("query","jabber:iq:roster")) {
+				String from = packet.getFrom();
+				if ((from==null)||(from.equals(account.getJid()))) {
+					Element query = packet.findChild("query");
 					processRosterItems(account, query);
 					mergePhoneContactsWithRoster(null);
+				} else {
+					Log.d(LOGTAG,"unauthorized roster push from: "+from);
 				}
 			} else if (packet
 					.hasChild("open", "http://jabber.org/protocol/ibb")
