@@ -619,6 +619,7 @@ public class XmppConnectionService extends Service {
 
 	@Override
 	public void onDestroy() {
+		Log.d(LOGTAG,"stopping service");
 		super.onDestroy();
 		for (Account account : accounts) {
 			if (account.getXmppConnection() != null) {
