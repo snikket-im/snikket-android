@@ -80,7 +80,7 @@
     <string name="send_unencrypted">Enviar sin encriptar</string>
 	<string name="decryption_failed">Falló la desencriptación. Tal vez no tengas la clave privada apropiada.</string>
 	<string name="openkeychain_required">OpenKeychain</string>
-	<string name="openkeychain_required_long">Conversations utiliza un tercero llamado <b>OpenKeychain</b> para encriptar y desencriptar mensajes y para gestionar tus claves publicas.\n\nOpenKeychain está licenciado bajo GPLv3 y disponible en F-Droid y Google Play.\n\nPara utilizar openPGP por favor instala la aplicación y reinicia Conversations.</string>
+	<string name="openkeychain_required_long">Conversations utiliza una tercera app llamada <b>OpenKeychain</b> para encriptar y desencriptar mensajes y para gestionar tus claves publicas.\n\nOpenKeychain está licenciado bajo GPLv3 y disponible en F-Droid y Google Play.\n\n<small>(Por favor reinicia Conversations después)</small></string>
 	<string name="restart">Reiniciar</string>
 	<string name="install">Instalar</string>
 </resources>
