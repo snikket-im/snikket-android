@@ -26,6 +26,9 @@ public class IqPacket extends AbstractStanza {
 		case TYPE_RESULT:
 			this.setAttribute("type", "result");
 			break;
+		case TYPE_ERROR:
+			this.setAttribute("type", "error");
+			break;
 		default:
 			break;
 		}

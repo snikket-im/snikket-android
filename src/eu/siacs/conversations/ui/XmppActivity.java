@@ -95,8 +95,12 @@ public abstract class XmppActivity extends Activity {
 				
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					// TODO Auto-generated method stub
-					
+					if (xmppConnectionServiceBound) {
+						unbindService(mConnection);
+						xmppConnectionServiceBound = false;
+					}
+					stopService(new Intent(XmppActivity.this, XmppConnectionService.class));
+					finish();
 				}
 			});
 			builder.setPositiveButton(getString(R.string.install), new OnClickListener() {
@@ -106,6 +110,7 @@ public abstract class XmppActivity extends Activity {
 					Uri uri = Uri.parse("market://details?id=org.sufficientlysecure.keychain");
 					Intent intent = new Intent(Intent.ACTION_VIEW, uri);
 					startActivity(intent);
+					finish();
 				}
 			});
 			builder.create().show();
