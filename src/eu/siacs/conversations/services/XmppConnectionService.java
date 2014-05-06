@@ -47,6 +47,7 @@ import eu.siacs.conversations.xmpp.OnStatusChanged;
 import eu.siacs.conversations.xmpp.OnTLSExceptionReceived;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.jingle.JingleConnectionManager;
+import eu.siacs.conversations.xmpp.jingle.JingleFile;
 import eu.siacs.conversations.xmpp.jingle.OnJinglePacketReceived;
 import eu.siacs.conversations.xmpp.jingle.stanzas.JinglePacket;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
@@ -92,7 +93,7 @@ public class XmppConnectionService extends Service {
 	private JingleConnectionManager mJingleConnectionManager = new JingleConnectionManager(
 			this);
 
-	public OnConversationListChangedListener convChangedListener = null;
+	private OnConversationListChangedListener convChangedListener = null;
 	private int convChangedListenerCount = 0;
 	private OnAccountListChangedListener accountChangedListener = null;
 	private OnTLSExceptionReceived tlsException = null;
@@ -432,7 +433,7 @@ public class XmppConnectionService extends Service {
 			if (this.mPgpEngine == null) {
 				this.mPgpEngine = new PgpEngine(new OpenPgpApi(
 						getApplicationContext(),
-						pgpServiceConnection.getService()));
+						pgpServiceConnection.getService()),this);
 			}
 			return mPgpEngine;
 		} else {
@@ -445,21 +446,20 @@ public class XmppConnectionService extends Service {
 		return this.fileBackend;
 	}
 
-	public void attachImageToConversation(final Conversation conversation,
+	public Message attachImageToConversation(final Conversation conversation,
 			final String presence, final Uri uri) {
+		final Message message = new Message(conversation, "",Message.ENCRYPTION_NONE);
+		message.setPresence(presence);
+		message.setType(Message.TYPE_IMAGE);
+		message.setStatus(Message.STATUS_PREPARING);
+		conversation.getMessages().add(message);
+		if (convChangedListener != null) {
+			convChangedListener.onConversationListChanged();
+		}
 		new Thread(new Runnable() {
 
 			@Override
 			public void run() {
-				Message message = new Message(conversation, "",
-						Message.ENCRYPTION_NONE);
-				message.setPresence(presence);
-				message.setType(Message.TYPE_IMAGE);
-				message.setStatus(Message.STATUS_PREPARING);
-				conversation.getMessages().add(message);
-				if (convChangedListener != null) {
-					convChangedListener.onConversationListChanged();
-				}
 				getFileBackend().copyImageToPrivateStorage(message, uri);
 				message.setStatus(Message.STATUS_OFFERED);
 				databaseBackend.createMessage(message);
@@ -469,6 +469,25 @@ public class XmppConnectionService extends Service {
 				sendMessage(message, null);
 			}
 		}).start();
+		return message;
+	}
+	
+	public Message attachEncryptedImageToConversation(final Conversation conversation, final String presence, final Uri uri, final OnPgpEngineResult callback) {
+		Log.d(LOGTAG,"attach encrypted image");
+		final Message message = new Message(conversation, "",Message.ENCRYPTION_DECRYPTED);
+		message.setPresence(presence);
+		message.setType(Message.TYPE_IMAGE);
+		message.setStatus(Message.STATUS_PREPARING);
+		new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				getFileBackend().copyImageToPrivateStorage(message, uri);
+				getPgpEngine().encrypt(message, callback);
+				message.setStatus(Message.STATUS_OFFERED);
+			}
+		}).start();
+		return message;
 	}
 
 	protected Conversation findMuc(String name, Account account) {
@@ -754,8 +773,6 @@ public class XmppConnectionService extends Service {
 					addToConversation = true;
 				} else if (message.getEncryption() == Message.ENCRYPTION_PGP) {
 					message.getConversation().endOtrIfNeeded();
-					long keyId = message.getConversation().getContact()
-							.getPgpKeyId();
 					packet = new MessagePacket();
 					packet.setType(MessagePacket.TYPE_CHAT);
 					packet.setFrom(message.getConversation().getAccount()
@@ -1409,12 +1426,6 @@ public class XmppConnectionService extends Service {
 		}).start();
 	}
 
-	public void updateConversationInGui() {
-		if (convChangedListener != null) {
-			convChangedListener.onConversationListChanged();
-		}
-	}
-
 	public void sendConversationSubject(Conversation conversation,
 			String subject) {
 		MessagePacket packet = new MessagePacket();
@@ -1479,5 +1490,13 @@ public class XmppConnectionService extends Service {
 	public SharedPreferences getPreferences() {
 		return PreferenceManager
 				.getDefaultSharedPreferences(getApplicationContext());
+	}
+	
+	public void updateUi(Conversation conversation, boolean notify) {
+		if (convChangedListener != null) {
+			convChangedListener.onConversationListChanged();
+		} else {
+			UIHelper.updateNotification(getApplicationContext(), getConversations(), conversation, notify);
+		}
 	}
 }

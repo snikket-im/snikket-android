@@ -6,7 +6,10 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 
+import org.openintents.openpgp.OpenPgpError;
+
 import eu.siacs.conversations.R;
+import eu.siacs.conversations.crypto.OnPgpEngineResult;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
@@ -18,9 +21,11 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.content.IntentSender.SendIntentException;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
@@ -59,6 +64,7 @@ public class ConversationActivity extends XmppActivity {
 	public static final int REQUEST_SEND_MESSAGE = 0x75441;
 	public static final int REQUEST_DECRYPT_PGP = 0x76783;
 	private static final int ATTACH_FILE = 0x48502;
+	private static final int REQUEST_SEND_PGP_IMAGE = 0x53883;
 
 	protected SlidingPaneLayout spl;
 
@@ -69,6 +75,8 @@ public class ConversationActivity extends XmppActivity {
 	private boolean paneShouldBeOpen = true;
 	private boolean useSubject = true;
 	private ArrayAdapter<Conversation> listAdapter;
+	
+	public Message pendingMessage = null;
 
 	private OnConversationListChangedListener onConvChanged = new OnConversationListChangedListener() {
 
@@ -581,10 +589,42 @@ public class ConversationActivity extends XmppActivity {
 					selectedFragment.hidePgpPassphraseBox();
 				}
 			} else if (requestCode == ATTACH_FILE) {
-				Conversation conversation = getSelectedConversation();
+				final Conversation conversation = getSelectedConversation();
 				String presence = conversation.getNextPresence();
-				xmppConnectionService.attachImageToConversation(conversation, presence, data.getData());
-				
+				if (conversation.nextMessageEncryption == Message.ENCRYPTION_NONE) {
+					xmppConnectionService.attachImageToConversation(conversation, presence, data.getData());
+				} else if (conversation.nextMessageEncryption == Message.ENCRYPTION_PGP) {
+					pendingMessage = xmppConnectionService.attachEncryptedImageToConversation(conversation, presence, data.getData(), new OnPgpEngineResult() {
+						
+						@Override
+						public void userInputRequried(PendingIntent pi) {
+							Log.d(LOGTAG,"user input requried");
+							try {
+								startIntentSenderForResult(pi.getIntentSender(),
+										ConversationActivity.REQUEST_SEND_PGP_IMAGE, null, 0,
+										0, 0);
+							} catch (SendIntentException e1) {
+								Log.d("xmppService","failed to start intent to send message");
+							}
+						}
+						
+						@Override
+						public void success() {
+							conversation.getMessages().add(pendingMessage);
+							pendingMessage.setStatus(Message.STATUS_OFFERED);
+							xmppConnectionService.databaseBackend.createMessage(pendingMessage);
+							xmppConnectionService.sendMessage(pendingMessage, null);
+							xmppConnectionService.updateUi(conversation, false);
+						}
+						
+						@Override
+						public void error(OpenPgpError openPgpError) {
+							Log.d(LOGTAG,"pgp error"+openPgpError.getMessage());
+						}
+					});
+				} else {
+					Log.d(LOGTAG,"unknown next message encryption: "+conversation.nextMessageEncryption);
+				}
 			}
 		}
 	}

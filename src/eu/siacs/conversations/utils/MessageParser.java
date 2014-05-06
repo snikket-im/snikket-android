@@ -77,9 +77,7 @@ public class MessageParser {
 								.sendMessagePacket(outPacket);
 					}
 				}
-				if (service.convChangedListener!=null) {
-					service.convChangedListener.onConversationListChanged();
-				}
+				service.updateUi(conversation, false);
 			} else if ((before != after) && (after == SessionStatus.FINISHED)) {
 				conversation.resetOtrSession();
 				Log.d(LOGTAG,"otr session stoped");
@@ -101,7 +99,7 @@ public class MessageParser {
 		Conversation conversation = service.findOrCreateConversation(account, fromParts[0],true);
 		if (packet.hasChild("subject")) {
 			conversation.getMucOptions().setSubject(packet.findChild("subject").getContent());
-			service.updateConversationInGui();
+			service.updateUi(conversation, false);
 			return null;
 		}
 		if ((fromParts.length == 1)) {
@@ -118,7 +116,6 @@ public class MessageParser {
 
 	public static Message parseCarbonMessage(MessagePacket packet,
 			Account account, XmppConnectionService service) {
-		// TODO Auto-generated method stub
 		int status;
 		String fullJid;
 		Element forwarded;

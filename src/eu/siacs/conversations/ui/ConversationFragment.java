@@ -269,7 +269,7 @@ public class ConversationFragment extends Fragment {
 				
 				String filesize = "";
 				
-				if (item.getType() == Message.TYPE_IMAGE) {
+				if ((item.getType() == Message.TYPE_IMAGE)&&((item.getEncryption() == Message.ENCRYPTION_DECRYPTED)||(item.getEncryption() == Message.ENCRYPTION_NONE))) {
 					String[] fileParams = item.getBody().split(",");
 					if ((fileParams.length>=1)&&(item.getStatus() != Message.STATUS_PREPARING)) {
 						long size = Long.parseLong(fileParams[0]);
@@ -510,7 +510,7 @@ public class ConversationFragment extends Fragment {
 		ConversationActivity activity = (ConversationActivity) getActivity();
 		if (this.conversation != null) {
 			for (Message message : this.conversation.getMessages()) {
-				if (message.getEncryption() == Message.ENCRYPTION_PGP) {
+				if ((message.getEncryption() == Message.ENCRYPTION_PGP)&&(message.getStatus() == Message.STATUS_RECIEVED)) {
 					decryptMessage(message);
 					break;
 				}
@@ -594,7 +594,7 @@ public class ConversationFragment extends Fragment {
 	}
 
 	protected void sendPgpMessage(final Message message) {
-		ConversationActivity activity = (ConversationActivity) getActivity();
+		final ConversationActivity activity = (ConversationActivity) getActivity();
 		final XmppConnectionService xmppService = activity.xmppConnectionService;
 		final Contact contact = message.getConversation().getContact();
 		final Account account = message.getConversation().getAccount();
@@ -604,7 +604,6 @@ public class ConversationFragment extends Fragment {
 					
 					@Override
 					public void userInputRequried(PendingIntent pi) {
-						Log.d("xmppService","hasKey returned user input required");
 						try {
 							getActivity().startIntentSenderForResult(pi.getIntentSender(),
 									ConversationActivity.REQUEST_SEND_MESSAGE, null, 0,
@@ -616,13 +615,12 @@ public class ConversationFragment extends Fragment {
 					
 					@Override
 					public void success() {
-						Log.d("xmppService","hasKey returned success");
-						xmppService.getPgpEngine().encrypt(account, contact.getPgpKeyId(), message,new OnPgpEngineResult() {
+						xmppService.getPgpEngine().encrypt(account, message,new OnPgpEngineResult() {
 							
 							@Override
 							public void userInputRequried(PendingIntent pi) {
 								try {
-									getActivity().startIntentSenderForResult(pi.getIntentSender(),
+									activity.startIntentSenderForResult(pi.getIntentSender(),
 											ConversationActivity.REQUEST_SEND_MESSAGE, null, 0,
 											0, 0);
 								} catch (SendIntentException e1) {

@@ -81,6 +81,7 @@ public class JingleConnection {
 				sendSuccess();
 				if (acceptedAutomatically) {
 					message.markUnread();
+					JingleConnection.this.mXmppConnectionService.updateUi(message.getConversation(), true);
 				}
 				BitmapFactory.Options options = new BitmapFactory.Options();
 				options.inJustDecodeBounds = true;
@@ -91,7 +92,7 @@ public class JingleConnection {
 				mXmppConnectionService.databaseBackend.createMessage(message);
 				mXmppConnectionService.markMessage(message, Message.STATUS_RECIEVED);
 			}
-			Log.d("xmppService","sucessfully transmitted file. sha1:"+file.getSha1Sum()+" "+message.getBody());
+			Log.d("xmppService","sucessfully transmitted file:"+file.getName()+" encryption:"+message.getEncryption());
 		}
 	};
 	
@@ -226,7 +227,6 @@ public class JingleConnection {
 		this.mergeCandidates(JingleCandidate.parse(content.socks5transport().getChildren()));
 		this.fileOffer = packet.getJingleContent().getFileOffer();
 		if (fileOffer!=null) {
-			this.file = this.mXmppConnectionService.getFileBackend().getJingleFile(message);
 			Element fileSize = fileOffer.findChild("size");
 			Element fileNameElement = fileOffer.findChild("name");
 			if (fileNameElement!=null) {
@@ -243,20 +243,20 @@ public class JingleConnection {
 					}
 				}
 				if (supportedFile) {
-					this.file.setExpectedSize(Long.parseLong(fileSize.getContent()));
-					message.setBody(""+this.file.getExpectedSize());
+					long size = Long.parseLong(fileSize.getContent());
+					message.setBody(""+size);
 					conversation.getMessages().add(message);
-					if (this.file.getExpectedSize()<=this.mJingleConnectionManager.getAutoAcceptFileSize()) {
+					if (size<=this.mJingleConnectionManager.getAutoAcceptFileSize()) {
 						Log.d("xmppService","auto accepting file from "+packet.getFrom());
 						this.acceptedAutomatically = true;
 						this.sendAccept();
 					} else {
 						message.markUnread();
-						Log.d("xmppService","not auto accepting new file offer with size: "+this.file.getExpectedSize()+" allowed size:"+this.mJingleConnectionManager.getAutoAcceptFileSize());
-						if (this.mXmppConnectionService.convChangedListener!=null) {
-							this.mXmppConnectionService.convChangedListener.onConversationListChanged();
-						}
+						Log.d("xmppService","not auto accepting new file offer with size: "+size+" allowed size:"+this.mJingleConnectionManager.getAutoAcceptFileSize());
+						this.mXmppConnectionService.updateUi(conversation, true);
 					}
+					this.file = this.mXmppConnectionService.getFileBackend().getJingleFile(message,false);
+					this.file.setExpectedSize(size);
 				} else {
 					this.sendCancel();
 				}
@@ -273,7 +273,7 @@ public class JingleConnection {
 		Content content = new Content(this.contentCreator,this.contentName);
 		if (message.getType() == Message.TYPE_IMAGE) {
 			content.setTransportId(this.transportId);
-			this.file = this.mXmppConnectionService.getFileBackend().getJingleFile(message);
+			this.file = this.mXmppConnectionService.getFileBackend().getJingleFile(message,false);
 			content.setFileOffer(this.file);
 			this.transportId = this.mJingleConnectionManager.nextRandomId();
 			content.setTransportId(this.transportId);

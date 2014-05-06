@@ -47,13 +47,22 @@ public class FileBackend {
 	public LruCache<String, Bitmap> getThumbnailCache() {
 		return thumbnailCache;
 	}
-
+	
 	public JingleFile getJingleFile(Message message) {
+		return getJingleFile(message, true);
+	}
+
+	public JingleFile getJingleFile(Message message, boolean decrypted) {
 		Conversation conversation = message.getConversation();
 		String prefix = context.getFilesDir().getAbsolutePath();
 		String path = prefix + "/" + conversation.getAccount().getJid() + "/"
 				+ conversation.getContactJid();
-		String filename = message.getUuid() + ".webp";
+		String filename;
+		if ((decrypted)||(message.getEncryption() == Message.ENCRYPTION_NONE)) {
+			filename = message.getUuid() + ".webp";
+		} else {
+			filename = message.getUuid() + ".webp.pgp";
+		}
 		return new JingleFile(path + "/" + filename);
 	}
 
