@@ -56,7 +56,7 @@ public class Conversation extends AbstractEntity {
 
 	private transient String otrFingerprint = null;
 
-	private int nextMessageEncryption =  Message.ENCRYPTION_NONE;
+	private int nextMessageEncryption = -1;
 	private String nextMessage;
 
 	private transient MucOptions mucOptions = null;
@@ -332,6 +332,9 @@ public class Conversation extends AbstractEntity {
 	}
 	
 	public int getNextEncryption() {
+		if (this.nextMessageEncryption == -1) {
+			return this.getLatestEncryption();
+		}
 		return this.nextMessageEncryption;
 	}
 	

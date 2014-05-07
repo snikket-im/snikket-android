@@ -565,8 +565,6 @@ public class ConversationFragment extends Fragment {
 			this.messageListAdapter.notifyDataSetChanged();
 			if (conversation.getMode() == Conversation.MODE_SINGLE) {
 				if (messageList.size() >= 1) {
-					conversation.setNextEncryption(conversation
-							.getLatestEncryption());
 					makeFingerprintWarning(conversation.getLatestEncryption());
 				}
 			} else {
