@@ -57,6 +57,7 @@ public class Conversation extends AbstractEntity {
 	private transient String otrFingerprint = null;
 
 	private int nextMessageEncryption =  Message.ENCRYPTION_NONE;
+	private String nextMessage;
 
 	private transient MucOptions mucOptions = null;
 
@@ -336,5 +337,14 @@ public class Conversation extends AbstractEntity {
 	
 	public void setNextEncryption(int encryption) {
 		this.nextMessageEncryption = encryption;
+	}
+	
+	public String getNextMessage() {
+		return this.nextMessage;
+	}
+	
+	public void setNextMessage(String message) {
+		Log.d("xmppService","saving text: "+message);
+		this.nextMessage = message;
 	}
 }
