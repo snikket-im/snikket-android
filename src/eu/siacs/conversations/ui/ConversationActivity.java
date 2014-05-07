@@ -320,7 +320,55 @@ public class ConversationActivity extends XmppActivity {
 		}
 		return true;
 	}
+	
+	private void attachFileDialog() {
+		selectPresence(getSelectedConversation(), new OnPresenceSelected() {
+			
+			@Override
+			public void onPresenceSelected(boolean success, String presence) {
+				if (success) {
+					Intent attachFileIntent = new Intent();
+					attachFileIntent.setType("image/*");
+					attachFileIntent.setAction(Intent.ACTION_GET_CONTENT);
+					Intent chooser = Intent.createChooser(attachFileIntent, getString(R.string.attach_file));
+					startActivityForResult(chooser,	ATTACH_FILE);
+				}
+			}
 
+			@Override
+			public void onSendPlainTextInstead() {
+				
+			}
+		},"file");
+	}
+
+	private void attachFile() {
+		if (getSelectedConversation().getNextEncryption() == Message.ENCRYPTION_PGP) {
+			if (hasPgp()) {
+				xmppConnectionService.getPgpEngine().hasKey(getSelectedConversation().getContact(), new OnPgpEngineResult() {
+					
+					@Override
+					public void userInputRequried(PendingIntent pi) {
+						ConversationActivity.this.runIntent(pi, REQUEST_SEND_PGP_IMAGE);
+					}
+					
+					@Override
+					public void success() {
+						attachFileDialog();
+					}
+					
+					@Override
+					public void error(OpenPgpError openPgpError) {
+						// TODO Auto-generated method stub
+						
+					}
+				});
+			}
+		} else if (getSelectedConversation().getNextEncryption() == Message.ENCRYPTION_NONE) {
+			attachFileDialog();
+		}
+	}
+	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
@@ -328,25 +376,7 @@ public class ConversationActivity extends XmppActivity {
 			spl.openPane();
 			break;
 		case R.id.action_attach_file:
-			selectPresence(getSelectedConversation(), new OnPresenceSelected() {
-				
-				@Override
-				public void onPresenceSelected(boolean success, String presence) {
-					if (success) {
-						Intent attachFileIntent = new Intent();
-						attachFileIntent.setType("image/*");
-						attachFileIntent.setAction(Intent.ACTION_GET_CONTENT);
-						Intent chooser = Intent.createChooser(attachFileIntent, getString(R.string.attach_file));
-						startActivityForResult(chooser,	ATTACH_FILE);
-					}
-				}
-
-				@Override
-				public void onSendPlainTextInstead() {
-					// TODO Auto-generated method stub
-					
-				}
-			},"file");
+			attachFile();
 			break;
 		case R.id.action_add:
 			startActivity(new Intent(this, ContactsActivity.class));
@@ -391,19 +421,19 @@ public class ConversationActivity extends XmppActivity {
 					public boolean onMenuItemClick(MenuItem item) {
 						switch (item.getItemId()) {
 						case R.id.encryption_choice_none:
-							selConv.nextMessageEncryption = Message.ENCRYPTION_NONE;
+							selConv.setNextEncryption(Message.ENCRYPTION_NONE);
 							item.setChecked(true);
 							break;
 						case R.id.encryption_choice_otr:
-							selConv.nextMessageEncryption = Message.ENCRYPTION_OTR;
+							selConv.setNextEncryption(Message.ENCRYPTION_OTR);
 							item.setChecked(true);
 							break;
 						case R.id.encryption_choice_pgp:
-							selConv.nextMessageEncryption = Message.ENCRYPTION_PGP;
+							selConv.setNextEncryption(Message.ENCRYPTION_PGP);
 							item.setChecked(true);
 							break;
 						default:
-							selConv.nextMessageEncryption = Message.ENCRYPTION_NONE;
+							selConv.setNextEncryption(Message.ENCRYPTION_NONE);
 							break;
 						}
 						fragment.updateChatMsgHint();
@@ -411,7 +441,7 @@ public class ConversationActivity extends XmppActivity {
 					}
 				});
 				popup.inflate(R.menu.encryption_choices);
-				switch (selConv.nextMessageEncryption) {
+				switch (selConv.getNextEncryption()) {
 				case Message.ENCRYPTION_NONE:
 					popup.getMenu().findItem(R.id.encryption_choice_none)
 							.setChecked(true);
@@ -591,21 +621,14 @@ public class ConversationActivity extends XmppActivity {
 			} else if (requestCode == ATTACH_FILE) {
 				final Conversation conversation = getSelectedConversation();
 				String presence = conversation.getNextPresence();
-				if (conversation.nextMessageEncryption == Message.ENCRYPTION_NONE) {
+				if (conversation.getNextEncryption() == Message.ENCRYPTION_NONE) {
 					xmppConnectionService.attachImageToConversation(conversation, presence, data.getData());
-				} else if (conversation.nextMessageEncryption == Message.ENCRYPTION_PGP) {
+				} else if (conversation.getNextEncryption() == Message.ENCRYPTION_PGP) {
 					pendingMessage = xmppConnectionService.attachEncryptedImageToConversation(conversation, presence, data.getData(), new OnPgpEngineResult() {
 						
 						@Override
 						public void userInputRequried(PendingIntent pi) {
-							Log.d(LOGTAG,"user input requried");
-							try {
-								startIntentSenderForResult(pi.getIntentSender(),
-										ConversationActivity.REQUEST_SEND_PGP_IMAGE, null, 0,
-										0, 0);
-							} catch (SendIntentException e1) {
-								Log.d("xmppService","failed to start intent to send message");
-							}
+							ConversationActivity.this.runIntent(pi, ConversationActivity.REQUEST_SEND_PGP_IMAGE);
 						}
 						
 						@Override
@@ -615,6 +638,7 @@ public class ConversationActivity extends XmppActivity {
 							xmppConnectionService.databaseBackend.createMessage(pendingMessage);
 							xmppConnectionService.sendMessage(pendingMessage, null);
 							xmppConnectionService.updateUi(conversation, false);
+							pendingMessage = null;
 						}
 						
 						@Override
@@ -623,7 +647,7 @@ public class ConversationActivity extends XmppActivity {
 						}
 					});
 				} else {
-					Log.d(LOGTAG,"unknown next message encryption: "+conversation.nextMessageEncryption);
+					Log.d(LOGTAG,"unknown next message encryption: "+conversation.getNextEncryption());
 				}
 			}
 		}
@@ -728,6 +752,15 @@ public class ConversationActivity extends XmppActivity {
 			}
 		});
 		builder.create().show();
+	}
+	
+	public void runIntent(PendingIntent pi, int requestCode) {
+		try {
+			this.startIntentSenderForResult(pi.getIntentSender(),requestCode, null, 0,
+					0, 0);
+		} catch (SendIntentException e1) {
+			Log.d("xmppService","failed to start intent to send message");
+		}
 	}
 	
 	

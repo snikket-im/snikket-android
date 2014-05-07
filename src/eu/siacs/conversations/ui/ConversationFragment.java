@@ -79,10 +79,10 @@ public class ConversationFragment extends Fragment {
 			if (chatMsg.getText().length() < 1)
 				return;
 			Message message = new Message(conversation, chatMsg.getText()
-					.toString(), conversation.nextMessageEncryption);
-			if (conversation.nextMessageEncryption == Message.ENCRYPTION_OTR) {
+					.toString(), conversation.getNextEncryption());
+			if (conversation.getNextEncryption() == Message.ENCRYPTION_OTR) {
 				sendOtrMessage(message);
-			} else if (conversation.nextMessageEncryption == Message.ENCRYPTION_PGP) {
+			} else if (conversation.getNextEncryption() == Message.ENCRYPTION_PGP) {
 				sendPgpMessage(message);
 			} else {
 				sendPlainTextMessage(message);
@@ -129,7 +129,7 @@ public class ConversationFragment extends Fragment {
 		if (conversation.getMode() == Conversation.MODE_MULTI) {
 			chatMsg.setHint(getString(R.string.send_message_to_conference));
 		} else {
-			switch (conversation.nextMessageEncryption) {
+			switch (conversation.getNextEncryption()) {
 			case Message.ENCRYPTION_NONE:
 				chatMsg.setHint(getString(R.string.send_plain_text_message));
 				break;
@@ -137,9 +137,6 @@ public class ConversationFragment extends Fragment {
 				chatMsg.setHint(getString(R.string.send_otr_message));
 				break;
 			case Message.ENCRYPTION_PGP:
-				chatMsg.setHint(getString(R.string.send_pgp_message));
-				break;
-			case Message.ENCRYPTION_DECRYPTED:
 				chatMsg.setHint(getString(R.string.send_pgp_message));
 				break;
 			default:
@@ -441,12 +438,6 @@ public class ConversationFragment extends Fragment {
 
 			}
 		}
-		if (queuedPqpMessage != null) {
-			this.conversation.nextMessageEncryption = Message.ENCRYPTION_PGP;
-			Message message = new Message(conversation, queuedPqpMessage,
-					Message.ENCRYPTION_PGP);
-			sendPgpMessage(message);
-		}
 		if (conversation.getMode() == Conversation.MODE_MULTI) {
 			activity.xmppConnectionService
 					.setOnRenameListener(new OnRenameListener() {
@@ -520,14 +511,8 @@ public class ConversationFragment extends Fragment {
 			this.messageListAdapter.notifyDataSetChanged();
 			if (conversation.getMode() == Conversation.MODE_SINGLE) {
 				if (messageList.size() >= 1) {
-					int latestEncryption = this.conversation.getLatestMessage()
-							.getEncryption();
-					if ((latestEncryption == Message.ENCRYPTION_DECRYPTED)||(latestEncryption == Message.ENCRYPTION_DECRYPTION_FAILED)) {
-						conversation.nextMessageEncryption = Message.ENCRYPTION_PGP;
-					} else {
-						conversation.nextMessageEncryption = latestEncryption;
-					}
-					makeFingerprintWarning(latestEncryption);
+					conversation.setNextEncryption(conversation.getLatestEncryption());
+					makeFingerprintWarning(conversation.getLatestEncryption());
 				}
 			} else {
 				if (conversation.getMucOptions().getError() != 0) {
@@ -600,17 +585,11 @@ public class ConversationFragment extends Fragment {
 		final Account account = message.getConversation().getAccount();
 		if (activity.hasPgp()) {
 			if (contact.getPgpKeyId() != 0) {
-				xmppService.getPgpEngine().hasKey(account,contact.getPgpKeyId(), new OnPgpEngineResult() {
+				xmppService.getPgpEngine().hasKey(contact, new OnPgpEngineResult() {
 					
 					@Override
 					public void userInputRequried(PendingIntent pi) {
-						try {
-							getActivity().startIntentSenderForResult(pi.getIntentSender(),
-									ConversationActivity.REQUEST_SEND_MESSAGE, null, 0,
-									0, 0);
-						} catch (SendIntentException e1) {
-							Log.d("xmppService","failed to start intent to send message");
-						}
+						activity.runIntent(pi, ConversationActivity.REQUEST_SEND_MESSAGE);
 					}
 					
 					@Override
@@ -619,13 +598,7 @@ public class ConversationFragment extends Fragment {
 							
 							@Override
 							public void userInputRequried(PendingIntent pi) {
-								try {
-									activity.startIntentSenderForResult(pi.getIntentSender(),
-											ConversationActivity.REQUEST_SEND_MESSAGE, null, 0,
-											0, 0);
-								} catch (SendIntentException e1) {
-									Log.d("xmppService","failed to start intent to send message");
-								}
+								activity.runIntent(pi, ConversationActivity.REQUEST_SEND_MESSAGE);
 							}
 							
 							@Override
@@ -664,7 +637,7 @@ public class ConversationFragment extends Fragment {
 							@Override
 							public void onClick(DialogInterface dialog,
 									int which) {
-								conversation.nextMessageEncryption = Message.ENCRYPTION_NONE;
+								conversation.setNextEncryption(Message.ENCRYPTION_NONE);
 								message.setEncryption(Message.ENCRYPTION_NONE);
 								xmppService.sendMessage(message, null);
 								chatMsg.setText("");

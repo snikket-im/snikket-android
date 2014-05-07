@@ -15,6 +15,7 @@ import org.openintents.openpgp.util.OpenPgpApi;
 import org.openintents.openpgp.util.OpenPgpApi.IOpenPgpCallback;
 
 import eu.siacs.conversations.entities.Account;
+import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xmpp.jingle.JingleFile;
@@ -230,8 +231,11 @@ public class PgpEngine {
 				return 0;
 			}
 		case OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED:
+			Log.d("xmppService","openpgp user interaction requeried");
 			return 0;
 		case OpenPgpApi.RESULT_CODE_ERROR:
+			Log.d("xmppService","openpgp error: "+((OpenPgpError) result
+							.getParcelableExtra(OpenPgpApi.RESULT_ERROR)).getMessage());
 			return 0;
 		}
 		return 0;
@@ -272,11 +276,11 @@ public class PgpEngine {
 		});
 	}
 	
-	public void hasKey(Account account, long keyId, final OnPgpEngineResult callback) {
+	public void hasKey(Contact contact, final OnPgpEngineResult callback) {
 		Intent params = new Intent();
 		params.setAction(OpenPgpApi.ACTION_GET_KEY);
-		params.putExtra(OpenPgpApi.EXTRA_KEY_ID, keyId);
-		params.putExtra(OpenPgpApi.EXTRA_ACCOUNT_NAME, account.getJid());
+		params.putExtra(OpenPgpApi.EXTRA_KEY_ID, contact.getPgpKeyId());
+		params.putExtra(OpenPgpApi.EXTRA_ACCOUNT_NAME, contact.getAccount().getJid());
 		InputStream is = new ByteArrayInputStream(new byte[0]);
 		OutputStream os = new ByteArrayOutputStream();
 		api.executeApiAsync(params, is, os, new IOpenPgpCallback() {

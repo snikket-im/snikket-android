@@ -326,7 +326,7 @@ public class XmppConnectionService extends Service {
 										msg = "";
 									}
 									contact.setPgpKeyId(pgp.fetchKeyId(account,msg,x.getContent()));
-									Log.d("xmppService","fetched key id for "+contact.getDisplayName()+" was:"+contact.getPgpKeyId());
+									Log.d("xmppService",account.getJid()+": fetched key id for "+contact.getJid()+" was:"+contact.getPgpKeyId());
 								}
 							}
 							replaceContactInConversation(account,
