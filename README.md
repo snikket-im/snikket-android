@@ -14,6 +14,7 @@ Android 4.0+ smart phones.
 
 ##Features
 * End-to-end encryption with either OTR or openPGP
+* Sending and receiving images
 * Holo UI
 * Syncs with your desktop client
 * Group Chats
@@ -38,9 +39,14 @@ These XEPs are - as of now:
 * XEP-0237: Roster Versioning mainly to save bandwith on poor mobile connections
 
 ##Contributors
-(In order of appearance))
+(In order of appearance)
+
+###Code
 * Rene Treffer @rtreffer
 * Andreas Straub @strb
+
+###Translations
+* @beriain (Spanish and Basque)
 
 ##FAQ
 ###General
@@ -73,6 +79,12 @@ detais within Conversations. This will start an add to address book intent with 
 as payload. This doesn’t require Conversations to have write permissions on your
 address book but also doesn’t require you to copy past Jabber ID from one app to
 another.
+####How can I change my status
+You can set an account offline by long pressing on it and select temporarily
+disable account from the context menu. Other statuses like away, DND and N/A are
+not supported for simplicity reasons. Users tend to forget their status, other
+users ignore them and setting the status automatically would mean too much of an
+impact on privacy.
 ###Security
 ####Why are there to end-to-end encryption methods and which one should I choose?
 In most cases OTR should be the encryption method of choice. It works out of the box with most contacts as long as they are online.
