@@ -26,7 +26,7 @@
             android:layout_toLeftOf="@+id/textSendButton"
             android:background="#eee"
             android:ems="10"
-            android:inputType="textMultiLine"
+            android:inputType="textShortMessage|textMultiLine|textCapSentences"
             android:minLines="1" >
                     <requestFocus />
         </EditText>
