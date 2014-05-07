@@ -67,7 +67,9 @@ public class JingleConnection {
 		@Override
 		public void onIqPacketReceived(Account account, IqPacket packet) {
 			if (packet.getType() == IqPacket.TYPE_ERROR) {
-				mXmppConnectionService.markMessage(message, Message.STATUS_SEND_FAILED);
+				if (initiator.equals(account.getFullJid())) {
+					mXmppConnectionService.markMessage(message, Message.STATUS_SEND_FAILED);
+				}
 				status = STATUS_FAILED;
 			}
 		}
