@@ -273,9 +273,7 @@ public class ConversationFragment extends Fragment {
 
 				String filesize = "";
 
-				if ((item.getType() == Message.TYPE_IMAGE)
-						&& ((item.getEncryption() == Message.ENCRYPTION_DECRYPTED) || (item
-								.getEncryption() == Message.ENCRYPTION_NONE))) {
+				if (item.getType() == Message.TYPE_IMAGE) {
 					String[] fileParams = item.getBody().split(",");
 					if ((fileParams.length >= 1)
 							&& (item.getStatus() != Message.STATUS_PREPARING)) {
@@ -316,7 +314,8 @@ public class ConversationFragment extends Fragment {
 										}
 									}
 								});
-					} else {
+					} else if ((item.getEncryption() == Message.ENCRYPTION_DECRYPTED)
+							|| (item.getEncryption() == Message.ENCRYPTION_NONE)) {
 						viewHolder.messageBody.setVisibility(View.GONE);
 						viewHolder.image.setVisibility(View.VISIBLE);
 						if (fileParams.length == 3) {
@@ -357,6 +356,22 @@ public class ConversationFragment extends Fragment {
 										startActivity(intent);
 									}
 								});
+					} else if (item.getEncryption() == Message.ENCRYPTION_PGP) {
+						viewHolder.image.setVisibility(View.GONE);
+						viewHolder.messageBody.setVisibility(View.VISIBLE);
+						viewHolder.messageBody
+								.setText(getString(R.string.encrypted_message));
+						viewHolder.messageBody.setTextColor(0xff33B5E5);
+						viewHolder.messageBody.setTypeface(null,
+								Typeface.ITALIC);
+					} else {
+						viewHolder.image.setVisibility(View.GONE);
+						viewHolder.messageBody.setVisibility(View.VISIBLE);
+						viewHolder.messageBody
+								.setText(getString(R.string.decryption_failed));
+						viewHolder.messageBody.setTextColor(0xFFe92727);
+						viewHolder.messageBody.setTypeface(null,
+								Typeface.NORMAL);
 					}
 				} else {
 					viewHolder.image.setVisibility(View.GONE);
