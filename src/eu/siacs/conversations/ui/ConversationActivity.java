@@ -423,7 +423,7 @@ public class ConversationActivity extends XmppActivity {
 			startActivity(inviteIntent);
 			break;
 		case R.id.action_security:
-			final Conversation selConv = getSelectedConversation();
+			final Conversation conversation = getSelectedConversation();
 			View menuItemView = findViewById(R.id.action_security);
 			PopupMenu popup = new PopupMenu(this, menuItemView);
 			final ConversationFragment fragment = (ConversationFragment) getFragmentManager()
@@ -435,19 +435,25 @@ public class ConversationActivity extends XmppActivity {
 					public boolean onMenuItemClick(MenuItem item) {
 						switch (item.getItemId()) {
 						case R.id.encryption_choice_none:
-							selConv.setNextEncryption(Message.ENCRYPTION_NONE);
+							conversation.setNextEncryption(Message.ENCRYPTION_NONE);
 							item.setChecked(true);
 							break;
 						case R.id.encryption_choice_otr:
-							selConv.setNextEncryption(Message.ENCRYPTION_OTR);
+							conversation.setNextEncryption(Message.ENCRYPTION_OTR);
 							item.setChecked(true);
 							break;
 						case R.id.encryption_choice_pgp:
-							selConv.setNextEncryption(Message.ENCRYPTION_PGP);
-							item.setChecked(true);
+							if (hasPgp()) {
+								if (conversation.getAccount().getKeys().has("pgp_signature")) {
+									conversation.setNextEncryption(Message.ENCRYPTION_PGP);
+									item.setChecked(true);
+								} else {
+									announcePgp(conversation.getAccount());
+								}
+							}
 							break;
 						default:
-							selConv.setNextEncryption(Message.ENCRYPTION_NONE);
+							conversation.setNextEncryption(Message.ENCRYPTION_NONE);
 							break;
 						}
 						fragment.updateChatMsgHint();
@@ -455,7 +461,7 @@ public class ConversationActivity extends XmppActivity {
 					}
 				});
 				popup.inflate(R.menu.encryption_choices);
-				switch (selConv.getNextEncryption()) {
+				switch (conversation.getNextEncryption()) {
 				case Message.ENCRYPTION_NONE:
 					popup.getMenu().findItem(R.id.encryption_choice_none)
 							.setChecked(true);
@@ -465,10 +471,6 @@ public class ConversationActivity extends XmppActivity {
 							.setChecked(true);
 					break;
 				case Message.ENCRYPTION_PGP:
-					popup.getMenu().findItem(R.id.encryption_choice_pgp)
-							.setChecked(true);
-					break;
-				case Message.ENCRYPTION_DECRYPTED:
 					popup.getMenu().findItem(R.id.encryption_choice_pgp)
 							.setChecked(true);
 					break;

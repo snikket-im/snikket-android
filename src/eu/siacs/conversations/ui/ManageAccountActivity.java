@@ -38,8 +38,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 public class ManageAccountActivity extends XmppActivity {
-
-	public static final int REQUEST_ANNOUNCE_PGP = 0x73731;
 	
 	protected boolean isActionMode = false;
 	protected ActionMode actionMode;
@@ -281,7 +279,7 @@ public class ManageAccountActivity extends XmppActivity {
 							} else if (item.getItemId()==R.id.mgmt_account_announce_pgp) {
 								if (activity.hasPgp()) {
 									mode.finish();
-									announcePgp();
+									announcePgp(selectedAccountForActionMode);
 								}
 							} else if (item.getItemId() == R.id.mgmt_otr_key) {
 								AlertDialog.Builder builder = new AlertDialog.Builder(activity);
@@ -358,33 +356,6 @@ public class ManageAccountActivity extends XmppActivity {
 				} else {
 					return false;
 				}
-			}
-		});
-	}
-
-	private void announcePgp() {
-		final Account account = selectedAccountForActionMode;
-		xmppConnectionService.getPgpEngine().generateSignature(account, "online", new OnPgpEngineResult() {
-			
-			@Override
-			public void userInputRequried(PendingIntent pi) {
-				try {
-					startIntentSenderForResult(pi.getIntentSender(), REQUEST_ANNOUNCE_PGP, null, 0, 0, 0);
-				} catch (SendIntentException e) {
-					Log.d("xmppService","coulnd start intent for pgp anncouncment");
-				}
-			}
-			
-			@Override
-			public void success() {
-				xmppConnectionService.databaseBackend.updateAccount(account);
-				xmppConnectionService.sendPgpPresence(account, account.getPgpSignature());
-			}
-			
-			@Override
-			public void error(OpenPgpError openPgpError) {
-				// TODO Auto-generated method stub
-				
 			}
 		});
 	}
@@ -487,7 +458,7 @@ public class ManageAccountActivity extends XmppActivity {
 		 super.onActivityResult(requestCode, resultCode, data);
 		 if (resultCode == RESULT_OK) {
 			if (requestCode == REQUEST_ANNOUNCE_PGP) {
-				announcePgp();
+				announcePgp(selectedAccountForActionMode);
 			 }
 		 }
 	 }
