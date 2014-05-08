@@ -288,7 +288,10 @@ public class ManageAccountActivity extends XmppActivity {
 								View view = (View) getLayoutInflater().inflate(R.layout.otr_fingerprint, null);
 								if (fingerprintTxt!=null) {
 									TextView fingerprint = (TextView) view.findViewById(R.id.otr_fingerprint);
+									TextView noFingerprintView = (TextView) view.findViewById(R.id.otr_no_fingerprint);
 									fingerprint.setText(fingerprintTxt);
+									fingerprint.setVisibility(View.VISIBLE);
+									noFingerprintView.setVisibility(View.GONE);
 								}
 								builder.setView(view);
 								builder.setPositiveButton("Done", null);
