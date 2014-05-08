@@ -718,28 +718,31 @@ public class ConversationFragment extends Fragment {
 						});
 
 			} else {
-				AlertDialog.Builder builder = new AlertDialog.Builder(
-						getActivity());
-				builder.setTitle("No openPGP key found");
-				builder.setIconAttribute(android.R.attr.alertDialogIcon);
-				builder.setMessage("There is no openPGP key associated with this contact");
-				builder.setNegativeButton("Cancel", null);
-				builder.setPositiveButton("Send plain text",
-						new DialogInterface.OnClickListener() {
+				showNoPGPKeyDialog(new DialogInterface.OnClickListener() {
 
-							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
-								conversation
-										.setNextEncryption(Message.ENCRYPTION_NONE);
-								message.setEncryption(Message.ENCRYPTION_NONE);
-								xmppService.sendMessage(message, null);
-								chatMsg.setText("");
-							}
-						});
-				builder.create().show();
+					@Override
+					public void onClick(DialogInterface dialog,
+							int which) {
+						conversation
+								.setNextEncryption(Message.ENCRYPTION_NONE);
+						message.setEncryption(Message.ENCRYPTION_NONE);
+						xmppService.sendMessage(message, null);
+						chatMsg.setText("");
+					}
+				});
 			}
 		}
+	}
+	
+	public void showNoPGPKeyDialog(DialogInterface.OnClickListener listener) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(
+				getActivity());
+		builder.setTitle(getString(R.string.no_pgp_key));
+		builder.setIconAttribute(android.R.attr.alertDialogIcon);
+		builder.setMessage(getText(R.string.contact_has_no_pgp_key));
+		builder.setNegativeButton(getString(R.string.cancel), null);
+		builder.setPositiveButton(getString(R.string.send_unencrypted),listener);
+		builder.create().show();
 	}
 
 	protected void sendOtrMessage(final Message message) {

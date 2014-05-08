@@ -84,4 +84,6 @@
     <string name="restart">Restart</string>
     <string name="install">Install</string>
     <string name="offering">offering&#8230;</string>
+    <string name="no_pgp_key">No openPGP Key found</string>
+    <string name="contact_has_no_pgp_key">Conversations is unable to encrypt your messages because your contact is not announcing his or hers public key.\n\n<small>Please ask your contact to setup openPGP.</small></string>
 </resources>

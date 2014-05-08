@@ -341,26 +341,42 @@ public class ConversationActivity extends XmppActivity {
 	}
 
 	private void attachFile() {
-		if (getSelectedConversation().getNextEncryption() == Message.ENCRYPTION_PGP) {
+		final Conversation conversation = getSelectedConversation();
+		if (conversation.getNextEncryption() == Message.ENCRYPTION_PGP) {
 			if (hasPgp()) {
-				xmppConnectionService.getPgpEngine().hasKey(getSelectedConversation().getContact(), new OnPgpEngineResult() {
-					
-					@Override
-					public void userInputRequried(PendingIntent pi) {
-						ConversationActivity.this.runIntent(pi, REQUEST_SEND_PGP_IMAGE);
-					}
-					
-					@Override
-					public void success() {
-						attachFileDialog();
-					}
-					
-					@Override
-					public void error(OpenPgpError openPgpError) {
-						// TODO Auto-generated method stub
+				if (conversation.getContact().getPgpKeyId()!=0) {
+					xmppConnectionService.getPgpEngine().hasKey(conversation.getContact(), new OnPgpEngineResult() {
 						
+						@Override
+						public void userInputRequried(PendingIntent pi) {
+							ConversationActivity.this.runIntent(pi, REQUEST_SEND_PGP_IMAGE);
+						}
+						
+						@Override
+						public void success() {
+							attachFileDialog();
+						}
+						
+						@Override
+						public void error(OpenPgpError openPgpError) {
+							// TODO Auto-generated method stub
+							
+						}
+					});
+				} else {
+					final ConversationFragment fragment = (ConversationFragment) getFragmentManager()
+							.findFragmentByTag("conversation");
+					if (fragment != null) {
+						fragment.showNoPGPKeyDialog(new OnClickListener() {
+							
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								conversation.setNextEncryption(Message.ENCRYPTION_NONE);
+								attachFileDialog();
+							}
+						});
 					}
-				});
+				}
 			}
 		} else if (getSelectedConversation().getNextEncryption() == Message.ENCRYPTION_NONE) {
 			attachFileDialog();
