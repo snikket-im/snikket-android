@@ -6,6 +6,7 @@ import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.OnPgpEngineResult;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Conversation;
+import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.services.XmppConnectionService.XmppConnectionBinder;
 import eu.siacs.conversations.utils.ExceptionHelper;
@@ -162,7 +163,7 @@ public abstract class XmppActivity extends Activity {
 		startActivity(viewConversationIntent);
 	}
 	
-	protected void announcePgp(final Account account) {
+	protected void announcePgp(final Account account, final Conversation conversation) {
 		xmppConnectionService.getPgpEngine().generateSignature(account, "online", new OnPgpEngineResult() {
 			
 			@Override
@@ -178,6 +179,9 @@ public abstract class XmppActivity extends Activity {
 			public void success() {
 				xmppConnectionService.databaseBackend.updateAccount(account);
 				xmppConnectionService.sendPgpPresence(account, account.getPgpSignature());
+				if (conversation!=null) {
+					conversation.setNextEncryption(Message.ENCRYPTION_PGP);
+				}
 			}
 			
 			@Override
