@@ -2,6 +2,7 @@ package eu.siacs.conversations.ui;
 
 import java.io.FileNotFoundException;
 import java.lang.ref.WeakReference;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
@@ -67,6 +68,7 @@ public class ConversationActivity extends XmppActivity {
 	private static final int REQUEST_ATTACH_FILE_DIALOG = 0x48502;
 	private static final int REQUEST_SEND_PGP_IMAGE = 0x53883;
 	private static final int REQUEST_ATTACH_FILE = 0x73824;
+	public static final int REQUEST_ENCRYPT_MESSAGE = 0x378018;
 
 	protected SlidingPaneLayout spl;
 
@@ -652,6 +654,10 @@ public class ConversationActivity extends XmppActivity {
 				attachFile();
 			} else if (requestCode == REQUEST_ANNOUNCE_PGP) {
 				announcePgp(getSelectedConversation().getAccount(),getSelectedConversation());
+			} else if (requestCode == REQUEST_ENCRYPT_MESSAGE) {
+				encryptTextMessage();
+			} else {
+				Log.d(LOGTAG,"unknown result code:"+requestCode);
 			}
 		}
 	}
@@ -883,5 +889,37 @@ public class ConversationActivity extends XmppActivity {
 	    public BitmapWorkerTask getBitmapWorkerTask() {
 	        return bitmapWorkerTaskReference.get();
 	    }
+	}
+
+	public void encryptTextMessage() {
+		xmppConnectionService.getPgpEngine().encrypt(this.pendingMessage, new OnPgpEngineResult() {
+
+					@Override
+					public void userInputRequried(
+							PendingIntent pi) {
+						activity.runIntent(
+								pi,
+								ConversationActivity.REQUEST_SEND_MESSAGE);
+					}
+
+					@Override
+					public void success() {
+						xmppConnectionService.sendMessage(pendingMessage, null);
+						pendingMessage = null;
+						ConversationFragment selectedFragment = (ConversationFragment) getFragmentManager()
+								.findFragmentByTag("conversation");
+						if (selectedFragment != null) {
+							selectedFragment.clearInputField();
+						}
+					}
+
+					@Override
+					public void error(
+							OpenPgpError openPgpError) {
+						// TODO Auto-generated method
+						// stub
+
+					}
+				});
 	}
 }

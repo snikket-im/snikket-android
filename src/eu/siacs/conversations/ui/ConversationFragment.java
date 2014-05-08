@@ -664,10 +664,10 @@ public class ConversationFragment extends Fragment {
 	}
 
 	protected void sendPgpMessage(final Message message) {
+		activity.pendingMessage = message;
 		final ConversationActivity activity = (ConversationActivity) getActivity();
 		final XmppConnectionService xmppService = activity.xmppConnectionService;
 		final Contact contact = message.getConversation().getContact();
-		final Account account = message.getConversation().getAccount();
 		if (activity.hasPgp()) {
 			if (contact.getPgpKeyId() != 0) {
 				xmppService.getPgpEngine().hasKey(contact,
@@ -677,37 +677,12 @@ public class ConversationFragment extends Fragment {
 							public void userInputRequried(PendingIntent pi) {
 								activity.runIntent(
 										pi,
-										ConversationActivity.REQUEST_SEND_MESSAGE);
+										ConversationActivity.REQUEST_ENCRYPT_MESSAGE);
 							}
 
 							@Override
 							public void success() {
-								xmppService.getPgpEngine().encrypt(account,
-										message, new OnPgpEngineResult() {
-
-											@Override
-											public void userInputRequried(
-													PendingIntent pi) {
-												activity.runIntent(
-														pi,
-														ConversationActivity.REQUEST_SEND_MESSAGE);
-											}
-
-											@Override
-											public void success() {
-												xmppService.sendMessage(
-														message, null);
-												chatMsg.setText("");
-											}
-
-											@Override
-											public void error(
-													OpenPgpError openPgpError) {
-												// TODO Auto-generated method
-												// stub
-
-											}
-										});
+								activity.encryptTextMessage();
 							}
 
 							@Override
@@ -808,5 +783,9 @@ public class ConversationFragment extends Fragment {
 
 	public void setText(String text) {
 		this.pastedText = text;
+	}
+
+	public void clearInputField() {
+		this.chatMsg.setText("");
 	}
 }
