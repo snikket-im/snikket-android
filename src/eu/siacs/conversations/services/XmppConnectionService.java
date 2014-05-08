@@ -451,18 +451,14 @@ public class XmppConnectionService extends Service {
 		final Message message = new Message(conversation, "",Message.ENCRYPTION_NONE);
 		message.setPresence(presence);
 		message.setType(Message.TYPE_IMAGE);
-		message.setStatus(Message.STATUS_PREPARING);
-		conversation.getMessages().add(message);
-		if (convChangedListener != null) {
-			convChangedListener.onConversationListChanged();
-		}
+		message.setStatus(Message.STATUS_OFFERED);
 		new Thread(new Runnable() {
 
 			@Override
 			public void run() {
 				getFileBackend().copyImageToPrivateStorage(message, uri);
-				message.setStatus(Message.STATUS_OFFERED);
 				databaseBackend.createMessage(message);
+				conversation.getMessages().add(message);
 				if (convChangedListener != null) {
 					convChangedListener.onConversationListChanged();
 				}
@@ -477,14 +473,13 @@ public class XmppConnectionService extends Service {
 		final Message message = new Message(conversation, "",Message.ENCRYPTION_DECRYPTED);
 		message.setPresence(presence);
 		message.setType(Message.TYPE_IMAGE);
-		message.setStatus(Message.STATUS_PREPARING);
+		message.setStatus(Message.STATUS_OFFERED);
 		new Thread(new Runnable() {
 
 			@Override
 			public void run() {
 				getFileBackend().copyImageToPrivateStorage(message, uri);
 				getPgpEngine().encrypt(message, callback);
-				message.setStatus(Message.STATUS_OFFERED);
 			}
 		}).start();
 		return message;

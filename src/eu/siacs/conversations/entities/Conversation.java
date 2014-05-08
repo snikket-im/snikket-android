@@ -15,7 +15,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
-import android.util.Log;
 
 public class Conversation extends AbstractEntity {
 
@@ -238,7 +237,6 @@ public class Conversation extends AbstractEntity {
 				}
 				return this.otrSession;
 			} catch (OtrException e) {
-				Log.d("xmppServic", "couldnt start otr");
 				return null;
 			}
 		}
@@ -347,7 +345,6 @@ public class Conversation extends AbstractEntity {
 	}
 	
 	public void setNextMessage(String message) {
-		Log.d("xmppService","saving text: "+message);
 		this.nextMessage = message;
 	}
 }

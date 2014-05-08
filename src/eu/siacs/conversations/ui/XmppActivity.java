@@ -1,27 +1,36 @@
 package eu.siacs.conversations.ui;
 
+import org.openintents.openpgp.OpenPgpError;
+
 import eu.siacs.conversations.R;
+import eu.siacs.conversations.crypto.OnPgpEngineResult;
+import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.services.XmppConnectionService.XmppConnectionBinder;
 import eu.siacs.conversations.utils.ExceptionHelper;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.app.AlertDialog.Builder;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.content.IntentSender.SendIntentException;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 public abstract class XmppActivity extends Activity {
+	
+	public static final int REQUEST_ANNOUNCE_PGP = 0x73731;
 	
 	protected final static String LOGTAG = "xmppService";
 	
@@ -151,5 +160,31 @@ public abstract class XmppActivity extends Activity {
 		viewConversationIntent.setFlags(viewConversationIntent.getFlags()
 				| Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(viewConversationIntent);
+	}
+	
+	protected void announcePgp(final Account account) {
+		xmppConnectionService.getPgpEngine().generateSignature(account, "online", new OnPgpEngineResult() {
+			
+			@Override
+			public void userInputRequried(PendingIntent pi) {
+				try {
+					startIntentSenderForResult(pi.getIntentSender(), REQUEST_ANNOUNCE_PGP, null, 0, 0, 0);
+				} catch (SendIntentException e) {
+					Log.d("xmppService","coulnd start intent for pgp anncouncment");
+				}
+			}
+			
+			@Override
+			public void success() {
+				xmppConnectionService.databaseBackend.updateAccount(account);
+				xmppConnectionService.sendPgpPresence(account, account.getPgpSignature());
+			}
+			
+			@Override
+			public void error(OpenPgpError openPgpError) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 	}
 }

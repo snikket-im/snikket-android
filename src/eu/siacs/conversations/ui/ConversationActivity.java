@@ -178,16 +178,14 @@ public class ConversationActivity extends XmppActivity {
 					convLastMsg.setVisibility(View.VISIBLE);
 					imagePreview.setVisibility(View.GONE);
 				} else if (latestMessage.getType() == Message.TYPE_IMAGE) {
-					if ((latestMessage.getStatus() >= Message.STATUS_RECIEVED)&&(latestMessage.getStatus() != Message.STATUS_PREPARING)) {
+					if (latestMessage.getStatus() >= Message.STATUS_RECIEVED) {
 						convLastMsg.setVisibility(View.GONE);
 						imagePreview.setVisibility(View.VISIBLE);
 						loadBitmap(latestMessage, imagePreview);
 					} else {
 						convLastMsg.setVisibility(View.VISIBLE);
 						imagePreview.setVisibility(View.GONE);
-						if (latestMessage.getStatus() == Message.STATUS_PREPARING) {
-							convLastMsg.setText(getText(R.string.preparing_image));
-						} else  if (latestMessage.getStatus() == Message.STATUS_RECEIVED_OFFER) {
+						if (latestMessage.getStatus() == Message.STATUS_RECEIVED_OFFER) {
 							convLastMsg.setText(getText(R.string.image_offered_for_download));
 						} else if (latestMessage.getStatus() == Message.STATUS_RECIEVING) {
 							convLastMsg.setText(getText(R.string.receiving_image));
@@ -343,26 +341,42 @@ public class ConversationActivity extends XmppActivity {
 	}
 
 	private void attachFile() {
-		if (getSelectedConversation().getNextEncryption() == Message.ENCRYPTION_PGP) {
+		final Conversation conversation = getSelectedConversation();
+		if (conversation.getNextEncryption() == Message.ENCRYPTION_PGP) {
 			if (hasPgp()) {
-				xmppConnectionService.getPgpEngine().hasKey(getSelectedConversation().getContact(), new OnPgpEngineResult() {
-					
-					@Override
-					public void userInputRequried(PendingIntent pi) {
-						ConversationActivity.this.runIntent(pi, REQUEST_SEND_PGP_IMAGE);
-					}
-					
-					@Override
-					public void success() {
-						attachFileDialog();
-					}
-					
-					@Override
-					public void error(OpenPgpError openPgpError) {
-						// TODO Auto-generated method stub
+				if (conversation.getContact().getPgpKeyId()!=0) {
+					xmppConnectionService.getPgpEngine().hasKey(conversation.getContact(), new OnPgpEngineResult() {
 						
+						@Override
+						public void userInputRequried(PendingIntent pi) {
+							ConversationActivity.this.runIntent(pi, REQUEST_SEND_PGP_IMAGE);
+						}
+						
+						@Override
+						public void success() {
+							attachFileDialog();
+						}
+						
+						@Override
+						public void error(OpenPgpError openPgpError) {
+							// TODO Auto-generated method stub
+							
+						}
+					});
+				} else {
+					final ConversationFragment fragment = (ConversationFragment) getFragmentManager()
+							.findFragmentByTag("conversation");
+					if (fragment != null) {
+						fragment.showNoPGPKeyDialog(new OnClickListener() {
+							
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								conversation.setNextEncryption(Message.ENCRYPTION_NONE);
+								attachFileDialog();
+							}
+						});
 					}
-				});
+				}
 			}
 		} else if (getSelectedConversation().getNextEncryption() == Message.ENCRYPTION_NONE) {
 			attachFileDialog();
@@ -409,7 +423,7 @@ public class ConversationActivity extends XmppActivity {
 			startActivity(inviteIntent);
 			break;
 		case R.id.action_security:
-			final Conversation selConv = getSelectedConversation();
+			final Conversation conversation = getSelectedConversation();
 			View menuItemView = findViewById(R.id.action_security);
 			PopupMenu popup = new PopupMenu(this, menuItemView);
 			final ConversationFragment fragment = (ConversationFragment) getFragmentManager()
@@ -421,19 +435,25 @@ public class ConversationActivity extends XmppActivity {
 					public boolean onMenuItemClick(MenuItem item) {
 						switch (item.getItemId()) {
 						case R.id.encryption_choice_none:
-							selConv.setNextEncryption(Message.ENCRYPTION_NONE);
+							conversation.setNextEncryption(Message.ENCRYPTION_NONE);
 							item.setChecked(true);
 							break;
 						case R.id.encryption_choice_otr:
-							selConv.setNextEncryption(Message.ENCRYPTION_OTR);
+							conversation.setNextEncryption(Message.ENCRYPTION_OTR);
 							item.setChecked(true);
 							break;
 						case R.id.encryption_choice_pgp:
-							selConv.setNextEncryption(Message.ENCRYPTION_PGP);
-							item.setChecked(true);
+							if (hasPgp()) {
+								if (conversation.getAccount().getKeys().has("pgp_signature")) {
+									conversation.setNextEncryption(Message.ENCRYPTION_PGP);
+									item.setChecked(true);
+								} else {
+									announcePgp(conversation.getAccount());
+								}
+							}
 							break;
 						default:
-							selConv.setNextEncryption(Message.ENCRYPTION_NONE);
+							conversation.setNextEncryption(Message.ENCRYPTION_NONE);
 							break;
 						}
 						fragment.updateChatMsgHint();
@@ -441,7 +461,7 @@ public class ConversationActivity extends XmppActivity {
 					}
 				});
 				popup.inflate(R.menu.encryption_choices);
-				switch (selConv.getNextEncryption()) {
+				switch (conversation.getNextEncryption()) {
 				case Message.ENCRYPTION_NONE:
 					popup.getMenu().findItem(R.id.encryption_choice_none)
 							.setChecked(true);
@@ -451,10 +471,6 @@ public class ConversationActivity extends XmppActivity {
 							.setChecked(true);
 					break;
 				case Message.ENCRYPTION_PGP:
-					popup.getMenu().findItem(R.id.encryption_choice_pgp)
-							.setChecked(true);
-					break;
-				case Message.ENCRYPTION_DECRYPTED:
 					popup.getMenu().findItem(R.id.encryption_choice_pgp)
 							.setChecked(true);
 					break;
