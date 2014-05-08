@@ -279,7 +279,7 @@ public class ManageAccountActivity extends XmppActivity {
 							} else if (item.getItemId()==R.id.mgmt_account_announce_pgp) {
 								if (activity.hasPgp()) {
 									mode.finish();
-									announcePgp(selectedAccountForActionMode);
+									announcePgp(selectedAccountForActionMode,null);
 								}
 							} else if (item.getItemId() == R.id.mgmt_otr_key) {
 								AlertDialog.Builder builder = new AlertDialog.Builder(activity);
@@ -458,8 +458,8 @@ public class ManageAccountActivity extends XmppActivity {
 		 super.onActivityResult(requestCode, resultCode, data);
 		 if (resultCode == RESULT_OK) {
 			if (requestCode == REQUEST_ANNOUNCE_PGP) {
-				announcePgp(selectedAccountForActionMode);
-			 }
+				announcePgp(selectedAccountForActionMode,null);
+			}
 		 }
 	 }
 }

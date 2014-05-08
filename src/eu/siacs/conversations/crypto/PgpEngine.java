@@ -114,59 +114,18 @@ public class PgpEngine {
 		}
 	}
 
-	public void encrypt(Account account, final Message message,
-			final OnPgpEngineResult callback) {
+	public void encrypt(final Message message,final OnPgpEngineResult callback) {
 		long[] keys = { message.getConversation().getContact().getPgpKeyId() };
 		Intent params = new Intent();
 		params.setAction(OpenPgpApi.ACTION_ENCRYPT);
 		params.putExtra(OpenPgpApi.EXTRA_KEY_IDS, keys);
-		params.putExtra(OpenPgpApi.EXTRA_REQUEST_ASCII_ARMOR, true);
-		params.putExtra(OpenPgpApi.EXTRA_ACCOUNT_NAME, account.getJid());
-
-		InputStream is = new ByteArrayInputStream(message.getBody().getBytes());
-		final OutputStream os = new ByteArrayOutputStream();
-		api.executeApiAsync(params, is, os, new IOpenPgpCallback() {
-			
-			@Override
-			public void onReturn(Intent result) {
-				switch (result.getIntExtra(OpenPgpApi.RESULT_CODE,
-						OpenPgpApi.RESULT_CODE_ERROR)) {
-				case OpenPgpApi.RESULT_CODE_SUCCESS:
-					StringBuilder encryptedMessageBody = new StringBuilder();
-					String[] lines = os.toString().split("\n");
-					for (int i = 3; i < lines.length - 1; ++i) {
-						encryptedMessageBody.append(lines[i].trim());
-					}
-					message.setEncryptedBody(encryptedMessageBody.toString());
-					callback.success();
-					break;
-				case OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED:
-					callback.userInputRequried((PendingIntent) result
-							.getParcelableExtra(OpenPgpApi.RESULT_INTENT));
-					break;
-				case OpenPgpApi.RESULT_CODE_ERROR:
-					callback.error((OpenPgpError) result
-							.getParcelableExtra(OpenPgpApi.RESULT_ERROR));
-					break;
-				}
-			}
-		});
+		params.putExtra(OpenPgpApi.EXTRA_ACCOUNT_NAME, message.getConversation().getAccount().getJid());
 		
-	}
+		if (message.getType() == Message.TYPE_TEXT) {
+			params.putExtra(OpenPgpApi.EXTRA_REQUEST_ASCII_ARMOR, true);
 	
-	public void encrypt(final Message message, final OnPgpEngineResult callback) {
-		try {
-			Log.d("xmppService","calling to encrypt file");
-			JingleFile inputFile = this.mXmppConnectionService.getFileBackend().getJingleFile(message, true);
-			JingleFile outputFile = this.mXmppConnectionService.getFileBackend().getJingleFile(message, false);
-			outputFile.createNewFile();
-			long[] keys = { message.getConversation().getContact().getPgpKeyId() };
-			Intent params = new Intent();
-			params.setAction(OpenPgpApi.ACTION_ENCRYPT);
-			params.putExtra(OpenPgpApi.EXTRA_KEY_IDS, keys);
-			params.putExtra(OpenPgpApi.EXTRA_ACCOUNT_NAME, message.getConversation().getAccount().getJid());
-			InputStream is = new FileInputStream(inputFile);
-			OutputStream os = new FileOutputStream(outputFile);
+			InputStream is = new ByteArrayInputStream(message.getBody().getBytes());
+			final OutputStream os = new ByteArrayOutputStream();
 			api.executeApiAsync(params, is, os, new IOpenPgpCallback() {
 				
 				@Override
@@ -174,6 +133,12 @@ public class PgpEngine {
 					switch (result.getIntExtra(OpenPgpApi.RESULT_CODE,
 							OpenPgpApi.RESULT_CODE_ERROR)) {
 					case OpenPgpApi.RESULT_CODE_SUCCESS:
+						StringBuilder encryptedMessageBody = new StringBuilder();
+						String[] lines = os.toString().split("\n");
+						for (int i = 3; i < lines.length - 1; ++i) {
+							encryptedMessageBody.append(lines[i].trim());
+						}
+						message.setEncryptedBody(encryptedMessageBody.toString());
 						callback.success();
 						break;
 					case OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED:
@@ -187,13 +152,41 @@ public class PgpEngine {
 					}
 				}
 			});
-		} catch (FileNotFoundException e) {
-			Log.d("xmppService","file not found: "+e.getMessage());
-		} catch (IOException e) {
-			Log.d("xmppService","io exception during file encrypt");
+		} else if (message.getType() == Message.TYPE_IMAGE) {
+			try {
+				JingleFile inputFile = this.mXmppConnectionService.getFileBackend().getJingleFile(message, true);
+				JingleFile outputFile = this.mXmppConnectionService.getFileBackend().getJingleFile(message, false);
+				outputFile.createNewFile();
+				InputStream is = new FileInputStream(inputFile);
+				OutputStream os = new FileOutputStream(outputFile);
+				api.executeApiAsync(params, is, os, new IOpenPgpCallback() {
+					
+					@Override
+					public void onReturn(Intent result) {
+						switch (result.getIntExtra(OpenPgpApi.RESULT_CODE,
+								OpenPgpApi.RESULT_CODE_ERROR)) {
+						case OpenPgpApi.RESULT_CODE_SUCCESS:
+							callback.success();
+							break;
+						case OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED:
+							callback.userInputRequried((PendingIntent) result
+									.getParcelableExtra(OpenPgpApi.RESULT_INTENT));
+							break;
+						case OpenPgpApi.RESULT_CODE_ERROR:
+							callback.error((OpenPgpError) result
+									.getParcelableExtra(OpenPgpApi.RESULT_ERROR));
+							break;
+						}
+					}
+				});
+			} catch (FileNotFoundException e) {
+				Log.d("xmppService","file not found: "+e.getMessage());
+			} catch (IOException e) {
+				Log.d("xmppService","io exception during file encrypt");
+			}
 		}
 	}
-
+	
 	public long fetchKeyId(Account account, String status, String signature) {
 		if ((signature == null) || (api == null)) {
 			return 0;
