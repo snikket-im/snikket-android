@@ -178,16 +178,14 @@ public class ConversationActivity extends XmppActivity {
 					convLastMsg.setVisibility(View.VISIBLE);
 					imagePreview.setVisibility(View.GONE);
 				} else if (latestMessage.getType() == Message.TYPE_IMAGE) {
-					if ((latestMessage.getStatus() >= Message.STATUS_RECIEVED)&&(latestMessage.getStatus() != Message.STATUS_PREPARING)) {
+					if (latestMessage.getStatus() >= Message.STATUS_RECIEVED) {
 						convLastMsg.setVisibility(View.GONE);
 						imagePreview.setVisibility(View.VISIBLE);
 						loadBitmap(latestMessage, imagePreview);
 					} else {
 						convLastMsg.setVisibility(View.VISIBLE);
 						imagePreview.setVisibility(View.GONE);
-						if (latestMessage.getStatus() == Message.STATUS_PREPARING) {
-							convLastMsg.setText(getText(R.string.preparing_image));
-						} else  if (latestMessage.getStatus() == Message.STATUS_RECEIVED_OFFER) {
+						if (latestMessage.getStatus() == Message.STATUS_RECEIVED_OFFER) {
 							convLastMsg.setText(getText(R.string.image_offered_for_download));
 						} else if (latestMessage.getStatus() == Message.STATUS_RECIEVING) {
 							convLastMsg.setText(getText(R.string.receiving_image));
