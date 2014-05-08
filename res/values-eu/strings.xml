@@ -83,4 +83,7 @@
 	<string name="openkeychain_required_long">Conversationsek <b>OpenKeychain</b> izeneko hirugarren app bat erabiltzen du mezuak enkriptatu eta desenkriptatzeko eta zure gako publikoak kudeatzeko.\n\nOpenKeychain GPLv3 lizentziapean dago eta F-Droid eta Google Playn eskura daiteke.\n\n<small>(Mesedez ondoren Conversations berrabiarazi)</small></string>
 	<string name="restart">Berrabiarazi</string>
 	<string name="install">Instalatu</string>
+	<string name="offering">eskeintzen&#8230;</string>
+    <string name="no_pgp_key">Ez da openPGP gakorik aurkitu</string>
+    <string name="contact_has_no_pgp_key">Conversations ez da zure mezuak enkriptatzeko gai zure kontaktua bere gako publikoa jakinarazten ez dagoelako.\n\n<small>Mesedez eskatu ezaiozu zure kontaktuari openPGP konfigura dezan.</small></string>
 </resources>
