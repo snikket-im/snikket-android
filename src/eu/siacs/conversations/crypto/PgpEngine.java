@@ -274,9 +274,7 @@ public class PgpEngine {
 		params.setAction(OpenPgpApi.ACTION_GET_KEY);
 		params.putExtra(OpenPgpApi.EXTRA_KEY_ID, contact.getPgpKeyId());
 		params.putExtra(OpenPgpApi.EXTRA_ACCOUNT_NAME, contact.getAccount().getJid());
-		InputStream is = new ByteArrayInputStream(new byte[0]);
-		OutputStream os = new ByteArrayOutputStream();
-		api.executeApiAsync(params, is, os, new IOpenPgpCallback() {
+		api.executeApiAsync(params, null, null, new IOpenPgpCallback() {
 			
 			@Override
 			public void onReturn(Intent result) {
@@ -295,5 +293,14 @@ public class PgpEngine {
 				}
 			}
 		});
+	}
+	
+	public PendingIntent getIntentForKey(Contact contact) {
+		Intent params = new Intent();
+		params.setAction(OpenPgpApi.ACTION_GET_KEY);
+		params.putExtra(OpenPgpApi.EXTRA_KEY_ID, contact.getPgpKeyId());
+		params.putExtra(OpenPgpApi.EXTRA_ACCOUNT_NAME, contact.getAccount().getJid());
+		Intent result = api.executeApi(params, null, null);
+		return (PendingIntent) result.getParcelableExtra(OpenPgpApi.RESULT_INTENT);
 	}
 }
