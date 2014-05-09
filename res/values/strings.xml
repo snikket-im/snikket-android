@@ -89,4 +89,7 @@
     <string name="encrypted_message_received"><i>Encrypted message received. Touch to view and decrypt.</i></string>
     <string name="encrypted_image_received"><i>Encrypted image received. Touch to view and decrypt.</i></string>
     <string name="image_file"><i>Image received. Touch to view</i></string>
+    <string name="otr_file_transfer">OTR encryption not available</string>
+    <string name="otr_file_transfer_msg">Unfortunaly OTR encryption is not available for file transfer. You can choose either openPGP or no encryption.</string>
+    <string name="use_pgp_encryption">Use openPGP encryption</string>
 </resources>

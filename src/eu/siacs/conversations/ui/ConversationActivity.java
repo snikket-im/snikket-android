@@ -2,7 +2,6 @@ package eu.siacs.conversations.ui;
 
 import java.io.FileNotFoundException;
 import java.lang.ref.WeakReference;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
@@ -390,6 +389,31 @@ public class ConversationActivity extends XmppActivity {
 			}
 		} else if (getSelectedConversation().getNextEncryption() == Message.ENCRYPTION_NONE) {
 			attachFileDialog();
+		} else {
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setTitle(getString(R.string.otr_file_transfer));
+			builder.setMessage(getString(R.string.otr_file_transfer_msg));
+			builder.setNegativeButton(getString(R.string.cancel), null);
+			if (conversation.getContact().getPgpKeyId()==0) {
+				builder.setPositiveButton(getString(R.string.send_unencrypted), new OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						conversation.setNextEncryption(Message.ENCRYPTION_NONE);
+						attachFile();
+					}
+				});
+			} else {
+				builder.setPositiveButton(getString(R.string.use_pgp_encryption), new OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						conversation.setNextEncryption(Message.ENCRYPTION_PGP);
+						attachFile();
+					}
+				});
+			}
+			builder.create().show();
 		}
 	}
 	
