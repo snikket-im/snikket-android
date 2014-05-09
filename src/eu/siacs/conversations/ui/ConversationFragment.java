@@ -492,7 +492,9 @@ public class ConversationFragment extends Fragment {
 	@Override
 	public void onStop() {
 		super.onStop();
-		this.conversation.setNextMessage(chatMsg.getText().toString());
+		if (this.conversation!=null) {
+			this.conversation.setNextMessage(chatMsg.getText().toString());
+		}
 	}
 
 	public void onBackendConnected() {

@@ -53,7 +53,7 @@
     <string name="send_failed">unsuccessful delivery</string>
     <string name="send_rejected">rejected</string>
     <string name="receiving_image">Receiving image file. Please wait&#8230;</string>
-    <string name="preparing_image">Preparing image for transmission. Please wait&#8230;</string>
+    <string name="preparing_image">Preparing image for transmission</string>
     <string name="action_clear_history">Clear history</string>
     <string name="clear_conversation_history">Clear Conversation History</string>
     <string name="clear_histor_msg">Do you want to delete all messages within this Conversation?\n\n<b>Warning:</b> This will not influence messages stored on other devices or servers.</string>
@@ -86,4 +86,7 @@
     <string name="offering">offering&#8230;</string>
     <string name="no_pgp_key">No openPGP Key found</string>
     <string name="contact_has_no_pgp_key">Conversations is unable to encrypt your messages because your contact is not announcing his or hers public key.\n\n<small>Please ask your contact to setup openPGP.</small></string>
+    <string name="encrypted_message_received"><i>Encrypted message received. Touch to view and decrypt.</i></string>
+    <string name="encrypted_image_received"><i>Encrypted image received. Touch to view and decrypt.</i></string>
+    <string name="image_file"><i>Image received. Touch to view</i></string>
 </resources>

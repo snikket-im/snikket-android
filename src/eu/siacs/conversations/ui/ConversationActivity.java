@@ -55,6 +55,7 @@ import android.widget.PopupMenu;
 import android.widget.PopupMenu.OnMenuItemClickListener;
 import android.widget.TextView;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 public class ConversationActivity extends XmppActivity {
 
@@ -112,6 +113,7 @@ public class ConversationActivity extends XmppActivity {
 	
 	protected ConversationActivity activity = this;
 	private DisplayMetrics metrics;
+	private Toast prepareImageToast;
 
 	public List<Conversation> getConversationList() {
 		return this.conversationList;
@@ -178,7 +180,11 @@ public class ConversationActivity extends XmppActivity {
 				Message latestMessage = conv.getLatestMessage();
 				
 				if (latestMessage.getType() == Message.TYPE_TEXT) {
-					convLastMsg.setText(conv.getLatestMessage().getBody());
+					if ((latestMessage.getEncryption() != Message.ENCRYPTION_PGP)&&(latestMessage.getEncryption() != Message.ENCRYPTION_DECRYPTION_FAILED)) {
+						convLastMsg.setText(conv.getLatestMessage().getBody());
+					} else {
+						convLastMsg.setText(getText(R.string.encrypted_message_received));
+					}
 					convLastMsg.setVisibility(View.VISIBLE);
 					imagePreview.setVisibility(View.GONE);
 				} else if (latestMessage.getType() == Message.TYPE_IMAGE) {
@@ -639,11 +645,14 @@ public class ConversationActivity extends XmppActivity {
 					selectedFragment.hidePgpPassphraseBox();
 				}
 			} else if (requestCode == REQUEST_ATTACH_FILE_DIALOG) {
+				prepareImageToast = Toast.makeText(getApplicationContext(), getText(R.string.preparing_image), Toast.LENGTH_LONG);
 				final Conversation conversation = getSelectedConversation();
 				String presence = conversation.getNextPresence();
 				if (conversation.getNextEncryption() == Message.ENCRYPTION_NONE) {
+					prepareImageToast.show();
 					xmppConnectionService.attachImageToConversation(conversation, presence, data.getData());
 				} else if (conversation.getNextEncryption() == Message.ENCRYPTION_PGP) {
+					prepareImageToast.show();
 					attachPgpFile(conversation,data.getData());
 				} else {
 					Log.d(LOGTAG,"unknown next message encryption: "+conversation.getNextEncryption());
