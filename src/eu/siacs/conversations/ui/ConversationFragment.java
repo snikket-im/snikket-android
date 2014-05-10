@@ -198,8 +198,12 @@ public class ConversationFragment extends Fragment {
 				boolean error = false;
 				if (message.getType() == Message.TYPE_IMAGE) {
 					String[] fileParams = message.getBody().split(",");
-					long size = Long.parseLong(fileParams[0]);
-					filesize = size / 1024 + " KB";
+					try {
+						long size = Long.parseLong(fileParams[0]);
+						filesize = size / 1024 + " KB";
+					} catch (NumberFormatException e) {
+						filesize = "0 KB";
+					}
 				}
 				switch (message.getStatus()) {
 				case Message.STATUS_UNSEND:
@@ -585,6 +589,9 @@ public class ConversationFragment extends Fragment {
 	}
 
 	public void updateMessages() {
+		if (getView()==null) {
+			return;
+		}
 		ConversationActivity activity = (ConversationActivity) getActivity();
 		if (this.conversation != null) {
 			for (Message message : this.conversation.getMessages()) {
