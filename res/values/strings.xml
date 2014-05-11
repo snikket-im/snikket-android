@@ -92,4 +92,27 @@
     <string name="otr_file_transfer">OTR encryption not available</string>
     <string name="otr_file_transfer_msg">Unfortunaly OTR encryption is not available for file transfer. You can choose either openPGP or no encryption.</string>
     <string name="use_pgp_encryption">Use openPGP encryption</string>
+    <string name="pref_xmpp_resource">XMPP resource</string>
+    <string name="pref_xmpp_resource_summary">The name this client identifies itself with</string>
+    <string name="pref_accept_files">Accept files</string>
+    <string name="pref_accept_files_summary">Automatically accept files smaller than&#8230;</string>
+    <string name="pref_notification_settings">Notification Settings</string>
+    <string name="pref_notifications">Notifications</string>
+    <string name="pref_notifications_summary">Notify when a new message arrives</string>
+    <string name="pref_vibrate">Vibrate</string>
+    <string name="pref_vibrate_summary">Also vibrate when a new message arrives</string>
+    <string name="pref_sound">Sound</string>
+    <string name="pref_sound_summary">Play ringtone with notification</string>
+    <string name="pref_conference_notifications">Conference notifications</string>
+    <string name="pref_conference_notifications_summary">Always notify when a new conference message arrives instead of only when highlighted</string>
+    <string name="pref_notification_grace_period">Notification grace period</string>
+    <string name="pref_notification_grace_period_summary">Disable notifications for a short time after a carbon copy was received</string>
+    <string name="pref_ui_options">UI Options</string>
+    <string name="pref_use_phone_self_picture">Use Phones self contact picture</string>
+    <string name="pref_use_phone_sefl_picture_summary">You may no longer be able to distinguish which account you are using in a conversation</string>
+    <string name="pref_conference_name">Conference name</string>
+    <string name="pref_conference_name_summary">Use room’s subject to identify Conferences</string>
+    <string name="pref_advanced_options">Advanced Options</string>
+    <string name="pref_never_send_crash">Never send crash reports</string>
+    <string name="pref_never_send_crash_summary">By sending in stack traces you are helping the ongoing development of Conversations</string>
 </resources>

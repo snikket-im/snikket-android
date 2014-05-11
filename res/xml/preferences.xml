@@ -10,69 +10,69 @@
             />
         <ListPreference 
             android:key="resource"
-            android:title="XMPP Resource"
-            android:summary="The name this client identifies itself"
+            android:title="@string/pref_xmpp_resource"
+            android:summary="@string/pref_xmpp_resource_summary"
             android:entries="@array/resources"
             android:entryValues="@array/resources"
             android:defaultValue="Mobile"/>
         <ListPreference 
             android:key="auto_accept_file_size"
-            android:title="Accept files"
-            android:summary="Automatically accept files smaller than"
+            android:title="@string/pref_accept_files"
+            android:summary="@string/pref_accept_files_summary"
             android:entries="@array/filesizes"
             android:entryValues="@array/filesizes_values"
             android:defaultValue="524288"/>
     </PreferenceCategory>
     <PreferenceCategory 
-        android:title="Notification Settings">
+        android:title="@string/pref_notification_settings">
         <CheckBoxPreference 
             android:key="show_notification"
-            android:title="Notification"
-            android:summary="Notify when a new message arrives"
+            android:title="@string/pref_notifications"
+            android:summary="@string/pref_notifications_summary"
             android:defaultValue="true"
             />
         <CheckBoxPreference
             android:key="vibrate_on_notification"
             android:dependency="show_notification"
-            android:title="Vibrate"
-            android:summary="Also vibrate when a new message arrives"
+            android:title="@string/pref_vibrate"
+            android:summary="@string/pref_vibrate_summary"
             android:defaultValue="true"/>
         <RingtonePreference 
             android:key="notification_ringtone"
-            android:title="Sound"
+            android:title="@string/pref_sound"
             android:ringtoneType="notification"
             android:dependency="show_notification"
-            android:summary="Play ringtone with notification"
+            android:summary="@string/pref_sound_summary"
             android:defaultValue="content://settings/system/notification_sound"/>
         <CheckBoxPreference 
             android:key="notify_in_conversation_when_highlighted"
-            android:title="Conference notification"
-            android:summary="Always notify when a new conference message arrives instead of only when highlighted"/>
+            android:title="@string/pref_conference_notifications"
+            android:summary="@string/pref_conference_notifications_summary"/>
         <CheckBoxPreference
             android:key="notification_grace_period_after_carbon_received"
-            android:title="Notification grace period"
-            android:summary="Disable notifications for a short time after a carbon copy was received"
+            android:title="@string/pref_notification_grace_period"
+            android:summary="@string/pref_notification_grace_period_summary"
             android:defaultValue="true"/>
     </PreferenceCategory>
     <PreferenceCategory 
-        android:title="UI Options">
+        android:title="@string/pref_ui_options">
         <CheckBoxPreference 
             android:key="show_phone_selfcontact_picture"
-            android:title="Use Phones self contact picture"
-            android:summary="You may no longer be able to distinguish which account you are using in a conversation"
+            android:title="@string/pref_use_phone_self_picture"
+            android:summary="@string/pref_use_phone_sefl_picture_summary"
             android:defaultValue="true"/>
         <CheckBoxPreference 
             android:key="use_subject_in_muc"
-            android:title="Conference Name"
-            android:summary="Use room’s subject to identify Conferences"
+            android:title="@string/pref_conference_name"
+            android:summary="@string/pref_conference_name_summary"
             android:defaultValue="true"/>
     </PreferenceCategory>
     <PreferenceCategory
         android:title="Advanced Options">
         <CheckBoxPreference 
             android:key="never_send"
-            android:title="Never send crash reports"
-            android:summary="By sending in stack traces you are helping the ongoing development of Conversations"
+            android:title="@string/pref_never_send_crash"
+            android:summary="@string/pref_never_send_crash_summary"
             android:defaultValue="false"/>
     </PreferenceCategory>
 </PreferenceScreen>
