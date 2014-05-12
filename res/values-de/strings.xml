@@ -69,7 +69,7 @@
     <string name="error_loading_image">Fehler beim laden des Bildes. (Datei wurde nicht gefunden)</string>
     <string name="image_offered_for_download"><i>Bild Datei zum Download angeboten</i></string>
     <string name="not_connected">Nicht verbunden</string>
-    <string name="you_are_offline">Du musst online sein um % zu verschicken. Dein Account der mit dieser Unterhaltung verbunden ist aber gerade offline.</string>
+    <string name="you_are_offline">Du musst online sein um %s zu verschicken. Dein Account der mit dieser Unterhaltung verbunden ist aber gerade offline.</string>
     <string name="you_are_offline_blank">Du kannst diese Aktion nicht ausführen so lange du offline bist.</string>
     <string name="files">Dateien</string>
     <string name="otr_messages">OTR-verschlüsselte Nachrichten</string>
@@ -80,7 +80,7 @@
     <string name="send_unencrypted">Unverschlüsselt verschicken</string>
     <string name="decryption_failed">Entschlüsselung fehlgeschlagen. Vielleicht hast du nicht den richtigen Private Key.</string>
     <string name="openkeychain_required">OpenKeychain</string>
-    <string name="openkeychain_required_long">Conversations benutzt eine Third-party-app names <b>OpenKeychain</b> um Nachrichten zu ver- und entschlüsseln und um deine Schlüssel zu verwalten.\n\nOpenKeychain ist GPLv3 lizensiert und bei F-Droid oder Google Play zu bekommen.\n\n<small>(Bitte starte Conversations danach neu)</small></string>
+    <string name="openkeychain_required_long">Conversations benutzt eine Third-party-app names <b>OpenKeychain</b> um Nachrichten zu ver- und entschlüsseln und um deine Schlüssel zu verwalten.\n\nOpenKeychain ist GPLv3 lizenziert und bei F-Droid oder Google Play zu bekommen.\n\n<small>(Bitte starte Conversations danach neu)</small></string>
     <string name="restart">Neustarten</string>
     <string name="install">Installieren</string>
 </resources>
