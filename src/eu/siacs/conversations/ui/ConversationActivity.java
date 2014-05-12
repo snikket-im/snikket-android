@@ -9,7 +9,6 @@ import java.util.List;
 import org.openintents.openpgp.OpenPgpError;
 
 import eu.siacs.conversations.R;
-import eu.siacs.conversations.crypto.OnPgpEngineResult;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
@@ -354,7 +353,7 @@ public class ConversationActivity extends XmppActivity {
 		if (conversation.getNextEncryption() == Message.ENCRYPTION_PGP) {
 			if (hasPgp()) {
 				if (conversation.getContact().getPgpKeyId()!=0) {
-					xmppConnectionService.getPgpEngine().hasKey(conversation.getContact(), new OnPgpEngineResult() {
+					xmppConnectionService.getPgpEngine().hasKey(conversation.getContact(), new UiCallback() {
 						
 						@Override
 						public void userInputRequried(PendingIntent pi) {
@@ -367,7 +366,7 @@ public class ConversationActivity extends XmppActivity {
 						}
 						
 						@Override
-						public void error(OpenPgpError openPgpError) {
+						public void error(int error) {
 							// TODO Auto-generated method stub
 							
 						}
@@ -671,10 +670,26 @@ public class ConversationActivity extends XmppActivity {
 			} else if (requestCode == REQUEST_ATTACH_FILE_DIALOG) {
 				prepareImageToast = Toast.makeText(getApplicationContext(), getText(R.string.preparing_image), Toast.LENGTH_LONG);
 				final Conversation conversation = getSelectedConversation();
-				String presence = conversation.getNextPresence();
 				if (conversation.getNextEncryption() == Message.ENCRYPTION_NONE) {
 					prepareImageToast.show();
-					xmppConnectionService.attachImageToConversation(conversation, presence, data.getData());
+					this.pendingMessage = xmppConnectionService.attachImageToConversation(conversation, data.getData(),new UiCallback() {
+						
+						@Override
+						public void userInputRequried(PendingIntent pi) {
+							
+						}
+						
+						@Override
+						public void success() {
+							sendPendingImageMessage();
+						}
+						
+						@Override
+						public void error(int error) {
+							pendingMessage = null;
+							displayErrorDialog(error);
+						}
+					});
 				} else if (conversation.getNextEncryption() == Message.ENCRYPTION_PGP) {
 					prepareImageToast.show();
 					attachPgpFile(conversation,data.getData());
@@ -696,8 +711,7 @@ public class ConversationActivity extends XmppActivity {
 	}
 	
 	private void attachPgpFile(Conversation conversation, Uri uri) {
-			String presence = conversation.getNextPresence();
-			pendingMessage = xmppConnectionService.attachEncryptedImageToConversation(conversation, presence, uri, new OnPgpEngineResult() {
+			pendingMessage = xmppConnectionService.attachImageToConversation(conversation, uri, new UiCallback() {
 				
 				@Override
 				public void userInputRequried(PendingIntent pi) {
@@ -706,20 +720,25 @@ public class ConversationActivity extends XmppActivity {
 				
 				@Override
 				public void success() {
-					pendingMessage.getConversation().getMessages().add(pendingMessage);
-					xmppConnectionService.databaseBackend.createMessage(pendingMessage);
-					xmppConnectionService.sendMessage(pendingMessage, null);
-					xmppConnectionService.updateUi(pendingMessage.getConversation(), false);
-					pendingMessage = null;
+					sendPendingImageMessage();
 				}
 				
 				@Override
-				public void error(OpenPgpError openPgpError) {
-					Log.d(LOGTAG,"pgp error"+openPgpError.getMessage());
+				public void error(int error) {
+					pendingMessage = null;
+					displayErrorDialog(error);
 				}
 			});
 	}
 
+	private void sendPendingImageMessage() {
+		pendingMessage.getConversation().getMessages().add(pendingMessage);
+		xmppConnectionService.databaseBackend.createMessage(pendingMessage);
+		xmppConnectionService.sendMessage(pendingMessage, null);
+		xmppConnectionService.updateUi(pendingMessage.getConversation(), false);
+		pendingMessage = null;
+	}
+	
 	public void updateConversationList() {
 		conversationList.clear();
 		conversationList.addAll(xmppConnectionService.getConversations());
@@ -925,7 +944,7 @@ public class ConversationActivity extends XmppActivity {
 	}
 
 	public void encryptTextMessage() {
-		xmppConnectionService.getPgpEngine().encrypt(this.pendingMessage, new OnPgpEngineResult() {
+		xmppConnectionService.getPgpEngine().encrypt(this.pendingMessage, new UiCallback() {
 
 					@Override
 					public void userInputRequried(
@@ -947,10 +966,7 @@ public class ConversationActivity extends XmppActivity {
 					}
 
 					@Override
-					public void error(
-							OpenPgpError openPgpError) {
-						// TODO Auto-generated method
-						// stub
+					public void error(int error) {
 
 					}
 				});

@@ -8,9 +8,7 @@ import java.util.Set;
 import org.openintents.openpgp.OpenPgpError;
 
 import net.java.otr4j.session.SessionStatus;
-
 import eu.siacs.conversations.R;
-import eu.siacs.conversations.crypto.OnPgpEngineResult;
 import eu.siacs.conversations.crypto.PgpEngine;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
@@ -560,7 +558,7 @@ public class ConversationFragment extends Fragment {
 	private void decryptMessage(final Message message) {
 		PgpEngine engine = activity.xmppConnectionService.getPgpEngine();
 		if (engine != null) {
-			engine.decrypt(message, new OnPgpEngineResult() {
+			engine.decrypt(message, new UiCallback() {
 
 				@Override
 				public void userInputRequried(PendingIntent pi) {
@@ -576,9 +574,7 @@ public class ConversationFragment extends Fragment {
 				}
 
 				@Override
-				public void error(OpenPgpError openPgpError) {
-					Log.d("xmppService",
-							"decryption error" + openPgpError.getMessage());
+				public void error(int error) {
 					message.setEncryption(Message.ENCRYPTION_DECRYPTION_FAILED);
 					// updateMessages();
 				}
@@ -680,7 +676,7 @@ public class ConversationFragment extends Fragment {
 		if (activity.hasPgp()) {
 			if (contact.getPgpKeyId() != 0) {
 				xmppService.getPgpEngine().hasKey(contact,
-						new OnPgpEngineResult() {
+						new UiCallback() {
 
 							@Override
 							public void userInputRequried(PendingIntent pi) {
@@ -695,9 +691,8 @@ public class ConversationFragment extends Fragment {
 							}
 
 							@Override
-							public void error(OpenPgpError openPgpError) {
-								Log.d("xmppService", "openpgp error"
-										+ openPgpError.getMessage());
+							public void error(int error) {
+								
 							}
 						});
 

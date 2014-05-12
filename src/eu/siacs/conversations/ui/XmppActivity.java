@@ -1,9 +1,8 @@
 package eu.siacs.conversations.ui;
 
-import org.openintents.openpgp.OpenPgpError;
+import java.nio.channels.AlreadyConnectedException;
 
 import eu.siacs.conversations.R;
-import eu.siacs.conversations.crypto.OnPgpEngineResult;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
@@ -164,7 +163,7 @@ public abstract class XmppActivity extends Activity {
 	}
 	
 	protected void announcePgp(final Account account, final Conversation conversation) {
-		xmppConnectionService.getPgpEngine().generateSignature(account, "online", new OnPgpEngineResult() {
+		xmppConnectionService.getPgpEngine().generateSignature(account, "online", new UiCallback() {
 			
 			@Override
 			public void userInputRequried(PendingIntent pi) {
@@ -185,10 +184,25 @@ public abstract class XmppActivity extends Activity {
 			}
 			
 			@Override
-			public void error(OpenPgpError openPgpError) {
-				// TODO Auto-generated method stub
-				
+			public void error(int error) {
+				displayErrorDialog(error);
 			}
 		});
+	}
+	
+	protected void displayErrorDialog(final int errorCode) {
+		runOnUiThread(new Runnable() {
+			
+			@Override
+			public void run() {
+				AlertDialog.Builder builder = new AlertDialog.Builder(XmppActivity.this);
+				builder.setIconAttribute(android.R.attr.alertDialogIcon);
+				builder.setTitle(getString(R.string.error));
+				builder.setMessage(errorCode);
+				builder.setNeutralButton(R.string.accept, null);
+				builder.create().show();
+			}
+		});
+		
 	}
 }

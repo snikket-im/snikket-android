@@ -102,7 +102,7 @@ public class FileBackend {
 			boolean success = scalledBitmap.compress(
 					Bitmap.CompressFormat.WEBP, 75, os);
 			if (!success) {
-				// Log.d("xmppService", "couldnt compress");
+				return null;
 			}
 			os.flush();
 			os.close();
@@ -112,14 +112,12 @@ public class FileBackend {
 			message.setBody(""+size+","+width+","+height);
 			return file;
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			return null;
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			return null;
+		} catch (SecurityException e) {
+			return null;
 		}
-
-		return null;
 	}
 
 	public Bitmap getImageFromMessage(Message message) {

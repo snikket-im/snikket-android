@@ -17,8 +17,7 @@ import org.openintents.openpgp.util.OpenPgpServiceConnection;
 import net.java.otr4j.OtrException;
 import net.java.otr4j.session.Session;
 import net.java.otr4j.session.SessionStatus;
-
-import eu.siacs.conversations.crypto.OnPgpEngineResult;
+import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.PgpEngine;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
@@ -33,6 +32,7 @@ import eu.siacs.conversations.persistance.OnPhoneContactsMerged;
 import eu.siacs.conversations.ui.OnAccountListChangedListener;
 import eu.siacs.conversations.ui.OnConversationListChangedListener;
 import eu.siacs.conversations.ui.OnRosterFetchedListener;
+import eu.siacs.conversations.ui.UiCallback;
 import eu.siacs.conversations.utils.ExceptionHelper;
 import eu.siacs.conversations.utils.MessageParser;
 import eu.siacs.conversations.utils.OnPhoneContactsLoadedListener;
@@ -446,45 +446,35 @@ public class XmppConnectionService extends Service {
 		return this.fileBackend;
 	}
 
-	public Message attachImageToConversation(final Conversation conversation,
-			final String presence, final Uri uri) {
-		final Message message = new Message(conversation, "",Message.ENCRYPTION_NONE);
-		message.setPresence(presence);
+	public Message attachImageToConversation(final Conversation conversation, final Uri uri,  final UiCallback callback) {
+		final Message message;
+		if (conversation.getNextEncryption() == Message.ENCRYPTION_PGP) {
+			message = new Message(conversation, "",Message.ENCRYPTION_DECRYPTED);
+		} else {
+			message = new Message(conversation, "", Message.ENCRYPTION_NONE);
+		}
+		message.setPresence(conversation.getNextPresence());
 		message.setType(Message.TYPE_IMAGE);
 		message.setStatus(Message.STATUS_OFFERED);
 		new Thread(new Runnable() {
 
 			@Override
 			public void run() {
-				getFileBackend().copyImageToPrivateStorage(message, uri);
-				databaseBackend.createMessage(message);
-				conversation.getMessages().add(message);
-				if (convChangedListener != null) {
-					convChangedListener.onConversationListChanged();
+				JingleFile file = getFileBackend().copyImageToPrivateStorage(message, uri);
+				if (file==null) {
+					callback.error(R.string.error_copying_image_file);
+				} else {
+					if (conversation.getNextEncryption() == Message.ENCRYPTION_PGP) {
+						getPgpEngine().encrypt(message, callback);
+					} else {
+						callback.success();
+					}
 				}
-				sendMessage(message, null);
 			}
 		}).start();
 		return message;
 	}
 	
-	public Message attachEncryptedImageToConversation(final Conversation conversation, final String presence, final Uri uri, final OnPgpEngineResult callback) {
-		Log.d(LOGTAG,"attach encrypted image");
-		final Message message = new Message(conversation, "",Message.ENCRYPTION_DECRYPTED);
-		message.setPresence(presence);
-		message.setType(Message.TYPE_IMAGE);
-		message.setStatus(Message.STATUS_OFFERED);
-		new Thread(new Runnable() {
-
-			@Override
-			public void run() {
-				getFileBackend().copyImageToPrivateStorage(message, uri);
-				getPgpEngine().encrypt(message, callback);
-			}
-		}).start();
-		return message;
-	}
-
 	protected Conversation findMuc(String name, Account account) {
 		for (Conversation conversation : this.conversations) {
 			if (conversation.getContactJid().split("/")[0].equals(name)

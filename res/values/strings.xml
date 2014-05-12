@@ -115,4 +115,9 @@
     <string name="pref_advanced_options">Advanced Options</string>
     <string name="pref_never_send_crash">Never send crash reports</string>
     <string name="pref_never_send_crash_summary">By sending in stack traces you are helping the ongoing development of Conversations</string>
+    <string name="openpgp_error">OpenKeychain reporeted an error</string>
+    <string name="error_decrypting_file">I/O Error decrypting file</string>
+    <string name="error_copying_image_file">Error copying image file.</string>
+    <string name="accept">Accept</string>
+    <string name="error">An error has occurred</string>
 </resources>
