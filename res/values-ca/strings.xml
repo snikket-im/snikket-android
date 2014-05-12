@@ -105,7 +105,7 @@
     <string name="pref_sound_summary">Reprodueix el to de trucada amb la notificació</string>
     <string name="pref_conference_notifications">Notificacions de conferència</string>
     <string name="pref_conference_notifications_summary">Sempre notifica quan arriba un nou missatge de conferència en comptes de només quan està destacat</string>
-    <string name="pref_notification_grace_period">Notificació del període d\'despera</string>
+    <string name="pref_notification_grace_period">Notificació del període d\'espera</string>
     <string name="pref_notification_grace_period_summary">Desactiva les notificacions durant un breu termini després de rebre una còpia de missatges carbon</string>
     <string name="pref_ui_options">Opcions de UI</string>
     <string name="pref_use_phone_self_picture">Utilitza l\'avatar de l\'usuari del mòbil</string>
