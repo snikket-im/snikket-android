@@ -4,10 +4,14 @@ import java.math.BigInteger;
 import java.util.Iterator;
 import java.util.Locale;
 
+import org.openintents.openpgp.util.OpenPgpUtils;
+
 import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentSender.SendIntentException;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract.CommonDataKinds;
@@ -26,6 +30,7 @@ import android.widget.QuickContactBadge;
 import android.widget.TextView;
 import android.widget.Toast;
 import eu.siacs.conversations.R;
+import eu.siacs.conversations.crypto.PgpEngine;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Presences;
 import eu.siacs.conversations.utils.UIHelper;
@@ -252,17 +257,29 @@ public class ContactDetailsActivity extends XmppActivity {
 			key.setText(otrFingerprint);
 			keys.addView(view);
 		}
-		Log.d("gultsch", "pgp key id " + contact.getPgpKeyId());
 		if (contact.getPgpKeyId() != 0) {
 			View view = (View) inflater.inflate(R.layout.contact_key, null);
 			TextView key = (TextView) view.findViewById(R.id.key);
 			TextView keyType = (TextView) view.findViewById(R.id.key_type);
 			keyType.setText("PGP Key ID");
-			BigInteger bi = new BigInteger("" + contact.getPgpKeyId());
-			StringBuilder builder = new StringBuilder(bi.toString(16)
-					.toUpperCase(Locale.US));
-			builder.insert(8, " ");
-			key.setText(builder.toString());
+			key.setText(OpenPgpUtils.convertKeyIdToHex(contact.getPgpKeyId()));
+			view.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					PgpEngine pgp = activity.xmppConnectionService.getPgpEngine();
+					if (pgp!=null) {
+						PendingIntent intent = pgp.getIntentForKey(contact);
+						if (intent!=null) {
+							try {
+								startIntentSenderForResult(intent.getIntentSender(), 0, null, 0, 0, 0);
+							} catch (SendIntentException e) {
+								
+							}
+						}
+					}
+				}
+			});
 			keys.addView(view);
 		}
 	}

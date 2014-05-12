@@ -8,9 +8,7 @@ import java.util.Set;
 import org.openintents.openpgp.OpenPgpError;
 
 import net.java.otr4j.session.SessionStatus;
-
 import eu.siacs.conversations.R;
-import eu.siacs.conversations.crypto.OnPgpEngineResult;
 import eu.siacs.conversations.crypto.PgpEngine;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
@@ -198,8 +196,12 @@ public class ConversationFragment extends Fragment {
 				boolean error = false;
 				if (message.getType() == Message.TYPE_IMAGE) {
 					String[] fileParams = message.getBody().split(",");
-					long size = Long.parseLong(fileParams[0]);
-					filesize = size / 1024 + " KB";
+					try {
+						long size = Long.parseLong(fileParams[0]);
+						filesize = size / 1024 + " KB";
+					} catch (NumberFormatException e) {
+						filesize = "0 KB";
+					}
 				}
 				switch (message.getStatus()) {
 				case Message.STATUS_UNSEND:
@@ -492,7 +494,9 @@ public class ConversationFragment extends Fragment {
 	@Override
 	public void onStop() {
 		super.onStop();
-		this.conversation.setNextMessage(chatMsg.getText().toString());
+		if (this.conversation!=null) {
+			this.conversation.setNextMessage(chatMsg.getText().toString());
+		}
 	}
 
 	public void onBackendConnected() {
@@ -554,7 +558,7 @@ public class ConversationFragment extends Fragment {
 	private void decryptMessage(final Message message) {
 		PgpEngine engine = activity.xmppConnectionService.getPgpEngine();
 		if (engine != null) {
-			engine.decrypt(message, new OnPgpEngineResult() {
+			engine.decrypt(message, new UiCallback() {
 
 				@Override
 				public void userInputRequried(PendingIntent pi) {
@@ -570,9 +574,7 @@ public class ConversationFragment extends Fragment {
 				}
 
 				@Override
-				public void error(OpenPgpError openPgpError) {
-					Log.d("xmppService",
-							"decryption error" + openPgpError.getMessage());
+				public void error(int error) {
 					message.setEncryption(Message.ENCRYPTION_DECRYPTION_FAILED);
 					// updateMessages();
 				}
@@ -583,6 +585,9 @@ public class ConversationFragment extends Fragment {
 	}
 
 	public void updateMessages() {
+		if (getView()==null) {
+			return;
+		}
 		ConversationActivity activity = (ConversationActivity) getActivity();
 		if (this.conversation != null) {
 			for (Message message : this.conversation.getMessages()) {
@@ -664,56 +669,30 @@ public class ConversationFragment extends Fragment {
 	}
 
 	protected void sendPgpMessage(final Message message) {
+		activity.pendingMessage = message;
 		final ConversationActivity activity = (ConversationActivity) getActivity();
 		final XmppConnectionService xmppService = activity.xmppConnectionService;
 		final Contact contact = message.getConversation().getContact();
-		final Account account = message.getConversation().getAccount();
 		if (activity.hasPgp()) {
 			if (contact.getPgpKeyId() != 0) {
 				xmppService.getPgpEngine().hasKey(contact,
-						new OnPgpEngineResult() {
+						new UiCallback() {
 
 							@Override
 							public void userInputRequried(PendingIntent pi) {
 								activity.runIntent(
 										pi,
-										ConversationActivity.REQUEST_SEND_MESSAGE);
+										ConversationActivity.REQUEST_ENCRYPT_MESSAGE);
 							}
 
 							@Override
 							public void success() {
-								xmppService.getPgpEngine().encrypt(account,
-										message, new OnPgpEngineResult() {
-
-											@Override
-											public void userInputRequried(
-													PendingIntent pi) {
-												activity.runIntent(
-														pi,
-														ConversationActivity.REQUEST_SEND_MESSAGE);
-											}
-
-											@Override
-											public void success() {
-												xmppService.sendMessage(
-														message, null);
-												chatMsg.setText("");
-											}
-
-											@Override
-											public void error(
-													OpenPgpError openPgpError) {
-												// TODO Auto-generated method
-												// stub
-
-											}
-										});
+								activity.encryptTextMessage();
 							}
 
 							@Override
-							public void error(OpenPgpError openPgpError) {
-								Log.d("xmppService", "openpgp error"
-										+ openPgpError.getMessage());
+							public void error(int error) {
+								
 							}
 						});
 
@@ -808,5 +787,9 @@ public class ConversationFragment extends Fragment {
 
 	public void setText(String text) {
 		this.pastedText = text;
+	}
+
+	public void clearInputField() {
+		this.chatMsg.setText("");
 	}
 }

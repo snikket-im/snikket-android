@@ -1,5 +1,12 @@
 ###Changelog
 
+####Version 0.2
+* Image file transfer
+* Better integration with OpenKeychain (PGP encryption)
+* Nicer conversation tiles for conferences
+* Ability to clear conversation history
+* A lot of bug fixes and code clean up
+
 ####Version 0.1.3
 * Switched to minidns library to resolve SRV records
 * Faster DNS in some cases

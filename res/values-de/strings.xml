@@ -28,7 +28,7 @@
     <string name="share_with">Teile mit&#8230;</string>
     <string name="ask_again"><u>Klick um noch einmal zu fragen</u></string>
     <string name="show_otr_key">OTR Fingerabdruck</string>
-    <string name="no_otr_fingerprint">Es wurde noch kein OTR Fingerabdruck erzeugt. Beginne einfach eine verschlüsselte Unterhaltung an.</string>
+    <string name="no_otr_fingerprint">Es wurde noch kein OTR-Fingerabdruck erzeugt. Beginne einfach eine verschlüsselte Unterhaltung um einen Fingerabdruck zu erzeugen.</string>
     <string name="start_conversation">Beginne Unterhaltung</string>
     <string name="invite_contacts">Kontakte einladen</string>
     <string name="invite_contacts_to_existing">Lade zu bestehender Konferenz ein</string>

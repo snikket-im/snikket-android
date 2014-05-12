@@ -6,7 +6,6 @@ import java.util.List;
 import org.openintents.openpgp.OpenPgpError;
 
 import eu.siacs.conversations.R;
-import eu.siacs.conversations.crypto.OnPgpEngineResult;
 import eu.siacs.conversations.crypto.PgpEngine;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.ui.EditAccount.EditAccountListener;
@@ -279,7 +278,7 @@ public class ManageAccountActivity extends XmppActivity {
 							} else if (item.getItemId()==R.id.mgmt_account_announce_pgp) {
 								if (activity.hasPgp()) {
 									mode.finish();
-									announcePgp(selectedAccountForActionMode);
+									announcePgp(selectedAccountForActionMode,null);
 								}
 							} else if (item.getItemId() == R.id.mgmt_otr_key) {
 								AlertDialog.Builder builder = new AlertDialog.Builder(activity);
@@ -288,7 +287,10 @@ public class ManageAccountActivity extends XmppActivity {
 								View view = (View) getLayoutInflater().inflate(R.layout.otr_fingerprint, null);
 								if (fingerprintTxt!=null) {
 									TextView fingerprint = (TextView) view.findViewById(R.id.otr_fingerprint);
+									TextView noFingerprintView = (TextView) view.findViewById(R.id.otr_no_fingerprint);
 									fingerprint.setText(fingerprintTxt);
+									fingerprint.setVisibility(View.VISIBLE);
+									noFingerprintView.setVisibility(View.GONE);
 								}
 								builder.setView(view);
 								builder.setPositiveButton("Done", null);
@@ -458,8 +460,8 @@ public class ManageAccountActivity extends XmppActivity {
 		 super.onActivityResult(requestCode, resultCode, data);
 		 if (resultCode == RESULT_OK) {
 			if (requestCode == REQUEST_ANNOUNCE_PGP) {
-				announcePgp(selectedAccountForActionMode);
-			 }
+				announcePgp(selectedAccountForActionMode,null);
+			}
 		 }
 	 }
 }

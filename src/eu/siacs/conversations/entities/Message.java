@@ -1,7 +1,9 @@
 package eu.siacs.conversations.entities;
 
+import eu.siacs.conversations.R;
 import eu.siacs.conversations.xmpp.jingle.JingleConnection;
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 
 public class Message extends AbstractEntity {
@@ -102,6 +104,20 @@ public class Message extends AbstractEntity {
 
 	public String getBody() {
 		return body;
+	}
+	
+	public String getReadableBody(Context context) {
+		if ((encryption == ENCRYPTION_PGP)&&(type == TYPE_TEXT)) {
+			return ""+context.getText(R.string.encrypted_message_received);
+		} else if ((encryption == ENCRYPTION_OTR)&&(type == TYPE_IMAGE)) {
+			return ""+context.getText(R.string.encrypted_image_received);
+		} else if (encryption == ENCRYPTION_DECRYPTION_FAILED) {
+			return ""+context.getText(R.string.decryption_failed);
+		} else if (type == TYPE_IMAGE) {
+			return ""+context.getText(R.string.image_file);
+		} else {
+			return body.trim();
+		}
 	}
 
 	public long getTimeSent() {
