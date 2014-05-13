@@ -130,4 +130,5 @@
     <string name="ask_for_presence_updates">Ask for presence updates</string>
     <string name="attach_choose_picture">Choose picture</string>
     <string name="attach_take_picture">Take picture</string>
+    <string name="preemptively_grant">Preemptively grant subscription request</string>
 </resources>
