@@ -53,7 +53,7 @@
     <string name="send_failed">Zustellung nicht erfolgreich</string>
     <string name="send_rejected">abgelehnt</string>
     <string name="receiving_image">Empfange Bild. Bitte warten&#8230;</string>
-    <string name="preparing_image">Bereite Bild für die Übertragung vor. Bitte warten&#8230;</string>
+    <string name="preparing_image">Bereite Bild für die Übertragung vor</string>
     <string name="action_clear_history">Verlauf löschen</string>
     <string name="clear_conversation_history">Unterhaltungsverlauf löschen</string>
     <string name="clear_histor_msg">Möchtest du alle Nachrichten in dieser Unterhaltung löschen?\n\n<b>Achtung:</b> Das beeinflust nicht Nachrichten die eventuell auf anderen Geräten gespeichert wurden.</string>
