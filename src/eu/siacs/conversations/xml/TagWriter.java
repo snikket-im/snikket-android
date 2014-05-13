@@ -23,8 +23,12 @@ public class TagWriter {
 				}
 				try {
 					AbstractStanza output = writeQueue.take();
-					outputStream.write(output.toString());
-					outputStream.flush();
+					if (outputStream==null) {
+						shouldStop = true;
+					} else {
+						outputStream.write(output.toString());
+						outputStream.flush();
+					}
 				} catch (IOException e) {
 					shouldStop = true;
 				} catch (InterruptedException e) {
