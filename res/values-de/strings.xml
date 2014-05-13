@@ -127,5 +127,5 @@
     <string name="keys">Schlüssel</string>
     <string name="send_presence_updates">Sende Online Status</string>
     <string name="receive_presence_updates">Empfange Online Status</string>
-    <string name="preemptively_grant">Preemptively grant subscription request</string>
+    <string name="preemptively_grant">Erlaube Statusanfrage vorab</string>
 </resources>
