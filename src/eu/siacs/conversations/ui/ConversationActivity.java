@@ -13,6 +13,7 @@ import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
+import eu.siacs.conversations.services.ImageProvider;
 import eu.siacs.conversations.utils.ExceptionHelper;
 import eu.siacs.conversations.utils.UIHelper;
 import android.net.Uri;
@@ -352,6 +353,7 @@ public class ConversationActivity extends XmppActivity {
 	
 	private void takePicture() {
 		Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+		takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, ImageProvider.getIncomingContentUri());
 	    if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
 	        startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
 	    }
@@ -732,6 +734,26 @@ public class ConversationActivity extends XmppActivity {
 				announcePgp(getSelectedConversation().getAccount(),getSelectedConversation());
 			} else if (requestCode == REQUEST_ENCRYPT_MESSAGE) {
 				encryptTextMessage();
+			} else if (requestCode == REQUEST_IMAGE_CAPTURE) {
+				this.pendingMessage = xmppConnectionService.attachImageToConversation(getSelectedConversation(), null, new UiCallback() {
+					
+					@Override
+					public void userInputRequried(PendingIntent pi) {
+						// TODO Auto-generated method stub
+						
+					}
+					
+					@Override
+					public void success() {
+						sendPendingImageMessage();
+					}
+					
+					@Override
+					public void error(int errorCode) {
+						// TODO Auto-generated method stub
+						
+					}
+				});
 			} else {
 				Log.d(LOGTAG,"unknown result code:"+requestCode);
 			}

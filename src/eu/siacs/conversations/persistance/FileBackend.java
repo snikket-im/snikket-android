@@ -1,6 +1,7 @@
 package eu.siacs.conversations.persistance;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -17,7 +18,6 @@ import android.util.LruCache;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
@@ -89,15 +89,25 @@ public class FileBackend {
 
 	public JingleFile copyImageToPrivateStorage(Message message, Uri image) {
 		try {
-			Log.d("xmppService","copying file: "+image.toString()+ " to internal storage");
-			InputStream is = context.getContentResolver()
+			InputStream is;
+			if (image!=null) {
+				Log.d("xmppService","copying file: "+image.toString()+ " to internal storage");
+				is = context.getContentResolver()
 					.openInputStream(image);
+			} else {
+				Log.d("xmppService","copying file from incoming to internal storage");
+				is = new FileInputStream(getIncomingFile());
+			}
 			JingleFile file = getJingleFile(message);
 			file.getParentFile().mkdirs();
 			file.createNewFile();
 			OutputStream os = new FileOutputStream(file);
 			Bitmap originalBitmap = BitmapFactory.decodeStream(is);
 			is.close();
+			if (image==null) {
+				Log.d("xmppService","delete incoming file");
+				getIncomingFile().delete();
+			}
 			Bitmap scalledBitmap = resize(originalBitmap, IMAGE_SIZE);
 			boolean success = scalledBitmap.compress(
 					Bitmap.CompressFormat.WEBP, 75, os);
@@ -159,5 +169,9 @@ public class FileBackend {
 				deleteFile(c);
 		}
 		f.delete();
+	}
+
+	public File getIncomingFile() {
+		return new File(context.getFilesDir().getAbsolutePath()+"/incoming");
 	}
 }
