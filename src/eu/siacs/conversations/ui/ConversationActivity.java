@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 
-import org.openintents.openpgp.OpenPgpError;
-
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
@@ -122,6 +120,10 @@ public class ConversationActivity extends XmppActivity {
 
 	public Conversation getSelectedConversation() {
 		return this.selectedConversation;
+	}
+	
+	public void setSelectedConversation(Conversation conversation) {
+		this.selectedConversation = conversation;
 	}
 
 	public ListView getConversationListView() {
@@ -238,8 +240,8 @@ public class ConversationActivity extends XmppActivity {
 			public void onItemClick(AdapterView<?> arg0, View clickedView,
 					int position, long arg3) {
 				paneShouldBeOpen = false;
-				if (selectedConversation != conversationList.get(position)) {
-					selectedConversation = conversationList.get(position);
+				if (getSelectedConversation() != conversationList.get(position)) {
+					setSelectedConversation(conversationList.get(position));
 					swapConversationFragment(); // .onBackendConnected(conversationList.get(position));
 				} else {
 					spl.closePane();
@@ -379,7 +381,7 @@ public class ConversationActivity extends XmppActivity {
 						
 						@Override
 						public void error(int error) {
-							// TODO Auto-generated method stub
+							displayErrorDialog(error);
 							
 						}
 					});
@@ -482,7 +484,7 @@ public class ConversationActivity extends XmppActivity {
 			Intent inviteIntent = new Intent(getApplicationContext(),
 					ContactsActivity.class);
 			inviteIntent.setAction("invite");
-			inviteIntent.putExtra("uuid", selectedConversation.getUuid());
+			inviteIntent.putExtra("uuid", getSelectedConversation().getUuid());
 			startActivity(inviteIntent);
 			break;
 		case R.id.action_security:
@@ -561,9 +563,9 @@ public class ConversationActivity extends XmppActivity {
 		spl.openPane();
 		xmppConnectionService.archiveConversation(conversation);
 		if (conversationList.size() > 0) {
-			selectedConversation = conversationList.get(0);
+			setSelectedConversation(conversationList.get(0));
 		} else {
-			selectedConversation = null;
+			setSelectedConversation(null);
 		}
 	}
 
@@ -649,7 +651,7 @@ public class ConversationActivity extends XmppActivity {
 
 				for (int i = 0; i < conversationList.size(); ++i) {
 					if (conversationList.get(i).getUuid().equals(convToView)) {
-						selectedConversation = conversationList.get(i);
+						setSelectedConversation(conversationList.get(i));
 					}
 				}
 				paneShouldBeOpen = false;
@@ -672,7 +674,7 @@ public class ConversationActivity extends XmppActivity {
 				if (selectedFragment != null) {
 					selectedFragment.onBackendConnected();
 				} else {
-					selectedConversation = conversationList.get(0);
+					setSelectedConversation(conversationList.get(0));
 					swapConversationFragment();
 				}
 				ExceptionHelper.checkForCrash(this, this.xmppConnectionService);
