@@ -120,4 +120,12 @@
     <string name="error_copying_image_file">Huts irudi fitxategia kopiatzerakoan.</string>
     <string name="accept">Onartu</string>
     <string name="error">Akats bat gertatu da</string>
+    <string name="pref_grant_presence_updates">Presentzia eguneraketak eman</string>
+	<string name="pref_grant_presence_updates_summary">Prebentiboki presentzia eguneraketak eman eta eskatu sortu dituzun kontaktuetarako</string>
+	<string name="subscriptions">Harpidetzak</string>
+	<string name="your_account">Zure kontua</string>
+	<string name="keys">Gakoak</string>
+	<string name="send_presence_updates">Presentzia eguneraketak bidali</string>
+	<string name="receive_presence_updates">Presentzia eguneraketak jaso</string>
+	<string name="ask_for_presence_updates">Presentzia eguneraketak eskatu</string>
 </resources>
