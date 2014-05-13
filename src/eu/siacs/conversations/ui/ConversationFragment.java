@@ -16,6 +16,7 @@ import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.entities.MucOptions.OnRenameListener;
+import eu.siacs.conversations.services.ImageProvider;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.jingle.JingleConnection;
@@ -329,15 +330,8 @@ public class ConversationFragment extends Fragment {
 
 					@Override
 					public void onClick(View v) {
-						Uri uri = Uri
-								.parse("content://eu.siacs.conversations.images/"
-										+ message.getConversationUuid()
-										+ "/"
-										+ message.getUuid());
-						Log.d("xmppService",
-								"staring intent with uri:" + uri.toString());
 						Intent intent = new Intent(Intent.ACTION_VIEW);
-						intent.setDataAndType(uri, "image/*");
+						intent.setDataAndType(ImageProvider.getContentUri(message), "image/*");
 						startActivity(intent);
 					}
 				});

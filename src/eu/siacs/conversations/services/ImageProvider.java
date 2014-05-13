@@ -93,5 +93,13 @@ public class ImageProvider extends ContentProvider {
 	public int update(Uri arg0, ContentValues arg1, String arg2, String[] arg3) {
 		return 0;
 	}
+	
+	public static Uri getContentUri(Message message) {
+		return Uri
+				.parse("content://eu.siacs.conversations.images/"
+						+ message.getConversationUuid()
+						+ "/"
+						+ message.getUuid());
+	}
 
 }
