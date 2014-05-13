@@ -354,11 +354,25 @@ public class ConversationActivity extends XmppActivity {
 	}
 	
 	private void takePicture() {
-		Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-		takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, ImageProvider.getIncomingContentUri());
-	    if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-	        startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-	    }
+		selectPresence(getSelectedConversation(), new OnPresenceSelected() {
+			
+			@Override
+			public void onPresenceSelected(boolean success, String presence) {
+				if (success) {
+					Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+					takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, ImageProvider.getIncomingContentUri());
+					if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+						startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+					}
+				}
+			}
+
+			@Override
+			public void onSendPlainTextInstead() {
+				// TODO Auto-generated method stub
+				
+			}
+		},"file");
 
 	}
 
