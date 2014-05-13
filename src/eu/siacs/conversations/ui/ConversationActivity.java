@@ -19,6 +19,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.provider.MediaStore;
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
 import android.app.PendingIntent;
@@ -65,6 +66,7 @@ public class ConversationActivity extends XmppActivity {
 	public static final int REQUEST_SEND_MESSAGE = 0x75441;
 	public static final int REQUEST_DECRYPT_PGP = 0x76783;
 	private static final int REQUEST_ATTACH_FILE_DIALOG = 0x48502;
+	private static final int REQUEST_IMAGE_CAPTURE = 0x33788;
 	private static final int REQUEST_SEND_PGP_IMAGE = 0x53883;
 	private static final int REQUEST_ATTACH_FILE = 0x73824;
 	public static final int REQUEST_ENCRYPT_MESSAGE = 0x378018;
@@ -347,6 +349,14 @@ public class ConversationActivity extends XmppActivity {
 			}
 		},"file");
 	}
+	
+	private void takePicture() {
+		Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+	    if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+	        startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+	    }
+
+	}
 
 	private void attachFile() {
 		final Conversation conversation = getSelectedConversation();
@@ -423,7 +433,25 @@ public class ConversationActivity extends XmppActivity {
 			spl.openPane();
 			break;
 		case R.id.action_attach_file:
-			attachFile();
+			View menuAttachFile = findViewById(R.id.action_attach_file);
+			PopupMenu attachFilePopup = new PopupMenu(this, menuAttachFile);
+			attachFilePopup.inflate(R.menu.attachment_choices);
+			attachFilePopup.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+				
+				@Override
+				public boolean onMenuItemClick(MenuItem item) {
+					switch (item.getItemId()) {
+					case R.id.attach_choose_picture:
+						attachFile();
+						break;
+					case R.id.attach_take_picture:
+						takePicture();
+						break;
+					}
+					return false;
+				}
+			});
+			attachFilePopup.show();
 			break;
 		case R.id.action_add:
 			startActivity(new Intent(this, ContactsActivity.class));

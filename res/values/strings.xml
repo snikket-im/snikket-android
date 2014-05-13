@@ -128,4 +128,6 @@
     <string name="send_presence_updates">Send presence updates</string>
     <string name="receive_presence_updates">Receive presence updates</string>
     <string name="ask_for_presence_updates">Ask for presence updates</string>
+    <string name="attach_choose_picture">Choose picture</string>
+    <string name="attach_take_picture">Take picture</string>
 </resources>
