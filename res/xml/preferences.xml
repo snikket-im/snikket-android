@@ -4,8 +4,8 @@
         android:title="General">
         <CheckBoxPreference 
             android:key="grant_new_contacts"
-            android:title="Grant presence updates"
-            android:summary="Preemptively grant and ask for presence subscription for contacts you created"
+            android:title="@string/pref_grant_presence_updates"
+            android:summary="@string/pref_grant_presence_updates_summary"
             android:defaultValue="true"
             />
         <ListPreference 

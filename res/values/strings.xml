@@ -120,4 +120,12 @@
     <string name="error_copying_image_file">Error copying image file.</string>
     <string name="accept">Accept</string>
     <string name="error">An error has occurred</string>
+    <string name="pref_grant_presence_updates">Grant presence updates</string>
+    <string name="pref_grant_presence_updates_summary">Preemptively grant and ask for presence subscription for contacts you created</string>
+    <string name="subscriptions">Subscriptions</string>
+    <string name="your_account">Your account</string>
+    <string name="keys">Keys</string>
+    <string name="send_presence_updates">Send presence updates</string>
+    <string name="receive_presence_updates">Receive presence updates</string>
+    <string name="ask_for_presence_updates">Ask for presence updates</string>
 </resources>

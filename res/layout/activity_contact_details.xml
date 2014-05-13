@@ -14,7 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="8dp"
-        android:text="Contact Details" />
+        android:text="@string/action_contact_details" />
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="88dp"
@@ -42,7 +42,6 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="8dp"
                 android:singleLine="true"
-                android:text="something@jabber.example.com"
                 android:textColor="#5b5b5b"
                 android:textSize="18sp" />
 
@@ -51,7 +50,6 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:paddingLeft="16dp"
-                android:text="online"
                 android:textSize="24sp"
                 android:textStyle="bold" />
         </LinearLayout>
@@ -64,13 +62,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="8dp"
-        android:text="Your account" />
+        android:text="@string/your_account" />
     <TextView
         android:id="@+id/details_account"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="8dp"
-        android:text="julia@jabber.example.com"
         android:textSize="18sp"
         android:textColor="#5b5b5b" />
    <TextView
@@ -78,13 +75,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="8dp"
-        android:text="Subscription" />
+        android:text="@string/subscriptions" />
 
     <CheckBox
         android:id="@+id/details_send_presence"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Send presence updates"
+        android:text="@string/send_presence_updates"
         android:textSize="18sp"
         android:textColor="#5b5b5b" />
 
@@ -92,7 +89,7 @@
         android:id="@+id/details_receive_presence"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Receive presence updates"
+        android:text="@string/receive_presence_updates"
         android:textSize="18sp"
         android:textColor="#5b5b5b" />
         
@@ -112,7 +109,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="8dp"
-        android:text="Keys" />
+        android:text="@string/keys" />
 
  <LinearLayout
      android:id="@+id/details_contact_keys"
