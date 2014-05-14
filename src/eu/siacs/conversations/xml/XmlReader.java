@@ -85,10 +85,8 @@ public class XmlReader {
 
 	public Element readElement(Tag currentTag) throws XmlPullParserException, IOException {
 		Element element = new Element(currentTag.getName());
-		//Log.d(LOGTAG,"trying to read element "+element.getName());
 		element.setAttributes(currentTag.getAttributes());
 		Tag nextTag = this.readTag();
-		//Log.d(LOGTAG,"next Tag is: "+nextTag.toString());
 		if(nextTag.isNo()) {
 			element.setContent(nextTag.getName());
 			nextTag = this.readTag();
@@ -96,15 +94,16 @@ public class XmlReader {
 		if (nextTag == null) {
 			throw new IOException("unterupted mid tag");
 		}
-		//Log.d(LOGTAG,"reading till the end of "+element.getName());
 		while(!nextTag.isEnd(element.getName())) {
 			if (!nextTag.isNo()) {
 				Element child = this.readElement(nextTag);
 				element.addChild(child);
 			}
 			nextTag = this.readTag();
+			if (nextTag == null) {
+				throw new IOException("unterupted mid tag");
+			}
 		}
-		//Log.d(LOGTAG,"return with element"+element);
 		return element;
 	}
 }
