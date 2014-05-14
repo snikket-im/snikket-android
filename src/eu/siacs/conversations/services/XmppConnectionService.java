@@ -476,16 +476,15 @@ public class XmppConnectionService extends Service {
 
 			@Override
 			public void run() {
-				JingleFile file = getFileBackend().copyImageToPrivateStorage(
-						message, uri);
-				if (file == null) {
-					callback.error(R.string.error_copying_image_file);
-				} else {
+				try {
+					getFileBackend().copyImageToPrivateStorage(message, uri);
 					if (conversation.getNextEncryption() == Message.ENCRYPTION_PGP) {
 						getPgpEngine().encrypt(message, callback);
 					} else {
 						callback.success();
 					}
+				} catch (FileBackend.ImageCopyException e) {
+					callback.error(e.getResId());
 				}
 			}
 		}).start();
