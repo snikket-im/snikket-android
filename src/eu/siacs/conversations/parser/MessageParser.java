@@ -1,4 +1,4 @@
-package eu.siacs.conversations.utils;
+package eu.siacs.conversations.parser;
 
 import java.util.List;
 
@@ -15,29 +15,34 @@ import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
 public class MessageParser {
 	
 	protected static final String LOGTAG = "xmppService";
+	private XmppConnectionService mXmppConnectionService;
 	
-	public static Message parsePlainTextChat(MessagePacket packet, Account account, XmppConnectionService service) {
+	public MessageParser(XmppConnectionService service) {
+		this.mXmppConnectionService = service;
+	}
+	
+	public Message parsePlainTextChat(MessagePacket packet, Account account) {
 		String[] fromParts = packet.getFrom().split("/");
-		Conversation conversation = service.findOrCreateConversation(account, fromParts[0],false);
+		Conversation conversation = mXmppConnectionService.findOrCreateConversation(account, fromParts[0],false);
 		String body = packet.getBody();
 		return new Message(conversation, packet.getFrom(), body, Message.ENCRYPTION_NONE, Message.STATUS_RECIEVED);
 	}
 	
-	public static Message parsePgpChat(String pgpBody, MessagePacket packet, Account account, XmppConnectionService service) {
+	public Message parsePgpChat(String pgpBody, MessagePacket packet, Account account) {
 		String[] fromParts = packet.getFrom().split("/");
-		Conversation conversation = service.findOrCreateConversation(account, fromParts[0],false);
+		Conversation conversation = mXmppConnectionService.findOrCreateConversation(account, fromParts[0],false);
 		return new Message(conversation, packet.getFrom(), pgpBody, Message.ENCRYPTION_PGP, Message.STATUS_RECIEVED);
 	}
 	
-	public static Message parseOtrChat(MessagePacket packet, Account account, XmppConnectionService service) {
+	public Message parseOtrChat(MessagePacket packet, Account account) {
 		boolean properlyAddressed = (packet.getTo().split("/").length == 2) || (account.countPresences() == 1);
 		String[] fromParts = packet.getFrom().split("/");
-		Conversation conversation = service.findOrCreateConversation(account, fromParts[0],false);
+		Conversation conversation = mXmppConnectionService.findOrCreateConversation(account, fromParts[0],false);
 		String body = packet.getBody();
 		if (!conversation.hasValidOtrSession()) {
 			if (properlyAddressed) {
 				Log.d("xmppService","starting new otr session with "+packet.getFrom()+" because no valid otr session has been found");
-				conversation.startOtrSession(service.getApplicationContext(), fromParts[1],false);
+				conversation.startOtrSession(mXmppConnectionService.getApplicationContext(), fromParts[1],false);
 			} else {
 				Log.d("xmppService",account.getJid()+": ignoring otr session with "+fromParts[0]);
 				return null;
@@ -48,7 +53,7 @@ public class MessageParser {
 				conversation.resetOtrSession();
 				if (properlyAddressed) {
 					Log.d("xmppService","replacing otr session with "+packet.getFrom());
-					conversation.startOtrSession(service.getApplicationContext(), fromParts[1],false);
+					conversation.startOtrSession(mXmppConnectionService.getApplicationContext(), fromParts[1],false);
 				} else {
 					return null;
 				}
@@ -69,15 +74,15 @@ public class MessageParser {
 					Message msg = messages.get(i);
 					if ((msg.getStatus() == Message.STATUS_UNSEND)
 							&& (msg.getEncryption() == Message.ENCRYPTION_OTR)) {
-						MessagePacket outPacket = service.prepareMessagePacket(
+						MessagePacket outPacket = mXmppConnectionService.prepareMessagePacket(
 								account, msg, otrSession);
 						msg.setStatus(Message.STATUS_SEND);
-						service.databaseBackend.updateMessage(msg);
+						mXmppConnectionService.databaseBackend.updateMessage(msg);
 						account.getXmppConnection()
 								.sendMessagePacket(outPacket);
 					}
 				}
-				service.updateUi(conversation, false);
+				mXmppConnectionService.updateUi(conversation, false);
 			} else if ((before != after) && (after == SessionStatus.FINISHED)) {
 				conversation.resetOtrSession();
 				Log.d(LOGTAG,"otr session stoped");
@@ -93,13 +98,13 @@ public class MessageParser {
 		}
 	}
 	
-	public static Message parseGroupchat(MessagePacket packet, Account account, XmppConnectionService service) {
+	public Message parseGroupchat(MessagePacket packet, Account account) {
 		int status;
 		String[] fromParts = packet.getFrom().split("/");
-		Conversation conversation = service.findOrCreateConversation(account, fromParts[0],true);
+		Conversation conversation = mXmppConnectionService.findOrCreateConversation(account, fromParts[0],true);
 		if (packet.hasChild("subject")) {
 			conversation.getMucOptions().setSubject(packet.findChild("subject").getContent());
-			service.updateUi(conversation, false);
+			mXmppConnectionService.updateUi(conversation, false);
 			return null;
 		}
 		if ((fromParts.length == 1)) {
@@ -114,8 +119,7 @@ public class MessageParser {
 		return new Message(conversation, counterPart, packet.getBody(), Message.ENCRYPTION_NONE, status);
 	}
 
-	public static Message parseCarbonMessage(MessagePacket packet,
-			Account account, XmppConnectionService service) {
+	public Message parseCarbonMessage(MessagePacket packet,Account account) {
 		int status;
 		String fullJid;
 		Element forwarded;
@@ -142,16 +146,16 @@ public class MessageParser {
 			fullJid = message.getAttribute("to");
 		}
 		String[] parts = fullJid.split("/");
-		Conversation conversation = service.findOrCreateConversation(account, parts[0],false);
+		Conversation conversation = mXmppConnectionService.findOrCreateConversation(account, parts[0],false);
 		return new Message(conversation,fullJid, message.findChild("body").getContent(), Message.ENCRYPTION_NONE,status);
 	}
 
-	public static void parseError(MessagePacket packet, Account account, XmppConnectionService service) {
+	public void parseError(MessagePacket packet, Account account) {
 		String[] fromParts = packet.getFrom().split("/");
-		service.markMessage(account, fromParts[0], packet.getId(), Message.STATUS_SEND_FAILED);
+		mXmppConnectionService.markMessage(account, fromParts[0], packet.getId(), Message.STATUS_SEND_FAILED);
 	}
 
-	public static String getPgpBody(MessagePacket packet) {
+	public String getPgpBody(MessagePacket packet) {
 		for(Element child : packet.getChildren()) {
 			if (child.getName().equals("x")&&child.getAttribute("xmlns").equals("jabber:x:encrypted")) {
 				return child.getContent();
