@@ -1,7 +1,5 @@
 package eu.siacs.conversations.ui;
 
-import java.nio.channels.AlreadyConnectedException;
-
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Conversation;

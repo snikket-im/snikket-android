@@ -384,7 +384,6 @@ public class ConversationActivity extends XmppActivity {
 						@Override
 						public void error(int error) {
 							displayErrorDialog(error);
-							
 						}
 					});
 				} else {
@@ -728,20 +727,35 @@ public class ConversationActivity extends XmppActivity {
 				
 			@Override
 			public void userInputRequried(PendingIntent pi) {
+				hidePrepareImageToast();
 				ConversationActivity.this.runIntent(pi, ConversationActivity.REQUEST_SEND_PGP_IMAGE);
 			}
 			
 			@Override
 			public void success() {
 				sendPendingImageMessage();
+				hidePrepareImageToast();
 			}
 			
 			@Override
 			public void error(int error) {
+				hidePrepareImageToast();
 				pendingMessage = null;
 				displayErrorDialog(error);
 			}
 		});
+	}
+	
+	private void hidePrepareImageToast() {
+		if (prepareImageToast!=null) {
+			runOnUiThread(new Runnable() {
+				
+				@Override
+				public void run() {
+					prepareImageToast.cancel();
+				}
+			});
+		}
 	}
 
 	private void sendPendingImageMessage() {
