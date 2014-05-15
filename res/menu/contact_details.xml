@@ -5,13 +5,13 @@
         android:orderInCategory="10"
         android:showAsAction="always"
         android:icon="@drawable/ic_action_edit"
-        android:title="Edit name" />
+        android:title="@string/action_edit_contact" />
     <item
         android:id="@+id/action_delete_contact"
         android:orderInCategory="10"
         android:showAsAction="always"
         android:icon="@drawable/ic_action_discard"
-        android:title="Delete from roster" />
+        android:title="@string/action_delete_contact" />
     <item
         android:id="@+id/action_accounts"
         android:orderInCategory="90"
