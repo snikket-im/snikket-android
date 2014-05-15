@@ -5,12 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
-import org.openintents.openpgp.OpenPgpError;
-
 import net.java.otr4j.session.SessionStatus;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.PgpEngine;
-import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
@@ -31,7 +28,6 @@ import android.content.SharedPreferences;
 import android.content.IntentSender.SendIntentException;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
-import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Editable;
@@ -267,7 +263,9 @@ public class ConversationFragment extends Fragment {
 			}
 
 			private void displayInfoMessage(ViewHolder viewHolder, int r) {
-				viewHolder.download_button.setVisibility(View.GONE);
+				if (viewHolder.download_button!=null) {
+					viewHolder.download_button.setVisibility(View.GONE);
+				}
 				viewHolder.image.setVisibility(View.GONE);
 				viewHolder.messageBody.setVisibility(View.VISIBLE);
 				viewHolder.messageBody.setText(getString(r));
