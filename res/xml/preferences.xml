@@ -68,7 +68,7 @@
             android:defaultValue="true"/>
     </PreferenceCategory>
     <PreferenceCategory
-        android:title="Advanced Options">
+        android:title="@string/pref_advanced_options">
         <CheckBoxPreference 
             android:key="never_send"
             android:title="@string/pref_never_send_crash"
