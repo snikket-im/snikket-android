@@ -341,7 +341,11 @@ public class Conversation extends AbstractEntity {
 	}
 	
 	public String getNextMessage() {
-		return this.nextMessage;
+		if (this.nextMessage==null) {
+			return "";
+		} else {
+			return this.nextMessage;
+		}
 	}
 	
 	public void setNextMessage(String message) {
