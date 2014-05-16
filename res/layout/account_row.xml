@@ -19,7 +19,6 @@
             android:id="@+id/account_jid"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="inputmice@jabber.ccc.de"
             android:textSize="20sp"
             android:singleLine="true"
 	        android:scrollHorizontally="false"/>
@@ -42,6 +41,7 @@
                 android:id="@+id/account_status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingLeft="4dp"
                 android:textColor="#669900"
                 android:text="@string/account_status_unknown"
                 android:textStyle="bold"

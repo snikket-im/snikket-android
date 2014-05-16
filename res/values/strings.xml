@@ -139,7 +139,7 @@
     <string name="error_file_not_found">File not found</string>
     <string name="error_io_exception">General I/O error. Maybe you ran out of storage space?</string>
     <string name="error_security_exception_during_image_copy">The app you used to select this image did not provide us with enough permissions to read the file.\n\n<small>Use a different file manager to choose an image</small></string>
-	<string name="account_status">Status :</string>
+	<string name="account_status">Status:</string>
 	<string name="account_status_unknown">Unknown</string>
 	<string name="account_status_disabled">Temporarily disabled</string>
 	<string name="account_status_online">Online</string>
