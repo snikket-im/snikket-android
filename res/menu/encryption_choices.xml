@@ -4,14 +4,14 @@
     
 <item
     android:id="@+id/encryption_choice_none"
-    android:title="Plain text"
+    android:title="@string/encryption_choice_none"
     />
 <item
     android:id="@+id/encryption_choice_otr"
-    android:title="OTR"
+    android:title="@string/encryption_choice_otr"
     />
 <item
     android:id="@+id/encryption_choice_pgp"
-    android:title="OpenPGP"/>
+    android:title="@string/encryption_choice_pgp"/>
 </group>
 </menu>

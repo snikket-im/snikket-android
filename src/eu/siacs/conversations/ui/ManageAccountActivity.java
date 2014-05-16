@@ -73,7 +73,7 @@ public class ManageAccountActivity extends XmppActivity {
 				@Override
 				public void run() {
 					AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-					builder.setTitle("Untrusted Certificate");
+					builder.setTitle(getString(R.string.account_status_error));
 					builder.setIconAttribute(android.R.attr.alertDialogIcon);
 					View view = (View) getLayoutInflater().inflate(R.layout.cert_warning, null);
 					TextView sha = (TextView) view.findViewById(R.id.sha);
@@ -91,8 +91,8 @@ public class ManageAccountActivity extends XmppActivity {
 					hint.setText(getString(R.string.untrusted_cert_hint,account.getServer()));
 					sha.setText(humanReadableSha.toString());
 					builder.setView(view);
-					builder.setNegativeButton("Don't connect", null);
-					builder.setPositiveButton("Trust certificate", new OnClickListener() {
+					builder.setNegativeButton(getString(R.string.certif_no_trust), null);
+					builder.setPositiveButton(getString(R.string.certif_trust), new OnClickListener() {
 						
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
@@ -130,55 +130,55 @@ public class ManageAccountActivity extends XmppActivity {
 						.findViewById(R.id.account_status);
 				switch (account.getStatus()) {
 				case Account.STATUS_DISABLED:
-					statusView.setText("temporarily disabled");
+					statusView.setText(getString(R.string.account_status_disabled));
 					statusView.setTextColor(0xFF1da9da);
 					break;
 				case Account.STATUS_ONLINE:
-					statusView.setText("online");
+					statusView.setText(getString(R.string.account_status_online));
 					statusView.setTextColor(0xFF83b600);
 					break;
 				case Account.STATUS_CONNECTING:
-					statusView.setText("connecting\u2026");
+					statusView.setText(getString(R.string.account_status_connecting));
 					statusView.setTextColor(0xFF1da9da);
 					break;
 				case Account.STATUS_OFFLINE:
-					statusView.setText("offline");
+					statusView.setText(getString(R.string.account_status_offline));
 					statusView.setTextColor(0xFFe92727);
 					break;
 				case Account.STATUS_UNAUTHORIZED:
-					statusView.setText("unauthorized");
+					statusView.setText(getString(R.string.account_status_unauthorized));
 					statusView.setTextColor(0xFFe92727);
 					break;
 				case Account.STATUS_SERVER_NOT_FOUND:
-					statusView.setText("server not found");
+					statusView.setText(getString(R.string.account_status_not_found));
 					statusView.setTextColor(0xFFe92727);
 					break;
 				case Account.STATUS_NO_INTERNET:
-					statusView.setText("no internet");
+					statusView.setText(getString(R.string.account_status_no_internet));
 					statusView.setTextColor(0xFFe92727);
 					break;
 				case Account.STATUS_SERVER_REQUIRES_TLS:
-					statusView.setText("server requires TLS");
+					statusView.setText(getString(R.string.account_status_requires_tls));
 					statusView.setTextColor(0xFFe92727);
 					break;
 				case Account.STATUS_TLS_ERROR:
-					statusView.setText("untrusted cerficate");
+					statusView.setText(getString(R.string.account_status_error));
 					statusView.setTextColor(0xFFe92727);
 					break;
 				case Account.STATUS_REGISTRATION_FAILED:
-					statusView.setText("registration failed");
+					statusView.setText(getString(R.string.account_status_regis_fail));
 					statusView.setTextColor(0xFFe92727);
 					break;
 				case Account.STATUS_REGISTRATION_CONFLICT:
-					statusView.setText("username already in use");
+					statusView.setText(getString(R.string.account_status_regis_conflict));
 					statusView.setTextColor(0xFFe92727);
 					break;
 				case  Account.STATUS_REGISTRATION_SUCCESSFULL:
-					statusView.setText("registration completed");
+					statusView.setText(getString(R.string.account_status_regis_success));
 					statusView.setTextColor(0xFF83b600);
 					break;
 				case Account.STATUS_REGISTRATION_NOT_SUPPORTED:
-					statusView.setText("server does not support registration");
+					statusView.setText(getString(R.string.account_status_regis_not_sup));
 					statusView.setTextColor(0xFFe92727);
 					break;
 				default:

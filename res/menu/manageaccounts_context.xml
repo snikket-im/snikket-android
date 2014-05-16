@@ -5,20 +5,20 @@
         android:id="@+id/mgmt_account_edit"
         android:icon="@drawable/ic_action_edit"
         android:showAsAction="always"
-        android:title="Edit Account"/>
+        android:title="@string/mgmt_account_edit"/>
     <item
         android:id="@+id/mgmt_account_delete"
         android:icon="@drawable/ic_action_delete"
         android:showAsAction="always"
-        android:title="Delete"/>
+        android:title="@string/mgmt_account_delete"/>
     <item
         android:id="@+id/mgmt_account_disable"
         android:showAsAction="never"
-        android:title="Temporarily disable"/>
+        android:title="@string/mgmt_account_disable"/>
     <item
         android:id="@+id/mgmt_account_enable"
         android:showAsAction="never"
-        android:title="Enable"
+        android:title="@string/mgmt_account_enable"
         android:visible="false"/>
     <item
         android:id="@+id/mgmt_account_announce_pgp"
