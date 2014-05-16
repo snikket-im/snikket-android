@@ -269,11 +269,15 @@ public class Conversation extends AbstractEntity {
 			return false;
 		} else {
 			String foreignPresence = this.otrSession.getSessionID().getUserID();
-			if (!getContact().getPresences().containsKey(foreignPresence)) {
-				this.resetOtrSession();
-				return false;
+			if (getContact()==null) {
+				return true;
+			} else {
+				if (!getContact().getPresences().containsKey(foreignPresence)) {
+					this.resetOtrSession();
+					return false;
+				}
+				return true;
 			}
-			return true;
 		}
 	}
 
