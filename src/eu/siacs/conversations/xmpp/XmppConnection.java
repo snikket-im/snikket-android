@@ -111,7 +111,7 @@ public class XmppConnection implements Runnable {
 
 	protected void changeStatus(int nextStatus) {
 		if (account.getStatus() != nextStatus) {
-			if ((nextStatus == Account.STATUS_OFFLINE)&&(account.getStatus() != Account.STATUS_CONNECTING)&&(account.getStatus() != Account.STATUS_ONLINE)) {
+			if ((nextStatus == Account.STATUS_OFFLINE)&&(account.getStatus() != Account.STATUS_CONNECTING)&&(account.getStatus() != Account.STATUS_ONLINE)&&(account.getStatus() != Account.STATUS_DISABLED)) {
 				return;
 			}
 			account.setStatus(nextStatus);
@@ -257,10 +257,10 @@ public class XmppConnection implements Runnable {
 				RequestPacket r = new RequestPacket(smVersion);
 				tagWriter.writeStanzaAsync(r);
 			} else if (nextTag.isStart("resumed")) {
+				Log.d(LOGTAG,account.getJid()+": session resumed");
 				tagReader.readElement(nextTag);
 				sendPing();
 				changeStatus(Account.STATUS_ONLINE);
-				Log.d(LOGTAG,account.getJid()+": session resumed");
 			} else if (nextTag.isStart("r")) {
 				tagReader.readElement(nextTag);
 				AckPacket ack = new AckPacket(this.stanzasReceived,smVersion);

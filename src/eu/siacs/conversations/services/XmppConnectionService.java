@@ -774,11 +774,7 @@ public class XmppConnectionService extends Service {
 					addToConversation = true;
 				} else if (message.getEncryption() == Message.ENCRYPTION_PGP) {
 					message.getConversation().endOtrIfNeeded();
-					packet = new MessagePacket();
-					packet.setType(MessagePacket.TYPE_CHAT);
-					packet.setFrom(message.getConversation().getAccount()
-							.getFullJid());
-					packet.setTo(message.getCounterpart());
+					packet = prepareMessagePacket(account, message, null);
 					packet.setBody("This is an XEP-0027 encryted message");
 					packet.addChild("x", "jabber:x:encrypted").setContent(
 							message.getEncryptedBody());
@@ -800,9 +796,18 @@ public class XmppConnectionService extends Service {
 				}
 			}
 		} else {
-			// account is offline
-			saveInDb = true;
-			addToConversation = true;
+			if (message.getEncryption() == Message.ENCRYPTION_PGP) {
+				String pgpBody = message.getEncryptedBody();
+				String decryptedBody = message.getBody();
+				message.setBody(pgpBody);
+				databaseBackend.createMessage(message);
+				message.setEncryption(Message.ENCRYPTION_DECRYPTED);
+				message.setBody(decryptedBody);
+				addToConversation = true;
+			} else {
+				saveInDb = true;
+				addToConversation = true;
+			}
 
 		}
 		if (saveInDb) {
@@ -822,22 +827,35 @@ public class XmppConnectionService extends Service {
 
 	private void sendUnsendMessages(Conversation conversation) {
 		for (int i = 0; i < conversation.getMessages().size(); ++i) {
-			if ((conversation.getMessages().get(i).getStatus() == Message.STATUS_UNSEND)
-					&& (conversation.getMessages().get(i).getEncryption() == Message.ENCRYPTION_NONE)) {
-				Message message = conversation.getMessages().get(i);
-				MessagePacket packet = prepareMessagePacket(
-						conversation.getAccount(), message, null);
-				conversation.getAccount().getXmppConnection()
-						.sendMessagePacket(packet);
-				message.setStatus(Message.STATUS_SEND);
-				if (conversation.getMode() == Conversation.MODE_SINGLE) {
-					databaseBackend.updateMessage(message);
-				} else {
-					databaseBackend.deleteMessage(message);
-					conversation.getMessages().remove(i);
-					i--;
-				}
+			if (conversation.getMessages().get(i).getStatus() == Message.STATUS_UNSEND) {
+				resendMessage(conversation.getMessages().get(i));
 			}
+		}
+	}
+	
+	private void resendMessage(Message message) {
+		Account account = message.getConversation().getAccount();
+		MessagePacket packet = null;
+		if (message.getEncryption() == Message.ENCRYPTION_NONE) {
+			packet = prepareMessagePacket(account, message,null);
+		} else if (message.getEncryption() == Message.ENCRYPTION_DECRYPTED) {
+			packet = prepareMessagePacket(account, message, null);
+			packet.setBody("This is an XEP-0027 encryted message");
+			if (message.getEncryptedBody()==null) {
+				markMessage(message, Message.STATUS_SEND_FAILED);
+				return;
+			}
+			packet.addChild("x", "jabber:x:encrypted").setContent(
+					message.getEncryptedBody());
+		} else if (message.getEncryption() == Message.ENCRYPTION_PGP) {
+			packet = prepareMessagePacket(account, message, null);
+			packet.setBody("This is an XEP-0027 encryted message");
+			packet.addChild("x", "jabber:x:encrypted").setContent(
+					message.getBody());
+		}
+		if (packet!=null) {
+			account.getXmppConnection().sendMessagePacket(packet);
+			markMessage(message, Message.STATUS_SEND);
 		}
 	}
 
