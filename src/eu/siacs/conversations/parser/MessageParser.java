@@ -112,7 +112,11 @@ public class MessageParser {
 		}
 		String counterPart = fromParts[1];
 		if (counterPart.equals(conversation.getMucOptions().getNick())) {
-			status = Message.STATUS_SEND;
+			if (mXmppConnectionService.markMessage(conversation, packet.getId(), Message.STATUS_SEND)) {
+				return null;
+			} else {
+				status = Message.STATUS_SEND;
+			}
 		} else {
 			status = Message.STATUS_RECIEVED;
 		}

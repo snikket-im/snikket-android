@@ -10,14 +10,12 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 
-import org.openintents.openpgp.OpenPgpError;
 import org.openintents.openpgp.util.OpenPgpApi;
 import org.openintents.openpgp.util.OpenPgpServiceConnection;
 
 import net.java.otr4j.OtrException;
 import net.java.otr4j.session.Session;
 import net.java.otr4j.session.SessionStatus;
-import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.PgpEngine;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
@@ -47,7 +45,6 @@ import eu.siacs.conversations.xmpp.OnStatusChanged;
 import eu.siacs.conversations.xmpp.OnTLSExceptionReceived;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.jingle.JingleConnectionManager;
-import eu.siacs.conversations.xmpp.jingle.JingleFile;
 import eu.siacs.conversations.xmpp.jingle.OnJinglePacketReceived;
 import eu.siacs.conversations.xmpp.jingle.stanzas.JinglePacket;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
@@ -788,11 +785,11 @@ public class XmppConnectionService extends Service {
 					// don't encrypt
 					if (message.getConversation().getMode() == Conversation.MODE_SINGLE) {
 						message.setStatus(Message.STATUS_SEND);
-						saveInDb = true;
-						addToConversation = true;
 					}
 					packet = prepareMessagePacket(account, message, null);
 					send = true;
+					saveInDb = true;
+					addToConversation = true;
 				}
 			}
 		} else {
@@ -1481,21 +1478,23 @@ public class XmppConnectionService extends Service {
 
 	public boolean markMessage(Account account, String recipient, String uuid,
 			int status) {
-		boolean marked = false;
 		for (Conversation conversation : getConversations()) {
 			if (conversation.getContactJid().equals(recipient)
 					&& conversation.getAccount().equals(account)) {
-				for (Message message : conversation.getMessages()) {
-					if (message.getUuid().equals(uuid)) {
-						markMessage(message, status);
-						marked = true;
-						break;
-					}
-				}
-				break;
+				return markMessage(conversation, uuid, status);
 			}
 		}
-		return marked;
+		return false;
+	}
+	
+	public boolean markMessage(Conversation conversation, String uuid, int status) {
+		for (Message message : conversation.getMessages()) {
+			if (message.getUuid().equals(uuid)) {
+				markMessage(message, status);
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public void markMessage(Message message, int status) {
