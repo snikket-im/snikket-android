@@ -583,7 +583,7 @@ public class ConversationFragment extends Fragment {
 		ConversationActivity activity = (ConversationActivity) getActivity();
 		if (this.conversation != null) {
 			for (Message message : this.conversation.getMessages()) {
-				if (message.getEncryption() == Message.ENCRYPTION_PGP) {
+				if ((message.getEncryption() == Message.ENCRYPTION_PGP)&&((message.getStatus() == Message.STATUS_RECIEVED)||(message.getStatus() == Message.STATUS_SEND))) {
 					decryptMessage(message);
 					break;
 				}
