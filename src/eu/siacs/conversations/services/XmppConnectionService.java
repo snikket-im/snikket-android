@@ -1156,8 +1156,11 @@ public class XmppConnectionService extends Service {
 		this.statusListener.onStatusChanged(account);
 		databaseBackend.updateAccount(account);
 		reconnectAccount(account, false);
-		if (accountChangedListener != null)
+		if (accountChangedListener != null) {
 			accountChangedListener.onAccountListChangedListener();
+		}
+		UIHelper.showErrorNotification(getApplicationContext(),
+				getAccounts());
 	}
 
 	public void deleteAccount(Account account) {
@@ -1166,8 +1169,11 @@ public class XmppConnectionService extends Service {
 		}
 		databaseBackend.deleteAccount(account);
 		this.accounts.remove(account);
-		if (accountChangedListener != null)
+		if (accountChangedListener != null) {
 			accountChangedListener.onAccountListChangedListener();
+		}
+		UIHelper.showErrorNotification(getApplicationContext(),
+				getAccounts());
 	}
 
 	public void setOnConversationListChangedListener(

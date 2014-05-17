@@ -42,11 +42,14 @@ These XEPs are - as of now:
 (In order of appearance)
 
 ###Code
-* Rene Treffer @rtreffer
-* Andreas Straub @strb
+* [Rene Treffer](https://github.com/rtreffer)
+* [Andreas Straub](https://github.com/strb)
 
 ###Translations
-* @beriain (Spanish and Basque)
+* [Sergio Cárdenas](https://github.com/kruks23) (Spanish)
+* [Benoit Bouvarel](https://github.com/BenoitBouvarel) (French)
+* [Daniel Gultsch](https://github.com/iNPUTmice) (German)
+
 
 ##FAQ
 ###General

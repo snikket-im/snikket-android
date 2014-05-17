@@ -515,9 +515,10 @@ public class ContactsActivity extends XmppActivity {
 			getActionBar().setHomeButtonEnabled(false);
 		}
 		this.rosterContacts.clear();
-		for (int i = 0; i < accounts.size(); ++i) {
-			rosterContacts.addAll(xmppConnectionService.getRoster(accounts
-					.get(i)));
+		for(Account account : accounts) {
+			if (account.getStatus() != Account.STATUS_DISABLED) {
+				rosterContacts.addAll(xmppConnectionService.getRoster(account));
+			}
 		}
 		updateAggregatedContacts();
 	}

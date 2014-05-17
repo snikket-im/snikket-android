@@ -12,7 +12,6 @@ import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
-import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.entities.MucOptions.User;
 import eu.siacs.conversations.ui.ConversationActivity;
 import eu.siacs.conversations.ui.ManageAccountActivity;
@@ -27,7 +26,6 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -38,11 +36,9 @@ import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.provider.ContactsContract.Contacts;
 import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationCompat.InboxStyle;
 import android.support.v4.app.TaskStackBuilder;
 import android.text.Html;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -234,11 +230,7 @@ public class UIHelper {
 		}
 		return bitmap;
 	}
-
-	private static Bitmap getUnknownContactPicture(String[] names, int size) {
-		return getUnknownContactPicture(names, size, UIHelper.BG_COLOR, UIHelper.FG_COLOR);
-	}
-
+	
 	private static Bitmap getMucContactPicture(Conversation conversation, int size, int bgColor, int fgColor) {
 		List<User> members = conversation.getMucOptions().getUsers();
 		if (members.size() == 0) {
@@ -273,10 +265,6 @@ public class UIHelper {
 	}
 
 	public static Bitmap getContactPicture(Contact contact, int dpSize, Context context, boolean notification) {
-		int fgColor = UIHelper.FG_COLOR,
-			bgColor = (notification) ?
-				UIHelper.BG_COLOR : UIHelper.TRANSPARENT;
-
 		String uri = contact.getProfilePhoto();
 		if (uri==null) {
 			return getContactPicture(contact.getDisplayName(), dpSize,
