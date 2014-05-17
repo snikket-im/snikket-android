@@ -21,7 +21,6 @@ import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.net.ssl.SSLContext;
@@ -547,7 +546,8 @@ public class XmppConnection implements Runnable {
 				Log.d(LOGTAG,account.getJid()+": sending deprecated session");
 				IqPacket startSession = new IqPacket(IqPacket.TYPE_SET);
 				startSession.addChild("session","urn:ietf:params:xml:ns:xmpp-session"); //setContent("")
-				this.sendIqPacket(startSession, null);
+				startSession.setId(nextRandomId());
+				this.sendPacket(startSession, null);
 			}
 		}
 	}
