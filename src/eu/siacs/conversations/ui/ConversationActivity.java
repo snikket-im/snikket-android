@@ -66,11 +66,13 @@ public class ConversationActivity extends XmppActivity {
 	public static final int REQUEST_DECRYPT_PGP = 0x76783;
 	private static final int REQUEST_ATTACH_FILE_DIALOG = 0x48502;
 	private static final int REQUEST_IMAGE_CAPTURE = 0x33788;
+	private static final int REQUEST_RECORD_AUDIO = 0x46189;
 	private static final int REQUEST_SEND_PGP_IMAGE = 0x53883;
 	public static final int REQUEST_ENCRYPT_MESSAGE = 0x378018;
 	
 	private static final int ATTACHMENT_CHOICE_CHOOSE_IMAGE = 0x92734;
 	private static final int ATTACHMENT_CHOICE_TAKE_PHOTO = 0x84123;
+	private static final int ATTACHMENT_CHOICE_RECORD_VOICE = 0x75291;
 
 	protected SlidingPaneLayout spl;
 
@@ -352,6 +354,9 @@ public class ConversationActivity extends XmppActivity {
 						attachFileIntent.setAction(Intent.ACTION_GET_CONTENT);
 						Intent chooser = Intent.createChooser(attachFileIntent, getString(R.string.attach_file));
 						startActivityForResult(chooser,	REQUEST_ATTACH_FILE_DIALOG);
+					} else if (attachmentChoice==ATTACHMENT_CHOICE_RECORD_VOICE) {
+						Intent intent = new Intent(MediaStore.Audio.Media.RECORD_SOUND_ACTION);
+						startActivityForResult(intent, REQUEST_RECORD_AUDIO);
 					}
 				}
 			}
@@ -451,6 +456,9 @@ public class ConversationActivity extends XmppActivity {
 						break;
 					case R.id.attach_take_picture:
 						attachFile(ATTACHMENT_CHOICE_TAKE_PHOTO);
+						break;
+					case R.id.attach_record_voice:
+						attachFile(ATTACHMENT_CHOICE_RECORD_VOICE);
 						break;
 					}
 					return false;

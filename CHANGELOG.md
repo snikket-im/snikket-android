@@ -1,5 +1,11 @@
 ###Changelog
 
+####Version 0.2.2
+* Ability to take photos directly
+* Improved openPGP offline handling
+* Various bug fixes
+* Updated Translations
+
 ####Version 0.2.1
 * Various bug fixes
 * Updated Translations
