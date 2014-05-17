@@ -163,5 +163,6 @@
     <string name="mgmt_account_delete">Delete</string>
     <string name="mgmt_account_disable">Temporarily disable</string>
     <string name="mgmt_account_enable">Enable</string>
+    <string name="attach_record_voice">Record voice</string>
 
 </resources>

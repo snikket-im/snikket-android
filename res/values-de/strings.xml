@@ -163,5 +163,6 @@
     <string name="mgmt_account_delete">Löschen</string>
     <string name="mgmt_account_disable">Vorübergehend abschalten</string>
     <string name="mgmt_account_enable">Anschalten</string>
+    <string name="attach_record_voice">Sprache aufzeichnen</string>
 
 </resources>
