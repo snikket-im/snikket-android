@@ -542,13 +542,6 @@ public class XmppConnection implements Runnable {
 			this.tagWriter.writeStanzaAsync(resume);
 		} else if (this.streamFeatures.hasChild("bind") && shouldBind) {
 			sendBindRequest();
-			if (this.streamFeatures.hasChild("session")) {
-				Log.d(LOGTAG,account.getJid()+": sending deprecated session");
-				IqPacket startSession = new IqPacket(IqPacket.TYPE_SET);
-				startSession.addChild("session","urn:ietf:params:xml:ns:xmpp-session"); //setContent("")
-				startSession.setId(nextRandomId());
-				this.sendPacket(startSession, null);
-			}
 		}
 	}
 
@@ -655,9 +648,17 @@ public class XmppConnection implements Runnable {
 				if (bindListener !=null) {
 					bindListener.onBind(account);
 				}
+				
 				changeStatus(Account.STATUS_ONLINE);
 			}
 		});
+		if (this.streamFeatures.hasChild("session")) {
+			Log.d(LOGTAG,account.getJid()+": sending deprecated session");
+			IqPacket startSession = new IqPacket(IqPacket.TYPE_SET);
+			startSession.addChild("session","urn:ietf:params:xml:ns:xmpp-session"); //setContent("")
+			startSession.setId(nextRandomId());
+			this.sendPacket(startSession, null);
+		}
 	}
 
 	private void sendServiceDiscoveryInfo(final String server) {
