@@ -4,7 +4,7 @@
     <string name="app_name">Conversations</string>
     <string name="action_settings">Einstellungen</string>
     <string name="action_add">Neue Unterhaltung</string>
-    <string name="action_accounts">Kontos verwalten</string>
+    <string name="action_accounts">Konten verwalten</string>
     <string name="action_refresh">Kontaktliste neu laden</string>
     <string name="action_end_conversation">Unterhaltung beenden</string>
     <string name="action_contact_details">Kontaktdetails</string>
