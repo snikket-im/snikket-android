@@ -1,5 +1,8 @@
 ###Changelog
 
+####Version 0.2.3
+* regression fix with receiving encrypted images
+
 ####Version 0.2.2
 * Ability to take photos directly
 * Improved openPGP offline handling
