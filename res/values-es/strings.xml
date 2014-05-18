@@ -50,7 +50,7 @@
     <string name="problem_connecting_to_account">No se ha podido conectar a la cuenta</string>
     <string name="problem_connecting_to_accounts">No se ha podido conectar a múltiples cuentas</string>
     <string name="touch_to_fix">Pulsa aquí para gestionar tus cuentas</string>
-    <string name="attach_file">Adjuntar imagen</string>
+    <string name="attach_file">Adjuntar</string>
     <string name="not_in_roster">El contacto no está en tu lista. ¿Quieres añadirlo?</string>
     <string name="add_contact">Añadir contacto</string>
     <string name="send_failed">Error al enviar</string>
@@ -131,8 +131,8 @@
     <string name="send_presence_updates">Enviar actualizaciones de presencia</string>
     <string name="receive_presence_updates">Recibir actualizaciones de presencia</string>
     <string name="ask_for_presence_updates">Solicitar actualizaciones de presencia</string>
-    <string name="attach_choose_picture">Selecciona imagen</string>
-    <string name="attach_take_picture">Toma una foto</string>
+    <string name="attach_choose_picture">Seleccionar imagen</string>
+    <string name="attach_take_picture">Hacer foto</string>
     <string name="preemptively_grant">Por defecto otorgar peticiones de suscripción</string>
     <string name="error_not_an_image_file">El archivo seleccionado no es una imagen</string>
     <string name="error_compressing_image">Error convirtiendo el archivo de imagen</string>
@@ -163,4 +163,9 @@
     <string name="mgmt_account_delete">Eliminar cuenta</string>
     <string name="mgmt_account_disable">Deshabilitar temporalmente</string>
     <string name="mgmt_account_enable">Habilitar</string>
+    <string name="attach_record_voice">Grabar audio</string>
+    <string name="account_settings">Configuración de cuenta</string>
+    <string name="save">Guardar</string>
+    <string name="passwords_do_not_match">Las contraseñas no coinciden</string>
+    <string name="invalid_jid">Éste no es un identificador de Jabber válido</string>
 </resources>
