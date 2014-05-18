@@ -29,6 +29,7 @@ public class Message extends AbstractEntity {
 	
 	public static final int TYPE_TEXT = 0;
 	public static final int TYPE_IMAGE = 1;
+	public static final int TYPE_AUDIO = 2;
 
 	public static String CONVERSATION = "conversationUuid";
 	public static String COUNTERPART = "counterpart";

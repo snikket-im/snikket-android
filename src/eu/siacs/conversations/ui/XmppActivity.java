@@ -175,7 +175,7 @@ public abstract class XmppActivity extends Activity {
 			@Override
 			public void success() {
 				xmppConnectionService.databaseBackend.updateAccount(account);
-				xmppConnectionService.sendPgpPresence(account, account.getPgpSignature());
+				xmppConnectionService.sendPresence(account);
 				if (conversation!=null) {
 					conversation.setNextEncryption(Message.ENCRYPTION_PGP);
 				}

@@ -51,27 +51,19 @@ public class EditAccount extends DialogFragment {
 		final CheckBox registerAccount = (CheckBox) view
 				.findViewById(R.id.edit_account_register_new);
 
-		final String okButtonDesc;
-
 		if (account != null) {
 			jidText.setText(account.getJid());
 			password.setText(account.getPassword());
-			Log.d("xmppService","mein debugger. account != null");
 			if (account.isOptionSet(Account.OPTION_REGISTER)) {
 				registerAccount.setChecked(true);
-				builder.setTitle(getString(R.string.register_account));
-				okButtonDesc = "Register";
 				passwordConfirm.setVisibility(View.VISIBLE);
 				passwordConfirm.setText(account.getPassword());
 			} else {
 				registerAccount.setVisibility(View.GONE);
-				builder.setTitle("Edit account");
-				okButtonDesc = "Edit";
 			}
-		} else {
-			builder.setTitle("Add account");
-			okButtonDesc = "Add";
 		}
+		builder.setTitle(R.string.account_settings);
+		
 
 		registerAccount
 				.setOnCheckedChangeListener(new OnCheckedChangeListener() {
@@ -79,26 +71,19 @@ public class EditAccount extends DialogFragment {
 					@Override
 					public void onCheckedChanged(CompoundButton buttonView,
 							boolean isChecked) {
-						AlertDialog d = (AlertDialog) getDialog();
-						Button positiveButton = (Button) d
-								.getButton(Dialog.BUTTON_POSITIVE);
 						if (isChecked) {
-							d.setTitle(getString(R.string.register_account));
-							positiveButton.setText("Register");
 							passwordConfirm.setVisibility(View.VISIBLE);
 							confirmPwDesc.setVisibility(View.VISIBLE);
 						} else {
-							d.setTitle("Add account");
 							passwordConfirm.setVisibility(View.GONE);
-							positiveButton.setText("Add");
 							confirmPwDesc.setVisibility(View.GONE);
 						}
 					}
 				});
 
 		builder.setView(view);
-		builder.setNeutralButton("Cancel", null);
-		builder.setPositiveButton(okButtonDesc, null);
+		builder.setNeutralButton(R.string.cancel, null);
+		builder.setPositiveButton(R.string.save, null);
 		return builder.create();
 	}
 
@@ -114,7 +99,9 @@ public class EditAccount extends DialogFragment {
 				String jid = jidEdit.getText().toString();
 				EditText passwordEdit = (EditText) d
 						.findViewById(R.id.account_password);
+				EditText passwordConfirmEdit = (EditText) d.findViewById(R.id.account_password_confirm2);
 				String password = passwordEdit.getText().toString();
+				String passwordConfirm = passwordConfirmEdit.getText().toString();
 				CheckBox register = (CheckBox) d.findViewById(R.id.edit_account_register_new);
 				String username;
 				String server;
@@ -123,8 +110,14 @@ public class EditAccount extends DialogFragment {
 					username = parts[0];
 					server = parts[1];
 				} else {
-					jidEdit.setError("Invalid Jabber ID");
+					jidEdit.setError(getString(R.string.invalid_jid));
 					return;
+				}
+				if (register.isChecked()) {
+					if (!passwordConfirm.equals(password)) {
+						passwordConfirmEdit.setError(getString(R.string.passwords_do_not_match));
+						return;
+					}
 				}
 				if (account != null) {
 					account.setPassword(password);

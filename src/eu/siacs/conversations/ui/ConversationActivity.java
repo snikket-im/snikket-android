@@ -722,12 +722,19 @@ public class ConversationActivity extends XmppActivity {
 				encryptTextMessage();
 			} else if (requestCode == REQUEST_IMAGE_CAPTURE) {
 				attachImageToConversation(getSelectedConversation(), null);
+			} else if (requestCode == REQUEST_RECORD_AUDIO) {
+				Log.d("xmppService",data.getData().toString());
+				attachAudioToConversation(getSelectedConversation(),data.getData());
 			} else {
 				Log.d(LOGTAG,"unknown result code:"+requestCode);
 			}
 		}
 	}
 	
+	private void attachAudioToConversation(Conversation conversation, Uri uri) {
+		
+	}
+
 	private void attachImageToConversation(Conversation conversation, Uri uri) {
 		prepareImageToast = Toast.makeText(getApplicationContext(), getText(R.string.preparing_image), Toast.LENGTH_LONG);
 		prepareImageToast.show();

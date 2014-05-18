@@ -164,5 +164,9 @@
     <string name="mgmt_account_disable">Vorübergehend abschalten</string>
     <string name="mgmt_account_enable">Anschalten</string>
     <string name="attach_record_voice">Sprache aufzeichnen</string>
+    <string name="account_settings">Kontoeinstellungen</string>
+    <string name="save">Speichern</string>
+    <string name="passwords_do_not_match">Passwörter stimmen nicht überein</string>
+    <string name="invalid_jid">Ungültige Jabber ID</string>
 
 </resources>

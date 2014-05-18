@@ -242,10 +242,17 @@ public class XmppConnectionService extends Service {
 			} else if (account.getStatus() == Account.STATUS_REGISTRATION_SUCCESSFULL) {
 				databaseBackend.updateAccount(account);
 				reconnectAccount(account, true);
-			} else {
-				UIHelper.showErrorNotification(getApplicationContext(),
-						getAccounts());
+			} else if (account.getStatus() != Account.STATUS_CONNECTING) {
+				int next = account.getXmppConnection().getTimeToNextAttempt();
+				Log.d(LOGTAG, account.getJid()
+						+ ": error connecting account. try again in " + next
+						+ "s for the "
+						+ (account.getXmppConnection().getAttempt() + 1)
+						+ " time");
+				scheduleWakeupCall(next, false);
 			}
+			UIHelper.showErrorNotification(getApplicationContext(),
+					getAccounts());
 		}
 	};
 
@@ -576,8 +583,6 @@ public class XmppConnectionService extends Service {
 							statusListener.onStatusChanged(account);
 						}
 					}
-
-					// TODO 3 remaining cases
 					if (account.getStatus() == Account.STATUS_ONLINE) {
 						long lastReceived = account.getXmppConnection().lastPaketReceived;
 						long lastSent = account.getXmppConnection().lastPingSent;
@@ -605,15 +610,9 @@ public class XmppConnectionService extends Service {
 								+ ": time out during connect reconnecting");
 						reconnectAccount(account, true);
 					} else {
-						Log.d(LOGTAG,
-								"seconds since last connect:"
-										+ ((SystemClock.elapsedRealtime() - account
-												.getXmppConnection().lastConnect) / 1000));
-						Log.d(LOGTAG,
-								account.getJid() + ": status="
-										+ account.getStatus());
-						// TODO notify user of ssl cert problem or auth problem
-						// or what ever
+						if (account.getXmppConnection().getTimeToNextAttempt() <= 0) {
+							reconnectAccount(account, true);
+						}
 					}
 					// in any case. reschedule wakup call
 					this.scheduleWakeupCall(PING_MAX_INTERVAL, true);
@@ -676,7 +675,6 @@ public class XmppConnectionService extends Service {
 						this.pingIntent, 0);
 				alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,
 						timeToWake, pendingPingIntent);
-				// Log.d(LOGTAG,"schedule ping in "+seconds+" seconds");
 			} else {
 				long scheduledTime = this.pingIntent.getLongExtra("time", 0);
 				if (scheduledTime < SystemClock.elapsedRealtime()
@@ -687,7 +685,6 @@ public class XmppConnectionService extends Service {
 							context, 0, this.pingIntent, 0);
 					alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,
 							timeToWake, pendingPingIntent);
-					// Log.d(LOGTAG,"reschedule old ping to ping in "+seconds+" seconds");
 				}
 			}
 		} else {
@@ -729,11 +726,10 @@ public class XmppConnectionService extends Service {
 
 			@Override
 			public void onBind(Account account) {
-				databaseBackend.clearPresences(account);
+				databaseBackend.clearPresences(account); //contact presences
 				account.clearPresences(); // self presences
-				if (account.getXmppConnection().hasFeatureRosterManagment()) {
-					updateRoster(account, null);
-				}
+				updateRoster(account, null);
+				sendPresence(account);
 				connectMultiModeConversations(account);
 				if (convChangedListener != null) {
 					convChangedListener.onConversationListChanged();
@@ -829,16 +825,16 @@ public class XmppConnectionService extends Service {
 			}
 		}
 	}
-	
+
 	private void resendMessage(Message message) {
 		Account account = message.getConversation().getAccount();
 		MessagePacket packet = null;
 		if (message.getEncryption() == Message.ENCRYPTION_NONE) {
-			packet = prepareMessagePacket(account, message,null);
+			packet = prepareMessagePacket(account, message, null);
 		} else if (message.getEncryption() == Message.ENCRYPTION_DECRYPTED) {
 			packet = prepareMessagePacket(account, message, null);
 			packet.setBody("This is an XEP-0027 encryted message");
-			if (message.getEncryptedBody()==null) {
+			if (message.getEncryptedBody() == null) {
 				markMessage(message, Message.STATUS_SEND_FAILED);
 				return;
 			}
@@ -850,7 +846,7 @@ public class XmppConnectionService extends Service {
 			packet.addChild("x", "jabber:x:encrypted").setContent(
 					message.getBody());
 		}
-		if (packet!=null) {
+		if (packet != null) {
 			account.getXmppConnection().sendMessagePacket(packet);
 			markMessage(message, Message.STATUS_SEND);
 		}
@@ -1159,8 +1155,7 @@ public class XmppConnectionService extends Service {
 		if (accountChangedListener != null) {
 			accountChangedListener.onAccountListChangedListener();
 		}
-		UIHelper.showErrorNotification(getApplicationContext(),
-				getAccounts());
+		UIHelper.showErrorNotification(getApplicationContext(), getAccounts());
 	}
 
 	public void deleteAccount(Account account) {
@@ -1172,8 +1167,7 @@ public class XmppConnectionService extends Service {
 		if (accountChangedListener != null) {
 			accountChangedListener.onAccountListChangedListener();
 		}
-		UIHelper.showErrorNotification(getApplicationContext(),
-				getAccounts());
+		UIHelper.showErrorNotification(getApplicationContext(), getAccounts());
 	}
 
 	public void setOnConversationListChangedListener(
@@ -1394,16 +1388,15 @@ public class XmppConnectionService extends Service {
 		contact.getAccount().getXmppConnection().sendPresencePacket(packet);
 	}
 
-	public void sendPgpPresence(Account account, String signature) {
+	public void sendPresence(Account account) {
 		PresencePacket packet = new PresencePacket();
 		packet.setAttribute("from", account.getFullJid());
-		Element status = new Element("status");
-		status.setContent("online");
-		packet.addChild(status);
-		Element x = new Element("x");
-		x.setAttribute("xmlns", "jabber:x:signed");
-		x.setContent(signature);
-		packet.addChild(x);
+		String sig = account.getPgpSignature();
+		if (sig!=null) {
+			packet.addChild("status").setContent("online");
+			packet.addChild("x","jabber:x:signed").setContent(sig);
+		}
+		Log.d(LOGTAG,packet.toString());
 		account.getXmppConnection().sendPresencePacket(packet);
 	}
 
@@ -1427,7 +1420,6 @@ public class XmppConnectionService extends Service {
 		this.tlsException = null;
 	}
 
-	// TODO dont let thread sleep but schedule wake up
 	public void reconnectAccount(final Account account, final boolean force) {
 		new Thread(new Runnable() {
 
@@ -1492,8 +1484,9 @@ public class XmppConnectionService extends Service {
 		}
 		return false;
 	}
-	
-	public boolean markMessage(Conversation conversation, String uuid, int status) {
+
+	public boolean markMessage(Conversation conversation, String uuid,
+			int status) {
 		for (Message message : conversation.getMessages()) {
 			if (message.getUuid().equals(uuid)) {
 				markMessage(message, status);

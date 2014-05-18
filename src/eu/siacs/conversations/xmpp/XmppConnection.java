@@ -30,7 +30,6 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
-import org.json.JSONException;
 import org.xmlpull.v1.XmlPullParserException;
 
 import android.os.Bundle;
@@ -88,6 +87,8 @@ public class XmppConnection implements Runnable {
 	public long lastPingSent = 0;
 	public long lastConnect = 0;
 	public long lastSessionStarted = 0;
+	
+	private int attempt = 0;
 
 	private static final int PACKET_IQ = 0;
 	private static final int PACKET_MESSAGE = 1;
@@ -113,6 +114,9 @@ public class XmppConnection implements Runnable {
 			if ((nextStatus == Account.STATUS_OFFLINE)&&(account.getStatus() != Account.STATUS_CONNECTING)&&(account.getStatus() != Account.STATUS_ONLINE)&&(account.getStatus() != Account.STATUS_DISABLED)) {
 				return;
 			}
+			if (nextStatus == Account.STATUS_ONLINE) {
+				this.attempt = 0;
+			}
 			account.setStatus(nextStatus);
 			if (statusListener != null) {
 				statusListener.onStatusChanged(account);
@@ -123,6 +127,7 @@ public class XmppConnection implements Runnable {
 	protected void connect() {
 		Log.d(LOGTAG,account.getJid()+ ": connecting");
 		lastConnect = SystemClock.elapsedRealtime();
+		this.attempt++;
 		try {
 			shouldAuthenticate = shouldBind = !account.isOptionSet(Account.OPTION_REGISTER);
 			tagReader = new XmlReader(wakeLock);
@@ -609,25 +614,10 @@ public class XmppConnection implements Runnable {
 		});
 	}
 
-	private void sendInitialPresence() {
-		PresencePacket packet = new PresencePacket();
-		packet.setAttribute("from", account.getFullJid());
-		if (account.getKeys().has("pgp_signature")) {
-			try {
-				String signature = account.getKeys().getString("pgp_signature");
-				packet.addChild("status").setContent("online");
-				packet.addChild("x","jabber:x:signed").setContent(signature);
-			} catch (JSONException e) {
-				//
-			}
-		}
-		this.sendPresencePacket(packet);
-	}
-
 	private void sendBindRequest() throws IOException {
 		IqPacket iq = new IqPacket(IqPacket.TYPE_SET);
 		iq.addChild("bind", "urn:ietf:params:xml:ns:xmpp-bind").addChild("resource").setContent(account.getResource());
-		this.sendIqPacket(iq, new OnIqPacketReceived() {
+		this.sendUnboundIqPacket(iq, new OnIqPacketReceived() {
 			@Override
 			public void onIqPacketReceived(Account account, IqPacket packet) {
 				String resource = packet.findChild("bind").findChild("jid")
@@ -642,7 +632,6 @@ public class XmppConnection implements Runnable {
 					EnablePacket enable = new EnablePacket(smVersion);
 					tagWriter.writeStanzaAsync(enable);
 				}
-				sendInitialPresence();
 				sendServiceDiscoveryInfo(account.getServer());
 				sendServiceDiscoveryItems(account.getServer());
 				if (bindListener !=null) {
@@ -655,9 +644,8 @@ public class XmppConnection implements Runnable {
 		if (this.streamFeatures.hasChild("session")) {
 			Log.d(LOGTAG,account.getJid()+": sending deprecated session");
 			IqPacket startSession = new IqPacket(IqPacket.TYPE_SET);
-			startSession.addChild("session","urn:ietf:params:xml:ns:xmpp-session"); //setContent("")
-			startSession.setId(nextRandomId());
-			this.sendPacket(startSession, null);
+			startSession.addChild("session","urn:ietf:params:xml:ns:xmpp-session");
+			this.sendUnboundIqPacket(startSession, null);
 		}
 	}
 
@@ -755,6 +743,14 @@ public class XmppConnection implements Runnable {
 			packet.setAttribute("id", id);
 		}
 		packet.setFrom(account.getFullJid());
+		this.sendPacket(packet, callback);
+	}
+	
+	public void sendUnboundIqPacket(IqPacket packet, OnIqPacketReceived callback) {
+		if (packet.getId()==null) {
+			String id = nextRandomId();
+			packet.setAttribute("id", id);
+		}
 		this.sendPacket(packet, callback);
 	}
 
@@ -915,5 +911,15 @@ public class XmppConnection implements Runnable {
 	public void addPendingSubscription(String jid) {
 		Log.d(LOGTAG,"adding "+jid+" to pending subscriptions");
 		this.pendingSubscriptions.add(jid);
+	}
+
+	public int getTimeToNextAttempt() {
+		int interval = (int) (25 * Math.pow(1.5,attempt));
+		int secondsSinceLast = (int) ((SystemClock.elapsedRealtime() - this.lastConnect) / 1000);
+		return interval - secondsSinceLast;
+	}
+	
+	public int getAttempt() {
+		return this.attempt;
 	}
 }
