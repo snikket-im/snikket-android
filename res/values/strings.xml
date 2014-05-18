@@ -164,5 +164,9 @@
     <string name="mgmt_account_disable">Temporarily disable</string>
     <string name="mgmt_account_enable">Enable</string>
     <string name="attach_record_voice">Record voice</string>
+    <string name="account_settings">Account Settings</string>
+    <string name="save">Save</string>
+    <string name="passwords_do_not_match">Passwords do not match</string>
+    <string name="invalid_jid">This is not a valid Jabber ID</string>
 
 </resources>
