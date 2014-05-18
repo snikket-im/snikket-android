@@ -726,11 +726,10 @@ public class XmppConnectionService extends Service {
 
 			@Override
 			public void onBind(Account account) {
-				databaseBackend.clearPresences(account);
+				databaseBackend.clearPresences(account); //contact presences
 				account.clearPresences(); // self presences
-				if (account.getXmppConnection().hasFeatureRosterManagment()) {
-					updateRoster(account, null);
-				}
+				updateRoster(account, null);
+				sendPresence(account);
 				connectMultiModeConversations(account);
 				if (convChangedListener != null) {
 					convChangedListener.onConversationListChanged();
@@ -1389,16 +1388,15 @@ public class XmppConnectionService extends Service {
 		contact.getAccount().getXmppConnection().sendPresencePacket(packet);
 	}
 
-	public void sendPgpPresence(Account account, String signature) {
+	public void sendPresence(Account account) {
 		PresencePacket packet = new PresencePacket();
 		packet.setAttribute("from", account.getFullJid());
-		Element status = new Element("status");
-		status.setContent("online");
-		packet.addChild(status);
-		Element x = new Element("x");
-		x.setAttribute("xmlns", "jabber:x:signed");
-		x.setContent(signature);
-		packet.addChild(x);
+		String sig = account.getPgpSignature();
+		if (sig!=null) {
+			packet.addChild("status").setContent("online");
+			packet.addChild("x","jabber:x:signed").setContent(sig);
+		}
+		Log.d(LOGTAG,packet.toString());
 		account.getXmppConnection().sendPresencePacket(packet);
 	}
 
@@ -1422,7 +1420,6 @@ public class XmppConnectionService extends Service {
 		this.tlsException = null;
 	}
 
-	// TODO dont let thread sleep but schedule wake up
 	public void reconnectAccount(final Account account, final boolean force) {
 		new Thread(new Runnable() {
 

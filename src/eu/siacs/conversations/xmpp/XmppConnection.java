@@ -30,7 +30,6 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
-import org.json.JSONException;
 import org.xmlpull.v1.XmlPullParserException;
 
 import android.os.Bundle;
@@ -615,21 +614,6 @@ public class XmppConnection implements Runnable {
 		});
 	}
 
-	private void sendInitialPresence() {
-		PresencePacket packet = new PresencePacket();
-		packet.setAttribute("from", account.getFullJid());
-		if (account.getKeys().has("pgp_signature")) {
-			try {
-				String signature = account.getKeys().getString("pgp_signature");
-				packet.addChild("status").setContent("online");
-				packet.addChild("x","jabber:x:signed").setContent(signature);
-			} catch (JSONException e) {
-				//
-			}
-		}
-		this.sendPresencePacket(packet);
-	}
-
 	private void sendBindRequest() throws IOException {
 		IqPacket iq = new IqPacket(IqPacket.TYPE_SET);
 		iq.addChild("bind", "urn:ietf:params:xml:ns:xmpp-bind").addChild("resource").setContent(account.getResource());
@@ -648,7 +632,6 @@ public class XmppConnection implements Runnable {
 					EnablePacket enable = new EnablePacket(smVersion);
 					tagWriter.writeStanzaAsync(enable);
 				}
-				sendInitialPresence();
 				sendServiceDiscoveryInfo(account.getServer());
 				sendServiceDiscoveryItems(account.getServer());
 				if (bindListener !=null) {
