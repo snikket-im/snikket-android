@@ -617,7 +617,7 @@ public class XmppConnection implements Runnable {
 	private void sendBindRequest() throws IOException {
 		IqPacket iq = new IqPacket(IqPacket.TYPE_SET);
 		iq.addChild("bind", "urn:ietf:params:xml:ns:xmpp-bind").addChild("resource").setContent(account.getResource());
-		this.sendIqPacket(iq, new OnIqPacketReceived() {
+		this.sendUnboundIqPacket(iq, new OnIqPacketReceived() {
 			@Override
 			public void onIqPacketReceived(Account account, IqPacket packet) {
 				String resource = packet.findChild("bind").findChild("jid")
@@ -644,9 +644,8 @@ public class XmppConnection implements Runnable {
 		if (this.streamFeatures.hasChild("session")) {
 			Log.d(LOGTAG,account.getJid()+": sending deprecated session");
 			IqPacket startSession = new IqPacket(IqPacket.TYPE_SET);
-			startSession.addChild("session","urn:ietf:params:xml:ns:xmpp-session"); //setContent("")
-			startSession.setId(nextRandomId());
-			this.sendPacket(startSession, null);
+			startSession.addChild("session","urn:ietf:params:xml:ns:xmpp-session");
+			this.sendUnboundIqPacket(startSession, null);
 		}
 	}
 
@@ -744,6 +743,14 @@ public class XmppConnection implements Runnable {
 			packet.setAttribute("id", id);
 		}
 		packet.setFrom(account.getFullJid());
+		this.sendPacket(packet, callback);
+	}
+	
+	public void sendUnboundIqPacket(IqPacket packet, OnIqPacketReceived callback) {
+		if (packet.getId()==null) {
+			String id = nextRandomId();
+			packet.setAttribute("id", id);
+		}
 		this.sendPacket(packet, callback);
 	}
 
