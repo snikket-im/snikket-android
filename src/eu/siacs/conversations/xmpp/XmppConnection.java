@@ -88,6 +88,8 @@ public class XmppConnection implements Runnable {
 	public long lastPingSent = 0;
 	public long lastConnect = 0;
 	public long lastSessionStarted = 0;
+	
+	private int attempt = 0;
 
 	private static final int PACKET_IQ = 0;
 	private static final int PACKET_MESSAGE = 1;
@@ -113,6 +115,9 @@ public class XmppConnection implements Runnable {
 			if ((nextStatus == Account.STATUS_OFFLINE)&&(account.getStatus() != Account.STATUS_CONNECTING)&&(account.getStatus() != Account.STATUS_ONLINE)&&(account.getStatus() != Account.STATUS_DISABLED)) {
 				return;
 			}
+			if (nextStatus == Account.STATUS_ONLINE) {
+				this.attempt = 0;
+			}
 			account.setStatus(nextStatus);
 			if (statusListener != null) {
 				statusListener.onStatusChanged(account);
@@ -123,6 +128,7 @@ public class XmppConnection implements Runnable {
 	protected void connect() {
 		Log.d(LOGTAG,account.getJid()+ ": connecting");
 		lastConnect = SystemClock.elapsedRealtime();
+		this.attempt++;
 		try {
 			shouldAuthenticate = shouldBind = !account.isOptionSet(Account.OPTION_REGISTER);
 			tagReader = new XmlReader(wakeLock);
@@ -915,5 +921,15 @@ public class XmppConnection implements Runnable {
 	public void addPendingSubscription(String jid) {
 		Log.d(LOGTAG,"adding "+jid+" to pending subscriptions");
 		this.pendingSubscriptions.add(jid);
+	}
+
+	public int getTimeToNextAttempt() {
+		int interval = (int) (25 * Math.pow(1.5,attempt));
+		int secondsSinceLast = (int) ((SystemClock.elapsedRealtime() - this.lastConnect) / 1000);
+		return interval - secondsSinceLast;
+	}
+	
+	public int getAttempt() {
+		return this.attempt;
 	}
 }
