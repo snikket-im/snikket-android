@@ -2,21 +2,17 @@ package eu.siacs.conversations.persistance;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
-import eu.siacs.conversations.entities.Presences;
 import eu.siacs.conversations.entities.Roster;
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.os.Bundle;
 import android.util.Log;
 
 public class DatabaseBackend extends SQLiteOpenHelper {
@@ -27,16 +23,16 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 	private static final int DATABASE_VERSION = 5;
 
 	private static String CREATE_CONTATCS_STATEMENT = "create table "
-			+ Contact.TABLENAME + "(" + Contact.UUID + " TEXT PRIMARY KEY, "
-			+ Contact.ACCOUNT + " TEXT, " + Contact.SERVERNAME + " TEXT, "
+			+ Contact.TABLENAME + "(" + Contact.ACCOUNT + " TEXT, " + Contact.SERVERNAME + " TEXT, "
 			+ Contact.SYSTEMNAME + " TEXT," + Contact.JID + " TEXT,"
 			+ Contact.KEYS + " TEXT," + Contact.PHOTOURI + " TEXT,"
 			+ Contact.OPTIONS + " NUMBER," + Contact.SYSTEMACCOUNT
 			+ " NUMBER, " + "FOREIGN KEY(" + Contact.ACCOUNT + ") REFERENCES "
-			+ Account.TABLENAME + "(" + Account.UUID + ") ON DELETE CASCADE);";
+			+ Account.TABLENAME + "(" + Account.UUID + ") ON DELETE CASCADE, UNIQUE("+Contact.ACCOUNT+", "+Contact.JID+") ON CONFLICT REPLACE);";
 
 	public DatabaseBackend(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
+		Log.d("xmppService",CREATE_CONTATCS_STATEMENT);
 	}
 
 	@Override
@@ -220,7 +216,19 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 	}
 	
 	public void writeRoster(Roster roster) {
-		
+		Account account = roster.getAccount();
+		SQLiteDatabase db = this.getWritableDatabase();
+		for(Contact contact : roster.getContacts()) {
+			if (contact.getOption(Contact.Options.IN_ROSTER)) {
+				db.insert(Contact.TABLENAME, null, contact.getContentValues());
+			} else {
+				String where = Contact.ACCOUNT + "=? AND "+Contact.JID+"=?";
+				String[] whereArgs = {account.getUuid(), contact.getJid()};
+				db.delete(Contact.TABLENAME, where, whereArgs);
+			}
+		}
+		account.setRosterVersion(roster.getVersion());
+		updateAccount(account);
 	}
 
 	public void deleteMessage(Message message) {
@@ -233,24 +241,6 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getWritableDatabase();
 		String[] args = { conversation.getUuid() };
 		db.delete(Message.TABLENAME, Message.CONVERSATION + "=?", args);
-	}
-
-	public void deleteContact(Contact contact) {
-		SQLiteDatabase db = this.getWritableDatabase();
-		String[] args = { contact.getUuid() };
-		db.delete(Contact.TABLENAME, Contact.UUID + "=?", args);
-	}
-
-	public Contact getContact(String uuid) {
-		SQLiteDatabase db = this.getWritableDatabase();
-		String[] args = { uuid };
-		Cursor cursor = db.query(Contact.TABLENAME, null, Contact.UUID + "=?",
-				args, null, null, null);
-		if (cursor.getCount() == 0) {
-			return null;
-		}
-		cursor.moveToFirst();
-		return Contact.fromCursor(cursor);
 	}
 
 	public Conversation findConversationByUuid(String conversationUuid) {
