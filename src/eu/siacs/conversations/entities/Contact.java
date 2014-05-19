@@ -1,6 +1,5 @@
 package eu.siacs.conversations.entities;
 
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Set;
@@ -11,9 +10,7 @@ import eu.siacs.conversations.xml.Element;
 import android.content.ContentValues;
 import android.database.Cursor;
 
-public class Contact extends AbstractEntity implements Serializable {
-	private static final long serialVersionUID = -4570817093119419962L;
-
+public class Contact {
 	public static final String TABLENAME = "contacts";
 
 	public static final String SYSTEMNAME = "systemname";
@@ -39,10 +36,9 @@ public class Contact extends AbstractEntity implements Serializable {
 
 	protected boolean inRoster = true;
 
-	public Contact(String uuid, String account, String systemName,
+	public Contact(String account, String systemName,
 			String serverName, String jid, int subscription, String photoUri,
 			String systemAccount, String keys) {
-		this.uuid = uuid;
 		this.accountUuid = account;
 		this.systemName = systemName;
 		this.serverName = serverName;
@@ -87,10 +83,8 @@ public class Contact extends AbstractEntity implements Serializable {
 				.toLowerCase().contains(needle.toLowerCase())));
 	}
 
-	@Override
 	public ContentValues getContentValues() {
 		ContentValues values = new ContentValues();
-		values.put(UUID, uuid);
 		values.put(ACCOUNT, accountUuid);
 		values.put(SYSTEMNAME, systemName);
 		values.put(SERVERNAME, serverName);
@@ -103,8 +97,7 @@ public class Contact extends AbstractEntity implements Serializable {
 	}
 
 	public static Contact fromCursor(Cursor cursor) {
-		return new Contact(cursor.getString(cursor.getColumnIndex(UUID)),
-				cursor.getString(cursor.getColumnIndex(ACCOUNT)),
+		return new Contact(cursor.getString(cursor.getColumnIndex(ACCOUNT)),
 				cursor.getString(cursor.getColumnIndex(SYSTEMNAME)),
 				cursor.getString(cursor.getColumnIndex(SERVERNAME)),
 				cursor.getString(cursor.getColumnIndex(JID)),
@@ -129,10 +122,6 @@ public class Contact extends AbstractEntity implements Serializable {
 
 	public Account getAccount() {
 		return this.account;
-	}
-
-	public void setUuid(String uuid) {
-		this.uuid = uuid;
 	}
 
 	public boolean couldBeMuc() {

@@ -616,14 +616,24 @@ public class XmppConnectionService extends Service {
 
 	@Override
 	public void onDestroy() {
-		Log.d(LOGTAG, "stopping service");
 		super.onDestroy();
+		this.logoutAndSave();
+	}
+	
+	@Override
+	public void onTaskRemoved(Intent rootIntent) {
+		super.onTaskRemoved(rootIntent);
+		this.logoutAndSave();
+	}
+	
+	private void logoutAndSave() {
 		for (Account account : accounts) {
 			databaseBackend.writeRoster(account.getRoster());
 			if (account.getXmppConnection() != null) {
 				disconnect(account, true);
 			}
 		}
+		Log.d(LOGTAG,"good bye");
 	}
 
 	protected void scheduleWakeupCall(int seconds, boolean ping) {
