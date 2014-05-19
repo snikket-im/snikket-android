@@ -4,33 +4,30 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Set;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import eu.siacs.conversations.xml.Element;
-
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.util.Log;
 
 public class Contact extends AbstractEntity implements Serializable {
 	private static final long serialVersionUID = -4570817093119419962L;
 
 	public static final String TABLENAME = "contacts";
 
-	public static final String DISPLAYNAME = "name";
+	public static final String SYSTEMNAME = "systemname";
+	public static final String SERVERNAME = "servername";
 	public static final String JID = "jid";
-	public static final String SUBSCRIPTION = "subscription";
+	public static final String OPTIONS = "options";
 	public static final String SYSTEMACCOUNT = "systemaccount";
 	public static final String PHOTOURI = "photouri";
 	public static final String KEYS = "pgpkey";
-	public static final String PRESENCES = "presences";
 	public static final String ACCOUNT = "accountUuid";
 
 	protected String accountUuid;
-	protected String displayName;
+	protected String systemName;
+	protected String serverName;
 	protected String jid;
 	protected int subscription = 0;
 	protected String systemAccount;
@@ -42,26 +39,13 @@ public class Contact extends AbstractEntity implements Serializable {
 
 	protected boolean inRoster = true;
 
-	public Contact(Account account, String displayName, String jid,
-			String photoUri) {
-		if (account == null) {
-			this.accountUuid = null;
-		} else {
-			this.accountUuid = account.getUuid();
-		}
-		this.account = account;
-		this.displayName = displayName;
-		this.jid = jid;
-		this.photoUri = photoUri;
-		this.uuid = java.util.UUID.randomUUID().toString();
-	}
-
-	public Contact(String uuid, String account, String displayName, String jid,
-			int subscription, String photoUri, String systemAccount,
-			String keys, String presences) {
+	public Contact(String uuid, String account, String systemName,
+			String serverName, String jid, int subscription, String photoUri,
+			String systemAccount, String keys) {
 		this.uuid = uuid;
 		this.accountUuid = account;
-		this.displayName = displayName;
+		this.systemName = systemName;
+		this.serverName = serverName;
 		this.jid = jid;
 		this.subscription = subscription;
 		this.photoUri = photoUri;
@@ -74,11 +58,20 @@ public class Contact extends AbstractEntity implements Serializable {
 		} catch (JSONException e) {
 			this.keys = new JSONObject();
 		}
-		this.presences = Presences.fromJsonString(presences);
+	}
+
+	public Contact(String jid) {
+		this.jid = jid;
 	}
 
 	public String getDisplayName() {
-		return this.displayName;
+		if (this.systemName != null) {
+			return this.systemName;
+		} else if (this.serverName != null) {
+			return this.serverName;
+		} else {
+			return this.jid.split("@")[0];
+		}
 	}
 
 	public String getProfilePhoto() {
@@ -90,7 +83,7 @@ public class Contact extends AbstractEntity implements Serializable {
 	}
 
 	public boolean match(String needle) {
-		return (jid.toLowerCase().contains(needle.toLowerCase()) || (displayName
+		return (jid.toLowerCase().contains(needle.toLowerCase()) || (getDisplayName()
 				.toLowerCase().contains(needle.toLowerCase())));
 	}
 
@@ -99,26 +92,26 @@ public class Contact extends AbstractEntity implements Serializable {
 		ContentValues values = new ContentValues();
 		values.put(UUID, uuid);
 		values.put(ACCOUNT, accountUuid);
-		values.put(DISPLAYNAME, displayName);
+		values.put(SYSTEMNAME, systemName);
+		values.put(SERVERNAME, serverName);
 		values.put(JID, jid);
-		values.put(SUBSCRIPTION, subscription);
+		values.put(OPTIONS, subscription);
 		values.put(SYSTEMACCOUNT, systemAccount);
 		values.put(PHOTOURI, photoUri);
 		values.put(KEYS, keys.toString());
-		values.put(PRESENCES, presences.toJsonString());
 		return values;
 	}
 
 	public static Contact fromCursor(Cursor cursor) {
 		return new Contact(cursor.getString(cursor.getColumnIndex(UUID)),
 				cursor.getString(cursor.getColumnIndex(ACCOUNT)),
-				cursor.getString(cursor.getColumnIndex(DISPLAYNAME)),
+				cursor.getString(cursor.getColumnIndex(SYSTEMNAME)),
+				cursor.getString(cursor.getColumnIndex(SERVERNAME)),
 				cursor.getString(cursor.getColumnIndex(JID)),
-				cursor.getInt(cursor.getColumnIndex(SUBSCRIPTION)),
+				cursor.getInt(cursor.getColumnIndex(OPTIONS)),
 				cursor.getString(cursor.getColumnIndex(PHOTOURI)),
 				cursor.getString(cursor.getColumnIndex(SYSTEMACCOUNT)),
-				cursor.getString(cursor.getColumnIndex(KEYS)),
-				cursor.getString(cursor.getColumnIndex(PRESENCES)));
+				cursor.getString(cursor.getColumnIndex(KEYS)));
 	}
 
 	public int getSubscription() {
@@ -154,8 +147,8 @@ public class Contact extends AbstractEntity implements Serializable {
 				return (domainParts[0].equals("conf")
 						|| domainParts[0].equals("conference")
 						|| domainParts[0].equals("muc")
-						|| domainParts[0].equals("sala")
-						|| domainParts[0].equals("salas"));
+						|| domainParts[0].equals("sala") || domainParts[0]
+							.equals("salas"));
 			}
 		}
 	}
@@ -188,8 +181,12 @@ public class Contact extends AbstractEntity implements Serializable {
 		this.photoUri = uri;
 	}
 
-	public void setDisplayName(String name) {
-		this.displayName = name;
+	public void setServerName(String serverName) {
+		this.serverName = serverName;
+	}
+
+	public void setSystemName(String systemName) {
+		this.systemName = systemName;
 	}
 
 	public String getSystemAccount() {
@@ -249,15 +246,15 @@ public class Contact extends AbstractEntity implements Serializable {
 		}
 	}
 
-	public void setSubscriptionOption(int option) {
+	public void setOption(int option) {
 		this.subscription |= 1 << option;
 	}
 
-	public void resetSubscriptionOption(int option) {
+	public void resetOption(int option) {
 		this.subscription &= ~(1 << option);
 	}
 
-	public boolean getSubscriptionOption(int option) {
+	public boolean getOption(int option) {
 		return ((this.subscription & (1 << option)) != 0);
 	}
 
@@ -267,40 +264,38 @@ public class Contact extends AbstractEntity implements Serializable {
 
 		if (subscription != null) {
 			if (subscription.equals("to")) {
-				this.resetSubscriptionOption(Contact.Subscription.FROM);
-				this.setSubscriptionOption(Contact.Subscription.TO);
+				this.resetOption(Contact.Options.FROM);
+				this.setOption(Contact.Options.TO);
 			} else if (subscription.equals("from")) {
-				this.resetSubscriptionOption(Contact.Subscription.TO);
-				this.setSubscriptionOption(Contact.Subscription.FROM);
+				this.resetOption(Contact.Options.TO);
+				this.setOption(Contact.Options.FROM);
 			} else if (subscription.equals("both")) {
-				this.setSubscriptionOption(Contact.Subscription.TO);
-				this.setSubscriptionOption(Contact.Subscription.FROM);
+				this.setOption(Contact.Options.TO);
+				this.setOption(Contact.Options.FROM);
 			}
 		}
 
 		if ((ask != null) && (ask.equals("subscribe"))) {
-			this.setSubscriptionOption(Contact.Subscription.ASKING);
+			this.setOption(Contact.Options.ASKING);
 		} else {
-			this.resetSubscriptionOption(Contact.Subscription.ASKING);
+			this.resetOption(Contact.Options.ASKING);
 		}
 	}
 
-	public class Subscription {
+	public Element asElement() {
+		Element item = new Element("item");
+		item.setAttribute("jid", this.jid);
+		if (this.serverName != null) {
+			item.setAttribute("name", this.serverName);
+		}
+		return item;
+	}
+
+	public class Options {
 		public static final int TO = 0;
 		public static final int FROM = 1;
 		public static final int ASKING = 2;
 		public static final int PREEMPTIVE_GRANT = 4;
-	}
-
-	public void flagAsNotInRoster() {
-		this.inRoster = false;
-	}
-
-	public boolean isInRoster() {
-		return this.inRoster;
-	}
-
-	public String getAccountUuid() {
-		return this.accountUuid;
+		public static final int IN_ROSTER = 8;
 	}
 }

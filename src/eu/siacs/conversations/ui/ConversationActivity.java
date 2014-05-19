@@ -474,10 +474,11 @@ public class ConversationActivity extends XmppActivity {
 			break;
 		case R.id.action_contact_details:
 			Contact contact = this.getSelectedConversation().getContact();
-			if (contact != null) {
+			if (contact.getOption(Contact.Options.IN_ROSTER)) {
 				Intent intent = new Intent(this, ContactDetailsActivity.class);
 				intent.setAction(ContactDetailsActivity.ACTION_VIEW_CONTACT);
-				intent.putExtra("uuid", contact.getUuid());
+				intent.putExtra("account", this.getSelectedConversation().getAccount().getJid());
+				intent.putExtra("contact",contact.getJid());
 				startActivity(intent);
 			} else {
 				showAddToRosterDialog(getSelectedConversation());
@@ -874,8 +875,7 @@ public class ConversationActivity extends XmppActivity {
 			public void onClick(DialogInterface dialog, int which) {
 				String jid = conversation.getContactJid();
 				Account account = getSelectedConversation().getAccount();
-				String name = jid.split("@")[0];
-				Contact contact = new Contact(account, name, jid, null);
+				Contact contact = account.getRoster().getContact(jid);
 				xmppConnectionService.createContact(contact);
 			}
 		});

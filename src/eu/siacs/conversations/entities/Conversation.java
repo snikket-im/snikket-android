@@ -49,7 +49,6 @@ public class Conversation extends AbstractEntity {
 
 	private transient List<Message> messages = null;
 	private transient Account account = null;
-	private transient Contact contact;
 
 	private transient SessionImpl otrSession;
 
@@ -129,19 +128,13 @@ public class Conversation extends AbstractEntity {
 	public String getName(boolean useSubject) {
 		if ((getMode() == MODE_MULTI) && (getMucOptions().getSubject() != null) && useSubject) {
 			return getMucOptions().getSubject();
-		} else if (this.contact != null) {
-			return this.contact.getDisplayName();
 		} else {
-			return this.name;
+			return this.getContact().getDisplayName();
 		}
 	}
 
 	public String getProfilePhotoString() {
-		if (this.contact == null) {
-			return null;
-		} else {
-			return this.contact.getProfilePhoto();
-		}
+		return this.getContact().getProfilePhoto();
 	}
 
 	public String getAccountUuid() {
@@ -153,14 +146,7 @@ public class Conversation extends AbstractEntity {
 	}
 
 	public Contact getContact() {
-		return this.contact;
-	}
-
-	public void setContact(Contact contact) {
-		this.contact = contact;
-		if (contact != null) {
-			this.contactUuid = contact.getUuid();
-		}
+		return this.account.getRoster().getContact(this.contactJid);
 	}
 
 	public void setAccount(Account account) {

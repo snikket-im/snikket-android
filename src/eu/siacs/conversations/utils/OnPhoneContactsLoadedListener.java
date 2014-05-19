@@ -1,9 +1,9 @@
 package eu.siacs.conversations.utils;
 
-import java.util.Hashtable;
+import java.util.List;
 
 import android.os.Bundle;
 
 public interface OnPhoneContactsLoadedListener {
-	public void onPhoneContactsLoaded(Hashtable<String, Bundle> phoneContacts);
+	public void onPhoneContactsLoaded(List<Bundle> phoneContacts);
 }

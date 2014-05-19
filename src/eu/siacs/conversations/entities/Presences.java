@@ -4,10 +4,6 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import eu.siacs.conversations.xml.Element;
 
 public class Presences {
@@ -45,39 +41,6 @@ public class Presences {
 			if (entry.getValue()<status) status = entry.getValue();
 		}
 		return status;
-	}
-
-	public String toJsonString() {
-		JSONArray json = new JSONArray();
-		Iterator<Entry<String, Integer>> it = presences.entrySet().iterator();
-
-		while (it.hasNext()) {
-			Entry<String, Integer> entry = it.next();
-			JSONObject jObj = new JSONObject();
-			try {
-				jObj.put("resource", entry.getKey());
-				jObj.put("status", entry.getValue());
-			} catch (JSONException e) {
-				
-			}
-			json.put(jObj);
-		}
-		return json.toString();
-	}
-
-	public static Presences fromJsonString(String jsonString) {
-		Presences presences = new Presences();
-		try {
-			JSONArray json = new JSONArray(jsonString);
-			for (int i = 0; i < json.length(); ++i) {
-				JSONObject jObj = json.getJSONObject(i);
-				presences.updatePresence(jObj.getString("resource"),
-						jObj.getInt("status"));
-			}
-		} catch (JSONException e1) {
-
-		}
-		return presences;
 	}
 
 	public static int parseShow(Element show) {
