@@ -17,7 +17,6 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
@@ -28,15 +27,6 @@ public class ShareWithActivity extends XmppActivity {
 	
 	private LinearLayout conversations;
 	private LinearLayout contacts;
-	
-	private OnClickListener click = new OnClickListener() {
-		
-		@Override
-		public void onClick(View v) {
-			// TODO Auto-generated method stub
-			
-		}
-	};
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +61,7 @@ public class ShareWithActivity extends XmppActivity {
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
 		boolean useSubject = preferences.getBoolean("use_subject_in_muc", true);
 		
-		Set<String> displayedContacts = new HashSet<String>();
+		Set<Contact> displayedContacts = new HashSet<Contact>();
 		conversations.removeAllViews();
 		List<Conversation> convList = xmppConnectionService.getConversations();
 		Collections.sort(convList, new Comparator<Conversation>() {
@@ -95,15 +85,13 @@ public class ShareWithActivity extends XmppActivity {
 				}
 			});
 			conversations.addView(view);
-			if (conversation.getContact() != null) {
-				displayedContacts.add(conversation.getContact().getUuid());
-			}
+			displayedContacts.add(conversation.getContact());
 		}
 		contacts.removeAllViews();
-		final List<Contact> contactsList = new ArrayList<Contact>();
+		List<Contact> contactsList = new ArrayList<Contact>();
 		for(Account account : xmppConnectionService.getAccounts()) {
-			for(final Contact contact : account.getRoster().getContacts()) {
-				if (!displayedContacts.contains(contact.getUuid())) {
+			for(Contact contact : account.getRoster().getContacts()) {
+				if (!displayedContacts.contains(contact)&&(contact.getOption(Contact.Options.IN_ROSTER))) {
 					contactsList.add(contact);
 				}
 			}

@@ -247,13 +247,8 @@ public class UIHelper {
 
 	public static Bitmap getContactPicture(Conversation conversation, int dpSize, Context context, boolean notification) {
 		if(conversation.getMode() == Conversation.MODE_SINGLE) {
-			if (conversation.getContact() != null){
 				return getContactPicture(conversation.getContact(), dpSize,
 						context, notification);
-			} else {
-				return getContactPicture(conversation.getName(false), dpSize,
-						context, notification);
-			}
 		} else{
 			int fgColor = UIHelper.FG_COLOR,
 				bgColor = (notification) ?
