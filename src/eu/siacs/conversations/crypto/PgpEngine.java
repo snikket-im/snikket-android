@@ -221,7 +221,6 @@ public class PgpEngine {
 				return 0;
 			}
 		case OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED:
-			Log.d("xmppService","openpgp user interaction requeried");
 			return 0;
 		case OpenPgpApi.RESULT_CODE_ERROR:
 			Log.d("xmppService","openpgp error: "+((OpenPgpError) result

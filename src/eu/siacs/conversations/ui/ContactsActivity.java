@@ -18,7 +18,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
@@ -34,13 +33,11 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.ImageView;
 import android.widget.Toast;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -130,8 +127,10 @@ public class ContactsActivity extends XmppActivity {
 				Intent intent = new Intent(getApplicationContext(),
 						ContactDetailsActivity.class);
 				intent.setAction(ContactDetailsActivity.ACTION_VIEW_CONTACT);
-				intent.putExtra("uuid", selectedContacts.get(0).getUuid());
+				intent.putExtra("account", selectedContacts.get(0).getAccount().getJid());
+				intent.putExtra("contact",selectedContacts.get(0).getJid());
 				startActivity(intent);
+				finish();
 				break;
 			case R.id.action_invite:
 				invite();
@@ -270,7 +269,7 @@ public class ContactsActivity extends XmppActivity {
 
 		aggregatedContacts.clear();
 		for (Contact contact : rosterContacts) {
-			if (contact.match(searchString))
+			if (contact.match(searchString)&&(contact.getOption(Contact.Options.IN_ROSTER)))
 				aggregatedContacts.add(contact);
 		}
 
@@ -287,9 +286,8 @@ public class ContactsActivity extends XmppActivity {
 		if (aggregatedContacts.size() == 0) {
 
 			if (Validator.isValidJid(searchString)) {
-				String name = searchString.split("@")[0];
-				Contact newContact = new Contact(null, name, searchString, null);
-				newContact.flagAsNotInRoster();
+				Contact newContact = new Contact(searchString);
+				newContact.resetOption(Contact.Options.IN_ROSTER);
 				aggregatedContacts.add(newContact);
 				contactsHeader.setText("Create new contact");
 			} else {
@@ -463,7 +461,7 @@ public class ContactsActivity extends XmppActivity {
 	}
 
 	public void startConversation(Contact contact, Account account, boolean muc) {
-		if (!contact.isInRoster()&&(!muc)) {
+		if (!contact.getOption(Contact.Options.IN_ROSTER)&&(!muc)) {
 			xmppConnectionService.createContact(contact);
 		}
 		Conversation conversation = xmppConnectionService
@@ -517,7 +515,7 @@ public class ContactsActivity extends XmppActivity {
 		this.rosterContacts.clear();
 		for(Account account : accounts) {
 			if (account.getStatus() != Account.STATUS_DISABLED) {
-				rosterContacts.addAll(xmppConnectionService.getRoster(account));
+				rosterContacts.addAll(account.getRoster().getContacts());
 			}
 		}
 		updateAggregatedContacts();
@@ -533,50 +531,10 @@ public class ContactsActivity extends XmppActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case R.id.action_refresh_contacts:
-			refreshContacts();
-			break;
 		default:
 			break;
 		}
 		return super.onOptionsItemSelected(item);
-	}
-
-	private void refreshContacts() {
-		final ProgressBar progress = (ProgressBar) findViewById(R.id.progressBar1);
-		final EditText searchBar = (EditText) findViewById(R.id.new_conversation_search);
-		final TextView contactsHeader = (TextView) findViewById(R.id.contacts_header);
-		final ListView contactList = (ListView) findViewById(R.id.contactList);
-		searchBar.setVisibility(View.GONE);
-		contactsHeader.setVisibility(View.GONE);
-		contactList.setVisibility(View.GONE);
-		progress.setVisibility(View.VISIBLE);
-		this.accounts = xmppConnectionService.getAccounts();
-		this.rosterContacts.clear();
-		for (int i = 0; i < accounts.size(); ++i) {
-			if (accounts.get(i).getStatus() == Account.STATUS_ONLINE) {
-				xmppConnectionService.updateRoster(accounts.get(i),
-						new OnRosterFetchedListener() {
-
-							@Override
-							public void onRosterFetched(
-									final List<Contact> roster) {
-								runOnUiThread(new Runnable() {
-
-									@Override
-									public void run() {
-										rosterContacts.addAll(roster);
-										progress.setVisibility(View.GONE);
-										searchBar.setVisibility(View.VISIBLE);
-										contactList.setVisibility(View.VISIBLE);
-										contactList.setVisibility(View.VISIBLE);
-										updateAggregatedContacts();
-									}
-								});
-							}
-						});
-			}
-		}
 	}
 
 	@Override

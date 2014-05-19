@@ -65,6 +65,8 @@ public class Account  extends AbstractEntity{
 
 	private String otrFingerprint;
 	
+	private Roster roster = null;
+	
 	public Account() {
 		this.uuid = "0";
 	}
@@ -286,5 +288,12 @@ public class Account  extends AbstractEntity{
 		} else {
 			return null;
 		}
+	}
+	
+	public Roster getRoster() {
+		if (this.roster==null) {
+			this.roster = new Roster(this);
+		}
+		return this.roster;
 	}
 }

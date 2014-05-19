@@ -1,8 +1,6 @@
 package eu.siacs.conversations.ui;
 
-import java.math.BigInteger;
 import java.util.Iterator;
-import java.util.Locale;
 
 import org.openintents.openpgp.util.OpenPgpUtils;
 
@@ -17,7 +15,6 @@ import android.os.Bundle;
 import android.provider.ContactsContract.CommonDataKinds;
 import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.Intents;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,6 +28,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.PgpEngine;
+import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Presences;
 import eu.siacs.conversations.utils.UIHelper;
@@ -40,12 +38,14 @@ public class ContactDetailsActivity extends XmppActivity {
 
 	protected ContactDetailsActivity activity = this;
 
-	private String uuid;
 	private Contact contact;
-
+	
+	private String accountJid;
+	private String contactJid;
+	
 	private EditText name;
-	private TextView contactJid;
-	private TextView accountJid;
+	private TextView contactJidTv;
+	private TextView accountJidTv;
 	private TextView status;
 	private TextView askAgain;
 	private CheckBox send;
@@ -56,7 +56,7 @@ public class ContactDetailsActivity extends XmppActivity {
 
 		@Override
 		public void onClick(DialogInterface dialog, int which) {
-			activity.xmppConnectionService.deleteContact(contact);
+			activity.xmppConnectionService.deleteContactOnServer(contact);
 			activity.finish();
 		}
 	};
@@ -65,8 +65,8 @@ public class ContactDetailsActivity extends XmppActivity {
 
 		@Override
 		public void onClick(DialogInterface dialog, int which) {
-			contact.setDisplayName(name.getText().toString());
-			activity.xmppConnectionService.updateContact(contact);
+			contact.setServerName(name.getText().toString());
+			activity.xmppConnectionService.pushContactToServer(contact);
 			populateView();
 		}
 	};
@@ -104,12 +104,13 @@ public class ContactDetailsActivity extends XmppActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		if (getIntent().getAction().equals(ACTION_VIEW_CONTACT)) {
-			this.uuid = getIntent().getExtras().getString("uuid");
+			this.accountJid = getIntent().getExtras().getString("account");
+			this.contactJid = getIntent().getExtras().getString("contact");
 		}
 		setContentView(R.layout.activity_contact_details);
 
-		contactJid = (TextView) findViewById(R.id.details_contactjid);
-		accountJid = (TextView) findViewById(R.id.details_account);
+		contactJidTv = (TextView) findViewById(R.id.details_contactjid);
+		accountJidTv = (TextView) findViewById(R.id.details_account);
 		status = (TextView) findViewById(R.id.details_contactstatus);
 		send = (CheckBox) findViewById(R.id.details_send_presence);
 		receive = (CheckBox) findViewById(R.id.details_receive_presence);
@@ -170,18 +171,18 @@ public class ContactDetailsActivity extends XmppActivity {
 
 	private void populateView() {
 		setTitle(contact.getDisplayName());
-		if (contact.getSubscriptionOption(Contact.Subscription.FROM)) {
+		if (contact.getOption(Contact.Options.FROM)) {
 			send.setChecked(true);
 		} else {
 			send.setText(R.string.preemptively_grant);
 			if (contact
-					.getSubscriptionOption(Contact.Subscription.PREEMPTIVE_GRANT)) {
+					.getOption(Contact.Options.PREEMPTIVE_GRANT)) {
 				send.setChecked(true);
 			} else {
 				send.setChecked(false);
 			}
 		}
-		if (contact.getSubscriptionOption(Contact.Subscription.TO)) {
+		if (contact.getOption(Contact.Options.TO)) {
 			receive.setChecked(true);
 		} else {
 			receive.setText(R.string.ask_for_presence_updates);
@@ -195,7 +196,7 @@ public class ContactDetailsActivity extends XmppActivity {
 					
 				}
 			});
-			if (contact.getSubscriptionOption(Contact.Subscription.ASKING)) {
+			if (contact.getOption(Contact.Options.ASKING)) {
 				receive.setChecked(true);
 			} else {
 				receive.setChecked(false);
@@ -233,11 +234,11 @@ public class ContactDetailsActivity extends XmppActivity {
 			break;
 		}
 		if (contact.getPresences().size() > 1) {
-			contactJid.setText(contact.getJid()+" ("+contact.getPresences().size()+")");
+			contactJidTv.setText(contact.getJid()+" ("+contact.getPresences().size()+")");
 		} else {
-			contactJid.setText(contact.getJid());
+			contactJidTv.setText(contact.getJid());
 		}
-		accountJid.setText(contact.getAccount().getJid());
+		accountJidTv.setText(contact.getAccount().getJid());
 
 		UIHelper.prepareContactBadge(this, badge, contact, getApplicationContext());
 
@@ -286,65 +287,66 @@ public class ContactDetailsActivity extends XmppActivity {
 
 	@Override
 	public void onBackendConnected() {
-		if (uuid != null) {
-			this.contact = xmppConnectionService.findContact(uuid);
-			if (this.contact != null) {
-				populateView();
+		if ((accountJid != null)&&(contactJid != null)) {
+			Account account = xmppConnectionService.findAccountByJid(accountJid);
+			if (account==null) {
+				return;
 			}
+			this.contact = account.getRoster().getContact(contactJid);
+			populateView();
 		}
 	}
 
 	@Override
 	protected void onStop() {
 		super.onStop();
-		boolean needsUpdating = false;
-		if (contact.getSubscriptionOption(Contact.Subscription.FROM)) {
+		boolean updated = false;
+		if (contact.getOption(Contact.Options.FROM)) {
 			if (!send.isChecked()) {
-				contact.resetSubscriptionOption(Contact.Subscription.FROM);
-				contact.resetSubscriptionOption(Contact.Subscription.PREEMPTIVE_GRANT);
+				contact.resetOption(Contact.Options.FROM);
+				contact.resetOption(Contact.Options.PREEMPTIVE_GRANT);
 				activity.xmppConnectionService.stopPresenceUpdatesTo(contact);
-				needsUpdating = true;
+				updated = true;
 			}
 		} else {
 			if (contact
-					.getSubscriptionOption(Contact.Subscription.PREEMPTIVE_GRANT)) {
+					.getOption(Contact.Options.PREEMPTIVE_GRANT)) {
 				if (!send.isChecked()) {
-					contact.resetSubscriptionOption(Contact.Subscription.PREEMPTIVE_GRANT);
-					needsUpdating = true;
+					contact.resetOption(Contact.Options.PREEMPTIVE_GRANT);
+					updated = true;
 				}
 			} else {
 				if (send.isChecked()) {
-					contact.setSubscriptionOption(Contact.Subscription.PREEMPTIVE_GRANT);
-					needsUpdating = true;
+					contact.setOption(Contact.Options.PREEMPTIVE_GRANT);
+					updated = true;
 				}
 			}
 		}
-		if (contact.getSubscriptionOption(Contact.Subscription.TO)) {
+		if (contact.getOption(Contact.Options.TO)) {
 			if (!receive.isChecked()) {
-				contact.resetSubscriptionOption(Contact.Subscription.TO);
+				contact.resetOption(Contact.Options.TO);
 				activity.xmppConnectionService.stopPresenceUpdatesFrom(contact);
-				needsUpdating = true;
+				updated = true;
 			}
 		} else {
-			if (contact.getSubscriptionOption(Contact.Subscription.ASKING)) {
+			if (contact.getOption(Contact.Options.ASKING)) {
 				if (!receive.isChecked()) {
-					contact.resetSubscriptionOption(Contact.Subscription.ASKING);
+					contact.resetOption(Contact.Options.ASKING);
 					activity.xmppConnectionService
 							.stopPresenceUpdatesFrom(contact);
-					needsUpdating = true;
+					updated = true;
 				}
 			} else {
 				if (receive.isChecked()) {
-					contact.setSubscriptionOption(Contact.Subscription.ASKING);
+					contact.setOption(Contact.Options.ASKING);
 					activity.xmppConnectionService
 							.requestPresenceUpdatesFrom(contact);
-					needsUpdating = true;
+					updated = true;
 				}
 			}
 		}
-		if (needsUpdating) {
+		if (updated) {
 			Toast.makeText(getApplicationContext(), "Subscription updated", Toast.LENGTH_SHORT).show();
-			activity.xmppConnectionService.updateContact(contact);
 		}
 	}
 

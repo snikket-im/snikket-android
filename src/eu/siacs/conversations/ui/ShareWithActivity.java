@@ -102,7 +102,7 @@ public class ShareWithActivity extends XmppActivity {
 		contacts.removeAllViews();
 		final List<Contact> contactsList = new ArrayList<Contact>();
 		for(Account account : xmppConnectionService.getAccounts()) {
-			for(final Contact contact : xmppConnectionService.getRoster(account)) {
+			for(final Contact contact : account.getRoster().getContacts()) {
 				if (!displayedContacts.contains(contact.getUuid())) {
 					contactsList.add(contact);
 				}

@@ -1,8 +1,8 @@
 package eu.siacs.conversations.utils;
 
-import java.util.Hashtable;
+import java.util.ArrayList;
+import java.util.List;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Loader;
@@ -10,21 +10,15 @@ import android.content.Loader.OnLoadCompleteListener;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Looper;
 import android.provider.ContactsContract;
 import android.provider.ContactsContract.Profile;
-import android.provider.MediaStore;
 
 public class PhoneHelper {
 
 	public static void loadPhoneContacts(Context context,
 			final OnPhoneContactsLoadedListener listener) {
-		if (Looper.myLooper() == null) {
-			Looper.prepare();
-		}
-		final Looper mLooper = Looper.myLooper();
-		final Hashtable<String, Bundle> phoneContacts = new Hashtable<String, Bundle>();
-
+		final List<Bundle> phoneContacts = new ArrayList<Bundle>();
+		
 		final String[] PROJECTION = new String[] { ContactsContract.Data._ID,
 				ContactsContract.Data.DISPLAY_NAME,
 				ContactsContract.Data.PHOTO_THUMBNAIL_URI,
@@ -58,15 +52,14 @@ public class PhoneHelper {
 									.getColumnIndex(ContactsContract.Data.PHOTO_THUMBNAIL_URI)));
 					contact.putString("lookup", cursor.getString(cursor
 							.getColumnIndex(ContactsContract.Data.LOOKUP_KEY)));
-					phoneContacts.put(
-							cursor.getString(cursor
-									.getColumnIndex(ContactsContract.CommonDataKinds.Im.DATA)),
-							contact);
+					
+					contact.putString("jid",cursor.getString(cursor
+									.getColumnIndex(ContactsContract.CommonDataKinds.Im.DATA)));
+					phoneContacts.add(contact);
 				}
 				if (listener != null) {
 					listener.onPhoneContactsLoaded(phoneContacts);
 				}
-				mLooper.quit();
 			}
 		});
 		mCursorLoader.startLoading();
