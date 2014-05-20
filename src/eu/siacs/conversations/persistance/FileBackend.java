@@ -94,17 +94,30 @@ public class FileBackend {
 			JingleFile file = getJingleFile(message);
 			file.getParentFile().mkdirs();
 			file.createNewFile();
-			OutputStream os = new FileOutputStream(file);
-			Bitmap originalBitmap = BitmapFactory.decodeStream(is);
+			Bitmap originalBitmap;
+			try {
+				originalBitmap = BitmapFactory.decodeStream(is);
+				is.close();
+			} catch (OutOfMemoryError e) {
+				is.close();
+				Log.d("xmppService","catched out of memory. try again");
+				if (image != null) {
+					is = context.getContentResolver().openInputStream(image);
+				} else {
+					is = new FileInputStream(getIncomingFile());
+				}
+				BitmapFactory.Options options = new BitmapFactory.Options();
+				options.inSampleSize = 2;
+				originalBitmap = BitmapFactory.decodeStream(is, null, options);
+			}
 			if (originalBitmap == null) {
-				os.close();
 				throw new ImageCopyException(R.string.error_not_an_image_file);
 			}
-			is.close();
 			if (image == null) {
 				getIncomingFile().delete();
 			}
 			Bitmap scalledBitmap = resize(originalBitmap, IMAGE_SIZE);
+			OutputStream os = new FileOutputStream(file);
 			boolean success = scalledBitmap.compress(
 					Bitmap.CompressFormat.WEBP, 75, os);
 			if (!success) {
