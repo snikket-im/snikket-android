@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import org.bouncycastle.crypto.engines.ISAACEngine;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -81,8 +83,12 @@ public class FileBackend {
 			return originalBitmap;
 		}
 	}
+	
+	public JingleFile copyImageToPrivateStorage(Message message, Uri image) throws ImageCopyException {
+		return this.copyImageToPrivateStorage(message, image,0);
+	}
 
-	public JingleFile copyImageToPrivateStorage(Message message, Uri image)
+	private JingleFile copyImageToPrivateStorage(Message message, Uri image, int sampleSize)
 			throws ImageCopyException {
 		try {
 			InputStream is;
@@ -95,22 +101,12 @@ public class FileBackend {
 			file.getParentFile().mkdirs();
 			file.createNewFile();
 			Bitmap originalBitmap;
-			try {
-				originalBitmap = BitmapFactory.decodeStream(is);
-				is.close();
-			} catch (OutOfMemoryError e) {
-				is.close();
-				Log.d("xmppService","catched out of memory. try again");
-				if (image != null) {
-					is = context.getContentResolver().openInputStream(image);
-				} else {
-					is = new FileInputStream(getIncomingFile());
-				}
-				BitmapFactory.Options options = new BitmapFactory.Options();
-				options.inSampleSize = 2;
-				originalBitmap = BitmapFactory.decodeStream(is, null, options);
-				is.close();
-			}
+			BitmapFactory.Options options = new BitmapFactory.Options();
+			int inSampleSize = (int) Math.pow(2, sampleSize);
+			Log.d("xmppService","reading bitmap with sample size "+inSampleSize);
+			options.inSampleSize = inSampleSize;
+			originalBitmap = BitmapFactory.decodeStream(is, null, options);
+			is.close();
 			if (originalBitmap == null) {
 				throw new ImageCopyException(R.string.error_not_an_image_file);
 			}
@@ -138,6 +134,8 @@ public class FileBackend {
 		} catch (SecurityException e) {
 			throw new ImageCopyException(
 					R.string.error_security_exception_during_image_copy);
+		} catch (OutOfMemoryError e) {
+			return copyImageToPrivateStorage(message, image, sampleSize++);
 		}
 	}
 
