@@ -303,12 +303,6 @@ public class XmppConnectionService extends Service {
 				} else {
 					Contact contact = account.getRoster().getContact(
 							packet.getFrom());
-					/*
-					 * if (contact == null) { if ("subscribe".equals(type)) {
-					 * account.getXmppConnection().addPendingSubscription(
-					 * fromParts[0]); } else { // Log.d(LOGTAG,packet.getFrom()+
-					 * // " could not be found"); } return; }
-					 */
 					if (type == null) {
 						if (fromParts.length == 2) {
 							contact.updatePresence(fromParts[1], Presences
@@ -327,12 +321,6 @@ public class XmppConnectionService extends Service {
 									}
 									contact.setPgpKeyId(pgp.fetchKeyId(account,
 											msg, x.getContent()));
-									Log.d("xmppService",
-											account.getJid()
-													+ ": fetched key id for "
-													+ contact.getJid()
-													+ " was:"
-													+ contact.getPgpKeyId());
 								}
 							}
 						} else {
@@ -357,8 +345,7 @@ public class XmppConnectionService extends Service {
 								requestPresenceUpdatesFrom(contact);
 							}
 						} else {
-							account.getXmppConnection().addPendingSubscription(
-									fromParts[0]);
+							contact.setOption(Contact.Options.PENDING_SUBSCRIPTION_REQUEST);
 						}
 					} else {
 						// Log.d(LOGTAG, packet.toString());
@@ -1198,8 +1185,7 @@ public class XmppConnectionService extends Service {
 		pushContactToServer(contact);
 		if (autoGrant) {
 			requestPresenceUpdatesFrom(contact);
-			if (contact.getAccount().getXmppConnection().hasPendingSubscription(
-					contact.getJid())) {
+			if (contact.getOption(Contact.Options.PENDING_SUBSCRIPTION_REQUEST)) {
 				Log.d("xmppService", "contact had pending subscription");
 				sendPresenceUpdatesTo(contact);
 			}
@@ -1260,6 +1246,7 @@ public class XmppConnectionService extends Service {
 		packet.setAttribute("from", contact.getAccount().getJid());
 		Log.d(LOGTAG, packet.toString());
 		contact.getAccount().getXmppConnection().sendPresencePacket(packet);
+		contact.resetOption(Contact.Options.PENDING_SUBSCRIPTION_REQUEST);
 	}
 
 	public void sendPresence(Account account) {

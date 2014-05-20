@@ -392,20 +392,17 @@ public class ConversationFragment extends Fragment {
 
 				if (type == RECIEVED) {
 					if (item.getConversation().getMode() == Conversation.MODE_MULTI) {
-						if (item.getCounterpart() != null) {
-							viewHolder.contact_picture
-									.setImageBitmap(mBitmapCache.get(item
-											.getCounterpart(), null,
-											getActivity()
-													.getApplicationContext()));
-						} else {
-							viewHolder.contact_picture
-									.setImageBitmap(mBitmapCache.get(
-											item.getConversation().getName(
-													useSubject), null,
-											getActivity()
-													.getApplicationContext()));
-						}
+						viewHolder.contact_picture.setImageBitmap(mBitmapCache
+								.get(item.getCounterpart(), null, getActivity()
+										.getApplicationContext()));
+						viewHolder.contact_picture
+								.setOnClickListener(new OnClickListener() {
+
+									@Override
+									public void onClick(View v) {
+										highlightInConference(item.getCounterpart());
+									}
+								});
 					}
 				}
 
@@ -461,6 +458,22 @@ public class ConversationFragment extends Fragment {
 		return view;
 	}
 
+	protected void highlightInConference(String nick) {
+		if (chatMsg.getText().toString().isEmpty()) {
+			chatMsg.setText(nick+": ");
+		} else {
+			String oldString = chatMsg.getText().toString();
+			if (oldString.endsWith(" ")) {
+				chatMsg.setText(oldString+nick+" ");
+			} else {
+				chatMsg.setText(oldString+" "+nick+" ");
+			}
+		}
+		int position = chatMsg.length();
+		Editable etext = chatMsg.getText();
+		Selection.setSelection(etext, position);
+	}
+	
 	protected Bitmap findSelfPicture() {
 		SharedPreferences sharedPref = PreferenceManager
 				.getDefaultSharedPreferences(getActivity()

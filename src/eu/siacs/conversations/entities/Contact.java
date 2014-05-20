@@ -286,5 +286,6 @@ public class Contact {
 		public static final int ASKING = 2;
 		public static final int PREEMPTIVE_GRANT = 4;
 		public static final int IN_ROSTER = 8;
+		public static final int PENDING_SUBSCRIPTION_REQUEST = 16;
 	}
 }
