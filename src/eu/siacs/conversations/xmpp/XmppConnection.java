@@ -74,9 +74,7 @@ public class XmppConnection implements Runnable {
 	private boolean shouldAuthenticate = true;
 	private Element streamFeatures;
 	private HashMap<String, List<String>> disco = new HashMap<String, List<String>>();
-	
-	private HashSet<String> pendingSubscriptions = new HashSet<String>();
-	
+
 	private String streamId = null;
 	private int smVersion = 3;
 	
@@ -904,15 +902,6 @@ public class XmppConnection implements Runnable {
 		return findDiscoItemByFeature("http://jabber.org/protocol/muc");
 	}
 	
-	public boolean hasPendingSubscription(String jid) {
-		return this.pendingSubscriptions.contains(jid);
-	}
-	
-	public void addPendingSubscription(String jid) {
-		Log.d(LOGTAG,"adding "+jid+" to pending subscriptions");
-		this.pendingSubscriptions.add(jid);
-	}
-
 	public int getTimeToNextAttempt() {
 		int interval = (int) (25 * Math.pow(1.5,attempt));
 		int secondsSinceLast = (int) ((SystemClock.elapsedRealtime() - this.lastConnect) / 1000);
