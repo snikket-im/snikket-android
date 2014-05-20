@@ -259,6 +259,7 @@ public class XmppConnection implements Runnable {
 				RequestPacket r = new RequestPacket(smVersion);
 				tagWriter.writeStanzaAsync(r);
 			} else if (nextTag.isStart("resumed")) {
+				lastPaketReceived = SystemClock.elapsedRealtime();
 				Log.d(LOGTAG,account.getJid()+": session resumed");
 				tagReader.readElement(nextTag);
 				sendPing();
