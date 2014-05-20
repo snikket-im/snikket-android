@@ -15,6 +15,8 @@
     <string name="action_delete_contact">Eliminar contacto de la lista</string>
     <string name="title_activity_contacts">Contactos</string>
     <string name="just_now">ahora</string>
+    <string name="minutes_ago">min</string>
+    <string name="unread_conversations">conversaciones por leer</string>
     <string name="sending">enviando&#8230;</string>
     <string name="announce_pgp">Renovar anuncio PGP</string>
     <string name="encrypted_message">Desencriptando mensaje. Espera por favor&#8230;</string>
@@ -31,7 +33,7 @@
     <string name="share_with">Compartir con</string>
     <string name="ask_again"><u>Pulsa para preguntar otra vez</u></string>
     <string name="show_otr_key">Huella dactilar OTR</string>
-    <string name="no_otr_fingerprint">No se ha generado una huella dactilar OTR. Simplemente continúa y comienza una conversación encriptada</string>
+    <string name="no_otr_fingerprint">No se ha generado una huella dactilar OTR. Continúa y comienza una conversación encriptada</string>
     <string name="start_conversation">Comenzar conversación</string>
     <string name="invite_contacts">Invitar contactos</string>
     <string name="invite_contacts_to_existing">Invitar a conferencia existente</string>
@@ -89,8 +91,8 @@
     <string name="offering">ofreciendo&#8230;</string>
     <string name="no_pgp_key">Clave openPGP no encontrada</string>
     <string name="contact_has_no_pgp_key">Conversations no ha podido encriptar tus mensajes porque tu contacto no está anunciando su clave publica.\n\n<small>Por favor, pide a tu contacto que configure openPGP.</small></string>
-    <string name="encrypted_message_received"><i>Mensaje encriptado recibido. Pulsa para desencriptar y ver.</i></string>
-    <string name="encrypted_image_received"><i>Imagen encriptada recibida. Pulsa para desencriptar y ver.</i></string>
+    <string name="encrypted_message_received"><i>Mensaje encriptado recibido. Pulsa para ver.</i></string>
+    <string name="encrypted_image_received"><i>Imagen encriptada recibida. Pulsa para ver.</i></string>
     <string name="image_file"><i>Imagen recibida. Pulsa para ver</i></string>
     <string name="otr_file_transfer">Encriptación con OTR no disponible</string>
     <string name="otr_file_transfer_msg">Desafortunadamente la encriptación con OTR no está disponible para transferencia de archivos. Puedes selecionar encriptación con openPGP o no usar encriptación.</string>
@@ -124,7 +126,7 @@
     <string name="accept">Aceptar</string>
     <string name="error">Ha ocurrido un error</string>
     <string name="pref_grant_presence_updates">Suscripción de presencia</string>
-    <string name="pref_grant_presence_updates_summary">Por defecto otorgar y pedir suscripciones de presencia de los contactos que ha creado</string>
+    <string name="pref_grant_presence_updates_summary">Por defecto otorgar y pedir suscripciones de presencia de los contactos que has creado</string>
     <string name="subscriptions">Suscripciones</string>
     <string name="your_account">Tu cuenta</string>
     <string name="keys">Claves</string>
@@ -138,7 +140,7 @@
     <string name="error_compressing_image">Error convirtiendo el archivo de imagen</string>
     <string name="error_file_not_found">Archivo no encontrado</string>
     <string name="error_io_exception">Error I/O general. ¿Puede que te hayas quedado sin espacio en disco?</string>
-    <string name="error_security_exception_during_image_copy">La aplicación que usas para seleccionar imágenes no nos proporciona suficientes permisos para leer el archivo.\n\n<small>Utiliza un explorador de ficheros diferente para seleccionar la imagen</small></string>
+    <string name="error_security_exception_during_image_copy">La aplicación que usas para seleccionar imágenes no proporciona suficientes permisos para leer el archivo.\n\n<small>Utiliza un explorador de ficheros diferente para seleccionar la imagen</small></string>
     <string name="account_status">Estado:</string>
     <string name="account_status_unknown">Desconocido</string>
     <string name="account_status_disabled">Deshabilitado temporalmente</string>
@@ -167,5 +169,5 @@
     <string name="account_settings">Configuración de cuenta</string>
     <string name="save">Guardar</string>
     <string name="passwords_do_not_match">Las contraseñas no coinciden</string>
-    <string name="invalid_jid">Éste no es un identificador de Jabber válido</string>
+    <string name="invalid_jid">El identificador no es un identificador de Jabber válido</string>
 </resources>
