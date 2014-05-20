@@ -233,7 +233,7 @@ public class ConversationFragment extends Fragment {
 					viewHolder.indicator.setVisibility(View.VISIBLE);
 				}
 
-				String formatedTime = UIHelper.readableTimeDifference(message
+				String formatedTime = UIHelper.readableTimeDifference(getContext(), message
 						.getTimeSent());
 				if (message.getStatus() <= Message.STATUS_RECIEVED) {
 					if ((filesize != null) && (info != null)) {

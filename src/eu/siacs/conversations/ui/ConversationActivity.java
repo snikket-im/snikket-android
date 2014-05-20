@@ -223,7 +223,7 @@ public class ConversationActivity extends XmppActivity {
 				}
 
 				((TextView) view.findViewById(R.id.conversation_lastupdate))
-						.setText(UIHelper.readableTimeDifference(conv
+						.setText(UIHelper.readableTimeDifference(getContext(), conv
 								.getLatestMessage().getTimeSent()));
 
 				ImageView profilePicture = (ImageView) view

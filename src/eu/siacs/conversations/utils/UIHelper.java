@@ -50,16 +50,16 @@ public class UIHelper {
 	private static final int FG_COLOR = 0xFFE5E5E5;
 	private static final int TRANSPARENT = 0x00000000;
 
-	public static String readableTimeDifference(long time) {
+	public static String readableTimeDifference(Context context, long time) {
 		if (time == 0) {
-			return "just now";
+			return context.getString(R.string.just_now);
 		}
 		Date date = new Date(time);
 		long difference = (System.currentTimeMillis() - time) / 1000;
 		if (difference < 60) {
-			return "just now";
+			return context.getString(R.string.just_now);
 		} else if (difference < 60 * 10) {
-			return difference / 60 + " min ago";
+			return difference / 60 + " " + context.getString(R.string.minutes_ago);
 		} else if (difference < 60 * 60 * 24) {
 			SimpleDateFormat sdf = new SimpleDateFormat("HH:mm",Locale.US);
 			return sdf.format(date);
@@ -395,7 +395,7 @@ public class UIHelper {
 					.bigText(bigText.toString()));
 		} else {
 			NotificationCompat.InboxStyle style = new NotificationCompat.InboxStyle();
-			style.setBigContentTitle(unread.size() + " unread Conversations");
+			style.setBigContentTitle(unread.size() + " " + context.getString(R.string.unread_conversations));
 			StringBuilder names = new StringBuilder();
 			for (int i = 0; i < unread.size(); ++i) {
 				targetUuid = unread.get(i).getUuid();
@@ -407,7 +407,7 @@ public class UIHelper {
 				style.addLine(Html.fromHtml("<b>" + unread.get(i).getName(useSubject)
 						+ "</b> " + unread.get(i).getLatestMessage().getReadableBody(context)));
 			}
-			mBuilder.setContentTitle(unread.size() + " unread Conversations");
+			mBuilder.setContentTitle(unread.size() + " " + context.getString(R.string.unread_conversations));
 			mBuilder.setContentText(names.toString());
 			mBuilder.setStyle(style);
 		}
