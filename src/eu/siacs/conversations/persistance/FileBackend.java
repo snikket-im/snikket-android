@@ -109,6 +109,7 @@ public class FileBackend {
 				BitmapFactory.Options options = new BitmapFactory.Options();
 				options.inSampleSize = 2;
 				originalBitmap = BitmapFactory.decodeStream(is, null, options);
+				is.close();
 			}
 			if (originalBitmap == null) {
 				throw new ImageCopyException(R.string.error_not_an_image_file);
