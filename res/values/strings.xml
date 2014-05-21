@@ -170,5 +170,5 @@
     <string name="save">Save</string>
     <string name="passwords_do_not_match">Passwords do not match</string>
     <string name="invalid_jid">This is not a valid Jabber ID</string>
-
+	<string name="error_out_of_memory">Ouf of memory. Image is to large</string>
 </resources>
