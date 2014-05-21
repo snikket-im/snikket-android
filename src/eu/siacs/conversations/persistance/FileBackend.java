@@ -135,7 +135,12 @@ public class FileBackend {
 			throw new ImageCopyException(
 					R.string.error_security_exception_during_image_copy);
 		} catch (OutOfMemoryError e) {
-			return copyImageToPrivateStorage(message, image, sampleSize++);
+			++sampleSize;
+			if (sampleSize<=3) {
+				return copyImageToPrivateStorage(message, image, sampleSize);
+			} else {
+				throw new ImageCopyException(R.string.error_out_of_memory);
+			}
 		}
 	}
 
