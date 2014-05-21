@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
@@ -323,6 +325,15 @@ public class UIHelper {
 		mNotificationManager.notify(1111, notification);
 	}
 
+	private static Pattern generateNickHighlightPattern(String nick) {
+		// We expect a word boundary, i.e. space or start of string, followed by the
+		// nick (matched in case-insensitive manner), followed by optional
+		// punctuation (for example "bob: i disagree" or "how are you alice?"),
+		// followed by another word boundary.
+		return Pattern.compile("\\b"+nick+"\\p{Punct}?\\b",
+				Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
+	}
+
 	public static void updateNotification(Context context,
 			List<Conversation> conversations, Conversation currentCon, boolean notify) {
 		NotificationManager mNotificationManager = (NotificationManager) context
@@ -343,7 +354,9 @@ public class UIHelper {
 		
 		if ((currentCon != null) &&(currentCon.getMode() == Conversation.MODE_MULTI)&&(!alwaysNotify)) {
 			String nick = currentCon.getMucOptions().getNick();
-			notify = currentCon.getLatestMessage().getBody().contains(nick);
+			Pattern highlight = generateNickHighlightPattern(nick);
+			Matcher m = highlight.matcher(currentCon.getLatestMessage().getBody());
+			notify = m.find();
 		}
 		
 		List<Conversation> unread = new ArrayList<Conversation>();
@@ -453,11 +466,13 @@ public class UIHelper {
 	private static boolean wasHighlighted(Conversation conversation) {
 		List<Message> messages = conversation.getMessages();
 		String nick = conversation.getMucOptions().getNick();
+		Pattern highlight = generateNickHighlightPattern(nick);
 		for(int i = messages.size() - 1; i >= 0; --i) {
 			if (messages.get(i).isRead()) {
 				break;
 			} else {
-				if (messages.get(i).getBody().contains(nick)) {
+				Matcher m = highlight.matcher(messages.get(i).getBody());
+				if (m.find()) {
 					return true;
 				}
 			}
