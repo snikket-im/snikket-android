@@ -622,6 +622,23 @@ public class ConversationActivity extends XmppActivity {
 	}
 
 	@Override
+	protected void onNewIntent (Intent intent) {
+		if ((Intent.ACTION_VIEW.equals(intent.getAction())&&(VIEW_CONVERSATION.equals(intent.getType())))) {
+			String convToView = (String) intent.getExtras().get(
+					CONVERSATION);
+
+			for (int i = 0; i < conversationList.size(); ++i) {
+				if (conversationList.get(i).getUuid().equals(convToView)) {
+					setSelectedConversation(conversationList.get(i));
+				}
+			}
+			paneShouldBeOpen = false;
+			String text = intent.getExtras().getString(TEXT, null);
+			swapConversationFragment().setText(text);
+		}
+	}
+	
+	@Override
 	public void onStart() {
 		super.onStart();
 		SharedPreferences preferences = PreferenceManager

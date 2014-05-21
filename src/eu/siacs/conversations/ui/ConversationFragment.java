@@ -459,15 +459,11 @@ public class ConversationFragment extends Fragment {
 	}
 
 	protected void highlightInConference(String nick) {
-		if (chatMsg.getText().toString().isEmpty()) {
+		String oldString = chatMsg.getText().toString().trim();
+		if (oldString.isEmpty()) {
 			chatMsg.setText(nick+": ");
 		} else {
-			String oldString = chatMsg.getText().toString();
-			if (oldString.endsWith(" ")) {
-				chatMsg.setText(oldString+nick+" ");
-			} else {
-				chatMsg.setText(oldString+" "+nick+" ");
-			}
+			chatMsg.setText(oldString+" "+nick+" ");
 		}
 		int position = chatMsg.length();
 		Editable etext = chatMsg.getText();
@@ -510,10 +506,16 @@ public class ConversationFragment extends Fragment {
 		if (this.conversation == null) {
 			return;
 		}
+		String oldString = conversation.getNextMessage().trim();
 		if (this.pastedText == null) {
-			this.chatMsg.setText(conversation.getNextMessage());
+			this.chatMsg.setText(oldString);
 		} else {
-			chatMsg.setText(conversation.getNextMessage() + " " + pastedText);
+			
+			if (oldString.isEmpty()) {
+				chatMsg.setText(pastedText);
+			} else {
+				chatMsg.setText(oldString + " " + pastedText);
+			}
 			pastedText = null;
 		}
 		int position = chatMsg.length();

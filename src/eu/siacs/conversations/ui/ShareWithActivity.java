@@ -80,7 +80,7 @@ public class ShareWithActivity extends XmppActivity {
 				@Override
 				public void onClick(View v) {
 					 String sharedText = getIntent().getStringExtra(Intent.EXTRA_TEXT);
-					 switchToConversation(conversation, sharedText);
+					 switchToConversation(conversation, sharedText,true);
 					 finish();
 				}
 			});
@@ -114,7 +114,7 @@ public class ShareWithActivity extends XmppActivity {
 				public void onClick(View v) {
 					 String sharedText = getIntent().getStringExtra(Intent.EXTRA_TEXT);
 					 Conversation conversation = xmppConnectionService.findOrCreateConversation(con.getAccount(), con.getJid(), false);
-					 switchToConversation(conversation, sharedText);
+					 switchToConversation(conversation, sharedText,true);
 					 finish();
 				}
 			});

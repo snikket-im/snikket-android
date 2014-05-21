@@ -258,7 +258,7 @@ public class ContactsActivity extends XmppActivity {
 									conversation, subject.toString());
 							xmppConnectionService.inviteToConference(conversation,
 									selectedContacts);
-							switchToConversation(conversation, null);
+							switchToConversation(conversation, null,false);
 						}
 					});
 			builder.create().show();
@@ -467,7 +467,7 @@ public class ContactsActivity extends XmppActivity {
 		Conversation conversation = xmppConnectionService
 				.findOrCreateConversation(account, contact.getJid(), muc);
 
-		switchToConversation(conversation, null);
+		switchToConversation(conversation, null,false);
 	}
 
 	@Override
@@ -494,7 +494,7 @@ public class ContactsActivity extends XmppActivity {
 									.findOrCreateConversation(
 											accounts.get(which), finalJid,
 											false);
-							switchToConversation(conversation, null);
+							switchToConversation(conversation, null,false);
 							finish();
 						}
 					}).show();
@@ -502,7 +502,7 @@ public class ContactsActivity extends XmppActivity {
 					Conversation conversation = xmppConnectionService
 							.findOrCreateConversation(this.accounts.get(0),
 									jid, false);
-					switchToConversation(conversation, null);
+					switchToConversation(conversation, null,false);
 					finish();
 				}
 			}

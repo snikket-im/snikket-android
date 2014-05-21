@@ -145,7 +145,7 @@ public abstract class XmppActivity extends Activity {
 		ExceptionHelper.init(getApplicationContext());
 	}
 	
-	public void switchToConversation(Conversation conversation, String text) {
+	public void switchToConversation(Conversation conversation, String text, boolean newTask) {
 		Intent viewConversationIntent = new Intent(this,
 				ConversationActivity.class);
 		viewConversationIntent.setAction(Intent.ACTION_VIEW);
@@ -155,8 +155,12 @@ public abstract class XmppActivity extends Activity {
 			viewConversationIntent.putExtra(ConversationActivity.TEXT, text);
 		}
 		viewConversationIntent.setType(ConversationActivity.VIEW_CONVERSATION);
-		viewConversationIntent.setFlags(viewConversationIntent.getFlags()
+		if (newTask) {
+			viewConversationIntent.setFlags(viewConversationIntent.getFlags() | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP |  Intent.FLAG_ACTIVITY_TASK_ON_HOME );
+		} else {
+			viewConversationIntent.setFlags(viewConversationIntent.getFlags()
 				| Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		}
 		startActivity(viewConversationIntent);
 	}
 	

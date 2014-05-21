@@ -508,7 +508,7 @@ public class XmppConnectionService extends Service {
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		this.wakeLock.acquire();
-		if ((intent.getAction()!=null)&&(intent.getAction().equals(ACTION_MERGE_PHONE_CONTACTS))) {
+		if ((intent!=null)&&(intent.getAction()!=null)&&(intent.getAction().equals(ACTION_MERGE_PHONE_CONTACTS))) {
 			mergePhoneContactsWithRoster();
 		}
 		ConnectivityManager cm = (ConnectivityManager) getApplicationContext()
@@ -1209,42 +1209,34 @@ public class XmppConnectionService extends Service {
 	}
 
 	public void requestPresenceUpdatesFrom(Contact contact) {
-		// Requesting a Subscription type=subscribe
 		PresencePacket packet = new PresencePacket();
 		packet.setAttribute("type", "subscribe");
 		packet.setAttribute("to", contact.getJid());
 		packet.setAttribute("from", contact.getAccount().getJid());
-		Log.d(LOGTAG, packet.toString());
 		contact.getAccount().getXmppConnection().sendPresencePacket(packet);
 	}
 
 	public void stopPresenceUpdatesFrom(Contact contact) {
-		// Unsubscribing type='unsubscribe'
 		PresencePacket packet = new PresencePacket();
 		packet.setAttribute("type", "unsubscribe");
 		packet.setAttribute("to", contact.getJid());
 		packet.setAttribute("from", contact.getAccount().getJid());
-		Log.d(LOGTAG, packet.toString());
 		contact.getAccount().getXmppConnection().sendPresencePacket(packet);
 	}
 
 	public void stopPresenceUpdatesTo(Contact contact) {
-		// Canceling a Subscription type=unsubscribed
 		PresencePacket packet = new PresencePacket();
 		packet.setAttribute("type", "unsubscribed");
 		packet.setAttribute("to", contact.getJid());
 		packet.setAttribute("from", contact.getAccount().getJid());
-		Log.d(LOGTAG, packet.toString());
 		contact.getAccount().getXmppConnection().sendPresencePacket(packet);
 	}
 
 	public void sendPresenceUpdatesTo(Contact contact) {
-		// type='subscribed'
 		PresencePacket packet = new PresencePacket();
 		packet.setAttribute("type", "subscribed");
 		packet.setAttribute("to", contact.getJid());
 		packet.setAttribute("from", contact.getAccount().getJid());
-		Log.d(LOGTAG, packet.toString());
 		contact.getAccount().getXmppConnection().sendPresencePacket(packet);
 		contact.resetOption(Contact.Options.PENDING_SUBSCRIPTION_REQUEST);
 	}
