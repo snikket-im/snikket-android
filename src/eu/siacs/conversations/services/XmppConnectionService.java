@@ -508,8 +508,12 @@ public class XmppConnectionService extends Service {
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		this.wakeLock.acquire();
-		if ((intent!=null)&&(intent.getAction()!=null)&&(intent.getAction().equals(ACTION_MERGE_PHONE_CONTACTS))) {
+		if ((intent!=null)&&(ACTION_MERGE_PHONE_CONTACTS.equals(intent.getAction()))) {
 			mergePhoneContactsWithRoster();
+			return START_STICKY;
+		} else if ((intent!=null)&&(Intent.ACTION_SHUTDOWN.equals(intent.getAction()))){
+			logoutAndSave();
+			return START_NOT_STICKY;
 		}
 		ConnectivityManager cm = (ConnectivityManager) getApplicationContext()
 				.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -617,10 +621,15 @@ public class XmppConnectionService extends Service {
 		for (Account account : accounts) {
 			databaseBackend.writeRoster(account.getRoster());
 			if (account.getXmppConnection() != null) {
-				disconnect(account, true);
+				disconnect(account, false);
 			}
 		}
+		Context context = getApplicationContext();
+		AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+		Intent intent = new Intent(context, EventReceiver.class);
+		alarmManager.cancel(PendingIntent.getBroadcast(context, 0, intent, 0));
 		Log.d(LOGTAG,"good bye");
+		stopSelf();
 	}
 
 	protected void scheduleWakeupCall(int seconds, boolean ping) {
@@ -1193,10 +1202,15 @@ public class XmppConnectionService extends Service {
 	}
 	
 	public void pushContactToServer(Contact contact) {
-		IqPacket iq = new IqPacket(IqPacket.TYPE_SET);
-		iq.query("jabber:iq:roster").addChild(contact.asElement());
 		Account account = contact.getAccount();
-		account.getXmppConnection().sendIqPacket(iq, null);
+		if (account.getStatus() == Account.STATUS_ONLINE) {
+			IqPacket iq = new IqPacket(IqPacket.TYPE_SET);
+			iq.query("jabber:iq:roster").addChild(contact.asElement());
+			account.getXmppConnection().sendIqPacket(iq, null);
+			contact.resetOption(Contact.Options.DIRTY_PUSH);
+		} else {
+			contact.setOption(Contact.Options.DIRTY_PUSH);
+		}
 	}
 	
 	public void deleteContactOnServer(Contact contact) {

@@ -32,7 +32,6 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 
 	public DatabaseBackend(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
-		Log.d("xmppService",CREATE_CONTATCS_STATEMENT);
 	}
 
 	@Override
