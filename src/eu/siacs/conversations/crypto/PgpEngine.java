@@ -17,6 +17,7 @@ import org.openintents.openpgp.util.OpenPgpApi.IOpenPgpCallback;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
+import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.ui.UiCallback;
@@ -114,10 +115,15 @@ public class PgpEngine {
 	}
 
 	public void encrypt(final Message message,final UiCallback callback) {
-		long[] keys = { message.getConversation().getContact().getPgpKeyId() };
+		
 		Intent params = new Intent();
 		params.setAction(OpenPgpApi.ACTION_ENCRYPT);
-		params.putExtra(OpenPgpApi.EXTRA_KEY_IDS, keys);
+		if (message.getConversation().getMode() == Conversation.MODE_SINGLE) {
+			long[] keys = { message.getConversation().getContact().getPgpKeyId() };
+			params.putExtra(OpenPgpApi.EXTRA_KEY_IDS, keys);
+		} else {
+			params.putExtra(OpenPgpApi.EXTRA_KEY_IDS, message.getConversation().getMucOptions().getPgpKeyIds());
+		}
 		params.putExtra(OpenPgpApi.EXTRA_ACCOUNT_NAME, message.getConversation().getAccount().getJid());
 		
 		if (message.getType() == Message.TYPE_TEXT) {

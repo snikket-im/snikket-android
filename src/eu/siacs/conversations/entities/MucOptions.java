@@ -236,4 +236,18 @@ public class MucOptions {
 	public void flagAboutToRename() {
 		this.aboutToRename = true;
 	}
+	
+	public long[] getPgpKeyIds() {
+		List<Long> ids = new ArrayList<Long>();
+		for(User user : getUsers()) {
+			if(user.getPgpKeyId()!=0) {
+				ids.add(user.getPgpKeyId());
+			}
+		}
+		long[] primitivLongArray = new long[ids.size()];
+		for(int i = 0; i < ids.size(); ++i) {
+			primitivLongArray[i] = ids.get(i);
+		}
+		return primitivLongArray;
+	}
 }
