@@ -873,7 +873,6 @@ public class XmppConnectionService extends Service {
 			packet.setBody(message.getBody());
 			packet.setTo(message.getCounterpart().split("/")[0]);
 			packet.setFrom(account.getJid());
-			packet.addChild("x", "jabber:x:encrypted").setContent("test");
 		}
 		packet.setId(message.getUuid());
 		return packet;

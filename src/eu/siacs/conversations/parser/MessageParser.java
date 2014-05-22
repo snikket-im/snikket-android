@@ -120,7 +120,12 @@ public class MessageParser {
 		} else {
 			status = Message.STATUS_RECIEVED;
 		}
-		return new Message(conversation, counterPart, packet.getBody(), Message.ENCRYPTION_NONE, status);
+		String pgpBody = getPgpBody(packet);
+		if (pgpBody==null) {
+			return new Message(conversation, counterPart, packet.getBody(), Message.ENCRYPTION_NONE, status);
+		} else {
+			return new Message(conversation, counterPart, pgpBody, Message.ENCRYPTION_PGP, status);
+		}
 	}
 
 	public Message parseCarbonMessage(MessagePacket packet,Account account) {
@@ -160,11 +165,11 @@ public class MessageParser {
 	}
 
 	public String getPgpBody(MessagePacket packet) {
-		for(Element child : packet.getChildren()) {
-			if (child.getName().equals("x")&&child.getAttribute("xmlns").equals("jabber:x:encrypted")) {
-				return child.getContent();
-			}
+		Element child = packet.findChild("x", "jabber:x:encrypted");
+		if (child==null) {
+			return null;
+		} else {
+			return child.getContent();
 		}
-		return null;
 	}
 }
