@@ -89,11 +89,10 @@ public class ContactDetailsActivity extends XmppActivity {
 		@Override
 		public void onClick(View v) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-			builder.setTitle("Add to phone book");
-			builder.setMessage("Do you want to add " + contact.getJid()
-					+ " to your phones contact list?");
-			builder.setNegativeButton("Cancel", null);
-			builder.setPositiveButton("Add", addToPhonebook);
+			builder.setTitle(getString(R.string.action_add_phone_book));
+			builder.setMessage(getString(R.string.add_phone_book_text, contact.getJid()));
+			builder.setNegativeButton(getString(R.string.cancel), null);
+			builder.setPositiveButton(getString(R.string.add), addToPhonebook);
 			builder.create().show();
 		}
 	};
@@ -125,17 +124,17 @@ public class ContactDetailsActivity extends XmppActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem menuItem) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setNegativeButton("Cancel", null);
+		builder.setNegativeButton(getString(R.string.cancel), null);
 		switch (menuItem.getItemId()) {
 		case android.R.id.home:
 			finish();
 			break;
 		case R.id.action_delete_contact:
-			builder.setTitle("Delete from roster")
+			builder.setTitle(getString(R.string.action_delete_contact))
 					.setMessage(
 							getString(R.string.remove_contact_text,
 									contact.getJid()))
-					.setPositiveButton("Delete", removeFromRoster).create()
+					.setPositiveButton(getString(R.string.delete), removeFromRoster).create()
 					.show();
 			break;
 		case R.id.action_edit_contact:
@@ -146,7 +145,7 @@ public class ContactDetailsActivity extends XmppActivity {
 				name = (EditText) view.findViewById(R.id.editText1);
 				name.setText(contact.getDisplayName());
 				builder.setView(view).setTitle(contact.getJid())
-						.setPositiveButton("Edit", editContactNameListener)
+						.setPositiveButton(getString(R.string.edit), editContactNameListener)
 						.create().show();
 
 			} else {
@@ -191,7 +190,8 @@ public class ContactDetailsActivity extends XmppActivity {
 				
 				@Override
 				public void onClick(View v) {
-					Toast.makeText(getApplicationContext(), "Asked for presence updates",Toast.LENGTH_SHORT).show();
+					Toast.makeText(getApplicationContext(), getString(R.string.asked_for_presence_updates),
+                            Toast.LENGTH_SHORT).show();
 					xmppConnectionService.requestPresenceUpdatesFrom(contact);
 					
 				}
@@ -205,31 +205,31 @@ public class ContactDetailsActivity extends XmppActivity {
 
 		switch (contact.getMostAvailableStatus()) {
 		case Presences.CHAT:
-			status.setText("free to chat");
+			status.setText(R.string.contact_status_free_to_chat);
 			status.setTextColor(0xFF83b600);
 			break;
 		case Presences.ONLINE:
-			status.setText("online");
+			status.setText(R.string.contact_status_online);
 			status.setTextColor(0xFF83b600);
 			break;
 		case Presences.AWAY:
-			status.setText("away");
+			status.setText(R.string.contact_status_away);
 			status.setTextColor(0xFFffa713);
 			break;
 		case Presences.XA:
-			status.setText("extended away");
+			status.setText(R.string.contact_status_extended_away);
 			status.setTextColor(0xFFffa713);
 			break;
 		case Presences.DND:
-			status.setText("do not disturb");
+			status.setText(R.string.contact_status_do_not_disturb);
 			status.setTextColor(0xFFe92727);
 			break;
 		case Presences.OFFLINE:
-			status.setText("offline");
+			status.setText(R.string.contact_status_offline);
 			status.setTextColor(0xFFe92727);
 			break;
 		default:
-			status.setText("offline");
+			status.setText(R.string.contact_status_offline);
 			status.setTextColor(0xFFe92727);
 			break;
 		}
@@ -346,7 +346,7 @@ public class ContactDetailsActivity extends XmppActivity {
 			}
 		}
 		if (updated) {
-			Toast.makeText(getApplicationContext(), "Subscription updated", Toast.LENGTH_SHORT).show();
+			Toast.makeText(getApplicationContext(), getString(R.string.subscription_updated), Toast.LENGTH_SHORT).show();
 		}
 	}
 
