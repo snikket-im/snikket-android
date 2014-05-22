@@ -82,7 +82,7 @@ public class XmppConnectionService extends Service {
 	private static final int PING_TIMEOUT = 5;
 	private static final int CONNECT_TIMEOUT = 60;
 	private static final long CARBON_GRACE_PERIOD = 60000L;
-	
+
 	private static String ACTION_MERGE_PHONE_CONTACTS = "merge_phone_contacts";
 
 	private MessageParser mMessageParser = new MessageParser(this);
@@ -110,7 +110,8 @@ public class XmppConnectionService extends Service {
 		@Override
 		public void onChange(boolean selfChange) {
 			super.onChange(selfChange);
-			Intent intent = new Intent(getApplicationContext(), XmppConnectionService.class);
+			Intent intent = new Intent(getApplicationContext(),
+					XmppConnectionService.class);
 			intent.setAction(ACTION_MERGE_PHONE_CONTACTS);
 			startService(intent);
 		}
@@ -243,7 +244,8 @@ public class XmppConnectionService extends Service {
 			} else if (account.getStatus() == Account.STATUS_REGISTRATION_SUCCESSFULL) {
 				databaseBackend.updateAccount(account);
 				reconnectAccount(account, true);
-			} else if (account.getStatus() != Account.STATUS_CONNECTING) {
+			} else if ((account.getStatus() != Account.STATUS_CONNECTING)
+					&& (account.getStatus() != Account.STATUS_NO_INTERNET)) {
 				int next = account.getXmppConnection().getTimeToNextAttempt();
 				Log.d(LOGTAG, account.getJid()
 						+ ": error connecting account. try again in " + next
@@ -508,10 +510,12 @@ public class XmppConnectionService extends Service {
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		this.wakeLock.acquire();
-		if ((intent!=null)&&(ACTION_MERGE_PHONE_CONTACTS.equals(intent.getAction()))) {
+		if ((intent != null)
+				&& (ACTION_MERGE_PHONE_CONTACTS.equals(intent.getAction()))) {
 			mergePhoneContactsWithRoster();
 			return START_STICKY;
-		} else if ((intent!=null)&&(Intent.ACTION_SHUTDOWN.equals(intent.getAction()))){
+		} else if ((intent != null)
+				&& (Intent.ACTION_SHUTDOWN.equals(intent.getAction()))) {
 			logoutAndSave();
 			return START_NOT_STICKY;
 		}
@@ -610,13 +614,13 @@ public class XmppConnectionService extends Service {
 		super.onDestroy();
 		this.logoutAndSave();
 	}
-	
+
 	@Override
 	public void onTaskRemoved(Intent rootIntent) {
 		super.onTaskRemoved(rootIntent);
 		this.logoutAndSave();
 	}
-	
+
 	private void logoutAndSave() {
 		for (Account account : accounts) {
 			databaseBackend.writeRoster(account.getRoster());
@@ -625,10 +629,11 @@ public class XmppConnectionService extends Service {
 			}
 		}
 		Context context = getApplicationContext();
-		AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+		AlarmManager alarmManager = (AlarmManager) context
+				.getSystemService(Context.ALARM_SERVICE);
 		Intent intent = new Intent(context, EventReceiver.class);
 		alarmManager.cancel(PendingIntent.getBroadcast(context, 0, intent, 0));
-		Log.d(LOGTAG,"good bye");
+		Log.d(LOGTAG, "good bye");
 		stopSelf();
 	}
 
@@ -1192,15 +1197,8 @@ public class XmppConnectionService extends Service {
 			contact.setOption(Contact.Options.ASKING);
 		}
 		pushContactToServer(contact);
-		if (autoGrant) {
-			requestPresenceUpdatesFrom(contact);
-			if (contact.getOption(Contact.Options.PENDING_SUBSCRIPTION_REQUEST)) {
-				Log.d("xmppService", "contact had pending subscription");
-				sendPresenceUpdatesTo(contact);
-			}
-		}
 	}
-	
+
 	public void pushContactToServer(Contact contact) {
 		Account account = contact.getAccount();
 		if (account.getStatus() == Account.STATUS_ONLINE) {
@@ -1208,18 +1206,31 @@ public class XmppConnectionService extends Service {
 			iq.query("jabber:iq:roster").addChild(contact.asElement());
 			account.getXmppConnection().sendIqPacket(iq, null);
 			contact.resetOption(Contact.Options.DIRTY_PUSH);
+			if (contact.getOption(Contact.Options.ASKING)) {
+				requestPresenceUpdatesFrom(contact);
+			}
+			if (contact.getOption(Contact.Options.PENDING_SUBSCRIPTION_REQUEST)) {
+				Log.d("xmppService", "contact had pending subscription");
+				sendPresenceUpdatesTo(contact);
+			}
+			contact.resetOption(Contact.Options.DIRTY_PUSH);
 		} else {
 			contact.setOption(Contact.Options.DIRTY_PUSH);
 		}
 	}
-	
+
 	public void deleteContactOnServer(Contact contact) {
-		IqPacket iq = new IqPacket(IqPacket.TYPE_SET);
-		Element item = iq.query("jabber:iq:roster").addChild("item");
-		item.setAttribute("jid", contact.getJid());
-		item.setAttribute("subscription", "remove");
 		Account account = contact.getAccount();
-		account.getXmppConnection().sendIqPacket(iq, null);
+		if (account.getStatus() == Account.STATUS_ONLINE) {
+			IqPacket iq = new IqPacket(IqPacket.TYPE_SET);
+			Element item = iq.query("jabber:iq:roster").addChild("item");
+			item.setAttribute("jid", contact.getJid());
+			item.setAttribute("subscription", "remove");
+			account.getXmppConnection().sendIqPacket(iq, null);
+			contact.resetOption(Contact.Options.DIRTY_DELETE);
+		} else {
+			contact.setOption(Contact.Options.DIRTY_DELETE);
+		}
 	}
 
 	public void requestPresenceUpdatesFrom(Contact contact) {
@@ -1371,7 +1382,7 @@ public class XmppConnectionService extends Service {
 					getConversations(), conversation, notify);
 		}
 	}
-	
+
 	public Account findAccountByJid(String accountJid) {
 		for (Account account : this.accounts) {
 			if (account.getJid().equals(accountJid)) {
