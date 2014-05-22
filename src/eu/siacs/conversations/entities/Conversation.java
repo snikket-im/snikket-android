@@ -276,7 +276,7 @@ public class Conversation extends AbstractEntity {
 
 	public synchronized MucOptions getMucOptions() {
 		if (this.mucOptions == null) {
-			this.mucOptions = new MucOptions();
+			this.mucOptions = new MucOptions(this.getAccount());
 		}
 		this.mucOptions.setConversation(this);
 		return this.mucOptions;

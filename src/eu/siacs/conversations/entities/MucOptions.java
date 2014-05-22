@@ -3,11 +3,10 @@ package eu.siacs.conversations.entities;
 import java.util.ArrayList;
 import java.util.List;
 
-import eu.siacs.conversations.entities.MucOptions.User;
+import eu.siacs.conversations.crypto.PgpEngine;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.stanzas.PresencePacket;
 import android.annotation.SuppressLint;
-import android.util.Log;
 
 @SuppressLint("DefaultLocale")
 public class MucOptions {
@@ -31,6 +30,7 @@ public class MucOptions {
 		private int role;
 		private int affiliation;
 		private String name;
+		private long pgpKeyId = 0;
 		
 		public String getName() {
 			return name;
@@ -70,7 +70,15 @@ public class MucOptions {
 				this.affiliation = AFFILIATION_NONE;
 			}
 		}
+		public void setPgpKeyId(long id) {
+			this.pgpKeyId = id;
+		}
+		
+		public long getPgpKeyId() {
+			return this.pgpKeyId;
+		}
 	}
+	private Account account;
 	private ArrayList<User> users = new ArrayList<User>();
 	private Conversation conversation;
 	private boolean isOnline = false;
@@ -80,6 +88,9 @@ public class MucOptions {
 	private User self = new User();
 	private String subject = null;
 
+	public MucOptions(Account account) {
+		this.account = account;
+	}
 	
 	public void deleteUser(String name) {
 		for(int i = 0; i < users.size(); ++i) {
@@ -100,7 +111,7 @@ public class MucOptions {
 		users.add(user);
 		}
 	
-	public void processPacket(PresencePacket packet) {
+	public void processPacket(PresencePacket packet, PgpEngine pgp) {
 		String[] fromParts = packet.getFrom().split("/");
 		if (fromParts.length>=2) {
 			String name = fromParts[1];
@@ -118,6 +129,20 @@ public class MucOptions {
 					self = user;
 				} else {
 					addUser(user);
+				}
+				if (pgp != null) {
+					Element x = packet.findChild("x",
+							"jabber:x:signed");
+					if (x != null) {
+						Element status = packet.findChild("status");
+						String msg;
+						if (status != null) {
+							msg = status.getContent();
+						} else {
+							msg = "";
+						}
+						user.setPgpKeyId(pgp.fetchKeyId(account,msg, x.getContent()));
+					}
 				}
 			} else if (type.equals("unavailable")) {
 				if (name.equals(getNick())) {

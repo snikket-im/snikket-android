@@ -181,6 +181,7 @@ public class MucDetailsActivity extends XmppActivity {
 							.findViewById(R.id.contact_photo);
 					imageView.setImageBitmap(UIHelper.getContactPicture(contact.getName(), 48,this.getApplicationContext(), false));
 					membersView.addView(view);
+					Log.d(LOGTAG,contact.getName()+" pgp id: "+contact.getPgpKeyId());
 				}
 			}
 		} else {

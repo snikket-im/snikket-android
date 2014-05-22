@@ -678,37 +678,41 @@ public class ConversationFragment extends Fragment {
 		final XmppConnectionService xmppService = activity.xmppConnectionService;
 		final Contact contact = message.getConversation().getContact();
 		if (activity.hasPgp()) {
-			if (contact.getPgpKeyId() != 0) {
-				xmppService.getPgpEngine().hasKey(contact, new UiCallback() {
-
-					@Override
-					public void userInputRequried(PendingIntent pi) {
-						activity.runIntent(pi,
-								ConversationActivity.REQUEST_ENCRYPT_MESSAGE);
-					}
-
-					@Override
-					public void success() {
-						activity.encryptTextMessage();
-					}
-
-					@Override
-					public void error(int error) {
-
-					}
-				});
-
+			if (conversation.getMode() == Conversation.MODE_SINGLE) {
+				if (contact.getPgpKeyId() != 0) {
+					xmppService.getPgpEngine().hasKey(contact, new UiCallback() {
+	
+						@Override
+						public void userInputRequried(PendingIntent pi) {
+							activity.runIntent(pi,
+									ConversationActivity.REQUEST_ENCRYPT_MESSAGE);
+						}
+	
+						@Override
+						public void success() {
+							activity.encryptTextMessage();
+						}
+	
+						@Override
+						public void error(int error) {
+	
+						}
+					});
+	
+				} else {
+					showNoPGPKeyDialog(new DialogInterface.OnClickListener() {
+	
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							conversation.setNextEncryption(Message.ENCRYPTION_NONE);
+							message.setEncryption(Message.ENCRYPTION_NONE);
+							xmppService.sendMessage(message, null);
+							chatMsg.setText("");
+						}
+					});
+				}
 			} else {
-				showNoPGPKeyDialog(new DialogInterface.OnClickListener() {
-
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						conversation.setNextEncryption(Message.ENCRYPTION_NONE);
-						message.setEncryption(Message.ENCRYPTION_NONE);
-						xmppService.sendMessage(message, null);
-						chatMsg.setText("");
-					}
-				});
+				activity.encryptTextMessage();
 			}
 		}
 	}

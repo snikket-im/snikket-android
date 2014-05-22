@@ -321,7 +321,6 @@ public class ConversationActivity extends XmppActivity {
 			if (this.getSelectedConversation() != null) {
 				if (this.getSelectedConversation().getMode() == Conversation.MODE_MULTI) {
 					menuContactDetails.setVisible(false);
-					menuSecure.setVisible(false);
 					menuAttach.setVisible(false);
 				} else {
 					menuMucDetails.setVisible(false);
@@ -536,14 +535,17 @@ public class ConversationActivity extends XmppActivity {
 					}
 				});
 				popup.inflate(R.menu.encryption_choices);
+				MenuItem otr = popup.getMenu().findItem(R.id.encryption_choice_otr);
+				if (conversation.getMode() == Conversation.MODE_MULTI) {
+					otr.setVisible(false);
+				}
 				switch (conversation.getNextEncryption()) {
 				case Message.ENCRYPTION_NONE:
 					popup.getMenu().findItem(R.id.encryption_choice_none)
 							.setChecked(true);
 					break;
 				case Message.ENCRYPTION_OTR:
-					popup.getMenu().findItem(R.id.encryption_choice_otr)
-							.setChecked(true);
+					otr.setChecked(true);
 					break;
 				case Message.ENCRYPTION_PGP:
 					popup.getMenu().findItem(R.id.encryption_choice_pgp)

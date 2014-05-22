@@ -279,7 +279,7 @@ public class XmppConnectionService extends Service {
 				Conversation muc = findMuc(
 						packet.getAttribute("from").split("/")[0], account);
 				if (muc != null) {
-					muc.getMucOptions().processPacket(packet);
+					muc.getMucOptions().processPacket(packet,getPgpEngine());
 				} else {
 					Log.d(LOGTAG, account.getJid()
 							+ ": could not find muc for received muc package "
@@ -293,7 +293,7 @@ public class XmppConnectionService extends Service {
 							account.getJid() + ": reading muc status packet "
 									+ packet.toString());
 					int error = muc.getMucOptions().getError();
-					muc.getMucOptions().processPacket(packet);
+					muc.getMucOptions().processPacket(packet,getPgpEngine());
 					if ((muc.getMucOptions().getError() != error)
 							&& (convChangedListener != null)) {
 						Log.d(LOGTAG, "muc error status changed");
@@ -873,6 +873,7 @@ public class XmppConnectionService extends Service {
 			packet.setBody(message.getBody());
 			packet.setTo(message.getCounterpart().split("/")[0]);
 			packet.setFrom(account.getJid());
+			packet.addChild("x", "jabber:x:encrypted").setContent("test");
 		}
 		packet.setId(message.getUuid());
 		return packet;
@@ -1107,6 +1108,7 @@ public class XmppConnectionService extends Service {
 	}
 
 	public void joinMuc(Conversation conversation) {
+		Account account = conversation.getAccount();
 		String[] mucParts = conversation.getContactJid().split("/");
 		String muc;
 		String nick;
@@ -1115,19 +1117,24 @@ public class XmppConnectionService extends Service {
 			nick = mucParts[1];
 		} else {
 			muc = mucParts[0];
-			nick = conversation.getAccount().getUsername();
+			nick = account.getUsername();
 		}
 		PresencePacket packet = new PresencePacket();
 		packet.setAttribute("to", muc + "/" + nick);
 		Element x = new Element("x");
 		x.setAttribute("xmlns", "http://jabber.org/protocol/muc");
+		String sig = account.getPgpSignature();
+		if (sig != null) {
+			packet.addChild("status").setContent("online");
+			packet.addChild("x", "jabber:x:signed").setContent(sig);
+		}
 		if (conversation.getMessages().size() != 0) {
 			long lastMsgTime = conversation.getLatestMessage().getTimeSent();
 			long diff = (System.currentTimeMillis() - lastMsgTime) / 1000 - 1;
 			x.addChild("history").setAttribute("seconds", diff + "");
 		}
 		packet.addChild(x);
-		conversation.getAccount().getXmppConnection()
+		account.getXmppConnection()
 				.sendPresencePacket(packet);
 	}
 
