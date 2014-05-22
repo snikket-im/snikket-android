@@ -31,12 +31,23 @@ public class Roster {
 	}
 
 	public void clearPresences() {
-		// TODO Auto-generated method stub
-		
+		for(Contact contact : getContacts()) {
+			contact.clearPresences();
+		}
 	}
 	
 	public void markAllAsNotInRoster() {
-		
+		for(Contact contact : getContacts()) {
+			contact.resetOption(Contact.Options.IN_ROSTER);
+		}
+	}
+	
+	public void clearSystemAccounts() {
+		for(Contact contact : getContacts()) {
+			contact.setPhotoUri(null);
+			contact.setSystemName(null);
+			contact.setSystemAccount(null);
+		}
 	}
 
 	public List<Contact> getContacts() {

@@ -894,6 +894,9 @@ public class XmppConnectionService extends Service {
 				new OnPhoneContactsLoadedListener() {
 					@Override
 					public void onPhoneContactsLoaded(List<Bundle> phoneContacts) {
+						for(Account account : accounts) {
+							account.getRoster().clearSystemAccounts();
+						}
 						for (Bundle phoneContact : phoneContacts) {
 							for (Account account : accounts) {
 								String jid = phoneContact.getString("jid");
