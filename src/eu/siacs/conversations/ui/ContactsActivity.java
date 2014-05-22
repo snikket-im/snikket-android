@@ -269,7 +269,7 @@ public class ContactsActivity extends XmppActivity {
 
 		aggregatedContacts.clear();
 		for (Contact contact : rosterContacts) {
-			if (contact.match(searchString)&&(contact.getOption(Contact.Options.IN_ROSTER)))
+			if (contact.match(searchString)&&(contact.showInRoster()))
 				aggregatedContacts.add(contact);
 		}
 

@@ -3,12 +3,15 @@ package eu.siacs.conversations.entities;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Set;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import eu.siacs.conversations.xml.Element;
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.util.Log;
 
 public class Contact {
 	public static final String TABLENAME = "contacts";
@@ -36,8 +39,8 @@ public class Contact {
 
 	protected boolean inRoster = true;
 
-	public Contact(String account, String systemName,
-			String serverName, String jid, int subscription, String photoUri,
+	public Contact(String account, String systemName, String serverName,
+			String jid, int subscription, String photoUri,
 			String systemAccount, String keys) {
 		this.accountUuid = account;
 		this.systemName = systemName;
@@ -247,6 +250,12 @@ public class Contact {
 		return ((this.subscription & (1 << option)) != 0);
 	}
 
+	public boolean showInRoster() {
+		return (this.getOption(Contact.Options.IN_ROSTER) && (!this
+				.getOption(Contact.Options.DIRTY_DELETE)))
+				|| (this.getOption(Contact.Options.DIRTY_PUSH));
+	}
+
 	public void parseSubscriptionFromElement(Element item) {
 		String ask = item.getAttribute("ask");
 		String subscription = item.getAttribute("subscription");
@@ -261,13 +270,19 @@ public class Contact {
 			} else if (subscription.equals("both")) {
 				this.setOption(Contact.Options.TO);
 				this.setOption(Contact.Options.FROM);
+			} else if (subscription.equals("none")) {
+				this.resetOption(Contact.Options.FROM);
+				this.resetOption(Contact.Options.TO);
 			}
 		}
 
-		if ((ask != null) && (ask.equals("subscribe"))) {
-			this.setOption(Contact.Options.ASKING);
-		} else {
-			this.resetOption(Contact.Options.ASKING);
+		// do NOT override asking if pending push request
+		if (!this.getOption(Contact.Options.DIRTY_PUSH)) {
+			if ((ask != null) && (ask.equals("subscribe"))) {
+				this.setOption(Contact.Options.ASKING);
+			} else {
+				this.resetOption(Contact.Options.ASKING);
+			}
 		}
 	}
 
@@ -284,10 +299,10 @@ public class Contact {
 		public static final int TO = 0;
 		public static final int FROM = 1;
 		public static final int ASKING = 2;
-		public static final int PREEMPTIVE_GRANT = 4;
-		public static final int IN_ROSTER = 8;
-		public static final int PENDING_SUBSCRIPTION_REQUEST = 16;
-		public static final int DIRTY_PUSH = 32;
-		public static final int DIRTY_DELETE = 64;
+		public static final int PREEMPTIVE_GRANT = 3;
+		public static final int IN_ROSTER = 4;
+		public static final int PENDING_SUBSCRIPTION_REQUEST = 5;
+		public static final int DIRTY_PUSH = 6;
+		public static final int DIRTY_DELETE = 7;
 	}
 }

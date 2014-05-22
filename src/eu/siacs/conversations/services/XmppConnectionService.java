@@ -234,6 +234,7 @@ public class XmppConnectionService extends Service {
 						sendUnsendMessages(conversations.get(i));
 					}
 				}
+				syncDirtyContacts(account);
 				scheduleWakeupCall(PING_MAX_INTERVAL, true);
 			} else if (account.getStatus() == Account.STATUS_OFFLINE) {
 				if (!account.isOptionSet(Account.OPTION_DISABLED)) {
@@ -490,9 +491,12 @@ public class XmppConnectionService extends Service {
 				String name = item.getAttribute("name");
 				String subscription = item.getAttribute("subscription");
 				Contact contact = account.getRoster().getContact(jid);
-				contact.setServerName(name);
+				if (!contact.getOption(Contact.Options.DIRTY_PUSH)) {
+					contact.setServerName(name);
+				}
 				if (subscription.equals("remove")) {
 					contact.resetOption(Contact.Options.IN_ROSTER);
+					contact.resetOption(Contact.Options.DIRTY_DELETE);
 				} else {
 					contact.setOption(Contact.Options.IN_ROSTER);
 					contact.parseSubscriptionFromElement(item);
@@ -1191,6 +1195,18 @@ public class XmppConnectionService extends Service {
 	public void updateMessage(Message message) {
 		databaseBackend.updateMessage(message);
 	}
+	
+	protected void syncDirtyContacts(Account account) {
+		for(Contact contact : account.getRoster().getContacts()) {
+			if (contact.getOption(Contact.Options.DIRTY_PUSH)) {
+				pushContactToServer(contact);
+			}
+			if (contact.getOption(Contact.Options.DIRTY_DELETE)) {
+				Log.d(LOGTAG,"dirty delete");
+				deleteContactOnServer(contact);
+			}
+		}
+	}
 
 	public void createContact(Contact contact) {
 		SharedPreferences sharedPref = getPreferences();
@@ -1203,12 +1219,12 @@ public class XmppConnectionService extends Service {
 	}
 
 	public void pushContactToServer(Contact contact) {
+		contact.resetOption(Contact.Options.DIRTY_DELETE);
 		Account account = contact.getAccount();
 		if (account.getStatus() == Account.STATUS_ONLINE) {
 			IqPacket iq = new IqPacket(IqPacket.TYPE_SET);
 			iq.query("jabber:iq:roster").addChild(contact.asElement());
 			account.getXmppConnection().sendIqPacket(iq, null);
-			contact.resetOption(Contact.Options.DIRTY_PUSH);
 			if (contact.getOption(Contact.Options.ASKING)) {
 				requestPresenceUpdatesFrom(contact);
 			}
@@ -1223,6 +1239,7 @@ public class XmppConnectionService extends Service {
 	}
 
 	public void deleteContactOnServer(Contact contact) {
+		contact.resetOption(Contact.Options.DIRTY_PUSH);
 		Account account = contact.getAccount();
 		if (account.getStatus() == Account.STATUS_ONLINE) {
 			IqPacket iq = new IqPacket(IqPacket.TYPE_SET);
@@ -1266,7 +1283,6 @@ public class XmppConnectionService extends Service {
 		packet.setAttribute("to", contact.getJid());
 		packet.setAttribute("from", contact.getAccount().getJid());
 		contact.getAccount().getXmppConnection().sendPresencePacket(packet);
-		contact.resetOption(Contact.Options.PENDING_SUBSCRIPTION_REQUEST);
 	}
 
 	public void sendPresence(Account account) {

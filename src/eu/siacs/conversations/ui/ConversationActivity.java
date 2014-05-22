@@ -474,7 +474,7 @@ public class ConversationActivity extends XmppActivity {
 			break;
 		case R.id.action_contact_details:
 			Contact contact = this.getSelectedConversation().getContact();
-			if (contact.getOption(Contact.Options.IN_ROSTER)) {
+			if (contact.showInRoster()) {
 				Intent intent = new Intent(this, ContactDetailsActivity.class);
 				intent.setAction(ContactDetailsActivity.ACTION_VIEW_CONTACT);
 				intent.putExtra("account", this.getSelectedConversation().getAccount().getJid());
