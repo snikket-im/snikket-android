@@ -82,8 +82,8 @@ public class EditAccount extends DialogFragment {
 				});
 
 		builder.setView(view);
-		builder.setNeutralButton(R.string.cancel, null);
-		builder.setPositiveButton(R.string.save, null);
+		builder.setNeutralButton(getString(R.string.cancel), null);
+		builder.setPositiveButton(getString(R.string.save), null);
 		return builder.create();
 	}
 

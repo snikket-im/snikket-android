@@ -39,7 +39,7 @@
         <activity
             android:name="eu.siacs.conversations.ui.ConversationActivity"
             android:configChanges="orientation|screenSize"
-            android:label="Conversations"
+            android:label="@string/title_activity_conversations"
             android:windowSoftInputMode="stateHidden" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -49,23 +49,23 @@
         </activity>
         <activity
             android:name="eu.siacs.conversations.ui.SettingsActivity"
-            android:label="Settings"
+            android:label="@string/title_activity_settings"
             android:parentActivityName="eu.siacs.conversations.ui.ConversationActivity" >
         </activity>
         <activity
             android:name="eu.siacs.conversations.ui.ManageAccountActivity"
-            android:label="Manage Accounts"
+            android:label="@string/title_activity_manage_accounts"
             android:configChanges="orientation|screenSize"
             android:parentActivityName="eu.siacs.conversations.ui.ConversationActivity" >
         </activity>
         <activity
             android:name="eu.siacs.conversations.ui.MucDetailsActivity"
-            android:label="Conference Details"
+            android:label="@string/title_activity_conference_details"
             android:windowSoftInputMode="stateHidden" >
         </activity>
         <activity
             android:name="eu.siacs.conversations.ui.ContactDetailsActivity"
-            android:label="Contact Details"
+            android:label="@string/title_activity_contact_details"
             android:windowSoftInputMode="stateHidden" >
         </activity>
         <activity
@@ -85,7 +85,7 @@
         </activity>
         <activity
             android:name="eu.siacs.conversations.ui.ShareWithActivity"
-            android:label="Conversations"
+            android:label="@string/title_activity_conversations"
             android:theme="@android:style/Theme.Holo.Light.DialogWhenLarge"
             android:icon="@drawable/ic_launcher">
             <intent-filter>

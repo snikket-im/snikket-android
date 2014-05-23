@@ -186,7 +186,7 @@ public class ContactsActivity extends XmppActivity {
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			builder.setTitle(getString(R.string.account_offline));
 			builder.setMessage(getString(R.string.cant_invite_while_offline));
-			builder.setNegativeButton("OK", null);
+			builder.setNegativeButton(getString(R.string.ok), null);
 			builder.setIconAttribute(android.R.attr.alertDialogIcon);
 			builder.create().show();
 			return false;
@@ -289,12 +289,12 @@ public class ContactsActivity extends XmppActivity {
 				Contact newContact = new Contact(searchString);
 				newContact.resetOption(Contact.Options.IN_ROSTER);
 				aggregatedContacts.add(newContact);
-				contactsHeader.setText("Create new contact");
+				contactsHeader.setText(getString(R.string.new_contact));
 			} else {
-				contactsHeader.setText("Contacts");
+				contactsHeader.setText(getString(R.string.contacts));
 			}
 		} else {
-			contactsHeader.setText("Contacts");
+			contactsHeader.setText(getString(R.string.contacts));
 		}
 
 		contactsAdapter.notifyDataSetChanged();
@@ -427,7 +427,7 @@ public class ContactsActivity extends XmppActivity {
 		}
 
 		AlertDialog.Builder accountChooser = new AlertDialog.Builder(this);
-		accountChooser.setTitle("Choose account");
+		accountChooser.setTitle(getString(R.string.choose_account));
 		accountChooser.setItems(accountList, listener);
 		return accountChooser.create();
 	}
@@ -435,9 +435,9 @@ public class ContactsActivity extends XmppActivity {
 	public void showIsMucDialogIfNeeded(final Contact clickedContact) {
 		if (clickedContact.couldBeMuc()) {
 			AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-			dialog.setTitle("Multi User Conference");
-			dialog.setMessage("Are you trying to join a conference?");
-			dialog.setPositiveButton("Yes", new OnClickListener() {
+			dialog.setTitle(getString(R.string.multi_user_conference));
+			dialog.setMessage(getString(R.string.trying_join_conference));
+			dialog.setPositiveButton(getString(R.string.yes), new OnClickListener() {
 
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
@@ -445,7 +445,7 @@ public class ContactsActivity extends XmppActivity {
 							clickedContact.getAccount(), true);
 				}
 			});
-			dialog.setNegativeButton("No", new OnClickListener() {
+			dialog.setNegativeButton(getString(R.string.no), new OnClickListener() {
 
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
