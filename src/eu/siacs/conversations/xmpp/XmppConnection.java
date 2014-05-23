@@ -330,6 +330,9 @@ public class XmppConnection implements Runnable {
 		}
 		element.setAttributes(currentTag.getAttributes());
 		Tag nextTag = tagReader.readTag();
+		if (nextTag==null) {
+			throw new IOException("interrupted mid tag");
+		}
 		while (!nextTag.isEnd(element.getName())) {
 			if (!nextTag.isNo()) {
 				Element child = tagReader.readElement(nextTag);
@@ -341,6 +344,9 @@ public class XmppConnection implements Runnable {
 				element.addChild(child);
 			}
 			nextTag = tagReader.readTag();
+			if (nextTag==null) {
+				throw new IOException("interrupted mid tag");
+			}
 		}
 		++stanzasReceived;
 		lastPaketReceived = SystemClock.elapsedRealtime();
