@@ -36,6 +36,7 @@ import eu.siacs.conversations.utils.PhoneHelper;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.OnBindListener;
+import eu.siacs.conversations.xmpp.OnContactStatusChanged;
 import eu.siacs.conversations.xmpp.OnIqPacketReceived;
 import eu.siacs.conversations.xmpp.OnMessagePacketReceived;
 import eu.siacs.conversations.xmpp.OnPresencePacketReceived;
@@ -95,6 +96,16 @@ public class XmppConnectionService extends Service {
 	private int convChangedListenerCount = 0;
 	private OnAccountListChangedListener accountChangedListener = null;
 	private OnTLSExceptionReceived tlsException = null;
+	private OnContactStatusChanged onContactStatusChanged = new OnContactStatusChanged() {
+		
+		@Override
+		public void onContactStatusChanged(Contact contact) {
+			Conversation conversation = findActiveConversation(contact);
+			if (conversation!=null) {
+				conversation.endOtrIfNeeded();
+			}
+		}
+	};
 
 	public void setOnTLSExceptionReceivedListener(
 			OnTLSExceptionReceived listener) {
@@ -325,8 +336,7 @@ public class XmppConnectionService extends Service {
 											msg, x.getContent()));
 								}
 							}
-						} else {
-							// Log.d(LOGTAG,"presence without resource "+packet.toString());
+							onContactStatusChanged.onContactStatusChanged(contact);
 						}
 					} else if (type.equals("unavailable")) {
 						if (fromParts.length != 2) {
@@ -334,6 +344,7 @@ public class XmppConnectionService extends Service {
 						} else {
 							contact.removePresence(fromParts[1]);
 						}
+						onContactStatusChanged.onContactStatusChanged(contact);
 					} else if (type.equals("subscribe")) {
 						Log.d(LOGTAG, "received subscribe packet from "
 								+ packet.getFrom());
@@ -946,6 +957,15 @@ public class XmppConnectionService extends Service {
 
 	public List<Account> getAccounts() {
 		return this.accounts;
+	}
+	
+	public Conversation findActiveConversation(Contact contact) {
+		for (Conversation conversation : this.getConversations()) {
+			if (conversation.getContact() == contact) {
+				return conversation;
+			}
+		}
+		return null;
 	}
 
 	public Conversation findOrCreateConversation(Account account, String jid,

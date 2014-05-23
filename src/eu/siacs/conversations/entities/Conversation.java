@@ -10,11 +10,11 @@ import net.java.otr4j.crypto.OtrCryptoException;
 import net.java.otr4j.session.SessionID;
 import net.java.otr4j.session.SessionImpl;
 import net.java.otr4j.session.SessionStatus;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
+import android.util.Log;
 
 public class Conversation extends AbstractEntity {
 
@@ -240,6 +240,7 @@ public class Conversation extends AbstractEntity {
 	public void endOtrIfNeeded() {
 		if (this.otrSession != null) {
 			if (this.otrSession.getSessionStatus() == SessionStatus.ENCRYPTED) {
+				Log.d("xmppService","ending otr session with "+getContactJid());
 				try {
 					this.otrSession.endSession();
 					this.resetOtrSession();
@@ -251,20 +252,7 @@ public class Conversation extends AbstractEntity {
 	}
 
 	public boolean hasValidOtrSession() {
-		if (this.otrSession == null) {
-			return false;
-		} else {
-			String foreignPresence = this.otrSession.getSessionID().getUserID();
-			if (getContact()==null) {
-				return true;
-			} else {
-				if (!getContact().getPresences().containsKey(foreignPresence)) {
-					this.resetOtrSession();
-					return false;
-				}
-				return true;
-			}
-		}
+		return this.otrSession != null;
 	}
 
 	public String getOtrFingerprint() {
