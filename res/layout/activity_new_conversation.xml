@@ -23,7 +23,7 @@
         android:layout_alignParentTop="true"
         android:background="#eee"
         android:ems="10"
-        android:hint="Search or enter Jabber ID"
+        android:hint="@string/search_jabber_id"
         android:inputType="textEmailAddress"
         android:paddingBottom="12dp"
         android:paddingLeft="8dp"
