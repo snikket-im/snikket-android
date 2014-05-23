@@ -49,7 +49,7 @@ These XEPs are - as of now:
 * [Sergio Cárdenas](https://github.com/kruks23) (Spanish)
 * [Benoit Bouvarel](https://github.com/BenoitBouvarel) (French)
 * [Daniel Gultsch](https://github.com/iNPUTmice) (German)
-
+* [Aitor Beriain](https://github.com/beriain) (Basque)
 
 ##FAQ
 ###General
