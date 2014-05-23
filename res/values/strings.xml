@@ -12,6 +12,7 @@
     <string name="action_secure">Secure conversation</string>
     <string name="action_add_account">Add account</string>
     <string name="action_edit_contact">Edit name</string>
+    <string name="action_add_phone_book">Add to phone book</string>
     <string name="action_delete_contact">Delete from roster</string>
     <string name="title_activity_contacts">Contacts</string>
     <string name="just_now">just now</string>
@@ -39,6 +40,9 @@
     <string name="invite_contacts_to_existing">Invite to existing conference</string>
     <string name="new_conference">Create new conference</string>
     <string name="cancel">Cancel</string>
+    <string name="add">Add</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
     <string name="create_invite">Create \u0026 Invite</string>
     <string name="new_conference_explained">Do you want to create a new conference with a randomly generated address and invite the selected contacts to it?</string>
     <string name="no_open_mucs">No existing conferences</string>
@@ -128,11 +132,13 @@
     <string name="pref_grant_presence_updates">Grant presence updates</string>
     <string name="pref_grant_presence_updates_summary">Preemptively grant and ask for presence subscription for contacts you created</string>
     <string name="subscriptions">Subscriptions</string>
+    <string name="subscription_updated">Subscription updated</string>
     <string name="your_account">Your account</string>
     <string name="keys">Keys</string>
     <string name="send_presence_updates">Send presence updates</string>
     <string name="receive_presence_updates">Receive presence updates</string>
     <string name="ask_for_presence_updates">Ask for presence updates</string>
+    <string name="asked_for_presence_updates">Asked for presence updates</string>
     <string name="attach_choose_picture">Choose picture</string>
     <string name="attach_take_picture">Take picture</string>
     <string name="preemptively_grant">Preemptively grant subscription request</string>
@@ -171,4 +177,11 @@
     <string name="passwords_do_not_match">Passwords do not match</string>
     <string name="invalid_jid">This is not a valid Jabber ID</string>
 	<string name="error_out_of_memory">Ouf of memory. Image is to large</string>
+    <string name="add_phone_book_text">Do you want to add %s to your phones contact list?</string>
+    <string name="contact_status_online">online</string>
+    <string name="contact_status_free_to_chat">free to chat</string>
+    <string name="contact_status_away">away</string>
+    <string name="contact_status_extended_away">extended away</string>
+    <string name="contact_status_do_not_disturb">do not disturb</string>
+    <string name="contact_status_offline">offline</string>
 </resources>

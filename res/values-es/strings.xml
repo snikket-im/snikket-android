@@ -13,6 +13,7 @@
     <string name="action_add_account">Añadir cuenta</string>
     <string name="action_edit_contact">Editar contacto</string>
     <string name="action_delete_contact">Eliminar contacto de la lista</string>
+    <string name="action_add_phone_book">Añadir a contactos del teléfono</string>
     <string name="title_activity_contacts">Contactos</string>
     <string name="just_now">ahora</string>
     <string name="minutes_ago">min</string>
@@ -26,7 +27,7 @@
     <string name="participant">Participante</string>
     <string name="visitor">Visitante</string>
     <string name="enter_new_name">Introduce un nuevo nombre:</string>
-    <string name="remove_contact_text">¿Quieres eliminar a %s de tu lista?. La conversación asociada a esta cuenta no se eliminará.</string>
+    <string name="remove_contact_text">¿Quieres eliminar a %s de tu lista? La conversación asociada a esta cuenta no se eliminará.</string>
     <string name="untrusted_cert_hint">El servidor %s presenta un certificado no confiable, posiblemente auto firmado.</string>
     <string name="account_info">Información del servidor</string>
     <string name="register_account">Registrar nueva cuenta en servidor</string>
@@ -39,6 +40,9 @@
     <string name="invite_contacts_to_existing">Invitar a conferencia existente</string>
     <string name="new_conference">Crear nueva conferencia</string>
     <string name="cancel">Cancelar</string>
+    <string name="add">Añadir</string>
+    <string name="edit">Editar</string>
+    <string name="delete">Eliminar</string>
     <string name="create_invite">Crear \u0026 Invitar</string>
     <string name="new_conference_explained">¿Quieres crear una nueva conferencia con una dirección generada aleatoriamente e invitar a los contactos seleccionados a ella?</string>
     <string name="no_open_mucs">No hay conferencias existentes</string>
@@ -128,11 +132,13 @@
     <string name="pref_grant_presence_updates">Suscripción de presencia</string>
     <string name="pref_grant_presence_updates_summary">Por defecto otorgar y pedir suscripciones de presencia de los contactos que has creado</string>
     <string name="subscriptions">Suscripciones</string>
+    <string name="subscription_updated">Suscripción actualizada</string>
     <string name="your_account">Tu cuenta</string>
     <string name="keys">Claves</string>
     <string name="send_presence_updates">Enviar actualizaciones de presencia</string>
     <string name="receive_presence_updates">Recibir actualizaciones de presencia</string>
     <string name="ask_for_presence_updates">Solicitar actualizaciones de presencia</string>
+    <string name="asked_for_presence_updates">Solictida actualizaciones de presencia</string>
     <string name="attach_choose_picture">Seleccionar imagen</string>
     <string name="attach_take_picture">Hacer foto</string>
     <string name="preemptively_grant">Por defecto otorgar peticiones de suscripción</string>
@@ -170,4 +176,12 @@
     <string name="save">Guardar</string>
     <string name="passwords_do_not_match">Las contraseñas no coinciden</string>
     <string name="invalid_jid">El identificador no es un identificador de Jabber válido</string>
+    <string name="error_out_of_memory">Sin memoria. La imagen es demasiado grande</string>
+    <string name="add_phone_book_text">¿Te gustaría añadir a %s a tus contactos del teléfono?</string>
+    <string name="contact_status_online">Disponible</string>
+    <string name="contact_status_free_to_chat">Hablador</string>
+    <string name="contact_status_away">Ausente</string>
+    <string name="contact_status_extended_away">Ausencia ext.</string>
+    <string name="contact_status_do_not_disturb">No molestar</string>
+    <string name="contact_status_offline">Desconectado</string>
 </resources>
