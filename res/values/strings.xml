@@ -213,4 +213,5 @@
     <string name="muc_details_conference_subject">Conference Subject</string>
     <string name="muc_details_your_nickname">Your nickname</string>
     <string name="muc_details_other_members">Other Members</string>
+    <string name="subscription_not_updated_offline">Account offline. Could not update subscription</string>
 </resources>

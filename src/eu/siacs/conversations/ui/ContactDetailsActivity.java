@@ -301,52 +301,69 @@ public class ContactDetailsActivity extends XmppActivity {
 	protected void onStop() {
 		super.onStop();
 		boolean updated = false;
+		boolean online = contact.getAccount().getStatus() == Account.STATUS_ONLINE;
 		if (contact.getOption(Contact.Options.FROM)) {
 			if (!send.isChecked()) {
-				contact.resetOption(Contact.Options.FROM);
-				contact.resetOption(Contact.Options.PREEMPTIVE_GRANT);
-				activity.xmppConnectionService.stopPresenceUpdatesTo(contact);
+				if (online) {
+					contact.resetOption(Contact.Options.FROM);
+					contact.resetOption(Contact.Options.PREEMPTIVE_GRANT);
+					activity.xmppConnectionService.stopPresenceUpdatesTo(contact);
+				}
 				updated = true;
 			}
 		} else {
 			if (contact
 					.getOption(Contact.Options.PREEMPTIVE_GRANT)) {
 				if (!send.isChecked()) {
-					contact.resetOption(Contact.Options.PREEMPTIVE_GRANT);
+					if (online) {
+						contact.resetOption(Contact.Options.PREEMPTIVE_GRANT);
+					}
 					updated = true;
 				}
 			} else {
 				if (send.isChecked()) {
-					contact.setOption(Contact.Options.PREEMPTIVE_GRANT);
+					if (online) {
+						contact.setOption(Contact.Options.PREEMPTIVE_GRANT);
+					}
 					updated = true;
 				}
 			}
 		}
 		if (contact.getOption(Contact.Options.TO)) {
 			if (!receive.isChecked()) {
-				contact.resetOption(Contact.Options.TO);
-				activity.xmppConnectionService.stopPresenceUpdatesFrom(contact);
+				if (online) {
+					contact.resetOption(Contact.Options.TO);
+					activity.xmppConnectionService.stopPresenceUpdatesFrom(contact);
+				}
 				updated = true;
 			}
 		} else {
 			if (contact.getOption(Contact.Options.ASKING)) {
 				if (!receive.isChecked()) {
-					contact.resetOption(Contact.Options.ASKING);
-					activity.xmppConnectionService
+					if (online) {
+						contact.resetOption(Contact.Options.ASKING);
+						activity.xmppConnectionService
 							.stopPresenceUpdatesFrom(contact);
+					}
 					updated = true;
 				}
 			} else {
 				if (receive.isChecked()) {
-					contact.setOption(Contact.Options.ASKING);
-					activity.xmppConnectionService
+					if (online) {
+						contact.setOption(Contact.Options.ASKING);
+						activity.xmppConnectionService
 							.requestPresenceUpdatesFrom(contact);
+					}
 					updated = true;
 				}
 			}
 		}
 		if (updated) {
-			Toast.makeText(getApplicationContext(), getString(R.string.subscription_updated), Toast.LENGTH_SHORT).show();
+			if (online) {
+				Toast.makeText(getApplicationContext(), getString(R.string.subscription_updated), Toast.LENGTH_SHORT).show();
+			} else {
+				Toast.makeText(getApplicationContext(), getString(R.string.subscription_not_updated_offline), Toast.LENGTH_SHORT).show();
+			}
 		}
 	}
 
