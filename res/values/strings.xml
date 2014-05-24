@@ -28,6 +28,8 @@
     <string name="encrypted_message">Decrypting message. Please wait&#8230;</string>
     <string name="conference_details">Conference Details</string>
     <string name="nick_in_use">Nickname is already in use</string>
+    <string name="admin">Admin</string>
+    <string name="owner">Owner</string>
     <string name="moderator">Moderator</string>
     <string name="participant">Participant</string>
     <string name="visitor">Visitor</string>
@@ -46,6 +48,7 @@
     <string name="new_conference">Create new conference</string>
     <string name="new_contact">Create new contact</string>
     <string name="contacts">Contacts</string>
+    <string name="search_jabber_id">Search or enter Jabber ID</string>
     <string name="choose_account">Choose account</string>
     <string name="multi_user_conference">Multi User Conference</string>
     <string name="trying_join_conference">Are you trying to join a conference?</string>
@@ -57,6 +60,7 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="ok">Ok</string>
+    <string name="done">Done</string>
     <string name="create_invite">Create \u0026 Invite</string>
     <string name="new_conference_explained">Do you want to create a new conference with a randomly generated address and invite the selected contacts to it?</string>
     <string name="no_open_mucs">No existing conferences</string>
@@ -185,9 +189,16 @@
     <string name="mgmt_account_delete">Delete</string>
     <string name="mgmt_account_disable">Temporarily disable</string>
     <string name="mgmt_account_enable">Enable</string>
+    <string name="mgmt_account_are_you_sure">Are you sure?</string>
+    <string name="mgmt_account_delete_confirm_text">If you delete your account your entire conversation history will be lost</string>
     <string name="attach_record_voice">Record voice</string>
     <string name="account_settings">Account Settings</string>
-    <string name="save">Save</string>
+    <string name="account_settings_jabber_id">Jabber ID:</string>
+    <string name="account_settings_password">Password:</string>
+    <string name="account_settings_example_jabber_id">username@example.com</string>
+    <string name="account_settings_confirm_password">Confirm password:</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm password</string>
     <string name="passwords_do_not_match">Passwords do not match</string>
     <string name="invalid_jid">This is not a valid Jabber ID</string>
 	<string name="error_out_of_memory">Ouf of memory. Image is to large</string>
@@ -198,4 +209,8 @@
     <string name="contact_status_extended_away">extended away</string>
     <string name="contact_status_do_not_disturb">do not disturb</string>
     <string name="contact_status_offline">offline</string>
+    <string name="muc_details_conference">Conference</string>
+    <string name="muc_details_conference_subject">Conference Subject</string>
+    <string name="muc_details_your_nickname">Your nickname</string>
+    <string name="muc_details_other_members">Other Members</string>
 </resources>

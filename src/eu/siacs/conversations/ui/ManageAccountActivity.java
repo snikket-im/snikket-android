@@ -261,10 +261,10 @@ public class ManageAccountActivity extends XmppActivity {
 								mode.finish();
 							} else if (item.getItemId()==R.id.mgmt_account_delete) {
 								AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-								builder.setTitle("Are you sure?");
+								builder.setTitle(getString(R.string.mgmt_account_are_you_sure));
 								builder.setIconAttribute(android.R.attr.alertDialogIcon);
-								builder.setMessage("If you delete your account your entire conversation history will be lost");
-								builder.setPositiveButton("Delete", new OnClickListener() {
+								builder.setMessage(getString(R.string.mgmt_account_delete_confirm_text));
+								builder.setPositiveButton(getString(R.string.delete), new OnClickListener() {
 									
 									@Override
 									public void onClick(DialogInterface dialog, int which) {
@@ -273,7 +273,7 @@ public class ManageAccountActivity extends XmppActivity {
 										mode.finish();
 									}
 								});
-								builder.setNegativeButton("Cancel",null);
+								builder.setNegativeButton(getString(R.string.cancel),null);
 								builder.create().show();
 							} else if (item.getItemId()==R.id.mgmt_account_announce_pgp) {
 								if (activity.hasPgp()) {
@@ -293,7 +293,7 @@ public class ManageAccountActivity extends XmppActivity {
 									noFingerprintView.setVisibility(View.GONE);
 								}
 								builder.setView(view);
-								builder.setPositiveButton("Done", null);
+								builder.setPositiveButton(getString(R.string.done), null);
 								builder.create().show();
 							} else if (item.getItemId() == R.id.mgmt_account_info) {
 								AlertDialog.Builder builder = new AlertDialog.Builder(activity);

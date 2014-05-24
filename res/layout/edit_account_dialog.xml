@@ -9,7 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="14sp"
-        android:text="Jabber ID:" />
+        android:text="@string/account_settings_jabber_id" />
 
 
     
@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textEmailAddress"
-        android:hint="username@example.com">
+        android:hint="@string/account_settings_example_jabber_id">
 
 
     </EditText>
@@ -30,7 +30,7 @@
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Password:"
+        android:text="@string/account_settings_password"
         android:textSize="14sp"/>
 
     <EditText
@@ -39,14 +39,14 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPassword"
-        android:hint="Password" 
+        android:hint="@string/password"
         android:fontFamily="sans-serif" />
 
     <CheckBox
         android:id="@+id/edit_account_register_new"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Register a new account on server"/>
+        android:text="@string/register_account"/>
 
     
         <TextView
@@ -54,7 +54,7 @@
         android:id="@+id/account_confirm_password_desc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Confirm password:"
+        android:text="@string/account_settings_confirm_password"
         android:textSize="14sp"
         android:visibility="gone"/>
     
@@ -64,7 +64,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPassword"
-        android:hint="Confirm password" 
+        android:hint="@string/confirm_password"
         android:visibility="gone"
         android:fontFamily="sans-serif" />
 

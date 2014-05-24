@@ -13,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="8dp"
-        android:text="Conference" />
+        android:text="@string/muc_details_conference" />
        <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -28,7 +28,7 @@
             android:layout_toLeftOf="@+id/muc_edit_subject"
             android:background="#eee"
             android:ems="10"
-            android:hint="Conferenece Subject"
+            android:hint="@string/muc_details_conference_subject"
             android:inputType="textAutoComplete"
             android:paddingBottom="12dp"
             android:paddingLeft="8dp"
@@ -62,7 +62,7 @@
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
         android:paddingTop="8dp"
-        android:text="Your Nickname" />
+        android:text="@string/muc_details_your_nickname" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -78,7 +78,7 @@
             android:layout_toLeftOf="@+id/muc_edit_nick"
             android:background="#eee"
             android:ems="10"
-            android:hint="Your nickname"
+            android:hint="@string/muc_details_your_nickname"
             android:inputType="textEmailAddress"
             android:paddingBottom="12dp"
             android:paddingLeft="8dp"
@@ -119,7 +119,7 @@
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
         android:paddingTop="8dp"
-        android:text="Other Members" />
+        android:text="@string/muc_details_other_members" />
 
     <LinearLayout
         android:id="@+id/muc_members"

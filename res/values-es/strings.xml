@@ -28,6 +28,8 @@
     <string name="encrypted_message">Desencriptando mensaje. Espera por favor&#8230;</string>
     <string name="conference_details">Detalles de la conferencia</string>
     <string name="nick_in_use">El apodo ya está en uso</string>
+    <string name="admin">Administrador</string>
+    <string name="owner">Propietario</string>
     <string name="moderator">Moderador</string>
     <string name="participant">Participante</string>
     <string name="visitor">Visitante</string>
@@ -46,6 +48,7 @@
     <string name="new_conference">Crear nueva conferencia</string>
     <string name="new_contact">Crear nuevo contacto</string>
     <string name="contacts">Contactos</string>
+    <string name="search_jabber_id">Busca o escribe identificador Jabber</string>
     <string name="choose_account">Seleccionar cuenta</string>
     <string name="multi_user_conference">Conferencia multiusuario</string>
     <string name="trying_join_conference">¿Estás intentando unirte a una conferencia?</string>
@@ -57,6 +60,7 @@
     <string name="yes">Sí</string>
     <string name="no">No</string>
     <string name="ok">Ok</string>
+    <string name="done">Hecho</string>
     <string name="create_invite">Crear \u0026 Invitar</string>
     <string name="new_conference_explained">¿Quieres crear una nueva conferencia con una dirección generada aleatoriamente e invitar a los contactos seleccionados a ella?</string>
     <string name="no_open_mucs">No hay conferencias existentes</string>
@@ -97,7 +101,7 @@
     <string name="files">archivos</string>
     <string name="otr_messages">Mensajes encriptados con OTR</string>
     <string name="manage_account">Gestionar cuenta</string>
-    <string name="contact_offline">Tu contacto está desconectado</string>
+    <string name="contact_offline">El contacto está desconectado</string>
     <string name="contact_offline_otr">Desgraciadamente no es posible enviar mensajes encriptados con OTR a un contacto desconectado.\n¿Quieres enviar el mensaje en texto plano?</string>
     <string name="contact_offline_file">Desgraciadamente no es posible enviar archivos a un contacto desconectado.</string>
     <string name="send_unencrypted">Enviar sin encriptar</string>
@@ -108,7 +112,7 @@
     <string name="install">Instalar</string>
     <string name="offering">ofreciendo&#8230;</string>
     <string name="no_pgp_key">Clave openPGP no encontrada</string>
-    <string name="contact_has_no_pgp_key">Conversations no ha podido encriptar tus mensajes porque tu contacto no está anunciando su clave publica.\n\n<small>Por favor, pide a tu contacto que configure openPGP.</small></string>
+    <string name="contact_has_no_pgp_key">Conversations no ha podido encriptar tus mensajes porque el contacto no está anunciando su clave publica.\n\n<small>Por favor, pide a tu contacto que configure openPGP.</small></string>
     <string name="encrypted_message_received"><i>Mensaje encriptado recibido. Pulsa para ver.</i></string>
     <string name="encrypted_image_received"><i>Imagen encriptada recibida. Pulsa para ver.</i></string>
     <string name="image_file"><i>Imagen recibida. Pulsa para ver</i></string>
@@ -185,9 +189,16 @@
     <string name="mgmt_account_delete">Eliminar cuenta</string>
     <string name="mgmt_account_disable">Deshabilitar temporalmente</string>
     <string name="mgmt_account_enable">Habilitar</string>
+    <string name="mgmt_account_are_you_sure">¿Estás seguro?</string>
+    <string name="mgmt_account_delete_confirm_text">Si eliminas tu cuenta tu historial completo de conversaciones se perderá</string>
     <string name="attach_record_voice">Grabar audio</string>
     <string name="account_settings">Configuración de cuenta</string>
-    <string name="save">Guardar</string>
+    <string name="account_settings_jabber_id">Identificador Jabber:</string>
+    <string name="account_settings_password">Contraseña:</string>
+    <string name="account_settings_example_jabber_id">usuario@ejemplo.com</string>
+    <string name="account_settings_confirm_password">Confirmar contraseña:</string>
+    <string name="password">Contraseña</string>
+    <string name="confirm_password">Confirmar contraseña</string>
     <string name="passwords_do_not_match">Las contraseñas no coinciden</string>
     <string name="invalid_jid">El identificador no es un identificador de Jabber válido</string>
     <string name="error_out_of_memory">Sin memoria. La imagen es demasiado grande</string>
@@ -198,4 +209,8 @@
     <string name="contact_status_extended_away">Ausencia ext.</string>
     <string name="contact_status_do_not_disturb">No molestar</string>
     <string name="contact_status_offline">Desconectado</string>
+    <string name="muc_details_conference">Conferencia</string>
+    <string name="muc_details_conference_subject">Ausnto de la Conferencia</string>
+    <string name="muc_details_your_nickname">Tu apodo</string>
+    <string name="muc_details_other_members">Otros Miembros</string>
 </resources>

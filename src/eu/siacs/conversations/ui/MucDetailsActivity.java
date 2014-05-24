@@ -153,11 +153,11 @@ public class MucDetailsActivity extends XmppActivity {
 					switch (self.getAffiliation()) {
 					case User.AFFILIATION_ADMIN:
 						mRoleAffiliaton.setText(getReadableRole(self.getRole())
-								+ " (Admin)");
+								+ " (" + getString(R.string.admin) + ")");
 						break;
 					case User.AFFILIATION_OWNER:
 						mRoleAffiliaton.setText(getReadableRole(self.getRole())
-								+ " (Owner)");
+								+ " (" + getString(R.string.owner) + ")");
 						break;
 					default:
 						mRoleAffiliaton
