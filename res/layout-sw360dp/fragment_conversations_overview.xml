@@ -4,7 +4,7 @@
         android:layout_height="match_parent"
         android:id="@+id/slidingpanelayout">
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="336dp"
+    android:layout_width="324dp"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#eeeeee"
@@ -22,7 +22,7 @@
 </LinearLayout>
 <LinearLayout 
     android:id="@+id/selected_conversation"
-    android:layout_width="400dp"
+    android:layout_width="fill_parent"
 	android:layout_height="match_parent"
 	android:layout_weight="1"
 	android:background="#e5e5e5"

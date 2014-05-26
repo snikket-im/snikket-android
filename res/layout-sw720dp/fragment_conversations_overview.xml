@@ -1,0 +1,31 @@
+<android.support.v4.widget.SlidingPaneLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/slidingpanelayout">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="288dp"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#eeeeee"
+    >
+ 
+    <ListView
+        android:id="@+id/list"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:divider="#b5b5b5"
+        android:dividerHeight="1dp"
+        android:background="#eeeeee"
+     />
+ 
+</LinearLayout>
+<LinearLayout 
+    android:id="@+id/selected_conversation"
+    android:layout_width="fill_parent"
+	android:layout_height="match_parent"
+	android:layout_weight="1"
+	android:background="#e5e5e5"
+	android:orientation="vertical">
+</LinearLayout>      
+</android.support.v4.widget.SlidingPaneLayout>
