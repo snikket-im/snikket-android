@@ -201,18 +201,18 @@
 	<string name="confirm_password">Pasahitza egiaztatu</string>
 	<string name="passwords_do_not_match">Pasahitzak ez dute bat egiten</string>
 	<string name="invalid_jid">Hau ez da Jabber ID baliodun bat</string>
-	<string name="error_out_of_memory">Ouf of memory. Image is to large</string>
-	<string name="add_phone_book_text">Do you want to add %s to your phones contact list?</string>
-	<string name="contact_status_online">online</string>
-	<string name="contact_status_free_to_chat">free to chat</string>
-	<string name="contact_status_away">away</string>
-	<string name="contact_status_extended_away">extended away</string>
-	<string name="contact_status_do_not_disturb">do not disturb</string>
-	<string name="contact_status_offline">offline</string>
-	<string name="muc_details_conference">Conference</string>
-	<string name="muc_details_conference_subject">Conference Subject</string>
-	<string name="muc_details_your_nickname">Your nickname</string>
-	<string name="muc_details_other_members">Other Members</string>
-	<string name="subscription_not_updated_offline">Account offline. Could not update subscription</string>
+	<string name="error_out_of_memory">Memoriarik gabe. Irudia handiegia da</string>
+	<string name="add_phone_book_text">%s zure telefono kontaktu zerrendara gehitu nahi al duzu?</string>
+	<string name="contact_status_online">konektatuta</string>
+	<string name="contact_status_free_to_chat">hitzegiteko aske</string>
+	<string name="contact_status_away">kanpoan</string>
+	<string name="contact_status_extended_away">luzerako kanpoan</string>
+	<string name="contact_status_do_not_disturb">ez gogaitu</string>
+	<string name="contact_status_offline">lineaz kanpo</string>
+	<string name="muc_details_conference">Konferentzia</string>
+	<string name="muc_details_conference_subject">Konferentziaren gaia</string>
+	<string name="muc_details_your_nickname">Zure ezizena</string>
+	<string name="muc_details_other_members">Beste kideak</string>
+	<string name="subscription_not_updated_offline">Kontua lineaz kanpo. Ezin izan da harpidetza eguneratu</string>
 	
 </resources>
