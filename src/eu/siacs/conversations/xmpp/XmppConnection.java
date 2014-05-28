@@ -898,7 +898,7 @@ public class XmppConnection implements Runnable {
 						}
 					}
 				}
-			});
+			}).start();
 		} catch (IOException e) {
 			Log.d(LOGTAG, "io exception during disconnect");
 		}
