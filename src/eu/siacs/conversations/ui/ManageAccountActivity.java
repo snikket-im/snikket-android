@@ -317,36 +317,36 @@ public class ManageAccountActivity extends XmppActivity {
 									pcks_received.setText(""+xmpp.getReceivedStanzas());
 									pcks_sent.setText(""+xmpp.getSentStanzas());
 									if (connectionAgeHours >= 2) {
-										connection.setText(connectionAgeHours+" hours");
+										connection.setText(connectionAgeHours+" " + getString(R.string.hours));
 									} else {
-										connection.setText(connectionAge+" mins");
+										connection.setText(connectionAge+" " + getString(R.string.mins));
 									}
 									if (xmpp.hasFeatureStreamManagment()) {
 										if (sessionAgeHours >= 2) {
-											session.setText(sessionAgeHours+" hours");
+											session.setText(sessionAgeHours+" " + getString(R.string.hours));
 										} else {
-											session.setText(sessionAge+" mins");
+											session.setText(sessionAge+" " + getString(R.string.mins));
 										}
-										stream.setText("Yes");
+										stream.setText(getString(R.string.yes));
 									} else {
-										stream.setText("No");
+										stream.setText(getString(R.string.no));
 										session.setText(connection.getText());
 									}
 									if (xmpp.hasFeaturesCarbon()) {
-										carbon.setText("Yes");
+										carbon.setText(getString(R.string.yes));
 									} else {
-										carbon.setText("No");
+										carbon.setText(getString(R.string.no));
 									}
 									if (xmpp.hasFeatureRosterManagment()) {
-										roster.setText("Yes");
+										roster.setText(getString(R.string.yes));
 									} else {
-										roster.setText("No");
+										roster.setText(getString(R.string.no));
 									}
 									builder.setView(view);
 								} else {
-									builder.setMessage("Account is offline");
+									builder.setMessage(getString(R.string.mgmt_account_account_offline));
 								}
-								builder.setPositiveButton("Hide", null);
+								builder.setPositiveButton(getString(R.string.hide), null);
 								builder.create().show();
 							}
 							return true;

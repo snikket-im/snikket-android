@@ -20,6 +20,7 @@
     <string name="title_activity_conference_details">Conference Details</string>
     <string name="title_activity_contact_details">Contact Details</string>
     <string name="title_activity_conversations">Conversations</string>
+    <string name="title_activity_sharewith">Share with Conversation</string>
     <string name="just_now">just now</string>
     <string name="minutes_ago">min ago</string>
     <string name="unread_conversations">unread Conversations</string>
@@ -61,6 +62,7 @@
     <string name="no">No</string>
     <string name="ok">Ok</string>
     <string name="done">Done</string>
+    <string name="hide">Hide</string>
     <string name="create_invite">Create \u0026 Invite</string>
     <string name="new_conference_explained">Do you want to create a new conference with a randomly generated address and invite the selected contacts to it?</string>
     <string name="no_open_mucs">No existing conferences</string>
@@ -191,6 +193,7 @@
     <string name="mgmt_account_enable">Enable</string>
     <string name="mgmt_account_are_you_sure">Are you sure?</string>
     <string name="mgmt_account_delete_confirm_text">If you delete your account your entire conversation history will be lost</string>
+    <string name="mgmt_account_account_offline">Account is offline</string>
     <string name="attach_record_voice">Record voice</string>
     <string name="account_settings">Account Settings</string>
     <string name="account_settings_jabber_id">Jabber ID:</string>
@@ -214,4 +217,17 @@
     <string name="muc_details_your_nickname">Your nickname</string>
     <string name="muc_details_other_members">Other Members</string>
     <string name="subscription_not_updated_offline">Account offline. Could not update subscription</string>
+    <string name="share_with_active_conversations">Active Conversations</string>
+    <string name="server_info_statistics">Statistics</string>
+    <string name="server_info_connection_age">Connection age</string>
+    <string name="server_info_session_age">Session age</string>
+    <string name="server_info_packets_sent">Packets sent</string>
+    <string name="server_info_packets_received">Packets received</string>
+    <string name="server_info_connected_accounts">Connected accounts</string>
+    <string name="server_info_server_features">Server Features</string>
+    <string name="server_info_roster_versioning">Roster Versioning</string>
+    <string name="server_info_carbon_messages">Carbon Messages</string>
+    <string name="server_info_stream_management">Stream Management</string>
+    <string name="hours">hours</string>
+    <string name="mins">mins</string>
 </resources>
