@@ -77,7 +77,7 @@
     <string name="attach_file">Attach file</string>
     <string name="not_in_roster">The contact is not in your roster. Would you like to add it?</string>
     <string name="add_contact">Add contact</string>
-    <string name="send_failed">unsuccessful delivery</string>
+    <string name="send_failed">delivery failed</string>
     <string name="send_rejected">rejected</string>
     <string name="receiving_image">Receiving image file. Please wait&#8230;</string>
     <string name="preparing_image">Preparing image for transmission</string>
