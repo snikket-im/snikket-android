@@ -35,7 +35,7 @@
     <string name="participant">Participant</string>
     <string name="visitor">Visitor</string>
     <string name="enter_new_name">Enter a new name:</string>
-    <string name="remove_contact_text">Do you want to delete %s from your roster. The conversation associated with this account will not be removed.</string>
+    <string name="remove_contact_text">Do you want to delete %s from your roster? The conversation associated with this account will not be removed.</string>
     <string name="untrusted_cert_hint">The server %s presented you with an untrusted, possible self signed, certificate.</string>
     <string name="account_info">Server Info</string>
     <string name="register_account">Register new account on server</string>
@@ -79,7 +79,7 @@
     <string name="attach_file">Attach file</string>
     <string name="not_in_roster">The contact is not in your roster. Would you like to add it?</string>
     <string name="add_contact">Add contact</string>
-    <string name="send_failed">unsuccessful delivery</string>
+    <string name="send_failed">delivery failed</string>
     <string name="send_rejected">rejected</string>
     <string name="receiving_image">Receiving image file. Please wait&#8230;</string>
     <string name="preparing_image">Preparing image for transmission</string>
