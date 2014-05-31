@@ -398,16 +398,21 @@ public class ManageAccountActivity extends XmppActivity {
 		case R.id.action_add_account:
 			addAccount();
 			break;
-		case android.R.id.home:
-			if (xmppConnectionService.getConversations().size() == 0) {
-				startActivity(new Intent(getApplicationContext(),
-						ContactsActivity.class));
-			}
-			break;
 		default:
 			break;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	public boolean onNavigateUp() {
+		if (xmppConnectionService.getConversations().size() == 0) {
+			startActivity(new Intent(this, ContactsActivity.class));
+			finish();
+			return true;
+		} else {
+			return super.onNavigateUp();
+		}
 	}
 
 	private void editAccount(Account account) {
