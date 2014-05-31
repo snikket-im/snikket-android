@@ -523,7 +523,6 @@ public class XmppConnectionService extends Service {
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		this.wakeLock.acquire();
 		if ((intent != null)
 				&& (ACTION_MERGE_PHONE_CONTACTS.equals(intent.getAction()))) {
 			mergePhoneContactsWithRoster();
@@ -533,6 +532,7 @@ public class XmppConnectionService extends Service {
 			logoutAndSave();
 			return START_NOT_STICKY;
 		}
+		this.wakeLock.acquire();
 		ConnectivityManager cm = (ConnectivityManager) getApplicationContext()
 				.getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
