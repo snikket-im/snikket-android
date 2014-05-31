@@ -398,6 +398,12 @@ public class ManageAccountActivity extends XmppActivity {
 		case R.id.action_add_account:
 			addAccount();
 			break;
+		case android.R.id.home:
+			if (xmppConnectionService.getConversations().size() == 0) {
+				startActivity(new Intent(getApplicationContext(),
+						ContactsActivity.class));
+			}
+			break;
 		default:
 			break;
 		}
