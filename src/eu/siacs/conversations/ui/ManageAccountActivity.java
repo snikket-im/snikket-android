@@ -380,6 +380,7 @@ public class ManageAccountActivity extends XmppActivity {
 		accountListViewAdapter.notifyDataSetChanged();
 		if ((this.accountList.size() == 0)&&(this.firstrun)) {
 			getActionBar().setDisplayHomeAsUpEnabled(false);
+			getActionBar().setHomeButtonEnabled(false);
 			addAccount();
 			this.firstrun = false;
 		}
@@ -429,6 +430,7 @@ public class ManageAccountActivity extends XmppActivity {
 			public void onAccountEdited(Account account) {
 				xmppConnectionService.createAccount(account);
 				activity.getActionBar().setDisplayHomeAsUpEnabled(true);
+				activity.getActionBar().setHomeButtonEnabled(true);
 			}
 		});
 		dialog.show(getFragmentManager(), "add_account");

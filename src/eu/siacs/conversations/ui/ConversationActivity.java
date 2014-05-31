@@ -262,6 +262,7 @@ public class ConversationActivity extends XmppActivity {
 			public void onPanelOpened(View arg0) {
 				paneShouldBeOpen = true;
 				getActionBar().setDisplayHomeAsUpEnabled(false);
+				getActionBar().setHomeButtonEnabled(false);
 				getActionBar().setTitle(R.string.app_name);
 				invalidateOptionsMenu();
 				hideKeyboard();
@@ -273,6 +274,7 @@ public class ConversationActivity extends XmppActivity {
 				if ((conversationList.size() > 0)
 						&& (getSelectedConversation() != null)) {
 					getActionBar().setDisplayHomeAsUpEnabled(true);
+					getActionBar().setHomeButtonEnabled(true);
 					getActionBar().setTitle(
 							getSelectedConversation().getName(useSubject));
 					invalidateOptionsMenu();
