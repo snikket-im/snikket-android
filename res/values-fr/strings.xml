@@ -66,7 +66,7 @@
     <string name="send_message_to_conference">Envoyer un message à la conférence</string>
     <string name="send_plain_text_message">Envoyer un message</string>
     <string name="send_otr_message">Envoyer un message sécurisé par OTR</string>
-    <string name="send_pgp_message">Envoyer un message sécurisé par openPGP</string>
+    <string name="send_pgp_message">Envoyer un message sécurisé par OpenPGP</string>
     <string name="your_nick_has_been_changed">Votre identifiant a été changé</string>
     <string name="download_image">Télécharger l\'image</string>
     <string name="error_loading_image">Impossible de télécharger l\'image (Fichier non trouvé)</string>
@@ -87,14 +87,14 @@
     <string name="restart">Redémarrer</string>
     <string name="install">Installer</string>
 	<string name="offering">Proposition&#8230;</string>
-    <string name="no_pgp_key">Aucune clef openPGP trouvée.</string>
-    <string name="contact_has_no_pgp_key">Conversations ne peut chiffrer vos messages car votre correspondant n\'a pas communiqué sa clef publique.\n\n<small>Merci de demander à votre correspondant de configurer openPGP.</small></string>
+    <string name="no_pgp_key">Aucune clef OpenPGP trouvée.</string>
+    <string name="contact_has_no_pgp_key">Conversations ne peut chiffrer vos messages car votre correspondant n\'a pas communiqué sa clef publique.\n\n<small>Merci de demander à votre correspondant de configurer OpenPGP.</small></string>
     <string name="encrypted_message_received"><i>Message chiffré reçu. Appuyez pour le déchiffrer.</i></string>
     <string name="encrypted_image_received"><i>Image chiffrée reçue. Appuyez pour la déchiffrer.</i></string>
     <string name="image_file"><i>Image reçue. Appuyez pour visualiser.</i></string>
     <string name="otr_file_transfer">Chiffrement OTR non disponible</string>
-    <string name="otr_file_transfer_msg">Malheureusement le chiffrement OTR n\'est pas disponible pour le transfert de fichiers. Vous pouvez utiliser openPGP ou envoyer vos fichiers non chiffrés.</string>
-    <string name="use_pgp_encryption">Utiliser le chiffrement openPGP</string>
+    <string name="otr_file_transfer_msg">Malheureusement le chiffrement OTR n\'est pas disponible pour le transfert de fichiers. Vous pouvez utiliser OpenPGP ou envoyer vos fichiers non chiffrés.</string>
+    <string name="use_pgp_encryption">Utiliser le chiffrement OpenPGP</string>
     <string name="pref_xmpp_resource">Ressource XMPP</string>
     <string name="pref_xmpp_resource_summary">Nom permettant d\'identifier ce client XMPP</string>
     <string name="pref_accept_files">Accepter les fichiers</string>
@@ -158,7 +158,7 @@
 	<string name="certif_trust">Croire ce certificat</string>
 	<string name="encryption_choice_none">Texte clair</string>
 	<string name="encryption_choice_otr">OTR</string>
-	<string name="encryption_choice_pgp">openPGP</string>
+	<string name="encryption_choice_pgp">OpenPGP</string>
 	<string name="mgmt_account_edit">Modifier le compte</string>	
 	<string name="mgmt_account_delete">Supprimer</string>	
 	<string name="mgmt_account_disable">Désactiver temporairement</string>
