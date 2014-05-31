@@ -527,6 +527,7 @@ public class ConversationFragment extends Fragment {
 			if (!activity.shouldPaneBeOpen()) {
 				activity.getSlidingPaneLayout().closePane();
 				activity.getActionBar().setDisplayHomeAsUpEnabled(true);
+				activity.getActionBar().setHomeButtonEnabled(true);
 				activity.getActionBar().setTitle(
 						conversation.getName(useSubject));
 				activity.invalidateOptionsMenu();

@@ -66,7 +66,7 @@
     <string name="send_message_to_conference">Nachricht an Konferenz schicken</string>
     <string name="send_plain_text_message">Unverschlüsselt schreiben</string>
     <string name="send_otr_message">OTR-verschlüsselt schreiben</string>
-    <string name="send_pgp_message">openPGP-verschlüsselt schreiben</string>
+    <string name="send_pgp_message">OpenPGP-verschlüsselt schreiben</string>
     <string name="your_nick_has_been_changed">Dein Nickname wurde geändert</string>
     <string name="download_image">Bild herunter laden</string>
     <string name="error_loading_image">Fehler beim laden des Bildes. (Datei wurde nicht gefunden)</string>
@@ -87,14 +87,14 @@
     <string name="restart">Neustarten</string>
     <string name="install">Installieren</string>
     <string name="offering">angeboten&#8230;</string>
-    <string name="no_pgp_key">Kein openPGP Schlüssel gefunden</string>
-    <string name="contact_has_no_pgp_key">Conversations ist nicht in der Lage deine Nachrichten zu verschlüsseln weil dein Kontakt sein oder ihren Schlüssel nicht preis gibt.\n\n<small>Bitte sag deinem Kontakt er oder sie möge bitte openPGP einrichten.</small></string>
+    <string name="no_pgp_key">Kein OpenPGP Schlüssel gefunden</string>
+    <string name="contact_has_no_pgp_key">Conversations ist nicht in der Lage deine Nachrichten zu verschlüsseln weil dein Kontakt sein oder ihren Schlüssel nicht preis gibt.\n\n<small>Bitte sag deinem Kontakt er oder sie möge bitte OpenPGP einrichten.</small></string>
     <string name="encrypted_message_received"><i>Verschlüsselte Nachricht erhalten. Drücke hier um sie anzuzeigen und zu entschlüsseln.</i></string>
     <string name="encrypted_image_received"><i>Verschlüsseltes Bild erhalten. Drücke hier um es anzuzeigen und zu entschlüsseln.</i></string>
     <string name="image_file"><i>Bild erhalten. Drücke hier um es anzuzeigen.</i></string>
     <string name="otr_file_transfer">OTR-Verschlüsselung nicht verfügbar</string>
-    <string name="otr_file_transfer_msg">Es ist nicht möglich Datein mitels OTR zu verschlüsseln. Du kannst entweder openPGP wählen oder die Datei nicht verschlüsseln.</string>
-    <string name="use_pgp_encryption">openPGP verwenden</string>
+    <string name="otr_file_transfer_msg">Es ist nicht möglich Datein mitels OTR zu verschlüsseln. Du kannst entweder OpenPGP wählen oder die Datei nicht verschlüsseln.</string>
+    <string name="use_pgp_encryption">OpenPGP verwenden</string>
     <string name="pref_xmpp_resource">XMPP resource</string>
     <string name="pref_xmpp_resource_summary">Der Name mit dem sich der Client selber identifiziert</string>
     <string name="pref_accept_files">Dateiannahme</string>
@@ -158,7 +158,7 @@
     <string name="certif_trust">Dem Zertifikat vertrauen</string>
     <string name="encryption_choice_none">Klartext</string>
     <string name="encryption_choice_otr">OTR</string>
-    <string name="encryption_choice_pgp">openPGP</string>
+    <string name="encryption_choice_pgp">OpenPGP</string>
     <string name="mgmt_account_edit">Konto bearbeiten</string>
     <string name="mgmt_account_delete">Löschen</string>
     <string name="mgmt_account_disable">Vorübergehend abschalten</string>

@@ -34,7 +34,7 @@ public class ShareWithActivity extends XmppActivity {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.share_with);
-		setTitle("Share with Conversation");
+		setTitle(getString(R.string.title_activity_sharewith));
 		
 		contacts = (LinearLayout) findViewById(R.id.contacts);
 		conversations = (LinearLayout) findViewById(R.id.conversations);
