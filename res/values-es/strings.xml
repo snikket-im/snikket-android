@@ -92,7 +92,7 @@
     <string name="send_message_to_conference">Enviar mensaje a conferencia</string>
     <string name="send_plain_text_message">Enviar mensaje de texto</string>
     <string name="send_otr_message">Enviar mensaje encriptado con OTR</string>
-    <string name="send_pgp_message">Enviar mensaje encriptado con openPGP</string>
+    <string name="send_pgp_message">Enviar mensaje encriptado con OpenPGP</string>
     <string name="your_nick_has_been_changed">Tu apodo se ha modificado</string>
     <string name="download_image">Descargar imagen</string>
     <string name="error_loading_image">Error cargando imagen (Archivo no encontrado)</string>
@@ -113,14 +113,14 @@
     <string name="restart">Reiniciar</string>
     <string name="install">Instalar</string>
     <string name="offering">ofreciendo&#8230;</string>
-    <string name="no_pgp_key">Clave openPGP no encontrada</string>
-    <string name="contact_has_no_pgp_key">Conversations no ha podido encriptar tus mensajes porque el contacto no está anunciando su clave publica.\n\n<small>Por favor, pide a tu contacto que configure openPGP.</small></string>
+    <string name="no_pgp_key">Clave OpenPGP no encontrada</string>
+    <string name="contact_has_no_pgp_key">Conversations no ha podido encriptar tus mensajes porque el contacto no está anunciando su clave publica.\n\n<small>Por favor, pide a tu contacto que configure OpenPGP.</small></string>
     <string name="encrypted_message_received"><i>Mensaje encriptado recibido. Pulsa para ver.</i></string>
     <string name="encrypted_image_received"><i>Imagen encriptada recibida. Pulsa para ver.</i></string>
     <string name="image_file"><i>Imagen recibida. Pulsa para ver</i></string>
     <string name="otr_file_transfer">Encriptación con OTR no disponible</string>
-    <string name="otr_file_transfer_msg">Desafortunadamente la encriptación con OTR no está disponible para transferencia de archivos. Puedes selecionar encriptación con openPGP o no usar encriptación.</string>
-    <string name="use_pgp_encryption">Usa encriptación con openPGP</string>
+    <string name="otr_file_transfer_msg">Desafortunadamente la encriptación con OTR no está disponible para transferencia de archivos. Puedes selecionar encriptación con OpenPGP o no usar encriptación.</string>
+    <string name="use_pgp_encryption">Usa encriptación con OpenPGP</string>
     <string name="pref_xmpp_resource">Recurso</string>
     <string name="pref_xmpp_resource_summary">El nombre que identifica el cliente que estás utilizando</string>
     <string name="pref_accept_files">Aceptar archivos</string>
@@ -186,7 +186,7 @@
     <string name="certif_trust">Confiar en el certificado</string>
     <string name="encryption_choice_none">Texto plano</string>
     <string name="encryption_choice_otr">OTR</string>
-    <string name="encryption_choice_pgp">openPGP</string>
+    <string name="encryption_choice_pgp">OpenPGP</string>
     <string name="mgmt_account_edit">Editar cuenta</string>
     <string name="mgmt_account_delete">Eliminar cuenta</string>
     <string name="mgmt_account_disable">Deshabilitar temporalmente</string>

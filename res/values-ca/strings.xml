@@ -63,7 +63,7 @@
     <string name="send_message_to_conference">Enviar missatge a conferència</string>
     <string name="send_plain_text_message">Enviar missatge de text</string>
     <string name="send_otr_message">Enviar missatge xifrat amb OTR</string>
-    <string name="send_pgp_message">Enviar missatge xifrat amb openPGP</string>
+    <string name="send_pgp_message">Enviar missatge xifrat amb OpenPGP</string>
     <string name="your_nick_has_been_changed">El teu sobrenom s\'ha modificat</string>
     <string name="download_image">Descarregar imatge</string>
     <string name="error_loading_image">Error carregant imatge (Fitxer no trobat)</string>
@@ -84,14 +84,14 @@
     <string name="restart">Reiniciar</string>
     <string name="install">Instal·lar</string>
     <string name="offering">oferint&#8230;</string>
-    <string name="no_pgp_key">Clau openPGP no trobada</string>
-    <string name="contact_has_no_pgp_key">Conversations no ha pogut xifrar els teus missatges perquè el teu contacte no està anunciant la seva clau pública.\n\n<small>Si us plau, demana al teu contacte que configuri openPGP.</small></string>
+    <string name="no_pgp_key">Clau OpenPGP no trobada</string>
+    <string name="contact_has_no_pgp_key">Conversations no ha pogut xifrar els teus missatges perquè el teu contacte no està anunciant la seva clau pública.\n\n<small>Si us plau, demana al teu contacte que configuri OpenPGP.</small></string>
     <string name="encrypted_message_received"><i>Missatge xifrat rebut. Prem per desxifrar i veure-ho.</i></string>
     <string name="encrypted_image_received"><i>Imatge xifrada rebuda. Prem per desxifrar i veure-la.</i></string>
     <string name="image_file"><i>Imatge rebuda. Prem per veure</i></string>
     <string name="otr_file_transfer">Xifratge amb OTR no disponible</string>
-    <string name="otr_file_transfer_msg">Malauradament el xifratge amb OTR no està disponible per transferència de fitxers. Pots seleccionar xifratge amb openPGP o no usar xifratge.</string>
-    <string name="use_pgp_encryption">Usa xifratge amb openPGP</string>
+    <string name="otr_file_transfer_msg">Malauradament el xifratge amb OTR no està disponible per transferència de fitxers. Pots seleccionar xifratge amb OpenPGP o no usar xifratge.</string>
+    <string name="use_pgp_encryption">Usa xifratge amb OpenPGP</string>
 	<string name="pref_xmpp_resource">Recursos XMPP</string>
     <string name="pref_xmpp_resource_summary">El nom que identifica aquest client amb</string>
     <string name="pref_accept_files">Acceptar fitxers</string>

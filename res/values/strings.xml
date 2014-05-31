@@ -92,7 +92,7 @@
     <string name="send_message_to_conference">Send message to conference</string>
     <string name="send_plain_text_message">Send plain text message</string>
     <string name="send_otr_message">Send OTR encrypted message</string>
-    <string name="send_pgp_message">Send openPGP encrypted message</string>
+    <string name="send_pgp_message">Send OpenPGP encrypted message</string>
     <string name="your_nick_has_been_changed">Your nickname has been changed</string>
     <string name="download_image">Download Image</string>
     <string name="error_loading_image">Error loading image (File not found)</string>
@@ -113,14 +113,14 @@
     <string name="restart">Restart</string>
     <string name="install">Install</string>
     <string name="offering">offering&#8230;</string>
-    <string name="no_pgp_key">No openPGP Key found</string>
-    <string name="contact_has_no_pgp_key">Conversations is unable to encrypt your messages because your contact is not announcing his or hers public key.\n\n<small>Please ask your contact to setup openPGP.</small></string>
+    <string name="no_pgp_key">No OpenPGP Key found</string>
+    <string name="contact_has_no_pgp_key">Conversations is unable to encrypt your messages because your contact is not announcing his or hers public key.\n\n<small>Please ask your contact to setup OpenPGP.</small></string>
     <string name="encrypted_message_received"><i>Encrypted message received. Touch to view and decrypt.</i></string>
     <string name="encrypted_image_received"><i>Encrypted image received. Touch to view and decrypt.</i></string>
     <string name="image_file"><i>Image received. Touch to view</i></string>
     <string name="otr_file_transfer">OTR encryption not available</string>
-    <string name="otr_file_transfer_msg">Unfortunaly OTR encryption is not available for file transfer. You can choose either openPGP or no encryption.</string>
-    <string name="use_pgp_encryption">Use openPGP encryption</string>
+    <string name="otr_file_transfer_msg">Unfortunaly OTR encryption is not available for file transfer. You can choose either OpenPGP or no encryption.</string>
+    <string name="use_pgp_encryption">Use OpenPGP encryption</string>
     <string name="pref_xmpp_resource">XMPP resource</string>
     <string name="pref_xmpp_resource_summary">The name this client identifies itself with</string>
     <string name="pref_accept_files">Accept files</string>
@@ -186,7 +186,7 @@
     <string name="certif_trust">Trust certificate</string>
     <string name="encryption_choice_none">Plain text</string>
     <string name="encryption_choice_otr">OTR</string>
-    <string name="encryption_choice_pgp">openPGP</string>
+    <string name="encryption_choice_pgp">OpenPGP</string>
     <string name="mgmt_account_edit">Edit account</string>
     <string name="mgmt_account_delete">Delete</string>
     <string name="mgmt_account_disable">Temporarily disable</string>
