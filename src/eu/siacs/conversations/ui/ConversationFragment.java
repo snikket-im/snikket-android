@@ -701,7 +701,7 @@ public class ConversationFragment extends Fragment {
 					});
 	
 				} else {
-					showNoPGPKeyDialog(new DialogInterface.OnClickListener() {
+					showNoPGPKeyDialog(false,new DialogInterface.OnClickListener() {
 	
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
@@ -713,16 +713,34 @@ public class ConversationFragment extends Fragment {
 					});
 				}
 			} else {
-				activity.encryptTextMessage();
+				if (conversation.getMucOptions().pgpKeysInUse()) {
+					activity.encryptTextMessage();
+				} else {
+					showNoPGPKeyDialog(true,new DialogInterface.OnClickListener() {
+						
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							conversation.setNextEncryption(Message.ENCRYPTION_NONE);
+							message.setEncryption(Message.ENCRYPTION_NONE);
+							xmppService.sendMessage(message, null);
+							chatMsg.setText("");
+						}
+					});
+				}
 			}
 		}
 	}
 
-	public void showNoPGPKeyDialog(DialogInterface.OnClickListener listener) {
+	public void showNoPGPKeyDialog(boolean plural, DialogInterface.OnClickListener listener) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-		builder.setTitle(getString(R.string.no_pgp_key));
 		builder.setIconAttribute(android.R.attr.alertDialogIcon);
-		builder.setMessage(getText(R.string.contact_has_no_pgp_key));
+		if (plural) {
+			builder.setTitle(getString(R.string.no_pgp_keys));
+			builder.setMessage(getText(R.string.contacts_have_no_pgp_keys));
+		} else {
+			builder.setTitle(getString(R.string.no_pgp_key));
+			builder.setMessage(getText(R.string.contact_has_no_pgp_key));
+		}
 		builder.setNegativeButton(getString(R.string.cancel), null);
 		builder.setPositiveButton(getString(R.string.send_unencrypted),
 				listener);

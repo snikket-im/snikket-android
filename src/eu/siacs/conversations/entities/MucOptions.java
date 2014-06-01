@@ -250,4 +250,22 @@ public class MucOptions {
 		}
 		return primitivLongArray;
 	}
+	
+	public boolean pgpKeysInUse() {
+		for(User user : getUsers()) {
+			if (user.getPgpKeyId()!=0) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public boolean everybodyHasKeys() {
+		for(User user : getUsers()) {
+			if (user.getPgpKeyId()==0) {
+				return false;
+			}
+		}
+		return true;
+	}
 }

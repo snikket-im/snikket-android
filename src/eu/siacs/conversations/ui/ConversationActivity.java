@@ -396,7 +396,7 @@ public class ConversationActivity extends XmppActivity {
 					final ConversationFragment fragment = (ConversationFragment) getFragmentManager()
 							.findFragmentByTag("conversation");
 					if (fragment != null) {
-						fragment.showNoPGPKeyDialog(new OnClickListener() {
+						fragment.showNoPGPKeyDialog(false,new OnClickListener() {
 							
 							@Override
 							public void onClick(DialogInterface dialog, int which) {
