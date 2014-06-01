@@ -138,7 +138,7 @@
     <string name="pref_notification_grace_period_summary">Deshabilita las notificaciones durante un corto periodo de tiempo después de recibir la copia del mensaje carbon</string>
     <string name="pref_ui_options">Opciones de interfaz</string>
     <string name="pref_use_phone_self_picture">Usar foto del teléfono</string>
-    <string name="pref_use_phone_sefl_picture_summary">Podrías no ser capaz de distinguir que cuenta está utlizando en una conversación</string>
+    <string name="pref_use_phone_self_picture_summary">Podrías no ser capaz de distinguir que cuenta está utlizando en una conversación</string>
     <string name="pref_conference_name">Nombre de la conferencia</string>
     <string name="pref_conference_name_summary">Usa el nombre de la sala para identificar Conferencias</string>
     <string name="pref_advanced_options">Opciones avanzadas</string>

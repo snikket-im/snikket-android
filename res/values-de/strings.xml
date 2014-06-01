@@ -112,7 +112,7 @@
     <string name="pref_notification_grace_period_summary">Deaktiviere Benachrichtigungen für eine kurze Zeit nach erhalt einer Nachricht die von einem anderen Client von Dir kommt.</string>
     <string name="pref_ui_options">Aussehen</string>
     <string name="pref_use_phone_self_picture">Benutze Dein Kontaktbild</string>
-    <string name="pref_use_phone_sefl_picture_summary">Wenn du mehrere Accounts hast bist du eventuell nicht mehr in der Lage diese auseinander zu halten.</string>
+    <string name="pref_use_phone_self_picture_summary">Wenn du mehrere Accounts hast bist du eventuell nicht mehr in der Lage diese auseinander zu halten.</string>
     <string name="pref_conference_name">Konferenznamen</string>
     <string name="pref_conference_name_summary">Benutze das Thema der Konferenz als Name in der Überschicht</string>
     <string name="pref_advanced_options">Erweiterte Optionen</string>

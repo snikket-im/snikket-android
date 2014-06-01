@@ -109,7 +109,7 @@
     <string name="pref_notification_grace_period_summary">Desactiva les notificacions durant un breu termini després de rebre una còpia de missatges carbon</string>
     <string name="pref_ui_options">Opcions de UI</string>
     <string name="pref_use_phone_self_picture">Utilitza l\'avatar de l\'usuari del mòbil</string>
-    <string name="pref_use_phone_sefl_picture_summary">Podries no diferenciar quin compte estàs usant a la conversa</string>
+    <string name="pref_use_phone_self_picture_summary">Podries no diferenciar quin compte estàs usant a la conversa</string>
     <string name="pref_conference_name">Nom de la conferència</string>
     <string name="pref_conference_name_summary">Utilitza l\'assumpte de la sala per identificar Conferències</string>
     <string name="pref_advanced_options">Opcions avançades</string>

@@ -59,7 +59,7 @@
         <CheckBoxPreference 
             android:key="show_phone_selfcontact_picture"
             android:title="@string/pref_use_phone_self_picture"
-            android:summary="@string/pref_use_phone_sefl_picture_summary"
+            android:summary="@string/pref_use_phone_self_picture_summary"
             android:defaultValue="true"/>
         <CheckBoxPreference 
             android:key="use_subject_in_muc"
