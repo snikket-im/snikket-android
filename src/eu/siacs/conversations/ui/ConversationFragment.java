@@ -124,22 +124,18 @@ public class ConversationFragment extends Fragment {
 	}
 
 	public void updateChatMsgHint() {
-		if (conversation.getMode() == Conversation.MODE_MULTI) {
-			chatMsg.setHint(getString(R.string.send_message_to_conference));
-		} else {
-			switch (conversation.getNextEncryption()) {
-			case Message.ENCRYPTION_NONE:
-				chatMsg.setHint(getString(R.string.send_plain_text_message));
-				break;
-			case Message.ENCRYPTION_OTR:
-				chatMsg.setHint(getString(R.string.send_otr_message));
-				break;
-			case Message.ENCRYPTION_PGP:
-				chatMsg.setHint(getString(R.string.send_pgp_message));
-				break;
-			default:
-				break;
-			}
+		switch (conversation.getNextEncryption()) {
+		case Message.ENCRYPTION_NONE:
+			chatMsg.setHint(getString(R.string.send_plain_text_message));
+			break;
+		case Message.ENCRYPTION_OTR:
+			chatMsg.setHint(getString(R.string.send_otr_message));
+			break;
+		case Message.ENCRYPTION_PGP:
+			chatMsg.setHint(getString(R.string.send_pgp_message));
+			break;
+		default:
+			break;
 		}
 	}
 

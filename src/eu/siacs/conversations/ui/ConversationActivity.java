@@ -321,16 +321,16 @@ public class ConversationActivity extends XmppActivity {
 			((MenuItem) menu.findItem(R.id.action_add)).setVisible(!spl
 					.isSlideable());
 			if (this.getSelectedConversation() != null) {
+				if (this.getSelectedConversation().getLatestMessage()
+						.getEncryption() != Message.ENCRYPTION_NONE) {
+					menuSecure.setIcon(R.drawable.ic_action_secure);
+				}
 				if (this.getSelectedConversation().getMode() == Conversation.MODE_MULTI) {
 					menuContactDetails.setVisible(false);
 					menuAttach.setVisible(false);
 				} else {
 					menuMucDetails.setVisible(false);
 					menuInviteContacts.setVisible(false);
-					if (this.getSelectedConversation().getLatestMessage()
-							.getEncryption() != Message.ENCRYPTION_NONE) {
-						menuSecure.setIcon(R.drawable.ic_action_secure);
-					}
 				}
 			}
 		}
@@ -539,7 +539,7 @@ public class ConversationActivity extends XmppActivity {
 				popup.inflate(R.menu.encryption_choices);
 				MenuItem otr = popup.getMenu().findItem(R.id.encryption_choice_otr);
 				if (conversation.getMode() == Conversation.MODE_MULTI) {
-					otr.setVisible(false);
+					otr.setEnabled(false);
 				}
 				switch (conversation.getNextEncryption()) {
 				case Message.ENCRYPTION_NONE:

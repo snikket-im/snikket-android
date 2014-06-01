@@ -60,7 +60,7 @@
     <string name="save">Save</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
     <string name="done">Done</string>
     <string name="hide">Hide</string>
     <string name="create_invite">Create \u0026 Invite</string>
@@ -89,7 +89,6 @@
     <string name="delete_messages">Delete messages</string>
     <string name="also_end_conversation">End this conversations afterwards</string>
     <string name="choose_presence">Choose presence to contact</string>
-    <string name="send_message_to_conference">Send message to conference</string>
     <string name="send_plain_text_message">Send plain text message</string>
     <string name="send_otr_message">Send OTR encrypted message</string>
     <string name="send_pgp_message">Send OpenPGP encrypted message</string>
