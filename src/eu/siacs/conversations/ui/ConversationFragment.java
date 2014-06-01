@@ -91,7 +91,7 @@ public class ConversationFragment extends Fragment {
 
 		@Override
 		public void onClick(View v) {
-			if (askForPassphraseIntent != null) {
+			if (activity.hasPgp() && askForPassphraseIntent != null) {
 				try {
 					getActivity().startIntentSenderForResult(
 							askForPassphraseIntent,
@@ -230,8 +230,8 @@ public class ConversationFragment extends Fragment {
 					viewHolder.indicator.setVisibility(View.VISIBLE);
 				}
 
-				String formatedTime = UIHelper.readableTimeDifference(getContext(), message
-						.getTimeSent());
+				String formatedTime = UIHelper.readableTimeDifference(
+						getContext(), message.getTimeSent());
 				if (message.getStatus() <= Message.STATUS_RECIEVED) {
 					if ((filesize != null) && (info != null)) {
 						viewHolder.time.setText(filesize + " \u00B7 " + info);
@@ -397,7 +397,8 @@ public class ConversationFragment extends Fragment {
 
 									@Override
 									public void onClick(View v) {
-										highlightInConference(item.getCounterpart());
+										highlightInConference(item
+												.getCounterpart());
 									}
 								});
 					}
@@ -458,15 +459,15 @@ public class ConversationFragment extends Fragment {
 	protected void highlightInConference(String nick) {
 		String oldString = chatMsg.getText().toString().trim();
 		if (oldString.isEmpty()) {
-			chatMsg.setText(nick+": ");
+			chatMsg.setText(nick + ": ");
 		} else {
-			chatMsg.setText(oldString+" "+nick+" ");
+			chatMsg.setText(oldString + " " + nick + " ");
 		}
 		int position = chatMsg.length();
 		Editable etext = chatMsg.getText();
 		Selection.setSelection(etext, position);
 	}
-	
+
 	protected Bitmap findSelfPicture() {
 		SharedPreferences sharedPref = PreferenceManager
 				.getDefaultSharedPreferences(getActivity()
@@ -507,7 +508,7 @@ public class ConversationFragment extends Fragment {
 		if (this.pastedText == null) {
 			this.chatMsg.setText(oldString);
 		} else {
-			
+
 			if (oldString.isEmpty()) {
 				chatMsg.setText(pastedText);
 			} else {
@@ -678,62 +679,74 @@ public class ConversationFragment extends Fragment {
 		if (activity.hasPgp()) {
 			if (conversation.getMode() == Conversation.MODE_SINGLE) {
 				if (contact.getPgpKeyId() != 0) {
-					xmppService.getPgpEngine().hasKey(contact, new UiCallback() {
-	
-						@Override
-						public void userInputRequried(PendingIntent pi) {
-							activity.runIntent(pi,
-									ConversationActivity.REQUEST_ENCRYPT_MESSAGE);
-						}
-	
-						@Override
-						public void success() {
-							activity.encryptTextMessage();
-						}
-	
-						@Override
-						public void error(int error) {
-	
-						}
-					});
-	
+					xmppService.getPgpEngine().hasKey(contact,
+							new UiCallback() {
+
+								@Override
+								public void userInputRequried(PendingIntent pi) {
+									activity.runIntent(
+											pi,
+											ConversationActivity.REQUEST_ENCRYPT_MESSAGE);
+								}
+
+								@Override
+								public void success() {
+									activity.encryptTextMessage();
+								}
+
+								@Override
+								public void error(int error) {
+
+								}
+							});
+
 				} else {
-					showNoPGPKeyDialog(false,new DialogInterface.OnClickListener() {
-	
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							conversation.setNextEncryption(Message.ENCRYPTION_NONE);
-							message.setEncryption(Message.ENCRYPTION_NONE);
-							xmppService.sendMessage(message, null);
-							chatMsg.setText("");
-						}
-					});
+					showNoPGPKeyDialog(false,
+							new DialogInterface.OnClickListener() {
+
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {
+									conversation
+											.setNextEncryption(Message.ENCRYPTION_NONE);
+									message.setEncryption(Message.ENCRYPTION_NONE);
+									xmppService.sendMessage(message, null);
+									chatMsg.setText("");
+								}
+							});
 				}
 			} else {
 				if (conversation.getMucOptions().pgpKeysInUse()) {
 					if (!conversation.getMucOptions().everybodyHasKeys()) {
-						Toast warning = Toast.makeText(getActivity(), R.string.missing_public_keys, Toast.LENGTH_LONG);
+						Toast warning = Toast
+								.makeText(getActivity(),
+										R.string.missing_public_keys,
+										Toast.LENGTH_LONG);
 						warning.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
 						warning.show();
 					}
 					activity.encryptTextMessage();
 				} else {
-					showNoPGPKeyDialog(true,new DialogInterface.OnClickListener() {
-						
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							conversation.setNextEncryption(Message.ENCRYPTION_NONE);
-							message.setEncryption(Message.ENCRYPTION_NONE);
-							xmppService.sendMessage(message, null);
-							chatMsg.setText("");
-						}
-					});
+					showNoPGPKeyDialog(true,
+							new DialogInterface.OnClickListener() {
+
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {
+									conversation
+											.setNextEncryption(Message.ENCRYPTION_NONE);
+									message.setEncryption(Message.ENCRYPTION_NONE);
+									xmppService.sendMessage(message, null);
+									chatMsg.setText("");
+								}
+							});
 				}
 			}
 		}
 	}
 
-	public void showNoPGPKeyDialog(boolean plural, DialogInterface.OnClickListener listener) {
+	public void showNoPGPKeyDialog(boolean plural,
+			DialogInterface.OnClickListener listener) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		builder.setIconAttribute(android.R.attr.alertDialogIcon);
 		if (plural) {
