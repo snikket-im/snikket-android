@@ -156,7 +156,9 @@ public abstract class XmppActivity extends Activity {
 		}
 		viewConversationIntent.setType(ConversationActivity.VIEW_CONVERSATION);
 		if (newTask) {
-			viewConversationIntent.setFlags(viewConversationIntent.getFlags() | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP |  Intent.FLAG_ACTIVITY_TASK_ON_HOME );
+			viewConversationIntent.setFlags(viewConversationIntent.getFlags()
+				| Intent.FLAG_ACTIVITY_NEW_TASK
+				| Intent.FLAG_ACTIVITY_SINGLE_TOP);
 		} else {
 			viewConversationIntent.setFlags(viewConversationIntent.getFlags()
 				| Intent.FLAG_ACTIVITY_CLEAR_TOP);
