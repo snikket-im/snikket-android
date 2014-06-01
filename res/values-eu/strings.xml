@@ -136,7 +136,7 @@
 	<string name="pref_notification_grace_period_summary">Jakinarazpenak denbora labur baterako ezgaitu ikatz-kopia bat jaso ondoren</string>
 	<string name="pref_ui_options">Erabiltzaile-interfazearen aukerak</string>
 	<string name="pref_use_phone_self_picture">Telefonoaren kontaktu argazkia erabili</string>
-	<string name="pref_use_phone_sefl_picture_summary">Baliteke elkarrizketa batean zein kontu erabiltzen ari zaren gehiago ez bereiztea</string>
+	<string name="pref_use_phone_self_picture_summary">Baliteke elkarrizketa batean zein kontu erabiltzen ari zaren gehiago ez bereiztea</string>
 	<string name="pref_conference_name">Konferentziaren izena</string>
 	<string name="pref_conference_name_summary">Erabili gelaren gaia konferentziak identifikatzeko</string>
 	<string name="pref_advanced_options">Aukera aurreratuak</string>

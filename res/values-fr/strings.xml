@@ -112,7 +112,7 @@
     <string name="pref_notification_grace_period_summary">Désactiver momentanément les notifications après l\'arrivée d\'une copie carbone.</string>
     <string name="pref_ui_options">Options d\'affichage</string>
     <string name="pref_use_phone_self_picture">Utiliser les images des contacts</string>
-    <string name="pref_use_phone_sefl_picture_summary">Vous pourriez ne plus être capable de distinguer quel compte vous utilisez dans une conversation.</string>
+    <string name="pref_use_phone_self_picture_summary">Vous pourriez ne plus être capable de distinguer quel compte vous utilisez dans une conversation.</string>
     <string name="pref_conference_name">Nom de la conférence</string>
     <string name="pref_conference_name_summary">Identifier la conférence par son sujet</string>
     <string name="pref_advanced_options">Options avancées</string>
