@@ -34,6 +34,7 @@ import android.text.Editable;
 import android.text.Selection;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -714,6 +715,11 @@ public class ConversationFragment extends Fragment {
 				}
 			} else {
 				if (conversation.getMucOptions().pgpKeysInUse()) {
+					if (!conversation.getMucOptions().everybodyHasKeys()) {
+						Toast warning = Toast.makeText(getActivity(), R.string.missing_public_keys, Toast.LENGTH_LONG);
+						warning.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+						warning.show();
+					}
 					activity.encryptTextMessage();
 				} else {
 					showNoPGPKeyDialog(true,new DialogInterface.OnClickListener() {

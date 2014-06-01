@@ -232,4 +232,5 @@
     <string name="server_info_stream_management">Stream Management</string>
     <string name="hours">hours</string>
     <string name="mins">mins</string>
+    <string name="missing_public_keys">Missing public key announcements</string>
 </resources>
