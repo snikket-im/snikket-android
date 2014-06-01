@@ -6,13 +6,16 @@ import java.util.List;
 import org.openintents.openpgp.util.OpenPgpUtils;
 
 import eu.siacs.conversations.R;
+import eu.siacs.conversations.crypto.PgpEngine;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.entities.MucOptions.User;
 import eu.siacs.conversations.utils.UIHelper;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.IntentSender.SendIntentException;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -169,19 +172,35 @@ public class MucDetailsActivity extends XmppActivity {
 				}
 				this.users.clear();
 				this.users.addAll(conversation.getMucOptions().getUsers());
-				//contactsAdapter.notifyDataSetChanged();
 				LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 				membersView.removeAllViews();
-				for(User contact : conversation.getMucOptions().getUsers()) {
+				for(final User contact : conversation.getMucOptions().getUsers()) {
 					View view = (View) inflater.inflate(R.layout.contact, null);
-
-					((TextView) view.findViewById(R.id.contact_display_name))
-							.setText(contact.getName());
+					TextView displayName = (TextView) view.findViewById(R.id.contact_display_name);
+					TextView key = (TextView) view.findViewById(R.id.key);
+					displayName.setText(contact.getName());
 					TextView role = (TextView) view.findViewById(R.id.contact_jid);
-					if (contact.getPgpKeyId()==0) {
-						role.setText(getReadableRole(contact.getRole()));
-					} else {
-						role.setText(getReadableRole(contact.getRole())+" \u00B7 "+OpenPgpUtils.convertKeyIdToHex(contact.getPgpKeyId()));
+					role.setText(getReadableRole(contact.getRole()));
+					if (contact.getPgpKeyId()!=0) {
+						key.setVisibility(View.VISIBLE);
+						key.setOnClickListener(new OnClickListener() {
+							
+							@Override
+							public void onClick(View v) {
+								PgpEngine pgp = xmppConnectionService.getPgpEngine();
+								if (pgp!=null) {
+									PendingIntent intent = pgp.getIntentForKey(conversation.getAccount(), contact.getPgpKeyId());
+									if (intent!=null) {
+										try {
+											startIntentSenderForResult(intent.getIntentSender(), 0, null, 0, 0, 0);
+										} catch (SendIntentException e) {
+											
+										}
+									}
+								}
+							}
+						});
+						key.setText(OpenPgpUtils.convertKeyIdToHex(contact.getPgpKeyId()));
 					}
 					ImageView imageView = (ImageView) view
 							.findViewById(R.id.contact_photo);

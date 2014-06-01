@@ -303,4 +303,13 @@ public class PgpEngine {
 		Intent result = api.executeApi(params, null, null);
 		return (PendingIntent) result.getParcelableExtra(OpenPgpApi.RESULT_INTENT);
 	}
+
+	public PendingIntent getIntentForKey(Account account, long pgpKeyId) {
+		Intent params = new Intent();
+		params.setAction(OpenPgpApi.ACTION_GET_KEY);
+		params.putExtra(OpenPgpApi.EXTRA_KEY_ID, pgpKeyId);
+		params.putExtra(OpenPgpApi.EXTRA_ACCOUNT_NAME, account.getJid());
+		Intent result = api.executeApi(params, null, null);
+		return (PendingIntent) result.getParcelableExtra(OpenPgpApi.RESULT_INTENT);
+	}
 }
