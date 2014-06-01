@@ -1,12 +1,12 @@
 package eu.siacs.conversations.entities;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Roster {
 	Account account;
-	HashMap<String, Contact> contacts = new HashMap<String, Contact>();
+	ConcurrentHashMap<String, Contact> contacts = new ConcurrentHashMap<String, Contact>();
 	private String version = null;
 	
 	public Roster(Account account) {
