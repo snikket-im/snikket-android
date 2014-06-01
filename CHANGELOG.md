@@ -1,5 +1,11 @@
 ###Changelog
 
+####Version 0.3
+* Mostly bug fixes and internal rewrites
+* made OTR more reliable
+* improved issues with occasional message lost
+* experimental conference encryption. (see FAQ)
+
 ####Version 0.2.3
 * regression fix with receiving encrypted images
 

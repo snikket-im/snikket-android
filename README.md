@@ -44,6 +44,7 @@ These XEPs are - as of now:
 ###Code
 * [Rene Treffer](https://github.com/rtreffer)
 * [Andreas Straub](https://github.com/strb)
+* [Alethea Butler](https://github.com/alethea)
 
 ###Translations
 * [Sergio Cárdenas](https://github.com/kruks23) (Spanish)
@@ -100,6 +101,19 @@ unstable but because the fundamental concepts of PGP aren't ready for a
 widespread use. The way PGP works is that you trust Key IDs instead of XMPP- or email addresses. So in theory your contact list should consist of Public-Key-IDs instead of email addresses. But of course no email or xmpp client out there implements these concepts. Plus PGP in the context of instant messaging has a couple of downsides. It is vulnerable to replay attacks, it is rather verbose, and decryping and encrypting takes longer than OTR. It is however asynchronous and works well with carbonated messages.
 
 To use openpgp you have to install the opensource app OpenKeychain (www.openkeychain.org) and then long press on the account in manage accounts and choose renew PGP announcement from the contextual menu.
+####How does the encryption for conferences work?
+For conferences the only supported encryption method is OpenPGP. (OTR does not
+work with multiple participents.) Every participant has to announce their
+OpenPGP key. (See answer above). If you would like to send encrypted messages to
+a conference you have to make sure that you have every participants public key
+in your OpenKeychain. Right now there is no check in Conversations to ensure
+that. You have to take care of that yourself. Go to the conference details and
+touch every key id (The hexadecimal number below a contact). This will send you
+to OpenKeychain which will assist you on adding the key.
+This works best in very small conferences with contacts you are already using
+OpenPGP with. This feature is regarded experimental. Conversations is the only
+client that uses XEP-0027 with confercenes. (The XEP neither specifically allows
+nor disallows this.)
 ###Development
 ####How do I build Conversations
 Make sure to have ANDROID_HOME point to your Android SDK
