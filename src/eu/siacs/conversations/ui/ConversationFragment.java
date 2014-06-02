@@ -38,6 +38,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -329,6 +330,18 @@ public class ConversationFragment extends Fragment {
 						intent.setDataAndType(
 								ImageProvider.getContentUri(message), "image/*");
 						startActivity(intent);
+					}
+				});
+				viewHolder.image.setOnLongClickListener(new OnLongClickListener() {
+					
+					@Override
+					public boolean onLongClick(View v) {
+						Intent shareIntent = new Intent();
+						shareIntent.setAction(Intent.ACTION_SEND);
+						shareIntent.putExtra(Intent.EXTRA_STREAM, ImageProvider.getContentUri(message));
+						shareIntent.setType("image/*");
+						startActivity(Intent.createChooser(shareIntent, getText(R.string.share_with)));
+						return true;
 					}
 				});
 			}
