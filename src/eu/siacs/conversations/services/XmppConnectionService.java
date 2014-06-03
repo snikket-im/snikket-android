@@ -1146,6 +1146,7 @@ public class XmppConnectionService extends Service {
 	public void renameInMuc(final Conversation conversation, final String nick) {
 		final MucOptions options = conversation.getMucOptions();
 		if (options.online()) {
+			Account account = conversation.getAccount();
 			options.setOnRenameListener(new OnRenameListener() {
 
 				@Override
@@ -1166,9 +1167,14 @@ public class XmppConnectionService extends Service {
 			packet.setAttribute("to",
 					conversation.getContactJid().split("/")[0] + "/" + nick);
 			packet.setAttribute("from", conversation.getAccount().getFullJid());
-
-			conversation.getAccount().getXmppConnection()
-					.sendPresencePacket(packet, null);
+			
+			String sig = account.getPgpSignature();
+			if (sig != null) {
+				packet.addChild("status").setContent("online");
+				packet.addChild("x", "jabber:x:signed").setContent(sig);
+			}
+			
+			account.getXmppConnection().sendPresencePacket(packet, null);
 		} else {
 			String jid = conversation.getContactJid().split("/")[0] + "/"
 					+ nick;
