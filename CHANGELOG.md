@@ -2,6 +2,8 @@
 
 ####Version 0.3
 * Mostly bug fixes and internal rewrites
+* Touch contact picture in conference to highlight
+* Long press on received image to share
 * made OTR more reliable
 * improved issues with occasional message lost
 * experimental conference encryption. (see FAQ)
