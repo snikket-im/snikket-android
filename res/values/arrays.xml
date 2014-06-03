@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <array name="resources">
+    <string-array name="resources">
         <item>Mobile</item>
         <item>Phone</item>
         <item>Tablet</item>
         <item>Conversations</item>
         <item>Android</item>
-    </array>
+    </string-array>
     <string-array name="filesizes">
         <item>never</item>
         <item>256 KB</item>
@@ -18,5 +18,17 @@
         <item>262144</item>
         <item>524288</item>
         <item>1048576</item>
+    </string-array>
+    <string-array name="message_acks">
+        <item>never</item>
+        <item>when received</item>
+        <item>when read</item>
+        <item>when received and when read</item>
+    </string-array>
+    <string-array name="message_acks_values">
+		<item>0</item>
+		<item>1</item>
+		<item>2</item>
+		<item>3</item>        
     </string-array>
 </resources>
