@@ -97,11 +97,11 @@ public class XmppConnectionService extends Service {
 	private OnAccountListChangedListener accountChangedListener = null;
 	private OnTLSExceptionReceived tlsException = null;
 	private OnContactStatusChanged onContactStatusChanged = new OnContactStatusChanged() {
-		
+
 		@Override
 		public void onContactStatusChanged(Contact contact) {
 			Conversation conversation = findActiveConversation(contact);
-			if (conversation!=null) {
+			if (conversation != null) {
 				conversation.endOtrIfNeeded();
 			}
 		}
@@ -139,6 +139,7 @@ public class XmppConnectionService extends Service {
 					"notification_grace_period_after_carbon_received", true)) {
 				notify = (SystemClock.elapsedRealtime() - lastCarbonMessageReceived) > CARBON_GRACE_PERIOD;
 			}
+			
 
 			if ((packet.getType() == MessagePacket.TYPE_CHAT)) {
 				String pgpBody = mMessageParser.getPgpBody(packet);
@@ -217,6 +218,25 @@ public class XmppConnectionService extends Service {
 					Log.d(LOGTAG, "error trying to parse date" + e.getMessage());
 				}
 			}
+			if ((confirmReception()) && ((packet.getId() != null))) {
+				MessagePacket receivedPacket = new MessagePacket();
+				receivedPacket.setType(MessagePacket.TYPE_UNKNOWN);
+				receivedPacket.setTo(message.getCounterpart());
+				receivedPacket.setFrom(account.getFullJid());
+				if (packet.hasChild("markable", "urn:xmpp:chat-markers:0")) {
+					Element received = receivedPacket.addChild("received",
+							"urn:xmpp:chat-markers:0");
+					received.setAttribute("id", packet.getId());
+					account.getXmppConnection().sendMessagePacket(
+							receivedPacket);
+				} else if (packet.hasChild("request", "urn:xmpp:receipts")) {
+					Element received = receivedPacket.addChild("received",
+							"urn:xmpp:receipts");
+					received.setAttribute("id", packet.getId());
+					account.getXmppConnection().sendMessagePacket(
+							receivedPacket);
+				}
+			}
 			Conversation conversation = message.getConversation();
 			conversation.getMessages().add(message);
 			if (packet.getType() != MessagePacket.TYPE_ERROR) {
@@ -279,7 +299,7 @@ public class XmppConnectionService extends Service {
 				Conversation muc = findMuc(
 						packet.getAttribute("from").split("/")[0], account);
 				if (muc != null) {
-					muc.getMucOptions().processPacket(packet,getPgpEngine());
+					muc.getMucOptions().processPacket(packet, getPgpEngine());
 				} else {
 					Log.d(LOGTAG, account.getJid()
 							+ ": could not find muc for received muc package "
@@ -293,7 +313,7 @@ public class XmppConnectionService extends Service {
 							account.getJid() + ": reading muc status packet "
 									+ packet.toString());
 					int error = muc.getMucOptions().getError();
-					muc.getMucOptions().processPacket(packet,getPgpEngine());
+					muc.getMucOptions().processPacket(packet, getPgpEngine());
 					if ((muc.getMucOptions().getError() != error)
 							&& (convChangedListener != null)) {
 						Log.d(LOGTAG, "muc error status changed");
@@ -336,7 +356,8 @@ public class XmppConnectionService extends Service {
 											msg, x.getContent()));
 								}
 							}
-							onContactStatusChanged.onContactStatusChanged(contact);
+							onContactStatusChanged
+									.onContactStatusChanged(contact);
 						}
 					} else if (type.equals("unavailable")) {
 						if (fromParts.length != 2) {
@@ -400,6 +421,9 @@ public class XmppConnectionService extends Service {
 						"urn:xmpp:jingle:transports:s5b:1");
 				query.addChild("feature").setAttribute("var",
 						"urn:xmpp:jingle:transports:ibb:1");
+				if (confirmReception()) {
+					query.addChild("feature").setAttribute("var", "urn:xmpp:receipts");
+				}
 				account.getXmppConnection().sendIqPacket(iqResponse, null);
 			} else {
 				if ((packet.getType() == IqPacket.TYPE_GET)
@@ -868,6 +892,7 @@ public class XmppConnectionService extends Service {
 				packet.setTo(message.getCounterpart());
 				packet.setFrom(account.getJid());
 			}
+			packet.addChild("markable", "urn:xmpp:chat-markers:0");
 		} else if (message.getConversation().getMode() == Conversation.MODE_MULTI) {
 			packet.setType(MessagePacket.TYPE_GROUPCHAT);
 			packet.setBody(message.getBody());
@@ -908,7 +933,7 @@ public class XmppConnectionService extends Service {
 				new OnPhoneContactsLoadedListener() {
 					@Override
 					public void onPhoneContactsLoaded(List<Bundle> phoneContacts) {
-						for(Account account : accounts) {
+						for (Account account : accounts) {
 							account.getRoster().clearSystemAccounts();
 						}
 						for (Bundle phoneContact : phoneContacts) {
@@ -958,7 +983,7 @@ public class XmppConnectionService extends Service {
 	public List<Account> getAccounts() {
 		return this.accounts;
 	}
-	
+
 	public Conversation findActiveConversation(Contact contact) {
 		for (Conversation conversation : this.getConversations()) {
 			if (conversation.getContact() == contact) {
@@ -1133,8 +1158,7 @@ public class XmppConnectionService extends Service {
 			x.addChild("history").setAttribute("seconds", diff + "");
 		}
 		packet.addChild(x);
-		account.getXmppConnection()
-				.sendPresencePacket(packet);
+		account.getXmppConnection().sendPresencePacket(packet);
 	}
 
 	private OnRenameListener renameListener = null;
@@ -1167,13 +1191,13 @@ public class XmppConnectionService extends Service {
 			packet.setAttribute("to",
 					conversation.getContactJid().split("/")[0] + "/" + nick);
 			packet.setAttribute("from", conversation.getAccount().getFullJid());
-			
+
 			String sig = account.getPgpSignature();
 			if (sig != null) {
 				packet.addChild("status").setContent("online");
 				packet.addChild("x", "jabber:x:signed").setContent(sig);
 			}
-			
+
 			account.getXmppConnection().sendPresencePacket(packet, null);
 		} else {
 			String jid = conversation.getContactJid().split("/")[0] + "/"
@@ -1226,14 +1250,14 @@ public class XmppConnectionService extends Service {
 	public void updateMessage(Message message) {
 		databaseBackend.updateMessage(message);
 	}
-	
+
 	protected void syncDirtyContacts(Account account) {
-		for(Contact contact : account.getRoster().getContacts()) {
+		for (Contact contact : account.getRoster().getContacts()) {
 			if (contact.getOption(Contact.Options.DIRTY_PUSH)) {
 				pushContactToServer(contact);
 			}
 			if (contact.getOption(Contact.Options.DIRTY_DELETE)) {
-				Log.d(LOGTAG,"dirty delete");
+				Log.d(LOGTAG, "dirty delete");
 				deleteContactOnServer(contact);
 			}
 		}
@@ -1422,6 +1446,18 @@ public class XmppConnectionService extends Service {
 	public SharedPreferences getPreferences() {
 		return PreferenceManager
 				.getDefaultSharedPreferences(getApplicationContext());
+	}
+	
+	private boolean confirmReception() {
+		String autoAcks = getPreferences().getString(
+				"auto_acknowledge_messages", "2");
+		int autoAcksValue;
+		try {
+			autoAcksValue = Integer.parseInt(autoAcks);
+		} catch (NumberFormatException e) {
+			autoAcksValue = 0;
+		}
+		return autoAcksValue == 1 || autoAcksValue == 3;
 	}
 
 	public void updateUi(Conversation conversation, boolean notify) {

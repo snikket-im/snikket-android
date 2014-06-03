@@ -22,6 +22,14 @@
             android:entries="@array/filesizes"
             android:entryValues="@array/filesizes_values"
             android:defaultValue="524288"/>
+        <ListPreference 
+            android:key="auto_acknowledge_messages"
+            android:title="@string/pref_auto_acknowledge_messages"
+            android:summary="@string/pref_auto_acknowledge_messages_summary"
+            android:entries="@array/message_acks"
+            android:entryValues="@array/message_acks_values"
+            android:defaultValue="2"
+            />
     </PreferenceCategory>
     <PreferenceCategory 
         android:title="@string/pref_notification_settings">
