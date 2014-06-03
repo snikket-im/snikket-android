@@ -90,7 +90,7 @@ not supported for simplicity reasons. Users tend to forget their status, other
 users ignore them and setting the status automatically would mean too much of an
 impact on privacy.
 ###Security
-####Why are there to end-to-end encryption methods and which one should I choose?
+####Why are there two end-to-end encryption methods and which one should I choose?
 In most cases OTR should be the encryption method of choice. It works out of the box with most contacts as long as they are online.
 However PGP can be in some cases (carbonated messages to multiple clients) be
 more flexible.
