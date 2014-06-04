@@ -419,6 +419,7 @@ public class ConversationFragment extends Fragment {
 													.getContact(),
 											getActivity()
 													.getApplicationContext()));
+							viewHolder.contact_picture.setAlpha(128);
 
 						}
 						break;
