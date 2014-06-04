@@ -36,7 +36,9 @@ public class ImageProvider extends ContentProvider {
 				throw new FileNotFoundException();
 			}
 			String conversationUuid = uuidsSplited[1];
-			String messageUuid = uuidsSplited[2];
+			String messageUuid = uuidsSplited[2].split("\\.")[0];
+			
+			Log.d("xmppService","messageUuid="+messageUuid);
 	
 			Conversation conversation = databaseBackend
 					.findConversationByUuid(conversationUuid);
@@ -113,7 +115,8 @@ public class ImageProvider extends ContentProvider {
 				.parse("content://eu.siacs.conversations.images/"
 						+ message.getConversationUuid()
 						+ "/"
-						+ message.getUuid());
+						+ message.getUuid()
+						+ ".webp");
 	}
 
 	public static Uri getIncomingContentUri() {

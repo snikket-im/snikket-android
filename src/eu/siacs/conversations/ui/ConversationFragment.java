@@ -342,7 +342,7 @@ public class ConversationFragment extends Fragment {
 						Intent shareIntent = new Intent();
 						shareIntent.setAction(Intent.ACTION_SEND);
 						shareIntent.putExtra(Intent.EXTRA_STREAM, ImageProvider.getContentUri(message));
-						shareIntent.setType("image/*");
+						shareIntent.setType("image/webp");
 						startActivity(Intent.createChooser(shareIntent, getText(R.string.share_with)));
 						return true;
 					}
