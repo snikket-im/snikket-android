@@ -630,10 +630,11 @@ public class ConversationActivity extends XmppActivity {
 		if ((Intent.ACTION_VIEW.equals(intent.getAction())&&(VIEW_CONVERSATION.equals(intent.getType())))) {
 			String convToView = (String) intent.getExtras().get(
 					CONVERSATION);
-
+			updateConversationList();
 			for (int i = 0; i < conversationList.size(); ++i) {
 				if (conversationList.get(i).getUuid().equals(convToView)) {
 					setSelectedConversation(conversationList.get(i));
+					break;
 				}
 			}
 			paneShouldBeOpen = false;
