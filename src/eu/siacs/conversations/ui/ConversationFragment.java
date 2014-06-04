@@ -170,15 +170,18 @@ public class ConversationFragment extends Fragment {
 
 			private static final int SENT = 0;
 			private static final int RECIEVED = 1;
+			private static final int STATUS = 2;
 
 			@Override
 			public int getViewTypeCount() {
-				return 2;
+				return 3;
 			}
 
 			@Override
 			public int getItemViewType(int position) {
-				if (getItem(position).getStatus() <= Message.STATUS_RECIEVED) {
+				if (getItem(position).getType() == Message.TYPE_STATUS) {
+					return STATUS;
+				} else 	if (getItem(position).getStatus() <= Message.STATUS_RECIEVED) {
 					return RECIEVED;
 				} else {
 					return SENT;
@@ -360,6 +363,15 @@ public class ConversationFragment extends Fragment {
 						viewHolder.contact_picture = (ImageView) view
 								.findViewById(R.id.message_photo);
 						viewHolder.contact_picture.setImageBitmap(selfBitmap);
+						viewHolder.indicator = (ImageView) view
+								.findViewById(R.id.security_indicator);
+						viewHolder.image = (ImageView) view
+								.findViewById(R.id.message_image);
+						viewHolder.messageBody = (TextView) view
+								.findViewById(R.id.message_body);
+						viewHolder.time = (TextView) view
+								.findViewById(R.id.message_time);
+						view.setTag(viewHolder);
 						break;
 					case RECIEVED:
 						view = (View) inflater.inflate(
@@ -382,22 +394,44 @@ public class ConversationFragment extends Fragment {
 													.getApplicationContext()));
 
 						}
+						viewHolder.indicator = (ImageView) view
+								.findViewById(R.id.security_indicator);
+						viewHolder.image = (ImageView) view
+								.findViewById(R.id.message_image);
+						viewHolder.messageBody = (TextView) view
+								.findViewById(R.id.message_body);
+						viewHolder.time = (TextView) view
+								.findViewById(R.id.message_time);
+						view.setTag(viewHolder);
+						break;
+					case STATUS:
+						view = (View) inflater.inflate(
+								R.layout.message_status, null);
+						viewHolder.contact_picture = (ImageView) view
+								.findViewById(R.id.message_photo);
+						if (item.getConversation().getMode() == Conversation.MODE_SINGLE) {
+
+							viewHolder.contact_picture
+									.setImageBitmap(mBitmapCache.get(
+											item.getConversation().getName(
+													useSubject), item
+													.getConversation()
+													.getContact(),
+											getActivity()
+													.getApplicationContext()));
+
+						}
 						break;
 					default:
 						viewHolder = null;
 						break;
 					}
-					viewHolder.indicator = (ImageView) view
-							.findViewById(R.id.security_indicator);
-					viewHolder.image = (ImageView) view
-							.findViewById(R.id.message_image);
-					viewHolder.messageBody = (TextView) view
-							.findViewById(R.id.message_body);
-					viewHolder.time = (TextView) view
-							.findViewById(R.id.message_time);
-					view.setTag(viewHolder);
 				} else {
 					viewHolder = (ViewHolder) view.getTag();
+				}
+				
+				if (type == STATUS) {
+					return view;
 				}
 
 				if (type == RECIEVED) {
@@ -620,6 +654,7 @@ public class ConversationFragment extends Fragment {
 			}
 			this.messageList.clear();
 			this.messageList.addAll(this.conversation.getMessages());
+			updateStatusMessages();
 			this.messageListAdapter.notifyDataSetChanged();
 			if (conversation.getMode() == Conversation.MODE_SINGLE) {
 				if (messageList.size() >= 1) {
@@ -646,6 +681,21 @@ public class ConversationFragment extends Fragment {
 				UIHelper.updateNotification(getActivity(),
 						activity.getConversationList(), null, false);
 				activity.updateConversationList();
+			}
+		}
+	}
+	
+	protected void updateStatusMessages() {
+		if (conversation.getMode() == Conversation.MODE_SINGLE) {
+			for(int i = this.messageList.size() - 1; i >= 0; --i) {
+				if (this.messageList.get(i).getStatus() == Message.STATUS_RECIEVED) {
+					return;
+				} else {
+					if (this.messageList.get(i).getStatus() == Message.STATUS_SEND_DISPLAYED) {
+						this.messageList.add(i+1, Message.createStatusMessage(conversation));
+						return;
+					}
+				}
 			}
 		}
 	}

@@ -32,6 +32,7 @@ public class Message extends AbstractEntity {
 	public static final int TYPE_TEXT = 0;
 	public static final int TYPE_IMAGE = 1;
 	public static final int TYPE_AUDIO = 2;
+	public static final int TYPE_STATUS = 3;
 
 	public static String CONVERSATION = "conversationUuid";
 	public static String COUNTERPART = "counterpart";
@@ -54,6 +55,10 @@ public class Message extends AbstractEntity {
 	protected transient Conversation conversation = null;
 	
 	protected transient JingleConnection jingleConnection = null;
+	
+	private Message() {
+		
+	}
 
 	public Message(Conversation conversation, String body, int encryption) {
 		this(java.util.UUID.randomUUID().toString(), conversation.getUuid(),
@@ -204,5 +209,12 @@ public class Message extends AbstractEntity {
 	
 	public JingleConnection getJingleConnection() {
 		return this.jingleConnection;
+	}
+	
+	public static Message createStatusMessage(Conversation conversation) {
+		Message message = new Message();
+		message.setType(Message.TYPE_STATUS);
+		message.setConversation(conversation);
+		return message;
 	}
 }
