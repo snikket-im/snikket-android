@@ -279,7 +279,7 @@ public class ConversationActivity extends XmppActivity {
 							getSelectedConversation().getName(useSubject));
 					invalidateOptionsMenu();
 					if (!getSelectedConversation().isRead()) {
-						getSelectedConversation().markRead();
+						xmppConnectionService.markRead(getSelectedConversation());
 						UIHelper.updateNotification(getApplicationContext(),
 								getConversationList(), null, false);
 						listView.invalidateViews();

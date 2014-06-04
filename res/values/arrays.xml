@@ -19,16 +19,4 @@
         <item>524288</item>
         <item>1048576</item>
     </string-array>
-    <string-array name="message_acks">
-        <item>never</item>
-        <item>when received</item>
-        <item>when read</item>
-        <item>when received and when read</item>
-    </string-array>
-    <string-array name="message_acks_values">
-		<item>0</item>
-		<item>1</item>
-		<item>2</item>
-		<item>3</item>        
-    </string-array>
 </resources>

@@ -25,6 +25,7 @@ public class MessageParser {
 		String[] fromParts = packet.getFrom().split("/");
 		Conversation conversation = mXmppConnectionService
 				.findOrCreateConversation(account, fromParts[0], false);
+		conversation.setLatestMarkableMessageId(getMarkableMessageId(packet));
 		String pgpBody = getPgpBody(packet);
 		if (pgpBody != null) {
 			return new Message(conversation, packet.getFrom(), pgpBody,
@@ -104,6 +105,7 @@ public class MessageParser {
 			if ((body == null) || (body.isEmpty())) {
 				return null;
 			}
+			conversation.setLatestMarkableMessageId(getMarkableMessageId(packet));
 			return new Message(conversation, packet.getFrom(), body,
 					Message.ENCRYPTION_OTR, Message.STATUS_RECIEVED);
 		} catch (Exception e) {
@@ -138,6 +140,7 @@ public class MessageParser {
 			status = Message.STATUS_RECIEVED;
 		}
 		String pgpBody = getPgpBody(packet);
+		conversation.setLatestMarkableMessageId(getMarkableMessageId(packet));
 		if (pgpBody == null) {
 			return new Message(conversation, counterPart, packet.getBody(),
 					Message.ENCRYPTION_NONE, status);
@@ -174,6 +177,7 @@ public class MessageParser {
 		String[] parts = fullJid.split("/");
 		Conversation conversation = mXmppConnectionService
 				.findOrCreateConversation(account, parts[0], false);
+		conversation.setLatestMarkableMessageId(getMarkableMessageId(packet));
 		String pgpBody = getPgpBody(message);
 		if (pgpBody != null) {
 			return new Message(conversation, fullJid, pgpBody,
@@ -191,12 +195,20 @@ public class MessageParser {
 				packet.getId(), Message.STATUS_SEND_FAILED);
 	}
 
-	private String getPgpBody(Element packet) {
-		Element child = packet.findChild("x", "jabber:x:encrypted");
+	private String getPgpBody(Element message) {
+		Element child = message.findChild("x", "jabber:x:encrypted");
 		if (child == null) {
 			return null;
 		} else {
 			return child.getContent();
+		}
+	}
+	
+	private String getMarkableMessageId(Element message) {
+		if (message.hasChild("markable", "urn:xmpp:chat-markers:0")) {
+			return message.getAttribute("id");
+		} else {
+			return null;
 		}
 	}
 }

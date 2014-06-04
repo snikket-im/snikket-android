@@ -641,7 +641,7 @@ public class ConversationFragment extends Fragment {
 			if (size >= 1)
 				messagesView.setSelection(size - 1);
 			if (!activity.shouldPaneBeOpen()) {
-				conversation.markRead();
+				activity.xmppConnectionService.markRead(conversation);
 				// TODO update notifications
 				UIHelper.updateNotification(getActivity(),
 						activity.getConversationList(), null, false);

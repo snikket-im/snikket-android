@@ -20,6 +20,8 @@ public class Message extends AbstractEntity {
 	public static final int STATUS_SEND_FAILED = 3;
 	public static final int STATUS_SEND_REJECTED = 4;
 	public static final int STATUS_OFFERED = 6;
+	public static final int STATUS_SEND_RECEIVED = 7;
+	public static final int STATUS_SEND_DISPLAYED = 8;
 
 	public static final int ENCRYPTION_NONE = 0;
 	public static final int ENCRYPTION_PGP = 1;

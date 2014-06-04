@@ -139,7 +139,6 @@ public class XmppConnectionService extends Service {
 					"notification_grace_period_after_carbon_received", true)) {
 				notify = (SystemClock.elapsedRealtime() - lastCarbonMessageReceived) > CARBON_GRACE_PERIOD;
 			}
-			
 
 			if ((packet.getType() == MessagePacket.TYPE_CHAT)) {
 				if ((packet.getBody() != null)
@@ -149,8 +148,7 @@ public class XmppConnectionService extends Service {
 						message.markUnread();
 					}
 				} else if (packet.hasChild("body")) {
-					message = mMessageParser
-							.parseChat(packet, account);
+					message = mMessageParser.parseChat(packet, account);
 					message.markUnread();
 				} else if (packet.hasChild("received")
 						|| (packet.hasChild("sent"))) {
@@ -182,7 +180,16 @@ public class XmppConnectionService extends Service {
 				mMessageParser.parseError(packet, account);
 				return;
 			} else if (packet.getType() == MessagePacket.TYPE_NORMAL) {
-				if (packet.hasChild("x")) {
+				if (packet.hasChild("displayed","urn:xmpp:chat-markers:0")) {
+					String id = packet.findChild("displayed","urn:xmpp:chat-markers:0").getAttribute("id");
+					String[] fromParts = packet.getFrom().split("/");
+					markMessage(account,fromParts[0], id, Message.STATUS_SEND_DISPLAYED);
+					Log.d(LOGTAG,"message was displayed by contact");
+				} else if (packet.hasChild("received","urn:xmpp:chat-markers:0")) {
+					String id = packet.findChild("received","urn:xmpp:chat-markers:0").getAttribute("id");
+					String[] fromParts = packet.getFrom().split("/");
+					markMessage(account,fromParts[0], id, Message.STATUS_SEND_RECEIVED);
+				} else if (packet.hasChild("x")) {
 					Element x = packet.findChild("x");
 					if (x.hasChild("invite")) {
 						findOrCreateConversation(account, packet.getFrom(),
@@ -195,7 +202,7 @@ public class XmppConnectionService extends Service {
 					}
 
 				} else {
-					// Log.d(LOGTAG, "unparsed message " + packet.toString());
+					//Log.d(LOGTAG, "unparsed message " + packet.toString());
 				}
 			}
 			if ((message == null) || (message.getBody() == null)) {
@@ -213,9 +220,9 @@ public class XmppConnectionService extends Service {
 					Log.d(LOGTAG, "error trying to parse date" + e.getMessage());
 				}
 			}
-			if ((confirmReception()) && ((packet.getId() != null))) {
+			if ((confirmMessages()) && ((packet.getId() != null))) {
 				MessagePacket receivedPacket = new MessagePacket();
-				receivedPacket.setType(MessagePacket.TYPE_UNKNOWN);
+				receivedPacket.setType(MessagePacket.TYPE_NORMAL);
 				receivedPacket.setTo(message.getCounterpart());
 				receivedPacket.setFrom(account.getFullJid());
 				if (packet.hasChild("markable", "urn:xmpp:chat-markers:0")) {
@@ -416,8 +423,9 @@ public class XmppConnectionService extends Service {
 						"urn:xmpp:jingle:transports:s5b:1");
 				query.addChild("feature").setAttribute("var",
 						"urn:xmpp:jingle:transports:ibb:1");
-				if (confirmReception()) {
-					query.addChild("feature").setAttribute("var", "urn:xmpp:receipts");
+				if (confirmMessages()) {
+					query.addChild("feature").setAttribute("var",
+							"urn:xmpp:receipts");
 				}
 				account.getXmppConnection().sendIqPacket(iqResponse, null);
 			} else {
@@ -968,8 +976,15 @@ public class XmppConnectionService extends Service {
 		Collections.sort(this.conversations, new Comparator<Conversation>() {
 			@Override
 			public int compare(Conversation lhs, Conversation rhs) {
-				return (int) (rhs.getLatestMessage().getTimeSent() - lhs
-						.getLatestMessage().getTimeSent());
+				Message left = lhs.getLatestMessage();
+				Message right = rhs.getLatestMessage();
+				if (left.getTimeSent() > right.getTimeSent()) {
+					return -1;
+				} else if (left.getTimeSent() < right.getTimeSent()) {
+					return 1;
+				} else {
+					return 0;
+				}
 			}
 		});
 		return this.conversations;
@@ -1442,17 +1457,9 @@ public class XmppConnectionService extends Service {
 		return PreferenceManager
 				.getDefaultSharedPreferences(getApplicationContext());
 	}
-	
-	private boolean confirmReception() {
-		String autoAcks = getPreferences().getString(
-				"auto_acknowledge_messages", "2");
-		int autoAcksValue;
-		try {
-			autoAcksValue = Integer.parseInt(autoAcks);
-		} catch (NumberFormatException e) {
-			autoAcksValue = 0;
-		}
-		return autoAcksValue == 1 || autoAcksValue == 3;
+
+	public boolean confirmMessages() {
+		return getPreferences().getBoolean("confirm_messages", true);
 	}
 
 	public void updateUi(Conversation conversation, boolean notify) {
@@ -1471,5 +1478,20 @@ public class XmppConnectionService extends Service {
 			}
 		}
 		return null;
+	}
+
+	public void markRead(Conversation conversation) {
+		conversation.markRead(this);
+	}
+
+	public void sendConfirmMessage(Account account, String to, String id) {
+		MessagePacket receivedPacket = new MessagePacket();
+		receivedPacket.setType(MessagePacket.TYPE_NORMAL);
+		receivedPacket.setTo(to);
+		receivedPacket.setFrom(account.getFullJid());
+		Element received = receivedPacket.addChild("displayed",
+				"urn:xmpp:chat-markers:0");
+		received.setAttribute("id", id);
+		account.getXmppConnection().sendMessagePacket(receivedPacket);
 	}
 }
