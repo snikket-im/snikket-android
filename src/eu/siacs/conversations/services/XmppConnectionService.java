@@ -142,12 +142,7 @@ public class XmppConnectionService extends Service {
 			
 
 			if ((packet.getType() == MessagePacket.TYPE_CHAT)) {
-				String pgpBody = mMessageParser.getPgpBody(packet);
-				if (pgpBody != null) {
-					message = mMessageParser.parsePgpChat(pgpBody, packet,
-							account);
-					message.markUnread();
-				} else if ((packet.getBody() != null)
+				if ((packet.getBody() != null)
 						&& (packet.getBody().startsWith("?OTR"))) {
 					message = mMessageParser.parseOtrChat(packet, account);
 					if (message != null) {
@@ -155,7 +150,7 @@ public class XmppConnectionService extends Service {
 					}
 				} else if (packet.hasChild("body")) {
 					message = mMessageParser
-							.parsePlainTextChat(packet, account);
+							.parseChat(packet, account);
 					message.markUnread();
 				} else if (packet.hasChild("received")
 						|| (packet.hasChild("sent"))) {

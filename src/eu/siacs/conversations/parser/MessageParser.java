@@ -21,19 +21,17 @@ public class MessageParser {
 		this.mXmppConnectionService = service;
 	}
 	
-	public Message parsePlainTextChat(MessagePacket packet, Account account) {
+	public Message parseChat(MessagePacket packet, Account account) {
 		String[] fromParts = packet.getFrom().split("/");
 		Conversation conversation = mXmppConnectionService.findOrCreateConversation(account, fromParts[0],false);
-		String body = packet.getBody();
-		return new Message(conversation, packet.getFrom(), body, Message.ENCRYPTION_NONE, Message.STATUS_RECIEVED);
+		String pgpBody = getPgpBody(packet);
+		if (pgpBody!=null) {
+			return new Message(conversation, packet.getFrom(), pgpBody, Message.ENCRYPTION_PGP, Message.STATUS_RECIEVED);
+		} else {
+			return new Message(conversation, packet.getFrom(), packet.getBody(), Message.ENCRYPTION_NONE, Message.STATUS_RECIEVED);
+		}
 	}
-	
-	public Message parsePgpChat(String pgpBody, MessagePacket packet, Account account) {
-		String[] fromParts = packet.getFrom().split("/");
-		Conversation conversation = mXmppConnectionService.findOrCreateConversation(account, fromParts[0],false);
-		return new Message(conversation, packet.getFrom(), pgpBody, Message.ENCRYPTION_PGP, Message.STATUS_RECIEVED);
-	}
-	
+
 	public Message parseOtrChat(MessagePacket packet, Account account) {
 		boolean properlyAddressed = (packet.getTo().split("/").length == 2) || (account.countPresences() == 1);
 		String[] fromParts = packet.getFrom().split("/");
@@ -156,7 +154,12 @@ public class MessageParser {
 		}
 		String[] parts = fullJid.split("/");
 		Conversation conversation = mXmppConnectionService.findOrCreateConversation(account, parts[0],false);
-		return new Message(conversation,fullJid, message.findChild("body").getContent(), Message.ENCRYPTION_NONE,status);
+		String pgpBody = getPgpBody(packet);
+		if (pgpBody!=null) {
+			return new Message(conversation,fullJid, pgpBody,Message.ENCRYPTION_PGP,status);
+		} else {
+			return new Message(conversation,fullJid,packet.getBody(),Message.ENCRYPTION_NONE,status);
+		}
 	}
 
 	public void parseError(MessagePacket packet, Account account) {
@@ -164,7 +167,7 @@ public class MessageParser {
 		mXmppConnectionService.markMessage(account, fromParts[0], packet.getId(), Message.STATUS_SEND_FAILED);
 	}
 
-	public String getPgpBody(MessagePacket packet) {
+	private String getPgpBody(MessagePacket packet) {
 		Element child = packet.findChild("x", "jabber:x:encrypted");
 		if (child==null) {
 			return null;
