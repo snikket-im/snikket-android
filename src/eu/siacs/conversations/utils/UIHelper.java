@@ -78,7 +78,7 @@ public class UIHelper {
 		}
 		long difference = (System.currentTimeMillis() - time) / 1000;
 		if (difference < 60) {
-			return context.getString(R.string.just_now);
+			return context.getString(R.string.last_seen_now);
 		} else if (difference < 60 * 90) {
 			return context.getString(R.string.last_seen_mins,difference/60);
 		} else if (difference < 60 * 60 * 36) {

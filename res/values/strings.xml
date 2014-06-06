@@ -236,7 +236,7 @@
     <string name="hours">hours</string>
     <string name="mins">mins</string>
     <string name="missing_public_keys">Missing public key announcements</string>
-    <string name="last_seen_now">last seen %d ago</string>
+    <string name="last_seen_now">last seen just now</string>
     <string name="last_seen_mins">last seen %d minutes ago</string>
     <string name="last_seen_hours">last seen %d hours ago</string>
     <string name="last_seen_days">last seen %d days ago</string>
