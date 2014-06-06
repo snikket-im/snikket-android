@@ -203,6 +203,15 @@ public class Message extends AbstractEntity {
 		this.counterpart = this.counterpart.split("/")[0] + "/" + presence;
 	}
 	
+	public String getPresence() {
+		String[] counterparts = this.counterpart.split("/");
+		if (counterparts.length == 2) {
+			return counterparts[1];
+		} else {
+			return null;
+		}
+	}
+	
 	public void setJingleConnection(JingleConnection connection) {
 		this.jingleConnection = connection;
 	}

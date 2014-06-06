@@ -6,6 +6,7 @@ import net.java.otr4j.session.Session;
 import net.java.otr4j.session.SessionStatus;
 import android.util.Log;
 import eu.siacs.conversations.entities.Account;
+import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.services.XmppConnectionService;
@@ -26,6 +27,7 @@ public class MessageParser {
 		Conversation conversation = mXmppConnectionService
 				.findOrCreateConversation(account, fromParts[0], false);
 		conversation.setLatestMarkableMessageId(getMarkableMessageId(packet));
+		updateLastseen(packet, account);
 		String pgpBody = getPgpBody(packet);
 		if (pgpBody != null) {
 			return new Message(conversation, packet.getFrom(), pgpBody,
@@ -43,6 +45,7 @@ public class MessageParser {
 		String[] fromParts = packet.getFrom().split("/");
 		Conversation conversation = mXmppConnectionService
 				.findOrCreateConversation(account, fromParts[0], false);
+		updateLastseen(packet, account);
 		String body = packet.getBody();
 		if (!conversation.hasValidOtrSession()) {
 			if (properlyAddressed) {
@@ -171,6 +174,7 @@ public class MessageParser {
 			return null; // either malformed or boring
 		if (status == Message.STATUS_RECIEVED) {
 			fullJid = message.getAttribute("from");
+			updateLastseen(message, account);
 		} else {
 			fullJid = message.getAttribute("to");
 		}
@@ -209,6 +213,25 @@ public class MessageParser {
 			return message.getAttribute("id");
 		} else {
 			return null;
+		}
+	}
+	
+	private void updateLastseen(Element message, Account account) {
+		String[] fromParts = message.getAttribute("from").split("/");
+		String from = fromParts[0];
+		String presence = null;
+		if (fromParts.length >= 2) {
+			presence = fromParts[1];
+		}
+		Contact contact = account.getRoster().getContact(from);
+		if (presence!=null) {
+			contact.lastseen.presence = presence;
+			contact.lastseen.time = System.currentTimeMillis();
+		} else if ((contact.getPresences().size() == 1)&&(contact.getPresences().containsKey(contact.lastseen.presence))) {
+			contact.lastseen.time = System.currentTimeMillis();
+		} else {
+			contact.lastseen.presence = null;
+			contact.lastseen.time = System.currentTimeMillis();
 		}
 	}
 }

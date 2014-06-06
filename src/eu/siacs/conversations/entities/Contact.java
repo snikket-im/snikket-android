@@ -11,7 +11,6 @@ import org.json.JSONObject;
 import eu.siacs.conversations.xml.Element;
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.util.Log;
 
 public class Contact {
 	public static final String TABLENAME = "contacts";
@@ -38,6 +37,8 @@ public class Contact {
 	protected Account account;
 
 	protected boolean inRoster = true;
+	
+	public Lastseen lastseen = new Lastseen();
 
 	public Contact(String account, String systemName, String serverName,
 			String jid, int subscription, String photoUri,
@@ -304,5 +305,10 @@ public class Contact {
 		public static final int PENDING_SUBSCRIPTION_REQUEST = 5;
 		public static final int DIRTY_PUSH = 6;
 		public static final int DIRTY_DELETE = 7;
+	}
+	
+	public class Lastseen {
+		public long time = 0;
+		public String presence = null;
 	}
 }

@@ -72,6 +72,11 @@
             android:title="@string/pref_conference_name"
             android:summary="@string/pref_conference_name_summary"
             android:defaultValue="true"/>
+        <CheckBoxPreference 
+            android:key="show_last_seen"
+            android:title="@string/pref_show_last_seen"
+            android:summary="@string/pref_show_last_seen_summary"
+            android:defaultValue="false"/>
     </PreferenceCategory>
     <PreferenceCategory
         android:title="@string/pref_advanced_options">

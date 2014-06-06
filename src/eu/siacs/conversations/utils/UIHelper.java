@@ -70,6 +70,19 @@ public class UIHelper {
 			return sdf.format(date);
 		}
 	}
+	
+	public static String lastseen(Context context, long time) {
+		long difference = (System.currentTimeMillis() - time) / 1000;
+		if (difference < 60) {
+			return context.getString(R.string.just_now);
+		} else if (difference < 60 * 60) {
+			return difference / 60 + " " + context.getString(R.string.mins);
+		} else if (difference < 60 * 60 * 24) {
+			return difference / (60 * 60)+ " " + context.getString(R.string.hours);
+		} else {
+			return "days";
+		}
+	}
 
 	public static int getRealPx(int dp, Context context) {
 		final DisplayMetrics metrics = context.getResources().getDisplayMetrics();

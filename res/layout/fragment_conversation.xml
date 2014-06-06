@@ -3,32 +3,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#e5e5e5">
+    android:background="#e5e5e5" >
 
     <RelativeLayout
-        android:background="#eee"
         android:id="@+id/textsend"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true">
+        android:layout_alignParentLeft="true"
+        android:background="#eee" >
 
         <EditText
             android:id="@+id/textinput"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:minHeight="48dp"
             android:layout_alignParentLeft="true"
-            android:paddingBottom="12dp"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:paddingTop="12dp"
             android:layout_toLeftOf="@+id/textSendButton"
             android:background="#eee"
             android:ems="10"
             android:inputType="textShortMessage|textMultiLine|textCapSentences"
-            android:minLines="1" >
-                    <requestFocus />
+            android:minHeight="48dp"
+            android:minLines="1"
+            android:paddingBottom="12dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:paddingTop="12dp" >
+
+            <requestFocus />
         </EditText>
 
         <ImageButton
@@ -52,101 +53,118 @@
         android:divider="@null"
         android:dividerHeight="0dp"
         android:listSelector="@android:color/transparent"
+        android:stackFromBottom="true"
         android:transcriptMode="alwaysScroll"
-        tools:listitem="@layout/message_sent"
-        android:stackFromBottom="true">
-
+        tools:listitem="@layout/message_sent" >
     </ListView>
+
     <LinearLayout
         android:id="@+id/info_box"
-         android:layout_height="wrap_content"
-         android:layout_width="fill_parent"
-         android:orientation="vertical"
-        >
-        
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
         <LinearLayout
-        android:id="@+id/muc_error"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/redbackground"
-        android:orientation="vertical"
-        android:visibility="gone"
-        >
+            android:id="@+id/muc_error"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/redbackground"
+            android:orientation="vertical"
+            android:visibility="gone" >
 
-        <TextView
-            android:id="@+id/muc_error_msg"
-            android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/muc_error_msg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:textColor="#eee"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="8dp"
+                android:paddingLeft="8dp"
+                android:text="Click to edit conference details"
+                android:textColor="#eee"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/new_fingerprint"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:textColor="#eee"
-            android:textStyle="bold"
-            android:padding="8dp"
-            android:textSize="20sp"/>
-        <TextView 
-            android:layout_width="wrap_content"
+            android:background="@drawable/redbackground"
+            android:orientation="vertical"
+            android:visibility="gone" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="Unknown OTR Fingerprint"
+                android:textColor="#eee"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/otr_fingerprint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="8dp"
+                android:paddingLeft="8dp"
+                android:textColor="#eee"
+                android:textSize="14sp"
+                android:typeface="monospace" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/pgp_keyentry"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Click to edit conference details"
-            android:textColor="#eee"
-            android:paddingLeft="8dp"
-            android:paddingBottom="8dp"
-            android:textSize="14sp"/>
-        
+            android:background="@drawable/bluebackground"
+            android:orientation="vertical"
+            android:visibility="gone" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="OpenPGP encrypted messages found"
+                android:textColor="#eee"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="8dp"
+                android:paddingLeft="8dp"
+                android:text="Click here to enter passphrase and decrypt messages"
+                android:textColor="#eee"
+                android:textSize="14sp" />
+        </LinearLayout>
     </LinearLayout>
-        
-        
+
     <LinearLayout
-        android:id="@+id/new_fingerprint"
+        android:id="@+id/last_seen"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/redbackground"
+        android:background="#7f333333"
         android:orientation="vertical"
         android:visibility="gone"
-        >
+        android:layout_below="@+id/info_box">
 
         <TextView
+            android:id="@+id/last_seen_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Unknown OTR Fingerprint"
-            android:textColor="#eee"
-            android:textStyle="bold"
-            android:padding="8dp"
-            android:textSize="20sp"/>
-        <TextView 
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/otr_fingerprint"
-            android:textColor="#eee"
-            android:paddingLeft="8dp"
-            android:paddingBottom="8dp"
-            android:textSize="14sp"
-            android:typeface="monospace"/>
-        
+            android:layout_gravity="center"
+            android:padding="4dp"
+            android:text="@string/last_seen"
+            android:textColor="#e5e5e5"
+            android:textSize="14sp" />
     </LinearLayout>
-    <LinearLayout
-        android:id="@+id/pgp_keyentry"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/bluebackground"
-        android:orientation="vertical"
-        android:visibility="gone"
-        >
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="OpenPGP encrypted messages found"
-            android:textColor="#eee"
-            android:textStyle="bold"
-            android:padding="8dp"
-            android:textSize="20sp"/>
-        <TextView 
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="#eee"
-            android:text="Click here to enter passphrase and decrypt messages"
-            android:paddingLeft="8dp"
-            android:paddingBottom="8dp"
-            android:textSize="14sp"/>
-        
-    </LinearLayout>
-    </LinearLayout>
 </RelativeLayout>

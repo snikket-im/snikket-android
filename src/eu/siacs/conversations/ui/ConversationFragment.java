@@ -107,7 +107,9 @@ public class ConversationFragment extends Fragment {
 
 	private LinearLayout pgpInfo;
 	private LinearLayout mucError;
+	public LinearLayout lastSeen;
 	private TextView mucErrorText;
+	private TextView lastSeenText;
 	private OnClickListener clickToMuc = new OnClickListener() {
 
 		@Override
@@ -161,6 +163,8 @@ public class ConversationFragment extends Fragment {
 		mucError = (LinearLayout) view.findViewById(R.id.muc_error);
 		mucError.setOnClickListener(clickToMuc);
 		mucErrorText = (TextView) view.findViewById(R.id.muc_error_msg);
+		lastSeen = (LinearLayout) view.findViewById(R.id.last_seen);
+		lastSeenText = (TextView) view.findViewById(R.id.last_seen_text);
 
 		messagesView = (ListView) view.findViewById(R.id.messages_view);
 
@@ -181,7 +185,7 @@ public class ConversationFragment extends Fragment {
 			public int getItemViewType(int position) {
 				if (getItem(position).getType() == Message.TYPE_STATUS) {
 					return STATUS;
-				} else 	if (getItem(position).getStatus() <= Message.STATUS_RECIEVED) {
+				} else if (getItem(position).getStatus() <= Message.STATUS_RECIEVED) {
 					return RECIEVED;
 				} else {
 					return SENT;
@@ -335,18 +339,21 @@ public class ConversationFragment extends Fragment {
 						startActivity(intent);
 					}
 				});
-				viewHolder.image.setOnLongClickListener(new OnLongClickListener() {
-					
-					@Override
-					public boolean onLongClick(View v) {
-						Intent shareIntent = new Intent();
-						shareIntent.setAction(Intent.ACTION_SEND);
-						shareIntent.putExtra(Intent.EXTRA_STREAM, ImageProvider.getContentUri(message));
-						shareIntent.setType("image/webp");
-						startActivity(Intent.createChooser(shareIntent, getText(R.string.share_with)));
-						return true;
-					}
-				});
+				viewHolder.image
+						.setOnLongClickListener(new OnLongClickListener() {
+
+							@Override
+							public boolean onLongClick(View v) {
+								Intent shareIntent = new Intent();
+								shareIntent.setAction(Intent.ACTION_SEND);
+								shareIntent.putExtra(Intent.EXTRA_STREAM,
+										ImageProvider.getContentUri(message));
+								shareIntent.setType("image/webp");
+								startActivity(Intent.createChooser(shareIntent,
+										getText(R.string.share_with)));
+								return true;
+							}
+						});
 			}
 
 			@Override
@@ -405,8 +412,8 @@ public class ConversationFragment extends Fragment {
 						view.setTag(viewHolder);
 						break;
 					case STATUS:
-						view = (View) inflater.inflate(
-								R.layout.message_status, null);
+						view = (View) inflater.inflate(R.layout.message_status,
+								null);
 						viewHolder.contact_picture = (ImageView) view
 								.findViewById(R.id.message_photo);
 						if (item.getConversation().getMode() == Conversation.MODE_SINGLE) {
@@ -430,7 +437,7 @@ public class ConversationFragment extends Fragment {
 				} else {
 					viewHolder = (ViewHolder) view.getTag();
 				}
-				
+
 				if (type == STATUS) {
 					return view;
 				}
@@ -577,7 +584,11 @@ public class ConversationFragment extends Fragment {
 				activity.getActionBar().setTitle(
 						conversation.getName(useSubject));
 				activity.invalidateOptionsMenu();
-
+				if (activity.showLastseen()) {
+					lastSeen.setVisibility(View.VISIBLE);
+				}
+			} else {
+				lastSeen.setVisibility(View.GONE);
 			}
 		}
 		if (conversation.getMode() == Conversation.MODE_MULTI) {
@@ -653,6 +664,16 @@ public class ConversationFragment extends Fragment {
 					break;
 				}
 			}
+			if (activity.showLastseen()) {
+				Contact contact = conversation.getContact();
+				if ((contact.lastseen.presence != null)&&(contact.lastseen.time != 0)) {
+					lastSeenText.setText(getString(R.string.last_seen,
+						UIHelper.lastseen(getActivity(), contact.lastseen.time),
+						contact.lastseen.presence));
+				} else {
+					lastSeenText.setText(R.string.never_seen);
+				}
+			}
 			this.messageList.clear();
 			this.messageList.addAll(this.conversation.getMessages());
 			updateStatusMessages();
@@ -685,15 +706,16 @@ public class ConversationFragment extends Fragment {
 			}
 		}
 	}
-	
+
 	protected void updateStatusMessages() {
 		if (conversation.getMode() == Conversation.MODE_SINGLE) {
-			for(int i = this.messageList.size() - 1; i >= 0; --i) {
+			for (int i = this.messageList.size() - 1; i >= 0; --i) {
 				if (this.messageList.get(i).getStatus() == Message.STATUS_RECIEVED) {
 					return;
 				} else {
 					if (this.messageList.get(i).getStatus() == Message.STATUS_SEND_DISPLAYED) {
-						this.messageList.add(i+1, Message.createStatusMessage(conversation));
+						this.messageList.add(i + 1,
+								Message.createStatusMessage(conversation));
 						return;
 					}
 				}
