@@ -52,7 +52,7 @@ public class DNSHelper {
 			DNSMessage message =
 					client.query(
 							qname,
-							TYPE.ANY,
+							TYPE.SRV,
 							CLASS.IN,
 							dnsServer.getHostAddress());
 
