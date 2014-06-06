@@ -39,6 +39,7 @@ import android.preference.PreferenceManager;
 import android.provider.ContactsContract.Contacts;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
+import android.text.format.DateUtils;
 import android.text.Html;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -51,6 +52,7 @@ public class UIHelper {
 	private static final int BG_COLOR = 0xFF181818;
 	private static final int FG_COLOR = 0xFFE5E5E5;
 	private static final int TRANSPARENT = 0x00000000;
+    private static final int DATE_NO_YEAR_FLAGS = DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_NO_YEAR;
 
 	public static String readableTimeDifference(Context context, long time) {
 		if (time == 0) {
@@ -66,8 +68,7 @@ public class UIHelper {
 			SimpleDateFormat sdf = new SimpleDateFormat("HH:mm",Locale.US);
 			return sdf.format(date);
 		} else {
-			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd",Locale.US);
-			return sdf.format(date);
+			return DateUtils.formatDateTime(context, date.getTime(), DATE_NO_YEAR_FLAGS);
 		}
 	}
 	
