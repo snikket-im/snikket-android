@@ -18,7 +18,7 @@
     <string name="title_activity_manage_accounts">Gestionar Cuentas</string>
     <string name="title_activity_settings">Ajustes</string>
     <string name="title_activity_conference_details">Detalles de Conferencia</string>
-    <string name="title_activity_contact_details">Detalles de Contacto</string>
+    <string name="title_activity_contact_details">Detalles del Contacto</string>
     <string name="title_activity_conversations">Conversations</string>
     <string name="title_activity_sharewith">Compartir con Conversación</string>
     <string name="just_now">ahora</string>
@@ -60,7 +60,7 @@
     <string name="save">Guardar</string>
     <string name="yes">Sí</string>
     <string name="no">No</string>
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
     <string name="done">Hecho</string>
     <string name="hide">Ocultar</string>
     <string name="create_invite">Crear \u0026 Invitar</string>
@@ -89,7 +89,6 @@
     <string name="delete_messages">Borrar mensajes</string>
     <string name="also_end_conversation">Terminar esta conversación más tarde</string>
     <string name="choose_presence">Selecciona recurso del contacto</string>
-    <string name="send_message_to_conference">Enviar mensaje a conferencia</string>
     <string name="send_plain_text_message">Enviar mensaje de texto</string>
     <string name="send_otr_message">Enviar mensaje encriptado con OTR</string>
     <string name="send_pgp_message">Enviar mensaje encriptado con OpenPGP</string>
@@ -115,6 +114,8 @@
     <string name="offering">ofreciendo&#8230;</string>
     <string name="no_pgp_key">Clave OpenPGP no encontrada</string>
     <string name="contact_has_no_pgp_key">Conversations no ha podido encriptar tus mensajes porque el contacto no está anunciando su clave publica.\n\n<small>Por favor, pide a tu contacto que configure OpenPGP.</small></string>
+    <string name="no_pgp_keys">Claves OpenPGP no encontradas</string>
+    <string name="contacts_have_no_pgp_keys">Conversations no ha podido encriptar tus mensajes porque tus contactos no están anunciando su clave publica.\n\n<small>Por favor, pide a tus contacto que configuren OpenPGP.</small></string>
     <string name="encrypted_message_received"><i>Mensaje encriptado recibido. Pulsa para ver.</i></string>
     <string name="encrypted_image_received"><i>Imagen encriptada recibida. Pulsa para ver.</i></string>
     <string name="image_file"><i>Imagen recibida. Pulsa para ver</i></string>
@@ -144,6 +145,8 @@
     <string name="pref_advanced_options">Opciones avanzadas</string>
     <string name="pref_never_send_crash">Nunca enviar informe de fallos</string>
     <string name="pref_never_send_crash_summary">Enviando volcados de pilas ayudas al desarrollo de Conversations</string>
+    <string name="pref_confirm_messages">Confirmar Mensajes</string>
+    <string name="pref_confirm_messages_summary">Permitir a tus contactos saber cuando recibes y lees un mensaje</string>
     <string name="openpgp_error">OpenKeychain reportó un error</string>
     <string name="error_decrypting_file">I/O Error desencriptando fichero</string>
     <string name="error_copying_image_file">Error copiando archivo de imagen.</string>
@@ -230,4 +233,5 @@
     <string name="server_info_stream_management">Stream Management</string>
     <string name="hours">horas</string>
     <string name="mins">mins</string>
+    <string name="missing_public_keys">Perdidas claves de anuncio públicas</string>
 </resources>
