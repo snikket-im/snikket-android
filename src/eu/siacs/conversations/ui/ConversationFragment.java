@@ -666,13 +666,7 @@ public class ConversationFragment extends Fragment {
 			}
 			if (activity.showLastseen()) {
 				Contact contact = conversation.getContact();
-				if ((contact.lastseen.presence != null)&&(contact.lastseen.time != 0)) {
-					lastSeenText.setText(getString(R.string.last_seen,
-						UIHelper.lastseen(getActivity(), contact.lastseen.time),
-						contact.lastseen.presence));
-				} else {
-					lastSeenText.setText(R.string.never_seen);
-				}
+				lastSeenText.setText(UIHelper.lastseen(getActivity(), contact.lastseen.time));
 			}
 			this.messageList.clear();
 			this.messageList.addAll(this.conversation.getMessages());

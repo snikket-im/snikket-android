@@ -73,15 +73,18 @@ public class UIHelper {
 	}
 	
 	public static String lastseen(Context context, long time) {
+		if (time==0) {
+			return context.getString(R.string.never_seen);
+		}
 		long difference = (System.currentTimeMillis() - time) / 1000;
 		if (difference < 60) {
 			return context.getString(R.string.just_now);
-		} else if (difference < 60 * 60) {
-			return difference / 60 + " " + context.getString(R.string.mins);
-		} else if (difference < 60 * 60 * 24) {
-			return difference / (60 * 60)+ " " + context.getString(R.string.hours);
+		} else if (difference < 60 * 90) {
+			return context.getString(R.string.last_seen_mins,difference/60);
+		} else if (difference < 60 * 60 * 36) {
+			return context.getString(R.string.last_seen_hours,difference/(60*60));
 		} else {
-			return "days";
+			return context.getString(R.string.last_seen_days,difference/(60*60*24));
 		}
 	}
 

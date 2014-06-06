@@ -162,7 +162,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:padding="4dp"
-            android:text="@string/last_seen"
+            android:text="@string/never_seen"
             android:textColor="#e5e5e5"
             android:textSize="14sp" />
     </LinearLayout>
