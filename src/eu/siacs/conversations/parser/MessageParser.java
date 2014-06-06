@@ -24,7 +24,7 @@ public class MessageParser extends AbstractParser {
 		Conversation conversation = mXmppConnectionService
 				.findOrCreateConversation(account, fromParts[0], false);
 		conversation.setLatestMarkableMessageId(getMarkableMessageId(packet));
-		updateLastseen(packet, account);
+		updateLastseen(packet, account,true);
 		String pgpBody = getPgpBody(packet);
 		if (pgpBody != null) {
 			return new Message(conversation, packet.getFrom(), pgpBody,
@@ -42,7 +42,7 @@ public class MessageParser extends AbstractParser {
 		String[] fromParts = packet.getFrom().split("/");
 		Conversation conversation = mXmppConnectionService
 				.findOrCreateConversation(account, fromParts[0], false);
-		updateLastseen(packet, account);
+		updateLastseen(packet, account,true);
 		String body = packet.getBody();
 		if (!conversation.hasValidOtrSession()) {
 			if (properlyAddressed) {
@@ -174,7 +174,7 @@ public class MessageParser extends AbstractParser {
 			return null; // either malformed or boring
 		if (status == Message.STATUS_RECIEVED) {
 			fullJid = message.getAttribute("from");
-			updateLastseen(message, account);
+			updateLastseen(message, account,true);
 		} else {
 			fullJid = message.getAttribute("to");
 		}
@@ -199,6 +199,28 @@ public class MessageParser extends AbstractParser {
 		mXmppConnectionService.markMessage(account, fromParts[0],
 				packet.getId(), Message.STATUS_SEND_FAILED);
 	}
+	
+	public void parseNormal(MessagePacket packet, Account account) {
+		if (packet.hasChild("displayed","urn:xmpp:chat-markers:0")) {
+			String id = packet.findChild("displayed","urn:xmpp:chat-markers:0").getAttribute("id");
+			String[] fromParts = packet.getFrom().split("/");
+			updateLastseen(packet, account,true);
+			mXmppConnectionService.markMessage(account,fromParts[0], id, Message.STATUS_SEND_DISPLAYED);
+		} else if (packet.hasChild("received","urn:xmpp:chat-markers:0")) {
+			String id = packet.findChild("received","urn:xmpp:chat-markers:0").getAttribute("id");
+			String[] fromParts = packet.getFrom().split("/");
+			updateLastseen(packet, account,false);
+			mXmppConnectionService.markMessage(account,fromParts[0], id, Message.STATUS_SEND_RECEIVED);
+		} else if (packet.hasChild("x")) {
+			Element x = packet.findChild("x");
+			if (x.hasChild("invite")) {
+				Conversation conversation = mXmppConnectionService.findOrCreateConversation(account, packet.getFrom(),
+						true);
+				mXmppConnectionService.updateUi(conversation, false);
+			}
+
+		}
+	}
 
 	private String getPgpBody(Element message) {
 		Element child = message.findChild("x", "jabber:x:encrypted");
@@ -216,4 +238,6 @@ public class MessageParser extends AbstractParser {
 			return null;
 		}
 	}
+
+	
 }

@@ -178,30 +178,7 @@ public class XmppConnectionService extends Service {
 				mMessageParser.parseError(packet, account);
 				return;
 			} else if (packet.getType() == MessagePacket.TYPE_NORMAL) {
-				if (packet.hasChild("displayed","urn:xmpp:chat-markers:0")) {
-					String id = packet.findChild("displayed","urn:xmpp:chat-markers:0").getAttribute("id");
-					String[] fromParts = packet.getFrom().split("/");
-					markMessage(account,fromParts[0], id, Message.STATUS_SEND_DISPLAYED);
-					Log.d(LOGTAG,"message was displayed by contact");
-				} else if (packet.hasChild("received","urn:xmpp:chat-markers:0")) {
-					String id = packet.findChild("received","urn:xmpp:chat-markers:0").getAttribute("id");
-					String[] fromParts = packet.getFrom().split("/");
-					markMessage(account,fromParts[0], id, Message.STATUS_SEND_RECEIVED);
-				} else if (packet.hasChild("x")) {
-					Element x = packet.findChild("x");
-					if (x.hasChild("invite")) {
-						findOrCreateConversation(account, packet.getFrom(),
-								true);
-						if (convChangedListener != null) {
-							convChangedListener.onConversationListChanged();
-						}
-						Log.d(LOGTAG,
-								"invitation received to " + packet.getFrom());
-					}
-
-				} else {
-					//Log.d(LOGTAG, "unparsed message " + packet.toString());
-				}
+				mMessageParser.parseNormal(packet, account);
 			}
 			if ((message == null) || (message.getBody() == null)) {
 				return;

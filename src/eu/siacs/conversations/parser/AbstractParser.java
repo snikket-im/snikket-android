@@ -34,7 +34,7 @@ public abstract class AbstractParser {
 		}
 	}
 	
-	protected void updateLastseen(Element packet, Account account) {
+	protected void updateLastseen(Element packet, Account account, boolean presenceOverwrite) {
 		String[] fromParts = packet.getAttribute("from").split("/");
 		String from = fromParts[0];
 		String presence = null;
@@ -45,7 +45,7 @@ public abstract class AbstractParser {
 		long timestamp = getTimestamp(packet);
 		if (timestamp >= contact.lastseen.time) {
 			contact.lastseen.time = timestamp;
-			if (presence!=null) {
+			if ((presence!=null)&&(presenceOverwrite)) {
 				contact.lastseen.presence = presence;
 			}
 		}

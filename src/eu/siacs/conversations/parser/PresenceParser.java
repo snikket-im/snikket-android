@@ -71,9 +71,9 @@ public class PresenceParser extends AbstractParser {
 									x.getContent()));
 						}
 					}
+					updateLastseen(packet, account,true);
 					mXmppConnectionService.onContactStatusChanged
 							.onContactStatusChanged(contact);
-					updateLastseen(packet, account);
 				}
 			} else if (type.equals("unavailable")) {
 				if (fromParts.length != 2) {
