@@ -725,27 +725,31 @@ public class XmppConnectionService extends Service {
 
 	private void resendMessage(Message message) {
 		Account account = message.getConversation().getAccount();
-		MessagePacket packet = null;
-		if (message.getEncryption() == Message.ENCRYPTION_NONE) {
-			packet = prepareMessagePacket(account, message, null);
-		} else if (message.getEncryption() == Message.ENCRYPTION_DECRYPTED) {
-			packet = prepareMessagePacket(account, message, null);
-			packet.setBody("This is an XEP-0027 encryted message");
-			if (message.getEncryptedBody() == null) {
-				markMessage(message, Message.STATUS_SEND_FAILED);
-				return;
+		if (message.getType() == Message.TYPE_TEXT) {
+			MessagePacket packet = null;
+			if (message.getEncryption() == Message.ENCRYPTION_NONE) {
+				packet = prepareMessagePacket(account, message, null);
+			} else if (message.getEncryption() == Message.ENCRYPTION_DECRYPTED) {
+				packet = prepareMessagePacket(account, message, null);
+				packet.setBody("This is an XEP-0027 encryted message");
+				if (message.getEncryptedBody() == null) {
+					markMessage(message, Message.STATUS_SEND_FAILED);
+					return;
+				}
+				packet.addChild("x", "jabber:x:encrypted").setContent(
+						message.getEncryptedBody());
+			} else if (message.getEncryption() == Message.ENCRYPTION_PGP) {
+				packet = prepareMessagePacket(account, message, null);
+				packet.setBody("This is an XEP-0027 encryted message");
+				packet.addChild("x", "jabber:x:encrypted").setContent(
+						message.getBody());
 			}
-			packet.addChild("x", "jabber:x:encrypted").setContent(
-					message.getEncryptedBody());
-		} else if (message.getEncryption() == Message.ENCRYPTION_PGP) {
-			packet = prepareMessagePacket(account, message, null);
-			packet.setBody("This is an XEP-0027 encryted message");
-			packet.addChild("x", "jabber:x:encrypted").setContent(
-					message.getBody());
-		}
-		if (packet != null) {
-			account.getXmppConnection().sendMessagePacket(packet);
-			markMessage(message, Message.STATUS_SEND);
+			if (packet != null) {
+				account.getXmppConnection().sendMessagePacket(packet);
+				markMessage(message, Message.STATUS_SEND);
+			}
+		} else if (message.getType() == Message.TYPE_IMAGE) {
+			//TODO: send images
 		}
 	}
 
