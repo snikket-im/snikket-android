@@ -161,7 +161,6 @@ public class PgpEngine {
 						}
 						message.setEncryptedBody(encryptedMessageBody
 								.toString());
-						message.ready = true;
 						callback.success(message);
 						break;
 					case OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED:
@@ -191,7 +190,6 @@ public class PgpEngine {
 						switch (result.getIntExtra(OpenPgpApi.RESULT_CODE,
 								OpenPgpApi.RESULT_CODE_ERROR)) {
 						case OpenPgpApi.RESULT_CODE_SUCCESS:
-							message.ready = true;
 							callback.success(message);
 							break;
 						case OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED:

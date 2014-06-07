@@ -376,7 +376,6 @@ public class XmppConnectionService extends Service {
 					if (conversation.getNextEncryption() == Message.ENCRYPTION_PGP) {
 						getPgpEngine().encrypt(message, callback);
 					} else {
-						message.ready = true;
 						callback.success(message);
 					}
 				} catch (FileBackend.ImageCopyException e) {

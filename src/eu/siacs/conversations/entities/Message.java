@@ -55,8 +55,6 @@ public class Message extends AbstractEntity {
 	protected transient Conversation conversation = null;
 	
 	protected transient JingleConnection jingleConnection = null;
-
-	public boolean ready = true;
 	
 	private Message() {
 		
