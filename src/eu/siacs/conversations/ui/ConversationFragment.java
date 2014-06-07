@@ -770,6 +770,7 @@ public class ConversationFragment extends Fragment {
 
 								@Override
 								public void success(Contact contact) {
+									chatMsg.setText("");
 									activity.encryptTextMessage(message);
 								}
 
