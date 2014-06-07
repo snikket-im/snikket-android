@@ -15,6 +15,7 @@
     <string name="action_delete_contact">Aus Kontaktliste entfernen</string>
     <string name="title_activity_contacts">Kontakte</string>
     <string name="just_now">gerade</string>
+    <string name="minutes_ago">vor %d Minuten</string>
     <string name="sending">senden&#8230;</string>
     <string name="announce_pgp">PGP Ankündigung erneuern</string>
     <string name="encrypted_message">Entschlüssle Nachricht. Bitte warten&#8230;</string>

@@ -1,8 +1,8 @@
 package eu.siacs.conversations.utils;
 
 import java.io.FileNotFoundException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -39,6 +39,7 @@ import android.preference.PreferenceManager;
 import android.provider.ContactsContract.Contacts;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
+import android.text.format.DateFormat;
 import android.text.format.DateUtils;
 import android.text.Html;
 import android.util.DisplayMetrics;
@@ -60,16 +61,25 @@ public class UIHelper {
 		}
 		Date date = new Date(time);
 		long difference = (System.currentTimeMillis() - time) / 1000;
-		if (difference < 60) {
+		if (difference < 90) {
 			return context.getString(R.string.just_now);
-		} else if (difference < 60 * 10) {
-			return difference / 60 + " " + context.getString(R.string.minutes_ago);
-		} else if (difference < 60 * 60 * 24) {
-			SimpleDateFormat sdf = new SimpleDateFormat("HH:mm",Locale.US);
-			return sdf.format(date);
+		} else if (difference < 60 * 15) {
+			return context.getString(R.string.minutes_ago,Math.round(difference/60.0));
+		} else if (today(date)) {
+			java.text.DateFormat df = DateFormat.getTimeFormat(context);
+			return df.format(date);
 		} else {
 			return DateUtils.formatDateTime(context, date.getTime(), DATE_NO_YEAR_FLAGS);
 		}
+	}
+	
+	private static boolean today(Date date) {
+		Calendar cal1 = Calendar.getInstance();
+		Calendar cal2 = Calendar.getInstance();
+		cal1.setTime(date);
+		cal2.setTimeInMillis(System.currentTimeMillis());
+		return cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) &&
+		                  cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR);
 	}
 	
 	public static String lastseen(Context context, long time) {
@@ -77,14 +87,14 @@ public class UIHelper {
 			return context.getString(R.string.never_seen);
 		}
 		long difference = (System.currentTimeMillis() - time) / 1000;
-		if (difference < 60) {
+		if (difference < 90) {
 			return context.getString(R.string.last_seen_now);
 		} else if (difference < 60 * 90) {
-			return context.getString(R.string.last_seen_mins,difference/60);
+			return context.getString(R.string.last_seen_mins,Math.round(difference/60.0));
 		} else if (difference < 60 * 60 * 36) {
-			return context.getString(R.string.last_seen_hours,difference/(60*60));
+			return context.getString(R.string.last_seen_hours,Math.round(difference/(60.0*60.0)));
 		} else {
-			return context.getString(R.string.last_seen_days,difference/(60*60*24));
+			return context.getString(R.string.last_seen_days,Math.round(difference/(60.0*60.0*24.0)));
 		}
 	}
 
@@ -101,7 +111,6 @@ public class UIHelper {
 	}
 
 	private static void drawTile(Canvas canvas, String letter, int tileColor, int textColor, int left, int top, int right, int bottom) {
-		int size = canvas.getWidth();
 		Paint tilePaint = new Paint(), textPaint = new Paint();
 		tilePaint.setColor(tileColor);
 		textPaint.setColor(textColor);

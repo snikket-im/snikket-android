@@ -22,7 +22,7 @@
     <string name="title_activity_conversations">Conversations</string>
     <string name="title_activity_sharewith">Share with Conversation</string>
     <string name="just_now">just now</string>
-    <string name="minutes_ago">min ago</string>
+    <string name="minutes_ago">%d mins ago</string>
     <string name="unread_conversations">unread Conversations</string>
     <string name="sending">sending&#8230;</string>
     <string name="announce_pgp">Renew PGP announcement</string>
