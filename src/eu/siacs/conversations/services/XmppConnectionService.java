@@ -356,7 +356,7 @@ public class XmppConnectionService extends Service {
 	}
 
 	public Message attachImageToConversation(final Conversation conversation,
-			final Uri uri, final UiCallback callback) {
+			final Uri uri, final UiCallback<Message> callback) {
 		final Message message;
 		if (conversation.getNextEncryption() == Message.ENCRYPTION_PGP) {
 			message = new Message(conversation, "",
@@ -376,10 +376,11 @@ public class XmppConnectionService extends Service {
 					if (conversation.getNextEncryption() == Message.ENCRYPTION_PGP) {
 						getPgpEngine().encrypt(message, callback);
 					} else {
-						callback.success();
+						message.ready = true;
+						callback.success(message);
 					}
 				} catch (FileBackend.ImageCopyException e) {
-					callback.error(e.getResId());
+					callback.error(e.getResId(),message);
 				}
 			}
 		}).start();

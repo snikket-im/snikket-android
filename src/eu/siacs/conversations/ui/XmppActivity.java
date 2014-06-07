@@ -166,11 +166,11 @@ public abstract class XmppActivity extends Activity {
 		startActivity(viewConversationIntent);
 	}
 	
-	protected void announcePgp(final Account account, final Conversation conversation) {
-		xmppConnectionService.getPgpEngine().generateSignature(account, "online", new UiCallback() {
+	protected void announcePgp(Account account, final Conversation conversation) {
+		xmppConnectionService.getPgpEngine().generateSignature(account, "online", new UiCallback<Account>() {
 			
 			@Override
-			public void userInputRequried(PendingIntent pi) {
+			public void userInputRequried(PendingIntent pi, Account account) {
 				try {
 					startIntentSenderForResult(pi.getIntentSender(), REQUEST_ANNOUNCE_PGP, null, 0, 0, 0);
 				} catch (SendIntentException e) {
@@ -179,7 +179,7 @@ public abstract class XmppActivity extends Activity {
 			}
 			
 			@Override
-			public void success() {
+			public void success(Account account) {
 				xmppConnectionService.databaseBackend.updateAccount(account);
 				xmppConnectionService.sendPresence(account);
 				if (conversation!=null) {
@@ -188,7 +188,7 @@ public abstract class XmppActivity extends Activity {
 			}
 			
 			@Override
-			public void error(int error) {
+			public void error(int error, Account account) {
 				displayErrorDialog(error);
 			}
 		});

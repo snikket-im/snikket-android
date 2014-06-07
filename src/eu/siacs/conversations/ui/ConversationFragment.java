@@ -621,26 +621,26 @@ public class ConversationFragment extends Fragment {
 		}
 	}
 
-	private void decryptMessage(final Message message) {
+	private void decryptMessage(Message message) {
 		PgpEngine engine = activity.xmppConnectionService.getPgpEngine();
 		if (engine != null) {
-			engine.decrypt(message, new UiCallback() {
+			engine.decrypt(message, new UiCallback<Message>() {
 
 				@Override
-				public void userInputRequried(PendingIntent pi) {
+				public void userInputRequried(PendingIntent pi, Message message) {
 					askForPassphraseIntent = pi.getIntentSender();
 					pgpInfo.setVisibility(View.VISIBLE);
 				}
 
 				@Override
-				public void success() {
+				public void success(Message message) {
 					activity.xmppConnectionService.databaseBackend
 							.updateMessage(message);
 					updateMessages();
 				}
 
 				@Override
-				public void error(int error) {
+				public void error(int error, Message message) {
 					message.setEncryption(Message.ENCRYPTION_DECRYPTION_FAILED);
 					// updateMessages();
 				}
@@ -752,7 +752,6 @@ public class ConversationFragment extends Fragment {
 	}
 
 	protected void sendPgpMessage(final Message message) {
-		activity.pendingMessage = message;
 		final ConversationActivity activity = (ConversationActivity) getActivity();
 		final XmppConnectionService xmppService = activity.xmppConnectionService;
 		final Contact contact = message.getConversation().getContact();
@@ -760,22 +759,22 @@ public class ConversationFragment extends Fragment {
 			if (conversation.getMode() == Conversation.MODE_SINGLE) {
 				if (contact.getPgpKeyId() != 0) {
 					xmppService.getPgpEngine().hasKey(contact,
-							new UiCallback() {
+							new UiCallback<Contact>() {
 
 								@Override
-								public void userInputRequried(PendingIntent pi) {
+								public void userInputRequried(PendingIntent pi,Contact contact) {
 									activity.runIntent(
 											pi,
 											ConversationActivity.REQUEST_ENCRYPT_MESSAGE);
 								}
 
 								@Override
-								public void success() {
-									activity.encryptTextMessage();
+								public void success(Contact contact) {
+									activity.encryptTextMessage(message);
 								}
 
 								@Override
-								public void error(int error) {
+								public void error(int error, Contact contact) {
 
 								}
 							});
@@ -805,7 +804,7 @@ public class ConversationFragment extends Fragment {
 						warning.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
 						warning.show();
 					}
-					activity.encryptTextMessage();
+					activity.encryptTextMessage(message);
 				} else {
 					showNoPGPKeyDialog(true,
 							new DialogInterface.OnClickListener() {

@@ -85,8 +85,6 @@ public class ConversationActivity extends XmppActivity {
 	private boolean showLastseen = false;
 	private ArrayAdapter<Conversation> listAdapter;
 
-	public Message pendingMessage = null;
-
 	private OnConversationListChangedListener onConvChanged = new OnConversationListChangedListener() {
 
 		@Override
@@ -399,21 +397,23 @@ public class ConversationActivity extends XmppActivity {
 			if (hasPgp()) {
 				if (conversation.getContact().getPgpKeyId() != 0) {
 					xmppConnectionService.getPgpEngine().hasKey(
-							conversation.getContact(), new UiCallback() {
+							conversation.getContact(),
+							new UiCallback<Contact>() {
 
 								@Override
-								public void userInputRequried(PendingIntent pi) {
+								public void userInputRequried(PendingIntent pi,
+										Contact contact) {
 									ConversationActivity.this.runIntent(pi,
 											attachmentChoice);
 								}
 
 								@Override
-								public void success() {
+								public void success(Contact contact) {
 									selectPresenceToAttachFile(attachmentChoice);
 								}
 
 								@Override
-								public void error(int error) {
+								public void error(int error, Contact contact) {
 									displayErrorDialog(error);
 								}
 							});
@@ -794,7 +794,7 @@ public class ConversationActivity extends XmppActivity {
 				announcePgp(getSelectedConversation().getAccount(),
 						getSelectedConversation());
 			} else if (requestCode == REQUEST_ENCRYPT_MESSAGE) {
-				encryptTextMessage();
+				// encryptTextMessage();
 			} else if (requestCode == REQUEST_IMAGE_CAPTURE) {
 				attachImageToConversation(getSelectedConversation(), null);
 			} else if (requestCode == REQUEST_RECORD_AUDIO) {
@@ -815,26 +815,30 @@ public class ConversationActivity extends XmppActivity {
 		prepareImageToast = Toast.makeText(getApplicationContext(),
 				getText(R.string.preparing_image), Toast.LENGTH_LONG);
 		prepareImageToast.show();
-		pendingMessage = xmppConnectionService.attachImageToConversation(
-				conversation, uri, new UiCallback() {
+		xmppConnectionService.attachImageToConversation(conversation, uri,
+				new UiCallback<Message>() {
 
 					@Override
-					public void userInputRequried(PendingIntent pi) {
+					public void userInputRequried(PendingIntent pi,
+							Message object) {
 						hidePrepareImageToast();
 						ConversationActivity.this.runIntent(pi,
 								ConversationActivity.REQUEST_SEND_PGP_IMAGE);
 					}
 
 					@Override
-					public void success() {
-						sendPendingImageMessage();
-						hidePrepareImageToast();
+					public void success(Message message) {
+						message.getConversation().getMessages().add(message);
+						xmppConnectionService.databaseBackend
+								.createMessage(message);
+						xmppConnectionService.sendMessage(message, null);
+						xmppConnectionService.updateUi(
+								message.getConversation(), false);
 					}
 
 					@Override
-					public void error(int error) {
+					public void error(int error, Message message) {
 						hidePrepareImageToast();
-						pendingMessage = null;
 						displayErrorDialog(error);
 					}
 				});
@@ -850,14 +854,6 @@ public class ConversationActivity extends XmppActivity {
 				}
 			});
 		}
-	}
-
-	private void sendPendingImageMessage() {
-		pendingMessage.getConversation().getMessages().add(pendingMessage);
-		xmppConnectionService.databaseBackend.createMessage(pendingMessage);
-		xmppConnectionService.sendMessage(pendingMessage, null);
-		xmppConnectionService.updateUi(pendingMessage.getConversation(), false);
-		pendingMessage = null;
 	}
 
 	public void updateConversationList() {
@@ -1084,29 +1080,24 @@ public class ConversationActivity extends XmppActivity {
 		}
 	}
 
-	public void encryptTextMessage() {
-		xmppConnectionService.getPgpEngine().encrypt(this.pendingMessage,
-				new UiCallback() {
+	public void encryptTextMessage(Message message) {
+		xmppConnectionService.getPgpEngine().encrypt(message,
+				new UiCallback<Message>() {
 
 					@Override
-					public void userInputRequried(PendingIntent pi) {
+					public void userInputRequried(PendingIntent pi,
+							Message message) {
 						activity.runIntent(pi,
 								ConversationActivity.REQUEST_SEND_MESSAGE);
 					}
 
 					@Override
-					public void success() {
-						xmppConnectionService.sendMessage(pendingMessage, null);
-						pendingMessage = null;
-						ConversationFragment selectedFragment = (ConversationFragment) getFragmentManager()
-								.findFragmentByTag("conversation");
-						if (selectedFragment != null) {
-							selectedFragment.clearInputField();
-						}
+					public void success(Message message) {
+						xmppConnectionService.sendMessage(message, null);
 					}
 
 					@Override
-					public void error(int error) {
+					public void error(int error, Message message) {
 
 					}
 				});
