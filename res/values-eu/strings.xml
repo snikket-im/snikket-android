@@ -20,8 +20,9 @@
 	<string name="title_activity_conference_details">Konferentziaren xehetasunak</string>
 	<string name="title_activity_contact_details">Kontaktuaren xehetasunak</string>
 	<string name="title_activity_conversations">Conversations</string>
+	<string name="title_activity_sharewith">Elkarrizketa batekin partekatu</string>
   	<string name="just_now">orain</string>
-  	<string name="minutes_ago">min lehenago</string>
+  	<string name="minutes_ago">%d min lehenago</string>
 	<string name="unread_conversations">irakurri gabeko elkarrizketak</string>
   	<string name="sending">bidaltzen&#8230;</string>
   	<string name="announce_pgp">PGP iragarpena berritu</string>
@@ -34,7 +35,7 @@
   	<string name="participant">Parte-hartzailea</string>
   	<string name="visitor">Bisitaria</string>
   	<string name="enter_new_name">Sartu izen berri bat:</string>
-	<string name="remove_contact_text">%s zure zerrendatik ezabatu nahi duzu. Kontu honekin lotutako elkarrizketa ez da ezabatuko.</string>
+	<string name="remove_contact_text">%s zure zerrendatik ezabatu nahi duzu? Kontu honekin lotutako elkarrizketa ez da ezabatuko.</string>
 	<string name="untrusted_cert_hint">%s zerbitzariak konfiantzarik gabeko, agian bere buruak izenpetutako, ziurtagiri batekin aurkeztu zaitu.</string>
   	<string name="account_info">Zerbitzariaren informazioa</string>
   	<string name="register_account">Kontu berria zerbitzarian erregistratu</string>
@@ -61,6 +62,7 @@
 	<string name="no">Ez</string>
 	<string name="ok">Ados</string>
 	<string name="done">Eginda</string>
+	<string name="hide">Ezkutatu</string>
   	<string name="create_invite">Sortu \u0026 Gonbidatu</string>
 	<string name="new_conference_explained">Ausazki sortutako helbide batekin konferentzia berri bat sortu eta hautatutako kontaktuak bertara gonbidatu nahi al dituzu?</string>
   	<string name="no_open_mucs">Ez da konferentziarik existitzen</string>
@@ -87,7 +89,6 @@
   	<string name="delete_messages">Mezuak ezabatu</string>
   	<string name="also_end_conversation">Elkarrizketa hau geroago amaitu</string>
   	<string name="choose_presence">Hautatu agerpena kontaktuarentzat</string>
-  	<string name="send_message_to_conference">Mezua konferentziara bidali</string>
   	<string name="send_plain_text_message">Testu mezua bidali</string>
   	<string name="send_otr_message">OTRz enkriptatutako mezua bidali</string>
   	<string name="send_pgp_message">openPGPz enkriptatutako mezua bidali</string>
@@ -113,6 +114,8 @@
 	<string name="offering">eskeintzen&#8230;</string>
   	<string name="no_pgp_key">Ez da openPGP gakorik aurkitu</string>
   	<string name="contact_has_no_pgp_key">Conversations ez da zure mezuak enkriptatzeko gai zure kontaktua bere gako publikoa jakinarazten ez dagoelako.\n\n<small>Mesedez eskatu ezaiozu zure kontaktuari openPGP konfigura dezan.</small></string>
+  	<string name="no_pgp_keys">Ez da OpenPGP gakorik aurkitu</string>
+  	<string name="contacts_have_no_pgp_keys">Conversations ez da zure mezuak enkriptatzeko gai zure kontaktuak haien gako publikoa jakinarazten ez daudelako.\n\n<small>Mesedez eskatu ezaiezu zure kontakuei OpenPGP konfigura dezaten.</small></string>
   	<string name="encrypted_message_received"><i>Enkriptatutako mezua jaso da. Ukitu ikusi eta desenkriptatzeko.</i></string>
 	<string name="encrypted_image_received"><i>Enkriptatutako irudia jaso da. Ukitu ikusi eta desenkriptatzeko.</i></string>
 	<string name="image_file"><i>Irudia jaso da. Ukitu ikusteko</i></string>
@@ -142,6 +145,10 @@
 	<string name="pref_advanced_options">Aukera aurreratuak</string>
 	<string name="pref_never_send_crash">Gelditze txostenik ez bidali inoiz</string>
 	<string name="pref_never_send_crash_summary">Akats harraskak bidaliz Conversationsen garapenean laguntzen duzu</string>
+	<string name="pref_confirm_messages">Mezuak egiaztatu</string>
+	<string name="pref_confirm_messages_summary">Zure kontatuak mezu bat noiz jaso eta irakurri duzun jakin dezan baimendu</string>
+	<string name="pref_show_last_seen">Azkenengoz ikusia erakutsi</string>
+	<string name="pref_show_last_seen_summary">Kontaktu bat azken aldiz konektatuta ikusi den ordua erakutsi</string>
 	<string name="openpgp_error">OpenKeychainek akats baten berri eman du</string>
   	<string name="error_decrypting_file">Sarrera/Irteera akatsa fitxategia desenkriptatzerakoan</string>
   	<string name="error_copying_image_file">Huts irudi fitxategia kopiatzerakoan.</string>
@@ -191,6 +198,7 @@
 	<string name="mgmt_account_enable">Gaitu</string>
 	<string name="mgmt_account_are_you_sure">Ziur al zaude?</string>
 	<string name="mgmt_account_delete_confirm_text">Zure kontua ezabatzen baduzu zure elkarrizketa historia guztia galduko da</string>
+	<string name="mgmt_account_account_offline">Kontua lineaz kanpo dago</string>
 	<string name="attach_record_voice">Ahotsa grabatu</string>
 	<string name="account_settings">Kontuaren ezarpenak</string>
 	<string name="account_settings_jabber_id">Jabber IDa:</string>
@@ -214,5 +222,24 @@
 	<string name="muc_details_your_nickname">Zure ezizena</string>
 	<string name="muc_details_other_members">Beste kideak</string>
 	<string name="subscription_not_updated_offline">Kontua lineaz kanpo. Ezin izan da harpidetza eguneratu</string>
+	<string name="share_with_active_conversations">Elkarrizketa aktiboak</string>
+	<string name="server_info_statistics">Estatistikak</string>
+	<string name="server_info_connection_age">Konexioaren adina</string>
+	<string name="server_info_session_age">Saioaren adina</string>
+	<string name="server_info_packets_sent">Bidalitako paketeak</string>
+	<string name="server_info_packets_received">Jasotako paketeak</string>
+	<string name="server_info_connected_accounts">Konektatutako kontuak</string>
+	<string name="server_info_server_features">Zerbitzariaren ezaugarriak</string>
+	<string name="server_info_roster_versioning">Roster Versioning</string>
+	<string name="server_info_carbon_messages">Carbon Messages</string>
+	<string name="server_info_stream_management">Stream Management</string>
+	<string name="hours">orduak</string>
+	<string name="mins">minutuak</string>
+	<string name="missing_public_keys">Gako publikoen iragarpenak faltan</string>
+	<string name="last_seen_now">azkenegoz ikusia orain</string>
+	<string name="last_seen_mins">azkenegoz ikusia %d minutu lehenago</string>
+	<string name="last_seen_hours">azkenegoz ikusia %d ordu lehenago</string>
+	<string name="last_seen_days">azkenegoz ikusia %d egun lehenago</string>
+	<string name="never_seen">inoiz ez ikusia</string>
 	
 </resources>
