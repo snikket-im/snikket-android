@@ -150,7 +150,7 @@
     <string name="account_status_not_found">Server nicht gefunden</string>
     <string name="account_status_no_internet">Keine Internetverbindung</string>
     <string name="account_status_requires_tls">Server benötigt TLS</string>
-    <string name="account_status_error">Unbekanntes Zerfifikat</string>
+    <string name="account_status_error">Unbekanntes Zertifikat</string>
     <string name="account_status_regis_fail">Registrierung fehlgeschlagen</string>
     <string name="account_status_regis_conflict">Benutzername wird bereits verwendet</string>
     <string name="account_status_regis_success">Registrierung abgeschlossen</string>
