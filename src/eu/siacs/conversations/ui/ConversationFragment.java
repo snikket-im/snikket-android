@@ -276,6 +276,7 @@ public class ConversationFragment extends Fragment {
 				viewHolder.messageBody.setText(getString(r));
 				viewHolder.messageBody.setTextColor(0xff33B5E5);
 				viewHolder.messageBody.setTypeface(null, Typeface.ITALIC);
+				viewHolder.messageBody.setTextIsSelectable(false);
 			}
 
 			private void displayDecryptionFailed(ViewHolder viewHolder) {
@@ -286,6 +287,7 @@ public class ConversationFragment extends Fragment {
 						.setText(getString(R.string.decryption_failed));
 				viewHolder.messageBody.setTextColor(0xFFe92727);
 				viewHolder.messageBody.setTypeface(null, Typeface.NORMAL);
+				viewHolder.messageBody.setTextIsSelectable(false);
 			}
 
 			private void displayTextMessage(ViewHolder viewHolder, String text) {
@@ -301,6 +303,7 @@ public class ConversationFragment extends Fragment {
 				}
 				viewHolder.messageBody.setTextColor(0xff333333);
 				viewHolder.messageBody.setTypeface(null, Typeface.NORMAL);
+				viewHolder.messageBody.setTextIsSelectable(true);
 			}
 
 			private void displayImageMessage(ViewHolder viewHolder,
@@ -367,6 +370,8 @@ public class ConversationFragment extends Fragment {
 					case SENT:
 						view = (View) inflater.inflate(R.layout.message_sent,
 								null);
+						viewHolder.message_box = (LinearLayout) view
+								.findViewById(R.id.message_box);
 						viewHolder.contact_picture = (ImageView) view
 								.findViewById(R.id.message_photo);
 						viewHolder.contact_picture.setImageBitmap(selfBitmap);
@@ -383,6 +388,8 @@ public class ConversationFragment extends Fragment {
 					case RECIEVED:
 						view = (View) inflater.inflate(
 								R.layout.message_recieved, null);
+						viewHolder.message_box = (LinearLayout) view
+								.findViewById(R.id.message_box);
 						viewHolder.contact_picture = (ImageView) view
 								.findViewById(R.id.message_photo);
 
@@ -492,8 +499,20 @@ public class ConversationFragment extends Fragment {
 					}
 				} else {
 					if (item.getEncryption() == Message.ENCRYPTION_PGP) {
-						displayInfoMessage(viewHolder,
-								R.string.encrypted_message);
+						if (activity.hasPgp()) {
+							displayInfoMessage(viewHolder,
+									R.string.encrypted_message);
+						} else {
+							displayInfoMessage(viewHolder,
+									R.string.install_openkeychain);
+							viewHolder.message_box.setOnClickListener(new OnClickListener() {
+								
+								@Override
+								public void onClick(View v) {
+									activity.showInstallPgpDialog();
+								}
+							});
+						}
 					} else if (item.getEncryption() == Message.ENCRYPTION_DECRYPTION_FAILED) {
 						displayDecryptionFailed(viewHolder);
 					} else {
@@ -646,7 +665,7 @@ public class ConversationFragment extends Fragment {
 				}
 			});
 		} else {
-			pgpInfo.setVisibility(View.VISIBLE);
+			pgpInfo.setVisibility(View.GONE);
 		}
 	}
 
@@ -666,7 +685,8 @@ public class ConversationFragment extends Fragment {
 			}
 			if (activity.showLastseen()) {
 				Contact contact = conversation.getContact();
-				lastSeenText.setText(UIHelper.lastseen(getActivity(), contact.lastseen.time));
+				lastSeenText.setText(UIHelper.lastseen(getActivity(),
+						contact.lastseen.time));
 			}
 			this.messageList.clear();
 			this.messageList.addAll(this.conversation.getMessages());
@@ -762,7 +782,8 @@ public class ConversationFragment extends Fragment {
 							new UiCallback<Contact>() {
 
 								@Override
-								public void userInputRequried(PendingIntent pi,Contact contact) {
+								public void userInputRequried(PendingIntent pi,
+										Contact contact) {
 									activity.runIntent(
 											pi,
 											ConversationActivity.REQUEST_ENCRYPT_MESSAGE);
@@ -822,6 +843,8 @@ public class ConversationFragment extends Fragment {
 							});
 				}
 			}
+		} else {
+			activity.showInstallPgpDialog();
 		}
 	}
 
@@ -873,6 +896,7 @@ public class ConversationFragment extends Fragment {
 
 	private static class ViewHolder {
 
+		protected LinearLayout message_box;
 		protected Button download_button;
 		protected ImageView image;
 		protected ImageView indicator;

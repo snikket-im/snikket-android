@@ -279,6 +279,8 @@ public class ManageAccountActivity extends XmppActivity {
 								if (activity.hasPgp()) {
 									mode.finish();
 									announcePgp(selectedAccountForActionMode,null);
+								} else {
+									activity.showInstallPgpDialog();
 								}
 							} else if (item.getItemId() == R.id.mgmt_otr_key) {
 								AlertDialog.Builder builder = new AlertDialog.Builder(activity);

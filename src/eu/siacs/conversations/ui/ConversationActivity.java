@@ -434,6 +434,8 @@ public class ConversationActivity extends XmppActivity {
 								});
 					}
 				}
+			} else {
+				showInstallPgpDialog();
 			}
 		} else if (getSelectedConversation().getNextEncryption() == Message.ENCRYPTION_NONE) {
 			selectPresenceToAttachFile(attachmentChoice);
@@ -568,6 +570,8 @@ public class ConversationActivity extends XmppActivity {
 									announcePgp(conversation.getAccount(),
 											conversation);
 								}
+							} else {
+								showInstallPgpDialog();
 							}
 							break;
 						default:
