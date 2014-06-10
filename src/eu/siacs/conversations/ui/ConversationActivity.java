@@ -928,21 +928,37 @@ public class ConversationActivity extends XmppActivity {
 					conversation.setNextPresence(presence);
 					listener.onPresenceSelected(true, presence);
 				} else {
+					final StringBuilder presence = new StringBuilder();
 					AlertDialog.Builder builder = new AlertDialog.Builder(this);
 					builder.setTitle(getString(R.string.choose_presence));
 					final String[] presencesArray = new String[presences.size()];
 					presences.keySet().toArray(presencesArray);
-					builder.setItems(presencesArray,
+					int preselectedPresence = 0;
+					for(int i = 0; i < presencesArray.length; ++i) {
+						if (presencesArray[i].equals(contact.lastseen.presence)) {
+							preselectedPresence = i;
+							break;
+						}
+					}
+					presence.append(presencesArray[preselectedPresence]);
+					builder.setSingleChoiceItems(presencesArray,preselectedPresence , 
 							new DialogInterface.OnClickListener() {
 
 								@Override
 								public void onClick(DialogInterface dialog,
 										int which) {
-									String presence = presencesArray[which];
-									conversation.setNextPresence(presence);
-									listener.onPresenceSelected(true, presence);
-								}
-							});
+									presence.delete(0, presence.length());
+									presence.append(presencesArray[which]);
+								}});
+					builder.setNegativeButton(R.string.cancel,	null);
+					builder.setPositiveButton(R.string.ok, new OnClickListener() {
+						
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							conversation.setNextPresence(presence.toString());
+							listener.onPresenceSelected(true, presence.toString());
+						}
+					});
 					builder.create().show();
 				}
 			}
