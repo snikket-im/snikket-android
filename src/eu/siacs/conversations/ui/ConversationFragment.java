@@ -167,6 +167,7 @@ public class ConversationFragment extends Fragment {
 		lastSeenText = (TextView) view.findViewById(R.id.last_seen_text);
 
 		messagesView = (ListView) view.findViewById(R.id.messages_view);
+		messagesView.setTranscriptMode(ListView.TRANSCRIPT_MODE_NORMAL);
 
 		messageListAdapter = new ArrayAdapter<Message>(this.getActivity()
 				.getApplicationContext(), R.layout.message_sent,
@@ -688,8 +689,11 @@ public class ConversationFragment extends Fragment {
 				lastSeenText.setText(UIHelper.lastseen(getActivity(),
 						contact.lastseen.time));
 			}
-			this.messageList.clear();
-			this.messageList.addAll(this.conversation.getMessages());
+			for(Message message : this.conversation.getMessages()) {
+				if (!this.messageList.contains(message)) {
+					this.messageList.add(message);
+				}
+			}
 			updateStatusMessages();
 			this.messageListAdapter.notifyDataSetChanged();
 			if (conversation.getMode() == Conversation.MODE_SINGLE) {
@@ -708,9 +712,6 @@ public class ConversationFragment extends Fragment {
 			}
 			getActivity().invalidateOptionsMenu();
 			updateChatMsgHint();
-			int size = this.messageList.size();
-			if (size >= 1)
-				messagesView.setSelection(size - 1);
 			if (!activity.shouldPaneBeOpen()) {
 				activity.xmppConnectionService.markRead(conversation);
 				// TODO update notifications
@@ -721,16 +722,32 @@ public class ConversationFragment extends Fragment {
 		}
 	}
 
+	private void messageSent() {
+		int size = this.messageList.size();
+		if (size >= 1) {
+			messagesView.setSelection(size - 1);
+		}
+		chatMsg.setText("");
+	}
+	
 	protected void updateStatusMessages() {
+		boolean addedStatusMsg = false;
 		if (conversation.getMode() == Conversation.MODE_SINGLE) {
 			for (int i = this.messageList.size() - 1; i >= 0; --i) {
-				if (this.messageList.get(i).getStatus() == Message.STATUS_RECIEVED) {
-					return;
+				if (addedStatusMsg) {
+					if (this.messageList.get(i).getType() == Message.TYPE_STATUS) {
+						this.messageList.remove(i);
+						--i;
+					}
 				} else {
-					if (this.messageList.get(i).getStatus() == Message.STATUS_SEND_DISPLAYED) {
-						this.messageList.add(i + 1,
-								Message.createStatusMessage(conversation));
-						return;
+					if (this.messageList.get(i).getStatus() == Message.STATUS_RECIEVED) {
+						addedStatusMsg = true;
+					} else {
+						if (this.messageList.get(i).getStatus() == Message.STATUS_SEND_DISPLAYED) {
+							this.messageList.add(i + 1,
+									Message.createStatusMessage(conversation));
+							addedStatusMsg = true;
+						}
 					}
 				}
 			}
@@ -768,7 +785,7 @@ public class ConversationFragment extends Fragment {
 	protected void sendPlainTextMessage(Message message) {
 		ConversationActivity activity = (ConversationActivity) getActivity();
 		activity.xmppConnectionService.sendMessage(message, null);
-		chatMsg.setText("");
+		messageSent();
 	}
 
 	protected void sendPgpMessage(final Message message) {
@@ -791,7 +808,7 @@ public class ConversationFragment extends Fragment {
 
 								@Override
 								public void success(Contact contact) {
-									chatMsg.setText("");
+									messageSent();
 									activity.encryptTextMessage(message);
 								}
 
@@ -812,7 +829,7 @@ public class ConversationFragment extends Fragment {
 											.setNextEncryption(Message.ENCRYPTION_NONE);
 									message.setEncryption(Message.ENCRYPTION_NONE);
 									xmppService.sendMessage(message, null);
-									chatMsg.setText("");
+									messageSent();
 								}
 							});
 				}
@@ -838,7 +855,7 @@ public class ConversationFragment extends Fragment {
 											.setNextEncryption(Message.ENCRYPTION_NONE);
 									message.setEncryption(Message.ENCRYPTION_NONE);
 									xmppService.sendMessage(message, null);
-									chatMsg.setText("");
+									messageSent();
 								}
 							});
 				}
@@ -870,7 +887,7 @@ public class ConversationFragment extends Fragment {
 		final XmppConnectionService xmppService = activity.xmppConnectionService;
 		if (conversation.hasValidOtrSession()) {
 			activity.xmppConnectionService.sendMessage(message, null);
-			chatMsg.setText("");
+			messageSent();
 		} else {
 			activity.selectPresence(message.getConversation(),
 					new OnPresenceSelected() {
@@ -880,7 +897,7 @@ public class ConversationFragment extends Fragment {
 								String presence) {
 							if (success) {
 								xmppService.sendMessage(message, presence);
-								chatMsg.setText("");
+								messageSent();
 							}
 						}
 
@@ -888,7 +905,7 @@ public class ConversationFragment extends Fragment {
 						public void onSendPlainTextInstead() {
 							message.setEncryption(Message.ENCRYPTION_NONE);
 							xmppService.sendMessage(message, null);
-							chatMsg.setText("");
+							messageSent();
 						}
 					}, "otr");
 		}
