@@ -70,7 +70,7 @@ public class ExceptionHelper {
 						Log.d("xmppService","using account="+finalAccount.getJid()+" to send in stack trace");
 						Conversation conversation = service.findOrCreateConversation(finalAccount, "bugs@siacs.eu", false);
 						Message message = new Message(conversation, stacktrace.toString(), Message.ENCRYPTION_NONE);
-						service.sendMessage(message, null);
+						service.sendMessage(message);
 				}
 			});
 			builder.setNegativeButton(context.getText(R.string.send_never),new OnClickListener() {

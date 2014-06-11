@@ -6,7 +6,6 @@ import net.java.otr4j.session.Session;
 import net.java.otr4j.session.SessionStatus;
 import android.util.Log;
 import eu.siacs.conversations.entities.Account;
-import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.services.XmppConnectionService;
@@ -80,21 +79,7 @@ public class MessageParser extends AbstractParser {
 			body = otrSession.transformReceiving(body);
 			SessionStatus after = otrSession.getSessionStatus();
 			if ((before != after) && (after == SessionStatus.ENCRYPTED)) {
-				List<Message> messages = conversation.getMessages();
-				for (int i = 0; i < messages.size(); ++i) {
-					Message msg = messages.get(i);
-					if ((msg.getStatus() == Message.STATUS_UNSEND)
-							&& (msg.getEncryption() == Message.ENCRYPTION_OTR)) {
-						MessagePacket outPacket = mXmppConnectionService
-								.prepareMessagePacket(account, msg, otrSession);
-						msg.setStatus(Message.STATUS_SEND);
-						mXmppConnectionService.databaseBackend
-								.updateMessage(msg);
-						account.getXmppConnection()
-								.sendMessagePacket(outPacket);
-					}
-				}
-				mXmppConnectionService.updateUi(conversation, false);
+				mXmppConnectionService.onOtrSessionEstablished(conversation);
 			} else if ((before != after) && (after == SessionStatus.FINISHED)) {
 				conversation.resetOtrSession();
 			}

@@ -146,8 +146,8 @@ public class Contact {
 		}
 	}
 
-	public Hashtable<String, Integer> getPresences() {
-		return this.presences.getPresences();
+	public Presences getPresences() {
+		return this.presences;
 	}
 
 	public void updatePresence(String resource, int status) {

@@ -20,6 +20,7 @@ import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.entities.MucOptions.OnRenameListener;
+import eu.siacs.conversations.entities.Presences;
 import eu.siacs.conversations.parser.MessageParser;
 import eu.siacs.conversations.parser.PresenceParser;
 import eu.siacs.conversations.persistance.DatabaseBackend;
@@ -226,6 +227,7 @@ public class XmppConnectionService extends Service {
 				List<Conversation> conversations = getConversations();
 				for (int i = 0; i < conversations.size(); ++i) {
 					if (conversations.get(i).getAccount() == account) {
+						conversations.get(i).endOtrIfNeeded();
 						sendUnsendMessages(conversations.get(i));
 					}
 				}
@@ -265,7 +267,7 @@ public class XmppConnectionService extends Service {
 			} else if (packet.hasChild("x", "http://jabber.org/protocol/muc")) {
 				mPresenceParser.parseConferencePresence(packet, account);
 			} else {
-				mPresenceParser.parseContactPresence(packet,account);
+				mPresenceParser.parseContactPresence(packet, account);
 			}
 		}
 	};
@@ -379,7 +381,7 @@ public class XmppConnectionService extends Service {
 						callback.success(message);
 					}
 				} catch (FileBackend.ImageCopyException e) {
-					callback.error(e.getResId(),message);
+					callback.error(e.getResId(), message);
 				}
 			}
 		}).start();
@@ -636,7 +638,7 @@ public class XmppConnectionService extends Service {
 		return connection;
 	}
 
-	synchronized public void sendMessage(Message message, String presence) {
+	synchronized public void sendMessage(Message message) {
 		Account account = message.getConversation().getAccount();
 		Conversation conv = message.getConversation();
 		MessagePacket packet = null;
@@ -650,7 +652,7 @@ public class XmppConnectionService extends Service {
 				if (message.getEncryption() == Message.ENCRYPTION_OTR) {
 					if (!conv.hasValidOtrSession()) {
 						// starting otr session. messages will be send later
-						conv.startOtrSession(getApplicationContext(), presence,
+						conv.startOtrSession(getApplicationContext(), message.getPresence(),
 								true);
 					} else if (conv.getOtrSession().getSessionStatus() == SessionStatus.ENCRYPTED) {
 						// otr session aleary exists, creating message packet
@@ -693,6 +695,13 @@ public class XmppConnectionService extends Service {
 				databaseBackend.createMessage(message);
 				message.setEncryption(Message.ENCRYPTION_DECRYPTED);
 				message.setBody(decryptedBody);
+				addToConversation = true;
+			} else if (message.getEncryption() == Message.ENCRYPTION_OTR) {
+				if (!conv.hasValidOtrSession()) {
+					conv.startOtrSession(getApplicationContext(), message.getPresence(),false);
+				}
+				message.setPresence(conv.getOtrSession().getSessionID().getUserID());
+				saveInDb = true;
 				addToConversation = true;
 			} else {
 				saveInDb = true;
@@ -743,13 +752,25 @@ public class XmppConnectionService extends Service {
 				packet.setBody("This is an XEP-0027 encryted message");
 				packet.addChild("x", "jabber:x:encrypted").setContent(
 						message.getBody());
+			} else if (message.getEncryption() == Message.ENCRYPTION_OTR) {
+				Presences presences = message.getConversation().getContact().getPresences();
+				if (!message.getConversation().hasValidOtrSession()) {
+					if ((message.getPresence() != null)&&(presences.has(message.getPresence()))) {
+						message.getConversation().startOtrSession(getApplicationContext(), message.getPresence(), true);
+					} else {
+						if (presences.size() == 1) {
+							String presence = presences.asStringArray()[0];
+							message.getConversation().startOtrSession(getApplicationContext(), presence, true);
+						}
+					}
+				}
 			}
 			if (packet != null) {
 				account.getXmppConnection().sendMessagePacket(packet);
 				markMessage(message, Message.STATUS_SEND);
 			}
 		} else if (message.getType() == Message.TYPE_IMAGE) {
-			//TODO: send images
+			// TODO: send images
 		}
 	}
 
@@ -1164,6 +1185,24 @@ public class XmppConnectionService extends Service {
 			contact.setOption(Contact.Options.ASKING);
 		}
 		pushContactToServer(contact);
+	}
+
+	public void onOtrSessionEstablished(Conversation conversation) {
+		Account account = conversation.getAccount();
+		List<Message> messages = conversation.getMessages();
+		Session otrSession = conversation.getOtrSession();
+		for (int i = 0; i < messages.size(); ++i) {
+			Message msg = messages.get(i);
+			if ((msg.getStatus() == Message.STATUS_UNSEND)
+					&& (msg.getEncryption() == Message.ENCRYPTION_OTR)) {
+				MessagePacket outPacket = prepareMessagePacket(account, msg,
+						otrSession);
+				msg.setStatus(Message.STATUS_SEND);
+				databaseBackend.updateMessage(msg);
+				account.getXmppConnection().sendMessagePacket(outPacket);
+			}
+		}
+		updateUi(conversation, false);
 	}
 
 	public void pushContactToServer(Contact contact) {

@@ -62,4 +62,14 @@ public class Presences {
 	public int size() {
 		return presences.size();
 	}
+	
+	public String[] asStringArray() {
+		final String[] presencesArray = new String[presences.size()];
+		presences.keySet().toArray(presencesArray);
+		return presencesArray;
+	}
+
+	public boolean has(String presence) {
+		return presences.containsKey(presence);
+	}
 }

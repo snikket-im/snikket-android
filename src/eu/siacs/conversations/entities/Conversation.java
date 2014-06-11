@@ -257,14 +257,14 @@ public class Conversation extends AbstractEntity {
 	public void endOtrIfNeeded() {
 		if (this.otrSession != null) {
 			if (this.otrSession.getSessionStatus() == SessionStatus.ENCRYPTED) {
-				Log.d("xmppService", "ending otr session with "
-						+ getContactJid());
 				try {
 					this.otrSession.endSession();
 					this.resetOtrSession();
 				} catch (OtrException e) {
 					this.resetOtrSession();
 				}
+			} else {
+				this.resetOtrSession();
 			}
 		}
 	}

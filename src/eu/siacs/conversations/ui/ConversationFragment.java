@@ -784,7 +784,7 @@ public class ConversationFragment extends Fragment {
 
 	protected void sendPlainTextMessage(Message message) {
 		ConversationActivity activity = (ConversationActivity) getActivity();
-		activity.xmppConnectionService.sendMessage(message, null);
+		activity.xmppConnectionService.sendMessage(message);
 		messageSent();
 	}
 
@@ -828,7 +828,7 @@ public class ConversationFragment extends Fragment {
 									conversation
 											.setNextEncryption(Message.ENCRYPTION_NONE);
 									message.setEncryption(Message.ENCRYPTION_NONE);
-									xmppService.sendMessage(message, null);
+									xmppService.sendMessage(message);
 									messageSent();
 								}
 							});
@@ -854,7 +854,7 @@ public class ConversationFragment extends Fragment {
 									conversation
 											.setNextEncryption(Message.ENCRYPTION_NONE);
 									message.setEncryption(Message.ENCRYPTION_NONE);
-									xmppService.sendMessage(message, null);
+									xmppService.sendMessage(message);
 									messageSent();
 								}
 							});
@@ -886,7 +886,7 @@ public class ConversationFragment extends Fragment {
 		ConversationActivity activity = (ConversationActivity) getActivity();
 		final XmppConnectionService xmppService = activity.xmppConnectionService;
 		if (conversation.hasValidOtrSession()) {
-			activity.xmppConnectionService.sendMessage(message, null);
+			activity.xmppConnectionService.sendMessage(message);
 			messageSent();
 		} else {
 			activity.selectPresence(message.getConversation(),
@@ -896,7 +896,8 @@ public class ConversationFragment extends Fragment {
 						public void onPresenceSelected(boolean success,
 								String presence) {
 							if (success) {
-								xmppService.sendMessage(message, presence);
+								message.setPresence(presence);
+								xmppService.sendMessage(message);
 								messageSent();
 							}
 						}
@@ -904,7 +905,7 @@ public class ConversationFragment extends Fragment {
 						@Override
 						public void onSendPlainTextInstead() {
 							message.setEncryption(Message.ENCRYPTION_NONE);
-							xmppService.sendMessage(message, null);
+							xmppService.sendMessage(message);
 							messageSent();
 						}
 					}, "otr");
