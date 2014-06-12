@@ -139,6 +139,7 @@ public class Contact {
 			} else {
 				return (domainParts[0].equals("conf")
 						|| domainParts[0].equals("conference")
+						|| domainParts[0].equals("room")
 						|| domainParts[0].equals("muc")
 						|| domainParts[0].equals("sala") || domainParts[0]
 							.equals("salas"));

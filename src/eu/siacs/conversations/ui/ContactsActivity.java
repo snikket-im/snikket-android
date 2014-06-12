@@ -18,6 +18,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
@@ -433,7 +434,9 @@ public class ContactsActivity extends XmppActivity {
 	}
 
 	public void showIsMucDialogIfNeeded(final Contact clickedContact) {
-		if (clickedContact.couldBeMuc()) {
+		if (isMuc(clickedContact)) {
+			startConversation(clickedContact,clickedContact.getAccount(), true);
+		} else if (clickedContact.couldBeMuc()) {
 			AlertDialog.Builder dialog = new AlertDialog.Builder(this);
 			dialog.setTitle(getString(R.string.multi_user_conference));
 			dialog.setMessage(getString(R.string.trying_join_conference));
@@ -458,6 +461,17 @@ public class ContactsActivity extends XmppActivity {
 			startConversation(clickedContact, clickedContact.getAccount(),
 					false);
 		}
+	}
+	
+	private boolean isMuc(Contact contact) {
+		ArrayList<String> mucServers = new ArrayList<String>();
+		for(Account account : accounts) {
+			if (account.getXmppConnection()!=null) {
+				mucServers.add(account.getXmppConnection().getMucServer());
+			}
+		}
+		String server = contact.getJid().split("@")[1];
+		return mucServers.contains(server);
 	}
 
 	public void startConversation(Contact contact, Account account, boolean muc) {

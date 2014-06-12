@@ -936,7 +936,7 @@ public class XmppConnection implements Runnable {
 				.iterator();
 		while (it.hasNext()) {
 			Entry<String, List<String>> pairs = it.next();
-			if (pairs.getValue().contains(feature)) {
+			if (pairs.getValue().contains(feature)&&pairs.getValue().size()==1) {
 				return pairs.getKey();
 			}
 			it.remove();
