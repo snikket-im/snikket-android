@@ -207,6 +207,9 @@ public class ConversationFragment extends Fragment {
 					}
 				}
 				switch (message.getStatus()) {
+				case Message.STATUS_WAITING:
+					info = getString(R.string.waiting);
+					break;
 				case Message.STATUS_UNSEND:
 					info = getString(R.string.sending);
 					break;
@@ -883,7 +886,7 @@ public class ConversationFragment extends Fragment {
 	}
 
 	protected void sendOtrMessage(final Message message) {
-		ConversationActivity activity = (ConversationActivity) getActivity();
+		final ConversationActivity activity = (ConversationActivity) getActivity();
 		final XmppConnectionService xmppService = activity.xmppConnectionService;
 		if (conversation.hasValidOtrSession()) {
 			activity.xmppConnectionService.sendMessage(message);
@@ -896,6 +899,7 @@ public class ConversationFragment extends Fragment {
 						public void onPresenceSelected(boolean success,
 								String presence) {
 							if (success) {
+								Log.d("xmppService","selected presence "+presence);
 								message.setPresence(presence);
 								xmppService.sendMessage(message);
 								messageSent();
@@ -908,7 +912,7 @@ public class ConversationFragment extends Fragment {
 							xmppService.sendMessage(message);
 							messageSent();
 						}
-					}, "otr");
+					});
 		}
 	}
 

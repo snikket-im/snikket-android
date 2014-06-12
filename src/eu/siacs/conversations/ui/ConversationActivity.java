@@ -389,7 +389,7 @@ public class ConversationActivity extends XmppActivity {
 				// TODO Auto-generated method stub
 
 			}
-		}, "file");
+		});
 	}
 
 	private void attachFile(final int attachmentChoice) {
@@ -868,7 +868,7 @@ public class ConversationActivity extends XmppActivity {
 	}
 
 	public void selectPresence(final Conversation conversation,
-			final OnPresenceSelected listener, String reason) {
+			final OnPresenceSelected listener) {
 		Contact contact = conversation.getContact();
 		if (contact == null) {
 			showAddToRosterDialog(conversation);

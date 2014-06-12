@@ -97,9 +97,6 @@
     <string name="error_loading_image">Error loading image (File not found)</string>
     <string name="image_offered_for_download"><i>Image file offered for download</i></string>
     <string name="not_connected">Not Connected</string>
-    <string name="you_are_offline">You have to be online to send %s but your account assoziated with this Conversation is currently offline.</string>
-    <string name="you_are_offline_blank">You can not perform this action while being offline</string>
-    <string name="files">files</string>
     <string name="otr_messages">OTR encrypted messages</string>
     <string name="manage_account">Manage account</string>
     <string name="contact_offline">Your Contact is Offline</string>
@@ -112,6 +109,7 @@
     <string name="restart">Restart</string>
     <string name="install">Install</string>
     <string name="offering">offering&#8230;</string>
+    <string name="waiting">waiting&#8230;</string>
     <string name="no_pgp_key">No OpenPGP Key found</string>
     <string name="contact_has_no_pgp_key">Conversations is unable to encrypt your messages because your contact is not announcing his or hers public key.\n\n<small>Please ask your contact to setup OpenPGP.</small></string>
     <string name="no_pgp_keys">No OpenPGP Keys found</string>
