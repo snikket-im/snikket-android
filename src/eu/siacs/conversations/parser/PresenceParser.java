@@ -1,6 +1,5 @@
 package eu.siacs.conversations.parser;
 
-import android.util.Log;
 import eu.siacs.conversations.crypto.PgpEngine;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
@@ -54,6 +53,7 @@ public class PresenceParser extends AbstractParser {
 			Contact contact = account.getRoster().getContact(packet.getFrom());
 			if (type == null) {
 				if (fromParts.length == 2) {
+					int sizeBefore = contact.getPresences().size();
 					contact.updatePresence(fromParts[1],
 							Presences.parseShow(packet.findChild("show")));
 					PgpEngine pgp = mXmppConnectionService.getPgpEngine();
@@ -71,9 +71,10 @@ public class PresenceParser extends AbstractParser {
 									x.getContent()));
 						}
 					}
+					boolean online = sizeBefore < contact.getPresences().size();
 					updateLastseen(packet, account,true);
 					mXmppConnectionService.onContactStatusChanged
-							.onContactStatusChanged(contact,true);
+							.onContactStatusChanged(contact,online);
 				}
 			} else if (type.equals("unavailable")) {
 				if (fromParts.length != 2) {

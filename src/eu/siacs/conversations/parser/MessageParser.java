@@ -1,10 +1,7 @@
 package eu.siacs.conversations.parser;
 
-import java.util.List;
-
 import net.java.otr4j.session.Session;
 import net.java.otr4j.session.SessionStatus;
-import android.util.Log;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
@@ -45,16 +42,10 @@ public class MessageParser extends AbstractParser {
 		String body = packet.getBody();
 		if (!conversation.hasValidOtrSession()) {
 			if (properlyAddressed) {
-				Log.d("xmppService",
-						"starting new otr session with "
-								+ packet.getFrom()
-								+ " because no valid otr session has been found");
 				conversation.startOtrSession(
 						mXmppConnectionService.getApplicationContext(),
 						fromParts[1], false);
 			} else {
-				Log.d("xmppService", account.getJid()
-						+ ": ignoring otr session with " + fromParts[0]);
 				return null;
 			}
 		} else {
@@ -63,8 +54,6 @@ public class MessageParser extends AbstractParser {
 			if (!foreignPresence.equals(fromParts[1])) {
 				conversation.resetOtrSession();
 				if (properlyAddressed) {
-					Log.d("xmppService",
-							"replacing otr session with " + packet.getFrom());
 					conversation.startOtrSession(
 							mXmppConnectionService.getApplicationContext(),
 							fromParts[1], false);

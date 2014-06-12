@@ -1194,6 +1194,7 @@ public class XmppConnectionService extends Service {
 		Account account = conversation.getAccount();
 		List<Message> messages = conversation.getMessages();
 		Session otrSession = conversation.getOtrSession();
+		Log.d(LOGTAG,account.getJid()+" otr session established with "+conversation.getContactJid()+"/"+otrSession.getSessionID().getUserID());
 		for (int i = 0; i < messages.size(); ++i) {
 			Message msg = messages.get(i);
 			if ((msg.getStatus() == Message.STATUS_UNSEND)
