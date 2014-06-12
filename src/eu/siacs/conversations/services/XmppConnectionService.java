@@ -98,10 +98,13 @@ public class XmppConnectionService extends Service {
 	public OnContactStatusChanged onContactStatusChanged = new OnContactStatusChanged() {
 
 		@Override
-		public void onContactStatusChanged(Contact contact) {
+		public void onContactStatusChanged(Contact contact, boolean online) {
 			Conversation conversation = findActiveConversation(contact);
 			if (conversation != null) {
 				conversation.endOtrIfNeeded();
+				if (online&&(contact.getPresences().size() == 1)) {
+					sendUnsendMessages(conversation);
+				}
 			}
 		}
 	};

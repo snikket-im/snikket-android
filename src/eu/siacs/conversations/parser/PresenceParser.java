@@ -73,7 +73,7 @@ public class PresenceParser extends AbstractParser {
 					}
 					updateLastseen(packet, account,true);
 					mXmppConnectionService.onContactStatusChanged
-							.onContactStatusChanged(contact);
+							.onContactStatusChanged(contact,true);
 				}
 			} else if (type.equals("unavailable")) {
 				if (fromParts.length != 2) {
@@ -82,7 +82,7 @@ public class PresenceParser extends AbstractParser {
 					contact.removePresence(fromParts[1]);
 				}
 				mXmppConnectionService.onContactStatusChanged
-						.onContactStatusChanged(contact);
+						.onContactStatusChanged(contact,false);
 			} else if (type.equals("subscribe")) {
 				if (contact.getOption(Contact.Options.PREEMPTIVE_GRANT)) {
 					mXmppConnectionService.sendPresenceUpdatesTo(contact);
