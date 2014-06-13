@@ -699,8 +699,8 @@ public class XmppConnectionService extends Service {
 				}
 			}
 		} else {
+			message.setStatus(Message.STATUS_WAITING);
 			if (message.getType() == Message.TYPE_IMAGE) { 
-				message.setStatus(Message.STATUS_WAITING);
 				saveInDb = true;
 				addToConversation = true;
 			} else {
@@ -719,8 +719,6 @@ public class XmppConnectionService extends Service {
 					} else if (!conv.hasValidOtrSession() && message.getPresence() != null) {
 						conv.startOtrSession(getApplicationContext(),
 								message.getPresence(), false);
-					} else if (message.getPresence() == null) {
-						message.setStatus(Message.STATUS_WAITING);
 					}
 					saveInDb = true;
 					addToConversation = true;
@@ -749,8 +747,7 @@ public class XmppConnectionService extends Service {
 	private void sendUnsendMessages(Conversation conversation) {
 		for (int i = 0; i < conversation.getMessages().size(); ++i) {
 			int status = conversation.getMessages().get(i).getStatus();
-			if ((status == Message.STATUS_UNSEND)
-					|| (status == Message.STATUS_WAITING)) {
+			if (status == Message.STATUS_WAITING) {
 				resendMessage(conversation.getMessages().get(i));
 			}
 		}
@@ -799,8 +796,19 @@ public class XmppConnectionService extends Service {
 				markMessage(message, Message.STATUS_SEND);
 			}
 		} else if (message.getType() == Message.TYPE_IMAGE) {
-			// TODO: send images
-
+			Presences presences = message.getConversation().getContact().getPresences();
+			if ((message.getPresence() != null)
+					&& (presences.has(message.getPresence()))) {
+				markMessage(message, Message.STATUS_OFFERED);
+				mJingleConnectionManager.createNewConnection(message);
+			} else {
+				if (presences.size() == 1) {
+					String presence = presences.asStringArray()[0];
+					message.setPresence(presence);
+					markMessage(message, Message.STATUS_OFFERED);
+					mJingleConnectionManager.createNewConnection(message);
+				}
+			}
 		}
 	}
 

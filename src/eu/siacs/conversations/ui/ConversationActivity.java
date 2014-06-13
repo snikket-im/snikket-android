@@ -866,6 +866,7 @@ public class ConversationActivity extends XmppActivity {
 		} else {
 			Presences presences = contact.getPresences();
 			if (presences.size() == 0) {
+				conversation.setNextPresence(null);
 				listener.onPresenceSelected(true, null);
 			} else if (presences.size() == 1) {
 				String presence = (String) presences.asStringArray()[0];
