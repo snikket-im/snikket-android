@@ -650,7 +650,13 @@ public class XmppConnectionService extends Service {
 		boolean send = false;
 		if (account.getStatus() == Account.STATUS_ONLINE) {
 			if (message.getType() == Message.TYPE_IMAGE) {
-				mJingleConnectionManager.createNewConnection(message);
+				if (message.getPresence() !=null ) {
+					mJingleConnectionManager.createNewConnection(message);
+				} else {
+					message.setStatus(Message.STATUS_WAITING);
+					saveInDb = true;
+					addToConversation = true;
+				}
 			} else {
 				if (message.getEncryption() == Message.ENCRYPTION_OTR) {
 					if (!conv.hasValidOtrSession()&&(message.getPresence() != null)) {
@@ -693,29 +699,35 @@ public class XmppConnectionService extends Service {
 				}
 			}
 		} else {
-			if (message.getEncryption() == Message.ENCRYPTION_PGP) {
-				String pgpBody = message.getEncryptedBody();
-				String decryptedBody = message.getBody();
-				message.setBody(pgpBody);
-				databaseBackend.createMessage(message);
-				message.setEncryption(Message.ENCRYPTION_DECRYPTED);
-				message.setBody(decryptedBody);
-				addToConversation = true;
-			} else if (message.getEncryption() == Message.ENCRYPTION_OTR) {
-				if (conv.hasValidOtrSession()) {
-					message.setPresence(conv.getOtrSession().getSessionID()
-							.getUserID());
-				} else if (!conv.hasValidOtrSession() && message.getPresence() != null) {
-					conv.startOtrSession(getApplicationContext(),
-							message.getPresence(), false);
-				} else if (message.getPresence() == null) {
-					message.setStatus(Message.STATUS_WAITING);
-				}
+			if (message.getType() == Message.TYPE_IMAGE) { 
+				message.setStatus(Message.STATUS_WAITING);
 				saveInDb = true;
 				addToConversation = true;
 			} else {
-				saveInDb = true;
-				addToConversation = true;
+				if (message.getEncryption() == Message.ENCRYPTION_PGP) {
+					String pgpBody = message.getEncryptedBody();
+					String decryptedBody = message.getBody();
+					message.setBody(pgpBody);
+					databaseBackend.createMessage(message);
+					message.setEncryption(Message.ENCRYPTION_DECRYPTED);
+					message.setBody(decryptedBody);
+					addToConversation = true;
+				} else if (message.getEncryption() == Message.ENCRYPTION_OTR) {
+					if (conv.hasValidOtrSession()) {
+						message.setPresence(conv.getOtrSession().getSessionID()
+								.getUserID());
+					} else if (!conv.hasValidOtrSession() && message.getPresence() != null) {
+						conv.startOtrSession(getApplicationContext(),
+								message.getPresence(), false);
+					} else if (message.getPresence() == null) {
+						message.setStatus(Message.STATUS_WAITING);
+					}
+					saveInDb = true;
+					addToConversation = true;
+				} else {
+					saveInDb = true;
+					addToConversation = true;
+				}
 			}
 
 		}

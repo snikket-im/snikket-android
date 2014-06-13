@@ -193,6 +193,8 @@ public class ConversationFragment extends Fragment {
 				String filesize = null;
 				String info = null;
 				boolean error = false;
+				boolean multiReceived = message.getConversation().getMode() == Conversation.MODE_MULTI
+						&& message.getStatus() <= Message.STATUS_RECIEVED;
 				if (message.getType() == Message.TYPE_IMAGE) {
 					String[] fileParams = message.getBody().split(",");
 					try {
@@ -221,8 +223,7 @@ public class ConversationFragment extends Fragment {
 					error = true;
 					break;
 				default:
-					if ((message.getConversation().getMode() == Conversation.MODE_MULTI)
-							&& (message.getStatus() <= Message.STATUS_RECIEVED)) {
+					if (multiReceived) {
 						info = message.getCounterpart();
 					}
 					break;
@@ -256,8 +257,12 @@ public class ConversationFragment extends Fragment {
 					if ((filesize != null) && (info != null)) {
 						viewHolder.time.setText(filesize + " \u00B7 " + info);
 					} else if ((filesize == null) && (info != null)) {
-						viewHolder.time.setText(info + " \u00B7 "
+						if (error) {
+							viewHolder.time.setText(info + " \u00B7 "
 								+ formatedTime);
+						} else {
+							viewHolder.time.setText(info);
+						}
 					} else if ((filesize != null) && (info == null)) {
 						viewHolder.time.setText(filesize + " \u00B7 "
 								+ formatedTime);
