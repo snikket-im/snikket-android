@@ -269,11 +269,6 @@ public class ConversationActivity extends XmppActivity {
 				getActionBar().setTitle(R.string.app_name);
 				invalidateOptionsMenu();
 				hideKeyboard();
-				ConversationFragment selectedFragment = (ConversationFragment) getFragmentManager()
-						.findFragmentByTag("conversation");
-				if (selectedFragment != null) {
-					selectedFragment.lastSeen.setVisibility(View.GONE);
-				}
 			}
 
 			@Override
@@ -292,11 +287,6 @@ public class ConversationActivity extends XmppActivity {
 						UIHelper.updateNotification(getApplicationContext(),
 								getConversationList(), null, false);
 						listView.invalidateViews();
-					}
-					ConversationFragment selectedFragment = (ConversationFragment) getFragmentManager()
-							.findFragmentByTag("conversation");
-					if ((selectedFragment != null) && (showLastseen())) {
-						selectedFragment.lastSeen.setVisibility(View.VISIBLE);
 					}
 				}
 			}

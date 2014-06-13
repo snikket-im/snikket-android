@@ -147,24 +147,4 @@
         </LinearLayout>
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/last_seen"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="#7f333333"
-        android:orientation="vertical"
-        android:visibility="gone"
-        android:layout_below="@+id/info_box">
-
-        <TextView
-            android:id="@+id/last_seen_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:padding="4dp"
-            android:text="@string/never_seen"
-            android:textColor="#e5e5e5"
-            android:textSize="14sp" />
-    </LinearLayout>
-
 </RelativeLayout>

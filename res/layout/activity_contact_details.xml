@@ -17,7 +17,8 @@
         android:text="@string/action_contact_details" />
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="88dp"
+        android:layout_height="wrap_content"
+        android:minHeight="88dp"
         android:padding="8dp">
 
         <QuickContactBadge
@@ -52,6 +53,14 @@
                 android:paddingLeft="16dp"
                 android:textSize="24sp"
                 android:textStyle="bold" />
+            <TextView
+                android:id="@+id/details_lastseen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="8dp"
+                android:singleLine="true"
+                android:textColor="#5b5b5b"
+                android:textSize="14sp" />
         </LinearLayout>
           
     </RelativeLayout>

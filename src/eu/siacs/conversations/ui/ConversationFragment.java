@@ -107,9 +107,7 @@ public class ConversationFragment extends Fragment {
 
 	private LinearLayout pgpInfo;
 	private LinearLayout mucError;
-	public LinearLayout lastSeen;
 	private TextView mucErrorText;
-	private TextView lastSeenText;
 	private OnClickListener clickToMuc = new OnClickListener() {
 
 		@Override
@@ -163,8 +161,6 @@ public class ConversationFragment extends Fragment {
 		mucError = (LinearLayout) view.findViewById(R.id.muc_error);
 		mucError.setOnClickListener(clickToMuc);
 		mucErrorText = (TextView) view.findViewById(R.id.muc_error_msg);
-		lastSeen = (LinearLayout) view.findViewById(R.id.last_seen);
-		lastSeenText = (TextView) view.findViewById(R.id.last_seen_text);
 
 		messagesView = (ListView) view.findViewById(R.id.messages_view);
 		messagesView.setTranscriptMode(ListView.TRANSCRIPT_MODE_NORMAL);
@@ -607,11 +603,6 @@ public class ConversationFragment extends Fragment {
 				activity.getActionBar().setTitle(
 						conversation.getName(useSubject));
 				activity.invalidateOptionsMenu();
-				if (activity.showLastseen()) {
-					lastSeen.setVisibility(View.VISIBLE);
-				}
-			} else {
-				lastSeen.setVisibility(View.GONE);
 			}
 		}
 		if (conversation.getMode() == Conversation.MODE_MULTI) {
@@ -686,11 +677,6 @@ public class ConversationFragment extends Fragment {
 					decryptMessage(message);
 					break;
 				}
-			}
-			if (activity.showLastseen()) {
-				Contact contact = conversation.getContact();
-				lastSeenText.setText(UIHelper.lastseen(getActivity(),
-						contact.lastseen.time));
 			}
 			for(Message message : this.conversation.getMessages()) {
 				if (!this.messageList.contains(message)) {
@@ -899,7 +885,6 @@ public class ConversationFragment extends Fragment {
 						public void onPresenceSelected(boolean success,
 								String presence) {
 							if (success) {
-								Log.d("xmppService","selected presence "+presence);
 								message.setPresence(presence);
 								xmppService.sendMessage(message);
 								messageSent();

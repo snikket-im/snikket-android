@@ -48,6 +48,7 @@ public class ContactDetailsActivity extends XmppActivity {
 	private TextView accountJidTv;
 	private TextView status;
 	private TextView askAgain;
+	private TextView lastseen;
 	private CheckBox send;
 	private CheckBox receive;
 	private QuickContactBadge badge;
@@ -111,6 +112,7 @@ public class ContactDetailsActivity extends XmppActivity {
 		contactJidTv = (TextView) findViewById(R.id.details_contactjid);
 		accountJidTv = (TextView) findViewById(R.id.details_account);
 		status = (TextView) findViewById(R.id.details_contactstatus);
+		lastseen = (TextView) findViewById(R.id.details_lastseen);
 		send = (CheckBox) findViewById(R.id.details_send_presence);
 		receive = (CheckBox) findViewById(R.id.details_receive_presence);
 		askAgain = (TextView) findViewById(R.id.ask_again);
@@ -202,6 +204,8 @@ public class ContactDetailsActivity extends XmppActivity {
 				receive.setChecked(false);
 			}
 		}
+		
+		lastseen.setText(UIHelper.lastseen(getApplicationContext(),contact.lastseen.time));
 
 		switch (contact.getMostAvailableStatus()) {
 		case Presences.CHAT:
