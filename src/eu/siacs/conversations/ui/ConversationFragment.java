@@ -683,12 +683,16 @@ public class ConversationFragment extends Fragment {
 					break;
 				}
 			}
-			for(Message message : this.conversation.getMessages()) {
-				if (!this.messageList.contains(message)) {
-					this.messageList.add(message);
+			if (this.conversation.getMessages().size() == 0) {
+				this.messageList.clear();
+			} else {
+				for(Message message : this.conversation.getMessages()) {
+					if (!this.messageList.contains(message)) {
+						this.messageList.add(message);
+					}
 				}
+				updateStatusMessages();
 			}
-			updateStatusMessages();
 			this.messageListAdapter.notifyDataSetChanged();
 			if (conversation.getMode() == Conversation.MODE_SINGLE) {
 				if (messageList.size() >= 1) {
