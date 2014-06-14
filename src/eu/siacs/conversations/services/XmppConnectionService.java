@@ -931,6 +931,14 @@ public class XmppConnectionService extends Service {
 		});
 		return this.conversations;
 	}
+	
+	public List<Message> getMoreMessages(Conversation conversation,long timestamp) {
+		List<Message> messages = databaseBackend.getMessages(conversation, 50, timestamp);
+		for(Message message : messages) {
+			message.setConversation(conversation);
+		}
+		return messages;
+	}
 
 	public List<Account> getAccounts() {
 		return this.accounts;

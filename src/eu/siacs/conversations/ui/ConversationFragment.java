@@ -40,6 +40,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
+import android.widget.AbsListView.OnScrollListener;
+import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -68,6 +70,7 @@ public class ConversationFragment extends Fragment {
 	protected Bitmap selfBitmap;
 
 	private boolean useSubject = true;
+	private boolean messagesLoaded = false;
 
 	private IntentSender askForPassphraseIntent = null;
 
@@ -118,6 +121,33 @@ public class ConversationFragment extends Fragment {
 			startActivity(intent);
 		}
 	};
+
+	private OnScrollListener mOnScrollListener = new OnScrollListener() {
+
+		@Override
+		public void onScrollStateChanged(AbsListView view, int scrollState) {
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public void onScroll(AbsListView view, int firstVisibleItem,
+				int visibleItemCount, int totalItemCount) {
+			if (firstVisibleItem == 0 && messagesLoaded) {
+				long timestamp = messageList.get(0).getTimeSent();
+				messagesLoaded = false;
+				List<Message> messages = activity.xmppConnectionService
+						.getMoreMessages(conversation, timestamp);
+				messageList.addAll(0, messages);
+				messageListAdapter.notifyDataSetChanged();
+				if (messages.size() != 0) {
+					messagesLoaded = true;
+				}
+				messagesView.setSelectionFromTop(messages.size() + 1, 0);
+			}
+		}
+	};
+
 	private ConversationActivity activity;
 
 	public void hidePgpPassphraseBox() {
@@ -163,6 +193,7 @@ public class ConversationFragment extends Fragment {
 		mucErrorText = (TextView) view.findViewById(R.id.muc_error_msg);
 
 		messagesView = (ListView) view.findViewById(R.id.messages_view);
+		messagesView.setOnScrollListener(mOnScrollListener);
 		messagesView.setTranscriptMode(ListView.TRANSCRIPT_MODE_NORMAL);
 
 		messageListAdapter = new ArrayAdapter<Message>(this.getActivity()
@@ -259,7 +290,7 @@ public class ConversationFragment extends Fragment {
 					} else if ((filesize == null) && (info != null)) {
 						if (error) {
 							viewHolder.time.setText(info + " \u00B7 "
-								+ formatedTime);
+									+ formatedTime);
 						} else {
 							viewHolder.time.setText(info);
 						}
@@ -510,13 +541,14 @@ public class ConversationFragment extends Fragment {
 						} else {
 							displayInfoMessage(viewHolder,
 									R.string.install_openkeychain);
-							viewHolder.message_box.setOnClickListener(new OnClickListener() {
-								
-								@Override
-								public void onClick(View v) {
-									activity.showInstallPgpDialog();
-								}
-							});
+							viewHolder.message_box
+									.setOnClickListener(new OnClickListener() {
+
+										@Override
+										public void onClick(View v) {
+											activity.showInstallPgpDialog();
+										}
+									});
 						}
 					} else if (item.getEncryption() == Message.ENCRYPTION_DECRYPTION_FAILED) {
 						displayDecryptionFailed(viewHolder);
@@ -685,12 +717,14 @@ public class ConversationFragment extends Fragment {
 			}
 			if (this.conversation.getMessages().size() == 0) {
 				this.messageList.clear();
+				messagesLoaded = false;
 			} else {
-				for(Message message : this.conversation.getMessages()) {
+				for (Message message : this.conversation.getMessages()) {
 					if (!this.messageList.contains(message)) {
 						this.messageList.add(message);
 					}
 				}
+				messagesLoaded = true;
 				updateStatusMessages();
 			}
 			this.messageListAdapter.notifyDataSetChanged();
@@ -727,7 +761,7 @@ public class ConversationFragment extends Fragment {
 		}
 		chatMsg.setText("");
 	}
-	
+
 	protected void updateStatusMessages() {
 		boolean addedStatusMsg = false;
 		if (conversation.getMode() == Conversation.MODE_SINGLE) {

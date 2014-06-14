@@ -128,14 +128,26 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		}
 		return list;
 	}
+	
+	public List<Message> getMessages(Conversation conversations, int limit) {
+		return getMessages(conversations, limit,-1);
+	}
 
-	public List<Message> getMessages(Conversation conversation, int limit) {
+	public List<Message> getMessages(Conversation conversation, int limit, long timestamp) {
 		List<Message> list = new CopyOnWriteArrayList<Message>();
 		SQLiteDatabase db = this.getReadableDatabase();
-		String[] selectionArgs = { conversation.getUuid() };
-		Cursor cursor = db.query(Message.TABLENAME, null, Message.CONVERSATION
-				+ "=?", selectionArgs, null, null, Message.TIME_SENT + " DESC",
-				String.valueOf(limit));
+		Cursor cursor;
+		if (timestamp==-1) {
+			String[] selectionArgs = { conversation.getUuid() };
+			cursor = db.query(Message.TABLENAME, null, Message.CONVERSATION
+					+ "=?", selectionArgs, null, null, Message.TIME_SENT + " DESC",
+					String.valueOf(limit));
+		} else {
+			String[] selectionArgs = { conversation.getUuid() , ""+timestamp};
+			cursor = db.query(Message.TABLENAME, null, Message.CONVERSATION
+					+ "=? and "+Message.TIME_SENT+"<?", selectionArgs, null, null, Message.TIME_SENT + " DESC",
+					String.valueOf(limit));
+		}
 		if (cursor.getCount() > 0) {
 			cursor.moveToLast();
 			do {
