@@ -141,8 +141,9 @@ public class Contact {
 						|| domainParts[0].equals("conference")
 						|| domainParts[0].equals("room")
 						|| domainParts[0].equals("muc")
-						|| domainParts[0].equals("sala") || domainParts[0]
-							.equals("salas"));
+						|| domainParts[0].equals("chat")
+						|| domainParts[0].equals("sala")
+						|| domainParts[0].equals("salas"));
 			}
 		}
 	}
