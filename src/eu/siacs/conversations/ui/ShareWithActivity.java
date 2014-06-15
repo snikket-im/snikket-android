@@ -11,7 +11,9 @@ import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
+import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.utils.UIHelper;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -29,6 +31,27 @@ public class ShareWithActivity extends XmppActivity {
 
 	private LinearLayout conversations;
 	private LinearLayout contacts;
+	private boolean isImage = false;
+	
+	private UiCallback<Message> attachImageCallback = new UiCallback<Message>() {
+		
+		@Override
+		public void userInputRequried(PendingIntent pi, Message object) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+		@Override
+		public void success(Message message) {
+			xmppConnectionService.sendMessage(message);
+		}
+		
+		@Override
+		public void error(int errorCode, Message object) {
+			// TODO Auto-generated method stub
+			
+		}
+	};
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +81,7 @@ public class ShareWithActivity extends XmppActivity {
 
 	@Override
 	void onBackendConnected() {
-		final boolean isImage = (getIntent().getType() != null && getIntent()
+		this.isImage = (getIntent().getType() != null && getIntent()
 				.getType().startsWith("image/"));
 		SharedPreferences preferences = PreferenceManager
 				.getDefaultSharedPreferences(this);
@@ -85,16 +108,7 @@ public class ShareWithActivity extends XmppActivity {
 
 					@Override
 					public void onClick(View v) {
-						String sharedText = null;
-						if (isImage) {
-							Uri uri = (Uri) getIntent().getParcelableExtra(Intent.EXTRA_STREAM);
-							Log.d(LOGTAG,uri.toString());
-						} else {
-							sharedText = getIntent().getStringExtra(
-								Intent.EXTRA_TEXT);
-						}
-						switchToConversation(conversation, sharedText, true);
-						finish();
+						share(conversation);
 					}
 				});
 				conversations.addView(view);
@@ -131,17 +145,28 @@ public class ShareWithActivity extends XmppActivity {
 
 				@Override
 				public void onClick(View v) {
-					String sharedText = getIntent().getStringExtra(
-							Intent.EXTRA_TEXT);
 					Conversation conversation = xmppConnectionService
 							.findOrCreateConversation(con.getAccount(),
 									con.getJid(), false);
-					switchToConversation(conversation, sharedText, true);
-					finish();
+					share(conversation);
 				}
 			});
 			contacts.addView(view);
 		}
+	}
+	
+	private void share(Conversation conversation) {
+		String sharedText = null;
+		if (isImage) {
+			Uri uri = (Uri) getIntent().getParcelableExtra(Intent.EXTRA_STREAM);
+			Log.d(LOGTAG,uri.toString());
+			ShareWithActivity.this.xmppConnectionService.attachImageToConversation(conversation, uri,attachImageCallback);
+		} else {
+			sharedText = getIntent().getStringExtra(
+				Intent.EXTRA_TEXT);
+		}
+		switchToConversation(conversation, sharedText, true);
+		finish();
 	}
 
 }
