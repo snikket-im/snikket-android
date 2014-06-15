@@ -22,6 +22,7 @@
     <string name="title_activity_conversations">Conversations</string>
     <string name="title_activity_sharewith">Share with Conversation</string>
     <string name="just_now">just now</string>
+    <string name="minute_ago">1 min ago</string>
     <string name="minutes_ago">%d mins ago</string>
     <string name="unread_conversations">unread Conversations</string>
     <string name="sending">sending&#8230;</string>
@@ -235,8 +236,11 @@
     <string name="mins">mins</string>
     <string name="missing_public_keys">Missing public key announcements</string>
     <string name="last_seen_now">last seen just now</string>
+    <string name="last_seen_min">last seen 1 minute ago</string>
     <string name="last_seen_mins">last seen %d minutes ago</string>
+    <string name="last_seen_hour">last seen 1 hour ago</string>
     <string name="last_seen_hours">last seen %d hours ago</string>
+    <string name="last_seen_day">last seen 1 day ago</string>
     <string name="last_seen_days">last seen %d days ago</string>
     <string name="never_seen">never seen</string>
     <string name="install_openkeychain">Encrypted message. Please install OpenKeychain to decrypt.</string>
