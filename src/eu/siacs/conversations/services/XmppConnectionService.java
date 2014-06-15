@@ -817,6 +817,7 @@ public class XmppConnectionService extends Service {
 		MessagePacket packet = new MessagePacket();
 		if (message.getConversation().getMode() == Conversation.MODE_SINGLE) {
 			packet.setType(MessagePacket.TYPE_CHAT);
+			packet.setFrom(account.getFullJid());
 			if (otrSession != null) {
 				try {
 					packet.setBody(otrSession.transformSending(message
@@ -831,11 +832,9 @@ public class XmppConnectionService extends Service {
 				packet.addChild("no-copy", "urn:xmpp:hints");
 				packet.setTo(otrSession.getSessionID().getAccountID() + "/"
 						+ otrSession.getSessionID().getUserID());
-				packet.setFrom(account.getFullJid());
 			} else {
 				packet.setBody(message.getBody());
 				packet.setTo(message.getCounterpart());
-				packet.setFrom(account.getJid());
 			}
 			packet.addChild("markable", "urn:xmpp:chat-markers:0");
 		} else if (message.getConversation().getMode() == Conversation.MODE_MULTI) {
