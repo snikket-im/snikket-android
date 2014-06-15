@@ -22,7 +22,8 @@
     <string name="title_activity_conversations">Conversations</string>
     <string name="title_activity_sharewith">Compartir con Conversación</string>
     <string name="just_now">ahora</string>
-    <string name="minutes_ago">%d min</string>
+    <string name="minute_ago">1 minuto</string>
+    <string name="minutes_ago">%d minutos</string>
     <string name="unread_conversations">conversaciones por leer</string>
     <string name="sending">enviando&#8230;</string>
     <string name="announce_pgp">Renovar anuncio PGP</string>
@@ -97,9 +98,6 @@
     <string name="error_loading_image">Error cargando imagen (Archivo no encontrado)</string>
     <string name="image_offered_for_download"><i>Archivo de imagen ofrecido para descarga</i></string>
     <string name="not_connected">No conectado</string>
-    <string name="you_are_offline">Debes estar conectado para enviar %s pero tu cuenta asociada a esta conversación está desconectada.</string>
-    <string name="you_are_offline_blank">No puedes ejecutar esta acción estando desconectado</string>
-    <string name="files">archivos</string>
     <string name="otr_messages">Mensajes encriptados con OTR</string>
     <string name="manage_account">Gestionar cuenta</string>
     <string name="contact_offline">El contacto está desconectado</string>
@@ -112,6 +110,7 @@
     <string name="restart">Reiniciar</string>
     <string name="install">Instalar</string>
     <string name="offering">ofreciendo&#8230;</string>
+    <string name="waiting">esperando&#8230;</string>
     <string name="no_pgp_key">Clave OpenPGP no encontrada</string>
     <string name="contact_has_no_pgp_key">Conversations no ha podido encriptar tus mensajes porque el contacto no está anunciando su clave publica.\n\n<small>Por favor, pide a tu contacto que configure OpenPGP.</small></string>
     <string name="no_pgp_keys">Claves OpenPGP no encontradas</string>
@@ -236,9 +235,13 @@
     <string name="hours">horas</string>
     <string name="mins">mins</string>
     <string name="missing_public_keys">Se han perdido las claves de anuncio públicas</string>
-    <string name="last_seen_now">última vez ahora</string>
-    <string name="last_seen_mins">última vez hace %d min.</string>
-    <string name="last_seen_hours">última vez hace %d horas</string>
-    <string name="last_seen_days">última vez hace %d días</string>
-    <string name="never_seen">nunca visto</string>
+    <string name="last_seen_now">Visto última vez ahora</string>
+    <string name="last_seen_min">Visto última vez hace 1 minuto</string>
+    <string name="last_seen_mins">Visto última vez hace %d minutos</string>
+    <string name="last_seen_hour">Visto última vez hace 1 hora</string>
+    <string name="last_seen_hours">Visto última vez hace %d horas</string>
+    <string name="last_seen_day">Visto última vez hace 1 día</string>
+    <string name="last_seen_days">Visto última vez hace %d días</string>
+    <string name="never_seen">Nunca visto</string>
+    <string name="install_openkeychain">Mensaje encriptado. Por favor instala OpenKeychain para desencriptar.</string>
 </resources>

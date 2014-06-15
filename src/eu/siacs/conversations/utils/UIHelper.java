@@ -61,8 +61,10 @@ public class UIHelper {
 		}
 		Date date = new Date(time);
 		long difference = (System.currentTimeMillis() - time) / 1000;
-		if (difference < 90) {
+		if (difference < 60) {
 			return context.getString(R.string.just_now);
+        } else if (difference < 60 * 2) {
+            return context.getString(R.string.minute_ago);
 		} else if (difference < 60 * 15) {
 			return context.getString(R.string.minutes_ago,Math.round(difference/60.0));
 		} else if (today(date)) {
@@ -87,12 +89,18 @@ public class UIHelper {
 			return context.getString(R.string.never_seen);
 		}
 		long difference = (System.currentTimeMillis() - time) / 1000;
-		if (difference < 90) {
+		if (difference < 60) {
 			return context.getString(R.string.last_seen_now);
-		} else if (difference < 60 * 90) {
-			return context.getString(R.string.last_seen_mins,Math.round(difference/60.0));
-		} else if (difference < 60 * 60 * 36) {
-			return context.getString(R.string.last_seen_hours,Math.round(difference/(60.0*60.0)));
+		} else if (difference < 60 * 2) {
+			return context.getString(R.string.last_seen_min);
+        } else if (difference < 60 * 60) {
+            return context.getString(R.string.last_seen_mins,Math.round(difference/60.0));
+		} else if (difference < 60 * 60 * 2) {
+			return context.getString(R.string.last_seen_hour);
+        } else if (difference < 60 * 60 * 24) {
+            return context.getString(R.string.last_seen_hours,Math.round(difference/(60.0*60.0)));
+        } else if (difference < 60 * 60 * 48) {
+            return context.getString(R.string.last_seen_day);
 		} else {
 			return context.getString(R.string.last_seen_days,Math.round(difference/(60.0*60.0*24.0)));
 		}
