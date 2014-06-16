@@ -876,6 +876,7 @@ public class ConversationFragment extends Fragment {
 						warning.show();
 					}
 					activity.encryptTextMessage(message);
+					messageSent();
 				} else {
 					showNoPGPKeyDialog(true,
 							new DialogInterface.OnClickListener() {
