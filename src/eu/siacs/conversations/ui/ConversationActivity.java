@@ -6,11 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import eu.siacs.conversations.R;
-import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
-import eu.siacs.conversations.entities.Presences;
 import eu.siacs.conversations.services.ImageProvider;
 import eu.siacs.conversations.utils.ExceptionHelper;
 import eu.siacs.conversations.utils.UIHelper;
@@ -345,38 +343,28 @@ public class ConversationActivity extends XmppActivity {
 		selectPresence(getSelectedConversation(), new OnPresenceSelected() {
 
 			@Override
-			public void onPresenceSelected(boolean success, String presence) {
-				if (success) {
-					if (attachmentChoice == ATTACHMENT_CHOICE_TAKE_PHOTO) {
-						Intent takePictureIntent = new Intent(
-								MediaStore.ACTION_IMAGE_CAPTURE);
-						takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
-								ImageProvider.getIncomingContentUri());
-						if (takePictureIntent
-								.resolveActivity(getPackageManager()) != null) {
-							startActivityForResult(takePictureIntent,
-									REQUEST_IMAGE_CAPTURE);
-						}
-					} else if (attachmentChoice == ATTACHMENT_CHOICE_CHOOSE_IMAGE) {
-						Intent attachFileIntent = new Intent();
-						attachFileIntent.setType("image/*");
-						attachFileIntent.setAction(Intent.ACTION_GET_CONTENT);
-						Intent chooser = Intent.createChooser(attachFileIntent,
-								getString(R.string.attach_file));
-						startActivityForResult(chooser,
-								REQUEST_ATTACH_FILE_DIALOG);
-					} else if (attachmentChoice == ATTACHMENT_CHOICE_RECORD_VOICE) {
-						Intent intent = new Intent(
-								MediaStore.Audio.Media.RECORD_SOUND_ACTION);
-						startActivityForResult(intent, REQUEST_RECORD_AUDIO);
+			public void onPresenceSelected() {
+				if (attachmentChoice == ATTACHMENT_CHOICE_TAKE_PHOTO) {
+					Intent takePictureIntent = new Intent(
+							MediaStore.ACTION_IMAGE_CAPTURE);
+					takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
+							ImageProvider.getIncomingContentUri());
+					if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+						startActivityForResult(takePictureIntent,
+								REQUEST_IMAGE_CAPTURE);
 					}
+				} else if (attachmentChoice == ATTACHMENT_CHOICE_CHOOSE_IMAGE) {
+					Intent attachFileIntent = new Intent();
+					attachFileIntent.setType("image/*");
+					attachFileIntent.setAction(Intent.ACTION_GET_CONTENT);
+					Intent chooser = Intent.createChooser(attachFileIntent,
+							getString(R.string.attach_file));
+					startActivityForResult(chooser, REQUEST_ATTACH_FILE_DIALOG);
+				} else if (attachmentChoice == ATTACHMENT_CHOICE_RECORD_VOICE) {
+					Intent intent = new Intent(
+							MediaStore.Audio.Media.RECORD_SOUND_ACTION);
+					startActivityForResult(intent, REQUEST_RECORD_AUDIO);
 				}
-			}
-
-			@Override
-			public void onSendPlainTextInstead() {
-				// TODO Auto-generated method stub
-
 			}
 		});
 	}
@@ -851,59 +839,6 @@ public class ConversationActivity extends XmppActivity {
 		listView.invalidateViews();
 	}
 
-	public void selectPresence(final Conversation conversation,
-			final OnPresenceSelected listener) {
-		Contact contact = conversation.getContact();
-		if (contact == null) {
-			showAddToRosterDialog(conversation);
-			listener.onPresenceSelected(false, null);
-		} else {
-			Presences presences = contact.getPresences();
-			if (presences.size() == 0) {
-				conversation.setNextPresence(null);
-				listener.onPresenceSelected(true, null);
-			} else if (presences.size() == 1) {
-				String presence = (String) presences.asStringArray()[0];
-				conversation.setNextPresence(presence);
-				listener.onPresenceSelected(true, presence);
-			} else {
-				final StringBuilder presence = new StringBuilder();
-				AlertDialog.Builder builder = new AlertDialog.Builder(this);
-				builder.setTitle(getString(R.string.choose_presence));
-				final String[] presencesArray = presences.asStringArray();
-				int preselectedPresence = 0;
-				for (int i = 0; i < presencesArray.length; ++i) {
-					if (presencesArray[i].equals(contact.lastseen.presence)) {
-						preselectedPresence = i;
-						break;
-					}
-				}
-				presence.append(presencesArray[preselectedPresence]);
-				builder.setSingleChoiceItems(presencesArray,
-						preselectedPresence,
-						new DialogInterface.OnClickListener() {
-
-							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
-								presence.delete(0, presence.length());
-								presence.append(presencesArray[which]);
-							}
-						});
-				builder.setNegativeButton(R.string.cancel, null);
-				builder.setPositiveButton(R.string.ok, new OnClickListener() {
-
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						conversation.setNextPresence(presence.toString());
-						listener.onPresenceSelected(true, presence.toString());
-					}
-				});
-				builder.create().show();
-			}
-		}
-	}
-
 	public boolean showLastseen() {
 		if (getSelectedConversation() == null) {
 			return false;
@@ -911,27 +846,6 @@ public class ConversationActivity extends XmppActivity {
 			return this.showLastseen
 					&& getSelectedConversation().getMode() == Conversation.MODE_SINGLE;
 		}
-	}
-
-	private void showAddToRosterDialog(final Conversation conversation) {
-		String jid = conversation.getContactJid();
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle(jid);
-		builder.setMessage(getString(R.string.not_in_roster));
-		builder.setNegativeButton(getString(R.string.cancel), null);
-		builder.setPositiveButton(getString(R.string.add_contact),
-				new DialogInterface.OnClickListener() {
-
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						String jid = conversation.getContactJid();
-						Account account = getSelectedConversation()
-								.getAccount();
-						Contact contact = account.getRoster().getContact(jid);
-						xmppConnectionService.createContact(contact);
-					}
-				});
-		builder.create().show();
 	}
 
 	public void runIntent(PendingIntent pi, int requestCode) {

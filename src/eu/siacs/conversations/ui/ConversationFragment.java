@@ -925,18 +925,8 @@ public class ConversationFragment extends Fragment {
 					new OnPresenceSelected() {
 
 						@Override
-						public void onPresenceSelected(boolean success,
-								String presence) {
-							if (success) {
-								message.setPresence(presence);
-								xmppService.sendMessage(message);
-								messageSent();
-							}
-						}
-
-						@Override
-						public void onSendPlainTextInstead() {
-							message.setEncryption(Message.ENCRYPTION_NONE);
+						public void onPresenceSelected() {
+							message.setPresence(conversation.getNextPresence());
 							xmppService.sendMessage(message);
 							messageSent();
 						}

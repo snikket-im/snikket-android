@@ -2,8 +2,10 @@ package eu.siacs.conversations.ui;
 
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
+import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
+import eu.siacs.conversations.entities.Presences;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.services.XmppConnectionService.XmppConnectionBinder;
 import eu.siacs.conversations.utils.ExceptionHelper;
@@ -218,5 +220,77 @@ public abstract class XmppActivity extends Activity {
 			}
 		});
 
+	}
+	
+	protected void showAddToRosterDialog(final Conversation conversation) {
+		String jid = conversation.getContactJid();
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle(jid);
+		builder.setMessage(getString(R.string.not_in_roster));
+		builder.setNegativeButton(getString(R.string.cancel), null);
+		builder.setPositiveButton(getString(R.string.add_contact),
+				new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						String jid = conversation.getContactJid();
+						Account account = conversation.getAccount();
+						Contact contact = account.getRoster().getContact(jid);
+						xmppConnectionService.createContact(contact);
+					}
+				});
+		builder.create().show();
+	}
+	
+	public void selectPresence(final Conversation conversation,
+			final OnPresenceSelected listener) {
+		Contact contact = conversation.getContact();
+		if (contact == null) {
+			showAddToRosterDialog(conversation);
+		} else {
+			Presences presences = contact.getPresences();
+			if (presences.size() == 0) {
+				conversation.setNextPresence(null);
+				listener.onPresenceSelected();
+			} else if (presences.size() == 1) {
+				String presence = (String) presences.asStringArray()[0];
+				conversation.setNextPresence(presence);
+				listener.onPresenceSelected();
+			} else {
+				final StringBuilder presence = new StringBuilder();
+				AlertDialog.Builder builder = new AlertDialog.Builder(this);
+				builder.setTitle(getString(R.string.choose_presence));
+				final String[] presencesArray = presences.asStringArray();
+				int preselectedPresence = 0;
+				for (int i = 0; i < presencesArray.length; ++i) {
+					if (presencesArray[i].equals(contact.lastseen.presence)) {
+						preselectedPresence = i;
+						break;
+					}
+				}
+				presence.append(presencesArray[preselectedPresence]);
+				builder.setSingleChoiceItems(presencesArray,
+						preselectedPresence,
+						new DialogInterface.OnClickListener() {
+
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								presence.delete(0, presence.length());
+								presence.append(presencesArray[which]);
+							}
+						});
+				builder.setNegativeButton(R.string.cancel, null);
+				builder.setPositiveButton(R.string.ok, new OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						conversation.setNextPresence(presence.toString());
+						listener.onPresenceSelected();
+					}
+				});
+				builder.create().show();
+			}
+		}
 	}
 }

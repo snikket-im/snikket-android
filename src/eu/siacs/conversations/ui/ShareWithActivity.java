@@ -155,12 +155,17 @@ public class ShareWithActivity extends XmppActivity {
 		}
 	}
 	
-	private void share(Conversation conversation) {
+	private void share(final Conversation conversation) {
 		String sharedText = null;
 		if (isImage) {
-			Uri uri = (Uri) getIntent().getParcelableExtra(Intent.EXTRA_STREAM);
-			Log.d(LOGTAG,uri.toString());
-			ShareWithActivity.this.xmppConnectionService.attachImageToConversation(conversation, uri,attachImageCallback);
+			final Uri uri = (Uri) getIntent().getParcelableExtra(Intent.EXTRA_STREAM);
+			selectPresence(conversation, new OnPresenceSelected() {
+				@Override
+				public void onPresenceSelected() {
+					ShareWithActivity.this.xmppConnectionService.attachImageToConversation(conversation, uri,attachImageCallback);
+				}
+			});
+			
 		} else {
 			sharedText = getIntent().getStringExtra(
 				Intent.EXTRA_TEXT);
