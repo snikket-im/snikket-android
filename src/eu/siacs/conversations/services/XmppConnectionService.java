@@ -645,36 +645,33 @@ public class XmppConnectionService extends Service {
 		Account account = message.getConversation().getAccount();
 		Conversation conv = message.getConversation();
 		MessagePacket packet = null;
-		boolean saveInDb = false;
-		boolean addToConversation = false;
+		boolean saveInDb = true;
 		boolean send = false;
 		if (account.getStatus() == Account.STATUS_ONLINE) {
 			if (message.getType() == Message.TYPE_IMAGE) {
-				if (message.getPresence() !=null ) {
+				if (message.getPresence() != null) {
 					mJingleConnectionManager.createNewConnection(message);
 				} else {
 					message.setStatus(Message.STATUS_WAITING);
-					saveInDb = true;
-					addToConversation = true;
 				}
 			} else {
 				if (message.getEncryption() == Message.ENCRYPTION_OTR) {
-					if (!conv.hasValidOtrSession()&&(message.getPresence() != null)) {
+					if (!conv.hasValidOtrSession()
+							&& (message.getPresence() != null)) {
 						// starting otr session. messages will be send later
 						conv.startOtrSession(getApplicationContext(),
 								message.getPresence(), true);
-					} else if (conv.hasValidOtrSession() && conv.getOtrSession().getSessionStatus() == SessionStatus.ENCRYPTED) {
+					} else if (conv.hasValidOtrSession()
+							&& conv.getOtrSession().getSessionStatus() == SessionStatus.ENCRYPTED) {
 						// otr session aleary exists, creating message packet
 						// accordingly
 						packet = prepareMessagePacket(account, message,
 								conv.getOtrSession());
 						send = true;
 						message.setStatus(Message.STATUS_SEND);
-					}  else if (message.getPresence() == null) {
+					} else if (message.getPresence() == null) {
 						message.setStatus(Message.STATUS_WAITING);
 					}
-					saveInDb = true;
-					addToConversation = true;
 				} else if (message.getEncryption() == Message.ENCRYPTION_PGP) {
 					message.getConversation().endOtrIfNeeded();
 					packet = prepareMessagePacket(account, message, null);
@@ -683,8 +680,6 @@ public class XmppConnectionService extends Service {
 							message.getEncryptedBody());
 					message.setStatus(Message.STATUS_SEND);
 					message.setEncryption(Message.ENCRYPTION_DECRYPTED);
-					saveInDb = true;
-					addToConversation = true;
 					send = true;
 				} else {
 					message.getConversation().endOtrIfNeeded();
@@ -694,37 +689,28 @@ public class XmppConnectionService extends Service {
 					}
 					packet = prepareMessagePacket(account, message, null);
 					send = true;
-					saveInDb = true;
-					addToConversation = true;
 				}
 			}
 		} else {
 			message.setStatus(Message.STATUS_WAITING);
-			if (message.getType() == Message.TYPE_IMAGE) { 
-				saveInDb = true;
-				addToConversation = true;
-			} else {
+			if (message.getType() == Message.TYPE_TEXT) {
 				if (message.getEncryption() == Message.ENCRYPTION_PGP) {
 					String pgpBody = message.getEncryptedBody();
 					String decryptedBody = message.getBody();
 					message.setBody(pgpBody);
 					databaseBackend.createMessage(message);
+					saveInDb = false;
 					message.setEncryption(Message.ENCRYPTION_DECRYPTED);
 					message.setBody(decryptedBody);
-					addToConversation = true;
 				} else if (message.getEncryption() == Message.ENCRYPTION_OTR) {
 					if (conv.hasValidOtrSession()) {
 						message.setPresence(conv.getOtrSession().getSessionID()
 								.getUserID());
-					} else if (!conv.hasValidOtrSession() && message.getPresence() != null) {
+					} else if (!conv.hasValidOtrSession()
+							&& message.getPresence() != null) {
 						conv.startOtrSession(getApplicationContext(),
 								message.getPresence(), false);
 					}
-					saveInDb = true;
-					addToConversation = true;
-				} else {
-					saveInDb = true;
-					addToConversation = true;
 				}
 			}
 
@@ -732,11 +718,9 @@ public class XmppConnectionService extends Service {
 		if (saveInDb) {
 			databaseBackend.createMessage(message);
 		}
-		if (addToConversation) {
-			conv.getMessages().add(message);
-			if (convChangedListener != null) {
-				convChangedListener.onConversationListChanged();
-			}
+		conv.getMessages().add(message);
+		if (convChangedListener != null) {
+			convChangedListener.onConversationListChanged();
 		}
 		if ((send) && (packet != null)) {
 			account.getXmppConnection().sendMessagePacket(packet);
@@ -796,7 +780,8 @@ public class XmppConnectionService extends Service {
 				markMessage(message, Message.STATUS_SEND);
 			}
 		} else if (message.getType() == Message.TYPE_IMAGE) {
-			Presences presences = message.getConversation().getContact().getPresences();
+			Presences presences = message.getConversation().getContact()
+					.getPresences();
 			if ((message.getPresence() != null)
 					&& (presences.has(message.getPresence()))) {
 				markMessage(message, Message.STATUS_OFFERED);
@@ -930,10 +915,12 @@ public class XmppConnectionService extends Service {
 		});
 		return this.conversations;
 	}
-	
-	public List<Message> getMoreMessages(Conversation conversation,long timestamp) {
-		List<Message> messages = databaseBackend.getMessages(conversation, 50, timestamp);
-		for(Message message : messages) {
+
+	public List<Message> getMoreMessages(Conversation conversation,
+			long timestamp) {
+		List<Message> messages = databaseBackend.getMessages(conversation, 50,
+				timestamp);
+		for (Message message : messages) {
 			message.setConversation(conversation);
 		}
 		return messages;

@@ -822,12 +822,7 @@ public class ConversationActivity extends XmppActivity {
 
 					@Override
 					public void success(Message message) {
-						message.getConversation().getMessages().add(message);
-						xmppConnectionService.databaseBackend
-								.createMessage(message);
 						xmppConnectionService.sendMessage(message);
-						xmppConnectionService.updateUi(
-								message.getConversation(), false);
 					}
 
 					@Override
