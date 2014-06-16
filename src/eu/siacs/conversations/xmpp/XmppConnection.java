@@ -17,7 +17,6 @@ import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
@@ -241,7 +240,7 @@ public class XmppConnection implements Runnable {
 				processStream(tagReader.readTag());
 				break;
 			} else if (nextTag.isStart("failure")) {
-				Element failure = tagReader.readElement(nextTag);
+				tagReader.readElement(nextTag);
 				changeStatus(Account.STATUS_UNAUTHORIZED);
 			} else if (nextTag.isStart("challenge")) {
 				String challange = tagReader.readElement(nextTag).getContent();
@@ -442,17 +441,14 @@ public class XmppConnection implements Runnable {
 
 	private void switchOverToTls(Tag currentTag) throws XmlPullParserException,
 			IOException {
-		Tag nextTag = tagReader.readTag(); // should be proceed end tag
+		tagReader.readTag();
 		try {
 			SSLContext sc = SSLContext.getInstance("TLS");
 			TrustManagerFactory tmf = TrustManagerFactory
 					.getInstance(TrustManagerFactory.getDefaultAlgorithm());
-			// Initialise the TMF as you normally would, for example:
-			// tmf.in
 			try {
 				tmf.init((KeyStore) null);
 			} catch (KeyStoreException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 

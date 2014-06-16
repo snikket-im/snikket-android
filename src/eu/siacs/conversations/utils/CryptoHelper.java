@@ -10,7 +10,6 @@ import java.util.Random;
 import eu.siacs.conversations.entities.Account;
 
 import android.util.Base64;
-import android.util.Log;
 
 public class CryptoHelper {
 	final protected static char[] hexArray = "0123456789ABCDEF".toCharArray();

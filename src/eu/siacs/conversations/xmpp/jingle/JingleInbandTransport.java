@@ -8,12 +8,10 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 import android.util.Base64;
-import android.util.Log;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.OnIqPacketReceived;
-import eu.siacs.conversations.xmpp.PacketReceived;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
 
 public class JingleInbandTransport extends JingleTransport {
@@ -39,7 +37,6 @@ public class JingleInbandTransport extends JingleTransport {
 	private OnIqPacketReceived onAckReceived = new OnIqPacketReceived() {
 		@Override
 		public void onIqPacketReceived(Account account, IqPacket packet) {
-			Log.d("xmppService", "on ack received");
 			if (packet.getType() == IqPacket.TYPE_RESULT) {
 				sendNextBlock();
 			}
@@ -82,7 +79,6 @@ public class JingleInbandTransport extends JingleTransport {
 	public void receive(JingleFile file, OnFileTransmitted callback) {
 		this.onFileTransmitted = callback;
 		this.file = file;
-		Log.d("xmppService", "receiving file over ibb");
 		try {
 			this.digest = MessageDigest.getInstance("SHA-1");
 			digest.reset();
@@ -101,7 +97,6 @@ public class JingleInbandTransport extends JingleTransport {
 	public void send(JingleFile file, OnFileTransmitted callback) {
 		this.onFileTransmitted = callback;
 		this.file = file;
-		Log.d("xmppService", "sending file over ibb");
 		try {
 			this.digest = MessageDigest.getInstance("SHA-1");
 			this.digest.reset();
@@ -151,10 +146,8 @@ public class JingleInbandTransport extends JingleTransport {
 			this.fileOutputStream.write(buffer);
 
 			this.digest.update(buffer);
-			Log.d("xmppService", "remaining file size:" + this.remainingSize);
 			if (this.remainingSize <= 0) {
 				file.setSha1Sum(CryptoHelper.bytesToHex(digest.digest()));
-				Log.d("xmppService","file name: "+file.getAbsolutePath());
 				fileOutputStream.flush();
 				fileOutputStream.close();
 				this.onFileTransmitted.onFileTransmitted(file);
@@ -179,7 +172,7 @@ public class JingleInbandTransport extends JingleTransport {
 			this.account.getXmppConnection().sendIqPacket(
 					packet.generateRespone(IqPacket.TYPE_RESULT), null);
 		} else {
-			Log.d("xmppServic","couldnt deliver payload "+packet.toString());
+			//TODO some sort of exception
 		}
 	}
 }

@@ -3,7 +3,6 @@ package eu.siacs.conversations.ui;
 import java.io.FileNotFoundException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.Hashtable;
 import java.util.List;
 
 import eu.siacs.conversations.R;

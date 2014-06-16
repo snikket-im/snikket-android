@@ -1,7 +1,6 @@
 package eu.siacs.conversations.entities;
 
 import java.util.HashSet;
-import java.util.Hashtable;
 import java.util.Set;
 
 import org.json.JSONArray;

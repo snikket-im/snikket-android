@@ -3,25 +3,19 @@ package eu.siacs.conversations.ui;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.openintents.openpgp.OpenPgpError;
-
 import eu.siacs.conversations.R;
-import eu.siacs.conversations.crypto.PgpEngine;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.ui.EditAccount.EditAccountListener;
 import eu.siacs.conversations.xmpp.OnTLSExceptionReceived;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
-import android.content.IntentSender.SendIntentException;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.util.Log;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;

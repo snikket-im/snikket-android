@@ -13,10 +13,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
 import eu.siacs.conversations.utils.CryptoHelper;
-import eu.siacs.conversations.xml.Element;
-
-import android.util.Log;
-import android.widget.Button;
 
 public class JingleSocks5Transport extends JingleTransport {
 	private JingleCandidate candidate;
@@ -150,13 +146,12 @@ public class JingleSocks5Transport extends JingleTransport {
 					byte[] buffer = new byte[8192];
 					int count = buffer.length;
 					while(remainingSize > 0) {
-						Log.d("xmppService","remaning size:"+remainingSize);
 						if (remainingSize<=count) {
 							count = (int) remainingSize;
 						}
 						count = inputStream.read(buffer, 0, count);
 						if (count==-1) {
-							Log.d("xmppService","end of stream");
+							// TODO throw exception
 						} else {
 							fileOutputStream.write(buffer, 0, count);
 							digest.update(buffer, 0, count);
@@ -166,7 +161,6 @@ public class JingleSocks5Transport extends JingleTransport {
 					fileOutputStream.flush();
 					fileOutputStream.close();
 					file.setSha1Sum(CryptoHelper.bytesToHex(digest.digest()));
-					Log.d("xmppService","transmitted filename was: "+file.getAbsolutePath());
 					callback.onFileTransmitted(file);
 				} catch (FileNotFoundException e) {
 					// TODO Auto-generated catch block
@@ -194,9 +188,8 @@ public class JingleSocks5Transport extends JingleTransport {
 		if (this.socket!=null) {
 			try {
 				this.socket.close();
-				Log.d("xmppService","cloesd socket with "+candidate.getHost()+":"+candidate.getPort());
 			} catch (IOException e) {
-				Log.d("xmppService","error closing socket with "+candidate.getHost()+":"+candidate.getPort());
+				
 			}
 		}
 	}
