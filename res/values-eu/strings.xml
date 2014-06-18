@@ -22,6 +22,7 @@
 	<string name="title_activity_conversations">Conversations</string>
 	<string name="title_activity_sharewith">Elkarrizketa batekin partekatu</string>
   	<string name="just_now">orain</string>
+  	<string name="minute_ago">1 min lehenago</string>
   	<string name="minutes_ago">%d min lehenago</string>
 	<string name="unread_conversations">irakurri gabeko elkarrizketak</string>
   	<string name="sending">bidaltzen&#8230;</string>
@@ -97,9 +98,6 @@
   	<string name="error_loading_image">Akatsa irudia kargatzen (fitxategia ez da aurkitu)</string>
   	<string name="image_offered_for_download"><i>Irudi fitxategia deskargarako eskeinia</i></string>
   	<string name="not_connected">Ez konektaturik</string>
-	<string name="you_are_offline">Konektatuta egon behar zara %s bidaltzeko baina elkarrizketa honekin lotutako kontua lineaz kanpo dago.</string>
-  	<string name="you_are_offline_blank">Ezin duzu ekintza hau lineaz kanpo egonda burutu</string>
-  	<string name="files">fitxategiak</string>
   	<string name="otr_messages">OTRz enkriptatutako mezuak</string>
   	<string name="manage_account">Kontua kudeatu</string>
   	<string name="contact_offline">Zure kontaktua lineaz kanpo dago</string>
@@ -112,6 +110,7 @@
 	<string name="restart">Berrabiarazi</string>
 	<string name="install">Instalatu</string>
 	<string name="offering">eskeintzen&#8230;</string>
+	<string name="waiting">itxaroten&#8230;</string>
   	<string name="no_pgp_key">Ez da openPGP gakorik aurkitu</string>
   	<string name="contact_has_no_pgp_key">Conversations ez da zure mezuak enkriptatzeko gai zure kontaktua bere gako publikoa jakinarazten ez dagoelako.\n\n<small>Mesedez eskatu ezaiozu zure kontaktuari openPGP konfigura dezan.</small></string>
   	<string name="no_pgp_keys">Ez da OpenPGP gakorik aurkitu</string>
@@ -237,9 +236,13 @@
 	<string name="mins">minutuak</string>
 	<string name="missing_public_keys">Gako publikoen iragarpenak faltan</string>
 	<string name="last_seen_now">azkenegoz ikusia orain</string>
+	<string name="last_seen_min">azkenegoz ikusia minutu 1 lehenago</string>
 	<string name="last_seen_mins">azkenegoz ikusia %d minutu lehenago</string>
+	<string name="last_seen_hour">azkenegoz ikusia ordu 1 lehenago</string>
 	<string name="last_seen_hours">azkenegoz ikusia %d ordu lehenago</string>
+	<string name="last_seen_day">azkenengoz ikusia egun 1 lehenago</string>
 	<string name="last_seen_days">azkenegoz ikusia %d egun lehenago</string>
 	<string name="never_seen">inoiz ez ikusia</string>
+	<string name="install_openkeychain">Mezu enkriptatua. Mesedez instalatu OpenKeychain desenkriptatzeko.</string>
 	
 </resources>
