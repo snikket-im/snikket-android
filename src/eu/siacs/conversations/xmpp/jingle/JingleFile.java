@@ -25,7 +25,11 @@ public class JingleFile extends File {
 	}
 	
 	public long getExpectedSize() {
-		return this.expectedSize;
+		if (this.aeskey!=null) {
+			return (this.expectedSize/16 + 1) * 16;
+		} else {
+			return this.expectedSize;
+		}
 	}
 	
 	public void setExpectedSize(long size) {
@@ -41,18 +45,18 @@ public class JingleFile extends File {
 	}
 	
 	public void setKey(byte[] key) {
-		Log.d("xmppService","using aes key "+CryptoHelper.bytesToHex(key));
 		if (key.length>=32) {
 			byte[] secretKey = new byte[32];
 			System.arraycopy(key, 0, secretKey, 0, 32);
-			this.aeskey = new SecretKeySpec(key, "AES");
+			this.aeskey = new SecretKeySpec(secretKey, "AES");
 		} else if (key.length>=16) {
-			byte[] secretKey = new byte[15];
+			byte[] secretKey = new byte[16];
 			System.arraycopy(key, 0, secretKey, 0, 16);
-			this.aeskey = new SecretKeySpec(key, "AES");
+			this.aeskey = new SecretKeySpec(secretKey, "AES");
 		} else {
 			Log.d("xmppService","weird key");
 		}
+		Log.d("xmppService","using aes key "+CryptoHelper.bytesToHex(this.aeskey.getEncoded()));
 	}
 	
 	public Key getKey() {
