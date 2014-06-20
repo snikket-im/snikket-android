@@ -1,11 +1,11 @@
 package eu.siacs.conversations.services;
 
+import java.security.SecureRandom;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Locale;
-import java.util.Random;
 
 import org.openintents.openpgp.util.OpenPgpApi;
 import org.openintents.openpgp.util.OpenPgpServiceConnection;
@@ -28,8 +28,10 @@ import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.ui.OnAccountListChangedListener;
 import eu.siacs.conversations.ui.OnConversationListChangedListener;
 import eu.siacs.conversations.ui.UiCallback;
+import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.ExceptionHelper;
 import eu.siacs.conversations.utils.OnPhoneContactsLoadedListener;
+import eu.siacs.conversations.utils.PRNGFixes;
 import eu.siacs.conversations.utils.PhoneHelper;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xml.Element;
@@ -47,6 +49,7 @@ import eu.siacs.conversations.xmpp.jingle.stanzas.JinglePacket;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
 import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
 import eu.siacs.conversations.xmpp.stanzas.PresencePacket;
+import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -114,7 +117,7 @@ public class XmppConnectionService extends Service {
 		tlsException = listener;
 	}
 
-	private Random mRandom = new Random(System.currentTimeMillis());
+	private SecureRandom mRandom;
 
 	private long lastCarbonMessageReceived = -CARBON_GRACE_PERIOD;
 
@@ -367,7 +370,7 @@ public class XmppConnectionService extends Service {
 			message = new Message(conversation, "",
 					Message.ENCRYPTION_DECRYPTED);
 		} else {
-			message = new Message(conversation, "", Message.ENCRYPTION_NONE);
+			message = new Message(conversation, "", conversation.getNextEncryption());
 		}
 		message.setPresence(conversation.getNextPresence());
 		message.setType(Message.TYPE_IMAGE);
@@ -509,9 +512,12 @@ public class XmppConnectionService extends Service {
 		return START_STICKY;
 	}
 
+	@SuppressLint("TrulyRandom")
 	@Override
 	public void onCreate() {
 		ExceptionHelper.init(getApplicationContext());
+		PRNGFixes.apply();
+		this.mRandom = new SecureRandom();
 		this.databaseBackend = DatabaseBackend
 				.getInstance(getApplicationContext());
 		this.fileBackend = new FileBackend(getApplicationContext());
@@ -604,7 +610,7 @@ public class XmppConnectionService extends Service {
 		SharedPreferences sharedPref = getPreferences();
 		account.setResource(sharedPref.getString("resource", "mobile")
 				.toLowerCase(Locale.getDefault()));
-		XmppConnection connection = new XmppConnection(account, this.pm);
+		XmppConnection connection = new XmppConnection(account, this);
 		connection.setOnMessagePacketReceivedListener(this.messageListener);
 		connection.setOnStatusChangedListener(this.statusListener);
 		connection.setOnPresencePacketReceivedListener(this.presenceListener);
@@ -1239,6 +1245,31 @@ public class XmppConnectionService extends Service {
 		}
 		updateUi(conversation, false);
 	}
+	
+	public boolean renewSymmetricKey(Conversation conversation) {
+		Account account = conversation.getAccount();
+		byte[] symmetricKey = new byte[32];
+		this.mRandom.nextBytes(symmetricKey);
+		Session otrSession = conversation.getOtrSession();
+		if (otrSession!=null) {
+			MessagePacket packet = new MessagePacket();
+			packet.setType(MessagePacket.TYPE_CHAT);
+			packet.setFrom(account.getFullJid());
+			packet.addChild("private", "urn:xmpp:carbons:2");
+			packet.addChild("no-copy", "urn:xmpp:hints");
+			packet.setTo(otrSession.getSessionID().getAccountID() + "/"
+					+ otrSession.getSessionID().getUserID());
+			try {
+				packet.setBody(otrSession.transformSending(CryptoHelper.FILETRANSFER+CryptoHelper.bytesToHex(symmetricKey)));
+				account.getXmppConnection().sendMessagePacket(packet);
+				conversation.setSymmetricKey(symmetricKey);
+				return true;
+			} catch (OtrException e) {
+				return false;
+			}
+		}
+		return false;
+	}
 
 	public void pushContactToServer(Contact contact) {
 		contact.resetOption(Contact.Options.DIRTY_DELETE);
@@ -1450,5 +1481,13 @@ public class XmppConnectionService extends Service {
 				"urn:xmpp:chat-markers:0");
 		received.setAttribute("id", id);
 		account.getXmppConnection().sendMessagePacket(receivedPacket);
+	}
+
+	public SecureRandom getRNG() {
+		return this.mRandom;
+	}
+
+	public PowerManager getPowerManager() {
+		return this.pm;
 	}
 }

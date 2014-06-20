@@ -316,7 +316,9 @@ public class ConversationFragment extends Fragment {
 			}
 
 			private void displayDecryptionFailed(ViewHolder viewHolder) {
-				viewHolder.download_button.setVisibility(View.GONE);
+				if (viewHolder.download_button != null) {
+					viewHolder.download_button.setVisibility(View.GONE);
+				}
 				viewHolder.image.setVisibility(View.GONE);
 				viewHolder.messageBody.setVisibility(View.VISIBLE);
 				viewHolder.messageBody
@@ -525,7 +527,8 @@ public class ConversationFragment extends Fragment {
 									}
 								});
 					} else if ((item.getEncryption() == Message.ENCRYPTION_DECRYPTED)
-							|| (item.getEncryption() == Message.ENCRYPTION_NONE)) {
+							|| (item.getEncryption() == Message.ENCRYPTION_NONE)
+							|| (item.getEncryption() == Message.ENCRYPTION_OTR)) {
 						displayImageMessage(viewHolder, item);
 					} else if (item.getEncryption() == Message.ENCRYPTION_PGP) {
 						displayInfoMessage(viewHolder,

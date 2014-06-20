@@ -1,11 +1,13 @@
 package eu.siacs.conversations.parser;
 
+import android.util.Log;
 import net.java.otr4j.session.Session;
 import net.java.otr4j.session.SessionStatus;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.services.XmppConnectionService;
+import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
 
@@ -72,9 +74,13 @@ public class MessageParser extends AbstractParser {
 			} else if ((before != after) && (after == SessionStatus.FINISHED)) {
 				conversation.resetOtrSession();
 			}
-			// isEmpty is a work around for some weird clients which send emtpty
-			// strings over otr
 			if ((body == null) || (body.isEmpty())) {
+				return null;
+			}
+			if (body.startsWith(CryptoHelper.FILETRANSFER)) {
+				String key = body.substring(CryptoHelper.FILETRANSFER.length());
+				conversation.setSymmetricKey(CryptoHelper.hexToBytes(key));
+				Log.d("xmppService","new symmetric key: "+CryptoHelper.bytesToHex(conversation.getSymmetricKey()));
 				return null;
 			}
 			conversation.setLatestMarkableMessageId(getMarkableMessageId(packet));

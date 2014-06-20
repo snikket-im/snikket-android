@@ -1,6 +1,12 @@
 package eu.siacs.conversations.xmpp.jingle;
 
 import java.io.File;
+import java.security.Key;
+
+import javax.crypto.spec.SecretKeySpec;
+
+import eu.siacs.conversations.utils.CryptoHelper;
+import android.util.Log;
 
 public class JingleFile extends File {
 	
@@ -8,6 +14,7 @@ public class JingleFile extends File {
 	
 	private long expectedSize = 0;
 	private String sha1sum;
+	private Key aeskey;
 	
 	public JingleFile(String path) {
 		super(path);
@@ -31,5 +38,24 @@ public class JingleFile extends File {
 	
 	public void setSha1Sum(String sum) {
 		this.sha1sum = sum;
+	}
+	
+	public void setKey(byte[] key) {
+		Log.d("xmppService","using aes key "+CryptoHelper.bytesToHex(key));
+		if (key.length>=32) {
+			byte[] secretKey = new byte[32];
+			System.arraycopy(key, 0, secretKey, 0, 32);
+			this.aeskey = new SecretKeySpec(key, "AES");
+		} else if (key.length>=16) {
+			byte[] secretKey = new byte[15];
+			System.arraycopy(key, 0, secretKey, 0, 16);
+			this.aeskey = new SecretKeySpec(key, "AES");
+		} else {
+			Log.d("xmppService","weird key");
+		}
+	}
+	
+	public Key getKey() {
+		return this.aeskey;
 	}
 }

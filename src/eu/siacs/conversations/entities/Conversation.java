@@ -62,6 +62,8 @@ public class Conversation extends AbstractEntity {
 
 	private transient String latestMarkableMessageId;
 
+	private byte[] symmetricKey;
+
 	public Conversation(String name, Account account, String contactJid,
 			int mode) {
 		this(java.util.UUID.randomUUID().toString(), name, null, account
@@ -352,5 +354,13 @@ public class Conversation extends AbstractEntity {
 		if (id != null) {
 			this.latestMarkableMessageId = id;
 		}
+	}
+
+	public void setSymmetricKey(byte[] key) {
+		this.symmetricKey = key;
+	}
+	
+	public byte[] getSymmetricKey() {
+		return this.symmetricKey;
 	}
 }

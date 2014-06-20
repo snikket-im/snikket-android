@@ -418,7 +418,8 @@ public class ConversationActivity extends XmppActivity {
 		} else if (getSelectedConversation().getNextEncryption() == Message.ENCRYPTION_NONE) {
 			selectPresenceToAttachFile(attachmentChoice);
 		} else {
-			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			selectPresenceToAttachFile(attachmentChoice);
+			/*AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			builder.setTitle(getString(R.string.otr_file_transfer));
 			builder.setMessage(getString(R.string.otr_file_transfer_msg));
 			builder.setNegativeButton(getString(R.string.cancel), null);
@@ -448,7 +449,7 @@ public class ConversationActivity extends XmppActivity {
 							}
 						});
 			}
-			builder.create().show();
+			builder.create().show();*/
 		}
 	}
 

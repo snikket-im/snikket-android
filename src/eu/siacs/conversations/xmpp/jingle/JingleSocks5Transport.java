@@ -12,6 +12,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
+import android.util.Log;
 import eu.siacs.conversations.utils.CryptoHelper;
 
 public class JingleSocks5Transport extends JingleTransport {
@@ -90,19 +91,23 @@ public class JingleSocks5Transport extends JingleTransport {
 			
 			@Override
 			public void run() {
-				FileInputStream fileInputStream = null;
+				InputStream fileInputStream = null;
 				try {
 					MessageDigest digest = MessageDigest.getInstance("SHA-1");
 					digest.reset();
-					fileInputStream = new FileInputStream(file);
+					fileInputStream = getInputStream(file);
 					int count;
+					long txbytes = 0;
 					byte[] buffer = new byte[8192];
-					while ((count = fileInputStream.read(buffer)) > 0) {
+					while ((count = fileInputStream.read(buffer)) != -1) {
+						txbytes += count;
 						outputStream.write(buffer, 0, count);
 						digest.update(buffer, 0, count);
+						Log.d("xmppService","tx bytes: "+txbytes);
 					}
 					outputStream.flush();
 					file.setSha1Sum(CryptoHelper.bytesToHex(digest.digest()));
+					//outputStream.close();
 					if (callback!=null) {
 						callback.onFileTransmitted(file);
 					}
@@ -110,8 +115,7 @@ public class JingleSocks5Transport extends JingleTransport {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					Log.d("xmppService","io exception: "+e.getMessage());
 				} catch (NoSuchAlgorithmException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -141,36 +145,30 @@ public class JingleSocks5Transport extends JingleTransport {
 					inputStream.skip(45);
 					file.getParentFile().mkdirs();
 					file.createNewFile();
-					FileOutputStream fileOutputStream = new FileOutputStream(file);
+					OutputStream fileOutputStream = getOutputStream(file);
 					long remainingSize = file.getExpectedSize();
 					byte[] buffer = new byte[8192];
 					int count = buffer.length;
-					while(remainingSize > 0) {
-						if (remainingSize<=count) {
-							count = (int) remainingSize;
-						}
-						count = inputStream.read(buffer, 0, count);
-						if (count==-1) {
-							// TODO throw exception
-						} else {
+					//while(remainingSize > 0) {
+					while((count = inputStream.read(buffer)) > 0) {
+						Log.d("xmppService","remaining size: "+remainingSize+" reading "+count+" bytes");
+						count = inputStream.read(buffer);
+						if (count!=-1) {
 							fileOutputStream.write(buffer, 0, count);
 							digest.update(buffer, 0, count);
-							remainingSize-=count;
 						}
+						remainingSize-=count;
 					}
 					fileOutputStream.flush();
 					fileOutputStream.close();
 					file.setSha1Sum(CryptoHelper.bytesToHex(digest.digest()));
 					callback.onFileTransmitted(file);
 				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					Log.d("xmppService","file not found exception");
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					Log.d("xmppService","io exception: "+e.getMessage());
 				} catch (NoSuchAlgorithmException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					Log.d("xmppService","no such algo"+e.getMessage());
 				}
 			}
 		}).start();

@@ -5,14 +5,14 @@ import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.util.Random;
 
 import eu.siacs.conversations.entities.Account;
 
 import android.util.Base64;
 
 public class CryptoHelper {
-	final protected static char[] hexArray = "0123456789ABCDEF".toCharArray();
+	public static final String FILETRANSFER = "?FILETRANSFERv1:"; 
+	final protected static char[] hexArray = "0123456789abcdef".toCharArray();
 	final protected static char[] vowels = "aeiou".toCharArray();
 	final protected static char[] consonants = "bcdfghjklmnpqrstvwxyz"
 			.toCharArray();
@@ -24,7 +24,11 @@ public class CryptoHelper {
 			hexChars[j * 2] = hexArray[v >>> 4];
 			hexChars[j * 2 + 1] = hexArray[v & 0x0F];
 		}
-		return new String(hexChars).toLowerCase();
+		return new String(hexChars);
+	}
+	
+	public static byte[] hexToBytes(String hexString) {
+		return new BigInteger(hexString, 16).toByteArray();
 	}
 
 	public static String saslPlain(String username, String password) {
@@ -40,9 +44,8 @@ public class CryptoHelper {
 	    return result;
 	} 
 	
-	public static String saslDigestMd5(Account account, String challenge) {
+	public static String saslDigestMd5(Account account, String challenge, SecureRandom random) {
 		try {
-			Random random = new SecureRandom();
 			String[] challengeParts = new String(Base64.decode(challenge,
 					Base64.DEFAULT)).split(",");
 			String nonce = "";
@@ -84,12 +87,11 @@ public class CryptoHelper {
 		}
 	}
 
-	public static String randomMucName() {
-		Random random = new SecureRandom();
+	public static String randomMucName(SecureRandom random) {
 		return randomWord(3, random) + "." + randomWord(7, random);
 	}
 
-	protected static String randomWord(int lenght, Random random) {
+	protected static String randomWord(int lenght, SecureRandom random) {
 		StringBuilder builder = new StringBuilder(lenght);
 		for (int i = 0; i < lenght; ++i) {
 			if (i % 2 == 0) {

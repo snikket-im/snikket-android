@@ -237,7 +237,7 @@ public class ContactsActivity extends XmppActivity {
 	
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
-							String mucName = CryptoHelper.randomMucName();
+							String mucName = CryptoHelper.randomMucName(xmppConnectionService.getRNG());
 							String serverName = account.getXmppConnection()
 									.getMucServer();
 							String jid = mucName + "@" + serverName;
