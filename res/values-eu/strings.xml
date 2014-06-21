@@ -241,12 +241,8 @@
     <string name="last_seen_days">azkenegoz ikusia %d egun lehenago</string>
     <string name="never_seen">inoiz ez ikusia</string>
     <string name="last_seen_min">azkenegoz ikusia minutu 1 lehenago</string>
-    <string name="last_seen_mins">azkenegoz ikusia %d minutu lehenago</string>
     <string name="last_seen_hour">azkenegoz ikusia ordu 1 lehenago</string>
-    <string name="last_seen_hours">azkenegoz ikusia %d ordu lehenago</string>
     <string name="last_seen_day">azkenengoz ikusia egun 1 lehenago</string>
-    <string name="last_seen_days">azkenegoz ikusia %d egun lehenago</string>
-    <string name="never_seen">inoiz ez ikusia</string>
     <string name="install_openkeychain">Mezu enkriptatua. Mesedez instalatu OpenKeychain desenkriptatzeko.</string>
 
 </resources>
