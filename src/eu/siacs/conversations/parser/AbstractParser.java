@@ -3,8 +3,8 @@ package eu.siacs.conversations.parser;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
-import android.util.Log;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.services.XmppConnectionService;
@@ -26,7 +26,7 @@ public abstract class AbstractParser {
 						"stamp");
 				stamp = stamp.replace("Z", "+0000");
 				if (stamp.contains(".")) {
-					Date date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
+					Date date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ",Locale.US)
 					.parse(stamp);
 					if (now<date.getTime()) {
 						return now;
@@ -34,7 +34,7 @@ public abstract class AbstractParser {
 						return date.getTime();
 					}
 				} else {
-					Date date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
+					Date date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ",Locale.US)
 							.parse(stamp);
 					if (now<date.getTime()) {
 						return now;

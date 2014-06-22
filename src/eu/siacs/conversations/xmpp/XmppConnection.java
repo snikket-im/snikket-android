@@ -795,7 +795,6 @@ public class XmppConnection implements Runnable {
 	}
 
 	public void sendMessagePacket(MessagePacket packet) {
-		Log.d("xmppService",packet.toString());
 		this.sendPacket(packet, null);
 	}
 

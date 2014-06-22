@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map.Entry;
 
 import android.graphics.BitmapFactory;
@@ -13,7 +14,6 @@ import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.services.XmppConnectionService;
-import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.OnIqPacketReceived;
 import eu.siacs.conversations.xmpp.jingle.stanzas.Content;
@@ -244,8 +244,7 @@ public class JingleConnection {
 			Element fileNameElement = fileOffer.findChild("name");
 			if (fileNameElement!=null) {
 				boolean supportedFile = false;
-				Log.d("xmppService","file offer: "+fileNameElement.getContent());
-				String[] filename = fileNameElement.getContent().toLowerCase().split("\\.");
+				String[] filename = fileNameElement.getContent().toLowerCase(Locale.US).split("\\.");
 				if (Arrays.asList(this.extensions).contains(filename[filename.length - 1])) {
 					supportedFile = true;
 				} else if (Arrays.asList(this.cryptoExtensions).contains(filename[filename.length - 1])) {

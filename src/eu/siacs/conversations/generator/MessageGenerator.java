@@ -2,6 +2,7 @@ package eu.siacs.conversations.generator;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.TimeZone;
 
 import net.java.otr4j.OtrException;
@@ -33,7 +34,7 @@ public class MessageGenerator {
 	}
 	
 	private void addDelay(MessagePacket packet, long timestamp) {
-		final SimpleDateFormat mDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+		final SimpleDateFormat mDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",Locale.US);
 		mDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 		Element delay = packet.addChild("delay", "urn:xmpp:delay");
 		Date date = new Date(timestamp);

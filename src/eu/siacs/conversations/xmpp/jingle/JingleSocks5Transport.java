@@ -1,12 +1,9 @@
 package eu.siacs.conversations.xmpp.jingle;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.ObjectInputStream.GetField;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.security.MessageDigest;
