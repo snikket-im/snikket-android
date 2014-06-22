@@ -967,6 +967,7 @@ public class ConversationActivity extends XmppActivity {
 
 					@Override
 					public void success(Message message) {
+						message.setEncryption(Message.ENCRYPTION_DECRYPTED);
 						xmppConnectionService.sendMessage(message);
 					}
 
