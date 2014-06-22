@@ -763,9 +763,9 @@ public class XmppConnectionService extends Service {
 		if (message.getType() == Message.TYPE_TEXT) {
 			MessagePacket packet = null;
 			if (message.getEncryption() == Message.ENCRYPTION_NONE) {
-				packet = mMessageGenerator.generateChat(message);
+				packet = mMessageGenerator.generateChat(message,true);
 			} else if ((message.getEncryption() == Message.ENCRYPTION_DECRYPTED)||(message.getEncryption() == Message.ENCRYPTION_PGP)) {
-				packet = mMessageGenerator.generatePgpChat(message);
+				packet = mMessageGenerator.generatePgpChat(message,true);
 			} else if (message.getEncryption() == Message.ENCRYPTION_OTR) {
 				Presences presences = message.getConversation().getContact()
 						.getPresences();
@@ -1207,7 +1207,7 @@ public class XmppConnectionService extends Service {
 				msg.setPresence(otrSession.getSessionID().getUserID());
 				if (msg.getType() == Message.TYPE_TEXT) {
 					try {
-						MessagePacket outPacket = mMessageGenerator.generateOtrChat(msg);
+						MessagePacket outPacket = mMessageGenerator.generateOtrChat(msg,true);
 						msg.setStatus(Message.STATUS_SEND);
 						databaseBackend.updateMessage(msg);
 						account.getXmppConnection().sendMessagePacket(outPacket);

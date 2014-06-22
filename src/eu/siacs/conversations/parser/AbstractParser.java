@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import android.util.Log;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.services.XmppConnectionService;
@@ -18,19 +19,34 @@ public abstract class AbstractParser {
 	}
 	
 	protected long getTimestamp(Element packet) {
+		long now = System.currentTimeMillis();
 		if (packet.hasChild("delay")) {
 			try {
 				String stamp = packet.findChild("delay").getAttribute(
 						"stamp");
 				stamp = stamp.replace("Z", "+0000");
-				Date date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
-						.parse(stamp);
-				return date.getTime();
+				if (stamp.contains(".")) {
+					Date date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
+					.parse(stamp);
+					if (now<date.getTime()) {
+						return now;
+					} else {
+						return date.getTime();
+					}
+				} else {
+					Date date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
+							.parse(stamp);
+					if (now<date.getTime()) {
+						return now;
+					} else {
+						return date.getTime();
+					}
+				}
 			} catch (ParseException e) {
-				return System.currentTimeMillis();
+				return now;
 			}
 		} else {
-			return System.currentTimeMillis();
+			return now;
 		}
 	}
 	

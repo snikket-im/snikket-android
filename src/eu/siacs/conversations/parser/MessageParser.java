@@ -18,20 +18,24 @@ public class MessageParser extends AbstractParser {
 	}
 
 	public Message parseChat(MessagePacket packet, Account account) {
+		Log.d("xmppService","received message: "+packet.toString());
 		String[] fromParts = packet.getFrom().split("/");
 		Conversation conversation = mXmppConnectionService
 				.findOrCreateConversation(account, fromParts[0], false);
 		conversation.setLatestMarkableMessageId(getMarkableMessageId(packet));
 		updateLastseen(packet, account,true);
 		String pgpBody = getPgpBody(packet);
+		Message finishedMessage;
 		if (pgpBody != null) {
-			return new Message(conversation, packet.getFrom(), pgpBody,
+			finishedMessage = new Message(conversation, packet.getFrom(), pgpBody,
 					Message.ENCRYPTION_PGP, Message.STATUS_RECIEVED);
 		} else {
-			return new Message(conversation, packet.getFrom(),
+			finishedMessage = new Message(conversation, packet.getFrom(),
 					packet.getBody(), Message.ENCRYPTION_NONE,
 					Message.STATUS_RECIEVED);
 		}
+		finishedMessage.setTime(getTimestamp(packet));
+		return finishedMessage;
 	}
 
 	public Message parseOtrChat(MessagePacket packet, Account account) {
