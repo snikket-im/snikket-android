@@ -370,7 +370,8 @@ public class XmppConnectionService extends Service {
 			message = new Message(conversation, "",
 					Message.ENCRYPTION_DECRYPTED);
 		} else {
-			message = new Message(conversation, "", conversation.getNextEncryption());
+			message = new Message(conversation, "",
+					conversation.getNextEncryption());
 		}
 		message.setPresence(conversation.getNextPresence());
 		message.setType(Message.TYPE_IMAGE);
@@ -656,7 +657,22 @@ public class XmppConnectionService extends Service {
 		if (account.getStatus() == Account.STATUS_ONLINE) {
 			if (message.getType() == Message.TYPE_IMAGE) {
 				if (message.getPresence() != null) {
-					mJingleConnectionManager.createNewConnection(message);
+					if (message.getEncryption() == Message.ENCRYPTION_OTR) {
+						if (!conv.hasValidOtrSession()
+								&& (message.getPresence() != null)) {
+							conv.startOtrSession(getApplicationContext(),
+									message.getPresence(), true);
+							message.setStatus(Message.STATUS_WAITING);
+						} else if (conv.hasValidOtrSession()
+								&& conv.getOtrSession().getSessionStatus() == SessionStatus.ENCRYPTED) {
+							mJingleConnectionManager
+									.createNewConnection(message);
+						} else if (message.getPresence() == null) {
+							message.setStatus(Message.STATUS_WAITING);
+						}
+					} else {
+						mJingleConnectionManager.createNewConnection(message);
+					}
 				} else {
 					message.setStatus(Message.STATUS_WAITING);
 				}
@@ -664,13 +680,11 @@ public class XmppConnectionService extends Service {
 				if (message.getEncryption() == Message.ENCRYPTION_OTR) {
 					if (!conv.hasValidOtrSession()
 							&& (message.getPresence() != null)) {
-						// starting otr session. messages will be send later
 						conv.startOtrSession(getApplicationContext(),
 								message.getPresence(), true);
+						message.setStatus(Message.STATUS_WAITING);
 					} else if (conv.hasValidOtrSession()
 							&& conv.getOtrSession().getSessionStatus() == SessionStatus.ENCRYPTED) {
-						// otr session aleary exists, creating message packet
-						// accordingly
 						packet = prepareMessagePacket(account, message,
 								conv.getOtrSession());
 						send = true;
@@ -1236,22 +1250,27 @@ public class XmppConnectionService extends Service {
 			Message msg = messages.get(i);
 			if ((msg.getStatus() == Message.STATUS_UNSEND || msg.getStatus() == Message.STATUS_WAITING)
 					&& (msg.getEncryption() == Message.ENCRYPTION_OTR)) {
-				MessagePacket outPacket = prepareMessagePacket(account, msg,
-						otrSession);
-				msg.setStatus(Message.STATUS_SEND);
-				databaseBackend.updateMessage(msg);
-				account.getXmppConnection().sendMessagePacket(outPacket);
+				msg.setPresence(otrSession.getSessionID().getUserID());
+				if (msg.getType() == Message.TYPE_TEXT) {
+					MessagePacket outPacket = prepareMessagePacket(account,
+							msg, otrSession);
+					msg.setStatus(Message.STATUS_SEND);
+					databaseBackend.updateMessage(msg);
+					account.getXmppConnection().sendMessagePacket(outPacket);
+				} else if (msg.getType() == Message.TYPE_IMAGE) {
+					mJingleConnectionManager.createNewConnection(msg);
+				}
 			}
 		}
 		updateUi(conversation, false);
 	}
-	
+
 	public boolean renewSymmetricKey(Conversation conversation) {
 		Account account = conversation.getAccount();
 		byte[] symmetricKey = new byte[32];
 		this.mRandom.nextBytes(symmetricKey);
 		Session otrSession = conversation.getOtrSession();
-		if (otrSession!=null) {
+		if (otrSession != null) {
 			MessagePacket packet = new MessagePacket();
 			packet.setType(MessagePacket.TYPE_CHAT);
 			packet.setFrom(account.getFullJid());
@@ -1260,7 +1279,9 @@ public class XmppConnectionService extends Service {
 			packet.setTo(otrSession.getSessionID().getAccountID() + "/"
 					+ otrSession.getSessionID().getUserID());
 			try {
-				packet.setBody(otrSession.transformSending(CryptoHelper.FILETRANSFER+CryptoHelper.bytesToHex(symmetricKey)));
+				packet.setBody(otrSession
+						.transformSending(CryptoHelper.FILETRANSFER
+								+ CryptoHelper.bytesToHex(symmetricKey)));
 				account.getXmppConnection().sendMessagePacket(packet);
 				conversation.setSymmetricKey(symmetricKey);
 				return true;
