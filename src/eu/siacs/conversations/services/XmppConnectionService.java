@@ -760,29 +760,29 @@ public class XmppConnectionService extends Service {
 
 	private void resendMessage(Message message) {
 		Account account = message.getConversation().getAccount();
-		if (message.getType() == Message.TYPE_TEXT) {
+		if (message.getEncryption() == Message.ENCRYPTION_OTR) {
+			Presences presences = message.getConversation().getContact()
+					.getPresences();
+			if (!message.getConversation().hasValidOtrSession()) {
+				if ((message.getPresence() != null)
+						&& (presences.has(message.getPresence()))) {
+					message.getConversation().startOtrSession(
+							getApplicationContext(), message.getPresence(),
+							true);
+				} else {
+					if (presences.size() == 1) {
+						String presence = presences.asStringArray()[0];
+						message.getConversation().startOtrSession(
+								getApplicationContext(), presence, true);
+					}
+				}
+			}
+		} else if (message.getType() == Message.TYPE_TEXT) {
 			MessagePacket packet = null;
 			if (message.getEncryption() == Message.ENCRYPTION_NONE) {
 				packet = mMessageGenerator.generateChat(message,true);
 			} else if ((message.getEncryption() == Message.ENCRYPTION_DECRYPTED)||(message.getEncryption() == Message.ENCRYPTION_PGP)) {
 				packet = mMessageGenerator.generatePgpChat(message,true);
-			} else if (message.getEncryption() == Message.ENCRYPTION_OTR) {
-				Presences presences = message.getConversation().getContact()
-						.getPresences();
-				if (!message.getConversation().hasValidOtrSession()) {
-					if ((message.getPresence() != null)
-							&& (presences.has(message.getPresence()))) {
-						message.getConversation().startOtrSession(
-								getApplicationContext(), message.getPresence(),
-								true);
-					} else {
-						if (presences.size() == 1) {
-							String presence = presences.asStringArray()[0];
-							message.getConversation().startOtrSession(
-									getApplicationContext(), presence, true);
-						}
-					}
-				}
 			}
 			if (packet != null) {
 				account.getXmppConnection().sendMessagePacket(packet);
