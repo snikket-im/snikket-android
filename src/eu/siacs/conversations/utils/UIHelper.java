@@ -114,7 +114,7 @@ public class UIHelper {
 	private static int getNameColor(String name) {
 		int holoColors[] = { 0xFF1da9da, 0xFFb368d9, 0xFF83b600, 0xFFffa713,
 				0xFFe92727 };
-		return holoColors[Math.abs(name.toLowerCase(Locale.getDefault()).hashCode()) % holoColors.length];
+		return holoColors[(int) ((name.hashCode() & 0xffffffffl) % holoColors.length)];
 	}
 
 	private static void drawTile(Canvas canvas, String letter, int tileColor, int textColor, int left, int top, int right, int bottom) {
@@ -394,7 +394,7 @@ public class UIHelper {
 			targetUuid=currentCon.getUuid();
 		}
 		if (unread.size() != 0) {
-			mBuilder.setSmallIcon(R.drawable.notification);
+			mBuilder.setSmallIcon(R.drawable.ic_notification);
 			if (notify) {
 				if (vibrate) {
 					int dat = 70;
