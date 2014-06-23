@@ -33,7 +33,6 @@ import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.Selection;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -102,7 +101,7 @@ public class ConversationFragment extends Fragment {
 							ConversationActivity.REQUEST_DECRYPT_PGP, null, 0,
 							0, 0);
 				} catch (SendIntentException e) {
-					Log.d("xmppService", "couldnt fire intent");
+					//
 				}
 			}
 		}
@@ -520,9 +519,6 @@ public class ConversationFragment extends Fragment {
 												.getJingleConnection();
 										if (connection != null) {
 											connection.accept();
-										} else {
-											Log.d("xmppService",
-													"attached jingle connection was null");
 										}
 									}
 								});

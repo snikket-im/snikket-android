@@ -21,6 +21,7 @@ public class MessageGenerator {
 		if (conversation.getMode() == Conversation.MODE_SINGLE) {
 			packet.setTo(message.getCounterpart());
 			packet.setType(MessagePacket.TYPE_CHAT);
+			packet.addChild("markable", "urn:xmpp:chat-markers:0");
 		} else {
 			packet.setTo(message.getCounterpart().split("/")[0]);
 			packet.setType(MessagePacket.TYPE_GROUPCHAT);

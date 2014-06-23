@@ -1,6 +1,5 @@
 package eu.siacs.conversations.parser;
 
-import android.util.Log;
 import net.java.otr4j.session.Session;
 import net.java.otr4j.session.SessionStatus;
 import eu.siacs.conversations.entities.Account;
@@ -18,7 +17,6 @@ public class MessageParser extends AbstractParser {
 	}
 
 	public Message parseChat(MessagePacket packet, Account account) {
-		Log.d("xmppService","received message: "+packet.toString());
 		String[] fromParts = packet.getFrom().split("/");
 		Conversation conversation = mXmppConnectionService
 				.findOrCreateConversation(account, fromParts[0], false);
@@ -84,7 +82,6 @@ public class MessageParser extends AbstractParser {
 			if (body.startsWith(CryptoHelper.FILETRANSFER)) {
 				String key = body.substring(CryptoHelper.FILETRANSFER.length());
 				conversation.setSymmetricKey(CryptoHelper.hexToBytes(key));
-				Log.d("xmppService","new symmetric key: "+CryptoHelper.bytesToHex(conversation.getSymmetricKey()));
 				return null;
 			}
 			conversation.setLatestMarkableMessageId(getMarkableMessageId(packet));
