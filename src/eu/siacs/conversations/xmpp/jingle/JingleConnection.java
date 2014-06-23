@@ -94,7 +94,7 @@ public class JingleConnection {
 				mXmppConnectionService.databaseBackend.createMessage(message);
 				mXmppConnectionService.markMessage(message, Message.STATUS_RECIEVED);
 			}
-			Log.d("xmppService","sucessfully transmitted file:"+file.getName()+" encryption:"+message.getEncryption());
+			Log.d("xmppService","sucessfully transmitted file:"+file.getAbsolutePath());
 		}
 	};
 	
