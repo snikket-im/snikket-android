@@ -41,7 +41,8 @@
             android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_conversations"
             android:windowSoftInputMode="stateHidden"
-            android:launchMode="singleTask" >
+            android:launchMode="singleTask"
+            android:logo="@drawable/ic_activity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -51,29 +52,34 @@
         <activity
             android:name="eu.siacs.conversations.ui.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName="eu.siacs.conversations.ui.ConversationActivity" >
+            android:parentActivityName="eu.siacs.conversations.ui.ConversationActivity"
+            android:logo="@drawable/ic_activity">
         </activity>
         <activity
             android:name="eu.siacs.conversations.ui.ManageAccountActivity"
             android:label="@string/title_activity_manage_accounts"
             android:configChanges="orientation|screenSize"
-            android:parentActivityName="eu.siacs.conversations.ui.ConversationActivity" >
+            android:parentActivityName="eu.siacs.conversations.ui.ConversationActivity"
+            android:logo="@drawable/ic_activity">
         </activity>
         <activity
             android:name="eu.siacs.conversations.ui.MucDetailsActivity"
             android:label="@string/title_activity_conference_details"
-            android:windowSoftInputMode="stateHidden" >
+            android:windowSoftInputMode="stateHidden"
+            android:logo="@drawable/ic_activity">
         </activity>
         <activity
             android:name="eu.siacs.conversations.ui.ContactDetailsActivity"
             android:label="@string/title_activity_contact_details"
-            android:windowSoftInputMode="stateHidden" >
+            android:windowSoftInputMode="stateHidden"
+            android:logo="@drawable/ic_activity">
         </activity>
         <activity
             android:name="eu.siacs.conversations.ui.ContactsActivity"
             android:label="@string/title_activity_contacts"
             android:parentActivityName="eu.siacs.conversations.ui.ConversationActivity"
-            android:windowSoftInputMode="stateHidden" >
+            android:windowSoftInputMode="stateHidden"
+            android:logo="@drawable/ic_activity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="de.gultsch.chat.ui.ConversationActivity" />
@@ -88,7 +94,7 @@
             android:name="eu.siacs.conversations.ui.ShareWithActivity"
             android:label="@string/title_activity_conversations"
             android:theme="@android:style/Theme.Holo.Light.DialogWhenLarge"
-            android:icon="@drawable/ic_launcher">
+            android:icon="@drawable/ic_activity">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
                 <category android:name="android.intent.category.DEFAULT" />
