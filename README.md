@@ -46,6 +46,9 @@ These XEPs are - as of now:
 * [Andreas Straub](https://github.com/strb)
 * [Alethea Butler](https://github.com/alethea)
 
+###Logo
+* [Diego Turtulici](https://github.com/diesys)
+
 ###Translations
 * [Sergio Cárdenas](https://github.com/kruks23) (Spanish)
 * [Benoit Bouvarel](https://github.com/BenoitBouvarel) (French)
