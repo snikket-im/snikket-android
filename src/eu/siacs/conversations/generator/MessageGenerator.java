@@ -46,17 +46,21 @@ public class MessageGenerator {
 		return generateOtrChat(message, false);
 	}
 	
-	public MessagePacket generateOtrChat(Message message, boolean addDelay) throws OtrException {
+	public MessagePacket generateOtrChat(Message message, boolean addDelay) {
 		Session otrSession = message.getConversation().getOtrSession();
 		if (otrSession==null) {
-			throw new OtrException(null);
+			return null;
 		}
 		MessagePacket packet = preparePacket(message,addDelay);
 		packet.addChild("private", "urn:xmpp:carbons:2");
 		packet.addChild("no-copy", "urn:xmpp:hints");
-		packet.setBody(otrSession.transformSending(message
-				.getBody()));
-		return packet;
+		try {
+			packet.setBody(otrSession.transformSending(message
+					.getBody()));
+			return packet;
+		} catch (OtrException e) {
+			return null;
+		}
 	}
 	
 	public MessagePacket generateChat(Message message) {

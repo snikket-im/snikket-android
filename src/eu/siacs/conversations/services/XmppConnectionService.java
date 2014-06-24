@@ -760,6 +760,7 @@ public class XmppConnectionService extends Service {
 
 	private void resendMessage(Message message) {
 		Account account = message.getConversation().getAccount();
+		MessagePacket packet = null;
 		if (message.getEncryption() == Message.ENCRYPTION_OTR) {
 			Presences presences = message.getConversation().getContact()
 					.getPresences();
@@ -776,17 +777,20 @@ public class XmppConnectionService extends Service {
 								getApplicationContext(), presence, true);
 					}
 				}
+			} else {
+				if (message.getConversation().getOtrSession().getSessionStatus() == SessionStatus.ENCRYPTED) {
+					if (message.getType() == Message.TYPE_TEXT) {
+						packet = mMessageGenerator.generateOtrChat(message,true);
+					} else if (message.getType() == Message.TYPE_IMAGE) {
+						mJingleConnectionManager.createNewConnection(message);
+					}
+				}
 			}
 		} else if (message.getType() == Message.TYPE_TEXT) {
-			MessagePacket packet = null;
 			if (message.getEncryption() == Message.ENCRYPTION_NONE) {
 				packet = mMessageGenerator.generateChat(message,true);
 			} else if ((message.getEncryption() == Message.ENCRYPTION_DECRYPTED)||(message.getEncryption() == Message.ENCRYPTION_PGP)) {
 				packet = mMessageGenerator.generatePgpChat(message,true);
-			}
-			if (packet != null) {
-				account.getXmppConnection().sendMessagePacket(packet);
-				markMessage(message, Message.STATUS_SEND);
 			}
 		} else if (message.getType() == Message.TYPE_IMAGE) {
 			Presences presences = message.getConversation().getContact()
@@ -803,6 +807,10 @@ public class XmppConnectionService extends Service {
 					mJingleConnectionManager.createNewConnection(message);
 				}
 			}
+		}
+		if (packet != null) {
+			account.getXmppConnection().sendMessagePacket(packet);
+			markMessage(message, Message.STATUS_SEND);
 		}
 	}
 
@@ -1206,13 +1214,11 @@ public class XmppConnectionService extends Service {
 					&& (msg.getEncryption() == Message.ENCRYPTION_OTR)) {
 				msg.setPresence(otrSession.getSessionID().getUserID());
 				if (msg.getType() == Message.TYPE_TEXT) {
-					try {
-						MessagePacket outPacket = mMessageGenerator.generateOtrChat(msg,true);
+					MessagePacket outPacket = mMessageGenerator.generateOtrChat(msg,true);
+					if (outPacket!=null) {
 						msg.setStatus(Message.STATUS_SEND);
 						databaseBackend.updateMessage(msg);
 						account.getXmppConnection().sendMessagePacket(outPacket);
-					} catch (OtrException e) {
-						Log.e(LOGTAG,"error creating otr packet");
 					}
 				} else if (msg.getType() == Message.TYPE_IMAGE) {
 					mJingleConnectionManager.createNewConnection(msg);
