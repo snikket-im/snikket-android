@@ -47,7 +47,7 @@ These XEPs are - as of now:
 * [Alethea Butler](https://github.com/alethea)
 
 ###Logo
-* [Diego Turtulici](https://github.com/diesys)
+* [Diego Turtulici](http://efesto.eigenlab.org/~diesys)
 
 ###Translations
 * [Sergio Cárdenas](https://github.com/kruks23) (Spanish)
