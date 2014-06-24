@@ -22,8 +22,8 @@
     <string name="title_activity_conversations">Conversations</string>
     <string name="title_activity_sharewith">Compartir con Conversación</string>
     <string name="just_now">ahora</string>
-    <string name="minute_ago">1 minuto</string>
-    <string name="minutes_ago">%d minutos</string>
+    <string name="minute_ago">hace 1 min</string>
+    <string name="minutes_ago">hace %d mins</string>
     <string name="unread_conversations">conversaciones por leer</string>
     <string name="sending">enviando&#8230;</string>
     <string name="announce_pgp">Renovar anuncio PGP</string>
