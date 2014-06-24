@@ -64,6 +64,8 @@ public class Conversation extends AbstractEntity {
 
 	private byte[] symmetricKey;
 
+	private boolean otrSessionNeedsStarting = false;
+
 	public Conversation(String name, Account account, String contactJid,
 			int mode) {
 		this(java.util.UUID.randomUUID().toString(), name, null, account
@@ -237,7 +239,10 @@ public class Conversation extends AbstractEntity {
 			try {
 				if (sendStart) {
 					this.otrSession.startSession();
+					this.otrSessionNeedsStarting = false;
 					return this.otrSession;
+				} else {
+					this.otrSessionNeedsStarting  = true;
 				}
 				return this.otrSession;
 			} catch (OtrException e) {
@@ -252,9 +257,20 @@ public class Conversation extends AbstractEntity {
 	}
 
 	public void resetOtrSession() {
+		this.otrSessionNeedsStarting = false;
 		this.otrSession = null;
 	}
 
+	public void startOtrIfNeeded() {
+		if (this.otrSession != null && this.otrSessionNeedsStarting) {
+			try {
+				this.otrSession.startSession();
+			} catch (OtrException e) {
+				this.resetOtrSession();
+			}
+		}
+	}
+	
 	public void endOtrIfNeeded() {
 		if (this.otrSession != null) {
 			if (this.otrSession.getSessionStatus() == SessionStatus.ENCRYPTED) {

@@ -235,7 +235,7 @@ public class XmppConnectionService extends Service {
 				List<Conversation> conversations = getConversations();
 				for (int i = 0; i < conversations.size(); ++i) {
 					if (conversations.get(i).getAccount() == account) {
-						conversations.get(i).endOtrIfNeeded();
+						conversations.get(i).startOtrIfNeeded();
 						sendUnsendMessages(conversations.get(i));
 					}
 				}
