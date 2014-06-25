@@ -89,12 +89,15 @@ public class XmlReader {
 		Element element = new Element(currentTag.getName());
 		element.setAttributes(currentTag.getAttributes());
 		Tag nextTag = this.readTag();
+		if (nextTag == null) {
+			throw new IOException("unterupted mid tag");
+		}
 		if(nextTag.isNo()) {
 			element.setContent(nextTag.getName());
 			nextTag = this.readTag();
-		}
-		if (nextTag == null) {
-			throw new IOException("unterupted mid tag");
+			if (nextTag == null) {
+				throw new IOException("unterupted mid tag");
+			}
 		}
 		while(!nextTag.isEnd(element.getName())) {
 			if (!nextTag.isNo()) {
