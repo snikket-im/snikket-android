@@ -38,6 +38,9 @@ public class PhoneHelper {
 
 			@Override
 			public void onLoadComplete(Loader<Cursor> arg0, Cursor cursor) {
+				if (cursor==null) {
+					return;
+				}
 				while (cursor.moveToNext()) {
 					Bundle contact = new Bundle();
 					contact.putInt("phoneid", cursor.getInt(cursor
