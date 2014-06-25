@@ -78,19 +78,19 @@ public class TagWriter {
 	}
 	
 	public TagWriter writeStanzaAsync(AbstractStanza stanza) {
-		try {
 			if (finshed) {
 				return this;
 			} else {
 				if (!asyncStanzaWriter.isAlive()) {
-					asyncStanzaWriter.start();
+					try {
+						asyncStanzaWriter.start();
+					} catch (IllegalThreadStateException e) {
+						//already started
+					}
 				}
 				writeQueue.add(stanza);
 				return this;
 			}
-		} catch (IllegalThreadStateException e) {
-			return this;
-		}
 	}
 	
 	public void finish() {
