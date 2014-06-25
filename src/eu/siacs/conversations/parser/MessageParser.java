@@ -56,7 +56,7 @@ public class MessageParser extends AbstractParser {
 			String foreignPresence = conversation.getOtrSession()
 					.getSessionID().getUserID();
 			if (!foreignPresence.equals(fromParts[1])) {
-				conversation.resetOtrSession();
+				conversation.endOtrIfNeeded();
 				if (properlyAddressed) {
 					conversation.startOtrSession(
 							mXmppConnectionService.getApplicationContext(),
@@ -90,6 +90,10 @@ public class MessageParser extends AbstractParser {
 			finishedMessage.setTime(getTimestamp(packet));
 			return finishedMessage;
 		} catch (Exception e) {
+			String receivedId = packet.getId();
+			if (receivedId!=null) {
+				mXmppConnectionService.replyWithError(account,packet);
+			}
 			conversation.resetOtrSession();
 			return null;
 		}

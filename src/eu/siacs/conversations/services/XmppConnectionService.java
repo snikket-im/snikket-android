@@ -1474,4 +1474,9 @@ public class XmppConnectionService extends Service {
 	public PowerManager getPowerManager() {
 		return this.pm;
 	}
+
+	public void replyWithError(Account account, MessagePacket packet) {
+		// TODO Auto-generated method stub
+		
+	}
 }
