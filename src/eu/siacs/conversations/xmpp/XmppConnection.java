@@ -183,7 +183,7 @@ public class XmppConnection implements Runnable {
 		} catch (UnknownHostException e) {
 			this.changeStatus(Account.STATUS_SERVER_NOT_FOUND);
 			if (wakeLock.isHeld()) {
-				wakeLock.release();
+				try { wakeLock.release();} catch (RuntimeException re) {}
 			}
 			return;
 		} catch (IOException e) {
@@ -191,21 +191,21 @@ public class XmppConnection implements Runnable {
 				this.changeStatus(Account.STATUS_OFFLINE);
 			}
 			if (wakeLock.isHeld()) {
-				wakeLock.release();
+				try { wakeLock.release();} catch (RuntimeException re) {}
 			}
 			return;
 		} catch (NoSuchAlgorithmException e) {
 			this.changeStatus(Account.STATUS_OFFLINE);
 			Log.d(LOGTAG, "compression exception " + e.getMessage());
 			if (wakeLock.isHeld()) {
-				wakeLock.release();
+				try { wakeLock.release();} catch (RuntimeException re) {}
 			}
 			return;
 		} catch (XmlPullParserException e) {
 			this.changeStatus(Account.STATUS_OFFLINE);
 			Log.d(LOGTAG, "xml exception " + e.getMessage());
 			if (wakeLock.isHeld()) {
-				wakeLock.release();
+				try { wakeLock.release();} catch (RuntimeException re) {}
 			}
 			return;
 		}

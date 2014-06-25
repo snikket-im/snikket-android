@@ -510,7 +510,7 @@ public class XmppConnectionService extends Service {
 			}
 		}
 		if (wakeLock.isHeld()) {
-			wakeLock.release();
+			try { wakeLock.release();} catch (RuntimeException re) {}
 		}
 		return START_STICKY;
 	}

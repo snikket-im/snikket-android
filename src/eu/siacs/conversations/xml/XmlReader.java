@@ -51,7 +51,7 @@ public class XmlReader {
 	
 	public Tag readTag() throws XmlPullParserException, IOException {
 		if (wakeLock.isHeld()) {
-			wakeLock.release();
+			try { wakeLock.release();} catch (RuntimeException re) {}
 		}
 		try {
 			while(parser.next() != XmlPullParser.END_DOCUMENT) {
@@ -75,7 +75,7 @@ public class XmlReader {
 					}
 				}
 			if (wakeLock.isHeld()) {
-				wakeLock.release();
+				try { wakeLock.release();} catch (RuntimeException re) {}
 			}
 		} catch (ArrayIndexOutOfBoundsException e) {
 			throw new IOException("xml parser mishandled ArrayIndexOufOfBounds", e);
