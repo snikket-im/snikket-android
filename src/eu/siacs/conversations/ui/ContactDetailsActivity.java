@@ -305,68 +305,70 @@ public class ContactDetailsActivity extends XmppActivity {
 	protected void onStop() {
 		super.onStop();
 		boolean updated = false;
-		boolean online = contact.getAccount().getStatus() == Account.STATUS_ONLINE;
-		if (contact.getOption(Contact.Options.FROM)) {
-			if (!send.isChecked()) {
-				if (online) {
-					contact.resetOption(Contact.Options.FROM);
-					contact.resetOption(Contact.Options.PREEMPTIVE_GRANT);
-					activity.xmppConnectionService.stopPresenceUpdatesTo(contact);
-				}
-				updated = true;
-			}
-		} else {
-			if (contact
-					.getOption(Contact.Options.PREEMPTIVE_GRANT)) {
+		if (contact!=null) {
+			boolean online = contact.getAccount().getStatus() == Account.STATUS_ONLINE;
+			if (contact.getOption(Contact.Options.FROM)) {
 				if (!send.isChecked()) {
 					if (online) {
+						contact.resetOption(Contact.Options.FROM);
 						contact.resetOption(Contact.Options.PREEMPTIVE_GRANT);
+						activity.xmppConnectionService.stopPresenceUpdatesTo(contact);
 					}
 					updated = true;
 				}
 			} else {
-				if (send.isChecked()) {
-					if (online) {
-						contact.setOption(Contact.Options.PREEMPTIVE_GRANT);
+				if (contact
+						.getOption(Contact.Options.PREEMPTIVE_GRANT)) {
+					if (!send.isChecked()) {
+						if (online) {
+							contact.resetOption(Contact.Options.PREEMPTIVE_GRANT);
+						}
+						updated = true;
 					}
-					updated = true;
+				} else {
+					if (send.isChecked()) {
+						if (online) {
+							contact.setOption(Contact.Options.PREEMPTIVE_GRANT);
+						}
+						updated = true;
+					}
 				}
 			}
-		}
-		if (contact.getOption(Contact.Options.TO)) {
-			if (!receive.isChecked()) {
-				if (online) {
-					contact.resetOption(Contact.Options.TO);
-					activity.xmppConnectionService.stopPresenceUpdatesFrom(contact);
-				}
-				updated = true;
-			}
-		} else {
-			if (contact.getOption(Contact.Options.ASKING)) {
+			if (contact.getOption(Contact.Options.TO)) {
 				if (!receive.isChecked()) {
 					if (online) {
-						contact.resetOption(Contact.Options.ASKING);
-						activity.xmppConnectionService
-							.stopPresenceUpdatesFrom(contact);
+						contact.resetOption(Contact.Options.TO);
+						activity.xmppConnectionService.stopPresenceUpdatesFrom(contact);
 					}
 					updated = true;
 				}
 			} else {
-				if (receive.isChecked()) {
-					if (online) {
-						contact.setOption(Contact.Options.ASKING);
-						activity.xmppConnectionService
-							.requestPresenceUpdatesFrom(contact);
+				if (contact.getOption(Contact.Options.ASKING)) {
+					if (!receive.isChecked()) {
+						if (online) {
+							contact.resetOption(Contact.Options.ASKING);
+							activity.xmppConnectionService
+								.stopPresenceUpdatesFrom(contact);
+						}
+						updated = true;
 					}
-					updated = true;
+				} else {
+					if (receive.isChecked()) {
+						if (online) {
+							contact.setOption(Contact.Options.ASKING);
+							activity.xmppConnectionService
+								.requestPresenceUpdatesFrom(contact);
+						}
+						updated = true;
+					}
 				}
 			}
-		}
-		if (updated) {
-			if (online) {
-				Toast.makeText(getApplicationContext(), getString(R.string.subscription_updated), Toast.LENGTH_SHORT).show();
-			} else {
-				Toast.makeText(getApplicationContext(), getString(R.string.subscription_not_updated_offline), Toast.LENGTH_SHORT).show();
+			if (updated) {
+				if (online) {
+					Toast.makeText(getApplicationContext(), getString(R.string.subscription_updated), Toast.LENGTH_SHORT).show();
+				} else {
+					Toast.makeText(getApplicationContext(), getString(R.string.subscription_not_updated_offline), Toast.LENGTH_SHORT).show();
+				}
 			}
 		}
 	}

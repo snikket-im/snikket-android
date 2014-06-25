@@ -37,7 +37,10 @@ public class PresenceParser extends AbstractParser {
 	}
 
 	public void parseContactPresence(PresencePacket packet, Account account) {
-		String[] fromParts = packet.getAttribute("from").split("/");
+		if (packet.getFrom()==null) {
+			return;
+		}
+		String[] fromParts = packet.getFrom().split("/");
 		String type = packet.getAttribute("type");
 		if (fromParts[0].equals(account.getJid())) {
 			if (fromParts.length == 2) {
