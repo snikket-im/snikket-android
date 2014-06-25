@@ -79,6 +79,8 @@ public class XmlReader {
 			}
 		} catch (ArrayIndexOutOfBoundsException e) {
 			throw new IOException("xml parser mishandled ArrayIndexOufOfBounds", e);
+		} catch (StringIndexOutOfBoundsException e) {
+			throw new IOException("xml parser mishandled StringIndexOufOfBounds", e);
 		}
 		return null;
 	}
