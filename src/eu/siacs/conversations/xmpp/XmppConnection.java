@@ -276,7 +276,6 @@ public class XmppConnection implements Runnable {
 			} else if (nextTag.isStart("r")) {
 				tagReader.readElement(nextTag);
 				AckPacket ack = new AckPacket(this.stanzasReceived, smVersion);
-				// Log.d(LOGTAG,ack.toString());
 				tagWriter.writeStanzaAsync(ack);
 			} else if (nextTag.isStart("a")) {
 				Element ack = tagReader.readElement(nextTag);
@@ -285,7 +284,6 @@ public class XmppConnection implements Runnable {
 				if (serverSequence > this.stanzasSent) {
 					this.stanzasSent = serverSequence;
 				}
-				// Log.d(LOGTAG,"server ack"+ack.toString()+" ("+this.stanzasSent+")");
 			} else if (nextTag.isStart("failed")) {
 				tagReader.readElement(nextTag);
 				Log.d(LOGTAG, account.getJid() + ": resumption failed");
@@ -299,9 +297,6 @@ public class XmppConnection implements Runnable {
 				processMessage(nextTag);
 			} else if (nextTag.isStart("presence")) {
 				processPresence(nextTag);
-			} else {
-				Log.d(LOGTAG, "found unexpected tag: " + nextTag.getName()
-						+ " as child of " + currentTag.getName());
 			}
 			nextTag = tagReader.readTag();
 		}
