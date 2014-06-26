@@ -461,6 +461,9 @@ public class ConversationActivity extends XmppActivity {
 			break;
 		case R.id.action_attach_file:
 			View menuAttachFile = findViewById(R.id.action_attach_file);
+			if (menuAttachFile==null) {
+				break;
+			}
 			PopupMenu attachFilePopup = new PopupMenu(this, menuAttachFile);
 			attachFilePopup.inflate(R.menu.attachment_choices);
 			attachFilePopup
@@ -519,6 +522,9 @@ public class ConversationActivity extends XmppActivity {
 		case R.id.action_security:
 			final Conversation conversation = getSelectedConversation();
 			View menuItemView = findViewById(R.id.action_security);
+			if (menuItemView==null) {
+				break;
+			}
 			PopupMenu popup = new PopupMenu(this, menuItemView);
 			final ConversationFragment fragment = (ConversationFragment) getFragmentManager()
 					.findFragmentByTag("conversation");
