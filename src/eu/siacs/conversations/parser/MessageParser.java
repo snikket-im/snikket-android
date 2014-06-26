@@ -92,9 +92,9 @@ public class MessageParser extends AbstractParser {
 		} catch (Exception e) {
 			String receivedId = packet.getId();
 			if (receivedId!=null) {
-				mXmppConnectionService.replyWithError(account,packet);
+				mXmppConnectionService.replyWithNotAcceptable(account,packet);
 			}
-			conversation.resetOtrSession();
+			conversation.endOtrIfNeeded();
 			return null;
 		}
 	}

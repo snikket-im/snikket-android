@@ -1475,8 +1475,10 @@ public class XmppConnectionService extends Service {
 		return this.pm;
 	}
 
-	public void replyWithError(Account account, MessagePacket packet) {
-		// TODO Auto-generated method stub
-		
+	public void replyWithNotAcceptable(Account account, MessagePacket packet) {
+		if (account.getStatus() == Account.STATUS_ONLINE) {
+			MessagePacket error = this.mMessageGenerator.generateNotAcceptable(packet);
+			account.getXmppConnection().sendMessagePacket(error);
+		}
 	}
 }

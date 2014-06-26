@@ -88,4 +88,22 @@ public class MessageGenerator {
 		}
 		return packet;
 	}
+
+	public MessagePacket generateNotAcceptable(MessagePacket origin) {
+		MessagePacket packet = generateError(origin);
+		Element error = packet.addChild("error");
+		error.setAttribute("type", "modify");
+		error.setAttribute("code", "406");
+		error.addChild("not-acceptable");
+		return packet;
+	}
+	
+	private MessagePacket generateError(MessagePacket origin) {
+		MessagePacket packet = new MessagePacket();
+		packet.setId(origin.getId());
+		packet.setTo(origin.getFrom());
+		packet.setBody(origin.getBody());
+		packet.setType(MessagePacket.TYPE_ERROR);
+		return packet;
+	}
 }
