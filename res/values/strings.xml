@@ -244,4 +244,8 @@
     <string name="last_seen_days">last seen %d days ago</string>
     <string name="never_seen">never seen</string>
     <string name="install_openkeychain">Encrypted message. Please install OpenKeychain to decrypt.</string>
+    <string name="unknown_otr_fingerprint">Unknown OTR fingerprint</string>
+    <string name="edit_conference_details">Touch to edit conference details</string>
+    <string name="openpgp_messages_found">OpenPGP encrypted messages found</string>
+    <string name="openpgp_click_to_decrypt">Click here to enter passphrase and decrypt messages</string>
 </resources>
