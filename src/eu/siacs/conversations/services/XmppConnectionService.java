@@ -80,9 +80,9 @@ public class XmppConnectionService extends Service {
 	public long startDate;
 
 	private static final int PING_MAX_INTERVAL = 300;
-	private static final int PING_MIN_INTERVAL = 10;
-	private static final int PING_TIMEOUT = 5;
-	private static final int CONNECT_TIMEOUT = 60;
+	private static final int PING_MIN_INTERVAL = 30;
+	private static final int PING_TIMEOUT = 10;
+	private static final int CONNECT_TIMEOUT = 90;
 	private static final long CARBON_GRACE_PERIOD = 60000L;
 
 	private static String ACTION_MERGE_PHONE_CONTACTS = "merge_phone_contacts";
