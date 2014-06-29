@@ -252,6 +252,9 @@ public class ConversationFragment extends Fragment {
 					info = getString(R.string.send_rejected);
 					error = true;
 					break;
+				case Message.STATUS_RECEPTION_FAILED:
+					info = getString(R.string.reception_failed);
+					error = true;
 				default:
 					if (multiReceived) {
 						info = message.getCounterpart();

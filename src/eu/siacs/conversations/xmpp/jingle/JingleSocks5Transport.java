@@ -10,7 +10,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
-import android.util.Log;
 import eu.siacs.conversations.utils.CryptoHelper;
 
 public class JingleSocks5Transport extends JingleTransport {
@@ -84,7 +83,7 @@ public class JingleSocks5Transport extends JingleTransport {
 		
 	}
 
-	public void send(final JingleFile file, final OnFileTransmitted callback) {
+	public void send(final JingleFile file, final OnFileTransmissionStatusChanged callback) {
 		new Thread(new Runnable() {
 			
 			@Override
@@ -94,37 +93,34 @@ public class JingleSocks5Transport extends JingleTransport {
 					MessageDigest digest = MessageDigest.getInstance("SHA-1");
 					digest.reset();
 					fileInputStream = getInputStream(file);
+					if (fileInputStream==null) {
+						callback.onFileTransferAborted();
+						return;
+					}
 					int count;
-					long txBytes = 0;
 					byte[] buffer = new byte[8192];
 					while ((count = fileInputStream.read(buffer)) > 0) {
-						txBytes += count;
 						outputStream.write(buffer, 0, count);
 						digest.update(buffer, 0, count);
 					}
-					Log.d("xmppService","txBytes="+txBytes);
 					outputStream.flush();
 					file.setSha1Sum(CryptoHelper.bytesToHex(digest.digest()));
 					if (callback!=null) {
 						callback.onFileTransmitted(file);
 					}
 				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					callback.onFileTransferAborted();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					callback.onFileTransferAborted();
 				} catch (NoSuchAlgorithmException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					callback.onFileTransferAborted();
 				} finally {
 					try {
 						if (fileInputStream != null) {
 							fileInputStream.close();
 						}
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+						callback.onFileTransferAborted();
 					}
 				}
 			}
@@ -132,7 +128,7 @@ public class JingleSocks5Transport extends JingleTransport {
 		
 	}
 	
-	public void receive(final JingleFile file, final OnFileTransmitted callback) {
+	public void receive(final JingleFile file, final OnFileTransmissionStatusChanged callback) {
 		new Thread(new Runnable() {
 			
 			@Override
@@ -144,35 +140,34 @@ public class JingleSocks5Transport extends JingleTransport {
 					file.getParentFile().mkdirs();
 					file.createNewFile();
 					OutputStream fileOutputStream = getOutputStream(file);
+					if (fileOutputStream==null) {
+						callback.onFileTransferAborted();
+						return;
+					}
 					long remainingSize = file.getExpectedSize();
 					byte[] buffer = new byte[8192];
 					int count = buffer.length;
-					long rxBytes = 0;
 					while(remainingSize > 0) {
 						count = inputStream.read(buffer);
 						if (count==-1) {
-							Log.d("xmppService","read end");
+							callback.onFileTransferAborted();
+							return;
 						} else {
-							rxBytes += count;
 							fileOutputStream.write(buffer, 0, count);
 							digest.update(buffer, 0, count);
 							remainingSize-=count;
 						}
 					}
-					Log.d("xmppService","rx bytes="+rxBytes);
 					fileOutputStream.flush();
 					fileOutputStream.close();
 					file.setSha1Sum(CryptoHelper.bytesToHex(digest.digest()));
 					callback.onFileTransmitted(file);
 				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					callback.onFileTransferAborted();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					callback.onFileTransferAborted();
 				} catch (NoSuchAlgorithmException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					callback.onFileTransferAborted();
 				}
 			}
 		}).start();

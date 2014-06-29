@@ -19,8 +19,8 @@ import android.util.Log;
 
 public abstract class JingleTransport {
 	public abstract void connect(final OnTransportConnected callback);
-	public abstract void receive(final JingleFile file, final OnFileTransmitted callback);
-	public abstract void send(final JingleFile file, final OnFileTransmitted callback);
+	public abstract void receive(final JingleFile file, final OnFileTransmissionStatusChanged callback);
+	public abstract void send(final JingleFile file, final OnFileTransmissionStatusChanged callback);
 	private byte[] iv = {0x00,0x01,0x02,0x03,0x04,0x05,0x06,0x07,0x08,0x09,0x0a,0x0b,0x0c,0x0d,0x0e,0xf};
 	
 	protected InputStream getInputStream(JingleFile file) throws FileNotFoundException {

@@ -1,5 +1,6 @@
 package eu.siacs.conversations.xmpp.jingle;
 
-public interface OnFileTransmitted {
+public interface OnFileTransmissionStatusChanged {
 	public void onFileTransmitted(JingleFile file);
+	public void onFileTransferAborted();
 }

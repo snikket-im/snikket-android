@@ -155,4 +155,12 @@ public class JingleConnectionManager {
 			Log.d("xmppService","no sid found in incomming ibb packet");
 		}
 	}
+	
+	public void cancelInTransmission() {
+		for(JingleConnection connection : this.connections) {
+			if (connection.getStatus() == JingleConnection.STATUS_TRANSMITTING) {
+				connection.cancel();
+			}
+		}
+	}
 }

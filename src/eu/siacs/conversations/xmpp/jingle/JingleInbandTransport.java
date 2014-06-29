@@ -33,7 +33,7 @@ public class JingleInbandTransport extends JingleTransport {
 	private long remainingSize;
 	private MessageDigest digest;
 	
-	private OnFileTransmitted onFileTransmitted;
+	private OnFileTransmissionStatusChanged onFileTransmissionStatusChanged;
 
 	private OnIqPacketReceived onAckReceived = new OnIqPacketReceived() {
 		@Override
@@ -77,8 +77,8 @@ public class JingleInbandTransport extends JingleTransport {
 	}
 
 	@Override
-	public void receive(JingleFile file, OnFileTransmitted callback) {
-		this.onFileTransmitted = callback;
+	public void receive(JingleFile file, OnFileTransmissionStatusChanged callback) {
+		this.onFileTransmissionStatusChanged = callback;
 		this.file = file;
 		try {
 			this.digest = MessageDigest.getInstance("SHA-1");
@@ -86,27 +86,35 @@ public class JingleInbandTransport extends JingleTransport {
 			file.getParentFile().mkdirs();
 			file.createNewFile();
 			this.fileOutputStream = getOutputStream(file);
+			if (this.fileOutputStream==null) {
+				callback.onFileTransferAborted();
+				return;
+			}
 			this.remainingSize = file.getExpectedSize();
 		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
+			callback.onFileTransferAborted();
 		} catch (IOException e) {
-			e.printStackTrace();
+			callback.onFileTransferAborted();
 		}
 	}
 
 	@Override
-	public void send(JingleFile file, OnFileTransmitted callback) {
-		this.onFileTransmitted = callback;
+	public void send(JingleFile file, OnFileTransmissionStatusChanged callback) {
+		this.onFileTransmissionStatusChanged = callback;
 		this.file = file;
 		try {
 			this.digest = MessageDigest.getInstance("SHA-1");
 			this.digest.reset();
 			fileInputStream = this.getInputStream(file);
+			if (fileInputStream==null) {
+				callback.onFileTransferAborted();
+				return;
+			}
 			this.sendNextBlock();
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			callback.onFileTransferAborted();
 		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
+			callback.onFileTransferAborted();
 		}
 	}
 
@@ -117,7 +125,7 @@ public class JingleInbandTransport extends JingleTransport {
 			if (count == -1) {
 				file.setSha1Sum(CryptoHelper.bytesToHex(digest.digest()));
 				fileInputStream.close();
-				this.onFileTransmitted.onFileTransmitted(file);
+				this.onFileTransmissionStatusChanged.onFileTransmitted(file);
 			} else {
 				this.digest.update(buffer);
 				String base64 = Base64.encodeToString(buffer, Base64.NO_WRAP);
@@ -134,8 +142,7 @@ public class JingleInbandTransport extends JingleTransport {
 				this.seq++;
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			this.onFileTransmissionStatusChanged.onFileTransferAborted();
 		}
 	}
 
@@ -154,10 +161,10 @@ public class JingleInbandTransport extends JingleTransport {
 				file.setSha1Sum(CryptoHelper.bytesToHex(digest.digest()));
 				fileOutputStream.flush();
 				fileOutputStream.close();
-				this.onFileTransmitted.onFileTransmitted(file);
+				this.onFileTransmissionStatusChanged.onFileTransmitted(file);
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
+			this.onFileTransmissionStatusChanged.onFileTransferAborted();
 		}
 	}
 

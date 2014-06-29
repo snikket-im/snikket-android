@@ -232,6 +232,7 @@ public class XmppConnectionService extends Service {
 				accountChangedListener.onAccountListChangedListener();
 			}
 			if (account.getStatus() == Account.STATUS_ONLINE) {
+				mJingleConnectionManager.cancelInTransmission();
 				List<Conversation> conversations = getConversations();
 				for (int i = 0; i < conversations.size(); ++i) {
 					if (conversations.get(i).getAccount() == account) {

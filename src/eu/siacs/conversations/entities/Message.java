@@ -12,6 +12,7 @@ public class Message extends AbstractEntity {
 	
 	public static final String TABLENAME = "messages";
 
+	public static final int STATUS_RECEPTION_FAILED = -3;
 	public static final int STATUS_RECEIVED_OFFER = -2;
 	public static final int STATUS_RECIEVING = -1;
 	public static final int STATUS_RECIEVED = 0;

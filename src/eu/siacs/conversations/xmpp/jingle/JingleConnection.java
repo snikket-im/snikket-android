@@ -75,7 +75,7 @@ public class JingleConnection {
 		}
 	};
 	
-	final OnFileTransmitted onFileTransmitted = new OnFileTransmitted() {
+	final OnFileTransmissionStatusChanged onFileTransmissionSatusChanged = new OnFileTransmissionStatusChanged() {
 		
 		@Override
 		public void onFileTransmitted(JingleFile file) {
@@ -96,6 +96,11 @@ public class JingleConnection {
 			}
 			Log.d("xmppService","sucessfully transmitted file:"+file.getAbsolutePath());
 		}
+
+		@Override
+		public void onFileTransferAborted() {
+			JingleConnection.this.cancel();
+		}
 	};
 	
 	private OnProxyActivated onProxyActivated = new OnProxyActivated() {
@@ -104,9 +109,9 @@ public class JingleConnection {
 		public void success() {
 			if (initiator.equals(account.getFullJid())) {
 				Log.d("xmppService","we were initiating. sending file");
-				transport.send(file,onFileTransmitted);
+				transport.send(file,onFileTransmissionSatusChanged);
 			} else {
-				transport.receive(file,onFileTransmitted);
+				transport.receive(file,onFileTransmissionSatusChanged);
 				Log.d("xmppService","we were responding. receiving file");
 			}
 		}
@@ -140,14 +145,14 @@ public class JingleConnection {
 			Reason reason = packet.getReason();
 			if (reason!=null) {
 				if (reason.hasChild("cancel")) {
-					this.receiveCancel();
+					this.cancel();
 				} else if (reason.hasChild("success")) {
 					this.receiveSuccess();
 				} else {
-					this.receiveCancel();
+					this.cancel();
 				}
 			} else {
-				this.receiveCancel();
+				this.cancel();
 			}
 		} else if (packet.isAction("session-accept")) {
 			returnResult = receiveAccept(packet);
@@ -279,13 +284,13 @@ public class JingleConnection {
 					}
 					this.file.setExpectedSize(size);
 				} else {
-					this.sendCancel();
+					this.cancel();
 				}
 			} else {
-				this.sendCancel();
+				this.cancel();
 			}
 		} else {
-			this.sendCancel();
+			this.cancel();
 		}
 	}
 	
@@ -405,7 +410,7 @@ public class JingleConnection {
 						connection.setActivated(true);
 					} else {
 						Log.d("xmppService","activated connection not found");
-						this.sendCancel();
+						this.cancel();
 					}
 				}
 				return true;
@@ -479,10 +484,10 @@ public class JingleConnection {
 			} else {
 				if (initiator.equals(account.getFullJid())) {
 					Log.d("xmppService","we were initiating. sending file");
-					connection.send(file,onFileTransmitted);
+					connection.send(file,onFileTransmissionSatusChanged);
 				} else {
 					Log.d("xmppService","we were responding. receiving file");
-					connection.receive(file,onFileTransmitted);
+					connection.receive(file,onFileTransmissionSatusChanged);
 				}
 			}
 		}
@@ -553,7 +558,7 @@ public class JingleConnection {
 		}
 		this.transportId = packet.getJingleContent().getTransportId();
 		this.transport = new JingleInbandTransport(this.account,this.responder,this.transportId,this.ibbBlockSize);
-		this.transport.receive(file, onFileTransmitted);
+		this.transport.receive(file, onFileTransmissionSatusChanged);
 		JinglePacket answer = bootstrapPacket("transport-accept");
 		Content content = new Content("initiator", "a-file-offer");
 		content.setTransportId(this.transportId);
@@ -582,7 +587,7 @@ public class JingleConnection {
 				
 				@Override
 				public void established() {
-					JingleConnection.this.transport.send(file, onFileTransmitted);
+					JingleConnection.this.transport.send(file, onFileTransmissionSatusChanged);
 				}
 			});
 			return true;
@@ -598,10 +603,21 @@ public class JingleConnection {
 		this.mJingleConnectionManager.finishConnection(this);
 	}
 	
-	private void receiveCancel() {
+	void cancel() {
+		this.sendCancel();
 		this.disconnect();
+		if (this.message!=null) {
+			if (this.responder.equals(account.getFullJid())) {
+				this.mXmppConnectionService.markMessage(this.message, Message.STATUS_RECEPTION_FAILED);
+			} else {
+				if (this.status == STATUS_INITIATED) {
+					this.mXmppConnectionService.markMessage(this.message, Message.STATUS_SEND_REJECTED);
+				} else {
+					this.mXmppConnectionService.markMessage(this.message, Message.STATUS_SEND_FAILED);
+				}
+			}
+		}
 		this.status = STATUS_CANCELED;
-		this.mXmppConnectionService.markMessage(this.message, Message.STATUS_SEND_REJECTED);
 		this.mJingleConnectionManager.finishConnection(this);
 	}
 	

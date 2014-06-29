@@ -248,4 +248,5 @@
     <string name="edit_conference_details">Touch to edit conference details</string>
     <string name="openpgp_messages_found">OpenPGP encrypted messages found</string>
     <string name="openpgp_click_to_decrypt">Click here to enter passphrase and decrypt messages</string>
+    <string name="reception_failed">Reception failed</string>
 </resources>
