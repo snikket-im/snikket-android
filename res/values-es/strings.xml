@@ -23,7 +23,7 @@
     <string name="title_activity_sharewith">Compartir con Conversación</string>
     <string name="just_now">ahora</string>
     <string name="minute_ago">hace 1 min</string>
-    <string name="minutes_ago">hace %d mins</string>
+    <string name="minutes_ago">hace %d min</string>
     <string name="unread_conversations">conversaciones por leer</string>
     <string name="sending">enviando&#8230;</string>
     <string name="announce_pgp">Renovar anuncio PGP</string>
@@ -233,7 +233,7 @@
     <string name="server_info_carbon_messages">Mensajes Carbon</string>
     <string name="server_info_stream_management">Stream Management</string>
     <string name="hours">horas</string>
-    <string name="mins">mins</string>
+    <string name="mins">min</string>
     <string name="missing_public_keys">Se han perdido las claves de anuncio públicas</string>
     <string name="last_seen_now">Visto última vez ahora</string>
     <string name="last_seen_min">Visto última vez hace 1 minuto</string>
@@ -244,4 +244,8 @@
     <string name="last_seen_days">Visto última vez hace %d días</string>
     <string name="never_seen">Nunca visto</string>
     <string name="install_openkeychain">Mensaje encriptado. Por favor instala OpenKeychain para desencriptar.</string>
+    <string name="unknown_otr_fingerprint">Clave OTR desconocida</string>
+    <string name="edit_conference_details">Pulsa para editar detalles de la conferencia</string>
+    <string name="openpgp_messages_found">Encontrado mensaje encriptado con OpenPGP</string>
+    <string name="openpgp_click_to_decrypt">Pulsa para introducir la contraseña y desencriptar el mensaje</string>
 </resources>
