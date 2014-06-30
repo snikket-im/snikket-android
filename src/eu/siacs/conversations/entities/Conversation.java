@@ -257,6 +257,7 @@ public class Conversation extends AbstractEntity {
 	}
 
 	public void resetOtrSession() {
+		this.otrFingerprint = null;
 		this.otrSessionNeedsStarting = false;
 		this.otrSession = null;
 	}

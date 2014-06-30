@@ -53,7 +53,8 @@ public class UIHelper {
 	private static final int BG_COLOR = 0xFF181818;
 	private static final int FG_COLOR = 0xFFE5E5E5;
 	private static final int TRANSPARENT = 0x00000000;
-    private static final int DATE_NO_YEAR_FLAGS = DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_NO_YEAR | DateUtils.FORMAT_ABBREV_ALL;
+	private static final int DATE_NO_YEAR_FLAGS = DateUtils.FORMAT_SHOW_DATE
+			| DateUtils.FORMAT_NO_YEAR | DateUtils.FORMAT_ABBREV_ALL;
 
 	public static String readableTimeDifference(Context context, long time) {
 		if (time == 0) {
@@ -63,29 +64,32 @@ public class UIHelper {
 		long difference = (System.currentTimeMillis() - time) / 1000;
 		if (difference < 60) {
 			return context.getString(R.string.just_now);
-        } else if (difference < 60 * 2) {
-            return context.getString(R.string.minute_ago);
+		} else if (difference < 60 * 2) {
+			return context.getString(R.string.minute_ago);
 		} else if (difference < 60 * 15) {
-			return context.getString(R.string.minutes_ago,Math.round(difference/60.0));
+			return context.getString(R.string.minutes_ago,
+					Math.round(difference / 60.0));
 		} else if (today(date)) {
 			java.text.DateFormat df = DateFormat.getTimeFormat(context);
 			return df.format(date);
 		} else {
-			return DateUtils.formatDateTime(context, date.getTime(), DATE_NO_YEAR_FLAGS);
+			return DateUtils.formatDateTime(context, date.getTime(),
+					DATE_NO_YEAR_FLAGS);
 		}
 	}
-	
+
 	private static boolean today(Date date) {
 		Calendar cal1 = Calendar.getInstance();
 		Calendar cal2 = Calendar.getInstance();
 		cal1.setTime(date);
 		cal2.setTimeInMillis(System.currentTimeMillis());
-		return cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) &&
-		                  cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR);
+		return cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR)
+				&& cal1.get(Calendar.DAY_OF_YEAR) == cal2
+						.get(Calendar.DAY_OF_YEAR);
 	}
-	
+
 	public static String lastseen(Context context, long time) {
-		if (time==0) {
+		if (time == 0) {
 			return context.getString(R.string.never_seen);
 		}
 		long difference = (System.currentTimeMillis() - time) / 1000;
@@ -93,21 +97,25 @@ public class UIHelper {
 			return context.getString(R.string.last_seen_now);
 		} else if (difference < 60 * 2) {
 			return context.getString(R.string.last_seen_min);
-        } else if (difference < 60 * 60) {
-            return context.getString(R.string.last_seen_mins,Math.round(difference/60.0));
+		} else if (difference < 60 * 60) {
+			return context.getString(R.string.last_seen_mins,
+					Math.round(difference / 60.0));
 		} else if (difference < 60 * 60 * 2) {
 			return context.getString(R.string.last_seen_hour);
-        } else if (difference < 60 * 60 * 24) {
-            return context.getString(R.string.last_seen_hours,Math.round(difference/(60.0*60.0)));
-        } else if (difference < 60 * 60 * 48) {
-            return context.getString(R.string.last_seen_day);
+		} else if (difference < 60 * 60 * 24) {
+			return context.getString(R.string.last_seen_hours,
+					Math.round(difference / (60.0 * 60.0)));
+		} else if (difference < 60 * 60 * 48) {
+			return context.getString(R.string.last_seen_day);
 		} else {
-			return context.getString(R.string.last_seen_days,Math.round(difference/(60.0*60.0*24.0)));
+			return context.getString(R.string.last_seen_days,
+					Math.round(difference / (60.0 * 60.0 * 24.0)));
 		}
 	}
 
 	public static int getRealPx(int dp, Context context) {
-		final DisplayMetrics metrics = context.getResources().getDisplayMetrics();
+		final DisplayMetrics metrics = context.getResources()
+				.getDisplayMetrics();
 		return ((int) (dp * metrics.density));
 	}
 
@@ -117,27 +125,27 @@ public class UIHelper {
 		return holoColors[(int) ((name.hashCode() & 0xffffffffl) % holoColors.length)];
 	}
 
-	private static void drawTile(Canvas canvas, String letter, int tileColor, int textColor, int left, int top, int right, int bottom) {
+	private static void drawTile(Canvas canvas, String letter, int tileColor,
+			int textColor, int left, int top, int right, int bottom) {
 		Paint tilePaint = new Paint(), textPaint = new Paint();
 		tilePaint.setColor(tileColor);
 		textPaint.setColor(textColor);
-		textPaint.setTypeface(Typeface.create("sans-serif-light", Typeface.NORMAL));
+		textPaint.setTypeface(Typeface.create("sans-serif-light",
+				Typeface.NORMAL));
 		textPaint.setTextSize((float) ((right - left) * 0.8));
 		Rect rect = new Rect();
 
 		canvas.drawRect(new Rect(left, top, right, bottom), tilePaint);
 		textPaint.getTextBounds(letter, 0, 1, rect);
 		float width = textPaint.measureText(letter);
-		canvas.drawText(letter,
-				(right+left)/2 - width/2,
-				(top+bottom)/2 + rect.height()/2,
-				textPaint);
+		canvas.drawText(letter, (right + left) / 2 - width / 2, (top + bottom)
+				/ 2 + rect.height() / 2, textPaint);
 	}
 
-	private static Bitmap getUnknownContactPicture(String[] names, int size, int bgColor, int fgColor) {
-		int tiles = (names.length > 4)? 4 :
-					(names.length < 1)? 1 :
-						names.length;
+	private static Bitmap getUnknownContactPicture(String[] names, int size,
+			int bgColor, int fgColor) {
+		int tiles = (names.length > 4) ? 4 : (names.length < 1) ? 1
+				: names.length;
 		Bitmap bitmap = Bitmap
 				.createBitmap(size, size, Bitmap.Config.ARGB_8888);
 		Canvas canvas = new Canvas(bitmap);
@@ -148,9 +156,9 @@ public class UIHelper {
 			letters[0] = "?";
 			colors[0] = 0xFFe92727;
 		} else {
-			for(int i = 0; i < tiles; ++i) {
-				letters[i] = (names[i].length() > 0) ?
-						names[i].substring(0, 1).toUpperCase(Locale.US) : " ";
+			for (int i = 0; i < tiles; ++i) {
+				letters[i] = (names[i].length() > 0) ? names[i].substring(0, 1)
+						.toUpperCase(Locale.US) : " ";
 				colors[i] = getNameColor(names[i]);
 			}
 
@@ -162,76 +170,79 @@ public class UIHelper {
 
 		bitmap.eraseColor(bgColor);
 
-		switch(tiles) {
-			case 1:
-				drawTile(canvas, letters[0], colors[0], fgColor,
-						0, 0, size, size);
-				break;
+		switch (tiles) {
+		case 1:
+			drawTile(canvas, letters[0], colors[0], fgColor, 0, 0, size, size);
+			break;
 
-			case 2:
-				drawTile(canvas, letters[0], colors[0], fgColor,
-						0, 0, size/2 - 1, size);
-				drawTile(canvas, letters[1], colors[1], fgColor,
-						size/2 + 1, 0, size, size);
-				break;
+		case 2:
+			drawTile(canvas, letters[0], colors[0], fgColor, 0, 0,
+					size / 2 - 1, size);
+			drawTile(canvas, letters[1], colors[1], fgColor, size / 2 + 1, 0,
+					size, size);
+			break;
 
-			case 3:
-				drawTile(canvas, letters[0], colors[0], fgColor,
-						0, 0, size/2 - 1, size);
-				drawTile(canvas, letters[1], colors[1], fgColor,
-						size/2 + 1, 0, size, size/2 - 1);
-				drawTile(canvas, letters[2], colors[2], fgColor,
-						size/2 + 1, size/2 + 1, size, size);
-				break;
+		case 3:
+			drawTile(canvas, letters[0], colors[0], fgColor, 0, 0,
+					size / 2 - 1, size);
+			drawTile(canvas, letters[1], colors[1], fgColor, size / 2 + 1, 0,
+					size, size / 2 - 1);
+			drawTile(canvas, letters[2], colors[2], fgColor, size / 2 + 1,
+					size / 2 + 1, size, size);
+			break;
 
-			case 4:
-				drawTile(canvas, letters[0], colors[0], fgColor,
-						0, 0, size/2 - 1, size/2 - 1);
-				drawTile(canvas, letters[1], colors[1], fgColor,
-						0, size/2 + 1, size/2 - 1, size);
-				drawTile(canvas, letters[2], colors[2], fgColor,
-						size/2 + 1, 0, size, size/2 - 1);
-				drawTile(canvas, letters[3], colors[3], fgColor,
-						size/2 + 1, size/2 + 1, size, size);
-				break;
+		case 4:
+			drawTile(canvas, letters[0], colors[0], fgColor, 0, 0,
+					size / 2 - 1, size / 2 - 1);
+			drawTile(canvas, letters[1], colors[1], fgColor, 0, size / 2 + 1,
+					size / 2 - 1, size);
+			drawTile(canvas, letters[2], colors[2], fgColor, size / 2 + 1, 0,
+					size, size / 2 - 1);
+			drawTile(canvas, letters[3], colors[3], fgColor, size / 2 + 1,
+					size / 2 + 1, size, size);
+			break;
 		}
 
 		return bitmap;
 	}
-	
-	private static Bitmap getMucContactPicture(Conversation conversation, int size, int bgColor, int fgColor) {
+
+	private static Bitmap getMucContactPicture(Conversation conversation,
+			int size, int bgColor, int fgColor) {
 		List<User> members = conversation.getMucOptions().getUsers();
 		if (members.size() == 0) {
-			return getUnknownContactPicture(new String[]{conversation.getName(false)}, size, bgColor, fgColor);
+			return getUnknownContactPicture(
+					new String[] { conversation.getName(false) }, size,
+					bgColor, fgColor);
 		}
-		String[] names = new String[members.size()+1];
+		String[] names = new String[members.size() + 1];
 		names[0] = conversation.getMucOptions().getNick();
-		for(int i = 0; i < members.size(); ++i) {
-			names[i+1] = members.get(i).getName();
+		for (int i = 0; i < members.size(); ++i) {
+			names[i + 1] = members.get(i).getName();
 		}
 
 		return getUnknownContactPicture(names, size, bgColor, fgColor);
 	}
 
-	public static Bitmap getContactPicture(Conversation conversation, int dpSize, Context context, boolean notification) {
-		if(conversation.getMode() == Conversation.MODE_SINGLE) {
-				return getContactPicture(conversation.getContact(), dpSize,
-						context, notification);
-		} else{
-			int fgColor = UIHelper.FG_COLOR,
-				bgColor = (notification) ?
-					UIHelper.BG_COLOR : UIHelper.TRANSPARENT;
+	public static Bitmap getContactPicture(Conversation conversation,
+			int dpSize, Context context, boolean notification) {
+		if (conversation.getMode() == Conversation.MODE_SINGLE) {
+			return getContactPicture(conversation.getContact(), dpSize,
+					context, notification);
+		} else {
+			int fgColor = UIHelper.FG_COLOR, bgColor = (notification) ? UIHelper.BG_COLOR
+					: UIHelper.TRANSPARENT;
 
-			return getMucContactPicture(conversation, getRealPx(dpSize, context),
-					bgColor, fgColor);
+			return getMucContactPicture(conversation,
+					getRealPx(dpSize, context), bgColor, fgColor);
 		}
 	}
 
-	public static Bitmap getContactPicture(Contact contact, int dpSize, Context context, boolean notification) {
+	public static Bitmap getContactPicture(Contact contact, int dpSize,
+			Context context, boolean notification) {
 		String uri = contact.getProfilePhoto();
-		if (uri==null) {
-			return getContactPicture(contact.getDisplayName(), dpSize,
-					context, notification);
+		if (uri == null) {
+			return getContactPicture(contact.getDisplayName(), dpSize, context,
+					notification);
 		}
 		try {
 			Bitmap bm = BitmapFactory.decodeStream(context.getContentResolver()
@@ -239,38 +250,42 @@ public class UIHelper {
 			return Bitmap.createScaledBitmap(bm, getRealPx(dpSize, context),
 					getRealPx(dpSize, context), false);
 		} catch (FileNotFoundException e) {
-			return getContactPicture(contact.getDisplayName(), dpSize,
-					context, notification);
+			return getContactPicture(contact.getDisplayName(), dpSize, context,
+					notification);
 		}
 	}
 
-	public static Bitmap getContactPicture(String name, int dpSize, Context context, boolean notification) {
-		int fgColor = UIHelper.FG_COLOR,
-			bgColor = (notification) ?
-				UIHelper.BG_COLOR : UIHelper.TRANSPARENT;
+	public static Bitmap getContactPicture(String name, int dpSize,
+			Context context, boolean notification) {
+		int fgColor = UIHelper.FG_COLOR, bgColor = (notification) ? UIHelper.BG_COLOR
+				: UIHelper.TRANSPARENT;
 
-		return getUnknownContactPicture(new String[]{name}, getRealPx(dpSize, context),
-				bgColor, fgColor);
+		return getUnknownContactPicture(new String[] { name },
+				getRealPx(dpSize, context), bgColor, fgColor);
 	}
 
-	public static void showErrorNotification(Context context, List<Account> accounts) {
+	public static void showErrorNotification(Context context,
+			List<Account> accounts) {
 		NotificationManager mNotificationManager = (NotificationManager) context
 				.getSystemService(Context.NOTIFICATION_SERVICE);
 		List<Account> accountsWproblems = new ArrayList<Account>();
-		for(Account account : accounts) {
+		for (Account account : accounts) {
 			if (account.hasErrorStatus()) {
 				accountsWproblems.add(account);
 			}
 		}
-		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context);
+		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
+				context);
 		if (accountsWproblems.size() == 0) {
 			mNotificationManager.cancel(1111);
 			return;
 		} else if (accountsWproblems.size() == 1) {
-			mBuilder.setContentTitle(context.getString(R.string.problem_connecting_to_account));
+			mBuilder.setContentTitle(context
+					.getString(R.string.problem_connecting_to_account));
 			mBuilder.setContentText(accountsWproblems.get(0).getJid());
 		} else {
-			mBuilder.setContentTitle(context.getString(R.string.problem_connecting_to_accounts));
+			mBuilder.setContentTitle(context
+					.getString(R.string.problem_connecting_to_accounts));
 			mBuilder.setContentText(context.getString(R.string.touch_to_fix));
 		}
 		mBuilder.setOngoing(true);
@@ -283,52 +298,62 @@ public class UIHelper {
 				ManageAccountActivity.class);
 		stackBuilder.addNextIntent(manageAccountsIntent);
 
-		PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(
-				0, PendingIntent.FLAG_UPDATE_CURRENT);
-		
+		PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0,
+				PendingIntent.FLAG_UPDATE_CURRENT);
+
 		mBuilder.setContentIntent(resultPendingIntent);
 		Notification notification = mBuilder.build();
 		mNotificationManager.notify(1111, notification);
 	}
 
 	private static Pattern generateNickHighlightPattern(String nick) {
-		// We expect a word boundary, i.e. space or start of string, followed by the
+		// We expect a word boundary, i.e. space or start of string, followed by
+		// the
 		// nick (matched in case-insensitive manner), followed by optional
 		// punctuation (for example "bob: i disagree" or "how are you alice?"),
 		// followed by another word boundary.
-		return Pattern.compile("\\b"+nick+"\\p{Punct}?\\b",
+		return Pattern.compile("\\b" + nick + "\\p{Punct}?\\b",
 				Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
 	}
 
 	public static void updateNotification(Context context,
-			List<Conversation> conversations, Conversation currentCon, boolean notify) {
+			List<Conversation> conversations, Conversation currentCon,
+			boolean notify) {
 		NotificationManager mNotificationManager = (NotificationManager) context
 				.getSystemService(Context.NOTIFICATION_SERVICE);
-		
-		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+
+		SharedPreferences preferences = PreferenceManager
+				.getDefaultSharedPreferences(context);
 		boolean useSubject = preferences.getBoolean("use_subject_in_muc", true);
-		boolean showNofifications = preferences.getBoolean("show_notification",true);
-		boolean vibrate = preferences.getBoolean("vibrate_on_notification", true);
-		boolean alwaysNotify = preferences.getBoolean("notify_in_conversation_when_highlighted", false);
+		boolean showNofifications = preferences.getBoolean("show_notification",
+				true);
+		boolean vibrate = preferences.getBoolean("vibrate_on_notification",
+				true);
+		boolean alwaysNotify = preferences.getBoolean(
+				"notify_in_conversation_when_highlighted", false);
 
 		if (!showNofifications) {
 			mNotificationManager.cancel(2342);
 			return;
 		}
-		
+
 		String targetUuid = "";
-		
-		if ((currentCon != null) &&(currentCon.getMode() == Conversation.MODE_MULTI)&&(!alwaysNotify)) {
+
+		if ((currentCon != null)
+				&& (currentCon.getMode() == Conversation.MODE_MULTI)
+				&& (!alwaysNotify)) {
 			String nick = currentCon.getMucOptions().getNick();
 			Pattern highlight = generateNickHighlightPattern(nick);
-			Matcher m = highlight.matcher(currentCon.getLatestMessage().getBody());
+			Matcher m = highlight.matcher(currentCon.getLatestMessage()
+					.getBody());
 			notify = m.find();
 		}
-		
+
 		List<Conversation> unread = new ArrayList<Conversation>();
 		for (Conversation conversation : conversations) {
 			if (conversation.getMode() == Conversation.MODE_MULTI) {
-				if ((!conversation.isRead())&&((wasHighlighted(conversation)||(alwaysNotify)))) {
+				if ((!conversation.isRead())
+						&& ((wasHighlighted(conversation) || (alwaysNotify)))) {
 					unread.add(conversation);
 				}
 			} else {
@@ -348,10 +373,11 @@ public class UIHelper {
 			Conversation conversation = unread.get(0);
 			targetUuid = conversation.getUuid();
 			mBuilder.setLargeIcon(UIHelper.getContactPicture(conversation, 64,
-							context, true));
+					context, true));
 			mBuilder.setContentTitle(conversation.getName(useSubject));
 			if (notify) {
-				mBuilder.setTicker(conversation.getLatestMessage().getReadableBody(context));
+				mBuilder.setTicker(conversation.getLatestMessage()
+						.getReadableBody(context));
 			}
 			StringBuilder bigText = new StringBuilder();
 			List<Message> messages = conversation.getMessages();
@@ -374,7 +400,8 @@ public class UIHelper {
 					.bigText(bigText.toString()));
 		} else {
 			NotificationCompat.InboxStyle style = new NotificationCompat.InboxStyle();
-			style.setBigContentTitle(unread.size() + " " + context.getString(R.string.unread_conversations));
+			style.setBigContentTitle(unread.size() + " "
+					+ context.getString(R.string.unread_conversations));
 			StringBuilder names = new StringBuilder();
 			for (int i = 0; i < unread.size(); ++i) {
 				targetUuid = unread.get(i).getUuid();
@@ -383,22 +410,26 @@ public class UIHelper {
 				} else {
 					names.append(unread.get(i).getName(useSubject));
 				}
-				style.addLine(Html.fromHtml("<b>" + unread.get(i).getName(useSubject)
-						+ "</b> " + unread.get(i).getLatestMessage().getReadableBody(context)));
+				style.addLine(Html.fromHtml("<b>"
+						+ unread.get(i).getName(useSubject)
+						+ "</b> "
+						+ unread.get(i).getLatestMessage()
+								.getReadableBody(context)));
 			}
-			mBuilder.setContentTitle(unread.size() + " " + context.getString(R.string.unread_conversations));
+			mBuilder.setContentTitle(unread.size() + " "
+					+ context.getString(R.string.unread_conversations));
 			mBuilder.setContentText(names.toString());
 			mBuilder.setStyle(style);
 		}
-		if ((currentCon!=null)&&(notify)) {
-			targetUuid=currentCon.getUuid();
+		if ((currentCon != null) && (notify)) {
+			targetUuid = currentCon.getUuid();
 		}
 		if (unread.size() != 0) {
 			mBuilder.setSmallIcon(R.drawable.ic_notification);
 			if (notify) {
 				if (vibrate) {
 					int dat = 70;
-					long[] pattern = {0,3*dat,dat,dat};
+					long[] pattern = { 0, 3 * dat, dat, dat };
 					mBuilder.setVibrate(pattern);
 				}
 				mBuilder.setLights(0xffffffff, 2000, 4000);
@@ -417,23 +448,23 @@ public class UIHelper {
 					targetUuid);
 			viewConversationIntent
 					.setType(ConversationActivity.VIEW_CONVERSATION);
-			
+
 			stackBuilder.addNextIntent(viewConversationIntent);
 
 			PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(
 					0, PendingIntent.FLAG_UPDATE_CURRENT);
-			
+
 			mBuilder.setContentIntent(resultPendingIntent);
 			Notification notification = mBuilder.build();
 			mNotificationManager.notify(2342, notification);
 		}
 	}
-	
+
 	private static boolean wasHighlighted(Conversation conversation) {
 		List<Message> messages = conversation.getMessages();
 		String nick = conversation.getMucOptions().getNick();
 		Pattern highlight = generateNickHighlightPattern(nick);
-		for(int i = messages.size() - 1; i >= 0; --i) {
+		for (int i = messages.size() - 1; i >= 0; --i) {
 			if (messages.get(i).isRead()) {
 				break;
 			} else {
@@ -453,7 +484,8 @@ public class UIHelper {
 			long id = Long.parseLong(systemAccount[0]);
 			badge.assignContactUri(Contacts.getLookupUri(id, systemAccount[1]));
 		}
-		badge.setImageBitmap(UIHelper.getContactPicture(contact, 72, context, false));
+		badge.setImageBitmap(UIHelper.getContactPicture(contact, 72, context,
+				false));
 	}
 
 	public static AlertDialog getVerifyFingerprintDialog(
@@ -489,7 +521,8 @@ public class UIHelper {
 		return builder.create();
 	}
 
-	public static Bitmap getSelfContactPicture(Account account, int size, boolean showPhoneSelfContactPicture, Context context) {
+	public static Bitmap getSelfContactPicture(Account account, int size,
+			boolean showPhoneSelfContactPicture, Context context) {
 		if (showPhoneSelfContactPicture) {
 			Uri selfiUri = PhoneHelper.getSefliUri(context);
 			if (selfiUri != null) {
@@ -497,7 +530,8 @@ public class UIHelper {
 					return BitmapFactory.decodeStream(context
 							.getContentResolver().openInputStream(selfiUri));
 				} catch (FileNotFoundException e) {
-					return getContactPicture(account.getJid(), size, context, false);
+					return getContactPicture(account.getJid(), size, context,
+							false);
 				}
 			}
 			return getContactPicture(account.getJid(), size, context, false);
