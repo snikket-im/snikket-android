@@ -482,7 +482,7 @@ public class UIHelper {
 			public void onClick(DialogInterface dialog, int which) {
 				contact.addOtrFingerprint(conversation.getOtrFingerprint());
 				msg.setVisibility(View.GONE);
-				//activity.xmppConnectionService.updateContact(contact);
+				activity.xmppConnectionService.syncRosterToDisk(account);
 			}
 		});
 		builder.setView(view);

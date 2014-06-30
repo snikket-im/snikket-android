@@ -1482,4 +1482,15 @@ public class XmppConnectionService extends Service {
 			account.getXmppConnection().sendMessagePacket(error);
 		}
 	}
+	
+	public void syncRosterToDisk(final Account account) {
+		new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				databaseBackend.writeRoster(account.getRoster());
+			}
+		}).start();
+		
+	}
 }
