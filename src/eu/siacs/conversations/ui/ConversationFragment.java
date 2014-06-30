@@ -805,10 +805,12 @@ public class ConversationFragment extends Fragment {
 
 				@Override
 				public void onClick(View v) {
-					AlertDialog dialog = UIHelper.getVerifyFingerprintDialog(
-							(ConversationActivity) getActivity(), conversation,
-							fingerprintWarning);
-					dialog.show();
+					if (conversation.getOtrFingerprint() != null) {
+						AlertDialog dialog = UIHelper.getVerifyFingerprintDialog(
+								(ConversationActivity) getActivity(), conversation,
+								fingerprintWarning);
+						dialog.show();
+					}
 				}
 			});
 		} else {
