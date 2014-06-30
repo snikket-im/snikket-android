@@ -924,15 +924,24 @@ public class XmppConnection implements Runnable {
 		return disco.get(server).contains(feature);
 	}
 
-	public String findDiscoItemByFeature(String feature) {
+	public List<String> findDiscoItemsByFeature(String feature) {
+		List<String> items = new ArrayList<String>();
 		Iterator<Entry<String, List<String>>> it = this.disco.entrySet()
 				.iterator();
 		while (it.hasNext()) {
 			Entry<String, List<String>> pairs = it.next();
-			if (pairs.getValue().contains(feature)&&pairs.getValue().size()==1) {
-				return pairs.getKey();
+			if (pairs.getValue().contains(feature)) {
+				items.add(pairs.getKey());
 			}
 			it.remove();
+		}
+		return items;
+	}
+	
+	public String findDiscoItemByFeature(String feature) {
+		List<String> items = findDiscoItemsByFeature(feature);
+		if (items.size()>=1) {
+			return items.get(0);
 		}
 		return null;
 	}
