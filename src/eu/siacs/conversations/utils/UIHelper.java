@@ -290,7 +290,7 @@ public class UIHelper {
 		}
 		mBuilder.setOngoing(true);
 		mBuilder.setLights(0xffffffff, 2000, 4000);
-		mBuilder.setSmallIcon(R.drawable.notification);
+		mBuilder.setSmallIcon(R.drawable.ic_notification);
 		TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
 		stackBuilder.addParentStack(ConversationActivity.class);
 
