@@ -240,6 +240,15 @@ public class ContactsActivity extends XmppActivity {
 							String mucName = CryptoHelper.randomMucName(xmppConnectionService.getRNG());
 							String serverName = account.getXmppConnection()
 									.getMucServer();
+							if (serverName==null) {
+								List<String> servers = getMucServers();
+								if (servers.size() >= 1) {
+									serverName = servers.get(0);
+								} else {
+									displayErrorDialog(R.string.no_muc_server_found);
+									return;
+								}
+							}
 							String jid = mucName + "@" + serverName;
 							Conversation conversation = xmppConnectionService
 									.findOrCreateConversation(account, jid, true);
@@ -462,15 +471,22 @@ public class ContactsActivity extends XmppActivity {
 		}
 	}
 	
-	private boolean isMuc(Contact contact) {
+	private List<String> getMucServers() {
 		ArrayList<String> mucServers = new ArrayList<String>();
 		for(Account account : accounts) {
 			if (account.getXmppConnection()!=null) {
-				mucServers.add(account.getXmppConnection().getMucServer());
+				String server = account.getXmppConnection().getMucServer();
+				if (server!=null) {
+					mucServers.add(server);
+				}
 			}
 		}
+		return mucServers;
+	}
+	
+	private boolean isMuc(Contact contact) {
 		String server = contact.getJid().split("@")[1];
-		return mucServers.contains(server);
+		return getMucServers().contains(server);
 	}
 
 	public void startConversation(Contact contact, Account account, boolean muc) {
