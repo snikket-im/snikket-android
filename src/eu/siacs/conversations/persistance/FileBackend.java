@@ -11,6 +11,8 @@ import java.io.OutputStream;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.util.Log;
 import android.util.LruCache;
@@ -85,19 +87,29 @@ public class FileBackend {
 			return originalBitmap;
 		}
 	}
-	
-	public JingleFile copyImageToPrivateStorage(Message message, Uri image) throws ImageCopyException {
-		return this.copyImageToPrivateStorage(message, image,0);
+
+	public Bitmap rotate(Bitmap bitmap, int degree) {
+		int w = bitmap.getWidth();
+		int h = bitmap.getHeight();
+		Matrix mtx = new Matrix();
+		mtx.postRotate(degree);
+		return Bitmap.createBitmap(bitmap, 0, 0, w, h, mtx, true);
 	}
 
-	private JingleFile copyImageToPrivateStorage(Message message, Uri image, int sampleSize)
+	public JingleFile copyImageToPrivateStorage(Message message, Uri image)
 			throws ImageCopyException {
+		return this.copyImageToPrivateStorage(message, image, 0);
+	}
+
+	private JingleFile copyImageToPrivateStorage(Message message, Uri image,
+			int sampleSize) throws ImageCopyException {
 		try {
 			InputStream is;
 			if (image != null) {
 				is = context.getContentResolver().openInputStream(image);
 			} else {
 				is = new FileInputStream(getIncomingFile());
+				image = getIncomingUri();
 			}
 			JingleFile file = getJingleFile(message);
 			file.getParentFile().mkdirs();
@@ -105,7 +117,8 @@ public class FileBackend {
 			Bitmap originalBitmap;
 			BitmapFactory.Options options = new BitmapFactory.Options();
 			int inSampleSize = (int) Math.pow(2, sampleSize);
-			Log.d("xmppService","reading bitmap with sample size "+inSampleSize);
+			Log.d("xmppService", "reading bitmap with sample size "
+					+ inSampleSize);
 			options.inSampleSize = inSampleSize;
 			originalBitmap = BitmapFactory.decodeStream(is, null, options);
 			is.close();
@@ -116,6 +129,18 @@ public class FileBackend {
 				getIncomingFile().delete();
 			}
 			Bitmap scalledBitmap = resize(originalBitmap, IMAGE_SIZE);
+			originalBitmap = null;
+			ExifInterface exif = new ExifInterface(image.toString());
+			if (exif.getAttribute(ExifInterface.TAG_ORIENTATION)
+					.equalsIgnoreCase("6")) {
+				scalledBitmap = rotate(scalledBitmap, 90);
+			} else if (exif.getAttribute(ExifInterface.TAG_ORIENTATION)
+					.equalsIgnoreCase("8")) {
+				scalledBitmap = rotate(scalledBitmap, 270);
+			} else if (exif.getAttribute(ExifInterface.TAG_ORIENTATION)
+					.equalsIgnoreCase("3")) {
+				scalledBitmap = rotate(scalledBitmap, 180);
+			}
 			OutputStream os = new FileOutputStream(file);
 			boolean success = scalledBitmap.compress(
 					Bitmap.CompressFormat.WEBP, 75, os);
@@ -138,7 +163,7 @@ public class FileBackend {
 					R.string.error_security_exception_during_image_copy);
 		} catch (OutOfMemoryError e) {
 			++sampleSize;
-			if (sampleSize<=3) {
+			if (sampleSize <= 3) {
 				return copyImageToPrivateStorage(message, image, sampleSize);
 			} else {
 				throw new ImageCopyException(R.string.error_out_of_memory);
@@ -189,6 +214,10 @@ public class FileBackend {
 
 	public File getIncomingFile() {
 		return new File(context.getFilesDir().getAbsolutePath() + "/incoming");
+	}
+	
+	public Uri getIncomingUri() {
+		return Uri.parse(context.getFilesDir().getAbsolutePath() + "/incoming");
 	}
 
 	public class ImageCopyException extends Exception {
