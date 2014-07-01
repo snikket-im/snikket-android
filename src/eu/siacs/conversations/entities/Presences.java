@@ -44,7 +44,7 @@ public class Presences {
 	}
 
 	public static int parseShow(Element show) {
-		if (show == null) {
+		if ((show == null)||(show.getContent() == null)) {
 			return Presences.ONLINE;
 		} else if (show.getContent().equals("away")) {
 			return Presences.AWAY;
