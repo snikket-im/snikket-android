@@ -647,7 +647,7 @@ public class ConversationActivity extends XmppActivity {
 				.beginTransaction();
 		transaction.replace(R.id.selected_conversation, selectedFragment,
 				"conversation");
-		transaction.commit();
+		transaction.commitAllowingStateLoss();
 		return selectedFragment;
 	}
 
