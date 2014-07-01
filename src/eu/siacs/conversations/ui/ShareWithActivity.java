@@ -26,30 +26,31 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class ShareWithActivity extends XmppActivity {
 
 	private LinearLayout conversations;
 	private LinearLayout contacts;
 	private boolean isImage = false;
-	
+
 	private UiCallback<Message> attachImageCallback = new UiCallback<Message>() {
-		
+
 		@Override
 		public void userInputRequried(PendingIntent pi, Message object) {
 			// TODO Auto-generated method stub
-			
+
 		}
-		
+
 		@Override
 		public void success(Message message) {
 			xmppConnectionService.sendMessage(message);
 		}
-		
+
 		@Override
 		public void error(int errorCode, Message object) {
 			// TODO Auto-generated method stub
-			
+
 		}
 	};
 
@@ -81,8 +82,8 @@ public class ShareWithActivity extends XmppActivity {
 
 	@Override
 	void onBackendConnected() {
-		this.isImage = (getIntent().getType() != null && getIntent()
-				.getType().startsWith("image/"));
+		this.isImage = (getIntent().getType() != null && getIntent().getType()
+				.startsWith("image/"));
 		SharedPreferences preferences = PreferenceManager
 				.getDefaultSharedPreferences(this);
 		boolean useSubject = preferences.getBoolean("use_subject_in_muc", true);
@@ -154,24 +155,32 @@ public class ShareWithActivity extends XmppActivity {
 			contacts.addView(view);
 		}
 	}
-	
+
 	private void share(final Conversation conversation) {
 		String sharedText = null;
 		if (isImage) {
-			final Uri uri = (Uri) getIntent().getParcelableExtra(Intent.EXTRA_STREAM);
+			final Uri uri = (Uri) getIntent().getParcelableExtra(
+					Intent.EXTRA_STREAM);
 			selectPresence(conversation, new OnPresenceSelected() {
 				@Override
 				public void onPresenceSelected() {
-					ShareWithActivity.this.xmppConnectionService.attachImageToConversation(conversation, uri,attachImageCallback);
+					Toast.makeText(getApplicationContext(),
+							getText(R.string.preparing_image),
+							Toast.LENGTH_LONG).show();
+					ShareWithActivity.this.xmppConnectionService
+							.attachImageToConversation(conversation, uri,
+									attachImageCallback);
+					switchToConversation(conversation, null, true);
+					finish();
 				}
 			});
-			
+
 		} else {
-			sharedText = getIntent().getStringExtra(
-				Intent.EXTRA_TEXT);
+			sharedText = getIntent().getStringExtra(Intent.EXTRA_TEXT);
+			switchToConversation(conversation, sharedText, true);
+			finish();
 		}
-		switchToConversation(conversation, sharedText, true);
-		finish();
+
 	}
 
 }
