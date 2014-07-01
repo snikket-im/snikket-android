@@ -1,11 +1,14 @@
 package eu.siacs.conversations.services;
 
 import java.security.SecureRandom;
+import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import org.openintents.openpgp.util.OpenPgpApi;
 import org.openintents.openpgp.util.OpenPgpServiceConnection;
@@ -1082,9 +1085,10 @@ public class XmppConnectionService extends Service {
 			packet.addChild("x", "jabber:x:signed").setContent(sig);
 		}
 		if (conversation.getMessages().size() != 0) {
-			long lastMsgTime = conversation.getLatestMessage().getTimeSent();
-			long diff = (System.currentTimeMillis() - lastMsgTime) / 1000 - 1;
-			x.addChild("history").setAttribute("seconds", diff + "");
+			final SimpleDateFormat mDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",Locale.US);
+			mDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+			Date date = new Date(conversation.getLatestMessage().getTimeSent() + 1000);
+			x.addChild("history").setAttribute("since",mDateFormat.format(date));
 		}
 		packet.addChild(x);
 		account.getXmppConnection().sendPresencePacket(packet);
