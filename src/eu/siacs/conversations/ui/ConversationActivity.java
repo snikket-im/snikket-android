@@ -488,7 +488,7 @@ public class ConversationActivity extends XmppActivity {
 			attachFilePopup.show();
 			break;
 		case R.id.action_add:
-			startActivity(new Intent(this, ContactsActivity.class));
+			startActivity(new Intent(this, StartConversation.class));
 			break;
 		case R.id.action_archive:
 			this.endConversation(getSelectedConversation());

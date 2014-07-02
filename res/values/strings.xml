@@ -21,6 +21,7 @@
     <string name="title_activity_contact_details">Contact Details</string>
     <string name="title_activity_conversations">Conversations</string>
     <string name="title_activity_sharewith">Share with Conversation</string>
+    <string name="title_activity_start_conversation">Start Conversation</string>
     <string name="just_now">just now</string>
     <string name="minute_ago">1 min ago</string>
     <string name="minutes_ago">%d mins ago</string>
@@ -254,4 +255,5 @@
     <string name="otr_fingerprint">OTR fingerprint</string>
     <string name="verify">Verify</string>
     <string name="decrypt">Decrypt</string>
+    <string name="conferences">Conferences</string>
 </resources>
