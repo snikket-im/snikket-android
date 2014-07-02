@@ -129,6 +129,7 @@ public class UIHelper {
 			int textColor, int left, int top, int right, int bottom) {
 		Paint tilePaint = new Paint(), textPaint = new Paint();
 		tilePaint.setColor(tileColor);
+		textPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
 		textPaint.setColor(textColor);
 		textPaint.setTypeface(Typeface.create("sans-serif-light",
 				Typeface.NORMAL));
