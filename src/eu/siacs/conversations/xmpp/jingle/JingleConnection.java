@@ -99,6 +99,7 @@ public class JingleConnection {
 
 		@Override
 		public void onFileTransferAborted() {
+			JingleConnection.this.sendCancel();
 			JingleConnection.this.cancel();
 		}
 	};
@@ -280,16 +281,26 @@ public class JingleConnection {
 					}
 					this.file = this.mXmppConnectionService.getFileBackend().getJingleFile(message,false);
 					if (message.getEncryption() == Message.ENCRYPTION_OTR) {
-						this.file.setKey(conversation.getSymmetricKey());
+						byte[] key = conversation.getSymmetricKey();
+						if (key==null) {
+							this.sendCancel();
+							this.cancel();
+							return;
+						} else {
+							this.file.setKey(conversation.getSymmetricKey());
+						}
 					}
 					this.file.setExpectedSize(size);
 				} else {
+					this.sendCancel();
 					this.cancel();
 				}
 			} else {
+				this.sendCancel();
 				this.cancel();
 			}
 		} else {
+			this.sendCancel();
 			this.cancel();
 		}
 	}
@@ -410,6 +421,7 @@ public class JingleConnection {
 						connection.setActivated(true);
 					} else {
 						Log.d("xmppService","activated connection not found");
+						this.sendCancel();
 						this.cancel();
 					}
 				}
@@ -603,8 +615,7 @@ public class JingleConnection {
 		this.mJingleConnectionManager.finishConnection(this);
 	}
 	
-	void cancel() {
-		this.sendCancel();
+	public void cancel() {
 		this.disconnect();
 		if (this.message!=null) {
 			if (this.responder.equals(account.getFullJid())) {

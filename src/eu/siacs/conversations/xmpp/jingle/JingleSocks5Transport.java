@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -137,6 +138,7 @@ public class JingleSocks5Transport extends JingleTransport {
 					MessageDigest digest = MessageDigest.getInstance("SHA-1");
 					digest.reset();
 					inputStream.skip(45);
+					socket.setSoTimeout(30000);
 					file.getParentFile().mkdirs();
 					file.createNewFile();
 					OutputStream fileOutputStream = getOutputStream(file);
