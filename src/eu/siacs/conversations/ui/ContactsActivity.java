@@ -485,8 +485,11 @@ public class ContactsActivity extends XmppActivity {
 	}
 	
 	private boolean isMuc(Contact contact) {
-		String server = contact.getJid().split("@")[1];
-		return getMucServers().contains(server);
+		String[] parts = contact.getJid().split("@");
+		if (parts.length != 2) {
+			return false;
+		}
+		return getMucServers().contains(parts[1]);
 	}
 
 	public void startConversation(Contact contact, Account account, boolean muc) {
