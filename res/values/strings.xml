@@ -8,7 +8,7 @@
     <string name="action_refresh">Refresh contact list</string>
     <string name="action_end_conversation">End this conversation</string>
     <string name="action_contact_details">Contact details</string>
-    <string name="action_muc_details">Conferenece details</string>
+    <string name="action_muc_details">Conference details</string>
     <string name="action_secure">Secure conversation</string>
     <string name="action_add_account">Add account</string>
     <string name="action_edit_contact">Edit name</string>
@@ -208,7 +208,7 @@
     <string name="confirm_password">Confirm password</string>
     <string name="passwords_do_not_match">Passwords do not match</string>
     <string name="invalid_jid">This is not a valid Jabber ID</string>
-	<string name="error_out_of_memory">Ouf of memory. Image is to large</string>
+    <string name="error_out_of_memory">Ouf of memory. Image is too large</string>
     <string name="add_phone_book_text">Do you want to add %s to your phones contact list?</string>
     <string name="contact_status_online">online</string>
     <string name="contact_status_free_to_chat">free to chat</string>
