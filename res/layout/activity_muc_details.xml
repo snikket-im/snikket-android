@@ -53,7 +53,7 @@
         android:padding="8dp"
         android:singleLine="true"
         android:textColor="#5b5b5b"
-        android:textSize="18sp"/>
+        android:textSize="14sp"/>
 
     <TextView
         style="@style/sectionHeader"
@@ -102,7 +102,7 @@
         android:layout_height="wrap_content"
         android:padding="8dp"
         android:singleLine="true"
-        android:textSize="18sp"
+        android:textSize="14sp"
         android:textColor="#5b5b5b"/>
     
     <LinearLayout

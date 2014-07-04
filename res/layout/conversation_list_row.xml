@@ -26,7 +26,7 @@
 	        android:layout_toLeftOf="@+id/conversation_lastupdate"
 	        android:singleLine="true"
 	        android:textColor="#636363"
-	        android:textSize="20sp"
+	        android:textSize="18sp"
 	        android:typeface="sans" />
 	 
 	    <LinearLayout

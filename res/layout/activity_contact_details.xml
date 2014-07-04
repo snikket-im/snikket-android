@@ -44,14 +44,14 @@
                 android:paddingLeft="8dp"
                 android:singleLine="true"
                 android:textColor="#5b5b5b"
-                android:textSize="18sp" />
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/details_contactstatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="16dp"
-                android:textSize="24sp"
+                android:textSize="18sp"
                 android:textStyle="bold" />
             <TextView
                 android:id="@+id/details_lastseen"
@@ -77,7 +77,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="8dp"
-        android:textSize="18sp"
+        android:textSize="14sp"
         android:textColor="#5b5b5b" />
    <TextView
         style="@style/sectionHeader"
@@ -91,7 +91,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/send_presence_updates"
-        android:textSize="18sp"
+        android:textSize="14sp"
         android:textColor="#5b5b5b" />
 
         <CheckBox
@@ -99,7 +99,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/receive_presence_updates"
-        android:textSize="18sp"
+        android:textSize="14sp"
         android:textColor="#5b5b5b" />
         
 	<TextView 
@@ -110,7 +110,7 @@
         android:layout_height="wrap_content"
         android:text="@string/ask_again"
         android:textColor="#33B5E5"
-        android:textSize="18sp"
+        android:textSize="14sp"
         android:visibility="gone"
 	    />
  <TextView

@@ -9,14 +9,14 @@
         android:id="@+id/hint"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="18sp"/>
+        android:textSize="14sp"/>
     
      <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="#FFe92727"
         android:textStyle="bold"
-        android:textSize="18sp"
+        android:textSize="14sp"
         android:text="Do not connect unless you know exactly what you are doing"
         android:paddingTop="8dp"
         android:paddingBottom="8dp"/>
@@ -24,7 +24,7 @@
      <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
+        android:textSize="14sp"
         android:text="The SHA1 fingerprint is:" />
 
     <TextView
@@ -36,6 +36,6 @@
         android:layout_height="wrap_content"
         android:typeface="monospace"
         android:textStyle="bold"
-        android:textSize="20sp"/>
+        android:textSize="18sp"/>
 
 </LinearLayout>

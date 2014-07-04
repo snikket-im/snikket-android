@@ -34,6 +34,7 @@
         android:layout_height="wrap_content"
         android:textColor="#5b5b5b"
         android:singleLine="true"
+        android:textSize="14sp"
         />
     <TextView 
         android:id="@+id/key"

@@ -78,7 +78,7 @@
                 android:layout_height="wrap_content"
                 android:padding="6dp"
                 android:textColor="#eee"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -105,7 +105,7 @@
                 android:padding="6dp"
                 android:text="@string/unknown_otr_fingerprint"
                 android:textColor="#eee"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -134,7 +134,7 @@
                 android:padding="6dp"
                 android:text="@string/openpgp_messages_found"
                 android:textColor="#eee"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:textStyle="bold" />
 
             <TextView

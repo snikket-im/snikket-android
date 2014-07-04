@@ -13,7 +13,7 @@
         android:paddingTop="8dp"
         android:text="Jabber ID"
         android:textColor="#33B5E5"
-        android:textSize="20sp"/>
+        android:textSize="18sp"/>
 
     <TextView
         android:id="@+id/verify_otr_jid"
@@ -27,7 +27,7 @@
         android:paddingTop="8dp"
         android:text="OTR fingerprint"
         android:textColor="#33B5E5"
-        android:textSize="20sp"/>
+        android:textSize="18sp"/>
 
     <TextView
         android:id="@+id/verify_otr_fingerprint"
@@ -42,7 +42,7 @@
         android:paddingTop="8dp"
         android:text="Your fingerprint"
         android:textColor="#33B5E5"
-        android:textSize="20sp"/>
+        android:textSize="18sp"/>
 
     <TextView
         android:id="@+id/verify_otr_yourprint"
