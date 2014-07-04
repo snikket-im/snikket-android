@@ -1,6 +1,7 @@
 package eu.siacs.conversations.entities;
 
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 
 import org.json.JSONArray;
@@ -78,7 +79,7 @@ public class Contact {
 	}
 
 	public String getJid() {
-		return this.jid;
+		return this.jid.toLowerCase(Locale.getDefault());
 	}
 
 	public boolean match(String needle) {

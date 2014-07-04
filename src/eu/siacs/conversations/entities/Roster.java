@@ -2,6 +2,7 @@ package eu.siacs.conversations.entities;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Roster {
@@ -19,7 +20,7 @@ public class Roster {
 	}
 	
 	public Contact getContact(String jid) {
-		String cleanJid = jid.split("/")[0];
+		String cleanJid = jid.split("/")[0].toLowerCase(Locale.getDefault());
 		if (contacts.containsKey(cleanJid)) {
 			return contacts.get(cleanJid);
 		} else {
