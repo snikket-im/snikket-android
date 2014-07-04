@@ -1,6 +1,7 @@
 package eu.siacs.conversations.entities;
 
 import java.security.interfaces.DSAPublicKey;
+import java.util.Locale;
 
 import net.java.otr4j.crypto.OtrCryptoEngineImpl;
 import net.java.otr4j.crypto.OtrCryptoException;
@@ -149,7 +150,7 @@ public class Account  extends AbstractEntity{
 	}
 	
 	public String getJid() {
-		return username+"@"+server;
+		return username.toLowerCase(Locale.getDefault())+"@"+server.toLowerCase(Locale.getDefault());
 	}
 	
 	public JSONObject getKeys() {
