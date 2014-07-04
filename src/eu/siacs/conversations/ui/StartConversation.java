@@ -9,12 +9,8 @@ import android.app.ListFragment;
 import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.PopupMenu;
-import android.widget.PopupMenu.OnMenuItemClickListener;
 import eu.siacs.conversations.R;
 
 public class StartConversation extends XmppActivity {
@@ -36,6 +32,7 @@ public class StartConversation extends XmppActivity {
 		@Override
 		public void onTabSelected(Tab tab, FragmentTransaction ft) {
 			mViewPager.setCurrentItem(tab.getPosition());
+			invalidateOptionsMenu();
 		}
 
 		@Override
@@ -49,6 +46,7 @@ public class StartConversation extends XmppActivity {
 		@Override
 		public void onPageSelected(int position) {
 			getActionBar().setSelectedNavigationItem(position);
+			invalidateOptionsMenu();
 		}
 	};
 
@@ -91,6 +89,13 @@ public class StartConversation extends XmppActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.start_conversation, menu);
+		MenuItem menuCreateContact = (MenuItem) menu.findItem(R.id.action_create_contact);
+		MenuItem menuCreateConference = (MenuItem) menu.findItem(R.id.action_create_conference);
+		if (getActionBar().getSelectedNavigationIndex() == 0) {
+			menuCreateConference.setVisible(false);
+		} else {
+			menuCreateContact.setVisible(false);
+		}
 		return true;
 	}
 

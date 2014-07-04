@@ -258,4 +258,5 @@
     <string name="conferences">Conferences</string>
     <string name="search">Search</string>
     <string name="create_contact">Create Contact</string>
+    <string name="create_conference">Create Conference</string>
 </resources>
