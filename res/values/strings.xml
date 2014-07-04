@@ -256,4 +256,6 @@
     <string name="verify">Verify</string>
     <string name="decrypt">Decrypt</string>
     <string name="conferences">Conferences</string>
+    <string name="search">Search</string>
+    <string name="create_contact">Create Contact</string>
 </resources>
