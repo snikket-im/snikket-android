@@ -4,7 +4,6 @@
     <item
         android:id="@+id/action_contact_details"
         android:showAsAction="ifRoom"
-        android:icon="@drawable/ic_action_person"
         android:title="@string/action_contact_details" />
  <item
         android:id="@+id/action_start_conversation"

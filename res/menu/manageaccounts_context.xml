@@ -8,7 +8,7 @@
         android:title="@string/mgmt_account_edit"/>
     <item
         android:id="@+id/mgmt_account_delete"
-        android:icon="@drawable/ic_action_delete"
+        android:icon="@drawable/ic_action_discard"
         android:showAsAction="always"
         android:title="@string/mgmt_account_delete"/>
     <item
