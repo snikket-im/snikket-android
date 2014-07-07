@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="app_name">Conversations</string>
     <string name="action_settings">Paramètres</string>
     <string name="action_add">Nouvelle conversation</string>
@@ -36,8 +35,6 @@
     <string name="participant">Participant</string>
     <string name="visitor">Visiteur</string>
     <string name="enter_new_name">Entrer un nouveau nom:</string>
-
-
     <string name="remove_contact_text">Voulez-vous supprimer %s de votre liste? Les conversations associées à ce compte ne seront pas supprimées.</string>
     <string name="untrusted_cert_hint">Le serveur %s utilise un certificat non certifié et peut-être auto-signé.</string>
     <string name="account_info">Informations du serveur</string>
@@ -67,14 +64,12 @@
     <string name="done">Terminé</string>
     <string name="hide">Cacher</string>
     <string name="create_invite">Créer \u0026 invitation</string>
-
     <string name="new_conference_explained">Voulez-vous créer une nouvelle conférence avec une adresse générée aléatoirement et inviter les contacts sélectionnés à la rejoindre?</string>
     <string name="no_open_mucs">Conférences non existantes</string>
     <string name="invitation_sent">Invitation envoyée</string>
     <string name="account_offline">Compte hors-ligne</string>
     <string name="cant_invite_while_offline">Vous devez être en ligne pour inviter des participants à une conférence.</string>
     <string name="crash_report_title">Conversations s\'est arreté</string>
-
     <string name="crash_report_message">En envoyant des logs vous aidez au développement de Conversations.\n\n<b>Attention:</b> Votre compte XMPP sera utilisé pour envoyer les logs aux développeurs.</string>
     <string name="send_now">Envoyer</string>
     <string name="send_never">Ne plus me demander</string>
@@ -108,7 +103,6 @@
     <string name="otr_messages">Messages chiffrés par OTR</string>
     <string name="manage_account">Gérer les comptes</string>
     <string name="contact_offline">Votre correspondant est hors-ligne.</string>
-
     <string name="contact_offline_otr">Envoyer un message chiffré via OTR à un correspondant hors-ligne n\'est malheureusement pas possible.\nVoulez-vous envoyer ce message sans chiffrement?</string>
     <string name="contact_offline_file">Envoyer un fichier à un correspondant hors-ligne n\'est malheureusement pas possible.</string>
     <string name="send_unencrypted">Envoyer en clair</string>
@@ -117,7 +111,7 @@
     <string name="openkeychain_required_long">Conversations requiert une application tierce nommée <b>OpenKeychain</b> pour chiffrer et déchiffrer les messages.\n\nOpenKeychain est sous licence GPLv3 et est disponible sur F-Droid et Google Play.\n\n<small>(Merci de redémarrer Conversations apres l\'installation du logiciel)</small></string>
     <string name="restart">Redémarrer</string>
     <string name="install">Installer</string>
-	<string name="offering">Proposition&#8230;</string>
+    <string name="offering">Proposition&#8230;</string>
     <string name="waiting">Patientez&#8230;</string>
     <string name="no_pgp_key">Aucune clef OpenPGP trouvée.</string>
     <string name="contact_has_no_pgp_key">Conversations ne peut chiffrer vos messages car votre correspondant n\'a pas communiqué sa clef publique.\n\n<small>Merci de demander à votre correspondant de configurer OpenPGP.</small></string>
@@ -179,30 +173,30 @@
     <string name="error_file_not_found">Fichier non trouvé</string>
     <string name="error_io_exception">Erreur générale d\'E/S. Avez-vous encore de l\'espace libre?</string>
     <string name="error_security_exception_during_image_copy">L\'application utilisée empêche la lecture de l\'image.\n\n<small>Choisissez l\'image depuis une autre application.</small></string>
-	<string name="account_status">Statut :</string>
-	<string name="account_status_unknown">Inconnu</string>
-	<string name="account_status_disabled">Temporarily disabled</string>
-	<string name="account_status_online">En ligne</string>
-	<string name="account_status_connecting">Connexion\u2026</string>
-	<string name="account_status_offline">Hors-ligne</string>
-	<string name="account_status_unauthorized">Non autorisé</string>
-	<string name="account_status_not_found">Serveur non trouvé</string>
-	<string name="account_status_no_internet">Aucune connectivité</string>
-	<string name="account_status_requires_tls">Le serveur requiert TLS</string>
-	<string name="account_status_error">Certificat non certifié</string>
-	<string name="account_status_regis_fail">Enregistrement échoué</string>
-	<string name="account_status_regis_conflict">Identifiant déjà utilisé</string>
-	<string name="account_status_regis_success">Enregistrement réussi</string>
-	<string name="account_status_regis_not_sup">Le serveur ne permet pas l\'enregistrement</string>
-	<string name="certif_no_trust">Annuler</string>
-	<string name="certif_trust">Croire ce certificat</string>
-	<string name="encryption_choice_none">Texte clair</string>
-	<string name="encryption_choice_otr">OTR</string>
-	<string name="encryption_choice_pgp">OpenPGP</string>
-	<string name="mgmt_account_edit">Modifier le compte</string>	
-	<string name="mgmt_account_delete">Supprimer</string>	
-	<string name="mgmt_account_disable">Désactiver temporairement</string>
-	<string name="mgmt_account_enable">Activer</string>
+    <string name="account_status">Statut :</string>
+    <string name="account_status_unknown">Inconnu</string>
+    <string name="account_status_disabled">Temporarily disabled</string>
+    <string name="account_status_online">En ligne</string>
+    <string name="account_status_connecting">Connexion\u2026</string>
+    <string name="account_status_offline">Hors-ligne</string>
+    <string name="account_status_unauthorized">Non autorisé</string>
+    <string name="account_status_not_found">Serveur non trouvé</string>
+    <string name="account_status_no_internet">Aucune connectivité</string>
+    <string name="account_status_requires_tls">Le serveur requiert TLS</string>
+    <string name="account_status_error">Certificat non certifié</string>
+    <string name="account_status_regis_fail">Enregistrement échoué</string>
+    <string name="account_status_regis_conflict">Identifiant déjà utilisé</string>
+    <string name="account_status_regis_success">Enregistrement réussi</string>
+    <string name="account_status_regis_not_sup">Le serveur ne permet pas l\'enregistrement</string>
+    <string name="certif_no_trust">Annuler</string>
+    <string name="certif_trust">Croire ce certificat</string>
+    <string name="encryption_choice_none">Texte clair</string>
+    <string name="encryption_choice_otr">OTR</string>
+    <string name="encryption_choice_pgp">OpenPGP</string>
+    <string name="mgmt_account_edit">Modifier le compte</string>    
+    <string name="mgmt_account_delete">Supprimer</string>    
+    <string name="mgmt_account_disable">Désactiver temporairement</string>
+    <string name="mgmt_account_enable">Activer</string>
     <string name="mgmt_account_are_you_sure">Êtes-vous sûr?</string>
     <string name="mgmt_account_delete_confirm_text">En supprimant votre compte, votre historique de conversations sera perdu!</string>
     <string name="mgmt_account_account_offline">Le compte est hors-ligne</string>
