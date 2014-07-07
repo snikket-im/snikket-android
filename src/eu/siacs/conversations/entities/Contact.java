@@ -12,7 +12,7 @@ import eu.siacs.conversations.xml.Element;
 import android.content.ContentValues;
 import android.database.Cursor;
 
-public class Contact {
+public class Contact implements ListItem {
 	public static final String TABLENAME = "contacts";
 
 	public static final String SYSTEMNAME = "systemname";
@@ -37,7 +37,7 @@ public class Contact {
 	protected Account account;
 
 	protected boolean inRoster = true;
-	
+
 	public Lastseen lastseen = new Lastseen();
 
 	public Contact(String account, String systemName, String serverName,
@@ -83,8 +83,10 @@ public class Contact {
 	}
 
 	public boolean match(String needle) {
-		return (jid.toLowerCase().contains(needle.toLowerCase()) || (getDisplayName()
-				.toLowerCase().contains(needle.toLowerCase())));
+		return needle == null
+				|| jid.contains(needle.toLowerCase())
+				|| getDisplayName().toLowerCase()
+						.contains(needle.toLowerCase());
 	}
 
 	public ContentValues getContentValues() {
@@ -142,8 +144,8 @@ public class Contact {
 						|| domainParts[0].equals("room")
 						|| domainParts[0].equals("muc")
 						|| domainParts[0].equals("chat")
-						|| domainParts[0].equals("sala")
-						|| domainParts[0].equals("salas"));
+						|| domainParts[0].equals("sala") || domainParts[0]
+							.equals("salas"));
 			}
 		}
 	}
@@ -308,9 +310,14 @@ public class Contact {
 		public static final int DIRTY_PUSH = 6;
 		public static final int DIRTY_DELETE = 7;
 	}
-	
+
 	public class Lastseen {
 		public long time = 0;
 		public String presence = null;
+	}
+
+	@Override
+	public int compareTo(ListItem another) {
+		return this.getDisplayName().compareToIgnoreCase(another.getDisplayName());
 	}
 }
