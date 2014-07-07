@@ -20,14 +20,14 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@android:style/Theme.Holo.Light" >
+        android:theme="@style/ConversationsTheme" >
         <service android:name="eu.siacs.conversations.services.XmppConnectionService" />
 
-         <provider
-             android:name="eu.siacs.conversations.services.ImageProvider"
-             android:authorities="eu.siacs.conversations.images"
-             android:exported="true"/>
-        
+        <provider
+            android:name="eu.siacs.conversations.services.ImageProvider"
+            android:authorities="eu.siacs.conversations.images"
+            android:exported="true" />
+
         <receiver android:name="eu.siacs.conversations.services.EventReceiver" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
@@ -40,9 +40,8 @@
             android:name="eu.siacs.conversations.ui.ConversationActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_conversations"
-            android:windowSoftInputMode="stateHidden"
             android:launchMode="singleTask"
-            android:logo="@drawable/ic_activity">
+            android:windowSoftInputMode="stateHidden" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -52,57 +51,57 @@
         <activity
             android:name="eu.siacs.conversations.ui.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName="eu.siacs.conversations.ui.ConversationActivity"
-            android:logo="@drawable/ic_activity">
+            android:parentActivityName="eu.siacs.conversations.ui.ConversationActivity" >
         </activity>
         <activity
             android:name="eu.siacs.conversations.ui.ManageAccountActivity"
-            android:label="@string/title_activity_manage_accounts"
             android:configChanges="orientation|screenSize"
-            android:parentActivityName="eu.siacs.conversations.ui.ConversationActivity"
-            android:logo="@drawable/ic_activity">
+            android:label="@string/title_activity_manage_accounts"
+            android:parentActivityName="eu.siacs.conversations.ui.ConversationActivity" >
         </activity>
         <activity
             android:name="eu.siacs.conversations.ui.MucDetailsActivity"
             android:label="@string/title_activity_conference_details"
-            android:windowSoftInputMode="stateHidden"
-            android:logo="@drawable/ic_activity">
+            android:windowSoftInputMode="stateHidden" >
         </activity>
         <activity
             android:name="eu.siacs.conversations.ui.ContactDetailsActivity"
             android:label="@string/title_activity_contact_details"
-            android:windowSoftInputMode="stateHidden"
-            android:logo="@drawable/ic_activity">
+            android:windowSoftInputMode="stateHidden" >
         </activity>
         <activity
             android:name="eu.siacs.conversations.ui.ContactsActivity"
             android:label="@string/title_activity_contacts"
             android:parentActivityName="eu.siacs.conversations.ui.ConversationActivity"
-            android:windowSoftInputMode="stateHidden"
-            android:logo="@drawable/ic_activity">
+            android:windowSoftInputMode="stateHidden" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="de.gultsch.chat.ui.ConversationActivity" />
+
             <intent-filter>
                 <action android:name="android.intent.action.SENDTO" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data android:scheme="imto" />
                 <data android:host="jabber" />
             </intent-filter>
         </activity>
         <activity
             android:name="eu.siacs.conversations.ui.ShareWithActivity"
-            android:label="@string/title_activity_conversations"
-            android:theme="@android:style/Theme.Holo.Light.DialogWhenLarge"
-            android:icon="@drawable/ic_activity">
+            android:label="@string/title_activity_conversations" >
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data android:mimeType="text/plain" />
             </intent-filter>
-             <intent-filter>
+            <intent-filter>
                 <action android:name="android.intent.action.SEND" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data android:mimeType="image/*" />
             </intent-filter>
         </activity>
