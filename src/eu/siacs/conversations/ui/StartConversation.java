@@ -11,6 +11,7 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.app.ListFragment;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -171,6 +172,9 @@ public class StartConversation extends XmppActivity {
 			menuCreateContact.setVisible(false);
 		}
 		mSearchView = (SearchView) menuSearch.getActionView();
+		int id = mSearchView.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
+		TextView textView = (TextView) mSearchView.findViewById(id);
+		textView.setTextColor(Color.WHITE);
 		mSearchView.setOnQueryTextListener(this.mOnQueryTextListener);
 		menuSearch
 				.setOnActionExpandListener(this.mOnSearchActionExpandListener);
