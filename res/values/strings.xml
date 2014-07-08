@@ -250,4 +250,6 @@
     <string name="openpgp_click_to_decrypt">Click here to enter passphrase and decrypt messages</string>
     <string name="reception_failed">Reception failed</string>
     <string name="no_muc_server_found">No suitable Conference Server found</string>
+    <string name="your_fingerprint">Your fingerprint</string>
+    <string name="otr_fingerprint">OTR fingerprint</string>
 </resources>

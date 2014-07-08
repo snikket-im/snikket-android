@@ -2,7 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-        android:background="#e5e5e5">
+        android:background="@color/primarybackground">
 
 <LinearLayout 
     android:layout_width="match_parent"
@@ -14,7 +14,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="8dp"
-        android:text="@string/action_contact_details" />
+        android:text="@string/action_contact_details"
+        android:textColor="@color/primarytext"/>
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -43,8 +44,8 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="8dp"
                 android:singleLine="true"
-                android:textColor="#5b5b5b"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:textColor="@color/primarytext"/>
 
             <TextView
                 android:id="@+id/details_contactstatus"
@@ -52,6 +53,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="16dp"
                 android:textSize="18sp"
+                android:textColor="@color/primarytext"
                 android:textStyle="bold" />
             <TextView
                 android:id="@+id/details_lastseen"
@@ -59,8 +61,8 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="8dp"
                 android:singleLine="true"
-                android:textColor="#5b5b5b"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:textColor="@color/primarytext"/>
         </LinearLayout>
           
     </RelativeLayout>
@@ -71,20 +73,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="8dp"
-        android:text="@string/your_account" />
+        android:text="@string/your_account"
+        android:textColor="@color/primarytext"/>
     <TextView
         android:id="@+id/details_account"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="8dp"
         android:textSize="14sp"
-        android:textColor="#5b5b5b" />
+        android:textColor="@color/primarytext" />
    <TextView
         style="@style/sectionHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="8dp"
-        android:text="@string/subscriptions" />
+        android:text="@string/subscriptions"
+        android:textColor="@color/primarytext"/>
 
     <CheckBox
         android:id="@+id/details_send_presence"
@@ -92,7 +96,7 @@
         android:layout_height="wrap_content"
         android:text="@string/send_presence_updates"
         android:textSize="14sp"
-        android:textColor="#5b5b5b" />
+        android:textColor="@color/primarytext" />
 
         <CheckBox
         android:id="@+id/details_receive_presence"
@@ -100,7 +104,7 @@
         android:layout_height="wrap_content"
         android:text="@string/receive_presence_updates"
         android:textSize="14sp"
-        android:textColor="#5b5b5b" />
+        android:textColor="@color/primarytext" />
         
 	<TextView 
 	    android:id="@+id/ask_again"

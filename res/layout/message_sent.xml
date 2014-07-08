@@ -20,7 +20,7 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
-            android:background="#ededed"
+            android:background="@color/primarybackground"
             android:orientation="vertical"
             android:gravity="center_vertical"
             android:paddingTop="4dp"
@@ -35,7 +35,7 @@
                 android:adjustViewBounds="true"
                 android:paddingBottom="2dp"
                 android:scaleType="fitXY"
-                android:background="#333333"
+                android:background="@color/primarytext"
                 />
 
             <TextView
@@ -44,8 +44,8 @@
                 android:layout_height="wrap_content"
                 android:autoLink="web"
                 android:textIsSelectable="true"
-                android:textColor="#333333"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:textColor="@color/primarytext"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -61,8 +61,8 @@
                     android:layout_gravity="center_vertical"
                     android:gravity="center_vertical"
                     android:text="@string/sending"
-                    android:textColor="#8e8e8e"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"
+                    android:textColor="@color/secondarytext"/>
                 
                  <ImageView
                     android:id="@+id/security_indicator"

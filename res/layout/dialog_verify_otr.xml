@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:paddingTop="8dp"
         android:text="Jabber ID"
-        android:textColor="#33B5E5"
+        android:textColor="@color/primarytext"
         android:textSize="18sp"/>
 
     <TextView
@@ -20,13 +20,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="8dp"
-        android:textSize="14sp" />
+        android:textSize="14sp"
+        android:textColor="@color/secondarytext"/>
      <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="8dp"
-        android:text="OTR fingerprint"
-        android:textColor="#33B5E5"
+        android:text="@string/otr_fingerprint"
+        android:textColor="@color/primarytext"
         android:textSize="18sp"/>
 
     <TextView
@@ -35,14 +36,15 @@
         android:layout_height="wrap_content"
         android:paddingLeft="8dp"
         android:textSize="14sp"
-        android:typeface="monospace"/>
+        android:typeface="monospace"
+        android:textColor="@color/secondarytext"/>
      <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="8dp"
-        android:text="Your fingerprint"
-        android:textColor="#33B5E5"
-        android:textSize="18sp"/>
+        android:text="@string/your_fingerprint"
+        android:textSize="18sp"
+        android:textColor="@color/primarytext"/>
 
     <TextView
         android:id="@+id/verify_otr_yourprint"
@@ -50,5 +52,6 @@
         android:layout_height="wrap_content"
         android:paddingLeft="8dp"
         android:textSize="14sp"
-        android:typeface="monospace"/>
+        android:typeface="monospace"
+        android:textColor="@color/secondarytext"/>
 </LinearLayout>

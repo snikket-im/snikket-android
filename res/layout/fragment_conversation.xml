@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#e5e5e5" >
+    android:background="@color/primarybackground" >
 
     <RelativeLayout
         android:id="@+id/textsend"
@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:background="#eee" >
+        android:background="@color/primarybackground" >
 
         <EditText
             android:id="@+id/textinput"
@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_toLeftOf="@+id/textSendButton"
-            android:background="#eee"
+            android:background="@color/primarybackground"
             android:ems="10"
             android:inputType="textShortMessage|textMultiLine|textCapSentences"
             android:minHeight="48dp"
@@ -27,7 +27,8 @@
             android:paddingBottom="12dp"
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
-            android:paddingTop="12dp" >
+            android:paddingTop="12dp"
+            android:textColor="@color/primarytext">
 
             <requestFocus />
         </EditText>
@@ -49,7 +50,7 @@
         android:layout_above="@+id/textsend"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/info_box"
-        android:background="#e5e5e5"
+        android:background="@color/secondarybackground"
         android:divider="@null"
         android:dividerHeight="0dp"
         android:listSelector="@android:color/transparent"

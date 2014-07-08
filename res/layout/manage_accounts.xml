@@ -8,7 +8,8 @@
         android:id="@+id/account_list"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        tools:listitem="@layout/account_row">
+        android:divider="@color/divider"
+        android:dividerHeight="1dp">
     </ListView>
 
 </LinearLayout>

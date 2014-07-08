@@ -2,7 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#e5e5e5">
+    android:background="@color/secondarybackground">
 
 <LinearLayout
     android:layout_width="wrap_content"
@@ -13,11 +13,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="8dp"
-        android:text="@string/muc_details_conference" />
+        android:text="@string/muc_details_conference"
+        android:textColor="@color/primarytext"/>
        <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#eee" >
+        android:background="@color/primarybackground" >
         
 
         <EditText
@@ -26,7 +27,7 @@
             android:layout_height="48dp"
             android:layout_alignParentLeft="true"
             android:layout_toLeftOf="@+id/muc_edit_subject"
-            android:background="#eee"
+            android:background="@color/primarybackground"
             android:ems="10"
             android:hint="@string/muc_details_conference_subject"
             android:inputType="textAutoComplete"
@@ -52,8 +53,8 @@
         android:layout_height="wrap_content"
         android:padding="8dp"
         android:singleLine="true"
-        android:textColor="#5b5b5b"
-        android:textSize="14sp"/>
+        android:textSize="14sp"
+        android:textColor="@color/primarytext"/>
 
     <TextView
         style="@style/sectionHeader"
@@ -62,12 +63,13 @@
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
         android:paddingTop="8dp"
-        android:text="@string/muc_details_your_nickname" />
+        android:text="@string/muc_details_your_nickname"
+        android:textColor="@color/primarytext"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#eee" >
+        android:background="@color/primarybackground" >
         
 
         <EditText
@@ -76,7 +78,7 @@
             android:layout_height="48dp"
             android:layout_alignParentLeft="true"
             android:layout_toLeftOf="@+id/muc_edit_nick"
-            android:background="#eee"
+            android:background="@color/primarybackground"
             android:ems="10"
             android:hint="@string/muc_details_your_nickname"
             android:inputType="textEmailAddress"
@@ -103,7 +105,7 @@
         android:padding="8dp"
         android:singleLine="true"
         android:textSize="14sp"
-        android:textColor="#5b5b5b"/>
+        android:textColor="@color/primarytext"/>
     
     <LinearLayout
         android:id="@+id/muc_more_details"
@@ -119,12 +121,13 @@
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
         android:paddingTop="8dp"
-        android:text="@string/muc_details_other_members" />
+        android:text="@string/muc_details_other_members"
+        android:textColor="@color/primarytext"/>
 
     <LinearLayout
         android:id="@+id/muc_members"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="0dp"
         android:layout_weight="1" 
         android:orientation="vertical"
         android:divider="?android:dividerHorizontal"
