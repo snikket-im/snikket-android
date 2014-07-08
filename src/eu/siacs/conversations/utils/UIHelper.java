@@ -54,7 +54,7 @@ public class UIHelper {
 	private static final int FG_COLOR = 0xFFFAFAFA;
 	private static final int TRANSPARENT = 0x00000000;
 	private static final int DATE_NO_YEAR_FLAGS = DateUtils.FORMAT_SHOW_DATE
-			| DateUtils.FORMAT_NO_YEAR | DateUtils.FORMAT_ABBREV_ALL;
+			| DateUtils.FORMAT_NO_YEAR | DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_ABBREV_ALL;
 
 	public static String readableTimeDifference(Context context, long time) {
 		if (time == 0) {
