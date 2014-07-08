@@ -60,6 +60,9 @@ public class ConversationFragment extends Fragment {
 	protected ArrayAdapter<Message> messageListAdapter;
 	protected Contact contact;
 	protected BitmapCache mBitmapCache = new BitmapCache();
+	
+	protected int mPrimaryTextColor;
+	protected int mSecondaryTextColor;
 
 	protected String queuedPqpMessage = null;
 
@@ -177,6 +180,9 @@ public class ConversationFragment extends Fragment {
 
 		this.inflater = inflater;
 
+		mPrimaryTextColor = getResources().getColor(R.color.primarytext);
+		mSecondaryTextColor = getResources().getColor(R.color.secondarytext);
+		
 		final View view = inflater.inflate(R.layout.fragment_conversation,
 				container, false);
 		chatMsg = (EditText) view.findViewById(R.id.textinput);
@@ -264,7 +270,7 @@ public class ConversationFragment extends Fragment {
 				if (error) {
 					viewHolder.time.setTextColor(0xFFe92727);
 				} else {
-					viewHolder.time.setTextColor(0xFF8e8e8e);
+					viewHolder.time.setTextColor(mSecondaryTextColor);
 				}
 				if (message.getEncryption() == Message.ENCRYPTION_NONE) {
 					viewHolder.indicator.setVisibility(View.GONE);
@@ -341,7 +347,7 @@ public class ConversationFragment extends Fragment {
 				} else {
 					viewHolder.messageBody.setText("");
 				}
-				viewHolder.messageBody.setTextColor(0xff333333);
+				viewHolder.messageBody.setTextColor(mPrimaryTextColor);
 				viewHolder.messageBody.setTypeface(null, Typeface.NORMAL);
 				viewHolder.messageBody.setTextIsSelectable(true);
 			}

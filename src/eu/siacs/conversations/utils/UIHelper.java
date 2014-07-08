@@ -51,7 +51,7 @@ import android.widget.TextView;
 
 public class UIHelper {
 	private static final int BG_COLOR = 0xFF181818;
-	private static final int FG_COLOR = 0xFFE5E5E5;
+	private static final int FG_COLOR = 0xFFFAFAFA;
 	private static final int TRANSPARENT = 0x00000000;
 	private static final int DATE_NO_YEAR_FLAGS = DateUtils.FORMAT_SHOW_DATE
 			| DateUtils.FORMAT_NO_YEAR | DateUtils.FORMAT_ABBREV_ALL;
@@ -120,8 +120,9 @@ public class UIHelper {
 	}
 
 	private static int getNameColor(String name) {
-		int holoColors[] = { 0xFF1da9da, 0xFFb368d9, 0xFF83b600, 0xFFffa713,
-				0xFFe92727 };
+		/*int holoColors[] = { 0xFF1da9da, 0xFFb368d9, 0xFF83b600, 0xFFffa713,
+				0xFFe92727 };*/
+		int holoColors[] = {0xFFe91e63, 0xFF9c27b0, 0xFF673ab7, 0xFF3f51b5, 0xFF5677fc, 0xFF03a9f4, 0xFF00bcd4, 0xFF009688, 0xFFff5722, 0xFF795548, 0xFF607d8b};
 		return holoColors[(int) ((name.hashCode() & 0xffffffffl) % holoColors.length)];
 	}
 
@@ -165,7 +166,7 @@ public class UIHelper {
 
 			if (names.length > 4) {
 				letters[3] = "\u2026"; // Unicode ellipsis
-				colors[3] = 0xFF444444;
+				colors[3] = 0xFF202020;
 			}
 		}
 
