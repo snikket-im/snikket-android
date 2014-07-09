@@ -48,6 +48,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -68,6 +69,9 @@ public class ConversationFragment extends Fragment {
 
 	private EditText chatMsg;
 	private String pastedText = null;
+	private RelativeLayout snackbar;
+	private TextView snackbarMessage;
+	private TextView snackbarAction;
 
 	protected Bitmap selfBitmap;
 
@@ -109,10 +113,7 @@ public class ConversationFragment extends Fragment {
 			}
 		}
 	};
-
-	private LinearLayout pgpInfo;
-	private LinearLayout mucError;
-	private TextView mucErrorText;
+	
 	private OnClickListener clickToMuc = new OnClickListener() {
 
 		@Override
@@ -152,10 +153,6 @@ public class ConversationFragment extends Fragment {
 
 	private ConversationActivity activity;
 
-	public void hidePgpPassphraseBox() {
-		pgpInfo.setVisibility(View.GONE);
-	}
-
 	public void updateChatMsgHint() {
 		switch (conversation.getNextEncryption()) {
 		case Message.ENCRYPTION_NONE:
@@ -191,11 +188,9 @@ public class ConversationFragment extends Fragment {
 				.findViewById(R.id.textSendButton);
 		sendButton.setOnClickListener(this.sendMsgListener);
 
-		pgpInfo = (LinearLayout) view.findViewById(R.id.pgp_keyentry);
-		pgpInfo.setOnClickListener(clickToDecryptListener);
-		mucError = (LinearLayout) view.findViewById(R.id.muc_error);
-		mucError.setOnClickListener(clickToMuc);
-		mucErrorText = (TextView) view.findViewById(R.id.muc_error_msg);
+		snackbar = (RelativeLayout) view.findViewById(R.id.snackbar);
+		snackbarMessage = (TextView) view.findViewById(R.id.snackbar_message);
+		snackbarAction = (TextView) view.findViewById(R.id.snackbar_action);
 
 		messagesView = (ListView) view.findViewById(R.id.messages_view);
 		messagesView.setOnScrollListener(mOnScrollListener);
@@ -688,7 +683,7 @@ public class ConversationFragment extends Fragment {
 				@Override
 				public void userInputRequried(PendingIntent pi, Message message) {
 					askForPassphraseIntent = pi.getIntentSender();
-					pgpInfo.setVisibility(View.VISIBLE);
+					showSnackbar(R.string.openpgp_messages_found,R.string.decrypt,clickToDecryptListener);
 				}
 
 				@Override
@@ -704,8 +699,6 @@ public class ConversationFragment extends Fragment {
 					// updateMessages();
 				}
 			});
-		} else {
-			pgpInfo.setVisibility(View.GONE);
 		}
 	}
 
@@ -742,12 +735,10 @@ public class ConversationFragment extends Fragment {
 				}
 			} else {
 				if (conversation.getMucOptions().getError() != 0) {
-					mucError.setVisibility(View.VISIBLE);
+					showSnackbar(R.string.nick_in_use, R.string.edit,clickToMuc);
 					if (conversation.getMucOptions().getError() == MucOptions.ERROR_NICK_IN_USE) {
-						mucErrorText.setText(getString(R.string.nick_in_use));
+						showSnackbar(R.string.nick_in_use, R.string.edit,clickToMuc);
 					}
-				} else {
-					mucError.setVisibility(View.GONE);
 				}
 			}
 			getActivity().invalidateOptionsMenu();
@@ -795,33 +786,36 @@ public class ConversationFragment extends Fragment {
 	}
 
 	protected void makeFingerprintWarning(int latestEncryption) {
-		final LinearLayout fingerprintWarning = (LinearLayout) getView()
-				.findViewById(R.id.new_fingerprint);
 		Set<String> knownFingerprints = conversation.getContact()
 				.getOtrFingerprints();
 		if ((latestEncryption == Message.ENCRYPTION_OTR)
 				&& (conversation.hasValidOtrSession()
 						&& (conversation.getOtrSession().getSessionStatus() == SessionStatus.ENCRYPTED) && (!knownFingerprints
 							.contains(conversation.getOtrFingerprint())))) {
-			fingerprintWarning.setVisibility(View.VISIBLE);
-			TextView fingerprint = (TextView) getView().findViewById(
-					R.id.otr_fingerprint);
-			fingerprint.setText(conversation.getOtrFingerprint());
-			fingerprintWarning.setOnClickListener(new OnClickListener() {
+			showSnackbar(R.string.unknown_otr_fingerprint, R.string.verify, new OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
 					if (conversation.getOtrFingerprint() != null) {
 						AlertDialog dialog = UIHelper.getVerifyFingerprintDialog(
 								(ConversationActivity) getActivity(), conversation,
-								fingerprintWarning);
+								snackbar);
 						dialog.show();
 					}
 				}
 			});
-		} else {
-			fingerprintWarning.setVisibility(View.GONE);
 		}
+	}
+	
+	protected void showSnackbar(int message, int action, OnClickListener clickListener) {
+		snackbar.setVisibility(View.VISIBLE);
+		snackbarMessage.setText(message);
+		snackbarAction.setText(action);
+		snackbarAction.setOnClickListener(clickListener);
+	}
+	
+	protected void hideSnackbar() {
+		snackbar.setVisibility(View.GONE);
 	}
 
 	protected void sendPlainTextMessage(Message message) {
