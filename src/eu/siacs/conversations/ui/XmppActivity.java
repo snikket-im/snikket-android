@@ -170,6 +170,14 @@ public abstract class XmppActivity extends Activity {
 		}
 		startActivity(viewConversationIntent);
 	}
+	
+	public void switchToContactDetails(Contact contact) {
+		Intent intent = new Intent(this, ContactDetailsActivity.class);
+		intent.setAction(ContactDetailsActivity.ACTION_VIEW_CONTACT);
+		intent.putExtra("account", contact.getAccount().getJid());
+		intent.putExtra("contact", contact.getJid());
+		startActivity(intent);
+	}
 
 	protected void announcePgp(Account account, final Conversation conversation) {
 		xmppConnectionService.getPgpEngine().generateSignature(account,

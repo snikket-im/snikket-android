@@ -1282,6 +1282,7 @@ public class XmppConnectionService extends Service {
 
 	public void deleteContactOnServer(Contact contact) {
 		contact.resetOption(Contact.Options.DIRTY_PUSH);
+		contact.setOption(Contact.Options.DIRTY_DELETE);
 		Account account = contact.getAccount();
 		if (account.getStatus() == Account.STATUS_ONLINE) {
 			IqPacket iq = new IqPacket(IqPacket.TYPE_SET);
@@ -1290,8 +1291,6 @@ public class XmppConnectionService extends Service {
 			item.setAttribute("subscription", "remove");
 			account.getXmppConnection().sendIqPacket(iq, null);
 			contact.resetOption(Contact.Options.DIRTY_DELETE);
-		} else {
-			contact.setOption(Contact.Options.DIRTY_DELETE);
 		}
 	}
 

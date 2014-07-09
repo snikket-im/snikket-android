@@ -15,12 +15,15 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -134,14 +137,29 @@ public class StartConversation extends XmppActivity {
 					@Override
 					public void onItemClick(AdapterView<?> arg0, View arg1,
 							int position, long arg3) {
-						Contact contact = (Contact) contacts.get(position);
-						Conversation conversation = xmppConnectionService
-								.findOrCreateConversation(contact.getAccount(),
-										contact.getJid(), false);
-						switchToConversation(conversation, null, false);
+						openConversationForContact(position);
 					}
 				});
 
+	}
+
+	protected void openConversationForContact(int position) {
+		Contact contact = (Contact) contacts.get(position);
+		Conversation conversation = xmppConnectionService
+				.findOrCreateConversation(contact.getAccount(),
+						contact.getJid(), false);
+		switchToConversation(conversation, null, false);
+	}
+	
+	protected void openDetailsForContact(int position) {
+		Contact contact = (Contact) contacts.get(position);
+		switchToContactDetails(contact);
+	}
+	
+	protected void deleteContact(int position) {
+		Contact contact = (Contact) contacts.get(position);
+		xmppConnectionService.deleteContactOnServer(contact);
+		filterContacts(null);
 	}
 
 	@Override
@@ -158,7 +176,8 @@ public class StartConversation extends XmppActivity {
 			menuCreateContact.setVisible(false);
 		}
 		mSearchView = (SearchView) menuSearch.getActionView();
-		int id = mSearchView.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
+		int id = mSearchView.getContext().getResources()
+				.getIdentifier("android:id/search_src_text", null, null);
 		TextView textView = (TextView) mSearchView.findViewById(id);
 		textView.setTextColor(Color.WHITE);
 		mSearchView.setOnQueryTextListener(this.mOnQueryTextListener);
@@ -228,6 +247,7 @@ public class StartConversation extends XmppActivity {
 
 	public static class MyListFragment extends ListFragment {
 		private AdapterView.OnItemClickListener mOnItemClickListener;
+		private int mContextPosition = -1;
 
 		@Override
 		public void onListItemClick(ListView l, View v, int position, long id) {
@@ -239,6 +259,38 @@ public class StartConversation extends XmppActivity {
 		public void setOnListItemClickListener(AdapterView.OnItemClickListener l) {
 			this.mOnItemClickListener = l;
 		}
-	}
 
+		@Override
+		public void onViewCreated(View view, Bundle savedInstanceState) {
+			super.onViewCreated(view, savedInstanceState);
+			registerForContextMenu(getListView());
+		}
+
+		@Override
+		public void onCreateContextMenu(ContextMenu menu, View v,
+				ContextMenuInfo menuInfo) {
+			super.onCreateContextMenu(menu, v, menuInfo);
+			getActivity().getMenuInflater().inflate(R.menu.contact_context,
+					menu);
+			AdapterView.AdapterContextMenuInfo acmi = (AdapterContextMenuInfo) menuInfo;
+			this.mContextPosition = acmi.position;
+		}
+
+		@Override
+		public boolean onContextItemSelected(MenuItem item) {
+			StartConversation activity = (StartConversation) getActivity();
+			switch(item.getItemId()) {
+			case R.id.context_start_conversation:
+				activity.openConversationForContact(mContextPosition);
+				break;
+			case R.id.context_contact_details:
+				activity.openDetailsForContact(mContextPosition);
+				break;
+			case R.id.context_delete_contact:
+				activity.deleteContact(mContextPosition);
+				break;
+			}
+			return true;
+		}
+	}
 }

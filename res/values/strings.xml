@@ -259,4 +259,6 @@
     <string name="search">Search</string>
     <string name="create_contact">Create Contact</string>
     <string name="create_conference">Create Conference</string>
+    <string name="delete_contact">Delete Contact</string>
+    <string name="view_contact_details">View contact details</string>
 </resources>
