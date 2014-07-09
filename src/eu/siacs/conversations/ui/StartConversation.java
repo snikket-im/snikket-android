@@ -18,7 +18,6 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MenuItem.OnActionExpandListener;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -87,19 +86,6 @@ public class StartConversation extends XmppActivity {
 		@Override
 		public boolean onQueryTextChange(String newText) {
 			filterContacts(newText);
-			return true;
-		}
-	};
-	private OnActionExpandListener mOnSearchActionExpandListener = new OnActionExpandListener() {
-
-		@Override
-		public boolean onMenuItemActionExpand(MenuItem item) {
-			return true;
-		}
-
-		@Override
-		public boolean onMenuItemActionCollapse(MenuItem item) {
-			invalidateOptionsMenu();
 			return true;
 		}
 	};
@@ -176,8 +162,6 @@ public class StartConversation extends XmppActivity {
 		TextView textView = (TextView) mSearchView.findViewById(id);
 		textView.setTextColor(Color.WHITE);
 		mSearchView.setOnQueryTextListener(this.mOnQueryTextListener);
-		menuSearch
-				.setOnActionExpandListener(this.mOnSearchActionExpandListener);
 		return true;
 	}
 
@@ -211,9 +195,7 @@ public class StartConversation extends XmppActivity {
 	}
 
 	private void onTabChanged() {
-		if (mSearchView == null || mSearchView.isIconified()) {
-			invalidateOptionsMenu();
-		}
+		invalidateOptionsMenu();
 	}
 
 	private class ListItemAdapter extends ArrayAdapter<ListItem> {
