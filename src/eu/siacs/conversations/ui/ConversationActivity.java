@@ -768,7 +768,7 @@ public class ConversationActivity extends XmppActivity {
 				ConversationFragment selectedFragment = (ConversationFragment) getFragmentManager()
 						.findFragmentByTag("conversation");
 				if (selectedFragment != null) {
-					selectedFragment.hidePgpPassphraseBox();
+					selectedFragment.hideSnackbar();
 				}
 			} else if (requestCode == REQUEST_ATTACH_FILE_DIALOG) {
 				attachImageToConversation(getSelectedConversation(),

@@ -492,7 +492,7 @@ public class UIHelper {
 
 	public static AlertDialog getVerifyFingerprintDialog(
 			final ConversationActivity activity,
-			final Conversation conversation, final LinearLayout msg) {
+			final Conversation conversation, final View msg) {
 		final Contact contact = conversation.getContact();
 		final Account account = conversation.getAccount();
 
