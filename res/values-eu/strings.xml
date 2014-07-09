@@ -22,7 +22,7 @@
     <string name="title_activity_conversations">Conversations</string>
     <string name="title_activity_sharewith">Elkarrizketa batekin partekatu</string>
     <string name="just_now">orain</string>
-    <string name="minute_ago">1 min lehenago</string>
+    <string name="minute_ago">min 1 lehenago</string>
     <string name="minutes_ago">%d min lehenago</string>
     <string name="unread_conversations">irakurri gabeko elkarrizketak</string>
     <string name="sending">bidaltzen&#8230;</string>
@@ -88,7 +88,7 @@
     <string name="clear_conversation_history">Elkarrizketa historia garbitu</string>
     <string name="clear_histor_msg">Elkarrizketa honetako mezu guztiak ezabatu nahi al dituzu?\n\n<b>Abisua:</b> Honek ez du beste gailu edo zerbitzarietan gordetako mezuetan eraginik izango.</string>
     <string name="delete_messages">Mezuak ezabatu</string>
-    <string name="also_end_conversation">Elkarrizketa hau geroago amaitu</string>
+    <string name="also_end_conversation">Elkarrizketa hau jarraian amaitu</string>
     <string name="choose_presence">Hautatu agerpena kontaktuarentzat</string>
     <string name="send_plain_text_message">Testu mezua bidali</string>
     <string name="send_otr_message">OTRz enkriptatutako mezua bidali</string>
@@ -145,7 +145,7 @@
     <string name="pref_never_send_crash">Gelditze txostenik ez bidali inoiz</string>
     <string name="pref_never_send_crash_summary">Akats harraskak bidaliz Conversationsen garapenean laguntzen duzu</string>
     <string name="pref_confirm_messages">Mezuak egiaztatu</string>
-    <string name="pref_confirm_messages_summary">Zure kontatuak mezu bat noiz jaso eta irakurri duzun jakin dezan baimendu</string>
+    <string name="pref_confirm_messages_summary">Zure kontaktuak mezu bat noiz jaso eta irakurri duzun jakin dezan baimendu</string>
     <string name="pref_show_last_seen">Azkenengoz ikusia erakutsi</string>
     <string name="pref_show_last_seen_summary">Kontaktu bat azken aldiz konektatuta ikusi den ordua erakutsi</string>
     <string name="openpgp_error">OpenKeychainek akats baten berri eman du</string>
@@ -233,7 +233,7 @@
     <string name="server_info_carbon_messages">Carbon Messages</string>
     <string name="server_info_stream_management">Stream Management</string>
     <string name="hours">orduak</string>
-    <string name="mins">minutuak</string>
+    <string name="mins">minutu</string>
     <string name="missing_public_keys">Gako publikoen iragarpenak faltan</string>
     <string name="last_seen_now">azkenegoz ikusia orain</string>
     <string name="last_seen_mins">azkenegoz ikusia %d minutu lehenago</string>
@@ -244,5 +244,11 @@
     <string name="last_seen_hour">azkenegoz ikusia ordu 1 lehenago</string>
     <string name="last_seen_day">azkenengoz ikusia egun 1 lehenago</string>
     <string name="install_openkeychain">Mezu enkriptatua. Mesedez instalatu OpenKeychain desenkriptatzeko.</string>
+    <string name="unknown_otr_fingerprint">OTR hatz-marka ezezaguna</string>
+	<string name="edit_conference_details">Ukitu konferentziaren xehetasunak editatzeko</string>
+	<string name="openpgp_messages_found">OpenPGPz enkriptatutako mezuak aurkitu dira</string>
+	<string name="openpgp_click_to_decrypt">Sakatu hemen pasahitza sartu eta mezuak desenkriptatzeko</string>
+	<string name="reception_failed">Jasotzeak huts egin du</string>
+	<string name="no_muc_server_found">Ez da aurkitu konferentzia zerbitzari egokirik</string>
 
 </resources>
