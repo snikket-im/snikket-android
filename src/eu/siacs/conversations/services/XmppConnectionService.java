@@ -431,6 +431,7 @@ public class XmppConnectionService extends Service {
 					contact.resetOption(Contact.Options.DIRTY_DELETE);
 				} else {
 					contact.setOption(Contact.Options.IN_ROSTER);
+					contact.resetOption(Contact.Options.DIRTY_PUSH);
 					contact.parseSubscriptionFromElement(item);
 				}
 			}
@@ -1263,6 +1264,7 @@ public class XmppConnectionService extends Service {
 
 	public void pushContactToServer(Contact contact) {
 		contact.resetOption(Contact.Options.DIRTY_DELETE);
+		contact.setOption(Contact.Options.DIRTY_PUSH);
 		Account account = contact.getAccount();
 		if (account.getStatus() == Account.STATUS_ONLINE) {
 			IqPacket iq = new IqPacket(IqPacket.TYPE_SET);
@@ -1275,9 +1277,6 @@ public class XmppConnectionService extends Service {
 				Log.d("xmppService", "contact had pending subscription");
 				sendPresenceUpdatesTo(contact);
 			}
-			contact.resetOption(Contact.Options.DIRTY_PUSH);
-		} else {
-			contact.setOption(Contact.Options.DIRTY_PUSH);
 		}
 	}
 
@@ -1291,7 +1290,6 @@ public class XmppConnectionService extends Service {
 			item.setAttribute("jid", contact.getJid());
 			item.setAttribute("subscription", "remove");
 			account.getXmppConnection().sendIqPacket(iq, null);
-			contact.resetOption(Contact.Options.DIRTY_DELETE);
 		}
 	}
 
