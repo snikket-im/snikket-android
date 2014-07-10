@@ -65,8 +65,10 @@ build your apk file.
 The more convenient way - which not only gives you automatic updates but also
 supports the further development of Conversations - is to buy the App in the Google
 [Play Store](https://play.google.com/store/apps/details?id=eu.siacs.conversations).
-
-
+####I don't have a Google Account but I would still like to make a contribution
+We accept donations over PayPal. You can use the E-Mail address donate@siacs.eu
+or use the button below.
+[![Donate with PayPal](https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=CW3SYT3KG5PDL)
 ####How do I create an account?
 XMPP like email for example is a federated protocol which means that there is
 not one company you can create your 'official xmpp account' with but there are
