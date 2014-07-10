@@ -433,6 +433,7 @@ public class ManageAccountActivity extends XmppActivity {
 				}
 			});
 			dialog.show(getFragmentManager(), "edit_account");
+			dialog.setKnownHosts(xmppConnectionService.getKnownHosts(),this);
 		
 	}
 	
@@ -449,6 +450,7 @@ public class ManageAccountActivity extends XmppActivity {
 			}
 		});
 		dialog.show(getFragmentManager(), "add_account");
+		dialog.setKnownHosts(xmppConnectionService.getKnownHosts(),this);
 	}
 
 	

@@ -1,14 +1,19 @@
 package eu.siacs.conversations.ui;
 
+import java.util.List;
+
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
+import eu.siacs.conversations.utils.KnownHostsAdapter;
 import eu.siacs.conversations.utils.Validator;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -19,6 +24,8 @@ import android.widget.TextView;
 public class EditAccount extends DialogFragment {
 
 	protected Account account;
+	
+	protected AutoCompleteTextView mAccountJid;
 
 	public void setAccount(Account account) {
 		this.account = account;
@@ -30,8 +37,17 @@ public class EditAccount extends DialogFragment {
 
 	protected EditAccountListener listener = null;
 
+	private KnownHostsAdapter mKnownHostsAdapter;
+
 	public void setEditAccountListener(EditAccountListener listener) {
 		this.listener = listener;
+	}
+	
+	public void setKnownHosts(List<String> hosts, Context context) {
+		this.mKnownHostsAdapter = new KnownHostsAdapter(context, android.R.layout.simple_list_item_1, hosts);
+		if (this.mAccountJid != null) {
+			this.mAccountJid.setAdapter(this.mKnownHostsAdapter);
+		}
 	}
 
 	@Override
@@ -39,7 +55,10 @@ public class EditAccount extends DialogFragment {
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		LayoutInflater inflater = getActivity().getLayoutInflater();
 		View view = inflater.inflate(R.layout.edit_account_dialog, null);
-		final EditText jidText = (EditText) view.findViewById(R.id.account_jid);
+		mAccountJid = (AutoCompleteTextView) view.findViewById(R.id.account_jid);
+		if (this.mKnownHostsAdapter!=null) {
+			mAccountJid.setAdapter(this.mKnownHostsAdapter);
+		}
 		final TextView confirmPwDesc = (TextView) view
 				.findViewById(R.id.account_confirm_password_desc);
 
@@ -51,7 +70,7 @@ public class EditAccount extends DialogFragment {
 				.findViewById(R.id.edit_account_register_new);
 
 		if (account != null) {
-			jidText.setText(account.getJid());
+			mAccountJid.setText(account.getJid());
 			password.setText(account.getPassword());
 			if (account.isOptionSet(Account.OPTION_REGISTER)) {
 				registerAccount.setChecked(true);

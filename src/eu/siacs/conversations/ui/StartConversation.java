@@ -12,8 +12,6 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.app.ListFragment;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.database.DataSetObserver;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
@@ -29,11 +27,10 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
+import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SearchView;
-import android.widget.SpinnerAdapter;
 import android.widget.SearchView.OnQueryTextListener;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -42,6 +39,7 @@ import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.ListItem;
+import eu.siacs.conversations.utils.KnownHostsAdapter;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.utils.Validator;
 
@@ -61,6 +59,7 @@ public class StartConversation extends XmppActivity {
 	private ArrayAdapter<ListItem> mConferenceAdapter;
 	
 	private List<String> mActivatedAccounts = new ArrayList<String>();
+	private List<String> mKnownHosts;
 
 	private TabListener mTabListener = new TabListener() {
 
@@ -176,7 +175,8 @@ public class StartConversation extends XmppActivity {
 		builder.setTitle(R.string.create_contact);
 		View dialogView = getLayoutInflater().inflate(R.layout.create_contact_dialog, null);
 		final Spinner spinner = (Spinner) dialogView.findViewById(R.id.account);
-		final EditText jid = (EditText) dialogView.findViewById(R.id.jid);
+		final AutoCompleteTextView jid = (AutoCompleteTextView) dialogView.findViewById(R.id.jid);
+		jid.setAdapter(new KnownHostsAdapter(this, android.R.layout.simple_list_item_1, mKnownHosts));
 		populateAccountSpinner(spinner);
 		builder.setView(dialogView);
 		builder.setNegativeButton(R.string.cancel, null);
@@ -259,6 +259,7 @@ public class StartConversation extends XmppActivity {
 				this.mActivatedAccounts.add(account.getJid());
 			}
 		}
+		this.mKnownHosts = xmppConnectionService.getKnownHosts();
 	}
 
 	protected void filterContacts(String needle) {

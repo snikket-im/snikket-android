@@ -13,16 +13,14 @@
 
 
     
-   <EditText
+   <AutoCompleteTextView
         android:id="@+id/account_jid"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textEmailAddress"
-        android:hint="@string/account_settings_example_jabber_id">
+        android:hint="@string/account_settings_example_jabber_id" />
 
-
-    </EditText>
     
        
       <TextView

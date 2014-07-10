@@ -2,6 +2,7 @@ package eu.siacs.conversations.services;
 
 import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -1495,5 +1496,23 @@ public class XmppConnectionService extends Service {
 			}
 		}).start();
 		
+	}
+	
+	public List<String> getKnownHosts() {
+		List<String> hosts = new ArrayList<String>();
+		for(Account account : getAccounts()) {
+			if (!hosts.contains(account.getServer())) {
+				hosts.add(account.getServer());
+			}
+			for(Contact contact : account.getRoster().getContacts()) {
+				if (contact.showInRoster()) {
+					String server = contact.getServer();
+					if (server!=null && !hosts.contains(server)) {
+						hosts.add(server);
+					}
+				}
+			}
+		}
+		return hosts;
 	}
 }

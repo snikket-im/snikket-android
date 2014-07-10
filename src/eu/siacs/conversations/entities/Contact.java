@@ -320,4 +320,13 @@ public class Contact implements ListItem {
 	public int compareTo(ListItem another) {
 		return this.getDisplayName().compareToIgnoreCase(another.getDisplayName());
 	}
+
+	public String getServer() {
+		String[] split = getJid().split("@");
+		if (split.length >= 2) {
+			return split[1];
+		} else {
+			return null;
+		}
+	}
 }
