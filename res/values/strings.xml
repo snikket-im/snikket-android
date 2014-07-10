@@ -201,10 +201,10 @@
     <string name="mgmt_account_account_offline">Account is offline</string>
     <string name="attach_record_voice">Record voice</string>
     <string name="account_settings">Account Settings</string>
-    <string name="account_settings_jabber_id">Jabber ID:</string>
-    <string name="account_settings_password">Password:</string>
+    <string name="account_settings_jabber_id">Jabber ID</string>
+    <string name="account_settings_password">Password</string>
     <string name="account_settings_example_jabber_id">username@example.com</string>
-    <string name="account_settings_confirm_password">Confirm password:</string>
+    <string name="account_settings_confirm_password">Confirm password</string>
     <string name="password">Password</string>
     <string name="confirm_password">Confirm password</string>
     <string name="passwords_do_not_match">Passwords do not match</string>
@@ -261,4 +261,6 @@
     <string name="create_conference">Create Conference</string>
     <string name="delete_contact">Delete Contact</string>
     <string name="view_contact_details">View contact details</string>
+    <string name="create">Create</string>
+    <string name="contact_already_exists">The contact already exists</string>
 </resources>

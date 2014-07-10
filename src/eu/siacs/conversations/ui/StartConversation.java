@@ -7,10 +7,13 @@ import java.util.List;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.ActionBar.TabListener;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.app.ListFragment;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.database.DataSetObserver;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
@@ -26,10 +29,13 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.SpinnerAdapter;
 import android.widget.SearchView.OnQueryTextListener;
+import android.widget.Spinner;
 import android.widget.TextView;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
@@ -37,6 +43,7 @@ import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.ListItem;
 import eu.siacs.conversations.utils.UIHelper;
+import eu.siacs.conversations.utils.Validator;
 
 public class StartConversation extends XmppActivity {
 
@@ -52,6 +59,8 @@ public class StartConversation extends XmppActivity {
 	private MyListFragment mConferenceListFragment = new MyListFragment();
 	private List<ListItem> conferences = new ArrayList<ListItem>();
 	private ArrayAdapter<ListItem> mConferenceAdapter;
+	
+	private List<String> mActivatedAccounts = new ArrayList<String>();
 
 	private TabListener mTabListener = new TabListener() {
 
@@ -161,6 +170,53 @@ public class StartConversation extends XmppActivity {
 		xmppConnectionService.deleteContactOnServer(contact);
 		filterContacts(null);
 	}
+	
+	protected void showCreateContactDialog() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle(R.string.create_contact);
+		View dialogView = getLayoutInflater().inflate(R.layout.create_contact_dialog, null);
+		final Spinner spinner = (Spinner) dialogView.findViewById(R.id.account);
+		final EditText jid = (EditText) dialogView.findViewById(R.id.jid);
+		populateAccountSpinner(spinner);
+		builder.setView(dialogView);
+		builder.setNegativeButton(R.string.cancel, null);
+		builder.setPositiveButton(R.string.create, null);
+		final AlertDialog dialog = builder.create();
+		dialog.show();
+		dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				if (Validator.isValidJid(jid.getText().toString())) {
+					String accountJid = (String) spinner.getSelectedItem();
+					String contactJid = jid.getText().toString();
+					Account account = xmppConnectionService.findAccountByJid(accountJid);
+					Contact contact = account.getRoster().getContact(contactJid);
+					if (contact.showInRoster()) {
+						jid.setError(getString(R.string.contact_already_exists));
+					} else {
+						xmppConnectionService.createContact(contact);
+						switchToConversation(contact);
+						dialog.dismiss();
+					}
+				} else {
+					jid.setError(getString(R.string.invalid_jid));
+				}
+			}
+		});
+		
+	}
+	
+	protected void switchToConversation(Contact contact) {
+		Conversation conversation = xmppConnectionService.findOrCreateConversation(contact.getAccount(), contact.getJid(), false);
+		switchToConversation(conversation, null, false);
+	}
+	
+	private void populateAccountSpinner(Spinner spinner) {
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, mActivatedAccounts);
+		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		spinner.setAdapter(adapter);
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -187,7 +243,8 @@ public class StartConversation extends XmppActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		default:
+		case R.id.action_create_contact:
+			showCreateContactDialog();
 			break;
 		}
 		return super.onOptionsItemSelected(item);
@@ -196,6 +253,12 @@ public class StartConversation extends XmppActivity {
 	@Override
 	void onBackendConnected() {
 		filterContacts(null);
+		this.mActivatedAccounts.clear();
+		for (Account account : xmppConnectionService.getAccounts()) {
+			if (account.getStatus() != Account.STATUS_DISABLED) {
+				this.mActivatedAccounts.add(account.getJid());
+			}
+		}
 	}
 
 	protected void filterContacts(String needle) {
