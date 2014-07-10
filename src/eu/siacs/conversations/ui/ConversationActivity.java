@@ -488,7 +488,7 @@ public class ConversationActivity extends XmppActivity {
 			attachFilePopup.show();
 			break;
 		case R.id.action_add:
-			startActivity(new Intent(this, ContactsActivity.class));
+			startActivity(new Intent(this, StartConversation.class));
 			break;
 		case R.id.action_archive:
 			this.endConversation(getSelectedConversation());
@@ -496,12 +496,7 @@ public class ConversationActivity extends XmppActivity {
 		case R.id.action_contact_details:
 			Contact contact = this.getSelectedConversation().getContact();
 			if (contact.showInRoster()) {
-				Intent intent = new Intent(this, ContactDetailsActivity.class);
-				intent.setAction(ContactDetailsActivity.ACTION_VIEW_CONTACT);
-				intent.putExtra("account", this.getSelectedConversation()
-						.getAccount().getJid());
-				intent.putExtra("contact", contact.getJid());
-				startActivity(intent);
+				switchToContactDetails(contact);
 			} else {
 				showAddToRosterDialog(getSelectedConversation());
 			}

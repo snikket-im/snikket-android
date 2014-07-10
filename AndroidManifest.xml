@@ -48,6 +48,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity 
+            android:name="eu.siacs.conversations.ui.StartConversation"
+            android:label="@string/title_activity_start_conversation"
+            android:parentActivityName="eu.siacs.conversations.ui.ConversationActivity"
+            android:logo="@drawable/ic_activity"
+            ></activity>
         <activity
             android:name="eu.siacs.conversations.ui.SettingsActivity"
             android:label="@string/title_activity_settings"

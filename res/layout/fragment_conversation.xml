@@ -5,13 +5,31 @@
     android:layout_height="match_parent"
     android:background="@color/secondarybackground" >
 
-    <RelativeLayout
-        android:id="@+id/textsend"
+   
+
+    <ListView
+        android:id="@+id/messages_view"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_above="@+id/snackbar"
         android:layout_alignParentLeft="true"
-        android:background="@color/primarybackground" >
+        android:layout_alignParentTop="true"
+        android:background="@color/secondarybackground"
+        android:divider="@null"
+        android:dividerHeight="0dp"
+        android:listSelector="@android:color/transparent"
+        android:stackFromBottom="true"
+        android:transcriptMode="normal"
+        tools:listitem="@layout/message_sent" >
+    </ListView>
+
+         <RelativeLayout
+             android:id="@+id/textsend"
+             android:layout_width="fill_parent"
+             android:layout_height="wrap_content"
+             android:layout_alignParentBottom="true"
+             android:layout_alignParentLeft="true"
+             android:background="@color/primarybackground" >
 
         <EditText
             android:id="@+id/textinput"
@@ -43,53 +61,42 @@
             android:src="@drawable/ic_action_send_now" />
     </RelativeLayout>
 
-    <ListView
-        android:id="@+id/messages_view"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/textsend"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/snackbar"
-        android:background="@color/secondarybackground"
-        android:divider="@null"
-        android:dividerHeight="0dp"
-        android:listSelector="@android:color/transparent"
-        android:stackFromBottom="true"
-        android:transcriptMode="normal"
-        tools:listitem="@layout/message_sent" >
-    </ListView>
+         <RelativeLayout
+             android:id="@+id/snackbar"
+             android:layout_width="fill_parent"
+             android:layout_height="wrap_content"
+             android:layout_above="@+id/textsend"
+             android:background="@drawable/snackbar"
+             android:minHeight="48dp"
+             android:layout_marginLeft="8dp"
+             android:layout_marginRight="8dp"
+             android:layout_marginBottom="4dp"
+             android:visibility="gone" >
 
-    <RelativeLayout
-        android:id="@+id/snackbar"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="48dp"
-        android:background="@color/darkbackground"
-        android:visibility="gone">
+             <TextView
+                 android:id="@+id/snackbar_message"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_alignParentLeft="true"
+                 android:layout_centerVertical="true"
+                 android:paddingLeft="24dp"
+                 android:textColor="@color/ondarktext"
+                 android:textSize="14sp" />
 
-        <TextView
-            android:id="@+id/snackbar_message"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:textSize="14sp"
-            android:textColor="@color/ondarktext"
-            android:paddingLeft="24dp"/>
-        <TextView
-            android:id="@+id/snackbar_action"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:textSize="14sp"
-            android:textColor="@color/ondarktext"
-            android:textStyle="bold"
-            android:textAllCaps="true"
-            android:paddingLeft="24dp"
-            android:paddingRight="24dp"
-            android:paddingTop="18dp"
-            android:paddingBottom="18dp"/>
-        </RelativeLayout>
+             <TextView
+                 android:id="@+id/snackbar_action"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_alignParentRight="true"
+                 android:layout_centerVertical="true"
+                 android:paddingBottom="16dp"
+                 android:paddingLeft="24dp"
+                 android:paddingRight="24dp"
+                 android:paddingTop="16dp"
+                 android:textAllCaps="true"
+                 android:textColor="@color/ondarktext"
+                 android:textSize="14sp"
+                 android:textStyle="bold" />
+         </RelativeLayout>
 
 </RelativeLayout>

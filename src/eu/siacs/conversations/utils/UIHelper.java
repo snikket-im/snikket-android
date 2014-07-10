@@ -13,11 +13,11 @@ import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
+import eu.siacs.conversations.entities.ListItem;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.MucOptions.User;
 import eu.siacs.conversations.ui.ConversationActivity;
 import eu.siacs.conversations.ui.ManageAccountActivity;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Notification;
@@ -239,7 +239,7 @@ public class UIHelper {
 		}
 	}
 
-	public static Bitmap getContactPicture(Contact contact, int dpSize,
+	public static Bitmap getContactPicture(ListItem contact, int dpSize,
 			Context context, boolean notification) {
 		String uri = contact.getProfilePhoto();
 		if (uri == null) {
