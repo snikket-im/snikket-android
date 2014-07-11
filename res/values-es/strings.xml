@@ -21,6 +21,7 @@
     <string name="title_activity_contact_details">Detalles del Contacto</string>
     <string name="title_activity_conversations">Conversations</string>
     <string name="title_activity_sharewith">Compartir con Conversación</string>
+    <string name="title_activity_start_conversation">Nueva Conversación</string>
     <string name="just_now">ahora</string>
     <string name="minute_ago">hace 1 min</string>
     <string name="minutes_ago">hace %d min</string>
@@ -200,10 +201,10 @@
     <string name="mgmt_account_account_offline">La cuenta está desconectada</string>
     <string name="attach_record_voice">Grabar audio</string>
     <string name="account_settings">Configuración de cuenta</string>
-    <string name="account_settings_jabber_id">Identificador Jabber:</string>
-    <string name="account_settings_password">Contraseña:</string>
+    <string name="account_settings_jabber_id">Identificador Jabber</string>
+    <string name="account_settings_password">Contraseña</string>
     <string name="account_settings_example_jabber_id">usuario@ejemplo.com</string>
-    <string name="account_settings_confirm_password">Confirmar contraseña:</string>
+    <string name="account_settings_confirm_password">Confirmar contraseña</string>
     <string name="password">Contraseña</string>
     <string name="confirm_password">Confirmar contraseña</string>
     <string name="passwords_do_not_match">Las contraseñas no coinciden</string>
@@ -250,4 +251,16 @@
     <string name="openpgp_click_to_decrypt">Pulsa para introducir la contraseña y desencriptar el mensaje</string>
     <string name="reception_failed">Error al recibir</string>
     <string name="no_muc_server_found">No se ha encontrado un servidor de conferencias apropiado</string>
+    <string name="your_fingerprint">Tu clave</string>
+    <string name="otr_fingerprint">Clave OTR</string>
+    <string name="verify">Verificar</string>
+    <string name="decrypt">Desencriptar</string>
+    <string name="conferences">Conferencias</string>
+    <string name="search">Buscar</string>
+    <string name="create_contact">Crear Contacto</string>
+    <string name="create_conference">Crear Conferencia</string>
+    <string name="delete_contact">Eliminar Contacto</string>
+    <string name="view_contact_details">Ver detalles del contacto</string>
+    <string name="create">Crear</string>
+    <string name="contact_already_exists">El contacto ya existe</string>
 </resources>
