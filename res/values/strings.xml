@@ -258,9 +258,13 @@
     <string name="conferences">Conferences</string>
     <string name="search">Search</string>
     <string name="create_contact">Create Contact</string>
-    <string name="create_conference">Create Conference</string>
+    <string name="join_conference">Join Conference</string>
     <string name="delete_contact">Delete Contact</string>
     <string name="view_contact_details">View contact details</string>
     <string name="create">Create</string>
     <string name="contact_already_exists">The contact already exists</string>
+    <string name="join">Join</string>
+    <string name="conference_address">Conference address</string>
+    <string name="conference_address_example">room@conference.example.com</string>
+    <string name="save_as_bookmark">Save as bookmark</string>
 </resources>

@@ -24,15 +24,23 @@
         android:layout_height="wrap_content"
         android:textSize="14sp"
         android:textColor="@color/primarytext"
-        android:text="@string/account_settings_jabber_id" />
+        android:text="@string/conference_address" />
     
     <AutoCompleteTextView
         android:id="@+id/jid"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:inputType="textEmailAddress"
-        android:hint="@string/account_settings_example_jabber_id"
+        android:hint="@string/conference_address_example"
         android:textColorHint="@color/secondarytext"
         android:textColor="@color/primarytext"
         />
+
+    <CheckBox
+        android:id="@+id/bookmark"
+        android:layout_marginTop="8dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/save_as_bookmark" />
+
 </LinearLayout>

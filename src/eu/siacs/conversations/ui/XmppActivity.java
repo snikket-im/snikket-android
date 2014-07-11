@@ -149,6 +149,10 @@ public abstract class XmppActivity extends Activity {
 		ExceptionHelper.init(getApplicationContext());
 	}
 
+	public void switchToConversation(Conversation conversation) {
+		switchToConversation(conversation, null, false);
+	}
+	
 	public void switchToConversation(Conversation conversation, String text,
 			boolean newTask) {
 		Intent viewConversationIntent = new Intent(this,

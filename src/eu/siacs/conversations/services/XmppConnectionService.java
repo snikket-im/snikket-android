@@ -1529,4 +1529,17 @@ public class XmppConnectionService extends Service {
 		}
 		return hosts;
 	}
+
+	public List<String> getKnownConferenceHosts() {
+		ArrayList<String> mucServers = new ArrayList<String>();
+		for (Account account : accounts) {
+			if (account.getXmppConnection() != null) {
+				String server = account.getXmppConnection().getMucServer();
+				if (server != null) {
+					mucServers.add(server);
+				}
+			}
+		}
+		return mucServers;
+	}
 }

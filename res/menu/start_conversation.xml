@@ -14,10 +14,10 @@
         android:showAsAction="always"
         android:title="@string/create_contact"/>
     <item
-        android:id="@+id/action_create_conference"
+        android:id="@+id/action_join_conference"
         android:icon="@drawable/ic_action_add_group"
         android:showAsAction="always"
-        android:title="@string/create_conference"/>
+        android:title="@string/join_conference"/>
     
     <item
         android:id="@+id/action_accounts"
