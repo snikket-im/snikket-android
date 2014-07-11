@@ -155,8 +155,12 @@ public class MessageParser extends AbstractParser {
 			return null;
 		}
 		Element message = forwarded.findChild("message");
-		if ((message == null) || (!message.hasChild("body")))
-			return null; // either malformed or boring
+		if ((message == null) || (!message.hasChild("body"))) {
+			if (status == Message.STATUS_RECIEVED) {
+				parseNormal(message, account);
+			}
+			return null;
+		}
 		if (status == Message.STATUS_RECIEVED) {
 			fullJid = message.getAttribute("from");
 			updateLastseen(message, account,true);
@@ -185,21 +189,21 @@ public class MessageParser extends AbstractParser {
 				packet.getId(), Message.STATUS_SEND_FAILED);
 	}
 	
-	public void parseNormal(MessagePacket packet, Account account) {
+	public void parseNormal(Element packet, Account account) {
 		if (packet.hasChild("displayed","urn:xmpp:chat-markers:0")) {
 			String id = packet.findChild("displayed","urn:xmpp:chat-markers:0").getAttribute("id");
-			String[] fromParts = packet.getFrom().split("/");
+			String[] fromParts = packet.getAttribute("from").split("/");
 			updateLastseen(packet, account,true);
 			mXmppConnectionService.markMessage(account,fromParts[0], id, Message.STATUS_SEND_DISPLAYED);
 		} else if (packet.hasChild("received","urn:xmpp:chat-markers:0")) {
 			String id = packet.findChild("received","urn:xmpp:chat-markers:0").getAttribute("id");
-			String[] fromParts = packet.getFrom().split("/");
+			String[] fromParts = packet.getAttribute("from").split("/");
 			updateLastseen(packet, account,false);
 			mXmppConnectionService.markMessage(account,fromParts[0], id, Message.STATUS_SEND_RECEIVED);
 		} else if (packet.hasChild("x")) {
 			Element x = packet.findChild("x");
 			if (x.hasChild("invite")) {
-				Conversation conversation = mXmppConnectionService.findOrCreateConversation(account, packet.getFrom(),
+				Conversation conversation = mXmppConnectionService.findOrCreateConversation(account, packet.getAttribute("from"),
 						true);
 				mXmppConnectionService.updateUi(conversation, false);
 			}
