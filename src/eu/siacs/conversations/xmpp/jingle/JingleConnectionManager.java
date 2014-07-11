@@ -2,12 +2,11 @@ package eu.siacs.conversations.xmpp.jingle;
 
 import java.math.BigInteger;
 import java.security.SecureRandom;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
+import java.util.concurrent.CopyOnWriteArrayList;
+import android.annotation.SuppressLint;
 import android.util.Log;
-
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.services.XmppConnectionService;
@@ -20,10 +19,11 @@ public class JingleConnectionManager {
 
 	private XmppConnectionService xmppConnectionService;
 
-	private List<JingleConnection> connections = new ArrayList<JingleConnection>();
+	private List<JingleConnection> connections = new CopyOnWriteArrayList<JingleConnection>();
 
 	private HashMap<String, JingleCandidate> primaryCandidates = new HashMap<String, JingleCandidate>();
 
+	@SuppressLint("TrulyRandom")
 	private SecureRandom random = new SecureRandom();
 
 	public JingleConnectionManager(XmppConnectionService service) {
