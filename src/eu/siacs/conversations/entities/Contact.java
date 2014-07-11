@@ -129,27 +129,7 @@ public class Contact implements ListItem {
 	public Account getAccount() {
 		return this.account;
 	}
-
-	public boolean couldBeMuc() {
-		String[] split = this.getJid().split("@");
-		if (split.length != 2) {
-			return false;
-		} else {
-			String[] domainParts = split[1].split("\\.");
-			if (domainParts.length < 3) {
-				return false;
-			} else {
-				return (domainParts[0].equals("conf")
-						|| domainParts[0].equals("conference")
-						|| domainParts[0].equals("room")
-						|| domainParts[0].equals("muc")
-						|| domainParts[0].equals("chat")
-						|| domainParts[0].equals("sala") || domainParts[0]
-							.equals("salas"));
-			}
-		}
-	}
-
+	
 	public Presences getPresences() {
 		return this.presences;
 	}

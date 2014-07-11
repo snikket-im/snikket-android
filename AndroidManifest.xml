@@ -53,8 +53,7 @@
             android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_start_conversation"
             android:logo="@drawable/ic_activity"
-            android:parentActivityName="eu.siacs.conversations.ui.ConversationActivity"
-            android:windowSoftInputMode="stateHidden" >
+            android:parentActivityName="eu.siacs.conversations.ui.ConversationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.SENDTO" />
 
