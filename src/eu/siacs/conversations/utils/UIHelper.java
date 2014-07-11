@@ -69,7 +69,7 @@ public class UIHelper {
 		} else if (difference < 60 * 15) {
 			return context.getString(R.string.minutes_ago,
 					Math.round(difference / 60.0));
-		} else if (today(date) || difference < 12 * 60 * 60) {
+		} else if (today(date) || difference < 6 * 60 * 60) {
 			java.text.DateFormat df = DateFormat.getTimeFormat(context);
 			return df.format(date);
 		} else {
