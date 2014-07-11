@@ -507,10 +507,8 @@ public class JingleConnection {
 	
 	private JingleSocks5Transport chooseConnection() {
 		JingleSocks5Transport connection = null;
-		Iterator<Entry<String, JingleSocks5Transport>> it = this.connections.entrySet().iterator();
-	    while (it.hasNext()) {
-	    	Entry<String, JingleSocks5Transport> pairs = it.next();
-	    	JingleSocks5Transport currentConnection = pairs.getValue();
+		for (Entry<String, JingleSocks5Transport> cursor : connections.entrySet()) {
+	    	JingleSocks5Transport currentConnection = cursor.getValue();
 	    	//Log.d("xmppService","comparing candidate: "+currentConnection.getCandidate().toString());
 	        if (currentConnection.isEstablished()&&(currentConnection.getCandidate().isUsedByCounterpart()||(!currentConnection.getCandidate().isOurs()))) {
 	        	//Log.d("xmppService","is usable");
@@ -533,7 +531,6 @@ public class JingleConnection {
 	        		}
 	        	}
 	        }
-	        it.remove();
 	    }
 		return connection;
 	}

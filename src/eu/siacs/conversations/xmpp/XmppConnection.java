@@ -926,14 +926,10 @@ public class XmppConnection implements Runnable {
 
 	public List<String> findDiscoItemsByFeature(String feature) {
 		List<String> items = new ArrayList<String>();
-		Iterator<Entry<String, List<String>>> it = this.disco.entrySet()
-				.iterator();
-		while (it.hasNext()) {
-			Entry<String, List<String>> pairs = it.next();
-			if (pairs.getValue().contains(feature)) {
-				items.add(pairs.getKey());
+		for (Entry<String, List<String>> cursor : disco.entrySet()) {
+			if (cursor.getValue().contains(feature)) {
+				items.add(cursor.getKey());
 			}
-			it.remove();
 		}
 		return items;
 	}
