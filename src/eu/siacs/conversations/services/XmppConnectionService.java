@@ -429,6 +429,7 @@ public class XmppConnectionService extends Service {
 				if (subscription.equals("remove")) {
 					contact.resetOption(Contact.Options.IN_ROSTER);
 					contact.resetOption(Contact.Options.DIRTY_DELETE);
+					contact.resetOption(Contact.Options.PREEMPTIVE_GRANT);
 				} else {
 					contact.setOption(Contact.Options.IN_ROSTER);
 					contact.resetOption(Contact.Options.DIRTY_PUSH);
@@ -516,7 +517,10 @@ public class XmppConnectionService extends Service {
 			}
 		}
 		if (wakeLock.isHeld()) {
-			try { wakeLock.release();} catch (RuntimeException re) {}
+			try {
+				wakeLock.release();
+			} catch (RuntimeException re) {
+			}
 		}
 		return START_STICKY;
 	}
@@ -693,13 +697,14 @@ public class XmppConnectionService extends Service {
 						message.setStatus(Message.STATUS_WAITING);
 					} else if (conv.hasValidOtrSession()
 							&& conv.getOtrSession().getSessionStatus() == SessionStatus.ENCRYPTED) {
-						message.setPresence(conv.getOtrSession().getSessionID().getUserID());
+						message.setPresence(conv.getOtrSession().getSessionID()
+								.getUserID());
 						try {
 							packet = mMessageGenerator.generateOtrChat(message);
 							send = true;
 							message.setStatus(Message.STATUS_SEND);
 						} catch (OtrException e) {
-							Log.e(LOGTAG,"error generating otr packet");
+							Log.e(LOGTAG, "error generating otr packet");
 							packet = null;
 						}
 					} else if (message.getPresence() == null) {
@@ -784,9 +789,11 @@ public class XmppConnectionService extends Service {
 					}
 				}
 			} else {
-				if (message.getConversation().getOtrSession().getSessionStatus() == SessionStatus.ENCRYPTED) {
+				if (message.getConversation().getOtrSession()
+						.getSessionStatus() == SessionStatus.ENCRYPTED) {
 					if (message.getType() == Message.TYPE_TEXT) {
-						packet = mMessageGenerator.generateOtrChat(message,true);
+						packet = mMessageGenerator.generateOtrChat(message,
+								true);
 					} else if (message.getType() == Message.TYPE_IMAGE) {
 						mJingleConnectionManager.createNewConnection(message);
 					}
@@ -794,9 +801,10 @@ public class XmppConnectionService extends Service {
 			}
 		} else if (message.getType() == Message.TYPE_TEXT) {
 			if (message.getEncryption() == Message.ENCRYPTION_NONE) {
-				packet = mMessageGenerator.generateChat(message,true);
-			} else if ((message.getEncryption() == Message.ENCRYPTION_DECRYPTED)||(message.getEncryption() == Message.ENCRYPTION_PGP)) {
-				packet = mMessageGenerator.generatePgpChat(message,true);
+				packet = mMessageGenerator.generateChat(message, true);
+			} else if ((message.getEncryption() == Message.ENCRYPTION_DECRYPTED)
+					|| (message.getEncryption() == Message.ENCRYPTION_PGP)) {
+				packet = mMessageGenerator.generatePgpChat(message, true);
 			}
 		} else if (message.getType() == Message.TYPE_IMAGE) {
 			Presences presences = message.getConversation().getContact()
@@ -1087,10 +1095,13 @@ public class XmppConnectionService extends Service {
 			packet.addChild("x", "jabber:x:signed").setContent(sig);
 		}
 		if (conversation.getMessages().size() != 0) {
-			final SimpleDateFormat mDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",Locale.US);
+			final SimpleDateFormat mDateFormat = new SimpleDateFormat(
+					"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US);
 			mDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-			Date date = new Date(conversation.getLatestMessage().getTimeSent() + 1000);
-			x.addChild("history").setAttribute("since",mDateFormat.format(date));
+			Date date = new Date(
+					conversation.getLatestMessage().getTimeSent() + 1000);
+			x.addChild("history").setAttribute("since",
+					mDateFormat.format(date));
 		}
 		packet.addChild(x);
 		account.getXmppConnection().sendPresencePacket(packet);
@@ -1221,11 +1232,13 @@ public class XmppConnectionService extends Service {
 					&& (msg.getEncryption() == Message.ENCRYPTION_OTR)) {
 				msg.setPresence(otrSession.getSessionID().getUserID());
 				if (msg.getType() == Message.TYPE_TEXT) {
-					MessagePacket outPacket = mMessageGenerator.generateOtrChat(msg,true);
-					if (outPacket!=null) {
+					MessagePacket outPacket = mMessageGenerator
+							.generateOtrChat(msg, true);
+					if (outPacket != null) {
 						msg.setStatus(Message.STATUS_SEND);
 						databaseBackend.updateMessage(msg);
-						account.getXmppConnection().sendMessagePacket(outPacket);
+						account.getXmppConnection()
+								.sendMessagePacket(outPacket);
 					}
 				} else if (msg.getType() == Message.TYPE_IMAGE) {
 					mJingleConnectionManager.createNewConnection(msg);
@@ -1273,7 +1286,8 @@ public class XmppConnectionService extends Service {
 			if (contact.getOption(Contact.Options.ASKING)) {
 				requestPresenceUpdatesFrom(contact);
 			}
-			if (contact.getOption(Contact.Options.PENDING_SUBSCRIPTION_REQUEST)) {
+			if (contact.getOption(Contact.Options.PENDING_SUBSCRIPTION_REQUEST)
+					&& contact.getOption(Contact.Options.PREEMPTIVE_GRANT)) {
 				Log.d("xmppService", "contact had pending subscription");
 				sendPresenceUpdatesTo(contact);
 			}
@@ -1281,6 +1295,7 @@ public class XmppConnectionService extends Service {
 	}
 
 	public void deleteContactOnServer(Contact contact) {
+		contact.resetOption(Contact.Options.PREEMPTIVE_GRANT);
 		contact.resetOption(Contact.Options.DIRTY_PUSH);
 		contact.setOption(Contact.Options.DIRTY_DELETE);
 		Account account = contact.getAccount();
@@ -1480,32 +1495,33 @@ public class XmppConnectionService extends Service {
 
 	public void replyWithNotAcceptable(Account account, MessagePacket packet) {
 		if (account.getStatus() == Account.STATUS_ONLINE) {
-			MessagePacket error = this.mMessageGenerator.generateNotAcceptable(packet);
+			MessagePacket error = this.mMessageGenerator
+					.generateNotAcceptable(packet);
 			account.getXmppConnection().sendMessagePacket(error);
 		}
 	}
-	
+
 	public void syncRosterToDisk(final Account account) {
 		new Thread(new Runnable() {
-			
+
 			@Override
 			public void run() {
 				databaseBackend.writeRoster(account.getRoster());
 			}
 		}).start();
-		
+
 	}
-	
+
 	public List<String> getKnownHosts() {
 		List<String> hosts = new ArrayList<String>();
-		for(Account account : getAccounts()) {
+		for (Account account : getAccounts()) {
 			if (!hosts.contains(account.getServer())) {
 				hosts.add(account.getServer());
 			}
-			for(Contact contact : account.getRoster().getContacts()) {
+			for (Contact contact : account.getRoster().getContacts()) {
 				if (contact.showInRoster()) {
 					String server = contact.getServer();
-					if (server!=null && !hosts.contains(server)) {
+					if (server != null && !hosts.contains(server)) {
 						hosts.add(server);
 					}
 				}

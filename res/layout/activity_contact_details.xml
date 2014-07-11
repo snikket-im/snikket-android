@@ -105,18 +105,6 @@
         android:text="@string/receive_presence_updates"
         android:textSize="14sp"
         android:textColor="@color/primarytext" />
-        
-	<TextView 
-	    android:id="@+id/ask_again"
-	    android:paddingTop="8dp"
-	    android:paddingLeft="32dp"
-	    android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/ask_again"
-        android:textColor="#33B5E5"
-        android:textSize="14sp"
-        android:visibility="gone"
-	    />
  <TextView
         style="@style/sectionHeader"
         android:layout_width="wrap_content"

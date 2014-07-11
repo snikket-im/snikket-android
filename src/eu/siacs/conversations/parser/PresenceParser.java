@@ -90,8 +90,6 @@ public class PresenceParser extends AbstractParser {
 			} else if (type.equals("subscribe")) {
 				if (contact.getOption(Contact.Options.PREEMPTIVE_GRANT)) {
 					mXmppConnectionService.sendPresenceUpdatesTo(contact);
-					contact.setOption(Contact.Options.FROM);
-					contact.resetOption(Contact.Options.PREEMPTIVE_GRANT);
 					if ((contact.getOption(Contact.Options.ASKING))
 							&& (!contact.getOption(Contact.Options.TO))) {
 						mXmppConnectionService

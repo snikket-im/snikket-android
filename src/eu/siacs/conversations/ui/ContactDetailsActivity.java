@@ -47,7 +47,6 @@ public class ContactDetailsActivity extends XmppActivity {
 	private TextView contactJidTv;
 	private TextView accountJidTv;
 	private TextView status;
-	private TextView askAgain;
 	private TextView lastseen;
 	private CheckBox send;
 	private CheckBox receive;
@@ -115,7 +114,6 @@ public class ContactDetailsActivity extends XmppActivity {
 		lastseen = (TextView) findViewById(R.id.details_lastseen);
 		send = (CheckBox) findViewById(R.id.details_send_presence);
 		receive = (CheckBox) findViewById(R.id.details_receive_presence);
-		askAgain = (TextView) findViewById(R.id.ask_again);
 		badge = (QuickContactBadge) findViewById(R.id.details_contact_badge);
 		keys = (LinearLayout) findViewById(R.id.details_contact_keys);
 		getActionBar().setHomeButtonEnabled(true);
@@ -174,6 +172,8 @@ public class ContactDetailsActivity extends XmppActivity {
 		setTitle(contact.getDisplayName());
 		if (contact.getOption(Contact.Options.FROM)) {
 			send.setChecked(true);
+		} else if (contact.getOption(Contact.Options.PENDING_SUBSCRIPTION_REQUEST)){
+			send.setChecked(false);
 		} else {
 			send.setText(R.string.preemptively_grant);
 			if (contact
@@ -187,17 +187,6 @@ public class ContactDetailsActivity extends XmppActivity {
 			receive.setChecked(true);
 		} else {
 			receive.setText(R.string.ask_for_presence_updates);
-			askAgain.setVisibility(View.VISIBLE);
-			askAgain.setOnClickListener(new OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-					Toast.makeText(getApplicationContext(), getString(R.string.asked_for_presence_updates),
-                            Toast.LENGTH_SHORT).show();
-					xmppConnectionService.requestPresenceUpdatesFrom(contact);
-					
-				}
-			});
 			if (contact.getOption(Contact.Options.ASKING)) {
 				receive.setChecked(true);
 			} else {
@@ -317,8 +306,7 @@ public class ContactDetailsActivity extends XmppActivity {
 					updated = true;
 				}
 			} else {
-				if (contact
-						.getOption(Contact.Options.PREEMPTIVE_GRANT)) {
+				if (contact.getOption(Contact.Options.PREEMPTIVE_GRANT)) {
 					if (!send.isChecked()) {
 						if (online) {
 							contact.resetOption(Contact.Options.PREEMPTIVE_GRANT);
@@ -328,7 +316,11 @@ public class ContactDetailsActivity extends XmppActivity {
 				} else {
 					if (send.isChecked()) {
 						if (online) {
-							contact.setOption(Contact.Options.PREEMPTIVE_GRANT);
+							if (contact.getOption(Contact.Options.PENDING_SUBSCRIPTION_REQUEST)) {
+								xmppConnectionService.sendPresenceUpdatesTo(contact);
+							} else {
+								contact.setOption(Contact.Options.PREEMPTIVE_GRANT);
+							}
 						}
 						updated = true;
 					}

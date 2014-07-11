@@ -272,9 +272,11 @@ public class Contact implements ListItem {
 			} else if (subscription.equals("from")) {
 				this.resetOption(Contact.Options.TO);
 				this.setOption(Contact.Options.FROM);
+				this.resetOption(Contact.Options.PREEMPTIVE_GRANT);
 			} else if (subscription.equals("both")) {
 				this.setOption(Contact.Options.TO);
 				this.setOption(Contact.Options.FROM);
+				this.resetOption(Contact.Options.PREEMPTIVE_GRANT);
 			} else if (subscription.equals("none")) {
 				this.resetOption(Contact.Options.FROM);
 				this.resetOption(Contact.Options.TO);
