@@ -195,7 +195,7 @@ public class ManageAccountActivity extends XmppActivity {
 					if ((account.getStatus() == Account.STATUS_OFFLINE)||(account.getStatus() == Account.STATUS_TLS_ERROR)) {
 						activity.xmppConnectionService.reconnectAccount(accountList.get(position),true);
 					} else if (account.getStatus() == Account.STATUS_ONLINE) {
-						activity.startActivity(new Intent(activity.getApplicationContext(),ContactsActivity.class));
+						activity.startActivity(new Intent(activity.getApplicationContext(),StartConversation.class));
 					} else if (account.getStatus() != Account.STATUS_DISABLED) {
 						editAccount(account);
 					}
@@ -403,7 +403,7 @@ public class ManageAccountActivity extends XmppActivity {
 	@Override
 	public boolean onNavigateUp() {
 		if (xmppConnectionService.getConversations().size() == 0) {
-			Intent contactsIntent = new Intent(this, ContactsActivity.class);
+			Intent contactsIntent = new Intent(this, StartConversation.class);
 			contactsIntent.setFlags(
 					// if activity exists in stack, pop the stack and go back to it
 					Intent.FLAG_ACTIVITY_CLEAR_TOP |

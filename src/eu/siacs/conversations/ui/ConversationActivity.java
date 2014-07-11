@@ -97,7 +97,7 @@ public class ConversationActivity extends XmppActivity {
 							swapConversationFragment();
 						} else {
 							startActivity(new Intent(getApplicationContext(),
-									ContactsActivity.class));
+									StartConversation.class));
 							finish();
 						}
 					}
@@ -419,37 +419,6 @@ public class ConversationActivity extends XmppActivity {
 			selectPresenceToAttachFile(attachmentChoice);
 		} else {
 			selectPresenceToAttachFile(attachmentChoice);
-			/*AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			builder.setTitle(getString(R.string.otr_file_transfer));
-			builder.setMessage(getString(R.string.otr_file_transfer_msg));
-			builder.setNegativeButton(getString(R.string.cancel), null);
-			if (conversation.getContact().getPgpKeyId() == 0) {
-				builder.setPositiveButton(getString(R.string.send_unencrypted),
-						new OnClickListener() {
-
-							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
-								conversation
-										.setNextEncryption(Message.ENCRYPTION_NONE);
-								attachFile(attachmentChoice);
-							}
-						});
-			} else {
-				builder.setPositiveButton(
-						getString(R.string.use_pgp_encryption),
-						new OnClickListener() {
-
-							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
-								conversation
-										.setNextEncryption(Message.ENCRYPTION_PGP);
-								attachFile(attachmentChoice);
-							}
-						});
-			}
-			builder.create().show();*/
 		}
 	}
 
@@ -508,11 +477,11 @@ public class ConversationActivity extends XmppActivity {
 			startActivity(intent);
 			break;
 		case R.id.action_invite:
-			Intent inviteIntent = new Intent(getApplicationContext(),
+			/*Intent inviteIntent = new Intent(getApplicationContext(),
 					ContactsActivity.class);
 			inviteIntent.setAction("invite");
 			inviteIntent.putExtra("uuid", getSelectedConversation().getUuid());
-			startActivity(inviteIntent);
+			startActivity(inviteIntent);*/
 			break;
 		case R.id.action_security:
 			final Conversation conversation = getSelectedConversation();
@@ -729,7 +698,7 @@ public class ConversationActivity extends XmppActivity {
 				finish();
 			} else if (conversationList.size() <= 0) {
 				// add no history
-				startActivity(new Intent(this, ContactsActivity.class));
+				startActivity(new Intent(this, StartConversation.class));
 				finish();
 			} else {
 				spl.openPane();
