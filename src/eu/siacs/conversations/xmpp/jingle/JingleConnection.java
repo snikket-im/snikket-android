@@ -83,7 +83,7 @@ public class JingleConnection {
 				sendSuccess();
 				if (acceptedAutomatically) {
 					message.markUnread();
-					JingleConnection.this.mXmppConnectionService.updateUi(message.getConversation(), true);
+					JingleConnection.this.mXmppConnectionService.notifyUi(message.getConversation(), true);
 				}
 				BitmapFactory.Options options = new BitmapFactory.Options();
 				options.inJustDecodeBounds = true;
@@ -277,7 +277,7 @@ public class JingleConnection {
 					} else {
 						message.markUnread();
 						Log.d("xmppService","not auto accepting new file offer with size: "+size+" allowed size:"+this.mJingleConnectionManager.getAutoAcceptFileSize());
-						this.mXmppConnectionService.updateUi(conversation, true);
+						this.mXmppConnectionService.notifyUi(conversation, true);
 					}
 					this.file = this.mXmppConnectionService.getFileBackend().getJingleFile(message,false);
 					if (message.getEncryption() == Message.ENCRYPTION_OTR) {

@@ -33,7 +33,7 @@ public class PresenceParser extends AbstractParser implements
 				int error = muc.getMucOptions().getError();
 				muc.getMucOptions().processPacket(packet, mPgpEngine);
 				if (muc.getMucOptions().getError() != error) {
-					mXmppConnectionService.updateUi(muc, false);
+					mXmppConnectionService.updateConversationUi();
 				}
 			}
 		}

@@ -10,6 +10,7 @@ import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.services.ImageProvider;
+import eu.siacs.conversations.services.XmppConnectionService.OnConversationUpdate;
 import eu.siacs.conversations.utils.ExceptionHelper;
 import eu.siacs.conversations.utils.UIHelper;
 import android.net.Uri;
@@ -83,10 +84,10 @@ public class ConversationActivity extends XmppActivity {
 	private boolean showLastseen = false;
 	private ArrayAdapter<Conversation> listAdapter;
 
-	private OnConversationListChangedListener onConvChanged = new OnConversationListChangedListener() {
-
+	private OnConversationUpdate onConvChanged = new OnConversationUpdate() {
+		
 		@Override
-		public void onConversationListChanged() {
+		public void onConversationUpdate() {
 			runOnUiThread(new Runnable() {
 
 				@Override
@@ -655,7 +656,7 @@ public class ConversationActivity extends XmppActivity {
 			this.onBackendConnected();
 		}
 		if (conversationList.size() >= 1) {
-			onConvChanged.onConversationListChanged();
+			onConvChanged.onConversationUpdate();
 		}
 	}
 

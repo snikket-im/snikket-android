@@ -98,8 +98,7 @@ public class PgpEngine {
 							message.setEncryption(Message.ENCRYPTION_DECRYPTED);
 							PgpEngine.this.mXmppConnectionService
 									.updateMessage(message);
-							PgpEngine.this.mXmppConnectionService.updateUi(
-									message.getConversation(), false);
+							PgpEngine.this.mXmppConnectionService.updateConversationUi();
 							callback.success(message);
 							return;
 						case OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED:

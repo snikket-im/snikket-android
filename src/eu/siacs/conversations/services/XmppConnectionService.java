@@ -33,8 +33,6 @@ import eu.siacs.conversations.parser.MessageParser;
 import eu.siacs.conversations.parser.PresenceParser;
 import eu.siacs.conversations.persistance.DatabaseBackend;
 import eu.siacs.conversations.persistance.FileBackend;
-import eu.siacs.conversations.ui.OnAccountListChangedListener;
-import eu.siacs.conversations.ui.OnConversationListChangedListener;
 import eu.siacs.conversations.ui.UiCallback;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.ExceptionHelper;
@@ -103,9 +101,9 @@ public class XmppConnectionService extends Service {
 	private JingleConnectionManager mJingleConnectionManager = new JingleConnectionManager(
 			this);
 
-	private OnConversationListChangedListener convChangedListener = null;
+	private OnConversationUpdate mOnConversationUpdate = null;
 	private int convChangedListenerCount = 0;
-	private OnAccountListChangedListener accountChangedListener = null;
+	private OnAccountUpdate mOnAccountUpdate = null;
 	private OnTLSExceptionReceived tlsException = null;
 	public OnContactStatusChanged onContactStatusChanged = new OnContactStatusChanged() {
 
@@ -144,8 +142,8 @@ public class XmppConnectionService extends Service {
 
 		@Override
 		public void onStatusChanged(Account account) {
-			if (accountChangedListener != null) {
-				accountChangedListener.onAccountListChangedListener();
+			if (mOnAccountUpdate != null) {
+				mOnAccountUpdate.onAccountUpdate();;
 			}
 			if (account.getStatus() == Account.STATUS_ONLINE) {
 				mJingleConnectionManager.cancelInTransmission();
@@ -329,8 +327,8 @@ public class XmppConnectionService extends Service {
 					// in any case. reschedule wakup call
 					this.scheduleWakeupCall(PING_MAX_INTERVAL, true);
 				}
-				if (accountChangedListener != null) {
-					accountChangedListener.onAccountListChangedListener();
+				if (mOnAccountUpdate != null) {
+					mOnAccountUpdate.onAccountUpdate();
 				}
 			}
 		}
@@ -470,9 +468,7 @@ public class XmppConnectionService extends Service {
 				fetchRosterFromServer(account);
 				sendPresencePacket(account, mPresenceGenerator.sendPresence(account));
 				connectMultiModeConversations(account);
-				if (convChangedListener != null) {
-					convChangedListener.onConversationListChanged();
-				}
+				updateConversationUi();
 			}
 		});
 		return connection;
@@ -565,9 +561,7 @@ public class XmppConnectionService extends Service {
 			databaseBackend.createMessage(message);
 		}
 		conv.getMessages().add(message);
-		if (convChangedListener != null) {
-			convChangedListener.onConversationListChanged();
-		}
+		updateConversationUi();
 		if ((send) && (packet != null)) {
 			sendMessagePacket(account, packet);
 		}
@@ -798,9 +792,7 @@ public class XmppConnectionService extends Service {
 				&& (conversation.getMode() == Conversation.MODE_MULTI)) {
 			joinMuc(conversation);
 		}
-		if (this.convChangedListener != null) {
-			this.convChangedListener.onConversationListChanged();
-		}
+		updateConversationUi();
 		return conversation;
 	}
 
@@ -812,18 +804,14 @@ public class XmppConnectionService extends Service {
 		}
 		this.databaseBackend.updateConversation(conversation);
 		this.conversations.remove(conversation);
-		if (this.convChangedListener != null) {
-			this.convChangedListener.onConversationListChanged();
-		}
+		updateConversationUi();
 	}
 
 	public void clearConversationHistory(Conversation conversation) {
 		this.databaseBackend.deleteMessagesInConversation(conversation);
 		this.fileBackend.removeFiles(conversation);
 		conversation.getMessages().clear();
-		if (this.convChangedListener != null) {
-			this.convChangedListener.onConversationListChanged();
-		}
+		updateConversationUi();
 	}
 
 	public int getConversationCount() {
@@ -834,17 +822,14 @@ public class XmppConnectionService extends Service {
 		databaseBackend.createAccount(account);
 		this.accounts.add(account);
 		this.reconnectAccount(account, false);
-		if (accountChangedListener != null)
-			accountChangedListener.onAccountListChangedListener();
+		updateAccountUi();
 	}
 
 	public void updateAccount(Account account) {
 		this.statusListener.onStatusChanged(account);
 		databaseBackend.updateAccount(account);
 		reconnectAccount(account, false);
-		if (accountChangedListener != null) {
-			accountChangedListener.onAccountListChangedListener();
-		}
+		updateAccountUi();
 		UIHelper.showErrorNotification(getApplicationContext(), getAccounts());
 	}
 
@@ -854,32 +839,29 @@ public class XmppConnectionService extends Service {
 		}
 		databaseBackend.deleteAccount(account);
 		this.accounts.remove(account);
-		if (accountChangedListener != null) {
-			accountChangedListener.onAccountListChangedListener();
-		}
+		updateAccountUi();
 		UIHelper.showErrorNotification(getApplicationContext(), getAccounts());
 	}
 
 	public void setOnConversationListChangedListener(
-			OnConversationListChangedListener listener) {
-		this.convChangedListener = listener;
+			OnConversationUpdate listener) {
+		this.mOnConversationUpdate = listener;
 		this.convChangedListenerCount++;
 	}
 
 	public void removeOnConversationListChangedListener() {
 		this.convChangedListenerCount--;
 		if (this.convChangedListenerCount == 0) {
-			this.convChangedListener = null;
+			this.mOnConversationUpdate = null;
 		}
 	}
 
-	public void setOnAccountListChangedListener(
-			OnAccountListChangedListener listener) {
-		this.accountChangedListener = listener;
+	public void setOnAccountListChangedListener(OnAccountUpdate listener) {
+		this.mOnAccountUpdate = listener;
 	}
 
 	public void removeOnAccountListChangedListener() {
-		this.accountChangedListener = null;
+		this.mOnAccountUpdate = null;
 	}
 
 	public void connectMultiModeConversations(Account account) {
@@ -1062,7 +1044,7 @@ public class XmppConnectionService extends Service {
 				}
 			}
 		}
-		updateUi(conversation, false);
+		notifyUi(conversation, false);
 	}
 
 	public boolean renewSymmetricKey(Conversation conversation) {
@@ -1197,9 +1179,7 @@ public class XmppConnectionService extends Service {
 	public void markMessage(Message message, int status) {
 		message.setStatus(status);
 		databaseBackend.updateMessage(message);
-		if (convChangedListener != null) {
-			convChangedListener.onConversationListChanged();
-		}
+		updateConversationUi();
 	}
 
 	public SharedPreferences getPreferences() {
@@ -1211,12 +1191,24 @@ public class XmppConnectionService extends Service {
 		return getPreferences().getBoolean("confirm_messages", true);
 	}
 
-	public void updateUi(Conversation conversation, boolean notify) {
-		if (convChangedListener != null) {
-			convChangedListener.onConversationListChanged();
+	public void notifyUi(Conversation conversation, boolean notify) {
+		if (mOnConversationUpdate != null) {
+			mOnConversationUpdate.onConversationUpdate();
 		} else {
 			UIHelper.updateNotification(getApplicationContext(),
 					getConversations(), conversation, notify);
+		}
+	}
+	
+	public void updateConversationUi() {
+		if (mOnConversationUpdate != null) {
+			mOnConversationUpdate.onConversationUpdate();
+		}
+	}
+	
+	public void updateAccountUi() {
+		if (mOnAccountUpdate != null) {
+			mOnAccountUpdate.onAccountUpdate();
 		}
 	}
 
@@ -1315,5 +1307,17 @@ public class XmppConnectionService extends Service {
 	
 	public JingleConnectionManager getJingleConnectionManager() {
 		return this.mJingleConnectionManager;
+	}
+	
+	public interface OnConversationUpdate {
+		public void onConversationUpdate();
+	}
+	
+	public interface OnAccountUpdate {
+		public void onAccountUpdate();
+	}
+	
+	public interface OnRosterUpdate {
+		public void onRosterUpdate();
 	}
 }

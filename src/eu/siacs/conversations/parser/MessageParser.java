@@ -114,7 +114,7 @@ public class MessageParser extends AbstractParser implements
 		if (packet.hasChild("subject")) {
 			conversation.getMucOptions().setSubject(
 					packet.findChild("subject").getContent());
-			mXmppConnectionService.updateUi(conversation, false);
+			mXmppConnectionService.updateConversationUi();
 			return null;
 		}
 		if ((fromParts.length == 1)) {
@@ -217,10 +217,10 @@ public class MessageParser extends AbstractParser implements
 		} else if (packet.hasChild("x")) {
 			Element x = packet.findChild("x");
 			if (x.hasChild("invite")) {
-				Conversation conversation = mXmppConnectionService
+				mXmppConnectionService
 						.findOrCreateConversation(account,
 								packet.getAttribute("from"), true);
-				mXmppConnectionService.updateUi(conversation, false);
+				mXmppConnectionService.updateConversationUi();
 			}
 
 		}
@@ -318,6 +318,6 @@ public class MessageParser extends AbstractParser implements
 		if (packet.getType() != MessagePacket.TYPE_ERROR) {
 			mXmppConnectionService.databaseBackend.createMessage(message);
 		}
-		mXmppConnectionService.updateUi(conversation, notify);
+		mXmppConnectionService.notifyUi(conversation, notify);
 	}
 }
