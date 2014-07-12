@@ -104,6 +104,7 @@ something (reading an article, watching a movie). Furthermore automatic setting
 of status always implies an impact on your privacy. (Are you sure you want
 everybody in your contact list to know that you have been using your computer at
 4am?!)
+
 In the past status has been used to judge the likelihood of whether or not your
 messages are being read. This is no longer necessary. With Chat Markers
 (XEP-0333, supported by Conversations since 0.4) we have the ability to **know**
@@ -114,10 +115,33 @@ With carbon messages (XEP-0280, supported by Conversations since 0.1) this is no
 longer necessary. Using priorities to route OTR messages isn't pratical either
 because they are not changeable on the fly. Metrics like last active client
 (the client which sent the last message) are much better.
+
 Unfortunatly these modern replacement for lagecay XMPP featurs are not widely
 adopted. However Conversations should be an instant messanger for the future and
 instead of making Conversations compatible with the past we should work on
 implementing new, improved technologies into other XMPP clients as well.
+
+Making these status and priority optional isn't a solution either because
+Conversations is trying to get rid of old behaviours and set an example for
+other clients.
+
+####Conversations is missing a certain feature
+I'm open for new feature suggestions. You can use the issue tracker on github.
+Please take some time to browse through the issues to see if someone else
+already suggested it. Be assured that I read each and every ticket. If I like it
+I will leave it open untill it's implemented. If I don't like it I will close
+it. (Usually with a short comment). If I don't comment on an feature request
+thats probably I good sign because this means I agree with you. Commenting with
++1 on either open or closed issues wont change my mind nor will it accelerate the
+development.
+
+####You closed my feature request but I want it really really badly
+Just write it yourself and send my a pull request. If I like it I will happily
+merge it if I don't at least you and like minded people get to enjoy it.
+
+####I need a feature and I need it know
+I am available for hire. Contact me JID: inputmice@siacs.eu
+
 ###Security
 ####Why are there two end-to-end encryption methods and which one should I choose?
 In most cases OTR should be the encryption method of choice. It works out of the box with most contacts as long as they are online.
