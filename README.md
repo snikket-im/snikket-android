@@ -131,7 +131,7 @@ Please take some time to browse through the issues to see if someone else
 already suggested it. Be assured that I read each and every ticket. If I like it
 I will leave it open untill it's implemented. If I don't like it I will close
 it. (Usually with a short comment). If I don't comment on an feature request
-thats probably I good sign because this means I agree with you. Commenting with
+thats probably a good sign because this means I agree with you. Commenting with
 +1 on either open or closed issues wont change my mind nor will it accelerate the
 development.
 
@@ -139,7 +139,7 @@ development.
 Just write it yourself and send my a pull request. If I like it I will happily
 merge it if I don't at least you and like minded people get to enjoy it.
 
-####I need a feature and I need it know
+####I need a feature and I need it now!
 I am available for hire. Contact me JID: inputmice@siacs.eu
 
 ###Security
