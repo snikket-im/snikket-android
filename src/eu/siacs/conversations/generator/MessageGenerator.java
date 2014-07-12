@@ -118,7 +118,7 @@ public class MessageGenerator {
 		return packet;
 	}
 	
-	public MessagePacket conversationSubject(Conversation conversation,String subject) {
+	public MessagePacket conferenceSubject(Conversation conversation,String subject) {
 		MessagePacket packet = new MessagePacket();
 		packet.setType(MessagePacket.TYPE_GROUPCHAT);
 		packet.setTo(conversation.getContactJid().split("/")[0]);

@@ -62,7 +62,7 @@ public class MucDetailsActivity extends XmppActivity {
 			String subject = mSubject.getText().toString();
 			MucOptions options = conversation.getMucOptions();
 			if (!subject.equals(options.getSubject())) {
-				MessagePacket packet = xmppConnectionService.getMessageGenerator().conversationSubject(conversation, subject);
+				MessagePacket packet = xmppConnectionService.getMessageGenerator().conferenceSubject(conversation, subject);
 				xmppConnectionService.sendMessagePacket(conversation.getAccount(), packet);
 				finish();
 			}
