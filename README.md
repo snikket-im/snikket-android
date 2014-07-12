@@ -95,12 +95,29 @@ detais within Conversations. This will start an add to address book intent with 
 as payload. This doesn’t require Conversations to have write permissions on your
 address book but also doesn’t require you to copy past Jabber ID from one app to
 another.
-####How can I change my status
-You can set an account offline by long pressing on it and select temporarily
-disable account from the context menu. Other statuses like away, DND and N/A are
-not supported for simplicity reasons. Users tend to forget their status, other
-users ignore them and setting the status automatically would mean too much of an
-impact on privacy.
+####Where can I see the status of my contacts? How can I set a status or priority
+Status are a horrible metric. Setting them manually to a proper value rarly
+works because users are either lazy or just forget about them. Setting them
+automatically does not provide quality results either. Keyboard or mouse
+activity as indicator for example fails when the users is just looking at
+something (reading an article, watching a movie). Furthermore automatic setting
+of status always implies an impact on your privacy. (Are you sure you want
+everybody in your contact list to know that you have been using your computer at
+4am?!)
+In the past status has been used to judge the likelihood of whether or not your
+messages are being read. This is no longer necessary. With Chat Markers
+(XEP-0333, supported by Conversations since 0.4) we have the ability to **know**
+whether or not your messages are being read.
+Similar things can be said for priorites. In the past priorties have been used
+(By servers, not by clients!) to route your messages to one specific client.
+With carbon messages (XEP-0280, supported by Conversations since 0.1) this is no
+longer necessary. Using priorities to route OTR messages isn't pratical either
+because they are not changeable on the fly. Metrics like last active client
+(the client which sent the last message) are much better.
+Unfortunatly these modern replacement for lagecay XMPP featurs are not widely
+adopted. However Conversations should be an instant messanger for the future and
+instead of making Conversations compatible with the past we should work on
+implementing new, improved technologies into other XMPP clients as well.
 ###Security
 ####Why are there two end-to-end encryption methods and which one should I choose?
 In most cases OTR should be the encryption method of choice. It works out of the box with most contacts as long as they are online.
