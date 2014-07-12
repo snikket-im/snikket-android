@@ -42,7 +42,7 @@ public class MessageGenerator {
 		delay.setAttribute("stamp", mDateFormat.format(date));
 	}
 	
-	public MessagePacket generateOtrChat(Message message) throws OtrException {
+	public MessagePacket generateOtrChat(Message message) {
 		return generateOtrChat(message, false);
 	}
 	
@@ -104,6 +104,28 @@ public class MessageGenerator {
 		packet.setTo(origin.getFrom());
 		packet.setBody(origin.getBody());
 		packet.setType(MessagePacket.TYPE_ERROR);
+		return packet;
+	}
+	
+	public MessagePacket confirm(Account account, String to, String id) {
+		MessagePacket packet = new MessagePacket();
+		packet.setType(MessagePacket.TYPE_NORMAL);
+		packet.setTo(to);
+		packet.setFrom(account.getFullJid());
+		Element received = packet.addChild("displayed",
+				"urn:xmpp:chat-markers:0");
+		received.setAttribute("id", id);
+		return packet;
+	}
+	
+	public MessagePacket conversationSubject(Conversation conversation,String subject) {
+		MessagePacket packet = new MessagePacket();
+		packet.setType(MessagePacket.TYPE_GROUPCHAT);
+		packet.setTo(conversation.getContactJid().split("/")[0]);
+		Element subjectChild = new Element("subject");
+		subjectChild.setContent(subject);
+		packet.addChild(subjectChild);
+		packet.setFrom(conversation.getAccount().getJid());
 		return packet;
 	}
 }

@@ -18,7 +18,6 @@ import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 
@@ -793,20 +792,10 @@ public class XmppConnection implements Runnable {
 		this.sendPacket(packet, null);
 	}
 
-	public void sendMessagePacket(MessagePacket packet,
-			OnMessagePacketReceived callback) {
-		this.sendPacket(packet, callback);
-	}
-
 	public void sendPresencePacket(PresencePacket packet) {
 		this.sendPacket(packet, null);
 	}
-
-	public void sendPresencePacket(PresencePacket packet,
-			OnPresencePacketReceived callback) {
-		this.sendPacket(packet, callback);
-	}
-
+	
 	private synchronized void sendPacket(final AbstractStanza packet,
 			PacketReceived callback) {
 		// TODO dont increment stanza count if packet = request packet or ack;

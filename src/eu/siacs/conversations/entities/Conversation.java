@@ -4,8 +4,6 @@ import java.security.interfaces.DSAPublicKey;
 import java.util.ArrayList;
 import java.util.List;
 
-import eu.siacs.conversations.services.XmppConnectionService;
-
 import net.java.otr4j.OtrException;
 import net.java.otr4j.crypto.OtrCryptoEngineImpl;
 import net.java.otr4j.crypto.OtrCryptoException;
@@ -117,14 +115,11 @@ public class Conversation extends AbstractEntity {
 			this.messages.get(i).markRead();
 		}
 	}
-
-	public void markRead(XmppConnectionService service) {
-		markRead();
-		if (service.confirmMessages() && this.latestMarkableMessageId != null) {
-			service.sendConfirmMessage(getAccount(), getContactJid(),
-					this.latestMarkableMessageId);
-			this.latestMarkableMessageId = null;
-		}
+	
+	public String popLatestMarkableMessageId() {
+		String id = this.latestMarkableMessageId;
+		this.latestMarkableMessageId = null;
+		return id;
 	}
 
 	public Message getLatestMessage() {

@@ -152,7 +152,7 @@ public abstract class XmppActivity extends Activity {
 	public void switchToConversation(Conversation conversation) {
 		switchToConversation(conversation, null, false);
 	}
-	
+
 	public void switchToConversation(Conversation conversation, String text,
 			boolean newTask) {
 		Intent viewConversationIntent = new Intent(this,
@@ -174,7 +174,7 @@ public abstract class XmppActivity extends Activity {
 		}
 		startActivity(viewConversationIntent);
 	}
-	
+
 	public void switchToContactDetails(Contact contact) {
 		Intent intent = new Intent(this, ContactDetailsActivity.class);
 		intent.setAction(ContactDetailsActivity.ACTION_VIEW_CONTACT);
@@ -203,7 +203,9 @@ public abstract class XmppActivity extends Activity {
 					public void success(Account account) {
 						xmppConnectionService.databaseBackend
 								.updateAccount(account);
-						xmppConnectionService.sendPresence(account);
+						xmppConnectionService.sendPresencePacket(account,
+								xmppConnectionService.getPresenceGenerator()
+										.sendPresence(account));
 						if (conversation != null) {
 							conversation
 									.setNextEncryption(Message.ENCRYPTION_PGP);
@@ -233,7 +235,7 @@ public abstract class XmppActivity extends Activity {
 		});
 
 	}
-	
+
 	protected void showAddToRosterDialog(final Conversation conversation) {
 		String jid = conversation.getContactJid();
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -253,7 +255,7 @@ public abstract class XmppActivity extends Activity {
 				});
 		builder.create().show();
 	}
-	
+
 	public void selectPresence(final Conversation conversation,
 			final OnPresenceSelected listener) {
 		Contact contact = conversation.getContact();

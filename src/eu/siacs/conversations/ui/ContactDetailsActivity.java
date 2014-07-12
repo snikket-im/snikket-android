@@ -31,7 +31,9 @@ import eu.siacs.conversations.crypto.PgpEngine;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Presences;
+import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.UIHelper;
+import eu.siacs.conversations.xmpp.stanzas.PresencePacket;
 
 public class ContactDetailsActivity extends XmppActivity {
 	public static final String ACTION_VIEW_CONTACT = "view_contact";
@@ -293,6 +295,8 @@ public class ContactDetailsActivity extends XmppActivity {
 	@Override
 	protected void onStop() {
 		super.onStop();
+		XmppConnectionService xcs = activity.xmppConnectionService;
+		PresencePacket packet = null;
 		boolean updated = false;
 		if (contact!=null) {
 			boolean online = contact.getAccount().getStatus() == Account.STATUS_ONLINE;
@@ -301,7 +305,7 @@ public class ContactDetailsActivity extends XmppActivity {
 					if (online) {
 						contact.resetOption(Contact.Options.FROM);
 						contact.resetOption(Contact.Options.PREEMPTIVE_GRANT);
-						activity.xmppConnectionService.stopPresenceUpdatesTo(contact);
+						packet = xcs.getPresenceGenerator().stopPresenceUpdatesTo(contact);
 					}
 					updated = true;
 				}
@@ -317,7 +321,7 @@ public class ContactDetailsActivity extends XmppActivity {
 					if (send.isChecked()) {
 						if (online) {
 							if (contact.getOption(Contact.Options.PENDING_SUBSCRIPTION_REQUEST)) {
-								xmppConnectionService.sendPresenceUpdatesTo(contact);
+								packet = xcs.getPresenceGenerator().sendPresenceUpdatesTo(contact);
 							} else {
 								contact.setOption(Contact.Options.PREEMPTIVE_GRANT);
 							}
@@ -330,7 +334,7 @@ public class ContactDetailsActivity extends XmppActivity {
 				if (!receive.isChecked()) {
 					if (online) {
 						contact.resetOption(Contact.Options.TO);
-						activity.xmppConnectionService.stopPresenceUpdatesFrom(contact);
+						packet = xcs.getPresenceGenerator().stopPresenceUpdatesFrom(contact);
 					}
 					updated = true;
 				}
@@ -339,8 +343,7 @@ public class ContactDetailsActivity extends XmppActivity {
 					if (!receive.isChecked()) {
 						if (online) {
 							contact.resetOption(Contact.Options.ASKING);
-							activity.xmppConnectionService
-								.stopPresenceUpdatesFrom(contact);
+							packet = xcs.getPresenceGenerator().stopPresenceUpdatesFrom(contact);
 						}
 						updated = true;
 					}
@@ -348,8 +351,7 @@ public class ContactDetailsActivity extends XmppActivity {
 					if (receive.isChecked()) {
 						if (online) {
 							contact.setOption(Contact.Options.ASKING);
-							activity.xmppConnectionService
-								.requestPresenceUpdatesFrom(contact);
+							packet = xcs.getPresenceGenerator().requestPresenceUpdatesFrom(contact);
 						}
 						updated = true;
 					}
@@ -357,6 +359,9 @@ public class ContactDetailsActivity extends XmppActivity {
 			}
 			if (updated) {
 				if (online) {
+					if (packet!=null) {
+						xcs.sendPresencePacket(contact.getAccount(), packet);
+					}
 					Toast.makeText(getApplicationContext(), getString(R.string.subscription_updated), Toast.LENGTH_SHORT).show();
 				} else {
 					Toast.makeText(getApplicationContext(), getString(R.string.subscription_not_updated_offline), Toast.LENGTH_SHORT).show();

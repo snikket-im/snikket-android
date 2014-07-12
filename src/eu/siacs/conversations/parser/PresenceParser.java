@@ -5,6 +5,7 @@ import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Presences;
+import eu.siacs.conversations.generator.PresenceGenerator;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.OnPresencePacketReceived;
@@ -13,8 +14,11 @@ import eu.siacs.conversations.xmpp.stanzas.PresencePacket;
 public class PresenceParser extends AbstractParser implements
 		OnPresencePacketReceived {
 
+	private PresenceGenerator mPresenceGenerator;
+	
 	public PresenceParser(XmppConnectionService service) {
 		super(service);
+		mPresenceGenerator = service.getPresenceGenerator();
 	}
 
 	public void parseConferencePresence(PresencePacket packet, Account account) {
@@ -91,11 +95,10 @@ public class PresenceParser extends AbstractParser implements
 						.onContactStatusChanged(contact, false);
 			} else if (type.equals("subscribe")) {
 				if (contact.getOption(Contact.Options.PREEMPTIVE_GRANT)) {
-					mXmppConnectionService.sendPresenceUpdatesTo(contact);
+					mXmppConnectionService.sendPresencePacket(account, mPresenceGenerator.stopPresenceUpdatesTo(contact));
 					if ((contact.getOption(Contact.Options.ASKING))
 							&& (!contact.getOption(Contact.Options.TO))) {
-						mXmppConnectionService
-								.requestPresenceUpdatesFrom(contact);
+						mXmppConnectionService.sendPresencePacket(account,mPresenceGenerator.requestPresenceUpdatesFrom(contact));
 					}
 				} else {
 					contact.setOption(Contact.Options.PENDING_SUBSCRIPTION_REQUEST);

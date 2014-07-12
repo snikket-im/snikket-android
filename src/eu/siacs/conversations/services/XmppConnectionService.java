@@ -26,6 +26,7 @@ import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.entities.MucOptions.OnRenameListener;
 import eu.siacs.conversations.entities.Presences;
 import eu.siacs.conversations.generator.MessageGenerator;
+import eu.siacs.conversations.generator.PresenceGenerator;
 import eu.siacs.conversations.parser.MessageParser;
 import eu.siacs.conversations.parser.PresenceParser;
 import eu.siacs.conversations.persistance.DatabaseBackend;
@@ -92,7 +93,8 @@ public class XmppConnectionService extends Service {
 	private MessageParser mMessageParser = new MessageParser(this);
 	private PresenceParser mPresenceParser = new PresenceParser(this);
 	private MessageGenerator mMessageGenerator = new MessageGenerator();
-
+	private PresenceGenerator mPresenceGenerator = new PresenceGenerator();
+	
 	private List<Account> accounts;
 	private List<Conversation> conversations = null;
 	private JingleConnectionManager mJingleConnectionManager = new JingleConnectionManager(
@@ -542,7 +544,7 @@ public class XmppConnectionService extends Service {
 				account.getRoster().clearPresences();
 				account.clearPresences(); // self presences
 				fetchRosterFromServer(account);
-				sendPresence(account);
+				sendPresencePacket(account, mPresenceGenerator.sendPresence(account));
 				connectMultiModeConversations(account);
 				if (convChangedListener != null) {
 					convChangedListener.onConversationListChanged();
@@ -591,14 +593,10 @@ public class XmppConnectionService extends Service {
 							&& conv.getOtrSession().getSessionStatus() == SessionStatus.ENCRYPTED) {
 						message.setPresence(conv.getOtrSession().getSessionID()
 								.getUserID());
-						try {
-							packet = mMessageGenerator.generateOtrChat(message);
-							send = true;
-							message.setStatus(Message.STATUS_SEND);
-						} catch (OtrException e) {
-							Log.e(LOGTAG, "error generating otr packet");
-							packet = null;
-						}
+						packet = mMessageGenerator.generateOtrChat(message);
+						send = true;
+						message.setStatus(Message.STATUS_SEND);
+						
 					} else if (message.getPresence() == null) {
 						message.setStatus(Message.STATUS_WAITING);
 					}
@@ -647,7 +645,7 @@ public class XmppConnectionService extends Service {
 			convChangedListener.onConversationListChanged();
 		}
 		if ((send) && (packet != null)) {
-			account.getXmppConnection().sendMessagePacket(packet);
+			sendMessagePacket(account, packet);
 		}
 
 	}
@@ -715,7 +713,7 @@ public class XmppConnectionService extends Service {
 			}
 		}
 		if (packet != null) {
-			account.getXmppConnection().sendMessagePacket(packet);
+			sendMessagePacket(account,packet);
 			markMessage(message, Message.STATUS_SEND);
 		}
 	}
@@ -996,7 +994,7 @@ public class XmppConnectionService extends Service {
 					mDateFormat.format(date));
 		}
 		packet.addChild(x);
-		account.getXmppConnection().sendPresencePacket(packet);
+		sendPresencePacket(account, packet);
 	}
 
 	private OnRenameListener renameListener = null;
@@ -1035,8 +1033,7 @@ public class XmppConnectionService extends Service {
 				packet.addChild("status").setContent("online");
 				packet.addChild("x", "jabber:x:signed").setContent(sig);
 			}
-
-			account.getXmppConnection().sendPresencePacket(packet, null);
+			sendPresencePacket(account,packet);
 		} else {
 			String jid = conversation.getContactJid().split("/")[0] + "/"
 					+ nick;
@@ -1055,8 +1052,7 @@ public class XmppConnectionService extends Service {
 		packet.setAttribute("from", conversation.getAccount().getFullJid());
 		packet.setAttribute("type", "unavailable");
 		Log.d(LOGTAG, "send leaving muc " + packet);
-		conversation.getAccount().getXmppConnection()
-				.sendPresencePacket(packet);
+		sendPresencePacket(conversation.getAccount(),packet);
 		conversation.getMucOptions().setOffline();
 	}
 
@@ -1129,8 +1125,7 @@ public class XmppConnectionService extends Service {
 					if (outPacket != null) {
 						msg.setStatus(Message.STATUS_SEND);
 						databaseBackend.updateMessage(msg);
-						account.getXmppConnection()
-								.sendMessagePacket(outPacket);
+						sendMessagePacket(account,outPacket);
 					}
 				} else if (msg.getType() == Message.TYPE_IMAGE) {
 					mJingleConnectionManager.createNewConnection(msg);
@@ -1157,7 +1152,7 @@ public class XmppConnectionService extends Service {
 				packet.setBody(otrSession
 						.transformSending(CryptoHelper.FILETRANSFER
 								+ CryptoHelper.bytesToHex(symmetricKey)));
-				account.getXmppConnection().sendMessagePacket(packet);
+				sendMessagePacket(account,packet);
 				conversation.setSymmetricKey(symmetricKey);
 				return true;
 			} catch (OtrException e) {
@@ -1176,12 +1171,12 @@ public class XmppConnectionService extends Service {
 			iq.query("jabber:iq:roster").addChild(contact.asElement());
 			account.getXmppConnection().sendIqPacket(iq, null);
 			if (contact.getOption(Contact.Options.ASKING)) {
-				requestPresenceUpdatesFrom(contact);
+				sendPresencePacket(account, mPresenceGenerator.requestPresenceUpdatesFrom(contact));
 			}
 			if (contact.getOption(Contact.Options.PENDING_SUBSCRIPTION_REQUEST)
 					&& contact.getOption(Contact.Options.PREEMPTIVE_GRANT)) {
 				Log.d("xmppService", "contact had pending subscription");
-				sendPresenceUpdatesTo(contact);
+				sendPresencePacket(account, mPresenceGenerator.sendPresenceUpdatesTo(contact));
 			}
 		}
 	}
@@ -1198,49 +1193,6 @@ public class XmppConnectionService extends Service {
 			item.setAttribute("subscription", "remove");
 			account.getXmppConnection().sendIqPacket(iq, null);
 		}
-	}
-
-	public void requestPresenceUpdatesFrom(Contact contact) {
-		PresencePacket packet = new PresencePacket();
-		packet.setAttribute("type", "subscribe");
-		packet.setAttribute("to", contact.getJid());
-		packet.setAttribute("from", contact.getAccount().getJid());
-		contact.getAccount().getXmppConnection().sendPresencePacket(packet);
-	}
-
-	public void stopPresenceUpdatesFrom(Contact contact) {
-		PresencePacket packet = new PresencePacket();
-		packet.setAttribute("type", "unsubscribe");
-		packet.setAttribute("to", contact.getJid());
-		packet.setAttribute("from", contact.getAccount().getJid());
-		contact.getAccount().getXmppConnection().sendPresencePacket(packet);
-	}
-
-	public void stopPresenceUpdatesTo(Contact contact) {
-		PresencePacket packet = new PresencePacket();
-		packet.setAttribute("type", "unsubscribed");
-		packet.setAttribute("to", contact.getJid());
-		packet.setAttribute("from", contact.getAccount().getJid());
-		contact.getAccount().getXmppConnection().sendPresencePacket(packet);
-	}
-
-	public void sendPresenceUpdatesTo(Contact contact) {
-		PresencePacket packet = new PresencePacket();
-		packet.setAttribute("type", "subscribed");
-		packet.setAttribute("to", contact.getJid());
-		packet.setAttribute("from", contact.getAccount().getJid());
-		contact.getAccount().getXmppConnection().sendPresencePacket(packet);
-	}
-
-	public void sendPresence(Account account) {
-		PresencePacket packet = new PresencePacket();
-		packet.setAttribute("from", account.getFullJid());
-		String sig = account.getPgpSignature();
-		if (sig != null) {
-			packet.addChild("status").setContent("online");
-			packet.addChild("x", "jabber:x:signed").setContent(sig);
-		}
-		account.getXmppConnection().sendPresencePacket(packet);
 	}
 
 	public void updateConversation(Conversation conversation) {
@@ -1271,21 +1223,6 @@ public class XmppConnectionService extends Service {
 		}).start();
 	}
 
-	public void sendConversationSubject(Conversation conversation,
-			String subject) {
-		MessagePacket packet = new MessagePacket();
-		packet.setType(MessagePacket.TYPE_GROUPCHAT);
-		packet.setTo(conversation.getContactJid().split("/")[0]);
-		Element subjectChild = new Element("subject");
-		subjectChild.setContent(subject);
-		packet.addChild(subjectChild);
-		packet.setFrom(conversation.getAccount().getJid());
-		Account account = conversation.getAccount();
-		if (account.getStatus() == Account.STATUS_ONLINE) {
-			account.getXmppConnection().sendMessagePacket(packet);
-		}
-	}
-
 	public void inviteToConference(Conversation conversation,
 			List<Contact> contacts) {
 		for (Contact contact : contacts) {
@@ -1299,8 +1236,7 @@ public class XmppConnectionService extends Service {
 			x.addChild(invite);
 			packet.addChild(x);
 			Log.d(LOGTAG, packet.toString());
-			conversation.getAccount().getXmppConnection()
-					.sendMessagePacket(packet);
+			sendMessagePacket(conversation.getAccount(),packet);
 		}
 
 	}
@@ -1363,18 +1299,13 @@ public class XmppConnectionService extends Service {
 	}
 
 	public void markRead(Conversation conversation) {
-		conversation.markRead(this);
-	}
-
-	public void sendConfirmMessage(Account account, String to, String id) {
-		MessagePacket receivedPacket = new MessagePacket();
-		receivedPacket.setType(MessagePacket.TYPE_NORMAL);
-		receivedPacket.setTo(to);
-		receivedPacket.setFrom(account.getFullJid());
-		Element received = receivedPacket.addChild("displayed",
-				"urn:xmpp:chat-markers:0");
-		received.setAttribute("id", id);
-		account.getXmppConnection().sendMessagePacket(receivedPacket);
+		conversation.markRead();
+		String id = conversation.popLatestMarkableMessageId();
+		if (confirmMessages() && id != null) {
+			Account account = conversation.getAccount();
+			String to = conversation.getContactJid();
+			this.sendMessagePacket(conversation.getAccount(), mMessageGenerator.confirm(account, to, id));
+		}
 	}
 
 	public SecureRandom getRNG() {
@@ -1389,7 +1320,7 @@ public class XmppConnectionService extends Service {
 		if (account.getStatus() == Account.STATUS_ONLINE) {
 			MessagePacket error = this.mMessageGenerator
 					.generateNotAcceptable(packet);
-			account.getXmppConnection().sendMessagePacket(error);
+			sendMessagePacket(account,error);
 		}
 	}
 
@@ -1433,5 +1364,21 @@ public class XmppConnectionService extends Service {
 			}
 		}
 		return mucServers;
+	}
+	
+	public void sendMessagePacket(Account account, MessagePacket packet) {
+		account.getXmppConnection().sendMessagePacket(packet);
+	}
+	
+	public void sendPresencePacket(Account account, PresencePacket packet) {
+		account.getXmppConnection().sendPresencePacket(packet);
+	}
+	
+	public MessageGenerator getMessageGenerator() {
+		return this.mMessageGenerator;
+	}
+	
+	public PresenceGenerator getPresenceGenerator() {
+		return this.mPresenceGenerator;
 	}
 }

@@ -11,9 +11,9 @@ import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.entities.MucOptions.User;
 import eu.siacs.conversations.utils.UIHelper;
+import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
 import android.app.PendingIntent;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.IntentSender.SendIntentException;
 import android.os.Bundle;
@@ -62,7 +62,8 @@ public class MucDetailsActivity extends XmppActivity {
 			String subject = mSubject.getText().toString();
 			MucOptions options = conversation.getMucOptions();
 			if (!subject.equals(options.getSubject())) {
-				xmppConnectionService.sendConversationSubject(conversation,subject);
+				MessagePacket packet = xmppConnectionService.getMessageGenerator().conversationSubject(conversation, subject);
+				xmppConnectionService.sendMessagePacket(conversation.getAccount(), packet);
 				finish();
 			}
 		}
