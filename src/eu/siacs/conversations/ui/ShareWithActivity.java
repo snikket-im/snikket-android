@@ -89,7 +89,8 @@ public class ShareWithActivity extends XmppActivity {
 
 		Set<Contact> displayedContacts = new HashSet<Contact>();
 		conversations.removeAllViews();
-		List<Conversation> convList = xmppConnectionService.getConversations();
+		List<Conversation> convList = new ArrayList<Conversation>();
+		xmppConnectionService.populateWithOrderedConversations(convList);
 		Collections.sort(convList, new Comparator<Conversation>() {
 			@Override
 			public int compare(Conversation lhs, Conversation rhs) {

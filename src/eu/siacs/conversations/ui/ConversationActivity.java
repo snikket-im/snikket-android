@@ -805,8 +805,7 @@ public class ConversationActivity extends XmppActivity {
 	}
 
 	public void updateConversationList() {
-		conversationList.clear();
-		conversationList.addAll(xmppConnectionService.getConversations());
+		xmppConnectionService.populateWithOrderedConversations(conversationList);
 		listView.invalidateViews();
 	}
 

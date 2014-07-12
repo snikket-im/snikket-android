@@ -116,8 +116,8 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		return cursor.getInt(0);
 	}
 
-	public List<Conversation> getConversations(int status) {
-		List<Conversation> list = new ArrayList<Conversation>();
+	public CopyOnWriteArrayList<Conversation> getConversations(int status) {
+		CopyOnWriteArrayList<Conversation> list = new CopyOnWriteArrayList<Conversation>();
 		SQLiteDatabase db = this.getReadableDatabase();
 		String[] selectionArgs = { "" + status };
 		Cursor cursor = db.rawQuery("select * from " + Conversation.TABLENAME

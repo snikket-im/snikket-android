@@ -10,6 +10,7 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.openintents.openpgp.util.OpenPgpApi;
 import org.openintents.openpgp.util.OpenPgpServiceConnection;
@@ -98,7 +99,7 @@ public class XmppConnectionService extends Service {
 	private PresenceGenerator mPresenceGenerator = new PresenceGenerator();
 	
 	private List<Account> accounts;
-	private List<Conversation> conversations = null;
+	private CopyOnWriteArrayList<Conversation> conversations = null;
 	private JingleConnectionManager mJingleConnectionManager = new JingleConnectionManager(
 			this);
 
@@ -708,7 +709,14 @@ public class XmppConnectionService extends Service {
 				conv.setMessages(databaseBackend.getMessages(conv, 50));
 			}
 		}
-		Collections.sort(this.conversations, new Comparator<Conversation>() {
+		
+		return this.conversations;
+	}
+	
+	public void populateWithOrderedConversations(List<Conversation> list) {
+		list.clear();
+		list.addAll(getConversations());
+		Collections.sort(list, new Comparator<Conversation>() {
 			@Override
 			public int compare(Conversation lhs, Conversation rhs) {
 				Message left = lhs.getLatestMessage();
@@ -722,7 +730,6 @@ public class XmppConnectionService extends Service {
 				}
 			}
 		});
-		return this.conversations;
 	}
 
 	public List<Message> getMoreMessages(Conversation conversation,
