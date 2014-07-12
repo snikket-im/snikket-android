@@ -27,6 +27,7 @@ import eu.siacs.conversations.entities.MucOptions.OnRenameListener;
 import eu.siacs.conversations.entities.Presences;
 import eu.siacs.conversations.generator.MessageGenerator;
 import eu.siacs.conversations.generator.PresenceGenerator;
+import eu.siacs.conversations.parser.IqParser;
 import eu.siacs.conversations.parser.MessageParser;
 import eu.siacs.conversations.parser.PresenceParser;
 import eu.siacs.conversations.persistance.DatabaseBackend;
@@ -92,6 +93,7 @@ public class XmppConnectionService extends Service {
 
 	private MessageParser mMessageParser = new MessageParser(this);
 	private PresenceParser mPresenceParser = new PresenceParser(this);
+	private IqParser mIqParser = new IqParser(this);
 	private MessageGenerator mMessageGenerator = new MessageGenerator();
 	private PresenceGenerator mPresenceGenerator = new PresenceGenerator();
 	
@@ -179,58 +181,6 @@ public class XmppConnectionService extends Service {
 		}
 	};
 
-	private OnIqPacketReceived unknownIqListener = new OnIqPacketReceived() {
-
-		@Override
-		public void onIqPacketReceived(Account account, IqPacket packet) {
-			if (packet.hasChild("query", "jabber:iq:roster")) {
-				String from = packet.getFrom();
-				if ((from == null) || (from.equals(account.getJid()))) {
-					Element query = packet.findChild("query");
-					processRosterItems(account, query);
-				} else {
-					Log.d(LOGTAG, "unauthorized roster push from: " + from);
-				}
-			} else if (packet
-					.hasChild("open", "http://jabber.org/protocol/ibb")
-					|| packet
-							.hasChild("data", "http://jabber.org/protocol/ibb")) {
-				XmppConnectionService.this.mJingleConnectionManager
-						.deliverIbbPacket(account, packet);
-			} else if (packet.hasChild("query",
-					"http://jabber.org/protocol/disco#info")) {
-				IqPacket iqResponse = packet
-						.generateRespone(IqPacket.TYPE_RESULT);
-				Element query = iqResponse.addChild("query",
-						"http://jabber.org/protocol/disco#info");
-				query.addChild("feature").setAttribute("var",
-						"urn:xmpp:jingle:1");
-				query.addChild("feature").setAttribute("var",
-						"urn:xmpp:jingle:apps:file-transfer:3");
-				query.addChild("feature").setAttribute("var",
-						"urn:xmpp:jingle:transports:s5b:1");
-				query.addChild("feature").setAttribute("var",
-						"urn:xmpp:jingle:transports:ibb:1");
-				if (confirmMessages()) {
-					query.addChild("feature").setAttribute("var",
-							"urn:xmpp:receipts");
-				}
-				account.getXmppConnection().sendIqPacket(iqResponse, null);
-			} else {
-				if ((packet.getType() == IqPacket.TYPE_GET)
-						|| (packet.getType() == IqPacket.TYPE_SET)) {
-					IqPacket response = packet
-							.generateRespone(IqPacket.TYPE_ERROR);
-					Element error = response.addChild("error");
-					error.setAttribute("type", "cancel");
-					error.addChild("feature-not-implemented",
-							"urn:ietf:params:xml:ns:xmpp-stanzas");
-					account.getXmppConnection().sendIqPacket(response, null);
-				}
-			}
-		}
-	};
-
 	private OnJinglePacketReceived jingleListener = new OnJinglePacketReceived() {
 
 		@Override
@@ -304,33 +254,6 @@ public class XmppConnectionService extends Service {
 			}
 		}
 		return null;
-	}
-
-	private void processRosterItems(Account account, Element elements) {
-		String version = elements.getAttribute("ver");
-		if (version != null) {
-			account.getRoster().setVersion(version);
-		}
-		for (Element item : elements.getChildren()) {
-			if (item.getName().equals("item")) {
-				String jid = item.getAttribute("jid");
-				String name = item.getAttribute("name");
-				String subscription = item.getAttribute("subscription");
-				Contact contact = account.getRoster().getContact(jid);
-				if (!contact.getOption(Contact.Options.DIRTY_PUSH)) {
-					contact.setServerName(name);
-				}
-				if (subscription.equals("remove")) {
-					contact.resetOption(Contact.Options.IN_ROSTER);
-					contact.resetOption(Contact.Options.DIRTY_DELETE);
-					contact.resetOption(Contact.Options.PREEMPTIVE_GRANT);
-				} else {
-					contact.setOption(Contact.Options.IN_ROSTER);
-					contact.resetOption(Contact.Options.DIRTY_PUSH);
-					contact.parseSubscriptionFromElement(item);
-				}
-			}
-		}
 	}
 
 	public class XmppConnectionBinder extends Binder {
@@ -522,7 +445,7 @@ public class XmppConnectionService extends Service {
 		connection.setOnStatusChangedListener(this.statusListener);
 		connection.setOnPresencePacketReceivedListener(this.mPresenceParser);
 		connection
-				.setOnUnregisteredIqPacketReceivedListener(this.unknownIqListener);
+				.setOnUnregisteredIqPacketReceivedListener(this.mIqParser);
 		connection.setOnJinglePacketReceivedListener(this.jingleListener);
 		connection
 				.setOnTLSExceptionReceivedListener(new OnTLSExceptionReceived() {
@@ -734,10 +657,10 @@ public class XmppConnectionService extends Service {
 					@Override
 					public void onIqPacketReceived(final Account account,
 							IqPacket packet) {
-						Element roster = packet.findChild("query");
-						if (roster != null) {
+						Element query = packet.findChild("query");
+						if (query != null) {
 							account.getRoster().markAllAsNotInRoster();
-							processRosterItems(account, roster);
+							mIqParser.rosterItems(account, query);
 						}
 					}
 				});
@@ -1167,16 +1090,17 @@ public class XmppConnectionService extends Service {
 		contact.setOption(Contact.Options.DIRTY_PUSH);
 		Account account = contact.getAccount();
 		if (account.getStatus() == Account.STATUS_ONLINE) {
+			boolean ask = contact.getOption(Contact.Options.ASKING);
+			boolean sendUpdates = contact.getOption(Contact.Options.PENDING_SUBSCRIPTION_REQUEST)
+					&& contact.getOption(Contact.Options.PREEMPTIVE_GRANT);
 			IqPacket iq = new IqPacket(IqPacket.TYPE_SET);
 			iq.query("jabber:iq:roster").addChild(contact.asElement());
 			account.getXmppConnection().sendIqPacket(iq, null);
-			if (contact.getOption(Contact.Options.ASKING)) {
-				sendPresencePacket(account, mPresenceGenerator.requestPresenceUpdatesFrom(contact));
-			}
-			if (contact.getOption(Contact.Options.PENDING_SUBSCRIPTION_REQUEST)
-					&& contact.getOption(Contact.Options.PREEMPTIVE_GRANT)) {
-				Log.d("xmppService", "contact had pending subscription");
+			if (sendUpdates) {
 				sendPresencePacket(account, mPresenceGenerator.sendPresenceUpdatesTo(contact));
+			}
+			if (ask) {
+				sendPresencePacket(account, mPresenceGenerator.requestPresenceUpdatesFrom(contact));
 			}
 		}
 	}
@@ -1380,5 +1304,9 @@ public class XmppConnectionService extends Service {
 	
 	public PresenceGenerator getPresenceGenerator() {
 		return this.mPresenceGenerator;
+	}
+	
+	public JingleConnectionManager getJingleConnectionManager() {
+		return this.mJingleConnectionManager;
 	}
 }

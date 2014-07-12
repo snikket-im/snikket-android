@@ -13,12 +13,9 @@ import eu.siacs.conversations.xmpp.stanzas.PresencePacket;
 
 public class PresenceParser extends AbstractParser implements
 		OnPresencePacketReceived {
-
-	private PresenceGenerator mPresenceGenerator;
 	
 	public PresenceParser(XmppConnectionService service) {
 		super(service);
-		mPresenceGenerator = service.getPresenceGenerator();
 	}
 
 	public void parseConferencePresence(PresencePacket packet, Account account) {
@@ -43,6 +40,7 @@ public class PresenceParser extends AbstractParser implements
 	}
 
 	public void parseContactPresence(PresencePacket packet, Account account) {
+		PresenceGenerator mPresenceGenerator = mXmppConnectionService.getPresenceGenerator();
 		if (packet.getFrom() == null) {
 			return;
 		}
@@ -95,11 +93,7 @@ public class PresenceParser extends AbstractParser implements
 						.onContactStatusChanged(contact, false);
 			} else if (type.equals("subscribe")) {
 				if (contact.getOption(Contact.Options.PREEMPTIVE_GRANT)) {
-					mXmppConnectionService.sendPresencePacket(account, mPresenceGenerator.stopPresenceUpdatesTo(contact));
-					if ((contact.getOption(Contact.Options.ASKING))
-							&& (!contact.getOption(Contact.Options.TO))) {
-						mXmppConnectionService.sendPresencePacket(account,mPresenceGenerator.requestPresenceUpdatesFrom(contact));
-					}
+					mXmppConnectionService.sendPresencePacket(account, mPresenceGenerator.sendPresenceUpdatesTo(contact));
 				} else {
 					contact.setOption(Contact.Options.PENDING_SUBSCRIPTION_REQUEST);
 				}
