@@ -43,8 +43,6 @@ import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.OnBindListener;
 import eu.siacs.conversations.xmpp.OnContactStatusChanged;
 import eu.siacs.conversations.xmpp.OnIqPacketReceived;
-import eu.siacs.conversations.xmpp.OnMessagePacketReceived;
-import eu.siacs.conversations.xmpp.OnPresencePacketReceived;
 import eu.siacs.conversations.xmpp.OnStatusChanged;
 import eu.siacs.conversations.xmpp.OnTLSExceptionReceived;
 import eu.siacs.conversations.xmpp.XmppConnection;
@@ -87,7 +85,7 @@ public class XmppConnectionService extends Service {
 	private static final int PING_MIN_INTERVAL = 30;
 	private static final int PING_TIMEOUT = 10;
 	private static final int CONNECT_TIMEOUT = 90;
-	private static final long CARBON_GRACE_PERIOD = 60000L;
+	public static final long CARBON_GRACE_PERIOD = 60000L;
 
 	private static String ACTION_MERGE_PHONE_CONTACTS = "merge_phone_contacts";
 
@@ -125,8 +123,6 @@ public class XmppConnectionService extends Service {
 
 	private SecureRandom mRandom;
 
-	private long lastCarbonMessageReceived = -CARBON_GRACE_PERIOD;
-
 	private ContentObserver contactObserver = new ContentObserver(null) {
 		@Override
 		public void onChange(boolean selfChange) {
@@ -139,95 +135,6 @@ public class XmppConnectionService extends Service {
 	};
 
 	private final IBinder mBinder = new XmppConnectionBinder();
-	private OnMessagePacketReceived messageListener = new OnMessagePacketReceived() {
-
-		@Override
-		public void onMessagePacketReceived(Account account,
-				MessagePacket packet) {
-			Message message = null;
-			boolean notify = true;
-			if (getPreferences().getBoolean(
-					"notification_grace_period_after_carbon_received", true)) {
-				notify = (SystemClock.elapsedRealtime() - lastCarbonMessageReceived) > CARBON_GRACE_PERIOD;
-			}
-
-			if ((packet.getType() == MessagePacket.TYPE_CHAT)) {
-				if ((packet.getBody() != null)
-						&& (packet.getBody().startsWith("?OTR"))) {
-					message = mMessageParser.parseOtrChat(packet, account);
-					if (message != null) {
-						message.markUnread();
-					}
-				} else if (packet.hasChild("body")) {
-					message = mMessageParser.parseChat(packet, account);
-					message.markUnread();
-				} else if (packet.hasChild("received")
-						|| (packet.hasChild("sent"))) {
-					message = mMessageParser
-							.parseCarbonMessage(packet, account);
-					if (message != null) {
-						if (message.getStatus() == Message.STATUS_SEND) {
-							lastCarbonMessageReceived = SystemClock
-									.elapsedRealtime();
-							notify = false;
-							message.getConversation().markRead();
-						} else {
-							message.markUnread();
-						}
-					}
-				}
-
-			} else if (packet.getType() == MessagePacket.TYPE_GROUPCHAT) {
-				message = mMessageParser.parseGroupchat(packet, account);
-				if (message != null) {
-					if (message.getStatus() == Message.STATUS_RECIEVED) {
-						message.markUnread();
-					} else {
-						message.getConversation().markRead();
-						notify = false;
-					}
-				}
-			} else if (packet.getType() == MessagePacket.TYPE_ERROR) {
-				mMessageParser.parseError(packet, account);
-				return;
-			} else if (packet.getType() == MessagePacket.TYPE_NORMAL) {
-				mMessageParser.parseNormal(packet, account);
-			}
-			if ((message == null) || (message.getBody() == null)) {
-				return;
-			}
-			if ((confirmMessages()) && ((packet.getId() != null))) {
-				MessagePacket receivedPacket = new MessagePacket();
-				receivedPacket.setType(MessagePacket.TYPE_NORMAL);
-				receivedPacket.setTo(message.getCounterpart());
-				receivedPacket.setFrom(account.getFullJid());
-				if (packet.hasChild("markable", "urn:xmpp:chat-markers:0")) {
-					Element received = receivedPacket.addChild("received",
-							"urn:xmpp:chat-markers:0");
-					received.setAttribute("id", packet.getId());
-					account.getXmppConnection().sendMessagePacket(
-							receivedPacket);
-				} else if (packet.hasChild("request", "urn:xmpp:receipts")) {
-					Element received = receivedPacket.addChild("received",
-							"urn:xmpp:receipts");
-					received.setAttribute("id", packet.getId());
-					account.getXmppConnection().sendMessagePacket(
-							receivedPacket);
-				}
-			}
-			Conversation conversation = message.getConversation();
-			conversation.getMessages().add(message);
-			if (packet.getType() != MessagePacket.TYPE_ERROR) {
-				databaseBackend.createMessage(message);
-			}
-			if (convChangedListener != null) {
-				convChangedListener.onConversationListChanged();
-			} else {
-				UIHelper.updateNotification(getApplicationContext(),
-						getConversations(), message.getConversation(), notify);
-			}
-		}
-	};
 	private OnStatusChanged statusListener = new OnStatusChanged() {
 
 		@Override
@@ -267,21 +174,6 @@ public class XmppConnectionService extends Service {
 			}
 			UIHelper.showErrorNotification(getApplicationContext(),
 					getAccounts());
-		}
-	};
-
-	private OnPresencePacketReceived presenceListener = new OnPresencePacketReceived() {
-
-		@Override
-		public void onPresencePacketReceived(final Account account,
-				PresencePacket packet) {
-			if (packet.hasChild("x", "http://jabber.org/protocol/muc#user")) {
-				mPresenceParser.parseConferencePresence(packet, account);
-			} else if (packet.hasChild("x", "http://jabber.org/protocol/muc")) {
-				mPresenceParser.parseConferencePresence(packet, account);
-			} else {
-				mPresenceParser.parseContactPresence(packet, account);
-			}
 		}
 	};
 
@@ -624,9 +516,9 @@ public class XmppConnectionService extends Service {
 		account.setResource(sharedPref.getString("resource", "mobile")
 				.toLowerCase(Locale.getDefault()));
 		XmppConnection connection = new XmppConnection(account, this);
-		connection.setOnMessagePacketReceivedListener(this.messageListener);
+		connection.setOnMessagePacketReceivedListener(this.mMessageParser);
 		connection.setOnStatusChangedListener(this.statusListener);
-		connection.setOnPresencePacketReceivedListener(this.presenceListener);
+		connection.setOnPresencePacketReceivedListener(this.mPresenceParser);
 		connection
 				.setOnUnregisteredIqPacketReceivedListener(this.unknownIqListener);
 		connection.setOnJinglePacketReceivedListener(this.jingleListener);

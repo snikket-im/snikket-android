@@ -7,9 +7,11 @@ import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Presences;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xml.Element;
+import eu.siacs.conversations.xmpp.OnPresencePacketReceived;
 import eu.siacs.conversations.xmpp.stanzas.PresencePacket;
 
-public class PresenceParser extends AbstractParser {
+public class PresenceParser extends AbstractParser implements
+		OnPresencePacketReceived {
 
 	public PresenceParser(XmppConnectionService service) {
 		super(service);
@@ -37,7 +39,7 @@ public class PresenceParser extends AbstractParser {
 	}
 
 	public void parseContactPresence(PresencePacket packet, Account account) {
-		if (packet.getFrom()==null) {
+		if (packet.getFrom() == null) {
 			return;
 		}
 		String[] fromParts = packet.getFrom().split("/");
@@ -75,9 +77,9 @@ public class PresenceParser extends AbstractParser {
 						}
 					}
 					boolean online = sizeBefore < contact.getPresences().size();
-					updateLastseen(packet, account,true);
+					updateLastseen(packet, account, true);
 					mXmppConnectionService.onContactStatusChanged
-							.onContactStatusChanged(contact,online);
+							.onContactStatusChanged(contact, online);
 				}
 			} else if (type.equals("unavailable")) {
 				if (fromParts.length != 2) {
@@ -86,7 +88,7 @@ public class PresenceParser extends AbstractParser {
 					contact.removePresence(fromParts[1]);
 				}
 				mXmppConnectionService.onContactStatusChanged
-						.onContactStatusChanged(contact,false);
+						.onContactStatusChanged(contact, false);
 			} else if (type.equals("subscribe")) {
 				if (contact.getOption(Contact.Options.PREEMPTIVE_GRANT)) {
 					mXmppConnectionService.sendPresenceUpdatesTo(contact);
@@ -99,6 +101,17 @@ public class PresenceParser extends AbstractParser {
 					contact.setOption(Contact.Options.PENDING_SUBSCRIPTION_REQUEST);
 				}
 			}
+		}
+	}
+
+	@Override
+	public void onPresencePacketReceived(Account account, PresencePacket packet) {
+		if (packet.hasChild("x", "http://jabber.org/protocol/muc#user")) {
+			this.parseConferencePresence(packet, account);
+		} else if (packet.hasChild("x", "http://jabber.org/protocol/muc")) {
+			this.parseConferencePresence(packet, account);
+		} else {
+			this.parseContactPresence(packet, account);
 		}
 	}
 
