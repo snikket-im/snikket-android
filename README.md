@@ -84,6 +84,17 @@ engine of your choice. Or maybe your univeristy has one. Or you can run your own
 Or ask a friend to run one. Once you found one you can use Conversations to
 create an account. Just select 'register new account on server' within the
 create account dialog.
+
+####Conversations dosen't work for me. Where can I get help?
+You can join our conference room on conversations@conference.siacs.eu A lot of
+people in there are able to answer basic questions about the usage of
+Conversations or can provide you with tips on running your own XMPP server. If
+you found a bug or your app crashes please read the Developer / Report Bugs
+section of this document.
+
+####I need professional support with Conversations or setting up my server
+I'm available for hire. Contact me at inputmice@siacs.eu
+
 ####How does the address book integration work?
 The address bock integration was designed to protect your privacy. Conversations
 neither uploads contacts from your address book to your server nor fills your
@@ -177,3 +188,9 @@ git submodule update --init --recursive
 ant clean
 ant debug
 ```
+####I found a bug
+Please report it to our issue tracker. If your app crashes please provide a
+stack trace. If you are experiencing missbehaviour please provide detailed
+steps to reproduce.
+Always mention whether you are running the latest Play Store version or the
+current HEAD.
