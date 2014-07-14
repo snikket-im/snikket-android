@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/context_join_conference"
+        android:title="@string/join_conference"/>
+    <item
+        android:id="@+id/context_delete_conference"
+        android:title="@string/delete_bookmark"/>
+
+</menu>

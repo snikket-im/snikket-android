@@ -20,6 +20,7 @@ import net.java.otr4j.session.Session;
 import net.java.otr4j.session.SessionStatus;
 import eu.siacs.conversations.crypto.PgpEngine;
 import eu.siacs.conversations.entities.Account;
+import eu.siacs.conversations.entities.Bookmark;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
@@ -245,9 +246,13 @@ public class XmppConnectionService extends Service {
 		return message;
 	}
 
-	public Conversation findMuc(String name, Account account) {
+	public Conversation findMuc(Bookmark bookmark) {
+		return findMuc(bookmark.getJid(), bookmark.getAccount());
+	}
+	
+	public Conversation findMuc(String jid, Account account) {
 		for (Conversation conversation : this.conversations) {
-			if (conversation.getContactJid().split("/")[0].equals(name)
+			if (conversation.getContactJid().split("/")[0].equals(jid)
 					&& (conversation.getAccount() == account)) {
 				return conversation;
 			}
@@ -466,6 +471,7 @@ public class XmppConnectionService extends Service {
 				account.getRoster().clearPresences();
 				account.clearPresences(); // self presences
 				fetchRosterFromServer(account);
+				fetchBookmarks(account);
 				sendPresencePacket(account, mPresenceGenerator.sendPresence(account));
 				connectMultiModeConversations(account);
 				updateConversationUi();
@@ -659,6 +665,45 @@ public class XmppConnectionService extends Service {
 						}
 					}
 				});
+	}
+	
+	public void fetchBookmarks(Account account) {
+		IqPacket iqPacket = new IqPacket(IqPacket.TYPE_GET);
+		Element query = iqPacket.query("jabber:iq:private");
+		query.addChild("storage", "storage:bookmarks");
+		OnIqPacketReceived callback = new OnIqPacketReceived() {
+			
+			@Override
+			public void onIqPacketReceived(Account account, IqPacket packet) {
+				Element query = packet.query();
+				List<Bookmark> bookmarks = new ArrayList<Bookmark>();
+				Element storage = query.findChild("storage", "storage:bookmarks");
+				if (storage!=null) {
+					for(Element item : storage.getChildren()) {
+						if (item.getName().equals("conference")) {
+							Log.d(LOGTAG,item.toString());
+							Bookmark bookmark = Bookmark.parse(item,account);
+							bookmarks.add(bookmark);
+							if (bookmark.autojoin()) {
+								Log.d(LOGTAG,"has autojoin");
+								Conversation conversation = findMuc(bookmark);
+								if (conversation!=null) {
+									Log.d(LOGTAG,"conversation existed. adding bookmark");
+									conversation.setBookmark(bookmark);
+								} else {
+									Log.d(LOGTAG,"creating new conversation");
+									conversation = findOrCreateConversation(account, bookmark.getJid(), true);
+									conversation.setBookmark(bookmark);
+								}
+							}
+						}
+					}
+				}
+				account.setBookmarks(bookmarks);
+			}
+		};
+		sendIqPacket(account, iqPacket, callback);
+		
 	}
 
 	private void mergePhoneContactsWithRoster() {
@@ -1295,6 +1340,10 @@ public class XmppConnectionService extends Service {
 	
 	public void sendPresencePacket(Account account, PresencePacket packet) {
 		account.getXmppConnection().sendPresencePacket(packet);
+	}
+	
+	public void sendIqPacket(Account account, IqPacket packet, OnIqPacketReceived callback) {
+		account.getXmppConnection().sendIqPacket(packet, callback);
 	}
 	
 	public MessageGenerator getMessageGenerator() {

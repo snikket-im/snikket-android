@@ -64,6 +64,8 @@ public class Conversation extends AbstractEntity {
 
 	private boolean otrSessionNeedsStarting = false;
 
+	private Bookmark bookmark;
+
 	public Conversation(String name, Account account, String contactJid,
 			int mode) {
 		this(java.util.UUID.randomUUID().toString(), name, null, account
@@ -374,5 +376,9 @@ public class Conversation extends AbstractEntity {
 	
 	public byte[] getSymmetricKey() {
 		return this.symmetricKey;
+	}
+
+	public void setBookmark(Bookmark bookmark) {
+		this.bookmark = bookmark;
 	}
 }

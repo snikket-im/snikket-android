@@ -1,6 +1,8 @@
 package eu.siacs.conversations.entities;
 
 import java.security.interfaces.DSAPublicKey;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import net.java.otr4j.crypto.OtrCryptoEngineImpl;
@@ -67,6 +69,8 @@ public class Account  extends AbstractEntity{
 	private String otrFingerprint;
 	
 	private Roster roster = null;
+
+	private List<Bookmark> bookmarks = new ArrayList<Bookmark>();
 	
 	public Account() {
 		this.uuid = "0";
@@ -296,5 +300,13 @@ public class Account  extends AbstractEntity{
 			this.roster = new Roster(this);
 		}
 		return this.roster;
+	}
+
+	public void setBookmarks(List<Bookmark> bookmarks) {
+		this.bookmarks = bookmarks;
+	}
+	
+	public List<Bookmark> getBookmarks() {
+		return this.bookmarks;
 	}
 }

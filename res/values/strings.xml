@@ -267,4 +267,5 @@
     <string name="conference_address">Conference address</string>
     <string name="conference_address_example">room@conference.example.com</string>
     <string name="save_as_bookmark">Save as bookmark</string>
+    <string name="delete_bookmark">Delete bookmark</string>
 </resources>

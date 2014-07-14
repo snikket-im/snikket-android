@@ -37,6 +37,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
+import eu.siacs.conversations.entities.Bookmark;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.ListItem;
@@ -63,6 +64,9 @@ public class StartConversation extends XmppActivity {
 	private List<String> mKnownConferenceHosts;
 
 	private EditText mSearchEditText;
+	
+	public int conference_context_id;
+	public int contact_context_id;
 
 	private TabListener mTabListener = new TabListener() {
 
@@ -115,7 +119,7 @@ public class StartConversation extends XmppActivity {
 			imm.hideSoftInputFromWindow(mSearchEditText.getWindowToken(),
 					InputMethodManager.HIDE_IMPLICIT_ONLY);
 			mSearchEditText.setText("");
-			filterContacts(null);
+			filter(null);
 			return true;
 		}
 	};
@@ -123,7 +127,7 @@ public class StartConversation extends XmppActivity {
 
 		@Override
 		public void afterTextChanged(Editable editable) {
-			filterContacts(editable.toString());
+			filter(editable.toString());
 		}
 
 		@Override
@@ -172,9 +176,19 @@ public class StartConversation extends XmppActivity {
 
 		mConferenceAdapter = new ListItemAdapter(conferences);
 		mConferenceListFragment.setListAdapter(mConferenceAdapter);
+		mConferenceListFragment.setContextMenu(R.menu.conference_context);
+		mConferenceListFragment.setOnListItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1,
+					int position, long arg3) {
+				openConversationForBookmark(position);
+			}
+		});
 
 		mContactsAdapter = new ListItemAdapter(contacts);
 		mContactsListFragment.setListAdapter(mContactsAdapter);
+		mContactsListFragment.setContextMenu(R.menu.contact_context);
 		mContactsListFragment
 				.setOnListItemClickListener(new OnItemClickListener() {
 
@@ -192,18 +206,35 @@ public class StartConversation extends XmppActivity {
 		Conversation conversation = xmppConnectionService
 				.findOrCreateConversation(contact.getAccount(),
 						contact.getJid(), false);
-		switchToConversation(conversation, null, false);
+		switchToConversation(conversation);
+	}
+	
+	protected void openConversationForContact() {
+		int position = contact_context_id;
+		openConversationForContact(position);
+	}
+	
+	protected void openConversationForBookmark() {
+		openConversationForBookmark(conference_context_id);
+	}
+	
+	protected void openConversationForBookmark(int position) {
+		Bookmark bookmark = (Bookmark) conferences.get(position);
+		Conversation conversation = xmppConnectionService.findOrCreateConversation(bookmark.getAccount(), bookmark.getJid(), true);
+		switchToConversation(conversation);
 	}
 
-	protected void openDetailsForContact(int position) {
+	protected void openDetailsForContact() {
+		int position = contact_context_id;
 		Contact contact = (Contact) contacts.get(position);
 		switchToContactDetails(contact);
 	}
 
-	protected void deleteContact(int position) {
+	protected void deleteContact() {
+		int position = contact_context_id;
 		Contact contact = (Contact) contacts.get(position);
 		xmppConnectionService.deleteContactOnServer(contact);
-		filterContacts(mSearchEditText.getText().toString());
+		filter(mSearchEditText.getText().toString());
 	}
 
 	protected void showCreateContactDialog() {
@@ -339,9 +370,9 @@ public class StartConversation extends XmppActivity {
 	@Override
 	void onBackendConnected() {
 		if (mSearchEditText != null) {
-			filterContacts(mSearchEditText.getText().toString());
+			filter(mSearchEditText.getText().toString());
 		} else {
-			filterContacts(null);
+			filter(null);
 		}
 		this.mActivatedAccounts.clear();
 		for (Account account : xmppConnectionService.getAccounts()) {
@@ -352,6 +383,11 @@ public class StartConversation extends XmppActivity {
 		this.mKnownHosts = xmppConnectionService.getKnownHosts();
 		this.mKnownConferenceHosts = xmppConnectionService
 				.getKnownConferenceHosts();
+	}
+	
+	protected void filter(String needle) {
+		this.filterContacts(needle);
+		this.filterConferences(needle);
 	}
 
 	protected void filterContacts(String needle) {
@@ -367,6 +403,21 @@ public class StartConversation extends XmppActivity {
 		}
 		Collections.sort(this.contacts);
 		mContactsAdapter.notifyDataSetChanged();
+	}
+	
+	protected void filterConferences(String needle) {
+		this.conferences.clear();
+		for (Account account : xmppConnectionService.getAccounts()) {
+			if (account.getStatus() != Account.STATUS_DISABLED) {
+				for(Bookmark bookmark : account.getBookmarks()) {
+					if (bookmark.match(needle)) {
+						this.conferences.add(bookmark);
+					}
+				}
+			}
+		}
+		Collections.sort(this.conferences);
+		mConferenceAdapter.notifyDataSetChanged();
 	}
 
 	private void onTabChanged() {
@@ -403,7 +454,11 @@ public class StartConversation extends XmppActivity {
 
 	public static class MyListFragment extends ListFragment {
 		private AdapterView.OnItemClickListener mOnItemClickListener;
-		private int mContextPosition = -1;
+		private int mResContextMenu;
+		
+		public void setContextMenu(int res) {
+			this.mResContextMenu = res;
+		}
 
 		@Override
 		public void onListItemClick(ListView l, View v, int position, long id) {
@@ -426,10 +481,15 @@ public class StartConversation extends XmppActivity {
 		public void onCreateContextMenu(ContextMenu menu, View v,
 				ContextMenuInfo menuInfo) {
 			super.onCreateContextMenu(menu, v, menuInfo);
-			getActivity().getMenuInflater().inflate(R.menu.contact_context,
+			StartConversation activity = (StartConversation) getActivity();
+			activity.getMenuInflater().inflate(mResContextMenu,
 					menu);
 			AdapterView.AdapterContextMenuInfo acmi = (AdapterContextMenuInfo) menuInfo;
-			this.mContextPosition = acmi.position;
+			if (mResContextMenu == R.menu.conference_context) {
+				activity.conference_context_id = acmi.position;
+			} else {
+				activity.contact_context_id = acmi.position;
+			}
 		}
 
 		@Override
@@ -437,13 +497,16 @@ public class StartConversation extends XmppActivity {
 			StartConversation activity = (StartConversation) getActivity();
 			switch (item.getItemId()) {
 			case R.id.context_start_conversation:
-				activity.openConversationForContact(mContextPosition);
+				activity.openConversationForContact();
 				break;
 			case R.id.context_contact_details:
-				activity.openDetailsForContact(mContextPosition);
+				activity.openDetailsForContact();
 				break;
 			case R.id.context_delete_contact:
-				activity.deleteContact(mContextPosition);
+				activity.deleteContact();
+				break;
+			case R.id.context_join_conference:
+				activity.openConversationForBookmark();
 				break;
 			}
 			return true;
