@@ -258,9 +258,13 @@
     <string name="conferences">Conferencias</string>
     <string name="search">Buscar</string>
     <string name="create_contact">Crear Contacto</string>
-    <string name="create_conference">Crear Conferencia</string>
+    <string name="join_conference">Unirse a Conferencia</string>
     <string name="delete_contact">Eliminar Contacto</string>
     <string name="view_contact_details">Ver detalles del contacto</string>
     <string name="create">Crear</string>
     <string name="contact_already_exists">El contacto ya existe</string>
+    <string name="join">Unirse</string>
+    <string name="conference_address">Dirección de la Conferencia</string>
+    <string name="conference_address_example">nombre@conferencia.ejemplo.com</string>
+    <string name="save_as_bookmark">Guardar en marcadores</string>
 </resources>
