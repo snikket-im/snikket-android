@@ -144,6 +144,8 @@ public class Conversation extends AbstractEntity {
 		if ((getMode() == MODE_MULTI) && (getMucOptions().getSubject() != null)
 				&& useSubject) {
 			return getMucOptions().getSubject();
+		} else if (getMode() == MODE_MULTI && bookmark!=null && bookmark.getName() != null) {
+			return bookmark.getName();
 		} else {
 			return this.getContact().getDisplayName();
 		}
@@ -380,5 +382,12 @@ public class Conversation extends AbstractEntity {
 
 	public void setBookmark(Bookmark bookmark) {
 		this.bookmark = bookmark;
+		this.bookmark.setConversation(this);
+	}
+	
+	public void deregisterWithBookmark() {
+		if (this.bookmark != null) {
+			this.bookmark.setConversation(null);
+		}
 	}
 }

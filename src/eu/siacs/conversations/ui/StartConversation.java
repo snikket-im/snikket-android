@@ -221,6 +221,7 @@ public class StartConversation extends XmppActivity {
 	protected void openConversationForBookmark(int position) {
 		Bookmark bookmark = (Bookmark) conferences.get(position);
 		Conversation conversation = xmppConnectionService.findOrCreateConversation(bookmark.getAccount(), bookmark.getJid(), true);
+		conversation.setBookmark(bookmark);
 		switchToConversation(conversation);
 	}
 
@@ -445,8 +446,7 @@ public class StartConversation extends XmppActivity {
 
 			jid.setText(item.getJid());
 			name.setText(item.getDisplayName());
-			picture.setImageBitmap(UIHelper.getContactPicture(item, 48,
-					this.getContext(), false));
+			picture.setImageBitmap(item.getImage(48, getApplicationContext()));
 			return view;
 		}
 

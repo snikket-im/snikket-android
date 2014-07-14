@@ -684,14 +684,11 @@ public class XmppConnectionService extends Service {
 							Log.d(LOGTAG,item.toString());
 							Bookmark bookmark = Bookmark.parse(item,account);
 							bookmarks.add(bookmark);
-							if (bookmark.autojoin()) {
-								Log.d(LOGTAG,"has autojoin");
-								Conversation conversation = findMuc(bookmark);
-								if (conversation!=null) {
-									Log.d(LOGTAG,"conversation existed. adding bookmark");
-									conversation.setBookmark(bookmark);
-								} else {
-									Log.d(LOGTAG,"creating new conversation");
+							Conversation conversation = findMuc(bookmark);
+							if (conversation!=null) {
+								conversation.setBookmark(bookmark);
+							} else {
+								if (bookmark.autojoin()) {
 									conversation = findOrCreateConversation(account, bookmark.getJid(), true);
 									conversation.setBookmark(bookmark);
 								}
@@ -1011,6 +1008,7 @@ public class XmppConnectionService extends Service {
 		Log.d(LOGTAG, "send leaving muc " + packet);
 		sendPresencePacket(conversation.getAccount(),packet);
 		conversation.getMucOptions().setOffline();
+		conversation.deregisterWithBookmark();
 	}
 
 	public void disconnect(Account account, boolean force) {

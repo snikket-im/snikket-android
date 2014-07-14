@@ -8,9 +8,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xml.Element;
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 
 public class Contact implements ListItem {
 	public static final String TABLENAME = "contacts";
@@ -310,5 +313,10 @@ public class Contact implements ListItem {
 		} else {
 			return null;
 		}
+	}
+
+	@Override
+	public Bitmap getImage(int dpSize, Context context) {
+		return UIHelper.getContactPicture(this, dpSize, context, false);
 	}
 }

@@ -238,7 +238,7 @@ public class UIHelper {
 		}
 	}
 
-	public static Bitmap getContactPicture(ListItem contact, int dpSize,
+	public static Bitmap getContactPicture(Contact contact, int dpSize,
 			Context context, boolean notification) {
 		String uri = contact.getProfilePhoto();
 		if (uri == null) {
