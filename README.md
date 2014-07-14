@@ -127,7 +127,7 @@ longer necessary. Using priorities to route OTR messages isn't pratical either
 because they are not changeable on the fly. Metrics like last active client
 (the client which sent the last message) are much better.
 
-Unfortunatly these modern replacement for lagecay XMPP featurs are not widely
+Unfortunatly these modern replacement for legacy XMPP featurs are not widely
 adopted. However Conversations should be an instant messanger for the future and
 instead of making Conversations compatible with the past we should work on
 implementing new, improved technologies into other XMPP clients as well.
