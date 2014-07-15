@@ -122,4 +122,10 @@ public class Bookmark implements ListItem {
 		}
 		return element;
 	}
+
+	public void unregisterConversation() {
+		if (this.mJoinedConversation != null) {
+			this.mJoinedConversation.deregisterWithBookmark();
+		}
+	}
 }

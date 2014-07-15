@@ -278,6 +278,7 @@ public class StartConversation extends XmppActivity {
 			
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
+				bookmark.unregisterConversation();
 				Account account = bookmark.getAccount();
 				account.getBookmarks().remove(bookmark);
 				xmppConnectionService.pushBookmarks(account);
