@@ -953,7 +953,6 @@ public class XmppConnectionService extends Service {
 					mDateFormat.format(date));
 		}
 		packet.addChild(x);
-		Log.d(LOGTAG,packet.toString());
 		sendPresencePacket(account, packet);
 	}
 

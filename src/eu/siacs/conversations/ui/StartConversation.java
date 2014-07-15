@@ -12,6 +12,8 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.app.ListFragment;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -225,7 +227,9 @@ public class StartConversation extends XmppActivity {
 				.findOrCreateConversation(bookmark.getAccount(),
 						bookmark.getJid(), true);
 		conversation.setBookmark(bookmark);
-		xmppConnectionService.joinMuc(conversation);
+		if (!conversation.getMucOptions().online()) {
+			xmppConnectionService.joinMuc(conversation);
+		}
 		if (!bookmark.autojoin()) {
 			bookmark.setAutojoin(true);
 			xmppConnectionService.pushBookmarks(bookmark.getAccount());
@@ -241,18 +245,47 @@ public class StartConversation extends XmppActivity {
 
 	protected void deleteContact() {
 		int position = contact_context_id;
-		Contact contact = (Contact) contacts.get(position);
-		xmppConnectionService.deleteContactOnServer(contact);
-		filter(mSearchEditText.getText().toString());
+		final Contact contact = (Contact) contacts.get(position);
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setNegativeButton(R.string.cancel, null);
+		builder.setTitle(R.string.action_delete_contact);
+		builder.setMessage(
+				getString(R.string.remove_contact_text,
+						contact.getJid()));
+		builder.setPositiveButton(R.string.delete,new OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				xmppConnectionService.deleteContactOnServer(contact);
+				filter(mSearchEditText.getText().toString());
+			}
+		});
+		builder.create().show();
+		
 	}
 
 	protected void deleteConference() {
 		int position = conference_context_id;
-		Bookmark bookmark = (Bookmark) conferences.get(position);
-		Account account = bookmark.getAccount();
-		account.getBookmarks().remove(bookmark);
-		xmppConnectionService.pushBookmarks(account);
-		filter(mSearchEditText.getText().toString());
+		final Bookmark bookmark = (Bookmark) conferences.get(position);
+		
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setNegativeButton(R.string.cancel, null);
+		builder.setTitle(R.string.delete_bookmark);
+		builder.setMessage(
+				getString(R.string.remove_bookmark_text,
+						bookmark.getJid()));
+		builder.setPositiveButton(R.string.delete,new OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				Account account = bookmark.getAccount();
+				account.getBookmarks().remove(bookmark);
+				xmppConnectionService.pushBookmarks(account);
+				filter(mSearchEditText.getText().toString());
+			}
+		});
+		builder.create().show();
+		
 	}
 
 	protected void showCreateContactDialog() {
@@ -342,13 +375,18 @@ public class StartConversation extends XmppActivity {
 											.findOrCreateConversation(account,
 													conferenceJid, true);
 									conversation.setBookmark(bookmark);
-									xmppConnectionService.joinMuc(conversation);
+									if (!conversation.getMucOptions().online()) {
+										xmppConnectionService.joinMuc(conversation);
+									}
 									switchToConversation(conversation);
 								}
 							} else {
 								Conversation conversation = xmppConnectionService
 										.findOrCreateConversation(account,
 												conferenceJid, true);
+								if (!conversation.getMucOptions().online()) {
+									xmppConnectionService.joinMuc(conversation);
+								}
 								switchToConversation(conversation);
 							}
 						} else {
