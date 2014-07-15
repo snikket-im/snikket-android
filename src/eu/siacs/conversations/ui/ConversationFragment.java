@@ -183,6 +183,15 @@ public class ConversationFragment extends Fragment {
 		final View view = inflater.inflate(R.layout.fragment_conversation,
 				container, false);
 		chatMsg = (EditText) view.findViewById(R.id.textinput);
+		chatMsg.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				if (activity.getSlidingPaneLayout().isSlideable()) {
+					activity.getSlidingPaneLayout().closePane();
+				}
+			}
+		});
 
 		ImageButton sendButton = (ImageButton) view
 				.findViewById(R.id.textSendButton);
