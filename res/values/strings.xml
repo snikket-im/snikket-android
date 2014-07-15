@@ -105,7 +105,7 @@
     <string name="contact_offline_otr">Sending OTR encrypted messages to an offline contact is unfortunately not supported.\nWould you like to send the message in plain text?</string>
     <string name="contact_offline_file">Sending files to an offline contact is unfortunately not supported.</string>
     <string name="send_unencrypted">Send unencrypted</string>
-    <string name="decryption_failed">Decrpytion failed. Maybe you don’t have the proper private key.</string>
+    <string name="decryption_failed">Decryption failed. Maybe you don’t have the proper private key.</string>
     <string name="openkeychain_required">OpenKeychain</string>
     <string name="openkeychain_required_long">Conversations utilizes a third party app called <b>OpenKeychain</b> to encrypt and decrypt messages and to mange your public keys.\n\nOpenKeychain is licensed under GPLv3 and available on F-Droid and Google Play.\n\n<small>(Please restart Conversations afterwards.)</small></string>
     <string name="restart">Restart</string>
