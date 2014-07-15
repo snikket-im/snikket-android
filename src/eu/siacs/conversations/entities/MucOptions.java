@@ -7,6 +7,7 @@ import eu.siacs.conversations.crypto.PgpEngine;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.stanzas.PresencePacket;
 import android.annotation.SuppressLint;
+import android.util.Log;
 
 @SuppressLint("DefaultLocale")
 public class MucOptions {
@@ -87,6 +88,7 @@ public class MucOptions {
 	private boolean aboutToRename = false;
 	private User self = new User();
 	private String subject = null;
+	private String nick;
 
 	public MucOptions(Account account) {
 		this.account = account;
@@ -123,7 +125,7 @@ public class MucOptions {
 				user.setAffiliation(item.getAttribute("affiliation"));
 				user.setRole(item.getAttribute("role"));
 				user.setName(name);
-				if (name.equals(getNick())) {
+				if (name.equals(getJoinNick())) {
 					this.isOnline = true;
 					this.error = 0;
 					self = user;
@@ -145,7 +147,7 @@ public class MucOptions {
 					}
 				}
 			} else if (type.equals("unavailable")) {
-				if (name.equals(getNick())) {
+				if (name.equals(getJoinNick())) {
 					Element item = packet.findChild("x","http://jabber.org/protocol/muc#user").findChild("item");
 					String nick = item.getAttribute("nick");
 					if (nick!=null) {
@@ -153,7 +155,7 @@ public class MucOptions {
 						if (renameListener!=null) {
 							renameListener.onRename(true);
 						}
-						this.setNick(nick);
+						this.setJoinNick(nick);
 					}
 				}
 				deleteUser(packet.getAttribute("from").split("/")[1]);
@@ -177,22 +179,25 @@ public class MucOptions {
 		return this.users;
 	}
 	
-	public String getNick() {
-		String[] split = conversation.getContactJid().split("/");
-		if (split.length == 2) {
-			return split[1];
+	public String getProposedNick() {
+		String[] mucParts = conversation.getContactJid().split("/");
+		if (conversation.getBookmark() != null && conversation.getBookmark().getNick() != null) {
+			return conversation.getBookmark().getNick();
 		} else {
-			if (conversation.getAccount()!=null) {
-				return conversation.getAccount().getUsername();
+			if (mucParts.length == 2) {
+				return mucParts[1];
 			} else {
-				return null;
+				return account.getUsername();
 			}
 		}
 	}
 	
-	public void setNick(String nick) {
-		String jid = conversation.getContactJid().split("/")[0]+"/"+nick;
-		conversation.setContactJid(jid);
+	public String getJoinNick() {
+		return this.nick;
+	}
+	
+	public void setJoinNick(String nick) {
+		this.nick = nick;
 	}
 	
 	public void setConversation(Conversation conversation) {
@@ -267,5 +272,9 @@ public class MucOptions {
 			}
 		}
 		return true;
+	}
+
+	public String getJoinJid() {
+		return this.conversation.getContactJid().split("/")[0]+"/"+this.getJoinNick();
 	}
 }

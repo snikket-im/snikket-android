@@ -43,7 +43,6 @@ import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.ListItem;
 import eu.siacs.conversations.utils.KnownHostsAdapter;
-import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.utils.Validator;
 
 public class StartConversation extends XmppActivity {
@@ -65,7 +64,7 @@ public class StartConversation extends XmppActivity {
 	private List<String> mKnownConferenceHosts;
 
 	private EditText mSearchEditText;
-	
+
 	public int conference_context_id;
 	public int contact_context_id;
 
@@ -178,14 +177,15 @@ public class StartConversation extends XmppActivity {
 		mConferenceAdapter = new ListItemAdapter(conferences);
 		mConferenceListFragment.setListAdapter(mConferenceAdapter);
 		mConferenceListFragment.setContextMenu(R.menu.conference_context);
-		mConferenceListFragment.setOnListItemClickListener(new OnItemClickListener() {
+		mConferenceListFragment
+				.setOnListItemClickListener(new OnItemClickListener() {
 
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1,
-					int position, long arg3) {
-				openConversationForBookmark(position);
-			}
-		});
+					@Override
+					public void onItemClick(AdapterView<?> arg0, View arg1,
+							int position, long arg3) {
+						openConversationForBookmark(position);
+					}
+				});
 
 		mContactsAdapter = new ListItemAdapter(contacts);
 		mContactsListFragment.setListAdapter(mContactsAdapter);
@@ -209,20 +209,23 @@ public class StartConversation extends XmppActivity {
 						contact.getJid(), false);
 		switchToConversation(conversation);
 	}
-	
+
 	protected void openConversationForContact() {
 		int position = contact_context_id;
 		openConversationForContact(position);
 	}
-	
+
 	protected void openConversationForBookmark() {
 		openConversationForBookmark(conference_context_id);
 	}
-	
+
 	protected void openConversationForBookmark(int position) {
 		Bookmark bookmark = (Bookmark) conferences.get(position);
-		Conversation conversation = xmppConnectionService.findOrCreateConversation(bookmark.getAccount(), bookmark.getJid(), true);
+		Conversation conversation = xmppConnectionService
+				.findOrCreateConversation(bookmark.getAccount(),
+						bookmark.getJid(), true);
 		conversation.setBookmark(bookmark);
+		xmppConnectionService.joinMuc(conversation);
 		if (!bookmark.autojoin()) {
 			bookmark.setAutojoin(true);
 			xmppConnectionService.pushBookmarks(bookmark.getAccount());
@@ -242,7 +245,7 @@ public class StartConversation extends XmppActivity {
 		xmppConnectionService.deleteContactOnServer(contact);
 		filter(mSearchEditText.getText().toString());
 	}
-	
+
 	protected void deleteConference() {
 		int position = contact_context_id;
 		Bookmark bookmark = (Bookmark) conferences.get(position);
@@ -307,7 +310,8 @@ public class StartConversation extends XmppActivity {
 		jid.setAdapter(new KnownHostsAdapter(this,
 				android.R.layout.simple_list_item_1, mKnownConferenceHosts));
 		populateAccountSpinner(spinner);
-		final CheckBox bookmarkCheckBox = (CheckBox) dialogView.findViewById(R.id.bookmark);
+		final CheckBox bookmarkCheckBox = (CheckBox) dialogView
+				.findViewById(R.id.bookmark);
 		builder.setView(dialogView);
 		builder.setNegativeButton(R.string.cancel, null);
 		builder.setPositiveButton(R.string.join, null);
@@ -328,20 +332,23 @@ public class StartConversation extends XmppActivity {
 								if (account.hasBookmarkFor(conferenceJid)) {
 									jid.setError(getString(R.string.bookmark_already_exists));
 								} else {
-									Bookmark bookmark = new Bookmark(account, conferenceJid);
+									Bookmark bookmark = new Bookmark(account,
+											conferenceJid);
 									bookmark.setAutojoin(true);
 									account.getBookmarks().add(bookmark);
-									xmppConnectionService.pushBookmarks(account);
+									xmppConnectionService
+											.pushBookmarks(account);
 									Conversation conversation = xmppConnectionService
 											.findOrCreateConversation(account,
 													conferenceJid, true);
 									conversation.setBookmark(bookmark);
-										switchToConversation(conversation);
+									xmppConnectionService.joinMuc(conversation);
+									switchToConversation(conversation);
 								}
 							} else {
 								Conversation conversation = xmppConnectionService
-									.findOrCreateConversation(account,
-											conferenceJid, true);
+										.findOrCreateConversation(account,
+												conferenceJid, true);
 								switchToConversation(conversation);
 							}
 						} else {
@@ -416,7 +423,7 @@ public class StartConversation extends XmppActivity {
 		this.mKnownConferenceHosts = xmppConnectionService
 				.getKnownConferenceHosts();
 	}
-	
+
 	protected void filter(String needle) {
 		this.filterContacts(needle);
 		this.filterConferences(needle);
@@ -436,12 +443,12 @@ public class StartConversation extends XmppActivity {
 		Collections.sort(this.contacts);
 		mContactsAdapter.notifyDataSetChanged();
 	}
-	
+
 	protected void filterConferences(String needle) {
 		this.conferences.clear();
 		for (Account account : xmppConnectionService.getAccounts()) {
 			if (account.getStatus() != Account.STATUS_DISABLED) {
-				for(Bookmark bookmark : account.getBookmarks()) {
+				for (Bookmark bookmark : account.getBookmarks()) {
 					if (bookmark.match(needle)) {
 						this.conferences.add(bookmark);
 					}
@@ -486,7 +493,7 @@ public class StartConversation extends XmppActivity {
 	public static class MyListFragment extends ListFragment {
 		private AdapterView.OnItemClickListener mOnItemClickListener;
 		private int mResContextMenu;
-		
+
 		public void setContextMenu(int res) {
 			this.mResContextMenu = res;
 		}
@@ -513,8 +520,7 @@ public class StartConversation extends XmppActivity {
 				ContextMenuInfo menuInfo) {
 			super.onCreateContextMenu(menu, v, menuInfo);
 			StartConversation activity = (StartConversation) getActivity();
-			activity.getMenuInflater().inflate(mResContextMenu,
-					menu);
+			activity.getMenuInflater().inflate(mResContextMenu, menu);
 			AdapterView.AdapterContextMenuInfo acmi = (AdapterContextMenuInfo) menuInfo;
 			if (mResContextMenu == R.menu.conference_context) {
 				activity.conference_context_id = acmi.position;

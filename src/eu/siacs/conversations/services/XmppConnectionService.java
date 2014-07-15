@@ -691,6 +691,7 @@ public class XmppConnectionService extends Service {
 								if (bookmark.autojoin()) {
 									conversation = findOrCreateConversation(account, bookmark.getJid(), true);
 									conversation.setBookmark(bookmark);
+									joinMuc(conversation);
 								}
 							}
 						}
@@ -840,10 +841,6 @@ public class XmppConnectionService extends Service {
 			this.databaseBackend.createConversation(conversation);
 		}
 		this.conversations.add(conversation);
-		if ((account.getStatus() == Account.STATUS_ONLINE)
-				&& (conversation.getMode() == Conversation.MODE_MULTI)) {
-			joinMuc(conversation);
-		}
 		updateConversationUi();
 		return conversation;
 	}
@@ -933,19 +930,12 @@ public class XmppConnectionService extends Service {
 	}
 
 	public void joinMuc(Conversation conversation) {
+		Log.d(LOGTAG,"joining conversation "+conversation.getContactJid());
 		Account account = conversation.getAccount();
-		String[] mucParts = conversation.getContactJid().split("/");
-		String muc;
-		String nick;
-		if (mucParts.length == 2) {
-			muc = mucParts[0];
-			nick = mucParts[1];
-		} else {
-			muc = mucParts[0];
-			nick = account.getUsername();
-		}
+		String nick = conversation.getMucOptions().getProposedNick();
+		conversation.getMucOptions().setJoinNick(nick);
 		PresencePacket packet = new PresencePacket();
-		packet.setAttribute("to", muc + "/" + nick);
+		packet.setAttribute("to",conversation.getMucOptions().getJoinJid());
 		Element x = new Element("x");
 		x.setAttribute("xmlns", "http://jabber.org/protocol/muc");
 		String sig = account.getPgpSignature();
@@ -963,6 +953,7 @@ public class XmppConnectionService extends Service {
 					mDateFormat.format(date));
 		}
 		packet.addChild(x);
+		Log.d(LOGTAG,packet.toString());
 		sendPresencePacket(account, packet);
 	}
 
@@ -984,10 +975,13 @@ public class XmppConnectionService extends Service {
 						renameListener.onRename(success);
 					}
 					if (success) {
-						String jid = conversation.getContactJid().split("/")[0]
-								+ "/" + nick;
-						conversation.setContactJid(jid);
+						conversation.setContactJid(conversation.getMucOptions().getJoinNick());
 						databaseBackend.updateConversation(conversation);
+						Bookmark bookmark = conversation.getBookmark();
+						if (bookmark!=null) {
+							bookmark.setNick(nick);
+							pushBookmarks(bookmark.getAccount());
+						}
 					}
 				}
 			});
@@ -1009,6 +1003,11 @@ public class XmppConnectionService extends Service {
 			conversation.setContactJid(jid);
 			databaseBackend.updateConversation(conversation);
 			if (conversation.getAccount().getStatus() == Account.STATUS_ONLINE) {
+				Bookmark bookmark = conversation.getBookmark();
+				if (bookmark!=null) {
+					bookmark.setNick(nick);
+					pushBookmarks(bookmark.getAccount());
+				}
 				joinMuc(conversation);
 			}
 		}
@@ -1016,8 +1015,7 @@ public class XmppConnectionService extends Service {
 
 	public void leaveMuc(Conversation conversation) {
 		PresencePacket packet = new PresencePacket();
-		packet.setAttribute("to", conversation.getContactJid().split("/")[0]
-				+ "/" + conversation.getMucOptions().getNick());
+		packet.setAttribute("to", conversation.getMucOptions().getJoinJid());
 		packet.setAttribute("from", conversation.getAccount().getFullJid());
 		packet.setAttribute("type", "unavailable");
 		sendPresencePacket(conversation.getAccount(),packet);

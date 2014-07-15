@@ -48,7 +48,7 @@ public class MucDetailsActivity extends XmppActivity {
 		public void onClick(View arg0) {
 			MucOptions options = conversation.getMucOptions();
 			String nick = mYourNick.getText().toString();
-			if (!options.getNick().equals(nick)) {
+			if (!options.getJoinNick().equals(nick)) {
 				xmppConnectionService.renameInMuc(conversation, nick);
 				finish();
 			}
@@ -149,7 +149,7 @@ public class MucDetailsActivity extends XmppActivity {
 				mSubject.setText(conversation.getMucOptions().getSubject());
 				setTitle(conversation.getName(useSubject));
 				mFullJid.setText(conversation.getContactJid().split("/")[0]);
-				mYourNick.setText(conversation.getMucOptions().getNick());
+				mYourNick.setText(conversation.getMucOptions().getJoinNick());
 				mRoleAffiliaton = (TextView) findViewById(R.id.muc_role);
 				if (conversation.getMucOptions().online()) {
 					mMoreDetails.setVisibility(View.VISIBLE);
