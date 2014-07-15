@@ -247,7 +247,7 @@ public class StartConversation extends XmppActivity {
 	}
 
 	protected void deleteConference() {
-		int position = contact_context_id;
+		int position = conference_context_id;
 		Bookmark bookmark = (Bookmark) conferences.get(position);
 		Account account = bookmark.getAccount();
 		account.getBookmarks().remove(bookmark);
