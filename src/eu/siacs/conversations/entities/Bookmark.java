@@ -16,13 +16,13 @@ public class Bookmark implements ListItem {
 	private boolean autojoin;
 	private Conversation mJoinedConversation;
 	
-	public Bookmark(Account account) {
+	public Bookmark(Account account, String jid) {
 		this.account = account;
+		this.jid = jid;
 	}
 
 	public static Bookmark parse(Element element, Account account) {
-		Bookmark bookmark = new Bookmark(account);
-		bookmark.setJid(element.getAttribute("jid"));
+		Bookmark bookmark = new Bookmark(account,element.getAttribute("jid"));
 		bookmark.setName(element.getAttribute("name"));
 		String autojoin = element.getAttribute("autojoin");
 		if (autojoin!=null && (autojoin.equals("true")||autojoin.equals("1"))) {
@@ -45,10 +45,6 @@ public class Bookmark implements ListItem {
 		this.name = name;
 	}
 	
-	public void setJid(String jid) {
-		this.jid = jid;
-	}
-	
 	public void setNick(String nick) {
 		this.nick = nick;
 	}
@@ -60,8 +56,8 @@ public class Bookmark implements ListItem {
 
 	@Override
 	public String getDisplayName() {
-		if (this.mJoinedConversation!=null) {
-			return this.mJoinedConversation.getName(true);
+		if (this.mJoinedConversation!=null && (this.mJoinedConversation.getMucOptions().getSubject() != null)) {
+			return this.mJoinedConversation.getMucOptions().getSubject();
 		} else if (name!=null) {
 			return name;
 		} else {
@@ -108,5 +104,22 @@ public class Bookmark implements ListItem {
 
 	public String getName() {
 		return name;
+	}
+	
+	public Element toElement() {
+		Element element = new Element("conference");
+		element.setAttribute("jid", this.getJid());
+		if (this.getName() != null) {
+			element.setAttribute("name", this.getName());
+		}
+		if (this.autojoin) {
+			element.setAttribute("autojoin", "true");
+		} else {
+			element.setAttribute("autojoin", "false");
+		}
+		if (this.nick != null) {
+			element.addChild("nick").setContent(this.nick);
+		}
+		return element;
 	}
 }

@@ -30,6 +30,7 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -222,6 +223,10 @@ public class StartConversation extends XmppActivity {
 		Bookmark bookmark = (Bookmark) conferences.get(position);
 		Conversation conversation = xmppConnectionService.findOrCreateConversation(bookmark.getAccount(), bookmark.getJid(), true);
 		conversation.setBookmark(bookmark);
+		if (!bookmark.autojoin()) {
+			bookmark.setAutojoin(true);
+			xmppConnectionService.pushBookmarks(bookmark.getAccount());
+		}
 		switchToConversation(conversation);
 	}
 
@@ -235,6 +240,15 @@ public class StartConversation extends XmppActivity {
 		int position = contact_context_id;
 		Contact contact = (Contact) contacts.get(position);
 		xmppConnectionService.deleteContactOnServer(contact);
+		filter(mSearchEditText.getText().toString());
+	}
+	
+	protected void deleteConference() {
+		int position = contact_context_id;
+		Bookmark bookmark = (Bookmark) conferences.get(position);
+		Account account = bookmark.getAccount();
+		account.getBookmarks().remove(bookmark);
+		xmppConnectionService.pushBookmarks(account);
 		filter(mSearchEditText.getText().toString());
 	}
 
@@ -293,6 +307,7 @@ public class StartConversation extends XmppActivity {
 		jid.setAdapter(new KnownHostsAdapter(this,
 				android.R.layout.simple_list_item_1, mKnownConferenceHosts));
 		populateAccountSpinner(spinner);
+		final CheckBox bookmarkCheckBox = (CheckBox) dialogView.findViewById(R.id.bookmark);
 		builder.setView(dialogView);
 		builder.setNegativeButton(R.string.cancel, null);
 		builder.setPositiveButton(R.string.join, null);
@@ -309,10 +324,26 @@ public class StartConversation extends XmppActivity {
 							String conferenceJid = jid.getText().toString();
 							Account account = xmppConnectionService
 									.findAccountByJid(accountJid);
-							Conversation conversation = xmppConnectionService
+							if (bookmarkCheckBox.isChecked()) {
+								if (account.hasBookmarkFor(conferenceJid)) {
+									jid.setError(getString(R.string.bookmark_already_exists));
+								} else {
+									Bookmark bookmark = new Bookmark(account, conferenceJid);
+									bookmark.setAutojoin(true);
+									account.getBookmarks().add(bookmark);
+									xmppConnectionService.pushBookmarks(account);
+									Conversation conversation = xmppConnectionService
+											.findOrCreateConversation(account,
+													conferenceJid, true);
+									conversation.setBookmark(bookmark);
+										switchToConversation(conversation);
+								}
+							} else {
+								Conversation conversation = xmppConnectionService
 									.findOrCreateConversation(account,
 											conferenceJid, true);
-							switchToConversation(conversation);
+								switchToConversation(conversation);
+							}
 						} else {
 							jid.setError(getString(R.string.invalid_jid));
 						}
@@ -508,6 +539,8 @@ public class StartConversation extends XmppActivity {
 			case R.id.context_join_conference:
 				activity.openConversationForBookmark();
 				break;
+			case R.id.context_delete_conference:
+				activity.deleteConference();
 			}
 			return true;
 		}

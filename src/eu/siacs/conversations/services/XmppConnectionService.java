@@ -702,6 +702,16 @@ public class XmppConnectionService extends Service {
 		sendIqPacket(account, iqPacket, callback);
 		
 	}
+	
+	public void pushBookmarks(Account account) {
+		IqPacket iqPacket = new IqPacket(IqPacket.TYPE_SET);
+		Element query = iqPacket.query("jabber:iq:private");
+		Element storage = query.addChild("storage", "storage:bookmarks");
+		for(Bookmark bookmark : account.getBookmarks()) {
+			storage.addChild(bookmark.toElement());
+		}
+		sendIqPacket(account, iqPacket,null);
+	}
 
 	private void mergePhoneContactsWithRoster() {
 		PhoneHelper.loadPhoneContacts(getApplicationContext(),
@@ -840,6 +850,11 @@ public class XmppConnectionService extends Service {
 
 	public void archiveConversation(Conversation conversation) {
 		if (conversation.getMode() == Conversation.MODE_MULTI) {
+			Bookmark bookmark = conversation.getBookmark();
+			if (bookmark!=null && bookmark.autojoin()) {
+				bookmark.setAutojoin(false);
+				pushBookmarks(bookmark.getAccount());
+			}
 			leaveMuc(conversation);
 		} else {
 			conversation.endOtrIfNeeded();
@@ -1005,10 +1020,10 @@ public class XmppConnectionService extends Service {
 				+ "/" + conversation.getMucOptions().getNick());
 		packet.setAttribute("from", conversation.getAccount().getFullJid());
 		packet.setAttribute("type", "unavailable");
-		Log.d(LOGTAG, "send leaving muc " + packet);
 		sendPresencePacket(conversation.getAccount(),packet);
 		conversation.getMucOptions().setOffline();
 		conversation.deregisterWithBookmark();
+		Log.d(LOGTAG,conversation.getAccount().getJid()+" leaving muc "+conversation.getContactJid());
 	}
 
 	public void disconnect(Account account, boolean force) {

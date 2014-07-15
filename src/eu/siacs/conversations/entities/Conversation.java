@@ -390,4 +390,8 @@ public class Conversation extends AbstractEntity {
 			this.bookmark.setConversation(null);
 		}
 	}
+
+	public Bookmark getBookmark() {
+		return this.bookmark;
+	}
 }
