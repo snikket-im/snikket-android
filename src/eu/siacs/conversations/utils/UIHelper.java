@@ -216,7 +216,7 @@ public class UIHelper {
 					bgColor, fgColor);
 		}
 		String[] names = new String[members.size() + 1];
-		names[0] = conversation.getMucOptions().getJoinNick();
+		names[0] = conversation.getMucOptions().getActualNick();
 		for (int i = 0; i < members.size(); ++i) {
 			names[i + 1] = members.get(i).getName();
 		}
@@ -343,7 +343,7 @@ public class UIHelper {
 		if ((currentCon != null)
 				&& (currentCon.getMode() == Conversation.MODE_MULTI)
 				&& (!alwaysNotify)) {
-			String nick = currentCon.getMucOptions().getJoinNick();
+			String nick = currentCon.getMucOptions().getActualNick();
 			Pattern highlight = generateNickHighlightPattern(nick);
 			Matcher m = highlight.matcher(currentCon.getLatestMessage()
 					.getBody());
@@ -463,7 +463,7 @@ public class UIHelper {
 
 	private static boolean wasHighlighted(Conversation conversation) {
 		List<Message> messages = conversation.getMessages();
-		String nick = conversation.getMucOptions().getJoinNick();
+		String nick = conversation.getMucOptions().getActualNick();
 		Pattern highlight = generateNickHighlightPattern(nick);
 		for (int i = messages.size() - 1; i >= 0; --i) {
 			if (messages.get(i).isRead()) {

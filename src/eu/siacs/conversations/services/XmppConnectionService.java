@@ -964,6 +964,7 @@ public class XmppConnectionService extends Service {
 
 	public void renameInMuc(final Conversation conversation, final String nick) {
 		final MucOptions options = conversation.getMucOptions();
+		options.setJoinNick(nick);
 		if (options.online()) {
 			Account account = conversation.getAccount();
 			options.setOnRenameListener(new OnRenameListener() {
@@ -974,7 +975,7 @@ public class XmppConnectionService extends Service {
 						renameListener.onRename(success);
 					}
 					if (success) {
-						conversation.setContactJid(conversation.getMucOptions().getJoinNick());
+						conversation.setContactJid(conversation.getMucOptions().getJoinJid());
 						databaseBackend.updateConversation(conversation);
 						Bookmark bookmark = conversation.getBookmark();
 						if (bookmark!=null) {
@@ -986,8 +987,7 @@ public class XmppConnectionService extends Service {
 			});
 			options.flagAboutToRename();
 			PresencePacket packet = new PresencePacket();
-			packet.setAttribute("to",
-					conversation.getContactJid().split("/")[0] + "/" + nick);
+			packet.setAttribute("to",options.getJoinJid());
 			packet.setAttribute("from", conversation.getAccount().getFullJid());
 
 			String sig = account.getPgpSignature();
@@ -997,9 +997,7 @@ public class XmppConnectionService extends Service {
 			}
 			sendPresencePacket(account,packet);
 		} else {
-			String jid = conversation.getContactJid().split("/")[0] + "/"
-					+ nick;
-			conversation.setContactJid(jid);
+			conversation.setContactJid(options.getJoinJid());
 			databaseBackend.updateConversation(conversation);
 			if (conversation.getAccount().getStatus() == Account.STATUS_ONLINE) {
 				Bookmark bookmark = conversation.getBookmark();

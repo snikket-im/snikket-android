@@ -121,7 +121,7 @@ public class MessageParser extends AbstractParser implements
 			return null;
 		}
 		String counterPart = fromParts[1];
-		if (counterPart.equals(conversation.getMucOptions().getJoinNick())) {
+		if (counterPart.equals(conversation.getMucOptions().getActualNick())) {
 			if (mXmppConnectionService.markMessage(conversation,
 					packet.getId(), Message.STATUS_SEND)) {
 				return null;

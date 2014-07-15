@@ -7,7 +7,6 @@ import eu.siacs.conversations.crypto.PgpEngine;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.stanzas.PresencePacket;
 import android.annotation.SuppressLint;
-import android.util.Log;
 
 @SuppressLint("DefaultLocale")
 public class MucOptions {
@@ -147,7 +146,7 @@ public class MucOptions {
 					}
 				}
 			} else if (type.equals("unavailable")) {
-				if (name.equals(getJoinNick())) {
+				if (name.equals(self.getName())) {
 					Element item = packet.findChild("x","http://jabber.org/protocol/muc#user").findChild("item");
 					String nick = item.getAttribute("nick");
 					if (nick!=null) {
@@ -155,7 +154,6 @@ public class MucOptions {
 						if (renameListener!=null) {
 							renameListener.onRename(true);
 						}
-						this.setJoinNick(nick);
 					}
 				}
 				deleteUser(packet.getAttribute("from").split("/")[1]);
@@ -167,6 +165,7 @@ public class MucOptions {
 							renameListener.onRename(false);
 						}
 						aboutToRename = false;
+						this.setJoinNick(getActualNick());
 					} else {
 						this.error  = ERROR_NICK_IN_USE;
 					}
@@ -194,6 +193,14 @@ public class MucOptions {
 	
 	public String getJoinNick() {
 		return this.nick;
+	}
+	
+	public String getActualNick() {
+		if (this.self.getName()!=null) {
+			return this.self.getName();
+		} else {
+			return this.getProposedNick();
+		}
 	}
 	
 	public void setJoinNick(String nick) {
