@@ -20,6 +20,7 @@
     <string name="title_activity_contact_details">Détails du contact</string>
     <string name="title_activity_conversations">Conversations</string>
     <string name="title_activity_sharewith">Partager avec Conversation</string>
+	<string name="title_activity_start_conversation">Lancement de Conversation</string>
     <string name="just_now">À l\'instant</string>
     <string name="minute_ago">Il y a 1 minute</string>
     <string name="minutes_ago">Il y a %d minutes</string>
@@ -202,10 +203,10 @@
     <string name="mgmt_account_account_offline">Le compte est hors-ligne</string>
     <string name="attach_record_voice">Enregistrer un son</string>
     <string name="account_settings">Paramètres du compte</string>
-    <string name="account_settings_jabber_id">Identifiant:</string>
-    <string name="account_settings_password">Mot de passe:</string>
+    <string name="account_settings_jabber_id">Identifiant</string>
+    <string name="account_settings_password">Mot de passe</string>
     <string name="account_settings_example_jabber_id">utilisateur@exemple.com</string>
-    <string name="account_settings_confirm_password">Confirmer le mot de passe:</string>
+    <string name="account_settings_confirm_password">Confirmer le mot de passe</string>
     <string name="password">Mot de passe</string>
     <string name="confirm_password">Confirmer le mot de passe</string>
     <string name="passwords_do_not_match">Les deux mots de passes ne correspondent pas.</string>
@@ -251,5 +252,22 @@
     <string name="openpgp_messages_found">Messages chiffrés par OpenPGP détectés.</string>
     <string name="openpgp_click_to_decrypt">Tapotez pour entrer la phrase secrète afin de déchiffrer le message.</string>
     <string name="reception_failed">Echec lors de la réception</string>
-    <string name="no_muc_server_found">Aucun serveur de conférences trouvé.</string>
+    <string name="no_muc_server_found">Aucun serveur de conférences n\'a été trouvé.</string>
+    <string name="your_fingerprint">Votre empreinte</string>
+    <string name="otr_fingerprint">Empreinte OTR</string>
+    <string name="verify">Vérifier</string>
+    <string name="decrypt">Déchiffrer</string>
+    <string name="conferences">Conférences</string>
+    <string name="search">Rechercher</string>
+    <string name="create_contact">Ajouter un contact</string>
+    <string name="join_conference">Rejoindre la conférence</string>
+    <string name="delete_contact">Supprimer le contact</string>
+    <string name="view_contact_details">Afficher les détails du contact</string>
+    <string name="create">Ajouter</string>
+    <string name="contact_already_exists">Le contact existe déjà.</string>
+    <string name="join">Rejoindre</string>
+    <string name="conference_address">Adresse de la conférence</string>
+    <string name="conference_address_example">salle@conference.exemple.com</string>
+    <string name="save_as_bookmark">Enregistrer en favoris</string>
+    <string name="delete_bookmark">Supprimer le favoris</string>
 </resources>
