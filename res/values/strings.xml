@@ -209,7 +209,7 @@
     <string name="confirm_password">Confirm password</string>
     <string name="passwords_do_not_match">Passwords do not match</string>
     <string name="invalid_jid">This is not a valid Jabber ID</string>
-    <string name="error_out_of_memory">Ouf of memory. Image is too large</string>
+    <string name="error_out_of_memory">Out of memory. Image is too large</string>
     <string name="add_phone_book_text">Do you want to add %s to your phones contact list?</string>
     <string name="contact_status_online">online</string>
     <string name="contact_status_free_to_chat">free to chat</string>
