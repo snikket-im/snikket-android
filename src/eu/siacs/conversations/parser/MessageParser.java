@@ -286,6 +286,8 @@ public class MessageParser extends AbstractParser implements
 					message.markUnread();
 				} else {
 					message.getConversation().markRead();
+					lastCarbonMessageReceived = SystemClock
+							.elapsedRealtime();
 					notify = false;
 				}
 			}
