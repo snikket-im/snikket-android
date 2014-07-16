@@ -174,6 +174,9 @@ public class MessageParser extends AbstractParser implements
 		} else {
 			fullJid = message.getAttribute("to");
 		}
+		if (fullJid==null) {
+			return null;
+		}
 		String[] parts = fullJid.split("/");
 		Conversation conversation = mXmppConnectionService
 				.findOrCreateConversation(account, parts[0], false);
