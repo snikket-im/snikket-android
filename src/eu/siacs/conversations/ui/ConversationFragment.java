@@ -12,9 +12,9 @@ import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.MucOptions;
-import eu.siacs.conversations.entities.MucOptions.OnRenameListener;
 import eu.siacs.conversations.services.ImageProvider;
 import eu.siacs.conversations.services.XmppConnectionService;
+import eu.siacs.conversations.ui.XmppActivity.OnPresenceSelected;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.jingle.JingleConnection;
 import android.app.AlertDialog;
@@ -118,8 +118,8 @@ public class ConversationFragment extends Fragment {
 
 		@Override
 		public void onClick(View v) {
-			Intent intent = new Intent(getActivity(), MucDetailsActivity.class);
-			intent.setAction(MucDetailsActivity.ACTION_VIEW_MUC);
+			Intent intent = new Intent(getActivity(), ConferenceDetailsActivity.class);
+			intent.setAction(ConferenceDetailsActivity.ACTION_VIEW_MUC);
 			intent.putExtra("uuid", conversation.getUuid());
 			startActivity(intent);
 		}

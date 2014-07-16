@@ -1,4 +1,4 @@
-package eu.siacs.conversations.utils;
+package eu.siacs.conversations.ui.adapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +42,7 @@ public class KnownHostsAdapter extends ArrayAdapter<String> {
 		@Override
 		protected void publishResults(CharSequence constraint,
 				FilterResults results) {
-			ArrayList<String> filteredList = ((ArrayList<String>) results.values);
+			ArrayList<String> filteredList = (ArrayList<String>) results.values;
 			if (results != null && results.count > 0) {
 				clear();
 				for (String c : filteredList) {

@@ -1189,21 +1189,18 @@ public class XmppConnectionService extends Service {
 		}).start();
 	}
 
-	public void inviteToConference(Conversation conversation,
-			List<Contact> contacts) {
-		for (Contact contact : contacts) {
-			MessagePacket packet = new MessagePacket();
-			packet.setTo(conversation.getContactJid().split("/")[0]);
-			packet.setFrom(conversation.getAccount().getFullJid());
-			Element x = new Element("x");
-			x.setAttribute("xmlns", "http://jabber.org/protocol/muc#user");
-			Element invite = new Element("invite");
-			invite.setAttribute("to", contact.getJid());
-			x.addChild(invite);
-			packet.addChild(x);
-			Log.d(LOGTAG, packet.toString());
-			sendMessagePacket(conversation.getAccount(),packet);
-		}
+	public void inviteToConference(Conversation conversation, String contactJid) {
+		Account account = conversation.getAccount();
+		MessagePacket packet = new MessagePacket();
+		packet.setTo(conversation.getContactJid().split("/")[0]);
+		packet.setFrom(account.getFullJid());
+		Element x = new Element("x");
+		x.setAttribute("xmlns", "http://jabber.org/protocol/muc#user");
+		Element invite = new Element("invite");
+		invite.setAttribute("to", contactJid);
+		x.addChild(invite);
+		packet.addChild(x);
+		sendMessagePacket(account,packet);
 
 	}
 
@@ -1269,6 +1266,15 @@ public class XmppConnectionService extends Service {
 		for (Account account : this.accounts) {
 			if (account.getJid().equals(accountJid)) {
 				return account;
+			}
+		}
+		return null;
+	}
+	
+	public Conversation findConversationByUuid(String uuid) {
+		for (Conversation conversation : getConversations()) {
+			if (conversation.getUuid().equals(uuid)) {
+				return conversation;
 			}
 		}
 		return null;

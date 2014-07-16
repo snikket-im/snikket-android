@@ -98,7 +98,7 @@ public class ConversationActivity extends XmppActivity {
 							swapConversationFragment();
 						} else {
 							startActivity(new Intent(getApplicationContext(),
-									StartConversation.class));
+									StartConversationActivity.class));
 							finish();
 						}
 					}
@@ -306,23 +306,26 @@ public class ConversationActivity extends XmppActivity {
 				.findItem(R.id.action_muc_details);
 		MenuItem menuContactDetails = (MenuItem) menu
 				.findItem(R.id.action_contact_details);
-		MenuItem menuInviteContacts = (MenuItem) menu
-				.findItem(R.id.action_invite);
 		MenuItem menuAttach = (MenuItem) menu.findItem(R.id.action_attach_file);
 		MenuItem menuClearHistory = (MenuItem) menu
 				.findItem(R.id.action_clear_history);
+		MenuItem menuManageAccounts = (MenuItem) menu.findItem(R.id.action_accounts);
+		MenuItem menuSettings = (MenuItem) menu.findItem(R.id.action_settings);
+		MenuItem menuAdd = (MenuItem) menu.findItem(R.id.action_add);
+		MenuItem menuInviteContact = (MenuItem) menu.findItem(R.id.action_invite);
 
 		if ((spl.isOpen() && (spl.isSlideable()))) {
 			menuArchive.setVisible(false);
 			menuMucDetails.setVisible(false);
 			menuContactDetails.setVisible(false);
 			menuSecure.setVisible(false);
-			menuInviteContacts.setVisible(false);
+			menuInviteContact.setVisible(false);
 			menuAttach.setVisible(false);
 			menuClearHistory.setVisible(false);
 		} else {
-			((MenuItem) menu.findItem(R.id.action_add)).setVisible(!spl
-					.isSlideable());
+			menuAdd.setVisible(!spl.isSlideable());
+			menuSettings.setVisible(!spl.isSlideable());
+			menuManageAccounts.setVisible(!spl.isSlideable());
 			if (this.getSelectedConversation() != null) {
 				if (this.getSelectedConversation().getLatestMessage()
 						.getEncryption() != Message.ENCRYPTION_NONE) {
@@ -333,7 +336,7 @@ public class ConversationActivity extends XmppActivity {
 					menuAttach.setVisible(false);
 				} else {
 					menuMucDetails.setVisible(false);
-					menuInviteContacts.setVisible(false);
+					menuInviteContact.setVisible(false);
 				}
 			}
 		}
@@ -458,7 +461,7 @@ public class ConversationActivity extends XmppActivity {
 			attachFilePopup.show();
 			break;
 		case R.id.action_add:
-			startActivity(new Intent(this, StartConversation.class));
+			startActivity(new Intent(this, StartConversationActivity.class));
 			break;
 		case R.id.action_archive:
 			this.endConversation(getSelectedConversation());
@@ -472,17 +475,13 @@ public class ConversationActivity extends XmppActivity {
 			}
 			break;
 		case R.id.action_muc_details:
-			Intent intent = new Intent(this, MucDetailsActivity.class);
-			intent.setAction(MucDetailsActivity.ACTION_VIEW_MUC);
+			Intent intent = new Intent(this, ConferenceDetailsActivity.class);
+			intent.setAction(ConferenceDetailsActivity.ACTION_VIEW_MUC);
 			intent.putExtra("uuid", getSelectedConversation().getUuid());
 			startActivity(intent);
 			break;
 		case R.id.action_invite:
-			/*Intent inviteIntent = new Intent(getApplicationContext(),
-					ContactsActivity.class);
-			inviteIntent.setAction("invite");
-			inviteIntent.putExtra("uuid", getSelectedConversation().getUuid());
-			startActivity(inviteIntent);*/
+			inviteToConversation(getSelectedConversation());
 			break;
 		case R.id.action_security:
 			final Conversation conversation = getSelectedConversation();
@@ -699,7 +698,7 @@ public class ConversationActivity extends XmppActivity {
 				finish();
 			} else if (conversationList.size() <= 0) {
 				// add no history
-				startActivity(new Intent(this, StartConversation.class));
+				startActivity(new Intent(this, StartConversationActivity.class));
 				finish();
 			} else {
 				spl.openPane();

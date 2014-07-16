@@ -21,11 +21,9 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
@@ -34,20 +32,19 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Bookmark;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.ListItem;
-import eu.siacs.conversations.utils.KnownHostsAdapter;
+import eu.siacs.conversations.ui.adapter.KnownHostsAdapter;
+import eu.siacs.conversations.ui.adapter.ListItemAdapter;
 import eu.siacs.conversations.utils.Validator;
 
-public class StartConversation extends XmppActivity {
+public class StartConversationActivity extends XmppActivity {
 
 	private Tab mContactsTab;
 	private Tab mConferencesTab;
@@ -176,7 +173,7 @@ public class StartConversation extends XmppActivity {
 			}
 		});
 
-		mConferenceAdapter = new ListItemAdapter(conferences);
+		mConferenceAdapter = new ListItemAdapter(getApplicationContext(),conferences);
 		mConferenceListFragment.setListAdapter(mConferenceAdapter);
 		mConferenceListFragment.setContextMenu(R.menu.conference_context);
 		mConferenceListFragment
@@ -189,7 +186,7 @@ public class StartConversation extends XmppActivity {
 					}
 				});
 
-		mContactsAdapter = new ListItemAdapter(contacts);
+		mContactsAdapter = new ListItemAdapter(getApplicationContext(),contacts);
 		mContactsListFragment.setListAdapter(mContactsAdapter);
 		mContactsListFragment.setContextMenu(R.menu.contact_context);
 		mContactsListFragment
@@ -502,33 +499,6 @@ public class StartConversation extends XmppActivity {
 		invalidateOptionsMenu();
 	}
 
-	private class ListItemAdapter extends ArrayAdapter<ListItem> {
-
-		public ListItemAdapter(List<ListItem> objects) {
-			super(getApplicationContext(), 0, objects);
-		}
-
-		@Override
-		public View getView(int position, View view, ViewGroup parent) {
-			LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			ListItem item = getItem(position);
-			if (view == null) {
-				view = (View) inflater.inflate(R.layout.contact, null);
-			}
-			TextView name = (TextView) view
-					.findViewById(R.id.contact_display_name);
-			TextView jid = (TextView) view.findViewById(R.id.contact_jid);
-			ImageView picture = (ImageView) view
-					.findViewById(R.id.contact_photo);
-
-			jid.setText(item.getJid());
-			name.setText(item.getDisplayName());
-			picture.setImageBitmap(item.getImage(48, getApplicationContext()));
-			return view;
-		}
-
-	}
-
 	public static class MyListFragment extends ListFragment {
 		private AdapterView.OnItemClickListener mOnItemClickListener;
 		private int mResContextMenu;
@@ -558,7 +528,7 @@ public class StartConversation extends XmppActivity {
 		public void onCreateContextMenu(ContextMenu menu, View v,
 				ContextMenuInfo menuInfo) {
 			super.onCreateContextMenu(menu, v, menuInfo);
-			StartConversation activity = (StartConversation) getActivity();
+			StartConversationActivity activity = (StartConversationActivity) getActivity();
 			activity.getMenuInflater().inflate(mResContextMenu, menu);
 			AdapterView.AdapterContextMenuInfo acmi = (AdapterContextMenuInfo) menuInfo;
 			if (mResContextMenu == R.menu.conference_context) {
@@ -570,7 +540,7 @@ public class StartConversation extends XmppActivity {
 
 		@Override
 		public boolean onContextItemSelected(MenuItem item) {
-			StartConversation activity = (StartConversation) getActivity();
+			StartConversationActivity activity = (StartConversationActivity) getActivity();
 			switch (item.getItemId()) {
 			case R.id.context_start_conversation:
 				activity.openConversationForContact();

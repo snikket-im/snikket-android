@@ -49,11 +49,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="eu.siacs.conversations.ui.StartConversation"
+            android:name="eu.siacs.conversations.ui.StartConversationActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_start_conversation"
             android:logo="@drawable/ic_activity"
-            android:parentActivityName="eu.siacs.conversations.ui.ConversationActivity">
+            android:parentActivityName="eu.siacs.conversations.ui.ConversationActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.SENDTO" />
 
@@ -68,6 +68,9 @@
             android:label="@string/title_activity_settings"
             android:parentActivityName="eu.siacs.conversations.ui.ConversationActivity" >
         </activity>
+        <activity android:name="eu.siacs.conversations.ui.ChooseContactActivity"
+             android:label="@string/title_activity_choose_contact">
+        </activity>
         <activity
             android:name="eu.siacs.conversations.ui.ManageAccountActivity"
             android:configChanges="orientation|screenSize"
@@ -75,7 +78,7 @@
             android:parentActivityName="eu.siacs.conversations.ui.ConversationActivity" >
         </activity>
         <activity
-            android:name="eu.siacs.conversations.ui.MucDetailsActivity"
+            android:name="eu.siacs.conversations.ui.ConferenceDetailsActivity"
             android:label="@string/title_activity_conference_details"
             android:windowSoftInputMode="stateHidden" >
         </activity>

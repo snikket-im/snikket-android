@@ -21,7 +21,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.QuickContactBadge;
 import android.widget.TextView;
@@ -45,7 +44,6 @@ public class ContactDetailsActivity extends XmppActivity {
 	private String accountJid;
 	private String contactJid;
 	
-	private EditText name;
 	private TextView contactJidTv;
 	private TextView accountJidTv;
 	private TextView status;
@@ -60,16 +58,6 @@ public class ContactDetailsActivity extends XmppActivity {
 		public void onClick(DialogInterface dialog, int which) {
 			activity.xmppConnectionService.deleteContactOnServer(contact);
 			activity.finish();
-		}
-	};
-
-	private DialogInterface.OnClickListener editContactNameListener = new DialogInterface.OnClickListener() {
-
-		@Override
-		public void onClick(DialogInterface dialog, int which) {
-			contact.setServerName(name.getText().toString());
-			activity.xmppConnectionService.pushContactToServer(contact);
-			populateView();
 		}
 	};
 

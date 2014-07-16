@@ -6,7 +6,7 @@ import java.util.List;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.services.XmppConnectionService.OnAccountUpdate;
-import eu.siacs.conversations.ui.EditAccount.EditAccountListener;
+import eu.siacs.conversations.ui.EditAccountDialog.EditAccountListener;
 import eu.siacs.conversations.xmpp.OnTLSExceptionReceived;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import android.app.Activity;
@@ -221,7 +221,7 @@ public class ManageAccountActivity extends XmppActivity {
 					} else if (account.getStatus() == Account.STATUS_ONLINE) {
 						activity.startActivity(new Intent(activity
 								.getApplicationContext(),
-								StartConversation.class));
+								StartConversationActivity.class));
 					} else if (account.getStatus() != Account.STATUS_DISABLED) {
 						editAccount(account);
 					}
@@ -513,7 +513,7 @@ public class ManageAccountActivity extends XmppActivity {
 	@Override
 	public boolean onNavigateUp() {
 		if (xmppConnectionService.getConversations().size() == 0) {
-			Intent contactsIntent = new Intent(this, StartConversation.class);
+			Intent contactsIntent = new Intent(this, StartConversationActivity.class);
 			contactsIntent.setFlags(
 			// if activity exists in stack, pop the stack and go back to it
 					Intent.FLAG_ACTIVITY_CLEAR_TOP |
@@ -531,7 +531,7 @@ public class ManageAccountActivity extends XmppActivity {
 	}
 
 	private void editAccount(Account account) {
-		EditAccount dialog = new EditAccount();
+		EditAccountDialog dialog = new EditAccountDialog();
 		dialog.setAccount(account);
 		dialog.setEditAccountListener(new EditAccountListener() {
 
@@ -550,7 +550,7 @@ public class ManageAccountActivity extends XmppActivity {
 
 	protected void addAccount() {
 		final Activity activity = this;
-		EditAccount dialog = new EditAccount();
+		EditAccountDialog dialog = new EditAccountDialog();
 		dialog.setEditAccountListener(new EditAccountListener() {
 
 			@Override

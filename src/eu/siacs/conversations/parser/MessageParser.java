@@ -220,10 +220,13 @@ public class MessageParser extends AbstractParser implements
 		} else if (packet.hasChild("x")) {
 			Element x = packet.findChild("x");
 			if (x.hasChild("invite")) {
-				mXmppConnectionService
+				Conversation conversation = mXmppConnectionService
 						.findOrCreateConversation(account,
 								packet.getAttribute("from"), true);
-				mXmppConnectionService.updateConversationUi();
+				if (!conversation.getMucOptions().online()) {
+					mXmppConnectionService.joinMuc(conversation);
+					mXmppConnectionService.updateConversationUi();
+				}	
 			}
 
 		}

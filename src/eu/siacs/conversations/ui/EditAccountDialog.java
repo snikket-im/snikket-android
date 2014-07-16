@@ -4,7 +4,7 @@ import java.util.List;
 
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
-import eu.siacs.conversations.utils.KnownHostsAdapter;
+import eu.siacs.conversations.ui.adapter.KnownHostsAdapter;
 import eu.siacs.conversations.utils.Validator;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -21,7 +21,7 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.TextView;
 
-public class EditAccount extends DialogFragment {
+public class EditAccountDialog extends DialogFragment {
 
 	protected Account account;
 	

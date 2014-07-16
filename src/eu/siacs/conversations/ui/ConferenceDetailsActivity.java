@@ -31,7 +31,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MucDetailsActivity extends XmppActivity {
+public class ConferenceDetailsActivity extends XmppActivity {
 	public static final String ACTION_VIEW_MUC = "view_muc";
 	private Conversation conversation;
 	private TextView mYourNick;
@@ -48,12 +48,7 @@ public class MucDetailsActivity extends XmppActivity {
 
 		@Override
 		public void onClick(View v) {
-			/*
-			 * Intent intent = new Intent(getApplicationContext(),
-			 * ContactsActivity.class); intent.setAction("invite");
-			 * intent.putExtra("uuid",conversation.getUuid());
-			 * startActivity(intent);
-			 */
+			inviteToConversation(conversation);
 		}
 	};
 
@@ -155,11 +150,7 @@ public class MucDetailsActivity extends XmppActivity {
 			this.uuid = getIntent().getExtras().getString("uuid");
 		}
 		if (uuid != null) {
-			for (Conversation mConv : xmppConnectionService.getConversations()) {
-				if (mConv.getUuid().equals(uuid)) {
-					this.conversation = mConv;
-				}
-			}
+			this.conversation = xmppConnectionService.findConversationByUuid(uuid);
 			if (this.conversation != null) {
 				populateView();
 			}
@@ -188,11 +179,11 @@ public class MucDetailsActivity extends XmppActivity {
 					public void run() {
 						populateView();
 						if (success) {
-							Toast.makeText(MucDetailsActivity.this,
+							Toast.makeText(ConferenceDetailsActivity.this,
 									getString(R.string.your_nick_has_been_changed),
 									Toast.LENGTH_SHORT).show();
 						} else {
-							Toast.makeText(MucDetailsActivity.this,
+							Toast.makeText(ConferenceDetailsActivity.this,
 									getString(R.string.nick_in_use),
 									Toast.LENGTH_SHORT).show();
 						}

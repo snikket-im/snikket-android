@@ -23,6 +23,7 @@ import android.content.ServiceConnection;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -31,6 +32,7 @@ import android.widget.EditText;
 public abstract class XmppActivity extends Activity {
 
 	public static final int REQUEST_ANNOUNCE_PGP = 0x73731;
+	protected static final int REQUEST_INVITE_TO_CONVERSATION = 0x341830;
 
 	protected final static String LOGTAG = "xmppService";
 
@@ -40,6 +42,10 @@ public abstract class XmppActivity extends Activity {
 	
 	protected interface OnValueEdited {
 		public void onValueEdited(String value);
+	}
+	
+	public interface OnPresenceSelected {
+		public void onPresenceSelected();
 	}
 
 	protected ServiceConnection mConnection = new ServiceConnection() {
@@ -187,6 +193,12 @@ public abstract class XmppActivity extends Activity {
 		startActivity(intent);
 	}
 
+	protected void inviteToConversation(Conversation conversation) {
+		Intent intent = new Intent(getApplicationContext(), ChooseContactActivity.class);
+		intent.putExtra("conversation",conversation.getUuid());
+		startActivityForResult(intent, REQUEST_INVITE_TO_CONVERSATION);
+	}
+	
 	protected void announcePgp(Account account, final Conversation conversation) {
 		xmppConnectionService.getPgpEngine().generateSignature(account,
 				"online", new UiCallback<Account>() {
@@ -326,6 +338,20 @@ public abstract class XmppActivity extends Activity {
 				});
 				builder.create().show();
 			}
+		}
+	}
+	
+	protected void onActivityResult(int requestCode, int resultCode,
+			final Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (requestCode == REQUEST_INVITE_TO_CONVERSATION && resultCode == RESULT_OK) {
+			String contactJid = data.getStringExtra("contact");
+			String conversationUuid = data.getStringExtra("conversation");
+			Conversation conversation = xmppConnectionService.findConversationByUuid(conversationUuid);
+			if (conversation.getMode() == Conversation.MODE_MULTI) {
+				xmppConnectionService.inviteToConference(conversation, contactJid);
+			}
+			Log.d("xmppService","inviting "+contactJid+" to "+conversation.getName(true));
 		}
 	}
 }
