@@ -38,6 +38,7 @@
     <string name="visitor">Visitante</string>
     <string name="enter_new_name">Introduce un nuevo nombre:</string>
     <string name="remove_contact_text">¿Quieres eliminar a %s de tu lista? La conversación asociada a esta cuenta no se eliminará.</string>
+    <string name="remove_bookmark_text">¿Quieres eliminar %s de tus marcadores? La conversación de la conferencia asociada con este marcador no se eliminará.</string>
     <string name="untrusted_cert_hint">El servidor %s presenta un certificado no confiable, posiblemente auto firmado.</string>
     <string name="account_info">Información del servidor</string>
     <string name="register_account">Registrar nueva cuenta en servidor</string>
@@ -79,7 +80,7 @@
     <string name="problem_connecting_to_accounts">No se ha podido conectar a múltiples cuentas</string>
     <string name="touch_to_fix">Pulsa aquí para gestionar tus cuentas</string>
     <string name="attach_file">Adjuntar</string>
-    <string name="not_in_roster">El contacto no está en tu lista. ¿Quieres añadirlo?</string>
+    <string name="not_in_roster">El contacto no está en tu lista. ¿Te gustaría añadirlo?</string>
     <string name="add_contact">Añadir contacto</string>
     <string name="send_failed">Error al enviar</string>
     <string name="send_rejected">rechazado</string>
@@ -267,4 +268,8 @@
     <string name="conference_address">Dirección de la Conferencia</string>
     <string name="conference_address_example">nombre@conferencia.ejemplo.com</string>
     <string name="save_as_bookmark">Guardar en marcadores</string>
+    <string name="delete_bookmark">Eliminar marcador</string>
+    <string name="bookmark_already_exists">Este marcador ya exsite</string>
+    <string name="you">Tú</string>
+    <string name="action_edit_subject">Editar asunto de la conferencia</string>
 </resources>
