@@ -141,15 +141,15 @@ public class ContactDetailsActivity extends XmppActivity {
 			break;
 		case R.id.action_edit_contact:
 			if (contact.getSystemAccount() == null) {
-
-				View view = (View) getLayoutInflater().inflate(
-						R.layout.edit_contact_name, null);
-				name = (EditText) view.findViewById(R.id.editText1);
-				name.setText(contact.getDisplayName());
-				builder.setView(view).setTitle(contact.getJid())
-						.setPositiveButton(getString(R.string.edit), editContactNameListener)
-						.create().show();
-
+				quickEdit(contact.getDisplayName(), new OnValueEdited() {
+					
+					@Override
+					public void onValueEdited(String value) {
+						contact.setServerName(value);
+						activity.xmppConnectionService.pushContactToServer(contact);
+						populateView();
+					}
+				});
 			} else {
 				Intent intent = new Intent(Intent.ACTION_EDIT);
 				String[] systemAccount = contact.getSystemAccount().split("#");

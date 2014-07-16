@@ -23,10 +23,10 @@ import android.content.ServiceConnection;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 
 public abstract class XmppActivity extends Activity {
 
@@ -37,6 +37,10 @@ public abstract class XmppActivity extends Activity {
 	public XmppConnectionService xmppConnectionService;
 	public boolean xmppConnectionServiceBound = false;
 	protected boolean handledViewIntent = false;
+	
+	protected interface OnValueEdited {
+		public void onValueEdited(String value);
+	}
 
 	protected ServiceConnection mConnection = new ServiceConnection() {
 
@@ -193,10 +197,7 @@ public abstract class XmppActivity extends Activity {
 						try {
 							startIntentSenderForResult(pi.getIntentSender(),
 									REQUEST_ANNOUNCE_PGP, null, 0, 0, 0);
-						} catch (SendIntentException e) {
-							Log.d("xmppService",
-									"coulnd start intent for pgp anncouncment");
-						}
+						} catch (SendIntentException e) {}
 					}
 
 					@Override
@@ -256,6 +257,26 @@ public abstract class XmppActivity extends Activity {
 		builder.create().show();
 	}
 
+	protected void quickEdit(final String previousValue, final OnValueEdited callback) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		View view = (View) getLayoutInflater().inflate(R.layout.quickedit, null);
+		final EditText editor = (EditText) view.findViewById(R.id.editor);
+		editor.setText(previousValue);
+		builder.setView(view);
+		builder.setNegativeButton(R.string.cancel, null);
+		builder.setPositiveButton(R.string.edit, new OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				String value = editor.getText().toString();
+				if (!previousValue.equals(value) && value.trim().length() > 0) {
+					callback.onValueEdited(value);
+				}
+			}
+		});
+		builder.create().show();
+	}
+	
 	public void selectPresence(final Conversation conversation,
 			final OnPresenceSelected listener) {
 		Contact contact = conversation.getContact();

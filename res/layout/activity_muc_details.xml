@@ -2,147 +2,128 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/secondarybackground">
-
-<LinearLayout
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:orientation="vertical" >
-     <TextView
-        style="@style/sectionHeader"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:text="@string/muc_details_conference"
-        android:textColor="@color/primarytext"/>
-       <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/primarybackground" >
-        
-
-        <EditText
-            android:id="@+id/muc_subject"
-            android:layout_width="wrap_content"
-            android:layout_height="48dp"
-            android:layout_alignParentLeft="true"
-            android:layout_toLeftOf="@+id/muc_edit_subject"
-            android:background="@color/primarybackground"
-            android:ems="10"
-            android:hint="@string/muc_details_conference_subject"
-            android:inputType="textAutoComplete"
-            android:paddingBottom="12dp"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:paddingTop="12dp" />
-
-        <ImageButton
-            android:id="@+id/muc_edit_subject"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:layout_centerVertical="true"
-            android:background="?android:selectableItemBackground"
-            android:padding="8dp"
-            android:src="@drawable/ic_action_edit" />
-    </RelativeLayout>
-    <TextView
-        android:id="@+id/muc_jabberid"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:singleLine="true"
-        android:textSize="14sp"
-        android:textColor="@color/primarytext"/>
-
-    <TextView
-        style="@style/sectionHeader"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
-        android:paddingTop="8dp"
-        android:text="@string/muc_details_your_nickname"
-        android:textColor="@color/primarytext"/>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/primarybackground" >
-        
-
-        <EditText
-            android:id="@+id/muc_your_nick"
-            android:layout_width="wrap_content"
-            android:layout_height="48dp"
-            android:layout_alignParentLeft="true"
-            android:layout_toLeftOf="@+id/muc_edit_nick"
-            android:background="@color/primarybackground"
-            android:ems="10"
-            android:hint="@string/muc_details_your_nickname"
-            android:inputType="textEmailAddress"
-            android:paddingBottom="12dp"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:paddingTop="12dp" />
-
-        <ImageButton
-            android:id="@+id/muc_edit_nick"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:layout_centerVertical="true"
-            android:background="?android:selectableItemBackground"
-            android:padding="8dp"
-            android:src="@drawable/ic_action_edit" />
-    </RelativeLayout>
-    <TextView
-        android:id="@+id/muc_role"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:singleLine="true"
-        android:textSize="14sp"
-        android:textColor="@color/primarytext"/>
-    
-    <LinearLayout
-        android:id="@+id/muc_more_details"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:orientation="vertical">
-
-    <TextView
-        android:id="@+id/muc_participants_header"
-        style="@style/sectionHeader"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
-        android:paddingTop="8dp"
-        android:text="@string/muc_details_other_members"
-        android:textColor="@color/primarytext"/>
+    android:background="@color/primarybackground" >
 
     <LinearLayout
-        android:id="@+id/muc_members"
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" 
-        android:orientation="vertical"
-        android:divider="?android:dividerHorizontal"
-        android:showDividers="middle"
-        >
-    </LinearLayout>
-    </LinearLayout>
-
-    <Button
-        android:layout_marginTop="24dp"
-        android:id="@+id/invite"
-        style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/invite_contacts"
-        android:layout_gravity="center_horizontal"/>
-</LinearLayout>
+        android:orientation="vertical" >
+
+        <TextView
+            style="@style/sectionHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="@string/muc_details_conference" />
+
+        <TextView
+            android:id="@+id/muc_jabberid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:singleLine="true"
+            android:text="@string/account_settings_example_jabber_id"
+            android:textColor="@color/primarytext"
+            android:textSize="14sp"/>
+
+        <TextView
+            style="@style/sectionHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:paddingTop="8dp"
+            android:text="@string/you" />
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="?android:attr/activatedBackgroundIndicator"
+            android:padding="8dp"
+            android:paddingBottom="8dp" >
+
+            <ImageView
+                android:id="@+id/your_photo"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_alignParentLeft="true"
+                android:src="@drawable/ic_profile" >
+            </ImageView>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/your_photo"
+                android:orientation="vertical"
+                android:paddingLeft="8dp" >
+
+                <TextView
+                    android:id="@+id/muc_your_nick"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:text="hallo hallo"
+                    android:textColor="@color/primarytext"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/muc_role"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:text="Participant"
+                    android:textColor="@color/primarytext"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/edit_nick_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="?android:selectableItemBackground"
+              	android:src="@drawable/ic_action_edit_dark"
+              	android:padding="8dp"/>
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/muc_more_details"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/muc_participants_header"
+                style="@style/sectionHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="8dp"
+                android:text="@string/muc_details_other_members" />
+
+            <LinearLayout
+                android:id="@+id/muc_members"
+                android:layout_width="fill_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:divider="?android:dividerHorizontal"
+                android:orientation="vertical"
+                android:showDividers="middle" >
+            </LinearLayout>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/invite"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="24dp"
+            android:text="@string/invite_contacts" />
+    </LinearLayout>
+
 </ScrollView>

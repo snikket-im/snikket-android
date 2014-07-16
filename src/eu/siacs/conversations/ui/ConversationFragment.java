@@ -654,34 +654,6 @@ public class ConversationFragment extends Fragment {
 				activity.invalidateOptionsMenu();
 			}
 		}
-		if (conversation.getMode() == Conversation.MODE_MULTI) {
-			activity.xmppConnectionService
-					.setOnRenameListener(new OnRenameListener() {
-
-						@Override
-						public void onRename(final boolean success) {
-							activity.xmppConnectionService
-									.updateConversation(conversation);
-							getActivity().runOnUiThread(new Runnable() {
-
-								@Override
-								public void run() {
-									if (success) {
-										Toast.makeText(
-												getActivity(),
-												getString(R.string.your_nick_has_been_changed),
-												Toast.LENGTH_SHORT).show();
-									} else {
-										Toast.makeText(
-												getActivity(),
-												getString(R.string.nick_in_use),
-												Toast.LENGTH_SHORT).show();
-									}
-								}
-							});
-						}
-					});
-		}
 	}
 
 	private void decryptMessage(Message message) {

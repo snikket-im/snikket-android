@@ -87,7 +87,7 @@ public class MucOptions {
 	private boolean aboutToRename = false;
 	private User self = new User();
 	private String subject = null;
-	private String nick;
+	private String joinnick;
 
 	public MucOptions(Account account) {
 		this.account = account;
@@ -124,10 +124,16 @@ public class MucOptions {
 				user.setAffiliation(item.getAttribute("affiliation"));
 				user.setRole(item.getAttribute("role"));
 				user.setName(name);
-				if (name.equals(getJoinNick())) {
+				if (name.equals(this.joinnick)) {
 					this.isOnline = true;
 					this.error = 0;
 					self = user;
+					if (aboutToRename) {
+						if (renameListener!=null) {
+							renameListener.onRename(true);
+						}
+						aboutToRename = false;
+					}
 				} else {
 					addUser(user);
 				}
@@ -146,16 +152,6 @@ public class MucOptions {
 					}
 				}
 			} else if (type.equals("unavailable")) {
-				if (name.equals(self.getName())) {
-					Element item = packet.findChild("x","http://jabber.org/protocol/muc#user").findChild("item");
-					String nick = item.getAttribute("nick");
-					if (nick!=null) {
-						aboutToRename = false;
-						if (renameListener!=null) {
-							renameListener.onRename(true);
-						}
-					}
-				}
 				deleteUser(packet.getAttribute("from").split("/")[1]);
 			} else if (type.equals("error")) {
 				Element error = packet.findChild("error");
@@ -191,10 +187,6 @@ public class MucOptions {
 		}
 	}
 	
-	public String getJoinNick() {
-		return this.nick;
-	}
-	
 	public String getActualNick() {
 		if (this.self.getName()!=null) {
 			return this.self.getName();
@@ -204,7 +196,7 @@ public class MucOptions {
 	}
 	
 	public void setJoinNick(String nick) {
-		this.nick = nick;
+		this.joinnick = nick;
 	}
 	
 	public void setConversation(Conversation conversation) {
@@ -282,6 +274,6 @@ public class MucOptions {
 	}
 
 	public String getJoinJid() {
-		return this.conversation.getContactJid().split("/")[0]+"/"+this.getJoinNick();
+		return this.conversation.getContactJid().split("/")[0]+"/"+this.joinnick;
 	}
 }
