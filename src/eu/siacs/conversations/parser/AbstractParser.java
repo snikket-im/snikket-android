@@ -2,6 +2,8 @@ package eu.siacs.conversations.parser;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Locale;
 
@@ -20,11 +22,16 @@ public abstract class AbstractParser {
 	
 	protected long getTimestamp(Element packet) {
 		long now = System.currentTimeMillis();
-		if (packet.hasChild("delay")) {
+		ArrayList<String> stamps = new ArrayList<String>();
+		for(Element child : packet.getChildren()) {
+			if (child.getName().equals("delay")) {
+				stamps.add(child.getAttribute("stamp").replace("Z", "+0000"));
+			}
+		}
+		Collections.sort(stamps);
+		if (stamps.size() >= 1) {
 			try {
-				String stamp = packet.findChild("delay").getAttribute(
-						"stamp");
-				stamp = stamp.replace("Z", "+0000");
+				String stamp = stamps.get(stamps.size() - 1);
 				if (stamp.contains(".")) {
 					Date date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ",Locale.US)
 					.parse(stamp);
