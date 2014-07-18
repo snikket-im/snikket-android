@@ -568,7 +568,7 @@ public class ConversationActivity extends XmppActivity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	private void endConversation(Conversation conversation) {
+	public void endConversation(Conversation conversation) {
 		conversation.setStatus(Conversation.STATUS_ARCHIVED);
 		paneShouldBeOpen = true;
 		spl.openPane();

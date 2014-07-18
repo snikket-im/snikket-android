@@ -270,4 +270,6 @@
     <string name="you">You</string>
     <string name="action_edit_subject">Edit conference subject</string>
     <string name="title_activity_choose_contact">Choose contact</string>
+    <string name="conference_not_found">Conference not found</string>
+    <string name="leave">Leave</string>
 </resources>

@@ -124,6 +124,14 @@ public class ConversationFragment extends Fragment {
 			startActivity(intent);
 		}
 	};
+	
+	private OnClickListener leaveMuc = new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			activity.endConversation(conversation);
+		}
+	};
 
 	private OnScrollListener mOnScrollListener = new OnScrollListener() {
 
@@ -687,6 +695,7 @@ public class ConversationFragment extends Fragment {
 		if (getView() == null) {
 			return;
 		}
+		hideSnackbar();
 		ConversationActivity activity = (ConversationActivity) getActivity();
 		if (this.conversation != null) {
 			for (Message message : this.conversation.getMessages()) {
@@ -715,10 +724,11 @@ public class ConversationFragment extends Fragment {
 					makeFingerprintWarning(conversation.getLatestEncryption());
 				}
 			} else {
-				if (conversation.getMucOptions().getError() != 0) {
-					showSnackbar(R.string.nick_in_use, R.string.edit,clickToMuc);
+				if (!conversation.getMucOptions().online()) {
 					if (conversation.getMucOptions().getError() == MucOptions.ERROR_NICK_IN_USE) {
 						showSnackbar(R.string.nick_in_use, R.string.edit,clickToMuc);
+					} else if (conversation.getMucOptions().getError() == MucOptions.ERROR_ROOM_NOT_FOUND) {
+						showSnackbar(R.string.conference_not_found,R.string.leave,leaveMuc);
 					}
 				}
 			}

@@ -10,7 +10,9 @@ import android.annotation.SuppressLint;
 
 @SuppressLint("DefaultLocale")
 public class MucOptions {
+	public static final int ERROR_NO_ERROR = 0;
 	public static final int ERROR_NICK_IN_USE = 1;
+	public static final int ERROR_ROOM_NOT_FOUND = 2;
 	
 	public interface OnRenameListener {
 		public void onRename(boolean success);
@@ -82,7 +84,7 @@ public class MucOptions {
 	private ArrayList<User> users = new ArrayList<User>();
 	private Conversation conversation;
 	private boolean isOnline = false;
-	private int error = 0;
+	private int error = ERROR_ROOM_NOT_FOUND;
 	private OnRenameListener renameListener = null;
 	private boolean aboutToRename = false;
 	private User self = new User();
@@ -126,7 +128,7 @@ public class MucOptions {
 				user.setName(name);
 				if (name.equals(this.joinnick)) {
 					this.isOnline = true;
-					this.error = 0;
+					this.error = ERROR_NO_ERROR;
 					self = user;
 					if (aboutToRename) {
 						if (renameListener!=null) {
