@@ -16,9 +16,6 @@ import android.database.Cursor;
 import android.net.Uri;
 
 public class Conversation extends AbstractEntity {
-
-	private static final long serialVersionUID = -6727528868973996739L;
-
 	public static final String TABLENAME = "conversations";
 
 	public static final int STATUS_AVAILABLE = 0;

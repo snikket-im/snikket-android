@@ -4,6 +4,7 @@ import java.security.interfaces.DSAPublicKey;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import net.java.otr4j.crypto.OtrCryptoEngineImpl;
 import net.java.otr4j.crypto.OtrCryptoException;
@@ -18,8 +19,6 @@ import android.content.Context;
 import android.database.Cursor;
 
 public class Account  extends AbstractEntity{
-
-	private static final long serialVersionUID = 6174825093869578035L;
 	
 	public static final String TABLENAME = "accounts";
 	
@@ -71,6 +70,9 @@ public class Account  extends AbstractEntity{
 	private Roster roster = null;
 
 	private List<Bookmark> bookmarks = new ArrayList<Bookmark>();
+	
+	public List<Conversation> pendingConferenceJoins = new CopyOnWriteArrayList<Conversation>();
+	public List<Conversation> pendingConferenceLeaves = new CopyOnWriteArrayList<Conversation>();
 	
 	public Account() {
 		this.uuid = "0";
