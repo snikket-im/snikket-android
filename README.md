@@ -54,6 +54,7 @@ These XEPs are - as of now:
 * [Benoit Bouvarel](https://github.com/BenoitBouvarel) (French)
 * [Daniel Gultsch](https://github.com/iNPUTmice) (German)
 * [Aitor Beriain](https://github.com/beriain) (Basque)
+* [Ilia Rostovtsev](https://github.com/rostovtsev) (Russian)
 
 ##FAQ
 ###General
