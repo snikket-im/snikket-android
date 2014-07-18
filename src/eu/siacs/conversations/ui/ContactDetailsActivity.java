@@ -31,6 +31,7 @@ import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Presences;
 import eu.siacs.conversations.services.XmppConnectionService;
+import eu.siacs.conversations.services.XmppConnectionService.OnRosterUpdate;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.stanzas.PresencePacket;
 
@@ -88,6 +89,20 @@ public class ContactDetailsActivity extends XmppActivity {
 	};
 
 	private LinearLayout keys;
+
+	private OnRosterUpdate rosterUpdate = new OnRosterUpdate() {
+		
+		@Override
+		public void onRosterUpdate() {
+			runOnUiThread(new Runnable() {
+				
+				@Override
+				public void run() {
+					populateView();
+				}
+			});
+		}
+	};
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -270,6 +285,7 @@ public class ContactDetailsActivity extends XmppActivity {
 
 	@Override
 	public void onBackendConnected() {
+		xmppConnectionService.setOnRosterUpdateListener(this.rosterUpdate );
 		if ((accountJid != null)&&(contactJid != null)) {
 			Account account = xmppConnectionService.findAccountByJid(accountJid);
 			if (account==null) {
@@ -356,6 +372,7 @@ public class ContactDetailsActivity extends XmppActivity {
 				}
 			}
 		}
+		xmppConnectionService.removeOnRosterUpdateListener();
 	}
 
 }

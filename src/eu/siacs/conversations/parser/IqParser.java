@@ -38,6 +38,7 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
 				}
 			}
 		}
+		mXmppConnectionService.updateRosterUi();
 	}
 
 	@Override

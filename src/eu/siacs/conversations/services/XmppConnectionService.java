@@ -105,6 +105,7 @@ public class XmppConnectionService extends Service {
 	private OnConversationUpdate mOnConversationUpdate = null;
 	private int convChangedListenerCount = 0;
 	private OnAccountUpdate mOnAccountUpdate = null;
+	private OnRosterUpdate mOnRosterUpdate = null;
 	private OnTLSExceptionReceived tlsException = null;
 	public OnContactStatusChanged onContactStatusChanged = new OnContactStatusChanged() {
 
@@ -917,6 +918,14 @@ public class XmppConnectionService extends Service {
 	public void removeOnAccountListChangedListener() {
 		this.mOnAccountUpdate = null;
 	}
+	
+	public void setOnRosterUpdateListener(OnRosterUpdate listener) {
+		this.mOnRosterUpdate = listener;
+	}
+
+	public void removeOnRosterUpdateListener() {
+		this.mOnRosterUpdate = null;
+	}
 
 	public void connectMultiModeConversations(Account account) {
 		List<Conversation> conversations = getConversations();
@@ -1259,6 +1268,12 @@ public class XmppConnectionService extends Service {
 	public void updateAccountUi() {
 		if (mOnAccountUpdate != null) {
 			mOnAccountUpdate.onAccountUpdate();
+		}
+	}
+	
+	public void updateRosterUi() {
+		if (mOnRosterUpdate != null) {
+			mOnRosterUpdate.onRosterUpdate();
 		}
 	}
 

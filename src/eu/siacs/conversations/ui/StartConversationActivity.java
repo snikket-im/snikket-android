@@ -40,6 +40,7 @@ import eu.siacs.conversations.entities.Bookmark;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.ListItem;
+import eu.siacs.conversations.services.XmppConnectionService.OnRosterUpdate;
 import eu.siacs.conversations.ui.adapter.KnownHostsAdapter;
 import eu.siacs.conversations.ui.adapter.ListItemAdapter;
 import eu.siacs.conversations.utils.Validator;
@@ -139,6 +140,19 @@ public class StartConversationActivity extends XmppActivity {
 				int count) {
 		}
 	};
+	private OnRosterUpdate onRosterUpdate = new OnRosterUpdate() {
+		
+		@Override
+		public void onRosterUpdate() {
+			runOnUiThread(new Runnable() {
+				
+				@Override
+				public void run() {
+					filter(mSearchEditText.getText().toString());
+				}
+			});
+		}
+	};
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -199,6 +213,12 @@ public class StartConversationActivity extends XmppActivity {
 					}
 				});
 
+	}
+	
+	@Override
+	public void onStop() {
+		super.onStop();
+		xmppConnectionService.removeOnRosterUpdateListener();
 	}
 
 	protected void openConversationForContact(int position) {
@@ -444,6 +464,7 @@ public class StartConversationActivity extends XmppActivity {
 
 	@Override
 	void onBackendConnected() {
+		xmppConnectionService.setOnRosterUpdateListener(this.onRosterUpdate );
 		if (mSearchEditText != null) {
 			filter(mSearchEditText.getText().toString());
 		} else {

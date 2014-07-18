@@ -99,6 +99,7 @@ public class PresenceParser extends AbstractParser implements
 				}
 			}
 		}
+		mXmppConnectionService.updateRosterUi();
 	}
 
 	@Override
