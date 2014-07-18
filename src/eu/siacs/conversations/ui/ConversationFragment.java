@@ -8,6 +8,7 @@ import java.util.Set;
 import net.java.otr4j.session.SessionStatus;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.PgpEngine;
+import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
@@ -61,7 +62,7 @@ public class ConversationFragment extends Fragment {
 	protected ArrayAdapter<Message> messageListAdapter;
 	protected Contact contact;
 	protected BitmapCache mBitmapCache = new BitmapCache();
-	
+
 	protected int mPrimaryTextColor;
 	protected int mSecondaryTextColor;
 
@@ -113,20 +114,21 @@ public class ConversationFragment extends Fragment {
 			}
 		}
 	};
-	
+
 	private OnClickListener clickToMuc = new OnClickListener() {
 
 		@Override
 		public void onClick(View v) {
-			Intent intent = new Intent(getActivity(), ConferenceDetailsActivity.class);
+			Intent intent = new Intent(getActivity(),
+					ConferenceDetailsActivity.class);
 			intent.setAction(ConferenceDetailsActivity.ACTION_VIEW_MUC);
 			intent.putExtra("uuid", conversation.getUuid());
 			startActivity(intent);
 		}
 	};
-	
+
 	private OnClickListener leaveMuc = new OnClickListener() {
-		
+
 		@Override
 		public void onClick(View v) {
 			activity.endConversation(conversation);
@@ -187,12 +189,12 @@ public class ConversationFragment extends Fragment {
 
 		mPrimaryTextColor = getResources().getColor(R.color.primarytext);
 		mSecondaryTextColor = getResources().getColor(R.color.secondarytext);
-		
+
 		final View view = inflater.inflate(R.layout.fragment_conversation,
 				container, false);
 		chatMsg = (EditText) view.findViewById(R.id.textinput);
 		chatMsg.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				if (activity.getSlidingPaneLayout().isSlideable()) {
@@ -672,7 +674,8 @@ public class ConversationFragment extends Fragment {
 				@Override
 				public void userInputRequried(PendingIntent pi, Message message) {
 					askForPassphraseIntent = pi.getIntentSender();
-					showSnackbar(R.string.openpgp_messages_found,R.string.decrypt,clickToDecryptListener);
+					showSnackbar(R.string.openpgp_messages_found,
+							R.string.decrypt, clickToDecryptListener);
 				}
 
 				@Override
@@ -724,11 +727,14 @@ public class ConversationFragment extends Fragment {
 					makeFingerprintWarning(conversation.getLatestEncryption());
 				}
 			} else {
-				if (!conversation.getMucOptions().online()) {
+				if (!conversation.getMucOptions().online()
+						&& conversation.getAccount().getStatus() == Account.STATUS_ONLINE) {
 					if (conversation.getMucOptions().getError() == MucOptions.ERROR_NICK_IN_USE) {
-						showSnackbar(R.string.nick_in_use, R.string.edit,clickToMuc);
+						showSnackbar(R.string.nick_in_use, R.string.edit,
+								clickToMuc);
 					} else if (conversation.getMucOptions().getError() == MucOptions.ERROR_ROOM_NOT_FOUND) {
-						showSnackbar(R.string.conference_not_found,R.string.leave,leaveMuc);
+						showSnackbar(R.string.conference_not_found,
+								R.string.leave, leaveMuc);
 					}
 				}
 			}
@@ -783,28 +789,31 @@ public class ConversationFragment extends Fragment {
 				&& (conversation.hasValidOtrSession()
 						&& (conversation.getOtrSession().getSessionStatus() == SessionStatus.ENCRYPTED) && (!knownFingerprints
 							.contains(conversation.getOtrFingerprint())))) {
-			showSnackbar(R.string.unknown_otr_fingerprint, R.string.verify, new OnClickListener() {
+			showSnackbar(R.string.unknown_otr_fingerprint, R.string.verify,
+					new OnClickListener() {
 
-				@Override
-				public void onClick(View v) {
-					if (conversation.getOtrFingerprint() != null) {
-						AlertDialog dialog = UIHelper.getVerifyFingerprintDialog(
-								(ConversationActivity) getActivity(), conversation,
-								snackbar);
-						dialog.show();
-					}
-				}
-			});
+						@Override
+						public void onClick(View v) {
+							if (conversation.getOtrFingerprint() != null) {
+								AlertDialog dialog = UIHelper
+										.getVerifyFingerprintDialog(
+												(ConversationActivity) getActivity(),
+												conversation, snackbar);
+								dialog.show();
+							}
+						}
+					});
 		}
 	}
-	
-	protected void showSnackbar(int message, int action, OnClickListener clickListener) {
+
+	protected void showSnackbar(int message, int action,
+			OnClickListener clickListener) {
 		snackbar.setVisibility(View.VISIBLE);
 		snackbarMessage.setText(message);
 		snackbarAction.setText(action);
 		snackbarAction.setOnClickListener(clickListener);
 	}
-	
+
 	protected void hideSnackbar() {
 		snackbar.setVisibility(View.GONE);
 	}
