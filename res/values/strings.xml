@@ -22,6 +22,7 @@
     <string name="title_activity_conversations">Conversations</string>
     <string name="title_activity_sharewith">Share with Conversation</string>
     <string name="title_activity_start_conversation">Start Conversation</string>
+    <string name="title_activity_choose_contact">Choose contact</string>
     <string name="just_now">just now</string>
     <string name="minute_ago">1 min ago</string>
     <string name="minutes_ago">%d mins ago</string>
@@ -269,7 +270,6 @@
     <string name="bookmark_already_exists">This bookmark already exists</string>
     <string name="you">You</string>
     <string name="action_edit_subject">Edit conference subject</string>
-    <string name="title_activity_choose_contact">Choose contact</string>
     <string name="conference_not_found">Conference not found</string>
     <string name="leave">Leave</string>
 </resources>

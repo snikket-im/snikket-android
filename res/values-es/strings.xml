@@ -22,6 +22,7 @@
     <string name="title_activity_conversations">Conversations</string>
     <string name="title_activity_sharewith">Compartir con Conversación</string>
     <string name="title_activity_start_conversation">Nueva Conversación</string>
+    <string name="title_activity_choose_contact">Elegir Contacto</string>
     <string name="just_now">ahora</string>
     <string name="minute_ago">hace 1 min</string>
     <string name="minutes_ago">hace %d min</string>
@@ -47,10 +48,7 @@
     <string name="show_otr_key">Clave OTR</string>
     <string name="no_otr_fingerprint">No se ha generado una clave OTR. Continúa y comienza una conversación encriptada</string>
     <string name="start_conversation">Comenzar conversación</string>
-    <string name="invite_contacts">Invitar contactos</string>
-    <string name="invite_contacts_to_existing">Invitar a conferencia existente</string>
-    <string name="new_conference">Crear nueva conferencia</string>
-    <string name="new_contact">Crear nuevo contacto</string>
+    <string name="invite_contact">Invitar contactos</string>
     <string name="contacts">Contactos</string>
     <string name="search_jabber_id">Busca o escribe identificador Jabber</string>
     <string name="choose_account">Seleccionar cuenta</string>
@@ -272,4 +270,6 @@
     <string name="bookmark_already_exists">Este marcador ya exsite</string>
     <string name="you">Tú</string>
     <string name="action_edit_subject">Editar asunto de la conferencia</string>
+    <string name="conference_not_found">Conferencia no encontrada</string>
+    <string name="leave">Salir</string>
 </resources>
