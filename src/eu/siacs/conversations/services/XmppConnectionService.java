@@ -532,11 +532,13 @@ public class XmppConnectionService extends Service {
 					}
 				} else if (message.getEncryption() == Message.ENCRYPTION_DECRYPTED) {
 					message.getConversation().endOtrIfNeeded();
+					message.getConversation().failWaitingOtrMessages();
 					packet = mMessageGenerator.generatePgpChat(message);
 					message.setStatus(Message.STATUS_SEND);
 					send = true;
 				} else {
 					message.getConversation().endOtrIfNeeded();
+					message.getConversation().failWaitingOtrMessages();
 					if (message.getConversation().getMode() == Conversation.MODE_SINGLE) {
 						message.setStatus(Message.STATUS_SEND);
 					}

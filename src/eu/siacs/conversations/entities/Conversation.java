@@ -114,7 +114,7 @@ public class Conversation extends AbstractEntity {
 			this.messages.get(i).markRead();
 		}
 	}
-	
+
 	public String popLatestMarkableMessageId() {
 		String id = this.latestMarkableMessageId;
 		this.latestMarkableMessageId = null;
@@ -141,7 +141,8 @@ public class Conversation extends AbstractEntity {
 		if ((getMode() == MODE_MULTI) && (getMucOptions().getSubject() != null)
 				&& useSubject) {
 			return getMucOptions().getSubject();
-		} else if (getMode() == MODE_MULTI && bookmark!=null && bookmark.getName() != null) {
+		} else if (getMode() == MODE_MULTI && bookmark != null
+				&& bookmark.getName() != null) {
 			return bookmark.getName();
 		} else {
 			return this.getContact().getDisplayName();
@@ -238,7 +239,7 @@ public class Conversation extends AbstractEntity {
 					this.otrSessionNeedsStarting = false;
 					return this.otrSession;
 				} else {
-					this.otrSessionNeedsStarting  = true;
+					this.otrSessionNeedsStarting = true;
 				}
 				return this.otrSession;
 			} catch (OtrException e) {
@@ -267,7 +268,7 @@ public class Conversation extends AbstractEntity {
 			}
 		}
 	}
-	
+
 	public void endOtrIfNeeded() {
 		if (this.otrSession != null) {
 			if (this.otrSession.getSessionStatus() == SessionStatus.ENCRYPTED) {
@@ -372,7 +373,7 @@ public class Conversation extends AbstractEntity {
 	public void setSymmetricKey(byte[] key) {
 		this.symmetricKey = key;
 	}
-	
+
 	public byte[] getSymmetricKey() {
 		return this.symmetricKey;
 	}
@@ -381,7 +382,7 @@ public class Conversation extends AbstractEntity {
 		this.bookmark = bookmark;
 		this.bookmark.setConversation(this);
 	}
-	
+
 	public void deregisterWithBookmark() {
 		if (this.bookmark != null) {
 			this.bookmark.setConversation(null);
@@ -390,5 +391,14 @@ public class Conversation extends AbstractEntity {
 
 	public Bookmark getBookmark() {
 		return this.bookmark;
+	}
+
+	public void failWaitingOtrMessages() {
+		for (Message message : this.messages) {
+			if (message.getEncryption() == Message.ENCRYPTION_OTR
+					&& message.getStatus() == Message.STATUS_WAITING) {
+				message.setStatus(Message.STATUS_SEND_FAILED);
+			}
+		}
 	}
 }
