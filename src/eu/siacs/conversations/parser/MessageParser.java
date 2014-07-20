@@ -109,6 +109,9 @@ public class MessageParser extends AbstractParser implements
 	private Message parseGroupchat(MessagePacket packet, Account account) {
 		int status;
 		String[] fromParts = packet.getFrom().split("/");
+		if (mXmppConnectionService.find(account.pendingConferenceLeaves,account,fromParts[0]) != null) {
+			return null;
+		}
 		Conversation conversation = mXmppConnectionService
 				.findOrCreateConversation(account, fromParts[0], true);
 		if (packet.hasChild("subject")) {

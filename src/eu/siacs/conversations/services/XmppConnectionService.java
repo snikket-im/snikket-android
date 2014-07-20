@@ -111,7 +111,7 @@ public class XmppConnectionService extends Service {
 
 		@Override
 		public void onContactStatusChanged(Contact contact, boolean online) {
-			Conversation conversation = findActiveConversation(contact);
+			Conversation conversation = find(getConversations(),contact);
 			if (conversation != null) {
 				conversation.endOtrIfNeeded();
 				if (online && (contact.getPresences().size() == 1)) {
@@ -268,18 +268,12 @@ public class XmppConnectionService extends Service {
 		return message;
 	}
 
-	public Conversation findMuc(Bookmark bookmark) {
-		return findMuc(bookmark.getJid(), bookmark.getAccount());
+	public Conversation find(Bookmark bookmark) {
+		return find(bookmark.getAccount(),bookmark.getJid());
 	}
 	
-	public Conversation findMuc(String jid, Account account) {
-		for (Conversation conversation : this.conversations) {
-			if (conversation.getContactJid().split("/")[0].equals(jid)
-					&& (conversation.getAccount() == account)) {
-				return conversation;
-			}
-		}
-		return null;
+	public Conversation find(Account account, String jid) {
+		return find(getConversations(),account,jid);
 	}
 
 	public class XmppConnectionBinder extends Binder {
@@ -693,7 +687,7 @@ public class XmppConnectionService extends Service {
 						if (item.getName().equals("conference")) {
 							Bookmark bookmark = Bookmark.parse(item,account);
 							bookmarks.add(bookmark);
-							Conversation conversation = findMuc(bookmark);
+							Conversation conversation = find(bookmark);
 							if (conversation!=null) {
 								conversation.setBookmark(bookmark);
 							} else {
@@ -802,8 +796,8 @@ public class XmppConnectionService extends Service {
 		return this.accounts;
 	}
 
-	public Conversation findActiveConversation(Contact contact) {
-		for (Conversation conversation : this.getConversations()) {
+	public Conversation find(List<Conversation> haystack, Contact contact) {
+		for (Conversation conversation : haystack) {
 			if (conversation.getContact() == contact) {
 				return conversation;
 			}
@@ -811,16 +805,24 @@ public class XmppConnectionService extends Service {
 		return null;
 	}
 
-	public Conversation findOrCreateConversation(Account account, String jid,
-			boolean muc) {
-		for (Conversation conv : this.getConversations()) {
-			if ((conv.getAccount().equals(account))
-					&& (conv.getContactJid().split("/")[0].equals(jid))) {
-				return conv;
+	public Conversation find(List<Conversation> haystack, Account account, String jid) {
+		for (Conversation conversation : haystack) {
+			if ((conversation.getAccount().equals(account))
+					&& (conversation.getContactJid().split("/")[0].equals(jid))) {
+				return conversation;
 			}
 		}
-		Conversation conversation = databaseBackend.findConversation(account,
-				jid);
+		return null;
+	}
+	
+	
+	public Conversation findOrCreateConversation(Account account, String jid,
+			boolean muc) {
+		Conversation conversation = find(account, jid);
+		if (conversation != null) {
+			return conversation;
+		}
+		conversation = databaseBackend.findConversation(account,jid);
 		if (conversation != null) {
 			conversation.setStatus(Conversation.STATUS_AVAILABLE);
 			conversation.setAccount(account);

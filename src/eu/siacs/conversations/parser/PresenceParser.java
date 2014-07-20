@@ -21,14 +21,14 @@ public class PresenceParser extends AbstractParser implements
 	public void parseConferencePresence(PresencePacket packet, Account account) {
 		PgpEngine mPgpEngine = mXmppConnectionService.getPgpEngine();
 		if (packet.hasChild("x", "http://jabber.org/protocol/muc#user")) {
-			Conversation muc = mXmppConnectionService.findMuc(packet
-					.getAttribute("from").split("/")[0], account);
+			Conversation muc = mXmppConnectionService.find(account,packet
+					.getAttribute("from").split("/")[0]);
 			if (muc != null) {
 				muc.getMucOptions().processPacket(packet, mPgpEngine);
 			}
 		} else if (packet.hasChild("x", "http://jabber.org/protocol/muc")) {
-			Conversation muc = mXmppConnectionService.findMuc(packet
-					.getAttribute("from").split("/")[0], account);
+			Conversation muc = mXmppConnectionService.find(account,packet
+					.getAttribute("from").split("/")[0]);
 			if (muc != null) {
 				int error = muc.getMucOptions().getError();
 				muc.getMucOptions().processPacket(packet, mPgpEngine);
