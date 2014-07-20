@@ -31,6 +31,7 @@ import eu.siacs.conversations.crypto.PgpEngine;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Presences;
+import eu.siacs.conversations.services.XmppConnectionService.OnAccountUpdate;
 import eu.siacs.conversations.services.XmppConnectionService.OnRosterUpdate;
 import eu.siacs.conversations.utils.UIHelper;
 
@@ -144,6 +145,20 @@ public class ContactDetailsActivity extends XmppActivity {
 		}
 	};
 
+	private OnAccountUpdate accountUpdate = new OnAccountUpdate() {
+		
+		@Override
+		public void onAccountUpdate() {
+			runOnUiThread(new Runnable() {
+
+				@Override
+				public void run() {
+					populateView();
+				}
+			});
+		}
+	};
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -244,6 +259,13 @@ public class ContactDetailsActivity extends XmppActivity {
 				receive.setChecked(false);
 			}
 		}
+		if (contact.getAccount().getStatus() == Account.STATUS_ONLINE) {
+			receive.setEnabled(true);
+			send.setEnabled(true);
+		} else {
+			receive.setEnabled(false);
+			send.setEnabled(false);
+		}
 
 		lastseen.setText(UIHelper.lastseen(getApplicationContext(),
 				contact.lastseen.time));
@@ -338,6 +360,7 @@ public class ContactDetailsActivity extends XmppActivity {
 	@Override
 	public void onBackendConnected() {
 		xmppConnectionService.setOnRosterUpdateListener(this.rosterUpdate);
+		xmppConnectionService.setOnAccountListChangedListener(this.accountUpdate );
 		if ((accountJid != null) && (contactJid != null)) {
 			Account account = xmppConnectionService
 					.findAccountByJid(accountJid);
@@ -353,6 +376,7 @@ public class ContactDetailsActivity extends XmppActivity {
 	protected void onStop() {
 		super.onStop();
 		xmppConnectionService.removeOnRosterUpdateListener();
+		xmppConnectionService.removeOnAccountListChangedListener();
 	}
 
 }
