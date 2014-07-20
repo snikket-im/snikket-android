@@ -46,7 +46,7 @@
     <string name="share_with">Share with</string>
     <string name="ask_again"><u>Click to ask again</u></string>
     <string name="show_otr_key">OTR fingerprint</string>
-    <string name="no_otr_fingerprint">No OTR Fingerprint generated. Just go ahead an start an encrypted conversation</string>
+    <string name="no_otr_fingerprint">No OTR Fingerprint generated. Just go ahead and start an encrypted conversation</string>
     <string name="start_conversation">Start Conversation</string>
     <string name="invite_contact">Invite Contact</string>
     <string name="contacts">Contacts</string>
@@ -148,7 +148,7 @@
     <string name="pref_confirm_messages_summary">Let your contact know when you have received and read a message</string>
     <string name="pref_show_last_seen">Display last seen</string>
     <string name="pref_show_last_seen_summary">Display the latest time a contact has been seen online</string>
-    <string name="openpgp_error">OpenKeychain reporeted an error</string>
+    <string name="openpgp_error">OpenKeychain reported an error</string>
     <string name="error_decrypting_file">I/O Error decrypting file</string>
     <string name="error_copying_image_file">Error copying image file.</string>
     <string name="accept">Accept</string>
