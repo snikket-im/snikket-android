@@ -30,13 +30,10 @@ public class PresenceParser extends AbstractParser implements
 			Conversation muc = mXmppConnectionService.find(account,packet
 					.getAttribute("from").split("/")[0]);
 			if (muc != null) {
-				int error = muc.getMucOptions().getError();
 				muc.getMucOptions().processPacket(packet, mPgpEngine);
-				if (muc.getMucOptions().getError() != error) {
-					mXmppConnectionService.updateConversationUi();
-				}
 			}
 		}
+		mXmppConnectionService.updateConversationUi();
 	}
 
 	public void parseContactPresence(PresencePacket packet, Account account) {
