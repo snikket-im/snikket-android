@@ -291,6 +291,9 @@ public class Conversation extends AbstractEntity {
 	public String getOtrFingerprint() {
 		if (this.otrFingerprint == null) {
 			try {
+				if (getOtrSession()== null) {
+					return "";
+				}
 				DSAPublicKey remotePubKey = (DSAPublicKey) getOtrSession()
 						.getRemotePublicKey();
 				StringBuilder builder = new StringBuilder(

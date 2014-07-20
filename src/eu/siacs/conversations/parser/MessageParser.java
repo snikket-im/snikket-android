@@ -80,6 +80,7 @@ public class MessageParser extends AbstractParser implements
 				mXmppConnectionService.onOtrSessionEstablished(conversation);
 			} else if ((before != after) && (after == SessionStatus.FINISHED)) {
 				conversation.resetOtrSession();
+				mXmppConnectionService.updateConversationUi();
 			}
 			if ((body == null) || (body.isEmpty())) {
 				return null;
