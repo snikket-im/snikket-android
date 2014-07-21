@@ -901,6 +901,16 @@ public class XmppConnectionService extends Service {
 	}
 
 	public void deleteAccount(Account account) {
+		for(Conversation conversation : conversations) {
+			if (conversation.getAccount() == account) {
+				if (conversation.getMode() == Conversation.MODE_MULTI) {
+					leaveMuc(conversation);
+				} else if (conversation.getMode() == Conversation.MODE_SINGLE) {
+					conversation.endOtrIfNeeded();
+				}
+				conversations.remove(conversation);
+			}
+		}
 		if (account.getXmppConnection() != null) {
 			this.disconnect(account, true);
 		}
