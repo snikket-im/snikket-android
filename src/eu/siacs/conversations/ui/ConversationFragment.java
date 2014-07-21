@@ -494,6 +494,13 @@ public class ConversationFragment extends Fragment {
 											getActivity()
 													.getApplicationContext()));
 							viewHolder.contact_picture.setAlpha(128);
+							viewHolder.contact_picture.setOnClickListener(new OnClickListener() {
+								
+								@Override
+								public void onClick(View v) {
+									Toast.makeText(getActivity(), R.string.contact_has_read_up_to_this_point, Toast.LENGTH_SHORT).show();	
+								}
+							});
 
 						}
 						break;
