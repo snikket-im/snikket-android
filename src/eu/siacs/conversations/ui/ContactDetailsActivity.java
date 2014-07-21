@@ -173,9 +173,7 @@ public class ContactDetailsActivity extends XmppActivity {
 		status = (TextView) findViewById(R.id.details_contactstatus);
 		lastseen = (TextView) findViewById(R.id.details_lastseen);
 		send = (CheckBox) findViewById(R.id.details_send_presence);
-		send.setOnCheckedChangeListener(this.mOnSendCheckedChange);
 		receive = (CheckBox) findViewById(R.id.details_receive_presence);
-		receive.setOnCheckedChangeListener(this.mOnReceiveCheckedChange);
 		badge = (QuickContactBadge) findViewById(R.id.details_contact_badge);
 		keys = (LinearLayout) findViewById(R.id.details_contact_keys);
 		getActionBar().setHomeButtonEnabled(true);
@@ -232,6 +230,8 @@ public class ContactDetailsActivity extends XmppActivity {
 	}
 
 	private void populateView() {
+		send.setOnCheckedChangeListener(null);
+		receive.setOnCheckedChangeListener(null);
 		setTitle(contact.getDisplayName());
 		if (contact.getOption(Contact.Options.FROM)) {
 			send.setText(R.string.send_presence_updates);
@@ -267,6 +267,9 @@ public class ContactDetailsActivity extends XmppActivity {
 			send.setEnabled(false);
 		}
 
+		send.setOnCheckedChangeListener(this.mOnSendCheckedChange);
+		receive.setOnCheckedChangeListener(this.mOnReceiveCheckedChange);
+		
 		lastseen.setText(UIHelper.lastseen(getApplicationContext(),
 				contact.lastseen.time));
 
