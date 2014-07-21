@@ -969,6 +969,7 @@ public class XmppConnectionService extends Service {
 			String nick = conversation.getMucOptions().getProposedNick();
 			conversation.getMucOptions().setJoinNick(nick);
 			PresencePacket packet = new PresencePacket();
+			String joinJid = conversation.getMucOptions().getJoinJid();
 			packet.setAttribute("to",conversation.getMucOptions().getJoinJid());
 			Element x = new Element("x");
 			x.setAttribute("xmlns", "http://jabber.org/protocol/muc");
@@ -988,6 +989,10 @@ public class XmppConnectionService extends Service {
 			}
 			packet.addChild(x);
 			sendPresencePacket(account, packet);
+			if (!joinJid.equals(conversation.getContactJid())) {
+				conversation.setContactJid(joinJid);
+				databaseBackend.updateConversation(conversation);
+			}
 		} else {
 			account.pendingConferenceJoins.add(conversation);
 		}
