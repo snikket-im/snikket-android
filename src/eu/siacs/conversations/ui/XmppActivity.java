@@ -349,7 +349,7 @@ public abstract class XmppActivity extends Activity {
 			String conversationUuid = data.getStringExtra("conversation");
 			Conversation conversation = xmppConnectionService.findConversationByUuid(conversationUuid);
 			if (conversation.getMode() == Conversation.MODE_MULTI) {
-				xmppConnectionService.inviteToConference(conversation, contactJid);
+				xmppConnectionService.invite(conversation, contactJid);
 			}
 			Log.d("xmppService","inviting "+contactJid+" to "+conversation.getName(true));
 		}

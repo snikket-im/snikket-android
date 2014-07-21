@@ -221,8 +221,8 @@ public class MessageParser extends AbstractParser implements
 			updateLastseen(packet, account, false);
 			mXmppConnectionService.markMessage(account, fromParts[0], id,
 					Message.STATUS_SEND_RECEIVED);
-		} else if (packet.hasChild("x")) {
-			Element x = packet.findChild("x");
+		} else if (packet.hasChild("x","http://jabber.org/protocol/muc#user")) {
+			Element x = packet.findChild("x","http://jabber.org/protocol/muc#user");
 			if (x.hasChild("invite")) {
 				Conversation conversation = mXmppConnectionService
 						.findOrCreateConversation(account,
@@ -233,6 +233,17 @@ public class MessageParser extends AbstractParser implements
 				}	
 			}
 
+		} else if (packet.hasChild("x", "jabber:x:conference")) {
+			Element x = packet.findChild("x", "jabber:x:conference");
+			String jid = x.getAttribute("jid");
+			if (jid!=null) {
+				Conversation conversation = mXmppConnectionService
+						.findOrCreateConversation(account,jid, true);
+				if (!conversation.getMucOptions().online()) {
+					mXmppConnectionService.joinMuc(conversation);
+					mXmppConnectionService.updateConversationUi();
+				}
+			}
 		}
 	}
 

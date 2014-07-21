@@ -1223,19 +1223,9 @@ public class XmppConnectionService extends Service {
 		}).start();
 	}
 
-	public void inviteToConference(Conversation conversation, String contactJid) {
-		Account account = conversation.getAccount();
-		MessagePacket packet = new MessagePacket();
-		packet.setTo(conversation.getContactJid().split("/")[0]);
-		packet.setFrom(account.getFullJid());
-		Element x = new Element("x");
-		x.setAttribute("xmlns", "http://jabber.org/protocol/muc#user");
-		Element invite = new Element("invite");
-		invite.setAttribute("to", contactJid);
-		x.addChild(invite);
-		packet.addChild(x);
-		sendMessagePacket(account,packet);
-		Log.d(LOGTAG,packet.toString());
+	public void invite(Conversation conversation, String contact) {
+		MessagePacket packet = mMessageGenerator.invite(conversation, contact);
+		sendMessagePacket(conversation.getAccount(),packet);
 	}
 
 	public boolean markMessage(Account account, String recipient, String uuid,

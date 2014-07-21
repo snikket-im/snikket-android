@@ -128,4 +128,14 @@ public class MessageGenerator {
 		packet.setFrom(conversation.getAccount().getJid());
 		return packet;
 	}
+	
+	public MessagePacket invite(Conversation conversation, String contact) {
+		MessagePacket packet = new MessagePacket();
+		packet.setType(MessagePacket.TYPE_NORMAL);
+		packet.setTo(contact);
+		packet.setFrom(conversation.getAccount().getFullJid());
+		Element x = packet.addChild("x", "jabber:x:conference");
+		x.setAttribute("jid", conversation.getContactJid().split("/")[0]);
+		return packet;
+	}
 }
