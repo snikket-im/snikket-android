@@ -129,13 +129,26 @@ public class MessageGenerator {
 		return packet;
 	}
 	
-	public MessagePacket invite(Conversation conversation, String contact) {
+	public MessagePacket directInvite(Conversation conversation, String contact) {
 		MessagePacket packet = new MessagePacket();
 		packet.setType(MessagePacket.TYPE_NORMAL);
 		packet.setTo(contact);
 		packet.setFrom(conversation.getAccount().getFullJid());
 		Element x = packet.addChild("x", "jabber:x:conference");
 		x.setAttribute("jid", conversation.getContactJid().split("/")[0]);
+		return packet;
+	}
+	
+	public MessagePacket invite(Conversation conversation, String contact) {
+		MessagePacket packet = new MessagePacket();
+		packet.setTo(conversation.getContactJid().split("/")[0]);
+		packet.setFrom(conversation.getAccount().getFullJid());
+		Element x = new Element("x");
+		x.setAttribute("xmlns", "http://jabber.org/protocol/muc#user");
+		Element invite = new Element("invite");
+		invite.setAttribute("to", contact);
+		x.addChild(invite);
+		packet.addChild(x);
 		return packet;
 	}
 }
