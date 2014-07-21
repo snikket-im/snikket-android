@@ -699,8 +699,19 @@ public class ConversationFragment extends Fragment {
 			return;
 		}
 		hideSnackbar();
-		ConversationActivity activity = (ConversationActivity) getActivity();
+		final ConversationActivity activity = (ConversationActivity) getActivity();
 		if (this.conversation != null) {
+			final Contact contact = this.conversation.getContact();
+			if (!contact.showInRoster() && contact.getOption(Contact.Options.PENDING_SUBSCRIPTION_REQUEST)) {
+				showSnackbar(R.string.contact_added_you, R.string.add_back, new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						activity.xmppConnectionService.createContact(contact);
+						activity.switchToContactDetails(contact);
+					}
+				});
+			}
 			for (Message message : this.conversation.getMessages()) {
 				if ((message.getEncryption() == Message.ENCRYPTION_PGP)
 						&& ((message.getStatus() == Message.STATUS_RECIEVED) || (message

@@ -264,6 +264,7 @@ public abstract class XmppActivity extends Activity {
 						Account account = conversation.getAccount();
 						Contact contact = account.getRoster().getContact(jid);
 						xmppConnectionService.createContact(contact);
+						switchToContactDetails(contact);
 					}
 				});
 		builder.create().show();
