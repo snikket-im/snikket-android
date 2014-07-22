@@ -81,7 +81,8 @@
                  android:layout_centerVertical="true"
                  android:paddingLeft="24dp"
                  android:textColor="@color/ondarktext"
-                 android:textSize="14sp" />
+                 android:textSize="14sp" 
+                 android:layout_toLeftOf="@+id/snackbar_action"/>
 
              <TextView
                  android:id="@+id/snackbar_action"
