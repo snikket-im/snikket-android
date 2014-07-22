@@ -1,5 +1,10 @@
 ###Changelog
 
+####Version 0.5
+* UI overhaul
+* MUC / Conference bookmarks
+* A lot of bug fixes
+
 ####Version 0.4
 * OTR file encryption
 * keep OTR messages and files on device until both parties or online at the same time
