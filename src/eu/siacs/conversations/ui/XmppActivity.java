@@ -40,6 +40,9 @@ public abstract class XmppActivity extends Activity {
 	public boolean xmppConnectionServiceBound = false;
 	protected boolean handledViewIntent = false;
 	
+	protected int mPrimaryTextColor;
+	protected int mSecondaryTextColor;
+	
 	protected interface OnValueEdited {
 		public void onValueEdited(String value);
 	}
@@ -157,6 +160,8 @@ public abstract class XmppActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		ExceptionHelper.init(getApplicationContext());
+		mPrimaryTextColor = getResources().getColor(R.color.primarytext);
+		mSecondaryTextColor = getResources().getColor(R.color.secondarytext);
 	}
 
 	public void switchToConversation(Conversation conversation) {
@@ -354,5 +359,13 @@ public abstract class XmppActivity extends Activity {
 			}
 			Log.d("xmppService","inviting "+contactJid+" to "+conversation.getName(true));
 		}
+	}
+	
+	public int getSecondaryTextColor() {
+		return this.mSecondaryTextColor;
+	}
+	
+	public int getPrimaryTextColor() {
+		return this.mPrimaryTextColor;
 	}
 }
