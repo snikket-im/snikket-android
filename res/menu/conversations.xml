@@ -35,15 +35,15 @@
         android:showAsAction="never"
         android:title="@string/invite_contact"/>
     <item
-        android:id="@+id/action_archive"
+        android:id="@+id/action_clear_history"
         android:orderInCategory="50"
         android:showAsAction="never"
-        android:title="@string/action_end_conversation"/>
+        android:title="@string/action_clear_history"/>
     <item
-        android:id="@+id/action_clear_history"
+        android:id="@+id/action_archive"
         android:orderInCategory="60"
         android:showAsAction="never"
-        android:title="@string/action_clear_history"/>
+        android:title="@string/action_end_conversation"/>
     <item
         android:id="@+id/action_accounts"
         android:orderInCategory="90"

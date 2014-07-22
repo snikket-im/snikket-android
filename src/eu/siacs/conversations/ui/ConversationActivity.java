@@ -309,8 +309,6 @@ public class ConversationActivity extends XmppActivity {
 		MenuItem menuAttach = (MenuItem) menu.findItem(R.id.action_attach_file);
 		MenuItem menuClearHistory = (MenuItem) menu
 				.findItem(R.id.action_clear_history);
-		MenuItem menuManageAccounts = (MenuItem) menu.findItem(R.id.action_accounts);
-		MenuItem menuSettings = (MenuItem) menu.findItem(R.id.action_settings);
 		MenuItem menuAdd = (MenuItem) menu.findItem(R.id.action_add);
 		MenuItem menuInviteContact = (MenuItem) menu.findItem(R.id.action_invite);
 
@@ -324,8 +322,6 @@ public class ConversationActivity extends XmppActivity {
 			menuClearHistory.setVisible(false);
 		} else {
 			menuAdd.setVisible(!spl.isSlideable());
-			menuSettings.setVisible(!spl.isSlideable());
-			menuManageAccounts.setVisible(!spl.isSlideable());
 			if (this.getSelectedConversation() != null) {
 				if (this.getSelectedConversation().getLatestMessage()
 						.getEncryption() != Message.ENCRYPTION_NONE) {
