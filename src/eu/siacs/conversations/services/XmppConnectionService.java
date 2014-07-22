@@ -367,8 +367,6 @@ public class XmppConnectionService extends Service {
 		PRNGFixes.apply();
 		this.mRandom = new SecureRandom();
 		this.mMemorizingTrustManager = new MemorizingTrustManager(getApplicationContext());
-		this.mMemorizingTrustManager.wrapHostnameVerifier(
-				new org.apache.http.conn.ssl.StrictHostnameVerifier());
 		this.databaseBackend = DatabaseBackend
 				.getInstance(getApplicationContext());
 		this.fileBackend = new FileBackend(getApplicationContext());
