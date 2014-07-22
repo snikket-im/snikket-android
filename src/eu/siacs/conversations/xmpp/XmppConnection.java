@@ -21,6 +21,7 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map.Entry;
 
+import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
@@ -28,8 +29,12 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
+import org.bouncycastle.pqc.math.linearalgebra.GoppaCode.MaMaPe;
 import org.xmlpull.v1.XmlPullParserException;
 
+import de.duenndns.ssl.MemorizingTrustManager;
+
+import android.content.Context;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
@@ -97,11 +102,12 @@ public class XmppConnection implements Runnable {
 	private OnIqPacketReceived unregisteredIqListener = null;
 	private OnMessagePacketReceived messageListener = null;
 	private OnStatusChanged statusListener = null;
-	private OnTLSExceptionReceived tlsListener = null;
 	private OnBindListener bindListener = null;
+	private MemorizingTrustManager mMemorizingTrustManager;
 
 	public XmppConnection(Account account, XmppConnectionService service) {
 		this.mRandom = service.getRNG();
+		this.mMemorizingTrustManager = service.getMemorizingTrustManager();
 		this.account = account;
 		this.wakeLock = service.getPowerManager().newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
 				account.getJid());
@@ -440,67 +446,19 @@ public class XmppConnection implements Runnable {
 		tagReader.readTag();
 		try {
 			SSLContext sc = SSLContext.getInstance("TLS");
-			TrustManagerFactory tmf = TrustManagerFactory
-					.getInstance(TrustManagerFactory.getDefaultAlgorithm());
-			try {
-				tmf.init((KeyStore) null);
-			} catch (KeyStoreException e1) {
-				e1.printStackTrace();
-			}
-
-			TrustManager[] trustManagers = tmf.getTrustManagers();
-			final X509TrustManager origTrustmanager = (X509TrustManager) trustManagers[0];
-
-			TrustManager[] wrappedTrustManagers = new TrustManager[] { new X509TrustManager() {
-
-				@Override
-				public void checkClientTrusted(X509Certificate[] chain,
-						String authType) throws CertificateException {
-					origTrustmanager.checkClientTrusted(chain, authType);
-				}
-
-				@Override
-				public void checkServerTrusted(X509Certificate[] chain,
-						String authType) throws CertificateException {
-					try {
-						origTrustmanager.checkServerTrusted(chain, authType);
-					} catch (CertificateException e) {
-						if (e.getCause() instanceof CertPathValidatorException) {
-							String sha;
-							try {
-								MessageDigest sha1 = MessageDigest
-										.getInstance("SHA1");
-								sha1.update(chain[0].getEncoded());
-								sha = CryptoHelper.bytesToHex(sha1.digest());
-								if (!sha.equals(account.getSSLFingerprint())) {
-									changeStatus(Account.STATUS_TLS_ERROR);
-									if (tlsListener != null) {
-										tlsListener.onTLSExceptionReceived(sha,
-												account);
-									}
-									throw new CertificateException();
-								}
-							} catch (NoSuchAlgorithmException e1) {
-								// TODO Auto-generated catch block
-								e1.printStackTrace();
-							}
-						} else {
-							throw new CertificateException();
-						}
-					}
-				}
-
-				@Override
-				public X509Certificate[] getAcceptedIssuers() {
-					return origTrustmanager.getAcceptedIssuers();
-				}
-
-			} };
-			sc.init(null, wrappedTrustManagers, null);
+			sc.init(null, new X509TrustManager[] { this.mMemorizingTrustManager }, mRandom);
 			SSLSocketFactory factory = sc.getSocketFactory();
+			
+			HostnameVerifier verifier = this.mMemorizingTrustManager.wrapHostnameVerifier(new org.apache.http.conn.ssl.StrictHostnameVerifier());
 			SSLSocket sslSocket = (SSLSocket) factory.createSocket(socket,
 					socket.getInetAddress().getHostAddress(), socket.getPort(),
 					true);
+			
+			if (verifier != null && !verifier.verify(account.getServer(), sslSocket.getSession())) {
+				Log.d(LOGTAG, account.getJid() + ": host mismatch in TLS connection");
+				sslSocket.close();
+				throw new IOException();
+			}
 			tagReader.setInputStream(sslSocket.getInputStream());
 			tagWriter.setOutputStream(sslSocket.getOutputStream());
 			sendStartStream();
@@ -508,10 +466,8 @@ public class XmppConnection implements Runnable {
 			processStream(tagReader.readTag());
 			sslSocket.close();
 		} catch (NoSuchAlgorithmException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		} catch (KeyManagementException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -842,11 +798,6 @@ public class XmppConnection implements Runnable {
 
 	public void setOnStatusChangedListener(OnStatusChanged listener) {
 		this.statusListener = listener;
-	}
-
-	public void setOnTLSExceptionReceivedListener(
-			OnTLSExceptionReceived listener) {
-		this.tlsListener = listener;
 	}
 
 	public void setOnBindListener(OnBindListener listener) {

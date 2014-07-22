@@ -105,6 +105,7 @@
                 <data android:mimeType="image/*" />
             </intent-filter>
         </activity>
+        <activity android:name="de.duenndns.ssl.MemorizingActivity" />
     </application>
 
 </manifest>

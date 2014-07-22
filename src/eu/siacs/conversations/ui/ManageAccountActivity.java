@@ -59,57 +59,6 @@ public class ManageAccountActivity extends XmppActivity {
 		}
 	};
 
-	protected OnTLSExceptionReceived tlsExceptionReceived = new OnTLSExceptionReceived() {
-
-		@Override
-		public void onTLSExceptionReceived(final String fingerprint,
-				final Account account) {
-			activity.runOnUiThread(new Runnable() {
-
-				@Override
-				public void run() {
-					AlertDialog.Builder builder = new AlertDialog.Builder(
-							activity);
-					builder.setTitle(getString(R.string.account_status_error));
-					builder.setIconAttribute(android.R.attr.alertDialogIcon);
-					View view = (View) getLayoutInflater().inflate(
-							R.layout.cert_warning, null);
-					TextView sha = (TextView) view.findViewById(R.id.sha);
-					TextView hint = (TextView) view.findViewById(R.id.hint);
-					StringBuilder humanReadableSha = new StringBuilder();
-					humanReadableSha.append(fingerprint);
-					for (int i = 2; i < 59; i += 3) {
-						if ((i == 14) || (i == 29) || (i == 44)) {
-							humanReadableSha.insert(i, "\n");
-						} else {
-							humanReadableSha.insert(i, ":");
-						}
-
-					}
-					hint.setText(getString(R.string.untrusted_cert_hint,
-							account.getServer()));
-					sha.setText(humanReadableSha.toString());
-					builder.setView(view);
-					builder.setNegativeButton(
-							getString(R.string.certif_no_trust), null);
-					builder.setPositiveButton(getString(R.string.certif_trust),
-							new OnClickListener() {
-
-								@Override
-								public void onClick(DialogInterface dialog,
-										int which) {
-									account.setSSLCertFingerprint(fingerprint);
-									activity.xmppConnectionService
-											.updateAccount(account);
-								}
-							});
-					builder.create().show();
-				}
-			});
-
-		}
-	};
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
@@ -471,7 +420,6 @@ public class ManageAccountActivity extends XmppActivity {
 	protected void onStop() {
 		if (xmppConnectionServiceBound) {
 			xmppConnectionService.removeOnAccountListChangedListener();
-			xmppConnectionService.removeOnTLSExceptionReceivedListener();
 		}
 		super.onStop();
 	}
@@ -479,8 +427,6 @@ public class ManageAccountActivity extends XmppActivity {
 	@Override
 	void onBackendConnected() {
 		xmppConnectionService.setOnAccountListChangedListener(accountChanged);
-		xmppConnectionService
-				.setOnTLSExceptionReceivedListener(tlsExceptionReceived);
 		this.accountList.clear();
 		this.accountList.addAll(xmppConnectionService.getAccounts());
 		accountListViewAdapter.notifyDataSetChanged();

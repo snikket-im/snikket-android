@@ -15,6 +15,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import org.openintents.openpgp.util.OpenPgpApi;
 import org.openintents.openpgp.util.OpenPgpServiceConnection;
 
+import de.duenndns.ssl.MemorizingTrustManager;
+
 import net.java.otr4j.OtrException;
 import net.java.otr4j.session.Session;
 import net.java.otr4j.session.SessionStatus;
@@ -90,6 +92,8 @@ public class XmppConnectionService extends Service {
 	public static final long CARBON_GRACE_PERIOD = 60000L;
 
 	private static String ACTION_MERGE_PHONE_CONTACTS = "merge_phone_contacts";
+	
+	private MemorizingTrustManager mMemorizingTrustManager;
 
 	private MessageParser mMessageParser = new MessageParser(this);
 	private PresenceParser mPresenceParser = new PresenceParser(this);
@@ -106,7 +110,6 @@ public class XmppConnectionService extends Service {
 	private int convChangedListenerCount = 0;
 	private OnAccountUpdate mOnAccountUpdate = null;
 	private OnRosterUpdate mOnRosterUpdate = null;
-	private OnTLSExceptionReceived tlsException = null;
 	public OnContactStatusChanged onContactStatusChanged = new OnContactStatusChanged() {
 
 		@Override
@@ -120,11 +123,6 @@ public class XmppConnectionService extends Service {
 			}
 		}
 	};
-
-	public void setOnTLSExceptionReceivedListener(
-			OnTLSExceptionReceived listener) {
-		tlsException = listener;
-	}
 
 	private SecureRandom mRandom;
 
@@ -368,6 +366,9 @@ public class XmppConnectionService extends Service {
 		ExceptionHelper.init(getApplicationContext());
 		PRNGFixes.apply();
 		this.mRandom = new SecureRandom();
+		this.mMemorizingTrustManager = new MemorizingTrustManager(getApplicationContext());
+		this.mMemorizingTrustManager.wrapHostnameVerifier(
+				new org.apache.http.conn.ssl.StrictHostnameVerifier());
 		this.databaseBackend = DatabaseBackend
 				.getInstance(getApplicationContext());
 		this.fileBackend = new FileBackend(getApplicationContext());
@@ -467,19 +468,6 @@ public class XmppConnectionService extends Service {
 		connection
 				.setOnUnregisteredIqPacketReceivedListener(this.mIqParser);
 		connection.setOnJinglePacketReceivedListener(this.jingleListener);
-		connection
-				.setOnTLSExceptionReceivedListener(new OnTLSExceptionReceived() {
-
-					@Override
-					public void onTLSExceptionReceived(String fingerprint,
-							Account account) {
-						Log.d(LOGTAG, "tls exception arrived in service");
-						if (tlsException != null) {
-							tlsException.onTLSExceptionReceived(fingerprint,
-									account);
-						}
-					}
-				});
 		connection.setOnBindListener(this.mOnBindListener);
 		return connection;
 	}
@@ -1214,10 +1202,6 @@ public class XmppConnectionService extends Service {
 		this.databaseBackend.updateConversation(conversation);
 	}
 
-	public void removeOnTLSExceptionReceivedListener() {
-		this.tlsException = null;
-	}
-
 	public void reconnectAccount(final Account account, final boolean force) {
 		new Thread(new Runnable() {
 
@@ -1337,6 +1321,10 @@ public class XmppConnectionService extends Service {
 
 	public SecureRandom getRNG() {
 		return this.mRandom;
+	}
+	
+	public MemorizingTrustManager getMemorizingTrustManager() {
+		return this.mMemorizingTrustManager;
 	}
 
 	public PowerManager getPowerManager() {
