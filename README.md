@@ -55,6 +55,7 @@ These XEPs are - as of now:
 * [Daniel Gultsch](https://github.com/iNPUTmice) (German)
 * [Aitor Beriain](https://github.com/beriain) (Basque)
 * [Ilia Rostovtsev](https://github.com/rostovtsev) (Russian)
+* [Jelmer Vernooij](https://github.com/jelmer) (Dutch)
 
 ##FAQ
 ###General
