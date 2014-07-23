@@ -339,9 +339,13 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 
 								@Override
 								public void onClick(View v) {
-									Toast.makeText(
-											getContext(),
-											R.string.contact_has_read_up_to_this_point,
+									String name = item.getConversation()
+											.getName(true);
+									String read = getContext()
+											.getString(
+													R.string.contact_has_read_up_to_this_point,
+													name);
+									Toast.makeText(getContext(), read,
 											Toast.LENGTH_SHORT).show();
 								}
 							});

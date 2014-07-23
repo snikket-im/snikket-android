@@ -64,9 +64,6 @@
     <string name="ok">OK</string>
     <string name="done">Done</string>
     <string name="hide">Hide</string>
-    <string name="create_invite">Create \u0026 Invite</string>
-    <string name="new_conference_explained">Do you want to create a new conference with a randomly generated address and invite the selected contacts to it?</string>
-    <string name="no_open_mucs">No existing conferences</string>
     <string name="invitation_sent">Invitation sent</string>
     <string name="account_offline">Account offline</string>
     <string name="cant_invite_while_offline">You have to be online to invite people to conferences</string>
@@ -156,7 +153,6 @@
     <string name="pref_grant_presence_updates">Grant presence updates</string>
     <string name="pref_grant_presence_updates_summary">Preemptively grant and ask for presence subscription for contacts you created</string>
     <string name="subscriptions">Subscriptions</string>
-    <string name="subscription_updated">Subscription updated</string>
     <string name="your_account">Your account</string>
     <string name="keys">Keys</string>
     <string name="send_presence_updates">Send presence updates</string>
@@ -181,13 +177,10 @@
     <string name="account_status_not_found">Server not found</string>
     <string name="account_status_no_internet">No connectivity</string>
     <string name="account_status_requires_tls">Server requires TLS</string>
-    <string name="account_status_error">Untrusted cerficate</string>
     <string name="account_status_regis_fail">Registration failed</string>
     <string name="account_status_regis_conflict">Username already in use</string>
     <string name="account_status_regis_success">Registration completed</string>
     <string name="account_status_regis_not_sup">Server does not support registration</string>
-    <string name="certif_no_trust">Don\'t connect</string>
-    <string name="certif_trust">Trust certificate</string>
     <string name="encryption_choice_none">Plain text</string>
     <string name="encryption_choice_otr">OTR</string>
     <string name="encryption_choice_pgp">OpenPGP</string>
@@ -274,5 +267,5 @@
     <string name="leave">Leave</string>
     <string name="contact_added_you">Contact added you to contact list</string>
     <string name="add_back">Add back</string>
-    <string name="contact_has_read_up_to_this_point">Your contact has read up to this point</string>
+    <string name="contact_has_read_up_to_this_point">%s has read up to this point</string>
 </resources>
