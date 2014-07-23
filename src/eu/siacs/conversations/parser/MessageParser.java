@@ -295,6 +295,8 @@ public class MessageParser extends AbstractParser implements
 						message.markUnread();
 					}
 				}
+			} else {
+				parseNormal(packet, account);
 			}
 
 		} else if (packet.getType() == MessagePacket.TYPE_GROUPCHAT) {

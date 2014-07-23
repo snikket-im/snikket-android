@@ -29,6 +29,7 @@ import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.entities.MucOptions.OnRenameListener;
 import eu.siacs.conversations.entities.Presences;
+import eu.siacs.conversations.generator.IqGenerator;
 import eu.siacs.conversations.generator.MessageGenerator;
 import eu.siacs.conversations.generator.PresenceGenerator;
 import eu.siacs.conversations.parser.IqParser;
@@ -985,6 +986,7 @@ public class XmppConnectionService extends Service {
 	}
 
 	private OnRenameListener renameListener = null;
+	private IqGenerator mIqGenerator = new IqGenerator();
 
 	public void setOnRenameListener(OnRenameListener listener) {
 		this.renameListener = listener;
@@ -1397,6 +1399,10 @@ public class XmppConnectionService extends Service {
 	
 	public PresenceGenerator getPresenceGenerator() {
 		return this.mPresenceGenerator;
+	}
+	
+	public IqGenerator getIqGenerator() {
+		return this.mIqGenerator ;
 	}
 	
 	public JingleConnectionManager getJingleConnectionManager() {

@@ -2,9 +2,10 @@ package eu.siacs.conversations.generator;
 
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
+import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.stanzas.PresencePacket;
 
-public class PresenceGenerator {
+public class PresenceGenerator extends AbstractGenerator {
 
 	private PresencePacket subscription(String type, Contact contact) {
 		PresencePacket packet = new PresencePacket();
@@ -37,6 +38,13 @@ public class PresenceGenerator {
 		if (sig != null) {
 			packet.addChild("status").setContent("online");
 			packet.addChild("x", "jabber:x:signed").setContent(sig);
+		}
+		String capHash = getCapHash();
+		if (capHash != null) {
+			Element cap = packet.addChild("c","http://jabber.org/protocol/caps");
+			cap.setAttribute("hash", "sha-1");
+			cap.setAttribute("node","http://conversions.siacs.eu");
+			cap.setAttribute("ver", capHash);
 		}
 		return packet;
 	}
