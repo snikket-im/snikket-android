@@ -151,4 +151,14 @@ public class MessageGenerator {
 		packet.addChild(x);
 		return packet;
 	}
+	
+	public MessagePacket received(Account account, MessagePacket originalMessage, String namespace) {
+		MessagePacket receivedPacket = new MessagePacket();
+		receivedPacket.setType(MessagePacket.TYPE_NORMAL);
+		receivedPacket.setTo(originalMessage.getFrom());
+		receivedPacket.setFrom(account.getFullJid());
+		Element received = receivedPacket.addChild("received",namespace);
+		received.setAttribute("id", originalMessage.getId());
+		return receivedPacket;
+	}
 }

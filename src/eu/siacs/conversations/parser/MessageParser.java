@@ -316,26 +316,20 @@ public class MessageParser extends AbstractParser implements
 			return;
 		} else if (packet.getType() == MessagePacket.TYPE_NORMAL) {
 			this.parseNormal(packet, account);
+			return;
 		}
 		if ((message == null) || (message.getBody() == null)) {
 			return;
 		}
 		if ((mXmppConnectionService.confirmMessages())
 				&& ((packet.getId() != null))) {
-			MessagePacket receivedPacket = new MessagePacket();
-			receivedPacket.setType(MessagePacket.TYPE_NORMAL);
-			receivedPacket.setTo(message.getCounterpart());
-			receivedPacket.setFrom(account.getFullJid());
 			if (packet.hasChild("markable", "urn:xmpp:chat-markers:0")) {
-				Element received = receivedPacket.addChild("received",
-						"urn:xmpp:chat-markers:0");
-				received.setAttribute("id", packet.getId());
-				account.getXmppConnection().sendMessagePacket(receivedPacket);
-			} else if (packet.hasChild("request", "urn:xmpp:receipts")) {
-				Element received = receivedPacket.addChild("received",
-						"urn:xmpp:receipts");
-				received.setAttribute("id", packet.getId());
-				account.getXmppConnection().sendMessagePacket(receivedPacket);
+				MessagePacket receipt = mXmppConnectionService.getMessageGenerator().received(account, packet, "urn:xmpp:chat-markers:0");
+				mXmppConnectionService.sendMessagePacket(account, receipt);
+			}
+			if (packet.hasChild("request", "urn:xmpp:receipts")) {
+				MessagePacket receipt = mXmppConnectionService.getMessageGenerator().received(account, packet, "urn:xmpp:receipts");
+				mXmppConnectionService.sendMessagePacket(account, receipt);
 			}
 		}
 		Conversation conversation = message.getConversation();
