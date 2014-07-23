@@ -395,13 +395,4 @@ public class Conversation extends AbstractEntity {
 	public Bookmark getBookmark() {
 		return this.bookmark;
 	}
-
-	public void failWaitingOtrMessages() {
-		for (Message message : this.messages) {
-			if (message.getEncryption() == Message.ENCRYPTION_OTR
-					&& message.getStatus() == Message.STATUS_WAITING) {
-				message.setStatus(Message.STATUS_SEND_FAILED);
-			}
-		}
-	}
 }

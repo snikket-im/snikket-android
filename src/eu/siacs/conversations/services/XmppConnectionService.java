@@ -519,13 +519,13 @@ public class XmppConnectionService extends Service {
 					}
 				} else if (message.getEncryption() == Message.ENCRYPTION_DECRYPTED) {
 					message.getConversation().endOtrIfNeeded();
-					message.getConversation().failWaitingOtrMessages();
+					failWaitingOtrMessages(message.getConversation());
 					packet = mMessageGenerator.generatePgpChat(message);
 					message.setStatus(Message.STATUS_SEND);
 					send = true;
 				} else {
 					message.getConversation().endOtrIfNeeded();
-					message.getConversation().failWaitingOtrMessages();
+					failWaitingOtrMessages(message.getConversation());
 					if (message.getConversation().getMode() == Conversation.MODE_SINGLE) {
 						message.setStatus(Message.STATUS_SEND);
 					}
@@ -1316,6 +1316,15 @@ public class XmppConnectionService extends Service {
 			Account account = conversation.getAccount();
 			String to = conversation.getContactJid();
 			this.sendMessagePacket(conversation.getAccount(), mMessageGenerator.confirm(account, to, id));
+		}
+	}
+	
+	public void failWaitingOtrMessages(Conversation conversation) {
+		for (Message message : conversation.getMessages()) {
+			if (message.getEncryption() == Message.ENCRYPTION_OTR
+					&& message.getStatus() == Message.STATUS_WAITING) {
+				markMessage(message, Message.STATUS_SEND_FAILED);
+			}
 		}
 	}
 
