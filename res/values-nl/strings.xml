@@ -45,10 +45,6 @@
     <string name="show_otr_key">OTR vingerafdruk</string>
     <string name="no_otr_fingerprint">Geen OTR vingerafdruk gegenereerd. Start simpelweg een versleutelde conversatie</string>
     <string name="start_conversation">Start Conversatie</string>
-    <string name="invite_contacts">Nodig Contacten Uit</string>
-    <string name="invite_contacts_to_existing">Nodig uit naar bestaande groepsconversatie</string>
-    <string name="new_conference">Start nieuwe groepsconversatie</string>
-    <string name="new_contact">Maak nieuw contact</string>
     <string name="contacts">Contacten</string>
     <string name="search_jabber_id">Zoek of voer Jabber ID in</string>
     <string name="choose_account">Kies account</string>
@@ -64,9 +60,6 @@
     <string name="ok">OK</string>
     <string name="done">Klaar</string>
     <string name="hide">Verberg</string>
-    <string name="create_invite">Maak \u0026 Uitnodiging aan</string>
-    <string name="new_conference_explained">Wilt U een nieuw groepsconversatie starten met een willekeurig gegenereerd adres en de geselecteerde contacten ertoe uitnodigen?</string>
-    <string name="no_open_mucs">Geen bestaande groepsconversaties</string>
     <string name="invitation_sent">Uitnodiging verstuurd</string>
     <string name="account_offline">Account niet verbonden</string>
     <string name="cant_invite_while_offline">U moet online zijn om mensen uit te nodigen tot een groepsconversatie</string>
@@ -123,8 +116,6 @@
     <string name="use_pgp_encryption">Gebruik OpenPGP versleuteling</string>
     <string name="pref_xmpp_resource">XMPP resource</string>
     <string name="pref_xmpp_resource_summary">De naam waarmee deze client zich identificeert</string>
-    <string name="pref_accept_files">Accepteer bestanden</string>
-    <string name="pref_accept_files_summary">Accepteer automatisch bestanden kleiner dan&#8230;</string>
     <string name="pref_notification_settings">Notificatie Instellingen</string>
     <string name="pref_notifications">Notificaties</string>
     <string name="pref_notifications_summary">Notificatie als een nieuw bericht arriveert</string>
@@ -156,7 +147,6 @@
     <string name="pref_grant_presence_updates">Verleen toestemming voor aanwezigheid updates</string>
     <string name="pref_grant_presence_updates_summary">Vantevoren toestemming verlenen en vragen aan contacten die U hebt aangemaakt</string>
     <string name="subscriptions">Abonnementen</string>
-    <string name="subscription_updated">Abonnement ververst</string>
     <string name="your_account">Uw account</string>
     <string name="keys">Sleutels</string>
     <string name="send_presence_updates">Verstuur aanwezigheid updates</string>
@@ -181,13 +171,10 @@
     <string name="account_status_not_found">Server niet gevonden</string>
     <string name="account_status_no_internet">Geen verbinding</string>
     <string name="account_status_requires_tls">Server vereist TLS</string>
-    <string name="account_status_error">Onvertrouwd certificaat</string>
     <string name="account_status_regis_fail">Registratie mislukt</string>
     <string name="account_status_regis_conflict">Gebruikersnaam bezet</string>
     <string name="account_status_regis_success">Registratie compleet</string>
     <string name="account_status_regis_not_sup">Server ondersteunt geen registratie</string>
-    <string name="certif_no_trust">Niet verbinden</string>
-    <string name="certif_trust">Certificaat vertrouwen</string>
     <string name="encryption_choice_none">Onversleuteld</string>
     <string name="encryption_choice_otr">OTR</string>
     <string name="encryption_choice_pgp">OpenPGP</string>

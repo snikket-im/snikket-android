@@ -30,13 +30,7 @@
     <string name="show_otr_key">Emprempta dactilar OTR</string>
     <string name="no_otr_fingerprint">No s\'ha generat una emprempta dactilar OTR. Simplement continua i comença una conversa xifrada.</string>
     <string name="start_conversation">Començar conversa</string>
-    <string name="invite_contacts">Convidar contactes</string>
-    <string name="invite_contacts_to_existing">Convidar a conferència existent</string>
-    <string name="new_conference">Crear nova conferència</string>
     <string name="cancel">Cancel·lar</string>
-    <string name="create_invite">Crear \u0026 Convidar</string>
-    <string name="new_conference_explained">Vols crear una nova conferència amb una adreça generada aleatòriament i convidar als contactes seleccionats a ella?</string>
-    <string name="no_open_mucs">No hi ha conferències existents</string>
     <string name="invitation_sent">Invitació enviada</string>
     <string name="account_offline">Compte desconnectat</string>
     <string name="cant_invite_while_offline">Has d\'estar connectat per convidar contactes a la conferència</string>
@@ -60,7 +54,6 @@
     <string name="delete_messages">Esborrar missatges</string>
     <string name="also_end_conversation">Finalitzar aquesta conversa més tard</string>
     <string name="choose_presence">Selecciona recurs del contacte</string>
-    <string name="send_message_to_conference">Enviar missatge a conferència</string>
     <string name="send_plain_text_message">Enviar missatge de text</string>
     <string name="send_otr_message">Enviar missatge xifrat amb OTR</string>
     <string name="send_pgp_message">Enviar missatge xifrat amb OpenPGP</string>
@@ -69,9 +62,6 @@
     <string name="error_loading_image">Error carregant imatge (Fitxer no trobat)</string>
     <string name="image_offered_for_download"><i>Fitxer d\'imatge ofert per a descàrrega</i></string>
     <string name="not_connected">No connectat</string>
-    <string name="you_are_offline">Has d\'estar connectat per enviar %s però el teu compte associat a aquesta conversa està desconnectat.</string>
-    <string name="you_are_offline_blank">No pots executar aquesta acció estant desconnectat.</string>
-    <string name="files">fitxers</string>
     <string name="otr_messages">Missatges xifrats amb OTR</string>
     <string name="manage_account">Gestionar compte</string>
     <string name="contact_offline">El teu contacte està desconnectat</string>
@@ -94,8 +84,6 @@
     <string name="use_pgp_encryption">Usa xifratge amb OpenPGP</string>
 	<string name="pref_xmpp_resource">Recursos XMPP</string>
     <string name="pref_xmpp_resource_summary">El nom que identifica aquest client amb</string>
-    <string name="pref_accept_files">Acceptar fitxers</string>
-    <string name="pref_accept_files_summary">Accepta fitxers automàticament amb una mida menor a&#8230;</string>
     <string name="pref_notification_settings">Ajustos de notificacions</string>
     <string name="pref_notifications">Notificacions</string>
     <string name="pref_notifications_summary">Notifica quan arriba un nou missatge</string>

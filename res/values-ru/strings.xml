@@ -45,10 +45,6 @@
     <string name="show_otr_key">Контрольная сумма криптографического протокола OTR</string>
     <string name="no_otr_fingerprint">Нет созданных контрольных сумм криптографического протокола OTR. Просто начните новую зашифрованную беседу</string>
     <string name="start_conversation">Начать Беседу</string>
-    <string name="invite_contacts">Пригласить Пользователя</string>
-    <string name="invite_contacts_to_existing">Пригласить пользователя в существующую конференцию</string>
-    <string name="new_conference">Создать новую конференцию</string>
-    <string name="new_contact">Создать новый контакт</string>
     <string name="contacts">Контакты</string>
     <string name="search_jabber_id">Укажите уникальный идентификатор пользователя JID (Джаббер ID)</string>
     <string name="choose_account">Выберите аккаунт</string>
@@ -64,9 +60,6 @@
     <string name="ok">ОК</string>
     <string name="done">Готово</string>
     <string name="hide">Спрятать</string>
-    <string name="create_invite">Создать \u0026 Пригласить</string>
-    <string name="new_conference_explained">Вы хотите создать новую конференцию со случайным адресом и пригласить туда выбранных пользователей?</string>
-    <string name="no_open_mucs">Нет существующих конференций</string>
     <string name="invitation_sent">Приглашение отправлено</string>
     <string name="account_offline">Аккаунт не в сети</string>
     <string name="cant_invite_while_offline">Вы должны быть в сети, чтобы пригласить пользователей в конференцию</string>
@@ -123,8 +116,6 @@
     <string name="use_pgp_encryption">Использовать OpenPGP шифрование</string>
     <string name="pref_xmpp_resource">XMPP ресурс</string>
     <string name="pref_xmpp_resource_summary">Имя, которым Conversations идентифицирует себя</string>
-    <string name="pref_accept_files">Принимать файлы</string>
-    <string name="pref_accept_files_summary">Автоматически принимать файлы размером меньше, чем&#8230;</string>
     <string name="pref_notification_settings">Настройки Уведомлений</string>
     <string name="pref_notifications">Уведомление</string>
     <string name="pref_notifications_summary">Уведомлять когда приходят новые сообщения</string>
@@ -156,7 +147,6 @@
     <string name="pref_grant_presence_updates">Предоставлять обновления присутствия</string>
     <string name="pref_grant_presence_updates_summary">Разрешить и запрашивать статус присутствия для созданных вами контактов</string>
     <string name="subscriptions">Подписки</string>
-    <string name="subscription_updated">Подписка обновлена</string>
     <string name="your_account">Ваш аккаунт</string>
     <string name="keys">Ключи</string>
     <string name="send_presence_updates">Анонсировать статус присутствия</string>
@@ -181,13 +171,10 @@
     <string name="account_status_not_found">Сервер не найден</string>
     <string name="account_status_no_internet">Нет соединения</string>
     <string name="account_status_requires_tls">Сервер требует использования криптографического протокола TLS</string>
-    <string name="account_status_error">Неподтвержденный сертификат</string>
     <string name="account_status_regis_fail">Регистрация не удалась</string>
     <string name="account_status_regis_conflict">Имя пользователя уже используется</string>
     <string name="account_status_regis_success">Регистрация завершена</string>
     <string name="account_status_regis_not_sup">Сервер не поддерживает регистрацию</string>
-    <string name="certif_no_trust">Не подключаться</string>
-    <string name="certif_trust">Принять сертификат</string>
     <string name="encryption_choice_none">Без шифрования</string>
     <string name="encryption_choice_otr">OTR</string>
     <string name="encryption_choice_pgp">OpenPGP</string>

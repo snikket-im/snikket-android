@@ -64,9 +64,6 @@
     <string name="ok">OK</string>
     <string name="done">Hecho</string>
     <string name="hide">Ocultar</string>
-    <string name="create_invite">Crear \u0026 Invitar</string>
-    <string name="new_conference_explained">¿Quieres crear una nueva conferencia con una dirección generada aleatoriamente e invitar a los contactos seleccionados a ella?</string>
-    <string name="no_open_mucs">No hay conferencias existentes</string>
     <string name="invitation_sent">Invitación enviada</string>
     <string name="account_offline">Cuenta desconectada</string>
     <string name="cant_invite_while_offline">Debes estar conectado para invitar a contactos a la conferencia</string>
@@ -123,8 +120,6 @@
     <string name="use_pgp_encryption">Usa encriptación con OpenPGP</string>
     <string name="pref_xmpp_resource">Recurso</string>
     <string name="pref_xmpp_resource_summary">El nombre que identifica el cliente que estás utilizando</string>
-    <string name="pref_accept_files">Aceptar archivos</string>
-    <string name="pref_accept_files_summary">De forma automática aceptar archivos menores que&#8230;</string>
     <string name="pref_notification_settings">Ajustes de notificación</string>
     <string name="pref_notifications">Notificaciones</string>
     <string name="pref_notifications_summary">Notifica cuando llega un nuevo mensaje</string>
@@ -156,7 +151,6 @@
     <string name="pref_grant_presence_updates">Suscripción de presencia</string>
     <string name="pref_grant_presence_updates_summary">De forma automática solicitar y conceder suscripciones de presencia de los contactos que has creado</string>
     <string name="subscriptions">Suscripciones</string>
-    <string name="subscription_updated">Suscripción actualizada</string>
     <string name="your_account">Tu cuenta</string>
     <string name="keys">Claves</string>
     <string name="send_presence_updates">Enviar actualizaciones de presencia</string>
@@ -181,13 +175,10 @@
     <string name="account_status_not_found">Servidor no encontrado</string>
     <string name="account_status_no_internet">Sin conectividad</string>
     <string name="account_status_requires_tls">El servidor requiere TLS</string>
-    <string name="account_status_error">Certificado no confiable</string>
     <string name="account_status_regis_fail">Error en el registro</string>
     <string name="account_status_regis_conflict">El identificador ya está en uso</string>
     <string name="account_status_regis_success">Registro completado</string>
     <string name="account_status_regis_not_sup">El servidor no soporta registros</string>
-    <string name="certif_no_trust">No conectar</string>
-    <string name="certif_trust">Confiar en el certificado</string>
     <string name="encryption_choice_none">Texto plano</string>
     <string name="encryption_choice_otr">OTR</string>
     <string name="encryption_choice_pgp">OpenPGP</string>

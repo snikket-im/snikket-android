@@ -64,9 +64,6 @@
     <string name="ok">Ados</string>
     <string name="done">Eginda</string>
     <string name="hide">Ezkutatu</string>
-    <string name="create_invite">Sortu \u0026 Gonbidatu</string>
-    <string name="new_conference_explained">Ausazki sortutako helbide batekin konferentzia berri bat sortu eta hautatutako kontaktuak bertara gonbidatu nahi al dituzu?</string>
-    <string name="no_open_mucs">Ez da konferentziarik existitzen</string>
     <string name="invitation_sent">Gonbidapena bidali da</string>
     <string name="account_offline">Kontua lineaz kanpo</string>
     <string name="cant_invite_while_offline">Konektatuta egon behar zara jendea konferentzietara gonbidatzeko</string>
@@ -123,8 +120,6 @@
     <string name="use_pgp_encryption">OpenPGP enkriptazioa erabili</string>
     <string name="pref_xmpp_resource">XMPP baliabidea</string>
     <string name="pref_xmpp_resource_summary">Bezero honek bere burua aurkezteko erabiltzen duen izena</string>
-    <string name="pref_accept_files">Fitxategiak onartu</string>
-    <string name="pref_accept_files_summary">Hurrengo tamaina baino fitxategi txikiagoak automatikoki onartu&#8230;</string>
     <string name="pref_notification_settings">Jakinarazpenen ezarpenak</string>
     <string name="pref_notifications">Jakinarazpenak</string>
     <string name="pref_notifications_summary">Mezu berri bat heltzerakoan jakinarazi</string>
@@ -156,7 +151,6 @@
     <string name="pref_grant_presence_updates">Presentzia eguneraketak eman</string>
     <string name="pref_grant_presence_updates_summary">Prebentiboki presentzia eguneraketak eman eta eskatu sortu dituzun kontaktuetarako</string>
     <string name="subscriptions">Harpidetzak</string>
-    <string name="subscription_updated">Herpidetza eguneratuta</string>
     <string name="your_account">Zure kontua</string>
     <string name="keys">Gakoak</string>
     <string name="send_presence_updates">Presentzia eguneraketak bidali</string>
@@ -181,13 +175,10 @@
     <string name="account_status_not_found">Zerbitzaria ez da aurkitu</string>
     <string name="account_status_no_internet">Konektagarritasunik ez</string>
     <string name="account_status_requires_tls">Zerbitzariak TLS behar du</string>
-    <string name="account_status_error">Konfiantzarik gabeko ziurtagiria</string>
     <string name="account_status_regis_fail">Erregistroak huts egin du</string>
     <string name="account_status_regis_conflict">Erabiltzaile izena dagoeneko erabilita</string>
     <string name="account_status_regis_success">Erregistroa burutu da</string>
     <string name="account_status_regis_not_sup">Zerbitzariak ez du erregistratzea onartzen</string>
-    <string name="certif_no_trust">Ez konektatu</string>
-    <string name="certif_trust">Ziurtagiriaz fidatu</string>
     <string name="encryption_choice_none">Testu laua</string>
     <string name="encryption_choice_otr">OTR</string>
     <string name="encryption_choice_pgp">OpenPGP</string>

@@ -35,13 +35,7 @@
     <string name="show_otr_key">Pegada dactilar OTR</string>
     <string name="no_otr_fingerprint">Non hai pegadas dactilares OTR. Continúa e comeza unha conversación cifrada</string>
     <string name="start_conversation">Comeza conversa</string>
-    <string name="invite_contacts">Invitar contactos</string>
-    <string name="invite_contacts_to_existing">Invitar a conferencia existente</string>
-    <string name="new_conference">Crear nova conferencia</string>
     <string name="cancel">Cancelar</string>
-    <string name="create_invite">Crear \u0026 Invitar</string>
-    <string name="new_conference_explained">¿Queres crear unha nueva conferencia con unha dirección xerada aleatoriamente e invitar aos contactos seleccionados a ela?</string>
-    <string name="no_open_mucs">Non hai conferencias existentes</string>
     <string name="invitation_sent">Invitación enviada</string>
     <string name="account_offline">Conta desconectada</string>
     <string name="cant_invite_while_offline">Debes estar conectado para invitar contactos á conferencia</string>
@@ -65,7 +59,6 @@
     <string name="delete_messages">Borrar mensaxes</string>
     <string name="also_end_conversation">Terminar esta conversa máis tarde</string>
     <string name="choose_presence">Selecciona recurso del contacto</string>
-    <string name="send_message_to_conference">Enviar mensaxe a conferencia</string>
     <string name="send_plain_text_message">Enviar mensaxe de texto</string>
     <string name="send_otr_message">Enviar mensaxe cifrado con OTR</string>
     <string name="send_pgp_message">Enviar mensaxe cifrado con OpenPGP</string>
@@ -74,9 +67,6 @@
     <string name="error_loading_image">Erro na carga da imaxen (Arquivo non atopado)</string>
     <string name="image_offered_for_download"><i>Arquivo de imaxe ofrecido para descarga</i></string>
     <string name="not_connected">Non conectado</string>
-    <string name="you_are_offline">Debes estar conectado para enviar %s pero a túa conta asociada a esta conversa está desconectada.</string>
-    <string name="you_are_offline_blank">Non podes executar esta acción estando desconectado</string>
-    <string name="files">arquivos</string>
     <string name="otr_messages">Mensaxes cifrados con OTR</string>
     <string name="manage_account">Xestionar conta</string>
     <string name="contact_offline">O teu contacto está desconectado</string>
@@ -99,8 +89,6 @@
     <string name="use_pgp_encryption">Usa cifrado con OpenPGP</string>
     <string name="pref_xmpp_resource">Recurso</string>
     <string name="pref_xmpp_resource_summary">O nome que identifica o cliente que estás a empregar</string>
-    <string name="pref_accept_files">Aceptar arquivos</string>
-    <string name="pref_accept_files_summary">De forma automática aceptar arquivos menores de&#8230;</string>
     <string name="pref_notification_settings">Axustes de notificación</string>
     <string name="pref_notifications">Notificacións</string>
     <string name="pref_notifications_summary">Notifica cuando chega unha nova mensaxe</string>
@@ -151,13 +139,10 @@
     <string name="account_status_not_found">Servidor non atopado</string>
     <string name="account_status_no_internet">Sen conectividade</string>
     <string name="account_status_requires_tls">O servidor require TLS</string>
-    <string name="account_status_error">Certificado non confiable</string>
     <string name="account_status_regis_fail">Erro no rexistro</string>
     <string name="account_status_regis_conflict">O identificador xa está en uso</string>
     <string name="account_status_regis_success">Rexistro completado</string>
     <string name="account_status_regis_not_sup">O servidor non soporta rexistros</string>
-    <string name="certif_no_trust">Non conectar</string>
-    <string name="certif_trust">Confiar no certificado</string>
     <string name="encryption_choice_none">Texto plano</string>
     <string name="encryption_choice_otr">OTR</string>
     <string name="encryption_choice_pgp">OpenPGP</string>

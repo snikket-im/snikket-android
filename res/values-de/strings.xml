@@ -45,10 +45,6 @@
     <string name="show_otr_key">OTR Fingerabdruck</string>
     <string name="no_otr_fingerprint">Es wurde noch kein OTR-Fingerabdruck erzeugt. Beginne einfach eine verschlüsselte Unterhaltung um einen Fingerabdruck zu erzeugen.</string>
     <string name="start_conversation">Beginne Unterhaltung</string>
-    <string name="invite_contacts">Kontakte einladen</string>
-    <string name="invite_contacts_to_existing">Lade zu bestehender Konferenz ein</string>
-    <string name="new_conference">Erzeuge neue Konferenz</string>
-    <string name="new_contact">Neuen Kontakt erstellen</string>
     <string name="contacts">Kontakte</string>
     <string name="search_jabber_id">Jabber ID eingeben oder suchen</string>
     <string name="choose_account">Account auswählen</string>
@@ -64,9 +60,6 @@
     <string name="ok">OK</string>
     <string name="done">Erledigt</string>
     <string name="hide">Verstecken</string>
-    <string name="create_invite">Erzeugen \u0026 Einladen</string>
-    <string name="new_conference_explained">Möchtest du eine neue Konferenz mit einer zufälligen Adresse erstellen und die ausgewählten Kontakte zu dieser einladen?</string>
-    <string name="no_open_mucs">Keine bestehende Konferenz</string>
     <string name="invitation_sent">Einladung wurde versandt</string>
     <string name="account_offline">Account offline</string>
     <string name="cant_invite_while_offline">Du musst online sein um andere Leute zu einer Konferenz einzuladen</string>
@@ -90,7 +83,6 @@
     <string name="delete_messages">Nachrichten löschen</string>
     <string name="also_end_conversation">Diese Unterhaltung danach beenden</string>
     <string name="choose_presence">Choose presence to contact</string>
-    <string name="send_message_to_conference">Nachricht an Konferenz schicken</string>
     <string name="send_plain_text_message">Unverschlüsselt schreiben</string>
     <string name="send_otr_message">OTR-verschlüsselt schreiben</string>
     <string name="send_pgp_message">OpenPGP-verschlüsselt schreiben</string>
@@ -99,9 +91,6 @@
     <string name="error_loading_image">Fehler beim laden des Bildes. (Datei wurde nicht gefunden)</string>
     <string name="image_offered_for_download"><i>Bild Datei zum Download angeboten</i></string>
     <string name="not_connected">Nicht verbunden</string>
-    <string name="you_are_offline">Du musst online sein um %s zu verschicken. Das mit dieser Unterhaltung verbundene Konto ist gerade offline.</string>
-    <string name="you_are_offline_blank">Du kannst diese Aktion nicht ausführen so lange du offline bist.</string>
-    <string name="files">Dateien</string>
     <string name="otr_messages">OTR-verschlüsselte Nachrichten</string>
     <string name="manage_account">Konto verwalten</string>
     <string name="contact_offline">Dein Kontakt ist offline</string>
@@ -116,7 +105,6 @@
     <string name="offering">angeboten&#8230;</string>
     <string name="waiting">warten&#8230;</string>
     <string name="no_pgp_key">Kein OpenPGP Schlüssel gefunden</string>
-    <string name="no_pgp_keys">Keine OpenPGP-Schlüssel gefunden</string>
     <string name="contact_has_no_pgp_key">Conversations ist nicht in der Lage deine Nachrichten zu verschlüsseln weil dein Kontakt sein oder ihren Schlüssel nicht preis gibt.\n\n<small>Bitte sag deinem Kontakt er oder sie möge bitte OpenPGP einrichten.</small></string>
     <string name="contact_has_no_pgp_keys">Conversations ist nicht in der Lage deine Nachrichten zu verschlüsseln weil dein Kontakt sein oder ihren Schlüssel nicht preis gibt.\n\n<small>Bitte sag deinem Kontakt er oder sie möge bitte OpenPGP einrichten.</small></string>
     <string name="encrypted_message_received"><i>Verschlüsselte Nachricht erhalten. Drücke hier um sie anzuzeigen und zu entschlüsseln.</i></string>
@@ -127,8 +115,6 @@
     <string name="use_pgp_encryption">OpenPGP verwenden</string>
     <string name="pref_xmpp_resource">XMPP resource</string>
     <string name="pref_xmpp_resource_summary">Der Name mit dem sich der Client selber identifiziert</string>
-    <string name="pref_accept_files">Dateiannahme</string>
-    <string name="pref_accept_files_summary">Datein die kleiner sind als &#8230; automatisch annehmen</string>
     <string name="pref_notification_settings">Benachrichtigungseinstellung</string>
     <string name="pref_notifications">Benachrichtigungen</string>
     <string name="pref_notifications_summary">Benachrichtige mich wenn eine neu Nachricht ankommt</string>
@@ -156,7 +142,6 @@
     <string name="pref_grant_presence_updates">Online Status</string>
     <string name="pref_grant_presence_updates_summary">Erlaube Kontakten die von Dir erstellt wurden deinen Status zu sehen und frage um Erlaubnis ihren zu sehen.</string>
     <string name="subscriptions">Abonnements</string>
-    <string name="subscription_updated">Abonnements aktualisiert</string>
     <string name="your_account">Dein Account</string>
     <string name="keys">Schlüssel</string>
     <string name="send_presence_updates">Anwesenheitsbenachrichtigungen senden</string>
@@ -181,13 +166,10 @@
     <string name="account_status_not_found">Server nicht gefunden</string>
     <string name="account_status_no_internet">Keine Internetverbindung</string>
     <string name="account_status_requires_tls">Server benötigt TLS</string>
-    <string name="account_status_error">Unbekanntes Zertifikat</string>
     <string name="account_status_regis_fail">Registrierung fehlgeschlagen</string>
     <string name="account_status_regis_conflict">Benutzername wird bereits verwendet</string>
     <string name="account_status_regis_success">Registrierung abgeschlossen</string>
     <string name="account_status_regis_not_sup">Der Server unterstützt keine Registrierung</string>
-    <string name="certif_no_trust">Nicht verbinden</string>
-    <string name="certif_trust">Dem Zertifikat vertrauen</string>
     <string name="encryption_choice_none">Klartext</string>
     <string name="encryption_choice_otr">OTR</string>
     <string name="encryption_choice_pgp">OpenPGP</string>
@@ -206,7 +188,6 @@
     <string name="mgmt_account_are_you_sure">Bist du dir sicher?</string>
     <string name="mgmt_account_delete_confirm_text">Wenn du dein Konto löscht, gehen alle Gesprächsverläufe verloren</string>
     <string name="mgmt_account_account_offline">Das Konto ist offline</string>
-    <string name="attach_record_voice">Audio aufnehmen</string>
     <string name="account_settings_jabber_id">Jabber ID:</string>
     <string name="account_settings_password">Passwort:</string>
     <string name="account_settings_example_jabber_id">benutzer@domain.de</string>
