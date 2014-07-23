@@ -7,7 +7,6 @@ import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.services.XmppConnectionService.OnAccountUpdate;
 import eu.siacs.conversations.ui.EditAccountDialog.EditAccountListener;
-import eu.siacs.conversations.xmpp.OnTLSExceptionReceived;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import android.app.Activity;
 import android.app.AlertDialog;
