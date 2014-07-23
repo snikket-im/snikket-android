@@ -40,7 +40,6 @@ public class Account  extends AbstractEntity{
 	public static final int STATUS_ONLINE = 1;
 	public static final int STATUS_NO_INTERNET = 2;
 	public static final int STATUS_UNAUTHORIZED = 3;
-	public static final int STATUS_TLS_ERROR = 4;
 	public static final int STATUS_SERVER_NOT_FOUND = 5;
 
 	public static final int STATUS_SERVER_REQUIRES_TLS = 6;

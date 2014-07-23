@@ -192,9 +192,7 @@ public class XmppConnection implements Runnable {
 			}
 			return;
 		} catch (IOException e) {
-			if (account.getStatus() != Account.STATUS_TLS_ERROR) {
-				this.changeStatus(Account.STATUS_OFFLINE);
-			}
+			this.changeStatus(Account.STATUS_OFFLINE);
 			if (wakeLock.isHeld()) {
 				try { wakeLock.release();} catch (RuntimeException re) {}
 			}

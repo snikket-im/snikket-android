@@ -121,11 +121,6 @@ public class ManageAccountActivity extends XmppActivity {
 							.setText(getString(R.string.account_status_requires_tls));
 					statusView.setTextColor(0xFFe92727);
 					break;
-				case Account.STATUS_TLS_ERROR:
-					statusView
-							.setText(getString(R.string.account_status_error));
-					statusView.setTextColor(0xFFe92727);
-					break;
 				case Account.STATUS_REGISTRATION_FAILED:
 					statusView
 							.setText(getString(R.string.account_status_regis_fail));
@@ -163,8 +158,7 @@ public class ManageAccountActivity extends XmppActivity {
 					int position, long arg3) {
 				if (!isActionMode) {
 					Account account = accountList.get(position);
-					if ((account.getStatus() == Account.STATUS_OFFLINE)
-							|| (account.getStatus() == Account.STATUS_TLS_ERROR)) {
+					if (account.getStatus() == Account.STATUS_OFFLINE) {
 						activity.xmppConnectionService.reconnectAccount(
 								accountList.get(position), true);
 					} else if (account.getStatus() == Account.STATUS_ONLINE) {
