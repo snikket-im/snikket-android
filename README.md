@@ -32,7 +32,7 @@ your friends.
 These XEPs are - as of now:
 * XEP-0065: SOCKS5 Bytestreams - or rather mod_proxy65. Will be used to tranfer files if both parties are behind a firewall (NAT).
 * XEP-0138: Stream Compression saves bandwith
-* XEP-0198: Stream Management allows XMPP to surive small network outages and changes of the underlying TCP connection.
+* XEP-0198: Stream Management allows XMPP to survive small network outages and changes of the underlying TCP connection.
 * XEP-0280: Message Carbons which automatically syncs the messages you send to
   your desktop client and thus allows you to switch seamlessly from your mobile
   client to your desktop client and back within one conversation.
@@ -86,7 +86,7 @@ Or ask a friend to run one. Once you found one you can use Conversations to
 create an account. Just select 'register new account on server' within the
 create account dialog.
 
-####Conversations dosen't work for me. Where can I get help?
+####Conversations doesn't work for me. Where can I get help?
 You can join our conference room on conversations@conference.siacs.eu A lot of
 people in there are able to answer basic questions about the usage of
 Conversations or can provide you with tips on running your own XMPP server. If
@@ -103,7 +103,7 @@ address book with unnecessary contacts from your online roster. If you manually
 add a Jabber ID to your phones address book Conversations will use the name and
 the profile picture of this contact. To make the process of adding Jabber IDs to
 your address book easier you can click on the profile picture in the contact
-detais within Conversations. This will start an add to address book intent with the jabber ID
+details within Conversations. This will start an add to address book intent with the jabber ID
 as payload. This doesn’t require Conversations to have write permissions on your
 address book but also doesn’t require you to copy past Jabber ID from one app to
 another.
@@ -111,7 +111,7 @@ another.
 Status are a horrible metric. Setting them manually to a proper value rarly
 works because users are either lazy or just forget about them. Setting them
 automatically does not provide quality results either. Keyboard or mouse
-activity as indicator for example fails when the users is just looking at
+activity as indicator for example fails when the user is just looking at
 something (reading an article, watching a movie). Furthermore automatic setting
 of status always implies an impact on your privacy. (Are you sure you want
 everybody in your contact list to know that you have been using your computer at
@@ -128,8 +128,8 @@ longer necessary. Using priorities to route OTR messages isn't pratical either
 because they are not changeable on the fly. Metrics like last active client
 (the client which sent the last message) are much better.
 
-Unfortunatly these modern replacement for legacy XMPP featurs are not widely
-adopted. However Conversations should be an instant messanger for the future and
+Unfortunatly these modern replacements for legacy XMPP features are not widely
+adopted. However Conversations should be an instant messenger for the future and
 instead of making Conversations compatible with the past we should work on
 implementing new, improved technologies into other XMPP clients as well.
 
@@ -141,14 +141,14 @@ other clients.
 I'm open for new feature suggestions. You can use the issue tracker on github.
 Please take some time to browse through the issues to see if someone else
 already suggested it. Be assured that I read each and every ticket. If I like it
-I will leave it open untill it's implemented. If I don't like it I will close
+I will leave it open until it's implemented. If I don't like it I will close
 it. (Usually with a short comment). If I don't comment on an feature request
-thats probably a good sign because this means I agree with you. Commenting with
-+1 on either open or closed issues wont change my mind nor will it accelerate the
+that's probably a good sign because this means I agree with you. Commenting with
++1 on either open or closed issues won't change my mind nor will it accelerate the
 development.
 
 ####You closed my feature request but I want it really really badly
-Just write it yourself and send my a pull request. If I like it I will happily
+Just write it yourself and send me a pull request. If I like it I will happily
 merge it if I don't at least you and like minded people get to enjoy it.
 
 ####I need a feature and I need it now!
@@ -163,21 +163,21 @@ more flexible.
 Before you continue reading you should notice that the openPGP support in
 Conversations is marked as experimental. This is not because it will make the app
 unstable but because the fundamental concepts of PGP aren't ready for a
-widespread use. The way PGP works is that you trust Key IDs instead of XMPP- or email addresses. So in theory your contact list should consist of Public-Key-IDs instead of email addresses. But of course no email or xmpp client out there implements these concepts. Plus PGP in the context of instant messaging has a couple of downsides. It is vulnerable to replay attacks, it is rather verbose, and decryping and encrypting takes longer than OTR. It is however asynchronous and works well with carbonated messages.
+widespread use. The way PGP works is that you trust Key IDs instead of XMPP- or email addresses. So in theory your contact list should consist of Public-Key-IDs instead of email addresses. But of course no email or xmpp client out there implements these concepts. Plus PGP in the context of instant messaging has a couple of downsides. It is vulnerable to replay attacks, it is rather verbose, and decrypting and encrypting takes longer than OTR. It is however asynchronous and works well with carbonated messages.
 
 To use openpgp you have to install the opensource app OpenKeychain (www.openkeychain.org) and then long press on the account in manage accounts and choose renew PGP announcement from the contextual menu.
 ####How does the encryption for conferences work?
 For conferences the only supported encryption method is OpenPGP. (OTR does not
 work with multiple participents.) Every participant has to announce their
 OpenPGP key. (See answer above). If you would like to send encrypted messages to
-a conference you have to make sure that you have every participants public key
+a conference you have to make sure that you have every participant's public key
 in your OpenKeychain. Right now there is no check in Conversations to ensure
 that. You have to take care of that yourself. Go to the conference details and
 touch every key id (The hexadecimal number below a contact). This will send you
 to OpenKeychain which will assist you on adding the key.
 This works best in very small conferences with contacts you are already using
 OpenPGP with. This feature is regarded experimental. Conversations is the only
-client that uses XEP-0027 with confercenes. (The XEP neither specifically allows
+client that uses XEP-0027 with conferences. (The XEP neither specifically allows
 nor disallows this.)
 ###Development
 ####How do I build Conversations
