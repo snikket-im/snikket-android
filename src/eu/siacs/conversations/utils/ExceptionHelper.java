@@ -17,7 +17,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.DialogInterface.OnClickListener;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.preference.PreferenceManager;
+import android.text.format.DateUtils;
 import android.util.Log;
 
 public class ExceptionHelper {
@@ -49,13 +53,20 @@ public class ExceptionHelper {
 			FileInputStream file = context.openFileInput("stacktrace.txt");
 			InputStreamReader inputStreamReader = new InputStreamReader(
                     file);
-            BufferedReader bufferedReader = new BufferedReader(
+            BufferedReader stacktrace = new BufferedReader(
                     inputStreamReader);
-            final StringBuilder stacktrace = new StringBuilder();
+            final StringBuilder report = new StringBuilder();
+            PackageManager pm = context.getPackageManager();
+            PackageInfo packageInfo = null;
+            try {
+                packageInfo = pm.getPackageInfo(context.getPackageName(), 0);
+                report.append("Version: "+packageInfo.versionName+'\n');
+                report.append("Last Update: "+DateUtils.formatDateTime(context, packageInfo.lastUpdateTime, DateUtils.FORMAT_SHOW_TIME|DateUtils.FORMAT_SHOW_DATE)+'\n');
+            } catch (NameNotFoundException e) {}
             String line;
-            while((line = bufferedReader.readLine()) != null) {
-            	stacktrace.append(line);
-            	stacktrace.append('\n');
+            while((line = stacktrace.readLine()) != null) {
+            	report.append(line);
+            	report.append('\n');
             }
             file.close();
             context.deleteFile("stacktrace.txt");
@@ -69,7 +80,7 @@ public class ExceptionHelper {
 					
 						Log.d("xmppService","using account="+finalAccount.getJid()+" to send in stack trace");
 						Conversation conversation = service.findOrCreateConversation(finalAccount, "bugs@siacs.eu", false);
-						Message message = new Message(conversation, stacktrace.toString(), Message.ENCRYPTION_NONE);
+						Message message = new Message(conversation, report.toString(), Message.ENCRYPTION_NONE);
 						service.sendMessage(message);
 				}
 			});
