@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <string name="invite_contact">Пригласить собеседника</string>
+    <string name="you">Вы</string>
+    <string name="conference_not_found">Конференция не найдена</string>
+    <string name="pref_accept_files">Принимать файлы</string>
+    <string name="pref_accept_files_summary">Автоматически принимать файлы, размером меньше&#8230;</string>
+    <string name="title_activity_choose_contact">Выберите собеседника</string>
+    <string name="contact_added_you">Собеседник добавил вас в контакт лист</string>
+    <string name="remove_bookmark_text">Вы хотели бы удалить %s из закладок? Беседы связанные с данной закладкой не будут удалены.</string>
+    <string name="action_edit_subject">Редактировать тему конференции</string>
+    <string name="leave">Покинуть</string>
+    <string name="add_back">Добавить в ответ</string>
+    <string name="contact_has_read_up_to_this_point">%s видела сообщения до этого момента</string>
+
     <string name="app_name">Conversations</string>
     <string name="action_settings">Настройки</string>
     <string name="action_add">Новая беседа</string>
