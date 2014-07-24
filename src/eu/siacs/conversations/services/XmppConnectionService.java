@@ -1381,7 +1381,7 @@ public class XmppConnectionService extends Service {
 		for (Account account : accounts) {
 			if (account.getXmppConnection() != null) {
 				String server = account.getXmppConnection().getMucServer();
-				if (server != null) {
+				if (server != null && !mucServers.contains(server)) {
 					mucServers.add(server);
 				}
 			}
