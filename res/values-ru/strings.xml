@@ -5,7 +5,7 @@
     <string name="you">Вы</string>
     <string name="conference_not_found">Конференция не найдена</string>
     <string name="pref_accept_files">Принимать файлы</string>
-    <string name="pref_accept_files_summary">Автоматически принимать файлы, размером меньше&#8230;</string>
+    <string name="pref_accept_files_summary">Автоматически принимать файлы размером меньше&#8230;</string>
     <string name="title_activity_choose_contact">Выберите собеседника</string>
     <string name="contact_added_you">Собеседник добавил вас в контакт лист</string>
     <string name="remove_bookmark_text">Вы хотели бы удалить %s из закладок? Беседы связанные с данной закладкой не будут удалены.</string>
@@ -138,7 +138,7 @@
     <string name="pref_xmpp_resource">XMPP ресурс</string>
     <string name="pref_xmpp_resource_summary">Имя, которым Conversations идентифицирует себя</string>
     <string name="pref_accept_files">Принимать файлы</string>
-    <string name="pref_accept_files_summary">Автоматически принимать файлы размером меньше, чем&#8230;</string>
+    <string name="pref_accept_files_summary">Автоматически принимать файлы размером меньше&#8230;</string>
     <string name="pref_notification_settings">Настройки Уведомлений</string>
     <string name="pref_notifications">Уведомление</string>
     <string name="pref_notifications_summary">Уведомлять когда приходят новые сообщения</string>
