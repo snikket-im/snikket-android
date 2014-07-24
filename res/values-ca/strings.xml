@@ -84,7 +84,9 @@
     <string name="use_pgp_encryption">Usa xifratge amb OpenPGP</string>
 	<string name="pref_xmpp_resource">Recursos XMPP</string>
     <string name="pref_xmpp_resource_summary">El nom que identifica aquest client amb</string>
-    <string name="pref_notification_settings">Ajustos de notificacions</string>
+	<string name="pref_accept_files">Acceptar fitxers</string>
+	<string name="pref_accept_files_summary">Accepta fitxers automàticament amb una mida menor a&#8230;</string>
+	<string name="pref_notification_settings">Ajustos de notificacions</string>
     <string name="pref_notifications">Notificacions</string>
     <string name="pref_notifications_summary">Notifica quan arriba un nou missatge</string>
     <string name="pref_vibrate">Vibra</string>

@@ -116,7 +116,9 @@
     <string name="use_pgp_encryption">Utiliser le chiffrement OpenPGP</string>
     <string name="pref_xmpp_resource">Ressource XMPP</string>
     <string name="pref_xmpp_resource_summary">Nom permettant d\'identifier ce client XMPP</string>
-    <string name="pref_notification_settings">Paramètres de notification</string>
+	<string name="pref_accept_files">Accepter les fichiers</string>
+    <string name="pref_accept_files_summary">Accepter automatiquement les fichiers plus petits que&#8230;</string>
+	<string name="pref_notification_settings">Paramètres de notification</string>
     <string name="pref_notifications">Notifications</string>
     <string name="pref_notifications_summary">Notifier l\'arrivée d\'un message</string>
     <string name="pref_vibrate">Vibration</string>
