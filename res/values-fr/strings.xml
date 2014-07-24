@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name">Conversations</string>
     <string name="action_settings">Paramètres</string>
     <string name="action_add">Nouvelle conversation</string>
@@ -20,7 +21,8 @@
     <string name="title_activity_contact_details">Détails du contact</string>
     <string name="title_activity_conversations">Conversations</string>
     <string name="title_activity_sharewith">Partager avec Conversation</string>
-	<string name="title_activity_start_conversation">Lancement de Conversation</string>
+    <string name="title_activity_start_conversation">Lancement de Conversation</string>
+    <string name="title_activity_choose_contact">Choix du contact</string>
     <string name="just_now">À l\'instant</string>
     <string name="minute_ago">Il y a 1 minute</string>
     <string name="minutes_ago">Il y a %d minutes</string>
@@ -37,6 +39,7 @@
     <string name="visitor">Visiteur</string>
     <string name="enter_new_name">Entrer un nouveau nom:</string>
     <string name="remove_contact_text">Voulez-vous supprimer %s de votre liste? Les conversations associées à ce compte ne seront pas supprimées.</string>
+    <string name="remove_bookmark_text">Voulez-vous retirer %s des favoris? La conversation associée avec ce favoris ne sera pas supprimé.</string>
     <string name="untrusted_cert_hint">Le serveur %s utilise un certificat non certifié et peut-être auto-signé.</string>
     <string name="account_info">Informations du serveur</string>
     <string name="register_account">Créer un nouveau compte sur le serveur</string>
@@ -45,6 +48,7 @@
     <string name="show_otr_key">Empreinte OTR</string>
     <string name="no_otr_fingerprint">Empreinte OTR non générée. Essayez de démarrer une conversation sécurisée.</string>
     <string name="start_conversation">Démarrer une conversation</string>
+    <string name="invite_contact">Inviter des contacts</string>
     <string name="contacts">Contacts</string>
     <string name="search_jabber_id">Rechercher un identifiant</string>
     <string name="choose_account">Choix du compte</string>
@@ -116,9 +120,9 @@
     <string name="use_pgp_encryption">Utiliser le chiffrement OpenPGP</string>
     <string name="pref_xmpp_resource">Ressource XMPP</string>
     <string name="pref_xmpp_resource_summary">Nom permettant d\'identifier ce client XMPP</string>
-	<string name="pref_accept_files">Accepter les fichiers</string>
+    <string name="pref_accept_files">Accepter les fichiers</string>
     <string name="pref_accept_files_summary">Accepter automatiquement les fichiers plus petits que&#8230;</string>
-	<string name="pref_notification_settings">Paramètres de notification</string>
+    <string name="pref_notification_settings">Paramètres de notification</string>
     <string name="pref_notifications">Notifications</string>
     <string name="pref_notifications_summary">Notifier l\'arrivée d\'un message</string>
     <string name="pref_vibrate">Vibration</string>
@@ -165,7 +169,7 @@
     <string name="error_security_exception_during_image_copy">L\'application utilisée empêche la lecture de l\'image.\n\n<small>Choisissez l\'image depuis une autre application.</small></string>
     <string name="account_status">Statut :</string>
     <string name="account_status_unknown">Inconnu</string>
-    <string name="account_status_disabled">Temporarily disabled</string>
+    <string name="account_status_disabled">Désactivé temporairement</string>
     <string name="account_status_online">En ligne</string>
     <string name="account_status_connecting">Connexion\u2026</string>
     <string name="account_status_offline">Hors-ligne</string>
@@ -180,8 +184,8 @@
     <string name="encryption_choice_none">Texte clair</string>
     <string name="encryption_choice_otr">OTR</string>
     <string name="encryption_choice_pgp">OpenPGP</string>
-    <string name="mgmt_account_edit">Modifier le compte</string>    
-    <string name="mgmt_account_delete">Supprimer</string>    
+    <string name="mgmt_account_edit">Modifier le compte</string>
+    <string name="mgmt_account_delete">Supprimer</string>
     <string name="mgmt_account_disable">Désactiver temporairement</string>
     <string name="mgmt_account_enable">Activer</string>
     <string name="mgmt_account_are_you_sure">Êtes-vous sûr?</string>
@@ -256,4 +260,13 @@
     <string name="conference_address_example">salle@conference.exemple.com</string>
     <string name="save_as_bookmark">Enregistrer en favoris</string>
     <string name="delete_bookmark">Supprimer le favoris</string>
+    <string name="bookmark_already_exists">Ce favoris existe déjà.</string>
+    <string name="you">Vous</string>
+    <string name="action_edit_subject">Modifier le sujet de la conférence</string>
+    <string name="conference_not_found">Conférence non trouvée</string>
+    <string name="leave">Partir</string>
+    <string name="contact_added_you">Votre correspondant vous a ajouté dans sa liste de contacts</string>
+    <string name="add_back">Ajouter également</string>
+    <string name="contact_has_read_up_to_this_point">%s a lu les messages précédents.</string>
+
 </resources>
