@@ -267,5 +267,5 @@
     <string name="leave">Salir</string>
     <string name="contact_added_you">El contacto te ha añadido a su lista de contactos</string>
     <string name="add_back">Añadir contacto</string>
-    <string name="contact_has_read_up_to_this_point">Tu contacto ha leído hasta aquí</string>
+    <string name="contact_has_read_up_to_this_point">%s ha leído hasta aquí</string>
 </resources>

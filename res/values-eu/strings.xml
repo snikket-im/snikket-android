@@ -267,6 +267,6 @@
     <string name="leave">Alde egin</string>
     <string name="contact_added_you">Kontaktua zure kontaktu zerrendara gehitu da</string>
     <string name="add_back">Berriz gehitu</string>
-    <string name="contact_has_read_up_to_this_point">Zure kontaktuak puntu honetaraino irakurri du</string>
+    <string name="contact_has_read_up_to_this_point">%s puntu honetaraino irakurri du</string>
 
 </resources>
