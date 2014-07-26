@@ -609,25 +609,32 @@ public class XmppConnection implements Runnable {
 		this.sendUnboundIqPacket(iq, new OnIqPacketReceived() {
 			@Override
 			public void onIqPacketReceived(Account account, IqPacket packet) {
-				String resource = packet.findChild("bind").findChild("jid")
-						.getContent().split("/")[1];
-				account.setResource(resource);
-				if (streamFeatures.hasChild("sm", "urn:xmpp:sm:3")) {
-					smVersion = 3;
-					EnablePacket enable = new EnablePacket(smVersion);
-					tagWriter.writeStanzaAsync(enable);
-				} else if (streamFeatures.hasChild("sm", "urn:xmpp:sm:2")) {
-					smVersion = 2;
-					EnablePacket enable = new EnablePacket(smVersion);
-					tagWriter.writeStanzaAsync(enable);
+				Element bind = packet.findChild("bind");
+				if (bind!=null) {
+					Element jid = bind.findChild("jid");
+					if (jid!=null) {
+						account.setResource(jid.getContent().split("/")[1]);
+						if (streamFeatures.hasChild("sm", "urn:xmpp:sm:3")) {
+							smVersion = 3;
+							EnablePacket enable = new EnablePacket(smVersion);
+							tagWriter.writeStanzaAsync(enable);
+						} else if (streamFeatures.hasChild("sm", "urn:xmpp:sm:2")) {
+							smVersion = 2;
+							EnablePacket enable = new EnablePacket(smVersion);
+							tagWriter.writeStanzaAsync(enable);
+						}
+						sendServiceDiscoveryInfo(account.getServer());
+						sendServiceDiscoveryItems(account.getServer());
+						if (bindListener != null) {
+							bindListener.onBind(account);
+						}
+						changeStatus(Account.STATUS_ONLINE);
+					} else {
+						disconnect(true);
+					}
+				} else {
+					disconnect(true);
 				}
-				sendServiceDiscoveryInfo(account.getServer());
-				sendServiceDiscoveryItems(account.getServer());
-				if (bindListener != null) {
-					bindListener.onBind(account);
-				}
-
-				changeStatus(Account.STATUS_ONLINE);
 			}
 		});
 		if (this.streamFeatures.hasChild("session")) {
