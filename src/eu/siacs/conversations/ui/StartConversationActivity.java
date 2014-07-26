@@ -482,8 +482,10 @@ public class StartConversationActivity extends XmppActivity {
 	}
 
 	protected void filter(String needle) {
-		this.filterContacts(needle);
-		this.filterConferences(needle);
+		if (xmppConnectionServiceBound) {
+			this.filterContacts(needle);
+			this.filterConferences(needle);
+		}
 	}
 
 	protected void filterContacts(String needle) {
