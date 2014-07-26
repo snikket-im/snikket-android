@@ -116,9 +116,9 @@
     <string name="use_pgp_encryption">Gebruik OpenPGP versleuteling</string>
     <string name="pref_xmpp_resource">XMPP resource</string>
     <string name="pref_xmpp_resource_summary">De naam waarmee deze client zich identificeert</string>
-	<string name="pref_accept_files">Accepteer bestanden</string>
+    <string name="pref_accept_files">Accepteer bestanden</string>
     <string name="pref_accept_files_summary">Accepteer automatisch bestanden kleiner dan&#8230;</string>
-	<string name="pref_notification_settings">Notificatie Instellingen</string>
+    <string name="pref_notification_settings">Notificatie Instellingen</string>
     <string name="pref_notifications">Notificaties</string>
     <string name="pref_notifications_summary">Notificatie als een nieuw bericht arriveert</string>
     <string name="pref_vibrate">Trillen</string>
@@ -239,4 +239,34 @@
     <string name="openpgp_click_to_decrypt">Raak hier aan om het wachtwoord in te voeren het bericht te ontsleutelen</string>
     <string name="reception_failed">Ontvangen mislukt</string>
     <string name="no_muc_server_found">Geen geschikte Groepsconversatie Server gevonden</string>
+
+    <string name="join_conference">Aan groepsconversatie deelnemen</string>
+    <string name="invite_contact">Contact uitnodigen</string>
+    <string name="your_fingerprint">Uw vingerafdruk</string>
+    <string name="delete_bookmark">Bladwijzer verwijderen</string>
+    <string name="join">Deelnemen</string>
+    <string name="otr_fingerprint">OTR vingerafdruk</string>
+    <string name="you">U</string>
+    <string name="conference_not_found">Groepsconversatie niet gevonden</string>
+    <string name="search">Zoeken</string>
+    <string name="contact_already_exists">Het contact bestaat al</string>
+    <string name="title_activity_start_conversation">Start Groepsconversatie</string>
+    <string name="title_activity_choose_contact">Kies contact</string>
+    <string name="contact_added_you">Contact added you to contact list</string>
+    <string name="view_contact_details">Contactdetails bekijken</string>
+    <string name="conferences">Groepsconversaties</string>
+    <string name="verify">Controleren</string>
+    <string name="create_contact">Contact Aanmaken</string>
+    <string name="remove_bookmark_text">Wilt u %s als bladwijzer verwijderen? De groepsconversatie die verbonden is met deze bladwijzer zal niet verwijderd worden.</string>
+    <string name="action_edit_subject">Onderwerp van groepsconversatie veranderen</string>
+    <string name="delete_contact">Contact Verwijderen</string>
+    <string name="create">Aanmaken</string>
+    <string name="leave">Verlaten</string>
+    <string name="conference_address">Groepsconversatie adres</string>
+    <string name="save_as_bookmark">Bladwijzer toevoegen</string>
+    <string name="conference_address_example">kamer@groepsconversatie.voorbeeld.nl</string>
+    <string name="add_back">Terug toevoegen</string>
+    <string name="bookmark_already_exists">Deze bladwijzer bestaat al</string>
+    <string name="decrypt">Ontsleutelen</string>
+    <string name="contact_has_read_up_to_this_point">%s heeft tot hier gelezen</string>
 </resources>
