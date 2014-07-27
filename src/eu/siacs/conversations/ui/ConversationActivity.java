@@ -36,7 +36,6 @@ import android.graphics.drawable.Drawable;
 import android.support.v4.widget.SlidingPaneLayout;
 import android.support.v4.widget.SlidingPaneLayout.PanelSlideListener;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -624,19 +623,24 @@ public class ConversationActivity extends XmppActivity {
 
 	@Override
 	protected void onNewIntent(Intent intent) {
-		if ((Intent.ACTION_VIEW.equals(intent.getAction()) && (VIEW_CONVERSATION
-				.equals(intent.getType())))) {
-			String convToView = (String) intent.getExtras().get(CONVERSATION);
-			updateConversationList();
-			for (int i = 0; i < conversationList.size(); ++i) {
-				if (conversationList.get(i).getUuid().equals(convToView)) {
-					setSelectedConversation(conversationList.get(i));
-					break;
+		if (xmppConnectionServiceBound) {
+			if ((Intent.ACTION_VIEW.equals(intent.getAction()) && (VIEW_CONVERSATION
+					.equals(intent.getType())))) {
+				String convToView = (String) intent.getExtras().get(CONVERSATION);
+				updateConversationList();
+				for (int i = 0; i < conversationList.size(); ++i) {
+					if (conversationList.get(i).getUuid().equals(convToView)) {
+						setSelectedConversation(conversationList.get(i));
+						break;
+					}
 				}
+				paneShouldBeOpen = false;
+				String text = intent.getExtras().getString(TEXT, null);
+				swapConversationFragment().setText(text);
 			}
-			paneShouldBeOpen = false;
-			String text = intent.getExtras().getString(TEXT, null);
-			swapConversationFragment().setText(text);
+		} else {
+			handledViewIntent = false;
+			setIntent(intent);
 		}
 	}
 
@@ -747,11 +751,8 @@ public class ConversationActivity extends XmppActivity {
 			} else if (requestCode == REQUEST_IMAGE_CAPTURE) {
 				attachImageToConversation(getSelectedConversation(), null);
 			} else if (requestCode == REQUEST_RECORD_AUDIO) {
-				Log.d("xmppService", data.getData().toString());
 				attachAudioToConversation(getSelectedConversation(),
 						data.getData());
-			} else {
-				Log.d(LOGTAG, "unknown result code:" + requestCode);
 			}
 		}
 	}
@@ -818,9 +819,7 @@ public class ConversationActivity extends XmppActivity {
 		try {
 			this.startIntentSenderForResult(pi.getIntentSender(), requestCode,
 					null, 0, 0, 0);
-		} catch (SendIntentException e1) {
-			Log.d("xmppService", "failed to start intent to send message");
-		}
+		} catch (SendIntentException e1) {}
 	}
 
 	class BitmapWorkerTask extends AsyncTask<Message, Void, Bitmap> {
@@ -838,7 +837,6 @@ public class ConversationActivity extends XmppActivity {
 				return xmppConnectionService.getFileBackend().getThumbnail(
 						message, (int) (metrics.density * 288), false);
 			} catch (FileNotFoundException e) {
-				Log.d("xmppService", "file not found!");
 				return null;
 			}
 		}
