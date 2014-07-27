@@ -2,6 +2,7 @@ package eu.siacs.conversations.entities;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import eu.siacs.conversations.crypto.PgpEngine;
 import eu.siacs.conversations.xml.Element;
@@ -81,7 +82,7 @@ public class MucOptions {
 		}
 	}
 	private Account account;
-	private ArrayList<User> users = new ArrayList<User>();
+	private List<User> users = new CopyOnWriteArrayList<User>();
 	private Conversation conversation;
 	private boolean isOnline = false;
 	private int error = ERROR_ROOM_NOT_FOUND;

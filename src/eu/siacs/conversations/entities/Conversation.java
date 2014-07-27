@@ -1,8 +1,8 @@
 package eu.siacs.conversations.entities;
 
 import java.security.interfaces.DSAPublicKey;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import net.java.otr4j.OtrException;
 import net.java.otr4j.crypto.OtrCryptoEngineImpl;
@@ -43,7 +43,7 @@ public class Conversation extends AbstractEntity {
 
 	private String nextPresence;
 
-	private transient List<Message> messages = null;
+	private transient CopyOnWriteArrayList<Message> messages = null;
 	private transient Account account = null;
 
 	private transient SessionImpl otrSession;
@@ -85,8 +85,9 @@ public class Conversation extends AbstractEntity {
 	}
 
 	public List<Message> getMessages() {
-		if (messages == null)
-			this.messages = new ArrayList<Message>(); // prevent null pointer
+		if (messages == null) {
+			this.messages = new CopyOnWriteArrayList<Message>(); // prevent null pointer
+		}
 
 		// populate with Conversation (this)
 
@@ -133,7 +134,7 @@ public class Conversation extends AbstractEntity {
 		}
 	}
 
-	public void setMessages(List<Message> msgs) {
+	public void setMessages(CopyOnWriteArrayList<Message> msgs) {
 		this.messages = msgs;
 	}
 

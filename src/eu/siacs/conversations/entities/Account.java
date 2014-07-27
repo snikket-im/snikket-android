@@ -1,7 +1,6 @@
 package eu.siacs.conversations.entities;
 
 import java.security.interfaces.DSAPublicKey;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -68,7 +67,7 @@ public class Account  extends AbstractEntity{
 	
 	private Roster roster = null;
 
-	private List<Bookmark> bookmarks = new ArrayList<Bookmark>();
+	private List<Bookmark> bookmarks = new CopyOnWriteArrayList<Bookmark>();
 	
 	public List<Conversation> pendingConferenceJoins = new CopyOnWriteArrayList<Conversation>();
 	public List<Conversation> pendingConferenceLeaves = new CopyOnWriteArrayList<Conversation>();

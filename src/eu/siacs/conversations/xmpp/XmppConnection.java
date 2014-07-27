@@ -7,14 +7,8 @@ import java.math.BigInteger;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.security.KeyManagementException;
-import java.security.KeyStore;
-import java.security.KeyStoreException;
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.security.cert.CertPathValidatorException;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -25,16 +19,13 @@ import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.TrustManagerFactory;
+
 import javax.net.ssl.X509TrustManager;
 
-import org.bouncycastle.pqc.math.linearalgebra.GoppaCode.MaMaPe;
 import org.xmlpull.v1.XmlPullParserException;
 
 import de.duenndns.ssl.MemorizingTrustManager;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;

@@ -668,7 +668,7 @@ public class XmppConnectionService extends Service {
 			@Override
 			public void onIqPacketReceived(Account account, IqPacket packet) {
 				Element query = packet.query();
-				List<Bookmark> bookmarks = new ArrayList<Bookmark>();
+				List<Bookmark> bookmarks = new CopyOnWriteArrayList<Bookmark>();
 				Element storage = query.findChild("storage", "storage:bookmarks");
 				if (storage!=null) {
 					for(Element item : storage.getChildren()) {
