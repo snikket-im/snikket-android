@@ -1,6 +1,5 @@
 #Conversations
-Conversations is an open source XMPP (formerly known as Jabber) client for
-Android 4.0+ smart phones.
+Conversations - the very last word in instant messaging
 [![Google Play](http://developer.android.com/images/brand/en_generic_rgb_wo_45.png)](https://play.google.com/store/apps/details?id=eu.siacs.conversations)
 
 ![screenshots](https://raw.githubusercontent.com/siacs/Conversations/master/screenshots.png)
@@ -8,16 +7,16 @@ Android 4.0+ smart phones.
 ##Design principles
 * Be as beautiful and easy to use as possible without sacrificing security or
   privacy
-* Rely on existing, well established protocols
+* Rely on existing, well established protocols (XMPP)
 * Do not require a Google Account or specifically Google Cloud Messaging (GCM)
 * Require as little permissons as possible
 
 ##Features
 * End-to-end encryption with either OTR or openPGP
 * Sending and receiving images
-* Holo UI
-* Syncs with your desktop client
-* Group Chats
+* Intuitive UI that follows Android Design guidelines
+* Syncs with desktop client
+* Conferences (with support for bookmarks)
 * Address book integration
 * Multiple Accounts / unified inbox
 
