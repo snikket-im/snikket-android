@@ -54,7 +54,7 @@ public class XmlReader {
 			try { wakeLock.release();} catch (RuntimeException re) {}
 		}
 		try {
-			while(parser.next() != XmlPullParser.END_DOCUMENT) {
+			while(parser.next() != XmlPullParser.END_DOCUMENT && this.is != null) {
 					wakeLock.acquire();
 					if (parser.getEventType() == XmlPullParser.START_TAG) {
 						Tag tag = Tag.start(parser.getName());
@@ -81,8 +81,6 @@ public class XmlReader {
 			throw new IOException("xml parser mishandled ArrayIndexOufOfBounds", e);
 		} catch (StringIndexOutOfBoundsException e) {
 			throw new IOException("xml parser mishandled StringIndexOufOfBounds", e);
-		} catch (NullPointerException e) {
-			throw new IOException("null pointer in xml parser");
 		}
 		return null;
 	}
