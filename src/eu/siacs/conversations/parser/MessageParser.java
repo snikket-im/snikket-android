@@ -174,12 +174,16 @@ public class MessageParser extends AbstractParser implements
 		}
 		if (status == Message.STATUS_RECIEVED) {
 			fullJid = message.getAttribute("from");
-			updateLastseen(message, account, true);
+			if (fullJid == null ) {
+				return null;
+			} else {
+				updateLastseen(message, account, true);
+			}
 		} else {
 			fullJid = message.getAttribute("to");
-		}
-		if (fullJid==null) {
-			return null;
+			if (fullJid == null) {
+				return null;
+			}
 		}
 		String[] parts = fullJid.split("/");
 		Conversation conversation = mXmppConnectionService
