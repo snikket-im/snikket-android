@@ -20,6 +20,8 @@ Conversations - the very last word in instant messaging
 * Conferences (with support for bookmarks)
 * Address book integration
 * Multiple Accounts / unified inbox
+* Very low impact on battery life
+
 
 ###XMPP Features
 Conversations works with every XMPP server out there. However XMPP is an extensible
