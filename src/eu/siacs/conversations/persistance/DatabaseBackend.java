@@ -20,15 +20,17 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 	private static DatabaseBackend instance = null;
 
 	private static final String DATABASE_NAME = "history";
-	private static final int DATABASE_VERSION = 5;
+	private static final int DATABASE_VERSION = 6;
 
 	private static String CREATE_CONTATCS_STATEMENT = "create table "
-			+ Contact.TABLENAME + "(" + Contact.ACCOUNT + " TEXT, " + Contact.SERVERNAME + " TEXT, "
-			+ Contact.SYSTEMNAME + " TEXT," + Contact.JID + " TEXT,"
-			+ Contact.KEYS + " TEXT," + Contact.PHOTOURI + " TEXT,"
-			+ Contact.OPTIONS + " NUMBER," + Contact.SYSTEMACCOUNT
-			+ " NUMBER, " + "FOREIGN KEY(" + Contact.ACCOUNT + ") REFERENCES "
-			+ Account.TABLENAME + "(" + Account.UUID + ") ON DELETE CASCADE, UNIQUE("+Contact.ACCOUNT+", "+Contact.JID+") ON CONFLICT REPLACE);";
+			+ Contact.TABLENAME + "(" + Contact.ACCOUNT + " TEXT, "
+			+ Contact.SERVERNAME + " TEXT, " + Contact.SYSTEMNAME + " TEXT,"
+			+ Contact.JID + " TEXT," + Contact.KEYS + " TEXT,"
+			+ Contact.PHOTOURI + " TEXT," + Contact.OPTIONS + " NUMBER,"
+			+ Contact.SYSTEMACCOUNT + " NUMBER, " + "FOREIGN KEY("
+			+ Contact.ACCOUNT + ") REFERENCES " + Account.TABLENAME + "("
+			+ Account.UUID + ") ON DELETE CASCADE, UNIQUE(" + Contact.ACCOUNT
+			+ ", " + Contact.JID + ") ON CONFLICT REPLACE);";
 
 	public DatabaseBackend(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -54,8 +56,9 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		db.execSQL("create table " + Message.TABLENAME + "( " + Message.UUID
 				+ " TEXT PRIMARY KEY, " + Message.CONVERSATION + " TEXT, "
 				+ Message.TIME_SENT + " NUMBER, " + Message.COUNTERPART
-				+ " TEXT, " + Message.BODY + " TEXT, " + Message.ENCRYPTION
-				+ " NUMBER, " + Message.STATUS + " NUMBER," + Message.TYPE
+				+ " TEXT, " + Message.TRUE_COUNTERPART + " TEXT,"
+				+ Message.BODY + " TEXT, " + Message.ENCRYPTION + " NUMBER, "
+				+ Message.STATUS + " NUMBER," + Message.TYPE
 				+ " NUMBER, FOREIGN KEY(" + Message.CONVERSATION
 				+ ") REFERENCES " + Conversation.TABLENAME + "("
 				+ Conversation.UUID + ") ON DELETE CASCADE);");
@@ -74,9 +77,14 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 					+ Message.TYPE + " NUMBER");
 		}
 		if (oldVersion < 5 && newVersion >= 5) {
-			db.execSQL("DROP TABLE "+Contact.TABLENAME);
+			db.execSQL("DROP TABLE " + Contact.TABLENAME);
 			db.execSQL(CREATE_CONTATCS_STATEMENT);
-			db.execSQL("UPDATE "+Account.TABLENAME+ " SET "+Account.ROSTERVERSION+" = NULL");
+			db.execSQL("UPDATE " + Account.TABLENAME + " SET "
+					+ Account.ROSTERVERSION + " = NULL");
+		}
+		if (oldVersion < 6 && newVersion >= 6) {
+			db.execSQL("ALTER TABLE " + Message.TABLENAME + " ADD COLUMN "
+					+ Message.TRUE_COUNTERPART + " TEXT");
 		}
 	}
 
@@ -128,24 +136,27 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		}
 		return list;
 	}
-	
-	public CopyOnWriteArrayList<Message> getMessages(Conversation conversations, int limit) {
-		return getMessages(conversations, limit,-1);
+
+	public CopyOnWriteArrayList<Message> getMessages(
+			Conversation conversations, int limit) {
+		return getMessages(conversations, limit, -1);
 	}
 
-	public CopyOnWriteArrayList<Message> getMessages(Conversation conversation, int limit, long timestamp) {
+	public CopyOnWriteArrayList<Message> getMessages(Conversation conversation,
+			int limit, long timestamp) {
 		CopyOnWriteArrayList<Message> list = new CopyOnWriteArrayList<Message>();
 		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor cursor;
-		if (timestamp==-1) {
+		if (timestamp == -1) {
 			String[] selectionArgs = { conversation.getUuid() };
 			cursor = db.query(Message.TABLENAME, null, Message.CONVERSATION
-					+ "=?", selectionArgs, null, null, Message.TIME_SENT + " DESC",
-					String.valueOf(limit));
+					+ "=?", selectionArgs, null, null, Message.TIME_SENT
+					+ " DESC", String.valueOf(limit));
 		} else {
-			String[] selectionArgs = { conversation.getUuid() , ""+timestamp};
+			String[] selectionArgs = { conversation.getUuid(), "" + timestamp };
 			cursor = db.query(Message.TABLENAME, null, Message.CONVERSATION
-					+ "=? and "+Message.TIME_SENT+"<?", selectionArgs, null, null, Message.TIME_SENT + " DESC",
+					+ "=? and " + Message.TIME_SENT + "<?", selectionArgs,
+					null, null, Message.TIME_SENT + " DESC",
 					String.valueOf(limit));
 		}
 		if (cursor.getCount() > 0) {
@@ -225,16 +236,16 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 			roster.initContact(Contact.fromCursor(cursor));
 		}
 	}
-	
+
 	public void writeRoster(Roster roster) {
 		Account account = roster.getAccount();
 		SQLiteDatabase db = this.getWritableDatabase();
-		for(Contact contact : roster.getContacts()) {
+		for (Contact contact : roster.getContacts()) {
 			if (contact.getOption(Contact.Options.IN_ROSTER)) {
 				db.insert(Contact.TABLENAME, null, contact.getContentValues());
 			} else {
-				String where = Contact.ACCOUNT + "=? AND "+Contact.JID+"=?";
-				String[] whereArgs = {account.getUuid(), contact.getJid()};
+				String where = Contact.ACCOUNT + "=? AND " + Contact.JID + "=?";
+				String[] whereArgs = { account.getUuid(), contact.getJid() };
 				db.delete(Contact.TABLENAME, where, whereArgs);
 			}
 		}

@@ -7,6 +7,8 @@ import org.openintents.openpgp.util.OpenPgpUtils;
 
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.PgpEngine;
+import eu.siacs.conversations.entities.Account;
+import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.entities.MucOptions.OnRenameListener;
@@ -54,7 +56,7 @@ public class ConferenceDetailsActivity extends XmppActivity {
 
 	private List<User> users = new ArrayList<MucOptions.User>();
 	private OnConversationUpdate onConvChanged = new OnConversationUpdate() {
-		
+
 		@Override
 		public void onConversationUpdate() {
 			runOnUiThread(new Runnable() {
@@ -150,13 +152,14 @@ public class ConferenceDetailsActivity extends XmppActivity {
 			this.uuid = getIntent().getExtras().getString("uuid");
 		}
 		if (uuid != null) {
-			this.conversation = xmppConnectionService.findConversationByUuid(uuid);
+			this.conversation = xmppConnectionService
+					.findConversationByUuid(uuid);
 			if (this.conversation != null) {
 				populateView();
 			}
 		}
 	}
-	
+
 	@Override
 	protected void onStop() {
 		if (xmppConnectionServiceBound) {
@@ -164,33 +167,34 @@ public class ConferenceDetailsActivity extends XmppActivity {
 		}
 		super.onStop();
 	}
-	
+
 	protected void registerListener() {
 		if (xmppConnectionServiceBound) {
 			xmppConnectionService
 					.setOnConversationListChangedListener(this.onConvChanged);
-		xmppConnectionService.setOnRenameListener(new OnRenameListener() {
+			xmppConnectionService.setOnRenameListener(new OnRenameListener() {
 
-			@Override
-			public void onRename(final boolean success) {
-				runOnUiThread(new Runnable() {
+				@Override
+				public void onRename(final boolean success) {
+					runOnUiThread(new Runnable() {
 
-					@Override
-					public void run() {
-						populateView();
-						if (success) {
-							Toast.makeText(ConferenceDetailsActivity.this,
-									getString(R.string.your_nick_has_been_changed),
-									Toast.LENGTH_SHORT).show();
-						} else {
-							Toast.makeText(ConferenceDetailsActivity.this,
-									getString(R.string.nick_in_use),
-									Toast.LENGTH_SHORT).show();
+						@Override
+						public void run() {
+							populateView();
+							if (success) {
+								Toast.makeText(
+										ConferenceDetailsActivity.this,
+										getString(R.string.your_nick_has_been_changed),
+										Toast.LENGTH_SHORT).show();
+							} else {
+								Toast.makeText(ConferenceDetailsActivity.this,
+										getString(R.string.nick_in_use),
+										Toast.LENGTH_SHORT).show();
+							}
 						}
-					}
-				});
-			}
-		});
+					});
+				}
+			});
 		}
 	}
 
@@ -222,28 +226,42 @@ public class ConferenceDetailsActivity extends XmppActivity {
 		this.users.addAll(conversation.getMucOptions().getUsers());
 		LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		membersView.removeAllViews();
-		for (final User contact : conversation.getMucOptions().getUsers()) {
-			View view = (View) inflater.inflate(R.layout.contact, null);
-			TextView displayName = (TextView) view
+		Account account = conversation.getAccount();
+		for (final User user : conversation.getMucOptions().getUsers()) {
+			View view = (View) inflater.inflate(R.layout.contact, membersView,
+					false);
+			TextView name = (TextView) view
 					.findViewById(R.id.contact_display_name);
 			TextView key = (TextView) view.findViewById(R.id.key);
-			displayName.setText(contact.getName());
 			TextView role = (TextView) view.findViewById(R.id.contact_jid);
-			role.setText(getReadableRole(contact.getRole()));
-			if (contact.getPgpKeyId() != 0) {
+			role.setText(getReadableRole(user.getRole()));
+			if (user.getPgpKeyId() != 0) {
 				key.setVisibility(View.VISIBLE);
 				key.setOnClickListener(new OnClickListener() {
 
 					@Override
 					public void onClick(View v) {
-						viewPgpKey(contact);
+						viewPgpKey(user);
 					}
 				});
-				key.setText(OpenPgpUtils.convertKeyIdToHex(contact
-						.getPgpKeyId()));
+				key.setText(OpenPgpUtils.convertKeyIdToHex(user.getPgpKeyId()));
 			}
-			Bitmap bm = UIHelper.getContactPicture(contact.getName(), 48, this,
-					false);
+			Bitmap bm;
+			if (user.getJid() != null) {
+				Contact contact = account.getRoster().getContact(user.getJid());
+				if (contact.showInRoster()) {
+					bm = contact.getImage(48, this);
+					name.setText(contact.getDisplayName());
+				} else {
+					bm = UIHelper.getContactPicture(user.getName(), 48, this,
+							false);
+					name.setText(user.getName());
+				}
+			} else {
+				bm = UIHelper
+						.getContactPicture(user.getName(), 48, this, false);
+				name.setText(user.getName());
+			}
 			ImageView iv = (ImageView) view.findViewById(R.id.contact_photo);
 			iv.setImageBitmap(bm);
 			membersView.addView(view);

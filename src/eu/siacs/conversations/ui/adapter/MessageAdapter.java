@@ -42,17 +42,12 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 	private BitmapCache mBitmapCache = new BitmapCache();
 	private DisplayMetrics metrics;
 
-	private boolean useSubject = true;
-
 	private OnContactPictureClicked mOnContactPictureClickedListener;
 
 	public MessageAdapter(ConversationActivity activity, List<Message> messages) {
 		super(activity, 0, messages);
 		this.activity = activity;
 		metrics = getContext().getResources().getDisplayMetrics();
-		SharedPreferences preferences = PreferenceManager
-				.getDefaultSharedPreferences(getContext());
-		useSubject = preferences.getBoolean("use_subject_in_muc", true);
 	}
 
 	private Bitmap getSelfBitmap() {
@@ -130,7 +125,12 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 			error = true;
 		default:
 			if (multiReceived) {
-				info = message.getCounterpart();
+				Contact contact = message.getContact();
+				if (contact != null) {
+					info = contact.getDisplayName();
+				} else {
+					info = message.getCounterpart();
+				}
 			}
 			break;
 		}
@@ -277,7 +277,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 			switch (type) {
 			case SENT:
 				view = (View) activity.getLayoutInflater().inflate(
-						R.layout.message_sent, null);
+						R.layout.message_sent, parent,false);
 				viewHolder.message_box = (LinearLayout) view
 						.findViewById(R.id.message_box);
 				viewHolder.contact_picture = (ImageView) view
@@ -295,7 +295,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 				break;
 			case RECIEVED:
 				view = (View) activity.getLayoutInflater().inflate(
-						R.layout.message_recieved, null);
+						R.layout.message_recieved, parent,false);
 				viewHolder.message_box = (LinearLayout) view
 						.findViewById(R.id.message_box);
 				viewHolder.contact_picture = (ImageView) view
@@ -307,9 +307,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 				if (item.getConversation().getMode() == Conversation.MODE_SINGLE) {
 
 					viewHolder.contact_picture.setImageBitmap(mBitmapCache.get(
-							item.getConversation().getName(useSubject), item
-									.getConversation().getContact(),
-							getContext()));
+							item.getConversation().getContact(), getContext()));
 
 				}
 				viewHolder.indicator = (ImageView) view
@@ -324,15 +322,13 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 				break;
 			case STATUS:
 				view = (View) activity.getLayoutInflater().inflate(
-						R.layout.message_status, null);
+						R.layout.message_status, parent,false);
 				viewHolder.contact_picture = (ImageView) view
 						.findViewById(R.id.message_photo);
 				if (item.getConversation().getMode() == Conversation.MODE_SINGLE) {
 
 					viewHolder.contact_picture.setImageBitmap(mBitmapCache.get(
-							item.getConversation().getName(useSubject), item
-									.getConversation().getContact(),
-							getContext()));
+							item.getConversation().getContact(), getContext()));
 					viewHolder.contact_picture.setAlpha(128);
 					viewHolder.contact_picture
 							.setOnClickListener(new OnClickListener() {
@@ -366,8 +362,14 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 
 		if (type == RECIEVED) {
 			if (item.getConversation().getMode() == Conversation.MODE_MULTI) {
-				viewHolder.contact_picture.setImageBitmap(mBitmapCache.get(
-						item.getCounterpart(), null, getContext()));
+				Contact contact = item.getContact();
+				if (contact != null) {
+					viewHolder.contact_picture.setImageBitmap(mBitmapCache.get(
+							contact, getContext()));
+				} else {
+					viewHolder.contact_picture.setImageBitmap(mBitmapCache.get(
+							item.getCounterpart(), getContext()));
+				}
 				viewHolder.contact_picture
 						.setOnClickListener(new OnClickListener() {
 
@@ -453,20 +455,27 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 	}
 
 	private class BitmapCache {
-		private HashMap<String, Bitmap> bitmaps = new HashMap<String, Bitmap>();
+		private HashMap<String, Bitmap> contactBitmaps = new HashMap<String, Bitmap>();
+		private HashMap<String, Bitmap> unknownBitmaps = new HashMap<String, Bitmap>();
 
-		public Bitmap get(String name, Contact contact, Context context) {
-			if (bitmaps.containsKey(name)) {
-				return bitmaps.get(name);
+		public Bitmap get(Contact contact, Context context) {
+			if (contactBitmaps.containsKey(contact.getJid())) {
+				return contactBitmaps.get(contact.getJid());
 			} else {
-				Bitmap bm;
-				if (contact != null) {
-					bm = UIHelper
-							.getContactPicture(contact, 48, context, false);
-				} else {
-					bm = UIHelper.getContactPicture(name, 48, context, false);
-				}
-				bitmaps.put(name, bm);
+				Bitmap bm = UIHelper.getContactPicture(contact, 48, context,
+						false);
+				contactBitmaps.put(contact.getJid(), bm);
+				return bm;
+			}
+		}
+
+		public Bitmap get(String name, Context context) {
+			if (unknownBitmaps.containsKey(name)) {
+				return unknownBitmaps.get(name);
+			} else {
+				Bitmap bm = UIHelper
+						.getContactPicture(name, 48, context, false);
+				unknownBitmaps.put(name, bm);
 				return bm;
 			}
 		}

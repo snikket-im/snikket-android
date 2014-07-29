@@ -14,11 +14,11 @@ public class MucOptions {
 	public static final int ERROR_NO_ERROR = 0;
 	public static final int ERROR_NICK_IN_USE = 1;
 	public static final int ERROR_ROOM_NOT_FOUND = 2;
-	
+
 	public interface OnRenameListener {
 		public void onRename(boolean success);
 	}
-	
+
 	public class User {
 		public static final int ROLE_MODERATOR = 3;
 		public static final int ROLE_NONE = 0;
@@ -29,22 +29,33 @@ public class MucOptions {
 		public static final int AFFILIATION_MEMBER = 2;
 		public static final int AFFILIATION_OUTCAST = 1;
 		public static final int AFFILIATION_NONE = 0;
-		
+
 		private int role;
 		private int affiliation;
 		private String name;
+		private String jid;
 		private long pgpKeyId = 0;
-		
+
 		public String getName() {
 			return name;
 		}
+
 		public void setName(String user) {
 			this.name = user;
 		}
-		
+
+		public void setJid(String jid) {
+			this.jid = jid;
+		}
+
+		public String getJid() {
+			return this.jid;
+		}
+
 		public int getRole() {
 			return this.role;
 		}
+
 		public void setRole(String role) {
 			role = role.toLowerCase();
 			if (role.equals("moderator")) {
@@ -57,9 +68,11 @@ public class MucOptions {
 				this.role = ROLE_NONE;
 			}
 		}
+
 		public int getAffiliation() {
 			return this.affiliation;
 		}
+
 		public void setAffiliation(String affiliation) {
 			if (affiliation.equalsIgnoreCase("admin")) {
 				this.affiliation = AFFILIATION_ADMIN;
@@ -73,14 +86,16 @@ public class MucOptions {
 				this.affiliation = AFFILIATION_NONE;
 			}
 		}
+
 		public void setPgpKeyId(long id) {
 			this.pgpKeyId = id;
 		}
-		
+
 		public long getPgpKeyId() {
 			return this.pgpKeyId;
 		}
 	}
+
 	private Account account;
 	private List<User> users = new CopyOnWriteArrayList<User>();
 	private Conversation conversation;
@@ -95,44 +110,47 @@ public class MucOptions {
 	public MucOptions(Account account) {
 		this.account = account;
 	}
-	
+
 	public void deleteUser(String name) {
-		for(int i = 0; i < users.size(); ++i) {
+		for (int i = 0; i < users.size(); ++i) {
 			if (users.get(i).getName().equals(name)) {
 				users.remove(i);
 				return;
 			}
 		}
 	}
-	
+
 	public void addUser(User user) {
-		for(int i = 0; i < users.size(); ++i) {
+		for (int i = 0; i < users.size(); ++i) {
 			if (users.get(i).getName().equals(user.getName())) {
 				users.set(i, user);
 				return;
 			}
 		}
 		users.add(user);
-		}
-	
+	}
+
 	public void processPacket(PresencePacket packet, PgpEngine pgp) {
 		String[] fromParts = packet.getFrom().split("/");
-		if (fromParts.length>=2) {
+		if (fromParts.length >= 2) {
 			String name = fromParts[1];
 			String type = packet.getAttribute("type");
-			if (type==null) {
+			if (type == null) {
 				User user = new User();
-				Element item = packet.findChild("x","http://jabber.org/protocol/muc#user").findChild("item");
+				Element item = packet.findChild("x",
+						"http://jabber.org/protocol/muc#user")
+						.findChild("item");
 				user.setName(name);
 				user.setAffiliation(item.getAttribute("affiliation"));
 				user.setRole(item.getAttribute("role"));
+				user.setJid(item.getAttribute("jid"));
 				user.setName(name);
 				if (name.equals(this.joinnick)) {
 					this.isOnline = true;
 					this.error = ERROR_NO_ERROR;
 					self = user;
 					if (aboutToRename) {
-						if (renameListener!=null) {
+						if (renameListener != null) {
 							renameListener.onRename(true);
 						}
 						aboutToRename = false;
@@ -141,8 +159,7 @@ public class MucOptions {
 					addUser(user);
 				}
 				if (pgp != null) {
-					Element x = packet.findChild("x",
-							"jabber:x:signed");
+					Element x = packet.findChild("x", "jabber:x:signed");
 					if (x != null) {
 						Element status = packet.findChild("status");
 						String msg;
@@ -151,7 +168,8 @@ public class MucOptions {
 						} else {
 							msg = "";
 						}
-						user.setPgpKeyId(pgp.fetchKeyId(account,msg, x.getContent()));
+						user.setPgpKeyId(pgp.fetchKeyId(account, msg,
+								x.getContent()));
 					}
 				}
 			} else if (type.equals("unavailable")) {
@@ -160,26 +178,27 @@ public class MucOptions {
 				Element error = packet.findChild("error");
 				if (error.hasChild("conflict")) {
 					if (aboutToRename) {
-						if (renameListener!=null) {
+						if (renameListener != null) {
 							renameListener.onRename(false);
 						}
 						aboutToRename = false;
 						this.setJoinNick(getActualNick());
 					} else {
-						this.error  = ERROR_NICK_IN_USE;
+						this.error = ERROR_NICK_IN_USE;
 					}
 				}
 			}
 		}
 	}
-	
+
 	public List<User> getUsers() {
 		return this.users;
 	}
-	
+
 	public String getProposedNick() {
 		String[] mucParts = conversation.getContactJid().split("/");
-		if (conversation.getBookmark() != null && conversation.getBookmark().getNick() != null) {
+		if (conversation.getBookmark() != null
+				&& conversation.getBookmark().getNick() != null) {
 			return conversation.getBookmark().getNick();
 		} else {
 			if (mucParts.length == 2) {
@@ -189,27 +208,27 @@ public class MucOptions {
 			}
 		}
 	}
-	
+
 	public String getActualNick() {
-		if (this.self.getName()!=null) {
+		if (this.self.getName() != null) {
 			return this.self.getName();
 		} else {
 			return this.getProposedNick();
 		}
 	}
-	
+
 	public void setJoinNick(String nick) {
 		this.joinnick = nick;
 	}
-	
+
 	public void setConversation(Conversation conversation) {
 		this.conversation = conversation;
 	}
-	
+
 	public boolean online() {
 		return this.isOnline;
 	}
-	
+
 	public int getError() {
 		return this.error;
 	}
@@ -217,7 +236,7 @@ public class MucOptions {
 	public void setOnRenameListener(OnRenameListener listener) {
 		this.renameListener = listener;
 	}
-	
+
 	public OnRenameListener getOnRenameListener() {
 		return this.renameListener;
 	}
@@ -235,7 +254,7 @@ public class MucOptions {
 	public void setSubject(String content) {
 		this.subject = content;
 	}
-	
+
 	public String getSubject() {
 		return this.subject;
 	}
@@ -243,33 +262,33 @@ public class MucOptions {
 	public void flagAboutToRename() {
 		this.aboutToRename = true;
 	}
-	
+
 	public long[] getPgpKeyIds() {
 		List<Long> ids = new ArrayList<Long>();
-		for(User user : getUsers()) {
-			if(user.getPgpKeyId()!=0) {
+		for (User user : getUsers()) {
+			if (user.getPgpKeyId() != 0) {
 				ids.add(user.getPgpKeyId());
 			}
 		}
 		long[] primitivLongArray = new long[ids.size()];
-		for(int i = 0; i < ids.size(); ++i) {
+		for (int i = 0; i < ids.size(); ++i) {
 			primitivLongArray[i] = ids.get(i);
 		}
 		return primitivLongArray;
 	}
-	
+
 	public boolean pgpKeysInUse() {
-		for(User user : getUsers()) {
-			if (user.getPgpKeyId()!=0) {
+		for (User user : getUsers()) {
+			if (user.getPgpKeyId() != 0) {
 				return true;
 			}
 		}
 		return false;
 	}
-	
+
 	public boolean everybodyHasKeys() {
-		for(User user : getUsers()) {
-			if (user.getPgpKeyId()==0) {
+		for (User user : getUsers()) {
+			if (user.getPgpKeyId() == 0) {
 				return false;
 			}
 		}
@@ -277,6 +296,16 @@ public class MucOptions {
 	}
 
 	public String getJoinJid() {
-		return this.conversation.getContactJid().split("/")[0]+"/"+this.joinnick;
+		return this.conversation.getContactJid().split("/")[0] + "/"
+				+ this.joinnick;
+	}
+	
+	public String getTrueCounterpart(String counterpart) {
+		for(User user : this.getUsers()) {
+			if (user.getName().equals(counterpart)) {
+				return user.getJid();
+			}
+		}
+		return null;
 	}
 }

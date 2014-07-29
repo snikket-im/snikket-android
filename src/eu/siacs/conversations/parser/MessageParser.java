@@ -146,6 +146,9 @@ public class MessageParser extends AbstractParser implements
 					Message.ENCRYPTION_PGP, status);
 		}
 		finishedMessage.setTime(getTimestamp(packet));
+		if (status == Message.STATUS_RECIEVED) {
+			finishedMessage.setTrueCounterpart(conversation.getMucOptions().getTrueCounterpart(counterPart));
+		}
 		return finishedMessage;
 	}
 
