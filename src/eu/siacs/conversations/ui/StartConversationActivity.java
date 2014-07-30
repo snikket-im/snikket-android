@@ -148,7 +148,9 @@ public class StartConversationActivity extends XmppActivity {
 				
 				@Override
 				public void run() {
-					filter(mSearchEditText.getText().toString());
+					if (mSearchEditText != null) {
+						filter(mSearchEditText.getText().toString());
+					}
 				}
 			});
 		}
