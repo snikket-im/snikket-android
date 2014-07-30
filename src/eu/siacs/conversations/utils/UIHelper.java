@@ -214,13 +214,17 @@ public class UIHelper {
 					new String[] { conversation.getName(false) }, size,
 					bgColor, fgColor);
 		}
-		String[] names = new String[members.size() + 1];
-		names[0] = conversation.getMucOptions().getActualNick();
-		for (int i = 0; i < members.size(); ++i) {
-			names[i + 1] = members.get(i).getName();
+		ArrayList<String> names = new ArrayList<String>();
+		names.add(conversation.getMucOptions().getActualNick());
+		for(User user : members) {
+			names.add(user.getName());
+			if (names.size() > 4 ) {
+				break;
+			}
 		}
-
-		return getUnknownContactPicture(names, size, bgColor, fgColor);
+		String[] mArrayNames = new String[names.size()];
+		names.toArray(mArrayNames);
+		return getUnknownContactPicture(mArrayNames, size, bgColor, fgColor);
 	}
 
 	public static Bitmap getContactPicture(Conversation conversation,
