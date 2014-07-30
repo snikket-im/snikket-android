@@ -74,7 +74,7 @@ public class PhoneHelper {
 		Cursor mProfileCursor = context.getContentResolver().query(
 				Profile.CONTENT_URI, mProjection, null, null, null);
 
-		if (mProfileCursor.getCount() == 0) {
+		if (mProfileCursor == null || mProfileCursor.getCount() == 0) {
 			return null;
 		} else {
 			mProfileCursor.moveToFirst();
