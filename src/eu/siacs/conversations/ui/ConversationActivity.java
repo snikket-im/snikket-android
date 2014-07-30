@@ -18,6 +18,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
 import android.app.PendingIntent;
@@ -157,7 +158,7 @@ public class ConversationActivity extends XmppActivity {
 				if (view == null) {
 					LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 					view = (View) inflater.inflate(
-							R.layout.conversation_list_row, null);
+							R.layout.conversation_list_row, parent,false);
 				}
 				Conversation conv;
 				if (conversationList.size() > position) {
@@ -261,9 +262,12 @@ public class ConversationActivity extends XmppActivity {
 			@Override
 			public void onPanelOpened(View arg0) {
 				paneShouldBeOpen = true;
-				getActionBar().setDisplayHomeAsUpEnabled(false);
-				getActionBar().setHomeButtonEnabled(false);
-				getActionBar().setTitle(R.string.app_name);
+				ActionBar ab = getActionBar();
+				if (ab!=null) {
+					ab.setDisplayHomeAsUpEnabled(false);
+					ab.setHomeButtonEnabled(false);
+					ab.setTitle(R.string.app_name);
+				}
 				invalidateOptionsMenu();
 				hideKeyboard();
 			}
@@ -273,10 +277,13 @@ public class ConversationActivity extends XmppActivity {
 				paneShouldBeOpen = false;
 				if ((conversationList.size() > 0)
 						&& (getSelectedConversation() != null)) {
-					getActionBar().setDisplayHomeAsUpEnabled(true);
-					getActionBar().setHomeButtonEnabled(true);
-					getActionBar().setTitle(
+					ActionBar ab = getActionBar();
+					if (ab!=null) {
+						ab.setDisplayHomeAsUpEnabled(true);
+						ab.setHomeButtonEnabled(true);
+						ab.setTitle(
 							getSelectedConversation().getName(useSubject));
+					}
 					invalidateOptionsMenu();
 					if (!getSelectedConversation().isRead()) {
 						xmppConnectionService
