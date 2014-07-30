@@ -193,9 +193,21 @@ git submodule update --init --recursive
 ant clean
 ant debug
 ```
+####How do I debug Conversations
+If something goes wrong Conversations usually exposes very little information in
+the UI. (Other than the fact that something didn't work)
+However with adb (android debug bridge) you squeeze some more information out of
+Conversations. These information are especially useful if you are experiencing
+troubles with your connection or with file transfer.
+````
+adb -d logcat -v time -s xmppService
+````
 ####I found a bug
 Please report it to our issue tracker. If your app crashes please provide a
 stack trace. If you are experiencing missbehaviour please provide detailed
 steps to reproduce.
 Always mention whether you are running the latest Play Store version or the
 current HEAD.
+If you are having problems connecting to your XMPP server your file tranfer
+doesn’t work as expected please always include a logcat debug output with your
+issue. (See above)
