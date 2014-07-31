@@ -42,6 +42,8 @@ public abstract class XmppActivity extends Activity {
 	
 	protected int mPrimaryTextColor;
 	protected int mSecondaryTextColor;
+	protected int mWarningTextColor;
+	protected int mPrimaryColor;
 	
 	protected interface OnValueEdited {
 		public void onValueEdited(String value);
@@ -162,6 +164,8 @@ public abstract class XmppActivity extends Activity {
 		ExceptionHelper.init(getApplicationContext());
 		mPrimaryTextColor = getResources().getColor(R.color.primarytext);
 		mSecondaryTextColor = getResources().getColor(R.color.secondarytext);
+		mWarningTextColor = getResources().getColor(R.color.warningtext);
+		mPrimaryColor = getResources().getColor(R.color.primary);
 	}
 
 	public void switchToConversation(Conversation conversation) {
@@ -367,5 +371,13 @@ public abstract class XmppActivity extends Activity {
 	
 	public int getPrimaryTextColor() {
 		return this.mPrimaryTextColor;
+	}
+	
+	public int getWarningTextColor() {
+		return this.mWarningTextColor;
+	}
+	
+	public int getPrimaryColor() {
+		return this.mPrimaryColor;
 	}
 }

@@ -12,10 +12,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import eu.siacs.conversations.crypto.OtrEngine;
+import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 
 public class Account  extends AbstractEntity{
 	
@@ -317,5 +319,9 @@ public class Account  extends AbstractEntity{
 			}
 		}
 		return false;
+	}
+
+	public Bitmap getImage(Context context, int size) {
+		return UIHelper.getContactPicture(getJid(), size, context, false);
 	}
 }
