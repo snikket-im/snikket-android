@@ -13,10 +13,8 @@ import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.jingle.JingleConnection;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
-import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,7 +35,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 
 	private ConversationActivity activity;
 
-	private Bitmap selfBitmap2;
+	private Bitmap accountBitmap;
 
 	private BitmapCache mBitmapCache = new BitmapCache();
 	private DisplayMetrics metrics;
@@ -51,20 +49,14 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 	}
 
 	private Bitmap getSelfBitmap() {
-		if (this.selfBitmap2 == null) {
+		if (this.accountBitmap == null) {
 
 			if (getCount() > 0) {
-				SharedPreferences preferences = PreferenceManager
-						.getDefaultSharedPreferences(getContext());
-				boolean showPhoneSelfContactPicture = preferences.getBoolean(
-						"show_phone_selfcontact_picture", true);
-
-				this.selfBitmap2 = UIHelper.getSelfContactPicture(getItem(0)
-						.getConversation().getAccount(), 48,
-						showPhoneSelfContactPicture, getContext());
+				this.accountBitmap = getItem(0)
+						.getConversation().getAccount().getImage(getContext(), 48);
 			}
 		}
-		return this.selfBitmap2;
+		return this.accountBitmap;
 	}
 
 	public void setOnContactPictureClicked(OnContactPictureClicked listener) {
