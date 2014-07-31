@@ -1,6 +1,9 @@
 ###Changelog
 
-###Version 0.5.1
+####Version 0.5.2
+* minor bug fixes
+
+####Version 0.5.1
 * couple of small bug fixes that have been missed in 0.5
 * complete translations for Swedish, Dutch, German, Spanish, French, Russian
 
