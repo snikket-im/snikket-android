@@ -13,6 +13,7 @@ import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.services.XmppConnectionService;
+import eu.siacs.conversations.ui.EditMessage.OnEnterPressed;
 import eu.siacs.conversations.ui.XmppActivity.OnPresenceSelected;
 import eu.siacs.conversations.ui.adapter.MessageAdapter;
 import eu.siacs.conversations.ui.adapter.MessageAdapter.OnContactPictureClicked;
@@ -20,6 +21,7 @@ import eu.siacs.conversations.utils.UIHelper;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
@@ -30,14 +32,17 @@ import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.Selection;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView.OnScrollListener;
+import android.widget.TextView.OnEditorActionListener;
 import android.widget.AbsListView;
 
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
@@ -55,7 +60,7 @@ public class ConversationFragment extends Fragment {
 
 	protected String queuedPqpMessage = null;
 
-	private EditText chatMsg;
+	private EditMessage mEditMessage;
 	private String pastedText = null;
 	private RelativeLayout snackbar;
 	private TextView snackbarMessage;
@@ -65,22 +70,27 @@ public class ConversationFragment extends Fragment {
 	private boolean messagesLoaded = false;
 
 	private IntentSender askForPassphraseIntent = null;
+	
+	private OnEditorActionListener mEditorActionListener = new OnEditorActionListener() {
+		
+		@Override
+		public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+			if (actionId == EditorInfo.IME_ACTION_DONE) {
+                InputMethodManager imm = (InputMethodManager) v.getContext()
+                        .getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                return true;
+            } else {
+            	return false;
+            }
+		}
+	};
 
-	private OnClickListener sendMsgListener = new OnClickListener() {
+	private OnClickListener mSendButtonListener = new OnClickListener() {
 
 		@Override
 		public void onClick(View v) {
-			if (chatMsg.getText().length() < 1)
-				return;
-			Message message = new Message(conversation, chatMsg.getText()
-					.toString(), conversation.getNextEncryption());
-			if (conversation.getNextEncryption() == Message.ENCRYPTION_OTR) {
-				sendOtrMessage(message);
-			} else if (conversation.getNextEncryption() == Message.ENCRYPTION_PGP) {
-				sendPgpMessage(message);
-			} else {
-				sendPlainTextMessage(message);
-			}
+			sendMessage();
 		}
 	};
 	protected OnClickListener clickToDecryptListener = new OnClickListener() {
@@ -147,17 +157,32 @@ public class ConversationFragment extends Fragment {
 	};
 
 	private ConversationActivity activity;
+	
+	
+	private void sendMessage() {
+		if (mEditMessage.getText().length() < 1)
+			return;
+		Message message = new Message(conversation, mEditMessage.getText()
+				.toString(), conversation.getNextEncryption());
+		if (conversation.getNextEncryption() == Message.ENCRYPTION_OTR) {
+			sendOtrMessage(message);
+		} else if (conversation.getNextEncryption() == Message.ENCRYPTION_PGP) {
+			sendPgpMessage(message);
+		} else {
+			sendPlainTextMessage(message);
+		}
+	}
 
 	public void updateChatMsgHint() {
 		switch (conversation.getNextEncryption()) {
 		case Message.ENCRYPTION_NONE:
-			chatMsg.setHint(getString(R.string.send_plain_text_message));
+			mEditMessage.setHint(getString(R.string.send_plain_text_message));
 			break;
 		case Message.ENCRYPTION_OTR:
-			chatMsg.setHint(getString(R.string.send_otr_message));
+			mEditMessage.setHint(getString(R.string.send_otr_message));
 			break;
 		case Message.ENCRYPTION_PGP:
-			chatMsg.setHint(getString(R.string.send_pgp_message));
+			mEditMessage.setHint(getString(R.string.send_pgp_message));
 			break;
 		default:
 			break;
@@ -169,8 +194,8 @@ public class ConversationFragment extends Fragment {
 			ViewGroup container, Bundle savedInstanceState) {
 		final View view = inflater.inflate(R.layout.fragment_conversation,
 				container, false);
-		chatMsg = (EditText) view.findViewById(R.id.textinput);
-		chatMsg.setOnClickListener(new OnClickListener() {
+		mEditMessage = (EditMessage) view.findViewById(R.id.textinput);
+		mEditMessage.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -179,10 +204,18 @@ public class ConversationFragment extends Fragment {
 				}
 			}
 		});
-
+		mEditMessage.setOnEditorActionListener(mEditorActionListener);
+		mEditMessage.setOnEnterPressedListener(new OnEnterPressed() {
+			
+			@Override
+			public void onEnterPressed() {
+				sendMessage();
+			}
+		});
+		
 		ImageButton sendButton = (ImageButton) view
 				.findViewById(R.id.textSendButton);
-		sendButton.setOnClickListener(this.sendMsgListener);
+		sendButton.setOnClickListener(this.mSendButtonListener);
 
 		snackbar = (RelativeLayout) view.findViewById(R.id.snackbar);
 		snackbarMessage = (TextView) view.findViewById(R.id.snackbar_message);
@@ -207,14 +240,14 @@ public class ConversationFragment extends Fragment {
 	}
 
 	protected void highlightInConference(String nick) {
-		String oldString = chatMsg.getText().toString().trim();
+		String oldString = mEditMessage.getText().toString().trim();
 		if (oldString.isEmpty()) {
-			chatMsg.setText(nick + ": ");
+			mEditMessage.setText(nick + ": ");
 		} else {
-			chatMsg.setText(oldString + " " + nick + " ");
+			mEditMessage.setText(oldString + " " + nick + " ");
 		}
-		int position = chatMsg.length();
-		Editable etext = chatMsg.getText();
+		int position = mEditMessage.length();
+		Editable etext = mEditMessage.getText();
 		Selection.setSelection(etext, position);
 	}
 
@@ -234,7 +267,7 @@ public class ConversationFragment extends Fragment {
 	public void onStop() {
 		super.onStop();
 		if (this.conversation != null) {
-			this.conversation.setNextMessage(chatMsg.getText().toString());
+			this.conversation.setNextMessage(mEditMessage.getText().toString());
 		}
 	}
 
@@ -245,18 +278,18 @@ public class ConversationFragment extends Fragment {
 		}
 		String oldString = conversation.getNextMessage().trim();
 		if (this.pastedText == null) {
-			this.chatMsg.setText(oldString);
+			this.mEditMessage.setText(oldString);
 		} else {
 
 			if (oldString.isEmpty()) {
-				chatMsg.setText(pastedText);
+				mEditMessage.setText(pastedText);
 			} else {
-				chatMsg.setText(oldString + " " + pastedText);
+				mEditMessage.setText(oldString + " " + pastedText);
 			}
 			pastedText = null;
 		}
-		int position = chatMsg.length();
-		Editable etext = chatMsg.getText();
+		int position = mEditMessage.length();
+		Editable etext = mEditMessage.getText();
 		Selection.setSelection(etext, position);
 		updateMessages();
 		if (activity.getSlidingPaneLayout().isSlideable()) {
@@ -371,7 +404,7 @@ public class ConversationFragment extends Fragment {
 		if (size >= 1) {
 			messagesView.setSelection(size - 1);
 		}
-		chatMsg.setText("");
+		mEditMessage.setText("");
 	}
 
 	protected void updateStatusMessages() {
@@ -560,6 +593,6 @@ public class ConversationFragment extends Fragment {
 	}
 
 	public void clearInputField() {
-		this.chatMsg.setText("");
+		this.mEditMessage.setText("");
 	}
 }
