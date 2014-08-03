@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import eu.siacs.conversations.R;
+import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.utils.PhoneHelper;
 
 public class PublishProfilePictureActivity extends XmppActivity {
@@ -23,6 +24,8 @@ public class PublishProfilePictureActivity extends XmppActivity {
 	private Button publishButton;
 	
 	private Uri avatarUri;
+	
+	private Account account;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -37,7 +40,7 @@ public class PublishProfilePictureActivity extends XmppActivity {
 			@Override
 			public void onClick(View v) {
 				if (avatarUri!=null) {
-					xmppConnectionService.pushAvatar(null, avatarUri);
+					xmppConnectionService.pushAvatar(account, avatarUri);
 					finish();
 				}
 			}
@@ -67,7 +70,6 @@ public class PublishProfilePictureActivity extends XmppActivity {
 	protected void onActivityResult(int requestCode, int resultCode,
 			final Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		Log.d("xmppService","on activity result");
 		if (resultCode == RESULT_OK) {
 			if (requestCode == REQUEST_CHOOSE_FILE) {
 				Log.d("xmppService","bla");
@@ -78,13 +80,19 @@ public class PublishProfilePictureActivity extends XmppActivity {
 
 	@Override
 	protected void onBackendConnected() {
-		Log.d("xmppService","on backend connected");
-		if (this.avatarUri == null) {
-			avatarUri = PhoneHelper.getSefliUri(getApplicationContext());
+		if (getIntent()!=null) {
+			String jid = getIntent().getStringExtra("account");
+			if (jid!=null) {
+				this.account = xmppConnectionService.findAccountByJid(jid);
+				if (this.avatarUri == null) {
+					avatarUri = PhoneHelper.getSefliUri(getApplicationContext());
+				}
+				loadImageIntoPreview(avatarUri);
+				String explainText = getString(R.string.publish_avatar_explanation,account.getJid());
+				this.explanation.setText(explainText);
+			}
 		}
-		loadImageIntoPreview(avatarUri);
-		String explainText = getString(R.string.publish_avatar_explanation,"daniel@gultsch.de");
-		this.explanation.setText(explainText);
+		
 	}
 	
 	protected void loadImageIntoPreview(Uri uri) {
