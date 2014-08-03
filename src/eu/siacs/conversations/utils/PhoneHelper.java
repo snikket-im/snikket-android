@@ -70,7 +70,7 @@ public class PhoneHelper {
 
 	public static Uri getSefliUri(Context context) {
 		String[] mProjection = new String[] { Profile._ID,
-				Profile.PHOTO_THUMBNAIL_URI };
+				Profile.PHOTO_URI };
 		Cursor mProfileCursor = context.getContentResolver().query(
 				Profile.CONTENT_URI, mProjection, null, null, null);
 

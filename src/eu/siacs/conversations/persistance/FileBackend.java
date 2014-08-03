@@ -1,5 +1,7 @@
 package eu.siacs.conversations.persistance;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -7,19 +9,28 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.security.DigestOutputStream;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Matrix;
+import android.graphics.RectF;
 import android.media.ExifInterface;
 import android.net.Uri;
+import android.util.Base64;
+import android.util.Base64OutputStream;
 import android.util.Log;
 import android.util.LruCache;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
+import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.xmpp.jingle.JingleFile;
+import eu.siacs.conversations.xmpp.pep.Avatar;
 
 public class FileBackend {
 
@@ -215,9 +226,101 @@ public class FileBackend {
 	public File getIncomingFile() {
 		return new File(context.getFilesDir().getAbsolutePath() + "/incoming");
 	}
-	
+
 	public Uri getIncomingUri() {
 		return Uri.parse(context.getFilesDir().getAbsolutePath() + "/incoming");
+	}
+	
+	public Avatar getPepAvatar(Uri image, int size, Bitmap.CompressFormat format) {
+		try {
+			Avatar avatar = new Avatar();
+			Bitmap bm = cropCenterSquare(image, size);
+			ByteArrayOutputStream mByteArrayOutputStream = new ByteArrayOutputStream();
+			Base64OutputStream mBase64OutputSttream = new Base64OutputStream(mByteArrayOutputStream, Base64.DEFAULT);
+			MessageDigest digest = MessageDigest.getInstance("SHA-1");
+			DigestOutputStream mDigestOutputStream = new DigestOutputStream(mBase64OutputSttream, digest);
+			bm.compress(format, 75, mDigestOutputStream);
+			avatar.sha1sum = CryptoHelper.bytesToHex(digest.digest());
+			avatar.image = new String(mByteArrayOutputStream.toByteArray());
+			return avatar;
+		} catch (NoSuchAlgorithmException e) {
+			return null;
+		}
+	}
+	
+	public void save(Avatar avatar) {
+		String path = context.getFilesDir().getAbsolutePath() + "/avatars/";
+		File file = new File(path+"/"+avatar.getFilename());
+		file.getParentFile().mkdirs();
+		Log.d("xmppService",file.getAbsolutePath());
+		try {
+			file.createNewFile();
+			FileOutputStream mFileOutputStream = new FileOutputStream(file);
+			MessageDigest digest = MessageDigest.getInstance("SHA-1");
+			DigestOutputStream mDigestOutputStream = new DigestOutputStream(mFileOutputStream, digest);
+			mDigestOutputStream.write(avatar.getImageAsBytes());
+			mDigestOutputStream.flush();
+			mDigestOutputStream.close();
+			Log.d("xmppService","sha1sum after write: "+CryptoHelper.bytesToHex(digest.digest()));
+		} catch (FileNotFoundException e) {
+			
+		} catch (IOException e) {
+			Log.d("xmppService",e.getMessage());
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public Bitmap cropCenterSquare(Uri image, int size) {
+		try {
+			BitmapFactory.Options options = new BitmapFactory.Options();
+			options.inSampleSize = calcSampleSize(image, size);
+			InputStream is = context.getContentResolver()
+					.openInputStream(image);
+			Bitmap input = BitmapFactory.decodeStream(is, null, options);
+			int w = input.getWidth();
+			int h = input.getHeight();
+
+			float scale = Math.max((float) size / h, (float) size / w);
+
+			float outWidth = scale * w;
+			float outHeight = scale * h;
+			float left = (size - outWidth) / 2;
+			float top = (size - outHeight) / 2;
+			RectF target = new RectF(left, top, left + outWidth, top
+					+ outHeight);
+
+			Bitmap output = Bitmap.createBitmap(size, size, input.getConfig());
+			Canvas canvas = new Canvas(output);
+			canvas.drawBitmap(input, null, target, null);
+			return output;
+		} catch (FileNotFoundException e) {
+			return null;
+		}
+	}
+
+	private int calcSampleSize(Uri image, int size)
+			throws FileNotFoundException {
+		BitmapFactory.Options options = new BitmapFactory.Options();
+		options.inJustDecodeBounds = true;
+		BitmapFactory.decodeStream(context.getContentResolver()
+				.openInputStream(image), null, options);
+		int height = options.outHeight;
+		int width = options.outWidth;
+		int inSampleSize = 1;
+
+		if (height > size || width > size) {
+			int halfHeight = height / 2;
+			int halfWidth = width / 2;
+
+			while ((halfHeight / inSampleSize) > size
+					&& (halfWidth / inSampleSize) > size) {
+				inSampleSize *= 2;
+			}
+		}
+		return inSampleSize;
+
 	}
 
 	public class ImageCopyException extends Exception {

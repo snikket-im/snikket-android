@@ -25,6 +25,10 @@
         android:showAsAction="never"
         android:title="@string/announce_pgp"/>
     <item
+        android:id="@+id/mgmt_account_publish_avatar"
+        android:showAsAction="never"
+        android:title="@string/publish_avatar"/>
+    <item
         android:id="@+id/mgmt_otr_key"
         android:showAsAction="never"
         android:title="@string/show_otr_key"/>

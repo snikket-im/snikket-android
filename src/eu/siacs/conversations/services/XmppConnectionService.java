@@ -53,6 +53,7 @@ import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.jingle.JingleConnectionManager;
 import eu.siacs.conversations.xmpp.jingle.OnJinglePacketReceived;
 import eu.siacs.conversations.xmpp.jingle.stanzas.JinglePacket;
+import eu.siacs.conversations.xmpp.pep.Avatar;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
 import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
 import eu.siacs.conversations.xmpp.stanzas.PresencePacket;
@@ -64,6 +65,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.ContentObserver;
+import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -1183,6 +1185,17 @@ public class XmppConnectionService extends Service {
 		}
 	}
 
+	
+	public void pushAvatar(Account account, Uri image) {
+		Avatar avatar = getFileBackend().getPepAvatar(image, 192, Bitmap.CompressFormat.WEBP);
+		if (avatar!=null) {
+			Log.d(LOGTAG,avatar.sha1sum);
+			Log.d(LOGTAG,avatar.image);
+			avatar.type = "image/webp";
+			getFileBackend().save(avatar);
+		}
+	}
+	
 	public void deleteContactOnServer(Contact contact) {
 		contact.resetOption(Contact.Options.PREEMPTIVE_GRANT);
 		contact.resetOption(Contact.Options.DIRTY_PUSH);

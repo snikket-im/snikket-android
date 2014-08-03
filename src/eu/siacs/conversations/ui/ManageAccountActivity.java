@@ -99,6 +99,8 @@ public class ManageAccountActivity extends XmppActivity {
 				xmppConnectionService
 						.updateAccount(selectedAccountForActionMode);
 				mode.finish();
+			} else if (item.getItemId() == R.id.mgmt_account_publish_avatar) {
+				startActivity(new Intent(getApplicationContext(), PublishProfilePictureActivity.class));
 			} else if (item.getItemId() == R.id.mgmt_account_delete) {
 				AlertDialog.Builder builder = new AlertDialog.Builder(activity);
 				builder.setTitle(getString(R.string.mgmt_account_are_you_sure));
