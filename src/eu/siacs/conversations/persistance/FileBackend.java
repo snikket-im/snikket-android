@@ -261,7 +261,7 @@ public class FileBackend {
 			mDigestOutputStream.write(avatar.getImageAsBytes());
 			mDigestOutputStream.flush();
 			mDigestOutputStream.close();
-			Log.d("xmppService","sha1sum after write: "+CryptoHelper.bytesToHex(digest.digest()));
+			avatar.size = file.length();
 		} catch (FileNotFoundException e) {
 			
 		} catch (IOException e) {

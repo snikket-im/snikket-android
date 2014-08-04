@@ -144,4 +144,12 @@ public class Element {
 	public void clearChildren() {
 		this.children.clear();
 	}
+
+	public void setAttribute(String name, long value) {
+		this.setAttribute(name, ""+value);
+	}
+	
+	public void setAttribute(String name, int value) {
+		this.setAttribute(name, ""+value);
+	}
 }

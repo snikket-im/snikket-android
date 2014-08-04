@@ -6,6 +6,9 @@ public class Avatar {
 	public String type;
 	public String sha1sum;
 	public String image;
+	public int height;
+	public int width;
+	public long size;
 	public byte[] getImageAsBytes() {
 		return Base64.decode(image, Base64.DEFAULT);
 	}

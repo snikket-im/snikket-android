@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 import eu.siacs.conversations.xml.Element;
+import eu.siacs.conversations.xmpp.pep.Avatar;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
 
 public class IqGenerator extends AbstractGenerator {
@@ -27,5 +28,35 @@ public class IqGenerator extends AbstractGenerator {
 			query.addChild("feature").setAttribute("var",feature);
 		}
 		return packet;
+	}
+	
+	protected IqPacket publish(String node, Element item) {
+		IqPacket packet = new IqPacket(IqPacket.TYPE_SET);
+		Element pubsub = packet.addChild("pubsub", "http://jabber.org/protocol/pubsub");
+		Element publish = pubsub.addChild("publish");
+		publish.setAttribute("node", node);
+		publish.addChild(item);
+		return packet;
+	}
+	
+	public IqPacket publishAvatar(Avatar avatar) {
+		Element item = new Element("item");
+		item.setAttribute("id", avatar.sha1sum);
+		Element data = item.addChild("data","urn:xmpp:avatar:data");
+		data.setContent(avatar.image);
+		return publish("urn:xmpp:avatar:data", item);
+	}
+	
+	public IqPacket publishAvatarMetadata(Avatar avatar) {
+		Element item = new Element("item");
+		item.setAttribute("id", avatar.sha1sum);
+		Element metadata = item.addChild("metadata","urn:xmpp:avatar:metadata");
+		Element info = metadata.addChild("info");
+		info.setAttribute("bytes",avatar.size);
+		info.setAttribute("id",avatar.sha1sum);
+		info.setAttribute("height",avatar.height);
+		info.setAttribute("width",avatar.height);
+		info.setAttribute("type", avatar.type);
+		return publish("urn:xmpp:avatar:metadata",item);
 	}
 }

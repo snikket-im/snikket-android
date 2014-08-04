@@ -1,6 +1,7 @@
 package eu.siacs.conversations.parser;
 
 import android.os.SystemClock;
+import android.util.Log;
 import net.java.otr4j.session.Session;
 import net.java.otr4j.session.SessionStatus;
 import eu.siacs.conversations.entities.Account;
@@ -213,6 +214,10 @@ public class MessageParser extends AbstractParser implements
 	}
 
 	private void parseNormal(Element packet, Account account) {
+		if (packet.hasChild("event","http://jabber.org/protocol/pubsub#event")) {
+			Element event = packet.findChild("event","http://jabber.org/protocol/pubsub#event");
+			parseEvent(event,packet.getAttribute("from"),account);
+		}
 		if (packet.hasChild("displayed", "urn:xmpp:chat-markers:0")) {
 			String id = packet
 					.findChild("displayed", "urn:xmpp:chat-markers:0")
@@ -251,6 +256,16 @@ public class MessageParser extends AbstractParser implements
 					mXmppConnectionService.updateConversationUi();
 				}
 			}
+		}
+	}
+
+	private void parseEvent(Element event, String from, Account account) {
+		Element items = event.findChild("items");
+		String node = items.getAttribute("node");
+		if (node!=null) {
+			Log.d("xmppService",account.getJid()+": "+node+" from "+from);
+		} else {
+			Log.d("xmppService",event.toString());
 		}
 	}
 
@@ -324,6 +339,9 @@ public class MessageParser extends AbstractParser implements
 		} else if (packet.getType() == MessagePacket.TYPE_NORMAL) {
 			this.parseNormal(packet, account);
 			return;
+		} else if (packet.getType() == MessagePacket.TYPE_HEADLINE) {
+			this.parseHeadline(packet, account);
+			return;
 		}
 		if ((message == null) || (message.getBody() == null)) {
 			return;
@@ -345,5 +363,12 @@ public class MessageParser extends AbstractParser implements
 			mXmppConnectionService.databaseBackend.createMessage(message);
 		}
 		mXmppConnectionService.notifyUi(conversation, notify);
+	}
+
+	private void parseHeadline(MessagePacket packet, Account account) {
+		if (packet.hasChild("event","http://jabber.org/protocol/pubsub#event")) {
+			Element event = packet.findChild("event","http://jabber.org/protocol/pubsub#event");
+			parseEvent(event,packet.getFrom(),account);
+		}
 	}
 }

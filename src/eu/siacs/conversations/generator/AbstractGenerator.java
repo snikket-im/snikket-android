@@ -18,7 +18,8 @@ public abstract class AbstractGenerator {
 			"http://jabber.org/protocol/muc",
 			"jabber:x:conference",
 			"http://jabber.org/protocol/caps",
-			"http://jabber.org/protocol/disco#info"};
+			"http://jabber.org/protocol/disco#info",
+			"urn:xmpp:avatar:metadata+notify"};
 	public final String IDENTITY_NAME = "Conversations 0.5";
 	public final String IDENTITY_TYPE = "phone";
 	/*public final String[] FEATURES = { "http://jabber.org/protocol/muc","http://jabber.org/protocol/disco#info", "http://jabber.org/protocol/disco#items", "http://jabber.org/protocol/caps" };

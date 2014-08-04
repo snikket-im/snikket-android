@@ -8,6 +8,7 @@ public class MessagePacket extends AbstractStanza {
 	public static final int TYPE_NORMAL = 2;
 	public static final int TYPE_GROUPCHAT = 3;
 	public static final int TYPE_ERROR = 4;
+	public static final int TYPE_HEADLINE = 5;
 	
 	public MessagePacket() {
 		super("message");
@@ -59,6 +60,8 @@ public class MessagePacket extends AbstractStanza {
 			return TYPE_GROUPCHAT;
 		} else if (type.equals("error")) {
 			return TYPE_ERROR;
+		} else if (type.equals("headline")) {
+			return TYPE_HEADLINE;
 		} else {
 			return TYPE_UNKNOWN;
 		}

@@ -20,6 +20,7 @@ import de.duenndns.ssl.MemorizingTrustManager;
 import net.java.otr4j.OtrException;
 import net.java.otr4j.session.Session;
 import net.java.otr4j.session.SessionStatus;
+import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.PgpEngine;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Bookmark;
@@ -1186,13 +1187,46 @@ public class XmppConnectionService extends Service {
 	}
 
 	
-	public void pushAvatar(Account account, Uri image) {
-		Avatar avatar = getFileBackend().getPepAvatar(image, 192, Bitmap.CompressFormat.WEBP);
+	public void publishAvatar(Account account, Uri image, final UiCallback<Avatar> callback) {
+		final Bitmap.CompressFormat format = Defaults.AVATAR_FORMAT;
+		final int size = Defaults.AVATAR_SIZE;
+		final Avatar avatar = getFileBackend().getPepAvatar(image, size, format);
 		if (avatar!=null) {
-			Log.d(LOGTAG,avatar.sha1sum);
-			Log.d(LOGTAG,avatar.image);
-			avatar.type = "image/webp";
+			avatar.height = size;
+			avatar.width = size;
+			if (format.equals(Bitmap.CompressFormat.WEBP)) {
+				avatar.type = "image/webp";
+			} else if (format.equals(Bitmap.CompressFormat.JPEG)) {
+				avatar.type = "image/jpeg";
+			} else if (format.equals(Bitmap.CompressFormat.PNG)) {
+				avatar.type = "image/png";
+			}
 			getFileBackend().save(avatar);
+			IqPacket packet = this.mIqGenerator.publishAvatar(avatar);
+			this.sendIqPacket(account, packet, new OnIqPacketReceived() {
+				
+				@Override
+				public void onIqPacketReceived(Account account, IqPacket result) {
+					if (result.getType() == IqPacket.TYPE_RESULT) {
+						IqPacket packet = XmppConnectionService.this.mIqGenerator.publishAvatarMetadata(avatar);
+						sendIqPacket(account, packet, new OnIqPacketReceived() {
+							
+							@Override
+							public void onIqPacketReceived(Account account, IqPacket result) {
+								if (result.getType() == IqPacket.TYPE_RESULT) {
+									callback.success(avatar);
+								} else {
+									callback.error(R.string.error, avatar);
+								}
+							}
+						});
+					} else {
+						callback.error(R.string.error, avatar);
+					}
+				}
+			});
+		} else {
+			callback.error(R.string.error, null);
 		}
 	}
 	
