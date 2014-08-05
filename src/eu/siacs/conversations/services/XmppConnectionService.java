@@ -1216,17 +1216,17 @@ public class XmppConnectionService extends Service {
 								if (result.getType() == IqPacket.TYPE_RESULT) {
 									callback.success(avatar);
 								} else {
-									callback.error(R.string.error, avatar);
+									callback.error(R.string.error_publish_avatar_server_reject, avatar);
 								}
 							}
 						});
 					} else {
-						callback.error(R.string.error, avatar);
+						callback.error(R.string.error_publish_avatar_server_reject, avatar);
 					}
 				}
 			});
 		} else {
-			callback.error(R.string.error, null);
+			callback.error(R.string.error_publish_avatar_converting, null);
 		}
 	}
 	

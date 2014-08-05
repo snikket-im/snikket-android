@@ -69,7 +69,8 @@
         android:layout_height="fill_parent"
         android:layout_above="@+id/button_bar"
         android:layout_below="@+id/hint"
-        android:layout_centerHorizontal="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
         android:gravity="center_vertical"
         android:orientation="vertical"
         android:paddingLeft="8dp"
@@ -83,12 +84,14 @@
             android:textSize="18sp"/>
         
         <TextView
+            android:id="@+id/hint_or_warning"
             android:layout_marginTop="8dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/publish_avatar_explanation"
             android:textColor="@color/primarytext"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:minLines="3" />
     </LinearLayout>
 
 </RelativeLayout>

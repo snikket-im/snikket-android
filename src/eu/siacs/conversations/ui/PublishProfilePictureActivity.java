@@ -22,6 +22,7 @@ public class PublishProfilePictureActivity extends XmppActivity {
 
 	private ImageView avatar;
 	private TextView accountTextView;
+	private TextView hintOrWarning;
 	private Button cancelButton;
 	private Button publishButton;
 
@@ -33,19 +34,32 @@ public class PublishProfilePictureActivity extends XmppActivity {
 
 		@Override
 		public void success(Avatar object) {
-			finish();
+			runOnUiThread(new Runnable() {
+
+				@Override
+				public void run() {
+					finish();
+				}
+			});
 		}
 
 		@Override
-		public void error(int errorCode, Avatar object) {
-			// TODO Auto-generated method stub
+		public void error(final int errorCode, Avatar object) {
+			runOnUiThread(new Runnable() {
+
+				@Override
+				public void run() {
+					hintOrWarning.setText(errorCode);
+					hintOrWarning.setTextColor(getWarningTextColor());
+					publishButton.setText(R.string.publish_avatar);
+					enablePublishButton();
+				}
+			});
 
 		}
 
 		@Override
 		public void userInputRequried(PendingIntent pi, Avatar object) {
-			// TODO Auto-generated method stub
-
 		}
 	};
 
@@ -57,11 +71,13 @@ public class PublishProfilePictureActivity extends XmppActivity {
 		this.cancelButton = (Button) findViewById(R.id.cancel_button);
 		this.publishButton = (Button) findViewById(R.id.publish_button);
 		this.accountTextView = (TextView) findViewById(R.id.account);
+		this.hintOrWarning = (TextView) findViewById(R.id.hint_or_warning);
 		this.publishButton.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				if (avatarUri != null) {
+					publishButton.setText(R.string.publishing);
 					disablePublishButton();
 					xmppConnectionService.publishAvatar(account, avatarUri,
 							avatarPublication);
@@ -99,7 +115,7 @@ public class PublishProfilePictureActivity extends XmppActivity {
 			}
 		}
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem menuItem) {
 		super.onOptionsItemSelected(menuItem);
@@ -133,13 +149,16 @@ public class PublishProfilePictureActivity extends XmppActivity {
 				uri, 384);
 		this.avatar.setImageBitmap(bm);
 		enablePublishButton();
+		this.publishButton.setText(R.string.publish_avatar);
+		this.hintOrWarning.setText(R.string.publish_avatar_explanation);
+		this.hintOrWarning.setTextColor(getPrimaryTextColor());
 	}
 
 	protected void enablePublishButton() {
 		this.publishButton.setEnabled(true);
 		this.publishButton.setTextColor(getPrimaryTextColor());
 	}
-	
+
 	protected void disablePublishButton() {
 		this.publishButton.setEnabled(false);
 		this.publishButton.setTextColor(getSecondaryTextColor());
