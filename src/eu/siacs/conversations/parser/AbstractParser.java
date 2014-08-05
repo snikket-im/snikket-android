@@ -73,4 +73,16 @@ public abstract class AbstractParser {
 			}
 		}
 	}
+	
+	protected String avatarData(Element items) {
+		Element item = items.findChild("item");
+		if (item==null) {
+			return null;
+		}
+		Element data = item.findChild("data","urn:xmpp:avatar:data");
+		if (data==null) {
+			return null;
+		}
+		return data.getContent();
+	}
 }

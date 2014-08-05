@@ -248,6 +248,11 @@ public class FileBackend {
 		}
 	}
 	
+	public boolean isAvatarCached(Avatar avatar) {
+		File file = new File(getAvatarPath(context, avatar.getFilename()));
+		return file.exists();
+	}
+	
 	public void save(Avatar avatar) {
 		File file = new File(getAvatarPath(context, avatar.getFilename()));
 		file.getParentFile().mkdirs();

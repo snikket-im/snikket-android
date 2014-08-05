@@ -8,12 +8,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xml.Element;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 public class Contact implements ListItem {
 	public static final String TABLENAME = "contacts";
@@ -34,6 +36,7 @@ public class Contact implements ListItem {
 	protected int subscription = 0;
 	protected String systemAccount;
 	protected String photoUri;
+	protected String avatar;
 	protected JSONObject keys = new JSONObject();
 	protected Presences presences = new Presences();
 
@@ -316,7 +319,20 @@ public class Contact implements ListItem {
 	}
 
 	@Override
-	public Bitmap getImage(int dpSize, Context context) {
-		return UIHelper.getContactPicture(this, dpSize, context, false);
+	public Bitmap getImage(int size, Context context) {
+		if (this.avatar!=null) {
+			Bitmap bm = BitmapFactory.decodeFile(FileBackend.getAvatarPath(context, avatar));
+			if (bm==null) {
+				return UIHelper.getContactPicture(this, size, context, false);
+			} else {
+				return bm;
+			}
+		} else {
+			return UIHelper.getContactPicture(this, size, context, false);
+		}
+	}
+
+	public void setAvatar(String filename) {
+		this.avatar = filename;
 	}
 }

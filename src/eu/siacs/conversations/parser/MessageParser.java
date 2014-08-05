@@ -5,12 +5,14 @@ import android.util.Log;
 import net.java.otr4j.session.Session;
 import net.java.otr4j.session.SessionStatus;
 import eu.siacs.conversations.entities.Account;
+import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.OnMessagePacketReceived;
+import eu.siacs.conversations.xmpp.pep.Avatar;
 import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
 
 public class MessageParser extends AbstractParser implements
@@ -263,7 +265,22 @@ public class MessageParser extends AbstractParser implements
 		Element items = event.findChild("items");
 		String node = items.getAttribute("node");
 		if (node!=null) {
-			Log.d("xmppService",account.getJid()+": "+node+" from "+from);
+			if (node.equals("urn:xmpp:avatar:metadata")) {
+				Avatar avatar = Avatar.parseMetadata(items);
+				avatar.owner = from;
+				if (mXmppConnectionService.getFileBackend().isAvatarCached(avatar)) {
+					if (account.getJid().equals(from)) {
+						account.setAvatar(avatar.getFilename());
+					} else {
+						Contact contact = account.getRoster().getContact(from);
+						contact.setAvatar(avatar.getFilename());
+					}
+				} else {
+					mXmppConnectionService.fetchAvatar(account, avatar);
+				}
+			} else {
+				Log.d("xmppService",account.getJid()+": "+node+" from "+from);
+			}
 		} else {
 			Log.d("xmppService",event.toString());
 		}

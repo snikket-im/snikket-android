@@ -1231,6 +1231,22 @@ public class XmppConnectionService extends Service {
 		}
 	}
 	
+	public void fetchAvatar(Account account, final Avatar avatar) {
+		IqPacket packet = this.mIqGenerator.retrieveAvatar(avatar);
+		sendIqPacket(account, packet, new OnIqPacketReceived() {
+			
+			@Override
+			public void onIqPacketReceived(Account account, IqPacket result) {
+				avatar.image = mIqParser.avatarData(result);
+				if (avatar.image!=null) {
+					getFileBackend().save(avatar);
+					Contact contact = account.getRoster().getContact(avatar.owner);
+					contact.setAvatar(avatar.getFilename());
+				}
+			}
+		});
+	}
+	
 	public void deleteContactOnServer(Contact contact) {
 		contact.resetOption(Contact.Options.PREEMPTIVE_GRANT);
 		contact.resetOption(Contact.Options.DIRTY_PUSH);

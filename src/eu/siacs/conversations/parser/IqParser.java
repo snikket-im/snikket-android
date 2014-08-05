@@ -40,6 +40,18 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
 		}
 		mXmppConnectionService.updateRosterUi();
 	}
+	
+	public String avatarData(IqPacket packet) {
+		Element pubsub = packet.findChild("pubsub", "http://jabber.org/protocol/pubsub");
+		if (pubsub==null) {
+			return null;
+		}
+		Element items = pubsub.findChild("items");
+		if (items==null) {
+			return null;
+		}
+		return super.avatarData(items);
+	}
 
 	@Override
 	public void onIqPacketReceived(Account account, IqPacket packet) {

@@ -4,6 +4,8 @@ import java.security.interfaces.DSAPublicKey;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import eu.siacs.conversations.utils.UIHelper;
+
 import net.java.otr4j.OtrException;
 import net.java.otr4j.crypto.OtrCryptoEngineImpl;
 import net.java.otr4j.crypto.OtrCryptoException;
@@ -13,7 +15,7 @@ import net.java.otr4j.session.SessionStatus;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.net.Uri;
+import android.graphics.Bitmap;
 
 public class Conversation extends AbstractEntity {
 	public static final String TABLENAME = "conversations";
@@ -172,13 +174,6 @@ public class Conversation extends AbstractEntity {
 
 	public String getContactJid() {
 		return this.contactJid;
-	}
-
-	public Uri getProfilePhotoUri() {
-		if (this.getProfilePhotoString() != null) {
-			return Uri.parse(this.getProfilePhotoString());
-		}
-		return null;
 	}
 
 	public int getStatus() {
@@ -395,5 +390,13 @@ public class Conversation extends AbstractEntity {
 
 	public Bookmark getBookmark() {
 		return this.bookmark;
+	}
+
+	public Bitmap getImage(Context context, int size) {
+		if (mode==MODE_SINGLE) {
+			return getContact().getImage(size, context);
+		} else {
+			return UIHelper.getContactPicture(this, size, context, false);
+		}
 	}
 }

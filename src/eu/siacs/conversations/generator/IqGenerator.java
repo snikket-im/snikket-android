@@ -39,6 +39,15 @@ public class IqGenerator extends AbstractGenerator {
 		return packet;
 	}
 	
+	protected IqPacket retrieve(String node, Element item) {
+		IqPacket packet = new IqPacket(IqPacket.TYPE_GET);
+		Element pubsub = packet.addChild("pubsub", "http://jabber.org/protocol/pubsub");
+		Element items = pubsub.addChild("items");
+		items.setAttribute("node", node);
+		items.addChild(item);
+		return packet;
+	}
+	
 	public IqPacket publishAvatar(Avatar avatar) {
 		Element item = new Element("item");
 		item.setAttribute("id", avatar.sha1sum);
@@ -58,5 +67,13 @@ public class IqGenerator extends AbstractGenerator {
 		info.setAttribute("width",avatar.height);
 		info.setAttribute("type", avatar.type);
 		return publish("urn:xmpp:avatar:metadata",item);
+	}
+	
+	public IqPacket retrieveAvatar(Avatar avatar) {
+		Element item = new Element("item");
+		item.setAttribute("id", avatar.sha1sum);
+		IqPacket packet = retrieve("urn:xmpp:avatar:data", item);
+		packet.setTo(avatar.owner);
+		return packet;
 	}
 }

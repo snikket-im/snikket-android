@@ -488,8 +488,7 @@ public class UIHelper {
 			long id = Long.parseLong(systemAccount[0]);
 			badge.assignContactUri(Contacts.getLookupUri(id, systemAccount[1]));
 		}
-		badge.setImageBitmap(UIHelper.getContactPicture(contact, 72, context,
-				false));
+		badge.setImageBitmap(contact.getImage(72, context));
 	}
 
 	public static AlertDialog getVerifyFingerprintDialog(

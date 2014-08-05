@@ -229,8 +229,7 @@ public class ConversationActivity extends XmppActivity {
 
 				ImageView profilePicture = (ImageView) view
 						.findViewById(R.id.conversation_image);
-				profilePicture.setImageBitmap(UIHelper.getContactPicture(conv,
-						56, activity.getApplicationContext(), false));
+				profilePicture.setImageBitmap(conv.getImage(getApplicationContext(),56)); //;UIHelper.getContactPicture(conv,56, activity.getApplicationContext(), false));
 
 				return view;
 			}
