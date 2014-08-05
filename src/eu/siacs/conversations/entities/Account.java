@@ -12,12 +12,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import eu.siacs.conversations.crypto.OtrEngine;
+import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 
 public class Account  extends AbstractEntity{
 	
@@ -58,6 +61,7 @@ public class Account  extends AbstractEntity{
 	protected String resource = "mobile";
 	protected int status = -1;
 	protected JSONObject keys = new JSONObject();
+	protected String avatar;
 	
 	protected boolean online = false;
 	
@@ -322,6 +326,23 @@ public class Account  extends AbstractEntity{
 	}
 
 	public Bitmap getImage(Context context, int size) {
-		return UIHelper.getContactPicture(getJid(), size, context, false);
+		if (this.avatar!=null) {
+			Bitmap bm = BitmapFactory.decodeFile(FileBackend.getAvatarPath(context, avatar));
+			if (bm==null) {
+				return UIHelper.getContactPicture(getJid(), size, context, false);
+			} else {
+				return bm;
+			}
+		} else {
+			return UIHelper.getContactPicture(getJid(), size, context, false);
+		}
+	}
+
+	public void setAvatar(String filename) {
+		this.avatar = filename;
+	}
+	
+	public String getAvatar() {
+		return this.avatar;
 	}
 }

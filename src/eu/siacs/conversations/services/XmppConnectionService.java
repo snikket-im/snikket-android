@@ -1214,6 +1214,7 @@ public class XmppConnectionService extends Service {
 							@Override
 							public void onIqPacketReceived(Account account, IqPacket result) {
 								if (result.getType() == IqPacket.TYPE_RESULT) {
+									account.setAvatar(avatar.getFilename());
 									callback.success(avatar);
 								} else {
 									callback.error(R.string.error_publish_avatar_server_reject, avatar);

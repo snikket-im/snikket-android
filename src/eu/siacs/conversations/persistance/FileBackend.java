@@ -249,8 +249,7 @@ public class FileBackend {
 	}
 	
 	public void save(Avatar avatar) {
-		String path = context.getFilesDir().getAbsolutePath() + "/avatars/";
-		File file = new File(path+"/"+avatar.getFilename());
+		File file = new File(getAvatarPath(context, avatar.getFilename()));
 		file.getParentFile().mkdirs();
 		Log.d("xmppService",file.getAbsolutePath());
 		try {
@@ -270,6 +269,10 @@ public class FileBackend {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public static String getAvatarPath(Context context, String avatar) {
+		return context.getFilesDir().getAbsolutePath() + "/avatars/"+avatar;
 	}
 
 	public Bitmap cropCenterSquare(Uri image, int size) {

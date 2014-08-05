@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -134,10 +135,19 @@ public class PublishProfilePictureActivity extends XmppActivity {
 			if (jid != null) {
 				this.account = xmppConnectionService.findAccountByJid(jid);
 				if (this.avatarUri == null) {
-					avatarUri = PhoneHelper
-							.getSefliUri(getApplicationContext());
+					if (this.account.getAvatar() != null) {
+						this.avatar.setImageBitmap(this.account.getImage(
+								getApplicationContext(), 384));
+					} else {
+						this.avatarUri = PhoneHelper
+								.getSefliUri(getApplicationContext());
+						if (this.avatarUri != null) {
+							loadImageIntoPreview(this.avatarUri);
+						}
+					}
+				} else {
+					loadImageIntoPreview(avatarUri);
 				}
-				loadImageIntoPreview(avatarUri);
 				this.accountTextView.setText(this.account.getJid());
 			}
 		}
