@@ -1201,7 +1201,10 @@ public class XmppConnectionService extends Service {
 			} else if (format.equals(Bitmap.CompressFormat.PNG)) {
 				avatar.type = "image/png";
 			}
-			getFileBackend().save(avatar);
+			if (!getFileBackend().save(avatar)) {
+				callback.error(R.string.error_saving_avatar, avatar);
+				return;
+			}
 			IqPacket packet = this.mIqGenerator.publishAvatar(avatar);
 			this.sendIqPacket(account, packet, new OnIqPacketReceived() {
 				
@@ -1232,6 +1235,7 @@ public class XmppConnectionService extends Service {
 	}
 	
 	public void fetchAvatar(Account account, final Avatar avatar) {
+		Log.d(LOGTAG,account.getJid()+": retrieving avatar for "+avatar.owner);
 		IqPacket packet = this.mIqGenerator.retrieveAvatar(avatar);
 		sendIqPacket(account, packet, new OnIqPacketReceived() {
 			
@@ -1239,9 +1243,14 @@ public class XmppConnectionService extends Service {
 			public void onIqPacketReceived(Account account, IqPacket result) {
 				avatar.image = mIqParser.avatarData(result);
 				if (avatar.image!=null) {
-					getFileBackend().save(avatar);
-					Contact contact = account.getRoster().getContact(avatar.owner);
-					contact.setAvatar(avatar.getFilename());
+					if (getFileBackend().save(avatar)) {
+						if (account.getJid().equals(avatar.owner)) {
+							account.setAvatar(avatar.getFilename());
+						} else {
+							Contact contact = account.getRoster().getContact(avatar.owner);
+							contact.setAvatar(avatar.getFilename());
+						}
+					}
 				}
 			}
 		});

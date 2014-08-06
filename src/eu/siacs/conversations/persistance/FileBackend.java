@@ -1,6 +1,5 @@
 package eu.siacs.conversations.persistance;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -239,11 +238,17 @@ public class FileBackend {
 			Base64OutputStream mBase64OutputSttream = new Base64OutputStream(mByteArrayOutputStream, Base64.DEFAULT);
 			MessageDigest digest = MessageDigest.getInstance("SHA-1");
 			DigestOutputStream mDigestOutputStream = new DigestOutputStream(mBase64OutputSttream, digest);
-			bm.compress(format, 75, mDigestOutputStream);
+			if (!bm.compress(format, 75, mDigestOutputStream)) {
+				return null;
+			}
+			mDigestOutputStream.flush();
+			mDigestOutputStream.close();
 			avatar.sha1sum = CryptoHelper.bytesToHex(digest.digest());
 			avatar.image = new String(mByteArrayOutputStream.toByteArray());
 			return avatar;
 		} catch (NoSuchAlgorithmException e) {
+			return null;
+		} catch (IOException e) {
 			return null;
 		}
 	}
@@ -253,26 +258,38 @@ public class FileBackend {
 		return file.exists();
 	}
 	
-	public void save(Avatar avatar) {
-		File file = new File(getAvatarPath(context, avatar.getFilename()));
+	public boolean save(Avatar avatar) {
+		if (isAvatarCached(avatar)) {
+			return true;
+		}
+		String filename = getAvatarPath(context, avatar.getFilename());
+		File file = new File(filename+".tmp");
 		file.getParentFile().mkdirs();
-		Log.d("xmppService",file.getAbsolutePath());
 		try {
 			file.createNewFile();
 			FileOutputStream mFileOutputStream = new FileOutputStream(file);
 			MessageDigest digest = MessageDigest.getInstance("SHA-1");
+			digest.reset();
 			DigestOutputStream mDigestOutputStream = new DigestOutputStream(mFileOutputStream, digest);
 			mDigestOutputStream.write(avatar.getImageAsBytes());
 			mDigestOutputStream.flush();
 			mDigestOutputStream.close();
 			avatar.size = file.length();
+			String sha1sum = CryptoHelper.bytesToHex(digest.digest());
+			if (sha1sum.equals(avatar.sha1sum)) {
+				file.renameTo(new File(filename));
+				return true;
+			} else {
+				Log.d("xmppService","sha1sum mismatch for "+avatar.owner);
+				file.delete();
+				return false;
+			}
 		} catch (FileNotFoundException e) {
-			
+			return false;
 		} catch (IOException e) {
-			Log.d("xmppService",e.getMessage());
+			return false;
 		} catch (NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			return false;
 		}
 	}
 	

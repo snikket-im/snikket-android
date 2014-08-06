@@ -451,14 +451,10 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		private HashMap<String, Bitmap> unknownBitmaps = new HashMap<String, Bitmap>();
 
 		public Bitmap get(Contact contact, Context context) {
-			if (contactBitmaps.containsKey(contact.getJid())) {
-				return contactBitmaps.get(contact.getJid());
-			} else {
-				Bitmap bm = UIHelper.getContactPicture(contact, 48, context,
-						false);
-				contactBitmaps.put(contact.getJid(), bm);
-				return bm;
+			if (!contactBitmaps.containsKey(contact.getJid())) {
+				contactBitmaps.put(contact.getJid(), contact.getImage(48, context));
 			}
+			return contactBitmaps.get(contact.getJid());
 		}
 
 		public Bitmap get(String name, Context context) {
