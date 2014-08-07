@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 
 public class Validator {
 	public static final Pattern VALID_JID = 
-		    Pattern.compile("\\b^[^@/<>'\"\\s]+@[^@/<>'\"\\s]+$", Pattern.CASE_INSENSITIVE);
+		    Pattern.compile("^[^@/<>'\"\\s]+@[^@/<>'\"\\s]+$", Pattern.CASE_INSENSITIVE);
 	
 	public static boolean isValidJid(String jid) {
 		Matcher matcher = VALID_JID.matcher(jid);
