@@ -334,7 +334,7 @@ public class UIHelper {
 		boolean vibrate = preferences.getBoolean("vibrate_on_notification",
 				true);
 		boolean alwaysNotify = preferences.getBoolean(
-				"notify_in_conversation_when_highlighted", false);
+				"notify_in_conversation_when_highlighted", false) && notify;
 
 		if (!showNofifications) {
 			mNotificationManager.cancel(2342);
