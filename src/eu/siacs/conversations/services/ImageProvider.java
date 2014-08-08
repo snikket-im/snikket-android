@@ -61,7 +61,7 @@ public class ImageProvider extends ContentProvider {
 			message.setConversation(conversation);
 			conversation.setAccount(account);
 	
-			File file = fileBackend.getJingleFile(message);
+			File file = fileBackend.getJingleFileLegacy(message);
 			pfd = ParcelFileDescriptor.open(file,
 					ParcelFileDescriptor.MODE_READ_ONLY);
 			return pfd;
@@ -110,7 +110,7 @@ public class ImageProvider extends ContentProvider {
 		return 0;
 	}
 	
-	public static Uri getContentUri(Message message) {
+	public static Uri getProviderUri(Message message) {
 		return Uri
 				.parse("content://eu.siacs.conversations.images/"
 						+ message.getConversationUuid()

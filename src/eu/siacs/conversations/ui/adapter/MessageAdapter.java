@@ -52,8 +52,8 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		if (this.accountBitmap == null) {
 
 			if (getCount() > 0) {
-				this.accountBitmap = getItem(0)
-						.getConversation().getAccount().getImage(getContext(), 48);
+				this.accountBitmap = getItem(0).getConversation().getAccount()
+						.getImage(getContext(), 48);
 			}
 		}
 		return this.accountBitmap;
@@ -237,8 +237,8 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(Intent.ACTION_VIEW);
-				intent.setDataAndType(ImageProvider.getContentUri(message),
-						"image/*");
+				intent.setDataAndType(activity.xmppConnectionService
+						.getFileBackend().getJingleFileUri(message), "image/*");
 				getContext().startActivity(intent);
 			}
 		});
@@ -249,7 +249,8 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 				Intent shareIntent = new Intent();
 				shareIntent.setAction(Intent.ACTION_SEND);
 				shareIntent.putExtra(Intent.EXTRA_STREAM,
-						ImageProvider.getContentUri(message));
+						activity.xmppConnectionService.getFileBackend()
+								.getJingleFileUri(message));
 				shareIntent.setType("image/webp");
 				getContext().startActivity(
 						Intent.createChooser(shareIntent,
@@ -269,7 +270,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 			switch (type) {
 			case SENT:
 				view = (View) activity.getLayoutInflater().inflate(
-						R.layout.message_sent, parent,false);
+						R.layout.message_sent, parent, false);
 				viewHolder.message_box = (LinearLayout) view
 						.findViewById(R.id.message_box);
 				viewHolder.contact_picture = (ImageView) view
@@ -287,7 +288,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 				break;
 			case RECIEVED:
 				view = (View) activity.getLayoutInflater().inflate(
-						R.layout.message_recieved, parent,false);
+						R.layout.message_recieved, parent, false);
 				viewHolder.message_box = (LinearLayout) view
 						.findViewById(R.id.message_box);
 				viewHolder.contact_picture = (ImageView) view
@@ -314,7 +315,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 				break;
 			case STATUS:
 				view = (View) activity.getLayoutInflater().inflate(
-						R.layout.message_status, parent,false);
+						R.layout.message_status, parent, false);
 				viewHolder.contact_picture = (ImageView) view
 						.findViewById(R.id.message_photo);
 				if (item.getConversation().getMode() == Conversation.MODE_SINGLE) {
@@ -452,7 +453,8 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 
 		public Bitmap get(Contact contact, Context context) {
 			if (!contactBitmaps.containsKey(contact.getJid())) {
-				contactBitmaps.put(contact.getJid(), contact.getImage(48, context));
+				contactBitmaps.put(contact.getJid(),
+						contact.getImage(48, context));
 			}
 			return contactBitmaps.get(contact.getJid());
 		}
