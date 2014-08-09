@@ -9,7 +9,8 @@
             android:id="@+id/conversation_image"
             android:layout_width="56dp"
             android:layout_height="56dp"
-            android:layout_alignParentLeft="true"/>
+            android:layout_alignParentLeft="true"
+            android:scaleType="centerCrop"/>
 
 	<RelativeLayout
 	    android:layout_toRightOf="@+id/conversation_image"

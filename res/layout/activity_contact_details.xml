@@ -27,7 +27,7 @@
             android:layout_width="72dp"
             android:layout_height="72dp"
             android:layout_centerVertical="true"
-            android:scaleType="fitXY"/>
+            android:scaleType="centerCrop"/>
 
         <LinearLayout
             android:id="@+id/details_jidbox"

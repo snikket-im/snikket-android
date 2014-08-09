@@ -34,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
                 android:paddingBottom="2dp"
-                android:scaleType="fitXY"
+                android:scaleType="centerCrop"
                 android:background="@color/primarytext"
                 />
             
