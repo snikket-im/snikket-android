@@ -5,10 +5,10 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -24,10 +24,12 @@ public class PublishProfilePictureActivity extends XmppActivity {
 	private ImageView avatar;
 	private TextView accountTextView;
 	private TextView hintOrWarning;
+	private TextView secondaryHint;
 	private Button cancelButton;
 	private Button publishButton;
 
 	private Uri avatarUri;
+	private Uri defaultUri;
 
 	private Account account;
 
@@ -64,6 +66,16 @@ public class PublishProfilePictureActivity extends XmppActivity {
 		}
 	};
 
+	private OnLongClickListener backToDefaultListener = new OnLongClickListener() {
+		
+		@Override
+		public boolean onLongClick(View v) {
+			avatarUri = defaultUri;
+			loadImageIntoPreview(defaultUri);
+			return true;
+		}
+	};
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -73,6 +85,7 @@ public class PublishProfilePictureActivity extends XmppActivity {
 		this.publishButton = (Button) findViewById(R.id.publish_button);
 		this.accountTextView = (TextView) findViewById(R.id.account);
 		this.hintOrWarning = (TextView) findViewById(R.id.hint_or_warning);
+		this.secondaryHint = (TextView) findViewById(R.id.secondary_hint);
 		this.publishButton.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -104,6 +117,7 @@ public class PublishProfilePictureActivity extends XmppActivity {
 				startActivityForResult(chooser, REQUEST_CHOOSE_FILE);
 			}
 		});
+		this.defaultUri = PhoneHelper.getSefliUri(getApplicationContext());
 	}
 
 	@Override
@@ -139,10 +153,9 @@ public class PublishProfilePictureActivity extends XmppActivity {
 						this.avatar.setImageBitmap(this.account.getImage(
 								getApplicationContext(), 384));
 					} else {
-						this.avatarUri = PhoneHelper
-								.getSefliUri(getApplicationContext());
-						if (this.avatarUri != null) {
-							loadImageIntoPreview(this.avatarUri);
+						if (this.defaultUri != null) {
+							this.avatarUri = this.defaultUri;
+							loadImageIntoPreview(this.defaultUri);
 						}
 					}
 				} else {
@@ -162,6 +175,13 @@ public class PublishProfilePictureActivity extends XmppActivity {
 		this.publishButton.setText(R.string.publish_avatar);
 		this.hintOrWarning.setText(R.string.publish_avatar_explanation);
 		this.hintOrWarning.setTextColor(getPrimaryTextColor());
+		if (this.defaultUri != null && uri.equals(this.defaultUri)) {
+			this.secondaryHint.setVisibility(View.INVISIBLE);
+			this.avatar.setOnLongClickListener(null);
+		} else {
+			this.secondaryHint.setVisibility(View.VISIBLE);
+			this.avatar.setOnLongClickListener(this.backToDefaultListener );
+		}
 	}
 
 	protected void enablePublishButton() {
