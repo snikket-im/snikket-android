@@ -302,7 +302,7 @@ public abstract class XmppActivity extends Activity {
 	public void selectPresence(final Conversation conversation,
 			final OnPresenceSelected listener) {
 		Contact contact = conversation.getContact();
-		if (contact == null) {
+		if (!contact.showInRoster()) {
 			showAddToRosterDialog(conversation);
 		} else {
 			Presences presences = contact.getPresences();
