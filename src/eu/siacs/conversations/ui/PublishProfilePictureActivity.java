@@ -67,7 +67,7 @@ public class PublishProfilePictureActivity extends XmppActivity {
 	};
 
 	private OnLongClickListener backToDefaultListener = new OnLongClickListener() {
-		
+
 		@Override
 		public boolean onLongClick(View v) {
 			avatarUri = defaultUri;
@@ -152,6 +152,8 @@ public class PublishProfilePictureActivity extends XmppActivity {
 					if (this.account.getAvatar() != null) {
 						this.avatar.setImageBitmap(this.account.getImage(
 								getApplicationContext(), 384));
+						this.avatar
+								.setOnLongClickListener(this.backToDefaultListener);
 					} else {
 						if (this.defaultUri != null) {
 							this.avatarUri = this.defaultUri;
@@ -180,7 +182,7 @@ public class PublishProfilePictureActivity extends XmppActivity {
 			this.avatar.setOnLongClickListener(null);
 		} else {
 			this.secondaryHint.setVisibility(View.VISIBLE);
-			this.avatar.setOnLongClickListener(this.backToDefaultListener );
+			this.avatar.setOnLongClickListener(this.backToDefaultListener);
 		}
 	}
 
