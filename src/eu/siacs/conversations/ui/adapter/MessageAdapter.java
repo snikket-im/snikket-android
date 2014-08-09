@@ -7,7 +7,6 @@ import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
-import eu.siacs.conversations.services.ImageProvider;
 import eu.siacs.conversations.ui.ConversationActivity;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.jingle.JingleConnection;
@@ -251,6 +250,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 				shareIntent.putExtra(Intent.EXTRA_STREAM,
 						activity.xmppConnectionService.getFileBackend()
 								.getJingleFileUri(message));
+				shareIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 				shareIntent.setType("image/webp");
 				getContext().startActivity(
 						Intent.createChooser(shareIntent,
