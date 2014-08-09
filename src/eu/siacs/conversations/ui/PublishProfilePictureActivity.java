@@ -32,6 +32,8 @@ public class PublishProfilePictureActivity extends XmppActivity {
 	private Uri defaultUri;
 
 	private Account account;
+	
+	private boolean support = false;
 
 	private UiCallback<Avatar> avatarPublication = new UiCallback<Avatar>() {
 
@@ -148,6 +150,9 @@ public class PublishProfilePictureActivity extends XmppActivity {
 			String jid = getIntent().getStringExtra("account");
 			if (jid != null) {
 				this.account = xmppConnectionService.findAccountByJid(jid);
+				if (this.account.getXmppConnection() != null) {
+					this.support = this.account.getXmppConnection().getFeatures().pubsub();
+				}
 				if (this.avatarUri == null) {
 					if (this.account.getAvatar() != null) {
 						this.avatar.setImageBitmap(this.account.getImage(
@@ -173,10 +178,16 @@ public class PublishProfilePictureActivity extends XmppActivity {
 		Bitmap bm = xmppConnectionService.getFileBackend().cropCenterSquare(
 				uri, 384);
 		this.avatar.setImageBitmap(bm);
-		enablePublishButton();
-		this.publishButton.setText(R.string.publish_avatar);
-		this.hintOrWarning.setText(R.string.publish_avatar_explanation);
-		this.hintOrWarning.setTextColor(getPrimaryTextColor());
+		if (support) {
+			enablePublishButton();
+			this.publishButton.setText(R.string.publish_avatar);
+			this.hintOrWarning.setText(R.string.publish_avatar_explanation);
+			this.hintOrWarning.setTextColor(getPrimaryTextColor());
+		} else {
+			disablePublishButton();
+			this.hintOrWarning.setTextColor(getWarningTextColor());
+			this.hintOrWarning.setText(R.string.error_publish_avatar_no_server_support);
+		}
 		if (this.defaultUri != null && uri.equals(this.defaultUri)) {
 			this.secondaryHint.setVisibility(View.INVISIBLE);
 			this.avatar.setOnLongClickListener(null);

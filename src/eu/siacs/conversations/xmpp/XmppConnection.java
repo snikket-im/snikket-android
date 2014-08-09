@@ -64,6 +64,8 @@ public class XmppConnection implements Runnable {
 	private Socket socket;
 	private XmlReader tagReader;
 	private TagWriter tagWriter;
+	
+	private Features features = new Features(this);
 
 	private boolean shouldBind = true;
 	private boolean shouldAuthenticate = true;
@@ -662,7 +664,7 @@ public class XmppConnection implements Runnable {
 	}
 
 	private void enableAdvancedStreamFeatures() {
-		if (hasFeaturesCarbon()) {
+		if (getFeatures().carbons()) {
 			sendEnableCarbons();
 		}
 	}
@@ -833,33 +835,6 @@ public class XmppConnection implements Runnable {
 		}
 	}
 
-	public boolean hasFeatureRosterManagment() {
-		if (this.streamFeatures == null) {
-			return false;
-		} else {
-			return this.streamFeatures.hasChild("ver");
-		}
-	}
-
-	public boolean hasFeatureStreamManagment() {
-		if (this.streamFeatures == null) {
-			return false;
-		} else {
-			return this.streamFeatures.hasChild("sm");
-		}
-	}
-
-	public boolean hasFeaturesCarbon() {
-		return hasDiscoFeature(account.getServer(), "urn:xmpp:carbons:2");
-	}
-
-	public boolean hasDiscoFeature(String server, String feature) {
-		if (!disco.containsKey(server)) {
-			return false;
-		}
-		return disco.get(server).contains(feature);
-	}
-
 	public List<String> findDiscoItemsByFeature(String feature) {
 		List<String> items = new ArrayList<String>();
 		for (Entry<String, List<String>> cursor : disco.entrySet()) {
@@ -902,5 +877,47 @@ public class XmppConnection implements Runnable {
 
 	public int getAttempt() {
 		return this.attempt;
+	}
+	
+	public Features getFeatures() {
+		return this.features;
+	}
+	
+	public class Features {
+		XmppConnection connection;
+		public Features(XmppConnection connection) {
+			this.connection = connection;
+		}
+		
+		private boolean hasDiscoFeature(String server, String feature) {
+			if (!connection.disco.containsKey(server)) {
+				return false;
+			}
+			return connection.disco.get(server).contains(feature);
+		}
+		
+		public boolean carbons() {
+			return hasDiscoFeature(account.getServer(), "urn:xmpp:carbons:2");
+		}
+		
+		public boolean sm() {
+			if (connection.streamFeatures == null) {
+				return false;
+			} else {
+				return connection.streamFeatures.hasChild("sm");
+			}
+		}
+		
+		public boolean pubsub() {
+			return hasDiscoFeature(account.getServer(), "http://jabber.org/protocol/pubsub#publish");
+		}
+		
+		public boolean rosterVersioning() {
+			if (connection.streamFeatures == null) {
+				return false;
+			} else {
+				return connection.streamFeatures.hasChild("ver");
+			}
+		}
 	}
 }

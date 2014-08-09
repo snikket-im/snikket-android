@@ -184,7 +184,7 @@ public class ManageAccountActivity extends XmppActivity {
 						connection.setText(connectionAge + " "
 								+ getString(R.string.mins));
 					}
-					if (xmpp.hasFeatureStreamManagment()) {
+					if (xmpp.getFeatures().sm()) {
 						if (sessionAgeHours >= 2) {
 							session.setText(sessionAgeHours + " "
 									+ getString(R.string.hours));
@@ -197,12 +197,12 @@ public class ManageAccountActivity extends XmppActivity {
 						stream.setText(getString(R.string.no));
 						session.setText(connection.getText());
 					}
-					if (xmpp.hasFeaturesCarbon()) {
+					if (xmpp.getFeatures().carbons()) {
 						carbon.setText(getString(R.string.yes));
 					} else {
 						carbon.setText(getString(R.string.no));
 					}
-					if (xmpp.hasFeatureRosterManagment()) {
+					if (xmpp.getFeatures().rosterVersioning()) {
 						roster.setText(getString(R.string.yes));
 					} else {
 						roster.setText(getString(R.string.no));
