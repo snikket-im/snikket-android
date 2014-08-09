@@ -607,12 +607,15 @@ public class ConversationActivity extends XmppActivity {
 
 	protected ConversationFragment swapConversationFragment() {
 		ConversationFragment selectedFragment = new ConversationFragment();
+		if (!isFinishing()) {
 
 		FragmentTransaction transaction = getFragmentManager()
 				.beginTransaction();
 		transaction.replace(R.id.selected_conversation, selectedFragment,
 				"conversation");
-		transaction.commitAllowingStateLoss();
+		
+			transaction.commitAllowingStateLoss();
+		}
 		return selectedFragment;
 	}
 
