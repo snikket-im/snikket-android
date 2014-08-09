@@ -54,7 +54,7 @@ public class XmlReader {
 			try { wakeLock.release();} catch (RuntimeException re) {}
 		}
 		try {
-			while(parser.next() != XmlPullParser.END_DOCUMENT && this.is != null) {
+			while(this.is != null && parser.next() != XmlPullParser.END_DOCUMENT) {
 					wakeLock.acquire();
 					if (parser.getEventType() == XmlPullParser.START_TAG) {
 						Tag tag = Tag.start(parser.getName());
