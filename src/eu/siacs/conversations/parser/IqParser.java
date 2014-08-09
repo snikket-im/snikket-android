@@ -27,14 +27,16 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
 				if (!contact.getOption(Contact.Options.DIRTY_PUSH)) {
 					contact.setServerName(name);
 				}
-				if (subscription.equals("remove")) {
-					contact.resetOption(Contact.Options.IN_ROSTER);
-					contact.resetOption(Contact.Options.DIRTY_DELETE);
-					contact.resetOption(Contact.Options.PREEMPTIVE_GRANT);
-				} else {
-					contact.setOption(Contact.Options.IN_ROSTER);
-					contact.resetOption(Contact.Options.DIRTY_PUSH);
-					contact.parseSubscriptionFromElement(item);
+				if (subscription!=null) {
+					if (subscription.equals("remove")) {
+						contact.resetOption(Contact.Options.IN_ROSTER);
+						contact.resetOption(Contact.Options.DIRTY_DELETE);
+						contact.resetOption(Contact.Options.PREEMPTIVE_GRANT);
+					} else {
+						contact.setOption(Contact.Options.IN_ROSTER);
+						contact.resetOption(Contact.Options.DIRTY_PUSH);
+						contact.parseSubscriptionFromElement(item);
+					}
 				}
 			}
 		}
