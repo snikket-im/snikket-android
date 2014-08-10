@@ -528,7 +528,7 @@ public class XmppConnectionService extends Service {
 				} else {
 					message.getConversation().endOtrIfNeeded();
 					failWaitingOtrMessages(message.getConversation());
-					if (message.getConversation().getMode() == Conversation.MODE_SINGLE) {
+					if (message.getConversation().getMode() == Conversation.MODE_SINGLE || message.getType() == Message.TYPE_PRIVATE) {
 						message.setStatus(Message.STATUS_SEND);
 					}
 					packet = mMessageGenerator.generateChat(message);

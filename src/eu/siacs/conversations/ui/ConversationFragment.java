@@ -17,6 +17,7 @@ import eu.siacs.conversations.ui.EditMessage.OnEnterPressed;
 import eu.siacs.conversations.ui.XmppActivity.OnPresenceSelected;
 import eu.siacs.conversations.ui.adapter.MessageAdapter;
 import eu.siacs.conversations.ui.adapter.MessageAdapter.OnContactPictureClicked;
+import eu.siacs.conversations.ui.adapter.MessageAdapter.OnContactPictureLongClicked;
 import eu.siacs.conversations.utils.UIHelper;
 import android.app.AlertDialog;
 import android.app.Fragment;
@@ -160,10 +161,22 @@ public class ConversationFragment extends Fragment {
 	
 	
 	private void sendMessage() {
-		if (mEditMessage.getText().length() < 1)
+		if (mEditMessage.getText().length() < 1) {
+			if (this.conversation.getMode() == Conversation.MODE_MULTI) {
+				conversation.setNextPresence(null);
+				updateChatMsgHint();
+			}
 			return;
+		}
 		Message message = new Message(conversation, mEditMessage.getText()
 				.toString(), conversation.getNextEncryption());
+		if (conversation.getMode() == Conversation.MODE_MULTI) {
+			if (conversation.getNextPresence() != null) {
+				message.setPresence(conversation.getNextPresence());
+				message.setType(Message.TYPE_PRIVATE);
+				conversation.setNextPresence(null);
+			}
+		}
 		if (conversation.getNextEncryption() == Message.ENCRYPTION_OTR) {
 			sendOtrMessage(message);
 		} else if (conversation.getNextEncryption() == Message.ENCRYPTION_PGP) {
@@ -230,13 +243,36 @@ public class ConversationFragment extends Fragment {
 			@Override
 			public void onContactPictureClicked(Message message) {
 				if (message.getConversation().getMode() == Conversation.MODE_MULTI) {
-					highlightInConference(message.getCounterpart());
+					if (message.getPresence() != null) {
+						highlightInConference(message.getPresence());
+					} else {
+						highlightInConference(message.getCounterpart());
+					}
+				}
+			}
+		});
+		messageListAdapter.setOnContactPictureLongClicked(new OnContactPictureLongClicked() {
+			
+			@Override
+			public void onContactPictureLongClicked(Message message) {
+				if (message.getConversation().getMode() == Conversation.MODE_MULTI) {
+					if (message.getPresence() != null) {
+						privateMessageWith(message.getPresence());
+					} else {
+						privateMessageWith(message.getCounterpart());
+					}
 				}
 			}
 		});
 		messagesView.setAdapter(messageListAdapter);
 
 		return view;
+	}
+	
+	protected void privateMessageWith(String counterpart) {
+		this.mEditMessage.setHint(getString(R.string.send_private_message_to,counterpart));
+		this.mEditMessage.setText("");
+		this.conversation.setNextPresence(counterpart);
 	}
 
 	protected void highlightInConference(String nick) {
@@ -302,6 +338,9 @@ public class ConversationFragment extends Fragment {
 						conversation.getName(useSubject));
 				activity.invalidateOptionsMenu();
 			}
+		}
+		if (this.conversation.getMode() == Conversation.MODE_MULTI) {
+			conversation.setNextPresence(null);
 		}
 	}
 
@@ -406,6 +445,7 @@ public class ConversationFragment extends Fragment {
 			messagesView.setSelection(size - 1);
 		}
 		mEditMessage.setText("");
+		updateChatMsgHint();
 	}
 
 	protected void updateStatusMessages() {

@@ -14,6 +14,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
+import android.text.Html;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +41,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 	private DisplayMetrics metrics;
 
 	private OnContactPictureClicked mOnContactPictureClickedListener;
+	private OnContactPictureLongClicked mOnContactPictureLongClickedListener;
 
 	public MessageAdapter(ConversationActivity activity, List<Message> messages) {
 		super(activity, 0, messages);
@@ -60,6 +62,10 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 
 	public void setOnContactPictureClicked(OnContactPictureClicked listener) {
 		this.mOnContactPictureClickedListener = listener;
+	}
+	
+	public void setOnContactPictureLongClicked(OnContactPictureLongClicked listener) {
+		this.mOnContactPictureLongClickedListener = listener;
 	}
 
 	@Override
@@ -120,7 +126,11 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 				if (contact != null) {
 					info = contact.getDisplayName();
 				} else {
-					info = message.getCounterpart();
+					if (message.getPresence() != null) {
+						info = message.getPresence();
+					} else {
+						info = message.getCounterpart();
+					}
 				}
 			}
 			break;
@@ -190,14 +200,33 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		viewHolder.messageBody.setTextIsSelectable(false);
 	}
 
-	private void displayTextMessage(ViewHolder viewHolder, String text) {
+	private void displayTextMessage(ViewHolder viewHolder, Message message) {
 		if (viewHolder.download_button != null) {
 			viewHolder.download_button.setVisibility(View.GONE);
 		}
 		viewHolder.image.setVisibility(View.GONE);
 		viewHolder.messageBody.setVisibility(View.VISIBLE);
-		if (text != null) {
-			viewHolder.messageBody.setText(text.trim());
+		if (message.getBody() != null) {
+			if (message.getType() != Message.TYPE_PRIVATE) {
+				viewHolder.messageBody.setText(message.getBody().trim());
+			} else {
+				StringBuilder builder = new StringBuilder();
+				builder.append(message.getBody().trim());
+				builder.append("&nbsp;<b><i>(");
+				if (message.getStatus() <= Message.STATUS_RECIEVED) {
+					builder.append(activity.getString(R.string.private_message));
+				} else {
+					String to;
+					if (message.getPresence() != null) {
+						to = message.getPresence();
+					} else {
+						to = message.getCounterpart();
+					}
+					builder.append(activity.getString(R.string.private_message_to, to));
+				}
+				builder.append(")</i></b>");
+				viewHolder.messageBody.setText(Html.fromHtml(builder.toString()));
+			}
 		} else {
 			viewHolder.messageBody.setText("");
 		}
@@ -376,6 +405,18 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 
 							}
 						});
+				viewHolder.contact_picture.setOnLongClickListener(new OnLongClickListener() {
+					
+					@Override
+					public boolean onLongClick(View v) {
+						if (MessageAdapter.this.mOnContactPictureLongClickedListener != null) {
+							MessageAdapter.this.mOnContactPictureLongClickedListener.onContactPictureLongClicked(item);
+							return true;
+						} else {
+							return false;
+						}
+					}
+				});
 			}
 		}
 
@@ -426,7 +467,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 			} else if (item.getEncryption() == Message.ENCRYPTION_DECRYPTION_FAILED) {
 				displayDecryptionFailed(viewHolder);
 			} else {
-				displayTextMessage(viewHolder, item.getBody());
+				displayTextMessage(viewHolder, item);
 			}
 		}
 
@@ -473,5 +514,9 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 
 	public interface OnContactPictureClicked {
 		public void onContactPictureClicked(Message message);
+	}
+	
+	public interface OnContactPictureLongClicked {
+		public void onContactPictureLongClicked(Message message);
 	}
 }

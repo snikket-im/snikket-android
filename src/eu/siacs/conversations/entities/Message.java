@@ -33,6 +33,7 @@ public class Message extends AbstractEntity {
 	public static final int TYPE_IMAGE = 1;
 	public static final int TYPE_AUDIO = 2;
 	public static final int TYPE_STATUS = 3;
+	public static final int TYPE_PRIVATE = 4;
 
 	public static String CONVERSATION = "conversationUuid";
 	public static String COUNTERPART = "counterpart";
@@ -256,5 +257,9 @@ public class Message extends AbstractEntity {
 		message.setType(Message.TYPE_STATUS);
 		message.setConversation(conversation);
 		return message;
+	}
+
+	public void setCounterpart(String counterpart) {
+		this.counterpart = counterpart;
 	}
 }
