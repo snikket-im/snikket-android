@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.RejectedExecutionException;
 
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Contact;
@@ -185,7 +186,7 @@ public class ConversationActivity extends XmppActivity {
 
 				Message latestMessage = conv.getLatestMessage();
 
-				if (latestMessage.getType() == Message.TYPE_TEXT) {
+				if (latestMessage.getType() == Message.TYPE_TEXT || latestMessage.getType() == Message.TYPE_PRIVATE) {
 					if ((latestMessage.getEncryption() != Message.ENCRYPTION_PGP)
 							&& (latestMessage.getEncryption() != Message.ENCRYPTION_DECRYPTION_FAILED)) {
 						convLastMsg.setText(conv.getLatestMessage().getBody());
@@ -880,7 +881,11 @@ public class ConversationActivity extends XmppActivity {
 				final AsyncDrawable asyncDrawable = new AsyncDrawable(
 						getResources(), null, task);
 				imageView.setImageDrawable(asyncDrawable);
-				task.execute(message);
+				try {
+					task.execute(message);
+				} catch (RejectedExecutionException e) {
+					return;
+				}
 			}
 		}
 	}
