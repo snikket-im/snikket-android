@@ -272,6 +272,7 @@ public class ConversationFragment extends Fragment {
 	}
 
 	public void onBackendConnected() {
+		this.activity = (ConversationActivity) getActivity();
 		this.conversation = activity.getSelectedConversation();
 		if (this.conversation == null) {
 			return;
