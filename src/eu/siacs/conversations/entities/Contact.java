@@ -321,7 +321,7 @@ public class Contact implements ListItem {
 	@Override
 	public Bitmap getImage(int size, Context context) {
 		if (this.avatar!=null) {
-			Bitmap bm = BitmapFactory.decodeFile(FileBackend.getAvatarPath(context, avatar));
+			Bitmap bm = FileBackend.getAvatar(avatar, size, context);
 			if (bm==null) {
 				return UIHelper.getContactPicture(this, size, context, false);
 			} else {

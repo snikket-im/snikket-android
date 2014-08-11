@@ -15,6 +15,7 @@ import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.MucOptions.User;
+import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.ui.ConversationActivity;
 import eu.siacs.conversations.ui.ManageAccountActivity;
 import android.app.Activity;
@@ -376,8 +377,7 @@ public class UIHelper {
 		} else if (unread.size() == 1) {
 			Conversation conversation = unread.get(0);
 			targetUuid = conversation.getUuid();
-			mBuilder.setLargeIcon(UIHelper.getContactPicture(conversation, 64,
-					context, true));
+			mBuilder.setLargeIcon(conversation.getImage(context, 64));
 			mBuilder.setContentTitle(conversation.getName(useSubject));
 			if (notify) {
 				mBuilder.setTicker(conversation.getLatestMessage()

@@ -30,6 +30,7 @@ import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.services.ImageProvider;
 import eu.siacs.conversations.utils.CryptoHelper;
+import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.jingle.JingleFile;
 import eu.siacs.conversations.xmpp.pep.Avatar;
 
@@ -330,25 +331,29 @@ public class FileBackend {
 			InputStream is = context.getContentResolver()
 					.openInputStream(image);
 			Bitmap input = BitmapFactory.decodeStream(is, null, options);
-			int w = input.getWidth();
-			int h = input.getHeight();
-
-			float scale = Math.max((float) size / h, (float) size / w);
-
-			float outWidth = scale * w;
-			float outHeight = scale * h;
-			float left = (size - outWidth) / 2;
-			float top = (size - outHeight) / 2;
-			RectF target = new RectF(left, top, left + outWidth, top
-					+ outHeight);
-
-			Bitmap output = Bitmap.createBitmap(size, size, input.getConfig());
-			Canvas canvas = new Canvas(output);
-			canvas.drawBitmap(input, null, target, null);
-			return output;
+			return cropCenterSquare(input, size);
 		} catch (FileNotFoundException e) {
 			return null;
 		}
+	}
+	
+	public static Bitmap cropCenterSquare(Bitmap input, int size) {
+		int w = input.getWidth();
+		int h = input.getHeight();
+
+		float scale = Math.max((float) size / h, (float) size / w);
+
+		float outWidth = scale * w;
+		float outHeight = scale * h;
+		float left = (size - outWidth) / 2;
+		float top = (size - outHeight) / 2;
+		RectF target = new RectF(left, top, left + outWidth, top
+				+ outHeight);
+
+		Bitmap output = Bitmap.createBitmap(size, size, input.getConfig());
+		Canvas canvas = new Canvas(output);
+		canvas.drawBitmap(input, null, target, null);
+		return output;
 	}
 
 	private int calcSampleSize(Uri image, int size)
@@ -394,5 +399,13 @@ public class FileBackend {
 		public int getResId() {
 			return resId;
 		}
+	}
+
+	public static Bitmap getAvatar(String avatar, int size, Context context) {
+		Bitmap bm = BitmapFactory.decodeFile(FileBackend.getAvatarPath(context, avatar));
+		if (bm==null) {
+			return null;
+		}
+		return cropCenterSquare(bm, UIHelper.getRealPx(size, context));
 	}
 }
