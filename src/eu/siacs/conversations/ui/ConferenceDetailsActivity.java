@@ -199,8 +199,7 @@ public class ConferenceDetailsActivity extends XmppActivity {
 	}
 
 	private void populateView() {
-		mYourPhoto.setImageBitmap(UIHelper.getContactPicture(conversation
-				.getMucOptions().getActualNick(), 48, this, false));
+		mYourPhoto.setImageBitmap(conversation.getAccount().getImage(this, 48));
 		setTitle(conversation.getName(true));
 		mFullJid.setText(conversation.getContactJid().split("/")[0]);
 		mYourNick.setText(conversation.getMucOptions().getActualNick());

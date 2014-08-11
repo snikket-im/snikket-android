@@ -326,7 +326,7 @@ public class Account  extends AbstractEntity{
 
 	public Bitmap getImage(Context context, int size) {
 		if (this.avatar!=null) {
-			Bitmap bm = BitmapFactory.decodeFile(FileBackend.getAvatarPath(context, avatar));
+			Bitmap bm = FileBackend.getAvatar(this.avatar, size, context);
 			if (bm==null) {
 				return UIHelper.getContactPicture(getJid(), size, context, false);
 			} else {
