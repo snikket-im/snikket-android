@@ -21,6 +21,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -63,6 +64,7 @@ public class StartConversationActivity extends XmppActivity {
 	private List<String> mKnownHosts;
 	private List<String> mKnownConferenceHosts;
 
+	private Menu mOptionsMenu;
 	private EditText mSearchEditText;
 
 	public int conference_context_id;
@@ -432,6 +434,7 @@ public class StartConversationActivity extends XmppActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
+		this.mOptionsMenu = menu;
 		getMenuInflater().inflate(R.menu.start_conversation, menu);
 		MenuItem menuCreateContact = (MenuItem) menu
 				.findItem(R.id.action_create_contact);
@@ -462,6 +465,17 @@ public class StartConversationActivity extends XmppActivity {
 			break;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+	
+	@Override
+	public boolean onKeyUp(int keyCode, KeyEvent event)
+	{		
+		if(keyCode == KeyEvent.KEYCODE_SEARCH && !event.isLongPress())
+		{
+			mOptionsMenu.findItem(R.id.action_search).expandActionView();
+			return true;
+		}
+		return super.onKeyUp(keyCode, event);
 	}
 
 	@Override
