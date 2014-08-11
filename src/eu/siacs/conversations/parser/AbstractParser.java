@@ -63,6 +63,8 @@ public abstract class AbstractParser {
 		String presence = null;
 		if (fromParts.length >= 2) {
 			presence = fromParts[1];
+		} else {
+			presence = "";
 		}
 		Contact contact = account.getRoster().getContact(from);
 		long timestamp = getTimestamp(packet);

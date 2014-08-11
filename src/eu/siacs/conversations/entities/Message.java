@@ -224,7 +224,7 @@ public class Message extends AbstractEntity {
 	}
 
 	public void setPresence(String presence) {
-		if (presence == null) {
+		if (presence == null || presence.isEmpty()) {
 			this.counterpart = this.counterpart.split("/")[0];
 		} else {
 			this.counterpart = this.counterpart.split("/")[0] + "/" + presence;

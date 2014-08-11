@@ -58,25 +58,31 @@ public class MessageParser extends AbstractParser implements
 		String[] fromParts = packet.getFrom().split("/");
 		Conversation conversation = mXmppConnectionService
 				.findOrCreateConversation(account, fromParts[0], false);
+		String presence;
+		if (fromParts.length >= 2) {
+			presence = fromParts[1];
+		} else {
+			presence = "";
+		}
 		updateLastseen(packet, account, true);
 		String body = packet.getBody();
 		if (!conversation.hasValidOtrSession()) {
 			if (properlyAddressed) {
 				conversation.startOtrSession(
 						mXmppConnectionService.getApplicationContext(),
-						fromParts[1], false);
+						presence, false);
 			} else {
 				return null;
 			}
 		} else {
 			String foreignPresence = conversation.getOtrSession()
 					.getSessionID().getUserID();
-			if (!foreignPresence.equals(fromParts[1])) {
+			if (!foreignPresence.equals(presence)) {
 				conversation.endOtrIfNeeded();
 				if (properlyAddressed) {
 					conversation.startOtrSession(
 							mXmppConnectionService.getApplicationContext(),
-							fromParts[1], false);
+							presence, false);
 				} else {
 					return null;
 				}
