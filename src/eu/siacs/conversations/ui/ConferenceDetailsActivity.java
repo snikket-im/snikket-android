@@ -233,7 +233,6 @@ public class ConferenceDetailsActivity extends XmppActivity {
 					.findViewById(R.id.contact_display_name);
 			TextView key = (TextView) view.findViewById(R.id.key);
 			TextView role = (TextView) view.findViewById(R.id.contact_jid);
-			role.setText(getReadableRole(user.getRole()));
 			if (user.getPgpKeyId() != 0) {
 				key.setVisibility(View.VISIBLE);
 				key.setOnClickListener(new OnClickListener() {
@@ -251,15 +250,18 @@ public class ConferenceDetailsActivity extends XmppActivity {
 				if (contact.showInRoster()) {
 					bm = contact.getImage(48, this);
 					name.setText(contact.getDisplayName());
+					role.setText(user.getName() + " \u2022 " + getReadableRole(user.getRole()));
 				} else {
 					bm = UIHelper.getContactPicture(user.getName(), 48, this,
 							false);
 					name.setText(user.getName());
+					role.setText(getReadableRole(user.getRole()));
 				}
 			} else {
 				bm = UIHelper
 						.getContactPicture(user.getName(), 48, this, false);
 				name.setText(user.getName());
+				role.setText(getReadableRole(user.getRole()));
 			}
 			ImageView iv = (ImageView) view.findViewById(R.id.contact_photo);
 			iv.setImageBitmap(bm);
