@@ -499,7 +499,9 @@ public class ConversationFragment extends Fragment {
 	protected void showSnackbar(int message, int action,
 			OnClickListener clickListener) {
 		snackbar.setVisibility(View.VISIBLE);
+		snackbar.setOnClickListener(null);
 		snackbarMessage.setText(message);
+		snackbarMessage.setOnClickListener(null);
 		snackbarAction.setText(action);
 		snackbarAction.setOnClickListener(clickListener);
 	}
