@@ -187,6 +187,7 @@
     <string name="mgmt_account_edit">Edit account</string>
     <string name="mgmt_account_delete">Delete</string>
     <string name="mgmt_account_disable">Temporarily disable</string>
+    <string name="mgmt_account_publish_avatar">Publish avatar</string>
     <string name="mgmt_account_enable">Enable</string>
     <string name="mgmt_account_are_you_sure">Are you sure?</string>
     <string name="mgmt_account_delete_confirm_text">If you delete your account your entire conversation history will be lost</string>
