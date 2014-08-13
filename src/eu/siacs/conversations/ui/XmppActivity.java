@@ -31,8 +31,8 @@ import android.widget.EditText;
 
 public abstract class XmppActivity extends Activity {
 
-	public static final int REQUEST_ANNOUNCE_PGP = 0x73731;
-	protected static final int REQUEST_INVITE_TO_CONVERSATION = 0x341830;
+	protected static final int REQUEST_ANNOUNCE_PGP = 0x0101;
+	protected static final int REQUEST_INVITE_TO_CONVERSATION = 0x0102;
 
 	protected final static String LOGTAG = "xmppService";
 

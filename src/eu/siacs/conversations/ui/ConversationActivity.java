@@ -62,17 +62,17 @@ public class ConversationActivity extends XmppActivity {
 	public static final String TEXT = "text";
 	public static final String PRESENCE = "eu.siacs.conversations.presence";
 
-	public static final int REQUEST_SEND_MESSAGE = 0x75441;
-	public static final int REQUEST_DECRYPT_PGP = 0x76783;
-	private static final int REQUEST_ATTACH_FILE_DIALOG = 0x48502;
-	private static final int REQUEST_IMAGE_CAPTURE = 0x33788;
-	private static final int REQUEST_RECORD_AUDIO = 0x46189;
-	private static final int REQUEST_SEND_PGP_IMAGE = 0x53883;
-	public static final int REQUEST_ENCRYPT_MESSAGE = 0x378018;
+	public static final int REQUEST_SEND_MESSAGE = 0x0201;
+	public static final int REQUEST_DECRYPT_PGP = 0x0202;
+	private static final int REQUEST_ATTACH_FILE_DIALOG = 0x0203;
+	private static final int REQUEST_IMAGE_CAPTURE = 0x0204;
+	private static final int REQUEST_RECORD_AUDIO = 0x0205;
+	private static final int REQUEST_SEND_PGP_IMAGE = 0x0206;
+	public static final int REQUEST_ENCRYPT_MESSAGE = 0x0207;
 
-	private static final int ATTACHMENT_CHOICE_CHOOSE_IMAGE = 0x92734;
-	private static final int ATTACHMENT_CHOICE_TAKE_PHOTO = 0x84123;
-	private static final int ATTACHMENT_CHOICE_RECORD_VOICE = 0x75291;
+	private static final int ATTACHMENT_CHOICE_CHOOSE_IMAGE = 0x0301;
+	private static final int ATTACHMENT_CHOICE_TAKE_PHOTO = 0x0302;
+	private static final int ATTACHMENT_CHOICE_RECORD_VOICE = 0x0303;
 
 	protected SlidingPaneLayout spl;
 
@@ -768,7 +768,7 @@ public class ConversationActivity extends XmppActivity {
 	}
 
 	private void attachAudioToConversation(Conversation conversation, Uri uri) {
-
+		
 	}
 
 	private void attachImageToConversation(Conversation conversation, Uri uri) {
