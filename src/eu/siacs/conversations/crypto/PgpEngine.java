@@ -54,9 +54,18 @@ public class PgpEngine {
 					switch (result.getIntExtra(OpenPgpApi.RESULT_CODE,
 							OpenPgpApi.RESULT_CODE_ERROR)) {
 					case OpenPgpApi.RESULT_CODE_SUCCESS:
-						message.setBody(os.toString());
-						message.setEncryption(Message.ENCRYPTION_DECRYPTED);
-						callback.success(message);
+						try {
+							os.flush();
+							if (message.getEncryption() == Message.ENCRYPTION_PGP) {
+								message.setBody(os.toString());
+								message.setEncryption(Message.ENCRYPTION_DECRYPTED);
+								callback.success(message);
+							}
+						} catch (IOException e) {
+							callback.error(R.string.openpgp_error, message);
+							return;
+						}
+						
 						return;
 					case OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED:
 						callback.userInputRequried((PendingIntent) result
@@ -64,6 +73,8 @@ public class PgpEngine {
 								message);
 						return;
 					case OpenPgpApi.RESULT_CODE_ERROR:
+						OpenPgpError error = result.getParcelableExtra(OpenPgpApi.RESULT_ERROR);
+						Log.d("xmppService",error.getMessage());
 						callback.error(R.string.openpgp_error, message);
 						return;
 					default:
@@ -153,14 +164,20 @@ public class PgpEngine {
 					switch (result.getIntExtra(OpenPgpApi.RESULT_CODE,
 							OpenPgpApi.RESULT_CODE_ERROR)) {
 					case OpenPgpApi.RESULT_CODE_SUCCESS:
-						StringBuilder encryptedMessageBody = new StringBuilder();
-						String[] lines = os.toString().split("\n");
-						for (int i = 3; i < lines.length - 1; ++i) {
-							encryptedMessageBody.append(lines[i].trim());
+						try {
+							os.flush();
+							StringBuilder encryptedMessageBody = new StringBuilder();
+							String[] lines = os.toString().split("\n");
+							for (int i = 3; i < lines.length - 1; ++i) {
+								encryptedMessageBody.append(lines[i].trim());
+							}
+							message.setEncryptedBody(encryptedMessageBody
+									.toString());
+							callback.success(message);
+						} catch (IOException e) {
+							callback.error(R.string.openpgp_error, message);
 						}
-						message.setEncryptedBody(encryptedMessageBody
-								.toString());
-						callback.success(message);
+						
 						break;
 					case OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED:
 						callback.userInputRequried((PendingIntent) result
