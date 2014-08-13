@@ -24,16 +24,23 @@ public class PresenceParser extends AbstractParser implements
 			Conversation muc = mXmppConnectionService.find(account, packet
 					.getAttribute("from").split("/")[0]);
 			if (muc != null) {
+				boolean before = muc.getMucOptions().online();
 				muc.getMucOptions().processPacket(packet, mPgpEngine);
+				if (before!=muc.getMucOptions().online()) {
+					mXmppConnectionService.updateConversationUi();
+				}
 			}
 		} else if (packet.hasChild("x", "http://jabber.org/protocol/muc")) {
 			Conversation muc = mXmppConnectionService.find(account, packet
 					.getAttribute("from").split("/")[0]);
 			if (muc != null) {
+				boolean before = muc.getMucOptions().online();
 				muc.getMucOptions().processPacket(packet, mPgpEngine);
+				if (before!=muc.getMucOptions().online()) {
+					mXmppConnectionService.updateConversationUi();
+				}
 			}
 		}
-		mXmppConnectionService.updateConversationUi();
 	}
 
 	public void parseContactPresence(PresencePacket packet, Account account) {
