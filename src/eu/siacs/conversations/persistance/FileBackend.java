@@ -13,6 +13,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -21,6 +22,7 @@ import android.graphics.RectF;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Base64OutputStream;
 import android.util.Log;
@@ -159,21 +161,11 @@ public class FileBackend {
 			if (originalBitmap == null) {
 				throw new ImageCopyException(R.string.error_not_an_image_file);
 			}
-			if (image == null) {
-				getIncomingFile().delete();
-			}
 			Bitmap scalledBitmap = resize(originalBitmap, IMAGE_SIZE);
 			originalBitmap = null;
-			ExifInterface exif = new ExifInterface(image.toString());
-			if (exif.getAttribute(ExifInterface.TAG_ORIENTATION)
-					.equalsIgnoreCase("6")) {
-				scalledBitmap = rotate(scalledBitmap, 90);
-			} else if (exif.getAttribute(ExifInterface.TAG_ORIENTATION)
-					.equalsIgnoreCase("8")) {
-				scalledBitmap = rotate(scalledBitmap, 270);
-			} else if (exif.getAttribute(ExifInterface.TAG_ORIENTATION)
-					.equalsIgnoreCase("3")) {
-				scalledBitmap = rotate(scalledBitmap, 180);
+			int rotation = getRotation(image);
+			if (rotation > 0) {
+				scalledBitmap = rotate(scalledBitmap, rotation);
 			}
 			OutputStream os = new FileOutputStream(file);
 			boolean success = scalledBitmap.compress(
@@ -201,6 +193,38 @@ public class FileBackend {
 				return copyImageToPrivateStorage(message, image, sampleSize);
 			} else {
 				throw new ImageCopyException(R.string.error_out_of_memory);
+			}
+		}
+	}
+	
+	private int getRotation(Uri image) {
+		if ("content".equals(image.getScheme())) {
+	        Cursor cursor = context.getContentResolver().query(image,
+	                new String[] { MediaStore.Images.ImageColumns.ORIENTATION }, null, null, null);
+
+	        if (cursor.getCount() != 1) {
+	            return -1;
+	        }
+	        cursor.moveToFirst();
+	        return cursor.getInt(0);
+		} else {
+			ExifInterface exif;
+			try {
+				exif = new ExifInterface(image.toString());
+				if (exif.getAttribute(ExifInterface.TAG_ORIENTATION)
+						.equalsIgnoreCase("6")) {
+					return 90;
+				} else if (exif.getAttribute(ExifInterface.TAG_ORIENTATION)
+						.equalsIgnoreCase("8")) {
+					return 270;
+				} else if (exif.getAttribute(ExifInterface.TAG_ORIENTATION)
+						.equalsIgnoreCase("3")) {
+					return 180;
+				} else {
+					return 0;
+				}
+			} catch (IOException e) {
+				return -1;
 			}
 		}
 	}
