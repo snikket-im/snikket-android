@@ -187,6 +187,7 @@
     <string name="mgmt_account_edit">Editar cuenta</string>
     <string name="mgmt_account_delete">Eliminar cuenta</string>
     <string name="mgmt_account_disable">Deshabilitar temporalmente</string>
+    <string name="mgmt_account_publish_avatar">Imagen de perfil</string>
     <string name="mgmt_account_enable">Habilitar</string>
     <string name="mgmt_account_are_you_sure">¿Estás seguro?</string>
     <string name="mgmt_account_delete_confirm_text">Si eliminas tu cuenta tu historial completo de conversaciones se perderá</string>
@@ -268,10 +269,16 @@
     <string name="contact_added_you">El contacto te ha añadido a su lista de contactos</string>
     <string name="add_back">Añadir contacto</string>
     <string name="contact_has_read_up_to_this_point">%s ha leído hasta aquí</string>
-    <string name="publish_avatar">Imagen de perfil</string>
+    <string name="publish_avatar">Publicar imagen</string>
     <string name="touch_to_choose_picture">Pulsa para seleccionar una imagen de la galería</string>
     <string name="publish_avatar_explanation">Nota: Todos tus contactos podrán ver esta imagen.</string>
     <string name="publishing">Publicando&#8230;</string>
     <string name="error_publish_avatar_server_reject">El servidor rechazó la publicación</string>
     <string name="error_publish_avatar_converting">Se ha producido un error mientras se convertía la imagen</string>
+    <string name="error_saving_avatar">No se ha podido guardar la imagen de perfil en disco</string>
+    <string name="or_long_press_for_default">(O pulsación prolongada para volver a tu imagen de la agenda)</string>
+    <string name="error_publish_avatar_no_server_support">Tu servidor no soporta la publicación de imágenes de perfil</string>
+    <string name="private_message">en privado</string>
+    <string name="private_message_to">en privado para %s</string>
+    <string name="send_private_message_to">Enviar mensaje privado a %s</string>
 </resources>
