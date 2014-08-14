@@ -46,6 +46,6 @@ public abstract class AbstractGenerator {
 			s.append(feature+"<");
 	    }
 		byte[] sha1 = md.digest(s.toString().getBytes());
-	    return new String(Base64.encode(sha1, Base64.DEFAULT));
+	    return new String(Base64.encode(sha1, Base64.DEFAULT)).trim();
 	}
 }
