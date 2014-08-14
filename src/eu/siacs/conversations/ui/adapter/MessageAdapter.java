@@ -389,8 +389,11 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 					viewHolder.contact_picture.setImageBitmap(mBitmapCache.get(
 							contact, getContext()));
 				} else {
-					viewHolder.contact_picture.setImageBitmap(mBitmapCache.get(
-							item.getCounterpart(), getContext()));
+					String name = item.getPresence();
+					if (name==null) {
+						name = item.getCounterpart();
+					}
+					viewHolder.contact_picture.setImageBitmap(mBitmapCache.get(name, getContext()));
 				}
 				viewHolder.contact_picture
 						.setOnClickListener(new OnClickListener() {
