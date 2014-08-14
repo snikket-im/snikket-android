@@ -416,8 +416,14 @@ public class XmppConnection implements Runnable {
 			NoSuchAlgorithmException {
 		tagReader.readTag(); // read tag close
 
+		if (!tagWriter.isActive()) {
+			throw new IOException();
+		}
 		tagWriter.setOutputStream(new ZLibOutputStream(tagWriter
 				.getOutputStream()));
+		if (tagReader.getInputStream() == null) {
+			throw new IOException();
+		}
 		tagReader
 				.setInputStream(new ZLibInputStream(tagReader.getInputStream()));
 
