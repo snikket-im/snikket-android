@@ -12,6 +12,7 @@ import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.services.ImageProvider;
 import eu.siacs.conversations.services.XmppConnectionService.OnConversationUpdate;
+import eu.siacs.conversations.ui.adapter.ConversationAdapter;
 import eu.siacs.conversations.utils.ExceptionHelper;
 import eu.siacs.conversations.utils.UIHelper;
 import android.net.Uri;
@@ -23,7 +24,6 @@ import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
 import android.app.PendingIntent;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.IntentSender.SendIntentException;
@@ -31,19 +31,15 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.v4.widget.SlidingPaneLayout;
 import android.support.v4.widget.SlidingPaneLayout.PanelSlideListener;
 import android.util.DisplayMetrics;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
@@ -51,7 +47,6 @@ import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.PopupMenu.OnMenuItemClickListener;
-import android.widget.TextView;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -151,92 +146,11 @@ public class ConversationActivity extends XmppActivity {
 		setContentView(R.layout.fragment_conversations_overview);
 
 		listView = (ListView) findViewById(R.id.list);
+		
+		getActionBar().setDisplayHomeAsUpEnabled(false);
+		getActionBar().setHomeButtonEnabled(false);
 
-		this.listAdapter = new ArrayAdapter<Conversation>(this,
-				R.layout.conversation_list_row, conversationList) {
-			@Override
-			public View getView(int position, View view, ViewGroup parent) {
-				if (view == null) {
-					LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-					view = (View) inflater.inflate(
-							R.layout.conversation_list_row, parent,false);
-				}
-				Conversation conv;
-				if (conversationList.size() > position) {
-					conv = getItem(position);
-				} else {
-					return view;
-				}
-				if (!spl.isSlideable()) {
-					if (conv == getSelectedConversation()) {
-						view.setBackgroundColor(0xffdddddd);
-					} else {
-						view.setBackgroundColor(Color.TRANSPARENT);
-					}
-				} else {
-					view.setBackgroundColor(Color.TRANSPARENT);
-				}
-				TextView convName = (TextView) view
-						.findViewById(R.id.conversation_name);
-				convName.setText(conv.getName(useSubject));
-				TextView convLastMsg = (TextView) view
-						.findViewById(R.id.conversation_lastmsg);
-				ImageView imagePreview = (ImageView) view
-						.findViewById(R.id.conversation_lastimage);
-
-				Message latestMessage = conv.getLatestMessage();
-
-				if (latestMessage.getType() == Message.TYPE_TEXT || latestMessage.getType() == Message.TYPE_PRIVATE) {
-					if ((latestMessage.getEncryption() != Message.ENCRYPTION_PGP)
-							&& (latestMessage.getEncryption() != Message.ENCRYPTION_DECRYPTION_FAILED)) {
-						convLastMsg.setText(conv.getLatestMessage().getBody());
-					} else {
-						convLastMsg
-								.setText(getText(R.string.encrypted_message_received));
-					}
-					convLastMsg.setVisibility(View.VISIBLE);
-					imagePreview.setVisibility(View.GONE);
-				} else if (latestMessage.getType() == Message.TYPE_IMAGE) {
-					if (latestMessage.getStatus() >= Message.STATUS_RECIEVED) {
-						convLastMsg.setVisibility(View.GONE);
-						imagePreview.setVisibility(View.VISIBLE);
-						loadBitmap(latestMessage, imagePreview);
-					} else {
-						convLastMsg.setVisibility(View.VISIBLE);
-						imagePreview.setVisibility(View.GONE);
-						if (latestMessage.getStatus() == Message.STATUS_RECEIVED_OFFER) {
-							convLastMsg
-									.setText(getText(R.string.image_offered_for_download));
-						} else if (latestMessage.getStatus() == Message.STATUS_RECIEVING) {
-							convLastMsg
-									.setText(getText(R.string.receiving_image));
-						} else {
-							convLastMsg.setText("");
-						}
-					}
-				}
-
-				if (!conv.isRead()) {
-					convName.setTypeface(null, Typeface.BOLD);
-					convLastMsg.setTypeface(null, Typeface.BOLD);
-				} else {
-					convName.setTypeface(null, Typeface.NORMAL);
-					convLastMsg.setTypeface(null, Typeface.NORMAL);
-				}
-
-				((TextView) view.findViewById(R.id.conversation_lastupdate))
-						.setText(UIHelper.readableTimeDifference(getContext(),
-								conv.getLatestMessage().getTimeSent()));
-
-				ImageView profilePicture = (ImageView) view
-						.findViewById(R.id.conversation_image);
-				profilePicture.setImageBitmap(conv.getImage(getApplicationContext(),56)); //;UIHelper.getContactPicture(conv,56, activity.getApplicationContext(), false));
-
-				return view;
-			}
-
-		};
-
+		this.listAdapter = new ConversationAdapter(this, conversationList);
 		listView.setAdapter(this.listAdapter);
 
 		listView.setOnItemClickListener(new OnItemClickListener() {
@@ -247,7 +161,7 @@ public class ConversationActivity extends XmppActivity {
 				paneShouldBeOpen = false;
 				if (getSelectedConversation() != conversationList.get(position)) {
 					setSelectedConversation(conversationList.get(position));
-					swapConversationFragment(); // .onBackendConnected(conversationList.get(position));
+					swapConversationFragment();
 				} else {
 					spl.closePane();
 				}
@@ -433,7 +347,7 @@ public class ConversationActivity extends XmppActivity {
 		switch (item.getItemId()) {
 		case android.R.id.home:
 			spl.openPane();
-			break;
+			return true;
 		case R.id.action_attach_file:
 			View menuAttachFile = findViewById(R.id.action_attach_file);
 			if (menuAttachFile==null) {
