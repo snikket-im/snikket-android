@@ -189,7 +189,7 @@ public class MessageParser extends AbstractParser implements
 		}
 		Element message = forwarded.findChild("message");
 		if ((message == null) || (!message.hasChild("body"))) {
-			if (status == Message.STATUS_RECIEVED) {
+			if (status == Message.STATUS_RECIEVED && message.getAttribute("from")!=null) {
 				parseNormal(message, account);
 			}
 			return null;
@@ -296,17 +296,19 @@ public class MessageParser extends AbstractParser implements
 		if (node != null) {
 			if (node.equals("urn:xmpp:avatar:metadata")) {
 				Avatar avatar = Avatar.parseMetadata(items);
-				avatar.owner = from;
-				if (mXmppConnectionService.getFileBackend().isAvatarCached(
-						avatar)) {
-					if (account.getJid().equals(from)) {
-						account.setAvatar(avatar.getFilename());
+				if (avatar!=null) {
+					avatar.owner = from;
+					if (mXmppConnectionService.getFileBackend().isAvatarCached(
+							avatar)) {
+						if (account.getJid().equals(from)) {
+							account.setAvatar(avatar.getFilename());
+						} else {
+							Contact contact = account.getRoster().getContact(from);
+							contact.setAvatar(avatar.getFilename());
+						}
 					} else {
-						Contact contact = account.getRoster().getContact(from);
-						contact.setAvatar(avatar.getFilename());
+						mXmppConnectionService.fetchAvatar(account, avatar);
 					}
-				} else {
-					mXmppConnectionService.fetchAvatar(account, avatar);
 				}
 			} else {
 				Log.d("xmppService", account.getJid() + ": " + node + " from "
