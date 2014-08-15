@@ -112,6 +112,7 @@ public class XmppConnectionService extends Service {
 	private OnConversationUpdate mOnConversationUpdate = null;
 	private int convChangedListenerCount = 0;
 	private OnAccountUpdate mOnAccountUpdate = null;
+	private int accountChangedListenerCount = 0;
 	private OnRosterUpdate mOnRosterUpdate = null;
 	public OnContactStatusChanged onContactStatusChanged = new OnContactStatusChanged() {
 
@@ -924,10 +925,14 @@ public class XmppConnectionService extends Service {
 
 	public void setOnAccountListChangedListener(OnAccountUpdate listener) {
 		this.mOnAccountUpdate = listener;
+		this.accountChangedListenerCount++;
 	}
 
 	public void removeOnAccountListChangedListener() {
-		this.mOnAccountUpdate = null;
+		this.accountChangedListenerCount--;
+		if (this.accountChangedListenerCount == 0) {
+			this.mOnAccountUpdate = null;
+		}
 	}
 	
 	public void setOnRosterUpdateListener(OnRosterUpdate listener) {
@@ -1234,7 +1239,11 @@ public class XmppConnectionService extends Service {
 		}
 	}
 	
-	public void fetchAvatar(Account account, final Avatar avatar) {
+	public void fetchAvatar(Account account, Avatar avatar) {
+		fetchAvatar(account, avatar, null);
+	}
+	
+	public void fetchAvatar(Account account, final Avatar avatar, final UiCallback<Avatar> callback) {
 		Log.d(LOGTAG,account.getJid()+": retrieving avatar for "+avatar.owner);
 		IqPacket packet = this.mIqGenerator.retrieveAvatar(avatar);
 		sendIqPacket(account, packet, new OnIqPacketReceived() {
@@ -1250,8 +1259,44 @@ public class XmppConnectionService extends Service {
 							Contact contact = account.getRoster().getContact(avatar.owner);
 							contact.setAvatar(avatar.getFilename());
 						}
+						if (callback!=null) {
+							callback.success(avatar);
+						}
+						return;
 					}
 				}
+				if (callback!=null) {
+					callback.error(0, null);
+				}
+			}
+		});
+	}
+	
+	public void checkForAvatar(Account account, final UiCallback<Avatar> callback) {
+		IqPacket packet = this.mIqGenerator.retrieveAvatarMetaData(null);
+		this.sendIqPacket(account, packet, new OnIqPacketReceived() {
+			
+			@Override
+			public void onIqPacketReceived(Account account, IqPacket packet) {
+				if (packet.getType() == IqPacket.TYPE_RESULT) {
+					Element pubsub = packet.findChild("pubsub", "http://jabber.org/protocol/pubsub");
+					if (pubsub!=null) {
+						Element items = pubsub.findChild("items");
+						if (items!=null) {
+							Avatar avatar = Avatar.parseMetadata(items);
+							if (avatar!=null) {
+								avatar.owner = account.getJid();
+								if (fileBackend.isAvatarCached(avatar)) {
+									callback.success(avatar);
+								} else {
+									fetchAvatar(account, avatar,callback);
+								}
+								return;
+							}
+						}
+					}
+				}
+				callback.error(0, null);
 			}
 		});
 	}

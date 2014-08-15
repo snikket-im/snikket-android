@@ -54,8 +54,7 @@
             android:name="eu.siacs.conversations.ui.StartConversationActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_start_conversation"
-            android:logo="@drawable/ic_activity"
-            android:parentActivityName="eu.siacs.conversations.ui.ConversationActivity" >
+            android:logo="@drawable/ic_activity" >
             <intent-filter>
                 <action android:name="android.intent.action.SENDTO" />
 
@@ -67,17 +66,20 @@
         </activity>
         <activity
             android:name="eu.siacs.conversations.ui.SettingsActivity"
-            android:label="@string/title_activity_settings"
-            android:parentActivityName="eu.siacs.conversations.ui.ConversationActivity" >
+            android:label="@string/title_activity_settings" >
         </activity>
-        <activity android:name="eu.siacs.conversations.ui.ChooseContactActivity"
-             android:label="@string/title_activity_choose_contact">
+        <activity
+            android:name="eu.siacs.conversations.ui.ChooseContactActivity"
+            android:label="@string/title_activity_choose_contact" >
         </activity>
         <activity
             android:name="eu.siacs.conversations.ui.ManageAccountActivity"
             android:configChanges="orientation|screenSize"
-            android:label="@string/title_activity_manage_accounts"
-            android:parentActivityName="eu.siacs.conversations.ui.ConversationActivity" >
+            android:label="@string/title_activity_manage_accounts" >
+        </activity>
+        <activity
+            android:name="eu.siacs.conversations.ui.EditAccountActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize" >
         </activity>
         <activity
             android:name="eu.siacs.conversations.ui.ConferenceDetailsActivity"
@@ -89,7 +91,7 @@
             android:label="@string/title_activity_contact_details"
             android:windowSoftInputMode="stateHidden" >
         </activity>
-         <activity
+        <activity
             android:name="eu.siacs.conversations.ui.PublishProfilePictureActivity"
             android:label="@string/publish_avatar"
             android:windowSoftInputMode="stateHidden" >

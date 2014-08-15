@@ -39,16 +39,16 @@ public abstract class XmppActivity extends Activity {
 	public XmppConnectionService xmppConnectionService;
 	public boolean xmppConnectionServiceBound = false;
 	protected boolean handledViewIntent = false;
-	
+
 	protected int mPrimaryTextColor;
 	protected int mSecondaryTextColor;
 	protected int mWarningTextColor;
 	protected int mPrimaryColor;
-	
+
 	protected interface OnValueEdited {
 		public void onValueEdited(String value);
 	}
-	
+
 	public interface OnPresenceSelected {
 		public void onPresenceSelected();
 	}
@@ -154,6 +154,9 @@ public abstract class XmppActivity extends Activity {
 		case R.id.action_accounts:
 			startActivity(new Intent(this, ManageAccountActivity.class));
 			break;
+		case android.R.id.home:
+			finish();
+			break;
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -203,11 +206,12 @@ public abstract class XmppActivity extends Activity {
 	}
 
 	protected void inviteToConversation(Conversation conversation) {
-		Intent intent = new Intent(getApplicationContext(), ChooseContactActivity.class);
-		intent.putExtra("conversation",conversation.getUuid());
+		Intent intent = new Intent(getApplicationContext(),
+				ChooseContactActivity.class);
+		intent.putExtra("conversation", conversation.getUuid());
 		startActivityForResult(intent, REQUEST_INVITE_TO_CONVERSATION);
 	}
-	
+
 	protected void announcePgp(Account account, final Conversation conversation) {
 		xmppConnectionService.getPgpEngine().generateSignature(account,
 				"online", new UiCallback<Account>() {
@@ -218,7 +222,8 @@ public abstract class XmppActivity extends Activity {
 						try {
 							startIntentSenderForResult(pi.getIntentSender(),
 									REQUEST_ANNOUNCE_PGP, null, 0, 0, 0);
-						} catch (SendIntentException e) {}
+						} catch (SendIntentException e) {
+						}
 					}
 
 					@Override
@@ -279,15 +284,17 @@ public abstract class XmppActivity extends Activity {
 		builder.create().show();
 	}
 
-	protected void quickEdit(final String previousValue, final OnValueEdited callback) {
+	protected void quickEdit(final String previousValue,
+			final OnValueEdited callback) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		View view = (View) getLayoutInflater().inflate(R.layout.quickedit, null);
+		View view = (View) getLayoutInflater()
+				.inflate(R.layout.quickedit, null);
 		final EditText editor = (EditText) view.findViewById(R.id.editor);
 		editor.setText(previousValue);
 		builder.setView(view);
 		builder.setNegativeButton(R.string.cancel, null);
 		builder.setPositiveButton(R.string.edit, new OnClickListener() {
-			
+
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				String value = editor.getText().toString();
@@ -298,7 +305,7 @@ public abstract class XmppActivity extends Activity {
 		});
 		builder.create().show();
 	}
-	
+
 	public void selectPresence(final Conversation conversation,
 			final OnPresenceSelected listener) {
 		Contact contact = conversation.getContact();
@@ -350,33 +357,36 @@ public abstract class XmppActivity extends Activity {
 			}
 		}
 	}
-	
+
 	protected void onActivityResult(int requestCode, int resultCode,
 			final Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		if (requestCode == REQUEST_INVITE_TO_CONVERSATION && resultCode == RESULT_OK) {
+		if (requestCode == REQUEST_INVITE_TO_CONVERSATION
+				&& resultCode == RESULT_OK) {
 			String contactJid = data.getStringExtra("contact");
 			String conversationUuid = data.getStringExtra("conversation");
-			Conversation conversation = xmppConnectionService.findConversationByUuid(conversationUuid);
+			Conversation conversation = xmppConnectionService
+					.findConversationByUuid(conversationUuid);
 			if (conversation.getMode() == Conversation.MODE_MULTI) {
 				xmppConnectionService.invite(conversation, contactJid);
 			}
-			Log.d("xmppService","inviting "+contactJid+" to "+conversation.getName(true));
+			Log.d("xmppService", "inviting " + contactJid + " to "
+					+ conversation.getName(true));
 		}
 	}
-	
+
 	public int getSecondaryTextColor() {
 		return this.mSecondaryTextColor;
 	}
-	
+
 	public int getPrimaryTextColor() {
 		return this.mPrimaryTextColor;
 	}
-	
+
 	public int getWarningTextColor() {
 		return this.mWarningTextColor;
 	}
-	
+
 	public int getPrimaryColor() {
 		return this.mPrimaryColor;
 	}

@@ -45,8 +45,6 @@ public class Account  extends AbstractEntity{
 	public static final int STATUS_UNAUTHORIZED = 3;
 	public static final int STATUS_SERVER_NOT_FOUND = 5;
 
-	public static final int STATUS_SERVER_REQUIRES_TLS = 6;
-
 	public static final int STATUS_REGISTRATION_FAILED = 7;
 	public static final int STATUS_REGISTRATION_CONFLICT = 8;
 	public static final int STATUS_REGISTRATION_SUCCESSFULL = 9;
@@ -144,6 +142,11 @@ public class Account  extends AbstractEntity{
 		} else {
 			return this.status;
 		}
+	}
+	
+	public boolean errorStatus() {
+		int s = getStatus();
+		return (s == STATUS_OFFLINE || s == STATUS_SERVER_NOT_FOUND || s == STATUS_UNAUTHORIZED);
 	}
 	
 	public boolean hasErrorStatus() {

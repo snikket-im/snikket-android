@@ -281,4 +281,7 @@
     <string name="private_message">in private</string>
     <string name="private_message_to">in private to %s</string>
     <string name="send_private_message_to">Send private message to %s</string>
+    <string name="connect">Connect</string>
+    <string name="account_already_exists">This account does already exist</string>
+    <string name="next">Next</string>
 </resources>

@@ -25,6 +25,7 @@ public class Avatar {
 			return sha1sum;
 		}
 	}
+	
 	public static Avatar parseMetadata(Element items) {
 		Element item = items.findChild("item");
 		if (item==null) {

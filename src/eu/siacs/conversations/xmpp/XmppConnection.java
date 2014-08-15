@@ -221,11 +221,6 @@ public class XmppConnection implements Runnable {
 				processStreamError(nextTag);
 			} else if (nextTag.isStart("features")) {
 				processStreamFeatures(nextTag);
-				if ((streamFeatures.getChildren().size() == 1)
-						&& (streamFeatures.hasChild("starttls"))
-						&& (!account.isOptionSet(Account.OPTION_USETLS))) {
-					changeStatus(Account.STATUS_SERVER_REQUIRES_TLS);
-				}
 			} else if (nextTag.isStart("proceed")) {
 				switchOverToTls(nextTag);
 			} else if (nextTag.isStart("compressed")) {

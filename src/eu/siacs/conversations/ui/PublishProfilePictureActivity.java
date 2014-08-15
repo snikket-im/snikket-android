@@ -134,17 +134,6 @@ public class PublishProfilePictureActivity extends XmppActivity {
 	}
 
 	@Override
-	public boolean onOptionsItemSelected(MenuItem menuItem) {
-		super.onOptionsItemSelected(menuItem);
-		switch (menuItem.getItemId()) {
-		case android.R.id.home:
-			finish();
-			break;
-		}
-		return true;
-	}
-
-	@Override
 	protected void onBackendConnected() {
 		if (getIntent() != null) {
 			String jid = getIntent().getStringExtra("account");

@@ -42,9 +42,11 @@ public class IqGenerator extends AbstractGenerator {
 	protected IqPacket retrieve(String node, Element item) {
 		IqPacket packet = new IqPacket(IqPacket.TYPE_GET);
 		Element pubsub = packet.addChild("pubsub", "http://jabber.org/protocol/pubsub");
-		Element items = pubsub.addChild("items");
-		items.setAttribute("node", node);
-		items.addChild(item);
+			Element items = pubsub.addChild("items");
+			items.setAttribute("node", node);
+		if (item!=null) {
+			items.addChild(item);
+		}
 		return packet;
 	}
 	
@@ -74,6 +76,14 @@ public class IqGenerator extends AbstractGenerator {
 		item.setAttribute("id", avatar.sha1sum);
 		IqPacket packet = retrieve("urn:xmpp:avatar:data", item);
 		packet.setTo(avatar.owner);
+		return packet;
+	}
+
+	public IqPacket retrieveAvatarMetaData(String to) {
+		IqPacket packet = retrieve("urn:xmpp:avatar:metadata", null);
+		if (to!=null) {
+			packet.setTo(to);
+		}
 		return packet;
 	}
 }
