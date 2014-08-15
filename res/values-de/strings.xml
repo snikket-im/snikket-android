@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="app_name">Conversations</string>
     <string name="action_settings">Einstellungen</string>
     <string name="action_add">Neue Unterhaltung</string>
@@ -68,7 +67,7 @@
     <string name="account_offline">Account offline</string>
     <string name="cant_invite_while_offline">Du musst online sein, um andere Leute zu einer Konferenz einzuladen</string>
     <string name="crash_report_title">Conversations ist abgestürzt</string>
-    <string name="crash_report_message">Durch das Einsenden von Fehlerberichten hilfst du der stetigen Verbesserung von Conversations.\n<b>Achtung:</b> Dies wird eines deiner XMPP-Konten benutzen, um den Entwickler zu kontaktieren.</string>
+    <string name="crash_report_message">Durch das Einsenden von Fehlerberichten hilfst du bei der stetigen Verbesserung von Conversations.\n<b>Achtung:</b> Dies wird eines deiner XMPP-Konten benutzen, um den Entwickler zu kontaktieren.</string>
     <string name="send_now">Jetzt abschicken</string>
     <string name="send_never">Nie mehr nachfragen</string>
     <string name="problem_connecting_to_account">Es gibt Probleme beim Verbindungsaufbau mit einem Konto</string>
@@ -98,7 +97,7 @@
     <string name="otr_messages">OTR-verschlüsselte Nachrichten</string>
     <string name="manage_account">Konto verwalten</string>
     <string name="contact_offline">Dein Kontakt ist offline</string>
-    <string name="contact_offline_otr">Dein Kontakt muss online sein, um OTR-verschlüsselte Nachrichten zu empfangen. Möchtest Du die Nachricht gerne im Klartext übertragen?</string>
+    <string name="contact_offline_otr">Dein Kontakt muss online sein, um OTR-verschlüsselte Nachrichten zu empfangen. Möchtest Du die Nachricht im Klartext übertragen?</string>
     <string name="contact_offline_file">Der Kontakt muss online sein, um Dateien zu empfangen.</string>
     <string name="send_unencrypted">Unverschlüsselt verschicken</string>
     <string name="decryption_failed">Entschlüsselung fehlgeschlagen. Vielleicht hast du nicht den richtigen privaten Schlüssel.</string>
@@ -109,38 +108,38 @@
     <string name="offering">angeboten&#8230;</string>
     <string name="waiting">warten&#8230;</string>
     <string name="no_pgp_key">Kein OpenPGP-Schlüssel gefunden</string>
-    <string name="contact_has_no_pgp_key">Conversations ist nicht in der Lage deine Nachrichten zu verschlüsseln, weil dein Kontakt seinen oder ihren Schlüssel nicht preisgibt.\n\n<small>Bitte sag deinem Kontakt er oder sie möge bitte OpenPGP einrichten.</small></string>
+    <string name="contact_has_no_pgp_key">Conversations ist nicht in der Lage, deine Nachrichten zu verschlüsseln, weil dein Kontakt seinen oder ihren Schlüssel nicht preisgibt.\n\n<small>Bitte sag deinem Kontakt, er oder sie möge bitte OpenPGP einrichten.</small></string>
     <string name="no_pgp_keys">Keine OpenPGP-Schlüssel gefunden</string>
-    <string name="contact_has_no_pgp_keys">Conversations ist nicht in der Lage deine Nachrichten zu verschlüsseln, weil dein Kontakt sein oder ihren Schlüssel nicht preisgibt.\n\n<small>Bitte sag deinem Kontakt er oder sie möge bitte OpenPGP einrichten.</small></string>
+    <string name="contact_has_no_pgp_keys">Conversations ist nicht in der Lage, deine Nachrichten zu verschlüsseln, weil dein Kontakt sein oder ihren Schlüssel nicht preisgibt.\n\n<small>Bitte sag deinem Kontakt, er oder sie möge bitte OpenPGP einrichten.</small></string>
     <string name="encrypted_message_received"><i>Verschlüsselte Nachricht erhalten. Drücke hier, um sie anzuzeigen und zu entschlüsseln.</i></string>
     <string name="encrypted_image_received"><i>Verschlüsseltes Bild erhalten. Drücke hier, um es anzuzeigen und zu entschlüsseln.</i></string>
     <string name="image_file"><i>Bild erhalten. Drücke hier, um es anzuzeigen.</i></string>
     <string name="otr_file_transfer">OTR-Verschlüsselung nicht verfügbar</string>
-    <string name="otr_file_transfer_msg">Es ist nicht möglich Dateien mittels OTR zu verschlüsseln. Du kannst entweder OpenPGP wählen oder die Datei nicht verschlüsseln.</string>
+    <string name="otr_file_transfer_msg">Es ist nicht möglich, Dateien mittels OTR zu verschlüsseln. Du kannst entweder OpenPGP wählen oder die Datei unverschlüsselt senden.</string>
     <string name="use_pgp_encryption">OpenPGP verwenden</string>
     <string name="pref_xmpp_resource">XMPP-Ressource</string>
-    <string name="pref_xmpp_resource_summary">Der Name mit dem sich der Client selbst identifiziert</string>
-	<string name="pref_accept_files">Dateiannahme</string>
-    <string name="pref_accept_files_summary">Dateien die kleiner sind als &#8230; automatisch annehmen</string>
-	<string name="pref_notification_settings">Benachrichtigungseinstellungen</string>
+    <string name="pref_xmpp_resource_summary">Der Name, mit dem sich der Client selbst identifiziert</string>
+    <string name="pref_accept_files">Dateiannahme</string>
+    <string name="pref_accept_files_summary">Dateien, die kleiner sind als &#8230;, automatisch annehmen</string>
+    <string name="pref_notification_settings">Benachrichtigungseinstellungen</string>
     <string name="pref_notifications">Benachrichtigungen</string>
     <string name="pref_notifications_summary">Benachrichtige mich, wenn eine neu Nachricht ankommt</string>
     <string name="pref_vibrate">Vibrieren</string>
     <string name="pref_vibrate_summary">Vibriere, wenn eine neue Nachricht ankommt</string>
     <string name="pref_sound">Klingelton</string>
-    <string name="pref_sound_summary">Spiele Klingelton, wenn eine Nachricht ankommt</string>
+    <string name="pref_sound_summary">Spiele Klingelton, wenn eine neue Nachricht ankommt</string>
     <string name="pref_conference_notifications">Konferenz-Benachrichtigungen</string>
-    <string name="pref_conference_notifications_summary">Benachrichtige mich bei jeder Konferenznachricht und nicht nur wenn ich angesprochen werde.</string>
+    <string name="pref_conference_notifications_summary">Benachrichtige mich bei jeder Konferenznachricht und nicht nur, wenn ich angesprochen werde.</string>
     <string name="pref_notification_grace_period">Gnadenfrist</string>
     <string name="pref_notification_grace_period_summary">Deaktiviere Benachrichtigungen für eine kurze Zeit nach Erhalt einer Nachricht, die von einem anderen deiner Clients kommt.</string>
     <string name="pref_ui_options">Benutzeroberfläche</string>
     <string name="pref_use_phone_self_picture">Benutze dein Kontaktbild</string>
-    <string name="pref_use_phone_self_picture_summary">Wenn du mehrere Accounts hast bist du eventuell nicht mehr in der Lage diese auseinander zu halten</string>
+    <string name="pref_use_phone_self_picture_summary">Wenn du mehrere Accounts hast, bist du eventuell nicht mehr in der Lage, diese auseinander zu halten</string>
     <string name="pref_conference_name">Konferenzname</string>
     <string name="pref_conference_name_summary">Benutze das Thema der Konferenz als Name in der Übersicht</string>
     <string name="pref_advanced_options">Erweiterte Optionen</string>
     <string name="pref_never_send_crash">Sende niemals Absturzberichte</string>
-    <string name="pref_never_send_crash_summary">Wenn du Absturzberichte einschickst hilfst du Conversations stetig zu verbessern</string>
+    <string name="pref_never_send_crash_summary">Wenn du Absturzberichte einschickst, hilfst du Conversations stetig zu verbessern</string>
     <string name="pref_confirm_messages">Lesebestätigung senden</string>
     <string name="pref_confirm_messages_summary">Informiere deine Kontakte, wenn du eine Nachricht empfängst oder liest</string>
     <string name="pref_show_last_seen">Letzte Nutzung anzeigen</string>
@@ -151,13 +150,13 @@
     <string name="accept">Annehmen</string>
     <string name="error">Ein unbekannter Fehler ist aufgetreten</string>
     <string name="pref_grant_presence_updates">Online-Status</string>
-    <string name="pref_grant_presence_updates_summary">Erlaube Kontakten, die von dir erstellt wurden, deinen Status zu sehen und frage um Erlaubnis ihren sehen zu dürfen</string>
+    <string name="pref_grant_presence_updates_summary">Erlaube Kontakten, die von dir erstellt wurden, deinen Status zu sehen und frage um Erlaubnis, ihren sehen zu dürfen</string>
     <string name="subscriptions">Abonnements</string>
     <string name="your_account">Dein Account</string>
     <string name="keys">Schlüssel</string>
     <string name="send_presence_updates">Anwesenheitsbenachrichtigungen senden</string>
     <string name="receive_presence_updates">Empfange Anwesenheitsbenachrichtigungen</string>
-    <string name="ask_for_presence_updates">Frage um Erlaubnis Anwesenheitsbenachrichtigungen sehen zu dürfen</string>
+    <string name="ask_for_presence_updates">Frage um Erlaubnis, Anwesenheitsbenachrichtigungen sehen zu dürfen</string>
     <string name="asked_for_presence_updates">Es wurde um Anwesenheitsbenachrichtigungen gefragt</string>
     <string name="attach_choose_picture">Foto auswählen</string>
     <string name="attach_take_picture">Foto aufnehmen</string>
@@ -166,7 +165,7 @@
     <string name="error_compressing_image">Fehler beim Umwandeln des Bildes</string>
     <string name="error_file_not_found">Datei nicht gefunden</string>
     <string name="error_io_exception">Allgemeiner Fehler. Vielleicht hast du keinen Speicherplatz mehr?</string>
-    <string name="error_security_exception_during_image_copy">Die App mit der du das Bild ausgesucht hast, hat uns keine Rechte eingeräumt das Bild zu betrachten.\n\n<small>Benutze einen anderen Dateimanager</small></string>
+    <string name="error_security_exception_during_image_copy">Die App, mit der du das Bild ausgesucht hast, hat uns keine Rechte eingeräumt, das Bild zu betrachten.\n\n<small>Benutze einen anderen Dateimanager</small></string>
     <string name="account_status">Status:</string>
     <string name="account_status_unknown">Unbekannt</string>
     <string name="account_status_disabled">Vorübergehend abgeschaltet</string>
@@ -268,4 +267,16 @@
     <string name="contact_added_you">Der Kontakt hat dich zur Kontaktliste hinzugefügt</string>
     <string name="add_back">Auch hinzufügen</string>
     <string name="contact_has_read_up_to_this_point">%s hat bis zu diesem Punkt gelesen</string>
+    <string name="publish_avatar">Avatar veröffentlichen</string>
+    <string name="touch_to_choose_picture">Klicke hier, um ein Avatar auszuwählen</string>
+    <string name="publish_avatar_explanation">Achtung: Jeder, der deinen Status sehen darf, sieht auch dein Avatar.</string>
+    <string name="publishing">Veröffentliche&#8230;</string>
+    <string name="error_publish_avatar_server_reject">Der Server hat die Veröffentlichung des Avatars abgelehnt.</string>
+    <string name="error_publish_avatar_converting">Bei der Konvertierung des Avatars lief etwas schief.</string>
+    <string name="error_saving_avatar">Kann Avatar nicht speichern.</string>
+    <string name="or_long_press_for_default">(Oder klicke lange, um Standard herzustellen)</string>
+    <string name="error_publish_avatar_no_server_support">Dein Server unterstützt die Veröffentlichung von Avatars nicht.</string>
+    <string name="private_message">private Nachricht</string>
+    <string name="private_message_to">private Nachricht an %s</string>
+    <string name="send_private_message_to">Sende private Nachricht an %s</string>
 </resources>
