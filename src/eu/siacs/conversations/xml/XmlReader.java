@@ -28,24 +28,33 @@ public class XmlReader {
 		this.wakeLock = wakeLock;
 	}
 	
-	public void setInputStream(InputStream inputStream) {
+	public void setInputStream(InputStream inputStream) throws IOException {
+		if (inputStream==null) {
+			throw new IOException();
+		}
 		this.is = inputStream;
 		try {
 			parser.setInput(new InputStreamReader(this.is));
 		} catch (XmlPullParserException e) {
-			Log.d(LOGTAG,"error setting input stream");
+			throw new IOException("error resetting parser");
 		}
 	}
 
-	public InputStream getInputStream() {
+	public InputStream getInputStream() throws IOException {
+		if (this.is==null) {
+			throw new IOException();
+		}
 		return is;
 	}
 
-	public void reset() {
+	public void reset() throws IOException {
+		if (this.is==null) {
+			throw new IOException();
+		}
 		try {
 			parser.setInput(new InputStreamReader(this.is));
 		} catch (XmlPullParserException e) {
-			Log.d(LOGTAG,"error resetting input stream");
+			throw new IOException("error resetting parser");
 		}
 	}
 	

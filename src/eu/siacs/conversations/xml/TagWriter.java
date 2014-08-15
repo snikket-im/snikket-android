@@ -41,12 +41,18 @@ public class TagWriter {
 	public TagWriter() {
 	}
 	
-	public void setOutputStream(OutputStream out) {
+	public void setOutputStream(OutputStream out) throws IOException {
+		if (out==null) {
+			throw new IOException();
+		}
 		this.plainOutputStream = out;
 		this.outputStream = new OutputStreamWriter(out);
 	}
 
-	public OutputStream getOutputStream() {
+	public OutputStream getOutputStream() throws IOException {
+		if (this.plainOutputStream==null) {
+			throw new IOException();
+		}
 		return this.plainOutputStream;
 	}
 
