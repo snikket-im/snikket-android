@@ -129,6 +129,9 @@ public class PublishProfilePictureActivity extends XmppActivity {
 		if (resultCode == RESULT_OK) {
 			if (requestCode == REQUEST_CHOOSE_FILE) {
 				this.avatarUri = data.getData();
+				if (xmppConnectionServiceBound) {
+					loadImageIntoPreview(this.avatarUri);
+				}
 			}
 		}
 	}
@@ -173,6 +176,12 @@ public class PublishProfilePictureActivity extends XmppActivity {
 	protected void loadImageIntoPreview(Uri uri) {
 		Bitmap bm = xmppConnectionService.getFileBackend().cropCenterSquare(
 				uri, 384);
+		if (bm==null) {
+			disablePublishButton();
+			this.hintOrWarning.setTextColor(getWarningTextColor());
+			this.hintOrWarning.setText(R.string.error_publish_avatar_converting);
+			return;
+		}
 		this.avatar.setImageBitmap(bm);
 		if (support) {
 			enablePublishButton();

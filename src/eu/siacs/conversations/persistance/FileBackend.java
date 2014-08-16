@@ -285,6 +285,9 @@ public class FileBackend {
 		try {
 			Avatar avatar = new Avatar();
 			Bitmap bm = cropCenterSquare(image, size);
+			if (bm==null) {
+				return null;
+			}
 			ByteArrayOutputStream mByteArrayOutputStream = new ByteArrayOutputStream();
 			Base64OutputStream mBase64OutputSttream = new Base64OutputStream(mByteArrayOutputStream, Base64.DEFAULT);
 			MessageDigest digest = MessageDigest.getInstance("SHA-1");
@@ -355,7 +358,11 @@ public class FileBackend {
 			InputStream is = context.getContentResolver()
 					.openInputStream(image);
 			Bitmap input = BitmapFactory.decodeStream(is, null, options);
-			return cropCenterSquare(input, size);
+			if (input==null) {
+				return null;
+			} else {
+				return cropCenterSquare(input, size);
+			}
 		} catch (FileNotFoundException e) {
 			return null;
 		}
