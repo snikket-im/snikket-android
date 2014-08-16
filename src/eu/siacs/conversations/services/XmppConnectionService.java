@@ -1287,6 +1287,7 @@ public class XmppConnectionService extends Service {
 							if (avatar!=null) {
 								avatar.owner = account.getJid();
 								if (fileBackend.isAvatarCached(avatar)) {
+									account.setAvatar(avatar.getFilename());
 									callback.success(avatar);
 								} else {
 									fetchAvatar(account, avatar,callback);
