@@ -19,7 +19,7 @@
     <string name="title_activity_settings">Ezarpenak</string>
     <string name="title_activity_conference_details">Konferentziaren xehetasunak</string>
     <string name="title_activity_contact_details">Kontaktuaren xehetasunak</string>
-    <string name="title_activity_conversations">Elkarrizketak</string>
+    <string name="title_activity_conversations">Conversations</string>
     <string name="title_activity_sharewith">Elkarrizketa batekin partekatu</string>
     <string name="title_activity_start_conversation">Elkarrizketa hasi</string>
     <string name="title_activity_choose_contact">Kontaktua hautatu</string>
@@ -39,7 +39,7 @@
     <string name="visitor">Bisitaria</string>
     <string name="enter_new_name">Sartu izen berri bat:</string>
     <string name="remove_contact_text">%s zure zerrendatik ezabatu nahi duzu? Kontu honekin lotutako elkarrizketa ez da ezabatuko.</string>
-    <string name="remove_bookmark_text">%s laster marka bezala ezabatu nahi duzu? Laster-marka honekin lotutako elkarrizketa ez da ezabatuko.</string>
+    <string name="remove_bookmark_text">%s laster-marka bezala ezabatu nahi duzu? Laster-marka honekin lotutako elkarrizketa ez da ezabatuko.</string>
     <string name="untrusted_cert_hint">%s zerbitzariak konfiantzarik gabeko, agian bere buruak izenpetutako, ziurtagiri batekin aurkeztu zaitu.</string>
     <string name="account_info">Zerbitzariaren informazioa</string>
     <string name="register_account">Kontu berria zerbitzarian erregistratu</string>
@@ -187,6 +187,7 @@
     <string name="mgmt_account_edit">Kontua editatu</string>
     <string name="mgmt_account_delete">Ezabatu</string>
     <string name="mgmt_account_disable">Aldi baterako ezgaitu</string>
+    <string name="mgmt_account_publish_avatar">Profileko argazkia argitaratu</string>
     <string name="mgmt_account_enable">Gaitu</string>
     <string name="mgmt_account_are_you_sure">Ziur al zaude?</string>
     <string name="mgmt_account_delete_confirm_text">Zure kontua ezabatzen baduzu zure elkarrizketa historia guztia galduko da</string>
@@ -267,6 +268,21 @@
     <string name="leave">Alde egin</string>
     <string name="contact_added_you">Kontaktuak bere zerrendara gehitu zaitu</string>
     <string name="add_back">Bera gehitu</string>
-    <string name="contact_has_read_up_to_this_point">%s puntu honetaraino irakurri du</string>
+    <string name="contact_has_read_up_to_this_point">%s(e)k puntu honetaraino irakurri du</string>
+    <string name="publish_avatar">Profileko argazkia argitaratu</string>
+    <string name="touch_to_choose_picture">Ukitu profileko argazkia irudi bat galeriatik hautatzeko</string>
+    <string name="publish_avatar_explanation">Adi: Zure presentzia eguneraketetara harpidetutako edonork irudi hau ikusi ahal izango du.</string>
+    <string name="publishing">Argitaratzen&#8230;</string>
+    <string name="error_publish_avatar_server_reject">Zerbitzariak zure argitarapena ukatu du</string>
+    <string name="error_publish_avatar_converting">Zerbait oker joan da zure irudia bihurtzerakoan</string>
+    <string name="error_saving_avatar">Ezin izan da profileko argazkia diskoan gorde</string>
+    <string name="or_long_press_for_default">(Edo sakatu luze lehenetsira bueltatzeko)</string>
+    <string name="error_publish_avatar_no_server_support">Zure zerbitzariak ez du profileko argazkien argitarapena onartzen</string>
+    <string name="private_message">pribatuan</string>
+    <string name="private_message_to">%s(r)i pribatuan</string>
+    <string name="send_private_message_to">%s(r)i mezu pribatua bidali</string>
+    <string name="connect">Konektatu</string>
+    <string name="account_already_exists">Kontu hau existitzen da dagoeneko</string>
+    <string name="next">Hurrengoa</string>
 
 </resources>
