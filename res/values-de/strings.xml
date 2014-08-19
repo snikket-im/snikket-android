@@ -187,6 +187,7 @@
     <string name="mgmt_account_delete">Löschen</string>
     <string name="mgmt_account_disable">Vorübergehend abschalten</string>
     <string name="mgmt_account_enable">Anschalten</string>
+    <string name="mgmt_account_publish_avatar">Avatar veröffentlichen</string>
     <string name="mgmt_account_are_you_sure">Bist du dir sicher?</string>
     <string name="mgmt_account_delete_confirm_text">Wenn du dein Konto löscht, gehen alle Gesprächsverläufe verloren</string>
     <string name="mgmt_account_account_offline">Das Konto ist offline</string>
