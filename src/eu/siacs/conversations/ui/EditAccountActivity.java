@@ -251,7 +251,6 @@ public class EditAccountActivity extends XmppActivity {
 				xmppConnectionService.getKnownHosts());
 		this.xmppConnectionService
 				.setOnAccountListChangedListener(this.mOnAccountUpdateListener);
-		this.mAccountJid.setAdapter(null);
 		if (this.jidToEdit != null) {
 			this.mAccount = xmppConnectionService.findAccountByJid(jidToEdit);
 			updateAccountInformation();
