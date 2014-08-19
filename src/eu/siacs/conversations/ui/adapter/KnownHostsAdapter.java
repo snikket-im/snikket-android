@@ -23,7 +23,10 @@ public class KnownHostsAdapter extends ArrayAdapter<String> {
 					}
 				} else if (split.length == 2) {
 					for (String domain : domains) {
-						if (domain.contains(split[1])) {
+						if (domain.contentEquals(split[1])) {
+							suggestions.clear();
+							break;
+						} else if (domain.contains(split[1])) {
 							suggestions.add(split[0].toLowerCase(Locale.getDefault()) + "@" + domain);
 						}
 					}

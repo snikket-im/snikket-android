@@ -12,11 +12,15 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TableLayout;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.TextView;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.services.XmppConnectionService.OnAccountUpdate;
 import eu.siacs.conversations.ui.adapter.KnownHostsAdapter;
+import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.utils.Validator;
 import eu.siacs.conversations.xmpp.pep.Avatar;
 
@@ -29,18 +33,20 @@ public class EditAccountActivity extends XmppActivity {
 	private Button mCancelButton;
 	private Button mSaveButton;
 
+	private LinearLayout mStats;
+	private TextView mServerCompat;
+	private TextView mSessionEst;
+
 	private String jidToEdit;
 	private Account mAccount;
 
-	private boolean mUserInputIsValid = false;
 	private boolean mFetchingAvatar = false;
-	
+
 	private OnClickListener mSaveButtonClickListener = new OnClickListener() {
 
 		@Override
 		public void onClick(View v) {
-			if (mAccount != null && mAccount.errorStatus()
-					&& !mUserInputIsValid) {
+			if (mAccount != null && mAccount.errorStatus()) {
 				xmppConnectionService.reconnectAccount(mAccount, true);
 				return;
 			}
@@ -66,11 +72,14 @@ public class EditAccountActivity extends XmppActivity {
 				mAccount.setPassword(password);
 				mAccount.setUsername(username);
 				mAccount.setServer(server);
-				mAccount.setOption(Account.OPTION_REGISTER, mRegisterNew.isChecked());
+				mAccount.setOption(Account.OPTION_REGISTER,
+						mRegisterNew.isChecked());
 				xmppConnectionService.updateAccount(mAccount);
 			} else {
-				if (xmppConnectionService.findAccountByJid(mAccountJid.getText().toString())!=null) {
-					mAccountJid.setError(getString(R.string.account_already_exists));
+				if (xmppConnectionService.findAccountByJid(mAccountJid
+						.getText().toString()) != null) {
+					mAccountJid
+							.setError(getString(R.string.account_already_exists));
 					return;
 				}
 				mAccount = new Account(username, server, password);
@@ -84,7 +93,6 @@ public class EditAccountActivity extends XmppActivity {
 			if (jidToEdit != null) {
 				finish();
 			} else {
-				mUserInputIsValid = false;
 				updateSaveButton();
 				updateAccountInformation();
 			}
@@ -98,24 +106,6 @@ public class EditAccountActivity extends XmppActivity {
 			finish();
 		}
 	};
-	private TextWatcher mTextWatcher = new TextWatcher() {
-
-		@Override
-		public void onTextChanged(CharSequence s, int start, int before,
-				int count) {
-			mUserInputIsValid = inputDataDiffersFromAccount() && Validator.isValidJid(mAccountJid.getText().toString());
-			updateSaveButton();
-		}
-
-		@Override
-		public void beforeTextChanged(CharSequence s, int start, int count,
-				int after) {
-		}
-
-		@Override
-		public void afterTextChanged(Editable s) {
-		}
-	};
 	private OnAccountUpdate mOnAccountUpdateListener = new OnAccountUpdate() {
 
 		@Override
@@ -124,10 +114,15 @@ public class EditAccountActivity extends XmppActivity {
 
 				@Override
 				public void run() {
-					if (jidToEdit==null && mAccount!=null && mAccount.getStatus() == Account.STATUS_ONLINE) {
+					if (mAccount != null) {
+						updateAccountInformation();
+					}
+					if (jidToEdit == null && mAccount != null
+							&& mAccount.getStatus() == Account.STATUS_ONLINE) {
 						if (!mFetchingAvatar) {
 							mFetchingAvatar = true;
-							xmppConnectionService.checkForAvatar(mAccount, mAvatarFetchCallback);
+							xmppConnectionService.checkForAvatar(mAccount,
+									mAvatarFetchCallback);
 						}
 					} else {
 						updateSaveButton();
@@ -137,33 +132,36 @@ public class EditAccountActivity extends XmppActivity {
 		}
 	};
 	private UiCallback<Avatar> mAvatarFetchCallback = new UiCallback<Avatar>() {
-		
+
 		@Override
 		public void userInputRequried(PendingIntent pi, Avatar avatar) {
 			finishInitialSetup(avatar);
 		}
-		
+
 		@Override
 		public void success(Avatar avatar) {
 			finishInitialSetup(avatar);
 		}
-		
+
 		@Override
 		public void error(int errorCode, Avatar avatar) {
 			finishInitialSetup(avatar);
 		}
 	};
+	private KnownHostsAdapter mKnownHostsAdapter;
 
 	protected void finishInitialSetup(final Avatar avatar) {
 		runOnUiThread(new Runnable() {
-			
+
 			@Override
 			public void run() {
 				Intent intent;
-				if (avatar!=null) {
-					intent = new Intent(getApplicationContext(), StartConversationActivity.class);
+				if (avatar != null) {
+					intent = new Intent(getApplicationContext(),
+							StartConversationActivity.class);
 				} else {
-					intent = new Intent(getApplicationContext(), PublishProfilePictureActivity.class);
+					intent = new Intent(getApplicationContext(),
+							PublishProfilePictureActivity.class);
 					intent.putExtra("account", mAccount.getJid());
 				}
 				startActivity(intent);
@@ -171,7 +169,7 @@ public class EditAccountActivity extends XmppActivity {
 			}
 		});
 	}
-	
+
 	protected boolean inputDataDiffersFromAccount() {
 		if (mAccount == null) {
 			return true;
@@ -186,29 +184,15 @@ public class EditAccountActivity extends XmppActivity {
 
 	protected void updateSaveButton() {
 		if (mAccount != null
-				&& mAccount.getStatus() == Account.STATUS_CONNECTING
-				&& !mUserInputIsValid) {
+				&& mAccount.getStatus() == Account.STATUS_CONNECTING) {
 			this.mSaveButton.setEnabled(false);
 			this.mSaveButton.setTextColor(getSecondaryTextColor());
 			this.mSaveButton.setText(R.string.account_status_connecting);
-		} else if (mAccount != null && mAccount.errorStatus()
-				&& !mUserInputIsValid) {
-			this.mSaveButton.setEnabled(true);
-			this.mSaveButton.setTextColor(getPrimaryTextColor());
-			this.mSaveButton.setText(R.string.connect);
-		} else if (mUserInputIsValid) {
-			this.mSaveButton.setEnabled(true);
-			this.mSaveButton.setTextColor(getPrimaryTextColor());
-			if (jidToEdit!=null) {
-				this.mSaveButton.setText(R.string.save);
-			} else {
-				this.mSaveButton.setText(R.string.next);
-			}
 		} else {
-			this.mSaveButton.setEnabled(false);
-			this.mSaveButton.setTextColor(getSecondaryTextColor());
-			if (jidToEdit!=null) {
-				this.mSaveButton.setText(R.string.save);
+			this.mSaveButton.setEnabled(true);
+			this.mSaveButton.setTextColor(getPrimaryTextColor());
+			if (jidToEdit != null) {
+				this.mSaveButton.setText(R.string.connect);
 			} else {
 				this.mSaveButton.setText(R.string.next);
 			}
@@ -223,6 +207,9 @@ public class EditAccountActivity extends XmppActivity {
 		this.mPassword = (EditText) findViewById(R.id.account_password);
 		this.mPasswordConfirm = (EditText) findViewById(R.id.account_password_confirm);
 		this.mRegisterNew = (CheckBox) findViewById(R.id.account_register_new);
+		this.mStats = (LinearLayout) findViewById(R.id.stats);
+		this.mSessionEst = (TextView) findViewById(R.id.session_est);
+		this.mServerCompat = (TextView) findViewById(R.id.server_compat);
 		this.mSaveButton = (Button) findViewById(R.id.save_button);
 		this.mCancelButton = (Button) findViewById(R.id.cancel_button);
 		this.mSaveButton.setOnClickListener(this.mSaveButtonClickListener);
@@ -238,12 +225,9 @@ public class EditAccountActivity extends XmppActivity {
 						} else {
 							mPasswordConfirm.setVisibility(View.GONE);
 						}
-						mUserInputIsValid = inputDataDiffersFromAccount() && Validator.isValidJid(mAccountJid.getText().toString());
 						updateSaveButton();
 					}
 				});
-		this.mAccountJid.addTextChangedListener(this.mTextWatcher);
-		this.mPassword.addTextChangedListener(this.mTextWatcher);
 	}
 
 	@Override
@@ -262,6 +246,9 @@ public class EditAccountActivity extends XmppActivity {
 
 	@Override
 	protected void onBackendConnected() {
+		this.mKnownHostsAdapter = new KnownHostsAdapter(this,
+				android.R.layout.simple_list_item_1,
+				xmppConnectionService.getKnownHosts());
 		this.xmppConnectionService
 				.setOnAccountListChangedListener(this.mOnAccountUpdateListener);
 		this.mAccountJid.setAdapter(null);
@@ -273,9 +260,7 @@ public class EditAccountActivity extends XmppActivity {
 			getActionBar().setDisplayShowHomeEnabled(false);
 			this.mCancelButton.setEnabled(false);
 		}
-		this.mAccountJid.setAdapter(new KnownHostsAdapter(this,
-				android.R.layout.simple_list_item_1, xmppConnectionService
-						.getKnownHosts()));
+		this.mAccountJid.setAdapter(this.mKnownHostsAdapter);
 		updateSaveButton();
 	}
 
@@ -289,6 +274,22 @@ public class EditAccountActivity extends XmppActivity {
 		} else {
 			this.mRegisterNew.setVisibility(View.GONE);
 			this.mRegisterNew.setChecked(false);
+		}
+		if (this.mAccount.getStatus() == Account.STATUS_ONLINE) {
+			this.mStats.setVisibility(View.VISIBLE);
+			this.mSessionEst.setText(UIHelper.readableTimeDifference(
+					getApplicationContext(), this.mAccount.getXmppConnection()
+							.getLastSessionEstablished()));
+			this.mServerCompat.setText(this.mAccount.getXmppConnection()
+					.getFeatures().getCompatibility()
+					+ "%");
+		} else {
+			if (this.mAccount.errorStatus()) {
+				this.mAccountJid.setError(getString(this.mAccount
+						.getReadableStatusId()));
+				this.mAccountJid.requestFocus();
+			}
+			this.mStats.setVisibility(View.GONE);
 		}
 	}
 }

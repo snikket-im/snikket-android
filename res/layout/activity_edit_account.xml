@@ -5,6 +5,7 @@
     android:background="@color/primarybackground" >
 
     <LinearLayout
+        android:id="@+id/editor"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -14,23 +15,23 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/account_settings_jabber_id"
-            android:textSize="14sp"
-            android:textColor="@color/primarytext"/>
+            android:textColor="@color/primarytext"
+            android:textSize="14sp" />
 
         <AutoCompleteTextView
             android:id="@+id/account_jid"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/account_settings_example_jabber_id"
-            android:inputType="textEmailAddress"/>
+            android:inputType="textEmailAddress" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="@string/account_settings_password"
-            android:textSize="14sp"
-            android:textColor="@color/primarytext"/>
+            android:textColor="@color/primarytext"
+            android:textSize="14sp" />
 
         <EditText
             android:id="@+id/account_password"
@@ -45,16 +46,16 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="@string/register_account"
-            android:textSize="14sp"
-            android:textColor="@color/primarytext"/>
+            android:textColor="@color/primarytext"
+            android:textSize="14sp" />
 
         <TextView
             android:id="@+id/account_confirm_password_desc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/account_settings_confirm_password"
-            android:textSize="14sp"
             android:textColor="@color/primarytext"
+            android:textSize="14sp"
             android:visibility="gone" />
 
         <EditText
@@ -68,12 +69,73 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/stats"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@+id/button_bar"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/editor"
+        android:layout_marginTop="8dp"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@color/secondarytext"
+            android:text="@string/additional_information"
+            android:gravity="center_horizontal"/>
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:stretchColumns="1"
+            android:layout_marginTop="8dp">
+
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/server_info_session_established" />
+
+                <TextView
+                    android:id="@+id/session_est"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/server_info_compatibilty" />
+
+                <TextView
+                    android:id="@+id/server_compat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right" />
+            </TableRow>
+        </TableLayout>
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/button_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true" >
+        android:layout_alignParentRight="true">
 
         <Button
             android:id="@+id/cancel_button"

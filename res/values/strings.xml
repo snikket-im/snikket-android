@@ -284,4 +284,7 @@
     <string name="connect">Connect</string>
     <string name="account_already_exists">This account does already exist</string>
     <string name="next">Next</string>
+    <string name="server_info_compatibilty">Server compatibilty</string>
+    <string name="server_info_session_established">Current session established</string>
+    <string name="additional_information">Additional Information</string>
 </resources>

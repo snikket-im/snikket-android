@@ -183,7 +183,7 @@ public class XmppConnectionService extends Service {
 						+ "s for the "
 						+ (account.getXmppConnection().getAttempt() + 1)
 						+ " time");
-				scheduleWakeupCall(next, false);
+				scheduleWakeupCall((int) (next * 1.2), false);
 			}
 			UIHelper.showErrorNotification(getApplicationContext(),
 					getAccounts());
@@ -317,15 +317,13 @@ public class XmppConnectionService extends Service {
 						}
 					}
 					if (account.getStatus() == Account.STATUS_ONLINE) {
-						long lastReceived = account.getXmppConnection().lastPaketReceived;
-						long lastSent = account.getXmppConnection().lastPingSent;
+						long lastReceived = account.getXmppConnection().getLastPacketReceived();
+						long lastSent = account.getXmppConnection().getLastPingSent();
 						if (lastSent - lastReceived >= PING_TIMEOUT * 1000) {
 							Log.d(LOGTAG, account.getJid() + ": ping timeout");
 							this.reconnectAccount(account, true);
 						} else if (SystemClock.elapsedRealtime() - lastReceived >= PING_MIN_INTERVAL * 1000) {
 							account.getXmppConnection().sendPing();
-							account.getXmppConnection().lastPingSent = SystemClock
-									.elapsedRealtime();
 							this.scheduleWakeupCall(2, false);
 						}
 					} else if (account.getStatus() == Account.STATUS_OFFLINE) {
@@ -333,12 +331,10 @@ public class XmppConnectionService extends Service {
 							account.setXmppConnection(this
 									.createConnection(account));
 						}
-						account.getXmppConnection().lastPingSent = SystemClock
-								.elapsedRealtime();
 						new Thread(account.getXmppConnection()).start();
 					} else if ((account.getStatus() == Account.STATUS_CONNECTING)
 							&& ((SystemClock.elapsedRealtime() - account
-									.getXmppConnection().lastConnect) / 1000 >= CONNECT_TIMEOUT)) {
+									.getXmppConnection().getLastConnect()) / 1000 >= CONNECT_TIMEOUT)) {
 						Log.d(LOGTAG, account.getJid()
 								+ ": time out during connect reconnecting");
 						reconnectAccount(account, true);

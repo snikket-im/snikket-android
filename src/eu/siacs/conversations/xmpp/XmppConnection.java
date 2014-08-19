@@ -74,14 +74,16 @@ public class XmppConnection implements Runnable {
 
 	private String streamId = null;
 	private int smVersion = 3;
+	
+	private boolean usingCompression = false;
 
 	private int stanzasReceived = 0;
 	private int stanzasSent = 0;
 
-	public long lastPaketReceived = 0;
-	public long lastPingSent = 0;
-	public long lastConnect = 0;
-	public long lastSessionStarted = 0;
+	private long lastPaketReceived = 0;
+	private long lastPingSent = 0;
+	private long lastConnect = 0;
+	private long lastSessionStarted = 0;
 
 	private int attempt = 0;
 
@@ -127,7 +129,9 @@ public class XmppConnection implements Runnable {
 
 	protected void connect() {
 		Log.d(LOGTAG, account.getJid() + ": connecting");
+		usingCompression = false;
 		lastConnect = SystemClock.elapsedRealtime();
+		lastPingSent = SystemClock.elapsedRealtime();
 		this.attempt++;
 		try {
 			shouldAuthenticate = shouldBind = !account
@@ -417,6 +421,7 @@ public class XmppConnection implements Runnable {
 
 		sendStartStream();
 		Log.d(LOGTAG, account.getJid() + ": compression enabled");
+		usingCompression = true;
 		processStream(tagReader.readTag());
 	}
 
@@ -766,6 +771,7 @@ public class XmppConnection implements Runnable {
 			iq.addChild("ping", "urn:xmpp:ping");
 			this.sendIqPacket(iq, null);
 		}
+		this.lastPingSent = SystemClock.elapsedRealtime();
 	}
 
 	public void setOnMessagePacketReceivedListener(
@@ -850,15 +856,7 @@ public class XmppConnection implements Runnable {
 	public void r() {
 		this.tagWriter.writeStanzaAsync(new RequestPacket(smVersion));
 	}
-
-	public int getReceivedStanzas() {
-		return this.stanzasReceived;
-	}
-
-	public int getSentStanzas() {
-		return this.stanzasSent;
-	}
-
+	
 	public String getMucServer() {
 		return findDiscoItemByFeature("http://jabber.org/protocol/muc");
 	}
@@ -913,5 +911,66 @@ public class XmppConnection implements Runnable {
 				return connection.streamFeatures.hasChild("ver");
 			}
 		}
+		
+		public boolean streamhost() {
+			return connection.findDiscoItemByFeature("http://jabber.org/protocol/bytestreams") != null;
+		}
+		
+		public boolean compression() {
+			return connection.usingCompression;
+		}
+		
+		public int getCompatibility() {
+			int hit = 0;
+			int miss = 0;
+			if (carbons()) {
+				++hit;
+			} else {
+				++miss;
+			}
+			if (sm()) {
+				++hit;
+			} else {
+				++miss;
+			}
+			if (pubsub()) {
+				++hit;
+			} else {
+				++miss;
+			}
+			if (streamhost()) {
+				++hit;
+			} else {
+				++miss;
+			}
+			if (compression()) {
+				++hit;
+			} else {
+				++miss;
+			}
+			return (int) (((float) hit) / (hit + miss) * 100);
+		}
+	}
+
+	public long getLastSessionEstablished() {
+		long diff;
+		if (this.lastSessionStarted == 0) {
+			diff = SystemClock.elapsedRealtime() - this.lastConnect;
+		} else {
+			diff = SystemClock.elapsedRealtime() - this.lastSessionStarted;
+		}
+		return System.currentTimeMillis() - diff;
+	}
+	
+	public long getLastConnect() {
+		return this.lastConnect;
+	}
+	
+	public long getLastPingSent() {
+		return this.lastPingSent;
+	}
+	
+	public long getLastPacketReceived() {
+		return this.lastPaketReceived;
 	}
 }

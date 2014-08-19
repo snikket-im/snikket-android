@@ -2,11 +2,11 @@ package eu.siacs.conversations.xmpp.jingle;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentHashMap;
 
 import android.content.Intent;
 import android.graphics.BitmapFactory;
@@ -48,7 +48,7 @@ public class JingleConnection {
 	private String initiator;
 	private String responder;
 	private List<JingleCandidate> candidates = new ArrayList<JingleCandidate>();
-	private HashMap<String, JingleSocks5Transport> connections = new HashMap<String, JingleSocks5Transport>();
+	private ConcurrentHashMap<String, JingleSocks5Transport> connections = new ConcurrentHashMap<String, JingleSocks5Transport>();
 
 	private String transportId;
 	private Element fileOffer;
@@ -696,6 +696,7 @@ public class JingleConnection {
 	}
 
 	public void cancel() {
+		this.status = STATUS_CANCELED;
 		this.disconnect();
 		if (this.message != null) {
 			if (this.responder.equals(account.getFullJid())) {
@@ -711,7 +712,6 @@ public class JingleConnection {
 				}
 			}
 		}
-		this.status = STATUS_CANCELED;
 		this.mJingleConnectionManager.finishConnection(this);
 	}
 
