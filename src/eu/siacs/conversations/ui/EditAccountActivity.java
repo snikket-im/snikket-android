@@ -3,8 +3,6 @@ package eu.siacs.conversations.ui;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AutoCompleteTextView;
@@ -13,7 +11,6 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.TableLayout;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.TextView;
 import eu.siacs.conversations.R;
@@ -36,6 +33,8 @@ public class EditAccountActivity extends XmppActivity {
 	private LinearLayout mStats;
 	private TextView mServerCompat;
 	private TextView mSessionEst;
+	private TextView mOtrFingerprint;
+	private TextView mOtrFingerprintHeadline;
 
 	private String jidToEdit;
 	private Account mAccount;
@@ -46,8 +45,9 @@ public class EditAccountActivity extends XmppActivity {
 
 		@Override
 		public void onClick(View v) {
-			if (mAccount != null && mAccount.errorStatus()) {
-				xmppConnectionService.reconnectAccount(mAccount, true);
+			if (!Validator.isValidJid(mAccountJid.getText().toString())) {
+				mAccountJid.setError(getString(R.string.invalid_jid));
+				mAccountJid.requestFocus();
 				return;
 			}
 			boolean registerNewAccount = mRegisterNew.isChecked();
@@ -65,6 +65,7 @@ public class EditAccountActivity extends XmppActivity {
 				if (!password.equals(passwordConfirm)) {
 					mPasswordConfirm
 							.setError(getString(R.string.passwords_do_not_match));
+					mPasswordConfirm.requestFocus();
 					return;
 				}
 			}
@@ -72,22 +73,20 @@ public class EditAccountActivity extends XmppActivity {
 				mAccount.setPassword(password);
 				mAccount.setUsername(username);
 				mAccount.setServer(server);
-				mAccount.setOption(Account.OPTION_REGISTER,
-						mRegisterNew.isChecked());
+				mAccount.setOption(Account.OPTION_REGISTER,registerNewAccount);
 				xmppConnectionService.updateAccount(mAccount);
 			} else {
 				if (xmppConnectionService.findAccountByJid(mAccountJid
 						.getText().toString()) != null) {
 					mAccountJid
 							.setError(getString(R.string.account_already_exists));
+					mAccountJid.requestFocus();
 					return;
 				}
 				mAccount = new Account(username, server, password);
 				mAccount.setOption(Account.OPTION_USETLS, true);
 				mAccount.setOption(Account.OPTION_USECOMPRESSION, true);
-				if (registerNewAccount) {
-					mAccount.setOption(Account.OPTION_REGISTER, true);
-				}
+				mAccount.setOption(Account.OPTION_REGISTER, registerNewAccount);
 				xmppConnectionService.createAccount(mAccount);
 			}
 			if (jidToEdit != null) {
@@ -114,9 +113,6 @@ public class EditAccountActivity extends XmppActivity {
 
 				@Override
 				public void run() {
-					if (mAccount != null) {
-						updateAccountInformation();
-					}
 					if (jidToEdit == null && mAccount != null
 							&& mAccount.getStatus() == Account.STATUS_ONLINE) {
 						if (!mFetchingAvatar) {
@@ -126,6 +122,9 @@ public class EditAccountActivity extends XmppActivity {
 						}
 					} else {
 						updateSaveButton();
+					}
+					if (mAccount != null) {
+						updateAccountInformation();
 					}
 				}
 			});
@@ -210,6 +209,8 @@ public class EditAccountActivity extends XmppActivity {
 		this.mStats = (LinearLayout) findViewById(R.id.stats);
 		this.mSessionEst = (TextView) findViewById(R.id.session_est);
 		this.mServerCompat = (TextView) findViewById(R.id.server_compat);
+		this.mOtrFingerprint = (TextView) findViewById(R.id.otr_fingerprint);
+		this.mOtrFingerprintHeadline = (TextView) findViewById(R.id.otr_fingerprint_headline);
 		this.mSaveButton = (Button) findViewById(R.id.save_button);
 		this.mCancelButton = (Button) findViewById(R.id.cancel_button);
 		this.mSaveButton.setOnClickListener(this.mSaveButtonClickListener);
@@ -274,7 +275,7 @@ public class EditAccountActivity extends XmppActivity {
 			this.mRegisterNew.setVisibility(View.GONE);
 			this.mRegisterNew.setChecked(false);
 		}
-		if (this.mAccount.getStatus() == Account.STATUS_ONLINE) {
+		if (this.mAccount.getStatus() == Account.STATUS_ONLINE && !this.mFetchingAvatar) {
 			this.mStats.setVisibility(View.VISIBLE);
 			this.mSessionEst.setText(UIHelper.readableTimeDifference(
 					getApplicationContext(), this.mAccount.getXmppConnection()
@@ -282,6 +283,15 @@ public class EditAccountActivity extends XmppActivity {
 			this.mServerCompat.setText(this.mAccount.getXmppConnection()
 					.getFeatures().getCompatibility()
 					+ "%");
+			String fingerprint = this.mAccount.getOtrFingerprint(getApplicationContext());
+			if (fingerprint!=null) {
+				this.mOtrFingerprintHeadline.setVisibility(View.VISIBLE);
+				this.mOtrFingerprint.setVisibility(View.VISIBLE);
+				this.mOtrFingerprint.setText(fingerprint);
+			} else {
+				this.mOtrFingerprint.setVisibility(View.GONE);
+				this.mOtrFingerprintHeadline.setVisibility(View.GONE);
+			}
 		} else {
 			if (this.mAccount.errorStatus()) {
 				this.mAccountJid.setError(getString(this.mAccount

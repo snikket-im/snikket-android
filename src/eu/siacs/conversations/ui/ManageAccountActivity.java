@@ -7,32 +7,26 @@ import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.services.XmppConnectionService.OnAccountUpdate;
 import eu.siacs.conversations.ui.adapter.AccountAdapter;
-import eu.siacs.conversations.xmpp.XmppConnection;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.SystemClock;
-import android.view.ActionMode;
+import android.view.ContextMenu;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
-import android.widget.TextView;
 
 public class ManageAccountActivity extends XmppActivity {
 
-	protected boolean isActionMode = false;
-	protected ActionMode actionMode;
-	protected Account selectedAccountForActionMode = null;
 	protected ManageAccountActivity activity = this;
 
-	protected boolean firstrun = true;
+	protected Account selectedAccount = null;
 
 	protected List<Account> accountList = new ArrayList<Account>();
 	protected ListView accountListView;
@@ -53,105 +47,6 @@ public class ManageAccountActivity extends XmppActivity {
 		}
 	};
 
-	protected ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
-
-		@Override
-		public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-			if (selectedAccountForActionMode
-					.isOptionSet(Account.OPTION_DISABLED)) {
-				menu.findItem(R.id.mgmt_account_enable).setVisible(true);
-				menu.findItem(R.id.mgmt_account_disable).setVisible(false);
-			} else {
-				menu.findItem(R.id.mgmt_account_disable).setVisible(true);
-				menu.findItem(R.id.mgmt_account_enable).setVisible(false);
-			}
-			return true;
-		}
-
-		@Override
-		public void onDestroyActionMode(ActionMode mode) {
-			// TODO Auto-generated method stub
-
-		}
-
-		@Override
-		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-			MenuInflater inflater = mode.getMenuInflater();
-			inflater.inflate(R.menu.manageaccounts_context, menu);
-			return true;
-		}
-
-		@Override
-		public boolean onActionItemClicked(final ActionMode mode, MenuItem item) {
-			if (item.getItemId() == R.id.mgmt_account_edit) {
-				editAccount(selectedAccountForActionMode);
-			} else if (item.getItemId() == R.id.mgmt_account_disable) {
-				selectedAccountForActionMode.setOption(Account.OPTION_DISABLED,
-						true);
-				xmppConnectionService
-						.updateAccount(selectedAccountForActionMode);
-				mode.finish();
-			} else if (item.getItemId() == R.id.mgmt_account_enable) {
-				selectedAccountForActionMode.setOption(Account.OPTION_DISABLED,
-						false);
-				xmppConnectionService
-						.updateAccount(selectedAccountForActionMode);
-				mode.finish();
-			} else if (item.getItemId() == R.id.mgmt_account_publish_avatar) {
-				Intent intent = new Intent(getApplicationContext(), PublishProfilePictureActivity.class);
-				intent.putExtra("account", selectedAccountForActionMode.getJid());
-				startActivity(intent);
-			} else if (item.getItemId() == R.id.mgmt_account_delete) {
-				AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-				builder.setTitle(getString(R.string.mgmt_account_are_you_sure));
-				builder.setIconAttribute(android.R.attr.alertDialogIcon);
-				builder.setMessage(getString(R.string.mgmt_account_delete_confirm_text));
-				builder.setPositiveButton(getString(R.string.delete),
-						new OnClickListener() {
-
-							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
-								xmppConnectionService
-										.deleteAccount(selectedAccountForActionMode);
-								selectedAccountForActionMode = null;
-								mode.finish();
-							}
-						});
-				builder.setNegativeButton(getString(R.string.cancel), null);
-				builder.create().show();
-			} else if (item.getItemId() == R.id.mgmt_account_announce_pgp) {
-				if (activity.hasPgp()) {
-					mode.finish();
-					announcePgp(selectedAccountForActionMode, null);
-				} else {
-					activity.showInstallPgpDialog();
-				}
-			} else if (item.getItemId() == R.id.mgmt_otr_key) {
-				AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-				builder.setTitle("OTR Fingerprint");
-				String fingerprintTxt = selectedAccountForActionMode
-						.getOtrFingerprint(getApplicationContext());
-				View view = (View) getLayoutInflater().inflate(
-						R.layout.otr_fingerprint, null);
-				if (fingerprintTxt != null) {
-					TextView fingerprint = (TextView) view
-							.findViewById(R.id.otr_fingerprint);
-					TextView noFingerprintView = (TextView) view
-							.findViewById(R.id.otr_no_fingerprint);
-					fingerprint.setText(fingerprintTxt);
-					fingerprint.setVisibility(View.VISIBLE);
-					noFingerprintView.setVisibility(View.GONE);
-				}
-				builder.setView(view);
-				builder.setPositiveButton(getString(R.string.done), null);
-				builder.create().show();
-			}
-			return true;
-		}
-
-	};
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
@@ -160,7 +55,6 @@ public class ManageAccountActivity extends XmppActivity {
 		setContentView(R.layout.manage_accounts);
 
 		accountListView = (ListView) findViewById(R.id.account_list);
-		final XmppActivity activity = this;
 		this.mAccountAdapter = new AccountAdapter(this, accountList);
 		accountListView.setAdapter(this.mAccountAdapter);
 		accountListView.setOnItemClickListener(new OnItemClickListener() {
@@ -168,34 +62,27 @@ public class ManageAccountActivity extends XmppActivity {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View view,
 					int position, long arg3) {
-				if (!isActionMode) {
-					editAccount(accountList.get(position));
-				} else {
-					selectedAccountForActionMode = accountList.get(position);
-					actionMode.invalidate();
-				}
+				editAccount(accountList.get(position));
 			}
 		});
-		accountListView
-				.setOnItemLongClickListener(new OnItemLongClickListener() {
+		registerForContextMenu(accountListView);
+	}
 
-					@Override
-					public boolean onItemLongClick(AdapterView<?> arg0,
-							View view, int position, long arg3) {
-						if (!isActionMode) {
-							accountListView
-									.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-							accountListView.setItemChecked(position, true);
-							selectedAccountForActionMode = accountList
-									.get(position);
-							actionMode = activity
-									.startActionMode(mActionModeCallback);
-							return true;
-						} else {
-							return false;
-						}
-					}
-				});
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v,
+			ContextMenuInfo menuInfo) {
+		super.onCreateContextMenu(menu, v, menuInfo);
+		activity.getMenuInflater().inflate(R.menu.manageaccounts_context, menu);
+		AdapterView.AdapterContextMenuInfo acmi = (AdapterContextMenuInfo) menuInfo;
+		this.selectedAccount = accountList.get(acmi.position);
+		if (this.selectedAccount.isOptionSet(Account.OPTION_DISABLED)) {
+			menu.findItem(R.id.mgmt_account_disable).setVisible(false);
+			menu.findItem(R.id.mgmt_account_announce_pgp).setVisible(false);
+			menu.findItem(R.id.mgmt_account_publish_avatar).setVisible(false);
+		} else {
+			menu.findItem(R.id.mgmt_account_enable).setVisible(false);
+		}
+		menu.setHeaderTitle(this.selectedAccount.getJid());
 	}
 
 	@Override
@@ -212,11 +99,6 @@ public class ManageAccountActivity extends XmppActivity {
 		this.accountList.clear();
 		this.accountList.addAll(xmppConnectionService.getAccounts());
 		mAccountAdapter.notifyDataSetChanged();
-		if ((this.accountList.size() == 0) && (this.firstrun)) {
-			getActionBar().setDisplayHomeAsUpEnabled(false);
-			getActionBar().setHomeButtonEnabled(false);
-			this.firstrun = false;
-		}
 	}
 
 	@Override
@@ -226,10 +108,33 @@ public class ManageAccountActivity extends XmppActivity {
 	}
 
 	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.mgmt_account_publish_avatar:
+			publishAvatar(selectedAccount);
+			return true;
+		case R.id.mgmt_account_disable:
+			disableAccount(selectedAccount);
+			return true;
+		case R.id.mgmt_account_enable:
+			enableAccount(selectedAccount);
+			return true;
+		case R.id.mgmt_account_delete:
+			deleteAccount(selectedAccount);
+			return true;
+		case R.id.mgmt_account_announce_pgp:
+			publishOpenPGPPublicKey(selectedAccount);
+		default:
+			return super.onContextItemSelected(item);
+		}
+	}
+
+	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.action_add_account:
-			startActivity(new Intent(getApplicationContext(), EditAccountActivity.class));
+			startActivity(new Intent(getApplicationContext(),
+					EditAccountActivity.class));
 			break;
 		default:
 			break;
@@ -264,24 +169,46 @@ public class ManageAccountActivity extends XmppActivity {
 		startActivity(intent);
 	}
 
-	@Override
-	public void onActionModeStarted(ActionMode mode) {
-		super.onActionModeStarted(mode);
-		this.isActionMode = true;
+	private void publishAvatar(Account account) {
+		Intent intent = new Intent(getApplicationContext(),
+				PublishProfilePictureActivity.class);
+		intent.putExtra("account", account.getJid());
+		startActivity(intent);
 	}
 
-	@Override
-	public void onActionModeFinished(ActionMode mode) {
-		super.onActionModeFinished(mode);
-		this.isActionMode = false;
-		accountListView.clearChoices();
-		accountListView.requestLayout();
-		accountListView.post(new Runnable() {
-			@Override
-			public void run() {
-				accountListView.setChoiceMode(ListView.CHOICE_MODE_NONE);
-			}
-		});
+	private void disableAccount(Account account) {
+		account.setOption(Account.OPTION_DISABLED, true);
+		xmppConnectionService.updateAccount(account);
+	}
+
+	private void enableAccount(Account account) {
+		account.setOption(Account.OPTION_DISABLED, false);
+		xmppConnectionService.updateAccount(account);
+	}
+
+	private void publishOpenPGPPublicKey(Account account) {
+		if (activity.hasPgp()) {
+			announcePgp(account, null);
+		} else {
+			this.showInstallPgpDialog();
+		}
+	}
+
+	private void deleteAccount(final Account account) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+		builder.setTitle(getString(R.string.mgmt_account_are_you_sure));
+		builder.setIconAttribute(android.R.attr.alertDialogIcon);
+		builder.setMessage(getString(R.string.mgmt_account_delete_confirm_text));
+		builder.setPositiveButton(getString(R.string.delete),
+				new OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						xmppConnectionService.deleteAccount(account);
+						selectedAccount = null;
+					}
+				});
+		builder.setNegativeButton(getString(R.string.cancel), null);
+		builder.create().show();
 	}
 
 	@Override
@@ -289,7 +216,7 @@ public class ManageAccountActivity extends XmppActivity {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (resultCode == RESULT_OK) {
 			if (requestCode == REQUEST_ANNOUNCE_PGP) {
-				announcePgp(selectedAccountForActionMode, null);
+				announcePgp(selectedAccount, null);
 			}
 		}
 	}
