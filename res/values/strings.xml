@@ -184,6 +184,7 @@
     <string name="encryption_choice_none">Plain text</string>
     <string name="encryption_choice_otr">OTR</string>
     <string name="encryption_choice_pgp">OpenPGP</string>
+    <string name="mgmt_account_edit">Edit account</string>
     <string name="mgmt_account_delete">Delete account</string>
     <string name="mgmt_account_disable">Temporarily disable</string>
     <string name="mgmt_account_publish_avatar">Publish avatar</string>
@@ -287,4 +288,5 @@
     <string name="server_info_compatibilty">Server compatibilty</string>
     <string name="server_info_session_established">Current session established</string>
     <string name="additional_information">Additional Information</string>
+
 </resources>
