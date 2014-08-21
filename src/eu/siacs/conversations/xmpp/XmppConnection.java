@@ -948,6 +948,11 @@ public class XmppConnection implements Runnable {
 			} else {
 				++miss;
 			}
+			if (rosterVersioning()) {
+				++hit;
+			} else {
+				++miss;
+			}
 			return (int) (((float) hit) / (hit + miss) * 100);
 		}
 	}
