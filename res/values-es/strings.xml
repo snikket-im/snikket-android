@@ -120,9 +120,9 @@
     <string name="use_pgp_encryption">Usa encriptación con OpenPGP</string>
     <string name="pref_xmpp_resource">Recurso</string>
     <string name="pref_xmpp_resource_summary">El nombre que identifica el cliente que estás utilizando</string>
-	<string name="pref_accept_files">Aceptar archivos</string>
-	<string name="pref_accept_files_summary">De forma automática aceptar archivos menores que&#8230;</string>
-	<string name="pref_notification_settings">Ajustes de notificación</string>
+    <string name="pref_accept_files">Aceptar archivos</string>
+    <string name="pref_accept_files_summary">De forma automática aceptar archivos menores que&#8230;</string>
+    <string name="pref_notification_settings">Ajustes de notificación</string>
     <string name="pref_notifications">Notificaciones</string>
     <string name="pref_notifications_summary">Notifica cuando llega un nuevo mensaje</string>
     <string name="pref_vibrate">Vibrar</string>
@@ -188,6 +188,7 @@
     <string name="mgmt_account_delete">Eliminar cuenta</string>
     <string name="mgmt_account_disable">Deshabilitar temporalmente</string>
     <string name="mgmt_account_publish_avatar">Imagen de perfil</string>
+    <string name="mgmt_account_publish_pgp">Publicar clave pública OpenPGP</string>
     <string name="mgmt_account_enable">Habilitar</string>
     <string name="mgmt_account_are_you_sure">¿Estás seguro?</string>
     <string name="mgmt_account_delete_confirm_text">Si eliminas tu cuenta tu historial completo de conversaciones se perderá</string>
@@ -281,4 +282,10 @@
     <string name="private_message">en privado</string>
     <string name="private_message_to">en privado para %s</string>
     <string name="send_private_message_to">Enviar mensaje privado a %s</string>
+    <string name="connect">Conectar</string>
+    <string name="account_already_exists">Esta cuenta ya existe</string>
+    <string name="next">Siguiente</string>
+    <string name="server_info_compatibilty">Compatibilidad del servidor</string>
+    <string name="server_info_session_established">Inicio sesión actual</string>
+    <string name="additional_information">Información adicional</string>
 </resources>
