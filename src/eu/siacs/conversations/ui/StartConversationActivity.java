@@ -143,11 +143,11 @@ public class StartConversationActivity extends XmppActivity {
 		}
 	};
 	private OnRosterUpdate onRosterUpdate = new OnRosterUpdate() {
-		
+
 		@Override
 		public void onRosterUpdate() {
 			runOnUiThread(new Runnable() {
-				
+
 				@Override
 				public void run() {
 					if (mSearchEditText != null) {
@@ -191,7 +191,8 @@ public class StartConversationActivity extends XmppActivity {
 			}
 		});
 
-		mConferenceAdapter = new ListItemAdapter(getApplicationContext(),conferences);
+		mConferenceAdapter = new ListItemAdapter(getApplicationContext(),
+				conferences);
 		mConferenceListFragment.setListAdapter(mConferenceAdapter);
 		mConferenceListFragment.setContextMenu(R.menu.conference_context);
 		mConferenceListFragment
@@ -204,7 +205,8 @@ public class StartConversationActivity extends XmppActivity {
 					}
 				});
 
-		mContactsAdapter = new ListItemAdapter(getApplicationContext(),contacts);
+		mContactsAdapter = new ListItemAdapter(getApplicationContext(),
+				contacts);
 		mContactsListFragment.setListAdapter(mContactsAdapter);
 		mContactsListFragment.setContextMenu(R.menu.contact_context);
 		mContactsListFragment
@@ -218,7 +220,7 @@ public class StartConversationActivity extends XmppActivity {
 				});
 
 	}
-	
+
 	@Override
 	public void onStop() {
 		super.onStop();
@@ -270,11 +272,10 @@ public class StartConversationActivity extends XmppActivity {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setNegativeButton(R.string.cancel, null);
 		builder.setTitle(R.string.action_delete_contact);
-		builder.setMessage(
-				getString(R.string.remove_contact_text,
-						contact.getJid()));
-		builder.setPositiveButton(R.string.delete,new OnClickListener() {
-			
+		builder.setMessage(getString(R.string.remove_contact_text,
+				contact.getJid()));
+		builder.setPositiveButton(R.string.delete, new OnClickListener() {
+
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				xmppConnectionService.deleteContactOnServer(contact);
@@ -282,21 +283,20 @@ public class StartConversationActivity extends XmppActivity {
 			}
 		});
 		builder.create().show();
-		
+
 	}
 
 	protected void deleteConference() {
 		int position = conference_context_id;
 		final Bookmark bookmark = (Bookmark) conferences.get(position);
-		
+
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setNegativeButton(R.string.cancel, null);
 		builder.setTitle(R.string.delete_bookmark);
-		builder.setMessage(
-				getString(R.string.remove_bookmark_text,
-						bookmark.getJid()));
-		builder.setPositiveButton(R.string.delete,new OnClickListener() {
-			
+		builder.setMessage(getString(R.string.remove_bookmark_text,
+				bookmark.getJid()));
+		builder.setPositiveButton(R.string.delete, new OnClickListener() {
+
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				bookmark.unregisterConversation();
@@ -307,7 +307,7 @@ public class StartConversationActivity extends XmppActivity {
 			}
 		});
 		builder.create().show();
-		
+
 	}
 
 	protected void showCreateContactDialog() {
@@ -331,6 +331,9 @@ public class StartConversationActivity extends XmppActivity {
 
 					@Override
 					public void onClick(View v) {
+						if (!xmppConnectionServiceBound) {
+							return;
+						}
 						if (Validator.isValidJid(jid.getText().toString())) {
 							String accountJid = (String) spinner
 									.getSelectedItem();
@@ -377,6 +380,9 @@ public class StartConversationActivity extends XmppActivity {
 
 					@Override
 					public void onClick(View v) {
+						if (!xmppConnectionServiceBound) {
+							return;
+						}
 						if (Validator.isValidJid(jid.getText().toString())) {
 							String accountJid = (String) spinner
 									.getSelectedItem();
@@ -398,7 +404,8 @@ public class StartConversationActivity extends XmppActivity {
 													conferenceJid, true);
 									conversation.setBookmark(bookmark);
 									if (!conversation.getMucOptions().online()) {
-										xmppConnectionService.joinMuc(conversation);
+										xmppConnectionService
+												.joinMuc(conversation);
 									}
 									switchToConversation(conversation);
 								}
@@ -466,12 +473,10 @@ public class StartConversationActivity extends XmppActivity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	
+
 	@Override
-	public boolean onKeyUp(int keyCode, KeyEvent event)
-	{		
-		if(keyCode == KeyEvent.KEYCODE_SEARCH && !event.isLongPress())
-		{
+	public boolean onKeyUp(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_SEARCH && !event.isLongPress()) {
 			mOptionsMenu.findItem(R.id.action_search).expandActionView();
 			return true;
 		}
@@ -480,7 +485,7 @@ public class StartConversationActivity extends XmppActivity {
 
 	@Override
 	void onBackendConnected() {
-		xmppConnectionService.setOnRosterUpdateListener(this.onRosterUpdate );
+		xmppConnectionService.setOnRosterUpdateListener(this.onRosterUpdate);
 		if (mSearchEditText != null) {
 			filter(mSearchEditText.getText().toString());
 		} else {
