@@ -34,6 +34,7 @@ your friends.
 These XEPs are - as of now:
 * XEP-0065: SOCKS5 Bytestreams - or rather mod_proxy65. Will be used to tranfer files if both parties are behind a firewall (NAT).
 * XEP-0138: Stream Compression saves bandwith
+* XEP-0163: Personal Eventing Protocol for avatars
 * XEP-0198: Stream Management allows XMPP to survive small network outages and changes of the underlying TCP connection.
 * XEP-0280: Message Carbons which automatically syncs the messages you send to
   your desktop client and thus allows you to switch seamlessly from your mobile
