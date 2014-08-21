@@ -244,6 +244,14 @@ public class EditAccountActivity extends XmppActivity {
 			}
 		}
 	}
+	
+	@Override
+	protected void onStop() {
+		if (xmppConnectionServiceBound) {
+			xmppConnectionService.removeOnAccountListChangedListener();
+		}
+		super.onStop();
+	}
 
 	@Override
 	protected void onBackendConnected() {
