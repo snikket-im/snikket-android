@@ -65,15 +65,6 @@ public class ImageProvider extends ContentProvider {
 			pfd = ParcelFileDescriptor.open(file,
 					ParcelFileDescriptor.MODE_READ_ONLY);
 			return pfd;
-		} else if ("w".equals(mode)){
-			File file = fileBackend.getIncomingFile();
-			try {
-				file.createNewFile();
-			} catch (IOException e) {
-				throw new FileNotFoundException();
-			}
-			pfd = ParcelFileDescriptor.open(file, ParcelFileDescriptor.MODE_READ_WRITE);
-			return pfd;
 		} else {
 			throw new FileNotFoundException();
 		}
@@ -117,9 +108,5 @@ public class ImageProvider extends ContentProvider {
 						+ "/"
 						+ message.getUuid()
 						+ ".webp");
-	}
-
-	public static Uri getIncomingContentUri() {
-		return Uri.parse("content://eu.siacs.conversations.images/incoming");
 	}
 }

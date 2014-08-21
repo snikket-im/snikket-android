@@ -10,7 +10,6 @@ import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
-import eu.siacs.conversations.services.ImageProvider;
 import eu.siacs.conversations.services.XmppConnectionService.OnConversationUpdate;
 import eu.siacs.conversations.ui.adapter.ConversationAdapter;
 import eu.siacs.conversations.utils.ExceptionHelper;
@@ -36,6 +35,7 @@ import android.graphics.drawable.Drawable;
 import android.support.v4.widget.SlidingPaneLayout;
 import android.support.v4.widget.SlidingPaneLayout.PanelSlideListener;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -111,6 +111,8 @@ public class ConversationActivity extends XmppActivity {
 	protected ConversationActivity activity = this;
 	private DisplayMetrics metrics;
 	private Toast prepareImageToast;
+	
+	private Uri pendingImageUri = null;
 
 	public List<Conversation> getConversationList() {
 		return this.conversationList;
@@ -265,10 +267,11 @@ public class ConversationActivity extends XmppActivity {
 			@Override
 			public void onPresenceSelected() {
 				if (attachmentChoice == ATTACHMENT_CHOICE_TAKE_PHOTO) {
+					pendingImageUri = xmppConnectionService.getFileBackend().getTakePhotoUri();
+					Log.d("xmppService",pendingImageUri.toString());
 					Intent takePictureIntent = new Intent(
 							MediaStore.ACTION_IMAGE_CAPTURE);
-					takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
-							ImageProvider.getIncomingContentUri());
+					takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,pendingImageUri);
 					if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
 						startActivityForResult(takePictureIntent,
 								REQUEST_IMAGE_CAPTURE);
@@ -597,6 +600,13 @@ public class ConversationActivity extends XmppActivity {
 		if (conversationList.size() == 0) {
 			updateConversationList();
 		}
+		
+		if (getSelectedConversation()!=null && pendingImageUri !=null) {
+			attachImageToConversation(getSelectedConversation(), pendingImageUri);
+			pendingImageUri = null;
+		} else {
+			pendingImageUri = null;
+		}
 
 		if ((getIntent().getAction() != null)
 				&& (getIntent().getAction().equals(Intent.ACTION_VIEW) && (!handledViewIntent))) {
@@ -659,8 +669,11 @@ public class ConversationActivity extends XmppActivity {
 					selectedFragment.hideSnackbar();
 				}
 			} else if (requestCode == REQUEST_ATTACH_FILE_DIALOG) {
-				attachImageToConversation(getSelectedConversation(),
-						data.getData());
+				pendingImageUri = data.getData();
+				if (xmppConnectionServiceBound) {
+					attachImageToConversation(getSelectedConversation(),pendingImageUri);
+					pendingImageUri = null;
+				}
 			} else if (requestCode == REQUEST_SEND_PGP_IMAGE) {
 
 			} else if (requestCode == ATTACHMENT_CHOICE_CHOOSE_IMAGE) {
@@ -673,7 +686,13 @@ public class ConversationActivity extends XmppActivity {
 			} else if (requestCode == REQUEST_ENCRYPT_MESSAGE) {
 				// encryptTextMessage();
 			} else if (requestCode == REQUEST_IMAGE_CAPTURE) {
-				attachImageToConversation(getSelectedConversation(), null);
+				if (xmppConnectionServiceBound) {
+					attachImageToConversation(getSelectedConversation(), pendingImageUri);
+					pendingImageUri = null;
+				}
+				Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+				intent.setData(pendingImageUri);
+				sendBroadcast(intent);
 			} else if (requestCode == REQUEST_RECORD_AUDIO) {
 				attachAudioToConversation(getSelectedConversation(),
 						data.getData());

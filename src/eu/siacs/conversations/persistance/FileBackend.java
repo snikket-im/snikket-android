@@ -2,7 +2,6 @@ package eu.siacs.conversations.persistance;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -11,6 +10,9 @@ import java.io.OutputStream;
 import java.security.DigestOutputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -42,6 +44,8 @@ public class FileBackend {
 
 	private Context context;
 	private LruCache<String, Bitmap> thumbnailCache;
+	
+	private SimpleDateFormat imageDateFormat = new SimpleDateFormat("yyyyMMdd_HHmmssSSS",Locale.US);
 
 	public FileBackend(Context context) {
 		this.context = context;
@@ -140,13 +144,7 @@ public class FileBackend {
 	private JingleFile copyImageToPrivateStorage(Message message, Uri image,
 			int sampleSize) throws ImageCopyException {
 		try {
-			InputStream is;
-			if (image != null) {
-				is = context.getContentResolver().openInputStream(image);
-			} else {
-				is = new FileInputStream(getIncomingFile());
-				image = getIncomingUri();
-			}
+			InputStream is = context.getContentResolver().openInputStream(image);
 			JingleFile file = getJingleFile(message);
 			file.getParentFile().mkdirs();
 			file.createNewFile();
@@ -273,12 +271,17 @@ public class FileBackend {
 		f.delete();
 	}
 
-	public File getIncomingFile() {
-		return new File(context.getFilesDir().getAbsolutePath() + "/incoming");
-	}
-
-	public Uri getIncomingUri() {
-		return Uri.parse(context.getFilesDir().getAbsolutePath() + "/incoming");
+	public Uri getTakePhotoUri() {
+		StringBuilder pathBuilder = new StringBuilder();
+		pathBuilder.append(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM));
+		pathBuilder.append('/');
+		pathBuilder.append("Camera");
+		pathBuilder.append('/');
+		pathBuilder.append("IMG_"+this.imageDateFormat.format(new Date())+".jpg");
+		Uri uri = Uri.parse("file://"+pathBuilder.toString());
+		File file = new File(uri.toString());
+		file.getParentFile().mkdirs();
+		return uri;
 	}
 	
 	public Avatar getPepAvatar(Uri image, int size, Bitmap.CompressFormat format) {
