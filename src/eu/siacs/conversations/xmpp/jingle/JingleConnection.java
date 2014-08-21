@@ -328,7 +328,7 @@ public class JingleConnection {
 							this.cancel();
 							return;
 						} else {
-							this.file.setKey(conversation.getSymmetricKey());
+							this.file.setKey(key);
 						}
 					}
 					this.file.setExpectedSize(size);
