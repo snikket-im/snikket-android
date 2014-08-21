@@ -15,7 +15,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 
 public class Contact implements ListItem {
 	public static final String TABLENAME = "contacts";
@@ -28,6 +27,7 @@ public class Contact implements ListItem {
 	public static final String PHOTOURI = "photouri";
 	public static final String KEYS = "pgpkey";
 	public static final String ACCOUNT = "accountUuid";
+	public static final String AVATAR = "avatar";
 
 	protected String accountUuid;
 	protected String systemName;
@@ -48,7 +48,7 @@ public class Contact implements ListItem {
 
 	public Contact(String account, String systemName, String serverName,
 			String jid, int subscription, String photoUri,
-			String systemAccount, String keys) {
+			String systemAccount, String keys, String avatar) {
 		this.accountUuid = account;
 		this.systemName = systemName;
 		this.serverName = serverName;
@@ -64,6 +64,7 @@ public class Contact implements ListItem {
 		} catch (JSONException e) {
 			this.keys = new JSONObject();
 		}
+		this.avatar = avatar;
 	}
 
 	public Contact(String jid) {
@@ -105,6 +106,7 @@ public class Contact implements ListItem {
 		values.put(SYSTEMACCOUNT, systemAccount);
 		values.put(PHOTOURI, photoUri);
 		values.put(KEYS, keys.toString());
+		values.put(AVATAR,avatar);
 		return values;
 	}
 
@@ -116,7 +118,8 @@ public class Contact implements ListItem {
 				cursor.getInt(cursor.getColumnIndex(OPTIONS)),
 				cursor.getString(cursor.getColumnIndex(PHOTOURI)),
 				cursor.getString(cursor.getColumnIndex(SYSTEMACCOUNT)),
-				cursor.getString(cursor.getColumnIndex(KEYS)));
+				cursor.getString(cursor.getColumnIndex(KEYS)),
+				cursor.getString(cursor.getColumnIndex(AVATAR)));
 	}
 
 	public int getSubscription() {
@@ -332,7 +335,12 @@ public class Contact implements ListItem {
 		}
 	}
 
-	public void setAvatar(String filename) {
-		this.avatar = filename;
+	public boolean setAvatar(String filename) {
+		if (this.avatar != null && this.avatar.equals(filename)) {
+			return false;
+		} else {
+			this.avatar = filename;
+			return true;
+		}
 	}
 }

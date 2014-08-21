@@ -1218,7 +1218,9 @@ public class XmppConnectionService extends Service {
 							@Override
 							public void onIqPacketReceived(Account account, IqPacket result) {
 								if (result.getType() == IqPacket.TYPE_RESULT) {
-									account.setAvatar(avatar.getFilename());
+									if (account.setAvatar(avatar.getFilename())) {
+										databaseBackend.updateAccount(account);
+									}
 									callback.success(avatar);
 								} else {
 									callback.error(R.string.error_publish_avatar_server_reject, avatar);
@@ -1250,7 +1252,9 @@ public class XmppConnectionService extends Service {
 				if (avatar.image!=null) {
 					if (getFileBackend().save(avatar)) {
 						if (account.getJid().equals(avatar.owner)) {
-							account.setAvatar(avatar.getFilename());
+							if (account.setAvatar(avatar.getFilename())) {
+								databaseBackend.updateAccount(account);
+							}
 						} else {
 							Contact contact = account.getRoster().getContact(avatar.owner);
 							contact.setAvatar(avatar.getFilename());
@@ -1283,7 +1287,9 @@ public class XmppConnectionService extends Service {
 							if (avatar!=null) {
 								avatar.owner = account.getJid();
 								if (fileBackend.isAvatarCached(avatar)) {
-									account.setAvatar(avatar.getFilename());
+									if (account.setAvatar(avatar.getFilename())) {
+										databaseBackend.updateAccount(account);
+									}
 									callback.success(avatar);
 								} else {
 									fetchAvatar(account, avatar,callback);

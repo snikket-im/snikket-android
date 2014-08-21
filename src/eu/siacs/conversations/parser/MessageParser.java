@@ -301,7 +301,9 @@ public class MessageParser extends AbstractParser implements
 					if (mXmppConnectionService.getFileBackend().isAvatarCached(
 							avatar)) {
 						if (account.getJid().equals(from)) {
-							account.setAvatar(avatar.getFilename());
+							if (account.setAvatar(avatar.getFilename())) {
+								mXmppConnectionService.databaseBackend.updateAccount(account);
+							}
 						} else {
 							Contact contact = account.getRoster().getContact(from);
 							contact.setAvatar(avatar.getFilename());

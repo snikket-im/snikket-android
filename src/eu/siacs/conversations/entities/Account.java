@@ -31,6 +31,7 @@ public class Account extends AbstractEntity {
 	public static final String OPTIONS = "options";
 	public static final String ROSTERVERSION = "rosterversion";
 	public static final String KEYS = "keys";
+	public static final String AVATAR = "avatar";
 
 	public static final int OPTION_USETLS = 0;
 	public static final int OPTION_DISABLED = 1;
@@ -81,11 +82,11 @@ public class Account extends AbstractEntity {
 
 	public Account(String username, String server, String password) {
 		this(java.util.UUID.randomUUID().toString(), username, server,
-				password, 0, null, "");
+				password, 0, null, "",null);
 	}
 
 	public Account(String uuid, String username, String server,
-			String password, int options, String rosterVersion, String keys) {
+			String password, int options, String rosterVersion, String keys, String avatar) {
 		this.uuid = uuid;
 		this.username = username;
 		this.server = server;
@@ -97,6 +98,7 @@ public class Account extends AbstractEntity {
 		} catch (JSONException e) {
 
 		}
+		this.avatar = avatar;
 	}
 
 	public boolean isOptionSet(int option) {
@@ -209,6 +211,7 @@ public class Account extends AbstractEntity {
 		values.put(OPTIONS, options);
 		values.put(KEYS, this.keys.toString());
 		values.put(ROSTERVERSION, rosterVersion);
+		values.put(AVATAR, avatar);
 		return values;
 	}
 
@@ -219,7 +222,8 @@ public class Account extends AbstractEntity {
 				cursor.getString(cursor.getColumnIndex(PASSWORD)),
 				cursor.getInt(cursor.getColumnIndex(OPTIONS)),
 				cursor.getString(cursor.getColumnIndex(ROSTERVERSION)),
-				cursor.getString(cursor.getColumnIndex(KEYS)));
+				cursor.getString(cursor.getColumnIndex(KEYS)),
+				cursor.getString(cursor.getColumnIndex(AVATAR)));
 	}
 
 	public OtrEngine getOtrEngine(Context context) {
@@ -346,8 +350,13 @@ public class Account extends AbstractEntity {
 		}
 	}
 
-	public void setAvatar(String filename) {
-		this.avatar = filename;
+	public boolean setAvatar(String filename) {
+		if (this.avatar != null && this.avatar.equals(filename)) {
+			return false;
+		} else {
+			this.avatar = filename;
+			return true;
+		}
 	}
 
 	public String getAvatar() {

@@ -43,6 +43,7 @@ public class Message extends AbstractEntity {
 	public static String ENCRYPTION = "encryption";
 	public static String STATUS = "status";
 	public static String TYPE = "type";
+	public static String REMOTE_MSG_ID = "remoteMsgId";
 
 	protected String conversationUuid;
 	protected String counterpart;
@@ -54,6 +55,7 @@ public class Message extends AbstractEntity {
 	protected int status;
 	protected int type;
 	protected boolean read = true;
+	protected String remoteMsgId = null;
 
 	protected transient Conversation conversation = null;
 	
@@ -66,17 +68,17 @@ public class Message extends AbstractEntity {
 	public Message(Conversation conversation, String body, int encryption) {
 		this(java.util.UUID.randomUUID().toString(), conversation.getUuid(),
 				conversation.getContactJid(), null, body, System.currentTimeMillis(), encryption,
-				Message.STATUS_UNSEND,TYPE_TEXT);
+				Message.STATUS_UNSEND,TYPE_TEXT,null);
 		this.conversation = conversation;
 	}
 	
 	public Message(Conversation conversation, String counterpart, String body, int encryption, int status) {
-		this(java.util.UUID.randomUUID().toString(), conversation.getUuid(),counterpart, null, body, System.currentTimeMillis(), encryption,status,TYPE_TEXT);
+		this(java.util.UUID.randomUUID().toString(), conversation.getUuid(),counterpart, null, body, System.currentTimeMillis(), encryption,status,TYPE_TEXT,null);
 		this.conversation = conversation;
 	}
 	
 	public Message(String uuid, String conversationUUid, String counterpart, String trueCounterpart,
-			String body, long timeSent, int encryption, int status, int type) {
+			String body, long timeSent, int encryption, int status, int type, String remoteMsgId) {
 		this.uuid = uuid;
 		this.conversationUuid = conversationUUid;
 		this.counterpart = counterpart;
@@ -86,6 +88,7 @@ public class Message extends AbstractEntity {
 		this.encryption = encryption;
 		this.status = status;
 		this.type = type;
+		this.remoteMsgId = remoteMsgId;
 	}
 
 	@Override
@@ -100,6 +103,7 @@ public class Message extends AbstractEntity {
 		values.put(ENCRYPTION, encryption);
 		values.put(STATUS, status);
 		values.put(TYPE, type);
+		values.put(REMOTE_MSG_ID,remoteMsgId);
 		return values;
 	}
 
@@ -162,6 +166,14 @@ public class Message extends AbstractEntity {
 	public int getStatus() {
 		return status;
 	}
+	
+	public String getRemoteMsgId() {
+		return this.remoteMsgId;
+	}
+	
+	public void setRemoteMsgId(String id) {
+		this.remoteMsgId = id;
+	}
 
 	public static Message fromCursor(Cursor cursor) {
 		return new Message(cursor.getString(cursor.getColumnIndex(UUID)),
@@ -172,7 +184,8 @@ public class Message extends AbstractEntity {
 				cursor.getLong(cursor.getColumnIndex(TIME_SENT)),
 				cursor.getInt(cursor.getColumnIndex(ENCRYPTION)),
 				cursor.getInt(cursor.getColumnIndex(STATUS)),
-				cursor.getInt(cursor.getColumnIndex(TYPE)));
+				cursor.getInt(cursor.getColumnIndex(TYPE)),
+				cursor.getString(cursor.getColumnIndex(REMOTE_MSG_ID)));
 	}
 
 	public void setConversation(Conversation conv) {
