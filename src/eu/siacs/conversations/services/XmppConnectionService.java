@@ -177,13 +177,16 @@ public class XmppConnectionService extends Service {
 				reconnectAccount(account, true);
 			} else if ((account.getStatus() != Account.STATUS_CONNECTING)
 					&& (account.getStatus() != Account.STATUS_NO_INTERNET)) {
-				int next = account.getXmppConnection().getTimeToNextAttempt();
-				Log.d(LOGTAG, account.getJid()
-						+ ": error connecting account. try again in " + next
-						+ "s for the "
-						+ (account.getXmppConnection().getAttempt() + 1)
-						+ " time");
-				scheduleWakeupCall((int) (next * 1.2), false);
+				XmppConnection connection = account.getXmppConnection();
+				if (connection!=null) {
+					int next = connection.getTimeToNextAttempt();
+					Log.d(LOGTAG, account.getJid()
+							+ ": error connecting account. try again in " + next
+							+ "s for the "
+							+ (connection.getAttempt() + 1)
+							+ " time");
+					scheduleWakeupCall((int) (next * 1.2), false);
+				}
 			}
 			UIHelper.showErrorNotification(getApplicationContext(),
 					getAccounts());
