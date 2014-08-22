@@ -187,18 +187,22 @@ public class ConversationFragment extends Fragment {
 	}
 
 	public void updateChatMsgHint() {
-		switch (conversation.getNextEncryption()) {
-		case Message.ENCRYPTION_NONE:
-			mEditMessage.setHint(getString(R.string.send_plain_text_message));
-			break;
-		case Message.ENCRYPTION_OTR:
-			mEditMessage.setHint(getString(R.string.send_otr_message));
-			break;
-		case Message.ENCRYPTION_PGP:
-			mEditMessage.setHint(getString(R.string.send_pgp_message));
-			break;
-		default:
-			break;
+		if (conversation.getNextPresence() != null) {
+			this.mEditMessage.setHint(getString(R.string.send_private_message_to,conversation.getNextPresence()));
+		} else {
+			switch (conversation.getNextEncryption()) {
+			case Message.ENCRYPTION_NONE:
+				mEditMessage.setHint(getString(R.string.send_plain_text_message));
+				break;
+			case Message.ENCRYPTION_OTR:
+				mEditMessage.setHint(getString(R.string.send_otr_message));
+				break;
+			case Message.ENCRYPTION_PGP:
+				mEditMessage.setHint(getString(R.string.send_pgp_message));
+				break;
+			default:
+				break;
+			}
 		}
 	}
 
@@ -270,9 +274,9 @@ public class ConversationFragment extends Fragment {
 	}
 	
 	protected void privateMessageWith(String counterpart) {
-		this.mEditMessage.setHint(getString(R.string.send_private_message_to,counterpart));
 		this.mEditMessage.setText("");
 		this.conversation.setNextPresence(counterpart);
+		updateChatMsgHint();
 	}
 
 	protected void highlightInConference(String nick) {
@@ -328,7 +332,6 @@ public class ConversationFragment extends Fragment {
 		int position = mEditMessage.length();
 		Editable etext = mEditMessage.getText();
 		Selection.setSelection(etext, position);
-		updateMessages();
 		if (activity.getSlidingPaneLayout().isSlideable()) {
 			if (!activity.shouldPaneBeOpen()) {
 				activity.getSlidingPaneLayout().closePane();
@@ -342,6 +345,7 @@ public class ConversationFragment extends Fragment {
 		if (this.conversation.getMode() == Conversation.MODE_MULTI) {
 			conversation.setNextPresence(null);
 		}
+		updateMessages();
 	}
 
 	private void decryptMessage(Message message) {

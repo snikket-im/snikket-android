@@ -15,6 +15,10 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.text.Html;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.StyleSpan;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
@@ -210,11 +214,9 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 			if (message.getType() != Message.TYPE_PRIVATE) {
 				viewHolder.messageBody.setText(message.getBody().trim());
 			} else {
-				StringBuilder builder = new StringBuilder();
-				builder.append(message.getBody().trim());
-				builder.append("&nbsp;<b><i>(");
+				String privateMarker;
 				if (message.getStatus() <= Message.STATUS_RECIEVED) {
-					builder.append(activity.getString(R.string.private_message));
+					privateMarker = activity.getString(R.string.private_message);
 				} else {
 					String to;
 					if (message.getPresence() != null) {
@@ -222,10 +224,12 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 					} else {
 						to = message.getCounterpart();
 					}
-					builder.append(activity.getString(R.string.private_message_to, to));
+					privateMarker = activity.getString(R.string.private_message_to, to);
 				}
-				builder.append(")</i></b>");
-				viewHolder.messageBody.setText(Html.fromHtml(builder.toString()));
+				SpannableString span = new SpannableString(privateMarker+" "+message.getBody());
+				span.setSpan(new ForegroundColorSpan(activity.getSecondaryTextColor()), 0, privateMarker.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+				span.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), 0, privateMarker.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+				viewHolder.messageBody.setText(span);
 			}
 		} else {
 			viewHolder.messageBody.setText("");
