@@ -275,4 +275,12 @@ public class Message extends AbstractEntity {
 	public void setCounterpart(String counterpart) {
 		this.counterpart = counterpart;
 	}
+	
+	public boolean equals(Message message) {
+		if ((this.remoteMsgId!=null) && (this.body != null) && (this.counterpart != null)) {
+			return this.remoteMsgId.equals(message.getRemoteMsgId()) && this.body.equals(message.getBody()) && this.counterpart.equals(message.getCounterpart());
+		} else {
+			return false;
+		}
+	}
 }

@@ -48,6 +48,7 @@ public class MessageParser extends AbstractParser implements
 					.getTrueCounterpart(fromParts[1]));
 
 		}
+		finishedMessage.setRemoteMsgId(packet.getId());
 		finishedMessage.setTime(getTimestamp(packet));
 		return finishedMessage;
 	}
@@ -113,6 +114,7 @@ public class MessageParser extends AbstractParser implements
 					packet.getFrom(), body, Message.ENCRYPTION_OTR,
 					Message.STATUS_RECIEVED);
 			finishedMessage.setTime(getTimestamp(packet));
+			finishedMessage.setRemoteMsgId(packet.getId());
 			return finishedMessage;
 		} catch (Exception e) {
 			String receivedId = packet.getId();
@@ -163,11 +165,15 @@ public class MessageParser extends AbstractParser implements
 			finishedMessage = new Message(conversation, counterPart, pgpBody,
 					Message.ENCRYPTION_PGP, status);
 		}
-		finishedMessage.setTime(getTimestamp(packet));
+		finishedMessage.setRemoteMsgId(packet.getId());
 		if (status == Message.STATUS_RECIEVED) {
 			finishedMessage.setTrueCounterpart(conversation.getMucOptions()
 					.getTrueCounterpart(counterPart));
 		}
+		if (packet.hasChild("delay") && conversation.hasDuplicateMessage(finishedMessage)) {
+			return null;
+		}
+		finishedMessage.setTime(getTimestamp(packet));
 		return finishedMessage;
 	}
 
@@ -223,7 +229,7 @@ public class MessageParser extends AbstractParser implements
 					Message.ENCRYPTION_NONE, status);
 		}
 		finishedMessage.setTime(getTimestamp(message));
-		
+		finishedMessage.setRemoteMsgId(message.getAttribute("id"));
 		if (conversation.getMode() == Conversation.MODE_MULTI
 				&& parts.length >= 2) {
 			finishedMessage.setType(Message.TYPE_PRIVATE);

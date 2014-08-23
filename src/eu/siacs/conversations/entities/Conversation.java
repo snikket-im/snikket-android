@@ -399,4 +399,13 @@ public class Conversation extends AbstractEntity {
 			return UIHelper.getContactPicture(this, size, context, false);
 		}
 	}
+	
+	public boolean hasDuplicateMessage(Message message) {
+		for(int i = this.getMessages().size() -1; i >= 0; --i) {
+			if (this.messages.get(i).equals(message)) {
+				return true;
+			}
+		}
+		return false;
+	}
 }
