@@ -76,7 +76,7 @@ public class EditAccountActivity extends XmppActivity {
 				mAccount.setPassword(password);
 				mAccount.setUsername(username);
 				mAccount.setServer(server);
-				mAccount.setOption(Account.OPTION_REGISTER,registerNewAccount);
+				mAccount.setOption(Account.OPTION_REGISTER, registerNewAccount);
 				xmppConnectionService.updateAccount(mAccount);
 			} else {
 				if (xmppConnectionService.findAccountByJid(mAccountJid
@@ -116,7 +116,13 @@ public class EditAccountActivity extends XmppActivity {
 
 				@Override
 				public void run() {
-					if (jidToEdit == null && mAccount != null
+					if (mAccount != null
+							&& mAccount.getStatus() != Account.STATUS_ONLINE
+							&& mFetchingAvatar) {
+						startActivity(new Intent(getApplicationContext(),
+								ManageAccountActivity.class));
+						finish();
+					} else if (jidToEdit == null && mAccount != null
 							&& mAccount.getStatus() == Account.STATUS_ONLINE) {
 						if (!mFetchingAvatar) {
 							mFetchingAvatar = true;
@@ -250,7 +256,7 @@ public class EditAccountActivity extends XmppActivity {
 			}
 		}
 	}
-	
+
 	@Override
 	protected void onStop() {
 		if (xmppConnectionServiceBound) {
@@ -273,6 +279,7 @@ public class EditAccountActivity extends XmppActivity {
 			getActionBar().setDisplayHomeAsUpEnabled(false);
 			getActionBar().setDisplayShowHomeEnabled(false);
 			this.mCancelButton.setEnabled(false);
+			this.mCancelButton.setTextColor(getSecondaryTextColor());
 		}
 		this.mAccountJid.setAdapter(this.mKnownHostsAdapter);
 		updateSaveButton();
@@ -289,7 +296,8 @@ public class EditAccountActivity extends XmppActivity {
 			this.mRegisterNew.setVisibility(View.GONE);
 			this.mRegisterNew.setChecked(false);
 		}
-		if (this.mAccount.getStatus() == Account.STATUS_ONLINE && !this.mFetchingAvatar) {
+		if (this.mAccount.getStatus() == Account.STATUS_ONLINE
+				&& !this.mFetchingAvatar) {
 			this.mStats.setVisibility(View.VISIBLE);
 			this.mSessionEst.setText(UIHelper.readableTimeDifference(
 					getApplicationContext(), this.mAccount.getXmppConnection()
@@ -298,7 +306,8 @@ public class EditAccountActivity extends XmppActivity {
 			if (features.carbons()) {
 				this.mServerInfoCarbons.setText(R.string.server_info_available);
 			} else {
-				this.mServerInfoCarbons.setText(R.string.server_info_unavailable);
+				this.mServerInfoCarbons
+						.setText(R.string.server_info_unavailable);
 			}
 			if (features.sm()) {
 				this.mServerInfoSm.setText(R.string.server_info_available);
@@ -310,8 +319,9 @@ public class EditAccountActivity extends XmppActivity {
 			} else {
 				this.mServerInfoPep.setText(R.string.server_info_unavailable);
 			}
-			String fingerprint = this.mAccount.getOtrFingerprint(getApplicationContext());
-			if (fingerprint!=null) {
+			String fingerprint = this.mAccount
+					.getOtrFingerprint(getApplicationContext());
+			if (fingerprint != null) {
 				this.mOtrFingerprintHeadline.setVisibility(View.VISIBLE);
 				this.mOtrFingerprint.setVisibility(View.VISIBLE);
 				this.mOtrFingerprint.setText(fingerprint);

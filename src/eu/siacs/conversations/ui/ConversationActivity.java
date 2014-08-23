@@ -628,8 +628,7 @@ public class ConversationActivity extends XmppActivity {
 			}
 		} else {
 			if (xmppConnectionService.getAccounts().size() == 0) {
-				startActivity(new Intent(this, ManageAccountActivity.class));
-				finish();
+				startActivity(new Intent(this, EditAccountActivity.class));
 			} else if (conversationList.size() <= 0) {
 				// add no history
 				startActivity(new Intent(this, StartConversationActivity.class));
