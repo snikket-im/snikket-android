@@ -165,6 +165,7 @@ public class EditAccountActivity extends XmppActivity {
 					intent = new Intent(getApplicationContext(),
 							PublishProfilePictureActivity.class);
 					intent.putExtra("account", mAccount.getJid());
+					intent.putExtra("setup", true);
 				}
 				startActivity(intent);
 				finish();

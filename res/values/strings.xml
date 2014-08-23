@@ -282,5 +282,6 @@
     <string name="next">Next</string>
     <string name="server_info_session_established">Current session established</string>
     <string name="additional_information">Additional Information</string>
+    <string name="skip">Skip</string>
 
 </resources>

@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
@@ -32,8 +31,10 @@ public class PublishProfilePictureActivity extends XmppActivity {
 	private Uri defaultUri;
 
 	private Account account;
-	
+
 	private boolean support = false;
+
+	private boolean mInitialAccountSetup;
 
 	private UiCallback<Avatar> avatarPublication = new UiCallback<Avatar>() {
 
@@ -43,6 +44,10 @@ public class PublishProfilePictureActivity extends XmppActivity {
 
 				@Override
 				public void run() {
+					if (mInitialAccountSetup) {
+						startActivity(new Intent(getApplicationContext(),
+							StartConversationActivity.class));
+					}
 					finish();
 				}
 			});
@@ -104,6 +109,10 @@ public class PublishProfilePictureActivity extends XmppActivity {
 
 			@Override
 			public void onClick(View v) {
+				if (mInitialAccountSetup) {
+					startActivity(new Intent(getApplicationContext(),
+						StartConversationActivity.class));
+				}
 				finish();
 			}
 		});
@@ -143,21 +152,25 @@ public class PublishProfilePictureActivity extends XmppActivity {
 			if (jid != null) {
 				this.account = xmppConnectionService.findAccountByJid(jid);
 				if (this.account.getXmppConnection() != null) {
-					this.support = this.account.getXmppConnection().getFeatures().pubsub();
+					this.support = this.account.getXmppConnection()
+							.getFeatures().pubsub();
 				}
 				if (this.avatarUri == null) {
-					if (this.account.getAvatar() != null || this.defaultUri == null) {
+					if (this.account.getAvatar() != null
+							|| this.defaultUri == null) {
 						this.avatar.setImageBitmap(this.account.getImage(
 								getApplicationContext(), 384));
 						if (this.defaultUri != null) {
 							this.avatar
-								.setOnLongClickListener(this.backToDefaultListener);
+									.setOnLongClickListener(this.backToDefaultListener);
 						} else {
 							this.secondaryHint.setVisibility(View.INVISIBLE);
 						}
 						if (!support) {
-							this.hintOrWarning.setTextColor(getWarningTextColor());
-							this.hintOrWarning.setText(R.string.error_publish_avatar_no_server_support);
+							this.hintOrWarning
+									.setTextColor(getWarningTextColor());
+							this.hintOrWarning
+									.setText(R.string.error_publish_avatar_no_server_support);
 						}
 					} else {
 						this.avatarUri = this.defaultUri;
@@ -173,13 +186,26 @@ public class PublishProfilePictureActivity extends XmppActivity {
 
 	}
 
+	@Override
+	protected void onStart() {
+		super.onStart();
+		if (getIntent() != null) {
+			this.mInitialAccountSetup = getIntent().getBooleanExtra("setup",
+					false);
+		}
+		if (this.mInitialAccountSetup) {
+			this.cancelButton.setText(R.string.skip);
+		}
+	}
+
 	protected void loadImageIntoPreview(Uri uri) {
 		Bitmap bm = xmppConnectionService.getFileBackend().cropCenterSquare(
 				uri, 384);
-		if (bm==null) {
+		if (bm == null) {
 			disablePublishButton();
 			this.hintOrWarning.setTextColor(getWarningTextColor());
-			this.hintOrWarning.setText(R.string.error_publish_avatar_converting);
+			this.hintOrWarning
+					.setText(R.string.error_publish_avatar_converting);
 			return;
 		}
 		this.avatar.setImageBitmap(bm);
@@ -191,12 +217,13 @@ public class PublishProfilePictureActivity extends XmppActivity {
 		} else {
 			disablePublishButton();
 			this.hintOrWarning.setTextColor(getWarningTextColor());
-			this.hintOrWarning.setText(R.string.error_publish_avatar_no_server_support);
+			this.hintOrWarning
+					.setText(R.string.error_publish_avatar_no_server_support);
 		}
 		if (this.defaultUri != null && uri.equals(this.defaultUri)) {
 			this.secondaryHint.setVisibility(View.INVISIBLE);
 			this.avatar.setOnLongClickListener(null);
-		} else if (this.defaultUri != null ) {
+		} else if (this.defaultUri != null) {
 			this.secondaryHint.setVisibility(View.VISIBLE);
 			this.avatar.setOnLongClickListener(this.backToDefaultListener);
 		}
