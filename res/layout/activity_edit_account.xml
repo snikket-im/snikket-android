@@ -8,153 +8,187 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/button_bar"
-        android:layout_alignParentTop="true">
+        android:layout_alignParentTop="true" >
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" 
-            android:orientation="vertical">
-
-    <LinearLayout
-        android:id="@+id/editor"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="8dp" >
-
-        <TextView
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/account_settings_jabber_id"
-            android:textColor="@color/primarytext"
-            android:textSize="14sp" />
+            android:orientation="vertical" >
 
-        <AutoCompleteTextView
-            android:id="@+id/account_jid"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/account_settings_example_jabber_id"
-            android:inputType="textEmailAddress" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@string/account_settings_password"
-            android:textColor="@color/primarytext"
-            android:textSize="14sp" />
-
-        <EditText
-            android:id="@+id/account_password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/password"
-            android:inputType="textPassword" />
-
-        <CheckBox
-            android:id="@+id/account_register_new"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@string/register_account"
-            android:textColor="@color/primarytext"
-            android:textSize="14sp" />
-
-        <TextView
-            android:id="@+id/account_confirm_password_desc"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/account_settings_confirm_password"
-            android:textColor="@color/primarytext"
-            android:textSize="14sp"
-            android:visibility="gone" />
-
-        <EditText
-            android:id="@+id/account_password_confirm"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:hint="@string/confirm_password"
-            android:inputType="textPassword"
-            android:visibility="gone" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/stats"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_marginTop="8dp"
-        android:orientation="vertical"
-        android:padding="16dp"
-        android:visibility="gone" >
-
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:text="@string/additional_information"
-            android:textColor="@color/secondarytext"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
-        <TableLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:stretchColumns="1" >
-
-            <TableRow
+            <LinearLayout
+                android:id="@+id/editor"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="8dp" >
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/server_info_session_established" />
+                    android:text="@string/account_settings_jabber_id"
+                    android:textColor="@color/primarytext"
+                    android:textSize="14sp" />
+
+                <AutoCompleteTextView
+                    android:id="@+id/account_jid"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/account_settings_example_jabber_id"
+                    android:inputType="textEmailAddress" />
 
                 <TextView
-                    android:id="@+id/session_est"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="right" />
-            </TableRow>
+                    android:layout_marginTop="8dp"
+                    android:text="@string/account_settings_password"
+                    android:textColor="@color/primarytext"
+                    android:textSize="14sp" />
 
-            <TableRow
+                <EditText
+                    android:id="@+id/account_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/password"
+                    android:inputType="textPassword" />
+
+                <CheckBox
+                    android:id="@+id/account_register_new"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/register_account"
+                    android:textColor="@color/primarytext"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/account_confirm_password_desc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/account_settings_confirm_password"
+                    android:textColor="@color/primarytext"
+                    android:textSize="14sp"
+                    android:visibility="gone" />
+
+                <EditText
+                    android:id="@+id/account_password_confirm"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:hint="@string/confirm_password"
+                    android:inputType="textPassword"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/stats"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content" >
+                android:layout_height="fill_parent"
+                android:layout_marginTop="8dp"
+                android:orientation="vertical"
+                android:padding="16dp"
+                android:visibility="visible" >
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/server_info_compatibilty" />
+                    android:gravity="center_horizontal"
+                    android:text="@string/additional_information"
+                    android:textColor="@color/secondarytext"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:stretchColumns="1" >
+
+                    <TableRow
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content" >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/server_info_session_established" />
+
+                        <TextView
+                            android:id="@+id/session_est"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content" >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/server_info_pep"
+                            android:textColor="@color/primarytext" />
+
+                        <TextView
+                            android:id="@+id/server_info_pep"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content" >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/server_info_stream_management" />
+
+                        <TextView
+                            android:id="@+id/server_info_sm"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content" >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/server_info_carbon_messages" />
+
+                        <TextView
+                            android:id="@+id/server_info_carbons"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right" />
+                    </TableRow>
+                </TableLayout>
 
                 <TextView
-                    android:id="@+id/server_compat"
+                    android:id="@+id/otr_fingerprint_headline"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:gravity="center_horizontal"
+                    android:text="@string/otr_fingerprint"
+                    android:textColor="@color/secondarytext"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/otr_fingerprint"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="right" />
-            </TableRow>
-        </TableLayout>
-
-        <TextView
-            android:id="@+id/otr_fingerprint_headline"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:gravity="center_horizontal"
-            android:text="@string/otr_fingerprint"
-            android:textColor="@color/secondarytext"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/otr_fingerprint"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:textSize="14sp"
-            android:typeface="monospace" />
-    </LinearLayout>
-    </LinearLayout>
+                    android:layout_marginTop="8dp"
+                    android:textSize="14sp"
+                    android:typeface="monospace" />
+            </LinearLayout>
+        </LinearLayout>
     </ScrollView>
 
     <LinearLayout

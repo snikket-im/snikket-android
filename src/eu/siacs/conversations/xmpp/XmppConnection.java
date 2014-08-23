@@ -919,42 +919,6 @@ public class XmppConnection implements Runnable {
 		public boolean compression() {
 			return connection.usingCompression;
 		}
-		
-		public int getCompatibility() {
-			int hit = 0;
-			int miss = 0;
-			if (carbons()) {
-				++hit;
-			} else {
-				++miss;
-			}
-			if (sm()) {
-				++hit;
-			} else {
-				++miss;
-			}
-			if (pubsub()) {
-				++hit;
-			} else {
-				++miss;
-			}
-			if (streamhost()) {
-				++hit;
-			} else {
-				++miss;
-			}
-			if (compression()) {
-				++hit;
-			} else {
-				++miss;
-			}
-			if (rosterVersioning()) {
-				++hit;
-			} else {
-				++miss;
-			}
-			return (int) (((float) hit) / (hit + miss) * 100);
-		}
 	}
 
 	public long getLastSessionEstablished() {

@@ -19,6 +19,7 @@ import eu.siacs.conversations.services.XmppConnectionService.OnAccountUpdate;
 import eu.siacs.conversations.ui.adapter.KnownHostsAdapter;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.utils.Validator;
+import eu.siacs.conversations.xmpp.XmppConnection.Features;
 import eu.siacs.conversations.xmpp.pep.Avatar;
 
 public class EditAccountActivity extends XmppActivity {
@@ -31,7 +32,9 @@ public class EditAccountActivity extends XmppActivity {
 	private Button mSaveButton;
 
 	private LinearLayout mStats;
-	private TextView mServerCompat;
+	private TextView mServerInfoSm;
+	private TextView mServerInfoCarbons;
+	private TextView mServerInfoPep;
 	private TextView mSessionEst;
 	private TextView mOtrFingerprint;
 	private TextView mOtrFingerprintHeadline;
@@ -208,7 +211,9 @@ public class EditAccountActivity extends XmppActivity {
 		this.mRegisterNew = (CheckBox) findViewById(R.id.account_register_new);
 		this.mStats = (LinearLayout) findViewById(R.id.stats);
 		this.mSessionEst = (TextView) findViewById(R.id.session_est);
-		this.mServerCompat = (TextView) findViewById(R.id.server_compat);
+		this.mServerInfoCarbons = (TextView) findViewById(R.id.server_info_carbons);
+		this.mServerInfoSm = (TextView) findViewById(R.id.server_info_sm);
+		this.mServerInfoPep = (TextView) findViewById(R.id.server_info_pep);
 		this.mOtrFingerprint = (TextView) findViewById(R.id.otr_fingerprint);
 		this.mOtrFingerprintHeadline = (TextView) findViewById(R.id.otr_fingerprint_headline);
 		this.mSaveButton = (Button) findViewById(R.id.save_button);
@@ -288,9 +293,22 @@ public class EditAccountActivity extends XmppActivity {
 			this.mSessionEst.setText(UIHelper.readableTimeDifference(
 					getApplicationContext(), this.mAccount.getXmppConnection()
 							.getLastSessionEstablished()));
-			this.mServerCompat.setText(this.mAccount.getXmppConnection()
-					.getFeatures().getCompatibility()
-					+ "%");
+			Features features = this.mAccount.getXmppConnection().getFeatures();
+			if (features.carbons()) {
+				this.mServerInfoCarbons.setText(R.string.server_info_available);
+			} else {
+				this.mServerInfoCarbons.setText(R.string.server_info_unavailable);
+			}
+			if (features.sm()) {
+				this.mServerInfoSm.setText(R.string.server_info_available);
+			} else {
+				this.mServerInfoSm.setText(R.string.server_info_unavailable);
+			}
+			if (features.pubsub()) {
+				this.mServerInfoPep.setText(R.string.server_info_available);
+			} else {
+				this.mServerInfoPep.setText(R.string.server_info_unavailable);
+			}
 			String fingerprint = this.mAccount.getOtrFingerprint(getApplicationContext());
 			if (fingerprint!=null) {
 				this.mOtrFingerprintHeadline.setVisibility(View.VISIBLE);
