@@ -186,8 +186,9 @@
     <string name="mgmt_account_edit">Konto bearbeiten</string>
     <string name="mgmt_account_delete">Löschen</string>
     <string name="mgmt_account_disable">Vorübergehend abschalten</string>
-    <string name="mgmt_account_enable">Anschalten</string>
     <string name="mgmt_account_publish_avatar">Avatar veröffentlichen</string>
+    <string name="mgmt_account_publish_pgp">OpenPGP Public Key veröffentlichen</string>
+    <string name="mgmt_account_enable">Anschalten</string>
     <string name="mgmt_account_are_you_sure">Bist du dir sicher?</string>
     <string name="mgmt_account_delete_confirm_text">Wenn du dein Konto löscht, gehen alle Gesprächsverläufe verloren</string>
     <string name="mgmt_account_account_offline">Das Konto ist offline</string>
@@ -215,16 +216,11 @@
     <string name="muc_details_other_members">Andere Mitglieder</string>
     <string name="subscription_not_updated_offline">Der Account ist offline. Die Abonnements konnten nicht aktualisiert werden</string>
     <string name="share_with_active_conversations">Aktive Gespräche</string>
-    <string name="server_info_statistics">Statistiken</string>
-    <string name="server_info_connection_age">Verbindungsdauer</string>
-    <string name="server_info_session_age">Sitzungsdauer</string>
-    <string name="server_info_packets_sent">Gesendete Pakete</string>
-    <string name="server_info_packets_received">Empfangene Pakete</string>
-    <string name="server_info_connected_accounts">Verbundene Konten</string>
-    <string name="server_info_server_features">Serverfunktionen</string>
-    <string name="server_info_roster_versioning">Roster Versioning</string>
-    <string name="server_info_carbon_messages">Carbon Messages</string>
-    <string name="server_info_stream_management">Stream Management</string>
+    <string name="server_info_carbon_messages">XEP-0280: Message Carbons</string>
+    <string name="server_info_stream_management">XEP-0198: Stream Management</string>
+    <string name="server_info_pep">XEP-0163: PEP (Avatars)</string>
+    <string name="server_info_available">verfügabr</string>
+    <string name="server_info_unavailable">nicht verfügbar</string>
     <string name="hours">Stunden</string>
     <string name="mins">Minuten</string>
     <string name="missing_public_keys">Öffentlicher Schlüssel fehlt</string>
@@ -280,4 +276,9 @@
     <string name="private_message">private Nachricht</string>
     <string name="private_message_to">private Nachricht an %s</string>
     <string name="send_private_message_to">Sende private Nachricht an %s</string>
+    <string name="connect">Verbinden</string>
+    <string name="account_already_exists">Der Account existiert bereits</string>
+    <string name="next">Weiter</string>
+    <string name="server_info_session_established">Aktuelle Sitzung wiederhergestellt</string>
+    <string name="additional_information">Zusätzliche Informationen</string>
 </resources>
