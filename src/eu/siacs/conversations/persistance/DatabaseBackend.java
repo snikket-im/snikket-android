@@ -27,10 +27,11 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 			+ Contact.SERVERNAME + " TEXT, " + Contact.SYSTEMNAME + " TEXT,"
 			+ Contact.JID + " TEXT," + Contact.KEYS + " TEXT,"
 			+ Contact.PHOTOURI + " TEXT," + Contact.OPTIONS + " NUMBER,"
-			+ Contact.SYSTEMACCOUNT + " NUMBER, " + "FOREIGN KEY("
-			+ Contact.ACCOUNT + ") REFERENCES " + Account.TABLENAME + "("
-			+ Account.UUID + ") ON DELETE CASCADE, UNIQUE(" + Contact.ACCOUNT
-			+ ", " + Contact.JID + ") ON CONFLICT REPLACE);";
+			+ Contact.SYSTEMACCOUNT + " NUMBER, " + Contact.AVATAR + " TEXT, "
+			+ "FOREIGN KEY(" + Contact.ACCOUNT + ") REFERENCES "
+			+ Account.TABLENAME + "(" + Account.UUID
+			+ ") ON DELETE CASCADE, UNIQUE(" + Contact.ACCOUNT + ", "
+			+ Contact.JID + ") ON CONFLICT REPLACE);";
 
 	public DatabaseBackend(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -43,7 +44,8 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 				+ " TEXT PRIMARY KEY," + Account.USERNAME + " TEXT,"
 				+ Account.SERVER + " TEXT," + Account.PASSWORD + " TEXT,"
 				+ Account.ROSTERVERSION + " TEXT," + Account.OPTIONS
-				+ " NUMBER, " + Account.KEYS + " TEXT)");
+				+ " NUMBER, " + Account.AVATAR + " TEXT, " + Account.KEYS
+				+ " TEXT)");
 		db.execSQL("create table " + Conversation.TABLENAME + " ("
 				+ Conversation.UUID + " TEXT PRIMARY KEY, " + Conversation.NAME
 				+ " TEXT, " + Conversation.CONTACT + " TEXT, "
@@ -58,10 +60,11 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 				+ Message.TIME_SENT + " NUMBER, " + Message.COUNTERPART
 				+ " TEXT, " + Message.TRUE_COUNTERPART + " TEXT,"
 				+ Message.BODY + " TEXT, " + Message.ENCRYPTION + " NUMBER, "
-				+ Message.STATUS + " NUMBER," + Message.TYPE
-				+ " NUMBER, FOREIGN KEY(" + Message.CONVERSATION
-				+ ") REFERENCES " + Conversation.TABLENAME + "("
-				+ Conversation.UUID + ") ON DELETE CASCADE);");
+				+ Message.STATUS + " NUMBER," + Message.TYPE + " NUMBER, "
+				+ Message.REMOTE_MSG_ID + " TEXT, FOREIGN KEY("
+				+ Message.CONVERSATION + ") REFERENCES "
+				+ Conversation.TABLENAME + "(" + Conversation.UUID
+				+ ") ON DELETE CASCADE);");
 
 		db.execSQL(CREATE_CONTATCS_STATEMENT);
 	}
