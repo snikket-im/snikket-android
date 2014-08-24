@@ -335,6 +335,16 @@ public class Conversation extends AbstractEntity {
 		if ((latestEncryption == Message.ENCRYPTION_DECRYPTED)
 				|| (latestEncryption == Message.ENCRYPTION_DECRYPTION_FAILED)) {
 			return Message.ENCRYPTION_PGP;
+		} else if (latestEncryption == Message.ENCRYPTION_NONE) {
+			if (getContact().getPresences().size() == 1) {
+				if (getContact().getOtrFingerprints().size() >= 1) {
+					return Message.ENCRYPTION_OTR;
+				} else {
+					return latestEncryption;
+				}
+			} else {
+				return latestEncryption;
+			}
 		} else {
 			return latestEncryption;
 		}
