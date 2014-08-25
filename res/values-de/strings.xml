@@ -110,7 +110,7 @@
     <string name="no_pgp_key">Kein OpenPGP-Schlüssel gefunden</string>
     <string name="contact_has_no_pgp_key">Conversations ist nicht in der Lage, deine Nachrichten zu verschlüsseln, weil dein Kontakt seinen oder ihren Schlüssel nicht preisgibt.\n\n<small>Bitte sag deinem Kontakt, er oder sie möge bitte OpenPGP einrichten.</small></string>
     <string name="no_pgp_keys">Keine OpenPGP-Schlüssel gefunden</string>
-    <string name="contact_has_no_pgp_keys">Conversations ist nicht in der Lage, deine Nachrichten zu verschlüsseln, weil dein Kontakt sein oder ihren Schlüssel nicht preisgibt.\n\n<small>Bitte sag deinem Kontakt, er oder sie möge bitte OpenPGP einrichten.</small></string>
+    <string name="contacts_have_no_pgp_keys">Conversations ist nicht in der Lage, deine Nachrichten zu verschlüsseln, weil dein Kontakt sein oder ihren Schlüssel nicht preisgibt.\n\n<small>Bitte sag deinem Kontakt, er oder sie möge bitte OpenPGP einrichten.</small></string>
     <string name="encrypted_message_received"><i>Verschlüsselte Nachricht erhalten. Drücke hier, um sie anzuzeigen und zu entschlüsseln.</i></string>
     <string name="encrypted_image_received"><i>Verschlüsseltes Bild erhalten. Drücke hier, um es anzuzeigen und zu entschlüsseln.</i></string>
     <string name="image_file"><i>Bild erhalten. Drücke hier, um es anzuzeigen.</i></string>
