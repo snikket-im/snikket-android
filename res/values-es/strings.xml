@@ -217,16 +217,11 @@
     <string name="muc_details_other_members">Otros Miembros</string>
     <string name="subscription_not_updated_offline">Cuenta desconectada. No se puede actualizar suscripciones</string>
     <string name="share_with_active_conversations">Conversaciones Activas</string>
-    <string name="server_info_statistics">Estadísticas</string>
-    <string name="server_info_connection_age">Tiempo de conexión</string>
-    <string name="server_info_session_age">Duración de la sesión</string>
-    <string name="server_info_packets_sent">Paquetes enviados</string>
-    <string name="server_info_packets_received">Paquetes recibidos</string>
-    <string name="server_info_connected_accounts">Cuentas conectadas</string>
-    <string name="server_info_server_features">Características del Servidor</string>
-    <string name="server_info_roster_versioning">Roster Versioning</string>
-    <string name="server_info_carbon_messages">Mensajes Carbon</string>
-    <string name="server_info_stream_management">Stream Management</string>
+    <string name="server_info_carbon_messages">XEP-0280: Message Carbons</string>
+    <string name="server_info_stream_management">XEP-0198: Stream Management</string>
+    <string name="server_info_pep">XEP-0163: PEP (Avatars)</string>
+    <string name="server_info_available">Sí</string>
+    <string name="server_info_unavailable">No</string>
     <string name="hours">horas</string>
     <string name="mins">min</string>
     <string name="missing_public_keys">Se han perdido las claves de anuncio públicas</string>
@@ -285,7 +280,7 @@
     <string name="connect">Conectar</string>
     <string name="account_already_exists">Esta cuenta ya existe</string>
     <string name="next">Siguiente</string>
-    <string name="server_info_compatibilty">Compatibilidad del servidor</string>
     <string name="server_info_session_established">Inicio sesión actual</string>
     <string name="additional_information">Información adicional</string>
+    <string name="skip">Omitir</string>
 </resources>
