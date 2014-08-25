@@ -71,19 +71,19 @@ public class ConversationFragment extends Fragment {
 	private boolean messagesLoaded = false;
 
 	private IntentSender askForPassphraseIntent = null;
-	
+
 	private OnEditorActionListener mEditorActionListener = new OnEditorActionListener() {
-		
+
 		@Override
 		public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 			if (actionId == EditorInfo.IME_ACTION_DONE) {
-                InputMethodManager imm = (InputMethodManager) v.getContext()
-                        .getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-                return true;
-            } else {
-            	return false;
-            }
+				InputMethodManager imm = (InputMethodManager) v.getContext()
+						.getSystemService(Context.INPUT_METHOD_SERVICE);
+				imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+				return true;
+			} else {
+				return false;
+			}
 		}
 	};
 
@@ -158,8 +158,7 @@ public class ConversationFragment extends Fragment {
 	};
 
 	private ConversationActivity activity;
-	
-	
+
 	private void sendMessage() {
 		if (mEditMessage.getText().length() < 1) {
 			if (this.conversation.getMode() == Conversation.MODE_MULTI) {
@@ -187,12 +186,16 @@ public class ConversationFragment extends Fragment {
 	}
 
 	public void updateChatMsgHint() {
-		if (conversation.getNextPresence() != null) {
-			this.mEditMessage.setHint(getString(R.string.send_private_message_to,conversation.getNextPresence()));
+		if (conversation.getMode() == Conversation.MODE_MULTI
+				&& conversation.getNextPresence() != null) {
+			this.mEditMessage.setHint(getString(
+					R.string.send_private_message_to,
+					conversation.getNextPresence()));
 		} else {
 			switch (conversation.getNextEncryption()) {
 			case Message.ENCRYPTION_NONE:
-				mEditMessage.setHint(getString(R.string.send_plain_text_message));
+				mEditMessage
+						.setHint(getString(R.string.send_plain_text_message));
 				break;
 			case Message.ENCRYPTION_OTR:
 				mEditMessage.setHint(getString(R.string.send_otr_message));
@@ -223,13 +226,13 @@ public class ConversationFragment extends Fragment {
 		});
 		mEditMessage.setOnEditorActionListener(mEditorActionListener);
 		mEditMessage.setOnEnterPressedListener(new OnEnterPressed() {
-			
+
 			@Override
 			public void onEnterPressed() {
 				sendMessage();
 			}
 		});
-		
+
 		ImageButton sendButton = (ImageButton) view
 				.findViewById(R.id.textSendButton);
 		sendButton.setOnClickListener(this.mSendButtonListener);
@@ -241,38 +244,41 @@ public class ConversationFragment extends Fragment {
 		messagesView = (ListView) view.findViewById(R.id.messages_view);
 		messagesView.setOnScrollListener(mOnScrollListener);
 		messagesView.setTranscriptMode(ListView.TRANSCRIPT_MODE_NORMAL);
-		messageListAdapter = new MessageAdapter((ConversationActivity) getActivity(), this.messageList);
-		messageListAdapter.setOnContactPictureClicked(new OnContactPictureClicked() {
-			
-			@Override
-			public void onContactPictureClicked(Message message) {
-				if (message.getConversation().getMode() == Conversation.MODE_MULTI) {
-					if (message.getPresence() != null) {
-						highlightInConference(message.getPresence());
-					} else {
-						highlightInConference(message.getCounterpart());
+		messageListAdapter = new MessageAdapter(
+				(ConversationActivity) getActivity(), this.messageList);
+		messageListAdapter
+				.setOnContactPictureClicked(new OnContactPictureClicked() {
+
+					@Override
+					public void onContactPictureClicked(Message message) {
+						if (message.getConversation().getMode() == Conversation.MODE_MULTI) {
+							if (message.getPresence() != null) {
+								highlightInConference(message.getPresence());
+							} else {
+								highlightInConference(message.getCounterpart());
+							}
+						}
 					}
-				}
-			}
-		});
-		messageListAdapter.setOnContactPictureLongClicked(new OnContactPictureLongClicked() {
-			
-			@Override
-			public void onContactPictureLongClicked(Message message) {
-				if (message.getConversation().getMode() == Conversation.MODE_MULTI) {
-					if (message.getPresence() != null) {
-						privateMessageWith(message.getPresence());
-					} else {
-						privateMessageWith(message.getCounterpart());
+				});
+		messageListAdapter
+				.setOnContactPictureLongClicked(new OnContactPictureLongClicked() {
+
+					@Override
+					public void onContactPictureLongClicked(Message message) {
+						if (message.getConversation().getMode() == Conversation.MODE_MULTI) {
+							if (message.getPresence() != null) {
+								privateMessageWith(message.getPresence());
+							} else {
+								privateMessageWith(message.getCounterpart());
+							}
+						}
 					}
-				}
-			}
-		});
+				});
 		messagesView.setAdapter(messageListAdapter);
 
 		return view;
 	}
-	
+
 	protected void privateMessageWith(String counterpart) {
 		this.mEditMessage.setText("");
 		this.conversation.setNextPresence(counterpart);
@@ -384,15 +390,19 @@ public class ConversationFragment extends Fragment {
 		final ConversationActivity activity = (ConversationActivity) getActivity();
 		if (this.conversation != null) {
 			final Contact contact = this.conversation.getContact();
-			if (!contact.showInRoster() && contact.getOption(Contact.Options.PENDING_SUBSCRIPTION_REQUEST)) {
-				showSnackbar(R.string.contact_added_you, R.string.add_back, new OnClickListener() {
-					
-					@Override
-					public void onClick(View v) {
-						activity.xmppConnectionService.createContact(contact);
-						activity.switchToContactDetails(contact);
-					}
-				});
+			if (!contact.showInRoster()
+					&& contact
+							.getOption(Contact.Options.PENDING_SUBSCRIPTION_REQUEST)) {
+				showSnackbar(R.string.contact_added_you, R.string.add_back,
+						new OnClickListener() {
+
+							@Override
+							public void onClick(View v) {
+								activity.xmppConnectionService
+										.createContact(contact);
+								activity.switchToContactDetails(contact);
+							}
+						});
 			}
 			for (Message message : this.conversation.getMessages()) {
 				if ((message.getEncryption() == Message.ENCRYPTION_PGP)
