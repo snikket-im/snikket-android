@@ -40,15 +40,18 @@ public class MessageParser extends AbstractParser implements
 					packet.getBody(), Message.ENCRYPTION_NONE,
 					Message.STATUS_RECIEVED);
 		}
+		finishedMessage.setRemoteMsgId(packet.getId());
 		if (conversation.getMode() == Conversation.MODE_MULTI
 				&& fromParts.length >= 2) {
 			finishedMessage.setType(Message.TYPE_PRIVATE);
 			finishedMessage.setPresence(fromParts[1]);
 			finishedMessage.setTrueCounterpart(conversation.getMucOptions()
 					.getTrueCounterpart(fromParts[1]));
+			if (conversation.hasDuplicateMessage(finishedMessage)) {
+				return null;
+			}
 
 		}
-		finishedMessage.setRemoteMsgId(packet.getId());
 		finishedMessage.setTime(getTimestamp(packet));
 		return finishedMessage;
 	}
@@ -236,7 +239,9 @@ public class MessageParser extends AbstractParser implements
 			finishedMessage.setPresence(parts[1]);
 			finishedMessage.setTrueCounterpart(conversation.getMucOptions()
 					.getTrueCounterpart(parts[1]));
-
+			if (conversation.hasDuplicateMessage(finishedMessage)) {
+				return null;
+			}
 		}
 		
 		return finishedMessage;
@@ -362,7 +367,9 @@ public class MessageParser extends AbstractParser implements
 				}
 			} else if (packet.hasChild("body")) {
 				message = this.parseChat(packet, account);
-				message.markUnread();
+				if (message != null) {
+					message.markUnread();
+				}
 			} else if (packet.hasChild("received") || (packet.hasChild("sent"))) {
 				message = this.parseCarbonMessage(packet, account);
 				if (message != null) {
