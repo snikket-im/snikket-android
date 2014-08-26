@@ -211,14 +211,6 @@
     <string name="muc_details_other_members">Andere Leden</string>
     <string name="subscription_not_updated_offline">Account offline. Kon abonnement niet vernieuwen</string>
     <string name="share_with_active_conversations">Actieve Conversaties</string>
-    <string name="server_info_statistics">Statistieken</string>
-    <string name="server_info_connection_age">Verbindingsduur</string>
-    <string name="server_info_session_age">Sessieduur</string>
-    <string name="server_info_packets_sent">Paketten verstuurd</string>
-    <string name="server_info_packets_received">Paketten ontvangen</string>
-    <string name="server_info_connected_accounts">Verbonden accounts</string>
-    <string name="server_info_server_features">Server Kenmerken</string>
-    <string name="server_info_roster_versioning">Roster Versioning</string>
     <string name="server_info_carbon_messages">Carbon Berichten</string>
     <string name="server_info_stream_management">Stream Management</string>
     <string name="hours">uren</string>

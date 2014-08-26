@@ -216,14 +216,6 @@
     <string name="muc_details_other_members">Beste kideak</string>
     <string name="subscription_not_updated_offline">Kontua lineaz kanpo. Ezin izan da harpidetza eguneratu</string>
     <string name="share_with_active_conversations">Elkarrizketa aktiboak</string>
-    <string name="server_info_statistics">Estatistikak</string>
-    <string name="server_info_connection_age">Konexioaren adina</string>
-    <string name="server_info_session_age">Saioaren adina</string>
-    <string name="server_info_packets_sent">Bidalitako paketeak</string>
-    <string name="server_info_packets_received">Jasotako paketeak</string>
-    <string name="server_info_connected_accounts">Konektatutako kontuak</string>
-    <string name="server_info_server_features">Zerbitzariaren ezaugarriak</string>
-    <string name="server_info_roster_versioning">Roster Versioning</string>
     <string name="server_info_carbon_messages">Carbon Messages</string>
     <string name="server_info_stream_management">Stream Management</string>
     <string name="hours">ordu</string>

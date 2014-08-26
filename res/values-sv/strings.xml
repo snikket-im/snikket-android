@@ -215,14 +215,6 @@
     <string name="muc_details_other_members">Andra medlemmar</string>
     <string name="subscription_not_updated_offline">Konto offline. Kunde inte uppdatera abonnemang</string>
     <string name="share_with_active_conversations">Aktiva konversationer</string>
-    <string name="server_info_statistics">Statistik</string>
-    <string name="server_info_connection_age">Uppkopplingstid</string>
-    <string name="server_info_session_age">Sessionstid</string>
-    <string name="server_info_packets_sent">Skickade paket</string>
-    <string name="server_info_packets_received">Mottagna paket</string>
-    <string name="server_info_connected_accounts">Uppkopplade konton</string>
-    <string name="server_info_server_features">Serverfunktioner</string>
-    <string name="server_info_roster_versioning">Roster Versioning</string>
     <string name="server_info_carbon_messages">Carbon Messages</string>
     <string name="server_info_stream_management">Stream Management</string>
     <string name="hours">timmar</string>

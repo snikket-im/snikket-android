@@ -216,14 +216,6 @@
     <string name="muc_details_other_members">חברים אחרים</string>
     <string name="subscription_not_updated_offline">חשבון לא מקוון. לא היה מסוגל לעדכן הרשמה</string>
     <string name="share_with_active_conversations">דיונים פעילים</string>
-    <string name="server_info_statistics">סטטיסטיקה</string>
-    <string name="server_info_connection_age">תקופת התחברות</string>
-    <string name="server_info_session_age">תקופת הפעלה</string>
-    <string name="server_info_packets_sent">חבילות מידע נשלחו</string>
-    <string name="server_info_packets_received">חבילות מידע נתקבלו</string>
-    <string name="server_info_connected_accounts">חשבונות מחוברים</string>
-    <string name="server_info_server_features">תכונות שרת</string>
-    <string name="server_info_roster_versioning">נסחיות רשימה</string>
     <string name="server_info_carbon_messages">הודעות פחם</string>
     <string name="server_info_stream_management">ניהול זרם</string>
     <string name="hours">שעות</string>

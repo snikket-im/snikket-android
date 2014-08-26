@@ -221,14 +221,6 @@
     <string name="muc_details_other_members">Другие участники</string>
     <string name="subscription_not_updated_offline">Аккаунт не в сети. Не удалось обновить статус подписки</string>
     <string name="share_with_active_conversations">Активные Беседы</string>
-    <string name="server_info_statistics">Статистика</string>
-    <string name="server_info_connection_age">Продолжительность соединения</string>
-    <string name="server_info_session_age">Продолжительность сессии</string>
-    <string name="server_info_packets_sent">Пакет послан</string>
-    <string name="server_info_packets_received">Пакет получен</string>
-    <string name="server_info_connected_accounts">Активных аккаунтов</string>
-    <string name="server_info_server_features">Особенности Сервера</string>
-    <string name="server_info_roster_versioning">Контроль версий списков</string>
     <string name="server_info_carbon_messages">Дублирование сообщений</string>
     <string name="server_info_stream_management">Управление потоками</string>
     <string name="hours">час.</string>

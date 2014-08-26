@@ -215,14 +215,6 @@
     <string name="muc_details_other_members">Autres membres</string>
     <string name="subscription_not_updated_offline">Vous ne pouvez pas mettre à jour de publication en étant hors-ligne.</string>
     <string name="share_with_active_conversations">Conversations actives</string>
-    <string name="server_info_statistics">Statistiques</string>
-    <string name="server_info_connection_age">Durée de connexion</string>
-    <string name="server_info_session_age">Durée de la session</string>
-    <string name="server_info_packets_sent">Paquets envoyés</string>
-    <string name="server_info_packets_received">Paquets reçus</string>
-    <string name="server_info_connected_accounts">Comptes connectés</string>
-    <string name="server_info_server_features">Capacités du serveur</string>
-    <string name="server_info_roster_versioning">Versions de la liste de contacts</string>
     <string name="server_info_carbon_messages">Copies carbone</string>
     <string name="server_info_stream_management">Gestion des flux</string>
     <string name="hours">heures</string>
