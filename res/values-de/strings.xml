@@ -281,4 +281,5 @@
     <string name="next">Weiter</string>
     <string name="server_info_session_established">Aktuelle Sitzung wiederhergestellt</string>
     <string name="additional_information">Zusätzliche Informationen</string>
+	<string name="skip">Überspringen</string>
 </resources>
