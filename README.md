@@ -26,20 +26,20 @@ Conversations - the very last word in instant messaging
 ###XMPP Features
 Conversations works with every XMPP server out there. However XMPP is an extensible
 protocol. These extensions are standardized as well in so called XEP’s.
-Conversations supports a couple of those to make the overall userexperience better. There is a
+Conversations supports a couple of those to make the overall user experience better. There is a
 chance that your current XMPP server does not support these extensions.
 Therefore to get the most out of Conversations you should consider either switching to an
 XMPP server that does or - even better - run your own XMPP server for you and
 your friends.
 These XEPs are - as of now:
-* XEP-0065: SOCKS5 Bytestreams - or rather mod_proxy65. Will be used to tranfer files if both parties are behind a firewall (NAT).
-* XEP-0138: Stream Compression saves bandwith
+* XEP-0065: SOCKS5 Bytestreams - or rather mod_proxy65. Will be used to transfer files if both parties are behind a firewall (NAT).
+* XEP-0138: Stream Compression saves bandwidth
 * XEP-0163: Personal Eventing Protocol for avatars
 * XEP-0198: Stream Management allows XMPP to survive small network outages and changes of the underlying TCP connection.
 * XEP-0280: Message Carbons which automatically syncs the messages you send to
   your desktop client and thus allows you to switch seamlessly from your mobile
   client to your desktop client and back within one conversation.
-* XEP-0237: Roster Versioning mainly to save bandwith on poor mobile connections
+* XEP-0237: Roster Versioning mainly to save bandwidth on poor mobile connections
 
 ##Contributors
 (In order of appearance)
@@ -77,7 +77,7 @@ I accept donations over PayPal and BitCoin. For donations via PayPal you can use
 [![Donate with PayPal](https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=CW3SYT3KG5PDL)
 
 **Disclaimer:** I'm not a huge fan of PayPal and their business policies. For larger
-contributons please get in touch with me beforehand and we can talk about bank
+contributions please get in touch with me beforehand and we can talk about bank
 transfer (SEPA).
 
 My Bitcoin Address is: 1NxSU1YxYzJVDpX1rcESAA3NJki7kRgeeu
@@ -86,7 +86,7 @@ My Bitcoin Address is: 1NxSU1YxYzJVDpX1rcESAA3NJki7kRgeeu
 XMPP like email for example is a federated protocol which means that there is
 not one company you can create your 'official xmpp account' with but there are
 hundreds or even thousands of provider out there. To find one use a web search
-engine of your choice. Or maybe your univeristy has one. Or you can run your own.
+engine of your choice. Or maybe your university has one. Or you can run your own.
 Or ask a friend to run one. Once you found one you can use Conversations to
 create an account. Just select 'register new account on server' within the
 create account dialog.
@@ -113,7 +113,7 @@ as payload. This doesn’t require Conversations to have write permissions on yo
 address book but also doesn’t require you to copy past Jabber ID from one app to
 another.
 ####Where can I see the status of my contacts? How can I set a status or priority
-Status are a horrible metric. Setting them manually to a proper value rarly
+Status are a horrible metric. Setting them manually to a proper value rarely
 works because users are either lazy or just forget about them. Setting them
 automatically does not provide quality results either. Keyboard or mouse
 activity as indicator for example fails when the user is just looking at
@@ -126,14 +126,14 @@ In the past status has been used to judge the likelihood of whether or not your
 messages are being read. This is no longer necessary. With Chat Markers
 (XEP-0333, supported by Conversations since 0.4) we have the ability to **know**
 whether or not your messages are being read.
-Similar things can be said for priorites. In the past priorties have been used
+Similar things can be said for priorities. In the past priorities have been used
 (By servers, not by clients!) to route your messages to one specific client.
 With carbon messages (XEP-0280, supported by Conversations since 0.1) this is no
 longer necessary. Using priorities to route OTR messages isn't pratical either
 because they are not changeable on the fly. Metrics like last active client
 (the client which sent the last message) are much better.
 
-Unfortunatly these modern replacements for legacy XMPP features are not widely
+Unfortunately these modern replacements for legacy XMPP features are not widely
 adopted. However Conversations should be an instant messenger for the future and
 instead of making Conversations compatible with the past we should work on
 implementing new, improved technologies into other XMPP clients as well.
@@ -173,7 +173,7 @@ widespread use. The way PGP works is that you trust Key IDs instead of XMPP- or 
 To use openpgp you have to install the opensource app OpenKeychain (www.openkeychain.org) and then long press on the account in manage accounts and choose renew PGP announcement from the contextual menu.
 ####How does the encryption for conferences work?
 For conferences the only supported encryption method is OpenPGP. (OTR does not
-work with multiple participents.) Every participant has to announce their
+work with multiple participants.) Every participant has to announce their
 OpenPGP key. (See answer above). If you would like to send encrypted messages to
 a conference you have to make sure that you have every participant's public key
 in your OpenKeychain. Right now there is no check in Conversations to ensure
@@ -209,6 +209,6 @@ stack trace. If you are experiencing missbehaviour please provide detailed
 steps to reproduce.
 Always mention whether you are running the latest Play Store version or the
 current HEAD.
-If you are having problems connecting to your XMPP server your file tranfer
+If you are having problems connecting to your XMPP server your file transfer
 doesn’t work as expected please always include a logcat debug output with your
 issue. (See above)
