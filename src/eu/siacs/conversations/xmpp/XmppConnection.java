@@ -31,6 +31,7 @@ import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.os.SystemClock;
 import android.util.Log;
+import android.util.SparseArray;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.CryptoHelper;
@@ -74,6 +75,7 @@ public class XmppConnection implements Runnable {
 
 	private String streamId = null;
 	private int smVersion = 3;
+	private SparseArray<String> messageReceipts = new SparseArray<String>();
 	
 	private boolean usingCompression = false;
 
@@ -98,6 +100,7 @@ public class XmppConnection implements Runnable {
 	private OnMessagePacketReceived messageListener = null;
 	private OnStatusChanged statusListener = null;
 	private OnBindListener bindListener = null;
+	private OnMessageAcknowledged acknowledgedListener = null;
 	private MemorizingTrustManager mMemorizingTrustManager;
 
 	public XmppConnection(Account account, XmppConnectionService service) {
@@ -248,7 +251,6 @@ public class XmppConnection implements Runnable {
 						challange,mRandom));
 				tagWriter.writeElement(response);
 			} else if (nextTag.isStart("enabled")) {
-				this.stanzasSent = 0;
 				Element enabled = tagReader.readElement(nextTag);
 				if ("true".equals(enabled.getAttribute("resume"))) {
 					this.streamId = enabled.getAttribute("id");
@@ -276,8 +278,12 @@ public class XmppConnection implements Runnable {
 				Element ack = tagReader.readElement(nextTag);
 				lastPaketReceived = SystemClock.elapsedRealtime();
 				int serverSequence = Integer.parseInt(ack.getAttribute("h"));
-				if (serverSequence > this.stanzasSent) {
-					this.stanzasSent = serverSequence;
+				String msgId = this.messageReceipts.get(serverSequence);
+				if (msgId != null) {
+					if (this.acknowledgedListener != null) {
+						this.acknowledgedListener.onMessageAcknowledged(account, msgId);
+					}
+					this.messageReceipts.remove(serverSequence);
 				}
 			} else if (nextTag.isStart("failed")) {
 				tagReader.readElement(nextTag);
@@ -610,10 +616,12 @@ public class XmppConnection implements Runnable {
 							smVersion = 3;
 							EnablePacket enable = new EnablePacket(smVersion);
 							tagWriter.writeStanzaAsync(enable);
+							stanzasSent = 0;
 						} else if (streamFeatures.hasChild("sm", "urn:xmpp:sm:2")) {
 							smVersion = 2;
 							EnablePacket enable = new EnablePacket(smVersion);
 							tagWriter.writeStanzaAsync(enable);
+							stanzasSent = 0;
 						}
 						sendServiceDiscoveryInfo(account.getServer());
 						sendServiceDiscoveryItems(account.getServer());
@@ -751,9 +759,15 @@ public class XmppConnection implements Runnable {
 	
 	private synchronized void sendPacket(final AbstractStanza packet,
 			PacketReceived callback) {
-		// TODO dont increment stanza count if packet = request packet or ack;
-		++stanzasSent;
+		if (packet.getName().equals("iq") || packet.getName().equals("message") || packet.getName().equals("presence")) {
+			++stanzasSent;
+		}
 		tagWriter.writeStanzaAsync(packet);
+		if (packet instanceof MessagePacket && packet.getId() != null && this.streamId != null) {
+			Log.d(LOGTAG,"request delivery report for stanza "+stanzasSent);
+			this.messageReceipts.put(stanzasSent, packet.getId());
+			tagWriter.writeStanzaAsync(new RequestPacket(this.smVersion));
+		}
 		if (callback != null) {
 			if (packet.getId() == null) {
 				packet.setId(nextRandomId());
@@ -800,6 +814,10 @@ public class XmppConnection implements Runnable {
 
 	public void setOnBindListener(OnBindListener listener) {
 		this.bindListener = listener;
+	}
+	
+	public void setOnMessageAcknowledgeListener(OnMessageAcknowledged listener) {
+		this.acknowledgedListener = listener;
 	}
 
 	public void disconnect(boolean force) {
