@@ -47,6 +47,8 @@ import eu.siacs.conversations.xmpp.stanzas.AbstractStanza;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
 import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
 import eu.siacs.conversations.xmpp.stanzas.PresencePacket;
+import eu.siacs.conversations.xmpp.stanzas.csi.ActivePacket;
+import eu.siacs.conversations.xmpp.stanzas.csi.InactivePacket;
 import eu.siacs.conversations.xmpp.stanzas.streammgmt.AckPacket;
 import eu.siacs.conversations.xmpp.stanzas.streammgmt.EnablePacket;
 import eu.siacs.conversations.xmpp.stanzas.streammgmt.RequestPacket;
@@ -900,6 +902,14 @@ public class XmppConnection implements Runnable {
 			}
 		}
 		
+		public boolean csi() {
+			if (connection.streamFeatures == null) {
+				return false;
+			} else {
+				return connection.streamFeatures.hasChild("csi");
+			}
+		}
+		
 		public boolean pubsub() {
 			return hasDiscoFeature(account.getServer(), "http://jabber.org/protocol/pubsub#publish");
 		}
@@ -941,5 +951,13 @@ public class XmppConnection implements Runnable {
 	
 	public long getLastPacketReceived() {
 		return this.lastPaketReceived;
+	}
+
+	public void sendActive() {
+		this.sendPacket(new ActivePacket(), null);
+	}
+	
+	public void sendInactive() {
+		this.sendPacket(new InactivePacket(), null);
 	}
 }

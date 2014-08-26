@@ -911,6 +911,9 @@ public class XmppConnectionService extends Service {
 
 	public void setOnConversationListChangedListener(
 			OnConversationUpdate listener) {
+		if (checkListeners()) {
+			switchToForeground();
+		}
 		this.mOnConversationUpdate = listener;
 		this.convChangedListenerCount++;
 	}
@@ -919,10 +922,16 @@ public class XmppConnectionService extends Service {
 		this.convChangedListenerCount--;
 		if (this.convChangedListenerCount == 0) {
 			this.mOnConversationUpdate = null;
+			if (checkListeners()) {
+				switchToBackground();
+			}
 		}
 	}
 
 	public void setOnAccountListChangedListener(OnAccountUpdate listener) {
+		if (checkListeners()) {
+			switchToForeground();
+		}
 		this.mOnAccountUpdate = listener;
 		this.accountChangedListenerCount++;
 	}
@@ -931,15 +940,54 @@ public class XmppConnectionService extends Service {
 		this.accountChangedListenerCount--;
 		if (this.accountChangedListenerCount == 0) {
 			this.mOnAccountUpdate = null;
+			if (checkListeners()) {
+				switchToBackground();
+			}
 		}
 	}
 	
 	public void setOnRosterUpdateListener(OnRosterUpdate listener) {
+		if (checkListeners()) {
+			switchToForeground();
+		}
 		this.mOnRosterUpdate = listener;
 	}
 
 	public void removeOnRosterUpdateListener() {
 		this.mOnRosterUpdate = null;
+		if (checkListeners()) {
+			switchToBackground();
+		}
+	}
+	
+	private boolean checkListeners() {
+		return (this.mOnAccountUpdate == null && this.mOnConversationUpdate == null && this.mOnRosterUpdate == null);
+	}
+	
+	private void switchToForeground() {
+		Log.d(LOGTAG,"going into foreground");
+		for(Account account : getAccounts()) {
+			if (account.getStatus() == Account.STATUS_ONLINE) {
+				XmppConnection connection = account.getXmppConnection();
+				if (connection != null && connection.getFeatures().csi()) {
+					connection.sendActive();
+					Log.d(LOGTAG,account.getJid() + " sending csi//active");
+				}
+			}
+		}
+	}
+	
+	private void switchToBackground() {
+		Log.d(LOGTAG,"going into background");
+		for(Account account : getAccounts()) {
+			if (account.getStatus() == Account.STATUS_ONLINE) {
+				XmppConnection connection = account.getXmppConnection();
+				if (connection != null && connection.getFeatures().csi()) {
+					connection.sendInactive();
+					Log.d(LOGTAG,account.getJid() + " sending csi//inactive");
+				}
+			}
+		}
 	}
 
 	public void connectMultiModeConversations(Account account) {
