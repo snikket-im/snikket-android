@@ -266,9 +266,27 @@ public class XmppConnection implements Runnable {
 				tagWriter.writeStanzaAsync(r);
 			} else if (nextTag.isStart("resumed")) {
 				lastPaketReceived = SystemClock.elapsedRealtime();
-				Log.d(LOGTAG, account.getJid() + ": session resumed");
-				tagReader.readElement(nextTag);
-				sendPing();
+				Element resumed = tagReader.readElement(nextTag);
+				String h = resumed.getAttribute("h");
+				try {
+					int serverCount = Integer.parseInt(h);
+					if (serverCount!=stanzasSent) {
+						Log.d(LOGTAG,account.getJid() + ": session resumed with lost packages");
+						stanzasSent = serverCount;
+					} else {
+						Log.d(LOGTAG, account.getJid() + ": session resumed");
+					}
+					if (acknowledgedListener!=null) {
+						for(int i = 0; i < messageReceipts.size(); ++i) {
+							if (serverCount>=messageReceipts.keyAt(i)) {
+								acknowledgedListener.onMessageAcknowledged(account, messageReceipts.valueAt(i));
+							}
+						}
+					}
+					messageReceipts.clear();
+				} catch (NumberFormatException e) {
+					
+				}
 				changeStatus(Account.STATUS_ONLINE);
 			} else if (nextTag.isStart("r")) {
 				tagReader.readElement(nextTag);
