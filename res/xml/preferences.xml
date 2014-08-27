@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
     <PreferenceCategory 
-        android:title="General">
+        android:title="@string/pref_general">
         <CheckBoxPreference 
             android:key="grant_new_contacts"
             android:title="@string/pref_grant_presence_updates"

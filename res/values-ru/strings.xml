@@ -1,41 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-     <string name="next">Далее</string>
-     <string name="publish_avatar_explanation">Пожалуйста, обратите внимание, что этот аватар смогут увидеть все ваши подписчики</string>
-     <string name="server_info_unavailable">недоступен</string>
-     <string name="mgmt_account_publish_pgp">Анонсировать OpenPGP ключ</string>
-     <string name="additional_information">Дополнительная информация</string>
-     <string name="server_info_pep">XEP-0163: PEP (Аватары)</string>
-     <string name="skip">Пропустить</string>
-     <string name="problem_connecting_to_account">Не удается подключиться к аккаунту</string>
-     <string name="problem_connecting_to_accounts">Не удается подключиться к аккаунтам</string>
-     <string name="not_connected">Не подключен</string>
-     <string name="account_status_connecting">Соединение\u2026</string>
-     <string name="account_status_no_internet">Нет подключения к сети</string>
-     <string name="connect">Подключиться</string>
-     <string name="account_already_exists">Эта учетная запись уже существует</string>
-     <string name="private_message_to">отправить %s</string>
-     <string name="send_private_message_to">Отправить личное сообщение для %s</string>
-     <string name="touch_to_choose_picture">Нажмите на аватар, чтобы выбрать новую фотографию из галереи</string>
-     <string name="mgmt_account_publish_avatar">Разместить аватар</string>
-     <string name="publish_avatar">Разместить аватар</string>
-     <string name="error_publish_avatar_server_reject">Сервер не смог разместить аватар</string>
-     <string name="error_publish_avatar_converting">В процессе преобразования фотографии возникла ошибка</string>
-     <string name="error_publish_avatar_no_server_support">Ваш сервер не поддерживает публикацию аватаров</string>
-     <string name="publishing">Установка&#8230;</string>
-     <string name="error_publish_avatar_server_reject">Сервер отклонил размещение аватара</string>
-     <string name="send_private_message_to">Отправить личное сообщение для %s</string>
-     <string name="error_saving_avatar">Не удалось сохранить аватар</string>
-     <string name="error_publish_avatar_no_server_support">Ваш сервер не поддерживает публикацию аватаров</string>
-     <string name="server_info_session_established">Текущий сеанс установлен</string>
-     <string name="or_long_press_for_default">(Или долгое нажатие, чтобы вернуть значения по умолчанию)</string>
-     <string name="error_publish_avatar_converting">В процессе преобразования фотографии возникла ошибка</string>
-     <string name="mgmt_account_publish_avatar">Разместить аватар</string>
-     <string name="server_info_available">доступен</string>
-
-     <string name="general">Общие</string>
-
+    <string name="next">Далее</string>
+    <string name="publish_avatar_explanation">Пожалуйста, обратите внимание, что этот аватар смогут увидеть все ваши подписчики</string>
+    <string name="server_info_unavailable">недоступен</string>
+    <string name="mgmt_account_publish_pgp">Анонсировать OpenPGP ключ</string>
+    <string name="additional_information">Дополнительная информация</string>
+    <string name="server_info_pep">XEP-0163: PEP (Аватары)</string>
+    <string name="skip">Пропустить</string>
+    <string name="problem_connecting_to_account">Не удается подключиться к аккаунту</string>
+    <string name="problem_connecting_to_accounts">Не удается подключиться к аккаунтам</string>
+    <string name="not_connected">Не подключен</string>
+    <string name="account_status_connecting">Соединение\u2026</string>
+    <string name="account_status_no_internet">Нет подключения к сети</string>
+    <string name="connect">Подключиться</string>
+    <string name="account_already_exists">Эта учетная запись уже существует</string>
+    <string name="private_message_to">отправить %s</string>
+    <string name="send_private_message_to">Отправить личное сообщение для %s</string>
+    <string name="touch_to_choose_picture">Нажмите на аватар, чтобы выбрать новую фотографию из галереи</string>
+    <string name="mgmt_account_publish_avatar">Разместить аватар</string>
+    <string name="publish_avatar">Разместить аватар</string>
+    <string name="error_publish_avatar_server_reject">Сервер не смог разместить аватар</string>
+    <string name="error_publish_avatar_converting">В процессе преобразования фотографии возникла ошибка</string>
+    <string name="error_publish_avatar_no_server_support">Ваш сервер не поддерживает публикацию аватаров</string>
+    <string name="publishing">Установка&#8230;</string>
+    <string name="error_saving_avatar">Не удалось сохранить аватар</string>
+    <string name="server_info_session_established">Текущий сеанс установлен</string>
+    <string name="or_long_press_for_default">(Или долгое нажатие, чтобы вернуть значения по умолчанию)</string>
+    <string name="server_info_available">доступен</string>
+    <string name="pref_general">Общие</string>
     <string name="invite_contact">Пригласить собеседника</string>
     <string name="you">Вы</string>
     <string name="conference_not_found">Конференция не найдена</string>
@@ -115,8 +108,6 @@
     <string name="crash_report_message">Отправляя отчеты об ошибках, вы помогаете исправить и улучшить программу, поддерживая дальнейшее развитие программы\n<b>Предупреждение:</b>Отчет об ошибке будет отправлен разработчику, используя ваш аккаунт XMPP.</string>
     <string name="send_now">Отправить сейчас</string>
     <string name="send_never">Больше не спрашивать</string>
-    <string name="problem_connecting_to_account">Не удается подключиться к аккаунту</string>
-    <string name="problem_connecting_to_accounts">Не удается подключиться к аккаунтам</string>
     <string name="touch_to_fix">Нажмите здесь, чтобы настроить свои аккаунты</string>
     <string name="attach_file">Прикрепить файл</string>
     <string name="not_in_roster">Контакт не находится в вашем списке. Хотите добавить его?</string>
@@ -138,7 +129,6 @@
     <string name="download_image">Загрузить изображение</string>
     <string name="error_loading_image">Ошибка загрузки изображения (Файл не найден)</string>
     <string name="image_offered_for_download"><i>Изображение предложено для загрузки</i></string>
-    <string name="not_connected">Не подключен</string>
     <string name="otr_messages">OTR защифрованное сообщение</string>
     <string name="manage_account">Управление аккаунтом</string>
     <string name="contact_offline">Вы не в сети</string>
@@ -213,11 +203,9 @@
     <string name="account_status_unknown">Неизвестен</string>
     <string name="account_status_disabled">Временно отключен</string>
     <string name="account_status_online">В сети</string>
-    <string name="account_status_connecting">Подключение\u2026</string>
     <string name="account_status_offline">Не в сети</string>
     <string name="account_status_unauthorized">Неавторизован</string>
     <string name="account_status_not_found">Сервер не найден</string>
-    <string name="account_status_no_internet">Нет соединения</string>
     <string name="account_status_requires_tls">Сервер требует использования криптографического протокола TLS</string>
     <string name="account_status_regis_fail">Регистрация не удалась</string>
     <string name="account_status_regis_conflict">Имя пользователя уже используется</string>
@@ -295,4 +283,5 @@
     <string name="save_as_bookmark">Сохранить закладку</string>
     <string name="delete_bookmark">Удалить закладку</string>
     <string name="bookmark_already_exists">Такая закладка уже существует</string>
+
 </resources>

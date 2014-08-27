@@ -117,6 +117,7 @@
     <string name="otr_file_transfer">OTR-Verschlüsselung nicht verfügbar</string>
     <string name="otr_file_transfer_msg">Es ist nicht möglich, Dateien mittels OTR zu verschlüsseln. Du kannst entweder OpenPGP wählen oder die Datei unverschlüsselt senden.</string>
     <string name="use_pgp_encryption">OpenPGP verwenden</string>
+    <string name="pref_general">Allgemein</string>
     <string name="pref_xmpp_resource">XMPP-Ressource</string>
     <string name="pref_xmpp_resource_summary">Der Name, mit dem sich der Client selbst identifiziert</string>
     <string name="pref_accept_files">Dateiannahme</string>

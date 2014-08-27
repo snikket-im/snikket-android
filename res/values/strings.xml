@@ -118,6 +118,7 @@
     <string name="otr_file_transfer">OTR encryption not available</string>
     <string name="otr_file_transfer_msg">Unfortunaly OTR encryption is not available for file transfer. You can choose either OpenPGP or no encryption.</string>
     <string name="use_pgp_encryption">Use OpenPGP encryption</string>
+    <string name="pref_general">General</string>
     <string name="pref_xmpp_resource">XMPP resource</string>
     <string name="pref_xmpp_resource_summary">The name this client identifies itself with</string>
     <string name="pref_accept_files">Accept files</string>
