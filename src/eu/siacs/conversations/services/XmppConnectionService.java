@@ -169,11 +169,11 @@ public class XmppConnectionService extends Service {
 				syncDirtyContacts(account);
 				scheduleWakeupCall(PING_MAX_INTERVAL, true);
 			} else if (account.getStatus() == Account.STATUS_OFFLINE) {
+				resetSendingToWaiting(account);
 				if (!account.isOptionSet(Account.OPTION_DISABLED)) {
 					int timeToReconnect = mRandom.nextInt(50) + 10;
 					scheduleWakeupCall(timeToReconnect, false);
 				}
-
 			} else if (account.getStatus() == Account.STATUS_REGISTRATION_SUCCESSFULL) {
 				databaseBackend.updateAccount(account);
 				reconnectAccount(account, true);
@@ -232,7 +232,8 @@ public class XmppConnectionService extends Service {
 			for (Conversation conversation : getConversations()) {
 				if (conversation.getAccount() == account) {
 					for (Message message : conversation.getMessages()) {
-						if (message.getStatus() == Message.STATUS_UNSEND
+						if ((message.getStatus() == Message.STATUS_UNSEND || message
+								.getStatus() == Message.STATUS_WAITING)
 								&& message.getUuid().equals(uuid)) {
 							markMessage(message, Message.STATUS_SEND);
 							return;
@@ -1390,6 +1391,18 @@ public class XmppConnectionService extends Service {
 	public void invite(Conversation conversation, String contact) {
 		MessagePacket packet = mMessageGenerator.invite(conversation, contact);
 		sendMessagePacket(conversation.getAccount(), packet);
+	}
+	
+	public void resetSendingToWaiting(Account account) {
+		for(Conversation conversation : getConversations()) {
+			if (conversation.getAccount() == account) {
+				for(Message message : conversation.getMessages()) {
+					if (message.getStatus() == Message.STATUS_UNSEND) {
+						markMessage(message, Message.STATUS_WAITING);
+					}
+				}
+			}
+		}
 	}
 
 	public boolean markMessage(Account account, String recipient, String uuid,

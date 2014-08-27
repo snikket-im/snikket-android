@@ -635,11 +635,13 @@ public class XmppConnection implements Runnable {
 							EnablePacket enable = new EnablePacket(smVersion);
 							tagWriter.writeStanzaAsync(enable);
 							stanzasSent = 0;
+							messageReceipts.clear();
 						} else if (streamFeatures.hasChild("sm", "urn:xmpp:sm:2")) {
 							smVersion = 2;
 							EnablePacket enable = new EnablePacket(smVersion);
 							tagWriter.writeStanzaAsync(enable);
 							stanzasSent = 0;
+							messageReceipts.clear();
 						}
 						sendServiceDiscoveryInfo(account.getServer());
 						sendServiceDiscoveryItems(account.getServer());
