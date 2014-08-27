@@ -260,4 +260,27 @@
     <string name="contact_added_you">Kontakten lade till dig i sin kontaktlista</string>
     <string name="add_back">Addera tillbaks</string>
     <string name="contact_has_read_up_to_this_point">%s har läst fram hit</string>
+    <string name="next">Nästa</string>
+    <string name="publish_avatar_explanation">Notera: Alla som kan se dina närvarouppdateringar kommer se denna bild.</string>
+    <string name="server_info_unavailable">otillgänglig</string>
+    <string name="mgmt_account_publish_pgp">Publisera OpenPGP publik nyckel</string>
+    <string name="additional_information">Ytterligare information</string>
+    <string name="server_info_pep">XEP-0163: PEP (Avatarbilder)</string>
+    <string name="skip">skippa</string>
+    <string name="connect">Anslut</string>
+    <string name="account_already_exists">Detta konto finns redan</string>
+    <string name="private_message_to">till %s</string>
+    <string name="send_private_message_to">Skicka privat meddelande till %s</string>
+    <string name="touch_to_choose_picture">Tryck på avatarbild för att välja en bild från bildgalleriet</string>
+    <string name="mgmt_account_publish_avatar">Publisera avatarbild</string>
+    <string name="publish_avatar">Publisera avatarbild</string>
+    <string name="error_publish_avatar_server_reject">Servern kunde inte publisera</string>
+    <string name="error_publish_avatar_converting">Något gick fel vid konvertering av din bild</string>
+    <string name="error_publish_avatar_no_server_support">Din server stödjer inte publisering av avatarbilder</string>
+    <string name="publishing">Publiserar&#8230;</string>
+    <string name="error_saving_avatar">Kunde inte spara avatarbild till disk</string>
+    <string name="server_info_session_established">Nuvarande session upprättad</string>
+    <string name="or_long_press_for_default">(Eller tryck länge för att få tillbaks förvald)</string>
+    <string name="server_info_available">tillgänglig</string>
+
 </resources>
