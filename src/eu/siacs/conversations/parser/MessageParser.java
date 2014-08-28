@@ -34,11 +34,11 @@ public class MessageParser extends AbstractParser implements
 		Message finishedMessage;
 		if (pgpBody != null) {
 			finishedMessage = new Message(conversation, packet.getFrom(),
-					pgpBody, Message.ENCRYPTION_PGP, Message.STATUS_RECIEVED);
+					pgpBody, Message.ENCRYPTION_PGP, Message.STATUS_RECEIVED);
 		} else {
 			finishedMessage = new Message(conversation, packet.getFrom(),
 					packet.getBody(), Message.ENCRYPTION_NONE,
-					Message.STATUS_RECIEVED);
+					Message.STATUS_RECEIVED);
 		}
 		finishedMessage.setRemoteMsgId(packet.getId());
 		if (conversation.getMode() == Conversation.MODE_MULTI
@@ -115,7 +115,7 @@ public class MessageParser extends AbstractParser implements
 					.setLatestMarkableMessageId(getMarkableMessageId(packet));
 			Message finishedMessage = new Message(conversation,
 					packet.getFrom(), body, Message.ENCRYPTION_OTR,
-					Message.STATUS_RECIEVED);
+					Message.STATUS_RECEIVED);
 			finishedMessage.setTime(getTimestamp(packet));
 			finishedMessage.setRemoteMsgId(packet.getId());
 			return finishedMessage;
@@ -156,7 +156,7 @@ public class MessageParser extends AbstractParser implements
 				status = Message.STATUS_SEND;
 			}
 		} else {
-			status = Message.STATUS_RECIEVED;
+			status = Message.STATUS_RECEIVED;
 		}
 		String pgpBody = getPgpBody(packet);
 		conversation.setLatestMarkableMessageId(getMarkableMessageId(packet));
@@ -169,7 +169,7 @@ public class MessageParser extends AbstractParser implements
 					Message.ENCRYPTION_PGP, status);
 		}
 		finishedMessage.setRemoteMsgId(packet.getId());
-		if (status == Message.STATUS_RECIEVED) {
+		if (status == Message.STATUS_RECEIVED) {
 			finishedMessage.setTrueCounterpart(conversation.getMucOptions()
 					.getTrueCounterpart(counterPart));
 		}
@@ -186,7 +186,7 @@ public class MessageParser extends AbstractParser implements
 		Element forwarded;
 		if (packet.hasChild("received")) {
 			forwarded = packet.findChild("received").findChild("forwarded");
-			status = Message.STATUS_RECIEVED;
+			status = Message.STATUS_RECEIVED;
 		} else if (packet.hasChild("sent")) {
 			forwarded = packet.findChild("sent").findChild("forwarded");
 			status = Message.STATUS_SEND;
@@ -198,12 +198,12 @@ public class MessageParser extends AbstractParser implements
 		}
 		Element message = forwarded.findChild("message");
 		if ((message == null) || (!message.hasChild("body"))) {
-			if (status == Message.STATUS_RECIEVED && message.getAttribute("from")!=null) {
+			if (status == Message.STATUS_RECEIVED && message.getAttribute("from")!=null) {
 				parseNormal(message, account);
 			}
 			return null;
 		}
-		if (status == Message.STATUS_RECIEVED) {
+		if (status == Message.STATUS_RECEIVED) {
 			fullJid = message.getAttribute("from");
 			if (fullJid == null) {
 				return null;
@@ -389,7 +389,7 @@ public class MessageParser extends AbstractParser implements
 		} else if (packet.getType() == MessagePacket.TYPE_GROUPCHAT) {
 			message = this.parseGroupchat(packet, account);
 			if (message != null) {
-				if (message.getStatus() == Message.STATUS_RECIEVED) {
+				if (message.getStatus() == Message.STATUS_RECEIVED) {
 					message.markUnread();
 				} else {
 					message.getConversation().markRead();

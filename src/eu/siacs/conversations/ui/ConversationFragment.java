@@ -406,7 +406,7 @@ public class ConversationFragment extends Fragment {
 			}
 			for (Message message : this.conversation.getMessages()) {
 				if ((message.getEncryption() == Message.ENCRYPTION_PGP)
-						&& ((message.getStatus() == Message.STATUS_RECIEVED) || (message
+						&& ((message.getStatus() == Message.STATUS_RECEIVED) || (message
 								.getStatus() == Message.STATUS_SEND))) {
 					decryptMessage(message);
 					break;
@@ -472,7 +472,7 @@ public class ConversationFragment extends Fragment {
 						--i;
 					}
 				} else {
-					if (this.messageList.get(i).getStatus() == Message.STATUS_RECIEVED) {
+					if (this.messageList.get(i).getStatus() == Message.STATUS_RECEIVED) {
 						addedStatusMsg = true;
 					} else {
 						if (this.messageList.get(i).getStatus() == Message.STATUS_SEND_DISPLAYED) {

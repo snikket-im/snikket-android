@@ -98,7 +98,7 @@ public class JingleConnection {
 						+ imageHeight);
 				mXmppConnectionService.databaseBackend.createMessage(message);
 				mXmppConnectionService.markMessage(message,
-						Message.STATUS_RECIEVED);
+						Message.STATUS_RECEIVED);
 			}
 			Log.d("xmppService",
 					"sucessfully transmitted file:" + file.getAbsolutePath());
@@ -380,7 +380,7 @@ public class JingleConnection {
 
 	private void sendAccept() {
 		status = STATUS_ACCEPTED;
-		mXmppConnectionService.markMessage(message, Message.STATUS_RECIEVING);
+		mXmppConnectionService.markMessage(message, Message.STATUS_RECEIVING);
 		this.mJingleConnectionManager.getPrimaryCandidate(this.account,
 				new OnPrimaryCandidateFound() {
 
@@ -618,7 +618,7 @@ public class JingleConnection {
 		this.disconnect();
 		this.status = STATUS_FINISHED;
 		this.mXmppConnectionService.markMessage(this.message,
-				Message.STATUS_RECIEVED);
+				Message.STATUS_RECEIVED);
 		this.mJingleConnectionManager.finishConnection(this);
 	}
 

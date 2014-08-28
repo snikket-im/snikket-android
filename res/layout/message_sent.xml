@@ -3,10 +3,10 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:paddingBottom="4dp"
     android:paddingLeft="8dp"
     android:paddingRight="8dp"
-    android:paddingBottom="4dp"
-    android:paddingTop="4dp">
+    android:paddingTop="4dp" >
 
     <LinearLayout
         android:id="@+id/message_box"
@@ -21,38 +21,37 @@
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:background="@color/primarybackground"
-            android:orientation="vertical"
             android:gravity="center_vertical"
-            android:paddingTop="4dp"
+            android:orientation="vertical"
             android:paddingBottom="4dp"
+            android:paddingLeft="5dp"
             android:paddingRight="5dp"
-            android:paddingLeft="5dp">
-            
-            <ImageView 
+            android:paddingTop="4dp" >
+
+            <ImageView
                 android:id="@+id/message_image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
-                android:paddingBottom="2dp"
-                android:scaleType="centerCrop"
                 android:background="@color/primarytext"
-                />
+                android:paddingBottom="2dp"
+                android:scaleType="centerCrop" />
 
             <TextView
                 android:id="@+id/message_body"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:autoLink="web"
+                android:textColor="@color/primarytext"
                 android:textIsSelectable="true"
-                android:textSize="14sp"
-                android:textColor="@color/primarytext"/>
+                android:textSize="14sp" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:layout_gravity="right"
-                android:paddingTop="1dp">
+                android:orientation="horizontal"
+                android:paddingTop="1dp" >
 
                 <TextView
                     android:id="@+id/message_time"
@@ -61,19 +60,18 @@
                     android:layout_gravity="center_vertical"
                     android:gravity="center_vertical"
                     android:text="@string/sending"
-                    android:textSize="12sp"
-                    android:textColor="@color/secondarytext"/>
-                
-                 <ImageView
+                    android:textColor="@color/secondarytext"
+                    android:textSize="12sp" />
+
+                <ImageView
                     android:id="@+id/security_indicator"
                     android:layout_width="12sp"
                     android:layout_height="12sp"
                     android:layout_gravity="center_vertical"
-                    android:gravity="center_vertical"
+                    android:layout_marginLeft="6sp"
                     android:layout_marginTop="2sp"
-                    android:src="@drawable/ic_indicator"
-                    android:layout_marginLeft="6sp"/>
-
+                    android:gravity="center_vertical"
+                    android:src="@drawable/ic_indicator" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

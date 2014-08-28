@@ -81,7 +81,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 	public int getItemViewType(int position) {
 		if (getItem(position).getType() == Message.TYPE_STATUS) {
 			return STATUS;
-		} else if (getItem(position).getStatus() <= Message.STATUS_RECIEVED) {
+		} else if (getItem(position).getStatus() <= Message.STATUS_RECEIVED) {
 			return RECIEVED;
 		} else {
 			return SENT;
@@ -93,7 +93,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		String info = null;
 		boolean error = false;
 		boolean multiReceived = message.getConversation().getMode() == Conversation.MODE_MULTI
-				&& message.getStatus() <= Message.STATUS_RECIEVED;
+				&& message.getStatus() <= Message.STATUS_RECEIVED;
 		if (message.getType() == Message.TYPE_IMAGE) {
 			String[] fileParams = message.getBody().split(",");
 			try {
@@ -152,7 +152,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 
 		String formatedTime = UIHelper.readableTimeDifference(getContext(),
 				message.getTimeSent());
-		if (message.getStatus() <= Message.STATUS_RECIEVED) {
+		if (message.getStatus() <= Message.STATUS_RECEIVED) {
 			if ((filesize != null) && (info != null)) {
 				viewHolder.time.setText(filesize + " \u00B7 " + info);
 			} else if ((filesize == null) && (info != null)) {
@@ -215,7 +215,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 				viewHolder.messageBody.setText(message.getBody().trim());
 			} else {
 				String privateMarker;
-				if (message.getStatus() <= Message.STATUS_RECIEVED) {
+				if (message.getStatus() <= Message.STATUS_RECEIVED) {
 					privateMarker = activity.getString(R.string.private_message);
 				} else {
 					String to;
@@ -321,7 +321,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 				break;
 			case RECIEVED:
 				view = (View) activity.getLayoutInflater().inflate(
-						R.layout.message_recieved, parent, false);
+						R.layout.message_received, parent, false);
 				viewHolder.message_box = (LinearLayout) view
 						.findViewById(R.id.message_box);
 				viewHolder.contact_picture = (ImageView) view
@@ -428,7 +428,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		}
 
 		if (item.getType() == Message.TYPE_IMAGE) {
-			if (item.getStatus() == Message.STATUS_RECIEVING) {
+			if (item.getStatus() == Message.STATUS_RECEIVING) {
 				displayInfoMessage(viewHolder, R.string.receiving_image);
 			} else if (item.getStatus() == Message.STATUS_RECEIVED_OFFER) {
 				viewHolder.image.setVisibility(View.GONE);

@@ -67,7 +67,7 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 			convLastMsg.setVisibility(View.VISIBLE);
 			imagePreview.setVisibility(View.GONE);
 		} else if (latestMessage.getType() == Message.TYPE_IMAGE) {
-			if (latestMessage.getStatus() >= Message.STATUS_RECIEVED) {
+			if (latestMessage.getStatus() >= Message.STATUS_RECEIVED) {
 				convLastMsg.setVisibility(View.GONE);
 				imagePreview.setVisibility(View.VISIBLE);
 				activity.loadBitmap(latestMessage, imagePreview);
@@ -77,7 +77,7 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 				if (latestMessage.getStatus() == Message.STATUS_RECEIVED_OFFER) {
 					convLastMsg.setText(activity
 							.getText(R.string.image_offered_for_download));
-				} else if (latestMessage.getStatus() == Message.STATUS_RECIEVING) {
+				} else if (latestMessage.getStatus() == Message.STATUS_RECEIVING) {
 					convLastMsg.setText(activity
 							.getText(R.string.receiving_image));
 				} else {
