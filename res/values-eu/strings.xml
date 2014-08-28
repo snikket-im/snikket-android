@@ -121,9 +121,9 @@
     <string name="pref_general">Orokorrak</string>
     <string name="pref_xmpp_resource">XMPP baliabidea</string>
     <string name="pref_xmpp_resource_summary">Bezero honek bere burua aurkezteko erabiltzen duen izena</string>
-	<string name="pref_accept_files">Fitxategiak onartu</string>
+    <string name="pref_accept_files">Fitxategiak onartu</string>
     <string name="pref_accept_files_summary">Hurrengo tamaina baino fitxategi txikiagoak automatikoki onartu&#8230;</string>
-	<string name="pref_notification_settings">Jakinarazpenen ezarpenak</string>
+    <string name="pref_notification_settings">Jakinarazpenen ezarpenak</string>
     <string name="pref_notifications">Jakinarazpenak</string>
     <string name="pref_notifications_summary">Mezu berri bat heltzerakoan jakinarazi</string>
     <string name="pref_vibrate">Dardaratu</string>
