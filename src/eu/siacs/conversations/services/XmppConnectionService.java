@@ -146,6 +146,7 @@ public class XmppConnectionService extends Service {
 
 		@Override
 		public void onStatusChanged(Account account) {
+			XmppConnection connection = account.getXmppConnection();
 			if (mOnAccountUpdate != null) {
 				mOnAccountUpdate.onAccountUpdate();;
 			}
@@ -164,6 +165,15 @@ public class XmppConnectionService extends Service {
 						sendUnsendMessages(conversations.get(i));
 					}
 				}
+				if (connection!=null && connection.getFeatures().csi()) {
+					if (checkListeners()) {
+						Log.d(LOGTAG,account.getJid() + " sending csi//inactive");
+						connection.sendInactive();
+					} else {
+						Log.d(LOGTAG,account.getJid() + " sending csi//active");
+						connection.sendActive();
+					}
+				}
 				syncDirtyContacts(account);
 				scheduleWakeupCall(PING_MAX_INTERVAL, true);
 			} else if (account.getStatus() == Account.STATUS_OFFLINE) {
@@ -177,7 +187,6 @@ public class XmppConnectionService extends Service {
 				reconnectAccount(account, true);
 			} else if ((account.getStatus() != Account.STATUS_CONNECTING)
 					&& (account.getStatus() != Account.STATUS_NO_INTERNET)) {
-				XmppConnection connection = account.getXmppConnection();
 				if (connection!=null) {
 					int next = connection.getTimeToNextAttempt();
 					Log.d(LOGTAG, account.getJid()
@@ -965,7 +974,6 @@ public class XmppConnectionService extends Service {
 	}
 	
 	private void switchToForeground() {
-		Log.d(LOGTAG,"going into foreground");
 		for(Account account : getAccounts()) {
 			if (account.getStatus() == Account.STATUS_ONLINE) {
 				XmppConnection connection = account.getXmppConnection();
@@ -978,7 +986,6 @@ public class XmppConnectionService extends Service {
 	}
 	
 	private void switchToBackground() {
-		Log.d(LOGTAG,"going into background");
 		for(Account account : getAccounts()) {
 			if (account.getStatus() == Account.STATUS_ONLINE) {
 				XmppConnection connection = account.getXmppConnection();
