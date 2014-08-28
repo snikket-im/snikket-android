@@ -34,7 +34,7 @@ import android.widget.Toast;
 public class MessageAdapter extends ArrayAdapter<Message> {
 
 	private static final int SENT = 0;
-	private static final int RECIEVED = 1;
+	private static final int RECEIVED = 1;
 	private static final int STATUS = 2;
 
 	private ConversationActivity activity;
@@ -82,7 +82,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		if (getItem(position).getType() == Message.TYPE_STATUS) {
 			return STATUS;
 		} else if (getItem(position).getStatus() <= Message.STATUS_RECEIVED) {
-			return RECIEVED;
+			return RECEIVED;
 		} else {
 			return SENT;
 		}
@@ -319,7 +319,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 						.findViewById(R.id.message_time);
 				view.setTag(viewHolder);
 				break;
-			case RECIEVED:
+			case RECEIVED:
 				view = (View) activity.getLayoutInflater().inflate(
 						R.layout.message_received, parent, false);
 				viewHolder.message_box = (LinearLayout) view
@@ -386,7 +386,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 			return view;
 		}
 
-		if (type == RECIEVED) {
+		if (type == RECEIVED) {
 			if (item.getConversation().getMode() == Conversation.MODE_MULTI) {
 				Contact contact = item.getContact();
 				if (contact != null) {
