@@ -201,7 +201,11 @@ public class EditAccountActivity extends XmppActivity {
 			this.mSaveButton.setEnabled(true);
 			this.mSaveButton.setTextColor(getPrimaryTextColor());
 			if (jidToEdit != null) {
-				this.mSaveButton.setText(R.string.connect);
+				if (mAccount!= null && mAccount.getStatus() == Account.STATUS_ONLINE) {
+					this.mSaveButton.setText(R.string.save);
+				} else {
+					this.mSaveButton.setText(R.string.connect);
+				}
 			} else {
 				this.mSaveButton.setText(R.string.next);
 			}
