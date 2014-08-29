@@ -906,7 +906,7 @@ public class XmppConnection implements Runnable {
 			if (connection.streamFeatures == null) {
 				return false;
 			} else {
-				return connection.streamFeatures.hasChild("csi");
+				return connection.streamFeatures.hasChild("csi","urn:xmpp:csi:0");
 			}
 		}
 		
