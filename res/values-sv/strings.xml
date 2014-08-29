@@ -282,5 +282,8 @@
     <string name="server_info_session_established">Nuvarande session upprättad</string>
     <string name="or_long_press_for_default">(Eller tryck länge för att få tillbaks förvald)</string>
     <string name="server_info_available">tillgänglig</string>
+    <string name="pref_general">Generellt</string>
+    <string name="publish">Publicera</string>
+    <string name="private_message">privat meddelande</string>
 
 </resources>
