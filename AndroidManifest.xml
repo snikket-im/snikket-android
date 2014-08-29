@@ -93,7 +93,7 @@
         </activity>
         <activity
             android:name="eu.siacs.conversations.ui.PublishProfilePictureActivity"
-            android:label="@string/publish_avatar"
+            android:label="@string/mgmt_account_publish_avatar"
             android:windowSoftInputMode="stateHidden" >
         </activity>
         <activity

@@ -265,7 +265,7 @@
     <string name="contact_added_you">El contacto te ha añadido a su lista de contactos</string>
     <string name="add_back">Añadir contacto</string>
     <string name="contact_has_read_up_to_this_point">%s ha leído hasta aquí</string>
-    <string name="publish_avatar">Publicar imagen</string>
+    <string name="publish">Publicar</string>
     <string name="touch_to_choose_picture">Pulsa para seleccionar una imagen de la galería</string>
     <string name="publish_avatar_explanation">Nota: Todos tus contactos podrán ver esta imagen.</string>
     <string name="publishing">Publicando&#8230;</string>
