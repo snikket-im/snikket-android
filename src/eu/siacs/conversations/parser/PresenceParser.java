@@ -49,7 +49,7 @@ public class PresenceParser extends AbstractParser implements
 		if (packet.getFrom() == null) {
 			return;
 		}
-		String[] fromParts = packet.getFrom().split("/");
+		String[] fromParts = packet.getFrom().split("/", 2);
 		String type = packet.getAttribute("type");
 		if (fromParts[0].equals(account.getJid())) {
 			if (fromParts.length == 2) {
@@ -60,7 +60,6 @@ public class PresenceParser extends AbstractParser implements
 					account.removePresence(fromParts[1]);
 				}
 			}
-
 		} else {
 			Contact contact = account.getRoster().getContact(packet.getFrom());
 			if (type == null) {
@@ -107,6 +106,10 @@ public class PresenceParser extends AbstractParser implements
 				} else {
 					contact.setOption(Contact.Options.PENDING_SUBSCRIPTION_REQUEST);
 				}
+			}
+			Element nick = packet.findChild("nick", "http://jabber.org/protocol/nick");
+			if (nick != null) {
+				contact.setSystemName(nick.getContent());
 			}
 		}
 		mXmppConnectionService.updateRosterUi();
