@@ -90,6 +90,10 @@ public class XmlReader {
 			throw new IOException("xml parser mishandled ArrayIndexOufOfBounds", e);
 		} catch (StringIndexOutOfBoundsException e) {
 			throw new IOException("xml parser mishandled StringIndexOufOfBounds", e);
+		} catch (NullPointerException e) {
+			throw new IOException("xml parser mishandled NullPointerException", e);
+		} catch (IndexOutOfBoundsException e) {
+			throw new IOException("xml parser mishandled IndexOutOfBound", e);
 		}
 		return null;
 	}
