@@ -1,5 +1,12 @@
 ###Changelog
 
+####Version 0.6
+* Support for server side avatars
+* save images in gallery
+* show contact name and picture in non-anonymous conferences
+* reworked account creation
+* various bug fixes
+
 ####Version 0.5.2
 * minor bug fixes
 
