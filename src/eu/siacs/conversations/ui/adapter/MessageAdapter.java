@@ -36,6 +36,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 	private static final int SENT = 0;
 	private static final int RECIEVED = 1;
 	private static final int STATUS = 2;
+	private static final int NULL = 3;
 
 	private ConversationActivity activity;
 
@@ -74,12 +75,14 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 
 	@Override
 	public int getViewTypeCount() {
-		return 3;
+		return 4;
 	}
 
 	@Override
 	public int getItemViewType(int position) {
-		if (getItem(position).getType() == Message.TYPE_STATUS) {
+		if (getItem(position).wasMergedIntoPrevious()) {
+			return NULL;
+		} else if (getItem(position).getType() == Message.TYPE_STATUS) {
 			return STATUS;
 		} else if (getItem(position).getStatus() <= Message.STATUS_RECEIVED) {
 			return RECIEVED;
@@ -212,7 +215,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		viewHolder.messageBody.setVisibility(View.VISIBLE);
 		if (message.getBody() != null) {
 			if (message.getType() != Message.TYPE_PRIVATE) {
-				viewHolder.messageBody.setText(message.getBody().trim());
+				viewHolder.messageBody.setText(message.getMergedBody());
 			} else {
 				String privateMarker;
 				if (message.getStatus() <= Message.STATUS_RECEIVED) {
@@ -301,6 +304,10 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		if (view == null) {
 			viewHolder = new ViewHolder();
 			switch (type) {
+			case NULL:
+				view = (View) activity.getLayoutInflater().inflate(
+						R.layout.message_null, parent, false);
+				break;
 			case SENT:
 				view = (View) activity.getLayoutInflater().inflate(
 						R.layout.message_sent, parent, false);
@@ -382,7 +389,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 			viewHolder = (ViewHolder) view.getTag();
 		}
 
-		if (type == STATUS) {
+		if (type == STATUS || type == NULL) {
 			return view;
 		}
 

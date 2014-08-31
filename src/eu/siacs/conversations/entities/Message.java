@@ -7,7 +7,7 @@ import android.content.Context;
 import android.database.Cursor;
 
 public class Message extends AbstractEntity {
-	
+
 	public static final String TABLENAME = "messages";
 
 	public static final int STATUS_RECEPTION_FAILED = -3;
@@ -28,7 +28,7 @@ public class Message extends AbstractEntity {
 	public static final int ENCRYPTION_OTR = 2;
 	public static final int ENCRYPTION_DECRYPTED = 3;
 	public static final int ENCRYPTION_DECRYPTION_FAILED = 4;
-	
+
 	public static final int TYPE_TEXT = 0;
 	public static final int TYPE_IMAGE = 1;
 	public static final int TYPE_AUDIO = 2;
@@ -58,27 +58,32 @@ public class Message extends AbstractEntity {
 	protected String remoteMsgId = null;
 
 	protected transient Conversation conversation = null;
-	
+
 	protected transient JingleConnection jingleConnection = null;
-	
+
 	private Message() {
-		
+
 	}
 
 	public Message(Conversation conversation, String body, int encryption) {
 		this(java.util.UUID.randomUUID().toString(), conversation.getUuid(),
-				conversation.getContactJid(), null, body, System.currentTimeMillis(), encryption,
-				Message.STATUS_UNSEND,TYPE_TEXT,null);
+				conversation.getContactJid(), null, body, System
+						.currentTimeMillis(), encryption,
+				Message.STATUS_UNSEND, TYPE_TEXT, null);
 		this.conversation = conversation;
 	}
-	
-	public Message(Conversation conversation, String counterpart, String body, int encryption, int status) {
-		this(java.util.UUID.randomUUID().toString(), conversation.getUuid(),counterpart, null, body, System.currentTimeMillis(), encryption,status,TYPE_TEXT,null);
+
+	public Message(Conversation conversation, String counterpart, String body,
+			int encryption, int status) {
+		this(java.util.UUID.randomUUID().toString(), conversation.getUuid(),
+				counterpart, null, body, System.currentTimeMillis(),
+				encryption, status, TYPE_TEXT, null);
 		this.conversation = conversation;
 	}
-	
-	public Message(String uuid, String conversationUUid, String counterpart, String trueCounterpart,
-			String body, long timeSent, int encryption, int status, int type, String remoteMsgId) {
+
+	public Message(String uuid, String conversationUUid, String counterpart,
+			String trueCounterpart, String body, long timeSent, int encryption,
+			int status, int type, String remoteMsgId) {
 		this.uuid = uuid;
 		this.conversationUuid = conversationUUid;
 		this.counterpart = counterpart;
@@ -97,20 +102,20 @@ public class Message extends AbstractEntity {
 		values.put(UUID, uuid);
 		values.put(CONVERSATION, conversationUuid);
 		values.put(COUNTERPART, counterpart);
-		values.put(TRUE_COUNTERPART,trueCounterpart);
+		values.put(TRUE_COUNTERPART, trueCounterpart);
 		values.put(BODY, body);
 		values.put(TIME_SENT, timeSent);
 		values.put(ENCRYPTION, encryption);
 		values.put(STATUS, status);
 		values.put(TYPE, type);
-		values.put(REMOTE_MSG_ID,remoteMsgId);
+		values.put(REMOTE_MSG_ID, remoteMsgId);
 		return values;
 	}
 
 	public String getConversationUuid() {
 		return conversationUuid;
 	}
-	
+
 	public Conversation getConversation() {
 		return this.conversation;
 	}
@@ -118,7 +123,7 @@ public class Message extends AbstractEntity {
 	public String getCounterpart() {
 		return counterpart;
 	}
-	
+
 	public Contact getContact() {
 		if (this.conversation.getMode() == Conversation.MODE_SINGLE) {
 			return this.conversation.getContact();
@@ -127,7 +132,8 @@ public class Message extends AbstractEntity {
 				return null;
 			} else {
 				Account account = this.conversation.getAccount();
-				Contact contact = account.getRoster().getContact(this.trueCounterpart);
+				Contact contact = account.getRoster().getContact(
+						this.trueCounterpart);
 				if (contact.showInRoster()) {
 					return contact;
 				} else {
@@ -136,20 +142,20 @@ public class Message extends AbstractEntity {
 			}
 		}
 	}
-
+	
 	public String getBody() {
 		return body;
 	}
-	
+
 	public String getReadableBody(Context context) {
-		if ((encryption == ENCRYPTION_PGP)&&(type == TYPE_TEXT)) {
-			return ""+context.getText(R.string.encrypted_message_received);
-		} else if ((encryption == ENCRYPTION_OTR)&&(type == TYPE_IMAGE)) {
-			return ""+context.getText(R.string.encrypted_image_received);
+		if ((encryption == ENCRYPTION_PGP) && (type == TYPE_TEXT)) {
+			return "" + context.getText(R.string.encrypted_message_received);
+		} else if ((encryption == ENCRYPTION_OTR) && (type == TYPE_IMAGE)) {
+			return "" + context.getText(R.string.encrypted_image_received);
 		} else if (encryption == ENCRYPTION_DECRYPTION_FAILED) {
-			return ""+context.getText(R.string.decryption_failed);
+			return "" + context.getText(R.string.decryption_failed);
 		} else if (type == TYPE_IMAGE) {
-			return ""+context.getText(R.string.image_file);
+			return "" + context.getText(R.string.image_file);
 		} else {
 			return body.trim();
 		}
@@ -166,11 +172,11 @@ public class Message extends AbstractEntity {
 	public int getStatus() {
 		return status;
 	}
-	
+
 	public String getRemoteMsgId() {
 		return this.remoteMsgId;
 	}
-	
+
 	public void setRemoteMsgId(String id) {
 		this.remoteMsgId = id;
 	}
@@ -199,11 +205,11 @@ public class Message extends AbstractEntity {
 	public boolean isRead() {
 		return this.read;
 	}
-	
+
 	public void markRead() {
 		this.read = true;
 	}
-	
+
 	public void markUnread() {
 		this.read = false;
 	}
@@ -223,7 +229,7 @@ public class Message extends AbstractEntity {
 	public String getEncryptedBody() {
 		return this.encryptedBody;
 	}
-	
+
 	public void setEncryptedBody(String body) {
 		this.encryptedBody = body;
 	}
@@ -231,7 +237,7 @@ public class Message extends AbstractEntity {
 	public void setType(int type) {
 		this.type = type;
 	}
-	
+
 	public int getType() {
 		return this.type;
 	}
@@ -243,11 +249,11 @@ public class Message extends AbstractEntity {
 			this.counterpart = this.counterpart.split("/")[0] + "/" + presence;
 		}
 	}
-	
+
 	public void setTrueCounterpart(String trueCounterpart) {
 		this.trueCounterpart = trueCounterpart;
 	}
-	
+
 	public String getPresence() {
 		String[] counterparts = this.counterpart.split("/");
 		if (counterparts.length == 2) {
@@ -256,15 +262,15 @@ public class Message extends AbstractEntity {
 			return null;
 		}
 	}
-	
+
 	public void setJingleConnection(JingleConnection connection) {
 		this.jingleConnection = connection;
 	}
-	
+
 	public JingleConnection getJingleConnection() {
 		return this.jingleConnection;
 	}
-	
+
 	public static Message createStatusMessage(Conversation conversation) {
 		Message message = new Message();
 		message.setType(Message.TYPE_STATUS);
@@ -275,12 +281,62 @@ public class Message extends AbstractEntity {
 	public void setCounterpart(String counterpart) {
 		this.counterpart = counterpart;
 	}
-	
+
 	public boolean equals(Message message) {
-		if ((this.remoteMsgId!=null) && (this.body != null) && (this.counterpart != null)) {
-			return this.remoteMsgId.equals(message.getRemoteMsgId()) && this.body.equals(message.getBody()) && this.counterpart.equals(message.getCounterpart());
+		if ((this.remoteMsgId != null) && (this.body != null)
+				&& (this.counterpart != null)) {
+			return this.remoteMsgId.equals(message.getRemoteMsgId())
+					&& this.body.equals(message.getBody())
+					&& this.counterpart.equals(message.getCounterpart());
 		} else {
 			return false;
+		}
+	}
+
+	public Message next() {
+		int index = this.conversation.getMessages().indexOf(this);
+		if (index < 0 || index >= this.conversation.getMessages().size() - 1) {
+			return null;
+		} else {
+			return this.conversation.getMessages().get(index + 1);
+		}
+	}
+
+	public Message prev() {
+		int index = this.conversation.getMessages().indexOf(this);
+		if (index <= 0 || index > this.conversation.getMessages().size()) {
+			return null;
+		} else {
+			return this.conversation.getMessages().get(index - 1);
+		}
+	}
+
+	public boolean mergable(Message message) {
+		if (message == null) {
+			return false;
+		}
+		return (this.getType() == Message.TYPE_TEXT
+				&& this.getType() == message.getType()
+				&& this.getCounterpart().equals(message.getCounterpart())
+				&& (message.getTimeSent() - this.getTimeSent()) <= 20000 && ((this
+				.getStatus() == message.getStatus()) || (this.getStatus() == Message.STATUS_SEND && message
+				.getStatus() == Message.STATUS_UNSEND)));
+	}
+
+	public String getMergedBody() {
+		Message next = this.next();
+		if (this.mergable(next)) {
+			return body.trim() + '\n' + next.getMergedBody();
+		}
+		return body.trim();
+	}
+
+	public boolean wasMergedIntoPrevious() {
+		Message prev = this.prev();
+		if (prev == null) {
+			return false;
+		} else {
+			return prev.mergable(this);
 		}
 	}
 }
