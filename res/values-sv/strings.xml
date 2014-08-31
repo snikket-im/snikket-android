@@ -273,7 +273,6 @@
     <string name="send_private_message_to">Skicka privat meddelande till %s</string>
     <string name="touch_to_choose_picture">Tryck på avatarbild för att välja en bild från bildgalleriet</string>
     <string name="mgmt_account_publish_avatar">Publisera avatarbild</string>
-    <string name="publish_avatar">Publisera avatarbild</string>
     <string name="error_publish_avatar_server_reject">Servern kunde inte publisera</string>
     <string name="error_publish_avatar_converting">Något gick fel vid konvertering av din bild</string>
     <string name="error_publish_avatar_no_server_support">Din server stödjer inte publisering av avatarbilder</string>

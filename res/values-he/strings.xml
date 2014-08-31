@@ -261,7 +261,6 @@
     <string name="contact_added_you">איש קשר הוסיף אותך אל רשימת קשר</string>
     <string name="add_back">הוסף בחזרה</string>
     <string name="contact_has_read_up_to_this_point">%s קרא עד לנקודה זו</string>
-    <string name="publish_avatar">פרסם אווטאר</string>
     <string name="touch_to_choose_picture">לחץ על אווטאר כדי לבחור תמונה מתוך גלריה</string>
     <string name="publish_avatar_explanation">לתשומת לבך: כל מי אשר רשום לעדכוני נוכחות שלך יורשה לראות את תמונה זו.</string>
     <string name="publishing">כעת מפרסם&#8230;</string>

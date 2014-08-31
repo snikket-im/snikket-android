@@ -19,7 +19,6 @@
     <string name="send_private_message_to">Отправить личное сообщение для %s</string>
     <string name="touch_to_choose_picture">Нажмите на аватар, чтобы выбрать новую фотографию из галереи</string>
     <string name="mgmt_account_publish_avatar">Разместить аватар</string>
-    <string name="publish_avatar">Разместить аватар</string>
     <string name="error_publish_avatar_server_reject">Сервер не смог разместить аватар</string>
     <string name="error_publish_avatar_converting">В процессе преобразования фотографии возникла ошибка</string>
     <string name="error_publish_avatar_no_server_support">Ваш сервер не поддерживает публикацию аватаров</string>

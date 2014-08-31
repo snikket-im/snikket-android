@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <array name="resources">
+    <string-array name="resources">
         <item>Mòbil</item>
         <item>Telèfon</item>
         <item>Tauleta</item>
         <item>Conversations</item>
         <item>Android</item>
-    </array>
+    </string-array>
     <string-array name="filesizes">
         <item>mai</item>
         <item>256 KB</item>
