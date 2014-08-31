@@ -40,6 +40,9 @@ These XEPs are - as of now:
   your desktop client and thus allows you to switch seamlessly from your mobile
   client to your desktop client and back within one conversation.
 * XEP-0237: Roster Versioning mainly to save bandwidth on poor mobile connections
+* XEP-0352: Client State Indication let the server know whether or not
+  Conversations is in the background. Allows the server to save bandwidth by
+  withholding unimportent packages.
 
 ##Contributors
 (In order of appearance)
@@ -201,7 +204,7 @@ However with adb (android debug bridge) you squeeze some more information out of
 Conversations. These information are especially useful if you are experiencing
 troubles with your connection or with file transfer.
 ````
-adb -d logcat -v time -s xmppService
+adb -d logcat -v time -s conversations
 ````
 ####I found a bug
 Please report it to our issue tracker. If your app crashes please provide a
