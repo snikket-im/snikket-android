@@ -290,6 +290,9 @@ public class ConversationFragment extends Fragment {
 		if (oldString.isEmpty() || mEditMessage.getSelectionStart() == 0) {
 			mEditMessage.getText().insert(0, nick + ": ");
 		} else {
+			if (mEditMessage.getText().charAt(mEditMessage.getSelectionStart()-1)!=' ') {
+				nick = " "+nick;
+			}
 			mEditMessage.getText().insert(mEditMessage.getSelectionStart(), nick + " ");
 		}
 	}
