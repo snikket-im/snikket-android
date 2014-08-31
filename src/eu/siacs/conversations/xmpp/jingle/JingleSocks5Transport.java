@@ -21,7 +21,8 @@ public class JingleSocks5Transport extends JingleTransport {
 	private boolean activated = false;
 	protected Socket socket;
 
-	public JingleSocks5Transport(JingleConnection jingleConnection, JingleCandidate candidate) {
+	public JingleSocks5Transport(JingleConnection jingleConnection,
+			JingleCandidate candidate) {
 		this.candidate = candidate;
 		try {
 			MessageDigest mDigest = MessageDigest.getInstance("SHA-1");
@@ -44,11 +45,12 @@ public class JingleSocks5Transport extends JingleTransport {
 
 	public void connect(final OnTransportConnected callback) {
 		new Thread(new Runnable() {
-			
+
 			@Override
 			public void run() {
 				try {
-					socket = new Socket(candidate.getHost(), candidate.getPort());
+					socket = new Socket(candidate.getHost(),
+							candidate.getPort());
 					inputStream = socket.getInputStream();
 					outputStream = socket.getOutputStream();
 					byte[] login = { 0x05, 0x01, 0x00 };
@@ -57,8 +59,9 @@ public class JingleSocks5Transport extends JingleTransport {
 					outputStream.write(login);
 					inputStream.read(reply);
 					if (Arrays.equals(reply, expectedReply)) {
-						String connect = "" + '\u0005' + '\u0001' + '\u0000' + '\u0003'
-								+ '\u0028' + destination + '\u0000' + '\u0000';
+						String connect = "" + '\u0005' + '\u0001' + '\u0000'
+								+ '\u0003' + '\u0028' + destination + '\u0000'
+								+ '\u0000';
 						outputStream.write(connect.getBytes());
 						byte[] result = new byte[2];
 						inputStream.read(result);
@@ -80,12 +83,13 @@ public class JingleSocks5Transport extends JingleTransport {
 				}
 			}
 		}).start();
-		
+
 	}
 
-	public void send(final JingleFile file, final OnFileTransmissionStatusChanged callback) {
+	public void send(final JingleFile file,
+			final OnFileTransmissionStatusChanged callback) {
 		new Thread(new Runnable() {
-			
+
 			@Override
 			public void run() {
 				InputStream fileInputStream = null;
@@ -93,7 +97,7 @@ public class JingleSocks5Transport extends JingleTransport {
 					MessageDigest digest = MessageDigest.getInstance("SHA-1");
 					digest.reset();
 					fileInputStream = getInputStream(file);
-					if (fileInputStream==null) {
+					if (fileInputStream == null) {
 						callback.onFileTransferAborted();
 						return;
 					}
@@ -105,7 +109,7 @@ public class JingleSocks5Transport extends JingleTransport {
 					}
 					outputStream.flush();
 					file.setSha1Sum(CryptoHelper.bytesToHex(digest.digest()));
-					if (callback!=null) {
+					if (callback != null) {
 						callback.onFileTransmitted(file);
 					}
 				} catch (FileNotFoundException e) {
@@ -125,12 +129,13 @@ public class JingleSocks5Transport extends JingleTransport {
 				}
 			}
 		}).start();
-		
+
 	}
-	
-	public void receive(final JingleFile file, final OnFileTransmissionStatusChanged callback) {
+
+	public void receive(final JingleFile file,
+			final OnFileTransmissionStatusChanged callback) {
 		new Thread(new Runnable() {
-			
+
 			@Override
 			public void run() {
 				try {
@@ -141,22 +146,22 @@ public class JingleSocks5Transport extends JingleTransport {
 					file.getParentFile().mkdirs();
 					file.createNewFile();
 					OutputStream fileOutputStream = getOutputStream(file);
-					if (fileOutputStream==null) {
+					if (fileOutputStream == null) {
 						callback.onFileTransferAborted();
 						return;
 					}
 					long remainingSize = file.getExpectedSize();
 					byte[] buffer = new byte[8192];
 					int count = buffer.length;
-					while(remainingSize > 0) {
+					while (remainingSize > 0) {
 						count = inputStream.read(buffer);
-						if (count==-1) {
+						if (count == -1) {
 							callback.onFileTransferAborted();
 							return;
 						} else {
 							fileOutputStream.write(buffer, 0, count);
 							digest.update(buffer, 0, count);
-							remainingSize-=count;
+							remainingSize -= count;
 						}
 					}
 					fileOutputStream.flush();
@@ -177,25 +182,25 @@ public class JingleSocks5Transport extends JingleTransport {
 	public boolean isProxy() {
 		return this.candidate.getType() == JingleCandidate.TYPE_PROXY;
 	}
-	
+
 	public boolean needsActivation() {
 		return (this.isProxy() && !this.activated);
 	}
 
 	public void disconnect() {
-		if (this.socket!=null) {
+		if (this.socket != null) {
 			try {
 				this.socket.close();
 			} catch (IOException e) {
-				
+
 			}
 		}
 	}
-	
+
 	public boolean isEstablished() {
 		return this.isEstablished;
 	}
-	
+
 	public JingleCandidate getCandidate() {
 		return this.candidate;
 	}

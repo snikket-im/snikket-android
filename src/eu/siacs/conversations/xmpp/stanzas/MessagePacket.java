@@ -9,20 +9,20 @@ public class MessagePacket extends AbstractStanza {
 	public static final int TYPE_GROUPCHAT = 3;
 	public static final int TYPE_ERROR = 4;
 	public static final int TYPE_HEADLINE = 5;
-	
+
 	public MessagePacket() {
 		super("message");
 	}
-	
+
 	public String getBody() {
 		Element body = this.findChild("body");
-		if (body!=null) {
+		if (body != null) {
 			return body.getContent();
 		} else {
 			return null;
 		}
 	}
-	
+
 	public void setBody(String text) {
 		this.children.remove(findChild("body"));
 		Element body = new Element("body");
@@ -33,7 +33,7 @@ public class MessagePacket extends AbstractStanza {
 	public void setType(int type) {
 		switch (type) {
 		case TYPE_CHAT:
-			this.setAttribute("type","chat");
+			this.setAttribute("type", "chat");
 			break;
 		case TYPE_GROUPCHAT:
 			this.setAttribute("type", "groupchat");
@@ -43,14 +43,14 @@ public class MessagePacket extends AbstractStanza {
 		case TYPE_NORMAL:
 			break;
 		default:
-			this.setAttribute("type","chat");
+			this.setAttribute("type", "chat");
 			break;
 		}
 	}
-	
+
 	public int getType() {
 		String type = getAttribute("type");
-		if (type==null) {
+		if (type == null) {
 			return TYPE_NORMAL;
 		} else if (type.equals("normal")) {
 			return TYPE_NORMAL;

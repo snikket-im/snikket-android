@@ -14,7 +14,7 @@ public class Presences {
 	public static final int XA = 2;
 	public static final int DND = 3;
 	public static final int OFFLINE = 4;
-	
+
 	private Hashtable<String, Integer> presences = new Hashtable<String, Integer>();
 
 	public Hashtable<String, Integer> getPresences() {
@@ -28,23 +28,24 @@ public class Presences {
 	public void removePresence(String resource) {
 		this.presences.remove(resource);
 	}
-	
+
 	public void clearPresences() {
 		this.presences.clear();
 	}
-	
+
 	public int getMostAvailableStatus() {
 		int status = OFFLINE;
 		Iterator<Entry<String, Integer>> it = presences.entrySet().iterator();
 		while (it.hasNext()) {
 			Entry<String, Integer> entry = it.next();
-			if (entry.getValue()<status) status = entry.getValue();
+			if (entry.getValue() < status)
+				status = entry.getValue();
 		}
 		return status;
 	}
 
 	public static int parseShow(Element show) {
-		if ((show == null)||(show.getContent() == null)) {
+		if ((show == null) || (show.getContent() == null)) {
 			return Presences.ONLINE;
 		} else if (show.getContent().equals("away")) {
 			return Presences.AWAY;
@@ -53,16 +54,16 @@ public class Presences {
 		} else if (show.getContent().equals("chat")) {
 			return Presences.CHAT;
 		} else if (show.getContent().equals("dnd")) {
-			return 	Presences.DND;
+			return Presences.DND;
 		} else {
 			return Presences.OFFLINE;
 		}
 	}
-	
+
 	public int size() {
 		return presences.size();
 	}
-	
+
 	public String[] asStringArray() {
 		final String[] presencesArray = new String[presences.size()];
 		presences.keySet().toArray(presencesArray);

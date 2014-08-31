@@ -14,7 +14,7 @@ public class PresenceGenerator extends AbstractGenerator {
 		packet.setAttribute("from", contact.getAccount().getJid());
 		return packet;
 	}
-	
+
 	public PresencePacket requestPresenceUpdatesFrom(Contact contact) {
 		return subscription("subscribe", contact);
 	}
@@ -41,9 +41,10 @@ public class PresenceGenerator extends AbstractGenerator {
 		}
 		String capHash = getCapHash();
 		if (capHash != null) {
-			Element cap = packet.addChild("c","http://jabber.org/protocol/caps");
+			Element cap = packet.addChild("c",
+					"http://jabber.org/protocol/caps");
 			cap.setAttribute("hash", "sha-1");
-			cap.setAttribute("node","http://conversions.siacs.eu");
+			cap.setAttribute("node", "http://conversions.siacs.eu");
 			cap.setAttribute("ver", capHash);
 		}
 		return packet;

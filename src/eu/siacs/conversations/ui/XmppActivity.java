@@ -1,5 +1,6 @@
 package eu.siacs.conversations.ui;
 
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
@@ -33,8 +34,6 @@ public abstract class XmppActivity extends Activity {
 
 	protected static final int REQUEST_ANNOUNCE_PGP = 0x0101;
 	protected static final int REQUEST_INVITE_TO_CONVERSATION = 0x0102;
-
-	protected final static String LOGTAG = "xmppService";
 
 	public XmppConnectionService xmppConnectionService;
 	public boolean xmppConnectionServiceBound = false;
@@ -370,7 +369,7 @@ public abstract class XmppActivity extends Activity {
 			if (conversation.getMode() == Conversation.MODE_MULTI) {
 				xmppConnectionService.invite(conversation, contactJid);
 			}
-			Log.d("xmppService", "inviting " + contactJid + " to "
+			Log.d(Config.LOGTAG, "inviting " + contactJid + " to "
 					+ conversation.getName(true));
 		}
 	}

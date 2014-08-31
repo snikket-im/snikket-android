@@ -82,11 +82,12 @@ public class Account extends AbstractEntity {
 
 	public Account(String username, String server, String password) {
 		this(java.util.UUID.randomUUID().toString(), username, server,
-				password, 0, null, "",null);
+				password, 0, null, "", null);
 	}
 
 	public Account(String uuid, String username, String server,
-			String password, int options, String rosterVersion, String keys, String avatar) {
+			String password, int options, String rosterVersion, String keys,
+			String avatar) {
 		this.uuid = uuid;
 		this.username = username;
 		this.server = server;
@@ -151,7 +152,10 @@ public class Account extends AbstractEntity {
 
 	public boolean errorStatus() {
 		int s = getStatus();
-		return (s == STATUS_REGISTRATION_FAILED || s == STATUS_REGISTRATION_CONFLICT || s == STATUS_REGISTRATION_NOT_SUPPORTED || s == STATUS_SERVER_NOT_FOUND || s == STATUS_UNAUTHORIZED);
+		return (s == STATUS_REGISTRATION_FAILED
+				|| s == STATUS_REGISTRATION_CONFLICT
+				|| s == STATUS_REGISTRATION_NOT_SUPPORTED
+				|| s == STATUS_SERVER_NOT_FOUND || s == STATUS_UNAUTHORIZED);
 	}
 
 	public boolean hasErrorStatus() {

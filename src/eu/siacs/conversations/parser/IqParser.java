@@ -12,7 +12,7 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
 	public IqParser(XmppConnectionService service) {
 		super(service);
 	}
-	
+
 	public void rosterItems(Account account, Element query) {
 		String version = query.getAttribute("ver");
 		if (version != null) {
@@ -27,7 +27,7 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
 				if (!contact.getOption(Contact.Options.DIRTY_PUSH)) {
 					contact.setServerName(name);
 				}
-				if (subscription!=null) {
+				if (subscription != null) {
 					if (subscription.equals("remove")) {
 						contact.resetOption(Contact.Options.IN_ROSTER);
 						contact.resetOption(Contact.Options.DIRTY_DELETE);
@@ -42,14 +42,15 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
 		}
 		mXmppConnectionService.updateRosterUi();
 	}
-	
+
 	public String avatarData(IqPacket packet) {
-		Element pubsub = packet.findChild("pubsub", "http://jabber.org/protocol/pubsub");
-		if (pubsub==null) {
+		Element pubsub = packet.findChild("pubsub",
+				"http://jabber.org/protocol/pubsub");
+		if (pubsub == null) {
 			return null;
 		}
 		Element items = pubsub.findChild("items");
-		if (items==null) {
+		if (items == null) {
 			return null;
 		}
 		return super.avatarData(items);
@@ -63,20 +64,19 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
 				Element query = packet.findChild("query");
 				this.rosterItems(account, query);
 			}
-		} else if (packet
-				.hasChild("open", "http://jabber.org/protocol/ibb")
-				|| packet
-						.hasChild("data", "http://jabber.org/protocol/ibb")) {
-			mXmppConnectionService.getJingleConnectionManager().deliverIbbPacket(account, packet);
+		} else if (packet.hasChild("open", "http://jabber.org/protocol/ibb")
+				|| packet.hasChild("data", "http://jabber.org/protocol/ibb")) {
+			mXmppConnectionService.getJingleConnectionManager()
+					.deliverIbbPacket(account, packet);
 		} else if (packet.hasChild("query",
 				"http://jabber.org/protocol/disco#info")) {
-			IqPacket response = mXmppConnectionService.getIqGenerator().discoResponse(packet);
+			IqPacket response = mXmppConnectionService.getIqGenerator()
+					.discoResponse(packet);
 			account.getXmppConnection().sendIqPacket(response, null);
 		} else {
 			if ((packet.getType() == IqPacket.TYPE_GET)
 					|| (packet.getType() == IqPacket.TYPE_SET)) {
-				IqPacket response = packet
-						.generateRespone(IqPacket.TYPE_ERROR);
+				IqPacket response = packet.generateRespone(IqPacket.TYPE_ERROR);
 				Element error = response.addChild("error");
 				error.setAttribute("type", "cancel");
 				error.addChild("feature-not-implemented",

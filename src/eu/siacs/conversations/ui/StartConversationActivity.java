@@ -340,7 +340,7 @@ public class StartConversationActivity extends XmppActivity {
 							String contactJid = jid.getText().toString();
 							Account account = xmppConnectionService
 									.findAccountByJid(accountJid);
-							if (account==null) {
+							if (account == null) {
 								dialog.dismiss();
 								return;
 							}

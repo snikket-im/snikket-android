@@ -17,6 +17,7 @@ import org.json.JSONObject;
 import android.content.Context;
 import android.util.Log;
 
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.persistance.DatabaseBackend;
 import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
@@ -29,9 +30,7 @@ import net.java.otr4j.session.InstanceTag;
 import net.java.otr4j.session.SessionID;
 
 public class OtrEngine implements OtrEngineHost {
-	
-	private static final String LOGTAG = "xmppService";
-	
+
 	private Account account;
 	private OtrPolicy otrPolicy;
 	private KeyPair keyPair;
@@ -45,17 +44,17 @@ public class OtrEngine implements OtrEngineHost {
 		this.otrPolicy.setAllowV3(true);
 		this.keyPair = loadKey(account.getKeys());
 	}
-	
+
 	private KeyPair loadKey(JSONObject keys) {
 		if (keys == null) {
 			return null;
 		}
 		try {
-			BigInteger x = new BigInteger(keys.getString("otr_x"),16);
-			BigInteger y = new BigInteger(keys.getString("otr_y"),16);
-			BigInteger p = new BigInteger(keys.getString("otr_p"),16);
-			BigInteger q = new BigInteger(keys.getString("otr_q"),16);
-			BigInteger g = new BigInteger(keys.getString("otr_g"),16);
+			BigInteger x = new BigInteger(keys.getString("otr_x"), 16);
+			BigInteger y = new BigInteger(keys.getString("otr_y"), 16);
+			BigInteger p = new BigInteger(keys.getString("otr_p"), 16);
+			BigInteger q = new BigInteger(keys.getString("otr_q"), 16);
+			BigInteger g = new BigInteger(keys.getString("otr_g"), 16);
 			KeyFactory keyFactory = KeyFactory.getInstance("DSA");
 			DSAPublicKeySpec pubKeySpec = new DSAPublicKeySpec(y, p, q, g);
 			DSAPrivateKeySpec privateKeySpec = new DSAPrivateKeySpec(x, p, q, g);
@@ -70,26 +69,28 @@ public class OtrEngine implements OtrEngineHost {
 			return null;
 		}
 	}
-	
+
 	private void saveKey() {
 		PublicKey publicKey = keyPair.getPublic();
 		PrivateKey privateKey = keyPair.getPrivate();
 		KeyFactory keyFactory;
 		try {
 			keyFactory = KeyFactory.getInstance("DSA");
-			DSAPrivateKeySpec privateKeySpec = keyFactory.getKeySpec(privateKey, DSAPrivateKeySpec.class);
-			DSAPublicKeySpec publicKeySpec = keyFactory.getKeySpec(publicKey, DSAPublicKeySpec.class);
-			this.account.setKey("otr_x",privateKeySpec.getX().toString(16));
-			this.account.setKey("otr_g",privateKeySpec.getG().toString(16));
-			this.account.setKey("otr_p",privateKeySpec.getP().toString(16));
-			this.account.setKey("otr_q",privateKeySpec.getQ().toString(16));
-			this.account.setKey("otr_y",publicKeySpec.getY().toString(16));
+			DSAPrivateKeySpec privateKeySpec = keyFactory.getKeySpec(
+					privateKey, DSAPrivateKeySpec.class);
+			DSAPublicKeySpec publicKeySpec = keyFactory.getKeySpec(publicKey,
+					DSAPublicKeySpec.class);
+			this.account.setKey("otr_x", privateKeySpec.getX().toString(16));
+			this.account.setKey("otr_g", privateKeySpec.getG().toString(16));
+			this.account.setKey("otr_p", privateKeySpec.getP().toString(16));
+			this.account.setKey("otr_q", privateKeySpec.getQ().toString(16));
+			this.account.setKey("otr_y", publicKeySpec.getY().toString(16));
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
 		} catch (InvalidKeySpecException e) {
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	@Override
@@ -123,18 +124,19 @@ public class OtrEngine implements OtrEngineHost {
 		}
 		return this.keyPair.getPublic();
 	}
-	
+
 	@Override
 	public KeyPair getLocalKeyPair(SessionID arg0) throws OtrException {
-		if (this.keyPair==null) {
+		if (this.keyPair == null) {
 			KeyPairGenerator kg;
 			try {
-			kg = KeyPairGenerator.getInstance("DSA");
-			this.keyPair = kg.genKeyPair();
-			this.saveKey();
-			DatabaseBackend.getInstance(context).updateAccount(account);
+				kg = KeyPairGenerator.getInstance("DSA");
+				this.keyPair = kg.genKeyPair();
+				this.saveKey();
+				DatabaseBackend.getInstance(context).updateAccount(account);
 			} catch (NoSuchAlgorithmException e) {
-				Log.d(LOGTAG,"error generating key pair "+e.getMessage());
+				Log.d(Config.LOGTAG,
+						"error generating key pair " + e.getMessage());
 			}
 		}
 		return this.keyPair;
@@ -152,17 +154,18 @@ public class OtrEngine implements OtrEngineHost {
 	}
 
 	@Override
-	public void injectMessage(SessionID session, String body) throws OtrException {
+	public void injectMessage(SessionID session, String body)
+			throws OtrException {
 		MessagePacket packet = new MessagePacket();
 		packet.setFrom(account.getFullJid());
 		if (session.getUserID().isEmpty()) {
 			packet.setTo(session.getAccountID());
 		} else {
-			packet.setTo(session.getAccountID()+"/"+session.getUserID());
+			packet.setTo(session.getAccountID() + "/" + session.getUserID());
 		}
 		packet.setBody(body);
-		packet.addChild("private","urn:xmpp:carbons:2");
-		packet.addChild("no-copy","urn:xmpp:hints");
+		packet.addChild("private", "urn:xmpp:carbons:2");
+		packet.addChild("no-copy", "urn:xmpp:hints");
 		packet.setType(MessagePacket.TYPE_CHAT);
 		account.getXmppConnection().sendMessagePacket(packet);
 	}

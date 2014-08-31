@@ -14,9 +14,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class AccountAdapter extends ArrayAdapter<Account> {
-	
+
 	private XmppActivity activity;
-	
+
 	public AccountAdapter(XmppActivity activity, List<Account> objects) {
 		super(activity, 0, objects);
 		this.activity = activity;
@@ -34,7 +34,7 @@ public class AccountAdapter extends ArrayAdapter<Account> {
 		jid.setText(account.getJid());
 		TextView statusView = (TextView) view.findViewById(R.id.account_status);
 		ImageView imageView = (ImageView) view.findViewById(R.id.account_image);
-		imageView.setImageBitmap(account.getImage(activity,48));
+		imageView.setImageBitmap(account.getImage(activity, 48));
 		switch (account.getStatus()) {
 		case Account.STATUS_DISABLED:
 			statusView.setText(getContext().getString(

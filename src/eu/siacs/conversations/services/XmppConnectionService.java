@@ -20,6 +20,7 @@ import de.duenndns.ssl.MemorizingTrustManager;
 import net.java.otr4j.OtrException;
 import net.java.otr4j.session.Session;
 import net.java.otr4j.session.SessionStatus;
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.PgpEngine;
 import eu.siacs.conversations.entities.Account;
@@ -83,17 +84,10 @@ import android.util.Log;
 
 public class XmppConnectionService extends Service {
 
-	protected static final String LOGTAG = "xmppService";
 	public DatabaseBackend databaseBackend;
 	private FileBackend fileBackend;
 
 	public long startDate;
-
-	private static final int PING_MAX_INTERVAL = 300;
-	private static final int PING_MIN_INTERVAL = 30;
-	private static final int PING_TIMEOUT = 10;
-	private static final int CONNECT_TIMEOUT = 90;
-	public static final long CARBON_GRACE_PERIOD = 60000L;
 
 	private static String ACTION_MERGE_PHONE_CONTACTS = "merge_phone_contacts";
 
@@ -169,16 +163,17 @@ public class XmppConnectionService extends Service {
 				}
 				if (connection != null && connection.getFeatures().csi()) {
 					if (checkListeners()) {
-						Log.d(LOGTAG, account.getJid()
+						Log.d(Config.LOGTAG, account.getJid()
 								+ " sending csi//inactive");
 						connection.sendInactive();
 					} else {
-						Log.d(LOGTAG, account.getJid() + " sending csi//active");
+						Log.d(Config.LOGTAG, account.getJid()
+								+ " sending csi//active");
 						connection.sendActive();
 					}
 				}
 				syncDirtyContacts(account);
-				scheduleWakeupCall(PING_MAX_INTERVAL, true);
+				scheduleWakeupCall(Config.PING_MAX_INTERVAL, true);
 			} else if (account.getStatus() == Account.STATUS_OFFLINE) {
 				resetSendingToWaiting(account);
 				if (!account.isOptionSet(Account.OPTION_DISABLED)) {
@@ -192,7 +187,7 @@ public class XmppConnectionService extends Service {
 					&& (account.getStatus() != Account.STATUS_NO_INTERNET)) {
 				if (connection != null) {
 					int next = connection.getTimeToNextAttempt();
-					Log.d(LOGTAG, account.getJid()
+					Log.d(Config.LOGTAG, account.getJid()
 							+ ": error connecting account. try again in "
 							+ next + "s for the "
 							+ (connection.getAttempt() + 1) + " time");
@@ -355,10 +350,11 @@ public class XmppConnectionService extends Service {
 								.getLastPacketReceived();
 						long lastSent = account.getXmppConnection()
 								.getLastPingSent();
-						if (lastSent - lastReceived >= PING_TIMEOUT * 1000) {
-							Log.d(LOGTAG, account.getJid() + ": ping timeout");
+						if (lastSent - lastReceived >= Config.PING_TIMEOUT * 1000) {
+							Log.d(Config.LOGTAG, account.getJid()
+									+ ": ping timeout");
 							this.reconnectAccount(account, true);
-						} else if (SystemClock.elapsedRealtime() - lastReceived >= PING_MIN_INTERVAL * 1000) {
+						} else if (SystemClock.elapsedRealtime() - lastReceived >= Config.PING_MIN_INTERVAL * 1000) {
 							account.getXmppConnection().sendPing();
 							this.scheduleWakeupCall(2, false);
 						}
@@ -370,8 +366,8 @@ public class XmppConnectionService extends Service {
 						new Thread(account.getXmppConnection()).start();
 					} else if ((account.getStatus() == Account.STATUS_CONNECTING)
 							&& ((SystemClock.elapsedRealtime() - account
-									.getXmppConnection().getLastConnect()) / 1000 >= CONNECT_TIMEOUT)) {
-						Log.d(LOGTAG, account.getJid()
+									.getXmppConnection().getLastConnect()) / 1000 >= Config.CONNECT_TIMEOUT)) {
+						Log.d(Config.LOGTAG, account.getJid()
 								+ ": time out during connect reconnecting");
 						reconnectAccount(account, true);
 					} else {
@@ -380,7 +376,7 @@ public class XmppConnectionService extends Service {
 						}
 					}
 					// in any case. reschedule wakup call
-					this.scheduleWakeupCall(PING_MAX_INTERVAL, true);
+					this.scheduleWakeupCall(Config.PING_MAX_INTERVAL, true);
 				}
 				if (mOnAccountUpdate != null) {
 					mOnAccountUpdate.onAccountUpdate();
@@ -450,7 +446,7 @@ public class XmppConnectionService extends Service {
 				.getSystemService(Context.ALARM_SERVICE);
 		Intent intent = new Intent(context, EventReceiver.class);
 		alarmManager.cancel(PendingIntent.getBroadcast(context, 0, intent, 0));
-		Log.d(LOGTAG, "good bye");
+		Log.d(Config.LOGTAG, "good bye");
 		stopSelf();
 	}
 
@@ -673,10 +669,10 @@ public class XmppConnectionService extends Service {
 	public void fetchRosterFromServer(Account account) {
 		IqPacket iqPacket = new IqPacket(IqPacket.TYPE_GET);
 		if (!"".equals(account.getRosterVersion())) {
-			Log.d(LOGTAG, account.getJid() + ": fetching roster version "
-					+ account.getRosterVersion());
+			Log.d(Config.LOGTAG, account.getJid()
+					+ ": fetching roster version " + account.getRosterVersion());
 		} else {
-			Log.d(LOGTAG, account.getJid() + ": fetching roster");
+			Log.d(Config.LOGTAG, account.getJid() + ": fetching roster");
 		}
 		iqPacket.query("jabber:iq:roster").setAttribute("ver",
 				account.getRosterVersion());
@@ -1006,7 +1002,8 @@ public class XmppConnectionService extends Service {
 				XmppConnection connection = account.getXmppConnection();
 				if (connection != null && connection.getFeatures().csi()) {
 					connection.sendActive();
-					Log.d(LOGTAG, account.getJid() + " sending csi//active");
+					Log.d(Config.LOGTAG, account.getJid()
+							+ " sending csi//active");
 				}
 			}
 		}
@@ -1018,7 +1015,8 @@ public class XmppConnectionService extends Service {
 				XmppConnection connection = account.getXmppConnection();
 				if (connection != null && connection.getFeatures().csi()) {
 					connection.sendInactive();
-					Log.d(LOGTAG, account.getJid() + " sending csi//inactive");
+					Log.d(Config.LOGTAG, account.getJid()
+							+ " sending csi//inactive");
 				}
 			}
 		}
@@ -1040,7 +1038,7 @@ public class XmppConnectionService extends Service {
 		account.pendingConferenceJoins.remove(conversation);
 		account.pendingConferenceLeaves.remove(conversation);
 		if (account.getStatus() == Account.STATUS_ONLINE) {
-			Log.d(LOGTAG,
+			Log.d(Config.LOGTAG,
 					"joining conversation " + conversation.getContactJid());
 			String nick = conversation.getMucOptions().getProposedNick();
 			conversation.getMucOptions().setJoinNick(nick);
@@ -1142,8 +1140,8 @@ public class XmppConnectionService extends Service {
 			sendPresencePacket(conversation.getAccount(), packet);
 			conversation.getMucOptions().setOffline();
 			conversation.deregisterWithBookmark();
-			Log.d(LOGTAG, conversation.getAccount().getJid() + " leaving muc "
-					+ conversation.getContactJid());
+			Log.d(Config.LOGTAG, conversation.getAccount().getJid()
+					+ " leaving muc " + conversation.getContactJid());
 		} else {
 			account.pendingConferenceLeaves.add(conversation);
 		}
@@ -1184,7 +1182,6 @@ public class XmppConnectionService extends Service {
 				pushContactToServer(contact);
 			}
 			if (contact.getOption(Contact.Options.DIRTY_DELETE)) {
-				Log.d(LOGTAG, "dirty delete");
 				deleteContactOnServer(contact);
 			}
 		}
@@ -1204,9 +1201,10 @@ public class XmppConnectionService extends Service {
 		Account account = conversation.getAccount();
 		List<Message> messages = conversation.getMessages();
 		Session otrSession = conversation.getOtrSession();
-		Log.d(LOGTAG, account.getJid() + " otr session established with "
-				+ conversation.getContactJid() + "/"
-				+ otrSession.getSessionID().getUserID());
+		Log.d(Config.LOGTAG,
+				account.getJid() + " otr session established with "
+						+ conversation.getContactJid() + "/"
+						+ otrSession.getSessionID().getUserID());
 		for (int i = 0; i < messages.size(); ++i) {
 			Message msg = messages.get(i);
 			if ((msg.getStatus() == Message.STATUS_UNSEND || msg.getStatus() == Message.STATUS_WAITING)
@@ -1280,8 +1278,8 @@ public class XmppConnectionService extends Service {
 
 	public void publishAvatar(Account account, Uri image,
 			final UiCallback<Avatar> callback) {
-		final Bitmap.CompressFormat format = Defaults.AVATAR_FORMAT;
-		final int size = Defaults.AVATAR_SIZE;
+		final Bitmap.CompressFormat format = Config.AVATAR_FORMAT;
+		final int size = Config.AVATAR_SIZE;
 		final Avatar avatar = getFileBackend()
 				.getPepAvatar(image, size, format);
 		if (avatar != null) {
@@ -1341,7 +1339,7 @@ public class XmppConnectionService extends Service {
 
 	public void fetchAvatar(Account account, final Avatar avatar,
 			final UiCallback<Avatar> callback) {
-		Log.d(LOGTAG, account.getJid() + ": retrieving avatar for "
+		Log.d(Config.LOGTAG, account.getJid() + ": retrieving avatar for "
 				+ avatar.owner);
 		IqPacket packet = this.mIqGenerator.retrieveAvatar(avatar);
 		sendIqPacket(account, packet, new OnIqPacketReceived() {
@@ -1439,7 +1437,8 @@ public class XmppConnectionService extends Service {
 					}
 					Thread thread = new Thread(account.getXmppConnection());
 					thread.start();
-					scheduleWakeupCall((int) (CONNECT_TIMEOUT * 1.2), false);
+					scheduleWakeupCall((int) (Config.CONNECT_TIMEOUT * 1.2),
+							false);
 				}
 			}
 		}).start();

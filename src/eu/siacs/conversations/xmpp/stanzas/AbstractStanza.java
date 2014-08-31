@@ -15,20 +15,20 @@ public class AbstractStanza extends Element {
 	public String getFrom() {
 		return getAttribute("from");
 	}
-	
+
 	public String getId() {
 		return this.getAttribute("id");
 	}
-	
+
 	public void setTo(String to) {
 		setAttribute("to", to);
 	}
-	
+
 	public void setFrom(String from) {
-		setAttribute("from",from);
+		setAttribute("from", from);
 	}
-	
+
 	public void setId(String id) {
-		setAttribute("id",id);
+		setAttribute("id", id);
 	}
 }

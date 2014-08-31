@@ -13,17 +13,17 @@ import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xml.Element;
 
 public abstract class AbstractParser {
-	
+
 	protected XmppConnectionService mXmppConnectionService;
 
 	protected AbstractParser(XmppConnectionService service) {
 		this.mXmppConnectionService = service;
 	}
-	
+
 	protected long getTimestamp(Element packet) {
 		long now = System.currentTimeMillis();
 		ArrayList<String> stamps = new ArrayList<String>();
-		for(Element child : packet.getChildren()) {
+		for (Element child : packet.getChildren()) {
 			if (child.getName().equals("delay")) {
 				stamps.add(child.getAttribute("stamp").replace("Z", "+0000"));
 			}
@@ -33,17 +33,18 @@ public abstract class AbstractParser {
 			try {
 				String stamp = stamps.get(stamps.size() - 1);
 				if (stamp.contains(".")) {
-					Date date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ",Locale.US)
-					.parse(stamp);
-					if (now<date.getTime()) {
+					Date date = new SimpleDateFormat(
+							"yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.US)
+							.parse(stamp);
+					if (now < date.getTime()) {
 						return now;
 					} else {
 						return date.getTime();
 					}
 				} else {
-					Date date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ",Locale.US)
-							.parse(stamp);
-					if (now<date.getTime()) {
+					Date date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ",
+							Locale.US).parse(stamp);
+					if (now < date.getTime()) {
 						return now;
 					} else {
 						return date.getTime();
@@ -56,8 +57,9 @@ public abstract class AbstractParser {
 			return now;
 		}
 	}
-	
-	protected void updateLastseen(Element packet, Account account, boolean presenceOverwrite) {
+
+	protected void updateLastseen(Element packet, Account account,
+			boolean presenceOverwrite) {
 		String[] fromParts = packet.getAttribute("from").split("/");
 		String from = fromParts[0];
 		String presence = null;
@@ -70,19 +72,19 @@ public abstract class AbstractParser {
 		long timestamp = getTimestamp(packet);
 		if (timestamp >= contact.lastseen.time) {
 			contact.lastseen.time = timestamp;
-			if ((presence!=null)&&(presenceOverwrite)) {
+			if ((presence != null) && (presenceOverwrite)) {
 				contact.lastseen.presence = presence;
 			}
 		}
 	}
-	
+
 	protected String avatarData(Element items) {
 		Element item = items.findChild("item");
-		if (item==null) {
+		if (item == null) {
 			return null;
 		}
-		Element data = item.findChild("data","urn:xmpp:avatar:data");
-		if (data==null) {
+		Element data = item.findChild("data", "urn:xmpp:avatar:data");
+		if (data == null) {
 			return null;
 		}
 		return data.getContent();

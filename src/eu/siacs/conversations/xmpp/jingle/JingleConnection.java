@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.util.Log;
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
@@ -100,10 +101,11 @@ public class JingleConnection {
 				mXmppConnectionService.markMessage(message,
 						Message.STATUS_RECEIVED);
 			}
-			Log.d("xmppService",
+			Log.d(Config.LOGTAG,
 					"sucessfully transmitted file:" + file.getAbsolutePath());
-			if (message.getEncryption()!=Message.ENCRYPTION_PGP) {
-				Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+			if (message.getEncryption() != Message.ENCRYPTION_PGP) {
+				Intent intent = new Intent(
+						Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
 				intent.setData(Uri.fromFile(file));
 				mXmppConnectionService.sendBroadcast(intent);
 			}
@@ -121,17 +123,17 @@ public class JingleConnection {
 		@Override
 		public void success() {
 			if (initiator.equals(account.getFullJid())) {
-				Log.d("xmppService", "we were initiating. sending file");
+				Log.d(Config.LOGTAG, "we were initiating. sending file");
 				transport.send(file, onFileTransmissionSatusChanged);
 			} else {
 				transport.receive(file, onFileTransmissionSatusChanged);
-				Log.d("xmppService", "we were responding. receiving file");
+				Log.d(Config.LOGTAG, "we were responding. receiving file");
 			}
 		}
 
 		@Override
 		public void failed() {
-			Log.d("xmppService", "proxy activation failed");
+			Log.d(Config.LOGTAG, "proxy activation failed");
 		}
 	};
 
@@ -177,13 +179,13 @@ public class JingleConnection {
 				returnResult = this.receiveFallbackToIbb(packet);
 			} else {
 				returnResult = false;
-				Log.d("xmppService", "trying to fallback to something unknown"
+				Log.d(Config.LOGTAG, "trying to fallback to something unknown"
 						+ packet.toString());
 			}
 		} else if (packet.isAction("transport-accept")) {
 			returnResult = this.receiveTransportAccept(packet);
 		} else {
-			Log.d("xmppService", "packet arrived in connection. action was "
+			Log.d(Config.LOGTAG, "packet arrived in connection. action was "
 					+ packet.getAction());
 			returnResult = false;
 		}
@@ -224,14 +226,14 @@ public class JingleConnection {
 
 											@Override
 											public void failed() {
-												Log.d("xmppService",
+												Log.d(Config.LOGTAG,
 														"connection to our own primary candidete failed");
 												sendInitRequest();
 											}
 
 											@Override
 											public void established() {
-												Log.d("xmppService",
+												Log.d(Config.LOGTAG,
 														"succesfully connected to our own primary candidate");
 												mergeCandidate(candidate);
 												sendInitRequest();
@@ -239,7 +241,7 @@ public class JingleConnection {
 										});
 								mergeCandidate(candidate);
 							} else {
-								Log.d("xmppService",
+								Log.d(Config.LOGTAG,
 										"no primary candidate of our own was found");
 								sendInitRequest();
 							}
@@ -288,7 +290,7 @@ public class JingleConnection {
 								filename[filename.length - 2])) {
 							supportedFile = true;
 							if (filename[filename.length - 1].equals("otr")) {
-								Log.d("xmppService", "receiving otr file");
+								Log.d(Config.LOGTAG, "receiving otr file");
 								this.message
 										.setEncryption(Message.ENCRYPTION_OTR);
 							} else {
@@ -304,13 +306,13 @@ public class JingleConnection {
 					conversation.getMessages().add(message);
 					if (size <= this.mJingleConnectionManager
 							.getAutoAcceptFileSize()) {
-						Log.d("xmppService", "auto accepting file from "
+						Log.d(Config.LOGTAG, "auto accepting file from "
 								+ packet.getFrom());
 						this.acceptedAutomatically = true;
 						this.sendAccept();
 					} else {
 						message.markUnread();
-						Log.d("xmppService",
+						Log.d(Config.LOGTAG,
 								"not auto accepting new file offer with size: "
 										+ size
 										+ " allowed size:"
@@ -400,7 +402,7 @@ public class JingleConnection {
 
 								@Override
 								public void failed() {
-									Log.d("xmppService",
+									Log.d(Config.LOGTAG,
 											"connection to our own primary candidate failed");
 									content.socks5transport().setChildren(
 											getCandidatesAsElements());
@@ -411,7 +413,7 @@ public class JingleConnection {
 
 								@Override
 								public void established() {
-									Log.d("xmppService",
+									Log.d(Config.LOGTAG,
 											"connected to primary candidate");
 									mergeCandidate(candidate);
 									content.socks5transport().setChildren(
@@ -422,7 +424,7 @@ public class JingleConnection {
 								}
 							});
 						} else {
-							Log.d("xmppService",
+							Log.d(Config.LOGTAG,
 									"did not find a primary candidate for ourself");
 							content.socks5transport().setChildren(
 									getCandidatesAsElements());
@@ -446,7 +448,7 @@ public class JingleConnection {
 	}
 
 	private void sendJinglePacket(JinglePacket packet) {
-		// Log.d("xmppService",packet.toString());
+		// Log.d(Config.LOGTAG,packet.toString());
 		account.getXmppConnection().sendIqPacket(packet, responseListener);
 	}
 
@@ -470,14 +472,14 @@ public class JingleConnection {
 				} else {
 					String cid = content.socks5transport()
 							.findChild("activated").getAttribute("cid");
-					Log.d("xmppService", "received proxy activated (" + cid
+					Log.d(Config.LOGTAG, "received proxy activated (" + cid
 							+ ")prior to choosing our own transport");
 					JingleSocks5Transport connection = this.connections
 							.get(cid);
 					if (connection != null) {
 						connection.setActivated(true);
 					} else {
-						Log.d("xmppService", "activated connection not found");
+						Log.d(Config.LOGTAG, "activated connection not found");
 						this.sendCancel();
 						this.cancel();
 					}
@@ -487,7 +489,7 @@ public class JingleConnection {
 				onProxyActivated.failed();
 				return true;
 			} else if (content.socks5transport().hasChild("candidate-error")) {
-				Log.d("xmppService", "received candidate error");
+				Log.d(Config.LOGTAG, "received candidate error");
 				this.receivedCandidate = true;
 				if ((status == STATUS_ACCEPTED) && (this.sentCandidate)) {
 					this.connect();
@@ -497,14 +499,14 @@ public class JingleConnection {
 				String cid = content.socks5transport()
 						.findChild("candidate-used").getAttribute("cid");
 				if (cid != null) {
-					Log.d("xmppService", "candidate used by counterpart:" + cid);
+					Log.d(Config.LOGTAG, "candidate used by counterpart:" + cid);
 					JingleCandidate candidate = getCandidate(cid);
 					candidate.flagAsUsedByCounterpart();
 					this.receivedCandidate = true;
 					if ((status == STATUS_ACCEPTED) && (this.sentCandidate)) {
 						this.connect();
 					} else {
-						Log.d("xmppService",
+						Log.d(Config.LOGTAG,
 								"ignoring because file is already in transmission or we havent sent our candidate yet");
 					}
 					return true;
@@ -523,7 +525,7 @@ public class JingleConnection {
 		final JingleSocks5Transport connection = chooseConnection();
 		this.transport = connection;
 		if (connection == null) {
-			Log.d("xmppService", "could not find suitable candidate");
+			Log.d(Config.LOGTAG, "could not find suitable candidate");
 			this.disconnect();
 			if (this.initiator.equals(account.getFullJid())) {
 				this.sendFallbackToIbb();
@@ -532,7 +534,7 @@ public class JingleConnection {
 			this.status = STATUS_TRANSMITTING;
 			if (connection.needsActivation()) {
 				if (connection.getCandidate().isOurs()) {
-					Log.d("xmppService", "candidate "
+					Log.d(Config.LOGTAG, "candidate "
 							+ connection.getCandidate().getCid()
 							+ " was our proxy. going to activate");
 					IqPacket activation = new IqPacket(IqPacket.TYPE_SET);
@@ -557,17 +559,17 @@ public class JingleConnection {
 								}
 							});
 				} else {
-					Log.d("xmppService",
+					Log.d(Config.LOGTAG,
 							"candidate "
 									+ connection.getCandidate().getCid()
 									+ " was a proxy. waiting for other party to activate");
 				}
 			} else {
 				if (initiator.equals(account.getFullJid())) {
-					Log.d("xmppService", "we were initiating. sending file");
+					Log.d(Config.LOGTAG, "we were initiating. sending file");
 					connection.send(file, onFileTransmissionSatusChanged);
 				} else {
-					Log.d("xmppService", "we were responding. receiving file");
+					Log.d(Config.LOGTAG, "we were responding. receiving file");
 					connection.receive(file, onFileTransmissionSatusChanged);
 				}
 			}
@@ -579,11 +581,11 @@ public class JingleConnection {
 		for (Entry<String, JingleSocks5Transport> cursor : connections
 				.entrySet()) {
 			JingleSocks5Transport currentConnection = cursor.getValue();
-			// Log.d("xmppService","comparing candidate: "+currentConnection.getCandidate().toString());
+			// Log.d(Config.LOGTAG,"comparing candidate: "+currentConnection.getCandidate().toString());
 			if (currentConnection.isEstablished()
 					&& (currentConnection.getCandidate().isUsedByCounterpart() || (!currentConnection
 							.getCandidate().isOurs()))) {
-				// Log.d("xmppService","is usable");
+				// Log.d(Config.LOGTAG,"is usable");
 				if (connection == null) {
 					connection = currentConnection;
 				} else {
@@ -592,7 +594,7 @@ public class JingleConnection {
 						connection = currentConnection;
 					} else if (connection.getCandidate().getPriority() == currentConnection
 							.getCandidate().getPriority()) {
-						// Log.d("xmppService","found two candidates with same priority");
+						// Log.d(Config.LOGTAG,"found two candidates with same priority");
 						if (initiator.equals(account.getFullJid())) {
 							if (currentConnection.getCandidate().isOurs()) {
 								connection = currentConnection;
@@ -672,7 +674,7 @@ public class JingleConnection {
 
 				@Override
 				public void failed() {
-					Log.d("xmppService", "ibb open failed");
+					Log.d(Config.LOGTAG, "ibb open failed");
 				}
 
 				@Override
@@ -742,7 +744,7 @@ public class JingleConnection {
 
 			@Override
 			public void failed() {
-				Log.d("xmppService",
+				Log.d(Config.LOGTAG,
 						"connection failed with " + candidate.getHost() + ":"
 								+ candidate.getPort());
 				connectNextCandidate();
@@ -750,7 +752,7 @@ public class JingleConnection {
 
 			@Override
 			public void established() {
-				Log.d("xmppService",
+				Log.d(Config.LOGTAG,
 						"established connection with " + candidate.getHost()
 								+ ":" + candidate.getPort());
 				sendCandidateUsed(candidate.getCid());
@@ -874,7 +876,7 @@ public class JingleConnection {
 				}
 			}).start();
 		} else {
-			Log.d("xmppService", "status (" + status + ") was not ok");
+			Log.d(Config.LOGTAG, "status (" + status + ") was not ok");
 		}
 	}
 }

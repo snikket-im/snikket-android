@@ -146,10 +146,10 @@ public class Element {
 	}
 
 	public void setAttribute(String name, long value) {
-		this.setAttribute(name, ""+value);
+		this.setAttribute(name, "" + value);
 	}
-	
+
 	public void setAttribute(String name, int value) {
-		this.setAttribute(name, ""+value);
+		this.setAttribute(name, "" + value);
 	}
 }

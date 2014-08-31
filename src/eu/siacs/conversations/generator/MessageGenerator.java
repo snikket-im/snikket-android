@@ -32,56 +32,56 @@ public class MessageGenerator {
 		packet.setFrom(account.getFullJid());
 		packet.setId(message.getUuid());
 		if (addDelay) {
-			addDelay(packet,message.getTimeSent());
+			addDelay(packet, message.getTimeSent());
 		}
 		return packet;
 	}
-	
+
 	private void addDelay(MessagePacket packet, long timestamp) {
-		final SimpleDateFormat mDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",Locale.US);
+		final SimpleDateFormat mDateFormat = new SimpleDateFormat(
+				"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US);
 		mDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 		Element delay = packet.addChild("delay", "urn:xmpp:delay");
 		Date date = new Date(timestamp);
 		delay.setAttribute("stamp", mDateFormat.format(date));
 	}
-	
+
 	public MessagePacket generateOtrChat(Message message) {
 		return generateOtrChat(message, false);
 	}
-	
+
 	public MessagePacket generateOtrChat(Message message, boolean addDelay) {
 		Session otrSession = message.getConversation().getOtrSession();
-		if (otrSession==null) {
+		if (otrSession == null) {
 			return null;
 		}
-		MessagePacket packet = preparePacket(message,addDelay);
+		MessagePacket packet = preparePacket(message, addDelay);
 		packet.addChild("private", "urn:xmpp:carbons:2");
 		packet.addChild("no-copy", "urn:xmpp:hints");
 		try {
-			packet.setBody(otrSession.transformSending(message
-					.getBody()));
+			packet.setBody(otrSession.transformSending(message.getBody()));
 			return packet;
 		} catch (OtrException e) {
 			return null;
 		}
 	}
-	
+
 	public MessagePacket generateChat(Message message) {
 		return generateChat(message, false);
 	}
-	
+
 	public MessagePacket generateChat(Message message, boolean addDelay) {
-		MessagePacket packet = preparePacket(message,addDelay);
+		MessagePacket packet = preparePacket(message, addDelay);
 		packet.setBody(message.getBody());
 		return packet;
 	}
-	
+
 	public MessagePacket generatePgpChat(Message message) {
 		return generatePgpChat(message, false);
 	}
-	
+
 	public MessagePacket generatePgpChat(Message message, boolean addDelay) {
-		MessagePacket packet = preparePacket(message,addDelay);
+		MessagePacket packet = preparePacket(message, addDelay);
 		packet.setBody("This is an XEP-0027 encryted message");
 		if (message.getEncryption() == Message.ENCRYPTION_DECRYPTED) {
 			packet.addChild("x", "jabber:x:encrypted").setContent(
@@ -100,7 +100,7 @@ public class MessageGenerator {
 		error.addChild("not-acceptable");
 		return packet;
 	}
-	
+
 	private MessagePacket generateError(MessagePacket origin) {
 		MessagePacket packet = new MessagePacket();
 		packet.setId(origin.getId());
@@ -109,7 +109,7 @@ public class MessageGenerator {
 		packet.setType(MessagePacket.TYPE_ERROR);
 		return packet;
 	}
-	
+
 	public MessagePacket confirm(Account account, String to, String id) {
 		MessagePacket packet = new MessagePacket();
 		packet.setType(MessagePacket.TYPE_NORMAL);
@@ -120,8 +120,9 @@ public class MessageGenerator {
 		received.setAttribute("id", id);
 		return packet;
 	}
-	
-	public MessagePacket conferenceSubject(Conversation conversation,String subject) {
+
+	public MessagePacket conferenceSubject(Conversation conversation,
+			String subject) {
 		MessagePacket packet = new MessagePacket();
 		packet.setType(MessagePacket.TYPE_GROUPCHAT);
 		packet.setTo(conversation.getContactJid().split("/")[0]);
@@ -131,7 +132,7 @@ public class MessageGenerator {
 		packet.setFrom(conversation.getAccount().getJid());
 		return packet;
 	}
-	
+
 	public MessagePacket directInvite(Conversation conversation, String contact) {
 		MessagePacket packet = new MessagePacket();
 		packet.setType(MessagePacket.TYPE_NORMAL);
@@ -141,7 +142,7 @@ public class MessageGenerator {
 		x.setAttribute("jid", conversation.getContactJid().split("/")[0]);
 		return packet;
 	}
-	
+
 	public MessagePacket invite(Conversation conversation, String contact) {
 		MessagePacket packet = new MessagePacket();
 		packet.setTo(conversation.getContactJid().split("/")[0]);
@@ -154,13 +155,14 @@ public class MessageGenerator {
 		packet.addChild(x);
 		return packet;
 	}
-	
-	public MessagePacket received(Account account, MessagePacket originalMessage, String namespace) {
+
+	public MessagePacket received(Account account,
+			MessagePacket originalMessage, String namespace) {
 		MessagePacket receivedPacket = new MessagePacket();
 		receivedPacket.setType(MessagePacket.TYPE_NORMAL);
 		receivedPacket.setTo(originalMessage.getFrom());
 		receivedPacket.setFrom(account.getFullJid());
-		Element received = receivedPacket.addChild("received",namespace);
+		Element received = receivedPacket.addChild("received", namespace);
 		received.setAttribute("id", originalMessage.getId());
 		return receivedPacket;
 	}

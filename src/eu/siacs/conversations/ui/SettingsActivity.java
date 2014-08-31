@@ -14,7 +14,7 @@ public class SettingsActivity extends XmppActivity {
 
 	@Override
 	void onBackendConnected() {
-		
+
 	}
 
 }

@@ -23,13 +23,13 @@ import eu.siacs.conversations.entities.ListItem;
 import eu.siacs.conversations.ui.adapter.ListItemAdapter;
 
 public class ChooseContactActivity extends XmppActivity {
-	
+
 	private ListView mListView;
 	private ArrayList<ListItem> contacts = new ArrayList<ListItem>();
 	private ArrayAdapter<ListItem> mContactsAdapter;
-	
+
 	private EditText mSearchEditText;
-	
+
 	private TextWatcher mSearchTextWatcher = new TextWatcher() {
 
 		@Override
@@ -47,7 +47,7 @@ public class ChooseContactActivity extends XmppActivity {
 				int count) {
 		}
 	};
-	
+
 	private MenuItem.OnActionExpandListener mOnActionExpandListener = new MenuItem.OnActionExpandListener() {
 
 		@Override
@@ -76,35 +76,35 @@ public class ChooseContactActivity extends XmppActivity {
 			return true;
 		}
 	};
-	
-	
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_choose_contact);
 		mListView = (ListView) findViewById(R.id.choose_contact_list);
-		mContactsAdapter = new ListItemAdapter(getApplicationContext(), contacts);
+		mContactsAdapter = new ListItemAdapter(getApplicationContext(),
+				contacts);
 		mListView.setAdapter(mContactsAdapter);
 		mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int position,
-					long arg3) {
+			public void onItemClick(AdapterView<?> arg0, View arg1,
+					int position, long arg3) {
 				InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 				imm.hideSoftInputFromWindow(mSearchEditText.getWindowToken(),
 						InputMethodManager.HIDE_IMPLICIT_ONLY);
 				Intent request = getIntent();
 				Intent data = new Intent();
-				data.putExtra("contact",contacts.get(position).getJid());
-				data.putExtra("account",request.getStringExtra("account"));
-				data.putExtra("conversation",request.getStringExtra("conversation"));
+				data.putExtra("contact", contacts.get(position).getJid());
+				data.putExtra("account", request.getStringExtra("account"));
+				data.putExtra("conversation",
+						request.getStringExtra("conversation"));
 				setResult(RESULT_OK, data);
 				finish();
 			}
 		});
 	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.choose_contact, menu);
@@ -121,7 +121,7 @@ public class ChooseContactActivity extends XmppActivity {
 	void onBackendConnected() {
 		filterContacts(null);
 	}
-	
+
 	protected void filterContacts(String needle) {
 		this.contacts.clear();
 		for (Account account : xmppConnectionService.getAccounts()) {

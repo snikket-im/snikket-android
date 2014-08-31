@@ -299,9 +299,9 @@ public class MucOptions {
 		return this.conversation.getContactJid().split("/")[0] + "/"
 				+ this.joinnick;
 	}
-	
+
 	public String getTrueCounterpart(String counterpart) {
-		for(User user : this.getUsers()) {
+		for (User user : this.getUsers()) {
 			if (user.getName().equals(counterpart)) {
 				return user.getJid();
 			}

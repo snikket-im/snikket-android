@@ -46,7 +46,7 @@ public class PublishProfilePictureActivity extends XmppActivity {
 				public void run() {
 					if (mInitialAccountSetup) {
 						startActivity(new Intent(getApplicationContext(),
-							StartConversationActivity.class));
+								StartConversationActivity.class));
 					}
 					finish();
 				}
@@ -111,7 +111,7 @@ public class PublishProfilePictureActivity extends XmppActivity {
 			public void onClick(View v) {
 				if (mInitialAccountSetup) {
 					startActivity(new Intent(getApplicationContext(),
-						StartConversationActivity.class));
+							StartConversationActivity.class));
 				}
 				finish();
 			}

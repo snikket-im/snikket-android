@@ -142,7 +142,7 @@ public class Message extends AbstractEntity {
 			}
 		}
 	}
-	
+
 	public String getBody() {
 		return body;
 	}

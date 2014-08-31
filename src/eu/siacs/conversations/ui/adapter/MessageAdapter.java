@@ -14,7 +14,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
-import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
@@ -68,8 +67,9 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 	public void setOnContactPictureClicked(OnContactPictureClicked listener) {
 		this.mOnContactPictureClickedListener = listener;
 	}
-	
-	public void setOnContactPictureLongClicked(OnContactPictureLongClicked listener) {
+
+	public void setOnContactPictureLongClicked(
+			OnContactPictureLongClicked listener) {
 		this.mOnContactPictureLongClickedListener = listener;
 	}
 
@@ -219,7 +219,8 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 			} else {
 				String privateMarker;
 				if (message.getStatus() <= Message.STATUS_RECEIVED) {
-					privateMarker = activity.getString(R.string.private_message);
+					privateMarker = activity
+							.getString(R.string.private_message);
 				} else {
 					String to;
 					if (message.getPresence() != null) {
@@ -227,11 +228,18 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 					} else {
 						to = message.getCounterpart();
 					}
-					privateMarker = activity.getString(R.string.private_message_to, to);
+					privateMarker = activity.getString(
+							R.string.private_message_to, to);
 				}
-				SpannableString span = new SpannableString(privateMarker+" "+message.getBody());
-				span.setSpan(new ForegroundColorSpan(activity.getSecondaryTextColor()), 0, privateMarker.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-				span.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), 0, privateMarker.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+				SpannableString span = new SpannableString(privateMarker + " "
+						+ message.getBody());
+				span.setSpan(
+						new ForegroundColorSpan(activity
+								.getSecondaryTextColor()), 0, privateMarker
+								.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+				span.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), 0,
+						privateMarker.length(),
+						Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 				viewHolder.messageBody.setText(span);
 			}
 		} else {
@@ -401,10 +409,11 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 							contact, getContext()));
 				} else {
 					String name = item.getPresence();
-					if (name==null) {
+					if (name == null) {
 						name = item.getCounterpart();
 					}
-					viewHolder.contact_picture.setImageBitmap(mBitmapCache.get(name, getContext()));
+					viewHolder.contact_picture.setImageBitmap(mBitmapCache.get(
+							name, getContext()));
 				}
 				viewHolder.contact_picture
 						.setOnClickListener(new OnClickListener() {
@@ -419,18 +428,20 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 
 							}
 						});
-				viewHolder.contact_picture.setOnLongClickListener(new OnLongClickListener() {
-					
-					@Override
-					public boolean onLongClick(View v) {
-						if (MessageAdapter.this.mOnContactPictureLongClickedListener != null) {
-							MessageAdapter.this.mOnContactPictureLongClickedListener.onContactPictureLongClicked(item);
-							return true;
-						} else {
-							return false;
-						}
-					}
-				});
+				viewHolder.contact_picture
+						.setOnLongClickListener(new OnLongClickListener() {
+
+							@Override
+							public boolean onLongClick(View v) {
+								if (MessageAdapter.this.mOnContactPictureLongClickedListener != null) {
+									MessageAdapter.this.mOnContactPictureLongClickedListener
+											.onContactPictureLongClicked(item);
+									return true;
+								} else {
+									return false;
+								}
+							}
+						});
 			}
 		}
 
@@ -529,7 +540,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 	public interface OnContactPictureClicked {
 		public void onContactPictureClicked(Message message);
 	}
-	
+
 	public interface OnContactPictureLongClicked {
 		public void onContactPictureLongClicked(Message message);
 	}

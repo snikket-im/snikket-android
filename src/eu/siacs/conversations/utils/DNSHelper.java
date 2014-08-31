@@ -10,6 +10,7 @@ import de.measite.minidns.record.A;
 import de.measite.minidns.record.AAAA;
 import de.measite.minidns.record.Data;
 import de.measite.minidns.util.NameUtil;
+import eu.siacs.conversations.Config;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -47,14 +48,11 @@ public class DNSHelper {
 		Bundle namePort = new Bundle();
 		try {
 			String qname = "_xmpp-client._tcp." + host;
-			Log.d("xmppService", "using dns server: " + dnsServer.getHostAddress()
-					+ " to look up " + host);
-			DNSMessage message =
-					client.query(
-							qname,
-							TYPE.SRV,
-							CLASS.IN,
-							dnsServer.getHostAddress());
+			Log.d(Config.LOGTAG,
+					"using dns server: " + dnsServer.getHostAddress()
+							+ " to look up " + host);
+			DNSMessage message = client.query(qname, TYPE.SRV, CLASS.IN,
+					dnsServer.getHostAddress());
 
 			// How should we handle priorities and weight?
 			// Wikipedia has a nice article about priorities vs. weights:
@@ -64,21 +62,20 @@ public class DNSHelper {
 			// a random order respecting the weight, and dump that priority by
 			// priority
 
-			TreeMap<Integer, ArrayList<SRV>> priorities =
-					new TreeMap<Integer, ArrayList<SRV>>();
-			TreeMap<String, ArrayList<String>> ips4 =
-					new TreeMap<String, ArrayList<String>>();
-			TreeMap<String, ArrayList<String>> ips6 =
-					new TreeMap<String, ArrayList<String>>();
+			TreeMap<Integer, ArrayList<SRV>> priorities = new TreeMap<Integer, ArrayList<SRV>>();
+			TreeMap<String, ArrayList<String>> ips4 = new TreeMap<String, ArrayList<String>>();
+			TreeMap<String, ArrayList<String>> ips6 = new TreeMap<String, ArrayList<String>>();
 
-			for (Record[] rrset : new Record[][]{ message.getAnswers(),
-					message.getAdditionalResourceRecords()}) {
+			for (Record[] rrset : new Record[][] { message.getAnswers(),
+					message.getAdditionalResourceRecords() }) {
 				for (Record rr : rrset) {
 					Data d = rr.getPayload();
-					if (d instanceof SRV && NameUtil.idnEquals(qname,rr.getName())) {
+					if (d instanceof SRV
+							&& NameUtil.idnEquals(qname, rr.getName())) {
 						SRV srv = (SRV) d;
 						if (!priorities.containsKey(srv.getPriority())) {
-							priorities.put(srv.getPriority(), new ArrayList<SRV>(2));
+							priorities.put(srv.getPriority(),
+									new ArrayList<SRV>(2));
 						}
 						priorities.get(srv.getPriority()).add(srv);
 					}
@@ -100,8 +97,9 @@ public class DNSHelper {
 			}
 
 			Random rnd = new Random();
-			ArrayList<SRV> result = new ArrayList<SRV>(priorities.size() * 2 + 1);
-			for (ArrayList<SRV> s: priorities.values()) {
+			ArrayList<SRV> result = new ArrayList<SRV>(
+					priorities.size() * 2 + 1);
+			for (ArrayList<SRV> s : priorities.values()) {
 
 				// trivial case
 				if (s.size() <= 1) {
@@ -110,18 +108,20 @@ public class DNSHelper {
 				}
 
 				long totalweight = 0l;
-				for (SRV srv: s) {
+				for (SRV srv : s) {
 					totalweight += srv.getWeight();
 				}
 
 				while (totalweight > 0l && s.size() > 0) {
-					long p = (rnd.nextLong() & 0x7fffffffffffffffl) % totalweight;
+					long p = (rnd.nextLong() & 0x7fffffffffffffffl)
+							% totalweight;
 					int i = 0;
 					while (p > 0) {
 						p -= s.get(i++).getPriority();
 					}
 					i--;
-					// remove is expensive, but we have only a few entries anyway
+					// remove is expensive, but we have only a few entries
+					// anyway
 					SRV srv = s.remove(i);
 					totalweight -= srv.getWeight();
 					result.add(srv);
@@ -164,10 +164,10 @@ public class DNSHelper {
 			}
 
 		} catch (SocketTimeoutException e) {
-			Log.d("xmppService", "timeout during dns");
+			Log.d(Config.LOGTAG, "timeout during dns");
 			namePort.putString("error", "timeout");
 		} catch (Exception e) {
-			Log.d("xmppService","unhandled exception in sub project");
+			Log.d(Config.LOGTAG, "unhandled exception in sub project");
 			namePort.putString("error", "unhandled");
 		}
 		return namePort;

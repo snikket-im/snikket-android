@@ -11,7 +11,7 @@ import eu.siacs.conversations.entities.Account;
 import android.util.Base64;
 
 public class CryptoHelper {
-	public static final String FILETRANSFER = "?FILETRANSFERv1:"; 
+	public static final String FILETRANSFER = "?FILETRANSFERv1:";
 	final protected static char[] hexArray = "0123456789abcdef".toCharArray();
 	final protected static char[] vowels = "aeiou".toCharArray();
 	final protected static char[] consonants = "bcdfghjklmnpqrstvwxyz"
@@ -26,7 +26,7 @@ public class CryptoHelper {
 		}
 		return new String(hexChars);
 	}
-	
+
 	public static byte[] hexToBytes(String hexString) {
 		byte[] array = new BigInteger(hexString, 16).toByteArray();
 		if (array[0] == 0) {
@@ -42,13 +42,14 @@ public class CryptoHelper {
 	}
 
 	private static byte[] concatenateByteArrays(byte[] a, byte[] b) {
-	    byte[] result = new byte[a.length + b.length]; 
-	    System.arraycopy(a, 0, result, 0, a.length); 
-	    System.arraycopy(b, 0, result, a.length, b.length); 
-	    return result;
-	} 
-	
-	public static String saslDigestMd5(Account account, String challenge, SecureRandom random) {
+		byte[] result = new byte[a.length + b.length];
+		System.arraycopy(a, 0, result, 0, a.length);
+		System.arraycopy(b, 0, result, a.length, b.length);
+		return result;
+	}
+
+	public static String saslDigestMd5(Account account, String challenge,
+			SecureRandom random) {
 		try {
 			String[] challengeParts = new String(Base64.decode(challenge,
 					Base64.DEFAULT)).split(",");
@@ -61,28 +62,29 @@ public class CryptoHelper {
 					return null;
 				}
 			}
-			String digestUri = "xmpp/"+account.getServer();
+			String digestUri = "xmpp/" + account.getServer();
 			String nonceCount = "00000001";
 			String x = account.getUsername() + ":" + account.getServer() + ":"
 					+ account.getPassword();
 			MessageDigest md = MessageDigest.getInstance("MD5");
-			byte[] y = md
-					.digest(x.getBytes(Charset.defaultCharset()));
+			byte[] y = md.digest(x.getBytes(Charset.defaultCharset()));
 			String cNonce = new BigInteger(100, random).toString(32);
-			byte[] a1 = concatenateByteArrays(y,(":"+nonce+":"+cNonce).getBytes(Charset.defaultCharset()));
-			String a2 = "AUTHENTICATE:"+digestUri;
+			byte[] a1 = concatenateByteArrays(y,
+					(":" + nonce + ":" + cNonce).getBytes(Charset
+							.defaultCharset()));
+			String a2 = "AUTHENTICATE:" + digestUri;
 			String ha1 = bytesToHex(md.digest(a1));
 			String ha2 = bytesToHex(md.digest(a2.getBytes(Charset
 					.defaultCharset())));
-			String kd = ha1 + ":" + nonce + ":"+nonceCount+":" + cNonce + ":auth:"
-					+ ha2;
+			String kd = ha1 + ":" + nonce + ":" + nonceCount + ":" + cNonce
+					+ ":auth:" + ha2;
 			String response = bytesToHex(md.digest(kd.getBytes(Charset
 					.defaultCharset())));
 			String saslString = "username=\"" + account.getUsername()
 					+ "\",realm=\"" + account.getServer() + "\",nonce=\""
-					+ nonce + "\",cnonce=\"" + cNonce
-					+ "\",nc="+nonceCount+",qop=auth,digest-uri=\""+digestUri+"\",response=" + response
-					+ ",charset=utf-8";
+					+ nonce + "\",cnonce=\"" + cNonce + "\",nc=" + nonceCount
+					+ ",qop=auth,digest-uri=\"" + digestUri + "\",response="
+					+ response + ",charset=utf-8";
 			return Base64.encodeToString(
 					saslString.getBytes(Charset.defaultCharset()),
 					Base64.NO_WRAP);

@@ -11,48 +11,51 @@ public class Avatar {
 	public int width;
 	public long size;
 	public String owner;
+
 	public byte[] getImageAsBytes() {
 		return Base64.decode(image, Base64.DEFAULT);
 	}
+
 	public String getFilename() {
-		if (type==null) {
+		if (type == null) {
 			return sha1sum;
 		} else if (type.equalsIgnoreCase("image/webp")) {
-			return sha1sum+".webp";
+			return sha1sum + ".webp";
 		} else if (type.equalsIgnoreCase("image/png")) {
-			return sha1sum+".png";
+			return sha1sum + ".png";
 		} else {
 			return sha1sum;
 		}
 	}
-	
+
 	public static Avatar parseMetadata(Element items) {
 		Element item = items.findChild("item");
-		if (item==null) {
+		if (item == null) {
 			return null;
 		}
 		Element metadata = item.findChild("metadata");
-		if (metadata==null) {
+		if (metadata == null) {
 			return null;
 		}
 		String primaryId = item.getAttribute("id");
-		if (primaryId==null) {
+		if (primaryId == null) {
 			return null;
 		}
-		for(Element child : metadata.getChildren()) {
-			if (child.getName().equals("info") && primaryId.equals(child.getAttribute("id"))) {
+		for (Element child : metadata.getChildren()) {
+			if (child.getName().equals("info")
+					&& primaryId.equals(child.getAttribute("id"))) {
 				Avatar avatar = new Avatar();
 				String height = child.getAttribute("height");
 				String width = child.getAttribute("width");
 				String size = child.getAttribute("bytes");
 				try {
-					if (height!=null) {
+					if (height != null) {
 						avatar.height = Integer.parseInt(height);
 					}
-					if (width!=null) {
+					if (width != null) {
 						avatar.width = Integer.parseInt(width);
 					}
-					if (size!=null) {
+					if (size != null) {
 						avatar.size = Long.parseLong(size);
 					}
 				} catch (NumberFormatException e) {

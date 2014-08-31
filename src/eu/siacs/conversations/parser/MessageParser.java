@@ -4,6 +4,7 @@ import android.os.SystemClock;
 import android.util.Log;
 import net.java.otr4j.session.Session;
 import net.java.otr4j.session.SessionStatus;
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
@@ -18,7 +19,7 @@ import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
 public class MessageParser extends AbstractParser implements
 		OnMessagePacketReceived {
 
-	private long lastCarbonMessageReceived = -XmppConnectionService.CARBON_GRACE_PERIOD;
+	private long lastCarbonMessageReceived = -(Config.CARBON_GRACE_PERIOD * 1000);
 
 	public MessageParser(XmppConnectionService service) {
 		super(service);
@@ -173,7 +174,8 @@ public class MessageParser extends AbstractParser implements
 			finishedMessage.setTrueCounterpart(conversation.getMucOptions()
 					.getTrueCounterpart(counterPart));
 		}
-		if (packet.hasChild("delay") && conversation.hasDuplicateMessage(finishedMessage)) {
+		if (packet.hasChild("delay")
+				&& conversation.hasDuplicateMessage(finishedMessage)) {
 			return null;
 		}
 		finishedMessage.setTime(getTimestamp(packet));
@@ -198,7 +200,8 @@ public class MessageParser extends AbstractParser implements
 		}
 		Element message = forwarded.findChild("message");
 		if ((message == null) || (!message.hasChild("body"))) {
-			if (status == Message.STATUS_RECEIVED && message.getAttribute("from")!=null) {
+			if (status == Message.STATUS_RECEIVED
+					&& message.getAttribute("from") != null) {
 				parseNormal(message, account);
 			}
 			return null;
@@ -220,7 +223,7 @@ public class MessageParser extends AbstractParser implements
 		Conversation conversation = mXmppConnectionService
 				.findOrCreateConversation(account, parts[0], false);
 		conversation.setLatestMarkableMessageId(getMarkableMessageId(packet));
-		
+
 		String pgpBody = getPgpBody(message);
 		Message finishedMessage;
 		if (pgpBody != null) {
@@ -243,7 +246,7 @@ public class MessageParser extends AbstractParser implements
 				return null;
 			}
 		}
-		
+
 		return finishedMessage;
 	}
 
@@ -307,16 +310,18 @@ public class MessageParser extends AbstractParser implements
 		if (node != null) {
 			if (node.equals("urn:xmpp:avatar:metadata")) {
 				Avatar avatar = Avatar.parseMetadata(items);
-				if (avatar!=null) {
+				if (avatar != null) {
 					avatar.owner = from;
 					if (mXmppConnectionService.getFileBackend().isAvatarCached(
 							avatar)) {
 						if (account.getJid().equals(from)) {
 							if (account.setAvatar(avatar.getFilename())) {
-								mXmppConnectionService.databaseBackend.updateAccount(account);
+								mXmppConnectionService.databaseBackend
+										.updateAccount(account);
 							}
 						} else {
-							Contact contact = account.getRoster().getContact(from);
+							Contact contact = account.getRoster().getContact(
+									from);
 							contact.setAvatar(avatar.getFilename());
 						}
 					} else {
@@ -324,11 +329,11 @@ public class MessageParser extends AbstractParser implements
 					}
 				}
 			} else {
-				Log.d("xmppService", account.getJid() + ": " + node + " from "
+				Log.d(Config.LOGTAG, account.getJid() + ": " + node + " from "
 						+ from);
 			}
 		} else {
-			Log.d("xmppService", event.toString());
+			Log.d(Config.LOGTAG, event.toString());
 		}
 	}
 
@@ -355,7 +360,7 @@ public class MessageParser extends AbstractParser implements
 		boolean notify = true;
 		if (mXmppConnectionService.getPreferences().getBoolean(
 				"notification_grace_period_after_carbon_received", true)) {
-			notify = (SystemClock.elapsedRealtime() - lastCarbonMessageReceived) > XmppConnectionService.CARBON_GRACE_PERIOD;
+			notify = (SystemClock.elapsedRealtime() - lastCarbonMessageReceived) > (Config.CARBON_GRACE_PERIOD * 1000);
 		}
 
 		if ((packet.getType() == MessagePacket.TYPE_CHAT)) {

@@ -29,6 +29,7 @@ import android.util.Base64;
 import android.util.Base64OutputStream;
 import android.util.Log;
 import android.util.LruCache;
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
@@ -44,8 +45,9 @@ public class FileBackend {
 
 	private Context context;
 	private LruCache<String, Bitmap> thumbnailCache;
-	
-	private SimpleDateFormat imageDateFormat = new SimpleDateFormat("yyyyMMdd_HHmmssSSS",Locale.US);
+
+	private SimpleDateFormat imageDateFormat = new SimpleDateFormat(
+			"yyyyMMdd_HHmmssSSS", Locale.US);
 
 	public FileBackend(Context context) {
 		this.context = context;
@@ -85,14 +87,15 @@ public class FileBackend {
 		}
 		return new JingleFile(path + "/" + filename);
 	}
-	
+
 	public JingleFile getJingleFile(Message message) {
 		return getJingleFile(message, true);
 	}
 
 	public JingleFile getJingleFile(Message message, boolean decrypted) {
 		StringBuilder filename = new StringBuilder();
-		filename.append(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getAbsolutePath());
+		filename.append(Environment.getExternalStoragePublicDirectory(
+				Environment.DIRECTORY_PICTURES).getAbsolutePath());
 		filename.append("/Conversations/");
 		filename.append(message.getUuid());
 		if ((decrypted) || (message.getEncryption() == Message.ENCRYPTION_NONE)) {
@@ -106,7 +109,7 @@ public class FileBackend {
 		}
 		return new JingleFile(filename.toString());
 	}
-	
+
 	public Bitmap resize(Bitmap originalBitmap, int size) {
 		int w = originalBitmap.getWidth();
 		int h = originalBitmap.getHeight();
@@ -144,14 +147,15 @@ public class FileBackend {
 	private JingleFile copyImageToPrivateStorage(Message message, Uri image,
 			int sampleSize) throws ImageCopyException {
 		try {
-			InputStream is = context.getContentResolver().openInputStream(image);
+			InputStream is = context.getContentResolver()
+					.openInputStream(image);
 			JingleFile file = getJingleFile(message);
 			file.getParentFile().mkdirs();
 			file.createNewFile();
 			Bitmap originalBitmap;
 			BitmapFactory.Options options = new BitmapFactory.Options();
 			int inSampleSize = (int) Math.pow(2, sampleSize);
-			Log.d("xmppService", "reading bitmap with sample size "
+			Log.d(Config.LOGTAG, "reading bitmap with sample size "
 					+ inSampleSize);
 			options.inSampleSize = inSampleSize;
 			originalBitmap = BitmapFactory.decodeStream(is, null, options);
@@ -194,17 +198,20 @@ public class FileBackend {
 			}
 		}
 	}
-	
+
 	private int getRotation(Uri image) {
 		if ("content".equals(image.getScheme())) {
-	        Cursor cursor = context.getContentResolver().query(image,
-	                new String[] { MediaStore.Images.ImageColumns.ORIENTATION }, null, null, null);
+			Cursor cursor = context
+					.getContentResolver()
+					.query(image,
+							new String[] { MediaStore.Images.ImageColumns.ORIENTATION },
+							null, null, null);
 
-	        if (cursor.getCount() != 1) {
-	            return -1;
-	        }
-	        cursor.moveToFirst();
-	        return cursor.getInt(0);
+			if (cursor.getCount() != 1) {
+				return -1;
+			}
+			cursor.moveToFirst();
+			return cursor.getInt(0);
 		} else {
 			ExifInterface exif;
 			try {
@@ -258,7 +265,7 @@ public class FileBackend {
 		try {
 			this.deleteFile(file);
 		} catch (IOException e) {
-			Log.d("xmppService",
+			Log.d(Config.LOGTAG,
 					"error deleting file: " + file.getAbsolutePath());
 		}
 	}
@@ -273,28 +280,32 @@ public class FileBackend {
 
 	public Uri getTakePhotoUri() {
 		StringBuilder pathBuilder = new StringBuilder();
-		pathBuilder.append(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM));
+		pathBuilder.append(Environment
+				.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM));
 		pathBuilder.append('/');
 		pathBuilder.append("Camera");
 		pathBuilder.append('/');
-		pathBuilder.append("IMG_"+this.imageDateFormat.format(new Date())+".jpg");
-		Uri uri = Uri.parse("file://"+pathBuilder.toString());
+		pathBuilder.append("IMG_" + this.imageDateFormat.format(new Date())
+				+ ".jpg");
+		Uri uri = Uri.parse("file://" + pathBuilder.toString());
 		File file = new File(uri.toString());
 		file.getParentFile().mkdirs();
 		return uri;
 	}
-	
+
 	public Avatar getPepAvatar(Uri image, int size, Bitmap.CompressFormat format) {
 		try {
 			Avatar avatar = new Avatar();
 			Bitmap bm = cropCenterSquare(image, size);
-			if (bm==null) {
+			if (bm == null) {
 				return null;
 			}
 			ByteArrayOutputStream mByteArrayOutputStream = new ByteArrayOutputStream();
-			Base64OutputStream mBase64OutputSttream = new Base64OutputStream(mByteArrayOutputStream, Base64.DEFAULT);
+			Base64OutputStream mBase64OutputSttream = new Base64OutputStream(
+					mByteArrayOutputStream, Base64.DEFAULT);
 			MessageDigest digest = MessageDigest.getInstance("SHA-1");
-			DigestOutputStream mDigestOutputStream = new DigestOutputStream(mBase64OutputSttream, digest);
+			DigestOutputStream mDigestOutputStream = new DigestOutputStream(
+					mBase64OutputSttream, digest);
 			if (!bm.compress(format, 75, mDigestOutputStream)) {
 				return null;
 			}
@@ -309,25 +320,26 @@ public class FileBackend {
 			return null;
 		}
 	}
-	
+
 	public boolean isAvatarCached(Avatar avatar) {
 		File file = new File(getAvatarPath(context, avatar.getFilename()));
 		return file.exists();
 	}
-	
+
 	public boolean save(Avatar avatar) {
 		if (isAvatarCached(avatar)) {
 			return true;
 		}
 		String filename = getAvatarPath(context, avatar.getFilename());
-		File file = new File(filename+".tmp");
+		File file = new File(filename + ".tmp");
 		file.getParentFile().mkdirs();
 		try {
 			file.createNewFile();
 			FileOutputStream mFileOutputStream = new FileOutputStream(file);
 			MessageDigest digest = MessageDigest.getInstance("SHA-1");
 			digest.reset();
-			DigestOutputStream mDigestOutputStream = new DigestOutputStream(mFileOutputStream, digest);
+			DigestOutputStream mDigestOutputStream = new DigestOutputStream(
+					mFileOutputStream, digest);
 			mDigestOutputStream.write(avatar.getImageAsBytes());
 			mDigestOutputStream.flush();
 			mDigestOutputStream.close();
@@ -337,7 +349,7 @@ public class FileBackend {
 				file.renameTo(new File(filename));
 				return true;
 			} else {
-				Log.d("xmppService","sha1sum mismatch for "+avatar.owner);
+				Log.d(Config.LOGTAG, "sha1sum mismatch for " + avatar.owner);
 				file.delete();
 				return false;
 			}
@@ -349,9 +361,9 @@ public class FileBackend {
 			return false;
 		}
 	}
-	
+
 	public static String getAvatarPath(Context context, String avatar) {
-		return context.getFilesDir().getAbsolutePath() + "/avatars/"+avatar;
+		return context.getFilesDir().getAbsolutePath() + "/avatars/" + avatar;
 	}
 
 	public Bitmap cropCenterSquare(Uri image, int size) {
@@ -361,7 +373,7 @@ public class FileBackend {
 			InputStream is = context.getContentResolver()
 					.openInputStream(image);
 			Bitmap input = BitmapFactory.decodeStream(is, null, options);
-			if (input==null) {
+			if (input == null) {
 				return null;
 			} else {
 				return cropCenterSquare(input, size);
@@ -370,7 +382,7 @@ public class FileBackend {
 			return null;
 		}
 	}
-	
+
 	public static Bitmap cropCenterSquare(Bitmap input, int size) {
 		int w = input.getWidth();
 		int h = input.getHeight();
@@ -381,8 +393,7 @@ public class FileBackend {
 		float outHeight = scale * h;
 		float left = (size - outWidth) / 2;
 		float top = (size - outHeight) / 2;
-		RectF target = new RectF(left, top, left + outWidth, top
-				+ outHeight);
+		RectF target = new RectF(left, top, left + outWidth, top + outHeight);
 
 		Bitmap output = Bitmap.createBitmap(size, size, input.getConfig());
 		Canvas canvas = new Canvas(output);
@@ -412,11 +423,11 @@ public class FileBackend {
 		return inSampleSize;
 
 	}
-	
+
 	public Uri getJingleFileUri(Message message) {
 		File file = getJingleFile(message);
 		if (file.exists()) {
-			return Uri.parse("file://"+file.getAbsolutePath());
+			return Uri.parse("file://" + file.getAbsolutePath());
 		} else {
 			return ImageProvider.getProviderUri(message);
 		}
@@ -436,8 +447,9 @@ public class FileBackend {
 	}
 
 	public static Bitmap getAvatar(String avatar, int size, Context context) {
-		Bitmap bm = BitmapFactory.decodeFile(FileBackend.getAvatarPath(context, avatar));
-		if (bm==null) {
+		Bitmap bm = BitmapFactory.decodeFile(FileBackend.getAvatarPath(context,
+				avatar));
+		if (bm == null) {
 			return null;
 		}
 		return cropCenterSquare(bm, UIHelper.getRealPx(size, context));

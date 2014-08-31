@@ -2,8 +2,8 @@ package eu.siacs.conversations.services;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
@@ -27,7 +27,7 @@ public class ImageProvider extends ContentProvider {
 			DatabaseBackend databaseBackend = DatabaseBackend
 					.getInstance(getContext());
 			String uuids = uri.getPath();
-			Log.d("xmppService", "uuids = " + uuids+" mode="+mode);
+			Log.d(Config.LOGTAG, "uuids = " + uuids + " mode=" + mode);
 			if (uuids == null) {
 				throw new FileNotFoundException();
 			}
@@ -37,21 +37,21 @@ public class ImageProvider extends ContentProvider {
 			}
 			String conversationUuid = uuidsSplited[1];
 			String messageUuid = uuidsSplited[2].split("\\.")[0];
-			
-			Log.d("xmppService","messageUuid="+messageUuid);
-	
+
+			Log.d(Config.LOGTAG, "messageUuid=" + messageUuid);
+
 			Conversation conversation = databaseBackend
 					.findConversationByUuid(conversationUuid);
 			if (conversation == null) {
-				throw new FileNotFoundException("conversation " + conversationUuid
-						+ " could not be found");
+				throw new FileNotFoundException("conversation "
+						+ conversationUuid + " could not be found");
 			}
 			Message message = databaseBackend.findMessageByUuid(messageUuid);
 			if (message == null) {
 				throw new FileNotFoundException("message " + messageUuid
 						+ " could not be found");
 			}
-	
+
 			Account account = databaseBackend.findAccountByUuid(conversation
 					.getAccountUuid());
 			if (account == null) {
@@ -60,7 +60,7 @@ public class ImageProvider extends ContentProvider {
 			}
 			message.setConversation(conversation);
 			conversation.setAccount(account);
-	
+
 			File file = fileBackend.getJingleFileLegacy(message);
 			pfd = ParcelFileDescriptor.open(file,
 					ParcelFileDescriptor.MODE_READ_ONLY);
@@ -100,13 +100,10 @@ public class ImageProvider extends ContentProvider {
 	public int update(Uri arg0, ContentValues arg1, String arg2, String[] arg3) {
 		return 0;
 	}
-	
+
 	public static Uri getProviderUri(Message message) {
-		return Uri
-				.parse("content://eu.siacs.conversations.images/"
-						+ message.getConversationUuid()
-						+ "/"
-						+ message.getUuid()
-						+ ".webp");
+		return Uri.parse("content://eu.siacs.conversations.images/"
+				+ message.getConversationUuid() + "/" + message.getUuid()
+				+ ".webp");
 	}
 }

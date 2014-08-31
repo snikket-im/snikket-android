@@ -88,7 +88,8 @@ public class Conversation extends AbstractEntity {
 
 	public List<Message> getMessages() {
 		if (messages == null) {
-			this.messages = new CopyOnWriteArrayList<Message>(); // prevent null pointer
+			this.messages = new CopyOnWriteArrayList<Message>(); // prevent null
+																	// pointer
 		}
 
 		// populate with Conversation (this)
@@ -287,7 +288,7 @@ public class Conversation extends AbstractEntity {
 	public String getOtrFingerprint() {
 		if (this.otrFingerprint == null) {
 			try {
-				if (getOtrSession()== null) {
+				if (getOtrSession() == null) {
 					return "";
 				}
 				DSAPublicKey remotePubKey = (DSAPublicKey) getOtrSession()
@@ -403,15 +404,15 @@ public class Conversation extends AbstractEntity {
 	}
 
 	public Bitmap getImage(Context context, int size) {
-		if (mode==MODE_SINGLE) {
+		if (mode == MODE_SINGLE) {
 			return getContact().getImage(size, context);
 		} else {
 			return UIHelper.getContactPicture(this, size, context, false);
 		}
 	}
-	
+
 	public boolean hasDuplicateMessage(Message message) {
-		for(int i = this.getMessages().size() -1; i >= 0; --i) {
+		for (int i = this.getMessages().size() - 1; i >= 0; --i) {
 			if (this.messages.get(i).equals(message)) {
 				return true;
 			}

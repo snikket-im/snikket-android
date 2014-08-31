@@ -26,7 +26,7 @@ public class PresenceParser extends AbstractParser implements
 			if (muc != null) {
 				boolean before = muc.getMucOptions().online();
 				muc.getMucOptions().processPacket(packet, mPgpEngine);
-				if (before!=muc.getMucOptions().online()) {
+				if (before != muc.getMucOptions().online()) {
 					mXmppConnectionService.updateConversationUi();
 				}
 			}
@@ -36,7 +36,7 @@ public class PresenceParser extends AbstractParser implements
 			if (muc != null) {
 				boolean before = muc.getMucOptions().online();
 				muc.getMucOptions().processPacket(packet, mPgpEngine);
-				if (before!=muc.getMucOptions().online()) {
+				if (before != muc.getMucOptions().online()) {
 					mXmppConnectionService.updateConversationUi();
 				}
 			}

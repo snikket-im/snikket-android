@@ -250,7 +250,8 @@ public class ConferenceDetailsActivity extends XmppActivity {
 				if (contact.showInRoster()) {
 					bm = contact.getImage(48, this);
 					name.setText(contact.getDisplayName());
-					role.setText(user.getName() + " \u2022 " + getReadableRole(user.getRole()));
+					role.setText(user.getName() + " \u2022 "
+							+ getReadableRole(user.getRole()));
 				} else {
 					bm = UIHelper.getContactPicture(user.getName(), 48, this,
 							false);

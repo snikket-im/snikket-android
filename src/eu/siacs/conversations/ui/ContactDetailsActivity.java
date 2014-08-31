@@ -111,7 +111,8 @@ public class ContactDetailsActivity extends XmppActivity {
 		public void onCheckedChanged(CompoundButton buttonView,
 				boolean isChecked) {
 			if (isChecked) {
-				if (contact.getOption(Contact.Options.PENDING_SUBSCRIPTION_REQUEST)) {
+				if (contact
+						.getOption(Contact.Options.PENDING_SUBSCRIPTION_REQUEST)) {
 					xmppConnectionService.sendPresencePacket(contact
 							.getAccount(),
 							xmppConnectionService.getPresenceGenerator()
@@ -146,7 +147,7 @@ public class ContactDetailsActivity extends XmppActivity {
 	};
 
 	private OnAccountUpdate accountUpdate = new OnAccountUpdate() {
-		
+
 		@Override
 		public void onAccountUpdate() {
 			runOnUiThread(new Runnable() {
@@ -269,7 +270,7 @@ public class ContactDetailsActivity extends XmppActivity {
 
 		send.setOnCheckedChangeListener(this.mOnSendCheckedChange);
 		receive.setOnCheckedChangeListener(this.mOnReceiveCheckedChange);
-		
+
 		lastseen.setText(UIHelper.lastseen(getApplicationContext(),
 				contact.lastseen.time));
 
@@ -363,7 +364,8 @@ public class ContactDetailsActivity extends XmppActivity {
 	@Override
 	public void onBackendConnected() {
 		xmppConnectionService.setOnRosterUpdateListener(this.rosterUpdate);
-		xmppConnectionService.setOnAccountListChangedListener(this.accountUpdate );
+		xmppConnectionService
+				.setOnAccountListChangedListener(this.accountUpdate);
 		if ((accountJid != null) && (contactJid != null)) {
 			Account account = xmppConnectionService
 					.findAccountByJid(accountJid);

@@ -18,7 +18,7 @@ public class PhoneHelper {
 	public static void loadPhoneContacts(Context context,
 			final OnPhoneContactsLoadedListener listener) {
 		final List<Bundle> phoneContacts = new ArrayList<Bundle>();
-		
+
 		final String[] PROJECTION = new String[] { ContactsContract.Data._ID,
 				ContactsContract.Data.DISPLAY_NAME,
 				ContactsContract.Data.PHOTO_THUMBNAIL_URI,
@@ -38,7 +38,7 @@ public class PhoneHelper {
 
 			@Override
 			public void onLoadComplete(Loader<Cursor> arg0, Cursor cursor) {
-				if (cursor==null) {
+				if (cursor == null) {
 					return;
 				}
 				while (cursor.moveToNext()) {
@@ -55,8 +55,10 @@ public class PhoneHelper {
 									.getColumnIndex(ContactsContract.Data.PHOTO_THUMBNAIL_URI)));
 					contact.putString("lookup", cursor.getString(cursor
 							.getColumnIndex(ContactsContract.Data.LOOKUP_KEY)));
-					
-					contact.putString("jid",cursor.getString(cursor
+
+					contact.putString(
+							"jid",
+							cursor.getString(cursor
 									.getColumnIndex(ContactsContract.CommonDataKinds.Im.DATA)));
 					phoneContacts.add(contact);
 				}
@@ -69,8 +71,7 @@ public class PhoneHelper {
 	}
 
 	public static Uri getSefliUri(Context context) {
-		String[] mProjection = new String[] { Profile._ID,
-				Profile.PHOTO_URI };
+		String[] mProjection = new String[] { Profile._ID, Profile.PHOTO_URI };
 		Cursor mProfileCursor = context.getContentResolver().query(
 				Profile.CONTENT_URI, mProjection, null, null, null);
 
