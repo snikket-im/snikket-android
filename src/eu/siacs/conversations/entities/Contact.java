@@ -32,6 +32,7 @@ public class Contact implements ListItem {
 	protected String accountUuid;
 	protected String systemName;
 	protected String serverName;
+	protected String presenceName;
 	protected String jid;
 	protected int subscription = 0;
 	protected String systemAccount;
@@ -76,6 +77,8 @@ public class Contact implements ListItem {
 			return this.systemName;
 		} else if (this.serverName != null) {
 			return this.serverName;
+		} else if (this.presenceName != null) {
+			return this.presenceName;
 		} else {
 			return this.jid.split("@")[0];
 		}
@@ -173,6 +176,10 @@ public class Contact implements ListItem {
 
 	public void setSystemName(String systemName) {
 		this.systemName = systemName;
+	}
+
+	public void setPresenceName(String presenceName) {
+		this.presenceName = presenceName;
 	}
 
 	public String getSystemAccount() {

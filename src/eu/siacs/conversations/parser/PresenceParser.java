@@ -109,7 +109,7 @@ public class PresenceParser extends AbstractParser implements
 			}
 			Element nick = packet.findChild("nick", "http://jabber.org/protocol/nick");
 			if (nick != null) {
-				contact.setSystemName(nick.getContent());
+				contact.setPresenceName(nick.getContent());
 			}
 		}
 		mXmppConnectionService.updateRosterUi();
