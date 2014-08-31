@@ -315,8 +315,10 @@ public class Message extends AbstractEntity {
 		if (message == null) {
 			return false;
 		}
-		return (this.getType() == Message.TYPE_TEXT
+		return (message.getType() == Message.TYPE_TEXT
+				&& message.getEncryption() != Message.ENCRYPTION_PGP
 				&& this.getType() == message.getType()
+				&& this.getEncryption() == message.getEncryption()
 				&& this.getCounterpart().equals(message.getCounterpart())
 				&& (message.getTimeSent() - this.getTimeSent()) <= 20000 && ((this
 				.getStatus() == message.getStatus()) || (this.getStatus() == Message.STATUS_SEND && message
