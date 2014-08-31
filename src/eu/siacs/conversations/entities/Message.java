@@ -1,5 +1,6 @@
 package eu.siacs.conversations.entities;
 
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.xmpp.jingle.JingleConnection;
 import android.content.ContentValues;
@@ -320,9 +321,12 @@ public class Message extends AbstractEntity {
 				&& this.getType() == message.getType()
 				&& this.getEncryption() == message.getEncryption()
 				&& this.getCounterpart().equals(message.getCounterpart())
-				&& (message.getTimeSent() - this.getTimeSent()) <= 20000 && ((this
-				.getStatus() == message.getStatus()) || (this.getStatus() == Message.STATUS_SEND && message
-				.getStatus() == Message.STATUS_UNSEND)));
+				&& (message.getTimeSent() - this.getTimeSent()) <= (Config.MESSAGE_MERGE_WINDOW * 1000) && ((this
+				.getStatus() == message.getStatus()) || ((this.getStatus() == Message.STATUS_SEND || this
+				.getStatus() == Message.STATUS_SEND_RECEIVED) && (message
+				.getStatus() == Message.STATUS_UNSEND
+				|| message.getStatus() == Message.STATUS_SEND || message
+					.getStatus() == Message.STATUS_SEND_DISPLAYED))));
 	}
 
 	public String getMergedBody() {
