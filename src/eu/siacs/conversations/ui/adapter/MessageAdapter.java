@@ -96,7 +96,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		String info = null;
 		boolean error = false;
 		boolean multiReceived = message.getConversation().getMode() == Conversation.MODE_MULTI
-				&& message.getStatus() <= Message.STATUS_RECEIVED;
+				&& message.getMergedStatus() <= Message.STATUS_RECEIVED;
 		if (message.getType() == Message.TYPE_IMAGE) {
 			String[] fileParams = message.getBody().split(",");
 			try {
@@ -106,7 +106,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 				filesize = "0 KB";
 			}
 		}
-		switch (message.getStatus()) {
+		switch (message.getMergedStatus()) {
 		case Message.STATUS_WAITING:
 			info = getContext().getString(R.string.waiting);
 			break;
@@ -154,7 +154,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		}
 
 		String formatedTime = UIHelper.readableTimeDifference(getContext(),
-				message.getTimeSent());
+				message.getMergedTimeSent());
 		if (message.getStatus() <= Message.STATUS_RECEIVED) {
 			if ((filesize != null) && (info != null)) {
 				viewHolder.time.setText(filesize + " \u00B7 " + info);

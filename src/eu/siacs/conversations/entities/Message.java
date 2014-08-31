@@ -336,6 +336,24 @@ public class Message extends AbstractEntity {
 		}
 		return body.trim();
 	}
+	
+	public int getMergedStatus() {
+		Message next = this.next();
+		if (this.mergable(next)) {
+			return next.getMergedStatus();
+		} else {
+			return getStatus();
+		}
+	}
+	
+	public long getMergedTimeSent() {
+		Message next = this.next();
+		if (this.mergable(next)) {
+			return next.getMergedTimeSent();
+		} else {
+			return getTimeSent();
+		}
+	}
 
 	public boolean wasMergedIntoPrevious() {
 		Message prev = this.prev();
