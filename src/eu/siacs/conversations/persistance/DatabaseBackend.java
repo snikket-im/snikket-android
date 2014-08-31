@@ -13,7 +13,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 public class DatabaseBackend extends SQLiteOpenHelper {
 
@@ -203,7 +202,6 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor cursor = db.query(Account.TABLENAME, null, null, null, null,
 				null, null);
-		Log.d("gultsch", "found " + cursor.getCount() + " accounts");
 		while (cursor.moveToNext()) {
 			list.add(Account.fromCursor(cursor));
 		}
