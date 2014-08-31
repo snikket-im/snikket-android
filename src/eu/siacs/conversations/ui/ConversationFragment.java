@@ -287,14 +287,11 @@ public class ConversationFragment extends Fragment {
 
 	protected void highlightInConference(String nick) {
 		String oldString = mEditMessage.getText().toString().trim();
-		if (oldString.isEmpty()) {
-			mEditMessage.setText(nick + ": ");
+		if (oldString.isEmpty() || mEditMessage.getSelectionStart() == 0) {
+			mEditMessage.getText().insert(0, nick + ": ");
 		} else {
-			mEditMessage.setText(oldString + " " + nick + " ");
+			mEditMessage.getText().insert(mEditMessage.getSelectionStart(), nick + " ");
 		}
-		int position = mEditMessage.length();
-		Editable etext = mEditMessage.getText();
-		Selection.setSelection(etext, position);
 	}
 
 	@Override
