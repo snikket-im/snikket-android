@@ -5,6 +5,8 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import eu.siacs.conversations.utils.XmlHelper;
+
 public class Tag {
 	public static final int NO = -1;
 	public static final int START = 0;
@@ -84,7 +86,7 @@ public class Tag {
 				tagOutput.append(' ');
 				tagOutput.append(entry.getKey());
 				tagOutput.append("=\"");
-				tagOutput.append(entry.getValue());
+				tagOutput.append(XmlHelper.encodeEntities(entry.getValue()));
 				tagOutput.append('"');
 			}
 		}
