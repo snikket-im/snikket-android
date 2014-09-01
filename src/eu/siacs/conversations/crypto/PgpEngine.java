@@ -106,8 +106,8 @@ public class PgpEngine {
 									outputFile.getAbsolutePath(), options);
 							int imageHeight = options.outHeight;
 							int imageWidth = options.outWidth;
-							message.setBody("" + outputFile.getSize() + ","
-									+ imageWidth + "," + imageHeight);
+							message.setBody(Long.toString(outputFile.getSize()) + ','
+									+ imageWidth + ',' + imageHeight);
 							message.setEncryption(Message.ENCRYPTION_DECRYPTED);
 							PgpEngine.this.mXmppConnectionService
 									.updateMessage(message);

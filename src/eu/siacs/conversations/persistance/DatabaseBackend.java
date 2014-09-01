@@ -137,7 +137,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 	public CopyOnWriteArrayList<Conversation> getConversations(int status) {
 		CopyOnWriteArrayList<Conversation> list = new CopyOnWriteArrayList<Conversation>();
 		SQLiteDatabase db = this.getReadableDatabase();
-		String[] selectionArgs = { "" + status };
+		String[] selectionArgs = { Integer.toString(status) };
 		Cursor cursor = db.rawQuery("select * from " + Conversation.TABLENAME
 				+ " where " + Conversation.STATUS + " = ? order by "
 				+ Conversation.CREATED + " desc", selectionArgs);
@@ -163,7 +163,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 					+ "=?", selectionArgs, null, null, Message.TIME_SENT
 					+ " DESC", String.valueOf(limit));
 		} else {
-			String[] selectionArgs = { conversation.getUuid(), "" + timestamp };
+			String[] selectionArgs = { conversation.getUuid(), Long.toString(timestamp) };
 			cursor = db.query(Message.TABLENAME, null, Message.CONVERSATION
 					+ "=? and " + Message.TIME_SENT + "<?", selectionArgs,
 					null, null, Message.TIME_SENT + " DESC",

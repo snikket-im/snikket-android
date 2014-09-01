@@ -59,7 +59,7 @@ public class JingleInbandTransport extends JingleTransport {
 		Element open = iq.addChild("open", "http://jabber.org/protocol/ibb");
 		open.setAttribute("sid", this.sessionId);
 		open.setAttribute("stanza", "iq");
-		open.setAttribute("block-size", "" + this.blockSize);
+		open.setAttribute("block-size", Integer.toString(this.blockSize));
 
 		this.account.getXmppConnection().sendIqPacket(iq,
 				new OnIqPacketReceived() {
@@ -134,8 +134,8 @@ public class JingleInbandTransport extends JingleTransport {
 				iq.setTo(this.counterpart);
 				Element data = iq.addChild("data",
 						"http://jabber.org/protocol/ibb");
-				data.setAttribute("seq", "" + this.seq);
-				data.setAttribute("block-size", "" + this.blockSize);
+				data.setAttribute("seq", Integer.toString(this.seq));
+				data.setAttribute("block-size", Integer.toString(this.blockSize));
 				data.setAttribute("sid", this.sessionId);
 				data.setContent(base64);
 				this.account.getXmppConnection().sendIqPacket(iq,
