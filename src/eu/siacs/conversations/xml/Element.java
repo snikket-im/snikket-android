@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 
+import eu.siacs.conversations.utils.XmlHelper;
+
 public class Element {
 	protected String name;
 	protected Hashtable<String, String> attributes = new Hashtable<String, String>();
@@ -116,7 +118,7 @@ public class Element {
 			startTag.setAtttributes(this.attributes);
 			elementOutput.append(startTag);
 			if (content != null) {
-				elementOutput.append(encodeEntities(content));
+				elementOutput.append(XmlHelper.encodeEntities(content));
 			} else {
 				for (Element child : children) {
 					elementOutput.append(child.toString());
@@ -130,15 +132,6 @@ public class Element {
 
 	public String getName() {
 		return name;
-	}
-
-	private String encodeEntities(String content) {
-		content = content.replace("&", "&amp;");
-		content = content.replace("<", "&lt;");
-		content = content.replace(">", "&gt;");
-		content = content.replace("\"", "&quot;");
-		content = content.replace("'", "&apos;");
-		return content;
 	}
 
 	public void clearChildren() {
