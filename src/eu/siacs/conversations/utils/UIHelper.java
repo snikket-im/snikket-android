@@ -545,4 +545,27 @@ public class UIHelper {
 			return getContactPicture(account.getJid(), size, context, false);
 		}
 	}
+	public static String transformAsciiEmoticons(String body) {
+		if (body != null) {
+			for (String[] r: new String[][]{ // see https://de.wikipedia.org/wiki/Unicodeblock_Smileys
+				{":-?\\)", " 😀 ", },
+				{";-?\\)", " 😉 ", },
+				{":-?D", " 😃 ", },
+				{":-?[Ppb]", " 😋 ", },
+				{"8-?\\)", " 😎 ", },
+				{":-?\\|", " 😐 ", },
+				{":-?[/\\\\]", " 😕 ", },
+				{":-?\\*", " 😗 ", },
+				{":-?[0Oo]", " 😮 ", },
+				{":-?\\(", " 😞 ", },
+				{"\\^\\^", " 😁 ", },
+			}) {
+				String p = r[0];
+				p = "(^" + p + "$|^" + p + " +| +" + p + " +| +" + p + "$)";
+				body = body.replaceAll(p, r[1]);
+			}
+			body = body.trim();
+		}
+		return body;
+	}
 }

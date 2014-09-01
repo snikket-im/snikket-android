@@ -59,7 +59,7 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 				|| latestMessage.getType() == Message.TYPE_PRIVATE) {
 			if ((latestMessage.getEncryption() != Message.ENCRYPTION_PGP)
 					&& (latestMessage.getEncryption() != Message.ENCRYPTION_DECRYPTION_FAILED)) {
-				convLastMsg.setText(conv.getLatestMessage().getBody());
+				convLastMsg.setText(UIHelper.transformAsciiEmoticons(conv.getLatestMessage().getBody()));
 			} else {
 				convLastMsg.setText(activity
 						.getText(R.string.encrypted_message_received));
