@@ -561,7 +561,7 @@ public class UIHelper {
 				{"\\^\\^", " 😁 ", },
 			}) {
 				String p = r[0];
-				p = "(^" + p + "$|^" + p + " +| +" + p + " +| +" + p + "$)";
+				p = "(^" + p + "$|^" + p + "\\s+|\\s+" + p + "\\s+|\\s+" + p + "$)";
 				body = body.replaceAll(p, r[1]);
 			}
 			body = body.trim();
