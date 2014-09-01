@@ -95,7 +95,7 @@ public class JingleConnection {
 				BitmapFactory.decodeFile(file.getAbsolutePath(), options);
 				int imageHeight = options.outHeight;
 				int imageWidth = options.outWidth;
-				message.setBody("" + file.getSize() + "," + imageWidth + ","
+				message.setBody(Long.toString(file.getSize()) + ',' + imageWidth + ','
 						+ imageHeight);
 				mXmppConnectionService.databaseBackend.createMessage(message);
 				mXmppConnectionService.markMessage(message,
@@ -302,7 +302,7 @@ public class JingleConnection {
 				}
 				if (supportedFile) {
 					long size = Long.parseLong(fileSize.getContent());
-					message.setBody("" + size);
+					message.setBody(Long.toString(size));
 					conversation.getMessages().add(message);
 					if (size <= this.mJingleConnectionManager
 							.getAutoAcceptFileSize()) {
@@ -630,7 +630,7 @@ public class JingleConnection {
 		this.transportId = this.mJingleConnectionManager.nextRandomId();
 		content.setTransportId(this.transportId);
 		content.ibbTransport().setAttribute("block-size",
-				"" + this.ibbBlockSize);
+				Integer.toString(this.ibbBlockSize));
 		packet.setContent(content);
 		this.sendJinglePacket(packet);
 	}
@@ -652,7 +652,7 @@ public class JingleConnection {
 		Content content = new Content("initiator", "a-file-offer");
 		content.setTransportId(this.transportId);
 		content.ibbTransport().setAttribute("block-size",
-				"" + this.ibbBlockSize);
+				Integer.toString(this.ibbBlockSize));
 		answer.setContent(content);
 		this.sendJinglePacket(answer);
 		return true;

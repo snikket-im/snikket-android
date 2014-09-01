@@ -30,7 +30,7 @@ public class Content extends Element {
 				"urn:xmpp:jingle:apps:file-transfer:3");
 		Element offer = description.addChild("offer");
 		Element file = offer.addChild("file");
-		file.addChild("size").setContent("" + actualFile.getSize());
+		file.addChild("size").setContent(Long.toString(actualFile.getSize()));
 		if (otr) {
 			file.addChild("name").setContent(actualFile.getName() + ".otr");
 		} else {

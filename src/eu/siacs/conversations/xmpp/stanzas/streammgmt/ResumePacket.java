@@ -8,7 +8,7 @@ public class ResumePacket extends AbstractStanza {
 		super("resume");
 		this.setAttribute("xmlns", "urn:xmpp:sm:" + smVersion);
 		this.setAttribute("previd", id);
-		this.setAttribute("h", "" + sequence);
+		this.setAttribute("h", Integer.toString(sequence));
 	}
 
 }
