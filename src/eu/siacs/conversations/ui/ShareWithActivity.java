@@ -100,11 +100,9 @@ public class ShareWithActivity extends XmppActivity {
 		});
 		for (final Conversation conversation : convList) {
 			if (!isImage || conversation.getMode() == Conversation.MODE_SINGLE) {
-				View view = createContactView(
-						conversation.getName(useSubject),
+				View view = createContactView(conversation.getName(useSubject),
 						conversation.getLatestMessage().getBody().trim(),
-						UIHelper.getContactPicture(conversation, 48,
-								this.getApplicationContext(), false));
+						conversation.getImage(getApplicationContext(), 48));
 				view.setOnClickListener(new OnClickListener() {
 
 					@Override
@@ -136,19 +134,17 @@ public class ShareWithActivity extends XmppActivity {
 		});
 
 		for (int i = 0; i < contactsList.size(); ++i) {
-			final Contact con = contactsList.get(i);
-			View view = createContactView(
-					con.getDisplayName(),
-					con.getJid(),
-					UIHelper.getContactPicture(con, 48,
-							this.getApplicationContext(), false));
+			final Contact contact = contactsList.get(i);
+			View view = createContactView(contact.getDisplayName(),
+					contact.getJid(),
+					contact.getImage(48, getApplicationContext()));
 			view.setOnClickListener(new OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
 					Conversation conversation = xmppConnectionService
-							.findOrCreateConversation(con.getAccount(),
-									con.getJid(), false);
+							.findOrCreateConversation(contact.getAccount(),
+									contact.getJid(), false);
 					share(conversation);
 				}
 			});
