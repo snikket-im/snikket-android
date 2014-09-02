@@ -201,17 +201,20 @@ public class FileBackend {
 
 	private int getRotation(Uri image) {
 		if ("content".equals(image.getScheme())) {
-			Cursor cursor = context
-					.getContentResolver()
-					.query(image,
-							new String[] { MediaStore.Images.ImageColumns.ORIENTATION },
-							null, null, null);
-
-			if (cursor.getCount() != 1) {
+			try {
+				Cursor cursor = context
+						.getContentResolver()
+						.query(image,
+								new String[] { MediaStore.Images.ImageColumns.ORIENTATION },
+								null, null, null);
+				if (cursor.getCount() != 1) {
+					return -1;
+				}
+				cursor.moveToFirst();
+				return cursor.getInt(0);
+			} catch (IllegalArgumentException e) {
 				return -1;
 			}
-			cursor.moveToFirst();
-			return cursor.getInt(0);
 		} else {
 			ExifInterface exif;
 			try {
@@ -376,6 +379,10 @@ public class FileBackend {
 			if (input == null) {
 				return null;
 			} else {
+				int rotation = getRotation(image);
+				if (rotation > 0) {
+					input = rotate(input, rotation);
+				}
 				return cropCenterSquare(input, size);
 			}
 		} catch (FileNotFoundException e) {
