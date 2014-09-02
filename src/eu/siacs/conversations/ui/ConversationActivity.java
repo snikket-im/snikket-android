@@ -1,10 +1,7 @@
 package eu.siacs.conversations.ui;
 
-import java.io.FileNotFoundException;
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.RejectedExecutionException;
 
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Contact;
@@ -15,7 +12,6 @@ import eu.siacs.conversations.ui.adapter.ConversationAdapter;
 import eu.siacs.conversations.utils.ExceptionHelper;
 import eu.siacs.conversations.utils.UIHelper;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
@@ -28,13 +24,8 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.IntentSender.SendIntentException;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.support.v4.widget.SlidingPaneLayout;
 import android.support.v4.widget.SlidingPaneLayout.PanelSlideListener;
-import android.util.DisplayMetrics;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -46,7 +37,6 @@ import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.PopupMenu.OnMenuItemClickListener;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 public class ConversationActivity extends XmppActivity {
@@ -108,7 +98,6 @@ public class ConversationActivity extends XmppActivity {
 	};
 
 	protected ConversationActivity activity = this;
-	private DisplayMetrics metrics;
 	private Toast prepareImageToast;
 
 	private Uri pendingImageUri = null;
@@ -139,9 +128,6 @@ public class ConversationActivity extends XmppActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-
-		metrics = getResources().getDisplayMetrics();
-
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.fragment_conversations_overview);
@@ -769,105 +755,6 @@ public class ConversationActivity extends XmppActivity {
 			this.startIntentSenderForResult(pi.getIntentSender(), requestCode,
 					null, 0, 0, 0);
 		} catch (SendIntentException e1) {
-		}
-	}
-
-	class BitmapWorkerTask extends AsyncTask<Message, Void, Bitmap> {
-		private final WeakReference<ImageView> imageViewReference;
-		private Message message = null;
-
-		public BitmapWorkerTask(ImageView imageView) {
-			imageViewReference = new WeakReference<ImageView>(imageView);
-		}
-
-		@Override
-		protected Bitmap doInBackground(Message... params) {
-			message = params[0];
-			try {
-				return xmppConnectionService.getFileBackend().getThumbnail(
-						message, (int) (metrics.density * 288), false);
-			} catch (FileNotFoundException e) {
-				return null;
-			}
-		}
-
-		@Override
-		protected void onPostExecute(Bitmap bitmap) {
-			if (imageViewReference != null && bitmap != null) {
-				final ImageView imageView = imageViewReference.get();
-				if (imageView != null) {
-					imageView.setImageBitmap(bitmap);
-					imageView.setBackgroundColor(0x00000000);
-				}
-			}
-		}
-	}
-
-	public void loadBitmap(Message message, ImageView imageView) {
-		Bitmap bm;
-		try {
-			bm = xmppConnectionService.getFileBackend().getThumbnail(message,
-					(int) (metrics.density * 288), true);
-		} catch (FileNotFoundException e) {
-			bm = null;
-		}
-		if (bm != null) {
-			imageView.setImageBitmap(bm);
-			imageView.setBackgroundColor(0x00000000);
-		} else {
-			if (cancelPotentialWork(message, imageView)) {
-				imageView.setBackgroundColor(0xff333333);
-				final BitmapWorkerTask task = new BitmapWorkerTask(imageView);
-				final AsyncDrawable asyncDrawable = new AsyncDrawable(
-						getResources(), null, task);
-				imageView.setImageDrawable(asyncDrawable);
-				try {
-					task.execute(message);
-				} catch (RejectedExecutionException e) {
-					return;
-				}
-			}
-		}
-	}
-
-	public static boolean cancelPotentialWork(Message message,
-			ImageView imageView) {
-		final BitmapWorkerTask bitmapWorkerTask = getBitmapWorkerTask(imageView);
-
-		if (bitmapWorkerTask != null) {
-			final Message oldMessage = bitmapWorkerTask.message;
-			if (oldMessage == null || message != oldMessage) {
-				bitmapWorkerTask.cancel(true);
-			} else {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	private static BitmapWorkerTask getBitmapWorkerTask(ImageView imageView) {
-		if (imageView != null) {
-			final Drawable drawable = imageView.getDrawable();
-			if (drawable instanceof AsyncDrawable) {
-				final AsyncDrawable asyncDrawable = (AsyncDrawable) drawable;
-				return asyncDrawable.getBitmapWorkerTask();
-			}
-		}
-		return null;
-	}
-
-	static class AsyncDrawable extends BitmapDrawable {
-		private final WeakReference<BitmapWorkerTask> bitmapWorkerTaskReference;
-
-		public AsyncDrawable(Resources res, Bitmap bitmap,
-				BitmapWorkerTask bitmapWorkerTask) {
-			super(res, bitmap);
-			bitmapWorkerTaskReference = new WeakReference<BitmapWorkerTask>(
-					bitmapWorkerTask);
-		}
-
-		public BitmapWorkerTask getBitmapWorkerTask() {
-			return bitmapWorkerTaskReference.get();
 		}
 	}
 

@@ -6,6 +6,7 @@ import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.ui.ConversationActivity;
+import eu.siacs.conversations.ui.XmppActivity;
 import eu.siacs.conversations.utils.UIHelper;
 import android.content.Context;
 import android.graphics.Color;
@@ -19,9 +20,9 @@ import android.widget.TextView;
 
 public class ConversationAdapter extends ArrayAdapter<Conversation> {
 
-	ConversationActivity activity;
+	private XmppActivity activity;
 
-	public ConversationAdapter(ConversationActivity activity,
+	public ConversationAdapter(XmppActivity activity,
 			List<Conversation> conversations) {
 		super(activity, 0, conversations);
 		this.activity = activity;
@@ -36,14 +37,17 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 					parent, false);
 		}
 		Conversation conv = getItem(position);
-		if (!activity.getSlidingPaneLayout().isSlideable()) {
-			if (conv == activity.getSelectedConversation()) {
-				view.setBackgroundColor(0xffdddddd);
+		if (this.activity instanceof ConversationActivity) {
+			ConversationActivity activity = (ConversationActivity) this.activity;
+			if (!activity.getSlidingPaneLayout().isSlideable()) {
+				if (conv == activity.getSelectedConversation()) {
+					view.setBackgroundColor(0xffdddddd);
+				} else {
+					view.setBackgroundColor(Color.TRANSPARENT);
+				}
 			} else {
 				view.setBackgroundColor(Color.TRANSPARENT);
 			}
-		} else {
-			view.setBackgroundColor(Color.TRANSPARENT);
 		}
 		TextView convName = (TextView) view
 				.findViewById(R.id.conversation_name);

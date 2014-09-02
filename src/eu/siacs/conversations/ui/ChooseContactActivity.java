@@ -95,8 +95,13 @@ public class ChooseContactActivity extends XmppActivity {
 						InputMethodManager.HIDE_IMPLICIT_ONLY);
 				Intent request = getIntent();
 				Intent data = new Intent();
-				data.putExtra("contact", contacts.get(position).getJid());
-				data.putExtra("account", request.getStringExtra("account"));
+				ListItem mListItem = contacts.get(position);
+				data.putExtra("contact", mListItem.getJid());
+				String account = request.getStringExtra("account");
+				if (account==null && mListItem instanceof Contact) {
+					account = ((Contact) mListItem).getAccount().getJid();
+				}
+				data.putExtra("account", account);
 				data.putExtra("conversation",
 						request.getStringExtra("conversation"));
 				setResult(RESULT_OK, data);

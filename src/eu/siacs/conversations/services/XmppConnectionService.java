@@ -784,10 +784,22 @@ public class XmppConnectionService extends Service {
 
 		return this.conversations;
 	}
-
+	
 	public void populateWithOrderedConversations(List<Conversation> list) {
+		populateWithOrderedConversations(list,true);
+	}
+
+	public void populateWithOrderedConversations(List<Conversation> list, boolean includeConferences) {
 		list.clear();
-		list.addAll(getConversations());
+		if (includeConferences) {
+			list.addAll(getConversations());
+		} else {
+			for(Conversation conversation : getConversations()) {
+				if (conversation.getMode() == Conversation.MODE_SINGLE) {
+					list.add(conversation);
+				}
+			}
+		}
 		Collections.sort(list, new Comparator<Conversation>() {
 			@Override
 			public int compare(Conversation lhs, Conversation rhs) {

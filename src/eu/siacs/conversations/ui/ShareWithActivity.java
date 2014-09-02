@@ -1,37 +1,41 @@
 package eu.siacs.conversations.ui;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
-import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
-import eu.siacs.conversations.utils.UIHelper;
+import eu.siacs.conversations.ui.adapter.ConversationAdapter;
 import android.app.PendingIntent;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ListView;
 import android.widget.Toast;
 
 public class ShareWithActivity extends XmppActivity {
+	
+	private class Share {
+		public Uri uri;
+		public String account;
+		public String contact;
+		public String text;
+	}
+	
+	private Share share;
 
-	private LinearLayout conversations;
-	private LinearLayout contacts;
-	private boolean isImage = false;
+	private static final int REQUEST_START_NEW_CONVERSATION = 0x0501;
+	private ListView mListView;
+	private List<Conversation> mConversations = new ArrayList<Conversation>();
 
 	private UiCallback<Message> attachImageCallback = new UiCallback<Message>() {
 
@@ -52,111 +56,107 @@ public class ShareWithActivity extends XmppActivity {
 
 		}
 	};
+	
+	protected void onActivityResult(int requestCode, int resultCode,
+			final Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (requestCode == REQUEST_START_NEW_CONVERSATION
+				&& resultCode == RESULT_OK) {
+			share.contact = data.getStringExtra("contact");
+			share.account = data.getStringExtra("account");
+			Log.d(Config.LOGTAG,"contact: "+share.contact+" account:"+share.account);
+		}
+		if (xmppConnectionServiceBound && share != null && share.contact != null && share.account != null) {
+			share();
+		}
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
 
+		getActionBar().setDisplayHomeAsUpEnabled(false);
+		getActionBar().setHomeButtonEnabled(false);
+
 		setContentView(R.layout.share_with);
 		setTitle(getString(R.string.title_activity_sharewith));
 
-		contacts = (LinearLayout) findViewById(R.id.contacts);
-		conversations = (LinearLayout) findViewById(R.id.conversations);
+		mListView = (ListView) findViewById(R.id.choose_conversation_list);
+		ConversationAdapter mAdapter = new ConversationAdapter(this,
+				this.mConversations);
+		mListView.setAdapter(mAdapter);
+		mListView.setOnItemClickListener(new OnItemClickListener() {
 
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1,
+					int position, long arg3) {
+				Conversation conversation = mConversations.get(position);
+				if (conversation.getMode() == Conversation.MODE_SINGLE) {
+					share(mConversations.get(position));
+				}
+			}
+		});
+		
+		this.share = new Share();
 	}
-
-	public View createContactView(String name, String msgTxt, Bitmap bm) {
-		View view = (View) getLayoutInflater().inflate(R.layout.contact, null);
-		view.setBackgroundResource(R.drawable.greybackground);
-		TextView contactName = (TextView) view
-				.findViewById(R.id.contact_display_name);
-		contactName.setText(name);
-		TextView msg = (TextView) view.findViewById(R.id.contact_jid);
-		msg.setText(msgTxt);
-		ImageView imageView = (ImageView) view.findViewById(R.id.contact_photo);
-		imageView.setImageBitmap(bm);
-		return view;
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.share_with, menu);
+		return true;
 	}
 
 	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.action_add:
+			Intent intent = new Intent(getApplicationContext(),
+					ChooseContactActivity.class);
+			startActivityForResult(intent, REQUEST_START_NEW_CONVERSATION);
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+	
+	@Override
+	public void onStart() {
+		super.onStart();
+		if (getIntent().getType() != null && getIntent().getType()
+				.startsWith("image/")) {
+			this.share.uri = (Uri) getIntent().getParcelableExtra(
+					Intent.EXTRA_STREAM);
+		} else {
+			this.share.text = getIntent().getStringExtra(Intent.EXTRA_TEXT);
+		}
+	}
+	
+	@Override
 	void onBackendConnected() {
-		this.isImage = (getIntent().getType() != null && getIntent().getType()
-				.startsWith("image/"));
-		SharedPreferences preferences = PreferenceManager
-				.getDefaultSharedPreferences(this);
-		boolean useSubject = preferences.getBoolean("use_subject_in_muc", true);
-
-		Set<Contact> displayedContacts = new HashSet<Contact>();
-		conversations.removeAllViews();
-		List<Conversation> convList = new ArrayList<Conversation>();
-		xmppConnectionService.populateWithOrderedConversations(convList);
-		Collections.sort(convList, new Comparator<Conversation>() {
-			@Override
-			public int compare(Conversation lhs, Conversation rhs) {
-				return (int) (rhs.getLatestMessage().getTimeSent() - lhs
-						.getLatestMessage().getTimeSent());
-			}
-		});
-		for (final Conversation conversation : convList) {
-			if (!isImage || conversation.getMode() == Conversation.MODE_SINGLE) {
-				View view = createContactView(conversation.getName(useSubject),
-						conversation.getLatestMessage().getBody().trim(),
-						conversation.getImage(getApplicationContext(), 48));
-				view.setOnClickListener(new OnClickListener() {
-
-					@Override
-					public void onClick(View v) {
-						share(conversation);
-					}
-				});
-				conversations.addView(view);
-				displayedContacts.add(conversation.getContact());
+		if (xmppConnectionServiceBound &&  share != null && share.contact != null && share.account != null) {
+			share();
+			return;
+		}
+		xmppConnectionService.populateWithOrderedConversations(mConversations,
+				false);
+		for (Conversation conversation : mConversations) {
+			if (conversation.getMode() == Conversation.MODE_MULTI) {
+				mConversations.remove(conversation);
 			}
 		}
-		contacts.removeAllViews();
-		List<Contact> contactsList = new ArrayList<Contact>();
-		for (Account account : xmppConnectionService.getAccounts()) {
-			for (Contact contact : account.getRoster().getContacts()) {
-				if (!displayedContacts.contains(contact)
-						&& (contact.showInRoster())) {
-					contactsList.add(contact);
-				}
-			}
+	}
+	
+	private void share() {
+		Account account = xmppConnectionService.findAccountByJid(share.account);
+		if (account==null) {
+			return;
 		}
-
-		Collections.sort(contactsList, new Comparator<Contact>() {
-			@Override
-			public int compare(Contact lhs, Contact rhs) {
-				return lhs.getDisplayName().compareToIgnoreCase(
-						rhs.getDisplayName());
-			}
-		});
-
-		for (int i = 0; i < contactsList.size(); ++i) {
-			final Contact contact = contactsList.get(i);
-			View view = createContactView(contact.getDisplayName(),
-					contact.getJid(),
-					contact.getImage(48, getApplicationContext()));
-			view.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View v) {
-					Conversation conversation = xmppConnectionService
-							.findOrCreateConversation(contact.getAccount(),
-									contact.getJid(), false);
-					share(conversation);
-				}
-			});
-			contacts.addView(view);
-		}
+		Conversation conversation = xmppConnectionService.findOrCreateConversation(account, share.contact, false);
+		share(conversation);
 	}
 
 	private void share(final Conversation conversation) {
-		String sharedText = null;
-		if (isImage) {
-			final Uri uri = (Uri) getIntent().getParcelableExtra(
-					Intent.EXTRA_STREAM);
+		if (share.uri != null) {
 			selectPresence(conversation, new OnPresenceSelected() {
 				@Override
 				public void onPresenceSelected() {
@@ -164,7 +164,7 @@ public class ShareWithActivity extends XmppActivity {
 							getText(R.string.preparing_image),
 							Toast.LENGTH_LONG).show();
 					ShareWithActivity.this.xmppConnectionService
-							.attachImageToConversation(conversation, uri,
+							.attachImageToConversation(conversation, share.uri,
 									attachImageCallback);
 					switchToConversation(conversation, null, true);
 					finish();
@@ -172,8 +172,7 @@ public class ShareWithActivity extends XmppActivity {
 			});
 
 		} else {
-			sharedText = getIntent().getStringExtra(Intent.EXTRA_TEXT);
-			switchToConversation(conversation, sharedText, true);
+			switchToConversation(conversation,this.share.text, true);
 			finish();
 		}
 
