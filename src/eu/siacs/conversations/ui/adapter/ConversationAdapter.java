@@ -51,7 +51,7 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 		}
 		TextView convName = (TextView) view
 				.findViewById(R.id.conversation_name);
-		convName.setText(conv.getName(true));
+		convName.setText(conv.getName());
 		TextView convLastMsg = (TextView) view
 				.findViewById(R.id.conversation_lastmsg);
 		ImageView imagePreview = (ImageView) view

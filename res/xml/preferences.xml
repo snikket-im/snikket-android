@@ -60,14 +60,6 @@
             android:summary="@string/pref_notification_grace_period_summary"
             android:defaultValue="true"/>
     </PreferenceCategory>
-    <PreferenceCategory 
-        android:title="@string/pref_ui_options">
-        <CheckBoxPreference 
-            android:key="use_subject_in_muc"
-            android:title="@string/pref_conference_name"
-            android:summary="@string/pref_conference_name_summary"
-            android:defaultValue="true"/>
-    </PreferenceCategory>
     <PreferenceCategory
         android:title="@string/pref_advanced_options">
         <CheckBoxPreference 

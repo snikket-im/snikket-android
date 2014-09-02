@@ -384,7 +384,7 @@ public abstract class XmppActivity extends Activity {
 				xmppConnectionService.invite(conversation, contactJid);
 			}
 			Log.d(Config.LOGTAG, "inviting " + contactJid + " to "
-					+ conversation.getName(true));
+					+ conversation.getName());
 		}
 	}
 

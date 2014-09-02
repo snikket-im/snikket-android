@@ -109,7 +109,7 @@ public class ConferenceDetailsActivity extends XmppActivity {
 			break;
 		case R.id.action_edit_subject:
 			if (conversation != null) {
-				quickEdit(conversation.getName(true), new OnValueEdited() {
+				quickEdit(conversation.getName(), new OnValueEdited() {
 
 					@Override
 					public void onValueEdited(String value) {
@@ -200,7 +200,7 @@ public class ConferenceDetailsActivity extends XmppActivity {
 
 	private void populateView() {
 		mYourPhoto.setImageBitmap(conversation.getAccount().getImage(this, 48));
-		setTitle(conversation.getName(true));
+		setTitle(conversation.getName());
 		mFullJid.setText(conversation.getContactJid().split("/")[0]);
 		mYourNick.setText(conversation.getMucOptions().getActualNick());
 		mRoleAffiliaton = (TextView) findViewById(R.id.muc_role);

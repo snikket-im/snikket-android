@@ -13,7 +13,6 @@ import eu.siacs.conversations.utils.ExceptionHelper;
 import eu.siacs.conversations.utils.UIHelper;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.app.ActionBar;
 import android.app.AlertDialog;
@@ -23,7 +22,6 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.IntentSender.SendIntentException;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.support.v4.widget.SlidingPaneLayout;
 import android.support.v4.widget.SlidingPaneLayout.PanelSlideListener;
 import android.view.KeyEvent;
@@ -65,8 +63,6 @@ public class ConversationActivity extends XmppActivity {
 	private ListView listView;
 
 	private boolean paneShouldBeOpen = true;
-	private boolean useSubject = true;
-	private boolean showLastseen = false;
 	private ArrayAdapter<Conversation> listAdapter;
 
 	private OnConversationUpdate onConvChanged = new OnConversationUpdate() {
@@ -182,8 +178,7 @@ public class ConversationActivity extends XmppActivity {
 					if (ab != null) {
 						ab.setDisplayHomeAsUpEnabled(true);
 						ab.setHomeButtonEnabled(true);
-						ab.setTitle(getSelectedConversation().getName(
-								useSubject));
+						ab.setTitle(getSelectedConversation().getName());
 					}
 					invalidateOptionsMenu();
 					if (!getSelectedConversation().isRead()) {
@@ -562,10 +557,6 @@ public class ConversationActivity extends XmppActivity {
 	@Override
 	public void onStart() {
 		super.onStart();
-		SharedPreferences preferences = PreferenceManager
-				.getDefaultSharedPreferences(this);
-		this.useSubject = preferences.getBoolean("use_subject_in_muc", true);
-		this.showLastseen = preferences.getBoolean("show_last_seen", false);
 		if (this.xmppConnectionServiceBound) {
 			this.onBackendConnected();
 		}
@@ -739,15 +730,6 @@ public class ConversationActivity extends XmppActivity {
 		xmppConnectionService
 				.populateWithOrderedConversations(conversationList);
 		listView.invalidateViews();
-	}
-
-	public boolean showLastseen() {
-		if (getSelectedConversation() == null) {
-			return false;
-		} else {
-			return this.showLastseen
-					&& getSelectedConversation().getMode() == Conversation.MODE_SINGLE;
-		}
 	}
 
 	public void runIntent(PendingIntent pi, int requestCode) {

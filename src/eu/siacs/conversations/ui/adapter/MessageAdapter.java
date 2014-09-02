@@ -377,7 +377,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 								@Override
 								public void onClick(View v) {
 									String name = item.getConversation()
-											.getName(true);
+											.getName();
 									String read = getContext()
 											.getString(
 													R.string.contact_has_read_up_to_this_point,

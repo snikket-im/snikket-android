@@ -215,7 +215,7 @@ public class UIHelper {
 		List<User> members = conversation.getMucOptions().getUsers();
 		if (members.size() == 0) {
 			return getUnknownContactPicture(
-					new String[] { conversation.getName(false) }, size,
+					new String[] { conversation.getName() }, size,
 					bgColor, fgColor);
 		}
 		ArrayList<String> names = new ArrayList<String>();
@@ -332,7 +332,6 @@ public class UIHelper {
 
 		SharedPreferences preferences = PreferenceManager
 				.getDefaultSharedPreferences(context);
-		boolean useSubject = preferences.getBoolean("use_subject_in_muc", true);
 		boolean showNofifications = preferences.getBoolean("show_notification",
 				true);
 		boolean vibrate = preferences.getBoolean("vibrate_on_notification",
@@ -381,7 +380,7 @@ public class UIHelper {
 			Conversation conversation = unread.get(0);
 			targetUuid = conversation.getUuid();
 			mBuilder.setLargeIcon(conversation.getImage(context, 64));
-			mBuilder.setContentTitle(conversation.getName(useSubject));
+			mBuilder.setContentTitle(conversation.getName());
 			if (notify) {
 				mBuilder.setTicker(conversation.getLatestMessage()
 						.getReadableBody(context));
@@ -413,12 +412,12 @@ public class UIHelper {
 			for (int i = 0; i < unread.size(); ++i) {
 				targetUuid = unread.get(i).getUuid();
 				if (i < unread.size() - 1) {
-					names.append(unread.get(i).getName(useSubject) + ", ");
+					names.append(unread.get(i).getName() + ", ");
 				} else {
-					names.append(unread.get(i).getName(useSubject));
+					names.append(unread.get(i).getName());
 				}
 				style.addLine(Html.fromHtml("<b>"
-						+ unread.get(i).getName(useSubject)
+						+ unread.get(i).getName()
 						+ "</b> "
 						+ unread.get(i).getLatestMessage()
 								.getReadableBody(context)));

@@ -26,10 +26,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
-import android.content.SharedPreferences;
 import android.content.IntentSender.SendIntentException;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.Selection;
 import android.view.Gravity;
@@ -67,7 +65,6 @@ public class ConversationFragment extends Fragment {
 	private TextView snackbarMessage;
 	private TextView snackbarAction;
 
-	private boolean useSubject = true;
 	private boolean messagesLoaded = false;
 
 	private IntentSender askForPassphraseIntent = null;
@@ -301,9 +298,6 @@ public class ConversationFragment extends Fragment {
 	public void onStart() {
 		super.onStart();
 		this.activity = (ConversationActivity) getActivity();
-		SharedPreferences preferences = PreferenceManager
-				.getDefaultSharedPreferences(activity);
-		this.useSubject = preferences.getBoolean("use_subject_in_muc", true);
 		if (activity.xmppConnectionServiceBound) {
 			this.onBackendConnected();
 		}
@@ -344,7 +338,7 @@ public class ConversationFragment extends Fragment {
 				activity.getActionBar().setDisplayHomeAsUpEnabled(true);
 				activity.getActionBar().setHomeButtonEnabled(true);
 				activity.getActionBar().setTitle(
-						conversation.getName(useSubject));
+						conversation.getName());
 				activity.invalidateOptionsMenu();
 			}
 		}

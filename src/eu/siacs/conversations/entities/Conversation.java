@@ -141,9 +141,8 @@ public class Conversation extends AbstractEntity {
 		this.messages = msgs;
 	}
 
-	public String getName(boolean useSubject) {
-		if ((getMode() == MODE_MULTI) && (getMucOptions().getSubject() != null)
-				&& useSubject) {
+	public String getName() {
+		if (getMode() == MODE_MULTI && getMucOptions().getSubject() != null) {
 			return getMucOptions().getSubject();
 		} else if (getMode() == MODE_MULTI && bookmark != null
 				&& bookmark.getName() != null) {
