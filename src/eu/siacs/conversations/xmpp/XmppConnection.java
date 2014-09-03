@@ -763,8 +763,13 @@ public class XmppConnection implements Runnable {
 		});
 	}
 
-	private void processStreamError(Tag currentTag) {
-		Log.d(Config.LOGTAG, "processStreamError");
+	private void processStreamError(Tag currentTag) throws XmlPullParserException, IOException {
+		Element streamError = tagReader.readElement(currentTag);
+		if (streamError!=null && streamError.hasChild("conflict")) {
+			String resource = account.getResource().split("\\.")[0];
+			account.setResource(resource+"."+nextRandomId());
+			Log.d(Config.LOGTAG,account.getJid()+": switching resource due to conflict ("+account.getResource()+")");
+		}
 	}
 
 	private void sendStartStream() throws IOException {
