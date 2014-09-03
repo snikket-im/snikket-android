@@ -546,28 +546,32 @@ public class UIHelper {
 		}
 	}
 
-	private static final Pattern armorRegex(String regex) { return Pattern.compile("(^|\\s+)" + regex + "(\\s+|$)"); }
+	private static final Pattern armorRegex(String regex) {
+		return Pattern.compile("(^|\\s+)" + regex + "(\\s+|$)"); }
 
-	private static final String armorReplacement(String replacement) { return "$1" + replacement + "$2"; }
+	private static final String armorReplacement(String replacement) {
+		return "$1" + replacement + "$2"; }
+
+	private static final Object[][] patterns = new Object[][]{
+		{armorRegex(":-?\\)"), armorReplacement("😃"), },
+		{armorRegex(";-?\\)"), armorReplacement("😉"), },
+		{armorRegex(":-?D"), armorReplacement("😀"), },
+		{armorRegex(":-?[Ppb]"), armorReplacement("😋"), },
+		{armorRegex("8-?\\)"), armorReplacement("😎"), },
+		{armorRegex(":-?\\|"), armorReplacement("😐"), },
+		{armorRegex(":-?[/\\\\]"), armorReplacement("😕"), },
+		{armorRegex(":-?\\*"), armorReplacement("😗"), },
+		{armorRegex(":-?[0Oo]"), armorReplacement("😮"), },
+		{armorRegex(":-?\\("), armorReplacement("😞"), },
+		{armorRegex("\\^\\^"), armorReplacement("😁"), },
+	};
 
 	public static String transformAsciiEmoticons(String body) {
 		if (body != null) {
 		// see https://developer.android.com/reference/java/util/regex/Pattern.html
 		// see http://userguide.icu-project.org/strings/regexp
 		// see https://de.wikipedia.org/wiki/Unicodeblock_Smileys
-			for (Object[] r: new Object[][]{
-				{armorRegex(":-?\\)"), armorReplacement("😃"), },
-				{armorRegex(";-?\\)"), armorReplacement("😉"), },
-				{armorRegex(":-?D"), armorReplacement("😀"), },
-				{armorRegex(":-?[Ppb]"), armorReplacement("😋"), },
-				{armorRegex("8-?\\)"), armorReplacement("😎"), },
-				{armorRegex(":-?\\|"), armorReplacement("😐"), },
-				{armorRegex(":-?[/\\\\]"), armorReplacement("😕"), },
-				{armorRegex(":-?\\*"), armorReplacement("😗"), },
-				{armorRegex(":-?[0Oo]"), armorReplacement("😮"), },
-				{armorRegex(":-?\\("), armorReplacement("😞"), },
-				{armorRegex("\\^\\^"), armorReplacement("😁"), },
-			}) {
+			for (Object[] r: patterns) {
 				Pattern pattern = (Pattern)r[0];
 				String replacement = (String)r[1];
 				body = pattern.matcher(body).replaceAll(replacement);
