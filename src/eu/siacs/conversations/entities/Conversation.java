@@ -16,6 +16,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.os.SystemClock;
 
 public class Conversation extends AbstractEntity {
 	public static final String TABLENAME = "conversations";
@@ -42,6 +43,8 @@ public class Conversation extends AbstractEntity {
 	private int status;
 	private long created;
 	private int mode;
+	
+	private long mutedTill = 0;
 
 	private String nextPresence;
 
@@ -417,5 +420,13 @@ public class Conversation extends AbstractEntity {
 			}
 		}
 		return false;
+	}
+
+	public void setMutedTill(long mutedTill) {
+		this.mutedTill = mutedTill;
+	}
+	
+	public boolean isMuted() {
+		return SystemClock.elapsedRealtime() < this.mutedTill;
 	}
 }

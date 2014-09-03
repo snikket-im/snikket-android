@@ -435,6 +435,7 @@ public class MessageParser extends AbstractParser implements
 		if (packet.getType() != MessagePacket.TYPE_ERROR) {
 			mXmppConnectionService.databaseBackend.createMessage(message);
 		}
+		notify = notify && !conversation.isMuted();
 		mXmppConnectionService.notifyUi(conversation, notify);
 	}
 

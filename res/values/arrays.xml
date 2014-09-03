@@ -19,4 +19,18 @@
         <item>524288</item>
         <item>1048576</item>
     </string-array>
+    <string-array name="mute_options_descriptions">
+        <item>30 minutes</item>
+        <item>one hour</item>
+        <item>2 hours</item>
+        <item>8 hours</item>
+        <item>until further notice</item>
+    </string-array>
+    <integer-array name="mute_options_durations">
+        <item>1800</item>
+        <item>3600</item>
+        <item>7200</item>
+        <item>28800</item>
+        <item>-1</item>
+    </integer-array>
 </resources>

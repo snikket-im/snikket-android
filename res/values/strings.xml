@@ -235,5 +235,9 @@
     <string name="server_info_session_established">Current session established</string>
     <string name="additional_information">Additional Information</string>
     <string name="skip">Skip</string>
+    <string name="disable_notifications">Disable notifications</string>
+    <string name="disable_notifications_for_this_conversation">Disable notifications for this conversation</string>
+    <string name="notifications_disabled">Notifications are disabled</string>
+    <string name="enable">Enable</string>
 
 </resources>

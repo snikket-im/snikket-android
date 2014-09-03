@@ -13,6 +13,7 @@ import eu.siacs.conversations.utils.ExceptionHelper;
 import eu.siacs.conversations.utils.UIHelper;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.app.ActionBar;
 import android.app.AlertDialog;
@@ -214,6 +215,7 @@ public class ConversationActivity extends XmppActivity {
 		MenuItem menuAdd = (MenuItem) menu.findItem(R.id.action_add);
 		MenuItem menuInviteContact = (MenuItem) menu
 				.findItem(R.id.action_invite);
+		MenuItem menuMute = (MenuItem) menu.findItem(R.id.action_mute);
 
 		if ((spl.isOpen() && (spl.isSlideable()))) {
 			menuArchive.setVisible(false);
@@ -223,6 +225,7 @@ public class ConversationActivity extends XmppActivity {
 			menuInviteContact.setVisible(false);
 			menuAttach.setVisible(false);
 			menuClearHistory.setVisible(false);
+			menuMute.setVisible(false);
 		} else {
 			menuAdd.setVisible(!spl.isSlideable());
 			if (this.getSelectedConversation() != null) {
@@ -463,6 +466,9 @@ public class ConversationActivity extends XmppActivity {
 		case R.id.action_clear_history:
 			clearHistoryDialog(getSelectedConversation());
 			break;
+		case R.id.action_mute:
+			muteConversationDialog(getSelectedConversation());
+			break;
 		default:
 			break;
 		}
@@ -502,6 +508,31 @@ public class ConversationActivity extends XmppActivity {
 						}
 					}
 				});
+		builder.create().show();
+	}
+	
+	protected void muteConversationDialog(final Conversation conversation) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle(R.string.disable_notifications_for_this_conversation);
+		final int[] durations = getResources().getIntArray(R.array.mute_options_durations);
+		builder.setItems(R.array.mute_options_descriptions, new OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				long till;
+				if (durations[which]==-1) {
+					till = Long.MAX_VALUE;
+				} else {
+					till = SystemClock.elapsedRealtime() + (durations[which] * 1000);
+				}
+				conversation.setMutedTill(till);
+				ConversationFragment selectedFragment = (ConversationFragment) getFragmentManager()
+						.findFragmentByTag("conversation");
+				if (selectedFragment!=null) {
+					selectedFragment.updateMessages();
+				}
+			}
+		});
 		builder.create().show();
 	}
 

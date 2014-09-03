@@ -406,6 +406,16 @@ public class ConversationFragment extends Fragment {
 					break;
 				}
 			}
+			if (this.conversation.isMuted()) {
+				showSnackbar(R.string.notifications_disabled, R.string.enable, new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						conversation.setMutedTill(0);
+						updateMessages();
+					}
+				});
+			}
 			if (this.conversation.getMessages().size() == 0) {
 				this.messageList.clear();
 				messagesLoaded = false;
