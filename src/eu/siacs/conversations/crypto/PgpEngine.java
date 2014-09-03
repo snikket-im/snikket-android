@@ -171,8 +171,10 @@ public class PgpEngine {
 							os.flush();
 							StringBuilder encryptedMessageBody = new StringBuilder();
 							String[] lines = os.toString().split("\n");
-							for (int i = 3; i < lines.length - 1; ++i) {
-								encryptedMessageBody.append(lines[i].trim());
+							for (int i = 2; i < lines.length - 1; ++i) {
+								if (!lines[i].contains("Version")) {
+									encryptedMessageBody.append(lines[i].trim());
+								}
 							}
 							message.setEncryptedBody(encryptedMessageBody
 									.toString());
@@ -304,7 +306,9 @@ public class PgpEngine {
 								if (line.contains("END PGP SIGNATURE")) {
 									sig = false;
 								} else {
-									signatureBuilder.append(line.trim());
+									if (!line.contains("Version")) {
+										signatureBuilder.append(line.trim());
+									}
 								}
 							}
 							if (line.contains("BEGIN PGP SIGNATURE")) {
