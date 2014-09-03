@@ -384,7 +384,16 @@ public class ConversationFragment extends Fragment {
 		final ConversationActivity activity = (ConversationActivity) getActivity();
 		if (this.conversation != null) {
 			final Contact contact = this.conversation.getContact();
-			if (!contact.showInRoster()
+			if (this.conversation.isMuted()) {
+				showSnackbar(R.string.notifications_disabled, R.string.enable, new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						conversation.setMutedTill(0);
+						updateMessages();
+					}
+				});
+			} else if (!contact.showInRoster()
 					&& contact
 							.getOption(Contact.Options.PENDING_SUBSCRIPTION_REQUEST)) {
 				showSnackbar(R.string.contact_added_you, R.string.add_back,
@@ -405,16 +414,6 @@ public class ConversationFragment extends Fragment {
 					decryptMessage(message);
 					break;
 				}
-			}
-			if (this.conversation.isMuted()) {
-				showSnackbar(R.string.notifications_disabled, R.string.enable, new OnClickListener() {
-					
-					@Override
-					public void onClick(View v) {
-						conversation.setMutedTill(0);
-						updateMessages();
-					}
-				});
 			}
 			if (this.conversation.getMessages().size() == 0) {
 				this.messageList.clear();
@@ -494,7 +493,7 @@ public class ConversationFragment extends Fragment {
 		Set<String> knownFingerprints = conversation.getContact()
 				.getOtrFingerprints();
 		if ((latestEncryption == Message.ENCRYPTION_OTR)
-				&& (conversation.hasValidOtrSession()
+				&& (conversation.hasValidOtrSession() && (!conversation.isMuted())
 						&& (conversation.getOtrSession().getSessionStatus() == SessionStatus.ENCRYPTED) && (!knownFingerprints
 							.contains(conversation.getOtrFingerprint())))) {
 			showSnackbar(R.string.unknown_otr_fingerprint, R.string.verify,
