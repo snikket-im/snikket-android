@@ -16,6 +16,8 @@ public final class Config {
 	public static final Bitmap.CompressFormat AVATAR_FORMAT = Bitmap.CompressFormat.WEBP;
 	
 	public static final int MESSAGE_MERGE_WINDOW = 20;
+	
+	public static final boolean PARSE_EMOTICONS = false;
 
 	private Config() {
 

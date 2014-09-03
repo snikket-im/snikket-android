@@ -3,6 +3,7 @@ package eu.siacs.conversations.ui.adapter;
 import java.util.HashMap;
 import java.util.List;
 
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
@@ -215,7 +216,10 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		viewHolder.messageBody.setVisibility(View.VISIBLE);
 		if (message.getBody() != null) {
 			if (message.getType() != Message.TYPE_PRIVATE) {
-				viewHolder.messageBody.setText(UIHelper.transformAsciiEmoticons(message.getMergedBody()));
+				String body = Config.PARSE_EMOTICONS ? UIHelper
+						.transformAsciiEmoticons(message.getMergedBody())
+						: message.getMergedBody();
+				viewHolder.messageBody.setText(body);
 			} else {
 				String privateMarker;
 				if (message.getStatus() <= Message.STATUS_RECEIVED) {
