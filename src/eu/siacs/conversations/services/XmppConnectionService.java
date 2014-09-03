@@ -1059,6 +1059,10 @@ public class XmppConnectionService extends Service {
 			packet.setAttribute("to", conversation.getMucOptions().getJoinJid());
 			Element x = new Element("x");
 			x.setAttribute("xmlns", "http://jabber.org/protocol/muc");
+			if (conversation.getMucOptions().getPassword() != null) {
+				Element password = x.addChild("password");
+				password.setContent(conversation.getMucOptions().getPassword());
+			}
 			String sig = account.getPgpSignature();
 			if (sig != null) {
 				packet.addChild("status").setContent("online");
@@ -1089,6 +1093,13 @@ public class XmppConnectionService extends Service {
 
 	public void setOnRenameListener(OnRenameListener listener) {
 		this.renameListener = listener;
+	}
+	
+	public void providePasswordForMuc(Conversation conversation, String password) {
+		if (conversation.getMode() == Conversation.MODE_MULTI) {
+			conversation.getMucOptions().setPassword(password);
+			joinMuc(conversation);
+		}
 	}
 
 	public void renameInMuc(final Conversation conversation, final String nick) {
