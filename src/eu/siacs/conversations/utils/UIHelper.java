@@ -559,17 +559,20 @@ public class UIHelper {
 	}
 
 	private static final EmoticonPattern[] patterns = new EmoticonPattern[] {
-		new EmoticonPattern(":-?\\)", 0x1f603),
-		new EmoticonPattern(";-?\\)", 0x1f609),
 		new EmoticonPattern(":-?D", 0x1f600),
-		new EmoticonPattern(":-?[Ppb]", 0x1f60b),
-		new EmoticonPattern("8-?\\)", 0x1f60e),
+		new EmoticonPattern("\\^\\^", 0x1f601),
+		new EmoticonPattern(":'D", 0x1f602),
+		new EmoticonPattern("\\]-?D", 0x1f608),
+		new EmoticonPattern(";-?\\)", 0x1f609),
+		new EmoticonPattern(":-?\\)", 0x1f60a),
+		new EmoticonPattern("[B8]-?\\)", 0x1f60e),
 		new EmoticonPattern(":-?\\|", 0x1f610),
 		new EmoticonPattern(":-?[/\\\\]", 0x1f615),
 		new EmoticonPattern(":-?\\*", 0x1f617),
-		new EmoticonPattern(":-?[0Oo]", 0x1f62e),
+		new EmoticonPattern(":-?[Ppb]", 0x1f61b),
 		new EmoticonPattern(":-?\\(", 0x1f61e),
-		new EmoticonPattern("\\^\\^", 0x1f601),
+		new EmoticonPattern(":-?[0Oo]", 0x1f62e),
+		new EmoticonPattern("\\\\o/", 0x1F631),
 	};
 
 	public static String transformAsciiEmoticons(String body) {
