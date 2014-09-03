@@ -292,9 +292,25 @@ public class PgpEngine {
 				switch (result.getIntExtra(OpenPgpApi.RESULT_CODE, 0)) {
 				case OpenPgpApi.RESULT_CODE_SUCCESS:
 					StringBuilder signatureBuilder = new StringBuilder();
-					String[] lines = os.toString().split("\n");
-					for (int i = 7; i < lines.length - 1; ++i) {
-						signatureBuilder.append(lines[i].trim());
+					try {
+						os.flush();
+						String[] lines = os.toString().split("\n");
+						boolean sig = false;
+						for(String line : lines) {
+							if (sig) {
+								if (line.contains("END PGP SIGNATURE")) {
+									sig = false;
+								} else {
+									signatureBuilder.append(line.trim());
+								}
+							}
+							if (line.contains("BEGIN PGP SIGNATURE")) {
+								sig = true;
+							}
+						}
+					} catch (IOException e) {
+						callback.error(R.string.openpgp_error, account);
+						return;
 					}
 					account.setKey("pgp_signature", signatureBuilder.toString());
 					callback.success(account);
