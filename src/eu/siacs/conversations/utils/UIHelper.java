@@ -546,35 +546,36 @@ public class UIHelper {
 		}
 	}
 
-	private static final Pattern armorRegex(String regex) {
-		return Pattern.compile("(^|\\s+)" + regex + "(\\s+|$)"); }
+	private final static class EmoticonPattern {
+		Pattern pattern;
+		String replacement;
+		EmoticonPattern(String ascii, int unicode) {
+			this.pattern = Pattern.compile("(?<=(^|\\s))" + ascii + "(?=(\\s|$))");
+			this.replacement = new String(new int[]{unicode, }, 0, 1);
+		}
+		String replaceAll(String body) {
+			return pattern.matcher(body).replaceAll(replacement);
+		}
+	}
 
-	private static final String armorReplacement(String replacement) {
-		return "$1" + replacement + "$2"; }
-
-	private static final Object[][] patterns = new Object[][]{
-		{armorRegex(":-?\\)"), armorReplacement("😃"), },
-		{armorRegex(";-?\\)"), armorReplacement("😉"), },
-		{armorRegex(":-?D"), armorReplacement("😀"), },
-		{armorRegex(":-?[Ppb]"), armorReplacement("😋"), },
-		{armorRegex("8-?\\)"), armorReplacement("😎"), },
-		{armorRegex(":-?\\|"), armorReplacement("😐"), },
-		{armorRegex(":-?[/\\\\]"), armorReplacement("😕"), },
-		{armorRegex(":-?\\*"), armorReplacement("😗"), },
-		{armorRegex(":-?[0Oo]"), armorReplacement("😮"), },
-		{armorRegex(":-?\\("), armorReplacement("😞"), },
-		{armorRegex("\\^\\^"), armorReplacement("😁"), },
+	private static final EmoticonPattern[] patterns = new EmoticonPattern[] {
+		new EmoticonPattern(":-?\\)", 0x1f603),
+		new EmoticonPattern(";-?\\)", 0x1f609),
+		new EmoticonPattern(":-?D", 0x1f600),
+		new EmoticonPattern(":-?[Ppb]", 0x1f60b),
+		new EmoticonPattern("8-?\\)", 0x1f60e),
+		new EmoticonPattern(":-?\\|", 0x1f610),
+		new EmoticonPattern(":-?[/\\\\]", 0x1f615),
+		new EmoticonPattern(":-?\\*", 0x1f617),
+		new EmoticonPattern(":-?[0Oo]", 0x1f62e),
+		new EmoticonPattern(":-?\\(", 0x1f61e),
+		new EmoticonPattern("\\^\\^", 0x1f601),
 	};
 
 	public static String transformAsciiEmoticons(String body) {
 		if (body != null) {
-		// see https://developer.android.com/reference/java/util/regex/Pattern.html
-		// see http://userguide.icu-project.org/strings/regexp
-		// see https://de.wikipedia.org/wiki/Unicodeblock_Smileys
-			for (Object[] r: patterns) {
-				Pattern pattern = (Pattern)r[0];
-				String replacement = (String)r[1];
-				body = pattern.matcher(body).replaceAll(replacement);
+			for (EmoticonPattern p: patterns) {
+				body = p.replaceAll(body);
 			}
 			body = body.trim();
 		}
