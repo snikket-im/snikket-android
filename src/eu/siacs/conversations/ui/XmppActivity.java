@@ -33,6 +33,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.text.InputType;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MenuItem;
@@ -56,7 +57,7 @@ public abstract class XmppActivity extends Activity {
 	protected int mPrimaryColor;
 
 	private DisplayMetrics metrics;
-	
+
 	protected interface OnValueEdited {
 		public void onValueEdited(String value);
 	}
@@ -297,16 +298,22 @@ public abstract class XmppActivity extends Activity {
 		builder.create().show();
 	}
 
-	protected void quickEdit(final String previousValue,
-			final OnValueEdited callback) {
+	protected void quickEdit(String previousValue, OnValueEdited callback) {
+		quickEdit(previousValue, callback, false);
+	}
+
+	protected void quickPasswordEdit(String previousValue,
+			OnValueEdited callback) {
+		quickEdit(previousValue, callback, true);
+	}
+
+	private void quickEdit(final String previousValue,
+			final OnValueEdited callback, boolean password) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		View view = (View) getLayoutInflater()
 				.inflate(R.layout.quickedit, null);
 		final EditText editor = (EditText) view.findViewById(R.id.editor);
-		editor.setText(previousValue);
-		builder.setView(view);
-		builder.setNegativeButton(R.string.cancel, null);
-		builder.setPositiveButton(R.string.edit, new OnClickListener() {
+		OnClickListener mClickListener = new OnClickListener() {
 
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
@@ -315,7 +322,19 @@ public abstract class XmppActivity extends Activity {
 					callback.onValueEdited(value);
 				}
 			}
-		});
+		};
+		if (password) {
+			editor.setInputType(InputType.TYPE_CLASS_TEXT
+					| InputType.TYPE_TEXT_VARIATION_PASSWORD);
+			editor.setHint(R.string.password);
+			builder.setPositiveButton(R.string.accept, mClickListener);
+		} else {
+			builder.setPositiveButton(R.string.edit, mClickListener);
+		}
+		editor.requestFocus();
+		editor.setText(previousValue);
+		builder.setView(view);
+		builder.setNegativeButton(R.string.cancel, null);
 		builder.create().show();
 	}
 
@@ -403,7 +422,7 @@ public abstract class XmppActivity extends Activity {
 	public int getPrimaryColor() {
 		return this.mPrimaryColor;
 	}
-	
+
 	class BitmapWorkerTask extends AsyncTask<Message, Void, Bitmap> {
 		private final WeakReference<ImageView> imageViewReference;
 		private Message message = null;

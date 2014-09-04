@@ -138,7 +138,7 @@ public class ConversationFragment extends Fragment {
 			if (password==null) {
 				password = "";
 			}
-			activity.quickEdit(password, new OnValueEdited() {
+			activity.quickPasswordEdit(password, new OnValueEdited() {
 				
 				@Override
 				public void onValueEdited(String value) {
