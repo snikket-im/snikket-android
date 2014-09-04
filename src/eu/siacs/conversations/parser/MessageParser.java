@@ -328,12 +328,20 @@ public class MessageParser extends AbstractParser implements
 						mXmppConnectionService.fetchAvatar(account, avatar);
 					}
 				}
-			} else {
-				Log.d(Config.LOGTAG, account.getJid() + ": " + node + " from "
-						+ from);
+			} else if (node.equals("http://jabber.org/protocol/nick")) {
+				Element item = items.findChild("item");
+				if (item != null) {
+					Element nick = item.findChild("nick",
+							"http://jabber.org/protocol/nick");
+					if (nick != null) {
+						if (from != null) {
+							Contact contact = account.getRoster().getContact(
+									from);
+							contact.setPresenceName(nick.getContent());
+						}
+					}
+				}
 			}
-		} else {
-			Log.d(Config.LOGTAG, event.toString());
 		}
 	}
 
@@ -362,6 +370,8 @@ public class MessageParser extends AbstractParser implements
 				"notification_grace_period_after_carbon_received", true)) {
 			notify = (SystemClock.elapsedRealtime() - lastCarbonMessageReceived) > (Config.CARBON_GRACE_PERIOD * 1000);
 		}
+
+		this.parseNick(packet, account);
 
 		if ((packet.getType() == MessagePacket.TYPE_CHAT)) {
 			if ((packet.getBody() != null)
@@ -444,6 +454,18 @@ public class MessageParser extends AbstractParser implements
 			Element event = packet.findChild("event",
 					"http://jabber.org/protocol/pubsub#event");
 			parseEvent(event, packet.getFrom(), account);
+		}
+	}
+
+	private void parseNick(MessagePacket packet, Account account) {
+		Element nick = packet.findChild("nick",
+				"http://jabber.org/protocol/nick");
+		if (nick != null) {
+			if (packet.getFrom() != null) {
+				Contact contact = account.getRoster().getContact(
+						packet.getFrom());
+				contact.setPresenceName(nick.getContent());
+			}
 		}
 	}
 }
