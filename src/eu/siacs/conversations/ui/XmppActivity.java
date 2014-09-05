@@ -36,11 +36,13 @@ import android.os.IBinder;
 import android.text.InputType;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 public abstract class XmppActivity extends Activity {
 
@@ -298,6 +300,26 @@ public abstract class XmppActivity extends Activity {
 		builder.create().show();
 	}
 
+	private void showAskForPresenceDialog(final Contact contact) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle(contact.getJid());
+		builder.setMessage(R.string.request_presence_updates);
+		builder.setNegativeButton(getString(R.string.cancel), null);
+		builder.setPositiveButton(getString(R.string.request_now),
+				new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						if (xmppConnectionServiceBound) {
+							xmppConnectionService.sendPresencePacket(contact.getAccount(),
+									xmppConnectionService.getPresenceGenerator()
+											.requestPresenceUpdatesFrom(contact));
+						}
+					}
+				});
+		builder.create().show();
+	}
+
 	protected void quickEdit(String previousValue, OnValueEdited callback) {
 		quickEdit(previousValue, callback, false);
 	}
@@ -346,6 +368,18 @@ public abstract class XmppActivity extends Activity {
 		} else {
 			Presences presences = contact.getPresences();
 			if (presences.size() == 0) {
+				if (!contact.getOption(Contact.Options.TO)
+						&& !contact.getOption(Contact.Options.ASKING)
+						&& contact.getAccount().getStatus() == Account.STATUS_ONLINE) {
+					showAskForPresenceDialog(contact);
+					return;
+				} else if (!contact.getOption(Contact.Options.TO)) {
+					Toast toast = Toast.makeText(this,
+							R.string.missing_presence_updates,
+							Toast.LENGTH_LONG);
+					toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+					toast.show();
+				}
 				conversation.setNextPresence(null);
 				listener.onPresenceSelected();
 			} else if (presences.size() == 1) {

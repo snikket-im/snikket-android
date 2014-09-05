@@ -241,5 +241,8 @@
     <string name="enable">Enable</string>
     <string name="conference_requires_password">Conference requires password</string>
     <string name="enter_password">Enter password</string>
+    <string name="missing_presence_updates">Missing presence updates from contact</string>
+    <string name="request_presence_updates">Please request presence updates from your contact first.\n\n<small>This will be used to determine what client(s) your contact is using.</small></string>
+    <string name="request_now">Request now</string>
 
 </resources>
