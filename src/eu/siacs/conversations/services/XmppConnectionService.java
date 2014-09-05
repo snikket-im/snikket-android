@@ -784,17 +784,18 @@ public class XmppConnectionService extends Service {
 
 		return this.conversations;
 	}
-	
+
 	public void populateWithOrderedConversations(List<Conversation> list) {
-		populateWithOrderedConversations(list,true);
+		populateWithOrderedConversations(list, true);
 	}
 
-	public void populateWithOrderedConversations(List<Conversation> list, boolean includeConferences) {
+	public void populateWithOrderedConversations(List<Conversation> list,
+			boolean includeConferences) {
 		list.clear();
 		if (includeConferences) {
 			list.addAll(getConversations());
 		} else {
-			for(Conversation conversation : getConversations()) {
+			for (Conversation conversation : getConversations()) {
 				if (conversation.getMode() == Conversation.MODE_SINGLE) {
 					list.add(conversation);
 				}
@@ -1094,7 +1095,7 @@ public class XmppConnectionService extends Service {
 	public void setOnRenameListener(OnRenameListener listener) {
 		this.renameListener = listener;
 	}
-	
+
 	public void providePasswordForMuc(Conversation conversation, String password) {
 		if (conversation.getMode() == Conversation.MODE_MULTI) {
 			conversation.getMucOptions().setPassword(password);
@@ -1362,34 +1363,50 @@ public class XmppConnectionService extends Service {
 
 	public void fetchAvatar(Account account, final Avatar avatar,
 			final UiCallback<Avatar> callback) {
-		Log.d(Config.LOGTAG, account.getJid() + ": retrieving avatar for "
-				+ avatar.owner);
 		IqPacket packet = this.mIqGenerator.retrieveAvatar(avatar);
 		sendIqPacket(account, packet, new OnIqPacketReceived() {
 
 			@Override
 			public void onIqPacketReceived(Account account, IqPacket result) {
-				avatar.image = mIqParser.avatarData(result);
-				if (avatar.image != null) {
-					if (getFileBackend().save(avatar)) {
-						if (account.getJid().equals(avatar.owner)) {
-							if (account.setAvatar(avatar.getFilename())) {
-								databaseBackend.updateAccount(account);
+				final String ERROR = account.getJid()
+						+ ": fetching avatar for " + avatar.owner + " failed ";
+				if (result.getType() == IqPacket.TYPE_RESULT) {
+					avatar.image = mIqParser.avatarData(result);
+					if (avatar.image != null) {
+						if (getFileBackend().save(avatar)) {
+							if (account.getJid().equals(avatar.owner)) {
+								if (account.setAvatar(avatar.getFilename())) {
+									databaseBackend.updateAccount(account);
+								}
+							} else {
+								Contact contact = account.getRoster()
+										.getContact(avatar.owner);
+								contact.setAvatar(avatar.getFilename());
 							}
-						} else {
-							Contact contact = account.getRoster().getContact(
-									avatar.owner);
-							contact.setAvatar(avatar.getFilename());
+							if (callback != null) {
+								callback.success(avatar);
+							}
+							Log.d(Config.LOGTAG, account.getJid()
+									+ ": succesfully fetched avatar for "
+									+ avatar.owner);
+							return;
 						}
-						if (callback != null) {
-							callback.success(avatar);
-						}
-						return;
+					} else {
+						
+						Log.d(Config.LOGTAG, ERROR + "(parsing error)");
+					}
+				} else {
+					Element error = result.findChild("error");
+					if (error==null) {
+						Log.d(Config.LOGTAG, ERROR + "(server error)");
+					} else {
+						Log.d(Config.LOGTAG, ERROR + error.toString());
 					}
 				}
 				if (callback != null) {
 					callback.error(0, null);
 				}
+
 			}
 		});
 	}
