@@ -45,10 +45,10 @@ These XEPs are - as of now:
   withholding unimportent packages.
 
 ##Team
-###Head of Development
+####Head of Development
 * [Daniel Gultsch](https://github.com/inputmice)
 
-###Code Contributions
+####Code Contributions
 (In order of appearance)
 * [Rene Treffer](https://github.com/rtreffer)
 * [Andreas Straub](https://github.com/strb)
@@ -56,10 +56,10 @@ These XEPs are - as of now:
 * [M. Dietrich](https://github.com/emdete)
 * [betheg](https://github.com/betheg)
 
-###Logo
+####Logo
 * [Diego Turtulici](http://efesto.eigenlab.org/~diesys)
 
-###Translations
+####Translations
 * [Sergio Cárdenas](https://github.com/kruks23) (Spanish)
 * [Benoit Bouvarel](https://github.com/BenoitBouvarel) (French)
 * [Daniel Gultsch](https://github.com/iNPUTmice) (German)
