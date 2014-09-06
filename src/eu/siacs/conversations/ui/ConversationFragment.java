@@ -177,6 +177,9 @@ public class ConversationFragment extends Fragment {
 	private ConversationActivity activity;
 
 	private void sendMessage() {
+		if (this.conversation==null) {
+			return;
+		}
 		if (mEditMessage.getText().length() < 1) {
 			if (this.conversation.getMode() == Conversation.MODE_MULTI) {
 				conversation.setNextPresence(null);
