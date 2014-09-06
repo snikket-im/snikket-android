@@ -288,6 +288,10 @@ public class MessageParser extends AbstractParser implements
 						.findOrCreateConversation(account,
 								packet.getAttribute("from"), true);
 				if (!conversation.getMucOptions().online()) {
+					if (x.hasChild("password")) {
+						Element password = x.findChild("password");
+						conversation.getMucOptions().setPassword(password.getContent());
+					}
 					mXmppConnectionService.joinMuc(conversation);
 					mXmppConnectionService.updateConversationUi();
 				}
@@ -296,10 +300,14 @@ public class MessageParser extends AbstractParser implements
 		} else if (packet.hasChild("x", "jabber:x:conference")) {
 			Element x = packet.findChild("x", "jabber:x:conference");
 			String jid = x.getAttribute("jid");
+			String password = x.getAttribute("password");
 			if (jid != null) {
 				Conversation conversation = mXmppConnectionService
 						.findOrCreateConversation(account, jid, true);
 				if (!conversation.getMucOptions().online()) {
+					if (password != null) {
+						conversation.getMucOptions().setPassword(password);
+					}
 					mXmppConnectionService.joinMuc(conversation);
 					mXmppConnectionService.updateConversationUi();
 				}
