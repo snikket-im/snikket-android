@@ -14,6 +14,7 @@ import org.json.JSONObject;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.OtrEngine;
 import eu.siacs.conversations.persistance.FileBackend;
+import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import android.content.ContentValues;
@@ -230,7 +231,7 @@ public class Account extends AbstractEntity {
 				cursor.getString(cursor.getColumnIndex(AVATAR)));
 	}
 
-	public OtrEngine getOtrEngine(Context context) {
+	public OtrEngine getOtrEngine(XmppConnectionService context) {
 		if (otrEngine == null) {
 			otrEngine = new OtrEngine(context, this);
 		}
@@ -283,8 +284,8 @@ public class Account extends AbstractEntity {
 		this.rosterVersion = version;
 	}
 
-	public String getOtrFingerprint(Context applicationContext) {
-		this.getOtrEngine(applicationContext);
+	public String getOtrFingerprint(XmppConnectionService service) {
+		this.getOtrEngine(service);
 		return this.getOtrFingerprint();
 	}
 

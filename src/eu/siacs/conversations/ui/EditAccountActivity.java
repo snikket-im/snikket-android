@@ -325,7 +325,7 @@ public class EditAccountActivity extends XmppActivity {
 				this.mServerInfoPep.setText(R.string.server_info_unavailable);
 			}
 			String fingerprint = this.mAccount
-					.getOtrFingerprint(getApplicationContext());
+					.getOtrFingerprint(xmppConnectionService);
 			if (fingerprint != null) {
 				this.mOtrFingerprintHeadline.setVisibility(View.VISIBLE);
 				this.mOtrFingerprint.setVisibility(View.VISIBLE);

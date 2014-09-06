@@ -495,6 +495,11 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 				}
 			} else if (item.getEncryption() == Message.ENCRYPTION_DECRYPTION_FAILED) {
 				displayDecryptionFailed(viewHolder);
+			} else if (item.getEncryption() == Message.ENCRYPTION_OTR
+					&& item.getStatus() == Message.STATUS_RECEPTION_FAILED
+					&& item.getType() == Message.TYPE_TEXT) {
+				displayInfoMessage(viewHolder,
+						R.string.unable_to_decrypt_otr_message);
 			} else {
 				displayTextMessage(viewHolder, item);
 			}

@@ -516,7 +516,7 @@ public class XmppConnectionService extends Service {
 					if (message.getEncryption() == Message.ENCRYPTION_OTR) {
 						if (!conv.hasValidOtrSession()
 								&& (message.getPresence() != null)) {
-							conv.startOtrSession(getApplicationContext(),
+							conv.startOtrSession(this,
 									message.getPresence(), true);
 							message.setStatus(Message.STATUS_WAITING);
 						} else if (conv.hasValidOtrSession()
@@ -536,7 +536,7 @@ public class XmppConnectionService extends Service {
 				if (message.getEncryption() == Message.ENCRYPTION_OTR) {
 					if (!conv.hasValidOtrSession()
 							&& (message.getPresence() != null)) {
-						conv.startOtrSession(getApplicationContext(),
+						conv.startOtrSession(this,
 								message.getPresence(), true);
 						message.setStatus(Message.STATUS_WAITING);
 					} else if (conv.hasValidOtrSession()
@@ -577,7 +577,7 @@ public class XmppConnectionService extends Service {
 								.getUserID());
 					} else if (!conv.hasValidOtrSession()
 							&& message.getPresence() != null) {
-						conv.startOtrSession(getApplicationContext(),
+						conv.startOtrSession(this,
 								message.getPresence(), false);
 					}
 				}
@@ -617,13 +617,13 @@ public class XmppConnectionService extends Service {
 				if ((message.getPresence() != null)
 						&& (presences.has(message.getPresence()))) {
 					message.getConversation().startOtrSession(
-							getApplicationContext(), message.getPresence(),
+							this, message.getPresence(),
 							true);
 				} else {
 					if (presences.size() == 1) {
 						String presence = presences.asStringArray()[0];
 						message.getConversation().startOtrSession(
-								getApplicationContext(), presence, true);
+								this, presence, true);
 					}
 				}
 			} else {

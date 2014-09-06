@@ -19,7 +19,10 @@ import android.util.Log;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
+import eu.siacs.conversations.entities.Conversation;
+import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.persistance.DatabaseBackend;
+import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
 
 import net.java.otr4j.OtrEngineHost;
@@ -28,21 +31,24 @@ import net.java.otr4j.OtrPolicy;
 import net.java.otr4j.OtrPolicyImpl;
 import net.java.otr4j.session.InstanceTag;
 import net.java.otr4j.session.SessionID;
+import net.java.otr4j.session.SessionImpl;
+import net.java.otr4j.session.SessionStatus;
 
 public class OtrEngine implements OtrEngineHost {
 
 	private Account account;
 	private OtrPolicy otrPolicy;
 	private KeyPair keyPair;
-	private Context context;
+	private XmppConnectionService mXmppConnectionService;
 
-	public OtrEngine(Context context, Account account) {
+	public OtrEngine(XmppConnectionService service, Account account) {
 		this.account = account;
 		this.otrPolicy = new OtrPolicyImpl();
 		this.otrPolicy.setAllowV1(false);
 		this.otrPolicy.setAllowV2(true);
 		this.otrPolicy.setAllowV3(true);
 		this.keyPair = loadKey(account.getKeys());
+		this.mXmppConnectionService = service;
 	}
 
 	private KeyPair loadKey(JSONObject keys) {
@@ -102,14 +108,12 @@ public class OtrEngine implements OtrEngineHost {
 	@Override
 	public void finishedSessionMessage(SessionID arg0, String arg1)
 			throws OtrException {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public String getFallbackMessage(SessionID arg0) {
-		// TODO Auto-generated method stub
-		return null;
+		return "I would like to start a private (OTR encrypted) conversation but your client doesn’t seem to support that";
 	}
 
 	@Override
@@ -133,7 +137,7 @@ public class OtrEngine implements OtrEngineHost {
 				kg = KeyPairGenerator.getInstance("DSA");
 				this.keyPair = kg.genKeyPair();
 				this.saveKey();
-				DatabaseBackend.getInstance(context).updateAccount(account);
+				mXmppConnectionService.databaseBackend.updateAccount(account);
 			} catch (NoSuchAlgorithmException e) {
 				Log.d(Config.LOGTAG,
 						"error generating key pair " + e.getMessage());
@@ -171,9 +175,22 @@ public class OtrEngine implements OtrEngineHost {
 	}
 
 	@Override
-	public void messageFromAnotherInstanceReceived(SessionID arg0) {
-		// TODO Auto-generated method stub
-
+	public void messageFromAnotherInstanceReceived(SessionID id) {
+		String jid = id.getAccountID();
+		Conversation conversation = mXmppConnectionService
+				.findOrCreateConversation(account, jid, false);
+		Message error = new Message(conversation, null, Message.ENCRYPTION_OTR);
+		conversation.getMessages().add(error);
+		error.setStatus(Message.STATUS_RECEPTION_FAILED);
+		mXmppConnectionService.databaseBackend.createMessage(error);
+		SessionImpl session = conversation.getOtrSession();
+		if (session != null
+				&& session.getSessionStatus() != SessionStatus.ENCRYPTED) {
+			try {
+				session.startSession();
+			} catch (OtrException e) {
+			}
+		}
 	}
 
 	@Override

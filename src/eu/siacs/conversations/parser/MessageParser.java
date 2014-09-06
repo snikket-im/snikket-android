@@ -71,10 +71,13 @@ public class MessageParser extends AbstractParser implements
 		}
 		updateLastseen(packet, account, true);
 		String body = packet.getBody();
+		if (body.matches("^\\?OTRv\\d*\\?")) {
+			conversation.resetOtrSession();
+		}
 		if (!conversation.hasValidOtrSession()) {
 			if (properlyAddressed) {
 				conversation.startOtrSession(
-						mXmppConnectionService.getApplicationContext(),
+						mXmppConnectionService,
 						presence, false);
 			} else {
 				return null;
@@ -86,7 +89,7 @@ public class MessageParser extends AbstractParser implements
 				conversation.endOtrIfNeeded();
 				if (properlyAddressed) {
 					conversation.startOtrSession(
-							mXmppConnectionService.getApplicationContext(),
+							mXmppConnectionService,
 							presence, false);
 				} else {
 					return null;
@@ -125,7 +128,7 @@ public class MessageParser extends AbstractParser implements
 			if (receivedId != null) {
 				mXmppConnectionService.replyWithNotAcceptable(account, packet);
 			}
-			conversation.endOtrIfNeeded();
+			conversation.resetOtrSession();
 			return null;
 		}
 	}

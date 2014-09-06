@@ -377,7 +377,6 @@ public abstract class XmppActivity extends Activity {
 					Toast toast = Toast.makeText(this,
 							R.string.missing_presence_updates,
 							Toast.LENGTH_LONG);
-					toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
 					toast.show();
 				}
 				conversation.setNextPresence(null);

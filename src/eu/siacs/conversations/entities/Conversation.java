@@ -4,6 +4,7 @@ import java.security.interfaces.DSAPublicKey;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.UIHelper;
 
 import net.java.otr4j.OtrException;
@@ -43,7 +44,7 @@ public class Conversation extends AbstractEntity {
 	private int status;
 	private long created;
 	private int mode;
-	
+
 	private long mutedTill = 0;
 
 	private String nextPresence;
@@ -223,15 +224,15 @@ public class Conversation extends AbstractEntity {
 		this.mode = mode;
 	}
 
-	public SessionImpl startOtrSession(Context context, String presence,
-			boolean sendStart) {
+	public SessionImpl startOtrSession(XmppConnectionService service,
+			String presence, boolean sendStart) {
 		if (this.otrSession != null) {
 			return this.otrSession;
 		} else {
-			SessionID sessionId = new SessionID(this.getContactJid(), presence,
-					"xmpp");
+			SessionID sessionId = new SessionID(
+					this.getContactJid().split("/")[0], presence, "xmpp");
 			this.otrSession = new SessionImpl(sessionId, getAccount()
-					.getOtrEngine(context));
+					.getOtrEngine(service));
 			try {
 				if (sendStart) {
 					this.otrSession.startSession();
@@ -425,7 +426,7 @@ public class Conversation extends AbstractEntity {
 	public void setMutedTill(long mutedTill) {
 		this.mutedTill = mutedTill;
 	}
-	
+
 	public boolean isMuted() {
 		return SystemClock.elapsedRealtime() < this.mutedTill;
 	}
