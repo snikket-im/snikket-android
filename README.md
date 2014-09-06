@@ -44,13 +44,17 @@ These XEPs are - as of now:
   Conversations is in the background. Allows the server to save bandwidth by
   withholding unimportent packages.
 
-##Contributors
-(In order of appearance)
+##Team
+###Head of Development
+* [Daniel Gultsch](https://github.com/inputmice)
 
-###Code
+###Code Contributions
+(In order of appearance)
 * [Rene Treffer](https://github.com/rtreffer)
 * [Andreas Straub](https://github.com/strb)
 * [Alethea Butler](https://github.com/alethea)
+* [M. Dietrich](https://github.com/emdete)
+* [betheg](https://github.com/betheg)
 
 ###Logo
 * [Diego Turtulici](http://efesto.eigenlab.org/~diesys)
