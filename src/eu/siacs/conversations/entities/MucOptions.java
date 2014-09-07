@@ -108,6 +108,7 @@ public class MucOptions {
 	private String subject = null;
 	private String joinnick;
 	private String password = null;
+	private boolean passwordChanged = false;
 
 	public MucOptions(Account account) {
 		this.account = account;
@@ -157,6 +158,10 @@ public class MucOptions {
 						}
 						aboutToRename = false;
 					}
+					if (conversation.getBookmark() != null &&
+							conversation.getBookmark().isProvidePassword()) {
+						this.passwordChanged = false;
+					}
 				} else {
 					addUser(user);
 				}
@@ -189,6 +194,10 @@ public class MucOptions {
 						this.error = ERROR_NICK_IN_USE;
 					}
 				} else if (error.hasChild("not-authorized")) {
+					if (conversation.getBookmark() != null &&
+							conversation.getBookmark().isProvidePassword()) {
+						this.passwordChanged = true;
+					}
 					this.error = ERROR_PASSWORD_REQUIRED;
 				}
 			}
@@ -314,10 +323,25 @@ public class MucOptions {
 	}
 
 	public String getPassword() {
-		return this.password;
+		if (conversation.getBookmark() != null &&
+				conversation.getBookmark().getPassword() != null) {
+			return conversation.getBookmark().getPassword();
+		} else {
+			return this.password;
+		}
 	}
 	
 	public void setPassword(String password) {
-		this.password = password;
+		if (conversation.getBookmark() != null &&
+				conversation.getBookmark().isProvidePassword()) {
+			conversation.getBookmark().setPassword(password);
+		} else {
+			this.password = password;
+		}
 	}
+
+	public boolean isPasswordChanged() {
+		return this.passwordChanged;
+	}
+
 }
