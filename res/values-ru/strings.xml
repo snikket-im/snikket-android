@@ -133,9 +133,6 @@
     <string name="pref_conference_notifications_summary">Всегда сообщать при получении нового сообщения в конференции</string>
     <string name="pref_notification_grace_period">Отсрочка уведомлений</string>
     <string name="pref_notification_grace_period_summary">Не использовать уведомления, если вы прочитали сообщение на другом устройстве</string>
-    <string name="pref_ui_options">Параметры интерфейса</string>
-    <string name="pref_conference_name">Название конференции</string>
-    <string name="pref_conference_name_summary">Использовать тему комнаты для идентификации конференции</string>
     <string name="pref_advanced_options">Дополнительные параметры</string>
     <string name="pref_never_send_crash">Отчеты об ошибках</string>
     <string name="pref_never_send_crash_summary">Отправляя отчеты об ошибках, вы помогаете исправить и улучшить Conversations, поддерживая дальнейшее развитие программы</string>
@@ -199,7 +196,6 @@
     <string name="contact_status_offline">не в сети</string>
     <string name="muc_details_conference">Конференция</string>
     <string name="muc_details_other_members">Другие участники</string>
-    <string name="share_with_active_conversations">Активные контакты</string>
     <string name="server_info_carbon_messages">Дублирование сообщений</string>
     <string name="server_info_stream_management">Управление потоками</string>
     <string name="missing_public_keys">Отсутствие анонсирования открытых ключей</string>
