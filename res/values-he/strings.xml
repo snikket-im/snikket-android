@@ -102,9 +102,6 @@
     <string name="pref_conference_notifications_summary">תמיד תודיע כאשר הודעת ועידה חדשה מגיעה במקום רק כאשר מודגשת</string>
     <string name="pref_notification_grace_period">משך ארכת התראה</string>
     <string name="pref_notification_grace_period_summary">נטרל התראות לזמן קצר לאחר שהודעת פחם התקבלה</string>
-    <string name="pref_ui_options">אפשרויות ממשק משתמש</string>
-    <string name="pref_conference_name">שם ועידה</string>
-    <string name="pref_conference_name_summary">השתמש בנושא חדר כדי לזהות ועידות</string>
     <string name="pref_advanced_options">אפשרויות מתקדמות</string>
     <string name="pref_never_send_crash">לעולם אל תשלח דיווחי קריסה</string>
     <string name="pref_never_send_crash_summary">על ידי שליחת עקבות מחסנית אתה עוזר להתקדמות הפיתוח של Conversations</string>
@@ -171,7 +168,6 @@
     <string name="contact_status_offline">לא מקוון</string>
     <string name="muc_details_conference">ועידה</string>
     <string name="muc_details_other_members">חברים אחרים</string>
-    <string name="share_with_active_conversations">דיונים פעילים</string>
     <string name="server_info_carbon_messages">הודעות פחם</string>
     <string name="server_info_stream_management">ניהול זרם</string>
     <string name="missing_public_keys">הכרזות מפתח פומבי חסרות</string>

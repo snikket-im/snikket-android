@@ -103,9 +103,6 @@
     <string name="pref_conference_notifications_summary">Always notify when a new conference message arrives instead of only when highlighted</string>
     <string name="pref_notification_grace_period">Notification grace period</string>
     <string name="pref_notification_grace_period_summary">Disable notifications for a short time after a carbon copy was received</string>
-    <string name="pref_ui_options">UI Options</string>
-    <string name="pref_conference_name">Conference name</string>
-    <string name="pref_conference_name_summary">Use room’s subject to identify Conferences</string>
     <string name="pref_advanced_options">Advanced Options</string>
     <string name="pref_never_send_crash">Never send crash reports</string>
     <string name="pref_never_send_crash_summary">By sending in stack traces you are helping the ongoing development of Conversations</string>
@@ -173,7 +170,6 @@
     <string name="contact_status_offline">offline</string>
     <string name="muc_details_conference">Conference</string>
     <string name="muc_details_other_members">Other Members</string>
-    <string name="share_with_active_conversations">Active Conversations</string>
     <string name="server_info_carbon_messages">XEP-0280: Message Carbons</string>
     <string name="server_info_stream_management">XEP-0198: Stream Management</string>
     <string name="server_info_pep">XEP-0163: PEP (Avatars)</string>

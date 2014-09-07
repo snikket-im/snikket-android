@@ -102,9 +102,6 @@
     <string name="pref_conference_notifications_summary">Toujours notifier l\'arrivée d\'un message provenant d\'une conférence.</string>
     <string name="pref_notification_grace_period">Période sans notification</string>
     <string name="pref_notification_grace_period_summary">Désactiver momentanément les notifications après l\'arrivée d\'une copie carbone.</string>
-    <string name="pref_ui_options">Options d\'affichage</string>
-    <string name="pref_conference_name">Nom de la conférence</string>
-    <string name="pref_conference_name_summary">Identifier la conférence par son sujet</string>
     <string name="pref_advanced_options">Options avancées</string>
     <string name="pref_never_send_crash">Ne jamais envoyer de rapports d\'erreurs</string>
     <string name="pref_never_send_crash_summary">En envoyant des logs vous aidez au développement de Conversations.</string>
@@ -170,7 +167,6 @@
     <string name="contact_status_offline">Hors-ligne</string>
     <string name="muc_details_conference">Conférence</string>
     <string name="muc_details_other_members">Autres membres</string>
-    <string name="share_with_active_conversations">Conversations actives</string>
     <string name="server_info_carbon_messages">Copies carbone</string>
     <string name="server_info_stream_management">Gestion des flux</string>
     <string name="missing_public_keys">Aucune annonce de clef publique</string>

@@ -98,9 +98,6 @@
     <string name="pref_conference_notifications_summary">Toon altijd notificaties als er nieuwe berichten arriveren in groepsconversaties in plaats van alleen bij highlighting</string>
     <string name="pref_notification_grace_period">Notificatie uitstel periode</string>
     <string name="pref_notification_grace_period_summary">Zet notificaties voor korte tijd uit als er een carbon copy wordt ontvangen</string>
-    <string name="pref_ui_options">UI Opties</string>
-    <string name="pref_conference_name">Groepsconversatie naam</string>
-    <string name="pref_conference_name_summary">Gebruik onderwerp van kamer om groepsconversaties te identificeren</string>
     <string name="pref_advanced_options">Geadvanceerde Opties</string>
     <string name="pref_never_send_crash">Verstuur nooit crash rapportages</string>
     <string name="pref_never_send_crash_summary">Door crash rapportages te versturen helpt U mee aan de ontwikkeling van Conversaties</string>
@@ -166,7 +163,6 @@
     <string name="contact_status_offline">offline</string>
     <string name="muc_details_conference">groepsconversatie</string>
     <string name="muc_details_other_members">Andere Leden</string>
-    <string name="share_with_active_conversations">Actieve Conversaties</string>
     <string name="server_info_carbon_messages">Carbon Berichten</string>
     <string name="server_info_stream_management">Stream Management</string>
     <string name="missing_public_keys">Ontbrekende publieke sleutel aankondigingen</string>
@@ -219,28 +215,18 @@
     <string name="additional_information">Extra informatie</string>
     <string name="server_info_pep">XEP-0163: PEP (Avatars)</string>
     <string name="skip">Overslaan</string>
-    <string name="problem_connecting_to_account">Verbinden met account mislukt</string>
-    <string name="problem_connecting_to_accounts">Verbinden met meerdere accounts mislukt</string>
-    <string name="account_status_connecting">Verbinden\u2026</string>
-    <string name="account_status_no_internet">Geen verbinding met internet</string>
     <string name="connect">Verbinden</string>
     <string name="account_already_exists">Dit account bestaat al</string>
     <string name="private_message_to">naar %s</string>
     <string name="send_private_message_to">Verstuur privé bericht aan %s</string>
     <string name="touch_to_choose_picture">Klik op avatar om een afbeelding te selecteren uit de gallerij</string>
     <string name="mgmt_account_publish_avatar">Publiceer avatar</string>
-    <string name="publish_avatar_explanation">N.B.: Iedereen die uw aanwezigheid mag zien kan de afbeelding zien.</string>
     <string name="error_publish_avatar_server_reject">De server weigerde uw publicatie</string>
     <string name="error_publish_avatar_converting">Er ging iets mis bij het converteren van uw afbeelding</string>
     <string name="error_publish_avatar_no_server_support">Uw server ondersteunt de publicatie van avatars niet</string>
     <string name="publishing">Publiceren&#8230;</string>
-    <string name="error_publish_avatar_server_reject">De server weigerde uw publicatie</string>
-    <string name="send_private_message_to">Verstuur privé bericht aan %s</string>
     <string name="error_saving_avatar">Kon de avatar niet opslaan</string>
-    <string name="error_publish_avatar_no_server_support">Uw server ondersteunt het publiceren van avatars niet</string>
     <string name="server_info_session_established">Huidige sessie opgezet</string>
     <string name="or_long_press_for_default">(Of houdt lang ingedrukt om de oorspronkelijke terug te zetten)</string>
-    <string name="error_publish_avatar_converting">Er ging iets mis bij het converteren van uw afbeelding</string>
-    <string name="mgmt_account_publish_avatar">Publiceer avatar</string>
     <string name="server_info_available">beschikbaar</string>
 </resources>

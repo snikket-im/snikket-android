@@ -103,9 +103,6 @@
     <string name="pref_conference_notifications_summary">Beti jakinarazi konferentzia mezu berri bat heltzerakoan eta ez soilik nabarmentzerakoan</string>
     <string name="pref_notification_grace_period">Jakinarazpenen grazia epea</string>
     <string name="pref_notification_grace_period_summary">Jakinarazpenak denbora labur baterako ezgaitu ikatz-kopia bat jaso ondoren</string>
-    <string name="pref_ui_options">Erabiltzaile-interfazearen aukerak</string>
-    <string name="pref_conference_name">Konferentziaren izena</string>
-    <string name="pref_conference_name_summary">Erabili gelaren gaia konferentziak identifikatzeko</string>
     <string name="pref_advanced_options">Aukera aurreratuak</string>
     <string name="pref_never_send_crash">Gelditze txostenik ez bidali inoiz</string>
     <string name="pref_never_send_crash_summary">Akats harraskak bidaliz Conversationsen garapenean laguntzen duzu</string>
@@ -173,7 +170,6 @@
     <string name="contact_status_offline">lineaz kanpo</string>
     <string name="muc_details_conference">Konferentzia</string>
     <string name="muc_details_other_members">Beste kideak</string>
-    <string name="share_with_active_conversations">Elkarrizketa aktiboak</string>
     <string name="server_info_carbon_messages">XEP-0280: Message Carbons</string>
     <string name="server_info_stream_management">XEP-0198: Stream Management</string>
     <string name="server_info_pep">XEP-0163: PEP (Profileko argazkiak)</string>

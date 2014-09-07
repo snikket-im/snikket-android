@@ -102,9 +102,6 @@
     <string name="pref_conference_notifications_summary">Benachrichtige mich bei jeder Konferenznachricht und nicht nur, wenn ich angesprochen werde.</string>
     <string name="pref_notification_grace_period">Gnadenfrist</string>
     <string name="pref_notification_grace_period_summary">Deaktiviere Benachrichtigungen für eine kurze Zeit nach Erhalt einer Nachricht, die von einem anderen deiner Clients kommt.</string>
-    <string name="pref_ui_options">Benutzeroberfläche</string>
-    <string name="pref_conference_name">Konferenzname</string>
-    <string name="pref_conference_name_summary">Benutze das Thema der Konferenz als Name in der Übersicht</string>
     <string name="pref_advanced_options">Erweiterte Optionen</string>
     <string name="pref_never_send_crash">Sende niemals Absturzberichte</string>
     <string name="pref_never_send_crash_summary">Wenn du Absturzberichte einschickst, hilfst du Conversations stetig zu verbessern</string>
@@ -172,7 +169,6 @@
     <string name="contact_status_offline">Offline</string>
     <string name="muc_details_conference">Konferenz</string>
     <string name="muc_details_other_members">Andere Mitglieder</string>
-    <string name="share_with_active_conversations">Aktive Gespräche</string>
     <string name="server_info_carbon_messages">XEP-0280: Message Carbons</string>
     <string name="server_info_stream_management">XEP-0198: Stream Management</string>
     <string name="server_info_pep">XEP-0163: PEP (Avatare)</string>
