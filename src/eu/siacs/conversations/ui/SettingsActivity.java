@@ -31,7 +31,7 @@ public class SettingsActivity extends XmppActivity implements
 
 	@Override
 	public void onStop() {
-		super.onPause();
+		super.onStop();
 		PreferenceManager.getDefaultSharedPreferences(this)
 				.unregisterOnSharedPreferenceChangeListener(this);
 	}
