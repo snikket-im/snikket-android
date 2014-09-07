@@ -469,9 +469,11 @@ public class ConversationFragment extends Fragment {
 					case MucOptions.ERROR_ROOM_NOT_FOUND:
 						showSnackbar(R.string.conference_not_found,
 								R.string.leave, leaveMuc);
+						break;
 					case MucOptions.ERROR_PASSWORD_REQUIRED:
 						showSnackbar(R.string.conference_requires_password,
 								R.string.enter_password, enterPassword);
+						break;
 					default:
 						break;
 					}
