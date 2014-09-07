@@ -13,7 +13,9 @@ public class Bookmark implements ListItem {
 	private String jid;
 	private String nick;
 	private String name;
+	private String password;
 	private boolean autojoin;
+	private boolean providePassword;
 	private Conversation mJoinedConversation;
 
 	public Bookmark(Account account, String jid) {
@@ -35,6 +37,11 @@ public class Bookmark implements ListItem {
 		if (nick != null) {
 			bookmark.setNick(nick.getContent());
 		}
+		Element password = element.findChild("password");
+		if (password != null) {
+			bookmark.setPassword(password.getContent());
+			bookmark.setProvidePassword(true);
+		}
 		return bookmark;
 	}
 
@@ -48,6 +55,14 @@ public class Bookmark implements ListItem {
 
 	public void setNick(String nick) {
 		this.nick = nick;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	private void setProvidePassword(boolean providePassword) {
+		this.providePassword = providePassword;
 	}
 
 	@Override
@@ -79,6 +94,14 @@ public class Bookmark implements ListItem {
 
 	public boolean autojoin() {
 		return autojoin;
+	}
+
+	public String getPassword() {
+		return this.password;
+	}
+
+	public boolean isProvidePassword() {
+		return this.providePassword;
 	}
 
 	public boolean match(String needle) {
@@ -124,6 +147,9 @@ public class Bookmark implements ListItem {
 		}
 		if (this.nick != null) {
 			element.addChild("nick").setContent(this.nick);
+		}
+		if (this.password != null && isProvidePassword()) {
+			element.addChild("password").setContent(this.password);
 		}
 		return element;
 	}

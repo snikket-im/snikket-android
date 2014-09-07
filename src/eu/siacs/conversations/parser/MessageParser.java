@@ -1,7 +1,6 @@
 package eu.siacs.conversations.parser;
 
 import android.os.SystemClock;
-import android.util.Log;
 import net.java.otr4j.session.Session;
 import net.java.otr4j.session.SessionStatus;
 import eu.siacs.conversations.Config;
