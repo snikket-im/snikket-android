@@ -23,14 +23,14 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 public class ShareWithActivity extends XmppActivity {
-	
+
 	private class Share {
 		public Uri uri;
 		public String account;
 		public String contact;
 		public String text;
 	}
-	
+
 	private Share share;
 
 	private static final int REQUEST_START_NEW_CONVERSATION = 0x0501;
@@ -56,7 +56,7 @@ public class ShareWithActivity extends XmppActivity {
 
 		}
 	};
-	
+
 	protected void onActivityResult(int requestCode, int resultCode,
 			final Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
@@ -64,9 +64,11 @@ public class ShareWithActivity extends XmppActivity {
 				&& resultCode == RESULT_OK) {
 			share.contact = data.getStringExtra("contact");
 			share.account = data.getStringExtra("account");
-			Log.d(Config.LOGTAG,"contact: "+share.contact+" account:"+share.account);
+			Log.d(Config.LOGTAG, "contact: " + share.contact + " account:"
+					+ share.account);
 		}
-		if (xmppConnectionServiceBound && share != null && share.contact != null && share.account != null) {
+		if (xmppConnectionServiceBound && share != null
+				&& share.contact != null && share.account != null) {
 			share();
 		}
 	}
@@ -92,15 +94,16 @@ public class ShareWithActivity extends XmppActivity {
 			public void onItemClick(AdapterView<?> arg0, View arg1,
 					int position, long arg3) {
 				Conversation conversation = mConversations.get(position);
-				if (conversation.getMode() == Conversation.MODE_SINGLE) {
+				if (conversation.getMode() == Conversation.MODE_SINGLE
+						|| share.uri == null) {
 					share(mConversations.get(position));
 				}
 			}
 		});
-		
+
 		this.share = new Share();
 	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.share_with, menu);
@@ -118,40 +121,41 @@ public class ShareWithActivity extends XmppActivity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	
+
 	@Override
 	public void onStart() {
-		super.onStart();
-		if (getIntent().getType() != null && getIntent().getType()
-				.startsWith("image/")) {
+		if (getIntent().getType() != null
+				&& getIntent().getType().startsWith("image/")) {
 			this.share.uri = (Uri) getIntent().getParcelableExtra(
 					Intent.EXTRA_STREAM);
 		} else {
 			this.share.text = getIntent().getStringExtra(Intent.EXTRA_TEXT);
 		}
+		if (xmppConnectionServiceBound) {
+			xmppConnectionService.populateWithOrderedConversations(
+					mConversations, this.share.uri == null);
+		}
+		super.onStart();
 	}
-	
+
 	@Override
 	void onBackendConnected() {
-		if (xmppConnectionServiceBound &&  share != null && share.contact != null && share.account != null) {
+		if (xmppConnectionServiceBound && share != null
+				&& share.contact != null && share.account != null) {
 			share();
 			return;
 		}
 		xmppConnectionService.populateWithOrderedConversations(mConversations,
-				false);
-		for (Conversation conversation : mConversations) {
-			if (conversation.getMode() == Conversation.MODE_MULTI) {
-				mConversations.remove(conversation);
-			}
-		}
+				this.share != null && this.share.uri == null);
 	}
-	
+
 	private void share() {
 		Account account = xmppConnectionService.findAccountByJid(share.account);
-		if (account==null) {
+		if (account == null) {
 			return;
 		}
-		Conversation conversation = xmppConnectionService.findOrCreateConversation(account, share.contact, false);
+		Conversation conversation = xmppConnectionService
+				.findOrCreateConversation(account, share.contact, false);
 		share(conversation);
 	}
 
@@ -172,7 +176,7 @@ public class ShareWithActivity extends XmppActivity {
 			});
 
 		} else {
-			switchToConversation(conversation,this.share.text, true);
+			switchToConversation(conversation, this.share.text, true);
 			finish();
 		}
 
