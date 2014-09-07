@@ -102,9 +102,6 @@
     <string name="pref_conference_notifications_summary">Notifiera alltid när nytt konferensmeddelande tagits emot istället för endast vid highlight</string>
     <string name="pref_notification_grace_period">Notifieringsfrist</string>
     <string name="pref_notification_grace_period_summary">Deaktivera notifieringar en kort stund efter att en carbon copy tagits emot</string>
-    <string name="pref_ui_options">UI inställningar</string>
-    <string name="pref_conference_name">Konferensnamn</string>
-    <string name="pref_conference_name_summary">Använd konferensens ämne för att identifera konferensen</string>
     <string name="pref_advanced_options">Avancerade inställningar</string>
     <string name="pref_never_send_crash">Skicka aldrig krasch-rapporter</string>
     <string name="pref_never_send_crash_summary">Genom att skicka in stack traces hjälper du utvecklarna av Conversations</string>
@@ -170,7 +167,6 @@
     <string name="contact_status_offline">offline</string>
     <string name="muc_details_conference">Konferens</string>
     <string name="muc_details_other_members">Andra medlemmar</string>
-    <string name="share_with_active_conversations">Aktiva konversationer</string>
     <string name="server_info_carbon_messages">Carbon Messages</string>
     <string name="server_info_stream_management">Stream Management</string>
     <string name="missing_public_keys">Annonsering om publik nyckel saknas</string>

@@ -102,9 +102,6 @@
     <string name="pref_conference_notifications_summary">Siempre notifica cuando llega un mensaje de conferencia y no solo cuando llega un mensaje destacado</string>
     <string name="pref_notification_grace_period">Notificaciones Carbons</string>
     <string name="pref_notification_grace_period_summary">Deshabilita las notificaciones durante un corto periodo de tiempo después de recibir la copia del mensaje carbon</string>
-    <string name="pref_ui_options">Opciones de interfaz</string>
-    <string name="pref_conference_name">Nombre de la conferencia</string>
-    <string name="pref_conference_name_summary">Usa el nombre de la sala para identificar Conferencias</string>
     <string name="pref_advanced_options">Opciones avanzadas</string>
     <string name="pref_never_send_crash">Nunca enviar informe de fallos</string>
     <string name="pref_never_send_crash_summary">Si envías registros de error ayudas al desarrollo de Conversations</string>
@@ -172,7 +169,6 @@
     <string name="contact_status_offline">Desconectado</string>
     <string name="muc_details_conference">Conferencia</string>
     <string name="muc_details_other_members">Otros Miembros</string>
-    <string name="share_with_active_conversations">Conversaciones Activas</string>
     <string name="server_info_carbon_messages">XEP-0280: Message Carbons</string>
     <string name="server_info_stream_management">XEP-0198: Stream Management</string>
     <string name="server_info_pep">XEP-0163: PEP (Avatars)</string>
