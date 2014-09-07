@@ -245,5 +245,7 @@
     <string name="request_presence_updates">Please request presence updates from your contact first.\n\n<small>This will be used to determine what client(s) your contact is using.</small></string>
     <string name="request_now">Request now</string>
     <string name="unable_to_decrypt_otr_message">Unable to decrypt OTR message</string>
+    <string name="delete_fingerprint">Delete Fingerprint</string>
+    <string name="sure_delete_fingerprint">Are you sure you would like to delete this fingerprint?</string>
 
 </resources>

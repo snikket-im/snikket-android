@@ -351,4 +351,26 @@ public class Contact implements ListItem {
 			return true;
 		}
 	}
+
+	public boolean deleteOtrFingerprint(String fingerprint) {
+		boolean success = false;
+		try {
+			if (this.keys.has("otr_fingerprints")) {
+				JSONArray newPrints = new JSONArray();
+				JSONArray oldPrints = this.keys
+						.getJSONArray("otr_fingerprints");
+				for (int i = 0; i < oldPrints.length(); ++i) {
+					if (!oldPrints.getString(i).equals(fingerprint)) {
+						newPrints.put(oldPrints.getString(i));
+					} else {
+						success = true;
+					}
+				}
+				this.keys.put("otr_fingerprints", newPrints);
+			}
+			return success;
+		} catch (JSONException e) {
+			return false;
+		}
+	}
 }
