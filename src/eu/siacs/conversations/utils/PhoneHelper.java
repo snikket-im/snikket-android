@@ -2,6 +2,7 @@ package eu.siacs.conversations.utils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.RejectedExecutionException;
 
 import android.content.Context;
 import android.content.CursorLoader;
@@ -67,7 +68,13 @@ public class PhoneHelper {
 				}
 			}
 		});
-		mCursorLoader.startLoading();
+		try {
+			mCursorLoader.startLoading();
+		} catch (RejectedExecutionException e) {
+			if (listener != null) {
+				listener.onPhoneContactsLoaded(phoneContacts);
+			}
+		}
 	}
 
 	public static Uri getSefliUri(Context context) {
