@@ -363,7 +363,12 @@ public class Conversation extends AbstractEntity {
 				return latest;
 			}
 		}
-		return this.nextMessageEncryption;
+		if (this.nextMessageEncryption == Message.ENCRYPTION_NONE && force
+				&& getMode() == MODE_SINGLE) {
+			return Message.ENCRYPTION_OTR;
+		} else {
+			return this.nextMessageEncryption;
+		}
 	}
 
 	public void setNextEncryption(int encryption) {
