@@ -62,15 +62,17 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 
 		if (latestMessage.getType() == Message.TYPE_TEXT
 				|| latestMessage.getType() == Message.TYPE_PRIVATE) {
-			if ((latestMessage.getEncryption() != Message.ENCRYPTION_PGP)
+			if (latestMessage.getEncryption() == Message.ENCRYPTION_OTR
+					&& latestMessage.getStatus() == Message.STATUS_RECEPTION_FAILED) {
+				convLastMsg.setText(R.string.unable_to_decrypt_otr_message);
+			} else if ((latestMessage.getEncryption() != Message.ENCRYPTION_PGP)
 					&& (latestMessage.getEncryption() != Message.ENCRYPTION_DECRYPTION_FAILED)) {
 				String body = Config.PARSE_EMOTICONS ? UIHelper
 						.transformAsciiEmoticons(latestMessage.getBody())
 						: latestMessage.getBody();
 				convLastMsg.setText(body);
 			} else {
-				convLastMsg.setText(activity
-						.getText(R.string.encrypted_message_received));
+				convLastMsg.setText(R.string.encrypted_message_received);
 			}
 			convLastMsg.setVisibility(View.VISIBLE);
 			imagePreview.setVisibility(View.GONE);
@@ -83,11 +85,9 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 				convLastMsg.setVisibility(View.VISIBLE);
 				imagePreview.setVisibility(View.GONE);
 				if (latestMessage.getStatus() == Message.STATUS_RECEIVED_OFFER) {
-					convLastMsg.setText(activity
-							.getText(R.string.image_offered_for_download));
+					convLastMsg.setText(R.string.image_offered_for_download);
 				} else if (latestMessage.getStatus() == Message.STATUS_RECEIVING) {
-					convLastMsg.setText(activity
-							.getText(R.string.receiving_image));
+					convLastMsg.setText(R.string.receiving_image);
 				} else {
 					convLastMsg.setText("");
 				}

@@ -151,6 +151,8 @@ public class Message extends AbstractEntity {
 	public String getReadableBody(Context context) {
 		if ((encryption == ENCRYPTION_PGP) && (type == TYPE_TEXT)) {
 			return context.getText(R.string.encrypted_message_received).toString();
+		} else if (encryption == ENCRYPTION_OTR && type == TYPE_TEXT && status == STATUS_RECEPTION_FAILED) {
+			return context.getText(R.string.unable_to_decrypt_otr_message).toString();
 		} else if ((encryption == ENCRYPTION_OTR) && (type == TYPE_IMAGE)) {
 			return context.getText(R.string.encrypted_image_received).toString();
 		} else if (encryption == ENCRYPTION_DECRYPTION_FAILED) {

@@ -87,7 +87,8 @@ public class MessageGenerator {
 			packet.addChild("x", "jabber:x:encrypted").setContent(
 					message.getEncryptedBody());
 		} else if (message.getEncryption() == Message.ENCRYPTION_PGP) {
-			packet.setBody(message.getBody());
+			packet.addChild("x", "jabber:x:encrypted").setContent(
+					message.getBody());
 		}
 		return packet;
 	}
