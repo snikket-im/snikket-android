@@ -760,7 +760,7 @@ public class ConversationActivity extends XmppActivity {
 	public void updateConversationList() {
 		xmppConnectionService
 				.populateWithOrderedConversations(conversationList);
-		listView.invalidateViews();
+		listAdapter.notifyDataSetChanged();
 	}
 
 	public void runIntent(PendingIntent pi, int requestCode) {

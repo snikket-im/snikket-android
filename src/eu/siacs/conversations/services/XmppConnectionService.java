@@ -115,7 +115,7 @@ public class XmppConnectionService extends Service {
 		public void onContactStatusChanged(Contact contact, boolean online) {
 			Conversation conversation = find(getConversations(), contact);
 			if (conversation != null) {
-				conversation.endOtrIfNeeded();
+				conversation.resetOtrSession();
 				if (online && (contact.getPresences().size() == 1)) {
 					sendUnsendMessages(conversation);
 				}

@@ -41,7 +41,6 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 public abstract class XmppActivity extends Activity {
 
@@ -303,8 +302,8 @@ public abstract class XmppActivity extends Activity {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(contact.getJid());
 		builder.setMessage(R.string.request_presence_updates);
-		builder.setNegativeButton(getString(R.string.cancel), null);
-		builder.setPositiveButton(getString(R.string.request_now),
+		builder.setNegativeButton(R.string.cancel, null);
+		builder.setPositiveButton(R.string.request_now,
 				new DialogInterface.OnClickListener() {
 
 					@Override
@@ -316,6 +315,24 @@ public abstract class XmppActivity extends Activity {
 						}
 					}
 				});
+		builder.create().show();
+	}
+	
+	private void warnMutalPresenceSubscription(final Conversation conversation,final OnPresenceSelected listener) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle(conversation.getContact().getJid());
+		builder.setMessage(R.string.without_mutual_presence_updates);
+		builder.setNegativeButton(R.string.cancel, null);
+		builder.setPositiveButton(R.string.ignore, new OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				conversation.setNextPresence(null);
+				if (listener!=null) {
+					listener.onPresenceSelected();
+				}
+			}
+		});
 		builder.create().show();
 	}
 
@@ -371,15 +388,12 @@ public abstract class XmppActivity extends Activity {
 						&& !contact.getOption(Contact.Options.ASKING)
 						&& contact.getAccount().getStatus() == Account.STATUS_ONLINE) {
 					showAskForPresenceDialog(contact);
-					return;
-				} else if (!contact.getOption(Contact.Options.TO)) {
-					Toast toast = Toast.makeText(this,
-							R.string.missing_presence_updates,
-							Toast.LENGTH_LONG);
-					toast.show();
+				} else if (!contact.getOption(Contact.Options.TO) || !contact.getOption(Contact.Options.FROM)) {
+					warnMutalPresenceSubscription(conversation,listener);
+				} else {
+					conversation.setNextPresence(null);
+					listener.onPresenceSelected();
 				}
-				conversation.setNextPresence(null);
-				listener.onPresenceSelected();
 			} else if (presences.size() == 1) {
 				String presence = (String) presences.asStringArray()[0];
 				conversation.setNextPresence(presence);
