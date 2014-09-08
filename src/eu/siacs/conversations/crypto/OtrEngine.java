@@ -174,21 +174,7 @@ public class OtrEngine implements OtrEngineHost {
 
 	@Override
 	public void messageFromAnotherInstanceReceived(SessionID id) {
-		String jid = id.getAccountID();
-		Conversation conversation = mXmppConnectionService
-				.findOrCreateConversation(account, jid, false);
-		Message error = new Message(conversation, null, Message.ENCRYPTION_OTR);
-		conversation.getMessages().add(error);
-		error.setStatus(Message.STATUS_RECEPTION_FAILED);
-		mXmppConnectionService.databaseBackend.createMessage(error);
-		SessionImpl session = conversation.getOtrSession();
-		if (session != null
-				&& session.getSessionStatus() != SessionStatus.ENCRYPTED) {
-			try {
-				session.startSession();
-			} catch (OtrException e) {
-			}
-		}
+		Log.d(Config.LOGTAG,"unreadable message received from "+id.getAccountID());
 	}
 
 	@Override

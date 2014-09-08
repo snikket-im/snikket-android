@@ -15,6 +15,7 @@ import android.util.Log;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Conversation;
+import eu.siacs.conversations.entities.Downloadable;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xml.Element;
@@ -24,7 +25,7 @@ import eu.siacs.conversations.xmpp.jingle.stanzas.JinglePacket;
 import eu.siacs.conversations.xmpp.jingle.stanzas.Reason;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
 
-public class JingleConnection {
+public class JingleConnection implements Downloadable {
 
 	private final String[] extensions = { "webp", "jpeg", "jpg", "png" };
 	private final String[] cryptoExtensions = { "pgp", "gpg", "otr" };
@@ -259,7 +260,7 @@ public class JingleConnection {
 		this.message = new Message(conversation, "", Message.ENCRYPTION_NONE);
 		this.message.setType(Message.TYPE_IMAGE);
 		this.message.setStatus(Message.STATUS_RECEIVED_OFFER);
-		this.message.setJingleConnection(this);
+		this.message.setDownloadable(this);
 		String[] fromParts = packet.getFrom().split("/");
 		this.message.setPresence(fromParts[1]);
 		this.account = account;
@@ -866,7 +867,7 @@ public class JingleConnection {
 		return this.transport;
 	}
 
-	public void accept() {
+	public void start() {
 		if (status == STATUS_INITIATED) {
 			new Thread(new Runnable() {
 

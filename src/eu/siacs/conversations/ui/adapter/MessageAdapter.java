@@ -7,6 +7,7 @@ import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
+import eu.siacs.conversations.entities.Downloadable;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.ui.ConversationActivity;
 import eu.siacs.conversations.utils.UIHelper;
@@ -461,10 +462,9 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 
 							@Override
 							public void onClick(View v) {
-								JingleConnection connection = item
-										.getJingleConnection();
-								if (connection != null) {
-									connection.accept();
+								Downloadable downloadable = item.getDownloadable();
+								if (downloadable != null) {
+									downloadable.start();
 								}
 							}
 						});
@@ -495,11 +495,6 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 				}
 			} else if (item.getEncryption() == Message.ENCRYPTION_DECRYPTION_FAILED) {
 				displayDecryptionFailed(viewHolder);
-			} else if (item.getEncryption() == Message.ENCRYPTION_OTR
-					&& item.getStatus() == Message.STATUS_RECEPTION_FAILED
-					&& item.getType() == Message.TYPE_TEXT) {
-				displayInfoMessage(viewHolder,
-						R.string.unable_to_decrypt_otr_message);
 			} else {
 				displayTextMessage(viewHolder, item);
 			}

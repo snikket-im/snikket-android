@@ -62,10 +62,7 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 
 		if (latestMessage.getType() == Message.TYPE_TEXT
 				|| latestMessage.getType() == Message.TYPE_PRIVATE) {
-			if (latestMessage.getEncryption() == Message.ENCRYPTION_OTR
-					&& latestMessage.getStatus() == Message.STATUS_RECEPTION_FAILED) {
-				convLastMsg.setText(R.string.unable_to_decrypt_otr_message);
-			} else if ((latestMessage.getEncryption() != Message.ENCRYPTION_PGP)
+			if ((latestMessage.getEncryption() != Message.ENCRYPTION_PGP)
 					&& (latestMessage.getEncryption() != Message.ENCRYPTION_DECRYPTION_FAILED)) {
 				String body = Config.PARSE_EMOTICONS ? UIHelper
 						.transformAsciiEmoticons(latestMessage.getBody())
