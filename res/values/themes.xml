@@ -5,6 +5,15 @@
         <item name="android:actionBarStyle">@style/ConversationsActionBar</item>
         <item name="android:actionBarWidgetTheme">@style/ConversationsActionBarWidget</item>
         <item name="android:actionBarTabStyle">@style/ConversationsActionBarTabs</item>
+        <item name="TextSizeInfo">12sp</item>
+        <item name="TextSizeBody">14sp</item>
+        <item name="TextSizeHeadline">20sp</item>
+    </style>
+    
+    <style name="ConversationsTheme.LargerText" parent="ConversationsTheme">
+        <item name="TextSizeInfo">14sp</item>
+        <item name="TextSizeBody">16sp</item>
+        <item name="TextSizeHeadline">22sp</item>
     </style>
 
     <style name="ConversationsActionBar" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">

@@ -107,7 +107,8 @@ public class PresenceParser extends AbstractParser implements
 					contact.setOption(Contact.Options.PENDING_SUBSCRIPTION_REQUEST);
 				}
 			}
-			Element nick = packet.findChild("nick", "http://jabber.org/protocol/nick");
+			Element nick = packet.findChild("nick",
+					"http://jabber.org/protocol/nick");
 			if (nick != null) {
 				contact.setPresenceName(nick.getContent());
 			}

@@ -21,6 +21,7 @@ import android.app.AlertDialog.Builder;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.content.DialogInterface.OnClickListener;
 import android.content.IntentSender.SendIntentException;
 import android.content.res.Resources;
@@ -33,6 +34,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.text.InputType;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -183,6 +185,14 @@ public abstract class XmppActivity extends Activity {
 		mSecondaryTextColor = getResources().getColor(R.color.secondarytext);
 		mWarningTextColor = getResources().getColor(R.color.warningtext);
 		mPrimaryColor = getResources().getColor(R.color.primary);
+		if (getPreferences().getBoolean("use_larger_font", false)) {
+			setTheme(R.style.ConversationsTheme_LargerText);
+		}
+	}
+
+	protected SharedPreferences getPreferences() {
+		return PreferenceManager
+				.getDefaultSharedPreferences(getApplicationContext());
 	}
 
 	public void switchToConversation(Conversation conversation) {
@@ -309,26 +319,28 @@ public abstract class XmppActivity extends Activity {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						if (xmppConnectionServiceBound) {
-							xmppConnectionService.sendPresencePacket(contact.getAccount(),
-									xmppConnectionService.getPresenceGenerator()
-											.requestPresenceUpdatesFrom(contact));
+							xmppConnectionService.sendPresencePacket(contact
+									.getAccount(), xmppConnectionService
+									.getPresenceGenerator()
+									.requestPresenceUpdatesFrom(contact));
 						}
 					}
 				});
 		builder.create().show();
 	}
-	
-	private void warnMutalPresenceSubscription(final Conversation conversation,final OnPresenceSelected listener) {
+
+	private void warnMutalPresenceSubscription(final Conversation conversation,
+			final OnPresenceSelected listener) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(conversation.getContact().getJid());
 		builder.setMessage(R.string.without_mutual_presence_updates);
 		builder.setNegativeButton(R.string.cancel, null);
 		builder.setPositiveButton(R.string.ignore, new OnClickListener() {
-			
+
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				conversation.setNextPresence(null);
-				if (listener!=null) {
+				if (listener != null) {
 					listener.onPresenceSelected();
 				}
 			}
@@ -388,8 +400,9 @@ public abstract class XmppActivity extends Activity {
 						&& !contact.getOption(Contact.Options.ASKING)
 						&& contact.getAccount().getStatus() == Account.STATUS_ONLINE) {
 					showAskForPresenceDialog(contact);
-				} else if (!contact.getOption(Contact.Options.TO) || !contact.getOption(Contact.Options.FROM)) {
-					warnMutalPresenceSubscription(conversation,listener);
+				} else if (!contact.getOption(Contact.Options.TO)
+						|| !contact.getOption(Contact.Options.FROM)) {
+					warnMutalPresenceSubscription(conversation, listener);
 				} else {
 					conversation.setNextPresence(null);
 					listener.onPresenceSelected();

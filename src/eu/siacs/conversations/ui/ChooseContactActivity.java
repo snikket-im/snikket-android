@@ -82,8 +82,7 @@ public class ChooseContactActivity extends XmppActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_choose_contact);
 		mListView = (ListView) findViewById(R.id.choose_contact_list);
-		mContactsAdapter = new ListItemAdapter(getApplicationContext(),
-				contacts);
+		mContactsAdapter = new ListItemAdapter(this, contacts);
 		mListView.setAdapter(mContactsAdapter);
 		mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -98,7 +97,7 @@ public class ChooseContactActivity extends XmppActivity {
 				ListItem mListItem = contacts.get(position);
 				data.putExtra("contact", mListItem.getJid());
 				String account = request.getStringExtra("account");
-				if (account==null && mListItem instanceof Contact) {
+				if (account == null && mListItem instanceof Contact) {
 					account = ((Contact) mListItem).getAccount().getJid();
 				}
 				data.putExtra("account", account);

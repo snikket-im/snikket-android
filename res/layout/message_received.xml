@@ -44,7 +44,7 @@
                 android:autoLink="web"
                 android:textColor="@color/primarytext"
                 android:textIsSelectable="true"
-                android:textSize="14sp" />
+                android:textSize="?attr/TextSizeBody" />
 
             <Button
                 android:id="@+id/download_button"
@@ -62,8 +62,8 @@
 
                 <ImageView
                     android:id="@+id/security_indicator"
-                    android:layout_width="12sp"
-                    android:layout_height="12sp"
+                    android:layout_width="?attr/TextSizeInfo"
+                    android:layout_height="?attr/TextSizeInfo"
                     android:layout_gravity="center_vertical"
                     android:layout_marginRight="6sp"
                     android:layout_marginTop="2sp"
@@ -78,7 +78,7 @@
                     android:gravity="center_vertical"
                     android:text="@string/sending"
                     android:textColor="@color/secondarytext"
-                    android:textSize="12sp" />
+                    android:textSize="?attr/TextSizeInfo" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

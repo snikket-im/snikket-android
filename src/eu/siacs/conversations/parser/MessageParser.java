@@ -75,9 +75,8 @@ public class MessageParser extends AbstractParser implements
 		}
 		if (!conversation.hasValidOtrSession()) {
 			if (properlyAddressed) {
-				conversation.startOtrSession(
-						mXmppConnectionService,
-						presence, false);
+				conversation.startOtrSession(mXmppConnectionService, presence,
+						false);
 			} else {
 				return null;
 			}
@@ -87,8 +86,7 @@ public class MessageParser extends AbstractParser implements
 			if (!foreignPresence.equals(presence)) {
 				conversation.endOtrIfNeeded();
 				if (properlyAddressed) {
-					conversation.startOtrSession(
-							mXmppConnectionService,
+					conversation.startOtrSession(mXmppConnectionService,
 							presence, false);
 				} else {
 					return null;
@@ -289,7 +287,8 @@ public class MessageParser extends AbstractParser implements
 				if (!conversation.getMucOptions().online()) {
 					if (x.hasChild("password")) {
 						Element password = x.findChild("password");
-						conversation.getMucOptions().setPassword(password.getContent());
+						conversation.getMucOptions().setPassword(
+								password.getContent());
 					}
 					mXmppConnectionService.joinMuc(conversation);
 					mXmppConnectionService.updateConversationUi();
@@ -453,7 +452,8 @@ public class MessageParser extends AbstractParser implements
 		Conversation conversation = message.getConversation();
 		conversation.getMessages().add(message);
 		if (packet.getType() != MessagePacket.TYPE_ERROR) {
-			if (message.getEncryption() == Message.ENCRYPTION_NONE || mXmppConnectionService.saveEncryptedMessages()) {
+			if (message.getEncryption() == Message.ENCRYPTION_NONE
+					|| mXmppConnectionService.saveEncryptedMessages()) {
 				mXmppConnectionService.databaseBackend.createMessage(message);
 			}
 		}

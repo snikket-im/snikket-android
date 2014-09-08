@@ -96,8 +96,8 @@ public class JingleConnection implements Downloadable {
 				BitmapFactory.decodeFile(file.getAbsolutePath(), options);
 				int imageHeight = options.outHeight;
 				int imageWidth = options.outWidth;
-				message.setBody(Long.toString(file.getSize()) + ',' + imageWidth + ','
-						+ imageHeight);
+				message.setBody(Long.toString(file.getSize()) + ','
+						+ imageWidth + ',' + imageHeight);
 				mXmppConnectionService.databaseBackend.createMessage(message);
 				mXmppConnectionService.markMessage(message,
 						Message.STATUS_RECEIVED);

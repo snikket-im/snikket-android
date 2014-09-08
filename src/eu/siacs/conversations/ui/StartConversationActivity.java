@@ -191,8 +191,7 @@ public class StartConversationActivity extends XmppActivity {
 			}
 		});
 
-		mConferenceAdapter = new ListItemAdapter(getApplicationContext(),
-				conferences);
+		mConferenceAdapter = new ListItemAdapter(this, conferences);
 		mConferenceListFragment.setListAdapter(mConferenceAdapter);
 		mConferenceListFragment.setContextMenu(R.menu.conference_context);
 		mConferenceListFragment
@@ -205,8 +204,7 @@ public class StartConversationActivity extends XmppActivity {
 					}
 				});
 
-		mContactsAdapter = new ListItemAdapter(getApplicationContext(),
-				contacts);
+		mContactsAdapter = new ListItemAdapter(this, contacts);
 		mContactsListFragment.setListAdapter(mContactsAdapter);
 		mContactsListFragment.setContextMenu(R.menu.contact_context);
 		mContactsListFragment

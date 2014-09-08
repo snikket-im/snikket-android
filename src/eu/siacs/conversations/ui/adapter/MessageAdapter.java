@@ -462,7 +462,8 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 
 							@Override
 							public void onClick(View v) {
-								Downloadable downloadable = item.getDownloadable();
+								Downloadable downloadable = item
+										.getDownloadable();
 								if (downloadable != null) {
 									downloadable.start();
 								}

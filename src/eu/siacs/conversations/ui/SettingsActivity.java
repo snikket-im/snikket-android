@@ -2,6 +2,7 @@ package eu.siacs.conversations.ui;
 
 import java.util.Locale;
 
+import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;

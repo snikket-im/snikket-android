@@ -26,7 +26,7 @@
 	        android:layout_alignLeft="@+id/conversation_lastwrapper"
 	        android:layout_toLeftOf="@+id/conversation_lastupdate"
 	        android:singleLine="true"
-	        android:textSize="18sp"
+	        android:textSize="?attr/TextSizeHeadline"
 	        android:textColor="@color/primarytext"
 	        android:typeface="sans" />
 	 
@@ -42,7 +42,7 @@
 	        android:id="@+id/conversation_lastmsg"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
-	        android:textSize="14sp"
+	        android:textSize="?attr/TextSizeBody"
 	        android:textColor="@color/primarytext"
 	        android:singleLine="true"
 	        android:scrollHorizontally="false"
@@ -63,7 +63,7 @@
 	        android:layout_alignBaseline="@+id/conversation_name"
 	        android:layout_alignParentRight="true"
 	        android:gravity="right"
-	        android:textSize="12sp"
+	        android:textSize="?attr/TextSizeInfo"
 	        android:textColor="@color/secondarytext"/>
 
  	</RelativeLayout>

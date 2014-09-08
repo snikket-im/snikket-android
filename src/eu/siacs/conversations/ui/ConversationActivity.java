@@ -324,7 +324,8 @@ public class ConversationActivity extends XmppActivity {
 			} else {
 				showInstallPgpDialog();
 			}
-		} else if (getSelectedConversation().getNextEncryption(forceEncryption()) == Message.ENCRYPTION_NONE) {
+		} else if (getSelectedConversation().getNextEncryption(
+				forceEncryption()) == Message.ENCRYPTION_NONE) {
 			selectPresenceToAttachFile(attachmentChoice);
 		} else {
 			selectPresenceToAttachFile(attachmentChoice);
@@ -440,7 +441,8 @@ public class ConversationActivity extends XmppActivity {
 				popup.inflate(R.menu.encryption_choices);
 				MenuItem otr = popup.getMenu().findItem(
 						R.id.encryption_choice_otr);
-				MenuItem none = popup.getMenu().findItem(R.id.encryption_choice_none);
+				MenuItem none = popup.getMenu().findItem(
+						R.id.encryption_choice_none);
 				if (conversation.getMode() == Conversation.MODE_MULTI) {
 					otr.setEnabled(false);
 				} else {

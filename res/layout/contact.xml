@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="8dp"
-    android:paddingBottom="8dp"
-    android:background="?android:attr/activatedBackgroundIndicator">
+    android:background="?android:attr/activatedBackgroundIndicator"
+    android:padding="8dp" >
 
     <ImageView
         android:id="@+id/contact_photo"
@@ -12,40 +11,41 @@
         android:layout_height="48dp"
         android:layout_alignParentLeft="true"
         android:scaleType="centerCrop"
-        android:src="@drawable/ic_profile">
+        android:src="@drawable/ic_profile" >
     </ImageView>
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/contact_photo"
         android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/contact_photo"
         android:orientation="vertical"
-        android:paddingLeft="8dp">
-    <TextView 
-        android:id="@+id/contact_display_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:textColor="@color/primarytext"
-        android:singleLine="true"
-        />
-    <TextView 
-        android:id="@+id/contact_jid"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:singleLine="true"
-        android:textSize="14sp"
-        android:textColor="@color/primarytext"
-        />
-    <TextView 
-        android:id="@+id/key"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:textColor="@color/primarytext"
-        android:typeface="monospace"
-        android:visibility="gone"
-        />
+        android:paddingLeft="8dp" >
+
+        <TextView
+            android:id="@+id/contact_display_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:textSize="?attr/TextSizeHeadline"
+            android:textColor="@color/primarytext" />
+
+        <TextView
+            android:id="@+id/contact_jid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:textColor="@color/primarytext"
+            android:textSize="?attr/TextSizeBody" />
+
+        <TextView
+            android:id="@+id/key"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/primarytext"
+            android:textSize="?attr/TextSizeHeadline"
+            android:typeface="monospace"
+            android:visibility="gone" />
     </LinearLayout>
 
 </RelativeLayout>

@@ -108,6 +108,7 @@
     <string name="pref_never_send_crash_summary">By sending in stack traces you are helping the ongoing development of Conversations</string>
     <string name="pref_confirm_messages">Confirm Messages</string>
     <string name="pref_confirm_messages_summary">Let your contact know when you have received and read a message</string>
+    <string name="pref_ui_options">UI Options</string>
     <string name="openpgp_error">OpenKeychain reported an error</string>
     <string name="error_decrypting_file">I/O Error decrypting file</string>
     <string name="accept">Accept</string>
@@ -251,4 +252,6 @@
     <string name="pref_dont_save_encrypted_summary">Warning: This could lead to message loss</string>
 	<string name="pref_expert_options">Expert options</string>
 	<string name="pref_expert_options_summary">Please be very careful with those</string>
+	<string name="pref_use_larger_font">Increase font size</string>
+	<string name="pref_use_larger_font_summary">Use larger font sizes across the entire app</string>
 </resources>

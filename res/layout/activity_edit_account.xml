@@ -27,7 +27,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/account_settings_jabber_id"
                     android:textColor="@color/primarytext"
-                    android:textSize="14sp" />
+                    android:textSize="?attr/TextSizeBody" />
 
                 <AutoCompleteTextView
                     android:id="@+id/account_jid"
@@ -42,7 +42,7 @@
                     android:layout_marginTop="8dp"
                     android:text="@string/account_settings_password"
                     android:textColor="@color/primarytext"
-                    android:textSize="14sp" />
+                    android:textSize="?attr/TextSizeBody" />
 
                 <EditText
                     android:id="@+id/account_password"
@@ -58,7 +58,7 @@
                     android:layout_marginTop="8dp"
                     android:text="@string/register_account"
                     android:textColor="@color/primarytext"
-                    android:textSize="14sp" />
+                    android:textSize="?attr/TextSizeBody" />
 
                 <TextView
                     android:id="@+id/account_confirm_password_desc"
@@ -66,7 +66,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/account_settings_confirm_password"
                     android:textColor="@color/primarytext"
-                    android:textSize="14sp"
+                    android:textSize="?attr/TextSizeBody"
                     android:visibility="gone" />
 
                 <EditText
@@ -94,7 +94,7 @@
                     android:gravity="center_horizontal"
                     android:text="@string/additional_information"
                     android:textColor="@color/secondarytext"
-                    android:textSize="18sp"
+                    android:textSize="?attr/TextSizeHeadline"
                     android:textStyle="bold" />
 
                 <TableLayout
@@ -177,7 +177,7 @@
                     android:gravity="center_horizontal"
                     android:text="@string/otr_fingerprint"
                     android:textColor="@color/secondarytext"
-                    android:textSize="18sp"
+                    android:textSize="?attr/TextSizeHeadline"
                     android:textStyle="bold" />
 
                 <TextView
@@ -185,7 +185,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:textSize="14sp"
+                    android:textSize="?attr/TextSizeBody"
                     android:typeface="monospace" />
             </LinearLayout>
         </LinearLayout>

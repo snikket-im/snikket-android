@@ -9,7 +9,7 @@
         android:id="@+id/your_account"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="14sp"
+        android:textSize="?attr/TextSizeBody"
         android:textColor="@color/primarytext"
         android:text="@string/your_account" />
     <Spinner
@@ -22,7 +22,7 @@
         android:layout_marginTop="8dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="14sp"
+        android:textSize="?attr/TextSizeBody"
         android:textColor="@color/primarytext"
         android:text="@string/conference_address" />
     

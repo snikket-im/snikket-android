@@ -28,14 +28,14 @@
             android:scrollHorizontally="false"
             android:singleLine="true"
             android:textColor="@color/primarytext"
-            android:textSize="18sp" />
+            android:textSize="?attr/TextSizeHeadline" />
 
         <TextView
             android:id="@+id/account_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/account_status_unknown"
-            android:textSize="14sp"
+            android:textSize="?attr/TextSizeBody"
             android:textColor="@color/secondarytext"
             android:textStyle="bold"/>
     </LinearLayout>

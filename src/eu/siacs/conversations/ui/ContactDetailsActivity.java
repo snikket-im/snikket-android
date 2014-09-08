@@ -325,16 +325,18 @@ public class ContactDetailsActivity extends XmppActivity {
 		for (Iterator<String> iterator = contact.getOtrFingerprints()
 				.iterator(); iterator.hasNext();) {
 			final String otrFingerprint = iterator.next();
-			View view = (View) inflater.inflate(R.layout.contact_key, keys,false);
+			View view = (View) inflater.inflate(R.layout.contact_key, keys,
+					false);
 			TextView key = (TextView) view.findViewById(R.id.key);
 			TextView keyType = (TextView) view.findViewById(R.id.key_type);
-			ImageButton remove = (ImageButton) view.findViewById(R.id.button_remove);
+			ImageButton remove = (ImageButton) view
+					.findViewById(R.id.button_remove);
 			remove.setVisibility(View.VISIBLE);
 			keyType.setText("OTR Fingerprint");
 			key.setText(otrFingerprint);
 			keys.addView(view);
 			remove.setOnClickListener(new OnClickListener() {
-				
+
 				@Override
 				public void onClick(View v) {
 					confirmToDeleteFingerprint(otrFingerprint);
@@ -342,7 +344,8 @@ public class ContactDetailsActivity extends XmppActivity {
 			});
 		}
 		if (contact.getPgpKeyId() != 0) {
-			View view = (View) inflater.inflate(R.layout.contact_key, keys,false);
+			View view = (View) inflater.inflate(R.layout.contact_key, keys,
+					false);
 			TextView key = (TextView) view.findViewById(R.id.key);
 			TextView keyType = (TextView) view.findViewById(R.id.key_type);
 			keyType.setText("PGP Key ID");
@@ -370,23 +373,25 @@ public class ContactDetailsActivity extends XmppActivity {
 			keys.addView(view);
 		}
 	}
-	
+
 	protected void confirmToDeleteFingerprint(final String fingerprint) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(R.string.delete_fingerprint);
 		builder.setMessage(R.string.sure_delete_fingerprint);
 		builder.setNegativeButton(R.string.cancel, null);
-		builder.setPositiveButton(R.string.delete,new android.content.DialogInterface.OnClickListener() {
+		builder.setPositiveButton(R.string.delete,
+				new android.content.DialogInterface.OnClickListener() {
 
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				if (contact.deleteOtrFingerprint(fingerprint)) {
-					populateView();
-					xmppConnectionService.syncRosterToDisk(contact.getAccount());
-				}
-			}
-			
-		});
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						if (contact.deleteOtrFingerprint(fingerprint)) {
+							populateView();
+							xmppConnectionService.syncRosterToDisk(contact
+									.getAccount());
+						}
+					}
+
+				});
 		builder.create().show();
 	}
 

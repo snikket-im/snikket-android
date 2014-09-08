@@ -163,7 +163,8 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 					+ "=?", selectionArgs, null, null, Message.TIME_SENT
 					+ " DESC", String.valueOf(limit));
 		} else {
-			String[] selectionArgs = { conversation.getUuid(), Long.toString(timestamp) };
+			String[] selectionArgs = { conversation.getUuid(),
+					Long.toString(timestamp) };
 			cursor = db.query(Message.TABLENAME, null, Message.CONVERSATION
 					+ "=? and " + Message.TIME_SENT + "<?", selectionArgs,
 					null, null, Message.TIME_SENT + " DESC",

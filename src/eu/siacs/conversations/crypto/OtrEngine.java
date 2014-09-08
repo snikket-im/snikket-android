@@ -174,7 +174,8 @@ public class OtrEngine implements OtrEngineHost {
 
 	@Override
 	public void messageFromAnotherInstanceReceived(SessionID id) {
-		Log.d(Config.LOGTAG,"unreadable message received from "+id.getAccountID());
+		Log.d(Config.LOGTAG,
+				"unreadable message received from " + id.getAccountID());
 	}
 
 	@Override

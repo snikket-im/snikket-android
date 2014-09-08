@@ -135,7 +135,8 @@ public class JingleInbandTransport extends JingleTransport {
 				Element data = iq.addChild("data",
 						"http://jabber.org/protocol/ibb");
 				data.setAttribute("seq", Integer.toString(this.seq));
-				data.setAttribute("block-size", Integer.toString(this.blockSize));
+				data.setAttribute("block-size",
+						Integer.toString(this.blockSize));
 				data.setAttribute("sid", this.sessionId);
 				data.setContent(base64);
 				this.account.getXmppConnection().sendIqPacket(iq,

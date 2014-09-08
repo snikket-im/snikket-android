@@ -58,9 +58,9 @@ public class JingleSocks5Transport extends JingleTransport {
 					byte[] reply = new byte[2];
 					outputStream.write(login);
 					inputStream.read(reply);
-					final String connect = Character.toString('\u0005') + '\u0001' + '\u0000'
-							+ '\u0003' + '\u0028' + destination + '\u0000'
-							+ '\u0000';
+					final String connect = Character.toString('\u0005')
+							+ '\u0001' + '\u0000' + '\u0003' + '\u0028'
+							+ destination + '\u0000' + '\u0000';
 					if (Arrays.equals(reply, expectedReply)) {
 						outputStream.write(connect.getBytes());
 						byte[] result = new byte[2];

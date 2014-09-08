@@ -106,8 +106,8 @@ public class PgpEngine {
 									outputFile.getAbsolutePath(), options);
 							int imageHeight = options.outHeight;
 							int imageWidth = options.outWidth;
-							message.setBody(Long.toString(outputFile.getSize()) + ','
-									+ imageWidth + ',' + imageHeight);
+							message.setBody(Long.toString(outputFile.getSize())
+									+ ',' + imageWidth + ',' + imageHeight);
 							message.setEncryption(Message.ENCRYPTION_DECRYPTED);
 							PgpEngine.this.mXmppConnectionService
 									.updateMessage(message);
@@ -301,7 +301,7 @@ public class PgpEngine {
 						os.flush();
 						String[] lines = os.toString().split("\n");
 						boolean sig = false;
-						for(String line : lines) {
+						for (String line : lines) {
 							if (sig) {
 								if (line.contains("END PGP SIGNATURE")) {
 									sig = false;

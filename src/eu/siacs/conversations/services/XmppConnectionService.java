@@ -585,7 +585,8 @@ public class XmppConnectionService extends Service {
 
 		}
 		if (saveInDb) {
-			if (message.getEncryption() == Message.ENCRYPTION_NONE || saveEncryptedMessages()) {
+			if (message.getEncryption() == Message.ENCRYPTION_NONE
+					|| saveEncryptedMessages()) {
 				databaseBackend.createMessage(message);
 			}
 		}
@@ -1546,7 +1547,7 @@ public class XmppConnectionService extends Service {
 		return PreferenceManager
 				.getDefaultSharedPreferences(getApplicationContext());
 	}
-	
+
 	public boolean forceEncryption() {
 		return getPreferences().getBoolean("force_encryption", false);
 	}
@@ -1554,7 +1555,7 @@ public class XmppConnectionService extends Service {
 	public boolean confirmMessages() {
 		return getPreferences().getBoolean("confirm_messages", true);
 	}
-	
+
 	public boolean saveEncryptedMessages() {
 		return !getPreferences().getBoolean("dont_save_encrypted", false);
 	}

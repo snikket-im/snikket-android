@@ -149,9 +149,11 @@ public class Message extends AbstractEntity {
 
 	public String getReadableBody(Context context) {
 		if ((encryption == ENCRYPTION_PGP) && (type == TYPE_TEXT)) {
-			return context.getText(R.string.encrypted_message_received).toString();
+			return context.getText(R.string.encrypted_message_received)
+					.toString();
 		} else if ((encryption == ENCRYPTION_OTR) && (type == TYPE_IMAGE)) {
-			return context.getText(R.string.encrypted_image_received).toString();
+			return context.getText(R.string.encrypted_image_received)
+					.toString();
 		} else if (encryption == ENCRYPTION_DECRYPTION_FAILED) {
 			return context.getText(R.string.decryption_failed).toString();
 		} else if (type == TYPE_IMAGE) {
@@ -339,7 +341,7 @@ public class Message extends AbstractEntity {
 		}
 		return body.trim();
 	}
-	
+
 	public int getMergedStatus() {
 		Message next = this.next();
 		if (this.mergable(next)) {
@@ -348,7 +350,7 @@ public class Message extends AbstractEntity {
 			return getStatus();
 		}
 	}
-	
+
 	public long getMergedTimeSent() {
 		Message next = this.next();
 		if (this.mergable(next)) {
