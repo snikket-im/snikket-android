@@ -135,14 +135,15 @@ public class ConversationFragment extends Fragment {
 		public void onClick(View v) {
 			MucOptions muc = conversation.getMucOptions();
 			String password = muc.getPassword();
-			if (password==null) {
+			if (password == null) {
 				password = "";
 			}
 			activity.quickPasswordEdit(password, new OnValueEdited() {
-				
+
 				@Override
 				public void onValueEdited(String value) {
-					activity.xmppConnectionService.providePasswordForMuc(conversation,value);
+					activity.xmppConnectionService.providePasswordForMuc(
+							conversation, value);
 				}
 			});
 		}
@@ -177,7 +178,7 @@ public class ConversationFragment extends Fragment {
 	private ConversationActivity activity;
 
 	private void sendMessage() {
-		if (this.conversation==null) {
+		if (this.conversation == null) {
 			return;
 		}
 		if (mEditMessage.getText().length() < 1) {
@@ -188,7 +189,8 @@ public class ConversationFragment extends Fragment {
 			return;
 		}
 		Message message = new Message(conversation, mEditMessage.getText()
-				.toString(), conversation.getNextEncryption(activity.forceEncryption()));
+				.toString(), conversation.getNextEncryption(activity
+				.forceEncryption()));
 		if (conversation.getMode() == Conversation.MODE_MULTI) {
 			if (conversation.getNextPresence() != null) {
 				message.setPresence(conversation.getNextPresence());
@@ -440,15 +442,11 @@ public class ConversationFragment extends Fragment {
 					break;
 				}
 			}
+			this.messageList.clear();
 			if (this.conversation.getMessages().size() == 0) {
-				this.messageList.clear();
 				messagesLoaded = false;
 			} else {
-				for (Message message : this.conversation.getMessages()) {
-					if (!this.messageList.contains(message)) {
-						this.messageList.add(message);
-					}
-				}
+				this.messageList.addAll(this.conversation.getMessages());
 				messagesLoaded = true;
 				updateStatusMessages();
 			}
@@ -500,23 +498,15 @@ public class ConversationFragment extends Fragment {
 	}
 
 	protected void updateStatusMessages() {
-		boolean addedStatusMsg = false;
 		if (conversation.getMode() == Conversation.MODE_SINGLE) {
 			for (int i = this.messageList.size() - 1; i >= 0; --i) {
-				if (addedStatusMsg) {
-					if (this.messageList.get(i).getType() == Message.TYPE_STATUS) {
-						this.messageList.remove(i);
-						--i;
-					}
+				if (this.messageList.get(i).getStatus() == Message.STATUS_RECEIVED) {
+					return;
 				} else {
-					if (this.messageList.get(i).getStatus() == Message.STATUS_RECEIVED) {
-						addedStatusMsg = true;
-					} else {
-						if (this.messageList.get(i).getStatus() == Message.STATUS_SEND_DISPLAYED) {
-							this.messageList.add(i + 1,
-									Message.createStatusMessage(conversation));
-							addedStatusMsg = true;
-						}
+					if (this.messageList.get(i).getStatus() == Message.STATUS_SEND_DISPLAYED) {
+						this.messageList.add(i + 1,
+								Message.createStatusMessage(conversation));
+						return;
 					}
 				}
 			}
