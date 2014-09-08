@@ -516,8 +516,8 @@ public class XmppConnectionService extends Service {
 					if (message.getEncryption() == Message.ENCRYPTION_OTR) {
 						if (!conv.hasValidOtrSession()
 								&& (message.getPresence() != null)) {
-							conv.startOtrSession(this,
-									message.getPresence(), true);
+							conv.startOtrSession(this, message.getPresence(),
+									true);
 							message.setStatus(Message.STATUS_WAITING);
 						} else if (conv.hasValidOtrSession()
 								&& conv.getOtrSession().getSessionStatus() == SessionStatus.ENCRYPTED) {
@@ -536,8 +536,7 @@ public class XmppConnectionService extends Service {
 				if (message.getEncryption() == Message.ENCRYPTION_OTR) {
 					if (!conv.hasValidOtrSession()
 							&& (message.getPresence() != null)) {
-						conv.startOtrSession(this,
-								message.getPresence(), true);
+						conv.startOtrSession(this, message.getPresence(), true);
 						message.setStatus(Message.STATUS_WAITING);
 					} else if (conv.hasValidOtrSession()
 							&& conv.getOtrSession().getSessionStatus() == SessionStatus.ENCRYPTED) {
@@ -577,8 +576,7 @@ public class XmppConnectionService extends Service {
 								.getUserID());
 					} else if (!conv.hasValidOtrSession()
 							&& message.getPresence() != null) {
-						conv.startOtrSession(this,
-								message.getPresence(), false);
+						conv.startOtrSession(this, message.getPresence(), false);
 					}
 				}
 			}
@@ -616,14 +614,13 @@ public class XmppConnectionService extends Service {
 			if (!message.getConversation().hasValidOtrSession()) {
 				if ((message.getPresence() != null)
 						&& (presences.has(message.getPresence()))) {
-					message.getConversation().startOtrSession(
-							this, message.getPresence(),
-							true);
+					message.getConversation().startOtrSession(this,
+							message.getPresence(), true);
 				} else {
 					if (presences.size() == 1) {
 						String presence = presences.asStringArray()[0];
-						message.getConversation().startOtrSession(
-								this, presence, true);
+						message.getConversation().startOtrSession(this,
+								presence, true);
 					}
 				}
 			} else {
@@ -1099,8 +1096,8 @@ public class XmppConnectionService extends Service {
 	public void providePasswordForMuc(Conversation conversation, String password) {
 		if (conversation.getMode() == Conversation.MODE_MULTI) {
 			conversation.getMucOptions().setPassword(password);
-			if (conversation.getBookmark() != null &&
-					conversation.getMucOptions().isPasswordChanged()) {
+			if (conversation.getBookmark() != null
+					&& conversation.getMucOptions().isPasswordChanged()) {
 				if (!conversation.getBookmark().autojoin()) {
 					conversation.getBookmark().setAutojoin(true);
 				}
@@ -1399,12 +1396,12 @@ public class XmppConnectionService extends Service {
 							return;
 						}
 					} else {
-						
+
 						Log.d(Config.LOGTAG, ERROR + "(parsing error)");
 					}
 				} else {
 					Element error = result.findChild("error");
-					if (error==null) {
+					if (error == null) {
 						Log.d(Config.LOGTAG, ERROR + "(server error)");
 					} else {
 						Log.d(Config.LOGTAG, ERROR + error.toString());
@@ -1531,6 +1528,11 @@ public class XmppConnectionService extends Service {
 	}
 
 	public void markMessage(Message message, int status) {
+		if (status == Message.STATUS_SEND_FAILED
+				&& (message.getStatus() == Message.STATUS_SEND_RECEIVED || message
+						.getStatus() == Message.STATUS_SEND_DISPLAYED)) {
+			return;
+		}
 		message.setStatus(status);
 		databaseBackend.updateMessage(message);
 		updateConversationUi();
