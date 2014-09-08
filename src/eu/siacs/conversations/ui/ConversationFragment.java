@@ -188,7 +188,7 @@ public class ConversationFragment extends Fragment {
 			return;
 		}
 		Message message = new Message(conversation, mEditMessage.getText()
-				.toString(), conversation.getNextEncryption());
+				.toString(), conversation.getNextEncryption(activity.forceEncryption()));
 		if (conversation.getMode() == Conversation.MODE_MULTI) {
 			if (conversation.getNextPresence() != null) {
 				message.setPresence(conversation.getNextPresence());
@@ -196,9 +196,9 @@ public class ConversationFragment extends Fragment {
 				conversation.setNextPresence(null);
 			}
 		}
-		if (conversation.getNextEncryption() == Message.ENCRYPTION_OTR) {
+		if (conversation.getNextEncryption(activity.forceEncryption()) == Message.ENCRYPTION_OTR) {
 			sendOtrMessage(message);
-		} else if (conversation.getNextEncryption() == Message.ENCRYPTION_PGP) {
+		} else if (conversation.getNextEncryption(activity.forceEncryption()) == Message.ENCRYPTION_PGP) {
 			sendPgpMessage(message);
 		} else {
 			sendPlainTextMessage(message);
@@ -212,7 +212,7 @@ public class ConversationFragment extends Fragment {
 					R.string.send_private_message_to,
 					conversation.getNextPresence()));
 		} else {
-			switch (conversation.getNextEncryption()) {
+			switch (conversation.getNextEncryption(activity.forceEncryption())) {
 			case Message.ENCRYPTION_NONE:
 				mEditMessage
 						.setHint(getString(R.string.send_plain_text_message));

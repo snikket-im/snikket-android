@@ -339,24 +339,29 @@ public class Conversation extends AbstractEntity {
 		if ((latestEncryption == Message.ENCRYPTION_DECRYPTED)
 				|| (latestEncryption == Message.ENCRYPTION_DECRYPTION_FAILED)) {
 			return Message.ENCRYPTION_PGP;
-		} else if (latestEncryption == Message.ENCRYPTION_NONE) {
-			if (getContact().getPresences().size() == 1) {
-				if (getContact().getOtrFingerprints().size() >= 1) {
-					return Message.ENCRYPTION_OTR;
-				} else {
-					return latestEncryption;
-				}
-			} else {
-				return latestEncryption;
-			}
 		} else {
 			return latestEncryption;
 		}
 	}
 
-	public int getNextEncryption() {
+	public int getNextEncryption(boolean force) {
 		if (this.nextMessageEncryption == -1) {
-			return this.getLatestEncryption();
+			int latest = this.getLatestEncryption();
+			if (latest == Message.ENCRYPTION_NONE) {
+				if (force && getMode() == MODE_SINGLE) {
+					return Message.ENCRYPTION_OTR;
+				} else if (getContact().getPresences().size() == 1) {
+					if (getContact().getOtrFingerprints().size() >= 1) {
+						return Message.ENCRYPTION_OTR;
+					} else {
+						return latest;
+					}
+				} else {
+					return latest;
+				}
+			} else {
+				return latest;
+			}
 		}
 		return this.nextMessageEncryption;
 	}

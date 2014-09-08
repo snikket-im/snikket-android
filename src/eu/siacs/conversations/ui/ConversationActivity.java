@@ -14,6 +14,7 @@ import eu.siacs.conversations.utils.UIHelper;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.app.ActionBar;
 import android.app.AlertDialog;
@@ -279,7 +280,7 @@ public class ConversationActivity extends XmppActivity {
 
 	private void attachFile(final int attachmentChoice) {
 		final Conversation conversation = getSelectedConversation();
-		if (conversation.getNextEncryption() == Message.ENCRYPTION_PGP) {
+		if (conversation.getNextEncryption(forceEncryption()) == Message.ENCRYPTION_PGP) {
 			if (hasPgp()) {
 				if (conversation.getContact().getPgpKeyId() != 0) {
 					xmppConnectionService.getPgpEngine().hasKey(
@@ -323,7 +324,7 @@ public class ConversationActivity extends XmppActivity {
 			} else {
 				showInstallPgpDialog();
 			}
-		} else if (getSelectedConversation().getNextEncryption() == Message.ENCRYPTION_NONE) {
+		} else if (getSelectedConversation().getNextEncryption(forceEncryption()) == Message.ENCRYPTION_NONE) {
 			selectPresenceToAttachFile(attachmentChoice);
 		} else {
 			selectPresenceToAttachFile(attachmentChoice);
@@ -439,13 +440,17 @@ public class ConversationActivity extends XmppActivity {
 				popup.inflate(R.menu.encryption_choices);
 				MenuItem otr = popup.getMenu().findItem(
 						R.id.encryption_choice_otr);
+				MenuItem none = popup.getMenu().findItem(R.id.encryption_choice_none);
 				if (conversation.getMode() == Conversation.MODE_MULTI) {
 					otr.setEnabled(false);
+				} else {
+					if (forceEncryption()) {
+						none.setVisible(false);
+					}
 				}
-				switch (conversation.getNextEncryption()) {
+				switch (conversation.getNextEncryption(forceEncryption())) {
 				case Message.ENCRYPTION_NONE:
-					popup.getMenu().findItem(R.id.encryption_choice_none)
-							.setChecked(true);
+					none.setChecked(true);
 					break;
 				case Message.ENCRYPTION_OTR:
 					otr.setChecked(true);
@@ -510,29 +515,32 @@ public class ConversationActivity extends XmppActivity {
 				});
 		builder.create().show();
 	}
-	
+
 	protected void muteConversationDialog(final Conversation conversation) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(R.string.disable_notifications_for_this_conversation);
-		final int[] durations = getResources().getIntArray(R.array.mute_options_durations);
-		builder.setItems(R.array.mute_options_descriptions, new OnClickListener() {
-			
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				long till;
-				if (durations[which]==-1) {
-					till = Long.MAX_VALUE;
-				} else {
-					till = SystemClock.elapsedRealtime() + (durations[which] * 1000);
-				}
-				conversation.setMutedTill(till);
-				ConversationFragment selectedFragment = (ConversationFragment) getFragmentManager()
-						.findFragmentByTag("conversation");
-				if (selectedFragment!=null) {
-					selectedFragment.updateMessages();
-				}
-			}
-		});
+		final int[] durations = getResources().getIntArray(
+				R.array.mute_options_durations);
+		builder.setItems(R.array.mute_options_descriptions,
+				new OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						long till;
+						if (durations[which] == -1) {
+							till = Long.MAX_VALUE;
+						} else {
+							till = SystemClock.elapsedRealtime()
+									+ (durations[which] * 1000);
+						}
+						conversation.setMutedTill(till);
+						ConversationFragment selectedFragment = (ConversationFragment) getFragmentManager()
+								.findFragmentByTag("conversation");
+						if (selectedFragment != null) {
+							selectedFragment.updateMessages();
+						}
+					}
+				});
 		builder.create().show();
 	}
 
@@ -793,5 +801,10 @@ public class ConversationActivity extends XmppActivity {
 
 					}
 				});
+	}
+
+	public boolean forceEncryption() {
+		return PreferenceManager.getDefaultSharedPreferences(
+				getApplicationContext()).getBoolean("force_encryption", false);
 	}
 }

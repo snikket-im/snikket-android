@@ -270,12 +270,12 @@ public class XmppConnectionService extends Service {
 	public Message attachImageToConversation(final Conversation conversation,
 			final Uri uri, final UiCallback<Message> callback) {
 		final Message message;
-		if (conversation.getNextEncryption() == Message.ENCRYPTION_PGP) {
+		if (conversation.getNextEncryption(forceEncryption()) == Message.ENCRYPTION_PGP) {
 			message = new Message(conversation, "",
 					Message.ENCRYPTION_DECRYPTED);
 		} else {
 			message = new Message(conversation, "",
-					conversation.getNextEncryption());
+					conversation.getNextEncryption(forceEncryption()));
 		}
 		message.setPresence(conversation.getNextPresence());
 		message.setType(Message.TYPE_IMAGE);
@@ -286,7 +286,7 @@ public class XmppConnectionService extends Service {
 			public void run() {
 				try {
 					getFileBackend().copyImageToPrivateStorage(message, uri);
-					if (conversation.getNextEncryption() == Message.ENCRYPTION_PGP) {
+					if (conversation.getNextEncryption(forceEncryption()) == Message.ENCRYPTION_PGP) {
 						getPgpEngine().encrypt(message, callback);
 					} else {
 						callback.success(message);
@@ -567,9 +567,11 @@ public class XmppConnectionService extends Service {
 					String pgpBody = message.getEncryptedBody();
 					String decryptedBody = message.getBody();
 					message.setBody(pgpBody);
+					message.setEncryption(Message.ENCRYPTION_PGP);
 					databaseBackend.createMessage(message);
 					saveInDb = false;
 					message.setBody(decryptedBody);
+					message.setEncryption(Message.ENCRYPTION_DECRYPTED);
 				} else if (message.getEncryption() == Message.ENCRYPTION_OTR) {
 					if (conv.hasValidOtrSession()) {
 						message.setPresence(conv.getOtrSession().getSessionID()
@@ -583,7 +585,9 @@ public class XmppConnectionService extends Service {
 
 		}
 		if (saveInDb) {
-			databaseBackend.createMessage(message);
+			if (message.getEncryption() == Message.ENCRYPTION_NONE || saveEncryptedMessages()) {
+				databaseBackend.createMessage(message);
+			}
 		}
 		conv.getMessages().add(message);
 		if ((send) && (packet != null)) {
@@ -1542,9 +1546,17 @@ public class XmppConnectionService extends Service {
 		return PreferenceManager
 				.getDefaultSharedPreferences(getApplicationContext());
 	}
+	
+	public boolean forceEncryption() {
+		return getPreferences().getBoolean("force_encryption", false);
+	}
 
 	public boolean confirmMessages() {
 		return getPreferences().getBoolean("confirm_messages", true);
+	}
+	
+	public boolean saveEncryptedMessages() {
+		return !getPreferences().getBoolean("dont_save_encrypted", false);
 	}
 
 	public void notifyUi(Conversation conversation, boolean notify) {

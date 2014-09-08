@@ -245,5 +245,10 @@
     <string name="sure_delete_fingerprint">Are you sure you would like to delete this fingerprint?</string>
     <string name="ignore">Ignore</string>
     <string name="without_mutual_presence_updates"><b>Warning:</b> Sending this without mutual presence updates could cause unexpected problems.\n\n<small>Go to contact details to verify your presence subscriptions.</small></string>
+    <string name="pref_encryption_settings">Encryption settings</string>
+    <string name="pref_force_encryption">Force end-to-end encryption</string>
+    <string name="pref_force_encryption_summary">Always send messages encrypted (execpt for conferences)</string>
+    <string name="pref_dont_save_encrypted">Don’t save encrypted messages</string>
+    <string name="pref_dont_save_encrypted_summary">Warning: This could lead to message loss</string>
 
 </resources>

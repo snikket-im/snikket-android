@@ -60,6 +60,19 @@
             android:summary="@string/pref_notification_grace_period_summary"
             android:defaultValue="true"/>
     </PreferenceCategory>
+    <PreferenceCategory 
+        android:title="@string/pref_encryption_settings">
+        <CheckBoxPreference 
+            android:key="force_encryption"
+            android:title="@string/pref_force_encryption"
+            android:summary="@string/pref_force_encryption_summary"
+            android:defaultValue="false"/>
+        <CheckBoxPreference 
+            android:key="dont_save_encrypted"
+            android:title="@string/pref_dont_save_encrypted"
+            android:summary="@string/pref_dont_save_encrypted_summary"
+            android:defaultValue="false"/>
+    </PreferenceCategory>
     <PreferenceCategory
         android:title="@string/pref_advanced_options">
         <CheckBoxPreference 
