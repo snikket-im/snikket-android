@@ -17,7 +17,7 @@ public abstract class AbstractGenerator {
 			"jabber:x:conference", "http://jabber.org/protocol/caps",
 			"http://jabber.org/protocol/disco#info",
 			"urn:xmpp:avatar:metadata+notify" };
-	public final String IDENTITY_NAME = "Conversations 0.6";
+	public final String IDENTITY_NAME = "Conversations 0.7";
 	public final String IDENTITY_TYPE = "phone";
 
 	public String getCapHash() {

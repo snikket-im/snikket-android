@@ -1,4 +1,12 @@
 ###Changelog
+####Version 0.7
+* Ability to disable notifications for single conversations
+* Merge messages in chat bubbles
+* Fixes for OpenPGP and OTR (please republish your public key)
+* Improved reliability on sending messages
+* Join password protected Conferences
+* Configurable font size
+* Expert options for encryption
 
 ####Version 0.6
 * Support for server side avatars
