@@ -87,6 +87,7 @@
     <string name="encrypted_message_received"><i>Mensaje encriptado recibido. Pulsa para ver.</i></string>
     <string name="encrypted_image_received"><i>Imagen encriptada recibida. Pulsa para ver.</i></string>
     <string name="image_file"><i>Imagen recibida. Pulsa para ver</i></string>
+    <string name="pref_general">General</string>
     <string name="pref_xmpp_resource">Recurso</string>
     <string name="pref_xmpp_resource_summary">El nombre que identifica el cliente que estás utilizando</string>
     <string name="pref_accept_files">Aceptar archivos</string>
@@ -107,6 +108,7 @@
     <string name="pref_never_send_crash_summary">Si envías registros de error ayudas al desarrollo de Conversations</string>
     <string name="pref_confirm_messages">Confirmar Mensajes</string>
     <string name="pref_confirm_messages_summary">Permitir a tus contactos saber cuando recibes y lees un mensaje</string>
+    <string name="pref_ui_options">Opciones de interfaz</string>
     <string name="openpgp_error">OpenKeychain reportó un error</string>
     <string name="error_decrypting_file">Error desencriptando fichero</string>
     <string name="accept">Aceptar</string>
@@ -230,4 +232,26 @@
     <string name="server_info_session_established">Inicio sesión actual</string>
     <string name="additional_information">Información adicional</string>
     <string name="skip">Omitir</string>
+    <string name="disable_notifications">Deshabilitar notificaciones</string>
+    <string name="disable_notifications_for_this_conversation">Deshabilitar notificaciones para esta conversación</string>
+    <string name="notifications_disabled">Las notificaciones están deshabilitadas</string>
+    <string name="enable">Habilitar</string>
+    <string name="conference_requires_password">La conferencia requiere contraseña</string>
+    <string name="enter_password">Introduce la contraseña</string>
+    <string name="missing_presence_updates">Suscripción de actualizaciones de presencia del contacto perdida</string>
+    <string name="request_presence_updates">Por favor, solicita la suscripción de presencia a tu contacto primero.\n\n<small>Esto será usado para determinar qué cliente(s) está usando tu contacto.</small></string>
+    <string name="request_now">Solicitar ahora</string>
+    <string name="delete_fingerprint">Eliminar Clave OTR</string>
+    <string name="sure_delete_fingerprint">¿Estás seguro que quieres eliminar la clave OTR?</string>
+    <string name="ignore">Ignorar</string>
+    <string name="without_mutual_presence_updates"><b>Aviso:</b> Enviando esto sin suscripción de presencia por ambas partes podría causar problemas inesperados.\n\n<small>Verficia la suscripción de presencia en detalles del contacto.</small></string>
+    <string name="pref_encryption_settings">Ajustes de encriptación</string>
+    <string name="pref_force_encryption">Forzar encriptación end-to-end</string>
+    <string name="pref_force_encryption_summary">Siempre enviar mensajes encriptados (excepto para conferencias)</string>
+    <string name="pref_dont_save_encrypted">No guardar mensajes encriptados</string>
+    <string name="pref_dont_save_encrypted_summary">Aviso: Esto podría llevar a pérdida de mensajes</string>
+    <string name="pref_expert_options">Ajustes avanzados</string>
+    <string name="pref_expert_options_summary">Por favor, cuidado con estas opciones</string>
+    <string name="pref_use_larger_font">Incrementar tamaño de fuente</string>
+    <string name="pref_use_larger_font_summary">Usar fuentes grandes en toda la aplicación</string>
 </resources>
