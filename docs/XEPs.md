@@ -1,5 +1,6 @@
 * XEP-0030: Service Discovery
 * XEP-0045: Multi-User Chat
+* XEP-0048: Bookmarks
 * XEP-0115: Entity Capabilities
 * XEP-0138: Stream Compression
 * XEP-0163: Personal Eventing Protocol (avatars and nicks)
