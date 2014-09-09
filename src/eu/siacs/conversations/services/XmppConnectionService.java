@@ -1502,7 +1502,8 @@ public class XmppConnectionService extends Service {
 		for (Conversation conversation : getConversations()) {
 			if (conversation.getAccount() == account) {
 				for (Message message : conversation.getMessages()) {
-					if (message.getStatus() == Message.STATUS_UNSEND) {
+					if (message.getType() != Message.TYPE_IMAGE
+							&& message.getStatus() == Message.STATUS_UNSEND) {
 						markMessage(message, Message.STATUS_WAITING);
 					}
 				}
