@@ -58,7 +58,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:background="?android:selectableItemBackground"
-            android:src="@drawable/ic_action_send_now" />
+            android:src="@drawable/ic_action_send_now_offline" />
     </RelativeLayout>
 
          <RelativeLayout

@@ -109,6 +109,7 @@ public class XmppConnectionService extends Service {
 	private OnAccountUpdate mOnAccountUpdate = null;
 	private int accountChangedListenerCount = 0;
 	private OnRosterUpdate mOnRosterUpdate = null;
+	private int rosterChangedListenerCount = 0;
 	public OnContactStatusChanged onContactStatusChanged = new OnContactStatusChanged() {
 
 		@Override
@@ -997,12 +998,16 @@ public class XmppConnectionService extends Service {
 			switchToForeground();
 		}
 		this.mOnRosterUpdate = listener;
+		this.rosterChangedListenerCount++;
 	}
 
 	public void removeOnRosterUpdateListener() {
-		this.mOnRosterUpdate = null;
-		if (checkListeners()) {
-			switchToBackground();
+		this.rosterChangedListenerCount--;
+		if (this.rosterChangedListenerCount == 0) {
+			this.mOnRosterUpdate = null;
+			if (checkListeners()) {
+				switchToBackground();
+			}
 		}
 	}
 

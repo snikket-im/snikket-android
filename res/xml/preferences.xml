@@ -69,6 +69,11 @@
             android:key="use_larger_font"
             android:title="@string/pref_use_larger_font"
             android:summary="@string/pref_use_larger_font_summary"/>
+    <CheckBoxPreference 
+       		android:key="send_button_status"
+       		android:defaultValue="false"
+       		android:title="@string/pref_use_send_button_to_indicate_status"
+       		android:summary="@string/pref_use_send_button_to_indicate_status_summary"/>
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/pref_advanced_options" >
         <PreferenceScreen

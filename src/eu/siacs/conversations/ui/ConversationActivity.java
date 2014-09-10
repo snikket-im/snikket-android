@@ -7,7 +7,9 @@ import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
+import eu.siacs.conversations.services.XmppConnectionService.OnAccountUpdate;
 import eu.siacs.conversations.services.XmppConnectionService.OnConversationUpdate;
+import eu.siacs.conversations.services.XmppConnectionService.OnRosterUpdate;
 import eu.siacs.conversations.ui.adapter.ConversationAdapter;
 import eu.siacs.conversations.utils.ExceptionHelper;
 import eu.siacs.conversations.utils.UIHelper;
@@ -39,7 +41,8 @@ import android.widget.PopupMenu;
 import android.widget.PopupMenu.OnMenuItemClickListener;
 import android.widget.Toast;
 
-public class ConversationActivity extends XmppActivity {
+public class ConversationActivity extends XmppActivity implements
+		OnAccountUpdate, OnConversationUpdate, OnRosterUpdate {
 
 	public static final String VIEW_CONVERSATION = "viewConversation";
 	public static final String CONVERSATION = "conversationUuid";
@@ -66,34 +69,6 @@ public class ConversationActivity extends XmppActivity {
 
 	private boolean paneShouldBeOpen = true;
 	private ArrayAdapter<Conversation> listAdapter;
-
-	private OnConversationUpdate onConvChanged = new OnConversationUpdate() {
-
-		@Override
-		public void onConversationUpdate() {
-			runOnUiThread(new Runnable() {
-
-				@Override
-				public void run() {
-					updateConversationList();
-					if (paneShouldBeOpen) {
-						if (conversationList.size() >= 1) {
-							swapConversationFragment();
-						} else {
-							startActivity(new Intent(getApplicationContext(),
-									StartConversationActivity.class));
-							finish();
-						}
-					}
-					ConversationFragment selectedFragment = (ConversationFragment) getFragmentManager()
-							.findFragmentByTag("conversation");
-					if (selectedFragment != null) {
-						selectedFragment.updateMessages();
-					}
-				}
-			});
-		}
-	};
 
 	protected ConversationActivity activity = this;
 	private Toast prepareImageToast;
@@ -602,7 +577,7 @@ public class ConversationActivity extends XmppActivity {
 			this.onBackendConnected();
 		}
 		if (conversationList.size() >= 1) {
-			onConvChanged.onConversationUpdate();
+			this.onConversationUpdate();
 		}
 	}
 
@@ -610,6 +585,8 @@ public class ConversationActivity extends XmppActivity {
 	protected void onStop() {
 		if (xmppConnectionServiceBound) {
 			xmppConnectionService.removeOnConversationListChangedListener();
+			xmppConnectionService.removeOnAccountListChangedListener();
+			xmppConnectionService.removeOnRosterUpdateListener();
 		}
 		super.onStop();
 	}
@@ -672,8 +649,9 @@ public class ConversationActivity extends XmppActivity {
 
 	public void registerListener() {
 		if (xmppConnectionServiceBound) {
-			xmppConnectionService
-					.setOnConversationListChangedListener(this.onConvChanged);
+			xmppConnectionService.setOnConversationListChangedListener(this);
+			xmppConnectionService.setOnAccountListChangedListener(this);
+			xmppConnectionService.setOnRosterUpdateListener(this);
 		}
 	}
 
@@ -806,7 +784,65 @@ public class ConversationActivity extends XmppActivity {
 	}
 
 	public boolean forceEncryption() {
-		return PreferenceManager.getDefaultSharedPreferences(
-				getApplicationContext()).getBoolean("force_encryption", false);
+		return getPreferences().getBoolean("force_encryption", false);
+	}
+
+	public boolean useSendButtonToIndicateStatus() {
+		return getPreferences().getBoolean("send_button_status", false);
+	}
+
+	@Override
+	public void onAccountUpdate() {
+		final ConversationFragment fragment = (ConversationFragment) getFragmentManager()
+				.findFragmentByTag("conversation");
+		if (fragment != null) {
+			runOnUiThread(new Runnable() {
+
+				@Override
+				public void run() {
+					fragment.updateMessages();
+				}
+			});
+		}
+	}
+
+	@Override
+	public void onConversationUpdate() {
+		runOnUiThread(new Runnable() {
+
+			@Override
+			public void run() {
+				updateConversationList();
+				if (paneShouldBeOpen) {
+					if (conversationList.size() >= 1) {
+						swapConversationFragment();
+					} else {
+						startActivity(new Intent(getApplicationContext(),
+								StartConversationActivity.class));
+						finish();
+					}
+				}
+				ConversationFragment selectedFragment = (ConversationFragment) getFragmentManager()
+						.findFragmentByTag("conversation");
+				if (selectedFragment != null) {
+					selectedFragment.updateMessages();
+				}
+			}
+		});
+	}
+
+	@Override
+	public void onRosterUpdate() {
+		final ConversationFragment fragment = (ConversationFragment) getFragmentManager()
+				.findFragmentByTag("conversation");
+		if (fragment != null) {
+			runOnUiThread(new Runnable() {
+
+				@Override
+				public void run() {
+					fragment.updateMessages();
+				}
+			});
+		}
 	}
 }

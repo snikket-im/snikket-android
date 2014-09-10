@@ -12,6 +12,7 @@ import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.MucOptions;
+import eu.siacs.conversations.entities.Presences;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.ui.EditMessage.OnEnterPressed;
 import eu.siacs.conversations.ui.XmppActivity.OnPresenceSelected;
@@ -61,6 +62,7 @@ public class ConversationFragment extends Fragment {
 	protected String queuedPqpMessage = null;
 
 	private EditMessage mEditMessage;
+	private ImageButton mSendButton;
 	private String pastedText = null;
 	private RelativeLayout snackbar;
 	private TextView snackbarMessage;
@@ -255,9 +257,8 @@ public class ConversationFragment extends Fragment {
 			}
 		});
 
-		ImageButton sendButton = (ImageButton) view
-				.findViewById(R.id.textSendButton);
-		sendButton.setOnClickListener(this.mSendButtonListener);
+		mSendButton = (ImageButton) view.findViewById(R.id.textSendButton);
+		mSendButton.setOnClickListener(this.mSendButtonListener);
 
 		snackbar = (RelativeLayout) view.findViewById(R.id.snackbar);
 		snackbarMessage = (TextView) view.findViewById(R.id.snackbar_message);
@@ -485,6 +486,7 @@ public class ConversationFragment extends Fragment {
 						activity.getConversationList(), null, false);
 				activity.updateConversationList();
 			}
+			this.updateSendButton();
 		}
 	}
 
@@ -495,6 +497,51 @@ public class ConversationFragment extends Fragment {
 		}
 		mEditMessage.setText("");
 		updateChatMsgHint();
+	}
+
+	public void updateSendButton() {
+		Conversation c = this.conversation;
+		if (activity.useSendButtonToIndicateStatus() && c != null
+				&& c.getAccount().getStatus() == Account.STATUS_ONLINE) {
+			if (c.getMode() == Conversation.MODE_SINGLE) {
+				switch (c.getContact().getMostAvailableStatus()) {
+				case Presences.ONLINE:
+					this.mSendButton
+							.setImageResource(R.drawable.ic_action_send_now_online);
+					break;
+				case Presences.AWAY:
+					this.mSendButton
+							.setImageResource(R.drawable.ic_action_send_now_away);
+					break;
+				case Presences.XA:
+					this.mSendButton
+							.setImageResource(R.drawable.ic_action_send_now_away);
+					break;
+				case Presences.DND:
+					this.mSendButton
+							.setImageResource(R.drawable.ic_action_send_now_dnd);
+					break;
+				default:
+					this.mSendButton
+							.setImageResource(R.drawable.ic_action_send_now_offline);
+					break;
+				}
+			} else if (c.getMode() == Conversation.MODE_MULTI) {
+				if (c.getMucOptions().online()) {
+					this.mSendButton
+							.setImageResource(R.drawable.ic_action_send_now_online);
+				} else {
+					this.mSendButton
+							.setImageResource(R.drawable.ic_action_send_now_offline);
+				}
+			} else {
+				this.mSendButton
+						.setImageResource(R.drawable.ic_action_send_now_offline);
+			}
+		} else {
+			this.mSendButton
+					.setImageResource(R.drawable.ic_action_send_now_offline);
+		}
 	}
 
 	protected void updateStatusMessages() {
