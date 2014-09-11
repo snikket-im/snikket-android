@@ -231,5 +231,6 @@
     <string name="pref_general">Generellt</string>
     <string name="publish">Publicera</string>
     <string name="private_message">privat meddelande</string>
+    <string name="pref_ui_options">UI inställningar</string>
 
 </resources>

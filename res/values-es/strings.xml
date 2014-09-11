@@ -254,4 +254,5 @@
     <string name="pref_expert_options_summary">Por favor, cuidado con estas opciones</string>
     <string name="pref_use_larger_font">Incrementar tamaño de fuente</string>
     <string name="pref_use_larger_font_summary">Usar fuentes grandes en toda la aplicación</string>
+
 </resources>

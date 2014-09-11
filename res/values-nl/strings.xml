@@ -153,7 +153,7 @@
     <string name="confirm_password">Bevestig wachtwoord</string>
     <string name="passwords_do_not_match">Wachtwoorden komen niet overeen</string>
     <string name="invalid_jid">Dit is geen geldig Jabber ID</string>
-	<string name="error_out_of_memory">Geen geheugen beschikbaar. Afbeelding is te groot</string>
+    <string name="error_out_of_memory">Geen geheugen beschikbaar. Afbeelding is te groot</string>
     <string name="add_phone_book_text">Wilt U %s toevoegen aan de contactenlijst op uw telefoon?</string>
     <string name="contact_status_online">online</string>
     <string name="contact_status_free_to_chat">beschikbaar</string>
@@ -178,7 +178,6 @@
     <string name="unknown_otr_fingerprint">Onbekende OTR vingerafdruk</string>
     <string name="openpgp_messages_found">OpenPGP encrypted messages found</string>
     <string name="reception_failed">Ontvangen mislukt</string>
-
     <string name="join_conference">Aan groepsconversatie deelnemen</string>
     <string name="invite_contact">Contact uitnodigen</string>
     <string name="your_fingerprint">Uw vingerafdruk</string>
@@ -229,4 +228,6 @@
     <string name="server_info_session_established">Huidige sessie opgezet</string>
     <string name="or_long_press_for_default">(Of houdt lang ingedrukt om de oorspronkelijke terug te zetten)</string>
     <string name="server_info_available">beschikbaar</string>
+    <string name="pref_ui_options">UI Opties</string>
+
 </resources>

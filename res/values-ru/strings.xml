@@ -229,5 +229,6 @@
     <string name="save_as_bookmark">Сохранить закладку</string>
     <string name="delete_bookmark">Удалить закладку</string>
     <string name="bookmark_already_exists">Такая закладка уже существует</string>
+    <string name="pref_ui_options">Параметры интерфейса</string>
 
 </resources>

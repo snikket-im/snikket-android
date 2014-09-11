@@ -28,7 +28,7 @@
         android:layout_centerHorizontal="true"
         android:text="@string/touch_to_choose_picture"
         android:textColor="@color/secondarytext" />
-    
+
     <TextView
         android:id="@+id/secondary_hint"
         android:layout_width="wrap_content"
@@ -77,30 +77,30 @@
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
         android:layout_above="@+id/button_bar"
-        android:layout_below="@+id/secondary_hint"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
+        android:layout_below="@+id/secondary_hint"
         android:gravity="center_vertical"
         android:orientation="vertical"
         android:paddingLeft="8dp"
         android:paddingRight="8dp" >
 
-        <TextView 
+        <TextView
             android:id="@+id/account"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/primarytext"
-            android:textSize="?attr/TextSizeHeadline"/>
-        
+            android:textSize="?attr/TextSizeHeadline" />
+
         <TextView
             android:id="@+id/hint_or_warning"
-            android:layout_marginTop="8dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:minLines="3"
             android:text="@string/publish_avatar_explanation"
             android:textColor="@color/primarytext"
-            android:textSize="?attr/TextSizeBody"
-            android:minLines="3" />
+            android:textSize="?attr/TextSizeBody" />
     </LinearLayout>
 
 </RelativeLayout>

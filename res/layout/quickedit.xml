@@ -3,16 +3,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp" >
+
     <EditText
         android:id="@+id/editor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
-        android:textColor="@color/primarytext">
+        android:textColor="@color/primarytext" >
 
         <requestFocus />
     </EditText>
-    
+
 </LinearLayout>

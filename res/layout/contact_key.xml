@@ -32,9 +32,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:padding="8dp"
         android:background="?android:selectableItemBackground"
+        android:padding="8dp"
         android:src="@drawable/ic_action_remove"
-        android:visibility="invisible"/>
+        android:visibility="invisible" />
 
 </RelativeLayout>
