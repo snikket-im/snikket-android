@@ -62,18 +62,17 @@
             android:summary="@string/pref_notification_grace_period_summary"
             android:title="@string/pref_notification_grace_period" />
     </PreferenceCategory>
-    <PreferenceCategory
-        android:title="@string/pref_ui_options">
-    <CheckBoxPreference
+    <PreferenceCategory android:title="@string/pref_ui_options" >
+        <CheckBoxPreference
             android:defaultValue="false"
             android:key="use_larger_font"
-            android:title="@string/pref_use_larger_font"
-            android:summary="@string/pref_use_larger_font_summary"/>
-    <CheckBoxPreference 
-       		android:key="send_button_status"
-       		android:defaultValue="false"
-       		android:title="@string/pref_use_send_button_to_indicate_status"
-       		android:summary="@string/pref_use_send_button_to_indicate_status_summary"/>
+            android:summary="@string/pref_use_larger_font_summary"
+            android:title="@string/pref_use_larger_font" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="send_button_status"
+            android:summary="@string/pref_use_send_button_to_indicate_status_summary"
+            android:title="@string/pref_use_send_button_to_indicate_status" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/pref_advanced_options" >
         <PreferenceScreen
