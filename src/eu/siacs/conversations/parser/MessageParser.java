@@ -202,7 +202,7 @@ public class MessageParser extends AbstractParser implements
 		if ((message == null) || (!message.hasChild("body"))) {
 			if (status == Message.STATUS_RECEIVED
 					&& message.getAttribute("from") != null) {
-				parseNormal(message, account);
+				parseNonMessage(message, account);
 			}
 			return null;
 		}
@@ -256,13 +256,12 @@ public class MessageParser extends AbstractParser implements
 				packet.getId(), Message.STATUS_SEND_FAILED);
 	}
 
-	private void parseNormal(Element packet, Account account) {
+	private void parseNonMessage(Element packet, Account account) {
 		if (packet.hasChild("event", "http://jabber.org/protocol/pubsub#event")) {
 			Element event = packet.findChild("event",
 					"http://jabber.org/protocol/pubsub#event");
 			parseEvent(event, packet.getAttribute("from"), account);
-		}
-		if (packet.hasChild("displayed", "urn:xmpp:chat-markers:0")) {
+		} else if (packet.hasChild("displayed", "urn:xmpp:chat-markers:0")) {
 			String id = packet
 					.findChild("displayed", "urn:xmpp:chat-markers:0")
 					.getAttribute("id");
@@ -294,7 +293,6 @@ public class MessageParser extends AbstractParser implements
 					mXmppConnectionService.updateConversationUi();
 				}
 			}
-
 		} else if (packet.hasChild("x", "jabber:x:conference")) {
 			Element x = packet.findChild("x", "jabber:x:conference");
 			String jid = x.getAttribute("jid");
@@ -382,7 +380,7 @@ public class MessageParser extends AbstractParser implements
 
 		this.parseNick(packet, account);
 
-		if ((packet.getType() == MessagePacket.TYPE_CHAT)) {
+		if ((packet.getType() == MessagePacket.TYPE_CHAT || packet.getType() == MessagePacket.TYPE_NORMAL)) {
 			if ((packet.getBody() != null)
 					&& (packet.getBody().startsWith("?OTR"))) {
 				message = this.parseOtrChat(packet, account);
@@ -407,9 +405,8 @@ public class MessageParser extends AbstractParser implements
 					}
 				}
 			} else {
-				parseNormal(packet, account);
+				parseNonMessage(packet, account);
 			}
-
 		} else if (packet.getType() == MessagePacket.TYPE_GROUPCHAT) {
 			message = this.parseGroupchat(packet, account);
 			if (message != null) {
@@ -423,9 +420,6 @@ public class MessageParser extends AbstractParser implements
 			}
 		} else if (packet.getType() == MessagePacket.TYPE_ERROR) {
 			this.parseError(packet, account);
-			return;
-		} else if (packet.getType() == MessagePacket.TYPE_NORMAL) {
-			this.parseNormal(packet, account);
 			return;
 		} else if (packet.getType() == MessagePacket.TYPE_HEADLINE) {
 			this.parseHeadline(packet, account);
