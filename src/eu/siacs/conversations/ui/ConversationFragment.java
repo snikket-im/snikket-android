@@ -505,6 +505,10 @@ public class ConversationFragment extends Fragment {
 				&& c.getAccount().getStatus() == Account.STATUS_ONLINE) {
 			if (c.getMode() == Conversation.MODE_SINGLE) {
 				switch (c.getContact().getMostAvailableStatus()) {
+				case Presences.CHAT:
+					this.mSendButton
+							.setImageResource(R.drawable.ic_action_send_now_online);
+					break;
 				case Presences.ONLINE:
 					this.mSendButton
 							.setImageResource(R.drawable.ic_action_send_now_online);
