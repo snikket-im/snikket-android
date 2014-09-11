@@ -2,6 +2,7 @@ package eu.siacs.conversations.ui;
 
 import java.io.FileNotFoundException;
 import java.lang.ref.WeakReference;
+import java.util.List;
 import java.util.concurrent.RejectedExecutionException;
 
 import eu.siacs.conversations.Config;
@@ -24,6 +25,8 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.DialogInterface.OnClickListener;
 import android.content.IntentSender.SendIntentException;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 import android.content.Intent;
 import android.content.ServiceConnection;
@@ -153,8 +156,20 @@ public abstract class XmppActivity extends Activity {
 					public void onClick(DialogInterface dialog, int which) {
 						Uri uri = Uri
 								.parse("market://details?id=org.sufficientlysecure.keychain");
-						Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-						startActivity(intent);
+						Intent marketIntent = new Intent(Intent.ACTION_VIEW,
+								uri);
+						PackageManager manager = getApplicationContext()
+								.getPackageManager();
+						List<ResolveInfo> infos = manager
+								.queryIntentActivities(marketIntent, 0);
+						if (infos.size() > 0) {
+							startActivity(marketIntent);
+						} else {
+							uri = Uri.parse("http://www.openkeychain.org/");
+							Intent browserIntent = new Intent(
+									Intent.ACTION_VIEW, uri);
+							startActivity(browserIntent);
+						}
 						finish();
 					}
 				});
