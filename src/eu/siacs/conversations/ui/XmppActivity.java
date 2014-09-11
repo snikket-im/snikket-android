@@ -55,7 +55,9 @@ public abstract class XmppActivity extends Activity {
 
 	protected int mPrimaryTextColor;
 	protected int mSecondaryTextColor;
-	protected int mWarningTextColor;
+	protected int mColorRed;
+	protected int mColorOrange;
+	protected int mColorGreen;
 	protected int mPrimaryColor;
 
 	private DisplayMetrics metrics;
@@ -183,7 +185,9 @@ public abstract class XmppActivity extends Activity {
 		ExceptionHelper.init(getApplicationContext());
 		mPrimaryTextColor = getResources().getColor(R.color.primarytext);
 		mSecondaryTextColor = getResources().getColor(R.color.secondarytext);
-		mWarningTextColor = getResources().getColor(R.color.warningtext);
+		mColorRed = getResources().getColor(R.color.red);
+		mColorOrange = getResources().getColor(R.color.orange);
+		mColorGreen = getResources().getColor(R.color.green);
 		mPrimaryColor = getResources().getColor(R.color.primary);
 		if (getPreferences().getBoolean("use_larger_font", false)) {
 			setTheme(R.style.ConversationsTheme_LargerText);
@@ -475,7 +479,7 @@ public abstract class XmppActivity extends Activity {
 	}
 
 	public int getWarningTextColor() {
-		return this.mWarningTextColor;
+		return this.mColorRed;
 	}
 
 	public int getPrimaryColor() {

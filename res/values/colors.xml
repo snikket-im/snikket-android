@@ -9,5 +9,7 @@
     <color name="secondarybackground" type="color">#ffeeeeee</color>
     <color name="darkbackground" type="color">#ff323232</color>
     <color name="divider">#1f000000</color>
-    <color name="warningtext">#ffe51c23</color>
+    <color name="red">#ffe51c23</color>
+    <color name="orange">#ffff9800</color>
+    <color name="green">#ff259b24</color>
 </resources>

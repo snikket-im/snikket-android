@@ -145,7 +145,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 			break;
 		}
 		if (error) {
-			viewHolder.time.setTextColor(0xFFe92727);
+			viewHolder.time.setTextColor(activity.getWarningTextColor());
 		} else {
 			viewHolder.time.setTextColor(activity.getSecondaryTextColor());
 		}
@@ -191,7 +191,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		viewHolder.image.setVisibility(View.GONE);
 		viewHolder.messageBody.setVisibility(View.VISIBLE);
 		viewHolder.messageBody.setText(getContext().getString(r));
-		viewHolder.messageBody.setTextColor(0xff33B5E5);
+		viewHolder.messageBody.setTextColor(activity.getSecondaryTextColor());
 		viewHolder.messageBody.setTypeface(null, Typeface.ITALIC);
 		viewHolder.messageBody.setTextIsSelectable(false);
 	}
@@ -204,7 +204,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		viewHolder.messageBody.setVisibility(View.VISIBLE);
 		viewHolder.messageBody.setText(getContext().getString(
 				R.string.decryption_failed));
-		viewHolder.messageBody.setTextColor(0xFFe92727);
+		viewHolder.messageBody.setTextColor(activity.getWarningTextColor());
 		viewHolder.messageBody.setTypeface(null, Typeface.NORMAL);
 		viewHolder.messageBody.setTextIsSelectable(false);
 	}

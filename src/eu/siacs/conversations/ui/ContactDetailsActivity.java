@@ -278,31 +278,31 @@ public class ContactDetailsActivity extends XmppActivity {
 		switch (contact.getMostAvailableStatus()) {
 		case Presences.CHAT:
 			status.setText(R.string.contact_status_free_to_chat);
-			status.setTextColor(0xFF83b600);
+			status.setTextColor(mColorGreen);
 			break;
 		case Presences.ONLINE:
 			status.setText(R.string.contact_status_online);
-			status.setTextColor(0xFF83b600);
+			status.setTextColor(mColorGreen);
 			break;
 		case Presences.AWAY:
 			status.setText(R.string.contact_status_away);
-			status.setTextColor(0xFFffa713);
+			status.setTextColor(mColorOrange);
 			break;
 		case Presences.XA:
 			status.setText(R.string.contact_status_extended_away);
-			status.setTextColor(0xFFffa713);
+			status.setTextColor(mColorOrange);
 			break;
 		case Presences.DND:
 			status.setText(R.string.contact_status_do_not_disturb);
-			status.setTextColor(0xFFe92727);
+			status.setTextColor(mColorRed);
 			break;
 		case Presences.OFFLINE:
 			status.setText(R.string.contact_status_offline);
-			status.setTextColor(0xFFe92727);
+			status.setTextColor(mSecondaryTextColor);
 			break;
 		default:
 			status.setText(R.string.contact_status_offline);
-			status.setTextColor(0xFFe92727);
+			status.setTextColor(mSecondaryTextColor);
 			break;
 		}
 		if (contact.getPresences().size() > 1) {
