@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <color name="primary" type="color">#ff259b24</color>
     <color name="primarydark" type="color">#ff0a7e07</color>
     <color name="primarytext" type="color">#de000000</color>
@@ -9,5 +10,8 @@
     <color name="secondarybackground" type="color">#ffeeeeee</color>
     <color name="darkbackground" type="color">#ff323232</color>
     <color name="divider">#1f000000</color>
-    <color name="warningtext">#ffe51c23</color>
+    <color name="red">#ffe51c23</color>
+    <color name="orange">#ffff9800</color>
+    <color name="green">#ff259b24</color>
+
 </resources>

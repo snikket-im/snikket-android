@@ -9,7 +9,7 @@
         <item name="TextSizeBody">14sp</item>
         <item name="TextSizeHeadline">20sp</item>
     </style>
-    
+
     <style name="ConversationsTheme.LargerText" parent="ConversationsTheme">
         <item name="TextSizeInfo">14sp</item>
         <item name="TextSizeBody">16sp</item>
@@ -27,9 +27,9 @@
         <item name="android:popupMenuStyle">@android:style/Widget.Holo.Light.PopupMenu</item>
         <item name="android:dropDownListViewStyle">@android:style/Widget.Holo.Light.ListView.DropDown</item>
     </style>
-    
+
     <style name="ConversationsActionBarTabs" parent="@android:style/Widget.Holo.ActionBar.TabView">
-       <item name="android:background">@drawable/actionbar_tab_indicator</item>
+        <item name="android:background">@drawable/actionbar_tab_indicator</item>
     </style>
 
 </resources>

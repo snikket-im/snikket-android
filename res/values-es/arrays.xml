@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string-array name="resources">
         <item>Móvil</item>
         <item>Teléfono</item>
@@ -26,6 +27,7 @@
         <item>8 horas</item>
         <item>Hasta nuevo aviso</item>
     </string-array>
+
     <integer-array name="mute_options_durations">
         <item>1800</item>
         <item>3600</item>
@@ -33,4 +35,5 @@
         <item>28800</item>
         <item>-1</item>
     </integer-array>
+
 </resources>

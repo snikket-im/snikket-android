@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name">Conversations</string>
     <string name="action_settings">Einstellungen</string>
     <string name="action_add">Neue Unterhaltung</string>
@@ -230,4 +231,6 @@
     <string name="server_info_session_established">Aktuelle Sitzung wiederhergestellt</string>
     <string name="additional_information">Zusätzliche Informationen</string>
     <string name="skip">Überspringen</string>
+    <string name="pref_ui_options">Benutzeroberfläche</string>
+
 </resources>

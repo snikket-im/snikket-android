@@ -5,8 +5,6 @@
     android:layout_height="match_parent"
     android:background="@color/secondarybackground" >
 
-   
-
     <ListView
         android:id="@+id/messages_view"
         android:layout_width="fill_parent"
@@ -23,13 +21,13 @@
         tools:listitem="@layout/message_sent" >
     </ListView>
 
-         <RelativeLayout
-             android:id="@+id/textsend"
-             android:layout_width="fill_parent"
-             android:layout_height="wrap_content"
-             android:layout_alignParentBottom="true"
-             android:layout_alignParentLeft="true"
-             android:background="@color/primarybackground" >
+    <RelativeLayout
+        android:id="@+id/textsend"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:background="@color/primarybackground" >
 
         <eu.siacs.conversations.ui.EditMessage
             android:id="@+id/textinput"
@@ -39,6 +37,7 @@
             android:layout_toLeftOf="@+id/textSendButton"
             android:background="@color/primarybackground"
             android:ems="10"
+            android:imeOptions="flagNoExtractUi"
             android:inputType="textShortMessage|textMultiLine|textCapSentences"
             android:minHeight="48dp"
             android:minLines="1"
@@ -46,8 +45,8 @@
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
             android:paddingTop="12dp"
-            android:textColor="@color/primarytext"
-			android:imeOptions="flagNoExtractUi">
+            android:textColor="@color/primarytext" >
+
             <requestFocus />
         </eu.siacs.conversations.ui.EditMessage>
 
@@ -58,46 +57,46 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:background="?android:selectableItemBackground"
-            android:src="@drawable/ic_action_send_now" />
+            android:src="@drawable/ic_action_send_now_offline" />
     </RelativeLayout>
 
-         <RelativeLayout
-             android:id="@+id/snackbar"
-             android:layout_width="fill_parent"
-             android:layout_height="wrap_content"
-             android:layout_above="@+id/textsend"
-             android:background="@drawable/snackbar"
-             android:minHeight="48dp"
-             android:layout_marginLeft="8dp"
-             android:layout_marginRight="8dp"
-             android:layout_marginBottom="4dp"
-             android:visibility="gone" >
+    <RelativeLayout
+        android:id="@+id/snackbar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/textsend"
+        android:layout_marginBottom="4dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:background="@drawable/snackbar"
+        android:minHeight="48dp"
+        android:visibility="gone" >
 
-             <TextView
-                 android:id="@+id/snackbar_message"
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:layout_alignParentLeft="true"
-                 android:layout_centerVertical="true"
-                 android:paddingLeft="24dp"
-                 android:textColor="@color/ondarktext"
-                 android:textSize="?attr/TextSizeBody" 
-                 android:layout_toLeftOf="@+id/snackbar_action"/>
+        <TextView
+            android:id="@+id/snackbar_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/snackbar_action"
+            android:paddingLeft="24dp"
+            android:textColor="@color/ondarktext"
+            android:textSize="?attr/TextSizeBody" />
 
-             <TextView
-                 android:id="@+id/snackbar_action"
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:layout_alignParentRight="true"
-                 android:layout_centerVertical="true"
-                 android:paddingBottom="16dp"
-                 android:paddingLeft="24dp"
-                 android:paddingRight="24dp"
-                 android:paddingTop="16dp"
-                 android:textAllCaps="true"
-                 android:textColor="@color/ondarktext"
-                 android:textSize="?attr/TextSizeBody"
-                 android:textStyle="bold" />
-         </RelativeLayout>
+        <TextView
+            android:id="@+id/snackbar_action"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:paddingBottom="16dp"
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp"
+            android:paddingTop="16dp"
+            android:textAllCaps="true"
+            android:textColor="@color/ondarktext"
+            android:textSize="?attr/TextSizeBody"
+            android:textStyle="bold" />
+    </RelativeLayout>
 
 </RelativeLayout>

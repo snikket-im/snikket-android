@@ -17,7 +17,6 @@
     <string name="title_activity_settings">Inställningar</string>
     <string name="title_activity_conference_details">Konferensdetaljer</string>
     <string name="title_activity_contact_details">Kontaktdetaljer</string>
-    <string name="title_activity_conversations">Konversationer</string>
     <string name="title_activity_sharewith">Dela med konversation</string>
     <string name="title_activity_start_conversation">Starta konversation</string>
     <string name="title_activity_choose_contact">Välj kontakt</string>
@@ -65,7 +64,6 @@
     <string name="clear_histor_msg">Vill du ta bort alla meddelanden i denna konversation?\n\n<b>Varning:</b> Detta kommer inte påverka meddelanden lagrade på andra enheter eller servrar.</string>
     <string name="delete_messages">Ta bort meddelanden</string>
     <string name="also_end_conversation">Avsluta denna konversation efter</string>
-    <string name="choose_presence">Välj närvaro till kontakt</string>
     <string name="send_plain_text_message">Skicka meddelande i klartext</string>
     <string name="send_otr_message">Skicka OTR-krypterat meddelande</string>
     <string name="send_pgp_message">Skicka OpenPGP-krypterat meddelande</string>
@@ -101,7 +99,6 @@
     <string name="pref_conference_notifications">Konferensnotifieringar</string>
     <string name="pref_conference_notifications_summary">Notifiera alltid när nytt konferensmeddelande tagits emot istället för endast vid highlight</string>
     <string name="pref_notification_grace_period">Notifieringsfrist</string>
-    <string name="pref_notification_grace_period_summary">Deaktivera notifieringar en kort stund efter att en carbon copy tagits emot</string>
     <string name="pref_advanced_options">Avancerade inställningar</string>
     <string name="pref_never_send_crash">Skicka aldrig krasch-rapporter</string>
     <string name="pref_never_send_crash_summary">Genom att skicka in stack traces hjälper du utvecklarna av Conversations</string>
@@ -128,7 +125,6 @@
     <string name="error_io_exception">Generellt I/O-fel. Du kanske fick slut på plats?</string>
     <string name="error_security_exception_during_image_copy">Applikationen du använde för att välja bilden gav inte tillräckliga rättigheter för att läsa filen.\n\n<small>Använd en annan filhanterare för att välja bild</small></string>
     <string name="account_status_unknown">Okänd</string>
-    <string name="account_status_disabled">Tillfälligt deaktiverad</string>
     <string name="account_status_online">Online</string>
     <string name="account_status_connecting">Ansluter\u2026</string>
     <string name="account_status_offline">Offline</string>
@@ -144,7 +140,6 @@
     <string name="encryption_choice_pgp">OpenPGP</string>
     <string name="mgmt_account_edit">Ändra konto</string>
     <string name="mgmt_account_delete">Ta bort</string>
-    <string name="mgmt_account_disable">Deaktivera tillfälligt</string>
     <string name="mgmt_account_enable">Aktivera</string>
     <string name="mgmt_account_are_you_sure">Är du säker?</string>
     <string name="mgmt_account_delete_confirm_text">Om du tar bort kontot kommer all konversationshistorik att försvinna</string>
@@ -208,7 +203,6 @@
     <string name="add_back">Addera tillbaks</string>
     <string name="contact_has_read_up_to_this_point">%s har läst fram hit</string>
     <string name="next">Nästa</string>
-    <string name="publish_avatar_explanation">Notera: Alla som kan se dina närvarouppdateringar kommer se denna bild.</string>
     <string name="server_info_unavailable">otillgänglig</string>
     <string name="mgmt_account_publish_pgp">Publisera OpenPGP publik nyckel</string>
     <string name="additional_information">Ytterligare information</string>
@@ -231,5 +225,36 @@
     <string name="pref_general">Generellt</string>
     <string name="publish">Publicera</string>
     <string name="private_message">privat meddelande</string>
+    <string name="pref_ui_options">UI inställningar</string>
+    <string name="enable">Aktivera</string>
+    <string name="without_mutual_presence_updates"><b>Varning:</b> Skicka detta utan gemensamma tillgänglighetsuppdateringar kan ge oväntade problem.\n\n<small>Gå till kontaktdetaljer för att verifiera dina tillgänglighetsuppdateringar.</small></string>
+    <string name="disable_notifications">Inaktivera notifieringar</string>
+    <string name="request_presence_updates">Begär tillgänglighetsuppdateringar från din kontakt först.\n\n<small>Detta används för att se vilken klient/klienter din kontakt använder.</small></string>
+    <string name="conference_requires_password">Konferensen kräver lösenord</string>
+    <string name="pref_dont_save_encrypted">Spara in krypterade meddelanden</string>
+    <string name="pref_encryption_settings">Krypteringsinställningar</string>
+    <string name="pref_use_send_button_to_indicate_status_summary">Färglägg skickaknappen för att indikera kontaktens status</string>
+    <string name="missing_presence_updates">Saknar tillgänglighetsuppdateringar från kontakt</string>
+    <string name="pref_expert_options">Expertinställningar</string>
+    <string name="pref_force_encryption_summary">Sänd alltid krypterade meddelanden (utom för konferenser)</string>
+    <string name="pref_expert_options_summary">Var försiktig med dem</string>
+    <string name="disable_notifications_for_this_conversation">Inaktivera notifieringar för denna konversation</string>
+    <string name="pref_use_send_button_to_indicate_status">Skickaknappen indikerar status</string>
+    <string name="enter_password">Fyll i lösenord</string>
+    <string name="notifications_disabled">Notifieringar är inaktiverade</string>
+    <string name="pref_force_encryption">Tvinga kryptering</string>
+    <string name="sure_delete_fingerprint">Är du säker på att du vill ta bort detta fingeravtryck?</string>
+    <string name="ignore">Ignorera</string>
+    <string name="pref_use_larger_font_summary">Använd större teckenstorlek för hela applikationen</string>
+    <string name="pref_use_larger_font">Öka teckenstorlek</string>
+    <string name="pref_dont_save_encrypted_summary">Varning: Detta kan leda till att meddelanden förloras</string>
+    <string name="delete_fingerprint">Ta bort fingeravtryck</string>
+    <string name="request_now">Begär nu</string>
+    <string name="title_activity_conversations">Conversations</string>
+    <string name="publish_avatar_explanation">Notera: Alla som kan se dina tillgänglighetsuppdateringar kommer se denna bild.</string>
+    <string name="choose_presence">Välj tillgänglighet till kontakt</string>
+    <string name="pref_notification_grace_period_summary">Inaktivera notifieringar en kort stund efter att en carbon copy tagits emot</string>
+    <string name="account_status_disabled">Tillfälligt inaktiverad</string>
+    <string name="mgmt_account_disable">Inaktivera tillfälligt</string>
 
 </resources>

@@ -14,6 +14,6 @@
         android:layout_height="wrap_content"
         android:focusable="true"
         android:inputType="textEmailAddress|textNoSuggestions"
-        android:textColor="@color/ondarktext"/>
+        android:textColor="@color/ondarktext" />
 
 </LinearLayout>

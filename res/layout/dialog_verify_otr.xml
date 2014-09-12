@@ -3,55 +3,58 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingLeft="8dp"
     android:paddingBottom="16dp"
-    android:paddingRight="8dp">
-    
- <TextView
+    android:paddingLeft="8dp"
+    android:paddingRight="8dp" >
+
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="8dp"
         android:text="Jabber ID"
         android:textColor="@color/primarytext"
-        android:textSize="?attr/TextSizeHeadline"/>
+        android:textSize="?attr/TextSizeHeadline" />
 
     <TextView
         android:id="@+id/verify_otr_jid"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="8dp"
-        android:textSize="?attr/TextSizeBody"
-        android:textColor="@color/secondarytext"/>
-     <TextView
+        android:textColor="@color/secondarytext"
+        android:textSize="?attr/TextSizeBody" />
+
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="8dp"
         android:text="@string/otr_fingerprint"
         android:textColor="@color/primarytext"
-        android:textSize="?attr/TextSizeHeadline"/>
+        android:textSize="?attr/TextSizeHeadline" />
 
     <TextView
         android:id="@+id/verify_otr_fingerprint"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="8dp"
+        android:textColor="@color/secondarytext"
         android:textSize="?attr/TextSizeBody"
-        android:typeface="monospace"
-        android:textColor="@color/secondarytext"/>
-     <TextView
+        android:typeface="monospace" />
+
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="8dp"
         android:text="@string/your_fingerprint"
-        android:textSize="?attr/TextSizeHeadline"
-        android:textColor="@color/primarytext"/>
+        android:textColor="@color/primarytext"
+        android:textSize="?attr/TextSizeHeadline" />
 
     <TextView
         android:id="@+id/verify_otr_yourprint"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="8dp"
+        android:textColor="@color/secondarytext"
         android:textSize="?attr/TextSizeBody"
-        android:typeface="monospace"
-        android:textColor="@color/secondarytext"/>
+        android:typeface="monospace" />
+
 </LinearLayout>

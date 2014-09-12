@@ -250,8 +250,11 @@
     <string name="pref_force_encryption_summary">Always send messages encrypted (execpt for conferences)</string>
     <string name="pref_dont_save_encrypted">Don’t save encrypted messages</string>
     <string name="pref_dont_save_encrypted_summary">Warning: This could lead to message loss</string>
-	<string name="pref_expert_options">Expert options</string>
-	<string name="pref_expert_options_summary">Please be very careful with those</string>
-	<string name="pref_use_larger_font">Increase font size</string>
-	<string name="pref_use_larger_font_summary">Use larger font sizes across the entire app</string>
+    <string name="pref_expert_options">Expert options</string>
+    <string name="pref_expert_options_summary">Please be very careful with those</string>
+    <string name="pref_use_larger_font">Increase font size</string>
+    <string name="pref_use_larger_font_summary">Use larger font sizes across the entire app</string>
+    <string name="pref_use_send_button_to_indicate_status">Send button indicates status</string>
+    <string name="pref_use_send_button_to_indicate_status_summary">Colorize send button to indicate a contacs status</string>
+
 </resources>

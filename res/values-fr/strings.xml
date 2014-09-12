@@ -207,5 +207,6 @@
     <string name="contact_added_you">Votre correspondant vous a ajouté dans sa liste de contacts</string>
     <string name="add_back">Ajouter également</string>
     <string name="contact_has_read_up_to_this_point">%s a lu les messages précédents.</string>
+    <string name="pref_ui_options">Options d\'affichage</string>
 
 </resources>

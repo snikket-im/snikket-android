@@ -2,124 +2,127 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-        android:background="@color/primarybackground">
+    android:background="@color/primarybackground" >
 
-<LinearLayout 
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
-
-     <TextView
-        style="@style/sectionHeader"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:text="@string/action_contact_details"
-        android:textColor="@color/primarytext"/>
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:minHeight="88dp"
-        android:padding="8dp">
+        android:orientation="vertical" >
 
-        <QuickContactBadge
-            android:id="@+id/details_contact_badge"
-            android:layout_width="72dp"
-            android:layout_height="72dp"
-            android:layout_centerVertical="true"
-            android:scaleType="centerCrop"/>
-
-        <LinearLayout
-            android:id="@+id/details_jidbox"
+        <TextView
+            style="@style/sectionHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/details_contact_badge"
-            android:orientation="vertical"
-            android:paddingLeft="8dp" >
+            android:padding="8dp"
+            android:text="@string/action_contact_details"
+            android:textColor="@color/primarytext" />
 
-            <TextView
-                android:id="@+id/details_contactjid"
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="88dp"
+            android:padding="8dp" >
+
+            <QuickContactBadge
+                android:id="@+id/details_contact_badge"
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                android:layout_centerVertical="true"
+                android:scaleType="centerCrop" />
+
+            <LinearLayout
+                android:id="@+id/details_jidbox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="8dp"
-                android:singleLine="true"
-                android:textSize="?attr/TextSizeBody"
-                android:textColor="@color/primarytext"/>
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/details_contact_badge"
+                android:orientation="vertical"
+                android:paddingLeft="8dp" >
 
-            <TextView
-                android:id="@+id/details_contactstatus"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="16dp"
-                android:textSize="?attr/TextSizeHeadline"
-                android:textColor="@color/primarytext"
-                android:textStyle="bold" />
-            <TextView
-                android:id="@+id/details_lastseen"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="8dp"
-                android:singleLine="true"
-                android:textSize="?attr/TextSizeBody"
-                android:textColor="@color/primarytext"/>
-        </LinearLayout>
-          
-    </RelativeLayout>
+                <TextView
+                    android:id="@+id/details_contactjid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="8dp"
+                    android:singleLine="true"
+                    android:textColor="@color/primarytext"
+                    android:textSize="?attr/TextSizeBody" />
 
-  
-   <TextView
-        style="@style/sectionHeader"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:text="@string/your_account"
-        android:textColor="@color/primarytext"/>
-    <TextView
-        android:id="@+id/details_account"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingLeft="8dp"
-        android:textSize="?attr/TextSizeBody"
-        android:textColor="@color/primarytext" />
-   <TextView
-        style="@style/sectionHeader"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:text="@string/subscriptions"
-        android:textColor="@color/primarytext"/>
+                <TextView
+                    android:id="@+id/details_contactstatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="16dp"
+                    android:textColor="@color/primarytext"
+                    android:textSize="?attr/TextSizeHeadline"
+                    android:textStyle="bold" />
 
-    <CheckBox
-        android:id="@+id/details_send_presence"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/send_presence_updates"
-        android:textSize="?attr/TextSizeBody"
-        android:textColor="@color/primarytext" />
+                <TextView
+                    android:id="@+id/details_lastseen"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="8dp"
+                    android:singleLine="true"
+                    android:textColor="@color/primarytext"
+                    android:textSize="?attr/TextSizeBody" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <TextView
+            style="@style/sectionHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="@string/your_account"
+            android:textColor="@color/primarytext" />
+
+        <TextView
+            android:id="@+id/details_account"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="8dp"
+            android:textColor="@color/primarytext"
+            android:textSize="?attr/TextSizeBody" />
+
+        <TextView
+            style="@style/sectionHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="@string/subscriptions"
+            android:textColor="@color/primarytext" />
 
         <CheckBox
-        android:id="@+id/details_receive_presence"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/receive_presence_updates"
-        android:textSize="?attr/TextSizeBody"
-        android:textColor="@color/primarytext" />
- <TextView
-        style="@style/sectionHeader"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:text="@string/keys" />
+            android:id="@+id/details_send_presence"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/send_presence_updates"
+            android:textColor="@color/primarytext"
+            android:textSize="?attr/TextSizeBody" />
 
- <LinearLayout
-     android:id="@+id/details_contact_keys"
-     android:layout_width="match_parent"
-     android:layout_height="wrap_content"
-     android:orientation="vertical"
-     android:divider="?android:dividerHorizontal"
-        android:showDividers="middle">
- </LinearLayout>
-    
-</LinearLayout>
+        <CheckBox
+            android:id="@+id/details_receive_presence"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/receive_presence_updates"
+            android:textColor="@color/primarytext"
+            android:textSize="?attr/TextSizeBody" />
+
+        <TextView
+            style="@style/sectionHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="@string/keys" />
+
+        <LinearLayout
+            android:id="@+id/details_contact_keys"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="?android:dividerHorizontal"
+            android:orientation="vertical"
+            android:showDividers="middle" >
+        </LinearLayout>
+    </LinearLayout>
+
 </ScrollView>

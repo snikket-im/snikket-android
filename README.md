@@ -15,7 +15,9 @@ Conversations - the very last word in instant messaging
 ##Features
 * End-to-end encryption with either OTR or openPGP
 * Sending and receiving images
+* Indication when your contact has read your message
 * Intuitive UI that follows Android Design guidelines
+* Pictures / Avatars for your Contacts
 * Syncs with desktop client
 * Conferences (with support for bookmarks)
 * Address book integration
@@ -119,6 +121,29 @@ details within Conversations. This will start an add to address book intent with
 as payload. This doesn’t require Conversations to have write permissions on your
 address book but also doesn’t require you to copy past Jabber ID from one app to
 another.
+
+####I get 'delivery failed' on my messages
+If you get delivery failed on images it’s probably because the recipient lost
+network connectivity during recepiton. In that case you can try it again at a
+later time.
+
+For text messages the answer to your question is a little bit more complex.
+'delivery failed' on text messages is always something that is being reported by
+the server. The most common reason for this is that the recipient failed to
+resume a connection. When a client loses connectivity for a short time the client
+usually has a five minute window to pick up that connection again. When the
+client fails to do so because the network connectivity is out for longer than
+that all messages sent to that client will be returned to the sender resulting
+in a delivery failed.
+
+Other less common reasons are that the message you sent didn’t meet some
+criterias enforced by the server. (Too large, too many) Another reason could be
+that the recipient is offline and the server doesn’t provide offline storage.
+
+Usually you are able to distinguish between these two groups in the fact that
+the first one happens always after some time and the second one happens almost
+instantly.
+
 ####Where can I see the status of my contacts? How can I set a status or priority
 Status are a horrible metric. Setting them manually to a proper value rarely
 works because users are either lazy or just forget about them. Setting them

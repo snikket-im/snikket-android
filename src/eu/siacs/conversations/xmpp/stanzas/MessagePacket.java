@@ -4,7 +4,6 @@ import eu.siacs.conversations.xml.Element;
 
 public class MessagePacket extends AbstractStanza {
 	public static final int TYPE_CHAT = 0;
-	public static final int TYPE_UNKNOWN = 1;
 	public static final int TYPE_NORMAL = 2;
 	public static final int TYPE_GROUPCHAT = 3;
 	public static final int TYPE_ERROR = 4;
@@ -38,8 +37,6 @@ public class MessagePacket extends AbstractStanza {
 		case TYPE_GROUPCHAT:
 			this.setAttribute("type", "groupchat");
 			break;
-		case TYPE_UNKNOWN:
-			break;
 		case TYPE_NORMAL:
 			break;
 		default:
@@ -63,7 +60,7 @@ public class MessagePacket extends AbstractStanza {
 		} else if (type.equals("headline")) {
 			return TYPE_HEADLINE;
 		} else {
-			return TYPE_UNKNOWN;
+			return TYPE_NORMAL;
 		}
 	}
 }

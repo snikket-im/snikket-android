@@ -66,9 +66,9 @@
     <string name="image_file"><i>Imaxe recibida. Pulsa para ver</i></string>
     <string name="pref_xmpp_resource">Recurso</string>
     <string name="pref_xmpp_resource_summary">O nome que identifica o cliente que estás a empregar</string>
-	<string name="pref_accept_files">Aceptar arquivos</string>
+    <string name="pref_accept_files">Aceptar arquivos</string>
     <string name="pref_accept_files_summary">De forma automática aceptar arquivos menores de&#8230;</string>
-	<string name="pref_notification_settings">Axustes de notificación</string>
+    <string name="pref_notification_settings">Axustes de notificación</string>
     <string name="pref_notifications">Notificacións</string>
     <string name="pref_notifications_summary">Notifica cuando chega unha nova mensaxe</string>
     <string name="pref_vibrate">Tremer</string>
@@ -125,4 +125,6 @@
     <string name="save">Gardar</string>
     <string name="passwords_do_not_match">As contrasinais non coinciden</string>
     <string name="invalid_jid">O identificador non é un identificador de Jabber válido</string>
+    <string name="pref_ui_options">Opcións de interfaz</string>
+
 </resources>

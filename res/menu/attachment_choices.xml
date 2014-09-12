@@ -7,8 +7,9 @@
     <item
         android:id="@+id/attach_take_picture"
         android:title="@string/attach_take_picture"/>
-	<item
-	    android:id="@+id/attach_record_voice"
-	    android:title="@string/attach_record_voice"
-	    android:visible="false"/>
+    <item
+        android:id="@+id/attach_record_voice"
+        android:title="@string/attach_record_voice"
+        android:visible="false"/>
+
 </menu>
