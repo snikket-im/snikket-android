@@ -186,11 +186,13 @@ public class MessageParser extends AbstractParser implements
 		int status;
 		String fullJid;
 		Element forwarded;
-		if (packet.hasChild("received")) {
-			forwarded = packet.findChild("received").findChild("forwarded");
+		if (packet.hasChild("received", "urn:xmpp:carbons:2")) {
+			forwarded = packet.findChild("received", "urn:xmpp:carbons:2")
+				.findChild("forwarded", "urn:xmpp:forward:0");
 			status = Message.STATUS_RECEIVED;
-		} else if (packet.hasChild("sent")) {
-			forwarded = packet.findChild("sent").findChild("forwarded");
+		} else if (packet.hasChild("sent", "urn:xmpp:carbons:2")) {
+			forwarded = packet.findChild("sent", "urn:xmpp:carbons:2")
+				.findChild("forwarded", "urn:xmpp:forward:0");
 			status = Message.STATUS_SEND;
 		} else {
 			return null;
@@ -392,7 +394,8 @@ public class MessageParser extends AbstractParser implements
 				if (message != null) {
 					message.markUnread();
 				}
-			} else if (packet.hasChild("received") || (packet.hasChild("sent"))) {
+			} else if (packet.hasChild("received", "urn:xmpp:carbons:2")
+					|| (packet.hasChild("sent", "urn:xmpp:carbons:2"))) {
 				message = this.parseCarbonMessage(packet, account);
 				if (message != null) {
 					if (message.getStatus() == Message.STATUS_SEND) {
