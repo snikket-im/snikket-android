@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="eu.siacs.conversations"
     android:versionCode="27"
-    android:versionName="0.8-alpha" >
+    android:versionName="0.7.1" >
 
     <uses-sdk
         android:minSdkVersion="14"
