@@ -1,3 +1,4 @@
+* XEP-0027: Current Jabber OpenPGP Usage
 * XEP-0030: Service Discovery
 * XEP-0045: Multi-User Chat
 * XEP-0048: Bookmarks
