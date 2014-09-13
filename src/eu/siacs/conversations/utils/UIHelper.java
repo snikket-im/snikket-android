@@ -353,14 +353,15 @@ public class UIHelper {
 			Pattern highlight = generateNickHighlightPattern(nick);
 			Matcher m = highlight.matcher(currentCon.getLatestMessage()
 					.getBody());
-			notify = m.find();
+			notify = m.find()
+					|| (currentCon.getLatestMessage().getType() == Message.TYPE_PRIVATE);
 		}
 
 		List<Conversation> unread = new ArrayList<Conversation>();
 		for (Conversation conversation : conversations) {
 			if (conversation.getMode() == Conversation.MODE_MULTI) {
 				if ((!conversation.isRead())
-						&& ((wasHighlighted(conversation) || (alwaysNotify)))) {
+						&& ((wasHighlightedOrPrivate(conversation) || (alwaysNotify)))) {
 					unread.add(conversation);
 				}
 			} else {
@@ -466,7 +467,7 @@ public class UIHelper {
 		}
 	}
 
-	private static boolean wasHighlighted(Conversation conversation) {
+	private static boolean wasHighlightedOrPrivate(Conversation conversation) {
 		List<Message> messages = conversation.getMessages();
 		String nick = conversation.getMucOptions().getActualNick();
 		Pattern highlight = generateNickHighlightPattern(nick);
@@ -475,7 +476,8 @@ public class UIHelper {
 				break;
 			} else {
 				Matcher m = highlight.matcher(messages.get(i).getBody());
-				if (m.find()) {
+				if (m.find()
+						|| messages.get(i).getType() == Message.TYPE_PRIVATE) {
 					return true;
 				}
 			}
