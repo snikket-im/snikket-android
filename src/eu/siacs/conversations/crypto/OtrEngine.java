@@ -18,8 +18,6 @@ import android.util.Log;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
-import eu.siacs.conversations.entities.Conversation;
-import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
 
@@ -29,8 +27,6 @@ import net.java.otr4j.OtrPolicy;
 import net.java.otr4j.OtrPolicyImpl;
 import net.java.otr4j.session.InstanceTag;
 import net.java.otr4j.session.SessionID;
-import net.java.otr4j.session.SessionImpl;
-import net.java.otr4j.session.SessionStatus;
 
 public class OtrEngine implements OtrEngineHost {
 
