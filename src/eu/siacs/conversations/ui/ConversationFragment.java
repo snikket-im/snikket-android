@@ -165,14 +165,15 @@ public class ConversationFragment extends Fragment {
 			if (firstVisibleItem == 0 && messagesLoaded) {
 				long timestamp = messageList.get(0).getTimeSent();
 				messagesLoaded = false;
-				List<Message> messages = activity.xmppConnectionService
-						.getMoreMessages(conversation, timestamp);
-				messageList.addAll(0, messages);
+				int size = activity.xmppConnectionService.loadMoreMessages(
+						conversation, timestamp);
+				messageList.clear();
+				messageList.addAll(conversation.getMessages());
 				messageListAdapter.notifyDataSetChanged();
-				if (messages.size() != 0) {
+				if (size != 0) {
 					messagesLoaded = true;
 				}
-				messagesView.setSelectionFromTop(messages.size() + 1, 0);
+				messagesView.setSelectionFromTop(size + 1, 0);
 			}
 		}
 	};
@@ -492,7 +493,7 @@ public class ConversationFragment extends Fragment {
 
 	private void messageSent() {
 		int size = this.messageList.size();
-		if (size >= 1) {
+		if (size >= 1 && this.messagesView.getLastVisiblePosition() != size - 1) {
 			messagesView.setSelection(size - 1);
 		}
 		mEditMessage.setText("");

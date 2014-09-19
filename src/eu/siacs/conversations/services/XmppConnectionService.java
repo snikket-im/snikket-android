@@ -819,15 +819,15 @@ public class XmppConnectionService extends Service {
 			}
 		});
 	}
-
-	public List<Message> getMoreMessages(Conversation conversation,
-			long timestamp) {
+	
+	public int loadMoreMessages(Conversation conversation, long timestamp) {
 		List<Message> messages = databaseBackend.getMessages(conversation, 50,
 				timestamp);
 		for (Message message : messages) {
 			message.setConversation(conversation);
 		}
-		return messages;
+		conversation.getMessages().addAll(0, messages);
+		return messages.size();
 	}
 
 	public List<Account> getAccounts() {
