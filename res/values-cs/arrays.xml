@@ -5,7 +5,7 @@
         <item>Mobil</item>
         <item>Telefon</item>
         <item>Tablet</item>
-        <item>Conversations</item>
+        <item>Konverzace</item>
         <item>Android</item>
     </string-array>
     <string-array name="filesizes">
