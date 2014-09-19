@@ -11,7 +11,6 @@ import eu.siacs.conversations.entities.Downloadable;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.ui.ConversationActivity;
 import eu.siacs.conversations.utils.UIHelper;
-import eu.siacs.conversations.xmpp.jingle.JingleConnection;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -129,6 +128,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		case Message.STATUS_RECEPTION_FAILED:
 			info = getContext().getString(R.string.reception_failed);
 			error = true;
+			break;
 		default:
 			if (multiReceived) {
 				Contact contact = message.getContact();

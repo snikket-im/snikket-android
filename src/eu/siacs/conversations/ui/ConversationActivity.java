@@ -16,7 +16,6 @@ import eu.siacs.conversations.utils.UIHelper;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.app.ActionBar;
 import android.app.AlertDialog;
