@@ -585,18 +585,18 @@ public class XmppConnectionService extends Service {
 			}
 
 		}
+		conv.getMessages().add(message);
+		if (!account.getXmppConnection().getFeatures().sm()
+				&& conv.getMode() != Conversation.MODE_MULTI) {
+			message.setStatus(Message.STATUS_SEND);
+		}
 		if (saveInDb) {
 			if (message.getEncryption() == Message.ENCRYPTION_NONE
 					|| saveEncryptedMessages()) {
 				databaseBackend.createMessage(message);
 			}
 		}
-		conv.getMessages().add(message);
 		if ((send) && (packet != null)) {
-			if (!account.getXmppConnection().getFeatures().sm()
-					&& conv.getMode() != Conversation.MODE_MULTI) {
-				message.setStatus(Message.STATUS_SEND);
-			}
 			sendMessagePacket(account, packet);
 		}
 		updateConversationUi();
