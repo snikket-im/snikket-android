@@ -66,7 +66,7 @@ These XEPs are - as of now:
 * [Benoit Bouvarel](https://github.com/BenoitBouvarel) (French)
 * [Daniel Gultsch](https://github.com/iNPUTmice) (German)
 * [Aitor Beriain](https://github.com/beriain) (Basque)
-* [Ilia Rostovtsev](https://github.com/rostovtsev) (Russian)
+* [Ilia Rostovtsev](https://github.com/qooob) (Russian)
 * [Jelmer Vernooij](https://github.com/jelmer) (Dutch)
 * [Anders Sandblad](https://github.com/andersruneson) (Swedish)
 
