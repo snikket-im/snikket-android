@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Conversations</string>
+    <string name="app_name">Konverzace</string>
     <string name="action_settings">Nastavení</string>
     <string name="action_add">Nová konverzace</string>
     <string name="action_accounts">Nastavení účtů</string>
@@ -46,8 +46,8 @@
     <string name="delete">Smazat</string>
     <string name="save">Uložit</string>
     <string name="ok">OK</string>
-    <string name="crash_report_title">Aplikace Conversations přestala reagovat</string>
-    <string name="crash_report_message">Zasláním detailů o důvodu selhání pomůžete dalšímu vývoji aplikace Conversations\n<b>Varování:</b> Toto použije nastavený XMPP účet pro zaslání detailů vývojářům.</string>
+    <string name="crash_report_title">Aplikace Konverzace přestala reagovat</string>
+    <string name="crash_report_message">Zasláním detailů o důvodu selhání pomůžete dalšímu vývoji aplikace Konverzace\n<b>Varování:</b> Toto použije nastavený XMPP účet pro zaslání detailů vývojářům.</string>
     <string name="send_now">Odeslat teď</string>
     <string name="send_never">Již se neptat</string>
     <string name="problem_connecting_to_account">Připojení k účtu se nezdařilo</string>
@@ -75,15 +75,15 @@
     <string name="send_unencrypted">Poslat nešifrované</string>
     <string name="decryption_failed">Zašifrování se nezdařilo. Možná nemáte správný privátní klíč.</string>
     <string name="openkeychain_required">OpenKeychain</string>
-    <string name="openkeychain_required_long">Conversations využívá aplikaci třetí strany, <b>OpenKeychain</b>, k šifrování a dešifrování zpráv a ke správě veřejných klíčů.\n\nOpenKeychain je licencován pod GPLv3 a dostupný na F-Droid a Google Play.\n\n<small>(Po instalaci prosím restartujte aplikaci Conversations.)</small></string>
+    <string name="openkeychain_required_long">Konverzace využívá aplikaci třetí strany, <b>OpenKeychain</b>, k šifrování a dešifrování zpráv a ke správě veřejných klíčů.\n\nOpenKeychain je licencován pod GPLv3 a dostupný na F-Droid a Google Play.\n\n<small>(Po instalaci prosím restartujte aplikaci Konverzace.)</small></string>
     <string name="restart">Restartovat</string>
     <string name="install">Instalovat</string>
     <string name="offering">nabízí&#8230;</string>
     <string name="waiting">čekám&#8230;</string>
     <string name="no_pgp_key">Nebyl nalezen žádný OpenPGP klíč</string>
-    <string name="contact_has_no_pgp_key">Není možné zašifrovat zprávu v aplikaci Conversations, protože druhá strana neoznamuje svůj veřejný klíč.\n\n<small>Požádejte svůj kontakt ať si nastaví OpenPGP.</small></string>
+    <string name="contact_has_no_pgp_key">Není možné zašifrovat zprávu v aplikaci Konverzace, protože druhá strana neoznamuje svůj veřejný klíč.\n\n<small>Požádejte svůj kontakt ať si nastaví OpenPGP.</small></string>
     <string name="no_pgp_keys">Nebyly nalezeny žádné OpenPGP klíče</string>
-    <string name="contacts_have_no_pgp_keys">Není možné zašifrovat zprávy v aplikaci Conversations, protože kontakty neoznamují svůj veřejný klíč.\n\n<small>Požádejte své kontakty ať si nastaví OpenPGP.</small></string>
+    <string name="contacts_have_no_pgp_keys">Není možné zašifrovat zprávy v aplikaci Konverzace, protože kontakty neoznamují svůj veřejný klíč.\n\n<small>Požádejte své kontakty ať si nastaví OpenPGP.</small></string>
     <string name="encrypted_message_received"><i>Byla přijata šifrovaná zpráva. Tapni pro dešifrování a přečtení.</i></string>
     <string name="encrypted_image_received"><i>Byl přijat šifrovaný obrázek. Tapni pro dešifrování a prohlédnutí.</i></string>
     <string name="image_file"><i>Byl přijat obrázek. Tapni pro prohlédnutí</i></string>
@@ -105,15 +105,15 @@
     <string name="pref_notification_grace_period_summary">Neupozorňovat krátce poté co byla obdržena kopie zprávy</string>
     <string name="pref_advanced_options">Pokročilé nastavení</string>
     <string name="pref_never_send_crash">Neodesílat detaily o pádu aplikace</string>
-    <string name="pref_never_send_crash_summary">Zasláním detailů o důvodu selhání pomůžete dalšímu vývoji aplikace Conversations</string>
+    <string name="pref_never_send_crash_summary">Zasláním detailů o důvodu selhání pomůžete dalšímu vývoji aplikace Konverzace</string>
     <string name="pref_confirm_messages">Potvrzovat zprávy</string>
-    <string name="pref_confirm_messages_summary">Dá vědět vašim kontaktům, že zpráva byla přijata a přečtena</string>
+    <string name="pref_confirm_messages_summary">Dá vědět kontaktům, že zpráva byla přijata a přečtena</string>
     <string name="pref_ui_options">Nastavení UI</string>
     <string name="openpgp_error">OpenKeychain nahlásil chybu</string>
     <string name="error_decrypting_file">I/O chyba dešifrování souboru</string>
     <string name="accept">Přijmout</string>
     <string name="error">Došlo k chybě</string>
-<!--     <string name="pref_grant_presence_updates">Povolit aktualizace stavu</string> -->
+    <string name="pref_grant_presence_updates">Povolit aktualizace stavu</string>
     <string name="pref_grant_presence_updates_summary">Aktivně povolovat a žádat o zasílání změn stavu pro vytvářené kontakty</string>
     <string name="subscriptions">Odběry</string>
     <string name="your_account">Váš účet</string>
@@ -140,7 +140,7 @@
     <string name="account_status_regis_fail">Registrace selhala</string>
     <string name="account_status_regis_conflict">Uživatelské jméno se již používá</string>
     <string name="account_status_regis_success">Registrace dokončena</string>
-    <string name="account_status_regis_not_sup">Server nepodporuje registrování</string>
+    <string name="account_status_regis_not_sup">Server nepodporuje registrace</string>
     <string name="encryption_choice_none">Čistý text</string>
     <string name="encryption_choice_otr">OTR</string>
     <string name="encryption_choice_pgp">OpenPGP</string>
@@ -155,7 +155,7 @@
     <string name="attach_record_voice">Nahrát hlas</string>
     <string name="account_settings_jabber_id">Jabber ID</string>
     <string name="account_settings_password">Heslo</string>
-    <string name="account_settings_example_jabber_id">username@example.com</string>
+    <string name="account_settings_example_jabber_id">jmeno@server.cz</string>
     <string name="account_settings_confirm_password">Potvrdit heslo</string>
     <string name="password">Heslo</string>
     <string name="confirm_password">Potvrdit heslo</string>
@@ -199,11 +199,11 @@
     <string name="join_conference">Připojit ke konferenci</string>
     <string name="delete_contact">Smazat kontakt</string>
     <string name="view_contact_details">Zobrazit detaily kontaktu</string>
-    <string name="create">Vytořit</string>
+    <string name="create">Vytvořit</string>
     <string name="contact_already_exists">Kontakt již existuje</string>
     <string name="join">Vstoupit</string>
     <string name="conference_address">Adresa konference</string>
-    <string name="conference_address_example">room@conference.example.com</string>
+    <string name="conference_address_example">mistnost@konference.server.cz</string>
     <string name="save_as_bookmark">Uložit jako záložku</string>
     <string name="delete_bookmark">Smazat záložku</string>
     <string name="bookmark_already_exists">Tato záložka již existuje</string>
@@ -215,7 +215,7 @@
     <string name="add_back">Opět přidat</string>
     <string name="contact_has_read_up_to_this_point">%s dočetl až sem</string>
     <string name="publish">Zveřejnit</string>
-    <string name="touch_to_choose_picture">Tapnout avatar a vybrat obrázek z galerie</string>
+    <string name="touch_to_choose_picture">Tapnout na avatar a vybrat obrázek z galerie</string>
     <string name="publish_avatar_explanation">Pozor: Každý s povolením vidět změny stavu uvidí tento obrázek.</string>
     <string name="publishing">Zveřejňuji&#8230;</string>
     <string name="error_publish_avatar_server_reject">Server odmítl toto zveřejnění</string>
@@ -247,14 +247,14 @@
     <string name="without_mutual_presence_updates"><b>Varování:</b> Odeslání bez povolení změn stavu může způsobit nečekané problémy na obou stranách.\n\n<small>Přejdi na detaily kontaktu pro ověření povolení o změnách stavu.</small></string>
     <string name="pref_encryption_settings">Nastavení šifrování</string>
     <string name="pref_force_encryption">Vynutit šifrování</string>
-    <string name="pref_force_encryption_summary">Vždy zasílat šifrované zprávy (mimo konferencí)</string>
+    <string name="pref_force_encryption_summary">Vždy zasílat šifrované zprávy (mimo konference)</string>
     <string name="pref_dont_save_encrypted">Neukládat šifrované zprávy</string>
     <string name="pref_dont_save_encrypted_summary">Varování: Toto může vést ke ztrátě zpráv</string>
     <string name="pref_expert_options">Expertní nastavení</string>
-    <string name="pref_expert_options_summary">S tímto buďte velmi opatrní</string>
+    <string name="pref_expert_options_summary">S tímto zacházejte velmi opatrně</string>
     <string name="pref_use_larger_font">Zvětšit velikost písma</string>
     <string name="pref_use_larger_font_summary">Použít větší písmo v celé aplikaci</string>
-    <string name="pref_use_send_button_to_indicate_status">Tlačítko pro odeslání zobrazuje stavu</string>
+    <string name="pref_use_send_button_to_indicate_status">Tlačítko pro odeslání zobrazuje stav</string>
     <string name="pref_use_send_button_to_indicate_status_summary">Obarvit tlačítko pro odeslání barvou stavu kontaktu</string>
 
 </resources>
