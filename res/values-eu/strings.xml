@@ -108,6 +108,7 @@
     <string name="pref_never_send_crash_summary">Akats harraskak bidaliz Conversationsen garapenean laguntzen duzu</string>
     <string name="pref_confirm_messages">Mezuak egiaztatu</string>
     <string name="pref_confirm_messages_summary">Zure kontaktuak mezu bat noiz jaso eta irakurri duzun jakin dezan baimendu</string>
+    <string name="pref_ui_options">Erabiltzaile-interfazearen aukerak</string>
     <string name="openpgp_error">OpenKeychainek akats baten berri eman du</string>
     <string name="error_decrypting_file">Sarrera/Irteera akatsa fitxategia desenkriptatzerakoan</string>
     <string name="accept">Onartu</string>
@@ -213,6 +214,7 @@
     <string name="contact_added_you">Kontaktuak bere zerrendara gehitu zaitu</string>
     <string name="add_back">Bera gehitu</string>
     <string name="contact_has_read_up_to_this_point">%s(e)k puntu honetaraino irakurri du</string>
+    <string name="publish">Argitaratu</string>
     <string name="touch_to_choose_picture">Ukitu profileko argazkia irudi bat galeriatik hautatzeko</string>
     <string name="publish_avatar_explanation">Adi: Zure presentzia eguneraketetara harpidetutako edonork irudi hau ikusi ahal izango du.</string>
     <string name="publishing">Argitaratzen&#8230;</string>
@@ -230,6 +232,29 @@
     <string name="server_info_session_established">Uneko saioa ezarri da</string>
     <string name="additional_information">Informazio gehiago</string>
     <string name="skip">Orain ez</string>
-    <string name="pref_ui_options">Erabiltzaile-interfazearen aukerak</string>
-
+    <string name="disable_notifications">Jakinarazpenak ezgaitu</string>
+    <string name="disable_notifications_for_this_conversation">Elkarrizketa honetarako jakinarazpenak ezgaitu</string>
+    <string name="notifications_disabled">Jakinarazpenak ezgaituta daude</string>
+    <string name="enable">Gaitu</string>
+    <string name="conference_requires_password">Konferentziak pasahitza behar du</string>
+    <string name="enter_password">Sartu pasahitza</string>
+    <string name="missing_presence_updates">Kontaktuaren presentzia eguneraketak falta dira</string>
+    <string name="request_presence_updates">Mesedez eskatu lehenago zure kontaktuaren presentzia eguneraketak.\n\n<small>Kontaktuak erabiltzen ari den bezeroa(k) zehazteko erabilika da hau.</small></string>
+    <string name="request_now">Eskatu orain</string>
+    <string name="delete_fingerprint">Hatz-marka ezabatu</string>
+    <string name="sure_delete_fingerprint">Ziur al zaude hatz-marka hau ezabatu nahi duzulaz?</string>
+    <string name="ignore">Kasurik ez egin</string>
+    <string name="without_mutual_presence_updates"><b>Adi:</b> Bien arteko presentzia eguneraketarik gabe hau bidaltzeak ustekabeko arazoak sor litzake.\n\n<small>Joan zaitez kontaktuaren xehetasunetara zure presentzia eguneraketak egiaztatzeko.</small></string>
+    <string name="pref_encryption_settings">Enkriptazio ezarpenak</string>
+    <string name="pref_force_encryption">End-to-end enkriptazioa behartu</string>
+    <string name="pref_force_encryption_summary">Mezuak beti enkriptatuta bidali (konferentzietan izan ezik)</string>
+    <string name="pref_dont_save_encrypted">Ez gorde enkriptatutako mezuak</string>
+    <string name="pref_dont_save_encrypted_summary">Adi: Honek mezuen galera ekar lezake</string>
+    <string name="pref_expert_options">Adituentzako aukerak</string>
+    <string name="pref_expert_options_summary">Mesedez kontuz ibili hauekin</string>
+    <string name="pref_use_larger_font">Letraren tamaina handitu</string>
+    <string name="pref_use_larger_font_summary">Letra tamaina handiagoa erabili aplikazio osoan zehar</string>
+    <string name="pref_use_send_button_to_indicate_status">Bidaltze botoiak egoera adierazten du</string>
+    <string name="pref_use_send_button_to_indicate_status_summary">Bidaltze botoia koloreztatu kontaktu baten egoera adierazteko</string>
+    
 </resources>
