@@ -232,5 +232,29 @@
     <string name="additional_information">Zusätzliche Informationen</string>
     <string name="skip">Überspringen</string>
     <string name="pref_ui_options">Benutzeroberfläche</string>
+    <string name="disable_notifications">Benachrichtigungen deaktivieren</string>
+    <string name="disable_notifications_for_this_conversation">Benachrichtigungen für diese Unterhaltung deaktivieren</string>
+    <string name="notifications_disabled">Benachrichtigungen sind deaktiviert</string>
+    <string name="enable">Aktivieren</string>
+    <string name="conference_requires_password">Konferenz ist passwortgeschützt</string>
+    <string name="enter_password">Passwort eingeben</string>
+    <string name="missing_presence_updates">Fehlender Online-Status vom Kontakt</string>
+    <string name="request_presence_updates">Bitte erst Anwesenheitsbenachrichtigungen vom Kontakt anfordern.\n\n</string>
+    <string name="request_now">Jetzt anfordern</string>
+    <string name="delete_fingerprint">Fingerabdruck löschen</string>
+    <string name="sure_delete_fingerprint">Soll dieser Fingerabdruck definitiv gelöscht werden?</string>
+    <string name="ignore">Ignorieren</string>
+    <string name="without_mutual_presence_updates"><b>Achtung:</b> Es kann zu unerwarteten Problemen führen, dies ohne gegenseitige Anwesenheitsbenachrichtigungen abzusenden.\n\n<small>Bitte die Online-Status-Abonnements in den Kontaktdetails prüfen.</small></string>
+    <string name="pref_encryption_settings">Verschlüsselungs-Einstellungen</string>
+    <string name="pref_force_encryption">Ende-zu-Ende-Verschlüsselung forcieren</string>
+    <string name="pref_force_encryption_summary">Nachrichten immer verschlüsseln (außer für Konferenzen)</string>
+    <string name="pref_dont_save_encrypted">Verschlüsselte Nachrichten nicht speichern</string>
+    <string name="pref_dont_save_encrypted_summary">Achtung: Kann zu Nachrichtenverlust führen</string>
+    <string name="pref_expert_options">Einstellungen für Experten</string>
+    <string name="pref_expert_options_summary">Hier bitte vorsichtig sein</string>
+    <string name="pref_use_larger_font">Schriftgröße erhöhen</string>
+    <string name="pref_use_larger_font_summary">Überall in der App eine größere Schrift verwenden</string>
+    <string name="pref_use_send_button_to_indicate_status">Absende-Knopf zeigt Online-Status an</string>
+    <string name="pref_use_send_button_to_indicate_status_summary">Absende-Knopf einfärben, um den Online-Status des Kontakts zu signalisieren</string>
 
 </resources>
