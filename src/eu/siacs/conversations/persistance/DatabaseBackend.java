@@ -32,7 +32,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 			+ ") ON DELETE CASCADE, UNIQUE(" + Contact.ACCOUNT + ", "
 			+ Contact.JID + ") ON CONFLICT REPLACE);";
 
-	public DatabaseBackend(Context context) {
+	private DatabaseBackend(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 	}
 
@@ -220,6 +220,14 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getWritableDatabase();
 		String[] args = { account.getUuid() };
 		db.delete(Account.TABLENAME, Account.UUID + "=?", args);
+	}
+	
+	public boolean hasEnabledAccounts() {
+		SQLiteDatabase db = this.getReadableDatabase();
+		Cursor cursor= db.rawQuery("select count("+Account.UUID+")  from "+Account.TABLENAME+" where not options & (1 <<1)", null);
+		cursor.moveToFirst();
+		int count = cursor.getInt(0);
+		return (count>0);
 	}
 
 	@Override

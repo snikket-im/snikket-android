@@ -1,5 +1,6 @@
 package eu.siacs.conversations.services;
 
+import eu.siacs.conversations.persistance.DatabaseBackend;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -14,7 +15,9 @@ public class EventReceiver extends BroadcastReceiver {
 		} else {
 			mIntentForService.setAction("other");
 		}
-		context.startService(mIntentForService);
+		if (intent.getAction().equals("ui") || DatabaseBackend.getInstance(context).hasEnabledAccounts()) {
+			context.startService(mIntentForService);
+		}
 	}
 
 }
