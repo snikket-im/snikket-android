@@ -568,6 +568,7 @@ public class StartConversationActivity extends XmppActivity {
 		public void onViewCreated(View view, Bundle savedInstanceState) {
 			super.onViewCreated(view, savedInstanceState);
 			registerForContextMenu(getListView());
+			getListView().setFastScrollEnabled(true);
 		}
 
 		@Override

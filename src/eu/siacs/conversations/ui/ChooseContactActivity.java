@@ -82,6 +82,7 @@ public class ChooseContactActivity extends XmppActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_choose_contact);
 		mListView = (ListView) findViewById(R.id.choose_contact_list);
+		mListView.setFastScrollEnabled(true);
 		mContactsAdapter = new ListItemAdapter(this, contacts);
 		mListView.setAdapter(mContactsAdapter);
 		mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
