@@ -60,7 +60,7 @@ public abstract class AbstractParser {
 
 	protected void updateLastseen(Element packet, Account account,
 			boolean presenceOverwrite) {
-		String[] fromParts = packet.getAttribute("from").split("/");
+		String[] fromParts = packet.getAttribute("from").split("/",2);
 		String from = fromParts[0];
 		String presence = null;
 		if (fromParts.length >= 2) {

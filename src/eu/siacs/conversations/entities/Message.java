@@ -246,9 +246,9 @@ public class Message extends AbstractEntity {
 
 	public void setPresence(String presence) {
 		if (presence == null) {
-			this.counterpart = this.counterpart.split("/")[0];
+			this.counterpart = this.counterpart.split("/",2)[0];
 		} else {
-			this.counterpart = this.counterpart.split("/")[0] + "/" + presence;
+			this.counterpart = this.counterpart.split("/",2)[0] + "/" + presence;
 		}
 	}
 
@@ -257,7 +257,7 @@ public class Message extends AbstractEntity {
 	}
 
 	public String getPresence() {
-		String[] counterparts = this.counterpart.split("/");
+		String[] counterparts = this.counterpart.split("/",2);
 		if (counterparts.length == 2) {
 			return counterparts[1];
 		} else {

@@ -847,7 +847,7 @@ public class XmppConnectionService extends Service {
 			String jid) {
 		for (Conversation conversation : haystack) {
 			if ((conversation.getAccount().equals(account))
-					&& (conversation.getContactJid().split("/")[0].equals(jid))) {
+					&& (conversation.getContactJid().split("/",2)[0].equals(jid))) {
 				return conversation;
 			}
 		}

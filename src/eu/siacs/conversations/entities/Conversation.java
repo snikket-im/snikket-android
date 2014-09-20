@@ -230,7 +230,7 @@ public class Conversation extends AbstractEntity {
 			return this.otrSession;
 		} else {
 			SessionID sessionId = new SessionID(
-					this.getContactJid().split("/")[0], presence, "xmpp");
+					this.getContactJid().split("/",2)[0], presence, "xmpp");
 			this.otrSession = new SessionImpl(sessionId, getAccount()
 					.getOtrEngine(service));
 			try {
