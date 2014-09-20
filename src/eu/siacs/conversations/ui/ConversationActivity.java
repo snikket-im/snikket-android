@@ -790,6 +790,10 @@ public class ConversationActivity extends XmppActivity implements
 		return getPreferences().getBoolean("send_button_status", false);
 	}
 
+	public boolean indicateReceived() {
+		return getPreferences().getBoolean("indicate_received", false);
+	}
+
 	@Override
 	public void onAccountUpdate() {
 		final ConversationFragment fragment = (ConversationFragment) getFragmentManager()

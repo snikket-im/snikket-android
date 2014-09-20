@@ -326,12 +326,12 @@ public class Message extends AbstractEntity {
 				&& this.getType() == message.getType()
 				&& this.getEncryption() == message.getEncryption()
 				&& this.getCounterpart().equals(message.getCounterpart())
-				&& (message.getTimeSent() - this.getTimeSent()) <= (Config.MESSAGE_MERGE_WINDOW * 1000) && ((this
-				.getStatus() == message.getStatus()) || ((this.getStatus() == Message.STATUS_SEND || this
-				.getStatus() == Message.STATUS_SEND_RECEIVED) && (message
-				.getStatus() == Message.STATUS_UNSEND
-				|| message.getStatus() == Message.STATUS_SEND || message
-					.getStatus() == Message.STATUS_SEND_DISPLAYED))));
+				&& (message.getTimeSent() - this.getTimeSent()) <= (Config.MESSAGE_MERGE_WINDOW * 1000)
+				&& ((this.getStatus() == message.getStatus())
+				|| (this.getStatus() == Message.STATUS_SEND && (message.getStatus() == Message.STATUS_UNSEND
+				|| message.getStatus() == Message.STATUS_SEND))
+				|| (this.getStatus() == Message.STATUS_SEND_RECEIVED
+				&& message.getStatus() == Message.STATUS_SEND_DISPLAYED)));
 	}
 
 	public String getMergedBody() {

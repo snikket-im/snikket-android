@@ -27,6 +27,9 @@ public class MessageGenerator extends AbstractGenerator {
 			packet.setTo(message.getCounterpart());
 			packet.setType(MessagePacket.TYPE_CHAT);
 			packet.addChild("markable", "urn:xmpp:chat-markers:0");
+			if (this.mXmppConnectionService.indicateReceived()) {
+				packet.addChild("request", "urn:xmpp:receipts");
+			}
 		} else if (message.getType() == Message.TYPE_PRIVATE) {
 			packet.setTo(message.getCounterpart());
 			packet.setType(MessagePacket.TYPE_CHAT);

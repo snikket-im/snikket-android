@@ -255,6 +255,9 @@
     <string name="pref_use_larger_font">Increase font size</string>
     <string name="pref_use_larger_font_summary">Use larger font sizes across the entire app</string>
     <string name="pref_use_send_button_to_indicate_status">Send button indicates status</string>
+    <string name="pref_use_indicate_received">Request message receipts</string>
+    <string name="pref_use_indicate_received_summary">When message has been received by the receiver then a tick will appear as confirmation (must supported by the recipient client and does not work as any case)</string>
     <string name="pref_use_send_button_to_indicate_status_summary">Colorize send button to indicate contact status</string>
+    <string name="pref_expert_options_other">Other - not categorized</string>
 
 </resources>
