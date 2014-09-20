@@ -247,6 +247,12 @@ public abstract class XmppActivity extends Activity {
 		intent.putExtra("contact", contact.getJid());
 		startActivity(intent);
 	}
+	
+	public void switchToAccount(Account account) {
+		Intent intent = new Intent(this, EditAccountActivity.class);
+		intent.putExtra("jid", account.getJid());
+		startActivity(intent);
+	}
 
 	protected void inviteToConversation(Conversation conversation) {
 		Intent intent = new Intent(getApplicationContext(),

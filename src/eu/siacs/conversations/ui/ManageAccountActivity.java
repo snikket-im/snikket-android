@@ -62,7 +62,7 @@ public class ManageAccountActivity extends XmppActivity {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View view,
 					int position, long arg3) {
-				editAccount(accountList.get(position));
+				switchToAccount(accountList.get(position));
 			}
 		});
 		registerForContextMenu(accountListView);
@@ -161,12 +161,6 @@ public class ManageAccountActivity extends XmppActivity {
 		} else {
 			return super.onNavigateUp();
 		}
-	}
-
-	private void editAccount(Account account) {
-		Intent intent = new Intent(this, EditAccountActivity.class);
-		intent.putExtra("jid", account.getJid());
-		startActivity(intent);
 	}
 
 	private void publishAvatar(Account account) {

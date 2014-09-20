@@ -275,11 +275,23 @@ public class ConversationFragment extends Fragment {
 
 					@Override
 					public void onContactPictureClicked(Message message) {
-						if (message.getConversation().getMode() == Conversation.MODE_MULTI) {
-							if (message.getPresence() != null) {
-								highlightInConference(message.getPresence());
+						if (message.getStatus() <= Message.STATUS_RECEIVED) {
+							if (message.getConversation().getMode() == Conversation.MODE_MULTI) {
+								if (message.getPresence() != null) {
+									highlightInConference(message.getPresence());
+								} else {
+									highlightInConference(message
+											.getCounterpart());
+								}
 							} else {
-								highlightInConference(message.getCounterpart());
+								Contact contact = message.getConversation()
+										.getContact();
+								if (contact.showInRoster()) {
+									activity.switchToContactDetails(contact);
+								} else {
+									activity.showAddToRosterDialog(message
+											.getConversation());
+								}
 							}
 						}
 					}
@@ -289,11 +301,13 @@ public class ConversationFragment extends Fragment {
 
 					@Override
 					public void onContactPictureLongClicked(Message message) {
-						if (message.getConversation().getMode() == Conversation.MODE_MULTI) {
-							if (message.getPresence() != null) {
-								privateMessageWith(message.getPresence());
-							} else {
-								privateMessageWith(message.getCounterpart());
+						if (message.getStatus() <= Message.STATUS_RECEIVED) {
+							if (message.getConversation().getMode() == Conversation.MODE_MULTI) {
+								if (message.getPresence() != null) {
+									privateMessageWith(message.getPresence());
+								} else {
+									privateMessageWith(message.getCounterpart());
+								}
 							}
 						}
 					}
