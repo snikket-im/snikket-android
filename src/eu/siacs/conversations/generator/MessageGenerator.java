@@ -10,10 +10,15 @@ import net.java.otr4j.session.Session;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
+import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
 
-public class MessageGenerator {
+public class MessageGenerator extends AbstractGenerator {
+	public MessageGenerator(XmppConnectionService service) {
+		super(service);
+	}
+
 	private MessagePacket preparePacket(Message message, boolean addDelay) {
 		Conversation conversation = message.getConversation();
 		Account account = conversation.getAccount();

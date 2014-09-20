@@ -2,10 +2,15 @@ package eu.siacs.conversations.generator;
 
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
+import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.stanzas.PresencePacket;
 
 public class PresenceGenerator extends AbstractGenerator {
+
+	public PresenceGenerator(XmppConnectionService service) {
+		super(service);
+	}
 
 	private PresencePacket subscription(String type, Contact contact) {
 		PresencePacket packet = new PresencePacket();

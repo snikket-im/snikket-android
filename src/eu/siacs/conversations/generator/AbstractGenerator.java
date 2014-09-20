@@ -6,6 +6,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import eu.siacs.conversations.services.XmppConnectionService;
+
 import android.util.Base64;
 
 public abstract class AbstractGenerator {
@@ -19,6 +21,12 @@ public abstract class AbstractGenerator {
 			"urn:xmpp:avatar:metadata+notify" };
 	public final String IDENTITY_NAME = "Conversations 0.7";
 	public final String IDENTITY_TYPE = "phone";
+	
+	protected XmppConnectionService mXmppConnectionService;
+	
+	protected AbstractGenerator(XmppConnectionService service) {
+		this.mXmppConnectionService = service;
+	}
 
 	public String getCapHash() {
 		StringBuilder s = new StringBuilder();

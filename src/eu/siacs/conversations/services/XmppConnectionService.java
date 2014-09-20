@@ -96,8 +96,8 @@ public class XmppConnectionService extends Service {
 	private MessageParser mMessageParser = new MessageParser(this);
 	private PresenceParser mPresenceParser = new PresenceParser(this);
 	private IqParser mIqParser = new IqParser(this);
-	private MessageGenerator mMessageGenerator = new MessageGenerator();
-	private PresenceGenerator mPresenceGenerator = new PresenceGenerator();
+	private MessageGenerator mMessageGenerator = new MessageGenerator(this);
+	private PresenceGenerator mPresenceGenerator = new PresenceGenerator(this);
 
 	private List<Account> accounts;
 	private CopyOnWriteArrayList<Conversation> conversations = null;
@@ -1097,7 +1097,7 @@ public class XmppConnectionService extends Service {
 	}
 
 	private OnRenameListener renameListener = null;
-	private IqGenerator mIqGenerator = new IqGenerator();
+	private IqGenerator mIqGenerator = new IqGenerator(this);
 
 	public void setOnRenameListener(OnRenameListener listener) {
 		this.renameListener = listener;

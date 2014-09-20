@@ -4,11 +4,16 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.pep.Avatar;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
 
 public class IqGenerator extends AbstractGenerator {
+
+	public IqGenerator(XmppConnectionService service) {
+		super(service);
+	}
 
 	public IqPacket discoResponse(IqPacket request) {
 		IqPacket packet = new IqPacket(IqPacket.TYPE_RESULT);
