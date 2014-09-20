@@ -278,6 +278,13 @@ public class MessageParser extends AbstractParser implements
 			updateLastseen(packet, account, false);
 			mXmppConnectionService.markMessage(account, fromParts[0], id,
 					Message.STATUS_SEND_RECEIVED);
+		} else if (packet.hasChild("received", "urn:xmpp:receipts")) {
+			String id = packet.findChild("received", "urn:xmpp:receipts")
+					.getAttribute("id");
+			String[] fromParts = packet.getAttribute("from").split("/");
+			updateLastseen(packet, account, false);
+			mXmppConnectionService.markMessage(account, fromParts[0], id,
+					Message.STATUS_SEND_RECEIVED);
 		} else if (packet.hasChild("x", "http://jabber.org/protocol/muc#user")) {
 			Element x = packet.findChild("x",
 					"http://jabber.org/protocol/muc#user");

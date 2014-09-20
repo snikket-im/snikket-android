@@ -96,6 +96,9 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		String filesize = null;
 		String info = null;
 		boolean error = false;
+		if (viewHolder.indicatorReceived != null) {
+			viewHolder.indicatorReceived.setVisibility(View.GONE);
+		}
 		boolean multiReceived = message.getConversation().getMode() == Conversation.MODE_MULTI
 				&& message.getMergedStatus() <= Message.STATUS_RECEIVED;
 		if (message.getType() == Message.TYPE_IMAGE) {
@@ -116,6 +119,16 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 			break;
 		case Message.STATUS_OFFERED:
 			info = getContext().getString(R.string.offering);
+			break;
+		case Message.STATUS_SEND_RECEIVED:
+			if (activity.indicateReceived()) {
+				viewHolder.indicatorReceived.setVisibility(View.VISIBLE);
+			}
+			break;
+		case Message.STATUS_SEND_DISPLAYED:
+			if (activity.indicateReceived()) {
+				viewHolder.indicatorReceived.setVisibility(View.VISIBLE);
+			}
 			break;
 		case Message.STATUS_SEND_FAILED:
 			info = getContext().getString(R.string.send_failed);
@@ -337,6 +350,8 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 						.findViewById(R.id.message_body);
 				viewHolder.time = (TextView) view
 						.findViewById(R.id.message_time);
+				viewHolder.indicatorReceived = (ImageView) view
+						.findViewById(R.id.indicator_received);
 				view.setTag(viewHolder);
 				break;
 			case RECEIVED:
@@ -515,6 +530,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		protected Button download_button;
 		protected ImageView image;
 		protected ImageView indicator;
+		protected ImageView indicatorReceived;
 		protected TextView time;
 		protected TextView messageBody;
 		protected ImageView contact_picture;

@@ -232,6 +232,8 @@
     <string name="additional_information">Zusätzliche Informationen</string>
     <string name="skip">Überspringen</string>
     <string name="pref_ui_options">Benutzeroberfläche</string>
+    <string name="pref_use_indicate_received">Anfrage für Nachrichten Empfang</string>
+    <string name="pref_use_indicate_received_summary">Wenn Nachricht vom Empfänger empfangen wurde dann erscheint ein Häckchen als Bestätigung (muss vom Client des Empfängers unterstützt werden und funktioniert nicht in jedem Fall)</string>
     <string name="disable_notifications">Benachrichtigungen deaktivieren</string>
     <string name="disable_notifications_for_this_conversation">Benachrichtigungen für diese Unterhaltung deaktivieren</string>
     <string name="notifications_disabled">Benachrichtigungen sind deaktiviert</string>
@@ -256,5 +258,6 @@
     <string name="pref_use_larger_font_summary">Überall in der App eine größere Schrift verwenden</string>
     <string name="pref_use_send_button_to_indicate_status">Absende-Knopf zeigt Online-Status an</string>
     <string name="pref_use_send_button_to_indicate_status_summary">Absende-Knopf einfärben, um den Online-Status des Kontakts zu signalisieren</string>
+    <string name="pref_expert_options_other">Anderes - nicht kategorisiert</string>
 
 </resources>

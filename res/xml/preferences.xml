@@ -90,6 +90,13 @@
                     android:summary="@string/pref_dont_save_encrypted_summary"
                     android:title="@string/pref_dont_save_encrypted" />
             </PreferenceCategory>
+                <PreferenceCategory android:title="@string/pref_expert_options_other" >
+                    <CheckBoxPreference
+                        android:defaultValue="false"
+                        android:key="indicate_received"
+                        android:summary="@string/pref_use_indicate_received_summary"
+                        android:title="@string/pref_use_indicate_received" />
+                </PreferenceCategory>
         </PreferenceScreen>
 
         <CheckBoxPreference

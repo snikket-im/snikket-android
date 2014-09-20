@@ -1566,6 +1566,10 @@ public class XmppConnectionService extends Service {
 		return !getPreferences().getBoolean("dont_save_encrypted", false);
 	}
 
+	public boolean indicateReceived() {
+		return getPreferences().getBoolean("indicate_received", false);
+	}
+
 	public void notifyUi(Conversation conversation, boolean notify) {
 		if (mOnConversationUpdate != null) {
 			mOnConversationUpdate.onConversationUpdate();
