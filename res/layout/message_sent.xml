@@ -63,25 +63,27 @@
                     android:textColor="@color/secondarytext"
                     android:textSize="?attr/TextSizeInfo" />
 
+                 <ImageView
+                    android:id="@+id/security_indicator"
+                    android:layout_width="?attr/TextSizeInfo"
+                    android:layout_height="?attr/TextSizeInfo"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical"
+                    android:src="@drawable/ic_secure_indicator"
+                    android:layout_marginLeft="4sp"
+                    android:alpha="0.54"/>
+                
                 <ImageView
                     android:id="@+id/indicator_received"
                     android:layout_width="?attr/TextSizeInfo"
                     android:layout_height="?attr/TextSizeInfo"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="6sp"
-                    android:layout_marginTop="2sp"
                     android:gravity="center_vertical"
-                    android:src="@drawable/ic_received_indicator" />
+                    android:src="@drawable/ic_received_indicator"
+                    android:layout_marginLeft="4sp"
+                    android:alpha="0.54"/>
 
-                <ImageView
-                    android:id="@+id/security_indicator"
-                    android:layout_width="?attr/TextSizeInfo"
-                    android:layout_height="?attr/TextSizeInfo"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="6sp"
-                    android:layout_marginTop="2sp"
-                    android:gravity="center_vertical"
-                    android:src="@drawable/ic_indicator" />
+               
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

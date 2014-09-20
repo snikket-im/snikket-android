@@ -54,7 +54,7 @@
                 android:text="@string/download_image"
                 android:visibility="gone" />
 
-            <LinearLayout
+           <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -65,10 +65,12 @@
                     android:layout_width="?attr/TextSizeInfo"
                     android:layout_height="?attr/TextSizeInfo"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginRight="6sp"
-                    android:layout_marginTop="2sp"
                     android:gravity="center_vertical"
-                    android:src="@drawable/ic_indicator" />
+                    android:src="@drawable/ic_secure_indicator"
+                    android:layout_marginRight="4sp"
+                    android:alpha="0.54"/>
+                
+              
 
                 <TextView
                     android:id="@+id/message_time"
