@@ -168,7 +168,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 			viewHolder.indicator.setVisibility(View.VISIBLE);
 		}
 
-		String formatedTime = UIHelper.readableTimeDifference(getContext(),
+		String formatedTime = UIHelper.readableTimeDifferenceFull(getContext(),
 				message.getMergedTimeSent());
 		if (message.getStatus() <= Message.STATUS_RECEIVED) {
 			if ((filesize != null) && (info != null)) {

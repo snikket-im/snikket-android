@@ -51,10 +51,21 @@ public class UIHelper {
 	private static final int BG_COLOR = 0xFF181818;
 	private static final int FG_COLOR = 0xFFFAFAFA;
 	private static final int TRANSPARENT = 0x00000000;
-	private static final int DATE_NO_YEAR_FLAGS = DateUtils.FORMAT_SHOW_DATE
+	private static final int SHORT_DATE_FLAGS = DateUtils.FORMAT_SHOW_DATE
 			| DateUtils.FORMAT_NO_YEAR | DateUtils.FORMAT_ABBREV_ALL;
+	private static final int FULL_DATE_FLAGS = DateUtils.FORMAT_SHOW_TIME
+			| DateUtils.FORMAT_ABBREV_ALL | DateUtils.FORMAT_SHOW_DATE;
 
 	public static String readableTimeDifference(Context context, long time) {
+		return readableTimeDifference(context, time, false);
+	}
+
+	public static String readableTimeDifferenceFull(Context context, long time) {
+		return readableTimeDifference(context, time, true);
+	}
+
+	private static String readableTimeDifference(Context context, long time,
+			boolean fullDate) {
 		if (time == 0) {
 			return context.getString(R.string.just_now);
 		}
@@ -71,8 +82,13 @@ public class UIHelper {
 			java.text.DateFormat df = DateFormat.getTimeFormat(context);
 			return df.format(date);
 		} else {
-			return DateUtils.formatDateTime(context, date.getTime(),
-					DATE_NO_YEAR_FLAGS);
+			if (fullDate) {
+				return DateUtils.formatDateTime(context, date.getTime(),
+						FULL_DATE_FLAGS);
+			} else {
+				return DateUtils.formatDateTime(context, date.getTime(),
+						SHORT_DATE_FLAGS);
+			}
 		}
 	}
 
