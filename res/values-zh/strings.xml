@@ -91,7 +91,7 @@
     <string name="pref_xmpp_resource">XMPP 资源</string>
     <string name="pref_xmpp_resource_summary">客户端标识名称</string>
     <string name="pref_accept_files">接收文件</string>
-    <string name="pref_accept_files_summary">自动接收小于&#8230的文件;</string>
+    <string name="pref_accept_files_summary">自动接收小于 &#8230; 的文件</string>
     <string name="pref_notification_settings">通知设置</string>
     <string name="pref_notifications">通知</string>
     <string name="pref_notifications_summary">收到新消息时通知</string>
@@ -229,7 +229,7 @@
     <string name="connect">Connect</string>
     <string name="account_already_exists">该账号已存在</string>
     <string name="next">下一步</string>
-    <string name="server_info_session_established">当前会话已建立/string>
+    <string name="server_info_session_established">当前会话已建立</string>
     <string name="additional_information">其他信息</string>
     <string name="skip">Skip略过</string>
     <string name="disable_notifications">关闭通知</string>
