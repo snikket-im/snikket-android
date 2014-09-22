@@ -380,7 +380,11 @@ public class ConversationFragment extends Fragment {
 				activity.getSlidingPaneLayout().closePane();
 				activity.getActionBar().setDisplayHomeAsUpEnabled(true);
 				activity.getActionBar().setHomeButtonEnabled(true);
-				activity.getActionBar().setTitle(conversation.getName());
+				if (conversation.getMode() == Conversation.MODE_SINGLE || activity.useSubjectToIdentifyConference()) {
+					activity.getActionBar().setTitle(conversation.getName());
+				} else {
+					activity.getActionBar().setTitle(conversation.getContactJid().split("/")[0]);
+				}
 				activity.invalidateOptionsMenu();
 			}
 		}

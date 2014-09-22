@@ -62,6 +62,8 @@ public abstract class XmppActivity extends Activity {
 	protected int mColorOrange;
 	protected int mColorGreen;
 	protected int mPrimaryColor;
+	
+	protected boolean mUseSubject = true;
 
 	private DisplayMetrics metrics;
 
@@ -207,11 +209,16 @@ public abstract class XmppActivity extends Activity {
 		if (getPreferences().getBoolean("use_larger_font", false)) {
 			setTheme(R.style.ConversationsTheme_LargerText);
 		}
+		mUseSubject = getPreferences().getBoolean("use_subject", true);
 	}
 
 	protected SharedPreferences getPreferences() {
 		return PreferenceManager
 				.getDefaultSharedPreferences(getApplicationContext());
+	}
+	
+	public boolean useSubjectToIdentifyConference() {
+		return mUseSubject;
 	}
 
 	public void switchToConversation(Conversation conversation) {

@@ -154,7 +154,11 @@ public class ConversationActivity extends XmppActivity implements
 					if (ab != null) {
 						ab.setDisplayHomeAsUpEnabled(true);
 						ab.setHomeButtonEnabled(true);
-						ab.setTitle(getSelectedConversation().getName());
+						if (getSelectedConversation().getMode() == Conversation.MODE_SINGLE || activity.useSubjectToIdentifyConference()) {
+							ab.setTitle(getSelectedConversation().getName());
+						} else {
+							ab.setTitle(getSelectedConversation().getContactJid().split("/")[0]);
+						}
 					}
 					invalidateOptionsMenu();
 					if (!getSelectedConversation().isRead()) {

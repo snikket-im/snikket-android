@@ -52,7 +52,11 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 		}
 		TextView convName = (TextView) view
 				.findViewById(R.id.conversation_name);
-		convName.setText(conv.getName());
+		if (conv.getMode() == Conversation.MODE_SINGLE || activity.useSubjectToIdentifyConference()) {
+			convName.setText(conv.getName());
+		} else {
+			convName.setText(conv.getContactJid().split("/")[0]);
+		}
 		TextView convLastMsg = (TextView) view
 				.findViewById(R.id.conversation_lastmsg);
 		ImageView imagePreview = (ImageView) view
