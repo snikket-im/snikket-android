@@ -664,8 +664,13 @@ public class XmppConnectionService extends Service {
 			}
 		}
 		if (packet != null) {
+			if (!account.getXmppConnection().getFeatures().sm()
+					&& message.getConversation().getMode() != Conversation.MODE_MULTI) {
+				markMessage(message, Message.STATUS_SEND);
+			} else {
+				markMessage(message, Message.STATUS_UNSEND);
+			}
 			sendMessagePacket(account, packet);
-			markMessage(message, Message.STATUS_SEND);
 		}
 	}
 
