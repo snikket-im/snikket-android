@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Konverzace</string>
+    <string name="app_name">Conversations</string>
     <string name="action_settings">Nastavení</string>
     <string name="action_add">Nová konverzace</string>
     <string name="action_accounts">Nastavení účtů</string>
