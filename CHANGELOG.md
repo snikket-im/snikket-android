@@ -1,4 +1,15 @@
 ###Changelog
+
+####Version 0.7.2
+* show full timestamp in messages
+* brought back option to use JID to identify conferences
+* optionally request delivery receipts (expert option)
+* more languages
+* bug fixes
+
+####Version 0.7.1
+* Optionally use send button as status indicator
+
 ####Version 0.7
 * Ability to disable notifications for single conversations
 * Merge messages in chat bubbles
