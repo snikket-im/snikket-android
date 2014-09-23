@@ -154,10 +154,12 @@ public class ConversationActivity extends XmppActivity implements
 					if (ab != null) {
 						ab.setDisplayHomeAsUpEnabled(true);
 						ab.setHomeButtonEnabled(true);
-						if (getSelectedConversation().getMode() == Conversation.MODE_SINGLE || activity.useSubjectToIdentifyConference()) {
+						if (getSelectedConversation().getMode() == Conversation.MODE_SINGLE
+								|| activity.useSubjectToIdentifyConference()) {
 							ab.setTitle(getSelectedConversation().getName());
 						} else {
-							ab.setTitle(getSelectedConversation().getContactJid().split("/")[0]);
+							ab.setTitle(getSelectedConversation()
+									.getContactJid().split("/")[0]);
 						}
 					}
 					invalidateOptionsMenu();
@@ -312,152 +314,54 @@ public class ConversationActivity extends XmppActivity implements
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case android.R.id.home:
+		if (item.getItemId() == android.R.id.home) {
 			spl.openPane();
 			return true;
-		case R.id.action_attach_file:
-			View menuAttachFile = findViewById(R.id.action_attach_file);
-			if (menuAttachFile == null) {
-				break;
-			}
-			PopupMenu attachFilePopup = new PopupMenu(this, menuAttachFile);
-			attachFilePopup.inflate(R.menu.attachment_choices);
-			attachFilePopup
-					.setOnMenuItemClickListener(new OnMenuItemClickListener() {
-
-						@Override
-						public boolean onMenuItemClick(MenuItem item) {
-							switch (item.getItemId()) {
-							case R.id.attach_choose_picture:
-								attachFile(ATTACHMENT_CHOICE_CHOOSE_IMAGE);
-								break;
-							case R.id.attach_take_picture:
-								attachFile(ATTACHMENT_CHOICE_TAKE_PHOTO);
-								break;
-							case R.id.attach_record_voice:
-								attachFile(ATTACHMENT_CHOICE_RECORD_VOICE);
-								break;
-							}
-							return false;
-						}
-					});
-			attachFilePopup.show();
-			break;
-		case R.id.action_add:
+		} else if (item.getItemId() == R.id.action_add) {
 			startActivity(new Intent(this, StartConversationActivity.class));
-			break;
-		case R.id.action_archive:
-			this.endConversation(getSelectedConversation());
-			break;
-		case R.id.action_contact_details:
-			Contact contact = this.getSelectedConversation().getContact();
-			if (contact.showInRoster()) {
-				switchToContactDetails(contact);
-			} else {
-				showAddToRosterDialog(getSelectedConversation());
-			}
-			break;
-		case R.id.action_muc_details:
-			Intent intent = new Intent(this, ConferenceDetailsActivity.class);
-			intent.setAction(ConferenceDetailsActivity.ACTION_VIEW_MUC);
-			intent.putExtra("uuid", getSelectedConversation().getUuid());
-			startActivity(intent);
-			break;
-		case R.id.action_invite:
-			inviteToConversation(getSelectedConversation());
-			break;
-		case R.id.action_security:
-			final Conversation conversation = getSelectedConversation();
-			View menuItemView = findViewById(R.id.action_security);
-			if (menuItemView == null) {
+			return true;
+		} else if (getSelectedConversation() != null) {
+			switch (item.getItemId()) {
+			case R.id.action_attach_file:
+				attachFileDialog();
+				break;
+			case R.id.action_archive:
+				this.endConversation(getSelectedConversation());
+				break;
+			case R.id.action_contact_details:
+				Contact contact = this.getSelectedConversation().getContact();
+				if (contact.showInRoster()) {
+					switchToContactDetails(contact);
+				} else {
+					showAddToRosterDialog(getSelectedConversation());
+				}
+				break;
+			case R.id.action_muc_details:
+				Intent intent = new Intent(this,
+						ConferenceDetailsActivity.class);
+				intent.setAction(ConferenceDetailsActivity.ACTION_VIEW_MUC);
+				intent.putExtra("uuid", getSelectedConversation().getUuid());
+				startActivity(intent);
+				break;
+			case R.id.action_invite:
+				inviteToConversation(getSelectedConversation());
+				break;
+			case R.id.action_security:
+				selectEncryptionDialog(getSelectedConversation());
+				break;
+			case R.id.action_clear_history:
+				clearHistoryDialog(getSelectedConversation());
+				break;
+			case R.id.action_mute:
+				muteConversationDialog(getSelectedConversation());
+				break;
+			default:
 				break;
 			}
-			PopupMenu popup = new PopupMenu(this, menuItemView);
-			final ConversationFragment fragment = (ConversationFragment) getFragmentManager()
-					.findFragmentByTag("conversation");
-			if (fragment != null) {
-				popup.setOnMenuItemClickListener(new OnMenuItemClickListener() {
-
-					@Override
-					public boolean onMenuItemClick(MenuItem item) {
-						switch (item.getItemId()) {
-						case R.id.encryption_choice_none:
-							conversation
-									.setNextEncryption(Message.ENCRYPTION_NONE);
-							item.setChecked(true);
-							break;
-						case R.id.encryption_choice_otr:
-							conversation
-									.setNextEncryption(Message.ENCRYPTION_OTR);
-							item.setChecked(true);
-							break;
-						case R.id.encryption_choice_pgp:
-							if (hasPgp()) {
-								if (conversation.getAccount().getKeys()
-										.has("pgp_signature")) {
-									conversation
-											.setNextEncryption(Message.ENCRYPTION_PGP);
-									item.setChecked(true);
-								} else {
-									announcePgp(conversation.getAccount(),
-											conversation);
-								}
-							} else {
-								showInstallPgpDialog();
-							}
-							break;
-						default:
-							conversation
-									.setNextEncryption(Message.ENCRYPTION_NONE);
-							break;
-						}
-						fragment.updateChatMsgHint();
-						return true;
-					}
-				});
-				popup.inflate(R.menu.encryption_choices);
-				MenuItem otr = popup.getMenu().findItem(
-						R.id.encryption_choice_otr);
-				MenuItem none = popup.getMenu().findItem(
-						R.id.encryption_choice_none);
-				if (conversation.getMode() == Conversation.MODE_MULTI) {
-					otr.setEnabled(false);
-				} else {
-					if (forceEncryption()) {
-						none.setVisible(false);
-					}
-				}
-				switch (conversation.getNextEncryption(forceEncryption())) {
-				case Message.ENCRYPTION_NONE:
-					none.setChecked(true);
-					break;
-				case Message.ENCRYPTION_OTR:
-					otr.setChecked(true);
-					break;
-				case Message.ENCRYPTION_PGP:
-					popup.getMenu().findItem(R.id.encryption_choice_pgp)
-							.setChecked(true);
-					break;
-				default:
-					popup.getMenu().findItem(R.id.encryption_choice_none)
-							.setChecked(true);
-					break;
-				}
-				popup.show();
-			}
-
-			break;
-		case R.id.action_clear_history:
-			clearHistoryDialog(getSelectedConversation());
-			break;
-		case R.id.action_mute:
-			muteConversationDialog(getSelectedConversation());
-			break;
-		default:
-			break;
+			return super.onOptionsItemSelected(item);
+		} else {
+			return super.onOptionsItemSelected(item);
 		}
-		return super.onOptionsItemSelected(item);
 	}
 
 	public void endConversation(Conversation conversation) {
@@ -494,6 +398,111 @@ public class ConversationActivity extends XmppActivity implements
 					}
 				});
 		builder.create().show();
+	}
+	
+	protected void attachFileDialog() {
+		View menuAttachFile = findViewById(R.id.action_attach_file);
+		if (menuAttachFile == null) {
+			return;
+		}
+		PopupMenu attachFilePopup = new PopupMenu(this, menuAttachFile);
+		attachFilePopup.inflate(R.menu.attachment_choices);
+		attachFilePopup
+				.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+
+					@Override
+					public boolean onMenuItemClick(MenuItem item) {
+						switch (item.getItemId()) {
+						case R.id.attach_choose_picture:
+							attachFile(ATTACHMENT_CHOICE_CHOOSE_IMAGE);
+							break;
+						case R.id.attach_take_picture:
+							attachFile(ATTACHMENT_CHOICE_TAKE_PHOTO);
+							break;
+						case R.id.attach_record_voice:
+							attachFile(ATTACHMENT_CHOICE_RECORD_VOICE);
+							break;
+						}
+						return false;
+					}
+				});
+		attachFilePopup.show();
+	}
+
+	protected void selectEncryptionDialog(final Conversation conversation) {
+		View menuItemView = findViewById(R.id.action_security);
+		if (menuItemView == null) {
+			return;
+		}
+		PopupMenu popup = new PopupMenu(this, menuItemView);
+		final ConversationFragment fragment = (ConversationFragment) getFragmentManager()
+				.findFragmentByTag("conversation");
+		if (fragment != null) {
+			popup.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+
+				@Override
+				public boolean onMenuItemClick(MenuItem item) {
+					switch (item.getItemId()) {
+					case R.id.encryption_choice_none:
+						conversation.setNextEncryption(Message.ENCRYPTION_NONE);
+						item.setChecked(true);
+						break;
+					case R.id.encryption_choice_otr:
+						conversation.setNextEncryption(Message.ENCRYPTION_OTR);
+						item.setChecked(true);
+						break;
+					case R.id.encryption_choice_pgp:
+						if (hasPgp()) {
+							if (conversation.getAccount().getKeys()
+									.has("pgp_signature")) {
+								conversation
+										.setNextEncryption(Message.ENCRYPTION_PGP);
+								item.setChecked(true);
+							} else {
+								announcePgp(conversation.getAccount(),
+										conversation);
+							}
+						} else {
+							showInstallPgpDialog();
+						}
+						break;
+					default:
+						conversation.setNextEncryption(Message.ENCRYPTION_NONE);
+						break;
+					}
+					fragment.updateChatMsgHint();
+					return true;
+				}
+			});
+			popup.inflate(R.menu.encryption_choices);
+			MenuItem otr = popup.getMenu().findItem(R.id.encryption_choice_otr);
+			MenuItem none = popup.getMenu().findItem(
+					R.id.encryption_choice_none);
+			if (conversation.getMode() == Conversation.MODE_MULTI) {
+				otr.setEnabled(false);
+			} else {
+				if (forceEncryption()) {
+					none.setVisible(false);
+				}
+			}
+			switch (conversation.getNextEncryption(forceEncryption())) {
+			case Message.ENCRYPTION_NONE:
+				none.setChecked(true);
+				break;
+			case Message.ENCRYPTION_OTR:
+				otr.setChecked(true);
+				break;
+			case Message.ENCRYPTION_PGP:
+				popup.getMenu().findItem(R.id.encryption_choice_pgp)
+						.setChecked(true);
+				break;
+			default:
+				popup.getMenu().findItem(R.id.encryption_choice_none)
+						.setChecked(true);
+				break;
+			}
+			popup.show();
+		}
 	}
 
 	protected void muteConversationDialog(final Conversation conversation) {
