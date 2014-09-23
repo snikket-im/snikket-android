@@ -974,11 +974,7 @@ public class XmppConnection implements Runnable {
 		}
 
 		public boolean sm() {
-			if (connection.streamFeatures == null) {
-				return false;
-			} else {
-				return connection.streamFeatures.hasChild("sm");
-			}
+			return streamId != null;
 		}
 
 		public boolean csi() {
