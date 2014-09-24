@@ -69,6 +69,7 @@ These XEPs are - as of now:
 * [Ilia Rostovtsev](https://github.com/qooob) (Russian)
 * [Jelmer Vernooij](https://github.com/jelmer) (Dutch)
 * [Anders Sandblad](https://github.com/andersruneson) (Swedish)
+* [Aizaz AZ](http://www.linkedin.com/in/aizazhaider) (Chinese)
 
 ##FAQ
 ###General
