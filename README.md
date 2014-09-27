@@ -93,7 +93,7 @@ transfer (SEPA).
 My Bitcoin Address is: 1NxSU1YxYzJVDpX1rcESAA3NJki7kRgeeu
 
 
-[![Flattr this!](http://api.flattr.com/button/flattr-badge-large.png)](https://flattr.com/submit/auto?user_id=inputmice&url=https%3A%2F%2Fgithub.com%2Fsiacs%2FConversation)
+[![Flattr this!](http://api.flattr.com/button/flattr-badge-large.png)](https://flattr.com/submit/auto?user_id=inputmice&url=https%3A%2F%2Fgithub.com%2Fsiacs%2FConversations)
 
 ####How do I create an account?
 XMPP like email for example is a federated protocol which means that there is
