@@ -323,7 +323,8 @@ public class MucOptions {
 	}
 
 	public String getPassword() {
-		if (conversation.getBookmark() != null
+		this.password = conversation.getAttribute(Conversation.ATTRIBUTE_MUC_PASSWORD);
+		if (this.password == null && conversation.getBookmark() != null
 				&& conversation.getBookmark().getPassword() != null) {
 			return conversation.getBookmark().getPassword();
 		} else {
@@ -338,6 +339,7 @@ public class MucOptions {
 		} else {
 			this.password = password;
 		}
+		conversation.setAttribute(Conversation.ATTRIBUTE_MUC_PASSWORD, password);
 	}
 
 	public boolean isPasswordChanged() {

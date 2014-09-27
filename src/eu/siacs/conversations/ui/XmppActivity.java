@@ -294,6 +294,7 @@ public abstract class XmppActivity extends Activity {
 						if (conversation != null) {
 							conversation
 									.setNextEncryption(Message.ENCRYPTION_PGP);
+							xmppConnectionService.databaseBackend.updateConversation(conversation);
 						}
 					}
 

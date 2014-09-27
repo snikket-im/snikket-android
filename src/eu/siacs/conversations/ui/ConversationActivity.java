@@ -297,6 +297,7 @@ public class ConversationActivity extends XmppActivity implements
 											int which) {
 										conversation
 												.setNextEncryption(Message.ENCRYPTION_NONE);
+										xmppConnectionService.databaseBackend.updateConversation(conversation);
 										selectPresenceToAttachFile(attachmentChoice);
 									}
 								});
@@ -472,6 +473,7 @@ public class ConversationActivity extends XmppActivity implements
 						conversation.setNextEncryption(Message.ENCRYPTION_NONE);
 						break;
 					}
+					xmppConnectionService.databaseBackend.updateConversation(conversation);
 					fragment.updateChatMsgHint();
 					return true;
 				}

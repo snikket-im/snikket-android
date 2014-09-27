@@ -19,7 +19,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 	private static DatabaseBackend instance = null;
 
 	private static final String DATABASE_NAME = "history";
-	private static final int DATABASE_VERSION = 7;
+	private static final int DATABASE_VERSION = 8;
 
 	private static String CREATE_CONTATCS_STATEMENT = "create table "
 			+ Contact.TABLENAME + "(" + Contact.ACCOUNT + " TEXT, "
@@ -50,8 +50,8 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 				+ " TEXT, " + Conversation.CONTACT + " TEXT, "
 				+ Conversation.ACCOUNT + " TEXT, " + Conversation.CONTACTJID
 				+ " TEXT, " + Conversation.CREATED + " NUMBER, "
-				+ Conversation.STATUS + " NUMBER," + Conversation.MODE
-				+ " NUMBER," + "FOREIGN KEY(" + Conversation.ACCOUNT
+				+ Conversation.STATUS + " NUMBER, " + Conversation.MODE
+				+ " NUMBER, "+Conversation.ATTRIBUTES + " TEXT, FOREIGN KEY(" + Conversation.ACCOUNT
 				+ ") REFERENCES " + Account.TABLENAME + "(" + Account.UUID
 				+ ") ON DELETE CASCADE);");
 		db.execSQL("create table " + Message.TABLENAME + "( " + Message.UUID
@@ -95,6 +95,10 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 					+ Contact.AVATAR + " TEXT");
 			db.execSQL("ALTER TABLE " + Account.TABLENAME + " ADD COLUMN "
 					+ Account.AVATAR + " TEXT");
+		}
+		if (oldVersion < 8 && newVersion >= 8) {
+			db.execSQL("ALTER TABLE " + Conversation.TABLENAME + " ADD COLUMN "
+					+ Conversation.ATTRIBUTES + " TEXT");
 		}
 	}
 

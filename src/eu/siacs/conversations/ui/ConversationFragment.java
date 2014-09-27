@@ -668,6 +668,7 @@ public class ConversationFragment extends Fragment {
 										int which) {
 									conversation
 											.setNextEncryption(Message.ENCRYPTION_NONE);
+									xmppService.databaseBackend.updateConversation(conversation);
 									message.setEncryption(Message.ENCRYPTION_NONE);
 									xmppService.sendMessage(message);
 									messageSent();
@@ -696,6 +697,7 @@ public class ConversationFragment extends Fragment {
 									conversation
 											.setNextEncryption(Message.ENCRYPTION_NONE);
 									message.setEncryption(Message.ENCRYPTION_NONE);
+									xmppService.databaseBackend.updateConversation(conversation);
 									xmppService.sendMessage(message);
 									messageSent();
 								}

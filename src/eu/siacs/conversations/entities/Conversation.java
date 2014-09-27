@@ -4,6 +4,9 @@ import java.security.interfaces.DSAPublicKey;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.UIHelper;
 
@@ -36,6 +39,10 @@ public class Conversation extends AbstractEntity {
 	public static final String STATUS = "status";
 	public static final String CREATED = "created";
 	public static final String MODE = "mode";
+	public static final String ATTRIBUTES = "attributes";
+	
+	public static final String ATTRIBUTE_NEXT_ENCRYPTION = "next_encryption";
+	public static final String ATTRIBUTE_MUC_PASSWORD = "muc_password";
 
 	private String name;
 	private String contactUuid;
@@ -44,6 +51,8 @@ public class Conversation extends AbstractEntity {
 	private int status;
 	private long created;
 	private int mode;
+	
+	private JSONObject attributes = new JSONObject();
 
 	private long mutedTill = 0;
 
@@ -56,7 +65,6 @@ public class Conversation extends AbstractEntity {
 
 	private transient String otrFingerprint = null;
 
-	private int nextMessageEncryption = -1;
 	private String nextMessage;
 
 	private transient MucOptions mucOptions = null;
@@ -73,13 +81,13 @@ public class Conversation extends AbstractEntity {
 			int mode) {
 		this(java.util.UUID.randomUUID().toString(), name, null, account
 				.getUuid(), contactJid, System.currentTimeMillis(),
-				STATUS_AVAILABLE, mode);
+				STATUS_AVAILABLE, mode,"");
 		this.account = account;
 	}
 
 	public Conversation(String uuid, String name, String contactUuid,
 			String accountUuid, String contactJid, long created, int status,
-			int mode) {
+			int mode, String attributes) {
 		this.uuid = uuid;
 		this.name = name;
 		this.contactUuid = contactUuid;
@@ -88,6 +96,14 @@ public class Conversation extends AbstractEntity {
 		this.created = created;
 		this.status = status;
 		this.mode = mode;
+		try {
+			if (attributes==null) {
+				attributes = new String();
+			}
+			this.attributes = new JSONObject(attributes);
+		} catch (JSONException e) {
+			this.attributes = new JSONObject();
+		}
 	}
 
 	public List<Message> getMessages() {
@@ -198,6 +214,7 @@ public class Conversation extends AbstractEntity {
 		values.put(CREATED, created);
 		values.put(STATUS, status);
 		values.put(MODE, mode);
+		values.put(ATTRIBUTES,attributes.toString());
 		return values;
 	}
 
@@ -209,7 +226,8 @@ public class Conversation extends AbstractEntity {
 				cursor.getString(cursor.getColumnIndex(CONTACTJID)),
 				cursor.getLong(cursor.getColumnIndex(CREATED)),
 				cursor.getInt(cursor.getColumnIndex(STATUS)),
-				cursor.getInt(cursor.getColumnIndex(MODE)));
+				cursor.getInt(cursor.getColumnIndex(MODE)),
+				cursor.getString(cursor.getColumnIndex(ATTRIBUTES)));
 	}
 
 	public void setStatus(int status) {
@@ -345,7 +363,8 @@ public class Conversation extends AbstractEntity {
 	}
 
 	public int getNextEncryption(boolean force) {
-		if (this.nextMessageEncryption == -1) {
+		int next = this.getIntAttribute(ATTRIBUTE_NEXT_ENCRYPTION, -1);
+		if (next == -1) {
 			int latest = this.getLatestEncryption();
 			if (latest == Message.ENCRYPTION_NONE) {
 				if (force && getMode() == MODE_SINGLE) {
@@ -363,16 +382,16 @@ public class Conversation extends AbstractEntity {
 				return latest;
 			}
 		}
-		if (this.nextMessageEncryption == Message.ENCRYPTION_NONE && force
+		if (next == Message.ENCRYPTION_NONE && force
 				&& getMode() == MODE_SINGLE) {
 			return Message.ENCRYPTION_OTR;
 		} else {
-			return this.nextMessageEncryption;
+			return next;
 		}
 	}
 
 	public void setNextEncryption(int encryption) {
-		this.nextMessageEncryption = encryption;
+		this.setAttribute(ATTRIBUTE_NEXT_ENCRYPTION, String.valueOf(encryption));
 	}
 
 	public String getNextMessage() {
@@ -439,5 +458,35 @@ public class Conversation extends AbstractEntity {
 
 	public boolean isMuted() {
 		return SystemClock.elapsedRealtime() < this.mutedTill;
+	}
+	
+	public boolean setAttribute(String key, String value) {
+		try {
+			this.attributes.put(key, value);
+			return true;
+		} catch (JSONException e) {
+			return false;
+		}
+	}
+	
+	public String getAttribute(String key) {
+		try {
+			return this.attributes.getString(key);
+		} catch (JSONException e) {
+			return null;
+		}
+	}
+	
+	public int getIntAttribute(String key, int defaultValue) {
+		String value = this.getAttribute(key);
+		if (value==null) {
+			return defaultValue;
+		} else {
+			try {
+				return Integer.parseInt(value);
+			} catch (NumberFormatException e) {
+				return defaultValue;
+			}
+		}
 	}
 }

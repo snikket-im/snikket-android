@@ -1119,6 +1119,7 @@ public class XmppConnectionService extends Service {
 				}
 				pushBookmarks(conversation.getAccount());
 			}
+			databaseBackend.updateConversation(conversation);
 			joinMuc(conversation);
 		}
 	}
