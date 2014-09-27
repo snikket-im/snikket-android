@@ -824,7 +824,7 @@ public class XmppConnectionService extends Service {
 			}
 		});
 	}
-	
+
 	public int loadMoreMessages(Conversation conversation, long timestamp) {
 		List<Message> messages = databaseBackend.getMessages(conversation, 50,
 				timestamp);
@@ -851,8 +851,9 @@ public class XmppConnectionService extends Service {
 	public Conversation find(List<Conversation> haystack, Account account,
 			String jid) {
 		for (Conversation conversation : haystack) {
-			if ((conversation.getAccount().equals(account))
-					&& (conversation.getContactJid().split("/",2)[0].equals(jid))) {
+			if ((account == null || conversation.getAccount().equals(account))
+					&& (conversation.getContactJid().split("/", 2)[0]
+							.equals(jid))) {
 				return conversation;
 			}
 		}
@@ -1741,5 +1742,19 @@ public class XmppConnectionService extends Service {
 
 	public interface OnRosterUpdate {
 		public void onRosterUpdate();
+	}
+
+	public List<Contact> findContacts(String jid) {
+		ArrayList<Contact> contacts = new ArrayList<Contact>();
+		for (Account account : getAccounts()) {
+			if (!account.isOptionSet(Account.OPTION_DISABLED)) {
+				Contact contact = account.getRoster()
+						.getContactAsShownInRoster(jid);
+				if (contact != null) {
+					contacts.add(contact);
+				}
+			}
+		}
+		return contacts;
 	}
 }

@@ -245,6 +245,7 @@ public abstract class XmppActivity extends Activity {
 					| Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		}
 		startActivity(viewConversationIntent);
+		finish();
 	}
 
 	public void switchToContactDetails(Contact contact) {

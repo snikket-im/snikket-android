@@ -14,13 +14,18 @@ public class Roster {
 		this.account = account;
 	}
 
-	public boolean hasContact(String jid) {
-		String cleanJid = jid.split("/",2)[0];
-		return contacts.containsKey(cleanJid);
+	public Contact getContactAsShownInRoster(String jid) {
+		String cleanJid = jid.split("/", 2)[0];
+		Contact contact = contacts.get(cleanJid);
+		if (contact != null && contact.showInRoster()) {
+			return contact;
+		} else {
+			return null;
+		}
 	}
 
 	public Contact getContact(String jid) {
-		String cleanJid = jid.split("/",2)[0].toLowerCase(Locale.getDefault());
+		String cleanJid = jid.split("/", 2)[0].toLowerCase(Locale.getDefault());
 		if (contacts.containsKey(cleanJid)) {
 			return contacts.get(cleanJid);
 		} else {

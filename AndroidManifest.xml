@@ -63,6 +63,14 @@
                 <data android:scheme="imto" />
                 <data android:host="jabber" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="xmpp" />
+            </intent-filter>
         </activity>
         <activity
             android:name="eu.siacs.conversations.ui.SettingsActivity"
