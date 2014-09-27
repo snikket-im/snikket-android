@@ -254,5 +254,12 @@
     <string name="pref_expert_options_summary">Por favor, cuidado con estas opciones</string>
     <string name="pref_use_larger_font">Incrementar tamaño de fuente</string>
     <string name="pref_use_larger_font_summary">Usar fuentes grandes en toda la aplicación</string>
+    <string name="pref_use_send_button_to_indicate_status">Botón enviar indica estado</string>
+    <string name="pref_use_indicate_received">Solicitar entrega de mensaje</string>
+    <string name="pref_use_indicate_received_summary">Cuando el contacto reciba el mensaje será indicado con una marca verde. Cuidado, esto podría no funcionar en todos los casos.</string>
+    <string name="pref_use_send_button_to_indicate_status_summary">El color del botón enviar indica el estado del contacto</string>
+    <string name="pref_expert_options_other">Otros</string>
+    <string name="pref_conference_name">Nombre de conferencia</string>
+    <string name="pref_conference_name_summary">Usar el asunto de la conferencia en lugar del identificador jabber como nombre de conferencia</string>
 
 </resources>
