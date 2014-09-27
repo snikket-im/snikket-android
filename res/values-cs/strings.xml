@@ -255,6 +255,11 @@
     <string name="pref_use_larger_font">Zvětšit velikost písma</string>
     <string name="pref_use_larger_font_summary">Použít větší písmo v celé aplikaci</string>
     <string name="pref_use_send_button_to_indicate_status">Tlačítko pro odeslání zobrazuje stav</string>
+    <string name="pref_use_indicate_received">Požadovat oznámení o přijetí</string>
+    <string name="pref_use_indicate_received_summary">Přijaté zprávy budou označeny zeleně. Toto nemusí vždy plně fungovat.</string>
     <string name="pref_use_send_button_to_indicate_status_summary">Obarvit tlačítko pro odeslání barvou stavu kontaktu</string>
+    <string name="pref_expert_options_other">Další</string>
+    <string name="pref_conference_name">Jméno konference</string>
+    <string name="pref_conference_name_summary">Pro identifikaci konferencí použít téma místnosti místo jejího JID</string>
 
 </resources>
