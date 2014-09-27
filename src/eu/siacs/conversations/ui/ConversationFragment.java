@@ -76,10 +76,11 @@ public class ConversationFragment extends Fragment {
 
 		@Override
 		public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-			if (actionId == EditorInfo.IME_ACTION_DONE) {
+			if (actionId == EditorInfo.IME_ACTION_SEND) {
 				InputMethodManager imm = (InputMethodManager) v.getContext()
 						.getSystemService(Context.INPUT_METHOD_SERVICE);
 				imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+				sendMessage();
 				return true;
 			} else {
 				return false;
