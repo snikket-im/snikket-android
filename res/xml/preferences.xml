@@ -52,15 +52,9 @@
 
         <CheckBoxPreference
             android:dependency="show_notification"
-            android:key="notify_in_conversation_when_highlighted"
+            android:key="always_notify_in_conference"
             android:summary="@string/pref_conference_notifications_summary"
             android:title="@string/pref_conference_notifications" />
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:dependency="show_notification"
-            android:key="notification_grace_period_after_carbon_received"
-            android:summary="@string/pref_notification_grace_period_summary"
-            android:title="@string/pref_notification_grace_period" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/pref_ui_options" >
         <CheckBoxPreference

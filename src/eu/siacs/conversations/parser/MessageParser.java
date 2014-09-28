@@ -8,6 +8,7 @@ import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
+import eu.siacs.conversations.services.NotificationService;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.xml.Element;
@@ -386,11 +387,13 @@ public class MessageParser extends AbstractParser implements
 	@Override
 	public void onMessagePacketReceived(Account account, MessagePacket packet) {
 		Message message = null;
-		boolean notify = true;
-		if (mXmppConnectionService.getPreferences().getBoolean(
-				"notification_grace_period_after_carbon_received", true)) {
-			notify = (SystemClock.elapsedRealtime() - lastCarbonMessageReceived) > (Config.CARBON_GRACE_PERIOD * 1000);
-		}
+		boolean notify = mXmppConnectionService.getPreferences().getBoolean(
+				"show_notification", true);
+		notify = notify
+				&& (SystemClock.elapsedRealtime() - lastCarbonMessageReceived) > (Config.CARBON_GRACE_PERIOD * 1000);
+		boolean alwaysNotifyInConference = notify
+				&& mXmppConnectionService.getPreferences().getBoolean(
+						"always_notify_in_conference", false);
 
 		this.parseNick(packet, account);
 
@@ -427,8 +430,11 @@ public class MessageParser extends AbstractParser implements
 			if (message != null) {
 				if (message.getStatus() == Message.STATUS_RECEIVED) {
 					message.markUnread();
+					notify = alwaysNotifyInConference
+							|| NotificationService
+									.wasHighlightedOrPrivate(message);
 				} else {
-					message.getConversation().markRead();
+					mXmppConnectionService.markRead(message.getConversation());
 					lastCarbonMessageReceived = SystemClock.elapsedRealtime();
 					notify = false;
 				}

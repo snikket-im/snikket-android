@@ -2,6 +2,9 @@ package eu.siacs.conversations.services;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -162,4 +165,22 @@ public class NotificationService {
 				PendingIntent.FLAG_UPDATE_CURRENT);
 		return resultPendingIntent;
 	}
+
+	public static boolean wasHighlightedOrPrivate(Message message) {
+		String nick = message.getConversation().getMucOptions().getActualNick();
+		Pattern highlight = generateNickHighlightPattern(nick);
+		Matcher m = highlight.matcher(message.getBody());
+		return (m.find() || message.getType() == Message.TYPE_PRIVATE);
+	}
+
+	private static Pattern generateNickHighlightPattern(String nick) {
+		// We expect a word boundary, i.e. space or start of string, followed by
+		// the
+		// nick (matched in case-insensitive manner), followed by optional
+		// punctuation (for example "bob: i disagree" or "how are you alice?"),
+		// followed by another word boundary.
+		return Pattern.compile("\\b" + nick + "\\p{Punct}?\\b",
+				Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
+	}
+
 }

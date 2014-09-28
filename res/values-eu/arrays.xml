@@ -26,8 +26,9 @@
         <item>2 ordu</item>
         <item>8 ordu</item>
         <item>abisatu arte</item>
-        </string-array>
-        <integer-array name="mute_options_durations">
+    </string-array>
+
+    <integer-array name="mute_options_durations">
         <item>1800</item>
         <item>3600</item>
         <item>7200</item>
