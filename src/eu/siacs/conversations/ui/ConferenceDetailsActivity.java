@@ -201,7 +201,7 @@ public class ConferenceDetailsActivity extends XmppActivity {
 	private void populateView() {
 		mYourPhoto.setImageBitmap(conversation.getAccount().getImage(this, 48));
 		setTitle(conversation.getName());
-		mFullJid.setText(conversation.getContactJid().split("/",2)[0]);
+		mFullJid.setText(conversation.getContactJid().split("/", 2)[0]);
 		mYourNick.setText(conversation.getMucOptions().getActualNick());
 		mRoleAffiliaton = (TextView) findViewById(R.id.muc_role);
 		if (conversation.getMucOptions().online()) {

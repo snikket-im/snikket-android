@@ -167,8 +167,6 @@ public class ConversationActivity extends XmppActivity implements
 					if (!getSelectedConversation().isRead()) {
 						xmppConnectionService
 								.markRead(getSelectedConversation());
-						UIHelper.updateNotification(getApplicationContext(),
-								getConversationList(), null, false);
 						listView.invalidateViews();
 					}
 				}
@@ -297,7 +295,8 @@ public class ConversationActivity extends XmppActivity implements
 											int which) {
 										conversation
 												.setNextEncryption(Message.ENCRYPTION_NONE);
-										xmppConnectionService.databaseBackend.updateConversation(conversation);
+										xmppConnectionService.databaseBackend
+												.updateConversation(conversation);
 										selectPresenceToAttachFile(attachmentChoice);
 									}
 								});
@@ -402,7 +401,7 @@ public class ConversationActivity extends XmppActivity implements
 				});
 		builder.create().show();
 	}
-	
+
 	protected void attachFileDialog() {
 		View menuAttachFile = findViewById(R.id.action_attach_file);
 		if (menuAttachFile == null) {
@@ -473,7 +472,8 @@ public class ConversationActivity extends XmppActivity implements
 						conversation.setNextEncryption(Message.ENCRYPTION_NONE);
 						break;
 					}
-					xmppConnectionService.databaseBackend.updateConversation(conversation);
+					xmppConnectionService.databaseBackend
+							.updateConversation(conversation);
 					fragment.updateChatMsgHint();
 					return true;
 				}

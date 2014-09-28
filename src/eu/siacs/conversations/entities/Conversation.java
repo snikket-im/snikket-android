@@ -40,7 +40,7 @@ public class Conversation extends AbstractEntity {
 	public static final String CREATED = "created";
 	public static final String MODE = "mode";
 	public static final String ATTRIBUTES = "attributes";
-	
+
 	public static final String ATTRIBUTE_NEXT_ENCRYPTION = "next_encryption";
 	public static final String ATTRIBUTE_MUC_PASSWORD = "muc_password";
 
@@ -51,7 +51,7 @@ public class Conversation extends AbstractEntity {
 	private int status;
 	private long created;
 	private int mode;
-	
+
 	private JSONObject attributes = new JSONObject();
 
 	private long mutedTill = 0;
@@ -81,7 +81,7 @@ public class Conversation extends AbstractEntity {
 			int mode) {
 		this(java.util.UUID.randomUUID().toString(), name, null, account
 				.getUuid(), contactJid, System.currentTimeMillis(),
-				STATUS_AVAILABLE, mode,"");
+				STATUS_AVAILABLE, mode, "");
 		this.account = account;
 	}
 
@@ -97,7 +97,7 @@ public class Conversation extends AbstractEntity {
 		this.status = status;
 		this.mode = mode;
 		try {
-			if (attributes==null) {
+			if (attributes == null) {
 				attributes = new String();
 			}
 			this.attributes = new JSONObject(attributes);
@@ -214,7 +214,7 @@ public class Conversation extends AbstractEntity {
 		values.put(CREATED, created);
 		values.put(STATUS, status);
 		values.put(MODE, mode);
-		values.put(ATTRIBUTES,attributes.toString());
+		values.put(ATTRIBUTES, attributes.toString());
 		return values;
 	}
 
@@ -247,8 +247,8 @@ public class Conversation extends AbstractEntity {
 		if (this.otrSession != null) {
 			return this.otrSession;
 		} else {
-			SessionID sessionId = new SessionID(
-					this.getContactJid().split("/",2)[0], presence, "xmpp");
+			SessionID sessionId = new SessionID(this.getContactJid().split("/",
+					2)[0], presence, "xmpp");
 			this.otrSession = new SessionImpl(sessionId, getAccount()
 					.getOtrEngine(service));
 			try {
@@ -459,7 +459,7 @@ public class Conversation extends AbstractEntity {
 	public boolean isMuted() {
 		return SystemClock.elapsedRealtime() < this.mutedTill;
 	}
-	
+
 	public boolean setAttribute(String key, String value) {
 		try {
 			this.attributes.put(key, value);
@@ -468,7 +468,7 @@ public class Conversation extends AbstractEntity {
 			return false;
 		}
 	}
-	
+
 	public String getAttribute(String key) {
 		try {
 			return this.attributes.getString(key);
@@ -476,10 +476,10 @@ public class Conversation extends AbstractEntity {
 			return null;
 		}
 	}
-	
+
 	public int getIntAttribute(String key, int defaultValue) {
 		String value = this.getAttribute(key);
-		if (value==null) {
+		if (value == null) {
 			return defaultValue;
 		} else {
 			try {

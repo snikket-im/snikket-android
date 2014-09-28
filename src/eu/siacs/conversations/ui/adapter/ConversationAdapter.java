@@ -52,7 +52,8 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 		}
 		TextView convName = (TextView) view
 				.findViewById(R.id.conversation_name);
-		if (conv.getMode() == Conversation.MODE_SINGLE || activity.useSubjectToIdentifyConference()) {
+		if (conv.getMode() == Conversation.MODE_SINGLE
+				|| activity.useSubjectToIdentifyConference()) {
 			convName.setText(conv.getName());
 		} else {
 			convName.setText(conv.getContactJid().split("/")[0]);

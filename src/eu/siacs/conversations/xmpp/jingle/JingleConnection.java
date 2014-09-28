@@ -88,8 +88,8 @@ public class JingleConnection implements Downloadable {
 				sendSuccess();
 				if (acceptedAutomatically) {
 					message.markUnread();
-					JingleConnection.this.mXmppConnectionService.notifyUi(
-							message.getConversation(), true);
+					JingleConnection.this.mXmppConnectionService
+							.pushNotification(message);
 				}
 				BitmapFactory.Options options = new BitmapFactory.Options();
 				options.inJustDecodeBounds = true;
@@ -256,12 +256,12 @@ public class JingleConnection implements Downloadable {
 		this.status = STATUS_INITIATED;
 		Conversation conversation = this.mXmppConnectionService
 				.findOrCreateConversation(account,
-						packet.getFrom().split("/",2)[0], false);
+						packet.getFrom().split("/", 2)[0], false);
 		this.message = new Message(conversation, "", Message.ENCRYPTION_NONE);
 		this.message.setType(Message.TYPE_IMAGE);
 		this.message.setStatus(Message.STATUS_RECEIVED_OFFER);
 		this.message.setDownloadable(this);
-		String[] fromParts = packet.getFrom().split("/",2);
+		String[] fromParts = packet.getFrom().split("/", 2);
 		this.message.setPresence(fromParts[1]);
 		this.account = account;
 		this.initiator = packet.getFrom();
@@ -319,8 +319,7 @@ public class JingleConnection implements Downloadable {
 										+ " allowed size:"
 										+ this.mJingleConnectionManager
 												.getAutoAcceptFileSize());
-						this.mXmppConnectionService
-								.notifyUi(conversation, true);
+						this.mXmppConnectionService.pushNotification(message);
 					}
 					this.file = this.mXmppConnectionService.getFileBackend()
 							.getJingleFile(message, false);

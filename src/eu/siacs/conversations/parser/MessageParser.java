@@ -298,7 +298,8 @@ public class MessageParser extends AbstractParser implements
 						Element password = x.findChild("password");
 						conversation.getMucOptions().setPassword(
 								password.getContent());
-						mXmppConnectionService.databaseBackend.updateConversation(conversation);
+						mXmppConnectionService.databaseBackend
+								.updateConversation(conversation);
 					}
 					mXmppConnectionService.joinMuc(conversation);
 					mXmppConnectionService.updateConversationUi();
@@ -314,7 +315,8 @@ public class MessageParser extends AbstractParser implements
 				if (!conversation.getMucOptions().online()) {
 					if (password != null) {
 						conversation.getMucOptions().setPassword(password);
-						mXmppConnectionService.databaseBackend.updateConversation(conversation);
+						mXmppConnectionService.databaseBackend
+								.updateConversation(conversation);
 					}
 					mXmppConnectionService.joinMuc(conversation);
 					mXmppConnectionService.updateConversationUi();
@@ -465,7 +467,10 @@ public class MessageParser extends AbstractParser implements
 			}
 		}
 		notify = notify && !conversation.isMuted();
-		mXmppConnectionService.notifyUi(conversation, notify);
+		if (notify) {
+			mXmppConnectionService.pushNotification(message);
+		}
+		mXmppConnectionService.updateConversationUi();
 	}
 
 	private void parseHeadline(MessagePacket packet, Account account) {

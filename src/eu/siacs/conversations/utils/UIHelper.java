@@ -341,7 +341,7 @@ public class UIHelper {
 				Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
 	}
 
-	public static void updateNotification(Context context,
+	private static void updateNotification(Context context,
 			List<Conversation> conversations, Conversation currentCon,
 			boolean notify) {
 		NotificationManager mNotificationManager = (NotificationManager) context

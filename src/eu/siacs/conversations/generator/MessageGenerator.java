@@ -34,7 +34,7 @@ public class MessageGenerator extends AbstractGenerator {
 			packet.setTo(message.getCounterpart());
 			packet.setType(MessagePacket.TYPE_CHAT);
 		} else {
-			packet.setTo(message.getCounterpart().split("/",2)[0]);
+			packet.setTo(message.getCounterpart().split("/", 2)[0]);
 			packet.setType(MessagePacket.TYPE_GROUPCHAT);
 		}
 		packet.setFrom(account.getFullJid());
@@ -134,7 +134,7 @@ public class MessageGenerator extends AbstractGenerator {
 			String subject) {
 		MessagePacket packet = new MessagePacket();
 		packet.setType(MessagePacket.TYPE_GROUPCHAT);
-		packet.setTo(conversation.getContactJid().split("/",2)[0]);
+		packet.setTo(conversation.getContactJid().split("/", 2)[0]);
 		Element subjectChild = new Element("subject");
 		subjectChild.setContent(subject);
 		packet.addChild(subjectChild);
@@ -148,13 +148,13 @@ public class MessageGenerator extends AbstractGenerator {
 		packet.setTo(contact);
 		packet.setFrom(conversation.getAccount().getFullJid());
 		Element x = packet.addChild("x", "jabber:x:conference");
-		x.setAttribute("jid", conversation.getContactJid().split("/",2)[0]);
+		x.setAttribute("jid", conversation.getContactJid().split("/", 2)[0]);
 		return packet;
 	}
 
 	public MessagePacket invite(Conversation conversation, String contact) {
 		MessagePacket packet = new MessagePacket();
-		packet.setTo(conversation.getContactJid().split("/",2)[0]);
+		packet.setTo(conversation.getContactJid().split("/", 2)[0]);
 		packet.setFrom(conversation.getAccount().getFullJid());
 		Element x = new Element("x");
 		x.setAttribute("xmlns", "http://jabber.org/protocol/muc#user");

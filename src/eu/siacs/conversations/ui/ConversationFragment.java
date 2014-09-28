@@ -381,10 +381,12 @@ public class ConversationFragment extends Fragment {
 				activity.getSlidingPaneLayout().closePane();
 				activity.getActionBar().setDisplayHomeAsUpEnabled(true);
 				activity.getActionBar().setHomeButtonEnabled(true);
-				if (conversation.getMode() == Conversation.MODE_SINGLE || activity.useSubjectToIdentifyConference()) {
+				if (conversation.getMode() == Conversation.MODE_SINGLE
+						|| activity.useSubjectToIdentifyConference()) {
 					activity.getActionBar().setTitle(conversation.getName());
 				} else {
-					activity.getActionBar().setTitle(conversation.getContactJid().split("/")[0]);
+					activity.getActionBar().setTitle(
+							conversation.getContactJid().split("/")[0]);
 				}
 				activity.invalidateOptionsMenu();
 			}
@@ -502,8 +504,6 @@ public class ConversationFragment extends Fragment {
 			updateChatMsgHint();
 			if (!activity.shouldPaneBeOpen()) {
 				activity.xmppConnectionService.markRead(conversation);
-				UIHelper.updateNotification(getActivity(),
-						activity.getConversationList(), null, false);
 				activity.updateConversationList();
 			}
 			this.updateSendButton();
@@ -668,7 +668,8 @@ public class ConversationFragment extends Fragment {
 										int which) {
 									conversation
 											.setNextEncryption(Message.ENCRYPTION_NONE);
-									xmppService.databaseBackend.updateConversation(conversation);
+									xmppService.databaseBackend
+											.updateConversation(conversation);
 									message.setEncryption(Message.ENCRYPTION_NONE);
 									xmppService.sendMessage(message);
 									messageSent();
@@ -697,7 +698,8 @@ public class ConversationFragment extends Fragment {
 									conversation
 											.setNextEncryption(Message.ENCRYPTION_NONE);
 									message.setEncryption(Message.ENCRYPTION_NONE);
-									xmppService.databaseBackend.updateConversation(conversation);
+									xmppService.databaseBackend
+											.updateConversation(conversation);
 									xmppService.sendMessage(message);
 									messageSent();
 								}

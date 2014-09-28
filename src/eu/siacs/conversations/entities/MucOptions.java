@@ -134,7 +134,7 @@ public class MucOptions {
 	}
 
 	public void processPacket(PresencePacket packet, PgpEngine pgp) {
-		String[] fromParts = packet.getFrom().split("/",2);
+		String[] fromParts = packet.getFrom().split("/", 2);
 		if (fromParts.length >= 2) {
 			String name = fromParts[1];
 			String type = packet.getAttribute("type");
@@ -180,7 +180,7 @@ public class MucOptions {
 					}
 				}
 			} else if (type.equals("unavailable")) {
-				deleteUser(packet.getAttribute("from").split("/",2)[1]);
+				deleteUser(packet.getAttribute("from").split("/", 2)[1]);
 			} else if (type.equals("error")) {
 				Element error = packet.findChild("error");
 				if (error.hasChild("conflict")) {
@@ -209,7 +209,7 @@ public class MucOptions {
 	}
 
 	public String getProposedNick() {
-		String[] mucParts = conversation.getContactJid().split("/",2);
+		String[] mucParts = conversation.getContactJid().split("/", 2);
 		if (conversation.getBookmark() != null
 				&& conversation.getBookmark().getNick() != null) {
 			return conversation.getBookmark().getNick();
@@ -309,7 +309,7 @@ public class MucOptions {
 	}
 
 	public String getJoinJid() {
-		return this.conversation.getContactJid().split("/",2)[0] + "/"
+		return this.conversation.getContactJid().split("/", 2)[0] + "/"
 				+ this.joinnick;
 	}
 
@@ -323,7 +323,8 @@ public class MucOptions {
 	}
 
 	public String getPassword() {
-		this.password = conversation.getAttribute(Conversation.ATTRIBUTE_MUC_PASSWORD);
+		this.password = conversation
+				.getAttribute(Conversation.ATTRIBUTE_MUC_PASSWORD);
 		if (this.password == null && conversation.getBookmark() != null
 				&& conversation.getBookmark().getPassword() != null) {
 			return conversation.getBookmark().getPassword();
@@ -339,7 +340,8 @@ public class MucOptions {
 		} else {
 			this.password = password;
 		}
-		conversation.setAttribute(Conversation.ATTRIBUTE_MUC_PASSWORD, password);
+		conversation
+				.setAttribute(Conversation.ATTRIBUTE_MUC_PASSWORD, password);
 	}
 
 	public boolean isPasswordChanged() {

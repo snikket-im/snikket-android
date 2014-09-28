@@ -93,6 +93,8 @@ public class XmppConnectionService extends Service {
 
 	private MemorizingTrustManager mMemorizingTrustManager;
 
+	private NotificationService mNotificationService;
+
 	private MessageParser mMessageParser = new MessageParser(this);
 	private PresenceParser mPresenceParser = new PresenceParser(this);
 	private IqParser mIqParser = new IqParser(this);
@@ -401,6 +403,7 @@ public class XmppConnectionService extends Service {
 		this.mRandom = new SecureRandom();
 		this.mMemorizingTrustManager = new MemorizingTrustManager(
 				getApplicationContext());
+		this.mNotificationService = new NotificationService(this);
 		this.databaseBackend = DatabaseBackend
 				.getInstance(getApplicationContext());
 		this.fileBackend = new FileBackend(getApplicationContext());
@@ -1268,7 +1271,7 @@ public class XmppConnectionService extends Service {
 				}
 			}
 		}
-		notifyUi(conversation, false);
+		updateConversationUi();
 	}
 
 	public boolean renewSymmetricKey(Conversation conversation) {
@@ -1577,15 +1580,6 @@ public class XmppConnectionService extends Service {
 		return getPreferences().getBoolean("indicate_received", false);
 	}
 
-	public void notifyUi(Conversation conversation, boolean notify) {
-		if (mOnConversationUpdate != null) {
-			mOnConversationUpdate.onConversationUpdate();
-		} else {
-			UIHelper.updateNotification(getApplicationContext(),
-					getConversations(), conversation, notify);
-		}
-	}
-
 	public void updateConversationUi() {
 		if (mOnConversationUpdate != null) {
 			mOnConversationUpdate.onConversationUpdate();
@@ -1624,6 +1618,7 @@ public class XmppConnectionService extends Service {
 
 	public void markRead(Conversation conversation) {
 		conversation.markRead();
+		mNotificationService.clear(conversation);
 		String id = conversation.popLatestMarkableMessageId();
 		if (confirmMessages() && id != null) {
 			Account account = conversation.getAccount();
@@ -1757,5 +1752,9 @@ public class XmppConnectionService extends Service {
 			}
 		}
 		return contacts;
+	}
+
+	public void pushNotification(Message message) {
+		this.mNotificationService.push(message);
 	}
 }

@@ -63,7 +63,7 @@ public abstract class XmppActivity extends Activity {
 	protected int mColorOrange;
 	protected int mColorGreen;
 	protected int mPrimaryColor;
-	
+
 	protected boolean mUseSubject = true;
 
 	private DisplayMetrics metrics;
@@ -217,7 +217,7 @@ public abstract class XmppActivity extends Activity {
 		return PreferenceManager
 				.getDefaultSharedPreferences(getApplicationContext());
 	}
-	
+
 	public boolean useSubjectToIdentifyConference() {
 		return mUseSubject;
 	}
@@ -256,7 +256,7 @@ public abstract class XmppActivity extends Activity {
 		intent.putExtra("contact", contact.getJid());
 		startActivity(intent);
 	}
-	
+
 	public void switchToAccount(Account account) {
 		Intent intent = new Intent(this, EditAccountActivity.class);
 		intent.putExtra("jid", account.getJid());
@@ -294,7 +294,8 @@ public abstract class XmppActivity extends Activity {
 						if (conversation != null) {
 							conversation
 									.setNextEncryption(Message.ENCRYPTION_PGP);
-							xmppConnectionService.databaseBackend.updateConversation(conversation);
+							xmppConnectionService.databaseBackend
+									.updateConversation(conversation);
 						}
 					}
 

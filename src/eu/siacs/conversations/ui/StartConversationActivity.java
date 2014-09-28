@@ -325,8 +325,8 @@ public class StartConversationActivity extends XmppActivity {
 		final AutoCompleteTextView jid = (AutoCompleteTextView) dialogView
 				.findViewById(R.id.jid);
 		jid.setAdapter(new KnownHostsAdapter(this,
-					android.R.layout.simple_list_item_1, mKnownHosts));
-		if (prefilledJid!=null) {
+				android.R.layout.simple_list_item_1, mKnownHosts));
+		if (prefilledJid != null) {
 			jid.append(prefilledJid);
 		}
 		populateAccountSpinner(spinner);
@@ -536,7 +536,8 @@ public class StartConversationActivity extends XmppActivity {
 				setIntent(null);
 				return false;
 			}
-		} else if (getIntent() != null && Intent.ACTION_VIEW.equals(getIntent().getAction())) {
+		} else if (getIntent() != null
+				&& Intent.ACTION_VIEW.equals(getIntent().getAction())) {
 			Uri uri = getIntent().getData();
 			String jid = uri.getSchemeSpecificPart().split("\\?")[0];
 			return handleJid(jid);
@@ -545,8 +546,7 @@ public class StartConversationActivity extends XmppActivity {
 	}
 
 	private boolean handleJid(String jid) {
-		List<Contact> contacts = xmppConnectionService
-				.findContacts(jid);
+		List<Contact> contacts = xmppConnectionService.findContacts(jid);
 		if (contacts.size() == 0) {
 			showCreateContactDialog(jid);
 			return false;

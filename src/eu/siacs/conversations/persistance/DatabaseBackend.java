@@ -51,9 +51,9 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 				+ Conversation.ACCOUNT + " TEXT, " + Conversation.CONTACTJID
 				+ " TEXT, " + Conversation.CREATED + " NUMBER, "
 				+ Conversation.STATUS + " NUMBER, " + Conversation.MODE
-				+ " NUMBER, "+Conversation.ATTRIBUTES + " TEXT, FOREIGN KEY(" + Conversation.ACCOUNT
-				+ ") REFERENCES " + Account.TABLENAME + "(" + Account.UUID
-				+ ") ON DELETE CASCADE);");
+				+ " NUMBER, " + Conversation.ATTRIBUTES + " TEXT, FOREIGN KEY("
+				+ Conversation.ACCOUNT + ") REFERENCES " + Account.TABLENAME
+				+ "(" + Account.UUID + ") ON DELETE CASCADE);");
 		db.execSQL("create table " + Message.TABLENAME + "( " + Message.UUID
 				+ " TEXT PRIMARY KEY, " + Message.CONVERSATION + " TEXT, "
 				+ Message.TIME_SENT + " NUMBER, " + Message.COUNTERPART
@@ -225,13 +225,14 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		String[] args = { account.getUuid() };
 		db.delete(Account.TABLENAME, Account.UUID + "=?", args);
 	}
-	
+
 	public boolean hasEnabledAccounts() {
 		SQLiteDatabase db = this.getReadableDatabase();
-		Cursor cursor= db.rawQuery("select count("+Account.UUID+")  from "+Account.TABLENAME+" where not options & (1 <<1)", null);
+		Cursor cursor = db.rawQuery("select count(" + Account.UUID + ")  from "
+				+ Account.TABLENAME + " where not options & (1 <<1)", null);
 		cursor.moveToFirst();
 		int count = cursor.getInt(0);
-		return (count>0);
+		return (count > 0);
 	}
 
 	@Override
