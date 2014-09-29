@@ -399,7 +399,9 @@ public class MessageParser extends AbstractParser implements
 				if (message != null) {
 					message.markUnread();
 				}
-			} else if (packet.hasChild("body")) {
+			} else if (packet.hasChild("body")
+					&& !(packet.hasChild("x",
+							"http://jabber.org/protocol/muc#user"))) {
 				message = this.parseChat(packet, account);
 				if (message != null) {
 					message.markUnread();
