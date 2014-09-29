@@ -417,7 +417,7 @@ public class MessageParser extends AbstractParser implements
 						lastCarbonMessageReceived = SystemClock
 								.elapsedRealtime();
 						notify = false;
-						message.getConversation().markRead();
+						mXmppConnectionService.markRead(message.getConversation());
 					} else {
 						message.markUnread();
 					}
@@ -474,7 +474,7 @@ public class MessageParser extends AbstractParser implements
 		}
 		notify = notify && !conversation.isMuted();
 		if (notify) {
-			mXmppConnectionService.pushNotification(message);
+			mXmppConnectionService.getNotificationService().push(message);
 		}
 		mXmppConnectionService.updateConversationUi();
 	}

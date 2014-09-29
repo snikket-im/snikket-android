@@ -12,7 +12,6 @@ import eu.siacs.conversations.services.XmppConnectionService.OnConversationUpdat
 import eu.siacs.conversations.services.XmppConnectionService.OnRosterUpdate;
 import eu.siacs.conversations.ui.adapter.ConversationAdapter;
 import eu.siacs.conversations.utils.ExceptionHelper;
-import eu.siacs.conversations.utils.UIHelper;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -144,6 +143,9 @@ public class ConversationActivity extends XmppActivity implements
 				}
 				invalidateOptionsMenu();
 				hideKeyboard();
+				if (xmppConnectionServiceBound) {
+					xmppConnectionService.getNotificationService().setOpenConversation(null);
+				}
 			}
 
 			@Override
@@ -151,19 +153,7 @@ public class ConversationActivity extends XmppActivity implements
 				paneShouldBeOpen = false;
 				if ((conversationList.size() > 0)
 						&& (getSelectedConversation() != null)) {
-					ActionBar ab = getActionBar();
-					if (ab != null) {
-						ab.setDisplayHomeAsUpEnabled(true);
-						ab.setHomeButtonEnabled(true);
-						if (getSelectedConversation().getMode() == Conversation.MODE_SINGLE
-								|| activity.useSubjectToIdentifyConference()) {
-							ab.setTitle(getSelectedConversation().getName());
-						} else {
-							ab.setTitle(getSelectedConversation()
-									.getContactJid().split("/")[0]);
-						}
-					}
-					invalidateOptionsMenu();
+					openConversation(getSelectedConversation());
 					if (!getSelectedConversation().isRead()) {
 						xmppConnectionService
 								.markRead(getSelectedConversation());
@@ -178,6 +168,25 @@ public class ConversationActivity extends XmppActivity implements
 
 			}
 		});
+	}
+	
+	public void openConversation(Conversation conversation) {
+		ActionBar ab = getActionBar();
+		if (ab != null) {
+			ab.setDisplayHomeAsUpEnabled(true);
+			ab.setHomeButtonEnabled(true);
+			if (getSelectedConversation().getMode() == Conversation.MODE_SINGLE
+					|| activity.useSubjectToIdentifyConference()) {
+				ab.setTitle(getSelectedConversation().getName());
+			} else {
+				ab.setTitle(getSelectedConversation()
+						.getContactJid().split("/")[0]);
+			}
+		}
+		invalidateOptionsMenu();
+		if (xmppConnectionServiceBound) {
+			xmppConnectionService.getNotificationService().setOpenConversation(conversation);
+		}
 	}
 
 	@Override
@@ -603,6 +612,7 @@ public class ConversationActivity extends XmppActivity implements
 			xmppConnectionService.removeOnConversationListChangedListener();
 			xmppConnectionService.removeOnAccountListChangedListener();
 			xmppConnectionService.removeOnRosterUpdateListener();
+			xmppConnectionService.getNotificationService().setOpenConversation(null);
 		}
 		super.onStop();
 	}

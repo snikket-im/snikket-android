@@ -89,7 +89,7 @@ public class JingleConnection implements Downloadable {
 				if (acceptedAutomatically) {
 					message.markUnread();
 					JingleConnection.this.mXmppConnectionService
-							.pushNotification(message);
+							.getNotificationService().push(message);
 				}
 				BitmapFactory.Options options = new BitmapFactory.Options();
 				options.inJustDecodeBounds = true;
@@ -319,7 +319,8 @@ public class JingleConnection implements Downloadable {
 										+ " allowed size:"
 										+ this.mJingleConnectionManager
 												.getAutoAcceptFileSize());
-						this.mXmppConnectionService.pushNotification(message);
+						this.mXmppConnectionService.getNotificationService()
+								.push(message);
 					}
 					this.file = this.mXmppConnectionService.getFileBackend()
 							.getJingleFile(message, false);

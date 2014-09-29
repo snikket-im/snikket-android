@@ -2,7 +2,6 @@ package eu.siacs.conversations.services;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -16,7 +15,9 @@ import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.text.Html;
+import android.util.Log;
 
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
@@ -30,6 +31,8 @@ public class NotificationService {
 	private LinkedHashMap<String, ArrayList<Message>> notifications = new LinkedHashMap<String, ArrayList<Message>>();
 
 	public int NOTIFICATION_ID = 0x2342;
+	private Conversation mOpenConversation;
+	private boolean mIsInForeground;
 
 	public NotificationService(XmppConnectionService service) {
 		this.mXmppConnectionService = service;
@@ -38,6 +41,13 @@ public class NotificationService {
 	}
 
 	public synchronized void push(Message message) {
+		if (this.mIsInForeground
+				&& this.mOpenConversation == message.getConversation()) {
+			Log.d(Config.LOGTAG,"ignoring notification because foreground and conv matches");
+			return; // simply ignore
+		} else {
+			Log.d(Config.LOGTAG,"pushed new notification");
+		}
 		String conversationUuid = message.getConversationUuid();
 		if (notifications.containsKey(conversationUuid)) {
 			notifications.get(conversationUuid).add(message);
@@ -46,7 +56,7 @@ public class NotificationService {
 			mList.add(message);
 			notifications.put(conversationUuid, mList);
 		}
-		updateNotification(true);
+		updateNotification(!(this.mIsInForeground && this.mOpenConversation == null));
 	}
 
 	public void clear() {
@@ -93,8 +103,10 @@ public class NotificationService {
 							.bigText(text.toString()));
 					mBuilder.setContentText(messages.get(0).getReadableBody(
 							mXmppConnectionService));
-					mBuilder.setTicker(messages.get(messages.size() - 1)
-							.getReadableBody(mXmppConnectionService));
+					if (notify) {
+						mBuilder.setTicker(messages.get(messages.size() - 1)
+								.getReadableBody(mXmppConnectionService));
+					}
 					mBuilder.setContentIntent(createContentIntent(conversation
 							.getUuid()));
 				} else {
@@ -137,11 +149,11 @@ public class NotificationService {
 					long[] pattern = { 0, 3 * dat, dat, dat };
 					mBuilder.setVibrate(pattern);
 				}
-				mBuilder.setLights(0xffffffff, 2000, 4000);
 				if (ringtone != null) {
 					mBuilder.setSound(Uri.parse(ringtone));
 				}
 			}
+			mBuilder.setLights(0xffffffff, 2000, 4000);
 			Notification notification = mBuilder.build();
 			mNotificationManager.notify(NOTIFICATION_ID, notification);
 		}
@@ -181,6 +193,14 @@ public class NotificationService {
 		// followed by another word boundary.
 		return Pattern.compile("\\b" + nick + "\\p{Punct}?\\b",
 				Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
+	}
+
+	public void setOpenConversation(Conversation conversation) {
+		this.mOpenConversation = conversation;
+	}
+
+	public void setIsInForeground(boolean foreground) {
+		this.mIsInForeground = foreground;
 	}
 
 }

@@ -971,6 +971,7 @@ public class XmppConnectionService extends Service {
 			switchToForeground();
 		}
 		this.mOnConversationUpdate = listener;
+		this.mNotificationService.setIsInForeground(true);
 		this.convChangedListenerCount++;
 	}
 
@@ -978,6 +979,7 @@ public class XmppConnectionService extends Service {
 		this.convChangedListenerCount--;
 		if (this.convChangedListenerCount == 0) {
 			this.mOnConversationUpdate = null;
+			this.mNotificationService.setIsInForeground(false);
 			if (checkListeners()) {
 				switchToBackground();
 			}
@@ -1753,8 +1755,8 @@ public class XmppConnectionService extends Service {
 		}
 		return contacts;
 	}
-
-	public void pushNotification(Message message) {
-		this.mNotificationService.push(message);
+	
+	public NotificationService getNotificationService() {
+		return this.mNotificationService;
 	}
 }

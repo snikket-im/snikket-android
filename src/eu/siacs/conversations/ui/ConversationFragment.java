@@ -379,16 +379,7 @@ public class ConversationFragment extends Fragment {
 		if (activity.getSlidingPaneLayout().isSlideable()) {
 			if (!activity.shouldPaneBeOpen()) {
 				activity.getSlidingPaneLayout().closePane();
-				activity.getActionBar().setDisplayHomeAsUpEnabled(true);
-				activity.getActionBar().setHomeButtonEnabled(true);
-				if (conversation.getMode() == Conversation.MODE_SINGLE
-						|| activity.useSubjectToIdentifyConference()) {
-					activity.getActionBar().setTitle(conversation.getName());
-				} else {
-					activity.getActionBar().setTitle(
-							conversation.getContactJid().split("/")[0]);
-				}
-				activity.invalidateOptionsMenu();
+				activity.openConversation(conversation);
 			}
 		}
 		if (this.conversation.getMode() == Conversation.MODE_MULTI) {
