@@ -256,7 +256,7 @@
     <string name="pref_use_larger_font_summary">Use larger font sizes across the entire app</string>
     <string name="pref_use_send_button_to_indicate_status">Send button indicates status</string>
     <string name="pref_use_indicate_received">Request message receipts</string>
-    <string name="pref_use_indicate_received_summary">Received masseges will be marked with a green tick. Be aware that this might no work in every case.</string>
+    <string name="pref_use_indicate_received_summary">Received messages will be marked with a green tick if supported.</string>
     <string name="pref_use_send_button_to_indicate_status_summary">Colorize send button to indicate contact status</string>
     <string name="pref_expert_options_other">Other</string>
     <string name="pref_conference_name">Conference name</string>
