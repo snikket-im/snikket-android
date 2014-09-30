@@ -250,7 +250,10 @@ public class FileBackend {
 			if (!file.exists()) {
 				file = getJingleFileLegacy(message);
 			}
-			Bitmap fullsize = BitmapFactory.decodeFile(file.getAbsolutePath());
+			BitmapFactory.Options options = new BitmapFactory.Options();
+			options.inSampleSize = calcSampleSize(file, size);
+			Bitmap fullsize = BitmapFactory.decodeFile(file.getAbsolutePath(),
+					options);
 			if (fullsize == null) {
 				throw new FileNotFoundException();
 			}
@@ -414,6 +417,17 @@ public class FileBackend {
 		options.inJustDecodeBounds = true;
 		BitmapFactory.decodeStream(context.getContentResolver()
 				.openInputStream(image), null, options);
+		return calcSampleSize(options, size);
+	}
+
+	private int calcSampleSize(File image, int size) {
+		BitmapFactory.Options options = new BitmapFactory.Options();
+		options.inJustDecodeBounds = true;
+		BitmapFactory.decodeFile(image.getAbsolutePath(), options);
+		return calcSampleSize(options, size);
+	}
+
+	private int calcSampleSize(BitmapFactory.Options options, int size) {
 		int height = options.outHeight;
 		int width = options.outWidth;
 		int inSampleSize = 1;
@@ -428,7 +442,6 @@ public class FileBackend {
 			}
 		}
 		return inSampleSize;
-
 	}
 
 	public Uri getJingleFileUri(Message message) {
