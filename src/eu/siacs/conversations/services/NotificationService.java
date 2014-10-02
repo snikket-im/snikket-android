@@ -120,10 +120,11 @@ public class NotificationService {
 						+ mXmppConnectionService
 								.getString(R.string.unread_conversations));
 				StringBuilder names = new StringBuilder();
+				Conversation conversation = null;
 				for (ArrayList<Message> messages : notifications.values()) {
 					if (messages.size() > 0) {
-						String name = messages.get(0).getConversation()
-								.getName();
+						conversation = messages.get(0).getConversation();
+						String name = conversation.getName();
 						style.addLine(Html.fromHtml("<b>"
 								+ name
 								+ "</b> "
@@ -142,6 +143,10 @@ public class NotificationService {
 								.getString(R.string.unread_conversations));
 				mBuilder.setContentText(names.toString());
 				mBuilder.setStyle(style);
+				if (conversation!=null) {
+					mBuilder.setContentIntent(createContentIntent(conversation
+						.getUuid()));
+				}
 			}
 			if (notify) {
 				if (vibrate) {
@@ -153,6 +158,7 @@ public class NotificationService {
 					mBuilder.setSound(Uri.parse(ringtone));
 				}
 			}
+			mBuilder.setDeleteIntent(createDeleteIntent());
 			mBuilder.setLights(0xffffffff, 2000, 4000);
 			Notification notification = mBuilder.build();
 			mNotificationManager.notify(NOTIFICATION_ID, notification);
@@ -176,6 +182,12 @@ public class NotificationService {
 		PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0,
 				PendingIntent.FLAG_UPDATE_CURRENT);
 		return resultPendingIntent;
+	}
+	
+	private PendingIntent createDeleteIntent() {
+		Intent intent = new Intent(mXmppConnectionService, XmppConnectionService.class);
+		intent.setAction("clear_notification");
+		return PendingIntent.getService(mXmppConnectionService, 0, intent, 0);
 	}
 
 	public static boolean wasHighlightedOrPrivate(Message message) {

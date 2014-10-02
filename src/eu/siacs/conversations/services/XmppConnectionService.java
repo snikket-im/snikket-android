@@ -90,6 +90,7 @@ public class XmppConnectionService extends Service {
 	public long startDate;
 
 	private static String ACTION_MERGE_PHONE_CONTACTS = "merge_phone_contacts";
+	public static String ACTION_CLEAR_NOTIFICATION = "clear_notification";
 
 	private MemorizingTrustManager mMemorizingTrustManager;
 
@@ -318,14 +319,16 @@ public class XmppConnectionService extends Service {
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		if ((intent != null)
-				&& (ACTION_MERGE_PHONE_CONTACTS.equals(intent.getAction()))) {
-			mergePhoneContactsWithRoster();
-			return START_STICKY;
-		} else if ((intent != null)
-				&& (Intent.ACTION_SHUTDOWN.equals(intent.getAction()))) {
-			logoutAndSave();
-			return START_NOT_STICKY;
+		if (intent != null && intent.getAction() != null) {
+			if (intent.getAction().equals(ACTION_MERGE_PHONE_CONTACTS)) {
+				mergePhoneContactsWithRoster();
+				return START_STICKY;
+			} else if (intent.getAction().equals(Intent.ACTION_SHUTDOWN)) {
+				logoutAndSave();
+				return START_NOT_STICKY;
+			} else if (intent.getAction().equals(ACTION_CLEAR_NOTIFICATION)) {
+				mNotificationService.clear();
+			}
 		}
 		this.wakeLock.acquire();
 		ConnectivityManager cm = (ConnectivityManager) getApplicationContext()
