@@ -1533,26 +1533,34 @@ public class XmppConnectionService extends Service {
 
 	public boolean markMessage(Account account, String recipient, String uuid,
 			int status) {
-		for (Conversation conversation : getConversations()) {
-			if (conversation.getContactJid().equals(recipient)
-					&& conversation.getAccount().equals(account)) {
-				return markMessage(conversation, uuid, status);
+		if (uuid == null) {
+			return false;
+		} else {
+			for (Conversation conversation : getConversations()) {
+				if (conversation.getContactJid().equals(recipient)
+						&& conversation.getAccount().equals(account)) {
+					return markMessage(conversation, uuid, status);
+				}
 			}
+			return false;
 		}
-		return false;
 	}
 
 	public boolean markMessage(Conversation conversation, String uuid,
 			int status) {
-		for (Message message : conversation.getMessages()) {
-			if (message.getUuid().equals(uuid)
-					|| (message.getStatus() >= Message.STATUS_SEND && uuid
-							.equals(message.getRemoteMsgId()))) {
-				markMessage(message, status);
-				return true;
+		if (uuid == null) {
+			return false;
+		} else {
+			for (Message message : conversation.getMessages()) {
+				if (uuid.equals(message.getUuid())
+						|| (message.getStatus() >= Message.STATUS_SEND && uuid
+								.equals(message.getRemoteMsgId()))) {
+					markMessage(message, status);
+					return true;
+				}
 			}
+			return false;
 		}
-		return false;
 	}
 
 	public void markMessage(Message message, int status) {
