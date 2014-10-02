@@ -12,6 +12,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.PowerManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.text.Html;
@@ -39,7 +40,12 @@ public class NotificationService {
 	}
 
 	public synchronized void push(Message message) {
-		if (this.mIsInForeground
+
+		PowerManager pm = (PowerManager) mXmppConnectionService
+				.getSystemService(Context.POWER_SERVICE);
+		boolean isScreenOn = pm.isScreenOn();
+
+		if (this.mIsInForeground && isScreenOn
 				&& this.mOpenConversation == message.getConversation()) {
 			return; // simply ignore
 		}
@@ -51,7 +57,7 @@ public class NotificationService {
 			mList.add(message);
 			notifications.put(conversationUuid, mList);
 		}
-		updateNotification(!(this.mIsInForeground && this.mOpenConversation == null));
+		updateNotification(!(this.mIsInForeground && this.mOpenConversation == null) || !isScreenOn);
 	}
 
 	public void clear() {
