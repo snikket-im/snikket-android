@@ -1631,15 +1631,18 @@ public class XmppConnectionService extends Service {
 		return null;
 	}
 
-	public void markRead(Conversation conversation) {
+	public void markRead(Conversation conversation, boolean calledByUi) {
 		conversation.markRead();
 		mNotificationService.clear(conversation);
 		String id = conversation.popLatestMarkableMessageId();
-		if (confirmMessages() && id != null) {
+		if (confirmMessages() && id != null && calledByUi) {
 			Account account = conversation.getAccount();
 			String to = conversation.getContactJid();
 			this.sendMessagePacket(conversation.getAccount(),
 					mMessageGenerator.confirm(account, to, id));
+		}
+		if (!calledByUi) {
+			updateConversationUi();
 		}
 	}
 

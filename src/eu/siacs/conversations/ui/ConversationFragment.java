@@ -494,7 +494,7 @@ public class ConversationFragment extends Fragment {
 			getActivity().invalidateOptionsMenu();
 			updateChatMsgHint();
 			if (!activity.shouldPaneBeOpen()) {
-				activity.xmppConnectionService.markRead(conversation);
+				activity.xmppConnectionService.markRead(conversation,true);
 				activity.updateConversationList();
 			}
 			this.updateSendButton();

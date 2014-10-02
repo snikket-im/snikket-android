@@ -1,6 +1,7 @@
 package eu.siacs.conversations.parser;
 
 import android.os.SystemClock;
+import android.util.Log;
 import net.java.otr4j.session.Session;
 import net.java.otr4j.session.SessionStatus;
 import eu.siacs.conversations.Config;
@@ -202,10 +203,24 @@ public class MessageParser extends AbstractParser implements
 			return null;
 		}
 		Element message = forwarded.findChild("message");
-		if ((message == null) || (!message.hasChild("body"))) {
+		if (message == null) {
+			return null;
+		}
+		if (!message.hasChild("body")) {
 			if (status == Message.STATUS_RECEIVED
 					&& message.getAttribute("from") != null) {
 				parseNonMessage(message, account);
+			} else if (status == Message.STATUS_SEND
+					&& message.hasChild("displayed", "urn:xmpp:chat-markers:0")) {
+				String to = message.getAttribute("to");
+				if (to != null) {
+					Conversation conversation = mXmppConnectionService.find(
+							mXmppConnectionService.getConversations(), account,
+							to.split("/")[0]);
+					if (conversation != null) {
+						mXmppConnectionService.markRead(conversation, false);
+					}
+				}
 			}
 			return null;
 		}
@@ -419,7 +434,8 @@ public class MessageParser extends AbstractParser implements
 						lastCarbonMessageReceived = SystemClock
 								.elapsedRealtime();
 						notify = false;
-						mXmppConnectionService.markRead(message.getConversation());
+						mXmppConnectionService.markRead(
+								message.getConversation(), false);
 					} else {
 						message.markUnread();
 					}
@@ -436,7 +452,8 @@ public class MessageParser extends AbstractParser implements
 							|| NotificationService
 									.wasHighlightedOrPrivate(message);
 				} else {
-					mXmppConnectionService.markRead(message.getConversation());
+					mXmppConnectionService.markRead(message.getConversation(),
+							false);
 					lastCarbonMessageReceived = SystemClock.elapsedRealtime();
 					notify = false;
 				}

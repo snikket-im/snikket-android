@@ -156,7 +156,7 @@ public class ConversationActivity extends XmppActivity implements
 					openConversation(getSelectedConversation());
 					if (!getSelectedConversation().isRead()) {
 						xmppConnectionService
-								.markRead(getSelectedConversation());
+								.markRead(getSelectedConversation(),true);
 						listView.invalidateViews();
 					}
 				}
