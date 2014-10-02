@@ -15,9 +15,7 @@ import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.text.Html;
-import android.util.Log;
 
-import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
@@ -43,10 +41,7 @@ public class NotificationService {
 	public synchronized void push(Message message) {
 		if (this.mIsInForeground
 				&& this.mOpenConversation == message.getConversation()) {
-			Log.d(Config.LOGTAG,"ignoring notification because foreground and conv matches");
 			return; // simply ignore
-		} else {
-			Log.d(Config.LOGTAG,"pushed new notification");
 		}
 		String conversationUuid = message.getConversationUuid();
 		if (notifications.containsKey(conversationUuid)) {
@@ -143,9 +138,9 @@ public class NotificationService {
 								.getString(R.string.unread_conversations));
 				mBuilder.setContentText(names.toString());
 				mBuilder.setStyle(style);
-				if (conversation!=null) {
+				if (conversation != null) {
 					mBuilder.setContentIntent(createContentIntent(conversation
-						.getUuid()));
+							.getUuid()));
 				}
 			}
 			if (notify) {
@@ -183,9 +178,10 @@ public class NotificationService {
 				PendingIntent.FLAG_UPDATE_CURRENT);
 		return resultPendingIntent;
 	}
-	
+
 	private PendingIntent createDeleteIntent() {
-		Intent intent = new Intent(mXmppConnectionService, XmppConnectionService.class);
+		Intent intent = new Intent(mXmppConnectionService,
+				XmppConnectionService.class);
 		intent.setAction("clear_notification");
 		return PendingIntent.getService(mXmppConnectionService, 0, intent, 0);
 	}

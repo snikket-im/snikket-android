@@ -1545,7 +1545,9 @@ public class XmppConnectionService extends Service {
 	public boolean markMessage(Conversation conversation, String uuid,
 			int status) {
 		for (Message message : conversation.getMessages()) {
-			if (message.getUuid().equals(uuid)) {
+			if (message.getUuid().equals(uuid)
+					|| (message.getStatus() >= Message.STATUS_SEND && uuid
+							.equals(message.getRemoteMsgId()))) {
 				markMessage(message, status);
 				return true;
 			}
@@ -1758,7 +1760,7 @@ public class XmppConnectionService extends Service {
 		}
 		return contacts;
 	}
-	
+
 	public NotificationService getNotificationService() {
 		return this.mNotificationService;
 	}
