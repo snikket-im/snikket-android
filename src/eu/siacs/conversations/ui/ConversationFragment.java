@@ -245,9 +245,7 @@ public class ConversationFragment extends Fragment {
 
 			@Override
 			public void onClick(View v) {
-				if (activity.getSlidingPaneLayout().isSlideable()) {
-					activity.getSlidingPaneLayout().closePane();
-				}
+				activity.hideConversationsOverview();
 			}
 		});
 		mEditMessage.setOnEditorActionListener(mEditorActionListener);
@@ -376,9 +374,9 @@ public class ConversationFragment extends Fragment {
 		int position = mEditMessage.length();
 		Editable etext = mEditMessage.getText();
 		Selection.setSelection(etext, position);
-		if (activity.getSlidingPaneLayout().isSlideable()) {
+		if (activity.isConversationsOverviewHideable()) {
 			if (!activity.shouldPaneBeOpen()) {
-				activity.getSlidingPaneLayout().closePane();
+				activity.hideConversationsOverview();
 				activity.openConversation(conversation);
 			}
 		}

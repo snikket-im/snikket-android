@@ -59,8 +59,13 @@ public class ConversationActivity extends XmppActivity implements
 	private static final int ATTACHMENT_CHOICE_CHOOSE_IMAGE = 0x0301;
 	private static final int ATTACHMENT_CHOICE_TAKE_PHOTO = 0x0302;
 	private static final int ATTACHMENT_CHOICE_RECORD_VOICE = 0x0303;
+	private static final String STATE_OPEN_CONVERSATION = "state_open_conversation";
+	private static final String STATE_PANEL_OPEN = "state_panel_open";
 
-	protected SlidingPaneLayout spl;
+	private String mOpenConverstaion = null;
+	private boolean mPanelOpen = true;
+
+	private View mContentView;
 
 	private List<Conversation> conversationList = new ArrayList<Conversation>();
 	private Conversation selectedConversation = null;
@@ -83,24 +88,58 @@ public class ConversationActivity extends XmppActivity implements
 	}
 
 	public void setSelectedConversation(Conversation conversation) {
-		this.selectedConversation = conversation;
+		this.selectedConversation = conversation;	
 	}
 
 	public ListView getConversationListView() {
 		return this.listView;
 	}
 
-	public SlidingPaneLayout getSlidingPaneLayout() {
-		return this.spl;
-	}
-
 	public boolean shouldPaneBeOpen() {
 		return paneShouldBeOpen;
+	}
+	
+	public void showConversationsOverview() {
+		if (mContentView instanceof SlidingPaneLayout) {
+			SlidingPaneLayout mSlidingPaneLayout = (SlidingPaneLayout) mContentView;
+			mSlidingPaneLayout.openPane();
+		}
+	}
+	
+	public void hideConversationsOverview() {
+		if (mContentView instanceof SlidingPaneLayout) {
+			SlidingPaneLayout mSlidingPaneLayout = (SlidingPaneLayout) mContentView;
+			mSlidingPaneLayout.closePane();
+		}
+	}
+	
+	public boolean isConversationsOverviewHideable() {
+		if (mContentView instanceof SlidingPaneLayout) {
+			SlidingPaneLayout mSlidingPaneLayout = (SlidingPaneLayout) mContentView;
+			return mSlidingPaneLayout.isSlideable();
+		} else {
+			return false;
+		}
+	}
+	
+	public boolean isConversationsOverviewVisable() {
+		if (mContentView instanceof SlidingPaneLayout) {
+			SlidingPaneLayout mSlidingPaneLayout = (SlidingPaneLayout) mContentView;
+			return mSlidingPaneLayout.isOpen();
+		} else {
+			return true;
+		}
 	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		if (savedInstanceState != null) {
+			mOpenConverstaion = savedInstanceState.getString(
+					STATE_OPEN_CONVERSATION, null);
+			mPanelOpen = savedInstanceState.getBoolean(STATE_PANEL_OPEN, true);
+		}
 
 		setContentView(R.layout.fragment_conversations_overview);
 
@@ -122,54 +161,61 @@ public class ConversationActivity extends XmppActivity implements
 					setSelectedConversation(conversationList.get(position));
 					swapConversationFragment();
 				} else {
-					spl.closePane();
+					hideConversationsOverview();
 				}
 			}
 		});
-		spl = (SlidingPaneLayout) findViewById(R.id.slidingpanelayout);
-		spl.setParallaxDistance(150);
-		spl.setShadowResource(R.drawable.es_slidingpane_shadow);
-		spl.setSliderFadeColor(0);
-		spl.setPanelSlideListener(new PanelSlideListener() {
+		mContentView = findViewById(R.id.content_view_spl);
+		if (mContentView==null) {
+			mContentView = findViewById(R.id.content_view_ll);
+		}
+		if (mContentView instanceof SlidingPaneLayout) {
+			SlidingPaneLayout mSlidingPaneLayout = (SlidingPaneLayout) mContentView;
+			mSlidingPaneLayout.setParallaxDistance(150);
+			mSlidingPaneLayout.setShadowResource(R.drawable.es_slidingpane_shadow);
+			mSlidingPaneLayout.setSliderFadeColor(0);
+			mSlidingPaneLayout.setPanelSlideListener(new PanelSlideListener() {
 
-			@Override
-			public void onPanelOpened(View arg0) {
-				paneShouldBeOpen = true;
-				ActionBar ab = getActionBar();
-				if (ab != null) {
-					ab.setDisplayHomeAsUpEnabled(false);
-					ab.setHomeButtonEnabled(false);
-					ab.setTitle(R.string.app_name);
-				}
-				invalidateOptionsMenu();
-				hideKeyboard();
-				if (xmppConnectionServiceBound) {
-					xmppConnectionService.getNotificationService().setOpenConversation(null);
-				}
-			}
-
-			@Override
-			public void onPanelClosed(View arg0) {
-				paneShouldBeOpen = false;
-				if ((conversationList.size() > 0)
-						&& (getSelectedConversation() != null)) {
-					openConversation(getSelectedConversation());
-					if (!getSelectedConversation().isRead()) {
-						xmppConnectionService
-								.markRead(getSelectedConversation(),true);
-						listView.invalidateViews();
+				@Override
+				public void onPanelOpened(View arg0) {
+					paneShouldBeOpen = true;
+					ActionBar ab = getActionBar();
+					if (ab != null) {
+						ab.setDisplayHomeAsUpEnabled(false);
+						ab.setHomeButtonEnabled(false);
+						ab.setTitle(R.string.app_name);
+					}
+					invalidateOptionsMenu();
+					hideKeyboard();
+					if (xmppConnectionServiceBound) {
+						xmppConnectionService.getNotificationService()
+								.setOpenConversation(null);
 					}
 				}
-			}
 
-			@Override
-			public void onPanelSlide(View arg0, float arg1) {
-				// TODO Auto-generated method stub
+				@Override
+				public void onPanelClosed(View arg0) {
+					paneShouldBeOpen = false;
+					if ((conversationList.size() > 0)
+							&& (getSelectedConversation() != null)) {
+						openConversation(getSelectedConversation());
+						if (!getSelectedConversation().isRead()) {
+							xmppConnectionService.markRead(
+									getSelectedConversation(), true);
+							listView.invalidateViews();
+						}
+					}
+				}
 
-			}
-		});
+				@Override
+				public void onPanelSlide(View arg0, float arg1) {
+					// TODO Auto-generated method stub
+
+				}
+			});
+		}
 	}
-	
+
 	public void openConversation(Conversation conversation) {
 		ActionBar ab = getActionBar();
 		if (ab != null) {
@@ -179,13 +225,14 @@ public class ConversationActivity extends XmppActivity implements
 					|| activity.useSubjectToIdentifyConference()) {
 				ab.setTitle(getSelectedConversation().getName());
 			} else {
-				ab.setTitle(getSelectedConversation()
-						.getContactJid().split("/")[0]);
+				ab.setTitle(getSelectedConversation().getContactJid()
+						.split("/")[0]);
 			}
 		}
 		invalidateOptionsMenu();
 		if (xmppConnectionServiceBound) {
-			xmppConnectionService.getNotificationService().setOpenConversation(conversation);
+			xmppConnectionService.getNotificationService().setOpenConversation(
+					conversation);
 		}
 	}
 
@@ -206,7 +253,7 @@ public class ConversationActivity extends XmppActivity implements
 				.findItem(R.id.action_invite);
 		MenuItem menuMute = (MenuItem) menu.findItem(R.id.action_mute);
 
-		if ((spl.isOpen() && (spl.isSlideable()))) {
+		if (isConversationsOverviewVisable() && isConversationsOverviewHideable()) {
 			menuArchive.setVisible(false);
 			menuMucDetails.setVisible(false);
 			menuContactDetails.setVisible(false);
@@ -216,7 +263,7 @@ public class ConversationActivity extends XmppActivity implements
 			menuClearHistory.setVisible(false);
 			menuMute.setVisible(false);
 		} else {
-			menuAdd.setVisible(!spl.isSlideable());
+			menuAdd.setVisible(!isConversationsOverviewHideable());
 			if (this.getSelectedConversation() != null) {
 				if (this.getSelectedConversation().getLatestMessage()
 						.getEncryption() != Message.ENCRYPTION_NONE) {
@@ -325,7 +372,7 @@ public class ConversationActivity extends XmppActivity implements
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == android.R.id.home) {
-			spl.openPane();
+			showConversationsOverview();
 			return true;
 		} else if (item.getItemId() == R.id.action_add) {
 			startActivity(new Intent(this, StartConversationActivity.class));
@@ -377,7 +424,7 @@ public class ConversationActivity extends XmppActivity implements
 	public void endConversation(Conversation conversation) {
 		conversation.setStatus(Conversation.STATUS_ARCHIVED);
 		paneShouldBeOpen = true;
-		spl.openPane();
+		showConversationsOverview();
 		xmppConnectionService.archiveConversation(conversation);
 		if (conversationList.size() > 0) {
 			setSelectedConversation(conversationList.get(0));
@@ -563,8 +610,8 @@ public class ConversationActivity extends XmppActivity implements
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			if (!spl.isOpen()) {
-				spl.openPane();
+			if (!isConversationsOverviewVisable()) {
+				showConversationsOverview();
 				return false;
 			}
 		}
@@ -612,63 +659,71 @@ public class ConversationActivity extends XmppActivity implements
 			xmppConnectionService.removeOnConversationListChangedListener();
 			xmppConnectionService.removeOnAccountListChangedListener();
 			xmppConnectionService.removeOnRosterUpdateListener();
-			xmppConnectionService.getNotificationService().setOpenConversation(null);
+			xmppConnectionService.getNotificationService().setOpenConversation(
+					null);
 		}
 		super.onStop();
 	}
 
 	@Override
+	public void onSaveInstanceState(Bundle savedInstanceState) {
+		savedInstanceState.putString(STATE_OPEN_CONVERSATION,
+				getSelectedConversation().getUuid());
+		savedInstanceState.putBoolean(STATE_PANEL_OPEN, isConversationsOverviewVisable());
+		super.onSaveInstanceState(savedInstanceState);
+	}
+
+	@Override
 	void onBackendConnected() {
 		this.registerListener();
-		if (conversationList.size() == 0) {
-			updateConversationList();
+		updateConversationList();
+
+		if (xmppConnectionService.getAccounts().size() == 0) {
+			startActivity(new Intent(this, EditAccountActivity.class));
+		} else if (conversationList.size() <= 0) {
+			startActivity(new Intent(this, StartConversationActivity.class));
+			finish();
+		} else if (mOpenConverstaion != null) {
+			selectConversationByUuid(mOpenConverstaion);
+			paneShouldBeOpen = mPanelOpen;
+			if (paneShouldBeOpen) {
+				showConversationsOverview();
+			}
+			swapConversationFragment();
+			mOpenConverstaion = null;
+		} else if (getIntent() != null
+				&& VIEW_CONVERSATION.equals(getIntent().getType())) {
+			String uuid = (String) getIntent().getExtras().get(CONVERSATION);
+			String text = getIntent().getExtras().getString(TEXT, null);
+			selectConversationByUuid(uuid);
+			paneShouldBeOpen = false;
+			swapConversationFragment().setText(text);
+			setIntent(null);
+		} else {
+			showConversationsOverview();
+			ConversationFragment selectedFragment = (ConversationFragment) getFragmentManager()
+					.findFragmentByTag("conversation");
+			if (selectedFragment != null) {
+				selectedFragment.onBackendConnected();
+			} else {
+				pendingImageUri = null;
+				setSelectedConversation(conversationList.get(0));
+				swapConversationFragment();
+			}
 		}
 
-		if (getSelectedConversation() != null && pendingImageUri != null) {
+		if (pendingImageUri != null) {
 			attachImageToConversation(getSelectedConversation(),
 					pendingImageUri);
 			pendingImageUri = null;
-		} else {
-			pendingImageUri = null;
 		}
+		ExceptionHelper.checkForCrash(this, this.xmppConnectionService);
+	}
 
-		if ((getIntent().getAction() != null)
-				&& (getIntent().getAction().equals(Intent.ACTION_VIEW) && (!handledViewIntent))) {
-			if (getIntent().getType().equals(
-					ConversationActivity.VIEW_CONVERSATION)) {
-				handledViewIntent = true;
-
-				String convToView = (String) getIntent().getExtras().get(
-						CONVERSATION);
-
-				for (int i = 0; i < conversationList.size(); ++i) {
-					if (conversationList.get(i).getUuid().equals(convToView)) {
-						setSelectedConversation(conversationList.get(i));
-					}
-				}
-				paneShouldBeOpen = false;
-				String text = getIntent().getExtras().getString(TEXT, null);
-				swapConversationFragment().setText(text);
-			}
-		} else {
-			if (xmppConnectionService.getAccounts().size() == 0) {
-				startActivity(new Intent(this, EditAccountActivity.class));
-			} else if (conversationList.size() <= 0) {
-				// add no history
-				startActivity(new Intent(this, StartConversationActivity.class));
-				finish();
-			} else {
-				spl.openPane();
-				// find currently loaded fragment
-				ConversationFragment selectedFragment = (ConversationFragment) getFragmentManager()
-						.findFragmentByTag("conversation");
-				if (selectedFragment != null) {
-					selectedFragment.onBackendConnected();
-				} else {
-					setSelectedConversation(conversationList.get(0));
-					swapConversationFragment();
-				}
-				ExceptionHelper.checkForCrash(this, this.xmppConnectionService);
+	private void selectConversationByUuid(String uuid) {
+		for (int i = 0; i < conversationList.size(); ++i) {
+			if (conversationList.get(i).getUuid().equals(uuid)) {
+				setSelectedConversation(conversationList.get(i));
 			}
 		}
 	}

@@ -1,5 +1,5 @@
 <android.support.v4.widget.SlidingPaneLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/slidingpanelayout"
+    android:id="@+id/content_view_spl"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
