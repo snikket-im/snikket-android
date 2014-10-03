@@ -1,6 +1,8 @@
 package eu.siacs.conversations.ui;
 
 import android.app.PendingIntent;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -10,9 +12,11 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.TextView;
+import android.widget.Toast;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.services.XmppConnectionService.OnAccountUpdate;
@@ -38,6 +42,7 @@ public class EditAccountActivity extends XmppActivity {
 	private TextView mSessionEst;
 	private TextView mOtrFingerprint;
 	private TextView mOtrFingerprintHeadline;
+	private ImageButton mOtrFingerprintToClipboardButton;
 
 	private String jidToEdit;
 	private Account mAccount;
@@ -228,6 +233,7 @@ public class EditAccountActivity extends XmppActivity {
 		this.mServerInfoPep = (TextView) findViewById(R.id.server_info_pep);
 		this.mOtrFingerprint = (TextView) findViewById(R.id.otr_fingerprint);
 		this.mOtrFingerprintHeadline = (TextView) findViewById(R.id.otr_fingerprint_headline);
+		this.mOtrFingerprintToClipboardButton = (ImageButton) findViewById(R.id.action_copy_to_clipboard);
 		this.mSaveButton = (Button) findViewById(R.id.save_button);
 		this.mCancelButton = (Button) findViewById(R.id.cancel_button);
 		this.mSaveButton.setOnClickListener(this.mSaveButtonClickListener);
@@ -324,13 +330,29 @@ public class EditAccountActivity extends XmppActivity {
 			} else {
 				this.mServerInfoPep.setText(R.string.server_info_unavailable);
 			}
-			String fingerprint = this.mAccount
+			final String fingerprint = this.mAccount
 					.getOtrFingerprint(xmppConnectionService);
 			if (fingerprint != null) {
 				this.mOtrFingerprintHeadline.setVisibility(View.VISIBLE);
 				this.mOtrFingerprint.setVisibility(View.VISIBLE);
 				this.mOtrFingerprint.setText(fingerprint);
+				this.mOtrFingerprintToClipboardButton.setVisibility(View.VISIBLE);
+				this.mOtrFingerprintToClipboardButton
+						.setOnClickListener(new View.OnClickListener() {
+
+							@Override
+							public void onClick(View v) {
+
+								if (OtrFingerprintToClipBoard(fingerprint)) {
+									Toast.makeText(
+											EditAccountActivity.this,
+											R.string.toast_message_otr_fingerprint,
+											Toast.LENGTH_SHORT).show();
+								}
+							}
+						});
 			} else {
+				this.mOtrFingerprintToClipboardButton.setVisibility(View.GONE);
 				this.mOtrFingerprint.setVisibility(View.GONE);
 				this.mOtrFingerprintHeadline.setVisibility(View.GONE);
 			}
@@ -342,5 +364,16 @@ public class EditAccountActivity extends XmppActivity {
 			}
 			this.mStats.setVisibility(View.GONE);
 		}
+	}
+
+	private boolean OtrFingerprintToClipBoard(String fingerprint) {
+		ClipboardManager mClipBoardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+		String label = getResources().getString(R.string.otr_fingerprint);
+		if (mClipBoardManager != null) {
+			ClipData mClipData = ClipData.newPlainText(label, fingerprint);
+			mClipBoardManager.setPrimaryClip(mClipData);
+			return true;
+		}
+		return false;
 	}
 }
