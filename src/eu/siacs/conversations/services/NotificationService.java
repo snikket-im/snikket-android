@@ -57,7 +57,8 @@ public class NotificationService {
 			mList.add(message);
 			notifications.put(conversationUuid, mList);
 		}
-		updateNotification(!(this.mIsInForeground && this.mOpenConversation == null) || !isScreenOn);
+		updateNotification(!(this.mIsInForeground && this.mOpenConversation == null)
+				|| !isScreenOn);
 	}
 
 	public void clear() {
@@ -195,6 +196,9 @@ public class NotificationService {
 	public static boolean wasHighlightedOrPrivate(Message message) {
 		String nick = message.getConversation().getMucOptions().getActualNick();
 		Pattern highlight = generateNickHighlightPattern(nick);
+		if (message.getBody() == null || nick == null) {
+			return false;
+		}
 		Matcher m = highlight.matcher(message.getBody());
 		return (m.find() || message.getType() == Message.TYPE_PRIVATE);
 	}
