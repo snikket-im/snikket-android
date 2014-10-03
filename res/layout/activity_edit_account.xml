@@ -189,7 +189,8 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:layout_toLeftOf="@+id/action_copy_to_clipboard"
-                        android:orientation="vertical" >
+                        android:orientation="vertical"
+                        android:layout_centerVertical="true">
 
                         <TextView
                             android:id="@+id/otr_fingerprint"
@@ -206,6 +207,7 @@
                         android:background="?android:selectableItemBackground"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
+                        android:padding="8dp"
                         android:src="@drawable/ic_action_copy"
                         android:visibility="invisible" />
                 </RelativeLayout>
