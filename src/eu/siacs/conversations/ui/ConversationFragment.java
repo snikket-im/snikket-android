@@ -170,6 +170,7 @@ public class ConversationFragment extends Fragment {
 						conversation, timestamp);
 				messageList.clear();
 				messageList.addAll(conversation.getMessages());
+				updateStatusMessages();
 				messageListAdapter.notifyDataSetChanged();
 				if (size != 0) {
 					messagesLoaded = true;
