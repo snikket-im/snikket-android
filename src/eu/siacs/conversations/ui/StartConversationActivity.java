@@ -359,8 +359,8 @@ public class StartConversationActivity extends XmppActivity {
 								jid.setError(getString(R.string.contact_already_exists));
 							} else {
 								xmppConnectionService.createContact(contact);
-								switchToConversation(contact);
 								dialog.dismiss();
+								switchToConversation(contact);
 							}
 						} else {
 							jid.setError(getString(R.string.invalid_jid));
@@ -421,6 +421,7 @@ public class StartConversationActivity extends XmppActivity {
 										xmppConnectionService
 												.joinMuc(conversation);
 									}
+									dialog.dismiss();
 									switchToConversation(conversation);
 								}
 							} else {
@@ -430,6 +431,7 @@ public class StartConversationActivity extends XmppActivity {
 								if (!conversation.getMucOptions().online()) {
 									xmppConnectionService.joinMuc(conversation);
 								}
+								dialog.dismiss();
 								switchToConversation(conversation);
 							}
 						} else {
