@@ -156,6 +156,7 @@ public class Contact implements ListItem {
 
 	public void clearPresences() {
 		this.presences.clearPresences();
+		this.resetOption(Options.PENDING_SUBSCRIPTION_REQUEST);
 	}
 
 	public int getMostAvailableStatus() {
