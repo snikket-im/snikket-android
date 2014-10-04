@@ -202,12 +202,13 @@
 
                     <ImageButton
                         android:id="@+id/action_copy_to_clipboard"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
                         android:background="?android:selectableItemBackground"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:padding="8dp"
+                        android:padding="4dp"
+                        android:scaleType="fitXY"
                         android:src="@drawable/ic_action_copy"
                         android:visibility="invisible" />
                 </RelativeLayout>
