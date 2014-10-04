@@ -30,17 +30,16 @@ public class DNSHelper {
 		String dns[] = client.findDNS();
 
 		if (dns != null) {
-			// we have a list of DNS servers, let's go
 			for (String dnsserver : dns) {
 				InetAddress ip = InetAddress.getByName(dnsserver);
 				Bundle b = queryDNS(host, ip);
 				if (b.containsKey("name")) {
 					return b;
+				} else if (b.containsKey("error") && "nosrv".equals(b.getString("error", null))) {
+					return b;
 				}
 			}
 		}
-
-		// fallback
 		return queryDNS(host, InetAddress.getByName("8.8.8.8"));
 	}
 
@@ -164,10 +163,8 @@ public class DNSHelper {
 			}
 
 		} catch (SocketTimeoutException e) {
-			Log.d(Config.LOGTAG, "timeout during dns");
 			namePort.putString("error", "timeout");
 		} catch (Exception e) {
-			Log.d(Config.LOGTAG, "unhandled exception in sub project");
 			namePort.putString("error", "unhandled");
 		}
 		return namePort;

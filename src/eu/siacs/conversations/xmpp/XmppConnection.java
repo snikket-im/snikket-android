@@ -166,8 +166,12 @@ public class XmppConnection implements Runnable {
 							+ ":" + srvRecordPort);
 					socket = new Socket(srvRecordServer, srvRecordPort);
 				}
-			} else {
+			} else if (namePort.containsKey("error") && "nosrv".equals(namePort.getString("error", null))) {
 				socket = new Socket(account.getServer(), 5222);
+			} else {
+				Log.d(Config.LOGTAG,account.getJid()+": timeout in DNS resolution");
+				changeStatus(Account.STATUS_OFFLINE);
+				return;
 			}
 			OutputStream out = socket.getOutputStream();
 			tagWriter.setOutputStream(out);
