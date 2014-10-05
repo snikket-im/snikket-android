@@ -262,5 +262,8 @@
     <string name="pref_conference_name">Konferenz-Name</string>
     <string name="pref_conference_name_summary">Konferenz-Thema statt Raum-JID als Name verwenden</string>
     <string name="toast_message_otr_fingerprint">OTR Fingerabdruck in die Zwischenablage kopiert!</string>
+    <string name="conference_banned">Du wurdest aus dem Konferenzraum verbannt</string>
+    <string name="conference_members_only">Der Konferenzraum ist nur für Mitglieder</string>
+    <string name="conference_kicked">Du wurdest aus dem Konferenzraum geworfen</string>
 
 </resources>

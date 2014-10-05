@@ -15,6 +15,13 @@ public class MucOptions {
 	public static final int ERROR_NICK_IN_USE = 1;
 	public static final int ERROR_ROOM_NOT_FOUND = 2;
 	public static final int ERROR_PASSWORD_REQUIRED = 3;
+	public static final int ERROR_BANNED = 4;
+	public static final int ERROR_MEMBERS_ONLY = 5;
+
+	public static final int KICKED_FROM_ROOM = 9;
+
+	public static final String STATUS_CODE_BANNED = "301";
+	public static final String STATUS_CODE_KICKED = "307";
 
 	public interface OnRenameListener {
 		public void onRename(boolean success);
@@ -179,6 +186,18 @@ public class MucOptions {
 								x.getContent()));
 					}
 				}
+			} else if (type.equals("unavailable") && name.equals(this.joinnick)) {
+				Element status = packet.findChild("x",
+						"http://jabber.org/protocol/muc#user").findChild(
+						"status");
+				String code = status.getAttribute("code");
+				if (code.equals(STATUS_CODE_KICKED)) {
+					this.isOnline = false;
+					this.error = KICKED_FROM_ROOM;
+				} else if (code.equals(STATUS_CODE_BANNED)) {
+					this.isOnline = false;
+					this.error = ERROR_BANNED;
+				}
 			} else if (type.equals("unavailable")) {
 				deleteUser(packet.getAttribute("from").split("/", 2)[1]);
 			} else if (type.equals("error")) {
@@ -199,6 +218,10 @@ public class MucOptions {
 						this.passwordChanged = true;
 					}
 					this.error = ERROR_PASSWORD_REQUIRED;
+				} else if (error.hasChild("forbidden")) {
+					this.error = ERROR_BANNED;
+				} else if (error.hasChild("registration-required")) {
+					this.error = ERROR_MEMBERS_ONLY;
 				}
 			}
 		}

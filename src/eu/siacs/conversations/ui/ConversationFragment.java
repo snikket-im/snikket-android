@@ -485,6 +485,18 @@ public class ConversationFragment extends Fragment {
 						showSnackbar(R.string.conference_requires_password,
 								R.string.enter_password, enterPassword);
 						break;
+					case MucOptions.ERROR_BANNED:
+						showSnackbar(R.string.conference_banned,
+								R.string.leave, leaveMuc);
+						break;
+					case MucOptions.ERROR_MEMBERS_ONLY:
+						showSnackbar(R.string.conference_members_only,
+								R.string.leave, leaveMuc);
+						break;
+					case MucOptions.KICKED_FROM_ROOM:
+						showSnackbar(R.string.conference_kicked,
+								R.string.leave, leaveMuc);
+						break;
 					default:
 						break;
 					}
@@ -493,7 +505,7 @@ public class ConversationFragment extends Fragment {
 			getActivity().invalidateOptionsMenu();
 			updateChatMsgHint();
 			if (!activity.shouldPaneBeOpen()) {
-				activity.xmppConnectionService.markRead(conversation,true);
+				activity.xmppConnectionService.markRead(conversation, true);
 				activity.updateConversationList();
 			}
 			this.updateSendButton();
