@@ -262,5 +262,8 @@
     <string name="pref_conference_name">Conference name</string>
     <string name="pref_conference_name_summary">Use room’s subject instead of JID to identify conferences</string>
     <string name="toast_message_otr_fingerprint">OTR fingerprint copied to clipboard!</string>
+    <string name="conference_banned">You were been banned from the conference room</string>
+    <string name="conference_members_only">The conference room is only for members</string>
+    <string name="conference_kicked">You were been kicked from the conference room</string>
 
 </resources>
