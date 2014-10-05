@@ -311,7 +311,8 @@ public class XmppConnection implements Runnable {
 				} catch (NumberFormatException e) {
 
 				}
-				changeStatus(Account.STATUS_ONLINE);
+				sendInitialPing();
+				
 			} else if (nextTag.isStart("r")) {
 				tagReader.readElement(nextTag);
 				AckPacket ack = new AckPacket(this.stanzasReceived, smVersion);
@@ -350,6 +351,21 @@ public class XmppConnection implements Runnable {
 				statusListener.onStatusChanged(account);
 			}
 		}
+	}
+	
+	private void sendInitialPing() {
+		Log.d(Config.LOGTAG,account.getJid()+": sending intial ping");
+		IqPacket iq = new IqPacket(IqPacket.TYPE_GET);
+		iq.setFrom(account.getFullJid());
+		iq.addChild("ping", "urn:xmpp:ping");
+		this.sendIqPacket(iq, new OnIqPacketReceived() {
+			
+			@Override
+			public void onIqPacketReceived(Account account, IqPacket packet) {
+				Log.d(Config.LOGTAG,account.getJid()+": online with resource "+account.getResource());
+				changeStatus(Account.STATUS_ONLINE);
+			}
+		});
 	}
 
 	private Element processPacket(Tag currentTag, int packetType)
@@ -681,7 +697,7 @@ public class XmppConnection implements Runnable {
 						if (bindListener != null) {
 							bindListener.onBind(account);
 						}
-						changeStatus(Account.STATUS_ONLINE);
+						sendInitialPing();
 					} else {
 						disconnect(true);
 					}
