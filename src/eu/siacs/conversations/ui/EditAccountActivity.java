@@ -5,6 +5,8 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AutoCompleteTextView;
@@ -53,6 +55,12 @@ public class EditAccountActivity extends XmppActivity {
 
 		@Override
 		public void onClick(View v) {
+			if (mAccount != null
+					&& mAccount.getStatus() == Account.STATUS_DISABLED) {
+				mAccount.setOption(Account.OPTION_DISABLED, false);
+				xmppConnectionService.updateAccount(mAccount);
+				return;
+			}
 			if (!Validator.isValidJid(mAccountJid.getText().toString())) {
 				mAccountJid.setError(getString(R.string.invalid_jid));
 				mAccountJid.requestFocus();
@@ -162,6 +170,25 @@ public class EditAccountActivity extends XmppActivity {
 		}
 	};
 	private KnownHostsAdapter mKnownHostsAdapter;
+	private TextWatcher mTextWatcher = new TextWatcher() {
+
+		@Override
+		public void onTextChanged(CharSequence s, int start, int before,
+				int count) {
+			updateSaveButton();
+		}
+
+		@Override
+		public void beforeTextChanged(CharSequence s, int start, int count,
+				int after) {
+
+		}
+
+		@Override
+		public void afterTextChanged(Editable s) {
+
+		}
+	};
 
 	protected void finishInitialSetup(final Avatar avatar) {
 		runOnUiThread(new Runnable() {
@@ -202,6 +229,11 @@ public class EditAccountActivity extends XmppActivity {
 			this.mSaveButton.setEnabled(false);
 			this.mSaveButton.setTextColor(getSecondaryTextColor());
 			this.mSaveButton.setText(R.string.account_status_connecting);
+		} else if (mAccount != null
+				&& mAccount.getStatus() == Account.STATUS_DISABLED) {
+			this.mSaveButton.setEnabled(true);
+			this.mSaveButton.setTextColor(getPrimaryTextColor());
+			this.mSaveButton.setText(R.string.enable);
 		} else {
 			this.mSaveButton.setEnabled(true);
 			this.mSaveButton.setTextColor(getPrimaryTextColor());
@@ -209,6 +241,10 @@ public class EditAccountActivity extends XmppActivity {
 				if (mAccount != null
 						&& mAccount.getStatus() == Account.STATUS_ONLINE) {
 					this.mSaveButton.setText(R.string.save);
+					if (!accountInfoEdited()) {
+						this.mSaveButton.setEnabled(false);
+						this.mSaveButton.setTextColor(getSecondaryTextColor());
+					}
 				} else {
 					this.mSaveButton.setText(R.string.connect);
 				}
@@ -218,12 +254,21 @@ public class EditAccountActivity extends XmppActivity {
 		}
 	}
 
+	protected boolean accountInfoEdited() {
+		return (!this.mAccount.getJid().equals(
+				this.mAccountJid.getText().toString()))
+				|| (!this.mAccount.getPassword().equals(
+						this.mPassword.getText().toString()));
+	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_edit_account);
 		this.mAccountJid = (AutoCompleteTextView) findViewById(R.id.account_jid);
+		this.mAccountJid.addTextChangedListener(this.mTextWatcher);
 		this.mPassword = (EditText) findViewById(R.id.account_password);
+		this.mPassword.addTextChangedListener(this.mTextWatcher);
 		this.mPasswordConfirm = (EditText) findViewById(R.id.account_password_confirm);
 		this.mRegisterNew = (CheckBox) findViewById(R.id.account_register_new);
 		this.mStats = (LinearLayout) findViewById(R.id.stats);
@@ -261,7 +306,7 @@ public class EditAccountActivity extends XmppActivity {
 			this.jidToEdit = getIntent().getStringExtra("jid");
 			if (this.jidToEdit != null) {
 				this.mRegisterNew.setVisibility(View.GONE);
-				getActionBar().setTitle(R.string.mgmt_account_edit);
+				getActionBar().setTitle(jidToEdit);
 			} else {
 				getActionBar().setTitle(R.string.action_add_account);
 			}
@@ -336,7 +381,8 @@ public class EditAccountActivity extends XmppActivity {
 				this.mOtrFingerprintHeadline.setVisibility(View.VISIBLE);
 				this.mOtrFingerprint.setVisibility(View.VISIBLE);
 				this.mOtrFingerprint.setText(fingerprint);
-				this.mOtrFingerprintToClipboardButton.setVisibility(View.VISIBLE);
+				this.mOtrFingerprintToClipboardButton
+						.setVisibility(View.VISIBLE);
 				this.mOtrFingerprintToClipboardButton
 						.setOnClickListener(new View.OnClickListener() {
 
