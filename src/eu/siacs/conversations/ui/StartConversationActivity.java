@@ -403,7 +403,7 @@ public class StartConversationActivity extends XmppActivity {
 							String conferenceJid = jid.getText().toString();
 							Account account = xmppConnectionService
 									.findAccountByJid(accountJid);
-							if (account==null) {
+							if (account == null) {
 								dialog.dismiss();
 								return;
 							}

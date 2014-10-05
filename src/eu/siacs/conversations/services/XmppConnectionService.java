@@ -748,7 +748,7 @@ public class XmppConnectionService extends Service {
 		Element query = iqPacket.query("jabber:iq:private");
 		Element storage = query.addChild("storage", "storage:bookmarks");
 		for (Bookmark bookmark : account.getBookmarks()) {
-			storage.addChild(bookmark.toElement());
+			storage.addChild(bookmark);
 		}
 		sendIqPacket(account, iqPacket, null);
 	}
@@ -1120,11 +1120,8 @@ public class XmppConnectionService extends Service {
 	public void providePasswordForMuc(Conversation conversation, String password) {
 		if (conversation.getMode() == Conversation.MODE_MULTI) {
 			conversation.getMucOptions().setPassword(password);
-			if (conversation.getBookmark() != null
-					&& conversation.getMucOptions().isPasswordChanged()) {
-				if (!conversation.getBookmark().autojoin()) {
-					conversation.getBookmark().setAutojoin(true);
-				}
+			if (conversation.getBookmark() != null) {
+				conversation.getBookmark().setAutojoin(true);
 				pushBookmarks(conversation.getAccount());
 			}
 			databaseBackend.updateConversation(conversation);

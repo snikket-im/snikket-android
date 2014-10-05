@@ -208,7 +208,8 @@ public abstract class XmppActivity extends Activity {
 		mColorOrange = getResources().getColor(R.color.orange);
 		mColorGreen = getResources().getColor(R.color.green);
 		mPrimaryColor = getResources().getColor(R.color.primary);
-		mSecondaryBackgroundColor = getResources().getColor(R.color.secondarybackground);
+		mSecondaryBackgroundColor = getResources().getColor(
+				R.color.secondarybackground);
 		if (getPreferences().getBoolean("use_larger_font", false)) {
 			setTheme(R.style.ConversationsTheme_LargerText);
 		}
@@ -520,7 +521,7 @@ public abstract class XmppActivity extends Activity {
 	public int getPrimaryColor() {
 		return this.mPrimaryColor;
 	}
-	
+
 	public int getSecondaryBackgroundColor() {
 		return this.mSecondaryBackgroundColor;
 	}

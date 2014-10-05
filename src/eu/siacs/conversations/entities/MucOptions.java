@@ -165,8 +165,7 @@ public class MucOptions {
 						}
 						aboutToRename = false;
 					}
-					if (conversation.getBookmark() != null
-							&& conversation.getBookmark().isProvidePassword()) {
+					if (conversation.getBookmark() != null) {
 						this.passwordChanged = false;
 					}
 				} else {
@@ -213,8 +212,7 @@ public class MucOptions {
 						this.error = ERROR_NICK_IN_USE;
 					}
 				} else if (error.hasChild("not-authorized")) {
-					if (conversation.getBookmark() != null
-							&& conversation.getBookmark().isProvidePassword()) {
+					if (conversation.getBookmark() != null) {
 						this.passwordChanged = true;
 					}
 					this.error = ERROR_PASSWORD_REQUIRED;
@@ -357,8 +355,7 @@ public class MucOptions {
 	}
 
 	public void setPassword(String password) {
-		if (conversation.getBookmark() != null
-				&& conversation.getBookmark().isProvidePassword()) {
+		if (conversation.getBookmark() != null) {
 			conversation.getBookmark().setPassword(password);
 		} else {
 			this.password = password;
@@ -367,7 +364,7 @@ public class MucOptions {
 				.setAttribute(Conversation.ATTRIBUTE_MUC_PASSWORD, password);
 	}
 
-	public boolean isPasswordChanged() {
+	public boolean isPasswordChanged2() {
 		return this.passwordChanged;
 	}
 

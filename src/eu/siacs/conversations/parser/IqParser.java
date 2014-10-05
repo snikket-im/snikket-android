@@ -73,7 +73,7 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
 			IqPacket response = mXmppConnectionService.getIqGenerator()
 					.discoResponse(packet);
 			account.getXmppConnection().sendIqPacket(response, null);
-		} else if (packet.hasChild("ping","urn:xmpp:ping")) {
+		} else if (packet.hasChild("ping", "urn:xmpp:ping")) {
 			IqPacket response = packet.generateRespone(IqPacket.TYPE_RESULT);
 			mXmppConnectionService.sendIqPacket(account, response, null);
 		} else {

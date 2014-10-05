@@ -42,7 +42,8 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 			ConversationActivity activity = (ConversationActivity) this.activity;
 			if (!activity.isConversationsOverviewHideable()) {
 				if (conv == activity.getSelectedConversation()) {
-					view.setBackgroundColor(activity.getSecondaryBackgroundColor());
+					view.setBackgroundColor(activity
+							.getSecondaryBackgroundColor());
 				} else {
 					view.setBackgroundColor(Color.TRANSPARENT);
 				}

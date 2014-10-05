@@ -88,7 +88,7 @@ public class ConversationActivity extends XmppActivity implements
 	}
 
 	public void setSelectedConversation(Conversation conversation) {
-		this.selectedConversation = conversation;	
+		this.selectedConversation = conversation;
 	}
 
 	public ListView getConversationListView() {
@@ -98,21 +98,21 @@ public class ConversationActivity extends XmppActivity implements
 	public boolean shouldPaneBeOpen() {
 		return paneShouldBeOpen;
 	}
-	
+
 	public void showConversationsOverview() {
 		if (mContentView instanceof SlidingPaneLayout) {
 			SlidingPaneLayout mSlidingPaneLayout = (SlidingPaneLayout) mContentView;
 			mSlidingPaneLayout.openPane();
 		}
 	}
-	
+
 	public void hideConversationsOverview() {
 		if (mContentView instanceof SlidingPaneLayout) {
 			SlidingPaneLayout mSlidingPaneLayout = (SlidingPaneLayout) mContentView;
 			mSlidingPaneLayout.closePane();
 		}
 	}
-	
+
 	public boolean isConversationsOverviewHideable() {
 		if (mContentView instanceof SlidingPaneLayout) {
 			SlidingPaneLayout mSlidingPaneLayout = (SlidingPaneLayout) mContentView;
@@ -121,7 +121,7 @@ public class ConversationActivity extends XmppActivity implements
 			return false;
 		}
 	}
-	
+
 	public boolean isConversationsOverviewVisable() {
 		if (mContentView instanceof SlidingPaneLayout) {
 			SlidingPaneLayout mSlidingPaneLayout = (SlidingPaneLayout) mContentView;
@@ -166,13 +166,14 @@ public class ConversationActivity extends XmppActivity implements
 			}
 		});
 		mContentView = findViewById(R.id.content_view_spl);
-		if (mContentView==null) {
+		if (mContentView == null) {
 			mContentView = findViewById(R.id.content_view_ll);
 		}
 		if (mContentView instanceof SlidingPaneLayout) {
 			SlidingPaneLayout mSlidingPaneLayout = (SlidingPaneLayout) mContentView;
 			mSlidingPaneLayout.setParallaxDistance(150);
-			mSlidingPaneLayout.setShadowResource(R.drawable.es_slidingpane_shadow);
+			mSlidingPaneLayout
+					.setShadowResource(R.drawable.es_slidingpane_shadow);
 			mSlidingPaneLayout.setSliderFadeColor(0);
 			mSlidingPaneLayout.setPanelSlideListener(new PanelSlideListener() {
 
@@ -253,7 +254,8 @@ public class ConversationActivity extends XmppActivity implements
 				.findItem(R.id.action_invite);
 		MenuItem menuMute = (MenuItem) menu.findItem(R.id.action_mute);
 
-		if (isConversationsOverviewVisable() && isConversationsOverviewHideable()) {
+		if (isConversationsOverviewVisable()
+				&& isConversationsOverviewHideable()) {
 			menuArchive.setVisible(false);
 			menuMucDetails.setVisible(false);
 			menuContactDetails.setVisible(false);
@@ -669,7 +671,8 @@ public class ConversationActivity extends XmppActivity implements
 	public void onSaveInstanceState(Bundle savedInstanceState) {
 		savedInstanceState.putString(STATE_OPEN_CONVERSATION,
 				getSelectedConversation().getUuid());
-		savedInstanceState.putBoolean(STATE_PANEL_OPEN, isConversationsOverviewVisable());
+		savedInstanceState.putBoolean(STATE_PANEL_OPEN,
+				isConversationsOverviewVisable());
 		super.onSaveInstanceState(savedInstanceState);
 	}
 

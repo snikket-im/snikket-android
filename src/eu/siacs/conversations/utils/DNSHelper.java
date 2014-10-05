@@ -35,7 +35,8 @@ public class DNSHelper {
 				Bundle b = queryDNS(host, ip);
 				if (b.containsKey("name")) {
 					return b;
-				} else if (b.containsKey("error") && "nosrv".equals(b.getString("error", null))) {
+				} else if (b.containsKey("error")
+						&& "nosrv".equals(b.getString("error", null))) {
 					return b;
 				}
 			}
