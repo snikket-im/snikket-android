@@ -166,10 +166,12 @@ public class XmppConnection implements Runnable {
 							+ ":" + srvRecordPort);
 					socket = new Socket(srvRecordServer, srvRecordPort);
 				}
-			} else if (namePort.containsKey("error") && "nosrv".equals(namePort.getString("error", null))) {
+			} else if (namePort.containsKey("error")
+					&& "nosrv".equals(namePort.getString("error", null))) {
 				socket = new Socket(account.getServer(), 5222);
 			} else {
-				Log.d(Config.LOGTAG,account.getJid()+": timeout in DNS resolution");
+				Log.d(Config.LOGTAG, account.getJid()
+						+ ": timeout in DNS resolution");
 				changeStatus(Account.STATUS_OFFLINE);
 				return;
 			}
@@ -312,7 +314,7 @@ public class XmppConnection implements Runnable {
 
 				}
 				sendInitialPing();
-				
+
 			} else if (nextTag.isStart("r")) {
 				tagReader.readElement(nextTag);
 				AckPacket ack = new AckPacket(this.stanzasReceived, smVersion);
@@ -352,17 +354,18 @@ public class XmppConnection implements Runnable {
 			}
 		}
 	}
-	
+
 	private void sendInitialPing() {
-		Log.d(Config.LOGTAG,account.getJid()+": sending intial ping");
+		Log.d(Config.LOGTAG, account.getJid() + ": sending intial ping");
 		IqPacket iq = new IqPacket(IqPacket.TYPE_GET);
 		iq.setFrom(account.getFullJid());
 		iq.addChild("ping", "urn:xmpp:ping");
 		this.sendIqPacket(iq, new OnIqPacketReceived() {
-			
+
 			@Override
 			public void onIqPacketReceived(Account account, IqPacket packet) {
-				Log.d(Config.LOGTAG,account.getJid()+": online with resource "+account.getResource());
+				Log.d(Config.LOGTAG, account.getJid()
+						+ ": online with resource " + account.getResource());
 				changeStatus(Account.STATUS_ONLINE);
 			}
 		});
@@ -392,8 +395,11 @@ public class XmppConnection implements Runnable {
 		while (!nextTag.isEnd(element.getName())) {
 			if (!nextTag.isNo()) {
 				Element child = tagReader.readElement(nextTag);
-				if ((packetType == PACKET_IQ)
-						&& ("jingle".equals(child.getName()))) {
+				String type = currentTag.getAttribute("type");
+				if (packetType == PACKET_IQ
+						&& "jingle".equals(child.getName())
+						&& ("set".equalsIgnoreCase(type) || "get"
+								.equalsIgnoreCase(type))) {
 					element = new JinglePacket();
 					element.setAttributes(currentTag.getAttributes());
 				}
@@ -430,7 +436,9 @@ public class XmppConnection implements Runnable {
 				}
 
 				packetCallbacks.remove(packet.getId());
-			} else if (this.unregisteredIqListener != null) {
+			} else if ((packet.getType() == IqPacket.TYPE_GET || packet
+					.getType() == IqPacket.TYPE_SET)
+					&& this.unregisteredIqListener != null) {
 				this.unregisteredIqListener.onIqPacketReceived(account, packet);
 			}
 		}
