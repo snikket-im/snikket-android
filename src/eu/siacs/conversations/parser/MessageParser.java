@@ -73,7 +73,7 @@ public class MessageParser extends AbstractParser implements
 		updateLastseen(packet, account, true);
 		String body = packet.getBody();
 		if (body.matches("^\\?OTRv\\d*\\?")) {
-			conversation.resetOtrSession();
+			conversation.endOtrIfNeeded();
 		}
 		if (!conversation.hasValidOtrSession()) {
 			if (properlyAddressed) {
