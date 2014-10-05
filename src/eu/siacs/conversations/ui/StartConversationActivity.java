@@ -403,6 +403,10 @@ public class StartConversationActivity extends XmppActivity {
 							String conferenceJid = jid.getText().toString();
 							Account account = xmppConnectionService
 									.findAccountByJid(accountJid);
+							if (account==null) {
+								dialog.dismiss();
+								return;
+							}
 							if (bookmarkCheckBox.isChecked()) {
 								if (account.hasBookmarkFor(conferenceJid)) {
 									jid.setError(getString(R.string.bookmark_already_exists));
