@@ -418,6 +418,13 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		}
 
 		if (type == STATUS || type == NULL) {
+			if (position == getCount() - 1) {
+				view.getLayoutParams().height = 1;
+			} else {
+				view.getLayoutParams().height = 0;
+				
+			}
+			view.setLayoutParams(view.getLayoutParams());
 			return view;
 		}
 

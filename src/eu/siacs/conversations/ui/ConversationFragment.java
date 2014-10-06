@@ -522,9 +522,7 @@ public class ConversationFragment extends Fragment {
 
 	private void messageSent() {
 		int size = this.messageList.size();
-		if (size >= 1 && this.messagesView.getLastVisiblePosition() != size - 1) {
-			messagesView.setSelection(size - 1);
-		}
+		messagesView.setSelection(size - 1);
 		mEditMessage.setText("");
 		updateChatMsgHint();
 	}
