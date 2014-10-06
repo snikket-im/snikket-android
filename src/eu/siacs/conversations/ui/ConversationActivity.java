@@ -669,8 +669,11 @@ public class ConversationActivity extends XmppActivity implements
 
 	@Override
 	public void onSaveInstanceState(Bundle savedInstanceState) {
-		savedInstanceState.putString(STATE_OPEN_CONVERSATION,
-				getSelectedConversation().getUuid());
+		Conversation conversation = getSelectedConversation();
+		if (conversation!=null) {
+			savedInstanceState.putString(STATE_OPEN_CONVERSATION,
+					conversation.getUuid());
+		}
 		savedInstanceState.putBoolean(STATE_PANEL_OPEN,
 				isConversationsOverviewVisable());
 		super.onSaveInstanceState(savedInstanceState);
