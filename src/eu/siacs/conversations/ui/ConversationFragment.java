@@ -131,6 +131,14 @@ public class ConversationFragment extends Fragment {
 			activity.endConversation(conversation);
 		}
 	};
+	
+	private OnClickListener joinMuc = new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			activity.xmppConnectionService.joinMuc(conversation);
+		}
+	};
 
 	private OnClickListener enterPassword = new OnClickListener() {
 
@@ -495,7 +503,7 @@ public class ConversationFragment extends Fragment {
 						break;
 					case MucOptions.KICKED_FROM_ROOM:
 						showSnackbar(R.string.conference_kicked,
-								R.string.leave, leaveMuc);
+								R.string.join, joinMuc);
 						break;
 					default:
 						break;

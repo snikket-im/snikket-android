@@ -115,7 +115,6 @@ public class MucOptions {
 	private String subject = null;
 	private String joinnick;
 	private String password = null;
-	private boolean passwordChanged = false;
 
 	public MucOptions(Account account) {
 		this.account = account;
@@ -165,9 +164,6 @@ public class MucOptions {
 						}
 						aboutToRename = false;
 					}
-					if (conversation.getBookmark() != null) {
-						this.passwordChanged = false;
-					}
 				} else {
 					addUser(user);
 				}
@@ -186,22 +182,26 @@ public class MucOptions {
 					}
 				}
 			} else if (type.equals("unavailable") && name.equals(this.joinnick)) {
-				Element status = packet.findChild("x",
-						"http://jabber.org/protocol/muc#user").findChild(
-						"status");
-				String code = status.getAttribute("code");
-				if (code.equals(STATUS_CODE_KICKED)) {
-					this.isOnline = false;
-					this.error = KICKED_FROM_ROOM;
-				} else if (code.equals(STATUS_CODE_BANNED)) {
-					this.isOnline = false;
-					this.error = ERROR_BANNED;
+				Element x = packet.findChild("x",
+						"http://jabber.org/protocol/muc#user");
+				if (x != null) {
+					Element status = x.findChild("status");
+					if (status != null) {
+						String code = status.getAttribute("code");
+						if (STATUS_CODE_KICKED.equals(code)) {
+							this.isOnline = false;
+							this.error = KICKED_FROM_ROOM;
+						} else if (STATUS_CODE_BANNED.equals(code)) {
+							this.isOnline = false;
+							this.error = ERROR_BANNED;
+						}
+					}
 				}
 			} else if (type.equals("unavailable")) {
 				deleteUser(packet.getAttribute("from").split("/", 2)[1]);
 			} else if (type.equals("error")) {
 				Element error = packet.findChild("error");
-				if (error.hasChild("conflict")) {
+				if (error != null && error.hasChild("conflict")) {
 					if (aboutToRename) {
 						if (renameListener != null) {
 							renameListener.onRename(false);
@@ -211,14 +211,12 @@ public class MucOptions {
 					} else {
 						this.error = ERROR_NICK_IN_USE;
 					}
-				} else if (error.hasChild("not-authorized")) {
-					if (conversation.getBookmark() != null) {
-						this.passwordChanged = true;
-					}
+				} else if (error != null && error.hasChild("not-authorized")) {
 					this.error = ERROR_PASSWORD_REQUIRED;
-				} else if (error.hasChild("forbidden")) {
+				} else if (error != null && error.hasChild("forbidden")) {
 					this.error = ERROR_BANNED;
-				} else if (error.hasChild("registration-required")) {
+				} else if (error != null
+						&& error.hasChild("registration-required")) {
 					this.error = ERROR_MEMBERS_ONLY;
 				}
 			}
@@ -363,9 +361,4 @@ public class MucOptions {
 		conversation
 				.setAttribute(Conversation.ATTRIBUTE_MUC_PASSWORD, password);
 	}
-
-	public boolean isPasswordChanged2() {
-		return this.passwordChanged;
-	}
-
 }
