@@ -1,10 +1,7 @@
 package eu.siacs.conversations.parser;
 
-import android.os.SystemClock;
-import android.util.Log;
 import net.java.otr4j.session.Session;
 import net.java.otr4j.session.SessionStatus;
-import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
@@ -19,9 +16,6 @@ import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
 
 public class MessageParser extends AbstractParser implements
 		OnMessagePacketReceived {
-
-	private long lastCarbonMessageReceived = -(Config.CARBON_GRACE_PERIOD * 1000);
-
 	public MessageParser(XmppConnectionService service) {
 		super(service);
 	}
@@ -404,8 +398,6 @@ public class MessageParser extends AbstractParser implements
 		Message message = null;
 		boolean notify = mXmppConnectionService.getPreferences().getBoolean(
 				"show_notification", true);
-		notify = notify
-				&& (SystemClock.elapsedRealtime() - lastCarbonMessageReceived) > (Config.CARBON_GRACE_PERIOD * 1000);
 		boolean alwaysNotifyInConference = notify
 				&& mXmppConnectionService.getPreferences().getBoolean(
 						"always_notify_in_conference", false);
@@ -431,8 +423,8 @@ public class MessageParser extends AbstractParser implements
 				message = this.parseCarbonMessage(packet, account);
 				if (message != null) {
 					if (message.getStatus() == Message.STATUS_SEND) {
-						lastCarbonMessageReceived = SystemClock
-								.elapsedRealtime();
+						mXmppConnectionService.getNotificationService()
+								.activateGracePeriod();
 						notify = false;
 						mXmppConnectionService.markRead(
 								message.getConversation(), false);
@@ -454,7 +446,8 @@ public class MessageParser extends AbstractParser implements
 				} else {
 					mXmppConnectionService.markRead(message.getConversation(),
 							false);
-					lastCarbonMessageReceived = SystemClock.elapsedRealtime();
+					mXmppConnectionService.getNotificationService()
+							.activateGracePeriod();
 					notify = false;
 				}
 			}

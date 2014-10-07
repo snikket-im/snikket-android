@@ -970,6 +970,7 @@ public class XmppConnectionService extends Service {
 
 	public void setOnConversationListChangedListener(
 			OnConversationUpdate listener) {
+		this.mNotificationService.deactivateGracePeriod();
 		if (checkListeners()) {
 			switchToForeground();
 		}
@@ -990,6 +991,7 @@ public class XmppConnectionService extends Service {
 	}
 
 	public void setOnAccountListChangedListener(OnAccountUpdate listener) {
+		this.mNotificationService.deactivateGracePeriod();
 		if (checkListeners()) {
 			switchToForeground();
 		}
@@ -1008,6 +1010,7 @@ public class XmppConnectionService extends Service {
 	}
 
 	public void setOnRosterUpdateListener(OnRosterUpdate listener) {
+		this.mNotificationService.deactivateGracePeriod();
 		if (checkListeners()) {
 			switchToForeground();
 		}

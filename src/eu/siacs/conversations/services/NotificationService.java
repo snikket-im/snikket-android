@@ -13,10 +13,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.PowerManager;
+import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.text.Html;
 
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
@@ -32,6 +34,8 @@ public class NotificationService {
 	public int NOTIFICATION_ID = 0x2342;
 	private Conversation mOpenConversation;
 	private boolean mIsInForeground;
+	
+	private long mEndGracePeriod = 0L;
 
 	public NotificationService(XmppConnectionService service) {
 		this.mXmppConnectionService = service;
@@ -44,10 +48,9 @@ public class NotificationService {
 		PowerManager pm = (PowerManager) mXmppConnectionService
 				.getSystemService(Context.POWER_SERVICE);
 		boolean isScreenOn = pm.isScreenOn();
-
 		if (this.mIsInForeground && isScreenOn
 				&& this.mOpenConversation == message.getConversation()) {
-			return; // simply ignore
+			return;
 		}
 		String conversationUuid = message.getConversationUuid();
 		if (notifications.containsKey(conversationUuid)) {
@@ -57,8 +60,8 @@ public class NotificationService {
 			mList.add(message);
 			notifications.put(conversationUuid, mList);
 		}
-		updateNotification(!(this.mIsInForeground && this.mOpenConversation == null)
-				|| !isScreenOn);
+		updateNotification((!(this.mIsInForeground && this.mOpenConversation == null)
+				|| !isScreenOn) && !inGracePeriod());
 	}
 
 	public void clear() {
@@ -161,7 +164,9 @@ public class NotificationService {
 				}
 			}
 			mBuilder.setDeleteIntent(createDeleteIntent());
-			mBuilder.setLights(0xffffffff, 2000, 4000);
+			if (!inGracePeriod()) {
+				mBuilder.setLights(0xffffffff, 2000, 4000);
+			}
 			Notification notification = mBuilder.build();
 			mNotificationManager.notify(NOTIFICATION_ID, notification);
 		}
@@ -221,4 +226,16 @@ public class NotificationService {
 		this.mIsInForeground = foreground;
 	}
 
+	
+	public void activateGracePeriod() {
+		this.mEndGracePeriod = SystemClock.elapsedRealtime() + (Config.CARBON_GRACE_PERIOD * 1000);
+	}
+	
+	public void deactivateGracePeriod() {
+		this.mEndGracePeriod = 0L;
+	}
+	
+	private boolean inGracePeriod() {
+		return SystemClock.elapsedRealtime() < this.mEndGracePeriod;
+	}
 }
