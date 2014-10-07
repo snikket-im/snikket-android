@@ -585,6 +585,8 @@ public class ConversationActivity extends XmppActivity implements
 									+ (durations[which] * 1000);
 						}
 						conversation.setMutedTill(till);
+						activity.xmppConnectionService.databaseBackend
+								.updateConversation(conversation);
 						ConversationFragment selectedFragment = (ConversationFragment) getFragmentManager()
 								.findFragmentByTag("conversation");
 						if (selectedFragment != null) {

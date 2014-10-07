@@ -131,9 +131,9 @@ public class ConversationFragment extends Fragment {
 			activity.endConversation(conversation);
 		}
 	};
-	
+
 	private OnClickListener joinMuc = new OnClickListener() {
-		
+
 		@Override
 		public void onClick(View v) {
 			activity.xmppConnectionService.joinMuc(conversation);
@@ -438,6 +438,8 @@ public class ConversationFragment extends Fragment {
 							@Override
 							public void onClick(View v) {
 								conversation.setMutedTill(0);
+								activity.xmppConnectionService.databaseBackend
+										.updateConversation(conversation);
 								updateMessages();
 							}
 						});
@@ -502,8 +504,8 @@ public class ConversationFragment extends Fragment {
 								R.string.leave, leaveMuc);
 						break;
 					case MucOptions.KICKED_FROM_ROOM:
-						showSnackbar(R.string.conference_kicked,
-								R.string.join, joinMuc);
+						showSnackbar(R.string.conference_kicked, R.string.join,
+								joinMuc);
 						break;
 					default:
 						break;

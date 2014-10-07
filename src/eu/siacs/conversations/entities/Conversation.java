@@ -43,6 +43,7 @@ public class Conversation extends AbstractEntity {
 
 	public static final String ATTRIBUTE_NEXT_ENCRYPTION = "next_encryption";
 	public static final String ATTRIBUTE_MUC_PASSWORD = "muc_password";
+	public static final String ATTRIBUTE_MUTED_TILL = "muted_till";
 
 	private String name;
 	private String contactUuid;
@@ -53,8 +54,6 @@ public class Conversation extends AbstractEntity {
 	private int mode;
 
 	private JSONObject attributes = new JSONObject();
-
-	private long mutedTill = 0;
 
 	private String nextPresence;
 
@@ -452,12 +451,13 @@ public class Conversation extends AbstractEntity {
 		return false;
 	}
 
-	public void setMutedTill(long mutedTill) {
-		this.mutedTill = mutedTill;
+	public void setMutedTill(long value) {
+		this.setAttribute(ATTRIBUTE_MUTED_TILL, String.valueOf(value));
 	}
 
 	public boolean isMuted() {
-		return SystemClock.elapsedRealtime() < this.mutedTill;
+		return SystemClock.elapsedRealtime() < this.getLongAttribute(
+				ATTRIBUTE_MUTED_TILL, 0);
 	}
 
 	public boolean setAttribute(String key, String value) {
@@ -484,6 +484,19 @@ public class Conversation extends AbstractEntity {
 		} else {
 			try {
 				return Integer.parseInt(value);
+			} catch (NumberFormatException e) {
+				return defaultValue;
+			}
+		}
+	}
+
+	public long getLongAttribute(String key, long defaultValue) {
+		String value = this.getAttribute(key);
+		if (value == null) {
+			return defaultValue;
+		} else {
+			try {
+				return Long.parseLong(value);
 			} catch (NumberFormatException e) {
 				return defaultValue;
 			}

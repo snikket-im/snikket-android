@@ -425,7 +425,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 				view.getLayoutParams().height = 1;
 			} else {
 				view.getLayoutParams().height = 0;
-				
+
 			}
 			view.setLayoutParams(view.getLayoutParams());
 			return view;

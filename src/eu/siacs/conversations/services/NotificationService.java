@@ -34,7 +34,7 @@ public class NotificationService {
 	public int NOTIFICATION_ID = 0x2342;
 	private Conversation mOpenConversation;
 	private boolean mIsInForeground;
-	
+
 	private long mEndGracePeriod = 0L;
 
 	public NotificationService(XmppConnectionService service) {
@@ -60,8 +60,8 @@ public class NotificationService {
 			mList.add(message);
 			notifications.put(conversationUuid, mList);
 		}
-		updateNotification((!(this.mIsInForeground && this.mOpenConversation == null)
-				|| !isScreenOn) && !inGracePeriod());
+		updateNotification((!(this.mIsInForeground && this.mOpenConversation == null) || !isScreenOn)
+				&& !inGracePeriod());
 	}
 
 	public void clear() {
@@ -226,15 +226,15 @@ public class NotificationService {
 		this.mIsInForeground = foreground;
 	}
 
-	
 	public void activateGracePeriod() {
-		this.mEndGracePeriod = SystemClock.elapsedRealtime() + (Config.CARBON_GRACE_PERIOD * 1000);
+		this.mEndGracePeriod = SystemClock.elapsedRealtime()
+				+ (Config.CARBON_GRACE_PERIOD * 1000);
 	}
-	
+
 	public void deactivateGracePeriod() {
 		this.mEndGracePeriod = 0L;
 	}
-	
+
 	private boolean inGracePeriod() {
 		return SystemClock.elapsedRealtime() < this.mEndGracePeriod;
 	}
