@@ -417,7 +417,10 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 			viewHolder = (ViewHolder) view.getTag();
 		}
 
-		if (type == STATUS || type == NULL) {
+		if (type == STATUS) {
+			return view;
+		}
+		if (type == NULL) {
 			if (position == getCount() - 1) {
 				view.getLayoutParams().height = 1;
 			} else {
