@@ -1632,10 +1632,11 @@ public class XmppConnectionService extends Service {
 	}
 
 	public void markRead(Conversation conversation, boolean calledByUi) {
-		conversation.markRead();
 		mNotificationService.clear(conversation);
-		String id = conversation.popLatestMarkableMessageId();
+		String id = conversation.getLatestMarkableMessageId();
+		conversation.markRead();
 		if (confirmMessages() && id != null && calledByUi) {
+			Log.d(Config.LOGTAG,conversation.getAccount().getJid()+": sending read marker for "+conversation.getName());
 			Account account = conversation.getAccount();
 			String to = conversation.getContactJid();
 			this.sendMessagePacket(conversation.getAccount(),

@@ -68,7 +68,7 @@ public class Conversation extends AbstractEntity {
 
 	private transient MucOptions mucOptions = null;
 
-	private transient String latestMarkableMessageId;
+	//private transient String latestMarkableMessageId;
 
 	private byte[] symmetricKey;
 
@@ -138,10 +138,17 @@ public class Conversation extends AbstractEntity {
 		}
 	}
 
-	public String popLatestMarkableMessageId() {
-		String id = this.latestMarkableMessageId;
-		this.latestMarkableMessageId = null;
-		return id;
+	public String getLatestMarkableMessageId() {
+		for(int i = this.messages.size() - 1; i >= 0; --i) {
+			if (this.messages.get(i).getStatus() <= Message.STATUS_RECEIVED && this.messages.get(i).markable) {
+				if (this.messages.get(i).isRead()) {
+					return null;
+				} else {
+					return this.messages.get(i).getRemoteMsgId();
+				}
+			}
+		}
+		return null;
 	}
 
 	public Message getLatestMessage() {
@@ -403,12 +410,6 @@ public class Conversation extends AbstractEntity {
 
 	public void setNextMessage(String message) {
 		this.nextMessage = message;
-	}
-
-	public void setLatestMarkableMessageId(String id) {
-		if (id != null) {
-			this.latestMarkableMessageId = id;
-		}
 	}
 
 	public void setSymmetricKey(byte[] key) {

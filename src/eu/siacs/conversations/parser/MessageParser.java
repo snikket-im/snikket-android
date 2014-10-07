@@ -24,7 +24,6 @@ public class MessageParser extends AbstractParser implements
 		String[] fromParts = packet.getFrom().split("/", 2);
 		Conversation conversation = mXmppConnectionService
 				.findOrCreateConversation(account, fromParts[0], false);
-		conversation.setLatestMarkableMessageId(getMarkableMessageId(packet));
 		updateLastseen(packet, account, true);
 		String pgpBody = getPgpBody(packet);
 		Message finishedMessage;
@@ -37,6 +36,7 @@ public class MessageParser extends AbstractParser implements
 					Message.STATUS_RECEIVED);
 		}
 		finishedMessage.setRemoteMsgId(packet.getId());
+		finishedMessage.markable = isMarkable(packet);
 		if (conversation.getMode() == Conversation.MODE_MULTI
 				&& fromParts.length >= 2) {
 			finishedMessage.setType(Message.TYPE_PRIVATE);
@@ -108,13 +108,12 @@ public class MessageParser extends AbstractParser implements
 				conversation.setSymmetricKey(CryptoHelper.hexToBytes(key));
 				return null;
 			}
-			conversation
-					.setLatestMarkableMessageId(getMarkableMessageId(packet));
 			Message finishedMessage = new Message(conversation,
 					packet.getFrom(), body, Message.ENCRYPTION_OTR,
 					Message.STATUS_RECEIVED);
 			finishedMessage.setTime(getTimestamp(packet));
 			finishedMessage.setRemoteMsgId(packet.getId());
+			finishedMessage.markable = isMarkable(packet);
 			return finishedMessage;
 		} catch (Exception e) {
 			String receivedId = packet.getId();
@@ -156,7 +155,6 @@ public class MessageParser extends AbstractParser implements
 			status = Message.STATUS_RECEIVED;
 		}
 		String pgpBody = getPgpBody(packet);
-		conversation.setLatestMarkableMessageId(getMarkableMessageId(packet));
 		Message finishedMessage;
 		if (pgpBody == null) {
 			finishedMessage = new Message(conversation, counterPart,
@@ -166,6 +164,7 @@ public class MessageParser extends AbstractParser implements
 					Message.ENCRYPTION_PGP, status);
 		}
 		finishedMessage.setRemoteMsgId(packet.getId());
+		finishedMessage.markable = isMarkable(packet);
 		if (status == Message.STATUS_RECEIVED) {
 			finishedMessage.setTrueCounterpart(conversation.getMucOptions()
 					.getTrueCounterpart(counterPart));
@@ -234,8 +233,6 @@ public class MessageParser extends AbstractParser implements
 		String[] parts = fullJid.split("/", 2);
 		Conversation conversation = mXmppConnectionService
 				.findOrCreateConversation(account, parts[0], false);
-		conversation.setLatestMarkableMessageId(getMarkableMessageId(packet));
-
 		String pgpBody = getPgpBody(message);
 		Message finishedMessage;
 		if (pgpBody != null) {
@@ -248,6 +245,7 @@ public class MessageParser extends AbstractParser implements
 		}
 		finishedMessage.setTime(getTimestamp(message));
 		finishedMessage.setRemoteMsgId(message.getAttribute("id"));
+		finishedMessage.markable = isMarkable(message);
 		if (conversation.getMode() == Conversation.MODE_MULTI
 				&& parts.length >= 2) {
 			finishedMessage.setType(Message.TYPE_PRIVATE);
@@ -385,12 +383,8 @@ public class MessageParser extends AbstractParser implements
 		}
 	}
 
-	private String getMarkableMessageId(Element message) {
-		if (message.hasChild("markable", "urn:xmpp:chat-markers:0")) {
-			return message.getAttribute("id");
-		} else {
-			return null;
-		}
+	private boolean isMarkable(Element message) {
+		return message.hasChild("markable", "urn:xmpp:chat-markers:0");
 	}
 
 	@Override
