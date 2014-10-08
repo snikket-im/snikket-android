@@ -261,5 +261,9 @@
     <string name="pref_expert_options_other">Otros</string>
     <string name="pref_conference_name">Nombre de conferencia</string>
     <string name="pref_conference_name_summary">Usar el asunto de la conferencia en lugar del identificador jabber como nombre de conferencia</string>
+    <string name="toast_message_otr_fingerprint">¡Clave OTR copiada en el portapapeles!</string>
+    <string name="conference_banned">Tu entrada a esta conferencia ha sido prohibida</string>
+    <string name="conference_members_only">Esta conferencia es solo para miembros</string>
+    <string name="conference_kicked">Has sido expulsado de esta conferencia</string>
 
 </resources>
