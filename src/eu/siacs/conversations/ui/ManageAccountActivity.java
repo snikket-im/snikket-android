@@ -24,8 +24,6 @@ import android.widget.ListView;
 
 public class ManageAccountActivity extends XmppActivity {
 
-	protected ManageAccountActivity activity = this;
-
 	protected Account selectedAccount = null;
 
 	protected List<Account> accountList = new ArrayList<Account>();
@@ -72,7 +70,7 @@ public class ManageAccountActivity extends XmppActivity {
 	public void onCreateContextMenu(ContextMenu menu, View v,
 			ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
-		activity.getMenuInflater().inflate(R.menu.manageaccounts_context, menu);
+		ManageAccountActivity.this.getMenuInflater().inflate(R.menu.manageaccounts_context, menu);
 		AdapterView.AdapterContextMenuInfo acmi = (AdapterContextMenuInfo) menuInfo;
 		this.selectedAccount = accountList.get(acmi.position);
 		if (this.selectedAccount.isOptionSet(Account.OPTION_DISABLED)) {
@@ -181,7 +179,7 @@ public class ManageAccountActivity extends XmppActivity {
 	}
 
 	private void publishOpenPGPPublicKey(Account account) {
-		if (activity.hasPgp()) {
+		if (ManageAccountActivity.this.hasPgp()) {
 			announcePgp(account, null);
 		} else {
 			this.showInstallPgpDialog();
@@ -189,7 +187,7 @@ public class ManageAccountActivity extends XmppActivity {
 	}
 
 	private void deleteAccount(final Account account) {
-		AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+		AlertDialog.Builder builder = new AlertDialog.Builder(ManageAccountActivity.this);
 		builder.setTitle(getString(R.string.mgmt_account_are_you_sure));
 		builder.setIconAttribute(android.R.attr.alertDialogIcon);
 		builder.setMessage(getString(R.string.mgmt_account_delete_confirm_text));

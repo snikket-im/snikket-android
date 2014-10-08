@@ -74,7 +74,6 @@ public class ConversationActivity extends XmppActivity implements
 	private boolean paneShouldBeOpen = true;
 	private ArrayAdapter<Conversation> listAdapter;
 
-	protected ConversationActivity activity = this;
 	private Toast prepareImageToast;
 
 	private Uri pendingImageUri = null;
@@ -223,7 +222,7 @@ public class ConversationActivity extends XmppActivity implements
 			ab.setDisplayHomeAsUpEnabled(true);
 			ab.setHomeButtonEnabled(true);
 			if (getSelectedConversation().getMode() == Conversation.MODE_SINGLE
-					|| activity.useSubjectToIdentifyConference()) {
+					|| ConversationActivity.this.useSubjectToIdentifyConference()) {
 				ab.setTitle(getSelectedConversation().getName());
 			} else {
 				ab.setTitle(getSelectedConversation().getContactJid()
@@ -450,7 +449,7 @@ public class ConversationActivity extends XmppActivity implements
 
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						activity.xmppConnectionService
+						ConversationActivity.this.xmppConnectionService
 								.clearConversationHistory(conversation);
 						if (endConversationCheckBox.isChecked()) {
 							endConversation(conversation);
@@ -585,7 +584,7 @@ public class ConversationActivity extends XmppActivity implements
 									+ (durations[which] * 1000);
 						}
 						conversation.setMutedTill(till);
-						activity.xmppConnectionService.databaseBackend
+						ConversationActivity.this.xmppConnectionService.databaseBackend
 								.updateConversation(conversation);
 						ConversationFragment selectedFragment = (ConversationFragment) getFragmentManager()
 								.findFragmentByTag("conversation");
@@ -855,7 +854,7 @@ public class ConversationActivity extends XmppActivity implements
 					@Override
 					public void userInputRequried(PendingIntent pi,
 							Message message) {
-						activity.runIntent(pi,
+						ConversationActivity.this.runIntent(pi,
 								ConversationActivity.REQUEST_SEND_MESSAGE);
 					}
 

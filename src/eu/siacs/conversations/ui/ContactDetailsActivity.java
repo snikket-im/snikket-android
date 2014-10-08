@@ -39,8 +39,6 @@ import eu.siacs.conversations.utils.UIHelper;
 public class ContactDetailsActivity extends XmppActivity {
 	public static final String ACTION_VIEW_CONTACT = "view_contact";
 
-	protected ContactDetailsActivity activity = this;
-
 	private Contact contact;
 
 	private String accountJid;
@@ -58,8 +56,8 @@ public class ContactDetailsActivity extends XmppActivity {
 
 		@Override
 		public void onClick(DialogInterface dialog, int which) {
-			activity.xmppConnectionService.deleteContactOnServer(contact);
-			activity.finish();
+			ContactDetailsActivity.this.xmppConnectionService.deleteContactOnServer(contact);
+			ContactDetailsActivity.this.finish();
 		}
 	};
 
@@ -73,14 +71,14 @@ public class ContactDetailsActivity extends XmppActivity {
 			intent.putExtra(Intents.Insert.IM_PROTOCOL,
 					CommonDataKinds.Im.PROTOCOL_JABBER);
 			intent.putExtra("finishActivityOnSaveCompleted", true);
-			activity.startActivityForResult(intent, 0);
+			ContactDetailsActivity.this.startActivityForResult(intent, 0);
 		}
 	};
 	private OnClickListener onBadgeClick = new OnClickListener() {
 
 		@Override
 		public void onClick(View v) {
-			AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+			AlertDialog.Builder builder = new AlertDialog.Builder(ContactDetailsActivity.this);
 			builder.setTitle(getString(R.string.action_add_phone_book));
 			builder.setMessage(getString(R.string.add_phone_book_text,
 					contact.getJid()));
@@ -206,7 +204,7 @@ public class ContactDetailsActivity extends XmppActivity {
 					@Override
 					public void onValueEdited(String value) {
 						contact.setServerName(value);
-						activity.xmppConnectionService
+						ContactDetailsActivity.this.xmppConnectionService
 								.pushContactToServer(contact);
 						populateView();
 					}
@@ -354,7 +352,7 @@ public class ContactDetailsActivity extends XmppActivity {
 
 				@Override
 				public void onClick(View v) {
-					PgpEngine pgp = activity.xmppConnectionService
+					PgpEngine pgp = ContactDetailsActivity.this.xmppConnectionService
 							.getPgpEngine();
 					if (pgp != null) {
 						PendingIntent intent = pgp.getIntentForKey(contact);
