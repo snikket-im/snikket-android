@@ -210,6 +210,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		while (cursor.moveToNext()) {
 			list.add(Account.fromCursor(cursor));
 		}
+		cursor.close();
 		return list;
 	}
 
@@ -232,6 +233,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 				+ Account.TABLENAME + " where not options & (1 <<1)", null);
 		cursor.moveToFirst();
 		int count = cursor.getInt(0);
+		cursor.close();
 		return (count > 0);
 	}
 
@@ -258,6 +260,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		while (cursor.moveToNext()) {
 			roster.initContact(Contact.fromCursor(cursor));
 		}
+		cursor.close();
 	}
 
 	public void writeRoster(Roster roster) {

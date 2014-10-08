@@ -908,10 +908,12 @@ public class XmppConnectionService extends Service {
 
 	public void archiveConversation(Conversation conversation) {
 		if (conversation.getMode() == Conversation.MODE_MULTI) {
-			Bookmark bookmark = conversation.getBookmark();
-			if (bookmark != null && bookmark.autojoin()) {
-				bookmark.setAutojoin(false);
-				pushBookmarks(bookmark.getAccount());
+			if (conversation.getAccount().getStatus() == Account.STATUS_ONLINE) {
+				Bookmark bookmark = conversation.getBookmark();
+				if (bookmark != null && bookmark.autojoin()) {
+					bookmark.setAutojoin(false);
+					pushBookmarks(bookmark.getAccount());
+				}
 			}
 			leaveMuc(conversation);
 		} else {
@@ -1639,7 +1641,8 @@ public class XmppConnectionService extends Service {
 		String id = conversation.getLatestMarkableMessageId();
 		conversation.markRead();
 		if (confirmMessages() && id != null && calledByUi) {
-			Log.d(Config.LOGTAG,conversation.getAccount().getJid()+": sending read marker for "+conversation.getName());
+			Log.d(Config.LOGTAG, conversation.getAccount().getJid()
+					+ ": sending read marker for " + conversation.getName());
 			Account account = conversation.getAccount();
 			String to = conversation.getContactJid();
 			this.sendMessagePacket(conversation.getAccount(),
@@ -1722,16 +1725,25 @@ public class XmppConnectionService extends Service {
 	}
 
 	public void sendMessagePacket(Account account, MessagePacket packet) {
-		account.getXmppConnection().sendMessagePacket(packet);
+		XmppConnection connection = account.getXmppConnection();
+		if (connection != null) {
+			connection.sendMessagePacket(packet);
+		}
 	}
 
 	public void sendPresencePacket(Account account, PresencePacket packet) {
-		account.getXmppConnection().sendPresencePacket(packet);
+		XmppConnection connection = account.getXmppConnection();
+		if (connection != null) {
+			connection.sendPresencePacket(packet);
+		}
 	}
 
 	public void sendIqPacket(Account account, IqPacket packet,
 			OnIqPacketReceived callback) {
-		account.getXmppConnection().sendIqPacket(packet, callback);
+		XmppConnection connection = account.getXmppConnection();
+		if (connection != null) {
+			connection.sendIqPacket(packet, callback);
+		}
 	}
 
 	public MessageGenerator getMessageGenerator() {
