@@ -910,8 +910,7 @@ public class XmppConnection implements Runnable {
 	}
 
 	public void disconnect(boolean force) {
-		changeStatus(Account.STATUS_OFFLINE);
-		Log.d(Config.LOGTAG, "disconnecting");
+		Log.d(Config.LOGTAG, account.getJid()+": disconnecting");
 		try {
 			if (force) {
 				socket.close();
@@ -929,6 +928,7 @@ public class XmppConnection implements Runnable {
 								Thread.sleep(100);
 							}
 							tagWriter.writeTag(Tag.end("stream:stream"));
+							socket.close();
 						} catch (IOException e) {
 							Log.d(Config.LOGTAG,
 									"io exception during disconnect");

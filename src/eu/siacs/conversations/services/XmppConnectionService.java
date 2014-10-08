@@ -1508,6 +1508,9 @@ public class XmppConnectionService extends Service {
 					thread.start();
 					scheduleWakeupCall((int) (Config.CONNECT_TIMEOUT * 1.2),
 							false);
+				} else {
+					account.getRoster().clearPresences();
+					account.setXmppConnection(null);
 				}
 			}
 		}).start();
