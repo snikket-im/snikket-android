@@ -139,6 +139,9 @@ public class Conversation extends AbstractEntity {
 	}
 
 	public String getLatestMarkableMessageId() {
+		if (this.messages == null) {
+			return null;
+		}
 		for(int i = this.messages.size() - 1; i >= 0; --i) {
 			if (this.messages.get(i).getStatus() <= Message.STATUS_RECEIVED && this.messages.get(i).markable) {
 				if (this.messages.get(i).isRead()) {

@@ -517,7 +517,8 @@ public class XmppConnectionService extends Service {
 		MessagePacket packet = null;
 		boolean saveInDb = true;
 		boolean send = false;
-		if (account.getStatus() == Account.STATUS_ONLINE) {
+		if (account.getStatus() == Account.STATUS_ONLINE
+				&& account.getXmppConnection() != null) {
 			if (message.getType() == Message.TYPE_IMAGE) {
 				if (message.getPresence() != null) {
 					if (message.getEncryption() == Message.ENCRYPTION_OTR) {
@@ -567,6 +568,10 @@ public class XmppConnectionService extends Service {
 					send = true;
 				}
 			}
+			if (!account.getXmppConnection().getFeatures().sm()
+					&& conv.getMode() != Conversation.MODE_MULTI) {
+				message.setStatus(Message.STATUS_SEND);
+			}
 		} else {
 			message.setStatus(Message.STATUS_WAITING);
 			if (message.getType() == Message.TYPE_TEXT) {
@@ -592,10 +597,6 @@ public class XmppConnectionService extends Service {
 
 		}
 		conv.getMessages().add(message);
-		if (!account.getXmppConnection().getFeatures().sm()
-				&& conv.getMode() != Conversation.MODE_MULTI) {
-			message.setStatus(Message.STATUS_SEND);
-		}
 		if (saveInDb) {
 			if (message.getEncryption() == Message.ENCRYPTION_NONE
 					|| saveEncryptedMessages()) {
