@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="eu.siacs.conversations"
-    android:versionCode="28"
-    android:versionName="0.7.2" >
+    android:versionCode="31"
+    android:versionName="0.7.3" >
 
     <uses-sdk
         android:minSdkVersion="14"
@@ -40,7 +40,6 @@
 
         <activity
             android:name="eu.siacs.conversations.ui.ConversationActivity"
-            android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_conversations"
             android:launchMode="singleTask"
             android:windowSoftInputMode="stateHidden" >
@@ -62,6 +61,14 @@
 
                 <data android:scheme="imto" />
                 <data android:host="jabber" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="xmpp" />
             </intent-filter>
         </activity>
         <activity

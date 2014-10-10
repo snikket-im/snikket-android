@@ -21,9 +21,9 @@ public abstract class AbstractGenerator {
 			"urn:xmpp:avatar:metadata+notify" };
 	public final String IDENTITY_NAME = "Conversations 0.7";
 	public final String IDENTITY_TYPE = "phone";
-	
+
 	protected XmppConnectionService mXmppConnectionService;
-	
+
 	protected AbstractGenerator(XmppConnectionService service) {
 		this.mXmppConnectionService = service;
 	}

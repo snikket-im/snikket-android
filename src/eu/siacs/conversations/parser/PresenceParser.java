@@ -22,7 +22,7 @@ public class PresenceParser extends AbstractParser implements
 		PgpEngine mPgpEngine = mXmppConnectionService.getPgpEngine();
 		if (packet.hasChild("x", "http://jabber.org/protocol/muc#user")) {
 			Conversation muc = mXmppConnectionService.find(account, packet
-					.getAttribute("from").split("/",2)[0]);
+					.getAttribute("from").split("/", 2)[0]);
 			if (muc != null) {
 				boolean before = muc.getMucOptions().online();
 				muc.getMucOptions().processPacket(packet, mPgpEngine);
@@ -32,7 +32,7 @@ public class PresenceParser extends AbstractParser implements
 			}
 		} else if (packet.hasChild("x", "http://jabber.org/protocol/muc")) {
 			Conversation muc = mXmppConnectionService.find(account, packet
-					.getAttribute("from").split("/",2)[0]);
+					.getAttribute("from").split("/", 2)[0]);
 			if (muc != null) {
 				boolean before = muc.getMucOptions().online();
 				muc.getMucOptions().processPacket(packet, mPgpEngine);
@@ -58,6 +58,8 @@ public class PresenceParser extends AbstractParser implements
 							Presences.parseShow(packet.findChild("show")));
 				} else if (type.equals("unavailable")) {
 					account.removePresence(fromParts[1]);
+					mXmppConnectionService.getNotificationService()
+							.deactivateGracePeriod();
 				}
 			}
 		} else {

@@ -76,10 +76,11 @@ public class ConversationFragment extends Fragment {
 
 		@Override
 		public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-			if (actionId == EditorInfo.IME_ACTION_DONE) {
+			if (actionId == EditorInfo.IME_ACTION_SEND) {
 				InputMethodManager imm = (InputMethodManager) v.getContext()
 						.getSystemService(Context.INPUT_METHOD_SERVICE);
 				imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+				sendMessage();
 				return true;
 			} else {
 				return false;
@@ -131,6 +132,14 @@ public class ConversationFragment extends Fragment {
 		}
 	};
 
+	private OnClickListener joinMuc = new OnClickListener() {
+
+		@Override
+		public void onClick(View v) {
+			activity.xmppConnectionService.joinMuc(conversation);
+		}
+	};
+
 	private OnClickListener enterPassword = new OnClickListener() {
 
 		@Override
@@ -169,6 +178,7 @@ public class ConversationFragment extends Fragment {
 						conversation, timestamp);
 				messageList.clear();
 				messageList.addAll(conversation.getMessages());
+				updateStatusMessages();
 				messageListAdapter.notifyDataSetChanged();
 				if (size != 0) {
 					messagesLoaded = true;
@@ -244,9 +254,7 @@ public class ConversationFragment extends Fragment {
 
 			@Override
 			public void onClick(View v) {
-				if (activity.getSlidingPaneLayout().isSlideable()) {
-					activity.getSlidingPaneLayout().closePane();
-				}
+				activity.hideConversationsOverview();
 			}
 		});
 		mEditMessage.setOnEditorActionListener(mEditorActionListener);
@@ -375,17 +383,10 @@ public class ConversationFragment extends Fragment {
 		int position = mEditMessage.length();
 		Editable etext = mEditMessage.getText();
 		Selection.setSelection(etext, position);
-		if (activity.getSlidingPaneLayout().isSlideable()) {
+		if (activity.isConversationsOverviewHideable()) {
 			if (!activity.shouldPaneBeOpen()) {
-				activity.getSlidingPaneLayout().closePane();
-				activity.getActionBar().setDisplayHomeAsUpEnabled(true);
-				activity.getActionBar().setHomeButtonEnabled(true);
-				if (conversation.getMode() == Conversation.MODE_SINGLE || activity.useSubjectToIdentifyConference()) {
-					activity.getActionBar().setTitle(conversation.getName());
-				} else {
-					activity.getActionBar().setTitle(conversation.getContactJid().split("/")[0]);
-				}
-				activity.invalidateOptionsMenu();
+				activity.hideConversationsOverview();
+				activity.openConversation(conversation);
 			}
 		}
 		if (this.conversation.getMode() == Conversation.MODE_MULTI) {
@@ -437,6 +438,8 @@ public class ConversationFragment extends Fragment {
 							@Override
 							public void onClick(View v) {
 								conversation.setMutedTill(0);
+								activity.xmppConnectionService.databaseBackend
+										.updateConversation(conversation);
 								updateMessages();
 							}
 						});
@@ -492,6 +495,18 @@ public class ConversationFragment extends Fragment {
 						showSnackbar(R.string.conference_requires_password,
 								R.string.enter_password, enterPassword);
 						break;
+					case MucOptions.ERROR_BANNED:
+						showSnackbar(R.string.conference_banned,
+								R.string.leave, leaveMuc);
+						break;
+					case MucOptions.ERROR_MEMBERS_ONLY:
+						showSnackbar(R.string.conference_members_only,
+								R.string.leave, leaveMuc);
+						break;
+					case MucOptions.KICKED_FROM_ROOM:
+						showSnackbar(R.string.conference_kicked, R.string.join,
+								joinMuc);
+						break;
 					default:
 						break;
 					}
@@ -500,9 +515,7 @@ public class ConversationFragment extends Fragment {
 			getActivity().invalidateOptionsMenu();
 			updateChatMsgHint();
 			if (!activity.shouldPaneBeOpen()) {
-				activity.xmppConnectionService.markRead(conversation);
-				UIHelper.updateNotification(getActivity(),
-						activity.getConversationList(), null, false);
+				activity.xmppConnectionService.markRead(conversation, true);
 				activity.updateConversationList();
 			}
 			this.updateSendButton();
@@ -511,9 +524,7 @@ public class ConversationFragment extends Fragment {
 
 	private void messageSent() {
 		int size = this.messageList.size();
-		if (size >= 1 && this.messagesView.getLastVisiblePosition() != size - 1) {
-			messagesView.setSelection(size - 1);
-		}
+		messagesView.setSelection(size - 1);
 		mEditMessage.setText("");
 		updateChatMsgHint();
 	}
@@ -667,6 +678,8 @@ public class ConversationFragment extends Fragment {
 										int which) {
 									conversation
 											.setNextEncryption(Message.ENCRYPTION_NONE);
+									xmppService.databaseBackend
+											.updateConversation(conversation);
 									message.setEncryption(Message.ENCRYPTION_NONE);
 									xmppService.sendMessage(message);
 									messageSent();
@@ -695,6 +708,8 @@ public class ConversationFragment extends Fragment {
 									conversation
 											.setNextEncryption(Message.ENCRYPTION_NONE);
 									message.setEncryption(Message.ENCRYPTION_NONE);
+									xmppService.databaseBackend
+											.updateConversation(conversation);
 									xmppService.sendMessage(message);
 									messageSent();
 								}

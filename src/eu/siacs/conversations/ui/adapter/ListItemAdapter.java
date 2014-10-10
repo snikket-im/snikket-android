@@ -24,7 +24,7 @@ public class ListItemAdapter extends ArrayAdapter<ListItem> {
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		ListItem item = getItem(position);
 		if (view == null) {
-			view = (View) inflater.inflate(R.layout.contact, null);
+			view = (View) inflater.inflate(R.layout.contact, parent, false);
 		}
 		TextView name = (TextView) view.findViewById(R.id.contact_display_name);
 		TextView jid = (TextView) view.findViewById(R.id.contact_jid);

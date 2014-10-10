@@ -7,16 +7,15 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.regex.Pattern;
-import java.util.regex.Matcher;
 
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
-import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.MucOptions.User;
 import eu.siacs.conversations.ui.ConversationActivity;
 import eu.siacs.conversations.ui.ManageAccountActivity;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Notification;
@@ -26,7 +25,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -34,13 +32,11 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.net.Uri;
-import android.preference.PreferenceManager;
 import android.provider.ContactsContract.Contacts;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.text.format.DateFormat;
 import android.text.format.DateUtils;
-import android.text.Html;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -330,177 +326,6 @@ public class UIHelper {
 		mNotificationManager.notify(1111, notification);
 	}
 
-	private static Pattern generateNickHighlightPattern(String nick) {
-		// We expect a word boundary, i.e. space or start of string, followed by
-		// the
-		// nick (matched in case-insensitive manner), followed by optional
-		// punctuation (for example "bob: i disagree" or "how are you alice?"),
-		// followed by another word boundary.
-		return Pattern.compile("\\b" + nick + "\\p{Punct}?\\b",
-				Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
-	}
-
-	public static void updateNotification(Context context,
-			List<Conversation> conversations, Conversation currentCon,
-			boolean notify) {
-		NotificationManager mNotificationManager = (NotificationManager) context
-				.getSystemService(Context.NOTIFICATION_SERVICE);
-
-		SharedPreferences preferences = PreferenceManager
-				.getDefaultSharedPreferences(context);
-		boolean showNofifications = preferences.getBoolean("show_notification",
-				true);
-		boolean vibrate = preferences.getBoolean("vibrate_on_notification",
-				true);
-		boolean alwaysNotify = preferences.getBoolean(
-				"notify_in_conversation_when_highlighted", false);
-
-		if (!showNofifications) {
-			mNotificationManager.cancel(2342);
-			return;
-		}
-
-		String targetUuid = "";
-
-		if ((currentCon != null)
-				&& (currentCon.getMode() == Conversation.MODE_MULTI)
-				&& (!alwaysNotify) && notify) {
-			String nick = currentCon.getMucOptions().getActualNick();
-			Pattern highlight = generateNickHighlightPattern(nick);
-			Matcher m = highlight.matcher(currentCon.getLatestMessage()
-					.getBody());
-			notify = m.find()
-					|| (currentCon.getLatestMessage().getType() == Message.TYPE_PRIVATE);
-		}
-
-		List<Conversation> unread = new ArrayList<Conversation>();
-		for (Conversation conversation : conversations) {
-			if (conversation.getMode() == Conversation.MODE_MULTI) {
-				if ((!conversation.isRead())
-						&& ((wasHighlightedOrPrivate(conversation) || (alwaysNotify)))) {
-					unread.add(conversation);
-				}
-			} else {
-				if (!conversation.isRead()) {
-					unread.add(conversation);
-				}
-			}
-		}
-		String ringtone = preferences.getString("notification_ringtone", null);
-
-		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
-				context);
-		if (unread.size() == 0) {
-			mNotificationManager.cancel(2342);
-			return;
-		} else if (unread.size() == 1) {
-			Conversation conversation = unread.get(0);
-			targetUuid = conversation.getUuid();
-			mBuilder.setLargeIcon(conversation.getImage(context, 64));
-			mBuilder.setContentTitle(conversation.getName());
-			if (notify) {
-				mBuilder.setTicker(conversation.getLatestMessage()
-						.getReadableBody(context));
-			}
-			StringBuilder bigText = new StringBuilder();
-			List<Message> messages = conversation.getMessages();
-			String firstLine = "";
-			for (int i = messages.size() - 1; i >= 0; --i) {
-				if (!messages.get(i).isRead()) {
-					if (i == messages.size() - 1) {
-						firstLine = messages.get(i).getReadableBody(context);
-						bigText.append(firstLine);
-					} else {
-						firstLine = messages.get(i).getReadableBody(context);
-						bigText.insert(0, firstLine + "\n");
-					}
-				} else {
-					break;
-				}
-			}
-			mBuilder.setContentText(firstLine);
-			mBuilder.setStyle(new NotificationCompat.BigTextStyle()
-					.bigText(bigText.toString()));
-		} else {
-			NotificationCompat.InboxStyle style = new NotificationCompat.InboxStyle();
-			style.setBigContentTitle(unread.size() + " "
-					+ context.getString(R.string.unread_conversations));
-			StringBuilder names = new StringBuilder();
-			for (int i = 0; i < unread.size(); ++i) {
-				targetUuid = unread.get(i).getUuid();
-				if (i < unread.size() - 1) {
-					names.append(unread.get(i).getName() + ", ");
-				} else {
-					names.append(unread.get(i).getName());
-				}
-				style.addLine(Html.fromHtml("<b>"
-						+ unread.get(i).getName()
-						+ "</b> "
-						+ unread.get(i).getLatestMessage()
-								.getReadableBody(context)));
-			}
-			mBuilder.setContentTitle(unread.size() + " "
-					+ context.getString(R.string.unread_conversations));
-			mBuilder.setContentText(names.toString());
-			mBuilder.setStyle(style);
-		}
-		if ((currentCon != null) && (notify)) {
-			targetUuid = currentCon.getUuid();
-		}
-		if (unread.size() != 0) {
-			mBuilder.setSmallIcon(R.drawable.ic_notification);
-			if (notify) {
-				if (vibrate) {
-					int dat = 70;
-					long[] pattern = { 0, 3 * dat, dat, dat };
-					mBuilder.setVibrate(pattern);
-				}
-				mBuilder.setLights(0xffffffff, 2000, 4000);
-				if (ringtone != null) {
-					mBuilder.setSound(Uri.parse(ringtone));
-				}
-			}
-
-			TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
-			stackBuilder.addParentStack(ConversationActivity.class);
-
-			Intent viewConversationIntent = new Intent(context,
-					ConversationActivity.class);
-			viewConversationIntent.setAction(Intent.ACTION_VIEW);
-			viewConversationIntent.putExtra(ConversationActivity.CONVERSATION,
-					targetUuid);
-			viewConversationIntent
-					.setType(ConversationActivity.VIEW_CONVERSATION);
-
-			stackBuilder.addNextIntent(viewConversationIntent);
-
-			PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(
-					0, PendingIntent.FLAG_UPDATE_CURRENT);
-
-			mBuilder.setContentIntent(resultPendingIntent);
-			Notification notification = mBuilder.build();
-			mNotificationManager.notify(2342, notification);
-		}
-	}
-
-	private static boolean wasHighlightedOrPrivate(Conversation conversation) {
-		List<Message> messages = conversation.getMessages();
-		String nick = conversation.getMucOptions().getActualNick();
-		Pattern highlight = generateNickHighlightPattern(nick);
-		for (int i = messages.size() - 1; i >= 0; --i) {
-			if (messages.get(i).isRead()) {
-				break;
-			} else {
-				Matcher m = highlight.matcher(messages.get(i).getBody());
-				if (m.find()
-						|| messages.get(i).getType() == Message.TYPE_PRIVATE) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
 	public static void prepareContactBadge(final Activity activity,
 			QuickContactBadge badge, final Contact contact, Context context) {
 		if (contact.getSystemAccount() != null) {
@@ -511,6 +336,7 @@ public class UIHelper {
 		badge.setImageBitmap(contact.getImage(72, context));
 	}
 
+	@SuppressLint("InflateParams")
 	public static AlertDialog getVerifyFingerprintDialog(
 			final ConversationActivity activity,
 			final Conversation conversation, final View msg) {

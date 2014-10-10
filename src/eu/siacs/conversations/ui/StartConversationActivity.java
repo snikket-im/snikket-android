@@ -1,9 +1,12 @@
 package eu.siacs.conversations.ui;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.ActionBar.TabListener;
@@ -14,6 +17,8 @@ import android.app.ListFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -157,6 +162,8 @@ public class StartConversationActivity extends XmppActivity {
 			});
 		}
 	};
+	private MenuItem mMenuSearchView;
+	private String mInitialJid;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -308,7 +315,8 @@ public class StartConversationActivity extends XmppActivity {
 
 	}
 
-	protected void showCreateContactDialog() {
+	@SuppressLint("InflateParams")
+	protected void showCreateContactDialog(String prefilledJid) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(R.string.create_contact);
 		View dialogView = getLayoutInflater().inflate(
@@ -318,6 +326,9 @@ public class StartConversationActivity extends XmppActivity {
 				.findViewById(R.id.jid);
 		jid.setAdapter(new KnownHostsAdapter(this,
 				android.R.layout.simple_list_item_1, mKnownHosts));
+		if (prefilledJid != null) {
+			jid.append(prefilledJid);
+		}
 		populateAccountSpinner(spinner);
 		builder.setView(dialogView);
 		builder.setNegativeButton(R.string.cancel, null);
@@ -348,8 +359,8 @@ public class StartConversationActivity extends XmppActivity {
 								jid.setError(getString(R.string.contact_already_exists));
 							} else {
 								xmppConnectionService.createContact(contact);
-								switchToConversation(contact);
 								dialog.dismiss();
+								switchToConversation(contact);
 							}
 						} else {
 							jid.setError(getString(R.string.invalid_jid));
@@ -359,6 +370,7 @@ public class StartConversationActivity extends XmppActivity {
 
 	}
 
+	@SuppressLint("InflateParams")
 	protected void showJoinConferenceDialog() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(R.string.join_conference);
@@ -391,6 +403,10 @@ public class StartConversationActivity extends XmppActivity {
 							String conferenceJid = jid.getText().toString();
 							Account account = xmppConnectionService
 									.findAccountByJid(accountJid);
+							if (account == null) {
+								dialog.dismiss();
+								return;
+							}
 							if (bookmarkCheckBox.isChecked()) {
 								if (account.hasBookmarkFor(conferenceJid)) {
 									jid.setError(getString(R.string.bookmark_already_exists));
@@ -409,6 +425,7 @@ public class StartConversationActivity extends XmppActivity {
 										xmppConnectionService
 												.joinMuc(conversation);
 									}
+									dialog.dismiss();
 									switchToConversation(conversation);
 								}
 							} else {
@@ -418,6 +435,7 @@ public class StartConversationActivity extends XmppActivity {
 								if (!conversation.getMucOptions().online()) {
 									xmppConnectionService.joinMuc(conversation);
 								}
+								dialog.dismiss();
 								switchToConversation(conversation);
 							}
 						} else {
@@ -449,9 +467,9 @@ public class StartConversationActivity extends XmppActivity {
 				.findItem(R.id.action_create_contact);
 		MenuItem menuCreateConference = (MenuItem) menu
 				.findItem(R.id.action_join_conference);
-		MenuItem menuSearchView = (MenuItem) menu.findItem(R.id.action_search);
-		menuSearchView.setOnActionExpandListener(mOnActionExpandListener);
-		View mSearchView = menuSearchView.getActionView();
+		mMenuSearchView = (MenuItem) menu.findItem(R.id.action_search);
+		mMenuSearchView.setOnActionExpandListener(mOnActionExpandListener);
+		View mSearchView = mMenuSearchView.getActionView();
 		mSearchEditText = (EditText) mSearchView
 				.findViewById(R.id.search_field);
 		mSearchEditText.addTextChangedListener(mSearchTextWatcher);
@@ -460,6 +478,11 @@ public class StartConversationActivity extends XmppActivity {
 		} else {
 			menuCreateContact.setVisible(false);
 		}
+		if (mInitialJid != null) {
+			mMenuSearchView.expandActionView();
+			mSearchEditText.append(mInitialJid);
+			filter(mInitialJid);
+		}
 		return true;
 	}
 
@@ -467,7 +490,7 @@ public class StartConversationActivity extends XmppActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.action_create_contact:
-			showCreateContactDialog();
+			showCreateContactDialog(null);
 			break;
 		case R.id.action_join_conference:
 			showJoinConferenceDialog();
@@ -486,13 +509,8 @@ public class StartConversationActivity extends XmppActivity {
 	}
 
 	@Override
-	void onBackendConnected() {
+	protected void onBackendConnected() {
 		xmppConnectionService.setOnRosterUpdateListener(this.onRosterUpdate);
-		if (mSearchEditText != null) {
-			filter(mSearchEditText.getText().toString());
-		} else {
-			filter(null);
-		}
 		this.mActivatedAccounts.clear();
 		for (Account account : xmppConnectionService.getAccounts()) {
 			if (account.getStatus() != Account.STATUS_DISABLED) {
@@ -502,6 +520,55 @@ public class StartConversationActivity extends XmppActivity {
 		this.mKnownHosts = xmppConnectionService.getKnownHosts();
 		this.mKnownConferenceHosts = xmppConnectionService
 				.getKnownConferenceHosts();
+		if (!startByIntent()) {
+			if (mSearchEditText != null) {
+				filter(mSearchEditText.getText().toString());
+			} else {
+				filter(null);
+			}
+		}
+	}
+
+	protected boolean startByIntent() {
+		if (getIntent() != null
+				&& Intent.ACTION_SENDTO.equals(getIntent().getAction())) {
+			try {
+				String jid = URLDecoder.decode(
+						getIntent().getData().getEncodedPath(), "UTF-8").split(
+						"/")[1];
+				setIntent(null);
+				return handleJid(jid);
+			} catch (UnsupportedEncodingException e) {
+				setIntent(null);
+				return false;
+			}
+		} else if (getIntent() != null
+				&& Intent.ACTION_VIEW.equals(getIntent().getAction())) {
+			Uri uri = getIntent().getData();
+			String jid = uri.getSchemeSpecificPart().split("\\?")[0];
+			return handleJid(jid);
+		}
+		return false;
+	}
+
+	private boolean handleJid(String jid) {
+		List<Contact> contacts = xmppConnectionService.findContacts(jid);
+		if (contacts.size() == 0) {
+			showCreateContactDialog(jid);
+			return false;
+		} else if (contacts.size() == 1) {
+			switchToConversation(contacts.get(0));
+			return true;
+		} else {
+			if (mMenuSearchView != null) {
+				mMenuSearchView.expandActionView();
+				mSearchEditText.setText(jid);
+				filter(jid);
+			} else {
+				mInitialJid = jid;
+			}
+			return true;
+		}
 	}
 
 	protected void filter(String needle) {

@@ -57,9 +57,9 @@ public class Message extends AbstractEntity {
 	protected boolean read = true;
 	protected String remoteMsgId = null;
 
-	protected transient Conversation conversation = null;
-
-	protected transient Downloadable downloadable = null;
+	protected Conversation conversation = null;
+	protected Downloadable downloadable = null;
+	public boolean markable = false;
 
 	private Message() {
 

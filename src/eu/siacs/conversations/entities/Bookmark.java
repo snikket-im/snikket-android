@@ -7,46 +7,35 @@ import android.graphics.Bitmap;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xml.Element;
 
-public class Bookmark implements ListItem {
+public class Bookmark extends Element implements ListItem {
 
 	private Account account;
-	private String jid;
-	private String nick;
-	private String name;
-	private String password;
-	private boolean autojoin;
-	private boolean providePassword;
 	private Conversation mJoinedConversation;
 
 	public Bookmark(Account account, String jid) {
+		super("conference");
+		this.setAttribute("jid", jid);
 		this.account = account;
-		this.jid = jid;
+	}
+
+	private Bookmark(Account account) {
+		super("conference");
+		this.account = account;
 	}
 
 	public static Bookmark parse(Element element, Account account) {
-		Bookmark bookmark = new Bookmark(account, element.getAttribute("jid"));
-		bookmark.setName(element.getAttribute("name"));
-		String autojoin = element.getAttribute("autojoin");
-		if (autojoin != null
-				&& (autojoin.equals("true") || autojoin.equals("1"))) {
-			bookmark.setAutojoin(true);
-		} else {
-			bookmark.setAutojoin(false);
-		}
-		Element nick = element.findChild("nick");
-		if (nick != null) {
-			bookmark.setNick(nick.getContent());
-		}
-		Element password = element.findChild("password");
-		if (password != null) {
-			bookmark.setPassword(password.getContent());
-			bookmark.setProvidePassword(true);
-		}
+		Bookmark bookmark = new Bookmark(account);
+		bookmark.setAttributes(element.getAttributes());
+		bookmark.setChildren(element.getChildren());
 		return bookmark;
 	}
 
 	public void setAutojoin(boolean autojoin) {
-		this.autojoin = autojoin;
+		if (autojoin) {
+			this.setAttribute("autojoin", "true");
+		} else {
+			this.setAttribute("autojoin", "false");
+		}
 	}
 
 	public void setName(String name) {
@@ -54,15 +43,18 @@ public class Bookmark implements ListItem {
 	}
 
 	public void setNick(String nick) {
-		this.nick = nick;
+		Element element = this.findChild("nick");
+		if (element == null) {
+			element = this.addChild("nick");
+		}
+		element.setContent(nick);
 	}
 
 	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	private void setProvidePassword(boolean providePassword) {
-		this.providePassword = providePassword;
+		Element element = this.findChild("password");
+		if (element != null) {
+			element.setContent(password);
+		}
 	}
 
 	@Override
@@ -76,32 +68,45 @@ public class Bookmark implements ListItem {
 		if (this.mJoinedConversation != null
 				&& (this.mJoinedConversation.getMucOptions().getSubject() != null)) {
 			return this.mJoinedConversation.getMucOptions().getSubject();
-		} else if (name != null) {
-			return name;
+		} else if (getName() != null) {
+			return getName();
 		} else {
-			return this.jid.split("@")[0];
+			return this.getJid().split("@")[0];
 		}
 	}
 
 	@Override
 	public String getJid() {
-		return this.jid.toLowerCase(Locale.US);
+		String jid = this.getAttribute("jid");
+		if (jid != null) {
+			return jid.toLowerCase(Locale.US);
+		} else {
+			return null;
+		}
 	}
 
 	public String getNick() {
-		return this.nick;
+		Element nick = this.findChild("nick");
+		if (nick != null) {
+			return nick.getContent();
+		} else {
+			return null;
+		}
 	}
 
 	public boolean autojoin() {
-		return autojoin;
+		String autojoin = this.getAttribute("autojoin");
+		return (autojoin != null && (autojoin.equalsIgnoreCase("true") || autojoin
+				.equalsIgnoreCase("1")));
 	}
 
 	public String getPassword() {
-		return this.password;
-	}
-
-	public boolean isProvidePassword() {
-		return this.providePassword;
+		Element password = this.findChild("password");
+		if (password != null) {
+			return password.getContent();
+		} else {
+			return null;
+		}
 	}
 
 	public boolean match(String needle) {
@@ -131,27 +136,7 @@ public class Bookmark implements ListItem {
 	}
 
 	public String getName() {
-		return name;
-	}
-
-	public Element toElement() {
-		Element element = new Element("conference");
-		element.setAttribute("jid", this.getJid());
-		if (this.getName() != null) {
-			element.setAttribute("name", this.getName());
-		}
-		if (this.autojoin) {
-			element.setAttribute("autojoin", "true");
-		} else {
-			element.setAttribute("autojoin", "false");
-		}
-		if (this.nick != null) {
-			element.addChild("nick").setContent(this.nick);
-		}
-		if (this.password != null && isProvidePassword()) {
-			element.addChild("password").setContent(this.password);
-		}
-		return element;
+		return this.getAttribute("name");
 	}
 
 	public void unregisterConversation() {

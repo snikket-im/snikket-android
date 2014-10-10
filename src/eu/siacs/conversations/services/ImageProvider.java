@@ -31,7 +31,7 @@ public class ImageProvider extends ContentProvider {
 			if (uuids == null) {
 				throw new FileNotFoundException();
 			}
-			String[] uuidsSplited = uuids.split("/",2);
+			String[] uuidsSplited = uuids.split("/", 2);
 			if (uuidsSplited.length != 3) {
 				throw new FileNotFoundException();
 			}

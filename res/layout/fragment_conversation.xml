@@ -37,7 +37,7 @@
             android:layout_toLeftOf="@+id/textSendButton"
             android:background="@color/primarybackground"
             android:ems="10"
-            android:imeOptions="flagNoExtractUi"
+            android:imeOptions="flagNoExtractUi|actionSend"
             android:inputType="textShortMessage|textMultiLine|textCapSentences"
             android:minHeight="48dp"
             android:minLines="1"

@@ -1,12 +1,14 @@
-<android.support.v4.widget.SlidingPaneLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/slidingpanelayout"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/content_view_ll"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:baselineAligned="false">
 
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="345dp"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
+        android:layout_weight="1"
         android:background="@color/primarybackground"
         android:orientation="vertical" >
 
@@ -21,10 +23,10 @@
 
     <LinearLayout
         android:id="@+id/selected_conversation"
-        android:layout_width="fill_parent"
+        android:layout_width="0dp"
+        android:layout_weight="2"
         android:layout_height="match_parent"
-        android:layout_weight="1"
         android:orientation="vertical" >
     </LinearLayout>
 
-</android.support.v4.widget.SlidingPaneLayout>
+</LinearLayout>

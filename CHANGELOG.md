@@ -1,5 +1,10 @@
 ###Changelog
 
+####Version 0.7.3
+* revised tablet ui
+* internal rewrites
+* bug fixes
+
 ####Version 0.7.2
 * show full timestamp in messages
 * brought back option to use JID to identify conferences

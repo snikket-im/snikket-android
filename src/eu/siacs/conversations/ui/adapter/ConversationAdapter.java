@@ -40,9 +40,10 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 		Conversation conv = getItem(position);
 		if (this.activity instanceof ConversationActivity) {
 			ConversationActivity activity = (ConversationActivity) this.activity;
-			if (!activity.getSlidingPaneLayout().isSlideable()) {
+			if (!activity.isConversationsOverviewHideable()) {
 				if (conv == activity.getSelectedConversation()) {
-					view.setBackgroundColor(0xffdddddd);
+					view.setBackgroundColor(activity
+							.getSecondaryBackgroundColor());
 				} else {
 					view.setBackgroundColor(Color.TRANSPARENT);
 				}
@@ -52,7 +53,8 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 		}
 		TextView convName = (TextView) view
 				.findViewById(R.id.conversation_name);
-		if (conv.getMode() == Conversation.MODE_SINGLE || activity.useSubjectToIdentifyConference()) {
+		if (conv.getMode() == Conversation.MODE_SINGLE
+				|| activity.useSubjectToIdentifyConference()) {
 			convName.setText(conv.getName());
 		} else {
 			convName.setText(conv.getContactJid().split("/")[0]);

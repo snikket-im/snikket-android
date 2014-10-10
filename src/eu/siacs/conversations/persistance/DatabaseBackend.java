@@ -19,7 +19,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 	private static DatabaseBackend instance = null;
 
 	private static final String DATABASE_NAME = "history";
-	private static final int DATABASE_VERSION = 7;
+	private static final int DATABASE_VERSION = 8;
 
 	private static String CREATE_CONTATCS_STATEMENT = "create table "
 			+ Contact.TABLENAME + "(" + Contact.ACCOUNT + " TEXT, "
@@ -50,10 +50,10 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 				+ " TEXT, " + Conversation.CONTACT + " TEXT, "
 				+ Conversation.ACCOUNT + " TEXT, " + Conversation.CONTACTJID
 				+ " TEXT, " + Conversation.CREATED + " NUMBER, "
-				+ Conversation.STATUS + " NUMBER," + Conversation.MODE
-				+ " NUMBER," + "FOREIGN KEY(" + Conversation.ACCOUNT
-				+ ") REFERENCES " + Account.TABLENAME + "(" + Account.UUID
-				+ ") ON DELETE CASCADE);");
+				+ Conversation.STATUS + " NUMBER, " + Conversation.MODE
+				+ " NUMBER, " + Conversation.ATTRIBUTES + " TEXT, FOREIGN KEY("
+				+ Conversation.ACCOUNT + ") REFERENCES " + Account.TABLENAME
+				+ "(" + Account.UUID + ") ON DELETE CASCADE);");
 		db.execSQL("create table " + Message.TABLENAME + "( " + Message.UUID
 				+ " TEXT PRIMARY KEY, " + Message.CONVERSATION + " TEXT, "
 				+ Message.TIME_SENT + " NUMBER, " + Message.COUNTERPART
@@ -95,6 +95,10 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 					+ Contact.AVATAR + " TEXT");
 			db.execSQL("ALTER TABLE " + Account.TABLENAME + " ADD COLUMN "
 					+ Account.AVATAR + " TEXT");
+		}
+		if (oldVersion < 8 && newVersion >= 8) {
+			db.execSQL("ALTER TABLE " + Conversation.TABLENAME + " ADD COLUMN "
+					+ Conversation.ATTRIBUTES + " TEXT");
 		}
 	}
 
@@ -206,6 +210,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		while (cursor.moveToNext()) {
 			list.add(Account.fromCursor(cursor));
 		}
+		cursor.close();
 		return list;
 	}
 
@@ -221,13 +226,15 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		String[] args = { account.getUuid() };
 		db.delete(Account.TABLENAME, Account.UUID + "=?", args);
 	}
-	
+
 	public boolean hasEnabledAccounts() {
 		SQLiteDatabase db = this.getReadableDatabase();
-		Cursor cursor= db.rawQuery("select count("+Account.UUID+")  from "+Account.TABLENAME+" where not options & (1 <<1)", null);
+		Cursor cursor = db.rawQuery("select count(" + Account.UUID + ")  from "
+				+ Account.TABLENAME + " where not options & (1 <<1)", null);
 		cursor.moveToFirst();
 		int count = cursor.getInt(0);
-		return (count>0);
+		cursor.close();
+		return (count > 0);
 	}
 
 	@Override
@@ -253,6 +260,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		while (cursor.moveToNext()) {
 			roster.initContact(Contact.fromCursor(cursor));
 		}
+		cursor.close();
 	}
 
 	public void writeRoster(Roster roster) {

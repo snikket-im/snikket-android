@@ -15,7 +15,8 @@ public class EventReceiver extends BroadcastReceiver {
 		} else {
 			mIntentForService.setAction("other");
 		}
-		if (intent.getAction().equals("ui") || DatabaseBackend.getInstance(context).hasEnabledAccounts()) {
+		if (intent.getAction().equals("ui")
+				|| DatabaseBackend.getInstance(context).hasEnabledAccounts()) {
 			context.startService(mIntentForService);
 		}
 	}

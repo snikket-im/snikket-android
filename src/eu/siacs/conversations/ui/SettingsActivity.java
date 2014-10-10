@@ -21,7 +21,7 @@ public class SettingsActivity extends XmppActivity implements
 		super.onCreate(savedInstanceState);
 		mSettingsFragment = new SettingsFragment();
 		getFragmentManager().beginTransaction()
-				.replace(android.R.id.content,mSettingsFragment).commit();
+				.replace(android.R.id.content, mSettingsFragment).commit();
 	}
 
 	@Override
@@ -34,12 +34,16 @@ public class SettingsActivity extends XmppActivity implements
 		super.onStart();
 		PreferenceManager.getDefaultSharedPreferences(this)
 				.registerOnSharedPreferenceChangeListener(this);
-		ListPreference resources = (ListPreference) mSettingsFragment.findPreference("resource");
-		if (resources!=null) {
-			ArrayList<CharSequence> entries = new ArrayList<CharSequence>(Arrays.asList(resources.getEntries()));
-			entries.add(0,Build.MODEL);
-			resources.setEntries(entries.toArray(new CharSequence[entries.size()]));
-			resources.setEntryValues(entries.toArray(new CharSequence[entries.size()]));
+		ListPreference resources = (ListPreference) mSettingsFragment
+				.findPreference("resource");
+		if (resources != null) {
+			ArrayList<CharSequence> entries = new ArrayList<CharSequence>(
+					Arrays.asList(resources.getEntries()));
+			entries.add(0, Build.MODEL);
+			resources.setEntries(entries.toArray(new CharSequence[entries
+					.size()]));
+			resources.setEntryValues(entries.toArray(new CharSequence[entries
+					.size()]));
 		}
 	}
 
