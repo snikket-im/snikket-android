@@ -309,7 +309,7 @@ public class ContactDetailsActivity extends XmppActivity {
 		} else {
 			contactJidTv.setText(contact.getJid());
 		}
-		accountJidTv.setText(contact.getAccount().getJid());
+		accountJidTv.setText(getString(R.string.using_account,contact.getAccount().getJid()));
 
 		UIHelper.prepareContactBadge(this, badge, contact,
 				getApplicationContext());
@@ -319,9 +319,11 @@ public class ContactDetailsActivity extends XmppActivity {
 		}
 
 		keys.removeAllViews();
+		boolean hasKeys = false;
 		LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		for (Iterator<String> iterator = contact.getOtrFingerprints()
 				.iterator(); iterator.hasNext();) {
+			hasKeys = true;
 			final String otrFingerprint = iterator.next();
 			View view = (View) inflater.inflate(R.layout.contact_key, keys,
 					false);
@@ -342,6 +344,7 @@ public class ContactDetailsActivity extends XmppActivity {
 			});
 		}
 		if (contact.getPgpKeyId() != 0) {
+			hasKeys = true;
 			View view = (View) inflater.inflate(R.layout.contact_key, keys,
 					false);
 			TextView key = (TextView) view.findViewById(R.id.key);
@@ -369,6 +372,11 @@ public class ContactDetailsActivity extends XmppActivity {
 				}
 			});
 			keys.addView(view);
+		}
+		if (hasKeys) {
+			keys.setVisibility(View.VISIBLE);
+		} else {
+			keys.setVisibility(View.GONE);
 		}
 	}
 
