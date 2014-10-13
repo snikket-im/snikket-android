@@ -390,7 +390,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 
 					viewHolder.contact_picture.setImageBitmap(mBitmapCache.get(
 							item.getConversation().getContact(), getContext()));
-					viewHolder.contact_picture.setAlpha(128);
+					viewHolder.contact_picture.setAlpha(0.5f);
 					viewHolder.contact_picture
 							.setOnClickListener(new OnClickListener() {
 
