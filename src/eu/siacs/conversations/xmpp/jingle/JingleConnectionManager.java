@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import android.annotation.SuppressLint;
 import android.util.Log;
+import eu.siacs.conversations.AbstractConnectionManager;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Message;
@@ -16,10 +17,7 @@ import eu.siacs.conversations.xmpp.OnIqPacketReceived;
 import eu.siacs.conversations.xmpp.jingle.stanzas.JinglePacket;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
 
-public class JingleConnectionManager {
-
-	private XmppConnectionService xmppConnectionService;
-
+public class JingleConnectionManager extends AbstractConnectionManager {
 	private List<JingleConnection> connections = new CopyOnWriteArrayList<JingleConnection>();
 
 	private HashMap<String, JingleCandidate> primaryCandidates = new HashMap<String, JingleCandidate>();
@@ -28,7 +26,7 @@ public class JingleConnectionManager {
 	private SecureRandom random = new SecureRandom();
 
 	public JingleConnectionManager(XmppConnectionService service) {
-		this.xmppConnectionService = service;
+		super(service);
 	}
 
 	public void deliverPacket(Account account, JinglePacket packet) {
@@ -66,10 +64,6 @@ public class JingleConnectionManager {
 
 	public void finishConnection(JingleConnection connection) {
 		this.connections.remove(connection);
-	}
-
-	public XmppConnectionService getXmppConnectionService() {
-		return this.xmppConnectionService;
 	}
 
 	public void getPrimaryCandidate(Account account,
@@ -126,16 +120,6 @@ public class JingleConnectionManager {
 
 	public String nextRandomId() {
 		return new BigInteger(50, random).toString(32);
-	}
-
-	public long getAutoAcceptFileSize() {
-		String config = this.xmppConnectionService.getPreferences().getString(
-				"auto_accept_file_size", "524288");
-		try {
-			return Long.parseLong(config);
-		} catch (NumberFormatException e) {
-			return 524288;
-		}
 	}
 
 	public void deliverIbbPacket(Account account, IqPacket packet) {

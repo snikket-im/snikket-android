@@ -478,6 +478,9 @@ public class MessageParser extends AbstractParser implements
 				mXmppConnectionService.databaseBackend.createMessage(message);
 			}
 		}
+		if (message.getStatus() == Message.STATUS_RECEIVED && message.bodyContainsDownloadable()) {
+			this.mXmppConnectionService.getHttpConnectionManager().createNewConnection(message);
+		}
 		notify = notify && !conversation.isMuted();
 		if (notify) {
 			mXmppConnectionService.getNotificationService().push(message);

@@ -30,13 +30,13 @@ import android.util.Base64OutputStream;
 import android.util.Log;
 import android.util.LruCache;
 import eu.siacs.conversations.Config;
+import eu.siacs.conversations.DownloadableFile;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.services.ImageProvider;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.UIHelper;
-import eu.siacs.conversations.xmpp.jingle.JingleFile;
 import eu.siacs.conversations.xmpp.pep.Avatar;
 
 public class FileBackend {
@@ -66,11 +66,11 @@ public class FileBackend {
 		return thumbnailCache;
 	}
 
-	public JingleFile getJingleFileLegacy(Message message) {
+	public DownloadableFile getJingleFileLegacy(Message message) {
 		return getJingleFileLegacy(message, true);
 	}
 
-	public JingleFile getJingleFileLegacy(Message message, boolean decrypted) {
+	public DownloadableFile getJingleFileLegacy(Message message, boolean decrypted) {
 		Conversation conversation = message.getConversation();
 		String prefix = context.getFilesDir().getAbsolutePath();
 		String path = prefix + "/" + conversation.getAccount().getJid() + "/"
@@ -85,14 +85,14 @@ public class FileBackend {
 				filename = message.getUuid() + ".webp.pgp";
 			}
 		}
-		return new JingleFile(path + "/" + filename);
+		return new DownloadableFile(path + "/" + filename);
 	}
 
-	public JingleFile getJingleFile(Message message) {
-		return getJingleFile(message, true);
+	public DownloadableFile getJingleFile(Message message) {
+		return getConversationsFile(message, true);
 	}
 
-	public JingleFile getJingleFile(Message message, boolean decrypted) {
+	public DownloadableFile getConversationsFile(Message message, boolean decrypted) {
 		StringBuilder filename = new StringBuilder();
 		filename.append(Environment.getExternalStoragePublicDirectory(
 				Environment.DIRECTORY_PICTURES).getAbsolutePath());
@@ -107,7 +107,7 @@ public class FileBackend {
 				filename.append(".webp.pgp");
 			}
 		}
-		return new JingleFile(filename.toString());
+		return new DownloadableFile(filename.toString());
 	}
 
 	public Bitmap resize(Bitmap originalBitmap, int size) {
@@ -139,17 +139,17 @@ public class FileBackend {
 		return Bitmap.createBitmap(bitmap, 0, 0, w, h, mtx, true);
 	}
 
-	public JingleFile copyImageToPrivateStorage(Message message, Uri image)
+	public DownloadableFile copyImageToPrivateStorage(Message message, Uri image)
 			throws ImageCopyException {
 		return this.copyImageToPrivateStorage(message, image, 0);
 	}
 
-	private JingleFile copyImageToPrivateStorage(Message message, Uri image,
+	private DownloadableFile copyImageToPrivateStorage(Message message, Uri image,
 			int sampleSize) throws ImageCopyException {
 		try {
 			InputStream is = context.getContentResolver()
 					.openInputStream(image);
-			JingleFile file = getJingleFile(message);
+			DownloadableFile file = getJingleFile(message);
 			file.getParentFile().mkdirs();
 			file.createNewFile();
 			Bitmap originalBitmap;

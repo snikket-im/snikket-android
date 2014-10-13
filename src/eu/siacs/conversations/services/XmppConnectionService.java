@@ -34,6 +34,7 @@ import eu.siacs.conversations.entities.Presences;
 import eu.siacs.conversations.generator.IqGenerator;
 import eu.siacs.conversations.generator.MessageGenerator;
 import eu.siacs.conversations.generator.PresenceGenerator;
+import eu.siacs.conversations.http.HttpConnectionManager;
 import eu.siacs.conversations.parser.IqParser;
 import eu.siacs.conversations.parser.MessageParser;
 import eu.siacs.conversations.parser.PresenceParser;
@@ -106,6 +107,7 @@ public class XmppConnectionService extends Service {
 	private CopyOnWriteArrayList<Conversation> conversations = null;
 	private JingleConnectionManager mJingleConnectionManager = new JingleConnectionManager(
 			this);
+	private HttpConnectionManager mHttpConnectionManager = new HttpConnectionManager(this);
 
 	private OnConversationUpdate mOnConversationUpdate = null;
 	private int convChangedListenerCount = 0;
@@ -1780,7 +1782,7 @@ public class XmppConnectionService extends Service {
 		for (Account account : getAccounts()) {
 			if (!account.isOptionSet(Account.OPTION_DISABLED)) {
 				Contact contact = account.getRoster()
-						.getContactAsShownInRoster(jid);
+						.getContactFromRoster(jid);
 				if (contact != null) {
 					contacts.add(contact);
 				}
@@ -1791,5 +1793,9 @@ public class XmppConnectionService extends Service {
 
 	public NotificationService getNotificationService() {
 		return this.mNotificationService;
+	}
+
+	public HttpConnectionManager getHttpConnectionManager() {
+		return this.mHttpConnectionManager;
 	}
 }

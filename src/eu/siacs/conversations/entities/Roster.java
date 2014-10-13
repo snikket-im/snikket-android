@@ -14,7 +14,7 @@ public class Roster {
 		this.account = account;
 	}
 
-	public Contact getContactAsShownInRoster(String jid) {
+	public Contact getContactFromRoster(String jid) {
 		String cleanJid = jid.split("/", 2)[0];
 		Contact contact = contacts.get(cleanJid);
 		if (contact != null && contact.showInRoster()) {

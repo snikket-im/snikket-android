@@ -374,4 +374,8 @@ public class Contact implements ListItem {
 			return false;
 		}
 	}
+
+	public boolean trusted() {
+		return getOption(Options.FROM) && getOption(Options.TO);
+	}
 }

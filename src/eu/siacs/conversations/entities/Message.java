@@ -1,10 +1,15 @@
 package eu.siacs.conversations.entities;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Arrays;
+
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.text.InputFilter.LengthFilter;
 
 public class Message extends AbstractEntity {
 
@@ -131,14 +136,8 @@ public class Message extends AbstractEntity {
 			if (this.trueCounterpart == null) {
 				return null;
 			} else {
-				Account account = this.conversation.getAccount();
-				Contact contact = account.getRoster().getContact(
+				return this.conversation.getAccount().getRoster().getContactFromRoster(
 						this.trueCounterpart);
-				if (contact.showInRoster()) {
-					return contact;
-				} else {
-					return null;
-				}
 			}
 		}
 	}
@@ -367,6 +366,34 @@ public class Message extends AbstractEntity {
 			return false;
 		} else {
 			return prev.mergable(this);
+		}
+	}
+	
+	public boolean bodyContainsDownloadable() {
+		Contact contact = this.getContact();
+		if (contact == null || !contact.trusted()) {
+			return false;
+		}
+		try {
+			URL url = new URL(this.getBody());
+			if (!url.getProtocol().equalsIgnoreCase("http") && !url.getProtocol().equalsIgnoreCase("https")) {
+				return false;
+			}
+			if (url.getPath()==null) {
+				return false;
+			}
+			String[] pathParts = url.getPath().split("/");
+			String filename = pathParts[pathParts.length - 1];
+			String[] extensionParts = filename.split("\\.");
+			if (extensionParts.length == 2 && Arrays.asList(Downloadable.VALID_EXTENSIONS).contains(extensionParts[extensionParts.length -1])) {
+				return true;
+			} else if (extensionParts.length == 3 && Arrays.asList(Downloadable.VALID_CRYPTO_EXTENSIONS).contains(extensionParts.length -1) && Arrays.asList(Downloadable.VALID_EXTENSIONS).contains(extensionParts[extensionParts.length -2])) {
+				return true;
+			} else {
+				return false;
+			}
+		} catch (MalformedURLException e) {
+			return false;
 		}
 	}
 }

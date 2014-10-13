@@ -15,6 +15,7 @@ import org.openintents.openpgp.util.OpenPgpApi;
 import org.openintents.openpgp.util.OpenPgpApi.IOpenPgpCallback;
 
 import eu.siacs.conversations.Config;
+import eu.siacs.conversations.DownloadableFile;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
@@ -22,7 +23,6 @@ import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.ui.UiCallback;
-import eu.siacs.conversations.xmpp.jingle.JingleFile;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
@@ -86,10 +86,10 @@ public class PgpEngine {
 			});
 		} else if (message.getType() == Message.TYPE_IMAGE) {
 			try {
-				final JingleFile inputFile = this.mXmppConnectionService
-						.getFileBackend().getJingleFile(message, false);
-				final JingleFile outputFile = this.mXmppConnectionService
-						.getFileBackend().getJingleFile(message, true);
+				final DownloadableFile inputFile = this.mXmppConnectionService
+						.getFileBackend().getConversationsFile(message, false);
+				final DownloadableFile outputFile = this.mXmppConnectionService
+						.getFileBackend().getConversationsFile(message, true);
 				outputFile.createNewFile();
 				InputStream is = new FileInputStream(inputFile);
 				OutputStream os = new FileOutputStream(outputFile);
@@ -197,10 +197,10 @@ public class PgpEngine {
 			});
 		} else if (message.getType() == Message.TYPE_IMAGE) {
 			try {
-				JingleFile inputFile = this.mXmppConnectionService
-						.getFileBackend().getJingleFile(message, true);
-				JingleFile outputFile = this.mXmppConnectionService
-						.getFileBackend().getJingleFile(message, false);
+				DownloadableFile inputFile = this.mXmppConnectionService
+						.getFileBackend().getConversationsFile(message, true);
+				DownloadableFile outputFile = this.mXmppConnectionService
+						.getFileBackend().getConversationsFile(message, false);
 				outputFile.createNewFile();
 				InputStream is = new FileInputStream(inputFile);
 				OutputStream os = new FileOutputStream(outputFile);

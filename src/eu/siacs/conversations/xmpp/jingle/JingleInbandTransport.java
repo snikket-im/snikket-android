@@ -1,6 +1,5 @@
 package eu.siacs.conversations.xmpp.jingle;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -9,6 +8,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
 import android.util.Base64;
+import eu.siacs.conversations.DownloadableFile;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.xml.Element;
@@ -26,7 +26,7 @@ public class JingleInbandTransport extends JingleTransport {
 
 	private boolean established = false;
 
-	private JingleFile file;
+	private DownloadableFile file;
 
 	private InputStream fileInputStream = null;
 	private OutputStream fileOutputStream;
@@ -77,7 +77,7 @@ public class JingleInbandTransport extends JingleTransport {
 	}
 
 	@Override
-	public void receive(JingleFile file,
+	public void receive(DownloadableFile file,
 			OnFileTransmissionStatusChanged callback) {
 		this.onFileTransmissionStatusChanged = callback;
 		this.file = file;
@@ -86,7 +86,7 @@ public class JingleInbandTransport extends JingleTransport {
 			digest.reset();
 			file.getParentFile().mkdirs();
 			file.createNewFile();
-			this.fileOutputStream = getOutputStream(file);
+			this.fileOutputStream = file.createOutputStream();
 			if (this.fileOutputStream == null) {
 				callback.onFileTransferAborted();
 				return;
@@ -100,20 +100,18 @@ public class JingleInbandTransport extends JingleTransport {
 	}
 
 	@Override
-	public void send(JingleFile file, OnFileTransmissionStatusChanged callback) {
+	public void send(DownloadableFile file, OnFileTransmissionStatusChanged callback) {
 		this.onFileTransmissionStatusChanged = callback;
 		this.file = file;
 		try {
 			this.digest = MessageDigest.getInstance("SHA-1");
 			this.digest.reset();
-			fileInputStream = this.getInputStream(file);
+			fileInputStream = this.file.createInputStream();
 			if (fileInputStream == null) {
 				callback.onFileTransferAborted();
 				return;
 			}
 			this.sendNextBlock();
-		} catch (FileNotFoundException e) {
-			callback.onFileTransferAborted();
 		} catch (NoSuchAlgorithmException e) {
 			callback.onFileTransferAborted();
 		}

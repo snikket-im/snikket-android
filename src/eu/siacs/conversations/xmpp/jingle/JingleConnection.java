@@ -13,6 +13,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.util.Log;
 import eu.siacs.conversations.Config;
+import eu.siacs.conversations.DownloadableFile;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Downloadable;
@@ -54,7 +55,7 @@ public class JingleConnection implements Downloadable {
 
 	private String transportId;
 	private Element fileOffer;
-	private JingleFile file = null;
+	private DownloadableFile file = null;
 
 	private String contentName;
 	private String contentCreator;
@@ -83,7 +84,7 @@ public class JingleConnection implements Downloadable {
 	final OnFileTransmissionStatusChanged onFileTransmissionSatusChanged = new OnFileTransmissionStatusChanged() {
 
 		@Override
-		public void onFileTransmitted(JingleFile file) {
+		public void onFileTransmitted(DownloadableFile file) {
 			if (responder.equals(account.getFullJid())) {
 				sendSuccess();
 				if (acceptedAutomatically) {
@@ -323,7 +324,7 @@ public class JingleConnection implements Downloadable {
 								.push(message);
 					}
 					this.file = this.mXmppConnectionService.getFileBackend()
-							.getJingleFile(message, false);
+							.getConversationsFile(message, false);
 					if (message.getEncryption() == Message.ENCRYPTION_OTR) {
 						byte[] key = conversation.getSymmetricKey();
 						if (key == null) {
@@ -355,7 +356,7 @@ public class JingleConnection implements Downloadable {
 		if (message.getType() == Message.TYPE_IMAGE) {
 			content.setTransportId(this.transportId);
 			this.file = this.mXmppConnectionService.getFileBackend()
-					.getJingleFile(message, false);
+					.getConversationsFile(message, false);
 			if (message.getEncryption() == Message.ENCRYPTION_OTR) {
 				Conversation conversation = this.message.getConversation();
 				this.mXmppConnectionService.renewSymmetricKey(conversation);
