@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import eu.siacs.conversations.R;
@@ -43,7 +44,7 @@ public class EditAccountActivity extends XmppActivity {
 	private TextView mServerInfoPep;
 	private TextView mSessionEst;
 	private TextView mOtrFingerprint;
-	private TextView mOtrFingerprintHeadline;
+	private RelativeLayout mOtrFingerprintBox;
 	private ImageButton mOtrFingerprintToClipboardButton;
 
 	private String jidToEdit;
@@ -277,7 +278,7 @@ public class EditAccountActivity extends XmppActivity {
 		this.mServerInfoSm = (TextView) findViewById(R.id.server_info_sm);
 		this.mServerInfoPep = (TextView) findViewById(R.id.server_info_pep);
 		this.mOtrFingerprint = (TextView) findViewById(R.id.otr_fingerprint);
-		this.mOtrFingerprintHeadline = (TextView) findViewById(R.id.otr_fingerprint_headline);
+		this.mOtrFingerprintBox = (RelativeLayout) findViewById(R.id.otr_fingerprint_box);
 		this.mOtrFingerprintToClipboardButton = (ImageButton) findViewById(R.id.action_copy_to_clipboard);
 		this.mSaveButton = (Button) findViewById(R.id.save_button);
 		this.mCancelButton = (Button) findViewById(R.id.cancel_button);
@@ -378,8 +379,7 @@ public class EditAccountActivity extends XmppActivity {
 			final String fingerprint = this.mAccount
 					.getOtrFingerprint(xmppConnectionService);
 			if (fingerprint != null) {
-				this.mOtrFingerprintHeadline.setVisibility(View.VISIBLE);
-				this.mOtrFingerprint.setVisibility(View.VISIBLE);
+				this.mOtrFingerprintBox.setVisibility(View.VISIBLE);
 				this.mOtrFingerprint.setText(fingerprint);
 				this.mOtrFingerprintToClipboardButton
 						.setVisibility(View.VISIBLE);
@@ -398,9 +398,7 @@ public class EditAccountActivity extends XmppActivity {
 							}
 						});
 			} else {
-				this.mOtrFingerprintToClipboardButton.setVisibility(View.GONE);
-				this.mOtrFingerprint.setVisibility(View.GONE);
-				this.mOtrFingerprintHeadline.setVisibility(View.GONE);
+				this.mOtrFingerprintBox.setVisibility(View.GONE);
 			}
 		} else {
 			if (this.mAccount.errorStatus()) {

@@ -1,46 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/primarybackground" >
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/secondarybackground" >
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical" >
 
-        <TextView
-            style="@style/sectionHeader"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:text="@string/muc_details_conference" />
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@drawable/infocard_border"
+        android:orientation="vertical"
+        android:padding="16dp" >
 
         <TextView
             android:id="@+id/muc_jabberid"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:singleLine="true"
             android:text="@string/account_settings_example_jabber_id"
             android:textColor="@color/primarytext"
-            android:textSize="?attr/TextSizeBody" />
-
-        <TextView
-            style="@style/sectionHeader"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:paddingTop="8dp"
-            android:text="@string/you" />
-
+            android:textSize="?attr/TextSizeHeadline"
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp"/>
+        
         <RelativeLayout
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="?android:attr/activatedBackgroundIndicator"
-            android:padding="8dp"
-            android:paddingBottom="8dp" >
+            android:layout_height="wrap_content">
 
             <ImageView
                 android:id="@+id/your_photo"
@@ -85,22 +74,26 @@
                 android:padding="8dp"
                 android:src="@drawable/ic_action_edit_dark" />
         </RelativeLayout>
-
-        <LinearLayout
-            android:id="@+id/muc_more_details"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:orientation="vertical" >
-
-            <TextView
-                android:id="@+id/muc_participants_header"
-                style="@style/sectionHeader"
+         <TextView
+                android:id="@+id/details_account"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="8dp"
-                android:paddingRight="8dp"
-                android:paddingTop="8dp"
-                android:text="@string/muc_details_other_members" />
+                android:layout_gravity="right"
+                android:layout_marginTop="32dp"
+                android:text="@string/using_account"
+                android:textColor="@color/secondarytext"
+                android:textSize="?attr/TextSizeInfo" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/muc_more_details"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@drawable/infocard_border"
+        android:orientation="vertical"
+        android:padding="8dp" >
+
 
             <LinearLayout
                 android:id="@+id/muc_members"
@@ -111,7 +104,6 @@
                 android:orientation="vertical"
                 android:showDividers="middle" >
             </LinearLayout>
-        </LinearLayout>
 
         <Button
             android:id="@+id/invite"
@@ -123,4 +115,5 @@
             android:text="@string/invite_contact" />
     </LinearLayout>
 
+</LinearLayout>
 </ScrollView>

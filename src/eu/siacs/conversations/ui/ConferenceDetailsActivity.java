@@ -41,6 +41,7 @@ public class ConferenceDetailsActivity extends XmppActivity {
 	private ImageButton mEditNickButton;
 	private TextView mRoleAffiliaton;
 	private TextView mFullJid;
+	private TextView mAccountJid;
 	private LinearLayout membersView;
 	private LinearLayout mMoreDetails;
 	private Button mInviteButton;
@@ -78,6 +79,7 @@ public class ConferenceDetailsActivity extends XmppActivity {
 		mEditNickButton = (ImageButton) findViewById(R.id.edit_nick_button);
 		mFullJid = (TextView) findViewById(R.id.muc_jabberid);
 		membersView = (LinearLayout) findViewById(R.id.muc_members);
+		mAccountJid = (TextView) findViewById(R.id.details_account);
 		mMoreDetails = (LinearLayout) findViewById(R.id.muc_more_details);
 		mMoreDetails.setVisibility(View.GONE);
 		mInviteButton = (Button) findViewById(R.id.invite);
@@ -199,6 +201,7 @@ public class ConferenceDetailsActivity extends XmppActivity {
 	}
 
 	private void populateView() {
+		mAccountJid.setText(getString(R.string.using_account,conversation.getAccount().getJid()));
 		mYourPhoto.setImageBitmap(conversation.getAccount().getImage(this, 48));
 		setTitle(conversation.getName());
 		mFullJid.setText(conversation.getContactJid().split("/", 2)[0]);
