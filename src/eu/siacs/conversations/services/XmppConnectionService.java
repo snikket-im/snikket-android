@@ -975,6 +975,10 @@ public class XmppConnectionService extends Service {
 
 	public void setOnConversationListChangedListener(
 			OnConversationUpdate listener) {
+		if (!isScreenOn()) {
+			Log.d(Config.LOGTAG,"ignoring setOnConversationListChangedListener");
+			return;
+		}
 		this.mNotificationService.deactivateGracePeriod();
 		if (checkListeners()) {
 			switchToForeground();
@@ -996,6 +1000,10 @@ public class XmppConnectionService extends Service {
 	}
 
 	public void setOnAccountListChangedListener(OnAccountUpdate listener) {
+		if (!isScreenOn()) {
+			Log.d(Config.LOGTAG,"ignoring setOnAccountListChangedListener");
+			return;
+		}
 		this.mNotificationService.deactivateGracePeriod();
 		if (checkListeners()) {
 			switchToForeground();
@@ -1015,6 +1023,10 @@ public class XmppConnectionService extends Service {
 	}
 
 	public void setOnRosterUpdateListener(OnRosterUpdate listener) {
+		if (!isScreenOn()) {
+			Log.d(Config.LOGTAG,"ignoring setOnRosterUpdateListener");
+			return;
+		}
 		this.mNotificationService.deactivateGracePeriod();
 		if (checkListeners()) {
 			switchToForeground();
@@ -1062,6 +1074,11 @@ public class XmppConnectionService extends Service {
 				}
 			}
 		}
+	}
+	
+	private boolean isScreenOn() {
+		PowerManager pm = (PowerManager) this.getSystemService(Context.POWER_SERVICE);
+		return pm.isScreenOn();
 	}
 
 	public void connectMultiModeConversations(Account account) {
