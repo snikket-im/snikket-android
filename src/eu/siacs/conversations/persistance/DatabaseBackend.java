@@ -11,6 +11,7 @@ import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.Roster;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteCantOpenDatabaseException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -231,10 +232,14 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor cursor = db.rawQuery("select count(" + Account.UUID + ")  from "
 				+ Account.TABLENAME + " where not options & (1 <<1)", null);
-		cursor.moveToFirst();
-		int count = cursor.getInt(0);
-		cursor.close();
-		return (count > 0);
+		try {
+			cursor.moveToFirst();
+			int count = cursor.getInt(0);
+			cursor.close();
+			return (count > 0);
+		} catch (SQLiteCantOpenDatabaseException e) {
+			return true; //better safe than sorry
+		}
 	}
 
 	@Override
