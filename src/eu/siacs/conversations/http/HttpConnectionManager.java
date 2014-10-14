@@ -3,8 +3,8 @@ package eu.siacs.conversations.http;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import eu.siacs.conversations.AbstractConnectionManager;
 import eu.siacs.conversations.entities.Message;
+import eu.siacs.conversations.services.AbstractConnectionManager;
 import eu.siacs.conversations.services.XmppConnectionService;
 
 public class HttpConnectionManager extends AbstractConnectionManager {

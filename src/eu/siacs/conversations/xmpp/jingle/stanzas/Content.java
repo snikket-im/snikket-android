@@ -1,6 +1,6 @@
 package eu.siacs.conversations.xmpp.jingle.stanzas;
 
-import eu.siacs.conversations.DownloadableFile;
+import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.xml.Element;
 
 public class Content extends Element {

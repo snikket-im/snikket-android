@@ -1,6 +1,6 @@
 package eu.siacs.conversations.xmpp.jingle;
 
-import eu.siacs.conversations.DownloadableFile;
+import eu.siacs.conversations.entities.DownloadableFile;
 
 public abstract class JingleTransport {
 	public abstract void connect(final OnTransportConnected callback);

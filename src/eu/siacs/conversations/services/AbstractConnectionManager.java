@@ -1,6 +1,5 @@
-package eu.siacs.conversations;
+package eu.siacs.conversations.services;
 
-import eu.siacs.conversations.services.XmppConnectionService;
 
 public class AbstractConnectionManager {
 	protected XmppConnectionService mXmppConnectionService;

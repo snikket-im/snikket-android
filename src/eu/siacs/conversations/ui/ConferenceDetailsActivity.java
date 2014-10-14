@@ -171,33 +171,31 @@ public class ConferenceDetailsActivity extends XmppActivity {
 	}
 
 	protected void registerListener() {
-		if (xmppConnectionServiceBound) {
-			xmppConnectionService
-					.setOnConversationListChangedListener(this.onConvChanged);
-			xmppConnectionService.setOnRenameListener(new OnRenameListener() {
+		xmppConnectionService
+				.setOnConversationListChangedListener(this.onConvChanged);
+		xmppConnectionService.setOnRenameListener(new OnRenameListener() {
 
-				@Override
-				public void onRename(final boolean success) {
-					runOnUiThread(new Runnable() {
+			@Override
+			public void onRename(final boolean success) {
+				runOnUiThread(new Runnable() {
 
-						@Override
-						public void run() {
-							populateView();
-							if (success) {
-								Toast.makeText(
-										ConferenceDetailsActivity.this,
-										getString(R.string.your_nick_has_been_changed),
-										Toast.LENGTH_SHORT).show();
-							} else {
-								Toast.makeText(ConferenceDetailsActivity.this,
-										getString(R.string.nick_in_use),
-										Toast.LENGTH_SHORT).show();
-							}
+					@Override
+					public void run() {
+						populateView();
+						if (success) {
+							Toast.makeText(
+									ConferenceDetailsActivity.this,
+									getString(R.string.your_nick_has_been_changed),
+									Toast.LENGTH_SHORT).show();
+						} else {
+							Toast.makeText(ConferenceDetailsActivity.this,
+									getString(R.string.nick_in_use),
+									Toast.LENGTH_SHORT).show();
 						}
-					});
-				}
-			});
-		}
+					}
+				});
+			}
+		});
 	}
 
 	private void populateView() {

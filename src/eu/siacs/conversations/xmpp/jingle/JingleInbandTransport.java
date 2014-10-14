@@ -8,8 +8,8 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
 import android.util.Base64;
-import eu.siacs.conversations.DownloadableFile;
 import eu.siacs.conversations.entities.Account;
+import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.OnIqPacketReceived;

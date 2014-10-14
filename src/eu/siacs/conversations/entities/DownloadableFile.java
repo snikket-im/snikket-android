@@ -1,4 +1,4 @@
-package eu.siacs.conversations;
+package eu.siacs.conversations.entities;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -18,6 +18,7 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.utils.CryptoHelper;
 import android.util.Log;
 

@@ -736,11 +736,9 @@ public class ConversationActivity extends XmppActivity implements
 	}
 
 	public void registerListener() {
-		if (xmppConnectionServiceBound) {
-			xmppConnectionService.setOnConversationListChangedListener(this);
-			xmppConnectionService.setOnAccountListChangedListener(this);
-			xmppConnectionService.setOnRosterUpdateListener(this);
-		}
+		xmppConnectionService.setOnConversationListChangedListener(this);
+		xmppConnectionService.setOnAccountListChangedListener(this);
+		xmppConnectionService.setOnRosterUpdateListener(this);
 	}
 
 	@Override

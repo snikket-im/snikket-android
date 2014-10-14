@@ -12,8 +12,8 @@ import javax.net.ssl.HttpsURLConnection;
 import android.util.Log;
 
 import eu.siacs.conversations.Config;
-import eu.siacs.conversations.DownloadableFile;
 import eu.siacs.conversations.entities.Downloadable;
+import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.services.XmppConnectionService;
 
