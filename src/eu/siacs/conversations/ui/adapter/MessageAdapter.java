@@ -1,5 +1,7 @@
 package eu.siacs.conversations.ui.adapter;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 
@@ -225,10 +227,19 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		viewHolder.messageBody.setVisibility(View.VISIBLE);
 		if (message.getBody() != null) {
 			if (message.getType() != Message.TYPE_PRIVATE) {
-				String body = Config.PARSE_EMOTICONS ? UIHelper
-						.transformAsciiEmoticons(message.getMergedBody())
-						: message.getMergedBody();
-				viewHolder.messageBody.setText(body);
+				if (message.getType() == Message.TYPE_IMAGE) {
+					String orign = message.getImageParams().origin;
+					if (orign!=null) {
+						viewHolder.messageBody.setText(orign);
+					} else {
+						viewHolder.messageBody.setText(message.getBody());
+					}
+				} else {
+					String body = Config.PARSE_EMOTICONS ? UIHelper
+							.transformAsciiEmoticons(message.getMergedBody())
+							: message.getMergedBody();
+					viewHolder.messageBody.setText(body);
+				}
 			} else {
 				String privateMarker;
 				if (message.getStatus() <= Message.STATUS_RECEIVED) {
@@ -474,6 +485,8 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 				displayInfoMessage(viewHolder, R.string.receiving_image);
 			} else if (item.getStatus() == Message.STATUS_RECEIVED_CHECKING) {
 				displayInfoMessage(viewHolder, R.string.checking_image);
+			} else if (item.getStatus() == Message.STATUS_RECEPTION_FAILED) {
+				displayTextMessage(viewHolder, item);
 			} else if (item.getStatus() == Message.STATUS_RECEIVED_OFFER) {
 				viewHolder.image.setVisibility(View.GONE);
 				viewHolder.messageBody.setVisibility(View.GONE);
@@ -483,10 +496,10 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 
 							@Override
 							public void onClick(View v) {
-								Downloadable downloadable = item
-										.getDownloadable();
-								if (downloadable != null) {
-									downloadable.start();
+								if (!startDonwloadable(item)) {
+									activity.xmppConnectionService.markMessage(
+											item,
+											Message.STATUS_RECEPTION_FAILED);
 								}
 							}
 						});
@@ -525,6 +538,28 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		displayStatus(viewHolder, item);
 
 		return view;
+	}
+
+	public boolean startDonwloadable(Message message) {
+		Downloadable downloadable = message.getDownloadable();
+		if (downloadable != null) {
+			downloadable.start();
+			return true;
+		} else {
+			ImageParams params = message.getImageParams();
+			if (params.origin != null) {
+				try {
+					URL url = new URL(params.origin);
+					activity.xmppConnectionService.getHttpConnectionManager()
+							.createNewConnection(message, url);
+					return true;
+				} catch (MalformedURLException e) {
+					return false;
+				}
+			} else {
+				return false;
+			}
+		}
 	}
 
 	private static class ViewHolder {

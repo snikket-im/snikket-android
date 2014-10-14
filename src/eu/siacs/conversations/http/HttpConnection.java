@@ -10,9 +10,7 @@ import java.net.URL;
 import javax.net.ssl.HttpsURLConnection;
 
 import android.graphics.BitmapFactory;
-import android.util.Log;
 
-import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Downloadable;
 import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.entities.Message;
@@ -26,6 +24,7 @@ public class HttpConnection implements Downloadable {
 	private URL mUrl;
 	private Message message;
 	private DownloadableFile file;
+	private long mPreviousFileSize = Long.MIN_VALUE;
 
 	public HttpConnection(HttpConnectionManager manager) {
 		this.mHttpConnectionManager = manager;
@@ -44,11 +43,24 @@ public class HttpConnection implements Downloadable {
 			mUrl = new URL(message.getBody());
 			this.file = mXmppConnectionService.getFileBackend().getConversationsFile(message,false);
 			message.setType(Message.TYPE_IMAGE);
-			mXmppConnectionService.markMessage(message, Message.STATUS_RECEIVED_CHECKING);
+			message.setStatus(Message.STATUS_RECEIVED_CHECKING);
+			mXmppConnectionService.updateConversationUi();
 			checkFileSize();
 		} catch (MalformedURLException e) {
 			this.cancel();
 		}
+	}
+	
+	public void init(Message message, URL url) {
+		this.message = message;
+		this.message.setDownloadable(this);
+		this.mUrl = url;
+		this.file = mXmppConnectionService.getFileBackend().getConversationsFile(message,false);
+		this.mPreviousFileSize = message.getImageParams().size;
+		message.setType(Message.TYPE_IMAGE);
+		message.setStatus(Message.STATUS_RECEIVED_CHECKING);
+		mXmppConnectionService.updateConversationUi();
+		checkFileSize();
 	}
 	
 	private void checkFileSize() {
@@ -57,26 +69,34 @@ public class HttpConnection implements Downloadable {
 
 	public void cancel() {
 		mXmppConnectionService.markMessage(message, Message.STATUS_RECEPTION_FAILED);
-		Log.d(Config.LOGTAG,"canceled download");
+		mHttpConnectionManager.finishConnection(this);
+	}
+	
+	private void finish() {
+		message.setStatus(Message.STATUS_RECEIVED);
+		mXmppConnectionService.updateMessage(message);
+		mHttpConnectionManager.finishConnection(this);
 	}
 
 	private class FileSizeChecker implements Runnable {
 
 		@Override
 		public void run() {
+			long size;
 			try {
-				long size = retrieveFileSize();
-				file.setExpectedSize(size);
-				message.setBody(mUrl.toString()+","+String.valueOf(size));
-				if (size <= mHttpConnectionManager.getAutoAcceptFileSize()) {
-					mXmppConnectionService.updateMessage(message);
-					start();
-				} else {
-					message.setStatus(Message.STATUS_RECEIVED_OFFER);
-					mXmppConnectionService.updateMessage(message);
-				}
+				size = retrieveFileSize();
 			} catch (IOException e) {
 				cancel();
+				return;
+			}
+			file.setExpectedSize(size);
+			message.setBody(mUrl.toString()+","+String.valueOf(size));
+			if (size <= mHttpConnectionManager.getAutoAcceptFileSize() || size == mPreviousFileSize) {
+				mXmppConnectionService.updateMessage(message);
+				start();
+			} else {
+				message.setStatus(Message.STATUS_RECEIVED_OFFER);
+				mXmppConnectionService.updateMessage(message);
 			}
 		}
 
@@ -107,8 +127,7 @@ public class HttpConnection implements Downloadable {
 				mXmppConnectionService.markMessage(message, Message.STATUS_RECEIVING);
 				download();
 				updateImageBounds();
-				message.setStatus(Message.STATUS_RECEIVED);
-				mXmppConnectionService.updateMessage(message);
+				finish();
 			} catch (IOException e) {
 				cancel();
 			}

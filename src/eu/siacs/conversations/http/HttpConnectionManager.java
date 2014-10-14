@@ -1,5 +1,6 @@
 package eu.siacs.conversations.http;
 
+import java.net.URL;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -12,8 +13,6 @@ public class HttpConnectionManager extends AbstractConnectionManager {
 	public HttpConnectionManager(XmppConnectionService service) {
 		super(service);
 	}
-
-	private XmppConnectionService mXmppConnectionService;
 	
 	private List<HttpConnection> connections = new CopyOnWriteArrayList<HttpConnection>();
 	
@@ -23,5 +22,16 @@ public class HttpConnectionManager extends AbstractConnectionManager {
 		connection.init(message);
 		this.connections.add(connection);
 		return connection;
+	}
+	
+	public HttpConnection createNewConnection(Message message, URL url) {
+		HttpConnection connection = new HttpConnection(this);
+		connection.init(message,url);
+		this.connections.add(connection);
+		return connection;
+	}
+	
+	public void finishConnection(HttpConnection connection) {
+		this.connections.remove(connection);
 	}
 }
