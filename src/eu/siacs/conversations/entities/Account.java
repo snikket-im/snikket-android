@@ -160,8 +160,12 @@ public class Account extends AbstractEntity {
 	}
 
 	public boolean hasErrorStatus() {
-		return getStatus() > STATUS_NO_INTERNET
-				&& (getXmppConnection().getAttempt() >= 2);
+		if (getXmppConnection() == null) {
+			return false;
+		} else {
+			return getStatus() > STATUS_NO_INTERNET
+					&& (getXmppConnection().getAttempt() >= 2);
+		}
 	}
 
 	public void setResource(String resource) {
