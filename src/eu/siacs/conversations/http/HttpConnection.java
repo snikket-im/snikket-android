@@ -9,6 +9,7 @@ import java.net.URL;
 
 import javax.net.ssl.HttpsURLConnection;
 
+import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import eu.siacs.conversations.Config;
@@ -43,7 +44,7 @@ public class HttpConnection implements Downloadable {
 			mUrl = new URL(message.getBody());
 			this.file = mXmppConnectionService.getFileBackend().getConversationsFile(message,false);
 			message.setType(Message.TYPE_IMAGE);
-			mXmppConnectionService.markMessage(message, Message.STATUS_RECEIVED_OFFER);
+			mXmppConnectionService.markMessage(message, Message.STATUS_RECEIVED_CHECKING);
 			checkFileSize();
 		} catch (MalformedURLException e) {
 			this.cancel();
@@ -66,10 +67,14 @@ public class HttpConnection implements Downloadable {
 			try {
 				long size = retrieveFileSize();
 				file.setExpectedSize(size);
+				message.setBody(mUrl.toString()+","+String.valueOf(size));
 				if (size <= mHttpConnectionManager.getAutoAcceptFileSize()) {
+					mXmppConnectionService.updateMessage(message);
 					start();
+				} else {
+					message.setStatus(Message.STATUS_RECEIVED_OFFER);
+					mXmppConnectionService.updateMessage(message);
 				}
-				Log.d(Config.LOGTAG,"file size: "+size);
 			} catch (IOException e) {
 				cancel();
 			}
@@ -101,7 +106,9 @@ public class HttpConnection implements Downloadable {
 			try {
 				mXmppConnectionService.markMessage(message, Message.STATUS_RECEIVING);
 				download();
-				mXmppConnectionService.markMessage(message, Message.STATUS_RECEIVED);
+				updateImageBounds();
+				message.setStatus(Message.STATUS_RECEIVED);
+				mXmppConnectionService.updateMessage(message);
 			} catch (IOException e) {
 				cancel();
 			}
@@ -122,7 +129,17 @@ public class HttpConnection implements Downloadable {
 			os.flush();
 			os.close();
 			is.close();
-			Log.d(Config.LOGTAG,"finished downloading "+file.getAbsolutePath().toString());
+		}
+		
+		private void updateImageBounds() {
+			BitmapFactory.Options options = new BitmapFactory.Options();
+			options.inJustDecodeBounds = true;
+			BitmapFactory.decodeFile(file.getAbsolutePath(), options);
+			int imageHeight = options.outHeight;
+			int imageWidth = options.outWidth;
+			message.setBody(mUrl.toString()+","+file.getSize() + ','
+					+ imageWidth + ',' + imageHeight);
+			
 		}
 		
 	}

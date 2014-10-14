@@ -1249,6 +1249,7 @@ public class XmppConnectionService extends Service {
 
 	public void updateMessage(Message message) {
 		databaseBackend.updateMessage(message);
+		updateConversationUi();
 	}
 
 	protected void syncDirtyContacts(Account account) {

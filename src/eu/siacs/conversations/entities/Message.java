@@ -9,12 +9,12 @@ import eu.siacs.conversations.R;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.text.InputFilter.LengthFilter;
 
 public class Message extends AbstractEntity {
 
 	public static final String TABLENAME = "messages";
 
+	public static final int STATUS_RECEIVED_CHECKING = -4;
 	public static final int STATUS_RECEPTION_FAILED = -3;
 	public static final int STATUS_RECEIVED_OFFER = -2;
 	public static final int STATUS_RECEIVING = -1;
@@ -395,5 +395,68 @@ public class Message extends AbstractEntity {
 		} catch (MalformedURLException e) {
 			return false;
 		}
+	}
+	
+	public ImageParams getImageParams() {
+		ImageParams params = new ImageParams();
+		if (body==null) {
+			return params;
+		}
+		String parts[] = body.split(",");
+		if (parts.length==1) {
+			try {
+				params.size = Long.parseLong(parts[0]);
+			} catch (NumberFormatException e) {
+				params.origin = parts[0];
+			}
+		} else if (parts.length == 2) {
+			params.origin = parts[0];
+			try {
+				params.size = Long.parseLong(parts[1]);
+			} catch (NumberFormatException e) {
+				params.size = 0;
+			}
+		} else if (parts.length==3) {
+			try {
+				params.size = Long.parseLong(parts[0]);
+			} catch (NumberFormatException e) {
+				params.size = 0;
+			}
+			try {
+				params.width = Integer.parseInt(parts[1]);
+			} catch (NumberFormatException e) {
+				params.width = 0;
+			}
+			try {
+				params.height = Integer.parseInt(parts[2]);
+			} catch (NumberFormatException e) {
+				params.height = 0;
+			}
+		} else if (parts.length == 4) {
+			params.origin = parts[0];
+			try {
+				params.size = Long.parseLong(parts[1]);
+			} catch (NumberFormatException e) {
+				params.size = 0;
+			}
+			try {
+				params.width = Integer.parseInt(parts[2]);
+			} catch (NumberFormatException e) {
+				params.width = 0;
+			}
+			try {
+				params.height = Integer.parseInt(parts[3]);
+			} catch (NumberFormatException e) {
+				params.height = 0;
+			}
+		}
+		return params;
+	}
+	
+	public class ImageParams {
+		public long size = 0;
+		public int width = 0;
+		public int height = 0;
+		public String origin;
 	}
 }

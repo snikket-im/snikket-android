@@ -266,5 +266,6 @@
     <string name="conference_members_only">This conference is members only</string>
     <string name="conference_kicked">You have been kicked from this conference</string>
     <string name="using_account">using account %s</string>
+    <string name="checking_image">Checking image on HTTP host</string>
 
 </resources>

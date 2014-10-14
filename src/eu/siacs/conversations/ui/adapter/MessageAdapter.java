@@ -9,6 +9,7 @@ import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Downloadable;
 import eu.siacs.conversations.entities.Message;
+import eu.siacs.conversations.entities.Message.ImageParams;
 import eu.siacs.conversations.ui.ConversationActivity;
 import eu.siacs.conversations.utils.UIHelper;
 import android.content.Context;
@@ -102,13 +103,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		boolean multiReceived = message.getConversation().getMode() == Conversation.MODE_MULTI
 				&& message.getMergedStatus() <= Message.STATUS_RECEIVED;
 		if (message.getType() == Message.TYPE_IMAGE) {
-			String[] fileParams = message.getBody().split(",");
-			try {
-				long size = Long.parseLong(fileParams[0]);
-				filesize = size / 1024 + " KB";
-			} catch (NumberFormatException e) {
-				filesize = "0 KB";
-			}
+			filesize = message.getImageParams().size / 1024 + " KB";
 		}
 		switch (message.getMergedStatus()) {
 		case Message.STATUS_WAITING:
@@ -275,23 +270,19 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		}
 		viewHolder.messageBody.setVisibility(View.GONE);
 		viewHolder.image.setVisibility(View.VISIBLE);
-		String[] fileParams = message.getBody().split(",");
-		if (fileParams.length == 3) {
-			double target = metrics.density * 288;
-			int w = Integer.parseInt(fileParams[1]);
-			int h = Integer.parseInt(fileParams[2]);
-			int scalledW;
-			int scalledH;
-			if (w <= h) {
-				scalledW = (int) (w / ((double) h / target));
-				scalledH = (int) target;
-			} else {
-				scalledW = (int) target;
-				scalledH = (int) (h / ((double) w / target));
-			}
-			viewHolder.image.setLayoutParams(new LinearLayout.LayoutParams(
-					scalledW, scalledH));
+		ImageParams params = message.getImageParams();
+		double target = metrics.density * 288;
+		int scalledW;
+		int scalledH;
+		if (params.width <= params.height) {
+			scalledW = (int) (params.width / ((double) params.height / target));
+			scalledH = (int) target;
+		} else {
+			scalledW = (int) target;
+			scalledH = (int) (params.height / ((double) params.width / target));
 		}
+		viewHolder.image.setLayoutParams(new LinearLayout.LayoutParams(
+				scalledW, scalledH));
 		activity.loadBitmap(message, viewHolder.image);
 		viewHolder.image.setOnClickListener(new OnClickListener() {
 
@@ -481,6 +472,8 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		if (item.getType() == Message.TYPE_IMAGE) {
 			if (item.getStatus() == Message.STATUS_RECEIVING) {
 				displayInfoMessage(viewHolder, R.string.receiving_image);
+			} else if (item.getStatus() == Message.STATUS_RECEIVED_CHECKING) {
+				displayInfoMessage(viewHolder, R.string.checking_image);
 			} else if (item.getStatus() == Message.STATUS_RECEIVED_OFFER) {
 				viewHolder.image.setVisibility(View.GONE);
 				viewHolder.messageBody.setVisibility(View.GONE);
