@@ -105,7 +105,10 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		boolean multiReceived = message.getConversation().getMode() == Conversation.MODE_MULTI
 				&& message.getMergedStatus() <= Message.STATUS_RECEIVED;
 		if (message.getType() == Message.TYPE_IMAGE) {
-			filesize = message.getImageParams().size / 1024 + " KB";
+			ImageParams params = message.getImageParams();
+			if (params.size != 0) {
+				filesize = params.size / 1024 + " KB";
+			}
 		}
 		switch (message.getMergedStatus()) {
 		case Message.STATUS_WAITING:
