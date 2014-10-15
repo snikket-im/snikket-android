@@ -267,5 +267,6 @@
     <string name="conference_kicked">You have been kicked from this conference</string>
     <string name="using_account">using account %s</string>
     <string name="checking_image">Checking image on HTTP host</string>
+    <string name="image_file_deleted">The image file has been deleted</string>
 
 </resources>

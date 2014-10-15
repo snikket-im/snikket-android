@@ -327,7 +327,7 @@ public class JingleConnection implements Downloadable {
 								.push(message);
 					}
 					this.file = this.mXmppConnectionService.getFileBackend()
-							.getConversationsFile(message, false);
+							.getFile(message, false);
 					if (message.getEncryption() == Message.ENCRYPTION_OTR) {
 						byte[] key = conversation.getSymmetricKey();
 						if (key == null) {
@@ -359,7 +359,7 @@ public class JingleConnection implements Downloadable {
 		if (message.getType() == Message.TYPE_IMAGE) {
 			content.setTransportId(this.transportId);
 			this.file = this.mXmppConnectionService.getFileBackend()
-					.getConversationsFile(message, false);
+					.getFile(message, false);
 			if (message.getEncryption() == Message.ENCRYPTION_OTR) {
 				Conversation conversation = this.message.getConversation();
 				this.mXmppConnectionService.renewSymmetricKey(conversation);

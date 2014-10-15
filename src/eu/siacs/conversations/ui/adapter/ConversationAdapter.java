@@ -92,6 +92,8 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 					mLastMessage.setText(R.string.receiving_image);
 				} else if (d.getStatus() == Downloadable.STATUS_OFFER) {
 					mLastMessage.setText(R.string.image_offered_for_download);
+				} else if (d.getStatus() == Downloadable.STATUS_DELETED) {
+					mLastMessage.setText(R.string.image_file_deleted);
 				} else {
 					mLastMessage.setText("");
 				}

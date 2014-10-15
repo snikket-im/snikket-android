@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import eu.siacs.conversations.entities.Message;
+import eu.siacs.conversations.entities.Message.ImageParams;
 import eu.siacs.conversations.services.AbstractConnectionManager;
 import eu.siacs.conversations.services.XmppConnectionService;
 
@@ -19,13 +20,6 @@ public class HttpConnectionManager extends AbstractConnectionManager {
 	public HttpConnection createNewConnection(Message message) {
 		HttpConnection connection = new HttpConnection(this);
 		connection.init(message);
-		this.connections.add(connection);
-		return connection;
-	}
-
-	public HttpConnection createNewConnection(Message message, URL url) {
-		HttpConnection connection = new HttpConnection(this);
-		connection.init(message, url);
 		this.connections.add(connection);
 		return connection;
 	}

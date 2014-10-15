@@ -88,9 +88,9 @@ public class PgpEngine {
 		} else if (message.getType() == Message.TYPE_IMAGE) {
 			try {
 				final DownloadableFile inputFile = this.mXmppConnectionService
-						.getFileBackend().getConversationsFile(message, false);
+						.getFileBackend().getFile(message, false);
 				final DownloadableFile outputFile = this.mXmppConnectionService
-						.getFileBackend().getConversationsFile(message, true);
+						.getFileBackend().getFile(message, true);
 				outputFile.createNewFile();
 				InputStream is = new FileInputStream(inputFile);
 				OutputStream os = new FileOutputStream(outputFile);
@@ -198,9 +198,9 @@ public class PgpEngine {
 		} else if (message.getType() == Message.TYPE_IMAGE) {
 			try {
 				DownloadableFile inputFile = this.mXmppConnectionService
-						.getFileBackend().getConversationsFile(message, true);
+						.getFileBackend().getFile(message, true);
 				DownloadableFile outputFile = this.mXmppConnectionService
-						.getFileBackend().getConversationsFile(message, false);
+						.getFileBackend().getFile(message, false);
 				outputFile.createNewFile();
 				InputStream is = new FileInputStream(inputFile);
 				OutputStream os = new FileOutputStream(outputFile);

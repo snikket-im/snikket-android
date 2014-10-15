@@ -9,7 +9,9 @@ import java.net.URL;
 
 import javax.net.ssl.HttpsURLConnection;
 
+import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 
 import eu.siacs.conversations.entities.Downloadable;
 import eu.siacs.conversations.entities.DownloadableFile;
@@ -24,8 +26,8 @@ public class HttpConnection implements Downloadable {
 	private URL mUrl;
 	private Message message;
 	private DownloadableFile file;
-	private long mPreviousFileSize = 0;
 	private int mStatus = Downloadable.STATUS_UNKNOWN;
+	private boolean mAutostart = true;
 
 	public HttpConnection(HttpConnectionManager manager) {
 		this.mHttpConnectionManager = manager;
@@ -44,21 +46,12 @@ public class HttpConnection implements Downloadable {
 		try {
 			mUrl = new URL(message.getBody());
 			this.file = mXmppConnectionService.getFileBackend()
-					.getConversationsFile(message, false);
+					.getFile(message, false);
+			this.mAutostart = true;
 			checkFileSize();
 		} catch (MalformedURLException e) {
 			this.cancel();
 		}
-	}
-
-	public void init(Message message, URL url) {
-		this.message = message;
-		this.message.setDownloadable(this);
-		this.mUrl = url;
-		this.file = mXmppConnectionService.getFileBackend()
-				.getConversationsFile(message, false);
-		this.mPreviousFileSize = message.getImageParams().size;
-		checkFileSize();
 	}
 
 	private void checkFileSize() {
@@ -74,6 +67,9 @@ public class HttpConnection implements Downloadable {
 	}
 
 	private void finish() {
+		Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+		intent.setData(Uri.fromFile(file));
+		mXmppConnectionService.sendBroadcast(intent);
 		message.setDownloadable(null);
 		mHttpConnectionManager.finishConnection(this);
 	}
@@ -96,8 +92,7 @@ public class HttpConnection implements Downloadable {
 			}
 			file.setExpectedSize(size);
 			message.setType(Message.TYPE_IMAGE);
-			if (size <= mHttpConnectionManager.getAutoAcceptFileSize()
-					|| size == mPreviousFileSize) {
+			if (size <= mHttpConnectionManager.getAutoAcceptFileSize() && mAutostart) {
 				start();
 			} else {
 				changeStatus(STATUS_OFFER);

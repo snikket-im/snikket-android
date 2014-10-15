@@ -27,6 +27,7 @@ import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Bookmark;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
+import eu.siacs.conversations.entities.Downloadable;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.entities.MucOptions.OnRenameListener;
@@ -797,10 +798,20 @@ public class XmppConnectionService extends Service {
 				Account account = accountLookupTable.get(conv.getAccountUuid());
 				conv.setAccount(account);
 				conv.setMessages(databaseBackend.getMessages(conv, 50));
+				checkDeletedFiles(conv);
 			}
 		}
-
 		return this.conversations;
+	}
+	
+	private void checkDeletedFiles(Conversation conversation) {
+		for(Message message : conversation.getMessages()) {
+			if (message.getType() == Message.TYPE_IMAGE && message.getEncryption() != Message.ENCRYPTION_PGP) {
+				if (!getFileBackend().isFileAvailable(message)) {
+					message.setDownloadable(new DeletedDownloadable());
+				}
+			}
+		}
 	}
 
 	public void populateWithOrderedConversations(List<Conversation> list) {
@@ -1832,5 +1843,24 @@ public class XmppConnectionService extends Service {
 
 	public HttpConnectionManager getHttpConnectionManager() {
 		return this.mHttpConnectionManager;
+	}
+	
+	private class DeletedDownloadable implements Downloadable {
+
+		@Override
+		public void start() {
+			return;
+		}
+
+		@Override
+		public int getStatus() {
+			return Downloadable.STATUS_DELETED;
+		}
+
+		@Override
+		public long getFileSize() {
+			return 0;
+		}
+		
 	}
 }

@@ -1,7 +1,5 @@
 package eu.siacs.conversations.ui.adapter;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 
@@ -476,6 +474,8 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 			} else if (d != null
 					&& d.getStatus() == Downloadable.STATUS_CHECKING) {
 				displayInfoMessage(viewHolder, R.string.checking_image);
+			} else if (d != null && d.getStatus() == Downloadable.STATUS_DELETED) {
+				displayInfoMessage(viewHolder, R.string.image_file_deleted);
 			} else if (d != null && d.getStatus() == Downloadable.STATUS_OFFER) {
 				viewHolder.image.setVisibility(View.GONE);
 				viewHolder.messageBody.setVisibility(View.GONE);
@@ -531,19 +531,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 			downloadable.start();
 			return true;
 		} else {
-			ImageParams params = message.getImageParams();
-			if (params.origin != null) {
-				try {
-					URL url = new URL(params.origin);
-					activity.xmppConnectionService.getHttpConnectionManager()
-							.createNewConnection(message, url);
-					return true;
-				} catch (MalformedURLException e) {
-					return false;
-				}
-			} else {
-				return false;
-			}
+			return false;
 		}
 	}
 
