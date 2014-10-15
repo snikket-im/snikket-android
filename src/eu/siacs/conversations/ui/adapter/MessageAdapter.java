@@ -138,10 +138,6 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 			info = getContext().getString(R.string.send_rejected);
 			error = true;
 			break;
-		case Message.STATUS_RECEPTION_FAILED:
-			info = getContext().getString(R.string.reception_failed);
-			error = true;
-			break;
 		default:
 			if (multiReceived) {
 				Contact contact = message.getContact();
@@ -230,19 +226,10 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		viewHolder.messageBody.setVisibility(View.VISIBLE);
 		if (message.getBody() != null) {
 			if (message.getType() != Message.TYPE_PRIVATE) {
-				if (message.getType() == Message.TYPE_IMAGE) {
-					String orign = message.getImageParams().origin;
-					if (orign!=null) {
-						viewHolder.messageBody.setText(orign);
-					} else {
-						viewHolder.messageBody.setText(message.getBody());
-					}
-				} else {
-					String body = Config.PARSE_EMOTICONS ? UIHelper
-							.transformAsciiEmoticons(message.getMergedBody())
-							: message.getMergedBody();
-					viewHolder.messageBody.setText(body);
-				}
+				String body = Config.PARSE_EMOTICONS ? UIHelper
+						.transformAsciiEmoticons(message.getMergedBody())
+						: message.getMergedBody();
+				viewHolder.messageBody.setText(body);
 			} else {
 				String privateMarker;
 				if (message.getStatus() <= Message.STATUS_RECEIVED) {
@@ -347,6 +334,8 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 				viewHolder.contact_picture = (ImageView) view
 						.findViewById(R.id.message_photo);
 				viewHolder.contact_picture.setImageBitmap(getSelfBitmap());
+				viewHolder.download_button = (Button) view
+						.findViewById(R.id.download_button);
 				viewHolder.indicator = (ImageView) view
 						.findViewById(R.id.security_indicator);
 				viewHolder.image = (ImageView) view
@@ -366,15 +355,11 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 						.findViewById(R.id.message_box);
 				viewHolder.contact_picture = (ImageView) view
 						.findViewById(R.id.message_photo);
-
 				viewHolder.download_button = (Button) view
 						.findViewById(R.id.download_button);
-
 				if (item.getConversation().getMode() == Conversation.MODE_SINGLE) {
-
 					viewHolder.contact_picture.setImageBitmap(mBitmapCache.get(
 							item.getConversation().getContact(), getContext()));
-
 				}
 				viewHolder.indicator = (ImageView) view
 						.findViewById(R.id.security_indicator);
@@ -483,14 +468,15 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 			}
 		}
 
-		if (item.getType() == Message.TYPE_IMAGE) {
-			if (item.getStatus() == Message.STATUS_RECEIVING) {
+		if (item.getType() == Message.TYPE_IMAGE
+				|| item.getDownloadable() != null) {
+			Downloadable d = item.getDownloadable();
+			if (d != null && d.getStatus() == Downloadable.STATUS_DOWNLOADING) {
 				displayInfoMessage(viewHolder, R.string.receiving_image);
-			} else if (item.getStatus() == Message.STATUS_RECEIVED_CHECKING) {
+			} else if (d != null
+					&& d.getStatus() == Downloadable.STATUS_CHECKING) {
 				displayInfoMessage(viewHolder, R.string.checking_image);
-			} else if (item.getStatus() == Message.STATUS_RECEPTION_FAILED) {
-				displayTextMessage(viewHolder, item);
-			} else if (item.getStatus() == Message.STATUS_RECEIVED_OFFER) {
+			} else if (d != null && d.getStatus() == Downloadable.STATUS_OFFER) {
 				viewHolder.image.setVisibility(View.GONE);
 				viewHolder.messageBody.setVisibility(View.GONE);
 				viewHolder.download_button.setVisibility(View.VISIBLE);
@@ -499,11 +485,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 
 							@Override
 							public void onClick(View v) {
-								if (!startDonwloadable(item)) {
-									activity.xmppConnectionService.markMessage(
-											item,
-											Message.STATUS_RECEPTION_FAILED);
-								}
+								startDonwloadable(item);
 							}
 						});
 			} else if ((item.getEncryption() == Message.ENCRYPTION_DECRYPTED)

@@ -45,6 +45,14 @@
                 android:textColor="@color/primarytext"
                 android:textIsSelectable="true"
                 android:textSize="?attr/TextSizeBody" />
+            
+             <Button
+                android:id="@+id/download_button"
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/download_image"
+                android:visibility="gone" />
 
             <LinearLayout
                 android:layout_width="wrap_content"

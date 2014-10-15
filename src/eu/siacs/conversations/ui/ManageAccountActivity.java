@@ -70,7 +70,8 @@ public class ManageAccountActivity extends XmppActivity {
 	public void onCreateContextMenu(ContextMenu menu, View v,
 			ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
-		ManageAccountActivity.this.getMenuInflater().inflate(R.menu.manageaccounts_context, menu);
+		ManageAccountActivity.this.getMenuInflater().inflate(
+				R.menu.manageaccounts_context, menu);
 		AdapterView.AdapterContextMenuInfo acmi = (AdapterContextMenuInfo) menuInfo;
 		this.selectedAccount = accountList.get(acmi.position);
 		if (this.selectedAccount.isOptionSet(Account.OPTION_DISABLED)) {
@@ -187,7 +188,8 @@ public class ManageAccountActivity extends XmppActivity {
 	}
 
 	private void deleteAccount(final Account account) {
-		AlertDialog.Builder builder = new AlertDialog.Builder(ManageAccountActivity.this);
+		AlertDialog.Builder builder = new AlertDialog.Builder(
+				ManageAccountActivity.this);
 		builder.setTitle(getString(R.string.mgmt_account_are_you_sure));
 		builder.setIconAttribute(android.R.attr.alertDialogIcon);
 		builder.setMessage(getString(R.string.mgmt_account_delete_confirm_text));

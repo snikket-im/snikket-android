@@ -56,7 +56,8 @@ public class ContactDetailsActivity extends XmppActivity {
 
 		@Override
 		public void onClick(DialogInterface dialog, int which) {
-			ContactDetailsActivity.this.xmppConnectionService.deleteContactOnServer(contact);
+			ContactDetailsActivity.this.xmppConnectionService
+					.deleteContactOnServer(contact);
 			ContactDetailsActivity.this.finish();
 		}
 	};
@@ -78,7 +79,8 @@ public class ContactDetailsActivity extends XmppActivity {
 
 		@Override
 		public void onClick(View v) {
-			AlertDialog.Builder builder = new AlertDialog.Builder(ContactDetailsActivity.this);
+			AlertDialog.Builder builder = new AlertDialog.Builder(
+					ContactDetailsActivity.this);
 			builder.setTitle(getString(R.string.action_add_phone_book));
 			builder.setMessage(getString(R.string.add_phone_book_text,
 					contact.getJid()));
@@ -309,7 +311,8 @@ public class ContactDetailsActivity extends XmppActivity {
 		} else {
 			contactJidTv.setText(contact.getJid());
 		}
-		accountJidTv.setText(getString(R.string.using_account,contact.getAccount().getJid()));
+		accountJidTv.setText(getString(R.string.using_account, contact
+				.getAccount().getJid()));
 
 		UIHelper.prepareContactBadge(this, badge, contact,
 				getApplicationContext());

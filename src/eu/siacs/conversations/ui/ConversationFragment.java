@@ -72,8 +72,7 @@ public class ConversationFragment extends Fragment {
 	private boolean messagesLoaded = false;
 
 	private IntentSender askForPassphraseIntent = null;
-	
-	
+
 	private ConcurrentLinkedQueue<Message> mEncryptedMessages = new ConcurrentLinkedQueue<Message>();
 	private boolean mDecryptJobRunning = false;
 
@@ -505,8 +504,8 @@ public class ConversationFragment extends Fragment {
 	private void decryptNext() {
 		Message next = this.mEncryptedMessages.peek();
 		PgpEngine engine = activity.xmppConnectionService.getPgpEngine();
-			
-		if (next!=null && engine != null && !mDecryptJobRunning) {
+
+		if (next != null && engine != null && !mDecryptJobRunning) {
 			mDecryptJobRunning = true;
 			engine.decrypt(next, new UiCallback<Message>() {
 
@@ -535,7 +534,7 @@ public class ConversationFragment extends Fragment {
 			});
 		}
 	}
-	
+
 	private void messageSent() {
 		int size = this.messageList.size();
 		messagesView.setSelection(size - 1);

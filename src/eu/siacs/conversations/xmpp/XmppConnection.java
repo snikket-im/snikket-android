@@ -910,7 +910,7 @@ public class XmppConnection implements Runnable {
 	}
 
 	public void disconnect(boolean force) {
-		Log.d(Config.LOGTAG, account.getJid()+": disconnecting");
+		Log.d(Config.LOGTAG, account.getJid() + ": disconnecting");
 		try {
 			if (force) {
 				socket.close();

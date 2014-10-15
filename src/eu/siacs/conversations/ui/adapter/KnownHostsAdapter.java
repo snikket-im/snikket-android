@@ -47,11 +47,11 @@ public class KnownHostsAdapter extends ArrayAdapter<String> {
 		@Override
 		protected void publishResults(CharSequence constraint,
 				FilterResults results) {
-			ArrayList filteredList = (ArrayList)results.values;
+			ArrayList filteredList = (ArrayList) results.values;
 			if (results != null && results.count > 0) {
 				clear();
 				for (Object c : filteredList) {
-					add((String)c);
+					add((String) c);
 				}
 				notifyDataSetChanged();
 			}

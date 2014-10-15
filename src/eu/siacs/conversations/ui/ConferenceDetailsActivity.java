@@ -199,7 +199,8 @@ public class ConferenceDetailsActivity extends XmppActivity {
 	}
 
 	private void populateView() {
-		mAccountJid.setText(getString(R.string.using_account,conversation.getAccount().getJid()));
+		mAccountJid.setText(getString(R.string.using_account, conversation
+				.getAccount().getJid()));
 		mYourPhoto.setImageBitmap(conversation.getAccount().getImage(this, 48));
 		setTitle(conversation.getName());
 		mFullJid.setText(conversation.getContactJid().split("/", 2)[0]);

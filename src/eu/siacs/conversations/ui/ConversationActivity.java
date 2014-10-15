@@ -222,7 +222,8 @@ public class ConversationActivity extends XmppActivity implements
 			ab.setDisplayHomeAsUpEnabled(true);
 			ab.setHomeButtonEnabled(true);
 			if (getSelectedConversation().getMode() == Conversation.MODE_SINGLE
-					|| ConversationActivity.this.useSubjectToIdentifyConference()) {
+					|| ConversationActivity.this
+							.useSubjectToIdentifyConference()) {
 				ab.setTitle(getSelectedConversation().getName());
 			} else {
 				ab.setTitle(getSelectedConversation().getContactJid()

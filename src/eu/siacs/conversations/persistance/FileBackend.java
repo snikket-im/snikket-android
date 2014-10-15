@@ -70,7 +70,8 @@ public class FileBackend {
 		return getJingleFileLegacy(message, true);
 	}
 
-	public DownloadableFile getJingleFileLegacy(Message message, boolean decrypted) {
+	public DownloadableFile getJingleFileLegacy(Message message,
+			boolean decrypted) {
 		Conversation conversation = message.getConversation();
 		String prefix = context.getFilesDir().getAbsolutePath();
 		String path = prefix + "/" + conversation.getAccount().getJid() + "/"
@@ -92,7 +93,8 @@ public class FileBackend {
 		return getConversationsFile(message, true);
 	}
 
-	public DownloadableFile getConversationsFile(Message message, boolean decrypted) {
+	public DownloadableFile getConversationsFile(Message message,
+			boolean decrypted) {
 		StringBuilder filename = new StringBuilder();
 		filename.append(Environment.getExternalStoragePublicDirectory(
 				Environment.DIRECTORY_PICTURES).getAbsolutePath());
@@ -144,8 +146,8 @@ public class FileBackend {
 		return this.copyImageToPrivateStorage(message, image, 0);
 	}
 
-	private DownloadableFile copyImageToPrivateStorage(Message message, Uri image,
-			int sampleSize) throws ImageCopyException {
+	private DownloadableFile copyImageToPrivateStorage(Message message,
+			Uri image, int sampleSize) throws ImageCopyException {
 		try {
 			InputStream is = context.getContentResolver()
 					.openInputStream(image);

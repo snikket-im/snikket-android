@@ -76,7 +76,8 @@ public class PgpEngine {
 					case OpenPgpApi.RESULT_CODE_ERROR:
 						OpenPgpError error = result
 								.getParcelableExtra(OpenPgpApi.RESULT_ERROR);
-						Log.d(Config.LOGTAG,"openpgp error: "+error.getMessage());
+						Log.d(Config.LOGTAG,
+								"openpgp error: " + error.getMessage());
 						callback.error(R.string.openpgp_error, message);
 						return;
 					default:
@@ -110,7 +111,8 @@ public class PgpEngine {
 									+ ',' + imageWidth + ',' + imageHeight);
 							message.setEncryption(Message.ENCRYPTION_DECRYPTED);
 							PgpEngine.this.mXmppConnectionService
-									.updateMessage(message);;
+									.updateMessage(message);
+							;
 							callback.success(message);
 							return;
 						case OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED:

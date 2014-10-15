@@ -5,6 +5,7 @@ import java.util.List;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Conversation;
+import eu.siacs.conversations.entities.Downloadable;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.ui.ConversationActivity;
 import eu.siacs.conversations.ui.XmppActivity;
@@ -37,11 +38,11 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 			view = (View) inflater.inflate(R.layout.conversation_list_row,
 					parent, false);
 		}
-		Conversation conv = getItem(position);
+		Conversation conversation = getItem(position);
 		if (this.activity instanceof ConversationActivity) {
 			ConversationActivity activity = (ConversationActivity) this.activity;
 			if (!activity.isConversationsOverviewHideable()) {
-				if (conv == activity.getSelectedConversation()) {
+				if (conversation == activity.getSelectedConversation()) {
 					view.setBackgroundColor(activity
 							.getSecondaryBackgroundColor());
 				} else {
@@ -53,65 +54,76 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 		}
 		TextView convName = (TextView) view
 				.findViewById(R.id.conversation_name);
-		if (conv.getMode() == Conversation.MODE_SINGLE
+		if (conversation.getMode() == Conversation.MODE_SINGLE
 				|| activity.useSubjectToIdentifyConference()) {
-			convName.setText(conv.getName());
+			convName.setText(conversation.getName());
 		} else {
-			convName.setText(conv.getContactJid().split("/")[0]);
+			convName.setText(conversation.getContactJid().split("/")[0]);
 		}
-		TextView convLastMsg = (TextView) view
+		TextView mLastMessage = (TextView) view
 				.findViewById(R.id.conversation_lastmsg);
+		TextView mTimestamp = (TextView) view
+				.findViewById(R.id.conversation_lastupdate);
 		ImageView imagePreview = (ImageView) view
 				.findViewById(R.id.conversation_lastimage);
 
-		Message latestMessage = conv.getLatestMessage();
+		Message message = conversation.getLatestMessage();
 
-		if (latestMessage.getType() == Message.TYPE_TEXT
-				|| latestMessage.getType() == Message.TYPE_PRIVATE) {
-			if ((latestMessage.getEncryption() != Message.ENCRYPTION_PGP)
-					&& (latestMessage.getEncryption() != Message.ENCRYPTION_DECRYPTION_FAILED)) {
-				String body = Config.PARSE_EMOTICONS ? UIHelper
-						.transformAsciiEmoticons(latestMessage.getBody())
-						: latestMessage.getBody();
-				convLastMsg.setText(body);
-			} else {
-				convLastMsg.setText(R.string.encrypted_message_received);
-			}
-			convLastMsg.setVisibility(View.VISIBLE);
-			imagePreview.setVisibility(View.GONE);
-		} else if (latestMessage.getType() == Message.TYPE_IMAGE) {
-			if (latestMessage.getStatus() >= Message.STATUS_RECEIVED) {
-				convLastMsg.setVisibility(View.GONE);
-				imagePreview.setVisibility(View.VISIBLE);
-				activity.loadBitmap(latestMessage, imagePreview);
-			} else {
-				convLastMsg.setVisibility(View.VISIBLE);
-				imagePreview.setVisibility(View.GONE);
-				if (latestMessage.getStatus() == Message.STATUS_RECEIVED_OFFER) {
-					convLastMsg.setText(R.string.image_offered_for_download);
-				} else if (latestMessage.getStatus() == Message.STATUS_RECEIVING) {
-					convLastMsg.setText(R.string.receiving_image);
-				} else {
-					convLastMsg.setText("");
-				}
-			}
-		}
-
-		if (!conv.isRead()) {
+		if (!conversation.isRead()) {
 			convName.setTypeface(null, Typeface.BOLD);
-			convLastMsg.setTypeface(null, Typeface.BOLD);
 		} else {
 			convName.setTypeface(null, Typeface.NORMAL);
-			convLastMsg.setTypeface(null, Typeface.NORMAL);
 		}
 
-		((TextView) view.findViewById(R.id.conversation_lastupdate))
-				.setText(UIHelper.readableTimeDifference(getContext(), conv
-						.getLatestMessage().getTimeSent()));
+		if (message.getType() == Message.TYPE_IMAGE
+				|| message.getDownloadable() != null) {
+			Downloadable d = message.getDownloadable();
+			if (d != null) {
+				mLastMessage.setVisibility(View.VISIBLE);
+				imagePreview.setVisibility(View.GONE);
+				if (conversation.isRead()) {
+					mLastMessage.setTypeface(null, Typeface.ITALIC);
+				} else {
+					mLastMessage.setTypeface(null, Typeface.BOLD_ITALIC);
+				}
+				if (d.getStatus() == Downloadable.STATUS_CHECKING) {
+					mLastMessage.setText(R.string.checking_image);
+				} else if (d.getStatus() == Downloadable.STATUS_DOWNLOADING) {
+					mLastMessage.setText(R.string.receiving_image);
+				} else if (d.getStatus() == Downloadable.STATUS_OFFER) {
+					mLastMessage.setText(R.string.image_offered_for_download);
+				} else {
+					mLastMessage.setText("");
+				}
+			} else {
+				mLastMessage.setVisibility(View.GONE);
+				imagePreview.setVisibility(View.VISIBLE);
+				activity.loadBitmap(message, imagePreview);
+			}
+		} else {
+			if ((message.getEncryption() != Message.ENCRYPTION_PGP)
+					&& (message.getEncryption() != Message.ENCRYPTION_DECRYPTION_FAILED)) {
+				String body = Config.PARSE_EMOTICONS ? UIHelper
+						.transformAsciiEmoticons(message.getBody()) : message
+						.getBody();
+				mLastMessage.setText(body);
+			} else {
+				mLastMessage.setText(R.string.encrypted_message_received);
+			}
+			if (!conversation.isRead()) {
+				mLastMessage.setTypeface(null, Typeface.BOLD);
+			} else {
+				mLastMessage.setTypeface(null, Typeface.NORMAL);
+			}
+			mLastMessage.setVisibility(View.VISIBLE);
+			imagePreview.setVisibility(View.GONE);
+		}
+		mTimestamp.setText(UIHelper.readableTimeDifference(getContext(),
+				conversation.getLatestMessage().getTimeSent()));
 
 		ImageView profilePicture = (ImageView) view
 				.findViewById(R.id.conversation_image);
-		profilePicture.setImageBitmap(conv.getImage(activity, 56));
+		profilePicture.setImageBitmap(conversation.getImage(activity, 56));
 
 		return view;
 	}

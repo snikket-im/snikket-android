@@ -14,10 +14,6 @@ public class Message extends AbstractEntity {
 
 	public static final String TABLENAME = "messages";
 
-	public static final int STATUS_RECEIVED_CHECKING = -4;
-	public static final int STATUS_RECEPTION_FAILED = -3;
-	public static final int STATUS_RECEIVED_OFFER = -2;
-	public static final int STATUS_RECEIVING = -1;
 	public static final int STATUS_RECEIVED = 0;
 	public static final int STATUS_UNSEND = 1;
 	public static final int STATUS_SEND = 2;
@@ -136,8 +132,8 @@ public class Message extends AbstractEntity {
 			if (this.trueCounterpart == null) {
 				return null;
 			} else {
-				return this.conversation.getAccount().getRoster().getContactFromRoster(
-						this.trueCounterpart);
+				return this.conversation.getAccount().getRoster()
+						.getContactFromRoster(this.trueCounterpart);
 			}
 		}
 	}
@@ -147,11 +143,8 @@ public class Message extends AbstractEntity {
 	}
 
 	public String getReadableBody(Context context) {
-		if ((encryption == ENCRYPTION_PGP) && (type == TYPE_TEXT)) {
+		if (encryption == ENCRYPTION_PGP) {
 			return context.getText(R.string.encrypted_message_received)
-					.toString();
-		} else if ((encryption == ENCRYPTION_OTR) && (type == TYPE_IMAGE)) {
-			return context.getText(R.string.encrypted_image_received)
 					.toString();
 		} else if (encryption == ENCRYPTION_DECRYPTION_FAILED) {
 			return context.getText(R.string.decryption_failed).toString();
@@ -322,6 +315,8 @@ public class Message extends AbstractEntity {
 			return false;
 		}
 		return (message.getType() == Message.TYPE_TEXT
+				&& this.getDownloadable() == null
+				&& message.getDownloadable() == null
 				&& message.getEncryption() != Message.ENCRYPTION_PGP
 				&& this.getType() == message.getType()
 				&& this.getEncryption() == message.getEncryption()
@@ -368,26 +363,34 @@ public class Message extends AbstractEntity {
 			return prev.mergable(this);
 		}
 	}
-	
+
 	public boolean bodyContainsDownloadable() {
 		Contact contact = this.getContact();
-		if (contact == null || !contact.trusted()) {
+		if (status <= STATUS_RECEIVED
+				&& (contact == null || !contact.trusted())) {
 			return false;
 		}
 		try {
 			URL url = new URL(this.getBody());
-			if (!url.getProtocol().equalsIgnoreCase("http") && !url.getProtocol().equalsIgnoreCase("https")) {
+			if (!url.getProtocol().equalsIgnoreCase("http")
+					&& !url.getProtocol().equalsIgnoreCase("https")) {
 				return false;
 			}
-			if (url.getPath()==null) {
+			if (url.getPath() == null) {
 				return false;
 			}
 			String[] pathParts = url.getPath().split("/");
 			String filename = pathParts[pathParts.length - 1];
 			String[] extensionParts = filename.split("\\.");
-			if (extensionParts.length == 2 && Arrays.asList(Downloadable.VALID_EXTENSIONS).contains(extensionParts[extensionParts.length -1])) {
+			if (extensionParts.length == 2
+					&& Arrays.asList(Downloadable.VALID_EXTENSIONS).contains(
+							extensionParts[extensionParts.length - 1])) {
 				return true;
-			} else if (extensionParts.length == 3 && Arrays.asList(Downloadable.VALID_CRYPTO_EXTENSIONS).contains(extensionParts.length -1) && Arrays.asList(Downloadable.VALID_EXTENSIONS).contains(extensionParts[extensionParts.length -2])) {
+			} else if (extensionParts.length == 3
+					&& Arrays.asList(Downloadable.VALID_CRYPTO_EXTENSIONS)
+							.contains(extensionParts.length - 1)
+					&& Arrays.asList(Downloadable.VALID_EXTENSIONS).contains(
+							extensionParts[extensionParts.length - 2])) {
 				return true;
 			} else {
 				return false;
@@ -396,27 +399,23 @@ public class Message extends AbstractEntity {
 			return false;
 		}
 	}
-	
+
 	public ImageParams getImageParams() {
 		ImageParams params = new ImageParams();
-		if (body==null) {
+		if (this.downloadable != null) {
+			params.size = this.downloadable.getFileSize();
+		}
+		if (body == null) {
 			return params;
 		}
 		String parts[] = body.split(",");
-		if (parts.length==1) {
+		if (parts.length == 1) {
 			try {
 				params.size = Long.parseLong(parts[0]);
 			} catch (NumberFormatException e) {
 				params.origin = parts[0];
 			}
-		} else if (parts.length == 2) {
-			params.origin = parts[0];
-			try {
-				params.size = Long.parseLong(parts[1]);
-			} catch (NumberFormatException e) {
-				params.size = 0;
-			}
-		} else if (parts.length==3) {
+		} else if (parts.length == 3) {
 			try {
 				params.size = Long.parseLong(parts[0]);
 			} catch (NumberFormatException e) {
@@ -452,7 +451,7 @@ public class Message extends AbstractEntity {
 		}
 		return params;
 	}
-	
+
 	public class ImageParams {
 		public long size = 0;
 		public int width = 0;
