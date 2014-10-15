@@ -3,6 +3,7 @@ package eu.siacs.conversations.ui;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import net.java.otr4j.session.SessionStatus;
 import eu.siacs.conversations.R;
@@ -71,6 +72,10 @@ public class ConversationFragment extends Fragment {
 	private boolean messagesLoaded = false;
 
 	private IntentSender askForPassphraseIntent = null;
+	
+	
+	private ConcurrentLinkedQueue<Message> mEncryptedMessages = new ConcurrentLinkedQueue<Message>();
+	private boolean mDecryptJobRunning = false;
 
 	private OnEditorActionListener mEditorActionListener = new OnEditorActionListener() {
 
@@ -356,6 +361,7 @@ public class ConversationFragment extends Fragment {
 
 	@Override
 	public void onStop() {
+		mDecryptJobRunning = false;
 		super.onStop();
 		if (this.conversation != null) {
 			this.conversation.setNextMessage(mEditMessage.getText().toString());
@@ -393,34 +399,6 @@ public class ConversationFragment extends Fragment {
 			conversation.setNextPresence(null);
 		}
 		updateMessages();
-	}
-
-	private void decryptMessage(Message message) {
-		PgpEngine engine = activity.xmppConnectionService.getPgpEngine();
-		if (engine != null) {
-			engine.decrypt(message, new UiCallback<Message>() {
-
-				@Override
-				public void userInputRequried(PendingIntent pi, Message message) {
-					askForPassphraseIntent = pi.getIntentSender();
-					showSnackbar(R.string.openpgp_messages_found,
-							R.string.decrypt, clickToDecryptListener);
-				}
-
-				@Override
-				public void success(Message message) {
-					activity.xmppConnectionService.databaseBackend
-							.updateMessage(message);
-					updateMessages();
-				}
-
-				@Override
-				public void error(int error, Message message) {
-					message.setEncryption(Message.ENCRYPTION_DECRYPTION_FAILED);
-					// updateMessages();
-				}
-			});
-		}
 	}
 
 	public void updateMessages() {
@@ -461,10 +439,12 @@ public class ConversationFragment extends Fragment {
 				if ((message.getEncryption() == Message.ENCRYPTION_PGP)
 						&& ((message.getStatus() == Message.STATUS_RECEIVED) || (message
 								.getStatus() == Message.STATUS_SEND))) {
-					decryptMessage(message);
-					break;
+					if (!mEncryptedMessages.contains(message)) {
+						mEncryptedMessages.add(message);
+					}
 				}
 			}
+			decryptNext();
 			this.messageList.clear();
 			if (this.conversation.getMessages().size() == 0) {
 				messagesLoaded = false;
@@ -522,6 +502,41 @@ public class ConversationFragment extends Fragment {
 		}
 	}
 
+	private void decryptNext() {
+		Message next = this.mEncryptedMessages.peek();
+		PgpEngine engine = activity.xmppConnectionService.getPgpEngine();
+			
+		if (next!=null && engine != null && !mDecryptJobRunning) {
+			mDecryptJobRunning = true;
+			engine.decrypt(next, new UiCallback<Message>() {
+
+				@Override
+				public void userInputRequried(PendingIntent pi, Message message) {
+					mDecryptJobRunning = false;
+					askForPassphraseIntent = pi.getIntentSender();
+					showSnackbar(R.string.openpgp_messages_found,
+							R.string.decrypt, clickToDecryptListener);
+				}
+
+				@Override
+				public void success(Message message) {
+					mDecryptJobRunning = false;
+					mEncryptedMessages.remove();
+					activity.xmppConnectionService.updateMessage(message);
+				}
+
+				@Override
+				public void error(int error, Message message) {
+					message.setEncryption(Message.ENCRYPTION_DECRYPTION_FAILED);
+					mDecryptJobRunning = false;
+					mEncryptedMessages.remove();
+					activity.updateConversationList();
+					activity.xmppConnectionService.updateConversationUi();
+				}
+			});
+		}
+	}
+	
 	private void messageSent() {
 		int size = this.messageList.size();
 		messagesView.setSelection(size - 1);

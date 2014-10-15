@@ -76,7 +76,7 @@ public class PgpEngine {
 					case OpenPgpApi.RESULT_CODE_ERROR:
 						OpenPgpError error = result
 								.getParcelableExtra(OpenPgpApi.RESULT_ERROR);
-						Log.d(Config.LOGTAG, error.getMessage());
+						Log.d(Config.LOGTAG,"openpgp error: "+error.getMessage());
 						callback.error(R.string.openpgp_error, message);
 						return;
 					default:
