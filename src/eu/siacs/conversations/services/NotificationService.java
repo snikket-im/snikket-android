@@ -43,34 +43,40 @@ public class NotificationService {
 				.getSystemService(Context.NOTIFICATION_SERVICE);
 	}
 
-	public synchronized void push(Message message) {
-
+	public void push(Message message) {
 		PowerManager pm = (PowerManager) mXmppConnectionService
 				.getSystemService(Context.POWER_SERVICE);
 		boolean isScreenOn = pm.isScreenOn();
+
 		if (this.mIsInForeground && isScreenOn
 				&& this.mOpenConversation == message.getConversation()) {
 			return;
 		}
-		String conversationUuid = message.getConversationUuid();
-		if (notifications.containsKey(conversationUuid)) {
-			notifications.get(conversationUuid).add(message);
-		} else {
-			ArrayList<Message> mList = new ArrayList<Message>();
-			mList.add(message);
-			notifications.put(conversationUuid, mList);
+		synchronized (notifications) {
+			String conversationUuid = message.getConversationUuid();
+			if (notifications.containsKey(conversationUuid)) {
+				notifications.get(conversationUuid).add(message);
+			} else {
+				ArrayList<Message> mList = new ArrayList<Message>();
+				mList.add(message);
+				notifications.put(conversationUuid, mList);
+			}
 		}
 		updateNotification((!(this.mIsInForeground && this.mOpenConversation == null) || !isScreenOn)
 				&& !inGracePeriod());
 	}
 
 	public void clear() {
-		notifications.clear();
+		synchronized (notifications) {
+			notifications.clear();
+		}
 		updateNotification(false);
 	}
 
 	public void clear(Conversation conversation) {
-		notifications.remove(conversation.getUuid());
+		synchronized (notifications) {
+			notifications.remove(conversation.getUuid());
+		}
 		updateNotification(false);
 	}
 
