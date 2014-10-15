@@ -530,7 +530,6 @@ public class ConversationFragment extends Fragment {
 					message.setEncryption(Message.ENCRYPTION_DECRYPTION_FAILED);
 					mDecryptJobRunning = false;
 					mEncryptedMessages.remove();
-					activity.updateConversationList();
 					activity.xmppConnectionService.updateConversationUi();
 				}
 			});
