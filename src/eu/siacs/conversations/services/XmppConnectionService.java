@@ -107,14 +107,15 @@ public class XmppConnectionService extends Service {
 	private CopyOnWriteArrayList<Conversation> conversations = null;
 	private JingleConnectionManager mJingleConnectionManager = new JingleConnectionManager(
 			this);
-	private HttpConnectionManager mHttpConnectionManager = new HttpConnectionManager(this);
+	private HttpConnectionManager mHttpConnectionManager = new HttpConnectionManager(
+			this);
 
 	private OnConversationUpdate mOnConversationUpdate = null;
-	private int convChangedListenerCount = 0;
+	private Integer convChangedListenerCount = 0;
 	private OnAccountUpdate mOnAccountUpdate = null;
-	private int accountChangedListenerCount = 0;
+	private Integer accountChangedListenerCount = 0;
 	private OnRosterUpdate mOnRosterUpdate = null;
-	private int rosterChangedListenerCount = 0;
+	private Integer rosterChangedListenerCount = 0;
 	public OnContactStatusChanged onContactStatusChanged = new OnContactStatusChanged() {
 
 		@Override
@@ -976,71 +977,87 @@ public class XmppConnectionService extends Service {
 	public void setOnConversationListChangedListener(
 			OnConversationUpdate listener) {
 		if (!isScreenOn()) {
-			Log.d(Config.LOGTAG,"ignoring setOnConversationListChangedListener");
+			Log.d(Config.LOGTAG,
+					"ignoring setOnConversationListChangedListener");
 			return;
 		}
-		this.mNotificationService.deactivateGracePeriod();
-		if (checkListeners()) {
-			switchToForeground();
+		synchronized (this.convChangedListenerCount) {
+			this.mNotificationService.deactivateGracePeriod();
+			if (checkListeners()) {
+				switchToForeground();
+			}
+			this.mOnConversationUpdate = listener;
+			this.mNotificationService.setIsInForeground(true);
+			this.convChangedListenerCount++;
 		}
-		this.mOnConversationUpdate = listener;
-		this.mNotificationService.setIsInForeground(true);
-		this.convChangedListenerCount++;
 	}
 
 	public void removeOnConversationListChangedListener() {
-		this.convChangedListenerCount--;
-		if (this.convChangedListenerCount == 0) {
-			this.mOnConversationUpdate = null;
-			this.mNotificationService.setIsInForeground(false);
-			if (checkListeners()) {
-				switchToBackground();
+		synchronized (this.convChangedListenerCount) {
+			this.convChangedListenerCount--;
+			if (this.convChangedListenerCount <= 0) {
+				this.convChangedListenerCount = 0;
+				this.mOnConversationUpdate = null;
+				this.mNotificationService.setIsInForeground(false);
+				if (checkListeners()) {
+					switchToBackground();
+				}
 			}
 		}
 	}
 
 	public void setOnAccountListChangedListener(OnAccountUpdate listener) {
 		if (!isScreenOn()) {
-			Log.d(Config.LOGTAG,"ignoring setOnAccountListChangedListener");
+			Log.d(Config.LOGTAG, "ignoring setOnAccountListChangedListener");
 			return;
 		}
-		this.mNotificationService.deactivateGracePeriod();
-		if (checkListeners()) {
-			switchToForeground();
+		synchronized (this.accountChangedListenerCount) {
+			this.mNotificationService.deactivateGracePeriod();
+			if (checkListeners()) {
+				switchToForeground();
+			}
+			this.mOnAccountUpdate = listener;
+			this.accountChangedListenerCount++;
 		}
-		this.mOnAccountUpdate = listener;
-		this.accountChangedListenerCount++;
 	}
 
 	public void removeOnAccountListChangedListener() {
-		this.accountChangedListenerCount--;
-		if (this.accountChangedListenerCount == 0) {
-			this.mOnAccountUpdate = null;
-			if (checkListeners()) {
-				switchToBackground();
+		synchronized (this.accountChangedListenerCount) {
+			this.accountChangedListenerCount--;
+			if (this.accountChangedListenerCount <= 0) {
+				this.mOnAccountUpdate = null;
+				this.accountChangedListenerCount = 0;
+				if (checkListeners()) {
+					switchToBackground();
+				}
 			}
 		}
 	}
 
 	public void setOnRosterUpdateListener(OnRosterUpdate listener) {
 		if (!isScreenOn()) {
-			Log.d(Config.LOGTAG,"ignoring setOnRosterUpdateListener");
+			Log.d(Config.LOGTAG, "ignoring setOnRosterUpdateListener");
 			return;
 		}
-		this.mNotificationService.deactivateGracePeriod();
-		if (checkListeners()) {
-			switchToForeground();
+		synchronized (this.rosterChangedListenerCount) {
+			this.mNotificationService.deactivateGracePeriod();
+			if (checkListeners()) {
+				switchToForeground();
+			}
+			this.mOnRosterUpdate = listener;
+			this.rosterChangedListenerCount++;
 		}
-		this.mOnRosterUpdate = listener;
-		this.rosterChangedListenerCount++;
 	}
 
 	public void removeOnRosterUpdateListener() {
-		this.rosterChangedListenerCount--;
-		if (this.rosterChangedListenerCount == 0) {
-			this.mOnRosterUpdate = null;
-			if (checkListeners()) {
-				switchToBackground();
+		synchronized (this.rosterChangedListenerCount) {
+			this.rosterChangedListenerCount--;
+			if (this.rosterChangedListenerCount <= 0) {
+				this.rosterChangedListenerCount = 0;
+				this.mOnRosterUpdate = null;
+				if (checkListeners()) {
+					switchToBackground();
+				}
 			}
 		}
 	}
@@ -1075,9 +1092,10 @@ public class XmppConnectionService extends Service {
 			}
 		}
 	}
-	
+
 	private boolean isScreenOn() {
-		PowerManager pm = (PowerManager) this.getSystemService(Context.POWER_SERVICE);
+		PowerManager pm = (PowerManager) this
+				.getSystemService(Context.POWER_SERVICE);
 		return pm.isScreenOn();
 	}
 
@@ -1799,8 +1817,7 @@ public class XmppConnectionService extends Service {
 		ArrayList<Contact> contacts = new ArrayList<Contact>();
 		for (Account account : getAccounts()) {
 			if (!account.isOptionSet(Account.OPTION_DISABLED)) {
-				Contact contact = account.getRoster()
-						.getContactFromRoster(jid);
+				Contact contact = account.getRoster().getContactFromRoster(jid);
 				if (contact != null) {
 					contacts.add(contact);
 				}
