@@ -72,8 +72,6 @@ public class Conversation extends AbstractEntity {
 
 	private byte[] symmetricKey;
 
-	private boolean otrSessionNeedsStarting = false;
-
 	private Bookmark bookmark;
 
 	public Conversation(String name, Account account, String contactJid,
@@ -264,10 +262,7 @@ public class Conversation extends AbstractEntity {
 			try {
 				if (sendStart) {
 					this.otrSession.startSession();
-					this.otrSessionNeedsStarting = false;
 					return this.otrSession;
-				} else {
-					this.otrSessionNeedsStarting = true;
 				}
 				return this.otrSession;
 			} catch (OtrException e) {
@@ -283,12 +278,12 @@ public class Conversation extends AbstractEntity {
 
 	public void resetOtrSession() {
 		this.otrFingerprint = null;
-		this.otrSessionNeedsStarting = false;
 		this.otrSession = null;
 	}
 
 	public void startOtrIfNeeded() {
-		if (this.otrSession != null && this.otrSessionNeedsStarting) {
+		if (this.otrSession != null
+				&& this.otrSession.getSessionStatus() != SessionStatus.ENCRYPTED) {
 			try {
 				this.otrSession.startSession();
 			} catch (OtrException e) {
