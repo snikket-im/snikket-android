@@ -161,10 +161,23 @@ public class XmppConnection implements Runnable {
 							+ "[" + srvIpServer + "]:" + srvRecordPort);
 					socket = new Socket(srvIpServer, srvRecordPort);
 				} else {
-					Log.d(Config.LOGTAG, account.getJid()
-							+ ": using values from dns " + srvRecordServer
-							+ ":" + srvRecordPort);
-					socket = new Socket(srvRecordServer, srvRecordPort);
+					boolean socketError = true;
+					int srvIndex = 0;
+					while (socketError && namePort.containsKey("name" + srvIndex)){
+						try {
+							srvRecordServer = namePort.getString("name" + srvIndex);
+							srvRecordPort = namePort.getInt("port" + srvIndex);
+							Log.d(Config.LOGTAG, account.getJid()
+									+ ": using values from dns " + srvRecordServer
+									+ ":" + srvRecordPort);
+							socket = new Socket(srvRecordServer, srvRecordPort);
+							socketError = false;
+						} catch (UnknownHostException e) {
+							srvIndex++;
+						} catch (IOException e) {
+							srvIndex++;
+						}
+					}
 				}
 			} else if (namePort.containsKey("error")
 					&& "nosrv".equals(namePort.getString("error", null))) {
