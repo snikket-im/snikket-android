@@ -76,6 +76,7 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Binder;
 import android.os.Bundle;
+import android.os.FileObserver;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
@@ -141,6 +142,16 @@ public class XmppConnectionService extends Service {
 					XmppConnectionService.class);
 			intent.setAction(ACTION_MERGE_PHONE_CONTACTS);
 			startService(intent);
+		}
+	};
+	
+	private FileObserver fileObserver = new FileObserver(FileBackend.getConversationsDirectory()) {
+		
+		@Override
+		public void onEvent(int event, String path) {
+			if (event == FileObserver.DELETE) {
+				markFileDeleted(path.split("\\.")[0]);
+			}
 		}
 	};
 
@@ -424,6 +435,7 @@ public class XmppConnectionService extends Service {
 
 		getContentResolver().registerContentObserver(
 				ContactsContract.Contacts.CONTENT_URI, true, contactObserver);
+		this.fileObserver.startWatching();
 		this.pgpServiceConnection = new OpenPgpServiceConnection(
 				getApplicationContext(), "org.sufficientlysecure.keychain");
 		this.pgpServiceConnection.bindToService();
@@ -809,6 +821,20 @@ public class XmppConnectionService extends Service {
 			if (message.getType() == Message.TYPE_IMAGE && message.getEncryption() != Message.ENCRYPTION_PGP) {
 				if (!getFileBackend().isFileAvailable(message)) {
 					message.setDownloadable(new DeletedDownloadable());
+				}
+			}
+		}
+	}
+	
+	private void markFileDeleted(String uuid) {
+		for(Conversation conversation : getConversations()) {
+			for(Message message : conversation.getMessages()) {
+				if (message.getType() == Message.TYPE_IMAGE && message.getEncryption() != Message.ENCRYPTION_PGP && message.getUuid().equals(uuid)) {
+					if (!getFileBackend().isFileAvailable(message)) {
+						message.setDownloadable(new DeletedDownloadable());
+						updateConversationUi();
+					}
+					return;
 				}
 			}
 		}

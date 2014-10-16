@@ -72,9 +72,7 @@ public class FileBackend {
 	public DownloadableFile getFile(Message message,
 			boolean decrypted) {
 		StringBuilder filename = new StringBuilder();
-		filename.append(Environment.getExternalStoragePublicDirectory(
-				Environment.DIRECTORY_PICTURES).getAbsolutePath());
-		filename.append("/Conversations/");
+		filename.append(getConversationsDirectory());
 		filename.append(message.getUuid());
 		if ((decrypted) || (message.getEncryption() == Message.ENCRYPTION_NONE)) {
 			filename.append(".webp");
@@ -86,6 +84,11 @@ public class FileBackend {
 			}
 		}
 		return new DownloadableFile(filename.toString());
+	}
+	
+	public static String getConversationsDirectory() {
+		return Environment.getExternalStoragePublicDirectory(
+				Environment.DIRECTORY_PICTURES).getAbsolutePath()+"/Conversations/";
 	}
 
 	public Bitmap resize(Bitmap originalBitmap, int size) {
