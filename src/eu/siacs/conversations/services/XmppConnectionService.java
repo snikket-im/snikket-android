@@ -1110,11 +1110,10 @@ public class XmppConnectionService extends Service {
 				XmppConnection connection = account.getXmppConnection();
 				if (connection != null && connection.getFeatures().csi()) {
 					connection.sendActive();
-					Log.d(Config.LOGTAG, account.getJid()
-							+ " sending csi//active");
 				}
 			}
 		}
+		Log.d(Config.LOGTAG,"app switched into foreground");
 	}
 
 	private void switchToBackground() {
@@ -1123,11 +1122,10 @@ public class XmppConnectionService extends Service {
 				XmppConnection connection = account.getXmppConnection();
 				if (connection != null && connection.getFeatures().csi()) {
 					connection.sendInactive();
-					Log.d(Config.LOGTAG, account.getJid()
-							+ " sending csi//inactive");
 				}
 			}
 		}
+		Log.d(Config.LOGTAG,"app switched into background");
 	}
 
 	private boolean isScreenOn() {
