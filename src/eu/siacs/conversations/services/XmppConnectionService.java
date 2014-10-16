@@ -1125,6 +1125,7 @@ public class XmppConnectionService extends Service {
 				}
 			}
 		}
+		this.mNotificationService.setIsInForeground(false);
 		Log.d(Config.LOGTAG,"app switched into background");
 	}
 
