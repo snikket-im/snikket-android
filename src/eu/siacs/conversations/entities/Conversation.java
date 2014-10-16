@@ -297,18 +297,23 @@ public class Conversation extends AbstractEntity {
 		}
 	}
 
-	public void endOtrIfNeeded() {
+	public boolean endOtrIfNeeded() {
 		if (this.otrSession != null) {
 			if (this.otrSession.getSessionStatus() == SessionStatus.ENCRYPTED) {
 				try {
 					this.otrSession.endSession();
 					this.resetOtrSession();
+					return true;
 				} catch (OtrException e) {
 					this.resetOtrSession();
+					return false;
 				}
 			} else {
 				this.resetOtrSession();
+				return false;
 			}
+		} else {
+			return false;
 		}
 	}
 

@@ -1269,7 +1269,7 @@ public class XmppConnectionService extends Service {
 			conversation.getMucOptions().setOffline();
 			conversation.deregisterWithBookmark();
 			Log.d(Config.LOGTAG, conversation.getAccount().getJid()
-					+ " leaving muc " + conversation.getContactJid());
+					+ ": leaving muc " + conversation.getContactJid());
 		} else {
 			account.pendingConferenceLeaves.add(conversation);
 		}
@@ -1286,7 +1286,9 @@ public class XmppConnectionService extends Service {
 						if (conversation.getMode() == Conversation.MODE_MULTI) {
 							leaveMuc(conversation);
 						} else {
-							conversation.endOtrIfNeeded();
+							if (conversation.endOtrIfNeeded()) {
+								Log.d(Config.LOGTAG,account.getJid()+": ended otr session with "+conversation.getContactJid());
+							}
 						}
 					}
 				}
