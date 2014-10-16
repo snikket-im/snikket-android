@@ -519,6 +519,7 @@ public class XmppConnection implements Runnable {
 			SSLSocket sslSocket = (SSLSocket) factory.createSocket(socket,
 					socket.getInetAddress().getHostAddress(), socket.getPort(),
 					true);
+			sslSocket.setEnabledProtocols(sslSocket.getSupportedProtocols());
 
 			if (verifier != null
 					&& !verifier.verify(account.getServer(),
