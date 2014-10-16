@@ -62,8 +62,7 @@ public class HttpConnection implements Downloadable {
 	public void cancel() {
 		mHttpConnectionManager.finishConnection(this);
 		message.setDownloadable(null);
-		message.setBody(mUrl.toString());
-		mXmppConnectionService.updateMessage(message);
+		mXmppConnectionService.updateConversationUi();
 	}
 
 	private void finish() {
@@ -91,7 +90,6 @@ public class HttpConnection implements Downloadable {
 				return;
 			}
 			file.setExpectedSize(size);
-			message.setType(Message.TYPE_IMAGE);
 			if (size <= mHttpConnectionManager.getAutoAcceptFileSize() && mAutostart) {
 				start();
 			} else {
@@ -159,6 +157,7 @@ public class HttpConnection implements Downloadable {
 			int imageWidth = options.outWidth;
 			message.setBody(mUrl.toString() + "," + file.getSize() + ','
 					+ imageWidth + ',' + imageHeight);
+			message.setType(Message.TYPE_IMAGE);
 			mXmppConnectionService.updateMessage(message);
 		}
 
