@@ -10,10 +10,10 @@ Conversations - the very last word in instant messaging
   privacy
 * Rely on existing, well established protocols (XMPP)
 * Do not require a Google Account or specifically Google Cloud Messaging (GCM)
-* Require as little permissons as possible
+* Require as few permissions as possible
 
 ##Features
-* End-to-end encryption with either OTR or openPGP
+* End-to-end encryption with either [OTR](https://otr.cypherpunks.ca/) or [OpenPGP](http://www.openpgp.org/about_openpgp/)
 * Sending and receiving images
 * Indication when your contact has read your message
 * Intuitive UI that follows Android Design guidelines
