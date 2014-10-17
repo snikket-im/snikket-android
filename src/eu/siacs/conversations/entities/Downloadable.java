@@ -12,7 +12,7 @@ public interface Downloadable {
 	public static final int STATUS_DOWNLOADING = 0x204;
 	public static final int STATUS_DELETED = 0x205;
 
-	public void start();
+	public boolean start();
 
 	public int getStatus();
 

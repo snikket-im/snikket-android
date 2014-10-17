@@ -1,11 +1,9 @@
 package eu.siacs.conversations.http;
 
-import java.net.URL;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import eu.siacs.conversations.entities.Message;
-import eu.siacs.conversations.entities.Message.ImageParams;
 import eu.siacs.conversations.services.AbstractConnectionManager;
 import eu.siacs.conversations.services.XmppConnectionService;
 

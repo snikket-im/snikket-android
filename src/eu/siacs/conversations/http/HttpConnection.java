@@ -12,7 +12,9 @@ import javax.net.ssl.HttpsURLConnection;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.util.Log;
 
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Downloadable;
 import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.entities.Message;
@@ -35,9 +37,14 @@ public class HttpConnection implements Downloadable {
 	}
 
 	@Override
-	public void start() {
-		changeStatus(STATUS_DOWNLOADING);
-		new Thread(new FileDownloader()).start();
+	public boolean start() {
+		if (mXmppConnectionService.hasInternetConnection()) {
+			changeStatus(STATUS_DOWNLOADING);
+			new Thread(new FileDownloader()).start();
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	public void init(Message message) {

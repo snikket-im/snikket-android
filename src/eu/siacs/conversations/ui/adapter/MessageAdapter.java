@@ -102,7 +102,8 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		}
 		boolean multiReceived = message.getConversation().getMode() == Conversation.MODE_MULTI
 				&& message.getMergedStatus() <= Message.STATUS_RECEIVED;
-		if (message.getType() == Message.TYPE_IMAGE) {
+		if (message.getType() == Message.TYPE_IMAGE
+				|| message.getDownloadable() != null) {
 			ImageParams params = message.getImageParams();
 			if (params.size != 0) {
 				filesize = params.size / 1024 + " KB";
@@ -260,6 +261,20 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		viewHolder.messageBody.setTextColor(activity.getPrimaryTextColor());
 		viewHolder.messageBody.setTypeface(null, Typeface.NORMAL);
 		viewHolder.messageBody.setTextIsSelectable(true);
+	}
+
+	private void displayDownloadableMessage(ViewHolder viewHolder,
+			final Message message) {
+		viewHolder.image.setVisibility(View.GONE);
+		viewHolder.messageBody.setVisibility(View.GONE);
+		viewHolder.download_button.setVisibility(View.VISIBLE);
+		viewHolder.download_button.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				startDonwloadable(message);
+			}
+		});
 	}
 
 	private void displayImageMessage(ViewHolder viewHolder,
@@ -474,20 +489,11 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 			} else if (d != null
 					&& d.getStatus() == Downloadable.STATUS_CHECKING) {
 				displayInfoMessage(viewHolder, R.string.checking_image);
-			} else if (d != null && d.getStatus() == Downloadable.STATUS_DELETED) {
+			} else if (d != null
+					&& d.getStatus() == Downloadable.STATUS_DELETED) {
 				displayInfoMessage(viewHolder, R.string.image_file_deleted);
 			} else if (d != null && d.getStatus() == Downloadable.STATUS_OFFER) {
-				viewHolder.image.setVisibility(View.GONE);
-				viewHolder.messageBody.setVisibility(View.GONE);
-				viewHolder.download_button.setVisibility(View.VISIBLE);
-				viewHolder.download_button
-						.setOnClickListener(new OnClickListener() {
-
-							@Override
-							public void onClick(View v) {
-								startDonwloadable(item);
-							}
-						});
+				displayDownloadableMessage(viewHolder, item);
 			} else if ((item.getEncryption() == Message.ENCRYPTION_DECRYPTED)
 					|| (item.getEncryption() == Message.ENCRYPTION_NONE)
 					|| (item.getEncryption() == Message.ENCRYPTION_OTR)) {
@@ -525,13 +531,13 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		return view;
 	}
 
-	public boolean startDonwloadable(Message message) {
+	public void startDonwloadable(Message message) {
 		Downloadable downloadable = message.getDownloadable();
 		if (downloadable != null) {
-			downloadable.start();
-			return true;
-		} else {
-			return false;
+			if (!downloadable.start()) {
+				Toast.makeText(activity, R.string.not_connected_try_again,
+						Toast.LENGTH_SHORT).show();
+			}
 		}
 	}
 

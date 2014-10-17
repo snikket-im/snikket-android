@@ -346,15 +346,10 @@ public class XmppConnectionService extends Service {
 			}
 		}
 		this.wakeLock.acquire();
-		ConnectivityManager cm = (ConnectivityManager) getApplicationContext()
-				.getSystemService(Context.CONNECTIVITY_SERVICE);
-		NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-		boolean isConnected = activeNetwork != null
-				&& activeNetwork.isConnected();
-
+		
 		for (Account account : accounts) {
 			if (!account.isOptionSet(Account.OPTION_DISABLED)) {
-				if (!isConnected) {
+				if (!hasInternetConnection()) {
 					account.setStatus(Account.STATUS_NO_INTERNET);
 					if (statusListener != null) {
 						statusListener.onStatusChanged(account);
@@ -411,6 +406,13 @@ public class XmppConnectionService extends Service {
 			}
 		}
 		return START_STICKY;
+	}
+	
+	public boolean hasInternetConnection() {
+		ConnectivityManager cm = (ConnectivityManager) getApplicationContext()
+				.getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+		return activeNetwork != null && activeNetwork.isConnected();
 	}
 
 	@SuppressLint("TrulyRandom")
@@ -1873,8 +1875,8 @@ public class XmppConnectionService extends Service {
 	private class DeletedDownloadable implements Downloadable {
 
 		@Override
-		public void start() {
-			return;
+		public boolean start() {
+			return false;
 		}
 
 		@Override

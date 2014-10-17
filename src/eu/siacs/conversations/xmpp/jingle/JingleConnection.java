@@ -875,17 +875,20 @@ public class JingleConnection implements Downloadable {
 		return this.transport;
 	}
 
-	public void start() {
-		if (mJingleStatus == JINGLE_STATUS_INITIATED) {
-			new Thread(new Runnable() {
-
-				@Override
-				public void run() {
-					sendAccept();
-				}
-			}).start();
+	public boolean start() {
+		if (account.getStatus() == Account.STATUS_ONLINE) {
+			if (mJingleStatus == JINGLE_STATUS_INITIATED) {
+				new Thread(new Runnable() {
+	
+					@Override
+					public void run() {
+						sendAccept();
+					}
+				}).start();
+			}
+			return true;
 		} else {
-			Log.d(Config.LOGTAG, "status (" + mJingleStatus + ") was not ok");
+			return false;
 		}
 	}
 

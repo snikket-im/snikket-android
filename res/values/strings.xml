@@ -268,5 +268,6 @@
     <string name="using_account">using account %s</string>
     <string name="checking_image">Checking image on HTTP host</string>
     <string name="image_file_deleted">The image file has been deleted</string>
+    <string name="not_connected_try_again">You are not connected. Try again later</string>
 
 </resources>
