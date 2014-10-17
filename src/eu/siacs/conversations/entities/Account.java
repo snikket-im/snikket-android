@@ -11,6 +11,7 @@ import net.java.otr4j.crypto.OtrCryptoException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.OtrEngine;
 import eu.siacs.conversations.persistance.FileBackend;
@@ -21,6 +22,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.os.SystemClock;
 
 public class Account extends AbstractEntity {
 
@@ -64,16 +66,14 @@ public class Account extends AbstractEntity {
 
 	protected boolean online = false;
 
-	transient OtrEngine otrEngine = null;
-	transient XmppConnection xmppConnection = null;
-	transient protected Presences presences = new Presences();
-
+	private OtrEngine otrEngine = null;
+	private XmppConnection xmppConnection = null;
+	private Presences presences = new Presences();
+	private long mEndGracePeriod = 0L;
 	private String otrFingerprint;
-
 	private Roster roster = null;
-
+	
 	private List<Bookmark> bookmarks = new CopyOnWriteArrayList<Bookmark>();
-
 	public List<Conversation> pendingConferenceJoins = new CopyOnWriteArrayList<Conversation>();
 	public List<Conversation> pendingConferenceLeaves = new CopyOnWriteArrayList<Conversation>();
 
@@ -400,5 +400,18 @@ public class Account extends AbstractEntity {
 		default:
 			return R.string.account_status_unknown;
 		}
+	}
+	
+	public void activateGracePeriod() {
+		this.mEndGracePeriod = SystemClock.elapsedRealtime()
+				+ (Config.CARBON_GRACE_PERIOD * 1000);
+	}
+
+	public void deactivateGracePeriod() {
+		this.mEndGracePeriod = 0L;
+	}
+
+	public boolean inGracePeriod() {
+		return SystemClock.elapsedRealtime() < this.mEndGracePeriod;
 	}
 }

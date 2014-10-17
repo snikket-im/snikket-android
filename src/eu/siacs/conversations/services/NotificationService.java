@@ -20,6 +20,7 @@ import android.text.Html;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
+import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.ui.ConversationActivity;
@@ -34,9 +35,7 @@ public class NotificationService {
 	public int NOTIFICATION_ID = 0x2342;
 	private Conversation mOpenConversation;
 	private boolean mIsInForeground;
-
-	private long mEndGracePeriod = 0L;
-
+	
 	public NotificationService(XmppConnectionService service) {
 		this.mXmppConnectionService = service;
 		this.mNotificationManager = (NotificationManager) service
@@ -62,8 +61,9 @@ public class NotificationService {
 				notifications.put(conversationUuid, mList);
 			}
 		}
+		Account account = message.getConversation().getAccount();
 		updateNotification((!(this.mIsInForeground && this.mOpenConversation == null) || !isScreenOn)
-				&& !inGracePeriod());
+				&& !account.inGracePeriod());
 	}
 
 	public void clear() {
@@ -170,9 +170,7 @@ public class NotificationService {
 				}
 			}
 			mBuilder.setDeleteIntent(createDeleteIntent());
-			if (!inGracePeriod()) {
-				mBuilder.setLights(0xffffffff, 2000, 4000);
-			}
+			mBuilder.setLights(0xffffffff, 2000, 4000);
 			Notification notification = mBuilder.build();
 			mNotificationManager.notify(NOTIFICATION_ID, notification);
 		}
@@ -230,18 +228,5 @@ public class NotificationService {
 
 	public void setIsInForeground(boolean foreground) {
 		this.mIsInForeground = foreground;
-	}
-
-	public void activateGracePeriod() {
-		this.mEndGracePeriod = SystemClock.elapsedRealtime()
-				+ (Config.CARBON_GRACE_PERIOD * 1000);
-	}
-
-	public void deactivateGracePeriod() {
-		this.mEndGracePeriod = 0L;
-	}
-
-	private boolean inGracePeriod() {
-		return SystemClock.elapsedRealtime() < this.mEndGracePeriod;
 	}
 }

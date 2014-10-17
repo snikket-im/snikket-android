@@ -529,6 +529,7 @@ public class XmppConnectionService extends Service {
 
 	synchronized public void sendMessage(Message message) {
 		Account account = message.getConversation().getAccount();
+		account.deactivateGracePeriod();
 		Conversation conv = message.getConversation();
 		MessagePacket packet = null;
 		boolean saveInDb = true;
@@ -1019,7 +1020,6 @@ public class XmppConnectionService extends Service {
 			return;
 		}
 		synchronized (this.convChangedListenerCount) {
-			this.mNotificationService.deactivateGracePeriod();
 			if (checkListeners()) {
 				switchToForeground();
 			}
@@ -1049,7 +1049,6 @@ public class XmppConnectionService extends Service {
 			return;
 		}
 		synchronized (this.accountChangedListenerCount) {
-			this.mNotificationService.deactivateGracePeriod();
 			if (checkListeners()) {
 				switchToForeground();
 			}
@@ -1077,7 +1076,6 @@ public class XmppConnectionService extends Service {
 			return;
 		}
 		synchronized (this.rosterChangedListenerCount) {
-			this.mNotificationService.deactivateGracePeriod();
 			if (checkListeners()) {
 				switchToForeground();
 			}

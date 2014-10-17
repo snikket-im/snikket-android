@@ -58,8 +58,7 @@ public class PresenceParser extends AbstractParser implements
 							Presences.parseShow(packet.findChild("show")));
 				} else if (type.equals("unavailable")) {
 					account.removePresence(fromParts[1]);
-					mXmppConnectionService.getNotificationService()
-							.deactivateGracePeriod();
+					account.deactivateGracePeriod();
 				}
 			}
 		} else {
