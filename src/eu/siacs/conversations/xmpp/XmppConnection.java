@@ -10,6 +10,7 @@ import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
@@ -519,7 +520,14 @@ public class XmppConnection implements Runnable {
 			SSLSocket sslSocket = (SSLSocket) factory.createSocket(socket,
 					socket.getInetAddress().getHostAddress(), socket.getPort(),
 					true);
-			sslSocket.setEnabledProtocols(sslSocket.getSupportedProtocols());
+
+			// Support all protocols except legacy SSL.
+			// The min SDK version prevents us having to worry about SSLv2. In future, this may be
+			// true of SSLv3 as well.
+			final List<String> supportedProtocols = new LinkedList<String>(Arrays.asList(
+						sslSocket.getSupportedProtocols()));
+			supportedProtocols.remove("SSLv3");
+			sslSocket.setEnabledProtocols(supportedProtocols.toArray(new String[supportedProtocols.size()]));
 
 			if (verifier != null
 					&& !verifier.verify(account.getServer(),
