@@ -517,7 +517,7 @@ public class XmppConnection implements Runnable {
 	}
 
 	private boolean enableLegacySSL() {
-		return getPreferences().getBoolean("enable_legacy_ssl", true);
+		return getPreferences().getBoolean("enable_legacy_ssl", false);
 	}
 
 	private void switchOverToTls(Tag currentTag) throws XmlPullParserException,
