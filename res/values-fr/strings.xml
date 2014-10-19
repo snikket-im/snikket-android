@@ -232,7 +232,7 @@
     <string name="server_info_session_established">Session établie</string>
     <string name="additional_information">Informations supplémentaires</string>
     <string name="skip">Passer</string>
-    <string name="disable_notifications"Désactiver les notifications</string>
+	<string name="disable_notifications">Désactiver les notifications</string>
     <string name="disable_notifications_for_this_conversation">Désactiver les notifications pour cette conversation</string>
     <string name="notifications_disabled">Notifications are Désactivées</string>
     <string name="enable">Activer</string>
