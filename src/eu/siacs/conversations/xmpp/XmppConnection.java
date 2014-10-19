@@ -10,8 +10,10 @@ import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
 
@@ -26,15 +28,19 @@ import org.xmlpull.v1.XmlPullParserException;
 
 import de.duenndns.ssl.MemorizingTrustManager;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.os.SystemClock;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.util.SparseArray;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.services.XmppConnectionService;
+import eu.siacs.conversations.ui.StartConversationActivity;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.DNSHelper;
 import eu.siacs.conversations.utils.zlib.ZLibOutputStream;
@@ -105,6 +111,7 @@ public class XmppConnection implements Runnable {
 	private OnBindListener bindListener = null;
 	private OnMessageAcknowledged acknowledgedListener = null;
 	private MemorizingTrustManager mMemorizingTrustManager;
+    private final Context applicationContext;
 
 	public XmppConnection(Account account, XmppConnectionService service) {
 		this.mRandom = service.getRNG();
@@ -113,6 +120,7 @@ public class XmppConnection implements Runnable {
 		this.wakeLock = service.getPowerManager().newWakeLock(
 				PowerManager.PARTIAL_WAKE_LOCK, account.getJid());
 		tagWriter = new TagWriter();
+        applicationContext = service.getApplicationContext();
 	}
 
 	protected void changeStatus(int nextStatus) {
@@ -377,13 +385,13 @@ public class XmppConnection implements Runnable {
 		iq.addChild("ping", "urn:xmpp:ping");
 		this.sendIqPacket(iq, new OnIqPacketReceived() {
 
-			@Override
-			public void onIqPacketReceived(Account account, IqPacket packet) {
-				Log.d(Config.LOGTAG, account.getJid()
-						+ ": online with resource " + account.getResource());
-				changeStatus(Account.STATUS_ONLINE);
-			}
-		});
+            @Override
+            public void onIqPacketReceived(Account account, IqPacket packet) {
+                Log.d(Config.LOGTAG, account.getJid()
+                        + ": online with resource " + account.getResource());
+                changeStatus(Account.STATUS_ONLINE);
+            }
+        });
 	}
 
 	private Element processPacket(Tag currentTag, int packetType)
@@ -519,6 +527,14 @@ public class XmppConnection implements Runnable {
 		tagWriter.writeTag(startTLS);
 	}
 
+	private SharedPreferences getPreferences() {
+		return PreferenceManager.getDefaultSharedPreferences(applicationContext);
+	}
+
+	private boolean enableLegacySSL() {
+		return getPreferences().getBoolean("enable_legacy_ssl", false);
+	}
+
 	private void switchOverToTls(Tag currentTag) throws XmlPullParserException,
 			IOException {
 		tagReader.readTag();
@@ -534,6 +550,21 @@ public class XmppConnection implements Runnable {
 			SSLSocket sslSocket = (SSLSocket) factory.createSocket(socket,
 					socket.getInetAddress().getHostAddress(), socket.getPort(),
 					true);
+
+			// Support all protocols except legacy SSL.
+			// The min SDK version prevents us having to worry about SSLv2. In future, this may be
+			// true of SSLv3 as well.
+			final String[] supportProtocols;
+			if (enableLegacySSL()) {
+				supportProtocols = sslSocket.getSupportedProtocols();
+			} else {
+				final List<String> supportedProtocols = new LinkedList<String>(Arrays.asList(
+							sslSocket.getSupportedProtocols()));
+				supportedProtocols.remove("SSLv3");
+				supportProtocols = new String[supportedProtocols.size()];
+				supportedProtocols.toArray(supportProtocols);
+			}
+			sslSocket.setEnabledProtocols(supportProtocols);
 
 			if (verifier != null
 					&& !verifier.verify(account.getServer(),
