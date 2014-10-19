@@ -6,15 +6,18 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 
 import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLHandshakeException;
+import javax.net.ssl.X509TrustManager;
 
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.util.Log;
 
-import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Downloadable;
 import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.entities.Message;
@@ -39,8 +42,12 @@ public class HttpConnection implements Downloadable {
 	@Override
 	public boolean start() {
 		if (mXmppConnectionService.hasInternetConnection()) {
-			changeStatus(STATUS_DOWNLOADING);
-			new Thread(new FileDownloader()).start();
+			if (this.mStatus == STATUS_OFFER_CHECK_FILESIZE) {
+				checkFileSize(true);
+			} else {
+				changeStatus(STATUS_DOWNLOADING);
+				new Thread(new FileDownloader()).start();
+			}
 			return true;
 		} else {
 			return false;
@@ -52,18 +59,18 @@ public class HttpConnection implements Downloadable {
 		this.message.setDownloadable(this);
 		try {
 			mUrl = new URL(message.getBody());
-			this.file = mXmppConnectionService.getFileBackend()
-					.getFile(message, false);
+			this.file = mXmppConnectionService.getFileBackend().getFile(
+					message, false);
 			this.mAutostart = true;
-			checkFileSize();
+			checkFileSize(false);
 		} catch (MalformedURLException e) {
 			this.cancel();
 		}
 	}
 
-	private void checkFileSize() {
+	private void checkFileSize(boolean interactive) {
 		changeStatus(STATUS_CHECKING);
-		new Thread(new FileSizeChecker()).start();
+		new Thread(new FileSizeChecker(interactive)).start();
 	}
 
 	public void cancel() {
@@ -84,33 +91,62 @@ public class HttpConnection implements Downloadable {
 		this.mStatus = status;
 		mXmppConnectionService.updateConversationUi();
 	}
+	
+	private void setupTrustManager(HttpsURLConnection connection, boolean interactive) {
+		X509TrustManager trustManager;
+		if (interactive) {
+			trustManager = mXmppConnectionService.getMemorizingTrustManager();
+		} else {
+			trustManager = mXmppConnectionService.getMemorizingTrustManager().getNonInteractive();
+		}
+		try {
+			SSLContext sc = SSLContext.getInstance("TLS");
+			sc.init(null,new X509TrustManager[] { trustManager },mXmppConnectionService.getRNG());
+			connection.setSSLSocketFactory(sc.getSocketFactory());
+		} catch (KeyManagementException e) {
+			return;
+		} catch (NoSuchAlgorithmException e) {
+			return;
+		}
+	}
 
 	private class FileSizeChecker implements Runnable {
+		
+		private boolean interactive = false;
+
+		public FileSizeChecker(boolean interactive) {
+			this.interactive = interactive;
+		}
 
 		@Override
 		public void run() {
 			long size;
 			try {
 				size = retrieveFileSize();
+			} catch (SSLHandshakeException e) {
+				changeStatus(STATUS_OFFER_CHECK_FILESIZE);
+				return;
 			} catch (IOException e) {
 				cancel();
 				return;
 			}
 			file.setExpectedSize(size);
-			if (size <= mHttpConnectionManager.getAutoAcceptFileSize() && mAutostart) {
+			if (size <= mHttpConnectionManager.getAutoAcceptFileSize()
+					&& mAutostart) {
 				start();
 			} else {
 				changeStatus(STATUS_OFFER);
 			}
 		}
 
-		private long retrieveFileSize() throws IOException {
+		private long retrieveFileSize() throws IOException, SSLHandshakeException {
 			HttpURLConnection connection = (HttpURLConnection) mUrl
 					.openConnection();
 			connection.setRequestMethod("HEAD");
 			if (connection instanceof HttpsURLConnection) {
-
+				setupTrustManager((HttpsURLConnection) connection, interactive);
 			}
+			connection.connect();
 			String contentLength = connection.getHeaderField("Content-Length");
 			if (contentLength == null) {
 				throw new IOException();
@@ -141,7 +177,7 @@ public class HttpConnection implements Downloadable {
 			HttpURLConnection connection = (HttpURLConnection) mUrl
 					.openConnection();
 			if (connection instanceof HttpsURLConnection) {
-
+				setupTrustManager((HttpsURLConnection) connection, true);
 			}
 			BufferedInputStream is = new BufferedInputStream(
 					connection.getInputStream());

@@ -264,10 +264,11 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 	}
 
 	private void displayDownloadableMessage(ViewHolder viewHolder,
-			final Message message) {
+			final Message message, int resid) {
 		viewHolder.image.setVisibility(View.GONE);
 		viewHolder.messageBody.setVisibility(View.GONE);
 		viewHolder.download_button.setVisibility(View.VISIBLE);
+		viewHolder.download_button.setText(resid);
 		viewHolder.download_button.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -493,7 +494,9 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 					&& d.getStatus() == Downloadable.STATUS_DELETED) {
 				displayInfoMessage(viewHolder, R.string.image_file_deleted);
 			} else if (d != null && d.getStatus() == Downloadable.STATUS_OFFER) {
-				displayDownloadableMessage(viewHolder, item);
+				displayDownloadableMessage(viewHolder, item,R.string.download_image);
+			} else if (d != null && d.getStatus() == Downloadable.STATUS_OFFER_CHECK_FILESIZE) {
+				displayDownloadableMessage(viewHolder, item,R.string.check_image_filesize);
 			} else if ((item.getEncryption() == Message.ENCRYPTION_DECRYPTED)
 					|| (item.getEncryption() == Message.ENCRYPTION_NONE)
 					|| (item.getEncryption() == Message.ENCRYPTION_OTR)) {

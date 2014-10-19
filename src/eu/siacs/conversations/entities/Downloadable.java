@@ -11,6 +11,7 @@ public interface Downloadable {
 	public static final int STATUS_OFFER = 0x203;
 	public static final int STATUS_DOWNLOADING = 0x204;
 	public static final int STATUS_DELETED = 0x205;
+	public static final int STATUS_OFFER_CHECK_FILESIZE = 0x206;
 
 	public boolean start();
 
