@@ -80,6 +80,7 @@ public class XmppConnection implements Runnable {
 	private SparseArray<String> messageReceipts = new SparseArray<String>();
 
 	private boolean usingCompression = false;
+	private boolean usingEncryption = false;
 
 	private int stanzasReceived = 0;
 	private int stanzasSent = 0;
@@ -135,6 +136,7 @@ public class XmppConnection implements Runnable {
 	protected void connect() {
 		Log.d(Config.LOGTAG, account.getJid() + ": connecting");
 		usingCompression = false;
+		usingEncryption = false;
 		lastConnect = SystemClock.elapsedRealtime();
 		lastPingSent = SystemClock.elapsedRealtime();
 		this.attempt++;
@@ -546,6 +548,7 @@ public class XmppConnection implements Runnable {
 			sendStartStream();
 			Log.d(Config.LOGTAG, account.getJid()
 					+ ": TLS connection established");
+			usingEncryption = true;
 			processStream(tagReader.readTag());
 			sslSocket.close();
 		} catch (NoSuchAlgorithmException e1) {
@@ -575,8 +578,7 @@ public class XmppConnection implements Runnable {
 	private void processStreamFeatures(Tag currentTag)
 			throws XmlPullParserException, IOException {
 		this.streamFeatures = tagReader.readElement(currentTag);
-		if (this.streamFeatures.hasChild("starttls")
-				&& account.isOptionSet(Account.OPTION_USETLS)) {
+		if (this.streamFeatures.hasChild("starttls") && !usingEncryption) {
 			sendStartTLS();
 		} else if (compressionAvailable()) {
 			sendCompressionZlib();
@@ -588,7 +590,7 @@ public class XmppConnection implements Runnable {
 			changeStatus(Account.STATUS_REGISTRATION_NOT_SUPPORTED);
 			disconnect(true);
 		} else if (this.streamFeatures.hasChild("mechanisms")
-				&& shouldAuthenticate) {
+				&& shouldAuthenticate && usingEncryption) {
 			List<String> mechanisms = extractMechanisms(streamFeatures
 					.findChild("mechanisms"));
 			if (mechanisms.contains("PLAIN")) {
