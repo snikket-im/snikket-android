@@ -128,20 +128,20 @@ another.
 
 ####I get 'delivery failed' on my messages
 If you get delivery failed on images it’s probably because the recipient lost
-network connectivity during recepiton. In that case you can try it again at a
+network connectivity during reception. In that case you can try it again at a
 later time.
 
 For text messages the answer to your question is a little bit more complex.
 'delivery failed' on text messages is always something that is being reported by
 the server. The most common reason for this is that the recipient failed to
-resume a connection. When a client loses connectivity for a short time the client
-usually has a five minute window to pick up that connection again. When the
-client fails to do so because the network connectivity is out for longer than
-that all messages sent to that client will be returned to the sender resulting
-in a delivery failed.
+resume a connection. When a client loses connectivity for a short time the
+client usually has a five minute window to pick up that connection again. When
+the client fails to do so because the network connectivity is out for longer
+than that all messages sent to that client will be returned to the sender
+resulting in a delivery failed.
 
 Other less common reasons are that the message you sent didn’t meet some
-criterias enforced by the server. (Too large, too many) Another reason could be
+criteria enforced by the server. (Too large, too many) Another reason could be
 that the recipient is offline and the server doesn’t provide offline storage.
 
 Usually you are able to distinguish between these two groups in the fact that
@@ -165,7 +165,7 @@ whether or not your messages are being read.
 Similar things can be said for priorities. In the past priorities have been used
 (By servers, not by clients!) to route your messages to one specific client.
 With carbon messages (XEP-0280, supported by Conversations since 0.1) this is no
-longer necessary. Using priorities to route OTR messages isn't pratical either
+longer necessary. Using priorities to route OTR messages isn't practical either
 because they are not changeable on the fly. Metrics like last active client
 (the client which sent the last message) are much better.
 
@@ -179,7 +179,7 @@ Conversations is trying to get rid of old behaviours and set an example for
 other clients.
 
 ####Conversations is missing a certain feature
-I'm open for new feature suggestions. You can use the issue tracker on github.
+I'm open for new feature suggestions. You can use the issue tracker on Github.
 Please take some time to browse through the issues to see if someone else
 already suggested it. Be assured that I read each and every ticket. If I like it
 I will leave it open until it's implemented. If I don't like it I will close
@@ -241,7 +241,7 @@ adb -d logcat -v time -s conversations
 ````
 ####I found a bug
 Please report it to our issue tracker. If your app crashes please provide a
-stack trace. If you are experiencing missbehaviour please provide detailed
+stack trace. If you are experiencing misbehaviour please provide detailed
 steps to reproduce.
 Always mention whether you are running the latest Play Store version or the
 current HEAD.
