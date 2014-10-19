@@ -307,7 +307,7 @@ public class JingleConnection implements Downloadable {
 				if (supportedFile) {
 					long size = Long.parseLong(fileSize.getContent());
 					message.setBody(Long.toString(size));
-					conversation.getMessages().add(message);
+					conversation.add(message);
 					mXmppConnectionService.updateConversationUi();
 					if (size <= this.mJingleConnectionManager
 							.getAutoAcceptFileSize()) {
@@ -634,6 +634,7 @@ public class JingleConnection implements Downloadable {
 	}
 
 	private void sendFallbackToIbb() {
+		Log.d(Config.LOGTAG,"sending fallback to ibb");
 		JinglePacket packet = this.bootstrapPacket("transport-replace");
 		Content content = new Content(this.contentCreator, this.contentName);
 		this.transportId = this.mJingleConnectionManager.nextRandomId();
@@ -645,6 +646,7 @@ public class JingleConnection implements Downloadable {
 	}
 
 	private boolean receiveFallbackToIbb(JinglePacket packet) {
+		Log.d(Config.LOGTAG,"receiving fallack to ibb");
 		String receivedBlockSize = packet.getJingleContent().ibbTransport()
 				.getAttribute("block-size");
 		if (receivedBlockSize != null) {

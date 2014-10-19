@@ -152,14 +152,14 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		return list;
 	}
 
-	public CopyOnWriteArrayList<Message> getMessages(
+	public ArrayList<Message> getMessages(
 			Conversation conversations, int limit) {
 		return getMessages(conversations, limit, -1);
 	}
 
-	public CopyOnWriteArrayList<Message> getMessages(Conversation conversation,
+	public ArrayList<Message> getMessages(Conversation conversation,
 			int limit, long timestamp) {
-		CopyOnWriteArrayList<Message> list = new CopyOnWriteArrayList<Message>();
+		ArrayList<Message> list = new ArrayList<Message>();
 		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor cursor;
 		if (timestamp == -1) {
@@ -178,7 +178,9 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		if (cursor.getCount() > 0) {
 			cursor.moveToLast();
 			do {
-				list.add(Message.fromCursor(cursor));
+				Message message = Message.fromCursor(cursor);
+				message.setConversation(conversation);
+				list.add(message);
 			} while (cursor.moveToPrevious());
 		}
 		return list;

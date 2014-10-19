@@ -469,7 +469,7 @@ public class MessageParser extends AbstractParser implements
 			}
 		}
 		Conversation conversation = message.getConversation();
-		conversation.getMessages().add(message);
+		conversation.add(message);
 		if (packet.getType() != MessagePacket.TYPE_ERROR) {
 			if (message.getEncryption() == Message.ENCRYPTION_NONE
 					|| mXmppConnectionService.saveEncryptedMessages()) {

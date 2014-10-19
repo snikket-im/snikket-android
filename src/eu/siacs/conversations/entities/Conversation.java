@@ -1,8 +1,8 @@
 package eu.siacs.conversations.entities;
 
 import java.security.interfaces.DSAPublicKey;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -57,7 +57,7 @@ public class Conversation extends AbstractEntity {
 
 	private String nextPresence;
 
-	private transient CopyOnWriteArrayList<Message> messages = null;
+	private transient ArrayList<Message> messages = new ArrayList<Message>();
 	private transient Account account = null;
 
 	private transient SessionImpl otrSession;
@@ -104,17 +104,6 @@ public class Conversation extends AbstractEntity {
 	}
 
 	public List<Message> getMessages() {
-		if (messages == null) {
-			this.messages = new CopyOnWriteArrayList<Message>(); // prevent null
-																	// pointer
-		}
-
-		// populate with Conversation (this)
-
-		for (Message msg : messages) {
-			msg.setConversation(this);
-		}
-
 		return messages;
 	}
 
@@ -165,7 +154,7 @@ public class Conversation extends AbstractEntity {
 		}
 	}
 
-	public void setMessages(CopyOnWriteArrayList<Message> msgs) {
+	public void setMessages(ArrayList<Message> msgs) {
 		this.messages = msgs;
 	}
 
@@ -505,6 +494,19 @@ public class Conversation extends AbstractEntity {
 			} catch (NumberFormatException e) {
 				return defaultValue;
 			}
+		}
+	}
+	
+	public void add(Message message) {
+		message.setConversation(this);
+		synchronized (this.messages) {
+			this.messages.add(message);
+		}
+	}
+
+	public void addAll(int index, List<Message> messages) {
+		synchronized (this.messages) {
+			this.messages.addAll(index, messages);
 		}
 	}
 }
