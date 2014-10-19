@@ -529,7 +529,7 @@ public class XmppConnectionService extends Service {
 		return connection;
 	}
 
-	synchronized public void sendMessage(Message message) {
+	public void sendMessage(Message message) {
 		Account account = message.getConversation().getAccount();
 		account.deactivateGracePeriod();
 		Conversation conv = message.getConversation();
@@ -615,7 +615,7 @@ public class XmppConnectionService extends Service {
 			}
 
 		}
-		conv.getMessages().add(message);
+		conv.add(message);
 		if (saveInDb) {
 			if (message.getEncryption() == Message.ENCRYPTION_NONE
 					|| saveEncryptedMessages()) {
@@ -881,7 +881,7 @@ public class XmppConnectionService extends Service {
 		for (Message message : messages) {
 			message.setConversation(conversation);
 		}
-		conversation.getMessages().addAll(0, messages);
+		conversation.addAll(0, messages);
 		return messages.size();
 	}
 
