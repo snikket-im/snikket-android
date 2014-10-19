@@ -583,10 +583,10 @@ public class XmppConnection implements Runnable {
 		} else if (compressionAvailable()) {
 			sendCompressionZlib();
 		} else if (this.streamFeatures.hasChild("register")
-				&& (account.isOptionSet(Account.OPTION_REGISTER))) {
+				&& account.isOptionSet(Account.OPTION_REGISTER) && usingEncryption) {
 			sendRegistryRequest();
 		} else if (!this.streamFeatures.hasChild("register")
-				&& (account.isOptionSet(Account.OPTION_REGISTER))) {
+				&& account.isOptionSet(Account.OPTION_REGISTER)) {
 			changeStatus(Account.STATUS_REGISTRATION_NOT_SUPPORTED);
 			disconnect(true);
 		} else if (this.streamFeatures.hasChild("mechanisms")
@@ -606,6 +606,9 @@ public class XmppConnection implements Runnable {
 			this.tagWriter.writeStanzaAsync(resume);
 		} else if (this.streamFeatures.hasChild("bind") && shouldBind) {
 			sendBindRequest();
+		} else {
+			Log.d(Config.LOGTAG,account.getJid()+": incompatible server. disconnecting");
+			disconnect(true);
 		}
 	}
 
