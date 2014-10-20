@@ -313,10 +313,7 @@ public class ContactDetailsActivity extends XmppActivity {
 		}
 		accountJidTv.setText(getString(R.string.using_account, contact
 				.getAccount().getJid()));
-
-		UIHelper.prepareContactBadge(this, badge, contact,
-				getApplicationContext());
-
+		prepareContactBadge(badge, contact);
 		if (contact.getSystemAccount() == null) {
 			badge.setOnClickListener(onBadgeClick);
 		}
@@ -381,6 +378,16 @@ public class ContactDetailsActivity extends XmppActivity {
 		} else {
 			keys.setVisibility(View.GONE);
 		}
+	}
+
+	private void prepareContactBadge(QuickContactBadge badge, Contact contact) {
+		if (contact.getSystemAccount() != null) {
+			String[] systemAccount = contact.getSystemAccount().split("#");
+			long id = Long.parseLong(systemAccount[0]);
+			badge.assignContactUri(Contacts.getLookupUri(id, systemAccount[1]));
+		}
+		badge.setImageBitmap(xmppConnectionService.getAvatarService()
+				.getAvatar(contact, getPixel(72)));
 	}
 
 	protected void confirmToDeleteFingerprint(final String fingerprint) {

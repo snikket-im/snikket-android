@@ -358,8 +358,8 @@ public class JingleConnection implements Downloadable {
 		Content content = new Content(this.contentCreator, this.contentName);
 		if (message.getType() == Message.TYPE_IMAGE) {
 			content.setTransportId(this.transportId);
-			this.file = this.mXmppConnectionService.getFileBackend()
-					.getFile(message, false);
+			this.file = this.mXmppConnectionService.getFileBackend().getFile(
+					message, false);
 			if (message.getEncryption() == Message.ENCRYPTION_OTR) {
 				Conversation conversation = this.message.getConversation();
 				this.mXmppConnectionService.renewSymmetricKey(conversation);
@@ -634,7 +634,7 @@ public class JingleConnection implements Downloadable {
 	}
 
 	private void sendFallbackToIbb() {
-		Log.d(Config.LOGTAG,"sending fallback to ibb");
+		Log.d(Config.LOGTAG, "sending fallback to ibb");
 		JinglePacket packet = this.bootstrapPacket("transport-replace");
 		Content content = new Content(this.contentCreator, this.contentName);
 		this.transportId = this.mJingleConnectionManager.nextRandomId();
@@ -646,7 +646,7 @@ public class JingleConnection implements Downloadable {
 	}
 
 	private boolean receiveFallbackToIbb(JinglePacket packet) {
-		Log.d(Config.LOGTAG,"receiving fallack to ibb");
+		Log.d(Config.LOGTAG, "receiving fallack to ibb");
 		String receivedBlockSize = packet.getJingleContent().ibbTransport()
 				.getAttribute("block-size");
 		if (receivedBlockSize != null) {
@@ -881,7 +881,7 @@ public class JingleConnection implements Downloadable {
 		if (account.getStatus() == Account.STATUS_ONLINE) {
 			if (mJingleStatus == JINGLE_STATUS_INITIATED) {
 				new Thread(new Runnable() {
-	
+
 					@Override
 					public void run() {
 						sendAccept();

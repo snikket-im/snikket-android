@@ -91,17 +91,20 @@ public class HttpConnection implements Downloadable {
 		this.mStatus = status;
 		mXmppConnectionService.updateConversationUi();
 	}
-	
-	private void setupTrustManager(HttpsURLConnection connection, boolean interactive) {
+
+	private void setupTrustManager(HttpsURLConnection connection,
+			boolean interactive) {
 		X509TrustManager trustManager;
 		if (interactive) {
 			trustManager = mXmppConnectionService.getMemorizingTrustManager();
 		} else {
-			trustManager = mXmppConnectionService.getMemorizingTrustManager().getNonInteractive();
+			trustManager = mXmppConnectionService.getMemorizingTrustManager()
+					.getNonInteractive();
 		}
 		try {
 			SSLContext sc = SSLContext.getInstance("TLS");
-			sc.init(null,new X509TrustManager[] { trustManager },mXmppConnectionService.getRNG());
+			sc.init(null, new X509TrustManager[] { trustManager },
+					mXmppConnectionService.getRNG());
 			connection.setSSLSocketFactory(sc.getSocketFactory());
 		} catch (KeyManagementException e) {
 			return;
@@ -111,7 +114,7 @@ public class HttpConnection implements Downloadable {
 	}
 
 	private class FileSizeChecker implements Runnable {
-		
+
 		private boolean interactive = false;
 
 		public FileSizeChecker(boolean interactive) {
@@ -139,7 +142,8 @@ public class HttpConnection implements Downloadable {
 			}
 		}
 
-		private long retrieveFileSize() throws IOException, SSLHandshakeException {
+		private long retrieveFileSize() throws IOException,
+				SSLHandshakeException {
 			HttpURLConnection connection = (HttpURLConnection) mUrl
 					.openConnection();
 			connection.setRequestMethod("HEAD");

@@ -8,7 +8,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import eu.siacs.conversations.services.XmppConnectionService;
-import eu.siacs.conversations.utils.UIHelper;
 
 import net.java.otr4j.OtrException;
 import net.java.otr4j.crypto.OtrCryptoEngineImpl;
@@ -17,9 +16,7 @@ import net.java.otr4j.session.SessionID;
 import net.java.otr4j.session.SessionImpl;
 import net.java.otr4j.session.SessionStatus;
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.os.SystemClock;
 
 public class Conversation extends AbstractEntity {
@@ -329,9 +326,8 @@ public class Conversation extends AbstractEntity {
 
 	public synchronized MucOptions getMucOptions() {
 		if (this.mucOptions == null) {
-			this.mucOptions = new MucOptions(this.getAccount());
+			this.mucOptions = new MucOptions(this);
 		}
-		this.mucOptions.setConversation(this);
 		return this.mucOptions;
 	}
 
@@ -428,14 +424,6 @@ public class Conversation extends AbstractEntity {
 		return this.bookmark;
 	}
 
-	public Bitmap getImage(Context context, int size) {
-		if (mode == MODE_SINGLE) {
-			return getContact().getImage(size, context);
-		} else {
-			return UIHelper.getContactPicture(this, size, context, false);
-		}
-	}
-
 	public boolean hasDuplicateMessage(Message message) {
 		for (int i = this.getMessages().size() - 1; i >= 0; --i) {
 			if (this.messages.get(i).equals(message)) {
@@ -496,7 +484,7 @@ public class Conversation extends AbstractEntity {
 			}
 		}
 	}
-	
+
 	public void add(Message message) {
 		message.setConversation(this);
 		synchronized (this.messages) {

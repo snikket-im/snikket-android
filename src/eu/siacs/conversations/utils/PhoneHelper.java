@@ -22,7 +22,7 @@ public class PhoneHelper {
 
 		final String[] PROJECTION = new String[] { ContactsContract.Data._ID,
 				ContactsContract.Data.DISPLAY_NAME,
-				ContactsContract.Data.PHOTO_THUMBNAIL_URI,
+				ContactsContract.Data.PHOTO_URI,
 				ContactsContract.Data.LOOKUP_KEY,
 				ContactsContract.CommonDataKinds.Im.DATA };
 
@@ -50,10 +50,8 @@ public class PhoneHelper {
 							"displayname",
 							cursor.getString(cursor
 									.getColumnIndex(ContactsContract.Data.DISPLAY_NAME)));
-					contact.putString(
-							"photouri",
-							cursor.getString(cursor
-									.getColumnIndex(ContactsContract.Data.PHOTO_THUMBNAIL_URI)));
+					contact.putString("photouri", cursor.getString(cursor
+							.getColumnIndex(ContactsContract.Data.PHOTO_URI)));
 					contact.putString("lookup", cursor.getString(cursor
 							.getColumnIndex(ContactsContract.Data.LOOKUP_KEY)));
 

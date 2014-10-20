@@ -152,13 +152,12 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		return list;
 	}
 
-	public ArrayList<Message> getMessages(
-			Conversation conversations, int limit) {
+	public ArrayList<Message> getMessages(Conversation conversations, int limit) {
 		return getMessages(conversations, limit, -1);
 	}
 
-	public ArrayList<Message> getMessages(Conversation conversation,
-			int limit, long timestamp) {
+	public ArrayList<Message> getMessages(Conversation conversation, int limit,
+			long timestamp) {
 		ArrayList<Message> list = new ArrayList<Message>();
 		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor cursor;

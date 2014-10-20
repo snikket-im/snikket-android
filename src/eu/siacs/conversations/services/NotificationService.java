@@ -33,7 +33,7 @@ public class NotificationService {
 	public int NOTIFICATION_ID = 0x2342;
 	private Conversation mOpenConversation;
 	private boolean mIsInForeground;
-	
+
 	public NotificationService(XmppConnectionService service) {
 		this.mXmppConnectionService = service;
 		this.mNotificationManager = (NotificationManager) service
@@ -97,8 +97,8 @@ public class NotificationService {
 				if (messages.size() >= 1) {
 					Conversation conversation = messages.get(0)
 							.getConversation();
-					mBuilder.setLargeIcon(conversation.getImage(
-							mXmppConnectionService, 64));
+					// mBuilder.setLargeIcon(conversation.getImage(mXmppConnectionService,
+					// 64));
 					mBuilder.setContentTitle(conversation.getName());
 					StringBuilder text = new StringBuilder();
 					for (int i = 0; i < messages.size(); ++i) {

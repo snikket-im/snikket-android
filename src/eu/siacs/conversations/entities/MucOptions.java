@@ -102,6 +102,10 @@ public class MucOptions {
 		public long getPgpKeyId() {
 			return this.pgpKeyId;
 		}
+
+		public Contact getContact() {
+			return account.getRoster().getContactFromRoster(getJid());
+		}
 	}
 
 	private Account account;
@@ -116,8 +120,9 @@ public class MucOptions {
 	private String joinnick;
 	private String password = null;
 
-	public MucOptions(Account account) {
-		this.account = account;
+	public MucOptions(Conversation conversation) {
+		this.account = conversation.getAccount();
+		this.conversation = conversation;
 	}
 
 	public void deleteUser(String name) {
@@ -253,10 +258,6 @@ public class MucOptions {
 		this.joinnick = nick;
 	}
 
-	public void setConversation(Conversation conversation) {
-		this.conversation = conversation;
-	}
-
 	public boolean online() {
 		return this.isOnline;
 	}
@@ -360,5 +361,9 @@ public class MucOptions {
 		}
 		conversation
 				.setAttribute(Conversation.ATTRIBUTE_MUC_PASSWORD, password);
+	}
+
+	public Conversation getConversation() {
+		return this.conversation;
 	}
 }

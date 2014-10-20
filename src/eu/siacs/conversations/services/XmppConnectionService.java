@@ -111,6 +111,7 @@ public class XmppConnectionService extends Service {
 			this);
 	private HttpConnectionManager mHttpConnectionManager = new HttpConnectionManager(
 			this);
+	private AvatarService mAvatarService = new AvatarService(this);
 
 	private OnConversationUpdate mOnConversationUpdate = null;
 	private Integer convChangedListenerCount = 0;
@@ -144,9 +145,10 @@ public class XmppConnectionService extends Service {
 			startService(intent);
 		}
 	};
-	
-	private FileObserver fileObserver = new FileObserver(FileBackend.getConversationsDirectory()) {
-		
+
+	private FileObserver fileObserver = new FileObserver(
+			FileBackend.getConversationsDirectory()) {
+
 		@Override
 		public void onEvent(int event, String path) {
 			if (event == FileObserver.DELETE) {
@@ -286,6 +288,10 @@ public class XmppConnectionService extends Service {
 		return this.fileBackend;
 	}
 
+	public AvatarService getAvatarService() {
+		return this.mAvatarService;
+	}
+
 	public Message attachImageToConversation(final Conversation conversation,
 			final Uri uri, final UiCallback<Message> callback) {
 		final Message message;
@@ -346,7 +352,7 @@ public class XmppConnectionService extends Service {
 			}
 		}
 		this.wakeLock.acquire();
-		
+
 		for (Account account : accounts) {
 			if (!account.isOptionSet(Account.OPTION_DISABLED)) {
 				if (!hasInternetConnection()) {
@@ -407,7 +413,7 @@ public class XmppConnectionService extends Service {
 		}
 		return START_STICKY;
 	}
-	
+
 	public boolean hasInternetConnection() {
 		ConnectivityManager cm = (ConnectivityManager) getApplicationContext()
 				.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -818,21 +824,24 @@ public class XmppConnectionService extends Service {
 		}
 		return this.conversations;
 	}
-	
+
 	private void checkDeletedFiles(Conversation conversation) {
-		for(Message message : conversation.getMessages()) {
-			if (message.getType() == Message.TYPE_IMAGE && message.getEncryption() != Message.ENCRYPTION_PGP) {
+		for (Message message : conversation.getMessages()) {
+			if (message.getType() == Message.TYPE_IMAGE
+					&& message.getEncryption() != Message.ENCRYPTION_PGP) {
 				if (!getFileBackend().isFileAvailable(message)) {
 					message.setDownloadable(new DeletedDownloadable());
 				}
 			}
 		}
 	}
-	
+
 	private void markFileDeleted(String uuid) {
-		for(Conversation conversation : getConversations()) {
-			for(Message message : conversation.getMessages()) {
-				if (message.getType() == Message.TYPE_IMAGE && message.getEncryption() != Message.ENCRYPTION_PGP && message.getUuid().equals(uuid)) {
+		for (Conversation conversation : getConversations()) {
+			for (Message message : conversation.getMessages()) {
+				if (message.getType() == Message.TYPE_IMAGE
+						&& message.getEncryption() != Message.ENCRYPTION_PGP
+						&& message.getUuid().equals(uuid)) {
 					if (!getFileBackend().isFileAvailable(message)) {
 						message.setDownloadable(new DeletedDownloadable());
 						updateConversationUi();
@@ -1113,7 +1122,7 @@ public class XmppConnectionService extends Service {
 				}
 			}
 		}
-		Log.d(Config.LOGTAG,"app switched into foreground");
+		Log.d(Config.LOGTAG, "app switched into foreground");
 	}
 
 	private void switchToBackground() {
@@ -1126,7 +1135,7 @@ public class XmppConnectionService extends Service {
 			}
 		}
 		this.mNotificationService.setIsInForeground(false);
-		Log.d(Config.LOGTAG,"app switched into background");
+		Log.d(Config.LOGTAG, "app switched into background");
 	}
 
 	private boolean isScreenOn() {
@@ -1288,7 +1297,9 @@ public class XmppConnectionService extends Service {
 							leaveMuc(conversation);
 						} else {
 							if (conversation.endOtrIfNeeded()) {
-								Log.d(Config.LOGTAG,account.getJid()+": ended otr session with "+conversation.getContactJid());
+								Log.d(Config.LOGTAG, account.getJid()
+										+ ": ended otr session with "
+										+ conversation.getContactJid());
 							}
 						}
 					}
@@ -1871,7 +1882,7 @@ public class XmppConnectionService extends Service {
 	public HttpConnectionManager getHttpConnectionManager() {
 		return this.mHttpConnectionManager;
 	}
-	
+
 	private class DeletedDownloadable implements Downloadable {
 
 		@Override
@@ -1888,6 +1899,6 @@ public class XmppConnectionService extends Service {
 		public long getFileSize() {
 			return 0;
 		}
-		
+
 	}
 }

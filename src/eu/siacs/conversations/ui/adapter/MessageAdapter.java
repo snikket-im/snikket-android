@@ -59,8 +59,10 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		if (this.accountBitmap == null) {
 
 			if (getCount() > 0) {
-				this.accountBitmap = getItem(0).getConversation().getAccount()
-						.getImage(getContext(), 48);
+				this.accountBitmap = activity.xmppConnectionService
+						.getAvatarService().getAvatar(
+								getItem(0).getConversation().getAccount(),
+								activity.getPixel(48));
 			}
 		}
 		return this.accountBitmap;
@@ -494,9 +496,12 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 					&& d.getStatus() == Downloadable.STATUS_DELETED) {
 				displayInfoMessage(viewHolder, R.string.image_file_deleted);
 			} else if (d != null && d.getStatus() == Downloadable.STATUS_OFFER) {
-				displayDownloadableMessage(viewHolder, item,R.string.download_image);
-			} else if (d != null && d.getStatus() == Downloadable.STATUS_OFFER_CHECK_FILESIZE) {
-				displayDownloadableMessage(viewHolder, item,R.string.check_image_filesize);
+				displayDownloadableMessage(viewHolder, item,
+						R.string.download_image);
+			} else if (d != null
+					&& d.getStatus() == Downloadable.STATUS_OFFER_CHECK_FILESIZE) {
+				displayDownloadableMessage(viewHolder, item,
+						R.string.check_image_filesize);
 			} else if ((item.getEncryption() == Message.ENCRYPTION_DECRYPTED)
 					|| (item.getEncryption() == Message.ENCRYPTION_NONE)
 					|| (item.getEncryption() == Message.ENCRYPTION_OTR)) {
@@ -564,7 +569,8 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		public Bitmap get(Contact contact, Context context) {
 			if (!contactBitmaps.containsKey(contact.getJid())) {
 				contactBitmaps.put(contact.getJid(),
-						contact.getImage(48, context));
+						activity.xmppConnectionService.getAvatarService()
+								.getAvatar(contact, activity.getPixel(48)));
 			}
 			return contactBitmaps.get(contact.getJid());
 		}
@@ -573,8 +579,8 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 			if (unknownBitmaps.containsKey(name)) {
 				return unknownBitmaps.get(name);
 			} else {
-				Bitmap bm = UIHelper
-						.getContactPicture(name, 48, context, false);
+				Bitmap bm = activity.xmppConnectionService.getAvatarService()
+						.getAvatar(name, activity.getPixel(48));
 				unknownBitmaps.put(name, bm);
 				return bm;
 			}

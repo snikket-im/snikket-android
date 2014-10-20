@@ -127,7 +127,9 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 
 		ImageView profilePicture = (ImageView) view
 				.findViewById(R.id.conversation_image);
-		profilePicture.setImageBitmap(conversation.getImage(activity, 56));
+		profilePicture.setImageBitmap(activity.xmppConnectionService
+				.getAvatarService().getAvatar(conversation,
+						activity.getPixel(56)));
 
 		return view;
 	}

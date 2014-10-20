@@ -526,6 +526,11 @@ public abstract class XmppActivity extends Activity {
 		return this.mSecondaryBackgroundColor;
 	}
 
+	public int getPixel(int dp) {
+		DisplayMetrics metrics = getResources().getDisplayMetrics();
+		return ((int) (dp * metrics.density));
+	}
+
 	class BitmapWorkerTask extends AsyncTask<Message, Void, Bitmap> {
 		private final WeakReference<ImageView> imageViewReference;
 		private Message message = null;

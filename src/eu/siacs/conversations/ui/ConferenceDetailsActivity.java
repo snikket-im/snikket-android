@@ -201,7 +201,8 @@ public class ConferenceDetailsActivity extends XmppActivity {
 	private void populateView() {
 		mAccountJid.setText(getString(R.string.using_account, conversation
 				.getAccount().getJid()));
-		mYourPhoto.setImageBitmap(conversation.getAccount().getImage(this, 48));
+		mYourPhoto.setImageBitmap(xmppConnectionService.getAvatarService()
+				.getAvatar(conversation.getAccount(), getPixel(48)));
 		setTitle(conversation.getName());
 		mFullJid.setText(conversation.getContactJid().split("/", 2)[0]);
 		mYourNick.setText(conversation.getMucOptions().getActualNick());
@@ -248,21 +249,23 @@ public class ConferenceDetailsActivity extends XmppActivity {
 			}
 			Bitmap bm;
 			if (user.getJid() != null) {
-				Contact contact = account.getRoster().getContact(user.getJid());
-				if (contact.showInRoster()) {
-					bm = contact.getImage(48, this);
+				Contact contact = account.getRoster().getContactFromRoster(
+						user.getJid());
+				if (contact != null) {
+					bm = xmppConnectionService.getAvatarService().getAvatar(
+							contact, getPixel(48));
 					name.setText(contact.getDisplayName());
 					role.setText(user.getName() + " \u2022 "
 							+ getReadableRole(user.getRole()));
 				} else {
-					bm = UIHelper.getContactPicture(user.getName(), 48, this,
-							false);
+					bm = xmppConnectionService.getAvatarService().getAvatar(
+							user.getName(), getPixel(48));
 					name.setText(user.getName());
 					role.setText(getReadableRole(user.getRole()));
 				}
 			} else {
-				bm = UIHelper
-						.getContactPicture(user.getName(), 48, this, false);
+				bm = xmppConnectionService.getAvatarService().getAvatar(
+						user.getName(), getPixel(48));
 				name.setText(user.getName());
 				role.setText(getReadableRole(user.getRole()));
 			}

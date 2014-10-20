@@ -110,7 +110,7 @@ public class XmppConnection implements Runnable {
 	private OnBindListener bindListener = null;
 	private OnMessageAcknowledged acknowledgedListener = null;
 	private MemorizingTrustManager mMemorizingTrustManager;
-    private final Context applicationContext;
+	private final Context applicationContext;
 
 	public XmppConnection(Account account, XmppConnectionService service) {
 		this.mRandom = service.getRNG();
@@ -119,7 +119,7 @@ public class XmppConnection implements Runnable {
 		this.wakeLock = service.getPowerManager().newWakeLock(
 				PowerManager.PARTIAL_WAKE_LOCK, account.getJid());
 		tagWriter = new TagWriter();
-        applicationContext = service.getApplicationContext();
+		applicationContext = service.getApplicationContext();
 	}
 
 	protected void changeStatus(int nextStatus) {
@@ -172,13 +172,15 @@ public class XmppConnection implements Runnable {
 				} else {
 					boolean socketError = true;
 					int srvIndex = 0;
-					while (socketError && namePort.containsKey("name" + srvIndex)){
+					while (socketError
+							&& namePort.containsKey("name" + srvIndex)) {
 						try {
-							srvRecordServer = namePort.getString("name" + srvIndex);
+							srvRecordServer = namePort.getString("name"
+									+ srvIndex);
 							srvRecordPort = namePort.getInt("port" + srvIndex);
 							Log.d(Config.LOGTAG, account.getJid()
-									+ ": using values from dns " + srvRecordServer
-									+ ":" + srvRecordPort);
+									+ ": using values from dns "
+									+ srvRecordServer + ":" + srvRecordPort);
 							socket = new Socket(srvRecordServer, srvRecordPort);
 							socketError = false;
 						} catch (UnknownHostException e) {
@@ -384,13 +386,13 @@ public class XmppConnection implements Runnable {
 		iq.addChild("ping", "urn:xmpp:ping");
 		this.sendIqPacket(iq, new OnIqPacketReceived() {
 
-            @Override
-            public void onIqPacketReceived(Account account, IqPacket packet) {
-                Log.d(Config.LOGTAG, account.getJid()
-                        + ": online with resource " + account.getResource());
-                changeStatus(Account.STATUS_ONLINE);
-            }
-        });
+			@Override
+			public void onIqPacketReceived(Account account, IqPacket packet) {
+				Log.d(Config.LOGTAG, account.getJid()
+						+ ": online with resource " + account.getResource());
+				changeStatus(Account.STATUS_ONLINE);
+			}
+		});
 	}
 
 	private Element processPacket(Tag currentTag, int packetType)
@@ -527,7 +529,8 @@ public class XmppConnection implements Runnable {
 	}
 
 	private SharedPreferences getPreferences() {
-		return PreferenceManager.getDefaultSharedPreferences(applicationContext);
+		return PreferenceManager
+				.getDefaultSharedPreferences(applicationContext);
 	}
 
 	private boolean enableLegacySSL() {
@@ -551,14 +554,15 @@ public class XmppConnection implements Runnable {
 					true);
 
 			// Support all protocols except legacy SSL.
-			// The min SDK version prevents us having to worry about SSLv2. In future, this may be
+			// The min SDK version prevents us having to worry about SSLv2. In
+			// future, this may be
 			// true of SSLv3 as well.
 			final String[] supportProtocols;
 			if (enableLegacySSL()) {
 				supportProtocols = sslSocket.getSupportedProtocols();
 			} else {
-				final List<String> supportedProtocols = new LinkedList<String>(Arrays.asList(
-							sslSocket.getSupportedProtocols()));
+				final List<String> supportedProtocols = new LinkedList<String>(
+						Arrays.asList(sslSocket.getSupportedProtocols()));
 				supportedProtocols.remove("SSLv3");
 				supportProtocols = new String[supportedProtocols.size()];
 				supportedProtocols.toArray(supportProtocols);
@@ -613,7 +617,8 @@ public class XmppConnection implements Runnable {
 		} else if (compressionAvailable()) {
 			sendCompressionZlib();
 		} else if (this.streamFeatures.hasChild("register")
-				&& account.isOptionSet(Account.OPTION_REGISTER) && usingEncryption) {
+				&& account.isOptionSet(Account.OPTION_REGISTER)
+				&& usingEncryption) {
 			sendRegistryRequest();
 		} else if (!this.streamFeatures.hasChild("register")
 				&& account.isOptionSet(Account.OPTION_REGISTER)) {
@@ -637,7 +642,8 @@ public class XmppConnection implements Runnable {
 		} else if (this.streamFeatures.hasChild("bind") && shouldBind) {
 			sendBindRequest();
 		} else {
-			Log.d(Config.LOGTAG,account.getJid()+": incompatible server. disconnecting");
+			Log.d(Config.LOGTAG, account.getJid()
+					+ ": incompatible server. disconnecting");
 			disconnect(true);
 		}
 	}

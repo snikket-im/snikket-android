@@ -35,7 +35,6 @@ import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.utils.CryptoHelper;
-import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.pep.Avatar;
 
 public class FileBackend {
@@ -69,8 +68,7 @@ public class FileBackend {
 		return getFile(message, true);
 	}
 
-	public DownloadableFile getFile(Message message,
-			boolean decrypted) {
+	public DownloadableFile getFile(Message message, boolean decrypted) {
 		StringBuilder filename = new StringBuilder();
 		filename.append(getConversationsDirectory());
 		filename.append(message.getUuid());
@@ -85,10 +83,11 @@ public class FileBackend {
 		}
 		return new DownloadableFile(filename.toString());
 	}
-	
+
 	public static String getConversationsDirectory() {
 		return Environment.getExternalStoragePublicDirectory(
-				Environment.DIRECTORY_PICTURES).getAbsolutePath()+"/Conversations/";
+				Environment.DIRECTORY_PICTURES).getAbsolutePath()
+				+ "/Conversations/";
 	}
 
 	public Bitmap resize(Bitmap originalBitmap, int size) {
@@ -219,8 +218,7 @@ public class FileBackend {
 	}
 
 	public Bitmap getImageFromMessage(Message message) {
-		return BitmapFactory.decodeFile(getFile(message)
-				.getAbsolutePath());
+		return BitmapFactory.decodeFile(getFile(message).getAbsolutePath());
 	}
 
 	public Bitmap getThumbnail(Message message, int size, boolean cacheOnly)
@@ -306,7 +304,7 @@ public class FileBackend {
 	}
 
 	public boolean isAvatarCached(Avatar avatar) {
-		File file = new File(getAvatarPath(context, avatar.getFilename()));
+		File file = new File(getAvatarPath(avatar.getFilename()));
 		return file.exists();
 	}
 
@@ -314,7 +312,7 @@ public class FileBackend {
 		if (isAvatarCached(avatar)) {
 			return true;
 		}
-		String filename = getAvatarPath(context, avatar.getFilename());
+		String filename = getAvatarPath(avatar.getFilename());
 		File file = new File(filename + ".tmp");
 		file.getParentFile().mkdirs();
 		try {
@@ -346,8 +344,12 @@ public class FileBackend {
 		}
 	}
 
-	public static String getAvatarPath(Context context, String avatar) {
+	public String getAvatarPath(String avatar) {
 		return context.getFilesDir().getAbsolutePath() + "/avatars/" + avatar;
+	}
+
+	public Uri getAvatarUri(String avatar) {
+		return Uri.parse("file:" + getAvatarPath(avatar));
 	}
 
 	public Bitmap cropCenterSquare(Uri image, int size) {
@@ -371,7 +373,40 @@ public class FileBackend {
 		}
 	}
 
-	public static Bitmap cropCenterSquare(Bitmap input, int size) {
+	public Bitmap cropCenter(Uri image, int newHeight, int newWidth) {
+		try {
+			BitmapFactory.Options options = new BitmapFactory.Options();
+			options.inSampleSize = calcSampleSize(image,
+					Math.max(newHeight, newWidth));
+			InputStream is = context.getContentResolver()
+					.openInputStream(image);
+			Bitmap source = BitmapFactory.decodeStream(is, null, options);
+
+			int sourceWidth = source.getWidth();
+			int sourceHeight = source.getHeight();
+			float xScale = (float) newWidth / sourceWidth;
+			float yScale = (float) newHeight / sourceHeight;
+			float scale = Math.max(xScale, yScale);
+			float scaledWidth = scale * sourceWidth;
+			float scaledHeight = scale * sourceHeight;
+			float left = (newWidth - scaledWidth) / 2;
+			float top = (newHeight - scaledHeight) / 2;
+
+			RectF targetRect = new RectF(left, top, left + scaledWidth, top
+					+ scaledHeight);
+			Bitmap dest = Bitmap.createBitmap(newWidth, newHeight,
+					source.getConfig());
+			Canvas canvas = new Canvas(dest);
+			canvas.drawBitmap(source, null, targetRect, null);
+
+			return dest;
+		} catch (FileNotFoundException e) {
+			return null;
+		}
+
+	}
+
+	public Bitmap cropCenterSquare(Bitmap input, int size) {
 		int w = input.getWidth();
 		int h = input.getHeight();
 
@@ -440,13 +475,15 @@ public class FileBackend {
 		}
 	}
 
-	public static Bitmap getAvatar(String avatar, int size, Context context) {
-		Bitmap bm = BitmapFactory.decodeFile(FileBackend.getAvatarPath(context,
-				avatar));
+	public Bitmap getAvatar(String avatar, int size) {
+		if (avatar == null) {
+			return null;
+		}
+		Bitmap bm = cropCenter(getAvatarUri(avatar), size, size);
 		if (bm == null) {
 			return null;
 		}
-		return cropCenterSquare(bm, UIHelper.getRealPx(size, context));
+		return bm;
 	}
 
 	public boolean isFileAvailable(Message message) {

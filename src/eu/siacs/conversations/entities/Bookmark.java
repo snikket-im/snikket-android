@@ -2,9 +2,6 @@ package eu.siacs.conversations.entities;
 
 import java.util.Locale;
 
-import android.content.Context;
-import android.graphics.Bitmap;
-import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xml.Element;
 
 public class Bookmark extends Element implements ListItem {
@@ -120,19 +117,12 @@ public class Bookmark extends Element implements ListItem {
 		return this.account;
 	}
 
-	@Override
-	public Bitmap getImage(int dpSize, Context context) {
-		if (this.mJoinedConversation == null) {
-			return UIHelper.getContactPicture(getDisplayName(), dpSize,
-					context, false);
-		} else {
-			return UIHelper.getContactPicture(this.mJoinedConversation, dpSize,
-					context, false);
-		}
-	}
-
 	public void setConversation(Conversation conversation) {
 		this.mJoinedConversation = conversation;
+	}
+
+	public Conversation getConversation() {
+		return this.mJoinedConversation;
 	}
 
 	public String getName() {
