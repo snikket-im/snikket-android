@@ -62,6 +62,9 @@ public class Message extends AbstractEntity {
 	protected Downloadable downloadable = null;
 	public boolean markable = false;
 
+	private Message mNextMessage = null;
+	private Message mPreviousMessage = null;
+
 	private Message() {
 
 	}
@@ -293,21 +296,34 @@ public class Message extends AbstractEntity {
 	}
 
 	public Message next() {
-		int index = this.conversation.getMessages().indexOf(this);
-		if (index < 0 || index >= this.conversation.getMessages().size() - 1) {
-			return null;
-		} else {
-			return this.conversation.getMessages().get(index + 1);
+		if (this.mNextMessage == null) {
+			synchronized (this.conversation.messages) {
+				int index = this.conversation.messages.indexOf(this);
+				if (index < 0
+						|| index >= this.conversation.getMessages().size() - 1) {
+					this.mNextMessage = null;
+				} else {
+					this.mNextMessage = this.conversation.messages
+							.get(index + 1);
+				}
+			}
 		}
+		return this.mNextMessage;
 	}
 
 	public Message prev() {
-		int index = this.conversation.getMessages().indexOf(this);
-		if (index <= 0 || index > this.conversation.getMessages().size()) {
-			return null;
-		} else {
-			return this.conversation.getMessages().get(index - 1);
+		if (this.mPreviousMessage == null) {
+			synchronized (this.conversation.messages) {
+				int index = this.conversation.messages.indexOf(this);
+				if (index <= 0 || index > this.conversation.messages.size()) {
+					this.mPreviousMessage = null;
+				} else {
+					this.mPreviousMessage = this.conversation.messages
+							.get(index - 1);
+				}
+			}
 		}
+		return this.mPreviousMessage;
 	}
 
 	public boolean mergable(Message message) {

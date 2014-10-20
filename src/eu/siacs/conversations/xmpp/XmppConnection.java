@@ -40,7 +40,6 @@ import android.util.SparseArray;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.services.XmppConnectionService;
-import eu.siacs.conversations.ui.StartConversationActivity;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.DNSHelper;
 import eu.siacs.conversations.utils.zlib.ZLibOutputStream;

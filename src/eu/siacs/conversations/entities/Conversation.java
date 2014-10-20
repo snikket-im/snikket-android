@@ -57,8 +57,8 @@ public class Conversation extends AbstractEntity {
 
 	private String nextPresence;
 
-	private transient ArrayList<Message> messages = new ArrayList<Message>();
-	private transient Account account = null;
+	protected ArrayList<Message> messages = new ArrayList<Message>();
+	protected Account account = null;
 
 	private transient SessionImpl otrSession;
 
