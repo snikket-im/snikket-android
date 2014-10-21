@@ -150,8 +150,8 @@ public class JingleConnection implements Downloadable {
 		return this.sessionId;
 	}
 
-	public String getAccountJid() {
-		return this.account.getFullJid();
+	public Account getAccount() {
+		return this.account;
 	}
 
 	public String getCounterPart() {

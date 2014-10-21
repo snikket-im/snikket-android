@@ -36,7 +36,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
 			connections.add(connection);
 		} else {
 			for (JingleConnection connection : connections) {
-				if (connection.getAccountJid().equals(account.getFullJid())
+				if (connection.getAccount() == account
 						&& connection.getSessionId().equals(
 								packet.getSessionId())
 						&& connection.getCounterPart().equals(packet.getFrom())) {
@@ -136,7 +136,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
 		}
 		if (sid != null) {
 			for (JingleConnection connection : connections) {
-				if (connection.hasTransportId(sid)) {
+				if (connection.getAccount() == account && connection.hasTransportId(sid)) {
 					JingleTransport transport = connection.getTransport();
 					if (transport instanceof JingleInbandTransport) {
 						JingleInbandTransport inbandTransport = (JingleInbandTransport) transport;
