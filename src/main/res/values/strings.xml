@@ -186,7 +186,12 @@
     <string name="contact_status_offline">offline</string>
     <string name="muc_details_conference">Conference</string>
     <string name="muc_details_other_members">Other Members</string>
+    <string name="server_info_show_more">Server info</string>
+    <string name="server_info_mam">XEP-0313: MAM</string>
     <string name="server_info_carbon_messages">XEP-0280: Message Carbons</string>
+    <string name="server_info_csi">XEP-0352: Client State Indication</string>
+    <string name="server_info_blocking">XEP-0191: Blocking Command</string>
+    <string name="server_info_roster_version">XEP-0237: Roster Versioning</string>
     <string name="server_info_stream_management">XEP-0198: Stream Management</string>
     <string name="server_info_pep">XEP-0163: PEP (Avatars)</string>
     <string name="server_info_available">available</string>

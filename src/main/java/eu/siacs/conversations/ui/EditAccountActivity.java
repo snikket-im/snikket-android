@@ -19,6 +19,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,10 +43,15 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 	private CheckBox mRegisterNew;
 	private Button mCancelButton;
 	private Button mSaveButton;
+	private TableLayout mMoreTable;
 
 	private LinearLayout mStats;
 	private TextView mServerInfoSm;
+	private TextView mServerInfoRosterVersion;
 	private TextView mServerInfoCarbons;
+	private TextView mServerInfoMam;
+	private TextView mServerInfoCSI;
+	private TextView mServerInfoBlocking;
 	private TextView mServerInfoPep;
 	private TextView mSessionEst;
 	private TextView mOtrFingerprint;
@@ -292,7 +298,11 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 		this.mRegisterNew = (CheckBox) findViewById(R.id.account_register_new);
 		this.mStats = (LinearLayout) findViewById(R.id.stats);
 		this.mSessionEst = (TextView) findViewById(R.id.session_est);
+		this.mServerInfoRosterVersion = (TextView) findViewById(R.id.server_info_roster_version);
 		this.mServerInfoCarbons = (TextView) findViewById(R.id.server_info_carbons);
+		this.mServerInfoMam = (TextView) findViewById(R.id.server_info_mam);
+		this.mServerInfoCSI = (TextView) findViewById(R.id.server_info_csi);
+		this.mServerInfoBlocking = (TextView) findViewById(R.id.server_info_blocking);
 		this.mServerInfoSm = (TextView) findViewById(R.id.server_info_sm);
 		this.mServerInfoPep = (TextView) findViewById(R.id.server_info_pep);
 		this.mOtrFingerprint = (TextView) findViewById(R.id.otr_fingerprint);
@@ -302,6 +312,7 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 		this.mCancelButton = (Button) findViewById(R.id.cancel_button);
 		this.mSaveButton.setOnClickListener(this.mSaveButtonClickListener);
 		this.mCancelButton.setOnClickListener(this.mCancelButtonClickListener);
+		this.mMoreTable = (TableLayout) findViewById(R.id.server_info_more);
 		this.mRegisterNew
 			.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
@@ -384,6 +395,9 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 				intent.putExtra("account", mAccount.getJid().toString());
 				startActivity(intent);
 				break;
+			case R.id.action_server_info_show_more:
+				mMoreTable.setVisibility(item.isChecked() ? View.GONE : View.VISIBLE);
+				item.setChecked(!item.isChecked());
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -406,15 +420,35 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 		if (this.mAccount.getStatus() == Account.State.ONLINE
 				&& !this.mFetchingAvatar) {
 			this.mStats.setVisibility(View.VISIBLE);
-			this.mSessionEst.setText(UIHelper.readableTimeDifferenceFull(
+			this.mSessionEst.setText(UIHelper.readableTimeDifference(
 						getApplicationContext(), this.mAccount.getXmppConnection()
 						.getLastSessionEstablished()));
-			final Features features = this.mAccount.getXmppConnection().getFeatures();
+			Features features = this.mAccount.getXmppConnection().getFeatures();
+			if (features.rosterVersioning()) {
+				this.mServerInfoRosterVersion.setText(R.string.server_info_available);
+			} else {
+				this.mServerInfoRosterVersion.setText(R.string.server_info_unavailable);
+			}
 			if (features.carbons()) {
 				this.mServerInfoCarbons.setText(R.string.server_info_available);
 			} else {
 				this.mServerInfoCarbons
 					.setText(R.string.server_info_unavailable);
+			}
+			if (features.mam()) {
+				this.mServerInfoMam.setText(R.string.server_info_available);
+			} else {
+				this.mServerInfoMam.setText(R.string.server_info_unavailable);
+			}
+			if (features.csi()) {
+				this.mServerInfoCSI.setText(R.string.server_info_available);
+			} else {
+				this.mServerInfoCSI.setText(R.string.server_info_unavailable);
+			}
+			if (features.blocking()) {
+				this.mServerInfoBlocking.setText(R.string.server_info_available);
+			} else {
+				this.mServerInfoBlocking.setText(R.string.server_info_unavailable);
 			}
 			if (features.sm()) {
 				this.mServerInfoSm.setText(R.string.server_info_available);
