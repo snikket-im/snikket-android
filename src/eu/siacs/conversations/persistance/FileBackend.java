@@ -14,7 +14,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -28,12 +27,12 @@ import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Base64OutputStream;
 import android.util.Log;
-import android.util.LruCache;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.entities.Message;
+import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.xmpp.pep.Avatar;
 
@@ -41,27 +40,13 @@ public class FileBackend {
 
 	private static int IMAGE_SIZE = 1920;
 
-	private Context context;
-	private LruCache<String, Bitmap> thumbnailCache;
-
 	private SimpleDateFormat imageDateFormat = new SimpleDateFormat(
 			"yyyyMMdd_HHmmssSSS", Locale.US);
 
-	public FileBackend(Context context) {
-		this.context = context;
-		int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
-		int cacheSize = maxMemory / 8;
-		thumbnailCache = new LruCache<String, Bitmap>(cacheSize) {
-			@Override
-			protected int sizeOf(String key, Bitmap bitmap) {
-				return bitmap.getByteCount() / 1024;
-			}
-		};
+	private XmppConnectionService mXmppConnectionService;
 
-	}
-
-	public LruCache<String, Bitmap> getThumbnailCache() {
-		return thumbnailCache;
+	public FileBackend(XmppConnectionService service) {
+		this.mXmppConnectionService = service;
 	}
 
 	public DownloadableFile getFile(Message message) {
@@ -127,7 +112,7 @@ public class FileBackend {
 	private DownloadableFile copyImageToPrivateStorage(Message message,
 			Uri image, int sampleSize) throws ImageCopyException {
 		try {
-			InputStream is = context.getContentResolver()
+			InputStream is = mXmppConnectionService.getContentResolver()
 					.openInputStream(image);
 			DownloadableFile file = getFile(message);
 			file.getParentFile().mkdirs();
@@ -182,7 +167,7 @@ public class FileBackend {
 	private int getRotation(Uri image) {
 		if ("content".equals(image.getScheme())) {
 			try {
-				Cursor cursor = context
+				Cursor cursor = mXmppConnectionService
 						.getContentResolver()
 						.query(image,
 								new String[] { MediaStore.Images.ImageColumns.ORIENTATION },
@@ -223,7 +208,8 @@ public class FileBackend {
 
 	public Bitmap getThumbnail(Message message, int size, boolean cacheOnly)
 			throws FileNotFoundException {
-		Bitmap thumbnail = thumbnailCache.get(message.getUuid());
+		Bitmap thumbnail = mXmppConnectionService.getBitmapCache().get(
+				message.getUuid());
 		if ((thumbnail == null) && (!cacheOnly)) {
 			File file = getFile(message);
 			BitmapFactory.Options options = new BitmapFactory.Options();
@@ -234,13 +220,14 @@ public class FileBackend {
 				throw new FileNotFoundException();
 			}
 			thumbnail = resize(fullsize, size);
-			this.thumbnailCache.put(message.getUuid(), thumbnail);
+			this.mXmppConnectionService.getBitmapCache().put(message.getUuid(),
+					thumbnail);
 		}
 		return thumbnail;
 	}
 
 	public void removeFiles(Conversation conversation) {
-		String prefix = context.getFilesDir().getAbsolutePath();
+		String prefix = mXmppConnectionService.getFilesDir().getAbsolutePath();
 		String path = prefix + "/" + conversation.getAccount().getJid() + "/"
 				+ conversation.getContactJid();
 		File file = new File(path);
@@ -345,7 +332,8 @@ public class FileBackend {
 	}
 
 	public String getAvatarPath(String avatar) {
-		return context.getFilesDir().getAbsolutePath() + "/avatars/" + avatar;
+		return mXmppConnectionService.getFilesDir().getAbsolutePath()
+				+ "/avatars/" + avatar;
 	}
 
 	public Uri getAvatarUri(String avatar) {
@@ -356,7 +344,7 @@ public class FileBackend {
 		try {
 			BitmapFactory.Options options = new BitmapFactory.Options();
 			options.inSampleSize = calcSampleSize(image, size);
-			InputStream is = context.getContentResolver()
+			InputStream is = mXmppConnectionService.getContentResolver()
 					.openInputStream(image);
 			Bitmap input = BitmapFactory.decodeStream(is, null, options);
 			if (input == null) {
@@ -378,7 +366,7 @@ public class FileBackend {
 			BitmapFactory.Options options = new BitmapFactory.Options();
 			options.inSampleSize = calcSampleSize(image,
 					Math.max(newHeight, newWidth));
-			InputStream is = context.getContentResolver()
+			InputStream is = mXmppConnectionService.getContentResolver()
 					.openInputStream(image);
 			Bitmap source = BitmapFactory.decodeStream(is, null, options);
 
@@ -428,7 +416,7 @@ public class FileBackend {
 			throws FileNotFoundException {
 		BitmapFactory.Options options = new BitmapFactory.Options();
 		options.inJustDecodeBounds = true;
-		BitmapFactory.decodeStream(context.getContentResolver()
+		BitmapFactory.decodeStream(mXmppConnectionService.getContentResolver()
 				.openInputStream(image), null, options);
 		return calcSampleSize(options, size);
 	}

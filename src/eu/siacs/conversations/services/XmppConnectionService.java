@@ -84,11 +84,12 @@ import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.util.Log;
+import android.util.LruCache;
 
 public class XmppConnectionService extends Service {
 
 	public DatabaseBackend databaseBackend;
-	private FileBackend fileBackend;
+	private FileBackend fileBackend = new FileBackend(this);
 
 	public long startDate;
 
@@ -97,7 +98,8 @@ public class XmppConnectionService extends Service {
 
 	private MemorizingTrustManager mMemorizingTrustManager;
 
-	private NotificationService mNotificationService;
+	private NotificationService mNotificationService = new NotificationService(
+			this);
 
 	private MessageParser mMessageParser = new MessageParser(this);
 	private PresenceParser mPresenceParser = new PresenceParser(this);
@@ -269,6 +271,7 @@ public class XmppConnectionService extends Service {
 			}
 		}
 	};
+	private LruCache<String, Bitmap> mBitmapCache;
 
 	public PgpEngine getPgpEngine() {
 		if (pgpServiceConnection.isBound()) {
@@ -429,10 +432,18 @@ public class XmppConnectionService extends Service {
 		this.mRandom = new SecureRandom();
 		this.mMemorizingTrustManager = new MemorizingTrustManager(
 				getApplicationContext());
-		this.mNotificationService = new NotificationService(this);
+
+		int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
+		int cacheSize = maxMemory / 8;
+		this.mBitmapCache = new LruCache<String, Bitmap>(cacheSize) {
+			@Override
+			protected int sizeOf(String key, Bitmap bitmap) {
+				return bitmap.getByteCount() / 1024;
+			}
+		};
+
 		this.databaseBackend = DatabaseBackend
 				.getInstance(getApplicationContext());
-		this.fileBackend = new FileBackend(getApplicationContext());
 		this.accounts = databaseBackend.getAccounts();
 
 		for (Account account : this.accounts) {
@@ -801,6 +812,7 @@ public class XmppConnectionService extends Service {
 										.getString("photouri"));
 								contact.setSystemName(phoneContact
 										.getString("displayname"));
+								getAvatarService().clear(contact);
 							}
 						}
 					}
@@ -1497,10 +1509,12 @@ public class XmppConnectionService extends Service {
 								if (account.setAvatar(avatar.getFilename())) {
 									databaseBackend.updateAccount(account);
 								}
+								getAvatarService().clear(account);
 							} else {
 								Contact contact = account.getRoster()
 										.getContact(avatar.owner);
 								contact.setAvatar(avatar.getFilename());
+								getAvatarService().clear(contact);
 							}
 							if (callback != null) {
 								callback.success(avatar);
@@ -1550,6 +1564,7 @@ public class XmppConnectionService extends Service {
 									if (account.setAvatar(avatar.getFilename())) {
 										databaseBackend.updateAccount(account);
 									}
+									getAvatarService().clear(account);
 									callback.success(avatar);
 								} else {
 									fetchAvatar(account, avatar, callback);
@@ -1760,6 +1775,10 @@ public class XmppConnectionService extends Service {
 
 	public PowerManager getPowerManager() {
 		return this.pm;
+	}
+
+	public LruCache<String, Bitmap> getBitmapCache() {
+		return this.mBitmapCache;
 	}
 
 	public void replyWithNotAcceptable(Account account, MessagePacket packet) {

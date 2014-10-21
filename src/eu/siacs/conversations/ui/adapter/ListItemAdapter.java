@@ -36,8 +36,8 @@ public class ListItemAdapter extends ArrayAdapter<ListItem> {
 
 		jid.setText(item.getJid());
 		name.setText(item.getDisplayName());
-		picture.setImageBitmap(activity.xmppConnectionService
-				.getAvatarService().getAvatar(item, activity.getPixel(48)));
+		picture.setImageBitmap(activity.avatarService().get(item,
+				activity.getPixel(48)));
 		return view;
 	}
 

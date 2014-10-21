@@ -1,22 +1,18 @@
 package eu.siacs.conversations.utils;
 
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.regex.Pattern;
 
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
-import eu.siacs.conversations.entities.MucOptions.User;
 import eu.siacs.conversations.ui.ConversationActivity;
 import eu.siacs.conversations.ui.ManageAccountActivity;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -25,28 +21,15 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.Rect;
-import android.graphics.Typeface;
-import android.net.Uri;
-import android.provider.ContactsContract.Contacts;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.text.format.DateFormat;
 import android.text.format.DateUtils;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.QuickContactBadge;
 import android.widget.TextView;
 
 public class UIHelper {
-	private static final int BG_COLOR = 0xFF181818;
-	private static final int FG_COLOR = 0xFFFAFAFA;
-	private static final int TRANSPARENT = 0x00000000;
 	private static final int SHORT_DATE_FLAGS = DateUtils.FORMAT_SHOW_DATE
 			| DateUtils.FORMAT_NO_YEAR | DateUtils.FORMAT_ABBREV_ALL;
 	private static final int FULL_DATE_FLAGS = DateUtils.FORMAT_SHOW_TIME

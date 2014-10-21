@@ -386,8 +386,7 @@ public class ContactDetailsActivity extends XmppActivity {
 			long id = Long.parseLong(systemAccount[0]);
 			badge.assignContactUri(Contacts.getLookupUri(id, systemAccount[1]));
 		}
-		badge.setImageBitmap(xmppConnectionService.getAvatarService()
-				.getAvatar(contact, getPixel(72)));
+		badge.setImageBitmap(avatarService().get(contact, getPixel(72)));
 	}
 
 	protected void confirmToDeleteFingerprint(final String fingerprint) {

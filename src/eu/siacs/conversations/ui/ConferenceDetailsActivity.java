@@ -7,14 +7,12 @@ import org.openintents.openpgp.util.OpenPgpUtils;
 
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.PgpEngine;
-import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.entities.MucOptions.OnRenameListener;
 import eu.siacs.conversations.entities.MucOptions.User;
 import eu.siacs.conversations.services.XmppConnectionService.OnConversationUpdate;
-import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -201,8 +199,8 @@ public class ConferenceDetailsActivity extends XmppActivity {
 	private void populateView() {
 		mAccountJid.setText(getString(R.string.using_account, conversation
 				.getAccount().getJid()));
-		mYourPhoto.setImageBitmap(xmppConnectionService.getAvatarService()
-				.getAvatar(conversation.getAccount(), getPixel(48)));
+		mYourPhoto.setImageBitmap(avatarService().get(
+				conversation.getAccount(), getPixel(48)));
 		setTitle(conversation.getName());
 		mFullJid.setText(conversation.getContactJid().split("/", 2)[0]);
 		mYourNick.setText(conversation.getMucOptions().getActualNick());
@@ -228,7 +226,6 @@ public class ConferenceDetailsActivity extends XmppActivity {
 		this.users.addAll(conversation.getMucOptions().getUsers());
 		LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		membersView.removeAllViews();
-		Account account = conversation.getAccount();
 		for (final User user : conversation.getMucOptions().getUsers()) {
 			View view = (View) inflater.inflate(R.layout.contact, membersView,
 					false);
@@ -248,24 +245,14 @@ public class ConferenceDetailsActivity extends XmppActivity {
 				key.setText(OpenPgpUtils.convertKeyIdToHex(user.getPgpKeyId()));
 			}
 			Bitmap bm;
-			if (user.getJid() != null) {
-				Contact contact = account.getRoster().getContactFromRoster(
-						user.getJid());
-				if (contact != null) {
-					bm = xmppConnectionService.getAvatarService().getAvatar(
-							contact, getPixel(48));
-					name.setText(contact.getDisplayName());
-					role.setText(user.getName() + " \u2022 "
-							+ getReadableRole(user.getRole()));
-				} else {
-					bm = xmppConnectionService.getAvatarService().getAvatar(
-							user.getName(), getPixel(48));
-					name.setText(user.getName());
-					role.setText(getReadableRole(user.getRole()));
-				}
+			Contact contact = user.getContact();
+			if (contact != null) {
+				bm = avatarService().get(contact, getPixel(48));
+				name.setText(contact.getDisplayName());
+				role.setText(user.getName() + " \u2022 "
+						+ getReadableRole(user.getRole()));
 			} else {
-				bm = xmppConnectionService.getAvatarService().getAvatar(
-						user.getName(), getPixel(48));
+				bm = avatarService().get(user.getName(), getPixel(48));
 				name.setText(user.getName());
 				role.setText(getReadableRole(user.getRole()));
 			}

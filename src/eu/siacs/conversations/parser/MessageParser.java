@@ -348,10 +348,14 @@ public class MessageParser extends AbstractParser implements
 								mXmppConnectionService.databaseBackend
 										.updateAccount(account);
 							}
+							mXmppConnectionService.getAvatarService().clear(
+									account);
 						} else {
 							Contact contact = account.getRoster().getContact(
 									from);
 							contact.setAvatar(avatar.getFilename());
+							mXmppConnectionService.getAvatarService().clear(
+									contact);
 						}
 					} else {
 						mXmppConnectionService.fetchAvatar(account, avatar);

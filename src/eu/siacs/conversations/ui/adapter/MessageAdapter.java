@@ -1,6 +1,5 @@
 package eu.siacs.conversations.ui.adapter;
 
-import java.util.HashMap;
 import java.util.List;
 
 import eu.siacs.conversations.Config;
@@ -12,9 +11,7 @@ import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.Message.ImageParams;
 import eu.siacs.conversations.ui.ConversationActivity;
 import eu.siacs.conversations.utils.UIHelper;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -41,9 +38,6 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 
 	private ConversationActivity activity;
 
-	private Bitmap accountBitmap;
-
-	private BitmapCache mBitmapCache = new BitmapCache();
 	private DisplayMetrics metrics;
 
 	private OnContactPictureClicked mOnContactPictureClickedListener;
@@ -53,19 +47,6 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		super(activity, 0, messages);
 		this.activity = activity;
 		metrics = getContext().getResources().getDisplayMetrics();
-	}
-
-	private Bitmap getSelfBitmap() {
-		if (this.accountBitmap == null) {
-
-			if (getCount() > 0) {
-				this.accountBitmap = activity.xmppConnectionService
-						.getAvatarService().getAvatar(
-								getItem(0).getConversation().getAccount(),
-								activity.getPixel(48));
-			}
-		}
-		return this.accountBitmap;
 	}
 
 	public void setOnContactPictureClicked(OnContactPictureClicked listener) {
@@ -349,7 +330,10 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 						.findViewById(R.id.message_box);
 				viewHolder.contact_picture = (ImageView) view
 						.findViewById(R.id.message_photo);
-				viewHolder.contact_picture.setImageBitmap(getSelfBitmap());
+				viewHolder.contact_picture.setImageBitmap(activity
+						.avatarService().get(
+								item.getConversation().getAccount(),
+								activity.getPixel(48)));
 				viewHolder.download_button = (Button) view
 						.findViewById(R.id.download_button);
 				viewHolder.indicator = (ImageView) view
@@ -374,8 +358,9 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 				viewHolder.download_button = (Button) view
 						.findViewById(R.id.download_button);
 				if (item.getConversation().getMode() == Conversation.MODE_SINGLE) {
-					viewHolder.contact_picture.setImageBitmap(mBitmapCache.get(
-							item.getConversation().getContact(), getContext()));
+					viewHolder.contact_picture.setImageBitmap(activity
+							.avatarService().get(item.getContact(),
+									activity.getPixel(48)));
 				}
 				viewHolder.indicator = (ImageView) view
 						.findViewById(R.id.security_indicator);
@@ -394,8 +379,10 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 						.findViewById(R.id.message_photo);
 				if (item.getConversation().getMode() == Conversation.MODE_SINGLE) {
 
-					viewHolder.contact_picture.setImageBitmap(mBitmapCache.get(
-							item.getConversation().getContact(), getContext()));
+					viewHolder.contact_picture.setImageBitmap(activity
+							.avatarService().get(
+									item.getConversation().getContact(),
+									activity.getPixel(32)));
 					viewHolder.contact_picture.setAlpha(0.5f);
 					viewHolder.contact_picture
 							.setOnClickListener(new OnClickListener() {
@@ -471,15 +458,16 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 			if (item.getConversation().getMode() == Conversation.MODE_MULTI) {
 				Contact contact = item.getContact();
 				if (contact != null) {
-					viewHolder.contact_picture.setImageBitmap(mBitmapCache.get(
-							contact, getContext()));
+					viewHolder.contact_picture.setImageBitmap(activity
+							.avatarService()
+							.get(contact, activity.getPixel(48)));
 				} else {
 					String name = item.getPresence();
 					if (name == null) {
 						name = item.getCounterpart();
 					}
-					viewHolder.contact_picture.setImageBitmap(mBitmapCache.get(
-							name, getContext()));
+					viewHolder.contact_picture.setImageBitmap(activity
+							.avatarService().get(name, activity.getPixel(48)));
 				}
 			}
 		}
@@ -560,31 +548,6 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		protected TextView messageBody;
 		protected ImageView contact_picture;
 
-	}
-
-	private class BitmapCache {
-		private HashMap<String, Bitmap> contactBitmaps = new HashMap<String, Bitmap>();
-		private HashMap<String, Bitmap> unknownBitmaps = new HashMap<String, Bitmap>();
-
-		public Bitmap get(Contact contact, Context context) {
-			if (!contactBitmaps.containsKey(contact.getJid())) {
-				contactBitmaps.put(contact.getJid(),
-						activity.xmppConnectionService.getAvatarService()
-								.getAvatar(contact, activity.getPixel(48)));
-			}
-			return contactBitmaps.get(contact.getJid());
-		}
-
-		public Bitmap get(String name, Context context) {
-			if (unknownBitmaps.containsKey(name)) {
-				return unknownBitmaps.get(name);
-			} else {
-				Bitmap bm = activity.xmppConnectionService.getAvatarService()
-						.getAvatar(name, activity.getPixel(48));
-				unknownBitmaps.put(name, bm);
-				return bm;
-			}
-		}
 	}
 
 	public interface OnContactPictureClicked {

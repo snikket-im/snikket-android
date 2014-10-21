@@ -12,6 +12,7 @@ import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.Presences;
+import eu.siacs.conversations.services.AvatarService;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.services.XmppConnectionService.XmppConnectionBinder;
 import eu.siacs.conversations.utils.ExceptionHelper;
@@ -529,6 +530,10 @@ public abstract class XmppActivity extends Activity {
 	public int getPixel(int dp) {
 		DisplayMetrics metrics = getResources().getDisplayMetrics();
 		return ((int) (dp * metrics.density));
+	}
+
+	public AvatarService avatarService() {
+		return xmppConnectionService.getAvatarService();
 	}
 
 	class BitmapWorkerTask extends AsyncTask<Message, Void, Bitmap> {

@@ -34,8 +34,8 @@ public class AccountAdapter extends ArrayAdapter<Account> {
 		jid.setText(account.getJid());
 		TextView statusView = (TextView) view.findViewById(R.id.account_status);
 		ImageView imageView = (ImageView) view.findViewById(R.id.account_image);
-		imageView.setImageBitmap(activity.xmppConnectionService
-				.getAvatarService().getAvatar(account, activity.getPixel(48)));
+		imageView.setImageBitmap(activity.avatarService().get(account,
+				activity.getPixel(48)));
 		switch (account.getStatus()) {
 		case Account.STATUS_DISABLED:
 			statusView.setText(getContext().getString(

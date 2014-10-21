@@ -16,6 +16,7 @@ import android.os.PowerManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.text.Html;
+import android.util.DisplayMetrics;
 
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
@@ -26,7 +27,6 @@ import eu.siacs.conversations.ui.ConversationActivity;
 public class NotificationService {
 
 	private XmppConnectionService mXmppConnectionService;
-	private NotificationManager mNotificationManager;
 
 	private LinkedHashMap<String, ArrayList<Message>> notifications = new LinkedHashMap<String, ArrayList<Message>>();
 
@@ -36,8 +36,6 @@ public class NotificationService {
 
 	public NotificationService(XmppConnectionService service) {
 		this.mXmppConnectionService = service;
-		this.mNotificationManager = (NotificationManager) service
-				.getSystemService(Context.NOTIFICATION_SERVICE);
 	}
 
 	public void push(Message message) {
@@ -79,6 +77,8 @@ public class NotificationService {
 	}
 
 	private void updateNotification(boolean notify) {
+		NotificationManager notificationManager = (NotificationManager) mXmppConnectionService
+				.getSystemService(Context.NOTIFICATION_SERVICE);
 		SharedPreferences preferences = mXmppConnectionService.getPreferences();
 
 		String ringtone = preferences.getString("notification_ringtone", null);
@@ -86,7 +86,7 @@ public class NotificationService {
 				true);
 
 		if (notifications.size() == 0) {
-			mNotificationManager.cancel(NOTIFICATION_ID);
+			notificationManager.cancel(NOTIFICATION_ID);
 		} else {
 			NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
 					mXmppConnectionService);
@@ -97,8 +97,8 @@ public class NotificationService {
 				if (messages.size() >= 1) {
 					Conversation conversation = messages.get(0)
 							.getConversation();
-					// mBuilder.setLargeIcon(conversation.getImage(mXmppConnectionService,
-					// 64));
+					mBuilder.setLargeIcon(mXmppConnectionService
+							.getAvatarService().get(conversation, getPixel(64)));
 					mBuilder.setContentTitle(conversation.getName());
 					StringBuilder text = new StringBuilder();
 					for (int i = 0; i < messages.size(); ++i) {
@@ -119,7 +119,7 @@ public class NotificationService {
 					mBuilder.setContentIntent(createContentIntent(conversation
 							.getUuid()));
 				} else {
-					mNotificationManager.cancel(NOTIFICATION_ID);
+					notificationManager.cancel(NOTIFICATION_ID);
 					return;
 				}
 			} else {
@@ -170,7 +170,7 @@ public class NotificationService {
 			mBuilder.setDeleteIntent(createDeleteIntent());
 			mBuilder.setLights(0xffffffff, 2000, 4000);
 			Notification notification = mBuilder.build();
-			mNotificationManager.notify(NOTIFICATION_ID, notification);
+			notificationManager.notify(NOTIFICATION_ID, notification);
 		}
 	}
 
@@ -226,5 +226,11 @@ public class NotificationService {
 
 	public void setIsInForeground(boolean foreground) {
 		this.mIsInForeground = foreground;
+	}
+
+	private int getPixel(int dp) {
+		DisplayMetrics metrics = mXmppConnectionService.getResources()
+				.getDisplayMetrics();
+		return ((int) (dp * metrics.density));
 	}
 }
