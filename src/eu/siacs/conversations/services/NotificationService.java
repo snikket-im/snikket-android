@@ -1,9 +1,7 @@
 package eu.siacs.conversations.services;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -58,24 +56,25 @@ public class NotificationService {
 				mList.add(message);
 				notifications.put(conversationUuid, mList);
 			}
+			Account account = message.getConversation().getAccount();
+			updateNotification((!(this.mIsInForeground && this.mOpenConversation == null) || !isScreenOn)
+					&& !account.inGracePeriod());
 		}
-		Account account = message.getConversation().getAccount();
-		updateNotification((!(this.mIsInForeground && this.mOpenConversation == null) || !isScreenOn)
-				&& !account.inGracePeriod());
+
 	}
 
 	public void clear() {
 		synchronized (notifications) {
 			notifications.clear();
+			updateNotification(false);
 		}
-		updateNotification(false);
 	}
 
 	public void clear(Conversation conversation) {
 		synchronized (notifications) {
 			notifications.remove(conversation.getUuid());
+			updateNotification(false);
 		}
-		updateNotification(false);
 	}
 
 	private void updateNotification(boolean notify) {
@@ -132,11 +131,7 @@ public class NotificationService {
 								.getString(R.string.unread_conversations));
 				StringBuilder names = new StringBuilder();
 				Conversation conversation = null;
-				Iterator<Entry<String, ArrayList<Message>>> it = notifications
-						.entrySet().iterator();
-				while (it.hasNext()) {
-					Entry<String, ArrayList<Message>> entry = it.next();
-					ArrayList<Message> messages = entry.getValue();
+				for (ArrayList<Message> messages : notifications.values()) {
 					if (messages.size() > 0) {
 						conversation = messages.get(0).getConversation();
 						String name = conversation.getName();
@@ -148,7 +143,6 @@ public class NotificationService {
 						names.append(name);
 						names.append(", ");
 					}
-					it.remove();
 				}
 				if (names.length() >= 2) {
 					names.delete(names.length() - 2, names.length());
