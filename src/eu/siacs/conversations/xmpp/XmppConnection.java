@@ -185,8 +185,14 @@ public class XmppConnection implements Runnable {
 							socketError = false;
 						} catch (UnknownHostException e) {
 							srvIndex++;
+							if (!namePort.containsKey("name" + srvIndex)) {
+								throw e;
+							}
 						} catch (IOException e) {
 							srvIndex++;
+							if (!namePort.containsKey("name" + srvIndex)) {
+								throw e;
+							}
 						}
 					}
 				}
