@@ -1510,11 +1510,15 @@ public class XmppConnectionService extends Service {
 									databaseBackend.updateAccount(account);
 								}
 								getAvatarService().clear(account);
+								updateConversationUi();
+								updateAccountUi();
 							} else {
 								Contact contact = account.getRoster()
 										.getContact(avatar.owner);
 								contact.setAvatar(avatar.getFilename());
 								getAvatarService().clear(contact);
+								updateConversationUi();
+								updateRosterUi();
 							}
 							if (callback != null) {
 								callback.success(avatar);

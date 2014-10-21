@@ -350,12 +350,16 @@ public class MessageParser extends AbstractParser implements
 							}
 							mXmppConnectionService.getAvatarService().clear(
 									account);
+							mXmppConnectionService.updateConversationUi();
+							mXmppConnectionService.updateAccountUi();
 						} else {
 							Contact contact = account.getRoster().getContact(
 									from);
 							contact.setAvatar(avatar.getFilename());
 							mXmppConnectionService.getAvatarService().clear(
 									contact);
+							mXmppConnectionService.updateConversationUi();
+							mXmppConnectionService.updateRosterUi();
 						}
 					} else {
 						mXmppConnectionService.fetchAvatar(account, avatar);
