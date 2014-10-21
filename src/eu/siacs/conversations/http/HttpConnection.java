@@ -9,15 +9,20 @@ import java.net.URL;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 
+import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLHandshakeException;
 import javax.net.ssl.X509TrustManager;
 
+import org.apache.http.conn.ssl.StrictHostnameVerifier;
+
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.util.Log;
 
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Downloadable;
 import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.entities.Message;
@@ -32,7 +37,6 @@ public class HttpConnection implements Downloadable {
 	private Message message;
 	private DownloadableFile file;
 	private int mStatus = Downloadable.STATUS_UNKNOWN;
-	private boolean mAutostart = true;
 
 	public HttpConnection(HttpConnectionManager manager) {
 		this.mHttpConnectionManager = manager;
@@ -45,8 +49,7 @@ public class HttpConnection implements Downloadable {
 			if (this.mStatus == STATUS_OFFER_CHECK_FILESIZE) {
 				checkFileSize(true);
 			} else {
-				changeStatus(STATUS_DOWNLOADING);
-				new Thread(new FileDownloader()).start();
+				new Thread(new FileDownloader(true)).start();
 			}
 			return true;
 		} else {
@@ -61,7 +64,6 @@ public class HttpConnection implements Downloadable {
 			mUrl = new URL(message.getBody());
 			this.file = mXmppConnectionService.getFileBackend().getFile(
 					message, false);
-			this.mAutostart = true;
 			checkFileSize(false);
 		} catch (MalformedURLException e) {
 			this.cancel();
@@ -69,7 +71,6 @@ public class HttpConnection implements Downloadable {
 	}
 
 	private void checkFileSize(boolean interactive) {
-		changeStatus(STATUS_CHECKING);
 		new Thread(new FileSizeChecker(interactive)).start();
 	}
 
@@ -95,17 +96,26 @@ public class HttpConnection implements Downloadable {
 	private void setupTrustManager(HttpsURLConnection connection,
 			boolean interactive) {
 		X509TrustManager trustManager;
+		HostnameVerifier hostnameVerifier;
 		if (interactive) {
 			trustManager = mXmppConnectionService.getMemorizingTrustManager();
+			hostnameVerifier = mXmppConnectionService
+					.getMemorizingTrustManager().wrapHostnameVerifier(
+							new StrictHostnameVerifier());
 		} else {
 			trustManager = mXmppConnectionService.getMemorizingTrustManager()
 					.getNonInteractive();
+			hostnameVerifier = mXmppConnectionService
+					.getMemorizingTrustManager()
+					.wrapHostnameVerifierNonInteractive(
+							new StrictHostnameVerifier());
 		}
 		try {
 			SSLContext sc = SSLContext.getInstance("TLS");
 			sc.init(null, new X509TrustManager[] { trustManager },
 					mXmppConnectionService.getRNG());
 			connection.setSSLSocketFactory(sc.getSocketFactory());
+			connection.setHostnameVerifier(hostnameVerifier);
 		} catch (KeyManagementException e) {
 			return;
 		} catch (NoSuchAlgorithmException e) {
@@ -134,9 +144,8 @@ public class HttpConnection implements Downloadable {
 				return;
 			}
 			file.setExpectedSize(size);
-			if (size <= mHttpConnectionManager.getAutoAcceptFileSize()
-					&& mAutostart) {
-				start();
+			if (size <= mHttpConnectionManager.getAutoAcceptFileSize()) {
+				new Thread(new FileDownloader(interactive)).start();
 			} else {
 				changeStatus(STATUS_OFFER);
 			}
@@ -144,6 +153,7 @@ public class HttpConnection implements Downloadable {
 
 		private long retrieveFileSize() throws IOException,
 				SSLHandshakeException {
+			changeStatus(STATUS_CHECKING);
 			HttpURLConnection connection = (HttpURLConnection) mUrl
 					.openConnection();
 			connection.setRequestMethod("HEAD");
@@ -166,23 +176,33 @@ public class HttpConnection implements Downloadable {
 
 	private class FileDownloader implements Runnable {
 
+		private boolean interactive = false;
+
+		public FileDownloader(boolean interactive) {
+			this.interactive = interactive;
+		}
+
 		@Override
 		public void run() {
 			try {
+				changeStatus(STATUS_DOWNLOADING);
 				download();
 				updateImageBounds();
 				finish();
+			} catch (SSLHandshakeException e) {
+				changeStatus(STATUS_OFFER);
 			} catch (IOException e) {
 				cancel();
 			}
 		}
 
-		private void download() throws IOException {
+		private void download() throws SSLHandshakeException, IOException {
 			HttpURLConnection connection = (HttpURLConnection) mUrl
 					.openConnection();
 			if (connection instanceof HttpsURLConnection) {
-				setupTrustManager((HttpsURLConnection) connection, true);
+				setupTrustManager((HttpsURLConnection) connection, interactive);
 			}
+			connection.connect();
 			BufferedInputStream is = new BufferedInputStream(
 					connection.getInputStream());
 			OutputStream os = file.createOutputStream();

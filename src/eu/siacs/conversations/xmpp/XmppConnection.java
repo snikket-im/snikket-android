@@ -24,6 +24,7 @@ import javax.net.ssl.SSLSocketFactory;
 
 import javax.net.ssl.X509TrustManager;
 
+import org.apache.http.conn.ssl.StrictHostnameVerifier;
 import org.xmlpull.v1.XmlPullParserException;
 
 import de.duenndns.ssl.MemorizingTrustManager;
@@ -554,7 +555,7 @@ public class XmppConnection implements Runnable {
 			SSLSocketFactory factory = sc.getSocketFactory();
 
 			HostnameVerifier verifier = this.mMemorizingTrustManager
-					.wrapHostnameVerifier(new org.apache.http.conn.ssl.StrictHostnameVerifier());
+					.wrapHostnameVerifier(new StrictHostnameVerifier());
 			SSLSocket sslSocket = (SSLSocket) factory.createSocket(socket,
 					socket.getInetAddress().getHostAddress(), socket.getPort(),
 					true);
