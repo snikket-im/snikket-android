@@ -110,5 +110,12 @@
             android:summary="@string/pref_never_send_crash_summary"
             android:title="@string/pref_never_send_crash" />
     </PreferenceCategory>
+		<eu.siacs.conversations.ui.AboutDialog
+			android:summary="@string/pref_about_conversations_summary"
+			android:title="@string/pref_about_conversations"
+			android:dialogIcon="@drawable/ic_activity"
+			android:negativeButtonText="@null"
+			android:dialogMessage="@string/pref_about_message">
+		</eu.siacs.conversations.ui.AboutDialog>
 
 </PreferenceScreen>
