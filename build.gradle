@@ -20,7 +20,17 @@ allprojects {
 apply plugin: 'android'
 
 repositories {
+	jcenter()
 	mavenCentral()
+}
+
+dependencies {
+	compile project(':minidns')
+	compile project(':openpgpapilib')
+	compile project(':memorizingTrustManager')
+	compile 'com.android.support:support-v13:19.1.0'
+	compile 'org.bouncycastle:bcprov-jdk15on:1.50'
+	compile fileTree(dir: 'libs', include: ['*.jar'])
 }
 
 android {
@@ -40,22 +50,24 @@ android {
 	}
 	buildTypes {
 		release {
-			runProguard true
-			proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
-		}
-		debug {
 			runProguard false
 			proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
 		}
 	}
-}
+	lintOptions {
+		disable 'MissingTranslation', 'InvalidPackage'
+	}
+	subprojects {
 
-dependencies {
-	compile project(':minidns')
-	compile project(':openpgpapilib')
-	compile project(':memorizingTrustManager')
-	compile 'com.android.support:support-v13:19.1.0'
-	// compile files('libs/bcprov-jdk15on-150.jar')
-	// compile files('libs/otr4j-0.10.jar')
-	compile fileTree(dir: 'libs', include: ['*.jar'])
+		afterEvaluate {
+			if (getPlugins().hasPlugin('android') ||
+					getPlugins().hasPlugin('android-library')) {
+
+				configure(android.lintOptions) {
+					disable 'AndroidGradlePluginVersion', 'MissingTranslation'
+				}
+			}
+
+		}
+	}
 }
