@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/action_edit_contact"
+        android:icon="@drawable/ic_action_edit"
+        android:orderInCategory="10"
+        android:showAsAction="always"
+        android:title="@string/action_edit_contact"/>
+    <item
+        android:id="@+id/action_delete_contact"
+        android:icon="@drawable/ic_action_discard"
+        android:orderInCategory="10"
+        android:showAsAction="always"
+        android:title="@string/action_delete_contact"/>
+    <item
+        android:id="@+id/action_accounts"
+        android:orderInCategory="90"
+        android:showAsAction="never"
+        android:title="@string/action_accounts"/>
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/action_settings"/>
+
+</menu>

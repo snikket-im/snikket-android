@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="resources">
+        <item>Móvil</item>
+        <item>Teléfono</item>
+        <item>Tablet</item>
+        <item>Conversations</item>
+        <item>Android</item>
+    </string-array>
+    <string-array name="filesizes">
+        <item>nunca</item>
+        <item>256 KB</item>
+        <item>512 KB</item>
+        <item>1 MB</item>
+    </string-array>
+    <string-array name="filesizes_values">
+        <item>0</item>
+        <item>262144</item>
+        <item>524288</item>
+        <item>1048576</item>
+    </string-array>
+
+</resources>

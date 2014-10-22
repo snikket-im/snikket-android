@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="resources">
+        <item>Cellulare</item>
+        <item>Telefono</item>
+        <item>Tablet</item>
+        <item>Conversations</item>
+        <item>Android</item>
+    </string-array>
+    <string-array name="filesizes">
+        <item>mai</item>
+        <item>256 KB</item>
+        <item>512 KB</item>
+        <item>1 MB</item>
+    </string-array>
+    <string-array name="filesizes_values">
+        <item>0</item>
+        <item>262144</item>
+        <item>524288</item>
+        <item>1048576</item>
+    </string-array>
+    <string-array name="mute_options_descriptions">
+        <item>30 minuti</item>
+        <item>un\'ora</item>
+        <item>2 ore</item>
+        <item>8 ore</item>
+        <item>fino avviso ulteriore</item>
+    </string-array>
+
+    <integer-array name="mute_options_durations">
+        <item>1800</item>
+        <item>3600</item>
+        <item>7200</item>
+        <item>28800</item>
+        <item>-1</item>
+    </integer-array>
+
+</resources>

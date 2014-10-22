@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="resources">
+        <item>Мобильный</item>
+        <item>Телефон</item>
+        <item>Планшет</item>
+        <item>Conversations</item>
+        <item>Андроид</item>
+    </string-array>
+    <string-array name="filesizes">
+        <item>никогда</item>
+        <item>256 Кб</item>
+        <item>512 Кб</item>
+        <item>1 Мб</item>
+    </string-array>
+    <string-array name="filesizes_values">
+        <item>0</item>
+        <item>262144</item>
+        <item>524288</item>
+        <item>1048576</item>
+    </string-array>
+
+</resources>

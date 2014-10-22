@@ -1,0 +1,9 @@
+[submodule "minidns"]
+	path = minidns
+	url = https://github.com/rtreffer/minidns.git
+[submodule "openpgpapilib"]
+	path = openpgpapilib
+	url = https://github.com/open-keychain/openpgp-api-lib.git
+[submodule "memorizingTrustManager"]
+	path = memorizingTrustManager
+	url = https://github.com/iNPUTmice/MemorizingTrustManager.git

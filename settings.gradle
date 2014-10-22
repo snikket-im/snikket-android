@@ -1,0 +1,4 @@
+include ':memorizingTrustManager'
+include ':minidns'
+include ':openpgpapilib'
+include ':conversations'

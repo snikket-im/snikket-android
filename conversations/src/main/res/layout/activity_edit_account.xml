@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/secondarybackground" >
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/button_bar"
+        android:layout_alignParentTop="true" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:id="@+id/editor"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="@drawable/infocard_border"
+                android:orientation="vertical"
+                android:padding="16dp" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/account_settings_jabber_id"
+                    android:textColor="@color/primarytext"
+                    android:textSize="?attr/TextSizeBody" />
+
+                <AutoCompleteTextView
+                    android:id="@+id/account_jid"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/account_settings_example_jabber_id"
+                    android:inputType="textEmailAddress"
+                    android:textColor="@color/primarytext"
+                    android:textColorHint="@color/secondarytext"
+                    android:textSize="?attr/TextSizeBody" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/account_settings_password"
+                    android:textColor="@color/primarytext"
+                    android:textSize="?attr/TextSizeBody" />
+
+                <EditText
+                    android:id="@+id/account_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/password"
+                    android:inputType="textPassword"
+                    android:textColor="@color/primarytext"
+                    android:textColorHint="@color/secondarytext"
+                    android:textSize="?attr/TextSizeBody" />
+
+                <CheckBox
+                    android:id="@+id/account_register_new"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/register_account"
+                    android:textColor="@color/primarytext"
+                    android:textSize="?attr/TextSizeBody" />
+
+                <TextView
+                    android:id="@+id/account_confirm_password_desc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/account_settings_confirm_password"
+                    android:textColor="@color/primarytext"
+                    android:textSize="?attr/TextSizeBody"
+                    android:visibility="gone" />
+
+                <EditText
+                    android:id="@+id/account_password_confirm"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:hint="@string/confirm_password"
+                    android:inputType="textPassword"
+                    android:visibility="gone"
+                    android:textColor="@color/primarytext"
+                    android:textColorHint="@color/secondarytext"
+                    android:textSize="?attr/TextSizeBody" />
+            </LinearLayout>
+
+           <LinearLayout
+                android:id="@+id/stats"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_margin="8dp"
+                android:background="@drawable/infocard_border"
+                android:orientation="vertical"
+                android:padding="16dp"
+                android:visibility="gone" >
+
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:stretchColumns="1" >
+
+                    <TableRow
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content" >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/server_info_session_established"
+                            android:textColor="@color/primarytext"
+                            android:textSize="?attr/TextSizeBody" />
+
+                        <TextView
+                            android:id="@+id/session_est"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right"
+                            android:textColor="@color/primarytext"
+                            android:textSize="?attr/TextSizeBody" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content" >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/server_info_pep"
+                            android:textColor="@color/primarytext"
+                            android:textSize="?attr/TextSizeBody" />
+
+                        <TextView
+                            android:id="@+id/server_info_pep"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right"
+                            android:textColor="@color/primarytext"
+                            android:textSize="?attr/TextSizeBody" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content" >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/server_info_stream_management"
+                            android:textColor="@color/primarytext"
+                            android:textSize="?attr/TextSizeBody" />
+
+                        <TextView
+                            android:id="@+id/server_info_sm"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right"
+                            android:textColor="@color/primarytext"
+                            android:textSize="?attr/TextSizeBody" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content" >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/server_info_carbon_messages"
+                            android:textColor="@color/primarytext"
+                            android:textSize="?attr/TextSizeBody" />
+
+                        <TextView
+                            android:id="@+id/server_info_carbons"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right"
+                            android:textColor="@color/primarytext"
+                            android:textSize="?attr/TextSizeBody" />
+                    </TableRow>
+                </TableLayout>
+
+
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:id="@+id/otr_fingerprint_box"
+                    android:layout_marginTop="32dp">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_toLeftOf="@+id/action_copy_to_clipboard"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/otr_fingerprint"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/primarytext"
+                            android:textSize="?attr/TextSizeBody"
+                            android:typeface="monospace" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/secondarytext"
+                            android:textSize="?attr/TextSizeInfo"
+                            android:text="@string/otr_fingerprint"/>
+                    </LinearLayout>
+
+                    <ImageButton
+                        android:id="@+id/action_copy_to_clipboard"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:background="?android:selectableItemBackground"
+                        android:padding="8dp"
+                        android:src="@drawable/ic_action_copy"
+                        android:visibility="visible" />
+                </RelativeLayout>
+
+               
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/button_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true" >
+
+        <Button
+            android:id="@+id/cancel_button"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/cancel"
+            android:textColor="@color/primarytext" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="fill_parent"
+            android:layout_marginBottom="7dp"
+            android:layout_marginTop="7dp"
+            android:background="@color/divider" />
+
+        <Button
+            android:id="@+id/save_button"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:enabled="false"
+            android:text="@string/save"
+            android:textColor="@color/secondarytext" />
+    </LinearLayout>
+
+</RelativeLayout>

@@ -1,0 +1,28 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 19
+    buildToolsVersion "20.0.0"
+
+    defaultConfig {
+        applicationId "eu.siacs.conversations"
+        minSdkVersion 14
+        targetSdkVersion 19
+    }
+
+    buildTypes {
+        release {
+            runProguard false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+    }
+}
+
+dependencies {
+    compile project(':minidns')
+    compile project(':openpgpapilib')
+    compile project(':memorizingTrustManager')
+    compile files('libs/android-support-v13.jar')
+    compile files('libs/bcprov-jdk15on-150.jar')
+    compile files('libs/otr4j-0.10.jar')
+}

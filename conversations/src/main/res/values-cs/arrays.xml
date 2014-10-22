@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="resources">
+        <item>Mobil</item>
+        <item>Telefon</item>
+        <item>Tablet</item>
+        <item>Konverzace</item>
+        <item>Android</item>
+    </string-array>
+    <string-array name="filesizes">
+        <item>nikdy</item>
+        <item>256 KB</item>
+        <item>512 KB</item>
+        <item>1 MB</item>
+    </string-array>
+    <string-array name="filesizes_values">
+        <item>0</item>
+        <item>262144</item>
+        <item>524288</item>
+        <item>1048576</item>
+    </string-array>
+    <string-array name="mute_options_descriptions">
+        <item>30 minut</item>
+        <item>jedna hodina</item>
+        <item>2 hodiny</item>
+        <item>8 hodin</item>
+        <item>než opět změním</item>
+    </string-array>
+
+    <integer-array name="mute_options_durations">
+        <item>1800</item>
+        <item>3600</item>
+        <item>7200</item>
+        <item>28800</item>
+        <item>-1</item>
+    </integer-array>
+
+</resources>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?android:attr/activatedBackgroundIndicator"
+    android:padding="8dp" >
+
+    <ImageView
+        android:id="@+id/account_image"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_alignParentLeft="true"
+        android:src="@drawable/ic_profile" >
+    </ImageView>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/account_image"
+        android:orientation="vertical"
+        android:paddingLeft="8dp" >
+
+        <TextView
+            android:id="@+id/account_jid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scrollHorizontally="false"
+            android:singleLine="true"
+            android:textColor="@color/primarytext"
+            android:textSize="?attr/TextSizeHeadline" />
+
+        <TextView
+            android:id="@+id/account_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/account_status_unknown"
+            android:textColor="@color/secondarytext"
+            android:textSize="?attr/TextSizeBody"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+</RelativeLayout>

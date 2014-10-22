@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="resources">
+        <item>手机</item>
+        <item>电话</item>
+        <item>平板电脑</item>
+        <item>Conversations</item>
+        <item>Android</item>
+    </string-array>
+    <string-array name="filesizes">
+        <item>永不</item>
+        <item>256 KB</item>
+        <item>512 KB</item>
+        <item>1 MB</item>
+    </string-array>
+    <string-array name="filesizes_values">
+        <item>0</item>
+        <item>262144</item>
+        <item>524288</item>
+        <item>1048576</item>
+    </string-array>
+    <string-array name="mute_options_descriptions">
+        <item>30 分钟</item>
+        <item>1 小时</item>
+        <item>2 小时</item>
+        <item>8 小时</item>
+        <item>直至另行取消</item>
+    </string-array>
+
+    <integer-array name="mute_options_durations">
+        <item>1800</item>
+        <item>3600</item>
+        <item>7200</item>
+        <item>28800</item>
+        <item>-1</item>
+    </integer-array>
+
+</resources>
