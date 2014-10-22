@@ -605,8 +605,11 @@ public class ConversationActivity extends XmppActivity implements
 					.beginTransaction();
 			transaction.replace(R.id.selected_conversation, selectedFragment,
 					"conversation");
-
-			transaction.commitAllowingStateLoss();
+			try {
+				transaction.commitAllowingStateLoss();
+			} catch (IllegalStateException e) {
+				return selectedFragment;
+			}
 		}
 		return selectedFragment;
 	}
@@ -785,6 +788,10 @@ public class ConversationActivity extends XmppActivity implements
 			} else if (requestCode == REQUEST_RECORD_AUDIO) {
 				attachAudioToConversation(getSelectedConversation(),
 						data.getData());
+			}
+		} else {
+			if (requestCode == REQUEST_IMAGE_CAPTURE) {
+				pendingImageUri = null;
 			}
 		}
 	}
