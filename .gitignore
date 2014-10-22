@@ -4,7 +4,6 @@
 
 # https://github.com/github/gitignore/blob/master/Gradle.gitignore
 .gradle/
-gradle/
 build/
 # Ignore Gradle GUI config
 gradle-app.setting
@@ -37,5 +36,3 @@ proguard/
 .idea
 
 import-summary.txt
-
-*.jar
