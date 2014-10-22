@@ -5,7 +5,6 @@ import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.util.Arrays;
 
 import eu.siacs.conversations.entities.Account;
 import android.util.Base64;
@@ -28,9 +27,11 @@ public class CryptoHelper {
 	}
 
 	public static byte[] hexToBytes(String hexString) {
-		byte[] array = new BigInteger(hexString, 16).toByteArray();
-		if (array[0] == 0) {
-			array = Arrays.copyOfRange(array, 1, array.length);
+		int len = hexString.length();
+		byte[] array = new byte[len / 2];
+		for (int i = 0; i < len; i += 2) {
+			array[i / 2] = (byte) ((Character.digit(hexString.charAt(i), 16) << 4) + Character
+					.digit(hexString.charAt(i + 1), 16));
 		}
 		return array;
 	}

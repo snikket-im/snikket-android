@@ -27,6 +27,7 @@ import eu.siacs.conversations.entities.Downloadable;
 import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.services.XmppConnectionService;
+import eu.siacs.conversations.utils.CryptoHelper;
 
 public class HttpConnection implements Downloadable {
 
@@ -64,6 +65,14 @@ public class HttpConnection implements Downloadable {
 			mUrl = new URL(message.getBody());
 			this.file = mXmppConnectionService.getFileBackend().getFile(
 					message, false);
+			String reference = mUrl.getRef();
+			if (reference != null && reference.length() == 96) {
+				this.file.setKey(CryptoHelper.hexToBytes(reference));
+			}
+			if (this.message.getEncryption() == Message.ENCRYPTION_OTR
+					&& this.file.getKey() == null) {
+				this.message.setEncryption(Message.ENCRYPTION_NONE);
+			}
 			checkFileSize(false);
 		} catch (MalformedURLException e) {
 			this.cancel();

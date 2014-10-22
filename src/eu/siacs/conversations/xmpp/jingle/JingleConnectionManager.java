@@ -136,7 +136,8 @@ public class JingleConnectionManager extends AbstractConnectionManager {
 		}
 		if (sid != null) {
 			for (JingleConnection connection : connections) {
-				if (connection.getAccount() == account && connection.hasTransportId(sid)) {
+				if (connection.getAccount() == account
+						&& connection.hasTransportId(sid)) {
 					JingleTransport transport = connection.getTransport();
 					if (transport instanceof JingleInbandTransport) {
 						JingleInbandTransport inbandTransport = (JingleInbandTransport) transport;

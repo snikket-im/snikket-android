@@ -19,7 +19,6 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 import eu.siacs.conversations.Config;
-import eu.siacs.conversations.utils.CryptoHelper;
 import android.util.Log;
 
 public class DownloadableFile extends File {
@@ -43,7 +42,11 @@ public class DownloadableFile extends File {
 
 	public long getExpectedSize() {
 		if (this.aeskey != null) {
-			return (this.expectedSize / 16 + 1) * 16;
+			if (this.expectedSize == 0) {
+				return 0;
+			} else {
+				return (this.expectedSize / 16 + 1) * 16;
+			}
 		} else {
 			return this.expectedSize;
 		}
@@ -62,7 +65,14 @@ public class DownloadableFile extends File {
 	}
 
 	public void setKey(byte[] key) {
-		if (key.length >= 32) {
+		if (key.length == 48) {
+			byte[] secretKey = new byte[32];
+			byte[] iv = new byte[16];
+			System.arraycopy(key, 0, iv, 0, 16);
+			System.arraycopy(key, 16, secretKey, 0, 32);
+			this.aeskey = new SecretKeySpec(secretKey, "AES");
+			this.iv = iv;
+		} else if (key.length >= 32) {
 			byte[] secretKey = new byte[32];
 			System.arraycopy(key, 0, secretKey, 0, 32);
 			this.aeskey = new SecretKeySpec(secretKey, "AES");
@@ -70,12 +80,7 @@ public class DownloadableFile extends File {
 			byte[] secretKey = new byte[16];
 			System.arraycopy(key, 0, secretKey, 0, 16);
 			this.aeskey = new SecretKeySpec(secretKey, "AES");
-		} else {
-			Log.d(Config.LOGTAG, "weird key");
 		}
-		Log.d(Config.LOGTAG,
-				"using aes key "
-						+ CryptoHelper.bytesToHex(this.aeskey.getEncoded()));
 	}
 
 	public Key getKey() {
@@ -123,7 +128,7 @@ public class DownloadableFile extends File {
 			}
 		} else {
 			try {
-				IvParameterSpec ips = new IvParameterSpec(iv);
+				IvParameterSpec ips = new IvParameterSpec(this.iv);
 				Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
 				cipher.init(Cipher.DECRYPT_MODE, this.getKey(), ips);
 				Log.d(Config.LOGTAG, "opening encrypted output stream");

@@ -403,8 +403,9 @@ public class Message extends AbstractEntity {
 							extensionParts[extensionParts.length - 1])) {
 				return true;
 			} else if (extensionParts.length == 3
-					&& Arrays.asList(Downloadable.VALID_CRYPTO_EXTENSIONS)
-							.contains(extensionParts.length - 1)
+					&& Arrays
+							.asList(Downloadable.VALID_CRYPTO_EXTENSIONS)
+							.contains(extensionParts[extensionParts.length - 1])
 					&& Arrays.asList(Downloadable.VALID_EXTENSIONS).contains(
 							extensionParts[extensionParts.length - 2])) {
 				return true;
