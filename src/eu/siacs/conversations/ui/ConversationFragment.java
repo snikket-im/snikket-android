@@ -435,9 +435,9 @@ public class ConversationFragment extends Fragment {
 						});
 			}
 			for (Message message : this.conversation.getMessages()) {
-				if ((message.getEncryption() == Message.ENCRYPTION_PGP)
-						&& ((message.getStatus() == Message.STATUS_RECEIVED) || (message
-								.getStatus() == Message.STATUS_SEND))) {
+				if (message.getEncryption() == Message.ENCRYPTION_PGP
+						&& (message.getStatus() == Message.STATUS_RECEIVED || message
+								.getStatus() >= Message.STATUS_SEND) && message.getDownloadable() == null) {
 					if (!mEncryptedMessages.contains(message)) {
 						mEncryptedMessages.add(message);
 					}

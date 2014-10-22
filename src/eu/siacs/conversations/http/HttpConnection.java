@@ -20,9 +20,7 @@ import org.apache.http.conn.ssl.StrictHostnameVerifier;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.util.Log;
 
-import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Downloadable;
 import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.entities.Message;
@@ -63,12 +61,17 @@ public class HttpConnection implements Downloadable {
 		this.message.setDownloadable(this);
 		try {
 			mUrl = new URL(message.getBody());
+			String path = mUrl.getPath();
+			if (path != null && (path.endsWith(".pgp") || path.endsWith(".gpg"))) {
+				this.message.setEncryption(Message.ENCRYPTION_PGP);
+			}
 			this.file = mXmppConnectionService.getFileBackend().getFile(
 					message, false);
 			String reference = mUrl.getRef();
 			if (reference != null && reference.length() == 96) {
 				this.file.setKey(CryptoHelper.hexToBytes(reference));
 			}
+			
 			if (this.message.getEncryption() == Message.ENCRYPTION_OTR
 					&& this.file.getKey() == null) {
 				this.message.setEncryption(Message.ENCRYPTION_NONE);
@@ -95,6 +98,7 @@ public class HttpConnection implements Downloadable {
 		mXmppConnectionService.sendBroadcast(intent);
 		message.setDownloadable(null);
 		mHttpConnectionManager.finishConnection(this);
+		mXmppConnectionService.updateConversationUi();
 	}
 
 	private void changeStatus(int status) {
