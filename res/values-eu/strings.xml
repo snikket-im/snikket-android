@@ -205,7 +205,7 @@
     <string name="conference_address">Konferentziaren helbidea</string>
     <string name="conference_address_example">gela@conference.example.com</string>
     <string name="save_as_bookmark">Gorde laster-marka bezala</string>
-    <string name="delete_bookmark">Laster-marka ezbatu</string>
+    <string name="delete_bookmark">Laster-marka ezabatu</string>
     <string name="bookmark_already_exists">Laster-marka hau existitzen da dagoeneko</string>
     <string name="you">Zu</string>
     <string name="action_edit_subject">Konferentziaren gaia editatu</string>
@@ -250,11 +250,27 @@
     <string name="pref_force_encryption_summary">Mezuak beti enkriptatuta bidali (konferentzietan izan ezik)</string>
     <string name="pref_dont_save_encrypted">Ez gorde enkriptatutako mezuak</string>
     <string name="pref_dont_save_encrypted_summary">Adi: Honek mezuen galera ekar lezake</string>
+    <string name="pref_enable_legacy_ssl">Oinordetutako SSL gaitu</string>
+    <string name="pref_enable_legacy_ssl_summary">SSLv3 gaitzen du oinordetutako zerbitzarietarako. Adi: SSLv3 ez segurutzat hartzen da.</string>
     <string name="pref_expert_options">Adituentzako aukerak</string>
     <string name="pref_expert_options_summary">Mesedez kontuz ibili hauekin</string>
     <string name="pref_use_larger_font">Letraren tamaina handitu</string>
     <string name="pref_use_larger_font_summary">Letra tamaina handiagoa erabili aplikazio osoan zehar</string>
     <string name="pref_use_send_button_to_indicate_status">Bidaltze botoiak egoera adierazten du</string>
+    <string name="pref_use_indicate_received">Mezuen jasotzea eskatu</string>
+    <string name="pref_use_indicate_received_summary">Jasotako mezuak marka berde batekin markatuko dira. Baliteke kasu guztietan ez funtzionatzea.</string>
     <string name="pref_use_send_button_to_indicate_status_summary">Bidaltze botoia koloreztatu kontaktu baten egoera adierazteko</string>
+    <string name="pref_expert_options_other">Besteak</string>
+    <string name="pref_conference_name">Konferentziaren izena</string>
+    <string name="pref_conference_name_summary">Erabili gelaren gaia konferentziak identifikatzeko eta ez JIDa</string>
+    <string name="toast_message_otr_fingerprint">OTR hatz-marka arbelara kopiatu da</string>
+    <string name="conference_banned">Konferentzia honetara sartzea debekatuta duzu</string>
+    <string name="conference_members_only">Konferentzia hau kideentzat da soilik</string>
+    <string name="conference_kicked">Konferentzia honetatik kanporatua izan zara</string>
+    <string name="using_account">%s kontua erabiltzen</string>
+    <string name="checking_image">Irudia egiaztatzen HTTP ostalarian</string>
+    <string name="image_file_deleted">Irudia ezabatu egin da</string>
+    <string name="not_connected_try_again">Ez zaude konektatuta. Saiatu beranduago berriz</string>
+    <string name="check_image_filesize">Irudiaren tamaina egiaztatu</string>
 
 </resources>
