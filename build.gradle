@@ -51,7 +51,11 @@ android {
 }
 
 dependencies {
-	// ToDo: Move libs here if possible (instead of including the jars)
-	"compile 'com.android.support:support-v13:19.1.0'"
+	compile project(':minidns')
+	compile project(':openpgpapilib')
+	compile project(':memorizingTrustManager')
+	compile 'com.android.support:support-v13:19.1.0'
+	// compile files('libs/bcprov-jdk15on-150.jar')
+	// compile files('libs/otr4j-0.10.jar')
 	compile fileTree(dir: 'libs', include: ['*.jar'])
 }
