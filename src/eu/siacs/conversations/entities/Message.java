@@ -431,6 +431,11 @@ public class Message extends AbstractEntity {
 				params.size = Long.parseLong(parts[0]);
 			} catch (NumberFormatException e) {
 				params.origin = parts[0];
+				try {
+					params.url = new URL(parts[0]);
+				} catch (MalformedURLException e1) {
+					params.url = null;
+				}
 			}
 		} else if (parts.length == 3) {
 			try {
@@ -451,6 +456,11 @@ public class Message extends AbstractEntity {
 		} else if (parts.length == 4) {
 			params.origin = parts[0];
 			try {
+				params.url = new URL(parts[0]);
+			} catch (MalformedURLException e1) {
+				params.url = null;
+			}
+			try {
 				params.size = Long.parseLong(parts[1]);
 			} catch (NumberFormatException e) {
 				params.size = 0;
@@ -470,6 +480,7 @@ public class Message extends AbstractEntity {
 	}
 
 	public class ImageParams {
+		public URL url;
 		public long size = 0;
 		public int width = 0;
 		public int height = 0;

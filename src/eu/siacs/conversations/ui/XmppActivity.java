@@ -21,6 +21,8 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.app.AlertDialog.Builder;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -530,6 +532,17 @@ public abstract class XmppActivity extends Activity {
 	public int getPixel(int dp) {
 		DisplayMetrics metrics = getResources().getDisplayMetrics();
 		return ((int) (dp * metrics.density));
+	}
+	
+	public boolean copyTextToClipboard(String text,int labelResId) {
+		ClipboardManager mClipBoardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+		String label = getResources().getString(labelResId);
+		if (mClipBoardManager != null) {
+			ClipData mClipData = ClipData.newPlainText(label, text);
+			mClipBoardManager.setPrimaryClip(mClipData);
+			return true;
+		}
+		return false;
 	}
 
 	public AvatarService avatarService() {

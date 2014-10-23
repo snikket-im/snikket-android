@@ -191,6 +191,7 @@ public class ConversationActivity extends XmppActivity implements
 						xmppConnectionService.getNotificationService()
 								.setOpenConversation(null);
 					}
+					closeContextMenu();
 				}
 
 				@Override

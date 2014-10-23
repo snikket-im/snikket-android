@@ -11,6 +11,7 @@ import eu.siacs.conversations.crypto.PgpEngine;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
+import eu.siacs.conversations.entities.Downloadable;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.entities.Presences;
@@ -33,9 +34,12 @@ import android.content.IntentSender.SendIntentException;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.Selection;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -45,6 +49,8 @@ import android.widget.AbsListView.OnScrollListener;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.AbsListView;
 
+import android.widget.AdapterView;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ListView;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
@@ -193,6 +199,7 @@ public class ConversationFragment extends Fragment {
 	};
 
 	private ConversationActivity activity;
+	private Message selectedMessage;
 
 	private void sendMessage() {
 		if (this.conversation == null) {
@@ -326,7 +333,98 @@ public class ConversationFragment extends Fragment {
 				});
 		messagesView.setAdapter(messageListAdapter);
 
+		registerForContextMenu(messagesView);
+
 		return view;
+	}
+
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v,
+			ContextMenuInfo menuInfo) {
+		super.onCreateContextMenu(menu, v, menuInfo);
+		AdapterView.AdapterContextMenuInfo acmi = (AdapterContextMenuInfo) menuInfo;
+		this.selectedMessage = this.messageList.get(acmi.position);
+		populateContextMenu(menu);
+	}
+
+	private void populateContextMenu(ContextMenu menu) {
+		if (this.selectedMessage.getType() != Message.TYPE_STATUS) {
+			activity.getMenuInflater().inflate(R.menu.message_context, menu);
+			menu.setHeaderTitle(R.string.message_options);
+			MenuItem copyText = menu.findItem(R.id.copy_text);
+			MenuItem shareImage = menu.findItem(R.id.share_image);
+			MenuItem sendAgain = menu.findItem(R.id.send_again);
+			MenuItem copyUrl = menu.findItem(R.id.copy_url);
+			if (this.selectedMessage.getType() != Message.TYPE_TEXT
+					|| this.selectedMessage.getDownloadable() != null) {
+				copyText.setVisible(false);
+			}
+			if (this.selectedMessage.getType() != Message.TYPE_IMAGE
+					|| (this.selectedMessage.getDownloadable() != null && this.selectedMessage
+							.getDownloadable().getStatus() == Downloadable.STATUS_DELETED)) {
+				shareImage.setVisible(false);
+			}
+			if (this.selectedMessage.getStatus() != Message.STATUS_SEND_FAILED) {
+				sendAgain.setVisible(false);
+			}
+			if ((this.selectedMessage.getType() != Message.TYPE_IMAGE && this.selectedMessage
+					.getDownloadable() == null)
+					|| this.selectedMessage.getImageParams().url == null) {
+				copyUrl.setVisible(false);
+			}
+		}
+	}
+
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.share_image:
+			shareImage(selectedMessage);
+			return true;
+		case R.id.copy_text:
+			copyText(selectedMessage);
+			return true;
+		case R.id.send_again:
+			resendMessage(selectedMessage);
+			return true;
+		case R.id.copy_url:
+			copyUrl(selectedMessage);
+			return true;
+		default:
+			return super.onContextItemSelected(item);
+		}
+	}
+
+	private void shareImage(Message message) {
+		Intent shareIntent = new Intent();
+		shareIntent.setAction(Intent.ACTION_SEND);
+		shareIntent.putExtra(Intent.EXTRA_STREAM,
+				activity.xmppConnectionService.getFileBackend()
+						.getJingleFileUri(message));
+		shareIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+		shareIntent.setType("image/webp");
+		activity.startActivity(Intent.createChooser(shareIntent,
+				getText(R.string.share_with)));
+	}
+
+	private void copyText(Message message) {
+		if (activity.copyTextToClipboard(message.getMergedBody(),
+				R.string.message_text)) {
+			Toast.makeText(activity, R.string.message_copied_to_clipboard,
+					Toast.LENGTH_SHORT).show();
+		}
+	}
+
+	private void resendMessage(Message message) {
+		activity.xmppConnectionService.resendFailedMessages(message);
+	}
+
+	private void copyUrl(Message message) {
+		if (activity.copyTextToClipboard(
+				message.getImageParams().url.toString(), R.string.image_url)) {
+			Toast.makeText(activity, R.string.url_copied_to_clipboard,
+					Toast.LENGTH_SHORT).show();
+		}
 	}
 
 	protected void privateMessageWith(String counterpart) {
@@ -437,7 +535,8 @@ public class ConversationFragment extends Fragment {
 			for (Message message : this.conversation.getMessages()) {
 				if (message.getEncryption() == Message.ENCRYPTION_PGP
 						&& (message.getStatus() == Message.STATUS_RECEIVED || message
-								.getStatus() >= Message.STATUS_SEND) && message.getDownloadable() == null) {
+								.getStatus() >= Message.STATUS_SEND)
+						&& message.getDownloadable() == null) {
 					if (!mEncryptedMessages.contains(message)) {
 						mEncryptedMessages.add(message);
 					}

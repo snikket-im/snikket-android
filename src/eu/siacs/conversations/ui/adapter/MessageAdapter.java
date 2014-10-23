@@ -43,6 +43,15 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 	private OnContactPictureClicked mOnContactPictureClickedListener;
 	private OnContactPictureLongClicked mOnContactPictureLongClickedListener;
 
+	private OnLongClickListener openContextMenu = new OnLongClickListener() {
+		
+		@Override
+		public boolean onLongClick(View v) {
+			v.showContextMenu();
+			return true;
+		}
+	};
+	
 	public MessageAdapter(ConversationActivity activity, List<Message> messages) {
 		super(activity, 0, messages);
 		this.activity = activity;
@@ -259,6 +268,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 				startDonwloadable(message);
 			}
 		});
+		viewHolder.download_button.setOnLongClickListener(openContextMenu);
 	}
 
 	private void displayImageMessage(ViewHolder viewHolder,
@@ -292,23 +302,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 				getContext().startActivity(intent);
 			}
 		});
-		viewHolder.image.setOnLongClickListener(new OnLongClickListener() {
-
-			@Override
-			public boolean onLongClick(View v) {
-				Intent shareIntent = new Intent();
-				shareIntent.setAction(Intent.ACTION_SEND);
-				shareIntent.putExtra(Intent.EXTRA_STREAM,
-						activity.xmppConnectionService.getFileBackend()
-								.getJingleFileUri(message));
-				shareIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-				shareIntent.setType("image/webp");
-				getContext().startActivity(
-						Intent.createChooser(shareIntent,
-								getContext().getText(R.string.share_with)));
-				return true;
-			}
-		});
+		viewHolder.image.setOnLongClickListener(openContextMenu);
 	}
 
 	@Override

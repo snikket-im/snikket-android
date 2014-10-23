@@ -1924,4 +1924,21 @@ public class XmppConnectionService extends Service {
 		}
 
 	}
+
+	public void resendFailedMessages(Message message) {
+		List<Message> messages = new ArrayList<Message>();
+		Message current = message;
+		while(current.getStatus() == Message.STATUS_SEND_FAILED) {
+			messages.add(current);
+			if (current.mergable(current.next())) {
+				current = current.next();
+			} else {
+				break;
+			}
+		}
+		for(Message msg: messages) {
+			markMessage(msg, Message.STATUS_WAITING);
+			this.resendMessage(msg);
+		}
+	}
 }

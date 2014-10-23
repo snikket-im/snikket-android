@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/copy_text"
+        android:title="@string/copy_text"/>
+    <item
+        android:id="@+id/share_image"
+        android:title="@string/share_image"/>
+    <item
+        android:id="@+id/copy_url"
+        android:title="@string/copy_original_url" />
+    <item
+        android:id="@+id/send_again"
+        android:title="@string/send_again"/>
+
+</menu>

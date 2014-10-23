@@ -389,7 +389,7 @@ public class EditAccountActivity extends XmppActivity {
 							@Override
 							public void onClick(View v) {
 
-								if (OtrFingerprintToClipBoard(fingerprint)) {
+								if (copyTextToClipboard(fingerprint,R.string.otr_fingerprint)) {
 									Toast.makeText(
 											EditAccountActivity.this,
 											R.string.toast_message_otr_fingerprint,
@@ -408,16 +408,5 @@ public class EditAccountActivity extends XmppActivity {
 			}
 			this.mStats.setVisibility(View.GONE);
 		}
-	}
-
-	private boolean OtrFingerprintToClipBoard(String fingerprint) {
-		ClipboardManager mClipBoardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-		String label = getResources().getString(R.string.otr_fingerprint);
-		if (mClipBoardManager != null) {
-			ClipData mClipData = ClipData.newPlainText(label, fingerprint);
-			mClipBoardManager.setPrimaryClip(mClipData);
-			return true;
-		}
-		return false;
 	}
 }
