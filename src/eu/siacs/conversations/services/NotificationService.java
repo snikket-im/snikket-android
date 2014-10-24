@@ -17,6 +17,8 @@ import android.net.Uri;
 import android.os.PowerManager;
 import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationCompat.BigPictureStyle;
+import android.support.v4.app.NotificationCompat.Builder;
 import android.support.v4.app.TaskStackBuilder;
 import android.text.Html;
 import android.util.DisplayMetrics;
@@ -99,81 +101,11 @@ public class NotificationService {
 			if (notify) {
 				this.markLastNotification();
 			}
-			NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
-					mXmppConnectionService);
-			mBuilder.setSmallIcon(R.drawable.ic_notification);
+			Builder mBuilder;
 			if (notifications.size() == 1) {
-				ArrayList<Message> messages = notifications.values().iterator()
-						.next();
-				if (messages.size() >= 1) {
-					Conversation conversation = messages.get(0)
-							.getConversation();
-					mBuilder.setLargeIcon(mXmppConnectionService
-							.getAvatarService().get(conversation, getPixel(64)));
-					mBuilder.setContentTitle(conversation.getName());
-					if (messages.size() == 1 && messages.get(0).getType() == Message.TYPE_IMAGE) {
-						try {
-							Bitmap bitmap = mXmppConnectionService.getFileBackend().getThumbnail(messages.get(0),getPixel(288),false);
-							mBuilder.setStyle(new NotificationCompat.BigPictureStyle().bigPicture(bitmap));
-							mBuilder.setContentText(mXmppConnectionService.getString(R.string.image_file));
-						} catch (FileNotFoundException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-						
-					} else {
-						StringBuilder text = new StringBuilder();
-						for (int i = 0; i < messages.size(); ++i) {
-							text.append(getReadableBody(messages.get(i)));
-							if (i != messages.size() - 1) {
-								text.append("\n");
-							}
-						}
-						mBuilder.setStyle(new NotificationCompat.BigTextStyle()
-								.bigText(text.toString()));
-						mBuilder.setContentText(getReadableBody(messages.get(0)));
-						if (notify) {
-							mBuilder.setTicker(getReadableBody(messages
-									.get(messages.size() - 1)));
-						}
-					}
-					mBuilder.setContentIntent(createContentIntent(conversation
-							.getUuid()));
-				} else {
-					notificationManager.cancel(NOTIFICATION_ID);
-					return;
-				}
+				mBuilder = buildSingleConversations(notify);
 			} else {
-				NotificationCompat.InboxStyle style = new NotificationCompat.InboxStyle();
-				style.setBigContentTitle(notifications.size()
-						+ " "
-						+ mXmppConnectionService
-								.getString(R.string.unread_conversations));
-				StringBuilder names = new StringBuilder();
-				Conversation conversation = null;
-				for (ArrayList<Message> messages : notifications.values()) {
-					if (messages.size() > 0) {
-						conversation = messages.get(0).getConversation();
-						String name = conversation.getName();
-						style.addLine(Html.fromHtml("<b>" + name + "</b> "
-								+ getReadableBody(messages.get(0))));
-						names.append(name);
-						names.append(", ");
-					}
-				}
-				if (names.length() >= 2) {
-					names.delete(names.length() - 2, names.length());
-				}
-				mBuilder.setContentTitle(notifications.size()
-						+ " "
-						+ mXmppConnectionService
-								.getString(R.string.unread_conversations));
-				mBuilder.setContentText(names.toString());
-				mBuilder.setStyle(style);
-				if (conversation != null) {
-					mBuilder.setContentIntent(createContentIntent(conversation
-							.getUuid()));
-				}
+				mBuilder = buildMultipleConversation();
 			}
 			if (notify) {
 				if (vibrate) {
@@ -185,11 +117,128 @@ public class NotificationService {
 					mBuilder.setSound(Uri.parse(ringtone));
 				}
 			}
+			mBuilder.setSmallIcon(R.drawable.ic_notification);
 			mBuilder.setDeleteIntent(createDeleteIntent());
 			mBuilder.setLights(0xffffffff, 2000, 4000);
 			Notification notification = mBuilder.build();
 			notificationManager.notify(NOTIFICATION_ID, notification);
 		}
+	}
+
+	private Builder buildMultipleConversation() {
+		Builder mBuilder = new NotificationCompat.Builder(
+				mXmppConnectionService);
+		NotificationCompat.InboxStyle style = new NotificationCompat.InboxStyle();
+		style.setBigContentTitle(notifications.size()
+				+ " "
+				+ mXmppConnectionService
+						.getString(R.string.unread_conversations));
+		StringBuilder names = new StringBuilder();
+		Conversation conversation = null;
+		for (ArrayList<Message> messages : notifications.values()) {
+			if (messages.size() > 0) {
+				conversation = messages.get(0).getConversation();
+				String name = conversation.getName();
+				style.addLine(Html.fromHtml("<b>" + name + "</b> "
+						+ getReadableBody(messages.get(0))));
+				names.append(name);
+				names.append(", ");
+			}
+		}
+		if (names.length() >= 2) {
+			names.delete(names.length() - 2, names.length());
+		}
+		mBuilder.setContentTitle(notifications.size()
+				+ " "
+				+ mXmppConnectionService
+						.getString(R.string.unread_conversations));
+		mBuilder.setContentText(names.toString());
+		mBuilder.setStyle(style);
+		if (conversation != null) {
+			mBuilder.setContentIntent(createContentIntent(conversation
+					.getUuid()));
+		}
+		return mBuilder;
+	}
+
+	private Builder buildSingleConversations(boolean notify) {
+		Builder mBuilder = new NotificationCompat.Builder(
+				mXmppConnectionService);
+		ArrayList<Message> messages = notifications.values().iterator().next();
+		if (messages.size() >= 1) {
+			Conversation conversation = messages.get(0).getConversation();
+			mBuilder.setLargeIcon(mXmppConnectionService.getAvatarService()
+					.get(conversation, getPixel(64)));
+			mBuilder.setContentTitle(conversation.getName());
+			Message message;
+			if ((message = getImage(messages)) != null) {
+				modifyForImage(mBuilder, message, messages, notify);
+			} else {
+				modifyForTextOnly(mBuilder, messages, notify);
+			}
+			mBuilder.setContentIntent(createContentIntent(conversation
+					.getUuid()));
+		}
+		return mBuilder;
+
+	}
+
+	private void modifyForImage(Builder builder, Message message,
+			ArrayList<Message> messages, boolean notify) {
+		try {
+			Bitmap bitmap = mXmppConnectionService.getFileBackend()
+					.getThumbnail(message, getPixel(288), false);
+			ArrayList<Message> tmp = new ArrayList<Message>();
+			for (Message msg : messages) {
+				if (msg.getType() == Message.TYPE_TEXT
+						&& msg.getDownloadable() == null) {
+					tmp.add(msg);
+				}
+			}
+			BigPictureStyle bigPictureStyle = new NotificationCompat.BigPictureStyle();
+			bigPictureStyle.bigPicture(bitmap);
+			if (tmp.size() > 0) {
+				bigPictureStyle.setSummaryText(getMergedBodies(tmp));
+				builder.setContentText(getReadableBody(tmp.get(0)));
+			} else {
+				builder.setContentText(mXmppConnectionService.getString(R.string.image_file));
+			}
+			builder.setStyle(bigPictureStyle);
+		} catch (FileNotFoundException e) {
+			modifyForTextOnly(builder, messages, notify);
+		}
+	}
+
+	private void modifyForTextOnly(Builder builder,
+			ArrayList<Message> messages, boolean notify) {
+		builder.setStyle(new NotificationCompat.BigTextStyle()
+				.bigText(getMergedBodies(messages)));
+		builder.setContentText(getReadableBody(messages.get(0)));
+		if (notify) {
+			builder.setTicker(getReadableBody(messages.get(messages.size() - 1)));
+		}
+	}
+
+	private Message getImage(ArrayList<Message> messages) {
+		for (Message message : messages) {
+			if (message.getType() == Message.TYPE_IMAGE
+					&& message.getDownloadable() == null
+					&& message.getEncryption() != Message.ENCRYPTION_PGP) {
+				return message;
+			}
+		}
+		return null;
+	}
+
+	private String getMergedBodies(ArrayList<Message> messages) {
+		StringBuilder text = new StringBuilder();
+		for (int i = 0; i < messages.size(); ++i) {
+			text.append(getReadableBody(messages.get(i)));
+			if (i != messages.size() - 1) {
+				text.append("\n");
+			}
+		}
+		return text.toString();
 	}
 
 	private String getReadableBody(Message message) {
