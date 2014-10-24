@@ -327,7 +327,9 @@ public class Message extends AbstractEntity {
 				.getStatus() == Message.STATUS_SEND_RECEIVED) && (message
 				.getStatus() == Message.STATUS_UNSEND
 				|| message.getStatus() == Message.STATUS_SEND || message
-					.getStatus() == Message.STATUS_SEND_DISPLAYED)))));
+					.getStatus() == Message.STATUS_SEND_DISPLAYED))))
+				&& !message.bodyContainsDownloadable()
+				&& !this.bodyContainsDownloadable());
 	}
 
 	public String getMergedBody() {
