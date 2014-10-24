@@ -629,23 +629,11 @@ public class ConversationActivity extends XmppActivity implements
 	@Override
 	protected void onNewIntent(Intent intent) {
 		if (xmppConnectionServiceBound) {
-			if ((Intent.ACTION_VIEW.equals(intent.getAction()) && (VIEW_CONVERSATION
-					.equals(intent.getType())))) {
-				String convToView = (String) intent.getExtras().get(
-						CONVERSATION);
-				updateConversationList();
-				for (int i = 0; i < conversationList.size(); ++i) {
-					if (conversationList.get(i).getUuid().equals(convToView)) {
-						setSelectedConversation(conversationList.get(i));
-						break;
-					}
-				}
-				paneShouldBeOpen = false;
-				String text = intent.getExtras().getString(TEXT, null);
-				swapConversationFragment().setText(text);
+			 if (intent != null
+						&& VIEW_CONVERSATION.equals(getIntent().getType())) {
+				handleViewConversationIntent(intent);
 			}
 		} else {
-			handledViewIntent = false;
 			setIntent(intent);
 		}
 	}
@@ -705,11 +693,7 @@ public class ConversationActivity extends XmppActivity implements
 			mOpenConverstaion = null;
 		} else if (getIntent() != null
 				&& VIEW_CONVERSATION.equals(getIntent().getType())) {
-			String uuid = (String) getIntent().getExtras().get(CONVERSATION);
-			String text = getIntent().getExtras().getString(TEXT, null);
-			selectConversationByUuid(uuid);
-			paneShouldBeOpen = false;
-			swapConversationFragment().setText(text);
+			handleViewConversationIntent(getIntent());
 			setIntent(null);
 		} else {
 			showConversationsOverview();
@@ -730,6 +714,14 @@ public class ConversationActivity extends XmppActivity implements
 			pendingImageUri = null;
 		}
 		ExceptionHelper.checkForCrash(this, this.xmppConnectionService);
+	}
+	
+	private void handleViewConversationIntent(Intent intent) {
+		String uuid = (String) intent.getExtras().get(CONVERSATION);
+		String text = intent.getExtras().getString(TEXT, null);
+		selectConversationByUuid(uuid);
+		paneShouldBeOpen = false;
+		swapConversationFragment().setText(text);
 	}
 
 	private void selectConversationByUuid(String uuid) {

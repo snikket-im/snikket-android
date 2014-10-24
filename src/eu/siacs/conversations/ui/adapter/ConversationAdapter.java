@@ -100,6 +100,8 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 					mLastMessage.setText("");
 				}
 			} else if (message.getEncryption() == Message.ENCRYPTION_PGP) {
+				imagePreview.setVisibility(View.GONE);
+				mLastMessage.setVisibility(View.VISIBLE);
 				mLastMessage.setText(R.string.encrypted_message_received);
 			} else {
 				mLastMessage.setVisibility(View.GONE);

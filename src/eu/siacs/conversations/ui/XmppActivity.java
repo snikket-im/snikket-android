@@ -58,7 +58,6 @@ public abstract class XmppActivity extends Activity {
 
 	public XmppConnectionService xmppConnectionService;
 	public boolean xmppConnectionServiceBound = false;
-	protected boolean handledViewIntent = false;
 
 	protected int mPrimaryTextColor;
 	protected int mSecondaryTextColor;

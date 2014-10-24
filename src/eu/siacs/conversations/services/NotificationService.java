@@ -1,5 +1,6 @@
 package eu.siacs.conversations.services;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.regex.Matcher;
@@ -11,6 +12,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.PowerManager;
 import android.os.SystemClock;
@@ -109,19 +111,31 @@ public class NotificationService {
 					mBuilder.setLargeIcon(mXmppConnectionService
 							.getAvatarService().get(conversation, getPixel(64)));
 					mBuilder.setContentTitle(conversation.getName());
-					StringBuilder text = new StringBuilder();
-					for (int i = 0; i < messages.size(); ++i) {
-						text.append(getReadableBody(messages.get(i)));
-						if (i != messages.size() - 1) {
-							text.append("\n");
+					if (messages.size() == 1 && messages.get(0).getType() == Message.TYPE_IMAGE) {
+						try {
+							Bitmap bitmap = mXmppConnectionService.getFileBackend().getThumbnail(messages.get(0),getPixel(288),false);
+							mBuilder.setStyle(new NotificationCompat.BigPictureStyle().bigPicture(bitmap));
+							mBuilder.setContentText(mXmppConnectionService.getString(R.string.image_file));
+						} catch (FileNotFoundException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
 						}
-					}
-					mBuilder.setStyle(new NotificationCompat.BigTextStyle()
-							.bigText(text.toString()));
-					mBuilder.setContentText(getReadableBody(messages.get(0)));
-					if (notify) {
-						mBuilder.setTicker(getReadableBody(messages
-								.get(messages.size() - 1)));
+						
+					} else {
+						StringBuilder text = new StringBuilder();
+						for (int i = 0; i < messages.size(); ++i) {
+							text.append(getReadableBody(messages.get(i)));
+							if (i != messages.size() - 1) {
+								text.append("\n");
+							}
+						}
+						mBuilder.setStyle(new NotificationCompat.BigTextStyle()
+								.bigText(text.toString()));
+						mBuilder.setContentText(getReadableBody(messages.get(0)));
+						if (notify) {
+							mBuilder.setTicker(getReadableBody(messages
+									.get(messages.size() - 1)));
+						}
 					}
 					mBuilder.setContentIntent(createContentIntent(conversation
 							.getUuid()));
