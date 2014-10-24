@@ -9,9 +9,12 @@
         android:title="@string/share_image"/>
     <item
         android:id="@+id/copy_url"
-        android:title="@string/copy_original_url" />
+        android:title="@string/copy_original_url"/>
     <item
         android:id="@+id/send_again"
         android:title="@string/send_again"/>
+    <item
+        android:id="@+id/download_image"
+        android:title="@string/download_image"/>
 
 </menu>

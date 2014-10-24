@@ -355,6 +355,7 @@ public class ConversationFragment extends Fragment {
 			MenuItem shareImage = menu.findItem(R.id.share_image);
 			MenuItem sendAgain = menu.findItem(R.id.send_again);
 			MenuItem copyUrl = menu.findItem(R.id.copy_url);
+			MenuItem downloadImage = menu.findItem(R.id.download_image);
 			if (this.selectedMessage.getType() != Message.TYPE_TEXT
 					|| this.selectedMessage.getDownloadable() != null) {
 				copyText.setVisible(false);
@@ -371,6 +372,12 @@ public class ConversationFragment extends Fragment {
 					.getDownloadable() == null)
 					|| this.selectedMessage.getImageParams().url == null) {
 				copyUrl.setVisible(false);
+			}
+
+			if (this.selectedMessage.getType() != Message.TYPE_TEXT
+					|| this.selectedMessage.getDownloadable() != null
+					|| !this.selectedMessage.bodyContainsDownloadable()) {
+				downloadImage.setVisible(false);
 			}
 		}
 	}
@@ -390,6 +397,8 @@ public class ConversationFragment extends Fragment {
 		case R.id.copy_url:
 			copyUrl(selectedMessage);
 			return true;
+		case R.id.download_image:
+			downloadImage(selectedMessage);
 		default:
 			return super.onContextItemSelected(item);
 		}
@@ -425,6 +434,11 @@ public class ConversationFragment extends Fragment {
 			Toast.makeText(activity, R.string.url_copied_to_clipboard,
 					Toast.LENGTH_SHORT).show();
 		}
+	}
+
+	private void downloadImage(Message message) {
+		activity.xmppConnectionService.getHttpConnectionManager()
+				.createNewConnection(message);
 	}
 
 	protected void privateMessageWith(String counterpart) {
