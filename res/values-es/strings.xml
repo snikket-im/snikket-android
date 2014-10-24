@@ -267,10 +267,19 @@
     <string name="conference_banned">Tu entrada a esta conferencia ha sido prohibida</string>
     <string name="conference_members_only">Esta conferencia es solo para miembros</string>
     <string name="conference_kicked">Has sido expulsado de esta conferencia</string>
-    <string name="using_account">usando cuenta %s</string>
+    <string name="using_account">Usando cuenta %s</string>
     <string name="checking_image">Comprobando imagen en servidor HTTP</string>
     <string name="image_file_deleted">El archivo de imagen ha sido eliminado</string>
-    <string name="not_connected_try_again">No estás concectado. Intentalo más tarde</string>
+    <string name="not_connected_try_again">No estás concectado. Inténtalo más tarde</string>
     <string name="check_image_filesize">Comprobar el tamaño del archivo de imagen</string>
+    <string name="message_options">Opciones de mensaje</string>
+    <string name="copy_text">Copiar texto</string>
+    <string name="share_image">Compartir imagen</string>
+    <string name="copy_original_url">Copiar URL original</string>
+    <string name="send_again">Volver a enviar</string>
+    <string name="image_url">URL Imagen</string>
+    <string name="message_text">Mensaje de texto</string>
+    <string name="url_copied_to_clipboard">URL copiada al portapapeles</string>
+    <string name="message_copied_to_clipboard">Mensaje copiado al portapapeles</string>
 
 </resources>
