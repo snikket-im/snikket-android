@@ -36,6 +36,7 @@ public class HttpConnection implements Downloadable {
 	private Message message;
 	private DownloadableFile file;
 	private int mStatus = Downloadable.STATUS_UNKNOWN;
+	private boolean acceptedAutomatically = false;
 
 	public HttpConnection(HttpConnectionManager manager) {
 		this.mHttpConnectionManager = manager;
@@ -99,6 +100,9 @@ public class HttpConnection implements Downloadable {
 		message.setDownloadable(null);
 		mHttpConnectionManager.finishConnection(this);
 		mXmppConnectionService.updateConversationUi();
+		if (acceptedAutomatically) {
+			mXmppConnectionService.getNotificationService().push(message);
+		}
 	}
 
 	private void changeStatus(int status) {
@@ -151,6 +155,8 @@ public class HttpConnection implements Downloadable {
 				size = retrieveFileSize();
 			} catch (SSLHandshakeException e) {
 				changeStatus(STATUS_OFFER_CHECK_FILESIZE);
+				HttpConnection.this.acceptedAutomatically = false;
+				HttpConnection.this.mXmppConnectionService.getNotificationService().push(message);
 				return;
 			} catch (IOException e) {
 				cancel();
@@ -158,9 +164,12 @@ public class HttpConnection implements Downloadable {
 			}
 			file.setExpectedSize(size);
 			if (size <= mHttpConnectionManager.getAutoAcceptFileSize()) {
+				HttpConnection.this.acceptedAutomatically = true;
 				new Thread(new FileDownloader(interactive)).start();
 			} else {
 				changeStatus(STATUS_OFFER);
+				HttpConnection.this.acceptedAutomatically = false;
+				HttpConnection.this.mXmppConnectionService.getNotificationService().push(message);
 			}
 		}
 

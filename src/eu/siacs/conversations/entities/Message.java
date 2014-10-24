@@ -5,9 +5,7 @@ import java.net.URL;
 import java.util.Arrays;
 
 import eu.siacs.conversations.Config;
-import eu.siacs.conversations.R;
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 
 public class Message extends AbstractEntity {
@@ -143,19 +141,6 @@ public class Message extends AbstractEntity {
 
 	public String getBody() {
 		return body;
-	}
-
-	public String getReadableBody(Context context) {
-		if (encryption == ENCRYPTION_PGP) {
-			return context.getText(R.string.encrypted_message_received)
-					.toString();
-		} else if (encryption == ENCRYPTION_DECRYPTION_FAILED) {
-			return context.getText(R.string.decryption_failed).toString();
-		} else if (type == TYPE_IMAGE) {
-			return context.getText(R.string.image_file).toString();
-		} else {
-			return body.trim();
-		}
 	}
 
 	public long getTimeSent() {

@@ -78,14 +78,14 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 		if (message.getType() == Message.TYPE_IMAGE
 				|| message.getDownloadable() != null) {
 			Downloadable d = message.getDownloadable();
+			if (conversation.isRead()) {
+				mLastMessage.setTypeface(null, Typeface.ITALIC);
+			} else {
+				mLastMessage.setTypeface(null, Typeface.BOLD_ITALIC);
+			}
 			if (d != null) {
 				mLastMessage.setVisibility(View.VISIBLE);
 				imagePreview.setVisibility(View.GONE);
-				if (conversation.isRead()) {
-					mLastMessage.setTypeface(null, Typeface.ITALIC);
-				} else {
-					mLastMessage.setTypeface(null, Typeface.BOLD_ITALIC);
-				}
 				if (d.getStatus() == Downloadable.STATUS_CHECKING) {
 					mLastMessage.setText(R.string.checking_image);
 				} else if (d.getStatus() == Downloadable.STATUS_DOWNLOADING) {
@@ -99,6 +99,8 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 				} else {
 					mLastMessage.setText("");
 				}
+			} else if (message.getEncryption() == Message.ENCRYPTION_PGP) {
+				mLastMessage.setText(R.string.encrypted_message_received);
 			} else {
 				mLastMessage.setVisibility(View.GONE);
 				imagePreview.setVisibility(View.VISIBLE);
