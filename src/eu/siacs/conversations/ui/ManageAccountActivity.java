@@ -123,6 +123,7 @@ public class ManageAccountActivity extends XmppActivity {
 			return true;
 		case R.id.mgmt_account_announce_pgp:
 			publishOpenPGPPublicKey(selectedAccount);
+			return true;
 		default:
 			return super.onContextItemSelected(item);
 		}
