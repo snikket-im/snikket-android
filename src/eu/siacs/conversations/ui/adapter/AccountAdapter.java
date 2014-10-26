@@ -28,7 +28,7 @@ public class AccountAdapter extends ArrayAdapter<Account> {
 		if (view == null) {
 			LayoutInflater inflater = (LayoutInflater) getContext()
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			view = (View) inflater.inflate(R.layout.account_row, parent, false);
+			view = inflater.inflate(R.layout.account_row, parent, false);
 		}
 		TextView jid = (TextView) view.findViewById(R.id.account_jid);
 		jid.setText(account.getJid());

@@ -402,8 +402,7 @@ public abstract class XmppActivity extends Activity {
 	private void quickEdit(final String previousValue,
 			final OnValueEdited callback, boolean password) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		View view = (View) getLayoutInflater()
-				.inflate(R.layout.quickedit, null);
+		View view = getLayoutInflater().inflate(R.layout.quickedit, null);
 		final EditText editor = (EditText) view.findViewById(R.id.editor);
 		OnClickListener mClickListener = new OnClickListener() {
 
@@ -450,7 +449,7 @@ public abstract class XmppActivity extends Activity {
 					listener.onPresenceSelected();
 				}
 			} else if (presences.size() == 1) {
-				String presence = (String) presences.asStringArray()[0];
+				String presence = presences.asStringArray()[0];
 				conversation.setNextPresence(presence);
 				listener.onPresenceSelected();
 			} else {

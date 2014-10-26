@@ -241,19 +241,15 @@ public class ConversationActivity extends XmppActivity implements
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.conversations, menu);
-		MenuItem menuSecure = (MenuItem) menu.findItem(R.id.action_security);
-		MenuItem menuArchive = (MenuItem) menu.findItem(R.id.action_archive);
-		MenuItem menuMucDetails = (MenuItem) menu
-				.findItem(R.id.action_muc_details);
-		MenuItem menuContactDetails = (MenuItem) menu
-				.findItem(R.id.action_contact_details);
-		MenuItem menuAttach = (MenuItem) menu.findItem(R.id.action_attach_file);
-		MenuItem menuClearHistory = (MenuItem) menu
-				.findItem(R.id.action_clear_history);
-		MenuItem menuAdd = (MenuItem) menu.findItem(R.id.action_add);
-		MenuItem menuInviteContact = (MenuItem) menu
-				.findItem(R.id.action_invite);
-		MenuItem menuMute = (MenuItem) menu.findItem(R.id.action_mute);
+		MenuItem menuSecure = menu.findItem(R.id.action_security);
+		MenuItem menuArchive = menu.findItem(R.id.action_archive);
+		MenuItem menuMucDetails = menu.findItem(R.id.action_muc_details);
+		MenuItem menuContactDetails = menu.findItem(R.id.action_contact_details);
+		MenuItem menuAttach = menu.findItem(R.id.action_attach_file);
+		MenuItem menuClearHistory = menu.findItem(R.id.action_clear_history);
+		MenuItem menuAdd = menu.findItem(R.id.action_add);
+		MenuItem menuInviteContact = menu.findItem(R.id.action_invite);
+		MenuItem menuMute = menu.findItem(R.id.action_mute);
 
 		if (isConversationsOverviewVisable()
 				&& isConversationsOverviewHideable()) {
