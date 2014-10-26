@@ -227,7 +227,7 @@ public class ConferenceDetailsActivity extends XmppActivity {
 		LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		membersView.removeAllViews();
 		for (final User user : conversation.getMucOptions().getUsers()) {
-			View view = (View) inflater.inflate(R.layout.contact, membersView,
+			View view = inflater.inflate(R.layout.contact, membersView,
 					false);
 			TextView name = (TextView) view
 					.findViewById(R.id.contact_display_name);

@@ -325,8 +325,7 @@ public class ContactDetailsActivity extends XmppActivity {
 				.iterator(); iterator.hasNext();) {
 			hasKeys = true;
 			final String otrFingerprint = iterator.next();
-			View view = (View) inflater.inflate(R.layout.contact_key, keys,
-					false);
+			View view = inflater.inflate(R.layout.contact_key, keys, false);
 			TextView key = (TextView) view.findViewById(R.id.key);
 			TextView keyType = (TextView) view.findViewById(R.id.key_type);
 			ImageButton remove = (ImageButton) view
@@ -345,8 +344,7 @@ public class ContactDetailsActivity extends XmppActivity {
 		}
 		if (contact.getPgpKeyId() != 0) {
 			hasKeys = true;
-			View view = (View) inflater.inflate(R.layout.contact_key, keys,
-					false);
+			View view = inflater.inflate(R.layout.contact_key, keys, false);
 			TextView key = (TextView) view.findViewById(R.id.key);
 			TextView keyType = (TextView) view.findViewById(R.id.key_type);
 			keyType.setText("PGP Key ID");

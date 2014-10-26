@@ -314,11 +314,11 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 			viewHolder = new ViewHolder();
 			switch (type) {
 			case NULL:
-				view = (View) activity.getLayoutInflater().inflate(
+				view = activity.getLayoutInflater().inflate(
 						R.layout.message_null, parent, false);
 				break;
 			case SENT:
-				view = (View) activity.getLayoutInflater().inflate(
+				view = activity.getLayoutInflater().inflate(
 						R.layout.message_sent, parent, false);
 				viewHolder.message_box = (LinearLayout) view
 						.findViewById(R.id.message_box);
@@ -343,7 +343,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 				view.setTag(viewHolder);
 				break;
 			case RECEIVED:
-				view = (View) activity.getLayoutInflater().inflate(
+				view = activity.getLayoutInflater().inflate(
 						R.layout.message_received, parent, false);
 				viewHolder.message_box = (LinearLayout) view
 						.findViewById(R.id.message_box);
@@ -367,7 +367,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 				view.setTag(viewHolder);
 				break;
 			case STATUS:
-				view = (View) activity.getLayoutInflater().inflate(
+				view = activity.getLayoutInflater().inflate(
 						R.layout.message_status, parent, false);
 				viewHolder.contact_picture = (ImageView) view
 						.findViewById(R.id.message_photo);

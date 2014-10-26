@@ -35,7 +35,7 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 		if (view == null) {
 			LayoutInflater inflater = (LayoutInflater) activity
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			view = (View) inflater.inflate(R.layout.conversation_list_row,
+			view = inflater.inflate(R.layout.conversation_list_row,
 					parent, false);
 		}
 		Conversation conversation = getItem(position);
