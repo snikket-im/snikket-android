@@ -1,4 +1,4 @@
-include ':memorizingTrustManager'
-include ':minidns'
-include ':openpgpapilib'
+include ':libs/MemorizingTrustManager'
+include ':libs/minidns'
+include ':libs/openpgp-api-lib'
 include ':conversations'
