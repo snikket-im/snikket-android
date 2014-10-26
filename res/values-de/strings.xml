@@ -252,6 +252,8 @@
     <string name="pref_force_encryption_summary">Nachrichten immer verschlüsseln (außer für Konferenzen)</string>
     <string name="pref_dont_save_encrypted">Verschlüsselte Nachrichten nicht speichern</string>
     <string name="pref_dont_save_encrypted_summary">Achtung: Kann zu Nachrichtenverlust führen</string>
+    <string name="pref_enable_legacy_ssl">Alte SSL-Version aktivieren</string>
+    <string name="pref_enable_legacy_ssl_summary">Aktiviert SSLv3-Unterstützung für alte Server. Achtung: SSLv3 ist unsicher.</string>
     <string name="pref_expert_options">Einstellungen für Experten</string>
     <string name="pref_expert_options_summary">Hier bitte vorsichtig sein</string>
     <string name="pref_use_larger_font">Schriftgröße erhöhen</string>
@@ -265,5 +267,19 @@
     <string name="conference_banned">Du wurdest aus dem Konferenzraum verbannt</string>
     <string name="conference_members_only">Der Konferenzraum ist nur für Mitglieder</string>
     <string name="conference_kicked">Du wurdest aus dem Konferenzraum geworfen</string>
+    <string name="using_account">Verwende Konto %s</string>
+    <string name="checking_image">Prüfe Bild auf HTTP-Host</string>
+    <string name="image_file_deleted">Bilddatei wurde gelöscht</string>
+    <string name="not_connected_try_again">Nicht verbunden, bitte später versuchen</string>
+    <string name="check_image_filesize">Bildgröße prüfen</string>
+    <string name="message_options">Nachrichtenoptionen</string>
+    <string name="copy_text">Text kopieren</string>
+    <string name="share_image">Bild teilen</string>
+    <string name="copy_original_url">Original-URL kopieren</string>
+    <string name="send_again">Erneut senden</string>
+    <string name="image_url">Bild-URL</string>
+    <string name="message_text">Nachrichtentext</string>
+    <string name="url_copied_to_clipboard">URL in Zwischenablage kopiert</string>
+    <string name="message_copied_to_clipboard">Nachricht in Zwischenablage kopiert</string>
 
 </resources>
