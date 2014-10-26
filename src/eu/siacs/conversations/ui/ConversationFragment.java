@@ -399,6 +399,7 @@ public class ConversationFragment extends Fragment {
 			return true;
 		case R.id.download_image:
 			downloadImage(selectedMessage);
+			return true;
 		default:
 			return super.onContextItemSelected(item);
 		}
