@@ -7,6 +7,7 @@ import java.util.Arrays;
 import eu.siacs.conversations.Config;
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.util.Log;
 
 public class Message extends AbstractEntity {
 
@@ -405,14 +406,18 @@ public class Message extends AbstractEntity {
 	}
 
 	public ImageParams getImageParams() {
-		ImageParams params = new ImageParams();
+		ImageParams params = getLegacyImageParams();
+		if (params!=null) {
+			return params;
+		}
+		params = new ImageParams();
 		if (this.downloadable != null) {
 			params.size = this.downloadable.getFileSize();
 		}
 		if (body == null) {
 			return params;
 		}
-		String parts[] = body.split(",");
+		String parts[] = body.split("\\|");
 		if (parts.length == 1) {
 			try {
 				params.size = Long.parseLong(parts[0]);
@@ -464,6 +469,34 @@ public class Message extends AbstractEntity {
 			}
 		}
 		return params;
+	}
+	
+	public ImageParams getLegacyImageParams() {
+		ImageParams params = new ImageParams();
+		if (body == null) {
+			return params;
+		}
+		String parts[] = body.split(",");
+		if (parts.length == 3) {
+			try {
+				params.size = Long.parseLong(parts[0]);
+			} catch (NumberFormatException e) {
+				return null;
+			}
+			try {
+				params.width = Integer.parseInt(parts[1]);
+			} catch (NumberFormatException e) {
+				return null;
+			}
+			try {
+				params.height = Integer.parseInt(parts[2]);
+			} catch (NumberFormatException e) {
+				return null;
+			}
+			return params;
+		} else {
+			return null;
+		}
 	}
 
 	public class ImageParams {

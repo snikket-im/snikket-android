@@ -8,6 +8,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URL;
 
 import org.openintents.openpgp.OpenPgpError;
 import org.openintents.openpgp.OpenPgpSignatureResult;
@@ -101,14 +102,25 @@ public class PgpEngine {
 						switch (result.getIntExtra(OpenPgpApi.RESULT_CODE,
 								OpenPgpApi.RESULT_CODE_ERROR)) {
 						case OpenPgpApi.RESULT_CODE_SUCCESS:
+							URL url = message.getImageParams().url;
 							BitmapFactory.Options options = new BitmapFactory.Options();
 							options.inJustDecodeBounds = true;
 							BitmapFactory.decodeFile(
 									outputFile.getAbsolutePath(), options);
 							int imageHeight = options.outHeight;
 							int imageWidth = options.outWidth;
-							message.setBody(Long.toString(outputFile.getSize())
-									+ ',' + imageWidth + ',' + imageHeight);
+							if (url == null) {
+								message.setBody(Long.toString(outputFile
+										.getSize())
+										+ '|'
+										+ imageWidth
+										+ '|'
+										+ imageHeight);
+							} else {
+								message.setBody(url.toString() + "|"
+										+ Long.toString(outputFile.getSize())
+										+ '|' + imageWidth + '|' + imageHeight);
+							}
 							message.setEncryption(Message.ENCRYPTION_DECRYPTED);
 							PgpEngine.this.mXmppConnectionService
 									.updateMessage(message);
