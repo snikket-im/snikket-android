@@ -1,4 +1,3 @@
 include ':libs/MemorizingTrustManager'
 include ':libs/minidns'
 include ':libs/openpgp-api-lib'
-include ':conversations'
