@@ -1,3 +1,5 @@
 include ':libs/MemorizingTrustManager'
 include ':libs/minidns'
 include ':libs/openpgp-api-lib'
+
+rootProject.name = 'Conversations'
