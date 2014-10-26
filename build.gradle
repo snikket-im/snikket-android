@@ -33,7 +33,7 @@ dependencies {
 	compile project(':memorizingTrustManager')
 	compile 'com.android.support:support-v13:19.1.0'
 	compile 'org.bouncycastle:bcprov-jdk15on:1.50'
-	compile 'net.java:otr4j:0.10'
+	compile 'net.java:otr4j:0.21'
 	compile fileTree(dir: 'libs', include: ['*.jar'])
 }
 
