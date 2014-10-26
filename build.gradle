@@ -84,6 +84,18 @@ android {
 			runProguard true
 			proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
 		}
+		applicationVariants.all { variant ->
+			def fileName = variant.packageApplication.outputFile.name.replace(".apk",
+					"-" + defaultConfig.versionName + ".apk")
+				variant.packageApplication.outputFile = new
+				File(variant.packageApplication.outputFile.parent, fileName)
+				if (variant.zipAlign) {
+					if (variant.name.equals('release')) {
+						variant.outputFile = new File(variant.outputFile.parent,
+								rootProject.name + "-" + defaultConfig.versionName + ".apk")
+					}
+				}
+		}
 	}
 
 	lintOptions {
