@@ -33,7 +33,7 @@ public class DNSHelper {
 			for (String dnsserver : dns) {
 				InetAddress ip = InetAddress.getByName(dnsserver);
 				Bundle b = queryDNS(host, ip);
-				if (b.containsKey("name")) {
+				if (b.containsKey("values")) {
 					return b;
 				} else if (b.containsKey("error")
 						&& "nosrv".equals(b.getString("error", null))) {
@@ -45,7 +45,7 @@ public class DNSHelper {
 	}
 
 	public static Bundle queryDNS(String host, InetAddress dnsServer) {
-		Bundle namePort = new Bundle();
+		Bundle bundle = new Bundle();
 		try {
 			String qname = "_xmpp-client._tcp." + host;
 			Log.d(Config.LOGTAG,
@@ -133,42 +133,28 @@ public class DNSHelper {
 			}
 
 			if (result.size() == 0) {
-				namePort.putString("error", "nosrv");
-				return namePort;
+				bundle.putString("error", "nosrv");
+				return bundle;
 			}
-			// we now have a list of servers to try :-)
-
-			// classic name/port pair
-			String resultName = result.get(0).getName();
-			namePort.putString("name", resultName);
-			namePort.putInt("port", result.get(0).getPort());
-
-			if (ips4.containsKey(resultName)) {
-				// we have an ip!
-				ArrayList<String> ip = ips4.get(resultName);
-				Collections.shuffle(ip, rnd);
-				namePort.putString("ipv4", ip.get(0));
-			}
-			if (ips6.containsKey(resultName)) {
-				ArrayList<String> ip = ips6.get(resultName);
-				Collections.shuffle(ip, rnd);
-				namePort.putString("ipv6", ip.get(0));
-			}
-
-			// add all other records
-			int i = 0;
+			ArrayList<Bundle> values = new ArrayList<Bundle>();
 			for (SRV srv : result) {
-				namePort.putString("name" + i, srv.getName());
-				namePort.putInt("port" + i, srv.getPort());
-				i++;
+				Bundle namePort = new Bundle();
+				namePort.putString("name", srv.getName());
+				namePort.putInt("port", srv.getPort());
+				if (ips4.containsKey(srv.getName())) {
+					ArrayList<String> ip = ips4.get(srv.getName());
+					Collections.shuffle(ip, rnd);
+					namePort.putString("ipv4", ip.get(0));
+				}
+				values.add(namePort);
 			}
-
+			bundle.putParcelableArrayList("values", values);
 		} catch (SocketTimeoutException e) {
-			namePort.putString("error", "timeout");
+			bundle.putString("error", "timeout");
 		} catch (Exception e) {
-			namePort.putString("error", "unhandled");
+			bundle.putString("error", "unhandled");
 		}
-		return namePort;
+		return bundle;
 	}
 
 	final protected static char[] hexArray = "0123456789ABCDEF".toCharArray();

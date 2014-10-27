@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.math.BigInteger;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.security.KeyManagementException;
@@ -32,6 +33,7 @@ import de.duenndns.ssl.MemorizingTrustManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.os.SystemClock;
@@ -155,50 +157,47 @@ public class XmppConnection implements Runnable {
 			tagWriter = new TagWriter();
 			packetCallbacks.clear();
 			this.changeStatus(Account.STATUS_CONNECTING);
-			Bundle namePort = DNSHelper.getSRVRecord(account.getServer());
-			if ("timeout".equals(namePort.getString("error"))) {
+			Bundle result = DNSHelper.getSRVRecord(account.getServer());
+			ArrayList<Parcelable> values = result.getParcelableArrayList("values");
+			if ("timeout".equals(result.getString("error"))) {
 				Log.d(Config.LOGTAG, account.getJid() + ": dns timeout");
 				this.changeStatus(Account.STATUS_OFFLINE);
 				return;
-			}
-			String srvRecordServer = namePort.getString("name");
-			String srvIpServer = namePort.getString("ipv4");
-			int srvRecordPort = namePort.getInt("port");
-			if (srvRecordServer != null) {
-				if (srvIpServer != null) {
-					Log.d(Config.LOGTAG, account.getJid()
-							+ ": using values from dns " + srvRecordServer
-							+ "[" + srvIpServer + "]:" + srvRecordPort);
-					socket = new Socket(srvIpServer, srvRecordPort);
-				} else {
+			} else if (values != null) {
+					int i = 0;
 					boolean socketError = true;
-					int srvIndex = 0;
-					while (socketError
-							&& namePort.containsKey("name" + srvIndex)) {
+					while (socketError && values.size() > i) {
+						Bundle namePort = (Bundle) values.get(i);
 						try {
-							srvRecordServer = namePort.getString("name"
-									+ srvIndex);
-							srvRecordPort = namePort.getInt("port" + srvIndex);
-							Log.d(Config.LOGTAG, account.getJid()
-									+ ": using values from dns "
-									+ srvRecordServer + ":" + srvRecordPort);
-							socket = new Socket(srvRecordServer, srvRecordPort);
+							String srvRecordServer = namePort.getString("name");
+							int srvRecordPort = namePort.getInt("port");
+							String srvIpServer = namePort.getString("ipv4");
+							InetSocketAddress addr;
+							if (srvIpServer!=null) {
+								addr = new InetSocketAddress(srvIpServer, srvRecordPort);
+								Log.d(Config.LOGTAG, account.getJid()
+										+ ": using values from dns " + srvRecordServer
+										+ "[" + srvIpServer + "]:" + srvRecordPort);
+							} else {
+								addr = new InetSocketAddress(srvRecordServer, srvRecordPort);
+								Log.d(Config.LOGTAG, account.getJid()
+										+ ": using values from dns "
+										+ srvRecordServer + ":" + srvRecordPort);
+							}
+							socket = new Socket();
+							socket.connect(addr, 20000);
 							socketError = false;
 						} catch (UnknownHostException e) {
-							srvIndex++;
-							if (!namePort.containsKey("name" + srvIndex)) {
-								throw e;
-							}
+							i++;
 						} catch (IOException e) {
-							srvIndex++;
-							if (!namePort.containsKey("name" + srvIndex)) {
-								throw e;
-							}
+							i++;
 						}
 					}
-				}
-			} else if (namePort.containsKey("error")
-					&& "nosrv".equals(namePort.getString("error", null))) {
+					if (socketError) {
+						throw new IOException();
+					}
+			} else if (result.containsKey("error")
+					&& "nosrv".equals(result.getString("error", null))) {
 				socket = new Socket(account.getServer(), 5222);
 			} else {
 				Log.d(Config.LOGTAG, account.getJid()
