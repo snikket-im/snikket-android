@@ -383,7 +383,12 @@ public class Message extends AbstractEntity {
 				return false;
 			}
 			String[] pathParts = url.getPath().split("/");
-			String filename = pathParts[pathParts.length - 1];
+			String filename;
+			if (pathParts.length > 0) {
+				filename = pathParts[pathParts.length - 1];
+			} else {
+				filename = pathParts[0];
+			}
 			String[] extensionParts = filename.split("\\.");
 			if (extensionParts.length == 2
 					&& Arrays.asList(Downloadable.VALID_EXTENSIONS).contains(
