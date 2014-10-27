@@ -22,7 +22,7 @@
     </string-array>
     <string-array name="mute_options_descriptions">
         <item>30 Minuten</item>
-        <item>eine Stunde</item>
+        <item>1 Stunde</item>
         <item>2 Stunden</item>
         <item>8 Stunden</item>
         <item>bis auf Widerruf</item>
