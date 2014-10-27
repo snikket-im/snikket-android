@@ -17,7 +17,6 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.net.Uri;
-import android.util.Log;
 
 public class AvatarService {
 
@@ -43,7 +42,6 @@ public class AvatarService {
 		if (avatar != null) {
 			return avatar;
 		}
-		Log.d(Config.LOGTAG, "no cache hit for " + KEY);
 		avatar = mXmppConnectionService.getFileBackend().getAvatar(
 				contact.getAvatar(), size);
 		if (avatar == null) {
@@ -116,7 +114,6 @@ public class AvatarService {
 		if (bitmap != null) {
 			return bitmap;
 		}
-		Log.d(Config.LOGTAG, "no cache hit for " + KEY);
 		List<MucOptions.User> users = mucOptions.getUsers();
 		int count = users.size();
 		bitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
@@ -178,7 +175,6 @@ public class AvatarService {
 		if (avatar != null) {
 			return avatar;
 		}
-		Log.d(Config.LOGTAG, "no cache hit for " + KEY);
 		avatar = mXmppConnectionService.getFileBackend().getAvatar(
 				account.getAvatar(), size);
 		if (avatar == null) {
@@ -211,7 +207,6 @@ public class AvatarService {
 		if (bitmap != null) {
 			return bitmap;
 		}
-		Log.d(Config.LOGTAG, "no cache hit for " + KEY);
 		bitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
 		Canvas canvas = new Canvas(bitmap);
 		String letter = name.substring(0, 1);
