@@ -7,7 +7,6 @@ import java.util.Arrays;
 import eu.siacs.conversations.Config;
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.util.Log;
 
 public class Message extends AbstractEntity {
 
@@ -367,13 +366,13 @@ public class Message extends AbstractEntity {
 			return prev.mergable(this);
 		}
 	}
+	
+	public boolean trusted() {
+		Contact contact = this.getContact();
+		return (status > STATUS_RECEIVED || (contact != null && contact.trusted()));
+	}
 
 	public boolean bodyContainsDownloadable() {
-		Contact contact = this.getContact();
-		if (status <= STATUS_RECEIVED
-				&& (contact == null || !contact.trusted())) {
-			return false;
-		}
 		try {
 			URL url = new URL(this.getBody());
 			if (!url.getProtocol().equalsIgnoreCase("http")

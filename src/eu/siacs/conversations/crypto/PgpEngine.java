@@ -61,6 +61,10 @@ public class PgpEngine {
 							if (message.getEncryption() == Message.ENCRYPTION_PGP) {
 								message.setBody(os.toString());
 								message.setEncryption(Message.ENCRYPTION_DECRYPTED);
+								if (message.trusted() && message.bodyContainsDownloadable()) {
+									mXmppConnectionService.getHttpConnectionManager()
+											.createNewConnection(message);
+								}
 								callback.success(message);
 							}
 						} catch (IOException e) {
