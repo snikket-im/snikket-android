@@ -569,7 +569,7 @@ public class ConversationFragment extends Fragment {
 			this.messageListAdapter.notifyDataSetChanged();
 			if (conversation.getMode() == Conversation.MODE_SINGLE) {
 				if (messageList.size() >= 1) {
-					makeFingerprintWarning(conversation.getLatestEncryption());
+					makeFingerprintWarning();
 				}
 			} else {
 				if (!conversation.getMucOptions().online()
@@ -721,14 +721,13 @@ public class ConversationFragment extends Fragment {
 		}
 	}
 
-	protected void makeFingerprintWarning(int latestEncryption) {
+	protected void makeFingerprintWarning() {
 		Set<String> knownFingerprints = conversation.getContact()
 				.getOtrFingerprints();
-		if ((latestEncryption == Message.ENCRYPTION_OTR)
-				&& (conversation.hasValidOtrSession()
+		if (conversation.hasValidOtrSession()
 						&& (!conversation.isMuted())
 						&& (conversation.getOtrSession().getSessionStatus() == SessionStatus.ENCRYPTED) && (!knownFingerprints
-							.contains(conversation.getOtrFingerprint())))) {
+							.contains(conversation.getOtrFingerprint()))) {
 			showSnackbar(R.string.unknown_otr_fingerprint, R.string.verify,
 					new OnClickListener() {
 
