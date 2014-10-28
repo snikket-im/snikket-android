@@ -922,9 +922,9 @@ public class XmppConnectionService extends Service {
 	public Conversation find(List<Conversation> haystack, Account account,
 			String jid) {
 		for (Conversation conversation : haystack) {
-			if ((account == null || conversation.getAccount().equals(account))
+			if ((account == null || conversation.getAccount() == account)
 					&& (conversation.getContactJid().split("/", 2)[0]
-							.equals(jid))) {
+							.equalsIgnoreCase(jid))) {
 				return conversation;
 			}
 		}
