@@ -271,9 +271,25 @@ Make sure to have ANDROID_HOME point to your Android SDK
 
     git clone https://github.com/siacs/Conversations.git
     cd Conversations
-    git submodule update --init --recursive
-    ant clean
-    ant debug
+		./gradlew build
+
+### How do I update/add external libraries?
+
+If the library you want to update is in Maven Central or JCenter (or has its own
+Maven repo), add it or update its version in `build.gradle`. If the library is
+in the `libs/` directory, you can update it using a subtree merge by doing the
+following (using `minidns` as an example):
+
+    git remote add minidns https://github.com/rtreffer/minidns.git
+		git fetch minidns
+		git merge -s minidns/master
+
+To add a new dependency to the `libs/` directory:
+
+    git remote add name repo-url
+		git merge -s ours --no-commit name/branch
+		git read-tree --prefix=libs/name -u name/branch
+		git commit -m "Subtree merged in name"
 
 #### How do I debug Conversations
 
