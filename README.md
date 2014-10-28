@@ -284,9 +284,10 @@ following (using `minidns` as an example):
 		git fetch minidns
 		git merge -s subtree minidns master
 
-To add a new dependency to the `libs/` directory:
+To add a new dependency to the `libs/` directory (replacing "name", "branch" and
+"url" as necessary):
 
-    git remote add name repo-url
+    git remote add name url
 		git merge -s ours --no-commit name/branch
 		git read-tree --prefix=libs/name -u name/branch
 		git commit -m "Subtree merged in name"
