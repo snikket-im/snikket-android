@@ -282,7 +282,7 @@ following (using `minidns` as an example):
 
     git remote add minidns https://github.com/rtreffer/minidns.git
 		git fetch minidns
-		git merge -s minidns/master
+		git merge -s subtree minidns master
 
 To add a new dependency to the `libs/` directory:
 
