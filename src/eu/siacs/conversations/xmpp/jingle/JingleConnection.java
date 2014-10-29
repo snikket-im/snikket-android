@@ -73,11 +73,7 @@ public class JingleConnection implements Downloadable {
 		@Override
 		public void onIqPacketReceived(Account account, IqPacket packet) {
 			if (packet.getType() == IqPacket.TYPE_ERROR) {
-				if (initiator.equals(account.getFullJid())) {
-					mXmppConnectionService.markMessage(message,
-							Message.STATUS_SEND_FAILED);
-				}
-				mJingleStatus = JINGLE_STATUS_FAILED;
+				cancel();
 			}
 		}
 	};
@@ -354,6 +350,7 @@ public class JingleConnection implements Downloadable {
 	}
 
 	private void sendInitRequest() {
+		this.mXmppConnectionService.markMessage(this.message, Message.STATUS_OFFERED);
 		JinglePacket packet = this.bootstrapPacket("session-initiate");
 		Content content = new Content(this.contentCreator, this.contentName);
 		if (message.getType() == Message.TYPE_IMAGE) {
@@ -716,13 +713,8 @@ public class JingleConnection implements Downloadable {
 				this.mStatus = Downloadable.STATUS_FAILED;
 				this.mXmppConnectionService.updateConversationUi();
 			} else {
-				if (this.mJingleStatus == JINGLE_STATUS_INITIATED) {
-					this.mXmppConnectionService.markMessage(this.message,
-							Message.STATUS_SEND_REJECTED);
-				} else {
-					this.mXmppConnectionService.markMessage(this.message,
-							Message.STATUS_SEND_FAILED);
-				}
+				this.mXmppConnectionService.markMessage(this.message,
+						Message.STATUS_SEND_FAILED);
 			}
 		}
 		this.mJingleConnectionManager.finishConnection(this);

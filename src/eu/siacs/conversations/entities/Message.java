@@ -16,7 +16,6 @@ public class Message extends AbstractEntity {
 	public static final int STATUS_UNSEND = 1;
 	public static final int STATUS_SEND = 2;
 	public static final int STATUS_SEND_FAILED = 3;
-	public static final int STATUS_SEND_REJECTED = 4;
 	public static final int STATUS_WAITING = 5;
 	public static final int STATUS_OFFERED = 6;
 	public static final int STATUS_SEND_RECEIVED = 7;
