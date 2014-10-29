@@ -28,7 +28,6 @@ import android.util.Base64OutputStream;
 import android.util.Log;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
-import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.services.XmppConnectionService;
@@ -213,27 +212,6 @@ public class FileBackend {
 					thumbnail);
 		}
 		return thumbnail;
-	}
-
-	public void removeFiles(Conversation conversation) {
-		String prefix = mXmppConnectionService.getFilesDir().getAbsolutePath();
-		String path = prefix + "/" + conversation.getAccount().getJid() + "/"
-				+ conversation.getContactJid();
-		File file = new File(path);
-		try {
-			this.deleteFile(file);
-		} catch (IOException e) {
-			Log.d(Config.LOGTAG,
-					"error deleting file: " + file.getAbsolutePath());
-		}
-	}
-
-	private void deleteFile(File f) throws IOException {
-		if (f.isDirectory()) {
-			for (File c : f.listFiles())
-				deleteFile(c);
-		}
-		f.delete();
 	}
 
 	public Uri getTakePhotoUri() {

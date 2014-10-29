@@ -332,4 +332,22 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		cursor.moveToFirst();
 		return Account.fromCursor(cursor);
 	}
+
+	public List<Message> getImageMessages(Conversation conversation) {
+		ArrayList<Message> list = new ArrayList<Message>();
+		SQLiteDatabase db = this.getReadableDatabase();
+		Cursor cursor;
+			String[] selectionArgs = { conversation.getUuid(), String.valueOf(Message.TYPE_IMAGE) };
+			cursor = db.query(Message.TABLENAME, null, Message.CONVERSATION
+					+ "=? AND "+Message.TYPE+"=?", selectionArgs, null, null,null);
+		if (cursor.getCount() > 0) {
+			cursor.moveToLast();
+			do {
+				Message message = Message.fromCursor(cursor);
+				message.setConversation(conversation);
+				list.add(message);
+			} while (cursor.moveToPrevious());
+		}
+		return list;
+	}
 }
