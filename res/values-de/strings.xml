@@ -51,7 +51,7 @@
     <string name="send_now">Jetzt abschicken</string>
     <string name="send_never">Nie mehr nachfragen</string>
     <string name="problem_connecting_to_account">Es gibt Probleme beim Verbindungsaufbau mit einem Konto</string>
-    <string name="problem_connecting_to_accounts">Es gibt Probleme beim Verbindungsaufbau mit mehreren Konto</string>
+    <string name="problem_connecting_to_accounts">Es gibt Probleme beim Verbindungsaufbau mit mehreren Konten</string>
     <string name="touch_to_fix">Drücke hier, um das Konto zu verwalten</string>
     <string name="attach_file">Datei anfügen</string>
     <string name="not_in_roster">Der Kontakt ist nicht in deiner Kontaktliste. Möchtest du ihn hinzufügen?</string>
@@ -65,7 +65,7 @@
     <string name="clear_histor_msg">Möchtest du alle Nachrichten in dieser Unterhaltung löschen?\n\n<b>Achtung:</b> Dies beeinflusst nicht Nachrichten, die auf anderen Geräten oder Servern gespeichert sind.</string>
     <string name="delete_messages">Nachrichten löschen</string>
     <string name="also_end_conversation">Diese Unterhaltung danach beenden</string>
-    <string name="choose_presence">Choose presence to contact</string>
+    <string name="choose_presence">Ressource des Kontakts auswählen</string>
     <string name="send_plain_text_message">Unverschlüsselt schreiben</string>
     <string name="send_otr_message">OTR-verschlüsselt schreiben</string>
     <string name="send_pgp_message">OpenPGP-verschlüsselt schreiben</string>
@@ -81,9 +81,9 @@
     <string name="offering">angeboten&#8230;</string>
     <string name="waiting">warten&#8230;</string>
     <string name="no_pgp_key">Kein OpenPGP-Schlüssel gefunden</string>
-    <string name="contact_has_no_pgp_key">Conversations ist nicht in der Lage, deine Nachrichten zu verschlüsseln, weil dein Kontakt seinen oder ihren Schlüssel nicht preisgibt.\n\n<small>Bitte sag deinem Kontakt, er oder sie möge bitte OpenPGP einrichten.</small></string>
+    <string name="contact_has_no_pgp_key">Conversations ist nicht in der Lage, deine Nachrichten zu verschlüsseln, weil dein Kontakt seinen oder ihren Schlüssel nicht preisgibt.\n\n<small>Bitte sag deinem Kontakt, er oder sie möge OpenPGP einrichten.</small></string>
     <string name="no_pgp_keys">Keine OpenPGP-Schlüssel gefunden</string>
-    <string name="contacts_have_no_pgp_keys">Conversations ist nicht in der Lage, deine Nachrichten zu verschlüsseln, weil dein Kontakt seinen oder ihren Schlüssel nicht preisgibt.\n\n<small>Bitte sag deinem Kontakt, er oder sie möge bitte OpenPGP einrichten.</small></string>
+    <string name="contacts_have_no_pgp_keys">Conversations ist nicht in der Lage, deine Nachrichten zu verschlüsseln, weil deine Kontakte ihre Schlüssel nicht preisgeben.\n\n<small>Bitte sag deinen Kontakten, sie mögen OpenPGP einrichten.</small></string>
     <string name="encrypted_message_received"><i>Verschlüsselte Nachricht erhalten. Drücke hier, um sie anzuzeigen und zu entschlüsseln.</i></string>
     <string name="encrypted_image_received"><i>Verschlüsseltes Bild erhalten. Drücke hier, um es anzuzeigen und zu entschlüsseln.</i></string>
     <string name="image_file"><i>Bild erhalten. Drücke hier, um es anzuzeigen.</i></string>
@@ -100,7 +100,7 @@
     <string name="pref_sound">Klingelton</string>
     <string name="pref_sound_summary">Spiele Klingelton, wenn eine neue Nachricht ankommt</string>
     <string name="pref_conference_notifications">Konferenz-Benachrichtigungen</string>
-    <string name="pref_conference_notifications_summary">Benachrichtige mich bei jeder Konferenznachricht und nicht nur, wenn ich angesprochen werde.</string>
+    <string name="pref_conference_notifications_summary">Benachrichtige mich bei jeder Konferenznachricht und nicht nur, wenn ich angesprochen werde</string>
     <string name="pref_notification_grace_period">Gnadenfrist</string>
     <string name="pref_notification_grace_period_summary">Deaktiviere Benachrichtigungen für eine kurze Zeit nach Erhalt einer Nachricht, die von einem anderen deiner Clients kommt.</string>
     <string name="pref_advanced_options">Erweiterte Optionen</string>
@@ -233,7 +233,7 @@
     <string name="skip">Überspringen</string>
     <string name="pref_ui_options">Benutzeroberfläche</string>
     <string name="pref_use_indicate_received">Anfrage für Nachrichten Empfang</string>
-    <string name="pref_use_indicate_received_summary">Empfangene Nachrichten werden mit einem grünen Häckchen markiert. Bitte beachte das dies nicht unbedingt in allen Fällen funktioniert.</string>
+    <string name="pref_use_indicate_received_summary">Empfangene Nachrichten werden mit einem grünen Häckchen markiert. Bitte beachte, dass dies nicht in allen Fällen funktioniert.</string>
     <string name="disable_notifications">Benachrichtigungen deaktivieren</string>
     <string name="disable_notifications_for_this_conversation">Benachrichtigungen für diese Unterhaltung deaktivieren</string>
     <string name="notifications_disabled">Benachrichtigungen sind deaktiviert</string>
@@ -256,7 +256,7 @@
     <string name="pref_enable_legacy_ssl_summary">Aktiviert SSLv3-Unterstützung für alte Server. Achtung: SSLv3 ist unsicher.</string>
     <string name="pref_expert_options">Einstellungen für Experten</string>
     <string name="pref_expert_options_summary">Hier bitte vorsichtig sein</string>
-    <string name="pref_use_larger_font">Schriftgröße erhöhen</string>
+    <string name="pref_use_larger_font">Schrift vergrößern</string>
     <string name="pref_use_larger_font_summary">Überall in der App eine größere Schrift verwenden</string>
     <string name="pref_use_send_button_to_indicate_status">Absende-Knopf zeigt Online-Status an</string>
     <string name="pref_use_send_button_to_indicate_status_summary">Absende-Knopf einfärben, um den Online-Status des Kontakts zu signalisieren</string>
