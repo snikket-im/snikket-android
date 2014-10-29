@@ -361,8 +361,7 @@ public class ConversationFragment extends Fragment {
 				copyText.setVisible(false);
 			}
 			if (this.selectedMessage.getType() != Message.TYPE_IMAGE
-					|| (this.selectedMessage.getDownloadable() != null && this.selectedMessage
-							.getDownloadable().getStatus() == Downloadable.STATUS_DELETED)) {
+					|| this.selectedMessage.getDownloadable() != null) {
 				shareImage.setVisible(false);
 			}
 			if (this.selectedMessage.getStatus() != Message.STATUS_SEND_FAILED) {
