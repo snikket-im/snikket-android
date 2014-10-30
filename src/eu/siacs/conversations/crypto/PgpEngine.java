@@ -8,25 +8,24 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URL;
 
-import org.openintents.openpgp.OpenPgpError;
 import org.openintents.openpgp.OpenPgpSignatureResult;
 import org.openintents.openpgp.util.OpenPgpApi;
 import org.openintents.openpgp.util.OpenPgpApi.IOpenPgpCallback;
 
-import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
+import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.ui.UiCallback;
-import eu.siacs.conversations.xmpp.jingle.JingleFile;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
-import android.util.Log;
+import android.net.Uri;
 
 public class PgpEngine {
 	private OpenPgpApi api;
@@ -39,7 +38,6 @@ public class PgpEngine {
 
 	public void decrypt(final Message message,
 			final UiCallback<Message> callback) {
-		Log.d(Config.LOGTAG, "decrypting message " + message.getUuid());
 		Intent params = new Intent();
 		params.setAction(OpenPgpApi.ACTION_DECRYPT_VERIFY);
 		params.putExtra(OpenPgpApi.EXTRA_ACCOUNT_NAME, message
@@ -60,6 +58,10 @@ public class PgpEngine {
 							if (message.getEncryption() == Message.ENCRYPTION_PGP) {
 								message.setBody(os.toString());
 								message.setEncryption(Message.ENCRYPTION_DECRYPTED);
+								if (message.trusted() && message.bodyContainsDownloadable()) {
+									mXmppConnectionService.getHttpConnectionManager()
+											.createNewConnection(message);
+								}
 								callback.success(message);
 							}
 						} catch (IOException e) {
@@ -74,9 +76,6 @@ public class PgpEngine {
 								message);
 						return;
 					case OpenPgpApi.RESULT_CODE_ERROR:
-						OpenPgpError error = result
-								.getParcelableExtra(OpenPgpApi.RESULT_ERROR);
-						Log.d(Config.LOGTAG, error.getMessage());
 						callback.error(R.string.openpgp_error, message);
 						return;
 					default:
@@ -86,10 +85,10 @@ public class PgpEngine {
 			});
 		} else if (message.getType() == Message.TYPE_IMAGE) {
 			try {
-				final JingleFile inputFile = this.mXmppConnectionService
-						.getFileBackend().getJingleFile(message, false);
-				final JingleFile outputFile = this.mXmppConnectionService
-						.getFileBackend().getJingleFile(message, true);
+				final DownloadableFile inputFile = this.mXmppConnectionService
+						.getFileBackend().getFile(message, false);
+				final DownloadableFile outputFile = this.mXmppConnectionService
+						.getFileBackend().getFile(message, true);
 				outputFile.createNewFile();
 				InputStream is = new FileInputStream(inputFile);
 				OutputStream os = new FileOutputStream(outputFile);
@@ -100,19 +99,32 @@ public class PgpEngine {
 						switch (result.getIntExtra(OpenPgpApi.RESULT_CODE,
 								OpenPgpApi.RESULT_CODE_ERROR)) {
 						case OpenPgpApi.RESULT_CODE_SUCCESS:
+							URL url = message.getImageParams().url;
 							BitmapFactory.Options options = new BitmapFactory.Options();
 							options.inJustDecodeBounds = true;
 							BitmapFactory.decodeFile(
 									outputFile.getAbsolutePath(), options);
 							int imageHeight = options.outHeight;
 							int imageWidth = options.outWidth;
-							message.setBody(Long.toString(outputFile.getSize())
-									+ ',' + imageWidth + ',' + imageHeight);
+							if (url == null) {
+								message.setBody(Long.toString(outputFile
+										.getSize())
+										+ '|'
+										+ imageWidth
+										+ '|'
+										+ imageHeight);
+							} else {
+								message.setBody(url.toString() + "|"
+										+ Long.toString(outputFile.getSize())
+										+ '|' + imageWidth + '|' + imageHeight);
+							}
 							message.setEncryption(Message.ENCRYPTION_DECRYPTED);
 							PgpEngine.this.mXmppConnectionService
 									.updateMessage(message);
-							PgpEngine.this.mXmppConnectionService
-									.updateConversationUi();
+							inputFile.delete();
+							Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+							intent.setData(Uri.fromFile(outputFile));
+							mXmppConnectionService.sendBroadcast(intent);
 							callback.success(message);
 							return;
 						case OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED:
@@ -197,10 +209,10 @@ public class PgpEngine {
 			});
 		} else if (message.getType() == Message.TYPE_IMAGE) {
 			try {
-				JingleFile inputFile = this.mXmppConnectionService
-						.getFileBackend().getJingleFile(message, true);
-				JingleFile outputFile = this.mXmppConnectionService
-						.getFileBackend().getJingleFile(message, false);
+				DownloadableFile inputFile = this.mXmppConnectionService
+						.getFileBackend().getFile(message, true);
+				DownloadableFile outputFile = this.mXmppConnectionService
+						.getFileBackend().getFile(message, false);
 				outputFile.createNewFile();
 				InputStream is = new FileInputStream(inputFile);
 				OutputStream os = new FileOutputStream(outputFile);
@@ -226,9 +238,11 @@ public class PgpEngine {
 					}
 				});
 			} catch (FileNotFoundException e) {
-				Log.d(Config.LOGTAG, "file not found: " + e.getMessage());
+				callback.error(R.string.openpgp_error, message);
+				return;
 			} catch (IOException e) {
-				Log.d(Config.LOGTAG, "io exception during file encrypt");
+				callback.error(R.string.openpgp_error, message);
+				return;
 			}
 		}
 	}
@@ -272,11 +286,6 @@ public class PgpEngine {
 		case OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED:
 			return 0;
 		case OpenPgpApi.RESULT_CODE_ERROR:
-			Log.d(Config.LOGTAG,
-					"openpgp error: "
-							+ ((OpenPgpError) result
-									.getParcelableExtra(OpenPgpApi.RESULT_ERROR))
-									.getMessage());
 			return 0;
 		}
 		return 0;

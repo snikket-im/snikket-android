@@ -10,6 +10,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
+import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.utils.CryptoHelper;
 
 public class JingleSocks5Transport extends JingleTransport {
@@ -29,11 +30,11 @@ public class JingleSocks5Transport extends JingleTransport {
 			StringBuilder destBuilder = new StringBuilder();
 			destBuilder.append(jingleConnection.getSessionId());
 			if (candidate.isOurs()) {
-				destBuilder.append(jingleConnection.getAccountJid());
+				destBuilder.append(jingleConnection.getAccount().getFullJid());
 				destBuilder.append(jingleConnection.getCounterPart());
 			} else {
 				destBuilder.append(jingleConnection.getCounterPart());
-				destBuilder.append(jingleConnection.getAccountJid());
+				destBuilder.append(jingleConnection.getAccount().getFullJid());
 			}
 			mDigest.reset();
 			this.destination = CryptoHelper.bytesToHex(mDigest
@@ -86,7 +87,7 @@ public class JingleSocks5Transport extends JingleTransport {
 
 	}
 
-	public void send(final JingleFile file,
+	public void send(final DownloadableFile file,
 			final OnFileTransmissionStatusChanged callback) {
 		new Thread(new Runnable() {
 
@@ -96,7 +97,7 @@ public class JingleSocks5Transport extends JingleTransport {
 				try {
 					MessageDigest digest = MessageDigest.getInstance("SHA-1");
 					digest.reset();
-					fileInputStream = getInputStream(file);
+					fileInputStream = file.createInputStream();
 					if (fileInputStream == null) {
 						callback.onFileTransferAborted();
 						return;
@@ -132,7 +133,7 @@ public class JingleSocks5Transport extends JingleTransport {
 
 	}
 
-	public void receive(final JingleFile file,
+	public void receive(final DownloadableFile file,
 			final OnFileTransmissionStatusChanged callback) {
 		new Thread(new Runnable() {
 
@@ -145,7 +146,7 @@ public class JingleSocks5Transport extends JingleTransport {
 					socket.setSoTimeout(30000);
 					file.getParentFile().mkdirs();
 					file.createNewFile();
-					OutputStream fileOutputStream = getOutputStream(file);
+					OutputStream fileOutputStream = file.createOutputStream();
 					if (fileOutputStream == null) {
 						callback.onFileTransferAborted();
 						return;

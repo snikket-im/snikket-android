@@ -4,6 +4,7 @@ import java.util.List;
 
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.ListItem;
+import eu.siacs.conversations.ui.XmppActivity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,8 +15,11 @@ import android.widget.TextView;
 
 public class ListItemAdapter extends ArrayAdapter<ListItem> {
 
-	public ListItemAdapter(Context context, List<ListItem> objects) {
-		super(context, 0, objects);
+	protected XmppActivity activity;
+
+	public ListItemAdapter(XmppActivity activity, List<ListItem> objects) {
+		super(activity, 0, objects);
+		this.activity = activity;
 	}
 
 	@Override
@@ -24,7 +28,7 @@ public class ListItemAdapter extends ArrayAdapter<ListItem> {
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		ListItem item = getItem(position);
 		if (view == null) {
-			view = (View) inflater.inflate(R.layout.contact, parent, false);
+			view = inflater.inflate(R.layout.contact, parent, false);
 		}
 		TextView name = (TextView) view.findViewById(R.id.contact_display_name);
 		TextView jid = (TextView) view.findViewById(R.id.contact_jid);
@@ -32,7 +36,8 @@ public class ListItemAdapter extends ArrayAdapter<ListItem> {
 
 		jid.setText(item.getJid());
 		name.setText(item.getDisplayName());
-		picture.setImageBitmap(item.getImage(48, getContext()));
+		picture.setImageBitmap(activity.avatarService().get(item,
+				activity.getPixel(48)));
 		return view;
 	}
 

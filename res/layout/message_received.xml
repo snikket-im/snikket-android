@@ -15,7 +15,8 @@
         android:layout_alignParentBottom="true"
         android:layout_toRightOf="@+id/message_photo"
         android:background="@drawable/message_border"
-        android:minHeight="48dp" >
+        android:minHeight="48dp"
+        android:longClickable="true">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -43,7 +44,6 @@
                 android:layout_height="wrap_content"
                 android:autoLink="web"
                 android:textColor="@color/primarytext"
-                android:textIsSelectable="true"
                 android:textSize="?attr/TextSizeBody" />
 
             <Button

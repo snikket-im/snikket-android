@@ -1,23 +1,21 @@
 package eu.siacs.conversations.entities;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Arrays;
+
 import eu.siacs.conversations.Config;
-import eu.siacs.conversations.R;
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 
 public class Message extends AbstractEntity {
 
 	public static final String TABLENAME = "messages";
 
-	public static final int STATUS_RECEPTION_FAILED = -3;
-	public static final int STATUS_RECEIVED_OFFER = -2;
-	public static final int STATUS_RECEIVING = -1;
 	public static final int STATUS_RECEIVED = 0;
 	public static final int STATUS_UNSEND = 1;
 	public static final int STATUS_SEND = 2;
 	public static final int STATUS_SEND_FAILED = 3;
-	public static final int STATUS_SEND_REJECTED = 4;
 	public static final int STATUS_WAITING = 5;
 	public static final int STATUS_OFFERED = 6;
 	public static final int STATUS_SEND_RECEIVED = 7;
@@ -60,6 +58,9 @@ public class Message extends AbstractEntity {
 	protected Conversation conversation = null;
 	protected Downloadable downloadable = null;
 	public boolean markable = false;
+
+	private Message mNextMessage = null;
+	private Message mPreviousMessage = null;
 
 	private Message() {
 
@@ -131,36 +132,14 @@ public class Message extends AbstractEntity {
 			if (this.trueCounterpart == null) {
 				return null;
 			} else {
-				Account account = this.conversation.getAccount();
-				Contact contact = account.getRoster().getContact(
-						this.trueCounterpart);
-				if (contact.showInRoster()) {
-					return contact;
-				} else {
-					return null;
-				}
+				return this.conversation.getAccount().getRoster()
+						.getContactFromRoster(this.trueCounterpart);
 			}
 		}
 	}
 
 	public String getBody() {
 		return body;
-	}
-
-	public String getReadableBody(Context context) {
-		if ((encryption == ENCRYPTION_PGP) && (type == TYPE_TEXT)) {
-			return context.getText(R.string.encrypted_message_received)
-					.toString();
-		} else if ((encryption == ENCRYPTION_OTR) && (type == TYPE_IMAGE)) {
-			return context.getText(R.string.encrypted_image_received)
-					.toString();
-		} else if (encryption == ENCRYPTION_DECRYPTION_FAILED) {
-			return context.getText(R.string.decryption_failed).toString();
-		} else if (type == TYPE_IMAGE) {
-			return context.getText(R.string.image_file).toString();
-		} else {
-			return body.trim();
-		}
 	}
 
 	public long getTimeSent() {
@@ -301,21 +280,34 @@ public class Message extends AbstractEntity {
 	}
 
 	public Message next() {
-		int index = this.conversation.getMessages().indexOf(this);
-		if (index < 0 || index >= this.conversation.getMessages().size() - 1) {
-			return null;
-		} else {
-			return this.conversation.getMessages().get(index + 1);
+		if (this.mNextMessage == null) {
+			synchronized (this.conversation.messages) {
+				int index = this.conversation.messages.indexOf(this);
+				if (index < 0
+						|| index >= this.conversation.getMessages().size() - 1) {
+					this.mNextMessage = null;
+				} else {
+					this.mNextMessage = this.conversation.messages
+							.get(index + 1);
+				}
+			}
 		}
+		return this.mNextMessage;
 	}
 
 	public Message prev() {
-		int index = this.conversation.getMessages().indexOf(this);
-		if (index <= 0 || index > this.conversation.getMessages().size()) {
-			return null;
-		} else {
-			return this.conversation.getMessages().get(index - 1);
+		if (this.mPreviousMessage == null) {
+			synchronized (this.conversation.messages) {
+				int index = this.conversation.messages.indexOf(this);
+				if (index <= 0 || index > this.conversation.messages.size()) {
+					this.mPreviousMessage = null;
+				} else {
+					this.mPreviousMessage = this.conversation.messages
+							.get(index - 1);
+				}
+			}
 		}
+		return this.mPreviousMessage;
 	}
 
 	public boolean mergable(Message message) {
@@ -323,6 +315,8 @@ public class Message extends AbstractEntity {
 			return false;
 		}
 		return (message.getType() == Message.TYPE_TEXT
+				&& this.getDownloadable() == null
+				&& message.getDownloadable() == null
 				&& message.getEncryption() != Message.ENCRYPTION_PGP
 				&& this.getType() == message.getType()
 				&& this.getEncryption() == message.getEncryption()
@@ -332,7 +326,9 @@ public class Message extends AbstractEntity {
 				.getStatus() == Message.STATUS_SEND_RECEIVED) && (message
 				.getStatus() == Message.STATUS_UNSEND
 				|| message.getStatus() == Message.STATUS_SEND || message
-					.getStatus() == Message.STATUS_SEND_DISPLAYED)))));
+					.getStatus() == Message.STATUS_SEND_DISPLAYED))))
+				&& !message.bodyContainsDownloadable()
+				&& !this.bodyContainsDownloadable());
 	}
 
 	public String getMergedBody() {
@@ -368,5 +364,149 @@ public class Message extends AbstractEntity {
 		} else {
 			return prev.mergable(this);
 		}
+	}
+	
+	public boolean trusted() {
+		Contact contact = this.getContact();
+		return (status > STATUS_RECEIVED || (contact != null && contact.trusted()));
+	}
+
+	public boolean bodyContainsDownloadable() {
+		try {
+			URL url = new URL(this.getBody());
+			if (!url.getProtocol().equalsIgnoreCase("http")
+					&& !url.getProtocol().equalsIgnoreCase("https")) {
+				return false;
+			}
+			if (url.getPath() == null) {
+				return false;
+			}
+			String[] pathParts = url.getPath().split("/");
+			String filename;
+			if (pathParts.length > 0) {
+				filename = pathParts[pathParts.length - 1];
+			} else {
+				filename = pathParts[0];
+			}
+			String[] extensionParts = filename.split("\\.");
+			if (extensionParts.length == 2
+					&& Arrays.asList(Downloadable.VALID_EXTENSIONS).contains(
+							extensionParts[extensionParts.length - 1])) {
+				return true;
+			} else if (extensionParts.length == 3
+					&& Arrays
+							.asList(Downloadable.VALID_CRYPTO_EXTENSIONS)
+							.contains(extensionParts[extensionParts.length - 1])
+					&& Arrays.asList(Downloadable.VALID_EXTENSIONS).contains(
+							extensionParts[extensionParts.length - 2])) {
+				return true;
+			} else {
+				return false;
+			}
+		} catch (MalformedURLException e) {
+			return false;
+		}
+	}
+
+	public ImageParams getImageParams() {
+		ImageParams params = getLegacyImageParams();
+		if (params!=null) {
+			return params;
+		}
+		params = new ImageParams();
+		if (this.downloadable != null) {
+			params.size = this.downloadable.getFileSize();
+		}
+		if (body == null) {
+			return params;
+		}
+		String parts[] = body.split("\\|");
+		if (parts.length == 1) {
+			try {
+				params.size = Long.parseLong(parts[0]);
+			} catch (NumberFormatException e) {
+				params.origin = parts[0];
+				try {
+					params.url = new URL(parts[0]);
+				} catch (MalformedURLException e1) {
+					params.url = null;
+				}
+			}
+		} else if (parts.length == 3) {
+			try {
+				params.size = Long.parseLong(parts[0]);
+			} catch (NumberFormatException e) {
+				params.size = 0;
+			}
+			try {
+				params.width = Integer.parseInt(parts[1]);
+			} catch (NumberFormatException e) {
+				params.width = 0;
+			}
+			try {
+				params.height = Integer.parseInt(parts[2]);
+			} catch (NumberFormatException e) {
+				params.height = 0;
+			}
+		} else if (parts.length == 4) {
+			params.origin = parts[0];
+			try {
+				params.url = new URL(parts[0]);
+			} catch (MalformedURLException e1) {
+				params.url = null;
+			}
+			try {
+				params.size = Long.parseLong(parts[1]);
+			} catch (NumberFormatException e) {
+				params.size = 0;
+			}
+			try {
+				params.width = Integer.parseInt(parts[2]);
+			} catch (NumberFormatException e) {
+				params.width = 0;
+			}
+			try {
+				params.height = Integer.parseInt(parts[3]);
+			} catch (NumberFormatException e) {
+				params.height = 0;
+			}
+		}
+		return params;
+	}
+	
+	public ImageParams getLegacyImageParams() {
+		ImageParams params = new ImageParams();
+		if (body == null) {
+			return params;
+		}
+		String parts[] = body.split(",");
+		if (parts.length == 3) {
+			try {
+				params.size = Long.parseLong(parts[0]);
+			} catch (NumberFormatException e) {
+				return null;
+			}
+			try {
+				params.width = Integer.parseInt(parts[1]);
+			} catch (NumberFormatException e) {
+				return null;
+			}
+			try {
+				params.height = Integer.parseInt(parts[2]);
+			} catch (NumberFormatException e) {
+				return null;
+			}
+			return params;
+		} else {
+			return null;
+		}
+	}
+
+	public class ImageParams {
+		public URL url;
+		public long size = 0;
+		public int width = 0;
+		public int height = 0;
+		public String origin;
 	}
 }

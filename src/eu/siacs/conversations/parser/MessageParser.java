@@ -256,7 +256,6 @@ public class MessageParser extends AbstractParser implements
 				return null;
 			}
 		}
-
 		return finishedMessage;
 	}
 
@@ -348,10 +347,18 @@ public class MessageParser extends AbstractParser implements
 								mXmppConnectionService.databaseBackend
 										.updateAccount(account);
 							}
+							mXmppConnectionService.getAvatarService().clear(
+									account);
+							mXmppConnectionService.updateConversationUi();
+							mXmppConnectionService.updateAccountUi();
 						} else {
 							Contact contact = account.getRoster().getContact(
 									from);
 							contact.setAvatar(avatar.getFilename());
+							mXmppConnectionService.getAvatarService().clear(
+									contact);
+							mXmppConnectionService.updateConversationUi();
+							mXmppConnectionService.updateRosterUi();
 						}
 					} else {
 						mXmppConnectionService.fetchAvatar(account, avatar);
@@ -417,8 +424,7 @@ public class MessageParser extends AbstractParser implements
 				message = this.parseCarbonMessage(packet, account);
 				if (message != null) {
 					if (message.getStatus() == Message.STATUS_SEND) {
-						mXmppConnectionService.getNotificationService()
-								.activateGracePeriod();
+						account.activateGracePeriod();
 						notify = false;
 						mXmppConnectionService.markRead(
 								message.getConversation(), false);
@@ -440,8 +446,7 @@ public class MessageParser extends AbstractParser implements
 				} else {
 					mXmppConnectionService.markRead(message.getConversation(),
 							false);
-					mXmppConnectionService.getNotificationService()
-							.activateGracePeriod();
+					account.activateGracePeriod();
 					notify = false;
 				}
 			}
@@ -471,12 +476,25 @@ public class MessageParser extends AbstractParser implements
 			}
 		}
 		Conversation conversation = message.getConversation();
-		conversation.getMessages().add(message);
+		conversation.add(message);
+
+		if (message.getStatus() == Message.STATUS_RECEIVED
+				&& conversation.getOtrSession() != null
+				&& !conversation.getOtrSession().getSessionID().getUserID()
+						.equals(message.getPresence())) {
+			conversation.endOtrIfNeeded();
+		}
+
 		if (packet.getType() != MessagePacket.TYPE_ERROR) {
 			if (message.getEncryption() == Message.ENCRYPTION_NONE
 					|| mXmppConnectionService.saveEncryptedMessages()) {
 				mXmppConnectionService.databaseBackend.createMessage(message);
 			}
+		}
+		if (message.trusted() && message.bodyContainsDownloadable()) {
+			this.mXmppConnectionService.getHttpConnectionManager()
+					.createNewConnection(message);
+			notify = false;
 		}
 		notify = notify && !conversation.isMuted();
 		if (notify) {

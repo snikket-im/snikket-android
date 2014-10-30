@@ -4,14 +4,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.math.BigInteger;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
 
@@ -22,14 +25,19 @@ import javax.net.ssl.SSLSocketFactory;
 
 import javax.net.ssl.X509TrustManager;
 
+import org.apache.http.conn.ssl.StrictHostnameVerifier;
 import org.xmlpull.v1.XmlPullParserException;
 
 import de.duenndns.ssl.MemorizingTrustManager;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.os.SystemClock;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.util.SparseArray;
 import eu.siacs.conversations.Config;
@@ -80,6 +88,7 @@ public class XmppConnection implements Runnable {
 	private SparseArray<String> messageReceipts = new SparseArray<String>();
 
 	private boolean usingCompression = false;
+	private boolean usingEncryption = false;
 
 	private int stanzasReceived = 0;
 	private int stanzasSent = 0;
@@ -104,6 +113,7 @@ public class XmppConnection implements Runnable {
 	private OnBindListener bindListener = null;
 	private OnMessageAcknowledged acknowledgedListener = null;
 	private MemorizingTrustManager mMemorizingTrustManager;
+	private final Context applicationContext;
 
 	public XmppConnection(Account account, XmppConnectionService service) {
 		this.mRandom = service.getRNG();
@@ -112,6 +122,7 @@ public class XmppConnection implements Runnable {
 		this.wakeLock = service.getPowerManager().newWakeLock(
 				PowerManager.PARTIAL_WAKE_LOCK, account.getJid());
 		tagWriter = new TagWriter();
+		applicationContext = service.getApplicationContext();
 	}
 
 	protected void changeStatus(int nextStatus) {
@@ -135,6 +146,7 @@ public class XmppConnection implements Runnable {
 	protected void connect() {
 		Log.d(Config.LOGTAG, account.getJid() + ": connecting");
 		usingCompression = false;
+		usingEncryption = false;
 		lastConnect = SystemClock.elapsedRealtime();
 		lastPingSent = SystemClock.elapsedRealtime();
 		this.attempt++;
@@ -145,29 +157,47 @@ public class XmppConnection implements Runnable {
 			tagWriter = new TagWriter();
 			packetCallbacks.clear();
 			this.changeStatus(Account.STATUS_CONNECTING);
-			Bundle namePort = DNSHelper.getSRVRecord(account.getServer());
-			if ("timeout".equals(namePort.getString("error"))) {
+			Bundle result = DNSHelper.getSRVRecord(account.getServer());
+			ArrayList<Parcelable> values = result.getParcelableArrayList("values");
+			if ("timeout".equals(result.getString("error"))) {
 				Log.d(Config.LOGTAG, account.getJid() + ": dns timeout");
 				this.changeStatus(Account.STATUS_OFFLINE);
 				return;
-			}
-			String srvRecordServer = namePort.getString("name");
-			String srvIpServer = namePort.getString("ipv4");
-			int srvRecordPort = namePort.getInt("port");
-			if (srvRecordServer != null) {
-				if (srvIpServer != null) {
-					Log.d(Config.LOGTAG, account.getJid()
-							+ ": using values from dns " + srvRecordServer
-							+ "[" + srvIpServer + "]:" + srvRecordPort);
-					socket = new Socket(srvIpServer, srvRecordPort);
-				} else {
-					Log.d(Config.LOGTAG, account.getJid()
-							+ ": using values from dns " + srvRecordServer
-							+ ":" + srvRecordPort);
-					socket = new Socket(srvRecordServer, srvRecordPort);
-				}
-			} else if (namePort.containsKey("error")
-					&& "nosrv".equals(namePort.getString("error", null))) {
+			} else if (values != null) {
+					int i = 0;
+					boolean socketError = true;
+					while (socketError && values.size() > i) {
+						Bundle namePort = (Bundle) values.get(i);
+						try {
+							String srvRecordServer = namePort.getString("name");
+							int srvRecordPort = namePort.getInt("port");
+							String srvIpServer = namePort.getString("ipv4");
+							InetSocketAddress addr;
+							if (srvIpServer!=null) {
+								addr = new InetSocketAddress(srvIpServer, srvRecordPort);
+								Log.d(Config.LOGTAG, account.getJid()
+										+ ": using values from dns " + srvRecordServer
+										+ "[" + srvIpServer + "]:" + srvRecordPort);
+							} else {
+								addr = new InetSocketAddress(srvRecordServer, srvRecordPort);
+								Log.d(Config.LOGTAG, account.getJid()
+										+ ": using values from dns "
+										+ srvRecordServer + ":" + srvRecordPort);
+							}
+							socket = new Socket();
+							socket.connect(addr, 20000);
+							socketError = false;
+						} catch (UnknownHostException e) {
+							i++;
+						} catch (IOException e) {
+							i++;
+						}
+					}
+					if (socketError) {
+						throw new IOException();
+					}
+			} else if (result.containsKey("error")
+					&& "nosrv".equals(result.getString("error", null))) {
 				socket = new Socket(account.getServer(), 5222);
 			} else {
 				Log.d(Config.LOGTAG, account.getJid()
@@ -504,6 +534,15 @@ public class XmppConnection implements Runnable {
 		tagWriter.writeTag(startTLS);
 	}
 
+	private SharedPreferences getPreferences() {
+		return PreferenceManager
+				.getDefaultSharedPreferences(applicationContext);
+	}
+
+	private boolean enableLegacySSL() {
+		return getPreferences().getBoolean("enable_legacy_ssl", false);
+	}
+
 	private void switchOverToTls(Tag currentTag) throws XmlPullParserException,
 			IOException {
 		tagReader.readTag();
@@ -515,10 +554,26 @@ public class XmppConnection implements Runnable {
 			SSLSocketFactory factory = sc.getSocketFactory();
 
 			HostnameVerifier verifier = this.mMemorizingTrustManager
-					.wrapHostnameVerifier(new org.apache.http.conn.ssl.StrictHostnameVerifier());
+					.wrapHostnameVerifier(new StrictHostnameVerifier());
 			SSLSocket sslSocket = (SSLSocket) factory.createSocket(socket,
 					socket.getInetAddress().getHostAddress(), socket.getPort(),
 					true);
+
+			// Support all protocols except legacy SSL.
+			// The min SDK version prevents us having to worry about SSLv2. In
+			// future, this may be
+			// true of SSLv3 as well.
+			final String[] supportProtocols;
+			if (enableLegacySSL()) {
+				supportProtocols = sslSocket.getSupportedProtocols();
+			} else {
+				final List<String> supportedProtocols = new LinkedList<String>(
+						Arrays.asList(sslSocket.getSupportedProtocols()));
+				supportedProtocols.remove("SSLv3");
+				supportProtocols = new String[supportedProtocols.size()];
+				supportedProtocols.toArray(supportProtocols);
+			}
+			sslSocket.setEnabledProtocols(supportProtocols);
 
 			if (verifier != null
 					&& !verifier.verify(account.getServer(),
@@ -533,6 +588,7 @@ public class XmppConnection implements Runnable {
 			sendStartStream();
 			Log.d(Config.LOGTAG, account.getJid()
 					+ ": TLS connection established");
+			usingEncryption = true;
 			processStream(tagReader.readTag());
 			sslSocket.close();
 		} catch (NoSuchAlgorithmException e1) {
@@ -562,20 +618,20 @@ public class XmppConnection implements Runnable {
 	private void processStreamFeatures(Tag currentTag)
 			throws XmlPullParserException, IOException {
 		this.streamFeatures = tagReader.readElement(currentTag);
-		if (this.streamFeatures.hasChild("starttls")
-				&& account.isOptionSet(Account.OPTION_USETLS)) {
+		if (this.streamFeatures.hasChild("starttls") && !usingEncryption) {
 			sendStartTLS();
 		} else if (compressionAvailable()) {
 			sendCompressionZlib();
 		} else if (this.streamFeatures.hasChild("register")
-				&& (account.isOptionSet(Account.OPTION_REGISTER))) {
+				&& account.isOptionSet(Account.OPTION_REGISTER)
+				&& usingEncryption) {
 			sendRegistryRequest();
 		} else if (!this.streamFeatures.hasChild("register")
-				&& (account.isOptionSet(Account.OPTION_REGISTER))) {
+				&& account.isOptionSet(Account.OPTION_REGISTER)) {
 			changeStatus(Account.STATUS_REGISTRATION_NOT_SUPPORTED);
 			disconnect(true);
 		} else if (this.streamFeatures.hasChild("mechanisms")
-				&& shouldAuthenticate) {
+				&& shouldAuthenticate && usingEncryption) {
 			List<String> mechanisms = extractMechanisms(streamFeatures
 					.findChild("mechanisms"));
 			if (mechanisms.contains("PLAIN")) {
@@ -591,6 +647,10 @@ public class XmppConnection implements Runnable {
 			this.tagWriter.writeStanzaAsync(resume);
 		} else if (this.streamFeatures.hasChild("bind") && shouldBind) {
 			sendBindRequest();
+		} else {
+			Log.d(Config.LOGTAG, account.getJid()
+					+ ": incompatible server. disconnecting");
+			disconnect(true);
 		}
 	}
 
@@ -910,7 +970,7 @@ public class XmppConnection implements Runnable {
 	}
 
 	public void disconnect(boolean force) {
-		Log.d(Config.LOGTAG, account.getJid()+": disconnecting");
+		Log.d(Config.LOGTAG, account.getJid() + ": disconnecting");
 		try {
 			if (force) {
 				socket.close();

@@ -1,14 +1,13 @@
 package eu.siacs.conversations.entities;
 
 import java.security.interfaces.DSAPublicKey;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import eu.siacs.conversations.services.XmppConnectionService;
-import eu.siacs.conversations.utils.UIHelper;
 
 import net.java.otr4j.OtrException;
 import net.java.otr4j.crypto.OtrCryptoEngineImpl;
@@ -17,9 +16,7 @@ import net.java.otr4j.session.SessionID;
 import net.java.otr4j.session.SessionImpl;
 import net.java.otr4j.session.SessionStatus;
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.os.SystemClock;
 
 public class Conversation extends AbstractEntity {
@@ -57,8 +54,8 @@ public class Conversation extends AbstractEntity {
 
 	private String nextPresence;
 
-	private transient CopyOnWriteArrayList<Message> messages = null;
-	private transient Account account = null;
+	protected ArrayList<Message> messages = new ArrayList<Message>();
+	protected Account account = null;
 
 	private transient SessionImpl otrSession;
 
@@ -68,11 +65,9 @@ public class Conversation extends AbstractEntity {
 
 	private transient MucOptions mucOptions = null;
 
-	//private transient String latestMarkableMessageId;
+	// private transient String latestMarkableMessageId;
 
 	private byte[] symmetricKey;
-
-	private boolean otrSessionNeedsStarting = false;
 
 	private Bookmark bookmark;
 
@@ -106,17 +101,6 @@ public class Conversation extends AbstractEntity {
 	}
 
 	public List<Message> getMessages() {
-		if (messages == null) {
-			this.messages = new CopyOnWriteArrayList<Message>(); // prevent null
-																	// pointer
-		}
-
-		// populate with Conversation (this)
-
-		for (Message msg : messages) {
-			msg.setConversation(this);
-		}
-
 		return messages;
 	}
 
@@ -142,8 +126,9 @@ public class Conversation extends AbstractEntity {
 		if (this.messages == null) {
 			return null;
 		}
-		for(int i = this.messages.size() - 1; i >= 0; --i) {
-			if (this.messages.get(i).getStatus() <= Message.STATUS_RECEIVED && this.messages.get(i).markable) {
+		for (int i = this.messages.size() - 1; i >= 0; --i) {
+			if (this.messages.get(i).getStatus() <= Message.STATUS_RECEIVED
+					&& this.messages.get(i).markable) {
 				if (this.messages.get(i).isRead()) {
 					return null;
 				} else {
@@ -166,7 +151,7 @@ public class Conversation extends AbstractEntity {
 		}
 	}
 
-	public void setMessages(CopyOnWriteArrayList<Message> msgs) {
+	public void setMessages(ArrayList<Message> msgs) {
 		this.messages = msgs;
 	}
 
@@ -263,10 +248,7 @@ public class Conversation extends AbstractEntity {
 			try {
 				if (sendStart) {
 					this.otrSession.startSession();
-					this.otrSessionNeedsStarting = false;
 					return this.otrSession;
-				} else {
-					this.otrSessionNeedsStarting = true;
 				}
 				return this.otrSession;
 			} catch (OtrException e) {
@@ -282,12 +264,12 @@ public class Conversation extends AbstractEntity {
 
 	public void resetOtrSession() {
 		this.otrFingerprint = null;
-		this.otrSessionNeedsStarting = false;
 		this.otrSession = null;
 	}
 
 	public void startOtrIfNeeded() {
-		if (this.otrSession != null && this.otrSessionNeedsStarting) {
+		if (this.otrSession != null
+				&& this.otrSession.getSessionStatus() != SessionStatus.ENCRYPTED) {
 			try {
 				this.otrSession.startSession();
 			} catch (OtrException e) {
@@ -296,18 +278,23 @@ public class Conversation extends AbstractEntity {
 		}
 	}
 
-	public void endOtrIfNeeded() {
+	public boolean endOtrIfNeeded() {
 		if (this.otrSession != null) {
 			if (this.otrSession.getSessionStatus() == SessionStatus.ENCRYPTED) {
 				try {
 					this.otrSession.endSession();
 					this.resetOtrSession();
+					return true;
 				} catch (OtrException e) {
 					this.resetOtrSession();
+					return false;
 				}
 			} else {
 				this.resetOtrSession();
+				return false;
 			}
+		} else {
+			return false;
 		}
 	}
 
@@ -339,9 +326,8 @@ public class Conversation extends AbstractEntity {
 
 	public synchronized MucOptions getMucOptions() {
 		if (this.mucOptions == null) {
-			this.mucOptions = new MucOptions(this.getAccount());
+			this.mucOptions = new MucOptions(this);
 		}
-		this.mucOptions.setConversation(this);
 		return this.mucOptions;
 	}
 
@@ -438,14 +424,6 @@ public class Conversation extends AbstractEntity {
 		return this.bookmark;
 	}
 
-	public Bitmap getImage(Context context, int size) {
-		if (mode == MODE_SINGLE) {
-			return getContact().getImage(size, context);
-		} else {
-			return UIHelper.getContactPicture(this, size, context, false);
-		}
-	}
-
 	public boolean hasDuplicateMessage(Message message) {
 		for (int i = this.getMessages().size() - 1; i >= 0; --i) {
 			if (this.messages.get(i).equals(message)) {
@@ -504,6 +482,19 @@ public class Conversation extends AbstractEntity {
 			} catch (NumberFormatException e) {
 				return defaultValue;
 			}
+		}
+	}
+
+	public void add(Message message) {
+		message.setConversation(this);
+		synchronized (this.messages) {
+			this.messages.add(message);
+		}
+	}
+
+	public void addAll(int index, List<Message> messages) {
+		synchronized (this.messages) {
+			this.messages.addAll(index, messages);
 		}
 	}
 }

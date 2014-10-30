@@ -16,6 +16,7 @@ import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Downloadable;
+import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xml.Element;
@@ -33,17 +34,18 @@ public class JingleConnection implements Downloadable {
 	private JingleConnectionManager mJingleConnectionManager;
 	private XmppConnectionService mXmppConnectionService;
 
-	public static final int STATUS_INITIATED = 0;
-	public static final int STATUS_ACCEPTED = 1;
-	public static final int STATUS_TERMINATED = 2;
-	public static final int STATUS_CANCELED = 3;
-	public static final int STATUS_FINISHED = 4;
-	public static final int STATUS_TRANSMITTING = 5;
-	public static final int STATUS_FAILED = 99;
+	protected static final int JINGLE_STATUS_INITIATED = 0;
+	protected static final int JINGLE_STATUS_ACCEPTED = 1;
+	protected static final int JINGLE_STATUS_TERMINATED = 2;
+	protected static final int JINGLE_STATUS_CANCELED = 3;
+	protected static final int JINGLE_STATUS_FINISHED = 4;
+	protected static final int JINGLE_STATUS_TRANSMITTING = 5;
+	protected static final int JINGLE_STATUS_FAILED = 99;
 
 	private int ibbBlockSize = 4096;
 
-	private int status = -1;
+	private int mJingleStatus = -1;
+	private int mStatus = -1;
 	private Message message;
 	private String sessionId;
 	private Account account;
@@ -54,7 +56,7 @@ public class JingleConnection implements Downloadable {
 
 	private String transportId;
 	private Element fileOffer;
-	private JingleFile file = null;
+	private DownloadableFile file = null;
 
 	private String contentName;
 	private String contentCreator;
@@ -71,11 +73,7 @@ public class JingleConnection implements Downloadable {
 		@Override
 		public void onIqPacketReceived(Account account, IqPacket packet) {
 			if (packet.getType() == IqPacket.TYPE_ERROR) {
-				if (initiator.equals(account.getFullJid())) {
-					mXmppConnectionService.markMessage(message,
-							Message.STATUS_SEND_FAILED);
-				}
-				status = STATUS_FAILED;
+				cancel();
 			}
 		}
 	};
@@ -83,7 +81,7 @@ public class JingleConnection implements Downloadable {
 	final OnFileTransmissionStatusChanged onFileTransmissionSatusChanged = new OnFileTransmissionStatusChanged() {
 
 		@Override
-		public void onFileTransmitted(JingleFile file) {
+		public void onFileTransmitted(DownloadableFile file) {
 			if (responder.equals(account.getFullJid())) {
 				sendSuccess();
 				if (acceptedAutomatically) {
@@ -96,8 +94,8 @@ public class JingleConnection implements Downloadable {
 				BitmapFactory.decodeFile(file.getAbsolutePath(), options);
 				int imageHeight = options.outHeight;
 				int imageWidth = options.outWidth;
-				message.setBody(Long.toString(file.getSize()) + ','
-						+ imageWidth + ',' + imageHeight);
+				message.setBody(Long.toString(file.getSize()) + '|'
+						+ imageWidth + '|' + imageHeight);
 				mXmppConnectionService.databaseBackend.createMessage(message);
 				mXmppConnectionService.markMessage(message,
 						Message.STATUS_RECEIVED);
@@ -148,8 +146,8 @@ public class JingleConnection implements Downloadable {
 		return this.sessionId;
 	}
 
-	public String getAccountJid() {
-		return this.account.getFullJid();
+	public Account getAccount() {
+		return this.account;
 	}
 
 	public String getCounterPart() {
@@ -253,13 +251,14 @@ public class JingleConnection implements Downloadable {
 	}
 
 	public void init(Account account, JinglePacket packet) {
-		this.status = STATUS_INITIATED;
+		this.mJingleStatus = JINGLE_STATUS_INITIATED;
 		Conversation conversation = this.mXmppConnectionService
 				.findOrCreateConversation(account,
 						packet.getFrom().split("/", 2)[0], false);
 		this.message = new Message(conversation, "", Message.ENCRYPTION_NONE);
+		this.message.setStatus(Message.STATUS_RECEIVED);
 		this.message.setType(Message.TYPE_IMAGE);
-		this.message.setStatus(Message.STATUS_RECEIVED_OFFER);
+		this.mStatus = Downloadable.STATUS_OFFER;
 		this.message.setDownloadable(this);
 		String[] fromParts = packet.getFrom().split("/", 2);
 		this.message.setPresence(fromParts[1]);
@@ -304,7 +303,8 @@ public class JingleConnection implements Downloadable {
 				if (supportedFile) {
 					long size = Long.parseLong(fileSize.getContent());
 					message.setBody(Long.toString(size));
-					conversation.getMessages().add(message);
+					conversation.add(message);
+					mXmppConnectionService.updateConversationUi();
 					if (size <= this.mJingleConnectionManager
 							.getAutoAcceptFileSize()) {
 						Log.d(Config.LOGTAG, "auto accepting file from "
@@ -323,7 +323,7 @@ public class JingleConnection implements Downloadable {
 								.push(message);
 					}
 					this.file = this.mXmppConnectionService.getFileBackend()
-							.getJingleFile(message, false);
+							.getFile(message, false);
 					if (message.getEncryption() == Message.ENCRYPTION_OTR) {
 						byte[] key = conversation.getSymmetricKey();
 						if (key == null) {
@@ -350,12 +350,13 @@ public class JingleConnection implements Downloadable {
 	}
 
 	private void sendInitRequest() {
+		this.mXmppConnectionService.markMessage(this.message, Message.STATUS_OFFERED);
 		JinglePacket packet = this.bootstrapPacket("session-initiate");
 		Content content = new Content(this.contentCreator, this.contentName);
 		if (message.getType() == Message.TYPE_IMAGE) {
 			content.setTransportId(this.transportId);
-			this.file = this.mXmppConnectionService.getFileBackend()
-					.getJingleFile(message, false);
+			this.file = this.mXmppConnectionService.getFileBackend().getFile(
+					message, false);
 			if (message.getEncryption() == Message.ENCRYPTION_OTR) {
 				Conversation conversation = this.message.getConversation();
 				this.mXmppConnectionService.renewSymmetricKey(conversation);
@@ -369,7 +370,7 @@ public class JingleConnection implements Downloadable {
 			content.socks5transport().setChildren(getCandidatesAsElements());
 			packet.setContent(content);
 			this.sendJinglePacket(packet);
-			this.status = STATUS_INITIATED;
+			this.mJingleStatus = JINGLE_STATUS_INITIATED;
 		}
 	}
 
@@ -382,8 +383,9 @@ public class JingleConnection implements Downloadable {
 	}
 
 	private void sendAccept() {
-		status = STATUS_ACCEPTED;
-		mXmppConnectionService.markMessage(message, Message.STATUS_RECEIVING);
+		mJingleStatus = JINGLE_STATUS_ACCEPTED;
+		this.mStatus = Downloadable.STATUS_DOWNLOADING;
+		mXmppConnectionService.updateConversationUi();
 		this.mJingleConnectionManager.getPrimaryCandidate(this.account,
 				new OnPrimaryCandidateFound() {
 
@@ -457,7 +459,7 @@ public class JingleConnection implements Downloadable {
 		Content content = packet.getJingleContent();
 		mergeCandidates(JingleCandidate.parse(content.socks5transport()
 				.getChildren()));
-		this.status = STATUS_ACCEPTED;
+		this.mJingleStatus = JINGLE_STATUS_ACCEPTED;
 		mXmppConnectionService.markMessage(message, Message.STATUS_UNSEND);
 		this.connectNextCandidate();
 		return true;
@@ -492,7 +494,8 @@ public class JingleConnection implements Downloadable {
 			} else if (content.socks5transport().hasChild("candidate-error")) {
 				Log.d(Config.LOGTAG, "received candidate error");
 				this.receivedCandidate = true;
-				if ((status == STATUS_ACCEPTED) && (this.sentCandidate)) {
+				if ((mJingleStatus == JINGLE_STATUS_ACCEPTED)
+						&& (this.sentCandidate)) {
 					this.connect();
 				}
 				return true;
@@ -504,7 +507,8 @@ public class JingleConnection implements Downloadable {
 					JingleCandidate candidate = getCandidate(cid);
 					candidate.flagAsUsedByCounterpart();
 					this.receivedCandidate = true;
-					if ((status == STATUS_ACCEPTED) && (this.sentCandidate)) {
+					if ((mJingleStatus == JINGLE_STATUS_ACCEPTED)
+							&& (this.sentCandidate)) {
 						this.connect();
 					} else {
 						Log.d(Config.LOGTAG,
@@ -532,7 +536,7 @@ public class JingleConnection implements Downloadable {
 				this.sendFallbackToIbb();
 			}
 		} else {
-			this.status = STATUS_TRANSMITTING;
+			this.mJingleStatus = JINGLE_STATUS_TRANSMITTING;
 			if (connection.needsActivation()) {
 				if (connection.getCandidate().isOurs()) {
 					Log.d(Config.LOGTAG, "candidate "
@@ -619,13 +623,15 @@ public class JingleConnection implements Downloadable {
 		packet.setReason(reason);
 		this.sendJinglePacket(packet);
 		this.disconnect();
-		this.status = STATUS_FINISHED;
-		this.mXmppConnectionService.markMessage(this.message,
-				Message.STATUS_RECEIVED);
+		this.mJingleStatus = JINGLE_STATUS_FINISHED;
+		this.message.setStatus(Message.STATUS_RECEIVED);
+		this.message.setDownloadable(null);
+		this.mXmppConnectionService.updateMessage(message);
 		this.mJingleConnectionManager.finishConnection(this);
 	}
 
 	private void sendFallbackToIbb() {
+		Log.d(Config.LOGTAG, "sending fallback to ibb");
 		JinglePacket packet = this.bootstrapPacket("transport-replace");
 		Content content = new Content(this.contentCreator, this.contentName);
 		this.transportId = this.mJingleConnectionManager.nextRandomId();
@@ -637,6 +643,7 @@ public class JingleConnection implements Downloadable {
 	}
 
 	private boolean receiveFallbackToIbb(JinglePacket packet) {
+		Log.d(Config.LOGTAG, "receiving fallack to ibb");
 		String receivedBlockSize = packet.getJingleContent().ibbTransport()
 				.getAttribute("block-size");
 		if (receivedBlockSize != null) {
@@ -691,7 +698,7 @@ public class JingleConnection implements Downloadable {
 	}
 
 	private void receiveSuccess() {
-		this.status = STATUS_FINISHED;
+		this.mJingleStatus = JINGLE_STATUS_FINISHED;
 		this.mXmppConnectionService.markMessage(this.message,
 				Message.STATUS_SEND);
 		this.disconnect();
@@ -699,20 +706,15 @@ public class JingleConnection implements Downloadable {
 	}
 
 	public void cancel() {
-		this.status = STATUS_CANCELED;
+		this.mJingleStatus = JINGLE_STATUS_CANCELED;
 		this.disconnect();
 		if (this.message != null) {
 			if (this.responder.equals(account.getFullJid())) {
-				this.mXmppConnectionService.markMessage(this.message,
-						Message.STATUS_RECEPTION_FAILED);
+				this.mStatus = Downloadable.STATUS_FAILED;
+				this.mXmppConnectionService.updateConversationUi();
 			} else {
-				if (this.status == STATUS_INITIATED) {
-					this.mXmppConnectionService.markMessage(this.message,
-							Message.STATUS_SEND_REJECTED);
-				} else {
-					this.mXmppConnectionService.markMessage(this.message,
-							Message.STATUS_SEND_FAILED);
-				}
+				this.mXmppConnectionService.markMessage(this.message,
+						Message.STATUS_SEND_FAILED);
 			}
 		}
 		this.mJingleConnectionManager.finishConnection(this);
@@ -789,7 +791,7 @@ public class JingleConnection implements Downloadable {
 				.setAttribute("cid", cid);
 		packet.setContent(content);
 		this.sentCandidate = true;
-		if ((receivedCandidate) && (status == STATUS_ACCEPTED)) {
+		if ((receivedCandidate) && (mJingleStatus == JINGLE_STATUS_ACCEPTED)) {
 			connect();
 		}
 		this.sendJinglePacket(packet);
@@ -802,7 +804,7 @@ public class JingleConnection implements Downloadable {
 		content.socks5transport().addChild("candidate-error");
 		packet.setContent(content);
 		this.sentCandidate = true;
-		if ((receivedCandidate) && (status == STATUS_ACCEPTED)) {
+		if ((receivedCandidate) && (mJingleStatus == JINGLE_STATUS_ACCEPTED)) {
 			connect();
 		}
 		this.sendJinglePacket(packet);
@@ -816,8 +818,8 @@ public class JingleConnection implements Downloadable {
 		return this.responder;
 	}
 
-	public int getStatus() {
-		return this.status;
+	public int getJingleStatus() {
+		return this.mJingleStatus;
 	}
 
 	private boolean equalCandidateExists(JingleCandidate candidate) {
@@ -867,17 +869,34 @@ public class JingleConnection implements Downloadable {
 		return this.transport;
 	}
 
-	public void start() {
-		if (status == STATUS_INITIATED) {
-			new Thread(new Runnable() {
+	public boolean start() {
+		if (account.getStatus() == Account.STATUS_ONLINE) {
+			if (mJingleStatus == JINGLE_STATUS_INITIATED) {
+				new Thread(new Runnable() {
 
-				@Override
-				public void run() {
-					sendAccept();
-				}
-			}).start();
+					@Override
+					public void run() {
+						sendAccept();
+					}
+				}).start();
+			}
+			return true;
 		} else {
-			Log.d(Config.LOGTAG, "status (" + status + ") was not ok");
+			return false;
+		}
+	}
+
+	@Override
+	public int getStatus() {
+		return this.mStatus;
+	}
+
+	@Override
+	public long getFileSize() {
+		if (this.file != null) {
+			return this.file.getExpectedSize();
+		} else {
+			return 0;
 		}
 	}
 }

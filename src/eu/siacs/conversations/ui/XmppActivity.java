@@ -12,6 +12,7 @@ import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.Presences;
+import eu.siacs.conversations.services.AvatarService;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.services.XmppConnectionService.XmppConnectionBinder;
 import eu.siacs.conversations.utils.ExceptionHelper;
@@ -20,6 +21,8 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.app.AlertDialog.Builder;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -55,7 +58,6 @@ public abstract class XmppActivity extends Activity {
 
 	public XmppConnectionService xmppConnectionService;
 	public boolean xmppConnectionServiceBound = false;
-	protected boolean handledViewIntent = false;
 
 	protected int mPrimaryTextColor;
 	protected int mSecondaryTextColor;
@@ -400,8 +402,7 @@ public abstract class XmppActivity extends Activity {
 	private void quickEdit(final String previousValue,
 			final OnValueEdited callback, boolean password) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		View view = (View) getLayoutInflater()
-				.inflate(R.layout.quickedit, null);
+		View view = getLayoutInflater().inflate(R.layout.quickedit, null);
 		final EditText editor = (EditText) view.findViewById(R.id.editor);
 		OnClickListener mClickListener = new OnClickListener() {
 
@@ -448,7 +449,7 @@ public abstract class XmppActivity extends Activity {
 					listener.onPresenceSelected();
 				}
 			} else if (presences.size() == 1) {
-				String presence = (String) presences.asStringArray()[0];
+				String presence = presences.asStringArray()[0];
 				conversation.setNextPresence(presence);
 				listener.onPresenceSelected();
 			} else {
@@ -524,6 +525,26 @@ public abstract class XmppActivity extends Activity {
 
 	public int getSecondaryBackgroundColor() {
 		return this.mSecondaryBackgroundColor;
+	}
+
+	public int getPixel(int dp) {
+		DisplayMetrics metrics = getResources().getDisplayMetrics();
+		return ((int) (dp * metrics.density));
+	}
+	
+	public boolean copyTextToClipboard(String text,int labelResId) {
+		ClipboardManager mClipBoardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+		String label = getResources().getString(labelResId);
+		if (mClipBoardManager != null) {
+			ClipData mClipData = ClipData.newPlainText(label, text);
+			mClipBoardManager.setPrimaryClip(mClipData);
+			return true;
+		}
+		return false;
+	}
+
+	public AvatarService avatarService() {
+		return xmppConnectionService.getAvatarService();
 	}
 
 	class BitmapWorkerTask extends AsyncTask<Message, Void, Bitmap> {

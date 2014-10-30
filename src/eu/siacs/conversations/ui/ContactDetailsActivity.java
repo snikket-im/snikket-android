@@ -56,7 +56,8 @@ public class ContactDetailsActivity extends XmppActivity {
 
 		@Override
 		public void onClick(DialogInterface dialog, int which) {
-			ContactDetailsActivity.this.xmppConnectionService.deleteContactOnServer(contact);
+			ContactDetailsActivity.this.xmppConnectionService
+					.deleteContactOnServer(contact);
 			ContactDetailsActivity.this.finish();
 		}
 	};
@@ -78,7 +79,8 @@ public class ContactDetailsActivity extends XmppActivity {
 
 		@Override
 		public void onClick(View v) {
-			AlertDialog.Builder builder = new AlertDialog.Builder(ContactDetailsActivity.this);
+			AlertDialog.Builder builder = new AlertDialog.Builder(
+					ContactDetailsActivity.this);
 			builder.setTitle(getString(R.string.action_add_phone_book));
 			builder.setMessage(getString(R.string.add_phone_book_text,
 					contact.getJid()));
@@ -309,22 +311,21 @@ public class ContactDetailsActivity extends XmppActivity {
 		} else {
 			contactJidTv.setText(contact.getJid());
 		}
-		accountJidTv.setText(contact.getAccount().getJid());
-
-		UIHelper.prepareContactBadge(this, badge, contact,
-				getApplicationContext());
-
+		accountJidTv.setText(getString(R.string.using_account, contact
+				.getAccount().getJid()));
+		prepareContactBadge(badge, contact);
 		if (contact.getSystemAccount() == null) {
 			badge.setOnClickListener(onBadgeClick);
 		}
 
 		keys.removeAllViews();
+		boolean hasKeys = false;
 		LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		for (Iterator<String> iterator = contact.getOtrFingerprints()
 				.iterator(); iterator.hasNext();) {
+			hasKeys = true;
 			final String otrFingerprint = iterator.next();
-			View view = (View) inflater.inflate(R.layout.contact_key, keys,
-					false);
+			View view = inflater.inflate(R.layout.contact_key, keys, false);
 			TextView key = (TextView) view.findViewById(R.id.key);
 			TextView keyType = (TextView) view.findViewById(R.id.key_type);
 			ImageButton remove = (ImageButton) view
@@ -342,8 +343,8 @@ public class ContactDetailsActivity extends XmppActivity {
 			});
 		}
 		if (contact.getPgpKeyId() != 0) {
-			View view = (View) inflater.inflate(R.layout.contact_key, keys,
-					false);
+			hasKeys = true;
+			View view = inflater.inflate(R.layout.contact_key, keys, false);
 			TextView key = (TextView) view.findViewById(R.id.key);
 			TextView keyType = (TextView) view.findViewById(R.id.key_type);
 			keyType.setText("PGP Key ID");
@@ -370,6 +371,20 @@ public class ContactDetailsActivity extends XmppActivity {
 			});
 			keys.addView(view);
 		}
+		if (hasKeys) {
+			keys.setVisibility(View.VISIBLE);
+		} else {
+			keys.setVisibility(View.GONE);
+		}
+	}
+
+	private void prepareContactBadge(QuickContactBadge badge, Contact contact) {
+		if (contact.getSystemAccount() != null) {
+			String[] systemAccount = contact.getSystemAccount().split("#");
+			long id = Long.parseLong(systemAccount[0]);
+			badge.assignContactUri(Contacts.getLookupUri(id, systemAccount[1]));
+		}
+		badge.setImageBitmap(avatarService().get(contact, getPixel(72)));
 	}
 
 	protected void confirmToDeleteFingerprint(final String fingerprint) {

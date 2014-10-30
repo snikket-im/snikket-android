@@ -10,16 +10,14 @@ import android.util.Log;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Message;
+import eu.siacs.conversations.services.AbstractConnectionManager;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.OnIqPacketReceived;
 import eu.siacs.conversations.xmpp.jingle.stanzas.JinglePacket;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
 
-public class JingleConnectionManager {
-
-	private XmppConnectionService xmppConnectionService;
-
+public class JingleConnectionManager extends AbstractConnectionManager {
 	private List<JingleConnection> connections = new CopyOnWriteArrayList<JingleConnection>();
 
 	private HashMap<String, JingleCandidate> primaryCandidates = new HashMap<String, JingleCandidate>();
@@ -28,7 +26,7 @@ public class JingleConnectionManager {
 	private SecureRandom random = new SecureRandom();
 
 	public JingleConnectionManager(XmppConnectionService service) {
-		this.xmppConnectionService = service;
+		super(service);
 	}
 
 	public void deliverPacket(Account account, JinglePacket packet) {
@@ -38,7 +36,7 @@ public class JingleConnectionManager {
 			connections.add(connection);
 		} else {
 			for (JingleConnection connection : connections) {
-				if (connection.getAccountJid().equals(account.getFullJid())
+				if (connection.getAccount() == account
 						&& connection.getSessionId().equals(
 								packet.getSessionId())
 						&& connection.getCounterPart().equals(packet.getFrom())) {
@@ -46,8 +44,13 @@ public class JingleConnectionManager {
 					return;
 				}
 			}
-			account.getXmppConnection().sendIqPacket(
-					packet.generateRespone(IqPacket.TYPE_ERROR), null);
+			IqPacket response = packet.generateRespone(IqPacket.TYPE_ERROR);
+			Element error = response.addChild("error");
+			error.setAttribute("type", "cancel");
+			error.addChild("item-not-found",
+					"urn:ietf:params:xml:ns:xmpp-stanzas");
+			error.addChild("unknown-session", "urn:xmpp:jingle:errors:1");
+			account.getXmppConnection().sendIqPacket(response, null);
 		}
 	}
 
@@ -66,10 +69,6 @@ public class JingleConnectionManager {
 
 	public void finishConnection(JingleConnection connection) {
 		this.connections.remove(connection);
-	}
-
-	public XmppConnectionService getXmppConnectionService() {
-		return this.xmppConnectionService;
 	}
 
 	public void getPrimaryCandidate(Account account,
@@ -128,16 +127,6 @@ public class JingleConnectionManager {
 		return new BigInteger(50, random).toString(32);
 	}
 
-	public long getAutoAcceptFileSize() {
-		String config = this.xmppConnectionService.getPreferences().getString(
-				"auto_accept_file_size", "524288");
-		try {
-			return Long.parseLong(config);
-		} catch (NumberFormatException e) {
-			return 524288;
-		}
-	}
-
 	public void deliverIbbPacket(Account account, IqPacket packet) {
 		String sid = null;
 		Element payload = null;
@@ -152,7 +141,8 @@ public class JingleConnectionManager {
 		}
 		if (sid != null) {
 			for (JingleConnection connection : connections) {
-				if (connection.hasTransportId(sid)) {
+				if (connection.getAccount() == account
+						&& connection.hasTransportId(sid)) {
 					JingleTransport transport = connection.getTransport();
 					if (transport instanceof JingleInbandTransport) {
 						JingleInbandTransport inbandTransport = (JingleInbandTransport) transport;
@@ -170,7 +160,7 @@ public class JingleConnectionManager {
 
 	public void cancelInTransmission() {
 		for (JingleConnection connection : this.connections) {
-			if (connection.getStatus() == JingleConnection.STATUS_TRANSMITTING) {
+			if (connection.getJingleStatus() == JingleConnection.JINGLE_STATUS_TRANSMITTING) {
 				connection.cancel();
 			}
 		}

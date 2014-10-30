@@ -8,13 +8,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import eu.siacs.conversations.persistance.FileBackend;
-import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xml.Element;
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 
 public class Contact implements ListItem {
 	public static final String TABLENAME = "contacts";
@@ -330,20 +326,6 @@ public class Contact implements ListItem {
 		}
 	}
 
-	@Override
-	public Bitmap getImage(int size, Context context) {
-		if (this.avatar != null) {
-			Bitmap bm = FileBackend.getAvatar(avatar, size, context);
-			if (bm == null) {
-				return UIHelper.getContactPicture(this, size, context, false);
-			} else {
-				return bm;
-			}
-		} else {
-			return UIHelper.getContactPicture(this, size, context, false);
-		}
-	}
-
 	public boolean setAvatar(String filename) {
 		if (this.avatar != null && this.avatar.equals(filename)) {
 			return false;
@@ -351,6 +333,10 @@ public class Contact implements ListItem {
 			this.avatar = filename;
 			return true;
 		}
+	}
+
+	public String getAvatar() {
+		return this.avatar;
 	}
 
 	public boolean deleteOtrFingerprint(String fingerprint) {
@@ -373,5 +359,9 @@ public class Contact implements ListItem {
 		} catch (JSONException e) {
 			return false;
 		}
+	}
+
+	public boolean trusted() {
+		return getOption(Options.FROM) && getOption(Options.TO);
 	}
 }

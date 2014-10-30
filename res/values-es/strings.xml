@@ -250,6 +250,8 @@
     <string name="pref_force_encryption_summary">Siempre enviar mensajes encriptados (excepto para conferencias)</string>
     <string name="pref_dont_save_encrypted">No guardar mensajes encriptados</string>
     <string name="pref_dont_save_encrypted_summary">Aviso: Esto podría llevar a pérdida de mensajes</string>
+    <string name="pref_enable_legacy_ssl">Habilitar SSL heredado</string>
+    <string name="pref_enable_legacy_ssl_summary">Habilita soporte SSLv3 para servidores heredados. Advertencia: SSLv3 se considera no seguro.</string>
     <string name="pref_expert_options">Ajustes avanzados</string>
     <string name="pref_expert_options_summary">Por favor, cuidado con estas opciones</string>
     <string name="pref_use_larger_font">Incrementar tamaño de fuente</string>
@@ -265,5 +267,19 @@
     <string name="conference_banned">Tu entrada a esta conferencia ha sido prohibida</string>
     <string name="conference_members_only">Esta conferencia es solo para miembros</string>
     <string name="conference_kicked">Has sido expulsado de esta conferencia</string>
+    <string name="using_account">Usando cuenta %s</string>
+    <string name="checking_image">Comprobando imagen en servidor HTTP</string>
+    <string name="image_file_deleted">El archivo de imagen ha sido eliminado</string>
+    <string name="not_connected_try_again">No estás concectado. Inténtalo más tarde</string>
+    <string name="check_image_filesize">Comprobar el tamaño del archivo de imagen</string>
+    <string name="message_options">Opciones de mensaje</string>
+    <string name="copy_text">Copiar texto</string>
+    <string name="share_image">Compartir imagen</string>
+    <string name="copy_original_url">Copiar URL original</string>
+    <string name="send_again">Volver a enviar</string>
+    <string name="image_url">URL Imagen</string>
+    <string name="message_text">Mensaje de texto</string>
+    <string name="url_copied_to_clipboard">URL copiada al portapapeles</string>
+    <string name="message_copied_to_clipboard">Mensaje copiado al portapapeles</string>
 
 </resources>

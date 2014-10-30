@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/primarybackground" >
+    android:background="@color/secondarybackground" >
 
     <ScrollView
         android:layout_width="fill_parent"
@@ -19,8 +19,10 @@
                 android:id="@+id/editor"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="@drawable/infocard_border"
                 android:orientation="vertical"
-                android:padding="8dp" >
+                android:padding="16dp" >
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -34,7 +36,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/account_settings_example_jabber_id"
-                    android:inputType="textEmailAddress" />
+                    android:inputType="textEmailAddress"
+                    android:textColor="@color/primarytext"
+                    android:textColorHint="@color/secondarytext"
+                    android:textSize="?attr/TextSizeBody" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -49,7 +54,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/password"
-                    android:inputType="textPassword" />
+                    android:inputType="textPassword"
+                    android:textColor="@color/primarytext"
+                    android:textColorHint="@color/secondarytext"
+                    android:textSize="?attr/TextSizeBody" />
 
                 <CheckBox
                     android:id="@+id/account_register_new"
@@ -76,31 +84,25 @@
                     android:layout_marginTop="8dp"
                     android:hint="@string/confirm_password"
                     android:inputType="textPassword"
-                    android:visibility="gone" />
+                    android:visibility="gone"
+                    android:textColor="@color/primarytext"
+                    android:textColorHint="@color/secondarytext"
+                    android:textSize="?attr/TextSizeBody" />
             </LinearLayout>
 
-            <LinearLayout
+           <LinearLayout
                 android:id="@+id/stats"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:layout_marginTop="8dp"
+                android:layout_margin="8dp"
+                android:background="@drawable/infocard_border"
                 android:orientation="vertical"
                 android:padding="16dp"
                 android:visibility="gone" >
 
-                <TextView
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:text="@string/additional_information"
-                    android:textColor="@color/secondarytext"
-                    android:textSize="?attr/TextSizeHeadline"
-                    android:textStyle="bold" />
-
                 <TableLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
                     android:stretchColumns="1" >
 
                     <TableRow
@@ -110,13 +112,17 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/server_info_session_established" />
+                            android:text="@string/server_info_session_established"
+                            android:textColor="@color/primarytext"
+                            android:textSize="?attr/TextSizeBody" />
 
                         <TextView
                             android:id="@+id/session_est"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="right" />
+                            android:layout_gravity="right"
+                            android:textColor="@color/primarytext"
+                            android:textSize="?attr/TextSizeBody" />
                     </TableRow>
 
                     <TableRow
@@ -127,13 +133,16 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/server_info_pep"
-                            android:textColor="@color/primarytext" />
+                            android:textColor="@color/primarytext"
+                            android:textSize="?attr/TextSizeBody" />
 
                         <TextView
                             android:id="@+id/server_info_pep"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="right" />
+                            android:layout_gravity="right"
+                            android:textColor="@color/primarytext"
+                            android:textSize="?attr/TextSizeBody" />
                     </TableRow>
 
                     <TableRow
@@ -143,13 +152,17 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/server_info_stream_management" />
+                            android:text="@string/server_info_stream_management"
+                            android:textColor="@color/primarytext"
+                            android:textSize="?attr/TextSizeBody" />
 
                         <TextView
                             android:id="@+id/server_info_sm"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="right" />
+                            android:layout_gravity="right"
+                            android:textColor="@color/primarytext"
+                            android:textSize="?attr/TextSizeBody" />
                     </TableRow>
 
                     <TableRow
@@ -159,59 +172,64 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/server_info_carbon_messages" />
+                            android:text="@string/server_info_carbon_messages"
+                            android:textColor="@color/primarytext"
+                            android:textSize="?attr/TextSizeBody" />
 
                         <TextView
                             android:id="@+id/server_info_carbons"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="right" />
+                            android:layout_gravity="right"
+                            android:textColor="@color/primarytext"
+                            android:textSize="?attr/TextSizeBody" />
                     </TableRow>
                 </TableLayout>
 
-                <TextView
-                    android:id="@+id/otr_fingerprint_headline"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:gravity="center_horizontal"
-                    android:text="@string/otr_fingerprint"
-                    android:textColor="@color/secondarytext"
-                    android:textSize="?attr/TextSizeHeadline"
-                    android:textStyle="bold" />
+
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="8dp">
+                    android:id="@+id/otr_fingerprint_box"
+                    android:layout_marginTop="32dp">
+
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:layout_toLeftOf="@+id/action_copy_to_clipboard"
-                        android:orientation="vertical"
-                        android:layout_centerVertical="true">
+                        android:orientation="vertical">
 
                         <TextView
                             android:id="@+id/otr_fingerprint"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:textColor="@color/primarytext"
                             android:textSize="?attr/TextSizeBody"
                             android:typeface="monospace" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/secondarytext"
+                            android:textSize="?attr/TextSizeInfo"
+                            android:text="@string/otr_fingerprint"/>
                     </LinearLayout>
 
                     <ImageButton
                         android:id="@+id/action_copy_to_clipboard"
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
-                        android:background="?android:selectableItemBackground"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:padding="4dp"
-                        android:scaleType="fitXY"
+                        android:background="?android:selectableItemBackground"
+                        android:padding="8dp"
                         android:src="@drawable/ic_action_copy"
-                        android:visibility="invisible" />
+                        android:visibility="visible" />
                 </RelativeLayout>
+
+               
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

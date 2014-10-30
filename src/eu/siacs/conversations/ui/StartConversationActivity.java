@@ -463,11 +463,11 @@ public class StartConversationActivity extends XmppActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		this.mOptionsMenu = menu;
 		getMenuInflater().inflate(R.menu.start_conversation, menu);
-		MenuItem menuCreateContact = (MenuItem) menu
+		MenuItem menuCreateContact = menu
 				.findItem(R.id.action_create_contact);
-		MenuItem menuCreateConference = (MenuItem) menu
+		MenuItem menuCreateConference = menu
 				.findItem(R.id.action_join_conference);
-		mMenuSearchView = (MenuItem) menu.findItem(R.id.action_search);
+		mMenuSearchView = menu.findItem(R.id.action_search);
 		mMenuSearchView.setOnActionExpandListener(mOnActionExpandListener);
 		View mSearchView = mMenuSearchView.getActionView();
 		mSearchEditText = (EditText) mSearchView

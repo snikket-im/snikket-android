@@ -29,6 +29,7 @@ public class PresenceParser extends AbstractParser implements
 				if (before != muc.getMucOptions().online()) {
 					mXmppConnectionService.updateConversationUi();
 				}
+				mXmppConnectionService.getAvatarService().clear(muc);
 			}
 		} else if (packet.hasChild("x", "http://jabber.org/protocol/muc")) {
 			Conversation muc = mXmppConnectionService.find(account, packet
@@ -39,6 +40,7 @@ public class PresenceParser extends AbstractParser implements
 				if (before != muc.getMucOptions().online()) {
 					mXmppConnectionService.updateConversationUi();
 				}
+				mXmppConnectionService.getAvatarService().clear(muc);
 			}
 		}
 	}
@@ -58,8 +60,7 @@ public class PresenceParser extends AbstractParser implements
 							Presences.parseShow(packet.findChild("show")));
 				} else if (type.equals("unavailable")) {
 					account.removePresence(fromParts[1]);
-					mXmppConnectionService.getNotificationService()
-							.deactivateGracePeriod();
+					account.deactivateGracePeriod();
 				}
 			}
 		} else {

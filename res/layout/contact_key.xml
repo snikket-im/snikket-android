@@ -16,14 +16,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/primarytext"
-            android:textSize="?attr/TextSizeHeadline"
+            android:textSize="?attr/TextSizeBody"
             android:typeface="monospace" />
 
         <TextView
             android:id="@+id/key_type"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/secondarytext" />
+            android:textColor="@color/secondarytext"
+            android:textSize="?attr/TextSizeInfo"/>
     </LinearLayout>
 
     <ImageButton

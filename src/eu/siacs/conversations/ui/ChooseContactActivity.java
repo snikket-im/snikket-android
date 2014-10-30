@@ -113,7 +113,7 @@ public class ChooseContactActivity extends XmppActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.choose_contact, menu);
-		MenuItem menuSearchView = (MenuItem) menu.findItem(R.id.action_search);
+		MenuItem menuSearchView = menu.findItem(R.id.action_search);
 		View mSearchView = menuSearchView.getActionView();
 		mSearchEditText = (EditText) mSearchView
 				.findViewById(R.id.search_field);

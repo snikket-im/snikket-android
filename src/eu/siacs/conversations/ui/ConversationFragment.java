@@ -3,6 +3,7 @@ package eu.siacs.conversations.ui;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import net.java.otr4j.session.SessionStatus;
 import eu.siacs.conversations.R;
@@ -32,9 +33,12 @@ import android.content.IntentSender.SendIntentException;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.Selection;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -44,6 +48,8 @@ import android.widget.AbsListView.OnScrollListener;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.AbsListView;
 
+import android.widget.AdapterView;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ListView;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
@@ -71,6 +77,9 @@ public class ConversationFragment extends Fragment {
 	private boolean messagesLoaded = false;
 
 	private IntentSender askForPassphraseIntent = null;
+
+	private ConcurrentLinkedQueue<Message> mEncryptedMessages = new ConcurrentLinkedQueue<Message>();
+	private boolean mDecryptJobRunning = false;
 
 	private OnEditorActionListener mEditorActionListener = new OnEditorActionListener() {
 
@@ -189,6 +198,7 @@ public class ConversationFragment extends Fragment {
 	};
 
 	private ConversationActivity activity;
+	private Message selectedMessage;
 
 	private void sendMessage() {
 		if (this.conversation == null) {
@@ -322,7 +332,112 @@ public class ConversationFragment extends Fragment {
 				});
 		messagesView.setAdapter(messageListAdapter);
 
+		registerForContextMenu(messagesView);
+
 		return view;
+	}
+
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v,
+			ContextMenuInfo menuInfo) {
+		super.onCreateContextMenu(menu, v, menuInfo);
+		AdapterView.AdapterContextMenuInfo acmi = (AdapterContextMenuInfo) menuInfo;
+		this.selectedMessage = this.messageList.get(acmi.position);
+		populateContextMenu(menu);
+	}
+
+	private void populateContextMenu(ContextMenu menu) {
+		if (this.selectedMessage.getType() != Message.TYPE_STATUS) {
+			activity.getMenuInflater().inflate(R.menu.message_context, menu);
+			menu.setHeaderTitle(R.string.message_options);
+			MenuItem copyText = menu.findItem(R.id.copy_text);
+			MenuItem shareImage = menu.findItem(R.id.share_image);
+			MenuItem sendAgain = menu.findItem(R.id.send_again);
+			MenuItem copyUrl = menu.findItem(R.id.copy_url);
+			MenuItem downloadImage = menu.findItem(R.id.download_image);
+			if (this.selectedMessage.getType() != Message.TYPE_TEXT
+					|| this.selectedMessage.getDownloadable() != null) {
+				copyText.setVisible(false);
+			}
+			if (this.selectedMessage.getType() != Message.TYPE_IMAGE
+					|| this.selectedMessage.getDownloadable() != null) {
+				shareImage.setVisible(false);
+			}
+			if (this.selectedMessage.getStatus() != Message.STATUS_SEND_FAILED) {
+				sendAgain.setVisible(false);
+			}
+			if ((this.selectedMessage.getType() != Message.TYPE_IMAGE && this.selectedMessage
+					.getDownloadable() == null)
+					|| this.selectedMessage.getImageParams().url == null) {
+				copyUrl.setVisible(false);
+			}
+
+			if (this.selectedMessage.getType() != Message.TYPE_TEXT
+					|| this.selectedMessage.getDownloadable() != null
+					|| !this.selectedMessage.bodyContainsDownloadable()) {
+				downloadImage.setVisible(false);
+			}
+		}
+	}
+
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.share_image:
+			shareImage(selectedMessage);
+			return true;
+		case R.id.copy_text:
+			copyText(selectedMessage);
+			return true;
+		case R.id.send_again:
+			resendMessage(selectedMessage);
+			return true;
+		case R.id.copy_url:
+			copyUrl(selectedMessage);
+			return true;
+		case R.id.download_image:
+			downloadImage(selectedMessage);
+			return true;
+		default:
+			return super.onContextItemSelected(item);
+		}
+	}
+
+	private void shareImage(Message message) {
+		Intent shareIntent = new Intent();
+		shareIntent.setAction(Intent.ACTION_SEND);
+		shareIntent.putExtra(Intent.EXTRA_STREAM,
+				activity.xmppConnectionService.getFileBackend()
+						.getJingleFileUri(message));
+		shareIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+		shareIntent.setType("image/webp");
+		activity.startActivity(Intent.createChooser(shareIntent,
+				getText(R.string.share_with)));
+	}
+
+	private void copyText(Message message) {
+		if (activity.copyTextToClipboard(message.getMergedBody(),
+				R.string.message_text)) {
+			Toast.makeText(activity, R.string.message_copied_to_clipboard,
+					Toast.LENGTH_SHORT).show();
+		}
+	}
+
+	private void resendMessage(Message message) {
+		activity.xmppConnectionService.resendFailedMessages(message);
+	}
+
+	private void copyUrl(Message message) {
+		if (activity.copyTextToClipboard(
+				message.getImageParams().url.toString(), R.string.image_url)) {
+			Toast.makeText(activity, R.string.url_copied_to_clipboard,
+					Toast.LENGTH_SHORT).show();
+		}
+	}
+
+	private void downloadImage(Message message) {
+		activity.xmppConnectionService.getHttpConnectionManager()
+				.createNewConnection(message);
 	}
 
 	protected void privateMessageWith(String counterpart) {
@@ -356,6 +471,7 @@ public class ConversationFragment extends Fragment {
 
 	@Override
 	public void onStop() {
+		mDecryptJobRunning = false;
 		super.onStop();
 		if (this.conversation != null) {
 			this.conversation.setNextMessage(mEditMessage.getText().toString());
@@ -395,34 +511,6 @@ public class ConversationFragment extends Fragment {
 		updateMessages();
 	}
 
-	private void decryptMessage(Message message) {
-		PgpEngine engine = activity.xmppConnectionService.getPgpEngine();
-		if (engine != null) {
-			engine.decrypt(message, new UiCallback<Message>() {
-
-				@Override
-				public void userInputRequried(PendingIntent pi, Message message) {
-					askForPassphraseIntent = pi.getIntentSender();
-					showSnackbar(R.string.openpgp_messages_found,
-							R.string.decrypt, clickToDecryptListener);
-				}
-
-				@Override
-				public void success(Message message) {
-					activity.xmppConnectionService.databaseBackend
-							.updateMessage(message);
-					updateMessages();
-				}
-
-				@Override
-				public void error(int error, Message message) {
-					message.setEncryption(Message.ENCRYPTION_DECRYPTION_FAILED);
-					// updateMessages();
-				}
-			});
-		}
-	}
-
 	public void updateMessages() {
 		if (getView() == null) {
 			return;
@@ -458,13 +546,16 @@ public class ConversationFragment extends Fragment {
 						});
 			}
 			for (Message message : this.conversation.getMessages()) {
-				if ((message.getEncryption() == Message.ENCRYPTION_PGP)
-						&& ((message.getStatus() == Message.STATUS_RECEIVED) || (message
-								.getStatus() == Message.STATUS_SEND))) {
-					decryptMessage(message);
-					break;
+				if (message.getEncryption() == Message.ENCRYPTION_PGP
+						&& (message.getStatus() == Message.STATUS_RECEIVED || message
+								.getStatus() >= Message.STATUS_SEND)
+						&& message.getDownloadable() == null) {
+					if (!mEncryptedMessages.contains(message)) {
+						mEncryptedMessages.add(message);
+					}
 				}
 			}
+			decryptNext();
 			this.messageList.clear();
 			if (this.conversation.getMessages().size() == 0) {
 				messagesLoaded = false;
@@ -476,7 +567,7 @@ public class ConversationFragment extends Fragment {
 			this.messageListAdapter.notifyDataSetChanged();
 			if (conversation.getMode() == Conversation.MODE_SINGLE) {
 				if (messageList.size() >= 1) {
-					makeFingerprintWarning(conversation.getLatestEncryption());
+					makeFingerprintWarning();
 				}
 			} else {
 				if (!conversation.getMucOptions().online()
@@ -519,6 +610,40 @@ public class ConversationFragment extends Fragment {
 				activity.updateConversationList();
 			}
 			this.updateSendButton();
+		}
+	}
+
+	private void decryptNext() {
+		Message next = this.mEncryptedMessages.peek();
+		PgpEngine engine = activity.xmppConnectionService.getPgpEngine();
+
+		if (next != null && engine != null && !mDecryptJobRunning) {
+			mDecryptJobRunning = true;
+			engine.decrypt(next, new UiCallback<Message>() {
+
+				@Override
+				public void userInputRequried(PendingIntent pi, Message message) {
+					mDecryptJobRunning = false;
+					askForPassphraseIntent = pi.getIntentSender();
+					showSnackbar(R.string.openpgp_messages_found,
+							R.string.decrypt, clickToDecryptListener);
+				}
+
+				@Override
+				public void success(Message message) {
+					mDecryptJobRunning = false;
+					mEncryptedMessages.remove();
+					activity.xmppConnectionService.updateMessage(message);
+				}
+
+				@Override
+				public void error(int error, Message message) {
+					message.setEncryption(Message.ENCRYPTION_DECRYPTION_FAILED);
+					mDecryptJobRunning = false;
+					mEncryptedMessages.remove();
+					activity.xmppConnectionService.updateConversationUi();
+				}
+			});
 		}
 	}
 
@@ -594,14 +719,13 @@ public class ConversationFragment extends Fragment {
 		}
 	}
 
-	protected void makeFingerprintWarning(int latestEncryption) {
+	protected void makeFingerprintWarning() {
 		Set<String> knownFingerprints = conversation.getContact()
 				.getOtrFingerprints();
-		if ((latestEncryption == Message.ENCRYPTION_OTR)
-				&& (conversation.hasValidOtrSession()
+		if (conversation.hasValidOtrSession()
 						&& (!conversation.isMuted())
 						&& (conversation.getOtrSession().getSessionStatus() == SessionStatus.ENCRYPTED) && (!knownFingerprints
-							.contains(conversation.getOtrFingerprint())))) {
+							.contains(conversation.getOtrFingerprint()))) {
 			showSnackbar(R.string.unknown_otr_fingerprint, R.string.verify,
 					new OnClickListener() {
 

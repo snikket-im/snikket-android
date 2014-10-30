@@ -1,7 +1,7 @@
 package eu.siacs.conversations.xmpp.jingle.stanzas;
 
+import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.xml.Element;
-import eu.siacs.conversations.xmpp.jingle.JingleFile;
 
 public class Content extends Element {
 
@@ -25,7 +25,7 @@ public class Content extends Element {
 		this.transportId = sid;
 	}
 
-	public void setFileOffer(JingleFile actualFile, boolean otr) {
+	public void setFileOffer(DownloadableFile actualFile, boolean otr) {
 		Element description = this.addChild("description",
 				"urn:xmpp:jingle:apps:file-transfer:3");
 		Element offer = description.addChild("offer");

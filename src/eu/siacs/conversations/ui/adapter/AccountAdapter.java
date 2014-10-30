@@ -28,13 +28,14 @@ public class AccountAdapter extends ArrayAdapter<Account> {
 		if (view == null) {
 			LayoutInflater inflater = (LayoutInflater) getContext()
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			view = (View) inflater.inflate(R.layout.account_row, parent, false);
+			view = inflater.inflate(R.layout.account_row, parent, false);
 		}
 		TextView jid = (TextView) view.findViewById(R.id.account_jid);
 		jid.setText(account.getJid());
 		TextView statusView = (TextView) view.findViewById(R.id.account_status);
 		ImageView imageView = (ImageView) view.findViewById(R.id.account_image);
-		imageView.setImageBitmap(account.getImage(activity, 48));
+		imageView.setImageBitmap(activity.avatarService().get(account,
+				activity.getPixel(48)));
 		switch (account.getStatus()) {
 		case Account.STATUS_DISABLED:
 			statusView.setText(getContext().getString(
