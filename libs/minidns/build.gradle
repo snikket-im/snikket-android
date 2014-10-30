@@ -1,0 +1,77 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'osgi'
+apply plugin: 'nexus'
+
+buildscript {
+    repositories {
+        jcenter()
+        mavenLocal()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'org.gradle.api.plugins:gradle-nexus-plugin:0.7.1'
+    }
+}
+
+group = 'de.measite.minidns'
+description = "A minimal DNS client library with support for A, AAAA, NS and SRV records"
+sourceCompatibility = 1.7
+version = 'git tag --points-at HEAD'.execute().text.trim()
+isSNAPSHOT = 'git rev-parse --abbrev-ref HEAD'.execute().text.trim() == 'master'
+
+if (isSNAPSHOT) {
+  version = version + '-SNAPSHOT'
+}
+
+repositories {
+	mavenLocal()
+	mavenCentral()
+}
+
+nexus {
+    attachSources = true
+    attachTests = false
+    attachJavadoc = true
+    sign = true
+}
+
+modifyPom {
+    project {
+        name 'minidns'
+        description 'Minimal DNS library for java and android systems'
+        url 'https://github.com/rtreffer/minidns'
+        inceptionYear '2014'
+
+        scm {
+            url 'https://github.com/rtreffer/minidns'
+            connection 'scm:https://github.com/rtreffer/minidns'
+            developerConnection 'scm:git://github.com/rtreffer/minidns.git'
+        }
+
+        licenses {
+            license {
+                name 'The Apache Software License, Version 2.0'
+                url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                distribution 'repo'
+            }
+        }
+
+        developers {
+            developer {
+                id 'rtreffer'
+                name 'Rene Treffer'
+                email 'treffer@measite.de'
+            }
+            developer {
+                id 'flow'
+                name 'Florian Schmaus'
+                email 'flow@geekplace.eu'
+            }
+        }
+    }
+}
+
+dependencies {
+}
