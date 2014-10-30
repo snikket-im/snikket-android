@@ -1,5 +1,12 @@
 ###Changelog
 
+####Version 0.8
+* Download HTTP images
+* Show avatars in MUC tiles
+* Disabled SSLv3
+* Performance improvments
+* bug fixes
+
 ####Version 0.7.3
 * revised tablet ui
 * internal rewrites
