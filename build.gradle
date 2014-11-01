@@ -1,0 +1,118 @@
+// Top-level build file where you can add configuration options common to all
+// sub-projects/modules.
+buildscript {
+	repositories {
+		jcenter()
+		mavenCentral()
+	}
+	dependencies {
+		classpath 'com.android.tools.build:gradle:0.12.2'
+	}
+}
+
+allprojects {
+	repositories {
+		jcenter()
+		mavenCentral()
+	}
+}
+
+apply plugin: 'com.android.application'
+
+repositories {
+	jcenter()
+	mavenCentral()
+	maven {
+		url "http://jitsi.github.com/otr4j/repository/"
+	}
+}
+
+dependencies {
+	compile project(':libs/minidns')
+	compile project(':libs/openpgp-api-lib')
+	compile project(':libs/MemorizingTrustManager')
+	compile 'com.android.support:support-v13:19.1.0'
+	compile 'org.bouncycastle:bcprov-jdk15on:1.50'
+	compile 'net.java:otr4j:0.21'
+	compile fileTree(dir: 'libs', include: ['*.jar'])
+}
+
+android {
+	compileSdkVersion 19
+	buildToolsVersion "19.1"
+
+	defaultConfig {
+		minSdkVersion 14
+		targetSdkVersion 19
+		versionCode 32
+		versionName "0.8-alpha"
+	}
+
+	compileOptions {
+		sourceCompatibility JavaVersion.VERSION_1_7
+		targetCompatibility JavaVersion.VERSION_1_7
+	}
+
+	//
+	// To sign release builds, create the file `gradle.properties` in
+	// $HOME/.gradle or in your project directory with this content:
+	//
+	// mStoreFile=/path/to/key.store
+	// mStorePassword=xxx
+	// mKeyAlias=alias
+	// mKeyPassword=xxx
+	//
+	if (project.hasProperty('mStoreFile') &&
+			project.hasProperty('mStorePassword') &&
+			project.hasProperty('mKeyAlias') &&
+			project.hasProperty('mKeyPassword')) {
+		signingConfigs {
+			release {
+				storeFile file(mStoreFile)
+					storePassword mStorePassword
+					keyAlias mKeyAlias
+					keyPassword mKeyPassword
+			}
+		}
+		buildTypes.release.signingConfig = signingConfigs.release
+	} else {
+		buildTypes.release.signingConfig = null
+	}
+
+	buildTypes {
+		release {
+			runProguard true
+			proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+		}
+		applicationVariants.all { variant ->
+			def fileName = variant.packageApplication.outputFile.name.replace(".apk",
+					"-" + defaultConfig.versionName + ".apk")
+				variant.packageApplication.outputFile = new
+				File(variant.packageApplication.outputFile.parent, fileName)
+				if (variant.zipAlign) {
+					if (variant.name.equals('release')) {
+						variant.outputFile = new File(variant.outputFile.parent,
+								rootProject.name + "-" + defaultConfig.versionName + ".apk")
+					}
+				}
+		}
+	}
+
+	lintOptions {
+		disable 'MissingTranslation', 'InvalidPackage'
+	}
+
+	subprojects {
+
+		afterEvaluate {
+			if (getPlugins().hasPlugin('android') ||
+					getPlugins().hasPlugin('android-library')) {
+
+				configure(android.lintOptions) {
+					disable 'AndroidGradlePluginVersion', 'MissingTranslation'
+				}
+			}
+
+		}
+	}
+}
