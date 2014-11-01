@@ -310,7 +310,7 @@ public class Message extends AbstractEntity {
 		return this.mPreviousMessage;
 	}
 
-	public boolean mergable(Message message) {
+	public boolean mergeable(Message message) {
 		if (message == null) {
 			return false;
 		}
@@ -333,7 +333,7 @@ public class Message extends AbstractEntity {
 
 	public String getMergedBody() {
 		Message next = this.next();
-		if (this.mergable(next)) {
+		if (this.mergeable(next)) {
 			return body.trim() + '\n' + next.getMergedBody();
 		}
 		return body.trim();
@@ -341,7 +341,7 @@ public class Message extends AbstractEntity {
 
 	public int getMergedStatus() {
 		Message next = this.next();
-		if (this.mergable(next)) {
+		if (this.mergeable(next)) {
 			return next.getMergedStatus();
 		} else {
 			return getStatus();
@@ -350,7 +350,7 @@ public class Message extends AbstractEntity {
 
 	public long getMergedTimeSent() {
 		Message next = this.next();
-		if (this.mergable(next)) {
+		if (this.mergeable(next)) {
 			return next.getMergedTimeSent();
 		} else {
 			return getTimeSent();
@@ -362,7 +362,7 @@ public class Message extends AbstractEntity {
 		if (prev == null) {
 			return false;
 		} else {
-			return prev.mergable(this);
+			return prev.mergeable(this);
 		}
 	}
 	
@@ -386,7 +386,7 @@ public class Message extends AbstractEntity {
 			if (pathParts.length > 0) {
 				filename = pathParts[pathParts.length - 1];
 			} else {
-				filename = pathParts[0];
+				return false;
 			}
 			String[] extensionParts = filename.split("\\.");
 			if (extensionParts.length == 2

@@ -1935,7 +1935,7 @@ public class XmppConnectionService extends Service {
 		Message current = message;
 		while(current.getStatus() == Message.STATUS_SEND_FAILED) {
 			messages.add(current);
-			if (current.mergable(current.next())) {
+			if (current.mergeable(current.next())) {
 				current = current.next();
 			} else {
 				break;
