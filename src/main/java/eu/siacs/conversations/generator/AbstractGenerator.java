@@ -1,5 +1,7 @@
 package eu.siacs.conversations.generator;
 
+import android.util.Base64;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
@@ -8,18 +10,17 @@ import java.util.List;
 
 import eu.siacs.conversations.services.XmppConnectionService;
 
-import android.util.Base64;
-
 public abstract class AbstractGenerator {
-	public final String[] FEATURES = { "urn:xmpp:jingle:1",
+	public final String[] FEATURES = {"urn:xmpp:jingle:1",
 			"urn:xmpp:jingle:apps:file-transfer:3",
 			"urn:xmpp:jingle:transports:s5b:1",
 			"urn:xmpp:jingle:transports:ibb:1", "urn:xmpp:receipts",
 			"urn:xmpp:chat-markers:0", "http://jabber.org/protocol/muc",
 			"jabber:x:conference", "http://jabber.org/protocol/caps",
 			"http://jabber.org/protocol/disco#info",
-			"urn:xmpp:avatar:metadata+notify" };
-	public final String IDENTITY_NAME = "Conversations 0.7";
+			"urn:xmpp:avatar:metadata+notify",
+			"urn:xmpp:ping"};
+	public final String IDENTITY_NAME = "Conversations 0.8.1";
 	public final String IDENTITY_TYPE = "phone";
 
 	protected XmppConnectionService mXmppConnectionService;
