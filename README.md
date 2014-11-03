@@ -271,7 +271,7 @@ Make sure to have ANDROID_HOME point to your Android SDK
 
     git clone https://github.com/siacs/Conversations.git
     cd Conversations
-		./gradlew build
+    ./gradlew build
 
 ### How do I update/add external libraries?
 
