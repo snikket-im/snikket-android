@@ -39,7 +39,7 @@ should consider either switching to an XMPP server that does or — even better 
 run your own XMPP server for you and your friends. These XEP's are:
 
 * XEP-0065: SOCKS5 Bytestreams (or mod_proxy65). Will be used to transfer
-	files if both parties are behind a firewall (NAT).
+  files if both parties are behind a firewall (NAT).
 * XEP-0138: Stream Compression saves bandwidth
 * XEP-0163: Personal Eventing Protocol for avatars
 * XEP-0198: Stream Management allows XMPP to survive small network outages and
