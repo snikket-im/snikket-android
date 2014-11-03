@@ -1,5 +1,19 @@
 package eu.siacs.conversations.xmpp;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.os.Parcelable;
+import android.os.PowerManager;
+import android.os.PowerManager.WakeLock;
+import android.os.SystemClock;
+import android.preference.PreferenceManager;
+import android.util.Log;
+import android.util.SparseArray;
+
+import org.apache.http.conn.ssl.StrictHostnameVerifier;
+import org.xmlpull.v1.XmlPullParserException;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -22,31 +36,16 @@ import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
-
 import javax.net.ssl.X509TrustManager;
 
-import org.apache.http.conn.ssl.StrictHostnameVerifier;
-import org.xmlpull.v1.XmlPullParserException;
-
 import de.duenndns.ssl.MemorizingTrustManager;
-
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.os.Bundle;
-import android.os.Parcelable;
-import android.os.PowerManager;
-import android.os.PowerManager.WakeLock;
-import android.os.SystemClock;
-import android.preference.PreferenceManager;
-import android.util.Log;
-import android.util.SparseArray;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.DNSHelper;
-import eu.siacs.conversations.utils.zlib.ZLibOutputStream;
 import eu.siacs.conversations.utils.zlib.ZLibInputStream;
+import eu.siacs.conversations.utils.zlib.ZLibOutputStream;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Tag;
 import eu.siacs.conversations.xml.TagWriter;
@@ -164,38 +163,47 @@ public class XmppConnection implements Runnable {
 				this.changeStatus(Account.STATUS_OFFLINE);
 				return;
 			} else if (values != null) {
-					int i = 0;
-					boolean socketError = true;
-					while (socketError && values.size() > i) {
-						Bundle namePort = (Bundle) values.get(i);
+				int i = 0;
+				boolean socketError = true;
+				while (socketError && values.size() > i) {
+					Bundle namePort = (Bundle) values.get(i);
+					try {
+						String srvRecordServer = namePort.getString("name");
+						int srvRecordPort = namePort.getInt("port");
+						String srvIpServer = namePort.getString("ipv4");
+						InetSocketAddress addr;
+						if (srvIpServer != null) {
+							addr = new InetSocketAddress(srvIpServer, srvRecordPort);
+							Log.d(Config.LOGTAG, account.getJid()
+									+ ": using values from dns " + srvRecordServer
+									+ "[" + srvIpServer + "]:" + srvRecordPort);
+						} else {
+							addr = new InetSocketAddress(srvRecordServer, srvRecordPort);
+							Log.d(Config.LOGTAG, account.getJid()
+									+ ": using values from dns "
+									+ srvRecordServer + ":" + srvRecordPort);
+						}
+						socket = new Socket();
+						socket.connect(addr, 20000);
+						socketError = false;
+					} catch (UnknownHostException e) {
+						Log.d(Config.LOGTAG, account.getJid() + ": " + e.getMessage());
+						i++;
+					} catch (IOException e) {
+						Log.d(Config.LOGTAG, account.getJid() + ": " + e.getMessage());
+						i++;
+					}
+				}
+				if (socketError) {
+					this.changeStatus(Account.STATUS_SERVER_NOT_FOUND);
+					if (wakeLock.isHeld()) {
 						try {
-							String srvRecordServer = namePort.getString("name");
-							int srvRecordPort = namePort.getInt("port");
-							String srvIpServer = namePort.getString("ipv4");
-							InetSocketAddress addr;
-							if (srvIpServer!=null) {
-								addr = new InetSocketAddress(srvIpServer, srvRecordPort);
-								Log.d(Config.LOGTAG, account.getJid()
-										+ ": using values from dns " + srvRecordServer
-										+ "[" + srvIpServer + "]:" + srvRecordPort);
-							} else {
-								addr = new InetSocketAddress(srvRecordServer, srvRecordPort);
-								Log.d(Config.LOGTAG, account.getJid()
-										+ ": using values from dns "
-										+ srvRecordServer + ":" + srvRecordPort);
-							}
-							socket = new Socket();
-							socket.connect(addr, 20000);
-							socketError = false;
-						} catch (UnknownHostException e) {
-							i++;
-						} catch (IOException e) {
-							i++;
+							wakeLock.release();
+						} catch (RuntimeException re) {
 						}
 					}
-					if (socketError) {
-						throw new IOException();
-					}
+					return;
+				}
 			} else if (result.containsKey("error")
 					&& "nosrv".equals(result.getString("error", null))) {
 				socket = new Socket(account.getServer(), 5222);
@@ -235,6 +243,7 @@ public class XmppConnection implements Runnable {
 			}
 			return;
 		} catch (IOException e) {
+			Log.d(Config.LOGTAG, account.getJid() + ": " + e.getMessage());
 			this.changeStatus(Account.STATUS_OFFLINE);
 			if (wakeLock.isHeld()) {
 				try {
@@ -244,6 +253,7 @@ public class XmppConnection implements Runnable {
 			}
 			return;
 		} catch (NoSuchAlgorithmException e) {
+			Log.d(Config.LOGTAG, account.getJid() + ": " + e.getMessage());
 			this.changeStatus(Account.STATUS_OFFLINE);
 			Log.d(Config.LOGTAG, "compression exception " + e.getMessage());
 			if (wakeLock.isHeld()) {
@@ -254,8 +264,8 @@ public class XmppConnection implements Runnable {
 			}
 			return;
 		} catch (XmlPullParserException e) {
+			Log.d(Config.LOGTAG, account.getJid() + ": " + e.getMessage());
 			this.changeStatus(Account.STATUS_OFFLINE);
-			Log.d(Config.LOGTAG, "xml exception " + e.getMessage());
 			if (wakeLock.isHeld()) {
 				try {
 					wakeLock.release();
@@ -405,17 +415,17 @@ public class XmppConnection implements Runnable {
 			throws XmlPullParserException, IOException {
 		Element element;
 		switch (packetType) {
-		case PACKET_IQ:
-			element = new IqPacket();
-			break;
-		case PACKET_MESSAGE:
-			element = new MessagePacket();
-			break;
-		case PACKET_PRESENCE:
-			element = new PresencePacket();
-			break;
-		default:
-			return null;
+			case PACKET_IQ:
+				element = new IqPacket();
+				break;
+			case PACKET_MESSAGE:
+				element = new MessagePacket();
+				break;
+			case PACKET_PRESENCE:
+				element = new PresencePacket();
+				break;
+			default:
+				return null;
 		}
 		element.setAttributes(currentTag.getAttributes());
 		Tag nextTag = tagReader.readTag();
@@ -429,7 +439,7 @@ public class XmppConnection implements Runnable {
 				if (packetType == PACKET_IQ
 						&& "jingle".equals(child.getName())
 						&& ("set".equalsIgnoreCase(type) || "get"
-								.equalsIgnoreCase(type))) {
+						.equalsIgnoreCase(type))) {
 					element = new JinglePacket();
 					element.setAttributes(currentTag.getAttributes());
 				}
@@ -549,9 +559,13 @@ public class XmppConnection implements Runnable {
 		try {
 			SSLContext sc = SSLContext.getInstance("TLS");
 			sc.init(null,
-					new X509TrustManager[] { this.mMemorizingTrustManager },
+					new X509TrustManager[]{this.mMemorizingTrustManager},
 					mRandom);
 			SSLSocketFactory factory = sc.getSocketFactory();
+
+			if (factory == null) {
+				throw new IOException("SSLSocketFactory was null");
+			}
 
 			HostnameVerifier verifier = this.mMemorizingTrustManager
 					.wrapHostnameVerifier(new StrictHostnameVerifier());
@@ -577,11 +591,9 @@ public class XmppConnection implements Runnable {
 
 			if (verifier != null
 					&& !verifier.verify(account.getServer(),
-							sslSocket.getSession())) {
-				Log.d(Config.LOGTAG, account.getJid()
-						+ ": host mismatch in TLS connection");
+					sslSocket.getSession())) {
 				sslSocket.close();
-				throw new IOException();
+				throw new IOException("host mismatch in TLS connection");
 			}
 			tagReader.setInputStream(sslSocket.getInputStream());
 			tagWriter.setOutputStream(sslSocket.getOutputStream());
@@ -707,14 +719,14 @@ public class XmppConnection implements Runnable {
 
 						@Override
 						public void onIqPacketReceived(Account account,
-								IqPacket packet) {
+													   IqPacket packet) {
 							if (packet.getType() == IqPacket.TYPE_RESULT) {
 								account.setOption(Account.OPTION_REGISTER,
 										false);
 								changeStatus(Account.STATUS_REGISTRATION_SUCCESSFULL);
 							} else if (packet.hasChild("error")
 									&& (packet.findChild("error")
-											.hasChild("conflict"))) {
+									.hasChild("conflict"))) {
 								changeStatus(Account.STATUS_REGISTRATION_CONFLICT);
 							} else {
 								changeStatus(Account.STATUS_REGISTRATION_FAILED);
@@ -904,7 +916,7 @@ public class XmppConnection implements Runnable {
 	}
 
 	private synchronized void sendPacket(final AbstractStanza packet,
-			PacketReceived callback) {
+										 PacketReceived callback) {
 		if (packet.getName().equals("iq") || packet.getName().equals("message")
 				|| packet.getName().equals("presence")) {
 			++stanzasSent;
