@@ -164,29 +164,12 @@ public class FileBackend {
 	}
 
 	private int getRotation(Uri image) {
-		if ("content".equals(image.getScheme())) {
-			try {
-				Cursor cursor = mXmppConnectionService
-						.getContentResolver()
-						.query(image,
-								new String[] { MediaStore.Images.ImageColumns.ORIENTATION },
-								null, null, null);
-				if (cursor.getCount() != 1) {
-					return -1;
-				}
-				cursor.moveToFirst();
-				return cursor.getInt(0);
-			} catch (IllegalArgumentException e) {
-				return -1;
-			}
-		} else {
-			try {
-				InputStream is = mXmppConnectionService.getContentResolver()
-						.openInputStream(image);
-				return ExifHelper.getOrientation(is);
-			} catch (FileNotFoundException e) {
-				return 0;
-			}
+		try {
+			InputStream is = mXmppConnectionService.getContentResolver()
+					.openInputStream(image);
+			return ExifHelper.getOrientation(is);
+		} catch (FileNotFoundException e) {
+			return 0;
 		}
 	}
 
