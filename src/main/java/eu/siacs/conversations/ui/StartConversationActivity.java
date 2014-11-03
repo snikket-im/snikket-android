@@ -24,6 +24,7 @@ import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
@@ -40,6 +41,11 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
+
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
+
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Bookmark;
@@ -491,10 +497,13 @@ public class StartConversationActivity extends XmppActivity {
 		switch (item.getItemId()) {
 		case R.id.action_create_contact:
 			showCreateContactDialog(null);
-			break;
+			return true;
 		case R.id.action_join_conference:
 			showJoinConferenceDialog();
-			break;
+			return true;
+		case R.id.action_scan_qr_code:
+			new IntentIntegrator(this).initiateScan();
+			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -506,6 +515,18 @@ public class StartConversationActivity extends XmppActivity {
 			return true;
 		}
 		return super.onKeyUp(keyCode, event);
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+		if ((requestCode & 0xFFFF) == IntentIntegrator.REQUEST_CODE) {
+			IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
+			if (scanResult != null && scanResult.getFormatName() != null) {
+				String data = scanResult.getContents();
+				Log.d(Config.LOGTAG, data);
+			}
+		}
+		super.onActivityResult(requestCode,requestCode,intent);
 	}
 
 	@Override

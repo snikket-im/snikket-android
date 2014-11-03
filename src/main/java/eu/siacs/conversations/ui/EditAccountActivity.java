@@ -1,23 +1,44 @@
 package eu.siacs.conversations.ui;
 
+import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.EncodeHintType;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
+import com.google.zxing.qrcode.QRCodeWriter;
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
+
+import java.util.Hashtable;
+
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.services.XmppConnectionService.OnAccountUpdate;
@@ -173,13 +194,13 @@ public class EditAccountActivity extends XmppActivity {
 
 		@Override
 		public void onTextChanged(CharSequence s, int start, int before,
-				int count) {
+								  int count) {
 			updateSaveButton();
 		}
 
 		@Override
 		public void beforeTextChanged(CharSequence s, int start, int count,
-				int after) {
+									  int after) {
 
 		}
 
@@ -216,9 +237,45 @@ public class EditAccountActivity extends XmppActivity {
 		} else {
 			return (!mAccount.getJid().equals(mAccountJid.getText().toString()))
 					|| (!mAccount.getPassword().equals(
-							mPassword.getText().toString()) || mAccount
-							.isOptionSet(Account.OPTION_REGISTER) != mRegisterNew
-							.isChecked());
+					mPassword.getText().toString()) || mAccount
+					.isOptionSet(Account.OPTION_REGISTER) != mRegisterNew
+					.isChecked());
+		}
+	}
+
+	protected void showQrCode() {
+		Point size = new Point();
+		getWindowManager().getDefaultDisplay().getSize(size);
+		final int width = (size.x < size.y ? size.x : size.y);
+		String jid = mAccount.getJid();
+		Bitmap bitmap = createQrCodeBitmap("xmpp:" + jid, width);
+		ImageView view = new ImageView(this);
+		view.setImageBitmap(bitmap);
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setView(view);
+		builder.create().show();
+	}
+
+	protected Bitmap createQrCodeBitmap(String input, int size) {
+		try {
+			final QRCodeWriter QR_CODE_WRITER = new QRCodeWriter();
+			final Hashtable<EncodeHintType, Object> hints = new Hashtable<EncodeHintType, Object>();
+			hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.M);
+			final BitMatrix result = QR_CODE_WRITER.encode(input, BarcodeFormat.QR_CODE, size, size, hints);
+			final int width = result.getWidth();
+			final int height = result.getHeight();
+			final int[] pixels = new int[width * height];
+			for (int y = 0; y < height; y++) {
+				final int offset = y * width;
+				for (int x = 0; x < width; x++) {
+					pixels[offset + x] = result.get(x, y) ? Color.BLACK : Color.TRANSPARENT;
+				}
+			}
+			final Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+			bitmap.setPixels(pixels, 0, width, 0, 0, width, height);
+			return bitmap;
+		} catch (final WriterException e) {
+			return null;
 		}
 	}
 
@@ -257,7 +314,7 @@ public class EditAccountActivity extends XmppActivity {
 		return (!this.mAccount.getJid().equals(
 				this.mAccountJid.getText().toString()))
 				|| (!this.mAccount.getPassword().equals(
-						this.mPassword.getText().toString()));
+				this.mPassword.getText().toString()));
 	}
 
 	@Override
@@ -287,7 +344,7 @@ public class EditAccountActivity extends XmppActivity {
 
 					@Override
 					public void onCheckedChanged(CompoundButton buttonView,
-							boolean isChecked) {
+												 boolean isChecked) {
 						if (isChecked) {
 							mPasswordConfirm.setVisibility(View.VISIBLE);
 						} else {
@@ -296,6 +353,27 @@ public class EditAccountActivity extends XmppActivity {
 						updateSaveButton();
 					}
 				});
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		super.onCreateOptionsMenu(menu);
+		getMenuInflater().inflate(R.menu.editaccount, menu);
+		MenuItem showQrCode = menu.findItem(R.id.action_show_qr_code);
+		if (mAccount == null) {
+			showQrCode.setVisible(false);
+		}
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.action_show_qr_code:
+				showQrCode();
+				return true;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	@Override
@@ -387,7 +465,7 @@ public class EditAccountActivity extends XmppActivity {
 							@Override
 							public void onClick(View v) {
 
-								if (copyTextToClipboard(fingerprint,R.string.otr_fingerprint)) {
+								if (copyTextToClipboard(fingerprint, R.string.otr_fingerprint)) {
 									Toast.makeText(
 											EditAccountActivity.this,
 											R.string.toast_message_otr_fingerprint,

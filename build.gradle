@@ -34,6 +34,8 @@ dependencies {
 	compile 'com.android.support:support-v13:19.1.0'
 	compile 'org.bouncycastle:bcprov-jdk15on:1.50'
 	compile 'net.java:otr4j:0.21'
+	compile 'com.google.zxing:core:3.1.0'
+	compile 'com.google.zxing:android-integration:3.1.0'
 }
 
 android {
