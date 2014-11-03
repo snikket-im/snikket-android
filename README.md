@@ -281,16 +281,16 @@ in the `libs/` directory, you can update it using a subtree merge by doing the
 following (using `minidns` as an example):
 
     git remote add minidns https://github.com/rtreffer/minidns.git
-		git fetch minidns
-		git merge -s subtree minidns master
+    git fetch minidns
+    git merge -s subtree minidns master
 
 To add a new dependency to the `libs/` directory (replacing "name", "branch" and
 "url" as necessary):
 
     git remote add name url
-		git merge -s ours --no-commit name/branch
-		git read-tree --prefix=libs/name -u name/branch
-		git commit -m "Subtree merged in name"
+    git merge -s ours --no-commit name/branch
+    git read-tree --prefix=libs/name -u name/branch
+    git commit -m "Subtree merged in name"
 
 #### How do I debug Conversations
 
