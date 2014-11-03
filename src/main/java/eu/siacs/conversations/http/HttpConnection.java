@@ -229,6 +229,8 @@ public class HttpConnection implements Downloadable {
 			connection.connect();
 			BufferedInputStream is = new BufferedInputStream(
 					connection.getInputStream());
+			file.getParentFile().mkdirs();
+			file.createNewFile();
 			OutputStream os = file.createOutputStream();
 			if (os == null) {
 				throw new IOException();
