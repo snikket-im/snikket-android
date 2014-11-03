@@ -1,11 +1,5 @@
 package eu.siacs.conversations.ui;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
@@ -19,12 +13,15 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.net.Uri;
+import android.nfc.NdefMessage;
+import android.nfc.NdefRecord;
+import android.nfc.NfcAdapter;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
@@ -45,7 +42,12 @@ import android.widget.Spinner;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
-import eu.siacs.conversations.Config;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Bookmark;
@@ -74,6 +76,8 @@ public class StartConversationActivity extends XmppActivity {
 	private List<String> mActivatedAccounts = new ArrayList<String>();
 	private List<String> mKnownHosts;
 	private List<String> mKnownConferenceHosts;
+
+	private Invite mPendingInvite = null;
 
 	private Menu mOptionsMenu;
 	private EditText mSearchEditText;
@@ -145,12 +149,12 @@ public class StartConversationActivity extends XmppActivity {
 
 		@Override
 		public void beforeTextChanged(CharSequence s, int start, int count,
-				int after) {
+									  int after) {
 		}
 
 		@Override
 		public void onTextChanged(CharSequence s, int start, int before,
-				int count) {
+								  int count) {
 		}
 	};
 	private OnRosterUpdate onRosterUpdate = new OnRosterUpdate() {
@@ -212,7 +216,7 @@ public class StartConversationActivity extends XmppActivity {
 
 					@Override
 					public void onItemClick(AdapterView<?> arg0, View arg1,
-							int position, long arg3) {
+											int position, long arg3) {
 						openConversationForBookmark(position);
 					}
 				});
@@ -225,7 +229,7 @@ public class StartConversationActivity extends XmppActivity {
 
 					@Override
 					public void onItemClick(AdapterView<?> arg0, View arg1,
-							int position, long arg3) {
+											int position, long arg3) {
 						openConversationForContact(position);
 					}
 				});
@@ -377,7 +381,7 @@ public class StartConversationActivity extends XmppActivity {
 	}
 
 	@SuppressLint("InflateParams")
-	protected void showJoinConferenceDialog() {
+	protected void showJoinConferenceDialog(String prefilledJid) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(R.string.join_conference);
 		View dialogView = getLayoutInflater().inflate(
@@ -387,6 +391,9 @@ public class StartConversationActivity extends XmppActivity {
 				.findViewById(R.id.jid);
 		jid.setAdapter(new KnownHostsAdapter(this,
 				android.R.layout.simple_list_item_1, mKnownConferenceHosts));
+		if (prefilledJid != null) {
+			jid.append(prefilledJid);
+		}
 		populateAccountSpinner(spinner);
 		final CheckBox bookmarkCheckBox = (CheckBox) dialogView
 				.findViewById(R.id.bookmark);
@@ -495,15 +502,15 @@ public class StartConversationActivity extends XmppActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case R.id.action_create_contact:
-			showCreateContactDialog(null);
-			return true;
-		case R.id.action_join_conference:
-			showJoinConferenceDialog();
-			return true;
-		case R.id.action_scan_qr_code:
-			new IntentIntegrator(this).initiateScan();
-			return true;
+			case R.id.action_create_contact:
+				showCreateContactDialog(null);
+				return true;
+			case R.id.action_join_conference:
+				showJoinConferenceDialog(null);
+				return true;
+			case R.id.action_scan_qr_code:
+				new IntentIntegrator(this).initiateScan();
+				return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -523,10 +530,21 @@ public class StartConversationActivity extends XmppActivity {
 			IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
 			if (scanResult != null && scanResult.getFormatName() != null) {
 				String data = scanResult.getContents();
-				Log.d(Config.LOGTAG, data);
+				Invite invite = parseInviteUri(data);
+				if (xmppConnectionServiceBound) {
+					if (invite.muc) {
+						showJoinConferenceDialog(invite.jid);
+					} else {
+						handleJid(invite.jid);
+					}
+				} else if (invite.jid != null) {
+					this.mPendingInvite = invite;
+				} else {
+					this.mPendingInvite = null;
+				}
 			}
 		}
-		super.onActivityResult(requestCode,requestCode,intent);
+		super.onActivityResult(requestCode, requestCode, intent);
 	}
 
 	@Override
@@ -541,35 +559,88 @@ public class StartConversationActivity extends XmppActivity {
 		this.mKnownHosts = xmppConnectionService.getKnownHosts();
 		this.mKnownConferenceHosts = xmppConnectionService
 				.getKnownConferenceHosts();
-		if (!startByIntent()) {
+		if (this.mPendingInvite != null) {
+			if (this.mPendingInvite.muc) {
+				showJoinConferenceDialog(this.mPendingInvite.jid);
+			} else {
+				handleJid(this.mPendingInvite.jid);
+			}
+			this.mPendingInvite = null;
+		} else if (!handleIntent(getIntent())) {
 			if (mSearchEditText != null) {
 				filter(mSearchEditText.getText().toString());
 			} else {
 				filter(null);
 			}
 		}
+		setIntent(null);
 	}
 
-	protected boolean startByIntent() {
-		if (getIntent() != null
-				&& Intent.ACTION_SENDTO.equals(getIntent().getAction())) {
-			try {
-				String jid = URLDecoder.decode(
-						getIntent().getData().getEncodedPath(), "UTF-8").split(
-						"/")[1];
-				setIntent(null);
-				return handleJid(jid);
-			} catch (UnsupportedEncodingException e) {
-				setIntent(null);
-				return false;
-			}
-		} else if (getIntent() != null
-				&& Intent.ACTION_VIEW.equals(getIntent().getAction())) {
-			Uri uri = getIntent().getData();
-			String jid = uri.getSchemeSpecificPart().split("\\?")[0];
-			return handleJid(jid);
+	protected boolean handleIntent(Intent intent) {
+		if (intent == null || intent.getAction() == null) {
+			return false;
 		}
-		return false;
+		String jid;
+		Uri uri;
+		Invite invite;
+		switch (intent.getAction()) {
+			case Intent.ACTION_SENDTO:
+				try {
+					jid = URLDecoder.decode(
+							intent.getData().getEncodedPath(), "UTF-8").split(
+							"/")[1];
+					return handleJid(jid);
+				} catch (UnsupportedEncodingException e) {
+					return false;
+				}
+			case Intent.ACTION_VIEW:
+				uri = intent.getData();
+				invite = parseInviteUri(uri);
+				if (invite.muc) {
+					showJoinConferenceDialog(invite.jid);
+					return false;
+				} else {
+					return handleJid(invite.jid);
+				}
+			case NfcAdapter.ACTION_NDEF_DISCOVERED:
+				if (android.os.Build.VERSION.SDK_INT >= 16) {
+					Parcelable[] messages = getIntent().getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
+					NdefMessage message = (NdefMessage) messages[0];
+					NdefRecord record = message.getRecords()[0];
+					invite = parseInviteUri(record.toUri());
+					if (invite != null) {
+						if (invite.muc) {
+							showJoinConferenceDialog(invite.jid);
+							return false;
+						} else {
+							return handleJid(invite.jid);
+						}
+					}
+				} else {
+					return false;
+				}
+			default:
+				return false;
+		}
+	}
+
+	private Invite parseInviteUri(String uri) {
+		try {
+			return parseInviteUri(Uri.parse(uri));
+		} catch (IllegalArgumentException e) {
+			return null;
+		}
+	}
+
+	private Invite parseInviteUri(Uri uri) {
+		Invite invite = new Invite();
+		invite.muc = uri.getQuery() != null && uri.getQuery().equalsIgnoreCase("join");
+		if (uri.getAuthority() != null) {
+			invite.jid = uri.getAuthority();
+		} else {
+			invite.jid = uri.getSchemeSpecificPart().split("\\?")[0];
+		}
+		return invite;
 	}
 
 	private boolean handleJid(String jid) {
@@ -583,7 +654,8 @@ public class StartConversationActivity extends XmppActivity {
 		} else {
 			if (mMenuSearchView != null) {
 				mMenuSearchView.expandActionView();
-				mSearchEditText.setText(jid);
+				mSearchEditText.setText("");
+				mSearchEditText.append(jid);
 				filter(jid);
 			} else {
 				mInitialJid = jid;
@@ -661,7 +733,7 @@ public class StartConversationActivity extends XmppActivity {
 
 		@Override
 		public void onCreateContextMenu(ContextMenu menu, View v,
-				ContextMenuInfo menuInfo) {
+										ContextMenuInfo menuInfo) {
 			super.onCreateContextMenu(menu, v, menuInfo);
 			StartConversationActivity activity = (StartConversationActivity) getActivity();
 			activity.getMenuInflater().inflate(mResContextMenu, menu);
@@ -677,22 +749,27 @@ public class StartConversationActivity extends XmppActivity {
 		public boolean onContextItemSelected(MenuItem item) {
 			StartConversationActivity activity = (StartConversationActivity) getActivity();
 			switch (item.getItemId()) {
-			case R.id.context_start_conversation:
-				activity.openConversationForContact();
-				break;
-			case R.id.context_contact_details:
-				activity.openDetailsForContact();
-				break;
-			case R.id.context_delete_contact:
-				activity.deleteContact();
-				break;
-			case R.id.context_join_conference:
-				activity.openConversationForBookmark();
-				break;
-			case R.id.context_delete_conference:
-				activity.deleteConference();
+				case R.id.context_start_conversation:
+					activity.openConversationForContact();
+					break;
+				case R.id.context_contact_details:
+					activity.openDetailsForContact();
+					break;
+				case R.id.context_delete_contact:
+					activity.deleteContact();
+					break;
+				case R.id.context_join_conference:
+					activity.openConversationForBookmark();
+					break;
+				case R.id.context_delete_conference:
+					activity.deleteConference();
 			}
 			return true;
 		}
+	}
+
+	private class Invite {
+		public String jid;
+		public boolean muc;
 	}
 }

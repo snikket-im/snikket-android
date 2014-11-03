@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-		package="eu.siacs.conversations">
+    package="eu.siacs.conversations">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -12,16 +12,17 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.NFC" />
 
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        tools:replace="android:label"
-        android:theme="@style/ConversationsTheme" >
+        android:theme="@style/ConversationsTheme"
+        tools:replace="android:label">
         <service android:name="eu.siacs.conversations.services.XmppConnectionService" />
 
-        <receiver android:name="eu.siacs.conversations.services.EventReceiver" >
+        <receiver android:name="eu.siacs.conversations.services.EventReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
@@ -33,7 +34,7 @@
             android:name="eu.siacs.conversations.ui.ConversationActivity"
             android:label="@string/title_activity_conversations"
             android:launchMode="singleTask"
-            android:windowSoftInputMode="stateHidden" >
+            android:windowSoftInputMode="stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -43,8 +44,7 @@
         <activity
             android:name="eu.siacs.conversations.ui.StartConversationActivity"
             android:configChanges="orientation|screenSize"
-            android:label="@string/title_activity_start_conversation"
-            android:logo="@drawable/ic_activity" >
+            android:label="@string/title_activity_start_conversation">
             <intent-filter>
                 <action android:name="android.intent.action.SENDTO" />
 
@@ -61,42 +61,40 @@
 
                 <data android:scheme="xmpp" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.nfc.action.NDEF_DISCOVERED" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="xmpp" />
+            </intent-filter>
         </activity>
         <activity
             android:name="eu.siacs.conversations.ui.SettingsActivity"
-            android:label="@string/title_activity_settings" >
-        </activity>
+            android:label="@string/title_activity_settings"></activity>
         <activity
             android:name="eu.siacs.conversations.ui.ChooseContactActivity"
-            android:label="@string/title_activity_choose_contact" >
-        </activity>
+            android:label="@string/title_activity_choose_contact"></activity>
         <activity
             android:name="eu.siacs.conversations.ui.ManageAccountActivity"
             android:configChanges="orientation|screenSize"
-            android:label="@string/title_activity_manage_accounts" >
-        </activity>
+            android:label="@string/title_activity_manage_accounts"></activity>
         <activity
             android:name="eu.siacs.conversations.ui.EditAccountActivity"
-            android:windowSoftInputMode="stateHidden|adjustResize" >
-        </activity>
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
         <activity
             android:name="eu.siacs.conversations.ui.ConferenceDetailsActivity"
             android:label="@string/title_activity_conference_details"
-            android:windowSoftInputMode="stateHidden" >
-        </activity>
+            android:windowSoftInputMode="stateHidden"></activity>
         <activity
             android:name="eu.siacs.conversations.ui.ContactDetailsActivity"
             android:label="@string/title_activity_contact_details"
-            android:windowSoftInputMode="stateHidden" >
-        </activity>
+            android:windowSoftInputMode="stateHidden"></activity>
         <activity
             android:name="eu.siacs.conversations.ui.PublishProfilePictureActivity"
             android:label="@string/mgmt_account_publish_avatar"
-            android:windowSoftInputMode="stateHidden" >
-        </activity>
+            android:windowSoftInputMode="stateHidden"></activity>
         <activity
             android:name="eu.siacs.conversations.ui.ShareWithActivity"
-            android:label="@string/title_activity_conversations" >
+            android:label="@string/title_activity_conversations">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
 
