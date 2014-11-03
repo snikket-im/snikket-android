@@ -65,6 +65,7 @@
                 <action android:name="android.nfc.action.NDEF_DISCOVERED" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:scheme="xmpp" />
+                <data android:mimeType="application/vnd.eu.siacs.conversations.jid" />
             </intent-filter>
         </activity>
         <activity
