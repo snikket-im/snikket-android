@@ -39,7 +39,7 @@ should consider either switching to an XMPP server that does or — even better 
 run your own XMPP server for you and your friends. These XEP's are:
 
 * XEP-0065: SOCKS5 Bytestreams (or mod_proxy65). Will be used to transfer
-	files if both parties are behind a firewall (NAT).
+  files if both parties are behind a firewall (NAT).
 * XEP-0138: Stream Compression saves bandwidth
 * XEP-0163: Personal Eventing Protocol for avatars
 * XEP-0198: Stream Management allows XMPP to survive small network outages and
@@ -271,7 +271,7 @@ Make sure to have ANDROID_HOME point to your Android SDK
 
     git clone https://github.com/siacs/Conversations.git
     cd Conversations
-		./gradlew build
+    ./gradlew build
 
 ### How do I update/add external libraries?
 
@@ -281,16 +281,16 @@ in the `libs/` directory, you can update it using a subtree merge by doing the
 following (using `minidns` as an example):
 
     git remote add minidns https://github.com/rtreffer/minidns.git
-		git fetch minidns
-		git merge -s subtree minidns master
+    git fetch minidns
+    git merge -s subtree minidns master
 
 To add a new dependency to the `libs/` directory (replacing "name", "branch" and
 "url" as necessary):
 
     git remote add name url
-		git merge -s ours --no-commit name/branch
-		git read-tree --prefix=libs/name -u name/branch
-		git commit -m "Subtree merged in name"
+    git merge -s ours --no-commit name/branch
+    git read-tree --prefix=libs/name -u name/branch
+    git commit -m "Subtree merged in name"
 
 #### How do I debug Conversations
 
