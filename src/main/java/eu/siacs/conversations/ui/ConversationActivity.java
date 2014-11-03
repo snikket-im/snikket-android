@@ -1,21 +1,5 @@
 package eu.siacs.conversations.ui;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import eu.siacs.conversations.R;
-import eu.siacs.conversations.entities.Contact;
-import eu.siacs.conversations.entities.Conversation;
-import eu.siacs.conversations.entities.Message;
-import eu.siacs.conversations.services.XmppConnectionService.OnAccountUpdate;
-import eu.siacs.conversations.services.XmppConnectionService.OnConversationUpdate;
-import eu.siacs.conversations.services.XmppConnectionService.OnRosterUpdate;
-import eu.siacs.conversations.ui.adapter.ConversationAdapter;
-import eu.siacs.conversations.utils.ExceptionHelper;
-import android.net.Uri;
-import android.os.Bundle;
-import android.os.SystemClock;
-import android.provider.MediaStore;
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.AlertDialog;
@@ -23,8 +7,16 @@ import android.app.FragmentTransaction;
 import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
-import android.content.IntentSender.SendIntentException;
 import android.content.Intent;
+import android.content.IntentSender.SendIntentException;
+import android.net.Uri;
+import android.nfc.NdefMessage;
+import android.nfc.NdefRecord;
+import android.nfc.NfcAdapter;
+import android.nfc.NfcEvent;
+import android.os.Bundle;
+import android.os.SystemClock;
+import android.provider.MediaStore;
 import android.support.v4.widget.SlidingPaneLayout;
 import android.support.v4.widget.SlidingPaneLayout.PanelSlideListener;
 import android.view.KeyEvent;
@@ -39,6 +31,19 @@ import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.PopupMenu.OnMenuItemClickListener;
 import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import eu.siacs.conversations.R;
+import eu.siacs.conversations.entities.Contact;
+import eu.siacs.conversations.entities.Conversation;
+import eu.siacs.conversations.entities.Message;
+import eu.siacs.conversations.services.XmppConnectionService.OnAccountUpdate;
+import eu.siacs.conversations.services.XmppConnectionService.OnConversationUpdate;
+import eu.siacs.conversations.services.XmppConnectionService.OnRosterUpdate;
+import eu.siacs.conversations.ui.adapter.ConversationAdapter;
+import eu.siacs.conversations.utils.ExceptionHelper;
 
 public class ConversationActivity extends XmppActivity implements
 		OnAccountUpdate, OnConversationUpdate, OnRosterUpdate {
@@ -77,6 +82,18 @@ public class ConversationActivity extends XmppActivity implements
 	private Toast prepareImageToast;
 
 	private Uri pendingImageUri = null;
+
+	private NfcAdapter.CreateNdefMessageCallback mNdefPushMessageCallback = new NfcAdapter.CreateNdefMessageCallback() {
+		@Override
+		public NdefMessage createNdefMessage(NfcEvent nfcEvent) {
+			Conversation conversation = getSelectedConversation();
+			NdefMessage msg = new NdefMessage(new NdefRecord[]{
+					NdefRecord.createUri("xmpp:"+conversation.getAccount().getJid().getBytes()),
+					NdefRecord.createApplicationRecord("eu.siacs.conversations")
+			});
+			return msg;
+		}
+	};
 
 	public List<Conversation> getConversationList() {
 		return this.conversationList;
@@ -147,6 +164,8 @@ public class ConversationActivity extends XmppActivity implements
 		getActionBar().setDisplayHomeAsUpEnabled(false);
 		getActionBar().setHomeButtonEnabled(false);
 
+		registerNdefPushMessageCallback(this.mNdefPushMessageCallback);
+
 		this.listAdapter = new ConversationAdapter(this, conversationList);
 		listView.setAdapter(this.listAdapter);
 
@@ -154,7 +173,7 @@ public class ConversationActivity extends XmppActivity implements
 
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View clickedView,
-					int position, long arg3) {
+									int position, long arg3) {
 				paneShouldBeOpen = false;
 				if (getSelectedConversation() != conversationList.get(position)) {
 					setSelectedConversation(conversationList.get(position));
@@ -224,7 +243,7 @@ public class ConversationActivity extends XmppActivity implements
 			ab.setHomeButtonEnabled(true);
 			if (getSelectedConversation().getMode() == Conversation.MODE_SINGLE
 					|| ConversationActivity.this
-							.useSubjectToIdentifyConference()) {
+					.useSubjectToIdentifyConference()) {
 				ab.setTitle(getSelectedConversation().getName());
 			} else {
 				ab.setTitle(getSelectedConversation().getContactJid()
@@ -324,7 +343,7 @@ public class ConversationActivity extends XmppActivity implements
 
 								@Override
 								public void userInputRequried(PendingIntent pi,
-										Contact contact) {
+															  Contact contact) {
 									ConversationActivity.this.runIntent(pi,
 											attachmentChoice);
 								}
@@ -348,7 +367,7 @@ public class ConversationActivity extends XmppActivity implements
 
 									@Override
 									public void onClick(DialogInterface dialog,
-											int which) {
+														int which) {
 										conversation
 												.setNextEncryption(Message.ENCRYPTION_NONE);
 										xmppConnectionService.databaseBackend
@@ -379,41 +398,41 @@ public class ConversationActivity extends XmppActivity implements
 			return true;
 		} else if (getSelectedConversation() != null) {
 			switch (item.getItemId()) {
-			case R.id.action_attach_file:
-				attachFileDialog();
-				break;
-			case R.id.action_archive:
-				this.endConversation(getSelectedConversation());
-				break;
-			case R.id.action_contact_details:
-				Contact contact = this.getSelectedConversation().getContact();
-				if (contact.showInRoster()) {
-					switchToContactDetails(contact);
-				} else {
-					showAddToRosterDialog(getSelectedConversation());
-				}
-				break;
-			case R.id.action_muc_details:
-				Intent intent = new Intent(this,
-						ConferenceDetailsActivity.class);
-				intent.setAction(ConferenceDetailsActivity.ACTION_VIEW_MUC);
-				intent.putExtra("uuid", getSelectedConversation().getUuid());
-				startActivity(intent);
-				break;
-			case R.id.action_invite:
-				inviteToConversation(getSelectedConversation());
-				break;
-			case R.id.action_security:
-				selectEncryptionDialog(getSelectedConversation());
-				break;
-			case R.id.action_clear_history:
-				clearHistoryDialog(getSelectedConversation());
-				break;
-			case R.id.action_mute:
-				muteConversationDialog(getSelectedConversation());
-				break;
-			default:
-				break;
+				case R.id.action_attach_file:
+					attachFileDialog();
+					break;
+				case R.id.action_archive:
+					this.endConversation(getSelectedConversation());
+					break;
+				case R.id.action_contact_details:
+					Contact contact = this.getSelectedConversation().getContact();
+					if (contact.showInRoster()) {
+						switchToContactDetails(contact);
+					} else {
+						showAddToRosterDialog(getSelectedConversation());
+					}
+					break;
+				case R.id.action_muc_details:
+					Intent intent = new Intent(this,
+							ConferenceDetailsActivity.class);
+					intent.setAction(ConferenceDetailsActivity.ACTION_VIEW_MUC);
+					intent.putExtra("uuid", getSelectedConversation().getUuid());
+					startActivity(intent);
+					break;
+				case R.id.action_invite:
+					inviteToConversation(getSelectedConversation());
+					break;
+				case R.id.action_security:
+					selectEncryptionDialog(getSelectedConversation());
+					break;
+				case R.id.action_clear_history:
+					clearHistoryDialog(getSelectedConversation());
+					break;
+				case R.id.action_mute:
+					muteConversationDialog(getSelectedConversation());
+					break;
+				default:
+					break;
 			}
 			return super.onOptionsItemSelected(item);
 		} else {
@@ -471,15 +490,15 @@ public class ConversationActivity extends XmppActivity implements
 					@Override
 					public boolean onMenuItemClick(MenuItem item) {
 						switch (item.getItemId()) {
-						case R.id.attach_choose_picture:
-							attachFile(ATTACHMENT_CHOICE_CHOOSE_IMAGE);
-							break;
-						case R.id.attach_take_picture:
-							attachFile(ATTACHMENT_CHOICE_TAKE_PHOTO);
-							break;
-						case R.id.attach_record_voice:
-							attachFile(ATTACHMENT_CHOICE_RECORD_VOICE);
-							break;
+							case R.id.attach_choose_picture:
+								attachFile(ATTACHMENT_CHOICE_CHOOSE_IMAGE);
+								break;
+							case R.id.attach_take_picture:
+								attachFile(ATTACHMENT_CHOICE_TAKE_PHOTO);
+								break;
+							case R.id.attach_record_voice:
+								attachFile(ATTACHMENT_CHOICE_RECORD_VOICE);
+								break;
 						}
 						return false;
 					}
@@ -501,32 +520,32 @@ public class ConversationActivity extends XmppActivity implements
 				@Override
 				public boolean onMenuItemClick(MenuItem item) {
 					switch (item.getItemId()) {
-					case R.id.encryption_choice_none:
-						conversation.setNextEncryption(Message.ENCRYPTION_NONE);
-						item.setChecked(true);
-						break;
-					case R.id.encryption_choice_otr:
-						conversation.setNextEncryption(Message.ENCRYPTION_OTR);
-						item.setChecked(true);
-						break;
-					case R.id.encryption_choice_pgp:
-						if (hasPgp()) {
-							if (conversation.getAccount().getKeys()
-									.has("pgp_signature")) {
-								conversation
-										.setNextEncryption(Message.ENCRYPTION_PGP);
-								item.setChecked(true);
+						case R.id.encryption_choice_none:
+							conversation.setNextEncryption(Message.ENCRYPTION_NONE);
+							item.setChecked(true);
+							break;
+						case R.id.encryption_choice_otr:
+							conversation.setNextEncryption(Message.ENCRYPTION_OTR);
+							item.setChecked(true);
+							break;
+						case R.id.encryption_choice_pgp:
+							if (hasPgp()) {
+								if (conversation.getAccount().getKeys()
+										.has("pgp_signature")) {
+									conversation
+											.setNextEncryption(Message.ENCRYPTION_PGP);
+									item.setChecked(true);
+								} else {
+									announcePgp(conversation.getAccount(),
+											conversation);
+								}
 							} else {
-								announcePgp(conversation.getAccount(),
-										conversation);
+								showInstallPgpDialog();
 							}
-						} else {
-							showInstallPgpDialog();
-						}
-						break;
-					default:
-						conversation.setNextEncryption(Message.ENCRYPTION_NONE);
-						break;
+							break;
+						default:
+							conversation.setNextEncryption(Message.ENCRYPTION_NONE);
+							break;
 					}
 					xmppConnectionService.databaseBackend
 							.updateConversation(conversation);
@@ -546,20 +565,20 @@ public class ConversationActivity extends XmppActivity implements
 				}
 			}
 			switch (conversation.getNextEncryption(forceEncryption())) {
-			case Message.ENCRYPTION_NONE:
-				none.setChecked(true);
-				break;
-			case Message.ENCRYPTION_OTR:
-				otr.setChecked(true);
-				break;
-			case Message.ENCRYPTION_PGP:
-				popup.getMenu().findItem(R.id.encryption_choice_pgp)
-						.setChecked(true);
-				break;
-			default:
-				popup.getMenu().findItem(R.id.encryption_choice_none)
-						.setChecked(true);
-				break;
+				case Message.ENCRYPTION_NONE:
+					none.setChecked(true);
+					break;
+				case Message.ENCRYPTION_OTR:
+					otr.setChecked(true);
+					break;
+				case Message.ENCRYPTION_PGP:
+					popup.getMenu().findItem(R.id.encryption_choice_pgp)
+							.setChecked(true);
+					break;
+				default:
+					popup.getMenu().findItem(R.id.encryption_choice_none)
+							.setChecked(true);
+					break;
 			}
 			popup.show();
 		}
@@ -736,7 +755,7 @@ public class ConversationActivity extends XmppActivity implements
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode,
-			final Intent data) {
+									final Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (resultCode == RESULT_OK) {
 			if (requestCode == REQUEST_DECRYPT_PGP) {
@@ -798,7 +817,7 @@ public class ConversationActivity extends XmppActivity implements
 
 					@Override
 					public void userInputRequried(PendingIntent pi,
-							Message object) {
+												  Message object) {
 						hidePrepareImageToast();
 						ConversationActivity.this.runIntent(pi,
 								ConversationActivity.REQUEST_SEND_PGP_IMAGE);
@@ -849,7 +868,7 @@ public class ConversationActivity extends XmppActivity implements
 
 					@Override
 					public void userInputRequried(PendingIntent pi,
-							Message message) {
+												  Message message) {
 						ConversationActivity.this.runIntent(pi,
 								ConversationActivity.REQUEST_SEND_MESSAGE);
 					}
