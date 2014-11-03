@@ -1,5 +1,11 @@
 package eu.siacs.conversations.http;
 
+import android.content.Intent;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+
+import org.apache.http.conn.ssl.StrictHostnameVerifier;
+
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -14,12 +20,6 @@ import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLHandshakeException;
 import javax.net.ssl.X509TrustManager;
-
-import org.apache.http.conn.ssl.StrictHostnameVerifier;
-
-import android.content.Intent;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 
 import eu.siacs.conversations.entities.Downloadable;
 import eu.siacs.conversations.entities.DownloadableFile;
@@ -74,7 +74,7 @@ public class HttpConnection implements Downloadable {
 			if (reference != null && reference.length() == 96) {
 				this.file.setKey(CryptoHelper.hexToBytes(reference));
 			}
-			
+
 			if (this.message.getEncryption() == Message.ENCRYPTION_OTR
 					&& this.file.getKey() == null) {
 				this.message.setEncryption(Message.ENCRYPTION_NONE);
@@ -113,7 +113,7 @@ public class HttpConnection implements Downloadable {
 	}
 
 	private void setupTrustManager(HttpsURLConnection connection,
-			boolean interactive) {
+								   boolean interactive) {
 		X509TrustManager trustManager;
 		HostnameVerifier hostnameVerifier;
 		if (interactive) {
@@ -131,7 +131,7 @@ public class HttpConnection implements Downloadable {
 		}
 		try {
 			SSLContext sc = SSLContext.getInstance("TLS");
-			sc.init(null, new X509TrustManager[] { trustManager },
+			sc.init(null, new X509TrustManager[]{trustManager},
 					mXmppConnectionService.getRNG());
 			connection.setSSLSocketFactory(sc.getSocketFactory());
 			connection.setHostnameVerifier(hostnameVerifier);
@@ -230,6 +230,9 @@ public class HttpConnection implements Downloadable {
 			BufferedInputStream is = new BufferedInputStream(
 					connection.getInputStream());
 			OutputStream os = file.createOutputStream();
+			if (os == null) {
+				throw new IOException();
+			}
 			int count = -1;
 			byte[] buffer = new byte[1024];
 			while ((count = is.read(buffer)) != -1) {
