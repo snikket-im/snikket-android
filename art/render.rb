@@ -14,7 +14,7 @@ images = {
 images.each do |source, result|
 	resolutions.each do |name, factor|
 		size = factor * result[1]
-		path = "../res/drawable-#{name}/#{result[0]}.png"
+		path = "../src/main/res/drawable-#{name}/#{result[0]}.png"
 		cmd = "inkscape -e #{path} -C -h #{size} -w #{size} #{source}"
 		puts cmd
 		system cmd
