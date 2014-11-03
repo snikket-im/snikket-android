@@ -1,6 +1,8 @@
 package eu.siacs.conversations.ui;
 
 import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -19,11 +21,15 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.net.Uri;
+import android.nfc.NdefMessage;
+import android.nfc.NfcAdapter;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
@@ -40,6 +46,8 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
+
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Bookmark;
@@ -371,7 +379,7 @@ public class StartConversationActivity extends XmppActivity {
 	}
 
 	@SuppressLint("InflateParams")
-	protected void showJoinConferenceDialog() {
+	protected void showJoinConferenceDialog(String prefilledJid) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(R.string.join_conference);
 		View dialogView = getLayoutInflater().inflate(
@@ -381,6 +389,9 @@ public class StartConversationActivity extends XmppActivity {
 				.findViewById(R.id.jid);
 		jid.setAdapter(new KnownHostsAdapter(this,
 				android.R.layout.simple_list_item_1, mKnownConferenceHosts));
+		if (prefilledJid != null) {
+			jid.append(prefilledJid);
+		}
 		populateAccountSpinner(spinner);
 		final CheckBox bookmarkCheckBox = (CheckBox) dialogView
 				.findViewById(R.id.bookmark);
@@ -493,7 +504,7 @@ public class StartConversationActivity extends XmppActivity {
 			showCreateContactDialog(null);
 			break;
 		case R.id.action_join_conference:
-			showJoinConferenceDialog();
+			showJoinConferenceDialog(null);
 			break;
 		}
 		return super.onOptionsItemSelected(item);
@@ -520,7 +531,7 @@ public class StartConversationActivity extends XmppActivity {
 		this.mKnownHosts = xmppConnectionService.getKnownHosts();
 		this.mKnownConferenceHosts = xmppConnectionService
 				.getKnownConferenceHosts();
-		if (!startByIntent()) {
+		if (!handleIntent(getIntent())) {
 			if (mSearchEditText != null) {
 				filter(mSearchEditText.getText().toString());
 			} else {
@@ -529,26 +540,48 @@ public class StartConversationActivity extends XmppActivity {
 		}
 	}
 
-	protected boolean startByIntent() {
-		if (getIntent() != null
-				&& Intent.ACTION_SENDTO.equals(getIntent().getAction())) {
-			try {
-				String jid = URLDecoder.decode(
-						getIntent().getData().getEncodedPath(), "UTF-8").split(
-						"/")[1];
-				setIntent(null);
-				return handleJid(jid);
-			} catch (UnsupportedEncodingException e) {
-				setIntent(null);
-				return false;
-			}
-		} else if (getIntent() != null
-				&& Intent.ACTION_VIEW.equals(getIntent().getAction())) {
-			Uri uri = getIntent().getData();
-			String jid = uri.getSchemeSpecificPart().split("\\?")[0];
-			return handleJid(jid);
+	protected boolean handleIntent(Intent intent) {
+		if (intent==null || intent.getAction() == null) {
+			return false;
 		}
-		return false;
+		String jid;
+		switch(intent.getAction()) {
+			case Intent.ACTION_SENDTO:
+				try {
+					jid = URLDecoder.decode(
+							intent.getData().getEncodedPath(), "UTF-8").split(
+							"/")[1];
+					return handleJid(jid);
+				} catch (UnsupportedEncodingException e) {
+					return false;
+				}
+			case Intent.ACTION_VIEW:
+				Uri uri = intent.getData();
+				boolean muc = uri.getQuery() != null && uri.getQuery().equalsIgnoreCase("join");
+				if (uri.getAuthority() != null) {
+					jid = uri.getAuthority();
+				} else {
+					jid = uri.getSchemeSpecificPart().split("\\?")[0];
+				}
+				if (muc) {
+					showJoinConferenceDialog(jid);
+					return false;
+				} else {
+					return handleJid(jid);
+				}
+			case NfcAdapter.ACTION_NDEF_DISCOVERED:
+				Parcelable[] messages = getIntent().getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
+				NdefMessage message = (NdefMessage) messages[0];
+				String payload = message.getRecords()[0].toString();
+				if (payload.startsWith("xmpp:")) {
+					jid = payload.substring(5);
+					return handleJid(jid);
+				} else {
+					return false;
+				}
+			default:
+				return false;
+		}
 	}
 
 	private boolean handleJid(String jid) {

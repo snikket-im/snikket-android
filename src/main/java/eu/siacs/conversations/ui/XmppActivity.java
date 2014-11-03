@@ -38,6 +38,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.nfc.NfcAdapter;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -541,6 +542,13 @@ public abstract class XmppActivity extends Activity {
 			return true;
 		}
 		return false;
+	}
+
+	protected void registerNdefPushMessageCallback(NfcAdapter.CreateNdefMessageCallback callback) {
+		NfcAdapter nfcAdapter = NfcAdapter.getDefaultAdapter(this);
+		if (nfcAdapter!=null && nfcAdapter.isEnabled()) {
+			nfcAdapter.setNdefPushMessageCallback(callback,this);
+		}
 	}
 
 	public AvatarService avatarService() {
