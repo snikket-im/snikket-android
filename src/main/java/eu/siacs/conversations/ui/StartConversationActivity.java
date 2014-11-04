@@ -16,6 +16,7 @@ import android.net.Uri;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v13.app.FragmentPagerAdapter;
@@ -44,7 +45,9 @@ import com.google.zxing.integration.android.IntentResult;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -580,9 +583,9 @@ public class StartConversationActivity extends XmppActivity {
 		if (intent == null || intent.getAction() == null) {
 			return false;
 		}
-		String jid;
-		Uri uri;
-		Invite invite;
+		String jid = null;
+		Uri uri = null;
+		Invite invite = null;
 		switch (intent.getAction()) {
 			case Intent.ACTION_SENDTO:
 				try {
@@ -603,22 +606,27 @@ public class StartConversationActivity extends XmppActivity {
 					return handleJid(invite.jid);
 				}
 			case NfcAdapter.ACTION_NDEF_DISCOVERED:
-				if (android.os.Build.VERSION.SDK_INT >= 16) {
-					Parcelable[] messages = getIntent().getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
-					NdefMessage message = (NdefMessage) messages[0];
-					NdefRecord record = message.getRecords()[0];
+				Parcelable[] messages = getIntent().getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
+				NdefMessage message = (NdefMessage) messages[0];
+				NdefRecord record = message.getRecords()[0];
+				if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
 					invite = parseInviteUri(record.toUri());
-					if (invite != null) {
-						if (invite.muc) {
-							showJoinConferenceDialog(invite.jid);
-							return false;
-						} else {
-							return handleJid(invite.jid);
-						}
-					}
 				} else {
-					return false;
+					byte[] mPayload = record.getPayload();
+					if (mPayload[0] == 0) {
+						invite = parseInviteUri(Uri.parse(new String(Arrays.copyOfRange(
+							mPayload, 1, mPayload.length), StandardCharsets.UTF_8)));
+					}
 				}
+				if (invite != null) {
+					if (invite.muc) {
+						showJoinConferenceDialog(invite.jid);
+						return false;
+					} else {
+						return handleJid(invite.jid);
+					}
+				}
+				return false;
 			default:
 				return false;
 		}
