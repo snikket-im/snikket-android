@@ -23,6 +23,7 @@ import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
@@ -50,6 +51,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Bookmark;
@@ -579,6 +581,7 @@ public class StartConversationActivity extends XmppActivity {
 			case Intent.ACTION_SENDTO:
 				try {
 					// TODO use Intent.parse ?!?
+					// sample: imto://xmpp/jid@foo.com
 					String jid = URLDecoder.decode(
 							intent.getData().getEncodedPath(), "UTF-8").split(
 							"/")[1];
@@ -590,20 +593,29 @@ public class StartConversationActivity extends XmppActivity {
 				invite = new Invite(intent.getData());
 				return invite.invite();
 			case NfcAdapter.ACTION_NDEF_DISCOVERED:
-				Parcelable[] messages = getIntent().getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
-				NdefMessage message = (NdefMessage) messages[0];
-				NdefRecord record = message.getRecords()[0];
-				if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-					invite = new Invite(record.toUri());
-				} else {
-					byte[] mPayload = record.getPayload();
-					if (mPayload[0] == 0) {
-						invite = new Invite(Uri.parse(new String(Arrays.copyOfRange(
-								mPayload, 1, mPayload.length))));
+				for (Parcelable message : getIntent().getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES)) {
+					if (message instanceof NdefMessage) {
+						Log.d(Config.LOGTAG, "received message=" + message);
+						for (NdefRecord record : ((NdefMessage)message).getRecords()) {
+							switch (record.getTnf()) {
+							case NdefRecord.TNF_WELL_KNOWN:
+								if (Arrays.equals(record.getType(), NdefRecord.RTD_URI)) {
+									if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+										invite = new Invite(record.toUri());
+									} else {
+										byte[] mPayload = record.getPayload();
+										if (mPayload[0] == 0) {
+											invite = new Invite(Uri.parse(new String(Arrays.copyOfRange(
+													mPayload, 1, mPayload.length))));
+										}
+									}
+									if (invite != null) {
+										return invite.invite();
+									}
+								}
+							}
+						}
 					}
-				}
-				if (invite != null) {
-					return invite.invite();
 				}
 				return false;
 			default:
