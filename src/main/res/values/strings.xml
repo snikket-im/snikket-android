@@ -284,4 +284,5 @@
     <string name="image_transmission_failed">Image transmission failed</string>
     <string name="scan_qr_code">Scan QR code</string>
     <string name="show_qr_code">Show QR code</string>
+    <string name="account_details">Account details</string>
 </resources>

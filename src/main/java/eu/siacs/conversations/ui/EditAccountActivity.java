@@ -64,6 +64,7 @@ public class EditAccountActivity extends XmppActivity {
 	private TextView mServerInfoPep;
 	private TextView mSessionEst;
 	private TextView mOtrFingerprint;
+	private ImageView mAvatar;
 	private RelativeLayout mOtrFingerprintBox;
 	private ImageButton mOtrFingerprintToClipboardButton;
 
@@ -210,6 +211,17 @@ public class EditAccountActivity extends XmppActivity {
 
 		}
 	};
+	private OnClickListener mAvatarClickListener = new OnClickListener() {
+		@Override
+		public void onClick(View view) {
+			if (mAccount!=null) {
+				Intent intent = new Intent(getApplicationContext(),
+						PublishProfilePictureActivity.class);
+				intent.putExtra("account", mAccount.getJid());
+				startActivity(intent);
+			}
+		}
+	};
 
 	protected void finishInitialSetup(final Avatar avatar) {
 		runOnUiThread(new Runnable() {
@@ -300,6 +312,8 @@ public class EditAccountActivity extends XmppActivity {
 		this.mPassword = (EditText) findViewById(R.id.account_password);
 		this.mPassword.addTextChangedListener(this.mTextWatcher);
 		this.mPasswordConfirm = (EditText) findViewById(R.id.account_password_confirm);
+		this.mAvatar = (ImageView) findViewById(R.id.avater);
+		this.mAvatar.setOnClickListener(this.mAvatarClickListener);
 		this.mRegisterNew = (CheckBox) findViewById(R.id.account_register_new);
 		this.mStats = (LinearLayout) findViewById(R.id.stats);
 		this.mSessionEst = (TextView) findViewById(R.id.session_est);
@@ -347,8 +361,9 @@ public class EditAccountActivity extends XmppActivity {
 			this.jidToEdit = getIntent().getStringExtra("jid");
 			if (this.jidToEdit != null) {
 				this.mRegisterNew.setVisibility(View.GONE);
-				getActionBar().setTitle(jidToEdit);
+				getActionBar().setTitle(getString(R.string.account_details));
 			} else {
+				this.mAvatar.setVisibility(View.GONE);
 				getActionBar().setTitle(R.string.action_add_account);
 			}
 		}
@@ -385,6 +400,8 @@ public class EditAccountActivity extends XmppActivity {
 	private void updateAccountInformation() {
 		this.mAccountJid.setText(this.mAccount.getJid());
 		this.mPassword.setText(this.mAccount.getPassword());
+		this.mAvatar.setVisibility(View.VISIBLE);
+		this.mAvatar.setImageBitmap(avatarService().get(this.mAccount,getPixel(72)));
 		if (this.mAccount.isOptionSet(Account.OPTION_REGISTER)) {
 			this.mRegisterNew.setVisibility(View.VISIBLE);
 			this.mRegisterNew.setChecked(true);

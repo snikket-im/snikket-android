@@ -15,15 +15,24 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
-            <LinearLayout
+            <RelativeLayout
                 android:id="@+id/editor"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:background="@drawable/infocard_border"
                 android:orientation="vertical"
-                android:padding="16dp" >
-
+                android:padding="16dp">
+                <ImageView android:id="@+id/avater"
+                    android:layout_width="72dp"
+                    android:layout_height="72dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="16dp"/>
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_toRightOf="@+id/avater">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -88,7 +97,8 @@
                     android:textColor="@color/primarytext"
                     android:textColorHint="@color/secondarytext"
                     android:textSize="?attr/TextSizeBody" />
-            </LinearLayout>
+                </LinearLayout>
+            </RelativeLayout>
 
            <LinearLayout
                 android:id="@+id/stats"
