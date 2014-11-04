@@ -1,27 +1,5 @@
 package eu.siacs.conversations.ui;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.concurrent.ConcurrentLinkedQueue;
-
-import net.java.otr4j.session.SessionStatus;
-import eu.siacs.conversations.R;
-import eu.siacs.conversations.crypto.PgpEngine;
-import eu.siacs.conversations.entities.Account;
-import eu.siacs.conversations.entities.Contact;
-import eu.siacs.conversations.entities.Conversation;
-import eu.siacs.conversations.entities.Message;
-import eu.siacs.conversations.entities.MucOptions;
-import eu.siacs.conversations.entities.Presences;
-import eu.siacs.conversations.services.XmppConnectionService;
-import eu.siacs.conversations.ui.EditMessage.OnEnterPressed;
-import eu.siacs.conversations.ui.XmppActivity.OnPresenceSelected;
-import eu.siacs.conversations.ui.XmppActivity.OnValueEdited;
-import eu.siacs.conversations.ui.adapter.MessageAdapter;
-import eu.siacs.conversations.ui.adapter.MessageAdapter.OnContactPictureClicked;
-import eu.siacs.conversations.ui.adapter.MessageAdapter.OnContactPictureLongClicked;
-import eu.siacs.conversations.utils.UIHelper;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.PendingIntent;
@@ -44,17 +22,40 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AbsListView.OnScrollListener;
-import android.widget.TextView.OnEditorActionListener;
 import android.widget.AbsListView;
-
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
-import android.widget.ListView;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
+
+import net.java.otr4j.session.SessionStatus;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.ConcurrentLinkedQueue;
+
+import eu.siacs.conversations.R;
+import eu.siacs.conversations.crypto.PgpEngine;
+import eu.siacs.conversations.entities.Account;
+import eu.siacs.conversations.entities.Contact;
+import eu.siacs.conversations.entities.Conversation;
+import eu.siacs.conversations.entities.Message;
+import eu.siacs.conversations.entities.MucOptions;
+import eu.siacs.conversations.entities.Presences;
+import eu.siacs.conversations.services.XmppConnectionService;
+import eu.siacs.conversations.ui.EditMessage.OnEnterPressed;
+import eu.siacs.conversations.ui.XmppActivity.OnPresenceSelected;
+import eu.siacs.conversations.ui.XmppActivity.OnValueEdited;
+import eu.siacs.conversations.ui.adapter.MessageAdapter;
+import eu.siacs.conversations.ui.adapter.MessageAdapter.OnContactPictureClicked;
+import eu.siacs.conversations.ui.adapter.MessageAdapter.OnContactPictureLongClicked;
+import eu.siacs.conversations.utils.UIHelper;
 
 public class ConversationFragment extends Fragment {
 
@@ -179,7 +180,7 @@ public class ConversationFragment extends Fragment {
 
 		@Override
 		public void onScroll(AbsListView view, int firstVisibleItem,
-				int visibleItemCount, int totalItemCount) {
+							 int visibleItemCount, int totalItemCount) {
 			if (firstVisibleItem == 0 && messagesLoaded) {
 				long timestamp = messageList.get(0).getTimeSent();
 				messagesLoaded = false;
@@ -238,25 +239,25 @@ public class ConversationFragment extends Fragment {
 					conversation.getNextPresence()));
 		} else {
 			switch (conversation.getNextEncryption(activity.forceEncryption())) {
-			case Message.ENCRYPTION_NONE:
-				mEditMessage
-						.setHint(getString(R.string.send_plain_text_message));
-				break;
-			case Message.ENCRYPTION_OTR:
-				mEditMessage.setHint(getString(R.string.send_otr_message));
-				break;
-			case Message.ENCRYPTION_PGP:
-				mEditMessage.setHint(getString(R.string.send_pgp_message));
-				break;
-			default:
-				break;
+				case Message.ENCRYPTION_NONE:
+					mEditMessage
+							.setHint(getString(R.string.send_plain_text_message));
+					break;
+				case Message.ENCRYPTION_OTR:
+					mEditMessage.setHint(getString(R.string.send_otr_message));
+					break;
+				case Message.ENCRYPTION_PGP:
+					mEditMessage.setHint(getString(R.string.send_pgp_message));
+					break;
+				default:
+					break;
 			}
 		}
 	}
 
 	@Override
 	public View onCreateView(final LayoutInflater inflater,
-			ViewGroup container, Bundle savedInstanceState) {
+							 ViewGroup container, Bundle savedInstanceState) {
 		final View view = inflater.inflate(R.layout.fragment_conversation,
 				container, false);
 		mEditMessage = (EditMessage) view.findViewById(R.id.textinput);
@@ -311,6 +312,11 @@ public class ConversationFragment extends Fragment {
 											.getConversation());
 								}
 							}
+						}  else {
+							Account account = message.getConversation().getAccount();
+							Intent intent = new Intent(activity, EditAccountActivity.class);
+							intent.putExtra("jid", account.getJid());
+							startActivity(intent);
 						}
 					}
 				});
@@ -339,7 +345,7 @@ public class ConversationFragment extends Fragment {
 
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v,
-			ContextMenuInfo menuInfo) {
+									ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
 		AdapterView.AdapterContextMenuInfo acmi = (AdapterContextMenuInfo) menuInfo;
 		this.selectedMessage = this.messageList.get(acmi.position);
@@ -383,23 +389,23 @@ public class ConversationFragment extends Fragment {
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case R.id.share_image:
-			shareImage(selectedMessage);
-			return true;
-		case R.id.copy_text:
-			copyText(selectedMessage);
-			return true;
-		case R.id.send_again:
-			resendMessage(selectedMessage);
-			return true;
-		case R.id.copy_url:
-			copyUrl(selectedMessage);
-			return true;
-		case R.id.download_image:
-			downloadImage(selectedMessage);
-			return true;
-		default:
-			return super.onContextItemSelected(item);
+			case R.id.share_image:
+				shareImage(selectedMessage);
+				return true;
+			case R.id.copy_text:
+				copyText(selectedMessage);
+				return true;
+			case R.id.send_again:
+				resendMessage(selectedMessage);
+				return true;
+			case R.id.copy_url:
+				copyUrl(selectedMessage);
+				return true;
+			case R.id.download_image:
+				downloadImage(selectedMessage);
+				return true;
+			default:
+				return super.onContextItemSelected(item);
 		}
 	}
 
@@ -533,7 +539,7 @@ public class ConversationFragment extends Fragment {
 						});
 			} else if (!contact.showInRoster()
 					&& contact
-							.getOption(Contact.Options.PENDING_SUBSCRIPTION_REQUEST)) {
+					.getOption(Contact.Options.PENDING_SUBSCRIPTION_REQUEST)) {
 				showSnackbar(R.string.contact_added_you, R.string.add_back,
 						new OnClickListener() {
 
@@ -548,7 +554,7 @@ public class ConversationFragment extends Fragment {
 			for (Message message : this.conversation.getMessages()) {
 				if (message.getEncryption() == Message.ENCRYPTION_PGP
 						&& (message.getStatus() == Message.STATUS_RECEIVED || message
-								.getStatus() >= Message.STATUS_SEND)
+						.getStatus() >= Message.STATUS_SEND)
 						&& message.getDownloadable() == null) {
 					if (!mEncryptedMessages.contains(message)) {
 						mEncryptedMessages.add(message);
@@ -574,32 +580,32 @@ public class ConversationFragment extends Fragment {
 						&& conversation.getAccount().getStatus() == Account.STATUS_ONLINE) {
 					int error = conversation.getMucOptions().getError();
 					switch (error) {
-					case MucOptions.ERROR_NICK_IN_USE:
-						showSnackbar(R.string.nick_in_use, R.string.edit,
-								clickToMuc);
-						break;
-					case MucOptions.ERROR_ROOM_NOT_FOUND:
-						showSnackbar(R.string.conference_not_found,
-								R.string.leave, leaveMuc);
-						break;
-					case MucOptions.ERROR_PASSWORD_REQUIRED:
-						showSnackbar(R.string.conference_requires_password,
-								R.string.enter_password, enterPassword);
-						break;
-					case MucOptions.ERROR_BANNED:
-						showSnackbar(R.string.conference_banned,
-								R.string.leave, leaveMuc);
-						break;
-					case MucOptions.ERROR_MEMBERS_ONLY:
-						showSnackbar(R.string.conference_members_only,
-								R.string.leave, leaveMuc);
-						break;
-					case MucOptions.KICKED_FROM_ROOM:
-						showSnackbar(R.string.conference_kicked, R.string.join,
-								joinMuc);
-						break;
-					default:
-						break;
+						case MucOptions.ERROR_NICK_IN_USE:
+							showSnackbar(R.string.nick_in_use, R.string.edit,
+									clickToMuc);
+							break;
+						case MucOptions.ERROR_ROOM_NOT_FOUND:
+							showSnackbar(R.string.conference_not_found,
+									R.string.leave, leaveMuc);
+							break;
+						case MucOptions.ERROR_PASSWORD_REQUIRED:
+							showSnackbar(R.string.conference_requires_password,
+									R.string.enter_password, enterPassword);
+							break;
+						case MucOptions.ERROR_BANNED:
+							showSnackbar(R.string.conference_banned,
+									R.string.leave, leaveMuc);
+							break;
+						case MucOptions.ERROR_MEMBERS_ONLY:
+							showSnackbar(R.string.conference_members_only,
+									R.string.leave, leaveMuc);
+							break;
+						case MucOptions.KICKED_FROM_ROOM:
+							showSnackbar(R.string.conference_kicked, R.string.join,
+									joinMuc);
+							break;
+						default:
+							break;
 					}
 				}
 			}
@@ -660,30 +666,30 @@ public class ConversationFragment extends Fragment {
 				&& c.getAccount().getStatus() == Account.STATUS_ONLINE) {
 			if (c.getMode() == Conversation.MODE_SINGLE) {
 				switch (c.getContact().getMostAvailableStatus()) {
-				case Presences.CHAT:
-					this.mSendButton
-							.setImageResource(R.drawable.ic_action_send_now_online);
-					break;
-				case Presences.ONLINE:
-					this.mSendButton
-							.setImageResource(R.drawable.ic_action_send_now_online);
-					break;
-				case Presences.AWAY:
-					this.mSendButton
-							.setImageResource(R.drawable.ic_action_send_now_away);
-					break;
-				case Presences.XA:
-					this.mSendButton
-							.setImageResource(R.drawable.ic_action_send_now_away);
-					break;
-				case Presences.DND:
-					this.mSendButton
-							.setImageResource(R.drawable.ic_action_send_now_dnd);
-					break;
-				default:
-					this.mSendButton
-							.setImageResource(R.drawable.ic_action_send_now_offline);
-					break;
+					case Presences.CHAT:
+						this.mSendButton
+								.setImageResource(R.drawable.ic_action_send_now_online);
+						break;
+					case Presences.ONLINE:
+						this.mSendButton
+								.setImageResource(R.drawable.ic_action_send_now_online);
+						break;
+					case Presences.AWAY:
+						this.mSendButton
+								.setImageResource(R.drawable.ic_action_send_now_away);
+						break;
+					case Presences.XA:
+						this.mSendButton
+								.setImageResource(R.drawable.ic_action_send_now_away);
+						break;
+					case Presences.DND:
+						this.mSendButton
+								.setImageResource(R.drawable.ic_action_send_now_dnd);
+						break;
+					default:
+						this.mSendButton
+								.setImageResource(R.drawable.ic_action_send_now_offline);
+						break;
 				}
 			} else if (c.getMode() == Conversation.MODE_MULTI) {
 				if (c.getMucOptions().online()) {
@@ -723,9 +729,9 @@ public class ConversationFragment extends Fragment {
 		Set<String> knownFingerprints = conversation.getContact()
 				.getOtrFingerprints();
 		if (conversation.hasValidOtrSession()
-						&& (!conversation.isMuted())
-						&& (conversation.getOtrSession().getSessionStatus() == SessionStatus.ENCRYPTED) && (!knownFingerprints
-							.contains(conversation.getOtrFingerprint()))) {
+				&& (!conversation.isMuted())
+				&& (conversation.getOtrSession().getSessionStatus() == SessionStatus.ENCRYPTED) && (!knownFingerprints
+				.contains(conversation.getOtrFingerprint()))) {
 			showSnackbar(R.string.unknown_otr_fingerprint, R.string.verify,
 					new OnClickListener() {
 
@@ -744,7 +750,7 @@ public class ConversationFragment extends Fragment {
 	}
 
 	protected void showSnackbar(int message, int action,
-			OnClickListener clickListener) {
+								OnClickListener clickListener) {
 		snackbar.setVisibility(View.VISIBLE);
 		snackbar.setOnClickListener(null);
 		snackbarMessage.setText(message);
@@ -775,7 +781,7 @@ public class ConversationFragment extends Fragment {
 
 								@Override
 								public void userInputRequried(PendingIntent pi,
-										Contact contact) {
+															  Contact contact) {
 									activity.runIntent(
 											pi,
 											ConversationActivity.REQUEST_ENCRYPT_MESSAGE);
@@ -799,7 +805,7 @@ public class ConversationFragment extends Fragment {
 
 								@Override
 								public void onClick(DialogInterface dialog,
-										int which) {
+													int which) {
 									conversation
 											.setNextEncryption(Message.ENCRYPTION_NONE);
 									xmppService.databaseBackend
@@ -828,7 +834,7 @@ public class ConversationFragment extends Fragment {
 
 								@Override
 								public void onClick(DialogInterface dialog,
-										int which) {
+													int which) {
 									conversation
 											.setNextEncryption(Message.ENCRYPTION_NONE);
 									message.setEncryption(Message.ENCRYPTION_NONE);
@@ -846,7 +852,7 @@ public class ConversationFragment extends Fragment {
 	}
 
 	public void showNoPGPKeyDialog(boolean plural,
-			DialogInterface.OnClickListener listener) {
+								   DialogInterface.OnClickListener listener) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		builder.setIconAttribute(android.R.attr.alertDialogIcon);
 		if (plural) {
