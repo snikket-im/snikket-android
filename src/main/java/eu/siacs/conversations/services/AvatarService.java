@@ -1,5 +1,12 @@
 package eu.siacs.conversations.services;
 
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Rect;
+import android.graphics.Typeface;
+import android.net.Uri;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -10,12 +17,6 @@ import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.ListItem;
 import eu.siacs.conversations.entities.MucOptions;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.Rect;
-import android.graphics.Typeface;
-import android.net.Uri;
 
 public class AvatarService {
 
@@ -41,19 +42,14 @@ public class AvatarService {
 		if (avatar != null) {
 			return avatar;
 		}
-		avatar = mXmppConnectionService.getFileBackend().getAvatar(
-				contact.getAvatar(), size);
+		if (contact.getProfilePhoto() != null) {
+			avatar = mXmppConnectionService.getFileBackend().cropCenterSquare(Uri.parse(contact.getProfilePhoto()), size);
+		}
+		if (avatar == null && contact.getAvatar() != null) {
+			avatar = mXmppConnectionService.getFileBackend().getAvatar(contact.getAvatar(), size);
+		}
 		if (avatar == null) {
-			if (contact.getProfilePhoto() != null) {
-				avatar = mXmppConnectionService.getFileBackend()
-						.cropCenterSquare(Uri.parse(contact.getProfilePhoto()),
-								size);
-				if (avatar == null) {
-					avatar = get(contact.getDisplayName(), size);
-				}
-			} else {
-				avatar = get(contact.getDisplayName(), size);
-			}
+			avatar = get(contact.getDisplayName(), size);
 		}
 		this.mXmppConnectionService.getBitmapCache().put(KEY, avatar);
 		return avatar;
@@ -225,7 +221,7 @@ public class AvatarService {
 	}
 
 	private void drawTile(Canvas canvas, String letter, int tileColor,
-			int left, int top, int right, int bottom) {
+						  int left, int top, int right, int bottom) {
 		letter = letter.toUpperCase(Locale.getDefault());
 		Paint tilePaint = new Paint(), textPaint = new Paint();
 		tilePaint.setColor(tileColor);
@@ -244,15 +240,15 @@ public class AvatarService {
 	}
 
 	private void drawTile(Canvas canvas, MucOptions.User user, int left,
-			int top, int right, int bottom) {
+						  int top, int right, int bottom) {
 		Contact contact = user.getContact();
 		if (contact != null) {
 			Uri uri = null;
-			if (contact.getAvatar() != null) {
+			if (contact.getProfilePhoto() != null) {
+				uri = Uri.parse(contact.getProfilePhoto());
+			} else if (contact.getAvatar() != null) {
 				uri = mXmppConnectionService.getFileBackend().getAvatarUri(
 						contact.getAvatar());
-			} else if (contact.getProfilePhoto() != null) {
-				uri = Uri.parse(contact.getProfilePhoto());
 			}
 			if (uri != null) {
 				Bitmap bitmap = mXmppConnectionService.getFileBackend()
@@ -277,15 +273,15 @@ public class AvatarService {
 	}
 
 	private void drawTile(Canvas canvas, Bitmap bm, int dstleft, int dsttop,
-			int dstright, int dstbottom) {
+						  int dstright, int dstbottom) {
 		Rect dst = new Rect(dstleft, dsttop, dstright, dstbottom);
 		canvas.drawBitmap(bm, null, dst, null);
 	}
 
 	private int getColorForName(String name) {
-		int holoColors[] = { 0xFFe91e63, 0xFF9c27b0, 0xFF673ab7, 0xFF3f51b5,
+		int holoColors[] = {0xFFe91e63, 0xFF9c27b0, 0xFF673ab7, 0xFF3f51b5,
 				0xFF5677fc, 0xFF03a9f4, 0xFF00bcd4, 0xFF009688, 0xFFff5722,
-				0xFF795548, 0xFF607d8b };
+				0xFF795548, 0xFF607d8b};
 		return holoColors[(int) ((name.hashCode() & 0xffffffffl) % holoColors.length)];
 	}
 
