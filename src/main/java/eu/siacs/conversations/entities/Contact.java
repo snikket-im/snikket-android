@@ -24,6 +24,8 @@ public class Contact implements ListItem {
 	public static final String KEYS = "pgpkey";
 	public static final String ACCOUNT = "accountUuid";
 	public static final String AVATAR = "avatar";
+    public static final String LAST_PRESENCE = "last_presence";
+    public static final String LAST_TIME = "last_time";
 
 	protected String accountUuid;
 	protected String systemName;
@@ -43,9 +45,18 @@ public class Contact implements ListItem {
 
 	public Lastseen lastseen = new Lastseen();
 
-	public Contact(String account, String systemName, String serverName,
-			String jid, int subscription, String photoUri,
-			String systemAccount, String keys, String avatar) {
+	public Contact(final String account, final String systemName, final String serverName,
+		final String jid, final int subscription, final String photoUri,
+		final String systemAccount, final String keys, final String avatar,
+		final Lastseen lastseen) {
+		this(account, systemName, serverName, jid, subscription, photoUri, systemAccount, keys,
+				avatar);
+		this.lastseen = lastseen;
+	}
+
+	public Contact(final String account, final String systemName, final String serverName,
+		final String jid, final int subscription, final String photoUri,
+		final String systemAccount, final String keys, final String avatar) {
 		this.accountUuid = account;
 		this.systemName = systemName;
 		this.serverName = serverName;
@@ -53,18 +64,15 @@ public class Contact implements ListItem {
 		this.subscription = subscription;
 		this.photoUri = photoUri;
 		this.systemAccount = systemAccount;
-		if (keys == null) {
-			keys = "";
-		}
 		try {
-			this.keys = new JSONObject(keys);
+			this.keys = (keys == null ? new JSONObject("") : new JSONObject(keys));
 		} catch (JSONException e) {
 			this.keys = new JSONObject();
 		}
 		this.avatar = avatar;
 	}
 
-	public Contact(String jid) {
+	public Contact(final String jid) {
 		this.jid = jid;
 	}
 
@@ -106,10 +114,15 @@ public class Contact implements ListItem {
 		values.put(PHOTOURI, photoUri);
 		values.put(KEYS, keys.toString());
 		values.put(AVATAR, avatar);
+		values.put(LAST_PRESENCE, lastseen.presence);
+		values.put(LAST_TIME, lastseen.time);
 		return values;
 	}
 
-	public static Contact fromCursor(Cursor cursor) {
+	public static Contact fromCursor(final Cursor cursor) {
+		final Lastseen lastseen = new Lastseen(
+				cursor.getString(cursor.getColumnIndex(LAST_PRESENCE)),
+				cursor.getLong(cursor.getColumnIndex(LAST_TIME)));
 		return new Contact(cursor.getString(cursor.getColumnIndex(ACCOUNT)),
 				cursor.getString(cursor.getColumnIndex(SYSTEMNAME)),
 				cursor.getString(cursor.getColumnIndex(SERVERNAME)),
@@ -118,7 +131,8 @@ public class Contact implements ListItem {
 				cursor.getString(cursor.getColumnIndex(PHOTOURI)),
 				cursor.getString(cursor.getColumnIndex(SYSTEMACCOUNT)),
 				cursor.getString(cursor.getColumnIndex(KEYS)),
-				cursor.getString(cursor.getColumnIndex(AVATAR)));
+				cursor.getString(cursor.getColumnIndex(AVATAR)),
+				lastseen);
 	}
 
 	public int getSubscription() {
@@ -306,9 +320,18 @@ public class Contact implements ListItem {
 		public static final int DIRTY_DELETE = 7;
 	}
 
-	public class Lastseen {
-		public long time = 0;
-		public String presence = null;
+	public static class Lastseen {
+        public long time;
+        public String presence;
+
+        public Lastseen() {
+            time = 0;
+            presence = null;
+        }
+        public Lastseen(final String presence, final long time) {
+            this.time = time;
+            this.presence = presence;
+        }
 	}
 
 	@Override
