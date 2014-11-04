@@ -10,7 +10,9 @@
 
     <TextView
         android:text="@string/pref_about_message"
+        android:autoLink="web"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:linksClickable="true" />
 
 </ScrollView>
