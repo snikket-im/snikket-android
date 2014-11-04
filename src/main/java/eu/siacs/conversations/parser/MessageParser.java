@@ -2,6 +2,7 @@ package eu.siacs.conversations.parser;
 
 import net.java.otr4j.session.Session;
 import net.java.otr4j.session.SessionStatus;
+
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
@@ -374,6 +375,9 @@ public class MessageParser extends AbstractParser implements
 							Contact contact = account.getRoster().getContact(
 									from);
 							contact.setPresenceName(nick.getContent());
+							mXmppConnectionService.getAvatarService().clear(account);
+							mXmppConnectionService.updateConversationUi();
+							mXmppConnectionService.updateAccountUi();
 						}
 					}
 				}
@@ -401,7 +405,7 @@ public class MessageParser extends AbstractParser implements
 				"show_notification", true);
 		boolean alwaysNotifyInConference = notify
 				&& mXmppConnectionService.getPreferences().getBoolean(
-						"always_notify_in_conference", false);
+				"always_notify_in_conference", false);
 
 		this.parseNick(packet, account);
 
@@ -414,7 +418,7 @@ public class MessageParser extends AbstractParser implements
 				}
 			} else if (packet.hasChild("body")
 					&& !(packet.hasChild("x",
-							"http://jabber.org/protocol/muc#user"))) {
+					"http://jabber.org/protocol/muc#user"))) {
 				message = this.parseChat(packet, account);
 				if (message != null) {
 					message.markUnread();
@@ -442,7 +446,7 @@ public class MessageParser extends AbstractParser implements
 					message.markUnread();
 					notify = alwaysNotifyInConference
 							|| NotificationService
-									.wasHighlightedOrPrivate(message);
+							.wasHighlightedOrPrivate(message);
 				} else {
 					mXmppConnectionService.markRead(message.getConversation(),
 							false);
@@ -481,7 +485,7 @@ public class MessageParser extends AbstractParser implements
 		if (message.getStatus() == Message.STATUS_RECEIVED
 				&& conversation.getOtrSession() != null
 				&& !conversation.getOtrSession().getSessionID().getUserID()
-						.equals(message.getPresence())) {
+				.equals(message.getPresence())) {
 			conversation.endOtrIfNeeded();
 		}
 
