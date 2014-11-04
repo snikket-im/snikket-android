@@ -533,13 +533,9 @@ public class StartConversationActivity extends XmppActivity {
 			IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
 			if (scanResult != null && scanResult.getFormatName() != null) {
 				String data = scanResult.getContents();
-				Invite invite = parseInviteUri(data);
+				Invite invite = new Invite(data);
 				if (xmppConnectionServiceBound) {
-					if (invite.muc) {
-						showJoinConferenceDialog(invite.jid);
-					} else {
-						handleJid(invite.jid);
-					}
+					invite.invite();
 				} else if (invite.jid != null) {
 					this.mPendingInvite = invite;
 				} else {
@@ -563,11 +559,7 @@ public class StartConversationActivity extends XmppActivity {
 		this.mKnownConferenceHosts = xmppConnectionService
 				.getKnownConferenceHosts();
 		if (this.mPendingInvite != null) {
-			if (this.mPendingInvite.muc) {
-				showJoinConferenceDialog(this.mPendingInvite.jid);
-			} else {
-				handleJid(this.mPendingInvite.jid);
-			}
+			mPendingInvite.invite();
 			this.mPendingInvite = null;
 		} else if (!handleIntent(getIntent())) {
 			if (mSearchEditText != null) {
@@ -583,13 +575,12 @@ public class StartConversationActivity extends XmppActivity {
 		if (intent == null || intent.getAction() == null) {
 			return false;
 		}
-		String jid = null;
-		Uri uri = null;
 		Invite invite = null;
 		switch (intent.getAction()) {
 			case Intent.ACTION_SENDTO:
 				try {
-					jid = URLDecoder.decode(
+					// TODO use Intent.parse ?!?
+					String jid = URLDecoder.decode(
 							intent.getData().getEncodedPath(), "UTF-8").split(
 							"/")[1];
 					return handleJid(jid);
@@ -597,58 +588,28 @@ public class StartConversationActivity extends XmppActivity {
 					return false;
 				}
 			case Intent.ACTION_VIEW:
-				uri = intent.getData();
-				invite = parseInviteUri(uri);
-				if (invite.muc) {
-					showJoinConferenceDialog(invite.jid);
-					return false;
-				} else {
-					return handleJid(invite.jid);
-				}
+				invite = new Invite(intent.getData());
+				invite.invite();
 			case NfcAdapter.ACTION_NDEF_DISCOVERED:
 				Parcelable[] messages = getIntent().getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
 				NdefMessage message = (NdefMessage) messages[0];
 				NdefRecord record = message.getRecords()[0];
 				if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-					invite = parseInviteUri(record.toUri());
+					invite = new Invite(record.toUri());
 				} else {
 					byte[] mPayload = record.getPayload();
 					if (mPayload[0] == 0) {
-						invite = parseInviteUri(Uri.parse(new String(Arrays.copyOfRange(
+						invite = new Invite(Uri.parse(new String(Arrays.copyOfRange(
 							mPayload, 1, mPayload.length), StandardCharsets.UTF_8)));
 					}
 				}
 				if (invite != null) {
-					if (invite.muc) {
-						showJoinConferenceDialog(invite.jid);
-						return false;
-					} else {
-						return handleJid(invite.jid);
-					}
+					return invite.invite();
 				}
 				return false;
 			default:
 				return false;
 		}
-	}
-
-	private Invite parseInviteUri(String uri) {
-		try {
-			return parseInviteUri(Uri.parse(uri));
-		} catch (IllegalArgumentException e) {
-			return null;
-		}
-	}
-
-	private Invite parseInviteUri(Uri uri) {
-		Invite invite = new Invite();
-		invite.muc = uri.getQuery() != null && uri.getQuery().equalsIgnoreCase("join");
-		if (uri.getAuthority() != null) {
-			invite.jid = uri.getAuthority();
-		} else {
-			invite.jid = uri.getSchemeSpecificPart().split("\\?")[0];
-		}
-		return invite;
 	}
 
 	private boolean handleJid(String jid) {
@@ -777,7 +738,39 @@ public class StartConversationActivity extends XmppActivity {
 	}
 
 	private class Invite {
-		public String jid;
-		public boolean muc;
+		private String jid;
+		private boolean muc;
+
+		Invite(Uri uri) {
+			parse(uri);
+		}
+
+		Invite(String uri) {
+			try {
+				parse(Uri.parse(uri));
+			} catch (IllegalArgumentException e) {
+				jid = null;
+			}
+		}
+
+		boolean invite() {
+			if (jid != null) {
+				if (muc) {
+					showJoinConferenceDialog(jid);
+				} else {
+					return handleJid(jid);
+				}
+			}
+			return false;
+		}
+
+		void parse(Uri uri) {
+			muc = uri.getQuery() != null && uri.getQuery().equalsIgnoreCase("join");
+			if (uri.getAuthority() != null) {
+				jid = uri.getAuthority();
+			} else {
+				jid = uri.getSchemeSpecificPart().split("\\?")[0];
+			}
+		}
 	}
 }
