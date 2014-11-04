@@ -140,6 +140,15 @@ public class ConferenceDetailsActivity extends XmppActivity {
 	}
 
 	@Override
+	protected String getShareableUri() {
+		if (conversation!=null) {
+			return "xmpp:"+conversation.getContactJid().split("/")[0]+"?join";
+		} else {
+			return super.getShareableUri();
+		}
+	}
+
+	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.muc_details, menu);
 		return true;

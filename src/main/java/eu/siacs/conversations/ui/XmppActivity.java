@@ -1,7 +1,56 @@
 package eu.siacs.conversations.ui;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.app.PendingIntent;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
+import android.content.Intent;
+import android.content.IntentSender.SendIntentException;
+import android.content.ServiceConnection;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.Point;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.nfc.NdefMessage;
+import android.nfc.NdefRecord;
+import android.nfc.NfcAdapter;
+import android.nfc.NfcEvent;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.os.IBinder;
+import android.preference.PreferenceManager;
+import android.text.InputType;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+import android.widget.ImageView;
+
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.EncodeHintType;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
+
 import java.io.FileNotFoundException;
 import java.lang.ref.WeakReference;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.concurrent.RejectedExecutionException;
 
@@ -16,41 +65,6 @@ import eu.siacs.conversations.services.AvatarService;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.services.XmppConnectionService.XmppConnectionBinder;
 import eu.siacs.conversations.utils.ExceptionHelper;
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.PendingIntent;
-import android.app.AlertDialog.Builder;
-import android.content.ClipData;
-import android.content.ClipboardManager;
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.SharedPreferences;
-import android.content.DialogInterface.OnClickListener;
-import android.content.IntentSender.SendIntentException;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
-import android.content.res.Resources;
-import android.content.Intent;
-import android.content.ServiceConnection;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
-import android.nfc.NfcAdapter;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.os.IBinder;
-import android.preference.PreferenceManager;
-import android.text.InputType;
-import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
-import android.widget.ImageView;
 
 public abstract class XmppActivity extends Activity {
 
@@ -187,15 +201,18 @@ public abstract class XmppActivity extends Activity {
 
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case R.id.action_settings:
-			startActivity(new Intent(this, SettingsActivity.class));
-			break;
-		case R.id.action_accounts:
-			startActivity(new Intent(this, ManageAccountActivity.class));
-			break;
-		case android.R.id.home:
-			finish();
-			break;
+			case R.id.action_settings:
+				startActivity(new Intent(this, SettingsActivity.class));
+				break;
+			case R.id.action_accounts:
+				startActivity(new Intent(this, ManageAccountActivity.class));
+				break;
+			case android.R.id.home:
+				finish();
+				break;
+			case R.id.action_show_qr_code:
+				showQrCode();
+				break;
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -233,7 +250,7 @@ public abstract class XmppActivity extends Activity {
 	}
 
 	public void switchToConversation(Conversation conversation, String text,
-			boolean newTask) {
+									 boolean newTask) {
 		Intent viewConversationIntent = new Intent(this,
 				ConversationActivity.class);
 		viewConversationIntent.setAction(Intent.ACTION_VIEW);
@@ -282,7 +299,7 @@ public abstract class XmppActivity extends Activity {
 
 					@Override
 					public void userInputRequried(PendingIntent pi,
-							Account account) {
+												  Account account) {
 						try {
 							startIntentSenderForResult(pi.getIntentSender(),
 									REQUEST_ANNOUNCE_PGP, null, 0, 0, 0);
@@ -372,7 +389,7 @@ public abstract class XmppActivity extends Activity {
 	}
 
 	private void warnMutalPresenceSubscription(final Conversation conversation,
-			final OnPresenceSelected listener) {
+											   final OnPresenceSelected listener) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(conversation.getContact().getJid());
 		builder.setMessage(R.string.without_mutual_presence_updates);
@@ -395,13 +412,13 @@ public abstract class XmppActivity extends Activity {
 	}
 
 	protected void quickPasswordEdit(String previousValue,
-			OnValueEdited callback) {
+									 OnValueEdited callback) {
 		quickEdit(previousValue, callback, true);
 	}
 
 	@SuppressLint("InflateParams")
 	private void quickEdit(final String previousValue,
-			final OnValueEdited callback, boolean password) {
+						   final OnValueEdited callback, boolean password) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		View view = getLayoutInflater().inflate(R.layout.quickedit, null);
 		final EditText editor = (EditText) view.findViewById(R.id.editor);
@@ -431,7 +448,7 @@ public abstract class XmppActivity extends Activity {
 	}
 
 	public void selectPresence(final Conversation conversation,
-			final OnPresenceSelected listener) {
+							   final OnPresenceSelected listener) {
 		Contact contact = conversation.getContact();
 		if (!contact.showInRoster()) {
 			showAddToRosterDialog(conversation);
@@ -472,7 +489,7 @@ public abstract class XmppActivity extends Activity {
 
 							@Override
 							public void onClick(DialogInterface dialog,
-									int which) {
+												int which) {
 								presence.delete(0, presence.length());
 								presence.append(presencesArray[which]);
 							}
@@ -492,7 +509,7 @@ public abstract class XmppActivity extends Activity {
 	}
 
 	protected void onActivityResult(int requestCode, int resultCode,
-			final Intent data) {
+									final Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (requestCode == REQUEST_INVITE_TO_CONVERSATION
 				&& resultCode == RESULT_OK) {
@@ -532,8 +549,8 @@ public abstract class XmppActivity extends Activity {
 		DisplayMetrics metrics = getResources().getDisplayMetrics();
 		return ((int) (dp * metrics.density));
 	}
-	
-	public boolean copyTextToClipboard(String text,int labelResId) {
+
+	public boolean copyTextToClipboard(String text, int labelResId) {
 		ClipboardManager mClipBoardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
 		String label = getResources().getString(labelResId);
 		if (mClipBoardManager != null) {
@@ -544,12 +561,68 @@ public abstract class XmppActivity extends Activity {
 		return false;
 	}
 
-	protected void registerNdefPushMessageCallback(NfcAdapter.CreateNdefMessageCallback callback) {
-		if (android.os.Build.VERSION.SDK_INT >= 16) {
+	protected void registerNdefPushMessageCallback() {
 			NfcAdapter nfcAdapter = NfcAdapter.getDefaultAdapter(this);
 			if (nfcAdapter != null && nfcAdapter.isEnabled()) {
-				nfcAdapter.setNdefPushMessageCallback(callback, this);
+				nfcAdapter.setNdefPushMessageCallback(new NfcAdapter.CreateNdefMessageCallback() {
+					@Override
+					public NdefMessage createNdefMessage(NfcEvent nfcEvent) {
+						NdefMessage msg = new NdefMessage(new NdefRecord[]{
+								NdefRecord.createUri(getShareableUri()),
+								NdefRecord.createApplicationRecord("eu.siacs.conversations")
+						});
+						return msg;
+					}
+				}, this);
 			}
+	}
+
+	protected void unregisterNdefPushMessageCallback() {
+		NfcAdapter nfcAdapter = NfcAdapter.getDefaultAdapter(this);
+		if (nfcAdapter != null && nfcAdapter.isEnabled()) {
+			nfcAdapter.setNdefPushMessageCallback(null,this);
+		}
+	}
+
+	protected String getShareableUri() {
+		return null;
+	}
+
+	protected void showQrCode() {
+		String uri = getShareableUri();
+		if (uri!=null) {
+			Point size = new Point();
+			getWindowManager().getDefaultDisplay().getSize(size);
+			final int width = (size.x < size.y ? size.x : size.y);
+			Bitmap bitmap = createQrCodeBitmap(uri, width);
+			ImageView view = new ImageView(this);
+			view.setImageBitmap(bitmap);
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setView(view);
+			builder.create().show();
+		}
+	}
+
+	protected Bitmap createQrCodeBitmap(String input, int size) {
+		try {
+			final QRCodeWriter QR_CODE_WRITER = new QRCodeWriter();
+			final Hashtable<EncodeHintType, Object> hints = new Hashtable<EncodeHintType, Object>();
+			hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.M);
+			final BitMatrix result = QR_CODE_WRITER.encode(input, BarcodeFormat.QR_CODE, size, size, hints);
+			final int width = result.getWidth();
+			final int height = result.getHeight();
+			final int[] pixels = new int[width * height];
+			for (int y = 0; y < height; y++) {
+				final int offset = y * width;
+				for (int x = 0; x < width; x++) {
+					pixels[offset + x] = result.get(x, y) ? Color.BLACK : Color.TRANSPARENT;
+				}
+			}
+			final Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+			bitmap.setPixels(pixels, 0, width, 0, 0, width, height);
+			return bitmap;
+		} catch (final WriterException e) {
+			return null;
 		}
 	}
 
@@ -616,7 +689,7 @@ public abstract class XmppActivity extends Activity {
 	}
 
 	public static boolean cancelPotentialWork(Message message,
-			ImageView imageView) {
+											  ImageView imageView) {
 		final BitmapWorkerTask bitmapWorkerTask = getBitmapWorkerTask(imageView);
 
 		if (bitmapWorkerTask != null) {
@@ -645,7 +718,7 @@ public abstract class XmppActivity extends Activity {
 		private final WeakReference<BitmapWorkerTask> bitmapWorkerTaskReference;
 
 		public AsyncDrawable(Resources res, Bitmap bitmap,
-				BitmapWorkerTask bitmapWorkerTask) {
+							 BitmapWorkerTask bitmapWorkerTask) {
 			super(res, bitmap);
 			bitmapWorkerTaskReference = new WeakReference<BitmapWorkerTask>(
 					bitmapWorkerTask);

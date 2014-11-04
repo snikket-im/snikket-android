@@ -83,18 +83,6 @@ public class ConversationActivity extends XmppActivity implements
 
 	private Uri pendingImageUri = null;
 
-	private NfcAdapter.CreateNdefMessageCallback mNdefPushMessageCallback = new NfcAdapter.CreateNdefMessageCallback() {
-		@Override
-		public NdefMessage createNdefMessage(NfcEvent nfcEvent) {
-			Conversation conversation = getSelectedConversation();
-			NdefMessage msg = new NdefMessage(new NdefRecord[]{
-					NdefRecord.createUri("xmpp:"+conversation.getAccount().getJid()),
-					NdefRecord.createApplicationRecord("eu.siacs.conversations")
-			});
-			return msg;
-		}
-	};
-
 	public List<Conversation> getConversationList() {
 		return this.conversationList;
 	}
@@ -119,6 +107,16 @@ public class ConversationActivity extends XmppActivity implements
 		if (mContentView instanceof SlidingPaneLayout) {
 			SlidingPaneLayout mSlidingPaneLayout = (SlidingPaneLayout) mContentView;
 			mSlidingPaneLayout.openPane();
+		}
+	}
+
+	@Override
+	protected String getShareableUri() {
+		Conversation conversation = getSelectedConversation();
+		if (conversation!=null) {
+			return "xmpp:"+conversation.getAccount().getJid();
+		} else {
+			return super.getShareableUri();
 		}
 	}
 
@@ -163,9 +161,6 @@ public class ConversationActivity extends XmppActivity implements
 
 		getActionBar().setDisplayHomeAsUpEnabled(false);
 		getActionBar().setHomeButtonEnabled(false);
-
-		registerNdefPushMessageCallback(this.mNdefPushMessageCallback);
-
 		this.listAdapter = new ConversationAdapter(this, conversationList);
 		listView.setAdapter(this.listAdapter);
 
@@ -662,6 +657,18 @@ public class ConversationActivity extends XmppActivity implements
 		if (conversationList.size() >= 1) {
 			this.onConversationUpdate();
 		}
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		this.registerNdefPushMessageCallback();
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+		this.unregisterNdefPushMessageCallback();
 	}
 
 	@Override

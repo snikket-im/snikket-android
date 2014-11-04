@@ -162,6 +162,15 @@ public class ContactDetailsActivity extends XmppActivity {
 	};
 
 	@Override
+	protected String getShareableUri() {
+		if (contact!=null) {
+			return "xmpp:"+contact.getJid();
+		} else {
+			return super.getShareableUri();
+		}
+	}
+
+	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		if (getIntent().getAction().equals(ACTION_VIEW_CONTACT)) {

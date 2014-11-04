@@ -41,6 +41,7 @@ import java.util.Hashtable;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
+import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.services.XmppConnectionService.OnAccountUpdate;
 import eu.siacs.conversations.ui.adapter.KnownHostsAdapter;
 import eu.siacs.conversations.utils.UIHelper;
@@ -243,42 +244,6 @@ public class EditAccountActivity extends XmppActivity {
 		}
 	}
 
-	protected void showQrCode() {
-		Point size = new Point();
-		getWindowManager().getDefaultDisplay().getSize(size);
-		final int width = (size.x < size.y ? size.x : size.y);
-		String jid = mAccount.getJid();
-		Bitmap bitmap = createQrCodeBitmap("xmpp:" + jid, width);
-		ImageView view = new ImageView(this);
-		view.setImageBitmap(bitmap);
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setView(view);
-		builder.create().show();
-	}
-
-	protected Bitmap createQrCodeBitmap(String input, int size) {
-		try {
-			final QRCodeWriter QR_CODE_WRITER = new QRCodeWriter();
-			final Hashtable<EncodeHintType, Object> hints = new Hashtable<EncodeHintType, Object>();
-			hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.M);
-			final BitMatrix result = QR_CODE_WRITER.encode(input, BarcodeFormat.QR_CODE, size, size, hints);
-			final int width = result.getWidth();
-			final int height = result.getHeight();
-			final int[] pixels = new int[width * height];
-			for (int y = 0; y < height; y++) {
-				final int offset = y * width;
-				for (int x = 0; x < width; x++) {
-					pixels[offset + x] = result.get(x, y) ? Color.BLACK : Color.TRANSPARENT;
-				}
-			}
-			final Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-			bitmap.setPixels(pixels, 0, width, 0, 0, width, height);
-			return bitmap;
-		} catch (final WriterException e) {
-			return null;
-		}
-	}
-
 	protected void updateSaveButton() {
 		if (mAccount != null
 				&& mAccount.getStatus() == Account.STATUS_CONNECTING) {
@@ -315,6 +280,15 @@ public class EditAccountActivity extends XmppActivity {
 				this.mAccountJid.getText().toString()))
 				|| (!this.mAccount.getPassword().equals(
 				this.mPassword.getText().toString()));
+	}
+
+	@Override
+	protected String getShareableUri() {
+		if (mAccount!=null) {
+			return "xmpp:"+mAccount.getJid();
+		} else {
+			return super.getShareableUri();
+		}
 	}
 
 	@Override
@@ -364,16 +338,6 @@ public class EditAccountActivity extends XmppActivity {
 			showQrCode.setVisible(false);
 		}
 		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-			case R.id.action_show_qr_code:
-				showQrCode();
-				return true;
-		}
-		return super.onOptionsItemSelected(item);
 	}
 
 	@Override
