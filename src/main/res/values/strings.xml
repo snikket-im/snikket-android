@@ -256,26 +256,20 @@
     <string name="pref_expert_options_summary">Please be careful with these</string>
     <string name="title_activity_about">About Conversations</string>
     <string name="pref_about_conversations_summary">Build and licensing information</string>
-    <string name="pref_about_message">
-			This program is free software; you can redistribute it and/or modify it
+    <string name="pref_about_message">Conversations © 2014 Daniel Gultsch\n
+			\nThis program is free software; you can redistribute it and/or modify it
 			under the terms of the GNU General Public License version 3 as published
-			by the Free Software Foundation.\n
-			\n
-			https://www.gnu.org/licenses/gpl-3.0.html\n
-			\n
-			OpenPGP API is licensed under the Apache License, Version 2.0; You may
-			obtain a copy of the License at:\n
-			\n
-			https://www.apache.org/licenses/LICENSE-2.0\n
-			\n
-			Minidns © 2014 Rene Treffer and is provided under the WTFPL\n
-			\n
-			http://wtfpl.org\n
-			\n
-			MemorizingTrustManager © 2010 Georg Lukas under the terms of the MIT
-			License\n
-			\n
-			http://opensource.org/licenses/MIT\n
+			by the Free Software Foundation.
+			\nhttps://www.gnu.org/licenses/gpl-3.0.html\n
+			\nOpenPGP API is licensed under the Apache License, Version 2.0
+            \nhttps://www.apache.org/licenses/LICENSE-2.0\n
+			\nMinidns © 2014 Rene Treffer and is provided under the WTFPL
+            \nhttp://wtfpl.org\n
+			\nMemorizingTrustManager © 2010 Georg Lukas under the terms of the MIT
+			License
+            \nhttp://opensource.org/licenses/MIT\n
+            \nDownload the full source code at
+            \nhttps://github.com/siacs/Conversations
 			</string>
     <string name="pref_use_larger_font">Increase font size</string>
     <string name="pref_use_larger_font_summary">Use larger font sizes across the entire app</string>
