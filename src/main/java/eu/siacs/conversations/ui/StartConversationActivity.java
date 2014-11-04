@@ -45,7 +45,6 @@ import com.google.zxing.integration.android.IntentResult;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -589,7 +588,7 @@ public class StartConversationActivity extends XmppActivity {
 				}
 			case Intent.ACTION_VIEW:
 				invite = new Invite(intent.getData());
-				invite.invite();
+				return invite.invite();
 			case NfcAdapter.ACTION_NDEF_DISCOVERED:
 				Parcelable[] messages = getIntent().getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
 				NdefMessage message = (NdefMessage) messages[0];
@@ -600,7 +599,7 @@ public class StartConversationActivity extends XmppActivity {
 					byte[] mPayload = record.getPayload();
 					if (mPayload[0] == 0) {
 						invite = new Invite(Uri.parse(new String(Arrays.copyOfRange(
-							mPayload, 1, mPayload.length), StandardCharsets.UTF_8)));
+								mPayload, 1, mPayload.length))));
 					}
 				}
 				if (invite != null) {
