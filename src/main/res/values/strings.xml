@@ -25,8 +25,8 @@
     <string name="minute_ago">1 min ago</string>
     <string name="minutes_ago">%d mins ago</string>
     <string name="unread_conversations">unread Conversations</string>
-    <string name="sending">sending&#8230;</string>
-    <string name="encrypted_message">Decrypting message. Please wait&#8230;</string>
+    <string name="sending">sending…</string>
+    <string name="encrypted_message">Decrypting message. Please wait…</string>
     <string name="nick_in_use">Nickname is already in use</string>
     <string name="admin">Admin</string>
     <string name="owner">Owner</string>
@@ -58,7 +58,7 @@
     <string name="add_contact">Add contact</string>
     <string name="send_failed">delivery failed</string>
     <string name="send_rejected">rejected</string>
-    <string name="receiving_image">Receiving image file. Please wait&#8230;</string>
+    <string name="receiving_image">Receiving image file. Please wait…</string>
     <string name="preparing_image">Preparing image for transmission</string>
     <string name="action_clear_history">Clear history</string>
     <string name="clear_conversation_history">Clear Conversation History</string>
@@ -78,8 +78,8 @@
     <string name="openkeychain_required_long">Conversations utilizes a third party app called <b>OpenKeychain</b> to encrypt and decrypt messages and to manage your public keys.\n\nOpenKeychain is licensed under GPLv3 and available on F-Droid and Google Play.\n\n<small>(Please restart Conversations afterwards.)</small></string>
     <string name="restart">Restart</string>
     <string name="install">Install</string>
-    <string name="offering">offering&#8230;</string>
-    <string name="waiting">waiting&#8230;</string>
+    <string name="offering">offering…</string>
+    <string name="waiting">waiting…</string>
     <string name="no_pgp_key">No OpenPGP Key found</string>
     <string name="contact_has_no_pgp_key">Conversations is unable to encrypt your messages because your contact is not announcing his or hers public key.\n\n<small>Please ask your contact to setup OpenPGP.</small></string>
     <string name="no_pgp_keys">No OpenPGP Keys found</string>
@@ -91,7 +91,7 @@
     <string name="pref_xmpp_resource">XMPP resource</string>
     <string name="pref_xmpp_resource_summary">The name this client identifies itself with</string>
     <string name="pref_accept_files">Accept files</string>
-    <string name="pref_accept_files_summary">Automatically accept files smaller than&#8230;</string>
+    <string name="pref_accept_files_summary">Automatically accept files smaller than…</string>
     <string name="pref_notification_settings">Notification Settings</string>
     <string name="pref_notifications">Notifications</string>
     <string name="pref_notifications_summary">Notify when a new message arrives</string>
@@ -217,7 +217,7 @@
     <string name="publish">Publish</string>
     <string name="touch_to_choose_picture">Touch avatar to select picture from gallery</string>
     <string name="publish_avatar_explanation">Please note: Everyone subscribed to your presence updates will be allowed to see this picture.</string>
-    <string name="publishing">Publishing&#8230;</string>
+    <string name="publishing">Publishing…</string>
     <string name="error_publish_avatar_server_reject">The server rejected your publication</string>
     <string name="error_publish_avatar_converting">Something went wrong while converting your picture</string>
     <string name="error_saving_avatar">Could not save avatar to disk</string>
@@ -254,10 +254,9 @@
     <string name="pref_enable_legacy_ssl_summary">Enables SSLv3 support for legacy servers. Warning: SSLv3 is considered insecure.</string>
     <string name="pref_expert_options">Expert options</string>
     <string name="pref_expert_options_summary">Please be careful with these</string>
-		<string name="pref_about_conversations">About Conversations</string>
+    <string name="title_activity_about">About Conversations</string>
     <string name="pref_about_conversations_summary">Build and licensing information</string>
-		<string name="pref_about_message">
-			This program is free software; you can redistribute it and/or modify it
+    <string name="pref_about_message">			This program is free software; you can redistribute it and/or modify it
 			under the terms of the GNU General Public License version 3 as published
 			by the Free Software Foundation.\n
 			\n
@@ -289,8 +288,7 @@
 			NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
 			DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 			OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
-			USE OR OTHER DEALINGS IN THE SOFTWARE.
-		</string>
+			USE OR OTHER DEALINGS IN THE SOFTWARE.</string>
     <string name="pref_use_larger_font">Increase font size</string>
     <string name="pref_use_larger_font_summary">Use larger font sizes across the entire app</string>
     <string name="pref_use_send_button_to_indicate_status">Send button indicates status</string>
