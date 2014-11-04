@@ -23,6 +23,7 @@ import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
@@ -50,6 +51,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Bookmark;
@@ -574,41 +576,35 @@ public class StartConversationActivity extends XmppActivity {
 		if (intent == null || intent.getAction() == null) {
 			return false;
 		}
-		Invite invite = null;
 		switch (intent.getAction()) {
 			case Intent.ACTION_SENDTO:
-				try {
-					// TODO use Intent.parse ?!?
-					String jid = URLDecoder.decode(
-							intent.getData().getEncodedPath(), "UTF-8").split(
-							"/")[1];
-					return handleJid(jid);
-				} catch (UnsupportedEncodingException e) {
-					return false;
-				}
 			case Intent.ACTION_VIEW:
-				invite = new Invite(intent.getData());
-				return invite.invite();
+				Log.d(Config.LOGTAG, "received uri=" + intent.getData());
+				return new Invite(intent.getData()).invite();
 			case NfcAdapter.ACTION_NDEF_DISCOVERED:
-				Parcelable[] messages = getIntent().getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
-				NdefMessage message = (NdefMessage) messages[0];
-				NdefRecord record = message.getRecords()[0];
-				if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-					invite = new Invite(record.toUri());
-				} else {
-					byte[] mPayload = record.getPayload();
-					if (mPayload[0] == 0) {
-						invite = new Invite(Uri.parse(new String(Arrays.copyOfRange(
-								mPayload, 1, mPayload.length))));
+				for (Parcelable message : getIntent().getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES)) {
+					if (message instanceof NdefMessage) {
+						Log.d(Config.LOGTAG, "received message=" + message);
+						for (NdefRecord record : ((NdefMessage)message).getRecords()) {
+							switch (record.getTnf()) {
+							case NdefRecord.TNF_WELL_KNOWN:
+								if (Arrays.equals(record.getType(), NdefRecord.RTD_URI)) {
+									if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+										return new Invite(record.toUri()).invite();
+									} else {
+										byte[] payload = record.getPayload();
+										if (payload[0] == 0) {
+											return new Invite(Uri.parse(new String(Arrays.copyOfRange(
+													payload, 1, payload.length)))).invite();
+										}
+									}
+								}
+							}
+						}
 					}
 				}
-				if (invite != null) {
-					return invite.invite();
-				}
-				return false;
-			default:
-				return false;
 		}
+		return false;
 	}
 
 	private boolean handleJid(String jid) {
@@ -764,11 +760,21 @@ public class StartConversationActivity extends XmppActivity {
 		}
 
 		void parse(Uri uri) {
-			muc = uri.getQuery() != null && uri.getQuery().equalsIgnoreCase("join");
-			if (uri.getAuthority() != null) {
-				jid = uri.getAuthority();
-			} else {
-				jid = uri.getSchemeSpecificPart().split("\\?")[0];
+			String scheme = uri.getScheme();
+			if ("xmpp".equals(scheme)) {
+				// sample: xmpp:jid@foo.com
+				muc = "join".equalsIgnoreCase(uri.getQuery());
+				if (uri.getAuthority() != null) {
+					jid = uri.getAuthority();
+				} else {
+					jid = uri.getSchemeSpecificPart().split("\\?")[0];
+				}
+			} else if ("imto".equals(scheme)) {
+				// sample: imto://xmpp/jid@foo.com
+				try {
+					jid = URLDecoder.decode(uri.getEncodedPath(), "UTF-8").split("/")[1];
+				} catch (UnsupportedEncodingException e) {
+				}
 			}
 		}
 	}
