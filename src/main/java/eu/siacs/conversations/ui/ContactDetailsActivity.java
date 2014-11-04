@@ -166,7 +166,7 @@ public class ContactDetailsActivity extends XmppActivity {
 		if (contact!=null) {
 			return "xmpp:"+contact.getJid();
 		} else {
-			return super.getShareableUri();
+			return "";
 		}
 	}
 

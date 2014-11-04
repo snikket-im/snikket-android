@@ -116,7 +116,7 @@ public class ConversationActivity extends XmppActivity implements
 		if (conversation!=null) {
 			return "xmpp:"+conversation.getAccount().getJid();
 		} else {
-			return super.getShareableUri();
+			return "";
 		}
 	}
 
@@ -657,18 +657,6 @@ public class ConversationActivity extends XmppActivity implements
 		if (conversationList.size() >= 1) {
 			this.onConversationUpdate();
 		}
-	}
-
-	@Override
-	public void onResume() {
-		super.onResume();
-		this.registerNdefPushMessageCallback();
-	}
-
-	@Override
-	public void onPause() {
-		super.onPause();
-		this.unregisterNdefPushMessageCallback();
 	}
 
 	@Override

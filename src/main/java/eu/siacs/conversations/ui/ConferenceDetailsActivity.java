@@ -144,7 +144,7 @@ public class ConferenceDetailsActivity extends XmppActivity {
 		if (conversation!=null) {
 			return "xmpp:"+conversation.getContactJid().split("/")[0]+"?join";
 		} else {
-			return super.getShareableUri();
+			return "";
 		}
 	}
 

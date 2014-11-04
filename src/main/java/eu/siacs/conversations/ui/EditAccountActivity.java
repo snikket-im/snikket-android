@@ -287,7 +287,7 @@ public class EditAccountActivity extends XmppActivity {
 		if (mAccount!=null) {
 			return "xmpp:"+mAccount.getJid();
 		} else {
-			return super.getShareableUri();
+			return "";
 		}
 	}
 

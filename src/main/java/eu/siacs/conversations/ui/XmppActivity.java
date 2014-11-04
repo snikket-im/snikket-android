@@ -588,6 +588,20 @@ public abstract class XmppActivity extends Activity {
 		return null;
 	}
 
+	@Override
+	public void onResume() {
+		super.onResume();
+		if (this.getShareableUri()!=null) {
+			this.registerNdefPushMessageCallback();
+		}
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+		this.unregisterNdefPushMessageCallback();
+	}
+
 	protected void showQrCode() {
 		String uri = getShareableUri();
 		if (uri!=null) {
