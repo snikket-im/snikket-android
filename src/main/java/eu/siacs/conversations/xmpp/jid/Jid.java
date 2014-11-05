@@ -19,7 +19,7 @@ public final class Jid {
     private final String displayjid;
 
     public String getLocalpart() {
-        return IDN.toUnicode(localpart);
+        return localpart;
     }
 
     public String getDomainpart() {
@@ -27,10 +27,10 @@ public final class Jid {
     }
 
     public String getResourcepart() {
-        return IDN.toUnicode(resourcepart);
+        return resourcepart;
     }
 
-    public Jid fromString(final String jid) throws InvalidJidException {
+    public static Jid fromString(final String jid) throws InvalidJidException {
         return new Jid(jid);
     }
 
@@ -121,11 +121,20 @@ public final class Jid {
         this.displayjid = finaljid;
     }
 
-    public Jid getBareJid() {
+    public Jid toBareJid() {
         try {
             return resourcepart.isEmpty() ? this : fromParts(localpart, domainpart, "");
         } catch (final InvalidJidException e) {
-            // This should never happen due to the contracts we have in place.
+            // This should never happen.
+            return null;
+        }
+    }
+
+    public Jid toDomainJid() {
+        try {
+            return resourcepart.isEmpty() && localpart.isEmpty() ? this : fromString(getDomainpart());
+        } catch (final InvalidJidException e) {
+            // This should never happen.
             return null;
         }
     }

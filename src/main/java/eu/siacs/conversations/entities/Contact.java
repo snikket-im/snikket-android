@@ -1,16 +1,18 @@
 package eu.siacs.conversations.entities;
 
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.Set;
+import android.content.ContentValues;
+import android.database.Cursor;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import eu.siacs.conversations.xml.Element;
-import android.content.ContentValues;
-import android.database.Cursor;
+import eu.siacs.conversations.xmpp.jid.InvalidJidException;
+import eu.siacs.conversations.xmpp.jid.Jid;
 
 public class Contact implements ListItem {
 	public static final String TABLENAME = "contacts";
@@ -31,7 +33,7 @@ public class Contact implements ListItem {
 	protected String systemName;
 	protected String serverName;
 	protected String presenceName;
-	protected String jid;
+	protected Jid jid;
 	protected int subscription = 0;
 	protected String systemAccount;
 	protected String photoUri;
@@ -41,12 +43,10 @@ public class Contact implements ListItem {
 
 	protected Account account;
 
-	protected boolean inRoster = true;
-
 	public Lastseen lastseen = new Lastseen();
 
 	public Contact(final String account, final String systemName, final String serverName,
-		final String jid, final int subscription, final String photoUri,
+		final Jid jid, final int subscription, final String photoUri,
 		final String systemAccount, final String keys, final String avatar,
 		final Lastseen lastseen) {
 		this(account, systemName, serverName, jid, subscription, photoUri, systemAccount, keys,
@@ -55,7 +55,7 @@ public class Contact implements ListItem {
 	}
 
 	public Contact(final String account, final String systemName, final String serverName,
-		final String jid, final int subscription, final String photoUri,
+		final Jid jid, final int subscription, final String photoUri,
 		final String systemAccount, final String keys, final String avatar) {
 		this.accountUuid = account;
 		this.systemName = systemName;
@@ -72,7 +72,7 @@ public class Contact implements ListItem {
 		this.avatar = avatar;
 	}
 
-	public Contact(final String jid) {
+	public Contact(final Jid jid) {
 		this.jid = jid;
 	}
 
@@ -84,7 +84,7 @@ public class Contact implements ListItem {
 		} else if (this.presenceName != null) {
 			return this.presenceName;
 		} else {
-			return this.jid.split("@")[0];
+			return jid.getLocalpart();
 		}
 	}
 
@@ -92,13 +92,13 @@ public class Contact implements ListItem {
 		return this.photoUri;
 	}
 
-	public String getJid() {
-		return this.jid.toLowerCase(Locale.getDefault());
+	public Jid getJid() {
+		return jid;
 	}
 
 	public boolean match(String needle) {
 		return needle == null
-				|| jid.contains(needle.toLowerCase())
+				|| jid.toString().contains(needle.toLowerCase())
 				|| getDisplayName().toLowerCase()
 						.contains(needle.toLowerCase());
 	}
@@ -108,7 +108,7 @@ public class Contact implements ListItem {
 		values.put(ACCOUNT, accountUuid);
 		values.put(SYSTEMNAME, systemName);
 		values.put(SERVERNAME, serverName);
-		values.put(JID, jid);
+		values.put(JID, jid.toString());
 		values.put(OPTIONS, subscription);
 		values.put(SYSTEMACCOUNT, systemAccount);
 		values.put(PHOTOURI, photoUri);
@@ -123,10 +123,17 @@ public class Contact implements ListItem {
 		final Lastseen lastseen = new Lastseen(
 				cursor.getString(cursor.getColumnIndex(LAST_PRESENCE)),
 				cursor.getLong(cursor.getColumnIndex(LAST_TIME)));
-		return new Contact(cursor.getString(cursor.getColumnIndex(ACCOUNT)),
+        final Jid jid;
+        try {
+            jid = Jid.fromString(cursor.getString(cursor.getColumnIndex(JID)));
+        } catch (final InvalidJidException e) {
+            // TODO: Borked DB... handle this somehow?
+            return null;
+        }
+        return new Contact(cursor.getString(cursor.getColumnIndex(ACCOUNT)),
 				cursor.getString(cursor.getColumnIndex(SYSTEMNAME)),
 				cursor.getString(cursor.getColumnIndex(SERVERNAME)),
-				cursor.getString(cursor.getColumnIndex(JID)),
+				jid,
 				cursor.getInt(cursor.getColumnIndex(OPTIONS)),
 				cursor.getString(cursor.getColumnIndex(PHOTOURI)),
 				cursor.getString(cursor.getColumnIndex(SYSTEMACCOUNT)),
@@ -198,7 +205,7 @@ public class Contact implements ListItem {
 	}
 
 	public Set<String> getOtrFingerprints() {
-		Set<String> set = new HashSet<String>();
+		Set<String> set = new HashSet<>();
 		try {
 			if (this.keys.has("otr_fingerprints")) {
 				JSONArray fingerprints = this.keys
@@ -225,7 +232,7 @@ public class Contact implements ListItem {
 			}
 			fingerprints.put(print);
 			this.keys.put("otr_fingerprints", fingerprints);
-		} catch (JSONException e) {
+		} catch (final JSONException ignored) {
 
 		}
 	}
@@ -233,7 +240,7 @@ public class Contact implements ListItem {
 	public void setPgpKeyId(long keyId) {
 		try {
 			this.keys.put("pgp_keyid", keyId);
-		} catch (JSONException e) {
+		} catch (final JSONException ignored) {
 
 		}
 	}
@@ -273,21 +280,26 @@ public class Contact implements ListItem {
 		String subscription = item.getAttribute("subscription");
 
 		if (subscription != null) {
-			if (subscription.equals("to")) {
-				this.resetOption(Contact.Options.FROM);
-				this.setOption(Contact.Options.TO);
-			} else if (subscription.equals("from")) {
-				this.resetOption(Contact.Options.TO);
-				this.setOption(Contact.Options.FROM);
-				this.resetOption(Contact.Options.PREEMPTIVE_GRANT);
-			} else if (subscription.equals("both")) {
-				this.setOption(Contact.Options.TO);
-				this.setOption(Contact.Options.FROM);
-				this.resetOption(Contact.Options.PREEMPTIVE_GRANT);
-			} else if (subscription.equals("none")) {
-				this.resetOption(Contact.Options.FROM);
-				this.resetOption(Contact.Options.TO);
-			}
+            switch (subscription) {
+                case "to":
+                    this.resetOption(Options.FROM);
+                    this.setOption(Options.TO);
+                    break;
+                case "from":
+                    this.resetOption(Options.TO);
+                    this.setOption(Options.FROM);
+                    this.resetOption(Options.PREEMPTIVE_GRANT);
+                    break;
+                case "both":
+                    this.setOption(Options.TO);
+                    this.setOption(Options.FROM);
+                    this.resetOption(Options.PREEMPTIVE_GRANT);
+                    break;
+                case "none":
+                    this.resetOption(Options.FROM);
+                    this.resetOption(Options.TO);
+                    break;
+            }
 		}
 
 		// do NOT override asking if pending push request
@@ -301,8 +313,8 @@ public class Contact implements ListItem {
 	}
 
 	public Element asElement() {
-		Element item = new Element("item");
-		item.setAttribute("jid", this.jid);
+		final Element item = new Element("item");
+		item.setAttribute("jid", this.jid.toString());
 		if (this.serverName != null) {
 			item.setAttribute("name", this.serverName);
 		}
@@ -335,18 +347,13 @@ public class Contact implements ListItem {
 	}
 
 	@Override
-	public int compareTo(ListItem another) {
+	public int compareTo(final ListItem another) {
 		return this.getDisplayName().compareToIgnoreCase(
 				another.getDisplayName());
 	}
 
-	public String getServer() {
-		String[] split = getJid().split("@");
-		if (split.length >= 2) {
-			return split[1];
-		} else {
-			return null;
-		}
+	public Jid getServer() {
+		return getJid().toDomainJid();
 	}
 
 	public boolean setAvatar(String filename) {

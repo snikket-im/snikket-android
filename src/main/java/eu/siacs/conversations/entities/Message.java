@@ -5,6 +5,9 @@ import java.net.URL;
 import java.util.Arrays;
 
 import eu.siacs.conversations.Config;
+import eu.siacs.conversations.xmpp.jid.InvalidJidException;
+import eu.siacs.conversations.xmpp.jid.Jid;
+
 import android.content.ContentValues;
 import android.database.Cursor;
 
@@ -44,7 +47,7 @@ public class Message extends AbstractEntity {
 	public static String REMOTE_MSG_ID = "remoteMsgId";
 
 	protected String conversationUuid;
-	protected String counterpart;
+	protected Jid counterpart;
 	protected String trueCounterpart;
 	protected String body;
 	protected String encryptedBody;
@@ -74,17 +77,17 @@ public class Message extends AbstractEntity {
 		this.conversation = conversation;
 	}
 
-	public Message(Conversation conversation, String counterpart, String body,
-			int encryption, int status) {
+	public Message(final Conversation conversation, final Jid counterpart, final String body,
+			final int encryption, final int status) {
 		this(java.util.UUID.randomUUID().toString(), conversation.getUuid(),
 				counterpart, null, body, System.currentTimeMillis(),
 				encryption, status, TYPE_TEXT, null);
 		this.conversation = conversation;
 	}
 
-	public Message(String uuid, String conversationUUid, String counterpart,
-			String trueCounterpart, String body, long timeSent, int encryption,
-			int status, int type, String remoteMsgId) {
+	public Message(final String uuid, final String conversationUUid, final Jid counterpart,
+			final String trueCounterpart, final String body, final long timeSent,
+            final int encryption, final int status, final int type, final String remoteMsgId) {
 		this.uuid = uuid;
 		this.conversationUuid = conversationUUid;
 		this.counterpart = counterpart;
@@ -102,7 +105,7 @@ public class Message extends AbstractEntity {
 		ContentValues values = new ContentValues();
 		values.put(UUID, uuid);
 		values.put(CONVERSATION, conversationUuid);
-		values.put(COUNTERPART, counterpart);
+		values.put(COUNTERPART, counterpart.toString());
 		values.put(TRUE_COUNTERPART, trueCounterpart);
 		values.put(BODY, body);
 		values.put(TIME_SENT, timeSent);
@@ -121,7 +124,7 @@ public class Message extends AbstractEntity {
 		return this.conversation;
 	}
 
-	public String getCounterpart() {
+	public Jid getCounterpart() {
 		return counterpart;
 	}
 
@@ -163,9 +166,15 @@ public class Message extends AbstractEntity {
 	}
 
 	public static Message fromCursor(Cursor cursor) {
-		return new Message(cursor.getString(cursor.getColumnIndex(UUID)),
+        Jid jid;
+        try {
+            jid = Jid.fromString(cursor.getString(cursor.getColumnIndex(COUNTERPART)));
+        } catch (InvalidJidException e) {
+            jid = null;
+        }
+        return new Message(cursor.getString(cursor.getColumnIndex(UUID)),
 				cursor.getString(cursor.getColumnIndex(CONVERSATION)),
-				cursor.getString(cursor.getColumnIndex(COUNTERPART)),
+				jid,
 				cursor.getString(cursor.getColumnIndex(TRUE_COUNTERPART)),
 				cursor.getString(cursor.getColumnIndex(BODY)),
 				cursor.getLong(cursor.getColumnIndex(TIME_SENT)),
@@ -225,11 +234,14 @@ public class Message extends AbstractEntity {
 
 	public void setPresence(String presence) {
 		if (presence == null) {
-			this.counterpart = this.counterpart.split("/", 2)[0];
+			this.counterpart = this.counterpart.toBareJid();
 		} else {
-			this.counterpart = this.counterpart.split("/", 2)[0] + "/"
-					+ presence;
-		}
+            try {
+                this.counterpart = Jid.fromString(this.counterpart.toBareJid() + "/" + presence);
+            } catch (final InvalidJidException ignored) {
+                // TODO: Handle this?
+            }
+        }
 	}
 
 	public void setTrueCounterpart(String trueCounterpart) {
@@ -237,15 +249,11 @@ public class Message extends AbstractEntity {
 	}
 
 	public String getPresence() {
-		String[] counterparts = this.counterpart.split("/", 2);
-		if (counterparts.length == 2) {
-			return counterparts[1];
+		if (!counterpart.getResourcepart().isEmpty()) {
+			return counterpart.getResourcepart();
 		} else {
-			if (this.counterpart.contains("/")) {
-				return "";
-			} else {
-				return null;
-			}
+            // TODO: Return empty string or null?
+			return null;
 		}
 	}
 
@@ -264,7 +272,7 @@ public class Message extends AbstractEntity {
 		return message;
 	}
 
-	public void setCounterpart(String counterpart) {
+	public void setCounterpart(final Jid counterpart) {
 		this.counterpart = counterpart;
 	}
 
@@ -359,11 +367,7 @@ public class Message extends AbstractEntity {
 
 	public boolean wasMergedIntoPrevious() {
 		Message prev = this.prev();
-		if (prev == null) {
-			return false;
-		} else {
-			return prev.mergeable(this);
-		}
+        return prev != null && prev.mergeable(this);
 	}
 	
 	public boolean trusted() {

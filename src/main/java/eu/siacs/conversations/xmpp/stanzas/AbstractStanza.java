@@ -1,6 +1,7 @@
 package eu.siacs.conversations.xmpp.stanzas;
 
 import eu.siacs.conversations.xml.Element;
+import eu.siacs.conversations.xmpp.jid.Jid;
 
 public class AbstractStanza extends Element {
 
@@ -20,15 +21,15 @@ public class AbstractStanza extends Element {
 		return this.getAttribute("id");
 	}
 
-	public void setTo(String to) {
-		setAttribute("to", to);
+	public void setTo(final Jid to) {
+		setAttribute("to", to.toString());
 	}
 
-	public void setFrom(String from) {
-		setAttribute("from", from);
+	public void setFrom(final Jid from) {
+		setAttribute("from", from.toString());
 	}
 
-	public void setId(String id) {
+	public void setId(final String id) {
 		setAttribute("id", id);
 	}
 }

@@ -12,6 +12,7 @@ import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xml.Element;
+import eu.siacs.conversations.xmpp.jid.Jid;
 import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
 
 public class MessageGenerator extends AbstractGenerator {
@@ -34,7 +35,7 @@ public class MessageGenerator extends AbstractGenerator {
 			packet.setTo(message.getCounterpart());
 			packet.setType(MessagePacket.TYPE_CHAT);
 		} else {
-			packet.setTo(message.getCounterpart().split("/", 2)[0]);
+			packet.setTo(message.getCounterpart().toBareJid());
 			packet.setType(MessagePacket.TYPE_GROUPCHAT);
 		}
 		packet.setFrom(account.getFullJid());
@@ -113,13 +114,13 @@ public class MessageGenerator extends AbstractGenerator {
 	private MessagePacket generateError(MessagePacket origin) {
 		MessagePacket packet = new MessagePacket();
 		packet.setId(origin.getId());
-		packet.setTo(origin.getFrom());
+		packet.setAttribute("to", origin.getFrom());
 		packet.setBody(origin.getBody());
 		packet.setType(MessagePacket.TYPE_ERROR);
 		return packet;
 	}
 
-	public MessagePacket confirm(Account account, String to, String id) {
+	public MessagePacket confirm(final Account account, final Jid to, final String id) {
 		MessagePacket packet = new MessagePacket();
 		packet.setType(MessagePacket.TYPE_NORMAL);
 		packet.setTo(to);
@@ -134,7 +135,7 @@ public class MessageGenerator extends AbstractGenerator {
 			String subject) {
 		MessagePacket packet = new MessagePacket();
 		packet.setType(MessagePacket.TYPE_GROUPCHAT);
-		packet.setTo(conversation.getContactJid().split("/", 2)[0]);
+		packet.setTo(conversation.getContactJid().toBareJid());
 		Element subjectChild = new Element("subject");
 		subjectChild.setContent(subject);
 		packet.addChild(subjectChild);
@@ -142,19 +143,19 @@ public class MessageGenerator extends AbstractGenerator {
 		return packet;
 	}
 
-	public MessagePacket directInvite(Conversation conversation, String contact) {
+	public MessagePacket directInvite(final Conversation conversation, final Jid contact) {
 		MessagePacket packet = new MessagePacket();
 		packet.setType(MessagePacket.TYPE_NORMAL);
 		packet.setTo(contact);
 		packet.setFrom(conversation.getAccount().getFullJid());
 		Element x = packet.addChild("x", "jabber:x:conference");
-		x.setAttribute("jid", conversation.getContactJid().split("/", 2)[0]);
+		x.setAttribute("jid", conversation.getContactJid().toBareJid().toString());
 		return packet;
 	}
 
 	public MessagePacket invite(Conversation conversation, String contact) {
 		MessagePacket packet = new MessagePacket();
-		packet.setTo(conversation.getContactJid().split("/", 2)[0]);
+		packet.setTo(conversation.getContactJid().toBareJid());
 		packet.setFrom(conversation.getAccount().getFullJid());
 		Element x = new Element("x");
 		x.setAttribute("xmlns", "http://jabber.org/protocol/muc#user");
@@ -169,7 +170,7 @@ public class MessageGenerator extends AbstractGenerator {
 			MessagePacket originalMessage, String namespace) {
 		MessagePacket receivedPacket = new MessagePacket();
 		receivedPacket.setType(MessagePacket.TYPE_NORMAL);
-		receivedPacket.setTo(originalMessage.getFrom());
+		receivedPacket.setAttribute("to", originalMessage.getFrom());
 		receivedPacket.setFrom(account.getFullJid());
 		Element received = receivedPacket.addChild("received", namespace);
 		received.setAttribute("id", originalMessage.getId());

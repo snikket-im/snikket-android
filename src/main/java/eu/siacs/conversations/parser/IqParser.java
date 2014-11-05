@@ -5,6 +5,8 @@ import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.OnIqPacketReceived;
+import eu.siacs.conversations.xmpp.jid.InvalidJidException;
+import eu.siacs.conversations.xmpp.jid.Jid;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
 
 public class IqParser extends AbstractParser implements OnIqPacketReceived {
@@ -20,8 +22,14 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
 		}
 		for (Element item : query.getChildren()) {
 			if (item.getName().equals("item")) {
-				String jid = item.getAttribute("jid");
-				String name = item.getAttribute("name");
+                Jid jid;
+                try {
+                    jid = Jid.fromString(item.getAttribute("jid"));
+                } catch (final InvalidJidException e) {
+                    // TODO: Handle this?
+                    jid = null;
+                }
+                String name = item.getAttribute("name");
 				String subscription = item.getAttribute("subscription");
 				Contact contact = account.getRoster().getContact(jid);
 				if (!contact.getOption(Contact.Options.DIRTY_PUSH)) {
@@ -59,8 +67,13 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
 	@Override
 	public void onIqPacketReceived(Account account, IqPacket packet) {
 		if (packet.hasChild("query", "jabber:iq:roster")) {
-			String from = packet.getFrom();
-			if ((from == null) || (from.equals(account.getJid()))) {
+            Jid from = null;
+            try {
+                from = Jid.fromString(packet.getFrom());
+            } catch (final InvalidJidException e) {
+                // TODO: Handle this?
+            }
+            if ((from == null) || (from.equals(account.getJid()))) {
 				Element query = packet.findChild("query");
 				this.rosterItems(account, query);
 			}

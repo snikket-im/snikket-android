@@ -11,6 +11,7 @@ import de.measite.minidns.record.AAAA;
 import de.measite.minidns.record.Data;
 import de.measite.minidns.util.NameUtil;
 import eu.siacs.conversations.Config;
+import eu.siacs.conversations.xmpp.jid.Jid;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -26,7 +27,8 @@ import android.util.Log;
 public class DNSHelper {
 	protected static Client client = new Client();
 
-	public static Bundle getSRVRecord(String host) throws IOException {
+	public static Bundle getSRVRecord(final Jid jid) throws IOException {
+        final String host = jid.getDomainpart();
 		String dns[] = client.findDNS();
 
 		if (dns != null) {
@@ -62,9 +64,9 @@ public class DNSHelper {
 			// a random order respecting the weight, and dump that priority by
 			// priority
 
-			TreeMap<Integer, ArrayList<SRV>> priorities = new TreeMap<Integer, ArrayList<SRV>>();
-			TreeMap<String, ArrayList<String>> ips4 = new TreeMap<String, ArrayList<String>>();
-			TreeMap<String, ArrayList<String>> ips6 = new TreeMap<String, ArrayList<String>>();
+			TreeMap<Integer, ArrayList<SRV>> priorities = new TreeMap<>();
+			TreeMap<String, ArrayList<String>> ips4 = new TreeMap<>();
+			TreeMap<String, ArrayList<String>> ips6 = new TreeMap<>();
 
 			for (Record[] rrset : new Record[][] { message.getAnswers(),
 					message.getAdditionalResourceRecords() }) {
@@ -97,7 +99,7 @@ public class DNSHelper {
 			}
 
 			Random rnd = new Random();
-			ArrayList<SRV> result = new ArrayList<SRV>(
+			ArrayList<SRV> result = new ArrayList<>(
 					priorities.size() * 2 + 1);
 			for (ArrayList<SRV> s : priorities.values()) {
 
@@ -136,7 +138,7 @@ public class DNSHelper {
 				bundle.putString("error", "nosrv");
 				return bundle;
 			}
-			ArrayList<Bundle> values = new ArrayList<Bundle>();
+			ArrayList<Bundle> values = new ArrayList<>();
 			for (SRV srv : result) {
 				Bundle namePort = new Bundle();
 				namePort.putString("name", srv.getName());
