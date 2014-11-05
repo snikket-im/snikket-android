@@ -1,11 +1,5 @@
 package eu.siacs.conversations.services;
 
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -22,6 +16,12 @@ import android.support.v4.app.NotificationCompat.Builder;
 import android.support.v4.app.TaskStackBuilder;
 import android.text.Html;
 import android.util.DisplayMetrics;
+
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
@@ -46,7 +46,28 @@ public class NotificationService {
 		this.mXmppConnectionService = service;
 	}
 
+	public boolean notify(Message message) {
+		return (message.getStatus() == Message.STATUS_RECEIVED)
+				&& notificationsEnabled()
+				&& !message.getConversation().isMuted()
+				&& (message.getConversation().getMode() == Conversation.MODE_SINGLE
+					|| conferenceNotificationsEnabled()
+					|| wasHighlightedOrPrivate(message)
+					);
+	}
+
+	public boolean notificationsEnabled() {
+		return mXmppConnectionService.getPreferences().getBoolean("show_notification", true);
+	}
+
+	public boolean conferenceNotificationsEnabled() {
+		return mXmppConnectionService.getPreferences().getBoolean("always_notify_in_conference", false);
+	}
+
 	public void push(Message message) {
+		if (!notify(message)) {
+			return;
+		}
 		PowerManager pm = (PowerManager) mXmppConnectionService
 				.getSystemService(Context.POWER_SERVICE);
 		boolean isScreenOn = pm.isScreenOn();
@@ -110,7 +131,7 @@ public class NotificationService {
 			if (notify) {
 				if (vibrate) {
 					int dat = 70;
-					long[] pattern = { 0, 3 * dat, dat, dat };
+					long[] pattern = {0, 3 * dat, dat, dat};
 					mBuilder.setVibrate(pattern);
 				}
 				if (ringtone != null) {
@@ -132,7 +153,7 @@ public class NotificationService {
 		style.setBigContentTitle(notifications.size()
 				+ " "
 				+ mXmppConnectionService
-						.getString(R.string.unread_conversations));
+				.getString(R.string.unread_conversations));
 		StringBuilder names = new StringBuilder();
 		Conversation conversation = null;
 		for (ArrayList<Message> messages : notifications.values()) {
@@ -151,7 +172,7 @@ public class NotificationService {
 		mBuilder.setContentTitle(notifications.size()
 				+ " "
 				+ mXmppConnectionService
-						.getString(R.string.unread_conversations));
+				.getString(R.string.unread_conversations));
 		mBuilder.setContentText(names.toString());
 		mBuilder.setStyle(style);
 		if (conversation != null) {
@@ -184,7 +205,7 @@ public class NotificationService {
 	}
 
 	private void modifyForImage(Builder builder, Message message,
-			ArrayList<Message> messages, boolean notify) {
+								ArrayList<Message> messages, boolean notify) {
 		try {
 			Bitmap bitmap = mXmppConnectionService.getFileBackend()
 					.getThumbnail(message, getPixel(288), false);
@@ -210,7 +231,7 @@ public class NotificationService {
 	}
 
 	private void modifyForTextOnly(Builder builder,
-			ArrayList<Message> messages, boolean notify) {
+								   ArrayList<Message> messages, boolean notify) {
 		builder.setStyle(new NotificationCompat.BigTextStyle()
 				.bigText(getMergedBodies(messages)));
 		builder.setContentText(getReadableBody(messages.get(0)));
@@ -244,7 +265,7 @@ public class NotificationService {
 	private String getReadableBody(Message message) {
 		if (message.getDownloadable() != null
 				&& (message.getDownloadable().getStatus() == Downloadable.STATUS_OFFER || message
-						.getDownloadable().getStatus() == Downloadable.STATUS_OFFER_CHECK_FILESIZE)) {
+				.getDownloadable().getStatus() == Downloadable.STATUS_OFFER_CHECK_FILESIZE)) {
 			return mXmppConnectionService.getText(
 					R.string.image_offered_for_download).toString();
 		} else if (message.getEncryption() == Message.ENCRYPTION_PGP) {
@@ -287,7 +308,7 @@ public class NotificationService {
 		return PendingIntent.getService(mXmppConnectionService, 0, intent, 0);
 	}
 
-	public static boolean wasHighlightedOrPrivate(Message message) {
+	private boolean wasHighlightedOrPrivate(Message message) {
 		String nick = message.getConversation().getMucOptions().getActualNick();
 		Pattern highlight = generateNickHighlightPattern(nick);
 		if (message.getBody() == null || nick == null) {

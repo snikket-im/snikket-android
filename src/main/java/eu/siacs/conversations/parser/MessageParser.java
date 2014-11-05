@@ -401,12 +401,6 @@ public class MessageParser extends AbstractParser implements
 	@Override
 	public void onMessagePacketReceived(Account account, MessagePacket packet) {
 		Message message = null;
-		boolean notify = mXmppConnectionService.getPreferences().getBoolean(
-				"show_notification", true);
-		boolean alwaysNotifyInConference = notify
-				&& mXmppConnectionService.getPreferences().getBoolean(
-				"always_notify_in_conference", false);
-
 		this.parseNick(packet, account);
 
 		if ((packet.getType() == MessagePacket.TYPE_CHAT || packet.getType() == MessagePacket.TYPE_NORMAL)) {
@@ -429,7 +423,6 @@ public class MessageParser extends AbstractParser implements
 				if (message != null) {
 					if (message.getStatus() == Message.STATUS_SEND) {
 						account.activateGracePeriod();
-						notify = false;
 						mXmppConnectionService.markRead(
 								message.getConversation(), false);
 					} else {
@@ -444,14 +437,10 @@ public class MessageParser extends AbstractParser implements
 			if (message != null) {
 				if (message.getStatus() == Message.STATUS_RECEIVED) {
 					message.markUnread();
-					notify = alwaysNotifyInConference
-							|| NotificationService
-							.wasHighlightedOrPrivate(message);
 				} else {
 					mXmppConnectionService.markRead(message.getConversation(),
 							false);
 					account.activateGracePeriod();
-					notify = false;
 				}
 			}
 		} else if (packet.getType() == MessagePacket.TYPE_ERROR) {
@@ -498,10 +487,7 @@ public class MessageParser extends AbstractParser implements
 		if (message.trusted() && message.bodyContainsDownloadable()) {
 			this.mXmppConnectionService.getHttpConnectionManager()
 					.createNewConnection(message);
-			notify = false;
-		}
-		notify = notify && !conversation.isMuted();
-		if (notify) {
+		} else {
 			mXmppConnectionService.getNotificationService().push(message);
 		}
 		mXmppConnectionService.updateConversationUi();
