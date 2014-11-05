@@ -10,8 +10,6 @@ import gnu.inet.encoding.StringprepException;
  */
 public final class Jid {
 
-    public final static class InvalidJidException extends Exception { }
-
     private final String localpart;
     private final String domainpart;
     private final String resourcepart;
@@ -53,11 +51,13 @@ public final class Jid {
         final int slashCount = jid.length() - jid.replace("/", "").length();
 
         // Throw an error if there's anything obvious wrong with the JID...
+        if (jid.isEmpty() || jid.length() > 3071) {
+            throw new InvalidJidException(InvalidJidException.INVALID_LENGTH);
+        }
         if (atCount > 1 || slashCount > 1 ||
-                jid.length() == 0 || jid.length() > 3071 ||
                 jid.startsWith("@") || jid.endsWith("@") ||
                 jid.startsWith("/") || jid.endsWith("/")) {
-            throw new InvalidJidException();
+            throw new InvalidJidException(InvalidJidException.INVALID_CHARACTER);
         }
 
         String finaljid;
@@ -69,10 +69,10 @@ public final class Jid {
             try {
                 localpart = Stringprep.nodeprep(lp);
             } catch (final StringprepException e) {
-                throw new InvalidJidException();
+                throw new InvalidJidException(InvalidJidException.STRINGPREP_FAIL, e);
             }
             if (localpart.isEmpty() || localpart.length() > 1023) {
-                throw new InvalidJidException();
+                throw new InvalidJidException(InvalidJidException.INVALID_PART_LENGTH);
             }
             domainpartStart = atLoc;
             finaljid = lp + "@";
@@ -89,10 +89,10 @@ public final class Jid {
             try {
                 resourcepart = Stringprep.resourceprep(rp);
             } catch (final StringprepException e) {
-                throw new InvalidJidException();
+                throw new InvalidJidException(InvalidJidException.STRINGPREP_FAIL, e);
             }
             if (resourcepart.isEmpty() || resourcepart.length() > 1023) {
-                throw new InvalidJidException();
+                throw new InvalidJidException(InvalidJidException.INVALID_PART_LENGTH);
             }
             dp = jid.substring(domainpartStart, slashLoc);
             finaljid = finaljid + dp + "/" + rp;
@@ -111,7 +111,7 @@ public final class Jid {
 
         // TODO: Find a proper domain validation library; validate individual parts, separators, etc.
         if (domainpart.isEmpty() || domainpart.length() > 1023) {
-            throw new InvalidJidException();
+            throw new InvalidJidException(InvalidJidException.INVALID_PART_LENGTH);
         }
 
         this.displayjid = finaljid;
