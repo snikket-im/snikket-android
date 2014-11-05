@@ -30,22 +30,26 @@ public final class Jid {
         return IDN.toUnicode(resourcepart);
     }
 
-    // Special private constructor that doesn't do any checking...
-    private Jid(final String localpart, final String domainpart) {
-        this.localpart = localpart;
-        this.domainpart = domainpart;
-        this.resourcepart = "";
-        if (localpart.isEmpty()) {
-            this.displayjid = domainpart;
-        } else {
-            this.displayjid = localpart + "@" + domainpart;
-        }
+    public Jid fromString(final String jid) throws InvalidJidException {
+        return new Jid(jid);
     }
 
-    // Note: If introducing a mutable instance variable for some reason, make the constructor
-    // private and add a factory method to ensure thread safety and hash-cach-ability (tm).
-    public Jid(final String jid) throws InvalidJidException {
+    public static Jid fromParts(final String localpart,
+                                final String domainpart,
+                                final String resourcepart) throws InvalidJidException {
+        String out;
+        if (localpart == null || localpart.isEmpty()) {
+            out = domainpart;
+        } else {
+            out = localpart + "@" + domainpart;
+        }
+        if (resourcepart != null && !resourcepart.isEmpty()) {
+            out = out + "/" + resourcepart;
+        }
+        return new Jid(out);
+    }
 
+    private Jid(final String jid) throws InvalidJidException {
         // Hackish Android way to count the number of chars in a string... should work everywhere.
         final int atCount = jid.length() - jid.replace("@", "").length();
         final int slashCount = jid.length() - jid.replace("/", "").length();
@@ -118,7 +122,12 @@ public final class Jid {
     }
 
     public Jid getBareJid() {
-        return displayjid.contains("/") ? new Jid(localpart, domainpart) : this;
+        try {
+            return resourcepart.isEmpty() ? this : fromParts(localpart, domainpart, "");
+        } catch (final InvalidJidException e) {
+            // This should never happen due to the contracts we have in place.
+            return null;
+        }
     }
 
     @Override
@@ -133,12 +142,7 @@ public final class Jid {
 
         final Jid jid = (Jid) o;
 
-        // Since we're immutable, the JVM will cache hashcodes, making this very fast.
-        // I'm assuming Dalvik does the same sorts of optimizations...
-        // Since the hashcode does not include the displayJID it can be used for IDN comparison as
-        // well.
         return jid.hashCode() == this.hashCode();
-
     }
 
     @Override
