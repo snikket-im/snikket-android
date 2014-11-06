@@ -19,7 +19,7 @@ public class IqGenerator extends AbstractGenerator {
 	public IqPacket discoResponse(IqPacket request) {
 		IqPacket packet = new IqPacket(IqPacket.TYPE_RESULT);
 		packet.setId(request.getId());
-		packet.setAttribute("to", request.getFrom());
+        packet.setTo(request.getFrom());
 		Element query = packet.addChild("query",
 				"http://jabber.org/protocol/disco#info");
 		query.setAttribute("node", request.query().getAttribute("node"));
