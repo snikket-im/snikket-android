@@ -400,8 +400,10 @@ public class EditAccountActivity extends XmppActivity {
 	private void updateAccountInformation() {
 		this.mAccountJid.setText(this.mAccount.getJid());
 		this.mPassword.setText(this.mAccount.getPassword());
-		this.mAvatar.setVisibility(View.VISIBLE);
-		this.mAvatar.setImageBitmap(avatarService().get(this.mAccount,getPixel(72)));
+		if (this.jidToEdit != null) {
+			this.mAvatar.setVisibility(View.VISIBLE);
+			this.mAvatar.setImageBitmap(avatarService().get(this.mAccount, getPixel(72)));
+		}
 		if (this.mAccount.isOptionSet(Account.OPTION_REGISTER)) {
 			this.mRegisterNew.setVisibility(View.VISIBLE);
 			this.mRegisterNew.setChecked(true);
