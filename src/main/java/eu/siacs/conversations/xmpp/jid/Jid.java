@@ -78,7 +78,7 @@ public final class Jid {
             if (localpart.isEmpty() || localpart.length() > 1023) {
                 throw new InvalidJidException(InvalidJidException.INVALID_PART_LENGTH);
             }
-            domainpartStart = atLoc;
+            domainpartStart = atLoc + 1;
             finaljid = lp + "@";
         } else {
             localpart = "";
