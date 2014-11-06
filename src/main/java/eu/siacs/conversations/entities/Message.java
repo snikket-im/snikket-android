@@ -248,13 +248,8 @@ public class Message extends AbstractEntity {
 		this.trueCounterpart = trueCounterpart;
 	}
 
-	public String getPresence() {
-		if (!counterpart.getResourcepart().isEmpty()) {
-			return counterpart.getResourcepart();
-		} else {
-            // TODO: Return empty string or null?
-			return null;
-		}
+	public Jid getPresence() {
+		return counterpart;
 	}
 
 	public void setDownloadable(Downloadable downloadable) {

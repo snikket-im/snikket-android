@@ -162,6 +162,10 @@ public final class Jid {
         return result;
     }
 
+    public boolean hasLocalPart() {
+        return !localpart.isEmpty();
+    }
+
     public boolean isBareJid() {
         return this.resourcepart.isEmpty();
     }

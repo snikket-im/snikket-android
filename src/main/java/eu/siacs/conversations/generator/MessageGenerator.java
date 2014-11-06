@@ -114,7 +114,7 @@ public class MessageGenerator extends AbstractGenerator {
 	private MessagePacket generateError(MessagePacket origin) {
 		MessagePacket packet = new MessagePacket();
 		packet.setId(origin.getId());
-		packet.setAttribute("to", origin.getFrom());
+        packet.setTo(origin.getFrom());
 		packet.setBody(origin.getBody());
 		packet.setType(MessagePacket.TYPE_ERROR);
 		return packet;
@@ -170,7 +170,7 @@ public class MessageGenerator extends AbstractGenerator {
 			MessagePacket originalMessage, String namespace) {
 		MessagePacket receivedPacket = new MessagePacket();
 		receivedPacket.setType(MessagePacket.TYPE_NORMAL);
-		receivedPacket.setAttribute("to", originalMessage.getFrom());
+        receivedPacket.setTo(originalMessage.getFrom());
 		receivedPacket.setFrom(account.getFullJid());
 		Element received = receivedPacket.addChild("received", namespace);
 		received.setAttribute("id", originalMessage.getId());

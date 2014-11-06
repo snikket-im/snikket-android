@@ -35,14 +35,16 @@ import eu.siacs.conversations.entities.Presences;
 import eu.siacs.conversations.services.XmppConnectionService.OnAccountUpdate;
 import eu.siacs.conversations.services.XmppConnectionService.OnRosterUpdate;
 import eu.siacs.conversations.utils.UIHelper;
+import eu.siacs.conversations.xmpp.jid.InvalidJidException;
+import eu.siacs.conversations.xmpp.jid.Jid;
 
 public class ContactDetailsActivity extends XmppActivity {
 	public static final String ACTION_VIEW_CONTACT = "view_contact";
 
 	private Contact contact;
 
-	private String accountJid;
-	private String contactJid;
+	private Jid accountJid;
+	private Jid contactJid;
 
 	private TextView contactJidTv;
 	private TextView accountJidTv;
@@ -68,7 +70,7 @@ public class ContactDetailsActivity extends XmppActivity {
 		public void onClick(DialogInterface dialog, int which) {
 			Intent intent = new Intent(Intent.ACTION_INSERT_OR_EDIT);
 			intent.setType(Contacts.CONTENT_ITEM_TYPE);
-			intent.putExtra(Intents.Insert.IM_HANDLE, contact.getJid());
+			intent.putExtra(Intents.Insert.IM_HANDLE, contact.getJid().toString());
 			intent.putExtra(Intents.Insert.IM_PROTOCOL,
 					CommonDataKinds.Im.PROTOCOL_JABBER);
 			intent.putExtra("finishActivityOnSaveCompleted", true);
@@ -174,9 +176,15 @@ public class ContactDetailsActivity extends XmppActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		if (getIntent().getAction().equals(ACTION_VIEW_CONTACT)) {
-			this.accountJid = getIntent().getExtras().getString("account");
-			this.contactJid = getIntent().getExtras().getString("contact");
-		}
+            try {
+                this.accountJid = Jid.fromString(getIntent().getExtras().getString("account"));
+            } catch (final InvalidJidException ignored) {
+            }
+            try {
+                this.contactJid = Jid.fromString(getIntent().getExtras().getString("contact"));
+            } catch (final InvalidJidException ignored) {
+            }
+        }
 		setContentView(R.layout.activity_contact_details);
 
 		contactJidTv = (TextView) findViewById(R.id.details_contactjid);
@@ -318,7 +326,7 @@ public class ContactDetailsActivity extends XmppActivity {
 			contactJidTv.setText(contact.getJid() + " ("
 					+ contact.getPresences().size() + ")");
 		} else {
-			contactJidTv.setText(contact.getJid());
+			contactJidTv.setText(contact.getJid().toString());
 		}
 		accountJidTv.setText(getString(R.string.using_account, contact
 				.getAccount().getJid()));
