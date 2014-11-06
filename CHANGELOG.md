@@ -1,5 +1,13 @@
 ###Changelog
 
+####Version 0.8.2
+* Share contacts via QR codes or NFC
+* Slightly improved UI
+* minor bug fixes
+
+####Version 0.8.1
+* minor bug fixes
+
 ####Version 0.8
 * Download HTTP images
 * Show avatars in MUC tiles
