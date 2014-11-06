@@ -14,13 +14,15 @@ import eu.siacs.conversations.services.AbstractConnectionManager;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.OnIqPacketReceived;
+import eu.siacs.conversations.xmpp.jid.InvalidJidException;
+import eu.siacs.conversations.xmpp.jid.Jid;
 import eu.siacs.conversations.xmpp.jingle.stanzas.JinglePacket;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
 
 public class JingleConnectionManager extends AbstractConnectionManager {
-	private List<JingleConnection> connections = new CopyOnWriteArrayList<JingleConnection>();
+	private List<JingleConnection> connections = new CopyOnWriteArrayList<>();
 
-	private HashMap<String, JingleCandidate> primaryCandidates = new HashMap<String, JingleCandidate>();
+	private HashMap<Jid, JingleCandidate> primaryCandidates = new HashMap<>();
 
 	@SuppressLint("TrulyRandom")
 	private SecureRandom random = new SecureRandom();
@@ -61,7 +63,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
 		return connection;
 	}
 
-	public JingleConnection createNewConnection(JinglePacket packet) {
+	public JingleConnection createNewConnection(final JinglePacket packet) {
 		JingleConnection connection = new JingleConnection(this);
 		this.connections.add(connection);
 		return connection;
@@ -79,7 +81,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
 					.findDiscoItemByFeature(xmlns);
 			if (proxy != null) {
 				IqPacket iq = new IqPacket(IqPacket.TYPE_GET);
-				iq.setTo(proxy);
+				iq.setAttribute("to", proxy);
 				iq.query(xmlns);
 				account.getXmppConnection().sendIqPacket(iq,
 						new OnIqPacketReceived() {
@@ -101,8 +103,12 @@ public class JingleConnectionManager extends AbstractConnectionManager {
 													.getAttribute("port")));
 									candidate
 											.setType(JingleCandidate.TYPE_PROXY);
-									candidate.setJid(proxy);
-									candidate.setPriority(655360 + 65535);
+                                    try {
+                                        candidate.setJid(Jid.fromString(proxy));
+                                    } catch (final InvalidJidException e) {
+                                        candidate.setJid(null);
+                                    }
+                                    candidate.setPriority(655360 + 65535);
 									primaryCandidates.put(account.getJid(),
 											candidate);
 									listener.onPrimaryCandidateFound(true,

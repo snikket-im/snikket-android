@@ -67,12 +67,7 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
 	@Override
 	public void onIqPacketReceived(Account account, IqPacket packet) {
 		if (packet.hasChild("query", "jabber:iq:roster")) {
-            Jid from = null;
-            try {
-                from = Jid.fromString(packet.getFrom());
-            } catch (final InvalidJidException e) {
-                // TODO: Handle this?
-            }
+            final Jid from = packet.getFrom();
             if ((from == null) || (from.equals(account.getJid()))) {
 				Element query = packet.findChild("query");
 				this.rosterItems(account, query);

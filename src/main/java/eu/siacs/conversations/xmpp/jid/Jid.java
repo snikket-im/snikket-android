@@ -161,4 +161,8 @@ public final class Jid {
         result = 31 * result + resourcepart.hashCode();
         return result;
     }
+
+    public boolean isBareJid() {
+        return this.resourcepart.isEmpty();
+    }
 }

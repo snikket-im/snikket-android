@@ -152,9 +152,9 @@ public class MucOptions {
 	}
 
 	public void processPacket(PresencePacket packet, PgpEngine pgp) {
-		String[] fromParts = packet.getFrom().split("/", 2);
-		if (fromParts.length >= 2) {
-			String name = fromParts[1];
+        final Jid from = packet.getFrom();
+		if (!from.isBareJid()) {
+			final String name = from.getResourcepart();
 			String type = packet.getAttribute("type");
 			if (type == null) {
 				User user = new User();

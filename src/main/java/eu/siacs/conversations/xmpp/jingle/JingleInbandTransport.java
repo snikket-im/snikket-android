@@ -13,12 +13,13 @@ import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.OnIqPacketReceived;
+import eu.siacs.conversations.xmpp.jid.Jid;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
 
 public class JingleInbandTransport extends JingleTransport {
 
 	private Account account;
-	private String counterpart;
+	private Jid counterpart;
 	private int blockSize;
 	private int bufferSize;
 	private int seq = 0;
@@ -44,8 +45,8 @@ public class JingleInbandTransport extends JingleTransport {
 		}
 	};
 
-	public JingleInbandTransport(Account account, String counterpart,
-			String sid, int blocksize) {
+	public JingleInbandTransport(final Account account, final Jid counterpart,
+			final String sid, final int blocksize) {
 		this.account = account;
 		this.counterpart = counterpart;
 		this.blockSize = blocksize;
@@ -92,12 +93,10 @@ public class JingleInbandTransport extends JingleTransport {
 				return;
 			}
 			this.remainingSize = file.getExpectedSize();
-		} catch (NoSuchAlgorithmException e) {
-			callback.onFileTransferAborted();
-		} catch (IOException e) {
+		} catch (final NoSuchAlgorithmException | IOException e) {
 			callback.onFileTransferAborted();
 		}
-	}
+    }
 
 	@Override
 	public void send(DownloadableFile file,
