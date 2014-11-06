@@ -535,11 +535,8 @@ public class XmppConnectionService extends Service {
 
 	public XmppConnection createConnection(Account account) {
 		SharedPreferences sharedPref = getPreferences();
-        try {
-            account.setResource(sharedPref.getString("resource", "mobile")
-                    .toLowerCase(Locale.getDefault()));
-        } catch (final InvalidJidException ignored) {
-        }
+        account.setResource(sharedPref.getString("resource", "mobile")
+                .toLowerCase(Locale.getDefault()));
         XmppConnection connection = new XmppConnection(account, this);
 		connection.setOnMessagePacketReceivedListener(this.mMessageParser);
 		connection.setOnStatusChangedListener(this.statusListener);

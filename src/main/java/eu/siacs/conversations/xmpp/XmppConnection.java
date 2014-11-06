@@ -851,11 +851,7 @@ public class XmppConnection implements Runnable {
 		Element streamError = tagReader.readElement(currentTag);
 		if (streamError != null && streamError.hasChild("conflict")) {
 			final String resource = account.getResource().split("\\.")[0];
-            try {
-                account.setResource(resource + "." + nextRandomId());
-            } catch (final InvalidJidException ignored) {
-                // Should never reach here.
-            }
+            account.setResource(resource + "." + nextRandomId());
             Log.d(Config.LOGTAG,
 					account.getJid() + ": switching resource due to conflict ("
 							+ account.getResource() + ")");

@@ -88,10 +88,7 @@ public class Account extends AbstractEntity {
 		this.uuid = uuid;
         this.jid = jid;
         if (jid.getResourcepart().isEmpty()) {
-            try {
-                this.setResource("mobile");
-            } catch (final InvalidJidException ignored) {
-            }
+            this.setResource("mobile");
         }
 		this.password = password;
 		this.options = options;
@@ -164,9 +161,12 @@ public class Account extends AbstractEntity {
         return getXmppConnection() != null && getStatus() > STATUS_NO_INTERNET && (getXmppConnection().getAttempt() >= 2);
 	}
 
-	public void setResource(final String resource) throws InvalidJidException {
-        jid = Jid.fromParts(jid.getLocalpart(), jid.getDomainpart(), resource);
-	}
+	public void setResource(final String resource){
+        try {
+            jid = Jid.fromParts(jid.getLocalpart(), jid.getDomainpart(), resource);
+        } catch (final InvalidJidException ignored) {
+        }
+    }
 
 	public String getResource() {
 		return jid.getResourcepart();
