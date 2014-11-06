@@ -125,8 +125,9 @@ within the create account dialog.
 
 #### Conversations doesn't work for me. Where can I get help?
 
-You can join our conference room on `conversations@conference.siacs.eu` A lot of
-people in there are able to answer basic questions about the usage of
+You can join our conference room on
+[`conversations@conference.siacs.eu`](xmpp:conversations@conference.siacs.eu?join)
+A lot of people in there are able to answer basic questions about the usage of
 Conversations or can provide you with tips on running your own XMPP server. If
 you found a bug or your app crashes please read the Developer / Report Bugs
 section of this document.
