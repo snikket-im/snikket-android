@@ -10,10 +10,6 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.IntentSender.SendIntentException;
 import android.net.Uri;
-import android.nfc.NdefMessage;
-import android.nfc.NdefRecord;
-import android.nfc.NfcAdapter;
-import android.nfc.NfcEvent;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.provider.MediaStore;
@@ -55,20 +51,21 @@ public class ConversationActivity extends XmppActivity implements
 
 	public static final int REQUEST_SEND_MESSAGE = 0x0201;
 	public static final int REQUEST_DECRYPT_PGP = 0x0202;
+	public static final int REQUEST_ENCRYPT_MESSAGE = 0x0207;
 	private static final int REQUEST_ATTACH_FILE_DIALOG = 0x0203;
 	private static final int REQUEST_IMAGE_CAPTURE = 0x0204;
 	private static final int REQUEST_RECORD_AUDIO = 0x0205;
 	private static final int REQUEST_SEND_PGP_IMAGE = 0x0206;
-	public static final int REQUEST_ENCRYPT_MESSAGE = 0x0207;
-
 	private static final int ATTACHMENT_CHOICE_CHOOSE_IMAGE = 0x0301;
 	private static final int ATTACHMENT_CHOICE_TAKE_PHOTO = 0x0302;
 	private static final int ATTACHMENT_CHOICE_RECORD_VOICE = 0x0303;
 	private static final String STATE_OPEN_CONVERSATION = "state_open_conversation";
 	private static final String STATE_PANEL_OPEN = "state_panel_open";
+	private static final String STATE_PENDING_URI = "state_pending_uri";
 
 	private String mOpenConverstaion = null;
 	private boolean mPanelOpen = true;
+	private Uri mPendingImageUri = null;
 
 	private View mContentView;
 
@@ -81,7 +78,6 @@ public class ConversationActivity extends XmppActivity implements
 
 	private Toast prepareImageToast;
 
-	private Uri pendingImageUri = null;
 
 	public List<Conversation> getConversationList() {
 		return this.conversationList;
@@ -113,8 +109,8 @@ public class ConversationActivity extends XmppActivity implements
 	@Override
 	protected String getShareableUri() {
 		Conversation conversation = getSelectedConversation();
-		if (conversation!=null) {
-			return "xmpp:"+conversation.getAccount().getJid();
+		if (conversation != null) {
+			return "xmpp:" + conversation.getAccount().getJid();
 		} else {
 			return "";
 		}
@@ -148,11 +144,14 @@ public class ConversationActivity extends XmppActivity implements
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
 		if (savedInstanceState != null) {
 			mOpenConverstaion = savedInstanceState.getString(
 					STATE_OPEN_CONVERSATION, null);
 			mPanelOpen = savedInstanceState.getBoolean(STATE_PANEL_OPEN, true);
+			String pending = savedInstanceState.getString(STATE_PENDING_URI, null);
+			if (pending != null) {
+				mPendingImageUri = Uri.parse(pending);
+			}
 		}
 
 		setContentView(R.layout.fragment_conversations_overview);
@@ -301,12 +300,12 @@ public class ConversationActivity extends XmppActivity implements
 			@Override
 			public void onPresenceSelected() {
 				if (attachmentChoice == ATTACHMENT_CHOICE_TAKE_PHOTO) {
-					pendingImageUri = xmppConnectionService.getFileBackend()
+					mPendingImageUri = xmppConnectionService.getFileBackend()
 							.getTakePhotoUri();
 					Intent takePictureIntent = new Intent(
 							MediaStore.ACTION_IMAGE_CAPTURE);
 					takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
-							pendingImageUri);
+							mPendingImageUri);
 					if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
 						startActivityForResult(takePictureIntent,
 								REQUEST_IMAGE_CAPTURE);
@@ -680,6 +679,9 @@ public class ConversationActivity extends XmppActivity implements
 		}
 		savedInstanceState.putBoolean(STATE_PANEL_OPEN,
 				isConversationsOverviewVisable());
+		if (this.mPendingImageUri != null) {
+			savedInstanceState.putString(STATE_PENDING_URI, this.mPendingImageUri.toString());
+		}
 		super.onSaveInstanceState(savedInstanceState);
 	}
 
@@ -712,16 +714,16 @@ public class ConversationActivity extends XmppActivity implements
 			if (selectedFragment != null) {
 				selectedFragment.onBackendConnected();
 			} else {
-				pendingImageUri = null;
+				mPendingImageUri = null;
 				setSelectedConversation(conversationList.get(0));
 				swapConversationFragment();
 			}
 		}
 
-		if (pendingImageUri != null) {
+		if (mPendingImageUri != null) {
 			attachImageToConversation(getSelectedConversation(),
-					pendingImageUri);
-			pendingImageUri = null;
+					mPendingImageUri);
+			mPendingImageUri = null;
 		}
 		ExceptionHelper.checkForCrash(this, this.xmppConnectionService);
 	}
@@ -761,11 +763,11 @@ public class ConversationActivity extends XmppActivity implements
 					selectedFragment.updateMessages();
 				}
 			} else if (requestCode == REQUEST_ATTACH_FILE_DIALOG) {
-				pendingImageUri = data.getData();
+				mPendingImageUri = data.getData();
 				if (xmppConnectionServiceBound) {
 					attachImageToConversation(getSelectedConversation(),
-							pendingImageUri);
-					pendingImageUri = null;
+							mPendingImageUri);
+					mPendingImageUri = null;
 				}
 			} else if (requestCode == REQUEST_SEND_PGP_IMAGE) {
 
@@ -778,15 +780,15 @@ public class ConversationActivity extends XmppActivity implements
 						getSelectedConversation());
 			} else if (requestCode == REQUEST_ENCRYPT_MESSAGE) {
 				// encryptTextMessage();
-			} else if (requestCode == REQUEST_IMAGE_CAPTURE) {
+			} else if (requestCode == REQUEST_IMAGE_CAPTURE && mPendingImageUri != null) {
 				if (xmppConnectionServiceBound) {
 					attachImageToConversation(getSelectedConversation(),
-							pendingImageUri);
-					pendingImageUri = null;
+							mPendingImageUri);
+					mPendingImageUri = null;
 				}
 				Intent intent = new Intent(
 						Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-				intent.setData(pendingImageUri);
+				intent.setData(mPendingImageUri);
 				sendBroadcast(intent);
 			} else if (requestCode == REQUEST_RECORD_AUDIO) {
 				attachAudioToConversation(getSelectedConversation(),
@@ -794,7 +796,7 @@ public class ConversationActivity extends XmppActivity implements
 			}
 		} else {
 			if (requestCode == REQUEST_IMAGE_CAPTURE) {
-				pendingImageUri = null;
+				mPendingImageUri = null;
 			}
 		}
 	}
