@@ -34,7 +34,7 @@ public class ListItemAdapter extends ArrayAdapter<ListItem> {
 		TextView jid = (TextView) view.findViewById(R.id.contact_jid);
 		ImageView picture = (ImageView) view.findViewById(R.id.contact_photo);
 
-		jid.setText(item.getJid());
+		jid.setText(item.getJid().toString());
 		name.setText(item.getDisplayName());
 		picture.setImageBitmap(activity.avatarService().get(item,
 				activity.getPixel(48)));

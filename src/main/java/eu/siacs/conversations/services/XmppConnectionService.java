@@ -566,7 +566,7 @@ public class XmppConnectionService extends Service {
 					if (message.getEncryption() == Message.ENCRYPTION_OTR) {
 						if (!conv.hasValidOtrSession()
 								&& (message.getPresence() != null)) {
-							conv.startOtrSession(this, message.getPresence(),
+							conv.startOtrSession(this, message.getPresence().toString(),
 									true);
 							message.setStatus(Message.STATUS_WAITING);
 						} else if (conv.hasValidOtrSession()
@@ -587,7 +587,7 @@ public class XmppConnectionService extends Service {
 				if (message.getEncryption() == Message.ENCRYPTION_OTR) {
 					if (!conv.hasValidOtrSession()
 							&& (message.getPresence() != null)) {
-						conv.startOtrSession(this, message.getPresence(), true);
+						conv.startOtrSession(this, message.getPresence().toString(), true);
 						message.setStatus(Message.STATUS_WAITING);
 					} else if (conv.hasValidOtrSession()
 							&& conv.getOtrSession().getSessionStatus() == SessionStatus.ENCRYPTED) {
@@ -634,7 +634,7 @@ public class XmppConnectionService extends Service {
 								.getUserID());
 					} else if (!conv.hasValidOtrSession()
 							&& message.getPresence() != null) {
-						conv.startOtrSession(this, message.getPresence(), false);
+						conv.startOtrSession(this, message.getPresence().toString(), false);
 					}
 				}
 			}
@@ -670,9 +670,9 @@ public class XmppConnectionService extends Service {
 					.getPresences();
 			if (!message.getConversation().hasValidOtrSession()) {
 				if ((message.getPresence() != null)
-						&& (presences.has(message.getPresence()))) {
+						&& (presences.has(message.getPresence().toString()))) {
 					message.getConversation().startOtrSession(this,
-							message.getPresence(), true);
+							message.getPresence().toString(), true);
 				} else {
 					if (presences.size() == 1) {
 						String presence = presences.asStringArray()[0];
@@ -702,7 +702,7 @@ public class XmppConnectionService extends Service {
 			Presences presences = message.getConversation().getContact()
 					.getPresences();
 			if ((message.getPresence() != null)
-					&& (presences.has(message.getPresence()))) {
+					&& (presences.has(message.getPresence().toString()))) {
 				markMessage(message, Message.STATUS_OFFERED);
 				mJingleConnectionManager.createNewConnection(message);
 			} else {

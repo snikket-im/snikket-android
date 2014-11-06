@@ -173,7 +173,7 @@ public class AvatarService {
 		avatar = mXmppConnectionService.getFileBackend().getAvatar(
 				account.getAvatar(), size);
 		if (avatar == null) {
-			avatar = get(account.getJid(), size);
+			avatar = get(account.getJid().toString(), size);
 		}
 		mXmppConnectionService.getBitmapCache().put(KEY, avatar);
 		return avatar;

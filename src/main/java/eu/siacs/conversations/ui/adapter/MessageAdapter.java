@@ -1,5 +1,18 @@
 package eu.siacs.conversations.ui.adapter;
 
+import java.util.List;
+
+import eu.siacs.conversations.Config;
+import eu.siacs.conversations.R;
+import eu.siacs.conversations.entities.Contact;
+import eu.siacs.conversations.entities.Conversation;
+import eu.siacs.conversations.entities.Downloadable;
+import eu.siacs.conversations.entities.Message;
+import eu.siacs.conversations.entities.Message.ImageParams;
+import eu.siacs.conversations.ui.ConversationActivity;
+import eu.siacs.conversations.utils.UIHelper;
+import eu.siacs.conversations.xmpp.jid.Jid;
+
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.text.Spannable;
@@ -136,9 +149,9 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 					info = contact.getDisplayName();
 				} else {
 					if (message.getPresence() != null) {
-						info = message.getPresence();
+						info = message.getPresence().toString();
 					} else {
-						info = message.getCounterpart();
+						info = message.getCounterpart().toString();
 					}
 				}
 			}
@@ -227,7 +240,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 					privateMarker = activity
 							.getString(R.string.private_message);
 				} else {
-					String to;
+					final Jid to;
 					if (message.getPresence() != null) {
 						to = message.getPresence();
 					} else {

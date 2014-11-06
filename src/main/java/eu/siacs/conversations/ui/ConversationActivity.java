@@ -228,8 +228,7 @@ public class ConversationActivity extends XmppActivity implements
 					.useSubjectToIdentifyConference()) {
 				ab.setTitle(getSelectedConversation().getName());
 			} else {
-				ab.setTitle(getSelectedConversation().getContactJid()
-						.split("/")[0]);
+				ab.setTitle(getSelectedConversation().getContactJid().toBareJid().toString());
 			}
 		}
 		invalidateOptionsMenu();

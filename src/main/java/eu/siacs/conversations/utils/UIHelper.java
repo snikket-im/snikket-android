@@ -110,7 +110,7 @@ public class UIHelper {
 			List<Account> accounts) {
 		NotificationManager mNotificationManager = (NotificationManager) context
 				.getSystemService(Context.NOTIFICATION_SERVICE);
-		List<Account> accountsWproblems = new ArrayList<Account>();
+		List<Account> accountsWproblems = new ArrayList<>();
 		for (Account account : accounts) {
 			if (account.hasErrorStatus()) {
 				accountsWproblems.add(account);
@@ -124,7 +124,7 @@ public class UIHelper {
 		} else if (accountsWproblems.size() == 1) {
 			mBuilder.setContentTitle(context
 					.getString(R.string.problem_connecting_to_account));
-			mBuilder.setContentText(accountsWproblems.get(0).getJid());
+			mBuilder.setContentText(accountsWproblems.get(0).getJid().toString());
 		} else {
 			mBuilder.setContentTitle(context
 					.getString(R.string.problem_connecting_to_accounts));
@@ -165,7 +165,7 @@ public class UIHelper {
 		TextView yourprint = (TextView) view
 				.findViewById(R.id.verify_otr_yourprint);
 
-		jid.setText(contact.getJid());
+		jid.setText(contact.getJid().toString());
 		fingerprint.setText(conversation.getOtrFingerprint());
 		yourprint.setText(account.getOtrFingerprint());
 		builder.setNegativeButton("Cancel", null);

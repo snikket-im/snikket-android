@@ -336,9 +336,9 @@ public class Account extends AbstractEntity {
 		return this.bookmarks;
 	}
 
-	public boolean hasBookmarkFor(String conferenceJid) {
+	public boolean hasBookmarkFor(final Jid conferenceJid) {
 		for (Bookmark bmark : this.bookmarks) {
-			if (bmark.getJid().equals(conferenceJid)) {
+			if (bmark.getJid().equals(conferenceJid.toBareJid())) {
 				return true;
 			}
 		}

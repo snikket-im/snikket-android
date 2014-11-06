@@ -25,7 +25,7 @@ import eu.siacs.conversations.ui.adapter.ListItemAdapter;
 public class ChooseContactActivity extends XmppActivity {
 
 	private ListView mListView;
-	private ArrayList<ListItem> contacts = new ArrayList<ListItem>();
+	private ArrayList<ListItem> contacts = new ArrayList<>();
 	private ArrayAdapter<ListItem> mContactsAdapter;
 
 	private EditText mSearchEditText;
@@ -96,10 +96,10 @@ public class ChooseContactActivity extends XmppActivity {
 				Intent request = getIntent();
 				Intent data = new Intent();
 				ListItem mListItem = contacts.get(position);
-				data.putExtra("contact", mListItem.getJid());
+				data.putExtra("contact", mListItem.getJid().toString());
 				String account = request.getStringExtra("account");
 				if (account == null && mListItem instanceof Contact) {
-					account = ((Contact) mListItem).getAccount().getJid();
+					account = ((Contact) mListItem).getAccount().getJid().toString();
 				}
 				data.putExtra("account", account);
 				data.putExtra("conversation",

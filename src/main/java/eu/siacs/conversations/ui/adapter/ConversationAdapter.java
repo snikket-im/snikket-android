@@ -58,7 +58,7 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 				|| activity.useSubjectToIdentifyConference()) {
 			convName.setText(conversation.getName());
 		} else {
-			convName.setText(conversation.getContactJid().split("/")[0]);
+			convName.setText(conversation.getContactJid().toBareJid().toString());
 		}
 		TextView mLastMessage = (TextView) view
 				.findViewById(R.id.conversation_lastmsg);
