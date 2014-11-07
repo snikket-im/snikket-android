@@ -9,8 +9,6 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.content.IntentSender.SendIntentException;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.Selection;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Gravity;
@@ -60,80 +58,6 @@ import eu.siacs.conversations.utils.UIHelper;
 public class ConversationFragment extends Fragment {
 
 	protected Conversation conversation;
-	protected ListView messagesView;
-	protected LayoutInflater inflater;
-	protected List<Message> messageList = new ArrayList<Message>();
-	protected MessageAdapter messageListAdapter;
-	protected Contact contact;
-
-	protected String queuedPqpMessage = null;
-
-	private EditMessage mEditMessage;
-	private ImageButton mSendButton;
-	private String pastedText = null;
-	private RelativeLayout snackbar;
-	private TextView snackbarMessage;
-	private TextView snackbarAction;
-
-	private boolean messagesLoaded = false;
-
-	private IntentSender askForPassphraseIntent = null;
-
-	private ConcurrentLinkedQueue<Message> mEncryptedMessages = new ConcurrentLinkedQueue<Message>();
-	private boolean mDecryptJobRunning = false;
-
-	private OnEditorActionListener mEditorActionListener = new OnEditorActionListener() {
-
-		@Override
-		public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-			if (actionId == EditorInfo.IME_ACTION_SEND) {
-				InputMethodManager imm = (InputMethodManager) v.getContext()
-						.getSystemService(Context.INPUT_METHOD_SERVICE);
-				imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-				sendMessage();
-				return true;
-			} else {
-				return false;
-			}
-		}
-	};
-
-	private OnClickListener mSendButtonListener = new OnClickListener() {
-
-		@Override
-		public void onClick(View v) {
-			sendMessage();
-		}
-	};
-	protected OnClickListener clickToDecryptListener = new OnClickListener() {
-
-		@Override
-		public void onClick(View v) {
-			if (activity.hasPgp() && askForPassphraseIntent != null) {
-				try {
-					getActivity().startIntentSenderForResult(
-							askForPassphraseIntent,
-							ConversationActivity.REQUEST_DECRYPT_PGP, null, 0,
-							0, 0);
-				} catch (SendIntentException e) {
-					//
-				}
-			}
-		}
-	};
-
-	private OnClickListener clickToMuc = new OnClickListener() {
-
-		@Override
-		public void onClick(View v) {
-			Intent intent = new Intent(getActivity(),
-					ConferenceDetailsActivity.class);
-			intent.setAction(ConferenceDetailsActivity.ACTION_VIEW_MUC);
-			intent.putExtra("uuid", conversation.getUuid());
-			startActivity(intent);
-		}
-	};
-
 	private OnClickListener leaveMuc = new OnClickListener() {
 
 		@Override
@@ -141,7 +65,6 @@ public class ConversationFragment extends Fragment {
 			activity.endConversation(conversation);
 		}
 	};
-
 	private OnClickListener joinMuc = new OnClickListener() {
 
 		@Override
@@ -149,7 +72,6 @@ public class ConversationFragment extends Fragment {
 			activity.xmppConnectionService.joinMuc(conversation);
 		}
 	};
-
 	private OnClickListener enterPassword = new OnClickListener() {
 
 		@Override
@@ -169,7 +91,18 @@ public class ConversationFragment extends Fragment {
 			});
 		}
 	};
-
+	protected ListView messagesView;
+	protected LayoutInflater inflater;
+	protected List<Message> messageList = new ArrayList<Message>();
+	protected MessageAdapter messageListAdapter;
+	protected Contact contact;
+	protected String queuedPqpMessage = null;
+	private EditMessage mEditMessage;
+	private ImageButton mSendButton;
+	private RelativeLayout snackbar;
+	private TextView snackbarMessage;
+	private TextView snackbarAction;
+	private boolean messagesLoaded = false;
 	private OnScrollListener mOnScrollListener = new OnScrollListener() {
 
 		@Override
@@ -197,7 +130,58 @@ public class ConversationFragment extends Fragment {
 			}
 		}
 	};
+	private IntentSender askForPassphraseIntent = null;
+	protected OnClickListener clickToDecryptListener = new OnClickListener() {
 
+		@Override
+		public void onClick(View v) {
+			if (activity.hasPgp() && askForPassphraseIntent != null) {
+				try {
+					getActivity().startIntentSenderForResult(
+							askForPassphraseIntent,
+							ConversationActivity.REQUEST_DECRYPT_PGP, null, 0,
+							0, 0);
+				} catch (SendIntentException e) {
+					//
+				}
+			}
+		}
+	};
+	private ConcurrentLinkedQueue<Message> mEncryptedMessages = new ConcurrentLinkedQueue<Message>();
+	private boolean mDecryptJobRunning = false;
+	private OnEditorActionListener mEditorActionListener = new OnEditorActionListener() {
+
+		@Override
+		public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+			if (actionId == EditorInfo.IME_ACTION_SEND) {
+				InputMethodManager imm = (InputMethodManager) v.getContext()
+						.getSystemService(Context.INPUT_METHOD_SERVICE);
+				imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+				sendMessage();
+				return true;
+			} else {
+				return false;
+			}
+		}
+	};
+	private OnClickListener mSendButtonListener = new OnClickListener() {
+
+		@Override
+		public void onClick(View v) {
+			sendMessage();
+		}
+	};
+	private OnClickListener clickToMuc = new OnClickListener() {
+
+		@Override
+		public void onClick(View v) {
+			Intent intent = new Intent(getActivity(),
+					ConferenceDetailsActivity.class);
+			intent.setAction(ConferenceDetailsActivity.ACTION_VIEW_MUC);
+			intent.putExtra("uuid", conversation.getUuid());
+			startActivity(intent);
+		}
+	};
 	private ConversationActivity activity;
 	private Message selectedMessage;
 
@@ -467,15 +451,6 @@ public class ConversationFragment extends Fragment {
 	}
 
 	@Override
-	public void onStart() {
-		super.onStart();
-		this.activity = (ConversationActivity) getActivity();
-		if (activity.xmppConnectionServiceBound) {
-			this.onBackendConnected();
-		}
-	}
-
-	@Override
 	public void onStop() {
 		mDecryptJobRunning = false;
 		super.onStop();
@@ -484,36 +459,18 @@ public class ConversationFragment extends Fragment {
 		}
 	}
 
-	public void onBackendConnected() {
+	public void reInit(Conversation conversation) {
+		if (this.conversation != null) {
+			this.conversation.setNextMessage(mEditMessage.getText().toString());
+		}
 		this.activity = (ConversationActivity) getActivity();
-		this.conversation = activity.getSelectedConversation();
-		if (this.conversation == null) {
-			return;
-		}
-		String oldString = conversation.getNextMessage().trim();
-		if (this.pastedText == null) {
-			this.mEditMessage.setText(oldString);
-		} else {
-
-			if (oldString.isEmpty()) {
-				mEditMessage.setText(pastedText);
-			} else {
-				mEditMessage.setText(oldString + " " + pastedText);
-			}
-			pastedText = null;
-		}
-		int position = mEditMessage.length();
-		Editable etext = mEditMessage.getText();
-		Selection.setSelection(etext, position);
-		if (activity.isConversationsOverviewHideable()) {
-			if (!activity.shouldPaneBeOpen()) {
-				activity.hideConversationsOverview();
-				activity.openConversation(conversation);
-			}
-		}
+		this.conversation = conversation;
 		if (this.conversation.getMode() == Conversation.MODE_MULTI) {
-			conversation.setNextPresence(null);
+			this.conversation.setNextPresence(null);
 		}
+		this.mEditMessage.setText("");
+		this.mEditMessage.append(this.conversation.getNextMessage());
+		this.messagesView.invalidate();
 		updateMessages();
 	}
 
@@ -611,7 +568,7 @@ public class ConversationFragment extends Fragment {
 			}
 			getActivity().invalidateOptionsMenu();
 			updateChatMsgHint();
-			if (!activity.shouldPaneBeOpen()) {
+			if (!activity.isConversationsOverviewVisable() || !activity.isConversationsOverviewHideable()) {
 				activity.xmppConnectionService.markRead(conversation, true);
 				activity.updateConversationList();
 			}
@@ -888,8 +845,12 @@ public class ConversationFragment extends Fragment {
 		}
 	}
 
-	public void setText(String text) {
-		this.pastedText = text;
+	public void appendText(String text) {
+		String previous = this.mEditMessage.getText().toString();
+		if (previous.length() != 0 && !previous.endsWith(" ")) {
+			text = " " + text;
+		}
+		this.mEditMessage.append(text);
 	}
 
 	public void clearInputField() {

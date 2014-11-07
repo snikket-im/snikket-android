@@ -15,6 +15,7 @@ import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.support.v4.widget.SlidingPaneLayout;
 import android.support.v4.widget.SlidingPaneLayout.PanelSlideListener;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,6 +32,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
@@ -72,8 +74,8 @@ public class ConversationActivity extends XmppActivity implements
 	private List<Conversation> conversationList = new ArrayList<Conversation>();
 	private Conversation selectedConversation = null;
 	private ListView listView;
+	private ConversationFragment mConversationFragment;
 
-	private boolean paneShouldBeOpen = true;
 	private ArrayAdapter<Conversation> listAdapter;
 
 	private Toast prepareImageToast;
@@ -93,10 +95,6 @@ public class ConversationActivity extends XmppActivity implements
 
 	public ListView getConversationListView() {
 		return this.listView;
-	}
-
-	public boolean shouldPaneBeOpen() {
-		return paneShouldBeOpen;
 	}
 
 	public void showConversationsOverview() {
@@ -143,10 +141,14 @@ public class ConversationActivity extends XmppActivity implements
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		Log.d(Config.LOGTAG, "on create");
 		super.onCreate(savedInstanceState);
 		if (savedInstanceState != null) {
+			Log.d(Config.LOGTAG, savedInstanceState.toString());
+
 			mOpenConverstaion = savedInstanceState.getString(
 					STATE_OPEN_CONVERSATION, null);
+			Log.d(Config.LOGTAG, "recovered " + mOpenConverstaion);
 			mPanelOpen = savedInstanceState.getBoolean(STATE_PANEL_OPEN, true);
 			String pending = savedInstanceState.getString(STATE_PENDING_URI, null);
 			if (pending != null) {
@@ -155,6 +157,11 @@ public class ConversationActivity extends XmppActivity implements
 		}
 
 		setContentView(R.layout.fragment_conversations_overview);
+
+		this.mConversationFragment = new ConversationFragment();
+		FragmentTransaction transaction = getFragmentManager().beginTransaction();
+		transaction.replace(R.id.selected_conversation, this.mConversationFragment, "conversation");
+		transaction.commit();
 
 		listView = (ListView) findViewById(R.id.list);
 
@@ -168,13 +175,11 @@ public class ConversationActivity extends XmppActivity implements
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View clickedView,
 									int position, long arg3) {
-				paneShouldBeOpen = false;
 				if (getSelectedConversation() != conversationList.get(position)) {
 					setSelectedConversation(conversationList.get(position));
-					swapConversationFragment();
-				} else {
-					hideConversationsOverview();
+					ConversationActivity.this.mConversationFragment.reInit(getSelectedConversation());
 				}
+				hideConversationsOverview();
 			}
 		});
 		mContentView = findViewById(R.id.content_view_spl);
@@ -191,7 +196,6 @@ public class ConversationActivity extends XmppActivity implements
 
 				@Override
 				public void onPanelOpened(View arg0) {
-					paneShouldBeOpen = true;
 					ActionBar ab = getActionBar();
 					if (ab != null) {
 						ab.setDisplayHomeAsUpEnabled(false);
@@ -209,7 +213,6 @@ public class ConversationActivity extends XmppActivity implements
 
 				@Override
 				public void onPanelClosed(View arg0) {
-					paneShouldBeOpen = false;
 					if ((conversationList.size() > 0)
 							&& (getSelectedConversation() != null)) {
 						openConversation(getSelectedConversation());
@@ -436,7 +439,6 @@ public class ConversationActivity extends XmppActivity implements
 
 	public void endConversation(Conversation conversation) {
 		conversation.setStatus(Conversation.STATUS_ARCHIVED);
-		paneShouldBeOpen = true;
 		showConversationsOverview();
 		xmppConnectionService.archiveConversation(conversation);
 		if (conversationList.size() > 0) {
@@ -608,23 +610,6 @@ public class ConversationActivity extends XmppActivity implements
 		builder.create().show();
 	}
 
-	protected ConversationFragment swapConversationFragment() {
-		ConversationFragment selectedFragment = new ConversationFragment();
-		if (!isFinishing()) {
-
-			FragmentTransaction transaction = getFragmentManager()
-					.beginTransaction();
-			transaction.replace(R.id.selected_conversation, selectedFragment,
-					"conversation");
-			try {
-				transaction.commitAllowingStateLoss();
-			} catch (IllegalStateException e) {
-				return selectedFragment;
-			}
-		}
-		return selectedFragment;
-	}
-
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
@@ -674,6 +659,7 @@ public class ConversationActivity extends XmppActivity implements
 	public void onSaveInstanceState(Bundle savedInstanceState) {
 		Conversation conversation = getSelectedConversation();
 		if (conversation != null) {
+			Log.d(Config.LOGTAG, "saving conversation: " + conversation.getName() + " " + conversation.getUuid());
 			savedInstanceState.putString(STATE_OPEN_CONVERSATION,
 					conversation.getUuid());
 		}
@@ -700,24 +686,18 @@ public class ConversationActivity extends XmppActivity implements
 			handleViewConversationIntent(getIntent());
 			setIntent(null);
 		} else if (mOpenConverstaion != null) {
+			Log.d(Config.LOGTAG, "open conversation: " + mOpenConverstaion);
 			selectConversationByUuid(mOpenConverstaion);
-			paneShouldBeOpen = mPanelOpen;
-			if (paneShouldBeOpen) {
+			if (mPanelOpen) {
 				showConversationsOverview();
 			}
-			swapConversationFragment();
+			this.mConversationFragment.reInit(getSelectedConversation());
 			mOpenConverstaion = null;
-		} else {
+		} else if (getSelectedConversation() == null) {
 			showConversationsOverview();
-			ConversationFragment selectedFragment = (ConversationFragment) getFragmentManager()
-					.findFragmentByTag("conversation");
-			if (selectedFragment != null) {
-				selectedFragment.onBackendConnected();
-			} else {
-				mPendingImageUri = null;
-				setSelectedConversation(conversationList.get(0));
-				swapConversationFragment();
-			}
+			mPendingImageUri = null;
+			setSelectedConversation(conversationList.get(0));
+			this.mConversationFragment.reInit(getSelectedConversation());
 		}
 
 		if (mPendingImageUri != null) {
@@ -730,10 +710,12 @@ public class ConversationActivity extends XmppActivity implements
 
 	private void handleViewConversationIntent(Intent intent) {
 		String uuid = (String) intent.getExtras().get(CONVERSATION);
-		String text = intent.getExtras().getString(TEXT, null);
+		String text = intent.getExtras().getString(TEXT, "");
 		selectConversationByUuid(uuid);
-		paneShouldBeOpen = false;
-		swapConversationFragment().setText(text);
+		this.mConversationFragment.reInit(getSelectedConversation());
+		this.mConversationFragment.appendText(text);
+		hideConversationsOverview();
+		openConversation(getSelectedConversation());
 	}
 
 	private void selectConversationByUuid(String uuid) {
@@ -917,19 +899,12 @@ public class ConversationActivity extends XmppActivity implements
 			@Override
 			public void run() {
 				updateConversationList();
-				if (paneShouldBeOpen) {
-					if (conversationList.size() >= 1) {
-						swapConversationFragment();
-					} else {
+				if (conversationList.size() == 0) {
 						startActivity(new Intent(getApplicationContext(),
 								StartConversationActivity.class));
 						finish();
-					}
-				}
-				ConversationFragment selectedFragment = (ConversationFragment) getFragmentManager()
-						.findFragmentByTag("conversation");
-				if (selectedFragment != null) {
-					selectedFragment.updateMessages();
+				} else {
+					ConversationActivity.this.mConversationFragment.updateMessages();
 				}
 			}
 		});
@@ -937,16 +912,12 @@ public class ConversationActivity extends XmppActivity implements
 
 	@Override
 	public void onRosterUpdate() {
-		final ConversationFragment fragment = (ConversationFragment) getFragmentManager()
-				.findFragmentByTag("conversation");
-		if (fragment != null) {
-			runOnUiThread(new Runnable() {
+		runOnUiThread(new Runnable() {
 
 				@Override
 				public void run() {
-					fragment.updateMessages();
+					ConversationActivity.this.mConversationFragment.updateMessages();
 				}
 			});
-		}
 	}
 }

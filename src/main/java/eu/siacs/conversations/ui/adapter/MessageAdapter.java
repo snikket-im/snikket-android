@@ -1,5 +1,23 @@
 package eu.siacs.conversations.ui.adapter;
 
+import android.content.Intent;
+import android.graphics.Typeface;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.StyleSpan;
+import android.util.DisplayMetrics;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import java.util.List;
 
 import eu.siacs.conversations.Config;
@@ -11,23 +29,6 @@ import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.Message.ImageParams;
 import eu.siacs.conversations.ui.ConversationActivity;
 import eu.siacs.conversations.utils.UIHelper;
-import android.content.Intent;
-import android.graphics.Typeface;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.style.ForegroundColorSpan;
-import android.text.style.StyleSpan;
-import android.util.DisplayMetrics;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.View.OnClickListener;
-import android.view.View.OnLongClickListener;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 public class MessageAdapter extends ArrayAdapter<Message> {
 
@@ -323,10 +324,6 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 						.findViewById(R.id.message_box);
 				viewHolder.contact_picture = (ImageView) view
 						.findViewById(R.id.message_photo);
-				viewHolder.contact_picture.setImageBitmap(activity
-						.avatarService().get(
-								item.getConversation().getAccount(),
-								activity.getPixel(48)));
 				viewHolder.download_button = (Button) view
 						.findViewById(R.id.download_button);
 				viewHolder.indicator = (ImageView) view
@@ -350,11 +347,6 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 						.findViewById(R.id.message_photo);
 				viewHolder.download_button = (Button) view
 						.findViewById(R.id.download_button);
-				if (item.getConversation().getMode() == Conversation.MODE_SINGLE) {
-					viewHolder.contact_picture.setImageBitmap(activity
-							.avatarService().get(item.getContact(),
-									activity.getPixel(48)));
-				}
 				viewHolder.indicator = (ImageView) view
 						.findViewById(R.id.security_indicator);
 				viewHolder.image = (ImageView) view
@@ -363,6 +355,8 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 						.findViewById(R.id.message_body);
 				viewHolder.time = (TextView) view
 						.findViewById(R.id.message_time);
+				viewHolder.indicatorReceived = (ImageView) view
+						.findViewById(R.id.indicator_received);
 				view.setTag(viewHolder);
 				break;
 			case STATUS:
@@ -370,30 +364,6 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 						R.layout.message_status, parent, false);
 				viewHolder.contact_picture = (ImageView) view
 						.findViewById(R.id.message_photo);
-				if (item.getConversation().getMode() == Conversation.MODE_SINGLE) {
-
-					viewHolder.contact_picture.setImageBitmap(activity
-							.avatarService().get(
-									item.getConversation().getContact(),
-									activity.getPixel(32)));
-					viewHolder.contact_picture.setAlpha(0.5f);
-					viewHolder.contact_picture
-							.setOnClickListener(new OnClickListener() {
-
-								@Override
-								public void onClick(View v) {
-									String name = item.getConversation()
-											.getName();
-									String read = getContext()
-											.getString(
-													R.string.contact_has_read_up_to_this_point,
-													name);
-									Toast.makeText(getContext(), read,
-											Toast.LENGTH_SHORT).show();
-								}
-							});
-
-				}
 				break;
 			default:
 				viewHolder = null;
@@ -404,9 +374,32 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		}
 
 		if (type == STATUS) {
+			if (item.getConversation().getMode() == Conversation.MODE_SINGLE) {
+
+				viewHolder.contact_picture.setImageBitmap(activity
+						.avatarService().get(
+								item.getConversation().getContact(),
+								activity.getPixel(32)));
+				viewHolder.contact_picture.setAlpha(0.5f);
+				viewHolder.contact_picture
+						.setOnClickListener(new OnClickListener() {
+
+							@Override
+							public void onClick(View v) {
+								String name = item.getConversation()
+										.getName();
+								String read = getContext()
+										.getString(
+												R.string.contact_has_read_up_to_this_point,
+												name);
+								Toast.makeText(getContext(), read,
+										Toast.LENGTH_SHORT).show();
+							}
+						});
+
+			}
 			return view;
-		}
-		if (type == NULL) {
+		} else if (type == NULL) {
 			if (position == getCount() - 1) {
 				view.getLayoutParams().height = 1;
 			} else {
@@ -415,6 +408,19 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 			}
 			view.setLayoutParams(view.getLayoutParams());
 			return view;
+		} else if (type == RECEIVED) {
+			Contact contact = item.getContact();
+			if (contact != null) {
+				viewHolder.contact_picture.setImageBitmap(activity.avatarService().get(contact, activity.getPixel(48)));
+			} else if (item.getConversation().getMode() == Conversation.MODE_MULTI) {
+				String name = item.getPresence();
+				if (name == null) {
+					name = item.getCounterpart();
+				}
+				viewHolder.contact_picture.setImageBitmap(activity.avatarService().get(name, activity.getPixel(48)));
+			}
+		} else if (type == SENT) {
+			viewHolder.contact_picture.setImageBitmap(activity.avatarService().get(item.getConversation().getAccount(), activity.getPixel(48)));
 		}
 
 		if (viewHolder.contact_picture != null) {
@@ -426,7 +432,6 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 							if (MessageAdapter.this.mOnContactPictureClickedListener != null) {
 								MessageAdapter.this.mOnContactPictureClickedListener
 										.onContactPictureClicked(item);
-								;
 							}
 
 						}
@@ -445,24 +450,6 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 							}
 						}
 					});
-		}
-
-		if (type == RECEIVED) {
-			if (item.getConversation().getMode() == Conversation.MODE_MULTI) {
-				Contact contact = item.getContact();
-				if (contact != null) {
-					viewHolder.contact_picture.setImageBitmap(activity
-							.avatarService()
-							.get(contact, activity.getPixel(48)));
-				} else {
-					String name = item.getPresence();
-					if (name == null) {
-						name = item.getCounterpart();
-					}
-					viewHolder.contact_picture.setImageBitmap(activity
-							.avatarService().get(name, activity.getPixel(48)));
-				}
-			}
 		}
 
 		if (item.getType() == Message.TYPE_IMAGE
@@ -532,6 +519,14 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		}
 	}
 
+	public interface OnContactPictureClicked {
+		public void onContactPictureClicked(Message message);
+	}
+
+	public interface OnContactPictureLongClicked {
+		public void onContactPictureLongClicked(Message message);
+	}
+
 	private static class ViewHolder {
 
 		protected LinearLayout message_box;
@@ -543,13 +538,5 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		protected TextView messageBody;
 		protected ImageView contact_picture;
 
-	}
-
-	public interface OnContactPictureClicked {
-		public void onContactPictureClicked(Message message);
-	}
-
-	public interface OnContactPictureLongClicked {
-		public void onContactPictureLongClicked(Message message);
 	}
 }
