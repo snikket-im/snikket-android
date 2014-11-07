@@ -149,7 +149,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 					info = contact.getDisplayName();
 				} else {
 					if (message.getPresence() != null) {
-						info = message.getPresence().toString();
+						info = message.getPresence().getResourcepart();
 					} else {
 						info = message.getCounterpart().toString();
 					}
@@ -246,8 +246,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 					} else {
 						to = message.getCounterpart();
 					}
-					privateMarker = activity.getString(
-							R.string.private_message_to, to);
+					privateMarker = activity.getString(R.string.private_message_to, to);
 				}
 				SpannableString span = new SpannableString(privateMarker + " "
 						+ message.getBody());
@@ -436,7 +435,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 			viewHolder.contact_picture.setImageBitmap(activity.avatarService().get(item.getConversation().getAccount(), activity.getPixel(48)));
 		}
 
-		if (viewHolder.contact_picture != null) {
+		if (viewHolder != null && viewHolder.contact_picture != null) {
 			viewHolder.contact_picture
 					.setOnClickListener(new OnClickListener() {
 
@@ -501,14 +500,16 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 				} else {
 					displayInfoMessage(viewHolder,
 							R.string.install_openkeychain);
-					viewHolder.message_box
-							.setOnClickListener(new OnClickListener() {
+                    if (viewHolder != null) {
+                        viewHolder.message_box
+                                .setOnClickListener(new OnClickListener() {
 
-								@Override
-								public void onClick(View v) {
-									activity.showInstallPgpDialog();
-								}
-							});
+                                    @Override
+                                    public void onClick(View v) {
+                                        activity.showInstallPgpDialog();
+                                    }
+                                });
+                    }
 				}
 			} else if (item.getEncryption() == Message.ENCRYPTION_DECRYPTION_FAILED) {
 				displayDecryptionFailed(viewHolder);
