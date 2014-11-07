@@ -249,6 +249,7 @@ public class Message extends AbstractEntity {
 	}
 
 	public Jid getPresence() {
+        // TODO: This is now the same as getCounterpart()... find usages in code and remove one?
 		return counterpart;
 	}
 
