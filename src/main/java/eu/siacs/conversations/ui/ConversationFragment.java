@@ -566,7 +566,6 @@ public class ConversationFragment extends Fragment {
 					}
 				}
 			}
-			getActivity().invalidateOptionsMenu();
 			updateChatMsgHint();
 			if (!activity.isConversationsOverviewVisable() || !activity.isConversationsOverviewHideable()) {
 				activity.xmppConnectionService.markRead(conversation, true);

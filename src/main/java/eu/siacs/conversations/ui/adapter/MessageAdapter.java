@@ -364,6 +364,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 						R.layout.message_status, parent, false);
 				viewHolder.contact_picture = (ImageView) view
 						.findViewById(R.id.message_photo);
+				view.setTag(viewHolder);
 				break;
 			default:
 				viewHolder = null;
@@ -375,7 +376,6 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 
 		if (type == STATUS) {
 			if (item.getConversation().getMode() == Conversation.MODE_SINGLE) {
-
 				viewHolder.contact_picture.setImageBitmap(activity
 						.avatarService().get(
 								item.getConversation().getContact(),

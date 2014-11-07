@@ -15,7 +15,6 @@ import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.support.v4.widget.SlidingPaneLayout;
 import android.support.v4.widget.SlidingPaneLayout.PanelSlideListener;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -141,14 +140,9 @@ public class ConversationActivity extends XmppActivity implements
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		Log.d(Config.LOGTAG, "on create");
 		super.onCreate(savedInstanceState);
-		if (savedInstanceState != null) {
-			Log.d(Config.LOGTAG, savedInstanceState.toString());
-
-			mOpenConverstaion = savedInstanceState.getString(
+		if (savedInstanceState != null) {mOpenConverstaion = savedInstanceState.getString(
 					STATE_OPEN_CONVERSATION, null);
-			Log.d(Config.LOGTAG, "recovered " + mOpenConverstaion);
 			mPanelOpen = savedInstanceState.getBoolean(STATE_PANEL_OPEN, true);
 			String pending = savedInstanceState.getString(STATE_PENDING_URI, null);
 			if (pending != null) {
@@ -164,11 +158,11 @@ public class ConversationActivity extends XmppActivity implements
 		transaction.commit();
 
 		listView = (ListView) findViewById(R.id.list);
+		this.listAdapter = new ConversationAdapter(this, conversationList);
+		listView.setAdapter(this.listAdapter);
 
 		getActionBar().setDisplayHomeAsUpEnabled(false);
 		getActionBar().setHomeButtonEnabled(false);
-		this.listAdapter = new ConversationAdapter(this, conversationList);
-		listView.setAdapter(this.listAdapter);
 
 		listView.setOnItemClickListener(new OnItemClickListener() {
 
@@ -213,15 +207,7 @@ public class ConversationActivity extends XmppActivity implements
 
 				@Override
 				public void onPanelClosed(View arg0) {
-					if ((conversationList.size() > 0)
-							&& (getSelectedConversation() != null)) {
-						openConversation(getSelectedConversation());
-						if (!getSelectedConversation().isRead()) {
-							xmppConnectionService.markRead(
-									getSelectedConversation(), true);
-							listView.invalidateViews();
-						}
-					}
+					openConversation();
 				}
 
 				@Override
@@ -233,7 +219,7 @@ public class ConversationActivity extends XmppActivity implements
 		}
 	}
 
-	public void openConversation(Conversation conversation) {
+	public void openConversation() {
 		ActionBar ab = getActionBar();
 		if (ab != null) {
 			ab.setDisplayHomeAsUpEnabled(true);
@@ -249,8 +235,11 @@ public class ConversationActivity extends XmppActivity implements
 		}
 		invalidateOptionsMenu();
 		if (xmppConnectionServiceBound) {
-			xmppConnectionService.getNotificationService().setOpenConversation(
-					conversation);
+			xmppConnectionService.getNotificationService().setOpenConversation(getSelectedConversation());
+			if (!getSelectedConversation().isRead()) {
+				xmppConnectionService.markRead(getSelectedConversation(), true);
+				listView.invalidateViews();
+			}
 		}
 	}
 
@@ -443,6 +432,7 @@ public class ConversationActivity extends XmppActivity implements
 		xmppConnectionService.archiveConversation(conversation);
 		if (conversationList.size() > 0) {
 			setSelectedConversation(conversationList.get(0));
+			this.mConversationFragment.reInit(getSelectedConversation());
 		} else {
 			setSelectedConversation(null);
 		}
@@ -659,7 +649,6 @@ public class ConversationActivity extends XmppActivity implements
 	public void onSaveInstanceState(Bundle savedInstanceState) {
 		Conversation conversation = getSelectedConversation();
 		if (conversation != null) {
-			Log.d(Config.LOGTAG, "saving conversation: " + conversation.getName() + " " + conversation.getUuid());
 			savedInstanceState.putString(STATE_OPEN_CONVERSATION,
 					conversation.getUuid());
 		}
@@ -684,12 +673,14 @@ public class ConversationActivity extends XmppActivity implements
 		} else if (getIntent() != null
 				&& VIEW_CONVERSATION.equals(getIntent().getType())) {
 			handleViewConversationIntent(getIntent());
-			setIntent(null);
 		} else if (mOpenConverstaion != null) {
-			Log.d(Config.LOGTAG, "open conversation: " + mOpenConverstaion);
 			selectConversationByUuid(mOpenConverstaion);
 			if (mPanelOpen) {
 				showConversationsOverview();
+			} else {
+				if (isConversationsOverviewHideable()) {
+					openConversation();
+				}
 			}
 			this.mConversationFragment.reInit(getSelectedConversation());
 			mOpenConverstaion = null;
@@ -706,6 +697,7 @@ public class ConversationActivity extends XmppActivity implements
 			mPendingImageUri = null;
 		}
 		ExceptionHelper.checkForCrash(this, this.xmppConnectionService);
+		setIntent(new Intent());
 	}
 
 	private void handleViewConversationIntent(Intent intent) {
@@ -715,7 +707,9 @@ public class ConversationActivity extends XmppActivity implements
 		this.mConversationFragment.reInit(getSelectedConversation());
 		this.mConversationFragment.appendText(text);
 		hideConversationsOverview();
-		openConversation(getSelectedConversation());
+		if (mContentView instanceof SlidingPaneLayout) {
+			openConversation();
+		}
 	}
 
 	private void selectConversationByUuid(String uuid) {
