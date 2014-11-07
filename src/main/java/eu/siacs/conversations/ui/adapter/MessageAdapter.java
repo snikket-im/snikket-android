@@ -149,7 +149,11 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 					info = contact.getDisplayName();
 				} else {
 					if (message.getPresence() != null) {
-						info = message.getPresence().getResourcepart();
+                        if (message.getPresence().isBareJid()) {
+                            info = message.getPresence().toString();
+                        } else {
+                            info = message.getPresence().getResourcepart();
+                        }
 					} else {
 						info = message.getCounterpart().toString();
 					}
