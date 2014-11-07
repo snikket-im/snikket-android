@@ -417,11 +417,10 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 			if (contact != null) {
 				viewHolder.contact_picture.setImageBitmap(activity.avatarService().get(contact, activity.getPixel(48)));
 			} else if (item.getConversation().getMode() == Conversation.MODE_MULTI) {
-				String name = item.getPresence();
-				if (name == null) {
-					name = item.getCounterpart();
-				}
-				viewHolder.contact_picture.setImageBitmap(activity.avatarService().get(name, activity.getPixel(48)));
+				final Jid name = item.getPresence() != null ? item.getPresence() : item.getCounterpart();
+				viewHolder.contact_picture.setImageBitmap(activity.avatarService().get(
+                        name.isBareJid() ? name.toString() : name.getResourcepart(),
+                        activity.getPixel(48)));
 			}
 		} else if (type == SENT) {
 			viewHolder.contact_picture.setImageBitmap(activity.avatarService().get(item.getConversation().getAccount(), activity.getPixel(48)));
