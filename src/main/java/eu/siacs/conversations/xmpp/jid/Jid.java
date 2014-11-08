@@ -162,7 +162,7 @@ public final class Jid {
         return result;
     }
 
-    public boolean hasLocalPart() {
+    public boolean hasLocalpart() {
         return !localpart.isEmpty();
     }
 

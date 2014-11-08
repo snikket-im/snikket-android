@@ -36,7 +36,7 @@ public class AvatarService {
 		this.mXmppConnectionService = service;
 	}
 
-	public Bitmap get(Contact contact, int size) {
+	public Bitmap get(final Contact contact, final int size) {
 		final String KEY = key(contact, size);
 		Bitmap avatar = this.mXmppConnectionService.getBitmapCache().get(KEY);
 		if (avatar != null) {
@@ -49,7 +49,7 @@ public class AvatarService {
 			avatar = mXmppConnectionService.getFileBackend().getAvatar(contact.getAvatar(), size);
 		}
 		if (avatar == null) {
-			avatar = get(contact.getDisplayName(), size);
+            avatar = get(contact.getDisplayName(), size);
 		}
 		this.mXmppConnectionService.getBitmapCache().put(KEY, avatar);
 		return avatar;
@@ -196,7 +196,7 @@ public class AvatarService {
 				+ String.valueOf(size);
 	}
 
-	public Bitmap get(String name, int size) {
+	public Bitmap get(final String name, final int size) {
 		final String KEY = key(name, size);
 		Bitmap bitmap = mXmppConnectionService.getBitmapCache().get(KEY);
 		if (bitmap != null) {

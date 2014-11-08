@@ -1,15 +1,10 @@
 package eu.siacs.conversations.ui;
 
-import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.graphics.Point;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,21 +22,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.EncodeHintType;
-import com.google.zxing.WriterException;
-import com.google.zxing.common.BitMatrix;
-import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
-import com.google.zxing.qrcode.QRCodeWriter;
-import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
-
-import java.util.Hashtable;
-
-import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
-import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.services.XmppConnectionService.OnAccountUpdate;
 import eu.siacs.conversations.ui.adapter.KnownHostsAdapter;
 import eu.siacs.conversations.utils.UIHelper;
@@ -111,7 +93,7 @@ public class EditAccountActivity extends XmppActivity {
 			if (mAccount != null) {
 				mAccount.setPassword(password);
                 try {
-                    mAccount.setUsername(jid.hasLocalPart() ? jid.getLocalpart() : "");
+                    mAccount.setUsername(jid.hasLocalpart() ? jid.getLocalpart() : "");
                     mAccount.setServer(jid.getDomainpart());
                 } catch (final InvalidJidException ignored) {
                 }

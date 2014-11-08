@@ -78,14 +78,16 @@ public class Contact implements ListItem {
 
 	public String getDisplayName() {
 		if (this.systemName != null) {
-			return this.systemName;
-		} else if (this.serverName != null) {
-			return this.serverName;
+            return this.systemName;
+        } else if (this.serverName != null) {
+            return this.serverName;
 		} else if (this.presenceName != null) {
-			return this.presenceName;
+            return this.presenceName;
+		} else if (jid.hasLocalpart()) {
+            return jid.getLocalpart();
 		} else {
-			return jid.getLocalpart();
-		}
+            return jid.getDomainpart();
+        }
 	}
 
 	public String getProfilePhoto() {
