@@ -65,44 +65,33 @@ import eu.siacs.conversations.xmpp.stanzas.streammgmt.ResumePacket;
 
 public class XmppConnection implements Runnable {
 
+	private static final int PACKET_IQ = 0;
+	private static final int PACKET_MESSAGE = 1;
+	private static final int PACKET_PRESENCE = 2;
+	private final Context applicationContext;
 	protected Account account;
-
 	private WakeLock wakeLock;
-
 	private SecureRandom mRandom;
-
 	private Socket socket;
 	private XmlReader tagReader;
 	private TagWriter tagWriter;
-
 	private Features features = new Features(this);
-
 	private boolean shouldBind = true;
 	private boolean shouldAuthenticate = true;
 	private Element streamFeatures;
 	private HashMap<String, List<String>> disco = new HashMap<String, List<String>>();
-
 	private String streamId = null;
 	private int smVersion = 3;
 	private SparseArray<String> messageReceipts = new SparseArray<String>();
-
 	private boolean usingCompression = false;
 	private boolean usingEncryption = false;
-
 	private int stanzasReceived = 0;
 	private int stanzasSent = 0;
-
 	private long lastPaketReceived = 0;
 	private long lastPingSent = 0;
 	private long lastConnect = 0;
 	private long lastSessionStarted = 0;
-
 	private int attempt = 0;
-
-	private static final int PACKET_IQ = 0;
-	private static final int PACKET_MESSAGE = 1;
-	private static final int PACKET_PRESENCE = 2;
-
 	private Hashtable<String, PacketReceived> packetCallbacks = new Hashtable<String, PacketReceived>();
 	private OnPresencePacketReceived presenceListener = null;
 	private OnJinglePacketReceived jingleListener = null;
@@ -112,7 +101,6 @@ public class XmppConnection implements Runnable {
 	private OnBindListener bindListener = null;
 	private OnMessageAcknowledged acknowledgedListener = null;
 	private MemorizingTrustManager mMemorizingTrustManager;
-	private final Context applicationContext;
 
 	public XmppConnection(Account account, XmppConnectionService service) {
 		this.mRandom = service.getRNG();
@@ -569,6 +557,10 @@ public class XmppConnection implements Runnable {
 
 			HostnameVerifier verifier = this.mMemorizingTrustManager
 					.wrapHostnameVerifier(new StrictHostnameVerifier());
+
+			if (socket == null) {
+				throw new IOException("socket was null");
+			}
 			SSLSocket sslSocket = (SSLSocket) factory.createSocket(socket,
 					socket.getInetAddress().getHostAddress(), socket.getPort(),
 					true);
@@ -1055,6 +1047,36 @@ public class XmppConnection implements Runnable {
 		return this.features;
 	}
 
+	public long getLastSessionEstablished() {
+		long diff;
+		if (this.lastSessionStarted == 0) {
+			diff = SystemClock.elapsedRealtime() - this.lastConnect;
+		} else {
+			diff = SystemClock.elapsedRealtime() - this.lastSessionStarted;
+		}
+		return System.currentTimeMillis() - diff;
+	}
+
+	public long getLastConnect() {
+		return this.lastConnect;
+	}
+
+	public long getLastPingSent() {
+		return this.lastPingSent;
+	}
+
+	public long getLastPacketReceived() {
+		return this.lastPaketReceived;
+	}
+
+	public void sendActive() {
+		this.sendPacket(new ActivePacket(), null);
+	}
+
+	public void sendInactive() {
+		this.sendPacket(new InactivePacket(), null);
+	}
+
 	public class Features {
 		XmppConnection connection;
 
@@ -1091,6 +1113,10 @@ public class XmppConnection implements Runnable {
 					"http://jabber.org/protocol/pubsub#publish");
 		}
 
+		public boolean mam() {
+			return hasDiscoFeature(account.getServer(), "urn:xmpp:mam:0");
+		}
+
 		public boolean rosterVersioning() {
 			if (connection.streamFeatures == null) {
 				return false;
@@ -1107,35 +1133,5 @@ public class XmppConnection implements Runnable {
 		public boolean compression() {
 			return connection.usingCompression;
 		}
-	}
-
-	public long getLastSessionEstablished() {
-		long diff;
-		if (this.lastSessionStarted == 0) {
-			diff = SystemClock.elapsedRealtime() - this.lastConnect;
-		} else {
-			diff = SystemClock.elapsedRealtime() - this.lastSessionStarted;
-		}
-		return System.currentTimeMillis() - diff;
-	}
-
-	public long getLastConnect() {
-		return this.lastConnect;
-	}
-
-	public long getLastPingSent() {
-		return this.lastPingSent;
-	}
-
-	public long getLastPacketReceived() {
-		return this.lastPaketReceived;
-	}
-
-	public void sendActive() {
-		this.sendPacket(new ActivePacket(), null);
-	}
-
-	public void sendInactive() {
-		this.sendPacket(new InactivePacket(), null);
 	}
 }
