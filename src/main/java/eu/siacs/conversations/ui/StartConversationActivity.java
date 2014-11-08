@@ -573,7 +573,11 @@ public class StartConversationActivity extends XmppActivity {
 		setIntent(null);
 	}
 
-    @TargetApi(16)
+	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+	Invite getInviteJellyBean(NdefRecord record) {
+		return new Invite(record.toUri());
+	}
+
 	protected boolean handleIntent(Intent intent) {
 		if (intent == null || intent.getAction() == null) {
 			return false;
@@ -589,10 +593,10 @@ public class StartConversationActivity extends XmppActivity {
 						Log.d(Config.LOGTAG, "received message=" + message);
 						for (NdefRecord record : ((NdefMessage)message).getRecords()) {
 							switch (record.getTnf()) {
-                                case NdefRecord.TNF_WELL_KNOWN:
+							case NdefRecord.TNF_WELL_KNOWN:
 								if (Arrays.equals(record.getType(), NdefRecord.RTD_URI)) {
 									if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-										return new Invite(record.toUri()).invite();
+										return getInviteJellyBean(record).invite();
 									} else {
 										byte[] payload = record.getPayload();
 										if (payload[0] == 0) {
