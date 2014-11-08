@@ -28,7 +28,7 @@ public class AvatarService {
 	private static final String PREFIX_ACCOUNT = "account";
 	private static final String PREFIX_GENERIC = "generic";
 
-	private ArrayList<Integer> sizes = new ArrayList<Integer>();
+	final private ArrayList<Integer> sizes = new ArrayList<>();
 
 	protected XmppConnectionService mXmppConnectionService = null;
 
