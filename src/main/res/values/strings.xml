@@ -256,21 +256,29 @@
     <string name="pref_expert_options_summary">Please be careful with these</string>
     <string name="title_activity_about">About Conversations</string>
     <string name="pref_about_conversations_summary">Build and licensing information</string>
-    <string name="pref_about_message">Conversations © 2014 Daniel Gultsch\n
-			\nThis program is free software; you can redistribute it and/or modify it
-			under the terms of the GNU General Public License version 3 as published
-			by the Free Software Foundation.
-			\nhttps://www.gnu.org/licenses/gpl-3.0.html\n
-			\nOpenPGP API is licensed under the Apache License, Version 2.0
-            \nhttps://www.apache.org/licenses/LICENSE-2.0\n
-			\nMinidns © 2014 Rene Treffer and is provided under the WTFPL
-            \nhttp://wtfpl.org\n
-			\nMemorizingTrustManager © 2010 Georg Lukas under the terms of the MIT
-			License
-            \nhttp://opensource.org/licenses/MIT\n
-            \nDownload the full source code at
-            \nhttps://github.com/siacs/Conversations
-			</string>
+    <string name="pref_about_message">
+            Conversations the very last word in instant messaging.
+            \nCopyright © 2014 Daniel Gultsch
+            \n\nThis program is free software: you can redistribute it and/or modify
+            \nit under the terms of the GNU General Public License as published by
+            \nthe Free Software Foundation, either version 3 of the License, or
+            \n(at your option) any later version.
+            \n\nThis program is distributed in the hope that it will be useful,
+            \nbut WITHOUT ANY WARRANTY; without even the implied warranty of
+            \nMERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+            \nGNU General Public License for more details.
+            \n\nYou should have received a copy of the GNU General Public License
+            \nalong with this program. If not, see https://www.gnu.org/licenses
+            \n\nDownload the full source code at https://github.com/siacs/Conversations
+            \n\n\nLibraries
+            \n\nhttps://www.bouncycastle.org\n(The MIT License (MIT))
+            \n\nhttps://github.com/ge0rg/MemorizingTrustManager\n(The MIT License (MIT))
+            \n\nhttps://github.com/rtreffer/minidns\n(WTFPL)
+            \n\nhttps://github.com/open-keychain/openkeychain-api-lib\n(Apache License, Version 2.0)
+            \n\nhttps://github.com/jitsi/otr4j\n(LGPL-3.0)
+            \n\nhttps://developer.android.com/tools/support-library\n(Apache License, Version 2.0)
+            \n\nhttps://github.com/zxing/zxing\n(Apache License, Version 2.0)
+    </string>
     <string name="pref_use_larger_font">Increase font size</string>
     <string name="pref_use_larger_font_summary">Use larger font sizes across the entire app</string>
     <string name="pref_use_send_button_to_indicate_status">Send button indicates status</string>
