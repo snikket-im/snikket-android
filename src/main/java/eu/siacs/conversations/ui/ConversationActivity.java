@@ -31,7 +31,6 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
@@ -684,7 +683,9 @@ public class ConversationActivity extends XmppActivity implements
 			}
 			this.mConversationFragment.reInit(getSelectedConversation());
 			mOpenConverstaion = null;
-		} else if (getSelectedConversation() == null) {
+		} else if (getSelectedConversation() != null) {
+			this.mConversationFragment.updateMessages();
+		} else {
 			showConversationsOverview();
 			mPendingImageUri = null;
 			setSelectedConversation(conversationList.get(0));
