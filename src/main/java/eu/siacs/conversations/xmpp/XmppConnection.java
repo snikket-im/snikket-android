@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.math.BigInteger;
+import java.net.IDN;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -156,7 +157,7 @@ public class XmppConnection implements Runnable {
 				while (socketError && values.size() > i) {
 					Bundle namePort = (Bundle) values.get(i);
 					try {
-						String srvRecordServer = namePort.getString("name");
+						String srvRecordServer = IDN.toASCII(namePort.getString("name"));
 						int srvRecordPort = namePort.getInt("port");
 						String srvIpServer = namePort.getString("ipv4");
 						InetSocketAddress addr;
@@ -363,7 +364,7 @@ public class XmppConnection implements Runnable {
 			nextTag = tagReader.readTag();
 		}
 		if (account.getStatus() == Account.STATUS_ONLINE) {
-			account.setStatus(Account.STATUS_OFFLINE);
+			account. setStatus(Account.STATUS_OFFLINE);
 			if (statusListener != null) {
 				statusListener.onStatusChanged(account);
 			}
