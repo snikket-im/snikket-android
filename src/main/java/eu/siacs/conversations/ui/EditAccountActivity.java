@@ -232,18 +232,6 @@ public class EditAccountActivity extends XmppActivity {
 		});
 	}
 
-	protected boolean inputDataDiffersFromAccount() {
-		if (mAccount == null) {
-			return true;
-		} else {
-			return (!mAccount.getJid().equals(mAccountJid.getText().toString()))
-					|| (!mAccount.getPassword().equals(
-					mPassword.getText().toString()) || mAccount
-					.isOptionSet(Account.OPTION_REGISTER) != mRegisterNew
-					.isChecked());
-		}
-	}
-
 	protected void updateSaveButton() {
 		if (mAccount != null
 				&& mAccount.getStatus() == Account.STATUS_CONNECTING) {
@@ -348,7 +336,8 @@ public class EditAccountActivity extends XmppActivity {
 		if (getIntent() != null) {
             try {
                 this.jidToEdit = Jid.fromString(getIntent().getStringExtra("jid"));
-            } catch (final InvalidJidException ignored) {
+            } catch (final InvalidJidException | NullPointerException ignored) {
+                this.jidToEdit = null;
             }
             if (this.jidToEdit != null) {
 				this.mRegisterNew.setVisibility(View.GONE);
