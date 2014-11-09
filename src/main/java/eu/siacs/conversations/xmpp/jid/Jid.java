@@ -108,9 +108,17 @@ public final class Jid {
 
         // Remove trailling "." before storing the domain part.
         if (dp.endsWith(".")) {
-            domainpart = IDN.toASCII(dp.substring(0, dp.length() - 1), IDN.USE_STD3_ASCII_RULES);
+            try {
+                domainpart = IDN.toASCII(dp.substring(0, dp.length() - 1), IDN.USE_STD3_ASCII_RULES);
+            } catch (final IllegalArgumentException e) {
+                throw new InvalidJidException(e);
+            }
         } else {
-            domainpart = IDN.toASCII(dp, IDN.USE_STD3_ASCII_RULES);
+            try {
+                domainpart = IDN.toASCII(dp, IDN.USE_STD3_ASCII_RULES);
+            } catch (final IllegalArgumentException e) {
+                throw new InvalidJidException(e);
+            }
         }
 
         // TODO: Find a proper domain validation library; validate individual parts, separators, etc.

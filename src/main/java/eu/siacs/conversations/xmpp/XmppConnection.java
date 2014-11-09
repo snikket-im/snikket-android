@@ -157,7 +157,13 @@ public class XmppConnection implements Runnable {
 				while (socketError && values.size() > i) {
 					Bundle namePort = (Bundle) values.get(i);
 					try {
-						String srvRecordServer = IDN.toASCII(namePort.getString("name"));
+						String srvRecordServer;
+                        try {
+                            srvRecordServer=IDN.toASCII(namePort.getString("name"));
+                        } catch (final IllegalArgumentException e) {
+                            // TODO: Handle me?`
+                            srvRecordServer = "";
+                        }
 						int srvRecordPort = namePort.getInt("port");
 						String srvIpServer = namePort.getString("ipv4");
 						InetSocketAddress addr;
