@@ -23,7 +23,7 @@ public class MessageParser extends AbstractParser implements
 	}
 
 	private Message parseChat(MessagePacket packet, Account account) {
-        final Jid jid = packet.getFrom().toBareJid();
+        final Jid jid = packet.getFrom();
 		Conversation conversation = mXmppConnectionService
 				.findOrCreateConversation(account, jid.toBareJid(), false);
 		updateLastseen(packet, account, true);
@@ -42,7 +42,6 @@ public class MessageParser extends AbstractParser implements
 		if (conversation.getMode() == Conversation.MODE_MULTI
 				&& !jid.isBareJid()) {
 			finishedMessage.setType(Message.TYPE_PRIVATE);
-			finishedMessage.setCounterpart(packet.getFrom());
 			finishedMessage.setTrueCounterpart(conversation.getMucOptions()
 					.getTrueCounterpart(jid.getResourcepart()));
 			if (conversation.hasDuplicateMessage(finishedMessage)) {
@@ -50,6 +49,7 @@ public class MessageParser extends AbstractParser implements
 			}
 
 		}
+		finishedMessage.setCounterpart(jid);
 		finishedMessage.setTime(getTimestamp(packet));
 		return finishedMessage;
 	}
