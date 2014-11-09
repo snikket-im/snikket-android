@@ -40,7 +40,7 @@ public class MessageParser extends AbstractParser implements
 		finishedMessage.setRemoteMsgId(packet.getId());
 		finishedMessage.markable = isMarkable(packet);
 		if (conversation.getMode() == Conversation.MODE_MULTI
-				&& !jid.getResourcepart().isEmpty()) {
+				&& !jid.isBareJid()) {
 			finishedMessage.setType(Message.TYPE_PRIVATE);
 			finishedMessage.setCounterpart(packet.getFrom());
 			finishedMessage.setTrueCounterpart(conversation.getMucOptions()

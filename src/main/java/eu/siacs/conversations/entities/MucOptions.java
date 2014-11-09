@@ -244,7 +244,7 @@ public class MucOptions {
 				&& conversation.getBookmark().getNick() != null) {
 			return conversation.getBookmark().getNick();
 		} else {
-			if (!conversation.getContactJid().getResourcepart().isEmpty()) {
+			if (!conversation.getContactJid().isBareJid()) {
 				return conversation.getContactJid().getResourcepart();
 			} else {
 				return account.getUsername();
