@@ -69,7 +69,7 @@ public abstract class AbstractParser {
             // TODO: Handle this?
             from = null;
         }
-        String presence = from == null || from.getResourcepart().isEmpty() ? "" : from.getResourcepart();
+        String presence = from == null || from.isBareJid() ? "" : from.getResourcepart();
 		Contact contact = account.getRoster().getContact(from);
 		long timestamp = getTimestamp(packet);
 		if (timestamp >= contact.lastseen.time) {

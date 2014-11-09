@@ -56,7 +56,7 @@ public class PresenceParser extends AbstractParser implements
         final Jid from = packet.getFrom();
 		String type = packet.getAttribute("type");
 		if (from.toBareJid().equals(account.getJid().toBareJid())) {
-			if (!from.getResourcepart().isEmpty()) {
+			if (!from.isBareJid()) {
 				if (type == null) {
 					account.updatePresence(from.getResourcepart(),
 							Presences.parseShow(packet.findChild("show")));
@@ -69,7 +69,7 @@ public class PresenceParser extends AbstractParser implements
 			Contact contact = account.getRoster().getContact(packet.getFrom());
 			if (type == null) {
 				String presence;
-				if (!from.getResourcepart().isEmpty()) {
+				if (!from.isBareJid()) {
 					presence = from.getResourcepart();
 				} else {
 					presence = "";

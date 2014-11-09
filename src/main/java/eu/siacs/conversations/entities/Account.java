@@ -83,7 +83,7 @@ public class Account extends AbstractEntity {
 				   final String avatar) {
 		this.uuid = uuid;
 		this.jid = jid;
-		if (jid.getResourcepart().isEmpty()) {
+		if (jid.isBareJid()) {
 			this.setResource("mobile");
 		}
 		this.password = password;
