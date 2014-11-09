@@ -11,20 +11,25 @@ public class AbstractStanza extends Element {
 	}
 
 	public Jid getTo() {
-        try {
-            return Jid.fromString(getAttribute("to"));
-        } catch (final InvalidJidException e) {
-            return null;
-        }
-    }
+		try {
+			return Jid.fromString(getAttribute("to"));
+		} catch (final InvalidJidException e) {
+			return null;
+		}
+	}
 
 	public Jid getFrom() {
-        try {
-            return Jid.fromString(getAttribute("from"));
-        } catch (final InvalidJidException e) {
-            return null;
-        }
-    }
+		String from = getAttribute("from");
+		if (from == null) {
+			return null;
+		} else {
+			try {
+				return Jid.fromString(from);
+			} catch (final InvalidJidException e) {
+				return null;
+			}
+		}
+	}
 
 	public String getId() {
 		return this.getAttribute("id");
