@@ -23,7 +23,6 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -38,7 +37,6 @@ import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.X509TrustManager;
 
-import de.duenndns.ssl.MemorizingTrustManager;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.services.XmppConnectionService;
@@ -71,7 +69,6 @@ public class XmppConnection implements Runnable {
 	private final Context applicationContext;
 	protected Account account;
 	private WakeLock wakeLock;
-	private SecureRandom mRandom;
 	private Socket socket;
 	private XmlReader tagReader;
 	private TagWriter tagWriter;
@@ -100,15 +97,14 @@ public class XmppConnection implements Runnable {
 	private OnStatusChanged statusListener = null;
 	private OnBindListener bindListener = null;
 	private OnMessageAcknowledged acknowledgedListener = null;
-	private MemorizingTrustManager mMemorizingTrustManager;
+	private XmppConnectionService mXmppConnectionService = null;
 
 	public XmppConnection(Account account, XmppConnectionService service) {
-		this.mRandom = service.getRNG();
-		this.mMemorizingTrustManager = service.getMemorizingTrustManager();
 		this.account = account;
 		this.wakeLock = service.getPowerManager().newWakeLock(
 				PowerManager.PARTIAL_WAKE_LOCK, account.getJid());
 		tagWriter = new TagWriter();
+		mXmppConnectionService = service;
 		applicationContext = service.getApplicationContext();
 	}
 
@@ -298,7 +294,7 @@ public class XmppConnection implements Runnable {
 				response.setAttribute("xmlns",
 						"urn:ietf:params:xml:ns:xmpp-sasl");
 				response.setContent(CryptoHelper.saslDigestMd5(account,
-						challange, mRandom));
+						challange, mXmppConnectionService.getRNG()));
 				tagWriter.writeElement(response);
 			} else if (nextTag.isStart("enabled")) {
 				Element enabled = tagReader.readElement(nextTag);
@@ -547,16 +543,15 @@ public class XmppConnection implements Runnable {
 		try {
 			SSLContext sc = SSLContext.getInstance("TLS");
 			sc.init(null,
-					new X509TrustManager[]{this.mMemorizingTrustManager},
-					mRandom);
+					new X509TrustManager[]{this.mXmppConnectionService.getMemorizingTrustManager()},
+					mXmppConnectionService.getRNG());
 			SSLSocketFactory factory = sc.getSocketFactory();
 
 			if (factory == null) {
 				throw new IOException("SSLSocketFactory was null");
 			}
 
-			HostnameVerifier verifier = this.mMemorizingTrustManager
-					.wrapHostnameVerifier(new StrictHostnameVerifier());
+			HostnameVerifier verifier = this.mXmppConnectionService.getMemorizingTrustManager().wrapHostnameVerifier(new StrictHostnameVerifier());
 
 			if (socket == null) {
 				throw new IOException("socket was null");
@@ -879,7 +874,7 @@ public class XmppConnection implements Runnable {
 	}
 
 	private String nextRandomId() {
-		return new BigInteger(50, mRandom).toString(32);
+		return new BigInteger(50, mXmppConnectionService.getRNG()).toString(32);
 	}
 
 	public void sendIqPacket(IqPacket packet, OnIqPacketReceived callback) {
