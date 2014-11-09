@@ -1,5 +1,8 @@
 package eu.siacs.conversations.entities;
 
+import android.content.ContentValues;
+import android.database.Cursor;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
@@ -7,9 +10,6 @@ import java.util.Arrays;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
-
-import android.content.ContentValues;
-import android.database.Cursor;
 
 public class Message extends AbstractEntity {
 
@@ -45,7 +45,7 @@ public class Message extends AbstractEntity {
 	public static String STATUS = "status";
 	public static String TYPE = "type";
 	public static String REMOTE_MSG_ID = "remoteMsgId";
-
+	public boolean markable = false;
 	protected String conversationUuid;
 	protected Jid counterpart;
 	protected String trueCounterpart;
@@ -57,11 +57,8 @@ public class Message extends AbstractEntity {
 	protected int type;
 	protected boolean read = true;
 	protected String remoteMsgId = null;
-
 	protected Conversation conversation = null;
 	protected Downloadable downloadable = null;
-	public boolean markable = false;
-
 	private Message mNextMessage = null;
 	private Message mPreviousMessage = null;
 
@@ -78,7 +75,7 @@ public class Message extends AbstractEntity {
 	}
 
 	public Message(final Conversation conversation, final Jid counterpart, final String body,
-			final int encryption, final int status) {
+				   final int encryption, final int status) {
 		this(java.util.UUID.randomUUID().toString(), conversation.getUuid(),
 				counterpart, null, body, System.currentTimeMillis(),
 				encryption, status, TYPE_TEXT, null);
@@ -86,8 +83,8 @@ public class Message extends AbstractEntity {
 	}
 
 	public Message(final String uuid, final String conversationUUid, final Jid counterpart,
-			final String trueCounterpart, final String body, final long timeSent,
-            final int encryption, final int status, final int type, final String remoteMsgId) {
+				   final String trueCounterpart, final String body, final long timeSent,
+				   final int encryption, final int status, final int type, final String remoteMsgId) {
 		this.uuid = uuid;
 		this.conversationUuid = conversationUUid;
 		this.counterpart = counterpart;
@@ -100,12 +97,42 @@ public class Message extends AbstractEntity {
 		this.remoteMsgId = remoteMsgId;
 	}
 
+	public static Message fromCursor(Cursor cursor) {
+		Jid jid;
+		try {
+			jid = Jid.fromString(cursor.getString(cursor.getColumnIndex(COUNTERPART)));
+		} catch (InvalidJidException e) {
+			jid = null;
+		}
+		return new Message(cursor.getString(cursor.getColumnIndex(UUID)),
+				cursor.getString(cursor.getColumnIndex(CONVERSATION)),
+				jid,
+				cursor.getString(cursor.getColumnIndex(TRUE_COUNTERPART)),
+				cursor.getString(cursor.getColumnIndex(BODY)),
+				cursor.getLong(cursor.getColumnIndex(TIME_SENT)),
+				cursor.getInt(cursor.getColumnIndex(ENCRYPTION)),
+				cursor.getInt(cursor.getColumnIndex(STATUS)),
+				cursor.getInt(cursor.getColumnIndex(TYPE)),
+				cursor.getString(cursor.getColumnIndex(REMOTE_MSG_ID)));
+	}
+
+	public static Message createStatusMessage(Conversation conversation) {
+		Message message = new Message();
+		message.setType(Message.TYPE_STATUS);
+		message.setConversation(conversation);
+		return message;
+	}
+
 	@Override
 	public ContentValues getContentValues() {
 		ContentValues values = new ContentValues();
 		values.put(UUID, uuid);
 		values.put(CONVERSATION, conversationUuid);
-		values.put(COUNTERPART, counterpart.toString());
+		if (counterpart == null) {
+			values.putNull(COUNTERPART);
+		} else {
+			values.put(COUNTERPART, counterpart.toString());
+		}
 		values.put(TRUE_COUNTERPART, trueCounterpart);
 		values.put(BODY, body);
 		values.put(TIME_SENT, timeSent);
@@ -124,8 +151,16 @@ public class Message extends AbstractEntity {
 		return this.conversation;
 	}
 
+	public void setConversation(Conversation conv) {
+		this.conversation = conv;
+	}
+
 	public Jid getCounterpart() {
 		return counterpart;
+	}
+
+	public void setCounterpart(final Jid counterpart) {
+		this.counterpart = counterpart;
 	}
 
 	public Contact getContact() {
@@ -145,6 +180,10 @@ public class Message extends AbstractEntity {
 		return body;
 	}
 
+	public void setBody(String body) {
+		this.body = body;
+	}
+
 	public long getTimeSent() {
 		return timeSent;
 	}
@@ -153,8 +192,16 @@ public class Message extends AbstractEntity {
 		return encryption;
 	}
 
+	public void setEncryption(int encryption) {
+		this.encryption = encryption;
+	}
+
 	public int getStatus() {
 		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
 	}
 
 	public String getRemoteMsgId() {
@@ -163,33 +210,6 @@ public class Message extends AbstractEntity {
 
 	public void setRemoteMsgId(String id) {
 		this.remoteMsgId = id;
-	}
-
-	public static Message fromCursor(Cursor cursor) {
-        Jid jid;
-        try {
-            jid = Jid.fromString(cursor.getString(cursor.getColumnIndex(COUNTERPART)));
-        } catch (InvalidJidException e) {
-            jid = null;
-        }
-        return new Message(cursor.getString(cursor.getColumnIndex(UUID)),
-				cursor.getString(cursor.getColumnIndex(CONVERSATION)),
-				jid,
-				cursor.getString(cursor.getColumnIndex(TRUE_COUNTERPART)),
-				cursor.getString(cursor.getColumnIndex(BODY)),
-				cursor.getLong(cursor.getColumnIndex(TIME_SENT)),
-				cursor.getInt(cursor.getColumnIndex(ENCRYPTION)),
-				cursor.getInt(cursor.getColumnIndex(STATUS)),
-				cursor.getInt(cursor.getColumnIndex(TYPE)),
-				cursor.getString(cursor.getColumnIndex(REMOTE_MSG_ID)));
-	}
-
-	public void setConversation(Conversation conv) {
-		this.conversation = conv;
-	}
-
-	public void setStatus(int status) {
-		this.status = status;
 	}
 
 	public boolean isRead() {
@@ -208,14 +228,6 @@ public class Message extends AbstractEntity {
 		this.timeSent = time;
 	}
 
-	public void setEncryption(int encryption) {
-		this.encryption = encryption;
-	}
-
-	public void setBody(String body) {
-		this.body = body;
-	}
-
 	public String getEncryptedBody() {
 		return this.encryptedBody;
 	}
@@ -224,35 +236,24 @@ public class Message extends AbstractEntity {
 		this.encryptedBody = body;
 	}
 
-	public void setType(int type) {
-		this.type = type;
-	}
-
 	public int getType() {
 		return this.type;
+	}
+
+	public void setType(int type) {
+		this.type = type;
 	}
 
 	public void setTrueCounterpart(String trueCounterpart) {
 		this.trueCounterpart = trueCounterpart;
 	}
 
-	public void setDownloadable(Downloadable downloadable) {
-		this.downloadable = downloadable;
-	}
-
 	public Downloadable getDownloadable() {
 		return this.downloadable;
 	}
 
-	public static Message createStatusMessage(Conversation conversation) {
-		Message message = new Message();
-		message.setType(Message.TYPE_STATUS);
-		message.setConversation(conversation);
-		return message;
-	}
-
-	public void setCounterpart(final Jid counterpart) {
-		this.counterpart = counterpart;
+	public void setDownloadable(Downloadable downloadable) {
+		this.downloadable = downloadable;
 	}
 
 	public boolean equals(Message message) {
@@ -314,7 +315,7 @@ public class Message extends AbstractEntity {
 				.getStatus() == Message.STATUS_SEND_RECEIVED) && (message
 				.getStatus() == Message.STATUS_UNSEND
 				|| message.getStatus() == Message.STATUS_SEND || message
-					.getStatus() == Message.STATUS_SEND_DISPLAYED))))
+				.getStatus() == Message.STATUS_SEND_DISPLAYED))))
 				&& !message.bodyContainsDownloadable()
 				&& !this.bodyContainsDownloadable());
 	}
@@ -347,9 +348,9 @@ public class Message extends AbstractEntity {
 
 	public boolean wasMergedIntoPrevious() {
 		Message prev = this.prev();
-        return prev != null && prev.mergeable(this);
+		return prev != null && prev.mergeable(this);
 	}
-	
+
 	public boolean trusted() {
 		Contact contact = this.getContact();
 		return (status > STATUS_RECEIVED || (contact != null && contact.trusted()));
@@ -375,14 +376,14 @@ public class Message extends AbstractEntity {
 			String[] extensionParts = filename.split("\\.");
 			if (extensionParts.length == 2
 					&& Arrays.asList(Downloadable.VALID_EXTENSIONS).contains(
-							extensionParts[extensionParts.length - 1])) {
+					extensionParts[extensionParts.length - 1])) {
 				return true;
 			} else if (extensionParts.length == 3
 					&& Arrays
-							.asList(Downloadable.VALID_CRYPTO_EXTENSIONS)
-							.contains(extensionParts[extensionParts.length - 1])
+					.asList(Downloadable.VALID_CRYPTO_EXTENSIONS)
+					.contains(extensionParts[extensionParts.length - 1])
 					&& Arrays.asList(Downloadable.VALID_EXTENSIONS).contains(
-							extensionParts[extensionParts.length - 2])) {
+					extensionParts[extensionParts.length - 2])) {
 				return true;
 			} else {
 				return false;
@@ -394,7 +395,7 @@ public class Message extends AbstractEntity {
 
 	public ImageParams getImageParams() {
 		ImageParams params = getLegacyImageParams();
-		if (params!=null) {
+		if (params != null) {
 			return params;
 		}
 		params = new ImageParams();
@@ -457,7 +458,7 @@ public class Message extends AbstractEntity {
 		}
 		return params;
 	}
-	
+
 	public ImageParams getLegacyImageParams() {
 		ImageParams params = new ImageParams();
 		if (body == null) {

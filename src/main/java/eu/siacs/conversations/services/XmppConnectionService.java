@@ -585,19 +585,21 @@ public class XmppConnectionService extends Service {
 					if (!conv.hasValidOtrSession()&& (message.getCounterpart() != null)) {
 						conv.startOtrSession(this, message.getCounterpart().getResourcepart(), true);
 						message.setStatus(Message.STATUS_WAITING);
-					} else if (conv.hasValidOtrSession()
-							&& conv.getOtrSession().getSessionStatus() == SessionStatus.ENCRYPTED) {
+					} else if (conv.hasValidOtrSession()) {
 						SessionID id = conv.getOtrSession().getSessionID();
 						try {
 							message.setCounterpart(Jid.fromString(id.getAccountID() + "/" + id.getUserID()));
 						} catch (final InvalidJidException e) {
 							message.setCounterpart(null);
 						}
-						packet = mMessageGenerator.generateOtrChat(message);
-						send = true;
-
-					} else if (message.getCounterpart() == null) {
-						conv.startOtrIfNeeded();
+						if (conv.getOtrSession().getSessionStatus() == SessionStatus.ENCRYPTED) {
+							packet = mMessageGenerator.generateOtrChat(message);
+							send = true;
+						} else {
+							message.setStatus(Message.STATUS_WAITING);
+							conv.startOtrIfNeeded();
+						}
+					} else {
 						message.setStatus(Message.STATUS_WAITING);
 					}
 				} else if (message.getEncryption() == Message.ENCRYPTION_DECRYPTED) {
