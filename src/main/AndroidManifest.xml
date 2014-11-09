@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="eu.siacs.conversations">
+<manifest
+    package="eu.siacs.conversations"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -112,7 +113,10 @@
                 <data android:mimeType="image/*" />
             </intent-filter>
         </activity>
-        <activity android:name="de.duenndns.ssl.MemorizingActivity" />
+        <activity
+            android:name="de.duenndns.ssl.MemorizingActivity"
+            android:theme="@style/ConversationsTheme"
+            tools:replace="android:theme"/>
         <activity
             android:name=".ui.AboutActivity"
             android:label="@string/title_activity_about"
