@@ -1,5 +1,9 @@
 ###Changelog
 
+####Version 0.8.3
+* increased UI performance
+* fixed rotation bugs
+
 ####Version 0.8.2
 * Share contacts via QR codes or NFC
 * Slightly improved UI
