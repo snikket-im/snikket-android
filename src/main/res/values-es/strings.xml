@@ -254,6 +254,23 @@
     <string name="pref_enable_legacy_ssl_summary">Habilita soporte SSLv3 para servidores heredados. Advertencia: SSLv3 se considera no seguro.</string>
     <string name="pref_expert_options">Ajustes avanzados</string>
     <string name="pref_expert_options_summary">Por favor, cuidado con estas opciones</string>
+    <string name="title_activity_about">About Conversations</string>
+    <string name="pref_about_conversations_summary">Build and licensing information</string>
+    <string name="pref_about_message">Conversations © 2014 Daniel Gultsch\n
+        \nThis program is free software; you can redistribute it and/or modify it
+        under the terms of the GNU General Public License version 3 as published
+        by the Free Software Foundation.
+        \nhttps://www.gnu.org/licenses/gpl-3.0.html\n
+        \nOpenPGP API is licensed under the Apache License, Version 2.0
+        \nhttps://www.apache.org/licenses/LICENSE-2.0\n
+        \nMinidns © 2014 Rene Treffer and is provided under the WTFPL
+        \nhttp://wtfpl.org\n
+        \nMemorizingTrustManager © 2010 Georg Lukas under the terms of the MIT
+        License
+        \nhttp://opensource.org/licenses/MIT\n
+        \nDownload the full source code at
+        \nhttps://github.com/siacs/Conversations
+    </string>
     <string name="pref_use_larger_font">Incrementar tamaño de fuente</string>
     <string name="pref_use_larger_font_summary">Usar fuentes grandes en toda la aplicación</string>
     <string name="pref_use_send_button_to_indicate_status">Botón enviar indica estado</string>
@@ -281,5 +298,8 @@
     <string name="message_text">Mensaje de texto</string>
     <string name="url_copied_to_clipboard">URL copiada al portapapeles</string>
     <string name="message_copied_to_clipboard">Mensaje copiado al portapapeles</string>
-
+    <string name="image_transmission_failed">Falló la transmisión de la imagen</string>
+    <string name="scan_qr_code">Escanear código QR</string>
+    <string name="show_qr_code">Mostrar código QR</string>
+    <string name="account_details">Detalles de la cuenta</string>
 </resources>
