@@ -307,6 +307,7 @@ public class Message extends AbstractEntity {
 				&& message.getEncryption() != Message.ENCRYPTION_PGP
 				&& this.getType() == message.getType()
 				&& this.getEncryption() == message.getEncryption()
+				&& this.getCounterpart() != null
 				&& this.getCounterpart().equals(message.getCounterpart())
 				&& (message.getTimeSent() - this.getTimeSent()) <= (Config.MESSAGE_MERGE_WINDOW * 1000) && ((this
 				.getStatus() == message.getStatus() || ((this.getStatus() == Message.STATUS_SEND || this
