@@ -280,10 +280,11 @@ public class ConversationFragment extends Fragment {
 						if (message.getStatus() <= Message.STATUS_RECEIVED) {
 							if (message.getConversation().getMode() == Conversation.MODE_MULTI) {
 								if (message.getCounterpart() != null) {
-									highlightInConference(message.getCounterpart().getResourcepart());
-								} else {
-									highlightInConference(message
-											.getContact().getDisplayName());
+									if (!message.getCounterpart().getResourcepart().isEmpty()) {
+										highlightInConference(message.getCounterpart().getResourcepart());
+									} else {
+										highlightInConference(message.getCounterpart().toString());
+									}
 								}
 							} else {
 								Contact contact = message.getConversation()

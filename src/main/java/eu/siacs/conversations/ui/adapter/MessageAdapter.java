@@ -135,10 +135,8 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 				Contact contact = message.getContact();
 				if (contact != null) {
 					info = contact.getDisplayName();
-				} else if (message.getCounterpart() != null) {
-					info = message.getCounterpart().getResourcepart();
 				} else {
-					info = "";
+					info = getDisplayedMucCounterpart(message.getCounterpart());
 				}
 			}
 			break;
@@ -303,6 +301,16 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		viewHolder.image.setOnLongClickListener(openContextMenu);
 	}
 
+	private String getDisplayedMucCounterpart(final Jid counterpart) {
+		if (counterpart==null) {
+			return "";
+		} else if (!counterpart.getResourcepart().isEmpty()) {
+			return counterpart.getResourcepart();
+		} else {
+			return counterpart.toString();
+		}
+	}
+
 	@Override
 	public View getView(int position, View view, ViewGroup parent) {
 		final Message item = getItem(position);
@@ -411,7 +419,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 			if (contact != null) {
 				viewHolder.contact_picture.setImageBitmap(activity.avatarService().get(contact, activity.getPixel(48)));
 			} else if (item.getConversation().getMode() == Conversation.MODE_MULTI) {
-				viewHolder.contact_picture.setImageBitmap(activity.avatarService().get(item.getCounterpart().getResourcepart(),
+				viewHolder.contact_picture.setImageBitmap(activity.avatarService().get(getDisplayedMucCounterpart(item.getCounterpart()),
                         activity.getPixel(48)));
 			}
 		} else if (type == SENT) {
