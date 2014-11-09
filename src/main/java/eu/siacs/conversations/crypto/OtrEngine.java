@@ -153,7 +153,7 @@ public class OtrEngine implements OtrEngineHost {
 	public void injectMessage(SessionID session, String body)
 			throws OtrException {
 		MessagePacket packet = new MessagePacket();
-		packet.setFrom(account.getFullJid());
+		packet.setFrom(account.getJid());
 		if (session.getUserID().isEmpty()) {
 			packet.setAttribute("to", session.getAccountID());
 		} else {

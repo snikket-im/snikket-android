@@ -205,7 +205,7 @@ public class EditAccountActivity extends XmppActivity {
 			if (mAccount!=null) {
 				Intent intent = new Intent(getApplicationContext(),
 						PublishProfilePictureActivity.class);
-				intent.putExtra("account", mAccount.getJid().toString());
+				intent.putExtra("account", mAccount.getJid().toBareJid().toString());
 				startActivity(intent);
 			}
 		}
@@ -223,7 +223,7 @@ public class EditAccountActivity extends XmppActivity {
 				} else {
 					intent = new Intent(getApplicationContext(),
 							PublishProfilePictureActivity.class);
-					intent.putExtra("account", mAccount.getJid().toString());
+					intent.putExtra("account", mAccount.getJid().toBareJid().toString());
 					intent.putExtra("setup", true);
 				}
 				startActivity(intent);
@@ -264,7 +264,7 @@ public class EditAccountActivity extends XmppActivity {
 	}
 
 	protected boolean accountInfoEdited() {
-		return (!this.mAccount.getJid().equals(
+		return (!this.mAccount.getJid().toBareJid().equals(
 				this.mAccountJid.getText().toString()))
 				|| (!this.mAccount.getPassword().equals(
 				this.mPassword.getText().toString()));
@@ -273,7 +273,7 @@ public class EditAccountActivity extends XmppActivity {
 	@Override
 	protected String getShareableUri() {
 		if (mAccount!=null) {
-			return "xmpp:"+mAccount.getJid();
+			return "xmpp:"+mAccount.getJid().toBareJid();
 		} else {
 			return "";
 		}
@@ -378,7 +378,7 @@ public class EditAccountActivity extends XmppActivity {
 	}
 
 	private void updateAccountInformation() {
-		this.mAccountJid.setText(this.mAccount.getJid().toString());
+		this.mAccountJid.setText(this.mAccount.getJid().toBareJid().toString());
 		this.mPassword.setText(this.mAccount.getPassword());
 		if (this.jidToEdit != null) {
 			this.mAvatar.setVisibility(View.VISIBLE);

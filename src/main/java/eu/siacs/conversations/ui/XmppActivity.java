@@ -277,14 +277,14 @@ public abstract class XmppActivity extends Activity {
 	public void switchToContactDetails(Contact contact) {
 		Intent intent = new Intent(this, ContactDetailsActivity.class);
 		intent.setAction(ContactDetailsActivity.ACTION_VIEW_CONTACT);
-		intent.putExtra("account", contact.getAccount().getJid().toString());
+		intent.putExtra("account", contact.getAccount().getJid().toBareJid().toString());
 		intent.putExtra("contact", contact.getJid().toString());
 		startActivity(intent);
 	}
 
 	public void switchToAccount(Account account) {
 		Intent intent = new Intent(this, EditAccountActivity.class);
-		intent.putExtra("jid", account.getJid().toString());
+		intent.putExtra("jid", account.getJid().toBareJid().toString());
 		startActivity(intent);
 	}
 

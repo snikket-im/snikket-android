@@ -75,7 +75,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
 
 	public void getPrimaryCandidate(Account account,
 			final OnPrimaryCandidateFound listener) {
-		if (!this.primaryCandidates.containsKey(account.getJid())) {
+		if (!this.primaryCandidates.containsKey(account.getJid().toBareJid())) {
 			String xmlns = "http://jabber.org/protocol/bytestreams";
 			final String proxy = account.getXmppConnection()
 					.findDiscoItemByFeature(xmlns);
@@ -109,7 +109,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                                         candidate.setJid(null);
                                     }
                                     candidate.setPriority(655360 + 65535);
-									primaryCandidates.put(account.getJid(),
+									primaryCandidates.put(account.getJid().toBareJid(),
 											candidate);
 									listener.onPrimaryCandidateFound(true,
 											candidate);
@@ -125,7 +125,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
 
 		} else {
 			listener.onPrimaryCandidateFound(true,
-					this.primaryCandidates.get(account.getJid()));
+					this.primaryCandidates.get(account.getJid().toBareJid()));
 		}
 	}
 

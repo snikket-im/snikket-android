@@ -90,7 +90,7 @@ public class ExceptionHelper {
 						public void onClick(DialogInterface dialog, int which) {
 
 							Log.d(Config.LOGTAG, "using account="
-									+ finalAccount.getJid()
+									+ finalAccount.getJid().toBareJid()
 									+ " to send in stack trace");
                             Conversation conversation = null;
                             try {

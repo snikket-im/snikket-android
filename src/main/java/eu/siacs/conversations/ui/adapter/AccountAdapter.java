@@ -31,7 +31,7 @@ public class AccountAdapter extends ArrayAdapter<Account> {
 			view = inflater.inflate(R.layout.account_row, parent, false);
 		}
 		TextView jid = (TextView) view.findViewById(R.id.account_jid);
-		jid.setText(account.getJid().toString());
+		jid.setText(account.getJid().toBareJid().toString());
 		TextView statusView = (TextView) view.findViewById(R.id.account_status);
 		ImageView imageView = (ImageView) view.findViewById(R.id.account_image);
 		imageView.setImageBitmap(activity.avatarService().get(account,

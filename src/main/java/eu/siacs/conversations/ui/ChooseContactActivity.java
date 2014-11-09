@@ -99,7 +99,7 @@ public class ChooseContactActivity extends XmppActivity {
 				data.putExtra("contact", mListItem.getJid().toString());
 				String account = request.getStringExtra("account");
 				if (account == null && mListItem instanceof Contact) {
-					account = ((Contact) mListItem).getAccount().getJid().toString();
+					account = ((Contact) mListItem).getAccount().getJid().toBareJid().toString();
 				}
 				data.putExtra("account", account);
 				data.putExtra("conversation",

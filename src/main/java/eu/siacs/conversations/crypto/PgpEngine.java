@@ -41,7 +41,7 @@ public class PgpEngine {
 		Intent params = new Intent();
 		params.setAction(OpenPgpApi.ACTION_DECRYPT_VERIFY);
 		params.putExtra(OpenPgpApi.EXTRA_ACCOUNT_NAME, message
-				.getConversation().getAccount().getJid().toString());
+				.getConversation().getAccount().getJid().toBareJid().toString());
 		if (message.getType() == Message.TYPE_TEXT) {
 			InputStream is = new ByteArrayInputStream(message.getBody()
 					.getBytes());
@@ -156,7 +156,7 @@ public class PgpEngine {
 					.getMucOptions().getPgpKeyIds());
 		}
 		params.putExtra(OpenPgpApi.EXTRA_ACCOUNT_NAME, message
-				.getConversation().getAccount().getJid().toString());
+				.getConversation().getAccount().getJid().toBareJid().toString());
 
 		if (message.getType() == Message.TYPE_TEXT) {
 			params.putExtra(OpenPgpApi.EXTRA_REQUEST_ASCII_ARMOR, true);
@@ -257,7 +257,7 @@ public class PgpEngine {
 		Intent params = new Intent();
 		params.setAction(OpenPgpApi.ACTION_DECRYPT_VERIFY);
 		params.putExtra(OpenPgpApi.EXTRA_REQUEST_ASCII_ARMOR, true);
-		params.putExtra(OpenPgpApi.EXTRA_ACCOUNT_NAME, account.getJid().toString());
+		params.putExtra(OpenPgpApi.EXTRA_ACCOUNT_NAME, account.getJid().toBareJid().toString());
 		InputStream is = new ByteArrayInputStream(pgpSig.toString().getBytes());
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
 		Intent result = api.executeApi(params, is, os);
@@ -284,7 +284,7 @@ public class PgpEngine {
 		Intent params = new Intent();
 		params.putExtra(OpenPgpApi.EXTRA_REQUEST_ASCII_ARMOR, true);
 		params.setAction(OpenPgpApi.ACTION_SIGN);
-		params.putExtra(OpenPgpApi.EXTRA_ACCOUNT_NAME, account.getJid().toString());
+		params.putExtra(OpenPgpApi.EXTRA_ACCOUNT_NAME, account.getJid().toBareJid().toString());
 		InputStream is = new ByteArrayInputStream(status.getBytes());
 		final OutputStream os = new ByteArrayOutputStream();
 		api.executeApiAsync(params, is, os, new IOpenPgpCallback() {
@@ -336,7 +336,7 @@ public class PgpEngine {
 		params.setAction(OpenPgpApi.ACTION_GET_KEY);
 		params.putExtra(OpenPgpApi.EXTRA_KEY_ID, contact.getPgpKeyId());
 		params.putExtra(OpenPgpApi.EXTRA_ACCOUNT_NAME, contact.getAccount()
-				.getJid().toString());
+				.getJid().toBareJid().toString());
 		api.executeApiAsync(params, null, null, new IOpenPgpCallback() {
 
 			@Override
@@ -362,7 +362,7 @@ public class PgpEngine {
 		params.setAction(OpenPgpApi.ACTION_GET_KEY);
 		params.putExtra(OpenPgpApi.EXTRA_KEY_ID, contact.getPgpKeyId());
 		params.putExtra(OpenPgpApi.EXTRA_ACCOUNT_NAME, contact.getAccount()
-				.getJid().toString());
+				.getJid().toBareJid().toString());
 		Intent result = api.executeApi(params, null, null);
 		return (PendingIntent) result
 				.getParcelableExtra(OpenPgpApi.RESULT_INTENT);
@@ -372,7 +372,7 @@ public class PgpEngine {
 		Intent params = new Intent();
 		params.setAction(OpenPgpApi.ACTION_GET_KEY);
 		params.putExtra(OpenPgpApi.EXTRA_KEY_ID, pgpKeyId);
-		params.putExtra(OpenPgpApi.EXTRA_ACCOUNT_NAME, account.getJid().toString());
+		params.putExtra(OpenPgpApi.EXTRA_ACCOUNT_NAME, account.getJid().toBareJid().toString());
 		Intent result = api.executeApi(params, null, null);
 		return (PendingIntent) result
 				.getParcelableExtra(OpenPgpApi.RESULT_INTENT);
