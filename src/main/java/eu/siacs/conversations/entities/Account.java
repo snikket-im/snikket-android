@@ -1,14 +1,18 @@
 package eu.siacs.conversations.entities;
 
-import java.security.interfaces.DSAPublicKey;
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.os.SystemClock;
 
 import net.java.otr4j.crypto.OtrCryptoEngineImpl;
 import net.java.otr4j.crypto.OtrCryptoException;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.security.interfaces.DSAPublicKey;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
@@ -17,10 +21,6 @@ import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
-
-import android.content.ContentValues;
-import android.database.Cursor;
-import android.os.SystemClock;
 
 public class Account extends AbstractEntity {
 
@@ -51,7 +51,8 @@ public class Account extends AbstractEntity {
 	public static final int STATUS_REGISTRATION_CONFLICT = 8;
 	public static final int STATUS_REGISTRATION_SUCCESSFULL = 9;
 	public static final int STATUS_REGISTRATION_NOT_SUPPORTED = 10;
-
+	public List<Conversation> pendingConferenceJoins = new CopyOnWriteArrayList<>();
+	public List<Conversation> pendingConferenceLeaves = new CopyOnWriteArrayList<>();
 	protected Jid jid;
 	protected String password;
 	protected int options = 0;
@@ -59,19 +60,14 @@ public class Account extends AbstractEntity {
 	protected int status = -1;
 	protected JSONObject keys = new JSONObject();
 	protected String avatar;
-
 	protected boolean online = false;
-
 	private OtrEngine otrEngine = null;
 	private XmppConnection xmppConnection = null;
 	private Presences presences = new Presences();
 	private long mEndGracePeriod = 0L;
 	private String otrFingerprint;
 	private Roster roster = null;
-
 	private List<Bookmark> bookmarks = new CopyOnWriteArrayList<>();
-	public List<Conversation> pendingConferenceJoins = new CopyOnWriteArrayList<>();
-	public List<Conversation> pendingConferenceLeaves = new CopyOnWriteArrayList<>();
 
 	public Account() {
 		this.uuid = "0";
@@ -83,13 +79,13 @@ public class Account extends AbstractEntity {
 	}
 
 	public Account(final String uuid, final Jid jid,
-			final String password, final int options, final String rosterVersion, final String keys,
-			final String avatar) {
+				   final String password, final int options, final String rosterVersion, final String keys,
+				   final String avatar) {
 		this.uuid = uuid;
-        this.jid = jid;
-        if (jid.getResourcepart().isEmpty()) {
-            this.setResource("mobile");
-        }
+		this.jid = jid;
+		if (jid.getResourcepart().isEmpty()) {
+			this.setResource("mobile");
+		}
 		this.password = password;
 		this.options = options;
 		this.rosterVersion = rosterVersion;
@@ -99,6 +95,22 @@ public class Account extends AbstractEntity {
 
 		}
 		this.avatar = avatar;
+	}
+
+	public static Account fromCursor(Cursor cursor) {
+		Jid jid = null;
+		try {
+			jid = Jid.fromParts(cursor.getString(cursor.getColumnIndex(USERNAME)),
+					cursor.getString(cursor.getColumnIndex(SERVER)), "mobile");
+		} catch (final InvalidJidException ignored) {
+		}
+		return new Account(cursor.getString(cursor.getColumnIndex(UUID)),
+				jid,
+				cursor.getString(cursor.getColumnIndex(PASSWORD)),
+				cursor.getInt(cursor.getColumnIndex(OPTIONS)),
+				cursor.getString(cursor.getColumnIndex(ROSTERVERSION)),
+				cursor.getString(cursor.getColumnIndex(KEYS)),
+				cursor.getString(cursor.getColumnIndex(AVATAR)));
 	}
 
 	public boolean isOptionSet(int option) {
@@ -118,15 +130,15 @@ public class Account extends AbstractEntity {
 	}
 
 	public void setUsername(final String username) throws InvalidJidException {
-        jid = Jid.fromParts(username, jid.getDomainpart(), jid.getResourcepart());
-    }
+		jid = Jid.fromParts(username, jid.getDomainpart(), jid.getResourcepart());
+	}
 
 	public Jid getServer() {
 		return jid.toDomainJid();
 	}
 
 	public void setServer(final String server) throws InvalidJidException {
-        jid = Jid.fromParts(jid.getLocalpart(), server, jid.getResourcepart());
+		jid = Jid.fromParts(jid.getLocalpart(), server, jid.getResourcepart());
 	}
 
 	public String getPassword() {
@@ -137,16 +149,16 @@ public class Account extends AbstractEntity {
 		this.password = password;
 	}
 
-	public void setStatus(final int status) {
-		this.status = status;
-	}
-
 	public int getStatus() {
 		if (isOptionSet(OPTION_DISABLED)) {
 			return STATUS_DISABLED;
 		} else {
 			return this.status;
 		}
+	}
+
+	public void setStatus(final int status) {
+		this.status = status;
 	}
 
 	public boolean errorStatus() {
@@ -158,22 +170,22 @@ public class Account extends AbstractEntity {
 	}
 
 	public boolean hasErrorStatus() {
-        return getXmppConnection() != null && getStatus() > STATUS_NO_INTERNET && (getXmppConnection().getAttempt() >= 2);
+		return getXmppConnection() != null && getStatus() > STATUS_NO_INTERNET && (getXmppConnection().getAttempt() >= 2);
 	}
-
-	public void setResource(final String resource){
-        try {
-            jid = Jid.fromParts(jid.getLocalpart(), jid.getDomainpart(), resource);
-        } catch (final InvalidJidException ignored) {
-        }
-    }
 
 	public String getResource() {
 		return jid.getResourcepart();
 	}
 
+	public void setResource(final String resource) {
+		try {
+			jid = Jid.fromParts(jid.getLocalpart(), jid.getDomainpart(), resource);
+		} catch (final InvalidJidException ignored) {
+		}
+	}
+
 	public Jid getJid() {
-        return jid.toBareJid();
+		return jid.toBareJid();
 	}
 
 	public JSONObject getKeys() {
@@ -219,22 +231,6 @@ public class Account extends AbstractEntity {
 		return values;
 	}
 
-	public static Account fromCursor(Cursor cursor) {
-        Jid jid = null;
-        try {
-            jid = Jid.fromParts(cursor.getString(cursor.getColumnIndex(USERNAME)),
-                    cursor.getString(cursor.getColumnIndex(SERVER)), "mobile");
-        } catch (final InvalidJidException ignored) {
-        }
-        return new Account(cursor.getString(cursor.getColumnIndex(UUID)),
-                jid,
-				cursor.getString(cursor.getColumnIndex(PASSWORD)),
-				cursor.getInt(cursor.getColumnIndex(OPTIONS)),
-				cursor.getString(cursor.getColumnIndex(ROSTERVERSION)),
-				cursor.getString(cursor.getColumnIndex(KEYS)),
-				cursor.getString(cursor.getColumnIndex(AVATAR)));
-	}
-
 	public OtrEngine getOtrEngine(XmppConnectionService context) {
 		if (otrEngine == null) {
 			otrEngine = new OtrEngine(context, this);
@@ -251,7 +247,7 @@ public class Account extends AbstractEntity {
 	}
 
 	public Jid getFullJid() {
-        return this.getJid();
+		return this.jid;
 	}
 
 	public String getOtrFingerprint() {
@@ -328,12 +324,12 @@ public class Account extends AbstractEntity {
 		return this.roster;
 	}
 
-	public void setBookmarks(List<Bookmark> bookmarks) {
-		this.bookmarks = bookmarks;
-	}
-
 	public List<Bookmark> getBookmarks() {
 		return this.bookmarks;
+	}
+
+	public void setBookmarks(List<Bookmark> bookmarks) {
+		this.bookmarks = bookmarks;
 	}
 
 	public boolean hasBookmarkFor(final Jid conferenceJid) {
@@ -361,30 +357,30 @@ public class Account extends AbstractEntity {
 	public int getReadableStatusId() {
 		switch (getStatus()) {
 
-		case Account.STATUS_DISABLED:
-			return R.string.account_status_disabled;
-		case Account.STATUS_ONLINE:
-			return R.string.account_status_online;
-		case Account.STATUS_CONNECTING:
-			return R.string.account_status_connecting;
-		case Account.STATUS_OFFLINE:
-			return R.string.account_status_offline;
-		case Account.STATUS_UNAUTHORIZED:
-			return R.string.account_status_unauthorized;
-		case Account.STATUS_SERVER_NOT_FOUND:
-			return R.string.account_status_not_found;
-		case Account.STATUS_NO_INTERNET:
-			return R.string.account_status_no_internet;
-		case Account.STATUS_REGISTRATION_FAILED:
-			return R.string.account_status_regis_fail;
-		case Account.STATUS_REGISTRATION_CONFLICT:
-			return R.string.account_status_regis_conflict;
-		case Account.STATUS_REGISTRATION_SUCCESSFULL:
-			return R.string.account_status_regis_success;
-		case Account.STATUS_REGISTRATION_NOT_SUPPORTED:
-			return R.string.account_status_regis_not_sup;
-		default:
-			return R.string.account_status_unknown;
+			case Account.STATUS_DISABLED:
+				return R.string.account_status_disabled;
+			case Account.STATUS_ONLINE:
+				return R.string.account_status_online;
+			case Account.STATUS_CONNECTING:
+				return R.string.account_status_connecting;
+			case Account.STATUS_OFFLINE:
+				return R.string.account_status_offline;
+			case Account.STATUS_UNAUTHORIZED:
+				return R.string.account_status_unauthorized;
+			case Account.STATUS_SERVER_NOT_FOUND:
+				return R.string.account_status_not_found;
+			case Account.STATUS_NO_INTERNET:
+				return R.string.account_status_no_internet;
+			case Account.STATUS_REGISTRATION_FAILED:
+				return R.string.account_status_regis_fail;
+			case Account.STATUS_REGISTRATION_CONFLICT:
+				return R.string.account_status_regis_conflict;
+			case Account.STATUS_REGISTRATION_SUCCESSFULL:
+				return R.string.account_status_regis_success;
+			case Account.STATUS_REGISTRATION_NOT_SUPPORTED:
+				return R.string.account_status_regis_not_sup;
+			default:
+				return R.string.account_status_unknown;
 		}
 	}
 
