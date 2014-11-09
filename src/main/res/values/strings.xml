@@ -257,18 +257,18 @@
     <string name="title_activity_about">About Conversations</string>
     <string name="pref_about_conversations_summary">Build and licensing information</string>
     <string name="pref_about_message">
-            Conversations the very last word in instant messaging.
-            \nCopyright © 2014 Daniel Gultsch
+            Conversations • the very last word in instant messaging.
+            \n\nCopyright © 2014 Daniel Gultsch
             \n\nThis program is free software: you can redistribute it and/or modify
-            \nit under the terms of the GNU General Public License as published by
-            \nthe Free Software Foundation, either version 3 of the License, or
-            \n(at your option) any later version.
+            it under the terms of the GNU General Public License as published by
+            the Free Software Foundation, either version 3 of the License, or
+            (at your option) any later version.
             \n\nThis program is distributed in the hope that it will be useful,
-            \nbut WITHOUT ANY WARRANTY; without even the implied warranty of
-            \nMERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-            \nGNU General Public License for more details.
+            but WITHOUT ANY WARRANTY; without even the implied warranty of
+            MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+            GNU General Public License for more details.
             \n\nYou should have received a copy of the GNU General Public License
-            \nalong with this program. If not, see https://www.gnu.org/licenses
+            along with this program. If not, see https://www.gnu.org/licenses
             \n\nDownload the full source code at https://github.com/siacs/Conversations
             \n\n\nLibraries
             \n\nhttps://www.bouncycastle.org\n(The MIT License (MIT))
