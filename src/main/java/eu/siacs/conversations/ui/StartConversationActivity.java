@@ -574,7 +574,7 @@ public class StartConversationActivity extends XmppActivity {
 		this.mActivatedAccounts.clear();
 		for (Account account : xmppConnectionService.getAccounts()) {
 			if (account.getStatus() != Account.STATUS_DISABLED) {
-				this.mActivatedAccounts.add(account.getJid().toString());
+				this.mActivatedAccounts.add(account.getJid().toBareJid().toString());
 			}
 		}
 		this.mKnownHosts = xmppConnectionService.getKnownHosts();

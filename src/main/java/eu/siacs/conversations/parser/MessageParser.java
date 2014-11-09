@@ -347,7 +347,7 @@ public class MessageParser extends AbstractParser implements
 					avatar.owner = from;
 					if (mXmppConnectionService.getFileBackend().isAvatarCached(
 							avatar)) {
-						if (account.getJid().equals(from)) {
+						if (account.getJid().toBareJid().equals(from)) {
 							if (account.setAvatar(avatar.getFilename())) {
 								mXmppConnectionService.databaseBackend
 										.updateAccount(account);

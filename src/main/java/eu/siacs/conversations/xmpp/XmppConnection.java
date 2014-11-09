@@ -107,7 +107,7 @@ public class XmppConnection implements Runnable {
 	public XmppConnection(Account account, XmppConnectionService service) {
 		this.account = account;
 		this.wakeLock = service.getPowerManager().newWakeLock(
-				PowerManager.PARTIAL_WAKE_LOCK, account.getJid().toString());
+                PowerManager.PARTIAL_WAKE_LOCK, account.getJid().toBareJid().toString());
 		tagWriter = new TagWriter();
 		mXmppConnectionService = service;
 		applicationContext = service.getApplicationContext();
@@ -132,7 +132,7 @@ public class XmppConnection implements Runnable {
 	}
 
 	protected void connect() {
-		Log.d(Config.LOGTAG, account.getJid().toString() + ": connecting");
+		Log.d(Config.LOGTAG, account.getJid().toBareJid().toString() + ": connecting");
 		usingCompression = false;
 		usingEncryption = false;
 		lastConnect = SystemClock.elapsedRealtime();
@@ -148,7 +148,7 @@ public class XmppConnection implements Runnable {
 			Bundle result = DNSHelper.getSRVRecord(account.getServer());
 			ArrayList<Parcelable> values = result.getParcelableArrayList("values");
 			if ("timeout".equals(result.getString("error"))) {
-				Log.d(Config.LOGTAG, account.getJid().toString() + ": dns timeout");
+				Log.d(Config.LOGTAG, account.getJid().toBareJid().toString() + ": dns timeout");
 				this.changeStatus(Account.STATUS_OFFLINE);
 				return;
 			} else if (values != null) {
@@ -169,12 +169,12 @@ public class XmppConnection implements Runnable {
 						InetSocketAddress addr;
 						if (srvIpServer != null) {
 							addr = new InetSocketAddress(srvIpServer, srvRecordPort);
-							Log.d(Config.LOGTAG, account.getJid().toString()
+							Log.d(Config.LOGTAG, account.getJid().toBareJid().toString()
 									+ ": using values from dns " + srvRecordServer
 									+ "[" + srvIpServer + "]:" + srvRecordPort);
 						} else {
 							addr = new InetSocketAddress(srvRecordServer, srvRecordPort);
-							Log.d(Config.LOGTAG, account.getJid().toString()
+							Log.d(Config.LOGTAG, account.getJid().toBareJid().toString()
 									+ ": using values from dns "
 									+ srvRecordServer + ":" + srvRecordPort);
 						}
@@ -182,10 +182,10 @@ public class XmppConnection implements Runnable {
 						socket.connect(addr, 20000);
 						socketError = false;
 					} catch (UnknownHostException e) {
-						Log.d(Config.LOGTAG, account.getJid().toString() + ": " + e.getMessage());
+						Log.d(Config.LOGTAG, account.getJid().toBareJid().toString() + ": " + e.getMessage());
 						i++;
 					} catch (IOException e) {
-						Log.d(Config.LOGTAG, account.getJid().toString() + ": " + e.getMessage());
+						Log.d(Config.LOGTAG, account.getJid().toBareJid().toString() + ": " + e.getMessage());
 						i++;
 					}
 				}
@@ -203,7 +203,7 @@ public class XmppConnection implements Runnable {
 					&& "nosrv".equals(result.getString("error", null))) {
 				socket = new Socket(account.getServer().getDomainpart(), 5222);
 			} else {
-				Log.d(Config.LOGTAG, account.getJid().toString()
+				Log.d(Config.LOGTAG, account.getJid().toBareJid().toString()
 						+ ": timeout in DNS resolution");
 				changeStatus(Account.STATUS_OFFLINE);
 				return;
@@ -237,7 +237,7 @@ public class XmppConnection implements Runnable {
 				}
 			}
         } catch (final IOException | XmlPullParserException e) {
-			Log.d(Config.LOGTAG, account.getJid().toString() + ": " + e.getMessage());
+			Log.d(Config.LOGTAG, account.getJid().toBareJid().toString() + ": " + e.getMessage());
 			this.changeStatus(Account.STATUS_OFFLINE);
 			if (wakeLock.isHeld()) {
 				try {
@@ -246,7 +246,7 @@ public class XmppConnection implements Runnable {
 				}
 			}
         } catch (NoSuchAlgorithmException e) {
-			Log.d(Config.LOGTAG, account.getJid().toString() + ": " + e.getMessage());
+			Log.d(Config.LOGTAG, account.getJid().toBareJid().toString() + ": " + e.getMessage());
 			this.changeStatus(Account.STATUS_OFFLINE);
 			Log.d(Config.LOGTAG, "compression exception " + e.getMessage());
 			if (wakeLock.isHeld()) {
@@ -277,7 +277,7 @@ public class XmppConnection implements Runnable {
 			} else if (nextTag.isStart("compressed")) {
 				switchOverToZLib(nextTag);
 			} else if (nextTag.isStart("success")) {
-				Log.d(Config.LOGTAG, account.getJid().toString() + ": logged in");
+				Log.d(Config.LOGTAG, account.getJid().toBareJid().toString() + ": logged in");
 				tagReader.readTag();
 				tagReader.reset();
 				sendStartStream();
@@ -298,11 +298,11 @@ public class XmppConnection implements Runnable {
 				Element enabled = tagReader.readElement(nextTag);
 				if ("true".equals(enabled.getAttribute("resume"))) {
 					this.streamId = enabled.getAttribute("id");
-					Log.d(Config.LOGTAG, account.getJid().toString()
+					Log.d(Config.LOGTAG, account.getJid().toBareJid().toString()
 							+ ": stream managment(" + smVersion
 							+ ") enabled (resumable)");
 				} else {
-					Log.d(Config.LOGTAG, account.getJid().toString()
+					Log.d(Config.LOGTAG, account.getJid().toBareJid().toString()
 							+ ": stream managment(" + smVersion + ") enabled");
 				}
 				this.lastSessionStarted = SystemClock.elapsedRealtime();
@@ -316,11 +316,11 @@ public class XmppConnection implements Runnable {
 				try {
 					int serverCount = Integer.parseInt(h);
 					if (serverCount != stanzasSent) {
-						Log.d(Config.LOGTAG, account.getJid().toString()
+						Log.d(Config.LOGTAG, account.getJid().toBareJid().toString()
 								+ ": session resumed with lost packages");
 						stanzasSent = serverCount;
 					} else {
-						Log.d(Config.LOGTAG, account.getJid().toString()
+						Log.d(Config.LOGTAG, account.getJid().toBareJid().toString()
 								+ ": session resumed");
 					}
 					if (acknowledgedListener != null) {
@@ -355,7 +355,7 @@ public class XmppConnection implements Runnable {
 				}
 			} else if (nextTag.isStart("failed")) {
 				tagReader.readElement(nextTag);
-				Log.d(Config.LOGTAG, account.getJid().toString() + ": resumption failed");
+				Log.d(Config.LOGTAG, account.getJid().toBareJid().toString() + ": resumption failed");
 				streamId = null;
 				if (account.getStatus() != Account.STATUS_ONLINE) {
 					sendBindRequest();
@@ -378,15 +378,15 @@ public class XmppConnection implements Runnable {
 	}
 
 	private void sendInitialPing() {
-		Log.d(Config.LOGTAG, account.getJid().toString() + ": sending intial ping");
+		Log.d(Config.LOGTAG, account.getJid().toBareJid().toString() + ": sending intial ping");
 		IqPacket iq = new IqPacket(IqPacket.TYPE_GET);
-		iq.setFrom(account.getFullJid());
+		iq.setFrom(account.getJid());
 		iq.addChild("ping", "urn:xmpp:ping");
 		this.sendIqPacket(iq, new OnIqPacketReceived() {
 
 			@Override
 			public void onIqPacketReceived(Account account, IqPacket packet) {
-				Log.d(Config.LOGTAG, account.getJid().toString()
+				Log.d(Config.LOGTAG, account.getJid().toBareJid().toString()
 						+ ": online with resource " + account.getResource());
 				changeStatus(Account.STATUS_ONLINE);
 			}
@@ -515,7 +515,7 @@ public class XmppConnection implements Runnable {
 				.setInputStream(new ZLibInputStream(tagReader.getInputStream()));
 
 		sendStartStream();
-		Log.d(Config.LOGTAG, account.getJid() + ": compression enabled");
+		Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": compression enabled");
 		usingCompression = true;
 		processStream(tagReader.readTag());
 	}
@@ -582,7 +582,7 @@ public class XmppConnection implements Runnable {
 			tagReader.setInputStream(sslSocket.getInputStream());
 			tagWriter.setOutputStream(sslSocket.getOutputStream());
 			sendStartStream();
-			Log.d(Config.LOGTAG, account.getJid()
+			Log.d(Config.LOGTAG, account.getJid().toBareJid()
 					+ ": TLS connection established");
 			usingEncryption = true;
 			processStream(tagReader.readTag());
@@ -642,7 +642,7 @@ public class XmppConnection implements Runnable {
 		} else if (this.streamFeatures.hasChild("bind") && shouldBind) {
 			sendBindRequest();
 		} else {
-			Log.d(Config.LOGTAG, account.getJid()
+			Log.d(Config.LOGTAG, account.getJid().toBareJid()
 					+ ": incompatible server. disconnecting");
 			disconnect(true);
 		}
@@ -720,7 +720,7 @@ public class XmppConnection implements Runnable {
 				} else {
 					changeStatus(Account.STATUS_REGISTRATION_FAILED);
 					disconnect(true);
-					Log.d(Config.LOGTAG, account.getJid()
+					Log.d(Config.LOGTAG, account.getJid().toBareJid()
 							+ ": could not register. instructions are"
 							+ instructions.getContent());
 				}
@@ -773,7 +773,7 @@ public class XmppConnection implements Runnable {
 			}
 		});
 		if (this.streamFeatures.hasChild("session")) {
-			Log.d(Config.LOGTAG, account.getJid()
+			Log.d(Config.LOGTAG, account.getJid().toBareJid()
 					+ ": sending deprecated session");
 			IqPacket startSession = new IqPacket(IqPacket.TYPE_SET);
 			startSession.addChild("session",
@@ -843,10 +843,10 @@ public class XmppConnection implements Runnable {
 			@Override
 			public void onIqPacketReceived(Account account, IqPacket packet) {
 				if (!packet.hasChild("error")) {
-					Log.d(Config.LOGTAG, account.getJid()
+					Log.d(Config.LOGTAG, account.getJid().toBareJid()
 							+ ": successfully enabled carbons");
 				} else {
-					Log.d(Config.LOGTAG, account.getJid()
+					Log.d(Config.LOGTAG, account.getJid().toBareJid()
 							+ ": error enableing carbons " + packet.toString());
 				}
 			}
@@ -860,14 +860,14 @@ public class XmppConnection implements Runnable {
 			final String resource = account.getResource().split("\\.")[0];
             account.setResource(resource + "." + nextRandomId());
             Log.d(Config.LOGTAG,
-					account.getJid() + ": switching resource due to conflict ("
+					account.getJid().toBareJid() + ": switching resource due to conflict ("
 							+ account.getResource() + ")");
 		}
 	}
 
 	private void sendStartStream() throws IOException {
 		Tag stream = Tag.start("stream:stream");
-		stream.setAttribute("from", account.getJid().toString());
+		stream.setAttribute("from", account.getJid().toBareJid().toString());
 		stream.setAttribute("to", account.getServer().toString());
 		stream.setAttribute("version", "1.0");
 		stream.setAttribute("xml:lang", "en");
@@ -885,7 +885,7 @@ public class XmppConnection implements Runnable {
 			String id = nextRandomId();
 			packet.setAttribute("id", id);
 		}
-		packet.setFrom(account.getFullJid());
+		packet.setFrom(account.getJid());
 		this.sendPacket(packet, callback);
 	}
 
@@ -932,7 +932,7 @@ public class XmppConnection implements Runnable {
 			tagWriter.writeStanzaAsync(new RequestPacket(smVersion));
 		} else {
 			IqPacket iq = new IqPacket(IqPacket.TYPE_GET);
-			iq.setFrom(account.getFullJid());
+			iq.setFrom(account.getJid());
 			iq.addChild("ping", "urn:xmpp:ping");
 			this.sendIqPacket(iq, null);
 		}
@@ -972,7 +972,7 @@ public class XmppConnection implements Runnable {
 	}
 
 	public void disconnect(boolean force) {
-		Log.d(Config.LOGTAG, account.getJid() + ": disconnecting");
+		Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": disconnecting");
 		try {
 			if (force) {
 				socket.close();
