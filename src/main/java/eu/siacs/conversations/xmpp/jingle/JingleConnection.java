@@ -262,7 +262,7 @@ public class JingleConnection implements Downloadable {
 		this.mStatus = Downloadable.STATUS_OFFER;
 		this.message.setDownloadable(this);
         final Jid from = packet.getFrom();
-		this.message.setPresence(from.isBareJid() ? "" : from.getResourcepart());
+		this.message.setCounterpart(from);
 		this.account = account;
 		this.initiator = packet.getFrom();
 		this.responder = this.account.getFullJid();

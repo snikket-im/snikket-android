@@ -19,6 +19,7 @@ import de.duenndns.ssl.MemorizingTrustManager;
 
 import net.java.otr4j.OtrException;
 import net.java.otr4j.session.Session;
+import net.java.otr4j.session.SessionID;
 import net.java.otr4j.session.SessionStatus;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
@@ -308,7 +309,7 @@ public class XmppConnectionService extends Service {
 			message = new Message(conversation, "",
 					conversation.getNextEncryption(forceEncryption()));
 		}
-		message.setPresence(conversation.getNextPresence());
+		message.setCounterpart(conversation.getNextCounterpart());
 		message.setType(Message.TYPE_IMAGE);
 		message.setStatus(Message.STATUS_OFFERED);
 		new Thread(new Runnable() {
@@ -559,11 +560,10 @@ public class XmppConnectionService extends Service {
 		if (account.getStatus() == Account.STATUS_ONLINE
 				&& account.getXmppConnection() != null) {
 			if (message.getType() == Message.TYPE_IMAGE) {
-				if (message.getPresence() != null) {
+				if (message.getCounterpart() != null) {
 					if (message.getEncryption() == Message.ENCRYPTION_OTR) {
-						if (!conv.hasValidOtrSession()
-								&& (message.getPresence() != null)) {
-							conv.startOtrSession(this, message.getPresence().toString(),
+						if (!conv.hasValidOtrSession()) {
+							conv.startOtrSession(this, message.getCounterpart().getResourcepart(),
 									true);
 							message.setStatus(Message.STATUS_WAITING);
 						} else if (conv.hasValidOtrSession()
@@ -582,18 +582,21 @@ public class XmppConnectionService extends Service {
 				}
 			} else {
 				if (message.getEncryption() == Message.ENCRYPTION_OTR) {
-					if (!conv.hasValidOtrSession()
-							&& (message.getPresence() != null)) {
-						conv.startOtrSession(this, message.getPresence().toString(), true);
+					if (!conv.hasValidOtrSession()&& (message.getCounterpart() != null)) {
+						conv.startOtrSession(this, message.getCounterpart().getResourcepart(), true);
 						message.setStatus(Message.STATUS_WAITING);
 					} else if (conv.hasValidOtrSession()
 							&& conv.getOtrSession().getSessionStatus() == SessionStatus.ENCRYPTED) {
-						message.setPresence(conv.getOtrSession().getSessionID()
-								.getUserID());
+						SessionID id = conv.getOtrSession().getSessionID();
+						try {
+							message.setCounterpart(Jid.fromString(id.getAccountID() + "/" + id.getUserID()));
+						} catch (final InvalidJidException e) {
+							message.setCounterpart(null);
+						}
 						packet = mMessageGenerator.generateOtrChat(message);
 						send = true;
 
-					} else if (message.getPresence() == null) {
+					} else if (message.getCounterpart() == null) {
 						conv.startOtrIfNeeded();
 						message.setStatus(Message.STATUS_WAITING);
 					}
@@ -627,11 +630,15 @@ public class XmppConnectionService extends Service {
 					message.setEncryption(Message.ENCRYPTION_DECRYPTED);
 				} else if (message.getEncryption() == Message.ENCRYPTION_OTR) {
 					if (conv.hasValidOtrSession()) {
-						message.setPresence(conv.getOtrSession().getSessionID()
-								.getUserID());
+						SessionID id = conv.getOtrSession().getSessionID();
+						try {
+							message.setCounterpart(Jid.fromString(id.getAccountID() + "/" + id.getUserID()));
+						} catch (final InvalidJidException e) {
+							message.setCounterpart(null);
+						}
 					} else if (!conv.hasValidOtrSession()
-							&& message.getPresence() != null) {
-						conv.startOtrSession(this, message.getPresence().toString(), false);
+							&& message.getCounterpart() != null) {
+						conv.startOtrSession(this, message.getCounterpart().getResourcepart(), false);
 					}
 				}
 			}
@@ -666,10 +673,10 @@ public class XmppConnectionService extends Service {
 			Presences presences = message.getConversation().getContact()
 					.getPresences();
 			if (!message.getConversation().hasValidOtrSession()) {
-				if ((message.getPresence() != null)
-						&& (presences.has(message.getPresence().toString()))) {
+				if ((message.getCounterpart() != null)
+						&& (presences.has(message.getCounterpart().getResourcepart()))) {
 					message.getConversation().startOtrSession(this,
-							message.getPresence().toString(), true);
+							message.getCounterpart().getResourcepart(), true);
 				} else {
 					if (presences.size() == 1) {
 						String presence = presences.asStringArray()[0];
@@ -696,16 +703,20 @@ public class XmppConnectionService extends Service {
 				packet = mMessageGenerator.generatePgpChat(message, true);
 			}
 		} else if (message.getType() == Message.TYPE_IMAGE) {
-			Presences presences = message.getConversation().getContact()
-					.getPresences();
-			if ((message.getPresence() != null)
-					&& (presences.has(message.getPresence().toString()))) {
+			Contact contact = message.getConversation().getContact();
+			Presences presences = contact.getPresences();
+			if ((message.getCounterpart() != null)
+					&& (presences.has(message.getCounterpart().getResourcepart()))) {
 				markMessage(message, Message.STATUS_OFFERED);
 				mJingleConnectionManager.createNewConnection(message);
 			} else {
 				if (presences.size() == 1) {
 					String presence = presences.asStringArray()[0];
-					message.setPresence(presence);
+					try {
+						message.setCounterpart(Jid.fromParts(contact.getJid().getLocalpart(), contact.getJid().getDomainpart(), presence));
+					} catch (InvalidJidException e) {
+						return;
+					}
 					markMessage(message, Message.STATUS_OFFERED);
 					mJingleConnectionManager.createNewConnection(message);
 				}
@@ -1371,7 +1382,12 @@ public class XmppConnectionService extends Service {
         for (Message msg : messages) {
             if ((msg.getStatus() == Message.STATUS_UNSEND || msg.getStatus() == Message.STATUS_WAITING)
                     && (msg.getEncryption() == Message.ENCRYPTION_OTR)) {
-                msg.setPresence(otrSession.getSessionID().getUserID());
+				SessionID id = otrSession.getSessionID();
+				try {
+					msg.setCounterpart(Jid.fromString(id.getAccountID()+"/"+id.getUserID()));
+				} catch (InvalidJidException e) {
+					break;
+				}
                 if (msg.getType() == Message.TYPE_TEXT) {
                     MessagePacket outPacket = mMessageGenerator
                             .generateOtrChat(msg, true);
@@ -1400,7 +1416,7 @@ public class XmppConnectionService extends Service {
 			packet.addChild("private", "urn:xmpp:carbons:2");
 			packet.addChild("no-copy", "urn:xmpp:hints");
 			packet.setAttribute("to", otrSession.getSessionID().getAccountID() + "/"
-                    + otrSession.getSessionID().getUserID());
+					+ otrSession.getSessionID().getUserID());
 			try {
 				packet.setBody(otrSession
 						.transformSending(CryptoHelper.FILETRANSFER

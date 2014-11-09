@@ -232,25 +232,8 @@ public class Message extends AbstractEntity {
 		return this.type;
 	}
 
-	public void setPresence(String presence) {
-		if (presence == null) {
-			this.counterpart = this.counterpart.toBareJid();
-		} else {
-            try {
-                this.counterpart = Jid.fromString(this.counterpart.toBareJid() + "/" + presence);
-            } catch (final InvalidJidException ignored) {
-                // TODO: Handle this?
-            }
-        }
-	}
-
 	public void setTrueCounterpart(String trueCounterpart) {
 		this.trueCounterpart = trueCounterpart;
-	}
-
-	public Jid getPresence() {
-        // TODO: This is now the same as getCounterpart()... find usages in code and remove one?
-		return counterpart;
 	}
 
 	public void setDownloadable(Downloadable downloadable) {

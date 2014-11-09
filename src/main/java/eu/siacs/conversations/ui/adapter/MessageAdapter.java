@@ -135,16 +135,10 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 				Contact contact = message.getContact();
 				if (contact != null) {
 					info = contact.getDisplayName();
+				} else if (message.getCounterpart() != null) {
+					info = message.getCounterpart().getResourcepart();
 				} else {
-					if (message.getPresence() != null) {
-                        if (message.getPresence().isBareJid()) {
-                            info = message.getPresence().toString();
-                        } else {
-                            info = message.getPresence().getResourcepart();
-                        }
-					} else {
-						info = message.getCounterpart().toString();
-					}
+					info = "";
 				}
 			}
 			break;
@@ -232,11 +226,11 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 					privateMarker = activity
 							.getString(R.string.private_message);
 				} else {
-					final Jid to;
-					if (message.getPresence() != null) {
-						to = message.getPresence();
+					final String to;
+					if (message.getCounterpart() != null) {
+						to = message.getCounterpart().getResourcepart();
 					} else {
-						to = message.getCounterpart();
+						to = "";
 					}
 					privateMarker = activity.getString(R.string.private_message_to, to);
 				}
@@ -417,9 +411,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 			if (contact != null) {
 				viewHolder.contact_picture.setImageBitmap(activity.avatarService().get(contact, activity.getPixel(48)));
 			} else if (item.getConversation().getMode() == Conversation.MODE_MULTI) {
-				final Jid name = item.getPresence() != null ? item.getPresence() : item.getCounterpart();
-				viewHolder.contact_picture.setImageBitmap(activity.avatarService().get(
-                        name.isBareJid() ? name.toString() : name.getResourcepart(),
+				viewHolder.contact_picture.setImageBitmap(activity.avatarService().get(item.getCounterpart().getResourcepart(),
                         activity.getPixel(48)));
 			}
 		} else if (type == SENT) {

@@ -55,7 +55,7 @@ public class Conversation extends AbstractEntity {
 
 	private JSONObject attributes = new JSONObject();
 
-	private String nextPresence;
+	private Jid nextCounterpart;
 
 	protected ArrayList<Message> messages = new ArrayList<>();
 	protected Account account = null;
@@ -345,12 +345,12 @@ public class Conversation extends AbstractEntity {
 		this.contactJid = jid;
 	}
 
-	public void setNextPresence(String presence) {
-		this.nextPresence = presence;
+	public void setNextCounterpart(Jid jid) {
+		this.nextCounterpart = jid;
 	}
 
-	public String getNextPresence() {
-		return this.nextPresence;
+	public Jid getNextCounterpart() {
+		return this.nextCounterpart;
 	}
 
 	public int getLatestEncryption() {

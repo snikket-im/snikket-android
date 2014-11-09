@@ -65,6 +65,7 @@ import eu.siacs.conversations.services.AvatarService;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.services.XmppConnectionService.XmppConnectionBinder;
 import eu.siacs.conversations.utils.ExceptionHelper;
+import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
 
 public abstract class XmppActivity extends Activity {
@@ -399,7 +400,7 @@ public abstract class XmppActivity extends Activity {
 
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				conversation.setNextPresence(null);
+				conversation.setNextCounterpart(null);
 				if (listener != null) {
 					listener.onPresenceSelected();
 				}
@@ -450,7 +451,7 @@ public abstract class XmppActivity extends Activity {
 
 	public void selectPresence(final Conversation conversation,
 							   final OnPresenceSelected listener) {
-		Contact contact = conversation.getContact();
+		final Contact contact = conversation.getContact();
 		if (!contact.showInRoster()) {
 			showAddToRosterDialog(conversation);
 		} else {
@@ -464,12 +465,16 @@ public abstract class XmppActivity extends Activity {
 						|| !contact.getOption(Contact.Options.FROM)) {
 					warnMutalPresenceSubscription(conversation, listener);
 				} else {
-					conversation.setNextPresence(null);
+					conversation.setNextCounterpart(null);
 					listener.onPresenceSelected();
 				}
 			} else if (presences.size() == 1) {
 				String presence = presences.asStringArray()[0];
-				conversation.setNextPresence(presence);
+				try {
+					conversation.setNextCounterpart(Jid.fromParts(contact.getJid().getLocalpart(),contact.getJid().getDomainpart(),presence));
+				} catch (InvalidJidException e) {
+					conversation.setNextCounterpart(null);
+				}
 				listener.onPresenceSelected();
 			} else {
 				final StringBuilder presence = new StringBuilder();
@@ -500,7 +505,11 @@ public abstract class XmppActivity extends Activity {
 
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						conversation.setNextPresence(presence.toString());
+						try {
+							conversation.setNextCounterpart(Jid.fromParts(contact.getJid().getLocalpart(),contact.getJid().getDomainpart(),presence.toString()));
+						} catch (InvalidJidException e) {
+							conversation.setNextCounterpart(null);
+						}
 						listener.onPresenceSelected();
 					}
 				});

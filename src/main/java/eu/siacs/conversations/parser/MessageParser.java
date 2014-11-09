@@ -42,7 +42,7 @@ public class MessageParser extends AbstractParser implements
 		if (conversation.getMode() == Conversation.MODE_MULTI
 				&& !jid.getResourcepart().isEmpty()) {
 			finishedMessage.setType(Message.TYPE_PRIVATE);
-			finishedMessage.setPresence(jid.getResourcepart());
+			finishedMessage.setCounterpart(packet.getFrom());
 			finishedMessage.setTrueCounterpart(conversation.getMucOptions()
 					.getTrueCounterpart(jid.getResourcepart()));
 			if (conversation.hasDuplicateMessage(finishedMessage)) {
@@ -249,7 +249,7 @@ public class MessageParser extends AbstractParser implements
 		if (conversation.getMode() == Conversation.MODE_MULTI
 				&& !fullJid.isBareJid()) {
 			finishedMessage.setType(Message.TYPE_PRIVATE);
-			finishedMessage.setPresence(fullJid.getResourcepart());
+			finishedMessage.setCounterpart(fullJid);
 			finishedMessage.setTrueCounterpart(conversation.getMucOptions()
 					.getTrueCounterpart(fullJid.getResourcepart()));
 			if (conversation.hasDuplicateMessage(finishedMessage)) {
@@ -478,7 +478,7 @@ public class MessageParser extends AbstractParser implements
 		if (message.getStatus() == Message.STATUS_RECEIVED
 				&& conversation.getOtrSession() != null
 				&& !conversation.getOtrSession().getSessionID().getUserID()
-				.equals(message.getPresence())) {
+				.equals(message.getCounterpart().getResourcepart())) {
 			conversation.endOtrIfNeeded();
 		}
 
