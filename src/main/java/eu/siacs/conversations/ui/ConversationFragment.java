@@ -280,7 +280,7 @@ public class ConversationFragment extends Fragment {
 						if (message.getStatus() <= Message.STATUS_RECEIVED) {
 							if (message.getConversation().getMode() == Conversation.MODE_MULTI) {
 								if (message.getCounterpart() != null) {
-									if (!message.getCounterpart().getResourcepart().isEmpty()) {
+									if (!message.getCounterpart().isBareJid()) {
 										highlightInConference(message.getCounterpart().getResourcepart());
 									} else {
 										highlightInConference(message.getCounterpart().toString());

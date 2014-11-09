@@ -304,7 +304,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 	private String getDisplayedMucCounterpart(final Jid counterpart) {
 		if (counterpart==null) {
 			return "";
-		} else if (!counterpart.getResourcepart().isEmpty()) {
+		} else if (!counterpart.isBareJid()) {
 			return counterpart.getResourcepart();
 		} else {
 			return counterpart.toString();
