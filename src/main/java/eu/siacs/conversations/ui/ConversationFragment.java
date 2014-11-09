@@ -54,6 +54,7 @@ import eu.siacs.conversations.ui.adapter.MessageAdapter;
 import eu.siacs.conversations.ui.adapter.MessageAdapter.OnContactPictureClicked;
 import eu.siacs.conversations.ui.adapter.MessageAdapter.OnContactPictureLongClicked;
 import eu.siacs.conversations.utils.UIHelper;
+import eu.siacs.conversations.xmpp.jid.Jid;
 
 public class ConversationFragment extends Fragment {
 
@@ -92,11 +93,9 @@ public class ConversationFragment extends Fragment {
 		}
 	};
 	protected ListView messagesView;
-	protected LayoutInflater inflater;
-	protected List<Message> messageList = new ArrayList<Message>();
+	protected List<Message> messageList = new ArrayList<>();
 	protected MessageAdapter messageListAdapter;
 	protected Contact contact;
-	protected String queuedPqpMessage = null;
 	private EditMessage mEditMessage;
 	private ImageButton mSendButton;
 	private RelativeLayout snackbar;
@@ -147,7 +146,7 @@ public class ConversationFragment extends Fragment {
 			}
 		}
 	};
-	private ConcurrentLinkedQueue<Message> mEncryptedMessages = new ConcurrentLinkedQueue<Message>();
+	private ConcurrentLinkedQueue<Message> mEncryptedMessages = new ConcurrentLinkedQueue<>();
 	private boolean mDecryptJobRunning = false;
 	private OnEditorActionListener mEditorActionListener = new OnEditorActionListener() {
 
@@ -281,10 +280,10 @@ public class ConversationFragment extends Fragment {
 						if (message.getStatus() <= Message.STATUS_RECEIVED) {
 							if (message.getConversation().getMode() == Conversation.MODE_MULTI) {
 								if (message.getPresence() != null) {
-									highlightInConference(message.getPresence());
+									highlightInConference(message.getPresence().getResourcepart());
 								} else {
 									highlightInConference(message
-											.getCounterpart());
+											.getContact().getDisplayName());
 								}
 							} else {
 								Contact contact = message.getConversation()
@@ -299,7 +298,7 @@ public class ConversationFragment extends Fragment {
 						}  else {
 							Account account = message.getConversation().getAccount();
 							Intent intent = new Intent(activity, EditAccountActivity.class);
-							intent.putExtra("jid", account.getJid());
+							intent.putExtra("jid", account.getJid().toString());
 							startActivity(intent);
 						}
 					}
@@ -430,9 +429,9 @@ public class ConversationFragment extends Fragment {
 				.createNewConnection(message);
 	}
 
-	protected void privateMessageWith(String counterpart) {
+	protected void privateMessageWith(final Jid counterpart) {
 		this.mEditMessage.setText("");
-		this.conversation.setNextPresence(counterpart);
+		this.conversation.setNextPresence(counterpart.toString());
 		updateChatMsgHint();
 	}
 

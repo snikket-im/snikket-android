@@ -53,7 +53,7 @@ public class ConferenceDetailsActivity extends XmppActivity {
 		}
 	};
 
-	private List<User> users = new ArrayList<MucOptions.User>();
+	private List<User> users = new ArrayList<>();
 	private OnConversationUpdate onConvChanged = new OnConversationUpdate() {
 
 		@Override
@@ -142,7 +142,7 @@ public class ConferenceDetailsActivity extends XmppActivity {
 	@Override
 	protected String getShareableUri() {
 		if (conversation!=null) {
-			return "xmpp:"+conversation.getContactJid().split("/")[0]+"?join";
+			return "xmpp:"+conversation.getContactJid().toBareJid().toString()+"?join";
 		} else {
 			return "";
 		}
@@ -211,7 +211,7 @@ public class ConferenceDetailsActivity extends XmppActivity {
 		mYourPhoto.setImageBitmap(avatarService().get(
 				conversation.getAccount(), getPixel(48)));
 		setTitle(conversation.getName());
-		mFullJid.setText(conversation.getContactJid().split("/", 2)[0]);
+		mFullJid.setText(conversation.getContactJid().toBareJid().toString());
 		mYourNick.setText(conversation.getMucOptions().getActualNick());
 		mRoleAffiliaton = (TextView) findViewById(R.id.muc_role);
 		if (conversation.getMucOptions().online()) {

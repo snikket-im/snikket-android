@@ -3,15 +3,17 @@ package eu.siacs.conversations.entities;
 import java.util.Locale;
 
 import eu.siacs.conversations.xml.Element;
+import eu.siacs.conversations.xmpp.jid.InvalidJidException;
+import eu.siacs.conversations.xmpp.jid.Jid;
 
 public class Bookmark extends Element implements ListItem {
 
 	private Account account;
 	private Conversation mJoinedConversation;
 
-	public Bookmark(Account account, String jid) {
+	public Bookmark(final Account account, final Jid jid) {
 		super("conference");
-		this.setAttribute("jid", jid);
+		this.setAttribute("jid", jid.toString());
 		this.account = account;
 	}
 
@@ -55,10 +57,10 @@ public class Bookmark extends Element implements ListItem {
 	}
 
 	@Override
-	public int compareTo(ListItem another) {
-		return this.getDisplayName().compareToIgnoreCase(
-				another.getDisplayName());
-	}
+	public int compareTo(final ListItem another) {
+        return this.getDisplayName().compareToIgnoreCase(
+                another.getDisplayName());
+    }
 
 	@Override
 	public String getDisplayName() {
@@ -68,16 +70,20 @@ public class Bookmark extends Element implements ListItem {
 		} else if (getName() != null) {
 			return getName();
 		} else {
-			return this.getJid().split("@")[0];
+			return this.getJid().getLocalpart();
 		}
 	}
 
 	@Override
-	public String getJid() {
-		String jid = this.getAttribute("jid");
+	public Jid getJid() {
+		final String jid = this.getAttribute("jid");
 		if (jid != null) {
-			return jid.toLowerCase(Locale.US);
-		} else {
+            try {
+                return Jid.fromString(jid);
+            } catch (final InvalidJidException e) {
+                return null;
+            }
+        } else {
 			return null;
 		}
 	}
@@ -108,7 +114,7 @@ public class Bookmark extends Element implements ListItem {
 
 	public boolean match(String needle) {
 		return needle == null
-				|| getJid().contains(needle.toLowerCase(Locale.US))
+				|| getJid().toString().toLowerCase(Locale.US).contains(needle.toLowerCase(Locale.US))
 				|| getDisplayName().toLowerCase(Locale.US).contains(
 						needle.toLowerCase(Locale.US));
 	}

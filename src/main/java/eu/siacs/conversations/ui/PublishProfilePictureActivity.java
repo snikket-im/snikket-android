@@ -14,6 +14,8 @@ import android.widget.TextView;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.utils.PhoneHelper;
+import eu.siacs.conversations.xmpp.jid.InvalidJidException;
+import eu.siacs.conversations.xmpp.jid.Jid;
 import eu.siacs.conversations.xmpp.pep.Avatar;
 
 public class PublishProfilePictureActivity extends XmppActivity {
@@ -148,8 +150,13 @@ public class PublishProfilePictureActivity extends XmppActivity {
 	@Override
 	protected void onBackendConnected() {
 		if (getIntent() != null) {
-			String jid = getIntent().getStringExtra("account");
-			if (jid != null) {
+            Jid jid;
+            try {
+                jid = Jid.fromString(getIntent().getStringExtra("account"));
+            } catch (InvalidJidException e) {
+                jid = null;
+            }
+            if (jid != null) {
 				this.account = xmppConnectionService.findAccountByJid(jid);
 				if (this.account.getXmppConnection() != null) {
 					this.support = this.account.getXmppConnection()
@@ -180,7 +187,7 @@ public class PublishProfilePictureActivity extends XmppActivity {
 				} else {
 					loadImageIntoPreview(avatarUri);
 				}
-				this.accountTextView.setText(this.account.getJid());
+				this.accountTextView.setText(this.account.getJid().toString());
 			}
 		}
 

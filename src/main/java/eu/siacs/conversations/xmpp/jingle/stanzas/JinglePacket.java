@@ -1,6 +1,7 @@
 package eu.siacs.conversations.xmpp.jingle.stanzas;
 
 import eu.siacs.conversations.xml.Element;
+import eu.siacs.conversations.xmpp.jid.Jid;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
 
 public class JinglePacket extends IqPacket {
@@ -85,8 +86,8 @@ public class JinglePacket extends IqPacket {
 		return this.jingle.getAttribute("action");
 	}
 
-	public void setInitiator(String initiator) {
-		this.jingle.setAttribute("initiator", initiator);
+	public void setInitiator(final Jid initiator) {
+		this.jingle.setAttribute("initiator", initiator.toString());
 	}
 
 	public boolean isAction(String action) {

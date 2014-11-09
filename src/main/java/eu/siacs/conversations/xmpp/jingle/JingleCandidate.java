@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import eu.siacs.conversations.xml.Element;
+import eu.siacs.conversations.xmpp.jid.Jid;
 
 public class JingleCandidate {
 
@@ -17,7 +18,7 @@ public class JingleCandidate {
 	private String host;
 	private int port;
 	private int type;
-	private String jid;
+	private Jid jid;
 	private int priority;
 
 	public JingleCandidate(String cid, boolean ours) {
@@ -37,11 +38,11 @@ public class JingleCandidate {
 		return this.host;
 	}
 
-	public void setJid(String jid) {
+	public void setJid(final Jid jid) {
 		this.jid = jid;
 	}
 
-	public String getJid() {
+	public Jid getJid() {
 		return this.jid;
 	}
 
@@ -58,13 +59,17 @@ public class JingleCandidate {
 	}
 
 	public void setType(String type) {
-		if ("proxy".equals(type)) {
-			this.type = TYPE_PROXY;
-		} else if ("direct".equals(type)) {
-			this.type = TYPE_DIRECT;
-		} else {
-			this.type = TYPE_UNKNOWN;
-		}
+        switch (type) {
+            case "proxy":
+                this.type = TYPE_PROXY;
+                break;
+            case "direct":
+                this.type = TYPE_DIRECT;
+                break;
+            default:
+                this.type = TYPE_UNKNOWN;
+                break;
+        }
 	}
 
 	public void setPriority(int i) {
@@ -93,7 +98,7 @@ public class JingleCandidate {
 	}
 
 	public static List<JingleCandidate> parse(List<Element> canditates) {
-		List<JingleCandidate> parsedCandidates = new ArrayList<JingleCandidate>();
+		List<JingleCandidate> parsedCandidates = new ArrayList<>();
 		for (Element c : canditates) {
 			parsedCandidates.add(JingleCandidate.parse(c));
 		}
@@ -104,7 +109,7 @@ public class JingleCandidate {
 		JingleCandidate parsedCandidate = new JingleCandidate(
 				candidate.getAttribute("cid"), false);
 		parsedCandidate.setHost(candidate.getAttribute("host"));
-		parsedCandidate.setJid(candidate.getAttribute("jid"));
+		parsedCandidate.setJid(candidate.getJid());
 		parsedCandidate.setType(candidate.getAttribute("type"));
 		parsedCandidate.setPriority(Integer.parseInt(candidate
 				.getAttribute("priority")));
@@ -118,7 +123,7 @@ public class JingleCandidate {
 		element.setAttribute("cid", this.getCid());
 		element.setAttribute("host", this.getHost());
 		element.setAttribute("port", Integer.toString(this.getPort()));
-		element.setAttribute("jid", this.getJid());
+		element.setAttribute("jid", this.getJid().toString());
 		element.setAttribute("priority", Integer.toString(this.getPriority()));
 		if (this.getType() == TYPE_DIRECT) {
 			element.setAttribute("type", "direct");

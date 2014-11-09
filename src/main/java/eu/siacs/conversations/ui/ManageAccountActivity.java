@@ -81,7 +81,7 @@ public class ManageAccountActivity extends XmppActivity {
 		} else {
 			menu.findItem(R.id.mgmt_account_enable).setVisible(false);
 		}
-		menu.setHeaderTitle(this.selectedAccount.getJid());
+		menu.setHeaderTitle(this.selectedAccount.getJid().toString());
 	}
 
 	@Override
@@ -166,7 +166,7 @@ public class ManageAccountActivity extends XmppActivity {
 	private void publishAvatar(Account account) {
 		Intent intent = new Intent(getApplicationContext(),
 				PublishProfilePictureActivity.class);
-		intent.putExtra("account", account.getJid());
+		intent.putExtra("account", account.getJid().toString());
 		startActivity(intent);
 	}
 

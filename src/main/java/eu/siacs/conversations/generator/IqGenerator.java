@@ -6,6 +6,7 @@ import java.util.List;
 
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xml.Element;
+import eu.siacs.conversations.xmpp.jid.Jid;
 import eu.siacs.conversations.xmpp.pep.Avatar;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
 
@@ -18,7 +19,7 @@ public class IqGenerator extends AbstractGenerator {
 	public IqPacket discoResponse(IqPacket request) {
 		IqPacket packet = new IqPacket(IqPacket.TYPE_RESULT);
 		packet.setId(request.getId());
-		packet.setTo(request.getFrom());
+        packet.setTo(request.getFrom());
 		Element query = packet.addChild("query",
 				"http://jabber.org/protocol/disco#info");
 		query.setAttribute("node", request.query().getAttribute("node"));
@@ -86,8 +87,8 @@ public class IqGenerator extends AbstractGenerator {
 		return packet;
 	}
 
-	public IqPacket retrieveAvatarMetaData(String to) {
-		IqPacket packet = retrieve("urn:xmpp:avatar:metadata", null);
+	public IqPacket retrieveAvatarMetaData(final Jid to) {
+		final IqPacket packet = retrieve("urn:xmpp:avatar:metadata", null);
 		if (to != null) {
 			packet.setTo(to);
 		}

@@ -9,6 +9,9 @@ import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.ui.adapter.ConversationAdapter;
+import eu.siacs.conversations.xmpp.jid.InvalidJidException;
+import eu.siacs.conversations.xmpp.jid.Jid;
+
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.net.Uri;
@@ -150,13 +153,23 @@ public class ShareWithActivity extends XmppActivity {
 	}
 
 	private void share() {
-		Account account = xmppConnectionService.findAccountByJid(share.account);
-		if (account == null) {
+        Account account;
+        try {
+            account = xmppConnectionService.findAccountByJid(Jid.fromString(share.account));
+        } catch (final InvalidJidException e) {
+            account = null;
+        }
+        if (account == null) {
 			return;
 		}
-		Conversation conversation = xmppConnectionService
-				.findOrCreateConversation(account, share.contact, false);
-		share(conversation);
+        final Conversation conversation;
+        try {
+            conversation = xmppConnectionService
+                    .findOrCreateConversation(account, Jid.fromString(share.contact), false);
+        } catch (final InvalidJidException e) {
+            return;
+        }
+        share(conversation);
 	}
 
 	private void share(final Conversation conversation) {

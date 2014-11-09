@@ -15,8 +15,8 @@ public class PresenceGenerator extends AbstractGenerator {
 	private PresencePacket subscription(String type, Contact contact) {
 		PresencePacket packet = new PresencePacket();
 		packet.setAttribute("type", type);
-		packet.setAttribute("to", contact.getJid());
-		packet.setAttribute("from", contact.getAccount().getJid());
+		packet.setTo(contact.getJid());
+		packet.setFrom(contact.getAccount().getJid());
 		return packet;
 	}
 
@@ -38,7 +38,7 @@ public class PresenceGenerator extends AbstractGenerator {
 
 	public PresencePacket sendPresence(Account account) {
 		PresencePacket packet = new PresencePacket();
-		packet.setAttribute("from", account.getFullJid());
+		packet.setFrom(account.getFullJid());
 		String sig = account.getPgpSignature();
 		if (sig != null) {
 			packet.addChild("status").setContent("online");

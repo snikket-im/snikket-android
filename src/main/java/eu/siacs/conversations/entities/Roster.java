@@ -2,12 +2,13 @@ package eu.siacs.conversations.entities;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.concurrent.ConcurrentHashMap;
+
+import eu.siacs.conversations.xmpp.jid.Jid;
 
 public class Roster {
 	Account account;
-	ConcurrentHashMap<String, Contact> contacts = new ConcurrentHashMap<String, Contact>();
+	final ConcurrentHashMap<String, Contact> contacts = new ConcurrentHashMap<>();
 	private String version = null;
 
 	public Roster(Account account) {
@@ -27,14 +28,14 @@ public class Roster {
 		}
 	}
 
-	public Contact getContact(String jid) {
-		String cleanJid = jid.split("/", 2)[0].toLowerCase(Locale.getDefault());
-		if (contacts.containsKey(cleanJid)) {
-			return contacts.get(cleanJid);
+	public Contact getContact(final Jid jid) {
+		final Jid bareJid = jid.toBareJid();
+		if (contacts.containsKey(bareJid.toString())) {
+			return contacts.get(bareJid.toString());
 		} else {
-			Contact contact = new Contact(cleanJid);
+			Contact contact = new Contact(bareJid);
 			contact.setAccount(account);
-			contacts.put(cleanJid, contact);
+			contacts.put(bareJid.toString(), contact);
 			return contact;
 		}
 	}
@@ -60,13 +61,13 @@ public class Roster {
 	}
 
 	public List<Contact> getContacts() {
-		return new ArrayList<Contact>(this.contacts.values());
+		return new ArrayList<>(this.contacts.values());
 	}
 
-	public void initContact(Contact contact) {
+	public void initContact(final Contact contact) {
 		contact.setAccount(account);
 		contact.setOption(Contact.Options.IN_ROSTER);
-		contacts.put(contact.getJid(), contact);
+		contacts.put(contact.getJid().toBareJid().toString(), contact);
 	}
 
 	public void setVersion(String version) {

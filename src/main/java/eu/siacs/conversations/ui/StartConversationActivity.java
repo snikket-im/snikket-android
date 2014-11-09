@@ -63,6 +63,8 @@ import eu.siacs.conversations.services.XmppConnectionService.OnRosterUpdate;
 import eu.siacs.conversations.ui.adapter.KnownHostsAdapter;
 import eu.siacs.conversations.ui.adapter.ListItemAdapter;
 import eu.siacs.conversations.utils.Validator;
+import eu.siacs.conversations.xmpp.jid.InvalidJidException;
+import eu.siacs.conversations.xmpp.jid.Jid;
 
 public class StartConversationActivity extends XmppActivity {
 
@@ -71,7 +73,7 @@ public class StartConversationActivity extends XmppActivity {
 	private ViewPager mViewPager;
 
 	private MyListFragment mContactsListFragment = new MyListFragment();
-	private List<ListItem> contacts = new ArrayList<ListItem>();
+	private List<ListItem> contacts = new ArrayList<>();
 	private ArrayAdapter<ListItem> mContactsAdapter;
 
 	private MyListFragment mConferenceListFragment = new MyListFragment();
@@ -359,17 +361,26 @@ public class StartConversationActivity extends XmppActivity {
 							return;
 						}
 						if (Validator.isValidJid(jid.getText().toString())) {
-							String accountJid = (String) spinner
-									.getSelectedItem();
-							String contactJid = jid.getText().toString();
-							Account account = xmppConnectionService
+                            final Jid accountJid;
+                            try {
+                                accountJid = Jid.fromString((String) spinner
+                                        .getSelectedItem());
+                            } catch (final InvalidJidException e) {
+                                return;
+                            }
+                            final Jid contactJid;
+                            try {
+                                contactJid = Jid.fromString(jid.getText().toString());
+                            } catch (final InvalidJidException e) {
+                                return;
+                            }
+                            Account account = xmppConnectionService
 									.findAccountByJid(accountJid);
 							if (account == null) {
 								dialog.dismiss();
 								return;
 							}
-							Contact contact = account.getRoster().getContact(
-									contactJid);
+							Contact contact = account.getRoster().getContact(contactJid);
 							if (contact.showInRoster()) {
 								jid.setError(getString(R.string.contact_already_exists));
 							} else {
@@ -416,10 +427,19 @@ public class StartConversationActivity extends XmppActivity {
 							return;
 						}
 						if (Validator.isValidJid(jid.getText().toString())) {
-							String accountJid = (String) spinner
-									.getSelectedItem();
-							String conferenceJid = jid.getText().toString();
-							Account account = xmppConnectionService
+                            final Jid accountJid;
+                            try {
+                                accountJid = Jid.fromString((String) spinner.getSelectedItem());
+                            } catch (final InvalidJidException e) {
+                                return;
+                            }
+                            final Jid conferenceJid;
+                            try {
+                                conferenceJid = Jid.fromString(jid.getText().toString());
+                            } catch (final InvalidJidException e) {
+                                return; // TODO: Do some error handling...
+                            }
+                            Account account = xmppConnectionService
 									.findAccountByJid(accountJid);
 							if (account == null) {
 								dialog.dismiss();
@@ -471,7 +491,7 @@ public class StartConversationActivity extends XmppActivity {
 	}
 
 	private void populateAccountSpinner(Spinner spinner) {
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+		ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
 				android.R.layout.simple_spinner_item, mActivatedAccounts);
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinner.setAdapter(adapter);
@@ -554,7 +574,7 @@ public class StartConversationActivity extends XmppActivity {
 		this.mActivatedAccounts.clear();
 		for (Account account : xmppConnectionService.getAccounts()) {
 			if (account.getStatus() != Account.STATUS_DISABLED) {
-				this.mActivatedAccounts.add(account.getJid());
+				this.mActivatedAccounts.add(account.getJid().toString());
 			}
 		}
 		this.mKnownHosts = xmppConnectionService.getKnownHosts();
@@ -779,7 +799,7 @@ public class StartConversationActivity extends XmppActivity {
 				// sample: imto://xmpp/jid@foo.com
 				try {
 					jid = URLDecoder.decode(uri.getEncodedPath(), "UTF-8").split("/")[1];
-				} catch (UnsupportedEncodingException e) {
+				} catch (final UnsupportedEncodingException ignored) {
 				}
 			}
 		}

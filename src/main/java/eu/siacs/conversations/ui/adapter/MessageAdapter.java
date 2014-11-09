@@ -29,6 +29,7 @@ import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.Message.ImageParams;
 import eu.siacs.conversations.ui.ConversationActivity;
 import eu.siacs.conversations.utils.UIHelper;
+import eu.siacs.conversations.xmpp.jid.Jid;
 
 public class MessageAdapter extends ArrayAdapter<Message> {
 
@@ -136,9 +137,13 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 					info = contact.getDisplayName();
 				} else {
 					if (message.getPresence() != null) {
-						info = message.getPresence();
+                        if (message.getPresence().isBareJid()) {
+                            info = message.getPresence().toString();
+                        } else {
+                            info = message.getPresence().getResourcepart();
+                        }
 					} else {
-						info = message.getCounterpart();
+						info = message.getCounterpart().toString();
 					}
 				}
 			}
@@ -227,14 +232,13 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 					privateMarker = activity
 							.getString(R.string.private_message);
 				} else {
-					String to;
+					final Jid to;
 					if (message.getPresence() != null) {
 						to = message.getPresence();
 					} else {
 						to = message.getCounterpart();
 					}
-					privateMarker = activity.getString(
-							R.string.private_message_to, to);
+					privateMarker = activity.getString(R.string.private_message_to, to);
 				}
 				SpannableString span = new SpannableString(privateMarker + " "
 						+ message.getBody());
@@ -413,17 +417,16 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 			if (contact != null) {
 				viewHolder.contact_picture.setImageBitmap(activity.avatarService().get(contact, activity.getPixel(48)));
 			} else if (item.getConversation().getMode() == Conversation.MODE_MULTI) {
-				String name = item.getPresence();
-				if (name == null) {
-					name = item.getCounterpart();
-				}
-				viewHolder.contact_picture.setImageBitmap(activity.avatarService().get(name, activity.getPixel(48)));
+				final Jid name = item.getPresence() != null ? item.getPresence() : item.getCounterpart();
+				viewHolder.contact_picture.setImageBitmap(activity.avatarService().get(
+                        name.isBareJid() ? name.toString() : name.getResourcepart(),
+                        activity.getPixel(48)));
 			}
 		} else if (type == SENT) {
 			viewHolder.contact_picture.setImageBitmap(activity.avatarService().get(item.getConversation().getAccount(), activity.getPixel(48)));
 		}
 
-		if (viewHolder.contact_picture != null) {
+		if (viewHolder != null && viewHolder.contact_picture != null) {
 			viewHolder.contact_picture
 					.setOnClickListener(new OnClickListener() {
 
@@ -488,14 +491,16 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 				} else {
 					displayInfoMessage(viewHolder,
 							R.string.install_openkeychain);
-					viewHolder.message_box
-							.setOnClickListener(new OnClickListener() {
+                    if (viewHolder != null) {
+                        viewHolder.message_box
+                                .setOnClickListener(new OnClickListener() {
 
-								@Override
-								public void onClick(View v) {
-									activity.showInstallPgpDialog();
-								}
-							});
+                                    @Override
+                                    public void onClick(View v) {
+                                        activity.showInstallPgpDialog();
+                                    }
+                                });
+                    }
 				}
 			} else if (item.getEncryption() == Message.ENCRYPTION_DECRYPTION_FAILED) {
 				displayDecryptionFailed(viewHolder);

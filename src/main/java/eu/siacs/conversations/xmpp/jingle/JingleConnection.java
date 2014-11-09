@@ -21,6 +21,7 @@ import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.OnIqPacketReceived;
+import eu.siacs.conversations.xmpp.jid.Jid;
 import eu.siacs.conversations.xmpp.jingle.stanzas.Content;
 import eu.siacs.conversations.xmpp.jingle.stanzas.JinglePacket;
 import eu.siacs.conversations.xmpp.jingle.stanzas.Reason;
@@ -49,10 +50,10 @@ public class JingleConnection implements Downloadable {
 	private Message message;
 	private String sessionId;
 	private Account account;
-	private String initiator;
-	private String responder;
-	private List<JingleCandidate> candidates = new ArrayList<JingleCandidate>();
-	private ConcurrentHashMap<String, JingleSocks5Transport> connections = new ConcurrentHashMap<String, JingleSocks5Transport>();
+	private Jid initiator;
+	private Jid responder;
+	private List<JingleCandidate> candidates = new ArrayList<>();
+	private ConcurrentHashMap<String, JingleSocks5Transport> connections = new ConcurrentHashMap<>();
 
 	private String transportId;
 	private Element fileOffer;
@@ -150,7 +151,7 @@ public class JingleConnection implements Downloadable {
 		return this.account;
 	}
 
-	public String getCounterPart() {
+	public Jid getCounterPart() {
 		return this.message.getCounterpart();
 	}
 
@@ -254,14 +255,14 @@ public class JingleConnection implements Downloadable {
 		this.mJingleStatus = JINGLE_STATUS_INITIATED;
 		Conversation conversation = this.mXmppConnectionService
 				.findOrCreateConversation(account,
-						packet.getFrom().split("/", 2)[0], false);
+						packet.getFrom().toBareJid(), false);
 		this.message = new Message(conversation, "", Message.ENCRYPTION_NONE);
 		this.message.setStatus(Message.STATUS_RECEIVED);
 		this.message.setType(Message.TYPE_IMAGE);
 		this.mStatus = Downloadable.STATUS_OFFER;
 		this.message.setDownloadable(this);
-		String[] fromParts = packet.getFrom().split("/", 2);
-		this.message.setPresence(fromParts[1]);
+        final Jid from = packet.getFrom();
+		this.message.setPresence(from.isBareJid() ? "" : from.getResourcepart());
 		this.account = account;
 		this.initiator = packet.getFrom();
 		this.responder = this.account.getFullJid();
@@ -375,7 +376,7 @@ public class JingleConnection implements Downloadable {
 	}
 
 	private List<Element> getCandidatesAsElements() {
-		List<Element> elements = new ArrayList<Element>();
+		List<Element> elements = new ArrayList<>();
 		for (JingleCandidate c : this.candidates) {
 			elements.add(c.toElement());
 		}
@@ -547,7 +548,7 @@ public class JingleConnection implements Downloadable {
 					activation.query("http://jabber.org/protocol/bytestreams")
 							.setAttribute("sid", this.getSessionId());
 					activation.query().addChild("activate")
-							.setContent(this.getCounterPart());
+							.setContent(this.getCounterPart().toString());
 					this.account.getXmppConnection().sendIqPacket(activation,
 							new OnIqPacketReceived() {
 
@@ -810,11 +811,11 @@ public class JingleConnection implements Downloadable {
 		this.sendJinglePacket(packet);
 	}
 
-	public String getInitiator() {
+	public Jid getInitiator() {
 		return this.initiator;
 	}
 
-	public String getResponder() {
+	public Jid getResponder() {
 		return this.responder;
 	}
 

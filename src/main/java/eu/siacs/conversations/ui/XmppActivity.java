@@ -65,6 +65,7 @@ import eu.siacs.conversations.services.AvatarService;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.services.XmppConnectionService.XmppConnectionBinder;
 import eu.siacs.conversations.utils.ExceptionHelper;
+import eu.siacs.conversations.xmpp.jid.Jid;
 
 public abstract class XmppActivity extends Activity {
 
@@ -275,14 +276,14 @@ public abstract class XmppActivity extends Activity {
 	public void switchToContactDetails(Contact contact) {
 		Intent intent = new Intent(this, ContactDetailsActivity.class);
 		intent.setAction(ContactDetailsActivity.ACTION_VIEW_CONTACT);
-		intent.putExtra("account", contact.getAccount().getJid());
-		intent.putExtra("contact", contact.getJid());
+		intent.putExtra("account", contact.getAccount().getJid().toString());
+		intent.putExtra("contact", contact.getJid().toString());
 		startActivity(intent);
 	}
 
 	public void switchToAccount(Account account) {
 		Intent intent = new Intent(this, EditAccountActivity.class);
-		intent.putExtra("jid", account.getJid());
+		intent.putExtra("jid", account.getJid().toString());
 		startActivity(intent);
 	}
 
@@ -303,7 +304,7 @@ public abstract class XmppActivity extends Activity {
 						try {
 							startIntentSenderForResult(pi.getIntentSender(),
 									REQUEST_ANNOUNCE_PGP, null, 0, 0, 0);
-						} catch (SendIntentException e) {
+						} catch (final SendIntentException ignored) {
 						}
 					}
 
@@ -347,9 +348,9 @@ public abstract class XmppActivity extends Activity {
 	}
 
 	protected void showAddToRosterDialog(final Conversation conversation) {
-		String jid = conversation.getContactJid();
+		final Jid jid = conversation.getContactJid();
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle(jid);
+		builder.setTitle(jid.toString());
 		builder.setMessage(getString(R.string.not_in_roster));
 		builder.setNegativeButton(getString(R.string.cancel), null);
 		builder.setPositiveButton(getString(R.string.add_contact),
@@ -357,7 +358,7 @@ public abstract class XmppActivity extends Activity {
 
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						String jid = conversation.getContactJid();
+						final Jid jid = conversation.getContactJid();
 						Account account = conversation.getAccount();
 						Contact contact = account.getRoster().getContact(jid);
 						xmppConnectionService.createContact(contact);
@@ -369,7 +370,7 @@ public abstract class XmppActivity extends Activity {
 
 	private void showAskForPresenceDialog(final Contact contact) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle(contact.getJid());
+		builder.setTitle(contact.getJid().toString());
 		builder.setMessage(R.string.request_presence_updates);
 		builder.setNegativeButton(R.string.cancel, null);
 		builder.setPositiveButton(R.string.request_now,
@@ -391,7 +392,7 @@ public abstract class XmppActivity extends Activity {
 	private void warnMutalPresenceSubscription(final Conversation conversation,
 											   final OnPresenceSelected listener) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle(conversation.getContact().getJid());
+		builder.setTitle(conversation.getContact().getJid().toString());
 		builder.setMessage(R.string.without_mutual_presence_updates);
 		builder.setNegativeButton(R.string.cancel, null);
 		builder.setPositiveButton(R.string.ignore, new OnClickListener() {
@@ -567,11 +568,10 @@ public abstract class XmppActivity extends Activity {
 				nfcAdapter.setNdefPushMessageCallback(new NfcAdapter.CreateNdefMessageCallback() {
 					@Override
 					public NdefMessage createNdefMessage(NfcEvent nfcEvent) {
-						NdefMessage msg = new NdefMessage(new NdefRecord[]{
-								NdefRecord.createUri(getShareableUri()),
-								NdefRecord.createApplicationRecord("eu.siacs.conversations")
-						});
-						return msg;
+                        return new NdefMessage(new NdefRecord[]{
+                                NdefRecord.createUri(getShareableUri()),
+                                NdefRecord.createApplicationRecord("eu.siacs.conversations")
+                        });
 					}
 				}, this);
 			}
@@ -620,7 +620,7 @@ public abstract class XmppActivity extends Activity {
 	protected Bitmap createQrCodeBitmap(String input, int size) {
 		try {
 			final QRCodeWriter QR_CODE_WRITER = new QRCodeWriter();
-			final Hashtable<EncodeHintType, Object> hints = new Hashtable<EncodeHintType, Object>();
+			final Hashtable<EncodeHintType, Object> hints = new Hashtable<>();
 			hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.M);
 			final BitMatrix result = QR_CODE_WRITER.encode(input, BarcodeFormat.QR_CODE, size, size, hints);
 			final int width = result.getWidth();
@@ -649,7 +649,7 @@ public abstract class XmppActivity extends Activity {
 		private Message message = null;
 
 		public BitmapWorkerTask(ImageView imageView) {
-			imageViewReference = new WeakReference<ImageView>(imageView);
+			imageViewReference = new WeakReference<>(imageView);
 		}
 
 		@Override
@@ -665,7 +665,7 @@ public abstract class XmppActivity extends Activity {
 
 		@Override
 		protected void onPostExecute(Bitmap bitmap) {
-			if (imageViewReference != null && bitmap != null) {
+			if (bitmap != null) {
 				final ImageView imageView = imageViewReference.get();
 				if (imageView != null) {
 					imageView.setImageBitmap(bitmap);
@@ -695,9 +695,8 @@ public abstract class XmppActivity extends Activity {
 				imageView.setImageDrawable(asyncDrawable);
 				try {
 					task.execute(message);
-				} catch (RejectedExecutionException e) {
-					return;
-				}
+				} catch (final RejectedExecutionException ignored) {
+                }
 			}
 		}
 	}
@@ -734,7 +733,7 @@ public abstract class XmppActivity extends Activity {
 		public AsyncDrawable(Resources res, Bitmap bitmap,
 							 BitmapWorkerTask bitmapWorkerTask) {
 			super(res, bitmap);
-			bitmapWorkerTaskReference = new WeakReference<BitmapWorkerTask>(
+			bitmapWorkerTaskReference = new WeakReference<>(
 					bitmapWorkerTask);
 		}
 

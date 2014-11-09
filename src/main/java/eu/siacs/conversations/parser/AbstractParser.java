@@ -11,6 +11,8 @@ import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xml.Element;
+import eu.siacs.conversations.xmpp.jid.InvalidJidException;
+import eu.siacs.conversations.xmpp.jid.Jid;
 
 public abstract class AbstractParser {
 
@@ -22,7 +24,7 @@ public abstract class AbstractParser {
 
 	protected long getTimestamp(Element packet) {
 		long now = System.currentTimeMillis();
-		ArrayList<String> stamps = new ArrayList<String>();
+		ArrayList<String> stamps = new ArrayList<>();
 		for (Element child : packet.getChildren()) {
 			if (child.getName().equals("delay")) {
 				stamps.add(child.getAttribute("stamp").replace("Z", "+0000"));
@@ -58,21 +60,21 @@ public abstract class AbstractParser {
 		}
 	}
 
-	protected void updateLastseen(Element packet, Account account,
-			boolean presenceOverwrite) {
-		String[] fromParts = packet.getAttribute("from").split("/", 2);
-		String from = fromParts[0];
-		String presence = null;
-		if (fromParts.length >= 2) {
-			presence = fromParts[1];
-		} else {
-			presence = "";
-		}
+	protected void updateLastseen(final Element packet, final Account account,
+			final boolean presenceOverwrite) {
+        Jid from;
+        try {
+            from = Jid.fromString(packet.getAttribute("from")).toBareJid();
+        } catch (final InvalidJidException e) {
+            // TODO: Handle this?
+            from = null;
+        }
+        String presence = from == null || from.getResourcepart().isEmpty() ? "" : from.getResourcepart();
 		Contact contact = account.getRoster().getContact(from);
 		long timestamp = getTimestamp(packet);
 		if (timestamp >= contact.lastseen.time) {
 			contact.lastseen.time = timestamp;
-			if ((presence != null) && (presenceOverwrite)) {
+			if (!presence.isEmpty() && presenceOverwrite) {
 				contact.lastseen.presence = presence;
 			}
 		}

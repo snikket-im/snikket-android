@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.Locale;
 
 import eu.siacs.conversations.entities.Account;
+import eu.siacs.conversations.xmpp.jid.InvalidJidException;
+
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Build;
@@ -62,8 +64,8 @@ public class SettingsActivity extends XmppActivity implements
 					.toLowerCase(Locale.US);
 			if (xmppConnectionServiceBound) {
 				for (Account account : xmppConnectionService.getAccounts()) {
-					account.setResource(resource);
-					if (!account.isOptionSet(Account.OPTION_DISABLED)) {
+                    account.setResource(resource);
+                    if (!account.isOptionSet(Account.OPTION_DISABLED)) {
 						xmppConnectionService.reconnectAccount(account, false);
 					}
 				}

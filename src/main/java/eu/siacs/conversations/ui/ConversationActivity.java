@@ -69,7 +69,7 @@ public class ConversationActivity extends XmppActivity implements
 
 	private View mContentView;
 
-	private List<Conversation> conversationList = new ArrayList<Conversation>();
+	private List<Conversation> conversationList = new ArrayList<>();
 	private Conversation selectedConversation = null;
 	private ListView listView;
 	private ConversationFragment mConversationFragment;
@@ -160,8 +160,10 @@ public class ConversationActivity extends XmppActivity implements
 		this.listAdapter = new ConversationAdapter(this, conversationList);
 		listView.setAdapter(this.listAdapter);
 
-		getActionBar().setDisplayHomeAsUpEnabled(false);
-		getActionBar().setHomeButtonEnabled(false);
+		if (getActionBar() != null) {
+			getActionBar().setDisplayHomeAsUpEnabled(false);
+			getActionBar().setHomeButtonEnabled(false);
+		}
 
 		listView.setOnItemClickListener(new OnItemClickListener() {
 
@@ -228,8 +230,7 @@ public class ConversationActivity extends XmppActivity implements
 					.useSubjectToIdentifyConference()) {
 				ab.setTitle(getSelectedConversation().getName());
 			} else {
-				ab.setTitle(getSelectedConversation().getContactJid()
-						.split("/")[0]);
+				ab.setTitle(getSelectedConversation().getContactJid().toBareJid().toString());
 			}
 		}
 		invalidateOptionsMenu();
@@ -600,7 +601,7 @@ public class ConversationActivity extends XmppActivity implements
 	}
 
 	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
+	public boolean onKeyDown(final int keyCode, final KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
 			if (!isConversationsOverviewVisable()) {
 				showConversationsOverview();
@@ -611,7 +612,7 @@ public class ConversationActivity extends XmppActivity implements
 	}
 
 	@Override
-	protected void onNewIntent(Intent intent) {
+	protected void onNewIntent(final Intent intent) {
 		if (xmppConnectionServiceBound) {
 			if (intent != null && VIEW_CONVERSATION.equals(intent.getType())) {
 				handleViewConversationIntent(intent);
@@ -645,7 +646,7 @@ public class ConversationActivity extends XmppActivity implements
 	}
 
 	@Override
-	public void onSaveInstanceState(Bundle savedInstanceState) {
+	public void onSaveInstanceState(final Bundle savedInstanceState) {
 		Conversation conversation = getSelectedConversation();
 		if (conversation != null) {
 			savedInstanceState.putString(STATE_OPEN_CONVERSATION,
@@ -714,11 +715,11 @@ public class ConversationActivity extends XmppActivity implements
 	}
 
 	private void selectConversationByUuid(String uuid) {
-		for (int i = 0; i < conversationList.size(); ++i) {
-			if (conversationList.get(i).getUuid().equals(uuid)) {
-				setSelectedConversation(conversationList.get(i));
-			}
-		}
+        for (Conversation aConversationList : conversationList) {
+            if (aConversationList.getUuid().equals(uuid)) {
+                setSelectedConversation(aConversationList);
+            }
+        }
 	}
 
 	public void registerListener() {
@@ -832,7 +833,7 @@ public class ConversationActivity extends XmppActivity implements
 		try {
 			this.startIntentSenderForResult(pi.getIntentSender(), requestCode,
 					null, 0, 0, 0);
-		} catch (SendIntentException e1) {
+		} catch (final SendIntentException ignored) {
 		}
 	}
 

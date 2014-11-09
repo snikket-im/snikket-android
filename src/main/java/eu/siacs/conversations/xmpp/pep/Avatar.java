@@ -1,6 +1,8 @@
 package eu.siacs.conversations.xmpp.pep;
 
 import eu.siacs.conversations.xml.Element;
+import eu.siacs.conversations.xmpp.jid.Jid;
+
 import android.util.Base64;
 
 public class Avatar {
@@ -10,7 +12,7 @@ public class Avatar {
 	public int height;
 	public int width;
 	public long size;
-	public String owner;
+	public Jid owner;
 
 	public byte[] getImageAsBytes() {
 		return Base64.decode(image, Base64.DEFAULT);
