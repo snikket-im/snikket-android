@@ -55,7 +55,7 @@ public class PresenceParser extends AbstractParser implements
 		}
         final Jid from = packet.getFrom();
 		String type = packet.getAttribute("type");
-		if (from.toBareJid().equals(account.getJid())) {
+		if (from.toBareJid().equals(account.getJid().toBareJid())) {
 			if (!from.getResourcepart().isEmpty()) {
 				if (type == null) {
 					account.updatePresence(from.getResourcepart(),

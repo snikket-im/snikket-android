@@ -30,11 +30,11 @@ public class JingleSocks5Transport extends JingleTransport {
 			StringBuilder destBuilder = new StringBuilder();
 			destBuilder.append(jingleConnection.getSessionId());
 			if (candidate.isOurs()) {
-				destBuilder.append(jingleConnection.getAccount().getFullJid());
+				destBuilder.append(jingleConnection.getAccount().getJid());
 				destBuilder.append(jingleConnection.getCounterPart());
 			} else {
 				destBuilder.append(jingleConnection.getCounterPart());
-				destBuilder.append(jingleConnection.getAccount().getFullJid());
+				destBuilder.append(jingleConnection.getAccount().getJid());
 			}
 			mDigest.reset();
 			this.destination = CryptoHelper.bytesToHex(mDigest

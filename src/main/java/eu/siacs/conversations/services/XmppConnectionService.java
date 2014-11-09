@@ -190,11 +190,11 @@ public class XmppConnectionService extends Service {
                 }
 				if (connection != null && connection.getFeatures().csi()) {
 					if (checkListeners()) {
-						Log.d(Config.LOGTAG, account.getJid()
+						Log.d(Config.LOGTAG, account.getJid().toBareJid()
 								+ " sending csi//inactive");
 						connection.sendInactive();
 					} else {
-						Log.d(Config.LOGTAG, account.getJid()
+						Log.d(Config.LOGTAG, account.getJid().toBareJid()
 								+ " sending csi//active");
 						connection.sendActive();
 					}
@@ -214,7 +214,7 @@ public class XmppConnectionService extends Service {
 					&& (account.getStatus() != Account.STATUS_NO_INTERNET)) {
 				if (connection != null) {
 					int next = connection.getTimeToNextAttempt();
-					Log.d(Config.LOGTAG, account.getJid()
+					Log.d(Config.LOGTAG, account.getJid().toBareJid()
 							+ ": error connecting account. try again in "
 							+ next + "s for the "
 							+ (connection.getAttempt() + 1) + " time");
@@ -736,10 +736,10 @@ public class XmppConnectionService extends Service {
 	public void fetchRosterFromServer(Account account) {
 		IqPacket iqPacket = new IqPacket(IqPacket.TYPE_GET);
 		if (!"".equals(account.getRosterVersion())) {
-			Log.d(Config.LOGTAG, account.getJid()
+			Log.d(Config.LOGTAG, account.getJid().toBareJid()
 					+ ": fetching roster version " + account.getRosterVersion());
 		} else {
-			Log.d(Config.LOGTAG, account.getJid() + ": fetching roster");
+			Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": fetching roster");
 		}
 		iqPacket.query("jabber:iq:roster").setAttribute("ver",
 				account.getRosterVersion());
@@ -1276,7 +1276,7 @@ public class XmppConnectionService extends Service {
 			options.flagAboutToRename();
 			PresencePacket packet = new PresencePacket();
 			packet.setTo(options.getJoinJid());
-			packet.setFrom(conversation.getAccount().getFullJid());
+			packet.setFrom(conversation.getAccount().getJid());
 
 			String sig = account.getPgpSignature();
 			if (sig != null) {
@@ -1305,12 +1305,12 @@ public class XmppConnectionService extends Service {
 		if (account.getStatus() == Account.STATUS_ONLINE) {
 			PresencePacket packet = new PresencePacket();
 			packet.setTo(conversation.getMucOptions().getJoinJid());
-			packet.setFrom(conversation.getAccount().getFullJid());
+			packet.setFrom(conversation.getAccount().getJid());
 			packet.setAttribute("type", "unavailable");
 			sendPresencePacket(conversation.getAccount(), packet);
 			conversation.getMucOptions().setOffline();
 			conversation.deregisterWithBookmark();
-			Log.d(Config.LOGTAG, conversation.getAccount().getJid()
+			Log.d(Config.LOGTAG, conversation.getAccount().getJid().toBareJid()
 					+ ": leaving muc " + conversation.getContactJid());
 		} else {
 			account.pendingConferenceLeaves.add(conversation);
@@ -1328,7 +1328,7 @@ public class XmppConnectionService extends Service {
                             leaveMuc(conversation);
                         } else {
                             if (conversation.endOtrIfNeeded()) {
-                                Log.d(Config.LOGTAG, account.getJid()
+                                Log.d(Config.LOGTAG, account.getJid().toBareJid()
                                         + ": ended otr session with "
                                         + conversation.getContactJid());
                             }
@@ -1376,7 +1376,7 @@ public class XmppConnectionService extends Service {
 		List<Message> messages = conversation.getMessages();
 		Session otrSession = conversation.getOtrSession();
 		Log.d(Config.LOGTAG,
-				account.getJid() + " otr session established with "
+				account.getJid().toBareJid() + " otr session established with "
 						+ conversation.getContactJid() + "/"
 						+ otrSession.getSessionID().getUserID());
         for (Message msg : messages) {
@@ -1412,7 +1412,7 @@ public class XmppConnectionService extends Service {
 		if (otrSession != null) {
 			MessagePacket packet = new MessagePacket();
 			packet.setType(MessagePacket.TYPE_CHAT);
-			packet.setFrom(account.getFullJid());
+			packet.setFrom(account.getJid());
 			packet.addChild("private", "urn:xmpp:carbons:2");
 			packet.addChild("no-copy", "urn:xmpp:hints");
 			packet.setAttribute("to", otrSession.getSessionID().getAccountID() + "/"
@@ -1522,13 +1522,13 @@ public class XmppConnectionService extends Service {
 
 			@Override
 			public void onIqPacketReceived(Account account, IqPacket result) {
-				final String ERROR = account.getJid()
+				final String ERROR = account.getJid().toBareJid()
 						+ ": fetching avatar for " + avatar.owner + " failed ";
 				if (result.getType() == IqPacket.TYPE_RESULT) {
 					avatar.image = mIqParser.avatarData(result);
 					if (avatar.image != null) {
 						if (getFileBackend().save(avatar)) {
-							if (account.getJid().equals(avatar.owner)) {
+							if (account.getJid().toBareJid().equals(avatar.owner)) {
 								if (account.setAvatar(avatar.getFilename())) {
 									databaseBackend.updateAccount(account);
 								}
@@ -1546,7 +1546,7 @@ public class XmppConnectionService extends Service {
 							if (callback != null) {
 								callback.success(avatar);
 							}
-							Log.d(Config.LOGTAG, account.getJid()
+							Log.d(Config.LOGTAG, account.getJid().toBareJid()
 									+ ": succesfully fetched avatar for "
 									+ avatar.owner);
 							return;
@@ -1586,7 +1586,7 @@ public class XmppConnectionService extends Service {
 						if (items != null) {
 							Avatar avatar = Avatar.parseMetadata(items);
 							if (avatar != null) {
-								avatar.owner = account.getJid();
+								avatar.owner = account.getJid().toBareJid();
 								if (fileBackend.isAvatarCached(avatar)) {
 									if (account.setAvatar(avatar.getFilename())) {
 										databaseBackend.updateAccount(account);
@@ -1750,7 +1750,7 @@ public class XmppConnectionService extends Service {
 
 	public Account findAccountByJid(final Jid accountJid) {
 		for (Account account : this.accounts) {
-			if (account.getJid().equals(accountJid)) {
+			if (account.getJid().toBareJid().equals(accountJid)) {
 				return account;
 			}
 		}
@@ -1771,7 +1771,7 @@ public class XmppConnectionService extends Service {
 		String id = conversation.getLatestMarkableMessageId();
 		conversation.markRead();
 		if (confirmMessages() && id != null && calledByUi) {
-			Log.d(Config.LOGTAG, conversation.getAccount().getJid()
+			Log.d(Config.LOGTAG, conversation.getAccount().getJid().toBareJid()
 					+ ": sending read marker for " + conversation.getName());
 			Account account = conversation.getAccount();
 			final Jid to = conversation.getContactJid();

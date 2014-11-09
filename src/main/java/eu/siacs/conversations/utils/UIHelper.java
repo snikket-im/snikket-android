@@ -124,7 +124,7 @@ public class UIHelper {
 		} else if (accountsWproblems.size() == 1) {
 			mBuilder.setContentTitle(context
 					.getString(R.string.problem_connecting_to_account));
-			mBuilder.setContentText(accountsWproblems.get(0).getJid().toString());
+			mBuilder.setContentText(accountsWproblems.get(0).getJid().toBareJid().toString());
 		} else {
 			mBuilder.setContentTitle(context
 					.getString(R.string.problem_connecting_to_accounts));

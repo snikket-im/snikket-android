@@ -187,7 +187,7 @@ public class PublishProfilePictureActivity extends XmppActivity {
 				} else {
 					loadImageIntoPreview(avatarUri);
 				}
-				this.accountTextView.setText(this.account.getJid().toString());
+				this.accountTextView.setText(this.account.getJid().toBareJid().toString());
 			}
 		}
 

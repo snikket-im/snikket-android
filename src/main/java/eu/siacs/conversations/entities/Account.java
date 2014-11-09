@@ -185,7 +185,7 @@ public class Account extends AbstractEntity {
 	}
 
 	public Jid getJid() {
-		return jid.toBareJid();
+		return jid;
 	}
 
 	public JSONObject getKeys() {
@@ -244,10 +244,6 @@ public class Account extends AbstractEntity {
 
 	public void setXmppConnection(XmppConnection connection) {
 		this.xmppConnection = connection;
-	}
-
-	public Jid getFullJid() {
-		return this.jid;
 	}
 
 	public String getOtrFingerprint() {

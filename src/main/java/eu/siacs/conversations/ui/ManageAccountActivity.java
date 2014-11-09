@@ -81,7 +81,7 @@ public class ManageAccountActivity extends XmppActivity {
 		} else {
 			menu.findItem(R.id.mgmt_account_enable).setVisible(false);
 		}
-		menu.setHeaderTitle(this.selectedAccount.getJid().toString());
+		menu.setHeaderTitle(this.selectedAccount.getJid().toBareJid().toString());
 	}
 
 	@Override

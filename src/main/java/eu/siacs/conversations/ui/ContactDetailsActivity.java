@@ -329,7 +329,7 @@ public class ContactDetailsActivity extends XmppActivity {
 			contactJidTv.setText(contact.getJid().toString());
 		}
 		accountJidTv.setText(getString(R.string.using_account, contact
-				.getAccount().getJid()));
+				.getAccount().getJid().toBareJid()));
 		prepareContactBadge(badge, contact);
 		if (contact.getSystemAccount() == null) {
 			badge.setOnClickListener(onBadgeClick);

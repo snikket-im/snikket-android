@@ -68,7 +68,7 @@ public class AvatarService {
 				this.sizes.add(size);
 			}
 		}
-		return PREFIX_CONTACT + "_" + contact.getAccount().getJid() + "_"
+		return PREFIX_CONTACT + "_" + contact.getAccount().getJid().toBareJid() + "_"
 				+ contact.getJid() + "_" + String.valueOf(size);
 	}
 
@@ -173,7 +173,7 @@ public class AvatarService {
 		avatar = mXmppConnectionService.getFileBackend().getAvatar(
 				account.getAvatar(), size);
 		if (avatar == null) {
-			avatar = get(account.getJid().toString(), size);
+			avatar = get(account.getJid().toBareJid().toString(), size);
 		}
 		mXmppConnectionService.getBitmapCache().put(KEY, avatar);
 		return avatar;
