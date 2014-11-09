@@ -22,6 +22,7 @@ public class AvatarService {
 
 	private static final int FG_COLOR = 0xFFFAFAFA;
 	private static final int TRANSPARENT = 0x00000000;
+	private static final int PLACEHOLDER_COLOR = 0xFF202020;
 
 	private static final String PREFIX_CONTACT = "contact";
 	private static final String PREFIX_CONVERSATION = "conversation";
@@ -140,7 +141,7 @@ public class AvatarService {
 			drawTile(canvas, users.get(0), 0, 0, size / 2 - 1, size / 2 - 1);
 			drawTile(canvas, users.get(1), 0, size / 2 + 1, size / 2 - 1, size);
 			drawTile(canvas, users.get(2), size / 2 + 1, 0, size, size / 2 - 1);
-			drawTile(canvas, "\u2026", 0xFF202020, size / 2 + 1, size / 2 + 1,
+			drawTile(canvas, "\u2026", PLACEHOLDER_COLOR, size / 2 + 1, size / 2 + 1,
 					size, size);
 		}
 		this.mXmppConnectionService.getBitmapCache().put(KEY, bitmap);
@@ -204,8 +205,15 @@ public class AvatarService {
 		}
 		bitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
 		Canvas canvas = new Canvas(bitmap);
-		String letter = name.substring(0, 1);
-		int color = this.getColorForName(name);
+		String letter;
+		int color;
+		if (name.length() > 0) {
+			letter = name.substring(0, 1);
+			color = this.getColorForName(name);
+		} else {
+			letter = "X";
+			color = PLACEHOLDER_COLOR;
+		}
 		drawTile(canvas, letter, color, 0, 0, size, size);
 		mXmppConnectionService.getBitmapCache().put(KEY, bitmap);
 		return bitmap;
@@ -255,21 +263,21 @@ public class AvatarService {
 						.cropCenter(uri, bottom - top, right - left);
 				if (bitmap != null) {
 					drawTile(canvas, bitmap, left, top, right, bottom);
-				} else {
-					String letter = user.getName().substring(0, 1);
-					int color = this.getColorForName(user.getName());
-					drawTile(canvas, letter, color, left, top, right, bottom);
+					return;
 				}
-			} else {
-				String letter = user.getName().substring(0, 1);
-				int color = this.getColorForName(user.getName());
-				drawTile(canvas, letter, color, left, top, right, bottom);
 			}
-		} else {
-			String letter = user.getName().substring(0, 1);
-			int color = this.getColorForName(user.getName());
-			drawTile(canvas, letter, color, left, top, right, bottom);
 		}
+		String name = user.getName();
+		String letter;
+		int color;
+		if (name.length() > 0) {
+			letter = name.substring(0, 1);
+			color = this.getColorForName(name);
+		} else {
+			letter = "X";
+			color = PLACEHOLDER_COLOR;
+		}
+		drawTile(canvas, letter, color, left, top, right, bottom);
 	}
 
 	private void drawTile(Canvas canvas, Bitmap bm, int dstleft, int dsttop,
