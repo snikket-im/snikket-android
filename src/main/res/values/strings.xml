@@ -272,6 +272,7 @@
             \n\nDownload the full source code at https://github.com/siacs/Conversations
             \n\n\nLibraries
             \n\nhttps://www.bouncycastle.org\n(The MIT License (MIT))
+            \n\nhttps://www.gnu.org/software/libidn\n(Apache License, Version 2.0)
             \n\nhttps://github.com/ge0rg/MemorizingTrustManager\n(The MIT License (MIT))
             \n\nhttps://github.com/rtreffer/minidns\n(WTFPL)
             \n\nhttps://github.com/open-keychain/openkeychain-api-lib\n(Apache License, Version 2.0)
