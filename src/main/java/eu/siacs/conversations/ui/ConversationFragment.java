@@ -680,23 +680,21 @@ public class ConversationFragment extends Fragment {
 	}
 
 	protected void makeFingerprintWarning() {
-		Set<String> knownFingerprints = conversation.getContact()
-				.getOtrFingerprints();
 		if (conversation.hasValidOtrSession()
 				&& (!conversation.isMuted())
-				&& (conversation.getOtrSession().getSessionStatus() == SessionStatus.ENCRYPTED) && (!knownFingerprints
-				.contains(conversation.getOtrFingerprint()))) {
+				&& (conversation.getOtrSession().getSessionStatus() == SessionStatus.ENCRYPTED)
+				&& (!conversation.isOtrFingerprintVerified())) {
 			showSnackbar(R.string.unknown_otr_fingerprint, R.string.verify,
 					new OnClickListener() {
 
 						@Override
 						public void onClick(View v) {
 							if (conversation.getOtrFingerprint() != null) {
-								AlertDialog dialog = UIHelper
-										.getVerifyFingerprintDialog(
-												(ConversationActivity) getActivity(),
-												conversation, snackbar);
-								dialog.show();
+								Intent intent = new Intent(getActivity(),VerifyOTRActivity.class);
+								intent.setAction(VerifyOTRActivity.ACTION_VERIFY_CONTACT);
+								intent.putExtra("contact",conversation.getContact().getJid().toBareJid().toString());
+								intent.putExtra("account",conversation.getAccount().getJid().toBareJid().toString());
+								startActivity(intent);
 							}
 						}
 					});
