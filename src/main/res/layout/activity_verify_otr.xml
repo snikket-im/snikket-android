@@ -8,7 +8,18 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+        <TextView
+            android:id="@+id/error_no_session"
+            android:layout_margin="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/no_otr_session_found"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/primarytext"
+            android:textSize="?attr/TextSizeBody"
+            />
         <RelativeLayout
+            android:id="@+id/verification_area_one"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:background="@drawable/infocard_border"
@@ -90,6 +101,7 @@
             </LinearLayout>
         </RelativeLayout>
         <RelativeLayout
+            android:id="@+id/verification_area_two"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"

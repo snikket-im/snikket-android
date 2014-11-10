@@ -417,6 +417,10 @@ public class Conversation extends AbstractEntity {
 		}
 	}
 
+	public boolean smpRequested() {
+		return smp().status == Smp.STATUS_CONTACT_REQUESTED;
+	}
+
 	public void setNextMessage(String message) {
 		this.nextMessage = message;
 	}

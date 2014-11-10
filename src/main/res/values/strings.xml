@@ -326,4 +326,6 @@
     <string name="try_again">Try again</string>;
     <string name="finish">Finish</string>
     <string name="verified">Verified!</string>
+    <string name="smp_requested">Contact requested SMP verification</string>
+    <string name="no_otr_session_found">No valid OTR session has been found!</string>
 </resources>
