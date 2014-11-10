@@ -1,5 +1,7 @@
 package eu.siacs.conversations.xmpp.jid;
 
+import net.java.otr4j.session.SessionID;
+
 import java.net.IDN;
 
 import gnu.inet.encoding.Stringprep;
@@ -29,6 +31,14 @@ public final class Jid {
     public String getResourcepart() {
         return resourcepart;
     }
+
+	public static Jid fromSessionID(SessionID id) throws InvalidJidException{
+		if (id.getUserID().isEmpty()) {
+			return Jid.fromString(id.getAccountID());
+		} else {
+			return Jid.fromString(id.getAccountID()+"/"+id.getUserID());
+		}
+	}
 
     public static Jid fromString(final String jid) throws InvalidJidException {
         return new Jid(jid);
