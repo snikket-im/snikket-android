@@ -896,12 +896,11 @@ public class ConversationActivity extends XmppActivity implements
 			public void run() {
 				updateConversationList();
 				if (conversationList.size() == 0) {
-						startActivity(new Intent(getApplicationContext(),
-								StartConversationActivity.class));
-						finish();
-				} else {
-					ConversationActivity.this.mConversationFragment.updateMessages();
+					startActivity(new Intent(getApplicationContext(),
+							StartConversationActivity.class));
+					finish();
 				}
+				ConversationActivity.this.mConversationFragment.updateMessages();
 			}
 		});
 	}

@@ -105,7 +105,11 @@ public abstract class XmppActivity extends Activity {
 			XmppConnectionBinder binder = (XmppConnectionBinder) service;
 			xmppConnectionService = binder.getService();
 			xmppConnectionServiceBound = true;
-			onBackendConnected();
+			if (!isFinishing() && !isDestroyed()) {
+				onBackendConnected();
+			} else {
+				Log.d(Config.LOGTAG,"omitting call to onBackendConnected()");
+			}
 		}
 
 		@Override

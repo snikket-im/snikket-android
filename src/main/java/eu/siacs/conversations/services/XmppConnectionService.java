@@ -401,10 +401,10 @@ public class XmppConnectionService extends Service {
 				}
 			}
 		}
-		PowerManager pm = (PowerManager) this.getSystemService(Context.POWER_SERVICE);
+		/*PowerManager pm = (PowerManager) this.getSystemService(Context.POWER_SERVICE);
 		if (!pm.isScreenOn()) {
 			removeStaleListeners();
-		}
+		}*/
 		if (wakeLock.isHeld()) {
 			try {
 				wakeLock.release();
@@ -1080,11 +1080,11 @@ public class XmppConnectionService extends Service {
 
 	public void setOnConversationListChangedListener(
 			OnConversationUpdate listener) {
-		if (!isScreenOn()) {
+		/*if (!isScreenOn()) {
 			Log.d(Config.LOGTAG,
 					"ignoring setOnConversationListChangedListener");
 			return;
-		}
+		}*/
 		synchronized (this.convChangedListenerCount) {
 			if (checkListeners()) {
 				switchToForeground();
@@ -1110,10 +1110,10 @@ public class XmppConnectionService extends Service {
 	}
 
 	public void setOnAccountListChangedListener(OnAccountUpdate listener) {
-		if (!isScreenOn()) {
+		/*if (!isScreenOn()) {
 			Log.d(Config.LOGTAG, "ignoring setOnAccountListChangedListener");
 			return;
-		}
+		}*/
 		synchronized (this.accountChangedListenerCount) {
 			if (checkListeners()) {
 				switchToForeground();
@@ -1137,10 +1137,10 @@ public class XmppConnectionService extends Service {
 	}
 
 	public void setOnRosterUpdateListener(OnRosterUpdate listener) {
-		if (!isScreenOn()) {
+		/*if (!isScreenOn()) {
 			Log.d(Config.LOGTAG, "ignoring setOnRosterUpdateListener");
 			return;
-		}
+		}*/
 		synchronized (this.rosterChangedListenerCount) {
 			if (checkListeners()) {
 				switchToForeground();
