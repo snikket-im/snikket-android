@@ -2,23 +2,18 @@ package eu.siacs.conversations.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import net.java.otr4j.OtrException;
-import net.java.otr4j.crypto.OtrCryptoException;
 import net.java.otr4j.session.Session;
 
-import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
-import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
@@ -144,14 +139,14 @@ public class VerifyOTRActivity extends XmppActivity implements XmppConnectionSer
 	}
 
 	protected boolean handleIntent(Intent intent) {
-		if (getIntent().getAction().equals(ACTION_VERIFY_CONTACT)) {
+		if (intent.getAction().equals(ACTION_VERIFY_CONTACT)) {
 			try {
-				this.mAccount = this.xmppConnectionService.findAccountByJid(Jid.fromString(getIntent().getExtras().getString("account")));
+				this.mAccount = this.xmppConnectionService.findAccountByJid(Jid.fromString(intent.getExtras().getString("account")));
 			} catch (final InvalidJidException ignored) {
 				return false;
 			}
 			try {
-				this.mConversation = this.xmppConnectionService.find(this.mAccount,Jid.fromString(getIntent().getExtras().getString("contact")));
+				this.mConversation = this.xmppConnectionService.find(this.mAccount,Jid.fromString(intent.getExtras().getString("contact")));
 				if (this.mConversation == null) {
 					return false;
 				}
