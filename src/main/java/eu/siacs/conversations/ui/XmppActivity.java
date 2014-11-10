@@ -48,6 +48,8 @@ import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 
+import net.java.otr4j.session.SessionID;
+
 import java.io.FileNotFoundException;
 import java.lang.ref.WeakReference;
 import java.util.Hashtable;
@@ -452,7 +454,17 @@ public abstract class XmppActivity extends Activity {
 	public void selectPresence(final Conversation conversation,
 							   final OnPresenceSelected listener) {
 		final Contact contact = conversation.getContact();
-		if (!contact.showInRoster()) {
+		if (conversation.hasValidOtrSession()) {
+			SessionID id = conversation.getOtrSession().getSessionID();
+			Jid jid;
+			try {
+				jid = Jid.fromString(id.getAccountID() + "/" + id.getUserID());
+			} catch (InvalidJidException e) {
+				jid = null;
+			}
+			conversation.setNextCounterpart(jid);
+			listener.onPresenceSelected();
+		} else 	if (!contact.showInRoster()) {
 			showAddToRosterDialog(conversation);
 		} else {
 			Presences presences = contact.getPresences();

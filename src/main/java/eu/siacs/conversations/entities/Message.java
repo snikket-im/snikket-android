@@ -67,18 +67,14 @@ public class Message extends AbstractEntity {
 	}
 
 	public Message(Conversation conversation, String body, int encryption) {
-		this(java.util.UUID.randomUUID().toString(), conversation.getUuid(),
-				conversation.getContactJid(), null, body, System
-						.currentTimeMillis(), encryption,
-				Message.STATUS_UNSEND, TYPE_TEXT, null);
-		this.conversation = conversation;
+		this(conversation,body,encryption,STATUS_UNSEND);
 	}
 
-	public Message(final Conversation conversation, final Jid counterpart, final String body,
-				   final int encryption, final int status) {
+	public Message(Conversation conversation, String body, int encryption, int status) {
 		this(java.util.UUID.randomUUID().toString(), conversation.getUuid(),
-				counterpart, null, body, System.currentTimeMillis(),
-				encryption, status, TYPE_TEXT, null);
+				conversation.getContactJid().toBareJid(), null, body, System
+						.currentTimeMillis(), encryption,
+				status, TYPE_TEXT, null);
 		this.conversation = conversation;
 	}
 

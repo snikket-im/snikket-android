@@ -1,8 +1,11 @@
 package eu.siacs.conversations.parser;
 
+import android.util.Log;
+
 import net.java.otr4j.session.Session;
 import net.java.otr4j.session.SessionStatus;
 
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
@@ -30,10 +33,10 @@ public class MessageParser extends AbstractParser implements
 		String pgpBody = getPgpBody(packet);
 		Message finishedMessage;
 		if (pgpBody != null) {
-			finishedMessage = new Message(conversation, packet.getFrom(),
+			finishedMessage = new Message(conversation,
 					pgpBody, Message.ENCRYPTION_PGP, Message.STATUS_RECEIVED);
 		} else {
-			finishedMessage = new Message(conversation, packet.getFrom(),
+			finishedMessage = new Message(conversation,
 					packet.getBody(), Message.ENCRYPTION_NONE,
 					Message.STATUS_RECEIVED);
 		}
@@ -110,12 +113,12 @@ public class MessageParser extends AbstractParser implements
 				conversation.setSymmetricKey(CryptoHelper.hexToBytes(key));
 				return null;
 			}
-			Message finishedMessage = new Message(conversation,
-					packet.getFrom(), body, Message.ENCRYPTION_OTR,
+			Message finishedMessage = new Message(conversation, body, Message.ENCRYPTION_OTR,
 					Message.STATUS_RECEIVED);
 			finishedMessage.setTime(getTimestamp(packet));
 			finishedMessage.setRemoteMsgId(packet.getId());
 			finishedMessage.markable = isMarkable(packet);
+			finishedMessage.setCounterpart(from);
 			return finishedMessage;
 		} catch (Exception e) {
 			String receivedId = packet.getId();
@@ -158,14 +161,15 @@ public class MessageParser extends AbstractParser implements
 		String pgpBody = getPgpBody(packet);
 		Message finishedMessage;
 		if (pgpBody == null) {
-			finishedMessage = new Message(conversation, from,
+			finishedMessage = new Message(conversation,
 					packet.getBody(), Message.ENCRYPTION_NONE, status);
 		} else {
-			finishedMessage = new Message(conversation, from, pgpBody,
+			finishedMessage = new Message(conversation, pgpBody,
 					Message.ENCRYPTION_PGP, status);
 		}
 		finishedMessage.setRemoteMsgId(packet.getId());
 		finishedMessage.markable = isMarkable(packet);
+		finishedMessage.setCounterpart(from);
 		if (status == Message.STATUS_RECEIVED) {
 			finishedMessage.setTrueCounterpart(conversation.getMucOptions()
 					.getTrueCounterpart(from.getResourcepart()));
@@ -206,7 +210,7 @@ public class MessageParser extends AbstractParser implements
 				parseNonMessage(message, account);
 			} else if (status == Message.STATUS_SEND
 					&& message.hasChild("displayed", "urn:xmpp:chat-markers:0")) {
-				final Jid to = message.getTo();
+				final Jid to = message.getAttributeAsJid("to");
 				if (to != null) {
 					final Conversation conversation = mXmppConnectionService.find(
 							mXmppConnectionService.getConversations(), account,
@@ -219,14 +223,14 @@ public class MessageParser extends AbstractParser implements
 			return null;
 		}
 		if (status == Message.STATUS_RECEIVED) {
-			fullJid = message.getFrom();
+			fullJid = message.getAttributeAsJid("from");
 			if (fullJid == null) {
 				return null;
 			} else {
 				updateLastseen(message, account, true);
 			}
 		} else {
-			fullJid = message.getTo();
+			fullJid = message.getAttributeAsJid("to");
 			if (fullJid == null) {
 				return null;
 			}
@@ -236,20 +240,20 @@ public class MessageParser extends AbstractParser implements
 		String pgpBody = getPgpBody(message);
 		Message finishedMessage;
 		if (pgpBody != null) {
-			finishedMessage = new Message(conversation, fullJid, pgpBody,
+			finishedMessage = new Message(conversation, pgpBody,
 					Message.ENCRYPTION_PGP, status);
 		} else {
 			String body = message.findChild("body").getContent();
-			finishedMessage = new Message(conversation, fullJid, body,
+			finishedMessage = new Message(conversation, body,
 					Message.ENCRYPTION_NONE, status);
 		}
 		finishedMessage.setTime(getTimestamp(message));
 		finishedMessage.setRemoteMsgId(message.getAttribute("id"));
 		finishedMessage.markable = isMarkable(message);
+		finishedMessage.setCounterpart(fullJid);
 		if (conversation.getMode() == Conversation.MODE_MULTI
 				&& !fullJid.isBareJid()) {
 			finishedMessage.setType(Message.TYPE_PRIVATE);
-			finishedMessage.setCounterpart(fullJid);
 			finishedMessage.setTrueCounterpart(conversation.getMucOptions()
 					.getTrueCounterpart(fullJid.getResourcepart()));
 			if (conversation.hasDuplicateMessage(finishedMessage)) {
@@ -266,7 +270,7 @@ public class MessageParser extends AbstractParser implements
 	}
 
 	private void parseNonMessage(Element packet, Account account) {
-		final Jid from = packet.getFrom();
+		final Jid from = packet.getAttributeAsJid("from");
 		if (packet.hasChild("event", "http://jabber.org/protocol/pubsub#event")) {
 			Element event = packet.findChild("event",
 					"http://jabber.org/protocol/pubsub#event");
@@ -299,7 +303,7 @@ public class MessageParser extends AbstractParser implements
 			if (x.hasChild("invite")) {
 				Conversation conversation = mXmppConnectionService
 						.findOrCreateConversation(account,
-								packet.getFrom(), true);
+								packet.getAttributeAsJid("from"), true);
 				if (!conversation.getMucOptions().online()) {
 					if (x.hasChild("password")) {
 						Element password = x.findChild("password");
@@ -479,6 +483,7 @@ public class MessageParser extends AbstractParser implements
 				&& conversation.getOtrSession() != null
 				&& !conversation.getOtrSession().getSessionID().getUserID()
 				.equals(message.getCounterpart().getResourcepart())) {
+			Log.d(Config.LOGTAG, "ending because of reasons");
 			conversation.endOtrIfNeeded();
 		}
 

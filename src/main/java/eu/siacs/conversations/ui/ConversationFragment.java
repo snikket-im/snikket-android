@@ -825,21 +825,16 @@ public class ConversationFragment extends Fragment {
 	protected void sendOtrMessage(final Message message) {
 		final ConversationActivity activity = (ConversationActivity) getActivity();
 		final XmppConnectionService xmppService = activity.xmppConnectionService;
-		if (conversation.hasValidOtrSession()) {
-			activity.xmppConnectionService.sendMessage(message);
-			messageSent();
-		} else {
-			activity.selectPresence(message.getConversation(),
-					new OnPresenceSelected() {
+		activity.selectPresence(message.getConversation(),
+			new OnPresenceSelected() {
 
-						@Override
-						public void onPresenceSelected() {
-							message.setCounterpart(conversation.getNextCounterpart());
-							xmppService.sendMessage(message);
-							messageSent();
-						}
-					});
-		}
+				@Override
+				public void onPresenceSelected() {
+					message.setCounterpart(conversation.getNextCounterpart());
+					xmppService.sendMessage(message);
+					messageSent();
+				}
+			});
 	}
 
 	public void appendText(String text) {

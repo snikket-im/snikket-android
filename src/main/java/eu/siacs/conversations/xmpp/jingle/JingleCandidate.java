@@ -109,7 +109,7 @@ public class JingleCandidate {
 		JingleCandidate parsedCandidate = new JingleCandidate(
 				candidate.getAttribute("cid"), false);
 		parsedCandidate.setHost(candidate.getAttribute("host"));
-		parsedCandidate.setJid(candidate.getJid());
+		parsedCandidate.setJid(candidate.getAttributeAsJid("jid"));
 		parsedCandidate.setType(candidate.getAttribute("type"));
 		parsedCandidate.setPriority(Integer.parseInt(candidate
 				.getAttribute("priority")));

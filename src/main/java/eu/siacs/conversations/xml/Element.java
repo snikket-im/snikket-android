@@ -105,8 +105,8 @@ public class Element {
 		}
 	}
 
-    public Jid getJid() {
-        final String jid = this.getAttribute("jid");
+	public Jid getAttributeAsJid(String name) {
+		final String jid = this.getAttribute(name);
         if (jid != null && !jid.isEmpty()) {
             try {
                 return Jid.fromString(jid);
@@ -115,31 +115,7 @@ public class Element {
             }
         }
         return null;
-    }
-
-    public Jid getTo() {
-        final String to = this.getAttribute("to");
-        if (to != null && !to.isEmpty()) {
-            try {
-                return Jid.fromString(to);
-            } catch (final InvalidJidException e) {
-                return null;
-            }
-        }
-        return null;
-    }
-
-    public Jid getFrom() {
-        final String from = this.getAttribute("from");
-        if (from != null && !from.isEmpty()) {
-            try {
-                return Jid.fromString(from);
-            } catch (final InvalidJidException e) {
-                return null;
-            }
-        }
-        return null;
-    }
+	}
 
 	public Hashtable<String, String> getAttributes() {
 		return this.attributes;
