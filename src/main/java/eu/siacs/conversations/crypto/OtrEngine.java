@@ -18,13 +18,18 @@ import android.util.Log;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
+import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.services.XmppConnectionService;
+import eu.siacs.conversations.xmpp.jid.InvalidJidException;
+import eu.siacs.conversations.xmpp.jid.Jid;
 import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
 
 import net.java.otr4j.OtrEngineHost;
 import net.java.otr4j.OtrException;
 import net.java.otr4j.OtrPolicy;
 import net.java.otr4j.OtrPolicyImpl;
+import net.java.otr4j.crypto.OtrCryptoEngineImpl;
+import net.java.otr4j.crypto.OtrCryptoException;
 import net.java.otr4j.session.InstanceTag;
 import net.java.otr4j.session.SessionID;
 
@@ -92,9 +97,18 @@ public class OtrEngine implements OtrEngineHost {
     }
 
 	@Override
-	public void askForSecret(SessionID arg0, InstanceTag arg1, String arg2) {
-		// TODO Auto-generated method stub
-
+	public void askForSecret(SessionID id, InstanceTag instanceTag, String question) {
+		try {
+			final Jid jid = Jid.fromSessionID(id);
+			Conversation conversation = this.mXmppConnectionService.find(this.account,jid);
+			if (conversation!=null) {
+				conversation.smp().hint = question;
+				conversation.smp().status = Conversation.Smp.STATUS_CONTACT_REQUESTED;
+				mXmppConnectionService.updateConversationUi();
+			}
+		} catch (InvalidJidException e) {
+			Log.d(Config.LOGTAG,account.getJid().toBareJid()+": smp in invalid session "+id.toString());
+		}
 	}
 
 	@Override
@@ -110,8 +124,11 @@ public class OtrEngine implements OtrEngineHost {
 
 	@Override
 	public byte[] getLocalFingerprintRaw(SessionID arg0) {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			return new OtrCryptoEngineImpl().getFingerprintRaw(getPublicKey());
+		} catch (OtrCryptoException e) {
+			return null;
+		}
 	}
 
 	public PublicKey getPublicKey() {
@@ -187,20 +204,31 @@ public class OtrEngine implements OtrEngineHost {
 
 	@Override
 	public void showError(SessionID arg0, String arg1) throws OtrException {
-		// TODO Auto-generated method stub
-
+		Log.d(Config.LOGTAG,"show error");
 	}
 
 	@Override
-	public void smpAborted(SessionID arg0) throws OtrException {
-		// TODO Auto-generated method stub
+	public void smpAborted(SessionID id) throws OtrException {
+		setSmpStatus(id, Conversation.Smp.STATUS_NONE);
+	}
 
+	private void setSmpStatus(SessionID id, int status) {
+		try {
+			final Jid jid = Jid.fromSessionID(id);
+			Conversation conversation = this.mXmppConnectionService.find(this.account,jid);
+			if (conversation!=null) {
+				conversation.smp().status = status;
+				mXmppConnectionService.updateConversationUi();
+			}
+		} catch (final InvalidJidException ignored) {
+
+		}
 	}
 
 	@Override
-	public void smpError(SessionID arg0, int arg1, boolean arg2)
+	public void smpError(SessionID id, int arg1, boolean arg2)
 			throws OtrException {
-		throw new OtrException(new Exception("smp error"));
+		setSmpStatus(id, Conversation.Smp.STATUS_NONE);
 	}
 
 	@Override
@@ -211,19 +239,29 @@ public class OtrEngine implements OtrEngineHost {
 
 	@Override
 	public void unreadableMessageReceived(SessionID arg0) throws OtrException {
+		Log.d(Config.LOGTAG,"unreadable message received");
 		throw new OtrException(new Exception("unreadable message received"));
 	}
 
 	@Override
-	public void unverify(SessionID arg0, String arg1) {
-		// TODO Auto-generated method stub
-
+	public void unverify(SessionID id, String arg1) {
+		setSmpStatus(id, Conversation.Smp.STATUS_FAILED);
 	}
 
 	@Override
-	public void verify(SessionID arg0, String arg1, boolean arg2) {
-		// TODO Auto-generated method stub
-
+	public void verify(SessionID id, String arg1, boolean arg2) {
+		try {
+			final Jid jid = Jid.fromSessionID(id);
+			Conversation conversation = this.mXmppConnectionService.find(this.account,jid);
+			if (conversation!=null) {
+				conversation.smp().hint = null;
+				conversation.smp().status = Conversation.Smp.STATUS_VERIFIED;
+				conversation.verifyOtrFingerprint();
+				mXmppConnectionService.updateConversationUi();
+				mXmppConnectionService.syncRosterToDisk(conversation.getAccount());
+			}
+		} catch (final InvalidJidException ignored) {
+		}
 	}
 
 }

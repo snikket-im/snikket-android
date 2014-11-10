@@ -639,6 +639,7 @@ public abstract class XmppActivity extends Activity {
 	}
 
 	protected Bitmap createQrCodeBitmap(String input, int size) {
+		Log.d(Config.LOGTAG,"qr code requested size: "+size);
 		try {
 			final QRCodeWriter QR_CODE_WRITER = new QRCodeWriter();
 			final Hashtable<EncodeHintType, Object> hints = new Hashtable<>();
@@ -654,6 +655,7 @@ public abstract class XmppActivity extends Activity {
 				}
 			}
 			final Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+			Log.d(Config.LOGTAG,"output size: "+width+"x"+height);
 			bitmap.setPixels(pixels, 0, width, 0, 0, width, height);
 			return bitmap;
 		} catch (final WriterException e) {
