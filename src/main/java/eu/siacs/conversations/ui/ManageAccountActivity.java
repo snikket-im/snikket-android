@@ -22,15 +22,13 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
-public class ManageAccountActivity extends XmppActivity {
+public class ManageAccountActivity extends XmppActivity implements OnAccountUpdate {
 
 	protected Account selectedAccount = null;
 
 	protected List<Account> accountList = new ArrayList<Account>();
 	protected ListView accountListView;
 	protected AccountAdapter mAccountAdapter;
-	protected OnAccountUpdate accountChanged = new OnAccountUpdate() {
-
 		@Override
 		public void onAccountUpdate() {
 			accountList.clear();
@@ -43,7 +41,6 @@ public class ManageAccountActivity extends XmppActivity {
 				}
 			});
 		}
-	};
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -85,16 +82,7 @@ public class ManageAccountActivity extends XmppActivity {
 	}
 
 	@Override
-	protected void onStop() {
-		if (xmppConnectionServiceBound) {
-			xmppConnectionService.removeOnAccountListChangedListener();
-		}
-		super.onStop();
-	}
-
-	@Override
 	void onBackendConnected() {
-		xmppConnectionService.setOnAccountListChangedListener(accountChanged);
 		this.accountList.clear();
 		this.accountList.addAll(xmppConnectionService.getAccounts());
 		mAccountAdapter.notifyDataSetChanged();

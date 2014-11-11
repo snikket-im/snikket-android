@@ -62,6 +62,7 @@ import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
+import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.entities.Presences;
 import eu.siacs.conversations.services.AvatarService;
 import eu.siacs.conversations.services.XmppConnectionService;
@@ -77,6 +78,7 @@ public abstract class XmppActivity extends Activity {
 
 	public XmppConnectionService xmppConnectionService;
 	public boolean xmppConnectionServiceBound = false;
+	protected boolean registeredListeners = false;
 
 	protected int mPrimaryTextColor;
 	protected int mSecondaryTextColor;
@@ -105,11 +107,11 @@ public abstract class XmppActivity extends Activity {
 			XmppConnectionBinder binder = (XmppConnectionBinder) service;
 			xmppConnectionService = binder.getService();
 			xmppConnectionServiceBound = true;
-			if (!isFinishing() && !isDestroyed()) {
-				onBackendConnected();
-			} else {
-				Log.d(Config.LOGTAG,"omitting call to onBackendConnected()");
+			if (!registeredListeners) {
+				registerListeners();
+				registeredListeners = true;
 			}
+			onBackendConnected();
 		}
 
 		@Override
@@ -123,6 +125,12 @@ public abstract class XmppActivity extends Activity {
 		super.onStart();
 		if (!xmppConnectionServiceBound) {
 			connectToBackend();
+		} else {
+			if (!registeredListeners) {
+				this.registerListeners();
+				this.registeredListeners = true;
+			}
+			this.onBackendConnected();
 		}
 	}
 
@@ -137,6 +145,10 @@ public abstract class XmppActivity extends Activity {
 	protected void onStop() {
 		super.onStop();
 		if (xmppConnectionServiceBound) {
+			if (registeredListeners) {
+				this.unregisterListeners();
+				this.registeredListeners = false;
+			}
 			unbindService(mConnection);
 			xmppConnectionServiceBound = false;
 		}
@@ -206,6 +218,36 @@ public abstract class XmppActivity extends Activity {
 	}
 
 	abstract void onBackendConnected();
+
+	protected void registerListeners() {
+		if (this instanceof XmppConnectionService.OnConversationUpdate) {
+			this.xmppConnectionService.setOnConversationListChangedListener((XmppConnectionService.OnConversationUpdate) this);
+		}
+		if (this instanceof XmppConnectionService.OnAccountUpdate) {
+			this.xmppConnectionService.setOnAccountListChangedListener((XmppConnectionService.OnAccountUpdate) this);
+		}
+		if (this instanceof XmppConnectionService.OnRosterUpdate) {
+			this.xmppConnectionService.setOnRosterUpdateListener((XmppConnectionService.OnRosterUpdate) this);
+		}
+		if (this instanceof MucOptions.OnRenameListener) {
+			this.xmppConnectionService.setOnRenameListener((MucOptions.OnRenameListener) this);
+		}
+	}
+
+	protected void unregisterListeners() {
+		if (this instanceof XmppConnectionService.OnConversationUpdate) {
+			this.xmppConnectionService.removeOnConversationListChangedListener();
+		}
+		if (this instanceof XmppConnectionService.OnAccountUpdate) {
+			this.xmppConnectionService.removeOnAccountListChangedListener();
+		}
+		if (this instanceof XmppConnectionService.OnRosterUpdate) {
+			this.xmppConnectionService.removeOnRosterUpdateListener();
+		}
+		if (this instanceof MucOptions.OnRenameListener) {
+			this.xmppConnectionService.setOnRenameListener(null);
+		}
+	}
 
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {

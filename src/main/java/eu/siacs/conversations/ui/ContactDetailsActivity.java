@@ -1,9 +1,5 @@
 package eu.siacs.conversations.ui;
 
-import java.util.Iterator;
-
-import org.openintents.openpgp.util.OpenPgpUtils;
-
 import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -21,12 +17,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.CheckBox;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.QuickContactBadge;
 import android.widget.TextView;
+
+import org.openintents.openpgp.util.OpenPgpUtils;
+
+import java.util.Iterator;
+
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.PgpEngine;
 import eu.siacs.conversations.entities.Account;
@@ -38,22 +39,10 @@ import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
 
-public class ContactDetailsActivity extends XmppActivity {
+public class ContactDetailsActivity extends XmppActivity implements OnAccountUpdate, OnRosterUpdate {
 	public static final String ACTION_VIEW_CONTACT = "view_contact";
 
 	private Contact contact;
-
-	private Jid accountJid;
-	private Jid contactJid;
-
-	private TextView contactJidTv;
-	private TextView accountJidTv;
-	private TextView status;
-	private TextView lastseen;
-	private CheckBox send;
-	private CheckBox receive;
-	private QuickContactBadge badge;
-
 	private DialogInterface.OnClickListener removeFromRoster = new DialogInterface.OnClickListener() {
 
 		@Override
@@ -63,7 +52,54 @@ public class ContactDetailsActivity extends XmppActivity {
 			ContactDetailsActivity.this.finish();
 		}
 	};
+	private OnCheckedChangeListener mOnSendCheckedChange = new OnCheckedChangeListener() {
 
+		@Override
+		public void onCheckedChanged(CompoundButton buttonView,
+									 boolean isChecked) {
+			if (isChecked) {
+				if (contact
+						.getOption(Contact.Options.PENDING_SUBSCRIPTION_REQUEST)) {
+					xmppConnectionService.sendPresencePacket(contact
+									.getAccount(),
+							xmppConnectionService.getPresenceGenerator()
+									.sendPresenceUpdatesTo(contact));
+				} else {
+					contact.setOption(Contact.Options.PREEMPTIVE_GRANT);
+				}
+			} else {
+				contact.resetOption(Contact.Options.PREEMPTIVE_GRANT);
+				xmppConnectionService.sendPresencePacket(contact.getAccount(),
+						xmppConnectionService.getPresenceGenerator()
+								.stopPresenceUpdatesTo(contact));
+			}
+		}
+	};
+	private OnCheckedChangeListener mOnReceiveCheckedChange = new OnCheckedChangeListener() {
+
+		@Override
+		public void onCheckedChanged(CompoundButton buttonView,
+									 boolean isChecked) {
+			if (isChecked) {
+				xmppConnectionService.sendPresencePacket(contact.getAccount(),
+						xmppConnectionService.getPresenceGenerator()
+								.requestPresenceUpdatesFrom(contact));
+			} else {
+				xmppConnectionService.sendPresencePacket(contact.getAccount(),
+						xmppConnectionService.getPresenceGenerator()
+								.stopPresenceUpdatesFrom(contact));
+			}
+		}
+	};
+	private Jid accountJid;
+	private Jid contactJid;
+	private TextView contactJidTv;
+	private TextView accountJidTv;
+	private TextView status;
+	private TextView lastseen;
+	private CheckBox send;
+	private CheckBox receive;
+	private QuickContactBadge badge;
 	private DialogInterface.OnClickListener addToPhonebook = new DialogInterface.OnClickListener() {
 
 		@Override
@@ -91,82 +127,34 @@ public class ContactDetailsActivity extends XmppActivity {
 			builder.create().show();
 		}
 	};
-
 	private LinearLayout keys;
 
-	private OnRosterUpdate rosterUpdate = new OnRosterUpdate() {
+	@Override
+	public void onRosterUpdate() {
+		runOnUiThread(new Runnable() {
 
-		@Override
-		public void onRosterUpdate() {
-			runOnUiThread(new Runnable() {
-
-				@Override
-				public void run() {
-					populateView();
-				}
-			});
-		}
-	};
-
-	private OnCheckedChangeListener mOnSendCheckedChange = new OnCheckedChangeListener() {
-
-		@Override
-		public void onCheckedChanged(CompoundButton buttonView,
-				boolean isChecked) {
-			if (isChecked) {
-				if (contact
-						.getOption(Contact.Options.PENDING_SUBSCRIPTION_REQUEST)) {
-					xmppConnectionService.sendPresencePacket(contact
-							.getAccount(),
-							xmppConnectionService.getPresenceGenerator()
-									.sendPresenceUpdatesTo(contact));
-				} else {
-					contact.setOption(Contact.Options.PREEMPTIVE_GRANT);
-				}
-			} else {
-				contact.resetOption(Contact.Options.PREEMPTIVE_GRANT);
-				xmppConnectionService.sendPresencePacket(contact.getAccount(),
-						xmppConnectionService.getPresenceGenerator()
-								.stopPresenceUpdatesTo(contact));
+			@Override
+			public void run() {
+				populateView();
 			}
-		}
-	};
+		});
+	}
 
-	private OnCheckedChangeListener mOnReceiveCheckedChange = new OnCheckedChangeListener() {
+	@Override
+	public void onAccountUpdate() {
+		runOnUiThread(new Runnable() {
 
-		@Override
-		public void onCheckedChanged(CompoundButton buttonView,
-				boolean isChecked) {
-			if (isChecked) {
-				xmppConnectionService.sendPresencePacket(contact.getAccount(),
-						xmppConnectionService.getPresenceGenerator()
-								.requestPresenceUpdatesFrom(contact));
-			} else {
-				xmppConnectionService.sendPresencePacket(contact.getAccount(),
-						xmppConnectionService.getPresenceGenerator()
-								.stopPresenceUpdatesFrom(contact));
+			@Override
+			public void run() {
+				populateView();
 			}
-		}
-	};
-
-	private OnAccountUpdate accountUpdate = new OnAccountUpdate() {
-
-		@Override
-		public void onAccountUpdate() {
-			runOnUiThread(new Runnable() {
-
-				@Override
-				public void run() {
-					populateView();
-				}
-			});
-		}
-	};
+		});
+	}
 
 	@Override
 	protected String getShareableUri() {
-		if (contact!=null) {
-			return "xmpp:"+contact.getJid();
+		if (contact != null) {
+			return "xmpp:" + contact.getJid();
 		} else {
 			return "";
 		}
@@ -176,15 +164,15 @@ public class ContactDetailsActivity extends XmppActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		if (getIntent().getAction().equals(ACTION_VIEW_CONTACT)) {
-            try {
-                this.accountJid = Jid.fromString(getIntent().getExtras().getString("account"));
-            } catch (final InvalidJidException ignored) {
-            }
-            try {
-                this.contactJid = Jid.fromString(getIntent().getExtras().getString("contact"));
-            } catch (final InvalidJidException ignored) {
-            }
-        }
+			try {
+				this.accountJid = Jid.fromString(getIntent().getExtras().getString("account"));
+			} catch (final InvalidJidException ignored) {
+			}
+			try {
+				this.contactJid = Jid.fromString(getIntent().getExtras().getString("contact"));
+			} catch (final InvalidJidException ignored) {
+			}
+		}
 		setContentView(R.layout.activity_contact_details);
 
 		contactJidTv = (TextView) findViewById(R.id.details_contactjid);
@@ -205,39 +193,39 @@ public class ContactDetailsActivity extends XmppActivity {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setNegativeButton(getString(R.string.cancel), null);
 		switch (menuItem.getItemId()) {
-		case android.R.id.home:
-			finish();
-			break;
-		case R.id.action_delete_contact:
-			builder.setTitle(getString(R.string.action_delete_contact))
-					.setMessage(
-							getString(R.string.remove_contact_text,
-									contact.getJid()))
-					.setPositiveButton(getString(R.string.delete),
-							removeFromRoster).create().show();
-			break;
-		case R.id.action_edit_contact:
-			if (contact.getSystemAccount() == null) {
-				quickEdit(contact.getDisplayName(), new OnValueEdited() {
+			case android.R.id.home:
+				finish();
+				break;
+			case R.id.action_delete_contact:
+				builder.setTitle(getString(R.string.action_delete_contact))
+						.setMessage(
+								getString(R.string.remove_contact_text,
+										contact.getJid()))
+						.setPositiveButton(getString(R.string.delete),
+								removeFromRoster).create().show();
+				break;
+			case R.id.action_edit_contact:
+				if (contact.getSystemAccount() == null) {
+					quickEdit(contact.getDisplayName(), new OnValueEdited() {
 
-					@Override
-					public void onValueEdited(String value) {
-						contact.setServerName(value);
-						ContactDetailsActivity.this.xmppConnectionService
-								.pushContactToServer(contact);
-						populateView();
-					}
-				});
-			} else {
-				Intent intent = new Intent(Intent.ACTION_EDIT);
-				String[] systemAccount = contact.getSystemAccount().split("#");
-				long id = Long.parseLong(systemAccount[0]);
-				Uri uri = Contacts.getLookupUri(id, systemAccount[1]);
-				intent.setDataAndType(uri, Contacts.CONTENT_ITEM_TYPE);
-				intent.putExtra("finishActivityOnSaveCompleted", true);
-				startActivity(intent);
-			}
-			break;
+						@Override
+						public void onValueEdited(String value) {
+							contact.setServerName(value);
+							ContactDetailsActivity.this.xmppConnectionService
+									.pushContactToServer(contact);
+							populateView();
+						}
+					});
+				} else {
+					Intent intent = new Intent(Intent.ACTION_EDIT);
+					String[] systemAccount = contact.getSystemAccount().split("#");
+					long id = Long.parseLong(systemAccount[0]);
+					Uri uri = Contacts.getLookupUri(id, systemAccount[1]);
+					intent.setDataAndType(uri, Contacts.CONTENT_ITEM_TYPE);
+					intent.putExtra("finishActivityOnSaveCompleted", true);
+					startActivity(intent);
+				}
+				break;
 		}
 		return super.onOptionsItemSelected(menuItem);
 	}
@@ -293,34 +281,34 @@ public class ContactDetailsActivity extends XmppActivity {
 				contact.lastseen.time));
 
 		switch (contact.getMostAvailableStatus()) {
-		case Presences.CHAT:
-			status.setText(R.string.contact_status_free_to_chat);
-			status.setTextColor(mColorGreen);
-			break;
-		case Presences.ONLINE:
-			status.setText(R.string.contact_status_online);
-			status.setTextColor(mColorGreen);
-			break;
-		case Presences.AWAY:
-			status.setText(R.string.contact_status_away);
-			status.setTextColor(mColorOrange);
-			break;
-		case Presences.XA:
-			status.setText(R.string.contact_status_extended_away);
-			status.setTextColor(mColorOrange);
-			break;
-		case Presences.DND:
-			status.setText(R.string.contact_status_do_not_disturb);
-			status.setTextColor(mColorRed);
-			break;
-		case Presences.OFFLINE:
-			status.setText(R.string.contact_status_offline);
-			status.setTextColor(mSecondaryTextColor);
-			break;
-		default:
-			status.setText(R.string.contact_status_offline);
-			status.setTextColor(mSecondaryTextColor);
-			break;
+			case Presences.CHAT:
+				status.setText(R.string.contact_status_free_to_chat);
+				status.setTextColor(mColorGreen);
+				break;
+			case Presences.ONLINE:
+				status.setText(R.string.contact_status_online);
+				status.setTextColor(mColorGreen);
+				break;
+			case Presences.AWAY:
+				status.setText(R.string.contact_status_away);
+				status.setTextColor(mColorOrange);
+				break;
+			case Presences.XA:
+				status.setText(R.string.contact_status_extended_away);
+				status.setTextColor(mColorOrange);
+				break;
+			case Presences.DND:
+				status.setText(R.string.contact_status_do_not_disturb);
+				status.setTextColor(mColorRed);
+				break;
+			case Presences.OFFLINE:
+				status.setText(R.string.contact_status_offline);
+				status.setTextColor(mSecondaryTextColor);
+				break;
+			default:
+				status.setText(R.string.contact_status_offline);
+				status.setTextColor(mSecondaryTextColor);
+				break;
 		}
 		if (contact.getPresences().size() > 1) {
 			contactJidTv.setText(contact.getJid() + " ("
@@ -339,7 +327,7 @@ public class ContactDetailsActivity extends XmppActivity {
 		boolean hasKeys = false;
 		LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		for (Iterator<String> iterator = contact.getOtrFingerprints()
-				.iterator(); iterator.hasNext();) {
+				.iterator(); iterator.hasNext(); ) {
 			hasKeys = true;
 			final String otrFingerprint = iterator.next();
 			View view = inflater.inflate(R.layout.contact_key, keys, false);
@@ -427,9 +415,6 @@ public class ContactDetailsActivity extends XmppActivity {
 
 	@Override
 	public void onBackendConnected() {
-		xmppConnectionService.setOnRosterUpdateListener(this.rosterUpdate);
-		xmppConnectionService
-				.setOnAccountListChangedListener(this.accountUpdate);
 		if ((accountJid != null) && (contactJid != null)) {
 			Account account = xmppConnectionService
 					.findAccountByJid(accountJid);
@@ -440,12 +425,4 @@ public class ContactDetailsActivity extends XmppActivity {
 			populateView();
 		}
 	}
-
-	@Override
-	protected void onStop() {
-		super.onStop();
-		xmppConnectionService.removeOnRosterUpdateListener();
-		xmppConnectionService.removeOnAccountListChangedListener();
-	}
-
 }

@@ -634,18 +634,6 @@ public class ConversationActivity extends XmppActivity implements
 	}
 
 	@Override
-	protected void onStop() {
-		if (xmppConnectionServiceBound) {
-			xmppConnectionService.removeOnConversationListChangedListener();
-			xmppConnectionService.removeOnAccountListChangedListener();
-			xmppConnectionService.removeOnRosterUpdateListener();
-			xmppConnectionService.getNotificationService().setOpenConversation(
-					null);
-		}
-		super.onStop();
-	}
-
-	@Override
 	public void onSaveInstanceState(final Bundle savedInstanceState) {
 		Conversation conversation = getSelectedConversation();
 		if (conversation != null) {
@@ -662,9 +650,7 @@ public class ConversationActivity extends XmppActivity implements
 
 	@Override
 	void onBackendConnected() {
-		this.registerListener();
 		updateConversationList();
-
 		if (xmppConnectionService.getAccounts().size() == 0) {
 			startActivity(new Intent(this, EditAccountActivity.class));
 		} else if (conversationList.size() <= 0) {
@@ -722,10 +708,10 @@ public class ConversationActivity extends XmppActivity implements
         }
 	}
 
-	public void registerListener() {
-		xmppConnectionService.setOnConversationListChangedListener(this);
-		xmppConnectionService.setOnAccountListChangedListener(this);
-		xmppConnectionService.setOnRosterUpdateListener(this);
+	@Override
+	protected void unregisterListeners() {
+		super.unregisterListeners();
+		xmppConnectionService.getNotificationService().setOpenConversation(null);
 	}
 
 	@Override

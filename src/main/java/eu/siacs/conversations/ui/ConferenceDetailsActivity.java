@@ -31,7 +31,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class ConferenceDetailsActivity extends XmppActivity {
+public class ConferenceDetailsActivity extends XmppActivity implements OnConversationUpdate, OnRenameListener {
 	public static final String ACTION_VIEW_MUC = "view_muc";
 	private Conversation conversation;
 	private TextView mYourNick;
@@ -53,8 +53,28 @@ public class ConferenceDetailsActivity extends XmppActivity {
 		}
 	};
 
+	@Override
+	public void onRename(final boolean success) {
+		runOnUiThread(new Runnable() {
+
+			@Override
+			public void run() {
+				populateView();
+				if (success) {
+					Toast.makeText(
+							ConferenceDetailsActivity.this,
+							getString(R.string.your_nick_has_been_changed),
+							Toast.LENGTH_SHORT).show();
+				} else {
+					Toast.makeText(ConferenceDetailsActivity.this,
+							getString(R.string.nick_in_use),
+							Toast.LENGTH_SHORT).show();
+				}
+			}
+		});
+	}
+
 	private List<User> users = new ArrayList<>();
-	private OnConversationUpdate onConvChanged = new OnConversationUpdate() {
 
 		@Override
 		public void onConversationUpdate() {
@@ -66,7 +86,6 @@ public class ConferenceDetailsActivity extends XmppActivity {
 				}
 			});
 		}
-	};
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -156,7 +175,6 @@ public class ConferenceDetailsActivity extends XmppActivity {
 
 	@Override
 	void onBackendConnected() {
-		registerListener();
 		if (getIntent().getAction().equals(ACTION_VIEW_MUC)) {
 			this.uuid = getIntent().getExtras().getString("uuid");
 		}
@@ -167,42 +185,6 @@ public class ConferenceDetailsActivity extends XmppActivity {
 				populateView();
 			}
 		}
-	}
-
-	@Override
-	protected void onStop() {
-		if (xmppConnectionServiceBound) {
-			xmppConnectionService.removeOnConversationListChangedListener();
-		}
-		super.onStop();
-	}
-
-	protected void registerListener() {
-		xmppConnectionService
-				.setOnConversationListChangedListener(this.onConvChanged);
-		xmppConnectionService.setOnRenameListener(new OnRenameListener() {
-
-			@Override
-			public void onRename(final boolean success) {
-				runOnUiThread(new Runnable() {
-
-					@Override
-					public void run() {
-						populateView();
-						if (success) {
-							Toast.makeText(
-									ConferenceDetailsActivity.this,
-									getString(R.string.your_nick_has_been_changed),
-									Toast.LENGTH_SHORT).show();
-						} else {
-							Toast.makeText(ConferenceDetailsActivity.this,
-									getString(R.string.nick_in_use),
-									Toast.LENGTH_SHORT).show();
-						}
-					}
-				});
-			}
-		});
 	}
 
 	private void populateView() {

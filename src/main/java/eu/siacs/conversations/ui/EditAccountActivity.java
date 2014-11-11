@@ -33,7 +33,7 @@ import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
 import eu.siacs.conversations.xmpp.pep.Avatar;
 
-public class EditAccountActivity extends XmppActivity {
+public class EditAccountActivity extends XmppActivity implements OnAccountUpdate {
 
 	private AutoCompleteTextView mAccountJid;
 	private EditText mPassword;
@@ -132,8 +132,6 @@ public class EditAccountActivity extends XmppActivity {
 			finish();
 		}
 	};
-	private OnAccountUpdate mOnAccountUpdateListener = new OnAccountUpdate() {
-
 		@Override
 		public void onAccountUpdate() {
 			runOnUiThread(new Runnable() {
@@ -162,7 +160,6 @@ public class EditAccountActivity extends XmppActivity {
 				}
 			});
 		}
-	};
 	private UiCallback<Avatar> mAvatarFetchCallback = new UiCallback<Avatar>() {
 
 		@Override
@@ -350,20 +347,10 @@ public class EditAccountActivity extends XmppActivity {
 	}
 
 	@Override
-	protected void onStop() {
-		if (xmppConnectionServiceBound) {
-			xmppConnectionService.removeOnAccountListChangedListener();
-		}
-		super.onStop();
-	}
-
-	@Override
 	protected void onBackendConnected() {
         KnownHostsAdapter mKnownHostsAdapter = new KnownHostsAdapter(this,
                 android.R.layout.simple_list_item_1,
                 xmppConnectionService.getKnownHosts());
-		this.xmppConnectionService
-				.setOnAccountListChangedListener(this.mOnAccountUpdateListener);
 		if (this.jidToEdit != null) {
 			this.mAccount = xmppConnectionService.findAccountByJid(jidToEdit);
 			updateAccountInformation();
