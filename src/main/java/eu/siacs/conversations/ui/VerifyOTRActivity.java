@@ -164,7 +164,6 @@ public class VerifyOTRActivity extends XmppActivity implements XmppConnectionSer
 		if (handleIntent(getIntent())) {
 			updateView();
 		}
-		this.xmppConnectionService.setOnConversationListChangedListener(this);
 	}
 
 	protected void updateView() {
@@ -271,14 +270,6 @@ public class VerifyOTRActivity extends XmppActivity implements XmppConnectionSer
 		} else {
 			return "";
 		}
-	}
-
-	@Override
-	protected void onStop() {
-		if (xmppConnectionServiceBound) {
-			xmppConnectionService.removeOnConversationListChangedListener();
-		}
-		super.onStop();
 	}
 
 	@Override
