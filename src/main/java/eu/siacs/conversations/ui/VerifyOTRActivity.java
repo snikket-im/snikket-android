@@ -272,7 +272,6 @@ public class VerifyOTRActivity extends XmppActivity implements XmppConnectionSer
 		}
 	}
 
-	@Override
 	public void onConversationUpdate() {
 		runOnUiThread(new Runnable() {
 			@Override
