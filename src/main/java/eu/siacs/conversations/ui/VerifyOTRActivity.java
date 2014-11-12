@@ -50,29 +50,33 @@ public class VerifyOTRActivity extends XmppActivity implements XmppConnectionSer
 	private View.OnClickListener mCreateSharedSecretListener = new View.OnClickListener() {
 		@Override
 		public void onClick(final View view) {
-			final String question = mSharedSecretHint.getText().toString();
-			final String secret = mSharedSecretSecret.getText().toString();
-			if (!initSmp(question,secret)) {
-				Toast.makeText(getApplicationContext(),"smp failed",Toast.LENGTH_SHORT).show();
+			if (isAccountOnline()) {
+				final String question = mSharedSecretHint.getText().toString();
+				final String secret = mSharedSecretSecret.getText().toString();
+				initSmp(question, secret);
+				updateView();
 			}
-			updateView();
 		}
 	};
 	private View.OnClickListener mCancelSharedSecretListener = new View.OnClickListener() {
 		@Override
 		public void onClick(View view) {
-			abortSmp();
-			updateView();
+			if (isAccountOnline()) {
+				abortSmp();
+				updateView();
+			}
 		}
 	};
 	private View.OnClickListener mRespondSharedSecretListener = new View.OnClickListener() {
 
 		@Override
 		public void onClick(View view) {
-			final String question = mSharedSecretHint.getText().toString();
-			final String secret = mSharedSecretSecret.getText().toString();
-			respondSmp(question,secret);
-			updateView();
+			if (isAccountOnline()) {
+				final String question = mSharedSecretHint.getText().toString();
+				final String secret = mSharedSecretSecret.getText().toString();
+				respondSmp(question, secret);
+				updateView();
+			}
 		}
 	};
 	private View.OnClickListener mRetrySharedSecretListener = new View.OnClickListener() {
@@ -135,6 +139,15 @@ public class VerifyOTRActivity extends XmppActivity implements XmppConnectionSer
 			}
 		} else {
 			return false;
+		}
+	}
+
+	protected boolean isAccountOnline() {
+		if (this.mAccount.getStatus() != Account.STATUS_ONLINE) {
+			Toast.makeText(this,R.string.not_connected_try_again,Toast.LENGTH_SHORT).show();
+			return false;
+		} else {
+			return true;
 		}
 	}
 
