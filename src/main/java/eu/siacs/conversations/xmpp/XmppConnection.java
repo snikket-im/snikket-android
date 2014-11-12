@@ -39,9 +39,11 @@ import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.X509TrustManager;
 
 import eu.siacs.conversations.Config;
+import eu.siacs.conversations.crypto.sasl.DigestMd5;
+import eu.siacs.conversations.crypto.sasl.Plain;
+import eu.siacs.conversations.crypto.sasl.SaslMechanism;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.services.XmppConnectionService;
-import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.DNSHelper;
 import eu.siacs.conversations.utils.zlib.ZLibInputStream;
 import eu.siacs.conversations.utils.zlib.ZLibOutputStream;
@@ -103,6 +105,8 @@ public class XmppConnection implements Runnable {
 	private OnBindListener bindListener = null;
 	private OnMessageAcknowledged acknowledgedListener = null;
 	private XmppConnectionService mXmppConnectionService = null;
+
+    private SaslMechanism saslMechanism;
 
 	public XmppConnection(Account account, XmppConnectionService service) {
 		this.account = account;
@@ -287,12 +291,11 @@ public class XmppConnection implements Runnable {
 				tagReader.readElement(nextTag);
 				changeStatus(Account.STATUS_UNAUTHORIZED);
 			} else if (nextTag.isStart("challenge")) {
-				String challange = tagReader.readElement(nextTag).getContent();
-				Element response = new Element("response");
+				final String challenge = tagReader.readElement(nextTag).getContent();
+				final Element response = new Element("response");
 				response.setAttribute("xmlns",
 						"urn:ietf:params:xml:ns:xmpp-sasl");
-				response.setContent(CryptoHelper.saslDigestMd5(account,
-						challange, mXmppConnectionService.getRNG()));
+				response.setContent(saslMechanism.getResponse(challenge));
 				tagWriter.writeElement(response);
 			} else if (nextTag.isStart("enabled")) {
 				Element enabled = tagReader.readElement(nextTag);
@@ -592,23 +595,6 @@ public class XmppConnection implements Runnable {
 		}
     }
 
-	private void sendSaslAuthPlain() throws IOException {
-		String saslString = CryptoHelper.saslPlain(account.getUsername(),
-				account.getPassword());
-		Element auth = new Element("auth");
-		auth.setAttribute("xmlns", "urn:ietf:params:xml:ns:xmpp-sasl");
-		auth.setAttribute("mechanism", "PLAIN");
-		auth.setContent(saslString);
-		tagWriter.writeElement(auth);
-	}
-
-	private void sendSaslAuthDigestMd5() throws IOException {
-		Element auth = new Element("auth");
-		auth.setAttribute("xmlns", "urn:ietf:params:xml:ns:xmpp-sasl");
-		auth.setAttribute("mechanism", "DIGEST-MD5");
-		tagWriter.writeElement(auth);
-	}
-
 	private void processStreamFeatures(Tag currentTag)
 			throws XmlPullParserException, IOException {
 		this.streamFeatures = tagReader.readElement(currentTag);
@@ -626,14 +612,19 @@ public class XmppConnection implements Runnable {
 			disconnect(true);
 		} else if (this.streamFeatures.hasChild("mechanisms")
 				&& shouldAuthenticate && usingEncryption) {
-			List<String> mechanisms = extractMechanisms(streamFeatures
+			final List<String> mechanisms = extractMechanisms(streamFeatures
 					.findChild("mechanisms"));
-			if (mechanisms.contains("PLAIN")) {
-				sendSaslAuthPlain();
-			} else if (mechanisms.contains("DIGEST-MD5")) {
-				sendSaslAuthDigestMd5();
-			}
-		} else if (this.streamFeatures.hasChild("sm", "urn:xmpp:sm:"
+            final Element auth = new Element("auth");
+            auth.setAttribute("xmlns", "urn:ietf:params:xml:ns:xmpp-sasl");
+            if (mechanisms.contains("DIGEST-MD5")) {
+                saslMechanism = new DigestMd5(tagWriter, account, mXmppConnectionService.getRNG());
+			} else if (mechanisms.contains("PLAIN")) {
+                saslMechanism = new Plain(tagWriter, account);
+                auth.setContent(((Plain)saslMechanism).getStartAuth());
+            }
+            auth.setAttribute("mechanism", saslMechanism.getMechanism());
+            tagWriter.writeElement(auth);
+        } else if (this.streamFeatures.hasChild("sm", "urn:xmpp:sm:"
 				+ smVersion)
 				&& streamId != null) {
 			ResumePacket resume = new ResumePacket(this.streamId,
