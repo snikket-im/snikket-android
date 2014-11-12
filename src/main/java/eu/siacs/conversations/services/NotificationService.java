@@ -368,6 +368,8 @@ public class NotificationService {
 		mBuilder.setContentTitle(mXmppConnectionService.getString(R.string.conversations_foreground_service));
 		mBuilder.setContentText(mXmppConnectionService.getString(R.string.touch_to_disable));
 		mBuilder.setContentIntent(createDisableForeground());
+		mBuilder.setWhen(0);
+		mBuilder.setPriority(NotificationCompat.PRIORITY_MIN);
 		return mBuilder.build();
 	}
 }
