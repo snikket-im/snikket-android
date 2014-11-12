@@ -117,7 +117,7 @@ public final class Jid {
             finaljid = finaljid + dp;
         }
 
-        // Remove trailling "." before storing the domain part.
+        // Remove trailing "." before storing the domain part.
         if (dp.endsWith(".")) {
             try {
                 domainpart = IDN.toASCII(dp.substring(0, dp.length() - 1), IDN.USE_STD3_ASCII_RULES);
