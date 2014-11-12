@@ -70,6 +70,8 @@ public class SettingsActivity extends XmppActivity implements
 					}
 				}
 			}
+		} else if (name.equals("keep_foreground_service")) {
+			xmppConnectionService.toggleForegroundService();
 		}
 	}
 

@@ -101,6 +101,11 @@
                     android:key="indicate_received"
                     android:summary="@string/pref_use_indicate_received_summary"
                     android:title="@string/pref_use_indicate_received" />
+                <CheckBoxPreference
+                    android:defaultValue="false"
+                    android:key="keep_foreground_service"
+                    android:title="@string/pref_keep_foreground_service"
+                    android:summary="@string/pref_keep_foreground_service_summary" />
             </PreferenceCategory>
         </PreferenceScreen>
 

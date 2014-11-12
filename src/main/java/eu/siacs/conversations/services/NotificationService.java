@@ -38,6 +38,7 @@ public class NotificationService {
 	private LinkedHashMap<String, ArrayList<Message>> notifications = new LinkedHashMap<String, ArrayList<Message>>();
 
 	public static int NOTIFICATION_ID = 0x2342;
+	public static int FOREGROUND_NOTIFICATION_ID = 0x8899;
 	private Conversation mOpenConversation;
 	private boolean mIsInForeground;
 	private long mLastNotification;
@@ -290,9 +291,11 @@ public class NotificationService {
 		Intent viewConversationIntent = new Intent(mXmppConnectionService,
 				ConversationActivity.class);
 		viewConversationIntent.setAction(Intent.ACTION_VIEW);
-		viewConversationIntent.putExtra(ConversationActivity.CONVERSATION,
-				conversationUuid);
-		viewConversationIntent.setType(ConversationActivity.VIEW_CONVERSATION);
+		if (conversationUuid!=null) {
+			viewConversationIntent.putExtra(ConversationActivity.CONVERSATION,
+					conversationUuid);
+			viewConversationIntent.setType(ConversationActivity.VIEW_CONVERSATION);
+		}
 
 		stackBuilder.addNextIntent(viewConversationIntent);
 
@@ -304,7 +307,14 @@ public class NotificationService {
 	private PendingIntent createDeleteIntent() {
 		Intent intent = new Intent(mXmppConnectionService,
 				XmppConnectionService.class);
-		intent.setAction("clear_notification");
+		intent.setAction(XmppConnectionService.ACTION_CLEAR_NOTIFICATION);
+		return PendingIntent.getService(mXmppConnectionService, 0, intent, 0);
+	}
+
+	private PendingIntent createDisableForeground() {
+		Intent intent = new Intent(mXmppConnectionService,
+				XmppConnectionService.class);
+		intent.setAction(XmppConnectionService.ACTION_DISABLE_FOREGROUND);
 		return PendingIntent.getService(mXmppConnectionService, 0, intent, 0);
 	}
 
@@ -350,5 +360,14 @@ public class NotificationService {
 		int miniGrace = account.getStatus() == Account.STATUS_ONLINE ? Config.MINI_GRACE_PERIOD
 				: Config.MINI_GRACE_PERIOD * 2;
 		return SystemClock.elapsedRealtime() < (this.mLastNotification + miniGrace);
+	}
+
+	public Notification createForegroundNotification() {
+		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(mXmppConnectionService);
+		mBuilder.setSmallIcon(R.drawable.ic_stat_communication_import_export);
+		mBuilder.setContentTitle(mXmppConnectionService.getString(R.string.conversations_foreground_service));
+		mBuilder.setContentText(mXmppConnectionService.getString(R.string.touch_to_disable));
+		mBuilder.setContentIntent(createDisableForeground());
+		return mBuilder.build();
 	}
 }
