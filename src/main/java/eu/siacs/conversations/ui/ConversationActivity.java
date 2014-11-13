@@ -315,7 +315,9 @@ public class ConversationActivity extends XmppActivity implements
 					startActivityForResult(chooser, REQUEST_ATTACH_IMAGE_DIALOG);
 				} else if (attachmentChoice == ATTACHMENT_CHOICE_CHOOSE_FILE) {
 					Intent attachFileIntent = new Intent();
-					attachFileIntent.setType("file/*");
+					//attachFileIntent.setType("file/*");
+					attachFileIntent.setType("*/*");
+					attachFileIntent.addCategory(Intent.CATEGORY_OPENABLE);
 					attachFileIntent.setAction(Intent.ACTION_GET_CONTENT);
 					Intent chooser = Intent.createChooser(attachFileIntent,
 							getString(R.string.attach_file));
@@ -780,9 +782,22 @@ public class ConversationActivity extends XmppActivity implements
 	}
 
 	private void attachFileToConversation(Conversation conversation, Uri uri) {
-		Log.d(Config.LOGTAG, "attachFileToConversation");
-		Message message = xmppConnectionService.attachFileToConversation(conversation,uri);
-		xmppConnectionService.sendMessage(message);
+		xmppConnectionService.attachFileToConversation(conversation,uri, new UiCallback<Message>() {
+			@Override
+			public void success(Message message) {
+				xmppConnectionService.sendMessage(message);
+			}
+
+			@Override
+			public void error(int errorCode, Message message) {
+
+			}
+
+			@Override
+			public void userInputRequried(PendingIntent pi, Message message) {
+
+			}
+		});
 	}
 
 	private void attachImageToConversation(Conversation conversation, Uri uri) {

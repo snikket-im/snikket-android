@@ -295,29 +295,41 @@ public class XmppConnectionService extends Service {
 		return this.mAvatarService;
 	}
 
-	public Message attachFileToConversation(Conversation conversation, final Uri uri) {
+	public void attachFileToConversation(Conversation conversation, final Uri uri, final UiCallback<Message> callback) {
+		final Message message;
+		if (conversation.getNextEncryption(forceEncryption()) == Message.ENCRYPTION_PGP) {
+			message = new Message(conversation, "",
+					Message.ENCRYPTION_DECRYPTED);
+		} else {
+			message = new Message(conversation, "",
+					conversation.getNextEncryption(forceEncryption()));
+		}
+		message.setCounterpart(conversation.getNextCounterpart());
+		message.setType(Message.TYPE_FILE);
+		message.setStatus(Message.STATUS_OFFERED);
 		String path = getFileBackend().getOriginalPath(uri);
 		if (path!=null) {
-			Log.d(Config.LOGTAG,"file path : "+path);
-			Message message;
-			if (conversation.getNextEncryption(forceEncryption()) == Message.ENCRYPTION_PGP) {
-				message = new Message(conversation, "",
-						Message.ENCRYPTION_DECRYPTED);
-			} else {
-				message = new Message(conversation, "",
-						conversation.getNextEncryption(forceEncryption()));
-			}
-			message.setCounterpart(conversation.getNextCounterpart());
-			message.setType(Message.TYPE_FILE);
-			message.setStatus(Message.STATUS_OFFERED);
 			message.setRelativeFilePath(path);
 			getFileBackend().updateFileParams(message);
-			return message;
+			callback.success(message);
+		} else {
+			new Thread(new Runnable() {
+				@Override
+				public void run() {
+					try {
+						getFileBackend().copyFileToPrivateStorage(message, uri);
+						getFileBackend().updateFileParams(message);
+						callback.success(message);
+					} catch (FileBackend.FileCopyException e) {
+						callback.error(e.getResId(),message);
+					}
+				}
+			}).start();
+
 		}
-		return null;
 	}
 
-	public Message attachImageToConversation(final Conversation conversation,
+	public void attachImageToConversation(final Conversation conversation,
 											 final Uri uri, final UiCallback<Message> callback) {
 		final Message message;
 		if (conversation.getNextEncryption(forceEncryption()) == Message.ENCRYPTION_PGP) {
@@ -346,7 +358,6 @@ public class XmppConnectionService extends Service {
 				}
 			}
 		}).start();
-		return message;
 	}
 
 	public Conversation find(Bookmark bookmark) {

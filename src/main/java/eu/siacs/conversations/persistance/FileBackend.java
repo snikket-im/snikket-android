@@ -29,6 +29,8 @@ import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Base64OutputStream;
 import android.util.Log;
+import android.webkit.MimeTypeMap;
+
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.DownloadableFile;
@@ -118,8 +120,8 @@ public class FileBackend {
 	public String getOriginalPath(Uri uri) {
 		String path = null;
 		if (uri.getScheme().equals("file")) {
-			path = uri.getPath();
-		} else {
+			return uri.getPath();
+		} else if (uri.toString().startsWith("content://media/")) {
 			String[] projection = {MediaStore.MediaColumns.DATA};
 			Cursor metaCursor = mXmppConnectionService.getContentResolver().query(uri,
 					projection, null, null, null);
@@ -134,6 +136,32 @@ public class FileBackend {
 			}
 		}
 		return path;
+	}
+
+	public DownloadableFile copyFileToPrivateStorage(Message message, Uri uri) throws FileCopyException {
+		try {
+			Log.d(Config.LOGTAG, "copy " + uri.toString() + " to private storage");
+			String mime = mXmppConnectionService.getContentResolver().getType(uri);
+			String extension = MimeTypeMap.getSingleton().getExtensionFromMimeType(mime);
+			message.setRelativeFilePath(message.getUuid() + "." + extension);
+			DownloadableFile file = mXmppConnectionService.getFileBackend().getFile(message);
+			OutputStream os = new FileOutputStream(file);
+			InputStream is = mXmppConnectionService.getContentResolver().openInputStream(uri);
+			byte[] buffer = new byte[1024];
+            int length;
+            while ((length = is.read(buffer)) > 0) {
+				os.write(buffer, 0, length);
+            }
+			os.flush();
+			os.close();
+			is.close();
+			Log.d(Config.LOGTAG, "output file name " + mXmppConnectionService.getFileBackend().getFile(message));
+			return file;
+		} catch (FileNotFoundException e) {
+			throw new FileCopyException(R.string.error_file_not_found);
+		} catch (IOException e) {
+			throw new FileCopyException(R.string.error_io_exception);
+		}
 	}
 
 	public DownloadableFile copyImageToPrivateStorage(Message message, Uri image)
