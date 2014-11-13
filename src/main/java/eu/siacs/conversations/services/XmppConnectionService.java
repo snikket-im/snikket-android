@@ -311,6 +311,7 @@ public class XmppConnectionService extends Service {
 			message.setType(Message.TYPE_FILE);
 			message.setStatus(Message.STATUS_OFFERED);
 			message.setRelativeFilePath(path);
+			getFileBackend().updateFileParams(message);
 			return message;
 		}
 		return null;
@@ -335,7 +336,6 @@ public class XmppConnectionService extends Service {
 			public void run() {
 				try {
 					DownloadableFile file = getFileBackend().copyImageToPrivateStorage(message, uri);
-					message.setRelativeFilePath(file.getName());
 					if (conversation.getNextEncryption(forceEncryption()) == Message.ENCRYPTION_PGP) {
 						getPgpEngine().encrypt(message, callback);
 					} else {

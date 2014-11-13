@@ -433,6 +433,21 @@ public class FileBackend {
 		return Uri.parse("file://" + file.getAbsolutePath());
 	}
 
+	public void updateFileParams(Message message) {
+		DownloadableFile file = getFile(message);
+		if (message.getType() == Message.TYPE_IMAGE || file.getMimeType().startsWith("image/")) {
+			BitmapFactory.Options options = new BitmapFactory.Options();
+			options.inJustDecodeBounds = true;
+			BitmapFactory.decodeFile(file.getAbsolutePath(), options);
+			int imageHeight = options.outHeight;
+			int imageWidth = options.outWidth;
+			message.setBody(Long.toString(file.getSize()) + '|' + imageWidth + '|' + imageHeight);
+		} else {
+			message.setBody(Long.toString(file.getSize()));
+		}
+
+	}
+
 	public class FileCopyException extends Exception {
 		private static final long serialVersionUID = -1010013599132881427L;
 		private int resId;

@@ -91,13 +91,7 @@ public class JingleConnection implements Downloadable {
 					JingleConnection.this.mXmppConnectionService
 							.getNotificationService().push(message);
 				}
-				BitmapFactory.Options options = new BitmapFactory.Options();
-				options.inJustDecodeBounds = true;
-				BitmapFactory.decodeFile(file.getAbsolutePath(), options);
-				int imageHeight = options.outHeight;
-				int imageWidth = options.outWidth;
-				message.setBody(Long.toString(file.getSize()) + '|'
-						+ imageWidth + '|' + imageHeight);
+				mXmppConnectionService.getFileBackend().updateFileParams(message);
 				mXmppConnectionService.databaseBackend.createMessage(message);
 				mXmppConnectionService.markMessage(message,
 						Message.STATUS_RECEIVED);
@@ -306,6 +300,9 @@ public class JingleConnection implements Downloadable {
 					if (!fileNameElement.getContent().isEmpty()) {
 						String parts[] = fileNameElement.getContent().split("/");
 						suffix = parts[parts.length - 1];
+						if (message.getEncryption() == Message.ENCRYPTION_OTR  && suffix.endsWith(".otr")) {
+							suffix = suffix.substring(0,suffix.length() - 4);
+						}
 					}
 					message.setRelativeFilePath(message.getUuid()+"_"+suffix);
 				}

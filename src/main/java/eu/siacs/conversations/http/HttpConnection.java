@@ -251,14 +251,8 @@ public class HttpConnection implements Downloadable {
 		}
 
 		private void updateImageBounds() {
-			BitmapFactory.Options options = new BitmapFactory.Options();
-			options.inJustDecodeBounds = true;
-			BitmapFactory.decodeFile(file.getAbsolutePath(), options);
-			int imageHeight = options.outHeight;
-			int imageWidth = options.outWidth;
-			message.setBody(mUrl.toString() + "|" + file.getSize() + '|'
-					+ imageWidth + '|' + imageHeight);
 			message.setType(Message.TYPE_IMAGE);
+			mXmppConnectionService.getFileBackend().updateFileParams(message);
 			mXmppConnectionService.updateMessage(message);
 		}
 

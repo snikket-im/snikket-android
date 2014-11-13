@@ -103,10 +103,11 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		}
 		boolean multiReceived = message.getConversation().getMode() == Conversation.MODE_MULTI
 				&& message.getMergedStatus() <= Message.STATUS_RECEIVED;
-		if (message.getType() == Message.TYPE_IMAGE
-				|| message.getDownloadable() != null) {
+		if (message.getType() == Message.TYPE_IMAGE || message.getType() == Message.TYPE_FILE || message.getDownloadable() != null) {
 			ImageParams params = message.getImageParams();
-			if (params.size != 0) {
+			if (params.size > (1.5 * 1024 * 1024)) {
+				filesize = params.size / (1024 * 1024)+ " MB";
+			} else if (params.size > 0) {
 				filesize = params.size / 1024 + " KB";
 			}
 			if (message.getDownloadable() != null && message.getDownloadable().getStatus() == Downloadable.STATUS_FAILED) {
@@ -509,7 +510,11 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 				displayImageMessage(viewHolder, item);
 			}
 		} else if (item.getType() == Message.TYPE_FILE) {
-			displayOpenableMessage(viewHolder,item);
+			if (item.getImageParams().width > 0) {
+				displayImageMessage(viewHolder,item);
+			} else {
+				displayOpenableMessage(viewHolder, item);
+			}
 		} else {
 			if (item.getEncryption() == Message.ENCRYPTION_PGP) {
 				if (activity.hasPgp()) {
