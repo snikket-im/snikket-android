@@ -22,24 +22,32 @@ public class Presences {
 	}
 
 	public void updatePresence(String resource, int status) {
-		this.presences.put(resource, status);
+		synchronized (this.presences) {
+			this.presences.put(resource, status);
+		}
 	}
 
 	public void removePresence(String resource) {
-		this.presences.remove(resource);
+		synchronized (this.presences) {
+			this.presences.remove(resource);
+		}
 	}
 
 	public void clearPresences() {
-		this.presences.clear();
+		synchronized (this.presences) {
+			this.presences.clear();
+		}
 	}
 
 	public int getMostAvailableStatus() {
 		int status = OFFLINE;
-		Iterator<Entry<String, Integer>> it = presences.entrySet().iterator();
-		while (it.hasNext()) {
-			Entry<String, Integer> entry = it.next();
-			if (entry.getValue() < status)
-				status = entry.getValue();
+		synchronized (this.presences) {
+			Iterator<Entry<String, Integer>> it = presences.entrySet().iterator();
+			while (it.hasNext()) {
+				Entry<String, Integer> entry = it.next();
+				if (entry.getValue() < status)
+					status = entry.getValue();
+			}
 		}
 		return status;
 	}
@@ -61,16 +69,22 @@ public class Presences {
 	}
 
 	public int size() {
-		return presences.size();
+		synchronized (this.presences) {
+			return presences.size();
+		}
 	}
 
 	public String[] asStringArray() {
-		final String[] presencesArray = new String[presences.size()];
-		presences.keySet().toArray(presencesArray);
-		return presencesArray;
+		synchronized (this.presences) {
+			final String[] presencesArray = new String[presences.size()];
+			presences.keySet().toArray(presencesArray);
+			return presencesArray;
+		}
 	}
 
 	public boolean has(String presence) {
-		return presences.containsKey(presence);
+		synchronized (this.presences) {
+			return presences.containsKey(presence);
+		}
 	}
 }
