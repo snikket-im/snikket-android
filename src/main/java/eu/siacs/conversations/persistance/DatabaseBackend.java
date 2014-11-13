@@ -22,7 +22,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 	private static DatabaseBackend instance = null;
 
 	private static final String DATABASE_NAME = "history";
-	private static final int DATABASE_VERSION = 9;
+	private static final int DATABASE_VERSION = 10;
 
 	private static String CREATE_CONTATCS_STATEMENT = "create table "
 			+ Contact.TABLENAME + "(" + Contact.ACCOUNT + " TEXT, "
@@ -64,6 +64,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 				+ " TEXT, " + Message.TRUE_COUNTERPART + " TEXT,"
 				+ Message.BODY + " TEXT, " + Message.ENCRYPTION + " NUMBER, "
 				+ Message.STATUS + " NUMBER," + Message.TYPE + " NUMBER, "
+				+ Message.RELATIVE_FILE_PATH + " TEXT, "
 				+ Message.REMOTE_MSG_ID + " TEXT, FOREIGN KEY("
 				+ Message.CONVERSATION + ") REFERENCES "
 				+ Conversation.TABLENAME + "(" + Conversation.UUID
@@ -110,6 +111,10 @@ public class DatabaseBackend extends SQLiteOpenHelper {
             db.execSQL("ALTER TABLE " + Contact.TABLENAME + " ADD COLUMN "
                     + Contact.LAST_PRESENCE + " TEXT");
         }
+		if (oldVersion < 10 && newVersion >= 10) {
+			db.execSQL("ALTER TABLE " + Message.TABLENAME + " ADD COLUMN "
+					+ Message.RELATIVE_FILE_PATH + " TEXT");
+		}
 	}
 
 	public static synchronized DatabaseBackend getInstance(Context context) {

@@ -32,7 +32,7 @@ public class Message extends AbstractEntity {
 
 	public static final int TYPE_TEXT = 0;
 	public static final int TYPE_IMAGE = 1;
-	public static final int TYPE_AUDIO = 2;
+	public static final int TYPE_FILE = 2;
 	public static final int TYPE_STATUS = 3;
 	public static final int TYPE_PRIVATE = 4;
 
@@ -45,6 +45,7 @@ public class Message extends AbstractEntity {
 	public static String STATUS = "status";
 	public static String TYPE = "type";
 	public static String REMOTE_MSG_ID = "remoteMsgId";
+	public static String RELATIVE_FILE_PATH = "relativeFilePath";
 	public boolean markable = false;
 	protected String conversationUuid;
 	protected Jid counterpart;
@@ -55,6 +56,7 @@ public class Message extends AbstractEntity {
 	protected int encryption;
 	protected int status;
 	protected int type;
+	protected String relativeFilePath;
 	protected boolean read = true;
 	protected String remoteMsgId = null;
 	protected Conversation conversation = null;
@@ -74,13 +76,13 @@ public class Message extends AbstractEntity {
 		this(java.util.UUID.randomUUID().toString(), conversation.getUuid(),
 				conversation.getContactJid().toBareJid(), null, body, System
 						.currentTimeMillis(), encryption,
-				status, TYPE_TEXT, null);
+				status, TYPE_TEXT, null,null);
 		this.conversation = conversation;
 	}
 
 	public Message(final String uuid, final String conversationUUid, final Jid counterpart,
 				   final String trueCounterpart, final String body, final long timeSent,
-				   final int encryption, final int status, final int type, final String remoteMsgId) {
+				   final int encryption, final int status, final int type, final String remoteMsgId, final String relativeFilePath) {
 		this.uuid = uuid;
 		this.conversationUuid = conversationUUid;
 		this.counterpart = counterpart;
@@ -91,6 +93,7 @@ public class Message extends AbstractEntity {
 		this.status = status;
 		this.type = type;
 		this.remoteMsgId = remoteMsgId;
+		this.relativeFilePath = relativeFilePath;
 	}
 
 	public static Message fromCursor(Cursor cursor) {
@@ -114,7 +117,8 @@ public class Message extends AbstractEntity {
 				cursor.getInt(cursor.getColumnIndex(ENCRYPTION)),
 				cursor.getInt(cursor.getColumnIndex(STATUS)),
 				cursor.getInt(cursor.getColumnIndex(TYPE)),
-				cursor.getString(cursor.getColumnIndex(REMOTE_MSG_ID)));
+				cursor.getString(cursor.getColumnIndex(REMOTE_MSG_ID)),
+				cursor.getString(cursor.getColumnIndex(RELATIVE_FILE_PATH)));
 	}
 
 	public static Message createStatusMessage(Conversation conversation) {
@@ -141,6 +145,7 @@ public class Message extends AbstractEntity {
 		values.put(STATUS, status);
 		values.put(TYPE, type);
 		values.put(REMOTE_MSG_ID, remoteMsgId);
+		values.put(RELATIVE_FILE_PATH, relativeFilePath);
 		return values;
 	}
 
@@ -203,6 +208,14 @@ public class Message extends AbstractEntity {
 
 	public void setStatus(int status) {
 		this.status = status;
+	}
+
+	public void setRelativeFilePath(String path) {
+		this.relativeFilePath = path;
+	}
+
+	public String getRelativeFilePath() {
+		return  this.relativeFilePath;
 	}
 
 	public String getRemoteMsgId() {
@@ -376,14 +389,14 @@ public class Message extends AbstractEntity {
 			}
 			String[] extensionParts = filename.split("\\.");
 			if (extensionParts.length == 2
-					&& Arrays.asList(Downloadable.VALID_EXTENSIONS).contains(
+					&& Arrays.asList(Downloadable.VALID_IMAGE_EXTENSIONS).contains(
 					extensionParts[extensionParts.length - 1])) {
 				return true;
 			} else if (extensionParts.length == 3
 					&& Arrays
 					.asList(Downloadable.VALID_CRYPTO_EXTENSIONS)
 					.contains(extensionParts[extensionParts.length - 1])
-					&& Arrays.asList(Downloadable.VALID_EXTENSIONS).contains(
+					&& Arrays.asList(Downloadable.VALID_IMAGE_EXTENSIONS).contains(
 					extensionParts[extensionParts.length - 2])) {
 				return true;
 			} else {

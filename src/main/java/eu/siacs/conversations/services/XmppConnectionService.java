@@ -56,6 +56,7 @@ import eu.siacs.conversations.entities.Bookmark;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Downloadable;
+import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.entities.MucOptions.OnRenameListener;
@@ -294,6 +295,27 @@ public class XmppConnectionService extends Service {
 		return this.mAvatarService;
 	}
 
+	public Message attachFileToConversation(Conversation conversation, final Uri uri) {
+		String path = getFileBackend().getOriginalPath(uri);
+		if (path!=null) {
+			Log.d(Config.LOGTAG,"file path : "+path);
+			Message message;
+			if (conversation.getNextEncryption(forceEncryption()) == Message.ENCRYPTION_PGP) {
+				message = new Message(conversation, "",
+						Message.ENCRYPTION_DECRYPTED);
+			} else {
+				message = new Message(conversation, "",
+						conversation.getNextEncryption(forceEncryption()));
+			}
+			message.setCounterpart(conversation.getNextCounterpart());
+			message.setType(Message.TYPE_FILE);
+			message.setStatus(Message.STATUS_OFFERED);
+			message.setRelativeFilePath(path);
+			return message;
+		}
+		return null;
+	}
+
 	public Message attachImageToConversation(final Conversation conversation,
 											 final Uri uri, final UiCallback<Message> callback) {
 		final Message message;
@@ -312,13 +334,14 @@ public class XmppConnectionService extends Service {
 			@Override
 			public void run() {
 				try {
-					getFileBackend().copyImageToPrivateStorage(message, uri);
+					DownloadableFile file = getFileBackend().copyImageToPrivateStorage(message, uri);
+					message.setRelativeFilePath(file.getName());
 					if (conversation.getNextEncryption(forceEncryption()) == Message.ENCRYPTION_PGP) {
 						getPgpEngine().encrypt(message, callback);
 					} else {
 						callback.success(message);
 					}
-				} catch (FileBackend.ImageCopyException e) {
+				} catch (FileBackend.FileCopyException e) {
 					callback.error(e.getResId(), message);
 				}
 			}
@@ -552,7 +575,7 @@ public class XmppConnectionService extends Service {
 		boolean send = false;
 		if (account.getStatus() == Account.STATUS_ONLINE
 				&& account.getXmppConnection() != null) {
-			if (message.getType() == Message.TYPE_IMAGE) {
+			if (message.getType() == Message.TYPE_IMAGE || message.getType() == Message.TYPE_FILE) {
 				if (message.getCounterpart() != null) {
 					if (message.getEncryption() == Message.ENCRYPTION_OTR) {
 						if (!conv.hasValidOtrSession()) {
@@ -1986,6 +2009,16 @@ public class XmppConnectionService extends Service {
 		@Override
 		public long getFileSize() {
 			return 0;
+		}
+
+		@Override
+		public int getProgress() {
+			return 0;
+		}
+
+		@Override
+		public String getMimeType() {
+			return "";
 		}
 
 	}

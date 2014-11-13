@@ -37,6 +37,7 @@ public class HttpConnection implements Downloadable {
 	private DownloadableFile file;
 	private int mStatus = Downloadable.STATUS_UNKNOWN;
 	private boolean acceptedAutomatically = false;
+	private int mProgress = 0;
 
 	public HttpConnection(HttpConnectionManager manager) {
 		this.mHttpConnectionManager = manager;
@@ -235,10 +236,14 @@ public class HttpConnection implements Downloadable {
 			if (os == null) {
 				throw new IOException();
 			}
+			long transmitted = 0;
+			long expected = file.getExpectedSize();
 			int count = -1;
 			byte[] buffer = new byte[1024];
 			while ((count = is.read(buffer)) != -1) {
+				transmitted += count;
 				os.write(buffer, 0, count);
+				mProgress = (int) (expected * 100 / transmitted);
 			}
 			os.flush();
 			os.close();
@@ -271,5 +276,15 @@ public class HttpConnection implements Downloadable {
 		} else {
 			return 0;
 		}
+	}
+
+	@Override
+	public int getProgress() {
+		return this.mProgress;
+	}
+
+	@Override
+	public String getMimeType() {
+		return "";
 	}
 }

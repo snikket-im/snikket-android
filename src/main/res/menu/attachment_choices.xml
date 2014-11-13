@@ -9,7 +9,6 @@
         android:title="@string/attach_take_picture"/>
     <item
         android:id="@+id/attach_record_voice"
-        android:title="@string/attach_record_voice"
-        android:visible="false"/>
+        android:title="@string/choose_file"/>
 
 </menu>

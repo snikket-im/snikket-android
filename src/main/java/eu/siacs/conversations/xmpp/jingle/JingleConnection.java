@@ -11,6 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.SystemClock;
 import android.util.Log;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
@@ -28,9 +29,6 @@ import eu.siacs.conversations.xmpp.jingle.stanzas.Reason;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
 
 public class JingleConnection implements Downloadable {
-
-	private final String[] extensions = { "webp", "jpeg", "jpg", "png" };
-	private final String[] cryptoExtensions = { "pgp", "gpg", "otr" };
 
 	private JingleConnectionManager mJingleConnectionManager;
 	private XmppConnectionService mXmppConnectionService;
@@ -61,6 +59,9 @@ public class JingleConnection implements Downloadable {
 
 	private String contentName;
 	private String contentCreator;
+
+	private int mProgress = 0;
+	private long mLastGuiRefresh = 0;
 
 	private boolean receivedCandidate = false;
 	private boolean sentCandidate = false;
@@ -258,7 +259,6 @@ public class JingleConnection implements Downloadable {
 						packet.getFrom().toBareJid(), false);
 		this.message = new Message(conversation, "", Message.ENCRYPTION_NONE);
 		this.message.setStatus(Message.STATUS_RECEIVED);
-		this.message.setType(Message.TYPE_IMAGE);
 		this.mStatus = Downloadable.STATUS_OFFER;
 		this.message.setDownloadable(this);
         final Jid from = packet.getFrom();
@@ -278,68 +278,71 @@ public class JingleConnection implements Downloadable {
 			Element fileSize = fileOffer.findChild("size");
 			Element fileNameElement = fileOffer.findChild("name");
 			if (fileNameElement != null) {
-				boolean supportedFile = false;
 				String[] filename = fileNameElement.getContent()
 						.toLowerCase(Locale.US).split("\\.");
-				if (Arrays.asList(this.extensions).contains(
+				if (Arrays.asList(VALID_IMAGE_EXTENSIONS).contains(
 						filename[filename.length - 1])) {
-					supportedFile = true;
-				} else if (Arrays.asList(this.cryptoExtensions).contains(
+					message.setType(Message.TYPE_IMAGE);
+				} else if (Arrays.asList(VALID_CRYPTO_EXTENSIONS).contains(
 						filename[filename.length - 1])) {
 					if (filename.length == 3) {
-						if (Arrays.asList(this.extensions).contains(
+						if (Arrays.asList(VALID_IMAGE_EXTENSIONS).contains(
 								filename[filename.length - 2])) {
-							supportedFile = true;
-							if (filename[filename.length - 1].equals("otr")) {
-								Log.d(Config.LOGTAG, "receiving otr file");
-								this.message
-										.setEncryption(Message.ENCRYPTION_OTR);
-							} else {
-								this.message
-										.setEncryption(Message.ENCRYPTION_PGP);
-							}
-						}
-					}
-				}
-				if (supportedFile) {
-					long size = Long.parseLong(fileSize.getContent());
-					message.setBody(Long.toString(size));
-					conversation.add(message);
-					mXmppConnectionService.updateConversationUi();
-					if (size <= this.mJingleConnectionManager
-							.getAutoAcceptFileSize()) {
-						Log.d(Config.LOGTAG, "auto accepting file from "
-								+ packet.getFrom());
-						this.acceptedAutomatically = true;
-						this.sendAccept();
-					} else {
-						message.markUnread();
-						Log.d(Config.LOGTAG,
-								"not auto accepting new file offer with size: "
-										+ size
-										+ " allowed size:"
-										+ this.mJingleConnectionManager
-												.getAutoAcceptFileSize());
-						this.mXmppConnectionService.getNotificationService()
-								.push(message);
-					}
-					this.file = this.mXmppConnectionService.getFileBackend()
-							.getFile(message, false);
-					if (message.getEncryption() == Message.ENCRYPTION_OTR) {
-						byte[] key = conversation.getSymmetricKey();
-						if (key == null) {
-							this.sendCancel();
-							this.cancel();
-							return;
+							message.setType(Message.TYPE_IMAGE);
 						} else {
-							this.file.setKey(key);
+							message.setType(Message.TYPE_FILE);
+						}
+						if (filename[filename.length - 1].equals("otr")) {
+							message.setEncryption(Message.ENCRYPTION_OTR);
+						} else {
+							message.setEncryption(Message.ENCRYPTION_PGP);
 						}
 					}
-					this.file.setExpectedSize(size);
 				} else {
-					this.sendCancel();
-					this.cancel();
+					message.setType(Message.TYPE_FILE);
 				}
+				if (message.getType() == Message.TYPE_FILE) {
+					String suffix = "";
+					if (!fileNameElement.getContent().isEmpty()) {
+						String parts[] = fileNameElement.getContent().split("/");
+						suffix = parts[parts.length - 1];
+					}
+					message.setRelativeFilePath(message.getUuid()+"_"+suffix);
+				}
+				long size = Long.parseLong(fileSize.getContent());
+				message.setBody(Long.toString(size));
+				conversation.add(message);
+				mXmppConnectionService.updateConversationUi();
+				if (size <= this.mJingleConnectionManager
+						.getAutoAcceptFileSize()) {
+					Log.d(Config.LOGTAG, "auto accepting file from "
+							+ packet.getFrom());
+					this.acceptedAutomatically = true;
+					this.sendAccept();
+				} else {
+					message.markUnread();
+					Log.d(Config.LOGTAG,
+							"not auto accepting new file offer with size: "
+									+ size
+									+ " allowed size:"
+									+ this.mJingleConnectionManager
+											.getAutoAcceptFileSize());
+					this.mXmppConnectionService.getNotificationService()
+							.push(message);
+				}
+				this.file = this.mXmppConnectionService.getFileBackend()
+						.getFile(message, false);
+				if (message.getEncryption() == Message.ENCRYPTION_OTR) {
+					byte[] key = conversation.getSymmetricKey();
+					if (key == null) {
+						this.sendCancel();
+						this.cancel();
+						return;
+					} else {
+						this.file.setKey(key);
+					}
+				}
+				this.file.setExpectedSize(size);
 			} else {
 				this.sendCancel();
 				this.cancel();
@@ -354,7 +357,7 @@ public class JingleConnection implements Downloadable {
 		this.mXmppConnectionService.markMessage(this.message, Message.STATUS_OFFERED);
 		JinglePacket packet = this.bootstrapPacket("session-initiate");
 		Content content = new Content(this.contentCreator, this.contentName);
-		if (message.getType() == Message.TYPE_IMAGE) {
+		if (message.getType() == Message.TYPE_IMAGE || message.getType() == Message.TYPE_FILE) {
 			content.setTransportId(this.transportId);
 			this.file = this.mXmppConnectionService.getFileBackend().getFile(
 					message, false);
@@ -856,6 +859,14 @@ public class JingleConnection implements Downloadable {
 		return null;
 	}
 
+	public void updateProgress(int i) {
+		this.mProgress = i;
+		if (SystemClock.elapsedRealtime() - this.mLastGuiRefresh > 1000) {
+			this.mLastGuiRefresh = SystemClock.elapsedRealtime();
+			mXmppConnectionService.updateConversationUi();
+		}
+	}
+
 	interface OnProxyActivated {
 		public void success();
 
@@ -899,5 +910,15 @@ public class JingleConnection implements Downloadable {
 		} else {
 			return 0;
 		}
+	}
+
+	@Override
+	public int getProgress() {
+		return this.mProgress;
+	}
+
+	@Override
+	public String getMimeType() {
+		return this.file.getMimeType();
 	}
 }

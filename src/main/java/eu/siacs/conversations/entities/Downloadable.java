@@ -2,7 +2,7 @@ package eu.siacs.conversations.entities;
 
 public interface Downloadable {
 
-	public final String[] VALID_EXTENSIONS = {"webp", "jpeg", "jpg", "png", "jpe"};
+	public final String[] VALID_IMAGE_EXTENSIONS = {"webp", "jpeg", "jpg", "png", "jpe"};
 	public final String[] VALID_CRYPTO_EXTENSIONS = {"pgp", "gpg", "otr"};
 
 	public static final int STATUS_UNKNOWN = 0x200;
@@ -18,4 +18,8 @@ public interface Downloadable {
 	public int getStatus();
 
 	public long getFileSize();
+
+	public int getProgress();
+
+	public String getMimeType();
 }

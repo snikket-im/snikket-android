@@ -58,7 +58,7 @@
     <string name="add_contact">Add contact</string>
     <string name="send_failed">delivery failed</string>
     <string name="send_rejected">rejected</string>
-    <string name="receiving_image">Receiving image file. Please wait…</string>
+    <string name="receiving_image">Receiving image file (%1$d%%)</string>
     <string name="preparing_image">Preparing image for transmission</string>
     <string name="action_clear_history">Clear history</string>
     <string name="clear_conversation_history">Clear Conversation History</string>
@@ -311,4 +311,8 @@
     <string name="scan_qr_code">Scan QR code</string>
     <string name="show_qr_code">Show QR code</string>
     <string name="account_details">Account details</string>
+    <string name="choose_file">Choose file</string>
+    <string name="receiving_file">Receiving %1$s file (%2$d%%)</string>
+    <string name="download_file">Download %s file</string>
+    <string name="open_file">Open %s file</string>
 </resources>

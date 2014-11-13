@@ -2,11 +2,13 @@ package eu.siacs.conversations.persistance;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URLConnection;
 import java.security.DigestOutputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -14,6 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import android.content.ContentResolver;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -53,25 +56,34 @@ public class FileBackend {
 	}
 
 	public DownloadableFile getFile(Message message, boolean decrypted) {
-		StringBuilder filename = new StringBuilder();
-		filename.append(getConversationsDirectory());
-		filename.append(message.getUuid());
-		if ((decrypted) || (message.getEncryption() == Message.ENCRYPTION_NONE)) {
-			filename.append(".webp");
+		String path = message.getRelativeFilePath();
+		if (path != null && !path.isEmpty()) {
+			if (path.startsWith("/")) {
+				return new DownloadableFile(path);
+			} else {
+				return new DownloadableFile(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)+"/"+path);
+			}
 		} else {
-			if (message.getEncryption() == Message.ENCRYPTION_OTR) {
+			StringBuilder filename = new StringBuilder();
+			filename.append(getConversationsDirectory());
+			filename.append(message.getUuid());
+			if ((decrypted) || (message.getEncryption() == Message.ENCRYPTION_NONE)) {
 				filename.append(".webp");
 			} else {
-				filename.append(".webp.pgp");
+				if (message.getEncryption() == Message.ENCRYPTION_OTR) {
+					filename.append(".webp");
+				} else {
+					filename.append(".webp.pgp");
+				}
 			}
+			return new DownloadableFile(filename.toString());
 		}
-		return new DownloadableFile(filename.toString());
 	}
 
 	public static String getConversationsDirectory() {
 		return Environment.getExternalStoragePublicDirectory(
-				Environment.DIRECTORY_PICTURES).getAbsolutePath()
-				+ "/Conversations/";
+			Environment.DIRECTORY_PICTURES).getAbsolutePath()
+			+ "/Conversations/";
 	}
 
 	public Bitmap resize(Bitmap originalBitmap, int size) {
@@ -103,13 +115,34 @@ public class FileBackend {
 		return Bitmap.createBitmap(bitmap, 0, 0, w, h, mtx, true);
 	}
 
+	public String getOriginalPath(Uri uri) {
+		String path = null;
+		if (uri.getScheme().equals("file")) {
+			path = uri.getPath();
+		} else {
+			String[] projection = {MediaStore.MediaColumns.DATA};
+			Cursor metaCursor = mXmppConnectionService.getContentResolver().query(uri,
+					projection, null, null, null);
+			if (metaCursor != null) {
+				try {
+					if (metaCursor.moveToFirst()) {
+						path = metaCursor.getString(0);
+					}
+				} finally {
+					metaCursor.close();
+				}
+			}
+		}
+		return path;
+	}
+
 	public DownloadableFile copyImageToPrivateStorage(Message message, Uri image)
-			throws ImageCopyException {
+			throws FileCopyException {
 		return this.copyImageToPrivateStorage(message, image, 0);
 	}
 
 	private DownloadableFile copyImageToPrivateStorage(Message message,
-			Uri image, int sampleSize) throws ImageCopyException {
+			Uri image, int sampleSize) throws FileCopyException {
 		try {
 			InputStream is = mXmppConnectionService.getContentResolver()
 					.openInputStream(image);
@@ -125,7 +158,7 @@ public class FileBackend {
 			originalBitmap = BitmapFactory.decodeStream(is, null, options);
 			is.close();
 			if (originalBitmap == null) {
-				throw new ImageCopyException(R.string.error_not_an_image_file);
+				throw new FileCopyException(R.string.error_not_an_image_file);
 			}
 			Bitmap scalledBitmap = resize(originalBitmap, IMAGE_SIZE);
 			originalBitmap = null;
@@ -137,7 +170,7 @@ public class FileBackend {
 			boolean success = scalledBitmap.compress(
 					Bitmap.CompressFormat.WEBP, 75, os);
 			if (!success) {
-				throw new ImageCopyException(R.string.error_compressing_image);
+				throw new FileCopyException(R.string.error_compressing_image);
 			}
 			os.flush();
 			os.close();
@@ -147,18 +180,18 @@ public class FileBackend {
 			message.setBody(Long.toString(size) + ',' + width + ',' + height);
 			return file;
 		} catch (FileNotFoundException e) {
-			throw new ImageCopyException(R.string.error_file_not_found);
+			throw new FileCopyException(R.string.error_file_not_found);
 		} catch (IOException e) {
-			throw new ImageCopyException(R.string.error_io_exception);
+			throw new FileCopyException(R.string.error_io_exception);
 		} catch (SecurityException e) {
-			throw new ImageCopyException(
+			throw new FileCopyException(
 					R.string.error_security_exception_during_image_copy);
 		} catch (OutOfMemoryError e) {
 			++sampleSize;
 			if (sampleSize <= 3) {
 				return copyImageToPrivateStorage(message, image, sampleSize);
 			} else {
-				throw new ImageCopyException(R.string.error_out_of_memory);
+				throw new FileCopyException(R.string.error_out_of_memory);
 			}
 		}
 	}
@@ -400,11 +433,11 @@ public class FileBackend {
 		return Uri.parse("file://" + file.getAbsolutePath());
 	}
 
-	public class ImageCopyException extends Exception {
+	public class FileCopyException extends Exception {
 		private static final long serialVersionUID = -1010013599132881427L;
 		private int resId;
 
-		public ImageCopyException(int resId) {
+		public FileCopyException(int resId) {
 			this.resId = resId;
 		}
 
