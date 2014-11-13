@@ -158,39 +158,42 @@ public class MucOptions {
 			String type = packet.getAttribute("type");
 			if (type == null) {
 				User user = new User();
-				Element item = packet.findChild("x",
-						"http://jabber.org/protocol/muc#user")
-						.findChild("item");
-				user.setName(name);
-				user.setAffiliation(item.getAttribute("affiliation"));
-				user.setRole(item.getAttribute("role"));
-				user.setJid(item.getAttribute("jid"));
-				user.setName(name);
-				if (name.equals(this.joinnick)) {
-					this.isOnline = true;
-					this.error = ERROR_NO_ERROR;
-					self = user;
-					if (aboutToRename) {
-						if (renameListener != null) {
-							renameListener.onRename(true);
-						}
-						aboutToRename = false;
-					}
-				} else {
-					addUser(user);
-				}
-				if (pgp != null) {
-					Element x = packet.findChild("x", "jabber:x:signed");
-					if (x != null) {
-						Element status = packet.findChild("status");
-						String msg;
-						if (status != null) {
-							msg = status.getContent();
+				Element x = packet.findChild("x","http://jabber.org/protocol/muc#user");
+				if (x != null) {
+					Element item = x.findChild("item");
+					if (item != null) {
+						user.setName(name);
+						user.setAffiliation(item.getAttribute("affiliation"));
+						user.setRole(item.getAttribute("role"));
+						user.setJid(item.getAttribute("jid"));
+						user.setName(name);
+						if (name.equals(this.joinnick)) {
+							this.isOnline = true;
+							this.error = ERROR_NO_ERROR;
+							self = user;
+							if (aboutToRename) {
+								if (renameListener != null) {
+									renameListener.onRename(true);
+								}
+								aboutToRename = false;
+							}
 						} else {
-							msg = "";
+							addUser(user);
 						}
-						user.setPgpKeyId(pgp.fetchKeyId(account, msg,
-								x.getContent()));
+						if (pgp != null) {
+							Element signed = packet.findChild("x", "jabber:x:signed");
+							if (signed != null) {
+								Element status = packet.findChild("status");
+								String msg;
+								if (status != null) {
+									msg = status.getContent();
+								} else {
+									msg = "";
+								}
+								user.setPgpKeyId(pgp.fetchKeyId(account, msg,
+										signed.getContent()));
+							}
+						}
 					}
 				}
 			} else if (type.equals("unavailable") && name.equals(this.joinnick)) {
