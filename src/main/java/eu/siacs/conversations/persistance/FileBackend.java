@@ -2,14 +2,12 @@ package eu.siacs.conversations.persistance;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
-import java.net.URLConnection;
 import java.security.DigestOutputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -17,7 +15,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import android.content.ContentResolver;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -60,30 +57,36 @@ public class FileBackend {
 
 	public DownloadableFile getFile(Message message, boolean decrypted) {
 		String path = message.getRelativeFilePath();
-		if (path != null && !path.isEmpty()) {
+		if (!decrypted && (message.getEncryption() == Message.ENCRYPTION_PGP || message.getEncryption() == Message.ENCRYPTION_DECRYPTED)) {
+			String extension;
+			if (path != null && !path.isEmpty()) {
+				String[] parts = path.split("\\.");
+				extension = "."+parts[parts.length - 1];
+			} else if (message.getType() == Message.TYPE_IMAGE) {
+				extension = ".webp";
+			} else {
+				extension = "";
+			}
+			return new DownloadableFile(getConversationsFileDirectory()+message.getUuid()+extension+".pgp");
+		} else if (path != null && !path.isEmpty()) {
 			if (path.startsWith("/")) {
 				return new DownloadableFile(path);
 			} else {
-				return new DownloadableFile(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)+"/"+path);
+				return new DownloadableFile(getConversationsFileDirectory()+path);
 			}
 		} else {
 			StringBuilder filename = new StringBuilder();
-			filename.append(getConversationsDirectory());
-			filename.append(message.getUuid());
-			if ((decrypted) || (message.getEncryption() == Message.ENCRYPTION_NONE)) {
-				filename.append(".webp");
-			} else {
-				if (message.getEncryption() == Message.ENCRYPTION_OTR) {
-					filename.append(".webp");
-				} else {
-					filename.append(".webp.pgp");
-				}
-			}
+			filename.append(getConversationsImageDirectory());
+			filename.append(message.getUuid()+".webp");
 			return new DownloadableFile(filename.toString());
 		}
 	}
 
-	public static String getConversationsDirectory() {
+	public static String getConversationsFileDirectory() {
+		return  Environment.getExternalStorageDirectory().getAbsolutePath()+"/Conversations/";
+	}
+
+	public static String getConversationsImageDirectory() {
 		return Environment.getExternalStoragePublicDirectory(
 			Environment.DIRECTORY_PICTURES).getAbsolutePath()
 			+ "/Conversations/";

@@ -211,7 +211,7 @@ public class XmppConnectionService extends Service {
 	private Integer rosterChangedListenerCount = 0;
 	private SecureRandom mRandom;
 	private FileObserver fileObserver = new FileObserver(
-			FileBackend.getConversationsDirectory()) {
+			FileBackend.getConversationsImageDirectory()) {
 
 		@Override
 		public void onEvent(int event, String path) {
@@ -311,7 +311,11 @@ public class XmppConnectionService extends Service {
 		if (path!=null) {
 			message.setRelativeFilePath(path);
 			getFileBackend().updateFileParams(message);
-			callback.success(message);
+			if (message.getEncryption() == Message.ENCRYPTION_DECRYPTED) {
+				getPgpEngine().encrypt(message, callback);
+			} else {
+				callback.success(message);
+			}
 		} else {
 			new Thread(new Runnable() {
 				@Override
@@ -319,7 +323,11 @@ public class XmppConnectionService extends Service {
 					try {
 						getFileBackend().copyFileToPrivateStorage(message, uri);
 						getFileBackend().updateFileParams(message);
-						callback.success(message);
+						if (message.getEncryption() == Message.ENCRYPTION_DECRYPTED) {
+							getPgpEngine().encrypt(message, callback);
+						} else {
+							callback.success(message);
+						}
 					} catch (FileBackend.FileCopyException e) {
 						callback.error(e.getResId(),message);
 					}

@@ -306,6 +306,8 @@ public class JingleConnection implements Downloadable {
 						suffix = parts[parts.length - 1];
 						if (message.getEncryption() == Message.ENCRYPTION_OTR  && suffix.endsWith(".otr")) {
 							suffix = suffix.substring(0,suffix.length() - 4);
+						} else if (message.getEncryption() == Message.ENCRYPTION_PGP && (suffix.endsWith(".pgp") || suffix.endsWith(".gpg"))) {
+							suffix = suffix.substring(0,suffix.length() - 4);
 						}
 					}
 					message.setRelativeFilePath(message.getUuid()+"_"+suffix);

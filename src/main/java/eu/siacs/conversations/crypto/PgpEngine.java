@@ -80,12 +80,13 @@ public class PgpEngine {
                     }
 				}
 			});
-		} else if (message.getType() == Message.TYPE_IMAGE) {
+		} else if (message.getType() == Message.TYPE_IMAGE || message.getType() == Message.TYPE_FILE) {
 			try {
 				final DownloadableFile inputFile = this.mXmppConnectionService
 						.getFileBackend().getFile(message, false);
 				final DownloadableFile outputFile = this.mXmppConnectionService
 						.getFileBackend().getFile(message, true);
+				outputFile.getParentFile().mkdirs();
 				outputFile.createNewFile();
 				InputStream is = new FileInputStream(inputFile);
 				OutputStream os = new FileOutputStream(outputFile);
@@ -199,12 +200,13 @@ public class PgpEngine {
 					}
 				}
 			});
-		} else if (message.getType() == Message.TYPE_IMAGE) {
+		} else if (message.getType() == Message.TYPE_IMAGE || message.getType() == Message.TYPE_FILE) {
 			try {
 				DownloadableFile inputFile = this.mXmppConnectionService
 						.getFileBackend().getFile(message, true);
 				DownloadableFile outputFile = this.mXmppConnectionService
 						.getFileBackend().getFile(message, false);
+				outputFile.getParentFile().mkdirs();
 				outputFile.createNewFile();
 				InputStream is = new FileInputStream(inputFile);
 				OutputStream os = new FileOutputStream(outputFile);
