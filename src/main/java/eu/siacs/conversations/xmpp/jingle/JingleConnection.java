@@ -1,5 +1,6 @@
 package eu.siacs.conversations.xmpp.jingle;
 
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -97,6 +98,9 @@ public class JingleConnection implements Downloadable {
 						Message.STATUS_RECEIVED);
 			} else {
 				message.setDownloadable(null);
+				if (message.getEncryption() != Message.ENCRYPTION_PGP) {
+					file.delete();
+				}
 			}
 			Log.d(Config.LOGTAG,
 					"sucessfully transmitted file:" + file.getAbsolutePath());
@@ -922,6 +926,21 @@ public class JingleConnection implements Downloadable {
 
 	@Override
 	public String getMimeType() {
-		return this.file.getMimeType();
+		if (this.message.getType() == Message.TYPE_FILE) {
+			String mime = null;
+			String path = this.message.getRelativeFilePath();
+			if (path != null && !this.message.getRelativeFilePath().isEmpty()) {
+				mime = URLConnection.guessContentTypeFromName(this.message.getRelativeFilePath());
+				if (mime!=null) {
+					return  mime;
+				} else {
+					return "";
+				}
+			} else {
+				return "";
+			}
+		} else {
+			return "image/webp";
+		}
 	}
 }

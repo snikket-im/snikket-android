@@ -62,7 +62,7 @@ public class FileBackend {
 			if (path != null && !path.isEmpty()) {
 				String[] parts = path.split("\\.");
 				extension = "."+parts[parts.length - 1];
-			} else if (message.getType() == Message.TYPE_IMAGE) {
+			} else if (message.getType() == Message.TYPE_IMAGE || message.getType() == Message.TYPE_TEXT) {
 				extension = ".webp";
 			} else {
 				extension = "";

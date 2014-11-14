@@ -316,4 +316,5 @@
     <string name="download_file">Download %s file</string>
     <string name="open_file">Open %s file</string>
     <string name="sending_file">sending (%1$d%% completed)</string>
+    <string name="preparing_file">Preparing file for transmission</string>
 </resources>

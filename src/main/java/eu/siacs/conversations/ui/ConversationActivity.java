@@ -15,7 +15,6 @@ import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.support.v4.widget.SlidingPaneLayout;
 import android.support.v4.widget.SlidingPaneLayout.PanelSlideListener;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,7 +31,6 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
@@ -80,7 +78,7 @@ public class ConversationActivity extends XmppActivity implements
 
 	private ArrayAdapter<Conversation> listAdapter;
 
-	private Toast prepareImageToast;
+	private Toast prepareFileToast;
 
 
 	public List<Conversation> getConversationList() {
@@ -782,15 +780,19 @@ public class ConversationActivity extends XmppActivity implements
 	}
 
 	private void attachFileToConversation(Conversation conversation, Uri uri) {
+		prepareFileToast = Toast.makeText(getApplicationContext(),
+				getText(R.string.preparing_file), Toast.LENGTH_LONG);
+		prepareFileToast.show();
 		xmppConnectionService.attachFileToConversation(conversation,uri, new UiCallback<Message>() {
 			@Override
 			public void success(Message message) {
+				hidePrepareFileToast();
 				xmppConnectionService.sendMessage(message);
 			}
 
 			@Override
 			public void error(int errorCode, Message message) {
-
+				displayErrorDialog(errorCode);
 			}
 
 			@Override
@@ -801,16 +803,16 @@ public class ConversationActivity extends XmppActivity implements
 	}
 
 	private void attachImageToConversation(Conversation conversation, Uri uri) {
-		prepareImageToast = Toast.makeText(getApplicationContext(),
+		prepareFileToast = Toast.makeText(getApplicationContext(),
 				getText(R.string.preparing_image), Toast.LENGTH_LONG);
-		prepareImageToast.show();
+		prepareFileToast.show();
 		xmppConnectionService.attachImageToConversation(conversation, uri,
 				new UiCallback<Message>() {
 
 					@Override
 					public void userInputRequried(PendingIntent pi,
 												  Message object) {
-						hidePrepareImageToast();
+						hidePrepareFileToast();
 						ConversationActivity.this.runIntent(pi,
 								ConversationActivity.REQUEST_SEND_PGP_IMAGE);
 					}
@@ -822,19 +824,19 @@ public class ConversationActivity extends XmppActivity implements
 
 					@Override
 					public void error(int error, Message message) {
-						hidePrepareImageToast();
+						hidePrepareFileToast();
 						displayErrorDialog(error);
 					}
 				});
 	}
 
-	private void hidePrepareImageToast() {
-		if (prepareImageToast != null) {
+	private void hidePrepareFileToast() {
+		if (prepareFileToast != null) {
 			runOnUiThread(new Runnable() {
 
 				@Override
 				public void run() {
-					prepareImageToast.cancel();
+					prepareFileToast.cancel();
 				}
 			});
 		}

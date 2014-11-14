@@ -281,15 +281,16 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 	}
 
 	private void displayOpenableMessage(ViewHolder viewHolder,final Message message) {
+		final DownloadableFile file = activity.xmppConnectionService.getFileBackend().getFile(message);
 		viewHolder.image.setVisibility(View.GONE);
 		viewHolder.messageBody.setVisibility(View.GONE);
 		viewHolder.download_button.setVisibility(View.VISIBLE);
-		viewHolder.download_button.setText(activity.getString(R.string.open_file,activity.xmppConnectionService.getFileBackend().getFile(message).getMimeType()));
+		viewHolder.download_button.setText(activity.getString(R.string.open_file,file.getMimeType()));
 		viewHolder.download_button.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				openDonwloadable(message);
+				openDonwloadable(file);
 			}
 		});
 		viewHolder.download_button.setOnLongClickListener(openContextMenu);
@@ -506,43 +507,35 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 			} else if (d.getStatus() == Downloadable.STATUS_FAILED) {
 				displayInfoMessage(viewHolder, activity.getString(R.string.image_transmission_failed));
 			}
-		} else if (item.getType() == Message.TYPE_IMAGE) {
-			if (item.getEncryption() == Message.ENCRYPTION_PGP) {
-				displayInfoMessage(viewHolder,activity.getString(R.string.encrypted_message));
-			} else if (item.getEncryption() == Message.ENCRYPTION_DECRYPTION_FAILED) {
-				displayDecryptionFailed(viewHolder);
-			} else {
-				displayImageMessage(viewHolder, item);
-			}
-		} else if (item.getType() == Message.TYPE_FILE) {
+		} else if (item.getType() == Message.TYPE_IMAGE && item.getEncryption() != Message.ENCRYPTION_PGP && item.getEncryption() != Message.ENCRYPTION_DECRYPTION_FAILED) {
+			displayImageMessage(viewHolder, item);
+		} else if (item.getType() == Message.TYPE_FILE && item.getEncryption() != Message.ENCRYPTION_PGP && item.getEncryption() != Message.ENCRYPTION_DECRYPTION_FAILED) {
 			if (item.getImageParams().width > 0) {
 				displayImageMessage(viewHolder,item);
 			} else {
 				displayOpenableMessage(viewHolder, item);
 			}
-		} else {
-			if (item.getEncryption() == Message.ENCRYPTION_PGP) {
-				if (activity.hasPgp()) {
-					displayInfoMessage(viewHolder,activity.getString(R.string.encrypted_message));
-				} else {
-					displayInfoMessage(viewHolder,
-							activity.getString(R.string.install_openkeychain));
-                    if (viewHolder != null) {
-                        viewHolder.message_box
-                                .setOnClickListener(new OnClickListener() {
-
-                                    @Override
-                                    public void onClick(View v) {
-                                        activity.showInstallPgpDialog();
-                                    }
-                                });
-                    }
-				}
-			} else if (item.getEncryption() == Message.ENCRYPTION_DECRYPTION_FAILED) {
-				displayDecryptionFailed(viewHolder);
+		} else if (item.getEncryption() == Message.ENCRYPTION_PGP) {
+			if (activity.hasPgp()) {
+				displayInfoMessage(viewHolder,activity.getString(R.string.encrypted_message));
 			} else {
-				displayTextMessage(viewHolder, item);
+				displayInfoMessage(viewHolder,
+						activity.getString(R.string.install_openkeychain));
+				if (viewHolder != null) {
+					viewHolder.message_box
+							.setOnClickListener(new OnClickListener() {
+
+								@Override
+								public void onClick(View v) {
+									activity.showInstallPgpDialog();
+								}
+							});
+				}
 			}
+		} else if (item.getEncryption() == Message.ENCRYPTION_DECRYPTION_FAILED) {
+			displayDecryptionFailed(viewHolder);
+		} else {
+			displayTextMessage(viewHolder, item);
 		}
 
 		displayStatus(viewHolder, item);
@@ -560,8 +553,8 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		}
 	}
 
-	public void openDonwloadable(Message message) {
-		DownloadableFile file = activity.xmppConnectionService.getFileBackend().getFile(message);
+	public void openDonwloadable(DownloadableFile file) {
+		Log.d(Config.LOGTAG,"file "+file.getAbsolutePath());
 		Intent intent = new Intent(Intent.ACTION_VIEW);
 		intent.setDataAndType(Uri.fromFile(file), file.getMimeType());
 		getContext().startActivity(intent);
