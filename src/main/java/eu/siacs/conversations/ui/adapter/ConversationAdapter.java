@@ -6,6 +6,7 @@ import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Downloadable;
+import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.ui.ConversationActivity;
 import eu.siacs.conversations.ui.XmppActivity;
@@ -75,7 +76,7 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 			convName.setTypeface(null, Typeface.NORMAL);
 		}
 
-		if (message.getType() == Message.TYPE_IMAGE
+		if (message.getType() == Message.TYPE_IMAGE || message.getType() == Message.TYPE_FILE
 				|| message.getDownloadable() != null) {
 			Downloadable d = message.getDownloadable();
 			if (conversation.isRead()) {
@@ -89,13 +90,25 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 				if (d.getStatus() == Downloadable.STATUS_CHECKING) {
 					mLastMessage.setText(R.string.checking_image);
 				} else if (d.getStatus() == Downloadable.STATUS_DOWNLOADING) {
-					mLastMessage.setText(R.string.receiving_image);
+					if (message.getType() == Message.TYPE_FILE) {
+						mLastMessage.setText(getContext().getString(R.string.receiving_file,d.getMimeType(), d.getProgress()));
+					} else {
+						mLastMessage.setText(getContext().getString(R.string.receiving_image, d.getProgress()));
+					}
 				} else if (d.getStatus() == Downloadable.STATUS_OFFER) {
-					mLastMessage.setText(R.string.image_offered_for_download);
+					if (message.getType() == Message.TYPE_FILE) {
+						mLastMessage.setText(R.string.file_offered_for_download);
+					} else {
+						mLastMessage.setText(R.string.image_offered_for_download);
+					}
 				} else if (d.getStatus() == Downloadable.STATUS_OFFER_CHECK_FILESIZE) {
 					mLastMessage.setText(R.string.image_offered_for_download);
 				} else if (d.getStatus() == Downloadable.STATUS_DELETED) {
 					mLastMessage.setText(R.string.image_file_deleted);
+				} else if (message.getImageParams().width > 0) {
+					mLastMessage.setVisibility(View.GONE);
+					imagePreview.setVisibility(View.VISIBLE);
+					activity.loadBitmap(message, imagePreview);
 				} else {
 					mLastMessage.setText("");
 				}
@@ -103,6 +116,11 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 				imagePreview.setVisibility(View.GONE);
 				mLastMessage.setVisibility(View.VISIBLE);
 				mLastMessage.setText(R.string.encrypted_message_received);
+			} else if (message.getType() == Message.TYPE_FILE && message.getImageParams().width <= 0) {
+				DownloadableFile file = activity.xmppConnectionService.getFileBackend().getFile(message);
+				mLastMessage.setVisibility(View.VISIBLE);
+				imagePreview.setVisibility(View.GONE);
+				mLastMessage.setText(getContext().getString(R.string.file,file.getMimeType()));
 			} else {
 				mLastMessage.setVisibility(View.GONE);
 				imagePreview.setVisibility(View.VISIBLE);
