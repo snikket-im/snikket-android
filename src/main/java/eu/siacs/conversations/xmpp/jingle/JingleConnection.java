@@ -44,7 +44,7 @@ public class JingleConnection implements Downloadable {
 	private int ibbBlockSize = 4096;
 
 	private int mJingleStatus = -1;
-	private int mStatus = -1;
+	private int mStatus = Downloadable.STATUS_UNKNOWN;
 	private Message message;
 	private String sessionId;
 	private Account account;
@@ -95,6 +95,8 @@ public class JingleConnection implements Downloadable {
 				mXmppConnectionService.databaseBackend.createMessage(message);
 				mXmppConnectionService.markMessage(message,
 						Message.STATUS_RECEIVED);
+			} else {
+				message.setDownloadable(null);
 			}
 			Log.d(Config.LOGTAG,
 					"sucessfully transmitted file:" + file.getAbsolutePath());
@@ -198,6 +200,8 @@ public class JingleConnection implements Downloadable {
 		this.contentCreator = "initiator";
 		this.contentName = this.mJingleConnectionManager.nextRandomId();
 		this.message = message;
+		this.message.setDownloadable(this);
+		this.mStatus = Downloadable.STATUS_UPLOADING;
 		this.account = message.getConversation().getAccount();
 		this.initiator = this.account.getJid();
 		this.responder = this.message.getCounterpart();
@@ -858,7 +862,7 @@ public class JingleConnection implements Downloadable {
 
 	public void updateProgress(int i) {
 		this.mProgress = i;
-		if (SystemClock.elapsedRealtime() - this.mLastGuiRefresh > 1000) {
+		if (SystemClock.elapsedRealtime() - this.mLastGuiRefresh > Config.PROGRESS_UI_UPDATE_INTERVAL) {
 			this.mLastGuiRefresh = SystemClock.elapsedRealtime();
 			mXmppConnectionService.updateConversationUi();
 		}

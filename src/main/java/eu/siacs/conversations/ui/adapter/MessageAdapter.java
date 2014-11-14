@@ -119,7 +119,12 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 			info = getContext().getString(R.string.waiting);
 			break;
 		case Message.STATUS_UNSEND:
-			info = getContext().getString(R.string.sending);
+			Downloadable d = message.getDownloadable();
+			if (d!=null) {
+				info = getContext().getString(R.string.sending_file,d.getProgress());
+			} else {
+				info = getContext().getString(R.string.sending);
+			}
 			break;
 		case Message.STATUS_OFFERED:
 			info = getContext().getString(R.string.offering);
@@ -478,7 +483,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 					});
 		}
 
-		if (item.getDownloadable() != null) {
+		if (item.getDownloadable() != null && item.getDownloadable().getStatus() != Downloadable.STATUS_UPLOADING) {
 			Downloadable d = item.getDownloadable();
 			if (d.getStatus() == Downloadable.STATUS_DOWNLOADING) {
 				if (item.getType() == Message.TYPE_FILE) {

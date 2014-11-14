@@ -312,7 +312,8 @@
     <string name="show_qr_code">Show QR code</string>
     <string name="account_details">Account details</string>
     <string name="choose_file">Choose file</string>
-    <string name="receiving_file">Receiving %1$s file (%2$d%%)</string>
+    <string name="receiving_file">Receiving %1$s file (%2$d%% completed)</string>
     <string name="download_file">Download %s file</string>
     <string name="open_file">Open %s file</string>
+    <string name="sending_file">sending (%1$d%% completed)</string>
 </resources>

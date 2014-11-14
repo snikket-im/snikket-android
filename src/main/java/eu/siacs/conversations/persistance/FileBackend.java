@@ -8,6 +8,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URL;
 import java.net.URLConnection;
 import java.security.DigestOutputStream;
 import java.security.MessageDigest;
@@ -462,6 +463,10 @@ public class FileBackend {
 	}
 
 	public void updateFileParams(Message message) {
+		updateFileParams(message,null);
+	}
+
+	public void updateFileParams(Message message, URL url) {
 		DownloadableFile file = getFile(message);
 		if (message.getType() == Message.TYPE_IMAGE || file.getMimeType().startsWith("image/")) {
 			BitmapFactory.Options options = new BitmapFactory.Options();
@@ -469,7 +474,11 @@ public class FileBackend {
 			BitmapFactory.decodeFile(file.getAbsolutePath(), options);
 			int imageHeight = options.outHeight;
 			int imageWidth = options.outWidth;
-			message.setBody(Long.toString(file.getSize()) + '|' + imageWidth + '|' + imageHeight);
+			if (url == null) {
+				message.setBody(Long.toString(file.getSize()) + '|' + imageWidth + '|' + imageHeight);
+			} else {
+				message.setBody(url.toString()+"|"+Long.toString(file.getSize()) + '|' + imageWidth + '|' + imageHeight);
+			}
 		} else {
 			message.setBody(Long.toString(file.getSize()));
 		}

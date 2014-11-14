@@ -3,6 +3,7 @@ package eu.siacs.conversations.http;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.SystemClock;
 
 import org.apache.http.conn.ssl.StrictHostnameVerifier;
 
@@ -21,6 +22,7 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLHandshakeException;
 import javax.net.ssl.X509TrustManager;
 
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Downloadable;
 import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.entities.Message;
@@ -38,6 +40,7 @@ public class HttpConnection implements Downloadable {
 	private int mStatus = Downloadable.STATUS_UNKNOWN;
 	private boolean acceptedAutomatically = false;
 	private int mProgress = 0;
+	private long mLastGuiRefresh = 0;
 
 	public HttpConnection(HttpConnectionManager manager) {
 		this.mHttpConnectionManager = manager;
@@ -243,7 +246,7 @@ public class HttpConnection implements Downloadable {
 			while ((count = is.read(buffer)) != -1) {
 				transmitted += count;
 				os.write(buffer, 0, count);
-				mProgress = (int) (expected * 100 / transmitted);
+				updateProgress((int) ((((double) transmitted) / expected) * 100));
 			}
 			os.flush();
 			os.close();
@@ -252,10 +255,18 @@ public class HttpConnection implements Downloadable {
 
 		private void updateImageBounds() {
 			message.setType(Message.TYPE_IMAGE);
-			mXmppConnectionService.getFileBackend().updateFileParams(message);
+			mXmppConnectionService.getFileBackend().updateFileParams(message,mUrl);
 			mXmppConnectionService.updateMessage(message);
 		}
 
+	}
+
+	public void updateProgress(int i) {
+		this.mProgress = i;
+		if (SystemClock.elapsedRealtime() - this.mLastGuiRefresh > Config.PROGRESS_UI_UPDATE_INTERVAL) {
+			this.mLastGuiRefresh = SystemClock.elapsedRealtime();
+			mXmppConnectionService.updateConversationUi();
+		}
 	}
 
 	@Override
