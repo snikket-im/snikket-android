@@ -98,7 +98,7 @@ public class JingleConnection implements Downloadable {
 						Message.STATUS_RECEIVED);
 			} else {
 				message.setDownloadable(null);
-				if (message.getEncryption() != Message.ENCRYPTION_PGP) {
+				if (message.getEncryption() == Message.ENCRYPTION_PGP || message.getEncryption() == Message.ENCRYPTION_DECRYPTED) {
 					file.delete();
 				}
 			}
@@ -664,8 +664,7 @@ public class JingleConnection implements Downloadable {
 			}
 		}
 		this.transportId = packet.getJingleContent().getTransportId();
-		this.transport = new JingleInbandTransport(this.account,
-				this.responder, this.transportId, this.ibbBlockSize);
+		this.transport = new JingleInbandTransport(this, this.transportId, this.ibbBlockSize);
 		this.transport.receive(file, onFileTransmissionSatusChanged);
 		JinglePacket answer = bootstrapPacket("transport-accept");
 		Content content = new Content("initiator", "a-file-offer");
@@ -687,8 +686,7 @@ public class JingleConnection implements Downloadable {
 					this.ibbBlockSize = bs;
 				}
 			}
-			this.transport = new JingleInbandTransport(this.account,
-					this.responder, this.transportId, this.ibbBlockSize);
+			this.transport = new JingleInbandTransport(this, this.transportId, this.ibbBlockSize);
 			this.transport.connect(new OnTransportConnected() {
 
 				@Override

@@ -105,14 +105,14 @@ public class JingleSocks5Transport extends JingleTransport {
 						return;
 					}
 					long size = file.getSize();
-					double transmitted = 0;
+					long transmitted = 0;
 					int count;
 					byte[] buffer = new byte[8192];
 					while ((count = fileInputStream.read(buffer)) > 0) {
 						outputStream.write(buffer, 0, count);
 						digest.update(buffer, 0, count);
 						transmitted += count;
-						connection.updateProgress((int) (((transmitted) / size) * 100));
+						connection.updateProgress((int) ((((double) transmitted) / size) * 100));
 					}
 					outputStream.flush();
 					file.setSha1Sum(CryptoHelper.bytesToHex(digest.digest()));
