@@ -96,7 +96,12 @@ public class Message extends AbstractEntity {
 	public static Message fromCursor(Cursor cursor) {
 		Jid jid;
 		try {
-			jid = Jid.fromString(cursor.getString(cursor.getColumnIndex(COUNTERPART)));
+			String value = cursor.getString(cursor.getColumnIndex(COUNTERPART));
+			if (value!=null) {
+				jid = Jid.fromString(value);
+			} else {
+				jid = null;
+			}
 		} catch (InvalidJidException e) {
 			jid = null;
 		}
