@@ -133,6 +133,9 @@ public class MessageParser extends AbstractParser implements
 	private Message parseGroupchat(MessagePacket packet, Account account) {
 		int status;
         final Jid from = packet.getFrom();
+		if (from == null) {
+			return null;
+		}
 		if (mXmppConnectionService.find(account.pendingConferenceLeaves,
 				account, from.toBareJid()) != null) {
 			return null;
