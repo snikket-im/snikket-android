@@ -280,10 +280,11 @@ public class Account extends AbstractEntity {
 		return values;
 	}
 
-	public OtrEngine getOtrEngine(XmppConnectionService context) {
-		if (otrEngine == null) {
-			otrEngine = new OtrEngine(context, this);
-		}
+	public void initOtrEngine(XmppConnectionService context) {
+		this.otrEngine = new OtrEngine(context, this);
+	}
+
+	public OtrEngine getOtrEngine() {
 		return this.otrEngine;
 	}
 
@@ -298,23 +299,21 @@ public class Account extends AbstractEntity {
 	public String getOtrFingerprint() {
 		if (this.otrFingerprint == null) {
 			try {
-				DSAPublicKey pubkey = (DSAPublicKey) this.otrEngine
-					.getPublicKey();
-				if (pubkey == null) {
+				if (this.otrEngine == null) {
 					return null;
 				}
-				StringBuilder builder = new StringBuilder(
-						new OtrCryptoEngineImpl().getFingerprint(pubkey));
-				builder.insert(8, " ");
-				builder.insert(17, " ");
-				builder.insert(26, " ");
-				builder.insert(35, " ");
-				this.otrFingerprint = builder.toString();
+				DSAPublicKey publicKey = (DSAPublicKey) this.otrEngine.getPublicKey();
+				if (publicKey == null) {
+					return null;
+				}
+				this.otrFingerprint = new OtrCryptoEngineImpl().getFingerprint(publicKey);
+				return this.otrFingerprint;
 			} catch (final OtrCryptoException ignored) {
-
+				return null;
 			}
+		} else {
+			return this.otrFingerprint;
 		}
-		return this.otrFingerprint;
 	}
 
 	public String getRosterVersion() {
@@ -327,11 +326,6 @@ public class Account extends AbstractEntity {
 
 	public void setRosterVersion(String version) {
 		this.rosterVersion = version;
-	}
-
-	public String getOtrFingerprint(XmppConnectionService service) {
-		this.getOtrEngine(service);
-		return this.getOtrFingerprint();
 	}
 
 	public void updatePresence(String resource, int status) {
@@ -410,5 +404,14 @@ public class Account extends AbstractEntity {
 
 	public boolean inGracePeriod() {
 		return SystemClock.elapsedRealtime() < this.mEndGracePeriod;
+	}
+
+	public String getShareableUri() {
+		String fingerprint = this.getOtrFingerprint();
+		if (fingerprint != null) {
+			return "xmpp:" + this.getJid().toBareJid().toString() + "?otr-fingerprint="+fingerprint;
+		} else {
+			return "xmpp:" + this.getJid().toBareJid().toString();
+		}
 	}
 }

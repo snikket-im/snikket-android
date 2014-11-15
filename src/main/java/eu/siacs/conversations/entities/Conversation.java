@@ -240,16 +240,14 @@ public class Conversation extends AbstractEntity {
 		this.mode = mode;
 	}
 
-	public SessionImpl startOtrSession(XmppConnectionService service,
-			String presence, boolean sendStart) {
+	public SessionImpl startOtrSession(String presence, boolean sendStart) {
 		if (this.otrSession != null) {
 			return this.otrSession;
 		} else {
             final SessionID sessionId = new SessionID(this.getContactJid().toBareJid().toString(),
                     presence,
                     "xmpp");
-			this.otrSession = new SessionImpl(sessionId, getAccount()
-					.getOtrEngine(service));
+			this.otrSession = new SessionImpl(sessionId, getAccount().getOtrEngine());
 			try {
 				if (sendStart) {
 					this.otrSession.startSession();

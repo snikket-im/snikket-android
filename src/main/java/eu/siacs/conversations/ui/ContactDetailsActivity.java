@@ -154,7 +154,7 @@ public class ContactDetailsActivity extends XmppActivity implements OnAccountUpd
 	@Override
 	protected String getShareableUri() {
 		if (contact != null) {
-			return "xmpp:" + contact.getJid();
+			return contact.getShareableUri();
 		} else {
 			return "";
 		}
@@ -326,10 +326,8 @@ public class ContactDetailsActivity extends XmppActivity implements OnAccountUpd
 		keys.removeAllViews();
 		boolean hasKeys = false;
 		LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		for (Iterator<String> iterator = contact.getOtrFingerprints()
-				.iterator(); iterator.hasNext(); ) {
+		for(final String otrFingerprint : contact.getOtrFingerprints()) {
 			hasKeys = true;
-			final String otrFingerprint = iterator.next();
 			View view = inflater.inflate(R.layout.contact_key, keys, false);
 			TextView key = (TextView) view.findViewById(R.id.key);
 			TextView keyType = (TextView) view.findViewById(R.id.key_type);

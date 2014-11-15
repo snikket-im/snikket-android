@@ -7,6 +7,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -206,24 +207,26 @@ public class Contact implements ListItem {
 		return systemAccount;
 	}
 
-	public Set<String> getOtrFingerprints() {
-		Set<String> set = new HashSet<>();
+	public ArrayList<String> getOtrFingerprints() {
+		ArrayList<String> fingerprints = new ArrayList<String>();
 		try {
 			if (this.keys.has("otr_fingerprints")) {
-				JSONArray fingerprints = this.keys
+				JSONArray prints = this.keys
 						.getJSONArray("otr_fingerprints");
-				for (int i = 0; i < fingerprints.length(); ++i) {
-					set.add(fingerprints.getString(i));
+				for (int i = 0; i < prints.length(); ++i) {
+					fingerprints.add(prints.getString(i));
 				}
 			}
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (final JSONException ignored) {
+
 		}
-		return set;
+		return fingerprints;
 	}
 
-	public void addOtrFingerprint(String print) {
+	public boolean addOtrFingerprint(String print) {
+		if (getOtrFingerprints().contains(print)) {
+			return false;
+		}
 		try {
 			JSONArray fingerprints;
 			if (!this.keys.has("otr_fingerprints")) {
@@ -234,8 +237,9 @@ public class Contact implements ListItem {
 			}
 			fingerprints.put(print);
 			this.keys.put("otr_fingerprints", fingerprints);
+			return true;
 		} catch (final JSONException ignored) {
-
+			return false;
 		}
 	}
 
@@ -395,5 +399,14 @@ public class Contact implements ListItem {
 
 	public boolean trusted() {
 		return getOption(Options.FROM) && getOption(Options.TO);
+	}
+
+	public String getShareableUri() {
+		if (getOtrFingerprints().size() >= 1) {
+			String otr = getOtrFingerprints().get(0);
+			return "xmpp:"+getJid().toBareJid().toString()+"?otr-fingerprint="+otr.replace(" ","");
+		} else {
+			return "xmpp:"+getJid().toBareJid().toString();
+		}
 	}
 }

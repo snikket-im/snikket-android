@@ -26,6 +26,7 @@ import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.services.XmppConnectionService.OnAccountUpdate;
 import eu.siacs.conversations.ui.adapter.KnownHostsAdapter;
+import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.utils.Validator;
 import eu.siacs.conversations.xmpp.XmppConnection.Features;
@@ -270,7 +271,7 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 	@Override
 	protected String getShareableUri() {
 		if (mAccount!=null) {
-			return "xmpp:"+mAccount.getJid().toBareJid();
+			return mAccount.getShareableUri();
 		} else {
 			return "";
 		}
@@ -402,11 +403,10 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 			} else {
 				this.mServerInfoPep.setText(R.string.server_info_unavailable);
 			}
-			final String fingerprint = this.mAccount
-					.getOtrFingerprint(xmppConnectionService);
+			final String fingerprint = this.mAccount.getOtrFingerprint();
 			if (fingerprint != null) {
 				this.mOtrFingerprintBox.setVisibility(View.VISIBLE);
-				this.mOtrFingerprint.setText(fingerprint);
+				this.mOtrFingerprint.setText(CryptoHelper.prettifyFingerprint(fingerprint));
 				this.mOtrFingerprintToClipboardButton
 						.setVisibility(View.VISIBLE);
 				this.mOtrFingerprintToClipboardButton

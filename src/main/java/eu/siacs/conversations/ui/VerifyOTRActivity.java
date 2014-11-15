@@ -16,6 +16,7 @@ import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.services.XmppConnectionService;
+import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
 
@@ -184,7 +185,7 @@ public class VerifyOTRActivity extends XmppActivity implements XmppConnectionSer
 			this.mVerificationAreaOne.setVisibility(View.VISIBLE);
 			this.mVerificationAreaTwo.setVisibility(View.VISIBLE);
 			this.mErrorNoSession.setVisibility(View.GONE);
-			this.mYourFingerprint.setText(this.mAccount.getOtrFingerprint(xmppConnectionService));
+			this.mYourFingerprint.setText(CryptoHelper.prettifyFingerprint(this.mAccount.getOtrFingerprint()));
 			this.mRemoteFingerprint.setText(this.mConversation.getOtrFingerprint());
 			this.mRemoteJid.setText(this.mConversation.getContact().getJid().toBareJid().toString());
 			Conversation.Smp smp = mConversation.smp();
@@ -279,7 +280,7 @@ public class VerifyOTRActivity extends XmppActivity implements XmppConnectionSer
 	@Override
 	protected String getShareableUri() {
 		if (mAccount!=null) {
-			return "xmpp:"+mAccount.getJid().toBareJid();
+			return mAccount.getShareableUri();
 		} else {
 			return "";
 		}

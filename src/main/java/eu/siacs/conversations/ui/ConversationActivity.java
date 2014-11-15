@@ -108,7 +108,7 @@ public class ConversationActivity extends XmppActivity implements
 	protected String getShareableUri() {
 		Conversation conversation = getSelectedConversation();
 		if (conversation != null) {
-			return "xmpp:" + conversation.getAccount().getJid().toBareJid();
+			return conversation.getAccount().getShareableUri();
 		} else {
 			return "";
 		}

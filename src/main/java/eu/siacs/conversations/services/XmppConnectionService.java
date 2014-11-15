@@ -491,6 +491,7 @@ public class XmppConnectionService extends Service {
 		this.accounts = databaseBackend.getAccounts();
 
 		for (Account account : this.accounts) {
+			account.initOtrEngine(this);
 			this.databaseBackend.readRoster(account.getRoster());
 		}
 		this.mergePhoneContactsWithRoster();
@@ -608,8 +609,7 @@ public class XmppConnectionService extends Service {
 				if (message.getCounterpart() != null) {
 					if (message.getEncryption() == Message.ENCRYPTION_OTR) {
 						if (!conv.hasValidOtrSession()) {
-							conv.startOtrSession(this, message.getCounterpart().getResourcepart(),
-									true);
+							conv.startOtrSession(message.getCounterpart().getResourcepart(),true);
 							message.setStatus(Message.STATUS_WAITING);
 						} else if (conv.hasValidOtrSession()
 								&& conv.getOtrSession().getSessionStatus() == SessionStatus.ENCRYPTED) {
@@ -628,7 +628,7 @@ public class XmppConnectionService extends Service {
 			} else {
 				if (message.getEncryption() == Message.ENCRYPTION_OTR) {
 					if (!conv.hasValidOtrSession() && (message.getCounterpart() != null)) {
-						conv.startOtrSession(this, message.getCounterpart().getResourcepart(), true);
+						conv.startOtrSession(message.getCounterpart().getResourcepart(), true);
 						message.setStatus(Message.STATUS_WAITING);
 					} else if (conv.hasValidOtrSession()) {
 						if (conv.getOtrSession().getSessionStatus() == SessionStatus.ENCRYPTED) {
@@ -672,7 +672,7 @@ public class XmppConnectionService extends Service {
 				} else if (message.getEncryption() == Message.ENCRYPTION_OTR) {
 					if (!conv.hasValidOtrSession()
 							&& message.getCounterpart() != null) {
-						conv.startOtrSession(this, message.getCounterpart().getResourcepart(), false);
+						conv.startOtrSession(message.getCounterpart().getResourcepart(), false);
 							}
 				}
 			}
@@ -709,13 +709,11 @@ public class XmppConnectionService extends Service {
 			if (!message.getConversation().hasValidOtrSession()) {
 				if ((message.getCounterpart() != null)
 						&& (presences.has(message.getCounterpart().getResourcepart()))) {
-					message.getConversation().startOtrSession(this,
-							message.getCounterpart().getResourcepart(), true);
+					message.getConversation().startOtrSession(message.getCounterpart().getResourcepart(), true);
 				} else {
 					if (presences.size() == 1) {
 						String presence = presences.asStringArray()[0];
-						message.getConversation().startOtrSession(this,
-								presence, true);
+						message.getConversation().startOtrSession(presence, true);
 					}
 				}
 			} else {
@@ -1061,6 +1059,7 @@ public class XmppConnectionService extends Service {
 	}
 
 	public void createAccount(Account account) {
+		account.initOtrEngine(this);
 		databaseBackend.createAccount(account);
 		this.accounts.add(account);
 		this.reconnectAccount(account, false);

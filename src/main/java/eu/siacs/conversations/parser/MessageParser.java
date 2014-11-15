@@ -76,8 +76,7 @@ public class MessageParser extends AbstractParser implements
 		}
 		if (!conversation.hasValidOtrSession()) {
 			if (properlyAddressed) {
-				conversation.startOtrSession(mXmppConnectionService, presence,
-						false);
+				conversation.startOtrSession(presence,false);
 			} else {
 				return null;
 			}
@@ -87,8 +86,7 @@ public class MessageParser extends AbstractParser implements
 			if (!foreignPresence.equals(presence)) {
 				conversation.endOtrIfNeeded();
 				if (properlyAddressed) {
-					conversation.startOtrSession(mXmppConnectionService,
-							presence, false);
+					conversation.startOtrSession(presence, false);
 				} else {
 					return null;
 				}

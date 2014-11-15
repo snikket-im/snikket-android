@@ -82,4 +82,13 @@ public class CryptoHelper {
 	public static String saslPrep(final String s) {
 		return saslEscape(Normalizer.normalize(s, Normalizer.Form.NFKC));
 	}
+
+	public static String prettifyFingerprint(String fingerprint) {
+		StringBuilder builder = new StringBuilder(fingerprint);
+		builder.insert(8, " ");
+		builder.insert(17, " ");
+		builder.insert(26, " ");
+		builder.insert(35, " ");
+		return builder.toString();
+	}
 }
