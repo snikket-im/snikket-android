@@ -30,6 +30,10 @@ public class CryptoHelper {
 		return array;
 	}
 
+	public static String hexToString(final String hexString) {
+		return new String(hexToBytes(hexString));
+	}
+
 	public static byte[] concatenateByteArrays(byte[] a, byte[] b) {
 		byte[] result = new byte[a.length + b.length];
 		System.arraycopy(a, 0, result, 0, a.length);
