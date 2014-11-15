@@ -97,6 +97,7 @@ public class XmppConnectionService extends Service {
 
 	public static String ACTION_CLEAR_NOTIFICATION = "clear_notification";
 	private static String ACTION_MERGE_PHONE_CONTACTS = "merge_phone_contacts";
+	public static String ACTION_DISABLE_FOREGROUND = "disable_foreground";
 	private ContentObserver contactObserver = new ContentObserver(null) {
 		@Override
 		public void onChange(boolean selfChange) {
@@ -345,6 +346,9 @@ public class XmppConnectionService extends Service {
 				return START_NOT_STICKY;
 			} else if (intent.getAction().equals(ACTION_CLEAR_NOTIFICATION)) {
 				mNotificationService.clear();
+			} else if (intent.getAction().equals(ACTION_DISABLE_FOREGROUND)) {
+				getPreferences().edit().putBoolean("keep_foreground_service",false).commit();
+				toggleForegroundService();
 			}
 		}
 		this.wakeLock.acquire();
@@ -459,18 +463,23 @@ public class XmppConnectionService extends Service {
 		this.pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
 		this.wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
 				"XmppConnectionService");
+		toggleForegroundService();
 	}
 
-	@Override
-	public void onDestroy() {
-		super.onDestroy();
-		this.logoutAndSave();
+	public void toggleForegroundService() {
+		if (getPreferences().getBoolean("keep_foreground_service",false)) {
+			startForeground(NotificationService.FOREGROUND_NOTIFICATION_ID, this.mNotificationService.createForegroundNotification());
+		} else {
+			stopForeground(true);
+		}
 	}
 
 	@Override
 	public void onTaskRemoved(Intent rootIntent) {
 		super.onTaskRemoved(rootIntent);
-		this.logoutAndSave();
+		if (!getPreferences().getBoolean("keep_foreground_service",false)) {
+			this.logoutAndSave();
+		}
 	}
 
 	private void logoutAndSave() {

@@ -328,4 +328,8 @@
     <string name="verified">Verified!</string>
     <string name="smp_requested">Contact requested SMP verification</string>
     <string name="no_otr_session_found">No valid OTR session has been found!</string>
+    <string name="conversations_foreground_service">Conversations</string>
+    <string name="touch_to_disable">Touch to disable foreground service</string>
+    <string name="pref_keep_foreground_service">Keep service in foreground</string>
+    <string name="pref_keep_foreground_service_summary">Prevents the operating system from killing your connection</string>
 </resources>
