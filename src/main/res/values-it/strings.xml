@@ -81,9 +81,9 @@
     <string name="offering">offrendo&#8230;</string>
     <string name="waiting">in attesa&#8230;</string>
     <string name="no_pgp_key">Nessuna chiave OpenPGP trovata</string>
-    <string name="contact_has_no_pgp_key">Conversations non è in grado di cifrare i tuoi messaggi perchè il contatto non sta annunciando la sua chiave pubblica.\n\n<small>Per favore chiedi al tuo contatto di configurare OpenPGP.</small></string>
+    <string name="contact_has_no_pgp_key">Conversations non è in grado di cifrare i tuoi messaggi perché il contatto non sta annunciando la sua chiave pubblica.\n\n<small>Per favore chiedi al tuo contatto di configurare OpenPGP.</small></string>
     <string name="no_pgp_keys">Nessuna chiave OpenPGP trovata</string>
-    <string name="contacts_have_no_pgp_keys">Conversations non è in grado di cifrare i tuoi messaggi perchè i contatti non stanno annunciando la propria chiave pubblica.\n\n<small>Per favore chiedi ai tuoi contatti di configurare OpenPGP.</small></string>
+    <string name="contacts_have_no_pgp_keys">Conversations non è in grado di cifrare i tuoi messaggi perché i contatti non stanno annunciando la propria chiave pubblica.\n\n<small>Per favore chiedi ai tuoi contatti di configurare OpenPGP.</small></string>
     <string name="encrypted_message_received"><i>Messaggio cifrato ricevuto. Tocca per decifrare.</i></string>
     <string name="encrypted_image_received"><i>Immagine cifrata ricevuta. Tocca per decifrare e mostrare.</i></string>
     <string name="image_file"><i>Immagine ricevuta. Tocca per mostrare</i></string>

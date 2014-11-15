@@ -261,7 +261,7 @@
     <string name="pref_use_send_button_to_indicate_status">Absende-Knopf zeigt Online-Status an</string>
     <string name="pref_use_send_button_to_indicate_status_summary">Absende-Knopf einfärben, um den Online-Status des Kontakts zu signalisieren</string>
     <string name="pref_use_indicate_received">Anfrage für Nachrichten Empfang</string>
-    <string name="pref_use_indicate_received_summary">Empfangene Nachrichten werden mit einem grünen Häckchen markiert. Bitte beachte, dass dies nicht in allen Fällen funktioniert.</string>
+    <string name="pref_use_indicate_received_summary">Empfangene Nachrichten werden mit einem grünen Häkchen markiert. Bitte beachte, dass dies nicht in allen Fällen funktioniert.</string>
     <string name="pref_expert_options_other">Sonstiges</string>
     <string name="pref_conference_name">Konferenz-Name</string>
     <string name="pref_conference_name_summary">Konferenz-Thema statt Raum-JID als Namen verwenden</string>
