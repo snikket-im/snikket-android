@@ -505,7 +505,11 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 			} else if (d.getStatus() == Downloadable.STATUS_OFFER_CHECK_FILESIZE) {
 				displayDownloadableMessage(viewHolder, item,activity.getString(R.string.check_image_filesize));
 			} else if (d.getStatus() == Downloadable.STATUS_FAILED) {
-				displayInfoMessage(viewHolder, activity.getString(R.string.image_transmission_failed));
+				if (item.getType() == Message.TYPE_FILE) {
+					displayInfoMessage(viewHolder, activity.getString(R.string.file_transmission_failed));
+				} else {
+					displayInfoMessage(viewHolder, activity.getString(R.string.image_transmission_failed));
+				}
 			}
 		} else if (item.getType() == Message.TYPE_IMAGE && item.getEncryption() != Message.ENCRYPTION_PGP && item.getEncryption() != Message.ENCRYPTION_DECRYPTION_FAILED) {
 			displayImageMessage(viewHolder, item);

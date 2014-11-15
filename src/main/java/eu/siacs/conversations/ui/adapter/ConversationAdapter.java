@@ -104,7 +104,17 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 				} else if (d.getStatus() == Downloadable.STATUS_OFFER_CHECK_FILESIZE) {
 					mLastMessage.setText(R.string.image_offered_for_download);
 				} else if (d.getStatus() == Downloadable.STATUS_DELETED) {
-					mLastMessage.setText(R.string.image_file_deleted);
+					if (message.getType() == Message.TYPE_FILE) {
+						mLastMessage.setText(R.string.file_deleted);
+					} else {
+						mLastMessage.setText(R.string.image_file_deleted);
+					}
+				} else if (d.getStatus() == Downloadable.STATUS_FAILED) {
+					if (message.getType() == Message.TYPE_FILE) {
+						mLastMessage.setText(R.string.file_transmission_failed);
+					} else {
+						mLastMessage.setText(R.string.image_transmission_failed);
+					}
 				} else if (message.getImageParams().width > 0) {
 					mLastMessage.setVisibility(View.GONE);
 					imagePreview.setVisibility(View.VISIBLE);

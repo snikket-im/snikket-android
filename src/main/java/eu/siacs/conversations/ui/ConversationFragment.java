@@ -44,6 +44,7 @@ import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Downloadable;
+import eu.siacs.conversations.entities.DownloadablePlaceholder;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.entities.Presences;
@@ -367,7 +368,7 @@ public class ConversationFragment extends Fragment {
 				downloadImage.setVisible(false);
 			}
 			if (this.selectedMessage.getDownloadable() == null
-					|| this.selectedMessage.getDownloadable().getStatus() == Downloadable.STATUS_DELETED) {
+					|| this.selectedMessage.getDownloadable() instanceof DownloadablePlaceholder) {
 				cancelTransmission.setVisible(false);
 			}
 		}

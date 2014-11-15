@@ -28,6 +28,7 @@ import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Downloadable;
+import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.ui.ConversationActivity;
 
@@ -266,14 +267,21 @@ public class NotificationService {
 		if (message.getDownloadable() != null
 				&& (message.getDownloadable().getStatus() == Downloadable.STATUS_OFFER || message
 				.getDownloadable().getStatus() == Downloadable.STATUS_OFFER_CHECK_FILESIZE)) {
-			return mXmppConnectionService.getText(
-					R.string.image_offered_for_download).toString();
+			if (message.getType() == Message.TYPE_FILE) {
+				return mXmppConnectionService.getString(R.string.file_offered_for_download);
+			} else {
+				return mXmppConnectionService.getText(
+						R.string.image_offered_for_download).toString();
+			}
 		} else if (message.getEncryption() == Message.ENCRYPTION_PGP) {
 			return mXmppConnectionService.getText(
 					R.string.encrypted_message_received).toString();
 		} else if (message.getEncryption() == Message.ENCRYPTION_DECRYPTION_FAILED) {
 			return mXmppConnectionService.getText(R.string.decryption_failed)
 					.toString();
+		} else if (message.getType() == Message.TYPE_FILE) {
+			DownloadableFile file = mXmppConnectionService.getFileBackend().getFile(message);
+			return mXmppConnectionService.getString(R.string.file,file.getMimeType());
 		} else if (message.getType() == Message.TYPE_IMAGE) {
 			return mXmppConnectionService.getText(R.string.image_file)
 					.toString();

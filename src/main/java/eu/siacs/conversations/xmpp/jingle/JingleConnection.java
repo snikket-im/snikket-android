@@ -18,6 +18,7 @@ import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Downloadable;
 import eu.siacs.conversations.entities.DownloadableFile;
+import eu.siacs.conversations.entities.DownloadablePlaceholder;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xml.Element;
@@ -96,7 +97,6 @@ public class JingleConnection implements Downloadable {
 				mXmppConnectionService.markMessage(message,
 						Message.STATUS_RECEIVED);
 			} else {
-				message.setDownloadable(null);
 				if (message.getEncryption() == Message.ENCRYPTION_PGP || message.getEncryption() == Message.ENCRYPTION_DECRYPTED) {
 					file.delete();
 				}
@@ -710,6 +710,10 @@ public class JingleConnection implements Downloadable {
 		this.mXmppConnectionService.markMessage(this.message,
 				Message.STATUS_SEND);
 		this.disconnectSocks5Connections();
+		if (this.transport != null && this.transport instanceof JingleInbandTransport) {
+			this.transport.disconnect();
+		}
+		this.message.setDownloadable(null);
 		this.mJingleConnectionManager.finishConnection(this);
 	}
 
@@ -721,7 +725,7 @@ public class JingleConnection implements Downloadable {
 		this.sendCancel();
 		this.mJingleConnectionManager.finishConnection(this);
 		if (this.responder.equals(account.getJid())) {
-			this.mStatus = Downloadable.STATUS_FAILED;
+			this.message.setDownloadable(new DownloadablePlaceholder(Downloadable.STATUS_FAILED));
 			this.mXmppConnectionService.updateConversationUi();
 		} else {
 			this.mXmppConnectionService.markMessage(this.message,
@@ -733,9 +737,12 @@ public class JingleConnection implements Downloadable {
 	private void fail() {
 		this.mJingleStatus = JINGLE_STATUS_FAILED;
 		this.disconnectSocks5Connections();
+		if (this.transport != null && this.transport instanceof JingleInbandTransport) {
+			this.transport.disconnect();
+		}
 		if (this.message != null) {
 			if (this.responder.equals(account.getJid())) {
-				this.mStatus = Downloadable.STATUS_FAILED;
+				this.message.setDownloadable(new DownloadablePlaceholder(Downloadable.STATUS_FAILED));
 				this.mXmppConnectionService.updateConversationUi();
 			} else {
 				this.mXmppConnectionService.markMessage(this.message,
