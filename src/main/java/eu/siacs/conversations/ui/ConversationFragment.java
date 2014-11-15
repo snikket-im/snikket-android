@@ -44,6 +44,7 @@ import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Downloadable;
+import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.entities.DownloadablePlaceholder;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.MucOptions;
@@ -421,6 +422,14 @@ public class ConversationFragment extends Fragment {
 	}
 
 	private void resendMessage(Message message) {
+		if (message.getType() == Message.TYPE_FILE || message.getType() == Message.TYPE_IMAGE) {
+			DownloadableFile file = activity.xmppConnectionService.getFileBackend().getFile(message);
+			if (!file.exists()) {
+				Toast.makeText(activity,R.string.file_deleted,Toast.LENGTH_SHORT).show();
+				message.setDownloadable(new DownloadablePlaceholder(Downloadable.STATUS_DELETED));
+				return;
+			}
+		}
 		activity.xmppConnectionService.resendFailedMessages(message);
 	}
 

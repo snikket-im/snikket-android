@@ -1,6 +1,8 @@
 package eu.siacs.conversations.ui.adapter;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.text.Spannable;
@@ -495,7 +497,11 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 			} else if (d.getStatus() == Downloadable.STATUS_CHECKING) {
 				displayInfoMessage(viewHolder,activity.getString(R.string.checking_image));
 			} else if (d.getStatus() == Downloadable.STATUS_DELETED) {
-				displayInfoMessage(viewHolder,activity.getString(R.string.image_file_deleted));
+				if (item.getType() == Message.TYPE_FILE) {
+					displayInfoMessage(viewHolder, activity.getString(R.string.file_deleted));
+				} else {
+					displayInfoMessage(viewHolder, activity.getString(R.string.image_file_deleted));
+				}
 			} else if (d.getStatus() == Downloadable.STATUS_OFFER) {
 				if (item.getType() == Message.TYPE_FILE) {
 					displayDownloadableMessage(viewHolder,item,activity.getString(R.string.download_file,d.getMimeType()));
@@ -558,10 +564,19 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 	}
 
 	public void openDonwloadable(DownloadableFile file) {
-		Log.d(Config.LOGTAG,"file "+file.getAbsolutePath());
-		Intent intent = new Intent(Intent.ACTION_VIEW);
-		intent.setDataAndType(Uri.fromFile(file), file.getMimeType());
-		getContext().startActivity(intent);
+		if (!file.exists()) {
+			Toast.makeText(activity,R.string.file_deleted,Toast.LENGTH_SHORT).show();
+			return;
+		}
+		Intent openIntent = new Intent(Intent.ACTION_VIEW);
+		openIntent.setDataAndType(Uri.fromFile(file), file.getMimeType());
+		PackageManager manager = activity.getPackageManager();
+		List<ResolveInfo> infos = manager.queryIntentActivities(openIntent, 0);
+		if (infos.size() > 0) {
+			getContext().startActivity(openIntent);
+		} else {
+			Toast.makeText(activity,R.string.no_application_found_to_open_file,Toast.LENGTH_SHORT).show();
+		}
 	}
 
 	public interface OnContactPictureClicked {
