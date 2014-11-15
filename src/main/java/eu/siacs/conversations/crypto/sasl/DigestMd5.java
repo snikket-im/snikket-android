@@ -17,7 +17,13 @@ public class DigestMd5 extends SaslMechanism {
 		super(tagWriter, account, rng);
 	}
 
-	public static String getMechanism() {
+	@Override
+	public int getPriority() {
+		return 10;
+	}
+
+	@Override
+	public String getMechanism() {
 		return "DIGEST-MD5";
 	}
 

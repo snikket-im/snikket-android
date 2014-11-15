@@ -34,6 +34,8 @@ public class Account extends AbstractEntity {
 	public static final String KEYS = "keys";
 	public static final String AVATAR = "avatar";
 
+	public static final String PINNED_MECHANISM_KEY = "pinned_mechanism";
+
 	public static final int OPTION_USETLS = 0;
 	public static final int OPTION_DISABLED = 1;
 	public static final int OPTION_REGISTER = 2;
