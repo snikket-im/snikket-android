@@ -714,7 +714,7 @@ public class XmppConnectionService extends Service {
 					if (message.getType() == Message.TYPE_TEXT) {
 						packet = mMessageGenerator.generateOtrChat(message,
 								true);
-					} else if (message.getType() == Message.TYPE_IMAGE) {
+					} else if (message.getType() == Message.TYPE_IMAGE || message.getType() == Message.TYPE_FILE) {
 						mJingleConnectionManager.createNewConnection(message);
 					}
 				}
@@ -726,7 +726,7 @@ public class XmppConnectionService extends Service {
 					|| (message.getEncryption() == Message.ENCRYPTION_PGP)) {
 				packet = mMessageGenerator.generatePgpChat(message, true);
 			}
-		} else if (message.getType() == Message.TYPE_IMAGE) {
+		} else if (message.getType() == Message.TYPE_IMAGE || message.getType() == Message.TYPE_FILE) {
 			Contact contact = message.getConversation().getContact();
 			Presences presences = contact.getPresences();
 			if ((message.getCounterpart() != null)
@@ -1457,7 +1457,7 @@ public class XmppConnectionService extends Service {
 						databaseBackend.updateMessage(msg);
 						sendMessagePacket(account, outPacket);
 					}
-				} else if (msg.getType() == Message.TYPE_IMAGE) {
+				} else if (msg.getType() == Message.TYPE_IMAGE || msg.getType() == Message.TYPE_FILE) {
 					mJingleConnectionManager.createNewConnection(msg);
 				}
 			}

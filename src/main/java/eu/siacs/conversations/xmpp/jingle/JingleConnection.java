@@ -740,6 +740,7 @@ public class JingleConnection implements Downloadable {
 			} else {
 				this.mXmppConnectionService.markMessage(this.message,
 						Message.STATUS_SEND_FAILED);
+				this.message.setDownloadable(null);
 			}
 		}
 		this.mJingleConnectionManager.finishConnection(this);
