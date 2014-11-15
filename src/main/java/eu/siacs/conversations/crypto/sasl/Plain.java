@@ -8,18 +8,17 @@ import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.xml.TagWriter;
 
 public class Plain extends SaslMechanism {
-    public Plain(final TagWriter tagWriter, final Account account) {
-        super(tagWriter, account, null);
-    }
+	public Plain(final TagWriter tagWriter, final Account account) {
+		super(tagWriter, account, null);
+	}
 
-    @Override
-    public String getMechanism() {
-        return "PLAIN";
-    }
+	public static String getMechanism() {
+		return "PLAIN";
+	}
 
-    @Override
-    public String getStartAuth() {
-        final String sasl = '\u0000' + account.getUsername() + '\u0000' + account.getPassword();
-        return Base64.encodeToString(sasl.getBytes(Charset.defaultCharset()), Base64.NO_WRAP);
-    }
+	@Override
+	public String getClientFirstMessage() {
+		final String sasl = '\u0000' + account.getUsername() + '\u0000' + account.getPassword();
+		return Base64.encodeToString(sasl.getBytes(Charset.defaultCharset()), Base64.NO_WRAP);
+	}
 }

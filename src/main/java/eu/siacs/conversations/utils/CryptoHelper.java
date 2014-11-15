@@ -1,13 +1,14 @@
 package eu.siacs.conversations.utils;
 
 import java.security.SecureRandom;
+import java.text.Normalizer;
 
 public class CryptoHelper {
 	public static final String FILETRANSFER = "?FILETRANSFERv1:";
 	final protected static char[] hexArray = "0123456789abcdef".toCharArray();
 	final protected static char[] vowels = "aeiou".toCharArray();
-	final protected static char[] consonants = "bcdfghjklmnpqrstvwxyz"
-			.toCharArray();
+	final protected static char[] consonants = "bcdfghjklmnpqrstvwxyz".toCharArray();
+	final public static byte[] ONE = new byte[] { 0, 0, 0, 1 };
 
 	public static String bytesToHex(byte[] bytes) {
 		char[] hexChars = new char[bytes.length * 2];
@@ -50,5 +51,31 @@ public class CryptoHelper {
 			}
 		}
 		return builder.toString();
+	}
+
+	/**
+	 * Escapes usernames or passwords for SASL.
+	 */
+	public static String saslEscape(final String s) {
+		final StringBuilder sb = new StringBuilder((int) (s.length() * 1.1));
+		for (int i = 0; i < s.length(); i++) {
+			char c = s.charAt(i);
+			switch (c) {
+				case ',':
+					sb.append("=2C");
+					break;
+				case '=':
+					sb.append("=3D");
+					break;
+				default:
+					sb.append(c);
+					break;
+			}
+		}
+		return sb.toString();
+	}
+
+	public static String saslPrep(final String s) {
+		return saslEscape(Normalizer.normalize(s, Normalizer.Form.NFKC));
 	}
 }
