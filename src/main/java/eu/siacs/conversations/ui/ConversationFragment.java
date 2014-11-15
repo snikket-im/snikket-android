@@ -35,7 +35,6 @@ import net.java.otr4j.session.SessionStatus;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import eu.siacs.conversations.R;
@@ -53,7 +52,6 @@ import eu.siacs.conversations.ui.XmppActivity.OnValueEdited;
 import eu.siacs.conversations.ui.adapter.MessageAdapter;
 import eu.siacs.conversations.ui.adapter.MessageAdapter.OnContactPictureClicked;
 import eu.siacs.conversations.ui.adapter.MessageAdapter.OnContactPictureLongClicked;
-import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.jid.Jid;
 
 public class ConversationFragment extends Fragment {
@@ -143,6 +141,19 @@ public class ConversationFragment extends Fragment {
 				} catch (SendIntentException e) {
 					//
 				}
+			}
+		}
+	};
+	protected OnClickListener clickToVerify = new OnClickListener() {
+
+		@Override
+		public void onClick(View v) {
+			if (conversation.getOtrFingerprint() != null) {
+				Intent intent = new Intent(getActivity(), VerifyOTRActivity.class);
+				intent.setAction(VerifyOTRActivity.ACTION_VERIFY_CONTACT);
+				intent.putExtra("contact", conversation.getContact().getJid().toBareJid().toString());
+				intent.putExtra("account", conversation.getAccount().getJid().toBareJid().toString());
+				startActivity(intent);
 			}
 		}
 	};
@@ -296,7 +307,7 @@ public class ConversationFragment extends Fragment {
 											.getConversation());
 								}
 							}
-						}  else {
+						} else {
 							Account account = message.getConversation().getAccount();
 							Intent intent = new Intent(activity, EditAccountActivity.class);
 							intent.putExtra("jid", account.getJid().toBareJid().toString());
@@ -505,6 +516,39 @@ public class ConversationFragment extends Fragment {
 								activity.switchToContactDetails(contact);
 							}
 						});
+			} else if (conversation.getMode() == Conversation.MODE_SINGLE) {
+				makeFingerprintWarning();
+			} else if (!conversation.getMucOptions().online()
+					&& conversation.getAccount().getStatus() == Account.STATUS_ONLINE) {
+				int error = conversation.getMucOptions().getError();
+				switch (error) {
+					case MucOptions.ERROR_NICK_IN_USE:
+						showSnackbar(R.string.nick_in_use, R.string.edit,
+								clickToMuc);
+						break;
+					case MucOptions.ERROR_ROOM_NOT_FOUND:
+						showSnackbar(R.string.conference_not_found,
+								R.string.leave, leaveMuc);
+						break;
+					case MucOptions.ERROR_PASSWORD_REQUIRED:
+						showSnackbar(R.string.conference_requires_password,
+								R.string.enter_password, enterPassword);
+						break;
+					case MucOptions.ERROR_BANNED:
+						showSnackbar(R.string.conference_banned,
+								R.string.leave, leaveMuc);
+						break;
+					case MucOptions.ERROR_MEMBERS_ONLY:
+						showSnackbar(R.string.conference_members_only,
+								R.string.leave, leaveMuc);
+						break;
+					case MucOptions.KICKED_FROM_ROOM:
+						showSnackbar(R.string.conference_kicked, R.string.join,
+								joinMuc);
+						break;
+					default:
+						break;
+				}
 			}
 			for (Message message : this.conversation.getMessages()) {
 				if (message.getEncryption() == Message.ENCRYPTION_PGP
@@ -526,44 +570,6 @@ public class ConversationFragment extends Fragment {
 				updateStatusMessages();
 			}
 			this.messageListAdapter.notifyDataSetChanged();
-			if (conversation.getMode() == Conversation.MODE_SINGLE) {
-				if (messageList.size() >= 1) {
-					makeFingerprintWarning();
-				}
-			} else {
-				if (!conversation.getMucOptions().online()
-						&& conversation.getAccount().getStatus() == Account.STATUS_ONLINE) {
-					int error = conversation.getMucOptions().getError();
-					switch (error) {
-						case MucOptions.ERROR_NICK_IN_USE:
-							showSnackbar(R.string.nick_in_use, R.string.edit,
-									clickToMuc);
-							break;
-						case MucOptions.ERROR_ROOM_NOT_FOUND:
-							showSnackbar(R.string.conference_not_found,
-									R.string.leave, leaveMuc);
-							break;
-						case MucOptions.ERROR_PASSWORD_REQUIRED:
-							showSnackbar(R.string.conference_requires_password,
-									R.string.enter_password, enterPassword);
-							break;
-						case MucOptions.ERROR_BANNED:
-							showSnackbar(R.string.conference_banned,
-									R.string.leave, leaveMuc);
-							break;
-						case MucOptions.ERROR_MEMBERS_ONLY:
-							showSnackbar(R.string.conference_members_only,
-									R.string.leave, leaveMuc);
-							break;
-						case MucOptions.KICKED_FROM_ROOM:
-							showSnackbar(R.string.conference_kicked, R.string.join,
-									joinMuc);
-							break;
-						default:
-							break;
-					}
-				}
-			}
 			updateChatMsgHint();
 			if (!activity.isConversationsOverviewVisable() || !activity.isConversationsOverviewHideable()) {
 				activity.xmppConnectionService.markRead(conversation, true);
@@ -680,26 +686,11 @@ public class ConversationFragment extends Fragment {
 	}
 
 	protected void makeFingerprintWarning() {
-		Set<String> knownFingerprints = conversation.getContact()
-				.getOtrFingerprints();
-		if (conversation.hasValidOtrSession()
-				&& (!conversation.isMuted())
-				&& (conversation.getOtrSession().getSessionStatus() == SessionStatus.ENCRYPTED) && (!knownFingerprints
-				.contains(conversation.getOtrFingerprint()))) {
-			showSnackbar(R.string.unknown_otr_fingerprint, R.string.verify,
-					new OnClickListener() {
-
-						@Override
-						public void onClick(View v) {
-							if (conversation.getOtrFingerprint() != null) {
-								AlertDialog dialog = UIHelper
-										.getVerifyFingerprintDialog(
-												(ConversationActivity) getActivity(),
-												conversation, snackbar);
-								dialog.show();
-							}
-						}
-					});
+		if (conversation.smpRequested()) {
+			showSnackbar(R.string.smp_requested, R.string.verify, clickToVerify);
+		} else if (conversation.hasValidOtrSession() && (conversation.getOtrSession().getSessionStatus() == SessionStatus.ENCRYPTED)
+				&& (!conversation.isOtrFingerprintVerified())) {
+			showSnackbar(R.string.unknown_otr_fingerprint, R.string.verify, clickToVerify);
 		}
 	}
 
@@ -826,15 +817,15 @@ public class ConversationFragment extends Fragment {
 		final ConversationActivity activity = (ConversationActivity) getActivity();
 		final XmppConnectionService xmppService = activity.xmppConnectionService;
 		activity.selectPresence(message.getConversation(),
-			new OnPresenceSelected() {
+				new OnPresenceSelected() {
 
-				@Override
-				public void onPresenceSelected() {
-					message.setCounterpart(conversation.getNextCounterpart());
-					xmppService.sendMessage(message);
-					messageSent();
-				}
-			});
+					@Override
+					public void onPresenceSelected() {
+						message.setCounterpart(conversation.getNextCounterpart());
+						xmppService.sendMessage(message);
+						messageSent();
+					}
+				});
 	}
 
 	public void appendText(String text) {

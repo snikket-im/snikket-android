@@ -311,4 +311,21 @@
     <string name="scan_qr_code">Scan QR code</string>
     <string name="show_qr_code">Show QR code</string>
     <string name="account_details">Account details</string>
+    <string name="verify_otr">Verify OTR</string>
+    <string name="remote_fingerprint">Remote Fingerprint</string>
+    <string name="scan">scan</string>
+    <string name="or_touch_phones">(or touch phones)</string>
+    <string name="smp">Socialist Millionaire Protocol</string>
+    <string name="shared_secret_hint">Hint or Question</string>
+    <string name="shared_secret_secret">Shared Secret</string>
+    <string name="confirm">Confirm</string>
+    <string name="in_progress">In progress</string>
+    <string name="respond">Respond</string>
+    <string name="failed">Failed</string>
+    <string name="secrets_do_not_match">Secrets do not match</string>
+    <string name="try_again">Try again</string>;
+    <string name="finish">Finish</string>
+    <string name="verified">Verified!</string>
+    <string name="smp_requested">Contact requested SMP verification</string>
+    <string name="no_otr_session_found">No valid OTR session has been found!</string>
 </resources>

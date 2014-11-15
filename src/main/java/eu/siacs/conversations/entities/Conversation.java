@@ -63,12 +63,11 @@ public class Conversation extends AbstractEntity {
 	private transient SessionImpl otrSession;
 
 	private transient String otrFingerprint = null;
+	private Smp mSmp = new Smp();
 
 	private String nextMessage;
 
 	private transient MucOptions mucOptions = null;
-
-	// private transient String latestMarkableMessageId;
 
 	private byte[] symmetricKey;
 
@@ -271,6 +270,13 @@ public class Conversation extends AbstractEntity {
 	public void resetOtrSession() {
 		this.otrFingerprint = null;
 		this.otrSession = null;
+		this.mSmp.hint = null;
+		this.mSmp.secret = null;
+		this.mSmp.status = Smp.STATUS_NONE;
+	}
+
+	public Smp smp() {
+		return mSmp;
 	}
 
 	public void startOtrIfNeeded() {
@@ -328,6 +334,14 @@ public class Conversation extends AbstractEntity {
 			}
 		}
 		return this.otrFingerprint;
+	}
+
+	public void verifyOtrFingerprint() {
+		getContact().addOtrFingerprint(getOtrFingerprint());
+	}
+
+	public boolean isOtrFingerprintVerified() {
+		return getContact().getOtrFingerprints().contains(getOtrFingerprint());
 	}
 
 	public synchronized MucOptions getMucOptions() {
@@ -401,6 +415,10 @@ public class Conversation extends AbstractEntity {
 		} else {
 			return this.nextMessage;
 		}
+	}
+
+	public boolean smpRequested() {
+		return smp().status == Smp.STATUS_CONTACT_REQUESTED;
 	}
 
 	public void setNextMessage(String message) {
@@ -502,5 +520,17 @@ public class Conversation extends AbstractEntity {
 		synchronized (this.messages) {
 			this.messages.addAll(index, messages);
 		}
+	}
+
+	public class Smp {
+		public static final int STATUS_NONE = 0;
+		public static final int STATUS_CONTACT_REQUESTED = 1;
+		public static final int STATUS_WE_REQUESTED = 2;
+		public static final int STATUS_FAILED = 3;
+		public static final int STATUS_VERIFIED = 4;
+
+		public String secret = null;
+		public String hint = null;
+		public int status = 0;
 	}
 }

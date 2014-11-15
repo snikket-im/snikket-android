@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="@color/secondarybackground">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/error_no_session"
+            android:layout_margin="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/no_otr_session_found"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/primarytext"
+            android:textSize="?attr/TextSizeBody"
+            />
+        <RelativeLayout
+            android:id="@+id/verification_area_one"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="@drawable/infocard_border"
+            android:layout_margin="8dp">
+        <LinearLayout
+            android:id="@+id/fingerprint_area"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/remote_jid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/primarytext"
+                android:textSize="?attr/TextSizeHeadline"/>
+            <TextView
+                android:layout_marginTop="16dp"
+                android:id="@+id/your_fingerprint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/primarytext"
+                android:textSize="?attr/TextSizeBody"
+                android:typeface="monospace" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/secondarytext"
+                android:textSize="?attr/TextSizeInfo"
+                android:text="@string/your_fingerprint"/>
+            <TextView
+                android:layout_marginTop="16dp"
+                android:id="@+id/remote_fingerprint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/primarytext"
+                android:textSize="?attr/TextSizeBody"
+                android:typeface="monospace" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/secondarytext"
+                android:textSize="?attr/TextSizeInfo"
+                android:text="@string/remote_fingerprint"/>
+        </LinearLayout>
+            <LinearLayout
+                android:layout_below="@+id/fingerprint_area"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true" >
+
+                <Button
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:visibility="invisible" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="fill_parent"
+                    android:layout_marginBottom="7dp"
+                    android:layout_marginTop="7dp"
+                    android:background="@color/divider"
+                    android:visibility="invisible"/>
+
+                <Button
+                    android:id="@+id/button_verify_fingerprint"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/verify"
+                    android:textColor="@color/primarytext" />
+            </LinearLayout>
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/verification_area_two"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:background="@drawable/infocard_border">
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="vertical"
+                android:id="@+id/shared_secret_box"
+                android:padding="16dp">
+                <TextView
+                    android:text="@string/smp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/primarytext"
+                    android:textSize="?attr/TextSizeHeadline"
+                    android:layout_marginBottom="16dp"
+                    />
+                <TextView
+                    android:id="@+id/status_message"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/verified"
+                    android:layout_gravity="center_horizontal"
+                    android:textSize="?attr/TextSizeHeadline"
+                    android:textStyle="bold"
+                    android:visibility="gone"/>
+                <EditText
+                    android:id="@+id/shared_secret_hint"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textAutoComplete"
+                    android:hint="@string/shared_secret_hint"
+                    android:textColor="@color/primarytext"
+                    android:textColorHint="@color/secondarytext"
+                    android:textSize="?attr/TextSizeBody"
+                    android:layout_marginBottom="8dp"/>
+                <EditText
+                    android:id="@+id/shared_secret_secret"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/shared_secret_secret"
+                    android:inputType="textPassword"
+                    android:textColor="@color/primarytext"
+                    android:textColorHint="@color/secondarytext"
+                    android:textSize="?attr/TextSizeBody" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_below="@+id/shared_secret_box"
+                android:id="@+id/button_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true" >
+
+                <Button
+                    android:id="@+id/button_shared_secret_negative"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:enabled="false"
+                    android:text="@string/cancel"
+                    android:textColor="@color/secondarytext"/>
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="fill_parent"
+                    android:layout_marginBottom="7dp"
+                    android:layout_marginTop="7dp"
+                    android:background="@color/divider" />
+
+                <Button
+                    android:id="@+id/button_shared_secret_positive"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/create"
+                    android:textColor="@color/primarytext" />
+            </LinearLayout>
+        </RelativeLayout>
+    </LinearLayout>
+</ScrollView>
