@@ -33,13 +33,6 @@ public class ScramSha1 extends SaslMechanism {
 		HMAC = new HMac(new SHA1Digest());
 	}
 
-	private enum State {
-		INITIAL,
-		AUTH_TEXT_SENT,
-		RESPONSE_SENT,
-		VALID_SERVER_RESPONSE,
-	}
-
 	private State state = State.INITIAL;
 
 	public ScramSha1(final TagWriter tagWriter, final Account account, final SecureRandom rng) {
@@ -56,11 +49,9 @@ public class ScramSha1 extends SaslMechanism {
 
 	@Override
 	public String getClientFirstMessage() {
-		if (clientFirstMessageBare.isEmpty()) {
+		if (clientFirstMessageBare.isEmpty() && state == State.INITIAL) {
 			clientFirstMessageBare = "n=" + CryptoHelper.saslPrep(account.getUsername()) +
 				",r=" + this.clientNonce;
-		}
-		if (state == State.INITIAL) {
 			state = State.AUTH_TEXT_SENT;
 		}
 		return Base64.encodeToString(
@@ -157,7 +148,7 @@ public class ScramSha1 extends SaslMechanism {
 				state = State.VALID_SERVER_RESPONSE;
 				return "";
 			default:
-				throw new AuthenticationException("Invalid state: " + state);
+				throw new InvalidStateException(state);
 		}
 	}
 

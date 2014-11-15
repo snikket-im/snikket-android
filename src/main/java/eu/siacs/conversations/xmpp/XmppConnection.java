@@ -39,7 +39,6 @@ import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.X509TrustManager;
 
 import eu.siacs.conversations.Config;
-import eu.siacs.conversations.crypto.sasl.AuthenticationException;
 import eu.siacs.conversations.crypto.sasl.DigestMd5;
 import eu.siacs.conversations.crypto.sasl.Plain;
 import eu.siacs.conversations.crypto.sasl.SaslMechanism;
@@ -284,14 +283,14 @@ public class XmppConnection implements Runnable {
 							} else if (nextTag.isStart("compressed")) {
 								switchOverToZLib(nextTag);
 							} else if (nextTag.isStart("success")) {
-								Log.d(Config.LOGTAG, account.getJid().toBareJid().toString() + ": logged in");
 								final String challenge = tagReader.readElement(nextTag).getContent();
 								try {
 									saslMechanism.getResponse(challenge);
-								} catch (final AuthenticationException e) {
+								} catch (final SaslMechanism.AuthenticationException e) {
 									disconnect(true);
 									Log.e(Config.LOGTAG, String.valueOf(e));
 								}
+								Log.d(Config.LOGTAG, account.getJid().toBareJid().toString() + ": logged in");
 								tagReader.reset();
 								sendStartStream();
 								processStream(tagReader.readTag());
@@ -306,7 +305,7 @@ public class XmppConnection implements Runnable {
 										"urn:ietf:params:xml:ns:xmpp-sasl");
 								try {
 									response.setContent(saslMechanism.getResponse(challenge));
-								} catch (final AuthenticationException e) {
+								} catch (final SaslMechanism.AuthenticationException e) {
 									// TODO: Send auth abort tag.
 									Log.e(Config.LOGTAG, e.toString());
 								}
@@ -643,10 +642,10 @@ public class XmppConnection implements Runnable {
 				saslMechanism = new Plain(tagWriter, account);
 				auth.setAttribute("mechanism", Plain.getMechanism());
 			}
-			if (!saslMechanism.getClientFirstMessage().isEmpty()) {
-				auth.setContent(saslMechanism.getClientFirstMessage());
-			}
-			tagWriter.writeElement(auth);
+            if (!saslMechanism.getClientFirstMessage().isEmpty()) {
+                auth.setContent(saslMechanism.getClientFirstMessage());
+            }
+            tagWriter.writeElement(auth);
 		} else if (this.streamFeatures.hasChild("sm", "urn:xmpp:sm:"
 					+ smVersion)
 				&& streamId != null) {

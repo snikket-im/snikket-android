@@ -21,11 +21,6 @@ public class DigestMd5 extends SaslMechanism {
 		return "DIGEST-MD5";
 	}
 
-	private enum State {
-		INITIAL,
-		RESPONSE_SENT,
-	}
-
 	private State state = State.INITIAL;
 
 	@Override
@@ -53,8 +48,7 @@ public class DigestMd5 extends SaslMechanism {
 					final byte[] y = md.digest(x.getBytes(Charset.defaultCharset()));
 					final String cNonce = new BigInteger(100, rng).toString(32);
 					final byte[] a1 = CryptoHelper.concatenateByteArrays(y,
-							(":" + nonce + ":" + cNonce).getBytes(Charset
-																										.defaultCharset()));
+							(":" + nonce + ":" + cNonce).getBytes(Charset.defaultCharset()));
 					final String a2 = "AUTHENTICATE:" + digestUri;
 					final String ha1 = CryptoHelper.bytesToHex(md.digest(a1));
 					final String ha2 = CryptoHelper.bytesToHex(md.digest(a2.getBytes(Charset
@@ -72,13 +66,16 @@ public class DigestMd5 extends SaslMechanism {
 							saslString.getBytes(Charset.defaultCharset()),
 							Base64.NO_WRAP);
 				} catch (final NoSuchAlgorithmException e) {
-					return "";
+					throw new AuthenticationException(e);
 				}
 
 				return encodedResponse;
 			case RESPONSE_SENT:
-				return "";
+				state = State.VALID_SERVER_RESPONSE;
+				break;
+			default:
+				throw new InvalidStateException(state);
 		}
-		return "";
+		return null;
 	}
 }
