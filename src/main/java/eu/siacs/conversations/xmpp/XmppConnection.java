@@ -599,9 +599,9 @@ public class XmppConnection implements Runnable {
                             if (verifier != null
                                     && !verifier.verify(account.getServer().getDomainpart(),
                                     sslSocket.getSession())) {
-                                account.setStatus(Account.State.SECURITY_ERROR);
-                                sslSocket.close();
-                                throw new IOException("Host mismatch in TLS connection");
+								Log.d(Config.LOGTAG,account.getJid().toBareJid()+": TLS certificate verification failed");
+								disconnect(true);
+								changeStatus(Account.State.SECURITY_ERROR);
                             }
 							tagReader.setInputStream(sslSocket.getInputStream());
 							tagWriter.setOutputStream(sslSocket.getOutputStream());
@@ -653,12 +653,12 @@ public class XmppConnection implements Runnable {
 							") than pinned priority (" + keys.getInt(Account.PINNED_MECHANISM_KEY) +
 							"). Possible downgrade attack?");
 					disconnect(true);
-					account.setStatus(Account.State.SECURITY_ERROR);
+					changeStatus(Account.State.SECURITY_ERROR);
 				}
 			} catch (final JSONException e) {
 				Log.d(Config.LOGTAG, "Parse error while checking pinned auth mechanism");
 			}
-			Log.d(Config.LOGTAG, "Authenticating with " + saslMechanism.getMechanism());
+			Log.d(Config.LOGTAG,account.getJid().toString()+": Authenticating with " + saslMechanism.getMechanism());
 			auth.setAttribute("mechanism", saslMechanism.getMechanism());
 			if (!saslMechanism.getClientFirstMessage().isEmpty()) {
 				auth.setContent(saslMechanism.getClientFirstMessage());
@@ -673,10 +673,8 @@ public class XmppConnection implements Runnable {
 		} else if (this.streamFeatures.hasChild("bind") && shouldBind) {
 			sendBindRequest();
 		} else {
-			account.setStatus(Account.State.INCOMPATIBLE_SERVER);
-			Log.d(Config.LOGTAG, account.getJid().toBareJid()
-					+ ": incompatible server. disconnecting");
 			disconnect(true);
+			changeStatus(Account.State.INCOMPATIBLE_SERVER);
 		}
 	}
 
