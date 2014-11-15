@@ -669,6 +669,7 @@ public class XmppConnection implements Runnable {
 		} else if (this.streamFeatures.hasChild("bind") && shouldBind) {
 			sendBindRequest();
 		} else {
+			account.setStatus(Account.State.INCOMPATIBLE_SERVER);
 			Log.d(Config.LOGTAG, account.getJid().toBareJid()
 					+ ": incompatible server. disconnecting");
 			disconnect(true);

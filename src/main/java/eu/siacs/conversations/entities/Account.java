@@ -53,7 +53,8 @@ public class Account extends AbstractEntity {
 		REGISTRATION_CONFLICT(true),
 		REGISTRATION_SUCCESSFUL,
 		REGISTRATION_NOT_SUPPORTED(true),
-		SECURITY_ERROR(true);
+		SECURITY_ERROR(true),
+		INCOMPATIBLE_SERVER(true);
 
 		private boolean isError;
 
@@ -95,6 +96,8 @@ public class Account extends AbstractEntity {
 					return R.string.account_status_regis_not_sup;
 				case SECURITY_ERROR:
 					return R.string.account_status_security_error;
+				case INCOMPATIBLE_SERVER:
+					return R.string.account_status_incompatible_server;
 				default:
 					return R.string.account_status_unknown;
 			}

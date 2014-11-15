@@ -36,71 +36,19 @@ public class AccountAdapter extends ArrayAdapter<Account> {
 		ImageView imageView = (ImageView) view.findViewById(R.id.account_image);
 		imageView.setImageBitmap(activity.avatarService().get(account,
 				activity.getPixel(48)));
-		switch (account.getStatus()) {
-		case DISABLED:
-			statusView.setText(getContext().getString(
-					R.string.account_status_disabled));
-			statusView.setTextColor(activity.getSecondaryTextColor());
-			break;
-		case ONLINE:
-			statusView.setText(getContext().getString(
-					R.string.account_status_online));
-			statusView.setTextColor(activity.getPrimaryColor());
-			break;
-		case CONNECTING:
-			statusView.setText(getContext().getString(
-					R.string.account_status_connecting));
-			statusView.setTextColor(activity.getSecondaryTextColor());
-			break;
-		case OFFLINE:
-			statusView.setText(getContext().getString(
-					R.string.account_status_offline));
-			statusView.setTextColor(activity.getWarningTextColor());
-			break;
-		case UNAUTHORIZED:
-			statusView.setText(getContext().getString(
-					R.string.account_status_unauthorized));
-			statusView.setTextColor(activity.getWarningTextColor());
-			break;
-		case SERVER_NOT_FOUND:
-			statusView.setText(getContext().getString(
-					R.string.account_status_not_found));
-			statusView.setTextColor(activity.getWarningTextColor());
-			break;
-		case NO_INTERNET:
-			statusView.setText(getContext().getString(
-					R.string.account_status_no_internet));
-			statusView.setTextColor(activity.getWarningTextColor());
-			break;
-		case REGISTRATION_FAILED:
-			statusView.setText(getContext().getString(
-					R.string.account_status_regis_fail));
-			statusView.setTextColor(activity.getWarningTextColor());
-			break;
-		case REGISTRATION_CONFLICT:
-			statusView.setText(getContext().getString(
-					R.string.account_status_regis_conflict));
-			statusView.setTextColor(activity.getWarningTextColor());
-			break;
-		case REGISTRATION_SUCCESSFUL:
-			statusView.setText(getContext().getString(
-					R.string.account_status_regis_success));
-			statusView.setTextColor(activity.getSecondaryTextColor());
-			break;
-		case REGISTRATION_NOT_SUPPORTED:
-			statusView.setText(getContext().getString(
-					R.string.account_status_regis_not_sup));
-			statusView.setTextColor(activity.getWarningTextColor());
-			break;
-		case SECURITY_ERROR:
-			statusView.setText(getContext().getString
-					(R.string.account_status_security_error));
-			statusView.setTextColor(activity.getWarningTextColor());
-		default:
-			statusView.setText("");
-			break;
-		}
-
+        statusView.setText(getContext().getString(account.getStatus().getReadableId()));
+        switch (account.getStatus()) {
+            case ONLINE:
+                statusView.setTextColor(activity.getPrimaryColor());
+                break;
+            case DISABLED:
+            case CONNECTING:
+                statusView.setTextColor(activity.getSecondaryTextColor());
+                break;
+            default:
+                statusView.setTextColor(activity.getWarningTextColor());
+                break;
+        }
 		return view;
 	}
 }
