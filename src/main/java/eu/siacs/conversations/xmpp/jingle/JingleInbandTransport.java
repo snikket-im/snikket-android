@@ -34,7 +34,7 @@ public class JingleInbandTransport extends JingleTransport {
 	private JingleConnection connection;
 
 	private InputStream fileInputStream = null;
-	private OutputStream fileOutputStream;
+	private OutputStream fileOutputStream = null;
 	private long remainingSize = 0;
 	private long fileSize = 0;
 	private MessageDigest digest;
@@ -129,6 +129,20 @@ public class JingleInbandTransport extends JingleTransport {
 	@Override
 	public void disconnect() {
 		this.connected = false;
+		if (this.fileOutputStream != null) {
+			try {
+				this.fileOutputStream.close();
+			} catch (IOException e) {
+
+			}
+		}
+		if (this.fileInputStream != null) {
+			try {
+				this.fileInputStream.close();
+			} catch (IOException e) {
+
+			}
+		}
 	}
 
 	private void sendNextBlock() {

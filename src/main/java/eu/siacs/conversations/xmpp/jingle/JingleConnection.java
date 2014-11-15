@@ -726,6 +726,9 @@ public class JingleConnection implements Downloadable {
 		this.mJingleConnectionManager.finishConnection(this);
 		if (this.responder.equals(account.getJid())) {
 			this.message.setDownloadable(new DownloadablePlaceholder(Downloadable.STATUS_FAILED));
+			if (this.file!=null) {
+				file.delete();
+			}
 			this.mXmppConnectionService.updateConversationUi();
 		} else {
 			this.mXmppConnectionService.markMessage(this.message,
@@ -743,6 +746,9 @@ public class JingleConnection implements Downloadable {
 		if (this.message != null) {
 			if (this.responder.equals(account.getJid())) {
 				this.message.setDownloadable(new DownloadablePlaceholder(Downloadable.STATUS_FAILED));
+				if (this.file!=null) {
+					file.delete();
+				}
 				this.mXmppConnectionService.updateConversationUi();
 			} else {
 				this.mXmppConnectionService.markMessage(this.message,

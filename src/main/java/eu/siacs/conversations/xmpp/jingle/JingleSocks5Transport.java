@@ -197,6 +197,20 @@ public class JingleSocks5Transport extends JingleTransport {
 	}
 
 	public void disconnect() {
+		if (this.outputStream != null) {
+			try {
+				this.outputStream.close();
+			} catch (IOException e) {
+
+			}
+		}
+		if (this.inputStream != null) {
+			try {
+				this.inputStream.close();
+			} catch (IOException e) {
+
+			}
+		}
 		if (this.socket != null) {
 			try {
 				this.socket.close();
