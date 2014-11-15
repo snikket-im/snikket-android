@@ -42,17 +42,18 @@ public class Account extends AbstractEntity {
 	public static final int OPTION_USECOMPRESSION = 3;
 
 	public static enum State {
-        DISABLED,
-        OFFLINE,
-        CONNECTING,
-        ONLINE,
-        NO_INTERNET,
+		DISABLED,
+		OFFLINE,
+		CONNECTING,
+		ONLINE,
+		NO_INTERNET,
 		UNAUTHORIZED(true),
 		SERVER_NOT_FOUND(true),
 		REGISTRATION_FAILED(true),
 		REGISTRATION_CONFLICT(true),
-        REGISTRATION_SUCCESSFUL,
-		REGISTRATION_NOT_SUPPORTED(true);
+		REGISTRATION_SUCCESSFUL,
+		REGISTRATION_NOT_SUPPORTED(true),
+		SECURITY_ERROR(true);
 
 		private boolean isError;
 
@@ -92,6 +93,8 @@ public class Account extends AbstractEntity {
 					return R.string.account_status_regis_success;
 				case REGISTRATION_NOT_SUPPORTED:
 					return R.string.account_status_regis_not_sup;
+				case SECURITY_ERROR:
+					return R.string.account_status_security_error;
 				default:
 					return R.string.account_status_unknown;
 			}
@@ -126,8 +129,8 @@ public class Account extends AbstractEntity {
 	}
 
 	public Account(final String uuid, final Jid jid,
-				   final String password, final int options, final String rosterVersion, final String keys,
-				   final String avatar) {
+			final String password, final int options, final String rosterVersion, final String keys,
+			final String avatar) {
 		this.uuid = uuid;
 		this.jid = jid;
 		if (jid.isBareJid()) {
@@ -293,7 +296,7 @@ public class Account extends AbstractEntity {
 		if (this.otrFingerprint == null) {
 			try {
 				DSAPublicKey pubkey = (DSAPublicKey) this.otrEngine
-						.getPublicKey();
+					.getPublicKey();
 				if (pubkey == null) {
 					return null;
 				}
@@ -394,12 +397,12 @@ public class Account extends AbstractEntity {
 	}
 
 	public int getReadableStatusId() {
-        return this.getStatus().getReadableId();
+		return this.getStatus().getReadableId();
 	}
 
 	public void activateGracePeriod() {
 		this.mEndGracePeriod = SystemClock.elapsedRealtime()
-				+ (Config.CARBON_GRACE_PERIOD * 1000);
+			+ (Config.CARBON_GRACE_PERIOD * 1000);
 	}
 
 	public void deactivateGracePeriod() {

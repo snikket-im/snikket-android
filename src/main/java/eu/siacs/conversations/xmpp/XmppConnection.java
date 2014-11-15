@@ -649,7 +649,8 @@ public class XmppConnection implements Runnable {
 							") than pinned priority (" + keys.getInt(Account.PINNED_MECHANISM_KEY) +
 							"). Possible downgrade attack?");
 					disconnect(true);
-						}
+					account.setStatus(Account.State.SECURITY_ERROR);
+				}
 			} catch (final JSONException e) {
 				Log.d(Config.LOGTAG, "Parse error while checking pinned auth mechanism");
 			}

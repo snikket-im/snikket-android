@@ -92,6 +92,10 @@ public class AccountAdapter extends ArrayAdapter<Account> {
 					R.string.account_status_regis_not_sup));
 			statusView.setTextColor(activity.getWarningTextColor());
 			break;
+		case SECURITY_ERROR:
+			statusView.setText(getContext().getString
+					(R.string.account_status_security_error));
+			statusView.setTextColor(activity.getWarningTextColor());
 		default:
 			statusView.setText("");
 			break;
