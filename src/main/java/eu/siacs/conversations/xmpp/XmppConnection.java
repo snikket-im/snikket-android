@@ -88,8 +88,10 @@ public class XmppConnection implements Runnable {
 	private int smVersion = 3;
 	private SparseArray<String> messageReceipts = new SparseArray<>();
 
-	private boolean usingCompression = false;
-	private boolean usingEncryption = false;
+	private boolean enabledCompression = false;
+	private boolean enabledEncryption = false;
+	private boolean enabledCarbons = false;
+
 	private int stanzasReceived = 0;
 	private int stanzasSent = 0;
 	private long lastPaketReceived = 0;
@@ -138,8 +140,8 @@ public class XmppConnection implements Runnable {
 
 	protected void connect() {
 		Log.d(Config.LOGTAG, account.getJid().toBareJid().toString() + ": connecting");
-		usingCompression = false;
-		usingEncryption = false;
+		enabledCompression = false;
+		enabledEncryption = false;
 		lastConnect = SystemClock.elapsedRealtime();
 		lastPingSent = SystemClock.elapsedRealtime();
 		this.attempt++;
@@ -351,8 +353,9 @@ public class XmppConnection implements Runnable {
 								} catch (final NumberFormatException ignored) {
 
 								}
+								sendServiceDiscoveryInfo(account.getServer());
+								sendServiceDiscoveryItems(account.getServer());
 								sendInitialPing();
-
 							} else if (nextTag.isStart("r")) {
 								tagReader.readElement(nextTag);
 								AckPacket ack = new AckPacket(this.stanzasReceived, smVersion);
@@ -532,7 +535,7 @@ public class XmppConnection implements Runnable {
 
 						 sendStartStream();
 						 Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": compression enabled");
-						 usingCompression = true;
+						 enabledCompression = true;
 						 processStream(tagReader.readTag());
 	}
 
@@ -600,7 +603,7 @@ public class XmppConnection implements Runnable {
 							sendStartStream();
 							Log.d(Config.LOGTAG, account.getJid().toBareJid()
 									+ ": TLS connection established");
-							usingEncryption = true;
+							enabledEncryption = true;
 							processStream(tagReader.readTag());
 							sslSocket.close();
 						} catch (final NoSuchAlgorithmException | KeyManagementException e1) {
@@ -611,20 +614,20 @@ public class XmppConnection implements Runnable {
 	private void processStreamFeatures(Tag currentTag)
 		throws XmlPullParserException, IOException {
 		this.streamFeatures = tagReader.readElement(currentTag);
-		if (this.streamFeatures.hasChild("starttls") && !usingEncryption) {
+		if (this.streamFeatures.hasChild("starttls") && !enabledEncryption) {
 			sendStartTLS();
 		} else if (compressionAvailable()) {
 			sendCompressionZlib();
 		} else if (this.streamFeatures.hasChild("register")
 				&& account.isOptionSet(Account.OPTION_REGISTER)
-				&& usingEncryption) {
+				&& enabledEncryption) {
 			sendRegistryRequest();
 		} else if (!this.streamFeatures.hasChild("register")
 				&& account.isOptionSet(Account.OPTION_REGISTER)) {
 			changeStatus(Account.STATUS_REGISTRATION_NOT_SUPPORTED);
 			disconnect(true);
 		} else if (this.streamFeatures.hasChild("mechanisms")
-				&& shouldAuthenticate && usingEncryption) {
+				&& shouldAuthenticate && enabledEncryption) {
 			final List<String> mechanisms = extractMechanisms(streamFeatures
 					.findChild("mechanisms"));
 			final Element auth = new Element("auth");
@@ -771,6 +774,8 @@ public class XmppConnection implements Runnable {
 							stanzasSent = 0;
 							messageReceipts.clear();
 						}
+						enabledCarbons = false;
+						disco.clear();
 						sendServiceDiscoveryInfo(account.getServer());
 						sendServiceDiscoveryItems(account.getServer());
 						if (bindListener != null) {
@@ -796,32 +801,40 @@ public class XmppConnection implements Runnable {
 	}
 
 	private void sendServiceDiscoveryInfo(final Jid server) {
-		final IqPacket iq = new IqPacket(IqPacket.TYPE_GET);
-		iq.setTo(server.toDomainJid());
-		iq.query("http://jabber.org/protocol/disco#info");
-		this.sendIqPacket(iq, new OnIqPacketReceived() {
+		if (disco.containsKey(server.toDomainJid().toString())) {
+			if (account.getServer().equals(server.toDomainJid())) {
+				enableAdvancedStreamFeatures();
+			}
+		} else {
+			final IqPacket iq = new IqPacket(IqPacket.TYPE_GET);
+			iq.setTo(server.toDomainJid());
+			iq.query("http://jabber.org/protocol/disco#info");
+			this.sendIqPacket(iq, new OnIqPacketReceived() {
 
-			@Override
-			public void onIqPacketReceived(Account account, IqPacket packet) {
-				final List<Element> elements = packet.query().getChildren();
-				final List<String> features = new ArrayList<>();
-				for (Element element : elements) {
-					if (element.getName().equals("feature")) {
-						features.add(element.getAttribute("var"));
+				@Override
+				public void onIqPacketReceived(Account account, IqPacket packet) {
+					final List<Element> elements = packet.query().getChildren();
+					final List<String> features = new ArrayList<>();
+					for (Element element : elements) {
+						if (element.getName().equals("feature")) {
+							features.add(element.getAttribute("var"));
+						}
+					}
+					disco.put(server.toDomainJid().toString(), features);
+
+					if (account.getServer().equals(server.toDomainJid())) {
+						enableAdvancedStreamFeatures();
 					}
 				}
-				disco.put(server.toDomainJid().toString(), features);
-
-				if (account.getServer().equals(server.toDomainJid())) {
-					enableAdvancedStreamFeatures();
-				}
-			}
-		});
+			});
+		}
 	}
 
 	private void enableAdvancedStreamFeatures() {
 		if (getFeatures().carbons()) {
-			sendEnableCarbons();
+			if (!enabledCarbons) {
+				sendEnableCarbons();
+			}
 		}
 	}
 
@@ -858,6 +871,7 @@ public class XmppConnection implements Runnable {
 				if (!packet.hasChild("error")) {
 					Log.d(Config.LOGTAG, account.getJid().toBareJid()
 							+ ": successfully enabled carbons");
+					enabledCarbons = true;
 				} else {
 					Log.d(Config.LOGTAG, account.getJid().toBareJid()
 							+ ": error enableing carbons " + packet.toString());
@@ -1131,7 +1145,7 @@ public class XmppConnection implements Runnable {
 		}
 
 		public boolean compression() {
-			return connection.usingCompression;
+			return connection.enabledCompression;
 		}
 	}
 }
