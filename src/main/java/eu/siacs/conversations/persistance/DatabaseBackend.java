@@ -143,7 +143,9 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 				+ Conversation.TABLENAME + " where " + Conversation.STATUS
 				+ "=" + Conversation.STATUS_AVAILABLE, null);
 		cursor.moveToFirst();
-		return cursor.getInt(0);
+		int count = cursor.getInt(0);
+		cursor.close();
+		return count;
 	}
 
 	public CopyOnWriteArrayList<Conversation> getConversations(int status) {
@@ -156,6 +158,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		while (cursor.moveToNext()) {
 			list.add(Conversation.fromCursor(cursor));
 		}
+		cursor.close();
 		return list;
 	}
 
@@ -189,6 +192,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 				list.add(message);
 			} while (cursor.moveToPrevious());
 		}
+		cursor.close();
 		return list;
 	}
 
@@ -201,7 +205,9 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		if (cursor.getCount() == 0)
 			return null;
 		cursor.moveToFirst();
-		return Conversation.fromCursor(cursor);
+		Conversation conversation = Conversation.fromCursor(cursor);
+		cursor.close();
+		return conversation;
 	}
 
 	public void updateConversation(Conversation conversation) {
@@ -313,7 +319,9 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 			return null;
 		}
 		cursor.moveToFirst();
-		return Conversation.fromCursor(cursor);
+		Conversation conversation = Conversation.fromCursor(cursor);
+		cursor.close();
+		return conversation;
 	}
 
 	public Message findMessageByUuid(String messageUuid) {
@@ -325,7 +333,9 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 			return null;
 		}
 		cursor.moveToFirst();
-		return Message.fromCursor(cursor);
+		Message message = Message.fromCursor(cursor);
+		cursor.close();
+		return message;
 	}
 
 	public Account findAccountByUuid(String accountUuid) {
@@ -337,7 +347,9 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 			return null;
 		}
 		cursor.moveToFirst();
-		return Account.fromCursor(cursor);
+		Account account = Account.fromCursor(cursor);
+		cursor.close();
+		return account;
 	}
 
 	public List<Message> getImageMessages(Conversation conversation) {
@@ -355,6 +367,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 				list.add(message);
 			} while (cursor.moveToPrevious());
 		}
+		cursor.close();
 		return list;
 	}
 }
