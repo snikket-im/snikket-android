@@ -428,8 +428,7 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 			}
 		} else {
 			if (this.mAccount.errorStatus()) {
-				this.mAccountJid.setError(getString(this.mAccount
-						.getReadableStatusId()));
+				this.mAccountJid.setError(getString(this.mAccount.getStatus().getReadableId()));
 				this.mAccountJid.requestFocus();
 			}
 			this.mStats.setVisibility(View.GONE);
