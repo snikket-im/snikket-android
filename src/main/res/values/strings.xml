@@ -58,7 +58,7 @@
     <string name="add_contact">Add contact</string>
     <string name="send_failed">delivery failed</string>
     <string name="send_rejected">rejected</string>
-    <string name="receiving_image">Receiving image file. Please wait…</string>
+    <string name="receiving_image">Receiving image file (%1$d%%)</string>
     <string name="preparing_image">Preparing image for transmission</string>
     <string name="action_clear_history">Clear history</string>
     <string name="clear_conversation_history">Clear Conversation History</string>
@@ -332,4 +332,16 @@
     <string name="touch_to_disable">Touch to disable foreground service</string>
     <string name="pref_keep_foreground_service">Keep service in foreground</string>
     <string name="pref_keep_foreground_service_summary">Prevents the operating system from killing your connection</string>
+    <string name="choose_file">Choose file</string>
+    <string name="receiving_file">Receiving %1$s file (%2$d%% completed)</string>
+    <string name="download_file">Download %s file</string>
+    <string name="open_file">Open %s file</string>
+    <string name="sending_file">sending (%1$d%% completed)</string>
+    <string name="preparing_file">Preparing file for transmission</string>
+    <string name="file_offered_for_download">File offered for download</string>
+    <string name="file">%s file</string>
+    <string name="cancel_transmission">Cancel transmission</string>
+    <string name="file_transmission_failed">file transmission failed</string>
+    <string name="file_deleted">The file has been deleted</string>
+    <string name="no_application_found_to_open_file">No application found to open file</string>
 </resources>

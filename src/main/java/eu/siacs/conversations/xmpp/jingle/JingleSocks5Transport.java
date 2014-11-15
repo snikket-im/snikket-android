@@ -15,6 +15,7 @@ import eu.siacs.conversations.utils.CryptoHelper;
 
 public class JingleSocks5Transport extends JingleTransport {
 	private JingleCandidate candidate;
+	private JingleConnection connection;
 	private String destination;
 	private OutputStream outputStream;
 	private InputStream inputStream;
@@ -25,6 +26,7 @@ public class JingleSocks5Transport extends JingleTransport {
 	public JingleSocks5Transport(JingleConnection jingleConnection,
 			JingleCandidate candidate) {
 		this.candidate = candidate;
+		this.connection = jingleConnection;
 		try {
 			MessageDigest mDigest = MessageDigest.getInstance("SHA-1");
 			StringBuilder destBuilder = new StringBuilder();
@@ -102,11 +104,15 @@ public class JingleSocks5Transport extends JingleTransport {
 						callback.onFileTransferAborted();
 						return;
 					}
+					long size = file.getSize();
+					long transmitted = 0;
 					int count;
 					byte[] buffer = new byte[8192];
 					while ((count = fileInputStream.read(buffer)) > 0) {
 						outputStream.write(buffer, 0, count);
 						digest.update(buffer, 0, count);
+						transmitted += count;
+						connection.updateProgress((int) ((((double) transmitted) / size) * 100));
 					}
 					outputStream.flush();
 					file.setSha1Sum(CryptoHelper.bytesToHex(digest.digest()));
@@ -151,6 +157,7 @@ public class JingleSocks5Transport extends JingleTransport {
 						callback.onFileTransferAborted();
 						return;
 					}
+					double size = file.getExpectedSize();
 					long remainingSize = file.getExpectedSize();
 					byte[] buffer = new byte[8192];
 					int count = buffer.length;
@@ -164,6 +171,7 @@ public class JingleSocks5Transport extends JingleTransport {
 							digest.update(buffer, 0, count);
 							remainingSize -= count;
 						}
+						connection.updateProgress((int) (((size - remainingSize) / size) * 100));
 					}
 					fileOutputStream.flush();
 					fileOutputStream.close();
@@ -189,6 +197,20 @@ public class JingleSocks5Transport extends JingleTransport {
 	}
 
 	public void disconnect() {
+		if (this.outputStream != null) {
+			try {
+				this.outputStream.close();
+			} catch (IOException e) {
+
+			}
+		}
+		if (this.inputStream != null) {
+			try {
+				this.inputStream.close();
+			} catch (IOException e) {
+
+			}
+		}
 		if (this.socket != null) {
 			try {
 				this.socket.close();

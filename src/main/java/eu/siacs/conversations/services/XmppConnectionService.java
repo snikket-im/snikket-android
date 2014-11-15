@@ -56,6 +56,8 @@ import eu.siacs.conversations.entities.Bookmark;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Downloadable;
+import eu.siacs.conversations.entities.DownloadableFile;
+import eu.siacs.conversations.entities.DownloadablePlaceholder;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.entities.MucOptions.OnRenameListener;
@@ -211,7 +213,7 @@ public class XmppConnectionService extends Service {
 	private Integer rosterChangedListenerCount = 0;
 	private SecureRandom mRandom;
 	private FileObserver fileObserver = new FileObserver(
-			FileBackend.getConversationsDirectory()) {
+			FileBackend.getConversationsImageDirectory()) {
 
 		@Override
 		public void onEvent(int event, String path) {
@@ -295,7 +297,49 @@ public class XmppConnectionService extends Service {
 		return this.mAvatarService;
 	}
 
-	public Message attachImageToConversation(final Conversation conversation,
+	public void attachFileToConversation(Conversation conversation, final Uri uri, final UiCallback<Message> callback) {
+		final Message message;
+		if (conversation.getNextEncryption(forceEncryption()) == Message.ENCRYPTION_PGP) {
+			message = new Message(conversation, "",
+					Message.ENCRYPTION_DECRYPTED);
+		} else {
+			message = new Message(conversation, "",
+					conversation.getNextEncryption(forceEncryption()));
+		}
+		message.setCounterpart(conversation.getNextCounterpart());
+		message.setType(Message.TYPE_FILE);
+		message.setStatus(Message.STATUS_OFFERED);
+		String path = getFileBackend().getOriginalPath(uri);
+		if (path!=null) {
+			message.setRelativeFilePath(path);
+			getFileBackend().updateFileParams(message);
+			if (message.getEncryption() == Message.ENCRYPTION_DECRYPTED) {
+				getPgpEngine().encrypt(message, callback);
+			} else {
+				callback.success(message);
+			}
+		} else {
+			new Thread(new Runnable() {
+				@Override
+				public void run() {
+					try {
+						getFileBackend().copyFileToPrivateStorage(message, uri);
+						getFileBackend().updateFileParams(message);
+						if (message.getEncryption() == Message.ENCRYPTION_DECRYPTED) {
+							getPgpEngine().encrypt(message, callback);
+						} else {
+							callback.success(message);
+						}
+					} catch (FileBackend.FileCopyException e) {
+						callback.error(e.getResId(),message);
+					}
+				}
+			}).start();
+
+		}
+	}
+
+	public void attachImageToConversation(final Conversation conversation,
 											 final Uri uri, final UiCallback<Message> callback) {
 		final Message message;
 		if (conversation.getNextEncryption(forceEncryption()) == Message.ENCRYPTION_PGP) {
@@ -313,18 +357,17 @@ public class XmppConnectionService extends Service {
 			@Override
 			public void run() {
 				try {
-					getFileBackend().copyImageToPrivateStorage(message, uri);
+					DownloadableFile file = getFileBackend().copyImageToPrivateStorage(message, uri);
 					if (conversation.getNextEncryption(forceEncryption()) == Message.ENCRYPTION_PGP) {
 						getPgpEngine().encrypt(message, callback);
 					} else {
 						callback.success(message);
 					}
-				} catch (FileBackend.ImageCopyException e) {
+				} catch (FileBackend.FileCopyException e) {
 					callback.error(e.getResId(), message);
 				}
 			}
 		}).start();
-		return message;
 	}
 
 	public Conversation find(Bookmark bookmark) {
@@ -561,7 +604,7 @@ public class XmppConnectionService extends Service {
 		boolean send = false;
 		if (account.getStatus() == Account.STATUS_ONLINE
 				&& account.getXmppConnection() != null) {
-			if (message.getType() == Message.TYPE_IMAGE) {
+			if (message.getType() == Message.TYPE_IMAGE || message.getType() == Message.TYPE_FILE) {
 				if (message.getCounterpart() != null) {
 					if (message.getEncryption() == Message.ENCRYPTION_OTR) {
 						if (!conv.hasValidOtrSession()) {
@@ -678,11 +721,16 @@ public class XmppConnectionService extends Service {
 			} else {
 				if (message.getConversation().getOtrSession()
 						.getSessionStatus() == SessionStatus.ENCRYPTED) {
-					if (message.getType() == Message.TYPE_TEXT) {
-						packet = mMessageGenerator.generateOtrChat(message,
-								true);
-					} else if (message.getType() == Message.TYPE_IMAGE) {
-						mJingleConnectionManager.createNewConnection(message);
+					try {
+						message.setCounterpart(Jid.fromSessionID(message.getConversation().getOtrSession().getSessionID()));
+						if (message.getType() == Message.TYPE_TEXT) {
+							packet = mMessageGenerator.generateOtrChat(message,
+									true);
+						} else if (message.getType() == Message.TYPE_IMAGE || message.getType() == Message.TYPE_FILE) {
+							mJingleConnectionManager.createNewConnection(message);
+						}
+					} catch (InvalidJidException e) {
+
 					}
 				}
 			}
@@ -693,7 +741,7 @@ public class XmppConnectionService extends Service {
 					|| (message.getEncryption() == Message.ENCRYPTION_PGP)) {
 				packet = mMessageGenerator.generatePgpChat(message, true);
 			}
-		} else if (message.getType() == Message.TYPE_IMAGE) {
+		} else if (message.getType() == Message.TYPE_IMAGE || message.getType() == Message.TYPE_FILE) {
 			Contact contact = message.getConversation().getContact();
 			Presences presences = contact.getPresences();
 			if ((message.getCounterpart() != null)
@@ -852,10 +900,10 @@ public class XmppConnectionService extends Service {
 
 	private void checkDeletedFiles(Conversation conversation) {
 		for (Message message : conversation.getMessages()) {
-			if (message.getType() == Message.TYPE_IMAGE
+			if ((message.getType() == Message.TYPE_IMAGE || message.getType() == Message.TYPE_FILE)
 					&& message.getEncryption() != Message.ENCRYPTION_PGP) {
 				if (!getFileBackend().isFileAvailable(message)) {
-					message.setDownloadable(new DeletedDownloadable());
+					message.setDownloadable(new DownloadablePlaceholder(Downloadable.STATUS_DELETED));
 				}
 			}
 		}
@@ -868,7 +916,7 @@ public class XmppConnectionService extends Service {
 						&& message.getEncryption() != Message.ENCRYPTION_PGP
 						&& message.getUuid().equals(uuid)) {
 					if (!getFileBackend().isFileAvailable(message)) {
-						message.setDownloadable(new DeletedDownloadable());
+						message.setDownloadable(new DownloadablePlaceholder(Downloadable.STATUS_DELETED));
 						updateConversationUi();
 					}
 					return;
@@ -1424,7 +1472,7 @@ public class XmppConnectionService extends Service {
 						databaseBackend.updateMessage(msg);
 						sendMessagePacket(account, outPacket);
 					}
-				} else if (msg.getType() == Message.TYPE_IMAGE) {
+				} else if (msg.getType() == Message.TYPE_IMAGE || msg.getType() == Message.TYPE_FILE) {
 					mJingleConnectionManager.createNewConnection(msg);
 				}
 			}
@@ -1978,24 +2026,5 @@ public class XmppConnectionService extends Service {
 		public XmppConnectionService getService() {
 			return XmppConnectionService.this;
 		}
-	}
-
-	private class DeletedDownloadable implements Downloadable {
-
-		@Override
-		public boolean start() {
-			return false;
-		}
-
-		@Override
-		public int getStatus() {
-			return Downloadable.STATUS_DELETED;
-		}
-
-		@Override
-		public long getFileSize() {
-			return 0;
-		}
-
 	}
 }

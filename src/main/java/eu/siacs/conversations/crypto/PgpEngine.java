@@ -3,7 +3,6 @@ package eu.siacs.conversations.crypto;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,7 +23,6 @@ import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.ui.UiCallback;
 import android.app.PendingIntent;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 
 public class PgpEngine {
@@ -80,12 +78,13 @@ public class PgpEngine {
                     }
 				}
 			});
-		} else if (message.getType() == Message.TYPE_IMAGE) {
+		} else if (message.getType() == Message.TYPE_IMAGE || message.getType() == Message.TYPE_FILE) {
 			try {
 				final DownloadableFile inputFile = this.mXmppConnectionService
 						.getFileBackend().getFile(message, false);
 				final DownloadableFile outputFile = this.mXmppConnectionService
 						.getFileBackend().getFile(message, true);
+				outputFile.getParentFile().mkdirs();
 				outputFile.createNewFile();
 				InputStream is = new FileInputStream(inputFile);
 				OutputStream os = new FileOutputStream(outputFile);
@@ -97,24 +96,7 @@ public class PgpEngine {
 								OpenPgpApi.RESULT_CODE_ERROR)) {
 						case OpenPgpApi.RESULT_CODE_SUCCESS:
 							URL url = message.getImageParams().url;
-							BitmapFactory.Options options = new BitmapFactory.Options();
-							options.inJustDecodeBounds = true;
-							BitmapFactory.decodeFile(
-									outputFile.getAbsolutePath(), options);
-							int imageHeight = options.outHeight;
-							int imageWidth = options.outWidth;
-							if (url == null) {
-								message.setBody(Long.toString(outputFile
-										.getSize())
-										+ '|'
-										+ imageWidth
-										+ '|'
-										+ imageHeight);
-							} else {
-								message.setBody(url.toString() + "|"
-										+ Long.toString(outputFile.getSize())
-										+ '|' + imageWidth + '|' + imageHeight);
-							}
+							mXmppConnectionService.getFileBackend().updateFileParams(message,url);
 							message.setEncryption(Message.ENCRYPTION_DECRYPTED);
 							PgpEngine.this.mXmppConnectionService
 									.updateMessage(message);
@@ -199,12 +181,13 @@ public class PgpEngine {
 					}
 				}
 			});
-		} else if (message.getType() == Message.TYPE_IMAGE) {
+		} else if (message.getType() == Message.TYPE_IMAGE || message.getType() == Message.TYPE_FILE) {
 			try {
 				DownloadableFile inputFile = this.mXmppConnectionService
 						.getFileBackend().getFile(message, true);
 				DownloadableFile outputFile = this.mXmppConnectionService
 						.getFileBackend().getFile(message, false);
+				outputFile.getParentFile().mkdirs();
 				outputFile.createNewFile();
 				InputStream is = new FileInputStream(inputFile);
 				OutputStream os = new FileOutputStream(outputFile);

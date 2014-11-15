@@ -75,6 +75,10 @@ public class JingleConnectionManager extends AbstractConnectionManager {
 
 	public void getPrimaryCandidate(Account account,
 			final OnPrimaryCandidateFound listener) {
+		if (Config.NO_PROXY_LOOKUP) {
+			listener.onPrimaryCandidateFound(false, null);
+			return;
+		}
 		if (!this.primaryCandidates.containsKey(account.getJid().toBareJid())) {
 			String xmlns = "http://jabber.org/protocol/bytestreams";
 			final String proxy = account.getXmppConnection()

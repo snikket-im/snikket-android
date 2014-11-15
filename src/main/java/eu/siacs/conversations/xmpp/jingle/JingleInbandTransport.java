@@ -8,6 +8,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
 import android.util.Base64;
+
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.utils.CryptoHelper;
@@ -27,11 +28,15 @@ public class JingleInbandTransport extends JingleTransport {
 
 	private boolean established = false;
 
+	private boolean connected = true;
+
 	private DownloadableFile file;
+	private JingleConnection connection;
 
 	private InputStream fileInputStream = null;
-	private OutputStream fileOutputStream;
-	private long remainingSize;
+	private OutputStream fileOutputStream = null;
+	private long remainingSize = 0;
+	private long fileSize = 0;
 	private MessageDigest digest;
 
 	private OnFileTransmissionStatusChanged onFileTransmissionStatusChanged;
@@ -39,16 +44,16 @@ public class JingleInbandTransport extends JingleTransport {
 	private OnIqPacketReceived onAckReceived = new OnIqPacketReceived() {
 		@Override
 		public void onIqPacketReceived(Account account, IqPacket packet) {
-			if (packet.getType() == IqPacket.TYPE_RESULT) {
+			if (connected && packet.getType() == IqPacket.TYPE_RESULT) {
 				sendNextBlock();
 			}
 		}
 	};
 
-	public JingleInbandTransport(final Account account, final Jid counterpart,
-			final String sid, final int blocksize) {
-		this.account = account;
-		this.counterpart = counterpart;
+	public JingleInbandTransport(final JingleConnection connection, final String sid, final int blocksize) {
+		this.connection = connection;
+		this.account = connection.getAccount();
+		this.counterpart = connection.getCounterPart();
 		this.blockSize = blocksize;
 		this.bufferSize = blocksize / 4;
 		this.sessionId = sid;
@@ -61,7 +66,7 @@ public class JingleInbandTransport extends JingleTransport {
 		open.setAttribute("sid", this.sessionId);
 		open.setAttribute("stanza", "iq");
 		open.setAttribute("block-size", Integer.toString(this.blockSize));
-
+		this.connected = true;
 		this.account.getXmppConnection().sendIqPacket(iq,
 				new OnIqPacketReceived() {
 
@@ -92,7 +97,7 @@ public class JingleInbandTransport extends JingleTransport {
 				callback.onFileTransferAborted();
 				return;
 			}
-			this.remainingSize = file.getExpectedSize();
+			this.remainingSize = this.fileSize = file.getExpectedSize();
 		} catch (final NoSuchAlgorithmException | IOException e) {
 			callback.onFileTransferAborted();
 		}
@@ -104,6 +109,8 @@ public class JingleInbandTransport extends JingleTransport {
 		this.onFileTransmissionStatusChanged = callback;
 		this.file = file;
 		try {
+			this.remainingSize = this.file.getSize();
+			this.fileSize = this.remainingSize;
 			this.digest = MessageDigest.getInstance("SHA-1");
 			this.digest.reset();
 			fileInputStream = this.file.createInputStream();
@@ -111,9 +118,30 @@ public class JingleInbandTransport extends JingleTransport {
 				callback.onFileTransferAborted();
 				return;
 			}
-			this.sendNextBlock();
+			if (this.connected) {
+				this.sendNextBlock();
+			}
 		} catch (NoSuchAlgorithmException e) {
 			callback.onFileTransferAborted();
+		}
+	}
+
+	@Override
+	public void disconnect() {
+		this.connected = false;
+		if (this.fileOutputStream != null) {
+			try {
+				this.fileOutputStream.close();
+			} catch (IOException e) {
+
+			}
+		}
+		if (this.fileInputStream != null) {
+			try {
+				this.fileInputStream.close();
+			} catch (IOException e) {
+
+			}
 		}
 	}
 
@@ -126,6 +154,7 @@ public class JingleInbandTransport extends JingleTransport {
 				fileInputStream.close();
 				this.onFileTransmissionStatusChanged.onFileTransmitted(file);
 			} else {
+				this.remainingSize -= count;
 				this.digest.update(buffer);
 				String base64 = Base64.encodeToString(buffer, Base64.NO_WRAP);
 				IqPacket iq = new IqPacket(IqPacket.TYPE_SET);
@@ -140,6 +169,7 @@ public class JingleInbandTransport extends JingleTransport {
 				this.account.getXmppConnection().sendIqPacket(iq,
 						this.onAckReceived);
 				this.seq++;
+				connection.updateProgress((int) ((((double) (this.fileSize - this.remainingSize)) / this.fileSize) * 100));
 			}
 		} catch (IOException e) {
 			this.onFileTransmissionStatusChanged.onFileTransferAborted();
@@ -155,6 +185,7 @@ public class JingleInbandTransport extends JingleTransport {
 			}
 			this.remainingSize -= buffer.length;
 
+
 			this.fileOutputStream.write(buffer);
 
 			this.digest.update(buffer);
@@ -163,6 +194,8 @@ public class JingleInbandTransport extends JingleTransport {
 				fileOutputStream.flush();
 				fileOutputStream.close();
 				this.onFileTransmissionStatusChanged.onFileTransmitted(file);
+			} else {
+				connection.updateProgress((int) ((((double) (this.fileSize - this.remainingSize)) / this.fileSize) * 100));
 			}
 		} catch (IOException e) {
 			this.onFileTransmissionStatusChanged.onFileTransferAborted();
@@ -173,13 +206,14 @@ public class JingleInbandTransport extends JingleTransport {
 		if (payload.getName().equals("open")) {
 			if (!established) {
 				established = true;
+				connected = true;
 				this.account.getXmppConnection().sendIqPacket(
 						packet.generateRespone(IqPacket.TYPE_RESULT), null);
 			} else {
 				this.account.getXmppConnection().sendIqPacket(
 						packet.generateRespone(IqPacket.TYPE_ERROR), null);
 			}
-		} else if (payload.getName().equals("data")) {
+		} else if (connected && payload.getName().equals("data")) {
 			this.receiveNextBlock(payload.getContent());
 			this.account.getXmppConnection().sendIqPacket(
 					packet.generateRespone(IqPacket.TYPE_RESULT), null);

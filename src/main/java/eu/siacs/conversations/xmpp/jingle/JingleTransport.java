@@ -10,4 +10,6 @@ public abstract class JingleTransport {
 
 	public abstract void send(final DownloadableFile file,
 			final OnFileTransmissionStatusChanged callback);
+
+	public abstract void disconnect();
 }

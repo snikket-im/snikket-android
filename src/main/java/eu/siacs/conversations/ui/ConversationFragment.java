@@ -42,6 +42,9 @@ import eu.siacs.conversations.crypto.PgpEngine;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
+import eu.siacs.conversations.entities.Downloadable;
+import eu.siacs.conversations.entities.DownloadableFile;
+import eu.siacs.conversations.entities.DownloadablePlaceholder;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.entities.Presences;
@@ -354,6 +357,7 @@ public class ConversationFragment extends Fragment {
 			MenuItem sendAgain = menu.findItem(R.id.send_again);
 			MenuItem copyUrl = menu.findItem(R.id.copy_url);
 			MenuItem downloadImage = menu.findItem(R.id.download_image);
+			MenuItem cancelTransmission = menu.findItem(R.id.cancel_transmission);
 			if (this.selectedMessage.getType() != Message.TYPE_TEXT
 					|| this.selectedMessage.getDownloadable() != null) {
 				copyText.setVisible(false);
@@ -370,11 +374,14 @@ public class ConversationFragment extends Fragment {
 					|| this.selectedMessage.getImageParams().url == null) {
 				copyUrl.setVisible(false);
 			}
-
 			if (this.selectedMessage.getType() != Message.TYPE_TEXT
 					|| this.selectedMessage.getDownloadable() != null
 					|| !this.selectedMessage.bodyContainsDownloadable()) {
 				downloadImage.setVisible(false);
+			}
+			if (this.selectedMessage.getDownloadable() == null
+					|| this.selectedMessage.getDownloadable() instanceof DownloadablePlaceholder) {
+				cancelTransmission.setVisible(false);
 			}
 		}
 	}
@@ -396,6 +403,9 @@ public class ConversationFragment extends Fragment {
 				return true;
 			case R.id.download_image:
 				downloadImage(selectedMessage);
+				return true;
+			case R.id.cancel_transmission:
+				cancelTransmission(selectedMessage);
 				return true;
 			default:
 				return super.onContextItemSelected(item);
@@ -423,6 +433,14 @@ public class ConversationFragment extends Fragment {
 	}
 
 	private void resendMessage(Message message) {
+		if (message.getType() == Message.TYPE_FILE || message.getType() == Message.TYPE_IMAGE) {
+			DownloadableFile file = activity.xmppConnectionService.getFileBackend().getFile(message);
+			if (!file.exists()) {
+				Toast.makeText(activity,R.string.file_deleted,Toast.LENGTH_SHORT).show();
+				message.setDownloadable(new DownloadablePlaceholder(Downloadable.STATUS_DELETED));
+				return;
+			}
+		}
 		activity.xmppConnectionService.resendFailedMessages(message);
 	}
 
@@ -437,6 +455,13 @@ public class ConversationFragment extends Fragment {
 	private void downloadImage(Message message) {
 		activity.xmppConnectionService.getHttpConnectionManager()
 				.createNewConnection(message);
+	}
+
+	private void cancelTransmission(Message message) {
+		Downloadable downloadable = message.getDownloadable();
+		if (downloadable!=null) {
+			downloadable.cancel();
+		}
 	}
 
 	protected void privateMessageWith(final Jid counterpart) {

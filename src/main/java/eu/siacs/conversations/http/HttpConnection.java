@@ -3,6 +3,7 @@ package eu.siacs.conversations.http;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.SystemClock;
 
 import org.apache.http.conn.ssl.StrictHostnameVerifier;
 
@@ -21,6 +22,7 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLHandshakeException;
 import javax.net.ssl.X509TrustManager;
 
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Downloadable;
 import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.entities.Message;
@@ -37,6 +39,8 @@ public class HttpConnection implements Downloadable {
 	private DownloadableFile file;
 	private int mStatus = Downloadable.STATUS_UNKNOWN;
 	private boolean acceptedAutomatically = false;
+	private int mProgress = 0;
+	private long mLastGuiRefresh = 0;
 
 	public HttpConnection(HttpConnectionManager manager) {
 		this.mHttpConnectionManager = manager;
@@ -235,10 +239,14 @@ public class HttpConnection implements Downloadable {
 			if (os == null) {
 				throw new IOException();
 			}
+			long transmitted = 0;
+			long expected = file.getExpectedSize();
 			int count = -1;
 			byte[] buffer = new byte[1024];
 			while ((count = is.read(buffer)) != -1) {
+				transmitted += count;
 				os.write(buffer, 0, count);
+				updateProgress((int) ((((double) transmitted) / expected) * 100));
 			}
 			os.flush();
 			os.close();
@@ -246,17 +254,19 @@ public class HttpConnection implements Downloadable {
 		}
 
 		private void updateImageBounds() {
-			BitmapFactory.Options options = new BitmapFactory.Options();
-			options.inJustDecodeBounds = true;
-			BitmapFactory.decodeFile(file.getAbsolutePath(), options);
-			int imageHeight = options.outHeight;
-			int imageWidth = options.outWidth;
-			message.setBody(mUrl.toString() + "|" + file.getSize() + '|'
-					+ imageWidth + '|' + imageHeight);
 			message.setType(Message.TYPE_IMAGE);
+			mXmppConnectionService.getFileBackend().updateFileParams(message,mUrl);
 			mXmppConnectionService.updateMessage(message);
 		}
 
+	}
+
+	public void updateProgress(int i) {
+		this.mProgress = i;
+		if (SystemClock.elapsedRealtime() - this.mLastGuiRefresh > Config.PROGRESS_UI_UPDATE_INTERVAL) {
+			this.mLastGuiRefresh = SystemClock.elapsedRealtime();
+			mXmppConnectionService.updateConversationUi();
+		}
 	}
 
 	@Override
@@ -271,5 +281,15 @@ public class HttpConnection implements Downloadable {
 		} else {
 			return 0;
 		}
+	}
+
+	@Override
+	public int getProgress() {
+		return this.mProgress;
+	}
+
+	@Override
+	public String getMimeType() {
+		return "";
 	}
 }

@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URLConnection;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.Key;
@@ -28,6 +29,7 @@ public class DownloadableFile extends File {
 	private long expectedSize = 0;
 	private String sha1sum;
 	private Key aeskey;
+	private String mime;
 
 	private byte[] iv = { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08,
 			0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0xf };
@@ -49,6 +51,18 @@ public class DownloadableFile extends File {
 			}
 		} else {
 			return this.expectedSize;
+		}
+	}
+
+	public String getMimeType() {
+		String path = this.getAbsolutePath();
+		String mime = URLConnection.guessContentTypeFromName(path);
+		if (mime != null) {
+			return mime;
+		} else if (mime == null && path.endsWith(".webp")) {
+			return "image/webp";
+		} else {
+			return "";
 		}
 	}
 
