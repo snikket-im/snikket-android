@@ -10,7 +10,6 @@ import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.SystemClock;
 import android.util.Log;
@@ -76,7 +75,7 @@ public class JingleConnection implements Downloadable {
 		@Override
 		public void onIqPacketReceived(Account account, IqPacket packet) {
 			if (packet.getType() == IqPacket.TYPE_ERROR) {
-				cancel();
+				fail();
 			}
 		}
 	};
@@ -115,7 +114,7 @@ public class JingleConnection implements Downloadable {
 		@Override
 		public void onFileTransferAborted() {
 			JingleConnection.this.sendCancel();
-			JingleConnection.this.cancel();
+			JingleConnection.this.fail();
 		}
 	};
 
@@ -162,14 +161,14 @@ public class JingleConnection implements Downloadable {
 			Reason reason = packet.getReason();
 			if (reason != null) {
 				if (reason.hasChild("cancel")) {
-					this.cancel();
+					this.fail();
 				} else if (reason.hasChild("success")) {
 					this.receiveSuccess();
 				} else {
-					this.cancel();
+					this.fail();
 				}
 			} else {
-				this.cancel();
+				this.fail();
 			}
 		} else if (packet.isAction("session-accept")) {
 			returnResult = receiveAccept(packet);
@@ -343,7 +342,7 @@ public class JingleConnection implements Downloadable {
 					byte[] key = conversation.getSymmetricKey();
 					if (key == null) {
 						this.sendCancel();
-						this.cancel();
+						this.fail();
 						return;
 					} else {
 						this.file.setKey(key);
@@ -352,11 +351,11 @@ public class JingleConnection implements Downloadable {
 				this.file.setExpectedSize(size);
 			} else {
 				this.sendCancel();
-				this.cancel();
+				this.fail();
 			}
 		} else {
 			this.sendCancel();
-			this.cancel();
+			this.fail();
 		}
 	}
 
@@ -495,7 +494,7 @@ public class JingleConnection implements Downloadable {
 					} else {
 						Log.d(Config.LOGTAG, "activated connection not found");
 						this.sendCancel();
-						this.cancel();
+						this.fail();
 					}
 				}
 				return true;
@@ -542,7 +541,7 @@ public class JingleConnection implements Downloadable {
 		this.transport = connection;
 		if (connection == null) {
 			Log.d(Config.LOGTAG, "could not find suitable candidate");
-			this.disconnect();
+			this.disconnectSocks5Connections();
 			if (this.initiator.equals(account.getJid())) {
 				this.sendFallbackToIbb();
 			}
@@ -633,7 +632,7 @@ public class JingleConnection implements Downloadable {
 		reason.addChild("success");
 		packet.setReason(reason);
 		this.sendJinglePacket(packet);
-		this.disconnect();
+		this.disconnectSocks5Connections();
 		this.mJingleStatus = JINGLE_STATUS_FINISHED;
 		this.message.setStatus(Message.STATUS_RECEIVED);
 		this.message.setDownloadable(null);
@@ -710,13 +709,30 @@ public class JingleConnection implements Downloadable {
 		this.mJingleStatus = JINGLE_STATUS_FINISHED;
 		this.mXmppConnectionService.markMessage(this.message,
 				Message.STATUS_SEND);
-		this.disconnect();
+		this.disconnectSocks5Connections();
 		this.mJingleConnectionManager.finishConnection(this);
 	}
 
 	public void cancel() {
-		this.mJingleStatus = JINGLE_STATUS_CANCELED;
-		this.disconnect();
+		this.disconnectSocks5Connections();
+		if (this.transport != null && this.transport instanceof JingleInbandTransport) {
+			this.transport.disconnect();
+		}
+		this.sendCancel();
+		this.mJingleConnectionManager.finishConnection(this);
+		if (this.responder.equals(account.getJid())) {
+			this.mStatus = Downloadable.STATUS_FAILED;
+			this.mXmppConnectionService.updateConversationUi();
+		} else {
+			this.mXmppConnectionService.markMessage(this.message,
+					Message.STATUS_SEND_FAILED);
+			this.message.setDownloadable(null);
+		}
+	}
+
+	private void fail() {
+		this.mJingleStatus = JINGLE_STATUS_FAILED;
+		this.disconnectSocks5Connections();
 		if (this.message != null) {
 			if (this.responder.equals(account.getJid())) {
 				this.mStatus = Downloadable.STATUS_FAILED;
@@ -772,7 +788,7 @@ public class JingleConnection implements Downloadable {
 		});
 	}
 
-	private void disconnect() {
+	private void disconnectSocks5Connections() {
 		Iterator<Entry<String, JingleSocks5Transport>> it = this.connections
 				.entrySet().iterator();
 		while (it.hasNext()) {

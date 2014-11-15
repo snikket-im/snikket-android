@@ -28,6 +28,8 @@ public class JingleInbandTransport extends JingleTransport {
 
 	private boolean established = false;
 
+	private boolean connected = true;
+
 	private DownloadableFile file;
 	private JingleConnection connection;
 
@@ -42,7 +44,7 @@ public class JingleInbandTransport extends JingleTransport {
 	private OnIqPacketReceived onAckReceived = new OnIqPacketReceived() {
 		@Override
 		public void onIqPacketReceived(Account account, IqPacket packet) {
-			if (packet.getType() == IqPacket.TYPE_RESULT) {
+			if (connected && packet.getType() == IqPacket.TYPE_RESULT) {
 				sendNextBlock();
 			}
 		}
@@ -64,7 +66,7 @@ public class JingleInbandTransport extends JingleTransport {
 		open.setAttribute("sid", this.sessionId);
 		open.setAttribute("stanza", "iq");
 		open.setAttribute("block-size", Integer.toString(this.blockSize));
-
+		this.connected = true;
 		this.account.getXmppConnection().sendIqPacket(iq,
 				new OnIqPacketReceived() {
 
@@ -116,10 +118,17 @@ public class JingleInbandTransport extends JingleTransport {
 				callback.onFileTransferAborted();
 				return;
 			}
-			this.sendNextBlock();
+			if (this.connected) {
+				this.sendNextBlock();
+			}
 		} catch (NoSuchAlgorithmException e) {
 			callback.onFileTransferAborted();
 		}
+	}
+
+	@Override
+	public void disconnect() {
+		this.connected = false;
 	}
 
 	private void sendNextBlock() {
@@ -183,13 +192,14 @@ public class JingleInbandTransport extends JingleTransport {
 		if (payload.getName().equals("open")) {
 			if (!established) {
 				established = true;
+				connected = true;
 				this.account.getXmppConnection().sendIqPacket(
 						packet.generateRespone(IqPacket.TYPE_RESULT), null);
 			} else {
 				this.account.getXmppConnection().sendIqPacket(
 						packet.generateRespone(IqPacket.TYPE_ERROR), null);
 			}
-		} else if (payload.getName().equals("data")) {
+		} else if (connected && payload.getName().equals("data")) {
 			this.receiveNextBlock(payload.getContent());
 			this.account.getXmppConnection().sendIqPacket(
 					packet.generateRespone(IqPacket.TYPE_RESULT), null);

@@ -318,5 +318,6 @@
     <string name="sending_file">sending (%1$d%% completed)</string>
     <string name="preparing_file">Preparing file for transmission</string>
     <string name="file_offered_for_download">File offered for download</string>
-    <string name="file">%s file</string>;
+    <string name="file">%s file</string>
+    <string name="cancel_transmission">Cancel transmission</string>
 </resources>

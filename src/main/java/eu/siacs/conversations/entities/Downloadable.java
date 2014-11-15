@@ -23,4 +23,6 @@ public interface Downloadable {
 	public int getProgress();
 
 	public String getMimeType();
+
+	public void cancel();
 }

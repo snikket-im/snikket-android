@@ -16,5 +16,8 @@
     <item
         android:id="@+id/download_image"
         android:title="@string/download_image"/>
+    <item
+        android:id="@+id/cancel_transmission"
+        android:title="@string/cancel_transmission" />
 
 </menu>

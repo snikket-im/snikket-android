@@ -2040,5 +2040,10 @@ public class XmppConnectionService extends Service {
 			return "";
 		}
 
+		@Override
+		public void cancel() {
+
+		}
+
 	}
 }
