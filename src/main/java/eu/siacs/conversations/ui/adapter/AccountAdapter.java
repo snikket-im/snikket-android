@@ -37,57 +37,57 @@ public class AccountAdapter extends ArrayAdapter<Account> {
 		imageView.setImageBitmap(activity.avatarService().get(account,
 				activity.getPixel(48)));
 		switch (account.getStatus()) {
-		case Account.STATUS_DISABLED:
+		case DISABLED:
 			statusView.setText(getContext().getString(
 					R.string.account_status_disabled));
 			statusView.setTextColor(activity.getSecondaryTextColor());
 			break;
-		case Account.STATUS_ONLINE:
+		case ONLINE:
 			statusView.setText(getContext().getString(
 					R.string.account_status_online));
 			statusView.setTextColor(activity.getPrimaryColor());
 			break;
-		case Account.STATUS_CONNECTING:
+		case CONNECTING:
 			statusView.setText(getContext().getString(
 					R.string.account_status_connecting));
 			statusView.setTextColor(activity.getSecondaryTextColor());
 			break;
-		case Account.STATUS_OFFLINE:
+		case OFFLINE:
 			statusView.setText(getContext().getString(
 					R.string.account_status_offline));
 			statusView.setTextColor(activity.getWarningTextColor());
 			break;
-		case Account.STATUS_UNAUTHORIZED:
+		case UNAUTHORIZED:
 			statusView.setText(getContext().getString(
 					R.string.account_status_unauthorized));
 			statusView.setTextColor(activity.getWarningTextColor());
 			break;
-		case Account.STATUS_SERVER_NOT_FOUND:
+		case SERVER_NOT_FOUND:
 			statusView.setText(getContext().getString(
 					R.string.account_status_not_found));
 			statusView.setTextColor(activity.getWarningTextColor());
 			break;
-		case Account.STATUS_NO_INTERNET:
+		case NO_INTERNET:
 			statusView.setText(getContext().getString(
 					R.string.account_status_no_internet));
 			statusView.setTextColor(activity.getWarningTextColor());
 			break;
-		case Account.STATUS_REGISTRATION_FAILED:
+		case REGISTRATION_FAILED:
 			statusView.setText(getContext().getString(
 					R.string.account_status_regis_fail));
 			statusView.setTextColor(activity.getWarningTextColor());
 			break;
-		case Account.STATUS_REGISTRATION_CONFLICT:
+		case REGISTRATION_CONFLICT:
 			statusView.setText(getContext().getString(
 					R.string.account_status_regis_conflict));
 			statusView.setTextColor(activity.getWarningTextColor());
 			break;
-		case Account.STATUS_REGISTRATION_SUCCESSFULL:
+		case REGISTRATION_SUCCESSFUL:
 			statusView.setText(getContext().getString(
 					R.string.account_status_regis_success));
 			statusView.setTextColor(activity.getSecondaryTextColor());
 			break;
-		case Account.STATUS_REGISTRATION_NOT_SUPPORTED:
+		case REGISTRATION_NOT_SUPPORTED:
 			statusView.setText(getContext().getString(
 					R.string.account_status_regis_not_sup));
 			statusView.setTextColor(activity.getWarningTextColor());

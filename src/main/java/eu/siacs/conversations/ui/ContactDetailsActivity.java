@@ -266,7 +266,7 @@ public class ContactDetailsActivity extends XmppActivity implements OnAccountUpd
 				receive.setChecked(false);
 			}
 		}
-		if (contact.getAccount().getStatus() == Account.STATUS_ONLINE) {
+		if (contact.getAccount().getStatus() == Account.State.ONLINE) {
 			receive.setEnabled(true);
 			send.setEnabled(true);
 		} else {
