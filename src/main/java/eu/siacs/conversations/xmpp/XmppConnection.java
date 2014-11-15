@@ -593,12 +593,13 @@ public class XmppConnection implements Runnable {
 							}
 							sslSocket.setEnabledProtocols(supportProtocols);
 
-							if (verifier != null
-									&& !verifier.verify(account.getServer().getDomainpart(),
-										sslSocket.getSession())) {
-								sslSocket.close();
-								throw new IOException("host mismatch in TLS connection");
-									}
+                            if (verifier != null
+                                    && !verifier.verify(account.getServer().getDomainpart(),
+                                    sslSocket.getSession())) {
+                                account.setStatus(Account.State.SECURITY_ERROR);
+                                sslSocket.close();
+                                throw new IOException("Host mismatch in TLS connection");
+                            }
 							tagReader.setInputStream(sslSocket.getInputStream());
 							tagWriter.setOutputStream(sslSocket.getOutputStream());
 							sendStartStream();
