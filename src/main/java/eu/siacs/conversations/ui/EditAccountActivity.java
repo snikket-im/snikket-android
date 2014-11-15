@@ -62,7 +62,7 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 		@Override
 		public void onClick(View v) {
 			if (mAccount != null
-					&& mAccount.getStatus() == Account.STATUS_DISABLED) {
+					&& mAccount.getStatus() == Account.State.DISABLED) {
 				mAccount.setOption(Account.OPTION_DISABLED, false);
 				xmppConnectionService.updateAccount(mAccount);
 				return;
@@ -139,13 +139,13 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 				@Override
 				public void run() {
 					if (mAccount != null
-							&& mAccount.getStatus() != Account.STATUS_ONLINE
+							&& mAccount.getStatus() != Account.State.ONLINE
 							&& mFetchingAvatar) {
 						startActivity(new Intent(getApplicationContext(),
 								ManageAccountActivity.class));
 						finish();
 					} else if (jidToEdit == null && mAccount != null
-							&& mAccount.getStatus() == Account.STATUS_ONLINE) {
+							&& mAccount.getStatus() == Account.State.ONLINE) {
 						if (!mFetchingAvatar) {
 							mFetchingAvatar = true;
 							xmppConnectionService.checkForAvatar(mAccount,
@@ -231,12 +231,12 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 
 	protected void updateSaveButton() {
 		if (mAccount != null
-				&& mAccount.getStatus() == Account.STATUS_CONNECTING) {
+				&& mAccount.getStatus() == Account.State.CONNECTING) {
 			this.mSaveButton.setEnabled(false);
 			this.mSaveButton.setTextColor(getSecondaryTextColor());
 			this.mSaveButton.setText(R.string.account_status_connecting);
 		} else if (mAccount != null
-				&& mAccount.getStatus() == Account.STATUS_DISABLED) {
+				&& mAccount.getStatus() == Account.State.DISABLED) {
 			this.mSaveButton.setEnabled(true);
 			this.mSaveButton.setTextColor(getPrimaryTextColor());
 			this.mSaveButton.setText(R.string.enable);
@@ -245,7 +245,7 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 			this.mSaveButton.setTextColor(getPrimaryTextColor());
 			if (jidToEdit != null) {
 				if (mAccount != null
-						&& mAccount.getStatus() == Account.STATUS_ONLINE) {
+						&& mAccount.getStatus() == Account.State.ONLINE) {
 					this.mSaveButton.setText(R.string.save);
 					if (!accountInfoEdited()) {
 						this.mSaveButton.setEnabled(false);
@@ -379,7 +379,7 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 			this.mRegisterNew.setVisibility(View.GONE);
 			this.mRegisterNew.setChecked(false);
 		}
-		if (this.mAccount.getStatus() == Account.STATUS_ONLINE
+		if (this.mAccount.getStatus() == Account.State.ONLINE
 				&& !this.mFetchingAvatar) {
 			this.mStats.setVisibility(View.VISIBLE);
 			this.mSessionEst.setText(UIHelper.readableTimeDifference(
@@ -428,8 +428,7 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 			}
 		} else {
 			if (this.mAccount.errorStatus()) {
-				this.mAccountJid.setError(getString(this.mAccount
-						.getReadableStatusId()));
+				this.mAccountJid.setError(getString(this.mAccount.getStatus().getReadableId()));
 				this.mAccountJid.requestFocus();
 			}
 			this.mStats.setVisibility(View.GONE);

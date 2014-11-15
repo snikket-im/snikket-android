@@ -143,7 +143,7 @@ public class VerifyOTRActivity extends XmppActivity implements XmppConnectionSer
 	}
 
 	protected boolean isAccountOnline() {
-		if (this.mAccount.getStatus() != Account.STATUS_ONLINE) {
+		if (this.mAccount.getStatus() != Account.State.ONLINE) {
 			Toast.makeText(this,R.string.not_connected_try_again,Toast.LENGTH_SHORT).show();
 			return false;
 		} else {

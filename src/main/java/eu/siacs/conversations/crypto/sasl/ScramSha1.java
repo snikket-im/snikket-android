@@ -43,7 +43,13 @@ public class ScramSha1 extends SaslMechanism {
 		clientFirstMessageBare = "";
 	}
 
-	public static String getMechanism() {
+	@Override
+	public int getPriority() {
+		return 20;
+	}
+
+	@Override
+	public String getMechanism() {
 		return "SCRAM-SHA-1";
 	}
 

@@ -34,30 +34,83 @@ public class Account extends AbstractEntity {
 	public static final String KEYS = "keys";
 	public static final String AVATAR = "avatar";
 
+	public static final String PINNED_MECHANISM_KEY = "pinned_mechanism";
+
 	public static final int OPTION_USETLS = 0;
 	public static final int OPTION_DISABLED = 1;
 	public static final int OPTION_REGISTER = 2;
 	public static final int OPTION_USECOMPRESSION = 3;
 
-	public static final int STATUS_CONNECTING = 0;
-	public static final int STATUS_DISABLED = -2;
-	public static final int STATUS_OFFLINE = -1;
-	public static final int STATUS_ONLINE = 1;
-	public static final int STATUS_NO_INTERNET = 2;
-	public static final int STATUS_UNAUTHORIZED = 3;
-	public static final int STATUS_SERVER_NOT_FOUND = 5;
+	public static enum State {
+		DISABLED,
+		OFFLINE,
+		CONNECTING,
+		ONLINE,
+		NO_INTERNET,
+		UNAUTHORIZED(true),
+		SERVER_NOT_FOUND(true),
+		REGISTRATION_FAILED(true),
+		REGISTRATION_CONFLICT(true),
+		REGISTRATION_SUCCESSFUL,
+		REGISTRATION_NOT_SUPPORTED(true),
+		SECURITY_ERROR(true),
+		INCOMPATIBLE_SERVER(true);
 
-	public static final int STATUS_REGISTRATION_FAILED = 7;
-	public static final int STATUS_REGISTRATION_CONFLICT = 8;
-	public static final int STATUS_REGISTRATION_SUCCESSFULL = 9;
-	public static final int STATUS_REGISTRATION_NOT_SUPPORTED = 10;
+		private boolean isError;
+
+		public boolean isError() {
+			return this.isError;
+		}
+
+		private State(final boolean isError) {
+			this.isError = isError;
+		}
+
+		private State() {
+			this(false);
+		}
+
+		public int getReadableId() {
+			switch (this) {
+				case DISABLED:
+					return R.string.account_status_disabled;
+				case ONLINE:
+					return R.string.account_status_online;
+				case CONNECTING:
+					return R.string.account_status_connecting;
+				case OFFLINE:
+					return R.string.account_status_offline;
+				case UNAUTHORIZED:
+					return R.string.account_status_unauthorized;
+				case SERVER_NOT_FOUND:
+					return R.string.account_status_not_found;
+				case NO_INTERNET:
+					return R.string.account_status_no_internet;
+				case REGISTRATION_FAILED:
+					return R.string.account_status_regis_fail;
+				case REGISTRATION_CONFLICT:
+					return R.string.account_status_regis_conflict;
+				case REGISTRATION_SUCCESSFUL:
+					return R.string.account_status_regis_success;
+				case REGISTRATION_NOT_SUPPORTED:
+					return R.string.account_status_regis_not_sup;
+				case SECURITY_ERROR:
+					return R.string.account_status_security_error;
+				case INCOMPATIBLE_SERVER:
+					return R.string.account_status_incompatible_server;
+				default:
+					return R.string.account_status_unknown;
+			}
+		}
+	}
+
 	public List<Conversation> pendingConferenceJoins = new CopyOnWriteArrayList<>();
 	public List<Conversation> pendingConferenceLeaves = new CopyOnWriteArrayList<>();
 	protected Jid jid;
 	protected String password;
 	protected int options = 0;
 	protected String rosterVersion;
-	protected int status = -1;
+	protected State status = State.OFFLINE;
 	protected JSONObject keys = new JSONObject();
 	protected String avatar;
 	protected boolean online = false;
@@ -79,8 +132,8 @@ public class Account extends AbstractEntity {
 	}
 
 	public Account(final String uuid, final Jid jid,
-				   final String password, final int options, final String rosterVersion, final String keys,
-				   final String avatar) {
+			final String password, final int options, final String rosterVersion, final String keys,
+			final String avatar) {
 		this.uuid = uuid;
 		this.jid = jid;
 		if (jid.isBareJid()) {
@@ -149,28 +202,24 @@ public class Account extends AbstractEntity {
 		this.password = password;
 	}
 
-	public int getStatus() {
+	public State getStatus() {
 		if (isOptionSet(OPTION_DISABLED)) {
-			return STATUS_DISABLED;
+			return State.DISABLED;
 		} else {
 			return this.status;
 		}
 	}
 
-	public void setStatus(final int status) {
+	public void setStatus(final State status) {
 		this.status = status;
 	}
 
 	public boolean errorStatus() {
-		int s = getStatus();
-		return (s == STATUS_REGISTRATION_FAILED
-				|| s == STATUS_REGISTRATION_CONFLICT
-				|| s == STATUS_REGISTRATION_NOT_SUPPORTED
-				|| s == STATUS_SERVER_NOT_FOUND || s == STATUS_UNAUTHORIZED);
+		return getStatus().isError();
 	}
 
 	public boolean hasErrorStatus() {
-		return getXmppConnection() != null && getStatus() > STATUS_NO_INTERNET && (getXmppConnection().getAttempt() >= 2);
+		return getXmppConnection() != null && getStatus().isError() && getXmppConnection().getAttempt() >= 2;
 	}
 
 	public String getResource() {
@@ -250,7 +299,7 @@ public class Account extends AbstractEntity {
 		if (this.otrFingerprint == null) {
 			try {
 				DSAPublicKey pubkey = (DSAPublicKey) this.otrEngine
-						.getPublicKey();
+					.getPublicKey();
 				if (pubkey == null) {
 					return null;
 				}
@@ -350,39 +399,9 @@ public class Account extends AbstractEntity {
 		return this.avatar;
 	}
 
-	public int getReadableStatusId() {
-		switch (getStatus()) {
-
-			case Account.STATUS_DISABLED:
-				return R.string.account_status_disabled;
-			case Account.STATUS_ONLINE:
-				return R.string.account_status_online;
-			case Account.STATUS_CONNECTING:
-				return R.string.account_status_connecting;
-			case Account.STATUS_OFFLINE:
-				return R.string.account_status_offline;
-			case Account.STATUS_UNAUTHORIZED:
-				return R.string.account_status_unauthorized;
-			case Account.STATUS_SERVER_NOT_FOUND:
-				return R.string.account_status_not_found;
-			case Account.STATUS_NO_INTERNET:
-				return R.string.account_status_no_internet;
-			case Account.STATUS_REGISTRATION_FAILED:
-				return R.string.account_status_regis_fail;
-			case Account.STATUS_REGISTRATION_CONFLICT:
-				return R.string.account_status_regis_conflict;
-			case Account.STATUS_REGISTRATION_SUCCESSFULL:
-				return R.string.account_status_regis_success;
-			case Account.STATUS_REGISTRATION_NOT_SUPPORTED:
-				return R.string.account_status_regis_not_sup;
-			default:
-				return R.string.account_status_unknown;
-		}
-	}
-
 	public void activateGracePeriod() {
 		this.mEndGracePeriod = SystemClock.elapsedRealtime()
-				+ (Config.CARBON_GRACE_PERIOD * 1000);
+			+ (Config.CARBON_GRACE_PERIOD * 1000);
 	}
 
 	public void deactivateGracePeriod() {

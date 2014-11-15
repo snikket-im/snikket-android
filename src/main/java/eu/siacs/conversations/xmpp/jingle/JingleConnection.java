@@ -917,7 +917,7 @@ public class JingleConnection implements Downloadable {
 	}
 
 	public boolean start() {
-		if (account.getStatus() == Account.STATUS_ONLINE) {
+		if (account.getStatus() == Account.State.ONLINE) {
 			if (mJingleStatus == JINGLE_STATUS_INITIATED) {
 				new Thread(new Runnable() {
 

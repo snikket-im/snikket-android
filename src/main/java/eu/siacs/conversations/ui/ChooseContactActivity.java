@@ -130,7 +130,7 @@ public class ChooseContactActivity extends XmppActivity {
 	protected void filterContacts(String needle) {
 		this.contacts.clear();
 		for (Account account : xmppConnectionService.getAccounts()) {
-			if (account.getStatus() != Account.STATUS_DISABLED) {
+			if (account.getStatus() != Account.State.DISABLED) {
 				for (Contact contact : account.getRoster().getContacts()) {
 					if (contact.showInRoster() && contact.match(needle)) {
 						this.contacts.add(contact);

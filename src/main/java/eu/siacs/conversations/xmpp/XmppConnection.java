@@ -12,6 +12,8 @@ import android.util.Log;
 import android.util.SparseArray;
 
 import org.apache.http.conn.ssl.StrictHostnameVerifier;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
@@ -120,15 +122,15 @@ public class XmppConnection implements Runnable {
 		applicationContext = service.getApplicationContext();
 	}
 
-	protected void changeStatus(int nextStatus) {
+	protected void changeStatus(final Account.State nextStatus) {
 		if (account.getStatus() != nextStatus) {
-			if ((nextStatus == Account.STATUS_OFFLINE)
-					&& (account.getStatus() != Account.STATUS_CONNECTING)
-					&& (account.getStatus() != Account.STATUS_ONLINE)
-					&& (account.getStatus() != Account.STATUS_DISABLED)) {
+			if ((nextStatus == Account.State.OFFLINE)
+					&& (account.getStatus() != Account.State.CONNECTING)
+					&& (account.getStatus() != Account.State.ONLINE)
+					&& (account.getStatus() != Account.State.DISABLED)) {
 				return;
-					}
-			if (nextStatus == Account.STATUS_ONLINE) {
+			}
+			if (nextStatus == Account.State.ONLINE) {
 				this.attempt = 0;
 			}
 			account.setStatus(nextStatus);
@@ -151,12 +153,12 @@ public class XmppConnection implements Runnable {
 			tagReader = new XmlReader(wakeLock);
 			tagWriter = new TagWriter();
 			packetCallbacks.clear();
-			this.changeStatus(Account.STATUS_CONNECTING);
+			this.changeStatus(Account.State.CONNECTING);
 			Bundle result = DNSHelper.getSRVRecord(account.getServer());
 			ArrayList<Parcelable> values = result.getParcelableArrayList("values");
 			if ("timeout".equals(result.getString("error"))) {
 				Log.d(Config.LOGTAG, account.getJid().toBareJid().toString() + ": dns timeout");
-				this.changeStatus(Account.STATUS_OFFLINE);
+				this.changeStatus(Account.State.OFFLINE);
 				return;
 			} else if (values != null) {
 				int i = 0;
@@ -197,7 +199,7 @@ public class XmppConnection implements Runnable {
 					}
 				}
 				if (socketError) {
-					this.changeStatus(Account.STATUS_SERVER_NOT_FOUND);
+					this.changeStatus(Account.State.SERVER_NOT_FOUND);
 					if (wakeLock.isHeld()) {
 						try {
 							wakeLock.release();
@@ -212,7 +214,7 @@ public class XmppConnection implements Runnable {
 			} else {
 				Log.d(Config.LOGTAG, account.getJid().toBareJid().toString()
 						+ ": timeout in DNS resolution");
-				changeStatus(Account.STATUS_OFFLINE);
+				changeStatus(Account.State.OFFLINE);
 				return;
 			}
 			OutputStream out = socket.getOutputStream();
@@ -236,7 +238,7 @@ public class XmppConnection implements Runnable {
 				socket.close();
 			}
 		} catch (UnknownHostException e) {
-			this.changeStatus(Account.STATUS_SERVER_NOT_FOUND);
+			this.changeStatus(Account.State.SERVER_NOT_FOUND);
 			if (wakeLock.isHeld()) {
 				try {
 					wakeLock.release();
@@ -245,7 +247,7 @@ public class XmppConnection implements Runnable {
 			}
 		} catch (final IOException | XmlPullParserException e) {
 			Log.d(Config.LOGTAG, account.getJid().toBareJid().toString() + ": " + e.getMessage());
-			this.changeStatus(Account.STATUS_OFFLINE);
+			this.changeStatus(Account.State.OFFLINE);
 			if (wakeLock.isHeld()) {
 				try {
 					wakeLock.release();
@@ -254,7 +256,7 @@ public class XmppConnection implements Runnable {
 			}
 		} catch (NoSuchAlgorithmException e) {
 			Log.d(Config.LOGTAG, account.getJid().toBareJid().toString() + ": " + e.getMessage());
-			this.changeStatus(Account.STATUS_OFFLINE);
+			this.changeStatus(Account.State.OFFLINE);
 			Log.d(Config.LOGTAG, "compression exception " + e.getMessage());
 			if (wakeLock.isHeld()) {
 				try {
@@ -293,13 +295,15 @@ public class XmppConnection implements Runnable {
 									Log.e(Config.LOGTAG, String.valueOf(e));
 								}
 								Log.d(Config.LOGTAG, account.getJid().toBareJid().toString() + ": logged in");
+								account.setKey(Account.PINNED_MECHANISM_KEY,
+                                        String.valueOf(saslMechanism.getPriority()));
 								tagReader.reset();
 								sendStartStream();
 								processStream(tagReader.readTag());
 								break;
 							} else if (nextTag.isStart("failure")) {
 								tagReader.readElement(nextTag);
-								changeStatus(Account.STATUS_UNAUTHORIZED);
+								changeStatus(Account.State.UNAUTHORIZED);
 							} else if (nextTag.isStart("challenge")) {
 								final String challenge = tagReader.readElement(nextTag).getContent();
 								final Element response = new Element("response");
@@ -376,7 +380,7 @@ public class XmppConnection implements Runnable {
 								tagReader.readElement(nextTag);
 								Log.d(Config.LOGTAG, account.getJid().toBareJid().toString() + ": resumption failed");
 								streamId = null;
-								if (account.getStatus() != Account.STATUS_ONLINE) {
+								if (account.getStatus() != Account.State.ONLINE) {
 									sendBindRequest();
 								}
 							} else if (nextTag.isStart("iq")) {
@@ -388,8 +392,8 @@ public class XmppConnection implements Runnable {
 							}
 							nextTag = tagReader.readTag();
 						}
-						if (account.getStatus() == Account.STATUS_ONLINE) {
-							account. setStatus(Account.STATUS_OFFLINE);
+						if (account.getStatus() == Account.State.ONLINE) {
+							account. setStatus(Account.State.OFFLINE);
 							if (statusListener != null) {
 								statusListener.onStatusChanged(account);
 							}
@@ -407,7 +411,7 @@ public class XmppConnection implements Runnable {
 			public void onIqPacketReceived(Account account, IqPacket packet) {
 				Log.d(Config.LOGTAG, account.getJid().toBareJid().toString()
 						+ ": online with resource " + account.getResource());
-				changeStatus(Account.STATUS_ONLINE);
+				changeStatus(Account.State.ONLINE);
 			}
 		});
 	}
@@ -592,12 +596,13 @@ public class XmppConnection implements Runnable {
 							}
 							sslSocket.setEnabledProtocols(supportProtocols);
 
-							if (verifier != null
-									&& !verifier.verify(account.getServer().getDomainpart(),
-										sslSocket.getSession())) {
-								sslSocket.close();
-								throw new IOException("host mismatch in TLS connection");
-									}
+                            if (verifier != null
+                                    && !verifier.verify(account.getServer().getDomainpart(),
+                                    sslSocket.getSession())) {
+                                account.setStatus(Account.State.SECURITY_ERROR);
+                                sslSocket.close();
+                                throw new IOException("Host mismatch in TLS connection");
+                            }
 							tagReader.setInputStream(sslSocket.getInputStream());
 							tagWriter.setOutputStream(sslSocket.getOutputStream());
 							sendStartStream();
@@ -624,7 +629,7 @@ public class XmppConnection implements Runnable {
 			sendRegistryRequest();
 		} else if (!this.streamFeatures.hasChild("register")
 				&& account.isOptionSet(Account.OPTION_REGISTER)) {
-			changeStatus(Account.STATUS_REGISTRATION_NOT_SUPPORTED);
+			changeStatus(Account.State.REGISTRATION_NOT_SUPPORTED);
 			disconnect(true);
 		} else if (this.streamFeatures.hasChild("mechanisms")
 				&& shouldAuthenticate && enabledEncryption) {
@@ -632,23 +637,33 @@ public class XmppConnection implements Runnable {
 					.findChild("mechanisms"));
 			final Element auth = new Element("auth");
 			auth.setAttribute("xmlns", "urn:ietf:params:xml:ns:xmpp-sasl");
-			if (mechanisms.contains(ScramSha1.getMechanism())) {
+			if (mechanisms.contains("SCRAM-SHA-1")) {
 				saslMechanism = new ScramSha1(tagWriter, account, mXmppConnectionService.getRNG());
-				Log.d(Config.LOGTAG, "Authenticating with " + ScramSha1.getMechanism());
-				auth.setAttribute("mechanism", ScramSha1.getMechanism());
-			} else if (mechanisms.contains(DigestMd5.getMechanism())) {
-				Log.d(Config.LOGTAG, "Authenticating with " + DigestMd5.getMechanism());
+			} else if (mechanisms.contains("DIGEST-MD5")) {
 				saslMechanism = new DigestMd5(tagWriter, account, mXmppConnectionService.getRNG());
-				auth.setAttribute("mechanism", DigestMd5.getMechanism());
-			} else if (mechanisms.contains(Plain.getMechanism())) {
-				Log.d(Config.LOGTAG, "Authenticating with " + Plain.getMechanism());
+			} else if (mechanisms.contains("PLAIN")) {
 				saslMechanism = new Plain(tagWriter, account);
-				auth.setAttribute("mechanism", Plain.getMechanism());
 			}
-            if (!saslMechanism.getClientFirstMessage().isEmpty()) {
-                auth.setContent(saslMechanism.getClientFirstMessage());
-            }
-            tagWriter.writeElement(auth);
+			final JSONObject keys = account.getKeys();
+			try {
+				if (keys.has(Account.PINNED_MECHANISM_KEY) &&
+						keys.getInt(Account.PINNED_MECHANISM_KEY) > saslMechanism.getPriority() ) {
+					Log.e(Config.LOGTAG, "Auth failed. Authentication mechanism " + saslMechanism.getMechanism() +
+							" has lower priority (" + String.valueOf(saslMechanism.getPriority()) +
+							") than pinned priority (" + keys.getInt(Account.PINNED_MECHANISM_KEY) +
+							"). Possible downgrade attack?");
+					disconnect(true);
+					account.setStatus(Account.State.SECURITY_ERROR);
+				}
+			} catch (final JSONException e) {
+				Log.d(Config.LOGTAG, "Parse error while checking pinned auth mechanism");
+			}
+			Log.d(Config.LOGTAG, "Authenticating with " + saslMechanism.getMechanism());
+			auth.setAttribute("mechanism", saslMechanism.getMechanism());
+			if (!saslMechanism.getClientFirstMessage().isEmpty()) {
+				auth.setContent(saslMechanism.getClientFirstMessage());
+			}
+			tagWriter.writeElement(auth);
 		} else if (this.streamFeatures.hasChild("sm", "urn:xmpp:sm:"
 					+ smVersion)
 				&& streamId != null) {
@@ -658,6 +673,7 @@ public class XmppConnection implements Runnable {
 		} else if (this.streamFeatures.hasChild("bind") && shouldBind) {
 			sendBindRequest();
 		} else {
+			account.setStatus(Account.State.INCOMPATIBLE_SERVER);
 			Log.d(Config.LOGTAG, account.getJid().toBareJid()
 					+ ": incompatible server. disconnecting");
 			disconnect(true);
@@ -721,20 +737,20 @@ public class XmppConnection implements Runnable {
 							if (packet.getType() == IqPacket.TYPE_RESULT) {
 								account.setOption(Account.OPTION_REGISTER,
 										false);
-								changeStatus(Account.STATUS_REGISTRATION_SUCCESSFULL);
+								changeStatus(Account.State.REGISTRATION_SUCCESSFUL);
 							} else if (packet.hasChild("error")
 									&& (packet.findChild("error")
 										.hasChild("conflict"))) {
-								changeStatus(Account.STATUS_REGISTRATION_CONFLICT);
+								changeStatus(Account.State.REGISTRATION_CONFLICT);
 							} else {
-								changeStatus(Account.STATUS_REGISTRATION_FAILED);
+								changeStatus(Account.State.REGISTRATION_FAILED);
 								Log.d(Config.LOGTAG, packet.toString());
 							}
 							disconnect(true);
 						}
 					});
 				} else {
-					changeStatus(Account.STATUS_REGISTRATION_FAILED);
+					changeStatus(Account.State.REGISTRATION_FAILED);
 					disconnect(true);
 					Log.d(Config.LOGTAG, account.getJid().toBareJid()
 							+ ": could not register. instructions are"

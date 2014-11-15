@@ -12,7 +12,13 @@ public class Plain extends SaslMechanism {
 		super(tagWriter, account, null);
 	}
 
-	public static String getMechanism() {
+	@Override
+	public int getPriority() {
+		return 0;
+	}
+
+	@Override
+	public String getMechanism() {
 		return "PLAIN";
 	}
 

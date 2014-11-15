@@ -544,7 +544,7 @@ public class ConversationFragment extends Fragment {
 			} else if (conversation.getMode() == Conversation.MODE_SINGLE) {
 				makeFingerprintWarning();
 			} else if (!conversation.getMucOptions().online()
-					&& conversation.getAccount().getStatus() == Account.STATUS_ONLINE) {
+					&& conversation.getAccount().getStatus() == Account.State.ONLINE) {
 				int error = conversation.getMucOptions().getError();
 				switch (error) {
 					case MucOptions.ERROR_NICK_IN_USE:
@@ -648,7 +648,7 @@ public class ConversationFragment extends Fragment {
 	public void updateSendButton() {
 		Conversation c = this.conversation;
 		if (activity.useSendButtonToIndicateStatus() && c != null
-				&& c.getAccount().getStatus() == Account.STATUS_ONLINE) {
+				&& c.getAccount().getStatus() == Account.State.ONLINE) {
 			if (c.getMode() == Conversation.MODE_SINGLE) {
 				switch (c.getContact().getMostAvailableStatus()) {
 					case Presences.CHAT:

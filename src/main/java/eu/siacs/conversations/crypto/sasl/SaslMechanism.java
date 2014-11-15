@@ -44,6 +44,15 @@ public abstract class SaslMechanism {
 		this.rng = rng;
 	}
 
+	/**
+	 * The priority is used to pin the authentication mechanism. If authentication fails, it MAY be retried with another
+	 * mechanism of the same priority, but MUST NOT be tried with a mechanism of lower priority (to prevent downgrade
+	 * attacks).
+	 * @return An arbitrary int representing the priority
+	 */
+	public abstract int getPriority();
+
+	public abstract String getMechanism();
 	public String getClientFirstMessage() {
 		return "";
 	}

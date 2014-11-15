@@ -517,7 +517,7 @@ public abstract class XmppActivity extends Activity {
 			if (presences.size() == 0) {
 				if (!contact.getOption(Contact.Options.TO)
 						&& !contact.getOption(Contact.Options.ASKING)
-						&& contact.getAccount().getStatus() == Account.STATUS_ONLINE) {
+						&& contact.getAccount().getStatus() == Account.State.ONLINE) {
 					showAskForPresenceDialog(contact);
 				} else if (!contact.getOption(Contact.Options.TO)
 						|| !contact.getOption(Contact.Options.FROM)) {
