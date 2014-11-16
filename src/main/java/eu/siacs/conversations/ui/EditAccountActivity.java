@@ -383,7 +383,7 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 		if (this.mAccount.getStatus() == Account.State.ONLINE
 				&& !this.mFetchingAvatar) {
 			this.mStats.setVisibility(View.VISIBLE);
-			this.mSessionEst.setText(UIHelper.readableTimeDifference(
+			this.mSessionEst.setText(UIHelper.readableTimeDifferenceFull(
 					getApplicationContext(), this.mAccount.getXmppConnection()
 							.getLastSessionEstablished()));
 			Features features = this.mAccount.getXmppConnection().getFeatures();
