@@ -9,8 +9,10 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
@@ -29,6 +31,7 @@ public class Contact implements ListItem {
 	public static final String AVATAR = "avatar";
     public static final String LAST_PRESENCE = "last_presence";
     public static final String LAST_TIME = "last_time";
+	public static final String GROUPS = "groups";
 
 	protected String accountUuid;
 	protected String systemName;
@@ -40,6 +43,7 @@ public class Contact implements ListItem {
 	protected String photoUri;
 	protected String avatar;
 	protected JSONObject keys = new JSONObject();
+	protected JSONArray groups = new JSONArray();
 	protected Presences presences = new Presences();
 
 	protected Account account;
@@ -48,16 +52,7 @@ public class Contact implements ListItem {
 
 	public Contact(final String account, final String systemName, final String serverName,
 		final Jid jid, final int subscription, final String photoUri,
-		final String systemAccount, final String keys, final String avatar,
-		final Lastseen lastseen) {
-		this(account, systemName, serverName, jid, subscription, photoUri, systemAccount, keys,
-				avatar);
-		this.lastseen = lastseen;
-	}
-
-	public Contact(final String account, final String systemName, final String serverName,
-		final Jid jid, final int subscription, final String photoUri,
-		final String systemAccount, final String keys, final String avatar) {
+		final String systemAccount, final String keys, final String avatar, final Lastseen lastseen, final String groups) {
 		this.accountUuid = account;
 		this.systemName = systemName;
 		this.serverName = serverName;
@@ -71,6 +66,12 @@ public class Contact implements ListItem {
 			this.keys = new JSONObject();
 		}
 		this.avatar = avatar;
+		try {
+			this.groups = (groups == null ? new JSONArray() : new JSONArray(groups));
+		} catch (JSONException e) {
+			this.groups = new JSONArray();
+		}
+		this.lastseen = lastseen;
 	}
 
 	public Contact(final Jid jid) {
@@ -99,6 +100,31 @@ public class Contact implements ListItem {
 		return jid;
 	}
 
+	@Override
+	public List<Tag> getTags() {
+		ArrayList<Tag> tags = new ArrayList<Tag>();
+		for(String group : getGroups()) {
+			tags.add(new Tag(group, UIHelper.getColorForName(group)));
+		}
+		int status = getMostAvailableStatus();
+		switch (getMostAvailableStatus()) {
+			case Presences.CHAT:
+			case Presences.ONLINE:
+				tags.add(new Tag("online",0xff259b24));
+				break;
+			case Presences.AWAY:
+				tags.add(new Tag("away",0xffff9800));
+				break;
+			case Presences.XA:
+				tags.add(new Tag("not available",0xffe51c23));
+				break;
+			case Presences.DND:
+				tags.add(new Tag("dnd",0xffe51c23));
+				break;
+		}
+		return tags;
+	}
+
 	public boolean match(String needle) {
 		return needle == null
 				|| jid.toString().contains(needle.toLowerCase())
@@ -119,6 +145,7 @@ public class Contact implements ListItem {
 		values.put(AVATAR, avatar);
 		values.put(LAST_PRESENCE, lastseen.presence);
 		values.put(LAST_TIME, lastseen.time);
+		values.put(GROUPS,groups.toString());
 		return values;
 	}
 
@@ -142,7 +169,8 @@ public class Contact implements ListItem {
 				cursor.getString(cursor.getColumnIndex(SYSTEMACCOUNT)),
 				cursor.getString(cursor.getColumnIndex(KEYS)),
 				cursor.getString(cursor.getColumnIndex(AVATAR)),
-				lastseen);
+				lastseen,
+				cursor.getString(cursor.getColumnIndex(GROUPS)));
 	}
 
 	public int getSubscription() {
@@ -205,6 +233,17 @@ public class Contact implements ListItem {
 
 	public String getSystemAccount() {
 		return systemAccount;
+	}
+
+	public List<String> getGroups() {
+		ArrayList<String> groups = new ArrayList<String>();
+		for(int i = 0; i < this.groups.length(); ++i) {
+			try {
+				groups.add(this.groups.getString(i));
+			} catch (final JSONException ignored) {
+			}
+		}
+		return groups;
 	}
 
 	public ArrayList<String> getOtrFingerprints() {
@@ -318,11 +357,23 @@ public class Contact implements ListItem {
 		}
 	}
 
+	public void parseGroupsFromElement(Element item) {
+		this.groups = new JSONArray();
+		for(Element element : item.getChildren()) {
+			if (element.getName().equals("group") && element.getContent() != null) {
+				this.groups.put(element.getContent());
+			}
+		}
+	}
+
 	public Element asElement() {
 		final Element item = new Element("item");
 		item.setAttribute("jid", this.jid.toString());
 		if (this.serverName != null) {
 			item.setAttribute("name", this.serverName);
+		}
+		for(String group : getGroups()) {
+			item.addChild("group").setContent(group);
 		}
 		return item;
 	}

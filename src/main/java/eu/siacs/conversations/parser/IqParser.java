@@ -34,6 +34,7 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
 				Contact contact = account.getRoster().getContact(jid);
 				if (!contact.getOption(Contact.Options.DIRTY_PUSH)) {
 					contact.setServerName(name);
+					contact.parseGroupsFromElement(item);
 				}
 				if (subscription != null) {
 					if (subscription.equals("remove")) {

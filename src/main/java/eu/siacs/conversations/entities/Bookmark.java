@@ -1,5 +1,7 @@
 package eu.siacs.conversations.entities;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import eu.siacs.conversations.xml.Element;
@@ -86,6 +88,11 @@ public class Bookmark extends Element implements ListItem {
         } else {
 			return null;
 		}
+	}
+
+	@Override
+	public List<Tag> getTags() {
+		return new ArrayList<Tag>();
 	}
 
 	public String getNick() {

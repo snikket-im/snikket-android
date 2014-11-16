@@ -73,6 +73,11 @@
             android:key="send_button_status"
             android:summary="@string/pref_use_send_button_to_indicate_status_summary"
             android:title="@string/pref_use_send_button_to_indicate_status" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="show_dynamic_tags"
+            android:summary="@string/pref_show_dynamic_tags_summary"
+            android:title="@string/pref_show_dynamic_tags" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/pref_advanced_options" >
         <PreferenceScreen

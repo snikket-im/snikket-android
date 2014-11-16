@@ -37,7 +37,13 @@
             android:singleLine="true"
             android:textColor="@color/primarytext"
             android:textSize="?attr/TextSizeBody" />
-
+        <LinearLayout
+            android:id="@+id/tags"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:orientation="horizontal">
+        </LinearLayout>
         <TextView
             android:id="@+id/key"
             android:layout_width="wrap_content"

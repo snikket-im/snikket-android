@@ -22,7 +22,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 	private static DatabaseBackend instance = null;
 
 	private static final String DATABASE_NAME = "history";
-	private static final int DATABASE_VERSION = 10;
+	private static final int DATABASE_VERSION = 11;
 
 	private static String CREATE_CONTATCS_STATEMENT = "create table "
 			+ Contact.TABLENAME + "(" + Contact.ACCOUNT + " TEXT, "
@@ -31,7 +31,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 			+ Contact.PHOTOURI + " TEXT," + Contact.OPTIONS + " NUMBER,"
 			+ Contact.SYSTEMACCOUNT + " NUMBER, " + Contact.AVATAR + " TEXT, "
             + Contact.LAST_PRESENCE + " TEXT, " + Contact.LAST_TIME + " NUMBER, "
-			+ "FOREIGN KEY(" + Contact.ACCOUNT + ") REFERENCES "
+			+ Contact.GROUPS + " TEXT, FOREIGN KEY(" + Contact.ACCOUNT + ") REFERENCES "
 			+ Account.TABLENAME + "(" + Account.UUID
 			+ ") ON DELETE CASCADE, UNIQUE(" + Contact.ACCOUNT + ", "
 			+ Contact.JID + ") ON CONFLICT REPLACE);";
@@ -114,6 +114,12 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		if (oldVersion < 10 && newVersion >= 10) {
 			db.execSQL("ALTER TABLE " + Message.TABLENAME + " ADD COLUMN "
 					+ Message.RELATIVE_FILE_PATH + " TEXT");
+		}
+		if (oldVersion < 11 && newVersion >= 11) {
+			db.execSQL("ALTER TABLE " + Contact.TABLENAME + " ADD COLUMN "
+					+ Contact.GROUPS + " TEXT");
+			db.execSQL("delete from "+Contact.TABLENAME);
+			db.execSQL("update "+Account.TABLENAME+" set "+Account.ROSTERVERSION+" = NULL");
 		}
 	}
 
