@@ -1,5 +1,8 @@
 ###Changelog
 
+####Version 0.8.4
+* bug fixes
+
 ####Version 0.8.3
 * increased UI performance
 * fixed rotation bugs
