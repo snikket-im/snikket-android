@@ -325,7 +325,7 @@
     <string name="respond">Respond</string>
     <string name="failed">Failed</string>
     <string name="secrets_do_not_match">Secrets do not match</string>
-    <string name="try_again">Try again</string>;
+    <string name="try_again">Try again</string>
     <string name="finish">Finish</string>
     <string name="verified">Verified!</string>
     <string name="smp_requested">Contact requested SMP verification</string>
