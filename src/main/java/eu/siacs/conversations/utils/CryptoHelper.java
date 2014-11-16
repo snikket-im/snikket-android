@@ -80,7 +80,7 @@ public class CryptoHelper {
 	}
 
 	public static String saslPrep(final String s) {
-		return saslEscape(Normalizer.normalize(s, Normalizer.Form.NFKC));
+		return Normalizer.normalize(s, Normalizer.Form.NFKC);
 	}
 
 	public static String prettifyFingerprint(String fingerprint) {
