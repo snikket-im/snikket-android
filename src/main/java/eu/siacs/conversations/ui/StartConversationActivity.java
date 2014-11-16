@@ -547,7 +547,7 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 				Invite invite = new Invite(data);
 				if (xmppConnectionServiceBound) {
 					invite.invite();
-				} else if (invite.jid != null) {
+				} else if (invite.getJid() != null) {
 					this.mPendingInvite = invite;
 				} else {
 					this.mPendingInvite = null;
@@ -622,14 +622,14 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 	}
 
 	private boolean handleJid(Invite invite) {
-		List<Contact> contacts = xmppConnectionService.findContacts(invite.jid);
+		List<Contact> contacts = xmppConnectionService.findContacts(invite.getJid().toString());
 		if (contacts.size() == 0) {
-			showCreateContactDialog(invite.jid,invite.fingerprint);
+			showCreateContactDialog(invite.getJid().toString(),invite.getFingerprint());
 			return false;
 		} else if (contacts.size() == 1) {
 			Contact contact = contacts.get(0);
-			if (invite.fingerprint != null) {
-				if (contact.addOtrFingerprint(invite.fingerprint)) {
+			if (invite.getFingerprint() != null) {
+				if (contact.addOtrFingerprint(invite.getFingerprint())) {
 					Log.d(Config.LOGTAG,"added new fingerprint");
 					xmppConnectionService.syncRosterToDisk(contact.getAccount());
 				}
@@ -640,10 +640,10 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 			if (mMenuSearchView != null) {
 				mMenuSearchView.expandActionView();
 				mSearchEditText.setText("");
-				mSearchEditText.append(invite.jid);
-				filter(invite.jid);
+				mSearchEditText.append(invite.getJid().toString());
+				filter(invite.getJid().toString());
 			} else {
-				mInitialJid = invite.jid;
+				mInitialJid = invite.getJid().toString();
 			}
 			return true;
 		}
@@ -754,9 +754,6 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 	}
 
 	private class Invite extends XmppUri {
-		private String jid;
-		private boolean muc;
-		private String fingerprint;
 
 		public Invite(Uri uri) {
 			super(uri);

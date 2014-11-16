@@ -11,9 +11,9 @@ import eu.siacs.conversations.xmpp.jid.Jid;
 
 public class XmppUri {
 
-	private String jid;
-	private boolean muc;
-	private String fingerprint;
+	protected String jid;
+	protected boolean muc;
+	protected String fingerprint;
 
 	public XmppUri(String uri) {
 		try {
