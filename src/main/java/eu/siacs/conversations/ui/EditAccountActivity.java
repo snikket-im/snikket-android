@@ -415,7 +415,7 @@ public class EditAccountActivity extends XmppActivity {
 		if (this.mAccount.getStatus() == Account.STATUS_ONLINE
 				&& !this.mFetchingAvatar) {
 			this.mStats.setVisibility(View.VISIBLE);
-			this.mSessionEst.setText(UIHelper.readableTimeDifference(
+			this.mSessionEst.setText(UIHelper.readableTimeDifferenceFull(
 					getApplicationContext(), this.mAccount.getXmppConnection()
 							.getLastSessionEstablished()));
 			Features features = this.mAccount.getXmppConnection().getFeatures();
