@@ -45,8 +45,6 @@ import android.widget.Spinner;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -59,10 +57,10 @@ import eu.siacs.conversations.entities.Bookmark;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.ListItem;
+import eu.siacs.conversations.utils.XmppUri;
 import eu.siacs.conversations.services.XmppConnectionService.OnRosterUpdate;
 import eu.siacs.conversations.ui.adapter.KnownHostsAdapter;
 import eu.siacs.conversations.ui.adapter.ListItemAdapter;
-import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.Validator;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
@@ -755,21 +753,17 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 		}
 	}
 
-	private class Invite {
+	private class Invite extends XmppUri {
 		private String jid;
 		private boolean muc;
 		private String fingerprint;
 
-		Invite(Uri uri) {
-			parse(uri);
+		public Invite(Uri uri) {
+			super(uri);
 		}
 
-		Invite(String uri) {
-			try {
-				parse(Uri.parse(uri));
-			} catch (IllegalArgumentException e) {
-				jid = null;
-			}
+		public Invite(String uri) {
+			super(uri);
 		}
 
 		boolean invite() {
@@ -781,40 +775,6 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 				}
 			}
 			return false;
-		}
-
-		void parse(Uri uri) {
-			String scheme = uri.getScheme();
-			if ("xmpp".equals(scheme)) {
-				// sample: xmpp:jid@foo.com
-				muc = "join".equalsIgnoreCase(uri.getQuery());
-				if (uri.getAuthority() != null) {
-					jid = uri.getAuthority();
-				} else {
-					jid = uri.getSchemeSpecificPart().split("\\?")[0];
-				}
-				fingerprint = parseFingerprint(uri.getQuery());
-			} else if ("imto".equals(scheme)) {
-				// sample: imto://xmpp/jid@foo.com
-				try {
-					jid = URLDecoder.decode(uri.getEncodedPath(), "UTF-8").split("/")[1];
-				} catch (final UnsupportedEncodingException ignored) {
-				}
-			}
-		}
-
-		String parseFingerprint(String query) {
-			if (query == null) {
-				return null;
-			} else {
-				final String NEEDLE = "otr-fingerprint=";
-				int index = query.indexOf(NEEDLE);
-				if (index >= 0 && query.length() >= (NEEDLE.length() + index + 40)) {
-					return CryptoHelper.prettifyFingerprint(query.substring(index + NEEDLE.length(), index + NEEDLE.length() + 40));
-				} else {
-					return null;
-				}
-			}
 		}
 	}
 }

@@ -1,7 +1,11 @@
 package eu.siacs.conversations.ui;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -9,14 +13,19 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
+
 import net.java.otr4j.OtrException;
 import net.java.otr4j.session.Session;
 
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
+import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.CryptoHelper;
+import eu.siacs.conversations.utils.XmppUri;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
 
@@ -32,20 +41,38 @@ public class VerifyOTRActivity extends XmppActivity implements XmppConnectionSer
 	private TextView mYourFingerprint;
 	private EditText mSharedSecretHint;
 	private EditText mSharedSecretSecret;
-	private Button mButtonVerifyFingerprint;
+	private Button mButtonScanQrCode;
+	private Button mButtonShowQrCode;
 	private Button mButtonSharedSecretPositive;
 	private Button mButtonSharedSecretNegative;
 	private TextView mStatusMessage;
 	private Account mAccount;
 	private Conversation mConversation;
 
-	private View.OnClickListener mVerifyFingerprintListener = new View.OnClickListener() {
+	private DialogInterface.OnClickListener mVerifyFingerprintListener = new DialogInterface.OnClickListener() {
+
+		@Override
+		public void onClick(DialogInterface dialogInterface, int click) {
+			mConversation.verifyOtrFingerprint();
+			updateView();
+			xmppConnectionService.syncRosterToDisk(mConversation.getAccount());
+		}
+	};
+
+	private View.OnClickListener mShowQrCodeListener = new View.OnClickListener() {
+		@Override
+		public void onClick(final View view) {
+			showQrCode();
+		}
+	};
+
+	private View.OnClickListener mScanQrCodeListener = new View.OnClickListener() {
 
 		@Override
 		public void onClick(View view) {
-			mConversation.verifyOtrFingerprint();
-			finish();
+			new IntentIntegrator(VerifyOTRActivity.this).initiateScan();
 		}
+
 	};
 
 	private View.OnClickListener mCreateSharedSecretListener = new View.OnClickListener() {
@@ -97,6 +124,8 @@ public class VerifyOTRActivity extends XmppActivity implements XmppConnectionSer
 		}
 	};
 
+	private XmppUri mPendingUri = null;
+
 	protected boolean initSmp(final String question, final String secret) {
 		final Session session = mConversation.getOtrSession();
 		if (session!=null) {
@@ -143,6 +172,18 @@ public class VerifyOTRActivity extends XmppActivity implements XmppConnectionSer
 		}
 	}
 
+	protected void verifyWithUri(XmppUri uri) {
+		Contact contact = mConversation.getContact();
+		if (this.mConversation.getContact().getJid().equals(uri.getJid()) && uri.getFingerprint() != null) {
+			contact.addOtrFingerprint(uri.getFingerprint());
+			Toast.makeText(this,R.string.verified,Toast.LENGTH_SHORT).show();
+			updateView();
+			xmppConnectionService.syncRosterToDisk(contact.getAccount());
+		} else {
+			Toast.makeText(this,R.string.could_not_verify_fingerprint,Toast.LENGTH_SHORT).show();
+		}
+	}
+
 	protected boolean isAccountOnline() {
 		if (this.mAccount.getStatus() != Account.State.ONLINE) {
 			Toast.makeText(this,R.string.not_connected_try_again,Toast.LENGTH_SHORT).show();
@@ -174,14 +215,36 @@ public class VerifyOTRActivity extends XmppActivity implements XmppConnectionSer
 	}
 
 	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+		if ((requestCode & 0xFFFF) == IntentIntegrator.REQUEST_CODE) {
+			IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
+			if (scanResult != null && scanResult.getFormatName() != null) {
+				String data = scanResult.getContents();
+				XmppUri uri = new XmppUri(data);
+				if (xmppConnectionServiceBound) {
+					verifyWithUri(uri);
+				} else {
+					this.mPendingUri = uri;
+				}
+			}
+		}
+		super.onActivityResult(requestCode, requestCode, intent);
+	}
+
+	@Override
 	protected void onBackendConnected() {
 		if (handleIntent(getIntent())) {
+			if (mPendingUri!=null) {
+				verifyWithUri(mPendingUri);
+				mPendingUri = null;
+			}
 			updateView();
 		}
 	}
 
 	protected void updateView() {
 		if (this.mConversation.hasValidOtrSession()) {
+			invalidateOptionsMenu();
 			this.mVerificationAreaOne.setVisibility(View.VISIBLE);
 			this.mVerificationAreaTwo.setVisibility(View.VISIBLE);
 			this.mErrorNoSession.setVisibility(View.GONE);
@@ -191,9 +254,9 @@ public class VerifyOTRActivity extends XmppActivity implements XmppConnectionSer
 			Conversation.Smp smp = mConversation.smp();
 			Session session = mConversation.getOtrSession();
 			if (mConversation.isOtrFingerprintVerified()) {
-				deactivateButton(mButtonVerifyFingerprint, R.string.verified);
+				deactivateButton(mButtonScanQrCode, R.string.verified);
 			} else {
-				activateButton(mButtonVerifyFingerprint, R.string.verify, mVerifyFingerprintListener);
+				activateButton(mButtonScanQrCode, R.string.scan_qr_code, mScanQrCodeListener);
 			}
 			if (smp.status == Conversation.Smp.STATUS_NONE) {
 				activateButton(mButtonSharedSecretPositive, R.string.create, mCreateSharedSecretListener);
@@ -268,13 +331,44 @@ public class VerifyOTRActivity extends XmppActivity implements XmppConnectionSer
 		this.mYourFingerprint = (TextView) findViewById(R.id.your_fingerprint);
 		this.mButtonSharedSecretNegative = (Button) findViewById(R.id.button_shared_secret_negative);
 		this.mButtonSharedSecretPositive = (Button) findViewById(R.id.button_shared_secret_positive);
-		this.mButtonVerifyFingerprint = (Button) findViewById(R.id.button_verify_fingerprint);
+		this.mButtonScanQrCode = (Button) findViewById(R.id.button_scan_qr_code);
+		this.mButtonShowQrCode = (Button) findViewById(R.id.button_show_qr_code);
+		this.mButtonShowQrCode.setOnClickListener(this.mShowQrCodeListener);
 		this.mSharedSecretSecret = (EditText) findViewById(R.id.shared_secret_secret);
 		this.mSharedSecretHint = (EditText) findViewById(R.id.shared_secret_hint);
 		this.mStatusMessage= (TextView) findViewById(R.id.status_message);
 		this.mVerificationAreaOne = (RelativeLayout) findViewById(R.id.verification_area_one);
 		this.mVerificationAreaTwo = (RelativeLayout) findViewById(R.id.verification_area_two);
 		this.mErrorNoSession = (TextView) findViewById(R.id.error_no_session);
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.verify_otr, menu);
+		if (mConversation != null && mConversation.isOtrFingerprintVerified()) {
+			MenuItem manuallyVerifyItem = menu.findItem(R.id.manually_verify);
+			manuallyVerifyItem.setVisible(false);
+		}
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem menuItem) {
+		if (menuItem.getItemId() == R.id.manually_verify) {
+			showManuallyVerifyDialog();
+			return true;
+		} else {
+			return super.onOptionsItemSelected(menuItem);
+		}
+	}
+
+	private void showManuallyVerifyDialog() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle(R.string.manually_verify);
+		builder.setMessage(R.string.are_you_sure_verify_fingerprint);
+		builder.setNegativeButton(R.string.cancel, null);
+		builder.setPositiveButton(R.string.verify, mVerifyFingerprintListener);
+		builder.create().show();
 	}
 
 	@Override

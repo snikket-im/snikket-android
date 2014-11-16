@@ -76,27 +76,27 @@
                 android:layout_alignParentRight="true" >
 
                 <Button
+                    android:id="@+id/button_show_qr_code"
                     style="?android:attr/borderlessButtonStyle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:visibility="invisible" />
+                    android:text="@string/show_qr_code"/>
 
                 <View
                     android:layout_width="1dp"
                     android:layout_height="fill_parent"
                     android:layout_marginBottom="7dp"
                     android:layout_marginTop="7dp"
-                    android:background="@color/divider"
-                    android:visibility="invisible"/>
+                    android:background="@color/divider" />
 
                 <Button
-                    android:id="@+id/button_verify_fingerprint"
+                    android:id="@+id/button_scan_qr_code"
                     style="?android:attr/borderlessButtonStyle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/verify"
+                    android:text="@string/scan_qr_code"
                     android:textColor="@color/primarytext" />
             </LinearLayout>
         </RelativeLayout>
