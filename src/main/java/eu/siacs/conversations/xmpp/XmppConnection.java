@@ -21,6 +21,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.math.BigInteger;
 import java.net.IDN;
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -574,12 +575,15 @@ public class XmppConnection implements Runnable {
 
 							final HostnameVerifier verifier = this.mXmppConnectionService.getMemorizingTrustManager().wrapHostnameVerifier(new StrictHostnameVerifier());
 
-							if (socket == null) {
-								throw new IOException("socket was null");
+							if (socket == null || socket.isClosed()) {
+								throw new IOException("socket null or closed");
 							}
-							final SSLSocket sslSocket = (SSLSocket) factory.createSocket(socket,
-									socket.getInetAddress().getHostAddress(), socket.getPort(),
-									true);
+							final InetAddress address = socket.getInetAddress();
+							if (address == null) {
+								throw new IOException("socket address was null");
+							}
+
+							final SSLSocket sslSocket = (SSLSocket) factory.createSocket(socket,address.getHostAddress(), socket.getPort(),true);
 
 							// Support all protocols except legacy SSL.
 							// The min SDK version prevents us having to worry about SSLv2. In
