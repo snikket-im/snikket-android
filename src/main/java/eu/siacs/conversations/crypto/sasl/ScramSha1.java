@@ -52,7 +52,7 @@ public class ScramSha1 extends SaslMechanism {
 				final String[] kparts = k.split(",", 4);
 				try {
 					final byte[] saltedPassword, serverKey, clientKey;
-					saltedPassword = hi(CryptoHelper.saslPrep(CryptoHelper.hexToString(kparts[1])).getBytes(),
+					saltedPassword = hi(CryptoHelper.hexToString(kparts[1]).getBytes(),
 							Base64.decode(CryptoHelper.hexToString(kparts[2]), Base64.DEFAULT), Integer.valueOf(kparts[3]));
 					serverKey = hmac(saltedPassword, SERVER_KEY_BYTES);
 					clientKey = hmac(saltedPassword, CLIENT_KEY_BYTES);
@@ -88,7 +88,7 @@ public class ScramSha1 extends SaslMechanism {
 	@Override
 	public String getClientFirstMessage() {
 		if (clientFirstMessageBare.isEmpty() && state == State.INITIAL) {
-			clientFirstMessageBare = "n=" + CryptoHelper.saslPrep(account.getUsername()) +
+			clientFirstMessageBare = "n=" + CryptoHelper.saslEscape(CryptoHelper.saslPrep(account.getUsername())) +
 				",r=" + this.clientNonce;
 			state = State.AUTH_TEXT_SENT;
 		}
