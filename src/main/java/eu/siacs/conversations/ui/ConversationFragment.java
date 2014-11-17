@@ -494,6 +494,9 @@ public class ConversationFragment extends Fragment {
 	}
 
 	public void reInit(Conversation conversation) {
+		if (conversation == null) {
+			return;
+		}
 		if (this.conversation != null) {
 			this.conversation.setNextMessage(mEditMessage.getText().toString());
 		}

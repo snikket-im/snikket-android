@@ -43,7 +43,7 @@ public class MucOptions {
 		private int role;
 		private int affiliation;
 		private String name;
-		private String jid;
+		private Jid jid;
 		private long pgpKeyId = 0;
 
 		public String getName() {
@@ -54,11 +54,11 @@ public class MucOptions {
 			this.name = user;
 		}
 
-		public void setJid(String jid) {
+		public void setJid(Jid jid) {
 			this.jid = jid;
 		}
 
-		public String getJid() {
+		public Jid getJid() {
 			return this.jid;
 		}
 
@@ -165,7 +165,7 @@ public class MucOptions {
 						user.setName(name);
 						user.setAffiliation(item.getAttribute("affiliation"));
 						user.setRole(item.getAttribute("role"));
-						user.setJid(item.getAttribute("jid"));
+						user.setJid(item.getAttributeAsJid("jid"));
 						user.setName(name);
 						if (name.equals(this.joinnick)) {
 							this.isOnline = true;
@@ -346,7 +346,7 @@ public class MucOptions {
         }
     }
 
-	public String getTrueCounterpart(String counterpart) {
+	public Jid getTrueCounterpart(String counterpart) {
 		for (User user : this.getUsers()) {
 			if (user.getName().equals(counterpart)) {
 				return user.getJid();

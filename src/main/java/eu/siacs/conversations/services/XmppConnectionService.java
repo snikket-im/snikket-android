@@ -1971,7 +1971,7 @@ public class XmppConnectionService extends Service {
 		return this.mJingleConnectionManager;
 	}
 
-	public List<Contact> findContacts(String jid) {
+	public List<Contact> findContacts(Jid jid) {
 		ArrayList<Contact> contacts = new ArrayList<>();
 		for (Account account : getAccounts()) {
 			if (!account.isOptionSet(Account.OPTION_DISABLED)) {

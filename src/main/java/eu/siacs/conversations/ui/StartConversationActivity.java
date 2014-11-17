@@ -622,7 +622,7 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 	}
 
 	private boolean handleJid(Invite invite) {
-		List<Contact> contacts = xmppConnectionService.findContacts(invite.getJid().toString());
+		List<Contact> contacts = xmppConnectionService.findContacts(invite.getJid());
 		if (contacts.size() == 0) {
 			showCreateContactDialog(invite.getJid().toString(),invite.getFingerprint());
 			return false;

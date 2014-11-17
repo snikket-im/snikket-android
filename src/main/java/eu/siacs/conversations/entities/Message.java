@@ -49,7 +49,7 @@ public class Message extends AbstractEntity {
 	public boolean markable = false;
 	protected String conversationUuid;
 	protected Jid counterpart;
-	protected String trueCounterpart;
+	protected Jid trueCounterpart;
 	protected String body;
 	protected String encryptedBody;
 	protected long timeSent;
@@ -81,7 +81,7 @@ public class Message extends AbstractEntity {
 	}
 
 	public Message(final String uuid, final String conversationUUid, final Jid counterpart,
-				   final String trueCounterpart, final String body, final long timeSent,
+				   final Jid trueCounterpart, final String body, final long timeSent,
 				   final int encryption, final int status, final int type, final String remoteMsgId, final String relativeFilePath) {
 		this.uuid = uuid;
 		this.conversationUuid = conversationUUid;
@@ -108,10 +108,21 @@ public class Message extends AbstractEntity {
 		} catch (InvalidJidException e) {
 			jid = null;
 		}
+		Jid trueCounterpart;
+		try {
+			String value = cursor.getString(cursor.getColumnIndex(TRUE_COUNTERPART));
+			if (value!=null) {
+				trueCounterpart = Jid.fromString(value);
+			} else {
+				trueCounterpart = null;
+			}
+		} catch (InvalidJidException e) {
+			trueCounterpart = null;
+		}
 		return new Message(cursor.getString(cursor.getColumnIndex(UUID)),
 				cursor.getString(cursor.getColumnIndex(CONVERSATION)),
 				jid,
-				cursor.getString(cursor.getColumnIndex(TRUE_COUNTERPART)),
+				trueCounterpart,
 				cursor.getString(cursor.getColumnIndex(BODY)),
 				cursor.getLong(cursor.getColumnIndex(TIME_SENT)),
 				cursor.getInt(cursor.getColumnIndex(ENCRYPTION)),
@@ -138,7 +149,11 @@ public class Message extends AbstractEntity {
 		} else {
 			values.put(COUNTERPART, counterpart.toString());
 		}
-		values.put(TRUE_COUNTERPART, trueCounterpart);
+		if (trueCounterpart == null ) {
+			values.putNull(TRUE_COUNTERPART);
+		} else {
+			values.put(TRUE_COUNTERPART, trueCounterpart.toString());
+		}
 		values.put(BODY, body);
 		values.put(TIME_SENT, timeSent);
 		values.put(ENCRYPTION, encryption);
@@ -258,7 +273,7 @@ public class Message extends AbstractEntity {
 		this.type = type;
 	}
 
-	public void setTrueCounterpart(String trueCounterpart) {
+	public void setTrueCounterpart(Jid trueCounterpart) {
 		this.trueCounterpart = trueCounterpart;
 	}
 

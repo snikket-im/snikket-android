@@ -15,12 +15,11 @@ public class Roster {
 		this.account = account;
 	}
 
-	public Contact getContactFromRoster(String jid) {
+	public Contact getContactFromRoster(Jid jid) {
 		if (jid == null) {
 			return null;
 		}
-		String cleanJid = jid.split("/", 2)[0];
-		Contact contact = contacts.get(cleanJid);
+		Contact contact = contacts.get(jid.toBareJid().toString());
 		if (contact != null && contact.showInRoster()) {
 			return contact;
 		} else {
