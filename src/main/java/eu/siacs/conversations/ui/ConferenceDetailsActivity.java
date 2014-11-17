@@ -1,10 +1,11 @@
 package eu.siacs.conversations.ui;
 
-import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.IntentSender.SendIntentException;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -259,7 +260,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 		}
 	}
 
-	@SuppressLint("JELLY_BEAN")
+	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 	private void setListItemBackgroundOnView(View view) {
 		int sdk = android.os.Build.VERSION.SDK_INT;
 		if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
