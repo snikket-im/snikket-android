@@ -145,10 +145,10 @@ public class Contact implements ListItem {
 	}
 
 	public boolean match(String needle) {
-		if (needle == null) {
+		if (needle == null || needle.isEmpty()) {
 			return true;
 		}
-		needle = needle.toLowerCase();
+		needle = needle.toLowerCase().trim();
 		String[] parts = needle.split("\\s+");
 		if (parts.length > 1) {
 			for(int i = 0; i < parts.length; ++i) {
