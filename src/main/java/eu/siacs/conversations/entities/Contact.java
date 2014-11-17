@@ -9,6 +9,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xml.Element;
@@ -148,7 +149,7 @@ public class Contact implements ListItem {
 		if (needle == null || needle.isEmpty()) {
 			return true;
 		}
-		needle = needle.toLowerCase().trim();
+		needle = needle.toLowerCase(Locale.US).trim();
 		String[] parts = needle.split("\\s+");
 		if (parts.length > 1) {
 			for(int i = 0; i < parts.length; ++i) {
@@ -158,13 +159,16 @@ public class Contact implements ListItem {
 			}
 			return true;
 		} else {
-			return jid.toString().contains(needle) || getDisplayName().toLowerCase().contains(needle) || matchInTag(needle);
+			return jid.toString().contains(needle) ||
+				getDisplayName().toLowerCase(Locale.US).contains(needle) ||
+				matchInTag(needle);
 		}
 	}
 
 	private boolean matchInTag(String needle) {
+		needle = needle.toLowerCase(Locale.US);
 		for (Tag tag : getTags()) {
-			if (tag.getName().toLowerCase().contains(needle)) {
+			if (tag.getName().toLowerCase(Locale.US).contains(needle)) {
 				return true;
 			}
 		}
