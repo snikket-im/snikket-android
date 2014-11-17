@@ -351,4 +351,5 @@
     <string name="are_you_sure_verify_fingerprint">Are you sure that you want to verify your contacts OTR fingerprint?</string>
     <string name="pref_show_dynamic_tags">Show dynamic tags</string>
     <string name="pref_show_dynamic_tags_summary">Display read-only tags underneath contacts</string>
+    <string name="enable_notifications">Enable notifications</string>
 </resources>

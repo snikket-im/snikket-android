@@ -15,6 +15,7 @@ import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.support.v4.widget.SlidingPaneLayout;
 import android.support.v4.widget.SlidingPaneLayout.PanelSlideListener;
+import android.view.ContextMenu;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -73,7 +74,8 @@ public class ConversationActivity extends XmppActivity implements
 	private View mContentView;
 
 	private List<Conversation> conversationList = new ArrayList<>();
-	private Conversation selectedConversation = null;
+	private Conversation mSelectedConversation = null;
+	private Conversation mSelectedConversationForContext = null;
 	private ListView listView;
 	private ConversationFragment mConversationFragment;
 
@@ -87,11 +89,11 @@ public class ConversationActivity extends XmppActivity implements
 	}
 
 	public Conversation getSelectedConversation() {
-		return this.selectedConversation;
+		return this.mSelectedConversation;
 	}
 
 	public void setSelectedConversation(Conversation conversation) {
-		this.selectedConversation = conversation;
+		this.mSelectedConversation = conversation;
 	}
 
 	public ListView getConversationListView() {
@@ -180,6 +182,7 @@ public class ConversationActivity extends XmppActivity implements
 				hideConversationsOverview();
 			}
 		});
+		registerForContextMenu(listView);
 		mContentView = findViewById(R.id.content_view_spl);
 		if (mContentView == null) {
 			mContentView = findViewById(R.id.content_view_ll);
@@ -220,6 +223,42 @@ public class ConversationActivity extends XmppActivity implements
 
 				}
 			});
+		}
+	}
+
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+		getMenuInflater().inflate(R.menu.conversations_context, menu);
+		AdapterView.AdapterContextMenuInfo acmi = (AdapterView.AdapterContextMenuInfo) menuInfo;
+		this.mSelectedConversationForContext = this.conversationList.get(acmi.position);
+		menu.setHeaderTitle(this.mSelectedConversationForContext.getName());
+		MenuItem enableNotifications = menu.findItem(R.id.action_unmute);
+		MenuItem disableNotifications = menu.findItem(R.id.action_mute);
+		if (this.mSelectedConversationForContext.isMuted()) {
+			disableNotifications.setVisible(false);
+		} else {
+			enableNotifications.setVisible(false);
+		}
+		super.onCreateContextMenu(menu,v,menuInfo);
+	}
+
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.action_archive:
+				endConversation(mSelectedConversationForContext);
+				return true;
+			case R.id.action_mute:
+				muteConversationDialog(mSelectedConversationForContext);
+				return true;
+			case R.id.action_unmute:
+				mSelectedConversationForContext.setMutedTill(0);
+				xmppConnectionService.updateConversation(mSelectedConversationForContext);
+				updateConversationList();
+				ConversationActivity.this.mConversationFragment.updateMessages();
+				return true;
+			default:
+				return super.onContextItemSelected(item);
 		}
 	}
 
@@ -580,7 +619,7 @@ public class ConversationActivity extends XmppActivity implements
 
 	protected void muteConversationDialog(final Conversation conversation) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle(R.string.disable_notifications_for_this_conversation);
+		builder.setTitle(R.string.disable_notifications);
 		final int[] durations = getResources().getIntArray(
 				R.array.mute_options_durations);
 		builder.setItems(R.array.mute_options_descriptions,
@@ -598,11 +637,8 @@ public class ConversationActivity extends XmppActivity implements
 						conversation.setMutedTill(till);
 						ConversationActivity.this.xmppConnectionService.databaseBackend
 								.updateConversation(conversation);
-						ConversationFragment selectedFragment = (ConversationFragment) getFragmentManager()
-								.findFragmentByTag("conversation");
-						if (selectedFragment != null) {
-							selectedFragment.updateMessages();
-						}
+						updateConversationList();
+						ConversationActivity.this.mConversationFragment.updateMessages();
 					}
 				});
 		builder.create().show();
