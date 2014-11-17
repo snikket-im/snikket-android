@@ -69,8 +69,8 @@ run your own XMPP server for you and your friends. These XEP's are:
 * [betheg](https://github.com/betheg)
 
 #### Logo
-
-* [Diego Turtulici](http://efesto.eigenlab.org/~diesys)
+* [Ilia Rostovtsev](https://github.com/qooob) (Progress)
+* [Diego Turtulici](http://efesto.eigenlab.org/~diesys) (Original)
 
 #### Translations
 
