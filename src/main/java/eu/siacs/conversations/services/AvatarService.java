@@ -58,9 +58,11 @@ public class AvatarService {
 	}
 
 	public void clear(Contact contact) {
-		for (Integer size : sizes) {
-			this.mXmppConnectionService.getBitmapCache().remove(
-					key(contact, size));
+		synchronized (this.sizes) {
+			for (Integer size : sizes) {
+				this.mXmppConnectionService.getBitmapCache().remove(
+						key(contact, size));
+			}
 		}
 	}
 
@@ -150,9 +152,11 @@ public class AvatarService {
 	}
 
 	public void clear(MucOptions options) {
-		for (Integer size : sizes) {
-			this.mXmppConnectionService.getBitmapCache().remove(
-					key(options, size));
+		synchronized (this.sizes) {
+			for (Integer size : sizes) {
+				this.mXmppConnectionService.getBitmapCache().remove(
+						key(options, size));
+			}
 		}
 	}
 
@@ -182,9 +186,11 @@ public class AvatarService {
 	}
 
 	public void clear(Account account) {
-		for (Integer size : sizes) {
-			this.mXmppConnectionService.getBitmapCache().remove(
-					key(account, size));
+		synchronized (this.sizes) {
+			for (Integer size : sizes) {
+				this.mXmppConnectionService.getBitmapCache().remove(
+						key(account, size));
+			}
 		}
 	}
 
