@@ -47,6 +47,7 @@ public class ConversationActivity extends XmppActivity implements
 	public static final String VIEW_CONVERSATION = "viewConversation";
 	public static final String CONVERSATION = "conversationUuid";
 	public static final String TEXT = "text";
+	public static final String NICK = "nick";
 	public static final String PRESENCE = "eu.siacs.conversations.presence";
 
 	public static final int REQUEST_SEND_MESSAGE = 0x0201;
@@ -701,9 +702,14 @@ public class ConversationActivity extends XmppActivity implements
 	private void handleViewConversationIntent(Intent intent) {
 		String uuid = (String) intent.getExtras().get(CONVERSATION);
 		String text = intent.getExtras().getString(TEXT, "");
+		String nick = intent.getExtras().getString(NICK,null);
 		selectConversationByUuid(uuid);
 		this.mConversationFragment.reInit(getSelectedConversation());
-		this.mConversationFragment.appendText(text);
+		if (nick!=null) {
+			this.mConversationFragment.highlightInConference(nick);
+		} else {
+			this.mConversationFragment.appendText(text);
+		}
 		hideConversationsOverview();
 		if (mContentView instanceof SlidingPaneLayout) {
 			openConversation();

@@ -301,6 +301,14 @@ public abstract class XmppActivity extends Activity {
 
 	public void switchToConversation(Conversation conversation, String text,
 									 boolean newTask) {
+		switchToConversation(conversation,text,null,newTask);
+	}
+
+	public void highlightInMuc(Conversation conversation, String nick) {
+		switchToConversation(conversation,null,nick,false);
+	}
+
+	private void switchToConversation(Conversation conversation, String text, String nick, boolean newTask) {
 		Intent viewConversationIntent = new Intent(this,
 				ConversationActivity.class);
 		viewConversationIntent.setAction(Intent.ACTION_VIEW);
@@ -308,6 +316,9 @@ public abstract class XmppActivity extends Activity {
 				conversation.getUuid());
 		if (text != null) {
 			viewConversationIntent.putExtra(ConversationActivity.TEXT, text);
+		}
+		if (nick != null) {
+			viewConversationIntent.putExtra(ConversationActivity.NICK, nick);
 		}
 		viewConversationIntent.setType(ConversationActivity.VIEW_CONVERSATION);
 		if (newTask) {
