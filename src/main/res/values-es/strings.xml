@@ -301,7 +301,7 @@
     <string name="respond">Responder</string>
     <string name="failed">Falló</string>
     <string name="secrets_do_not_match">Los secretos no coinciden</string>
-    <string name="try_again">Intentar de nuevo</string>;
+    <string name="try_again">Intentar de nuevo</string>
     <string name="finish">Terminar</string>
     <string name="verified">Verificado!</string>
     <string name="smp_requested">El contacto solicita verificación SMP</string>
