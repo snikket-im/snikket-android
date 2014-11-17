@@ -6,8 +6,7 @@ resolutions={
 	'xxhdpi' => 3,
 	}
 images = {
-	'conversations.svg' => ['ic_launcher', 48],
-	'conversations_baloon.svg' => ['ic_activity', 32],
+	'conversations_baloon.svg' => ['ic_launcher', 48],
 	'conversations_mono.svg' => ['ic_notification', 24],
 	'ic_received_indicator.svg' => ['ic_received_indicator', 12],
 	}
