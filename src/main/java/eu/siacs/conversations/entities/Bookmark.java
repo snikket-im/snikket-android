@@ -2,6 +2,7 @@ package eu.siacs.conversations.entities;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xml.Element;
@@ -126,13 +127,16 @@ public class Bookmark extends Element implements ListItem {
 		if (needle == null) {
 			return true;
 		}
-		needle = needle.toLowerCase();
-		return getJid().toString().contains(needle) || getDisplayName().toLowerCase().contains(needle) || matchInTag(needle);
+		needle = needle.toLowerCase(Locale.US);
+		return getJid().toString().contains(needle) ||
+			getDisplayName().toLowerCase(Locale.US).contains(needle) ||
+			matchInTag(needle);
 	}
 
 	private boolean matchInTag(String needle) {
+		needle = needle.toLowerCase(Locale.US);
 		for (Tag tag : getTags()) {
-			if (tag.getName().toLowerCase().contains(needle)) {
+			if (tag.getName().toLowerCase(Locale.US).contains(needle)) {
 				return true;
 			}
 		}
