@@ -149,7 +149,17 @@ public class Contact implements ListItem {
 			return true;
 		}
 		needle = needle.toLowerCase();
-		return jid.toString().contains(needle) || getDisplayName().toLowerCase().contains(needle) || matchInTag(needle);
+		String[] parts = needle.split("\\s+");
+		if (parts.length > 1) {
+			for(int i = 0; i < parts.length; ++i) {
+				if (!match(parts[i])) {
+					return false;
+				}
+			}
+			return true;
+		} else {
+			return jid.toString().contains(needle) || getDisplayName().toLowerCase().contains(needle) || matchInTag(needle);
+		}
 	}
 
 	private boolean matchInTag(String needle) {
