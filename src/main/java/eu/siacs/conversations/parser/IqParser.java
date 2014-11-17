@@ -50,8 +50,10 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
 						contact.parseSubscriptionFromElement(item);
 					}
 				}
+				mXmppConnectionService.getAvatarService().clear(contact);
 			}
 		}
+		mXmppConnectionService.updateConversationUi();
 		mXmppConnectionService.updateRosterUi();
 	}
 
