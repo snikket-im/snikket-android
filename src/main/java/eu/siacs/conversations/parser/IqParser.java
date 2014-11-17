@@ -1,5 +1,8 @@
 package eu.siacs.conversations.parser;
 
+import android.util.Log;
+
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.services.XmppConnectionService;
@@ -68,32 +71,36 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
 	@Override
 	public void onIqPacketReceived(Account account, IqPacket packet) {
 		if (packet.hasChild("query", "jabber:iq:roster")) {
-            final Jid from = packet.getFrom();
-            if ((from == null) || (from.equals(account.getJid().toBareJid()))) {
+			final Jid from = packet.getFrom();
+			if ((from == null) || (from.equals(account.getJid().toBareJid()))) {
 				Element query = packet.findChild("query");
 				this.rosterItems(account, query);
 			}
-		} else if (packet.hasChild("open", "http://jabber.org/protocol/ibb")
-				|| packet.hasChild("data", "http://jabber.org/protocol/ibb")) {
-			mXmppConnectionService.getJingleConnectionManager()
-					.deliverIbbPacket(account, packet);
-		} else if (packet.hasChild("query",
-				"http://jabber.org/protocol/disco#info")) {
-			IqPacket response = mXmppConnectionService.getIqGenerator()
-					.discoResponse(packet);
-			account.getXmppConnection().sendIqPacket(response, null);
-		} else if (packet.hasChild("ping", "urn:xmpp:ping")) {
-			IqPacket response = packet.generateRespone(IqPacket.TYPE_RESULT);
-			mXmppConnectionService.sendIqPacket(account, response, null);
 		} else {
-			if ((packet.getType() == IqPacket.TYPE_GET)
-					|| (packet.getType() == IqPacket.TYPE_SET)) {
-				IqPacket response = packet.generateRespone(IqPacket.TYPE_ERROR);
-				Element error = response.addChild("error");
-				error.setAttribute("type", "cancel");
-				error.addChild("feature-not-implemented",
-						"urn:ietf:params:xml:ns:xmpp-stanzas");
+			if (packet.getFrom() == null) {
+				Log.d(Config.LOGTAG, account.getJid().toBareJid().toString() + ": received iq with invalid from "+packet.toString());
+				return;
+			} else if (packet.hasChild("open", "http://jabber.org/protocol/ibb")
+					|| packet.hasChild("data", "http://jabber.org/protocol/ibb")) {
+				mXmppConnectionService.getJingleConnectionManager()
+						.deliverIbbPacket(account, packet);
+			} else if (packet.hasChild("query", "http://jabber.org/protocol/disco#info")) {
+				IqPacket response = mXmppConnectionService.getIqGenerator()
+						.discoResponse(packet);
 				account.getXmppConnection().sendIqPacket(response, null);
+			} else if (packet.hasChild("ping", "urn:xmpp:ping")) {
+				IqPacket response = packet.generateRespone(IqPacket.TYPE_RESULT);
+				mXmppConnectionService.sendIqPacket(account, response, null);
+			} else {
+				if ((packet.getType() == IqPacket.TYPE_GET)
+						|| (packet.getType() == IqPacket.TYPE_SET)) {
+					IqPacket response = packet.generateRespone(IqPacket.TYPE_ERROR);
+					Element error = response.addChild("error");
+					error.setAttribute("type", "cancel");
+					error.addChild("feature-not-implemented",
+							"urn:ietf:params:xml:ns:xmpp-stanzas");
+					account.getXmppConnection().sendIqPacket(response, null);
+				}
 			}
 		}
 	}

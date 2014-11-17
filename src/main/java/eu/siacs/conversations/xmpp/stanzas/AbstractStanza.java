@@ -36,11 +36,15 @@ public class AbstractStanza extends Element {
 	}
 
 	public void setTo(final Jid to) {
-		setAttribute("to", to.toString());
+		if (to != null) {
+			setAttribute("to", to.toString());
+		}
 	}
 
 	public void setFrom(final Jid from) {
-		setAttribute("from", from.toString());
+		if (from != null) {
+			setAttribute("from", from.toString());
+		}
 	}
 
 	public void setId(final String id) {
