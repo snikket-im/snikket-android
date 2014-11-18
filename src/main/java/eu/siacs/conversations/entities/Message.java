@@ -69,14 +69,14 @@ public class Message extends AbstractEntity {
 	}
 
 	public Message(Conversation conversation, String body, int encryption) {
-		this(conversation,body,encryption,STATUS_UNSEND);
+		this(conversation, body, encryption, STATUS_UNSEND);
 	}
 
 	public Message(Conversation conversation, String body, int encryption, int status) {
 		this(java.util.UUID.randomUUID().toString(), conversation.getUuid(),
 				conversation.getContactJid().toBareJid(), null, body, System
 						.currentTimeMillis(), encryption,
-				status, TYPE_TEXT, null,null);
+				status, TYPE_TEXT, null, null);
 		this.conversation = conversation;
 	}
 
@@ -100,7 +100,7 @@ public class Message extends AbstractEntity {
 		Jid jid;
 		try {
 			String value = cursor.getString(cursor.getColumnIndex(COUNTERPART));
-			if (value!=null) {
+			if (value != null) {
 				jid = Jid.fromString(value);
 			} else {
 				jid = null;
@@ -111,7 +111,7 @@ public class Message extends AbstractEntity {
 		Jid trueCounterpart;
 		try {
 			String value = cursor.getString(cursor.getColumnIndex(TRUE_COUNTERPART));
-			if (value!=null) {
+			if (value != null) {
 				trueCounterpart = Jid.fromString(value);
 			} else {
 				trueCounterpart = null;
@@ -149,7 +149,7 @@ public class Message extends AbstractEntity {
 		} else {
 			values.put(COUNTERPART, counterpart.toString());
 		}
-		if (trueCounterpart == null ) {
+		if (trueCounterpart == null) {
 			values.putNull(TRUE_COUNTERPART);
 		} else {
 			values.put(TRUE_COUNTERPART, trueCounterpart.toString());
@@ -225,12 +225,12 @@ public class Message extends AbstractEntity {
 		this.status = status;
 	}
 
-	public void setRelativeFilePath(String path) {
-		this.relativeFilePath = path;
+	public String getRelativeFilePath() {
+		return this.relativeFilePath;
 	}
 
-	public String getRelativeFilePath() {
-		return  this.relativeFilePath;
+	public void setRelativeFilePath(String path) {
+		this.relativeFilePath = path;
 	}
 
 	public String getRemoteMsgId() {
@@ -286,14 +286,7 @@ public class Message extends AbstractEntity {
 	}
 
 	public boolean equals(Message message) {
-		if ((this.remoteMsgId != null) && (this.body != null)
-				&& (this.counterpart != null)) {
-			return this.remoteMsgId.equals(message.getRemoteMsgId())
-					&& this.body.equals(message.getBody())
-					&& this.counterpart.equals(message.getCounterpart());
-		} else {
-			return false;
-		}
+		return (this.remoteMsgId != null) && (this.body != null) && (this.counterpart != null) && this.remoteMsgId.equals(message.getRemoteMsgId()) && this.body.equals(message.getBody()) && this.counterpart.equals(message.getCounterpart());
 	}
 
 	public Message next() {
@@ -327,26 +320,8 @@ public class Message extends AbstractEntity {
 		return this.mPreviousMessage;
 	}
 
-	public boolean mergeable(Message message) {
-		if (message == null) {
-			return false;
-		}
-		return (message.getType() == Message.TYPE_TEXT
-				&& this.getDownloadable() == null
-				&& message.getDownloadable() == null
-				&& message.getEncryption() != Message.ENCRYPTION_PGP
-				&& this.getType() == message.getType()
-				&& this.getEncryption() == message.getEncryption()
-				&& this.getCounterpart() != null
-				&& this.getCounterpart().equals(message.getCounterpart())
-				&& (message.getTimeSent() - this.getTimeSent()) <= (Config.MESSAGE_MERGE_WINDOW * 1000) && ((this
-				.getStatus() == message.getStatus() || ((this.getStatus() == Message.STATUS_SEND || this
-				.getStatus() == Message.STATUS_SEND_RECEIVED) && (message
-				.getStatus() == Message.STATUS_UNSEND
-				|| message.getStatus() == Message.STATUS_SEND || message
-				.getStatus() == Message.STATUS_SEND_DISPLAYED))))
-				&& !message.bodyContainsDownloadable()
-				&& !this.bodyContainsDownloadable());
+	public boolean mergeable(final Message message) {
+		return message != null && (message.getType() == Message.TYPE_TEXT && this.getDownloadable() == null && message.getDownloadable() == null && message.getEncryption() != Message.ENCRYPTION_PGP && this.getType() == message.getType() && this.getStatus() == message.getStatus() && this.getEncryption() == message.getEncryption() && this.getCounterpart() != null && this.getCounterpart().equals(message.getCounterpart()) && (message.getTimeSent() - this.getTimeSent()) <= (Config.MESSAGE_MERGE_WINDOW * 1000) && !message.bodyContainsDownloadable() && !this.bodyContainsDownloadable());
 	}
 
 	public String getMergedBody() {
@@ -358,12 +333,7 @@ public class Message extends AbstractEntity {
 	}
 
 	public int getMergedStatus() {
-		Message next = this.next();
-		if (this.mergeable(next)) {
-			return next.getMergedStatus();
-		} else {
-			return getStatus();
-		}
+		return getStatus();
 	}
 
 	public long getMergedTimeSent() {
