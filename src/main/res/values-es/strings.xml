@@ -290,12 +290,12 @@
     <string name="show_qr_code">Mostrar código QR</string>
     <string name="account_details">Detalles de la cuenta</string>
     <string name="verify_otr">Verificar OTR</string>
-    <string name="remote_fingerprint">Códigos OTR remotos</string>
+    <string name="remote_fingerprint">Clave OTR remota</string>
     <string name="scan">escanear</string>
     <string name="or_touch_phones">(o une los teléfonos)</string>
     <string name="smp">Protocolo del Socialista Millonario</string>
-    <string name="shared_secret_hint">Sugerencia o Pregunta</string>
-    <string name="shared_secret_secret">Compartir secreto</string>
+    <string name="shared_secret_hint">Sugerencia o pregunta</string>
+    <string name="shared_secret_secret">Secreto compartido</string>
     <string name="confirm">Confirmar</string>
     <string name="in_progress">En progreso</string>
     <string name="respond">Responder</string>
@@ -324,7 +324,7 @@
     <string name="no_application_found_to_open_file">No se ha encontrado ninguna aplicación para abrir el archivo</string>
     <string name="could_not_verify_fingerprint">No se puede verificar el contacto</string>
     <string name="manually_verify">Verificar manualmente</string>
-    <string name="are_you_sure_verify_fingerprint">¿Estás seguro que quieres verificar tus contactos?</string>
+    <string name="are_you_sure_verify_fingerprint">¿Estás seguro de que quieres verificar tus contactos?</string>
     <string name="pref_show_dynamic_tags">Mostrar etiquetas</string>
     <string name="pref_show_dynamic_tags_summary">Muestra información en forma de etiquetas debajo de los contactos</string>
     <string name="enable_notifications">Habilitar notificaciones</string>
