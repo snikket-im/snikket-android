@@ -204,8 +204,7 @@ public class XmppConnectionService extends Service {
 					scheduleWakeupCall((int) (next * 1.2), false);
 				}
 					}
-			UIHelper.showErrorNotification(getApplicationContext(),
-					getAccounts());
+			getNotificationService().updateErrorNotification();
 		}
 	};
 	private Integer accountChangedListenerCount = 0;
@@ -1071,7 +1070,7 @@ public class XmppConnectionService extends Service {
 		databaseBackend.updateAccount(account);
 		reconnectAccount(account, false);
 		updateAccountUi();
-		UIHelper.showErrorNotification(getApplicationContext(), getAccounts());
+		getNotificationService().updateErrorNotification();
 	}
 
 	public void deleteAccount(Account account) {
@@ -1092,7 +1091,7 @@ public class XmppConnectionService extends Service {
 			databaseBackend.deleteAccount(account);
 			this.accounts.remove(account);
 			updateAccountUi();
-			UIHelper.showErrorNotification(getApplicationContext(), getAccounts());
+			getNotificationService().updateErrorNotification();
 		}
 	}
 

@@ -106,48 +106,6 @@ public class UIHelper {
 		}
 	}
 
-	public static void showErrorNotification(Context context,
-			List<Account> accounts) {
-		NotificationManager mNotificationManager = (NotificationManager) context
-				.getSystemService(Context.NOTIFICATION_SERVICE);
-		List<Account> accountsWproblems = new ArrayList<>();
-		for (Account account : accounts) {
-			if (account.hasErrorStatus()) {
-				accountsWproblems.add(account);
-			}
-		}
-		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
-				context);
-		if (accountsWproblems.size() == 0) {
-			mNotificationManager.cancel(1111);
-			return;
-		} else if (accountsWproblems.size() == 1) {
-			mBuilder.setContentTitle(context
-					.getString(R.string.problem_connecting_to_account));
-			mBuilder.setContentText(accountsWproblems.get(0).getJid().toBareJid().toString());
-		} else {
-			mBuilder.setContentTitle(context
-					.getString(R.string.problem_connecting_to_accounts));
-			mBuilder.setContentText(context.getString(R.string.touch_to_fix));
-		}
-		mBuilder.setOngoing(true);
-		mBuilder.setLights(0xffffffff, 2000, 4000);
-		mBuilder.setSmallIcon(R.drawable.ic_notification);
-		TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
-		stackBuilder.addParentStack(ConversationActivity.class);
-
-		Intent manageAccountsIntent = new Intent(context,
-				ManageAccountActivity.class);
-		stackBuilder.addNextIntent(manageAccountsIntent);
-
-		PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0,
-				PendingIntent.FLAG_UPDATE_CURRENT);
-
-		mBuilder.setContentIntent(resultPendingIntent);
-		Notification notification = mBuilder.build();
-		mNotificationManager.notify(1111, notification);
-	}
-
 	private final static class EmoticonPattern {
 		Pattern pattern;
 		String replacement;

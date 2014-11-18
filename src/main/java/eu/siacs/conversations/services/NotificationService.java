@@ -20,6 +20,7 @@ import android.util.DisplayMetrics;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -31,6 +32,7 @@ import eu.siacs.conversations.entities.Downloadable;
 import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.ui.ConversationActivity;
+import eu.siacs.conversations.ui.ManageAccountActivity;
 
 public class NotificationService {
 
@@ -40,6 +42,8 @@ public class NotificationService {
 
 	public static int NOTIFICATION_ID = 0x2342;
 	public static int FOREGROUND_NOTIFICATION_ID = 0x8899;
+	public static int ERROR_NOTIFICATION_ID = 0x5678;
+
 	private Conversation mOpenConversation;
 	private boolean mIsInForeground;
 	private long mLastNotification;
@@ -379,5 +383,40 @@ public class NotificationService {
 		mBuilder.setWhen(0);
 		mBuilder.setPriority(NotificationCompat.PRIORITY_MIN);
 		return mBuilder.build();
+	}
+
+	public void updateErrorNotification() {
+		NotificationManager mNotificationManager = (NotificationManager) mXmppConnectionService.getSystemService(Context.NOTIFICATION_SERVICE);
+		List<Account> errors = new ArrayList<>();
+		for (Account account : mXmppConnectionService.getAccounts()) {
+			if (account.hasErrorStatus()) {
+				errors.add(account);
+			}
+		}
+		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(mXmppConnectionService);
+		if (errors.size() == 0) {
+			mNotificationManager.cancel(ERROR_NOTIFICATION_ID);
+			return;
+		} else if (errors.size() == 1) {
+			mBuilder.setContentTitle(mXmppConnectionService.getString(R.string.problem_connecting_to_account));
+			mBuilder.setContentText(errors.get(0).getJid().toBareJid().toString());
+		} else {
+			mBuilder.setContentTitle(mXmppConnectionService.getString(R.string.problem_connecting_to_accounts));
+			mBuilder.setContentText(mXmppConnectionService.getString(R.string.touch_to_fix));
+		}
+		mBuilder.setOngoing(true);
+		mBuilder.setLights(0xffffffff, 2000, 4000);
+		mBuilder.setSmallIcon(R.drawable.ic_stat_alert_warning);
+		TaskStackBuilder stackBuilder = TaskStackBuilder.create(mXmppConnectionService);
+		stackBuilder.addParentStack(ConversationActivity.class);
+
+		Intent manageAccountsIntent = new Intent(mXmppConnectionService,ManageAccountActivity.class);
+		stackBuilder.addNextIntent(manageAccountsIntent);
+
+		PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0,PendingIntent.FLAG_UPDATE_CURRENT);
+
+		mBuilder.setContentIntent(resultPendingIntent);
+		Notification notification = mBuilder.build();
+		mNotificationManager.notify(ERROR_NOTIFICATION_ID, notification);
 	}
 }
