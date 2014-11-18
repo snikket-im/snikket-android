@@ -49,6 +49,13 @@
         android:orderInCategory="70"
         android:showAsAction="never"
         android:title="@string/disable_notifications"/>
+
+    <item
+        android:id="@+id/action_unmute"
+        android:orderInCategory="71"
+        android:showAsAction="never"
+        android:title="@string/enable_notifications"/>
+
     <item
         android:id="@+id/action_accounts"
         android:orderInCategory="90"

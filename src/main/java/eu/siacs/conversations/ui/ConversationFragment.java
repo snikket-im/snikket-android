@@ -525,10 +525,7 @@ public class ConversationFragment extends Fragment {
 
 							@Override
 							public void onClick(View v) {
-								conversation.setMutedTill(0);
-								activity.xmppConnectionService.databaseBackend
-										.updateConversation(conversation);
-								updateMessages();
+								activity.unmuteConversation(conversation);
 							}
 						});
 			} else if (!contact.showInRoster()

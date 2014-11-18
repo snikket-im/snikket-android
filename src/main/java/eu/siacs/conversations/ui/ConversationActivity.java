@@ -75,7 +75,6 @@ public class ConversationActivity extends XmppActivity implements
 
 	private List<Conversation> conversationList = new ArrayList<>();
 	private Conversation mSelectedConversation = null;
-	private Conversation mSelectedConversationForContext = null;
 	private ListView listView;
 	private ConversationFragment mConversationFragment;
 
@@ -226,42 +225,6 @@ public class ConversationActivity extends XmppActivity implements
 		}
 	}
 
-	/*@Override
-	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-		getMenuInflater().inflate(R.menu.conversations_context, menu);
-		AdapterView.AdapterContextMenuInfo acmi = (AdapterView.AdapterContextMenuInfo) menuInfo;
-		this.mSelectedConversationForContext = this.conversationList.get(acmi.position);
-		menu.setHeaderTitle(this.mSelectedConversationForContext.getName());
-		MenuItem enableNotifications = menu.findItem(R.id.action_unmute);
-		MenuItem disableNotifications = menu.findItem(R.id.action_mute);
-		if (this.mSelectedConversationForContext.isMuted()) {
-			disableNotifications.setVisible(false);
-		} else {
-			enableNotifications.setVisible(false);
-		}
-		super.onCreateContextMenu(menu,v,menuInfo);
-	}
-
-	@Override
-	public boolean onContextItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-			case R.id.action_archive:
-				endConversation(mSelectedConversationForContext);
-				return true;
-			case R.id.action_mute:
-				muteConversationDialog(mSelectedConversationForContext);
-				return true;
-			case R.id.action_unmute:
-				mSelectedConversationForContext.setMutedTill(0);
-				xmppConnectionService.updateConversation(mSelectedConversationForContext);
-				updateConversationList();
-				ConversationActivity.this.mConversationFragment.updateMessages();
-				return true;
-			default:
-				return super.onContextItemSelected(item);
-		}
-	}*/
-
 	public void openConversation() {
 		ActionBar ab = getActionBar();
 		if (ab != null) {
@@ -298,6 +261,7 @@ public class ConversationActivity extends XmppActivity implements
 		MenuItem menuAdd = menu.findItem(R.id.action_add);
 		MenuItem menuInviteContact = menu.findItem(R.id.action_invite);
 		MenuItem menuMute = menu.findItem(R.id.action_mute);
+		MenuItem menuUnmute = menu.findItem(R.id.action_unmute);
 
 		if (isConversationsOverviewVisable()
 				&& isConversationsOverviewHideable()) {
@@ -309,6 +273,7 @@ public class ConversationActivity extends XmppActivity implements
 			menuAttach.setVisible(false);
 			menuClearHistory.setVisible(false);
 			menuMute.setVisible(false);
+			menuUnmute.setVisible(false);
 		} else {
 			menuAdd.setVisible(!isConversationsOverviewHideable());
 			if (this.getSelectedConversation() != null) {
@@ -322,6 +287,11 @@ public class ConversationActivity extends XmppActivity implements
 				} else {
 					menuMucDetails.setVisible(false);
 					menuInviteContact.setVisible(false);
+				}
+				if (this.getSelectedConversation().isMuted()) {
+					menuMute.setVisible(false);
+				} else {
+					menuUnmute.setVisible(false);
 				}
 			}
 		}
@@ -463,6 +433,9 @@ public class ConversationActivity extends XmppActivity implements
 					break;
 				case R.id.action_mute:
 					muteConversationDialog(getSelectedConversation());
+					break;
+				case R.id.action_unmute:
+					unmuteConversation(getSelectedConversation());
 					break;
 				default:
 					break;
@@ -639,9 +612,18 @@ public class ConversationActivity extends XmppActivity implements
 								.updateConversation(conversation);
 						updateConversationList();
 						ConversationActivity.this.mConversationFragment.updateMessages();
+						invalidateOptionsMenu();
 					}
 				});
 		builder.create().show();
+	}
+
+	public void unmuteConversation(final Conversation conversation) {
+		conversation.setMutedTill(0);
+		this.xmppConnectionService.databaseBackend.updateConversation(conversation);
+		updateConversationList();
+		ConversationActivity.this.mConversationFragment.updateMessages();
+		invalidateOptionsMenu();
 	}
 
 	@Override
