@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.math.BigInteger;
+import java.net.ConnectException;
 import java.net.IDN;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
@@ -158,9 +159,7 @@ public class XmppConnection implements Runnable {
 			Bundle result = DNSHelper.getSRVRecord(account.getServer());
 			ArrayList<Parcelable> values = result.getParcelableArrayList("values");
 			if ("timeout".equals(result.getString("error"))) {
-				Log.d(Config.LOGTAG, account.getJid().toBareJid().toString() + ": dns timeout");
-				this.changeStatus(Account.State.OFFLINE);
-				return;
+				throw new IOException("timeout in dns");
 			} else if (values != null) {
 				int i = 0;
 				boolean socketError = true;
@@ -200,23 +199,13 @@ public class XmppConnection implements Runnable {
 					}
 				}
 				if (socketError) {
-					this.changeStatus(Account.State.SERVER_NOT_FOUND);
-					if (wakeLock.isHeld()) {
-						try {
-							wakeLock.release();
-						} catch (final RuntimeException ignored) {
-						}
-					}
-					return;
+					throw new UnknownHostException();
 				}
 			} else if (result.containsKey("error")
 					&& "nosrv".equals(result.getString("error", null))) {
 				socket = new Socket(account.getServer().getDomainpart(), 5222);
 			} else {
-				Log.d(Config.LOGTAG, account.getJid().toBareJid().toString()
-						+ ": timeout in DNS resolution");
-				changeStatus(Account.State.OFFLINE);
-				return;
+				throw new IOException("timeout in dns");
 			}
 			OutputStream out = socket.getOutputStream();
 			tagWriter.setOutputStream(out);
@@ -230,9 +219,7 @@ public class XmppConnection implements Runnable {
 					processStream(nextTag);
 					break;
 				} else {
-					Log.d(Config.LOGTAG,
-							"found unexpected tag: " + nextTag.getName());
-					return;
+					throw new IOException("unknown tag on connect");
 				}
 			}
 			if (socket.isConnected()) {
@@ -240,25 +227,15 @@ public class XmppConnection implements Runnable {
 			}
 		} catch (UnknownHostException e) {
 			this.changeStatus(Account.State.SERVER_NOT_FOUND);
-			if (wakeLock.isHeld()) {
-				try {
-					wakeLock.release();
-				} catch (final RuntimeException ignored) {
-				}
-			}
+		} catch (final ConnectException e) {
+			this.changeStatus(Account.State.SERVER_NOT_FOUND);
 		} catch (final IOException | XmlPullParserException e) {
 			Log.d(Config.LOGTAG, account.getJid().toBareJid().toString() + ": " + e.getMessage());
 			this.changeStatus(Account.State.OFFLINE);
-			if (wakeLock.isHeld()) {
-				try {
-					wakeLock.release();
-				} catch (final RuntimeException ignored) {
-				}
-			}
 		} catch (NoSuchAlgorithmException e) {
 			Log.d(Config.LOGTAG, account.getJid().toBareJid().toString() + ": " + e.getMessage());
 			this.changeStatus(Account.State.OFFLINE);
-			Log.d(Config.LOGTAG, "compression exception " + e.getMessage());
+		} finally {
 			if (wakeLock.isHeld()) {
 				try {
 					wakeLock.release();
@@ -266,7 +243,6 @@ public class XmppConnection implements Runnable {
 				}
 			}
 		}
-
 	}
 
 	@Override
@@ -534,7 +510,7 @@ public class XmppConnection implements Runnable {
 										NoSuchAlgorithmException {
 						 tagReader.readTag(); // read tag close
 						 tagWriter.setOutputStream(new ZLibOutputStream(tagWriter
-									 .getOutputStream()));
+								 .getOutputStream()));
 						 tagReader
 							 .setInputStream(new ZLibInputStream(tagReader.getInputStream()));
 
@@ -726,23 +702,23 @@ public class XmppConnection implements Runnable {
 						&& (packet.query().hasChild("password"))) {
 					IqPacket register = new IqPacket(IqPacket.TYPE_SET);
 					Element username = new Element("username")
-						.setContent(account.getUsername());
+							.setContent(account.getUsername());
 					Element password = new Element("password")
-						.setContent(account.getPassword());
+							.setContent(account.getPassword());
 					register.query("jabber:iq:register").addChild(username);
 					register.query().addChild(password);
 					sendIqPacket(register, new OnIqPacketReceived() {
 
 						@Override
 						public void onIqPacketReceived(Account account,
-								IqPacket packet) {
+													   IqPacket packet) {
 							if (packet.getType() == IqPacket.TYPE_RESULT) {
 								account.setOption(Account.OPTION_REGISTER,
 										false);
 								changeStatus(Account.State.REGISTRATION_SUCCESSFUL);
 							} else if (packet.hasChild("error")
 									&& (packet.findChild("error")
-										.hasChild("conflict"))) {
+									.hasChild("conflict"))) {
 								changeStatus(Account.State.REGISTRATION_CONFLICT);
 							} else {
 								changeStatus(Account.State.REGISTRATION_FAILED);
@@ -785,7 +761,7 @@ public class XmppConnection implements Runnable {
 							stanzasSent = 0;
 							messageReceipts.clear();
 						} else if (streamFeatures.hasChild("sm",
-									"urn:xmpp:sm:2")) {
+								"urn:xmpp:sm:2")) {
 							smVersion = 2;
 							EnablePacket enable = new EnablePacket(smVersion);
 							tagWriter.writeStanzaAsync(enable);
@@ -906,7 +882,7 @@ public class XmppConnection implements Runnable {
 			account.setResource(resource + "." + nextRandomId());
 			Log.d(Config.LOGTAG,
 					account.getJid().toBareJid() + ": switching resource due to conflict ("
-					+ account.getResource() + ")");
+							+ account.getResource() + ")");
 		}
 	}
 
