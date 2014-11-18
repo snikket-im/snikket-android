@@ -6,8 +6,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender.SendIntentException;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.ContactsContract.CommonDataKinds;
 import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.Intents;
@@ -27,11 +29,13 @@ import android.widget.TextView;
 import org.openintents.openpgp.util.OpenPgpUtils;
 
 import java.util.Iterator;
+import java.util.List;
 
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.PgpEngine;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
+import eu.siacs.conversations.entities.ListItem;
 import eu.siacs.conversations.entities.Presences;
 import eu.siacs.conversations.services.XmppConnectionService.OnAccountUpdate;
 import eu.siacs.conversations.services.XmppConnectionService.OnRosterUpdate;
@@ -95,11 +99,14 @@ public class ContactDetailsActivity extends XmppActivity implements OnAccountUpd
 	private Jid contactJid;
 	private TextView contactJidTv;
 	private TextView accountJidTv;
-	private TextView status;
 	private TextView lastseen;
 	private CheckBox send;
 	private CheckBox receive;
 	private QuickContactBadge badge;
+	private LinearLayout keys;
+	private LinearLayout tags;
+	private boolean showDynamicTags;
+
 	private DialogInterface.OnClickListener addToPhonebook = new DialogInterface.OnClickListener() {
 
 		@Override
@@ -113,6 +120,7 @@ public class ContactDetailsActivity extends XmppActivity implements OnAccountUpd
 			ContactDetailsActivity.this.startActivityForResult(intent, 0);
 		}
 	};
+
 	private OnClickListener onBadgeClick = new OnClickListener() {
 
 		@Override
@@ -127,7 +135,6 @@ public class ContactDetailsActivity extends XmppActivity implements OnAccountUpd
 			builder.create().show();
 		}
 	};
-	private LinearLayout keys;
 
 	@Override
 	public void onRosterUpdate() {
@@ -177,15 +184,17 @@ public class ContactDetailsActivity extends XmppActivity implements OnAccountUpd
 
 		contactJidTv = (TextView) findViewById(R.id.details_contactjid);
 		accountJidTv = (TextView) findViewById(R.id.details_account);
-		status = (TextView) findViewById(R.id.details_contactstatus);
 		lastseen = (TextView) findViewById(R.id.details_lastseen);
 		send = (CheckBox) findViewById(R.id.details_send_presence);
 		receive = (CheckBox) findViewById(R.id.details_receive_presence);
 		badge = (QuickContactBadge) findViewById(R.id.details_contact_badge);
 		keys = (LinearLayout) findViewById(R.id.details_contact_keys);
+		tags = (LinearLayout) findViewById(R.id.tags);
 		getActionBar().setHomeButtonEnabled(true);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+		this.showDynamicTags = preferences.getBoolean("show_dynamic_tags",false);
 	}
 
 	@Override
@@ -280,36 +289,6 @@ public class ContactDetailsActivity extends XmppActivity implements OnAccountUpd
 		lastseen.setText(UIHelper.lastseen(getApplicationContext(),
 				contact.lastseen.time));
 
-		switch (contact.getMostAvailableStatus()) {
-			case Presences.CHAT:
-				status.setText(R.string.contact_status_free_to_chat);
-				status.setTextColor(mColorGreen);
-				break;
-			case Presences.ONLINE:
-				status.setText(R.string.contact_status_online);
-				status.setTextColor(mColorGreen);
-				break;
-			case Presences.AWAY:
-				status.setText(R.string.contact_status_away);
-				status.setTextColor(mColorOrange);
-				break;
-			case Presences.XA:
-				status.setText(R.string.contact_status_extended_away);
-				status.setTextColor(mColorOrange);
-				break;
-			case Presences.DND:
-				status.setText(R.string.contact_status_do_not_disturb);
-				status.setTextColor(mColorRed);
-				break;
-			case Presences.OFFLINE:
-				status.setText(R.string.contact_status_offline);
-				status.setTextColor(mSecondaryTextColor);
-				break;
-			default:
-				status.setText(R.string.contact_status_offline);
-				status.setTextColor(mSecondaryTextColor);
-				break;
-		}
 		if (contact.getPresences().size() > 1) {
 			contactJidTv.setText(contact.getJid() + " ("
 					+ contact.getPresences().size() + ")");
@@ -378,6 +357,20 @@ public class ContactDetailsActivity extends XmppActivity implements OnAccountUpd
 			keys.setVisibility(View.VISIBLE);
 		} else {
 			keys.setVisibility(View.GONE);
+		}
+
+		List<ListItem.Tag> tagList = contact.getTags();
+		if (tagList.size() == 0 || !this.showDynamicTags) {
+			tags.setVisibility(View.GONE);
+		} else {
+			tags.setVisibility(View.VISIBLE);
+			tags.removeAllViewsInLayout();
+			for(ListItem.Tag tag : tagList) {
+				TextView tv = (TextView) inflater.inflate(R.layout.list_item_tag,tags,false);
+				tv.setText(tag.getName());
+				tv.setBackgroundColor(tag.getColor());
+				tags.addView(tv);
+			}
 		}
 	}
 
