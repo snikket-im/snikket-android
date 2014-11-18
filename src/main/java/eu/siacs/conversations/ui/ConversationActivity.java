@@ -182,7 +182,7 @@ public class ConversationActivity extends XmppActivity implements
 				hideConversationsOverview();
 			}
 		});
-		registerForContextMenu(listView);
+		//registerForContextMenu(listView);
 		mContentView = findViewById(R.id.content_view_spl);
 		if (mContentView == null) {
 			mContentView = findViewById(R.id.content_view_ll);
@@ -226,7 +226,7 @@ public class ConversationActivity extends XmppActivity implements
 		}
 	}
 
-	@Override
+	/*@Override
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
 		getMenuInflater().inflate(R.menu.conversations_context, menu);
 		AdapterView.AdapterContextMenuInfo acmi = (AdapterView.AdapterContextMenuInfo) menuInfo;
@@ -260,7 +260,7 @@ public class ConversationActivity extends XmppActivity implements
 			default:
 				return super.onContextItemSelected(item);
 		}
-	}
+	}*/
 
 	public void openConversation() {
 		ActionBar ab = getActionBar();
