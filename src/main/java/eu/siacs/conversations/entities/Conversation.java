@@ -57,7 +57,7 @@ public class Conversation extends AbstractEntity {
 
 	private Jid nextCounterpart;
 
-	protected ArrayList<Message> messages = new ArrayList<>();
+	protected final ArrayList<Message> messages = new ArrayList<>();
 	protected Account account = null;
 
 	private transient SessionImpl otrSession;
@@ -146,10 +146,6 @@ public class Conversation extends AbstractEntity {
 			message.setConversation(this);
 			return message;
 		}
-	}
-
-	public void setMessages(ArrayList<Message> msgs) {
-		this.messages = msgs;
 	}
 
 	public String getName() {

@@ -139,7 +139,7 @@ public class XmppConnectionService extends Service {
 	private MessageGenerator mMessageGenerator = new MessageGenerator(this);
 	private PresenceGenerator mPresenceGenerator = new PresenceGenerator(this);
 	private List<Account> accounts;
-	private CopyOnWriteArrayList<Conversation> conversations = null;
+	private final CopyOnWriteArrayList<Conversation> conversations = new CopyOnWriteArrayList<Conversation>();
 	private JingleConnectionManager mJingleConnectionManager = new JingleConnectionManager(
 			this);
 	private HttpConnectionManager mHttpConnectionManager = new HttpConnectionManager(
@@ -486,27 +486,23 @@ public class XmppConnectionService extends Service {
 			}
 		};
 
-		this.databaseBackend = DatabaseBackend
-			.getInstance(getApplicationContext());
+		this.databaseBackend = DatabaseBackend.getInstance(getApplicationContext());
 		this.accounts = databaseBackend.getAccounts();
 
 		for (Account account : this.accounts) {
 			account.initOtrEngine(this);
 			this.databaseBackend.readRoster(account.getRoster());
 		}
+		initConversations();
 		this.mergePhoneContactsWithRoster();
-		this.getConversations();
 
-		getContentResolver().registerContentObserver(
-				ContactsContract.Contacts.CONTENT_URI, true, contactObserver);
+		getContentResolver().registerContentObserver(ContactsContract.Contacts.CONTENT_URI, true, contactObserver);
 		this.fileObserver.startWatching();
-		this.pgpServiceConnection = new OpenPgpServiceConnection(
-				getApplicationContext(), "org.sufficientlysecure.keychain");
+		this.pgpServiceConnection = new OpenPgpServiceConnection(getApplicationContext(), "org.sufficientlysecure.keychain");
 		this.pgpServiceConnection.bindToService();
 
 		this.pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-		this.wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
-				"XmppConnectionService");
+		this.wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,"XmppConnectionService");
 		toggleForegroundService();
 	}
 
@@ -878,21 +874,23 @@ public class XmppConnectionService extends Service {
 				});
 	}
 
-	public List<Conversation> getConversations() {
-		if (this.conversations == null) {
+	private void initConversations() {
+		synchronized (this.conversations) {
 			Hashtable<String, Account> accountLookupTable = new Hashtable<>();
 			for (Account account : this.accounts) {
 				accountLookupTable.put(account.getUuid(), account);
 			}
-			this.conversations = databaseBackend
-				.getConversations(Conversation.STATUS_AVAILABLE);
+			this.conversations.addAll(databaseBackend.getConversations(Conversation.STATUS_AVAILABLE));
 			for (Conversation conv : this.conversations) {
 				Account account = accountLookupTable.get(conv.getAccountUuid());
 				conv.setAccount(account);
-				conv.setMessages(databaseBackend.getMessages(conv, 50));
+				conv.addAll(0, databaseBackend.getMessages(conv, 50));
 				checkDeletedFiles(conv);
 			}
 		}
+	}
+
+	public List<Conversation> getConversations() {
 		return this.conversations;
 	}
 
@@ -923,12 +921,11 @@ public class XmppConnectionService extends Service {
 		}
 	}
 
-	public void populateWithOrderedConversations(List<Conversation> list) {
+	public void populateWithOrderedConversations(final List<Conversation> list) {
 		populateWithOrderedConversations(list, true);
 	}
 
-	public void populateWithOrderedConversations(List<Conversation> list,
-			boolean includeConferences) {
+	public void populateWithOrderedConversations(final List<Conversation> list, boolean includeConferences) {
 		list.clear();
 		if (includeConferences) {
 			list.addAll(getConversations());
@@ -992,60 +989,63 @@ public class XmppConnectionService extends Service {
 
 	public Conversation findOrCreateConversation(final Account account, final Jid jid,
 			final boolean muc) {
-		Conversation conversation = find(account, jid);
-		if (conversation != null) {
+		synchronized (this.conversations) {
+			Conversation conversation = find(account, jid);
+			if (conversation != null) {
+				return conversation;
+			}
+			conversation = databaseBackend.findConversation(account, jid);
+			if (conversation != null) {
+				conversation.setStatus(Conversation.STATUS_AVAILABLE);
+				conversation.setAccount(account);
+				if (muc) {
+					conversation.setMode(Conversation.MODE_MULTI);
+				} else {
+					conversation.setMode(Conversation.MODE_SINGLE);
+				}
+				conversation.addAll(0, databaseBackend.getMessages(conversation, 50));
+				this.databaseBackend.updateConversation(conversation);
+			} else {
+				String conversationName;
+				Contact contact = account.getRoster().getContact(jid);
+				if (contact != null) {
+					conversationName = contact.getDisplayName();
+				} else {
+					conversationName = jid.getLocalpart();
+				}
+				if (muc) {
+					conversation = new Conversation(conversationName, account, jid,
+							Conversation.MODE_MULTI);
+				} else {
+					conversation = new Conversation(conversationName, account, jid,
+							Conversation.MODE_SINGLE);
+				}
+				this.databaseBackend.createConversation(conversation);
+			}
+			this.conversations.add(conversation);
+			updateConversationUi();
 			return conversation;
 		}
-		conversation = databaseBackend.findConversation(account, jid);
-		if (conversation != null) {
-			conversation.setStatus(Conversation.STATUS_AVAILABLE);
-			conversation.setAccount(account);
-			if (muc) {
-				conversation.setMode(Conversation.MODE_MULTI);
-			} else {
-				conversation.setMode(Conversation.MODE_SINGLE);
-			}
-			conversation.setMessages(databaseBackend.getMessages(conversation,
-						50));
-			this.databaseBackend.updateConversation(conversation);
-		} else {
-			String conversationName;
-			Contact contact = account.getRoster().getContact(jid);
-			if (contact != null) {
-				conversationName = contact.getDisplayName();
-			} else {
-				conversationName = jid.getLocalpart();
-			}
-			if (muc) {
-				conversation = new Conversation(conversationName, account, jid,
-						Conversation.MODE_MULTI);
-			} else {
-				conversation = new Conversation(conversationName, account, jid,
-						Conversation.MODE_SINGLE);
-			}
-			this.databaseBackend.createConversation(conversation);
-		}
-		this.conversations.add(conversation);
-		updateConversationUi();
-		return conversation;
 	}
 
 	public void archiveConversation(Conversation conversation) {
-		if (conversation.getMode() == Conversation.MODE_MULTI) {
-			if (conversation.getAccount().getStatus() == Account.State.ONLINE) {
-				Bookmark bookmark = conversation.getBookmark();
-				if (bookmark != null && bookmark.autojoin()) {
-					bookmark.setAutojoin(false);
-					pushBookmarks(bookmark.getAccount());
+		synchronized (this.conversations) {
+			if (conversation.getMode() == Conversation.MODE_MULTI) {
+				if (conversation.getAccount().getStatus() == Account.State.ONLINE) {
+					Bookmark bookmark = conversation.getBookmark();
+					if (bookmark != null && bookmark.autojoin()) {
+						bookmark.setAutojoin(false);
+						pushBookmarks(bookmark.getAccount());
+					}
 				}
+				leaveMuc(conversation);
+			} else {
+				conversation.endOtrIfNeeded();
 			}
-			leaveMuc(conversation);
-		} else {
-			conversation.endOtrIfNeeded();
+			this.databaseBackend.updateConversation(conversation);
+			this.conversations.remove(conversation);
+			updateConversationUi();
 		}
-		this.databaseBackend.updateConversation(conversation);
-		this.conversations.remove(conversation);
-		updateConversationUi();
 	}
 
 	public void clearConversationHistory(Conversation conversation) {
@@ -1075,23 +1075,25 @@ public class XmppConnectionService extends Service {
 	}
 
 	public void deleteAccount(Account account) {
-		for (Conversation conversation : conversations) {
-			if (conversation.getAccount() == account) {
-				if (conversation.getMode() == Conversation.MODE_MULTI) {
-					leaveMuc(conversation);
-				} else if (conversation.getMode() == Conversation.MODE_SINGLE) {
-					conversation.endOtrIfNeeded();
+		synchronized (this.conversations) {
+			for (Conversation conversation : conversations) {
+				if (conversation.getAccount() == account) {
+					if (conversation.getMode() == Conversation.MODE_MULTI) {
+						leaveMuc(conversation);
+					} else if (conversation.getMode() == Conversation.MODE_SINGLE) {
+						conversation.endOtrIfNeeded();
+					}
+					conversations.remove(conversation);
 				}
-				conversations.remove(conversation);
 			}
+			if (account.getXmppConnection() != null) {
+				this.disconnect(account, true);
+			}
+			databaseBackend.deleteAccount(account);
+			this.accounts.remove(account);
+			updateAccountUi();
+			UIHelper.showErrorNotification(getApplicationContext(), getAccounts());
 		}
-		if (account.getXmppConnection() != null) {
-			this.disconnect(account, true);
-		}
-		databaseBackend.deleteAccount(account);
-		this.accounts.remove(account);
-		updateAccountUi();
-		UIHelper.showErrorNotification(getApplicationContext(), getAccounts());
 	}
 
 	private void removeStaleListeners() {

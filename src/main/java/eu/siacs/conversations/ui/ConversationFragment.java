@@ -94,7 +94,7 @@ public class ConversationFragment extends Fragment {
 		}
 	};
 	protected ListView messagesView;
-	protected List<Message> messageList = new ArrayList<>();
+	final protected List<Message> messageList = new ArrayList<>();
 	protected MessageAdapter messageListAdapter;
 	protected Contact contact;
 	private EditMessage mEditMessage;
