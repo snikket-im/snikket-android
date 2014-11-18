@@ -123,6 +123,12 @@ own. Or ask a friend to run one. Once you've found one, you can use
 Conversations to create an account. Just select 'register new account on server'
 within the create account dialog.
 
+#### Where can I set up a custom hostname / port
+Conversations will automatically look up the SRV records for your domain name
+which can point to any hostname port combination. If your server doesn’t provide
+those please contact your admin and have them read
+[this](http://prosody.im/doc/dns#srv_records)
+
 #### Conversations doesn't work for me. Where can I get help?
 
 You can join our conference room on
