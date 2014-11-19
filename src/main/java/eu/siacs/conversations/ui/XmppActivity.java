@@ -1,6 +1,7 @@
 package eu.siacs.conversations.ui;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
@@ -29,6 +30,7 @@ import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
 import android.nfc.NfcEvent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
@@ -107,7 +109,7 @@ public abstract class XmppActivity extends Activity {
 			XmppConnectionBinder binder = (XmppConnectionBinder) service;
 			xmppConnectionService = binder.getService();
 			xmppConnectionServiceBound = true;
-			if (!registeredListeners) {
+			if (!registeredListeners && shouldRegisterListeners()) {
 				registerListeners();
 				registeredListeners = true;
 			}
@@ -131,6 +133,15 @@ public abstract class XmppActivity extends Activity {
 				this.registeredListeners = true;
 			}
 			this.onBackendConnected();
+		}
+	}
+
+	@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+	protected boolean shouldRegisterListeners() {
+		if  (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+			return !isDestroyed() && !isFinishing();
+		} else {
+			return !isFinishing();
 		}
 	}
 
