@@ -119,7 +119,7 @@ public class Conversation extends AbstractEntity {
 		}
 	}
 
-	public String getLatestMarkableMessageId() {
+	public Message getLatestMarkableMessage() {
 		if (this.messages == null) {
 			return null;
 		}
@@ -129,7 +129,7 @@ public class Conversation extends AbstractEntity {
 				if (this.messages.get(i).isRead()) {
 					return null;
 				} else {
-					return this.messages.get(i).getRemoteMsgId();
+					return this.messages.get(i);
 				}
 			}
 		}

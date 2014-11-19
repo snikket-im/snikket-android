@@ -85,6 +85,8 @@ import eu.siacs.conversations.xmpp.OnIqPacketReceived;
 import eu.siacs.conversations.xmpp.OnMessageAcknowledged;
 import eu.siacs.conversations.xmpp.OnStatusChanged;
 import eu.siacs.conversations.xmpp.XmppConnection;
+import eu.siacs.conversations.xmpp.forms.Data;
+import eu.siacs.conversations.xmpp.forms.Field;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
 import eu.siacs.conversations.xmpp.jingle.JingleConnectionManager;
@@ -1844,15 +1846,14 @@ public class XmppConnectionService extends Service {
 
 	public void markRead(Conversation conversation, boolean calledByUi) {
 		mNotificationService.clear(conversation);
-		String id = conversation.getLatestMarkableMessageId();
+		final Message markable = conversation.getLatestMarkableMessage();
 		conversation.markRead();
-		if (confirmMessages() && id != null && calledByUi) {
-			Log.d(Config.LOGTAG, conversation.getAccount().getJid().toBareJid()
-					+ ": sending read marker for " + conversation.getName());
+		if (confirmMessages() && markable != null && markable.getRemoteMsgId() != null && calledByUi) {
+			Log.d(Config.LOGTAG, conversation.getAccount().getJid().toBareJid()+ ": sending read marker to " + markable.getCounterpart().toString());
 			Account account = conversation.getAccount();
-			final Jid to = conversation.getContactJid();
-			this.sendMessagePacket(conversation.getAccount(),
-					mMessageGenerator.confirm(account, to, id));
+			final Jid to = markable.getCounterpart();
+			MessagePacket packet = mMessageGenerator.confirm(account, to, markable.getRemoteMsgId());
+			this.sendMessagePacket(conversation.getAccount(),packet);
 		}
 		if (!calledByUi) {
 			updateConversationUi();
