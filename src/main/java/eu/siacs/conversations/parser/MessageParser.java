@@ -344,50 +344,54 @@ public class MessageParser extends AbstractParser implements
 
 	private void parseEvent(final Element event, final Jid from, final Account account) {
 		Element items = event.findChild("items");
+		if (items == null) {
+			return;
+		}
 		String node = items.getAttribute("node");
-		if (node != null) {
-			if (node.equals("urn:xmpp:avatar:metadata")) {
-				Avatar avatar = Avatar.parseMetadata(items);
-				if (avatar != null) {
-					avatar.owner = from;
-					if (mXmppConnectionService.getFileBackend().isAvatarCached(
-							avatar)) {
-						if (account.getJid().toBareJid().equals(from)) {
-							if (account.setAvatar(avatar.getFilename())) {
-								mXmppConnectionService.databaseBackend
-										.updateAccount(account);
-							}
-							mXmppConnectionService.getAvatarService().clear(
-									account);
-							mXmppConnectionService.updateConversationUi();
-							mXmppConnectionService.updateAccountUi();
-						} else {
-							Contact contact = account.getRoster().getContact(
-									from);
-							contact.setAvatar(avatar.getFilename());
-							mXmppConnectionService.getAvatarService().clear(
-									contact);
-							mXmppConnectionService.updateConversationUi();
-							mXmppConnectionService.updateRosterUi();
+		if (node == null) {
+			return;
+		}
+		if (node.equals("urn:xmpp:avatar:metadata")) {
+			Avatar avatar = Avatar.parseMetadata(items);
+			if (avatar != null) {
+				avatar.owner = from;
+				if (mXmppConnectionService.getFileBackend().isAvatarCached(
+						avatar)) {
+					if (account.getJid().toBareJid().equals(from)) {
+						if (account.setAvatar(avatar.getFilename())) {
+							mXmppConnectionService.databaseBackend
+									.updateAccount(account);
 						}
+						mXmppConnectionService.getAvatarService().clear(
+								account);
+						mXmppConnectionService.updateConversationUi();
+						mXmppConnectionService.updateAccountUi();
 					} else {
-						mXmppConnectionService.fetchAvatar(account, avatar);
+						Contact contact = account.getRoster().getContact(
+								from);
+						contact.setAvatar(avatar.getFilename());
+						mXmppConnectionService.getAvatarService().clear(
+								contact);
+						mXmppConnectionService.updateConversationUi();
+						mXmppConnectionService.updateRosterUi();
 					}
+				} else {
+					mXmppConnectionService.fetchAvatar(account, avatar);
 				}
-			} else if (node.equals("http://jabber.org/protocol/nick")) {
-				Element item = items.findChild("item");
-				if (item != null) {
-					Element nick = item.findChild("nick",
-							"http://jabber.org/protocol/nick");
-					if (nick != null) {
-						if (from != null) {
-							Contact contact = account.getRoster().getContact(
-									from);
-							contact.setPresenceName(nick.getContent());
-							mXmppConnectionService.getAvatarService().clear(account);
-							mXmppConnectionService.updateConversationUi();
-							mXmppConnectionService.updateAccountUi();
-						}
+			}
+		} else if (node.equals("http://jabber.org/protocol/nick")) {
+			Element item = items.findChild("item");
+			if (item != null) {
+				Element nick = item.findChild("nick",
+						"http://jabber.org/protocol/nick");
+				if (nick != null) {
+					if (from != null) {
+						Contact contact = account.getRoster().getContact(
+								from);
+						contact.setPresenceName(nick.getContent());
+						mXmppConnectionService.getAvatarService().clear(account);
+						mXmppConnectionService.updateConversationUi();
+						mXmppConnectionService.updateAccountUi();
 					}
 				}
 			}
