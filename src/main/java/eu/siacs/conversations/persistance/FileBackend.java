@@ -149,6 +149,8 @@ public class FileBackend {
 			String extension = MimeTypeMap.getSingleton().getExtensionFromMimeType(mime);
 			message.setRelativeFilePath(message.getUuid() + "." + extension);
 			DownloadableFile file = mXmppConnectionService.getFileBackend().getFile(message);
+			file.getParentFile().mkdirs();
+			file.createNewFile();
 			OutputStream os = new FileOutputStream(file);
 			InputStream is = mXmppConnectionService.getContentResolver().openInputStream(uri);
 			byte[] buffer = new byte[1024];
