@@ -24,7 +24,9 @@ public class MucOptions {
 
 	public static final int KICKED_FROM_ROOM = 9;
 
+	public static final String STATUS_CODE_SELF_PRESENCE = "110";
 	public static final String STATUS_CODE_BANNED = "301";
+	public static final String STATUS_CODE_CHANGED_NICK = "303";
 	public static final String STATUS_CODE_KICKED = "307";
 
 	private interface OnEventListener {
@@ -178,7 +180,7 @@ public class MucOptions {
 						user.setAffiliation(item.getAttribute("affiliation"));
 						user.setRole(item.getAttribute("role"));
 						user.setJid(item.getAttributeAsJid("jid"));
-						if (codes.contains("110")) {
+						if (codes.contains(STATUS_CODE_SELF_PRESENCE)) {
 							this.isOnline = true;
 							this.error = ERROR_NO_ERROR;
 							self = user;
@@ -208,8 +210,8 @@ public class MucOptions {
 						}
 					}
 				}
-			} else if (type.equals("unavailable") && codes.contains("110")) {
-				if (codes.contains("303")) {
+			} else if (type.equals("unavailable") && codes.contains(STATUS_CODE_SELF_PRESENCE)) {
+				if (codes.contains(STATUS_CODE_CHANGED_NICK)) {
 					this.mNickChangingInProgress = true;
 				} else if (codes.contains(STATUS_CODE_KICKED)) {
 					setError(KICKED_FROM_ROOM);
