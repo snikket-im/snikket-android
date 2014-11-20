@@ -35,6 +35,7 @@ import org.openintents.openpgp.util.OpenPgpServiceConnection;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -273,7 +274,6 @@ public class XmppConnectionService extends Service {
 		}
 	};
 	private LruCache<String, Bitmap> mBitmapCache;
-	private OnRenameListener renameListener = null;
 	private IqGenerator mIqGenerator = new IqGenerator(this);
 
 	public PgpEngine getPgpEngine() {
@@ -1055,10 +1055,6 @@ public class XmppConnectionService extends Service {
 		updateConversationUi();
 	}
 
-	public int getConversationCount() {
-		return this.databaseBackend.getConversationCount();
-	}
-
 	public void createAccount(Account account) {
 		account.initOtrEngine(this);
 		databaseBackend.createAccount(account);
@@ -1276,10 +1272,9 @@ public class XmppConnectionService extends Service {
 			Log.d(Config.LOGTAG,
 					"joining conversation " + conversation.getContactJid());
 			String nick = conversation.getMucOptions().getProposedNick();
-			conversation.getMucOptions().setJoinNick(nick);
+			Jid joinJid = conversation.getMucOptions().createJoinJid(nick);
 			PresencePacket packet = new PresencePacket();
-			final Jid joinJid = conversation.getMucOptions().getJoinJid();
-			packet.setTo(conversation.getMucOptions().getJoinJid());
+			packet.setTo(joinJid);
 			Element x = new Element("x");
 			x.setAttribute("xmlns", "http://jabber.org/protocol/muc");
 			if (conversation.getMucOptions().getPassword() != null) {
@@ -1311,10 +1306,6 @@ public class XmppConnectionService extends Service {
 		}
 	}
 
-	public void setOnRenameListener(OnRenameListener listener) {
-		this.renameListener = listener;
-	}
-
 	public void providePasswordForMuc(Conversation conversation, String password) {
 		if (conversation.getMode() == Conversation.MODE_MULTI) {
 			conversation.getMucOptions().setPassword(password);
@@ -1327,33 +1318,33 @@ public class XmppConnectionService extends Service {
 		}
 	}
 
-	public void renameInMuc(final Conversation conversation, final String nick) {
+	public void renameInMuc(final Conversation conversation, final String nick, final UiCallback<Conversation> callback) {
 		final MucOptions options = conversation.getMucOptions();
-		options.setJoinNick(nick);
+		final Jid joinJid = options.createJoinJid(nick);
 		if (options.online()) {
 			Account account = conversation.getAccount();
 			options.setOnRenameListener(new OnRenameListener() {
 
 				@Override
-				public void onRename(boolean success) {
-					if (renameListener != null) {
-						renameListener.onRename(success);
+				public void onSuccess() {
+					conversation.setContactJid(joinJid);
+					databaseBackend.updateConversation(conversation);
+					Bookmark bookmark = conversation.getBookmark();
+					if (bookmark != null) {
+						bookmark.setNick(nick);
+						pushBookmarks(bookmark.getAccount());
 					}
-					if (success) {
-						conversation.setContactJid(conversation.getMucOptions()
-								.getJoinJid());
-						databaseBackend.updateConversation(conversation);
-						Bookmark bookmark = conversation.getBookmark();
-						if (bookmark != null) {
-							bookmark.setNick(nick);
-							pushBookmarks(bookmark.getAccount());
-						}
-					}
+					callback.success(conversation);
+				}
+
+				@Override
+				public void onFailure() {
+					callback.error(R.string.nick_in_use,conversation);
 				}
 			});
-			options.flagAboutToRename();
+
 			PresencePacket packet = new PresencePacket();
-			packet.setTo(options.getJoinJid());
+			packet.setTo(joinJid);
 			packet.setFrom(conversation.getAccount().getJid());
 
 			String sig = account.getPgpSignature();
@@ -1363,7 +1354,7 @@ public class XmppConnectionService extends Service {
 			}
 			sendPresencePacket(account, packet);
 		} else {
-			conversation.setContactJid(options.getJoinJid());
+			conversation.setContactJid(joinJid);
 			databaseBackend.updateConversation(conversation);
 			if (conversation.getAccount().getStatus() == Account.State.ONLINE) {
 				Bookmark bookmark = conversation.getBookmark();
@@ -1382,7 +1373,7 @@ public class XmppConnectionService extends Service {
 		account.pendingConferenceLeaves.remove(conversation);
 		if (account.getStatus() == Account.State.ONLINE) {
 			PresencePacket packet = new PresencePacket();
-			packet.setTo(conversation.getMucOptions().getJoinJid());
+			packet.setTo(conversation.getContactJid());
 			packet.setFrom(conversation.getAccount().getJid());
 			packet.setAttribute("type", "unavailable");
 			sendPresencePacket(conversation.getAccount(), packet);
@@ -1393,6 +1384,117 @@ public class XmppConnectionService extends Service {
 		} else {
 			account.pendingConferenceLeaves.add(conversation);
 		}
+	}
+
+	private String findConferenceServer(final Account account) {
+		String server;
+		if (account.getXmppConnection() != null) {
+			server = account.getXmppConnection().getMucServer();
+			if (server != null) {
+				return server;
+			}
+		}
+		for(Account other : getAccounts()) {
+			if (other != account && other.getXmppConnection() != null) {
+				server = other.getXmppConnection().getMucServer();
+				if (server != null) {
+					return server;
+				}
+			}
+		}
+		return null;
+	}
+
+	public void createAdhocConference(final Account account, final List<Jid> jids, final UiCallback<Conversation> callback) {
+		Log.d(Config.LOGTAG,account.getJid().toBareJid().toString()+": creating adhoc conference with "+ jids.toString());
+		if (account.getStatus() == Account.State.ONLINE) {
+			try {
+				String server = findConferenceServer(account);
+				if (server == null) {
+					if (callback != null) {
+						callback.error(R.string.no_conference_server_found,null);
+					}
+					return;
+				}
+				String name = new BigInteger(75,getRNG()).toString(32);
+				Jid jid = Jid.fromParts(name,server,null);
+				final Conversation conversation = findOrCreateConversation(account, jid, true);
+				joinMuc(conversation);
+				Bundle options = new Bundle();
+				options.putString("muc#roomconfig_persistentroom", "1");
+				options.putString("muc#roomconfig_membersonly", "1");
+				options.putString("muc#roomconfig_publicroom", "0");
+				options.putString("muc#roomconfig_whois", "anyone");
+				pushConferenceConfiguration(conversation, options, new OnConferenceOptionsPushed() {
+					@Override
+					public void onPushSucceeded() {
+						for(Jid invite : jids) {
+							invite(conversation,invite);
+						}
+						if (callback != null) {
+							callback.success(conversation);
+						}
+					}
+
+					@Override
+					public void onPushFailed() {
+						if (callback != null) {
+							callback.error(R.string.conference_creation_failed, conversation);
+						}
+					}
+				});
+
+			} catch (InvalidJidException e) {
+				if (callback != null) {
+					callback.error(R.string.conference_creation_failed, null);
+				}
+			}
+		} else {
+			if (callback != null) {
+				callback.error(R.string.not_connected_try_again,null);
+			}
+		}
+	}
+
+	public void pushConferenceConfiguration(final Conversation conversation,final Bundle options, final OnConferenceOptionsPushed callback) {
+		IqPacket request = new IqPacket(IqPacket.TYPE_GET);
+		request.setTo(conversation.getContactJid().toBareJid());
+		request.query("http://jabber.org/protocol/muc#owner");
+		sendIqPacket(conversation.getAccount(),request,new OnIqPacketReceived() {
+			@Override
+			public void onIqPacketReceived(Account account, IqPacket packet) {
+				if (packet.getType() != IqPacket.TYPE_ERROR) {
+					Data data = Data.parse(packet.query().findChild("x", "jabber:x:data"));
+					for (Field field : data.getFields()) {
+						if (options.containsKey(field.getName())) {
+							field.setValue(options.getString(field.getName()));
+						}
+					}
+					data.submit();
+					IqPacket set = new IqPacket(IqPacket.TYPE_SET);
+					set.setTo(conversation.getContactJid().toBareJid());
+					set.query("http://jabber.org/protocol/muc#owner").addChild(data);
+					sendIqPacket(account, set, new OnIqPacketReceived() {
+						@Override
+						public void onIqPacketReceived(Account account, IqPacket packet) {
+							if (packet.getType() == IqPacket.TYPE_RESULT) {
+								if (callback != null) {
+									callback.onPushSucceeded();
+								}
+							} else {
+								if (callback != null) {
+									callback.onPushFailed();
+								}
+							}
+						}
+					});
+				} else {
+					if (callback != null) {
+						callback.onPushFailed();
+					}
+				}
+			}
+		});
 	}
 
 	public void disconnect(Account account, boolean force) {
@@ -1726,7 +1828,7 @@ public class XmppConnectionService extends Service {
 		}).start();
 	}
 
-	public void invite(Conversation conversation, String contact) {
+	public void invite(Conversation conversation, Jid contact) {
 		MessagePacket packet = mMessageGenerator.invite(conversation, contact);
 		sendMessagePacket(conversation.getAccount(), packet);
 	}
@@ -2021,6 +2123,11 @@ public class XmppConnectionService extends Service {
 
 	public interface OnRosterUpdate {
 		public void onRosterUpdate();
+	}
+
+	private interface OnConferenceOptionsPushed {
+		public void onPushSucceeded();
+		public void onPushFailed();
 	}
 
 	public class XmppConnectionBinder extends Binder {

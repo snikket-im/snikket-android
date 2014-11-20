@@ -352,4 +352,8 @@
     <string name="pref_show_dynamic_tags">Show dynamic tags</string>
     <string name="pref_show_dynamic_tags_summary">Display read-only tags underneath contacts</string>
     <string name="enable_notifications">Enable notifications</string>
+    <string name="conference_with">Create conference with…</string>
+    <string name="no_conference_server_found">No conference server found</string>
+    <string name="conference_creation_failed">Conference creation failed!</string>
+    <string name="conference_created">Conference created!</string>
 </resources>

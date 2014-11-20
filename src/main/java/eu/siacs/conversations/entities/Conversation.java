@@ -149,11 +149,19 @@ public class Conversation extends AbstractEntity {
 	}
 
 	public String getName() {
-		if (getMode() == MODE_MULTI && getMucOptions().getSubject() != null) {
-			return getMucOptions().getSubject();
-		} else if (getMode() == MODE_MULTI && bookmark != null
-				&& bookmark.getName() != null) {
-			return bookmark.getName();
+		if (getMode() == MODE_MULTI) {
+			if (getMucOptions().getSubject() != null) {
+				return getMucOptions().getSubject();
+			} else if (bookmark != null && bookmark.getName() != null) {
+				return bookmark.getName();
+			} else {
+				String generatedName = getMucOptions().createNameFromParticipants();
+				if (generatedName != null) {
+					return generatedName;
+				} else {
+					return getContactJid().getLocalpart();
+				}
+			}
 		} else {
 			return this.getContact().getDisplayName();
 		}

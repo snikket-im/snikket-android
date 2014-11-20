@@ -274,7 +274,7 @@ public class AvatarService {
 				}
 			}
 		}
-		String name = user.getName();
+		String name = contact != null ? contact.getDisplayName() : user.getName();
 		String letter;
 		int color;
 		if (name.length() > 0) {

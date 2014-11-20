@@ -225,6 +225,18 @@ public class ConversationActivity extends XmppActivity implements
 		}
 	}
 
+	@Override
+	public void switchToConversation(Conversation conversation) {
+		setSelectedConversation(conversation);
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				ConversationActivity.this.mConversationFragment.reInit(getSelectedConversation());
+				openConversation();
+			}
+		});
+	}
+
 	public void openConversation() {
 		ActionBar ab = getActionBar();
 		if (ab != null) {
@@ -286,7 +298,7 @@ public class ConversationActivity extends XmppActivity implements
 					menuAttach.setVisible(false);
 				} else {
 					menuMucDetails.setVisible(false);
-					menuInviteContact.setVisible(false);
+					menuInviteContact.setTitle(R.string.conference_with);
 				}
 				if (this.getSelectedConversation().isMuted()) {
 					menuMute.setVisible(false);

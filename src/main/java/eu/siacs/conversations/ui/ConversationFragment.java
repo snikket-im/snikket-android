@@ -553,7 +553,7 @@ public class ConversationFragment extends Fragment {
 							showSnackbar(R.string.nick_in_use, R.string.edit,
 									clickToMuc);
 							break;
-						case MucOptions.ERROR_ROOM_NOT_FOUND:
+						case MucOptions.ERROR_UNKNOWN:
 							showSnackbar(R.string.conference_not_found,
 									R.string.leave, leaveMuc);
 							break;

@@ -1049,7 +1049,14 @@ public class XmppConnection implements Runnable {
 	}
 
 	public String getMucServer() {
-		return findDiscoItemByFeature("http://jabber.org/protocol/muc");
+		final List<String> items = new ArrayList<>();
+		for (Entry<String, List<String>> cursor : disco.entrySet()) {
+			final List<String> value = cursor.getValue();
+			if (value.contains("http://jabber.org/protocol/muc") && !value.contains("jabber:iq:gateway")) {
+				return cursor.getKey();
+			}
+		}
+		return null;
 	}
 
 	public int getTimeToNextAttempt() {

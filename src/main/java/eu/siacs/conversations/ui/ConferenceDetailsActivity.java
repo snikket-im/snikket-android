@@ -34,7 +34,7 @@ import eu.siacs.conversations.entities.MucOptions.User;
 import eu.siacs.conversations.services.XmppConnectionService.OnConversationUpdate;
 import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
 
-public class ConferenceDetailsActivity extends XmppActivity implements OnConversationUpdate, OnRenameListener {
+public class ConferenceDetailsActivity extends XmppActivity implements OnConversationUpdate {
 	public static final String ACTION_VIEW_MUC = "view_muc";
 	private Conversation mConversation;
 	private OnClickListener inviteListener = new OnClickListener() {
@@ -57,26 +57,34 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 	private List<User> users = new ArrayList<>();
 	private User mSelectedUser = null;
 
-	@Override
-	public void onRename(final boolean success) {
-		runOnUiThread(new Runnable() {
-
-			@Override
-			public void run() {
-				populateView();
-				if (success) {
-					Toast.makeText(
-							ConferenceDetailsActivity.this,
-							getString(R.string.your_nick_has_been_changed),
-							Toast.LENGTH_SHORT).show();
-				} else {
-					Toast.makeText(ConferenceDetailsActivity.this,
-							getString(R.string.nick_in_use),
-							Toast.LENGTH_SHORT).show();
+	private UiCallback<Conversation> renameCallback = new UiCallback<Conversation>() {
+		@Override
+		public void success(Conversation object) {
+			runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					Toast.makeText(ConferenceDetailsActivity.this,getString(R.string.your_nick_has_been_changed),Toast.LENGTH_SHORT).show();
+					populateView();
 				}
-			}
-		});
-	}
+			});
+
+		}
+
+		@Override
+		public void error(final int errorCode, Conversation object) {
+			runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					Toast.makeText(ConferenceDetailsActivity.this,getString(errorCode),Toast.LENGTH_SHORT).show();
+				}
+			});
+		}
+
+		@Override
+		public void userInputRequried(PendingIntent pi, Conversation object) {
+
+		}
+	};
 
 	@Override
 	public void onConversationUpdate() {
@@ -114,8 +122,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 
 							@Override
 							public void onValueEdited(String value) {
-								xmppConnectionService.renameInMuc(mConversation,
-										value);
+								xmppConnectionService.renameInMuc(mConversation,value,renameCallback);
 							}
 						});
 			}
