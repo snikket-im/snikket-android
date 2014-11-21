@@ -639,14 +639,12 @@ public class ConversationActivity extends XmppActivity implements
 	}
 
 	@Override
-	public boolean onKeyDown(final int keyCode, final KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			if (!isConversationsOverviewVisable()) {
-				showConversationsOverview();
-				return false;
-			}
+	public void onBackPressed() {
+		if (!isConversationsOverviewVisable()) {
+			showConversationsOverview();
+		} else {
+			moveTaskToBack(true);
 		}
-		return super.onKeyDown(keyCode, event);
 	}
 
 	@Override
