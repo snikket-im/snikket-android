@@ -1273,6 +1273,7 @@ public class XmppConnectionService extends Service {
 			String nick = conversation.getMucOptions().getProposedNick();
 			Jid joinJid = conversation.getMucOptions().createJoinJid(nick);
 			PresencePacket packet = new PresencePacket();
+			packet.setFrom(conversation.getAccount().getJid());
 			packet.setTo(joinJid);
 			Element x = new Element("x");
 			x.setAttribute("xmlns", "http://jabber.org/protocol/muc");
