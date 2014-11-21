@@ -28,6 +28,7 @@ public class MucOptions {
 	public static final String STATUS_CODE_BANNED = "301";
 	public static final String STATUS_CODE_CHANGED_NICK = "303";
 	public static final String STATUS_CODE_KICKED = "307";
+	public static final String STATUS_CODE_LOST_MEMBERSHIP = "321";
 
 	private interface OnEventListener {
 		public void onSuccess();
@@ -210,18 +211,23 @@ public class MucOptions {
 						}
 					}
 				}
-			} else if (type.equals("unavailable") && codes.contains(STATUS_CODE_SELF_PRESENCE)) {
-				if (codes.contains(STATUS_CODE_CHANGED_NICK)) {
-					this.mNickChangingInProgress = true;
-				} else if (codes.contains(STATUS_CODE_KICKED)) {
-					setError(KICKED_FROM_ROOM);
-				} else if (codes.contains(STATUS_CODE_BANNED)) {
-					setError(ERROR_BANNED);
-				} else {
-					setError(ERROR_UNKNOWN);
-				}
 			} else if (type.equals("unavailable")) {
-				deleteUser(name);
+				if (codes.contains(STATUS_CODE_SELF_PRESENCE) ||
+						packet.getFrom().equals(this.conversation.getContactJid())) {
+					if (codes.contains(STATUS_CODE_CHANGED_NICK)) {
+						this.mNickChangingInProgress = true;
+					} else if (codes.contains(STATUS_CODE_KICKED)) {
+						setError(KICKED_FROM_ROOM);
+					} else if (codes.contains(STATUS_CODE_BANNED)) {
+						setError(ERROR_BANNED);
+					} else if (codes.contains(STATUS_CODE_LOST_MEMBERSHIP)) {
+						setError(ERROR_MEMBERS_ONLY);
+					} else {
+						setError(ERROR_UNKNOWN);
+					}
+				} else {
+					deleteUser(name);
+				}
 			} else if (type.equals("error")) {
 				Element error = packet.findChild("error");
 				if (error != null && error.hasChild("conflict")) {
