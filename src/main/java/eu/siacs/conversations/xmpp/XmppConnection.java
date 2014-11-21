@@ -810,7 +810,12 @@ public class XmppConnection implements Runnable {
 					final List<Element> elements = packet.query().getChildren();
 					final List<String> features = new ArrayList<>();
 					for (Element element : elements) {
-						if (element.getName().equals("feature")) {
+						if (element.getName().equals("identity")) {
+							if ("irc".equals(element.getAttribute("type"))) {
+								//add fake feature to not confuse irc and real muc
+								features.add("siacs:no:muc");
+							}
+						} else if (element.getName().equals("feature")) {
 							features.add(element.getAttribute("var"));
 						}
 					}
@@ -1052,7 +1057,7 @@ public class XmppConnection implements Runnable {
 		final List<String> items = new ArrayList<>();
 		for (Entry<String, List<String>> cursor : disco.entrySet()) {
 			final List<String> value = cursor.getValue();
-			if (value.contains("http://jabber.org/protocol/muc") && !value.contains("jabber:iq:gateway")) {
+			if (value.contains("http://jabber.org/protocol/muc") && !value.contains("jabber:iq:gateway") && !value.contains("siacs:no:muc")) {
 				return cursor.getKey();
 			}
 		}
