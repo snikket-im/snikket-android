@@ -22,30 +22,15 @@ public class PresenceParser extends AbstractParser implements
 
 	public void parseConferencePresence(PresencePacket packet, Account account) {
 		PgpEngine mPgpEngine = mXmppConnectionService.getPgpEngine();
-		if (packet.hasChild("x", "http://jabber.org/protocol/muc#user")) {
-			final Conversation muc = packet.getFrom() == null ? null : mXmppConnectionService.find(
-                    account,
-                    packet.getFrom().toBareJid());
-			if (muc != null) {
-				boolean before = muc.getMucOptions().online();
-				muc.getMucOptions().processPacket(packet, mPgpEngine);
-				if (before != muc.getMucOptions().online()) {
-					mXmppConnectionService.updateConversationUi();
-				}
-				mXmppConnectionService.getAvatarService().clear(muc);
-			}
-		} else if (packet.hasChild("x", "http://jabber.org/protocol/muc")) {
-			final Conversation conversation = mXmppConnectionService.find(account,
-                    packet.getFrom().toBareJid());
-			if (conversation != null) {
-				final MucOptions mucOptions = conversation.getMucOptions();
-				boolean before = mucOptions.online();
-				int count = mucOptions.getUsers().size();
-				mucOptions.processPacket(packet, mPgpEngine);
-				mXmppConnectionService.getAvatarService().clear(conversation);
-				if (before != mucOptions.online() || (mucOptions.online() && count != mucOptions.getUsers().size())) {
-					mXmppConnectionService.updateConversationUi();
-				}
+		final Conversation conversation = packet.getFrom() == null ? null : mXmppConnectionService.find(account, packet.getFrom().toBareJid());
+		if (conversation != null) {
+			final MucOptions mucOptions = conversation.getMucOptions();
+			boolean before = mucOptions.online();
+			int count = mucOptions.getUsers().size();
+			mucOptions.processPacket(packet, mPgpEngine);
+			mXmppConnectionService.getAvatarService().clear(conversation);
+			if (before != mucOptions.online() || (mucOptions.online() && count != mucOptions.getUsers().size())) {
+				mXmppConnectionService.updateConversationUi();
 			}
 		}
 	}
@@ -56,7 +41,7 @@ public class PresenceParser extends AbstractParser implements
 		if (packet.getFrom() == null) {
 			return;
 		}
-        final Jid from = packet.getFrom();
+		final Jid from = packet.getFrom();
 		String type = packet.getAttribute("type");
 		if (from.toBareJid().equals(account.getJid().toBareJid())) {
 			if (!from.isBareJid()) {

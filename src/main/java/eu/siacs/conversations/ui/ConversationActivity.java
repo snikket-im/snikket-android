@@ -181,7 +181,6 @@ public class ConversationActivity extends XmppActivity implements
 				hideConversationsOverview();
 			}
 		});
-		//registerForContextMenu(listView);
 		mContentView = findViewById(R.id.content_view_spl);
 		if (mContentView == null) {
 			mContentView = findViewById(R.id.content_view_ll);
@@ -196,12 +195,7 @@ public class ConversationActivity extends XmppActivity implements
 
 				@Override
 				public void onPanelOpened(View arg0) {
-					ActionBar ab = getActionBar();
-					if (ab != null) {
-						ab.setDisplayHomeAsUpEnabled(false);
-						ab.setHomeButtonEnabled(false);
-						ab.setTitle(R.string.app_name);
-					}
+					updateActionBarTitle();
 					invalidateOptionsMenu();
 					hideKeyboard();
 					if (xmppConnectionServiceBound) {
@@ -237,20 +231,32 @@ public class ConversationActivity extends XmppActivity implements
 		});
 	}
 
-	public void openConversation() {
+	private void updateActionBarTitle() {
+		updateActionBarTitle(isConversationsOverviewHideable() && !isConversationsOverviewVisable());
+	}
+
+	private void updateActionBarTitle(boolean titleShouldBeName) {
 		ActionBar ab = getActionBar();
 		if (ab != null) {
-			ab.setDisplayHomeAsUpEnabled(true);
-			ab.setHomeButtonEnabled(true);
-			if (getSelectedConversation().getMode() == Conversation.MODE_SINGLE
-					|| ConversationActivity.this
-					.useSubjectToIdentifyConference()) {
-				ab.setTitle(getSelectedConversation().getName());
+			if (titleShouldBeName) {
+				ab.setDisplayHomeAsUpEnabled(true);
+				ab.setHomeButtonEnabled(true);
+				if (getSelectedConversation().getMode() == Conversation.MODE_SINGLE || useSubjectToIdentifyConference()) {
+					ab.setTitle(getSelectedConversation().getName());
+				} else {
+					ab.setTitle(getSelectedConversation().getContactJid().toBareJid().toString());
+				}
 			} else {
-				ab.setTitle(getSelectedConversation().getContactJid().toBareJid().toString());
+				ab.setDisplayHomeAsUpEnabled(false);
+				ab.setHomeButtonEnabled(false);
+				ab.setTitle(R.string.app_name);
 			}
 		}
-		invalidateOptionsMenu();
+	}
+
+	private void openConversation() {
+		this.updateActionBarTitle();
+		this.invalidateOptionsMenu();
 		if (xmppConnectionServiceBound) {
 			xmppConnectionService.getNotificationService().setOpenConversation(getSelectedConversation());
 			if (!getSelectedConversation().isRead()) {
@@ -739,8 +745,9 @@ public class ConversationActivity extends XmppActivity implements
 			this.mConversationFragment.appendText(text);
 		}
 		hideConversationsOverview();
+		openConversation();
 		if (mContentView instanceof SlidingPaneLayout) {
-			openConversation();
+			updateActionBarTitle(true); //fixes bug where slp isn't properly closed yet
 		}
 	}
 
@@ -928,17 +935,15 @@ public class ConversationActivity extends XmppActivity implements
 
 	@Override
 	public void onAccountUpdate() {
-		final ConversationFragment fragment = (ConversationFragment) getFragmentManager()
-				.findFragmentByTag("conversation");
-		if (fragment != null) {
-			runOnUiThread(new Runnable() {
+		runOnUiThread(new Runnable() {
 
-				@Override
-				public void run() {
-					fragment.updateMessages();
-				}
-			});
-		}
+			@Override
+			public void run() {
+				updateConversationList();
+				ConversationActivity.this.mConversationFragment.updateMessages();
+				updateActionBarTitle();
+			}
+		});
 	}
 
 	@Override
@@ -954,6 +959,7 @@ public class ConversationActivity extends XmppActivity implements
 					finish();
 				}
 				ConversationActivity.this.mConversationFragment.updateMessages();
+				updateActionBarTitle();
 			}
 		});
 	}
@@ -964,7 +970,9 @@ public class ConversationActivity extends XmppActivity implements
 
 				@Override
 				public void run() {
+					updateConversationList();
 					ConversationActivity.this.mConversationFragment.updateMessages();
+					updateActionBarTitle();
 				}
 			});
 	}
