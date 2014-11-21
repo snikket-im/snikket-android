@@ -285,14 +285,21 @@ public class VerifyOTRActivity extends XmppActivity implements XmppConnectionSer
 				this.mStatusMessage.setVisibility(View.VISIBLE);
 				this.mStatusMessage.setText(R.string.secrets_do_not_match);
 				this.mStatusMessage.setTextColor(getWarningTextColor());
-			} else if (smp.status == Conversation.Smp.STATUS_VERIFIED) {
+			} else if (smp.status == Conversation.Smp.STATUS_FINISHED) {
+				this.mSharedSecretHint.setText("");
 				this.mSharedSecretHint.setVisibility(View.GONE);
+				this.mSharedSecretSecret.setText("");
 				this.mSharedSecretSecret.setVisibility(View.GONE);
 				this.mStatusMessage.setVisibility(View.VISIBLE);
-				this.mStatusMessage.setText(R.string.verified);
 				this.mStatusMessage.setTextColor(getPrimaryColor());
 				deactivateButton(mButtonSharedSecretNegative, R.string.cancel);
-				activateButton(mButtonSharedSecretPositive, R.string.finish, mFinishListener);
+				if (mConversation.isOtrFingerprintVerified()) {
+					activateButton(mButtonSharedSecretPositive, R.string.finish, mFinishListener);
+					this.mStatusMessage.setText(R.string.verified);
+				} else {
+					activateButton(mButtonSharedSecretPositive,R.string.reset,mRetrySharedSecretListener);
+					this.mStatusMessage.setText(R.string.secret_accepted);
+				}
 			} else if (session != null && session.isSmpInProgress()) {
 				deactivateButton(mButtonSharedSecretPositive, R.string.in_progress);
 				activateButton(mButtonSharedSecretNegative, R.string.cancel, mCancelSharedSecretListener);

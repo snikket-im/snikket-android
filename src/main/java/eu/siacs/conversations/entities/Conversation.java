@@ -529,7 +529,7 @@ public class Conversation extends AbstractEntity {
 		public static final int STATUS_CONTACT_REQUESTED = 1;
 		public static final int STATUS_WE_REQUESTED = 2;
 		public static final int STATUS_FAILED = 3;
-		public static final int STATUS_VERIFIED = 4;
+		public static final int STATUS_FINISHED = 4;
 
 		public String secret = null;
 		public String hint = null;

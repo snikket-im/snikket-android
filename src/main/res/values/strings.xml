@@ -356,4 +356,6 @@
     <string name="no_conference_server_found">No conference server found</string>
     <string name="conference_creation_failed">Conference creation failed!</string>
     <string name="conference_created">Conference created!</string>
+    <string name="secret_accepted">Secret accepted!</string>
+    <string name="reset">Reset</string>
 </resources>

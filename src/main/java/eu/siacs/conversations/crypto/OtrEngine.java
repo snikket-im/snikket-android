@@ -20,6 +20,7 @@ import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.services.XmppConnectionService;
+import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
 import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
@@ -249,14 +250,17 @@ public class OtrEngine implements OtrEngineHost {
 	}
 
 	@Override
-	public void verify(SessionID id, String arg1, boolean arg2) {
+	public void verify(SessionID id, String fingerprint, boolean approved) {
+		Log.d(Config.LOGTAG,"OtrEngine.verify("+id.toString()+","+fingerprint+","+String.valueOf(approved)+")");
 		try {
 			final Jid jid = Jid.fromSessionID(id);
 			Conversation conversation = this.mXmppConnectionService.find(this.account,jid);
 			if (conversation!=null) {
+				if (approved) {
+					conversation.getContact().addOtrFingerprint(CryptoHelper.prettifyFingerprint(fingerprint));
+				}
 				conversation.smp().hint = null;
-				conversation.smp().status = Conversation.Smp.STATUS_VERIFIED;
-				conversation.verifyOtrFingerprint();
+				conversation.smp().status = Conversation.Smp.STATUS_FINISHED;
 				mXmppConnectionService.updateConversationUi();
 				mXmppConnectionService.syncRosterToDisk(conversation.getAccount());
 			}
