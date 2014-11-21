@@ -358,11 +358,13 @@ public class FileBackend {
 	}
 
 	public Bitmap cropCenterSquare(Uri image, int size) {
+		if (image == null) {
+			return null;
+		}
 		try {
 			BitmapFactory.Options options = new BitmapFactory.Options();
 			options.inSampleSize = calcSampleSize(image, size);
-			InputStream is = mXmppConnectionService.getContentResolver()
-					.openInputStream(image);
+			InputStream is = mXmppConnectionService.getContentResolver().openInputStream(image);
 			Bitmap input = BitmapFactory.decodeStream(is, null, options);
 			if (input == null) {
 				return null;
@@ -379,12 +381,13 @@ public class FileBackend {
 	}
 
 	public Bitmap cropCenter(Uri image, int newHeight, int newWidth) {
+		if (image == null) {
+			return null;
+		}
 		try {
 			BitmapFactory.Options options = new BitmapFactory.Options();
-			options.inSampleSize = calcSampleSize(image,
-					Math.max(newHeight, newWidth));
-			InputStream is = mXmppConnectionService.getContentResolver()
-					.openInputStream(image);
+			options.inSampleSize = calcSampleSize(image,Math.max(newHeight, newWidth));
+			InputStream is = mXmppConnectionService.getContentResolver().openInputStream(image);
 			Bitmap source = BitmapFactory.decodeStream(is, null, options);
 
 			int sourceWidth = source.getWidth();
@@ -397,13 +400,10 @@ public class FileBackend {
 			float left = (newWidth - scaledWidth) / 2;
 			float top = (newHeight - scaledHeight) / 2;
 
-			RectF targetRect = new RectF(left, top, left + scaledWidth, top
-					+ scaledHeight);
-			Bitmap dest = Bitmap.createBitmap(newWidth, newHeight,
-					source.getConfig());
+			RectF targetRect = new RectF(left, top, left + scaledWidth, top + scaledHeight);
+			Bitmap dest = Bitmap.createBitmap(newWidth, newHeight, source.getConfig());
 			Canvas canvas = new Canvas(dest);
 			canvas.drawBitmap(source, null, targetRect, null);
-
 			return dest;
 		} catch (FileNotFoundException e) {
 			return null;
@@ -429,12 +429,10 @@ public class FileBackend {
 		return output;
 	}
 
-	private int calcSampleSize(Uri image, int size)
-			throws FileNotFoundException {
+	private int calcSampleSize(Uri image, int size) throws FileNotFoundException {
 		BitmapFactory.Options options = new BitmapFactory.Options();
 		options.inJustDecodeBounds = true;
-		BitmapFactory.decodeStream(mXmppConnectionService.getContentResolver()
-				.openInputStream(image), null, options);
+		BitmapFactory.decodeStream(mXmppConnectionService.getContentResolver().openInputStream(image), null, options);
 		return calcSampleSize(options, size);
 	}
 
