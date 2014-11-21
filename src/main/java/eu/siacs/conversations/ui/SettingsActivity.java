@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.Locale;
 
 import eu.siacs.conversations.entities.Account;
-import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;

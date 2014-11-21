@@ -1,33 +1,13 @@
 package eu.siacs.conversations.utils;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.regex.Pattern;
 
 import eu.siacs.conversations.R;
-import eu.siacs.conversations.entities.Account;
-import eu.siacs.conversations.entities.Contact;
-import eu.siacs.conversations.entities.Conversation;
-import eu.siacs.conversations.ui.ConversationActivity;
-import eu.siacs.conversations.ui.ManageAccountActivity;
-import android.annotation.SuppressLint;
-import android.app.AlertDialog;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
-import android.content.Intent;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.TaskStackBuilder;
 import android.text.format.DateFormat;
 import android.text.format.DateUtils;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.TextView;
 
 public class UIHelper {
 	private static final int SHORT_DATE_FLAGS = DateUtils.FORMAT_SHOW_DATE

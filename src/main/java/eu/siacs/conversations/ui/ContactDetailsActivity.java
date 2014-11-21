@@ -28,7 +28,6 @@ import android.widget.TextView;
 
 import org.openintents.openpgp.util.OpenPgpUtils;
 
-import java.util.Iterator;
 import java.util.List;
 
 import eu.siacs.conversations.R;
@@ -36,7 +35,6 @@ import eu.siacs.conversations.crypto.PgpEngine;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.ListItem;
-import eu.siacs.conversations.entities.Presences;
 import eu.siacs.conversations.services.XmppConnectionService.OnAccountUpdate;
 import eu.siacs.conversations.services.XmppConnectionService.OnRosterUpdate;
 import eu.siacs.conversations.utils.UIHelper;
