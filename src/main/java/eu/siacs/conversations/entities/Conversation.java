@@ -18,7 +18,6 @@ import java.security.interfaces.DSAPublicKey;
 import java.util.ArrayList;
 import java.util.List;
 
-import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
 

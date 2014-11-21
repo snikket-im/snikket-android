@@ -1,7 +1,5 @@
 package eu.siacs.conversations.crypto.sasl;
 
-import android.util.Base64;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;

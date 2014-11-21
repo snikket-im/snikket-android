@@ -1,7 +1,6 @@
 package eu.siacs.conversations.http;
 
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.SystemClock;
 
