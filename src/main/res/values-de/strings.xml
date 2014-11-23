@@ -332,4 +332,6 @@
     <string name="no_conference_server_found">Konferenz-Server kann nicht gefunden werden</string>
     <string name="conference_creation_failed">Starten der Konferenz fehlgeschlagen!</string>
     <string name="conference_created">Konferenz erstellt!</string>
+    <string name="secret_accepted">Schlüssel akzeptiert!</string>
+    <string name="reset">Zurücksetzen</string>
 </resources>
