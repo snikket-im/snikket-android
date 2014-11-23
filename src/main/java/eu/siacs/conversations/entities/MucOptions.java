@@ -190,6 +190,8 @@ public class MucOptions {
 								this.onJoinListener.onSuccess();
 								this.onJoinListener = null;
 							}
+						} else if (packet.getFrom().equals(this.conversation.getContactJid())) {
+							self = user;
 						} else {
 							addUser(user);
 						}
