@@ -31,6 +31,8 @@ public class PresenceParser extends AbstractParser implements
 			mXmppConnectionService.getAvatarService().clear(conversation);
 			if (before != mucOptions.online() || (mucOptions.online() && count != mucOptions.getUsers().size())) {
 				mXmppConnectionService.updateConversationUi();
+			} else if (mucOptions.online()) {
+				mXmppConnectionService.updateMucRosterUi();
 			}
 		}
 	}
