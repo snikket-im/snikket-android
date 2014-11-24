@@ -27,6 +27,8 @@ import java.util.List;
 
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.PgpEngine;
+import eu.siacs.conversations.entities.Account;
+import eu.siacs.conversations.entities.Bookmark;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.MucOptions.User;
@@ -149,6 +151,12 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 					});
 				}
 				break;
+			case R.id.action_save_as_bookmark:
+				saveAsBookmark();
+				break;
+			case R.id.action_delete_bookmark:
+				deleteBookmark();
+				break;
 		}
 		return super.onOptionsItemSelected(menuItem);
 	}
@@ -173,6 +181,21 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 		} else {
 			return "";
 		}
+	}
+
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		MenuItem menuItemSaveBookmark = menu.findItem(R.id.action_save_as_bookmark);
+		MenuItem menuItemDeleteBookmark = menu.findItem(R.id.action_delete_bookmark);
+		Account account = mConversation.getAccount();
+		if (account.hasBookmarkFor(mConversation.getContactJid().toBareJid())) {
+			menuItemSaveBookmark.setVisible(false);
+			menuItemDeleteBookmark.setVisible(true);
+		} else {
+			menuItemDeleteBookmark.setVisible(false);
+			menuItemSaveBookmark.setVisible(true);
+		}
+		return true;
 	}
 
 	@Override
@@ -222,6 +245,22 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 			Conversation conversation = xmppConnectionService.findOrCreateConversation(this.mConversation.getAccount(),user.getJid(),false);
 			switchToConversation(conversation);
 		}
+	}
+
+	protected void saveAsBookmark() {
+		Account account = mConversation.getAccount();
+		Bookmark bookmark = new Bookmark(account, mConversation.getContactJid().toBareJid());
+		account.getBookmarks().add(bookmark);
+		xmppConnectionService.pushBookmarks(account);
+		mConversation.setBookmark(bookmark);
+	}
+
+	protected void deleteBookmark() {
+		Account account = mConversation.getAccount();
+		Bookmark bookmark = mConversation.getBookmark();
+		bookmark.unregisterConversation();
+		account.getBookmarks().remove(bookmark);
+		xmppConnectionService.pushBookmarks(account);
 	}
 
 	@Override
