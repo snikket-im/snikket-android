@@ -241,6 +241,9 @@ public abstract class XmppActivity extends Activity {
 		if (this instanceof XmppConnectionService.OnRosterUpdate) {
 			this.xmppConnectionService.setOnRosterUpdateListener((XmppConnectionService.OnRosterUpdate) this);
 		}
+		if (this instanceof XmppConnectionService.OnMucRosterUpdate) {
+			this.xmppConnectionService.setOnMucRosterUpdateListener((XmppConnectionService.OnMucRosterUpdate) this);
+		}
 	}
 
 	protected void unregisterListeners() {
@@ -252,6 +255,9 @@ public abstract class XmppActivity extends Activity {
 		}
 		if (this instanceof XmppConnectionService.OnRosterUpdate) {
 			this.xmppConnectionService.removeOnRosterUpdateListener();
+		}
+		if (this instanceof XmppConnectionService.OnMucRosterUpdate) {
+			this.xmppConnectionService.removeOnMucRosterUpdateListener();
 		}
 	}
 

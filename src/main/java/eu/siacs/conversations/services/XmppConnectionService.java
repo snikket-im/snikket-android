@@ -212,6 +212,8 @@ public class XmppConnectionService extends Service {
 	private Integer accountChangedListenerCount = 0;
 	private OnRosterUpdate mOnRosterUpdate = null;
 	private Integer rosterChangedListenerCount = 0;
+	private OnMucRosterUpdate mOnMucRosterUpdate = null;
+	private Integer mucRosterChangedListenerCount = 0;
 	private SecureRandom mRandom;
 	private FileObserver fileObserver = new FileObserver(
 			FileBackend.getConversationsImageDirectory()) {
@@ -1116,6 +1118,13 @@ public class XmppConnectionService extends Service {
 				removedListener = true;
 			}
 		}
+		synchronized (this.mucRosterChangedListenerCount) {
+			if (this.mOnMucRosterUpdate != null) {
+				this.mOnMucRosterUpdate = null;
+				this.mucRosterChangedListenerCount = 0;
+				removedListener = true;
+			}
+		}
 		if (removedListener) {
 			final String msg = "removed stale listeners";
 			Log.d(Config.LOGTAG, msg);
@@ -1210,6 +1219,29 @@ public class XmppConnectionService extends Service {
 			if (this.rosterChangedListenerCount <= 0) {
 				this.rosterChangedListenerCount = 0;
 				this.mOnRosterUpdate = null;
+				if (checkListeners()) {
+					switchToBackground();
+				}
+			}
+		}
+	}
+
+	public void setOnMucRosterUpdateListener(OnMucRosterUpdate listener) {
+		synchronized (this.mucRosterChangedListenerCount) {
+			if (checkListeners()) {
+				switchToForeground();
+			}
+			this.mOnMucRosterUpdate = listener;
+			this.mucRosterChangedListenerCount++;
+		}
+	}
+
+	public void removeOnMucRosterUpdateListener() {
+		synchronized (this.mucRosterChangedListenerCount) {
+			this.mucRosterChangedListenerCount--;
+			if (this.mucRosterChangedListenerCount <= 0) {
+				this.mucRosterChangedListenerCount = 0;
+				this.mOnMucRosterUpdate = null;
 				if (checkListeners()) {
 					switchToBackground();
 				}
@@ -1928,6 +1960,12 @@ public class XmppConnectionService extends Service {
 		}
 	}
 
+	public void updateMucRosterUi() {
+		if (mOnMucRosterUpdate != null) {
+			mOnMucRosterUpdate.onMucRosterUpdate();
+		}
+	}
+
 	public Account findAccountByJid(final Jid accountJid) {
 		for (Account account : this.accounts) {
 			if (account.getJid().toBareJid().equals(accountJid.toBareJid())) {
@@ -2123,6 +2161,10 @@ public class XmppConnectionService extends Service {
 
 	public interface OnRosterUpdate {
 		public void onRosterUpdate();
+	}
+
+	public interface OnMucRosterUpdate {
+		public void onMucRosterUpdate();
 	}
 
 	private interface OnConferenceOptionsPushed {

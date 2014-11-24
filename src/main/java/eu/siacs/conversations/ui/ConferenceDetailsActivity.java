@@ -32,10 +32,11 @@ import eu.siacs.conversations.entities.Bookmark;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.MucOptions.User;
+import eu.siacs.conversations.services.XmppConnectionService.OnMucRosterUpdate;
 import eu.siacs.conversations.services.XmppConnectionService.OnConversationUpdate;
 import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
 
-public class ConferenceDetailsActivity extends XmppActivity implements OnConversationUpdate {
+public class ConferenceDetailsActivity extends XmppActivity implements OnConversationUpdate, OnMucRosterUpdate {
 	public static final String ACTION_VIEW_MUC = "view_muc";
 	private Conversation mConversation;
 	private OnClickListener inviteListener = new OnClickListener() {
@@ -89,6 +90,17 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 
 	@Override
 	public void onConversationUpdate() {
+		runOnUiThread(new Runnable() {
+
+			@Override
+			public void run() {
+				populateView();
+			}
+		});
+	}
+
+	@Override
+	public void onMucRosterUpdate() {
 		runOnUiThread(new Runnable() {
 
 			@Override
