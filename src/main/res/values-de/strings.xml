@@ -58,7 +58,7 @@
     <string name="add_contact">Kontakt hinzufügen</string>
     <string name="send_failed">Zustellung nicht erfolgreich</string>
     <string name="send_rejected">abgelehnt</string>
-    <string name="receiving_image">Empfange Bild. Bitte warten&#8230;</string>
+    <string name="receiving_image">Empfange Bild (%1$d%% heruntergeladen)</string>
     <string name="preparing_image">Bereite Bild für die Übertragung vor</string>
     <string name="action_clear_history">Verlauf löschen</string>
     <string name="clear_conversation_history">Unterhaltungsverlauf löschen</string>
