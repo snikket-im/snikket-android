@@ -235,15 +235,16 @@ public class ConversationActivity extends XmppActivity implements
 	}
 
 	private void updateActionBarTitle(boolean titleShouldBeName) {
-		ActionBar ab = getActionBar();
+		final ActionBar ab = getActionBar();
+		final Conversation conversation = getSelectedConversation();
 		if (ab != null) {
-			if (titleShouldBeName) {
+			if (titleShouldBeName && conversation != null) {
 				ab.setDisplayHomeAsUpEnabled(true);
 				ab.setHomeButtonEnabled(true);
-				if (getSelectedConversation().getMode() == Conversation.MODE_SINGLE || useSubjectToIdentifyConference()) {
-					ab.setTitle(getSelectedConversation().getName());
+				if (conversation.getMode() == Conversation.MODE_SINGLE || useSubjectToIdentifyConference()) {
+					ab.setTitle(conversation.getName());
 				} else {
-					ab.setTitle(getSelectedConversation().getContactJid().toBareJid().toString());
+					ab.setTitle(conversation.getContactJid().toBareJid().toString());
 				}
 			} else {
 				ab.setDisplayHomeAsUpEnabled(false);
