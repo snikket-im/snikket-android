@@ -254,7 +254,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 
 	protected void startConversation(User user) {
 		if (user.getJid() != null) {
-			Conversation conversation = xmppConnectionService.findOrCreateConversation(this.mConversation.getAccount(),user.getJid(),false);
+			Conversation conversation = xmppConnectionService.findOrCreateConversation(this.mConversation.getAccount(),user.getJid().toBareJid(),false);
 			switchToConversation(conversation);
 		}
 	}
