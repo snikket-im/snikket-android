@@ -319,12 +319,7 @@ public class MessageParser extends AbstractParser implements
 			}
 		} else if (packet.hasChild("x", "jabber:x:conference")) {
 			Element x = packet.findChild("x", "jabber:x:conference");
-            Jid jid;
-            try {
-                jid = Jid.fromString(x.getAttribute("jid"));
-            } catch (InvalidJidException e) {
-                jid = null;
-            }
+            Jid jid = x.getAttributeAsJid("jid");
             String password = x.getAttribute("password");
 			if (jid != null) {
 				Conversation conversation = mXmppConnectionService
