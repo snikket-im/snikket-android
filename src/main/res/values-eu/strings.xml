@@ -328,5 +328,11 @@
     <string name="pref_show_dynamic_tags">Etiketa dinamikoak erakutsi</string>
     <string name="pref_show_dynamic_tags_summary">Irakurtzeko soilik diren etiketak erakutsi kontaktuen azpian</string>
     <string name="enable_notifications">Jakinarazpenak gaitu</string>
+    <string name="conference_with">Konferentzia sortu honekin…</string>
+    <string name="no_conference_server_found">Ez da konferentzia zerbitzaririk aurkitu</string>
+    <string name="conference_creation_failed">Konferentzia sortzeak huts egin du!</string>
+    <string name="conference_created">Konferentzia sortu da!</string>
+    <string name="secret_accepted">Sekretua onartu da!</string>
+    <string name="reset">Berrezarri</string>
 
 </resources>
