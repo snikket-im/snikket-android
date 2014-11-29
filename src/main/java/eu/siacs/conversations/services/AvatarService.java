@@ -113,7 +113,7 @@ public class AvatarService {
 		if (bitmap != null) {
 			return bitmap;
 		}
-		List<MucOptions.User> users = mucOptions.getUsers();
+		final List<MucOptions.User> users = new ArrayList<>(mucOptions.getUsers());
 		int count = users.size();
 		bitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
 		Canvas canvas = new Canvas(bitmap);
