@@ -813,13 +813,11 @@ public class XmppConnectionService extends Service {
 							Conversation conversation = find(bookmark);
 							if (conversation != null) {
 								conversation.setBookmark(bookmark);
-							} else {
-								if (bookmark.autojoin()) {
-									conversation = findOrCreateConversation(
-											account, bookmark.getJid(), true);
-									conversation.setBookmark(bookmark);
-									joinMuc(conversation);
-								}
+							} else if (bookmark.autojoin() && bookmark.getJid() != null) {
+								conversation = findOrCreateConversation(
+										account, bookmark.getJid(), true);
+								conversation.setBookmark(bookmark);
+								joinMuc(conversation);
 							}
 						}
 					}
@@ -980,6 +978,9 @@ public class XmppConnectionService extends Service {
 	public Conversation find(final List<Conversation> haystack,
 			final Account account,
 			final Jid jid) {
+		if (jid == null ) {
+			return null;
+		}
 		for (Conversation conversation : haystack) {
 			if ((account == null || conversation.getAccount() == account)
 					&& (conversation.getContactJid().toBareJid().equals(jid.toBareJid()))) {
