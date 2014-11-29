@@ -1,5 +1,14 @@
 ###Changelog
 
+####Version 0.9
+* arbitrary file transfer
+* more options to verify OTR (SMP, QR Codes, NFC)
+* ability to create instant conferences
+* r/o dynamic tags (presence and roster groups)
+* optional foreground service (expert option)
+* added SCRAM-SHA1 login method
+* bug fixes
+
 ####Version 0.8.4
 * bug fixes
 
