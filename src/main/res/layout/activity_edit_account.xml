@@ -27,7 +27,8 @@
                     android:layout_width="72dp"
                     android:layout_height="72dp"
                     android:layout_alignParentTop="true"
-                    android:layout_marginRight="16dp"/>
+                    android:layout_marginRight="16dp"
+                    android:contentDescription="@string/account_image_description"/>
                 <LinearLayout
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
@@ -236,7 +237,8 @@
                         android:background="?android:selectableItemBackground"
                         android:padding="8dp"
                         android:src="@drawable/ic_action_copy"
-                        android:visibility="visible" />
+                        android:visibility="visible"
+                        android:contentDescription="@string/copy_otr_clipboard_description"/>
                 </RelativeLayout>
 
                

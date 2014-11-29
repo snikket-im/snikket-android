@@ -124,8 +124,10 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 		mMoreDetails.setVisibility(View.GONE);
 		mInviteButton = (Button) findViewById(R.id.invite);
 		mInviteButton.setOnClickListener(inviteListener);
-		getActionBar().setHomeButtonEnabled(true);
-		getActionBar().setDisplayHomeAsUpEnabled(true);
+		if (getActionBar() != null) {
+			getActionBar().setHomeButtonEnabled(true);
+			getActionBar().setDisplayHomeAsUpEnabled(true);
+		}
 		mEditNickButton.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -364,6 +366,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 	private void setListItemBackgroundOnView(View view) {
 		int sdk = android.os.Build.VERSION.SDK_INT;
@@ -383,7 +386,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 				try {
 					startIntentSenderForResult(intent.getIntentSender(), 0,
 							null, 0, 0, 0);
-				} catch (SendIntentException e) {
+				} catch (SendIntentException ignored) {
 
 				}
 			}
