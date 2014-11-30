@@ -258,30 +258,6 @@
     <string name="pref_expert_options_summary">Fai attenzione con queste impostazioni</string>
     <string name="title_activity_about">Info su Conversations</string>
     <string name="pref_about_conversations_summary">Informazioni sulla licenza</string>
-    <string name="pref_about_message"  translatable="false">
-            Conversations • l'ultima parola nella messaggistica istantanea.
-            \n\nCopyright © 2014 Daniel Gultsch
-            \n\nThis program is free software: you can redistribute it and/or modify
-            it under the terms of the GNU General Public License as published by
-            the Free Software Foundation, either version 3 of the License, or
-            (at your option) any later version.
-            \n\nThis program is distributed in the hope that it will be useful,
-            but WITHOUT ANY WARRANTY; without even the implied warranty of
-            MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-            GNU General Public License for more details.
-            \n\nYou should have received a copy of the GNU General Public License
-            along with this program. If not, see https://www.gnu.org/licenses
-            \n\nDownload the full source code at https://github.com/siacs/Conversations
-            \n\n\nLibrerie
-            \n\nhttps://www.bouncycastle.org\n(The MIT License (MIT))
-            \n\nhttps://www.gnu.org/software/libidn\n(Apache License, Version 2.0)
-            \n\nhttps://github.com/ge0rg/MemorizingTrustManager\n(The MIT License (MIT))
-            \n\nhttps://github.com/rtreffer/minidns\n(WTFPL)
-            \n\nhttps://github.com/open-keychain/openkeychain-api-lib\n(Apache License, Version 2.0)
-            \n\nhttps://github.com/jitsi/otr4j\n(LGPL-3.0)
-            \n\nhttps://developer.android.com/tools/support-library\n(Apache License, Version 2.0)
-            \n\nhttps://github.com/zxing/zxing\n(Apache License, Version 2.0)
-    </string>
     <string name="pref_use_larger_font">Aumenta la dimensione dei font</string>
     <string name="pref_use_larger_font_summary">Usa font più grandi in tutta l\'app</string>
     <string name="pref_use_send_button_to_indicate_status">Il pulsante di invio indica lo stato</string>
