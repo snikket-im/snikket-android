@@ -25,7 +25,7 @@
         <item>un\'ora</item>
         <item>2 ore</item>
         <item>8 ore</item>
-        <item>fino avviso ulteriore</item>
+        <item>fino a nuovo avviso</item>
     </string-array>
 
     <integer-array name="mute_options_durations">
