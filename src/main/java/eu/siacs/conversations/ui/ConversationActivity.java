@@ -771,12 +771,8 @@ public class ConversationActivity extends XmppActivity implements
 		super.onActivityResult(requestCode, resultCode, data);
 		if (resultCode == RESULT_OK) {
 			if (requestCode == REQUEST_DECRYPT_PGP) {
-				ConversationFragment selectedFragment = (ConversationFragment) getFragmentManager()
-						.findFragmentByTag("conversation");
-				if (selectedFragment != null) {
-					selectedFragment.hideSnackbar();
-					selectedFragment.updateMessages();
-				}
+				mConversationFragment.hideSnackbar();
+				mConversationFragment.updateMessages();
 			} else if (requestCode == REQUEST_ATTACH_IMAGE_DIALOG) {
 				mPendingImageUri = data.getData();
 				if (xmppConnectionServiceBound) {
