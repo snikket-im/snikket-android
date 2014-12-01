@@ -22,11 +22,11 @@
     <string name="title_activity_start_conversation">Začít konverzaci</string>
     <string name="title_activity_choose_contact">Vybrat kontakt</string>
     <string name="just_now">právě teď</string>
-    <string name="minute_ago">před 1 minutou</string>
+    <string name="minute_ago">před minutou</string>
     <string name="minutes_ago">před %d minutami</string>
     <string name="unread_conversations">nepřečtené konverzace</string>
-    <string name="sending">odesílám&#8230;</string>
-    <string name="encrypted_message">Dešifruji zprávu. Chvíli strpení&#8230;</string>
+    <string name="sending">odesílám…</string>
+    <string name="encrypted_message">Dešifruji zprávu. Chvíli strpení…</string>
     <string name="nick_in_use">Přezdívka se již používá</string>
     <string name="admin">Administrátor</string>
     <string name="owner">Vlastník</string>
@@ -52,13 +52,13 @@
     <string name="send_never">Již se neptat</string>
     <string name="problem_connecting_to_account">Připojení k účtu se nezdařilo</string>
     <string name="problem_connecting_to_accounts">Připojení k několika účtům se nezdařilo</string>
-    <string name="touch_to_fix">Pro nastavení účtů tapni zde</string>
+    <string name="touch_to_fix">Pro nastavení účtů ťukni sem</string>
     <string name="attach_file">Přiložit soubor</string>
     <string name="not_in_roster">Kontakt není v seznamu. Chcete ho přidat?</string>
     <string name="add_contact">Přidat kontakt</string>
     <string name="send_failed">doručení selhalo</string>
     <string name="send_rejected">zamítnuto</string>
-    <string name="receiving_image">Přijímám obrázek. Chvíli strpení&#8230;</string>
+    <string name="receiving_image">Přijímám obrázek. Chvíli strpení…</string>
     <string name="preparing_image">Připravuji obrázek na přenos</string>
     <string name="action_clear_history">Smazat historii</string>
     <string name="clear_conversation_history">Smaže historii konverzací</string>
@@ -78,20 +78,20 @@
     <string name="openkeychain_required_long">Konverzace využívá aplikaci třetí strany, <b>OpenKeychain</b>, k šifrování a dešifrování zpráv a ke správě veřejných klíčů.\n\nOpenKeychain je licencován pod GPLv3 a dostupný na F-Droid a Google Play.\n\n<small>(Po instalaci prosím restartujte aplikaci Konverzace.)</small></string>
     <string name="restart">Restartovat</string>
     <string name="install">Instalovat</string>
-    <string name="offering">nabízí&#8230;</string>
-    <string name="waiting">čekám&#8230;</string>
+    <string name="offering">nabízí…</string>
+    <string name="waiting">čekám…</string>
     <string name="no_pgp_key">Nebyl nalezen žádný OpenPGP klíč</string>
     <string name="contact_has_no_pgp_key">Není možné zašifrovat zprávu v aplikaci Konverzace, protože druhá strana neoznamuje svůj veřejný klíč.\n\n<small>Požádejte svůj kontakt ať si nastaví OpenPGP.</small></string>
     <string name="no_pgp_keys">Nebyly nalezeny žádné OpenPGP klíče</string>
     <string name="contacts_have_no_pgp_keys">Není možné zašifrovat zprávy v aplikaci Konverzace, protože kontakty neoznamují svůj veřejný klíč.\n\n<small>Požádejte své kontakty ať si nastaví OpenPGP.</small></string>
-    <string name="encrypted_message_received"><i>Byla přijata šifrovaná zpráva. Tapni pro dešifrování a přečtení.</i></string>
-    <string name="encrypted_image_received"><i>Byl přijat šifrovaný obrázek. Tapni pro dešifrování a prohlédnutí.</i></string>
-    <string name="image_file"><i>Byl přijat obrázek. Tapni pro prohlédnutí</i></string>
+    <string name="encrypted_message_received"><i>Byla přijata šifrovaná zpráva. Ťukni pro dešifrování a přečtení.</i></string>
+    <string name="encrypted_image_received"><i>Byl přijat šifrovaný obrázek. Ťukni pro dešifrování a prohlédnutí.</i></string>
+    <string name="image_file"><i>Byl přijat obrázek. Ťukni pro prohlédnutí</i></string>
     <string name="pref_general">Obecné</string>
     <string name="pref_xmpp_resource">XMPP zdroj</string>
     <string name="pref_xmpp_resource_summary">Jméno se kterým se tento klient identifikuje</string>
     <string name="pref_accept_files">Přijímat soubory</string>
-    <string name="pref_accept_files_summary">Automaticky přijímat soubory menší než&#8230;</string>
+    <string name="pref_accept_files_summary">Automaticky přijímat soubory menší než…</string>
     <string name="pref_notification_settings">Nastavení upozornění</string>
     <string name="pref_notifications">Upozornění</string>
     <string name="pref_notifications_summary">Upozornit při přijetí nové zprávy</string>
@@ -123,7 +123,7 @@
     <string name="ask_for_presence_updates">Zažádat o změny stavu</string>
     <string name="attach_choose_picture">Vybrat obrázek</string>
     <string name="attach_take_picture">Vyfotit obrázek</string>
-    <string name="preemptively_grant">Aktivně povolovat vyžádání změnu stavu</string>
+    <string name="preemptively_grant">Aktivně povolovat vyžádání změn stavu</string>
     <string name="error_not_an_image_file">Vybraný soubor není obrázek</string>
     <string name="error_compressing_image">Chyba při konverzi obrázkového souboru</string>
     <string name="error_file_not_found">Soubor nenalezen</string>
@@ -141,6 +141,8 @@
     <string name="account_status_regis_conflict">Uživatelské jméno se již používá</string>
     <string name="account_status_regis_success">Registrace dokončena</string>
     <string name="account_status_regis_not_sup">Server nepodporuje registrace</string>
+    <string name="account_status_security_error">Bezpečnostní chyba</string>
+    <string name="account_status_incompatible_server">Nekompatibilní server</string>
     <string name="encryption_choice_none">Čistý text</string>
     <string name="encryption_choice_otr">OTR</string>
     <string name="encryption_choice_pgp">OpenPGP</string>
@@ -213,11 +215,11 @@
     <string name="leave">Odejít</string>
     <string name="contact_added_you">Kontakt přidán do seznamu</string>
     <string name="add_back">Opět přidat</string>
-    <string name="contact_has_read_up_to_this_point">%s dočetl až sem</string>
+    <string name="contact_has_read_up_to_this_point">%s dočetl(a) až sem</string>
     <string name="publish">Zveřejnit</string>
-    <string name="touch_to_choose_picture">Tapnout na avatar a vybrat obrázek z galerie</string>
+    <string name="touch_to_choose_picture">Ťuknout na avatar a vybrat obrázek z galerie</string>
     <string name="publish_avatar_explanation">Pozor: Každý s povolením vidět změny stavu uvidí tento obrázek.</string>
-    <string name="publishing">Zveřejňuji&#8230;</string>
+    <string name="publishing">Zveřejňuji…</string>
     <string name="error_publish_avatar_server_reject">Server odmítl toto zveřejnění</string>
     <string name="error_publish_avatar_converting">Při konverzi obrázku se něco nezdařilo</string>
     <string name="error_saving_avatar">Nepodařilo se uložit avatar na disk</string>
@@ -227,7 +229,7 @@
     <string name="private_message_to">pro %s</string>
     <string name="send_private_message_to">Zaslat soukromou zprávu pro %s</string>
     <string name="connect">Připojit</string>
-    <string name="account_already_exists">Tentou účet již existuje</string>
+    <string name="account_already_exists">Tento účet již existuje</string>
     <string name="next">Další</string>
     <string name="server_info_session_established">Současné sezení vytvořeno</string>
     <string name="additional_information">Dodatečné informace</string>
@@ -238,8 +240,8 @@
     <string name="enable">Povolit</string>
     <string name="conference_requires_password">Konference vyžaduje heslo</string>
     <string name="enter_password">Vložit heslo</string>
-    <string name="missing_presence_updates">Kontakt nezasílá informace o změně stavu</string>
-    <string name="request_presence_updates">Nejdříve si prosím vyžádejte povolení o zasílání změn stavu kontatku.\n\n<small>To bude poté použito pro zjištění jakou aplikaci tento kontakt používá.</small></string>
+    <string name="missing_presence_updates">Chybí informace o změnách stavu kontaktu</string>
+    <string name="request_presence_updates">Nejdříve si prosím vyžádejte povolení o zasílání změn stavu kontaktu.\n\n<small>To bude poté použito pro zjištění jakou aplikaci tento kontakt používá.</small></string>
     <string name="request_now">Ihned vyžádat</string>
     <string name="delete_fingerprint">Smazat identifikátor</string>
     <string name="sure_delete_fingerprint">Chcete opravdu smazat tento identifikátor?</string>
@@ -250,16 +252,112 @@
     <string name="pref_force_encryption_summary">Vždy zasílat šifrované zprávy (mimo konference)</string>
     <string name="pref_dont_save_encrypted">Neukládat šifrované zprávy</string>
     <string name="pref_dont_save_encrypted_summary">Varování: Toto může vést ke ztrátě zpráv</string>
+    <string name="pref_enable_legacy_ssl">Povolit zastaralé SSL</string>
+    <string name="pref_enable_legacy_ssl_summary">Povolí SSLv3 podporu pro zastaralé servery. Varování: SSLv3 není již považováno za bezpečné.</string>
     <string name="pref_expert_options">Expertní nastavení</string>
     <string name="pref_expert_options_summary">S tímto zacházejte velmi opatrně</string>
-    <string name="pref_use_larger_font">Zvětšit velikost písma</string>
-    <string name="pref_use_larger_font_summary">Použít větší písmo v celé aplikaci</string>
+    <string name="title_activity_about">O aplikaci Conversations</string>
+    <string name="pref_about_conversations_summary">Informace o sestavení a licenci</string>
+    <string name="pref_about_message"  translatable="false">
+            Conversations • the very last word in instant messaging.
+            \n\nCopyright © 2014 Daniel Gultsch
+            \n\nThis program is free software: you can redistribute it and/or modify
+            it under the terms of the GNU General Public License as published by
+            the Free Software Foundation, either version 3 of the License, or
+            (at your option) any later version.
+            \n\nThis program is distributed in the hope that it will be useful,
+            but WITHOUT ANY WARRANTY; without even the implied warranty of
+            MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+            GNU General Public License for more details.
+            \n\nYou should have received a copy of the GNU General Public License
+            along with this program. If not, see https://www.gnu.org/licenses
+            \n\nDownload the full source code at https://github.com/siacs/Conversations
+            \n\n\nLibraries
+            \n\nhttps://www.bouncycastle.org\n(The MIT License (MIT))
+            \n\nhttps://www.gnu.org/software/libidn\n(Apache License, Version 2.0)
+            \n\nhttps://github.com/ge0rg/MemorizingTrustManager\n(The MIT License (MIT))
+            \n\nhttps://github.com/rtreffer/minidns\n(WTFPL)
+            \n\nhttps://github.com/open-keychain/openkeychain-api-lib\n(Apache License, Version 2.0)
+            \n\nhttps://github.com/jitsi/otr4j\n(LGPL-3.0)
+            \n\nhttps://developer.android.com/tools/support-library\n(Apache License, Version 2.0)
+            \n\nhttps://github.com/zxing/zxing\n(Apache License, Version 2.0)
+    </string>
+    <string name="pref_use_larger_font">Zvětšit písmo</string>
+    <string name="pref_use_larger_font_summary">Používat v celé aplikaci větší velikost písma</string>
     <string name="pref_use_send_button_to_indicate_status">Tlačítko pro odeslání zobrazuje stav</string>
     <string name="pref_use_indicate_received">Požadovat oznámení o přijetí</string>
-    <string name="pref_use_indicate_received_summary">Přijaté zprávy budou označeny zeleně. Toto nemusí vždy plně fungovat.</string>
-    <string name="pref_use_send_button_to_indicate_status_summary">Obarvit tlačítko pro odeslání barvou stavu kontaktu</string>
+    <string name="pref_use_indicate_received_summary">Přijaté zprávy budou označeny zeleně, pokud je funkce podporována</string>
+    <string name="pref_use_send_button_to_indicate_status_summary">Obarvit tlačítko odesílání barvou indikující stavu kontaktu</string>
     <string name="pref_expert_options_other">Další</string>
     <string name="pref_conference_name">Jméno konference</string>
     <string name="pref_conference_name_summary">Pro identifikaci konferencí použít téma místnosti místo jejího JID</string>
-
+    <string name="toast_message_otr_fingerprint">OTR otisk zkopírován do schránky!</string>
+    <string name="conference_banned">Vstup do konference byl zakázán</string>
+    <string name="conference_members_only">Tato konference je pouze pro členy</string>
+    <string name="conference_kicked">Vykopli tě z této konference</string>
+    <string name="using_account">za použití účtu %s</string>
+    <string name="checking_image">Ověřuji obrázek na HTTP hostiteli</string>
+    <string name="image_file_deleted">Obrázek byl smazán</string>
+    <string name="not_connected_try_again">Bez připojení. Zkus znovu později</string>
+    <string name="check_image_filesize">Ověřit velikost obrázku</string>
+    <string name="message_options">Možnosti zpráv</string>
+    <string name="copy_text">Zkopírovat text</string>
+    <string name="share_image">Sdílet obrázek</string>
+    <string name="copy_original_url">Kopírovat originální URL</string>
+    <string name="send_again">Poslat znovu</string>
+    <string name="image_url">URL obrázku</string>
+    <string name="message_text">Text zprávy</string>
+    <string name="url_copied_to_clipboard">URL zkopírováno do schránky</string>
+    <string name="message_copied_to_clipboard">Zpráva zkopírována do schránky</string>
+    <string name="image_transmission_failed">Přenos obrázku selhal</string>
+    <string name="scan_qr_code">Skenovat QR kód</string>
+    <string name="show_qr_code">Zobrazit QR kód</string>
+    <string name="account_details">Detaily účtu</string>
+    <string name="verify_otr">Ověřit OTR</string>
+    <string name="remote_fingerprint">Vzdálený otisk</string>
+    <string name="scan">skenovat</string>
+    <string name="or_touch_phones">(nebo dotykové telefony)</string>
+    <string name="smp">Socialist Millionaire Protocol</string>
+    <string name="shared_secret_hint">Nápověda nebo Otázka</string>
+    <string name="shared_secret_secret">Sdílené tajemství</string>
+    <string name="confirm">Potvrdit</string>
+    <string name="in_progress">Probíhá</string>
+    <string name="respond">Odpovědět</string>
+    <string name="failed">Selhalo</string>
+    <string name="secrets_do_not_match">Tajemství se neshodují</string>
+    <string name="try_again">Zkusit znovu</string>
+    <string name="finish">Dokončit</string>
+    <string name="verified">Ověřeno!</string>
+    <string name="smp_requested">Kontakt zažádal o ověření SMP</string>
+    <string name="no_otr_session_found">Nebylo nalezeno platné OTR sezení!</string>
+    <string name="conversations_foreground_service">Conversations</string>
+    <string name="touch_to_disable">Ťukni pro vypnutí služby v popředí</string>
+    <string name="pref_keep_foreground_service">Ponechat službu v popředí</string>
+    <string name="pref_keep_foreground_service_summary">Zamezit operačnímu systému v ukončení připojení</string>
+    <string name="choose_file">Vybrat soubor</string>
+    <string name="receiving_file">Přijímám %1$s soubor (%2$d%% přeneseno)</string>
+    <string name="download_file">Stáhnout %s soubor</string>
+    <string name="open_file">Otevřít %s soubor</string>
+    <string name="sending_file">odesílám (%1$d%% přeneseno)</string>
+    <string name="preparing_file">Příprava souboru na přenos</string>
+    <string name="file_offered_for_download">Soubor nabídnut ke stažení</string>
+    <string name="file">%s soubor</string>
+    <string name="cancel_transmission">Zrušit přenos</string>
+    <string name="file_transmission_failed">přenos souboru selhal</string>
+    <string name="file_deleted">Soubor byl smazán</string>
+    <string name="no_application_found_to_open_file">Nebyla nalezena aplikace umožňující otevření souboru</string>
+    <string name="could_not_verify_fingerprint">Ověření otisku se nezdařilo</string>
+    <string name="manually_verify">Ruční ověření</string>
+    <string name="are_you_sure_verify_fingerprint">Opravdu si přejete ověřit OTR otisk kontaktu?</string>
+    <string name="pref_show_dynamic_tags">Zobrazit dynamické tagy</string>
+    <string name="pref_show_dynamic_tags_summary">Zobrazit tagy pro čtení pod kontakty</string>
+    <string name="enable_notifications">Povolit upozornění</string>
+    <string name="conference_with">Vytvořit konferenci s…</string>
+    <string name="no_conference_server_found">Nebyl nalezen konferenční server</string>
+    <string name="conference_creation_failed">Vytvoření konference selhalo!</string>
+    <string name="conference_created">Konference vytvořena!</string>
+    <string name="secret_accepted">Tajemství souhlasí!</string>
+    <string name="reset">Reset</string>
+    <string name="account_image_description">Avatar účtu</string>
+    <string name="copy_otr_clipboard_description">Zkopírovat otisk OTR do schránky</string>
 </resources>
