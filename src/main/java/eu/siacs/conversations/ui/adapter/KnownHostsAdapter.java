@@ -60,11 +60,8 @@ public class KnownHostsAdapter extends ArrayAdapter<String> {
 
 	public KnownHostsAdapter(Context context, int viewResourceId,
 			List<String> mKnownHosts) {
-		super(context, viewResourceId, mKnownHosts);
-		domains = new ArrayList<String>(mKnownHosts.size());
-		for (String domain : mKnownHosts) {
-			domains.add(new String(domain));
-		}
+		super(context, viewResourceId, new ArrayList<String>());
+		domains = new ArrayList<String>(mKnownHosts);
 	}
 
 	@Override
