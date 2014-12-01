@@ -82,6 +82,7 @@ run your own XMPP server for you and your friends. These XEP's are:
 * [Jelmer Vernooij](https://github.com/jelmer) (Dutch)
 * [Anders Sandblad](https://github.com/andersruneson) (Swedish)
 * [Aizaz AZ](http://www.linkedin.com/in/aizazhaider) (Chinese)
+* [Jaroslav Lichtblau] (https://github.com/svetlemodry) (Czech)
 
 ## FAQ
 
