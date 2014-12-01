@@ -848,11 +848,9 @@ public class XmppConnection implements Runnable {
 				List<Element> elements = packet.query().getChildren();
 				for (Element element : elements) {
 					if (element.getName().equals("item")) {
-						final String jid = element.getAttribute("jid");
-						try {
-							sendServiceDiscoveryInfo(Jid.fromString(jid).toDomainJid());
-						} catch (final InvalidJidException ignored) {
-							// TODO: Handle the case where an external JID is technically invalid?
+						final Jid jid = element.getAttributeAsJid("jid");
+						if (jid != null && !jid.equals(account.getServer())) {
+							sendServiceDiscoveryInfo(jid);
 						}
 					}
 				}
