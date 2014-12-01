@@ -25,14 +25,11 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
 		}
 		for (Element item : query.getChildren()) {
 			if (item.getName().equals("item")) {
-                Jid jid;
-                try {
-                    jid = Jid.fromString(item.getAttribute("jid"));
-                } catch (final InvalidJidException e) {
-                    // TODO: Handle this?
-                    jid = null;
-                }
-                String name = item.getAttribute("name");
+				final Jid jid = item.getAttributeAsJid("jid");
+				if (jid == null) {
+					break;
+				}
+				String name = item.getAttribute("name");
 				String subscription = item.getAttribute("subscription");
 				Contact contact = account.getRoster().getContact(jid);
 				if (!contact.getOption(Contact.Options.DIRTY_PUSH)) {
