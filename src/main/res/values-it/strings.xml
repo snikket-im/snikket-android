@@ -271,11 +271,11 @@
     <string name="conference_banned">Sei stato bandito da questa conferenza</string>
     <string name="conference_members_only">Questa conferenza è solo per membri</string>
     <string name="conference_kicked">Sei stato buttato fuori dalla conferenza</string>
-    <string name="using_account">usando l'utente %s</string>
+    <string name="using_account">usando l\'utente %s</string>
     <string name="checking_image">Controlla immagine su HTTP</string>
-    <string name="image_file_deleted">Il file dell'immagine è stato cancellato</string>
+    <string name="image_file_deleted">Il file dell\'immagine è stato cancellato</string>
     <string name="not_connected_try_again">Non sei connesso. Riprova più tardi</string>
-    <string name="check_image_filesize">Controlla le dimensioni dell'immagine</string>
+    <string name="check_image_filesize">Controlla le dimensioni dell\'immagine</string>
     <string name="message_options">Opzioni del messaggio</string>
     <string name="copy_text">Copia testo</string>
     <string name="share_image">Condividi immagine</string>
@@ -285,7 +285,7 @@
     <string name="message_text">Messaggio di testo</string>
     <string name="url_copied_to_clipboard">URL copiato</string>
     <string name="message_copied_to_clipboard">Messaggio copiato</string>
-    <string name="image_transmission_failed">Trasmissione dell'immagine fallita</string>
+    <string name="image_transmission_failed">Trasmissione dell\'immagine fallita</string>
     <string name="scan_qr_code">Scansiona codice QR</string>
     <string name="show_qr_code">Mostra codice QR</string>
     <string name="account_details">Dettagli utente</string>
@@ -324,7 +324,7 @@
     <string name="no_application_found_to_open_file">Nessuna applicazione trovata per aprire il file</string>
     <string name="could_not_verify_fingerprint">Impronta non verificata</string>
     <string name="manually_verify">Verifica manuale</string>
-    <string name="are_you_sure_verify_fingerprint">Sei sicuro di voler verificare l'impronta OTR del contatto?</string>
+    <string name="are_you_sure_verify_fingerprint">Sei sicuro di voler verificare l\'impronta OTR del contatto?</string>
     <string name="pref_show_dynamic_tags">Mostra tag dinamici</string>
     <string name="pref_show_dynamic_tags_summary">Mostra tag in sola lettura sotto i contatti</string>
     <string name="enable_notifications">Abilita le notifiche</string>
