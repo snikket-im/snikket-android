@@ -1,5 +1,8 @@
 ###Changelog
 
+####Version 0.9.1
+* bug fixes including some that caused Conversations to crash on start
+
 ####Version 0.9
 * arbitrary file transfer
 * more options to verify OTR (SMP, QR Codes, NFC)
