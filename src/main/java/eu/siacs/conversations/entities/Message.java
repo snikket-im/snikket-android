@@ -73,14 +73,21 @@ public class Message extends AbstractEntity {
 	}
 
 	public Message(Conversation conversation, String body, int encryption, int status) {
-		this(java.util.UUID.randomUUID().toString(), conversation.getUuid(),
-				conversation.getContactJid().toBareJid(), null, body, System
-						.currentTimeMillis(), encryption,
-				status, TYPE_TEXT, null, null);
+		this(java.util.UUID.randomUUID().toString(),
+				conversation.getUuid(),
+				conversation.getContactJid() == null ? null : conversation.getContactJid().toBareJid(),
+				null,
+				body,
+				System.currentTimeMillis(),
+				encryption,
+				status,
+				TYPE_TEXT,
+				null,
+				null);
 		this.conversation = conversation;
 	}
 
-	public Message(final String uuid, final String conversationUUid, final Jid counterpart,
+	private Message(final String uuid, final String conversationUUid, final Jid counterpart,
 				   final Jid trueCounterpart, final String body, final long timeSent,
 				   final int encryption, final int status, final int type, final String remoteMsgId, final String relativeFilePath) {
 		this.uuid = uuid;
