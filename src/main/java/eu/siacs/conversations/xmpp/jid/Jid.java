@@ -70,10 +70,9 @@ public final class Jid {
 		}
 
 		// Go ahead and check if the localpart or resourcepart is empty.
-		if (jid.startsWith("@") || jid.endsWith("@") ||
-				jid.startsWith("/") || jid.endsWith("/")) {
+		if (jid.startsWith("@") || (jid.endsWith("@") && slashCount == 0) || jid.startsWith("/") || (jid.endsWith("/") && slashCount < 2)) {
 			throw new InvalidJidException(InvalidJidException.INVALID_CHARACTER);
-				}
+		}
 
 		String finaljid;
 
