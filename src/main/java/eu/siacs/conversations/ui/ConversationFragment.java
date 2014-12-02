@@ -580,23 +580,23 @@ public class ConversationFragment extends Fragment {
 							break;
 					}
 				}
-				for (Message message : this.conversation.getMessages()) {
-					if (message.getEncryption() == Message.ENCRYPTION_PGP
-							&& (message.getStatus() == Message.STATUS_RECEIVED || message
-							.getStatus() >= Message.STATUS_SEND)
-							&& message.getDownloadable() == null) {
-						if (!mEncryptedMessages.contains(message)) {
-							mEncryptedMessages.add(message);
-						}
-					}
-				}
-				decryptNext();
 				this.messageList.clear();
 				if (this.conversation.getMessages().size() == 0) {
 					messagesLoaded = false;
 				} else {
 					this.messageList.addAll(this.conversation.getMessages());
 					messagesLoaded = true;
+					for (Message message : this.messageList) {
+						if (message.getEncryption() == Message.ENCRYPTION_PGP
+								&& (message.getStatus() == Message.STATUS_RECEIVED || message
+								.getStatus() >= Message.STATUS_SEND)
+								&& message.getDownloadable() == null) {
+							if (!mEncryptedMessages.contains(message)) {
+								mEncryptedMessages.add(message);
+							}
+						}
+					}
+					decryptNext();
 					updateStatusMessages();
 				}
 				this.messageListAdapter.notifyDataSetChanged();
