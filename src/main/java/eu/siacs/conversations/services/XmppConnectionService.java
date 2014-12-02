@@ -1301,10 +1301,12 @@ public class XmppConnectionService extends Service {
 		account.pendingConferenceJoins.remove(conversation);
 		account.pendingConferenceLeaves.remove(conversation);
 		if (account.getStatus() == Account.State.ONLINE) {
-			Log.d(Config.LOGTAG,
-					"joining conversation " + conversation.getContactJid());
-			String nick = conversation.getMucOptions().getProposedNick();
-			Jid joinJid = conversation.getMucOptions().createJoinJid(nick);
+			final String nick = conversation.getMucOptions().getProposedNick();
+			final Jid joinJid = conversation.getMucOptions().createJoinJid(nick);
+			if (joinJid == null) {
+				return; //safety net
+			}
+			Log.d(Config.LOGTAG,account.getJid().toBareJid().toString()+": joining conversation " + joinJid.toString());
 			PresencePacket packet = new PresencePacket();
 			packet.setFrom(conversation.getAccount().getJid());
 			packet.setTo(joinJid);
