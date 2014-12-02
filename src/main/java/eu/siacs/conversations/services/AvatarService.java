@@ -121,8 +121,8 @@ public class AvatarService {
 
 		if (count == 0) {
 			String name = mucOptions.getConversation().getName();
-			String letter = name.substring(0, 1);
-			int color = UIHelper.getColorForName(name);
+			final String letter = name.isEmpty() ? "X" : name.substring(0,1);
+			final int color = UIHelper.getColorForName(name);
 			drawTile(canvas, letter, color, 0, 0, size, size);
 		} else if (count == 1) {
 			drawTile(canvas, users.get(0), 0, 0, size, size);
@@ -212,15 +212,8 @@ public class AvatarService {
 		}
 		bitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
 		Canvas canvas = new Canvas(bitmap);
-		String letter;
-		int color;
-		if (name.length() > 0) {
-			letter = name.substring(0, 1);
-			color = UIHelper.getColorForName(name);
-		} else {
-			letter = "X";
-			color = PLACEHOLDER_COLOR;
-		}
+		final String letter = name.isEmpty() ? "X" : name.substring(0,1);
+		final int color = UIHelper.getColorForName(name);
 		drawTile(canvas, letter, color, 0, 0, size, size);
 		mXmppConnectionService.getBitmapCache().put(KEY, bitmap);
 		return bitmap;
@@ -275,15 +268,8 @@ public class AvatarService {
 			}
 		}
 		String name = contact != null ? contact.getDisplayName() : user.getName();
-		String letter;
-		int color;
-		if (name.length() > 0) {
-			letter = name.substring(0, 1);
-			color = UIHelper.getColorForName(name);
-		} else {
-			letter = "X";
-			color = PLACEHOLDER_COLOR;
-		}
+		final String letter = name.isEmpty() ? "X" : name.substring(0,1);
+		final int color = UIHelper.getColorForName(name);
 		drawTile(canvas, letter, color, left, top, right, bottom);
 	}
 
