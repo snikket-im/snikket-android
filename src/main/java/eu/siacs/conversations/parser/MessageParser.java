@@ -27,8 +27,10 @@ public class MessageParser extends AbstractParser implements
 
 	private Message parseChat(MessagePacket packet, Account account) {
         final Jid jid = packet.getFrom();
-		Conversation conversation = mXmppConnectionService
-				.findOrCreateConversation(account, jid.toBareJid(), false);
+		if (jid == null) {
+			return null;
+		}
+		Conversation conversation = mXmppConnectionService.findOrCreateConversation(account, jid.toBareJid(), false);
 		updateLastseen(packet, account, true);
 		String pgpBody = getPgpBody(packet);
 		Message finishedMessage;
@@ -61,6 +63,9 @@ public class MessageParser extends AbstractParser implements
 		boolean properlyAddressed = (!packet.getTo().isBareJid())
 				|| (account.countPresences() == 1);
         final Jid from = packet.getFrom();
+		if (from == null) {
+			return null;
+		}
 		Conversation conversation = mXmppConnectionService
 				.findOrCreateConversation(account, from.toBareJid(), false);
 		String presence;
