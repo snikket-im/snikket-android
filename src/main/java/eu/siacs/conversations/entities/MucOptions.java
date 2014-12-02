@@ -281,14 +281,13 @@ public class MucOptions {
 
 	public String getProposedNick() {
 		if (conversation.getBookmark() != null
-				&& conversation.getBookmark().getNick() != null) {
+				&& conversation.getBookmark().getNick() != null
+				&& !conversation.getBookmark().getNick().isEmpty()) {
 			return conversation.getBookmark().getNick();
+		} else if (!conversation.getContactJid().isBareJid()) {
+			return conversation.getContactJid().getResourcepart();
 		} else {
-			if (!conversation.getContactJid().isBareJid()) {
-				return conversation.getContactJid().getResourcepart();
-			} else {
-				return account.getUsername();
-			}
+			return account.getUsername();
 		}
 	}
 
