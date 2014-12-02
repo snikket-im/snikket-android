@@ -324,9 +324,9 @@
     <string name="no_application_found_to_open_file">Keine Anwendung zum Öffnen der Datei gefunden</string>
     <string name="could_not_verify_fingerprint">Kann Fingerabdruck nicht überprüfen</string>
     <string name="manually_verify">Manuell überprüfen</string>
-    <string name="are_you_sure_verify_fingerprint">Bist du sicher, dass du die OTR Fingerabdrücke des Kontakts überprüfen willst?</string>
+    <string name="are_you_sure_verify_fingerprint">Bist du sicher, dass du die OTR-Fingerabdrücke des Kontakts überprüfen willst?</string>
     <string name="pref_show_dynamic_tags">Dynamische Tags anzeigen</string>
-    <string name="pref_show_dynamic_tags_summary">Zeige schreibgeschützte Tags Unterhalb der Kontakte</string>
+    <string name="pref_show_dynamic_tags_summary">Zeige schreibgeschützte Tags unterhalb der Kontakte</string>
     <string name="enable_notifications">Aktiviere Benachrichtigungen</string>
     <string name="conference_with">Starte Konferenze mit&#8230;</string>
     <string name="no_conference_server_found">Konferenz-Server kann nicht gefunden werden</string>
@@ -334,4 +334,6 @@
     <string name="conference_created">Konferenz erstellt!</string>
     <string name="secret_accepted">Schlüssel akzeptiert!</string>
     <string name="reset">Zurücksetzen</string>
+    <string name="account_image_description">Konto-Avatar</string>
+    <string name="copy_otr_clipboard_description">OTR-Fingerabdruck in Zwischenablage kopieren</string>
 </resources>
