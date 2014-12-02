@@ -188,11 +188,11 @@
     <string name="last_seen_days">Visto última vez hace %d días</string>
     <string name="never_seen">Nunca visto</string>
     <string name="install_openkeychain">Mensaje encriptado. Por favor instala OpenKeychain para desencriptar.</string>
-    <string name="unknown_otr_fingerprint">Clave OTR desconocida</string>
+    <string name="unknown_otr_fingerprint">Huella digital OTR desconocida</string>
     <string name="openpgp_messages_found">Encontrado mensaje encriptado con OpenPGP</string>
     <string name="reception_failed">Error al recibir</string>
-    <string name="your_fingerprint">Tu clave</string>
-    <string name="otr_fingerprint">Clave OTR</string>
+    <string name="your_fingerprint">Tu huella digital</string>
+    <string name="otr_fingerprint">Huella digital OTR</string>
     <string name="verify">Verificar</string>
     <string name="decrypt">Desencriptar</string>
     <string name="conferences">Conferencias</string>
@@ -243,8 +243,8 @@
     <string name="missing_presence_updates">Suscripción de actualizaciones de presencia del contacto perdida</string>
     <string name="request_presence_updates">Por favor, solicita la suscripción de presencia a tu contacto primero.\n\n<small>Esto será usado para determinar qué cliente(s) está usando tu contacto.</small></string>
     <string name="request_now">Solicitar ahora</string>
-    <string name="delete_fingerprint">Eliminar Clave OTR</string>
-    <string name="sure_delete_fingerprint">¿Estás seguro que quieres eliminar la clave OTR?</string>
+    <string name="delete_fingerprint">Eliminar huella digital OTR</string>
+    <string name="sure_delete_fingerprint">¿Estás seguro que quieres eliminar esta huella digital OTR?</string>
     <string name="ignore">Ignorar</string>
     <string name="without_mutual_presence_updates"><b>Aviso:</b> Enviando esto sin suscripción de presencia por ambas partes podría causar problemas inesperados.\n\n<small>Verficia la suscripción de presencia en detalles del contacto.</small></string>
     <string name="pref_encryption_settings">Ajustes de encriptación</string>
@@ -267,7 +267,7 @@
     <string name="pref_expert_options_other">Otros</string>
     <string name="pref_conference_name">Nombre de conferencia</string>
     <string name="pref_conference_name_summary">Usar el asunto de la conferencia en lugar del identificador jabber como nombre de conferencia</string>
-    <string name="toast_message_otr_fingerprint">¡Clave OTR copiada en el portapapeles!</string>
+    <string name="toast_message_otr_fingerprint">¡Huella digital OTR copiada al portapapeles!</string>
     <string name="conference_banned">Tu entrada a esta conferencia ha sido prohibida</string>
     <string name="conference_members_only">Esta conferencia es solo para miembros</string>
     <string name="conference_kicked">Has sido expulsado de esta conferencia</string>
@@ -290,7 +290,7 @@
     <string name="show_qr_code">Mostrar código QR</string>
     <string name="account_details">Detalles de la cuenta</string>
     <string name="verify_otr">Verificar OTR</string>
-    <string name="remote_fingerprint">Clave OTR remota</string>
+    <string name="remote_fingerprint">Huella digital remota</string>
     <string name="scan">escanear</string>
     <string name="or_touch_phones">(o une los teléfonos)</string>
     <string name="smp">Protocolo del Socialista Millonario</string>
@@ -307,8 +307,8 @@
     <string name="smp_requested">El contacto solicita verificación SMP</string>
     <string name="no_otr_session_found">¡No se ha encontrado una sesión OTR válida!</string>
     <string name="conversations_foreground_service">Conversations</string>
-    <string name="touch_to_disable">Pulsa para deshabilitar servicio en segundo plano</string>
-    <string name="pref_keep_foreground_service">Mantener servicio en segundo plano</string>
+    <string name="touch_to_disable">Pulsa para deshabilitar servicio en primer plano</string>
+    <string name="pref_keep_foreground_service">Mantener servicio en primer plano</string>
     <string name="pref_keep_foreground_service_summary">Previene que el sistema cierre la conexión</string>
     <string name="choose_file">Seleccionar archivo</string>
     <string name="receiving_file">Recibiendo archivo %1$s (%2$d%% completedo)</string>
@@ -334,4 +334,6 @@
     <string name="conference_created">¡Conferencia creada!</string>
     <string name="secret_accepted">¡Secreto aceptado!</string>
     <string name="reset">Reinicializar</string>
+    <string name="account_image_description">Imagen de perfil</string>
+    <string name="copy_otr_clipboard_description">Copiar huella digital OTR al portapapeles</string>
 </resources>
