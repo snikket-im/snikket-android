@@ -20,7 +20,7 @@ public abstract class AbstractGenerator {
 			"http://jabber.org/protocol/disco#info",
 			"urn:xmpp:avatar:metadata+notify",
 			"urn:xmpp:ping"};
-	public final String IDENTITY_NAME = "Conversations 0.9.1";
+	public final String IDENTITY_NAME = "Conversations 0.9.2";
 	public final String IDENTITY_TYPE = "phone";
 
 	protected XmppConnectionService mXmppConnectionService;

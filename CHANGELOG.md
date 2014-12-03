@@ -1,5 +1,8 @@
 ###Changelog
 
+####Version 0.9.2
+* more bug fixes
+
 ####Version 0.9.1
 * bug fixes including some that caused Conversations to crash on start
 
