@@ -209,11 +209,11 @@ public class XmppConnectionService extends Service {
 			getNotificationService().updateErrorNotification();
 		}
 	};
-	private Integer accountChangedListenerCount = 0;
+	private int accountChangedListenerCount = 0;
 	private OnRosterUpdate mOnRosterUpdate = null;
-	private Integer rosterChangedListenerCount = 0;
+	private int rosterChangedListenerCount = 0;
 	private OnMucRosterUpdate mOnMucRosterUpdate = null;
-	private Integer mucRosterChangedListenerCount = 0;
+	private int mucRosterChangedListenerCount = 0;
 	private SecureRandom mRandom;
 	private FileObserver fileObserver = new FileObserver(
 			FileBackend.getConversationsImageDirectory()) {
@@ -783,7 +783,7 @@ public class XmppConnectionService extends Service {
 
 					@Override
 					public void onIqPacketReceived(final Account account,
-							IqPacket packet) {
+												   IqPacket packet) {
 						Element query = packet.findChild("query");
 						if (query != null) {
 							account.getRoster().markAllAsNotInRoster();
@@ -1095,72 +1095,21 @@ public class XmppConnectionService extends Service {
 		}
 	}
 
-	private void removeStaleListeners() {
-		boolean removedListener = false;
-		synchronized (this.convChangedListenerCount) {
-			if (this.mOnConversationUpdate != null) {
-				this.mOnConversationUpdate = null;
-				this.convChangedListenerCount = 0;
-				this.mNotificationService.setIsInForeground(false);
-				removedListener = true;
-			}
-		}
-		synchronized (this.accountChangedListenerCount) {
-			if (this.mOnAccountUpdate != null) {
-				this.mOnAccountUpdate = null;
-				this.accountChangedListenerCount = 0;
-				removedListener = true;
-			}
-		}
-		synchronized (this.rosterChangedListenerCount) {
-			if (this.mOnRosterUpdate != null) {
-				this.mOnRosterUpdate = null;
-				this.rosterChangedListenerCount = 0;
-				removedListener = true;
-			}
-		}
-		synchronized (this.mucRosterChangedListenerCount) {
-			if (this.mOnMucRosterUpdate != null) {
-				this.mOnMucRosterUpdate = null;
-				this.mucRosterChangedListenerCount = 0;
-				removedListener = true;
-			}
-		}
-		if (removedListener) {
-			final String msg = "removed stale listeners";
-			Log.d(Config.LOGTAG, msg);
-			checkListeners();
-			try {
-				OutputStream os = openFileOutput("stacktrace.txt", MODE_PRIVATE);
-				os.write(msg.getBytes());
-				os.flush();
-				os.close();
-			} catch (final FileNotFoundException ignored) {
-
-			} catch (final IOException ignored) {
-			}
-		}
-	}
-
-	public void setOnConversationListChangedListener(
-			OnConversationUpdate listener) {
-		/*if (!isScreenOn()) {
-			Log.d(Config.LOGTAG,
-			"ignoring setOnConversationListChangedListener");
-			return;
-			}*/
-		synchronized (this.convChangedListenerCount) {
+	public void setOnConversationListChangedListener(OnConversationUpdate listener) {
+		synchronized (this) {
 			if (checkListeners()) {
 				switchToForeground();
 			}
 			this.mOnConversationUpdate = listener;
 			this.mNotificationService.setIsInForeground(true);
-			this.convChangedListenerCount++;
-		}
+			if (this.convChangedListenerCount < 2) {
+				this.convChangedListenerCount++;
 			}
+		}
+	}
 
 	public void removeOnConversationListChangedListener() {
-		synchronized (this.convChangedListenerCount) {
+		synchronized (this) {
 			this.convChangedListenerCount--;
 			if (this.convChangedListenerCount <= 0) {
 				this.convChangedListenerCount = 0;
@@ -1174,21 +1123,19 @@ public class XmppConnectionService extends Service {
 	}
 
 	public void setOnAccountListChangedListener(OnAccountUpdate listener) {
-		/*if (!isScreenOn()) {
-			Log.d(Config.LOGTAG, "ignoring setOnAccountListChangedListener");
-			return;
-			}*/
-		synchronized (this.accountChangedListenerCount) {
+		synchronized (this) {
 			if (checkListeners()) {
 				switchToForeground();
 			}
 			this.mOnAccountUpdate = listener;
-			this.accountChangedListenerCount++;
+			if (this.accountChangedListenerCount < 2) {
+				this.accountChangedListenerCount++;
+			}
 		}
 	}
 
 	public void removeOnAccountListChangedListener() {
-		synchronized (this.accountChangedListenerCount) {
+		synchronized (this) {
 			this.accountChangedListenerCount--;
 			if (this.accountChangedListenerCount <= 0) {
 				this.mOnAccountUpdate = null;
@@ -1201,21 +1148,19 @@ public class XmppConnectionService extends Service {
 	}
 
 	public void setOnRosterUpdateListener(OnRosterUpdate listener) {
-		/*if (!isScreenOn()) {
-			Log.d(Config.LOGTAG, "ignoring setOnRosterUpdateListener");
-			return;
-			}*/
-		synchronized (this.rosterChangedListenerCount) {
+		synchronized (this) {
 			if (checkListeners()) {
 				switchToForeground();
 			}
 			this.mOnRosterUpdate = listener;
-			this.rosterChangedListenerCount++;
+			if (this.rosterChangedListenerCount < 2) {
+				this.rosterChangedListenerCount++;
+			}
 		}
 	}
 
 	public void removeOnRosterUpdateListener() {
-		synchronized (this.rosterChangedListenerCount) {
+		synchronized (this) {
 			this.rosterChangedListenerCount--;
 			if (this.rosterChangedListenerCount <= 0) {
 				this.rosterChangedListenerCount = 0;
@@ -1228,17 +1173,19 @@ public class XmppConnectionService extends Service {
 	}
 
 	public void setOnMucRosterUpdateListener(OnMucRosterUpdate listener) {
-		synchronized (this.mucRosterChangedListenerCount) {
+		synchronized (this) {
 			if (checkListeners()) {
 				switchToForeground();
 			}
 			this.mOnMucRosterUpdate = listener;
-			this.mucRosterChangedListenerCount++;
+			if (this.mucRosterChangedListenerCount < 2) {
+				this.mucRosterChangedListenerCount++;
+			}
 		}
 	}
 
 	public void removeOnMucRosterUpdateListener() {
-		synchronized (this.mucRosterChangedListenerCount) {
+		synchronized (this) {
 			this.mucRosterChangedListenerCount--;
 			if (this.mucRosterChangedListenerCount <= 0) {
 				this.mucRosterChangedListenerCount = 0;
@@ -1280,12 +1227,6 @@ public class XmppConnectionService extends Service {
 		Log.d(Config.LOGTAG, "app switched into background");
 	}
 
-	private boolean isScreenOn() {
-		PowerManager pm = (PowerManager) this
-			.getSystemService(Context.POWER_SERVICE);
-		return pm.isScreenOn();
-	}
-
 	public void connectMultiModeConversations(Account account) {
 		List<Conversation> conversations = getConversations();
 		for (Conversation conversation : conversations) {
@@ -1306,7 +1247,7 @@ public class XmppConnectionService extends Service {
 			if (joinJid == null) {
 				return; //safety net
 			}
-			Log.d(Config.LOGTAG,account.getJid().toBareJid().toString()+": joining conversation " + joinJid.toString());
+			Log.d(Config.LOGTAG, account.getJid().toBareJid().toString() + ": joining conversation " + joinJid.toString());
 			PresencePacket packet = new PresencePacket();
 			packet.setFrom(conversation.getAccount().getJid());
 			packet.setTo(joinJid);
@@ -1738,7 +1679,7 @@ public class XmppConnectionService extends Service {
 			@Override
 			public void onIqPacketReceived(Account account, IqPacket result) {
 				final String ERROR = account.getJid().toBareJid()
-					+ ": fetching avatar for " + avatar.owner + " failed ";
+						+ ": fetching avatar for " + avatar.owner + " failed ";
 				if (result.getType() == IqPacket.TYPE_RESULT) {
 					avatar.image = mIqParser.avatarData(result);
 					if (avatar.image != null) {
@@ -1752,7 +1693,7 @@ public class XmppConnectionService extends Service {
 								updateAccountUi();
 							} else {
 								Contact contact = account.getRoster()
-									.getContact(avatar.owner);
+										.getContact(avatar.owner);
 								contact.setAvatar(avatar.getFilename());
 								getAvatarService().clear(contact);
 								updateConversationUi();
