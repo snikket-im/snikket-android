@@ -458,6 +458,18 @@ public class Conversation extends AbstractEntity {
 		return false;
 	}
 
+	public Message findSentMessageWithBody(String body) {
+		synchronized (this.messages) {
+			for (int i = this.getMessages().size() - 1; i >= 0; --i) {
+				Message message = this.messages.get(i);
+				if ((message.getStatus() == Message.STATUS_UNSEND || message.getStatus() == Message.STATUS_SEND) && message.getBody() != null && message.getBody().equals(body)) {
+					return message;
+				}
+			}
+			return null;
+		}
+	}
+
 	public void setMutedTill(long value) {
 		this.setAttribute(ATTRIBUTE_MUTED_TILL, String.valueOf(value));
 	}
