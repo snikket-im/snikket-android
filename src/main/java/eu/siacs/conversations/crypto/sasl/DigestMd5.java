@@ -39,7 +39,7 @@ public class DigestMd5 extends SaslMechanism {
 					final Tokenizer tokenizer = new Tokenizer(Base64.decode(challenge, Base64.DEFAULT));
 					String nonce = "";
 					for (final String token : tokenizer) {
-						final String[] parts = token.split("=");
+						final String[] parts = token.split("=", 2);
 						if (parts[0].equals("nonce")) {
 							nonce = parts[1].replace("\"", "");
 						} else if (parts[0].equals("rspauth")) {
