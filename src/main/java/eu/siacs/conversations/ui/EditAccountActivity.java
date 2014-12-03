@@ -74,14 +74,15 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 				return;
 			}
 			boolean registerNewAccount = mRegisterNew.isChecked();
-            final Jid jid;
-            try {
-                jid = Jid.fromString(mAccountJid.getText().toString());
-            } catch (final InvalidJidException e) {
-                // TODO: Handle this error?
-                return;
-            }
-            String password = mPassword.getText().toString();
+			final Jid jid;
+			try {
+				jid = Jid.fromString(mAccountJid.getText().toString());
+			} catch (final InvalidJidException e) {
+				mAccountJid.setError(getString(R.string.invalid_jid));
+				mAccountJid.requestFocus();
+				return;
+			}
+			String password = mPassword.getText().toString();
 			String passwordConfirm = mPasswordConfirm.getText().toString();
 			if (registerNewAccount) {
 				if (!password.equals(passwordConfirm)) {
