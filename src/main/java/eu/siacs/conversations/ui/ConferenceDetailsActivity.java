@@ -264,6 +264,10 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 	protected void saveAsBookmark() {
 		Account account = mConversation.getAccount();
 		Bookmark bookmark = new Bookmark(account, mConversation.getContactJid().toBareJid());
+		if (!mConversation.getContactJid().isBareJid()) {
+			bookmark.setNick(mConversation.getContactJid().getResourcepart());
+		}
+		bookmark.setAutojoin(true);
 		account.getBookmarks().add(bookmark);
 		xmppConnectionService.pushBookmarks(account);
 		mConversation.setBookmark(bookmark);
