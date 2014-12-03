@@ -128,7 +128,8 @@ public class Bookmark extends Element implements ListItem {
 			return true;
 		}
 		needle = needle.toLowerCase(Locale.US);
-		return getJid().toString().contains(needle) ||
+		final Jid jid = getJid();
+		return (jid != null && jid.toString().contains(needle)) ||
 			getDisplayName().toLowerCase(Locale.US).contains(needle) ||
 			matchInTag(needle);
 	}

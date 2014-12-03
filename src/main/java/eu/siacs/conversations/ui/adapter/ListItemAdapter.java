@@ -5,6 +5,8 @@ import java.util.List;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.ListItem;
 import eu.siacs.conversations.ui.XmppActivity;
+import eu.siacs.conversations.xmpp.jid.Jid;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -36,8 +38,8 @@ public class ListItemAdapter extends ArrayAdapter<ListItem> {
 		if (view == null) {
 			view = inflater.inflate(R.layout.contact, parent, false);
 		}
-		TextView name = (TextView) view.findViewById(R.id.contact_display_name);
-		TextView jid = (TextView) view.findViewById(R.id.contact_jid);
+		TextView tvName = (TextView) view.findViewById(R.id.contact_display_name);
+		TextView tvJid = (TextView) view.findViewById(R.id.contact_jid);
 		ImageView picture = (ImageView) view.findViewById(R.id.contact_photo);
 		LinearLayout tagLayout = (LinearLayout) view.findViewById(R.id.tags);
 
@@ -54,9 +56,13 @@ public class ListItemAdapter extends ArrayAdapter<ListItem> {
 				tagLayout.addView(tv);
 			}
 		}
-
-		jid.setText(item.getJid().toString());
-		name.setText(item.getDisplayName());
+		final Jid jid = item.getJid();
+		if (jid != null) {
+			tvJid.setText(jid.toString());
+		} else {
+			tvJid.setText("");
+		}
+		tvName.setText(item.getDisplayName());
 		picture.setImageBitmap(activity.avatarService().get(item,
 				activity.getPixel(48)));
 		return view;
