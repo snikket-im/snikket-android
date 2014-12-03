@@ -64,6 +64,7 @@ public class PhoneHelper {
 				if (listener != null) {
 					listener.onPhoneContactsLoaded(phoneContacts);
 				}
+				cursor.close();
 			}
 		});
 		try {
@@ -85,6 +86,7 @@ public class PhoneHelper {
 		} else {
 			mProfileCursor.moveToFirst();
 			String uri = mProfileCursor.getString(1);
+			mProfileCursor.close();
 			if (uri == null) {
 				return null;
 			} else {
