@@ -96,7 +96,7 @@ software developer you can check out the sources from GitHub and use ant to
 build your apk file.
 
 The more convenient way — which not only gives you automatic updates but also
-supports the further development of Conversations - is to buy the App in the
+supports the further development of Conversations — is to buy the App in the
 Google [Play Store](https://play.google.com/store/apps/details?id=eu.siacs.conversations).
 
 #### I don't have a Google Account but I would still like to make a contribution
