@@ -79,6 +79,10 @@ public class DigestMd5 extends SaslMechanism {
 			case RESPONSE_SENT:
 				state = State.VALID_SERVER_RESPONSE;
 				break;
+			case VALID_SERVER_RESPONSE:
+				if (challenge==null) {
+					return null; //everything is fine
+				}
 			default:
 				throw new InvalidStateException(state);
 		}
