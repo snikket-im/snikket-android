@@ -43,6 +43,7 @@ public class Conversation extends AbstractEntity {
 	public static final String ATTRIBUTE_NEXT_ENCRYPTION = "next_encryption";
 	public static final String ATTRIBUTE_MUC_PASSWORD = "muc_password";
 	public static final String ATTRIBUTE_MUTED_TILL = "muted_till";
+	public static final String ATTRIBUTE_LAST_MESSAGE_RECEIVED = "last_message_received";
 
 	private String name;
 	private String contactUuid;
@@ -468,6 +469,14 @@ public class Conversation extends AbstractEntity {
 			}
 			return null;
 		}
+	}
+
+	public void setLastMessageReceived(long value) {
+		this.setAttribute(ATTRIBUTE_LAST_MESSAGE_RECEIVED, String.valueOf(value));
+	}
+
+	public long getLastMessageReceived() {
+		return getLongAttribute(ATTRIBUTE_LAST_MESSAGE_RECEIVED,0);
 	}
 
 	public void setMutedTill(long value) {

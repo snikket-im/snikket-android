@@ -24,40 +24,31 @@ public abstract class AbstractParser {
 
 	protected long getTimestamp(Element packet) {
 		long now = System.currentTimeMillis();
-		ArrayList<String> stamps = new ArrayList<>();
-		for (Element child : packet.getChildren()) {
-			if (child.getName().equals("delay")) {
-				stamps.add(child.getAttribute("stamp").replace("Z", "+0000"));
-			}
-		}
-		Collections.sort(stamps);
-		if (stamps.size() >= 1) {
-			try {
-				String stamp = stamps.get(stamps.size() - 1);
-				if (stamp.contains(".")) {
-					Date date = new SimpleDateFormat(
-							"yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.US)
-							.parse(stamp);
-					if (now < date.getTime()) {
-						return now;
-					} else {
-						return date.getTime();
-					}
-				} else {
-					Date date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ",
-							Locale.US).parse(stamp);
-					if (now < date.getTime()) {
-						return now;
-					} else {
-						return date.getTime();
-					}
-				}
-			} catch (ParseException e) {
-				return now;
-			}
-		} else {
+		Element delay = packet.findChild("delay");
+		if (delay == null) {
 			return now;
 		}
+		String stamp = delay.getAttribute("stamp");
+		if (stamp == null) {
+			return now;
+		}
+		try {
+			long time = parseTimestamp(stamp).getTime();
+			return now < time ? now : time;
+		} catch (ParseException e) {
+			return now;
+		}
+	}
+
+	public static Date parseTimestamp(String timestamp) throws ParseException {
+		timestamp = timestamp.replace("Z", "+0000");
+		SimpleDateFormat dateFormat;
+		if (timestamp.contains(".")) {
+			dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.US);
+		} else {
+			dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ",Locale.US);
+		}
+		return dateFormat.parse(timestamp);
 	}
 
 	protected void updateLastseen(final Element packet, final Account account,
@@ -66,8 +57,7 @@ public abstract class AbstractParser {
         try {
             from = Jid.fromString(packet.getAttribute("from")).toBareJid();
         } catch (final InvalidJidException e) {
-            // TODO: Handle this?
-            from = null;
+			return;
         }
         String presence = from == null || from.isBareJid() ? "" : from.getResourcepart();
 		Contact contact = account.getRoster().getContact(from);

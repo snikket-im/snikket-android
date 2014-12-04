@@ -32,20 +32,14 @@ import net.java.otr4j.session.SessionStatus;
 import org.openintents.openpgp.util.OpenPgpApi;
 import org.openintents.openpgp.util.OpenPgpServiceConnection;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.math.BigInteger;
 import java.security.SecureRandom;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Locale;
-import java.util.TimeZone;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import de.duenndns.ssl.MemorizingTrustManager;
@@ -1251,27 +1245,17 @@ public class XmppConnectionService extends Service {
 			PresencePacket packet = new PresencePacket();
 			packet.setFrom(conversation.getAccount().getJid());
 			packet.setTo(joinJid);
-			Element x = new Element("x");
-			x.setAttribute("xmlns", "http://jabber.org/protocol/muc");
+			Element x = packet.addChild("x","http://jabber.org/protocol/muc");
 			if (conversation.getMucOptions().getPassword() != null) {
-				Element password = x.addChild("password");
-				password.setContent(conversation.getMucOptions().getPassword());
+				x.addChild("password").setContent(conversation.getMucOptions().getPassword());
 			}
+			x.addChild("history").setAttribute("since",PresenceGenerator.getTimestamp(conversation.getLastMessageReceived()));
 			String sig = account.getPgpSignature();
 			if (sig != null) {
 				packet.addChild("status").setContent("online");
 				packet.addChild("x", "jabber:x:signed").setContent(sig);
 			}
-			if (conversation.getMessages().size() != 0) {
-				final SimpleDateFormat mDateFormat = new SimpleDateFormat(
-						"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US);
-				mDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-				Date date = new Date(conversation.getLatestMessage()
-						.getTimeSent() + 1000);
-				x.addChild("history").setAttribute("since",
-						mDateFormat.format(date));
-			}
-			packet.addChild(x);
+			Log.d(Config.LOGTAG,packet.toString());
 			sendPresencePacket(account, packet);
 			if (!joinJid.equals(conversation.getContactJid())) {
 				conversation.setContactJid(joinJid);

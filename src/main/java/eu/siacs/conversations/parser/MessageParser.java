@@ -14,7 +14,6 @@ import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.OnMessagePacketReceived;
-import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
 import eu.siacs.conversations.xmpp.pep.Avatar;
 import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
@@ -487,6 +486,8 @@ public class MessageParser extends AbstractParser implements
 		}
 		Conversation conversation = message.getConversation();
 		conversation.add(message);
+		conversation.setLastMessageReceived(System.currentTimeMillis());
+		mXmppConnectionService.updateConversation(conversation);
 
 		if (message.getStatus() == Message.STATUS_RECEIVED
 				&& conversation.getOtrSession() != null
