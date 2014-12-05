@@ -73,6 +73,7 @@ import eu.siacs.conversations.utils.OnPhoneContactsLoadedListener;
 import eu.siacs.conversations.utils.PRNGFixes;
 import eu.siacs.conversations.utils.PhoneHelper;
 import eu.siacs.conversations.xml.Element;
+import eu.siacs.conversations.xmpp.OnAdvancedStreamFeaturesAvailable;
 import eu.siacs.conversations.xmpp.OnBindListener;
 import eu.siacs.conversations.xmpp.OnContactStatusChanged;
 import eu.siacs.conversations.xmpp.OnIqPacketReceived;
@@ -141,6 +142,7 @@ public class XmppConnectionService extends Service {
 	private HttpConnectionManager mHttpConnectionManager = new HttpConnectionManager(
 			this);
 	private AvatarService mAvatarService = new AvatarService(this);
+	private MessageArchiveService mMessageArchiveService = new MessageArchiveService(this);
 	private OnConversationUpdate mOnConversationUpdate = null;
 	private Integer convChangedListenerCount = 0;
 	private OnAccountUpdate mOnAccountUpdate = null;
@@ -201,6 +203,12 @@ public class XmppConnectionService extends Service {
 				}
 					}
 			getNotificationService().updateErrorNotification();
+		}
+	};
+	private OnAdvancedStreamFeaturesAvailable onAdvancedStreamFeaturesAvailable = new OnAdvancedStreamFeaturesAvailable() {
+		@Override
+		public void onAdvancedStreamFeaturesAvailable(Account account) {
+			queryMessagesFromArchive(account);
 		}
 	};
 	private int accountChangedListenerCount = 0;
@@ -583,8 +591,8 @@ public class XmppConnectionService extends Service {
 		connection.setOnUnregisteredIqPacketReceivedListener(this.mIqParser);
 		connection.setOnJinglePacketReceivedListener(this.jingleListener);
 		connection.setOnBindListener(this.mOnBindListener);
-		connection
-			.setOnMessageAcknowledgeListener(this.mOnMessageAcknowledgedListener);
+		connection.setOnMessageAcknowledgeListener(this.mOnMessageAcknowledgedListener);
+		connection.setOnAdvancedStreamFeaturesAvailableListener(this.onAdvancedStreamFeaturesAvailable);
 		return connection;
 	}
 
@@ -1231,6 +1239,19 @@ public class XmppConnectionService extends Service {
 		}
 	}
 
+	private void queryMessagesFromArchive(final Account account) {
+		if (account.getXmppConnection() != null && account.getXmppConnection().getFeatures().mam()) {
+			List<Conversation> conversations = getConversations();
+			for (Conversation conversation : conversations) {
+				if (conversation.getMode() == Conversation.MODE_SINGLE && conversation.getAccount() == account) {
+					this.mMessageArchiveService.query(conversation);
+				}
+			}
+		} else {
+			Log.d(Config.LOGTAG,"no mam available");
+		}
+	}
+
 	public void joinMuc(Conversation conversation) {
 		Account account = conversation.getAccount();
 		account.pendingConferenceJoins.remove(conversation);
@@ -1255,7 +1276,6 @@ public class XmppConnectionService extends Service {
 				packet.addChild("status").setContent("online");
 				packet.addChild("x", "jabber:x:signed").setContent(sig);
 			}
-			Log.d(Config.LOGTAG,packet.toString());
 			sendPresencePacket(account, packet);
 			if (!joinJid.equals(conversation.getContactJid())) {
 				conversation.setContactJid(joinJid);
@@ -2031,6 +2051,10 @@ public class XmppConnectionService extends Service {
 
 	public JingleConnectionManager getJingleConnectionManager() {
 		return this.mJingleConnectionManager;
+	}
+
+	public MessageArchiveService getMessageArchiveService() {
+		return this.mMessageArchiveService;
 	}
 
 	public List<Contact> findContacts(Jid jid) {

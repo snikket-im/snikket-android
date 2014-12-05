@@ -102,9 +102,7 @@ public class Bookmark extends Element implements ListItem {
 	}
 
 	public boolean autojoin() {
-		String autojoin = this.getAttribute("autojoin");
-		return (autojoin != null && (autojoin.equalsIgnoreCase("true") || autojoin
-				.equalsIgnoreCase("1")));
+		return this.getAttributeAsBoolean("autojoin");
 	}
 
 	public String getPassword() {

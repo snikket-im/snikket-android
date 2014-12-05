@@ -272,6 +272,58 @@ public class MessageParser extends AbstractParser implements
 		return finishedMessage;
 	}
 
+	private Message parseMamMessage(MessagePacket packet, final Account account) {
+		final Element result = packet.findChild("result","urn:xmpp:mam:0");
+		if (result == null ) {
+			return null;
+		}
+		final Element forwarded = result.findChild("forwarded","urn:xmpp:forward:0");
+		if (forwarded == null) {
+			return null;
+		}
+		final Element message = forwarded.findChild("message");
+		if (message == null) {
+			return null;
+		}
+		final Element body = message.findChild("body");
+		if (body == null || message.hasChild("private","urn:xmpp:carbons:2") || message.hasChild("no-copy","urn:xmpp:hints")) {
+			return null;
+		}
+		int encryption;
+		String content = getPgpBody(message);
+		if (content != null) {
+			encryption = Message.ENCRYPTION_PGP;
+		} else {
+			encryption = Message.ENCRYPTION_NONE;
+			content = body.getContent();
+		}
+		if (content == null) {
+			return null;
+		}
+		final long timestamp = getTimestamp(forwarded);
+		final Jid to = message.getAttributeAsJid("to");
+		final Jid from = message.getAttributeAsJid("from");
+		Jid counterpart;
+		int status;
+		Conversation conversation;
+		if (from!=null && to != null && from.toBareJid().equals(account.getJid().toBareJid())) {
+			status = Message.STATUS_SEND;
+			conversation = this.mXmppConnectionService.findOrCreateConversation(account,to.toBareJid(),false);
+			counterpart = to;
+		} else if (from !=null && to != null) {
+			status = Message.STATUS_RECEIVED;
+			conversation = this.mXmppConnectionService.findOrCreateConversation(account,from.toBareJid(),false);
+			counterpart = from;
+		} else {
+			return null;
+		}
+		Message finishedMessage = new Message(conversation,content,encryption,status);
+		finishedMessage.setTime(timestamp);
+		finishedMessage.setCounterpart(counterpart);
+		Log.d(Config.LOGTAG,"received mam message "+content);
+		return finishedMessage;
+	}
+
 	private void parseError(final MessagePacket packet, final Account account) {
 		final Jid from = packet.getFrom();
 		mXmppConnectionService.markMessage(account, from.toBareJid(),
@@ -445,6 +497,17 @@ public class MessageParser extends AbstractParser implements
 						message.markUnread();
 					}
 				}
+			} else if (packet.hasChild("result","urn:xmpp:mam:0")) {
+				message = parseMamMessage(packet, account);
+				if (message != null) {
+					Conversation conversation = message.getConversation();
+					conversation.add(message);
+					mXmppConnectionService.databaseBackend.createMessage(message);
+				}
+				return;
+			} else if (packet.hasChild("fin","urn:xmpp:mam:0")) {
+				Element fin = packet.findChild("fin","urn:xmpp:mam:0");
+				mXmppConnectionService.getMessageArchiveService().processFin(fin);
 			} else {
 				parseNonMessage(packet, account);
 			}
@@ -493,7 +556,6 @@ public class MessageParser extends AbstractParser implements
 				&& conversation.getOtrSession() != null
 				&& !conversation.getOtrSession().getSessionID().getUserID()
 				.equals(message.getCounterpart().getResourcepart())) {
-			Log.d(Config.LOGTAG, "ending because of reasons");
 			conversation.endOtrIfNeeded();
 		}
 
@@ -506,7 +568,7 @@ public class MessageParser extends AbstractParser implements
 		if (message.trusted() && message.bodyContainsDownloadable()) {
 			this.mXmppConnectionService.getHttpConnectionManager()
 					.createNewConnection(message);
-		} else {
+		} else if (!message.isRead()) {
 			mXmppConnectionService.getNotificationService().push(message);
 		}
 		mXmppConnectionService.updateConversationUi();

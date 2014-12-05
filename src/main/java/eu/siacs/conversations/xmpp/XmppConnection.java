@@ -107,6 +107,7 @@ public class XmppConnection implements Runnable {
 	private OnMessagePacketReceived messageListener = null;
 	private OnStatusChanged statusListener = null;
 	private OnBindListener bindListener = null;
+	private OnAdvancedStreamFeaturesAvailable advancedStreamFeaturesAvailableListener = null;
 	private OnMessageAcknowledged acknowledgedListener = null;
 	private XmppConnectionService mXmppConnectionService = null;
 
@@ -771,6 +772,9 @@ public class XmppConnection implements Runnable {
 
 					if (account.getServer().equals(server.toDomainJid())) {
 						enableAdvancedStreamFeatures();
+						if (advancedStreamFeaturesAvailableListener != null) {
+							advancedStreamFeaturesAvailableListener.onAdvancedStreamFeaturesAvailable(account);
+						}
 					}
 				}
 			});
@@ -941,6 +945,10 @@ public class XmppConnection implements Runnable {
 
 	public void setOnMessageAcknowledgeListener(OnMessageAcknowledged listener) {
 		this.acknowledgedListener = listener;
+	}
+
+	public void setOnAdvancedStreamFeaturesAvailableListener(OnAdvancedStreamFeaturesAvailable listener) {
+		this.advancedStreamFeaturesAvailableListener = listener;
 	}
 
 	public void disconnect(boolean force) {
