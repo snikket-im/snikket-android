@@ -343,7 +343,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		final Message message = getItem(position);
 		final Conversation conversation = message.getConversation();
 		final Account account = conversation.getAccount();
-		int type = getItemViewType(position);
+		final int type = getItemViewType(position);
 		ViewHolder viewHolder;
 		if (view == null) {
 			viewHolder = new ViewHolder();
@@ -371,7 +371,6 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 						.findViewById(R.id.message_time);
 				viewHolder.indicatorReceived = (ImageView) view
 						.findViewById(R.id.indicator_received);
-				view.setTag(viewHolder);
 				break;
 			case RECEIVED:
 				view = activity.getLayoutInflater().inflate(
@@ -392,21 +391,23 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 						.findViewById(R.id.message_time);
 				viewHolder.indicatorReceived = (ImageView) view
 						.findViewById(R.id.indicator_received);
-				view.setTag(viewHolder);
 				break;
 			case STATUS:
 				view = activity.getLayoutInflater().inflate(
 						R.layout.message_status, parent, false);
 				viewHolder.contact_picture = (ImageView) view
 						.findViewById(R.id.message_photo);
-				view.setTag(viewHolder);
 				break;
 			default:
 				viewHolder = null;
 				break;
 			}
+			view.setTag(viewHolder);
 		} else {
 			viewHolder = (ViewHolder) view.getTag();
+			if (viewHolder == null) {
+				return view;
+			}
 		}
 
 		if (type == STATUS) {
