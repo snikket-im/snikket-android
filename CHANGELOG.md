@@ -1,4 +1,6 @@
 ###Changelog
+####Version 0.9.3
+* bug fixes
 
 ####Version 0.9.2
 * more bug fixes
