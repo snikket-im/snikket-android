@@ -17,5 +17,4 @@ public abstract class AbstractEntity {
 	public boolean equals(AbstractEntity entity) {
 		return this.getUuid().equals(entity.getUuid());
 	}
-
 }

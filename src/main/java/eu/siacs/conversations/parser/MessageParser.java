@@ -549,8 +549,11 @@ public class MessageParser extends AbstractParser implements
 		}
 		Conversation conversation = message.getConversation();
 		conversation.add(message);
-		conversation.setLastMessageReceived(System.currentTimeMillis());
-		mXmppConnectionService.updateConversation(conversation);
+		if (account.getXmppConnection() != null && account.getXmppConnection().getFeatures().advancedStreamFeaturesLoaded()) {
+			if (conversation.setLastMessageReceived(System.currentTimeMillis())) {
+				mXmppConnectionService.updateConversation(conversation);
+			}
+		}
 
 		if (message.getStatus() == Message.STATUS_RECEIVED
 				&& conversation.getOtrSession() != null

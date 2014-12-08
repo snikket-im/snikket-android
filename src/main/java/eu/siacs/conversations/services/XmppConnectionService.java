@@ -73,7 +73,7 @@ import eu.siacs.conversations.utils.OnPhoneContactsLoadedListener;
 import eu.siacs.conversations.utils.PRNGFixes;
 import eu.siacs.conversations.utils.PhoneHelper;
 import eu.siacs.conversations.xml.Element;
-import eu.siacs.conversations.xmpp.OnAdvancedStreamFeaturesAvailable;
+import eu.siacs.conversations.xmpp.OnAdvancedStreamFeaturesLoaded;
 import eu.siacs.conversations.xmpp.OnBindListener;
 import eu.siacs.conversations.xmpp.OnContactStatusChanged;
 import eu.siacs.conversations.xmpp.OnIqPacketReceived;
@@ -205,12 +205,7 @@ public class XmppConnectionService extends Service {
 			getNotificationService().updateErrorNotification();
 		}
 	};
-	private OnAdvancedStreamFeaturesAvailable onAdvancedStreamFeaturesAvailable = new OnAdvancedStreamFeaturesAvailable() {
-		@Override
-		public void onAdvancedStreamFeaturesAvailable(Account account) {
-			queryMessagesFromArchive(account);
-		}
-	};
+
 	private int accountChangedListenerCount = 0;
 	private OnRosterUpdate mOnRosterUpdate = null;
 	private int rosterChangedListenerCount = 0;
@@ -592,7 +587,7 @@ public class XmppConnectionService extends Service {
 		connection.setOnJinglePacketReceivedListener(this.jingleListener);
 		connection.setOnBindListener(this.mOnBindListener);
 		connection.setOnMessageAcknowledgeListener(this.mOnMessageAcknowledgedListener);
-		connection.setOnAdvancedStreamFeaturesAvailableListener(this.onAdvancedStreamFeaturesAvailable);
+		connection.addOnAdvancedStreamFeaturesAvailableListener(this.mMessageArchiveService);
 		return connection;
 	}
 
@@ -1027,6 +1022,7 @@ public class XmppConnectionService extends Service {
 				}
 				this.databaseBackend.createConversation(conversation);
 			}
+			this.mMessageArchiveService.query(conversation);
 			this.conversations.add(conversation);
 			updateConversationUi();
 			return conversation;
@@ -1236,19 +1232,6 @@ public class XmppConnectionService extends Service {
 					&& (conversation.getAccount() == account)) {
 				joinMuc(conversation);
 					}
-		}
-	}
-
-	private void queryMessagesFromArchive(final Account account) {
-		if (account.getXmppConnection() != null && account.getXmppConnection().getFeatures().mam()) {
-			List<Conversation> conversations = getConversations();
-			for (Conversation conversation : conversations) {
-				if (conversation.getMode() == Conversation.MODE_SINGLE && conversation.getAccount() == account) {
-					this.mMessageArchiveService.query(conversation);
-				}
-			}
-		} else {
-			Log.d(Config.LOGTAG,"no mam available");
 		}
 	}
 

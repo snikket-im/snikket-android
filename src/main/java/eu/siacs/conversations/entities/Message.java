@@ -493,6 +493,11 @@ public class Message extends AbstractEntity {
 		}
 	}
 
+	public void untie() {
+		this.mNextMessage = null;
+		this.mPreviousMessage = null;
+	}
+
 	public class ImageParams {
 		public URL url;
 		public long size = 0;

@@ -22,6 +22,8 @@ public final class Config {
 
 	public static final boolean NO_PROXY_LOOKUP = false; //useful to debug ibb
 
+	public static final long MAX_HISTORY_AGE = 7 * 24 * 60 * 60 * 1000;
+
 	private Config() {
 
 	}
