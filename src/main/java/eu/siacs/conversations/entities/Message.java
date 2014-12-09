@@ -45,6 +45,7 @@ public class Message extends AbstractEntity {
 	public static String STATUS = "status";
 	public static String TYPE = "type";
 	public static String REMOTE_MSG_ID = "remoteMsgId";
+	public static String SERVER_MSG_ID = "serverMsgId";
 	public static String RELATIVE_FILE_PATH = "relativeFilePath";
 	public boolean markable = false;
 	protected String conversationUuid;
@@ -59,6 +60,7 @@ public class Message extends AbstractEntity {
 	protected String relativeFilePath;
 	protected boolean read = true;
 	protected String remoteMsgId = null;
+	protected String serverMsgId = null;
 	protected Conversation conversation = null;
 	protected Downloadable downloadable = null;
 	private Message mNextMessage = null;
@@ -83,13 +85,15 @@ public class Message extends AbstractEntity {
 				status,
 				TYPE_TEXT,
 				null,
+				null,
 				null);
 		this.conversation = conversation;
 	}
 
 	private Message(final String uuid, final String conversationUUid, final Jid counterpart,
 				   final Jid trueCounterpart, final String body, final long timeSent,
-				   final int encryption, final int status, final int type, final String remoteMsgId, final String relativeFilePath) {
+				   final int encryption, final int status, final int type, final String remoteMsgId,
+				   final String relativeFilePath, final String serverMsgId) {
 		this.uuid = uuid;
 		this.conversationUuid = conversationUUid;
 		this.counterpart = counterpart;
@@ -101,6 +105,7 @@ public class Message extends AbstractEntity {
 		this.type = type;
 		this.remoteMsgId = remoteMsgId;
 		this.relativeFilePath = relativeFilePath;
+		this.serverMsgId = serverMsgId;
 	}
 
 	public static Message fromCursor(Cursor cursor) {
@@ -136,7 +141,8 @@ public class Message extends AbstractEntity {
 				cursor.getInt(cursor.getColumnIndex(STATUS)),
 				cursor.getInt(cursor.getColumnIndex(TYPE)),
 				cursor.getString(cursor.getColumnIndex(REMOTE_MSG_ID)),
-				cursor.getString(cursor.getColumnIndex(RELATIVE_FILE_PATH)));
+				cursor.getString(cursor.getColumnIndex(RELATIVE_FILE_PATH)),
+				cursor.getString(cursor.getColumnIndex(SERVER_MSG_ID)));
 	}
 
 	public static Message createStatusMessage(Conversation conversation) {
@@ -168,6 +174,7 @@ public class Message extends AbstractEntity {
 		values.put(TYPE, type);
 		values.put(REMOTE_MSG_ID, remoteMsgId);
 		values.put(RELATIVE_FILE_PATH, relativeFilePath);
+		values.put(SERVER_MSG_ID,serverMsgId);
 		return values;
 	}
 
@@ -248,6 +255,14 @@ public class Message extends AbstractEntity {
 		this.remoteMsgId = id;
 	}
 
+	public String getServerMsgId() {
+		return this.serverMsgId;
+	}
+
+	public void setServerMsgId(String id) {
+		this.serverMsgId = id;
+	}
+
 	public boolean isRead() {
 		return this.read;
 	}
@@ -293,7 +308,15 @@ public class Message extends AbstractEntity {
 	}
 
 	public boolean equals(Message message) {
-		return (this.remoteMsgId != null) && (this.body != null) && (this.counterpart != null) && this.remoteMsgId.equals(message.getRemoteMsgId()) && this.body.equals(message.getBody()) && this.counterpart.equals(message.getCounterpart());
+		if (this.serverMsgId != null && message.getServerMsgId() != null) {
+			return this.serverMsgId.equals(message.getServerMsgId());
+		} else {
+			return this.body != null
+					&& this.counterpart != null
+					&& ((this.remoteMsgId != null && this.remoteMsgId.equals(message.getRemoteMsgId()))
+					|| this.uuid.equals(message.getRemoteMsgId())) && this.body.equals(message.getBody())
+					&& this.counterpart.equals(message.getCounterpart());
+		}
 	}
 
 	public Message next() {
