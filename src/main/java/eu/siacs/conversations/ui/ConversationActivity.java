@@ -676,6 +676,15 @@ public class ConversationActivity extends XmppActivity implements
 	}
 
 	@Override
+	public void onResume() {
+		super.onResume();
+		int theme = findTheme();
+		if (this.mTheme != theme) {
+			recreate();
+		}
+	}
+
+	@Override
 	public void onSaveInstanceState(final Bundle savedInstanceState) {
 		Conversation conversation = getSelectedConversation();
 		if (conversation != null) {

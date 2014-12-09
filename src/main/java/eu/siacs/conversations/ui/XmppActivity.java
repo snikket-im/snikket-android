@@ -94,6 +94,7 @@ public abstract class XmppActivity extends Activity {
 	protected boolean mUseSubject = true;
 
 	private DisplayMetrics metrics;
+	protected int mTheme;
 
 	protected interface OnValueEdited {
 		public void onValueEdited(String value);
@@ -292,9 +293,8 @@ public abstract class XmppActivity extends Activity {
 		mPrimaryColor = getResources().getColor(R.color.primary);
 		mSecondaryBackgroundColor = getResources().getColor(
 				R.color.secondarybackground);
-		if (getPreferences().getBoolean("use_larger_font", false)) {
-			setTheme(R.style.ConversationsTheme_LargerText);
-		}
+		this.mTheme = findTheme();
+		setTheme(this.mTheme);
 		mUseSubject = getPreferences().getBoolean("use_subject", true);
 	}
 
@@ -718,6 +718,14 @@ public abstract class XmppActivity extends Activity {
 		super.onResume();
 		if (this.getShareableUri()!=null) {
 			this.registerNdefPushMessageCallback();
+		}
+	}
+
+	protected int findTheme() {
+		if (getPreferences().getBoolean("use_larger_font", false)) {
+			return R.style.ConversationsTheme_LargerText;
+		} else {
+			return R.style.ConversationsTheme;
 		}
 	}
 
