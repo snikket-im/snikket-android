@@ -104,7 +104,7 @@
     <string name="pref_notification_grace_period">Notificaciones Carbons</string>
     <string name="pref_notification_grace_period_summary">Deshabilita las notificaciones durante un corto periodo de tiempo después de recibir la copia del mensaje carbon</string>
     <string name="pref_advanced_options">Opciones avanzadas</string>
-    <string name="pref_never_send_crash">Nunca enviar informe de fallos</string>
+    <string name="pref_never_send_crash">Nunca enviar errores</string>
     <string name="pref_never_send_crash_summary">Si envías registros de error ayudas al desarrollo de Conversations</string>
     <string name="pref_confirm_messages">Confirmar Mensajes</string>
     <string name="pref_confirm_messages_summary">Permitir a tus contactos saber cuando recibes y lees un mensaje</string>
@@ -258,7 +258,7 @@
     <string name="pref_expert_options_summary">Por favor, cuidado con estas opciones</string>
     <string name="title_activity_about">Acerca de Conversations</string>
     <string name="pref_about_conversations_summary">Información de compilación y licencia</string>
-    <string name="pref_use_larger_font">Incrementar tamaño de fuente</string>
+    <string name="pref_use_larger_font">Tamaño de fuente grande</string>
     <string name="pref_use_larger_font_summary">Usar fuentes grandes en toda la aplicación</string>
     <string name="pref_use_send_button_to_indicate_status">Botón enviar indica estado</string>
     <string name="pref_use_indicate_received">Solicitar entrega de mensaje</string>
@@ -308,13 +308,13 @@
     <string name="no_otr_session_found">¡No se ha encontrado una sesión OTR válida!</string>
     <string name="conversations_foreground_service">Conversations</string>
     <string name="touch_to_disable">Pulsa para deshabilitar servicio en primer plano</string>
-    <string name="pref_keep_foreground_service">Mantener servicio en primer plano</string>
-    <string name="pref_keep_foreground_service_summary">Previene que el sistema cierre la conexión</string>
+    <string name="pref_keep_foreground_service">Servicio en primer plano</string>
+    <string name="pref_keep_foreground_service_summary">Mantener el servicio en primier plano previene que el sistema cierre la conexión</string>
     <string name="choose_file">Seleccionar archivo</string>
-    <string name="receiving_file">Recibiendo archivo %1$s (%2$d%% completedo)</string>
+    <string name="receiving_file">Recibiendo archivo %1$s (%2$d%% completado)</string>
     <string name="download_file">Descargar archivo %s</string>
     <string name="open_file">Abrir archivo %s</string>
-    <string name="sending_file">Enviando (%1$d%% completedo)</string>
+    <string name="sending_file">Enviando (%1$d%% completado)</string>
     <string name="preparing_file">Preparando transferencia de archivo</string>
     <string name="file_offered_for_download">Archivo ofrecido para descarga</string>
     <string name="file">Archivo %s</string>
