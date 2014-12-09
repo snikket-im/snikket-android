@@ -50,8 +50,6 @@ import eu.siacs.conversations.crypto.sasl.ScramSha1;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.DNSHelper;
-import eu.siacs.conversations.utils.zlib.ZLibInputStream;
-import eu.siacs.conversations.utils.zlib.ZLibOutputStream;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Tag;
 import eu.siacs.conversations.xml.TagWriter;
@@ -92,7 +90,6 @@ public class XmppConnection implements Runnable {
 	private int smVersion = 3;
 	private SparseArray<String> messageReceipts = new SparseArray<>();
 
-	private boolean enabledCompression = false;
 	private boolean enabledEncryption = false;
 	private boolean enabledCarbons = false;
 
@@ -144,7 +141,6 @@ public class XmppConnection implements Runnable {
 
 	protected void connect() {
 		Log.d(Config.LOGTAG, account.getJid().toBareJid().toString() + ": connecting");
-		enabledCompression = false;
 		enabledEncryption = false;
 		lastConnect = SystemClock.elapsedRealtime();
 		lastPingSent = SystemClock.elapsedRealtime();
@@ -261,8 +257,6 @@ public class XmppConnection implements Runnable {
 								processStreamFeatures(nextTag);
 							} else if (nextTag.isStart("proceed")) {
 								switchOverToTls(nextTag);
-							} else if (nextTag.isStart("compressed")) {
-								switchOverToZLib(nextTag);
 							} else if (nextTag.isStart("success")) {
 								final String challenge = tagReader.readElement(nextTag).getContent();
 								try {
@@ -498,28 +492,6 @@ public class XmppConnection implements Runnable {
 						}
 	}
 
-	private void sendCompressionZlib() throws IOException {
-		Element compress = new Element("compress");
-		compress.setAttribute("xmlns", "http://jabber.org/protocol/compress");
-		compress.addChild("method").setContent("zlib");
-		tagWriter.writeElement(compress);
-	}
-
-	private void switchOverToZLib(final Tag currentTag)
-		throws XmlPullParserException, IOException,
-										NoSuchAlgorithmException {
-						 tagReader.readTag(); // read tag close
-						 tagWriter.setOutputStream(new ZLibOutputStream(tagWriter
-								 .getOutputStream()));
-						 tagReader
-							 .setInputStream(new ZLibInputStream(tagReader.getInputStream()));
-
-						 sendStartStream();
-						 Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": compression enabled");
-						 enabledCompression = true;
-						 processStream(tagReader.readTag());
-	}
-
 	private void sendStartTLS() throws IOException {
 		Tag startTLS = Tag.empty("starttls");
 		startTLS.setAttribute("xmlns", "urn:ietf:params:xml:ns:xmpp-tls");
@@ -601,8 +573,6 @@ public class XmppConnection implements Runnable {
 		this.streamFeatures = tagReader.readElement(currentTag);
 		if (this.streamFeatures.hasChild("starttls") && !enabledEncryption) {
 			sendStartTLS();
-		} else if (compressionAvailable()) {
-			sendCompressionZlib();
 		} else if (this.streamFeatures.hasChild("register")
 				&& account.isOptionSet(Account.OPTION_REGISTER)
 				&& enabledEncryption) {
@@ -656,28 +626,6 @@ public class XmppConnection implements Runnable {
 			disconnect(true);
 			changeStatus(Account.State.INCOMPATIBLE_SERVER);
 		}
-	}
-
-	private boolean compressionAvailable() {
-		if (!this.streamFeatures.hasChild("compression",
-					"http://jabber.org/features/compress"))
-			return false;
-		if (!ZLibOutputStream.SUPPORTED)
-			return false;
-		if (!account.isOptionSet(Account.OPTION_USECOMPRESSION))
-			return false;
-
-		Element compression = this.streamFeatures.findChild("compression",
-				"http://jabber.org/features/compress");
-		for (Element child : compression.getChildren()) {
-			if (!"method".equals(child.getName()))
-				continue;
-
-			if ("zlib".equalsIgnoreCase(child.getContent())) {
-				return true;
-			}
-		}
-		return false;
 	}
 
 	private List<String> extractMechanisms(Element stream) {
@@ -1146,10 +1094,6 @@ public class XmppConnection implements Runnable {
 		public boolean streamhost() {
 			return connection
 				.findDiscoItemByFeature("http://jabber.org/protocol/bytestreams") != null;
-		}
-
-		public boolean compression() {
-			return connection.enabledCompression;
 		}
 	}
 }
