@@ -557,7 +557,7 @@ public class MessageParser extends AbstractParser implements
 		Conversation conversation = message.getConversation();
 		conversation.add(message);
 		if (account.getXmppConnection() != null && account.getXmppConnection().getFeatures().advancedStreamFeaturesLoaded()) {
-			if (conversation.setLastMessageReceived(System.currentTimeMillis())) {
+			if (conversation.setLastMessageTransmitted(System.currentTimeMillis())) {
 				mXmppConnectionService.updateConversation(conversation);
 			}
 		}

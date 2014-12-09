@@ -28,7 +28,7 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 	public void query(final Conversation conversation) {
 		synchronized (this.queries) {
 			final Account account = conversation.getAccount();
-			long start = conversation.getLastMessageReceived();
+			long start = conversation.getLastMessageTransmitted();
 			long end = account.getXmppConnection().getLastSessionEstablished();
 			if (end - start >= Config.MAX_HISTORY_AGE) {
 				start = end - Config.MAX_HISTORY_AGE;
@@ -51,7 +51,11 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 		synchronized (this.queries) {
 			this.queries.remove(query);
 		}
-		query.getConversation().sort();
+		final Conversation conversation = query.getConversation();
+		conversation.sort();
+		if (conversation.setLastMessageTransmitted(query.getEnd())) {
+			this.mXmppConnectionService.databaseBackend.updateConversation(conversation);
+		}
 		this.mXmppConnectionService.updateConversationUi();
 	}
 

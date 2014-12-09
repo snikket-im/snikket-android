@@ -73,7 +73,6 @@ import eu.siacs.conversations.utils.OnPhoneContactsLoadedListener;
 import eu.siacs.conversations.utils.PRNGFixes;
 import eu.siacs.conversations.utils.PhoneHelper;
 import eu.siacs.conversations.xml.Element;
-import eu.siacs.conversations.xmpp.OnAdvancedStreamFeaturesLoaded;
 import eu.siacs.conversations.xmpp.OnBindListener;
 import eu.siacs.conversations.xmpp.OnContactStatusChanged;
 import eu.siacs.conversations.xmpp.OnIqPacketReceived;
@@ -257,15 +256,17 @@ public class XmppConnectionService extends Service {
 
 		@Override
 		public void onMessageAcknowledged(Account account, String uuid) {
-			for (Conversation conversation : getConversations()) {
+			for (final Conversation conversation : getConversations()) {
 				if (conversation.getAccount() == account) {
-					for (Message message : conversation.getMessages()) {
-						if ((message.getStatus() == Message.STATUS_UNSEND || message
-									.getStatus() == Message.STATUS_WAITING)
-								&& message.getUuid().equals(uuid)) {
+					for (final Message message : conversation.getMessages()) {
+						final int s = message.getStatus();
+						if ((s == Message.STATUS_UNSEND || s == Message.STATUS_WAITING) && message.getUuid().equals(uuid)) {
 							markMessage(message, Message.STATUS_SEND);
+							if (conversation.setLastMessageTransmitted(System.currentTimeMillis())) {
+								databaseBackend.updateConversation(conversation);
+							}
 							return;
-								}
+						}
 					}
 				}
 			}
@@ -854,11 +855,11 @@ public class XmppConnectionService extends Service {
 									break;
 								}
 								final Contact contact = account.getRoster()
-									.getContact(jid);
+										.getContact(jid);
 								String systemAccount = phoneContact
-									.getInt("phoneid")
-									+ "#"
-									+ phoneContact.getString("lookup");
+										.getInt("phoneid")
+										+ "#"
+										+ phoneContact.getString("lookup");
 								contact.setSystemAccount(systemAccount);
 								contact.setPhotoUri(phoneContact
 										.getString("photouri"));
@@ -1253,7 +1254,7 @@ public class XmppConnectionService extends Service {
 			if (conversation.getMucOptions().getPassword() != null) {
 				x.addChild("password").setContent(conversation.getMucOptions().getPassword());
 			}
-			x.addChild("history").setAttribute("since",PresenceGenerator.getTimestamp(conversation.getLastMessageReceived()));
+			x.addChild("history").setAttribute("since",PresenceGenerator.getTimestamp(conversation.getLastMessageTransmitted()));
 			String sig = account.getPgpSignature();
 			if (sig != null) {
 				packet.addChild("status").setContent("online");
