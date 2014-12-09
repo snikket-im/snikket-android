@@ -18,7 +18,6 @@ public final class Config {
 
 	public static final int MESSAGE_MERGE_WINDOW = 20;
 
-	public static final boolean PARSE_EMOTICONS = false;
 	public static final int  PROGRESS_UI_UPDATE_INTERVAL = 750;
 
 	public static final boolean NO_PROXY_LOOKUP = false; //useful to debug ibb

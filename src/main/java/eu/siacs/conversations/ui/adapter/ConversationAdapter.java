@@ -2,7 +2,6 @@ package eu.siacs.conversations.ui.adapter;
 
 import java.util.List;
 
-import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Downloadable;
@@ -139,10 +138,7 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 		} else {
 			if ((message.getEncryption() != Message.ENCRYPTION_PGP)
 					&& (message.getEncryption() != Message.ENCRYPTION_DECRYPTION_FAILED)) {
-				String body = Config.PARSE_EMOTICONS ? UIHelper
-						.transformAsciiEmoticons(message.getBody()) : message
-						.getBody();
-				mLastMessage.setText(body);
+				mLastMessage.setText(message.getBody());
 			} else {
 				mLastMessage.setText(R.string.encrypted_message_received);
 			}
