@@ -124,10 +124,6 @@ public class MessageParser extends AbstractParser implements
 			finishedMessage.setCounterpart(from);
 			return finishedMessage;
 		} catch (Exception e) {
-			String receivedId = packet.getId();
-			if (receivedId != null) {
-				mXmppConnectionService.replyWithNotAcceptable(account, packet);
-			}
 			conversation.resetOtrSession();
 			return null;
 		}

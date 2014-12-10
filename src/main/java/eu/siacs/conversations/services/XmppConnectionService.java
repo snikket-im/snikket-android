@@ -1969,14 +1969,6 @@ public class XmppConnectionService extends Service {
 		return this.mBitmapCache;
 	}
 
-	public void replyWithNotAcceptable(Account account, MessagePacket packet) {
-		if (account.getStatus() == Account.State.ONLINE) {
-			MessagePacket error = this.mMessageGenerator
-				.generateNotAcceptable(packet);
-			sendMessagePacket(account, error);
-		}
-	}
-
 	public void syncRosterToDisk(final Account account) {
 		new Thread(new Runnable() {
 
