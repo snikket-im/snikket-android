@@ -97,7 +97,7 @@ import eu.siacs.conversations.xmpp.stanzas.IqPacket;
 import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
 import eu.siacs.conversations.xmpp.stanzas.PresencePacket;
 
-public class XmppConnectionService extends Service {
+public class XmppConnectionService extends Service implements OnPhoneContactsLoadedListener {
 
 	public static String ACTION_CLEAR_NOTIFICATION = "clear_notification";
 	private static String ACTION_MERGE_PHONE_CONTACTS = "merge_phone_contacts";
@@ -276,6 +276,7 @@ public class XmppConnectionService extends Service {
 	};
 	private LruCache<String, Bitmap> mBitmapCache;
 	private IqGenerator mIqGenerator = new IqGenerator(this);
+	private Thread mPhoneContactMergerThread;
 
 	public PgpEngine getPgpEngine() {
 		if (pgpServiceConnection.isBound()) {
@@ -384,7 +385,7 @@ public class XmppConnectionService extends Service {
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		if (intent != null && intent.getAction() != null) {
 			if (intent.getAction().equals(ACTION_MERGE_PHONE_CONTACTS)) {
-				mergePhoneContactsWithRoster();
+				PhoneHelper.loadPhoneContacts(getApplicationContext(), this);
 				return START_STICKY;
 			} else if (intent.getAction().equals(Intent.ACTION_SHUTDOWN)) {
 				logoutAndSave();
@@ -496,7 +497,7 @@ public class XmppConnectionService extends Service {
 			this.databaseBackend.readRoster(account.getRoster());
 		}
 		initConversations();
-		this.mergePhoneContactsWithRoster();
+		PhoneHelper.loadPhoneContacts(getApplicationContext(),this);
 
 		getContentResolver().registerContentObserver(ContactsContract.Contacts.CONTENT_URI, true, contactObserver);
 		this.fileObserver.startWatching();
@@ -839,39 +840,43 @@ public class XmppConnectionService extends Service {
 		sendIqPacket(account, iqPacket, null);
 	}
 
-	private void mergePhoneContactsWithRoster() {
-		PhoneHelper.loadPhoneContacts(getApplicationContext(),
-				new OnPhoneContactsLoadedListener() {
-					@Override
-					public void onPhoneContactsLoaded(List<Bundle> phoneContacts) {
-						for (Account account : accounts) {
-							account.getRoster().clearSystemAccounts();
+	public void onPhoneContactsLoaded(final List<Bundle> phoneContacts) {
+		if (mPhoneContactMergerThread != null) {
+			mPhoneContactMergerThread.interrupt();
+		}
+		mPhoneContactMergerThread = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				Log.d(Config.LOGTAG,"start merging phone contacts with roster");
+				for (Account account : accounts) {
+					account.getRoster().clearSystemAccounts();
+					for (Bundle phoneContact : phoneContacts) {
+						if (Thread.interrupted()) {
+							Log.d(Config.LOGTAG,"interrupted merging phone contacts");
+							return;
 						}
-						for (Bundle phoneContact : phoneContacts) {
-							for (Account account : accounts) {
-								Jid jid;
-								try {
-									jid = Jid.fromString(phoneContact.getString("jid"));
-								} catch (final InvalidJidException e) {
-									// TODO: Warn if contact import fails here?
-									break;
-								}
-								final Contact contact = account.getRoster()
-									.getContact(jid);
-								String systemAccount = phoneContact
-									.getInt("phoneid")
-									+ "#"
-									+ phoneContact.getString("lookup");
-								contact.setSystemAccount(systemAccount);
-								contact.setPhotoUri(phoneContact
-										.getString("photouri"));
-								contact.setSystemName(phoneContact
-										.getString("displayname"));
-								getAvatarService().clear(contact);
-							}
+						Jid jid;
+						try {
+							jid = Jid.fromString(phoneContact.getString("jid"));
+						} catch (final InvalidJidException e) {
+							break;
 						}
+						final Contact contact = account.getRoster()
+								.getContact(jid);
+						String systemAccount = phoneContact.getInt("phoneid")
+								+ "#"
+								+ phoneContact.getString("lookup");
+						contact.setSystemAccount(systemAccount);
+						contact.setPhotoUri(phoneContact.getString("photouri"));
+						getAvatarService().clear(contact);
+						contact.setSystemName(phoneContact.getString("displayname"));
 					}
-				});
+				}
+				Log.d(Config.LOGTAG,"finished merging phone contacts");
+				updateAccountUi();
+			}
+		});
+		mPhoneContactMergerThread.start();
 	}
 
 	private void initConversations() {
