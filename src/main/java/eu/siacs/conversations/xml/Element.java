@@ -159,4 +159,9 @@ public class Element {
 	public void setAttribute(String name, int value) {
 		this.setAttribute(name, Integer.toString(value));
 	}
+
+	public boolean getAttributeAsBoolean(String name) {
+		String attr = getAttribute(name);
+		return (attr != null && (attr.equalsIgnoreCase("true") || attr.equalsIgnoreCase("1")));
+	}
 }

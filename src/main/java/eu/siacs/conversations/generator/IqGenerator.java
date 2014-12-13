@@ -1,11 +1,16 @@
 package eu.siacs.conversations.generator;
 
+import android.util.Log;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import eu.siacs.conversations.Config;
+import eu.siacs.conversations.services.MessageArchiveService;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xml.Element;
+import eu.siacs.conversations.xmpp.forms.Data;
 import eu.siacs.conversations.xmpp.jid.Jid;
 import eu.siacs.conversations.xmpp.pep.Avatar;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
@@ -91,6 +96,24 @@ public class IqGenerator extends AbstractGenerator {
 		final IqPacket packet = retrieve("urn:xmpp:avatar:metadata", null);
 		if (to != null) {
 			packet.setTo(to);
+		}
+		return packet;
+	}
+
+	public IqPacket queryMessageArchiveManagement(MessageArchiveService.Query mam) {
+		final IqPacket packet = new IqPacket(IqPacket.TYPE_SET);
+		Element query = packet.query("urn:xmpp:mam:0");
+		query.setAttribute("queryid",mam.getQueryId());
+		Data data = new Data();
+		data.setFormType("urn:xmpp:mam:0");
+		if (mam.getWith()!=null) {
+			data.put("with", mam.getWith().toString());
+		}
+		data.put("start",getTimestamp(mam.getStart()));
+		data.put("end",getTimestamp(mam.getEnd()));
+		query.addChild(data);
+		if (mam.getAfter() != null) {
+			query.addChild("set", "http://jabber.org/protocol/rsm").addChild("after").setContent(mam.getAfter());
 		}
 		return packet;
 	}

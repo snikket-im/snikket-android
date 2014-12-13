@@ -1,0 +1,240 @@
+package eu.siacs.conversations.services;
+
+import android.util.Log;
+
+import java.math.BigInteger;
+import java.util.HashSet;
+import java.util.List;
+
+import eu.siacs.conversations.Config;
+import eu.siacs.conversations.entities.Account;
+import eu.siacs.conversations.entities.Conversation;
+import eu.siacs.conversations.generator.AbstractGenerator;
+import eu.siacs.conversations.parser.AbstractParser;
+import eu.siacs.conversations.xml.Element;
+import eu.siacs.conversations.xmpp.OnAdvancedStreamFeaturesLoaded;
+import eu.siacs.conversations.xmpp.OnIqPacketReceived;
+import eu.siacs.conversations.xmpp.jid.Jid;
+import eu.siacs.conversations.xmpp.stanzas.IqPacket;
+
+public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
+
+	private final XmppConnectionService mXmppConnectionService;
+
+	private final HashSet<Query> queries = new HashSet<Query>();
+
+	public MessageArchiveService(final XmppConnectionService service) {
+		this.mXmppConnectionService = service;
+	}
+
+	public void catchup(final Account account) {
+		long startCatchup = getLastMessageTransmitted(account);
+		long endCatchup = account.getXmppConnection().getLastSessionEstablished();
+		if (startCatchup == 0) {
+			return;
+		} else if (endCatchup - startCatchup >= Config.MAX_CATCHUP) {
+			startCatchup = endCatchup - Config.MAX_CATCHUP;
+			List<Conversation> conversations = mXmppConnectionService.getConversations();
+			for (Conversation conversation : conversations) {
+				if (conversation.getMode() == Conversation.MODE_SINGLE && conversation.getAccount() == account && startCatchup > conversation.getLastMessageTransmitted()) {
+					this.query(conversation,startCatchup);
+				}
+			}
+		}
+		final Query query = new Query(account, startCatchup, endCatchup);
+		this.queries.add(query);
+		this.execute(query);
+	}
+
+	private long getLastMessageTransmitted(final Account account) {
+		long timestamp = 0;
+		for(final Conversation conversation : mXmppConnectionService.getConversations()) {
+			if (conversation.getAccount() == account) {
+				long tmp = conversation.getLastMessageTransmitted();
+				if (tmp > timestamp) {
+					timestamp = tmp;
+				}
+			}
+		}
+		return timestamp;
+	}
+
+	public void query(final Conversation conversation) {
+		query(conversation,conversation.getAccount().getXmppConnection().getLastSessionEstablished());
+	}
+
+	public void query(final Conversation conversation, long end) {
+		synchronized (this.queries) {
+			final Account account = conversation.getAccount();
+			long start = conversation.getLastMessageTransmitted();
+			if (start > end) {
+				return;
+			} else if (end - start >= Config.MAX_HISTORY_AGE) {
+				start = end - Config.MAX_HISTORY_AGE;
+			}
+			final Query query = new Query(conversation, start, end);
+			this.queries.add(query);
+			this.execute(query);
+		}
+	}
+
+	private void execute(final Query query) {
+		Log.d(Config.LOGTAG,query.getAccount().getJid().toBareJid().toString()+": running mam query "+query.toString());
+		IqPacket packet = this.mXmppConnectionService.getIqGenerator().queryMessageArchiveManagement(query);
+			this.mXmppConnectionService.sendIqPacket(query.getAccount(), packet, new OnIqPacketReceived() {
+				@Override
+				public void onIqPacketReceived(Account account, IqPacket packet) {
+					if (packet.getType() == IqPacket.TYPE_ERROR) {
+						Log.d(Config.LOGTAG,account.getJid().toBareJid().toString()+": error executing mam: "+packet.toString());
+						finalizeQuery(query);
+					}
+				}
+			});
+	}
+
+	private void finalizeQuery(Query query) {
+		synchronized (this.queries) {
+			this.queries.remove(query);
+		}
+		final Conversation conversation = query.getConversation();
+		if (conversation != null) {
+			conversation.sort();
+			if (conversation.setLastMessageTransmitted(query.getEnd())) {
+				this.mXmppConnectionService.databaseBackend.updateConversation(conversation);
+			}
+			this.mXmppConnectionService.updateConversationUi();
+		} else {
+			for(Conversation tmp : this.mXmppConnectionService.getConversations()) {
+				if (tmp.getAccount() == query.getAccount()) {
+					tmp.sort();
+					if (tmp.setLastMessageTransmitted(query.getEnd())) {
+						this.mXmppConnectionService.databaseBackend.updateConversation(tmp);
+					}
+				}
+			}
+		}
+	}
+
+	public void processFin(Element fin) {
+		if (fin == null) {
+			return;
+		}
+		Query query = findQuery(fin.getAttribute("queryid"));
+		if (query == null) {
+			return;
+		}
+		boolean complete = fin.getAttributeAsBoolean("complete");
+		Element set = fin.findChild("set","http://jabber.org/protocol/rsm");
+		Element last = set == null ? null : set.findChild("last");
+		if (complete || last == null) {
+			this.finalizeQuery(query);
+		} else {
+			final Query nextQuery = query.next(last == null ? null : last.getContent());
+			this.execute(nextQuery);
+			synchronized (this.queries) {
+				this.queries.remove(query);
+				this.queries.add(nextQuery);
+			}
+		}
+	}
+
+	public Query findQuery(String id) {
+		if (id == null) {
+			return null;
+		}
+		synchronized (this.queries) {
+			for(Query query : this.queries) {
+				if (query.getQueryId().equals(id)) {
+					return query;
+				}
+			}
+			return null;
+		}
+	}
+
+	@Override
+	public void onAdvancedStreamFeaturesAvailable(Account account) {
+		if (account.getXmppConnection() != null && account.getXmppConnection().getFeatures().mam()) {
+			this.catchup(account);
+		}
+	}
+
+	public class Query {
+		private long start;
+		private long end;
+		private Jid with = null;
+		private String queryId;
+		private String after = null;
+		private Account account;
+		private Conversation conversation;
+
+		public Query(Conversation conversation, long start, long end) {
+			this(conversation.getAccount(), start, end);
+			this.conversation = conversation;
+			this.with = conversation.getContactJid().toBareJid();
+		}
+
+		public Query(Account account, long start, long end) {
+			this.account = account;
+			this.start = start;
+			this.end = end;
+			this.queryId = new BigInteger(50, mXmppConnectionService.getRNG()).toString(32);
+		}
+
+		public Query next(String after) {
+			Query query = new Query(this.account,this.start,this.end);
+			query.after = after;
+			query.conversation = conversation;
+			query.with = with;
+			return query;
+		}
+
+		public String getAfter() {
+			return after;
+		}
+
+		public String getQueryId() {
+			return queryId;
+		}
+
+		public Jid getWith() {
+			return with;
+		}
+
+		public long getStart() {
+			return start;
+		}
+
+		public long getEnd() {
+			return end;
+		}
+
+		public Conversation getConversation() {
+			return conversation;
+		}
+
+		public Account getAccount() {
+			return this.account;
+		}
+
+		@Override
+		public String toString() {
+			StringBuilder builder = new StringBuilder();
+			builder.append("with=");
+			if (this.with==null) {
+				builder.append("*");
+			} else {
+				builder.append(with.toString());
+			}
+			builder.append(", start=");
+			builder.append(AbstractGenerator.getTimestamp(this.start));
+			builder.append(", end=");
+			builder.append(AbstractGenerator.getTimestamp(this.end));
+			if (this.after!=null) {
+				builder.append(", after=");
+				builder.append(this.after);
+			}
+			return builder.toString();
+		}
+	}
+}

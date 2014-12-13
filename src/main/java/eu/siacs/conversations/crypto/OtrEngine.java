@@ -180,6 +180,7 @@ public class OtrEngine implements OtrEngineHost {
 		packet.setBody(body);
 		packet.addChild("private", "urn:xmpp:carbons:2");
 		packet.addChild("no-copy", "urn:xmpp:hints");
+		packet.addChild("no-store", "urn:xmpp:hints");
 		packet.setType(MessagePacket.TYPE_CHAT);
 		account.getXmppConnection().sendMessagePacket(packet);
 	}

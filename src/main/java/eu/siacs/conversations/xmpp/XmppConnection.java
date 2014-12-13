@@ -107,6 +107,7 @@ public class XmppConnection implements Runnable {
 	private OnMessagePacketReceived messageListener = null;
 	private OnStatusChanged statusListener = null;
 	private OnBindListener bindListener = null;
+	private ArrayList<OnAdvancedStreamFeaturesLoaded> advancedStreamFeaturesLoadedListeners = new ArrayList<>();
 	private OnMessageAcknowledged acknowledgedListener = null;
 	private XmppConnectionService mXmppConnectionService = null;
 
@@ -771,6 +772,9 @@ public class XmppConnection implements Runnable {
 
 					if (account.getServer().equals(server.toDomainJid())) {
 						enableAdvancedStreamFeatures();
+						for(OnAdvancedStreamFeaturesLoaded listener : advancedStreamFeaturesLoadedListeners) {
+							listener.onAdvancedStreamFeaturesAvailable(account);
+						}
 					}
 				}
 			});
@@ -943,6 +947,12 @@ public class XmppConnection implements Runnable {
 		this.acknowledgedListener = listener;
 	}
 
+	public void addOnAdvancedStreamFeaturesAvailableListener(OnAdvancedStreamFeaturesLoaded listener) {
+		if (!this.advancedStreamFeaturesLoadedListeners.contains(listener)) {
+			this.advancedStreamFeaturesLoadedListeners.add(listener);
+		}
+	}
+
 	public void disconnect(boolean force) {
 		Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": disconnecting");
 		try {
@@ -1085,6 +1095,10 @@ public class XmppConnection implements Runnable {
 
 		public boolean mam() {
 			return hasDiscoFeature(account.getServer(), "urn:xmpp:mam:0");
+		}
+
+		public boolean advancedStreamFeaturesLoaded() {
+			return disco.containsKey(account.getServer().toString());
 		}
 
 		public boolean rosterVersioning() {

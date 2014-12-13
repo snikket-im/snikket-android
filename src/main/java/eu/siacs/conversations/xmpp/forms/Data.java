@@ -37,6 +37,7 @@ public class Data extends Element {
 		Field field = getFieldByName(name);
 		if (field == null) {
 			field = new Field(name);
+			this.addChild(field);
 		}
 		field.setValue(value);
 	}
@@ -45,6 +46,7 @@ public class Data extends Element {
 		Field field = getFieldByName(name);
 		if (field == null) {
 			field = new Field(name);
+			this.addChild(field);
 		}
 		field.setValues(values);
 	}
@@ -71,5 +73,13 @@ public class Data extends Element {
 		data.setAttributes(element.getAttributes());
 		data.setChildren(element.getChildren());
 		return data;
+	}
+
+	public void setFormType(String formType) {
+		this.put("FORM_TYPE",formType);
+	}
+
+	public String getFormType() {
+		return this.getAttribute("FORM_TYPE");
 	}
 }

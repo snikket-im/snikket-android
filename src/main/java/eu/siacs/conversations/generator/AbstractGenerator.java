@@ -4,9 +4,12 @@ import android.util.Base64;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import eu.siacs.conversations.services.XmppConnectionService;
 
@@ -22,6 +25,8 @@ public abstract class AbstractGenerator {
 			"urn:xmpp:ping"};
 	public final String IDENTITY_NAME = "Conversations 0.9.3";
 	public final String IDENTITY_TYPE = "phone";
+
+	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US);
 
 	protected XmppConnectionService mXmppConnectionService;
 
@@ -45,5 +50,10 @@ public abstract class AbstractGenerator {
 		}
 		byte[] sha1 = md.digest(s.toString().getBytes());
 		return new String(Base64.encode(sha1, Base64.DEFAULT)).trim();
+	}
+
+	public static String getTimestamp(long time) {
+		DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("UTC"));
+		return DATE_FORMAT.format(time);
 	}
 }

@@ -3,6 +3,7 @@ package eu.siacs.conversations.entities;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.os.SystemClock;
+import android.util.Log;
 
 import net.java.otr4j.OtrException;
 import net.java.otr4j.crypto.OtrCryptoEngineImpl;
@@ -16,8 +17,11 @@ import org.json.JSONObject;
 
 import java.security.interfaces.DSAPublicKey;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
 
@@ -43,6 +47,7 @@ public class Conversation extends AbstractEntity {
 	public static final String ATTRIBUTE_NEXT_ENCRYPTION = "next_encryption";
 	public static final String ATTRIBUTE_MUC_PASSWORD = "muc_password";
 	public static final String ATTRIBUTE_MUTED_TILL = "muted_till";
+	public static final String ATTRIBUTE_LAST_MESSAGE_TRANSMITTED = "last_message_transmitted";
 
 	private String name;
 	private String contactUuid;
@@ -470,6 +475,31 @@ public class Conversation extends AbstractEntity {
 		}
 	}
 
+	public boolean setLastMessageTransmitted(long value) {
+		long before = getLastMessageTransmitted();
+		if (value - before > 1000) {
+			this.setAttribute(ATTRIBUTE_LAST_MESSAGE_TRANSMITTED, String.valueOf(value));
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public long getLastMessageTransmitted() {
+		long timestamp = getLongAttribute(ATTRIBUTE_LAST_MESSAGE_TRANSMITTED,0);
+		if (timestamp == 0) {
+			synchronized (this.messages) {
+				for(int i = this.messages.size() - 1; i >= 0; --i) {
+					Message message = this.messages.get(i);
+					if (message.getStatus() == Message.STATUS_RECEIVED) {
+						return message.getTimeSent();
+					}
+				}
+			}
+		}
+		return timestamp;
+	}
+
 	public void setMutedTill(long value) {
 		this.setAttribute(ATTRIBUTE_MUTED_TILL, String.valueOf(value));
 	}
@@ -532,6 +562,26 @@ public class Conversation extends AbstractEntity {
 	public void addAll(int index, List<Message> messages) {
 		synchronized (this.messages) {
 			this.messages.addAll(index, messages);
+		}
+	}
+
+	public void sort() {
+		synchronized (this.messages) {
+			for(Message message : this.messages) {
+				message.untie();
+			}
+			Collections.sort(this.messages,new Comparator<Message>() {
+				@Override
+				public int compare(Message left, Message right) {
+					if (left.getTimeSent() < right.getTimeSent()) {
+						return -1;
+					} else if (left.getTimeSent() > right.getTimeSent()) {
+						return 1;
+					} else {
+						return 0;
+					}
+				}
+			});
 		}
 	}
 
