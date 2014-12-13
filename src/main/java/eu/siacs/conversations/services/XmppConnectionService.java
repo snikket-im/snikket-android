@@ -383,7 +383,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		if (intent != null && intent.getAction() != null) {
 			if (intent.getAction().equals(ACTION_MERGE_PHONE_CONTACTS)) {
-				PhoneHelper.loadPhoneContacts(getApplicationContext(), this);
+				PhoneHelper.loadPhoneContacts(getApplicationContext(), new ArrayList<Bundle>(), this);
 				return START_STICKY;
 			} else if (intent.getAction().equals(Intent.ACTION_SHUTDOWN)) {
 				logoutAndSave();
@@ -495,7 +495,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 			this.databaseBackend.readRoster(account.getRoster());
 		}
 		initConversations();
-		PhoneHelper.loadPhoneContacts(getApplicationContext(),this);
+		PhoneHelper.loadPhoneContacts(getApplicationContext(),new ArrayList<Bundle>(), this);
 
 		getContentResolver().registerContentObserver(ContactsContract.Contacts.CONTENT_URI, true, contactObserver);
 		this.fileObserver.startWatching();
