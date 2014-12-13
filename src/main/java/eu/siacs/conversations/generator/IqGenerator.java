@@ -112,10 +112,10 @@ public class IqGenerator extends AbstractGenerator {
 		data.put("start",getTimestamp(mam.getStart()));
 		data.put("end",getTimestamp(mam.getEnd()));
 		query.addChild(data);
-		if (mam.getPagingOrder() == MessageArchiveService.PagingOrder.NORMAL) {
-			query.addChild("set", "http://jabber.org/protocol/rsm").addChild("after").setContent(mam.getReference());
-		} else {
+		if (mam.getPagingOrder() == MessageArchiveService.PagingOrder.REVERSE) {
 			query.addChild("set", "http://jabber.org/protocol/rsm").addChild("before").setContent(mam.getReference());
+		} else if (mam.getReference() != null) {
+			query.addChild("set", "http://jabber.org/protocol/rsm").addChild("after").setContent(mam.getReference());
 		}
 		return packet;
 	}
