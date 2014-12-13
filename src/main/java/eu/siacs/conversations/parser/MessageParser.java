@@ -10,6 +10,7 @@ import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
+import eu.siacs.conversations.services.MessageArchiveService;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.xml.Element;
@@ -303,16 +304,17 @@ public class MessageParser extends AbstractParser implements
 		final long timestamp = getTimestamp(forwarded);
 		final Jid to = message.getAttributeAsJid("to");
 		final Jid from = message.getAttributeAsJid("from");
+		final MessageArchiveService.Query query = this.mXmppConnectionService.getMessageArchiveService().findQuery(result.getAttribute("queryid"));
 		Jid counterpart;
 		int status;
 		Conversation conversation;
 		if (from!=null && to != null && from.toBareJid().equals(account.getJid().toBareJid())) {
 			status = Message.STATUS_SEND;
-			conversation = this.mXmppConnectionService.findOrCreateConversation(account,to.toBareJid(),false);
+			conversation = this.mXmppConnectionService.findOrCreateConversation(account,to.toBareJid(),false,query);
 			counterpart = to;
 		} else if (from !=null && to != null) {
 			status = Message.STATUS_RECEIVED;
-			conversation = this.mXmppConnectionService.findOrCreateConversation(account,from.toBareJid(),false);
+			conversation = this.mXmppConnectionService.findOrCreateConversation(account,from.toBareJid(),false,query);
 			counterpart = from;
 		} else {
 			return null;

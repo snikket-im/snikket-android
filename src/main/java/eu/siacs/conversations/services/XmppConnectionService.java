@@ -988,8 +988,11 @@ public class XmppConnectionService extends Service {
 		return null;
 	}
 
-	public Conversation findOrCreateConversation(final Account account, final Jid jid,
-			final boolean muc) {
+	public Conversation findOrCreateConversation(final Account account, final Jid jid,final boolean muc) {
+		return this.findOrCreateConversation(account,jid,muc,null);
+	}
+
+	public Conversation findOrCreateConversation(final Account account, final Jid jid,final boolean muc, final MessageArchiveService.Query query) {
 		synchronized (this.conversations) {
 			Conversation conversation = find(account, jid);
 			if (conversation != null) {
@@ -1023,7 +1026,13 @@ public class XmppConnectionService extends Service {
 				}
 				this.databaseBackend.createConversation(conversation);
 			}
-			this.mMessageArchiveService.query(conversation);
+			if (query == null) {
+				this.mMessageArchiveService.query(conversation);
+			} else {
+				if (query.getConversation() == null) {
+					this.mMessageArchiveService.query(conversation,query.getStart());
+				}
+			}
 			this.conversations.add(conversation);
 			updateConversationUi();
 			return conversation;
@@ -1303,7 +1312,7 @@ public class XmppConnectionService extends Service {
 
 				@Override
 				public void onFailure() {
-					callback.error(R.string.nick_in_use,conversation);
+					callback.error(R.string.nick_in_use, conversation);
 				}
 			});
 

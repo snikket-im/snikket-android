@@ -1,9 +1,12 @@
 package eu.siacs.conversations.generator;
 
+import android.util.Log;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.services.MessageArchiveService;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xml.Element;
@@ -103,7 +106,9 @@ public class IqGenerator extends AbstractGenerator {
 		query.setAttribute("queryid",mam.getQueryId());
 		Data data = new Data();
 		data.setFormType("urn:xmpp:mam:0");
-		data.put("with",mam.getWith().toString());
+		if (mam.getWith()!=null) {
+			data.put("with", mam.getWith().toString());
+		}
 		data.put("start",getTimestamp(mam.getStart()));
 		data.put("end",getTimestamp(mam.getEnd()));
 		query.addChild(data);
