@@ -320,8 +320,8 @@ public class Message extends AbstractEntity {
 	}
 
 	public Message next() {
-		if (this.mNextMessage == null) {
-			synchronized (this.conversation.messages) {
+		synchronized (this.conversation.messages) {
+			if (this.mNextMessage == null) {
 				int index = this.conversation.messages.indexOf(this);
 				if (index < 0
 						|| index >= this.conversation.getMessages().size() - 1) {
@@ -331,13 +331,14 @@ public class Message extends AbstractEntity {
 							.get(index + 1);
 				}
 			}
+			return this.mNextMessage;
 		}
-		return this.mNextMessage;
 	}
 
 	public Message prev() {
-		if (this.mPreviousMessage == null) {
-			synchronized (this.conversation.messages) {
+		synchronized (this.conversation.messages) {
+			if (this.mPreviousMessage == null) {
+
 				int index = this.conversation.messages.indexOf(this);
 				if (index <= 0 || index > this.conversation.messages.size()) {
 					this.mPreviousMessage = null;
@@ -346,8 +347,8 @@ public class Message extends AbstractEntity {
 							.get(index - 1);
 				}
 			}
+			return this.mPreviousMessage;
 		}
-		return this.mPreviousMessage;
 	}
 
 	public boolean mergeable(final Message message) {

@@ -23,6 +23,11 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 
 	private final HashSet<Query> queries = new HashSet<Query>();
 
+	public enum PagingOrder {
+		NORMAL,
+		REVERSE
+	};
+
 	public MessageArchiveService(final XmppConnectionService service) {
 		this.mXmppConnectionService = service;
 	}
@@ -72,7 +77,7 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 			} else if (end - start >= Config.MAX_HISTORY_AGE) {
 				start = end - Config.MAX_HISTORY_AGE;
 			}
-			final Query query = new Query(conversation, start, end);
+			final Query query = new Query(conversation, start, end,PagingOrder.REVERSE);
 			this.queries.add(query);
 			this.execute(query);
 		}
@@ -115,6 +120,17 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 		}
 	}
 
+	public boolean queryInProgress(Conversation conversation) {
+		synchronized (this.queries) {
+			for(Query query : queries) {
+				if (query.conversation == conversation) {
+					return true;
+				}
+			}
+			return false;
+		}
+	}
+
 	public void processFin(Element fin) {
 		if (fin == null) {
 			return;
@@ -126,11 +142,19 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 		boolean complete = fin.getAttributeAsBoolean("complete");
 		Element set = fin.findChild("set","http://jabber.org/protocol/rsm");
 		Element last = set == null ? null : set.findChild("last");
-		if (complete || last == null) {
+		Element first = set == null ? null : set.findChild("first");
+		Element relevant = query.getPagingOrder() == PagingOrder.NORMAL ? last : first;
+		if (complete || relevant == null) {
 			this.finalizeQuery(query);
 		} else {
-			final Query nextQuery = query.next(last == null ? null : last.getContent());
+			final Query nextQuery;
+			if (query.getPagingOrder() == PagingOrder.NORMAL) {
+				nextQuery = query.next(last == null ? null : last.getContent());
+			} else {
+				nextQuery = query.prev(first == null ? null : first.getContent());
+			}
 			this.execute(nextQuery);
+			this.finalizeQuery(query);
 			synchronized (this.queries) {
 				this.queries.remove(query);
 				this.queries.add(nextQuery);
@@ -164,14 +188,21 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 		private long end;
 		private Jid with = null;
 		private String queryId;
-		private String after = null;
+		private String reference = null;
 		private Account account;
 		private Conversation conversation;
+		private PagingOrder pagingOrder = PagingOrder.NORMAL;
+
 
 		public Query(Conversation conversation, long start, long end) {
 			this(conversation.getAccount(), start, end);
 			this.conversation = conversation;
 			this.with = conversation.getContactJid().toBareJid();
+		}
+
+		public Query(Conversation conversation, long start, long end, PagingOrder order) {
+			this(conversation,start,end);
+			this.pagingOrder = order;
 		}
 
 		public Query(Account account, long start, long end) {
@@ -181,16 +212,32 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 			this.queryId = new BigInteger(50, mXmppConnectionService.getRNG()).toString(32);
 		}
 
-		public Query next(String after) {
+		private Query page(String reference) {
 			Query query = new Query(this.account,this.start,this.end);
-			query.after = after;
+			query.reference = reference;
 			query.conversation = conversation;
 			query.with = with;
 			return query;
 		}
 
-		public String getAfter() {
-			return after;
+		public Query next(String reference) {
+			Query query = page(reference);
+			query.pagingOrder = PagingOrder.NORMAL;
+			return query;
+		}
+
+		public Query prev(String reference) {
+			Query query = page(reference);
+			query.pagingOrder = PagingOrder.REVERSE;
+			return query;
+		}
+
+		public String getReference() {
+			return reference;
+		}
+
+		public PagingOrder getPagingOrder() {
+			return this.pagingOrder;
 		}
 
 		public String getQueryId() {
@@ -230,9 +277,13 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 			builder.append(AbstractGenerator.getTimestamp(this.start));
 			builder.append(", end=");
 			builder.append(AbstractGenerator.getTimestamp(this.end));
-			if (this.after!=null) {
-				builder.append(", after=");
-				builder.append(this.after);
+			if (this.reference!=null) {
+				if (this.pagingOrder == PagingOrder.NORMAL) {
+					builder.append(", after=");
+				} else {
+					builder.append(", before=");
+				}
+				builder.append(this.reference);
 			}
 			return builder.toString();
 		}

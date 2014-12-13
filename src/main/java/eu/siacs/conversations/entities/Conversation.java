@@ -567,9 +567,6 @@ public class Conversation extends AbstractEntity {
 
 	public void sort() {
 		synchronized (this.messages) {
-			for(Message message : this.messages) {
-				message.untie();
-			}
 			Collections.sort(this.messages,new Comparator<Message>() {
 				@Override
 				public int compare(Message left, Message right) {
@@ -582,6 +579,9 @@ public class Conversation extends AbstractEntity {
 					}
 				}
 			});
+			for(Message message : this.messages) {
+				message.untie();
+			}
 		}
 	}
 

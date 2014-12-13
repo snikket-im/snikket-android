@@ -956,6 +956,9 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	}
 
 	public int loadMoreMessages(Conversation conversation, long timestamp) {
+		if (this.getMessageArchiveService().queryInProgress(conversation)) {
+			return 0;
+		}
 		List<Message> messages = databaseBackend.getMessages(conversation, 50,
 				timestamp);
 		for (Message message : messages) {
