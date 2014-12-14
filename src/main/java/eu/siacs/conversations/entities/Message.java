@@ -323,12 +323,10 @@ public class Message extends AbstractEntity {
 		synchronized (this.conversation.messages) {
 			if (this.mNextMessage == null) {
 				int index = this.conversation.messages.indexOf(this);
-				if (index < 0
-						|| index >= this.conversation.getMessages().size() - 1) {
+				if (index < 0 || index >= this.conversation.messages.size() - 1) {
 					this.mNextMessage = null;
 				} else {
-					this.mNextMessage = this.conversation.messages
-							.get(index + 1);
+					this.mNextMessage = this.conversation.messages.get(index + 1);
 				}
 			}
 			return this.mNextMessage;
@@ -338,13 +336,11 @@ public class Message extends AbstractEntity {
 	public Message prev() {
 		synchronized (this.conversation.messages) {
 			if (this.mPreviousMessage == null) {
-
 				int index = this.conversation.messages.indexOf(this);
 				if (index <= 0 || index > this.conversation.messages.size()) {
 					this.mPreviousMessage = null;
 				} else {
-					this.mPreviousMessage = this.conversation.messages
-							.get(index - 1);
+					this.mPreviousMessage = this.conversation.messages.get(index - 1);
 				}
 			}
 			return this.mPreviousMessage;

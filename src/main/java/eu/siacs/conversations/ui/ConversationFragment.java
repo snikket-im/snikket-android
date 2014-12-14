@@ -120,8 +120,7 @@ public class ConversationFragment extends Fragment {
 					long timestamp = ConversationFragment.this.messageList.get(0).getTimeSent();
 					messagesLoaded = false;
 					int size = activity.xmppConnectionService.loadMoreMessages(conversation, timestamp);
-					ConversationFragment.this.messageList.clear();
-					ConversationFragment.this.messageList.addAll(conversation.getMessages());
+					conversation.populateWithMessages(ConversationFragment.this.messageList);
 					updateStatusMessages();
 					messageListAdapter.notifyDataSetChanged();
 					if (size != 0) {
@@ -580,25 +579,19 @@ public class ConversationFragment extends Fragment {
 							break;
 					}
 				}
-				this.messageList.clear();
-				if (this.conversation.getMessages().size() == 0) {
-					messagesLoaded = false;
-				} else {
-					this.messageList.addAll(this.conversation.getMessages());
-					messagesLoaded = true;
-					for (Message message : this.messageList) {
-						if (message.getEncryption() == Message.ENCRYPTION_PGP
-								&& (message.getStatus() == Message.STATUS_RECEIVED || message
-								.getStatus() >= Message.STATUS_SEND)
-								&& message.getDownloadable() == null) {
-							if (!mEncryptedMessages.contains(message)) {
-								mEncryptedMessages.add(message);
-							}
+				conversation.populateWithMessages(ConversationFragment.this.messageList);
+				for (Message message : this.messageList) {
+					if (message.getEncryption() == Message.ENCRYPTION_PGP
+							&& (message.getStatus() == Message.STATUS_RECEIVED || message
+							.getStatus() >= Message.STATUS_SEND)
+							&& message.getDownloadable() == null) {
+						if (!mEncryptedMessages.contains(message)) {
+							mEncryptedMessages.add(message);
 						}
 					}
-					decryptNext();
-					updateStatusMessages();
 				}
+				decryptNext();
+				updateStatusMessages();
 				this.messageListAdapter.notifyDataSetChanged();
 				updateChatMsgHint();
 				if (!activity.isConversationsOverviewVisable() || !activity.isConversationsOverviewHideable()) {

@@ -77,6 +77,104 @@ public class Conversation extends AbstractEntity {
 
 	private Bookmark bookmark;
 
+	public Message findUnsentMessageWithUuid(String uuid) {
+		synchronized(this.messages) {
+			for (final Message message : this.messages) {
+				final int s = message.getStatus();
+				if ((s == Message.STATUS_UNSEND || s == Message.STATUS_WAITING) && message.getUuid().equals(uuid)) {
+					return message;
+				}
+			}
+		}
+		return null;
+	}
+
+	public void findWaitingMessages(OnMessageFound onMessageFound) {
+		synchronized (this.messages) {
+			for(Message message : this.messages) {
+				if (message.getStatus() == Message.STATUS_WAITING) {
+					onMessageFound.onMessageFound(message);
+				}
+			}
+		}
+	}
+
+	public void findMessagesWithFiles(OnMessageFound onMessageFound) {
+		synchronized (this.messages) {
+			for (Message message : this.messages) {
+				if ((message.getType() == Message.TYPE_IMAGE || message.getType() == Message.TYPE_FILE)
+						&& message.getEncryption() != Message.ENCRYPTION_PGP) {
+					onMessageFound.onMessageFound(message);
+				}
+			}
+		}
+	}
+
+	public Message findMessageWithFileAndUuid(String uuid) {
+		synchronized (this.messages) {
+			for (Message message : this.messages) {
+				if (message.getType() == Message.TYPE_IMAGE
+						&& message.getEncryption() != Message.ENCRYPTION_PGP
+						&& message.getUuid().equals(uuid)) {
+					return message;
+				}
+			}
+		}
+		return null;
+	}
+
+	public void clearMessages() {
+		synchronized (this.messages) {
+			this.messages.clear();
+		}
+	}
+
+	public void findUnsentMessagesWithOtrEncryption(OnMessageFound onMessageFound) {
+		synchronized (this.messages) {
+			for (Message message : this.messages) {
+				if ((message.getStatus() == Message.STATUS_UNSEND || message.getStatus() == Message.STATUS_WAITING)
+						&& (message.getEncryption() == Message.ENCRYPTION_OTR)) {
+					onMessageFound.onMessageFound(message);
+				}
+			}
+		}
+	}
+
+	public void findUnsentTextMessages(OnMessageFound onMessageFound) {
+		synchronized (this.messages) {
+			for (Message message : this.messages) {
+				if (message.getType() != Message.TYPE_IMAGE
+						&& message.getStatus() == Message.STATUS_UNSEND) {
+					onMessageFound.onMessageFound(message);
+				}
+			}
+		}
+	}
+
+	public Message findSentMessageWithUuid(String uuid) {
+		synchronized (this.messages) {
+			for (Message message : this.messages) {
+				if (uuid.equals(message.getUuid())
+						|| (message.getStatus() >= Message.STATUS_SEND && uuid
+						.equals(message.getRemoteMsgId()))) {
+					return message;
+				}
+			}
+		}
+		return null;
+	}
+
+	public void populateWithMessages(List<Message> messages) {
+		synchronized (this.messages) {
+			messages.clear();
+			messages.addAll(this.messages);
+		}
+	}
+
+	public interface OnMessageFound {
+		public void onMessageFound(final Message message);
+	}
+
 	public Conversation(final String name, final Account account, final Jid contactJid,
 			final int mode) {
 		this(java.util.UUID.randomUUID().toString(), name, null, account
@@ -101,10 +199,6 @@ public class Conversation extends AbstractEntity {
 		} catch (JSONException e) {
 			this.attributes = new JSONObject();
 		}
-	}
-
-	public List<Message> getMessages() {
-		return messages;
 	}
 
 	public boolean isRead() {
@@ -455,9 +549,11 @@ public class Conversation extends AbstractEntity {
 	}
 
 	public boolean hasDuplicateMessage(Message message) {
-		for (int i = this.getMessages().size() - 1; i >= 0; --i) {
-			if (this.messages.get(i).equals(message)) {
-				return true;
+		synchronized (this.messages) {
+			for (int i = this.messages.size() - 1; i >= 0; --i) {
+				if (this.messages.get(i).equals(message)) {
+					return true;
+				}
 			}
 		}
 		return false;
@@ -465,7 +561,7 @@ public class Conversation extends AbstractEntity {
 
 	public Message findSentMessageWithBody(String body) {
 		synchronized (this.messages) {
-			for (int i = this.getMessages().size() - 1; i >= 0; --i) {
+			for (int i = this.messages.size() - 1; i >= 0; --i) {
 				Message message = this.messages.get(i);
 				if ((message.getStatus() == Message.STATUS_UNSEND || message.getStatus() == Message.STATUS_SEND) && message.getBody() != null && message.getBody().equals(body)) {
 					return message;
@@ -567,7 +663,7 @@ public class Conversation extends AbstractEntity {
 
 	public void sort() {
 		synchronized (this.messages) {
-			Collections.sort(this.messages,new Comparator<Message>() {
+			Collections.sort(this.messages, new Comparator<Message>() {
 				@Override
 				public int compare(Message left, Message right) {
 					if (left.getTimeSent() < right.getTimeSent()) {

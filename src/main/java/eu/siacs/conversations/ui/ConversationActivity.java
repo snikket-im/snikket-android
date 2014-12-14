@@ -491,10 +491,12 @@ public class ConversationActivity extends XmppActivity implements
 
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						ConversationActivity.this.xmppConnectionService
-								.clearConversationHistory(conversation);
+						conversation.clearMessages();
 						if (endConversationCheckBox.isChecked()) {
 							endConversation(conversation);
+						} else {
+							updateConversationList();
+							ConversationActivity.this.mConversationFragment.updateMessages();
 						}
 					}
 				});
