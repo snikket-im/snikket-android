@@ -3,7 +3,9 @@ package eu.siacs.conversations.services;
 import android.util.Log;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 
 import eu.siacs.conversations.Config;
@@ -22,6 +24,7 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 	private final XmppConnectionService mXmppConnectionService;
 
 	private final HashSet<Query> queries = new HashSet<Query>();
+	private ArrayList<Query> pendingQueries = new ArrayList<Query>();
 
 	public enum PagingOrder {
 		NORMAL,
@@ -83,18 +86,41 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 		}
 	}
 
+	public void executePendingQueries(final Account account) {
+		List<Query> pending = new ArrayList<>();
+		synchronized(this.pendingQueries) {
+			for(Iterator<Query> iterator = this.pendingQueries.iterator(); iterator.hasNext();) {
+				Query query = iterator.next();
+				if (query.getAccount() == account) {
+					pending.add(query);
+					iterator.remove();
+				}
+			}
+		}
+		for(Query query : pending) {
+			this.execute(query);
+		}
+	}
+
 	private void execute(final Query query) {
-		Log.d(Config.LOGTAG,query.getAccount().getJid().toBareJid().toString()+": running mam query "+query.toString());
-		IqPacket packet = this.mXmppConnectionService.getIqGenerator().queryMessageArchiveManagement(query);
-			this.mXmppConnectionService.sendIqPacket(query.getAccount(), packet, new OnIqPacketReceived() {
+		final Account account=  query.getAccount();
+		if (account.getStatus() == Account.State.ONLINE) {
+			Log.d(Config.LOGTAG, account.getJid().toBareJid().toString() + ": running mam query " + query.toString());
+			IqPacket packet = this.mXmppConnectionService.getIqGenerator().queryMessageArchiveManagement(query);
+			this.mXmppConnectionService.sendIqPacket(account, packet, new OnIqPacketReceived() {
 				@Override
 				public void onIqPacketReceived(Account account, IqPacket packet) {
 					if (packet.getType() == IqPacket.TYPE_ERROR) {
-						Log.d(Config.LOGTAG,account.getJid().toBareJid().toString()+": error executing mam: "+packet.toString());
+						Log.d(Config.LOGTAG, account.getJid().toBareJid().toString() + ": error executing mam: " + packet.toString());
 						finalizeQuery(query);
 					}
 				}
 			});
+		} else {
+			synchronized (this.pendingQueries) {
+				this.pendingQueries.add(query);
+			}
+		}
 	}
 
 	private void finalizeQuery(Query query) {

@@ -160,6 +160,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 				for (Conversation conversation : account.pendingConferenceJoins) {
 					joinMuc(conversation);
 				}
+				mMessageArchiveService.executePendingQueries(account);
 				mJingleConnectionManager.cancelInTransmission();
 				List<Conversation> conversations = getConversations();
 				for (Conversation conversation : conversations) {
