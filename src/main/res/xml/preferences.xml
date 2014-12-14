@@ -35,7 +35,29 @@
             android:key="show_notification"
             android:summary="@string/pref_notifications_summary"
             android:title="@string/pref_notifications" />
-        <CheckBoxPreference
+          <PreferenceScreen
+            android:dependency="show_notification"
+            android:summary="@string/pref_quiet_hours_summary"
+            android:title="@string/title_pref_quiet_hours">
+            <CheckBoxPreference
+              android:defaultValue="false"
+              android:key="enable_quiet_hours"
+              android:summary="@string/pref_quiet_hours_summary"
+              android:title="@string/title_pref_enable_quiet_hours" />
+            <eu.siacs.conversations.ui.TimePreference
+              android:dependency="enable_quiet_hours"
+              android:key="quiet_hours_start"
+              android:negativeButtonText="@string/cancel"
+              android:positiveButtonText="@string/set"
+              android:title="@string/title_pref_quiet_hours_start_time" />
+            <eu.siacs.conversations.ui.TimePreference
+              android:dependency="enable_quiet_hours"
+              android:key="quiet_hours_end"
+              android:negativeButtonText="@string/cancel"
+              android:positiveButtonText="@string/set"
+              android:title="@string/title_pref_quiet_hours_end_time" />
+          </PreferenceScreen>
+          <CheckBoxPreference
             android:defaultValue="true"
             android:dependency="show_notification"
             android:key="vibrate_on_notification"
@@ -123,5 +145,4 @@
 		<eu.siacs.conversations.ui.AboutPreference
 			android:summary="@string/pref_about_conversations_summary"
 			android:title="@string/title_activity_about" />
-
 </PreferenceScreen>
