@@ -143,12 +143,21 @@ public class DNSHelper {
 				Bundle namePort = new Bundle();
 				namePort.putString("name", srv.getName());
 				namePort.putInt("port", srv.getPort());
+				if (ips6.containsKey(srv.getName())) {
+					ArrayList<String> ip = ips6.get(srv.getName());
+					Collections.shuffle(ip, rnd);
+					namePort.putString("ip", ip.get(0));
+					values.add(namePort);
+				}
 				if (ips4.containsKey(srv.getName())) {
 					ArrayList<String> ip = ips4.get(srv.getName());
 					Collections.shuffle(ip, rnd);
-					namePort.putString("ipv4", ip.get(0));
+					namePort.putString("ip", ip.get(0));
+					values.add(namePort);
 				}
-				values.add(namePort);
+				if (!ips6.containsKey(srv.getName()) && !ips4.containsKey(srv.getName())) {
+					values.add(namePort);
+				}
 			}
 			bundle.putParcelableArrayList("values", values);
 		} catch (SocketTimeoutException e) {

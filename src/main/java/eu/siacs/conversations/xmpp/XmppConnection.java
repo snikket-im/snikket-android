@@ -171,7 +171,7 @@ public class XmppConnection implements Runnable {
 							srvRecordServer = "";
 						}
 						int srvRecordPort = namePort.getInt("port");
-						String srvIpServer = namePort.getString("ipv4");
+						String srvIpServer = namePort.getString("ip");
 						InetSocketAddress addr;
 						if (srvIpServer != null) {
 							addr = new InetSocketAddress(srvIpServer, srvRecordPort);
