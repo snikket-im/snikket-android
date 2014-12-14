@@ -140,23 +140,17 @@ public class DNSHelper {
 			}
 			ArrayList<Bundle> values = new ArrayList<>();
 			for (SRV srv : result) {
-				Bundle namePort = new Bundle();
-				namePort.putString("name", srv.getName());
-				namePort.putInt("port", srv.getPort());
+				boolean added = false;
 				if (ips6.containsKey(srv.getName())) {
-					ArrayList<String> ip = ips6.get(srv.getName());
-					Collections.shuffle(ip, rnd);
-					namePort.putString("ip", ip.get(0));
-					values.add(namePort);
+					values.add(createNamePortBundle(srv.getName(),srv.getPort(),ips6));
+					added = true;
 				}
 				if (ips4.containsKey(srv.getName())) {
-					ArrayList<String> ip = ips4.get(srv.getName());
-					Collections.shuffle(ip, rnd);
-					namePort.putString("ip", ip.get(0));
-					values.add(namePort);
+					values.add(createNamePortBundle(srv.getName(),srv.getPort(),ips4));
+					added = true;
 				}
-				if (!ips6.containsKey(srv.getName()) && !ips4.containsKey(srv.getName())) {
-					values.add(namePort);
+				if (!added) {
+					values.add(createNamePortBundle(srv.getName(),srv.getPort(),null));
 				}
 			}
 			bundle.putParcelableArrayList("values", values);
@@ -166,6 +160,18 @@ public class DNSHelper {
 			bundle.putString("error", "unhandled");
 		}
 		return bundle;
+	}
+
+	private static Bundle createNamePortBundle(String name, int port, TreeMap<String, ArrayList<String>> ips) {
+		Bundle namePort = new Bundle();
+		namePort.putString("name", name);
+		namePort.putInt("port", port);
+		if (ips!=null) {
+			ArrayList<String> ip = ips.get(name);
+			Collections.shuffle(ip, new Random());
+			namePort.putString("ip", ip.get(0));
+		}
+		return namePort;
 	}
 
 	final protected static char[] hexArray = "0123456789ABCDEF".toCharArray();
