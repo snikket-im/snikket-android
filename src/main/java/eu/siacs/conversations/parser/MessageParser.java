@@ -60,12 +60,12 @@ public class MessageParser extends AbstractParser implements
 	}
 
 	private Message parseOtrChat(MessagePacket packet, Account account) {
-		boolean properlyAddressed = (!packet.getTo().isBareJid())
-				|| (account.countPresences() == 1);
-        final Jid from = packet.getFrom();
-		if (from == null) {
+		final Jid to = packet.getTo();
+		final Jid from = packet.getFrom();
+		if (to == null || from == null) {
 			return null;
 		}
+		boolean properlyAddressed = !to.isBareJid() || account.countPresences() == 1;
 		Conversation conversation = mXmppConnectionService
 				.findOrCreateConversation(account, from.toBareJid(), false);
 		String presence;
