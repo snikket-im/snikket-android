@@ -2086,6 +2086,16 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		}
 	}
 
+	public void clearConversationHistory(final Conversation conversation) {
+		conversation.clearMessages();
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				databaseBackend.deleteMessagesInConversation(conversation);
+			}
+		}).start();
+	}
+
 	public interface OnConversationUpdate {
 		public void onConversationUpdate();
 	}
