@@ -42,9 +42,9 @@ public class NotificationService {
 
 	private final LinkedHashMap<String, ArrayList<Message>> notifications = new LinkedHashMap<>();
 
-	public static int NOTIFICATION_ID = 0x2342;
-	public static int FOREGROUND_NOTIFICATION_ID = 0x8899;
-	public static int ERROR_NOTIFICATION_ID = 0x5678;
+	public static final int NOTIFICATION_ID = 0x2342;
+	public static final int FOREGROUND_NOTIFICATION_ID = 0x8899;
+	public static final int ERROR_NOTIFICATION_ID = 0x5678;
 
 	private Conversation mOpenConversation;
 	private boolean mIsInForeground;
