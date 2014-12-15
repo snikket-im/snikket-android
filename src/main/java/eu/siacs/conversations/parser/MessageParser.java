@@ -324,11 +324,8 @@ public class MessageParser extends AbstractParser implements
 		finishedMessage.setCounterpart(counterpart);
 		finishedMessage.setRemoteMsgId(message.getAttribute("id"));
 		finishedMessage.setServerMsgId(result.getAttribute("id"));
-		if (conversation.hasDuplicateMessage(finishedMessage)) {
-			Log.d(Config.LOGTAG, "received mam message " + content+ " (duplicate)");
-			return null;
-		} else {
-			Log.d(Config.LOGTAG, "received mam message " + content);
+		if (query!=null) {
+			query.incrementCount();
 		}
 		return finishedMessage;
 	}

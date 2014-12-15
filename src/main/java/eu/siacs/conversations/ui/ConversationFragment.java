@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.content.IntentSender.SendIntentException;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Gravity;
@@ -38,6 +39,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.PgpEngine;
 import eu.siacs.conversations.entities.Account;
@@ -104,6 +106,7 @@ public class ConversationFragment extends Fragment {
 	private TextView snackbarMessage;
 	private TextView snackbarAction;
 	private boolean messagesLoaded = false;
+
 	private OnScrollListener mOnScrollListener = new OnScrollListener() {
 
 		@Override
@@ -119,14 +122,30 @@ public class ConversationFragment extends Fragment {
 				if (firstVisibleItem == 0 && messagesLoaded) {
 					long timestamp = ConversationFragment.this.messageList.get(0).getTimeSent();
 					messagesLoaded = false;
-					int size = activity.xmppConnectionService.loadMoreMessages(conversation, timestamp);
-					conversation.populateWithMessages(ConversationFragment.this.messageList);
-					updateStatusMessages();
-					messageListAdapter.notifyDataSetChanged();
-					if (size != 0) {
-						messagesLoaded = true;
-					}
-					messagesView.setSelectionFromTop(size + 1, 0);
+					Log.d(Config.LOGTAG,"load more messages");
+					activity.xmppConnectionService.loadMoreMessages(conversation, timestamp, new XmppConnectionService.OnMoreMessagesLoaded() {
+						@Override
+						public void onMoreMessagesLoaded(final int count, Conversation conversation) {
+							if (ConversationFragment.this.conversation != conversation) {
+								return;
+							}
+							activity.runOnUiThread(new Runnable() {
+								@Override
+								public void run() {
+									int firstItem = messagesView.getFirstVisiblePosition();
+									Log.d(Config.LOGTAG, "done loading more messages. first item: " + firstItem);
+									ConversationFragment.this.conversation.populateWithMessages(ConversationFragment.this.messageList);
+									updateStatusMessages();
+									messageListAdapter.notifyDataSetChanged();
+									if (count != 0) {
+										messagesLoaded = true;
+									}
+									messagesView.setSelectionFromTop(firstItem + count, 0);
+								}
+							});
+						}
+					});
+
 				}
 			}
 		}
@@ -580,6 +599,7 @@ public class ConversationFragment extends Fragment {
 					}
 				}
 				conversation.populateWithMessages(ConversationFragment.this.messageList);
+				this.messagesLoaded = this.messageList.size() > 0;
 				for (Message message : this.messageList) {
 					if (message.getEncryption() == Message.ENCRYPTION_PGP
 							&& (message.getStatus() == Message.STATUS_RECEIVED || message

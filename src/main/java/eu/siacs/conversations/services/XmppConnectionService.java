@@ -246,8 +246,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 			account.pendingConferenceLeaves.clear();
 			fetchRosterFromServer(account);
 			fetchBookmarks(account);
-			sendPresencePacket(account,
-					mPresenceGenerator.sendPresence(account));
+			sendPresencePacket(account,mPresenceGenerator.sendPresence(account));
 			connectMultiModeConversations(account);
 			updateConversationUi();
 		}
@@ -893,11 +892,11 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 				accountLookupTable.put(account.getUuid(), account);
 			}
 			this.conversations.addAll(databaseBackend.getConversations(Conversation.STATUS_AVAILABLE));
-			for (Conversation conv : this.conversations) {
-				Account account = accountLookupTable.get(conv.getAccountUuid());
-				conv.setAccount(account);
-				conv.addAll(0, databaseBackend.getMessages(conv, 50));
-				checkDeletedFiles(conv);
+			for (Conversation conversation : this.conversations) {
+				Account account = accountLookupTable.get(conversation.getAccountUuid());
+				conversation.setAccount(account);
+				conversation.addAll(0, databaseBackend.getMessages(conversation, Config.PAGE_SIZE));
+				checkDeletedFiles(conversation);
 			}
 		}
 	}
@@ -962,17 +961,29 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		});
 	}
 
-	public int loadMoreMessages(Conversation conversation, long timestamp) {
+	public void loadMoreMessages(Conversation conversation, long timestamp, final OnMoreMessagesLoaded callback) {
 		if (this.getMessageArchiveService().queryInProgress(conversation)) {
-			return 0;
+			Log.d(Config.LOGTAG,"query in progress");
+			return;
 		}
-		List<Message> messages = databaseBackend.getMessages(conversation, 50,
-				timestamp);
+		List<Message> messages = databaseBackend.getMessages(conversation, 50,timestamp);
+		if (messages.size() == 0 && (conversation.getAccount().getXmppConnection() != null && conversation.getAccount().getXmppConnection().getFeatures().mam())) {
+			Log.d(Config.LOGTAG,"load more messages with mam");
+			MessageArchiveService.Query query = getMessageArchiveService().query(conversation,0,timestamp - 1);
+			if (query != null) {
+				query.setCallback(callback);
+			}
+			return;
+		}
 		for (Message message : messages) {
 			message.setConversation(conversation);
 		}
 		conversation.addAll(0, messages);
-		return messages.size();
+		callback.onMoreMessagesLoaded(messages.size(),conversation);
+	}
+
+	public interface OnMoreMessagesLoaded {
+		public void onMoreMessagesLoaded(int count,Conversation conversation);
 	}
 
 	public List<Account> getAccounts() {
@@ -1022,7 +1033,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 				} else {
 					conversation.setMode(Conversation.MODE_SINGLE);
 				}
-				conversation.addAll(0, databaseBackend.getMessages(conversation, 50));
+				conversation.addAll(0, databaseBackend.getMessages(conversation, Config.PAGE_SIZE));
 				this.databaseBackend.updateConversation(conversation);
 			} else {
 				String conversationName;
@@ -1244,13 +1255,14 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		Log.d(Config.LOGTAG, "app switched into background");
 	}
 
-	public void connectMultiModeConversations(Account account) {
+	private void connectMultiModeConversations(Account account) {
 		List<Conversation> conversations = getConversations();
 		for (Conversation conversation : conversations) {
 			if ((conversation.getMode() == Conversation.MODE_MULTI)
 					&& (conversation.getAccount() == account)) {
+				conversation.resetMucOptions();
 				joinMuc(conversation);
-					}
+			}
 		}
 	}
 

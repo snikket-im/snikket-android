@@ -18,13 +18,15 @@ public final class Config {
 
 	public static final int MESSAGE_MERGE_WINDOW = 20;
 
+	public static final int PAGE_SIZE = 50;
+
 	public static final int  PROGRESS_UI_UPDATE_INTERVAL = 750;
 
 	public static final boolean NO_PROXY_LOOKUP = false; //useful to debug ibb
 
 	private static final long MILLISECONDS_IN_DAY = 24 * 60 * 60 * 1000;
-	public static final long MAX_HISTORY_AGE = 7 * MILLISECONDS_IN_DAY;
-	public static final long MAX_CATCHUP =  MILLISECONDS_IN_DAY / 2;
+	public static final long MAM_MAX_CATCHUP =  MILLISECONDS_IN_DAY / 2;
+	public static final int MAM_MAX_MESSAGES = 500;
 
 	private Config() {
 
