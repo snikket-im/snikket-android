@@ -1,9 +1,12 @@
 package eu.siacs.conversations.xml;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.utils.XmlHelper;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
@@ -111,6 +114,7 @@ public class Element {
             try {
                 return Jid.fromString(jid);
             } catch (final InvalidJidException e) {
+				Log.e(Config.LOGTAG, "could not parse jid " + jid);
                 return null;
             }
         }

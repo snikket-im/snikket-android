@@ -53,12 +53,7 @@ public abstract class AbstractParser {
 
 	protected void updateLastseen(final Element packet, final Account account,
 			final boolean presenceOverwrite) {
-        Jid from;
-        try {
-            from = Jid.fromString(packet.getAttribute("from")).toBareJid();
-        } catch (final InvalidJidException e) {
-			return;
-        }
+        Jid from = packet.getAttributeAsJid("from");
         String presence = from == null || from.isBareJid() ? "" : from.getResourcepart();
 		Contact contact = account.getRoster().getContact(from);
 		long timestamp = getTimestamp(packet);
