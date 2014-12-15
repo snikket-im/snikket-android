@@ -217,7 +217,7 @@
     <string name="add_back">Add back</string>
     <string name="contact_has_read_up_to_this_point">%s ha letto fino a questo punto</string>
     <string name="publish">Pubblica</string>
-    <string name="touch_to_choose_picture">Tocca l\'avatar per selezionare l\'immagine dalla gallaria</string>
+    <string name="touch_to_choose_picture">Tocca l\'avatar per selezionare l\'immagine dalla galleria</string>
     <string name="publish_avatar_explanation">Nota bene: tutti i contatti sottoscritti agli aggiornamenti della tua presenza avranno il permesso di vedere questa immagine.</string>
     <string name="publishing">Pubblicazione&#8230;</string>
     <string name="error_publish_avatar_server_reject">Il server ha rifiutato la tua pubblicazione</string>
