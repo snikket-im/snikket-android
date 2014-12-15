@@ -268,7 +268,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 
 			@Override
 			public void onClick(View v) {
-				startDonwloadable(message);
+				startDownloadable(message);
 			}
 		});
 		viewHolder.download_button.setOnLongClickListener(openContextMenu);
@@ -284,7 +284,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 
 			@Override
 			public void onClick(View v) {
-				openDonwloadable(file);
+				openDownloadable(file);
 			}
 		});
 		viewHolder.download_button.setOnLongClickListener(openContextMenu);
@@ -438,6 +438,8 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 			}
 			view.setLayoutParams(view.getLayoutParams());
 			return view;
+		} else if (viewHolder.messageBody == null || viewHolder.image == null) {
+			return view; //avoiding weird platform bugs
 		} else if (type == RECEIVED) {
 			Contact contact = message.getContact();
 			if (contact != null) {
@@ -446,38 +448,36 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 				viewHolder.contact_picture.setImageBitmap(activity.avatarService().get(getDisplayedMucCounterpart(message.getCounterpart()),
                         activity.getPixel(48)));
 			}
-		} else if (type == SENT && viewHolder.contact_picture != null) {
+		} else if (type == SENT) {
 			viewHolder.contact_picture.setImageBitmap(activity.avatarService().get(account, activity.getPixel(48)));
 		}
 
-		if (viewHolder != null && viewHolder.contact_picture != null) {
-			viewHolder.contact_picture
-					.setOnClickListener(new OnClickListener() {
+		viewHolder.contact_picture
+				.setOnClickListener(new OnClickListener() {
 
-						@Override
-						public void onClick(View v) {
-							if (MessageAdapter.this.mOnContactPictureClickedListener != null) {
-								MessageAdapter.this.mOnContactPictureClickedListener
-										.onContactPictureClicked(message);
-							}
-
+					@Override
+					public void onClick(View v) {
+						if (MessageAdapter.this.mOnContactPictureClickedListener != null) {
+							MessageAdapter.this.mOnContactPictureClickedListener
+									.onContactPictureClicked(message);
 						}
-					});
-			viewHolder.contact_picture
-					.setOnLongClickListener(new OnLongClickListener() {
 
-						@Override
-						public boolean onLongClick(View v) {
-							if (MessageAdapter.this.mOnContactPictureLongClickedListener != null) {
-								MessageAdapter.this.mOnContactPictureLongClickedListener
-										.onContactPictureLongClicked(message);
-								return true;
-							} else {
-								return false;
-							}
+					}
+				});
+		viewHolder.contact_picture
+				.setOnLongClickListener(new OnLongClickListener() {
+
+					@Override
+					public boolean onLongClick(View v) {
+						if (MessageAdapter.this.mOnContactPictureLongClickedListener != null) {
+							MessageAdapter.this.mOnContactPictureLongClickedListener
+									.onContactPictureLongClicked(message);
+							return true;
+						} else {
+							return false;
 						}
-					});
-		}
+					}
+				});
 
 		if (message.getDownloadable() != null && message.getDownloadable().getStatus() != Downloadable.STATUS_UPLOADING) {
 			Downloadable d = message.getDownloadable();
@@ -546,7 +546,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		return view;
 	}
 
-	public void startDonwloadable(Message message) {
+	public void startDownloadable(Message message) {
 		Downloadable downloadable = message.getDownloadable();
 		if (downloadable != null) {
 			if (!downloadable.start()) {
@@ -556,7 +556,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		}
 	}
 
-	public void openDonwloadable(DownloadableFile file) {
+	public void openDownloadable(DownloadableFile file) {
 		if (!file.exists()) {
 			Toast.makeText(activity,R.string.file_deleted,Toast.LENGTH_SHORT).show();
 			return;
