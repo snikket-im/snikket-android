@@ -19,6 +19,7 @@ import android.util.DisplayMetrics;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -33,12 +34,13 @@ import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.ui.ConversationActivity;
 import eu.siacs.conversations.ui.ManageAccountActivity;
+import eu.siacs.conversations.ui.TimePreference;
 
 public class NotificationService {
 
 	private XmppConnectionService mXmppConnectionService;
 
-	private LinkedHashMap<String, ArrayList<Message>> notifications = new LinkedHashMap<String, ArrayList<Message>>();
+	private final LinkedHashMap<String, ArrayList<Message>> notifications = new LinkedHashMap<>();
 
 	public static int NOTIFICATION_ID = 0x2342;
 	public static int FOREGROUND_NOTIFICATION_ID = 0x8899;
@@ -54,16 +56,37 @@ public class NotificationService {
 
 	public boolean notify(Message message) {
 		return (message.getStatus() == Message.STATUS_RECEIVED)
-				&& notificationsEnabled()
-				&& !message.getConversation().isMuted()
-				&& (message.getConversation().getMode() == Conversation.MODE_SINGLE
+			&& notificationsEnabled()
+			&& !isQuietHours()
+			&& !message.getConversation().isMuted()
+			&& (message.getConversation().getMode() == Conversation.MODE_SINGLE
 					|| conferenceNotificationsEnabled()
 					|| wasHighlightedOrPrivate(message)
-					);
+				 );
 	}
 
 	public boolean notificationsEnabled() {
 		return mXmppConnectionService.getPreferences().getBoolean("show_notification", true);
+	}
+
+	public boolean isQuietHours() {
+		if (!mXmppConnectionService.getPreferences().getBoolean("enable_quiet_hours", false)) {
+			return false;
+		}
+		final Calendar startTime = Calendar.getInstance();
+		startTime.setTimeInMillis(mXmppConnectionService.getPreferences().getLong("quiet_hours_start", TimePreference.DEFAULT_VALUE));
+		final Calendar endTime = Calendar.getInstance();
+		endTime.setTimeInMillis(mXmppConnectionService.getPreferences().getLong("quiet_hours_end", TimePreference.DEFAULT_VALUE));
+		final Calendar nowTime = Calendar.getInstance();
+
+		startTime.set(nowTime.get(Calendar.YEAR), nowTime.get(Calendar.MONTH), nowTime.get(Calendar.DATE));
+		endTime.set(nowTime.get(Calendar.YEAR), nowTime.get(Calendar.MONTH), nowTime.get(Calendar.DATE));
+
+		if (endTime.before(startTime)) {
+			endTime.add(Calendar.DATE, 1);
+		}
+
+		return nowTime.after(startTime) && nowTime.before(endTime);
 	}
 
 	public boolean conferenceNotificationsEnabled() {
@@ -75,19 +98,19 @@ public class NotificationService {
 			return;
 		}
 		PowerManager pm = (PowerManager) mXmppConnectionService
-				.getSystemService(Context.POWER_SERVICE);
+			.getSystemService(Context.POWER_SERVICE);
 		boolean isScreenOn = pm.isScreenOn();
 
 		if (this.mIsInForeground && isScreenOn
 				&& this.mOpenConversation == message.getConversation()) {
 			return;
-		}
+				}
 		synchronized (notifications) {
 			String conversationUuid = message.getConversationUuid();
 			if (notifications.containsKey(conversationUuid)) {
 				notifications.get(conversationUuid).add(message);
 			} else {
-				ArrayList<Message> mList = new ArrayList<Message>();
+				ArrayList<Message> mList = new ArrayList<>();
 				mList.add(message);
 				notifications.put(conversationUuid, mList);
 			}
@@ -115,7 +138,7 @@ public class NotificationService {
 
 	private void updateNotification(boolean notify) {
 		NotificationManager notificationManager = (NotificationManager) mXmppConnectionService
-				.getSystemService(Context.NOTIFICATION_SERVICE);
+			.getSystemService(Context.NOTIFICATION_SERVICE);
 		SharedPreferences preferences = mXmppConnectionService.getPreferences();
 
 		String ringtone = preferences.getString("notification_ringtone", null);
@@ -167,7 +190,7 @@ public class NotificationService {
 				conversation = messages.get(0).getConversation();
 				String name = conversation.getName();
 				style.addLine(Html.fromHtml("<b>" + name + "</b> "
-						+ getReadableBody(messages.get(0))));
+							+ getReadableBody(messages.get(0))));
 				names.append(name);
 				names.append(", ");
 			}
@@ -183,7 +206,7 @@ public class NotificationService {
 		mBuilder.setStyle(style);
 		if (conversation != null) {
 			mBuilder.setContentIntent(createContentIntent(conversation
-					.getUuid()));
+						.getUuid()));
 		}
 		return mBuilder;
 	}
@@ -204,23 +227,23 @@ public class NotificationService {
 				modifyForTextOnly(mBuilder, messages, notify);
 			}
 			mBuilder.setContentIntent(createContentIntent(conversation
-					.getUuid()));
+						.getUuid()));
 		}
 		return mBuilder;
 
 	}
 
 	private void modifyForImage(Builder builder, Message message,
-								ArrayList<Message> messages, boolean notify) {
+			ArrayList<Message> messages, boolean notify) {
 		try {
 			Bitmap bitmap = mXmppConnectionService.getFileBackend()
-					.getThumbnail(message, getPixel(288), false);
-			ArrayList<Message> tmp = new ArrayList<Message>();
+				.getThumbnail(message, getPixel(288), false);
+			ArrayList<Message> tmp = new ArrayList<>();
 			for (Message msg : messages) {
 				if (msg.getType() == Message.TYPE_TEXT
 						&& msg.getDownloadable() == null) {
 					tmp.add(msg);
-				}
+						}
 			}
 			BigPictureStyle bigPictureStyle = new NotificationCompat.BigPictureStyle();
 			bigPictureStyle.bigPicture(bitmap);
@@ -237,7 +260,7 @@ public class NotificationService {
 	}
 
 	private void modifyForTextOnly(Builder builder,
-								   ArrayList<Message> messages, boolean notify) {
+			ArrayList<Message> messages, boolean notify) {
 		builder.setStyle(new NotificationCompat.BigTextStyle()
 				.bigText(getMergedBodies(messages)));
 		builder.setContentText(getReadableBody(messages.get(0)));
@@ -252,7 +275,7 @@ public class NotificationService {
 					&& message.getDownloadable() == null
 					&& message.getEncryption() != Message.ENCRYPTION_PGP) {
 				return message;
-			}
+					}
 		}
 		return null;
 	}
@@ -271,7 +294,7 @@ public class NotificationService {
 	private String getReadableBody(Message message) {
 		if (message.getDownloadable() != null
 				&& (message.getDownloadable().getStatus() == Downloadable.STATUS_OFFER || message
-				.getDownloadable().getStatus() == Downloadable.STATUS_OFFER_CHECK_FILESIZE)) {
+					.getDownloadable().getStatus() == Downloadable.STATUS_OFFER_CHECK_FILESIZE)) {
 			if (message.getType() == Message.TYPE_FILE) {
 				return mXmppConnectionService.getString(R.string.file_offered_for_download);
 			} else {
@@ -283,13 +306,13 @@ public class NotificationService {
 					R.string.encrypted_message_received).toString();
 		} else if (message.getEncryption() == Message.ENCRYPTION_DECRYPTION_FAILED) {
 			return mXmppConnectionService.getText(R.string.decryption_failed)
-					.toString();
+				.toString();
 		} else if (message.getType() == Message.TYPE_FILE) {
 			DownloadableFile file = mXmppConnectionService.getFileBackend().getFile(message);
 			return mXmppConnectionService.getString(R.string.file,file.getMimeType());
 		} else if (message.getType() == Message.TYPE_IMAGE) {
 			return mXmppConnectionService.getText(R.string.image_file)
-					.toString();
+				.toString();
 		} else {
 			return message.getBody().trim();
 		}
@@ -297,7 +320,7 @@ public class NotificationService {
 
 	private PendingIntent createContentIntent(String conversationUuid) {
 		TaskStackBuilder stackBuilder = TaskStackBuilder
-				.create(mXmppConnectionService);
+			.create(mXmppConnectionService);
 		stackBuilder.addParentStack(ConversationActivity.class);
 
 		Intent viewConversationIntent = new Intent(mXmppConnectionService,
@@ -311,9 +334,7 @@ public class NotificationService {
 
 		stackBuilder.addNextIntent(viewConversationIntent);
 
-		PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0,
-				PendingIntent.FLAG_UPDATE_CURRENT);
-		return resultPendingIntent;
+		return stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 	}
 
 	private PendingIntent createDeleteIntent() {
@@ -360,7 +381,7 @@ public class NotificationService {
 
 	private int getPixel(int dp) {
 		DisplayMetrics metrics = mXmppConnectionService.getResources()
-				.getDisplayMetrics();
+			.getDisplayMetrics();
 		return ((int) (dp * metrics.density));
 	}
 
@@ -370,7 +391,7 @@ public class NotificationService {
 
 	private boolean inMiniGracePeriod(Account account) {
 		int miniGrace = account.getStatus() == Account.State.ONLINE ? Config.MINI_GRACE_PERIOD
-				: Config.MINI_GRACE_PERIOD * 2;
+			: Config.MINI_GRACE_PERIOD * 2;
 		return SystemClock.elapsedRealtime() < (this.mLastNotification + miniGrace);
 	}
 
