@@ -278,6 +278,10 @@ public class MessageParser extends AbstractParser implements
 		if (result == null ) {
 			return null;
 		}
+		final MessageArchiveService.Query query = this.mXmppConnectionService.getMessageArchiveService().findQuery(result.getAttribute("queryid"));
+		if (query!=null) {
+			query.incrementTotalCount();
+		}
 		final Element forwarded = result.findChild("forwarded","urn:xmpp:forward:0");
 		if (forwarded == null) {
 			return null;
@@ -304,7 +308,6 @@ public class MessageParser extends AbstractParser implements
 		final long timestamp = getTimestamp(forwarded);
 		final Jid to = message.getAttributeAsJid("to");
 		final Jid from = message.getAttributeAsJid("from");
-		final MessageArchiveService.Query query = this.mXmppConnectionService.getMessageArchiveService().findQuery(result.getAttribute("queryid"));
 		Jid counterpart;
 		int status;
 		Conversation conversation;
@@ -324,8 +327,11 @@ public class MessageParser extends AbstractParser implements
 		finishedMessage.setCounterpart(counterpart);
 		finishedMessage.setRemoteMsgId(message.getAttribute("id"));
 		finishedMessage.setServerMsgId(result.getAttribute("id"));
+		if (conversation.hasDuplicateMessage(finishedMessage)) {
+			return null;
+		}
 		if (query!=null) {
-			query.incrementCount();
+			query.incrementMessageCount();
 		}
 		return finishedMessage;
 	}

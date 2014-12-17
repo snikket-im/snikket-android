@@ -311,9 +311,12 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 			return this.account;
 		}
 
-		public void incrementCount() {
-			this.count++;
+		public void incrementTotalCount() {
 			this.totalCount++;
+		}
+
+		public void incrementMessageCount() {
+			this.count++;
 		}
 
 		public int getTotalCount() {
