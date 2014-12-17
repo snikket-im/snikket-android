@@ -962,12 +962,13 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	}
 
 	public void loadMoreMessages(final Conversation conversation, final long timestamp, final OnMoreMessagesLoaded callback) {
+		Log.d(Config.LOGTAG,"load more messages for "+conversation.getName() + " prior to "+MessageGenerator.getTimestamp(timestamp));
+		if (XmppConnectionService.this.getMessageArchiveService().queryInProgress(conversation)) {
+			return;
+		}
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				if (XmppConnectionService.this.getMessageArchiveService().queryInProgress(conversation)) {
-					return;
-				}
 				final Account account = conversation.getAccount();
 				List<Message> messages = databaseBackend.getMessages(conversation, 50,timestamp);
 				if (messages.size() > 0) {

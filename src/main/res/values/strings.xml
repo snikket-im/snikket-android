@@ -367,4 +367,5 @@
     <string name="account_image_description">Account avatar</string>
     <string name="copy_otr_clipboard_description">Copy OTR fingerprint to clipboard</string>
     <string name="fetching_history_from_server">Fetching history from server</string>
+    <string name="no_more_history_on_server">No more history on server</string>
 </resources>

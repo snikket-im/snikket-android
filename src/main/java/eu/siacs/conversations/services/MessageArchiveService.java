@@ -9,6 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import eu.siacs.conversations.Config;
+import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.generator.AbstractGenerator;
@@ -217,7 +218,7 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 
 	public class Query {
 		private int totalCount = 0;
-		private int count = 0;
+		private int messageCount = 0;
 		private long start;
 		private long end;
 		private Jid with = null;
@@ -295,7 +296,10 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 
 		public void callback() {
 			if (this.callback != null) {
-				this.callback.onMoreMessagesLoaded(count,conversation);
+				this.callback.onMoreMessagesLoaded(messageCount,conversation);
+				if (messageCount==0) {
+					this.callback.informUser(R.string.no_more_history_on_server);
+				}
 			}
 		}
 
@@ -316,7 +320,7 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 		}
 
 		public void incrementMessageCount() {
-			this.count++;
+			this.messageCount++;
 		}
 
 		public int getTotalCount() {

@@ -105,7 +105,7 @@ public class ConversationFragment extends Fragment {
 	private RelativeLayout snackbar;
 	private TextView snackbarMessage;
 	private TextView snackbarAction;
-	private boolean messagesLoaded = false;
+	private boolean messagesLoaded = true;
 	private Toast messageLoaderToast;
 
 	private OnScrollListener mOnScrollListener = new OnScrollListener() {
@@ -120,7 +120,7 @@ public class ConversationFragment extends Fragment {
 		public void onScroll(AbsListView view, int firstVisibleItem,
 							 int visibleItemCount, int totalItemCount) {
 			synchronized (ConversationFragment.this.messageList) {
-				if (firstVisibleItem < 5 && messagesLoaded) {
+				if (firstVisibleItem < 5 && messagesLoaded && messageList.size() > 0) {
 					long timestamp = ConversationFragment.this.messageList.get(0).getTimeSent();
 					messagesLoaded = false;
 					activity.xmppConnectionService.loadMoreMessages(conversation, timestamp, new XmppConnectionService.OnMoreMessagesLoaded() {
@@ -132,19 +132,26 @@ public class ConversationFragment extends Fragment {
 							activity.runOnUiThread(new Runnable() {
 								@Override
 								public void run() {
-									int oldPosition = messagesView.getFirstVisiblePosition();
+									final int oldPosition = messagesView.getFirstVisiblePosition();
+									View v = messagesView.getChildAt(0);
+									final int pxOffset = (v == null) ? 0 : v.getTop();
 									ConversationFragment.this.conversation.populateWithMessages(ConversationFragment.this.messageList);
 									updateStatusMessages();
 									messageListAdapter.notifyDataSetChanged();
 									if (count != 0) {
 										final int newPosition = oldPosition + count;
-										Message tmpMessage = messageList.get(newPosition);
 										int offset = 0;
-										while(tmpMessage.wasMergedIntoPrevious()) {
-											offset++;
-											tmpMessage = tmpMessage.prev();
+										try {
+											Message tmpMessage = messageList.get(newPosition);
+
+											while(tmpMessage.wasMergedIntoPrevious()) {
+												offset++;
+												tmpMessage = tmpMessage.prev();
+											}
+										} catch (final IndexOutOfBoundsException ignored) {
+
 										}
-										messagesView.setSelectionFromTop(newPosition - offset, 0);
+										messagesView.setSelectionFromTop(newPosition - offset, pxOffset);
 										messagesLoaded = true;
 										if (messageLoaderToast != null) {
 											messageLoaderToast.cancel();
@@ -155,12 +162,22 @@ public class ConversationFragment extends Fragment {
 						}
 
 						@Override
-						public void informUser(int resId) {
-							if (messageLoaderToast != null) {
-								messageLoaderToast.cancel();
-							}
-							messageLoaderToast = Toast.makeText(activity,resId,Toast.LENGTH_LONG);
-							messageLoaderToast.show();
+						public void informUser(final int resId) {
+
+							activity.runOnUiThread(new Runnable() {
+								@Override
+								public void run() {
+									if (messageLoaderToast != null) {
+										messageLoaderToast.cancel();
+									}
+									if (ConversationFragment.this.conversation != conversation) {
+										return;
+									}
+									messageLoaderToast = Toast.makeText(activity,resId,Toast.LENGTH_LONG);
+									messageLoaderToast.show();
+								}
+							});
+
 						}
 					});
 
@@ -549,6 +566,11 @@ public class ConversationFragment extends Fragment {
 		this.mEditMessage.append(this.conversation.getNextMessage());
 		this.messagesView.invalidate();
 		updateMessages();
+		this.messagesLoaded = true;
+		int size = this.messageList.size();
+		if (size > 0) {
+			messagesView.setSelection(size - 1);
+		}
 	}
 
 	public void updateMessages() {
@@ -617,7 +639,6 @@ public class ConversationFragment extends Fragment {
 					}
 				}
 				conversation.populateWithMessages(ConversationFragment.this.messageList);
-				this.messagesLoaded = this.messageList.size() > 0;
 				for (Message message : this.messageList) {
 					if (message.getEncryption() == Message.ENCRYPTION_PGP
 							&& (message.getStatus() == Message.STATUS_RECEIVED || message
