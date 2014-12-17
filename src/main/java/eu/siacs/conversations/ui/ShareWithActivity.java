@@ -30,6 +30,7 @@ public class ShareWithActivity extends XmppActivity {
 
 	private class Share {
 		public Uri uri;
+		public boolean image;
 		public String account;
 		public String contact;
 		public String text;
@@ -129,10 +130,10 @@ public class ShareWithActivity extends XmppActivity {
 
 	@Override
 	public void onStart() {
-		if (getIntent().getType() != null
-				&& !getIntent().getType().startsWith("text/")) {
-			this.share.uri = (Uri) getIntent().getParcelableExtra(
-					Intent.EXTRA_STREAM);
+		final String type = getIntent().getType();
+		if (type != null && !type.startsWith("text/")) {
+			this.share.uri = (Uri) getIntent().getParcelableExtra(Intent.EXTRA_STREAM);
+			this.share.image = type.startsWith("image/") || URLConnection.guessContentTypeFromName(share.uri.getPath()).startsWith("image/");
 		} else {
 			this.share.text = getIntent().getStringExtra(Intent.EXTRA_TEXT);
 		}
@@ -179,8 +180,7 @@ public class ShareWithActivity extends XmppActivity {
 			selectPresence(conversation, new OnPresenceSelected() {
 				@Override
 				public void onPresenceSelected() {
-					final String type = URLConnection.guessContentTypeFromName(share.uri.getPath());
-					if (type != null && type.startsWith("image/")) {
+					if (share.image) {
 						Toast.makeText(getApplicationContext(),
 								getText(R.string.preparing_image),
 								Toast.LENGTH_LONG).show();
