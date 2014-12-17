@@ -1,17 +1,5 @@
 package eu.siacs.conversations.ui;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import eu.siacs.conversations.Config;
-import eu.siacs.conversations.R;
-import eu.siacs.conversations.entities.Account;
-import eu.siacs.conversations.entities.Conversation;
-import eu.siacs.conversations.entities.Message;
-import eu.siacs.conversations.ui.adapter.ConversationAdapter;
-import eu.siacs.conversations.xmpp.jid.InvalidJidException;
-import eu.siacs.conversations.xmpp.jid.Jid;
-
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.net.Uri;
@@ -24,6 +12,19 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import java.net.URLConnection;
+import java.util.ArrayList;
+import java.util.List;
+
+import eu.siacs.conversations.Config;
+import eu.siacs.conversations.R;
+import eu.siacs.conversations.entities.Account;
+import eu.siacs.conversations.entities.Conversation;
+import eu.siacs.conversations.entities.Message;
+import eu.siacs.conversations.ui.adapter.ConversationAdapter;
+import eu.siacs.conversations.xmpp.jid.InvalidJidException;
+import eu.siacs.conversations.xmpp.jid.Jid;
 
 public class ShareWithActivity extends XmppActivity {
 
@@ -38,9 +39,9 @@ public class ShareWithActivity extends XmppActivity {
 
 	private static final int REQUEST_START_NEW_CONVERSATION = 0x0501;
 	private ListView mListView;
-	private List<Conversation> mConversations = new ArrayList<Conversation>();
+	private List<Conversation> mConversations = new ArrayList<>();
 
-	private UiCallback<Message> attachImageCallback = new UiCallback<Message>() {
+	private UiCallback<Message> attachFileCallback = new UiCallback<Message>() {
 
 		@Override
 		public void userInputRequried(PendingIntent pi, Message object) {
@@ -78,11 +79,12 @@ public class ShareWithActivity extends XmppActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-
 		super.onCreate(savedInstanceState);
 
-		getActionBar().setDisplayHomeAsUpEnabled(false);
-		getActionBar().setHomeButtonEnabled(false);
+		if (getActionBar() != null) {
+			getActionBar().setDisplayHomeAsUpEnabled(false);
+			getActionBar().setHomeButtonEnabled(false);
+		}
 
 		setContentView(R.layout.share_with);
 		setTitle(getString(R.string.title_activity_sharewith));
@@ -128,7 +130,7 @@ public class ShareWithActivity extends XmppActivity {
 	@Override
 	public void onStart() {
 		if (getIntent().getType() != null
-				&& getIntent().getType().startsWith("image/")) {
+				&& !getIntent().getType().startsWith("text/")) {
 			this.share.uri = (Uri) getIntent().getParcelableExtra(
 					Intent.EXTRA_STREAM);
 		} else {
@@ -177,12 +179,22 @@ public class ShareWithActivity extends XmppActivity {
 			selectPresence(conversation, new OnPresenceSelected() {
 				@Override
 				public void onPresenceSelected() {
-					Toast.makeText(getApplicationContext(),
-							getText(R.string.preparing_image),
-							Toast.LENGTH_LONG).show();
-					ShareWithActivity.this.xmppConnectionService
+					final String type = URLConnection.guessContentTypeFromName(share.uri.getPath());
+					if (type != null && type.startsWith("image/")) {
+						Toast.makeText(getApplicationContext(),
+								getText(R.string.preparing_image),
+								Toast.LENGTH_LONG).show();
+						ShareWithActivity.this.xmppConnectionService
 							.attachImageToConversation(conversation, share.uri,
-									attachImageCallback);
+									attachFileCallback);
+					} else {
+						Toast.makeText(getApplicationContext(),
+								getText(R.string.preparing_file),
+								Toast.LENGTH_LONG).show();
+						ShareWithActivity.this.xmppConnectionService
+							.attachFileToConversation(conversation, share.uri,
+									attachFileCallback);
+					}
 					switchToConversation(conversation, null, true);
 					finish();
 				}
