@@ -24,7 +24,7 @@ public final class Config {
 
 	public static final boolean NO_PROXY_LOOKUP = false; //useful to debug ibb
 
-	private static final long MILLISECONDS_IN_DAY = 24 * 60 * 60 * 1000;
+	public static final long MILLISECONDS_IN_DAY = 24 * 60 * 60 * 1000;
 	public static final long MAM_MAX_CATCHUP =  MILLISECONDS_IN_DAY / 2;
 	public static final int MAM_MAX_MESSAGES = 500;
 
