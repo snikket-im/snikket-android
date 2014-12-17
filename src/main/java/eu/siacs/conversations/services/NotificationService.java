@@ -72,20 +72,15 @@ public class NotificationService {
 		if (!mXmppConnectionService.getPreferences().getBoolean("enable_quiet_hours", false)) {
 			return false;
 		}
-		final Calendar startTime = Calendar.getInstance();
-		startTime.setTimeInMillis(mXmppConnectionService.getPreferences().getLong("quiet_hours_start", TimePreference.DEFAULT_VALUE));
-		final Calendar endTime = Calendar.getInstance();
-		endTime.setTimeInMillis(mXmppConnectionService.getPreferences().getLong("quiet_hours_end", TimePreference.DEFAULT_VALUE));
-		final Calendar nowTime = Calendar.getInstance();
+		final long startTime = mXmppConnectionService.getPreferences().getLong("quiet_hours_start", TimePreference.DEFAULT_VALUE) % Config.MILLISECONDS_IN_DAY;
+		final long endTime = mXmppConnectionService.getPreferences().getLong("quiet_hours_end", TimePreference.DEFAULT_VALUE) % Config.MILLISECONDS_IN_DAY;
+		final long nowTime = Calendar.getInstance().getTimeInMillis() % Config.MILLISECONDS_IN_DAY;
 
-		startTime.set(nowTime.get(Calendar.YEAR), nowTime.get(Calendar.MONTH), nowTime.get(Calendar.DATE));
-		endTime.set(nowTime.get(Calendar.YEAR), nowTime.get(Calendar.MONTH), nowTime.get(Calendar.DATE));
-
-		if (endTime.before(startTime)) {
-			endTime.add(Calendar.DATE, 1);
+		if (endTime < startTime) {
+			return nowTime > startTime || nowTime < endTime;
+		} else {
+			return nowTime > startTime && nowTime < endTime;
 		}
-
-		return nowTime.after(startTime) && nowTime.before(endTime);
 	}
 
 	public boolean conferenceNotificationsEnabled() {

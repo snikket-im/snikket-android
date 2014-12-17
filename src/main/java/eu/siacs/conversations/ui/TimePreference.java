@@ -3,6 +3,7 @@ package eu.siacs.conversations.ui;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.preference.DialogPreference;
+import android.preference.Preference;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TimePicker;
@@ -11,12 +12,13 @@ import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-public class TimePreference extends DialogPreference {
+public class TimePreference extends DialogPreference implements Preference.OnPreferenceChangeListener {
 	private TimePicker picker = null;
 	public final static long DEFAULT_VALUE = 0;
 
 	public TimePreference(final Context context, final AttributeSet attrs) {
 		super(context, attrs, 0);
+		this.setOnPreferenceChangeListener(this);
 	}
 
 	protected void setTime(final long time) {
@@ -25,8 +27,7 @@ public class TimePreference extends DialogPreference {
 		notifyChanged();
 	}
 
-	protected void updateSummary() {
-		final long time = getPersistedLong(DEFAULT_VALUE);
+	protected void updateSummary(final long time) {
 		final DateFormat dateFormat = android.text.format.DateFormat.getTimeFormat(getContext());
 		final Date date = new Date(time);
 		setSummary(dateFormat.format(date.getTime()));
@@ -71,7 +72,6 @@ public class TimePreference extends DialogPreference {
 			}
 
 			setTime(c.getTimeInMillis());
-			updateSummary();
 		}
 	}
 
@@ -94,6 +94,12 @@ public class TimePreference extends DialogPreference {
 		}
 
 		setTime(time);
-		updateSummary();
+		updateSummary(time);
+	}
+
+	@Override
+	public boolean onPreferenceChange(final Preference preference, final Object newValue) {
+		((TimePreference) preference).updateSummary((Long)newValue);
+		return true;
 	}
 }
