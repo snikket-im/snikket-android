@@ -106,6 +106,7 @@ public class ConversationFragment extends Fragment {
 	private TextView snackbarMessage;
 	private TextView snackbarAction;
 	private boolean messagesLoaded = false;
+	private Toast messageLoaderToast;
 
 	private OnScrollListener mOnScrollListener = new OnScrollListener() {
 
@@ -119,10 +120,9 @@ public class ConversationFragment extends Fragment {
 		public void onScroll(AbsListView view, int firstVisibleItem,
 							 int visibleItemCount, int totalItemCount) {
 			synchronized (ConversationFragment.this.messageList) {
-				if (firstVisibleItem == 0 && messagesLoaded) {
+				if (firstVisibleItem < 5 && messagesLoaded) {
 					long timestamp = ConversationFragment.this.messageList.get(0).getTimeSent();
 					messagesLoaded = false;
-					Log.d(Config.LOGTAG,"load more messages");
 					activity.xmppConnectionService.loadMoreMessages(conversation, timestamp, new XmppConnectionService.OnMoreMessagesLoaded() {
 						@Override
 						public void onMoreMessagesLoaded(final int count, Conversation conversation) {
@@ -132,17 +132,35 @@ public class ConversationFragment extends Fragment {
 							activity.runOnUiThread(new Runnable() {
 								@Override
 								public void run() {
-									int firstItem = messagesView.getFirstVisiblePosition();
-									Log.d(Config.LOGTAG, "done loading more messages. first item: " + firstItem);
+									int oldPosition = messagesView.getFirstVisiblePosition();
 									ConversationFragment.this.conversation.populateWithMessages(ConversationFragment.this.messageList);
 									updateStatusMessages();
 									messageListAdapter.notifyDataSetChanged();
 									if (count != 0) {
+										final int newPosition = oldPosition + count;
+										Message tmpMessage = messageList.get(newPosition);
+										int offset = 0;
+										while(tmpMessage.wasMergedIntoPrevious()) {
+											offset++;
+											tmpMessage = tmpMessage.prev();
+										}
+										messagesView.setSelectionFromTop(newPosition - offset, 0);
 										messagesLoaded = true;
+										if (messageLoaderToast != null) {
+											messageLoaderToast.cancel();
+										}
 									}
-									messagesView.setSelectionFromTop(firstItem + count, 0);
 								}
 							});
+						}
+
+						@Override
+						public void informUser(int resId) {
+							if (messageLoaderToast != null) {
+								messageLoaderToast.cancel();
+							}
+							messageLoaderToast = Toast.makeText(activity,resId,Toast.LENGTH_LONG);
+							messageLoaderToast.show();
 						}
 					});
 

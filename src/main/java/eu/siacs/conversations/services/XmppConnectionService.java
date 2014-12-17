@@ -961,29 +961,32 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		});
 	}
 
-	public void loadMoreMessages(Conversation conversation, long timestamp, final OnMoreMessagesLoaded callback) {
-		if (this.getMessageArchiveService().queryInProgress(conversation)) {
-			Log.d(Config.LOGTAG,"query in progress");
-			return;
-		}
-		List<Message> messages = databaseBackend.getMessages(conversation, 50,timestamp);
-		if (messages.size() == 0 && (conversation.getAccount().getXmppConnection() != null && conversation.getAccount().getXmppConnection().getFeatures().mam())) {
-			Log.d(Config.LOGTAG,"load more messages with mam");
-			MessageArchiveService.Query query = getMessageArchiveService().query(conversation,0,timestamp - 1);
-			if (query != null) {
-				query.setCallback(callback);
+	public void loadMoreMessages(final Conversation conversation, final long timestamp, final OnMoreMessagesLoaded callback) {
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				if (XmppConnectionService.this.getMessageArchiveService().queryInProgress(conversation)) {
+					return;
+				}
+				final Account account = conversation.getAccount();
+				List<Message> messages = databaseBackend.getMessages(conversation, 50,timestamp);
+				if (messages.size() > 0) {
+					conversation.addAll(0, messages);
+					callback.onMoreMessagesLoaded(messages.size(), conversation);
+				} else if (account.getStatus() == Account.State.ONLINE && account.getXmppConnection() != null && account.getXmppConnection().getFeatures().mam()) {
+					MessageArchiveService.Query query = getMessageArchiveService().query(conversation,0,timestamp - 1);
+					if (query != null) {
+						query.setCallback(callback);
+					}
+					callback.informUser(R.string.fetching_history_from_server);
+				}
 			}
-			return;
-		}
-		for (Message message : messages) {
-			message.setConversation(conversation);
-		}
-		conversation.addAll(0, messages);
-		callback.onMoreMessagesLoaded(messages.size(),conversation);
+		}).start();
 	}
 
 	public interface OnMoreMessagesLoaded {
 		public void onMoreMessagesLoaded(int count,Conversation conversation);
+		public void informUser(int r);
 	}
 
 	public List<Account> getAccounts() {
