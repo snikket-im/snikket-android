@@ -318,13 +318,10 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 	protected void showCreateContactDialog(final String prefilledJid, final String fingerprint) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(R.string.create_contact);
-		View dialogView = getLayoutInflater().inflate(
-				R.layout.create_contact_dialog, null);
+		View dialogView = getLayoutInflater().inflate(R.layout.create_contact_dialog, null);
 		final Spinner spinner = (Spinner) dialogView.findViewById(R.id.account);
-		final AutoCompleteTextView jid = (AutoCompleteTextView) dialogView
-				.findViewById(R.id.jid);
-		jid.setAdapter(new KnownHostsAdapter(this,
-				android.R.layout.simple_list_item_1, mKnownHosts));
+		final AutoCompleteTextView jid = (AutoCompleteTextView) dialogView.findViewById(R.id.jid);
+		jid.setAdapter(new KnownHostsAdapter(this,android.R.layout.simple_list_item_1, mKnownHosts));
 		if (prefilledJid != null) {
 			jid.append(prefilledJid);
 			if (fingerprint!=null) {
@@ -351,8 +348,7 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 						if (Validator.isValidJid(jid.getText().toString())) {
 							final Jid accountJid;
 							try {
-								accountJid = Jid.fromString((String) spinner
-										.getSelectedItem());
+								accountJid = Jid.fromString((String) spinner.getSelectedItem());
 							} catch (final InvalidJidException e) {
 								return;
 							}
@@ -360,6 +356,7 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 							try {
 								contactJid = Jid.fromString(jid.getText().toString());
 							} catch (final InvalidJidException e) {
+								jid.setError(getString(R.string.invalid_jid));
 								return;
 							}
 							Account account = xmppConnectionService
@@ -389,13 +386,10 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 	protected void showJoinConferenceDialog(String prefilledJid) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(R.string.join_conference);
-		View dialogView = getLayoutInflater().inflate(
-				R.layout.join_conference_dialog, null);
+		View dialogView = getLayoutInflater().inflate(R.layout.join_conference_dialog, null);
 		final Spinner spinner = (Spinner) dialogView.findViewById(R.id.account);
-		final AutoCompleteTextView jid = (AutoCompleteTextView) dialogView
-				.findViewById(R.id.jid);
-		jid.setAdapter(new KnownHostsAdapter(this,
-				android.R.layout.simple_list_item_1, mKnownConferenceHosts));
+		final AutoCompleteTextView jid = (AutoCompleteTextView) dialogView.findViewById(R.id.jid);
+		jid.setAdapter(new KnownHostsAdapter(this,android.R.layout.simple_list_item_1, mKnownConferenceHosts));
 		if (prefilledJid != null) {
 			jid.append(prefilledJid);
 		}
@@ -426,7 +420,8 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 							try {
 								conferenceJid = Jid.fromString(jid.getText().toString());
 							} catch (final InvalidJidException e) {
-								return; // TODO: Do some error handling...
+								jid.setError(getString(R.string.invalid_jid));
+								return;
 							}
 							Account account = xmppConnectionService
 									.findAccountByJid(accountJid);
