@@ -129,6 +129,16 @@ public class Conversation extends AbstractEntity {
 		}
 	}
 
+	public void trim() {
+		synchronized (this.messages) {
+			final int size = messages.size();
+			final int maxsize = Config.PAGE_SIZE * Config.MAX_NUM_PAGES;
+			if (size > maxsize) {
+				this.messages.subList(0, size - maxsize).clear();
+			}
+		}
+	}
+
 	public void findUnsentMessagesWithOtrEncryption(OnMessageFound onMessageFound) {
 		synchronized (this.messages) {
 			for (Message message : this.messages) {
@@ -263,10 +273,6 @@ public class Conversation extends AbstractEntity {
 		} else {
 			return this.getContact().getDisplayName();
 		}
-	}
-
-	public String getProfilePhotoString() {
-		return this.getContact().getProfilePhoto();
 	}
 
 	public String getAccountUuid() {

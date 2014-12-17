@@ -554,6 +554,7 @@ public class ConversationFragment extends Fragment {
 		}
 		if (this.conversation != null) {
 			this.conversation.setNextMessage(mEditMessage.getText().toString());
+			this.conversation.trim();
 		}
 		this.activity = (ConversationActivity) getActivity();
 		this.conversation = conversation;
