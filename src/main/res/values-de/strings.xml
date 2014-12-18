@@ -41,6 +41,7 @@
     <string name="invite_contact">Kontakt einladen</string>
     <string name="contacts">Kontakte</string>
     <string name="cancel">Abbrechen</string>
+    <string name="set">Einstellen</string>
     <string name="add">Hinzufügen</string>
     <string name="edit">Bearbeiten</string>
     <string name="delete">Entfernen</string>
@@ -258,6 +259,11 @@
     <string name="pref_expert_options_summary">Hier bitte vorsichtig sein</string>
     <string name="title_activity_about">Über Conversations</string>
     <string name="pref_about_conversations_summary">Versions- und Lizenzinformationen</string>
+    <string name="title_pref_quiet_hours">Ruhige Stunden</string>
+    <string name="title_pref_quiet_hours_start_time">Beginn</string>
+    <string name="title_pref_quiet_hours_end_time">Ende</string>
+    <string name="title_pref_enable_quiet_hours">Aktiviere ruhige Stunden</string>
+    <string name="pref_quiet_hours_summary">Benachrichtigungen sind während der ruhigen Stunden stumm.</string>
     <string name="pref_use_larger_font">Schrift vergrößern</string>
     <string name="pref_use_larger_font_summary">Größere Schrift verwenden</string>
     <string name="pref_use_send_button_to_indicate_status">Absende-Knopf zeigt Online-Status an</string>
@@ -336,4 +342,6 @@
     <string name="reset">Zurücksetzen</string>
     <string name="account_image_description">Konto-Avatar</string>
     <string name="copy_otr_clipboard_description">OTR-Fingerabdruck in Zwischenablage kopieren</string>
+    <string name="fetching_history_from_server">Hole Chatverlauf vom Server</string>
+    <string name="no_more_history_on_server">Keine weiteren Nachrichten auf dem Server vorhanden.</string>
 </resources>
