@@ -27,7 +27,7 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
 			if (item.getName().equals("item")) {
 				final Jid jid = item.getAttributeAsJid("jid");
 				if (jid == null) {
-					break;
+					continue;
 				}
 				String name = item.getAttribute("name");
 				String subscription = item.getAttribute("subscription");
