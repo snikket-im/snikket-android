@@ -151,10 +151,13 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 		}
 	}
 
-	public boolean queryInProgress(Conversation conversation) {
+	public boolean queryInProgress(Conversation conversation, XmppConnectionService.OnMoreMessagesLoaded callback) {
 		synchronized (this.queries) {
 			for(Query query : queries) {
 				if (query.conversation == conversation) {
+					if (!query.hasCallback() && callback != null) {
+						query.setCallback(callback);
+					}
 					return true;
 				}
 			}

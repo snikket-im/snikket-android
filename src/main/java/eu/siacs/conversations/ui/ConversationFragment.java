@@ -769,8 +769,7 @@ public class ConversationFragment extends Fragment {
 						return;
 					} else {
 						if (this.messageList.get(i).getStatus() == Message.STATUS_SEND_DISPLAYED) {
-							this.messageList.add(i + 1,
-									Message.createStatusMessage(conversation));
+							this.messageList.add(i + 1,Message.createStatusMessage(conversation));
 							return;
 						}
 					}
