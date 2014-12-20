@@ -41,6 +41,7 @@
     <string name="invite_contact">Invitar contactos</string>
     <string name="contacts">Contactos</string>
     <string name="cancel">Cancelar</string>
+    <string name="set">Establecer</string>
     <string name="add">Añadir</string>
     <string name="edit">Editar</string>
     <string name="delete">Eliminar</string>
@@ -195,10 +196,10 @@
     <string name="otr_fingerprint">Huella digital OTR</string>
     <string name="verify">Verificar</string>
     <string name="decrypt">Desencriptar</string>
-    <string name="conferences">Convers. Grupo</string>
+    <string name="conferences">Conversación Grupo</string>
     <string name="search">Buscar</string>
     <string name="create_contact">Crear Contacto</string>
-    <string name="join_conference">Unirse a Conversación grupo</string>
+    <string name="join_conference">Unirse a Conversación en grupo</string>
     <string name="delete_contact">Eliminar Contacto</string>
     <string name="view_contact_details">Ver detalles del contacto</string>
     <string name="create">Crear</string>
@@ -208,7 +209,7 @@
     <string name="conference_address_example">nombre@salas.ejemplo.com</string>
     <string name="save_as_bookmark">Guardar en marcadores</string>
     <string name="delete_bookmark">Eliminar marcador</string>
-    <string name="bookmark_already_exists">Este marcador ya exsite</string>
+    <string name="bookmark_already_exists">Este marcador ya existe</string>
     <string name="you">Tú</string>
     <string name="action_edit_subject">Editar asunto de la conversación</string>
     <string name="conference_not_found">Conversación en grupo no encontrada</string>
@@ -258,6 +259,11 @@
     <string name="pref_expert_options_summary">Por favor, cuidado con estas opciones</string>
     <string name="title_activity_about">Acerca de Conversations</string>
     <string name="pref_about_conversations_summary">Información de compilación y licencia</string>
+    <string name="title_pref_quiet_hours">Horario de silencio</string>
+    <string name="title_pref_quiet_hours_start_time">Hora de comienzo</string>
+    <string name="title_pref_quiet_hours_end_time">Hora de fin</string>
+    <string name="title_pref_enable_quiet_hours">Habilitar horario de silencio</string>
+    <string name="pref_quiet_hours_summary">Las notificaciones serán silenciadas durante el horario de silencio</string>
     <string name="pref_use_larger_font">Tamaño de fuente grande</string>
     <string name="pref_use_larger_font_summary">Usar fuentes grandes en toda la aplicación</string>
     <string name="pref_use_send_button_to_indicate_status">Botón enviar indica estado</string>
@@ -274,7 +280,7 @@
     <string name="using_account">Usando cuenta %s</string>
     <string name="checking_image">Comprobando imagen en servidor HTTP</string>
     <string name="image_file_deleted">El archivo de imagen ha sido eliminado</string>
-    <string name="not_connected_try_again">No estás concectado. Inténtalo más tarde</string>
+    <string name="not_connected_try_again">No estás conectado. Inténtalo más tarde</string>
     <string name="check_image_filesize">Comprobar el tamaño del archivo de imagen</string>
     <string name="message_options">Opciones de mensaje</string>
     <string name="copy_text">Copiar texto</string>
@@ -336,4 +342,6 @@
     <string name="reset">Reinicializar</string>
     <string name="account_image_description">Imagen de perfil</string>
     <string name="copy_otr_clipboard_description">Copiar huella digital OTR al portapapeles</string>
+    <string name="fetching_history_from_server">Buscar historial en servidor</string>
+    <string name="no_more_history_on_server">No más historial del servidor</string>
 </resources>
