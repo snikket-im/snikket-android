@@ -116,10 +116,9 @@ public class Account extends AbstractEntity {
 	protected boolean online = false;
 	private OtrEngine otrEngine = null;
 	private XmppConnection xmppConnection = null;
-	private Presences presences = new Presences();
 	private long mEndGracePeriod = 0L;
 	private String otrFingerprint;
-	private Roster roster = null;
+	private final Roster roster = new Roster(this);
 	private List<Bookmark> bookmarks = new CopyOnWriteArrayList<>();
 
 	public Account() {
@@ -328,20 +327,8 @@ public class Account extends AbstractEntity {
 		this.rosterVersion = version;
 	}
 
-	public void updatePresence(String resource, int status) {
-		this.presences.updatePresence(resource, status);
-	}
-
-	public void removePresence(String resource) {
-		this.presences.removePresence(resource);
-	}
-
-	public void clearPresences() {
-		this.presences = new Presences();
-	}
-
 	public int countPresences() {
-		return this.presences.size();
+		return this.getRoster().getContact(this.getJid().toBareJid()).getPresences().size();
 	}
 
 	public String getPgpSignature() {
@@ -357,9 +344,6 @@ public class Account extends AbstractEntity {
 	}
 
 	public Roster getRoster() {
-		if (this.roster == null) {
-			this.roster = new Roster(this);
-		}
 		return this.roster;
 	}
 

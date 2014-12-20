@@ -241,7 +241,6 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		@Override
 		public void onBind(final Account account) {
 			account.getRoster().clearPresences();
-			account.clearPresences(); // self presences
 			account.pendingConferenceJoins.clear();
 			account.pendingConferenceLeaves.clear();
 			fetchRosterFromServer(account);
