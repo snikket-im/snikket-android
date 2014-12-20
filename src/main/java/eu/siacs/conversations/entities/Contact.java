@@ -271,7 +271,7 @@ public class Contact implements ListItem {
 			if (this.keys.has("otr_fingerprints")) {
 				final JSONArray prints = this.keys.getJSONArray("otr_fingerprints");
 				for (int i = 0; i < prints.length(); ++i) {
-					final String print = prints.getString(i);
+					final String print = prints.isNull(i) ? null : prints.getString(i);
 					if (print != null && !print.isEmpty()) {
 						fingerprints.add(prints.getString(i));
 					}
