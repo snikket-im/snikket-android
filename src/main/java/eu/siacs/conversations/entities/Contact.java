@@ -266,13 +266,15 @@ public class Contact implements ListItem {
 	}
 
 	public ArrayList<String> getOtrFingerprints() {
-		ArrayList<String> fingerprints = new ArrayList<String>();
+		final ArrayList<String> fingerprints = new ArrayList<String>();
 		try {
 			if (this.keys.has("otr_fingerprints")) {
-				JSONArray prints = this.keys
-						.getJSONArray("otr_fingerprints");
+				final JSONArray prints = this.keys.getJSONArray("otr_fingerprints");
 				for (int i = 0; i < prints.length(); ++i) {
-					fingerprints.add(prints.getString(i));
+					final String print = prints.getString(i);
+					if (print != null && !print.isEmpty()) {
+						fingerprints.add(prints.getString(i));
+					}
 				}
 			}
 		} catch (final JSONException ignored) {
