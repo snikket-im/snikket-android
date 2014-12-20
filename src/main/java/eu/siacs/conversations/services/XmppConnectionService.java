@@ -865,10 +865,9 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 						try {
 							jid = Jid.fromString(phoneContact.getString("jid"));
 						} catch (final InvalidJidException e) {
-							break;
+							continue;
 						}
-						final Contact contact = account.getRoster()
-								.getContact(jid);
+						final Contact contact = account.getRoster().getContact(jid);
 						String systemAccount = phoneContact.getInt("phoneid")
 								+ "#"
 								+ phoneContact.getString("lookup");
