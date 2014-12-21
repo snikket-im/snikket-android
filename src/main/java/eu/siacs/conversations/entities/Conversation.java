@@ -3,7 +3,6 @@ package eu.siacs.conversations.entities;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.os.SystemClock;
-import android.util.Log;
 
 import net.java.otr4j.OtrException;
 import net.java.otr4j.crypto.OtrCryptoEngineImpl;
@@ -25,7 +24,7 @@ import eu.siacs.conversations.Config;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
 
-public class Conversation extends AbstractEntity {
+public class Conversation extends AbstractEntity implements Blockable {
 	public static final String TABLENAME = "conversations";
 
 	public static final int STATUS_AVAILABLE = 0;
@@ -105,7 +104,7 @@ public class Conversation extends AbstractEntity {
 				if ((message.getType() == Message.TYPE_IMAGE || message.getType() == Message.TYPE_FILE)
 						&& message.getEncryption() != Message.ENCRYPTION_PGP) {
 					onMessageFound.onMessageFound(message);
-				}
+						}
 			}
 		}
 	}
@@ -117,7 +116,7 @@ public class Conversation extends AbstractEntity {
 						&& message.getEncryption() != Message.ENCRYPTION_PGP
 						&& message.getUuid().equals(uuid)) {
 					return message;
-				}
+						}
 			}
 		}
 		return null;
@@ -145,7 +144,7 @@ public class Conversation extends AbstractEntity {
 				if ((message.getStatus() == Message.STATUS_UNSEND || message.getStatus() == Message.STATUS_WAITING)
 						&& (message.getEncryption() == Message.ENCRYPTION_OTR)) {
 					onMessageFound.onMessageFound(message);
-				}
+						}
 			}
 		}
 	}
@@ -156,7 +155,7 @@ public class Conversation extends AbstractEntity {
 				if (message.getType() != Message.TYPE_IMAGE
 						&& message.getStatus() == Message.STATUS_UNSEND) {
 					onMessageFound.onMessageFound(message);
-				}
+						}
 			}
 		}
 	}
@@ -166,20 +165,36 @@ public class Conversation extends AbstractEntity {
 			for (Message message : this.messages) {
 				if (uuid.equals(message.getUuid())
 						|| (message.getStatus() >= Message.STATUS_SEND && uuid
-						.equals(message.getRemoteMsgId()))) {
+							.equals(message.getRemoteMsgId()))) {
 					return message;
-				}
+							}
 			}
 		}
 		return null;
 	}
 
-	public void populateWithMessages(List<Message> messages) {
+	public void populateWithMessages(final List<Message> messages) {
 		synchronized (this.messages) {
 			messages.clear();
 			messages.addAll(this.messages);
 		}
 	}
+
+	@Override
+	public boolean isBlocked() {
+		return getContact().isBlocked();
+	}
+
+	@Override
+	public boolean isDomainBlocked() {
+		return getContact().isDomainBlocked();
+	}
+
+	@Override
+	public Jid getBlockedJid() {
+		return getContact().getBlockedJid();
+	}
+
 
 	public interface OnMessageFound {
 		public void onMessageFound(final Message message);
@@ -212,8 +227,8 @@ public class Conversation extends AbstractEntity {
 	}
 
 	public boolean isRead() {
-        return (this.messages == null) || (this.messages.size() == 0) || this.messages.get(this.messages.size() - 1).isRead();
-    }
+		return (this.messages == null) || (this.messages.size() == 0) || this.messages.get(this.messages.size() - 1).isRead();
+	}
 
 	public void markRead() {
 		if (this.messages == null) {
@@ -239,7 +254,7 @@ public class Conversation extends AbstractEntity {
 				} else {
 					return this.messages.get(i);
 				}
-			}
+					}
 		}
 		return null;
 	}
@@ -267,7 +282,7 @@ public class Conversation extends AbstractEntity {
 				if (generatedName != null) {
 					return generatedName;
 				} else {
-					return getContactJid().getLocalpart();
+					return getJid().getLocalpart();
 				}
 			}
 		} else {
@@ -287,11 +302,12 @@ public class Conversation extends AbstractEntity {
 		return this.account.getRoster().getContact(this.contactJid);
 	}
 
-	public void setAccount(Account account) {
+	public void setAccount(final Account account) {
 		this.account = account;
 	}
 
-	public Jid getContactJid() {
+	@Override
+	public Jid getJid() {
 		return this.contactJid;
 	}
 
@@ -318,14 +334,14 @@ public class Conversation extends AbstractEntity {
 	}
 
 	public static Conversation fromCursor(Cursor cursor) {
-        Jid jid;
-        try {
-            jid = Jid.fromString(cursor.getString(cursor.getColumnIndex(CONTACTJID)));
-        } catch (final InvalidJidException e) {
-            // Borked DB..
-            jid = null;
-        }
-        return new Conversation(cursor.getString(cursor.getColumnIndex(UUID)),
+		Jid jid;
+		try {
+			jid = Jid.fromString(cursor.getString(cursor.getColumnIndex(CONTACTJID)));
+		} catch (final InvalidJidException e) {
+			// Borked DB..
+			jid = null;
+		}
+		return new Conversation(cursor.getString(cursor.getColumnIndex(UUID)),
 				cursor.getString(cursor.getColumnIndex(NAME)),
 				cursor.getString(cursor.getColumnIndex(CONTACT)),
 				cursor.getString(cursor.getColumnIndex(ACCOUNT)),
@@ -352,9 +368,9 @@ public class Conversation extends AbstractEntity {
 		if (this.otrSession != null) {
 			return this.otrSession;
 		} else {
-            final SessionID sessionId = new SessionID(this.getContactJid().toBareJid().toString(),
-                    presence,
-                    "xmpp");
+			final SessionID sessionId = new SessionID(this.getJid().toBareJid().toString(),
+					presence,
+					"xmpp");
 			this.otrSession = new SessionImpl(sessionId, getAccount().getOtrEngine());
 			try {
 				if (sendStart) {
@@ -393,7 +409,7 @@ public class Conversation extends AbstractEntity {
 			} catch (OtrException e) {
 				this.resetOtrSession();
 			}
-		}
+				}
 	}
 
 	public boolean endOtrIfNeeded() {
@@ -427,7 +443,7 @@ public class Conversation extends AbstractEntity {
 					return "";
 				}
 				DSAPublicKey remotePubKey = (DSAPublicKey) getOtrSession()
-						.getRemotePublicKey();
+					.getRemotePublicKey();
 				StringBuilder builder = new StringBuilder(
 						new OtrCryptoEngineImpl().getFingerprint(remotePubKey));
 				builder.insert(8, " ");

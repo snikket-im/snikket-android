@@ -117,10 +117,10 @@ public class ShareWithActivity extends XmppActivity {
 	}
 
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
+	public boolean onOptionsItemSelected(final MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.action_add:
-			Intent intent = new Intent(getApplicationContext(),
+			final Intent intent = new Intent(getApplicationContext(),
 					ChooseContactActivity.class);
 			startActivityForResult(intent, REQUEST_START_NEW_CONVERSATION);
 			return true;

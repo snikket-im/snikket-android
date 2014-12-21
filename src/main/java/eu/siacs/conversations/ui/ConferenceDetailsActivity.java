@@ -157,8 +157,8 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 						@Override
 						public void onValueEdited(String value) {
 							MessagePacket packet = xmppConnectionService
-									.getMessageGenerator().conferenceSubject(
-											mConversation, value);
+								.getMessageGenerator().conferenceSubject(
+										mConversation, value);
 							xmppConnectionService.sendMessagePacket(
 									mConversation.getAccount(), packet);
 						}
@@ -191,7 +191,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 	@Override
 	protected String getShareableUri() {
 		if (mConversation != null) {
-			return "xmpp:" + mConversation.getContactJid().toBareJid().toString() + "?join";
+			return "xmpp:" + mConversation.getJid().toBareJid().toString() + "?join";
 		} else {
 			return "";
 		}
@@ -202,7 +202,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 		MenuItem menuItemSaveBookmark = menu.findItem(R.id.action_save_as_bookmark);
 		MenuItem menuItemDeleteBookmark = menu.findItem(R.id.action_delete_bookmark);
 		Account account = mConversation.getAccount();
-		if (account.hasBookmarkFor(mConversation.getContactJid().toBareJid())) {
+		if (account.hasBookmarkFor(mConversation.getJid().toBareJid())) {
 			menuItemSaveBookmark.setVisible(false);
 			menuItemDeleteBookmark.setVisible(true);
 		} else {
@@ -263,9 +263,9 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 
 	protected void saveAsBookmark() {
 		Account account = mConversation.getAccount();
-		Bookmark bookmark = new Bookmark(account, mConversation.getContactJid().toBareJid());
-		if (!mConversation.getContactJid().isBareJid()) {
-			bookmark.setNick(mConversation.getContactJid().getResourcepart());
+		Bookmark bookmark = new Bookmark(account, mConversation.getJid().toBareJid());
+		if (!mConversation.getJid().isBareJid()) {
+			bookmark.setNick(mConversation.getJid().getResourcepart());
 		}
 		bookmark.setAutojoin(true);
 		account.getBookmarks().add(bookmark);
@@ -288,7 +288,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 		}
 		if (uuid != null) {
 			this.mConversation = xmppConnectionService
-					.findConversationByUuid(uuid);
+				.findConversationByUuid(uuid);
 			if (this.mConversation != null) {
 				populateView();
 			}
@@ -297,11 +297,11 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 
 	private void populateView() {
 		mAccountJid.setText(getString(R.string.using_account, mConversation
-				.getAccount().getJid().toBareJid()));
+					.getAccount().getJid().toBareJid()));
 		mYourPhoto.setImageBitmap(avatarService().get(
-				mConversation.getAccount(), getPixel(48)));
+					mConversation.getAccount(), getPixel(48)));
 		setTitle(mConversation.getName());
-		mFullJid.setText(mConversation.getContactJid().toBareJid().toString());
+		mFullJid.setText(mConversation.getJid().toBareJid().toString());
 		mYourNick.setText(mConversation.getMucOptions().getActualNick());
 		mRoleAffiliaton = (TextView) findViewById(R.id.muc_role);
 		if (mConversation.getMucOptions().online()) {
@@ -338,7 +338,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 			registerForContextMenu(view);
 			view.setTag(user);
 			TextView name = (TextView) view
-					.findViewById(R.id.contact_display_name);
+				.findViewById(R.id.contact_display_name);
 			TextView key = (TextView) view.findViewById(R.id.key);
 			TextView role = (TextView) view.findViewById(R.id.contact_jid);
 			if (user.getPgpKeyId() != 0) {

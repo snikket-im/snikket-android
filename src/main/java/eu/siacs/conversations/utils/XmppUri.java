@@ -5,7 +5,6 @@ import android.net.Uri;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
-import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
 

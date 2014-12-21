@@ -16,3 +16,4 @@
 * XEP-0313: Message Archive Management
 * XEP-0333: Chat Markers
 * XEP-0352: Client State Indication
+* XEP-0191: Blocking command

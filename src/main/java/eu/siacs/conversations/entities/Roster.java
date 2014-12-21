@@ -7,7 +7,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import eu.siacs.conversations.xmpp.jid.Jid;
 
 public class Roster {
-	Account account;
+	final Account account;
 	final ConcurrentHashMap<String, Contact> contacts = new ConcurrentHashMap<>();
 	private String version = null;
 
@@ -19,7 +19,7 @@ public class Roster {
 		if (jid == null) {
 			return null;
 		}
-		Contact contact = contacts.get(jid.toBareJid().toString());
+		final Contact contact = contacts.get(jid.toBareJid().toString());
 		if (contact != null && contact.showInRoster()) {
 			return contact;
 		} else {
@@ -32,7 +32,7 @@ public class Roster {
 		if (contacts.containsKey(bareJid.toString())) {
 			return contacts.get(bareJid.toString());
 		} else {
-			Contact contact = new Contact(bareJid);
+			final Contact contact = new Contact(bareJid);
 			contact.setAccount(account);
 			contacts.put(bareJid.toString(), contact);
 			return contact;
@@ -46,13 +46,13 @@ public class Roster {
 	}
 
 	public void markAllAsNotInRoster() {
-		for (Contact contact : getContacts()) {
+		for (final Contact contact : getContacts()) {
 			contact.resetOption(Contact.Options.IN_ROSTER);
 		}
 	}
 
 	public void clearSystemAccounts() {
-		for (Contact contact : getContacts()) {
+		for (final Contact contact : getContacts()) {
 			contact.setPhotoUri(null);
 			contact.setSystemName(null);
 			contact.setSystemAccount(null);

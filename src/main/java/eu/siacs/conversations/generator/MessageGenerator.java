@@ -114,7 +114,7 @@ public class MessageGenerator extends AbstractGenerator {
 	private MessagePacket generateError(MessagePacket origin) {
 		MessagePacket packet = new MessagePacket();
 		packet.setId(origin.getId());
-        packet.setTo(origin.getFrom());
+		packet.setTo(origin.getFrom());
 		packet.setBody(origin.getBody());
 		packet.setType(MessagePacket.TYPE_ERROR);
 		return packet;
@@ -135,7 +135,7 @@ public class MessageGenerator extends AbstractGenerator {
 			String subject) {
 		MessagePacket packet = new MessagePacket();
 		packet.setType(MessagePacket.TYPE_GROUPCHAT);
-		packet.setTo(conversation.getContactJid().toBareJid());
+		packet.setTo(conversation.getJid().toBareJid());
 		Element subjectChild = new Element("subject");
 		subjectChild.setContent(subject);
 		packet.addChild(subjectChild);
@@ -149,13 +149,13 @@ public class MessageGenerator extends AbstractGenerator {
 		packet.setTo(contact);
 		packet.setFrom(conversation.getAccount().getJid());
 		Element x = packet.addChild("x", "jabber:x:conference");
-		x.setAttribute("jid", conversation.getContactJid().toBareJid().toString());
+		x.setAttribute("jid", conversation.getJid().toBareJid().toString());
 		return packet;
 	}
 
 	public MessagePacket invite(Conversation conversation, Jid contact) {
 		MessagePacket packet = new MessagePacket();
-		packet.setTo(conversation.getContactJid().toBareJid());
+		packet.setTo(conversation.getJid().toBareJid());
 		packet.setFrom(conversation.getAccount().getJid());
 		Element x = new Element("x");
 		x.setAttribute("xmlns", "http://jabber.org/protocol/muc#user");
@@ -170,7 +170,7 @@ public class MessageGenerator extends AbstractGenerator {
 			MessagePacket originalMessage, String namespace) {
 		MessagePacket receivedPacket = new MessagePacket();
 		receivedPacket.setType(MessagePacket.TYPE_NORMAL);
-        receivedPacket.setTo(originalMessage.getFrom());
+		receivedPacket.setTo(originalMessage.getFrom());
 		receivedPacket.setFrom(account.getJid());
 		Element received = receivedPacket.addChild("received", namespace);
 		received.setAttribute("id", originalMessage.getId());

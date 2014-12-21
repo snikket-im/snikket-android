@@ -13,6 +13,10 @@
     <string name="action_edit_contact">Edit name</string>
     <string name="action_add_phone_book">Add to phone book</string>
     <string name="action_delete_contact">Delete from roster</string>
+    <string name="action_block_contact">Block contact</string>
+    <string name="action_unblock_contact">Unblock contact</string>
+    <string name="action_block_domain">Block domain</string>
+    <string name="action_unblock_domain">Unblock domain</string>
     <string name="title_activity_manage_accounts">Manage Accounts</string>
     <string name="title_activity_settings">Settings</string>
     <string name="title_activity_conference_details">Conference Details</string>
@@ -21,6 +25,7 @@
     <string name="title_activity_sharewith">Share with Conversation</string>
     <string name="title_activity_start_conversation">Start Conversation</string>
     <string name="title_activity_choose_contact">Choose contact</string>
+    <string name="title_activity_block_list">Block list</string>
     <string name="just_now">just now</string>
     <string name="minute_ago">1 min ago</string>
     <string name="minutes_ago">%d mins ago</string>
@@ -34,6 +39,11 @@
     <string name="participant">Participant</string>
     <string name="visitor">Visitor</string>
     <string name="remove_contact_text">Would you like to remove %s from your roster? The conversation associated with this contact will not be removed.</string>
+    <string name="block_contact_text">Would you like to block %s from sending you messages?</string>
+    <string name="unblock_contact_text">Would you like to unblock %s and allow them to send you messages?</string>
+    <string name="block_domain_text">Block all contacts from %s?</string>
+    <string name="unblock_domain_text">Unblock all contacts from %s?</string>
+    <string name="contact_blocked">Contact blocked</string>
     <string name="remove_bookmark_text">Would you like to remove %s as a bookmark? The conversation associated with this bookmark will not be removed.</string>
     <string name="register_account">Register new account on server</string>
     <string name="share_with">Share with</string>
@@ -45,6 +55,8 @@
     <string name="add">Add</string>
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
+    <string name="block">Block</string>
+    <string name="unblock">Unblock</string>
     <string name="save">Save</string>
     <string name="ok">OK</string>
     <string name="crash_report_title">Conversations has crashed</string>
@@ -202,6 +214,8 @@
     <string name="join_conference">Join Conference</string>
     <string name="delete_contact">Delete Contact</string>
     <string name="view_contact_details">View contact details</string>
+    <string name="block_contact">Block contact</string>
+    <string name="unblock_contact">Unblock contact</string>
     <string name="create">Create</string>
     <string name="contact_already_exists">The contact already exists</string>
     <string name="join">Join</string>
@@ -318,6 +332,7 @@
     <string name="image_transmission_failed">Image transmission failed</string>
     <string name="scan_qr_code">Scan QR code</string>
     <string name="show_qr_code">Show QR code</string>
+    <string name="show_block_list">Show block list</string>
     <string name="account_details">Account details</string>
     <string name="verify_otr">Verify OTR</string>
     <string name="remote_fingerprint">Remote Fingerprint</string>

@@ -12,10 +12,10 @@ public interface ListItem extends Comparable<ListItem> {
 	public List<Tag> getTags();
 
 	public final class Tag {
-		private String name;
-		private int color;
+		private final String name;
+		private final int color;
 
-		public Tag(String name, int color) {
+		public Tag(final String name, final int color) {
 			this.name = name;
 			this.color = color;
 		}
@@ -28,4 +28,6 @@ public interface ListItem extends Comparable<ListItem> {
 			return this.name;
 		}
 	}
+
+	public boolean match(final String needle);
 }

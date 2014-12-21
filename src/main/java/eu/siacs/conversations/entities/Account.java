@@ -11,8 +11,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.security.interfaces.DSAPublicKey;
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
@@ -56,7 +58,7 @@ public class Account extends AbstractEntity {
 		SECURITY_ERROR(true),
 		INCOMPATIBLE_SERVER(true);
 
-		private boolean isError;
+		private final boolean isError;
 
 		public boolean isError() {
 			return this.isError;
@@ -120,6 +122,7 @@ public class Account extends AbstractEntity {
 	private String otrFingerprint;
 	private final Roster roster = new Roster(this);
 	private List<Bookmark> bookmarks = new CopyOnWriteArrayList<>();
+	private final Collection<Jid> blocklist = new CopyOnWriteArraySet<>();
 
 	public Account() {
 		this.uuid = "0";
@@ -279,7 +282,7 @@ public class Account extends AbstractEntity {
 		return values;
 	}
 
-	public void initOtrEngine(XmppConnectionService context) {
+	public void initOtrEngine(final XmppConnectionService context) {
 		this.otrEngine = new OtrEngine(context, this);
 	}
 
@@ -291,7 +294,7 @@ public class Account extends AbstractEntity {
 		return this.xmppConnection;
 	}
 
-	public void setXmppConnection(XmppConnection connection) {
+	public void setXmppConnection(final XmppConnection connection) {
 		this.xmppConnection = connection;
 	}
 
@@ -323,7 +326,7 @@ public class Account extends AbstractEntity {
 		}
 	}
 
-	public void setRosterVersion(String version) {
+	public void setRosterVersion(final String version) {
 		this.rosterVersion = version;
 	}
 
@@ -351,7 +354,7 @@ public class Account extends AbstractEntity {
 		return this.bookmarks;
 	}
 
-	public void setBookmarks(List<Bookmark> bookmarks) {
+	public void setBookmarks(final List<Bookmark> bookmarks) {
 		this.bookmarks = bookmarks;
 	}
 
@@ -398,5 +401,22 @@ public class Account extends AbstractEntity {
 		} else {
 			return "xmpp:" + this.getJid().toBareJid().toString();
 		}
+	}
+
+	public boolean isBlocked(final ListItem contact) {
+		final Jid jid = contact.getJid();
+		return jid != null && (blocklist.contains(jid.toBareJid()) || blocklist.contains(jid.toDomainJid()));
+	}
+
+	public boolean isBlocked(final Jid jid) {
+		return jid != null && blocklist.contains(jid.toBareJid());
+	}
+
+	public Collection<Jid> getBlocklist() {
+		return this.blocklist;
+	}
+
+	public void clearBlocklist() {
+		getBlocklist().clear();
 	}
 }
