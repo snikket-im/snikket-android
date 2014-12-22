@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import eu.siacs.conversations.R;
+import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Blockable;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
@@ -316,7 +317,8 @@ public class ConversationActivity extends XmppActivity
 					} else {
 						menuUnblock.setVisible(false);
 					}
-					if (!this.getSelectedConversation().getAccount().getXmppConnection().getFeatures().blocking()) {
+					final Account account = this.getSelectedConversation().getAccount();
+					if (account.getStatus() != Account.State.ONLINE || !account.getXmppConnection().getFeatures().blocking()) {
 						menuBlock.setVisible(false);
 						menuUnblock.setVisible(false);
 					}

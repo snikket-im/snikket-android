@@ -327,7 +327,7 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 		if (mAccount == null) {
 			showQrCode.setVisible(false);
 			showBlocklist.setVisible(false);
-		} else if (!mAccount.getXmppConnection().getFeatures().blocking()) {
+		} else if (mAccount.getStatus() != Account.State.ONLINE || !mAccount.getXmppConnection().getFeatures().blocking()) {
 			showBlocklist.setVisible(false);
 		}
 		return true;
