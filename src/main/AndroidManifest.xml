@@ -77,6 +77,9 @@
             android:name=".ui.ChooseContactActivity"
             android:label="@string/title_activity_choose_contact" />
         <activity
+            android:name=".ui.BlocklistActivity"
+            android:label="@string/title_activity_block_list" />
+        <activity
             android:name=".ui.ManageAccountActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_manage_accounts" />

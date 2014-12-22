@@ -236,7 +236,7 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 		public Query(Conversation conversation, long start, long end) {
 			this(conversation.getAccount(), start, end);
 			this.conversation = conversation;
-			this.with = conversation.getContactJid().toBareJid();
+			this.with = conversation.getJid().toBareJid();
 		}
 
 		public Query(Conversation conversation, long start, long end, PagingOrder order) {

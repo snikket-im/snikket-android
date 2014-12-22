@@ -77,7 +77,7 @@ public class Message extends AbstractEntity {
 	public Message(Conversation conversation, String body, int encryption, int status) {
 		this(java.util.UUID.randomUUID().toString(),
 				conversation.getUuid(),
-				conversation.getContactJid() == null ? null : conversation.getContactJid().toBareJid(),
+				conversation.getJid() == null ? null : conversation.getJid().toBareJid(),
 				null,
 				body,
 				System.currentTimeMillis(),
@@ -91,9 +91,9 @@ public class Message extends AbstractEntity {
 	}
 
 	private Message(final String uuid, final String conversationUUid, final Jid counterpart,
-				   final Jid trueCounterpart, final String body, final long timeSent,
-				   final int encryption, final int status, final int type, final String remoteMsgId,
-				   final String relativeFilePath, final String serverMsgId) {
+			final Jid trueCounterpart, final String body, final long timeSent,
+			final int encryption, final int status, final int type, final String remoteMsgId,
+			final String relativeFilePath, final String serverMsgId) {
 		this.uuid = uuid;
 		this.conversationUuid = conversationUUid;
 		this.counterpart = counterpart;
@@ -206,7 +206,7 @@ public class Message extends AbstractEntity {
 				return null;
 			} else {
 				return this.conversation.getAccount().getRoster()
-						.getContactFromRoster(this.trueCounterpart);
+					.getContactFromRoster(this.trueCounterpart);
 			}
 		}
 	}
@@ -312,10 +312,10 @@ public class Message extends AbstractEntity {
 			return this.serverMsgId.equals(message.getServerMsgId());
 		} else {
 			return this.body != null
-					&& this.counterpart != null
-					&& ((this.remoteMsgId != null && this.remoteMsgId.equals(message.getRemoteMsgId()))
-					|| this.uuid.equals(message.getRemoteMsgId())) && this.body.equals(message.getBody())
-					&& this.counterpart.equals(message.getCounterpart());
+				&& this.counterpart != null
+				&& ((this.remoteMsgId != null && this.remoteMsgId.equals(message.getRemoteMsgId()))
+						|| this.uuid.equals(message.getRemoteMsgId())) && this.body.equals(message.getBody())
+				&& this.counterpart.equals(message.getCounterpart());
 		}
 	}
 
@@ -388,7 +388,7 @@ public class Message extends AbstractEntity {
 			if (!url.getProtocol().equalsIgnoreCase("http")
 					&& !url.getProtocol().equalsIgnoreCase("https")) {
 				return false;
-			}
+					}
 			if (url.getPath() == null) {
 				return false;
 			}
@@ -402,14 +402,14 @@ public class Message extends AbstractEntity {
 			String[] extensionParts = filename.split("\\.");
 			if (extensionParts.length == 2
 					&& Arrays.asList(Downloadable.VALID_IMAGE_EXTENSIONS).contains(
-					extensionParts[extensionParts.length - 1])) {
+						extensionParts[extensionParts.length - 1])) {
 				return true;
 			} else if (extensionParts.length == 3
 					&& Arrays
 					.asList(Downloadable.VALID_CRYPTO_EXTENSIONS)
 					.contains(extensionParts[extensionParts.length - 1])
 					&& Arrays.asList(Downloadable.VALID_IMAGE_EXTENSIONS).contains(
-					extensionParts[extensionParts.length - 2])) {
+						extensionParts[extensionParts.length - 2])) {
 				return true;
 			} else {
 				return false;

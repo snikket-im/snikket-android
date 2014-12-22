@@ -32,7 +32,7 @@ public final class Jid {
 		return resourcepart;
 	}
 
-	public static Jid fromSessionID(SessionID id) throws InvalidJidException{
+	public static Jid fromSessionID(final SessionID id) throws InvalidJidException{
 		if (id.getUserID().isEmpty()) {
 			return Jid.fromString(id.getAccountID());
 		} else {
@@ -189,5 +189,9 @@ public final class Jid {
 
 	public boolean isBareJid() {
 		return this.resourcepart.isEmpty();
+	}
+
+	public boolean isDomainJid() {
+		return !this.hasLocalpart();
 	}
 }

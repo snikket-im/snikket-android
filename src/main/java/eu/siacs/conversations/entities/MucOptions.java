@@ -80,20 +80,20 @@ public class MucOptions {
 
 		public void setRole(String role) {
 			role = role.toLowerCase();
-            switch (role) {
-                case "moderator":
-                    this.role = ROLE_MODERATOR;
-                    break;
-                case "participant":
-                    this.role = ROLE_PARTICIPANT;
-                    break;
-                case "visitor":
-                    this.role = ROLE_VISITOR;
-                    break;
-                default:
-                    this.role = ROLE_NONE;
-                    break;
-            }
+			switch (role) {
+				case "moderator":
+					this.role = ROLE_MODERATOR;
+					break;
+				case "participant":
+					this.role = ROLE_PARTICIPANT;
+					break;
+				case "visitor":
+					this.role = ROLE_VISITOR;
+					break;
+				default:
+					this.role = ROLE_NONE;
+					break;
+			}
 		}
 
 		public int getAffiliation() {
@@ -164,7 +164,7 @@ public class MucOptions {
 	}
 
 	public void processPacket(PresencePacket packet, PgpEngine pgp) {
-        final Jid from = packet.getFrom();
+		final Jid from = packet.getFrom();
 		if (!from.isBareJid()) {
 			final String name = from.getResourcepart();
 			final String type = packet.getAttribute("type");
@@ -179,7 +179,7 @@ public class MucOptions {
 						user.setAffiliation(item.getAttribute("affiliation"));
 						user.setRole(item.getAttribute("role"));
 						user.setJid(item.getAttributeAsJid("jid"));
-						if (codes.contains(STATUS_CODE_SELF_PRESENCE) || packet.getFrom().equals(this.conversation.getContactJid())) {
+						if (codes.contains(STATUS_CODE_SELF_PRESENCE) || packet.getFrom().equals(this.conversation.getJid())) {
 							this.isOnline = true;
 							this.error = ERROR_NO_ERROR;
 							self = user;
@@ -204,14 +204,14 @@ public class MucOptions {
 									msg = "";
 								}
 								user.setPgpKeyId(pgp.fetchKeyId(account, msg,
-										signed.getContent()));
+											signed.getContent()));
 							}
 						}
 					}
 				}
 			} else if (type.equals("unavailable")) {
 				if (codes.contains(STATUS_CODE_SELF_PRESENCE) ||
-						packet.getFrom().equals(this.conversation.getContactJid())) {
+						packet.getFrom().equals(this.conversation.getJid())) {
 					if (codes.contains(STATUS_CODE_CHANGED_NICK)) {
 						this.mNickChangingInProgress = true;
 					} else if (codes.contains(STATUS_CODE_KICKED)) {
@@ -282,8 +282,8 @@ public class MucOptions {
 				&& conversation.getBookmark().getNick() != null
 				&& !conversation.getBookmark().getNick().isEmpty()) {
 			return conversation.getBookmark().getNick();
-		} else if (!conversation.getContactJid().isBareJid()) {
-			return conversation.getContactJid().getResourcepart();
+		} else if (!conversation.getJid().isBareJid()) {
+			return conversation.getJid().getResourcepart();
 		} else {
 			return account.getUsername();
 		}
@@ -334,14 +334,14 @@ public class MucOptions {
 	public String createNameFromParticipants() {
 		if (users.size() >= 2) {
 			List<String> names = new ArrayList<String>();
-				for (User user : users) {
-					Contact contact = user.getContact();
-					if (contact != null && !contact.getDisplayName().isEmpty()) {
-						names.add(contact.getDisplayName().split("\\s+")[0]);
-					} else {
-						names.add(user.getName());
-					}
+			for (User user : users) {
+				Contact contact = user.getContact();
+				if (contact != null && !contact.getDisplayName().isEmpty()) {
+					names.add(contact.getDisplayName().split("\\s+")[0]);
+				} else {
+					names.add(user.getName());
 				}
+			}
 			StringBuilder builder = new StringBuilder();
 			for (int i = 0; i < names.size(); ++i) {
 				builder.append(names.get(i));
@@ -388,12 +388,12 @@ public class MucOptions {
 	}
 
 	public Jid createJoinJid(String nick) {
-        try {
-            return Jid.fromString(this.conversation.getContactJid().toBareJid().toString() + "/"+nick);
-        } catch (final InvalidJidException e) {
-            return null;
-        }
-    }
+		try {
+			return Jid.fromString(this.conversation.getJid().toBareJid().toString() + "/"+nick);
+		} catch (final InvalidJidException e) {
+			return null;
+		}
+	}
 
 	public Jid getTrueCounterpart(String counterpart) {
 		for (User user : this.getUsers()) {

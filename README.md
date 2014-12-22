@@ -50,9 +50,11 @@ run your own XMPP server for you and your friends. These XEP's are:
 * XEP-0313: Message Archive Management synchronize message history with the
   server. Catch up with messages that were sent while Conversations was
   offline.
-* XEP-0352: Client State Indication let the server know whether or not
+* XEP-0352: Client State Indication lets the server know whether or not
   Conversations is in the background. Allows the server to save bandwidth by
   withholding unimportant packages.
+* XEP-0191: Blocking command lets you blacklist spammers or block contacts
+  without removing them from your roster.
 
 ## Team
 

@@ -8,6 +8,9 @@
         android:id="@+id/context_contact_details"
         android:title="@string/view_contact_details"/>
     <item
+        android:id="@+id/context_contact_block_unblock"
+        android:title="@string/block_contact"/>
+    <item
         android:id="@+id/context_delete_contact"
         android:title="@string/delete_contact"/>
 

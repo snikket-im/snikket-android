@@ -228,9 +228,9 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		return conversation;
 	}
 
-	public void updateConversation(Conversation conversation) {
-		SQLiteDatabase db = this.getWritableDatabase();
-		String[] args = { conversation.getUuid() };
+	public void updateConversation(final Conversation conversation) {
+		final SQLiteDatabase db = this.getWritableDatabase();
+		final String[] args = { conversation.getUuid() };
 		db.update(Conversation.TABLENAME, conversation.getContentValues(),
 				Conversation.UUID + "=?", args);
 	}

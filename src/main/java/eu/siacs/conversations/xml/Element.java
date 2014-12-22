@@ -62,16 +62,16 @@ public class Element {
 			if (child.getName().equals(name)
 					&& (child.getAttribute("xmlns").equals(xmlns))) {
 				return child;
-			}
+					}
 		}
 		return null;
 	}
 
-	public boolean hasChild(String name) {
+	public boolean hasChild(final String name) {
 		return findChild(name) != null;
 	}
 
-	public boolean hasChild(String name, String xmlns) {
+	public boolean hasChild(final String name, final String xmlns) {
 		return findChild(name, xmlns) != null;
 	}
 
@@ -110,15 +110,15 @@ public class Element {
 
 	public Jid getAttributeAsJid(String name) {
 		final String jid = this.getAttribute(name);
-        if (jid != null && !jid.isEmpty()) {
-            try {
-                return Jid.fromString(jid);
-            } catch (final InvalidJidException e) {
+		if (jid != null && !jid.isEmpty()) {
+			try {
+				return Jid.fromString(jid);
+			} catch (final InvalidJidException e) {
 				Log.e(Config.LOGTAG, "could not parse jid " + jid);
-                return null;
-            }
-        }
-        return null;
+				return null;
+			}
+		}
+		return null;
 	}
 
 	public Hashtable<String, String> getAttributes() {
