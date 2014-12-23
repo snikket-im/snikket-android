@@ -29,7 +29,6 @@ import eu.siacs.conversations.services.XmppConnectionService.OnAccountUpdate;
 import eu.siacs.conversations.ui.adapter.KnownHostsAdapter;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.UIHelper;
-import eu.siacs.conversations.utils.Validator;
 import eu.siacs.conversations.xmpp.XmppConnection.Features;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
@@ -67,19 +66,14 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 	private OnClickListener mSaveButtonClickListener = new OnClickListener() {
 
 		@Override
-		public void onClick(View v) {
+		public void onClick(final View v) {
 			if (mAccount != null
 					&& mAccount.getStatus() == Account.State.DISABLED) {
 				mAccount.setOption(Account.OPTION_DISABLED, false);
 				xmppConnectionService.updateAccount(mAccount);
 				return;
 					}
-			if (!Validator.isValidJid(mAccountJid.getText().toString())) {
-				mAccountJid.setError(getString(R.string.invalid_jid));
-				mAccountJid.requestFocus();
-				return;
-			}
-			boolean registerNewAccount = mRegisterNew.isChecked();
+			final boolean registerNewAccount = mRegisterNew.isChecked();
 			final Jid jid;
 			try {
 				jid = Jid.fromString(mAccountJid.getText().toString());
@@ -88,8 +82,8 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 				mAccountJid.requestFocus();
 				return;
 			}
-			String password = mPassword.getText().toString();
-			String passwordConfirm = mPasswordConfirm.getText().toString();
+			final String password = mPassword.getText().toString();
+			final String passwordConfirm = mPasswordConfirm.getText().toString();
 			if (registerNewAccount) {
 				if (!password.equals(passwordConfirm)) {
 					mPasswordConfirm

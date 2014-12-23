@@ -38,6 +38,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
+import android.widget.Checkable;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -61,7 +62,6 @@ import eu.siacs.conversations.entities.ListItem;
 import eu.siacs.conversations.services.XmppConnectionService.OnRosterUpdate;
 import eu.siacs.conversations.ui.adapter.KnownHostsAdapter;
 import eu.siacs.conversations.ui.adapter.ListItemAdapter;
-import eu.siacs.conversations.utils.Validator;
 import eu.siacs.conversations.utils.XmppUri;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
@@ -349,41 +349,37 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 				new View.OnClickListener() {
 
 					@Override
-					public void onClick(View v) {
+					public void onClick(final View v) {
 						if (!xmppConnectionServiceBound) {
 							return;
 						}
-						if (Validator.isValidJid(jid.getText().toString())) {
-							final Jid accountJid;
-							try {
-								accountJid = Jid.fromString((String) spinner.getSelectedItem());
-							} catch (final InvalidJidException e) {
-								return;
-							}
-							final Jid contactJid;
-							try {
-								contactJid = Jid.fromString(jid.getText().toString());
-							} catch (final InvalidJidException e) {
-								jid.setError(getString(R.string.invalid_jid));
-								return;
-							}
-							Account account = xmppConnectionService
-								.findAccountByJid(accountJid);
-							if (account == null) {
-								dialog.dismiss();
-								return;
-							}
-							Contact contact = account.getRoster().getContact(contactJid);
-							if (contact.showInRoster()) {
-								jid.setError(getString(R.string.contact_already_exists));
-							} else {
-								contact.addOtrFingerprint(fingerprint);
-								xmppConnectionService.createContact(contact);
-								dialog.dismiss();
-								switchToConversation(contact);
-							}
-						} else {
+						final Jid accountJid;
+						try {
+							accountJid = Jid.fromString((String) spinner.getSelectedItem());
+						} catch (final InvalidJidException e) {
+							return;
+						}
+						final Jid contactJid;
+						try {
+							contactJid = Jid.fromString(jid.getText().toString());
+						} catch (final InvalidJidException e) {
 							jid.setError(getString(R.string.invalid_jid));
+							return;
+						}
+						final Account account = xmppConnectionService
+							.findAccountByJid(accountJid);
+						if (account == null) {
+							dialog.dismiss();
+							return;
+						}
+						final Contact contact = account.getRoster().getContact(contactJid);
+						if (contact.showInRoster()) {
+							jid.setError(getString(R.string.contact_already_exists));
+						} else {
+							contact.addOtrFingerprint(fingerprint);
+							xmppConnectionService.createContact(contact);
+							dialog.dismiss();
+							switchToConversation(contact);
 						}
 					}
 				});
@@ -391,10 +387,10 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 	}
 
 	@SuppressLint("InflateParams")
-	protected void showJoinConferenceDialog(String prefilledJid) {
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+	protected void showJoinConferenceDialog(final String prefilledJid) {
+		final AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(R.string.join_conference);
-		View dialogView = getLayoutInflater().inflate(R.layout.join_conference_dialog, null);
+		final View dialogView = getLayoutInflater().inflate(R.layout.join_conference_dialog, null);
 		final Spinner spinner = (Spinner) dialogView.findViewById(R.id.account);
 		final AutoCompleteTextView jid = (AutoCompleteTextView) dialogView.findViewById(R.id.jid);
 		jid.setAdapter(new KnownHostsAdapter(this,android.R.layout.simple_list_item_1, mKnownConferenceHosts));
@@ -402,7 +398,7 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 			jid.append(prefilledJid);
 		}
 		populateAccountSpinner(spinner);
-		final CheckBox bookmarkCheckBox = (CheckBox) dialogView
+		final Checkable bookmarkCheckBox = (CheckBox) dialogView
 			.findViewById(R.id.bookmark);
 		builder.setView(dialogView);
 		builder.setNegativeButton(R.string.cancel, null);
@@ -413,63 +409,59 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 				new View.OnClickListener() {
 
 					@Override
-					public void onClick(View v) {
+					public void onClick(final View v) {
 						if (!xmppConnectionServiceBound) {
 							return;
 						}
-						if (Validator.isValidJid(jid.getText().toString())) {
-							final Jid accountJid;
-							try {
-								accountJid = Jid.fromString((String) spinner.getSelectedItem());
-							} catch (final InvalidJidException e) {
-								return;
-							}
-							final Jid conferenceJid;
-							try {
-								conferenceJid = Jid.fromString(jid.getText().toString());
-							} catch (final InvalidJidException e) {
-								jid.setError(getString(R.string.invalid_jid));
-								return;
-							}
-							Account account = xmppConnectionService
-								.findAccountByJid(accountJid);
-							if (account == null) {
-								dialog.dismiss();
-								return;
-							}
-							if (bookmarkCheckBox.isChecked()) {
-								if (account.hasBookmarkFor(conferenceJid)) {
-									jid.setError(getString(R.string.bookmark_already_exists));
-								} else {
-									Bookmark bookmark = new Bookmark(account,
-											conferenceJid);
-									bookmark.setAutojoin(true);
-									account.getBookmarks().add(bookmark);
-									xmppConnectionService
-										.pushBookmarks(account);
-									Conversation conversation = xmppConnectionService
-										.findOrCreateConversation(account,
-												conferenceJid, true);
-									conversation.setBookmark(bookmark);
-									if (!conversation.getMucOptions().online()) {
-										xmppConnectionService
-											.joinMuc(conversation);
-									}
-									dialog.dismiss();
-									switchToConversation(conversation);
-								}
+						final Jid accountJid;
+						try {
+							accountJid = Jid.fromString((String) spinner.getSelectedItem());
+						} catch (final InvalidJidException e) {
+							return;
+						}
+						final Jid conferenceJid;
+						try {
+							conferenceJid = Jid.fromString(jid.getText().toString());
+						} catch (final InvalidJidException e) {
+							jid.setError(getString(R.string.invalid_jid));
+							return;
+						}
+						final Account account = xmppConnectionService
+							.findAccountByJid(accountJid);
+						if (account == null) {
+							dialog.dismiss();
+							return;
+						}
+						if (bookmarkCheckBox.isChecked()) {
+							if (account.hasBookmarkFor(conferenceJid)) {
+								jid.setError(getString(R.string.bookmark_already_exists));
 							} else {
-								Conversation conversation = xmppConnectionService
+								final Bookmark bookmark = new Bookmark(account,
+										conferenceJid);
+								bookmark.setAutojoin(true);
+								account.getBookmarks().add(bookmark);
+								xmppConnectionService
+									.pushBookmarks(account);
+								final Conversation conversation = xmppConnectionService
 									.findOrCreateConversation(account,
 											conferenceJid, true);
+								conversation.setBookmark(bookmark);
 								if (!conversation.getMucOptions().online()) {
-									xmppConnectionService.joinMuc(conversation);
+									xmppConnectionService
+										.joinMuc(conversation);
 								}
 								dialog.dismiss();
 								switchToConversation(conversation);
 							}
 						} else {
-							jid.setError(getString(R.string.invalid_jid));
+							final Conversation conversation = xmppConnectionService
+								.findOrCreateConversation(account,
+										conferenceJid, true);
+							if (!conversation.getMucOptions().online()) {
+								xmppConnectionService.joinMuc(conversation);
+							}
+							dialog.dismiss();
+							switchToConversation(conversation);
 						}
 					}
 				});
