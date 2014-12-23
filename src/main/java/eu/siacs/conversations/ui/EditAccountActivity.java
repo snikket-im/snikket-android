@@ -82,6 +82,11 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 				mAccountJid.requestFocus();
 				return;
 			}
+			if (jid.isDomainJid()) {
+				mAccountJid.setError(getString(R.string.invalid_jid));
+				mAccountJid.requestFocus();
+				return;
+			}
 			final String password = mPassword.getText().toString();
 			final String passwordConfirm = mPasswordConfirm.getText().toString();
 			if (registerNewAccount) {
@@ -329,11 +334,14 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 		getMenuInflater().inflate(R.menu.editaccount, menu);
 		final MenuItem showQrCode = menu.findItem(R.id.action_show_qr_code);
 		final MenuItem showBlocklist = menu.findItem(R.id.action_show_block_list);
+		final MenuItem showMoreInfo = menu.findItem(R.id.action_server_info_show_more);
 		if (mAccount == null) {
 			showQrCode.setVisible(false);
 			showBlocklist.setVisible(false);
+			showMoreInfo.setVisible(false);
 		} else if (mAccount.getStatus() != Account.State.ONLINE || !mAccount.getXmppConnection().getFeatures().blocking()) {
 			showBlocklist.setVisible(false);
+			showMoreInfo.setVisible(false);
 		}
 		return true;
 	}
