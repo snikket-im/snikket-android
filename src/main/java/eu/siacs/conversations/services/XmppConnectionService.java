@@ -74,6 +74,7 @@ import eu.siacs.conversations.utils.ExceptionHelper;
 import eu.siacs.conversations.utils.OnPhoneContactsLoadedListener;
 import eu.siacs.conversations.utils.PRNGFixes;
 import eu.siacs.conversations.utils.PhoneHelper;
+import eu.siacs.conversations.utils.Xmlns;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.OnBindListener;
 import eu.siacs.conversations.xmpp.OnContactStatusChanged;
@@ -483,11 +484,11 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		this.mMemorizingTrustManager = new MemorizingTrustManager(
 				getApplicationContext());
 
-		int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
-		int cacheSize = maxMemory / 8;
+		final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
+		final int cacheSize = maxMemory / 8;
 		this.mBitmapCache = new LruCache<String, Bitmap>(cacheSize) {
 			@Override
-			protected int sizeOf(String key, Bitmap bitmap) {
+			protected int sizeOf(final String key, final Bitmap bitmap) {
 				return bitmap.getByteCount() / 1024;
 			}
 		};
@@ -495,7 +496,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		this.databaseBackend = DatabaseBackend.getInstance(getApplicationContext());
 		this.accounts = databaseBackend.getAccounts();
 
-		for (Account account : this.accounts) {
+		for (final Account account : this.accounts) {
 			account.initOtrEngine(this);
 			this.databaseBackend.readRoster(account.getRoster());
 		}
@@ -521,7 +522,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	}
 
 	@Override
-	public void onTaskRemoved(Intent rootIntent) {
+	public void onTaskRemoved(final Intent rootIntent) {
 		super.onTaskRemoved(rootIntent);
 		if (!getPreferences().getBoolean("keep_foreground_service",false)) {
 			this.logoutAndSave();
@@ -529,7 +530,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	}
 
 	private void logoutAndSave() {
-		for (Account account : accounts) {
+		for (final Account account : accounts) {
 			databaseBackend.writeRoster(account.getRoster());
 			if (account.getXmppConnection() != null) {
 				disconnect(account, false);
@@ -791,21 +792,9 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		} else {
 			Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": fetching roster");
 		}
-		iqPacket.query("jabber:iq:roster").setAttribute("ver",
+		iqPacket.query(Xmlns.ROSTER).setAttribute("ver",
 				account.getRosterVersion());
-		account.getXmppConnection().sendIqPacket(iqPacket,
-				new OnIqPacketReceived() {
-
-					@Override
-					public void onIqPacketReceived(final Account account,
-							final IqPacket packet) {
-						final Element query = packet.findChild("query");
-						if (query != null) {
-							account.getRoster().markAllAsNotInRoster();
-							mIqParser.rosterItems(account, query);
-						}
-					}
-				});
+		account.getXmppConnection().sendIqPacket(iqPacket, mIqParser);
 	}
 
 	public void fetchBookmarks(final Account account) {
@@ -1433,7 +1422,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	}
 
 	public void createAdhocConference(final Account account, final Iterable<Jid> jids, final UiCallback<Conversation> callback) {
-		Log.d(Config.LOGTAG,account.getJid().toBareJid().toString()+": creating adhoc conference with "+ jids.toString());
+		Log.d(Config.LOGTAG, account.getJid().toBareJid().toString() + ": creating adhoc conference with " + jids.toString());
 		if (account.getStatus() == Account.State.ONLINE) {
 			try {
 				String server = findConferenceServer(account);
@@ -1637,17 +1626,17 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		return false;
 	}
 
-	public void pushContactToServer(Contact contact) {
+	public void pushContactToServer(final Contact contact) {
 		contact.resetOption(Contact.Options.DIRTY_DELETE);
 		contact.setOption(Contact.Options.DIRTY_PUSH);
-		Account account = contact.getAccount();
+		final Account account = contact.getAccount();
 		if (account.getStatus() == Account.State.ONLINE) {
-			boolean ask = contact.getOption(Contact.Options.ASKING);
-			boolean sendUpdates = contact
+			final boolean ask = contact.getOption(Contact.Options.ASKING);
+			final boolean sendUpdates = contact
 				.getOption(Contact.Options.PENDING_SUBSCRIPTION_REQUEST)
 				&& contact.getOption(Contact.Options.PREEMPTIVE_GRANT);
-			IqPacket iq = new IqPacket(IqPacket.TYPE_SET);
-			iq.query("jabber:iq:roster").addChild(contact.asElement());
+			final IqPacket iq = new IqPacket(IqPacket.TYPE_SET);
+			iq.query(Xmlns.ROSTER).addChild(contact.asElement());
 			account.getXmppConnection().sendIqPacket(iq, null);
 			if (sendUpdates) {
 				sendPresencePacket(account,
@@ -1660,7 +1649,8 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		}
 	}
 
-	public void publishAvatar(Account account, Uri image,
+	public void publishAvatar(final Account account,
+			final Uri image,
 			final UiCallback<Avatar> callback) {
 		final Bitmap.CompressFormat format = Config.AVATAR_FORMAT;
 		final int size = Config.AVATAR_SIZE;
@@ -1680,13 +1670,13 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 				callback.error(R.string.error_saving_avatar, avatar);
 				return;
 			}
-			IqPacket packet = this.mIqGenerator.publishAvatar(avatar);
+			final IqPacket packet = this.mIqGenerator.publishAvatar(avatar);
 			this.sendIqPacket(account, packet, new OnIqPacketReceived() {
 
 				@Override
 				public void onIqPacketReceived(Account account, IqPacket result) {
 					if (result.getType() == IqPacket.TYPE_RESULT) {
-						IqPacket packet = XmppConnectionService.this.mIqGenerator
+						final IqPacket packet = XmppConnectionService.this.mIqGenerator
 							.publishAvatarMetadata(avatar);
 						sendIqPacket(account, packet, new OnIqPacketReceived() {
 
@@ -1819,7 +1809,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		Account account = contact.getAccount();
 		if (account.getStatus() == Account.State.ONLINE) {
 			IqPacket iq = new IqPacket(IqPacket.TYPE_SET);
-			Element item = iq.query("jabber:iq:roster").addChild("item");
+			Element item = iq.query(Xmlns.ROSTER).addChild("item");
 			item.setAttribute("jid", contact.getJid().toString());
 			item.setAttribute("subscription", "remove");
 			account.getXmppConnection().sendIqPacket(iq, null);
@@ -2027,12 +2017,12 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	}
 
 	public List<String> getKnownHosts() {
-		List<String> hosts = new ArrayList<>();
-		for (Account account : getAccounts()) {
+		final List<String> hosts = new ArrayList<>();
+		for (final Account account : getAccounts()) {
 			if (!hosts.contains(account.getServer().toString())) {
 				hosts.add(account.getServer().toString());
 			}
-			for (Contact contact : account.getRoster().getContacts()) {
+			for (final Contact contact : account.getRoster().getContacts()) {
 				if (contact.showInRoster()) {
 					final String server = contact.getServer().toString();
 					if (server != null && !hosts.contains(server)) {
@@ -2045,10 +2035,10 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	}
 
 	public List<String> getKnownConferenceHosts() {
-		ArrayList<String> mucServers = new ArrayList<>();
-		for (Account account : accounts) {
+		final ArrayList<String> mucServers = new ArrayList<>();
+		for (final Account account : accounts) {
 			if (account.getXmppConnection() != null) {
-				String server = account.getXmppConnection().getMucServer();
+				final String server = account.getXmppConnection().getMucServer();
 				if (server != null && !mucServers.contains(server)) {
 					mucServers.add(server);
 				}

@@ -22,7 +22,7 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
 		super(service);
 	}
 
-	public void rosterItems(final Account account, final Element query) {
+	private void rosterItems(final Account account, final Element query) {
 		final String version = query.getAttribute("ver");
 		if (version != null) {
 			account.getRoster().setVersion(version);
@@ -71,103 +71,88 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
 		return super.avatarData(items);
 	}
 
+	public static boolean fromServer(final Account account, final IqPacket packet) {
+		return packet.getFrom() == null || packet.getFrom().equals(account.getServer()) || packet.getFrom().equals(account.getJid().toBareJid());
+	}
+
 	@Override
 	public void onIqPacketReceived(final Account account, final IqPacket packet) {
-		if (packet.hasChild("query", "jabber:iq:roster")) {
-			final Jid from = packet.getFrom();
-			if ((from == null) || (from.equals(account.getJid().toBareJid()))) {
-				final Element query = packet.findChild("query");
-				this.rosterItems(account, query);
+		if (packet.hasChild("query", Xmlns.ROSTER) && fromServer(account, packet)) {
+			final Element query = packet.findChild("query");
+			// If this is in response to a query for the whole roster:
+			if (packet.getType() == IqPacket.TYPE_RESULT) {
+				account.getRoster().markAllAsNotInRoster();
 			}
-		}  else if (packet.hasChild("block", Xmlns.BLOCKING) || packet.hasChild("blocklist", Xmlns.BLOCKING)) {
-			// Only accept block list changes from the server.
-			// The server should probably prevent other people from faking a blocklist push,
-			// but just in case let's prevent it client side as well.
-			final Jid from = packet.getFrom();
-			if (from == null || from.equals(account.getServer()) || from.equals(account.getJid().toBareJid())) {
-				Log.d(Config.LOGTAG, "Received blocklist update from server");
-				final Element blocklist = packet.findChild("blocklist", Xmlns.BLOCKING);
-				final Element block = packet.findChild("block", Xmlns.BLOCKING);
-				final Collection<Element> items = blocklist != null ? blocklist.getChildren() :
-					(block != null ? block.getChildren() : null);
-				// If this is a response to a blocklist query, clear the block list and replace with the new one.
-				// Otherwise, just update the existing blocklist.
-				if (packet.getType() == IqPacket.TYPE_RESULT) {
-					account.clearBlocklist();
-				}
-				if (items != null) {
-					final Collection<Jid> jids = new ArrayList<>(items.size());
-					// Create a collection of Jids from the packet
-					for (final Element item : items) {
-						if (item.getName().equals("item")) {
-							final Jid jid = item.getAttributeAsJid("jid");
-							if (jid != null) {
-								jids.add(jid);
-							}
+			this.rosterItems(account, query);
+		} else if ((packet.hasChild("block", Xmlns.BLOCKING) || packet.hasChild("blocklist", Xmlns.BLOCKING)) &&
+				fromServer(account, packet)) {
+			// Block list or block push.
+			Log.d(Config.LOGTAG, "Received blocklist update from server");
+			final Element blocklist = packet.findChild("blocklist", Xmlns.BLOCKING);
+			final Element block = packet.findChild("block", Xmlns.BLOCKING);
+			final Collection<Element> items = blocklist != null ? blocklist.getChildren() :
+				(block != null ? block.getChildren() : null);
+			// If this is a response to a blocklist query, clear the block list and replace with the new one.
+			// Otherwise, just update the existing blocklist.
+			if (packet.getType() == IqPacket.TYPE_RESULT) {
+				account.clearBlocklist();
+			}
+			if (items != null) {
+				final Collection<Jid> jids = new ArrayList<>(items.size());
+				// Create a collection of Jids from the packet
+				for (final Element item : items) {
+					if (item.getName().equals("item")) {
+						final Jid jid = item.getAttributeAsJid("jid");
+						if (jid != null) {
+							jids.add(jid);
 						}
 					}
-					account.getBlocklist().addAll(jids);
 				}
-				// Update the UI
-				mXmppConnectionService.updateBlocklistUi(OnUpdateBlocklist.Status.BLOCKED);
-			} else {
-				Log.d(Config.LOGTAG, "Received blocklist update from invalid jid: " + from.toString());
+				account.getBlocklist().addAll(jids);
 			}
-		} else if (packet.hasChild("unblock", Xmlns.BLOCKING)) {
-			final Jid from = packet.getFrom();
-			if ((from == null || from.equals(account.getServer()) || from.equals(account.getJid().toBareJid())) &&
-					packet.getType() == IqPacket.TYPE_SET) {
-				Log.d(Config.LOGTAG, "Received unblock update from server");
-				final Collection<Element> items = packet.getChildren().get(0).getChildren();
-				if (items.size() == 0) {
-					// No children to unblock == unblock all
-					account.getBlocklist().clear();
-				} else {
-					final Collection<Jid> jids = new ArrayList<>(items.size());
-					for (final Element item : items) {
-						if (item.getName().equals("item")) {
-							final Jid jid = item.getAttributeAsJid("jid");
-							if (jid != null) {
-								jids.add(jid);
-							}
+			// Update the UI
+			mXmppConnectionService.updateBlocklistUi(OnUpdateBlocklist.Status.BLOCKED);
+		} else if (packet.hasChild("unblock", Xmlns.BLOCKING) &&
+				fromServer(account, packet) && packet.getType() == IqPacket.TYPE_SET) {
+			Log.d(Config.LOGTAG, "Received unblock update from server");
+			final Collection<Element> items = packet.findChild("unblock", Xmlns.BLOCKING).getChildren();
+			if (items.size() == 0) {
+				// No children to unblock == unblock all
+				account.getBlocklist().clear();
+			} else {
+				final Collection<Jid> jids = new ArrayList<>(items.size());
+				for (final Element item : items) {
+					if (item.getName().equals("item")) {
+						final Jid jid = item.getAttributeAsJid("jid");
+						if (jid != null) {
+							jids.add(jid);
 						}
 					}
-					account.getBlocklist().removeAll(jids);
-					mXmppConnectionService.updateBlocklistUi(OnUpdateBlocklist.Status.UNBLOCKED);
 				}
-			} else {
-				if (packet.getType() == IqPacket.TYPE_SET) {
-					Log.d(Config.LOGTAG, "Received unblock update from invalid jid " + from.toString());
-				} else {
-					Log.d(Config.LOGTAG, "Received unblock update with invalid type " + packet.getType());
-				}
+				account.getBlocklist().removeAll(jids);
 			}
+			mXmppConnectionService.updateBlocklistUi(OnUpdateBlocklist.Status.UNBLOCKED);
+		} else if (packet.hasChild("open", "http://jabber.org/protocol/ibb")
+				|| packet.hasChild("data", "http://jabber.org/protocol/ibb")) {
+			mXmppConnectionService.getJingleConnectionManager()
+				.deliverIbbPacket(account, packet);
+		} else if (packet.hasChild("query", "http://jabber.org/protocol/disco#info")) {
+			final IqPacket response = mXmppConnectionService.getIqGenerator()
+				.discoResponse(packet);
+			account.getXmppConnection().sendIqPacket(response, null);
+		} else if (packet.hasChild("ping", "urn:xmpp:ping")) {
+			final IqPacket response = packet.generateRespone(IqPacket.TYPE_RESULT);
+			mXmppConnectionService.sendIqPacket(account, response, null);
 		} else {
-			if (packet.getFrom() == null) {
-				Log.d(Config.LOGTAG, account.getJid().toBareJid().toString() + ": received iq with invalid from "+packet.toString());
-				return;
-			} else if (packet.hasChild("open", "http://jabber.org/protocol/ibb")
-					|| packet.hasChild("data", "http://jabber.org/protocol/ibb")) {
-				mXmppConnectionService.getJingleConnectionManager()
-					.deliverIbbPacket(account, packet);
-			} else if (packet.hasChild("query", "http://jabber.org/protocol/disco#info")) {
-				final IqPacket response = mXmppConnectionService.getIqGenerator()
-					.discoResponse(packet);
+			if ((packet.getType() == IqPacket.TYPE_GET)
+					|| (packet.getType() == IqPacket.TYPE_SET)) {
+				final IqPacket response = packet.generateRespone(IqPacket.TYPE_ERROR);
+				final Element error = response.addChild("error");
+				error.setAttribute("type", "cancel");
+				error.addChild("feature-not-implemented",
+						"urn:ietf:params:xml:ns:xmpp-stanzas");
 				account.getXmppConnection().sendIqPacket(response, null);
-			} else if (packet.hasChild("ping", "urn:xmpp:ping")) {
-				final IqPacket response = packet.generateRespone(IqPacket.TYPE_RESULT);
-				mXmppConnectionService.sendIqPacket(account, response, null);
-			} else {
-				if ((packet.getType() == IqPacket.TYPE_GET)
-						|| (packet.getType() == IqPacket.TYPE_SET)) {
-					final IqPacket response = packet.generateRespone(IqPacket.TYPE_ERROR);
-					final Element error = response.addChild("error");
-					error.setAttribute("type", "cancel");
-					error.addChild("feature-not-implemented",
-							"urn:ietf:params:xml:ns:xmpp-stanzas");
-					account.getXmppConnection().sendIqPacket(response, null);
-						}
-			}
+					}
 		}
 	}
 
