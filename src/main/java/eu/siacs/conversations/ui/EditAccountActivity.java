@@ -40,6 +40,7 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 	private EditText mPassword;
 	private EditText mPasswordConfirm;
 	private CheckBox mRegisterNew;
+	private CheckBox mChangePassword;
 	private Button mCancelButton;
 	private Button mSaveButton;
 	private TableLayout mMoreTable;
@@ -63,7 +64,7 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 
 	private boolean mFetchingAvatar = false;
 
-	private OnClickListener mSaveButtonClickListener = new OnClickListener() {
+	private final OnClickListener mSaveButtonClickListener = new OnClickListener() {
 
 		@Override
 		public void onClick(final View v) {
@@ -74,6 +75,7 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 				return;
 					}
 			final boolean registerNewAccount = mRegisterNew.isChecked();
+			final boolean changePassword = mChangePassword.isChecked();
 			final Jid jid;
 			try {
 				jid = Jid.fromString(mAccountJid.getText().toString());
@@ -89,7 +91,7 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 			}
 			final String password = mPassword.getText().toString();
 			final String passwordConfirm = mPasswordConfirm.getText().toString();
-			if (registerNewAccount) {
+			if (registerNewAccount || changePassword) {
 				if (!password.equals(passwordConfirm)) {
 					mPasswordConfirm
 						.setError(getString(R.string.passwords_do_not_match));
@@ -98,14 +100,22 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 				}
 			}
 			if (mAccount != null) {
-				mAccount.setPassword(password);
 				try {
 					mAccount.setUsername(jid.hasLocalpart() ? jid.getLocalpart() : "");
 					mAccount.setServer(jid.getDomainpart());
 				} catch (final InvalidJidException ignored) {
 				}
-				mAccount.setOption(Account.OPTION_REGISTER, registerNewAccount);
-				xmppConnectionService.updateAccount(mAccount);
+				if (changePassword) {
+					if (mAccount.isOnlineAndConnected()) {
+						xmppConnectionService.updateAccountPasswordOnServer(mAccount, mPassword.getText().toString());
+					} else {
+						mPassword.setError(getResources().getString(R.string.account_status_no_internet));
+					}
+				} else {
+					mAccount.setPassword(password);
+					mAccount.setOption(Account.OPTION_REGISTER, registerNewAccount);
+					xmppConnectionService.updateAccount(mAccount);
+				}
 			} else {
 				try {
 					if (xmppConnectionService.findAccountByJid(Jid.fromString(mAccountJid.getText().toString())) != null) {
@@ -114,7 +124,7 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 						mAccountJid.requestFocus();
 						return;
 					}
-				} catch (InvalidJidException e) {
+				} catch (final InvalidJidException e) {
 					return;
 				}
 				mAccount = new Account(jid.toBareJid(), password);
@@ -132,10 +142,10 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 
 		}
 	};
-	private OnClickListener mCancelButtonClickListener = new OnClickListener() {
+	private final OnClickListener mCancelButtonClickListener = new OnClickListener() {
 
 		@Override
-		public void onClick(View v) {
+		public void onClick(final View v) {
 			finish();
 		}
 	};
@@ -167,47 +177,53 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 			}
 		});
 	}
-	private UiCallback<Avatar> mAvatarFetchCallback = new UiCallback<Avatar>() {
+	private final UiCallback<Avatar> mAvatarFetchCallback = new UiCallback<Avatar>() {
 
 		@Override
-		public void userInputRequried(PendingIntent pi, Avatar avatar) {
+		public void userInputRequried(final PendingIntent pi, final Avatar avatar) {
 			finishInitialSetup(avatar);
 		}
 
 		@Override
-		public void success(Avatar avatar) {
+		public void success(final Avatar avatar) {
 			finishInitialSetup(avatar);
 		}
 
 		@Override
-		public void error(int errorCode, Avatar avatar) {
+		public void error(final int errorCode, final Avatar avatar) {
 			finishInitialSetup(avatar);
 		}
 	};
-	private TextWatcher mTextWatcher = new TextWatcher() {
+	private final TextWatcher mTextWatcher = new TextWatcher() {
 
 		@Override
-		public void onTextChanged(CharSequence s, int start, int before,
-				int count) {
+		public void onTextChanged(final CharSequence s, final int start, final int before, final int count) {
 			updateSaveButton();
 		}
 
 		@Override
-		public void beforeTextChanged(CharSequence s, int start, int count,
-				int after) {
-
+		public void beforeTextChanged(final CharSequence s, final int start, final int count, final int after) {
 		}
 
 		@Override
-		public void afterTextChanged(Editable s) {
-
+		public void afterTextChanged(final Editable s) {
+			final boolean registrationReady = mAccount != null &&
+				mAccount.isOnlineAndConnected() &&
+				mAccount.getXmppConnection().getFeatures().register();
+			if (jidToEdit != null && mAccount != null && registrationReady &&
+					!mAccount.getPassword().equals(s.toString()) && !"".equals(s.toString())) {
+				mChangePassword.setVisibility(View.VISIBLE);
+			} else {
+				mChangePassword.setVisibility(View.INVISIBLE);
+				mChangePassword.setChecked(false);
+			}
 		}
 	};
-	private OnClickListener mAvatarClickListener = new OnClickListener() {
+	private final OnClickListener mAvatarClickListener = new OnClickListener() {
 		@Override
-		public void onClick(View view) {
-			if (mAccount!=null) {
-				Intent intent = new Intent(getApplicationContext(),
+		public void onClick(final View view) {
+			if (mAccount != null) {
+				final Intent intent = new Intent(getApplicationContext(),
 						PublishProfilePictureActivity.class);
 				intent.putExtra("account", mAccount.getJid().toBareJid().toString());
 				startActivity(intent);
@@ -220,7 +236,7 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 
 			@Override
 			public void run() {
-				Intent intent;
+				final Intent intent;
 				if (avatar != null) {
 					intent = new Intent(getApplicationContext(),
 							StartConversationActivity.class);
@@ -251,8 +267,7 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 			this.mSaveButton.setEnabled(true);
 			this.mSaveButton.setTextColor(getPrimaryTextColor());
 			if (jidToEdit != null) {
-				if (mAccount != null
-						&& mAccount.getStatus() == Account.State.ONLINE) {
+				if (mAccount != null && mAccount.isOnlineAndConnected()) {
 					this.mSaveButton.setText(R.string.save);
 					if (!accountInfoEdited()) {
 						this.mSaveButton.setEnabled(false);
@@ -268,7 +283,7 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 	}
 
 	protected boolean accountInfoEdited() {
-		return (!this.mAccount.getJid().toBareJid().equals(
+		return (!this.mAccount.getJid().toBareJid().toString().equals(
 					this.mAccountJid.getText().toString()))
 			|| (!this.mAccount.getPassword().equals(
 						this.mPassword.getText().toString()));
@@ -284,7 +299,7 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 	}
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	protected void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_edit_account);
 		this.mAccountJid = (AutoCompleteTextView) findViewById(R.id.account_jid);
@@ -295,6 +310,7 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 		this.mAvatar = (ImageView) findViewById(R.id.avater);
 		this.mAvatar.setOnClickListener(this.mAvatarClickListener);
 		this.mRegisterNew = (CheckBox) findViewById(R.id.account_register_new);
+		this.mChangePassword = (CheckBox) findViewById(R.id.account_change_password);
 		this.mStats = (LinearLayout) findViewById(R.id.stats);
 		this.mSessionEst = (TextView) findViewById(R.id.session_est);
 		this.mServerInfoRosterVersion = (TextView) findViewById(R.id.server_info_roster_version);
@@ -312,20 +328,20 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 		this.mSaveButton.setOnClickListener(this.mSaveButtonClickListener);
 		this.mCancelButton.setOnClickListener(this.mCancelButtonClickListener);
 		this.mMoreTable = (TableLayout) findViewById(R.id.server_info_more);
-		this.mRegisterNew
-			.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-
-				@Override
-				public void onCheckedChanged(CompoundButton buttonView,
-						boolean isChecked) {
-					if (isChecked) {
-						mPasswordConfirm.setVisibility(View.VISIBLE);
-					} else {
-						mPasswordConfirm.setVisibility(View.GONE);
-					}
-					updateSaveButton();
+		final OnCheckedChangeListener OnCheckedShowConfirmPassword = new OnCheckedChangeListener() {
+			@Override
+			public void onCheckedChanged(final CompoundButton buttonView,
+					final boolean isChecked) {
+				if (isChecked) {
+					mPasswordConfirm.setVisibility(View.VISIBLE);
+				} else {
+					mPasswordConfirm.setVisibility(View.GONE);
 				}
-			});
+				updateSaveButton();
+			}
+		};
+		this.mRegisterNew.setOnCheckedChangeListener(OnCheckedShowConfirmPassword);
+		this.mChangePassword.setOnCheckedChangeListener(OnCheckedShowConfirmPassword);
 	}
 
 	@Override
@@ -340,8 +356,8 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 			showBlocklist.setVisible(false);
 			showMoreInfo.setVisible(false);
 		} else if (mAccount.getStatus() != Account.State.ONLINE) {
-		showBlocklist.setVisible(false);
-		showMoreInfo.setVisible(false);
+			showBlocklist.setVisible(false);
+			showMoreInfo.setVisible(false);
 		} else if (!mAccount.getXmppConnection().getFeatures().blocking()) {
 			showBlocklist.setVisible(false);
 		}
@@ -368,6 +384,8 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 					getActionBar().setTitle(R.string.action_add_account);
 				}
 			}
+			this.mChangePassword.setVisibility(View.GONE);
+			this.mChangePassword.setChecked(false);
 		}
 	}
 
@@ -415,11 +433,15 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 		}
 		if (this.mAccount.isOptionSet(Account.OPTION_REGISTER)) {
 			this.mRegisterNew.setVisibility(View.VISIBLE);
+			this.mChangePassword.setVisibility(View.GONE);
+			this.mChangePassword.setChecked(false);
 			this.mRegisterNew.setChecked(true);
 			this.mPasswordConfirm.setText(this.mAccount.getPassword());
 		} else {
 			this.mRegisterNew.setVisibility(View.GONE);
 			this.mRegisterNew.setChecked(false);
+			this.mChangePassword.setVisibility(View.GONE);
+			this.mChangePassword.setChecked(false);
 		}
 		if (this.mAccount.getStatus() == Account.State.ONLINE
 				&& !this.mFetchingAvatar) {
@@ -474,7 +496,7 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 					.setOnClickListener(new View.OnClickListener() {
 
 						@Override
-						public void onClick(View v) {
+						public void onClick(final View v) {
 
 							if (copyTextToClipboard(fingerprint, R.string.otr_fingerprint)) {
 								Toast.makeText(

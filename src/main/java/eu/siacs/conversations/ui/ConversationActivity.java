@@ -318,7 +318,7 @@ public class ConversationActivity extends XmppActivity
 						menuUnblock.setVisible(false);
 					}
 					final Account account = this.getSelectedConversation().getAccount();
-					if (account.getStatus() != Account.State.ONLINE || !account.getXmppConnection().getFeatures().blocking()) {
+					if (account.isOnlineAndConnected() || !account.getXmppConnection().getFeatures().blocking()) {
 						menuBlock.setVisible(false);
 						menuUnblock.setVisible(false);
 					}

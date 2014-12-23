@@ -46,6 +46,7 @@
     <string name="contact_blocked">Contact blocked</string>
     <string name="remove_bookmark_text">Would you like to remove %s as a bookmark? The conversation associated with this bookmark will not be removed.</string>
     <string name="register_account">Register new account on server</string>
+    <string name="change_password">Change password</string>
     <string name="share_with">Share with</string>
     <string name="start_conversation">Start Conversation</string>
     <string name="invite_contact">Invite Contact</string>
@@ -249,7 +250,7 @@
     <string name="private_message_to">to %s</string>
     <string name="send_private_message_to">Send private message to %s</string>
     <string name="connect">Connect</string>
-    <string name="account_already_exists">This account does already exist</string>
+    <string name="account_already_exists">This account already exists</string>
     <string name="next">Next</string>
     <string name="server_info_session_established">Current session established</string>
     <string name="additional_information">Additional Information</string>

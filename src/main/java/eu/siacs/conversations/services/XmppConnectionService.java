@@ -222,7 +222,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	private OnMucRosterUpdate mOnMucRosterUpdate = null;
 	private int mucRosterChangedListenerCount = 0;
 	private SecureRandom mRandom;
-	private FileObserver fileObserver = new FileObserver(
+	private final FileObserver fileObserver = new FileObserver(
 			FileBackend.getConversationsImageDirectory()) {
 
 		@Override
@@ -232,7 +232,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 			}
 		}
 	};
-	private OnJinglePacketReceived jingleListener = new OnJinglePacketReceived() {
+	private final OnJinglePacketReceived jingleListener = new OnJinglePacketReceived() {
 
 		@Override
 		public void onJinglePacketReceived(Account account, JinglePacket packet) {
@@ -246,7 +246,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	private PendingIntent pendingPingIntent = null;
 	private WakeLock wakeLock;
 	private PowerManager pm;
-	private OnBindListener mOnBindListener = new OnBindListener() {
+	private final OnBindListener mOnBindListener = new OnBindListener() {
 
 		@Override
 		public void onBind(final Account account) {
@@ -261,7 +261,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		}
 	};
 
-	private OnMessageAcknowledged mOnMessageAcknowledgedListener = new OnMessageAcknowledged() {
+	private final OnMessageAcknowledged mOnMessageAcknowledgedListener = new OnMessageAcknowledged() {
 
 		@Override
 		public void onMessageAcknowledged(Account account, String uuid) {
@@ -279,7 +279,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		}
 	};
 	private LruCache<String, Bitmap> mBitmapCache;
-	private IqGenerator mIqGenerator = new IqGenerator(this);
+	private final IqGenerator mIqGenerator = new IqGenerator(this);
 	private Thread mPhoneContactMergerThread;
 
 	public PgpEngine getPgpEngine() {
@@ -304,7 +304,9 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		return this.mAvatarService;
 	}
 
-	public void attachFileToConversation(Conversation conversation, final Uri uri, final UiCallback<Message> callback) {
+	public void attachFileToConversation(final Conversation conversation,
+			final Uri uri,
+			final UiCallback<Message> callback) {
 		final Message message;
 		if (conversation.getNextEncryption(forceEncryption()) == Message.ENCRYPTION_PGP) {
 			message = new Message(conversation, "",
@@ -1082,7 +1084,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		}
 	}
 
-	public void createAccount(Account account) {
+	public void createAccount(final Account account) {
 		account.initOtrEngine(this);
 		databaseBackend.createAccount(account);
 		this.accounts.add(account);
@@ -1090,7 +1092,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		updateAccountUi();
 	}
 
-	public void updateAccount(Account account) {
+	public void updateAccount(final Account account) {
 		this.statusListener.onStatusChanged(account);
 		databaseBackend.updateAccount(account);
 		reconnectAccount(account, false);
@@ -1098,9 +1100,24 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		getNotificationService().updateErrorNotification();
 	}
 
-	public void deleteAccount(Account account) {
+	public void updateAccountPasswordOnServer(final Account account, final String newPassword) {
+		if (account.isOnlineAndConnected()) {
+			final IqPacket iq = getIqGenerator().generateSetPassword(account, newPassword);
+			sendIqPacket(account, iq, new OnIqPacketReceived() {
+				@Override
+				public void onIqPacketReceived(final Account account, final IqPacket packet) {
+					if (packet.getType() == IqPacket.TYPE_RESULT) {
+						account.setPassword(newPassword);
+						updateAccount(account);
+					}
+				}
+			});
+		}
+	}
+
+	public void deleteAccount(final Account account) {
 		synchronized (this.conversations) {
-			for (Conversation conversation : conversations) {
+			for (final Conversation conversation : conversations) {
 				if (conversation.getAccount() == account) {
 					if (conversation.getMode() == Conversation.MODE_MULTI) {
 						leaveMuc(conversation);

@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.services.MessageArchiveService;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.Xmlns;
@@ -117,7 +118,6 @@ public class IqGenerator extends AbstractGenerator {
 		}
 		return packet;
 	}
-
 	public IqPacket generateGetBlockList() {
 		final IqPacket iq = new IqPacket(IqPacket.TYPE_GET);
 		iq.addChild("blocklist", Xmlns.BLOCKING);
@@ -137,5 +137,15 @@ public class IqGenerator extends AbstractGenerator {
 		final Element block = iq.addChild("unblock", Xmlns.BLOCKING);
 		block.addChild("item").setAttribute("jid", jid.toBareJid().toString());
 		return iq;
+	}
+
+	public IqPacket generateSetPassword(final Account account, final String newPassword) {
+		final IqPacket packet = new IqPacket(IqPacket.TYPE_SET);
+		packet.setTo(account.getServer());
+		final Element query = packet.addChild("query", Xmlns.REGISTER);
+		final Jid jid = account.getJid();
+		query.addChild("username").setContent(jid.isDomainJid() ? jid.toString() : jid.getLocalpart());
+		query.addChild("password").setContent(newPassword);
+		return packet;
 	}
 }

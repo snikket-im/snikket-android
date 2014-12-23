@@ -10,6 +10,7 @@ import net.java.otr4j.crypto.OtrCryptoException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.security.PublicKey;
 import java.security.interfaces.DSAPublicKey;
 import java.util.Collection;
 import java.util.List;
@@ -152,7 +153,7 @@ public class Account extends AbstractEntity {
 		this.avatar = avatar;
 	}
 
-	public static Account fromCursor(Cursor cursor) {
+	public static Account fromCursor(final Cursor cursor) {
 		Jid jid = null;
 		try {
 			jid = Jid.fromParts(cursor.getString(cursor.getColumnIndex(USERNAME)),
@@ -168,11 +169,11 @@ public class Account extends AbstractEntity {
 				cursor.getString(cursor.getColumnIndex(AVATAR)));
 	}
 
-	public boolean isOptionSet(int option) {
+	public boolean isOptionSet(final int option) {
 		return ((options & (1 << option)) != 0);
 	}
 
-	public void setOption(int option, boolean value) {
+	public void setOption(final int option, final boolean value) {
 		if (value) {
 			this.options |= 1 << option;
 		} else {
@@ -243,34 +244,18 @@ public class Account extends AbstractEntity {
 		return keys;
 	}
 
-	public String getSSLFingerprint() {
-		if (keys.has("ssl_cert")) {
-			try {
-				return keys.getString("ssl_cert");
-			} catch (JSONException e) {
-				return null;
-			}
-		} else {
-			return null;
-		}
-	}
-
-	public void setSSLCertFingerprint(String fingerprint) {
-		this.setKey("ssl_cert", fingerprint);
-	}
-
-	public boolean setKey(String keyName, String keyValue) {
+	public boolean setKey(final String keyName, final String keyValue) {
 		try {
 			this.keys.put(keyName, keyValue);
 			return true;
-		} catch (JSONException e) {
+		} catch (final JSONException e) {
 			return false;
 		}
 	}
 
 	@Override
 	public ContentValues getContentValues() {
-		ContentValues values = new ContentValues();
+		final ContentValues values = new ContentValues();
 		values.put(UUID, uuid);
 		values.put(USERNAME, jid.getLocalpart());
 		values.put(SERVER, jid.getDomainpart());
@@ -304,8 +289,8 @@ public class Account extends AbstractEntity {
 				if (this.otrEngine == null) {
 					return null;
 				}
-				DSAPublicKey publicKey = (DSAPublicKey) this.otrEngine.getPublicKey();
-				if (publicKey == null) {
+				final PublicKey publicKey = this.otrEngine.getPublicKey();
+				if (publicKey == null || !(publicKey instanceof DSAPublicKey)) {
 					return null;
 				}
 				this.otrFingerprint = new OtrCryptoEngineImpl().getFingerprint(publicKey);
@@ -338,7 +323,7 @@ public class Account extends AbstractEntity {
 		if (keys.has("pgp_signature")) {
 			try {
 				return keys.getString("pgp_signature");
-			} catch (JSONException e) {
+			} catch (final JSONException e) {
 				return null;
 			}
 		} else {
@@ -359,7 +344,7 @@ public class Account extends AbstractEntity {
 	}
 
 	public boolean hasBookmarkFor(final Jid conferenceJid) {
-		for (Bookmark bookmark : this.bookmarks) {
+		for (final Bookmark bookmark : this.bookmarks) {
 			final Jid jid = bookmark.getJid();
 			if (jid != null && jid.equals(conferenceJid.toBareJid())) {
 				return true;
@@ -368,7 +353,7 @@ public class Account extends AbstractEntity {
 		return false;
 	}
 
-	public boolean setAvatar(String filename) {
+	public boolean setAvatar(final String filename) {
 		if (this.avatar != null && this.avatar.equals(filename)) {
 			return false;
 		} else {
@@ -395,7 +380,7 @@ public class Account extends AbstractEntity {
 	}
 
 	public String getShareableUri() {
-		String fingerprint = this.getOtrFingerprint();
+		final String fingerprint = this.getOtrFingerprint();
 		if (fingerprint != null) {
 			return "xmpp:" + this.getJid().toBareJid().toString() + "?otr-fingerprint="+fingerprint;
 		} else {
@@ -418,5 +403,9 @@ public class Account extends AbstractEntity {
 
 	public void clearBlocklist() {
 		getBlocklist().clear();
+	}
+
+	public boolean isOnlineAndConnected() {
+		return this.getStatus() == State.ONLINE && this.getXmppConnection() != null;
 	}
 }

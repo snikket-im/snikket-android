@@ -1082,6 +1082,10 @@ public class XmppConnection implements Runnable {
 			return hasDiscoFeature(account.getServer(), Xmlns.BLOCKING);
 		}
 
+		public boolean register() {
+			return hasDiscoFeature(account.getServer(), Xmlns.REGISTER);
+		}
+
 		public boolean sm() {
 			return streamId != null;
 		}
