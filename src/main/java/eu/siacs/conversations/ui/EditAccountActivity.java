@@ -82,6 +82,11 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 				mAccountJid.requestFocus();
 				return;
 			}
+			if (jid.isDomainJid()) {
+				mAccountJid.setError(getString(R.string.invalid_jid));
+				mAccountJid.requestFocus();
+				return;
+			}
 			final String password = mPassword.getText().toString();
 			final String passwordConfirm = mPasswordConfirm.getText().toString();
 			if (registerNewAccount) {
