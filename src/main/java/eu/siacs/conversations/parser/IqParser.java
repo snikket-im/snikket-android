@@ -22,7 +22,7 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
 		super(service);
 	}
 
-	public void rosterItems(final Account account, final Element query) {
+	private void rosterItems(final Account account, final Element query) {
 		final String version = query.getAttribute("ver");
 		if (version != null) {
 			account.getRoster().setVersion(version);
