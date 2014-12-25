@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
+import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.services.XmppConnectionService.OnAccountUpdate;
 import eu.siacs.conversations.ui.adapter.KnownHostsAdapter;
 import eu.siacs.conversations.utils.CryptoHelper;
@@ -34,7 +35,7 @@ import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
 import eu.siacs.conversations.xmpp.pep.Avatar;
 
-public class EditAccountActivity extends XmppActivity implements OnAccountUpdate {
+public class EditAccountActivity extends XmppActivity implements OnAccountUpdate, XmppConnectionService.OnAccountPasswordChanged {
 
 	private AutoCompleteTextView mAccountJid;
 	private EditText mPassword;
@@ -63,17 +64,17 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 	private Account mAccount;
 
 	private boolean mFetchingAvatar = false;
+	private boolean mChangingPassword = false;
 
 	private final OnClickListener mSaveButtonClickListener = new OnClickListener() {
 
 		@Override
 		public void onClick(final View v) {
-			if (mAccount != null
-					&& mAccount.getStatus() == Account.State.DISABLED) {
+			if (mAccount != null && mAccount.getStatus() == Account.State.DISABLED) {
 				mAccount.setOption(Account.OPTION_DISABLED, false);
 				xmppConnectionService.updateAccount(mAccount);
 				return;
-					}
+			}
 			final boolean registerNewAccount = mRegisterNew.isChecked();
 			final boolean changePassword = mChangePassword.isChecked();
 			final Jid jid;
@@ -107,10 +108,13 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 				}
 				if (changePassword) {
 					if (mAccount.isOnlineAndConnected()) {
-						xmppConnectionService.updateAccountPasswordOnServer(mAccount, mPassword.getText().toString());
+						xmppConnectionService.updateAccountPasswordOnServer(mAccount, mPassword.getText().toString(),EditAccountActivity.this);
+						mChangingPassword = true;
+						updateSaveButton();
 					} else {
-						mPassword.setError(getResources().getString(R.string.account_status_no_internet));
+						Toast.makeText(EditAccountActivity.this,R.string.not_connected_try_again,Toast.LENGTH_SHORT).show();
 					}
+					return;
 				} else {
 					mAccount.setPassword(password);
 					mAccount.setOption(Account.OPTION_REGISTER, registerNewAccount);
@@ -119,8 +123,7 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 			} else {
 				try {
 					if (xmppConnectionService.findAccountByJid(Jid.fromString(mAccountJid.getText().toString())) != null) {
-						mAccountJid
-							.setError(getString(R.string.account_already_exists));
+						mAccountJid.setError(getString(R.string.account_already_exists));
 						mAccountJid.requestFocus();
 						return;
 					}
@@ -253,13 +256,15 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 	}
 
 	protected void updateSaveButton() {
-		if (mAccount != null
-				&& mAccount.getStatus() == Account.State.CONNECTING) {
+		if (mChangingPassword) {
+			this.mSaveButton.setEnabled(false);
+			this.mSaveButton.setTextColor(getSecondaryTextColor());
+			this.mSaveButton.setText(R.string.updating);
+		} else if (mAccount != null && mAccount.getStatus() == Account.State.CONNECTING) {
 			this.mSaveButton.setEnabled(false);
 			this.mSaveButton.setTextColor(getSecondaryTextColor());
 			this.mSaveButton.setText(R.string.account_status_connecting);
-		} else if (mAccount != null
-				&& mAccount.getStatus() == Account.State.DISABLED) {
+		} else if (mAccount != null && mAccount.getStatus() == Account.State.DISABLED) {
 			this.mSaveButton.setEnabled(true);
 			this.mSaveButton.setTextColor(getPrimaryTextColor());
 			this.mSaveButton.setText(R.string.enable);
@@ -446,8 +451,7 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 		if (this.mAccount.getStatus() == Account.State.ONLINE
 				&& !this.mFetchingAvatar) {
 			this.mStats.setVisibility(View.VISIBLE);
-			this.mSessionEst.setText(UIHelper.readableTimeDifference(
-						getApplicationContext(), this.mAccount.getXmppConnection()
+			this.mSessionEst.setText(UIHelper.readableTimeDifferenceFull(this, this.mAccount.getXmppConnection()
 						.getLastSessionEstablished()));
 			Features features = this.mAccount.getXmppConnection().getFeatures();
 			if (features.rosterVersioning()) {
@@ -516,5 +520,31 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 			}
 			this.mStats.setVisibility(View.GONE);
 		}
+	}
+
+	@Override
+	public void onPasswordChangeSucceeded() {
+		this.mChangingPassword = false;
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				Toast.makeText(EditAccountActivity.this,R.string.password_changed,Toast.LENGTH_SHORT).show();
+				updateSaveButton();
+				updateAccountInformation();
+			}
+		});
+	}
+
+	@Override
+	public void onPasswordChangeFailed() {
+		this.mChangingPassword = false;
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				mPassword.requestFocus();
+				mPassword.setError(getString(R.string.could_not_change_password));
+				updateSaveButton();
+			}
+		});
 	}
 }

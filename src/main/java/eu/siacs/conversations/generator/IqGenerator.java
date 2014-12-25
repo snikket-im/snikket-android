@@ -144,7 +144,7 @@ public class IqGenerator extends AbstractGenerator {
 		packet.setTo(account.getServer());
 		final Element query = packet.addChild("query", Xmlns.REGISTER);
 		final Jid jid = account.getJid();
-		query.addChild("username").setContent(jid.isDomainJid() ? jid.toString() : jid.getLocalpart());
+		query.addChild("username").setContent(jid.getLocalpart());
 		query.addChild("password").setContent(newPassword);
 		return packet;
 	}

@@ -389,4 +389,7 @@
     <string name="copy_otr_clipboard_description">Copy OTR fingerprint to clipboard</string>
     <string name="fetching_history_from_server">Fetching history from server</string>
     <string name="no_more_history_on_server">No more history on server</string>
+    <string name="updating">Updating…</string>
+    <string name="password_changed">Password changed!</string>
+    <string name="could_not_change_password">Could not change password</string>
 </resources>

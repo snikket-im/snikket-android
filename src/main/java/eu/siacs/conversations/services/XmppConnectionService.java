@@ -1100,19 +1100,25 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		getNotificationService().updateErrorNotification();
 	}
 
-	public void updateAccountPasswordOnServer(final Account account, final String newPassword) {
-		if (account.isOnlineAndConnected()) {
-			final IqPacket iq = getIqGenerator().generateSetPassword(account, newPassword);
-			sendIqPacket(account, iq, new OnIqPacketReceived() {
-				@Override
-				public void onIqPacketReceived(final Account account, final IqPacket packet) {
-					if (packet.getType() == IqPacket.TYPE_RESULT) {
-						account.setPassword(newPassword);
-						updateAccount(account);
-					}
+	public void updateAccountPasswordOnServer(final Account account, final String newPassword, final OnAccountPasswordChanged callback) {
+		final IqPacket iq = getIqGenerator().generateSetPassword(account, newPassword);
+		sendIqPacket(account, iq, new OnIqPacketReceived() {
+			@Override
+			public void onIqPacketReceived(final Account account, final IqPacket packet) {
+				if (packet.getType() == IqPacket.TYPE_RESULT) {
+					account.setPassword(newPassword);
+					databaseBackend.updateAccount(account);
+					callback.onPasswordChangeSucceeded();
+				} else {
+					callback.onPasswordChangeFailed();
 				}
-			});
-		}
+			}
+		});
+	}
+
+	public interface OnAccountPasswordChanged {
+		public void onPasswordChangeSucceeded();
+		public void onPasswordChangeFailed();
 	}
 
 	public void deleteAccount(final Account account) {
