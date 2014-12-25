@@ -339,9 +339,11 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 			showQrCode.setVisible(false);
 			showBlocklist.setVisible(false);
 			showMoreInfo.setVisible(false);
-		} else if (mAccount.getStatus() != Account.State.ONLINE || !mAccount.getXmppConnection().getFeatures().blocking()) {
+		} else if (mAccount.getStatus() != Account.State.ONLINE) {
+		showBlocklist.setVisible(false);
+		showMoreInfo.setVisible(false);
+		} else if (!mAccount.getXmppConnection().getFeatures().blocking()) {
 			showBlocklist.setVisible(false);
-			showMoreInfo.setVisible(false);
 		}
 		return true;
 	}
