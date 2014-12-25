@@ -13,6 +13,10 @@
     <string name="action_edit_contact">Name bearbeiten</string>
     <string name="action_add_phone_book">Zum Telefonbuch hinzufügen</string>
     <string name="action_delete_contact">Aus Kontaktliste entfernen</string>
+    <string name="action_block_contact">Kontakt sperren</string>
+    <string name="action_unblock_contact">Kontakt entsperren</string>
+    <string name="action_block_domain">Domain sperren</string>
+    <string name="action_unblock_domain">Domain entsperren</string>
     <string name="title_activity_manage_accounts">Konten verwalten</string>
     <string name="title_activity_settings">Einstellungen</string>
     <string name="title_activity_conference_details">Konferenzdetails</string>
@@ -21,6 +25,7 @@
     <string name="title_activity_sharewith">Mit Unterhaltung teilen</string>
     <string name="title_activity_start_conversation">Beginne Unterhaltung</string>
     <string name="title_activity_choose_contact">Kontakt auswählen</string>
+    <string name="title_activity_block_list">Sperrliste</string>
     <string name="just_now">gerade</string>
     <string name="minute_ago">vor einer Minute</string>
     <string name="minutes_ago">vor %d Minuten</string>
@@ -34,6 +39,11 @@
     <string name="participant">Teilnehmer</string>
     <string name="visitor">Besucher</string>
     <string name="remove_contact_text">Möchtest du %s von deiner Kontaktliste entfernen? Die Unterhaltung mit diesem Kontakt wird dabei nicht entfernt.</string>
+    <string name="block_contact_text">Möchtest du %s sperren und keine Nachrichten mehr erhalten?</string>
+    <string name="unblock_contact_text">Möchtest du %s entsperren und wieder Nachrichten empfangen?</string>
+    <string name="block_domain_text">Sperre alle Kontakte von %s?</string>
+    <string name="unblock_domain_text">Entsperre alle Kontakte %s?</string>
+    <string name="contact_blocked">Kontakt gesperrt</string>
     <string name="remove_bookmark_text">Möchtest du das Lesezeichen %s entfernen? Die Unterhaltung mit diesem Lesezeichen wird dabei nicht entfernt.</string>
     <string name="register_account">Neues Konto auf dem Server erstellen</string>
     <string name="share_with">Teile mit&#8230;</string>
@@ -45,6 +55,8 @@
     <string name="add">Hinzufügen</string>
     <string name="edit">Bearbeiten</string>
     <string name="delete">Entfernen</string>
+    <string name="block">Sperren</string>
+    <string name="unblock">Entsperren</string>
     <string name="save">Speichern</string>
     <string name="ok">OK</string>
     <string name="crash_report_title">Conversations ist abgestürzt</string>
@@ -174,7 +186,12 @@
     <string name="contact_status_offline">Offline</string>
     <string name="muc_details_conference">Konferenz</string>
     <string name="muc_details_other_members">Andere Mitglieder</string>
+    <string name="server_info_show_more">Server Info</string>
+    <string name="server_info_mam">XEP-0313: MAM</string>
     <string name="server_info_carbon_messages">XEP-0280: Message Carbons</string>
+    <string name="server_info_csi">XEP-0352: Client State Indication</string>
+    <string name="server_info_blocking">XEP-0191: Blocking Command</string>
+    <string name="server_info_roster_version">XEP-0237: Roster Versioning</string>
     <string name="server_info_stream_management">XEP-0198: Stream Management</string>
     <string name="server_info_pep">XEP-0163: PEP (Avatare)</string>
     <string name="server_info_available">verfügbar</string>
@@ -202,6 +219,8 @@
     <string name="join_conference">Konferenz beitreten</string>
     <string name="delete_contact">Kontakt löschen</string>
     <string name="view_contact_details">Kontaktdetails anzeigen</string>
+    <string name="block_contact">Kontakt sperren</string>
+    <string name="unblock_contact">Kontakte entsperren</string>
     <string name="create">Erstellen</string>
     <string name="contact_already_exists">Der Kontakt existiert bereits</string>
     <string name="join">Beitreten</string>
@@ -294,6 +313,7 @@
     <string name="image_transmission_failed">Bild-Übertragung fehlgeschlagen</string>
     <string name="scan_qr_code">Scanne QR-Code</string>
     <string name="show_qr_code">Zeige QR-Code</string>
+    <string name="show_block_list">Zeige Sperrliste</string>
     <string name="account_details">Account Details</string>
     <string name="verify_otr">Prüfe OTR</string>
     <string name="remote_fingerprint">Fingerabdruck der Gegenseite</string>
