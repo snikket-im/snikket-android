@@ -94,8 +94,7 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 			final String passwordConfirm = mPasswordConfirm.getText().toString();
 			if (registerNewAccount || changePassword) {
 				if (!password.equals(passwordConfirm)) {
-					mPasswordConfirm
-						.setError(getString(R.string.passwords_do_not_match));
+					mPasswordConfirm.setError(getString(R.string.passwords_do_not_match));
 					mPasswordConfirm.requestFocus();
 					return;
 				}
@@ -210,18 +209,26 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 
 		@Override
 		public void afterTextChanged(final Editable s) {
-			final boolean registrationReady = mAccount != null &&
-				mAccount.isOnlineAndConnected() &&
-				mAccount.getXmppConnection().getFeatures().register();
-			if (jidToEdit != null && mAccount != null && registrationReady &&
-					!mAccount.getPassword().equals(s.toString()) && !"".equals(s.toString())) {
-				mChangePassword.setVisibility(View.VISIBLE);
-			} else {
-				mChangePassword.setVisibility(View.INVISIBLE);
-				mChangePassword.setChecked(false);
-			}
+			toggleChangePasswordCheckbox();
 		}
 	};
+
+	private void toggleChangePasswordCheckbox() {
+		final boolean registrationReady = mAccount != null &&
+				mAccount.isOnlineAndConnected() &&
+				mAccount.getXmppConnection().getFeatures().register();
+		if (passwordFieldEdited() && registrationReady) {
+			mChangePassword.setVisibility(View.VISIBLE);
+		} else {
+			mChangePassword.setVisibility(View.INVISIBLE);
+			mChangePassword.setChecked(false);
+		}
+	}
+
+	private boolean passwordFieldEdited() {
+		final String password = this.mPassword.getText().toString();
+		return jidToEdit != null && mAccount != null && !password.isEmpty() && !mAccount.getPassword().equals(password);
+	}
 	private final OnClickListener mAvatarClickListener = new OnClickListener() {
 		@Override
 		public void onClick(final View view) {
@@ -448,8 +455,8 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 			this.mChangePassword.setVisibility(View.GONE);
 			this.mChangePassword.setChecked(false);
 		}
-		if (this.mAccount.getStatus() == Account.State.ONLINE
-				&& !this.mFetchingAvatar) {
+		if (this.mAccount.isOnlineAndConnected() && !this.mFetchingAvatar) {
+			toggleChangePasswordCheckbox();
 			this.mStats.setVisibility(View.VISIBLE);
 			this.mSessionEst.setText(UIHelper.readableTimeDifferenceFull(this, this.mAccount.getXmppConnection()
 						.getLastSessionEstablished()));
