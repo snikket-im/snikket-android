@@ -46,6 +46,7 @@
     <string name="contact_blocked">Kontakt gesperrt</string>
     <string name="remove_bookmark_text">Möchtest du das Lesezeichen %s entfernen? Die Unterhaltung mit diesem Lesezeichen wird dabei nicht entfernt.</string>
     <string name="register_account">Neues Konto auf dem Server erstellen</string>
+    <string name="change_password_on_server">Passwort ändern</string>
     <string name="share_with">Teile mit&#8230;</string>
     <string name="start_conversation">Beginne Unterhaltung</string>
     <string name="invite_contact">Kontakt einladen</string>
@@ -364,4 +365,7 @@
     <string name="copy_otr_clipboard_description">OTR-Fingerabdruck in Zwischenablage kopieren</string>
     <string name="fetching_history_from_server">Hole Chatverlauf vom Server</string>
     <string name="no_more_history_on_server">Keine weiteren Nachrichten auf dem Server vorhanden.</string>
+    <string name="updating">Aktualisiere&#8230;</string>
+    <string name="password_changed">Passwort geändert.</string>
+    <string name="could_not_change_password">Passwort kann nicht geändert werden.</string>
 </resources>
