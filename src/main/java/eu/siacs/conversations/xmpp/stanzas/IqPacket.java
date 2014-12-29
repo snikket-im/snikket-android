@@ -67,7 +67,7 @@ public class IqPacket extends AbstractStanza {
 		}
 	}
 
-	public IqPacket generateRespone(final int type) {
+	public IqPacket generateResponse(final int type) {
 		final IqPacket packet = new IqPacket(type);
 		packet.setTo(this.getFrom());
 		packet.setId(this.getId());

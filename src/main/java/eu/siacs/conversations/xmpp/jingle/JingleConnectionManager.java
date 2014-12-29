@@ -46,7 +46,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
 					return;
 				}
 			}
-			IqPacket response = packet.generateRespone(IqPacket.TYPE_ERROR);
+			IqPacket response = packet.generateResponse(IqPacket.TYPE_ERROR);
 			Element error = response.addChild("error");
 			error.setAttribute("type", "cancel");
 			error.addChild("item-not-found",

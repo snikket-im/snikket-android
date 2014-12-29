@@ -208,15 +208,15 @@ public class JingleInbandTransport extends JingleTransport {
 				established = true;
 				connected = true;
 				this.account.getXmppConnection().sendIqPacket(
-						packet.generateRespone(IqPacket.TYPE_RESULT), null);
+						packet.generateResponse(IqPacket.TYPE_RESULT), null);
 			} else {
 				this.account.getXmppConnection().sendIqPacket(
-						packet.generateRespone(IqPacket.TYPE_ERROR), null);
+						packet.generateResponse(IqPacket.TYPE_ERROR), null);
 			}
 		} else if (connected && payload.getName().equals("data")) {
 			this.receiveNextBlock(payload.getContent());
 			this.account.getXmppConnection().sendIqPacket(
-					packet.generateRespone(IqPacket.TYPE_RESULT), null);
+					packet.generateResponse(IqPacket.TYPE_RESULT), null);
 		} else {
 			// TODO some sort of exception
 		}

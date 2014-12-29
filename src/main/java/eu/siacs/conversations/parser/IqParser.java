@@ -141,12 +141,12 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
 				.discoResponse(packet);
 			account.getXmppConnection().sendIqPacket(response, null);
 		} else if (packet.hasChild("ping", "urn:xmpp:ping")) {
-			final IqPacket response = packet.generateRespone(IqPacket.TYPE_RESULT);
+			final IqPacket response = packet.generateResponse(IqPacket.TYPE_RESULT);
 			mXmppConnectionService.sendIqPacket(account, response, null);
 		} else {
 			if ((packet.getType() == IqPacket.TYPE_GET)
 					|| (packet.getType() == IqPacket.TYPE_SET)) {
-				final IqPacket response = packet.generateRespone(IqPacket.TYPE_ERROR);
+				final IqPacket response = packet.generateResponse(IqPacket.TYPE_ERROR);
 				final Element error = response.addChild("error");
 				error.setAttribute("type", "cancel");
 				error.addChild("feature-not-implemented",
