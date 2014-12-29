@@ -5,7 +5,7 @@
         <item>Mobiel</item>
         <item>Telefoon</item>
         <item>Tablet</item>
-        <item>Conversaties</item>
+        <item>Conversations</item>
         <item>Android</item>
     </string-array>
     <string-array name="filesizes">
@@ -20,5 +20,20 @@
         <item>524288</item>
         <item>1048576</item>
     </string-array>
+    <string-array name="mute_options_descriptions">
+        <item>30 minuten</item>
+        <item>1 uur</item>
+        <item>2 uur</item>
+        <item>8 uur</item>
+        <item>voor onbepaalde duur</item>
+    </string-array>
+
+    <integer-array name="mute_options_durations">
+        <item>1800</item>
+        <item>3600</item>
+        <item>7200</item>
+        <item>28800</item>
+        <item>-1</item>
+    </integer-array>
 
 </resources>
