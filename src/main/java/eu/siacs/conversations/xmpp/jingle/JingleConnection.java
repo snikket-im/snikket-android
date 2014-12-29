@@ -191,10 +191,10 @@ public class JingleConnection implements Downloadable {
 		}
 		IqPacket response;
 		if (returnResult) {
-			response = packet.generateRespone(IqPacket.TYPE_RESULT);
+			response = packet.generateResponse(IqPacket.TYPE_RESULT);
 
 		} else {
-			response = packet.generateRespone(IqPacket.TYPE_ERROR);
+			response = packet.generateResponse(IqPacket.TYPE_ERROR);
 		}
 		account.getXmppConnection().sendIqPacket(response, null);
 	}
