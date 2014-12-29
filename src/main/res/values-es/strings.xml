@@ -13,6 +13,10 @@
     <string name="action_edit_contact">Editar contacto</string>
     <string name="action_delete_contact">Eliminar contacto de la lista</string>
     <string name="action_add_phone_book">Añadir a contactos del teléfono</string>
+    <string name="action_block_contact">Bloquear contacto</string>
+    <string name="action_unblock_contact">Desbloquear contacto</string>
+    <string name="action_block_domain">Bloquear dominio</string>
+    <string name="action_unblock_domain">Desbloquear dominio</string>
     <string name="title_activity_manage_accounts">Gestionar Cuentas</string>
     <string name="title_activity_settings">Ajustes</string>
     <string name="title_activity_conference_details">Detalles de Conversación en grupo</string>
@@ -21,6 +25,7 @@
     <string name="title_activity_sharewith">Compartir con Conversación</string>
     <string name="title_activity_start_conversation">Nueva Conversación</string>
     <string name="title_activity_choose_contact">Elegir Contacto</string>
+    <string name="title_activity_block_list">Lista contactos bloqueados</string>
     <string name="just_now">ahora</string>
     <string name="minute_ago">hace 1 min</string>
     <string name="minutes_ago">hace %d min</string>
@@ -34,8 +39,14 @@
     <string name="participant">Participante</string>
     <string name="visitor">Visitante</string>
     <string name="remove_contact_text">¿Quieres eliminar a %s de tu lista? La conversación asociada a esta cuenta no se eliminará.</string>
+    <string name="block_contact_text">¿Quieres bloquear a %s para que no pueda enviarte mensajes?</string>
+    <string name="unblock_contact_text">¿Quieres desbloquear a %s y permitirle que te envíe mensajes?</string>
+    <string name="block_domain_text">¿Bloquear todos los contactos de %s?</string>
+    <string name="unblock_domain_text">¿Desbloquear todos los contatos de %s?</string>
+    <string name="contact_blocked">Contacto bloqueado</string>
     <string name="remove_bookmark_text">¿Quieres eliminar %s de tus marcadores? La conversación asociada con este marcador no se eliminará.</string>
     <string name="register_account">Registrar nueva cuenta en servidor</string>
+    <string name="change_password_on_server">Cambiar contraseña</string>
     <string name="share_with">Compartir con</string>
     <string name="start_conversation">Comenzar conversación</string>
     <string name="invite_contact">Invitar contactos</string>
@@ -45,6 +56,8 @@
     <string name="add">Añadir</string>
     <string name="edit">Editar</string>
     <string name="delete">Eliminar</string>
+    <string name="block">Bloquear</string>
+    <string name="unblock">Desbloquear</string>
     <string name="save">Guardar</string>
     <string name="ok">OK</string>
     <string name="crash_report_title">Conversations se ha detenido.</string>
@@ -65,7 +78,7 @@
     <string name="clear_conversation_history">Limpiar historial de conversación</string>
     <string name="clear_histor_msg">¿Quieres borrar todos los mensajes de esta conversación?\n\n<b>Aviso:</b> Esto no afectará a los mensajes guardados en otros dispositivos o servidores.</string>
     <string name="delete_messages">Borrar mensajes</string>
-    <string name="also_end_conversation">Terminar esta conversación más tarde</string>
+    <string name="also_end_conversation">Además, terminar esta conversación</string>
     <string name="choose_presence">Selecciona recurso del contacto</string>
     <string name="send_plain_text_message">Enviar mensaje de texto</string>
     <string name="send_otr_message">Enviar mensaje cifrado con OTR</string>
@@ -174,11 +187,16 @@
     <string name="contact_status_offline">Desconectado</string>
     <string name="muc_details_conference">Conversación en grupo</string>
     <string name="muc_details_other_members">Otros Miembros</string>
+    <string name="server_info_show_more">Información de servidor</string>
+    <string name="server_info_mam">XEP-0313: MAM</string>
     <string name="server_info_carbon_messages">XEP-0280: Message Carbons</string>
+    <string name="server_info_csi">XEP-0352: Client State Indication</string>
+    <string name="server_info_blocking">XEP-0191: Blocking Command</string>
+    <string name="server_info_roster_version">XEP-0237: Roster Versioning</string>
     <string name="server_info_stream_management">XEP-0198: Stream Management</string>
     <string name="server_info_pep">XEP-0163: PEP (Avatars)</string>
-    <string name="server_info_available">Sí</string>
-    <string name="server_info_unavailable">No</string>
+    <string name="server_info_available">Disponible</string>
+    <string name="server_info_unavailable">No disponible</string>
     <string name="missing_public_keys">Se han perdido las claves de anuncio públicas</string>
     <string name="last_seen_now">Visto última vez ahora</string>
     <string name="last_seen_min">Visto última vez hace 1 minuto</string>
@@ -202,6 +220,8 @@
     <string name="join_conference">Unirse a Conversación en grupo</string>
     <string name="delete_contact">Eliminar Contacto</string>
     <string name="view_contact_details">Ver detalles del contacto</string>
+    <string name="block_contact">Bloquear contacto</string>
+    <string name="unblock_contact">Desbloquear contacto</string>
     <string name="create">Crear</string>
     <string name="contact_already_exists">El contacto ya existe</string>
     <string name="join">Unirse</string>
@@ -294,6 +314,7 @@
     <string name="image_transmission_failed">Falló la transferencia de la imagen</string>
     <string name="scan_qr_code">Escanear código QR</string>
     <string name="show_qr_code">Mostrar código QR</string>
+    <string name="show_block_list">Mostrar contactos bloqueados</string>
     <string name="account_details">Detalles de la cuenta</string>
     <string name="verify_otr">Verificar OTR</string>
     <string name="remote_fingerprint">Huella digital remota</string>
@@ -344,4 +365,7 @@
     <string name="copy_otr_clipboard_description">Copiar huella digital OTR al portapapeles</string>
     <string name="fetching_history_from_server">Buscar historial en servidor</string>
     <string name="no_more_history_on_server">No más historial del servidor</string>
+    <string name="updating">Actualizando…</string>
+    <string name="password_changed">!Contraseña cambiada!</string>
+    <string name="could_not_change_password">No se puede cambiar la contraseña</string>
 </resources>
