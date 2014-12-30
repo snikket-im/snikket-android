@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <resources>
 
-    <string name="app_name">Conversations</string>
     <string name="action_settings">Ezarpenak</string>
     <string name="action_add">Elkarrizketa berria</string>
     <string name="action_accounts">Kontuak kudeatu</string>
