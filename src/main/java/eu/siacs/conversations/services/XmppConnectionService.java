@@ -84,7 +84,6 @@ import eu.siacs.conversations.xmpp.OnMessagePacketReceived;
 import eu.siacs.conversations.xmpp.OnPresencePacketReceived;
 import eu.siacs.conversations.xmpp.OnStatusChanged;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
-import eu.siacs.conversations.xmpp.PacketReceived;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.forms.Data;
 import eu.siacs.conversations.xmpp.forms.Field;
@@ -979,7 +978,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 						query.setCallback(callback);
 					}
 					callback.informUser(R.string.fetching_history_from_server);
-				}
+						}
 			}
 		}).start();
 	}

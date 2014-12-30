@@ -1,11 +1,12 @@
 package eu.siacs.conversations.xmpp.stanzas;
 
+import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.jid.Jid;
 
 public class AbstractStanza extends Element {
 
-	protected AbstractStanza(String name) {
+	protected AbstractStanza(final String name) {
 		super(name);
 	}
 
@@ -35,5 +36,19 @@ public class AbstractStanza extends Element {
 
 	public void setId(final String id) {
 		setAttribute("id", id);
+	}
+
+	public boolean fromServer(final Account account) {
+		return getFrom() == null
+			|| getFrom().equals(account.getServer())
+			|| getFrom().equals(account.getJid().toBareJid())
+			|| getFrom().equals(account.getJid());
+	}
+
+	public boolean toServer(final Account account) {
+		return getTo() == null
+			|| getTo().equals(account.getServer())
+			|| getTo().equals(account.getJid().toBareJid())
+			|| getTo().equals(account.getJid());
 	}
 }

@@ -9,6 +9,7 @@ import android.os.PowerManager.WakeLock;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.util.Pair;
 import android.util.SparseArray;
 
 import org.apache.http.conn.ssl.StrictHostnameVerifier;
@@ -104,7 +105,7 @@ public class XmppConnection implements Runnable {
 	private long lastConnect = 0;
 	private long lastSessionStarted = 0;
 	private int attempt = 0;
-	private final Map<String, OnIqPacketReceived> packetCallbacks = new Hashtable<>();
+	private final Map<String, Pair<IqPacket, OnIqPacketReceived>> packetCallbacks = new Hashtable<>();
 	private OnPresencePacketReceived presenceListener = null;
 	private OnJinglePacketReceived jingleListener = null;
 	private OnIqPacketReceived unregisteredIqListener = null;
@@ -444,8 +445,21 @@ public class XmppConnection implements Runnable {
 							}
 						} else {
 							if (packetCallbacks.containsKey(packet.getId())) {
-								packetCallbacks.get(packet.getId()).onIqPacketReceived(account, packet);
-								packetCallbacks.remove(packet.getId());
+								final Pair<IqPacket, OnIqPacketReceived> packetCallbackDuple = packetCallbacks.get(packet.getId());
+								// Packets to the server should have responses from the server
+								if (packetCallbackDuple.first.toServer(account)) {
+									if (packet.fromServer(account)) {
+										packetCallbackDuple.second
+											.onIqPacketReceived(account, packet);
+										packetCallbacks.remove(packet.getId());
+									}
+								} else {
+									if (packet.getFrom().equals(packetCallbackDuple.first.getTo())) {
+										packetCallbackDuple.second
+											.onIqPacketReceived(account, packet);
+										packetCallbacks.remove(packet.getId());
+									}
+								}
 							} else if ((packet.getType() == IqPacket.TYPE.GET || packet
 										.getType() == IqPacket.TYPE.SET)
 									&& this.unregisteredIqListener != null) {
@@ -693,7 +707,7 @@ public class XmppConnection implements Runnable {
 		});
 		if (this.streamFeatures.hasChild("session")) {
 			Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": sending deprecated session");
-			final IqPacket startSession = new IqPacket(IqPacket.TYPE_SET);
+			final IqPacket startSession = new IqPacket(IqPacket.TYPE.SET);
 			startSession.addChild("session","urn:ietf:params:xml:ns:xmpp-session");
 			this.sendUnmodifiedIqPacket(startSession, null);
 		}
@@ -831,7 +845,7 @@ public class XmppConnection implements Runnable {
 			if (packet.getId() == null) {
 				packet.setId(nextRandomId());
 			}
-			packetCallbacks.put(packet.getId(), callback);
+			packetCallbacks.put(packet.getId(), new Pair<>(packet, callback));
 		}
 		this.sendPacket(packet);
 	}

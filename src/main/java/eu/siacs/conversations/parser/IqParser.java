@@ -71,16 +71,9 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
 		return super.avatarData(items);
 	}
 
-	public static boolean fromServer(final Account account, final IqPacket packet) {
-		return packet.getFrom() == null
-				|| packet.getFrom().equals(account.getServer())
-				|| packet.getFrom().equals(account.getJid().toBareJid())
-				|| packet.getFrom().equals(account.getJid());
-	}
-
 	@Override
 	public void onIqPacketReceived(final Account account, final IqPacket packet) {
-		if (packet.hasChild("query", Xmlns.ROSTER) && fromServer(account, packet)) {
+		if (packet.hasChild("query", Xmlns.ROSTER) && packet.fromServer(account)) {
 			final Element query = packet.findChild("query");
 			// If this is in response to a query for the whole roster:
 			if (packet.getType() == IqPacket.TYPE.RESULT) {
@@ -88,7 +81,7 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
 			}
 			this.rosterItems(account, query);
 		} else if ((packet.hasChild("block", Xmlns.BLOCKING) || packet.hasChild("blocklist", Xmlns.BLOCKING)) &&
-				fromServer(account, packet)) {
+				packet.fromServer(account)) {
 			// Block list or block push.
 			Log.d(Config.LOGTAG, "Received blocklist update from server");
 			final Element blocklist = packet.findChild("blocklist", Xmlns.BLOCKING);
@@ -116,7 +109,7 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
 			// Update the UI
 			mXmppConnectionService.updateBlocklistUi(OnUpdateBlocklist.Status.BLOCKED);
 		} else if (packet.hasChild("unblock", Xmlns.BLOCKING) &&
-				fromServer(account, packet) && packet.getType() == IqPacket.TYPE.SET) {
+				packet.fromServer(account) && packet.getType() == IqPacket.TYPE.SET) {
 			Log.d(Config.LOGTAG, "Received unblock update from server");
 			final Collection<Element> items = packet.findChild("unblock", Xmlns.BLOCKING).getChildren();
 			if (items.size() == 0) {
