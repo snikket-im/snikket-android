@@ -72,7 +72,7 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
 	}
 
 	public static boolean fromServer(final Account account, final IqPacket packet) {
-		return packet.getFrom() == null || packet.getFrom().equals(account.getServer()) || packet.getFrom().equals(account.getJid().toBareJid());
+		return packet.getFrom() == null || packet.getFrom().equals(account.getServer()) || packet.getFrom().toBareJid().equals(account.getJid().toBareJid());
 	}
 
 	@Override
