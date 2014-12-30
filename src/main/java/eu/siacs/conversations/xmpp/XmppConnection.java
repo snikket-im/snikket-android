@@ -372,7 +372,7 @@ public class XmppConnection implements Runnable {
 
 	private void sendInitialPing() {
 		Log.d(Config.LOGTAG, account.getJid().toBareJid().toString() + ": sending intial ping");
-		final IqPacket iq = new IqPacket(IqPacket.TYPE_GET);
+		final IqPacket iq = new IqPacket(IqPacket.TYPE.GET);
 		iq.setFrom(account.getJid());
 		iq.addChild("ping", "urn:xmpp:ping");
 		this.sendIqPacket(iq, new OnIqPacketReceived() {
@@ -446,11 +446,11 @@ public class XmppConnection implements Runnable {
 							if (packetCallbacks.containsKey(packet.getId())) {
 								packetCallbacks.get(packet.getId()).onIqPacketReceived(account, packet);
 								packetCallbacks.remove(packet.getId());
-							} else if ((packet.getType() == IqPacket.TYPE_GET || packet
-										.getType() == IqPacket.TYPE_SET)
+							} else if ((packet.getType() == IqPacket.TYPE.GET || packet
+										.getType() == IqPacket.TYPE.SET)
 									&& this.unregisteredIqListener != null) {
 								this.unregisteredIqListener.onIqPacketReceived(account, packet);
-							}
+									}
 						}
 	}
 
@@ -479,19 +479,19 @@ public class XmppConnection implements Runnable {
 	}
 
 	private void switchOverToTls(final Tag currentTag) throws XmlPullParserException, IOException {
-        tagReader.readTag();
-        try {
+		tagReader.readTag();
+		try {
 			final SSLContext sc = SSLContext.getInstance("TLS");
 			sc.init(null,new X509TrustManager[]{this.mXmppConnectionService.getMemorizingTrustManager()},mXmppConnectionService.getRNG());
 			final SSLSocketFactory factory = sc.getSocketFactory();
 			final HostnameVerifier verifier = this.mXmppConnectionService.getMemorizingTrustManager().wrapHostnameVerifier(new StrictHostnameVerifier());
-            final InetAddress address = socket == null ? null : socket.getInetAddress();
+			final InetAddress address = socket == null ? null : socket.getInetAddress();
 
 			if (factory == null || address == null || verifier == null) {
 				throw new IOException("could not setup ssl");
 			}
 
-            final SSLSocket sslSocket = (SSLSocket) factory.createSocket(socket,address.getHostAddress(), socket.getPort(),true);
+			final SSLSocket sslSocket = (SSLSocket) factory.createSocket(socket,address.getHostAddress(), socket.getPort(),true);
 
 			if (sslSocket == null) {
 				throw new IOException("could not initialize ssl socket");
@@ -506,13 +506,13 @@ public class XmppConnection implements Runnable {
 				supportedProtocols.remove("SSLv3");
 				supportProtocols = new String[supportedProtocols.size()];
 				supportedProtocols.toArray(supportProtocols);
-            }
+			}
 			sslSocket.setEnabledProtocols(supportProtocols);
 
-            if (!verifier.verify(account.getServer().getDomainpart(),sslSocket.getSession())) {
-                Log.d(Config.LOGTAG,account.getJid().toBareJid()+": TLS certificate verification failed");
-                disconnect(true);
-                changeStatus(Account.State.SECURITY_ERROR);
+			if (!verifier.verify(account.getServer().getDomainpart(),sslSocket.getSession())) {
+				Log.d(Config.LOGTAG,account.getJid().toBareJid()+": TLS certificate verification failed");
+				disconnect(true);
+				changeStatus(Account.State.SECURITY_ERROR);
 			}
 			tagReader.setInputStream(sslSocket.getInputStream());
 			tagWriter.setOutputStream(sslSocket.getOutputStream());
@@ -521,11 +521,11 @@ public class XmppConnection implements Runnable {
 			enabledEncryption = true;
 			processStream(tagReader.readTag());
 			sslSocket.close();
-        } catch (final NoSuchAlgorithmException | KeyManagementException e1) {
+		} catch (final NoSuchAlgorithmException | KeyManagementException e1) {
 			Log.d(Config.LOGTAG,account.getJid().toBareJid()+": TLS certificate verification failed");
 			disconnect(true);
 			changeStatus(Account.State.SECURITY_ERROR);
-        }
+		}
 	}
 
 	private void processStreamFeatures(final Tag currentTag)
@@ -598,7 +598,7 @@ public class XmppConnection implements Runnable {
 	}
 
 	private void sendRegistryRequest() {
-		final IqPacket register = new IqPacket(IqPacket.TYPE_GET);
+		final IqPacket register = new IqPacket(IqPacket.TYPE.GET);
 		register.query("jabber:iq:register");
 		register.setTo(account.getServer());
 		sendIqPacket(register, new OnIqPacketReceived() {
@@ -608,7 +608,7 @@ public class XmppConnection implements Runnable {
 				final Element instructions = packet.query().findChild("instructions");
 				if (packet.query().hasChild("username")
 						&& (packet.query().hasChild("password"))) {
-					final IqPacket register = new IqPacket(IqPacket.TYPE_SET);
+					final IqPacket register = new IqPacket(IqPacket.TYPE.SET);
 					final Element username = new Element("username")
 						.setContent(account.getUsername());
 					final Element password = new Element("password")
@@ -619,7 +619,7 @@ public class XmppConnection implements Runnable {
 
 						@Override
 						public void onIqPacketReceived(final Account account, final IqPacket packet) {
-							if (packet.getType() == IqPacket.TYPE_RESULT) {
+							if (packet.getType() == IqPacket.TYPE.RESULT) {
 								account.setOption(Account.OPTION_REGISTER,
 										false);
 								changeStatus(Account.State.REGISTRATION_SUCCESSFUL);
@@ -646,7 +646,7 @@ public class XmppConnection implements Runnable {
 	}
 
 	private void sendBindRequest() {
-		final IqPacket iq = new IqPacket(IqPacket.TYPE_SET);
+		final IqPacket iq = new IqPacket(IqPacket.TYPE.SET);
 		iq.addChild("bind", "urn:ietf:params:xml:ns:xmpp-bind")
 			.addChild("resource").setContent(account.getResource());
 		this.sendUnmodifiedIqPacket(iq, new OnIqPacketReceived() {
@@ -705,7 +705,7 @@ public class XmppConnection implements Runnable {
 				enableAdvancedStreamFeatures();
 			}
 		} else {
-			final IqPacket iq = new IqPacket(IqPacket.TYPE_GET);
+			final IqPacket iq = new IqPacket(IqPacket.TYPE.GET);
 			iq.setTo(server.toDomainJid());
 			iq.query("http://jabber.org/protocol/disco#info");
 			this.sendIqPacket(iq, new OnIqPacketReceived() {
@@ -750,7 +750,7 @@ public class XmppConnection implements Runnable {
 	}
 
 	private void sendServiceDiscoveryItems(final Jid server) {
-		final IqPacket iq = new IqPacket(IqPacket.TYPE_GET);
+		final IqPacket iq = new IqPacket(IqPacket.TYPE.GET);
 		iq.setTo(server.toDomainJid());
 		iq.query("http://jabber.org/protocol/disco#items");
 		this.sendIqPacket(iq, new OnIqPacketReceived() {
@@ -771,7 +771,7 @@ public class XmppConnection implements Runnable {
 	}
 
 	private void sendEnableCarbons() {
-		final IqPacket iq = new IqPacket(IqPacket.TYPE_SET);
+		final IqPacket iq = new IqPacket(IqPacket.TYPE.SET);
 		iq.addChild("enable", "urn:xmpp:carbons:2");
 		this.sendIqPacket(iq, new OnIqPacketReceived() {
 
@@ -861,7 +861,7 @@ public class XmppConnection implements Runnable {
 		if (streamFeatures.hasChild("sm")) {
 			tagWriter.writeStanzaAsync(new RequestPacket(smVersion));
 		} else {
-			final IqPacket iq = new IqPacket(IqPacket.TYPE_GET);
+			final IqPacket iq = new IqPacket(IqPacket.TYPE.GET);
 			iq.setFrom(account.getJid());
 			iq.addChild("ping", "urn:xmpp:ping");
 			this.sendIqPacket(iq, null);

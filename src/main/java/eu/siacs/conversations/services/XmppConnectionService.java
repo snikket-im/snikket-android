@@ -787,7 +787,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	}
 
 	public void fetchRosterFromServer(final Account account) {
-		final IqPacket iqPacket = new IqPacket(IqPacket.TYPE_GET);
+		final IqPacket iqPacket = new IqPacket(IqPacket.TYPE.GET);
 		if (!"".equals(account.getRosterVersion())) {
 			Log.d(Config.LOGTAG, account.getJid().toBareJid()
 					+ ": fetching roster version " + account.getRosterVersion());
@@ -800,7 +800,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	}
 
 	public void fetchBookmarks(final Account account) {
-		final IqPacket iqPacket = new IqPacket(IqPacket.TYPE_GET);
+		final IqPacket iqPacket = new IqPacket(IqPacket.TYPE.GET);
 		final Element query = iqPacket.query("jabber:iq:private");
 		query.addChild("storage", "storage:bookmarks");
 		final OnIqPacketReceived callback = new OnIqPacketReceived() {
@@ -835,7 +835,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	}
 
 	public void pushBookmarks(Account account) {
-		IqPacket iqPacket = new IqPacket(IqPacket.TYPE_SET);
+		IqPacket iqPacket = new IqPacket(IqPacket.TYPE.SET);
 		Element query = iqPacket.query("jabber:iq:private");
 		Element storage = query.addChild("storage", "storage:bookmarks");
 		for (Bookmark bookmark : account.getBookmarks()) {
@@ -1107,7 +1107,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		sendIqPacket(account, iq, new OnIqPacketReceived() {
 			@Override
 			public void onIqPacketReceived(final Account account, final IqPacket packet) {
-				if (packet.getType() == IqPacket.TYPE_RESULT) {
+				if (packet.getType() == IqPacket.TYPE.RESULT) {
 					account.setPassword(newPassword);
 					databaseBackend.updateAccount(account);
 					callback.onPasswordChangeSucceeded();
@@ -1500,13 +1500,13 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	}
 
 	public void pushConferenceConfiguration(final Conversation conversation,final Bundle options, final OnConferenceOptionsPushed callback) {
-		IqPacket request = new IqPacket(IqPacket.TYPE_GET);
+		IqPacket request = new IqPacket(IqPacket.TYPE.GET);
 		request.setTo(conversation.getJid().toBareJid());
 		request.query("http://jabber.org/protocol/muc#owner");
 		sendIqPacket(conversation.getAccount(),request,new OnIqPacketReceived() {
 			@Override
 			public void onIqPacketReceived(Account account, IqPacket packet) {
-				if (packet.getType() != IqPacket.TYPE_ERROR) {
+				if (packet.getType() != IqPacket.TYPE.ERROR) {
 					Data data = Data.parse(packet.query().findChild("x", "jabber:x:data"));
 					for (Field field : data.getFields()) {
 						if (options.containsKey(field.getName())) {
@@ -1514,13 +1514,13 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 						}
 					}
 					data.submit();
-					IqPacket set = new IqPacket(IqPacket.TYPE_SET);
+					IqPacket set = new IqPacket(IqPacket.TYPE.SET);
 					set.setTo(conversation.getJid().toBareJid());
 					set.query("http://jabber.org/protocol/muc#owner").addChild(data);
 					sendIqPacket(account, set, new OnIqPacketReceived() {
 						@Override
 						public void onIqPacketReceived(Account account, IqPacket packet) {
-							if (packet.getType() == IqPacket.TYPE_RESULT) {
+							if (packet.getType() == IqPacket.TYPE.RESULT) {
 								if (callback != null) {
 									callback.onPushSucceeded();
 								}
@@ -1662,7 +1662,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 			final boolean sendUpdates = contact
 				.getOption(Contact.Options.PENDING_SUBSCRIPTION_REQUEST)
 				&& contact.getOption(Contact.Options.PREEMPTIVE_GRANT);
-			final IqPacket iq = new IqPacket(IqPacket.TYPE_SET);
+			final IqPacket iq = new IqPacket(IqPacket.TYPE.SET);
 			iq.query(Xmlns.ROSTER).addChild(contact.asElement());
 			account.getXmppConnection().sendIqPacket(iq, null);
 			if (sendUpdates) {
@@ -1702,7 +1702,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 
 				@Override
 				public void onIqPacketReceived(Account account, IqPacket result) {
-					if (result.getType() == IqPacket.TYPE_RESULT) {
+					if (result.getType() == IqPacket.TYPE.RESULT) {
 						final IqPacket packet = XmppConnectionService.this.mIqGenerator
 							.publishAvatarMetadata(avatar);
 						sendIqPacket(account, packet, new OnIqPacketReceived() {
@@ -1710,7 +1710,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 							@Override
 							public void onIqPacketReceived(Account account,
 									IqPacket result) {
-								if (result.getType() == IqPacket.TYPE_RESULT) {
+								if (result.getType() == IqPacket.TYPE.RESULT) {
 									if (account.setAvatar(avatar.getFilename())) {
 										databaseBackend.updateAccount(account);
 									}
@@ -1747,7 +1747,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 			public void onIqPacketReceived(Account account, IqPacket result) {
 				final String ERROR = account.getJid().toBareJid()
 					+ ": fetching avatar for " + avatar.owner + " failed ";
-				if (result.getType() == IqPacket.TYPE_RESULT) {
+				if (result.getType() == IqPacket.TYPE.RESULT) {
 					avatar.image = mIqParser.avatarData(result);
 					if (avatar.image != null) {
 						if (getFileBackend().save(avatar)) {
@@ -1801,7 +1801,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 
 			@Override
 			public void onIqPacketReceived(Account account, IqPacket packet) {
-				if (packet.getType() == IqPacket.TYPE_RESULT) {
+				if (packet.getType() == IqPacket.TYPE.RESULT) {
 					Element pubsub = packet.findChild("pubsub",
 							"http://jabber.org/protocol/pubsub");
 					if (pubsub != null) {
@@ -1835,7 +1835,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		contact.setOption(Contact.Options.DIRTY_DELETE);
 		Account account = contact.getAccount();
 		if (account.getStatus() == Account.State.ONLINE) {
-			IqPacket iq = new IqPacket(IqPacket.TYPE_SET);
+			IqPacket iq = new IqPacket(IqPacket.TYPE.SET);
 			Element item = iq.query(Xmlns.ROSTER).addChild("item");
 			item.setAttribute("jid", contact.getJid().toString());
 			item.setAttribute("subscription", "remove");
@@ -2202,7 +2202,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 
 				@Override
 				public void onIqPacketReceived(final Account account, final IqPacket packet) {
-					if (packet.getType() == IqPacket.TYPE_RESULT) {
+					if (packet.getType() == IqPacket.TYPE.RESULT) {
 						account.getBlocklist().add(jid);
 						updateBlocklistUi(OnUpdateBlocklist.Status.BLOCKED);
 					}
@@ -2217,7 +2217,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 			this.sendIqPacket(blockable.getAccount(), getIqGenerator().generateSetUnblockRequest(jid), new OnIqPacketReceived() {
 				@Override
 				public void onIqPacketReceived(final Account account, final IqPacket packet) {
-					if (packet.getType() == IqPacket.TYPE_RESULT) {
+					if (packet.getType() == IqPacket.TYPE.RESULT) {
 						account.getBlocklist().remove(jid);
 						updateBlocklistUi(OnUpdateBlocklist.Status.UNBLOCKED);
 					}

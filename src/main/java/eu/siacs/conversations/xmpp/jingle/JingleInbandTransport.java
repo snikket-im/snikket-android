@@ -44,7 +44,7 @@ public class JingleInbandTransport extends JingleTransport {
 	private OnIqPacketReceived onAckReceived = new OnIqPacketReceived() {
 		@Override
 		public void onIqPacketReceived(Account account, IqPacket packet) {
-			if (connected && packet.getType() == IqPacket.TYPE_RESULT) {
+			if (connected && packet.getType() == IqPacket.TYPE.RESULT) {
 				sendNextBlock();
 			}
 		}
@@ -60,7 +60,7 @@ public class JingleInbandTransport extends JingleTransport {
 	}
 
 	public void connect(final OnTransportConnected callback) {
-		IqPacket iq = new IqPacket(IqPacket.TYPE_SET);
+		IqPacket iq = new IqPacket(IqPacket.TYPE.SET);
 		iq.setTo(this.counterpart);
 		Element open = iq.addChild("open", "http://jabber.org/protocol/ibb");
 		open.setAttribute("sid", this.sessionId);
@@ -73,7 +73,7 @@ public class JingleInbandTransport extends JingleTransport {
 					@Override
 					public void onIqPacketReceived(Account account,
 							IqPacket packet) {
-						if (packet.getType() == IqPacket.TYPE_ERROR) {
+						if (packet.getType() == IqPacket.TYPE.ERROR) {
 							callback.failed();
 						} else {
 							callback.established();
@@ -157,7 +157,7 @@ public class JingleInbandTransport extends JingleTransport {
 				this.remainingSize -= count;
 				this.digest.update(buffer);
 				String base64 = Base64.encodeToString(buffer, Base64.NO_WRAP);
-				IqPacket iq = new IqPacket(IqPacket.TYPE_SET);
+				IqPacket iq = new IqPacket(IqPacket.TYPE.SET);
 				iq.setTo(this.counterpart);
 				Element data = iq.addChild("data",
 						"http://jabber.org/protocol/ibb");
@@ -208,15 +208,15 @@ public class JingleInbandTransport extends JingleTransport {
 				established = true;
 				connected = true;
 				this.account.getXmppConnection().sendIqPacket(
-						packet.generateResponse(IqPacket.TYPE_RESULT), null);
+						packet.generateResponse(IqPacket.TYPE.RESULT), null);
 			} else {
 				this.account.getXmppConnection().sendIqPacket(
-						packet.generateResponse(IqPacket.TYPE_ERROR), null);
+						packet.generateResponse(IqPacket.TYPE.ERROR), null);
 			}
 		} else if (connected && payload.getName().equals("data")) {
 			this.receiveNextBlock(payload.getContent());
 			this.account.getXmppConnection().sendIqPacket(
-					packet.generateResponse(IqPacket.TYPE_RESULT), null);
+					packet.generateResponse(IqPacket.TYPE.RESULT), null);
 		} else {
 			// TODO some sort of exception
 		}

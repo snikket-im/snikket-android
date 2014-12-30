@@ -21,7 +21,7 @@ public class IqGenerator extends AbstractGenerator {
 	}
 
 	public IqPacket discoResponse(final IqPacket request) {
-		final IqPacket packet = new IqPacket(IqPacket.TYPE_RESULT);
+		final IqPacket packet = new IqPacket(IqPacket.TYPE.RESULT);
 		packet.setId(request.getId());
 		packet.setTo(request.getFrom());
 		final Element query = packet.addChild("query",
@@ -40,7 +40,7 @@ public class IqGenerator extends AbstractGenerator {
 	}
 
 	protected IqPacket publish(final String node, final Element item) {
-		final IqPacket packet = new IqPacket(IqPacket.TYPE_SET);
+		final IqPacket packet = new IqPacket(IqPacket.TYPE.SET);
 		final Element pubsub = packet.addChild("pubsub",
 				"http://jabber.org/protocol/pubsub");
 		final Element publish = pubsub.addChild("publish");
@@ -50,7 +50,7 @@ public class IqGenerator extends AbstractGenerator {
 	}
 
 	protected IqPacket retrieve(String node, Element item) {
-		final IqPacket packet = new IqPacket(IqPacket.TYPE_GET);
+		final IqPacket packet = new IqPacket(IqPacket.TYPE.GET);
 		final Element pubsub = packet.addChild("pubsub",
 				"http://jabber.org/protocol/pubsub");
 		final Element items = pubsub.addChild("items");
@@ -100,7 +100,7 @@ public class IqGenerator extends AbstractGenerator {
 	}
 
 	public IqPacket queryMessageArchiveManagement(final MessageArchiveService.Query mam) {
-		final IqPacket packet = new IqPacket(IqPacket.TYPE_SET);
+		final IqPacket packet = new IqPacket(IqPacket.TYPE.SET);
 		final Element query = packet.query("urn:xmpp:mam:0");
 		query.setAttribute("queryid",mam.getQueryId());
 		final Data data = new Data();
@@ -119,28 +119,28 @@ public class IqGenerator extends AbstractGenerator {
 		return packet;
 	}
 	public IqPacket generateGetBlockList() {
-		final IqPacket iq = new IqPacket(IqPacket.TYPE_GET);
+		final IqPacket iq = new IqPacket(IqPacket.TYPE.GET);
 		iq.addChild("blocklist", Xmlns.BLOCKING);
 
 		return iq;
 	}
 
 	public IqPacket generateSetBlockRequest(final Jid jid) {
-		final IqPacket iq = new IqPacket(IqPacket.TYPE_SET);
+		final IqPacket iq = new IqPacket(IqPacket.TYPE.SET);
 		final Element block = iq.addChild("block", Xmlns.BLOCKING);
 		block.addChild("item").setAttribute("jid", jid.toBareJid().toString());
 		return iq;
 	}
 
 	public IqPacket generateSetUnblockRequest(final Jid jid) {
-		final IqPacket iq = new IqPacket(IqPacket.TYPE_SET);
+		final IqPacket iq = new IqPacket(IqPacket.TYPE.SET);
 		final Element block = iq.addChild("unblock", Xmlns.BLOCKING);
 		block.addChild("item").setAttribute("jid", jid.toBareJid().toString());
 		return iq;
 	}
 
 	public IqPacket generateSetPassword(final Account account, final String newPassword) {
-		final IqPacket packet = new IqPacket(IqPacket.TYPE_SET);
+		final IqPacket packet = new IqPacket(IqPacket.TYPE.SET);
 		packet.setTo(account.getServer());
 		final Element query = packet.addChild("query", Xmlns.REGISTER);
 		final Jid jid = account.getJid();
