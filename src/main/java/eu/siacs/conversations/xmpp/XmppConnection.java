@@ -505,65 +505,54 @@ public class XmppConnection implements Runnable {
 		return getPreferences().getBoolean("enable_legacy_ssl", false);
 	}
 
-	private void switchOverToTls(final Tag currentTag) throws XmlPullParserException,
-					IOException {
-						tagReader.readTag();
-						try {
-							final SSLContext sc = SSLContext.getInstance("TLS");
-							sc.init(null,
-									new X509TrustManager[]{this.mXmppConnectionService.getMemorizingTrustManager()},
-									mXmppConnectionService.getRNG());
-							final SSLSocketFactory factory = sc.getSocketFactory();
+	private void switchOverToTls(final Tag currentTag) throws XmlPullParserException, IOException {
+        tagReader.readTag();
+        try {
+			final SSLContext sc = SSLContext.getInstance("TLS");
+			sc.init(null,new X509TrustManager[]{this.mXmppConnectionService.getMemorizingTrustManager()},mXmppConnectionService.getRNG());
+			final SSLSocketFactory factory = sc.getSocketFactory();
+			final HostnameVerifier verifier = this.mXmppConnectionService.getMemorizingTrustManager().wrapHostnameVerifier(new StrictHostnameVerifier());
+            final InetAddress address = socket == null ? null : socket.getInetAddress();
 
-							if (factory == null) {
-								throw new IOException("SSLSocketFactory was null");
-							}
+			if (factory == null || address == null || verifier == null) {
+				throw new IOException("could not setup ssl");
+			}
 
-							final HostnameVerifier verifier = this.mXmppConnectionService.getMemorizingTrustManager().wrapHostnameVerifier(new StrictHostnameVerifier());
+            final SSLSocket sslSocket = (SSLSocket) factory.createSocket(socket,address.getHostAddress(), socket.getPort(),true);
 
-							if (socket == null || socket.isClosed()) {
-								throw new IOException("socket null or closed");
-							}
-							final InetAddress address = socket.getInetAddress();
-							if (address == null) {
-								throw new IOException("socket address was null");
-							}
+			if (sslSocket == null) {
+				throw new IOException("could not initialize ssl socket");
+			}
 
-							final SSLSocket sslSocket = (SSLSocket) factory.createSocket(socket,address.getHostAddress(), socket.getPort(),true);
+			final String[] supportProtocols;
+			if (enableLegacySSL()) {
+				supportProtocols = sslSocket.getSupportedProtocols();
+			} else {
+				final Collection<String> supportedProtocols = new LinkedList<>(
+						Arrays.asList(sslSocket.getSupportedProtocols()));
+				supportedProtocols.remove("SSLv3");
+				supportProtocols = new String[supportedProtocols.size()];
+				supportedProtocols.toArray(supportProtocols);
+            }
+			sslSocket.setEnabledProtocols(supportProtocols);
 
-							// Support all protocols except legacy SSL.
-							// The min SDK version prevents us having to worry about SSLv2. In
-							// future, this may be true of SSLv3 as well.
-							final String[] supportProtocols;
-							if (enableLegacySSL()) {
-								supportProtocols = sslSocket.getSupportedProtocols();
-							} else {
-								final Collection<String> supportedProtocols = new LinkedList<>(
-										Arrays.asList(sslSocket.getSupportedProtocols()));
-								supportedProtocols.remove("SSLv3");
-								supportProtocols = new String[supportedProtocols.size()];
-								supportedProtocols.toArray(supportProtocols);
-							}
-							sslSocket.setEnabledProtocols(supportProtocols);
-
-							if (verifier != null
-									&& !verifier.verify(account.getServer().getDomainpart(),
-										sslSocket.getSession())) {
-								Log.d(Config.LOGTAG,account.getJid().toBareJid()+": TLS certificate verification failed");
-								disconnect(true);
-								changeStatus(Account.State.SECURITY_ERROR);
-									}
-							tagReader.setInputStream(sslSocket.getInputStream());
-							tagWriter.setOutputStream(sslSocket.getOutputStream());
-							sendStartStream();
-							Log.d(Config.LOGTAG, account.getJid().toBareJid()
-									+ ": TLS connection established");
-							enabledEncryption = true;
-							processStream(tagReader.readTag());
-							sslSocket.close();
-						} catch (final NoSuchAlgorithmException | KeyManagementException e1) {
-							e1.printStackTrace();
-						}
+            if (!verifier.verify(account.getServer().getDomainpart(),sslSocket.getSession())) {
+                Log.d(Config.LOGTAG,account.getJid().toBareJid()+": TLS certificate verification failed");
+                disconnect(true);
+                changeStatus(Account.State.SECURITY_ERROR);
+			}
+			tagReader.setInputStream(sslSocket.getInputStream());
+			tagWriter.setOutputStream(sslSocket.getOutputStream());
+			sendStartStream();
+			Log.d(Config.LOGTAG, account.getJid().toBareJid()+ ": TLS connection established");
+			enabledEncryption = true;
+			processStream(tagReader.readTag());
+			sslSocket.close();
+        } catch (final NoSuchAlgorithmException | KeyManagementException e1) {
+			Log.d(Config.LOGTAG,account.getJid().toBareJid()+": TLS certificate verification failed");
+			disconnect(true);
+			changeStatus(Account.State.SECURITY_ERROR);
+        }
 	}
 
 	private void processStreamFeatures(final Tag currentTag)
