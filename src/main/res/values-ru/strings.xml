@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Conversations</string>
     <string name="action_settings">Настройки</string>
     <string name="action_add">Новая беседа</string>
     <string name="action_accounts">Управление аккаунтами</string>
