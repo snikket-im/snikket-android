@@ -971,7 +971,9 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 				if (messages.size() > 0) {
 					conversation.addAll(0, messages);
 					callback.onMoreMessagesLoaded(messages.size(), conversation);
-				} else if (account.getStatus() == Account.State.ONLINE && account.getXmppConnection() != null && account.getXmppConnection().getFeatures().mam()) {
+				} else if (conversation.hasMessagesLeftOnServer()
+						&& account.isOnlineAndConnected()
+						&& account.getXmppConnection().getFeatures().mam()) {
 					MessageArchiveService.Query query = getMessageArchiveService().query(conversation,0,timestamp - 1);
 					if (query != null) {
 						query.setCallback(callback);

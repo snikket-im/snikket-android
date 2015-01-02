@@ -76,6 +76,16 @@ public class Conversation extends AbstractEntity implements Blockable {
 
 	private Bookmark bookmark;
 
+	private boolean messagesLeftOnServer = true;
+
+	public boolean hasMessagesLeftOnServer() {
+		return messagesLeftOnServer;
+	}
+
+	public void setHasMessagesLeftOnServer(boolean value) {
+		this.messagesLeftOnServer = value;
+	}
+
 	public Message findUnsentMessageWithUuid(String uuid) {
 		synchronized(this.messages) {
 			for (final Message message : this.messages) {
@@ -227,13 +237,10 @@ public class Conversation extends AbstractEntity implements Blockable {
 	}
 
 	public boolean isRead() {
-		return (this.messages == null) || (this.messages.size() == 0) || this.messages.get(this.messages.size() - 1).isRead();
+		return (this.messages.size() == 0) || this.messages.get(this.messages.size() - 1).isRead();
 	}
 
 	public void markRead() {
-		if (this.messages == null) {
-			return;
-		}
 		for (int i = this.messages.size() - 1; i >= 0; --i) {
 			if (messages.get(i).isRead()) {
 				break;
@@ -243,9 +250,6 @@ public class Conversation extends AbstractEntity implements Blockable {
 	}
 
 	public Message getLatestMarkableMessage() {
-		if (this.messages == null) {
-			return null;
-		}
 		for (int i = this.messages.size() - 1; i >= 0; --i) {
 			if (this.messages.get(i).getStatus() <= Message.STATUS_RECEIVED
 					&& this.messages.get(i).markable) {
@@ -260,7 +264,7 @@ public class Conversation extends AbstractEntity implements Blockable {
 	}
 
 	public Message getLatestMessage() {
-		if ((this.messages == null) || (this.messages.size() == 0)) {
+		if (this.messages.size() == 0) {
 			Message message = new Message(this, "", Message.ENCRYPTION_NONE);
 			message.setTime(getCreated());
 			return message;

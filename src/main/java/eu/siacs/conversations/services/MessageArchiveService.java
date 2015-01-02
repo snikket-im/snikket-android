@@ -24,7 +24,7 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 	private final XmppConnectionService mXmppConnectionService;
 
 	private final HashSet<Query> queries = new HashSet<Query>();
-	private ArrayList<Query> pendingQueries = new ArrayList<Query>();
+	private final ArrayList<Query> pendingQueries = new ArrayList<Query>();
 
 	public enum PagingOrder {
 		NORMAL,
@@ -134,6 +134,7 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 			if (conversation.setLastMessageTransmitted(query.getEnd())) {
 				this.mXmppConnectionService.databaseBackend.updateConversation(conversation);
 			}
+			conversation.setHasMessagesLeftOnServer(query.getMessageCount() > 0);
 			if (query.hasCallback()) {
 				query.callback();
 			} else {
@@ -300,7 +301,7 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 		public void callback() {
 			if (this.callback != null) {
 				this.callback.onMoreMessagesLoaded(messageCount,conversation);
-				if (messageCount==0) {
+				if (messageCount == 0) {
 					this.callback.informUser(R.string.no_more_history_on_server);
 				}
 			}
@@ -328,6 +329,10 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 
 		public int getTotalCount() {
 			return this.totalCount;
+		}
+
+		public int getMessageCount() {
+			return this.messageCount;
 		}
 
 		@Override
