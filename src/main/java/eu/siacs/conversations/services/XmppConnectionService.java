@@ -1272,7 +1272,9 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 
 	private boolean checkListeners() {
 		return (this.mOnAccountUpdate == null
-				&& this.mOnConversationUpdate == null && this.mOnRosterUpdate == null);
+				&& this.mOnConversationUpdate == null
+				&& this.mOnRosterUpdate == null
+				&& this.mOnUpdateBlocklist == null);
 	}
 
 	private void switchToForeground() {
@@ -1996,20 +1998,22 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		return null;
 	}
 
-	public void markRead(Conversation conversation, boolean calledByUi) {
+	public void markRead(final Conversation conversation) {
 		mNotificationService.clear(conversation);
-		final Message markable = conversation.getLatestMarkableMessage();
 		conversation.markRead();
-		if (confirmMessages() && markable != null && markable.getRemoteMsgId() != null && calledByUi) {
+	}
+
+	public void sendReadMarker(final Conversation conversation) {
+		final Message markable = conversation.getLatestMarkableMessage();
+		this.markRead(conversation);
+		if (confirmMessages() && markable != null && markable.getRemoteMsgId() != null) {
 			Log.d(Config.LOGTAG, conversation.getAccount().getJid().toBareJid()+ ": sending read marker to " + markable.getCounterpart().toString());
 			Account account = conversation.getAccount();
 			final Jid to = markable.getCounterpart();
 			MessagePacket packet = mMessageGenerator.confirm(account, to, markable.getRemoteMsgId());
 			this.sendMessagePacket(conversation.getAccount(),packet);
 		}
-		if (!calledByUi) {
-			updateConversationUi();
-		}
+		updateConversationUi();
 	}
 
 	public SecureRandom getRNG() {

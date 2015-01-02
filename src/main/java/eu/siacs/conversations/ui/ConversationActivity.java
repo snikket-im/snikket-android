@@ -85,6 +85,8 @@ public class ConversationActivity extends XmppActivity
 
 	private Toast prepareFileToast;
 
+	private boolean mActivityPaused = false;
+
 
 	public List<Conversation> getConversationList() {
 		return this.conversationList;
@@ -262,11 +264,15 @@ public class ConversationActivity extends XmppActivity
 		this.updateActionBarTitle();
 		this.invalidateOptionsMenu();
 		if (xmppConnectionServiceBound) {
-			xmppConnectionService.getNotificationService().setOpenConversation(getSelectedConversation());
-			if (!getSelectedConversation().isRead()) {
-				xmppConnectionService.markRead(getSelectedConversation(), true);
-				listView.invalidateViews();
-			}
+			final Conversation conversation = getSelectedConversation();
+			xmppConnectionService.getNotificationService().setOpenConversation(conversation);
+			sendReadMarkerIfNecessary(conversation);
+		}
+	}
+
+	public void sendReadMarkerIfNecessary(final Conversation conversation) {
+		if (!mActivityPaused && !conversation.isRead()) {
+			xmppConnectionService.sendReadMarker(conversation);
 		}
 	}
 
@@ -738,11 +744,24 @@ public class ConversationActivity extends XmppActivity
 	}
 
 	@Override
+	public void onPause() {
+		super.onPause();
+		this.mActivityPaused = true;
+		if (this.xmppConnectionServiceBound) {
+			this.xmppConnectionService.getNotificationService().setIsInForeground(false);
+		}
+	}
+
+	@Override
 	public void onResume() {
 		super.onResume();
 		int theme = findTheme();
 		if (this.mTheme != theme) {
 			recreate();
+		}
+		this.mActivityPaused = false;
+		if (this.xmppConnectionServiceBound) {
+			this.xmppConnectionService.getNotificationService().setIsInForeground(true);
 		}
 	}
 
@@ -763,6 +782,7 @@ public class ConversationActivity extends XmppActivity
 
 	@Override
 	void onBackendConnected() {
+		this.xmppConnectionService.getNotificationService().setIsInForeground(true);
 		updateConversationList();
 		if (xmppConnectionService.getAccounts().size() == 0) {
 			startActivity(new Intent(this, EditAccountActivity.class));

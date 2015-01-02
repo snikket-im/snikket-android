@@ -226,7 +226,7 @@ public class MessageParser extends AbstractParser implements
 							mXmppConnectionService.getConversations(), account,
 							to.toBareJid());
 					if (conversation != null) {
-						mXmppConnectionService.markRead(conversation, false);
+						mXmppConnectionService.markRead(conversation);
 					}
 				}
 			}
@@ -503,8 +503,7 @@ public class MessageParser extends AbstractParser implements
 				if (message != null) {
 					if (message.getStatus() == Message.STATUS_SEND) {
 						account.activateGracePeriod();
-						mXmppConnectionService.markRead(
-								message.getConversation(), false);
+						mXmppConnectionService.markRead(message.getConversation());
 					} else {
 						message.markUnread();
 					}
@@ -529,8 +528,7 @@ public class MessageParser extends AbstractParser implements
 				if (message.getStatus() == Message.STATUS_RECEIVED) {
 					message.markUnread();
 				} else {
-					mXmppConnectionService.markRead(message.getConversation(),
-							false);
+					mXmppConnectionService.markRead(message.getConversation());
 					account.activateGracePeriod();
 				}
 			}

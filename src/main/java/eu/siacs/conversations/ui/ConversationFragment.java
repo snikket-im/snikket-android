@@ -665,8 +665,7 @@ public class ConversationFragment extends Fragment {
 				this.messageListAdapter.notifyDataSetChanged();
 				updateChatMsgHint();
 				if (!activity.isConversationsOverviewVisable() || !activity.isConversationsOverviewHideable()) {
-					activity.xmppConnectionService.markRead(conversation, true);
-					activity.updateConversationList();
+					activity.sendReadMarkerIfNecessary(conversation);
 				}
 				this.updateSendButton();
 			}

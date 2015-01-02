@@ -16,6 +16,7 @@ import android.support.v4.app.NotificationCompat.Builder;
 import android.support.v4.app.TaskStackBuilder;
 import android.text.Html;
 import android.util.DisplayMetrics;
+import android.util.Log;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -368,6 +369,9 @@ public class NotificationService {
 	}
 
 	public void setIsInForeground(final boolean foreground) {
+		if (foreground != this.mIsInForeground) {
+			Log.d(Config.LOGTAG,"setIsInForeground("+Boolean.toString(foreground)+")");
+		}
 		this.mIsInForeground = foreground;
 	}
 
