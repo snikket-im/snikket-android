@@ -2,6 +2,7 @@ package eu.siacs.conversations.ui.adapter;
 
 import java.util.List;
 
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.ListItem;
 import eu.siacs.conversations.ui.XmppActivity;
@@ -10,6 +11,7 @@ import eu.siacs.conversations.xmpp.jid.Jid;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +24,17 @@ public class ListItemAdapter extends ArrayAdapter<ListItem> {
 
 	protected XmppActivity activity;
 	protected boolean showDynamicTags = false;
+	private View.OnClickListener onTagTvClick = new View.OnClickListener() {
+		@Override
+		public void onClick(View view) {
+			if (view instanceof  TextView && mOnTagClickedListener != null) {
+				TextView tv = (TextView) view;
+				final String tag = tv.getText().toString();
+				mOnTagClickedListener.onTagClicked(tag);
+			}
+		}
+	};
+	private OnTagClickedListener mOnTagClickedListener = null;
 
 	public ListItemAdapter(XmppActivity activity, List<ListItem> objects) {
 		super(activity, 0, objects);
@@ -53,6 +66,7 @@ public class ListItemAdapter extends ArrayAdapter<ListItem> {
 				TextView tv = (TextView) inflater.inflate(R.layout.list_item_tag,tagLayout,false);
 				tv.setText(tag.getName());
 				tv.setBackgroundColor(tag.getColor());
+				tv.setOnClickListener(this.onTagTvClick);
 				tagLayout.addView(tv);
 			}
 		}
@@ -66,6 +80,14 @@ public class ListItemAdapter extends ArrayAdapter<ListItem> {
 		picture.setImageBitmap(activity.avatarService().get(item,
 				activity.getPixel(48)));
 		return view;
+	}
+
+	public void setOnTagClickedListener(OnTagClickedListener listener) {
+		this.mOnTagClickedListener = listener;
+	}
+
+	public interface OnTagClickedListener {
+		public void onTagClicked(String tag);
 	}
 
 }

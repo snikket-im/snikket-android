@@ -160,6 +160,17 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 	};
 	private MenuItem mMenuSearchView;
 	private String mInitialJid;
+	private ListItemAdapter.OnTagClickedListener mOnTagClickedListener = new ListItemAdapter.OnTagClickedListener() {
+		@Override
+		public void onTagClicked(String tag) {
+			if (mMenuSearchView != null) {
+				mMenuSearchView.expandActionView();
+				mSearchEditText.setText("");
+				mSearchEditText.append(tag);
+				filter(tag);
+			}
+		}
+	};
 
 	@Override
 	public void onRosterUpdate() {
@@ -221,6 +232,7 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 			});
 
 		mContactsAdapter = new ListItemAdapter(this, contacts);
+		((ListItemAdapter) mContactsAdapter).setOnTagClickedListener(this.mOnTagClickedListener);
 		mContactsListFragment.setListAdapter(mContactsAdapter);
 		mContactsListFragment.setContextMenu(R.menu.contact_context);
 		mContactsListFragment
