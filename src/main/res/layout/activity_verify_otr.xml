@@ -101,7 +101,7 @@
 					android:textSize="?attr/TextSizeBody"/>
 
 				<EditText
-					android:id="@+id/shared_secret"
+					android:id="@+id/shared_secret_secret"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:layout_marginTop="8dp"
