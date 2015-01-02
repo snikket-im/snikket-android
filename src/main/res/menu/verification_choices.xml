@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/scan_fingerprint"
+        android:title="@string/scan_qr_code"/>
+    <item
+        android:id="@+id/ask_question"
+        android:title="@string/ask_question"/>
+
+    <item
+        android:id="@+id/manual_verification"
+        android:title="@string/manually_verify" />
+
+</menu>

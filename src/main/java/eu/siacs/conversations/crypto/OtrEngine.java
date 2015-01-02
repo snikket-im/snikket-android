@@ -126,7 +126,7 @@ public class OtrEngine extends OtrCryptoEngineImpl implements OtrEngineHost {
 	@Override
 	public byte[] getLocalFingerprintRaw(SessionID arg0) {
 		try {
-			return new OtrCryptoEngineImpl().getFingerprintRaw(getPublicKey());
+			return getFingerprintRaw(getPublicKey());
 		} catch (OtrCryptoException e) {
 			return null;
 		}

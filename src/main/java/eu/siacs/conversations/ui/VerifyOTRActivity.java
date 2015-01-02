@@ -5,12 +5,11 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -409,6 +408,13 @@ public class VerifyOTRActivity extends XmppActivity implements XmppConnectionSer
 		this.mSharedSecretHint = (TextView) findViewById(R.id.shared_secret_hint);
 		this.mManualVerificationArea = (LinearLayout) findViewById(R.id.manual_verification_area);
 		this.mSmpVerificationArea = (LinearLayout) findViewById(R.id.smp_verification_area);
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(final Menu menu) {
+		super.onCreateOptionsMenu(menu);
+		getMenuInflater().inflate(R.menu.verify_otr, menu);
+		return true;
 	}
 
 	private void showManuallyVerifyDialog() {

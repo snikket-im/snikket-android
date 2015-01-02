@@ -374,6 +374,8 @@ public class ConversationFragment extends Fragment {
 								privateMessageWith(message.getCounterpart());
 							}
 						}
+					} else {
+						activity.showQrCode();
 					}
 				}
 			});

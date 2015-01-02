@@ -398,5 +398,5 @@
     <string name="smp_explain_answer">Your contact would like to verify your fingerprint by challenging you with a shared secret. Your contact provided the following hint or question for that secret.</string>
     <string name="shared_secret_hint_should_not_be_empty">Your hint should not be empty</string>
     <string name="shared_secret_can_not_be_empty">Your shared secret can not be empty</string>
-    <string name="manual_verification_explanation">Carefully compare the fingerprints shown below with the fingerprints of your contact.\nYou can use a trusted communication channel like an encrypted e-mail or a telephone call channel to exchange those.</string>
+    <string name="manual_verification_explanation">Carefully compare the fingerprint shown below with the fingerprint of your contact.\nYou can use any trusted form of communication like an encrypted e-mail or a telephone call to exchange those.</string>
 </resources>
