@@ -14,7 +14,7 @@ public class Plain extends SaslMechanism {
 
 	@Override
 	public int getPriority() {
-		return 0;
+		return 10;
 	}
 
 	@Override

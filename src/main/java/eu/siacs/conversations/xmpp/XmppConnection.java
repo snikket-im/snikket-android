@@ -576,10 +576,10 @@ public class XmppConnection implements Runnable {
 			auth.setAttribute("xmlns", "urn:ietf:params:xml:ns:xmpp-sasl");
 			if (mechanisms.contains("SCRAM-SHA-1")) {
 				saslMechanism = new ScramSha1(tagWriter, account, mXmppConnectionService.getRNG());
-			//} else if (mechanisms.contains("DIGEST-MD5")) {
-			//	saslMechanism = new DigestMd5(tagWriter, account, mXmppConnectionService.getRNG());
 			} else if (mechanisms.contains("PLAIN")) {
 				saslMechanism = new Plain(tagWriter, account);
+			} else if (mechanisms.contains("DIGEST-MD5")) {
+				saslMechanism = new DigestMd5(tagWriter, account, mXmppConnectionService.getRNG());
 			}
 			final JSONObject keys = account.getKeys();
 			try {
