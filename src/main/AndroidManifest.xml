@@ -79,6 +79,9 @@
         <activity
             android:name=".ui.BlocklistActivity"
             android:label="@string/title_activity_block_list" />
+	    <activity
+		    android:name=".ui.ChangePasswordActivity"
+		    android:label="@string/change_password_on_server" />
         <activity
             android:name=".ui.ManageAccountActivity"
             android:configChanges="orientation|screenSize"

@@ -16,4 +16,8 @@
         android:checkable="true"
         android:checked="false"
         android:showAsAction="never" />
+
+	<item android:id="@+id/action_change_password_on_server"
+          android:title="@string/change_password"
+          android:showAsAction="never" />
 </menu>

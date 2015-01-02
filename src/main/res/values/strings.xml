@@ -399,4 +399,8 @@
     <string name="shared_secret_hint_should_not_be_empty">Your hint should not be empty</string>
     <string name="shared_secret_can_not_be_empty">Your shared secret can not be empty</string>
     <string name="manual_verification_explanation">Carefully compare the fingerprint shown below with the fingerprint of your contact.\nYou can use any trusted form of communication like an encrypted e-mail or a telephone call to exchange those.</string>
+	<string name="change_password">Change password</string>
+	<string name="current_password">Current password</string>
+	<string name="new_password">New password</string>
+	<string name="password_should_not_be_empty">Password should not be empty</string>
 </resources>
