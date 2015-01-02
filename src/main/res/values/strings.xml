@@ -392,4 +392,11 @@
     <string name="updating">Updating…</string>
     <string name="password_changed">Password changed!</string>
     <string name="could_not_change_password">Could not change password</string>
+    <string name="otr_session_not_started">Send a message to start an encrypted chat</string>
+    <string name="ask_question">Ask question</string>
+    <string name="smp_explain_question">If you and your contact have a secret in common that no one else knows (like an inside joke or simply what you had for lunch the last time you met) you can use that secret to verify each other\'s fingerprints.\n\nYou provide a hint or a question for your contact who will respond with a case-sensitive answer.</string>
+    <string name="smp_explain_answer">Your contact would like to verify your fingerprint by challenging you with a shared secret. Your contact provided the following hint or question for that secret.</string>
+    <string name="shared_secret_hint_should_not_be_empty">Your hint should not be empty</string>
+    <string name="shared_secret_can_not_be_empty">Your shared secret can not be empty</string>
+    <string name="manual_verification_explanation">Carefully compare the fingerprints shown below with the fingerprints of your contact.\nYou can use a trusted communication channel like an encrypted e-mail or a telephone call channel to exchange those.</string>
 </resources>

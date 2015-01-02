@@ -453,7 +453,7 @@ public class Contact implements ListItem, Blockable {
 	public String getShareableUri() {
 		if (getOtrFingerprints().size() >= 1) {
 			String otr = getOtrFingerprints().get(0);
-			return "xmpp:" + getJid().toBareJid().toString() + "?otr-fingerprint=" + otr.replace(" ", "");
+			return "xmpp:" + getJid().toBareJid().toString() + "?otr-fingerprint=" + otr;
 		} else {
 			return "xmpp:" + getJid().toBareJid().toString();
 		}

@@ -34,7 +34,7 @@ import net.java.otr4j.crypto.OtrCryptoException;
 import net.java.otr4j.session.InstanceTag;
 import net.java.otr4j.session.SessionID;
 
-public class OtrEngine implements OtrEngineHost {
+public class OtrEngine extends OtrCryptoEngineImpl implements OtrEngineHost {
 
 	private Account account;
 	private OtrPolicy otrPolicy;
@@ -258,10 +258,10 @@ public class OtrEngine implements OtrEngineHost {
 			Conversation conversation = this.mXmppConnectionService.find(this.account,jid);
 			if (conversation!=null) {
 				if (approved) {
-					conversation.getContact().addOtrFingerprint(CryptoHelper.prettifyFingerprint(fingerprint));
+					conversation.getContact().addOtrFingerprint(fingerprint);
 				}
 				conversation.smp().hint = null;
-				conversation.smp().status = Conversation.Smp.STATUS_FINISHED;
+				conversation.smp().status = Conversation.Smp.STATUS_VERIFIED;
 				mXmppConnectionService.updateConversationUi();
 				mXmppConnectionService.syncRosterToDisk(conversation.getAccount());
 			}

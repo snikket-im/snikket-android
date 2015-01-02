@@ -27,6 +27,8 @@ import android.widget.PopupMenu;
 import android.widget.PopupMenu.OnMenuItemClickListener;
 import android.widget.Toast;
 
+import net.java.otr4j.session.SessionStatus;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -553,6 +555,41 @@ public class ConversationActivity extends XmppActivity
 				}
 			});
 		attachFilePopup.show();
+	}
+
+	public void verifyOtrSessionDialog(final Conversation conversation, View view) {
+		if (!conversation.hasValidOtrSession() || conversation.getOtrSession().getSessionStatus() != SessionStatus.ENCRYPTED) {
+			Toast.makeText(this, R.string.otr_session_not_started, Toast.LENGTH_LONG).show();
+			return;
+		}
+		if (view == null) {
+			return;
+		}
+		PopupMenu popup = new PopupMenu(this, view);
+		popup.inflate(R.menu.verification_choices);
+		popup.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+			@Override
+			public boolean onMenuItemClick(MenuItem menuItem) {
+				Intent intent = new Intent(ConversationActivity.this, VerifyOTRActivity.class);
+				intent.setAction(VerifyOTRActivity.ACTION_VERIFY_CONTACT);
+				intent.putExtra("contact", conversation.getContact().getJid().toBareJid().toString());
+				intent.putExtra("account", conversation.getAccount().getJid().toBareJid().toString());
+				switch (menuItem.getItemId()) {
+					case R.id.scan_fingerprint:
+						intent.putExtra("mode",VerifyOTRActivity.MODE_SCAN_FINGERPRINT);
+						break;
+					case R.id.ask_question:
+						intent.putExtra("mode",VerifyOTRActivity.MODE_ASK_QUESTION);
+						break;
+					case R.id.manual_verification:
+						intent.putExtra("mode",VerifyOTRActivity.MODE_MANUAL_VERIFICATION);
+						break;
+				}
+				startActivity(intent);
+				return true;
+			}
+		});
+		popup.show();
 	}
 
 	protected void selectEncryptionDialog(final Conversation conversation) {

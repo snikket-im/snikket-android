@@ -436,30 +436,29 @@ public class Conversation extends AbstractEntity implements Blockable {
 		return this.otrSession != null;
 	}
 
-	public String getOtrFingerprint() {
+	public synchronized String getOtrFingerprint() {
 		if (this.otrFingerprint == null) {
 			try {
-				if (getOtrSession() == null) {
-					return "";
+				if (getOtrSession() == null || getOtrSession().getSessionStatus() != SessionStatus.ENCRYPTED) {
+					return null;
 				}
-				DSAPublicKey remotePubKey = (DSAPublicKey) getOtrSession()
-					.getRemotePublicKey();
-				StringBuilder builder = new StringBuilder(
-						new OtrCryptoEngineImpl().getFingerprint(remotePubKey));
-				builder.insert(8, " ");
-				builder.insert(17, " ");
-				builder.insert(26, " ");
-				builder.insert(35, " ");
-				this.otrFingerprint = builder.toString();
+				DSAPublicKey remotePubKey = (DSAPublicKey) getOtrSession().getRemotePublicKey();
+				this.otrFingerprint = getAccount().getOtrEngine().getFingerprint(remotePubKey);
 			} catch (final OtrCryptoException | UnsupportedOperationException ignored) {
-
+				return null;
 			}
 		}
 		return this.otrFingerprint;
 	}
 
-	public void verifyOtrFingerprint() {
-		getContact().addOtrFingerprint(getOtrFingerprint());
+	public boolean verifyOtrFingerprint() {
+		final String fingerprint = getOtrFingerprint();
+		if (fingerprint != null) {
+			getContact().addOtrFingerprint(fingerprint);
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	public boolean isOtrFingerprintVerified() {
@@ -708,7 +707,7 @@ public class Conversation extends AbstractEntity implements Blockable {
 		public static final int STATUS_CONTACT_REQUESTED = 1;
 		public static final int STATUS_WE_REQUESTED = 2;
 		public static final int STATUS_FAILED = 3;
-		public static final int STATUS_FINISHED = 4;
+		public static final int STATUS_VERIFIED = 4;
 
 		public String secret = null;
 		public String hint = null;

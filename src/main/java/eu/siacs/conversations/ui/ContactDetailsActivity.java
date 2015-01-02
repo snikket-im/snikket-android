@@ -37,6 +37,7 @@ import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.ListItem;
 import eu.siacs.conversations.services.XmppConnectionService.OnAccountUpdate;
 import eu.siacs.conversations.services.XmppConnectionService.OnRosterUpdate;
+import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
@@ -315,7 +316,7 @@ public class ContactDetailsActivity extends XmppActivity implements OnAccountUpd
 				.findViewById(R.id.button_remove);
 			remove.setVisibility(View.VISIBLE);
 			keyType.setText("OTR Fingerprint");
-			key.setText(otrFingerprint);
+			key.setText(CryptoHelper.prettifyFingerprint(otrFingerprint));
 			keys.addView(view);
 			remove.setOnClickListener(new OnClickListener() {
 
@@ -396,8 +397,7 @@ public class ContactDetailsActivity extends XmppActivity implements OnAccountUpd
 					public void onClick(DialogInterface dialog, int which) {
 						if (contact.deleteOtrFingerprint(fingerprint)) {
 							populateView();
-							xmppConnectionService.syncRosterToDisk(contact
-									.getAccount());
+							xmppConnectionService.syncRosterToDisk(contact.getAccount());
 						}
 					}
 

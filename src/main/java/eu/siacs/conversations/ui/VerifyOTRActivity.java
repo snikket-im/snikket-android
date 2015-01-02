@@ -1,14 +1,15 @@
 package eu.siacs.conversations.ui;
 
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,57 +33,56 @@ import eu.siacs.conversations.xmpp.jid.Jid;
 public class VerifyOTRActivity extends XmppActivity implements XmppConnectionService.OnConversationUpdate {
 
 	public static final String ACTION_VERIFY_CONTACT = "verify_contact";
+	public static final int MODE_SCAN_FINGERPRINT = - 0x0502;
+	public static final int MODE_ASK_QUESTION = 0x0503;
+	public static final int MODE_ANSWER_QUESTION = 0x0504;
+	public static final int MODE_MANUAL_VERIFICATION = 0x0505;
 
-	private RelativeLayout mVerificationAreaOne;
-	private RelativeLayout mVerificationAreaTwo;
-	private TextView mErrorNoSession;
-	private TextView mRemoteJid;
+	private LinearLayout mManualVerificationArea;
+	private LinearLayout mSmpVerificationArea;
 	private TextView mRemoteFingerprint;
 	private TextView mYourFingerprint;
-	private EditText mSharedSecretHint;
-	private EditText mSharedSecretSecret;
-	private Button mButtonScanQrCode;
-	private Button mButtonShowQrCode;
-	private Button mButtonSharedSecretPositive;
-	private Button mButtonSharedSecretNegative;
+	private TextView mVerificationExplain;
 	private TextView mStatusMessage;
+	private TextView mSharedSecretHint;
+	private EditText mSharedSecretHintEditable;
+	private EditText mSharedSecretSecret;
+	private Button mLeftButton;
+	private Button mRightButton;
 	private Account mAccount;
 	private Conversation mConversation;
+	private int mode = MODE_MANUAL_VERIFICATION;
+	private XmppUri mPendingUri = null;
 
 	private DialogInterface.OnClickListener mVerifyFingerprintListener = new DialogInterface.OnClickListener() {
 
 		@Override
 		public void onClick(DialogInterface dialogInterface, int click) {
 			mConversation.verifyOtrFingerprint();
-			updateView();
 			xmppConnectionService.syncRosterToDisk(mConversation.getAccount());
+			Toast.makeText(VerifyOTRActivity.this,R.string.verified,Toast.LENGTH_SHORT).show();
+			finish();
 		}
-	};
-
-	private View.OnClickListener mShowQrCodeListener = new View.OnClickListener() {
-		@Override
-		public void onClick(final View view) {
-			showQrCode();
-		}
-	};
-
-	private View.OnClickListener mScanQrCodeListener = new View.OnClickListener() {
-
-		@Override
-		public void onClick(View view) {
-			new IntentIntegrator(VerifyOTRActivity.this).initiateScan();
-		}
-
 	};
 
 	private View.OnClickListener mCreateSharedSecretListener = new View.OnClickListener() {
 		@Override
 		public void onClick(final View view) {
 			if (isAccountOnline()) {
-				final String question = mSharedSecretHint.getText().toString();
+				final String question = mSharedSecretHintEditable.getText().toString();
 				final String secret = mSharedSecretSecret.getText().toString();
-				initSmp(question, secret);
-				updateView();
+				if (question.trim().isEmpty()) {
+					mSharedSecretHintEditable.requestFocus();
+					mSharedSecretHintEditable.setError(getString(R.string.shared_secret_hint_should_not_be_empty));
+				} else if (secret.trim().isEmpty()) {
+					mSharedSecretSecret.requestFocus();
+					mSharedSecretSecret.setError(getString(R.string.shared_secret_can_not_be_empty));
+				} else {
+					mSharedSecretSecret.setError(null);
+					mSharedSecretHintEditable.setError(null);
+					initSmp(question, secret);
+					updateView();
+				}
 			}
 		}
 	};
@@ -100,7 +100,7 @@ public class VerifyOTRActivity extends XmppActivity implements XmppConnectionSer
 		@Override
 		public void onClick(View view) {
 			if (isAccountOnline()) {
-				final String question = mSharedSecretHint.getText().toString();
+				final String question = mSharedSecretHintEditable.getText().toString();
 				final String secret = mSharedSecretSecret.getText().toString();
 				respondSmp(question, secret);
 				updateView();
@@ -124,14 +124,14 @@ public class VerifyOTRActivity extends XmppActivity implements XmppConnectionSer
 		}
 	};
 
-	private XmppUri mPendingUri = null;
-
 	protected boolean initSmp(final String question, final String secret) {
 		final Session session = mConversation.getOtrSession();
 		if (session!=null) {
 			try {
 				session.initSmp(question, secret);
 				mConversation.smp().status = Conversation.Smp.STATUS_WE_REQUESTED;
+				mConversation.smp().secret = secret;
+				mConversation.smp().hint = question;
 				return true;
 			} catch (OtrException e) {
 				return false;
@@ -172,15 +172,17 @@ public class VerifyOTRActivity extends XmppActivity implements XmppConnectionSer
 		}
 	}
 
-	protected void verifyWithUri(XmppUri uri) {
+	protected boolean verifyWithUri(XmppUri uri) {
 		Contact contact = mConversation.getContact();
 		if (this.mConversation.getContact().getJid().equals(uri.getJid()) && uri.getFingerprint() != null) {
 			contact.addOtrFingerprint(uri.getFingerprint());
 			Toast.makeText(this,R.string.verified,Toast.LENGTH_SHORT).show();
 			updateView();
 			xmppConnectionService.syncRosterToDisk(contact.getAccount());
+			return true;
 		} else {
 			Toast.makeText(this,R.string.could_not_verify_fingerprint,Toast.LENGTH_SHORT).show();
+			return false;
 		}
 	}
 
@@ -194,7 +196,7 @@ public class VerifyOTRActivity extends XmppActivity implements XmppConnectionSer
 	}
 
 	protected boolean handleIntent(Intent intent) {
-		if (intent.getAction().equals(ACTION_VERIFY_CONTACT)) {
+		if (intent != null && intent.getAction().equals(ACTION_VERIFY_CONTACT)) {
 			try {
 				this.mAccount = this.xmppConnectionService.findAccountByJid(Jid.fromString(intent.getExtras().getString("account")));
 			} catch (final InvalidJidException ignored) {
@@ -206,6 +208,11 @@ public class VerifyOTRActivity extends XmppActivity implements XmppConnectionSer
 					return false;
 				}
 			} catch (final InvalidJidException ignored) {
+				return false;
+			}
+			this.mode = intent.getIntExtra("mode", MODE_MANUAL_VERIFICATION);
+			if (this.mode == MODE_SCAN_FINGERPRINT) {
+				new IntentIntegrator(this).initiateScan();
 				return false;
 			}
 			return true;
@@ -223,9 +230,12 @@ public class VerifyOTRActivity extends XmppActivity implements XmppConnectionSer
 				XmppUri uri = new XmppUri(data);
 				if (xmppConnectionServiceBound) {
 					verifyWithUri(uri);
+					finish();
 				} else {
 					this.mPendingUri = uri;
 				}
+			} else {
+				finish();
 			}
 		}
 		super.onActivityResult(requestCode, requestCode, intent);
@@ -234,84 +244,139 @@ public class VerifyOTRActivity extends XmppActivity implements XmppConnectionSer
 	@Override
 	protected void onBackendConnected() {
 		if (handleIntent(getIntent())) {
-			if (mPendingUri!=null) {
-				verifyWithUri(mPendingUri);
-				mPendingUri = null;
-			}
 			updateView();
+		} else if (mPendingUri!=null) {
+			verifyWithUri(mPendingUri);
+			finish();
+			mPendingUri = null;
 		}
+		setIntent(null);
 	}
 
 	protected void updateView() {
 		if (this.mConversation.hasValidOtrSession()) {
+			final ActionBar actionBar = getActionBar();
+			this.mVerificationExplain.setText(R.string.no_otr_session_found);
 			invalidateOptionsMenu();
-			this.mVerificationAreaOne.setVisibility(View.VISIBLE);
-			this.mVerificationAreaTwo.setVisibility(View.VISIBLE);
-			this.mErrorNoSession.setVisibility(View.GONE);
-			this.mYourFingerprint.setText(CryptoHelper.prettifyFingerprint(this.mAccount.getOtrFingerprint()));
-			this.mRemoteFingerprint.setText(this.mConversation.getOtrFingerprint());
-			this.mRemoteJid.setText(this.mConversation.getContact().getJid().toBareJid().toString());
-			Conversation.Smp smp = mConversation.smp();
-			Session session = mConversation.getOtrSession();
-			if (mConversation.isOtrFingerprintVerified()) {
-				deactivateButton(mButtonScanQrCode, R.string.verified);
-			} else {
-				activateButton(mButtonScanQrCode, R.string.scan_qr_code, mScanQrCodeListener);
-			}
-			if (smp.status == Conversation.Smp.STATUS_NONE) {
-				activateButton(mButtonSharedSecretPositive, R.string.create, mCreateSharedSecretListener);
-				deactivateButton(mButtonSharedSecretNegative, R.string.cancel);
-				this.mSharedSecretHint.setFocusableInTouchMode(true);
-				this.mSharedSecretSecret.setFocusableInTouchMode(true);
-				this.mSharedSecretSecret.setText("");
-				this.mSharedSecretHint.setText("");
-				this.mSharedSecretHint.setVisibility(View.VISIBLE);
-				this.mSharedSecretSecret.setVisibility(View.VISIBLE);
-				this.mStatusMessage.setVisibility(View.GONE);
-			} else if (smp.status == Conversation.Smp.STATUS_CONTACT_REQUESTED) {
-				this.mSharedSecretHint.setFocusable(false);
-				this.mSharedSecretHint.setText(smp.hint);
-				this.mSharedSecretSecret.setFocusableInTouchMode(true);
-				this.mSharedSecretHint.setVisibility(View.VISIBLE);
-				this.mSharedSecretSecret.setVisibility(View.VISIBLE);
-				this.mStatusMessage.setVisibility(View.GONE);
-				deactivateButton(mButtonSharedSecretNegative, R.string.cancel);
-				activateButton(mButtonSharedSecretPositive, R.string.respond, mRespondSharedSecretListener);
-			} else if (smp.status == Conversation.Smp.STATUS_FAILED) {
-				activateButton(mButtonSharedSecretNegative, R.string.cancel, mFinishListener);
-				activateButton(mButtonSharedSecretPositive, R.string.try_again, mRetrySharedSecretListener);
-				this.mSharedSecretHint.setVisibility(View.GONE);
-				this.mSharedSecretSecret.setVisibility(View.GONE);
-				this.mStatusMessage.setVisibility(View.VISIBLE);
-				this.mStatusMessage.setText(R.string.secrets_do_not_match);
-				this.mStatusMessage.setTextColor(getWarningTextColor());
-			} else if (smp.status == Conversation.Smp.STATUS_FINISHED) {
-				this.mSharedSecretHint.setText("");
-				this.mSharedSecretHint.setVisibility(View.GONE);
-				this.mSharedSecretSecret.setText("");
-				this.mSharedSecretSecret.setVisibility(View.GONE);
-				this.mStatusMessage.setVisibility(View.VISIBLE);
-				this.mStatusMessage.setTextColor(getPrimaryColor());
-				deactivateButton(mButtonSharedSecretNegative, R.string.cancel);
-				if (mConversation.isOtrFingerprintVerified()) {
-					activateButton(mButtonSharedSecretPositive, R.string.finish, mFinishListener);
-					this.mStatusMessage.setText(R.string.verified);
-				} else {
-					activateButton(mButtonSharedSecretPositive,R.string.reset,mRetrySharedSecretListener);
-					this.mStatusMessage.setText(R.string.secret_accepted);
-				}
-			} else if (session != null && session.isSmpInProgress()) {
-				deactivateButton(mButtonSharedSecretPositive, R.string.in_progress);
-				activateButton(mButtonSharedSecretNegative, R.string.cancel, mCancelSharedSecretListener);
-				this.mSharedSecretHint.setVisibility(View.VISIBLE);
-				this.mSharedSecretSecret.setVisibility(View.VISIBLE);
-				this.mSharedSecretHint.setFocusable(false);
-				this.mSharedSecretSecret.setFocusable(false);
+			switch(this.mode) {
+				case MODE_ASK_QUESTION:
+					if (actionBar != null ) {
+						actionBar.setTitle(R.string.ask_question);
+					}
+					this.updateViewAskQuestion();
+					break;
+				case MODE_ANSWER_QUESTION:
+					if (actionBar != null ) {
+						actionBar.setTitle(R.string.smp_requested);
+					}
+					this.updateViewAnswerQuestion();
+					break;
+				case MODE_MANUAL_VERIFICATION:
+				default:
+					if (actionBar != null ) {
+						actionBar.setTitle(R.string.manually_verify);
+					}
+					this.updateViewManualVerification();
+					break;
 			}
 		} else {
-			this.mVerificationAreaOne.setVisibility(View.GONE);
-			this.mVerificationAreaTwo.setVisibility(View.GONE);
-			this.mErrorNoSession.setVisibility(View.VISIBLE);
+			this.mManualVerificationArea.setVisibility(View.GONE);
+			this.mSmpVerificationArea.setVisibility(View.GONE);
+		}
+	}
+
+	protected void updateViewManualVerification() {
+		this.mVerificationExplain.setText(R.string.manual_verification_explanation);
+		this.mManualVerificationArea.setVisibility(View.VISIBLE);
+		this.mSmpVerificationArea.setVisibility(View.GONE);
+		this.mYourFingerprint.setText(CryptoHelper.prettifyFingerprint(this.mAccount.getOtrFingerprint()));
+		this.mRemoteFingerprint.setText(CryptoHelper.prettifyFingerprint(this.mConversation.getOtrFingerprint()));
+		if (this.mConversation.isOtrFingerprintVerified()) {
+			deactivateButton(this.mRightButton,R.string.verified);
+			activateButton(this.mLeftButton,R.string.cancel,this.mFinishListener);
+		} else {
+			activateButton(this.mLeftButton,R.string.cancel,this.mFinishListener);
+			activateButton(this.mRightButton,R.string.verify, new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					showManuallyVerifyDialog();
+				}
+			});
+		}
+	}
+
+	protected void updateViewAskQuestion() {
+		this.mManualVerificationArea.setVisibility(View.GONE);
+		this.mSmpVerificationArea.setVisibility(View.VISIBLE);
+		this.mVerificationExplain.setText(R.string.smp_explain_question);
+		final int smpStatus = this.mConversation.smp().status;
+		switch (smpStatus) {
+			case Conversation.Smp.STATUS_WE_REQUESTED:
+				this.mStatusMessage.setVisibility(View.GONE);
+				this.mSharedSecretHintEditable.setVisibility(View.VISIBLE);
+				this.mSharedSecretSecret.setVisibility(View.VISIBLE);
+				this.mSharedSecretHintEditable.setText(this.mConversation.smp().hint);
+				this.mSharedSecretSecret.setText(this.mConversation.smp().secret);
+				this.activateButton(this.mLeftButton, R.string.cancel, this.mCancelSharedSecretListener);
+				this.deactivateButton(this.mRightButton, R.string.in_progress);
+				break;
+			case Conversation.Smp.STATUS_FAILED:
+				this.mStatusMessage.setVisibility(View.GONE);
+				this.mSharedSecretHintEditable.setVisibility(View.VISIBLE);
+				this.mSharedSecretSecret.setVisibility(View.VISIBLE);
+				this.mSharedSecretSecret.requestFocus();
+				this.mSharedSecretSecret.setError(getString(R.string.secrets_do_not_match));
+				this.deactivateButton(this.mLeftButton, R.string.cancel);
+				this.activateButton(this.mRightButton, R.string.try_again, this.mRetrySharedSecretListener);
+				break;
+			case Conversation.Smp.STATUS_VERIFIED:
+				this.mSharedSecretHintEditable.setText("");
+				this.mSharedSecretHintEditable.setVisibility(View.GONE);
+				this.mSharedSecretSecret.setText("");
+				this.mSharedSecretSecret.setVisibility(View.GONE);
+				this.mStatusMessage.setVisibility(View.VISIBLE);
+				this.deactivateButton(this.mLeftButton, R.string.cancel);
+				this.activateButton(this.mRightButton, R.string.finish, this.mFinishListener);
+				break;
+			default:
+				this.mStatusMessage.setVisibility(View.GONE);
+				this.mSharedSecretHintEditable.setVisibility(View.VISIBLE);
+				this.mSharedSecretSecret.setVisibility(View.VISIBLE);
+				this.activateButton(this.mLeftButton,R.string.cancel,this.mFinishListener);
+				this.activateButton(this.mRightButton, R.string.ask_question, this.mCreateSharedSecretListener);
+				break;
+		}
+	}
+
+	protected void updateViewAnswerQuestion() {
+		this.mManualVerificationArea.setVisibility(View.GONE);
+		this.mSmpVerificationArea.setVisibility(View.VISIBLE);
+		this.mVerificationExplain.setText(R.string.smp_explain_answer);
+		this.mSharedSecretHintEditable.setVisibility(View.GONE);
+		this.mSharedSecretHint.setVisibility(View.VISIBLE);
+		this.deactivateButton(this.mLeftButton, R.string.cancel);
+		final int smpStatus = this.mConversation.smp().status;
+		switch (smpStatus) {
+			case Conversation.Smp.STATUS_CONTACT_REQUESTED:
+				this.mStatusMessage.setVisibility(View.GONE);
+				this.mSharedSecretHint.setText(this.mConversation.smp().hint);
+				this.activateButton(this.mRightButton,R.string.respond,this.mRespondSharedSecretListener);
+				break;
+			case Conversation.Smp.STATUS_VERIFIED:
+				this.mSharedSecretHintEditable.setText("");
+				this.mSharedSecretHintEditable.setVisibility(View.GONE);
+				this.mSharedSecretHint.setVisibility(View.GONE);
+				this.mSharedSecretSecret.setText("");
+				this.mSharedSecretSecret.setVisibility(View.GONE);
+				this.mStatusMessage.setVisibility(View.VISIBLE);
+				this.activateButton(this.mRightButton, R.string.finish, this.mFinishListener);
+				break;
+			case Conversation.Smp.STATUS_FAILED:
+			default:
+				this.mSharedSecretSecret.requestFocus();
+				this.mSharedSecretSecret.setError(getString(R.string.secrets_do_not_match));
+				this.activateButton(this.mRightButton,R.string.finish,this.mFinishListener);
+				break;
 		}
 	}
 
@@ -334,39 +399,16 @@ public class VerifyOTRActivity extends XmppActivity implements XmppConnectionSer
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_verify_otr);
 		this.mRemoteFingerprint = (TextView) findViewById(R.id.remote_fingerprint);
-		this.mRemoteJid = (TextView) findViewById(R.id.remote_jid);
 		this.mYourFingerprint = (TextView) findViewById(R.id.your_fingerprint);
-		this.mButtonSharedSecretNegative = (Button) findViewById(R.id.button_shared_secret_negative);
-		this.mButtonSharedSecretPositive = (Button) findViewById(R.id.button_shared_secret_positive);
-		this.mButtonScanQrCode = (Button) findViewById(R.id.button_scan_qr_code);
-		this.mButtonShowQrCode = (Button) findViewById(R.id.button_show_qr_code);
-		this.mButtonShowQrCode.setOnClickListener(this.mShowQrCodeListener);
+		this.mLeftButton = (Button) findViewById(R.id.left_button);
+		this.mRightButton = (Button) findViewById(R.id.right_button);
+		this.mVerificationExplain = (TextView) findViewById(R.id.verification_explanation);
+		this.mStatusMessage = (TextView) findViewById(R.id.status_message);
 		this.mSharedSecretSecret = (EditText) findViewById(R.id.shared_secret_secret);
-		this.mSharedSecretHint = (EditText) findViewById(R.id.shared_secret_hint);
-		this.mStatusMessage= (TextView) findViewById(R.id.status_message);
-		this.mVerificationAreaOne = (RelativeLayout) findViewById(R.id.verification_area_one);
-		this.mVerificationAreaTwo = (RelativeLayout) findViewById(R.id.verification_area_two);
-		this.mErrorNoSession = (TextView) findViewById(R.id.error_no_session);
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.verify_otr, menu);
-		if (mConversation != null && mConversation.isOtrFingerprintVerified()) {
-			MenuItem manuallyVerifyItem = menu.findItem(R.id.manually_verify);
-			manuallyVerifyItem.setVisible(false);
-		}
-		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem menuItem) {
-		if (menuItem.getItemId() == R.id.manually_verify) {
-			showManuallyVerifyDialog();
-			return true;
-		} else {
-			return super.onOptionsItemSelected(menuItem);
-		}
+		this.mSharedSecretHintEditable = (EditText) findViewById(R.id.shared_secret_hint_editable);
+		this.mSharedSecretHint = (TextView) findViewById(R.id.shared_secret_hint);
+		this.mManualVerificationArea = (LinearLayout) findViewById(R.id.manual_verification_area);
+		this.mSmpVerificationArea = (LinearLayout) findViewById(R.id.smp_verification_area);
 	}
 
 	private void showManuallyVerifyDialog() {
