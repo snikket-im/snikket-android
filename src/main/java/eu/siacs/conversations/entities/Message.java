@@ -518,6 +518,10 @@ public class Message extends AbstractEntity {
 		this.mPreviousMessage = null;
 	}
 
+	public boolean isFileOrImage() {
+		return type == TYPE_FILE || type == TYPE_IMAGE;
+	}
+
 	public class ImageParams {
 		public URL url;
 		public long size = 0;

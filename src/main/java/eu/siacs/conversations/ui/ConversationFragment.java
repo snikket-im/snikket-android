@@ -396,7 +396,8 @@ public class ConversationFragment extends Fragment {
 	}
 
 	private void populateContextMenu(ContextMenu menu) {
-		if (this.selectedMessage.getType() != Message.TYPE_STATUS) {
+		final Message m = this.selectedMessage;
+		if (m.getType() != Message.TYPE_STATUS) {
 			activity.getMenuInflater().inflate(R.menu.message_context, menu);
 			menu.setHeaderTitle(R.string.message_options);
 			MenuItem copyText = menu.findItem(R.id.copy_text);
@@ -405,31 +406,28 @@ public class ConversationFragment extends Fragment {
 			MenuItem copyUrl = menu.findItem(R.id.copy_url);
 			MenuItem downloadImage = menu.findItem(R.id.download_image);
 			MenuItem cancelTransmission = menu.findItem(R.id.cancel_transmission);
-			if (this.selectedMessage.getType() != Message.TYPE_TEXT
-					|| this.selectedMessage.getDownloadable() != null) {
+			if (m.getType() != Message.TYPE_TEXT || m.getDownloadable() != null) {
 				copyText.setVisible(false);
-					}
-			if (this.selectedMessage.getType() != Message.TYPE_IMAGE
-					|| this.selectedMessage.getDownloadable() != null) {
+			}
+			if (m.getType() != Message.TYPE_IMAGE || m.getDownloadable() != null) {
 				shareImage.setVisible(false);
-					}
-			if (this.selectedMessage.getStatus() != Message.STATUS_SEND_FAILED) {
+			}
+			if (m.getStatus() != Message.STATUS_SEND_FAILED) {
 				sendAgain.setVisible(false);
 			}
-			if ((this.selectedMessage.getType() != Message.TYPE_IMAGE && this.selectedMessage
-						.getDownloadable() == null)
-					|| this.selectedMessage.getImageParams().url == null) {
+			if ((m.getType() != Message.TYPE_IMAGE && m.getDownloadable() == null)
+					|| m.getImageParams().url == null) {
 				copyUrl.setVisible(false);
-					}
-			if (this.selectedMessage.getType() != Message.TYPE_TEXT
-					|| this.selectedMessage.getDownloadable() != null
-					|| !this.selectedMessage.bodyContainsDownloadable()) {
+			}
+			if (m.getType() != Message.TYPE_TEXT
+					|| m.getDownloadable() != null
+					|| !m.bodyContainsDownloadable()) {
 				downloadImage.setVisible(false);
-					}
-			if (this.selectedMessage.getDownloadable() == null
-					|| this.selectedMessage.getDownloadable() instanceof DownloadablePlaceholder) {
+			}
+			if (!((m.getDownloadable() != null && !(m.getDownloadable() instanceof DownloadablePlaceholder))
+					|| (m.isFileOrImage() && m.getStatus() == Message.STATUS_WAITING))) {
 				cancelTransmission.setVisible(false);
-					}
+			}
 		}
 	}
 
@@ -508,6 +506,8 @@ public class ConversationFragment extends Fragment {
 		Downloadable downloadable = message.getDownloadable();
 		if (downloadable!=null) {
 			downloadable.cancel();
+		} else {
+			activity.xmppConnectionService.markMessage(message,Message.STATUS_SEND_FAILED);
 		}
 	}
 
