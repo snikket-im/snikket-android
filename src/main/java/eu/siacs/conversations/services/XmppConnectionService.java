@@ -2159,6 +2159,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 
 	public void clearConversationHistory(final Conversation conversation) {
 		conversation.clearMessages();
+		conversation.setHasMessagesLeftOnServer(false); //avoid messages getting loaded through mam
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
