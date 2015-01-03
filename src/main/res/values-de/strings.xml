@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="action_settings">Einstellungen</string>
     <string name="action_add">Neue Unterhaltung</string>
     <string name="action_accounts">Konten verwalten</string>
@@ -314,7 +313,7 @@
     <string name="scan_qr_code">Scanne QR-Code</string>
     <string name="show_qr_code">Zeige QR-Code</string>
     <string name="show_block_list">Zeige Sperrliste</string>
-    <string name="account_details">Account Details</string>
+    <string name="account_details">Konto Details</string>
     <string name="verify_otr">Prüfe OTR</string>
     <string name="remote_fingerprint">Fingerabdruck der Gegenseite</string>
     <string name="scan">Scanne</string>
@@ -350,7 +349,7 @@
     <string name="no_application_found_to_open_file">Keine Anwendung zum Öffnen der Datei gefunden</string>
     <string name="could_not_verify_fingerprint">Kann Fingerabdruck nicht überprüfen</string>
     <string name="manually_verify">Manuell überprüfen</string>
-    <string name="are_you_sure_verify_fingerprint">Bist du sicher, dass du die OTR-Fingerabdrücke des Kontakts überprüfen willst?</string>
+    <string name="are_you_sure_verify_fingerprint">Bist du sicher, dass du den OTR-Fingerabdruck des Kontakts überprüfen willst?</string>
     <string name="pref_show_dynamic_tags">Dynamische Tags anzeigen</string>
     <string name="pref_show_dynamic_tags_summary">Zeige schreibgeschützte Tags unterhalb der Kontakte</string>
     <string name="enable_notifications">Aktiviere Benachrichtigungen</string>
@@ -369,9 +368,16 @@
     <string name="could_not_change_password">Passwort kann nicht geändert werden.</string>
     <string name="otr_session_not_started">Sende eine Nachricht, um eine verschlüsselte Unterhaltung zu beginnen</string>
     <string name="ask_question">Frage stellen</string>
-    <string name="smp_explain_question">Falls du mit deinem Kontakt ein gemeinsames Geheimnis hast (z.B. ein Insider-Witz oder was ihr zuletzt gemeinsam zum Mittag gegessen habt), kann dies zur gegenseitigen Überprüfung der Fingerabdrücke genutzt werden.\n\nDu stellst eine Frage oder gibst einen Hinweis und dein Kontakt gibt eine eindeutige Antwort.</string>
+    <string name="smp_explain_question">Falls du mit deinem Kontakt ein gemeinsames Geheimnis hast (z.B. ein Insider-Witz oder was ihr zuletzt gemeinsam zum Mittag gegessen habt), kann dies zur gegenseitigen Überprüfung des Fingerabdrucks genutzt werden.\n\nDu stellst eine Frage oder gibst einen Hinweis und dein Kontakt gibt eine eindeutige Antwort.</string>
     <string name="smp_explain_answer">Dein Kontakt möchte deinen Fingerabdruck mit Hilfe eines gemeinsamen Schlüssels überprüfen. Dein Kontakt hat dazu folgende Frage gestellt.</string>
     <string name="shared_secret_hint_should_not_be_empty">Deine Frage darf nicht leer sein.</string>
     <string name="shared_secret_can_not_be_empty">Dein gemeinsamer Schlüssel darf nicht leer sein</string>
-    <string name="manual_verification_explanation">Vergleiche die angezeigten Fingerabdrücke sorgfältig mit denen deines Kontaktes.\nDu kannst dazu einen sicheren Kommunikationsweg (z.B. verschlüsselte E-Mail oder Telefonanruf) zum Austausch nutzen.</string>
+    <string name="manual_verification_explanation">Vergleiche den angezeigten Fingerabdruck sorgfältig mit dem deines Kontakts.\nDu kannst dazu einen sicheren Kommunikationsweg (z.B. verschlüsselte E-Mail oder Telefonanruf) zum Austausch nutzen.</string>
+    <string name="change_password">Passwort ändern</string>
+	<string name="current_password">Aktuelles Passwort</string>
+	<string name="new_password">Neues Passwort</string>
+	<string name="password_should_not_be_empty">Das Passwort darf nicht leer sein</string>
+    <string name="enable_all_accounts">Alle Konten anschalten</string>
+	<string name="disable_all_accounts">Alle Konten abschalten</string>
+    <string name="perform_action_with">Aktion durchführen mit</string>
 </resources>
