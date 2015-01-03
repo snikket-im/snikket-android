@@ -13,7 +13,10 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URLConnection;
+import java.net.URLDecoder;
+import java.nio.charset.UnsupportedCharsetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -133,13 +136,17 @@ public class ShareWithActivity extends XmppActivity {
 		final String type = getIntent().getType();
 		if (type != null && !type.startsWith("text/")) {
 			this.share.uri = (Uri) getIntent().getParcelableExtra(Intent.EXTRA_STREAM);
-			this.share.image = type.startsWith("image/") || URLConnection.guessContentTypeFromName(share.uri.getPath()).startsWith("image/");
+			try {
+				this.share.image = type.startsWith("image/")
+						|| URLConnection.guessContentTypeFromName(this.share.uri.toString()).startsWith("image/");
+			} catch (final StringIndexOutOfBoundsException ignored) {
+				this.share.image = false;
+			}
 		} else {
 			this.share.text = getIntent().getStringExtra(Intent.EXTRA_TEXT);
 		}
 		if (xmppConnectionServiceBound) {
-			xmppConnectionService.populateWithOrderedConversations(
-					mConversations, this.share.uri == null);
+			xmppConnectionService.populateWithOrderedConversations(mConversations, this.share.uri == null);
 		}
 		super.onStart();
 	}

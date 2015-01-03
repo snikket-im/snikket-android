@@ -56,12 +56,16 @@ public class DownloadableFile extends File {
 
 	public String getMimeType() {
 		String path = this.getAbsolutePath();
-		String mime = URLConnection.guessContentTypeFromName(path);
-		if (mime != null) {
-			return mime;
-		} else if (mime == null && path.endsWith(".webp")) {
-			return "image/webp";
-		} else {
+		try {
+			String mime = URLConnection.guessContentTypeFromName(path.replace("#",""));
+			if (mime != null) {
+				return mime;
+			} else if (mime == null && path.endsWith(".webp")) {
+				return "image/webp";
+			} else {
+				return "";
+			}
+		} catch (final StringIndexOutOfBoundsException e) {
 			return "";
 		}
 	}
