@@ -1,4 +1,14 @@
 ###Changelog
+####Version 0.10
+* Support for Message Archive Management
+* Dynamically load message history
+* Ability to block contacts
+* New UI to verify fingerprints
+* Ability to change password on server
+* removed stream compression
+* quiet hours
+* fixed connection issues on ipv6 servers
+
 ####Version 0.9.3
 * bug fixes
 
