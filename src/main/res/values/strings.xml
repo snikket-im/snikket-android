@@ -403,4 +403,6 @@
 	<string name="current_password">Current password</string>
 	<string name="new_password">New password</string>
 	<string name="password_should_not_be_empty">Password should not be empty</string>
+	<string name="enable_all_accounts">Enable all accounts</string>
+	<string name="disable_all_accounts">Disable all accounts</string>
 </resources>
