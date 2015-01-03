@@ -1,14 +1,14 @@
 package eu.siacs.conversations.entities;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
 
 import eu.siacs.conversations.xmpp.jid.Jid;
 
 public class Roster {
 	final Account account;
-	final ConcurrentHashMap<String, Contact> contacts = new ConcurrentHashMap<>();
+	final HashMap<String, Contact> contacts = new HashMap<>();
 	private String version = null;
 
 	public Roster(Account account) {
@@ -19,23 +19,27 @@ public class Roster {
 		if (jid == null) {
 			return null;
 		}
-		final Contact contact = contacts.get(jid.toBareJid().toString());
-		if (contact != null && contact.showInRoster()) {
-			return contact;
-		} else {
-			return null;
+		synchronized (this.contacts) {
+			Contact contact = contacts.get(jid.toBareJid().toString());
+			if (contact != null && contact.showInRoster()) {
+				return contact;
+			} else {
+				return null;
+			}
 		}
 	}
 
 	public Contact getContact(final Jid jid) {
-		final Jid bareJid = jid.toBareJid();
-		if (contacts.containsKey(bareJid.toString())) {
-			return contacts.get(bareJid.toString());
-		} else {
-			final Contact contact = new Contact(bareJid);
-			contact.setAccount(account);
-			contacts.put(bareJid.toString(), contact);
-			return contact;
+		synchronized (this.contacts) {
+			final Jid bareJid = jid.toBareJid();
+			if (contacts.containsKey(bareJid.toString())) {
+				return contacts.get(bareJid.toString());
+			} else {
+				Contact contact = new Contact(bareJid);
+				contact.setAccount(account);
+				contacts.put(bareJid.toString(), contact);
+				return contact;
+			}
 		}
 	}
 
@@ -46,13 +50,13 @@ public class Roster {
 	}
 
 	public void markAllAsNotInRoster() {
-		for (final Contact contact : getContacts()) {
+		for (Contact contact : getContacts()) {
 			contact.resetOption(Contact.Options.IN_ROSTER);
 		}
 	}
 
 	public void clearSystemAccounts() {
-		for (final Contact contact : getContacts()) {
+		for (Contact contact : getContacts()) {
 			contact.setPhotoUri(null);
 			contact.setSystemName(null);
 			contact.setSystemAccount(null);
@@ -60,13 +64,17 @@ public class Roster {
 	}
 
 	public List<Contact> getContacts() {
-		return new ArrayList<>(this.contacts.values());
+		synchronized (this.contacts) {
+			return new ArrayList<>(this.contacts.values());
+		}
 	}
 
 	public void initContact(final Contact contact) {
 		contact.setAccount(account);
 		contact.setOption(Contact.Options.IN_ROSTER);
-		contacts.put(contact.getJid().toBareJid().toString(), contact);
+		synchronized (this.contacts) {
+			contacts.put(contact.getJid().toBareJid().toString(), contact);
+		}
 	}
 
 	public void setVersion(String version) {
