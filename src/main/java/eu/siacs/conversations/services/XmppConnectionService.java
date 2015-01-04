@@ -1052,11 +1052,13 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 				}
 				this.databaseBackend.createConversation(conversation);
 			}
-			if (query == null) {
-				this.mMessageArchiveService.query(conversation);
-			} else {
-				if (query.getConversation() == null) {
-					this.mMessageArchiveService.query(conversation,query.getStart());
+			if (account.getXmppConnection() != null && account.getXmppConnection().getFeatures().mam()) {
+				if (query == null) {
+					this.mMessageArchiveService.query(conversation);
+				} else {
+					if (query.getConversation() == null) {
+						this.mMessageArchiveService.query(conversation, query.getStart());
+					}
 				}
 			}
 			this.conversations.add(conversation);
