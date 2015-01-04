@@ -430,42 +430,40 @@ public class XmppConnection implements Runnable {
 		return element;
 	}
 
-	private void processIq(final Tag currentTag) throws XmlPullParserException,
-					IOException {
-						final IqPacket packet = (IqPacket) processPacket(currentTag, PACKET_IQ);
+	private void processIq(final Tag currentTag) throws XmlPullParserException, IOException {
+		final IqPacket packet = (IqPacket) processPacket(currentTag, PACKET_IQ);
 
-						if (packet.getId() == null) {
-							return; // an iq packet without id is definitely invalid
-						}
+		if (packet.getId() == null) {
+			return; // an iq packet without id is definitely invalid
+		}
 
-						if (packet instanceof JinglePacket) {
-							if (this.jingleListener != null) {
-								this.jingleListener.onJinglePacketReceived(account,
-										(JinglePacket) packet);
-							}
-						} else {
-							if (packetCallbacks.containsKey(packet.getId())) {
-								final Pair<IqPacket, OnIqPacketReceived> packetCallbackDuple = packetCallbacks.get(packet.getId());
-								// Packets to the server should have responses from the server
-								if (packetCallbackDuple.first.toServer(account)) {
-									if (packet.fromServer(account)) {
-										packetCallbackDuple.second
-											.onIqPacketReceived(account, packet);
-										packetCallbacks.remove(packet.getId());
-									}
-								} else {
-									if (packet.getFrom().equals(packetCallbackDuple.first.getTo())) {
-										packetCallbackDuple.second
-											.onIqPacketReceived(account, packet);
-										packetCallbacks.remove(packet.getId());
-									}
-								}
-							} else if ((packet.getType() == IqPacket.TYPE.GET || packet
-										.getType() == IqPacket.TYPE.SET)
-									&& this.unregisteredIqListener != null) {
-								this.unregisteredIqListener.onIqPacketReceived(account, packet);
-									}
-						}
+		if (packet instanceof JinglePacket) {
+			if (this.jingleListener != null) {
+				this.jingleListener.onJinglePacketReceived(account,(JinglePacket) packet);
+			}
+		} else {
+			if (packetCallbacks.containsKey(packet.getId())) {
+				final Pair<IqPacket, OnIqPacketReceived> packetCallbackDuple = packetCallbacks.get(packet.getId());
+				// Packets to the server should have responses from the server
+				if (packetCallbackDuple.first.toServer(account)) {
+					if (packet.fromServer(account)) {
+						packetCallbackDuple.second.onIqPacketReceived(account, packet);
+						packetCallbacks.remove(packet.getId());
+					} else {
+						Log.e(Config.LOGTAG,account.getJid().toBareJid().toString()+": ignoring spoofed iq packet");
+					}
+				} else {
+					if (packet.getFrom().equals(packetCallbackDuple.first.getTo())) {
+						packetCallbackDuple.second.onIqPacketReceived(account, packet);
+						packetCallbacks.remove(packet.getId());
+					} else {
+						Log.e(Config.LOGTAG,account.getJid().toBareJid().toString()+": ignoring spoofed iq packet");
+					}
+				}
+			} else if (packet.getType() == IqPacket.TYPE.GET|| packet.getType() == IqPacket.TYPE.SET) {
+				this.unregisteredIqListener.onIqPacketReceived(account, packet);
+			}
+		}
 	}
 
 	private void processMessage(final Tag currentTag) throws XmlPullParserException, IOException {
@@ -836,7 +834,7 @@ public class XmppConnection implements Runnable {
 
 	}
 
-	private void sendUnmodifiedIqPacket(final IqPacket packet, final OnIqPacketReceived callback) {
+	private synchronized void sendUnmodifiedIqPacket(final IqPacket packet, final OnIqPacketReceived callback) {
 		if (packet.getId() == null) {
 			final String id = nextRandomId();
 			packet.setAttribute("id", id);
