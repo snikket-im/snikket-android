@@ -71,24 +71,17 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
 		return super.avatarData(items);
 	}
 
-	public static boolean fromServer(final Account account, final IqPacket packet) {
-		return packet.getFrom() == null
-				|| packet.getFrom().equals(account.getServer())
-				|| packet.getFrom().equals(account.getJid().toBareJid())
-				|| packet.getFrom().equals(account.getJid());
-	}
-
 	@Override
 	public void onIqPacketReceived(final Account account, final IqPacket packet) {
-		if (packet.hasChild("query", Xmlns.ROSTER) && fromServer(account, packet)) {
+		if (packet.hasChild("query", Xmlns.ROSTER) && packet.fromServer(account)) {
 			final Element query = packet.findChild("query");
 			// If this is in response to a query for the whole roster:
-			if (packet.getType() == IqPacket.TYPE_RESULT) {
+			if (packet.getType() == IqPacket.TYPE.RESULT) {
 				account.getRoster().markAllAsNotInRoster();
 			}
 			this.rosterItems(account, query);
 		} else if ((packet.hasChild("block", Xmlns.BLOCKING) || packet.hasChild("blocklist", Xmlns.BLOCKING)) &&
-				fromServer(account, packet)) {
+				packet.fromServer(account)) {
 			// Block list or block push.
 			Log.d(Config.LOGTAG, "Received blocklist update from server");
 			final Element blocklist = packet.findChild("blocklist", Xmlns.BLOCKING);
@@ -97,7 +90,7 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
 				(block != null ? block.getChildren() : null);
 			// If this is a response to a blocklist query, clear the block list and replace with the new one.
 			// Otherwise, just update the existing blocklist.
-			if (packet.getType() == IqPacket.TYPE_RESULT) {
+			if (packet.getType() == IqPacket.TYPE.RESULT) {
 				account.clearBlocklist();
 			}
 			if (items != null) {
@@ -116,7 +109,7 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
 			// Update the UI
 			mXmppConnectionService.updateBlocklistUi(OnUpdateBlocklist.Status.BLOCKED);
 		} else if (packet.hasChild("unblock", Xmlns.BLOCKING) &&
-				fromServer(account, packet) && packet.getType() == IqPacket.TYPE_SET) {
+				packet.fromServer(account) && packet.getType() == IqPacket.TYPE.SET) {
 			Log.d(Config.LOGTAG, "Received unblock update from server");
 			final Collection<Element> items = packet.findChild("unblock", Xmlns.BLOCKING).getChildren();
 			if (items.size() == 0) {
@@ -144,12 +137,12 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
 				.discoResponse(packet);
 			account.getXmppConnection().sendIqPacket(response, null);
 		} else if (packet.hasChild("ping", "urn:xmpp:ping")) {
-			final IqPacket response = packet.generateResponse(IqPacket.TYPE_RESULT);
+			final IqPacket response = packet.generateResponse(IqPacket.TYPE.RESULT);
 			mXmppConnectionService.sendIqPacket(account, response, null);
 		} else {
-			if ((packet.getType() == IqPacket.TYPE_GET)
-					|| (packet.getType() == IqPacket.TYPE_SET)) {
-				final IqPacket response = packet.generateResponse(IqPacket.TYPE_ERROR);
+			if ((packet.getType() == IqPacket.TYPE.GET)
+					|| (packet.getType() == IqPacket.TYPE.SET)) {
+				final IqPacket response = packet.generateResponse(IqPacket.TYPE.ERROR);
 				final Element error = response.addChild("error");
 				error.setAttribute("type", "cancel");
 				error.addChild("feature-not-implemented",

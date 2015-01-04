@@ -46,7 +46,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
 					return;
 				}
 			}
-			IqPacket response = packet.generateResponse(IqPacket.TYPE_ERROR);
+			IqPacket response = packet.generateResponse(IqPacket.TYPE.ERROR);
 			Element error = response.addChild("error");
 			error.setAttribute("type", "cancel");
 			error.addChild("item-not-found",
@@ -84,7 +84,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
 			final String proxy = account.getXmppConnection()
 					.findDiscoItemByFeature(xmlns);
 			if (proxy != null) {
-				IqPacket iq = new IqPacket(IqPacket.TYPE_GET);
+				IqPacket iq = new IqPacket(IqPacket.TYPE.GET);
 				iq.setAttribute("to", proxy);
 				iq.query(xmlns);
 				account.getXmppConnection().sendIqPacket(iq,

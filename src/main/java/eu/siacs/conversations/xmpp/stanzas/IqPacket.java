@@ -4,32 +4,18 @@ import eu.siacs.conversations.xml.Element;
 
 public class IqPacket extends AbstractStanza {
 
-	public static final int TYPE_ERROR = -1;
-	public static final int TYPE_SET = 0;
-	public static final int TYPE_RESULT = 1;
-	public static final int TYPE_GET = 2;
-
-	private IqPacket(final String name) {
-		super(name);
+	public static enum TYPE {
+		ERROR,
+		SET,
+		RESULT,
+		GET,
+		INVALID
 	}
 
-	public IqPacket(final int type) {
+	public IqPacket(final TYPE type) {
 		super("iq");
-		switch (type) {
-			case TYPE_SET:
-				this.setAttribute("type", "set");
-				break;
-			case TYPE_GET:
-				this.setAttribute("type", "get");
-				break;
-			case TYPE_RESULT:
-				this.setAttribute("type", "result");
-				break;
-			case TYPE_ERROR:
-				this.setAttribute("type", "error");
-				break;
-			default:
-				break;
+		if (type != TYPE.INVALID) {
+			this.setAttribute("type", type.toString().toLowerCase());
 		}
 	}
 
@@ -51,23 +37,23 @@ public class IqPacket extends AbstractStanza {
 		return query();
 	}
 
-	public int getType() {
+	public TYPE getType() {
 		final String type = getAttribute("type");
 		switch (type) {
 			case "error":
-				return TYPE_ERROR;
+				return TYPE.ERROR;
 			case "result":
-				return TYPE_RESULT;
+				return TYPE.RESULT;
 			case "set":
-				return TYPE_SET;
+				return TYPE.SET;
 			case "get":
-				return TYPE_GET;
+				return TYPE.GET;
 			default:
-				return 1000;
+				return TYPE.INVALID;
 		}
 	}
 
-	public IqPacket generateResponse(final int type) {
+	public IqPacket generateResponse(final TYPE type) {
 		final IqPacket packet = new IqPacket(type);
 		packet.setTo(this.getFrom());
 		packet.setId(this.getId());
