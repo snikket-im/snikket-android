@@ -104,7 +104,7 @@ public class XmppConnection implements Runnable {
 	private long lastConnect = 0;
 	private long lastSessionStarted = 0;
 	private int attempt = 0;
-	private final Map<String, PacketReceived> packetCallbacks = new Hashtable<>();
+	private final Map<String, OnIqPacketReceived> packetCallbacks = new Hashtable<>();
 	private OnPresencePacketReceived presenceListener = null;
 	private OnJinglePacketReceived jingleListener = null;
 	private OnIqPacketReceived unregisteredIqListener = null;
@@ -444,50 +444,24 @@ public class XmppConnection implements Runnable {
 							}
 						} else {
 							if (packetCallbacks.containsKey(packet.getId())) {
-								if (packetCallbacks.get(packet.getId()) instanceof OnIqPacketReceived) {
-									((OnIqPacketReceived) packetCallbacks.get(packet.getId()))
-										.onIqPacketReceived(account, packet);
-								}
-
+								packetCallbacks.get(packet.getId()).onIqPacketReceived(account, packet);
 								packetCallbacks.remove(packet.getId());
 							} else if ((packet.getType() == IqPacket.TYPE_GET || packet
 										.getType() == IqPacket.TYPE_SET)
 									&& this.unregisteredIqListener != null) {
 								this.unregisteredIqListener.onIqPacketReceived(account, packet);
-									}
+							}
 						}
 	}
 
-	private void processMessage(final Tag currentTag) throws XmlPullParserException,
-					IOException {
-						final MessagePacket packet = (MessagePacket) processPacket(currentTag,
-								PACKET_MESSAGE);
-						final String id = packet.getAttribute("id");
-						if ((id != null) && (packetCallbacks.containsKey(id))) {
-							if (packetCallbacks.get(id) instanceof OnMessagePacketReceived) {
-								((OnMessagePacketReceived) packetCallbacks.get(id))
-									.onMessagePacketReceived(account, packet);
-							}
-							packetCallbacks.remove(id);
-						} else if (this.messageListener != null) {
-							this.messageListener.onMessagePacketReceived(account, packet);
-						}
+	private void processMessage(final Tag currentTag) throws XmlPullParserException, IOException {
+		final MessagePacket packet = (MessagePacket) processPacket(currentTag,PACKET_MESSAGE);
+		this.messageListener.onMessagePacketReceived(account, packet);
 	}
 
-	private void processPresence(final Tag currentTag) throws XmlPullParserException,
-					IOException {
-						PresencePacket packet = (PresencePacket) processPacket(currentTag,
-								PACKET_PRESENCE);
-						final String id = packet.getAttribute("id");
-						if ((id != null) && (packetCallbacks.containsKey(id))) {
-							if (packetCallbacks.get(id) instanceof OnPresencePacketReceived) {
-								((OnPresencePacketReceived) packetCallbacks.get(id))
-									.onPresencePacketReceived(account, packet);
-							}
-							packetCallbacks.remove(id);
-						} else if (this.presenceListener != null) {
-							this.presenceListener.onPresencePacketReceived(account, packet);
-						}
+	private void processPresence(final Tag currentTag) throws XmlPullParserException, IOException {
+		PresencePacket packet = (PresencePacket) processPacket(currentTag, PACKET_PRESENCE);
+		this.presenceListener.onPresencePacketReceived(account, packet);
 	}
 
 	private void sendStartTLS() throws IOException {
@@ -497,8 +471,7 @@ public class XmppConnection implements Runnable {
 	}
 
 	private SharedPreferences getPreferences() {
-		return PreferenceManager
-			.getDefaultSharedPreferences(applicationContext);
+		return PreferenceManager.getDefaultSharedPreferences(applicationContext);
 	}
 
 	private boolean enableLegacySSL() {
@@ -676,7 +649,7 @@ public class XmppConnection implements Runnable {
 		final IqPacket iq = new IqPacket(IqPacket.TYPE_SET);
 		iq.addChild("bind", "urn:ietf:params:xml:ns:xmpp-bind")
 			.addChild("resource").setContent(account.getResource());
-		this.sendUnboundIqPacket(iq, new OnIqPacketReceived() {
+		this.sendUnmodifiedIqPacket(iq, new OnIqPacketReceived() {
 			@Override
 			public void onIqPacketReceived(final Account account, final IqPacket packet) {
 				final Element bind = packet.findChild("bind");
@@ -719,12 +692,10 @@ public class XmppConnection implements Runnable {
 			}
 		});
 		if (this.streamFeatures.hasChild("session")) {
-			Log.d(Config.LOGTAG, account.getJid().toBareJid()
-					+ ": sending deprecated session");
+			Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": sending deprecated session");
 			final IqPacket startSession = new IqPacket(IqPacket.TYPE_SET);
-			startSession.addChild("session",
-					"urn:ietf:params:xml:ns:xmpp-session");
-			this.sendUnboundIqPacket(startSession, null);
+			startSession.addChild("session","urn:ietf:params:xml:ns:xmpp-session");
+			this.sendUnmodifiedIqPacket(startSession, null);
 		}
 	}
 
@@ -845,49 +816,44 @@ public class XmppConnection implements Runnable {
 		return new BigInteger(50, mXmppConnectionService.getRNG()).toString(32);
 	}
 
-	public void sendIqPacket(final IqPacket packet, final PacketReceived callback) {
-		if (packet.getId() == null) {
-			final String id = nextRandomId();
-			packet.setAttribute("id", id);
-		}
+	public void sendIqPacket(final IqPacket packet, final OnIqPacketReceived callback) {
 		packet.setFrom(account.getJid());
-		this.sendPacket(packet, callback);
+		this.sendUnmodifiedIqPacket(packet,callback);
+
 	}
 
-	public void sendUnboundIqPacket(final IqPacket packet, final PacketReceived callback) {
+	private void sendUnmodifiedIqPacket(final IqPacket packet, final OnIqPacketReceived callback) {
 		if (packet.getId() == null) {
 			final String id = nextRandomId();
 			packet.setAttribute("id", id);
 		}
-		this.sendPacket(packet, callback);
-	}
-
-	public void sendMessagePacket(final MessagePacket packet) {
-		this.sendPacket(packet, null);
-	}
-
-	public void sendPresencePacket(final PresencePacket packet) {
-		this.sendPacket(packet, null);
-	}
-
-	private synchronized void sendPacket(final AbstractStanza packet, final PacketReceived callback) {
-		if (packet.getName().equals("iq") || packet.getName().equals("message")
-				|| packet.getName().equals("presence")) {
-			++stanzasSent;
-				}
-		tagWriter.writeStanzaAsync(packet);
-		if (packet instanceof MessagePacket && packet.getId() != null
-				&& this.streamId != null) {
-			Log.d(Config.LOGTAG, "request delivery report for stanza "
-					+ stanzasSent);
-			this.messageReceipts.put(stanzasSent, packet.getId());
-			tagWriter.writeStanzaAsync(new RequestPacket(this.smVersion));
-				}
 		if (callback != null) {
 			if (packet.getId() == null) {
 				packet.setId(nextRandomId());
 			}
 			packetCallbacks.put(packet.getId(), callback);
+		}
+		this.sendPacket(packet);
+	}
+
+	public void sendMessagePacket(final MessagePacket packet) {
+		this.sendPacket(packet);
+	}
+
+	public void sendPresencePacket(final PresencePacket packet) {
+		this.sendPacket(packet);
+	}
+
+	private synchronized void sendPacket(final AbstractStanza packet) {
+		final String name = packet.getName();
+		if (name.equals("iq") || name.equals("message") || name.equals("presence")) {
+			++stanzasSent;
+		}
+		tagWriter.writeStanzaAsync(packet);
+		if (packet instanceof MessagePacket && packet.getId() != null && this.streamId != null) {
+			Log.d(Config.LOGTAG, "request delivery report for stanza " + stanzasSent);
+			this.messageReceipts.put(stanzasSent, packet.getId());
+			tagWriter.writeStanzaAsync(new RequestPacket(this.smVersion));
 		}
 	}
 
@@ -1044,11 +1010,11 @@ public class XmppConnection implements Runnable {
 	}
 
 	public void sendActive() {
-		this.sendPacket(new ActivePacket(), null);
+		this.sendPacket(new ActivePacket());
 	}
 
 	public void sendInactive() {
-		this.sendPacket(new InactivePacket(), null);
+		this.sendPacket(new InactivePacket());
 	}
 
 	public class Features {

@@ -803,7 +803,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		final IqPacket iqPacket = new IqPacket(IqPacket.TYPE_GET);
 		final Element query = iqPacket.query("jabber:iq:private");
 		query.addChild("storage", "storage:bookmarks");
-		final PacketReceived callback = new OnIqPacketReceived() {
+		final OnIqPacketReceived callback = new OnIqPacketReceived() {
 
 			@Override
 			public void onIqPacketReceived(final Account account, final IqPacket packet) {
@@ -2090,7 +2090,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		}
 	}
 
-	public void sendIqPacket(final Account account, final IqPacket packet, final PacketReceived callback) {
+	public void sendIqPacket(final Account account, final IqPacket packet, final OnIqPacketReceived callback) {
 		final XmppConnection connection = account.getXmppConnection();
 		if (connection != null) {
 			connection.sendIqPacket(packet, callback);
