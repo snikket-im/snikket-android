@@ -395,7 +395,7 @@ public class Message extends AbstractEntity {
 			String[] pathParts = url.getPath().split("/");
 			String filename;
 			if (pathParts.length > 0) {
-				filename = pathParts[pathParts.length - 1];
+				filename = pathParts[pathParts.length - 1].toLowerCase();
 			} else {
 				return false;
 			}

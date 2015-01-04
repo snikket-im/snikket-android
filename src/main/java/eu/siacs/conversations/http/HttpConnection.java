@@ -65,7 +65,7 @@ public class HttpConnection implements Downloadable {
 		this.message.setDownloadable(this);
 		try {
 			mUrl = new URL(message.getBody());
-			String path = mUrl.getPath();
+			String path = mUrl.getPath().toLowerCase();
 			if (path != null && (path.endsWith(".pgp") || path.endsWith(".gpg"))) {
 				this.message.setEncryption(Message.ENCRYPTION_PGP);
 			} else if (message.getEncryption() != Message.ENCRYPTION_OTR) {

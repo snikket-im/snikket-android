@@ -280,7 +280,7 @@ public class JingleConnection implements Downloadable {
 			Element fileNameElement = fileOffer.findChild("name");
 			if (fileNameElement != null) {
 				String[] filename = fileNameElement.getContent()
-						.toLowerCase(Locale.US).split("\\.");
+						.toLowerCase(Locale.US).toLowerCase().split("\\.");
 				if (Arrays.asList(VALID_IMAGE_EXTENSIONS).contains(
 						filename[filename.length - 1])) {
 					message.setType(Message.TYPE_IMAGE);
