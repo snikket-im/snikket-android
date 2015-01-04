@@ -245,7 +245,7 @@
     <string name="or_long_press_for_default">(Oder klicke lange, um Standard wiederherzustellen)</string>
     <string name="error_publish_avatar_no_server_support">Dein Server unterstützt die Veröffentlichung von Avataren nicht.</string>
     <string name="private_message">private Nachricht</string>
-    <string name="private_message_to">an %s</string>
+    <string name="private_message_to">an %s:</string>
     <string name="send_private_message_to">Sende private Nachricht an %s</string>
     <string name="connect">Verbinden</string>
     <string name="account_already_exists">Das Konto existiert bereits</string>
