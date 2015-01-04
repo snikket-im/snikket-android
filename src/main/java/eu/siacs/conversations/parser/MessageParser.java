@@ -245,6 +245,10 @@ public class MessageParser extends AbstractParser implements
 				return null;
 			}
 		}
+		if (message.hasChild("x","http://jabber.org/protocol/muc#user")
+				&& "chat".equals(message.getAttribute("type"))) {
+			return null;
+		}
 		Conversation conversation = mXmppConnectionService
 				.findOrCreateConversation(account, fullJid.toBareJid(), false);
 		String pgpBody = getPgpBody(message);
@@ -482,7 +486,6 @@ public class MessageParser extends AbstractParser implements
 	public void onMessagePacketReceived(Account account, MessagePacket packet) {
 		Message message = null;
 		this.parseNick(packet, account);
-
 		if ((packet.getType() == MessagePacket.TYPE_CHAT || packet.getType() == MessagePacket.TYPE_NORMAL)) {
 			if ((packet.getBody() != null)
 					&& (packet.getBody().startsWith("?OTR"))) {
@@ -490,9 +493,7 @@ public class MessageParser extends AbstractParser implements
 				if (message != null) {
 					message.markUnread();
 				}
-			} else if (packet.hasChild("body")
-					&& !(packet.hasChild("x",
-					"http://jabber.org/protocol/muc#user"))) {
+			} else if (packet.hasChild("body")) {
 				message = this.parseChat(packet, account);
 				if (message != null) {
 					message.markUnread();
