@@ -285,6 +285,9 @@ Make sure to have ANDROID_HOME point to your Android SDK
     cd Conversations
     ./gradlew build
 
+
+[![Build Status](https://travis-ci.org/siacs/Conversations.svg?branch=development)](https://travis-ci.org/siacs/Conversations)
+
 ### How do I update/add external libraries?
 
 If the library you want to update is in Maven Central or JCenter (or has its own
