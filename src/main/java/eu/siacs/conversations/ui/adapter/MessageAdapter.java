@@ -103,9 +103,9 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		if (message.getType() == Message.TYPE_IMAGE || message.getType() == Message.TYPE_FILE || message.getDownloadable() != null) {
 			ImageParams params = message.getImageParams();
 			if (params.size > (1.5 * 1024 * 1024)) {
-				filesize = params.size / (1024 * 1024)+ " MB";
+				filesize = params.size / (1024 * 1024)+ " MiB";
 			} else if (params.size > 0) {
-				filesize = params.size / 1024 + " KB";
+				filesize = params.size / 1024 + " KiB";
 			}
 			if (message.getDownloadable() != null && message.getDownloadable().getStatus() == Downloadable.STATUS_FAILED) {
 				error = true;
