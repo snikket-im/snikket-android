@@ -12,6 +12,10 @@
     <string name="action_edit_contact">Upravit jméno</string>
     <string name="action_add_phone_book">Přidat do telefonního seznamu</string>
     <string name="action_delete_contact">Smazat ze seznamu</string>
+    <string name="action_block_contact">Zablokovat kontakt</string>
+    <string name="action_unblock_contact">Odblokovat kontakt</string>
+    <string name="action_block_domain">Zablokovat doménu</string>
+    <string name="action_unblock_domain">Odblokovat doménu</string>
     <string name="title_activity_manage_accounts">Nastavení účtů</string>
     <string name="title_activity_settings">Nastavení</string>
     <string name="title_activity_conference_details">Detaily konference</string>
@@ -20,6 +24,7 @@
     <string name="title_activity_sharewith">Sdílet s konverzací</string>
     <string name="title_activity_start_conversation">Začít konverzaci</string>
     <string name="title_activity_choose_contact">Vybrat kontakt</string>
+    <string name="title_activity_block_list">Seznam blokovaných</string>
     <string name="just_now">právě teď</string>
     <string name="minute_ago">před minutou</string>
     <string name="minutes_ago">před %d minutami</string>
@@ -33,8 +38,14 @@
     <string name="participant">Účastník</string>
     <string name="visitor">Návštěvník</string>
     <string name="remove_contact_text">Chcete odstranit %s ze svého seznamu? Konverzace spojené s tímto kontaktem nebudou odstraněny.</string>
+    <string name="block_contact_text">Chcete zablokovat příjem zpráv od %s?</string>
+    <string name="unblock_contact_text">Chcete odblokovat příjem zpráv od %s?</string>
+    <string name="block_domain_text">Zablokovat všechny kontakty z %s?</string>
+    <string name="unblock_domain_text">Odblokovat všechny kontakty z %s?</string>
+    <string name="contact_blocked">Kontakty zablokovány</string>
     <string name="remove_bookmark_text">Chcete odstranit %s ze záložek? Konverzace spojené s touto záložkou nebudou odstraněny.</string>
     <string name="register_account">Registrovat nový účet na serveru</string>
+    <string name="change_password_on_server">Změnit heslo na serveru</string>
     <string name="share_with">Sdílet s</string>
     <string name="start_conversation">Začít konverzaci</string>
     <string name="invite_contact">Pozvat kontakt</string>
@@ -44,6 +55,8 @@
     <string name="add">Přidat</string>
     <string name="edit">Upravit</string>
     <string name="delete">Smazat</string>
+    <string name="block">Zablokovat</string>
+    <string name="unblock">Odblokovat</string>
     <string name="save">Uložit</string>
     <string name="ok">OK</string>
     <string name="crash_report_title">Aplikace Konverzace přestala reagovat</string>
@@ -173,7 +186,12 @@
     <string name="contact_status_offline">offline</string>
     <string name="muc_details_conference">Konference</string>
     <string name="muc_details_other_members">Ostatní členové</string>
+    <string name="server_info_show_more">Údaje serveru</string>
+    <string name="server_info_mam">XEP-0313: MAM</string>
     <string name="server_info_carbon_messages">XEP-0280: Kopie zpráv</string>
+    <string name="server_info_csi">XEP-0352: Zobrazování stavu klienta</string>
+    <string name="server_info_blocking">XEP-0191: Příkaz blokování</string>
+    <string name="server_info_roster_version">XEP-0237: Verzování seznamu</string>
     <string name="server_info_stream_management">XEP-0198: Nastavení proudu</string>
     <string name="server_info_pep">XEP-0163: PEP (Avatars)</string>
     <string name="server_info_available">dostupný</string>
@@ -201,6 +219,8 @@
     <string name="join_conference">Připojit ke konferenci</string>
     <string name="delete_contact">Smazat kontakt</string>
     <string name="view_contact_details">Zobrazit detaily kontaktu</string>
+    <string name="block_contact">Zablokovat kontakt</string>
+    <string name="unblock_contact">Odblokovat kontakt</string>
     <string name="create">Vytvořit</string>
     <string name="contact_already_exists">Kontakt již existuje</string>
     <string name="join">Vstoupit</string>
@@ -293,6 +313,7 @@
     <string name="image_transmission_failed">Přenos obrázku selhal</string>
     <string name="scan_qr_code">Skenovat QR kód</string>
     <string name="show_qr_code">Zobrazit QR kód</string>
+    <string name="show_block_list">Zobrazit seznam blokovaných</string>
     <string name="account_details">Detaily účtu</string>
     <string name="verify_otr">Ověřit OTR</string>
     <string name="remote_fingerprint">Vzdálený otisk</string>
@@ -343,4 +364,21 @@
     <string name="copy_otr_clipboard_description">Zkopírovat otisk OTR do schránky</string>
     <string name="fetching_history_from_server">Načíst historii ze serveru</string>
     <string name="no_more_history_on_server">Na serveru není žádná další historie</string>
+    <string name="updating">Aktualizuji...</string>
+    <string name="password_changed">Heslo změněno!</string>
+    <string name="could_not_change_password">Nelze změnit heslo</string>
+    <string name="otr_session_not_started">Zaslat zprávu pro spuštění šifrovaného chatu</string>
+    <string name="ask_question">Položit otázku</string>
+    <string name="smp_explain_question">Pokud máte vy i váš kontakt společné tajemství které neví nikdo jiný (něco jako společný vtip nebo co jste spolu měli k obědu při svém posledním setkání), můžete toto tajemství použít pro ověření pravosti svých šifrovacích otisků.\n\nZadáte nápovědu nebo otázku a kontakt na ni správně odpoví.</string>
+    <string name="smp_explain_answer">Váš kontakt by rád ověřil pravost šifrovacího otisku dotazem na společné tajemství. Váš kontakt zadal následující nápovědu nebo otázku pro zodpovězení tajemství.</string>
+    <string name="shared_secret_hint_should_not_be_empty">Nápověda by měla být vyplněna</string>
+    <string name="shared_secret_can_not_be_empty">Společně tajemství nemůže být nevyplněno</string>
+    <string name="manual_verification_explanation">Opatrně porovnejte otisk zobrazený níže s otiskem vašeho kontatku.\nMůžete využít jakoukoliv bezpečnou formu komunikace pro jejich výměnu, jako třeba šifrovaný email nebo telefonát.</string>
+	<string name="change_password">Změnit heslo</string>
+	<string name="current_password">Současné heslo</string>
+	<string name="new_password">Nové heslo</string>
+	<string name="password_should_not_be_empty">Heslo nemá být prázdné</string>
+	<string name="enable_all_accounts">Povolit všechny účty</string>
+	<string name="disable_all_accounts">Vypnout všechny účty</string>
+	<string name="perform_action_with">Provést akci s</string>
 </resources>
