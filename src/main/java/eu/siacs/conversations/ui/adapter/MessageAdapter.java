@@ -10,6 +10,7 @@ import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
@@ -23,6 +24,7 @@ import android.widget.Toast;
 
 import java.util.List;
 
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
@@ -430,6 +432,11 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 			}
 			return view;
 		} else if (type == NULL) {
+			if (viewHolder.message_box != null) {
+				Log.e(Config.LOGTAG, "detected type=NULL but with wrong cached view");
+				view = activity.getLayoutInflater().inflate(R.layout.message_null, parent, false);
+				view.setTag(new ViewHolder());
+			}
 			if (position == getCount() - 1) {
 				view.getLayoutParams().height = 1;
 			} else {
@@ -437,6 +444,9 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 
 			}
 			view.setLayoutParams(view.getLayoutParams());
+			return view;
+		} else if (message.wasMergedIntoPrevious()) {
+			Log.e(Config.LOGTAG,"detected wasMergedIntoPrevious with wrong type");
 			return view;
 		} else if (viewHolder.messageBody == null || viewHolder.image == null) {
 			return view; //avoiding weird platform bugs
