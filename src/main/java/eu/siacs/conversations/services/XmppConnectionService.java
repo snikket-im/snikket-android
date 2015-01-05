@@ -188,12 +188,12 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 					}
 				}
 				syncDirtyContacts(account);
-				scheduleWakeupCall(Config.PING_MAX_INTERVAL, true);
+				scheduleWakeUpCall(Config.PING_MAX_INTERVAL,account.getUuid().hashCode());
 			} else if (account.getStatus() == Account.State.OFFLINE) {
 				resetSendingToWaiting(account);
 				if (!account.isOptionSet(Account.OPTION_DISABLED)) {
 					int timeToReconnect = mRandom.nextInt(50) + 10;
-					scheduleWakeupCall(timeToReconnect, false);
+					scheduleWakeUpCall(timeToReconnect,account.getUuid().hashCode());
 				}
 			} else if (account.getStatus() == Account.State.REGISTRATION_SUCCESSFUL) {
 				databaseBackend.updateAccount(account);
@@ -206,7 +206,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 							+ ": error connecting account. try again in "
 							+ next + "s for the "
 							+ (connection.getAttempt() + 1) + " time");
-					scheduleWakeupCall((int) (next * 1.2), false);
+					scheduleWakeUpCall(next,account.getUuid().hashCode());
 				}
 					}
 			getNotificationService().updateErrorNotification();
@@ -241,8 +241,6 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 
 	private OpenPgpServiceConnection pgpServiceConnection;
 	private PgpEngine mPgpEngine = null;
-	private Intent pingIntent;
-	private PendingIntent pendingPingIntent = null;
 	private WakeLock wakeLock;
 	private PowerManager pm;
 	private final OnBindListener mOnBindListener = new OnBindListener() {
@@ -388,16 +386,17 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		if (intent != null && intent.getAction() != null) {
-			if (intent.getAction().equals(ACTION_MERGE_PHONE_CONTACTS)) {
+		final String action = intent == null ? null : intent.getAction();
+		if (action != null) {
+			if (action.equals(ACTION_MERGE_PHONE_CONTACTS)) {
 				PhoneHelper.loadPhoneContacts(getApplicationContext(), new ArrayList<Bundle>(), this);
 				return START_STICKY;
-			} else if (intent.getAction().equals(Intent.ACTION_SHUTDOWN)) {
+			} else if (action.equals(Intent.ACTION_SHUTDOWN)) {
 				logoutAndSave();
 				return START_NOT_STICKY;
-			} else if (intent.getAction().equals(ACTION_CLEAR_NOTIFICATION)) {
+			} else if (action.equals(ACTION_CLEAR_NOTIFICATION)) {
 				mNotificationService.clear();
-			} else if (intent.getAction().equals(ACTION_DISABLE_FOREGROUND)) {
+			} else if (action.equals(ACTION_DISABLE_FOREGROUND)) {
 				getPreferences().edit().putBoolean("keep_foreground_service",false).commit();
 				toggleForegroundService();
 			}
@@ -419,37 +418,36 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 						}
 					}
 					if (account.getStatus() == Account.State.ONLINE) {
-						long lastReceived = account.getXmppConnection()
-							.getLastPacketReceived();
-						long lastSent = account.getXmppConnection()
-							.getLastPingSent();
-						if (lastSent - lastReceived >= Config.PING_TIMEOUT * 1000) {
-							Log.d(Config.LOGTAG, account.getJid()
-									+ ": ping timeout");
+						long lastReceived = account.getXmppConnection().getLastPacketReceived();
+						long lastSent = account.getXmppConnection().getLastPingSent();
+						long pingInterval = "ui".equals(action) ? Config.PING_MIN_INTERVAL * 1000 : Config.PING_MAX_INTERVAL * 1000;
+						long secondsToNextPing = ((lastReceived + pingInterval) - SystemClock.elapsedRealtime()) / 1000;
+						if (lastSent > lastReceived && (lastSent +  Config.PING_TIMEOUT * 1000) < SystemClock.elapsedRealtime()) {
+							Log.d(Config.LOGTAG, account.getJid().toBareJid()+ ": ping timeout");
 							this.reconnectAccount(account, true);
-						} else if (SystemClock.elapsedRealtime() - lastReceived >= Config.PING_MIN_INTERVAL * 1000) {
+						} else if (secondsToNextPing <= 0) {
 							account.getXmppConnection().sendPing();
-							this.scheduleWakeupCall(2, false);
+							Log.d(Config.LOGTAG, account.getJid().toBareJid()+" send ping");
+							this.scheduleWakeUpCall(Config.PING_TIMEOUT,account.getUuid().hashCode());
+						} else {
+							this.scheduleWakeUpCall((int) secondsToNextPing, account.getUuid().hashCode());
 						}
 					} else if (account.getStatus() == Account.State.OFFLINE) {
 						if (account.getXmppConnection() == null) {
-							account.setXmppConnection(this
-									.createConnection(account));
+							account.setXmppConnection(this.createConnection(account));
 						}
 						new Thread(account.getXmppConnection()).start();
 					} else if ((account.getStatus() == Account.State.CONNECTING)
 							&& ((SystemClock.elapsedRealtime() - account
 									.getXmppConnection().getLastConnect()) / 1000 >= Config.CONNECT_TIMEOUT)) {
-						Log.d(Config.LOGTAG, account.getJid()
-								+ ": time out during connect reconnecting");
+						Log.d(Config.LOGTAG, account.getJid()+ ": time out during connect reconnecting");
 						reconnectAccount(account, true);
 					} else {
 						if (account.getXmppConnection().getTimeToNextAttempt() <= 0) {
 							reconnectAccount(account, true);
 						}
 					}
-					// in any case. reschedule wakup call
-					this.scheduleWakeupCall(Config.PING_MAX_INTERVAL, true);
+
 				}
 				if (mOnAccountUpdate != null) {
 					mOnAccountUpdate.onAccountUpdate();
@@ -546,42 +544,16 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		stopSelf();
 	}
 
-	protected void scheduleWakeupCall(int seconds, boolean ping) {
-		long timeToWake = SystemClock.elapsedRealtime() + seconds * 1000;
+	protected void scheduleWakeUpCall(int seconds, int requestCode) {
+		final long timeToWake = SystemClock.elapsedRealtime() + seconds * 1000;
+
 		Context context = getApplicationContext();
-		AlarmManager alarmManager = (AlarmManager) context
-			.getSystemService(Context.ALARM_SERVICE);
+		AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
-		if (ping) {
-			if (this.pingIntent == null) {
-				this.pingIntent = new Intent(context, EventReceiver.class);
-				this.pingIntent.setAction("ping");
-				this.pingIntent.putExtra("time", timeToWake);
-				this.pendingPingIntent = PendingIntent.getBroadcast(context, 0,
-						this.pingIntent, 0);
-				alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-						timeToWake, pendingPingIntent);
-			} else {
-				long scheduledTime = this.pingIntent.getLongExtra("time", 0);
-				if (scheduledTime < SystemClock.elapsedRealtime()
-						|| (scheduledTime > timeToWake)) {
-					this.pingIntent.putExtra("time", timeToWake);
-					alarmManager.cancel(this.pendingPingIntent);
-					this.pendingPingIntent = PendingIntent.getBroadcast(
-							context, 0, this.pingIntent, 0);
-					alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-							timeToWake, pendingPingIntent);
-						}
-			}
-		} else {
-			Intent intent = new Intent(context, EventReceiver.class);
-			intent.setAction("ping_check");
-			PendingIntent alarmIntent = PendingIntent.getBroadcast(context, 0,
-					intent, 0);
-			alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, timeToWake,
-					alarmIntent);
-		}
-
+		Intent intent = new Intent(context, EventReceiver.class);
+		intent.setAction("ping");
+		PendingIntent alarmIntent = PendingIntent.getBroadcast(context, requestCode, intent, 0);
+		alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, timeToWake, alarmIntent);
 	}
 
 	public XmppConnection createConnection(final Account account) {
@@ -1862,8 +1834,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 					}
 					Thread thread = new Thread(account.getXmppConnection());
 					thread.start();
-					scheduleWakeupCall((int) (Config.CONNECT_TIMEOUT * 1.2),
-							false);
+					scheduleWakeUpCall(Config.CONNECT_TIMEOUT,account.getUuid().hashCode());
 				} else {
 					account.getRoster().clearPresences();
 					account.setXmppConnection(null);
