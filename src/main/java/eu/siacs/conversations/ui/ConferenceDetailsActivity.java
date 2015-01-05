@@ -31,6 +31,7 @@ import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Bookmark;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
+import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.entities.MucOptions.User;
 import eu.siacs.conversations.services.XmppConnectionService.OnMucRosterUpdate;
 import eu.siacs.conversations.services.XmppConnectionService.OnConversationUpdate;
@@ -59,6 +60,8 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 	private List<User> users = new ArrayList<>();
 	private User mSelectedUser = null;
 
+	private boolean mAdvancedMode = false;
+
 	private UiCallback<Conversation> renameCallback = new UiCallback<Conversation>() {
 		@Override
 		public void success(Conversation object) {
@@ -66,7 +69,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 				@Override
 				public void run() {
 					Toast.makeText(ConferenceDetailsActivity.this,getString(R.string.your_nick_has_been_changed),Toast.LENGTH_SHORT).show();
-					populateView();
+					updateView();
 				}
 			});
 
@@ -94,7 +97,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 
 			@Override
 			public void run() {
-				populateView();
+				updateView();
 			}
 		});
 	}
@@ -105,7 +108,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 
 			@Override
 			public void run() {
-				populateView();
+				updateView();
 			}
 		});
 	}
@@ -171,21 +174,14 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 			case R.id.action_delete_bookmark:
 				deleteBookmark();
 				break;
+			case R.id.action_advanced_mode:
+				this.mAdvancedMode = !menuItem.isChecked();
+				menuItem.setChecked(this.mAdvancedMode);
+				invalidateOptionsMenu();
+				updateView();
+				break;
 		}
 		return super.onOptionsItemSelected(menuItem);
-	}
-
-	public String getReadableRole(int role) {
-		switch (role) {
-			case User.ROLE_MODERATOR:
-				return getString(R.string.moderator);
-			case User.ROLE_PARTICIPANT:
-				return getString(R.string.participant);
-			case User.ROLE_VISITOR:
-				return getString(R.string.visitor);
-			default:
-				return "";
-		}
 	}
 
 	@Override
@@ -201,6 +197,8 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		MenuItem menuItemSaveBookmark = menu.findItem(R.id.action_save_as_bookmark);
 		MenuItem menuItemDeleteBookmark = menu.findItem(R.id.action_delete_bookmark);
+		MenuItem menuItemAdvancedMode = menu.findItem(R.id.action_advanced_mode);
+		menuItemAdvancedMode.setChecked(mAdvancedMode);
 		Account account = mConversation.getAccount();
 		if (account.hasBookmarkFor(mConversation.getJid().toBareJid())) {
 			menuItemSaveBookmark.setVisible(false);
@@ -290,16 +288,15 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 			this.mConversation = xmppConnectionService
 				.findConversationByUuid(uuid);
 			if (this.mConversation != null) {
-				populateView();
+				updateView();
 			}
 		}
 	}
 
-	private void populateView() {
+	private void updateView() {
 		mAccountJid.setText(getString(R.string.using_account, mConversation
 					.getAccount().getJid().toBareJid()));
-		mYourPhoto.setImageBitmap(avatarService().get(
-					mConversation.getAccount(), getPixel(48)));
+		mYourPhoto.setImageBitmap(avatarService().get(mConversation.getAccount(), getPixel(48)));
 		setTitle(mConversation.getName());
 		mFullJid.setText(mConversation.getJid().toBareJid().toString());
 		mYourNick.setText(mConversation.getMucOptions().getActualNick());
@@ -307,18 +304,12 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 		if (mConversation.getMucOptions().online()) {
 			mMoreDetails.setVisibility(View.VISIBLE);
 			User self = mConversation.getMucOptions().getSelf();
-			switch (self.getAffiliation()) {
-				case User.AFFILIATION_ADMIN:
-					mRoleAffiliaton.setText(getReadableRole(self.getRole()) + " ("
-							+ getString(R.string.admin) + ")");
-					break;
-				case User.AFFILIATION_OWNER:
-					mRoleAffiliaton.setText(getReadableRole(self.getRole()) + " ("
-							+ getString(R.string.owner) + ")");
-					break;
-				default:
-					mRoleAffiliaton.setText(getReadableRole(self.getRole()));
-					break;
+			final String status = getStatus(self);
+			if (status != null) {
+				mRoleAffiliaton.setVisibility(View.VISIBLE);
+				mRoleAffiliaton.setText(status);
+			} else {
+				mRoleAffiliaton.setVisibility(View.GONE);
 			}
 		}
 		this.users.clear();
@@ -337,36 +328,48 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 			});
 			registerForContextMenu(view);
 			view.setTag(user);
-			TextView name = (TextView) view
-				.findViewById(R.id.contact_display_name);
-			TextView key = (TextView) view.findViewById(R.id.key);
-			TextView role = (TextView) view.findViewById(R.id.contact_jid);
-			if (user.getPgpKeyId() != 0) {
-				key.setVisibility(View.VISIBLE);
-				key.setOnClickListener(new OnClickListener() {
+			TextView tvDisplayName = (TextView) view.findViewById(R.id.contact_display_name);
+			TextView tvKey = (TextView) view.findViewById(R.id.key);
+			TextView tvStatus = (TextView) view.findViewById(R.id.contact_jid);
+			if (mAdvancedMode && user.getPgpKeyId() != 0) {
+				tvKey.setVisibility(View.VISIBLE);
+				tvKey.setOnClickListener(new OnClickListener() {
 
 					@Override
 					public void onClick(View v) {
 						viewPgpKey(user);
 					}
 				});
-				key.setText(OpenPgpUtils.convertKeyIdToHex(user.getPgpKeyId()));
+				tvKey.setText(OpenPgpUtils.convertKeyIdToHex(user.getPgpKeyId()));
 			}
 			Bitmap bm;
 			Contact contact = user.getContact();
 			if (contact != null) {
 				bm = avatarService().get(contact, getPixel(48));
-				name.setText(contact.getDisplayName());
-				role.setText(user.getName() + " \u2022 "
-						+ getReadableRole(user.getRole()));
+				tvDisplayName.setText(contact.getDisplayName());
+				tvStatus.setText(user.getName() + " \u2022 " + getStatus(user));
 			} else {
 				bm = avatarService().get(user.getName(), getPixel(48));
-				name.setText(user.getName());
-				role.setText(getReadableRole(user.getRole()));
+				tvDisplayName.setText(user.getName());
+				tvStatus.setText(getStatus(user));
+
 			}
 			ImageView iv = (ImageView) view.findViewById(R.id.contact_photo);
 			iv.setImageBitmap(bm);
 			membersView.addView(view);
+		}
+	}
+
+	private String getStatus(User user) {
+		if (mAdvancedMode) {
+			StringBuilder builder = new StringBuilder();
+			builder.append(getString(user.getAffiliation().getResId()));
+			builder.append(" (");
+			builder.append(getString(user.getRole().getResId()));
+			builder.append(')');
+			return builder.toString();
+		} else {
+			return getString(user.getAffiliation().getResId());
 		}
 	}
 

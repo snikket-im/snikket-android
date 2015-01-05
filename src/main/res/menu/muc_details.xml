@@ -21,6 +21,13 @@
         android:title="@string/delete_bookmark"
         android:orderInCategory="80"
         android:showAsAction="never" />
+	<item
+		android:id="@+id/action_advanced_mode"
+		android:title="@string/advanced_mode"
+		android:checkable="true"
+		android:checked="false"
+		android:orderInCategory="85"
+		android:showAsAction="never" />
     <item
         android:id="@+id/action_accounts"
         android:orderInCategory="90"
