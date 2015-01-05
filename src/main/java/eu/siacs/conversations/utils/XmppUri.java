@@ -18,7 +18,11 @@ public class XmppUri {
 		try {
 			parse(Uri.parse(uri));
 		} catch (IllegalArgumentException e) {
-			jid = null;
+			try {
+				jid = Jid.fromString(uri).toBareJid().toString();
+			} catch (InvalidJidException e2) {
+				jid = null;
+			}
 		}
 	}
 
@@ -42,6 +46,13 @@ public class XmppUri {
 			try {
 				jid = URLDecoder.decode(uri.getEncodedPath(), "UTF-8").split("/")[1];
 			} catch (final UnsupportedEncodingException ignored) {
+				jid = null;
+			}
+		} else {
+			try {
+				jid = Jid.fromString(uri.toString()).toBareJid().toString();
+			} catch (final InvalidJidException ignored) {
+				jid = null;
 			}
 		}
 	}
@@ -62,7 +73,7 @@ public class XmppUri {
 
 	public Jid getJid() {
 		try {
-			return Jid.fromString(this.jid);
+			return this.jid == null ? null :Jid.fromString(this.jid);
 		} catch (InvalidJidException e) {
 			return null;
 		}
@@ -70,9 +81,5 @@ public class XmppUri {
 
 	public String getFingerprint() {
 		return this.fingerprint;
-	}
-
-	public boolean isMuc() {
-		return this.muc;
 	}
 }
