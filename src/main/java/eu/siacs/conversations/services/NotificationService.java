@@ -21,10 +21,14 @@ import android.util.Log;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
@@ -64,6 +68,24 @@ public class NotificationService {
 					|| wasHighlightedOrPrivate(message)
 				 );
 	}
+
+	public void notifyPebble(Message message) {
+		final Intent i = new Intent("com.getpebble.action.SEND_NOTIFICATION");
+
+		final HashMap data = new HashMap();
+		final Conversation conversation = message.getConversation();
+		data.put("title", conversation.getName());
+		data.put("body", message.getBody());
+		final JSONObject jsonData = new JSONObject(data);
+		final String notificationData = new JSONArray().put(jsonData).toString();
+
+		i.putExtra("messageType", "PEBBLE_ALERT");
+		i.putExtra("sender", "Conversations"); /* XXX: Shouldn't be hardcoded, e.g., AbstractGenerator.APP_NAME); */
+		i.putExtra("notificationData", notificationData);
+
+		mXmppConnectionService.sendBroadcast(i);
+	}
+
 
 	public boolean notificationsEnabled() {
 		return mXmppConnectionService.getPreferences().getBoolean("show_notification", true);
@@ -110,9 +132,13 @@ public class NotificationService {
 				notifications.put(conversationUuid, mList);
 			}
 			final Account account = message.getConversation().getAccount();
-			updateNotification((!(this.mIsInForeground && this.mOpenConversation == null) || !isScreenOn)
+			final boolean doNotify = (!(this.mIsInForeground && this.mOpenConversation == null) || !isScreenOn)
 					&& !account.inGracePeriod()
-					&& !this.inMiniGracePeriod(account));
+					&& !this.inMiniGracePeriod(account);
+			updateNotification(doNotify);
+			if (doNotify) {
+				notifyPebble(message);
+			}
 		}
 
 	}
