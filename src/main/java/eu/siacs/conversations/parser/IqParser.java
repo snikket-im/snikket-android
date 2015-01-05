@@ -92,6 +92,7 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
 			// Otherwise, just update the existing blocklist.
 			if (packet.getType() == IqPacket.TYPE.RESULT) {
 				account.clearBlocklist();
+				account.getXmppConnection().getFeatures().setBlockListRequested(true);
 			}
 			if (items != null) {
 				final Collection<Jid> jids = new ArrayList<>(items.size());

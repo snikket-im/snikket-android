@@ -95,12 +95,9 @@ public class XmppConnection implements Runnable {
 	private int smVersion = 3;
 	private final SparseArray<String> messageReceipts = new SparseArray<>();
 
-	private boolean enabledEncryption = false;
-	private boolean enabledCarbons = false;
-
 	private int stanzasReceived = 0;
 	private int stanzasSent = 0;
-	private long lastPaketReceived = 0;
+	private long lastPacketReceived = 0;
 	private long lastPingSent = 0;
 	private long lastConnect = 0;
 	private long lastSessionStarted = 0;
@@ -147,13 +144,12 @@ public class XmppConnection implements Runnable {
 
 	protected void connect() {
 		Log.d(Config.LOGTAG, account.getJid().toBareJid().toString() + ": connecting");
-		enabledEncryption = false;
+		features.encryptionEnabled = false;
 		lastConnect = SystemClock.elapsedRealtime();
 		lastPingSent = SystemClock.elapsedRealtime();
 		this.attempt++;
 		try {
-			shouldAuthenticate = shouldBind = !account
-				.isOptionSet(Account.OPTION_REGISTER);
+			shouldAuthenticate = shouldBind = !account.isOptionSet(Account.OPTION_REGISTER);
 			tagReader = new XmlReader(wakeLock);
 			tagWriter = new TagWriter();
 			packetCallbacks.clear();
@@ -304,7 +300,7 @@ public class XmppConnection implements Runnable {
 								final RequestPacket r = new RequestPacket(smVersion);
 								tagWriter.writeStanzaAsync(r);
 							} else if (nextTag.isStart("resumed")) {
-								lastPaketReceived = SystemClock.elapsedRealtime();
+								lastPacketReceived = SystemClock.elapsedRealtime();
 								final Element resumed = tagReader.readElement(nextTag);
 								final String h = resumed.getAttribute("h");
 								try {
@@ -337,7 +333,7 @@ public class XmppConnection implements Runnable {
 								tagWriter.writeStanzaAsync(ack);
 							} else if (nextTag.isStart("a")) {
 								final Element ack = tagReader.readElement(nextTag);
-								lastPaketReceived = SystemClock.elapsedRealtime();
+								lastPacketReceived = SystemClock.elapsedRealtime();
 								final int serverSequence = Integer.parseInt(ack.getAttribute("h"));
 								final String msgId = this.messageReceipts.get(serverSequence);
 								if (msgId != null) {
@@ -426,7 +422,7 @@ public class XmppConnection implements Runnable {
 			}
 		}
 		++stanzasReceived;
-		lastPaketReceived = SystemClock.elapsedRealtime();
+		lastPacketReceived = SystemClock.elapsedRealtime();
 		return element;
 	}
 
@@ -530,7 +526,7 @@ public class XmppConnection implements Runnable {
 			tagWriter.setOutputStream(sslSocket.getOutputStream());
 			sendStartStream();
 			Log.d(Config.LOGTAG, account.getJid().toBareJid()+ ": TLS connection established");
-			enabledEncryption = true;
+			features.encryptionEnabled = true;
 			processStream(tagReader.readTag());
 			sslSocket.close();
 		} catch (final NoSuchAlgorithmException | KeyManagementException e1) {
@@ -543,18 +539,18 @@ public class XmppConnection implements Runnable {
 	private void processStreamFeatures(final Tag currentTag)
 		throws XmlPullParserException, IOException {
 		this.streamFeatures = tagReader.readElement(currentTag);
-		if (this.streamFeatures.hasChild("starttls") && !enabledEncryption) {
+		if (this.streamFeatures.hasChild("starttls") && !features.encryptionEnabled) {
 			sendStartTLS();
 		} else if (this.streamFeatures.hasChild("register")
 				&& account.isOptionSet(Account.OPTION_REGISTER)
-				&& enabledEncryption) {
+				&& features.encryptionEnabled) {
 			sendRegistryRequest();
 		} else if (!this.streamFeatures.hasChild("register")
 				&& account.isOptionSet(Account.OPTION_REGISTER)) {
 			changeStatus(Account.State.REGISTRATION_NOT_SUPPORTED);
 			disconnect(true);
 		} else if (this.streamFeatures.hasChild("mechanisms")
-				&& shouldAuthenticate && enabledEncryption) {
+				&& shouldAuthenticate && features.encryptionEnabled) {
 			final List<String> mechanisms = extractMechanisms(streamFeatures
 					.findChild("mechanisms"));
 			final Element auth = new Element("auth");
@@ -679,15 +675,15 @@ public class XmppConnection implements Runnable {
 							tagWriter.writeStanzaAsync(enable);
 							stanzasSent = 0;
 							messageReceipts.clear();
-						} else if (streamFeatures.hasChild("sm",
-									"urn:xmpp:sm:2")) {
+						} else if (streamFeatures.hasChild("sm", "urn:xmpp:sm:2")) {
 							smVersion = 2;
 							final EnablePacket enable = new EnablePacket(smVersion);
 							tagWriter.writeStanzaAsync(enable);
 							stanzasSent = 0;
 							messageReceipts.clear();
 						}
-						enabledCarbons = false;
+						features.carbonsEnabled = false;
+						features.blockListRequested = false;
 						disco.clear();
 						sendServiceDiscoveryInfo(account.getServer());
 						sendServiceDiscoveryItems(account.getServer());
@@ -750,12 +746,10 @@ public class XmppConnection implements Runnable {
 	}
 
 	private void enableAdvancedStreamFeatures() {
-		if (getFeatures().carbons()) {
-			if (!enabledCarbons) {
-				sendEnableCarbons();
-			}
+		if (getFeatures().carbons() && !features.carbonsEnabled) {
+			sendEnableCarbons();
 		}
-		if (getFeatures().blocking()) {
+		if (getFeatures().blocking() && !features.blockListRequested) {
 			Log.d(Config.LOGTAG, "Requesting block list");
 			this.sendIqPacket(getIqGenerator().generateGetBlockList(), mXmppConnectionService.getIqParser());
 		}
@@ -792,7 +786,7 @@ public class XmppConnection implements Runnable {
 				if (!packet.hasChild("error")) {
 					Log.d(Config.LOGTAG, account.getJid().toBareJid()
 							+ ": successfully enabled carbons");
-					enabledCarbons = true;
+					features.carbonsEnabled = true;
 				} else {
 					Log.d(Config.LOGTAG, account.getJid().toBareJid()
 							+ ": error enableing carbons " + packet.toString());
@@ -1018,7 +1012,7 @@ public class XmppConnection implements Runnable {
 	}
 
 	public long getLastPacketReceived() {
-		return this.lastPaketReceived;
+		return this.lastPacketReceived;
 	}
 
 	public void sendActive() {
@@ -1031,6 +1025,9 @@ public class XmppConnection implements Runnable {
 
 	public class Features {
 		XmppConnection connection;
+		private boolean carbonsEnabled = false;
+		private boolean encryptionEnabled = false;
+		private boolean blockListRequested = false;
 
 		public Features(final XmppConnection connection) {
 			this.connection = connection;
@@ -1078,9 +1075,8 @@ public class XmppConnection implements Runnable {
 			return connection.streamFeatures != null && connection.streamFeatures.hasChild("ver");
 		}
 
-		public boolean streamhost() {
-			return connection
-				.findDiscoItemByFeature("http://jabber.org/protocol/bytestreams") != null;
+		public void setBlockListRequested(boolean value) {
+			this.blockListRequested = value;
 		}
 	}
 
