@@ -51,10 +51,18 @@ public class UIHelper {
 	}
 
 	private static boolean today(Date date) {
+		return sameDay(date,new Date(System.currentTimeMillis()));
+	}
+
+	public static boolean sameDay(long timestamp1, long timestamp2) {
+		return sameDay(new Date(timestamp1),new Date(timestamp2));
+	}
+
+	private static boolean sameDay(Date a, Date b) {
 		Calendar cal1 = Calendar.getInstance();
 		Calendar cal2 = Calendar.getInstance();
-		cal1.setTime(date);
-		cal2.setTimeInMillis(System.currentTimeMillis());
+		cal1.setTime(a);
+		cal2.setTime(b);
 		return cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR)
 				&& cal1.get(Calendar.DAY_OF_YEAR) == cal2
 						.get(Calendar.DAY_OF_YEAR);
