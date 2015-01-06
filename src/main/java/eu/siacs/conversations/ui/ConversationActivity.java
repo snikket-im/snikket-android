@@ -1050,10 +1050,10 @@ public class ConversationActivity extends XmppActivity
 
 	@Override
 	public void OnUpdateBlocklist(Status status) {
-		invalidateOptionsMenu();
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
+				invalidateOptionsMenu();
 				ConversationActivity.this.mConversationFragment.updateMessages();
 			}
 		});
