@@ -134,11 +134,12 @@ public class ShareWithActivity extends XmppActivity {
 	@Override
 	public void onStart() {
 		final String type = getIntent().getType();
-		if (type != null && !type.startsWith("text/")) {
-			this.share.uri = (Uri) getIntent().getParcelableExtra(Intent.EXTRA_STREAM);
+		final Uri uri = getIntent().getParcelableExtra(Intent.EXTRA_STREAM);
+		if (type != null && uri != null && !type.startsWith("text/")) {
+			this.share.uri = uri;
 			try {
-				this.share.image = type.startsWith("image/")
-						|| URLConnection.guessContentTypeFromName(this.share.uri.toString()).startsWith("image/");
+				String guess = URLConnection.guessContentTypeFromName(uri.toString());
+				this.share.image = type.startsWith("image/") || (guess != null && guess.startsWith("image/"));
 			} catch (final StringIndexOutOfBoundsException ignored) {
 				this.share.image = false;
 			}
