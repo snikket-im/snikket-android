@@ -421,16 +421,16 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 						long lastReceived = account.getXmppConnection().getLastPacketReceived();
 						long lastSent = account.getXmppConnection().getLastPingSent();
 						long pingInterval = "ui".equals(action) ? Config.PING_MIN_INTERVAL * 1000 : Config.PING_MAX_INTERVAL * 1000;
-						long secondsToNextPing = ((lastReceived + pingInterval) - SystemClock.elapsedRealtime()) / 1000;
+						long msToNextPing = (Math.max(lastReceived,lastSent) + pingInterval) - SystemClock.elapsedRealtime();
 						if (lastSent > lastReceived && (lastSent +  Config.PING_TIMEOUT * 1000) < SystemClock.elapsedRealtime()) {
 							Log.d(Config.LOGTAG, account.getJid().toBareJid()+ ": ping timeout");
 							this.reconnectAccount(account, true);
-						} else if (secondsToNextPing <= 0) {
+						} else if (msToNextPing <= 0) {
 							account.getXmppConnection().sendPing();
 							Log.d(Config.LOGTAG, account.getJid().toBareJid()+" send ping");
 							this.scheduleWakeUpCall(Config.PING_TIMEOUT,account.getUuid().hashCode());
 						} else {
-							this.scheduleWakeUpCall((int) secondsToNextPing, account.getUuid().hashCode());
+							this.scheduleWakeUpCall((int) (msToNextPing / 1000), account.getUuid().hashCode());
 						}
 					} else if (account.getStatus() == Account.State.OFFLINE) {
 						if (account.getXmppConnection() == null) {
