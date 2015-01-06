@@ -282,7 +282,7 @@
 <string name="scan_qr_code">Scanner un QR code</string>
 <string name="show_qr_code">Afficher le QR code</string>
 <string name="show_block_list">Afficher la liste des contacts bloqués</string>
-<string name="account_details"Détails du compte</string>
+<string name="account_details">Détails du compte</string>
 <string name="verify_otr">Vérifier l\'OTR</string>
 <string name="remote_fingerprint">Supprimer l\'empreinte</string>
 <string name="scan">Scanner</string>
