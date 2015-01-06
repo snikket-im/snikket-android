@@ -707,8 +707,7 @@ public class JingleConnection implements Downloadable {
 
 	private void receiveSuccess() {
 		this.mJingleStatus = JINGLE_STATUS_FINISHED;
-		this.mXmppConnectionService.markMessage(this.message,
-				Message.STATUS_SEND);
+		this.mXmppConnectionService.markMessage(this.message,Message.STATUS_SEND_RECEIVED);
 		this.disconnectSocks5Connections();
 		if (this.transport != null && this.transport instanceof JingleInbandTransport) {
 			this.transport.disconnect();
