@@ -381,4 +381,9 @@
 	<string name="enable_all_accounts">Povolit všechny účty</string>
 	<string name="disable_all_accounts">Vypnout všechny účty</string>
 	<string name="perform_action_with">Provést akci s</string>
+	<string name="no_affiliation">Nepřidružený</string>
+	<string name="no_role">Bez role</string>
+	<string name="outcast">Vyloučený</string>
+	<string name="member">Člen</string>
+	<string name="advanced_mode">Pokročilý mód</string>
 </resources>
