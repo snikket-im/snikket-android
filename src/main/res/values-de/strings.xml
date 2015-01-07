@@ -374,10 +374,21 @@
     <string name="shared_secret_can_not_be_empty">Dein gemeinsamer Schlüssel darf nicht leer sein</string>
     <string name="manual_verification_explanation">Vergleiche den angezeigten Fingerabdruck sorgfältig mit dem deines Kontakts.\nDu kannst dazu einen sicheren Kommunikationsweg (z.B. verschlüsselte E-Mail oder Telefonanruf) zum Austausch nutzen.</string>
     <string name="change_password">Passwort ändern</string>
-	<string name="current_password">Aktuelles Passwort</string>
-	<string name="new_password">Neues Passwort</string>
-	<string name="password_should_not_be_empty">Das Passwort darf nicht leer sein</string>
+    <string name="current_password">Aktuelles Passwort</string>
+    <string name="new_password">Neues Passwort</string>
+    <string name="password_should_not_be_empty">Das Passwort darf nicht leer sein</string>
     <string name="enable_all_accounts">Alle Konten anschalten</string>
-	<string name="disable_all_accounts">Alle Konten abschalten</string>
+    <string name="disable_all_accounts">Alle Konten abschalten</string>
     <string name="perform_action_with">Aktion durchführen mit</string>
+    <string name="no_affiliation">Keine Zugehörigkeit</string>
+    <string name="no_role">Keine Rolle</string>
+    <string name="outcast">Ausgeschlossen</string>
+    <string name="member">Mitglied</string>
+    <string name="advanced_mode">Experten Modus</string>
+    <string name="grant_membership">Mitgliedschaft gewähren</string>
+    <string name="remove_membership">Mitgliedschaft entziehen</string>
+    <string name="grant_admin_privileges">Administratorrechte gewähren</string>
+    <string name="remove_admin_privileges">Administratorrechte entziehen</string>
+    <string name="remove_from_room">Aus Konferenz entfernen</string>
+    <string name="could_not_change_affiliation">Zugehörigkeit kann nicht geändert werden</string>
 </resources>
