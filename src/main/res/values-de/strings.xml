@@ -5,7 +5,7 @@
     <string name="action_accounts">Konten verwalten</string>
     <string name="action_end_conversation">Unterhaltung beenden</string>
     <string name="action_contact_details">Kontaktdetails</string>
-    <string name="action_muc_details">Konferenzdetails</string>
+    <string name="action_muc_details">Konferenz-Details</string>
     <string name="action_secure">Verschlüsselte Unterhaltung</string>
     <string name="action_add_account">Konto hinzufügen</string>
     <string name="action_edit_contact">Name bearbeiten</string>
@@ -17,7 +17,7 @@
     <string name="action_unblock_domain">Domain entsperren</string>
     <string name="title_activity_manage_accounts">Konten verwalten</string>
     <string name="title_activity_settings">Einstellungen</string>
-    <string name="title_activity_conference_details">Konferenzdetails</string>
+    <string name="title_activity_conference_details">Konferenz-Details</string>
     <string name="title_activity_contact_details">Kontaktdetails</string>
     <string name="title_activity_conversations">Conversations</string>
     <string name="title_activity_sharewith">Mit Unterhaltung teilen</string>
@@ -112,7 +112,7 @@
     <string name="pref_sound">Klingelton</string>
     <string name="pref_sound_summary">Spiele Klingelton, wenn eine neue Nachricht ankommt</string>
     <string name="pref_conference_notifications">Konferenz-Benachrichtigungen</string>
-    <string name="pref_conference_notifications_summary">Benachrichtige mich bei jeder Konferenznachricht und nicht nur, wenn ich angesprochen werde</string>
+    <string name="pref_conference_notifications_summary">Benachrichtige mich bei jeder Konferenz-Nachricht und nicht nur, wenn ich angesprochen werde</string>
     <string name="pref_notification_grace_period">Gnadenfrist</string>
     <string name="pref_notification_grace_period_summary">Deaktiviere Benachrichtigungen für eine kurze Zeit nach Erhalt einer Nachricht, die von einem anderen deiner Clients kommt.</string>
     <string name="pref_advanced_options">Erweiterte Optionen</string>
@@ -215,7 +215,7 @@
     <string name="conferences">Konferenzen</string>
     <string name="search">Suche</string>
     <string name="create_contact">Kontakt erstellen</string>
-    <string name="join_conference">Konferenz beitreten</string>
+    <string name="join_conference">Konferenz betreten</string>
     <string name="delete_contact">Kontakt löschen</string>
     <string name="view_contact_details">Kontaktdetails anzeigen</string>
     <string name="block_contact">Kontakt sperren</string>
@@ -223,13 +223,13 @@
     <string name="create">Erstellen</string>
     <string name="contact_already_exists">Der Kontakt existiert bereits</string>
     <string name="join">Beitreten</string>
-    <string name="conference_address">Konferenzadresse</string>
+    <string name="conference_address">Konferenz-Adresse</string>
     <string name="conference_address_example">raum@conference.example.com</string>
     <string name="save_as_bookmark">Als Lesezeichen speichern</string>
     <string name="delete_bookmark">Lesezeichen löschen</string>
     <string name="bookmark_already_exists">Das Lesezeichen existiert bereits</string>
     <string name="you">Du</string>
-    <string name="action_edit_subject">Konferenzthema anpassen</string>
+    <string name="action_edit_subject">Konferenz-Thema anpassen</string>
     <string name="conference_not_found">Konferenz nicht gefunden</string>
     <string name="leave">Verlassen</string>
     <string name="contact_added_you">Der Kontakt hat dich zur Kontaktliste hinzugefügt</string>
@@ -292,9 +292,9 @@
     <string name="pref_conference_name">Konferenz-Name</string>
     <string name="pref_conference_name_summary">Konferenz-Thema statt Raum-JID als Namen verwenden</string>
     <string name="toast_message_otr_fingerprint">OTR-Fingerabdruck in die Zwischenablage kopiert!</string>
-    <string name="conference_banned">Du wurdest aus dem Konferenzraum verbannt</string>
-    <string name="conference_members_only">Der Konferenzraum ist nur für Mitglieder</string>
-    <string name="conference_kicked">Du wurdest aus dem Konferenzraum geworfen</string>
+    <string name="conference_banned">Du wurdest von der Konferenz ausgeschlossen</string>
+    <string name="conference_members_only">Die Konferenz ist nur für Mitglieder</string>
+    <string name="conference_kicked">Du wurdest aus der Konferenz geworfen</string>
     <string name="using_account">Verwende Konto %s</string>
     <string name="checking_image">Prüfe Bild auf HTTP-Host</string>
     <string name="image_file_deleted">Bild wurde gelöscht</string>
@@ -391,4 +391,7 @@
     <string name="remove_admin_privileges">Administratorrechte entziehen</string>
     <string name="remove_from_room">Aus Konferenz entfernen</string>
     <string name="could_not_change_affiliation">Zugehörigkeit kann nicht geändert werden</string>
+    <string name="ban_user_from_conference">Kontakt von Konferenz ausschließen.</string>
+    <string name="removing_from_public_conference">Du versuchst %s aus der öffentlichen Konferenz zu entfernen. Die einzige Möglichkeit, dies dauerhaft zu tun, ist den Kontakt von der Konferenz auszuschließen.</string>
+    <string name="ban_now">Kontakt ausschließen</string>
 </resources>
