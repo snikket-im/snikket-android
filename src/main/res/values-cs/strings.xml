@@ -364,7 +364,7 @@
     <string name="copy_otr_clipboard_description">Zkopírovat otisk OTR do schránky</string>
     <string name="fetching_history_from_server">Načíst historii ze serveru</string>
     <string name="no_more_history_on_server">Na serveru není žádná další historie</string>
-    <string name="updating">Aktualizuji...</string>
+    <string name="updating">Aktualizuji…</string>
     <string name="password_changed">Heslo změněno!</string>
     <string name="could_not_change_password">Nelze změnit heslo</string>
     <string name="otr_session_not_started">Zaslat zprávu pro spuštění šifrovaného chatu</string>
