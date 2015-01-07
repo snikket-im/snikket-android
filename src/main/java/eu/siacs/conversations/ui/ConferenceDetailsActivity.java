@@ -245,6 +245,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 				MenuItem giveAdminPrivileges = menu.findItem(R.id.give_admin_privileges);
 				MenuItem removeAdminPrivileges = menu.findItem(R.id.remove_admin_privileges);
 				MenuItem removeFromRoom = menu.findItem(R.id.remove_from_room);
+				MenuItem banFromConference = menu.findItem(R.id.ban_from_conference);
 				startConversation.setVisible(true);
 				if (self.getAffiliation().ranks(MucOptions.Affiliation.ADMIN) &&
 						self.getAffiliation().outranks(user.getAffiliation())) {
@@ -254,13 +255,15 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 						} else {
 							removeMembership.setVisible(true);
 						}
+						banFromConference.setVisible(true);
+					} else {
+						removeFromRoom.setVisible(true);
 					}
 					if (user.getAffiliation() != MucOptions.Affiliation.ADMIN) {
 						giveAdminPrivileges.setVisible(true);
 					} else {
 						removeAdminPrivileges.setVisible(true);
 					}
-					removeFromRoom.setVisible(true);
 				}
 			}
 
@@ -289,6 +292,9 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 			case R.id.remove_from_room:
 				removeFromRoom(mSelectedUser);
 				return true;
+			case R.id.ban_from_conference:
+				xmppConnectionService.changeAffiliationInConference(mConversation,mSelectedUser.getJid(), MucOptions.Affiliation.OUTCAST,this);
+				return true;
 			default:
 				return super.onContextItemSelected(item);
 		}
@@ -299,7 +305,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 			xmppConnectionService.changeAffiliationInConference(mConversation,user.getJid(), MucOptions.Affiliation.NONE,this);
 		} else {
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			builder.setTitle(R.string.ban_user_from_conference);
+			builder.setTitle(R.string.ban_from_conference);
 			builder.setMessage(getString(R.string.removing_from_public_conference,user.getName()));
 			builder.setNegativeButton(R.string.cancel,null);
 			builder.setPositiveButton(R.string.ban_now,new DialogInterface.OnClickListener() {
