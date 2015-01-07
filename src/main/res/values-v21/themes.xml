@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="ConversationsTheme" parent="@android:style/Theme.Material.Light.DarkActionBar">
+        <item name="android:colorPrimary">@color/primary</item>
+        <item name="android:colorPrimaryDark">@color/primarydark</item>
+        <item name="android:colorAccent">@color/accent</item>
+
+        <item name="TextSizeInfo">12sp</item>
+        <item name="TextSizeBody">14sp</item>
+        <item name="TextSizeHeadline">20sp</item>
+    </style>
+
+</resources>
