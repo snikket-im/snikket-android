@@ -367,5 +367,30 @@
     <string name="updating">Bijwerken…</string>
     <string name="password_changed">Wachtwoord gewijzigd!</string>
     <string name="could_not_change_password">Kon wachtwoord niet wijzigen</string>
+    <string name="otr_session_not_started">Verstuur een bericht om een versleuteld gesprek te starten</string>
+    <string name="ask_question">Stel een vraag</string>
+    <string name="smp_explain_question">Als jij en je contact een gemeenschappelijk geheim hebben dat niemand anders weet (zoals een privé-grap of gewoonweg wat jullie gegeten hebben de laatste keer dat jullie elkaar zagen) kunnen jullie dat geheim gebruiken om elkaars vingerafdrukken te bevestigen.\n\nJe geeft een hint of een vraag voor je contact, en hij/zij moet hier op antwoorden met een hoofdlettergevoelig antwoord.</string>
+    <string name="smp_explain_answer">Je contact wil je vingerafdruk bevestigen door je uit te dagen met een gedeeld geheim. Je contact heeft daarvoor volgende hint of vraag opgegeven.</string>
+    <string name="shared_secret_hint_should_not_be_empty">Je hint zou niet leeg mogen zijn</string>
+    <string name="shared_secret_can_not_be_empty">Je gedeeld geheim can niet leeg zijn</string>
+    <string name="manual_verification_explanation">Vergelijk voorzichtig de vingerafdruk hieronder met de vingerafdruk van je contact.\nJe kan hiervoor eender welke betrouwbare vorm van communicatie gebruiken, zoals een versleutelde e-mail of een telefoongesprek.</string>
+	<string name="change_password">Wachtwoord wijzigen</string>
+	<string name="current_password">Huidig wachtwoord</string>
+	<string name="new_password">Nieuw wachtwoord</string>
+	<string name="password_should_not_be_empty">Wachtwoord zou niet leeg mogen zijn</string>
+	<string name="enable_all_accounts">Alle accounts aanzetten</string>
+	<string name="disable_all_accounts">Alle accounts uitzetten</string>
+	<string name="perform_action_with">Actie uitvoeren met</string>
+	<string name="no_affiliation">Geen aansluiting</string>
+	<string name="no_role">Geen rol</string>
+	<string name="outcast">Verstoteling</string>
+	<string name="member">Lid</string>
+	<string name="advanced_mode">Geavanceerde modus</string>
+	<string name="grant_membership">Lidmaatschap verlenen</string>
+	<string name="remove_membership">Lidmaatschap verwijderen</string>
+	<string name="grant_admin_privileges">Administratorprivileges verlenen</string>
+	<string name="remove_admin_privileges">Administratorprivileges verwijderen</string>
+	<string name="remove_from_room">Verwijderen uit kamer</string>
+	<string name="could_not_change_affiliation">Kon aansluiting niet wijzigen</string>
 
 </resources>
