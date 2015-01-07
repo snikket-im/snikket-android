@@ -33,11 +33,13 @@ import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.entities.MucOptions.User;
+import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.services.XmppConnectionService.OnMucRosterUpdate;
 import eu.siacs.conversations.services.XmppConnectionService.OnConversationUpdate;
+import eu.siacs.conversations.xmpp.jid.Jid;
 import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
 
-public class ConferenceDetailsActivity extends XmppActivity implements OnConversationUpdate, OnMucRosterUpdate {
+public class ConferenceDetailsActivity extends XmppActivity implements OnConversationUpdate, OnMucRosterUpdate, XmppConnectionService.OnAffiliationChanged {
 	public static final String ACTION_VIEW_MUC = "view_muc";
 	private Conversation mConversation;
 	private OnClickListener inviteListener = new OnClickListener() {
@@ -222,21 +224,44 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 		if (tag instanceof User) {
 			getMenuInflater().inflate(R.menu.muc_details_context,menu);
 			final User user = (User) tag;
+			final User self = mConversation.getMucOptions().getSelf();
 			this.mSelectedUser = user;
 			String name;
-			final Contact contact = user.getContact();
-			if (contact != null) {
-				name = contact.getDisplayName();
-			} else if (user.getJid() != null) {
-				name = user.getJid().toBareJid().toString();
-			} else {
-				name = user.getName();
+			if (user.getJid() != null) {
+				final Contact contact = user.getContact();
+				if (contact != null) {
+					name = contact.getDisplayName();
+				} else if (user.getJid() != null) {
+					name = user.getJid().toBareJid().toString();
+				} else {
+					name = user.getName();
+				}
+				menu.setHeaderTitle(name);
+				MenuItem startConversation = menu.findItem(R.id.start_conversation);
+				MenuItem giveMembership = menu.findItem(R.id.give_membership);
+				MenuItem removeMembership = menu.findItem(R.id.remove_membership);
+				MenuItem giveAdminPrivileges = menu.findItem(R.id.give_admin_privileges);
+				MenuItem removeAdminPrivileges = menu.findItem(R.id.remove_admin_privileges);
+				MenuItem removeFromRoom = menu.findItem(R.id.remove_from_room);
+				startConversation.setVisible(true);
+				if (self.getAffiliation().ranks(MucOptions.Affiliation.ADMIN) &&
+						self.getAffiliation().outranks(user.getAffiliation())) {
+					if (mAdvancedMode) {
+						if (user.getAffiliation() == MucOptions.Affiliation.NONE) {
+							giveMembership.setVisible(true);
+						} else {
+							removeMembership.setVisible(true);
+						}
+					}
+					if (user.getAffiliation() != MucOptions.Affiliation.ADMIN) {
+						giveAdminPrivileges.setVisible(true);
+					} else {
+						removeAdminPrivileges.setVisible(true);
+					}
+					removeFromRoom.setVisible(true);
+				}
 			}
-			menu.setHeaderTitle(name);
-			MenuItem startConversation = menu.findItem(R.id.start_conversation);
-			if (user.getJid() == null) {
-				startConversation.setVisible(false);
-			}
+
 		}
 		super.onCreateContextMenu(menu,v,menuInfo);
 	}
@@ -246,6 +271,21 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 		switch (item.getItemId()) {
 			case R.id.start_conversation:
 				startConversation(mSelectedUser);
+				return true;
+			case R.id.give_admin_privileges:
+				xmppConnectionService.changeAffiliationInConference(mConversation,mSelectedUser.getJid(), MucOptions.Affiliation.ADMIN,this);
+				return true;
+			case R.id.give_membership:
+				xmppConnectionService.changeAffiliationInConference(mConversation,mSelectedUser.getJid(), MucOptions.Affiliation.MEMBER,this);
+				return true;
+			case R.id.remove_membership:
+				xmppConnectionService.changeAffiliationInConference(mConversation,mSelectedUser.getJid(), MucOptions.Affiliation.NONE,this);
+				return true;
+			case R.id.remove_admin_privileges:
+				xmppConnectionService.changeAffiliationInConference(mConversation,mSelectedUser.getJid(), MucOptions.Affiliation.MEMBER,this);
+				return true;
+			case R.id.remove_from_room:
+				xmppConnectionService.changeAffiliationInConference(mConversation,mSelectedUser.getJid(), MucOptions.Affiliation.OUTCAST,this);
 				return true;
 			default:
 				return super.onContextItemSelected(item);
@@ -398,5 +438,15 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 				}
 			}
 		}
+	}
+
+	@Override
+	public void onAffiliationChangedSuccessful(Jid jid) {
+
+	}
+
+	@Override
+	public void onAffiliationChangeFailed(Jid jid, int resId) {
+
 	}
 }

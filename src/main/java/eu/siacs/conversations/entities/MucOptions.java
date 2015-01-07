@@ -17,39 +17,63 @@ import android.annotation.SuppressLint;
 public class MucOptions {
 
 	public enum Affiliation {
-		OWNER(R.string.owner),
-		ADMIN(R.string.admin),
-		MEMBER(R.string.member),
-		OUTCAST(R.string.outcast),
-		NONE(R.string.no_affiliation);
+		OWNER("owner", 4, R.string.owner),
+		ADMIN("admin", 3, R.string.admin),
+		MEMBER("member", 2, R.string.member),
+		OUTCAST("outcast", 0, R.string.outcast),
+		NONE("none", 1, R.string.no_affiliation);
 
-		private Affiliation(int resId) {
+		private Affiliation(String string, int rank, int resId) {
+			this.string = string;
 			this.resId = resId;
+			this.rank = rank;
 		}
 
+		private String string;
 		private int resId;
+		private int rank;
 
 		public int getResId() {
 			return resId;
+		}
+
+		@Override
+		public String toString() {
+			return this.string;
+		}
+
+		public boolean outranks(Affiliation affiliation) {
+			return rank > affiliation.rank;
+		}
+
+		public boolean ranks(Affiliation affiliation) {
+			return rank >= affiliation.rank;
 		}
 	}
 
 	;
 
 	public enum Role {
-		MODERATOR(R.string.moderator),
-		VISITOR(R.string.visitor),
-		PARTICIPANT(R.string.participant),
-		NONE(R.string.no_role);
+		MODERATOR("moderator", R.string.moderator),
+		VISITOR("visitor", R.string.visitor),
+		PARTICIPANT("participant", R.string.participant),
+		NONE("none", R.string.no_role);
 
-		private Role(int resId) {
+		private Role(String string, int resId) {
+			this.string = string;
 			this.resId = resId;
 		}
 
+		private String string;
 		private int resId;
 
 		public int getResId() {
 			return resId;
+		}
+
+		@Override
+		public String toString() {
+			return this.string;
 		}
 	}
 

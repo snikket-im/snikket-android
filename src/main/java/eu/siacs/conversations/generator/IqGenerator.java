@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 import eu.siacs.conversations.entities.Account;
+import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.services.MessageArchiveService;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.Xmlns;
@@ -146,6 +147,16 @@ public class IqGenerator extends AbstractGenerator {
 		final Jid jid = account.getJid();
 		query.addChild("username").setContent(jid.getLocalpart());
 		query.addChild("password").setContent(newPassword);
+		return packet;
+	}
+
+	public IqPacket changeAffiliation(Conversation conference, Jid jid, String affiliation) {
+		IqPacket packet = new IqPacket(IqPacket.TYPE.SET);
+		packet.setTo(conference.getJid().toBareJid());
+		packet.setFrom(conference.getAccount().getJid());
+		Element item = packet.query("http://jabber.org/protocol/muc#admin").addChild("item");
+		item.setAttribute("jid", jid.toString());
+		item.setAttribute("affiliation", affiliation);
 		return packet;
 	}
 }

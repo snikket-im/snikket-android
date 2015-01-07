@@ -411,4 +411,10 @@
 	<string name="outcast">Outcast</string>
 	<string name="member">Member</string>
 	<string name="advanced_mode">Advanced mode</string>
+	<string name="grant_membership">Grant membership</string>
+	<string name="remove_membership">Remove membership</string>
+	<string name="grant_admin_privileges">Grant admin privileges</string>
+	<string name="remove_admin_privileges">Remove admin privileges</string>
+	<string name="remove_from_room">Remove from room</string>
+	<string name="could_not_change_affiliation">Could not change affiliation</string>
 </resources>
