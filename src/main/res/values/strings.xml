@@ -417,4 +417,7 @@
 	<string name="remove_admin_privileges">Remove admin privileges</string>
 	<string name="remove_from_room">Remove from room</string>
 	<string name="could_not_change_affiliation">Could not change affiliation</string>
+	<string name="ban_user_from_conference">Ban user from conference</string>
+	<string name="removing_from_public_conference">You are trying to remove %s from a public conference. The only way to do that is to ban that user for ever.</string>
+	<string name="ban_now">Ban now</string>
 </resources>

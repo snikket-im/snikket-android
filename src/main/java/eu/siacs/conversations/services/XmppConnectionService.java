@@ -1316,6 +1316,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 				packet.addChild("x", "jabber:x:signed").setContent(sig);
 			}
 			sendPresencePacket(account, packet);
+			fetchConferenceConfiguration(conversation);
 			if (!joinJid.equals(conversation.getJid())) {
 				conversation.setContactJid(joinJid);
 				databaseBackend.updateConversation(conversation);
@@ -1475,6 +1476,29 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		}
 	}
 
+	public void fetchConferenceConfiguration(final Conversation conversation) {
+		IqPacket request = new IqPacket(IqPacket.TYPE.GET);
+		request.setTo(conversation.getJid().toBareJid());
+		request.query("http://jabber.org/protocol/disco#info");
+		sendIqPacket(conversation.getAccount(), request, new OnIqPacketReceived() {
+			@Override
+			public void onIqPacketReceived(Account account, IqPacket packet) {
+				if (packet.getType() != IqPacket.TYPE.ERROR) {
+					ArrayList<String> features = new ArrayList<String>();
+					for (Element child : packet.query().getChildren()) {
+						if (child != null && child.getName().equals("feature")) {
+							String var = child.getAttribute("var");
+							if (var != null) {
+								features.add(var);
+							}
+						}
+					}
+					conversation.getMucOptions().updateFeatures(features);
+				}
+			}
+		});
+	}
+
 	public void pushConferenceConfiguration(final Conversation conversation,final Bundle options, final OnConferenceOptionsPushed callback) {
 		IqPacket request = new IqPacket(IqPacket.TYPE.GET);
 		request.setTo(conversation.getJid().toBareJid());
@@ -1520,14 +1544,14 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		final Jid jid = user.toBareJid();
 		IqPacket request = this.mIqGenerator.changeAffiliation(conference, jid, affiliation.toString());
 		Log.d(Config.LOGTAG,request.toString());
-		sendIqPacket(conference.getAccount(),request,new OnIqPacketReceived() {
+		sendIqPacket(conference.getAccount(), request, new OnIqPacketReceived() {
 			@Override
 			public void onIqPacketReceived(Account account, IqPacket packet) {
-				Log.d(Config.LOGTAG,packet.toString());
+				Log.d(Config.LOGTAG, packet.toString());
 				if (packet.getType() == IqPacket.TYPE.RESULT) {
 					callback.onAffiliationChangedSuccessful(jid);
 				} else {
-					callback.onAffiliationChangeFailed(jid,R.string.could_not_change_affiliation);
+					callback.onAffiliationChangeFailed(jid, R.string.could_not_change_affiliation);
 				}
 			}
 		});

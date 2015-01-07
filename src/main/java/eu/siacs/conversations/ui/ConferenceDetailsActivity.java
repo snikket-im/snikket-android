@@ -1,8 +1,10 @@
 package eu.siacs.conversations.ui;
 
 import android.annotation.TargetApi;
+import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.IntentSender.SendIntentException;
 import android.graphics.Bitmap;
 import android.os.Build;
@@ -285,10 +287,28 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 				xmppConnectionService.changeAffiliationInConference(mConversation,mSelectedUser.getJid(), MucOptions.Affiliation.MEMBER,this);
 				return true;
 			case R.id.remove_from_room:
-				xmppConnectionService.changeAffiliationInConference(mConversation,mSelectedUser.getJid(), MucOptions.Affiliation.OUTCAST,this);
+				removeFromRoom(mSelectedUser);
 				return true;
 			default:
 				return super.onContextItemSelected(item);
+		}
+	}
+
+	private void removeFromRoom(final User user) {
+		if (mConversation.getMucOptions().membersOnly()) {
+			xmppConnectionService.changeAffiliationInConference(mConversation,user.getJid(), MucOptions.Affiliation.NONE,this);
+		} else {
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setTitle(R.string.ban_user_from_conference);
+			builder.setMessage(getString(R.string.removing_from_public_conference,user.getName()));
+			builder.setNegativeButton(R.string.cancel,null);
+			builder.setPositiveButton(R.string.ban_now,new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					xmppConnectionService.changeAffiliationInConference(mConversation,user.getJid(), MucOptions.Affiliation.OUTCAST,ConferenceDetailsActivity.this);
+				}
+			});
+			builder.create().show();
 		}
 	}
 
@@ -397,6 +417,11 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 			ImageView iv = (ImageView) view.findViewById(R.id.contact_photo);
 			iv.setImageBitmap(bm);
 			membersView.addView(view);
+			if (mConversation.getMucOptions().canInvite()) {
+				mInviteButton.setVisibility(View.VISIBLE);
+			} else {
+				mInviteButton.setVisibility(View.GONE);
+			}
 		}
 	}
 

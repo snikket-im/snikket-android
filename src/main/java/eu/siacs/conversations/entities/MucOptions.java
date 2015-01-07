@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.PgpEngine;
 import eu.siacs.conversations.xml.Element;
@@ -12,6 +13,7 @@ import eu.siacs.conversations.xmpp.jid.Jid;
 import eu.siacs.conversations.xmpp.stanzas.PresencePacket;
 
 import android.annotation.SuppressLint;
+import android.util.Log;
 
 @SuppressLint("DefaultLocale")
 public class MucOptions {
@@ -51,8 +53,6 @@ public class MucOptions {
 		}
 	}
 
-	;
-
 	public enum Role {
 		MODERATOR("moderator", R.string.moderator),
 		VISITOR("visitor", R.string.visitor),
@@ -86,6 +86,7 @@ public class MucOptions {
 
 	public static final int KICKED_FROM_ROOM = 9;
 
+	public static final String STATUS_CODE_ROOM_CONFIG_CHANGED = "104";
 	public static final String STATUS_CODE_SELF_PRESENCE = "110";
 	public static final String STATUS_CODE_BANNED = "301";
 	public static final String STATUS_CODE_CHANGED_NICK = "303";
@@ -107,8 +108,8 @@ public class MucOptions {
 	}
 
 	public class User {
-		private Role role;
-		private Affiliation affiliation;
+		private Role role = Role.NONE;
+		private Affiliation affiliation = Affiliation.NONE;
 		private String name;
 		private Jid jid;
 		private long pgpKeyId = 0;
@@ -190,6 +191,7 @@ public class MucOptions {
 
 	private Account account;
 	private List<User> users = new CopyOnWriteArrayList<>();
+	private List<String> features = new ArrayList<>();
 	private Conversation conversation;
 	private boolean isOnline = false;
 	private int error = ERROR_UNKNOWN;
@@ -203,6 +205,23 @@ public class MucOptions {
 	public MucOptions(Conversation conversation) {
 		this.account = conversation.getAccount();
 		this.conversation = conversation;
+	}
+
+	public void updateFeatures(ArrayList<String> features) {
+		this.features.clear();
+		this.features.addAll(features);
+	}
+
+	public boolean hasFeature(String feature) {
+		return this.features.contains(feature);
+	}
+
+	public boolean canInvite() {
+		 return !membersOnly() || self.getAffiliation().ranks(Affiliation.ADMIN);
+	}
+
+	public boolean membersOnly() {
+		return hasFeature("muc_membersonly");
 	}
 
 	public void deleteUser(String name) {
@@ -225,6 +244,7 @@ public class MucOptions {
 	}
 
 	public void processPacket(PresencePacket packet, PgpEngine pgp) {
+		Log.d(Config.LOGTAG, packet.toString());
 		final Jid from = packet.getFrom();
 		if (!from.isBareJid()) {
 			final String name = from.getResourcepart();
@@ -320,7 +340,7 @@ public class MucOptions {
 	}
 
 	private List<String> getStatusCodes(Element x) {
-		List<String> codes = new ArrayList<String>();
+		List<String> codes = new ArrayList<>();
 		if (x != null) {
 			for (Element child : x.getChildren()) {
 				if (child.getName().equals("status")) {

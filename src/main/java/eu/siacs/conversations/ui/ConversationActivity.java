@@ -9,7 +9,6 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.IntentSender.SendIntentException;
-import android.media.MediaActionSound;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -82,11 +81,6 @@ public class ConversationActivity extends XmppActivity
 	private Toast prepareFileToast;
 
 	private boolean mActivityPaused = false;
-
-
-	public List<Conversation> getConversationList() {
-		return this.conversationList;
-	}
 
 	public Conversation getSelectedConversation() {
 		return this.mSelectedConversation;
@@ -284,8 +278,7 @@ public class ConversationActivity extends XmppActivity
 		final MenuItem menuBlock = menu.findItem(R.id.action_block);
 		final MenuItem menuUnblock = menu.findItem(R.id.action_unblock);
 
-		if (isConversationsOverviewVisable()
-				&& isConversationsOverviewHideable()) {
+		if (isConversationsOverviewVisable() && isConversationsOverviewHideable()) {
 			menuArchive.setVisible(false);
 			menuMucDetails.setVisible(false);
 			menuContactDetails.setVisible(false);
@@ -309,9 +302,9 @@ public class ConversationActivity extends XmppActivity
 					menuAttach.setVisible(false);
 					menuBlock.setVisible(false);
 					menuUnblock.setVisible(false);
+					menuInviteContact.setVisible(getSelectedConversation().getMucOptions().canInvite());
 				} else {
 					menuMucDetails.setVisible(false);
-					menuInviteContact.setTitle(R.string.conference_with);
 					if (this.getSelectedConversation().isBlocked()) {
 						menuBlock.setVisible(false);
 					} else {

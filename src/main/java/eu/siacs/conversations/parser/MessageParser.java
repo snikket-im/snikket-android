@@ -1,15 +1,13 @@
 package eu.siacs.conversations.parser;
 
-import android.util.Log;
-
 import net.java.otr4j.session.Session;
 import net.java.otr4j.session.SessionStatus;
 
-import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
+import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.services.MessageArchiveService;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.CryptoHelper;
@@ -142,14 +140,25 @@ public class MessageParser extends AbstractParser implements
 		Conversation conversation = mXmppConnectionService
 				.findOrCreateConversation(account, from.toBareJid(), true);
 		if (packet.hasChild("subject")) {
-			conversation.getMucOptions().setSubject(
-					packet.findChild("subject").getContent());
+			conversation.getMucOptions().setSubject(packet.findChild("subject").getContent());
 			mXmppConnectionService.updateConversationUi();
 			return null;
 		}
-		if (from.isBareJid()) {
+
+		final Element x = packet.findChild("x", "http://jabber.org/protocol/muc#user");
+		if (from.isBareJid() && (x == null || !x.hasChild("status"))) {
 			return null;
+		} else if (from.isBareJid() && x.hasChild("status")) {
+			for(Element child : x.getChildren()) {
+				if (child.getName().equals("status")) {
+					String code = child.getAttribute("code");
+					if (code.contains(MucOptions.STATUS_CODE_ROOM_CONFIG_CHANGED)) {
+						mXmppConnectionService.fetchConferenceConfiguration(conversation);
+					}
+				}
+			}
 		}
+
 		if (from.getResourcepart().equals(conversation.getMucOptions().getActualNick())) {
 			if (mXmppConnectionService.markMessage(conversation,
 					packet.getId(), Message.STATUS_SEND)) {
@@ -350,7 +359,7 @@ public class MessageParser extends AbstractParser implements
 		final Jid from = packet.getAttributeAsJid("from");
 		Element invite = extractInvite(packet);
 		if (invite != null) {
-			Conversation conversation = mXmppConnectionService.findOrCreateConversation(account,from, true);
+			Conversation conversation = mXmppConnectionService.findOrCreateConversation(account, from, true);
 			if (!conversation.getMucOptions().online()) {
 				Element password = invite.findChild("password");
 				conversation.getMucOptions().setPassword(password == null ? null : password.getContent());
