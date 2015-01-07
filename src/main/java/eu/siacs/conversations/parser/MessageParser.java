@@ -348,6 +348,17 @@ public class MessageParser extends AbstractParser implements
 
 	private void parseNonMessage(Element packet, Account account) {
 		final Jid from = packet.getAttributeAsJid("from");
+		Element invite = extractInvite(packet);
+		if (invite != null) {
+			Conversation conversation = mXmppConnectionService.findOrCreateConversation(account,from, true);
+			if (!conversation.getMucOptions().online()) {
+				Element password = invite.findChild("password");
+				conversation.getMucOptions().setPassword(password == null ? null : password.getContent());
+				mXmppConnectionService.databaseBackend.updateConversation(conversation);
+				mXmppConnectionService.joinMuc(conversation);
+				mXmppConnectionService.updateConversationUi();
+			}
+		}
 		if (packet.hasChild("event", "http://jabber.org/protocol/pubsub#event")) {
 			Element event = packet.findChild("event",
 					"http://jabber.org/protocol/pubsub#event");
@@ -374,42 +385,18 @@ public class MessageParser extends AbstractParser implements
 			updateLastseen(packet, account, false);
 			mXmppConnectionService.markMessage(account, from.toBareJid(),
 					id, Message.STATUS_SEND_RECEIVED);
-		} else if (packet.hasChild("x", "http://jabber.org/protocol/muc#user")) {
-			Element x = packet.findChild("x",
-					"http://jabber.org/protocol/muc#user");
-			if (x.hasChild("invite")) {
-				Conversation conversation = mXmppConnectionService
-						.findOrCreateConversation(account,
-								packet.getAttributeAsJid("from"), true);
-				if (!conversation.getMucOptions().online()) {
-					if (x.hasChild("password")) {
-						Element password = x.findChild("password");
-						conversation.getMucOptions().setPassword(
-								password.getContent());
-						mXmppConnectionService.databaseBackend
-								.updateConversation(conversation);
-					}
-					mXmppConnectionService.joinMuc(conversation);
-					mXmppConnectionService.updateConversationUi();
-				}
-			}
-		} else if (packet.hasChild("x", "jabber:x:conference")) {
-			Element x = packet.findChild("x", "jabber:x:conference");
-            Jid jid = x.getAttributeAsJid("jid");
-            String password = x.getAttribute("password");
-			if (jid != null) {
-				Conversation conversation = mXmppConnectionService
-						.findOrCreateConversation(account, jid, true);
-				if (!conversation.getMucOptions().online()) {
-					if (password != null) {
-						conversation.getMucOptions().setPassword(password);
-						mXmppConnectionService.databaseBackend
-								.updateConversation(conversation);
-					}
-					mXmppConnectionService.joinMuc(conversation);
-					mXmppConnectionService.updateConversationUi();
-				}
-			}
+		}
+	}
+
+	private Element extractInvite(Element message) {
+		Element x = message.findChild("x","http://jabber.org/protocol/muc#user");
+		if (x == null) {
+			x = message.findChild("x","jabber:x:conference");
+		}
+		if (x != null && x.hasChild("invite")) {
+			return x;
+		} else {
+			return null;
 		}
 	}
 
@@ -493,7 +480,7 @@ public class MessageParser extends AbstractParser implements
 				if (message != null) {
 					message.markUnread();
 				}
-			} else if (packet.hasChild("body")) {
+			} else if (packet.hasChild("body") && extractInvite(packet) == null) {
 				message = this.parseChat(packet, account);
 				if (message != null) {
 					message.markUnread();
