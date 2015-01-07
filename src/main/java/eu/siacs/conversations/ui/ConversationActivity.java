@@ -492,7 +492,6 @@ public class ConversationActivity extends XmppActivity
 	}
 
 	public void endConversation(Conversation conversation) {
-		conversation.setStatus(Conversation.STATUS_ARCHIVED);
 		showConversationsOverview();
 		xmppConnectionService.archiveConversation(conversation);
 		if (conversationList.size() > 0) {

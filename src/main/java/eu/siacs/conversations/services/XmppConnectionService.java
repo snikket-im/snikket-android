@@ -1005,6 +1005,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 				} else {
 					conversation.setMode(Conversation.MODE_SINGLE);
 				}
+				conversation.setNextEncryption(-1);
 				conversation.addAll(0, databaseBackend.getMessages(conversation, Config.PAGE_SIZE));
 				this.databaseBackend.updateConversation(conversation);
 			} else {
@@ -1040,6 +1041,8 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	}
 
 	public void archiveConversation(Conversation conversation) {
+		conversation.setStatus(Conversation.STATUS_ARCHIVED);
+		conversation.setNextEncryption(-1);
 		synchronized (this.conversations) {
 			if (conversation.getMode() == Conversation.MODE_MULTI) {
 				if (conversation.getAccount().getStatus() == Account.State.ONLINE) {
