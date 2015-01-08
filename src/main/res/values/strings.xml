@@ -416,9 +416,16 @@
 	<string name="grant_admin_privileges">Grant admin privileges</string>
 	<string name="remove_admin_privileges">Revoke admin privileges</string>
 	<string name="remove_from_room">Remove from conference</string>
-	<string name="could_not_change_affiliation">Could not change affiliation</string>
+	<string name="could_not_change_affiliation">Could not change affiliation of %s</string>
 	<string name="ban_from_conference">Ban from conference</string>
 	<string name="removing_from_public_conference">You are trying to remove %s from a public conference. The only way to do that is to ban that user for ever.</string>
 	<string name="ban_now">Ban now</string>
-	<string name="could_not_change_role">Could not change role</string>
+	<string name="could_not_change_role">Could not change role of %s</string>
+	<string name="public_conference">This is a publicly accessible conference</string>
+	<string name="private_conference">This is a private, members only conference</string>
+	<string name="conference_options">Conference options</string>
+	<string name="members_only">Private (Members only)</string>
+	<string name="non_anonymous">Non-anonymous</string>
+	<string name="modified_conference_options">Modified conference options!</string>
+	<string name="could_not_modify_conference_options">Could not modify conference options</string>
 </resources>

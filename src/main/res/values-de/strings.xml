@@ -390,8 +390,16 @@
     <string name="grant_admin_privileges">Administratorrechte gewähren</string>
     <string name="remove_admin_privileges">Administratorrechte entziehen</string>
     <string name="remove_from_room">Aus Konferenz entfernen</string>
-    <string name="could_not_change_affiliation">Zugehörigkeit kann nicht geändert werden</string>
+    <string name="could_not_change_affiliation">Zugehörigkeit von %s konnte nicht verändernd werden</string>
     <string name="ban_from_conference">Von Konferenz ausschließen.</string>
     <string name="removing_from_public_conference">Du versuchst %s aus einer öffentlichen Konferenz zu entfernen. Die einzige Möglichkeit, dies dauerhaft zu tun, ist den Kontakt aus dieser Konferenz zu verbannen.</string>
     <string name="ban_now">Kontakt ausschließen</string>
+	<string name="could_not_change_role">Rolle von %s konnte nicht geändert werden</string>
+	<string name="public_conference">Das ist eine öffentlich zugängliche Konferenz</string>
+	<string name="private_conference">Das ist eine private Konferenz nur für Mitglieder</string>
+	<string name="conference_options">Konferenzoptionen</string>
+	<string name="members_only">Privat (Nur für Mitglieder)</string>
+	<string name="non_anonymous">De-anonymisiert</string>
+	<string name="modified_conference_options">Konferenzoptionen wurden modifiziert!</string>
+	<string name="could_not_modify_conference_options">Konferenzoptionen konnten nicht modifiziert werden</string>
 </resources>

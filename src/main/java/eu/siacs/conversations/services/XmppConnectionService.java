@@ -1497,6 +1497,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 						}
 					}
 					conversation.getMucOptions().updateFeatures(features);
+					updateConversationUi();
 				}
 			}
 		});
@@ -2229,7 +2230,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		public void onMucRosterUpdate();
 	}
 
-	private interface OnConferenceOptionsPushed {
+	public interface OnConferenceOptionsPushed {
 		public void onPushSucceeded();
 		public void onPushFailed();
 	}

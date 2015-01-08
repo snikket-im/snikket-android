@@ -41,7 +41,7 @@ import eu.siacs.conversations.services.XmppConnectionService.OnConversationUpdat
 import eu.siacs.conversations.xmpp.jid.Jid;
 import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
 
-public class ConferenceDetailsActivity extends XmppActivity implements OnConversationUpdate, OnMucRosterUpdate, XmppConnectionService.OnAffiliationChanged, XmppConnectionService.OnRoleChanged {
+public class ConferenceDetailsActivity extends XmppActivity implements OnConversationUpdate, OnMucRosterUpdate, XmppConnectionService.OnAffiliationChanged, XmppConnectionService.OnRoleChanged, XmppConnectionService.OnConferenceOptionsPushed {
 	public static final String ACTION_VIEW_MUC = "view_muc";
 	private Conversation mConversation;
 	private OnClickListener inviteListener = new OnClickListener() {
@@ -59,6 +59,8 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 	private TextView mAccountJid;
 	private LinearLayout membersView;
 	private LinearLayout mMoreDetails;
+	private TextView mConferenceType;
+	private ImageButton mChangeConferenceSettingsButton;
 	private Button mInviteButton;
 	private String uuid = null;
 	private List<User> users = new ArrayList<>();
@@ -92,6 +94,36 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 		@Override
 		public void userInputRequried(PendingIntent pi, Conversation object) {
 
+		}
+	};
+	private OnClickListener mChangeConferenceSettings = new OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			final MucOptions mucOptions = mConversation.getMucOptions();
+			AlertDialog.Builder builder = new AlertDialog.Builder(ConferenceDetailsActivity.this);
+			builder.setTitle(R.string.conference_options);
+			String[] options = {getString(R.string.members_only),
+					getString(R.string.non_anonymous)};
+			final boolean[] values = new boolean[options.length];
+			values[0] = mucOptions.membersOnly();
+			values[1] = mucOptions.nonanonymous();
+			builder.setMultiChoiceItems(options,values,new DialogInterface.OnMultiChoiceClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+					values[which] = isChecked;
+				}
+			});
+			builder.setNegativeButton(R.string.cancel, null);
+			builder.setPositiveButton(R.string.confirm,new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					Bundle options = new Bundle();
+					options.putString("muc#roomconfig_membersonly", values[0] ? "1" : "0");
+					options.putString("muc#roomconfig_whois", values[1] ? "anyone" : "moderators");
+					xmppConnectionService.pushConferenceConfiguration(mConversation,options,ConferenceDetailsActivity.this);
+				}
+			});
+			builder.create().show();
 		}
 	};
 
@@ -129,8 +161,12 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 		mAccountJid = (TextView) findViewById(R.id.details_account);
 		mMoreDetails = (LinearLayout) findViewById(R.id.muc_more_details);
 		mMoreDetails.setVisibility(View.GONE);
+		mChangeConferenceSettingsButton = (ImageButton) findViewById(R.id.change_conference_button);
+		mChangeConferenceSettingsButton.setOnClickListener(this.mChangeConferenceSettings);
+		mConferenceType = (TextView) findViewById(R.id.muc_conference_type);
 		mInviteButton = (Button) findViewById(R.id.invite);
 		mInviteButton.setOnClickListener(inviteListener);
+		mConferenceType = (TextView) findViewById(R.id.muc_conference_type);
 		if (getActionBar() != null) {
 			getActionBar().setHomeButtonEnabled(true);
 			getActionBar().setDisplayHomeAsUpEnabled(true);
@@ -361,16 +397,17 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 	}
 
 	private void updateView() {
+		final MucOptions mucOptions = mConversation.getMucOptions();
+		final User self = mucOptions.getSelf();
 		mAccountJid.setText(getString(R.string.using_account, mConversation
 					.getAccount().getJid().toBareJid()));
 		mYourPhoto.setImageBitmap(avatarService().get(mConversation.getAccount(), getPixel(48)));
 		setTitle(mConversation.getName());
 		mFullJid.setText(mConversation.getJid().toBareJid().toString());
-		mYourNick.setText(mConversation.getMucOptions().getActualNick());
+		mYourNick.setText(mucOptions.getActualNick());
 		mRoleAffiliaton = (TextView) findViewById(R.id.muc_role);
-		if (mConversation.getMucOptions().online()) {
+		if (mucOptions.online()) {
 			mMoreDetails.setVisibility(View.VISIBLE);
-			User self = mConversation.getMucOptions().getSelf();
 			final String status = getStatus(self);
 			if (status != null) {
 				mRoleAffiliaton.setVisibility(View.VISIBLE);
@@ -378,9 +415,19 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 			} else {
 				mRoleAffiliaton.setVisibility(View.GONE);
 			}
+			if (mucOptions.membersOnly()) {
+				mConferenceType.setText(R.string.private_conference);
+			} else {
+				mConferenceType.setText(R.string.public_conference);
+			}
+			if (self.getAffiliation().ranks(MucOptions.Affiliation.OWNER)) {
+				mChangeConferenceSettingsButton.setVisibility(View.VISIBLE);
+			} else {
+				mChangeConferenceSettingsButton.setVisibility(View.GONE);
+			}
 		}
 		this.users.clear();
-		this.users.addAll(mConversation.getMucOptions().getUsers());
+		this.users.addAll(mucOptions.getUsers());
 		LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		membersView.removeAllViews();
 		for (final User user : mConversation.getMucOptions().getUsers()) {
@@ -479,7 +526,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 
 	@Override
 	public void onAffiliationChangeFailed(Jid jid, int resId) {
-
+		displayToast(getString(resId,jid.toBareJid().toString()));
 	}
 
 	@Override
@@ -488,7 +535,26 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 	}
 
 	@Override
-	public void onRoleChangeFailed(String nick, int resid) {
+	public void onRoleChangeFailed(String nick, int resId) {
+		displayToast(getString(resId,nick));
+	}
 
+	@Override
+	public void onPushSucceeded() {
+		displayToast(getString(R.string.modified_conference_options));
+	}
+
+	@Override
+	public void onPushFailed() {
+		displayToast(getString(R.string.could_not_modify_conference_options));
+	}
+
+	private void displayToast(final String msg) {
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				Toast.makeText(ConferenceDetailsActivity.this,msg,Toast.LENGTH_SHORT).show();
+			}
+		});
 	}
 }

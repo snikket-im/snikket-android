@@ -13,7 +13,6 @@ import eu.siacs.conversations.xmpp.jid.Jid;
 import eu.siacs.conversations.xmpp.stanzas.PresencePacket;
 
 import android.annotation.SuppressLint;
-import android.util.Log;
 
 @SuppressLint("DefaultLocale")
 public class MucOptions {
@@ -224,6 +223,10 @@ public class MucOptions {
 		return hasFeature("muc_membersonly");
 	}
 
+	public boolean nonanonymous() {
+		return hasFeature("muc_nonanonymous");
+	}
+
 	public void deleteUser(String name) {
 		for (int i = 0; i < users.size(); ++i) {
 			if (users.get(i).getName().equals(name)) {
@@ -244,7 +247,6 @@ public class MucOptions {
 	}
 
 	public void processPacket(PresencePacket packet, PgpEngine pgp) {
-		Log.d(Config.LOGTAG, packet.toString());
 		final Jid from = packet.getFrom();
 		if (!from.isBareJid()) {
 			final String name = from.getResourcepart();
