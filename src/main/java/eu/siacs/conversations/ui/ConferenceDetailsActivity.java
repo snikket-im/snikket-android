@@ -233,8 +233,6 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 				final Contact contact = user.getContact();
 				if (contact != null) {
 					name = contact.getDisplayName();
-				} else if (user.getJid() != null) {
-					name = user.getJid().toBareJid().toString();
 				} else {
 					name = user.getName();
 				}

@@ -388,17 +388,20 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		final String action = intent == null ? null : intent.getAction();
 		if (action != null) {
-			if (action.equals(ACTION_MERGE_PHONE_CONTACTS)) {
-				PhoneHelper.loadPhoneContacts(getApplicationContext(), new CopyOnWriteArrayList<Bundle>(), this);
-				return START_STICKY;
-			} else if (action.equals(Intent.ACTION_SHUTDOWN)) {
-				logoutAndSave();
-				return START_NOT_STICKY;
-			} else if (action.equals(ACTION_CLEAR_NOTIFICATION)) {
-				mNotificationService.clear();
-			} else if (action.equals(ACTION_DISABLE_FOREGROUND)) {
-				getPreferences().edit().putBoolean("keep_foreground_service",false).commit();
-				toggleForegroundService();
+			switch (action) {
+				case ACTION_MERGE_PHONE_CONTACTS:
+					PhoneHelper.loadPhoneContacts(getApplicationContext(), new CopyOnWriteArrayList<Bundle>(), this);
+					return START_STICKY;
+				case Intent.ACTION_SHUTDOWN:
+					logoutAndSave();
+					return START_NOT_STICKY;
+				case ACTION_CLEAR_NOTIFICATION:
+					mNotificationService.clear();
+					break;
+				case ACTION_DISABLE_FOREGROUND:
+					getPreferences().edit().putBoolean("keep_foreground_service",false).commit();
+					toggleForegroundService();
+					break;
 			}
 		}
 		this.wakeLock.acquire();
@@ -1484,7 +1487,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 			@Override
 			public void onIqPacketReceived(Account account, IqPacket packet) {
 				if (packet.getType() != IqPacket.TYPE.ERROR) {
-					ArrayList<String> features = new ArrayList<String>();
+					ArrayList<String> features = new ArrayList<>();
 					for (Element child : packet.query().getChildren()) {
 						if (child != null && child.getName().equals("feature")) {
 							String var = child.getAttribute("var");
