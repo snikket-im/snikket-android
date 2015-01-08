@@ -159,4 +159,14 @@ public class IqGenerator extends AbstractGenerator {
 		item.setAttribute("affiliation", affiliation);
 		return packet;
 	}
+
+	public IqPacket changeRole(Conversation conference, String nick, String role) {
+		IqPacket packet = new IqPacket(IqPacket.TYPE.SET);
+		packet.setTo(conference.getJid().toBareJid());
+		packet.setFrom(conference.getAccount().getJid());
+		Element item = packet.query("http://jabber.org/protocol/muc#admin").addChild("item");
+		item.setAttribute("nick", nick);
+		item.setAttribute("role", role);
+		return packet;
+	}
 }

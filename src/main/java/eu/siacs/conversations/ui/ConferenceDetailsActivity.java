@@ -41,7 +41,7 @@ import eu.siacs.conversations.services.XmppConnectionService.OnConversationUpdat
 import eu.siacs.conversations.xmpp.jid.Jid;
 import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
 
-public class ConferenceDetailsActivity extends XmppActivity implements OnConversationUpdate, OnMucRosterUpdate, XmppConnectionService.OnAffiliationChanged {
+public class ConferenceDetailsActivity extends XmppActivity implements OnConversationUpdate, OnMucRosterUpdate, XmppConnectionService.OnAffiliationChanged, XmppConnectionService.OnRoleChanged {
 	public static final String ACTION_VIEW_MUC = "view_muc";
 	private Conversation mConversation;
 	private OnClickListener inviteListener = new OnClickListener() {
@@ -294,6 +294,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 				return true;
 			case R.id.ban_from_conference:
 				xmppConnectionService.changeAffiliationInConference(mConversation,mSelectedUser.getJid(), MucOptions.Affiliation.OUTCAST,this);
+				xmppConnectionService.changeRoleInConference(mConversation,mSelectedUser.getName(), MucOptions.Role.NONE,this);
 				return true;
 			default:
 				return super.onContextItemSelected(item);
@@ -303,6 +304,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 	private void removeFromRoom(final User user) {
 		if (mConversation.getMucOptions().membersOnly()) {
 			xmppConnectionService.changeAffiliationInConference(mConversation,user.getJid(), MucOptions.Affiliation.NONE,this);
+			xmppConnectionService.changeRoleInConference(mConversation,mSelectedUser.getName(), MucOptions.Role.NONE,ConferenceDetailsActivity.this);
 		} else {
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			builder.setTitle(R.string.ban_from_conference);
@@ -312,6 +314,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					xmppConnectionService.changeAffiliationInConference(mConversation,user.getJid(), MucOptions.Affiliation.OUTCAST,ConferenceDetailsActivity.this);
+					xmppConnectionService.changeRoleInConference(mConversation,mSelectedUser.getName(), MucOptions.Role.NONE,ConferenceDetailsActivity.this);
 				}
 			});
 			builder.create().show();
@@ -478,6 +481,16 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 
 	@Override
 	public void onAffiliationChangeFailed(Jid jid, int resId) {
+
+	}
+
+	@Override
+	public void onRoleChangedSuccessful(String nick) {
+
+	}
+
+	@Override
+	public void onRoleChangeFailed(String nick, int resid) {
 
 	}
 }

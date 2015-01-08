@@ -1562,6 +1562,27 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		public void onAffiliationChangeFailed(Jid jid, int resId);
 	}
 
+	public void changeRoleInConference(final Conversation conference, final String nick, MucOptions.Role role, final OnRoleChanged callback) {
+		IqPacket request = this.mIqGenerator.changeRole(conference, nick, role.toString());
+		Log.d(Config.LOGTAG,request.toString());
+		sendIqPacket(conference.getAccount(), request, new OnIqPacketReceived() {
+			@Override
+			public void onIqPacketReceived(Account account, IqPacket packet) {
+				Log.d(Config.LOGTAG, packet.toString());
+				if (packet.getType() == IqPacket.TYPE.RESULT) {
+					callback.onRoleChangedSuccessful(nick);
+				} else {
+					callback.onRoleChangeFailed(nick, R.string.could_not_change_role);
+				}
+			}
+		});
+	}
+
+	public interface OnRoleChanged{
+		public void onRoleChangedSuccessful(String nick);
+		public void onRoleChangeFailed(String nick, int resid);
+	}
+
 	public void disconnect(Account account, boolean force) {
 		if ((account.getStatus() == Account.State.ONLINE)
 				|| (account.getStatus() == Account.State.DISABLED)) {

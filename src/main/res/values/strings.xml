@@ -420,4 +420,5 @@
 	<string name="ban_from_conference">Ban from conference</string>
 	<string name="removing_from_public_conference">You are trying to remove %s from a public conference. The only way to do that is to ban that user for ever.</string>
 	<string name="ban_now">Ban now</string>
+	<string name="could_not_change_role">Could not change role</string>
 </resources>
