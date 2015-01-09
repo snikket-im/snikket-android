@@ -85,8 +85,7 @@ public class JingleCandidate {
 	}
 
 	public boolean equalValues(JingleCandidate other) {
-		return other.getHost().equals(this.getHost())
-				&& (other.getPort() == this.getPort());
+		return other != null && other.getHost().equals(this.getHost()) && (other.getPort() == this.getPort());
 	}
 
 	public boolean isOurs() {
