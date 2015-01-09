@@ -428,4 +428,10 @@
 	<string name="non_anonymous">Non-anonymous</string>
 	<string name="modified_conference_options">Modified conference options!</string>
 	<string name="could_not_modify_conference_options">Could not modify conference options</string>
+	<string name="never">Never</string>
+	<string name="thirty_minutes">30 minutes</string>
+	<string name="one_hour">1 hour</string>
+	<string name="two_hours">2 hours</string>
+	<string name="eight_hours">8 hours</string>
+	<string name="until_further_notice">Until further notice</string>
 </resources>
