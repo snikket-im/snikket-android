@@ -316,8 +316,13 @@ public class ConversationFragment extends Fragment {
 		mEditMessage.setOnEnterPressedListener(new OnEnterPressed() {
 
 			@Override
-			public void onEnterPressed() {
-				sendMessage();
+			public boolean onEnterPressed() {
+				if (activity.enterIsSend()) {
+					sendMessage();
+					return true;
+				} else {
+					return false;
+				}
 			}
 		});
 

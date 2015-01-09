@@ -122,6 +122,13 @@
                     android:summary="@string/pref_enable_legacy_ssl_summary"
                     android:title="@string/pref_enable_legacy_ssl" />
             </PreferenceCategory>
+	        <PreferenceCategory android:title="@string/pref_input_options">
+		        <CheckBoxPreference
+			        android:defaultValue="false"
+			        android:key="enter_is_send"
+			        android:title="@string/pref_enter_is_send"
+			        android:summary="@string/pref_enter_is_send_summary" />
+	        </PreferenceCategory>
             <PreferenceCategory android:title="@string/pref_expert_options_other" >
                 <CheckBoxPreference
                     android:defaultValue="false"

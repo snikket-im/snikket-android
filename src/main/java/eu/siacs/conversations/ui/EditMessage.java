@@ -21,9 +21,12 @@ public class EditMessage extends EditText {
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_ENTER) {
 			if (mOnEnterPressed != null) {
-				mOnEnterPressed.onEnterPressed();
+				if (mOnEnterPressed.onEnterPressed()) {
+					return true;
+				} else {
+					return super.onKeyDown(keyCode, event);
+				}
 			}
-			return true;
 		}
 		return super.onKeyDown(keyCode, event);
 	}
@@ -33,7 +36,7 @@ public class EditMessage extends EditText {
 	}
 
 	public interface OnEnterPressed {
-		public void onEnterPressed();
+		public boolean onEnterPressed();
 	}
 
 }

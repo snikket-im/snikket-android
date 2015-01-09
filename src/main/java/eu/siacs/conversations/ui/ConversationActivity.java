@@ -1058,4 +1058,8 @@ public class ConversationActivity extends XmppActivity
 	public void blockConversation(final Blockable conversation) {
 		xmppConnectionService.sendBlockRequest(conversation);
 	}
+
+	public boolean enterIsSend() {
+		return getPreferences().getBoolean("enter_is_send",false);
+	}
 }
