@@ -170,6 +170,7 @@ public class ConversationActivity extends XmppActivity
 					ConversationActivity.this.mConversationFragment.reInit(getSelectedConversation());
 				}
 				hideConversationsOverview();
+				openConversation();
 			}
 		});
 		mContentView = findViewById(R.id.content_view_spl);
@@ -254,6 +255,7 @@ public class ConversationActivity extends XmppActivity
 			xmppConnectionService.getNotificationService().setOpenConversation(conversation);
 			sendReadMarkerIfNecessary(conversation);
 		}
+		listAdapter.notifyDataSetChanged();
 	}
 
 	public void sendReadMarkerIfNecessary(final Conversation conversation) {
