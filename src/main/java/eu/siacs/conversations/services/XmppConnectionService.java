@@ -1547,11 +1547,9 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	public void changeAffiliationInConference(final Conversation conference, Jid user, MucOptions.Affiliation affiliation, final OnAffiliationChanged callback) {
 		final Jid jid = user.toBareJid();
 		IqPacket request = this.mIqGenerator.changeAffiliation(conference, jid, affiliation.toString());
-		Log.d(Config.LOGTAG,request.toString());
 		sendIqPacket(conference.getAccount(), request, new OnIqPacketReceived() {
 			@Override
 			public void onIqPacketReceived(Account account, IqPacket packet) {
-				Log.d(Config.LOGTAG, packet.toString());
 				if (packet.getType() == IqPacket.TYPE.RESULT) {
 					callback.onAffiliationChangedSuccessful(jid);
 				} else {
@@ -1559,6 +1557,17 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 				}
 			}
 		});
+	}
+
+	public void changeAffiliationsInConference(final Conversation conference, MucOptions.Affiliation before, MucOptions.Affiliation after) {
+		List<Jid> jids = new ArrayList<>();
+		for(MucOptions.User user : conference.getMucOptions().getUsers()) {
+			if (user.getAffiliation() == before) {
+				jids.add(user.getJid());
+			}
+		}
+		IqPacket request = this.mIqGenerator.changeAffiliation(conference, jids, after.toString());
+		sendIqPacket(conference.getAccount(), request, null);
 	}
 
 	public interface OnAffiliationChanged {

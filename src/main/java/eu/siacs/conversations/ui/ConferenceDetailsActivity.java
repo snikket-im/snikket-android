@@ -117,10 +117,17 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 			builder.setPositiveButton(R.string.confirm,new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
+					if (!mucOptions.membersOnly() && values[0]) {
+						xmppConnectionService.changeAffiliationsInConference(mConversation,
+								MucOptions.Affiliation.NONE,
+								MucOptions.Affiliation.MEMBER);
+					}
 					Bundle options = new Bundle();
 					options.putString("muc#roomconfig_membersonly", values[0] ? "1" : "0");
 					options.putString("muc#roomconfig_whois", values[1] ? "anyone" : "moderators");
-					xmppConnectionService.pushConferenceConfiguration(mConversation,options,ConferenceDetailsActivity.this);
+					xmppConnectionService.pushConferenceConfiguration(mConversation,
+							options,
+							ConferenceDetailsActivity.this);
 				}
 			});
 			builder.create().show();

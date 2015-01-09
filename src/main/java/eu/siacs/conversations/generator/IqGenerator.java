@@ -1,5 +1,6 @@
 package eu.siacs.conversations.generator;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -151,12 +152,21 @@ public class IqGenerator extends AbstractGenerator {
 	}
 
 	public IqPacket changeAffiliation(Conversation conference, Jid jid, String affiliation) {
+		List<Jid> jids = new ArrayList<>();
+		jids.add(jid);
+		return changeAffiliation(conference,jids,affiliation);
+	}
+
+	public IqPacket changeAffiliation(Conversation conference, List<Jid> jids, String affiliation) {
 		IqPacket packet = new IqPacket(IqPacket.TYPE.SET);
 		packet.setTo(conference.getJid().toBareJid());
 		packet.setFrom(conference.getAccount().getJid());
-		Element item = packet.query("http://jabber.org/protocol/muc#admin").addChild("item");
-		item.setAttribute("jid", jid.toString());
-		item.setAttribute("affiliation", affiliation);
+		Element query = packet.query("http://jabber.org/protocol/muc#admin");
+		for(Jid jid : jids) {
+			Element item = query.addChild("item");
+			item.setAttribute("jid", jid.toString());
+			item.setAttribute("affiliation", affiliation);
+		}
 		return packet;
 	}
 
