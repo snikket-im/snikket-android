@@ -784,11 +784,9 @@ public class ConversationActivity extends XmppActivity
 		} else if (conversationList.size() <= 0) {
 			startActivity(new Intent(this, StartConversationActivity.class));
 			finish();
-		} else if (getIntent() != null
-				&& VIEW_CONVERSATION.equals(getIntent().getType())) {
+		} else if (getIntent() != null && VIEW_CONVERSATION.equals(getIntent().getType())) {
 			handleViewConversationIntent(getIntent());
-		} else if (mOpenConverstaion != null) {
-			selectConversationByUuid(mOpenConverstaion);
+		} else if (selectConversationByUuid(mOpenConverstaion)) {
 			if (mPanelOpen) {
 				showConversationsOverview();
 			} else {
@@ -823,26 +821,32 @@ public class ConversationActivity extends XmppActivity
 		String uuid = (String) intent.getExtras().get(CONVERSATION);
 		String text = intent.getExtras().getString(TEXT, "");
 		String nick = intent.getExtras().getString(NICK,null);
-		selectConversationByUuid(uuid);
-		this.mConversationFragment.reInit(getSelectedConversation());
-		if (nick!=null) {
-			this.mConversationFragment.highlightInConference(nick);
-		} else {
-			this.mConversationFragment.appendText(text);
-		}
-		hideConversationsOverview();
-		openConversation();
-		if (mContentView instanceof SlidingPaneLayout) {
-			updateActionBarTitle(true); //fixes bug where slp isn't properly closed yet
+		if (selectConversationByUuid(uuid)) {
+			this.mConversationFragment.reInit(getSelectedConversation());
+			if (nick != null) {
+				this.mConversationFragment.highlightInConference(nick);
+			} else {
+				this.mConversationFragment.appendText(text);
+			}
+			hideConversationsOverview();
+			openConversation();
+			if (mContentView instanceof SlidingPaneLayout) {
+				updateActionBarTitle(true); //fixes bug where slp isn't properly closed yet
+			}
 		}
 	}
 
-	private void selectConversationByUuid(String uuid) {
+	private boolean selectConversationByUuid(String uuid) {
+		if (uuid == null) {
+			return false;
+		}
 		for (Conversation aConversationList : conversationList) {
 			if (aConversationList.getUuid().equals(uuid)) {
 				setSelectedConversation(aConversationList);
+				return true;
 			}
 		}
+		return false;
 	}
 
 	@Override
