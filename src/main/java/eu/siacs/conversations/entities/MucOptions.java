@@ -227,6 +227,10 @@ public class MucOptions {
 		return hasFeature("muc_nonanonymous");
 	}
 
+	public boolean persistent() {
+		return hasFeature("muc_persistent");
+	}
+
 	public void deleteUser(String name) {
 		for (int i = 0; i < users.size(); ++i) {
 			if (users.get(i).getName().equals(name)) {

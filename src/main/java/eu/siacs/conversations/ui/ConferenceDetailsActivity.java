@@ -39,7 +39,6 @@ import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.services.XmppConnectionService.OnMucRosterUpdate;
 import eu.siacs.conversations.services.XmppConnectionService.OnConversationUpdate;
 import eu.siacs.conversations.xmpp.jid.Jid;
-import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
 
 public class ConferenceDetailsActivity extends XmppActivity implements OnConversationUpdate, OnMucRosterUpdate, XmppConnectionService.OnAffiliationChanged, XmppConnectionService.OnRoleChanged, XmppConnectionService.OnConferenceOptionsPushed {
 	public static final String ACTION_VIEW_MUC = "view_muc";
@@ -63,7 +62,6 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 	private ImageButton mChangeConferenceSettingsButton;
 	private Button mInviteButton;
 	private String uuid = null;
-	private List<User> users = new ArrayList<>();
 	private User mSelectedUser = null;
 
 	private boolean mAdvancedMode = false;
@@ -125,12 +123,20 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 					Bundle options = new Bundle();
 					options.putString("muc#roomconfig_membersonly", values[0] ? "1" : "0");
 					options.putString("muc#roomconfig_whois", values[1] ? "anyone" : "moderators");
+					options.putString("muc#roomconfig_persistentroom", "1");
 					xmppConnectionService.pushConferenceConfiguration(mConversation,
 							options,
 							ConferenceDetailsActivity.this);
 				}
 			});
 			builder.create().show();
+		}
+	};
+	private OnValueEdited onSubjectEdited = new OnValueEdited() {
+
+		@Override
+		public void onValueEdited(String value) {
+			xmppConnectionService.pushSubjectToConference(mConversation,value);
 		}
 	};
 
@@ -202,17 +208,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 				break;
 			case R.id.action_edit_subject:
 				if (mConversation != null) {
-					quickEdit(mConversation.getName(), new OnValueEdited() {
-
-						@Override
-						public void onValueEdited(String value) {
-							MessagePacket packet = xmppConnectionService
-								.getMessageGenerator().conferenceSubject(
-										mConversation, value);
-							xmppConnectionService.sendMessagePacket(
-									mConversation.getAccount(), packet);
-						}
-					});
+					quickEdit(mConversation.getName(),this.onSubjectEdited);
 				}
 				break;
 			case R.id.action_save_as_bookmark:
@@ -277,7 +273,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 				if (contact != null) {
 					name = contact.getDisplayName();
 				} else {
-					name = user.getName();
+					name = user.getJid().toBareJid().toString();
 				}
 				menu.setHeaderTitle(name);
 				MenuItem startConversation = menu.findItem(R.id.start_conversation);
@@ -433,8 +429,6 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 				mChangeConferenceSettingsButton.setVisibility(View.GONE);
 			}
 		}
-		this.users.clear();
-		this.users.addAll(mucOptions.getUsers());
 		LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		membersView.removeAllViews();
 		for (final User user : mConversation.getMucOptions().getUsers()) {
