@@ -6,3 +6,4 @@ android:
     - build-tools-21.1.2
     - build-tools-19.1.0
     - android-21
+    - extra-android-m2repository
