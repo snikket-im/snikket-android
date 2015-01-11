@@ -57,28 +57,33 @@ public class FileBackend {
 
 	public DownloadableFile getFile(Message message, boolean decrypted) {
 		String path = message.getRelativeFilePath();
-		if (!decrypted && (message.getEncryption() == Message.ENCRYPTION_PGP || message.getEncryption() == Message.ENCRYPTION_DECRYPTED)) {
-			String extension;
-			if (path != null && !path.isEmpty()) {
-				String[] parts = path.split("\\.");
-				extension = "."+parts[parts.length - 1];
-			} else if (message.getType() == Message.TYPE_IMAGE || message.getType() == Message.TYPE_TEXT) {
+		String extension;
+		if (path != null && !path.isEmpty()) {
+			String[] parts = path.split("\\.");
+			extension = "."+parts[parts.length - 1];
+		} else {
+			if (message.getType() == Message.TYPE_IMAGE || message.getType() == Message.TYPE_TEXT) {
 				extension = ".webp";
 			} else {
 				extension = "";
 			}
+			path = message.getUuid()+extension;
+		}
+		final boolean encrypted = !decrypted
+				&& (message.getEncryption() == Message.ENCRYPTION_PGP
+				|| message.getEncryption() == Message.ENCRYPTION_DECRYPTED);
+		if (encrypted) {
 			return new DownloadableFile(getConversationsFileDirectory()+message.getUuid()+extension+".pgp");
-		} else if (path != null && !path.isEmpty()) {
+		} else {
 			if (path.startsWith("/")) {
 				return new DownloadableFile(path);
 			} else {
-				return new DownloadableFile(getConversationsFileDirectory()+path);
+				if (message.getType() == Message.TYPE_FILE) {
+					return new DownloadableFile(getConversationsFileDirectory() + path);
+				} else {
+					return new DownloadableFile(getConversationsImageDirectory()+path);
+				}
 			}
-		} else {
-			StringBuilder filename = new StringBuilder();
-			filename.append(getConversationsImageDirectory());
-			filename.append(message.getUuid()+".webp");
-			return new DownloadableFile(filename.toString());
 		}
 	}
 

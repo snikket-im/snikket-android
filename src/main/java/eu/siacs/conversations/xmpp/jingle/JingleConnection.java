@@ -101,11 +101,9 @@ public class JingleConnection implements Downloadable {
 					file.delete();
 				}
 			}
-			Log.d(Config.LOGTAG,
-					"sucessfully transmitted file:" + file.getAbsolutePath());
+			Log.d(Config.LOGTAG,"sucessfully transmitted file:" + file.getAbsolutePath());
 			if (message.getEncryption() != Message.ENCRYPTION_PGP) {
-				Intent intent = new Intent(
-						Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+				Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
 				intent.setData(Uri.fromFile(file));
 				mXmppConnectionService.sendBroadcast(intent);
 			}
@@ -281,15 +279,17 @@ public class JingleConnection implements Downloadable {
 			if (fileNameElement != null) {
 				String[] filename = fileNameElement.getContent()
 						.toLowerCase(Locale.US).toLowerCase().split("\\.");
-				if (Arrays.asList(VALID_IMAGE_EXTENSIONS).contains(
-						filename[filename.length - 1])) {
+				String extension = filename[filename.length - 1];
+				if (Arrays.asList(VALID_IMAGE_EXTENSIONS).contains(extension)) {
 					message.setType(Message.TYPE_IMAGE);
+					message.setRelativeFilePath(message.getUuid()+"."+extension);
 				} else if (Arrays.asList(VALID_CRYPTO_EXTENSIONS).contains(
 						filename[filename.length - 1])) {
 					if (filename.length == 3) {
-						if (Arrays.asList(VALID_IMAGE_EXTENSIONS).contains(
-								filename[filename.length - 2])) {
+						extension = filename[filename.length - 2];
+						if (Arrays.asList(VALID_IMAGE_EXTENSIONS).contains(extension)) {
 							message.setType(Message.TYPE_IMAGE);
+							message.setRelativeFilePath(message.getUuid()+"."+extension);
 						} else {
 							message.setType(Message.TYPE_FILE);
 						}

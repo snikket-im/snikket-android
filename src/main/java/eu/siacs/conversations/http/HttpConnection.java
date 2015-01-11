@@ -14,6 +14,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
@@ -65,14 +66,22 @@ public class HttpConnection implements Downloadable {
 		this.message.setDownloadable(this);
 		try {
 			mUrl = new URL(message.getBody());
-			String path = mUrl.getPath().toLowerCase();
-			if (path != null && (path.endsWith(".pgp") || path.endsWith(".gpg"))) {
+			String[] parts = mUrl.getPath().toLowerCase().split("\\.");
+			String lastPart = parts.length >= 1 ? parts[parts.length - 1] : null;
+			String secondToLast = parts.length >= 2 ? parts[parts.length -2] : null;
+			if ("pgp".equals(lastPart) || "gpg".equals(lastPart)) {
 				this.message.setEncryption(Message.ENCRYPTION_PGP);
 			} else if (message.getEncryption() != Message.ENCRYPTION_OTR) {
 				this.message.setEncryption(Message.ENCRYPTION_NONE);
 			}
-			this.file = mXmppConnectionService.getFileBackend().getFile(
-					message, false);
+			String extension;
+			if (Arrays.asList(VALID_CRYPTO_EXTENSIONS).contains(lastPart)) {
+				extension = secondToLast;
+			} else {
+				extension = lastPart;
+			}
+			message.setRelativeFilePath(message.getUuid()+"."+extension);
+			this.file = mXmppConnectionService.getFileBackend().getFile(message, false);
 			String reference = mUrl.getRef();
 			if (reference != null && reference.length() == 96) {
 				this.file.setKey(CryptoHelper.hexToBytes(reference));
