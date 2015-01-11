@@ -421,8 +421,8 @@
 	<string name="removing_from_public_conference">You are trying to remove %s from a public conference. The only way to do that is to ban that user for ever.</string>
 	<string name="ban_now">Ban now</string>
 	<string name="could_not_change_role">Could not change role of %s</string>
-	<string name="public_conference">This is a publicly accessible conference</string>
-	<string name="private_conference">This is a private, members only conference</string>
+	<string name="public_conference">Publicly accessible conference</string>
+	<string name="private_conference">Private, members only conference</string>
 	<string name="conference_options">Conference options</string>
 	<string name="members_only">Private (Members only)</string>
 	<string name="non_anonymous">Non-anonymous</string>

@@ -87,6 +87,7 @@
 				android:layout_centerVertical="true"
 				android:textColor="@color/primarytext"
 				android:textSize="?attr/TextSizeBody"
+				android:layout_alignParentLeft="true"
 				android:layout_toLeftOf="@+id/change_conference_button"
 				/>
 			<ImageButton
