@@ -8,6 +8,8 @@ import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.MucOptions;
+import eu.siacs.conversations.http.HttpConnection;
+import eu.siacs.conversations.http.HttpConnectionManager;
 import eu.siacs.conversations.services.MessageArchiveService;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.CryptoHelper;
@@ -575,9 +577,9 @@ public class MessageParser extends AbstractParser implements
 				mXmppConnectionService.databaseBackend.createMessage(message);
 			}
 		}
-		if (message.trusted() && message.bodyContainsDownloadable()) {
-			this.mXmppConnectionService.getHttpConnectionManager()
-					.createNewConnection(message);
+		final HttpConnectionManager manager = this.mXmppConnectionService.getHttpConnectionManager();
+		if (message.trusted() && message.bodyContainsDownloadable() && manager.getAutoAcceptFileSize() > 0) {
+			manager.createNewConnection(message);
 		} else if (!message.isRead()) {
 			mXmppConnectionService.getNotificationService().push(message);
 		}
