@@ -171,7 +171,12 @@ public class UIHelper {
 		if (path == null) {
 			return "";
 		}
-		final String mime = URLConnection.guessContentTypeFromName(path);
+		final String mime;
+		try {
+			mime = URLConnection.guessContentTypeFromName(path);
+		} catch (final StringIndexOutOfBoundsException ignored) {
+			return "";
+		}
 		if (mime == null) {
 			return "";
 		} else if (mime.startsWith("audio/")) {
