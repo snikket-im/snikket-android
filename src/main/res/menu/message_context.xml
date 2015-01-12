@@ -5,8 +5,8 @@
         android:id="@+id/copy_text"
         android:title="@string/copy_text"/>
     <item
-        android:id="@+id/share_image"
-        android:title="@string/share_image"/>
+        android:id="@+id/share_with"
+        android:title="@string/share_with"/>
     <item
         android:id="@+id/copy_url"
         android:title="@string/copy_original_url"/>
