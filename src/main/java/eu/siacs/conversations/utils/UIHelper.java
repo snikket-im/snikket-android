@@ -1,12 +1,20 @@
 package eu.siacs.conversations.utils;
 
+import java.net.URLConnection;
 import java.util.Calendar;
 import java.util.Date;
 
 import eu.siacs.conversations.R;
+import eu.siacs.conversations.entities.Contact;
+import eu.siacs.conversations.entities.Conversation;
+import eu.siacs.conversations.entities.Downloadable;
+import eu.siacs.conversations.entities.Message;
+import eu.siacs.conversations.xmpp.jid.Jid;
+
 import android.content.Context;
 import android.text.format.DateFormat;
 import android.text.format.DateUtils;
+import android.util.Pair;
 
 public class UIHelper {
 	private static final int SHORT_DATE_FLAGS = DateUtils.FORMAT_SHOW_DATE
@@ -101,5 +109,107 @@ public class UIHelper {
 				0xFF5677fc, 0xFF03a9f4, 0xFF00bcd4, 0xFF009688, 0xFFff5722,
 				0xFF795548, 0xFF607d8b};
 		return colors[(int) ((name.hashCode() & 0xffffffffl) % colors.length)];
+	}
+
+	public static Pair<String,Boolean> getMessagePreview(final Context context, final Message message) {
+		final Downloadable d = message.getDownloadable();
+		if (d != null ) {
+			switch (d.getStatus()) {
+				case Downloadable.STATUS_CHECKING:
+					return new Pair<>(context.getString(R.string.checking_image),true);
+				case Downloadable.STATUS_DOWNLOADING:
+					if (message.getType() == Message.TYPE_FILE) {
+						return new Pair<>(context.getString(R.string.receiving_x_file,
+								getFileDescriptionString(context,message),
+								d.getProgress()),true);
+					} else {
+						return new Pair<>(context.getString(R.string.receiving_image, d.getProgress()),true);
+					}
+				case Downloadable.STATUS_OFFER:
+				case Downloadable.STATUS_OFFER_CHECK_FILESIZE:
+					if (message.getType() == Message.TYPE_FILE) {
+						return new Pair<>(context.getString(R.string.x_file_offered_for_download,
+								getFileDescriptionString(context,message)),true);
+					} else {
+						return new Pair<>(context.getString(R.string.image_offered_for_download),true);
+					}
+				case Downloadable.STATUS_DELETED:
+					if (message.getType() == Message.TYPE_FILE) {
+						return new Pair<>(context.getString(R.string.file_deleted),true);
+					} else {
+						return new Pair<>(context.getString(R.string.image_file_deleted),true);
+					}
+				case Downloadable.STATUS_FAILED:
+					if (message.getType() == Message.TYPE_FILE) {
+						return new Pair<>(context.getString(R.string.file_transmission_failed),true);
+					} else {
+						return new Pair<>(context.getString(R.string.image_transmission_failed),true);
+					}
+				default:
+					return new Pair<>("",false);
+			}
+		} else if (message.getEncryption() == Message.ENCRYPTION_PGP) {
+			return new Pair<>(context.getString(R.string.encrypted_message_received),true);
+		} else if (message.getType() == Message.TYPE_FILE) {
+			if (message.getStatus() == Message.STATUS_RECEIVED) {
+				return new Pair<>(context.getString(R.string.received_x_file,
+						getFileDescriptionString(context, message)), true);
+			} else {
+				return new Pair<>(getFileDescriptionString(context,message),true);
+			}
+		} else {
+			if (message.getBody().startsWith("/me ")) {
+				return new Pair<>(message.getBody().replaceAll("^/me ",UIHelper.getMessageDisplayName(message) + " "),false);
+			} else {
+				return new Pair<>(message.getBody(), false);
+			}
+		}
+	}
+
+	public static String getFileDescriptionString(final Context context, final Message message) {
+		final String path = message.getRelativeFilePath();
+		if (path == null) {
+			return "";
+		}
+		final String mime = URLConnection.guessContentTypeFromName(path);
+		if (mime == null) {
+			return "";
+		} else if (mime.startsWith("audio/")) {
+			return context.getString(R.string.audio);
+		} else if(mime.startsWith("video/")) {
+			return context.getString(R.string.video);
+		} else if (mime.contains("pdf")) {
+			return context.getString(R.string.pdf_document)	;
+		} else {
+			return mime;
+		}
+	}
+
+	public static String getMessageDisplayName(final Message message) {
+		if (message.getStatus() == Message.STATUS_RECEIVED) {
+			if (message.getConversation().getMode() == Conversation.MODE_MULTI) {
+				return getDisplayedMucCounterpart(message.getCounterpart());
+			} else {
+				final Contact contact = message.getContact();
+				return contact != null ? contact.getDisplayName() : "";
+			}
+		} else {
+			if (message.getConversation().getMode() == Conversation.MODE_MULTI) {
+				return getDisplayedMucCounterpart(message.getConversation().getJid());
+			} else {
+				final Jid jid = message.getConversation().getAccount().getJid();
+				return jid.hasLocalpart() ? jid.getLocalpart() : jid.toDomainJid().toString();
+			}
+		}
+	}
+
+	private static String getDisplayedMucCounterpart(final Jid counterpart) {
+		if (counterpart==null) {
+			return "";
+		} else if (!counterpart.isBareJid()) {
+			return counterpart.getResourcepart();
+		} else {
+			return counterpart.toString();
+		}
 	}
 }

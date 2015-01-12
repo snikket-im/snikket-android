@@ -362,13 +362,12 @@
     <string name="pref_keep_foreground_service">Keep service in foreground</string>
     <string name="pref_keep_foreground_service_summary">Prevents the operating system from killing your connection</string>
     <string name="choose_file">Choose file</string>
-    <string name="receiving_file">Receiving %1$s file (%2$d%% completed)</string>
-    <string name="download_file">Download %s file</string>
-    <string name="open_file">Open %s file</string>
+    <string name="receiving_x_file">Receiving %1$s (%2$d%% completed)</string>
+    <string name="download_x_file">Download %s</string>
+    <string name="open_x_file">Open %s</string>
     <string name="sending_file">sending (%1$d%% completed)</string>
     <string name="preparing_file">Preparing file for transmission</string>
-    <string name="file_offered_for_download">File offered for download</string>
-    <string name="file">%s file</string>
+    <string name="x_file_offered_for_download">%s offered for download</string>
     <string name="cancel_transmission">Cancel transmission</string>
     <string name="file_transmission_failed">file transmission failed</string>
     <string name="file_deleted">The file has been deleted</string>
@@ -437,4 +436,8 @@
 	<string name="pref_input_options">Input options</string>
 	<string name="pref_enter_is_send">Enter is send</string>
 	<string name="pref_enter_is_send_summary">Use enter key to send message</string>
+	<string name="audio">audio file</string>
+	<string name="video">video file</string>
+	<string name="pdf_document">PDF document</string>
+	<string name="received_x_file">Received %s</string>
 </resources>

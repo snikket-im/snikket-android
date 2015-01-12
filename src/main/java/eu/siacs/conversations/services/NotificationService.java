@@ -40,6 +40,7 @@ import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.ui.ConversationActivity;
 import eu.siacs.conversations.ui.ManageAccountActivity;
 import eu.siacs.conversations.ui.TimePreference;
+import eu.siacs.conversations.utils.UIHelper;
 
 public class NotificationService {
 
@@ -210,7 +211,7 @@ public class NotificationService {
 				conversation = messages.get(0).getConversation();
 				String name = conversation.getName();
 				style.addLine(Html.fromHtml("<b>" + name + "</b> "
-							+ getReadableBody(messages.get(0))));
+							+ UIHelper.getMessagePreview(mXmppConnectionService,messages.get(0)).first));
 				names.append(name);
 				names.append(", ");
 			}
@@ -268,7 +269,7 @@ public class NotificationService {
 			bigPictureStyle.bigPicture(bitmap);
 			if (tmp.size() > 0) {
 				bigPictureStyle.setSummaryText(getMergedBodies(tmp));
-				builder.setContentText(getReadableBody(tmp.get(0)));
+				builder.setContentText(UIHelper.getMessagePreview(mXmppConnectionService,tmp.get(0)).first);
 			} else {
 				builder.setContentText(mXmppConnectionService.getString(R.string.image_file));
 			}
@@ -280,11 +281,10 @@ public class NotificationService {
 
 	private void modifyForTextOnly(final Builder builder,
 			final ArrayList<Message> messages, final boolean notify) {
-		builder.setStyle(new NotificationCompat.BigTextStyle()
-				.bigText(getMergedBodies(messages)));
-		builder.setContentText(getReadableBody(messages.get(0)));
+		builder.setStyle(new NotificationCompat.BigTextStyle().bigText(getMergedBodies(messages)));
+		builder.setContentText(UIHelper.getMessagePreview(mXmppConnectionService,messages.get(0)).first);
 		if (notify) {
-			builder.setTicker(getReadableBody(messages.get(messages.size() - 1)));
+			builder.setTicker(UIHelper.getMessagePreview(mXmppConnectionService,messages.get(messages.size() - 1)).first);
 		}
 	}
 
@@ -302,39 +302,12 @@ public class NotificationService {
 	private String getMergedBodies(final ArrayList<Message> messages) {
 		final StringBuilder text = new StringBuilder();
 		for (int i = 0; i < messages.size(); ++i) {
-			text.append(getReadableBody(messages.get(i)));
+			text.append(UIHelper.getMessagePreview(mXmppConnectionService,messages.get(i)).first);
 			if (i != messages.size() - 1) {
 				text.append("\n");
 			}
 		}
 		return text.toString();
-	}
-
-	private String getReadableBody(final Message message) {
-		if (message.getDownloadable() != null
-				&& (message.getDownloadable().getStatus() == Downloadable.STATUS_OFFER || message
-					.getDownloadable().getStatus() == Downloadable.STATUS_OFFER_CHECK_FILESIZE)) {
-			if (message.getType() == Message.TYPE_FILE) {
-				return mXmppConnectionService.getString(R.string.file_offered_for_download);
-			} else {
-				return mXmppConnectionService.getText(
-						R.string.image_offered_for_download).toString();
-			}
-		} else if (message.getEncryption() == Message.ENCRYPTION_PGP) {
-			return mXmppConnectionService.getText(
-					R.string.encrypted_message_received).toString();
-		} else if (message.getEncryption() == Message.ENCRYPTION_DECRYPTION_FAILED) {
-			return mXmppConnectionService.getText(R.string.decryption_failed)
-				.toString();
-		} else if (message.getType() == Message.TYPE_FILE) {
-			DownloadableFile file = mXmppConnectionService.getFileBackend().getFile(message);
-			return mXmppConnectionService.getString(R.string.file,file.getMimeType());
-		} else if (message.getType() == Message.TYPE_IMAGE) {
-			return mXmppConnectionService.getText(R.string.image_file)
-				.toString();
-		} else {
-			return message.getBody().trim();
-		}
 	}
 
 	private PendingIntent createContentIntent(final String conversationUuid) {
