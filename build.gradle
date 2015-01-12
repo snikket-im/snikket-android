@@ -94,7 +94,7 @@ android {
 	}
 
 	lintOptions {
-		disable 'MissingTranslation', 'InvalidPackage'
+		disable 'ExtraTranslation', 'MissingTranslation', 'InvalidPackage'
 	}
 
 	subprojects {
