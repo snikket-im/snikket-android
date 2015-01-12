@@ -1,5 +1,15 @@
 package eu.siacs.conversations.ui.adapter;
 
+import android.content.Context;
+import android.graphics.Color;
+import android.graphics.Typeface;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
+
 import java.util.List;
 
 import eu.siacs.conversations.R;
@@ -10,15 +20,6 @@ import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.ui.ConversationActivity;
 import eu.siacs.conversations.ui.XmppActivity;
 import eu.siacs.conversations.utils.UIHelper;
-import android.content.Context;
-import android.graphics.Color;
-import android.graphics.Typeface;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 public class ConversationAdapter extends ArrayAdapter<Conversation> {
 

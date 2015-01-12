@@ -9,6 +9,7 @@
 * XEP-0198: Stream Management
 * XEP-0234: Jingle File Transfer
 * XEP-0237: Roster Versioning
+* XEP-0245: The /me Command
 * XEP-0249: Direct MUC Invitations (receiving only)
 * XEP-0260: Jingle SOCKS5 Bytestreams Transport Method
 * XEP-0261: Jingle In-Band Bytestreams Transport Method

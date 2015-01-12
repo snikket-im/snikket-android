@@ -425,16 +425,16 @@ public class ConversationFragment extends Fragment {
 			if ((m.getType() != Message.TYPE_IMAGE && m.getDownloadable() == null)
 					|| m.getImageParams().url == null) {
 				copyUrl.setVisible(false);
-			}
+					}
 			if (m.getType() != Message.TYPE_TEXT
 					|| m.getDownloadable() != null
 					|| !m.bodyContainsDownloadable()) {
 				downloadImage.setVisible(false);
-			}
+					}
 			if (!((m.getDownloadable() != null && !(m.getDownloadable() instanceof DownloadablePlaceholder))
-					|| (m.isFileOrImage() && m.getStatus() == Message.STATUS_WAITING))) {
+						|| (m.isFileOrImage() && m.getStatus() == Message.STATUS_WAITING))) {
 				cancelTransmission.setVisible(false);
-			}
+						}
 		}
 	}
 
@@ -657,7 +657,7 @@ public class ConversationFragment extends Fragment {
 					}
 						}
 				conversation.populateWithMessages(ConversationFragment.this.messageList);
-				for (Message message : this.messageList) {
+				for (final Message message : this.messageList) {
 					if (message.getEncryption() == Message.ENCRYPTION_PGP
 							&& (message.getStatus() == Message.STATUS_RECEIVED || message
 								.getStatus() >= Message.STATUS_SEND)

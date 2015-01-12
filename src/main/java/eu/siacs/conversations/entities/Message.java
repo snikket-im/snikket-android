@@ -36,17 +36,18 @@ public class Message extends AbstractEntity {
 	public static final int TYPE_STATUS = 3;
 	public static final int TYPE_PRIVATE = 4;
 
-	public static String CONVERSATION = "conversationUuid";
-	public static String COUNTERPART = "counterpart";
-	public static String TRUE_COUNTERPART = "trueCounterpart";
-	public static String BODY = "body";
-	public static String TIME_SENT = "timeSent";
-	public static String ENCRYPTION = "encryption";
-	public static String STATUS = "status";
-	public static String TYPE = "type";
-	public static String REMOTE_MSG_ID = "remoteMsgId";
-	public static String SERVER_MSG_ID = "serverMsgId";
-	public static String RELATIVE_FILE_PATH = "relativeFilePath";
+	public static final String CONVERSATION = "conversationUuid";
+	public static final String COUNTERPART = "counterpart";
+	public static final String TRUE_COUNTERPART = "trueCounterpart";
+	public static final String BODY = "body";
+	public static final String TIME_SENT = "timeSent";
+	public static final String ENCRYPTION = "encryption";
+	public static final String STATUS = "status";
+	public static final String TYPE = "type";
+	public static final String REMOTE_MSG_ID = "remoteMsgId";
+	public static final String SERVER_MSG_ID = "serverMsgId";
+	public static final String RELATIVE_FILE_PATH = "relativeFilePath";
+
 	public boolean markable = false;
 	protected String conversationUuid;
 	protected Jid counterpart;
@@ -348,15 +349,33 @@ public class Message extends AbstractEntity {
 	}
 
 	public boolean mergeable(final Message message) {
-		return message != null && (message.getType() == Message.TYPE_TEXT && this.getDownloadable() == null && message.getDownloadable() == null && message.getEncryption() != Message.ENCRYPTION_PGP && this.getType() == message.getType() && this.getStatus() == message.getStatus() && this.getEncryption() == message.getEncryption() && this.getCounterpart() != null && this.getCounterpart().equals(message.getCounterpart()) && (message.getTimeSent() - this.getTimeSent()) <= (Config.MESSAGE_MERGE_WINDOW * 1000) && !message.bodyContainsDownloadable() && !this.bodyContainsDownloadable());
+		return message != null &&
+			(message.getType() == Message.TYPE_TEXT &&
+			 this.getDownloadable() == null &&
+			 message.getDownloadable() == null &&
+			 message.getEncryption() != Message.ENCRYPTION_PGP &&
+			 this.getType() == message.getType() &&
+			 this.getStatus() == message.getStatus() &&
+			 this.getEncryption() == message.getEncryption() &&
+			 this.getCounterpart() != null &&
+			 this.getCounterpart().equals(message.getCounterpart()) &&
+			 (message.getTimeSent() - this.getTimeSent()) <= (Config.MESSAGE_MERGE_WINDOW * 1000) &&
+			 !message.bodyContainsDownloadable() &&
+			 !this.bodyContainsDownloadable() &&
+			 !this.body.startsWith("/me ")
+			);
 	}
 
 	public String getMergedBody() {
-		Message next = this.next();
+		final Message next = this.next();
 		if (this.mergeable(next)) {
-			return body.trim() + '\n' + next.getMergedBody();
+			return getBody() + '\n' + next.getMergedBody();
 		}
 		return body.trim();
+	}
+
+	public boolean hasMeCommand() {
+		return getMergedBody().startsWith("/me ");
 	}
 
 	public int getMergedStatus() {
