@@ -12,9 +12,12 @@
         <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
             android:background="@drawable/infocard_border"
-            android:padding="16dp" >
+            android:padding="@dimen/infocard_padding" >
 
             <QuickContactBadge
                 android:id="@+id/details_contact_badge"
@@ -96,11 +99,14 @@
             android:id="@+id/details_contact_keys"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
             android:background="@drawable/infocard_border"
             android:divider="?android:dividerHorizontal"
             android:orientation="vertical"
-            android:padding="8dp"
+            android:padding="@dimen/infocard_padding"
             android:showDividers="middle" >
         </LinearLayout>
     </LinearLayout>

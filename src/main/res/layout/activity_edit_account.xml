@@ -20,10 +20,13 @@
                 android:id="@+id/editor"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
                 android:background="@drawable/infocard_border"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:padding="@dimen/infocard_padding">
                 <ImageView android:id="@+id/avater"
                     android:layout_width="72dp"
                     android:layout_height="72dp"
@@ -106,10 +109,13 @@
                 android:id="@+id/stats"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:layout_margin="8dp"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
                 android:background="@drawable/infocard_border"
                 android:orientation="vertical"
-                android:padding="16dp"
+                android:padding="@dimen/infocard_padding"
                 android:visibility="gone" >
 
                 <TableLayout

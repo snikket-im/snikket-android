@@ -1,0 +1,4 @@
+<resources>
+	<dimen name="conversations_overview_width">416dp</dimen>
+    <dimen name="activity_horizontal_margin">32dp</dimen>
+</resources>
