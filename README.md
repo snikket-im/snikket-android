@@ -94,6 +94,8 @@ The more convenient way — which not only gives you automatic updates but also
 supports the further development of Conversations — is to buy the App in the
 Google [Play Store](https://play.google.com/store/apps/details?id=eu.siacs.conversations).
 
+Buying the App from the Play Store will also give you access to our [beta test](#beta).
+
 #### I don't have a Google Account but I would still like to make a contribution
 
 I accept donations over PayPal, Bitcoin and Flattr. For donations via PayPal you
@@ -267,6 +269,14 @@ XEP-0027 with conferences. (The XEP neither specifically allows nor disallows
 this.)
 
 ### Development
+
+<a name="beta"></a>
+#### Beta testing
+If you bought the App on [Google Play](https://play.google.com/store/apps/details?id=eu.siacs.conversations)
+you can get access to the latest beta version by joining the
+[Conversations Beta Testers](https://plus.google.com/communities/107649347599361240873)
+community on Google+ and then using [this link](https://play.google.com/apps/testing/eu.siacs.conversations)
+to sign up for the beta test.
 
 #### How do I build Conversations
 
