@@ -15,6 +15,7 @@ import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.support.v4.widget.SlidingPaneLayout;
 import android.support.v4.widget.SlidingPaneLayout.PanelSlideListener;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,6 +33,7 @@ import net.java.otr4j.session.SessionStatus;
 import java.util.ArrayList;
 import java.util.List;
 
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Blockable;
@@ -133,7 +135,7 @@ public class ConversationActivity extends XmppActivity
 	}
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	protected void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		if (savedInstanceState != null) {mOpenConverstaion = savedInstanceState.getString(
 				STATE_OPEN_CONVERSATION, null);
@@ -536,25 +538,25 @@ public class ConversationActivity extends XmppActivity
 		}
 		attachFilePopup.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 
-				@Override
-				public boolean onMenuItemClick(MenuItem item) {
-					switch (item.getItemId()) {
-						case R.id.attach_choose_picture:
-							attachFile(ATTACHMENT_CHOICE_CHOOSE_IMAGE);
-							break;
-						case R.id.attach_take_picture:
-							attachFile(ATTACHMENT_CHOICE_TAKE_PHOTO);
-							break;
-						case R.id.attach_choose_file:
-							attachFile(ATTACHMENT_CHOICE_CHOOSE_FILE);
-							break;
-						case R.id.attach_record_voice:
-							attachFile(ATTACHMENT_CHOICE_RECORD_VOICE);
-							break;
-					}
-					return false;
+			@Override
+			public boolean onMenuItemClick(MenuItem item) {
+				switch (item.getItemId()) {
+					case R.id.attach_choose_picture:
+						attachFile(ATTACHMENT_CHOICE_CHOOSE_IMAGE);
+						break;
+					case R.id.attach_take_picture:
+						attachFile(ATTACHMENT_CHOICE_TAKE_PHOTO);
+						break;
+					case R.id.attach_choose_file:
+						attachFile(ATTACHMENT_CHOICE_CHOOSE_FILE);
+						break;
+					case R.id.attach_record_voice:
+						attachFile(ATTACHMENT_CHOICE_RECORD_VOICE);
+						break;
 				}
-			});
+				return false;
+			}
+		});
 		attachFilePopup.show();
 	}
 
@@ -750,8 +752,9 @@ public class ConversationActivity extends XmppActivity
 	@Override
 	public void onResume() {
 		super.onResume();
-		int theme = findTheme();
-		if (this.mTheme != theme) {
+		final int theme = findTheme();
+		final boolean usingEnterKey = usingEnterKey();
+		if (this.mTheme != theme || usingEnterKey != mUsingEnterKey) {
 			recreate();
 		}
 		this.mActivityPaused = false;

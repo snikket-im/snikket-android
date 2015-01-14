@@ -96,6 +96,7 @@ public abstract class XmppActivity extends Activity {
 
 	private DisplayMetrics metrics;
 	protected int mTheme;
+	protected boolean mUsingEnterKey = false;
 
 	protected interface OnValueEdited {
 		public void onValueEdited(String value);
@@ -303,7 +304,12 @@ public abstract class XmppActivity extends Activity {
 				R.color.secondarybackground);
 		this.mTheme = findTheme();
 		setTheme(this.mTheme);
+		this.mUsingEnterKey = usingEnterKey();
 		mUseSubject = getPreferences().getBoolean("use_subject", true);
+	}
+
+	protected boolean usingEnterKey() {
+		return getPreferences().getBoolean("display_enter_key", false);
 	}
 
 	protected SharedPreferences getPreferences() {
