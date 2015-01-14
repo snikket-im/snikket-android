@@ -20,6 +20,7 @@ import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLHandshakeException;
+import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.X509TrustManager;
 
 import eu.siacs.conversations.Config;
@@ -90,7 +91,7 @@ public class HttpConnection implements Downloadable {
 			if (this.message.getEncryption() == Message.ENCRYPTION_OTR
 					&& this.file.getKey() == null) {
 				this.message.setEncryption(Message.ENCRYPTION_NONE);
-			}
+					}
 			checkFileSize(false);
 		} catch (MalformedURLException e) {
 			this.cancel();
@@ -124,33 +125,39 @@ public class HttpConnection implements Downloadable {
 		mXmppConnectionService.updateConversationUi();
 	}
 
-	private void setupTrustManager(HttpsURLConnection connection,
-								   boolean interactive) {
-		X509TrustManager trustManager;
-		HostnameVerifier hostnameVerifier;
+	private void setupTrustManager(final HttpsURLConnection connection,
+			final boolean interactive) {
+		final X509TrustManager trustManager;
+		final HostnameVerifier hostnameVerifier;
 		if (interactive) {
 			trustManager = mXmppConnectionService.getMemorizingTrustManager();
 			hostnameVerifier = mXmppConnectionService
-					.getMemorizingTrustManager().wrapHostnameVerifier(
-							new StrictHostnameVerifier());
+				.getMemorizingTrustManager().wrapHostnameVerifier(
+						new StrictHostnameVerifier());
 		} else {
 			trustManager = mXmppConnectionService.getMemorizingTrustManager()
-					.getNonInteractive();
+				.getNonInteractive();
 			hostnameVerifier = mXmppConnectionService
-					.getMemorizingTrustManager()
-					.wrapHostnameVerifierNonInteractive(
-							new StrictHostnameVerifier());
+				.getMemorizingTrustManager()
+				.wrapHostnameVerifierNonInteractive(
+						new StrictHostnameVerifier());
 		}
 		try {
-			SSLContext sc = SSLContext.getInstance("TLS");
+			final SSLContext sc = SSLContext.getInstance("TLS");
 			sc.init(null, new X509TrustManager[]{trustManager},
 					mXmppConnectionService.getRNG());
-			connection.setSSLSocketFactory(sc.getSocketFactory());
+
+			final SSLSocketFactory sf = sc.getSocketFactory();
+			final String[] cipherSuites = CryptoHelper.getSupportedCipherSuites(
+					sf.getSupportedCipherSuites());
+			if (cipherSuites.length > 0) {
+				sc.getDefaultSSLParameters().setCipherSuites(cipherSuites);
+
+			}
+
+			connection.setSSLSocketFactory(sf);
 			connection.setHostnameVerifier(hostnameVerifier);
-		} catch (KeyManagementException e) {
-			return;
-		} catch (NoSuchAlgorithmException e) {
-			return;
+		} catch (final KeyManagementException | NoSuchAlgorithmException ignored) {
 		}
 	}
 
@@ -188,24 +195,24 @@ public class HttpConnection implements Downloadable {
 		}
 
 		private long retrieveFileSize() throws IOException,
-				SSLHandshakeException {
-			changeStatus(STATUS_CHECKING);
-			HttpURLConnection connection = (HttpURLConnection) mUrl
-					.openConnection();
-			connection.setRequestMethod("HEAD");
-			if (connection instanceof HttpsURLConnection) {
-				setupTrustManager((HttpsURLConnection) connection, interactive);
-			}
-			connection.connect();
-			String contentLength = connection.getHeaderField("Content-Length");
-			if (contentLength == null) {
-				throw new IOException();
-			}
-			try {
-				return Long.parseLong(contentLength, 10);
-			} catch (NumberFormatException e) {
-				throw new IOException();
-			}
+						SSLHandshakeException {
+							changeStatus(STATUS_CHECKING);
+							HttpURLConnection connection = (HttpURLConnection) mUrl
+								.openConnection();
+							connection.setRequestMethod("HEAD");
+							if (connection instanceof HttpsURLConnection) {
+								setupTrustManager((HttpsURLConnection) connection, interactive);
+							}
+							connection.connect();
+							String contentLength = connection.getHeaderField("Content-Length");
+							if (contentLength == null) {
+								throw new IOException();
+							}
+							try {
+								return Long.parseLong(contentLength, 10);
+							} catch (NumberFormatException e) {
+								throw new IOException();
+							}
 		}
 
 	}
@@ -234,7 +241,7 @@ public class HttpConnection implements Downloadable {
 
 		private void download() throws SSLHandshakeException, IOException {
 			HttpURLConnection connection = (HttpURLConnection) mUrl
-					.openConnection();
+				.openConnection();
 			if (connection instanceof HttpsURLConnection) {
 				setupTrustManager((HttpsURLConnection) connection, interactive);
 			}
