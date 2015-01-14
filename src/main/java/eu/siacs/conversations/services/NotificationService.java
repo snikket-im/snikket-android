@@ -1,5 +1,6 @@
 package eu.siacs.conversations.services;
 
+import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -8,6 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.PowerManager;
 import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
@@ -18,6 +20,9 @@ import android.text.Html;
 import android.util.DisplayMetrics;
 import android.util.Log;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -27,15 +32,10 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Conversation;
-import eu.siacs.conversations.entities.Downloadable;
-import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.ui.ConversationActivity;
 import eu.siacs.conversations.ui.ManageAccountActivity;
@@ -70,14 +70,14 @@ public class NotificationService {
 				 );
 	}
 
-	public void notifyPebble(Message message) {
+	public void notifyPebble(final Message message) {
 		final Intent i = new Intent("com.getpebble.action.SEND_NOTIFICATION");
 
-		final HashMap data = new HashMap();
 		final Conversation conversation = message.getConversation();
-		data.put("title", conversation.getName());
-		data.put("body", message.getBody());
-		final JSONObject jsonData = new JSONObject(data);
+		final JSONObject jsonData = new JSONObject(new HashMap<String, String>(2) {{
+			put("title", conversation.getName());
+			put("body", message.getBody());
+		}});
 		final String notificationData = new JSONArray().put(jsonData).toString();
 
 		i.putExtra("messageType", "PEBBLE_ALERT");
@@ -111,13 +111,28 @@ public class NotificationService {
 		return mXmppConnectionService.getPreferences().getBoolean("always_notify_in_conference", false);
 	}
 
+	@SuppressLint("NewApi")
+	@SuppressWarnings("deprecation")
+	private boolean isInteractive() {
+		final PowerManager pm = (PowerManager) mXmppConnectionService
+			.getSystemService(Context.POWER_SERVICE);
+
+		final boolean isScreenOn;
+		if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+			isScreenOn = pm.isScreenOn();
+		} else {
+			isScreenOn = pm.isInteractive();
+		}
+
+		return isScreenOn;
+	}
+
 	public void push(final Message message) {
 		if (!notify(message)) {
 			return;
 		}
-		final PowerManager pm = (PowerManager) mXmppConnectionService
-			.getSystemService(Context.POWER_SERVICE);
-		final boolean isScreenOn = pm.isScreenOn();
+
+		final boolean isScreenOn = isInteractive();
 
 		if (this.mIsInForeground && isScreenOn
 				&& this.mOpenConversation == message.getConversation()) {
@@ -134,8 +149,8 @@ public class NotificationService {
 			}
 			final Account account = message.getConversation().getAccount();
 			final boolean doNotify = (!(this.mIsInForeground && this.mOpenConversation == null) || !isScreenOn)
-					&& !account.inGracePeriod()
-					&& !this.inMiniGracePeriod(account);
+				&& !account.inGracePeriod()
+				&& !this.inMiniGracePeriod(account);
 			updateNotification(doNotify);
 			if (doNotify) {
 				notifyPebble(message);
