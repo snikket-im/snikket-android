@@ -53,6 +53,7 @@ import eu.siacs.conversations.crypto.sasl.ScramSha1;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.generator.IqGenerator;
 import eu.siacs.conversations.services.XmppConnectionService;
+import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.DNSHelper;
 import eu.siacs.conversations.utils.Xmlns;
 import eu.siacs.conversations.xml.Element;
@@ -514,6 +515,12 @@ public class XmppConnection implements Runnable {
 				supportedProtocols.remove("SSLv3");
 				supportProtocols = new String[supportedProtocols.size()];
 				supportedProtocols.toArray(supportProtocols);
+
+				final String[] cipherSuites = CryptoHelper.getSupportedCipherSuites(
+						sslSocket.getSupportedCipherSuites());
+				if (cipherSuites.length > 0) {
+					sslSocket.setEnabledCipherSuites(cipherSuites);
+				}
 			}
 			sslSocket.setEnabledProtocols(supportProtocols);
 

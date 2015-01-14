@@ -2,12 +2,17 @@ package eu.siacs.conversations.utils;
 
 import java.security.SecureRandom;
 import java.text.Normalizer;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.LinkedHashSet;
 
-public class CryptoHelper {
+import eu.siacs.conversations.Config;
+
+public final class CryptoHelper {
 	public static final String FILETRANSFER = "?FILETRANSFERv1:";
-	final protected static char[] hexArray = "0123456789abcdef".toCharArray();
-	final protected static char[] vowels = "aeiou".toCharArray();
-	final protected static char[] consonants = "bcdfghjklmnpqrstvwxyz".toCharArray();
+	private final static char[] hexArray = "0123456789abcdef".toCharArray();
+	private final static char[] vowels = "aeiou".toCharArray();
+	private final static char[] consonants = "bcdfghjklmnpqrstvwxyz".toCharArray();
 	final public static byte[] ONE = new byte[] { 0, 0, 0, 1 };
 
 	public static String bytesToHex(byte[] bytes) {
@@ -45,7 +50,7 @@ public class CryptoHelper {
 		return randomWord(3, random) + "." + randomWord(7, random);
 	}
 
-	protected static String randomWord(int lenght, SecureRandom random) {
+	private static String randomWord(int lenght, SecureRandom random) {
 		StringBuilder builder = new StringBuilder(lenght);
 		for (int i = 0; i < lenght; ++i) {
 			if (i % 2 == 0) {
@@ -90,5 +95,11 @@ public class CryptoHelper {
 		builder.insert(26, " ");
 		builder.insert(35, " ");
 		return builder.toString();
+	}
+
+	public static String[] getSupportedCipherSuites(final String[] platformSupportedCipherSuites) {
+		final Collection<String> cipherSuites = new LinkedHashSet<>(Arrays.asList(Config.ENABLED_CIPHERS));
+		cipherSuites.retainAll(Arrays.asList(platformSupportedCipherSuites));
+		return cipherSuites.toArray(new String[cipherSuites.size()]);
 	}
 }
