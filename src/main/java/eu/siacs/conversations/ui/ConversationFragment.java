@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.content.IntentSender.SendIntentException;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Gravity;
@@ -300,12 +301,21 @@ public class ConversationFragment extends Fragment {
 		}
 	}
 
+	private void setupIme() {
+		if (((ConversationActivity)getActivity()).usingEnterKey()) {
+			mEditMessage.setInputType(mEditMessage.getInputType() & (~InputType.TYPE_TEXT_VARIATION_SHORT_MESSAGE));
+		} else {
+			mEditMessage.setInputType(mEditMessage.getInputType() | InputType.TYPE_TEXT_VARIATION_SHORT_MESSAGE);
+		}
+	}
+
 	@Override
 	public View onCreateView(final LayoutInflater inflater,
 			ViewGroup container, Bundle savedInstanceState) {
 		final View view = inflater.inflate(R.layout.fragment_conversation,
 				container, false);
 		mEditMessage = (EditMessage) view.findViewById(R.id.textinput);
+		setupIme();
 		mEditMessage.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -421,24 +431,24 @@ public class ConversationFragment extends Fragment {
 					|| m.getType() == Message.TYPE_PRIVATE
 					|| m.getDownloadable() != null) {
 				shareWith.setVisible(false);
-			}
+					}
 			if (m.getStatus() != Message.STATUS_SEND_FAILED) {
 				sendAgain.setVisible(false);
 			}
 			if ((m.getType() != Message.TYPE_IMAGE && m.getDownloadable() == null)
 					|| m.getImageParams().url == null) {
 				copyUrl.setVisible(false);
-			}
+					}
 			if (m.getType() != Message.TYPE_TEXT
 					|| m.getDownloadable() != null
 					|| !m.bodyContainsDownloadable()) {
 				downloadImage.setVisible(false);
-			}
+					}
 			if (!((m.getDownloadable() != null && !(m.getDownloadable() instanceof DownloadablePlaceholder))
 						|| (m.isFileOrImage() && (m.getStatus() == Message.STATUS_WAITING
-					|| m.getStatus() == Message.STATUS_OFFERED)))) {
+								|| m.getStatus() == Message.STATUS_OFFERED)))) {
 				cancelTransmission.setVisible(false);
-			}
+								}
 		}
 	}
 
