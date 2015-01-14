@@ -212,9 +212,9 @@ public class UIHelper {
 		if (counterpart==null) {
 			return "";
 		} else if (!counterpart.isBareJid()) {
-			return counterpart.getResourcepart();
+			return counterpart.getResourcepart().trim();
 		} else {
-			return counterpart.toString();
+			return counterpart.toString().trim();
 		}
 	}
 }

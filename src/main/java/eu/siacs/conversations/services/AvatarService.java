@@ -212,7 +212,8 @@ public class AvatarService {
 		}
 		bitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
 		Canvas canvas = new Canvas(bitmap);
-		final String letter = name.isEmpty() ? "X" : name.substring(0,1);
+		final String trimmedName = name.trim();
+		final String letter = trimmedName.isEmpty() ? "X" : trimmedName.substring(0,1);
 		final int color = UIHelper.getColorForName(name);
 		drawTile(canvas, letter, color, 0, 0, size, size);
 		mXmppConnectionService.getBitmapCache().put(KEY, bitmap);
