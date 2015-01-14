@@ -28,7 +28,6 @@ repositories {
 }
 
 dependencies {
-	compile project(':libs:minidns')
 	compile project(':libs:openpgp-api-lib')
 	compile project(':libs:MemorizingTrustManager')
 	compile 'com.android.support:support-v13:21.0.3'
@@ -37,6 +36,7 @@ dependencies {
 	compile 'org.gnu.inet:libidn:1.15'
 	compile 'com.google.zxing:core:3.1.0'
 	compile 'com.google.zxing:android-integration:3.1.0'
+	compile 'de.measite.minidns:minidns:0.1.3'
 }
 
 android {
