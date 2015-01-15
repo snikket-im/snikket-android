@@ -409,11 +409,18 @@ public class NotificationService {
 		final NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(mXmppConnectionService);
 		mBuilder.setSmallIcon(R.drawable.ic_stat_communication_import_export);
 		mBuilder.setContentTitle(mXmppConnectionService.getString(R.string.conversations_foreground_service));
-		mBuilder.setContentText(mXmppConnectionService.getString(R.string.touch_to_disable));
-		mBuilder.setContentIntent(createDisableForeground());
+		mBuilder.setContentText(mXmppConnectionService.getString(R.string.touch_to_open_conversations));
+		mBuilder.addAction(R.drawable.ic_action_cancel,
+				mXmppConnectionService.getString(R.string.disable_foreground_service),
+				createDisableForeground());
+		mBuilder.setContentIntent(createOpenConversationsIntent());
 		mBuilder.setWhen(0);
 		mBuilder.setPriority(NotificationCompat.PRIORITY_MIN);
 		return mBuilder.build();
+	}
+
+	private PendingIntent createOpenConversationsIntent() {
+		return PendingIntent.getActivity(mXmppConnectionService, 0, new Intent(mXmppConnectionService,ConversationActivity.class),0);
 	}
 
 	public void updateErrorNotification() {

@@ -357,7 +357,6 @@
     <string name="smp_requested">Contact requested SMP verification</string>
     <string name="no_otr_session_found">No valid OTR session has been found!</string>
     <string name="conversations_foreground_service">Conversations</string>
-    <string name="touch_to_disable">Touch to disable foreground service</string>
     <string name="pref_keep_foreground_service">Keep service in foreground</string>
     <string name="pref_keep_foreground_service_summary">Prevents the operating system from killing your connection</string>
     <string name="choose_file">Choose file</string>
@@ -441,4 +440,6 @@
 	<string name="video">video file</string>
 	<string name="pdf_document">PDF document</string>
 	<string name="received_x_file">Received %s</string>
+    <string name="disable_foreground_service">Disable foreground service</string>
+    <string name="touch_to_open_conversations">Touch to open Conversations</string>
 </resources>
