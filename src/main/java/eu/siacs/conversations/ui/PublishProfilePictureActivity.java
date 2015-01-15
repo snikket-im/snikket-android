@@ -11,6 +11,8 @@ import android.view.View.OnLongClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.utils.PhoneHelper;
@@ -31,13 +33,18 @@ public class PublishProfilePictureActivity extends XmppActivity {
 
 	private Uri avatarUri;
 	private Uri defaultUri;
+	private OnLongClickListener backToDefaultListener = new OnLongClickListener() {
 
+		@Override
+		public boolean onLongClick(View v) {
+			avatarUri = defaultUri;
+			loadImageIntoPreview(defaultUri);
+			return true;
+		}
+	};
 	private Account account;
-
 	private boolean support = false;
-
 	private boolean mInitialAccountSetup;
-
 	private UiCallback<Avatar> avatarPublication = new UiCallback<Avatar>() {
 
 		@Override
@@ -50,6 +57,9 @@ public class PublishProfilePictureActivity extends XmppActivity {
 						startActivity(new Intent(getApplicationContext(),
 								StartConversationActivity.class));
 					}
+					Toast.makeText(PublishProfilePictureActivity.this,
+							R.string.avatar_has_been_published,
+							Toast.LENGTH_SHORT).show();
 					finish();
 				}
 			});
@@ -72,16 +82,6 @@ public class PublishProfilePictureActivity extends XmppActivity {
 
 		@Override
 		public void userInputRequried(PendingIntent pi, Avatar object) {
-		}
-	};
-
-	private OnLongClickListener backToDefaultListener = new OnLongClickListener() {
-
-		@Override
-		public boolean onLongClick(View v) {
-			avatarUri = defaultUri;
-			loadImageIntoPreview(defaultUri);
-			return true;
 		}
 	};
 

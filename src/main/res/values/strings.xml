@@ -442,4 +442,5 @@
 	<string name="received_x_file">Received %s</string>
     <string name="disable_foreground_service">Disable foreground service</string>
     <string name="touch_to_open_conversations">Touch to open Conversations</string>
+    <string name="avatar_has_been_published">Avatar has been published!</string>
 </resources>
