@@ -436,7 +436,7 @@ public class NotificationService {
 			mBuilder.setContentText(mXmppConnectionService.getString(R.string.touch_to_fix));
 		}
 		mBuilder.setOngoing(true);
-		mBuilder.setLights(0xffffffff, 2000, 4000);
+		//mBuilder.setLights(0xffffffff, 2000, 4000);
 		mBuilder.setSmallIcon(R.drawable.ic_stat_alert_warning);
 		TaskStackBuilder stackBuilder = TaskStackBuilder.create(mXmppConnectionService);
 		stackBuilder.addParentStack(ConversationActivity.class);
