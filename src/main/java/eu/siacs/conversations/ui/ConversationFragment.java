@@ -974,7 +974,4 @@ public class ConversationFragment extends Fragment {
 		this.mEditMessage.append(text);
 	}
 
-	public void clearInputField() {
-		this.mEditMessage.setText("");
-	}
 }

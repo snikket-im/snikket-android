@@ -201,7 +201,7 @@ public class ContactDetailsActivity extends XmppActivity implements OnAccountUpd
 
 	@Override
 	public boolean onOptionsItemSelected(final MenuItem menuItem) {
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		final AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setNegativeButton(getString(R.string.cancel), null);
 		switch (menuItem.getItemId()) {
 			case android.R.id.home:
@@ -237,13 +237,25 @@ public class ContactDetailsActivity extends XmppActivity implements OnAccountUpd
 					startActivity(intent);
 				}
 				break;
+			case R.id.action_block:
+				BlockContactDialog.show(this, xmppConnectionService, contact);
+				break;
+			case R.id.action_unblock:
+				BlockContactDialog.show(this, xmppConnectionService, contact);
+				break;
 		}
 		return super.onOptionsItemSelected(menuItem);
 	}
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
+	public boolean onCreateOptionsMenu(final Menu menu) {
 		getMenuInflater().inflate(R.menu.contact_details, menu);
+		if (this.contact.isBlocked()) {
+			menu.findItem(R.id.action_block).setVisible(false);
+		} else {
+			menu.findItem(R.id.action_unblock).setVisible(false);
+		}
+
 		return true;
 	}
 
@@ -424,6 +436,7 @@ public class ContactDetailsActivity extends XmppActivity implements OnAccountUpd
 
 			@Override
 			public void run() {
+				invalidateOptionsMenu();
 				populateView();
 			}
 		});

@@ -17,6 +17,19 @@
         android:id="@+id/action_show_qr_code"
         android:title="@string/show_qr_code"
         android:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_block"
+        android:orderInCategory="72"
+        android:showAsAction="never"
+        android:title="@string/action_block_contact"/>
+
+    <item
+        android:id="@+id/action_unblock"
+        android:orderInCategory="73"
+        android:showAsAction="never"
+        android:title="@string/action_unblock_contact"/>
+
     <item
         android:id="@+id/action_accounts"
         android:orderInCategory="90"
