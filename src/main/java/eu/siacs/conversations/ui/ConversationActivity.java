@@ -15,7 +15,6 @@ import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.support.v4.widget.SlidingPaneLayout;
 import android.support.v4.widget.SlidingPaneLayout.PanelSlideListener;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,7 +32,6 @@ import net.java.otr4j.session.SessionStatus;
 import java.util.ArrayList;
 import java.util.List;
 
-import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Blockable;
@@ -50,8 +48,11 @@ import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
 public class ConversationActivity extends XmppActivity
 	implements OnAccountUpdate, OnConversationUpdate, OnRosterUpdate, OnUpdateBlocklist {
 
+	public static final String ACTION_DOWNLOAD = "eu.siacs.conversations.action.DOWNLOAD";
+
 	public static final String VIEW_CONVERSATION = "viewConversation";
 	public static final String CONVERSATION = "conversationUuid";
+	public static final String MESSAGE = "messageUuid";
 	public static final String TEXT = "text";
 	public static final String NICK = "nick";
 
@@ -823,10 +824,11 @@ public class ConversationActivity extends XmppActivity
 		setIntent(new Intent());
 	}
 
-	private void handleViewConversationIntent(Intent intent) {
-		String uuid = (String) intent.getExtras().get(CONVERSATION);
-		String text = intent.getExtras().getString(TEXT, "");
-		String nick = intent.getExtras().getString(NICK,null);
+	private void handleViewConversationIntent(final Intent intent) {
+		final String uuid = (String) intent.getExtras().get(CONVERSATION);
+		final String downloadUuid = (String) intent.getExtras().get(MESSAGE);
+		final String text = intent.getExtras().getString(TEXT, "");
+		final String nick = intent.getExtras().getString(NICK, null);
 		if (selectConversationByUuid(uuid)) {
 			this.mConversationFragment.reInit(getSelectedConversation());
 			if (nick != null) {
@@ -838,6 +840,12 @@ public class ConversationActivity extends XmppActivity
 			openConversation();
 			if (mContentView instanceof SlidingPaneLayout) {
 				updateActionBarTitle(true); //fixes bug where slp isn't properly closed yet
+			}
+			if (downloadUuid != null) {
+				final Message message = mSelectedConversation.findMessageWithFileAndUuid(downloadUuid);
+				if (message != null) {
+					mConversationFragment.messageListAdapter.startDownloadable(message);
+				}
 			}
 		}
 	}

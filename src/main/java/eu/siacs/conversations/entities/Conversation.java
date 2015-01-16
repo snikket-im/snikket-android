@@ -108,9 +108,9 @@ public class Conversation extends AbstractEntity implements Blockable {
 		}
 	}
 
-	public void findMessagesWithFiles(OnMessageFound onMessageFound) {
+	public void findMessagesWithFiles(final OnMessageFound onMessageFound) {
 		synchronized (this.messages) {
-			for (Message message : this.messages) {
+			for (final Message message : this.messages) {
 				if ((message.getType() == Message.TYPE_IMAGE || message.getType() == Message.TYPE_FILE)
 						&& message.getEncryption() != Message.ENCRYPTION_PGP) {
 					onMessageFound.onMessageFound(message);
@@ -119,14 +119,14 @@ public class Conversation extends AbstractEntity implements Blockable {
 		}
 	}
 
-	public Message findMessageWithFileAndUuid(String uuid) {
+	public Message findMessageWithFileAndUuid(final String uuid) {
 		synchronized (this.messages) {
-			for (Message message : this.messages) {
-				if (message.getType() == Message.TYPE_IMAGE
+			for (final Message message : this.messages) {
+				if ((message.getType() == Message.TYPE_IMAGE || message.getType() == Message.TYPE_FILE)
 						&& message.getEncryption() != Message.ENCRYPTION_PGP
 						&& message.getUuid().equals(uuid)) {
 					return message;
-						}
+				}
 			}
 		}
 		return null;

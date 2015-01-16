@@ -44,7 +44,7 @@ import eu.siacs.conversations.utils.UIHelper;
 
 public class NotificationService {
 
-	private XmppConnectionService mXmppConnectionService;
+	private final XmppConnectionService mXmppConnectionService;
 
 	private final LinkedHashMap<String, ArrayList<Message>> notifications = new LinkedHashMap<>();
 
@@ -56,7 +56,7 @@ public class NotificationService {
 	private boolean mIsInForeground;
 	private long mLastNotification;
 
-	public NotificationService(XmppConnectionService service) {
+	public NotificationService(final XmppConnectionService service) {
 		this.mXmppConnectionService = service;
 	}
 
@@ -214,17 +214,17 @@ public class NotificationService {
 	private Builder buildMultipleConversation() {
 		final Builder mBuilder = new NotificationCompat.Builder(
 				mXmppConnectionService);
-		NotificationCompat.InboxStyle style = new NotificationCompat.InboxStyle();
+		final NotificationCompat.InboxStyle style = new NotificationCompat.InboxStyle();
 		style.setBigContentTitle(notifications.size()
 				+ " "
 				+ mXmppConnectionService
 				.getString(R.string.unread_conversations));
 		final StringBuilder names = new StringBuilder();
 		Conversation conversation = null;
-		for (ArrayList<Message> messages : notifications.values()) {
+		for (final ArrayList<Message> messages : notifications.values()) {
 			if (messages.size() > 0) {
 				conversation = messages.get(0).getConversation();
-				String name = conversation.getName();
+				final String name = conversation.getName();
 				style.addLine(Html.fromHtml("<b>" + name + "</b> "
 							+ UIHelper.getMessagePreview(mXmppConnectionService,messages.get(0)).first));
 				names.append(name);
@@ -241,8 +241,7 @@ public class NotificationService {
 		mBuilder.setContentText(names.toString());
 		mBuilder.setStyle(style);
 		if (conversation != null) {
-			mBuilder.setContentIntent(createContentIntent(conversation
-						.getUuid()));
+			mBuilder.setContentIntent(createContentIntent(conversation));
 		}
 		return mBuilder;
 	}
@@ -256,14 +255,24 @@ public class NotificationService {
 			mBuilder.setLargeIcon(mXmppConnectionService.getAvatarService()
 					.get(conversation, getPixel(64)));
 			mBuilder.setContentTitle(conversation.getName());
-			final Message message;
+			Message message;
 			if ((message = getImage(messages)) != null) {
 				modifyForImage(mBuilder, message, messages, notify);
 			} else {
 				modifyForTextOnly(mBuilder, messages, notify);
 			}
-			mBuilder.setContentIntent(createContentIntent(conversation
-						.getUuid()));
+			if ((message = getFirstDownloadableMessage(messages)) != null) {
+				mBuilder.addAction(
+						R.drawable.ic_action_download,
+						mXmppConnectionService.getResources().getString(
+							message.getType() == Message.TYPE_IMAGE ?
+							R.string.download_image :
+							R.string.download_file
+							),
+						createDownloadIntent(message)
+						);
+			}
+			mBuilder.setContentIntent(createContentIntent(conversation));
 		}
 		return mBuilder;
 	}
@@ -303,7 +312,7 @@ public class NotificationService {
 		}
 	}
 
-	private Message getImage(final ArrayList<Message> messages) {
+	private Message getImage(final Iterable<Message> messages) {
 		for (final Message message : messages) {
 			if (message.getType() == Message.TYPE_IMAGE
 					&& message.getDownloadable() == null
@@ -314,7 +323,17 @@ public class NotificationService {
 		return null;
 	}
 
-	private String getMergedBodies(final ArrayList<Message> messages) {
+	private Message getFirstDownloadableMessage(final Iterable<Message> messages) {
+		for (final Message message : messages) {
+			if ((message.getType() == Message.TYPE_FILE || message.getType() == Message.TYPE_IMAGE) &&
+					message.getDownloadable() != null) {
+				return message;
+					}
+		}
+		return null;
+	}
+
+	private CharSequence getMergedBodies(final ArrayList<Message> messages) {
 		final StringBuilder text = new StringBuilder();
 		for (int i = 0; i < messages.size(); ++i) {
 			text.append(UIHelper.getMessagePreview(mXmppConnectionService,messages.get(i)).first);
@@ -325,23 +344,37 @@ public class NotificationService {
 		return text.toString();
 	}
 
-	private PendingIntent createContentIntent(final String conversationUuid) {
+	private PendingIntent createContentIntent(final String conversationUuid, final String downloadMessageUuid) {
 		final TaskStackBuilder stackBuilder = TaskStackBuilder
 			.create(mXmppConnectionService);
 		stackBuilder.addParentStack(ConversationActivity.class);
 
 		final Intent viewConversationIntent = new Intent(mXmppConnectionService,
 				ConversationActivity.class);
-		viewConversationIntent.setAction(Intent.ACTION_VIEW);
+		if (downloadMessageUuid != null) {
+			viewConversationIntent.setAction(ConversationActivity.ACTION_DOWNLOAD);
+		} else {
+			viewConversationIntent.setAction(Intent.ACTION_VIEW);
+		}
 		if (conversationUuid != null) {
-			viewConversationIntent.putExtra(ConversationActivity.CONVERSATION,
-					conversationUuid);
+			viewConversationIntent.putExtra(ConversationActivity.CONVERSATION, conversationUuid);
 			viewConversationIntent.setType(ConversationActivity.VIEW_CONVERSATION);
+		}
+		if (downloadMessageUuid != null) {
+			viewConversationIntent.putExtra(ConversationActivity.MESSAGE, downloadMessageUuid);
 		}
 
 		stackBuilder.addNextIntent(viewConversationIntent);
 
 		return stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+	}
+
+	private PendingIntent createDownloadIntent(final Message message) {
+		return createContentIntent(message.getConversationUuid(), message.getUuid());
+	}
+
+	private PendingIntent createContentIntent(final Conversation conversation) {
+		return createContentIntent(conversation.getUuid(), null);
 	}
 
 	private PendingIntent createDeleteIntent() {
@@ -445,7 +478,7 @@ public class NotificationService {
 		mBuilder.setOngoing(true);
 		//mBuilder.setLights(0xffffffff, 2000, 4000);
 		mBuilder.setSmallIcon(R.drawable.ic_stat_alert_warning);
-		TaskStackBuilder stackBuilder = TaskStackBuilder.create(mXmppConnectionService);
+		final TaskStackBuilder stackBuilder = TaskStackBuilder.create(mXmppConnectionService);
 		stackBuilder.addParentStack(ConversationActivity.class);
 
 		final Intent manageAccountsIntent = new Intent(mXmppConnectionService,ManageAccountActivity.class);

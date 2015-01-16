@@ -85,6 +85,7 @@
     <string name="send_pgp_message">Send OpenPGP encrypted message</string>
     <string name="your_nick_has_been_changed">Your nickname has been changed</string>
     <string name="download_image">Download Image</string>
+    <string name="download_file">Download File</string>
     <string name="image_offered_for_download"><i>Image file offered for download</i></string>
     <string name="send_unencrypted">Send unencrypted</string>
     <string name="decryption_failed">Decryption failed. Maybe you don’t have the proper private key.</string>
