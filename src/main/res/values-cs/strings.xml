@@ -267,7 +267,6 @@
   <string name="pref_force_encryption_summary">Vždy zasílat šifrované zprávy (mimo konference)</string>
   <string name="pref_dont_save_encrypted">Neukládat šifrované zprávy</string>
   <string name="pref_dont_save_encrypted_summary">Varování: Toto může vést ke ztrátě zpráv</string>
-  <string name="pref_enable_legacy_ssl">Povolit zastaralé SSL</string>
   <string name="pref_expert_options">Expertní nastavení</string>
   <string name="pref_expert_options_summary">S tímto zacházejte velmi opatrně</string>
   <string name="title_activity_about">O aplikaci Conversations</string>

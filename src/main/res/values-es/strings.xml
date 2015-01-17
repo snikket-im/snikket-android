@@ -267,7 +267,6 @@
   <string name="pref_force_encryption_summary">Siempre enviar mensajes cifrados (excepto para conversaciones en grupo)</string>
   <string name="pref_dont_save_encrypted">No guardar mensajes cifrados</string>
   <string name="pref_dont_save_encrypted_summary">Aviso: Esto podría llevar a pérdida de mensajes</string>
-  <string name="pref_enable_legacy_ssl">Habilitar SSL heredado</string>
   <string name="pref_expert_options">Ajustes avanzados</string>
   <string name="pref_expert_options_summary">Por favor, cuidado con estas opciones</string>
   <string name="title_activity_about">Acerca de Conversations</string>
