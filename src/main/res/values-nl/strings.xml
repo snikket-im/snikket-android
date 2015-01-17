@@ -338,7 +338,6 @@
     <string name="pref_keep_foreground_service_summary">Belet het besturingssysteem van je verbinding te onderbreken</string>
     <string name="choose_file">Kies bestand</string>
     <string name="receiving_file">Ontvange van %1$s bestand (%2$d%% voltooid)</string>
-    <string name="download_file">Download %s bestand</string>
     <string name="open_file">Open %s bestand</string>
     <string name="sending_file">versturen (%1$d%% voltooid)</string>
     <string name="preparing_file">Bestand klaarmaken voor versturen</string>
