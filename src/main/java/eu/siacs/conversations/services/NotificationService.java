@@ -264,11 +264,8 @@ public class NotificationService {
 			if ((message = getFirstDownloadableMessage(messages)) != null) {
 				mBuilder.addAction(
 						R.drawable.ic_action_download,
-						mXmppConnectionService.getResources().getString(
-							message.getType() == Message.TYPE_IMAGE ?
-							R.string.download_image :
-							R.string.download_file
-							),
+						mXmppConnectionService.getResources().getString(R.string.download_x_file,
+							UIHelper.getFileDescriptionString(mXmppConnectionService, message)),
 						createDownloadIntent(message)
 						);
 			}

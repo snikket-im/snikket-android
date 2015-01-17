@@ -18,9 +18,9 @@ import android.util.Pair;
 
 public class UIHelper {
 	private static final int SHORT_DATE_FLAGS = DateUtils.FORMAT_SHOW_DATE
-			| DateUtils.FORMAT_NO_YEAR | DateUtils.FORMAT_ABBREV_ALL;
+		| DateUtils.FORMAT_NO_YEAR | DateUtils.FORMAT_ABBREV_ALL;
 	private static final int FULL_DATE_FLAGS = DateUtils.FORMAT_SHOW_TIME
-			| DateUtils.FORMAT_ABBREV_ALL | DateUtils.FORMAT_SHOW_DATE;
+		| DateUtils.FORMAT_ABBREV_ALL | DateUtils.FORMAT_SHOW_DATE;
 
 	public static String readableTimeDifference(Context context, long time) {
 		return readableTimeDifference(context, time, false);
@@ -72,8 +72,8 @@ public class UIHelper {
 		cal1.setTime(a);
 		cal2.setTime(b);
 		return cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR)
-				&& cal1.get(Calendar.DAY_OF_YEAR) == cal2
-						.get(Calendar.DAY_OF_YEAR);
+			&& cal1.get(Calendar.DAY_OF_YEAR) == cal2
+			.get(Calendar.DAY_OF_YEAR);
 	}
 
 	public static String lastseen(Context context, long time) {
@@ -106,8 +106,8 @@ public class UIHelper {
 			return 0xFF202020;
 		}
 		int colors[] = {0xFFe91e63, 0xFF9c27b0, 0xFF673ab7, 0xFF3f51b5,
-				0xFF5677fc, 0xFF03a9f4, 0xFF00bcd4, 0xFF009688, 0xFFff5722,
-				0xFF795548, 0xFF607d8b};
+			0xFF5677fc, 0xFF03a9f4, 0xFF00bcd4, 0xFF009688, 0xFFff5722,
+			0xFF795548, 0xFF607d8b};
 		return colors[(int) ((name.hashCode() & 0xffffffffl) % colors.length)];
 	}
 
@@ -120,8 +120,8 @@ public class UIHelper {
 				case Downloadable.STATUS_DOWNLOADING:
 					if (message.getType() == Message.TYPE_FILE) {
 						return new Pair<>(context.getString(R.string.receiving_x_file,
-								getFileDescriptionString(context,message),
-								d.getProgress()),true);
+									getFileDescriptionString(context,message),
+									d.getProgress()),true);
 					} else {
 						return new Pair<>(context.getString(R.string.receiving_image, d.getProgress()),true);
 					}
@@ -129,7 +129,7 @@ public class UIHelper {
 				case Downloadable.STATUS_OFFER_CHECK_FILESIZE:
 					if (message.getType() == Message.TYPE_FILE) {
 						return new Pair<>(context.getString(R.string.x_file_offered_for_download,
-								getFileDescriptionString(context,message)),true);
+									getFileDescriptionString(context,message)),true);
 					} else {
 						return new Pair<>(context.getString(R.string.image_offered_for_download),true);
 					}
@@ -153,7 +153,7 @@ public class UIHelper {
 		} else if (message.getType() == Message.TYPE_FILE) {
 			if (message.getStatus() == Message.STATUS_RECEIVED) {
 				return new Pair<>(context.getString(R.string.received_x_file,
-						getFileDescriptionString(context, message)), true);
+							getFileDescriptionString(context, message)), true);
 			} else {
 				return new Pair<>(getFileDescriptionString(context,message),true);
 			}
@@ -183,6 +183,8 @@ public class UIHelper {
 			return context.getString(R.string.audio);
 		} else if(mime.startsWith("video/")) {
 			return context.getString(R.string.video);
+		} else if (mime.startsWith("image/")) {
+			return context.getString(R.string.image);
 		} else if (mime.contains("pdf")) {
 			return context.getString(R.string.pdf_document)	;
 		} else {

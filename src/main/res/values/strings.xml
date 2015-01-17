@@ -85,7 +85,6 @@
     <string name="send_pgp_message">Send OpenPGP encrypted message</string>
     <string name="your_nick_has_been_changed">Your nickname has been changed</string>
     <string name="download_image">Download Image</string>
-    <string name="download_file">Download File</string>
     <string name="image_offered_for_download"><i>Image file offered for download</i></string>
     <string name="send_unencrypted">Send unencrypted</string>
     <string name="decryption_failed">Decryption failed. Maybe you don’t have the proper private key.</string>
@@ -439,9 +438,10 @@
 	<string name="pref_display_enter_key_summary">Change the emoticons key to an enter key</string>
 	<string name="audio">audio file</string>
 	<string name="video">video file</string>
+	<string name="image">image file</string>
 	<string name="pdf_document">PDF document</string>
 	<string name="received_x_file">Received %s</string>
-    <string name="disable_foreground_service">Disable foreground service</string>
-    <string name="touch_to_open_conversations">Touch to open Conversations</string>
-    <string name="avatar_has_been_published">Avatar has been published!</string>
+	<string name="disable_foreground_service">Disable foreground service</string>
+	<string name="touch_to_open_conversations">Touch to open Conversations</string>
+	<string name="avatar_has_been_published">Avatar has been published!</string>
 </resources>

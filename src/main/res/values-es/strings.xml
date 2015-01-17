@@ -338,7 +338,6 @@
     <string name="pref_keep_foreground_service_summary">Mantener el servicio en primer plano previene que el sistema cierre la conexión</string>
     <string name="choose_file">Seleccionar archivo</string>
     <string name="receiving_file">Recibiendo archivo %1$s (%2$d%% completado)</string>
-    <string name="download_file">Descargar archivo %s</string>
     <string name="open_file">Abrir archivo %s</string>
     <string name="sending_file">Enviando (%1$d%% completado)</string>
     <string name="preparing_file">Preparando transferencia de archivo</string>

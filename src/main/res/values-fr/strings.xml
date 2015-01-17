@@ -306,7 +306,6 @@
 <string name="pref_keep_foreground_service_summary">Evite que le système ferme votre connexion</string>
 <string name="choose_file">Choix d\'un fichier</string>
 <string name="receiving_file">Réception %1$s fichier (%2$d%% complété)</string>
-<string name="download_file">Télecharger %s fichier</string>
 <string name="open_file">Ouvrir %s fichier</string>
 <string name="sending_file">envoi (%1$d%% complété)</string>
 <string name="preparing_file">Préparation du fichier pour l\'envoi</string>

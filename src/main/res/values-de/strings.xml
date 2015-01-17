@@ -337,7 +337,6 @@
     <string name="pref_keep_foreground_service_summary">Verhindert, dass Android die Verbindung unterbricht</string>
     <string name="choose_file">Datei auswählen</string>
     <string name="receiving_file">Empfange %1$s Datei (%2$d%% heruntergeladen)</string>
-    <string name="download_file">Download %s Datei</string>
     <string name="open_file">Öffne %s Datei</string>
     <string name="sending_file">Sende (%1$d%% gesendet)</string>
     <string name="preparing_file">Bereite Datei für die Übertragung vor</string>

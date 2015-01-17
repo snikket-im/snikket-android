@@ -311,7 +311,6 @@
     <string name="pref_keep_foreground_service_summary">Sistema eragileak zure konexioa hiltzea galarazten du</string>
     <string name="choose_file">Fitxategia aukeratu</string>
     <string name="receiving_file">%1$s fitxategia jasotzen (%2$d%% osatua)</string>
-    <string name="download_file">%s fitxategia deskargatu</string>
     <string name="open_file">%s fitxategia ireki</string>
     <string name="sending_file">bidaltzen (%1$d%% osatua)</string>
     <string name="preparing_file">Fitxategia transmisiorako prestatzen</string>
