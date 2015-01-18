@@ -187,6 +187,10 @@ public class UIHelper {
 			return context.getString(R.string.image);
 		} else if (mime.contains("pdf")) {
 			return context.getString(R.string.pdf_document)	;
+		} else if (mime.contains("application/vnd.android.package-archive")) {
+			return context.getString(R.string.apk)	;
+		} else if (mime.contains("vcard")) {
+			return context.getString(R.string.vcard)	;
 		} else {
 			return mime;
 		}
