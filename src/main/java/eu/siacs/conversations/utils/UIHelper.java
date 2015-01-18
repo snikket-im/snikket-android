@@ -129,6 +129,14 @@ public class UIHelper {
 					return new Pair<>(context.getString(R.string.file_deleted),true);
 				case Downloadable.STATUS_FAILED:
 					return new Pair<>(context.getString(R.string.file_transmission_failed),true);
+				case Downloadable.STATUS_UPLOADING:
+					if (message.getStatus() == Message.STATUS_OFFERED) {
+						return new Pair<>(context.getString(R.string.offering_x_file,
+								getFileDescriptionString(context, message)), true);
+					} else {
+						return new Pair<>(context.getString(R.string.sending_x_file,
+								getFileDescriptionString(context, message)), true);
+					}
 				default:
 					return new Pair<>("",false);
 			}
