@@ -203,6 +203,10 @@ public class NotificationService {
 					mBuilder.setSound(Uri.parse(ringtone));
 				}
 			}
+			if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+				mBuilder.setCategory(Notification.CATEGORY_MESSAGE);
+				mBuilder.setColor(mXmppConnectionService.getResources().getColor(R.color.primary));
+			}
 			mBuilder.setSmallIcon(R.drawable.ic_notification);
 			mBuilder.setDeleteIntent(createDeleteIntent());
 			mBuilder.setLights(0xffffffff, 2000, 4000);
