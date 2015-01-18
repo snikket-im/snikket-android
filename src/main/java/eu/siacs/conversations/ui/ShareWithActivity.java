@@ -135,14 +135,9 @@ public class ShareWithActivity extends XmppActivity {
 	public void onStart() {
 		final String type = getIntent().getType();
 		final Uri uri = getIntent().getParcelableExtra(Intent.EXTRA_STREAM);
-		if (type != null && uri != null && !type.startsWith("text/")) {
+		if (type != null && uri != null && !type.equalsIgnoreCase("text/plain")) {
 			this.share.uri = uri;
-			try {
-				String guess = URLConnection.guessContentTypeFromName(uri.toString());
-				this.share.image = type.startsWith("image/") || (guess != null && guess.startsWith("image/"));
-			} catch (final StringIndexOutOfBoundsException ignored) {
-				this.share.image = false;
-			}
+			this.share.image = type.startsWith("image/") || isImage(uri);
 		} else {
 			this.share.text = getIntent().getStringExtra(Intent.EXTRA_TEXT);
 		}
@@ -150,6 +145,15 @@ public class ShareWithActivity extends XmppActivity {
 			xmppConnectionService.populateWithOrderedConversations(mConversations, this.share.uri == null);
 		}
 		super.onStart();
+	}
+
+	protected boolean isImage(Uri uri) {
+		try {
+			String guess = URLConnection.guessContentTypeFromName(uri.toString());
+			return (guess != null && guess.startsWith("image/"));
+		} catch (final StringIndexOutOfBoundsException ignored) {
+			return false;
+		}
 	}
 
 	@Override
