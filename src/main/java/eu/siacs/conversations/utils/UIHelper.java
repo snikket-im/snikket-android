@@ -118,33 +118,17 @@ public class UIHelper {
 				case Downloadable.STATUS_CHECKING:
 					return new Pair<>(context.getString(R.string.checking_image),true);
 				case Downloadable.STATUS_DOWNLOADING:
-					if (message.getType() == Message.TYPE_FILE) {
-						return new Pair<>(context.getString(R.string.receiving_x_file,
+					return new Pair<>(context.getString(R.string.receiving_x_file,
 									getFileDescriptionString(context,message),
 									d.getProgress()),true);
-					} else {
-						return new Pair<>(context.getString(R.string.receiving_image, d.getProgress()),true);
-					}
 				case Downloadable.STATUS_OFFER:
 				case Downloadable.STATUS_OFFER_CHECK_FILESIZE:
-					if (message.getType() == Message.TYPE_FILE) {
-						return new Pair<>(context.getString(R.string.x_file_offered_for_download,
+					return new Pair<>(context.getString(R.string.x_file_offered_for_download,
 									getFileDescriptionString(context,message)),true);
-					} else {
-						return new Pair<>(context.getString(R.string.image_offered_for_download),true);
-					}
 				case Downloadable.STATUS_DELETED:
-					if (message.getType() == Message.TYPE_FILE) {
-						return new Pair<>(context.getString(R.string.file_deleted),true);
-					} else {
-						return new Pair<>(context.getString(R.string.image_file_deleted),true);
-					}
+					return new Pair<>(context.getString(R.string.file_deleted),true);
 				case Downloadable.STATUS_FAILED:
-					if (message.getType() == Message.TYPE_FILE) {
-						return new Pair<>(context.getString(R.string.file_transmission_failed),true);
-					} else {
-						return new Pair<>(context.getString(R.string.image_transmission_failed),true);
-					}
+					return new Pair<>(context.getString(R.string.file_transmission_failed),true);
 				default:
 					return new Pair<>("",false);
 			}
@@ -167,13 +151,16 @@ public class UIHelper {
 	}
 
 	public static String getFileDescriptionString(final Context context, final Message message) {
+		if (message.getType() == Message.TYPE_IMAGE) {
+			return context.getString(R.string.image);
+		}
 		final String path = message.getRelativeFilePath();
 		if (path == null) {
 			return "";
 		}
 		final String mime;
 		try {
-			mime = URLConnection.guessContentTypeFromName(path);
+			mime = URLConnection.guessContentTypeFromName(path.replace("#",""));
 		} catch (final StringIndexOutOfBoundsException ignored) {
 			return context.getString(R.string.file);
 		}

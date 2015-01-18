@@ -72,7 +72,6 @@
     <string name="add_contact">Add contact</string>
     <string name="send_failed">delivery failed</string>
     <string name="send_rejected">rejected</string>
-    <string name="receiving_image">Receiving image file (%1$d%%)</string>
     <string name="preparing_image">Preparing image for transmission</string>
     <string name="action_clear_history">Clear history</string>
     <string name="clear_conversation_history">Clear Conversation History</string>
@@ -85,7 +84,6 @@
     <string name="send_pgp_message">Send OpenPGP encrypted message</string>
     <string name="your_nick_has_been_changed">Your nickname has been changed</string>
     <string name="download_image">Download Image</string>
-    <string name="image_offered_for_download"><i>Image file offered for download</i></string>
     <string name="send_unencrypted">Send unencrypted</string>
     <string name="decryption_failed">Decryption failed. Maybe you don’t have the proper private key.</string>
     <string name="openkeychain_required">OpenKeychain</string>
@@ -99,8 +97,6 @@
     <string name="no_pgp_keys">No OpenPGP Keys found</string>
     <string name="contacts_have_no_pgp_keys">Conversations is unable to encrypt your messages because your contacts are not announcing their public key.\n\n<small>Please ask your contacts to setup OpenPGP.</small></string>
     <string name="encrypted_message_received"><i>Encrypted message received. Touch to view and decrypt.</i></string>
-    <string name="encrypted_image_received"><i>Encrypted image received. Touch to view and decrypt.</i></string>
-    <string name="image_file"><i>Image received. Touch to view</i></string>
     <string name="pref_general">General</string>
     <string name="pref_xmpp_resource">XMPP resource</string>
     <string name="pref_xmpp_resource_summary">The name this client identifies itself with</string>
@@ -437,9 +433,9 @@
 	<string name="pref_enter_is_send_summary">Use enter key to send message</string>
 	<string name="pref_display_enter_key">Show enter key</string>
 	<string name="pref_display_enter_key_summary">Change the emoticons key to an enter key</string>
-	<string name="audio">audio file</string>
-	<string name="video">video file</string>
-	<string name="image">image file</string>
+	<string name="audio">audio</string>
+	<string name="video">video</string>
+	<string name="image">image</string>
 	<string name="pdf_document">PDF document</string>
 	<string name="apk">Android App</string>
 	<string name="vcard">Contact</string>

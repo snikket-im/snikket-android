@@ -487,39 +487,14 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 				}
 			});
 
-		if (message.getDownloadable() != null && message.getDownloadable().getStatus() != Downloadable.STATUS_UPLOADING) {
-			Downloadable d = message.getDownloadable();
-			if (d.getStatus() == Downloadable.STATUS_DOWNLOADING) {
-				if (message.getType() == Message.TYPE_FILE) {
-					displayInfoMessage(viewHolder,activity.getString(R.string.receiving_x_file,
-							UIHelper.getFileDescriptionString(activity,message),
-							d.getProgress()));
-				} else {
-					displayInfoMessage(viewHolder,activity.getString(R.string.receiving_image,d.getProgress()));
-				}
-			} else if (d.getStatus() == Downloadable.STATUS_CHECKING) {
-				displayInfoMessage(viewHolder,activity.getString(R.string.checking_image));
-			} else if (d.getStatus() == Downloadable.STATUS_DELETED) {
-				if (message.getType() == Message.TYPE_FILE) {
-					displayInfoMessage(viewHolder, activity.getString(R.string.file_deleted));
-				} else {
-					displayInfoMessage(viewHolder, activity.getString(R.string.image_file_deleted));
-				}
-			} else if (d.getStatus() == Downloadable.STATUS_OFFER) {
-				if (message.getType() == Message.TYPE_FILE) {
-					displayDownloadableMessage(viewHolder,message,activity.getString(R.string.download_x_file,
-							UIHelper.getFileDescriptionString(activity,message)));
-				} else {
-					displayDownloadableMessage(viewHolder, message,activity.getString(R.string.download_image));
-				}
-			} else if (d.getStatus() == Downloadable.STATUS_OFFER_CHECK_FILESIZE) {
-				displayDownloadableMessage(viewHolder, message,activity.getString(R.string.check_image_filesize));
-			} else if (d.getStatus() == Downloadable.STATUS_FAILED) {
-				if (message.getType() == Message.TYPE_FILE) {
-					displayInfoMessage(viewHolder, activity.getString(R.string.file_transmission_failed));
-				} else {
-					displayInfoMessage(viewHolder, activity.getString(R.string.image_transmission_failed));
-				}
+		final Downloadable downloadable = message.getDownloadable();
+		if (downloadable != null && downloadable.getStatus() != Downloadable.STATUS_UPLOADING) {
+			if (downloadable.getStatus() == Downloadable.STATUS_OFFER) {
+				displayDownloadableMessage(viewHolder,message,activity.getString(R.string.download_x_file, UIHelper.getFileDescriptionString(activity, message)));
+			} else if (downloadable.getStatus() == Downloadable.STATUS_OFFER_CHECK_FILESIZE) {
+				displayDownloadableMessage(viewHolder, message, activity.getString(R.string.check_image_filesize));
+			} else {
+				displayInfoMessage(viewHolder, UIHelper.getMessagePreview(activity, message).first);
 			}
 		} else if (message.getType() == Message.TYPE_IMAGE && message.getEncryption() != Message.ENCRYPTION_PGP && message.getEncryption() != Message.ENCRYPTION_DECRYPTION_FAILED) {
 			displayImageMessage(viewHolder, message);
