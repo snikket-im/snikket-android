@@ -362,6 +362,7 @@
     <string name="choose_file">Choose file</string>
     <string name="receiving_x_file">Receiving %1$s (%2$d%% completed)</string>
     <string name="download_x_file">Download %s</string>
+    <string name="file">file</string>
     <string name="open_x_file">Open %s</string>
     <string name="sending_file">sending (%1$d%% completed)</string>
     <string name="preparing_file">Preparing file for transmission</string>
