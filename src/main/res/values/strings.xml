@@ -441,6 +441,8 @@
 	<string name="video">video file</string>
 	<string name="image">image file</string>
 	<string name="pdf_document">PDF document</string>
+	<string name="apk">Android App</string>
+	<string name="vcard">Contact</string>
 	<string name="received_x_file">Received %s</string>
 	<string name="disable_foreground_service">Disable foreground service</string>
 	<string name="touch_to_open_conversations">Touch to open Conversations</string>
