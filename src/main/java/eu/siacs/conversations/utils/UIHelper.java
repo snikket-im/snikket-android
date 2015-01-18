@@ -175,10 +175,10 @@ public class UIHelper {
 		try {
 			mime = URLConnection.guessContentTypeFromName(path);
 		} catch (final StringIndexOutOfBoundsException ignored) {
-			return "";
+			return context.getString(R.string.file);
 		}
 		if (mime == null) {
-			return "";
+			return context.getString(R.string.file);
 		} else if (mime.startsWith("audio/")) {
 			return context.getString(R.string.audio);
 		} else if(mime.startsWith("video/")) {
