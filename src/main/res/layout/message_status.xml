@@ -19,4 +19,17 @@
         android:scaleType="fitXY"
         android:src="@drawable/ic_profile" />
 
+    <TextView
+        android:id="@+id/status_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="8dp"
+        android:layout_toEndOf="@+id/message_photo"
+        android:layout_toRightOf="@+id/message_photo"
+        android:text="@string/contact_has_read_up_to_this_point"
+        android:textColor="@color/secondarytext"
+        android:textSize="?attr/TextSizeInfo"
+        android:textStyle="italic"/>
+
 </RelativeLayout>

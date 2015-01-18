@@ -35,7 +35,6 @@ import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.Message.ImageParams;
 import eu.siacs.conversations.ui.ConversationActivity;
 import eu.siacs.conversations.utils.UIHelper;
-import eu.siacs.conversations.xmpp.jid.Jid;
 
 public class MessageAdapter extends ArrayAdapter<Message> {
 
@@ -388,10 +387,9 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 						.findViewById(R.id.indicator_received);
 					break;
 				case STATUS:
-					view = activity.getLayoutInflater().inflate(
-							R.layout.message_status, parent, false);
-					viewHolder.contact_picture = (ImageView) view
-						.findViewById(R.id.message_photo);
+					view = activity.getLayoutInflater().inflate(R.layout.message_status, parent, false);
+					viewHolder.contact_picture = (ImageView) view.findViewById(R.id.message_photo);
+					viewHolder.status_message = (TextView) view.findViewById(R.id.status_message);
 					break;
 				default:
 					viewHolder = null;
@@ -411,20 +409,8 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 						.avatarService().get(conversation.getContact(),
 							activity.getPixel(32)));
 				viewHolder.contact_picture.setAlpha(0.5f);
-				viewHolder.contact_picture
-					.setOnClickListener(new OnClickListener() {
-
-						@Override
-						public void onClick(View v) {
-							String name = conversation.getName();
-							String read = getContext()
-								.getString(
-										R.string.contact_has_read_up_to_this_point,
-										name);
-							Toast.makeText(getContext(), read,
-									Toast.LENGTH_SHORT).show();
-						}
-					});
+				viewHolder.status_message.setText(
+						activity.getString(R.string.contact_has_read_up_to_this_point, conversation.getName()));
 
 			}
 			return view;
@@ -577,6 +563,6 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		protected TextView time;
 		protected TextView messageBody;
 		protected ImageView contact_picture;
-
+		protected TextView status_message;
 	}
 }
