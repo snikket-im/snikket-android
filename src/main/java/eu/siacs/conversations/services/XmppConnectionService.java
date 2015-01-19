@@ -940,6 +940,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 				List<Message> messages = databaseBackend.getMessages(conversation, 50,timestamp);
 				if (messages.size() > 0) {
 					conversation.addAll(0, messages);
+					checkDeletedFiles(conversation);
 					callback.onMoreMessagesLoaded(messages.size(), conversation);
 				} else if (conversation.hasMessagesLeftOnServer()
 						&& account.isOnlineAndConnected()
@@ -949,7 +950,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 						query.setCallback(callback);
 					}
 					callback.informUser(R.string.fetching_history_from_server);
-						}
+				}
 			}
 		}).start();
 	}
@@ -1028,6 +1029,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 					}
 				}
 			}
+			checkDeletedFiles(conversation);
 			this.conversations.add(conversation);
 			updateConversationUi();
 			return conversation;
