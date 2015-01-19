@@ -296,7 +296,9 @@ public class NotificationService {
 				bigPictureStyle.setSummaryText(getMergedBodies(tmp));
 				builder.setContentText(UIHelper.getMessagePreview(mXmppConnectionService,tmp.get(0)).first);
 			} else {
-				builder.setContentText(mXmppConnectionService.getString(R.string.image_file));
+				builder.setContentText(mXmppConnectionService.getString(
+						R.string.received_x_file,
+						UIHelper.getFileDescriptionString(mXmppConnectionService,message)));
 			}
 			builder.setStyle(bigPictureStyle);
 		} catch (final FileNotFoundException e) {
