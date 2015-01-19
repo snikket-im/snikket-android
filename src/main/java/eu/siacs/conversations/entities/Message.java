@@ -371,7 +371,7 @@ public class Message extends AbstractEntity {
 		if (this.mergeable(next)) {
 			return getBody() + '\n' + next.getMergedBody();
 		}
-		return body.trim();
+		return getBody();
 	}
 
 	public boolean hasMeCommand() {
