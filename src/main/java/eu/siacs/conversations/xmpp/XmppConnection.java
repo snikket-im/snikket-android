@@ -507,22 +507,18 @@ public class XmppConnection implements Runnable {
 			}
 
 			final String[] supportProtocols;
-			if (enableLegacySSL()) {
-				supportProtocols = sslSocket.getSupportedProtocols();
-			} else {
-				final Collection<String> supportedProtocols = new LinkedList<>(
-						Arrays.asList(sslSocket.getSupportedProtocols()));
-				supportedProtocols.remove("SSLv3");
-				supportProtocols = new String[supportedProtocols.size()];
-				supportedProtocols.toArray(supportProtocols);
+			final Collection<String> supportedProtocols = new LinkedList<>(
+					Arrays.asList(sslSocket.getSupportedProtocols()));
+			supportedProtocols.remove("SSLv3");
+			supportProtocols = supportedProtocols.toArray(new String[supportedProtocols.size()]);
 
-				final String[] cipherSuites = CryptoHelper.getSupportedCipherSuites(
-						sslSocket.getSupportedCipherSuites());
-				if (cipherSuites.length > 0) {
-					sslSocket.setEnabledCipherSuites(cipherSuites);
-				}
-			}
 			sslSocket.setEnabledProtocols(supportProtocols);
+
+			final String[] cipherSuites = CryptoHelper.getSupportedCipherSuites(
+					sslSocket.getSupportedCipherSuites());
+			if (cipherSuites.length > 0) {
+				sslSocket.setEnabledCipherSuites(cipherSuites);
+			}
 
 			if (!verifier.verify(account.getServer().getDomainpart(),sslSocket.getSession())) {
 				Log.d(Config.LOGTAG,account.getJid().toBareJid()+": TLS certificate verification failed");

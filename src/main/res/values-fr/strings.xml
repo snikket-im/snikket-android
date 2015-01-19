@@ -267,7 +267,6 @@
   <string name="pref_force_encryption_summary">Toujours envoyer des messages chiffrés (sauf pour les conférences)</string>
   <string name="pref_dont_save_encrypted">Ne pas sauvegarder les messages chiffrés</string>
   <string name="pref_dont_save_encrypted_summary">Attention: Celà peut mener à une perte de messages</string>
-  <string name="pref_enable_legacy_ssl">Activer SSL hérité</string>
   <string name="pref_expert_options">Options avancées</string>
   <string name="pref_expert_options_summary">A utiliser avec précautions</string>
   <string name="title_activity_about">Sur Conversations</string>
