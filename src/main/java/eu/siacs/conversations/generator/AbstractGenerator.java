@@ -23,7 +23,7 @@ public abstract class AbstractGenerator {
 			"http://jabber.org/protocol/disco#info",
 			"urn:xmpp:avatar:metadata+notify",
 			"urn:xmpp:ping"};
-	public final String IDENTITY_NAME = "Conversations 0.10";
+	public final String IDENTITY_NAME = "Conversations 1.0-beta";
 	public final String IDENTITY_TYPE = "phone";
 
 	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US);

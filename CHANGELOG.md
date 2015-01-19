@@ -1,4 +1,11 @@
 ###Changelog
+
+####Version 1.0
+* MUC controls (Affiliaton changes)
+* Added download button to notification
+* Improved security
+* bug fixes + code clean up
+
 ####Version 0.10
 * Support for Message Archive Management
 * Dynamically load message history
