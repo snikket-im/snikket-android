@@ -118,7 +118,7 @@ public class NotificationService {
 			.getSystemService(Context.POWER_SERVICE);
 
 		final boolean isScreenOn;
-		if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
 			isScreenOn = pm.isScreenOn();
 		} else {
 			isScreenOn = pm.isInteractive();
@@ -134,10 +134,10 @@ public class NotificationService {
 
 		final boolean isScreenOn = isInteractive();
 
-		if (this.mIsInForeground && isScreenOn
-				&& this.mOpenConversation == message.getConversation()) {
+		if (this.mIsInForeground && isScreenOn && this.mOpenConversation == message.getConversation()) {
 			return;
-				}
+		}
+
 		synchronized (notifications) {
 			final String conversationUuid = message.getConversationUuid();
 			if (notifications.containsKey(conversationUuid)) {
@@ -156,7 +156,6 @@ public class NotificationService {
 				notifyPebble(message);
 			}
 		}
-
 	}
 
 	public void clear() {
@@ -171,6 +170,10 @@ public class NotificationService {
 			notifications.remove(conversation.getUuid());
 			updateNotification(false);
 		}
+	}
+
+	private void setNotificationColor(final Builder mBuilder) {
+		mBuilder.setColor(mXmppConnectionService.getResources().getColor(R.color.primary));
 	}
 
 	private void updateNotification(final boolean notify) {
@@ -205,8 +208,8 @@ public class NotificationService {
 			}
 			if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 				mBuilder.setCategory(Notification.CATEGORY_MESSAGE);
-				mBuilder.setColor(mXmppConnectionService.getResources().getColor(R.color.primary));
 			}
+			setNotificationColor(mBuilder);
 			mBuilder.setSmallIcon(R.drawable.ic_notification);
 			mBuilder.setDeleteIntent(createDeleteIntent());
 			mBuilder.setLights(0xffffffff, 2000, 4000);
@@ -331,7 +334,7 @@ public class NotificationService {
 			if ((message.getType() == Message.TYPE_FILE || message.getType() == Message.TYPE_IMAGE) &&
 					message.getDownloadable() != null) {
 				return message;
-					}
+			}
 		}
 		return null;
 	}
@@ -452,6 +455,10 @@ public class NotificationService {
 		mBuilder.setContentIntent(createOpenConversationsIntent());
 		mBuilder.setWhen(0);
 		mBuilder.setPriority(NotificationCompat.PRIORITY_MIN);
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+			mBuilder.setCategory(Notification.CATEGORY_SERVICE);
+		}
+		setNotificationColor(mBuilder);
 		return mBuilder.build();
 	}
 
