@@ -2,6 +2,7 @@ package eu.siacs.conversations.ui;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
@@ -300,12 +301,15 @@ public abstract class XmppActivity extends Activity {
 		mColorOrange = getResources().getColor(R.color.orange);
 		mColorGreen = getResources().getColor(R.color.green);
 		mPrimaryColor = getResources().getColor(R.color.primary);
-		mSecondaryBackgroundColor = getResources().getColor(
-				R.color.secondarybackground);
+		mSecondaryBackgroundColor = getResources().getColor(R.color.secondarybackground);
 		this.mTheme = findTheme();
 		setTheme(this.mTheme);
 		this.mUsingEnterKey = usingEnterKey();
 		mUseSubject = getPreferences().getBoolean("use_subject", true);
+		final ActionBar ab = getActionBar();
+		if (ab!=null) {
+			ab.setDisplayHomeAsUpEnabled(true);
+		}
 	}
 
 	protected boolean usingEnterKey() {
