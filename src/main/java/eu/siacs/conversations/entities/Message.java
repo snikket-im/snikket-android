@@ -311,12 +311,17 @@ public class Message extends AbstractEntity {
 	public boolean equals(Message message) {
 		if (this.serverMsgId != null && message.getServerMsgId() != null) {
 			return this.serverMsgId.equals(message.getServerMsgId());
+		} else if (this.body == null || this.counterpart == null) {
+			return false;
+		} else if (message.getRemoteMsgId() != null) {
+			return (message.getRemoteMsgId().equals(this.remoteMsgId) || message.getRemoteMsgId().equals(this.uuid))
+					&& this.counterpart.equals(message.getCounterpart())
+					&& this.body.equals(message.getBody());
 		} else {
-			return this.body != null
-				&& this.counterpart != null
-				&& ((this.remoteMsgId != null && this.remoteMsgId.equals(message.getRemoteMsgId()))
-						|| this.uuid.equals(message.getRemoteMsgId())) && this.body.equals(message.getBody())
-				&& this.counterpart.equals(message.getCounterpart());
+			return this.remoteMsgId == null
+					&& this.counterpart.equals(message.getCounterpart())
+					&& this.body.equals(message.getBody())
+					&& Math.abs(this.getTimeSent() - message.getTimeSent()) < Config.PING_TIMEOUT * 500;
 		}
 	}
 
