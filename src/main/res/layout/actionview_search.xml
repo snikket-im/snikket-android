@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:addStatesFromChildren="true"
     android:focusable="true"
@@ -10,10 +10,10 @@
 
     <EditText
         android:id="@+id/search_field"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:focusable="true"
         android:inputType="textEmailAddress|textNoSuggestions"
         android:textColor="@color/ondarktext" />
 
-</LinearLayout>
+</RelativeLayout>
