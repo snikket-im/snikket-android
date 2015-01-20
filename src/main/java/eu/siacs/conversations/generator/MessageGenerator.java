@@ -68,7 +68,7 @@ public class MessageGenerator extends AbstractGenerator {
 		packet.addChild("private", "urn:xmpp:carbons:2");
 		packet.addChild("no-copy", "urn:xmpp:hints");
 		try {
-			packet.setBody(otrSession.transformSending(message.getBody()));
+			packet.setBody(otrSession.transformSending(message.getBody())[0]);
 			return packet;
 		} catch (OtrException e) {
 			return null;
