@@ -72,7 +72,7 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 
 		if (message.getImageParams().width > 0
 				&& (message.getDownloadable() == null
-				|| message.getDownloadable().getStatus() == Downloadable.STATUS_DELETED)) {
+				|| message.getDownloadable().getStatus() != Downloadable.STATUS_DELETED)) {
 			mLastMessage.setVisibility(View.GONE);
 			imagePreview.setVisibility(View.VISIBLE);
 			activity.loadBitmap(message, imagePreview);
