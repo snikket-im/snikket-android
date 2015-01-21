@@ -59,6 +59,7 @@ import eu.siacs.conversations.entities.Bookmark;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.ListItem;
+import eu.siacs.conversations.entities.Presences;
 import eu.siacs.conversations.services.XmppConnectionService.OnRosterUpdate;
 import eu.siacs.conversations.ui.adapter.KnownHostsAdapter;
 import eu.siacs.conversations.ui.adapter.ListItemAdapter;
@@ -114,6 +115,7 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 			return true;
 		}
 	};
+	private boolean mHideOfflineContacts = false;
 	private TabListener mTabListener = new TabListener() {
 
 		@Override
@@ -159,7 +161,6 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 		}
 	};
 	private MenuItem mMenuSearchView;
-	private String mInitialJid;
 	private ListItemAdapter.OnTagClickedListener mOnTagClickedListener = new ListItemAdapter.OnTagClickedListener() {
 		@Override
 		public void onTagClicked(String tag) {
@@ -171,6 +172,7 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 			}
 		}
 	};
+	private String mInitialJid;
 
 	@Override
 	public void onRosterUpdate() {
@@ -244,6 +246,8 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 					openConversationForContact(position);
 				}
 			});
+
+		this.mHideOfflineContacts = getPreferences().getBoolean("hide_offline", false);
 
 	}
 
@@ -496,10 +500,10 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 	public boolean onCreateOptionsMenu(Menu menu) {
 		this.mOptionsMenu = menu;
 		getMenuInflater().inflate(R.menu.start_conversation, menu);
-		MenuItem menuCreateContact = menu
-			.findItem(R.id.action_create_contact);
-		MenuItem menuCreateConference = menu
-			.findItem(R.id.action_join_conference);
+		MenuItem menuCreateContact = menu.findItem(R.id.action_create_contact);
+		MenuItem menuCreateConference = menu.findItem(R.id.action_join_conference);
+		MenuItem menuHideOffline = menu.findItem(R.id.action_hide_offline);
+		menuHideOffline.setChecked(this.mHideOfflineContacts);
 		mMenuSearchView = menu.findItem(R.id.action_search);
 		mMenuSearchView.setOnActionExpandListener(mOnActionExpandListener);
 		View mSearchView = mMenuSearchView.getActionView();
@@ -531,6 +535,13 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 			case R.id.action_scan_qr_code:
 				new IntentIntegrator(this).initiateScan();
 				return true;
+			case R.id.action_hide_offline:
+				mHideOfflineContacts = !item.isChecked();
+				getPreferences().edit().putBoolean("hide_offline", mHideOfflineContacts).commit();
+				if (mSearchEditText != null) {
+					filter(mSearchEditText.getText().toString());
+				}
+				invalidateOptionsMenu();
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -667,7 +678,9 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 		for (Account account : xmppConnectionService.getAccounts()) {
 			if (account.getStatus() != Account.State.DISABLED) {
 				for (Contact contact : account.getRoster().getContacts()) {
-					if (contact.showInRoster() && contact.match(needle)) {
+					if (contact.showInRoster() && contact.match(needle)
+							&& (!this.mHideOfflineContacts
+							|| contact.getPresences().getMostAvailableStatus() < Presences.OFFLINE)) {
 						this.contacts.add(contact);
 					}
 				}
