@@ -3,6 +3,7 @@
 ####Version 1.0
 * MUC controls (Affiliaton changes)
 * Added download button to notification
+* Added check box to hide offline contacts
 * Improved security
 * bug fixes + code clean up
 
