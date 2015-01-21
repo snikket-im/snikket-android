@@ -65,6 +65,13 @@
                         android:textSize="?attr/TextSizeBody" />
                 </LinearLayout>
 
+                <Button
+                    android:id="@+id/add_contact_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/add_contact"/>
+
                 <CheckBox
                     android:id="@+id/details_send_presence"
                     android:layout_width="wrap_content"

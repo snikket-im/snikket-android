@@ -362,14 +362,7 @@ public class ConversationFragment extends Fragment {
 							}
 						}
 					} else {
-						Contact contact = message.getConversation()
-							.getContact();
-						if (contact.showInRoster()) {
-							activity.switchToContactDetails(contact);
-						} else {
-							activity.showAddToRosterDialog(message
-									.getConversation());
-						}
+						activity.switchToContactDetails(message.getContact());
 					}
 				} else {
 					Account account = message.getConversation().getAccount();

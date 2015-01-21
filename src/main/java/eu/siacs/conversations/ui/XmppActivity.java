@@ -438,9 +438,12 @@ public abstract class XmppActivity extends Activity {
 	}
 
 	protected void showAddToRosterDialog(final Conversation conversation) {
-		final Jid jid = conversation.getJid();
+		showAddToRosterDialog(conversation.getContact());
+	}
+
+	protected void showAddToRosterDialog(final Contact contact) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle(jid.toString());
+		builder.setTitle(contact.getJid().toString());
 		builder.setMessage(getString(R.string.not_in_roster));
 		builder.setNegativeButton(getString(R.string.cancel), null);
 		builder.setPositiveButton(getString(R.string.add_contact),
@@ -448,11 +451,10 @@ public abstract class XmppActivity extends Activity {
 
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						final Jid jid = conversation.getJid();
-						Account account = conversation.getAccount();
+						final Jid jid = contact.getJid();
+						Account account = contact.getAccount();
 						Contact contact = account.getRoster().getContact(jid);
 						xmppConnectionService.createContact(contact);
-						switchToContactDetails(contact);
 					}
 				});
 		builder.create().show();

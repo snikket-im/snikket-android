@@ -18,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
@@ -40,6 +41,7 @@ import eu.siacs.conversations.services.XmppConnectionService.OnRosterUpdate;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
+import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
 
@@ -51,9 +53,7 @@ public class ContactDetailsActivity extends XmppActivity implements OnAccountUpd
 
 		@Override
 		public void onClick(DialogInterface dialog, int which) {
-			ContactDetailsActivity.this.xmppConnectionService
-				.deleteContactOnServer(contact);
-			ContactDetailsActivity.this.finish();
+			xmppConnectionService.deleteContactOnServer(contact);
 		}
 	};
 	private OnCheckedChangeListener mOnSendCheckedChange = new OnCheckedChangeListener() {
@@ -102,6 +102,7 @@ public class ContactDetailsActivity extends XmppActivity implements OnAccountUpd
 	private TextView lastseen;
 	private CheckBox send;
 	private CheckBox receive;
+	private Button addContactButton;
 	private QuickContactBadge badge;
 	private LinearLayout keys;
 	private LinearLayout tags;
@@ -142,6 +143,7 @@ public class ContactDetailsActivity extends XmppActivity implements OnAccountUpd
 
 			@Override
 			public void run() {
+				invalidateOptionsMenu();
 				populateView();
 			}
 		});
@@ -153,6 +155,7 @@ public class ContactDetailsActivity extends XmppActivity implements OnAccountUpd
 
 			@Override
 			public void run() {
+				invalidateOptionsMenu();
 				populateView();
 			}
 		});
@@ -188,6 +191,13 @@ public class ContactDetailsActivity extends XmppActivity implements OnAccountUpd
 		send = (CheckBox) findViewById(R.id.details_send_presence);
 		receive = (CheckBox) findViewById(R.id.details_receive_presence);
 		badge = (QuickContactBadge) findViewById(R.id.details_contact_badge);
+		addContactButton = (Button) findViewById(R.id.add_contact_button);
+		addContactButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				showAddToRosterDialog(contact);
+			}
+		});
 		keys = (LinearLayout) findViewById(R.id.details_contact_keys);
 		tags = (LinearLayout) findViewById(R.id.tags);
 		if (getActionBar() != null) {
@@ -250,58 +260,83 @@ public class ContactDetailsActivity extends XmppActivity implements OnAccountUpd
 	@Override
 	public boolean onCreateOptionsMenu(final Menu menu) {
 		getMenuInflater().inflate(R.menu.contact_details, menu);
-		if (this.contact.isBlocked()) {
-			menu.findItem(R.id.action_block).setVisible(false);
+		MenuItem block = menu.findItem(R.id.action_block);
+		MenuItem unblock = menu.findItem(R.id.action_unblock);
+		MenuItem edit = menu.findItem(R.id.action_edit_contact);
+		MenuItem delete = menu.findItem(R.id.action_delete_contact);
+		final XmppConnection connection = contact.getAccount().getXmppConnection();
+		if (connection != null && connection.getFeatures().blocking()) {
+			if (this.contact.isBlocked()) {
+				menu.findItem(R.id.action_block).setVisible(false);
+			} else {
+				menu.findItem(R.id.action_unblock).setVisible(false);
+			}
 		} else {
 			menu.findItem(R.id.action_unblock).setVisible(false);
+			menu.findItem(R.id.action_block).setVisible(false);
 		}
-
+		if (!contact.showInRoster()) {
+			edit.setVisible(false);
+			delete.setVisible(false);
+		}
 		return true;
 	}
 
 	private void populateView() {
-		send.setOnCheckedChangeListener(null);
-		receive.setOnCheckedChangeListener(null);
 		setTitle(contact.getDisplayName());
-		if (contact.getOption(Contact.Options.FROM)) {
-			send.setText(R.string.send_presence_updates);
-			send.setChecked(true);
-		} else if (contact
-				.getOption(Contact.Options.PENDING_SUBSCRIPTION_REQUEST)) {
-			send.setChecked(false);
-			send.setText(R.string.send_presence_updates);
-		} else {
-			send.setText(R.string.preemptively_grant);
-			if (contact.getOption(Contact.Options.PREEMPTIVE_GRANT)) {
+		if (contact.showInRoster()) {
+			send.setVisibility(View.VISIBLE);
+			receive.setVisibility(View.VISIBLE);
+			addContactButton.setVisibility(View.GONE);
+			send.setOnCheckedChangeListener(null);
+			receive.setOnCheckedChangeListener(null);
+
+			if (contact.getOption(Contact.Options.FROM)) {
+				send.setText(R.string.send_presence_updates);
 				send.setChecked(true);
-			} else {
+			} else if (contact.getOption(Contact.Options.PENDING_SUBSCRIPTION_REQUEST)) {
 				send.setChecked(false);
+				send.setText(R.string.send_presence_updates);
+			} else {
+				send.setText(R.string.preemptively_grant);
+				if (contact.getOption(Contact.Options.PREEMPTIVE_GRANT)) {
+					send.setChecked(true);
+				} else {
+					send.setChecked(false);
+				}
 			}
-		}
-		if (contact.getOption(Contact.Options.TO)) {
-			receive.setText(R.string.receive_presence_updates);
-			receive.setChecked(true);
-		} else {
-			receive.setText(R.string.ask_for_presence_updates);
-			if (contact.getOption(Contact.Options.ASKING)) {
+			if (contact.getOption(Contact.Options.TO)) {
+				receive.setText(R.string.receive_presence_updates);
 				receive.setChecked(true);
 			} else {
-				receive.setChecked(false);
+				receive.setText(R.string.ask_for_presence_updates);
+				if (contact.getOption(Contact.Options.ASKING)) {
+					receive.setChecked(true);
+				} else {
+					receive.setChecked(false);
+				}
 			}
-		}
-		if (contact.getAccount().getStatus() == Account.State.ONLINE) {
-			receive.setEnabled(true);
-			send.setEnabled(true);
+			if (contact.getAccount().isOnlineAndConnected()) {
+				receive.setEnabled(true);
+				send.setEnabled(true);
+			} else {
+				receive.setEnabled(false);
+				send.setEnabled(false);
+			}
+
+			send.setOnCheckedChangeListener(this.mOnSendCheckedChange);
+			receive.setOnCheckedChangeListener(this.mOnReceiveCheckedChange);
 		} else {
-			receive.setEnabled(false);
-			send.setEnabled(false);
+			addContactButton.setVisibility(View.VISIBLE);
+			send.setVisibility(View.GONE);
+			receive.setVisibility(View.GONE);
 		}
 
-		send.setOnCheckedChangeListener(this.mOnSendCheckedChange);
-		receive.setOnCheckedChangeListener(this.mOnReceiveCheckedChange);
-
-		lastseen.setText(UIHelper.lastseen(getApplicationContext(),
-					contact.lastseen.time));
+		if (contact.isBlocked() && !this.showDynamicTags) {
+			lastseen.setText(R.string.contact_blocked);
+		} else {
+			lastseen.setText(UIHelper.lastseen(getApplicationContext(), contact.lastseen.time));
+		}
 
 		if (contact.getPresences().size() > 1) {
 			contactJidTv.setText(contact.getJid() + " ("

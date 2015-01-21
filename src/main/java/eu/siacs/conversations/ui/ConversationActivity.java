@@ -280,8 +280,6 @@ public class ConversationActivity extends XmppActivity
 		final MenuItem menuInviteContact = menu.findItem(R.id.action_invite);
 		final MenuItem menuMute = menu.findItem(R.id.action_mute);
 		final MenuItem menuUnmute = menu.findItem(R.id.action_unmute);
-		final MenuItem menuBlock = menu.findItem(R.id.action_block);
-		final MenuItem menuUnblock = menu.findItem(R.id.action_unblock);
 
 		if (isConversationsOverviewVisable() && isConversationsOverviewHideable()) {
 			menuArchive.setVisible(false);
@@ -293,8 +291,6 @@ public class ConversationActivity extends XmppActivity
 			menuClearHistory.setVisible(false);
 			menuMute.setVisible(false);
 			menuUnmute.setVisible(false);
-			menuBlock.setVisible(false);
-			menuUnblock.setVisible(false);
 		} else {
 			menuAdd.setVisible(!isConversationsOverviewHideable());
 			if (this.getSelectedConversation() != null) {
@@ -305,21 +301,10 @@ public class ConversationActivity extends XmppActivity
 				if (this.getSelectedConversation().getMode() == Conversation.MODE_MULTI) {
 					menuContactDetails.setVisible(false);
 					menuAttach.setVisible(false);
-					menuBlock.setVisible(false);
-					menuUnblock.setVisible(false);
 					menuInviteContact.setVisible(getSelectedConversation().getMucOptions().canInvite());
 				} else {
 					menuMucDetails.setVisible(false);
-					if (this.getSelectedConversation().isBlocked()) {
-						menuBlock.setVisible(false);
-					} else {
-						menuUnblock.setVisible(false);
-					}
 					final Account account = this.getSelectedConversation().getAccount();
-					if (!(account.isOnlineAndConnected() && account.getXmppConnection().getFeatures().blocking())) {
-						menuBlock.setVisible(false);
-						menuUnblock.setVisible(false);
-					}
 				}
 				if (this.getSelectedConversation().isMuted()) {
 					menuMute.setVisible(false);
@@ -445,12 +430,7 @@ public class ConversationActivity extends XmppActivity
 					this.endConversation(getSelectedConversation());
 					break;
 				case R.id.action_contact_details:
-					Contact contact = this.getSelectedConversation().getContact();
-					if (contact.showInRoster()) {
-						switchToContactDetails(contact);
-					} else {
-						showAddToRosterDialog(getSelectedConversation());
-					}
+					switchToContactDetails(getSelectedConversation().getContact());
 					break;
 				case R.id.action_muc_details:
 					Intent intent = new Intent(this,
