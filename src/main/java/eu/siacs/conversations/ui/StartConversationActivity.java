@@ -448,8 +448,7 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 							if (account.hasBookmarkFor(conferenceJid)) {
 								jid.setError(getString(R.string.bookmark_already_exists));
 							} else {
-								final Bookmark bookmark = new Bookmark(account,
-										conferenceJid);
+								final Bookmark bookmark = new Bookmark(account,conferenceJid.toBareJid());
 								bookmark.setAutojoin(true);
 								account.getBookmarks().add(bookmark);
 								xmppConnectionService

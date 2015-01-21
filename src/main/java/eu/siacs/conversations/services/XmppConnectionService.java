@@ -997,8 +997,10 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 				conversation.setAccount(account);
 				if (muc) {
 					conversation.setMode(Conversation.MODE_MULTI);
+					conversation.setContactJid(jid);
 				} else {
 					conversation.setMode(Conversation.MODE_SINGLE);
+					conversation.setContactJid(jid.toBareJid());
 				}
 				conversation.setNextEncryption(-1);
 				conversation.addAll(0, databaseBackend.getMessages(conversation, Config.PAGE_SIZE));
@@ -1015,7 +1017,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 					conversation = new Conversation(conversationName, account, jid,
 							Conversation.MODE_MULTI);
 				} else {
-					conversation = new Conversation(conversationName, account, jid,
+					conversation = new Conversation(conversationName, account, jid.toBareJid(),
 							Conversation.MODE_SINGLE);
 				}
 				this.databaseBackend.createConversation(conversation);
