@@ -33,6 +33,7 @@ import net.java.otr4j.crypto.OtrCryptoEngineImpl;
 import net.java.otr4j.crypto.OtrCryptoException;
 import net.java.otr4j.session.InstanceTag;
 import net.java.otr4j.session.SessionID;
+import net.java.otr4j.session.FragmenterInstructions;
 
 public class OtrEngine extends OtrCryptoEngineImpl implements OtrEngineHost {
 
@@ -267,6 +268,11 @@ public class OtrEngine extends OtrCryptoEngineImpl implements OtrEngineHost {
 			}
 		} catch (final InvalidJidException ignored) {
 		}
+	}
+
+	@Override
+	public FragmenterInstructions getFragmenterInstructions(SessionID sessionID) {
+		return null;
 	}
 
 }

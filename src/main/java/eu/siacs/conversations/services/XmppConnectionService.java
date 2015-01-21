@@ -1688,7 +1688,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 			try {
 				packet.setBody(otrSession
 						.transformSending(CryptoHelper.FILETRANSFER
-								+ CryptoHelper.bytesToHex(symmetricKey)));
+								+ CryptoHelper.bytesToHex(symmetricKey))[0]);
 				sendMessagePacket(account, packet);
 				conversation.setSymmetricKey(symmetricKey);
 				return true;
