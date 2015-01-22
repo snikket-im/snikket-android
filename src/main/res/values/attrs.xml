@@ -5,4 +5,24 @@
     <attr name="TextSizeBody" format="dimension" />
     <attr name="TextSizeHeadline" format="dimension" />
 
+    <attr name="icon_add_group" format="reference"/>
+    <attr name="icon_add_person" format="reference"/>
+    <attr name="icon_cancel" format="reference"/>
+    <attr name="icon_chat" format="reference"/>
+    <attr name="icon_copy" format="reference"/>
+    <attr name="icon_discard" format="reference"/>
+    <attr name="icon_download" format="reference"/>
+    <attr name="icon_edit" format="reference"/>
+    <attr name="icon_edit_dark" format="reference"/>
+    <attr name="icon_group" format="reference"/>
+    <attr name="icon_new" format="reference"/>
+    <attr name="icon_new_attachment" format="reference"/>
+    <attr name="icon_not_secure" format="reference"/>
+    <attr name="icon_refresh" format="reference"/>
+    <attr name="icon_remove" format="reference"/>
+    <attr name="icon_search" format="reference"/>
+    <attr name="icon_secure" format="reference"/>
+    <attr name="icon_settings" format="reference"/>
+    <attr name="icon_import_export" format="reference"/>
+
 </resources>
