@@ -687,6 +687,10 @@ public abstract class XmppActivity extends Activity {
 		return this.mPrimaryColor;
 	}
 
+	public int getOnlineColor() {
+		return this.mColorGreen;
+	}
+	
 	public int getSecondaryBackgroundColor() {
 		return this.mSecondaryBackgroundColor;
 	}
