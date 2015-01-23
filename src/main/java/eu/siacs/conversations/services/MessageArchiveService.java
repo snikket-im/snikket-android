@@ -225,7 +225,6 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 		private int messageCount = 0;
 		private long start;
 		private long end;
-		private Jid with = null;
 		private String queryId;
 		private String reference = null;
 		private Account account;
@@ -237,7 +236,6 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 		public Query(Conversation conversation, long start, long end) {
 			this(conversation.getAccount(), start, end);
 			this.conversation = conversation;
-			this.with = conversation.getJid().toBareJid();
 		}
 
 		public Query(Conversation conversation, long start, long end, PagingOrder order) {
@@ -256,7 +254,6 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 			Query query = new Query(this.account,this.start,this.end);
 			query.reference = reference;
 			query.conversation = conversation;
-			query.with = with;
 			query.totalCount = totalCount;
 			query.callback = callback;
 			return query;
@@ -287,7 +284,11 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 		}
 
 		public Jid getWith() {
-			return with;
+			return conversation == null ? null : conversation.getJid().toBareJid();
+		}
+
+		public boolean muc() {
+			return conversation != null && conversation.getMode() == Conversation.MODE_MULTI;
 		}
 
 		public long getStart() {
@@ -338,11 +339,15 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 		@Override
 		public String toString() {
 			StringBuilder builder = new StringBuilder();
-			builder.append("with=");
-			if (this.with==null) {
-				builder.append("*");
+			if (this.muc()) {
+				builder.append("to="+this.getWith().toString());
 			} else {
-				builder.append(with.toString());
+				builder.append("with=");
+				if (this.getWith() == null) {
+					builder.append("*");
+				} else {
+					builder.append(getWith().toString());
+				}
 			}
 			builder.append(", start=");
 			builder.append(AbstractGenerator.getTimestamp(this.start));

@@ -107,7 +107,9 @@ public class IqGenerator extends AbstractGenerator {
 		query.setAttribute("queryid",mam.getQueryId());
 		final Data data = new Data();
 		data.setFormType("urn:xmpp:mam:0");
-		if (mam.getWith()!=null) {
+		if (mam.muc()) {
+			packet.setTo(mam.getWith());
+		} else if (mam.getWith()!=null) {
 			data.put("with", mam.getWith().toString());
 		}
 		data.put("start",getTimestamp(mam.getStart()));

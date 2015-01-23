@@ -1022,7 +1022,9 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 				}
 				this.databaseBackend.createConversation(conversation);
 			}
-			if (account.getXmppConnection() != null && account.getXmppConnection().getFeatures().mam()) {
+			if (account.getXmppConnection() != null
+					&& account.getXmppConnection().getFeatures().mam()
+					&& !muc) {
 				if (query == null) {
 					this.mMessageArchiveService.query(conversation);
 				} else {
@@ -1314,6 +1316,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 				conversation.setContactJid(joinJid);
 				databaseBackend.updateConversation(conversation);
 			}
+			conversation.setHasMessagesLeftOnServer(false);
 		} else {
 			account.pendingConferenceJoins.add(conversation);
 		}

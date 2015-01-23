@@ -8,7 +8,6 @@ import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.MucOptions;
-import eu.siacs.conversations.http.HttpConnection;
 import eu.siacs.conversations.http.HttpConnectionManager;
 import eu.siacs.conversations.services.MessageArchiveService;
 import eu.siacs.conversations.services.XmppConnectionService;
@@ -142,6 +141,7 @@ public class MessageParser extends AbstractParser implements
 		Conversation conversation = mXmppConnectionService
 				.findOrCreateConversation(account, from.toBareJid(), true);
 		if (packet.hasChild("subject")) {
+			conversation.setHasMessagesLeftOnServer(true);
 			conversation.getMucOptions().setSubject(packet.findChild("subject").getContent());
 			mXmppConnectionService.updateConversationUi();
 			return null;
