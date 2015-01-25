@@ -5,7 +5,7 @@
   <string name="action_accounts">Gestionar cuentas</string>
   <string name="action_end_conversation">Terminar conversación</string>
   <string name="action_contact_details">Detalles del contacto</string>
-  <string name="action_muc_details">Detalles de conversación en grupo</string>
+  <string name="action_muc_details">Detalles de conversación</string>
   <string name="action_secure">Conversación segura</string>
   <string name="action_add_account">Añadir cuenta</string>
   <string name="action_edit_contact">Editar contacto</string>
@@ -17,7 +17,7 @@
   <string name="action_unblock_domain">Desbloquear dominio</string>
   <string name="title_activity_manage_accounts">Gestionar Cuentas</string>
   <string name="title_activity_settings">Ajustes</string>
-  <string name="title_activity_conference_details">Detalles de Conversación en grupo</string>
+  <string name="title_activity_conference_details">Detalles de Conversación</string>
   <string name="title_activity_contact_details">Detalles del Contacto</string>
   <string name="title_activity_conversations">Conversaciones</string>
   <string name="title_activity_sharewith">Compartir con Conversación</string>
@@ -59,7 +59,7 @@
   <string name="save">Guardar</string>
   <string name="ok">OK</string>
   <string name="crash_report_title">Conversations se ha detenido.</string>
-  <string name="crash_report_message">Si envías un informe de fallos ayudas al desarrollo de Conversations\n<b>Aviso:</b> Esto usará tu cuenta XMPP para enviar los registros de error al desarrollador.</string>
+  <string name="crash_report_message">Si envías informes de fallos ayudas al desarrollo de Conversations\n<b>Aviso:</b> Esto usará tu cuenta XMPP para enviar los registros de error al desarrollador.</string>
   <string name="send_now">Enviar ahora</string>
   <string name="send_never">No preguntar de nuevo</string>
   <string name="problem_connecting_to_account">No se ha podido conectar a la cuenta</string>
@@ -189,8 +189,8 @@
   <string name="server_info_roster_version">XEP-0237: Roster Versioning</string>
   <string name="server_info_stream_management">XEP-0198: Stream Management</string>
   <string name="server_info_pep">XEP-0163: PEP (Avatars)</string>
-  <string name="server_info_available">Disponible</string>
-  <string name="server_info_unavailable">No disponible</string>
+  <string name="server_info_available">Sí</string>
+  <string name="server_info_unavailable">No</string>
   <string name="missing_public_keys">Se han perdido las claves de anuncio públicas</string>
   <string name="last_seen_now">Visto última vez ahora</string>
   <string name="last_seen_min">Visto última vez hace 1 minuto</string>
@@ -226,7 +226,7 @@
   <string name="bookmark_already_exists">Este marcador ya existe</string>
   <string name="you">Tú</string>
   <string name="action_edit_subject">Editar asunto de la conversación</string>
-  <string name="conference_not_found">Conversación en grupo no encontrada</string>
+  <string name="conference_not_found">Conversación no encontrada</string>
   <string name="leave">Salir</string>
   <string name="contact_added_you">El contacto te ha añadido a su lista de contactos</string>
   <string name="add_back">Añadir contacto</string>
@@ -267,6 +267,8 @@
   <string name="pref_force_encryption_summary">Siempre enviar mensajes cifrados (excepto para conversaciones en grupo)</string>
   <string name="pref_dont_save_encrypted">No guardar mensajes cifrados</string>
   <string name="pref_dont_save_encrypted_summary">Aviso: Esto podría llevar a pérdida de mensajes</string>
+  <string name="pref_enable_legacy_ssl">Habilitar SSL heredado</string>
+  <string name="pref_enable_legacy_ssl_summary">Habilita soporte SSLv3 para servidores heredados y cifrado SSL no seguro</string>
   <string name="pref_expert_options">Ajustes avanzados</string>
   <string name="pref_expert_options_summary">Por favor, cuidado con estas opciones</string>
   <string name="title_activity_about">Acerca de Conversations</string>
@@ -330,6 +332,7 @@
   <string name="choose_file">Seleccionar archivo</string>
   <string name="receiving_x_file">Recibiendo %1$s (%2$d%% completado)</string>
   <string name="download_x_file">Descargar %s</string>
+  <string name="file">archivo</string>
   <string name="open_x_file">Abrir %s</string>
   <string name="sending_file">Enviando (%1$d%% completado)</string>
   <string name="preparing_file">Preparando transferencia de archivo</string>
@@ -345,8 +348,8 @@
   <string name="pref_show_dynamic_tags_summary">Muestra información en forma de etiquetas debajo de los contactos</string>
   <string name="enable_notifications">Habilitar notificaciones</string>
   <string name="conference_with">Crear conversación en grupo</string>
-  <string name="no_conference_server_found">No se ha encontrado el servidor para crear la conversación en grupo</string>
-  <string name="conference_creation_failed">¡La creación de la conversación en grupo ha fallado!</string>
+  <string name="no_conference_server_found">No se ha encontrado el servidor para crear la conversación</string>
+  <string name="conference_creation_failed">¡La creación de la conversación ha fallado!</string>
   <string name="conference_created">¡Conversación en grupo creada!</string>
   <string name="secret_accepted">¡Secreto aceptado!</string>
   <string name="reset">Reinicializar</string>
@@ -388,11 +391,11 @@
   <string name="could_not_change_role">No se puede cambiar el rol de %s</string>
   <string name="public_conference">Conversación de acceso público</string>
   <string name="private_conference">Conversación privada solo para miembros</string>
-  <string name="conference_options">Opciones de conversación en grupo</string>
+  <string name="conference_options">Opciones de conversación</string>
   <string name="members_only">Privada (solo miembros)</string>
   <string name="non_anonymous">No anónima</string>
-  <string name="modified_conference_options">¡Modificadas las opciones de la conversación en grupo!</string>
-  <string name="could_not_modify_conference_options">No se pueden modificar las opciones de la conversación en grupo.</string>
+  <string name="modified_conference_options">¡Modificadas las opciones de la conversación!</string>
+  <string name="could_not_modify_conference_options">No se pueden modificar las opciones de la conversación</string>
   <string name="never">Nunca</string>
   <string name="thirty_minutes">30 minutos</string>
   <string name="one_hour">1 hora</string>
@@ -402,6 +405,18 @@
   <string name="pref_input_options">Opciones de entrada</string>
   <string name="pref_enter_is_send">Intro para enviar</string>
   <string name="pref_enter_is_send_summary">Usar la tecla intro para enviar el mensaje</string>
+  <string name="pref_display_enter_key">Mostrar tecla Intro</string>
+  <string name="pref_display_enter_key_summary">Cambia la tecla de emoticonos por la tecla Intro</string>
+  <string name="audio">audio</string>
+  <string name="video">vídeo</string>
+  <string name="image">imagen</string>
   <string name="pdf_document">documento PDF</string>
+  <string name="apk">Android App</string>
+  <string name="vcard">Contacto</string>
   <string name="received_x_file">Recibido %s</string>
+  <string name="disable_foreground_service">Deshabilitar servicio en primer plano</string>
+  <string name="touch_to_open_conversations">Pulsa para abrir Conversations</string>
+  <string name="avatar_has_been_published">¡La imagen de perfil ha sido publicada!</string>
+  <string name="sending_x_file">Enviando %s</string>
+  <string name="offering_x_file">Ofreciendo %s</string>
 </resources>

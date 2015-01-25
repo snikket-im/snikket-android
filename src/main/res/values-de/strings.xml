@@ -267,6 +267,8 @@
   <string name="pref_force_encryption_summary">Nachrichten immer verschlüsseln (außer für Konferenzen)</string>
   <string name="pref_dont_save_encrypted">Verschlüsselte Nachrichten nicht speichern</string>
   <string name="pref_dont_save_encrypted_summary">Achtung: kann zu Nachrichtenverlust führen</string>
+  <string name="pref_enable_legacy_ssl">Alte SSL-Version aktivieren</string>
+  <string name="pref_enable_legacy_ssl_summary">Alte SSL-Version 3 und unsichere Verschlüsselungsalgorithmen aktivieren </string>
   <string name="pref_expert_options">Einstellungen für Experten</string>
   <string name="pref_expert_options_summary">Hier bitte vorsichtig sein</string>
   <string name="title_activity_about">Über Conversations</string>
@@ -330,6 +332,7 @@
   <string name="choose_file">Datei auswählen</string>
   <string name="receiving_x_file">Empfange  %1$s (%2$d%% abgeschlossen)</string>
   <string name="download_x_file">Lade %s herunter</string>
+  <string name="file">Datei</string>
   <string name="open_x_file">Öffne %s</string>
   <string name="sending_file">Sende (%1$d%% gesendet)</string>
   <string name="preparing_file">Bereite Datei für die Übertragung vor</string>
@@ -402,6 +405,18 @@
   <string name="pref_input_options">Eingabeoptionen</string>
   <string name="pref_enter_is_send">Eingabetaste sendet Nachricht</string>
   <string name="pref_enter_is_send_summary">Benutze die Eingabetaste zum Senden einer Nachricht</string>
+  <string name="pref_display_enter_key">Zeige Enter-Taste</string>
+  <string name="pref_display_enter_key_summary">Zeige die Enter-Taste anstelle der Smiley-Taste</string>
+  <string name="audio">Audio</string>
+  <string name="video">Video</string>
+  <string name="image">Bild</string>
   <string name="pdf_document">PDF-Dokument</string>
+  <string name="apk">Android App</string>
+  <string name="vcard">Kontakt</string>
   <string name="received_x_file">%s empfangen</string>
+  <string name="disable_foreground_service">Vordergrund-Dienst beenden</string>
+  <string name="touch_to_open_conversations">Tippen, um Conversations zu öffnen</string>
+  <string name="avatar_has_been_published">Avatar wurde gespeichert</string>
+  <string name="sending_x_file">Sende %s</string>
+  <string name="offering_x_file">%s angeboten</string>
 </resources>
