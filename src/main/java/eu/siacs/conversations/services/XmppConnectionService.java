@@ -436,11 +436,14 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 							account.setXmppConnection(this.createConnection(account));
 						}
 						new Thread(account.getXmppConnection()).start();
-					} else if ((account.getStatus() == Account.State.CONNECTING)
-							&& ((SystemClock.elapsedRealtime() - account
-									.getXmppConnection().getLastConnect()) / 1000 >= Config.CONNECT_TIMEOUT)) {
-						Log.d(Config.LOGTAG, account.getJid()+ ": time out during connect reconnecting");
-						reconnectAccount(account, true);
+					} else if (account.getStatus() == Account.State.CONNECTING) {
+						long timeout = Config.CONNECT_TIMEOUT - ((SystemClock.elapsedRealtime() - account.getXmppConnection().getLastConnect()) / 1000);
+						if (timeout < 0) {
+							Log.d(Config.LOGTAG, account.getJid() + ": time out during connect reconnecting");
+							reconnectAccount(account, true);
+						} else {
+							scheduleWakeUpCall((int) timeout,account.getUuid().hashCode());
+						}
 					} else {
 						if (account.getXmppConnection().getTimeToNextAttempt() <= 0) {
 							reconnectAccount(account, true);
