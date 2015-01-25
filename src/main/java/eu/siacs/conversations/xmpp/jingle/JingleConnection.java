@@ -36,8 +36,6 @@ public class JingleConnection implements Downloadable {
 
 	protected static final int JINGLE_STATUS_INITIATED = 0;
 	protected static final int JINGLE_STATUS_ACCEPTED = 1;
-	protected static final int JINGLE_STATUS_TERMINATED = 2;
-	protected static final int JINGLE_STATUS_CANCELED = 3;
 	protected static final int JINGLE_STATUS_FINISHED = 4;
 	protected static final int JINGLE_STATUS_TRANSMITTING = 5;
 	protected static final int JINGLE_STATUS_FAILED = 99;
@@ -360,7 +358,6 @@ public class JingleConnection implements Downloadable {
 	}
 
 	private void sendInitRequest() {
-		this.mXmppConnectionService.markMessage(this.message, Message.STATUS_OFFERED);
 		JinglePacket packet = this.bootstrapPacket("session-initiate");
 		Content content = new Content(this.contentCreator, this.contentName);
 		if (message.getType() == Message.TYPE_IMAGE || message.getType() == Message.TYPE_FILE) {
@@ -379,8 +376,19 @@ public class JingleConnection implements Downloadable {
 			content.setTransportId(this.transportId);
 			content.socks5transport().setChildren(getCandidatesAsElements());
 			packet.setContent(content);
-			this.sendJinglePacket(packet);
-			this.mJingleStatus = JINGLE_STATUS_INITIATED;
+			this.sendJinglePacket(packet,new OnIqPacketReceived() {
+
+				@Override
+				public void onIqPacketReceived(Account account, IqPacket packet) {
+					if (packet.getType() != IqPacket.TYPE.ERROR) {
+						mJingleStatus = JINGLE_STATUS_INITIATED;
+						mXmppConnectionService.markMessage(message, Message.STATUS_OFFERED);
+					} else {
+						fail();
+					}
+				}
+			});
+
 		}
 	}
 
@@ -451,8 +459,11 @@ public class JingleConnection implements Downloadable {
 	}
 
 	private void sendJinglePacket(JinglePacket packet) {
-		// Log.d(Config.LOGTAG,packet.toString());
 		account.getXmppConnection().sendIqPacket(packet, responseListener);
+	}
+
+	private void sendJinglePacket(JinglePacket packet, OnIqPacketReceived callback) {
+		account.getXmppConnection().sendIqPacket(packet,callback);
 	}
 
 	private boolean receiveAccept(JinglePacket packet) {
