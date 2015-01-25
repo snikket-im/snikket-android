@@ -161,6 +161,7 @@ public class MessageParser extends AbstractParser implements
 					}
 				}
 			}
+			return null;
 		}
 
 		if (from.getResourcepart().equals(conversation.getMucOptions().getActualNick())) {
