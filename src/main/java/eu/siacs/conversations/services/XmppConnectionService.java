@@ -140,7 +140,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 			account.pendingConferenceLeaves.clear();
 			fetchRosterFromServer(account);
 			fetchBookmarks(account);
-			sendPresencePacket(account, mPresenceGenerator.sendPresence(account));
+			sendPresence(account);
 			connectMultiModeConversations(account);
 			updateConversationUi();
 		}
@@ -2148,6 +2148,10 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		if (connection != null) {
 			connection.sendIqPacket(packet, callback);
 		}
+	}
+
+	public void sendPresence(final Account account) {
+		sendPresencePacket(account, mPresenceGenerator.sendPresence(account));
 	}
 
 	public MessageGenerator getMessageGenerator() {

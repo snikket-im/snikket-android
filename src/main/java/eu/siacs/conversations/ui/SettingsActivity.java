@@ -71,6 +71,14 @@ public class SettingsActivity extends XmppActivity implements
 			}
 		} else if (name.equals("keep_foreground_service")) {
 			xmppConnectionService.toggleForegroundService();
+		} else if (name.equals("confirm_messages")) {
+			if (xmppConnectionServiceBound) {
+				for (Account account : xmppConnectionService.getAccounts()) {
+					if (!account.isOptionSet(Account.OPTION_DISABLED)) {
+						xmppConnectionService.sendPresence(account);
+					}
+				}
+			}
 		}
 	}
 

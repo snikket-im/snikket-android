@@ -5,24 +5,30 @@ import android.util.Base64;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
 import eu.siacs.conversations.services.XmppConnectionService;
 
 public abstract class AbstractGenerator {
-	public final String[] FEATURES = {"urn:xmpp:jingle:1",
+	public final String[] FEATURES = {
+			"urn:xmpp:jingle:1",
 			"urn:xmpp:jingle:apps:file-transfer:3",
 			"urn:xmpp:jingle:transports:s5b:1",
-			"urn:xmpp:jingle:transports:ibb:1", "urn:xmpp:receipts",
-			"urn:xmpp:chat-markers:0", "http://jabber.org/protocol/muc",
-			"jabber:x:conference", "http://jabber.org/protocol/caps",
+			"urn:xmpp:jingle:transports:ibb:1",
+			"http://jabber.org/protocol/muc",
+			"jabber:x:conference",
+			"http://jabber.org/protocol/caps",
 			"http://jabber.org/protocol/disco#info",
 			"urn:xmpp:avatar:metadata+notify",
 			"urn:xmpp:ping"};
+	public final String[] MESSAGE_CONFIRMATION_FEATURES = {
+			"urn:xmpp:chat-markers:0",
+			"urn:xmpp:receipts"
+	};
 	public final String IDENTITY_NAME = "Conversations 1.0-beta";
 	public final String IDENTITY_TYPE = "phone";
 
@@ -43,7 +49,11 @@ public abstract class AbstractGenerator {
 		} catch (NoSuchAlgorithmException e) {
 			return null;
 		}
-		List<String> features = Arrays.asList(FEATURES);
+		ArrayList<String> features = new ArrayList<>();
+		features.addAll(Arrays.asList(FEATURES));
+		if (mXmppConnectionService.confirmMessages()) {
+			features.addAll(Arrays.asList(MESSAGE_CONFIRMATION_FEATURES));
+		}
 		Collections.sort(features);
 		for (String feature : features) {
 			s.append(feature + "<");

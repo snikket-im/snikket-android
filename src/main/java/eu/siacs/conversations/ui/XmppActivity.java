@@ -402,9 +402,7 @@ public abstract class XmppActivity extends Activity {
 					public void success(Account account) {
 						xmppConnectionService.databaseBackend
 							.updateAccount(account);
-						xmppConnectionService.sendPresencePacket(account,
-								xmppConnectionService.getPresenceGenerator()
-								.sendPresence(account));
+						xmppConnectionService.sendPresence(account);
 						if (conversation != null) {
 							conversation
 								.setNextEncryption(Message.ENCRYPTION_PGP);
