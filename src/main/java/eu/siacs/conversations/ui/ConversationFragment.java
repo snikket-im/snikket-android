@@ -298,6 +298,7 @@ public class ConversationFragment extends Fragment {
 				default:
 					break;
 			}
+			getActivity().invalidateOptionsMenu();
 		}
 	}
 
