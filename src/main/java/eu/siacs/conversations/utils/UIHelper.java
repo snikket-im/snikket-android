@@ -150,8 +150,9 @@ public class UIHelper {
 				return new Pair<>(getFileDescriptionString(context,message),true);
 			}
 		} else {
-			if (message.getBody().startsWith("/me ")) {
-				return new Pair<>(message.getBody().replaceAll("^/me ",UIHelper.getMessageDisplayName(message) + " "),false);
+			if (message.getBody().startsWith(Message.ME_COMMAND)) {
+				return new Pair<>(message.getBody().replaceAll("^" + Message.ME_COMMAND,
+						UIHelper.getMessageDisplayName(message) + " "), false);
 			} else {
 				return new Pair<>(message.getBody(), false);
 			}

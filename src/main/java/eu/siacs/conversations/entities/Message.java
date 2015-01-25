@@ -47,6 +47,7 @@ public class Message extends AbstractEntity {
 	public static final String REMOTE_MSG_ID = "remoteMsgId";
 	public static final String SERVER_MSG_ID = "serverMsgId";
 	public static final String RELATIVE_FILE_PATH = "relativeFilePath";
+	public static final String ME_COMMAND = "/me ";
 
 	public boolean markable = false;
 	protected String conversationUuid;
@@ -367,7 +368,8 @@ public class Message extends AbstractEntity {
 			 (message.getTimeSent() - this.getTimeSent()) <= (Config.MESSAGE_MERGE_WINDOW * 1000) &&
 			 !message.bodyContainsDownloadable() &&
 			 !this.bodyContainsDownloadable() &&
-			 !this.body.startsWith("/me ")
+			 !message.getBody().startsWith(ME_COMMAND) &&
+			 !this.getBody().startsWith(ME_COMMAND)
 			);
 	}
 
@@ -380,7 +382,7 @@ public class Message extends AbstractEntity {
 	}
 
 	public boolean hasMeCommand() {
-		return getMergedBody().startsWith("/me ");
+		return getMergedBody().startsWith(ME_COMMAND);
 	}
 
 	public int getMergedStatus() {
