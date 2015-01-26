@@ -166,7 +166,7 @@ public class MessageParser extends AbstractParser implements
 
 		if (from.getResourcepart().equals(conversation.getMucOptions().getActualNick())) {
 			if (mXmppConnectionService.markMessage(conversation,
-					packet.getId(), Message.STATUS_SEND)) {
+					packet.getId(), Message.STATUS_SEND_RECEIVED)) {
 				return null;
 			} else if (packet.getId() == null) {
 				Message message = conversation.findSentMessageWithBody(packet.getBody());
