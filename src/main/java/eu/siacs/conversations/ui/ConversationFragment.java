@@ -612,15 +612,6 @@ public class ConversationFragment extends Fragment {
 									}
 								}
 							});
-				} else if (this.conversation.isMuted()) {
-					showSnackbar(R.string.notifications_disabled, R.string.enable,
-							new OnClickListener() {
-
-								@Override
-								public void onClick(final View v) {
-									activity.unmuteConversation(conversation);
-								}
-							});
 				} else if (!contact.showInRoster()
 						&& contact
 						.getOption(Contact.Options.PENDING_SUBSCRIPTION_REQUEST)) {
@@ -667,7 +658,16 @@ public class ConversationFragment extends Fragment {
 						default:
 							break;
 					}
-						}
+				} else if (this.conversation.isMuted()) {
+					showSnackbar(R.string.notifications_disabled, R.string.enable,
+							new OnClickListener() {
+
+								@Override
+								public void onClick(final View v) {
+									activity.unmuteConversation(conversation);
+								}
+							});
+				}
 				conversation.populateWithMessages(ConversationFragment.this.messageList);
 				for (final Message message : this.messageList) {
 					if (message.getEncryption() == Message.ENCRYPTION_PGP
