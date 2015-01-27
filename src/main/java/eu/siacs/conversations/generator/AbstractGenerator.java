@@ -8,13 +8,14 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
 import eu.siacs.conversations.services.XmppConnectionService;
 
 public abstract class AbstractGenerator {
-	public final String[] FEATURES = {
+	private final String[] FEATURES = {
 			"urn:xmpp:jingle:1",
 			"urn:xmpp:jingle:apps:file-transfer:3",
 			"urn:xmpp:jingle:transports:s5b:1",
@@ -25,7 +26,7 @@ public abstract class AbstractGenerator {
 			"http://jabber.org/protocol/disco#info",
 			"urn:xmpp:avatar:metadata+notify",
 			"urn:xmpp:ping"};
-	public final String[] MESSAGE_CONFIRMATION_FEATURES = {
+	private final String[] MESSAGE_CONFIRMATION_FEATURES = {
 			"urn:xmpp:chat-markers:0",
 			"urn:xmpp:receipts"
 	};
@@ -49,13 +50,8 @@ public abstract class AbstractGenerator {
 		} catch (NoSuchAlgorithmException e) {
 			return null;
 		}
-		ArrayList<String> features = new ArrayList<>();
-		features.addAll(Arrays.asList(FEATURES));
-		if (mXmppConnectionService.confirmMessages()) {
-			features.addAll(Arrays.asList(MESSAGE_CONFIRMATION_FEATURES));
-		}
-		Collections.sort(features);
-		for (String feature : features) {
+
+		for (String feature : getFeatures()) {
 			s.append(feature + "<");
 		}
 		byte[] sha1 = md.digest(s.toString().getBytes());
@@ -65,5 +61,15 @@ public abstract class AbstractGenerator {
 	public static String getTimestamp(long time) {
 		DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("UTC"));
 		return DATE_FORMAT.format(time);
+	}
+
+	public List<String> getFeatures() {
+		ArrayList<String> features = new ArrayList<>();
+		features.addAll(Arrays.asList(FEATURES));
+		if (mXmppConnectionService.confirmMessages()) {
+			features.addAll(Arrays.asList(MESSAGE_CONFIRMATION_FEATURES));
+		}
+		Collections.sort(features);
+		return features;
 	}
 }

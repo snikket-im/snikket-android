@@ -1,8 +1,7 @@
 package eu.siacs.conversations.generator;
 
+
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import eu.siacs.conversations.entities.Account;
@@ -33,9 +32,7 @@ public class IqGenerator extends AbstractGenerator {
 		identity.setAttribute("category", "client");
 		identity.setAttribute("type", this.IDENTITY_TYPE);
 		identity.setAttribute("name", IDENTITY_NAME);
-		final List<String> features = Arrays.asList(FEATURES);
-		Collections.sort(features);
-		for (final String feature : features) {
+		for (final String feature : getFeatures()) {
 			query.addChild("feature").setAttribute("var", feature);
 		}
 		return packet;
