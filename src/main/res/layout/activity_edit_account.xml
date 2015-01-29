@@ -338,7 +338,7 @@
                         android:layout_centerVertical="true"
                         android:background="?android:selectableItemBackground"
                         android:padding="8dp"
-                        android:src="@drawable/ic_action_copy"
+                        android:src="?attr/icon_copy"
                         android:visibility="visible"
                         android:contentDescription="@string/copy_otr_clipboard_description"/>
                 </RelativeLayout>
