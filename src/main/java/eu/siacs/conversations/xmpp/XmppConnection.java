@@ -229,6 +229,7 @@ public class XmppConnection implements Runnable {
 		} catch (final IOException | XmlPullParserException | NoSuchAlgorithmException e) {
 			Log.d(Config.LOGTAG, account.getJid().toBareJid().toString() + ": " + e.getMessage());
 			this.changeStatus(Account.State.OFFLINE);
+			this.attempt--; //don't count attempt when reconnecting instantly anyway
 		} finally {
 			if (wakeLock.isHeld()) {
 				try {
