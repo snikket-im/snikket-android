@@ -76,7 +76,7 @@
 					android:layout_centerVertical="true"
 					android:background="?android:selectableItemBackground"
 					android:padding="8dp"
-					android:src="@drawable/ic_action_edit_dark"/>
+					android:src="?attr/icon_edit_dark"/>
 			</RelativeLayout>
 
 			<RelativeLayout
@@ -103,7 +103,7 @@
 				android:layout_centerVertical="true"
 				android:background="?android:selectableItemBackground"
 				android:padding="8dp"
-				android:src="@drawable/ic_action_settings"/>
+				android:src="?attr/icon_settings"/>
 				</RelativeLayout>
 
 			<TextView

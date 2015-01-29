@@ -9,6 +9,27 @@
         <item name="TextSizeInfo">12sp</item>
         <item name="TextSizeBody">14sp</item>
         <item name="TextSizeHeadline">20sp</item>
+
+        <item name="attr/icon_add_group">@drawable/ic_group_add_white_48dp</item>
+        <item name="attr/icon_add_person">@drawable/ic_person_add_white_48dp</item>
+        <item name="attr/icon_cancel">@drawable/ic_cancel_white_24dp</item>
+        <item name="attr/icon_chat">@drawable/ic_chat_white_48dp</item>
+        <item name="attr/icon_copy">@drawable/ic_content_copy_grey600_36dp</item>
+        <item name="attr/icon_discard">@drawable/ic_delete_white_48dp</item>
+        <item name="attr/icon_download">@drawable/ic_file_download_white_24dp</item>
+        <item name="attr/icon_edit">@drawable/ic_edit_white_48dp</item>
+        <item name="attr/icon_edit_dark">@drawable/ic_edit_grey600_36dp</item>
+        <item name="attr/icon_group">@drawable/ic_group_white_48dp</item>
+        <item name="attr/icon_new">@drawable/ic_add_white_48dp</item>
+        <item name="attr/icon_new_attachment">@drawable/ic_attach_file_white_48dp</item>
+        <item name="attr/icon_not_secure">@drawable/ic_lock_open_white_48dp</item>
+        <item name="attr/icon_refresh">@drawable/ic_refresh_white_48dp</item>
+        <item name="attr/icon_remove">@drawable/ic_remove_grey600_36dp</item>
+        <item name="attr/icon_search">@drawable/ic_search_white_48dp</item>
+        <item name="attr/icon_secure">@drawable/ic_lock_outline_white_48dp</item>
+        <item name="attr/icon_settings">@drawable/ic_settings_grey600_36dp</item>
+        <item name="attr/icon_import_export">@drawable/ic_import_export_white_48dp</item>
+
     </style>
 
 </resources>

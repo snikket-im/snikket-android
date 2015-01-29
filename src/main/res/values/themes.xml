@@ -8,6 +8,27 @@
         <item name="TextSizeInfo">12sp</item>
         <item name="TextSizeBody">14sp</item>
         <item name="TextSizeHeadline">20sp</item>
+
+        <item name="attr/icon_add_group">@drawable/ic_action_add_group</item>
+        <item name="attr/icon_add_person">@drawable/ic_action_add_person</item>
+        <item name="attr/icon_cancel">@drawable/ic_action_cancel</item>
+        <item name="attr/icon_chat">@drawable/ic_action_chat</item>
+        <item name="attr/icon_copy">@drawable/ic_action_copy</item>
+        <item name="attr/icon_discard">@drawable/ic_action_discard</item>
+        <item name="attr/icon_download">@drawable/ic_action_download</item>
+        <item name="attr/icon_edit">@drawable/ic_action_edit</item>
+        <item name="attr/icon_edit_dark">@drawable/ic_action_edit_dark</item>
+
+        <item name="attr/icon_group">@drawable/ic_action_group</item>
+        <item name="attr/icon_new">@drawable/ic_action_new</item>
+        <item name="attr/icon_new_attachment">@drawable/ic_action_new_attachment</item>
+        <item name="attr/icon_not_secure">@drawable/ic_action_not_secure</item>
+        <item name="attr/icon_refresh">@drawable/ic_action_refresh</item>
+        <item name="attr/icon_remove">@drawable/ic_action_remove</item>
+        <item name="attr/icon_search">@drawable/ic_action_search</item>
+        <item name="attr/icon_secure">@drawable/ic_action_secure</item>
+        <item name="attr/icon_settings">@drawable/ic_action_settings</item>
+        <item name="attr/icon_import_export">@drawable/ic_stat_communication_import_export</item>
     </style>
 
     <style name="ConversationsTheme.LargerText" parent="ConversationsTheme">

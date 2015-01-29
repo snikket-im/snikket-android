@@ -4,6 +4,7 @@ resolutions={
 	'hdpi' => 1.5,
 	'xhdpi' => 2,
 	'xxhdpi' => 3,
+	'xxxhdpi' => 4,
 	}
 images = {
 	'conversations_baloon.svg' => ['ic_launcher', 48],

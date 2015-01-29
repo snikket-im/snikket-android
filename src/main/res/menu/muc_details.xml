@@ -3,7 +3,7 @@
 
     <item
         android:id="@+id/action_edit_subject"
-        android:icon="@drawable/ic_action_edit"
+        android:icon="?attr/icon_edit"
         android:orderInCategory="10"
         android:showAsAction="always"
         android:title="@string/action_edit_subject"/>
