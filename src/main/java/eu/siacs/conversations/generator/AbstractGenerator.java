@@ -30,7 +30,7 @@ public abstract class AbstractGenerator {
 			"urn:xmpp:chat-markers:0",
 			"urn:xmpp:receipts"
 	};
-	public final String IDENTITY_NAME = "Conversations 1.0-beta2";
+	public final String IDENTITY_NAME = "Conversations 1.0";
 	public final String IDENTITY_TYPE = "phone";
 
 	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US);
