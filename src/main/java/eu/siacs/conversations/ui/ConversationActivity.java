@@ -262,8 +262,12 @@ public class ConversationActivity extends XmppActivity
 	}
 
 	public void sendReadMarkerIfNecessary(final Conversation conversation) {
-		if (!mActivityPaused && conversation != null && !conversation.isRead()) {
-			xmppConnectionService.sendReadMarker(conversation);
+		if (!mActivityPaused && conversation != null) {
+			if (!conversation.isRead()) {
+				xmppConnectionService.sendReadMarker(conversation);
+			} else {
+				xmppConnectionService.markRead(conversation);
+			}
 		}
 	}
 
@@ -742,9 +746,11 @@ public class ConversationActivity extends XmppActivity
 		if (this.xmppConnectionServiceBound) {
 			this.xmppConnectionService.getNotificationService().setIsInForeground(true);
 		}
+
 		if (!isConversationsOverviewVisable() || !isConversationsOverviewHideable()) {
 			sendReadMarkerIfNecessary(getSelectedConversation());
 		}
+
 	}
 
 	@Override
