@@ -266,8 +266,6 @@
   <string name="pref_force_encryption_summary">Stuur berichten altijd versleuteld (behalve in groepsgesprekken)</string>
   <string name="pref_dont_save_encrypted">Sla versleutelde berichten niet op</string>
   <string name="pref_dont_save_encrypted_summary"><b>Waarschuwing:</b> Dit kan leiden tot verlies van berichten</string>
-  <string name="pref_enable_legacy_ssl">Sta legacy SSL toe</string>
-  <string name="pref_enable_legacy_ssl_summary">Zet legacy SSLv3-ondersteuning en onveilige SSL-versleuteling aan.</string>
   <string name="pref_expert_options">Expert-instellingen</string>
   <string name="pref_expert_options_summary">Wees voorzichtig met deze instellingen</string>
   <string name="title_activity_about">Over Conversations</string>
