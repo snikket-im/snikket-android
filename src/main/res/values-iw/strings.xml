@@ -15,7 +15,6 @@
   <string name="title_activity_settings">הגדרות</string>
   <string name="title_activity_conference_details">פרטי ועידה</string>
   <string name="title_activity_contact_details">פרטי איש קשר</string>
-  <string name="title_activity_conversations">דיונים</string>
   <string name="title_activity_sharewith">שתף בעזרת Conversations</string>
   <string name="title_activity_start_conversation">התחל דיון</string>
   <string name="title_activity_choose_contact">בחר איש קשר</string>
