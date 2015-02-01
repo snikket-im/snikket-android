@@ -352,8 +352,8 @@
   <string name="reset">Reinicializar</string>
   <string name="account_image_description">Imagen de perfil</string>
   <string name="copy_otr_clipboard_description">Copiar huella digital OTR al portapapeles</string>
-  <string name="fetching_history_from_server">Buscar historial en servidor</string>
-  <string name="no_more_history_on_server">No más historial del servidor</string>
+  <string name="fetching_history_from_server">Buscando historial en el servidor</string>
+  <string name="no_more_history_on_server">No hay más historial en el servidor</string>
   <string name="updating">Actualizando…</string>
   <string name="password_changed">¡Contraseña cambiada!</string>
   <string name="could_not_change_password">No se puede cambiar la contraseña</string>
