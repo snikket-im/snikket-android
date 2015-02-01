@@ -416,4 +416,5 @@
   <string name="avatar_has_been_published">¡La imagen de perfil ha sido publicada!</string>
   <string name="sending_x_file">Enviando %s</string>
   <string name="offering_x_file">Ofreciendo %s</string>
+  <string name="hide_offline">Ocultar desconectados</string>
 </resources>

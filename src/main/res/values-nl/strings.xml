@@ -416,4 +416,5 @@
   <string name="avatar_has_been_published">Avatar is gepubliceerd!</string>
   <string name="sending_x_file">Bezig met versturen van %s</string>
   <string name="offering_x_file">Bezig met aanbieden van %s</string>
+  <string name="hide_offline">Offline verbergen</string>
 </resources>

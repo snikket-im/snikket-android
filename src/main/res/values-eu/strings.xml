@@ -329,6 +329,7 @@
   <string name="choose_file">Fitxategia aukeratu</string>
   <string name="receiving_x_file">%1$s jasotzen (%2$d%% osatua)</string>
   <string name="download_x_file">%s deskargatu</string>
+  <string name="file">fitxategia</string>
   <string name="open_x_file">%s ireki</string>
   <string name="sending_file">bidaltzen (%1$d%% osatua)</string>
   <string name="preparing_file">Fitxategia transmisiorako prestatzen</string>
@@ -401,6 +402,18 @@
   <string name="pref_input_options">Sarrera aukerak</string>
   <string name="pref_enter_is_send">Sartu teklak bidaltzen du</string>
   <string name="pref_enter_is_send_summary">Sartu tekla erabili mezua bidaltzeko</string>
+  <string name="pref_display_enter_key">Sartu tekla erakutsi</string>
+  <string name="pref_display_enter_key_summary">Aurpegieren tekla sartu teklarekin aldatu</string>
+  <string name="audio">audioa</string>
+  <string name="video">bideoa</string>
+  <string name="image">irudia</string>
   <string name="pdf_document">PDF dokumentua</string>
+  <string name="apk">Android aplikazioa</string>
+  <string name="vcard">Kontaktua</string>
   <string name="received_x_file">%s jaso da</string>
+  <string name="disable_foreground_service">Atzeko planoko zerbiztua ezgaitu</string>
+  <string name="touch_to_open_conversations">Ikutu Conversations irekitzeko</string>
+  <string name="avatar_has_been_published">Profileko argazkia argitaratu da</string>
+  <string name="sending_x_file">%s bidaltzen</string>
+  <string name="offering_x_file">%s eskeintzen...</string>
 </resources>

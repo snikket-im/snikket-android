@@ -329,6 +329,7 @@
   <string name="choose_file">Välj fil</string>
   <string name="receiving_x_file">Tar emot %1$s (%2$d%% klart)</string>
   <string name="download_x_file">Ladda ner %s</string>
+  <string name="file">fil</string>
   <string name="open_x_file">Öppna %s</string>
   <string name="sending_file">skickar (%1$d%% klart)</string>
   <string name="preparing_file">Förbereder fil för överföring</string>
@@ -401,6 +402,19 @@
   <string name="pref_input_options">Inmatningsalternativ</string>
   <string name="pref_enter_is_send">Skicka på enter</string>
   <string name="pref_enter_is_send_summary">Använd enter-knappen för att skicka meddelande</string>
+  <string name="pref_display_enter_key">Visa enter-tangent</string>
+  <string name="pref_display_enter_key_summary">Byt ut emoticons-tangenten mot en enter-tangent</string>
+  <string name="audio">ljud</string>
+  <string name="video">video</string>
+  <string name="image">bild</string>
   <string name="pdf_document">PDF-dokument</string>
+  <string name="apk">Android App</string>
+  <string name="vcard">Kontakt</string>
   <string name="received_x_file">Tagit emot %s</string>
+  <string name="disable_foreground_service">Deaktivera fögrundstjänst</string>
+  <string name="touch_to_open_conversations">Tryck för att öppna Conversations</string>
+  <string name="avatar_has_been_published">Avatarbild har publiserats!</string>
+  <string name="sending_x_file">Skickar %s</string>
+  <string name="offering_x_file">Erbjuder %s</string>
+  <string name="hide_offline">Dölj ej anslutna</string>
 </resources>
