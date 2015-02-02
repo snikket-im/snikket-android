@@ -98,8 +98,9 @@ public final class CryptoHelper {
 	}
 
 	public static String[] getSupportedCipherSuites(final String[] platformSupportedCipherSuites) {
-		final Collection<String> cipherSuites = new LinkedHashSet<>(Arrays.asList(Config.ENABLED_CIPHERS));
-		cipherSuites.retainAll(Arrays.asList(platformSupportedCipherSuites));
-		return cipherSuites.toArray(new String[cipherSuites.size()]);
+		//final Collection<String> cipherSuites = new LinkedHashSet<>(Arrays.asList(Config.ENABLED_CIPHERS));
+		//cipherSuites.retainAll(Arrays.asList(platformSupportedCipherSuites));
+		//return cipherSuites.toArray(new String[cipherSuites.size()]);
+		return platformSupportedCipherSuites;
 	}
 }
