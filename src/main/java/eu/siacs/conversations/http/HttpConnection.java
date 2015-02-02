@@ -148,7 +148,7 @@ public class HttpConnection implements Downloadable {
 					mXmppConnectionService.getRNG());
 
 			final SSLSocketFactory sf = sc.getSocketFactory();
-			final String[] cipherSuites = CryptoHelper.getSupportedCipherSuites(
+			final String[] cipherSuites = CryptoHelper.getOrderedCipherSuites(
 					sf.getSupportedCipherSuites());
 			if (cipherSuites.length > 0) {
 				sc.getDefaultSSLParameters().setCipherSuites(cipherSuites);
