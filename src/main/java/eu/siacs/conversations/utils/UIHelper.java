@@ -154,7 +154,7 @@ public class UIHelper {
 				return new Pair<>(message.getBody().replaceAll("^" + Message.ME_COMMAND,
 						UIHelper.getMessageDisplayName(message) + " "), false);
 			} else {
-				return new Pair<>(message.getBody(), false);
+				return new Pair<>(message.getBody().trim(), false);
 			}
 		}
 	}
