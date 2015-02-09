@@ -41,7 +41,7 @@ public abstract class AbstractParser {
 		timestamp = timestamp.replace("Z", "+0000");
 		SimpleDateFormat dateFormat;
 		if (timestamp.contains(".")) {
-			dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.US);
+			dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSZ", Locale.US);
 		} else {
 			dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ",Locale.US);
 		}
