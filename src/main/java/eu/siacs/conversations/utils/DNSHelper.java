@@ -140,18 +140,13 @@ public class DNSHelper {
 			}
 			ArrayList<Bundle> values = new ArrayList<>();
 			for (SRV srv : result) {
-				boolean added = false;
 				if (ips6.containsKey(srv.getName())) {
 					values.add(createNamePortBundle(srv.getName(),srv.getPort(),ips6));
-					added = true;
 				}
 				if (ips4.containsKey(srv.getName())) {
 					values.add(createNamePortBundle(srv.getName(),srv.getPort(),ips4));
-					added = true;
 				}
-				if (!added) {
-					values.add(createNamePortBundle(srv.getName(),srv.getPort(),null));
-				}
+				values.add(createNamePortBundle(srv.getName(),srv.getPort(),null));
 			}
 			bundle.putParcelableArrayList("values", values);
 		} catch (SocketTimeoutException e) {
