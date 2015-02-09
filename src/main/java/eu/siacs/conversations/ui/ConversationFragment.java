@@ -568,6 +568,7 @@ public class ConversationFragment extends Fragment {
 			this.conversation.trim();
 		}
 		this.activity = (ConversationActivity) getActivity();
+		this.askForPassphraseIntent = null;
 		this.conversation = conversation;
 		this.mDecryptJobRunning = false;
 		this.mEncryptedMessages.clear();
