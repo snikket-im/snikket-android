@@ -517,7 +517,7 @@ public class XmppConnection implements Runnable {
 
 			final String[] cipherSuites = CryptoHelper.getOrderedCipherSuites(
 					sslSocket.getSupportedCipherSuites());
-			Log.d(Config.LOGTAG, "Using ciphers: " + Arrays.toString(cipherSuites));
+			//Log.d(Config.LOGTAG, "Using ciphers: " + Arrays.toString(cipherSuites));
 			if (cipherSuites.length > 0) {
 				sslSocket.setEnabledCipherSuites(cipherSuites);
 			}
