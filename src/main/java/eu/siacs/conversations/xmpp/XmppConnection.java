@@ -1028,6 +1028,11 @@ public class XmppConnection implements Runnable {
 		this.sendPacket(new InactivePacket());
 	}
 
+	public void resetAttemptCount() {
+		this.attempt = 0;
+		this.lastConnect = 0;
+	}
+
 	public class Features {
 		XmppConnection connection;
 		private boolean carbonsEnabled = false;

@@ -102,6 +102,8 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	public static final String ACTION_CLEAR_NOTIFICATION = "clear_notification";
 	public static final String ACTION_DISABLE_FOREGROUND = "disable_foreground";
 	private static final String ACTION_MERGE_PHONE_CONTACTS = "merge_phone_contacts";
+	public static final String ACTION_TRY_AGAIN = "try_again";
+	public static final String ACTION_DISABLE_ACCOUNT = "disable_account";
 	private ContentObserver contactObserver = new ContentObserver(null) {
 		@Override
 		public void onChange(boolean selfChange) {
@@ -397,6 +399,28 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 				case ACTION_DISABLE_FOREGROUND:
 					getPreferences().edit().putBoolean("keep_foreground_service",false).commit();
 					toggleForegroundService();
+					break;
+				case ACTION_TRY_AGAIN:
+					for(Account account : accounts) {
+						if (account.hasErrorStatus()) {
+							final XmppConnection connection = account.getXmppConnection();
+							if (connection != null) {
+								connection.resetAttemptCount();
+							}
+						}
+					}
+					break;
+				case ACTION_DISABLE_ACCOUNT:
+					try {
+						String jid = intent.getStringExtra("account");
+						Account account = jid == null ? null : findAccountByJid(Jid.fromString(jid));
+						if (account != null) {
+							account.setOption(Account.OPTION_DISABLED,true);
+							updateAccount(account);
+						}
+					} catch (final InvalidJidException ignored) {
+						break;
+					}
 					break;
 			}
 		}

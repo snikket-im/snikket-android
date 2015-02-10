@@ -444,4 +444,5 @@
     <string name="sending_x_file">Sending %s</string>
     <string name="offering_x_file">Offering %s</string>
     <string name="hide_offline">Hide offline</string>
+    <string name="disable_account">Disable Account</string>
 </resources>
