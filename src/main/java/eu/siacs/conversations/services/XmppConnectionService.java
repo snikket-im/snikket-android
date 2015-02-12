@@ -277,6 +277,11 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	private LruCache<String, Bitmap> mBitmapCache;
 	private Thread mPhoneContactMergerThread;
 
+	private boolean mMessagesInitialized = false;
+	public boolean areMessagesInitialized() {
+		return this.mMessagesInitialized;
+	}
+
 	public PgpEngine getPgpEngine() {
 		if (pgpServiceConnection.isBound()) {
 			if (this.mPgpEngine == null) {
@@ -889,9 +894,20 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 			for (Conversation conversation : this.conversations) {
 				Account account = accountLookupTable.get(conversation.getAccountUuid());
 				conversation.setAccount(account);
-				conversation.addAll(0, databaseBackend.getMessages(conversation, Config.PAGE_SIZE));
-				checkDeletedFiles(conversation);
 			}
+			new Thread(new Runnable() {
+				@Override
+				public void run() {
+					Log.d(Config.LOGTAG,"start initilizing messages");
+					for (Conversation conversation : conversations) {
+						conversation.addAll(0, databaseBackend.getMessages(conversation, Config.PAGE_SIZE));
+						checkDeletedFiles(conversation);
+					}
+					mMessagesInitialized = true;
+					Log.d(Config.LOGTAG,"done intilizing old messages");
+					updateConversationUi();
+				}
+			}).start();
 		}
 	}
 

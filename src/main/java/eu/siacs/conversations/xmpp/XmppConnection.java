@@ -659,6 +659,12 @@ public class XmppConnection implements Runnable {
 	}
 
 	private void sendBindRequest() {
+		while(!mXmppConnectionService.areMessagesInitialized()) {
+			try {
+				Thread.sleep(500);
+			} catch (final InterruptedException ignored) {
+			}
+		}
 		final IqPacket iq = new IqPacket(IqPacket.TYPE.SET);
 		iq.addChild("bind", "urn:ietf:params:xml:ns:xmpp-bind")
 			.addChild("resource").setContent(account.getResource());
