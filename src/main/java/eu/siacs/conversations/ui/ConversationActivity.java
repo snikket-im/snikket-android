@@ -12,7 +12,6 @@ import android.content.IntentSender.SendIntentException;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.support.v4.widget.SlidingPaneLayout;
 import android.support.v4.widget.SlidingPaneLayout.PanelSlideListener;
@@ -677,8 +676,7 @@ public class ConversationActivity extends XmppActivity
 						if (durations[which] == -1) {
 							till = Long.MAX_VALUE;
 						} else {
-							till = SystemClock.elapsedRealtime()
-								+ (durations[which] * 1000);
+							till = System.currentTimeMillis() + (durations[which] * 1000);
 						}
 						conversation.setMutedTill(till);
 						ConversationActivity.this.xmppConnectionService.databaseBackend

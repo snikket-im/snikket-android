@@ -626,8 +626,7 @@ public class Conversation extends AbstractEntity implements Blockable {
 	}
 
 	public boolean isMuted() {
-		return SystemClock.elapsedRealtime() < this.getLongAttribute(
-				ATTRIBUTE_MUTED_TILL, 0);
+		return System.currentTimeMillis() < this.getLongAttribute(ATTRIBUTE_MUTED_TILL, 0);
 	}
 
 	public boolean setAttribute(String key, String value) {
