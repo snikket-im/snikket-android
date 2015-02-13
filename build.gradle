@@ -31,7 +31,7 @@ dependencies {
 	compile project(':libs:openpgp-api-lib')
 	compile project(':libs:MemorizingTrustManager')
 	compile 'com.android.support:support-v13:21.0.3'
-	compile 'org.bouncycastle:bcprov-jdk15on:1.50'
+	compile 'org.bouncycastle:bcprov-jdk15on:1.51'
 	compile 'net.java:otr4j:0.22'
 	compile 'org.gnu.inet:libidn:1.15'
 	compile 'com.google.zxing:core:3.1.0'
