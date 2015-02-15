@@ -4,9 +4,7 @@ import java.lang.ref.WeakReference;
 import java.util.List;
 import java.util.concurrent.RejectedExecutionException;
 
-import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
-import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.ListItem;
 import eu.siacs.conversations.ui.XmppActivity;
 import eu.siacs.conversations.utils.UIHelper;
@@ -20,7 +18,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -124,7 +121,7 @@ public class ListItemAdapter extends ArrayAdapter<ListItem> {
 	}
 
 	public void loadAvatar(ListItem item, ImageView imageView) {
-		Bitmap bm = activity.avatarService().get(item,activity.getPixel(56),true);
+		Bitmap bm = activity.avatarService().get(item,activity.getPixel(48),true);
 		if (bm != null) {
 			imageView.setImageBitmap(bm);
 			imageView.setBackgroundColor(0x00000000);
