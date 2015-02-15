@@ -140,7 +140,7 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 			imageView.setImageBitmap(bm);
 			imageView.setBackgroundColor(0x00000000);
 		} else if (cancelPotentialWork(conversation, imageView)) {
-			imageView.setBackgroundColor(0xff333333);
+			imageView.setBackgroundColor(UIHelper.getColorForName(conversation.getName()));
 			final BitmapWorkerTask task = new BitmapWorkerTask(imageView);
 			final AsyncDrawable asyncDrawable = new AsyncDrawable(activity.getResources(), null, task);
 			imageView.setImageDrawable(asyncDrawable);

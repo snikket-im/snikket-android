@@ -9,6 +9,7 @@ import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.ListItem;
 import eu.siacs.conversations.ui.XmppActivity;
+import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.jid.Jid;
 
 import android.content.Context;
@@ -128,7 +129,7 @@ public class ListItemAdapter extends ArrayAdapter<ListItem> {
 			imageView.setImageBitmap(bm);
 			imageView.setBackgroundColor(0x00000000);
 		} else if (cancelPotentialWork(item, imageView)) {
-			imageView.setBackgroundColor(0xff333333);
+			imageView.setBackgroundColor(UIHelper.getColorForName(item.getDisplayName()));
 			final BitmapWorkerTask task = new BitmapWorkerTask(imageView);
 			final AsyncDrawable asyncDrawable = new AsyncDrawable(activity.getResources(), null, task);
 			imageView.setImageDrawable(asyncDrawable);
