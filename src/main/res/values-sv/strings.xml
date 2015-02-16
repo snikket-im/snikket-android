@@ -417,4 +417,5 @@
   <string name="sending_x_file">Skickar %s</string>
   <string name="offering_x_file">Erbjuder %s</string>
   <string name="hide_offline">Dölj ej anslutna</string>
+  <string name="disable_account">Deaktivera konton</string>
 </resources>

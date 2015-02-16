@@ -406,4 +406,5 @@
   <string name="pdf_document">document PDF</string>
   <string name="vcard">Contact</string>
   <string name="received_x_file">%s reçu</string>
+  <string name="disable_account">Désactiver le compte</string>
 </resources>

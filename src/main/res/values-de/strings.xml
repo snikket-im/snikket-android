@@ -278,7 +278,7 @@
   <string name="pref_use_larger_font">Schrift vergrößern</string>
   <string name="pref_use_larger_font_summary">Größere Schrift verwenden</string>
   <string name="pref_use_send_button_to_indicate_status">Absende-Knopf zeigt Online-Status an</string>
-  <string name="pref_use_indicate_received">Anfrage für Nachrichten Empfang</string>
+  <string name="pref_use_indicate_received">Anfrage für Nachrichtenempfang</string>
   <string name="pref_use_indicate_received_summary">Empfangene Nachrichten werden mit einem grünen Häkchen markiert. Bitte beachte, dass dies nicht in allen Fällen funktioniert.</string>
   <string name="pref_use_send_button_to_indicate_status_summary">Absende-Knopf einfärben, um den Online-Status des Kontakts zu signalisieren</string>
   <string name="pref_expert_options_other">Sonstiges</string>
@@ -417,4 +417,5 @@
   <string name="sending_x_file">Sende %s</string>
   <string name="offering_x_file">%s angeboten</string>
   <string name="hide_offline">verstecke offline</string>
+  <string name="disable_account">Konto abschalten</string>
 </resources>

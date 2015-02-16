@@ -329,6 +329,7 @@
   <string name="choose_file">Изабери фајл</string>
   <string name="receiving_x_file">Примам %1$s (%2$d%% завршено)</string>
   <string name="download_x_file">Преузми %s</string>
+  <string name="file">фајл</string>
   <string name="open_x_file">Отвори %s</string>
   <string name="sending_file">шаљем (%1$d%% завршено)</string>
   <string name="preparing_file">Припремам фајл за пренос</string>
@@ -401,6 +402,20 @@
   <string name="pref_input_options">Опције уноса</string>
   <string name="pref_enter_is_send">Ентер шаље</string>
   <string name="pref_enter_is_send_summary">Користи Ентер тастер за слање порука</string>
+  <string name="pref_display_enter_key">Прикажи Ентер тастер</string>
+  <string name="pref_display_enter_key_summary">Промени тастер за емотиконе у ентер тастер</string>
+  <string name="audio">звук</string>
+  <string name="video">видео</string>
+  <string name="image">слика</string>
   <string name="pdf_document">ПДФ документ</string>
+  <string name="apk">Апликација за Андроид</string>
+  <string name="vcard">Контакт</string>
   <string name="received_x_file">Примљено %s</string>
+  <string name="disable_foreground_service">Онемогући сервис у првом плану</string>
+  <string name="touch_to_open_conversations">Додирните да отворите Конверзацију</string>
+  <string name="avatar_has_been_published">Аватар је објављен!</string>
+  <string name="sending_x_file">Шаљем %s</string>
+  <string name="offering_x_file">Нудим %s</string>
+  <string name="hide_offline">Сакриј неповезане</string>
+  <string name="disable_account">Онемогући налог</string>
 </resources>
