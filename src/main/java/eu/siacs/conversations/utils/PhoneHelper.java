@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Loader;
 import android.content.Loader.OnLoadCompleteListener;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -89,6 +90,19 @@ public class PhoneHelper {
 			} else {
 				return Uri.parse(uri);
 			}
+		}
+	}
+
+	public static String getVersionName(Context context) {
+		final String packageName = context == null ? null : context.getPackageName();
+		if (packageName != null) {
+			try {
+				return context.getPackageManager().getPackageInfo(packageName, 0).versionName;
+			} catch (final PackageManager.NameNotFoundException e) {
+				return "unknown";
+			}
+		} else {
+			return "unknown";
 		}
 	}
 }

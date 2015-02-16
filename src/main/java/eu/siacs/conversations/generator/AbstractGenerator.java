@@ -13,6 +13,7 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 import eu.siacs.conversations.services.XmppConnectionService;
+import eu.siacs.conversations.utils.PhoneHelper;
 
 public abstract class AbstractGenerator {
 	private final String[] FEATURES = {
@@ -25,12 +26,14 @@ public abstract class AbstractGenerator {
 			"http://jabber.org/protocol/caps",
 			"http://jabber.org/protocol/disco#info",
 			"urn:xmpp:avatar:metadata+notify",
-			"urn:xmpp:ping"};
+			"urn:xmpp:ping",
+			"jabber:iq:version"};
 	private final String[] MESSAGE_CONFIRMATION_FEATURES = {
 			"urn:xmpp:chat-markers:0",
 			"urn:xmpp:receipts"
 	};
-	public final String IDENTITY_NAME = "Conversations 1.0";
+	private String mVersion = null;
+	public final String IDENTITY_NAME = "Conversations";
 	public final String IDENTITY_TYPE = "phone";
 
 	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US);
@@ -41,10 +44,21 @@ public abstract class AbstractGenerator {
 		this.mXmppConnectionService = service;
 	}
 
+	protected String getIdentityVersion() {
+		if (mVersion == null) {
+			this.mVersion = PhoneHelper.getVersionName(mXmppConnectionService);
+		}
+		return this.mVersion;
+	}
+
+	protected String getIdentityName() {
+		return IDENTITY_NAME + " " + getIdentityVersion();
+	}
+
 	public String getCapHash() {
 		StringBuilder s = new StringBuilder();
-		s.append("client/" + IDENTITY_TYPE + "//" + IDENTITY_NAME + "<");
-		MessageDigest md = null;
+		s.append("client/" + IDENTITY_TYPE + "//" + getIdentityName() + "<");
+		MessageDigest md;
 		try {
 			md = MessageDigest.getInstance("SHA-1");
 		} catch (NoSuchAlgorithmException e) {

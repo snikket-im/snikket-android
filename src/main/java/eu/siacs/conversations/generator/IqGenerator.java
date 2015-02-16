@@ -8,6 +8,7 @@ import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.services.MessageArchiveService;
 import eu.siacs.conversations.services.XmppConnectionService;
+import eu.siacs.conversations.utils.PhoneHelper;
 import eu.siacs.conversations.utils.Xmlns;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.forms.Data;
@@ -30,11 +31,19 @@ public class IqGenerator extends AbstractGenerator {
 		query.setAttribute("node", request.query().getAttribute("node"));
 		final Element identity = query.addChild("identity");
 		identity.setAttribute("category", "client");
-		identity.setAttribute("type", this.IDENTITY_TYPE);
-		identity.setAttribute("name", IDENTITY_NAME);
+		identity.setAttribute("type", IDENTITY_TYPE);
+		identity.setAttribute("name", getIdentityName());
 		for (final String feature : getFeatures()) {
 			query.addChild("feature").setAttribute("var", feature);
 		}
+		return packet;
+	}
+
+	public IqPacket versionResponse(final IqPacket request) {
+		final IqPacket packet = request.generateResponse(IqPacket.TYPE.RESULT);
+		Element query = packet.query("jabber:iq:version");
+		query.addChild("name").setContent(IDENTITY_NAME);
+		query.addChild("version").setContent(getIdentityVersion());
 		return packet;
 	}
 

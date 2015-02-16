@@ -134,9 +134,11 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
 			mXmppConnectionService.getJingleConnectionManager()
 				.deliverIbbPacket(account, packet);
 		} else if (packet.hasChild("query", "http://jabber.org/protocol/disco#info")) {
-			final IqPacket response = mXmppConnectionService.getIqGenerator()
-				.discoResponse(packet);
-			account.getXmppConnection().sendIqPacket(response, null);
+			final IqPacket response = mXmppConnectionService.getIqGenerator().discoResponse(packet);
+			mXmppConnectionService.sendIqPacket(account, response, null);
+		} else if (packet.hasChild("query","jabber:iq:version")) {
+			final IqPacket response = mXmppConnectionService.getIqGenerator().versionResponse(packet);
+			mXmppConnectionService.sendIqPacket(account,response,null);
 		} else if (packet.hasChild("ping", "urn:xmpp:ping")) {
 			final IqPacket response = packet.generateResponse(IqPacket.TYPE.RESULT);
 			mXmppConnectionService.sendIqPacket(account, response, null);
