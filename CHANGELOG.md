@@ -1,5 +1,19 @@
 ###Changelog
 
+####Version 1.0.4
+* load avatars asynchronously on start up
+* support for XEP-0092: Software Version
+
+####Version 1.0.3
+* load messages asynchronously on start up
+* bug fixes
+
+####Version 1.0.2
+* skipped
+
+####Version 1.0.1
+* accept more ciphers
+
 ####Version 1.0
 * MUC controls (Affiliaton changes)
 * Added download button to notification
