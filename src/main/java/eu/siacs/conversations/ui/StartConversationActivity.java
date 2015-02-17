@@ -176,15 +176,7 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 
 	@Override
 	public void onRosterUpdate() {
-		runOnUiThread(new Runnable() {
-
-			@Override
-			public void run() {
-				if (mSearchEditText != null) {
-					filter(mSearchEditText.getText().toString());
-				}
-			}
-		});
+		this.refreshUi();
 	}
 
 	@Override
@@ -711,15 +703,14 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 
 	@Override
 	public void OnUpdateBlocklist(final Status status) {
-		runOnUiThread(new Runnable() {
+		refreshUi();
+	}
 
-			@Override
-			public void run() {
-				if (mSearchEditText != null) {
-					filter(mSearchEditText.getText().toString());
-				}
-			}
-		});
+	@Override
+	protected void refreshUiReal() {
+		if (mSearchEditText != null) {
+			filter(mSearchEditText.getText().toString());
+		}
 	}
 
 	public static class MyListFragment extends ListFragment {

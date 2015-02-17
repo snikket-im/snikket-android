@@ -33,7 +33,9 @@ import android.nfc.NfcEvent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.text.InputType;
 import android.util.DisplayMetrics;
@@ -98,6 +100,33 @@ public abstract class XmppActivity extends Activity {
 	private DisplayMetrics metrics;
 	protected int mTheme;
 	protected boolean mUsingEnterKey = false;
+
+	private long mLastUiRefresh = 0;
+	private Handler mRefreshUiHandler = new Handler();
+	private Runnable mRefreshUiRunnable = new Runnable() {
+		@Override
+		public void run() {
+			mLastUiRefresh = SystemClock.elapsedRealtime();
+			refreshUiReal();
+		}
+	};
+
+
+	protected void refreshUi() {
+		final long diff = SystemClock.elapsedRealtime() - mLastUiRefresh;
+		if (diff > Config.REFRESH_UI_INTERVAL) {
+			mRefreshUiHandler.removeCallbacks(mRefreshUiRunnable);
+			runOnUiThread(mRefreshUiRunnable);
+		} else {
+			final long next = Config.REFRESH_UI_INTERVAL - diff;
+			mRefreshUiHandler.removeCallbacks(mRefreshUiRunnable);
+			mRefreshUiHandler.postDelayed(mRefreshUiRunnable,next);
+		}
+	}
+
+	protected void refreshUiReal() {
+
+	};
 
 	protected interface OnValueEdited {
 		public void onValueEdited(String value);

@@ -436,11 +436,11 @@ public class VerifyOTRActivity extends XmppActivity implements XmppConnectionSer
 	}
 
 	public void onConversationUpdate() {
-		runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				updateView();
-			}
-		});
+		refreshUi();
+	}
+
+	@Override
+	protected void refreshUiReal() {
+		updateView();
 	}
 }

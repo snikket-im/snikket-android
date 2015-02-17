@@ -1006,56 +1006,39 @@ public class ConversationActivity extends XmppActivity
 	}
 
 	@Override
-	public void onAccountUpdate() {
-		runOnUiThread(new Runnable() {
+	protected void refreshUiReal() {
+		updateConversationList();
+		if (conversationList.size() == 0) {
+			startActivity(new Intent(getApplicationContext(),
+					StartConversationActivity.class));
+			finish();
+		}
+		ConversationActivity.this.mConversationFragment.updateMessages();
+		updateActionBarTitle();
+	}
 
-			@Override
-			public void run() {
-				updateConversationList();
-				ConversationActivity.this.mConversationFragment.updateMessages();
-				updateActionBarTitle();
-			}
-		});
+	@Override
+	public void onAccountUpdate() {
+		this.refreshUi();
 	}
 
 	@Override
 	public void onConversationUpdate() {
-		runOnUiThread(new Runnable() {
-
-			@Override
-			public void run() {
-				updateConversationList();
-				if (conversationList.size() == 0) {
-					startActivity(new Intent(getApplicationContext(),
-								StartConversationActivity.class));
-					finish();
-				}
-				ConversationActivity.this.mConversationFragment.updateMessages();
-				updateActionBarTitle();
-			}
-		});
+		this.refreshUi();
 	}
 
 	@Override
 	public void onRosterUpdate() {
-		runOnUiThread(new Runnable() {
-
-			@Override
-			public void run() {
-				updateConversationList();
-				ConversationActivity.this.mConversationFragment.updateMessages();
-				updateActionBarTitle();
-			}
-		});
+		this.refreshUi();
 	}
 
 	@Override
 	public void OnUpdateBlocklist(Status status) {
+		this.refreshUi();
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
 				invalidateOptionsMenu();
-				ConversationActivity.this.mConversationFragment.updateMessages();
 			}
 		});
 	}

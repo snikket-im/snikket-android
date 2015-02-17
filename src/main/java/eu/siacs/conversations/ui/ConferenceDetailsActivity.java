@@ -144,24 +144,17 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 
 	@Override
 	public void onConversationUpdate() {
-		runOnUiThread(new Runnable() {
-
-			@Override
-			public void run() {
-				updateView();
-			}
-		});
+		refreshUi();
 	}
 
 	@Override
 	public void onMucRosterUpdate() {
-		runOnUiThread(new Runnable() {
+		refreshUi();
+	}
 
-			@Override
-			public void run() {
-				updateView();
-			}
-		});
+	@Override
+	protected void refreshUiReal() {
+		updateView();
 	}
 
 	@Override
