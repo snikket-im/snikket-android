@@ -793,7 +793,7 @@ public class ConversationActivity extends XmppActivity
 			this.mConversationFragment.reInit(getSelectedConversation());
 			mOpenConverstaion = null;
 		} else if (getSelectedConversation() != null) {
-			this.mConversationFragment.updateMessages();
+			this.mConversationFragment.reInit(getSelectedConversation());
 		} else {
 			showConversationsOverview();
 			mPendingImageUri = null;

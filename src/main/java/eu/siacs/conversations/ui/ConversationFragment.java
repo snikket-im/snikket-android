@@ -577,7 +577,7 @@ public class ConversationFragment extends Fragment {
 		}
 		this.mEditMessage.setText("");
 		this.mEditMessage.append(this.conversation.getNextMessage());
-		this.messagesView.invalidateViews();
+		this.messagesView.setAdapter(messageListAdapter);
 		updateMessages();
 		this.messagesLoaded = true;
 		int size = this.messageList.size();
