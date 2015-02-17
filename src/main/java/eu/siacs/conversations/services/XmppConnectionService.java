@@ -16,6 +16,7 @@ import android.os.Binder;
 import android.os.Bundle;
 import android.os.FileObserver;
 import android.os.IBinder;
+import android.os.Looper;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.os.SystemClock;
@@ -277,9 +278,9 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	private LruCache<String, Bitmap> mBitmapCache;
 	private Thread mPhoneContactMergerThread;
 
-	private boolean mMessagesInitialized = false;
+	private boolean mRestoredFromDatabase = false;
 	public boolean areMessagesInitialized() {
-		return this.mMessagesInitialized;
+		return this.mRestoredFromDatabase;
 	}
 
 	public PgpEngine getPgpEngine() {
@@ -393,7 +394,11 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		if (action != null) {
 			switch (action) {
 				case ACTION_MERGE_PHONE_CONTACTS:
-					PhoneHelper.loadPhoneContacts(getApplicationContext(), new CopyOnWriteArrayList<Bundle>(), this);
+					if (mRestoredFromDatabase) {
+						PhoneHelper.loadPhoneContacts(getApplicationContext(),
+								new CopyOnWriteArrayList<Bundle>(),
+								this);
+					}
 					return START_STICKY;
 				case Intent.ACTION_SHUTDOWN:
 					logoutAndSave();
@@ -528,10 +533,8 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 
 		for (final Account account : this.accounts) {
 			account.initOtrEngine(this);
-			this.databaseBackend.readRoster(account.getRoster());
 		}
-		initConversations();
-		PhoneHelper.loadPhoneContacts(getApplicationContext(),new CopyOnWriteArrayList<Bundle>(), this);
+		restoreFromDatabase();
 
 		getContentResolver().registerContentObserver(ContactsContract.Contacts.CONTENT_URI, true, contactObserver);
 		this.fileObserver.startWatching();
@@ -884,7 +887,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		mPhoneContactMergerThread.start();
 	}
 
-	private void initConversations() {
+	private void restoreFromDatabase() {
 		synchronized (this.conversations) {
 			final Map<String, Account> accountLookupTable = new Hashtable<>();
 			for (Account account : this.accounts) {
@@ -898,13 +901,22 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 			new Thread(new Runnable() {
 				@Override
 				public void run() {
-					Log.d(Config.LOGTAG,"start initilizing messages");
+					Log.d(Config.LOGTAG,"restoring roster");
+					for(Account account : accounts) {
+						databaseBackend.readRoster(account.getRoster());
+					}
+					getBitmapCache().evictAll();
+					Looper.prepare();
+					PhoneHelper.loadPhoneContacts(getApplicationContext(),
+							new CopyOnWriteArrayList<Bundle>(),
+							XmppConnectionService.this);
+					Log.d(Config.LOGTAG,"restoring messages");
 					for (Conversation conversation : conversations) {
 						conversation.addAll(0, databaseBackend.getMessages(conversation, Config.PAGE_SIZE));
 						checkDeletedFiles(conversation);
 					}
-					mMessagesInitialized = true;
-					Log.d(Config.LOGTAG,"done intilizing old messages");
+					mRestoredFromDatabase = true;
+					Log.d(Config.LOGTAG,"restored all messages");
 					updateConversationUi();
 				}
 			}).start();
