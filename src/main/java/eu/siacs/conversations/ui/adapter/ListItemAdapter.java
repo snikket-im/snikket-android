@@ -121,18 +121,20 @@ public class ListItemAdapter extends ArrayAdapter<ListItem> {
 	}
 
 	public void loadAvatar(ListItem item, ImageView imageView) {
-		Bitmap bm = activity.avatarService().get(item,activity.getPixel(48),true);
-		if (bm != null) {
-			imageView.setImageBitmap(bm);
-			imageView.setBackgroundColor(0x00000000);
-		} else if (cancelPotentialWork(item, imageView)) {
-			imageView.setBackgroundColor(UIHelper.getColorForName(item.getDisplayName()));
-			final BitmapWorkerTask task = new BitmapWorkerTask(imageView);
-			final AsyncDrawable asyncDrawable = new AsyncDrawable(activity.getResources(), null, task);
-			imageView.setImageDrawable(asyncDrawable);
-			try {
-				task.execute(item);
-			} catch (final RejectedExecutionException ignored) {
+		if (cancelPotentialWork(item, imageView)) {
+			final Bitmap bm = activity.avatarService().get(item,activity.getPixel(48),true);
+			if (bm != null) {
+				imageView.setImageBitmap(bm);
+				imageView.setBackgroundColor(0x00000000);
+			} else {
+				imageView.setBackgroundColor(UIHelper.getColorForName(item.getDisplayName()));
+				final BitmapWorkerTask task = new BitmapWorkerTask(imageView);
+				final AsyncDrawable asyncDrawable = new AsyncDrawable(activity.getResources(), null, task);
+				imageView.setImageDrawable(asyncDrawable);
+				try {
+					task.execute(item);
+				} catch (final RejectedExecutionException ignored) {
+				}
 			}
 		}
 	}

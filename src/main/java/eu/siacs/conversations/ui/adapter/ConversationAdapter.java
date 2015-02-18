@@ -135,18 +135,20 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 	}
 
 	public void loadAvatar(Conversation conversation, ImageView imageView) {
-		Bitmap bm = activity.avatarService().get(conversation,activity.getPixel(56),true);
-		if (bm != null) {
-			imageView.setImageBitmap(bm);
-			imageView.setBackgroundColor(0x00000000);
-		} else if (cancelPotentialWork(conversation, imageView)) {
-			imageView.setBackgroundColor(UIHelper.getColorForName(conversation.getName()));
-			final BitmapWorkerTask task = new BitmapWorkerTask(imageView);
-			final AsyncDrawable asyncDrawable = new AsyncDrawable(activity.getResources(), null, task);
-			imageView.setImageDrawable(asyncDrawable);
-			try {
-				task.execute(conversation);
-			} catch (final RejectedExecutionException ignored) {
+		if (cancelPotentialWork(conversation, imageView)) {
+			final Bitmap bm = activity.avatarService().get(conversation, activity.getPixel(56), true);
+			if (bm != null) {
+				imageView.setImageBitmap(bm);
+				imageView.setBackgroundColor(0x00000000);
+			} else {
+				imageView.setBackgroundColor(UIHelper.getColorForName(conversation.getName()));
+				final BitmapWorkerTask task = new BitmapWorkerTask(imageView);
+				final AsyncDrawable asyncDrawable = new AsyncDrawable(activity.getResources(), null, task);
+				imageView.setImageDrawable(asyncDrawable);
+				try {
+					task.execute(conversation);
+				} catch (final RejectedExecutionException ignored) {
+				}
 			}
 		}
 	}
