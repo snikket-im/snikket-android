@@ -2,6 +2,7 @@
 * XEP-0030: Service Discovery
 * XEP-0045: Multi-User Chat
 * XEP-0048: Bookmarks
+* XEP-0092: Software Version
 * XEP-0115: Entity Capabilities
 * XEP-0163: Personal Eventing Protocol (avatars and nicks)
 * XEP-0166: Jingle (only used for file transfer)
