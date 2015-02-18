@@ -321,7 +321,9 @@ public class ConversationFragment extends Fragment {
 
 			@Override
 			public void onClick(View v) {
-				activity.hideConversationsOverview();
+				if (activity != null) {
+					activity.hideConversationsOverview();
+				}
 			}
 		});
 		mEditMessage.setOnEditorActionListener(mEditorActionListener);
