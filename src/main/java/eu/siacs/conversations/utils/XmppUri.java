@@ -32,7 +32,7 @@ public class XmppUri {
 
 	protected void parse(Uri uri) {
 		String scheme = uri.getScheme();
-		if ("xmpp".equals(scheme)) {
+		if ("xmpp".equalsIgnoreCase(scheme)) {
 			// sample: xmpp:jid@foo.com
 			muc = "join".equalsIgnoreCase(uri.getQuery());
 			if (uri.getAuthority() != null) {
@@ -41,7 +41,7 @@ public class XmppUri {
 				jid = uri.getSchemeSpecificPart().split("\\?")[0];
 			}
 			fingerprint = parseFingerprint(uri.getQuery());
-		} else if ("imto".equals(scheme)) {
+		} else if ("imto".equalsIgnoreCase(scheme)) {
 			// sample: imto://xmpp/jid@foo.com
 			try {
 				jid = URLDecoder.decode(uri.getEncodedPath(), "UTF-8").split("/")[1];
@@ -73,7 +73,7 @@ public class XmppUri {
 
 	public Jid getJid() {
 		try {
-			return this.jid == null ? null :Jid.fromString(this.jid);
+			return this.jid == null ? null :Jid.fromString(this.jid.toLowerCase());
 		} catch (InvalidJidException e) {
 			return null;
 		}
