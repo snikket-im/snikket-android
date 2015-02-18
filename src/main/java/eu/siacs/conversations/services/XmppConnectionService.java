@@ -466,10 +466,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 							this.scheduleWakeUpCall((int) (msToNextPing / 1000), account.getUuid().hashCode());
 						}
 					} else if (account.getStatus() == Account.State.OFFLINE) {
-						if (account.getXmppConnection() == null) {
-							account.setXmppConnection(this.createConnection(account));
-						}
-						new Thread(account.getXmppConnection()).start();
+						reconnectAccount(account,true);
 					} else if (account.getStatus() == Account.State.CONNECTING) {
 						long timeout = Config.CONNECT_TIMEOUT - ((SystemClock.elapsedRealtime() - account.getXmppConnection().getLastConnect()) / 1000);
 						if (timeout < 0) {
