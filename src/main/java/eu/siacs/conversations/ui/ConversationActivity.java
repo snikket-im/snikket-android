@@ -777,6 +777,7 @@ public class ConversationActivity extends XmppActivity
 		updateConversationList();
 		if (xmppConnectionService.getAccounts().size() == 0) {
 			startActivity(new Intent(this, EditAccountActivity.class));
+			finish();
 		} else if (conversationList.size() <= 0) {
 			startActivity(new Intent(this, StartConversationActivity.class));
 			finish();
@@ -1008,13 +1009,16 @@ public class ConversationActivity extends XmppActivity
 	@Override
 	protected void refreshUiReal() {
 		updateConversationList();
-		if (conversationList.size() == 0) {
-			startActivity(new Intent(getApplicationContext(),
-					StartConversationActivity.class));
+		if (xmppConnectionService != null && xmppConnectionService.getAccounts().size() == 0) {
+			startActivity(new Intent(this, EditAccountActivity.class));
 			finish();
+		} else if (conversationList.size() == 0) {
+			startActivity(new Intent(this, StartConversationActivity.class));
+			finish();
+		} else {
+			ConversationActivity.this.mConversationFragment.updateMessages();
+			updateActionBarTitle();
 		}
-		ConversationActivity.this.mConversationFragment.updateMessages();
-		updateActionBarTitle();
 	}
 
 	@Override
