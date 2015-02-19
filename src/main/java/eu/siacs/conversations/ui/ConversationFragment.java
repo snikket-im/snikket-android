@@ -420,7 +420,8 @@ public class ConversationFragment extends Fragment {
 			MenuItem copyUrl = menu.findItem(R.id.copy_url);
 			MenuItem downloadImage = menu.findItem(R.id.download_image);
 			MenuItem cancelTransmission = menu.findItem(R.id.cancel_transmission);
-			if (m.getType() != Message.TYPE_TEXT || m.getDownloadable() != null) {
+			if ((m.getType() != Message.TYPE_TEXT && m.getType() != Message.TYPE_PRIVATE)
+					|| m.getDownloadable() != null) {
 				copyText.setVisible(false);
 			}
 			if (m.getType() == Message.TYPE_TEXT
