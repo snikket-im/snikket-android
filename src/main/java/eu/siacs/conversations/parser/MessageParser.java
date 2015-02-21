@@ -1,8 +1,11 @@
 package eu.siacs.conversations.parser;
 
+import android.util.Log;
+
 import net.java.otr4j.session.Session;
 import net.java.otr4j.session.SessionStatus;
 
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
@@ -14,6 +17,7 @@ import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.OnMessagePacketReceived;
+import eu.siacs.conversations.xmpp.chatstate.ChatState;
 import eu.siacs.conversations.xmpp.jid.Jid;
 import eu.siacs.conversations.xmpp.pep.Avatar;
 import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
@@ -22,6 +26,21 @@ public class MessageParser extends AbstractParser implements
 		OnMessagePacketReceived {
 	public MessageParser(XmppConnectionService service) {
 		super(service);
+	}
+
+	private boolean extractChatState(Conversation conversation, final Element element) {
+		ChatState state = ChatState.parse(element);
+		if (state != null && conversation != null) {
+			final Account account = conversation.getAccount();
+			Jid from = element.getAttributeAsJid("from");
+			if (from != null && from.toBareJid().equals(account.getJid().toBareJid())) {
+				conversation.setOutgoingChatState(state);
+				return false;
+			} else {
+				return conversation.setIncomingChatState(state);
+			}
+		}
+		return false;
 	}
 
 	private Message parseChat(MessagePacket packet, Account account) {
@@ -55,6 +74,7 @@ public class MessageParser extends AbstractParser implements
 		}
 		finishedMessage.setCounterpart(jid);
 		finishedMessage.setTime(getTimestamp(packet));
+		extractChatState(conversation,packet);
 		return finishedMessage;
 	}
 
@@ -123,6 +143,7 @@ public class MessageParser extends AbstractParser implements
 			finishedMessage.setRemoteMsgId(packet.getId());
 			finishedMessage.markable = isMarkable(packet);
 			finishedMessage.setCounterpart(from);
+			extractChatState(conversation,packet);
 			return finishedMessage;
 		} catch (Exception e) {
 			conversation.resetOtrSession();
@@ -275,6 +296,7 @@ public class MessageParser extends AbstractParser implements
 			finishedMessage = new Message(conversation, body,
 					Message.ENCRYPTION_NONE, status);
 		}
+		extractChatState(conversation,message);
 		finishedMessage.setTime(getTimestamp(message));
 		finishedMessage.setRemoteMsgId(message.getAttribute("id"));
 		finishedMessage.markable = isMarkable(message);
@@ -362,6 +384,9 @@ public class MessageParser extends AbstractParser implements
 
 	private void parseNonMessage(Element packet, Account account) {
 		final Jid from = packet.getAttributeAsJid("from");
+		if (extractChatState(from == null ? null : mXmppConnectionService.find(account,from), packet)) {
+			mXmppConnectionService.updateConversationUi();
+		}
 		Element invite = extractInvite(packet);
 		if (invite != null) {
 			Conversation conversation = mXmppConnectionService.findOrCreateConversation(account, from, true);

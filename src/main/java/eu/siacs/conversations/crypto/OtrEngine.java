@@ -21,6 +21,7 @@ import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.CryptoHelper;
+import eu.siacs.conversations.xmpp.chatstate.ChatState;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
 import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
@@ -182,6 +183,19 @@ public class OtrEngine extends OtrCryptoEngineImpl implements OtrEngineHost {
 		packet.addChild("private", "urn:xmpp:carbons:2");
 		packet.addChild("no-copy", "urn:xmpp:hints");
 		packet.addChild("no-store", "urn:xmpp:hints");
+
+		try {
+			Jid jid = Jid.fromSessionID(session);
+			Conversation conversation = mXmppConnectionService.find(account,jid);
+			if (conversation != null && conversation.setOutgoingChatState(Config.DEFAULT_CHATSTATE)) {
+				if (mXmppConnectionService.sendChatStates()) {
+					packet.addChild(ChatState.toElement(conversation.getOutgoingChatState()));
+				}
+			}
+		} catch (final InvalidJidException ignored) {
+
+		}
+
 		packet.setType(MessagePacket.TYPE_CHAT);
 		account.getXmppConnection().sendMessagePacket(packet);
 	}

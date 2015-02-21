@@ -28,6 +28,13 @@
             android:key="confirm_messages"
             android:summary="@string/pref_confirm_messages_summary"
             android:title="@string/pref_confirm_messages" />
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="chat_states"
+            android:summary="@string/pref_chat_states_summary"
+            android:title="@string/pref_chat_states" />
+
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/pref_notification_settings" >
         <CheckBoxPreference

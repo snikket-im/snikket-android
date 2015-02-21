@@ -40,6 +40,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.PgpEngine;
 import eu.siacs.conversations.entities.Account;
@@ -52,15 +53,15 @@ import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.entities.Presences;
 import eu.siacs.conversations.services.XmppConnectionService;
-import eu.siacs.conversations.ui.EditMessage.OnEnterPressed;
 import eu.siacs.conversations.ui.XmppActivity.OnPresenceSelected;
 import eu.siacs.conversations.ui.XmppActivity.OnValueEdited;
 import eu.siacs.conversations.ui.adapter.MessageAdapter;
 import eu.siacs.conversations.ui.adapter.MessageAdapter.OnContactPictureClicked;
 import eu.siacs.conversations.ui.adapter.MessageAdapter.OnContactPictureLongClicked;
+import eu.siacs.conversations.xmpp.chatstate.ChatState;
 import eu.siacs.conversations.xmpp.jid.Jid;
 
-public class ConversationFragment extends Fragment {
+public class ConversationFragment extends Fragment implements EditMessage.KeyboardListener {
 
 	protected Conversation conversation;
 	private OnClickListener leaveMuc = new OnClickListener() {
@@ -327,18 +328,6 @@ public class ConversationFragment extends Fragment {
 			}
 		});
 		mEditMessage.setOnEditorActionListener(mEditorActionListener);
-		mEditMessage.setOnEnterPressedListener(new OnEnterPressed() {
-
-			@Override
-			public boolean onEnterPressed() {
-				if (activity.enterIsSend()) {
-					sendMessage();
-					return true;
-				} else {
-					return false;
-				}
-			}
-		});
 
 		mSendButton = (ImageButton) view.findViewById(R.id.textSendButton);
 		mSendButton.setOnClickListener(this.mSendButtonListener);
@@ -558,7 +547,17 @@ public class ConversationFragment extends Fragment {
 		mDecryptJobRunning = false;
 		super.onStop();
 		if (this.conversation != null) {
-			this.conversation.setNextMessage(mEditMessage.getText().toString());
+			final String msg = mEditMessage.getText().toString();
+			this.conversation.setNextMessage(msg);
+			updateChatState(this.conversation,msg);
+		}
+	}
+
+	private void updateChatState(final Conversation conversation, final String msg) {
+		ChatState state = msg.length() == 0 ? Config.DEFAULT_CHATSTATE : ChatState.PAUSED;
+		Account.State status = conversation.getAccount().getStatus();
+		if (status == Account.State.ONLINE && conversation.setOutgoingChatState(state)) {
+			activity.xmppConnectionService.sendChatState(conversation);
 		}
 	}
 
@@ -566,11 +565,18 @@ public class ConversationFragment extends Fragment {
 		if (conversation == null) {
 			return;
 		}
+
+		this.activity = (ConversationActivity) getActivity();
+
 		if (this.conversation != null) {
-			this.conversation.setNextMessage(mEditMessage.getText().toString());
+			final String msg = mEditMessage.getText().toString();
+			this.conversation.setNextMessage(msg);
+			if (this.conversation != conversation) {
+				updateChatState(this.conversation,msg);
+			}
 			this.conversation.trim();
 		}
-		this.activity = (ConversationActivity) getActivity();
+
 		this.askForPassphraseIntent = null;
 		this.conversation = conversation;
 		this.mDecryptJobRunning = false;
@@ -578,8 +584,10 @@ public class ConversationFragment extends Fragment {
 		if (this.conversation.getMode() == Conversation.MODE_MULTI) {
 			this.conversation.setNextCounterpart(null);
 		}
+		this.mEditMessage.setKeyboardListener(null);
 		this.mEditMessage.setText("");
 		this.mEditMessage.append(this.conversation.getNextMessage());
+		this.mEditMessage.setKeyboardListener(this);
 		this.messagesView.setAdapter(messageListAdapter);
 		updateMessages();
 		this.messagesLoaded = true;
@@ -834,13 +842,21 @@ public class ConversationFragment extends Fragment {
 	protected void updateStatusMessages() {
 		synchronized (this.messageList) {
 			if (conversation.getMode() == Conversation.MODE_SINGLE) {
-				for (int i = this.messageList.size() - 1; i >= 0; --i) {
-					if (this.messageList.get(i).getStatus() == Message.STATUS_RECEIVED) {
-						return;
-					} else {
-						if (this.messageList.get(i).getStatus() == Message.STATUS_SEND_DISPLAYED) {
-							this.messageList.add(i + 1,Message.createStatusMessage(conversation));
+				ChatState state = conversation.getIncomingChatState();
+				if (state == ChatState.COMPOSING) {
+					this.messageList.add(Message.createStatusMessage(conversation, getString(R.string.contact_is_typing, conversation.getName())));
+				} else if (state == ChatState.PAUSED) {
+					this.messageList.add(Message.createStatusMessage(conversation, getString(R.string.contact_has_stopped_typing, conversation.getName())));
+				} else {
+					for (int i = this.messageList.size() - 1; i >= 0; --i) {
+						if (this.messageList.get(i).getStatus() == Message.STATUS_RECEIVED) {
 							return;
+						} else {
+							if (this.messageList.get(i).getStatus() == Message.STATUS_SEND_DISPLAYED) {
+								this.messageList.add(i + 1,
+										Message.createStatusMessage(conversation, getString(R.string.contact_has_read_up_to_this_point, conversation.getName())));
+								return;
+							}
 						}
 					}
 				}
@@ -993,6 +1009,35 @@ public class ConversationFragment extends Fragment {
 			text = " " + text;
 		}
 		this.mEditMessage.append(text);
+	}
+
+	@Override
+	public void onEnterPressed() {
+		sendMessage();
+	}
+
+	@Override
+	public void onTypingStarted() {
+		Account.State status = conversation.getAccount().getStatus();
+		if (status == Account.State.ONLINE && conversation.setOutgoingChatState(ChatState.COMPOSING)) {
+			activity.xmppConnectionService.sendChatState(conversation);
+		}
+	}
+
+	@Override
+	public void onTypingStopped() {
+		Account.State status = conversation.getAccount().getStatus();
+		if (status == Account.State.ONLINE && conversation.setOutgoingChatState(ChatState.PAUSED)) {
+			activity.xmppConnectionService.sendChatState(conversation);
+		}
+	}
+
+	@Override
+	public void onTextDeleted() {
+		Account.State status = conversation.getAccount().getStatus();
+		if (status == Account.State.ONLINE && conversation.setOutgoingChatState(Config.DEFAULT_CHATSTATE)) {
+			activity.xmppConnectionService.sendChatState(conversation);
+		}
 	}
 
 }

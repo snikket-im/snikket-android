@@ -410,9 +410,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 						.avatarService().get(conversation.getContact(),
 							activity.getPixel(32)));
 				viewHolder.contact_picture.setAlpha(0.5f);
-				viewHolder.status_message.setText(
-						activity.getString(R.string.contact_has_read_up_to_this_point, conversation.getName()));
-
+				viewHolder.status_message.setText(message.getBody());
 			}
 			return view;
 		} else if (type == NULL) {

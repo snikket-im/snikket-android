@@ -27,7 +27,8 @@ public abstract class AbstractGenerator {
 			"http://jabber.org/protocol/disco#info",
 			"urn:xmpp:avatar:metadata+notify",
 			"urn:xmpp:ping",
-			"jabber:iq:version"};
+			"jabber:iq:version",
+			"http://jabber.org/protocol/chatstates"};
 	private final String[] MESSAGE_CONFIRMATION_FEATURES = {
 			"urn:xmpp:chat-markers:0",
 			"urn:xmpp:receipts"

@@ -147,10 +147,11 @@ public class Message extends AbstractEntity {
 				cursor.getString(cursor.getColumnIndex(SERVER_MSG_ID)));
 	}
 
-	public static Message createStatusMessage(Conversation conversation) {
+	public static Message createStatusMessage(Conversation conversation, String body) {
 		Message message = new Message();
 		message.setType(Message.TYPE_STATUS);
 		message.setConversation(conversation);
+		message.setBody(body);
 		return message;
 	}
 

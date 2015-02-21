@@ -86,6 +86,7 @@ import eu.siacs.conversations.xmpp.OnPresencePacketReceived;
 import eu.siacs.conversations.xmpp.OnStatusChanged;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
 import eu.siacs.conversations.xmpp.XmppConnection;
+import eu.siacs.conversations.xmpp.chatstate.ChatState;
 import eu.siacs.conversations.xmpp.forms.Data;
 import eu.siacs.conversations.xmpp.forms.Field;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
@@ -603,6 +604,13 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		return connection;
 	}
 
+	public void sendChatState(Conversation conversation) {
+		if (sendChatStates()) {
+			MessagePacket packet = mMessageGenerator.generateChatState(conversation);
+			sendMessagePacket(conversation.getAccount(), packet);
+		}
+	}
+
 	public void sendMessage(final Message message) {
 		final Account account = message.getConversation().getAccount();
 		account.deactivateGracePeriod();
@@ -703,6 +711,11 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 					}
 		}
 		if ((send) && (packet != null)) {
+			if (conv.setOutgoingChatState(Config.DEFAULT_CHATSTATE)) {
+				if (this.sendChatStates()) {
+					packet.addChild(ChatState.toElement(conv.getOutgoingChatState()));
+				}
+			}
 			sendMessagePacket(account, packet);
 		}
 		updateConversationUi();
@@ -783,6 +796,11 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 				markMessage(message, Message.STATUS_SEND);
 			} else {
 				markMessage(message, Message.STATUS_UNSEND);
+			}
+			if (message.getConversation().setOutgoingChatState(Config.DEFAULT_CHATSTATE)) {
+				if (this.sendChatStates()) {
+					packet.addChild(ChatState.toElement(message.getConversation().getOutgoingChatState()));
+				}
 			}
 			sendMessagePacket(account, packet);
 		}
@@ -2044,6 +2062,10 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 
 	public boolean confirmMessages() {
 		return getPreferences().getBoolean("confirm_messages", true);
+	}
+
+	public boolean sendChatStates() {
+		return getPreferences().getBoolean("chat_states", false);
 	}
 
 	public boolean saveEncryptedMessages() {

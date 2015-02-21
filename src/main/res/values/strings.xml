@@ -445,4 +445,8 @@
     <string name="offering_x_file">Offering %s</string>
     <string name="hide_offline">Hide offline</string>
     <string name="disable_account">Disable Account</string>
+    <string name="contact_is_typing">%s is typing...</string>
+    <string name="contact_has_stopped_typing">%s has stopped typing</string>
+    <string name="pref_chat_states">Typing notifications</string>
+    <string name="pref_chat_states_summary">Let your contact know when you are writing a new message</string>
 </resources>

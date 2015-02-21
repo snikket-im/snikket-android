@@ -2,6 +2,8 @@ package eu.siacs.conversations;
 
 import android.graphics.Bitmap;
 
+import eu.siacs.conversations.xmpp.chatstate.ChatState;
+
 public final class Config {
 
 	public static final String LOGTAG = "conversations";
@@ -29,6 +31,9 @@ public final class Config {
 	public static final long MILLISECONDS_IN_DAY = 24 * 60 * 60 * 1000;
 	public static final long MAM_MAX_CATCHUP =  MILLISECONDS_IN_DAY / 2;
 	public static final int MAM_MAX_MESSAGES = 500;
+
+	public static final ChatState DEFAULT_CHATSTATE = ChatState.ACTIVE;
+	public static final int TYPING_TIMEOUT = 8;
 
 	public static final String ENABLED_CIPHERS[] = {
 		"TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256",
