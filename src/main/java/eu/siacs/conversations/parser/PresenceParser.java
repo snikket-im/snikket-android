@@ -1,5 +1,7 @@
 package eu.siacs.conversations.parser;
 
+import java.util.ArrayList;
+
 import eu.siacs.conversations.crypto.PgpEngine;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
@@ -27,8 +29,12 @@ public class PresenceParser extends AbstractParser implements
 			final MucOptions mucOptions = conversation.getMucOptions();
 			boolean before = mucOptions.online();
 			int count = mucOptions.getUsers().size();
+			final ArrayList<MucOptions.User> tileUserBefore = new ArrayList<>(mucOptions.getUsers().subList(0,Math.min(mucOptions.getUsers().size(),4)));
 			mucOptions.processPacket(packet, mPgpEngine);
-			mXmppConnectionService.getAvatarService().clear(conversation);
+			final ArrayList<MucOptions.User> tileUserAfter = new ArrayList<>(mucOptions.getUsers().subList(0,Math.min(mucOptions.getUsers().size(),4)));
+			if (!tileUserAfter.equals(tileUserBefore)) {
+				mXmppConnectionService.getAvatarService().clear(conversation);
+			}
 			if (before != mucOptions.online() || (mucOptions.online() && count != mucOptions.getUsers().size())) {
 				mXmppConnectionService.updateConversationUi();
 			} else if (mucOptions.online()) {
