@@ -54,8 +54,10 @@ public class PublishProfilePictureActivity extends XmppActivity {
 				@Override
 				public void run() {
 					if (mInitialAccountSetup) {
-						startActivity(new Intent(getApplicationContext(),
-								StartConversationActivity.class));
+						Intent intent = new Intent(getApplicationContext(),
+								StartConversationActivity.class);
+						intent.putExtra("init",true);
+						startActivity(intent);
 					}
 					Toast.makeText(PublishProfilePictureActivity.this,
 							R.string.avatar_has_been_published,
@@ -112,8 +114,10 @@ public class PublishProfilePictureActivity extends XmppActivity {
 			@Override
 			public void onClick(View v) {
 				if (mInitialAccountSetup) {
-					startActivity(new Intent(getApplicationContext(),
-							StartConversationActivity.class));
+					Intent intent = new Intent(getApplicationContext(),
+							StartConversationActivity.class);
+					intent.putExtra("init",true);
+					startActivity(intent);
 				}
 				finish();
 			}

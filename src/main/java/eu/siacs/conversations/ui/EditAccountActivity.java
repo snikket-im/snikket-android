@@ -221,6 +221,7 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 				if (avatar != null) {
 					intent = new Intent(getApplicationContext(),
 							StartConversationActivity.class);
+					intent.putExtra("init",true);
 				} else {
 					intent = new Intent(getApplicationContext(),
 							PublishProfilePictureActivity.class);
@@ -379,6 +380,7 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 			if (getActionBar() != null) {
 				getActionBar().setDisplayHomeAsUpEnabled(false);
 				getActionBar().setDisplayShowHomeEnabled(false);
+				getActionBar().setHomeButtonEnabled(false);
 			}
 			this.mCancelButton.setEnabled(false);
 			this.mCancelButton.setTextColor(getSecondaryTextColor());

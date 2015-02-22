@@ -84,6 +84,7 @@ public class ConversationActivity extends XmppActivity
 	private Toast prepareFileToast;
 
 	private boolean mActivityPaused = false;
+	private boolean mRedirected = true;
 
 	public Conversation getSelectedConversation() {
 		return this.mSelectedConversation;
@@ -720,6 +721,7 @@ public class ConversationActivity extends XmppActivity
 	@Override
 	public void onStart() {
 		super.onStart();
+		this.mRedirected = false;
 		if (this.xmppConnectionServiceBound) {
 			this.onBackendConnected();
 		}
@@ -776,11 +778,19 @@ public class ConversationActivity extends XmppActivity
 		this.xmppConnectionService.getNotificationService().setIsInForeground(true);
 		updateConversationList();
 		if (xmppConnectionService.getAccounts().size() == 0) {
-			startActivity(new Intent(this, EditAccountActivity.class));
-			finish();
+			if (!mRedirected) {
+				this.mRedirected = true;
+				startActivity(new Intent(this, EditAccountActivity.class));
+				finish();
+			}
 		} else if (conversationList.size() <= 0) {
-			startActivity(new Intent(this, StartConversationActivity.class));
-			finish();
+			if (!mRedirected) {
+				this.mRedirected = true;
+				Intent intent = new Intent(this, StartConversationActivity.class);
+				intent.putExtra("init",true);
+				startActivity(intent);
+				finish();
+			}
 		} else if (getIntent() != null && VIEW_CONVERSATION.equals(getIntent().getType())) {
 			handleViewConversationIntent(getIntent());
 		} else if (selectConversationByUuid(mOpenConverstaion)) {
@@ -1010,11 +1020,19 @@ public class ConversationActivity extends XmppActivity
 	protected void refreshUiReal() {
 		updateConversationList();
 		if (xmppConnectionService != null && xmppConnectionService.getAccounts().size() == 0) {
-			startActivity(new Intent(this, EditAccountActivity.class));
-			finish();
+			if (!mRedirected) {
+				this.mRedirected = true;
+				startActivity(new Intent(this, EditAccountActivity.class));
+				finish();
+			}
 		} else if (conversationList.size() == 0) {
-			startActivity(new Intent(this, StartConversationActivity.class));
-			finish();
+			if (!mRedirected) {
+				this.mRedirected = true;
+				Intent intent = new Intent(this, StartConversationActivity.class);
+				intent.putExtra("init",true);
+				startActivity(intent);
+				finish();
+			}
 		} else {
 			ConversationActivity.this.mConversationFragment.updateMessages();
 			updateActionBarTitle();

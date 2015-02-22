@@ -574,9 +574,15 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 				this.mActivatedAccounts.add(account.getJid().toBareJid().toString());
 			}
 		}
+		final Intent intent = getIntent();
+		final ActionBar ab = getActionBar();
+		if (intent != null && intent.getBooleanExtra("init",false) && ab != null) {
+			ab.setDisplayShowHomeEnabled(false);
+			ab.setDisplayHomeAsUpEnabled(false);
+			ab.setHomeButtonEnabled(false);
+		}
 		this.mKnownHosts = xmppConnectionService.getKnownHosts();
-		this.mKnownConferenceHosts = xmppConnectionService
-			.getKnownConferenceHosts();
+		this.mKnownConferenceHosts = xmppConnectionService.getKnownConferenceHosts();
 		if (this.mPendingInvite != null) {
 			mPendingInvite.invite();
 			this.mPendingInvite = null;
