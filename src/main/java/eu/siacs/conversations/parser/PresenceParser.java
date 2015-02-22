@@ -29,9 +29,9 @@ public class PresenceParser extends AbstractParser implements
 			final MucOptions mucOptions = conversation.getMucOptions();
 			boolean before = mucOptions.online();
 			int count = mucOptions.getUsers().size();
-			final ArrayList<MucOptions.User> tileUserBefore = new ArrayList<>(mucOptions.getUsers().subList(0,Math.min(mucOptions.getUsers().size(),4)));
+			final ArrayList<MucOptions.User> tileUserBefore = new ArrayList<>(mucOptions.getUsers().subList(0,Math.min(mucOptions.getUsers().size(),5)));
 			mucOptions.processPacket(packet, mPgpEngine);
-			final ArrayList<MucOptions.User> tileUserAfter = new ArrayList<>(mucOptions.getUsers().subList(0,Math.min(mucOptions.getUsers().size(),4)));
+			final ArrayList<MucOptions.User> tileUserAfter = new ArrayList<>(mucOptions.getUsers().subList(0,Math.min(mucOptions.getUsers().size(),5)));
 			if (!tileUserAfter.equals(tileUserBefore)) {
 				mXmppConnectionService.getAvatarService().clear(conversation);
 			}
