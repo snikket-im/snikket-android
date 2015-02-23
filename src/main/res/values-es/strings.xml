@@ -417,4 +417,9 @@
   <string name="sending_x_file">Enviando %s</string>
   <string name="offering_x_file">Ofreciendo %s</string>
   <string name="hide_offline">Ocultar desconectados</string>
+  <string name="disable_account">Deshabilitar Cuenta</string>
+  <string name="contact_is_typing">%s está escribiendo...</string>
+  <string name="contact_has_stopped_typing">%s ha dejado de escribir</string>
+  <string name="pref_chat_states">Notificación de escritura</string>
+  <string name="pref_chat_states_summary">Permite a tus contactos saber cuando estás escribiendo un nuevo mensaje</string>
 </resources>

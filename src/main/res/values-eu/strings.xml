@@ -416,4 +416,10 @@
   <string name="avatar_has_been_published">Profileko argazkia argitaratu da</string>
   <string name="sending_x_file">%s bidaltzen</string>
   <string name="offering_x_file">%s eskeintzen...</string>
+  <string name="hide_offline">Lineaz kanpokoak ezkutatu</string>
+  <string name="disable_account">Kontua ezgaitu</string>
+  <string name="contact_is_typing">%s idazten ari da...</string>
+  <string name="contact_has_stopped_typing">%s idazteari utzi dio</string>
+  <string name="pref_chat_states">Idazketa jakinarazpenak</string>
+  <string name="pref_chat_states_summary">Zure kontaktuak mezu berri bat noiz idazten ari zaren jakin dezan baimendu</string>
 </resources>
