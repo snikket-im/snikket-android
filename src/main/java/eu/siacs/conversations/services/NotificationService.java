@@ -437,9 +437,6 @@ public class NotificationService {
 	}
 
 	public void setIsInForeground(final boolean foreground) {
-		if (foreground != this.mIsInForeground) {
-			Log.d(Config.LOGTAG,"setIsInForeground("+Boolean.toString(foreground)+")");
-		}
 		this.mIsInForeground = foreground;
 	}
 
