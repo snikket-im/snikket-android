@@ -1341,6 +1341,9 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 				}
 			}
 		}
+		for(Conversation conversation : getConversations()) {
+			conversation.setIncomingChatState(ChatState.ACTIVE);
+		}
 		this.mNotificationService.setIsInForeground(false);
 		Log.d(Config.LOGTAG, "app switched into background");
 	}
