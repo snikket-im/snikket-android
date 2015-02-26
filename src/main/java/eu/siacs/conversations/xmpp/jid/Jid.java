@@ -60,6 +60,8 @@ public final class Jid {
 	}
 
 	private Jid(final String jid) throws InvalidJidException {
+		if (jid == null) throw new InvalidJidException(InvalidJidException.IS_NULL);
+
 		// Hackish Android way to count the number of chars in a string... should work everywhere.
 		final int atCount = jid.length() - jid.replace("@", "").length();
 		final int slashCount = jid.length() - jid.replace("/", "").length();
