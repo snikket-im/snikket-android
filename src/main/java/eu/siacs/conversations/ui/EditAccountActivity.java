@@ -102,6 +102,8 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 				} catch (final InvalidJidException ignored) {
 					return;
 				}
+				mAccountJid.setError(null);
+				mPasswordConfirm.setError(null);
 				mAccount.setPassword(password);
 				mAccount.setOption(Account.OPTION_REGISTER, registerNewAccount);
 				xmppConnectionService.updateAccount(mAccount);
@@ -493,6 +495,8 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 			if (this.mAccount.errorStatus()) {
 				this.mAccountJid.setError(getString(this.mAccount.getStatus().getReadableId()));
 				this.mAccountJid.requestFocus();
+			} else {
+				this.mAccountJid.setError(null);
 			}
 			this.mStats.setVisibility(View.GONE);
 		}
