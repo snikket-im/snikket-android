@@ -148,7 +148,7 @@ public class Account extends AbstractEntity {
 		try {
 			this.keys = new JSONObject(keys);
 		} catch (final JSONException ignored) {
-
+			this.keys = new JSONObject();
 		}
 		this.avatar = avatar;
 	}
