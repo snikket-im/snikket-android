@@ -214,7 +214,7 @@ public class NotificationService {
 			mBuilder.setDefaults(0);
 			mBuilder.setSmallIcon(R.drawable.ic_notification);
 			mBuilder.setDeleteIntent(createDeleteIntent());
-			mBuilder.setLights(0xffffffff, 2000, 4000);
+			mBuilder.setLights(0xff259b24, 2000, 3000);
 			final Notification notification = mBuilder.build();
 			notificationManager.notify(NOTIFICATION_ID, notification);
 		}
