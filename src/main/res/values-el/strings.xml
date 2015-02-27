@@ -417,4 +417,9 @@
   <string name="sending_x_file">Αποστολή του %s</string>
   <string name="offering_x_file">Προσφορά του %s</string>
   <string name="hide_offline">Απόκρυψη των εκτός σύνδεσης</string>
+  <string name="disable_account">Απενεργοποίηση λογαριασμού</string>
+  <string name="contact_is_typing">Ο χρήστης %s γράφει...</string>
+  <string name="contact_has_stopped_typing">Ο χρήστης %s σταμάτησε να γράφει</string>
+  <string name="pref_chat_states">Ειδοποιήσεις πληκτρολόγησης</string>
+  <string name="pref_chat_states_summary">Επιτρέψτε στην επαφή σας να γνωρίζει πότε γράφετε ένα νέο μήνυμα</string>
 </resources>

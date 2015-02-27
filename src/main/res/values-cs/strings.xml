@@ -114,7 +114,7 @@
   <string name="pref_never_send_crash">Neodesílat detaily o pádu aplikace</string>
   <string name="pref_never_send_crash_summary">Zasláním detailů o důvodu selhání pomůžete dalšímu vývoji aplikace Konverzace</string>
   <string name="pref_confirm_messages">Potvrzovat zprávy</string>
-  <string name="pref_confirm_messages_summary">Dá vědět kontaktům, že zpráva byla přijata a přečtena</string>
+  <string name="pref_confirm_messages_summary">Oznamovat kontaktům, že zpráva byla přijata a přečtena</string>
   <string name="pref_ui_options">Nastavení UI</string>
   <string name="openpgp_error">OpenKeychain nahlásil chybu</string>
   <string name="error_decrypting_file">I/O chyba dešifrování souboru</string>
@@ -416,4 +416,10 @@
   <string name="avatar_has_been_published">Avatar byl zveřejněn!</string>
   <string name="sending_x_file">Odesílám %s</string>
   <string name="offering_x_file">Nabízím %s</string>
+  <string name="hide_offline">Skrýt offline</string>
+  <string name="disable_account">Vypnout účet</string>
+  <string name="contact_is_typing">%s píše...</string>
+  <string name="contact_has_stopped_typing">%s přestal(a) psát</string>
+  <string name="pref_chat_states">Upozornění při psaní</string>
+  <string name="pref_chat_states_summary">Oznamovat kontaktům že píšete novou zprávu</string>
 </resources>
