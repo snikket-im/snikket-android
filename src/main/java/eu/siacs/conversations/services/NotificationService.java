@@ -211,6 +211,7 @@ public class NotificationService {
 				mBuilder.setCategory(Notification.CATEGORY_MESSAGE);
 			}
 			setNotificationColor(mBuilder);
+			mBuilder.setDefaults(0);
 			mBuilder.setSmallIcon(R.drawable.ic_notification);
 			mBuilder.setDeleteIntent(createDeleteIntent());
 			mBuilder.setLights(0xffffffff, 2000, 4000);
