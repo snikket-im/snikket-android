@@ -332,17 +332,18 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 		final MenuItem showBlocklist = menu.findItem(R.id.action_show_block_list);
 		final MenuItem showMoreInfo = menu.findItem(R.id.action_server_info_show_more);
 		final MenuItem changePassword = menu.findItem(R.id.action_change_password_on_server);
-		if (mAccount == null) {
+		if (mAccount != null && mAccount.isOnlineAndConnected()) {
+			if (!mAccount.getXmppConnection().getFeatures().blocking()) {
+				showBlocklist.setVisible(false);
+			}
+			if (!mAccount.getXmppConnection().getFeatures().register()) {
+				changePassword.setVisible(false);
+			}
+		} else {
 			showQrCode.setVisible(false);
 			showBlocklist.setVisible(false);
 			showMoreInfo.setVisible(false);
 			changePassword.setVisible(false);
-		} else if (mAccount.getStatus() != Account.State.ONLINE) {
-			showBlocklist.setVisible(false);
-			showMoreInfo.setVisible(false);
-			changePassword.setVisible(false);
-		} else if (!mAccount.getXmppConnection().getFeatures().blocking()) {
-			showBlocklist.setVisible(false);
 		}
 		return true;
 	}
