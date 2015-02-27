@@ -275,7 +275,7 @@ public class MucOptions {
 				User user = new User();
 				if (x != null) {
 					Element item = x.findChild("item");
-					if (item != null) {
+					if (item != null && name != null) {
 						user.setName(name);
 						user.setAffiliation(item.getAttribute("affiliation"));
 						user.setRole(item.getAttribute("role"));
