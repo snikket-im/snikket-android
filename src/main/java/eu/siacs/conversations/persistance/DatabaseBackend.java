@@ -278,6 +278,8 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 			return (count > 0);
 		} catch (SQLiteCantOpenDatabaseException e) {
 			return true; // better safe than sorry
+		} catch (RuntimeException e) {
+			return true; // better safe than sorry
 		}
 	}
 
