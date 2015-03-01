@@ -362,7 +362,8 @@ public class Message extends AbstractEntity {
 			 message.getDownloadable() == null &&
 			 message.getEncryption() != Message.ENCRYPTION_PGP &&
 			 this.getType() == message.getType() &&
-			 this.getStatus() == message.getStatus() &&
+			 //this.getStatus() == message.getStatus() &&
+			 isStatusMergeable(this.getStatus(),message.getStatus()) &&
 			 this.getEncryption() == message.getEncryption() &&
 			 this.getCounterpart() != null &&
 			 this.getCounterpart().equals(message.getCounterpart()) &&
@@ -372,6 +373,17 @@ public class Message extends AbstractEntity {
 			 !message.getBody().startsWith(ME_COMMAND) &&
 			 !this.getBody().startsWith(ME_COMMAND)
 			);
+	}
+
+	private static boolean isStatusMergeable(int a, int b) {
+		return a == b || (
+				( a == Message.STATUS_SEND_RECEIVED && b == Message.STATUS_UNSEND)
+				|| (a == Message.STATUS_SEND_RECEIVED && b == Message.STATUS_SEND)
+				|| (a == Message.STATUS_UNSEND && b == Message.STATUS_SEND)
+				|| (a == Message.STATUS_UNSEND && b == Message.STATUS_SEND_RECEIVED)
+				|| (a == Message.STATUS_SEND && b == Message.STATUS_UNSEND)
+				|| (a == Message.STATUS_SEND && b == Message.STATUS_SEND_RECEIVED)
+		);
 	}
 
 	public String getMergedBody() {
@@ -387,6 +399,10 @@ public class Message extends AbstractEntity {
 	}
 
 	public int getMergedStatus() {
+		final Message next = this.next();
+		if (this.mergeable(next)) {
+			return next.getStatus();
+		}
 		return getStatus();
 	}
 
