@@ -402,14 +402,19 @@ public class MessageParser extends AbstractParser implements
 			Element event = packet.findChild("event",
 					"http://jabber.org/protocol/pubsub#event");
 			parseEvent(event, from, account);
-		} else if (from != null
-				&& packet.hasChild("displayed", "urn:xmpp:chat-markers:0")) {
+		} else if (from != null && packet.hasChild("displayed", "urn:xmpp:chat-markers:0")) {
 			String id = packet
 					.findChild("displayed", "urn:xmpp:chat-markers:0")
 					.getAttribute("id");
 			updateLastseen(packet, account, true);
-			mXmppConnectionService.markMessage(account, from.toBareJid(),
-					id, Message.STATUS_SEND_DISPLAYED);
+			final Message displayedMessage = mXmppConnectionService.markMessage(account, from.toBareJid(), id, Message.STATUS_SEND_DISPLAYED);
+			Message message = displayedMessage.prev();
+			while(message != null
+					&& message.getStatus() == Message.STATUS_SEND_RECEIVED
+					&& message.getTimeSent() < displayedMessage.getTimeSent()) {
+				mXmppConnectionService.markMessage(message,Message.STATUS_SEND_DISPLAYED);
+				message = message.prev();
+			}
 		} else if (from != null
 				&& packet.hasChild("received", "urn:xmpp:chat-markers:0")) {
 			String id = packet.findChild("received", "urn:xmpp:chat-markers:0")

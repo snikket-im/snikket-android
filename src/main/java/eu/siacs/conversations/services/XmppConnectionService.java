@@ -2013,19 +2013,20 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		}
 	}
 
-	public boolean markMessage(final Account account, final Jid recipient, final String uuid,
-							   final int status) {
+	public Message markMessage(final Account account, final Jid recipient, final String uuid, final int status) {
 		if (uuid == null) {
-			return false;
-		} else {
-			for (Conversation conversation : getConversations()) {
-				if (conversation.getJid().equals(recipient)
-						&& conversation.getAccount().equals(account)) {
-					return markMessage(conversation, uuid, status);
-				}
-			}
-			return false;
+			return null;
 		}
+		for (Conversation conversation : getConversations()) {
+			if (conversation.getJid().equals(recipient) && conversation.getAccount() == account) {
+				final Message message = conversation.findSentMessageWithUuid(uuid);
+				if (message != null) {
+					markMessage(message, status);
+				}
+				return message;
+			}
+		}
+		return null;
 	}
 
 	public boolean markMessage(Conversation conversation, String uuid,
