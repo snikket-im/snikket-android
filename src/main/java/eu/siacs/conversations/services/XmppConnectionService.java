@@ -2080,6 +2080,14 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		return getPreferences().getBoolean("indicate_received", false);
 	}
 
+	public int unreadCount() {
+		int count = 0;
+		for(Conversation conversation : getConversations()) {
+			count += conversation.unreadCount();
+		}
+		return count;
+	}
+
 	public void updateConversationUi() {
 		if (mOnConversationUpdate != null) {
 			mOnConversationUpdate.onConversationUpdate();

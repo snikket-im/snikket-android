@@ -736,6 +736,19 @@ public class Conversation extends AbstractEntity implements Blockable {
 		}
 	}
 
+	public int unreadCount() {
+		synchronized (this.messages) {
+			int count = 0;
+			for(int i = this.messages.size() - 1; i >= 0; --i) {
+				if (this.messages.get(i).isRead()) {
+					return count;
+				}
+				++count;
+			}
+			return count;
+		}
+	}
+
 	public class Smp {
 		public static final int STATUS_NONE = 0;
 		public static final int STATUS_CONTACT_REQUESTED = 1;
