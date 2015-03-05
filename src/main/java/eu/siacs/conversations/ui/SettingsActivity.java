@@ -65,7 +65,7 @@ public class SettingsActivity extends XmppActivity implements
 				for (Account account : xmppConnectionService.getAccounts()) {
                     account.setResource(resource);
                     if (!account.isOptionSet(Account.OPTION_DISABLED)) {
-						xmppConnectionService.reconnectAccount(account, false);
+						xmppConnectionService.reconnectAccountInBackground(account);
 					}
 				}
 			}

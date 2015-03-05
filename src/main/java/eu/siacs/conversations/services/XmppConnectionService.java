@@ -1136,7 +1136,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		account.initOtrEngine(this);
 		databaseBackend.createAccount(account);
 		this.accounts.add(account);
-		this.reconnectAccount(account, false);
+		this.reconnectAccountInBackground(account);
 		updateAccountUi();
 	}
 
@@ -1972,24 +1972,29 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	}
 
 	public void reconnectAccount(final Account account, final boolean force) {
-		new Thread(new Runnable() {
+		synchronized (account) {
+			if (account.getXmppConnection() != null) {
+				disconnect(account, force);
+			}
+			if (!account.isOptionSet(Account.OPTION_DISABLED)) {
+				if (account.getXmppConnection() == null) {
+					account.setXmppConnection(createConnection(account));
+				}
+				Thread thread = new Thread(account.getXmppConnection());
+				thread.start();
+				scheduleWakeUpCall(Config.CONNECT_TIMEOUT, account.getUuid().hashCode());
+			} else {
+				account.getRoster().clearPresences();
+				account.setXmppConnection(null);
+			}
+		}
+	}
 
+	public void reconnectAccountInBackground(final Account account) {
+		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				if (account.getXmppConnection() != null) {
-					disconnect(account, force);
-				}
-				if (!account.isOptionSet(Account.OPTION_DISABLED)) {
-					if (account.getXmppConnection() == null) {
-						account.setXmppConnection(createConnection(account));
-					}
-					Thread thread = new Thread(account.getXmppConnection());
-					thread.start();
-					scheduleWakeUpCall(Config.CONNECT_TIMEOUT, account.getUuid().hashCode());
-				} else {
-					account.getRoster().clearPresences();
-					account.setXmppConnection(null);
-				}
+				reconnectAccount(account,false);
 			}
 		}).start();
 	}

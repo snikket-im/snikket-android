@@ -242,6 +242,13 @@ public class XmppConnection implements Runnable {
 
 	@Override
 	public void run() {
+		try {
+			if (socket != null) {
+				socket.close();
+			}
+		} catch (final IOException ignored) {
+
+		}
 		connect();
 	}
 
