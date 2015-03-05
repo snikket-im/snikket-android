@@ -6,6 +6,7 @@ import net.java.otr4j.session.SessionID;
 
 import java.net.IDN;
 
+import eu.siacs.conversations.Config;
 import gnu.inet.encoding.Stringprep;
 import gnu.inet.encoding.StringprepException;
 
@@ -103,7 +104,7 @@ public final class Jid {
 		} else {
 			final String lp = jid.substring(0, atLoc);
 			try {
-				localpart = Stringprep.nodeprep(lp);
+				localpart = Config.DISABLE_STRING_PREP ? lp : Stringprep.nodeprep(lp);
 			} catch (final StringprepException e) {
 				throw new InvalidJidException(InvalidJidException.STRINGPREP_FAIL, e);
 			}
@@ -118,7 +119,7 @@ public final class Jid {
 		if (slashCount > 0) {
 			final String rp = jid.substring(slashLoc + 1, jid.length());
 			try {
-				resourcepart = Stringprep.resourceprep(rp);
+				resourcepart = Config.DISABLE_STRING_PREP ? rp : Stringprep.resourceprep(rp);
 			} catch (final StringprepException e) {
 				throw new InvalidJidException(InvalidJidException.STRINGPREP_FAIL, e);
 			}
@@ -154,7 +155,7 @@ public final class Jid {
 			throw new InvalidJidException(InvalidJidException.INVALID_PART_LENGTH);
 		}
 
-		Jid.cache.put(jid,this);
+		Jid.cache.put(jid, this);
 
 		this.displayjid = finaljid;
 	}

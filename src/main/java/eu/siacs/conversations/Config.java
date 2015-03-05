@@ -27,6 +27,7 @@ public final class Config {
 	public static final int REFRESH_UI_INTERVAL = 500;
 
 	public static final boolean NO_PROXY_LOOKUP = false; //useful to debug ibb
+	public static final boolean DISABLE_STRING_PREP = false; // setting to true might increase startup performance
 
 	public static final long MILLISECONDS_IN_DAY = 24 * 60 * 60 * 1000;
 	public static final long MAM_MAX_CATCHUP =  MILLISECONDS_IN_DAY / 2;
