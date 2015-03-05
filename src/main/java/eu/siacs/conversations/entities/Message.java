@@ -117,7 +117,7 @@ public class Message extends AbstractEntity {
 		try {
 			String value = cursor.getString(cursor.getColumnIndex(COUNTERPART));
 			if (value != null) {
-				jid = Jid.fromString(value);
+				jid = Jid.fromString(value, true);
 			} else {
 				jid = null;
 			}
@@ -128,7 +128,7 @@ public class Message extends AbstractEntity {
 		try {
 			String value = cursor.getString(cursor.getColumnIndex(TRUE_COUNTERPART));
 			if (value != null) {
-				trueCounterpart = Jid.fromString(value);
+				trueCounterpart = Jid.fromString(value, true);
 			} else {
 				trueCounterpart = null;
 			}

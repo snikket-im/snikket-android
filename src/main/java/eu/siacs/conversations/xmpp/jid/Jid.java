@@ -46,7 +46,11 @@ public final class Jid {
 	}
 
 	public static Jid fromString(final String jid) throws InvalidJidException {
-		return new Jid(jid);
+		return Jid.fromString(jid, false);
+	}
+
+	public static Jid fromString(final String jid, final boolean safe) throws InvalidJidException {
+		return new Jid(jid, safe);
 	}
 
 	public static Jid fromParts(final String localpart,
@@ -61,10 +65,10 @@ public final class Jid {
 		if (resourcepart != null && !resourcepart.isEmpty()) {
 			out = out + "/" + resourcepart;
 		}
-		return new Jid(out);
+		return new Jid(out, false);
 	}
 
-	private Jid(final String jid) throws InvalidJidException {
+	private Jid(final String jid, final boolean safe) throws InvalidJidException {
 		if (jid == null) throw new InvalidJidException(InvalidJidException.IS_NULL);
 
 		Jid fromCache = Jid.cache.get(jid);
@@ -104,7 +108,7 @@ public final class Jid {
 		} else {
 			final String lp = jid.substring(0, atLoc);
 			try {
-				localpart = Config.DISABLE_STRING_PREP ? lp : Stringprep.nodeprep(lp);
+				localpart = Config.DISABLE_STRING_PREP || safe ? lp : Stringprep.nodeprep(lp);
 			} catch (final StringprepException e) {
 				throw new InvalidJidException(InvalidJidException.STRINGPREP_FAIL, e);
 			}
@@ -119,7 +123,7 @@ public final class Jid {
 		if (slashCount > 0) {
 			final String rp = jid.substring(slashLoc + 1, jid.length());
 			try {
-				resourcepart = Config.DISABLE_STRING_PREP ? rp : Stringprep.resourceprep(rp);
+				resourcepart = Config.DISABLE_STRING_PREP || safe ? rp : Stringprep.resourceprep(rp);
 			} catch (final StringprepException e) {
 				throw new InvalidJidException(InvalidJidException.STRINGPREP_FAIL, e);
 			}

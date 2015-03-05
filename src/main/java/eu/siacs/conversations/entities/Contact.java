@@ -80,7 +80,7 @@ public class Contact implements ListItem, Blockable {
 				cursor.getLong(cursor.getColumnIndex(LAST_TIME)));
 		final Jid jid;
 		try {
-			jid = Jid.fromString(cursor.getString(cursor.getColumnIndex(JID)));
+			jid = Jid.fromString(cursor.getString(cursor.getColumnIndex(JID)), true);
 		} catch (final InvalidJidException e) {
 			// TODO: Borked DB... handle this somehow?
 			return null;
