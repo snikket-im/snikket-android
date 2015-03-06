@@ -143,7 +143,7 @@ public class MessageParser extends AbstractParser implements
 			finishedMessage.setRemoteMsgId(packet.getId());
 			finishedMessage.markable = isMarkable(packet);
 			finishedMessage.setCounterpart(from);
-			extractChatState(conversation,packet);
+			extractChatState(conversation, packet);
 			return finishedMessage;
 		} catch (Exception e) {
 			conversation.resetOtrSession();
@@ -408,11 +408,11 @@ public class MessageParser extends AbstractParser implements
 					.getAttribute("id");
 			updateLastseen(packet, account, true);
 			final Message displayedMessage = mXmppConnectionService.markMessage(account, from.toBareJid(), id, Message.STATUS_SEND_DISPLAYED);
-			Message message = displayedMessage.prev();
-			while(message != null
+			Message message = displayedMessage == null ? null :displayedMessage.prev();
+			while (message != null
 					&& message.getStatus() == Message.STATUS_SEND_RECEIVED
 					&& message.getTimeSent() < displayedMessage.getTimeSent()) {
-				mXmppConnectionService.markMessage(message,Message.STATUS_SEND_DISPLAYED);
+				mXmppConnectionService.markMessage(message, Message.STATUS_SEND_DISPLAYED);
 				message = message.prev();
 			}
 		} else if (from != null
