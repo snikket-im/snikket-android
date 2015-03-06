@@ -1012,8 +1012,13 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 	}
 
 	@Override
-	public void onEnterPressed() {
-		sendMessage();
+	public boolean onEnterPressed() {
+		if (activity.enterIsSend()) {
+			sendMessage();
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	@Override

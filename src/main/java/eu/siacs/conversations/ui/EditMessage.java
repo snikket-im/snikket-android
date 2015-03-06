@@ -37,10 +37,9 @@ public class EditMessage extends EditText {
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_ENTER) {
-			if (keyboardListener != null) {
-				keyboardListener.onEnterPressed();
+			if (keyboardListener != null && keyboardListener.onEnterPressed()) {
+				return true;
 			}
-			return true;
 		}
 		return super.onKeyDown(keyCode, event);
 	}
@@ -70,7 +69,7 @@ public class EditMessage extends EditText {
 	}
 
 	public interface KeyboardListener {
-		public void onEnterPressed();
+		public boolean onEnterPressed();
 		public void onTypingStarted();
 		public void onTypingStopped();
 		public void onTextDeleted();
