@@ -16,3 +16,8 @@ The Activity should then return an array of contacts instead of just one
 Private MUC messages either dont request message receipts or dont respond to them. The source
 of error should be determined and eliminated. A rather small tasks that just teaches you a bit
 about the stanza parser and generator in Conversations
+
+####Edit dynamic tags / groups
+The context menu for the contact list (StartConversationActivity) should offer the ability to
+edit groups. (Any UI decissions are left to you) Quick suggestion though: Dialog with
+checkboxes for existing groups and some way to enter new tags.
