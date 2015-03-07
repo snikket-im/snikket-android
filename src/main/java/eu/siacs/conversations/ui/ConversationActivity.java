@@ -33,7 +33,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import eu.siacs.conversations.R;
-import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Blockable;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
@@ -63,6 +62,7 @@ public class ConversationActivity extends XmppActivity
 	private static final int ATTACHMENT_CHOICE_TAKE_PHOTO = 0x0302;
 	private static final int ATTACHMENT_CHOICE_CHOOSE_FILE = 0x0303;
 	private static final int ATTACHMENT_CHOICE_RECORD_VOICE = 0x0304;
+	private static final int ATTACHMENT_CHOICE_LOCATION = 0x0305;
 	private static final String STATE_OPEN_CONVERSATION = "state_open_conversation";
 	private static final String STATE_PANEL_OPEN = "state_panel_open";
 	private static final String STATE_PENDING_URI = "state_pending_uri";
@@ -71,6 +71,7 @@ public class ConversationActivity extends XmppActivity
 	private boolean mPanelOpen = true;
 	private Uri mPendingImageUri = null;
 	private Uri mPendingFileUri = null;
+	private Uri mPendingGeoUri = null;
 
 	private View mContentView;
 
@@ -313,7 +314,6 @@ public class ConversationActivity extends XmppActivity
 					menuInviteContact.setVisible(getSelectedConversation().getMucOptions().canInvite());
 				} else {
 					menuMucDetails.setVisible(false);
-					final Account account = this.getSelectedConversation().getAccount();
 				}
 				if (this.getSelectedConversation().isMuted()) {
 					menuMute.setVisible(false);
@@ -325,50 +325,60 @@ public class ConversationActivity extends XmppActivity
 		return true;
 	}
 
-	private void selectPresenceToAttachFile(final int attachmentChoice) {
-		selectPresence(getSelectedConversation(), new OnPresenceSelected() {
+	private void selectPresenceToAttachFile(final int attachmentChoice, final int encryption) {
+		if (attachmentChoice == ATTACHMENT_CHOICE_LOCATION && encryption != Message.ENCRYPTION_OTR) {
+			getSelectedConversation().setNextCounterpart(null);
+			Intent intent = new Intent("eu.siacs.conversations.location.request");
+			startActivityForResult(intent,attachmentChoice);
+		} else {
+			selectPresence(getSelectedConversation(), new OnPresenceSelected() {
 
-			@Override
-			public void onPresenceSelected() {
-				Intent intent = new Intent();
-				boolean chooser = false;
-				switch (attachmentChoice) {
-					case ATTACHMENT_CHOICE_CHOOSE_IMAGE:
-						intent.setAction(Intent.ACTION_GET_CONTENT);
-						intent.setType("image/*");
-						chooser = true;
-						break;
-					case ATTACHMENT_CHOICE_TAKE_PHOTO:
-						mPendingImageUri = xmppConnectionService.getFileBackend().getTakePhotoUri();
-						intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
-						intent.putExtra(MediaStore.EXTRA_OUTPUT,mPendingImageUri);
-						break;
-					case ATTACHMENT_CHOICE_CHOOSE_FILE:
-						chooser = true;
-						intent.setType("*/*");
-						intent.addCategory(Intent.CATEGORY_OPENABLE);
-						intent.setAction(Intent.ACTION_GET_CONTENT);
-						break;
-					case ATTACHMENT_CHOICE_RECORD_VOICE:
-						intent.setAction(MediaStore.Audio.Media.RECORD_SOUND_ACTION);
-						break;
-				}
-				if (intent.resolveActivity(getPackageManager()) != null) {
-					if (chooser) {
-						startActivityForResult(
-								Intent.createChooser(intent,getString(R.string.perform_action_with)),
-								attachmentChoice);
-					} else {
-						startActivityForResult(intent, attachmentChoice);
+				@Override
+				public void onPresenceSelected() {
+					Intent intent = new Intent();
+					boolean chooser = false;
+					switch (attachmentChoice) {
+						case ATTACHMENT_CHOICE_CHOOSE_IMAGE:
+							intent.setAction(Intent.ACTION_GET_CONTENT);
+							intent.setType("image/*");
+							chooser = true;
+							break;
+						case ATTACHMENT_CHOICE_TAKE_PHOTO:
+							mPendingImageUri = xmppConnectionService.getFileBackend().getTakePhotoUri();
+							intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
+							intent.putExtra(MediaStore.EXTRA_OUTPUT, mPendingImageUri);
+							break;
+						case ATTACHMENT_CHOICE_CHOOSE_FILE:
+							chooser = true;
+							intent.setType("*/*");
+							intent.addCategory(Intent.CATEGORY_OPENABLE);
+							intent.setAction(Intent.ACTION_GET_CONTENT);
+							break;
+						case ATTACHMENT_CHOICE_RECORD_VOICE:
+							intent.setAction(MediaStore.Audio.Media.RECORD_SOUND_ACTION);
+							break;
+						case ATTACHMENT_CHOICE_LOCATION:
+							intent.setAction("eu.siacs.conversations.location.request");
+							break;
+					}
+					if (intent.resolveActivity(getPackageManager()) != null) {
+						if (chooser) {
+							startActivityForResult(
+									Intent.createChooser(intent, getString(R.string.perform_action_with)),
+									attachmentChoice);
+						} else {
+							startActivityForResult(intent, attachmentChoice);
+						}
 					}
 				}
-			}
-		});
+			});
+		}
 	}
 
 	private void attachFile(final int attachmentChoice) {
 		final Conversation conversation = getSelectedConversation();
-		if (conversation.getNextEncryption(forceEncryption()) == Message.ENCRYPTION_PGP) {
+		final int encryption = conversation.getNextEncryption(forceEncryption());
+		if (encryption == Message.ENCRYPTION_PGP) {
 			if (hasPgp()) {
 				if (conversation.getContact().getPgpKeyId() != 0) {
 					xmppConnectionService.getPgpEngine().hasKey(
@@ -378,13 +388,12 @@ public class ConversationActivity extends XmppActivity
 								@Override
 								public void userInputRequried(PendingIntent pi,
 										Contact contact) {
-									ConversationActivity.this.runIntent(pi,
-											attachmentChoice);
+									ConversationActivity.this.runIntent(pi,attachmentChoice);
 								}
 
 								@Override
 								public void success(Contact contact) {
-									selectPresenceToAttachFile(attachmentChoice);
+									selectPresenceToAttachFile(attachmentChoice,encryption);
 								}
 
 								@Override
@@ -406,7 +415,7 @@ public class ConversationActivity extends XmppActivity
 											.setNextEncryption(Message.ENCRYPTION_NONE);
 										xmppConnectionService.databaseBackend
 											.updateConversation(conversation);
-										selectPresenceToAttachFile(attachmentChoice);
+										selectPresenceToAttachFile(attachmentChoice,Message.ENCRYPTION_NONE);
 									}
 								});
 					}
@@ -414,11 +423,8 @@ public class ConversationActivity extends XmppActivity
 			} else {
 				showInstallPgpDialog();
 			}
-		} else if (getSelectedConversation().getNextEncryption(
-					forceEncryption()) == Message.ENCRYPTION_NONE) {
-			selectPresenceToAttachFile(attachmentChoice);
 		} else {
-			selectPresenceToAttachFile(attachmentChoice);
+			selectPresenceToAttachFile(attachmentChoice,encryption);
 		}
 	}
 
@@ -526,6 +532,9 @@ public class ConversationActivity extends XmppActivity
 		if (new Intent(MediaStore.Audio.Media.RECORD_SOUND_ACTION).resolveActivity(getPackageManager()) == null) {
 			attachFilePopup.getMenu().findItem(R.id.attach_record_voice).setVisible(false);
 		}
+		if (new Intent("eu.siacs.conversations.location.request").resolveActivity(getPackageManager()) == null) {
+			attachFilePopup.getMenu().findItem(R.id.attach_location).setVisible(false);
+		}
 		attachFilePopup.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 
 			@Override
@@ -542,6 +551,9 @@ public class ConversationActivity extends XmppActivity
 						break;
 					case R.id.attach_record_voice:
 						attachFile(ATTACHMENT_CHOICE_RECORD_VOICE);
+						break;
+					case R.id.attach_location:
+						attachFile(ATTACHMENT_CHOICE_LOCATION);
 						break;
 				}
 				return false;
@@ -809,6 +821,7 @@ public class ConversationActivity extends XmppActivity
 			showConversationsOverview();
 			mPendingImageUri = null;
 			mPendingFileUri = null;
+			mPendingGeoUri = null;
 			setSelectedConversation(conversationList.get(0));
 			this.mConversationFragment.reInit(getSelectedConversation());
 		}
@@ -819,6 +832,9 @@ public class ConversationActivity extends XmppActivity
 		} else if (mPendingFileUri != null) {
 			attachFileToConversation(getSelectedConversation(),mPendingFileUri);
 			mPendingFileUri = null;
+		} else if (mPendingGeoUri != null) {
+			attachLocationToConversation(getSelectedConversation(),mPendingGeoUri);
+			mPendingGeoUri = null;
 		}
 		ExceptionHelper.checkForCrash(this, this.xmppConnectionService);
 		setIntent(new Intent());
@@ -897,12 +913,40 @@ public class ConversationActivity extends XmppActivity
 				Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
 				intent.setData(mPendingImageUri);
 				sendBroadcast(intent);
+			} else if (requestCode == ATTACHMENT_CHOICE_LOCATION) {
+				double latitude = data.getDoubleExtra("latitude",0);
+				double longitude = data.getDoubleExtra("longitude",0);
+				this.mPendingGeoUri = Uri.parse("geo:"+String.valueOf(latitude)+","+String.valueOf(longitude));
+				if (xmppConnectionServiceBound) {
+					attachLocationToConversation(getSelectedConversation(), mPendingGeoUri);
+					this.mPendingGeoUri = null;
+				}
 			}
 		} else {
 			if (requestCode == ATTACHMENT_CHOICE_TAKE_PHOTO) {
 				mPendingImageUri = null;
 			}
 		}
+	}
+
+	private void attachLocationToConversation(Conversation conversation, Uri uri) {
+		xmppConnectionService.attachLocationToConversation(conversation,uri, new UiCallback<Message>() {
+
+			@Override
+			public void success(Message message) {
+				xmppConnectionService.sendMessage(message);
+			}
+
+			@Override
+			public void error(int errorCode, Message object) {
+
+			}
+
+			@Override
+			public void userInputRequried(PendingIntent pi, Message object) {
+
+			}
+		});
 	}
 
 	private void attachFileToConversation(Conversation conversation, Uri uri) {

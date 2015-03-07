@@ -34,6 +34,7 @@ import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.Message.ImageParams;
 import eu.siacs.conversations.ui.ConversationActivity;
+import eu.siacs.conversations.utils.GeoHelper;
 import eu.siacs.conversations.utils.UIHelper;
 
 public class MessageAdapter extends ArrayAdapter<Message> {
@@ -299,6 +300,21 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		viewHolder.download_button.setOnLongClickListener(openContextMenu);
 	}
 
+	private void displayLocationMessage(ViewHolder viewHolder, final Message message) {
+		viewHolder.image.setVisibility(View.GONE);
+		viewHolder.messageBody.setVisibility(View.GONE);
+		viewHolder.download_button.setVisibility(View.VISIBLE);
+		viewHolder.download_button.setText(R.string.show_location);
+		viewHolder.download_button.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				showLocation(message);
+			}
+		});
+		viewHolder.download_button.setOnLongClickListener(openContextMenu);
+	}
+
 	private void displayImageMessage(ViewHolder viewHolder,
 			final Message message) {
 		if (viewHolder.download_button != null) {
@@ -509,7 +525,11 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		} else if (message.getEncryption() == Message.ENCRYPTION_DECRYPTION_FAILED) {
 			displayDecryptionFailed(viewHolder);
 		} else {
-			displayTextMessage(viewHolder, message);
+			if (GeoHelper.isGeoUri(message.getBody())) {
+				displayLocationMessage(viewHolder,message);
+			} else {
+				displayTextMessage(viewHolder, message);
+			}
 		}
 
 		displayStatus(viewHolder, message);
@@ -542,6 +562,16 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		} else {
 			Toast.makeText(activity,R.string.no_application_found_to_open_file,Toast.LENGTH_SHORT).show();
 		}
+	}
+
+	public void showLocation(Message message) {
+		for(Intent intent : GeoHelper.createGeoIntentsFromMessage(message)) {
+			if (intent.resolveActivity(getContext().getPackageManager()) != null) {
+				getContext().startActivity(intent);
+				return;
+			}
+		}
+		Toast.makeText(activity,R.string.no_application_found_to_display_location,Toast.LENGTH_SHORT).show();
 	}
 
 	public interface OnContactPictureClicked {

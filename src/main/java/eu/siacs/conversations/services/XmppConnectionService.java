@@ -306,6 +306,24 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		return this.mAvatarService;
 	}
 
+	public void attachLocationToConversation(final Conversation conversation,
+											 final Uri uri,
+											 final UiCallback<Message> callback) {
+		int encryption = conversation.getNextEncryption(forceEncryption());
+		if (encryption == Message.ENCRYPTION_PGP) {
+			encryption = Message.ENCRYPTION_DECRYPTED;
+		}
+		Message message = new Message(conversation,uri.toString(),encryption);
+		if (conversation.getNextCounterpart() != null) {
+			message.setCounterpart(conversation.getNextCounterpart());
+		}
+		if (encryption == Message.ENCRYPTION_DECRYPTED) {
+			getPgpEngine().encrypt(message,callback);
+		} else {
+			callback.success(message);
+		}
+	}
+
 	public void attachFileToConversation(final Conversation conversation,
 			final Uri uri,
 			final UiCallback<Message> callback) {

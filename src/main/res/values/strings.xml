@@ -449,4 +449,7 @@
     <string name="contact_has_stopped_typing">%s has stopped typing</string>
     <string name="pref_chat_states">Typing notifications</string>
     <string name="pref_chat_states_summary">Let your contact know when you are writing a new message</string>
+    <string name="send_location">Send location</string>
+    <string name="show_location">Show location</string>
+    <string name="no_application_found_to_display_location">No application found to display location</string>
 </resources>

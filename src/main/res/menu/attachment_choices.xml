@@ -2,14 +2,21 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
-        android:id="@+id/attach_choose_picture"
-        android:title="@string/attach_choose_picture"/>
+        android:id="@+id/attach_location"
+        android:title="@string/send_location"/>
+
+    <item
+        android:id="@+id/attach_record_voice"
+        android:title="@string/attach_record_voice"/>
+
     <item
         android:id="@+id/attach_take_picture"
         android:title="@string/attach_take_picture"/>
-	<item
-		android:id="@+id/attach_record_voice"
-		android:title="@string/attach_record_voice"/>
+
+    <item
+        android:id="@+id/attach_choose_picture"
+        android:title="@string/attach_choose_picture"/>
+
     <item
         android:id="@+id/attach_choose_file"
         android:title="@string/choose_file"/>

@@ -8,6 +8,7 @@ import java.net.URL;
 import java.util.Arrays;
 
 import eu.siacs.conversations.Config;
+import eu.siacs.conversations.utils.GeoHelper;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
 
@@ -48,6 +49,7 @@ public class Message extends AbstractEntity {
 	public static final String SERVER_MSG_ID = "serverMsgId";
 	public static final String RELATIVE_FILE_PATH = "relativeFilePath";
 	public static final String ME_COMMAND = "/me ";
+
 
 	public boolean markable = false;
 	protected String conversationUuid;
@@ -368,6 +370,8 @@ public class Message extends AbstractEntity {
 			 this.getCounterpart() != null &&
 			 this.getCounterpart().equals(message.getCounterpart()) &&
 			 (message.getTimeSent() - this.getTimeSent()) <= (Config.MESSAGE_MERGE_WINDOW * 1000) &&
+			 !GeoHelper.isGeoUri(message.getBody()) &&
+			 !GeoHelper.isGeoUri(this.body) &&
 			 !message.bodyContainsDownloadable() &&
 			 !this.bodyContainsDownloadable() &&
 			 !message.getBody().startsWith(ME_COMMAND) &&
