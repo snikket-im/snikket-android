@@ -4,6 +4,7 @@ import java.security.SecureRandom;
 import java.text.Normalizer;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 
@@ -103,6 +104,21 @@ public final class CryptoHelper {
 		final List<String> platformCiphers = Arrays.asList(platformSupportedCipherSuites);
 		cipherSuites.retainAll(platformCiphers);
 		cipherSuites.addAll(platformCiphers);
+		filterWeakCipherSuites(cipherSuites);
 		return cipherSuites.toArray(new String[cipherSuites.size()]);
+	}
+
+	private static void filterWeakCipherSuites(final Collection<String> cipherSuites) {
+		final Iterator<String> it = cipherSuites.iterator();
+		while (it.hasNext()) {
+			String cipherName = it.next();
+			// remove all ciphers with no or very weak encryption or no authentication
+			for (String weakCipherPattern : Config.WEAK_CIPHER_PATTERNS) {
+				if (cipherName.contains(weakCipherPattern)) {
+					it.remove();
+					break;
+				}
+			}
+		}
 	}
 }
