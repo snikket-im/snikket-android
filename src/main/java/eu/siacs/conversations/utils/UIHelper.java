@@ -153,7 +153,13 @@ public class UIHelper {
 			if (message.getBody().startsWith(Message.ME_COMMAND)) {
 				return new Pair<>(message.getBody().replaceAll("^" + Message.ME_COMMAND,
 						UIHelper.getMessageDisplayName(message) + " "), false);
-			} else {
+			} else if (GeoHelper.isGeoUri(message.getBody())) {
+				if (message.getStatus() == Message.STATUS_RECEIVED) {
+					return new Pair<>(context.getString(R.string.received_location),true);
+				} else {
+					return new Pair<>(context.getString(R.string.location), true);
+				}
+			} else{
 				return new Pair<>(message.getBody().trim(), false);
 			}
 		}

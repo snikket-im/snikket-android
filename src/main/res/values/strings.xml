@@ -452,4 +452,6 @@
     <string name="send_location">Send location</string>
     <string name="show_location">Show location</string>
     <string name="no_application_found_to_display_location">No application found to display location</string>
+    <string name="location">Location</string>
+    <string name="received_location">Received location</string>
 </resources>
