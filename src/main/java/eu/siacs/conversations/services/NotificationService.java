@@ -40,6 +40,7 @@ import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.ui.ConversationActivity;
 import eu.siacs.conversations.ui.ManageAccountActivity;
 import eu.siacs.conversations.ui.TimePreference;
+import eu.siacs.conversations.utils.GeoHelper;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.XmppConnection;
 
@@ -279,6 +280,11 @@ public class NotificationService {
 						createDownloadIntent(message)
 						);
 			}
+			if ((message = getFirstLocationMessage(messages)) != null) {
+				mBuilder.addAction(R.drawable.ic_room_white_24dp,
+						mXmppConnectionService.getString(R.string.show_location),
+						createShowLocationIntent(message));
+			}
 			mBuilder.setContentIntent(createContentIntent(conversation));
 		}
 		return mBuilder;
@@ -342,6 +348,15 @@ public class NotificationService {
 		return null;
 	}
 
+	private Message getFirstLocationMessage(final Iterable<Message> messages) {
+		for(final Message message : messages) {
+			if (GeoHelper.isGeoUri(message.getBody())) {
+				return message;
+			}
+		}
+		return null;
+	}
+
 	private CharSequence getMergedBodies(final ArrayList<Message> messages) {
 		final StringBuilder text = new StringBuilder();
 		for (int i = 0; i < messages.size(); ++i) {
@@ -351,6 +366,16 @@ public class NotificationService {
 			}
 		}
 		return text.toString();
+	}
+
+	private PendingIntent createShowLocationIntent(final Message message) {
+		Iterable<Intent> intents = GeoHelper.createGeoIntentsFromMessage(message);
+		for(Intent intent : intents) {
+			if (intent.resolveActivity(mXmppConnectionService.getPackageManager()) != null) {
+				return PendingIntent.getActivity(mXmppConnectionService,18,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+			}
+		}
+		return createOpenConversationsIntent();
 	}
 
 	private PendingIntent createContentIntent(final String conversationUuid, final String downloadMessageUuid) {
