@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.IntentSender.SendIntentException;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.ContextMenu;
@@ -58,6 +59,7 @@ import eu.siacs.conversations.ui.XmppActivity.OnValueEdited;
 import eu.siacs.conversations.ui.adapter.MessageAdapter;
 import eu.siacs.conversations.ui.adapter.MessageAdapter.OnContactPictureClicked;
 import eu.siacs.conversations.ui.adapter.MessageAdapter.OnContactPictureLongClicked;
+import eu.siacs.conversations.utils.GeoHelper;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
 import eu.siacs.conversations.xmpp.jid.Jid;
 
@@ -410,19 +412,20 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 			MenuItem downloadImage = menu.findItem(R.id.download_image);
 			MenuItem cancelTransmission = menu.findItem(R.id.cancel_transmission);
 			if ((m.getType() != Message.TYPE_TEXT && m.getType() != Message.TYPE_PRIVATE)
-					|| m.getDownloadable() != null) {
+					|| m.getDownloadable() != null || GeoHelper.isGeoUri(m.getBody())) {
 				copyText.setVisible(false);
 			}
-			if (m.getType() == Message.TYPE_TEXT
+			if ((m.getType() == Message.TYPE_TEXT
 					|| m.getType() == Message.TYPE_PRIVATE
-					|| m.getDownloadable() != null) {
+					|| m.getDownloadable() != null)
+				&& (!GeoHelper.isGeoUri(m.getBody()))) {
 				shareWith.setVisible(false);
-					}
+			}
 			if (m.getStatus() != Message.STATUS_SEND_FAILED) {
 				sendAgain.setVisible(false);
 			}
-			if ((m.getType() != Message.TYPE_IMAGE && m.getDownloadable() == null)
-					|| m.getImageParams().url == null) {
+			if (((m.getType() != Message.TYPE_IMAGE && m.getDownloadable() == null)
+					|| m.getImageParams().url == null) && !GeoHelper.isGeoUri(m.getBody())) {
 				copyUrl.setVisible(false);
 					}
 			if (m.getType() != Message.TYPE_TEXT
@@ -467,16 +470,21 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 	private void shareWith(Message message) {
 		Intent shareIntent = new Intent();
 		shareIntent.setAction(Intent.ACTION_SEND);
-		shareIntent.putExtra(Intent.EXTRA_STREAM,
-				activity.xmppConnectionService.getFileBackend()
-				.getJingleFileUri(message));
-		shareIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-		String path = message.getRelativeFilePath();
-		String mime = path == null ? null :URLConnection.guessContentTypeFromName(path);
-		if (mime == null) {
-			mime = "image/webp";
+		if (GeoHelper.isGeoUri(message.getBody())) {
+			shareIntent.putExtra(Intent.EXTRA_TEXT, message.getBody());
+			shareIntent.setType("text/plain");
+		} else {
+			shareIntent.putExtra(Intent.EXTRA_STREAM,
+					activity.xmppConnectionService.getFileBackend()
+							.getJingleFileUri(message));
+			shareIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+			String path = message.getRelativeFilePath();
+			String mime = path == null ? null : URLConnection.guessContentTypeFromName(path);
+			if (mime == null) {
+				mime = "image/webp";
+			}
+			shareIntent.setType(mime);
 		}
-		shareIntent.setType(mime);
 		activity.startActivity(Intent.createChooser(shareIntent,getText(R.string.share_with)));
 	}
 
@@ -501,8 +509,16 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 	}
 
 	private void copyUrl(Message message) {
-		if (activity.copyTextToClipboard(
-					message.getImageParams().url.toString(), R.string.image_url)) {
+		final String url;
+		final int resId;
+		if (GeoHelper.isGeoUri(message.getBody())) {
+			resId = R.string.location;
+			url = message.getBody();
+		} else {
+			resId = R.string.image_url;
+			url = message.getImageParams().url.toString();
+		}
+		if (activity.copyTextToClipboard(url, resId)) {
 			Toast.makeText(activity, R.string.url_copied_to_clipboard,
 					Toast.LENGTH_SHORT).show();
 					}
