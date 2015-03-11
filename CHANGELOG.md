@@ -1,5 +1,14 @@
 ###Changelog
 
+####Version 1.2.0
+* Send current location (requires plugin)
+* bug fixes
+
+####Version 1.1.0
+* Typing notifications (must be turned on in settings)
+* Various UI performance improvements
+* bug fixes
+
 ####Version 1.0.4
 * load avatars asynchronously on start up
 * support for XEP-0092: Software Version
