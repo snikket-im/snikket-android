@@ -2041,7 +2041,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 			return null;
 		}
 		for (Conversation conversation : getConversations()) {
-			if (conversation.getJid().equals(recipient) && conversation.getAccount() == account) {
+			if (conversation.getJid().toBareJid().equals(recipient) && conversation.getAccount() == account) {
 				final Message message = conversation.findSentMessageWithUuid(uuid);
 				if (message != null) {
 					markMessage(message, status);
