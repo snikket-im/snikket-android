@@ -422,4 +422,9 @@
   <string name="contact_has_stopped_typing">%s ha dejado de escribir</string>
   <string name="pref_chat_states">Notificación de escritura</string>
   <string name="pref_chat_states_summary">Permite a tus contactos saber cuando estás escribiendo un nuevo mensaje</string>
+  <string name="send_location">Enviar ubicación</string>
+  <string name="show_location">Mostrar ubicación</string>
+  <string name="no_application_found_to_display_location">No se ha encontrado ninguna aplicación para mostrar la ubicación</string>
+  <string name="location">Ubicación</string>
+  <string name="received_location">Ubicación recibida</string>
 </resources>

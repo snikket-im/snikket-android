@@ -422,4 +422,9 @@
   <string name="contact_has_stopped_typing">%s přestal(a) psát</string>
   <string name="pref_chat_states">Upozornění při psaní</string>
   <string name="pref_chat_states_summary">Oznamovat kontaktům že píšete novou zprávu</string>
+  <string name="send_location">Poslat pozici</string>
+  <string name="show_location">Zobrazit pozici</string>
+  <string name="no_application_found_to_display_location">Nebyla nalezena aplikace pro zobrazení pozice</string>
+  <string name="location">Pozice</string>
+  <string name="received_location">Přijmout pozici</string>
 </resources>

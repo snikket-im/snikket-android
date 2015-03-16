@@ -418,4 +418,13 @@
   <string name="offering_x_file">Нудим %s</string>
   <string name="hide_offline">Сакриј неповезане</string>
   <string name="disable_account">Онемогући налог</string>
+  <string name="contact_is_typing">%s куца...</string>
+  <string name="contact_has_stopped_typing">%s престаде да куца</string>
+  <string name="pref_chat_states">Обавештења о куцању</string>
+  <string name="pref_chat_states_summary">Обзнаните контакту кад куцате нову поруку</string>
+  <string name="send_location">Пошаљи локацију</string>
+  <string name="show_location">Прикажи локацију</string>
+  <string name="no_application_found_to_display_location">Нема апликације за приказ локације</string>
+  <string name="location">Локација</string>
+  <string name="received_location">Примљена локација</string>
 </resources>

@@ -422,4 +422,9 @@
   <string name="contact_has_stopped_typing">Ο χρήστης %s σταμάτησε να γράφει</string>
   <string name="pref_chat_states">Ειδοποιήσεις πληκτρολόγησης</string>
   <string name="pref_chat_states_summary">Επιτρέψτε στην επαφή σας να γνωρίζει πότε γράφετε ένα νέο μήνυμα</string>
+  <string name="send_location">Αποστολή τοποθεσίας</string>
+  <string name="show_location">Εμφάνιση τοποθεσίας</string>
+  <string name="no_application_found_to_display_location">Δεν βρέθηκε εφαρμογή για την απεικόνιση τοποθεσίας</string>
+  <string name="location">Τοποθεσία</string>
+  <string name="received_location">Ελήφθη τοποθεσία</string>
 </resources>

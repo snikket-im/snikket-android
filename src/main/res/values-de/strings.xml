@@ -422,4 +422,9 @@
   <string name="contact_has_stopped_typing">%s schreibt nicht mehr</string>
   <string name="pref_chat_states">Tipp-Benachrichtigung</string>
   <string name="pref_chat_states_summary">Informiere deine Kontakte, wenn du eine Nachricht eintippst.</string>
+  <string name="send_location">Standort senden</string>
+  <string name="show_location">Standort anzeigen</string>
+  <string name="no_application_found_to_display_location">Keine App für die Standort-Anzeige gefunden</string>
+  <string name="location">Standort</string>
+  <string name="received_location">Standort empfangen</string>
 </resources>

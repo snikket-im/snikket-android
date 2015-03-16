@@ -422,4 +422,9 @@
   <string name="contact_has_stopped_typing">%s is gestopt met typen</string>
   <string name="pref_chat_states">Type-meldingen</string>
   <string name="pref_chat_states_summary">Laat je contacten weten wanneer je een nieuw bericht aan het schrijven bent</string>
+  <string name="send_location">Locatie versturen</string>
+  <string name="show_location">Locatie weergeven</string>
+  <string name="no_application_found_to_display_location">Geen applicatie gevonden om locatie weer te geven</string>
+  <string name="location">Locatie</string>
+  <string name="received_location">Locatie ontvangen</string>
 </resources>

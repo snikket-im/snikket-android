@@ -247,7 +247,7 @@
   <string name="next">Nästa</string>
   <string name="server_info_session_established">Nuvarande session upprättad</string>
   <string name="additional_information">Ytterligare information</string>
-  <string name="skip">skippa</string>
+  <string name="skip">Hoppa över</string>
   <string name="disable_notifications">Inaktivera notifieringar</string>
   <string name="disable_notifications_for_this_conversation">Inaktivera notifieringar för denna konversation</string>
   <string name="notifications_disabled">Notifieringar är inaktiverade</string>
@@ -264,7 +264,7 @@
   <string name="pref_encryption_settings">Krypteringsinställningar</string>
   <string name="pref_force_encryption">Tvinga kryptering</string>
   <string name="pref_force_encryption_summary">Sänd alltid krypterade meddelanden (utom för konferenser)</string>
-  <string name="pref_dont_save_encrypted">Spara in krypterade meddelanden</string>
+  <string name="pref_dont_save_encrypted">Spara inte krypterade meddelanden</string>
   <string name="pref_dont_save_encrypted_summary">Varning: Detta kan leda till att meddelanden förloras</string>
   <string name="pref_expert_options">Expertinställningar</string>
   <string name="pref_expert_options_summary">Var försiktig med dem</string>
@@ -411,15 +411,20 @@
   <string name="apk">Android App</string>
   <string name="vcard">Kontakt</string>
   <string name="received_x_file">Tagit emot %s</string>
-  <string name="disable_foreground_service">Deaktivera fögrundstjänst</string>
+  <string name="disable_foreground_service">Deaktivera förgrundstjänst</string>
   <string name="touch_to_open_conversations">Tryck för att öppna Conversations</string>
   <string name="avatar_has_been_published">Avatarbild har publicerats!</string>
   <string name="sending_x_file">Skickar %s</string>
   <string name="offering_x_file">Erbjuder %s</string>
   <string name="hide_offline">Dölj ej anslutna</string>
   <string name="disable_account">Deaktivera konton</string>
-  <string name="contact_is_typing">%s är att skriva...</string>
+  <string name="contact_is_typing">%s skriver...</string>
   <string name="contact_has_stopped_typing">%s har slutat skriva</string>
   <string name="pref_chat_states">Skriv-notifieringar</string>
-  <string name="pref_chat_states_summary">Låter dina kontakter veta när du är att skriva ett nytt meddelande</string>
+  <string name="pref_chat_states_summary">Låter dina kontakter veta när du skriver ett nytt meddelande</string>
+  <string name="send_location">Skicka position</string>
+  <string name="show_location">Visa position</string>
+  <string name="no_application_found_to_display_location">Kunde inte hitta applikation för att visa position</string>
+  <string name="location">Position</string>
+  <string name="received_location">Mottog position</string>
 </resources>
