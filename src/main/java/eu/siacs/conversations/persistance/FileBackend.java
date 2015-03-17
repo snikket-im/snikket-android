@@ -318,39 +318,41 @@ public class FileBackend {
 	}
 
 	public boolean save(Avatar avatar) {
+		File file;
 		if (isAvatarCached(avatar)) {
-			return true;
-		}
-		String filename = getAvatarPath(avatar.getFilename());
-		File file = new File(filename + ".tmp");
-		file.getParentFile().mkdirs();
-		try {
-			file.createNewFile();
-			FileOutputStream mFileOutputStream = new FileOutputStream(file);
-			MessageDigest digest = MessageDigest.getInstance("SHA-1");
-			digest.reset();
-			DigestOutputStream mDigestOutputStream = new DigestOutputStream(
-					mFileOutputStream, digest);
-			mDigestOutputStream.write(avatar.getImageAsBytes());
-			mDigestOutputStream.flush();
-			mDigestOutputStream.close();
-			avatar.size = file.length();
-			String sha1sum = CryptoHelper.bytesToHex(digest.digest());
-			if (sha1sum.equals(avatar.sha1sum)) {
-				file.renameTo(new File(filename));
-				return true;
-			} else {
-				Log.d(Config.LOGTAG, "sha1sum mismatch for " + avatar.owner);
-				file.delete();
+			file = new File(getAvatarPath(avatar.getFilename()));
+		} else {
+			String filename = getAvatarPath(avatar.getFilename());
+			file = new File(filename + ".tmp");
+			file.getParentFile().mkdirs();
+			try {
+				file.createNewFile();
+				FileOutputStream mFileOutputStream = new FileOutputStream(file);
+				MessageDigest digest = MessageDigest.getInstance("SHA-1");
+				digest.reset();
+				DigestOutputStream mDigestOutputStream = new DigestOutputStream(
+						mFileOutputStream, digest);
+				mDigestOutputStream.write(avatar.getImageAsBytes());
+				mDigestOutputStream.flush();
+				mDigestOutputStream.close();
+				String sha1sum = CryptoHelper.bytesToHex(digest.digest());
+				if (sha1sum.equals(avatar.sha1sum)) {
+					file.renameTo(new File(filename));
+				} else {
+					Log.d(Config.LOGTAG, "sha1sum mismatch for " + avatar.owner);
+					file.delete();
+					return false;
+				}
+			} catch (FileNotFoundException e) {
+				return false;
+			} catch (IOException e) {
+				return false;
+			} catch (NoSuchAlgorithmException e) {
 				return false;
 			}
-		} catch (FileNotFoundException e) {
-			return false;
-		} catch (IOException e) {
-			return false;
-		} catch (NoSuchAlgorithmException e) {
-			return false;
 		}
+		avatar.size = file.length();
+		return true;
 	}
 
 	public String getAvatarPath(String avatar) {
