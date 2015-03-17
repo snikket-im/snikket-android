@@ -454,4 +454,8 @@
     <string name="no_application_found_to_display_location">No application found to display location</string>
     <string name="location">Location</string>
     <string name="received_location">Received location</string>
+	<plurals name="select_contact">
+		<item quantity="one">Select %d contact</item>
+		<item quantity="other">Select %d contacts</item>
+	</plurals>
 </resources>
