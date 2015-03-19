@@ -422,4 +422,9 @@
   <string name="contact_has_stopped_typing">%s(e)k idazteari utzi dio</string>
   <string name="pref_chat_states">Idazketa jakinarazpenak</string>
   <string name="pref_chat_states_summary">Zure kontaktuak mezu berri bat noiz idazten ari zaren jakin dezan baimendu</string>
+  <string name="send_location">Kokapena partekatu</string>
+  <string name="show_location">Kokapena erakutsi</string>
+  <string name="no_application_found_to_display_location">Kokapena erakutsi dezakeen aplikaziorik ez da aurkitu</string>
+  <string name="location">Kokapena</string>
+  <string name="received_location">Kokapena jaso da</string>
 </resources>
