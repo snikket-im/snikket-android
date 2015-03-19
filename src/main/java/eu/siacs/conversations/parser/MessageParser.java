@@ -1,11 +1,8 @@
 package eu.siacs.conversations.parser;
 
-import android.util.Log;
-
 import net.java.otr4j.session.Session;
 import net.java.otr4j.session.SessionStatus;
 
-import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
@@ -66,7 +63,7 @@ public class MessageParser extends AbstractParser implements
 			final Jid trueCounterpart = conversation.getMucOptions()
 					.getTrueCounterpart(jid.getResourcepart());
 			if (trueCounterpart != null) {
-				updateLastseen(packet, account, trueCounterpart, true);
+				updateLastseen(packet, account, trueCounterpart, false);
 			}
 			finishedMessage.setType(Message.TYPE_PRIVATE);
 			finishedMessage.setTrueCounterpart(trueCounterpart);
@@ -169,7 +166,7 @@ public class MessageParser extends AbstractParser implements
 				.findOrCreateConversation(account, from.toBareJid(), true);
 		final Jid trueCounterpart = conversation.getMucOptions().getTrueCounterpart(from.getResourcepart());
 		if (trueCounterpart != null) {
-			updateLastseen(packet, account, trueCounterpart.toBareJid(), true);
+			updateLastseen(packet, account, trueCounterpart, false);
 		}
 		if (packet.hasChild("subject")) {
 			conversation.setHasMessagesLeftOnServer(true);
