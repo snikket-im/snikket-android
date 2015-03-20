@@ -687,28 +687,11 @@ public class XmppConnection implements Runnable {
 						} catch (final InvalidJidException e) {
 							// TODO: Handle the case where an external JID is technically invalid?
 						}
-						if (streamFeatures.hasChild("sm", "urn:xmpp:sm:3")) {
-							smVersion = 3;
-							final EnablePacket enable = new EnablePacket(smVersion);
-							tagWriter.writeStanzaAsync(enable);
-							stanzasSent = 0;
-							messageReceipts.clear();
-						} else if (streamFeatures.hasChild("sm", "urn:xmpp:sm:2")) {
-							smVersion = 2;
-							final EnablePacket enable = new EnablePacket(smVersion);
-							tagWriter.writeStanzaAsync(enable);
-							stanzasSent = 0;
-							messageReceipts.clear();
+						if (streamFeatures.hasChild("session")) {
+							sendStartSession();
+						} else {
+							sendPostBindInitialization();
 						}
-						features.carbonsEnabled = false;
-						features.blockListRequested = false;
-						disco.clear();
-						sendServiceDiscoveryInfo(account.getServer());
-						sendServiceDiscoveryItems(account.getServer());
-						if (bindListener != null) {
-							bindListener.onBind(account);
-						}
-						sendInitialPing();
 					} else {
 						disconnect(true);
 					}
@@ -717,12 +700,45 @@ public class XmppConnection implements Runnable {
 				}
 			}
 		});
-		if (this.streamFeatures.hasChild("session")) {
-			Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": sending deprecated session");
-			final IqPacket startSession = new IqPacket(IqPacket.TYPE.SET);
-			startSession.addChild("session","urn:ietf:params:xml:ns:xmpp-session");
-			this.sendUnmodifiedIqPacket(startSession, null);
+	}
+
+	private void sendStartSession() {
+		final IqPacket startSession = new IqPacket(IqPacket.TYPE.SET);
+		startSession.addChild("session","urn:ietf:params:xml:ns:xmpp-session");
+		this.sendUnmodifiedIqPacket(startSession, new OnIqPacketReceived() {
+			@Override
+			public void onIqPacketReceived(Account account, IqPacket packet) {
+				if (packet.getType() == IqPacket.TYPE.RESULT) {
+					sendPostBindInitialization();
+				} else {
+					disconnect(true);
+				}
+			}
+		});
+	}
+
+	private void sendPostBindInitialization() {
+		smVersion = 0;
+		if (streamFeatures.hasChild("sm", "urn:xmpp:sm:3")) {
+			smVersion = 3;
+		} else if (streamFeatures.hasChild("sm", "urn:xmpp:sm:2")) {
+			smVersion = 2;
 		}
+		if (smVersion != 0) {
+			final EnablePacket enable = new EnablePacket(smVersion);
+			tagWriter.writeStanzaAsync(enable);
+			stanzasSent = 0;
+			messageReceipts.clear();
+		}
+		features.carbonsEnabled = false;
+		features.blockListRequested = false;
+		disco.clear();
+		sendServiceDiscoveryInfo(account.getServer());
+		sendServiceDiscoveryItems(account.getServer());
+		if (bindListener != null) {
+			bindListener.onBind(account);
+		}
+		sendInitialPing();
 	}
 
 	private void sendServiceDiscoveryInfo(final Jid server) {
