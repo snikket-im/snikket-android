@@ -1,7 +1,7 @@
 ###Changelog
 
 ####Version 1.2.0
-* Send current location (requires [plugin]https://play.google.com/store/apps/details?id=eu.siacs.conversations.sharelocation())
+* Send current location. (requires [plugin](https://play.google.com/store/apps/details?id=eu.siacs.conversations.sharelocation))
 * Invite multiple contacts at once
 * performance improvements
 * bug fixes
