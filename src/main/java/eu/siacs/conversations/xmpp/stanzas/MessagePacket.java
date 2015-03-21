@@ -39,6 +39,9 @@ public class MessagePacket extends AbstractStanza {
 			break;
 		case TYPE_NORMAL:
 			break;
+		case TYPE_ERROR:
+			this.setAttribute("type","error");
+			break;
 		default:
 			this.setAttribute("type", "chat");
 			break;

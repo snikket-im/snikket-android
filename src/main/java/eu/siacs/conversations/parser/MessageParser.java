@@ -118,6 +118,7 @@ public class MessageParser extends AbstractParser implements
 			}
 		}
 		try {
+			conversation.setLastReceivedOtrMessageId(packet.getId());
 			Session otrSession = conversation.getOtrSession();
 			SessionStatus before = otrSession.getSessionStatus();
 			body = otrSession.transformReceiving(body);
@@ -145,6 +146,7 @@ public class MessageParser extends AbstractParser implements
 			finishedMessage.markable = isMarkable(packet);
 			finishedMessage.setCounterpart(from);
 			extractChatState(conversation, packet);
+			conversation.setLastReceivedOtrMessageId(null);
 			return finishedMessage;
 		} catch (Exception e) {
 			conversation.resetOtrSession();

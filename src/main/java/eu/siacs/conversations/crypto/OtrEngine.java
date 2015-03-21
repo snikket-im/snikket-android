@@ -201,9 +201,21 @@ public class OtrEngine extends OtrCryptoEngineImpl implements OtrEngineHost {
 	}
 
 	@Override
-	public void messageFromAnotherInstanceReceived(SessionID id) {
-		Log.d(Config.LOGTAG,
-				"unreadable message received from " + id.getAccountID());
+	public void messageFromAnotherInstanceReceived(SessionID session) {
+		try {
+			Jid jid = Jid.fromSessionID(session);
+			Conversation conversation = mXmppConnectionService.find(account, jid);
+			String id = conversation == null ? null : conversation.getLastReceivedOtrMessageId();
+			if (id != null) {
+				MessagePacket packet = mXmppConnectionService.getMessageGenerator().generateOtrError(jid,id);
+				packet.setFrom(account.getJid());
+				mXmppConnectionService.sendMessagePacket(account,packet);
+				Log.d(Config.LOGTAG,packet.toString());
+				Log.d(Config.LOGTAG,account.getJid().toBareJid().toString()+": unreadable OTR message in "+conversation.getName());
+			}
+		} catch (InvalidJidException e) {
+			return;
+		}
 	}
 
 	@Override

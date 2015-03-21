@@ -78,6 +78,7 @@ public class Conversation extends AbstractEntity implements Blockable {
 	private boolean messagesLeftOnServer = true;
 	private ChatState mOutgoingChatState = Config.DEFAULT_CHATSTATE;
 	private ChatState mIncomingChatState = Config.DEFAULT_CHATSTATE;
+	private String mLastReceivedOtrMessageId = null;
 
 	public boolean hasMessagesLeftOnServer() {
 		return messagesLeftOnServer;
@@ -232,6 +233,14 @@ public class Conversation extends AbstractEntity implements Blockable {
 	@Override
 	public Jid getBlockedJid() {
 		return getContact().getBlockedJid();
+	}
+
+	public String getLastReceivedOtrMessageId() {
+		return this.mLastReceivedOtrMessageId;
+	}
+
+	public void setLastReceivedOtrMessageId(String id) {
+		this.mLastReceivedOtrMessageId = id;
 	}
 
 
