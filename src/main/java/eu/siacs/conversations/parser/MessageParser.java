@@ -94,6 +94,7 @@ public class MessageParser extends AbstractParser implements
 		} else {
 			presence = from.getResourcepart();
 		}
+		extractChatState(conversation, packet);
 		updateLastseen(packet, account, true);
 		String body = packet.getBody();
 		if (body.matches("^\\?OTRv\\d{1,2}\\?.*")) {
@@ -145,7 +146,6 @@ public class MessageParser extends AbstractParser implements
 			finishedMessage.setRemoteMsgId(packet.getId());
 			finishedMessage.markable = isMarkable(packet);
 			finishedMessage.setCounterpart(from);
-			extractChatState(conversation, packet);
 			conversation.setLastReceivedOtrMessageId(null);
 			return finishedMessage;
 		} catch (Exception e) {
