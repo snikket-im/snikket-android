@@ -427,4 +427,9 @@
   <string name="no_application_found_to_display_location">Nebyla nalezena aplikace pro zobrazení pozice</string>
   <string name="location">Pozice</string>
   <string name="received_location">Přijmout pozici</string>
+  <plurals name="select_contact">
+    <item quantity="one">Vybrat %d kontakt</item>
+    <item quantity="few">Vybrat %d kontakty</item>
+    <item quantity="other">Vybrat %d kontaktů</item>
+  </plurals>
 </resources>

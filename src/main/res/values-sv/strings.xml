@@ -427,4 +427,8 @@
   <string name="no_application_found_to_display_location">Kunde inte hitta applikation för att visa position</string>
   <string name="location">Position</string>
   <string name="received_location">Mottog position</string>
+  <plurals name="select_contact">
+    <item quantity="one">Välj %d kontakt</item>
+    <item quantity="other">Välj %d kontakter</item>
+  </plurals>
 </resources>

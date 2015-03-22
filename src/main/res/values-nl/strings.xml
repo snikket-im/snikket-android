@@ -427,4 +427,8 @@
   <string name="no_application_found_to_display_location">Geen applicatie gevonden om locatie weer te geven</string>
   <string name="location">Locatie</string>
   <string name="received_location">Locatie ontvangen</string>
+  <plurals name="select_contact">
+    <item quantity="one">Selecteer %d contact</item>
+    <item quantity="other">Selecteer %d contacten</item>
+  </plurals>
 </resources>

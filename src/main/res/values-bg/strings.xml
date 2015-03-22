@@ -427,4 +427,8 @@
   <string name="no_application_found_to_display_location">Няма намерено приложение за показване на местоположението</string>
   <string name="location">Местоположение</string>
   <string name="received_location">Получено местоположение</string>
+  <plurals name="select_contact">
+    <item quantity="one">Изберете %d контакт</item>
+    <item quantity="other">Изберете %d контакта</item>
+  </plurals>
 </resources>
