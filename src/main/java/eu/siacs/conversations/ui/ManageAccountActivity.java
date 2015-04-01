@@ -168,6 +168,14 @@ public class ManageAccountActivity extends XmppActivity implements OnAccountUpda
 		}
 	}
 
+	public void onClickTglAccountState(Account account) {
+		if (account.isOptionSet(Account.OPTION_DISABLED)) {
+			enableAccount(account);
+		} else {
+			disableAccount(account);
+		}
+	}
+
 	private void publishAvatar(Account account) {
 		Intent intent = new Intent(getApplicationContext(),
 				PublishProfilePictureActivity.class);
