@@ -20,7 +20,10 @@
         android:layout_centerVertical="true"
         android:layout_toRightOf="@+id/account_image"
         android:orientation="vertical"
-        android:paddingLeft="8dp" >
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:layout_toLeftOf="@+id/tgl_account_status"
+        android:layout_toStartOf="@+id/tgl_account_status">
 
         <TextView
             android:id="@+id/account_jid"
@@ -40,5 +43,13 @@
             android:textSize="?attr/TextSizeBody"
             android:textStyle="bold" />
     </LinearLayout>
+
+    <Switch
+        android:id="@+id/tgl_account_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:focusable="false"/>
 
 </RelativeLayout>
