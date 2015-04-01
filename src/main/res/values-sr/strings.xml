@@ -302,8 +302,8 @@
   <string name="url_copied_to_clipboard">УРЛ је копиран на клипборд</string>
   <string name="message_copied_to_clipboard">Порука је копирана на клипборд</string>
   <string name="image_transmission_failed">Пренос слике није успео</string>
-  <string name="scan_qr_code">Очитај бар-код</string>
-  <string name="show_qr_code">Прикажи бар-код</string>
+  <string name="scan_qr_code">Очитај бар-кôд</string>
+  <string name="show_qr_code">Прикажи бар-кôд</string>
   <string name="show_block_list">Прикажи списак блокираних</string>
   <string name="account_details">Детаљи налога</string>
   <string name="verify_otr">Овери ОТР</string>
@@ -427,4 +427,9 @@
   <string name="no_application_found_to_display_location">Нема апликације за приказ локације</string>
   <string name="location">Локација</string>
   <string name="received_location">Примљена локација</string>
+  <plurals name="select_contact">
+    <item quantity="one">Изабери %d контакт</item>
+    <item quantity="few">Изабери %d контакта</item>
+    <item quantity="other">Изабери %d контаката</item>
+  </plurals>
 </resources>

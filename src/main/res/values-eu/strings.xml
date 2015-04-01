@@ -427,4 +427,8 @@
   <string name="no_application_found_to_display_location">Kokapena erakutsi dezakeen aplikaziorik ez da aurkitu</string>
   <string name="location">Kokapena</string>
   <string name="received_location">Kokapena jaso da</string>
+  <plurals name="select_contact">
+    <item quantity="one">Hautatu kontaktu %d</item>
+    <item quantity="other">Hautatu %d kontaktu</item>
+  </plurals>
 </resources>

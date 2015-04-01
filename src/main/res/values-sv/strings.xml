@@ -36,10 +36,10 @@
   <string name="participant">Deltagare</string>
   <string name="visitor">Besökare</string>
   <string name="remove_contact_text">Vill du ta bort %s från din kontaktlista? Konversationer associerade med denna kontakt kommer inte tas bort.</string>
-  <string name="block_contact_text">Vill du blockera %s från att skicka dig meddelanden</string>
+  <string name="block_contact_text">Vill du blockera %s från att skicka dig meddelanden?</string>
   <string name="unblock_contact_text">Vill du avblockera %s och tillåta denne att skicka dig meddelanden?</string>
-  <string name="block_domain_text">Blockera alla kontakter från %s</string>
-  <string name="unblock_domain_text">Avblockera alla kontakter från %s</string>
+  <string name="block_domain_text">Blockera alla kontakter från %s?</string>
+  <string name="unblock_domain_text">Avblockera alla kontakter från %s?</string>
   <string name="contact_blocked">Kontakt blockerad</string>
   <string name="remove_bookmark_text">Vill du ta bort %s som bokmärke? Konversationer associerade med detta bokmärke kommer inte tas bort.</string>
   <string name="register_account">Registrera nytt konto på servern</string>
@@ -74,7 +74,7 @@
   <string name="clear_conversation_history">Rensa konversationshistorik</string>
   <string name="clear_histor_msg">Vill du ta bort alla meddelanden i denna konversation?\n\n<b>Varning:</b> Detta kommer inte påverka meddelanden lagrade på andra enheter eller servrar.</string>
   <string name="delete_messages">Ta bort meddelanden</string>
-  <string name="also_end_conversation">Avsluta denna konversation efter</string>
+  <string name="also_end_conversation">Avsluta sedan denna konversation</string>
   <string name="choose_presence">Välj tillgänglighet till kontakt</string>
   <string name="send_plain_text_message">Skicka meddelande i klartext</string>
   <string name="send_otr_message">Skicka OTR-krypterat meddelande</string>
@@ -82,9 +82,9 @@
   <string name="your_nick_has_been_changed">Ditt nick har ändrats</string>
   <string name="download_image">Ladda ner bild</string>
   <string name="send_unencrypted">Skicka okrypterat</string>
-  <string name="decryption_failed">Avkryptering gick fel. Du kanske inte har rätt privat nyckel.</string>
+  <string name="decryption_failed">Avkryptering misslyckades. Du har kanske kanske inte rätt privat nyckel.</string>
   <string name="openkeychain_required">OpenKeychain</string>
-  <string name="openkeychain_required_long">Conversations använder en tredjeparts applikation som heter <b>OpenKeychain</b> för att kryptera och avkryptera meddelanden och hantera dina publika nycklar.\n\nOpenKeychain är licensierat under GPLv3 och tillgängligt på F-Droid och Google Play.\n\n<small>(Starta om Conversations efter.)</small></string>
+  <string name="openkeychain_required_long">Conversations använder en tredjeparts-applikation som heter <b>OpenKeychain</b> för att kryptera och avkryptera meddelanden och hantera dina publika nycklar.\n\nOpenKeychain är licensierad under GPLv3 och tillgänglig på F-Droid och Google Play.\n\n<small>(Starta om Conversations efter installation.)</small></string>
   <string name="restart">Starta om</string>
   <string name="install">Installera</string>
   <string name="offering">erbjuder…</string>
@@ -229,7 +229,7 @@
   <string name="leave">Lämna</string>
   <string name="contact_added_you">Kontakten lade till dig i sin kontaktlista</string>
   <string name="add_back">Addera tillbaka</string>
-  <string name="contact_has_read_up_to_this_point">%s har läst fram hit</string>
+  <string name="contact_has_read_up_to_this_point">%s har läst hit</string>
   <string name="publish">Publicera</string>
   <string name="touch_to_choose_picture">Tryck på avatarbild för att välja en bild från bildgalleriet</string>
   <string name="publish_avatar_explanation">Notera: Alla som kan se dina tillgänglighetsuppdateringar kommer se denna bild.</string>

@@ -427,4 +427,8 @@
   <string name="no_application_found_to_display_location">No se ha encontrado ninguna aplicación para mostrar la ubicación</string>
   <string name="location">Ubicación</string>
   <string name="received_location">Ubicación recibida</string>
+  <plurals name="select_contact">
+    <item quantity="one">Seleccionado %d contacto</item>
+    <item quantity="other">Seleccionados %d contactos</item>
+  </plurals>
 </resources>
