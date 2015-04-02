@@ -12,7 +12,7 @@
         android:background="@color/primarybackground"
         android:orientation="vertical" >
 
-        <ListView
+        <de.timroes.android.listview.EnhancedListView
             android:id="@+id/list"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"

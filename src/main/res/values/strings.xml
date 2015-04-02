@@ -296,6 +296,7 @@
             \n\nhttps://developer.android.com/tools/support-library\n(Apache License, Version 2.0)
             \n\nhttps://github.com/zxing/zxing\n(Apache License, Version 2.0)
             \n\nhttps://github.com/google/material-design-icons\n(CC BY 4.0)
+            \n\nhttps://github.com/timroes/EnhancedListView\n(Apache License, Version 2.0)
     </string>
     <string name="title_pref_quiet_hours">Quiet Hours</string>
     <string name="title_pref_quiet_hours_start_time">Start time</string>
@@ -454,6 +455,8 @@
     <string name="no_application_found_to_display_location">No application found to display location</string>
     <string name="location">Location</string>
     <string name="received_location">Received location</string>
+	<string name="title_undo_swipe_out_conversation">Conversation closed</string>
+	<string name="title_undo_swipe_out_muc">Left conference</string>
 	<plurals name="select_contact">
 		<item quantity="one">Select %d contact</item>
 		<item quantity="other">Select %d contacts</item>
