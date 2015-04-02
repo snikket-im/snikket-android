@@ -172,7 +172,7 @@ public class MessageGenerator extends AbstractGenerator {
 		return receivedPacket;
 	}
 
-	public MessagePacket generateOtrError(Jid to, String id) {
+	public MessagePacket generateOtrError(Jid to, String id, String errorText) {
 		MessagePacket packet = new MessagePacket();
 		packet.setType(MessagePacket.TYPE_ERROR);
 		packet.setAttribute("id",id);
@@ -181,7 +181,7 @@ public class MessageGenerator extends AbstractGenerator {
 		error.setAttribute("code","406");
 		error.setAttribute("type","modify");
 		error.addChild("not-acceptable","urn:ietf:params:xml:ns:xmpp-stanzas");
-		error.addChild("text").setContent("unreadable OTR message received");
+		error.addChild("text").setContent("?OTR Error:" + errorText);
 		return packet;
 	}
 }
