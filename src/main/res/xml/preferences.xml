@@ -147,6 +147,11 @@
                     android:key="keep_foreground_service"
                     android:title="@string/pref_keep_foreground_service"
                     android:summary="@string/pref_keep_foreground_service_summary" />
+				<CheckBoxPreference
+					android:defaultValue="false"
+					android:key="dont_trust_system_cas"
+					android:title="@string/pref_dont_trust_system_cas_title"
+					android:summary="@string/pref_dont_trust_system_cas_summary" />
             </PreferenceCategory>
         </PreferenceScreen>
 

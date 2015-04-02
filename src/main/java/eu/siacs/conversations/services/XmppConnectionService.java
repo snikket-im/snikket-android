@@ -532,9 +532,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		ExceptionHelper.init(getApplicationContext());
 		PRNGFixes.apply();
 		this.mRandom = new SecureRandom();
-		this.mMemorizingTrustManager = new MemorizingTrustManager(
-				getApplicationContext());
-
+		updateMemorizingTrustmanager();
 		final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
 		final int cacheSize = maxMemory / 8;
 		this.mBitmapCache = new LruCache<String, Bitmap>(cacheSize) {
@@ -2183,6 +2181,21 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 
 	public MemorizingTrustManager getMemorizingTrustManager() {
 		return this.mMemorizingTrustManager;
+	}
+
+	public void setMemorizingTrustManager(MemorizingTrustManager trustManager) {
+		this.mMemorizingTrustManager = trustManager;
+	}
+
+	public void updateMemorizingTrustmanager() {
+		final MemorizingTrustManager tm;
+		final boolean dontTrustSystemCAs = getPreferences().getBoolean("dont_trust_system_cas", false);
+		if (dontTrustSystemCAs) {
+			 tm = new MemorizingTrustManager(getApplicationContext(), null);
+		} else {
+			tm = new MemorizingTrustManager(getApplicationContext());
+		}
+		setMemorizingTrustManager(tm);
 	}
 
 	public PowerManager getPowerManager() {
