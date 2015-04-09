@@ -981,6 +981,10 @@ public class XmppConnection implements Runnable {
 		}
 	}
 
+	public void resetStreamId() {
+		this.streamId = null;
+	}
+
 	public List<String> findDiscoItemsByFeature(final String feature) {
 		final List<String> items = new ArrayList<>();
 		for (final Entry<String, List<String>> cursor : disco.entrySet()) {

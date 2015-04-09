@@ -1701,6 +1701,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 						}
 					}
 				}
+				sendOfflinePresence(account);
 			}
 			account.getXmppConnection().disconnect(force);
 		}
@@ -2259,6 +2260,10 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 
 	public void sendPresence(final Account account) {
 		sendPresencePacket(account, mPresenceGenerator.sendPresence(account));
+	}
+
+	public void sendOfflinePresence(final Account account) {
+		sendPresencePacket(account, mPresenceGenerator.sendOfflinePresence(account));
 	}
 
 	public MessageGenerator getMessageGenerator() {

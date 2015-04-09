@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Locale;
 
 import eu.siacs.conversations.entities.Account;
+import eu.siacs.conversations.xmpp.XmppConnection;
 
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
@@ -63,9 +64,14 @@ public class SettingsActivity extends XmppActivity implements
 					.toLowerCase(Locale.US);
 			if (xmppConnectionServiceBound) {
 				for (Account account : xmppConnectionService.getAccounts()) {
-                    account.setResource(resource);
-                    if (!account.isOptionSet(Account.OPTION_DISABLED)) {
-						xmppConnectionService.reconnectAccountInBackground(account);
+					if (account.setResource(resource)) {
+						if (!account.isOptionSet(Account.OPTION_DISABLED)) {
+							XmppConnection connection = account.getXmppConnection();
+							if (connection != null) {
+								connection.resetStreamId();
+							}
+							xmppConnectionService.reconnectAccountInBackground(account);
+						}
 					}
 				}
 			}
