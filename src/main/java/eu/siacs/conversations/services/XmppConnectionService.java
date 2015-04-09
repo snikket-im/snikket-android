@@ -1129,6 +1129,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	}
 
 	public void archiveConversation(Conversation conversation) {
+		getNotificationService().clear(conversation);
 		conversation.setStatus(Conversation.STATUS_ARCHIVED);
 		conversation.setNextEncryption(-1);
 		synchronized (this.conversations) {
