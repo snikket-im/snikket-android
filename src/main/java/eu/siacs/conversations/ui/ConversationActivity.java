@@ -5,6 +5,7 @@ import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
 import android.app.PendingIntent;
+import android.content.ClipData;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
@@ -30,6 +31,7 @@ import net.java.otr4j.session.SessionStatus;
 import de.timroes.android.listview.EnhancedListView;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import eu.siacs.conversations.R;
@@ -69,8 +71,8 @@ public class ConversationActivity extends XmppActivity
 
 	private String mOpenConverstaion = null;
 	private boolean mPanelOpen = true;
-	private Uri mPendingImageUri = null;
-	private Uri mPendingFileUri = null;
+	final private List<Uri> mPendingImageUris = new ArrayList<>();
+	final private List<Uri> mPendingFileUris = new ArrayList<>();
 	private Uri mPendingGeoUri = null;
 
 	private View mContentView;
@@ -141,13 +143,14 @@ public class ConversationActivity extends XmppActivity
 	@Override
 	protected void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		if (savedInstanceState != null) {mOpenConverstaion = savedInstanceState.getString(
-				STATE_OPEN_CONVERSATION, null);
-		mPanelOpen = savedInstanceState.getBoolean(STATE_PANEL_OPEN, true);
-		String pending = savedInstanceState.getString(STATE_PENDING_URI, null);
-		if (pending != null) {
-			mPendingImageUri = Uri.parse(pending);
-		}
+		if (savedInstanceState != null) {
+			mOpenConverstaion = savedInstanceState.getString(STATE_OPEN_CONVERSATION, null);
+			mPanelOpen = savedInstanceState.getBoolean(STATE_PANEL_OPEN, true);
+			String pending = savedInstanceState.getString(STATE_PENDING_URI, null);
+			if (pending != null) {
+				mPendingImageUris.clear();
+				mPendingImageUris.add(Uri.parse(pending));
+			}
 		}
 
 		setContentView(R.layout.fragment_conversations_overview);
@@ -409,13 +412,18 @@ public class ConversationActivity extends XmppActivity
 					switch (attachmentChoice) {
 						case ATTACHMENT_CHOICE_CHOOSE_IMAGE:
 							intent.setAction(Intent.ACTION_GET_CONTENT);
+							if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+								intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE,true);
+							}
 							intent.setType("image/*");
 							chooser = true;
 							break;
 						case ATTACHMENT_CHOICE_TAKE_PHOTO:
-							mPendingImageUri = xmppConnectionService.getFileBackend().getTakePhotoUri();
+							Uri uri = xmppConnectionService.getFileBackend().getTakePhotoUri();
 							intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
-							intent.putExtra(MediaStore.EXTRA_OUTPUT, mPendingImageUri);
+							intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+							mPendingImageUris.clear();
+							mPendingImageUris.add(uri);
 							break;
 						case ATTACHMENT_CHOICE_CHOOSE_FILE:
 							chooser = true;
@@ -857,8 +865,8 @@ public class ConversationActivity extends XmppActivity
 		}
 		savedInstanceState.putBoolean(STATE_PANEL_OPEN,
 				isConversationsOverviewVisable());
-		if (this.mPendingImageUri != null) {
-			savedInstanceState.putString(STATE_PENDING_URI, this.mPendingImageUri.toString());
+		if (this.mPendingImageUris.size() >= 1) {
+			savedInstanceState.putString(STATE_PENDING_URI, this.mPendingImageUris.get(0).toString());
 		}
 		super.onSaveInstanceState(savedInstanceState);
 	}
@@ -897,21 +905,23 @@ public class ConversationActivity extends XmppActivity
 			this.mConversationFragment.reInit(getSelectedConversation());
 		} else {
 			showConversationsOverview();
-			mPendingImageUri = null;
-			mPendingFileUri = null;
+			mPendingImageUris.clear();
+			mPendingFileUris.clear();
 			mPendingGeoUri = null;
 			setSelectedConversation(conversationList.get(0));
 			this.mConversationFragment.reInit(getSelectedConversation());
 		}
 
-		if (mPendingImageUri != null) {
-			attachImageToConversation(getSelectedConversation(),mPendingImageUri);
-			mPendingImageUri = null;
-		} else if (mPendingFileUri != null) {
-			attachFileToConversation(getSelectedConversation(),mPendingFileUri);
-			mPendingFileUri = null;
-		} else if (mPendingGeoUri != null) {
-			attachLocationToConversation(getSelectedConversation(),mPendingGeoUri);
+		for(Iterator<Uri> i = mPendingImageUris.iterator(); i.hasNext(); i.remove()) {
+			attachImageToConversation(getSelectedConversation(),i.next());
+		}
+
+		for(Iterator<Uri> i = mPendingFileUris.iterator(); i.hasNext(); i.remove()) {
+			attachFileToConversation(getSelectedConversation(),i.next());
+		}
+
+		if (mPendingGeoUri != null) {
+			attachLocationToConversation(getSelectedConversation(), mPendingGeoUri);
 			mPendingGeoUri = null;
 		}
 		ExceptionHelper.checkForCrash(this, this.xmppConnectionService);
@@ -963,6 +973,20 @@ public class ConversationActivity extends XmppActivity
 		xmppConnectionService.getNotificationService().setOpenConversation(null);
 	}
 
+	private static List<Uri> extractUriFromIntent(final Intent intent) {
+		List<Uri> uris = new ArrayList<>();
+		Uri uri = intent.getData();
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2 && uri == null) {
+			ClipData clipData = intent.getClipData();
+			for(int i = 0; i < clipData.getItemCount(); ++i) {
+				uris.add(clipData.getItemAt(i).getUri());
+			}
+		} else {
+			uris.add(uri);
+		}
+		return uris;
+	}
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode,
 			final Intent data) {
@@ -972,25 +996,34 @@ public class ConversationActivity extends XmppActivity
 				mConversationFragment.hideSnackbar();
 				mConversationFragment.updateMessages();
 			} else if (requestCode == ATTACHMENT_CHOICE_CHOOSE_IMAGE) {
-				mPendingImageUri = data.getData();
+				mPendingImageUris.clear();
+				mPendingImageUris.addAll(extractUriFromIntent(data));
 				if (xmppConnectionServiceBound) {
-					attachImageToConversation(getSelectedConversation(),mPendingImageUri);
-					mPendingImageUri = null;
+					for(Iterator<Uri> i = mPendingImageUris.iterator(); i.hasNext(); i.remove()) {
+						attachImageToConversation(getSelectedConversation(),i.next());
+					}
 				}
 			} else if (requestCode == ATTACHMENT_CHOICE_CHOOSE_FILE || requestCode == ATTACHMENT_CHOICE_RECORD_VOICE) {
-				mPendingFileUri = data.getData();
+				mPendingFileUris.clear();
+				mPendingFileUris.addAll(extractUriFromIntent(data));
 				if (xmppConnectionServiceBound) {
-					attachFileToConversation(getSelectedConversation(),mPendingFileUri);
-					mPendingFileUri = null;
+					for(Iterator<Uri> i = mPendingImageUris.iterator(); i.hasNext(); i.remove()) {
+						attachFileToConversation(getSelectedConversation(), i.next());
+					}
 				}
-			} else if (requestCode == ATTACHMENT_CHOICE_TAKE_PHOTO && mPendingImageUri != null) {
-				if (xmppConnectionServiceBound) {
-					attachImageToConversation(getSelectedConversation(),mPendingImageUri);
-					mPendingImageUri = null;
+			} else if (requestCode == ATTACHMENT_CHOICE_TAKE_PHOTO) {
+				if (mPendingImageUris.size() == 1) {
+					Uri uri = mPendingImageUris.get(0);
+					if (xmppConnectionServiceBound) {
+						attachImageToConversation(getSelectedConversation(), uri);
+						mPendingImageUris.clear();
+					}
+					Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+					intent.setData(uri);
+					sendBroadcast(intent);
+				} else {
+					mPendingImageUris.clear();
 				}
-				Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-				intent.setData(mPendingImageUri);
-				sendBroadcast(intent);
 			} else if (requestCode == ATTACHMENT_CHOICE_LOCATION) {
 				double latitude = data.getDoubleExtra("latitude",0);
 				double longitude = data.getDoubleExtra("longitude",0);
@@ -999,10 +1032,6 @@ public class ConversationActivity extends XmppActivity
 					attachLocationToConversation(getSelectedConversation(), mPendingGeoUri);
 					this.mPendingGeoUri = null;
 				}
-			}
-		} else {
-			if (requestCode == ATTACHMENT_CHOICE_TAKE_PHOTO) {
-				mPendingImageUri = null;
 			}
 		}
 	}
