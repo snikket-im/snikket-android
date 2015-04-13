@@ -168,8 +168,8 @@ public class ManageAccountActivity extends XmppActivity implements OnAccountUpda
 		}
 	}
 
-	public void onClickTglAccountState(Account account) {
-		if (account.isOptionSet(Account.OPTION_DISABLED)) {
+	public void onClickTglAccountState(Account account, boolean enable) {
+		if (enable) {
 			enableAccount(account);
 		} else {
 			disableAccount(account);

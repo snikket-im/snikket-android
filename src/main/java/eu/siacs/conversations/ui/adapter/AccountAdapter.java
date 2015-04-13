@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Switch;
@@ -51,14 +52,14 @@ public class AccountAdapter extends ArrayAdapter<Account> {
 				break;
 		}
 		final Switch tglAccountState = (Switch) view.findViewById(R.id.tgl_account_status);
-		boolean isDisabled = (account.getStatus() == Account.State.DISABLED) ? true : false;
+		final boolean isDisabled = (account.getStatus() == Account.State.DISABLED) ? true : false;
+		tglAccountState.setOnCheckedChangeListener(null);
 		tglAccountState.setChecked(!isDisabled);
-		tglAccountState.setOnClickListener(new View.OnClickListener() {
+		tglAccountState.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 			@Override
-			public void onClick(View v) {
-				if (activity instanceof ManageAccountActivity) {
-					((ManageAccountActivity) activity).onClickTglAccountState(account);
-					tglAccountState.toggle();
+			public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+				if (b == isDisabled && activity instanceof ManageAccountActivity) {
+					((ManageAccountActivity) activity).onClickTglAccountState(account,b);
 				}
 			}
 		});
