@@ -432,7 +432,7 @@ public class Message extends AbstractEntity {
 	public boolean bodyContainsDownloadable() {
 		/**
 		 * there are a few cases where spaces result in an unwanted behavior, e.g.
-		 * "http://example.com/image.jpg" text that will not be shown /abc.png"
+		 * "http://example.com/image.jpg text that will not be shown /abc.png"
 		 * or more than one image link in one message.
 		 */
 		if (body.contains(" ")) {
