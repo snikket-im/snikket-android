@@ -268,7 +268,6 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 			if (conversation.getNextCounterpart() != null) {
 				message.setCounterpart(conversation.getNextCounterpart());
 				message.setType(Message.TYPE_PRIVATE);
-				conversation.setNextCounterpart(null);
 			}
 		}
 		if (conversation.getNextEncryption(activity.forceEncryption()) == Message.ENCRYPTION_OTR) {
