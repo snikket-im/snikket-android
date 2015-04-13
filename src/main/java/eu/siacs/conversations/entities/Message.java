@@ -430,23 +430,31 @@ public class Message extends AbstractEntity {
 	}
 
 	public boolean bodyContainsDownloadable() {
+		/**
+		 * there are a few cases where spaces result in an unwanted behavior, e.g.
+		 * "http://example.com/image.jpg" text that will not be shown /abc.png"
+		 * or more than one image link in one message.
+		 */
+		if (body.contains(" ")) {
+			return false;
+		}
 		try {
-			URL url = new URL(this.getBody());
+			URL url = new URL(body);
 			if (!url.getProtocol().equalsIgnoreCase("http")
 					&& !url.getProtocol().equalsIgnoreCase("https")) {
 				return false;
 					}
-			if (url.getPath() == null) {
+
+			String sUrlPath = url.getPath();
+			if (sUrlPath == null || sUrlPath.isEmpty()) {
 				return false;
 			}
-			String[] pathParts = url.getPath().split("/");
-			String filename;
-			if (pathParts.length > 0) {
-				filename = pathParts[pathParts.length - 1].toLowerCase();
-			} else {
-				return false;
-			}
-			String[] extensionParts = filename.split("\\.");
+
+			int iSlashIndex = sUrlPath.lastIndexOf('/') + 1;
+
+			String sLastUrlPath = sUrlPath.substring(iSlashIndex).toLowerCase();
+
+			String[] extensionParts = sLastUrlPath.split("\\.");
 			if (extensionParts.length == 2
 					&& Arrays.asList(Downloadable.VALID_IMAGE_EXTENSIONS).contains(
 						extensionParts[extensionParts.length - 1])) {
