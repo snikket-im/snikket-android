@@ -90,6 +90,7 @@ public abstract class XmppActivity extends Activity {
 
 	protected int mPrimaryTextColor;
 	protected int mSecondaryTextColor;
+	protected int mPrimaryBackgroundColor;
 	protected int mSecondaryBackgroundColor;
 	protected int mColorRed;
 	protected int mColorOrange;
@@ -331,6 +332,7 @@ public abstract class XmppActivity extends Activity {
 		mColorOrange = getResources().getColor(R.color.orange);
 		mColorGreen = getResources().getColor(R.color.green);
 		mPrimaryColor = getResources().getColor(R.color.primary);
+		mPrimaryBackgroundColor = getResources().getColor(R.color.primarybackground);
 		mSecondaryBackgroundColor = getResources().getColor(R.color.secondarybackground);
 		this.mTheme = findTheme();
 		setTheme(this.mTheme);
@@ -740,7 +742,11 @@ public abstract class XmppActivity extends Activity {
 	public int getOnlineColor() {
 		return this.mColorGreen;
 	}
-	
+
+	public int getPrimaryBackgroundColor() {
+		return this.mPrimaryBackgroundColor;
+	}
+
 	public int getSecondaryBackgroundColor() {
 		return this.mSecondaryBackgroundColor;
 	}
