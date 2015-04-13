@@ -973,6 +973,7 @@ public class ConversationActivity extends XmppActivity
 		xmppConnectionService.getNotificationService().setOpenConversation(null);
 	}
 
+	@SuppressLint("NewApi")
 	private static List<Uri> extractUriFromIntent(final Intent intent) {
 		List<Uri> uris = new ArrayList<>();
 		Uri uri = intent.getData();
