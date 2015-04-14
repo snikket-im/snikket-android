@@ -67,7 +67,7 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 
 		@Override
 		public void onClick(final View v) {
-			if (mAccount != null && mAccount.getStatus() == Account.State.DISABLED) {
+			if (mAccount != null && mAccount.getStatus() == Account.State.DISABLED && !accountInfoEdited()) {
 				mAccount.setOption(Account.OPTION_DISABLED, false);
 				xmppConnectionService.updateAccount(mAccount);
 				return;
@@ -237,7 +237,11 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 	}
 
 	protected void updateSaveButton() {
-		if (mAccount != null && (mAccount.getStatus() == Account.State.CONNECTING || mFetchingAvatar)) {
+		if (accountInfoEdited() && jidToEdit != null) {
+			this.mSaveButton.setText(R.string.save);
+			this.mSaveButton.setEnabled(true);
+			this.mSaveButton.setTextColor(getPrimaryTextColor());
+		} else if (mAccount != null && (mAccount.getStatus() == Account.State.CONNECTING || mFetchingAvatar)) {
 			this.mSaveButton.setEnabled(false);
 			this.mSaveButton.setTextColor(getSecondaryTextColor());
 			this.mSaveButton.setText(R.string.account_status_connecting);
@@ -265,9 +269,9 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 	}
 
 	protected boolean accountInfoEdited() {
-		return (!this.mAccount.getJid().toBareJid().toString().equals(
-					this.mAccountJid.getText().toString()))
-			|| (!this.mAccount.getPassword().equals(
+		return this.mAccount != null && (!this.mAccount.getJid().toBareJid().toString().equals(
+					this.mAccountJid.getText().toString())
+			|| !this.mAccount.getPassword().equals(
 						this.mPassword.getText().toString()));
 	}
 
