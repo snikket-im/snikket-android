@@ -429,6 +429,8 @@
   <string name="received_location">Standort empfangen</string>
   <string name="title_undo_swipe_out_conversation">Unterhaltung beendet</string>
   <string name="title_undo_swipe_out_muc">Konferenz verlassen</string>
+  <string name="pref_dont_trust_system_cas_title">Misstraue Zertifizierungsstellen</string>
+  <string name="pref_dont_trust_system_cas_summary">Alle Zertifikate müssen manuell bestätigt werden</string>
   <plurals name="select_contact">
     <item quantity="one">%d Kontakt ausgewählt</item>
     <item quantity="other">%d Kontakte ausgewählt</item>

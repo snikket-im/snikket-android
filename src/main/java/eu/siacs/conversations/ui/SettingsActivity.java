@@ -85,7 +85,8 @@ public class SettingsActivity extends XmppActivity implements
 					}
 				}
 			}
+		} else if (name.equals("dont_trust_system_cas")) {
+			xmppConnectionService.updateMemorizingTrustmanager();
 		}
 	}
-
 }
