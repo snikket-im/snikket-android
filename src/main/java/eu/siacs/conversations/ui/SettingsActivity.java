@@ -7,6 +7,8 @@ import java.util.Locale;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.xmpp.XmppConnection;
 
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Build;
@@ -21,9 +23,12 @@ public class SettingsActivity extends XmppActivity implements
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mSettingsFragment = new SettingsFragment();
-		getFragmentManager().beginTransaction()
-				.replace(android.R.id.content, mSettingsFragment).commit();
+		FragmentManager fm = getFragmentManager();
+		mSettingsFragment = (SettingsFragment) fm.findFragmentById(android.R.id.content);
+		if (mSettingsFragment == null || !mSettingsFragment.getClass().equals(SettingsFragment.class)) {
+			mSettingsFragment = new SettingsFragment();
+			fm.beginTransaction().replace(android.R.id.content, mSettingsFragment).commit();
+		}
 	}
 
 	@Override
@@ -34,18 +39,15 @@ public class SettingsActivity extends XmppActivity implements
 	@Override
 	public void onStart() {
 		super.onStart();
-		PreferenceManager.getDefaultSharedPreferences(this)
-				.registerOnSharedPreferenceChangeListener(this);
-		ListPreference resources = (ListPreference) mSettingsFragment
-				.findPreference("resource");
+		PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(this);
+		ListPreference resources = (ListPreference) mSettingsFragment.findPreference("resource");
 		if (resources != null) {
-			ArrayList<CharSequence> entries = new ArrayList<CharSequence>(
-					Arrays.asList(resources.getEntries()));
-			entries.add(0, Build.MODEL);
-			resources.setEntries(entries.toArray(new CharSequence[entries
-					.size()]));
-			resources.setEntryValues(entries.toArray(new CharSequence[entries
-					.size()]));
+			ArrayList<CharSequence> entries = new ArrayList<>(Arrays.asList(resources.getEntries()));
+			if (!entries.contains(Build.MODEL)) {
+				entries.add(0, Build.MODEL);
+				resources.setEntries(entries.toArray(new CharSequence[entries.size()]));
+				resources.setEntryValues(entries.toArray(new CharSequence[entries.size()]));
+			}
 		}
 	}
 
