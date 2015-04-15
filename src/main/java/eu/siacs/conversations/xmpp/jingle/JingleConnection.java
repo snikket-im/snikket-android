@@ -317,7 +317,7 @@ public class JingleConnection implements Downloadable {
 				message.setBody(Long.toString(size));
 				conversation.add(message);
 				mXmppConnectionService.updateConversationUi();
-				if (size <= this.mJingleConnectionManager
+				if (size < this.mJingleConnectionManager
 						.getAutoAcceptFileSize()) {
 					Log.d(Config.LOGTAG, "auto accepting file from "
 							+ packet.getFrom());

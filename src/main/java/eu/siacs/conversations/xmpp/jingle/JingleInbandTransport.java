@@ -207,6 +207,7 @@ public class JingleInbandTransport extends JingleTransport {
 			if (!established) {
 				established = true;
 				connected = true;
+				this.receiveNextBlock("");
 				this.account.getXmppConnection().sendIqPacket(
 						packet.generateResponse(IqPacket.TYPE.RESULT), null);
 			} else {
