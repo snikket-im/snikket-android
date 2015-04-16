@@ -121,7 +121,7 @@ public class DNSHelper {
 					while (p > 0) {
 						p -= s.get(i++).getPriority();
 					}
-					i--;
+					if (i>0) i--;
 					// remove is expensive, but we have only a few entries
 					// anyway
 					SRV srv = s.remove(i);

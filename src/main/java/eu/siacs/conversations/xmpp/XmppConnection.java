@@ -204,7 +204,7 @@ public class XmppConnection implements Runnable {
 					&& "nosrv".equals(result.getString("error", null))) {
 				socket = new Socket(account.getServer().getDomainpart(), 5222);
 			} else {
-				throw new IOException("timeout in dns");
+				throw new IOException("unhandled exception in DNS resolver");
 			}
 			final OutputStream out = socket.getOutputStream();
 			tagWriter.setOutputStream(out);
