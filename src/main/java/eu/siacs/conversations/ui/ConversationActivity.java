@@ -246,7 +246,7 @@ public class ConversationActivity extends XmppActivity
 		listView.enableSwipeToDismiss();
 		listView.setSwipingLayout(R.id.swipeable_item);
 		listView.setUndoStyle(EnhancedListView.UndoStyle.SINGLE_POPUP);
-		listView.setUndoHideDelay(3000);
+		listView.setUndoHideDelay(8000);
 		listView.setRequireTouchBeforeDismiss(false);
 
 		mContentView = findViewById(R.id.content_view_spl);
