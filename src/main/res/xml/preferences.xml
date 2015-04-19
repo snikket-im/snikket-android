@@ -142,6 +142,17 @@
 			        android:title="@string/pref_display_enter_key"
 			        android:summary="@string/pref_display_enter_key_summary" />
 	        </PreferenceCategory>
+			<PreferenceCategory android:title="@string/pref_certificate_options">
+				<CheckBoxPreference
+					android:defaultValue="false"
+					android:key="dont_trust_system_cas"
+					android:title="@string/pref_dont_trust_system_cas_title"
+					android:summary="@string/pref_dont_trust_system_cas_summary" />
+				<Preference
+					android:key="remove_trusted_certificates"
+					android:title="@string/pref_remove_trusted_certificates_title"
+					android:summary="@string/pref_remove_trusted_certificates_summary" />
+			</PreferenceCategory>
             <PreferenceCategory android:title="@string/pref_expert_options_other" >
                 <CheckBoxPreference
                     android:defaultValue="false"
@@ -153,11 +164,6 @@
                     android:key="keep_foreground_service"
                     android:title="@string/pref_keep_foreground_service"
                     android:summary="@string/pref_keep_foreground_service_summary" />
-				<CheckBoxPreference
-					android:defaultValue="false"
-					android:key="dont_trust_system_cas"
-					android:title="@string/pref_dont_trust_system_cas_title"
-					android:summary="@string/pref_dont_trust_system_cas_summary" />
             </PreferenceCategory>
         </PreferenceScreen>
 

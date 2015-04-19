@@ -429,8 +429,19 @@
   <string name="received_location">Standort empfangen</string>
   <string name="title_undo_swipe_out_conversation">Unterhaltung beendet</string>
   <string name="title_undo_swipe_out_muc">Konferenz verlassen</string>
+  <string name="pref_certificate_options">Zertifikats-Optionen</string>
   <string name="pref_dont_trust_system_cas_title">Misstraue Zertifizierungsstellen</string>
   <string name="pref_dont_trust_system_cas_summary">Alle Zertifikate müssen manuell bestätigt werden</string>
+  <string name="pref_remove_trusted_certificates_title">Zertifikate löschen</string>
+  <string name="pref_remove_trusted_certificates_summary">Als vertrauenswürdig bestätigte Zertifikate löschen</string>
+  <string name="toast_no_trusted_certs">Keine manuell bestätigten Zertifikate</string>
+  <string name="dialog_manage_certs_title">Zertifikate löschen</string>
+  <string name="dialog_manage_certs_positivebutton">Auswahl löschen</string>
+  <string name="dialog_manage_certs_negativebutton">Abbrechen</string>
+  <plurals name="toast_delete_certificates">
+	<item quantity="one">%d Zertifikat gelöscht</item>
+    <item quantity="other">%d Zertifikate gelöscht</item>
+  </plurals>
   <plurals name="select_contact">
     <item quantity="one">%d Kontakt ausgewählt</item>
     <item quantity="other">%d Kontakte ausgewählt</item>
