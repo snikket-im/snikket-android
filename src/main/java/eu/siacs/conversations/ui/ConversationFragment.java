@@ -1019,6 +1019,9 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 	}
 
 	public void appendText(String text) {
+		if (text == null) {
+			return;
+		}
 		String previous = this.mEditMessage.getText().toString();
 		if (previous.length() != 0 && !previous.endsWith(" ")) {
 			text = " " + text;

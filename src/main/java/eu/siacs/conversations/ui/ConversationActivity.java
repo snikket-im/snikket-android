@@ -929,10 +929,10 @@ public class ConversationActivity extends XmppActivity
 	}
 
 	private void handleViewConversationIntent(final Intent intent) {
-		final String uuid = (String) intent.getExtras().get(CONVERSATION);
-		final String downloadUuid = (String) intent.getExtras().get(MESSAGE);
-		final String text = intent.getExtras().getString(TEXT, "");
-		final String nick = intent.getExtras().getString(NICK, null);
+		final String uuid = intent.getStringExtra(CONVERSATION);
+		final String downloadUuid = intent.getStringExtra(MESSAGE);
+		final String text = intent.getStringExtra(TEXT);
+		final String nick = intent.getStringExtra(NICK);
 		if (selectConversationByUuid(uuid)) {
 			this.mConversationFragment.reInit(getSelectedConversation());
 			if (nick != null) {
