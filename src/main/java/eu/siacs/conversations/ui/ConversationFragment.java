@@ -8,7 +8,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.IntentSender.SendIntentException;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.ContextMenu;
@@ -315,8 +314,8 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 	@Override
 	public View onCreateView(final LayoutInflater inflater,
 			ViewGroup container, Bundle savedInstanceState) {
-		final View view = inflater.inflate(R.layout.fragment_conversation,
-				container, false);
+		final View view = inflater.inflate(R.layout.fragment_conversation,container, false);
+		view.setOnClickListener(null);
 		mEditMessage = (EditMessage) view.findViewById(R.id.textinput);
 		setupIme();
 		mEditMessage.setOnClickListener(new OnClickListener() {
