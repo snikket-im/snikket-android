@@ -427,6 +427,10 @@
   <string name="no_application_found_to_display_location">Nebyla nalezena aplikace pro zobrazení pozice</string>
   <string name="location">Pozice</string>
   <string name="received_location">Přijmout pozici</string>
+  <string name="title_undo_swipe_out_conversation">Conversation zavřena</string>
+  <string name="title_undo_swipe_out_muc">Opustil(a) konferenci</string>
+  <string name="pref_dont_trust_system_cas_title">Nedůvěřovat systémovým CA</string>
+  <string name="pref_dont_trust_system_cas_summary">Všechny certifikáty musí být schváleny ručně</string>
   <plurals name="select_contact">
     <item quantity="one">Vybrat %d kontakt</item>
     <item quantity="few">Vybrat %d kontakty</item>
