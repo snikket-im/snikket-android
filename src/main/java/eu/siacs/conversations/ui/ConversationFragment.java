@@ -718,21 +718,6 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 			final ConversationActivity activity = (ConversationActivity) getActivity();
 			if (this.conversation != null) {
 				updateSnackBar(this.conversation);
-				final Contact contact = this.conversation.getContact();
-				if (this.conversation.isBlocked()) {
-
-				} else if (!contact.showInRoster()
-						&& contact
-						.getOption(Contact.Options.PENDING_SUBSCRIPTION_REQUEST)) {
-
-				} else if (conversation.getMode() == Conversation.MODE_SINGLE) {
-					makeFingerprintWarning();
-				} else if (!conversation.getMucOptions().online()
-						&& conversation.getAccount().getStatus() == Account.State.ONLINE) {
-
-				} else if (this.conversation.isMuted()) {
-
-				}
 				conversation.populateWithMessages(ConversationFragment.this.messageList);
 				for (final Message message : this.messageList) {
 					if (message.getEncryption() == Message.ENCRYPTION_PGP
@@ -876,10 +861,6 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 				}
 			}
 		}
-	}
-
-	protected void makeFingerprintWarning() {
-
 	}
 
 	protected void showSnackbar(final int message, final int action,
