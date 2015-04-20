@@ -764,6 +764,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 					} catch (final NoSuchElementException ignored) {
 
 					}
+					askForPassphraseIntent = null;
 					activity.xmppConnectionService.updateMessage(message);
 				}
 
