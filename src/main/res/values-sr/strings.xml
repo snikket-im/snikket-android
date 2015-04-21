@@ -427,6 +427,10 @@
   <string name="no_application_found_to_display_location">Нема апликације за приказ локације</string>
   <string name="location">Локација</string>
   <string name="received_location">Примљена локација</string>
+  <string name="title_undo_swipe_out_conversation">Преписка затворена</string>
+  <string name="title_undo_swipe_out_muc">Напусти конференцију</string>
+  <string name="pref_dont_trust_system_cas_title">Не веруј системским сертификационим телима</string>
+  <string name="pref_dont_trust_system_cas_summary">Сви сертификати морају ручно да се одобре</string>
   <plurals name="select_contact">
     <item quantity="one">Изабери %d контакт</item>
     <item quantity="few">Изабери %d контакта</item>

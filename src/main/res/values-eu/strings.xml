@@ -359,7 +359,6 @@
   <string name="could_not_change_password">Pasahitza ezin izan da aldatu</string>
   <string name="otr_session_not_started">Mezu bat bidali enkripatutako elkarrizketa hasteko</string>
   <string name="ask_question">Galdetu</string>
-  <string name="smp_explain_question">Zu eta zure kontaktua beste inor ezagutzen ez duen elkarren arteko sekreturen bat baduzue (ohiko txantxa edo azkenengo aldian bazkaldu zenutena adibidez) bakoitzaren hatz-markak egiaztatzeko sekretu hori erabili dezakezue.\n\nIradokizun edo galdera bat eman behar duzu zure kontaktuak erantzun dezan, letra larri eta xeheak bereiziz.</string>
   <string name="smp_explain_answer">Zure kontaktuak zure hatz-marka egiaztatu nahi du partekatutako sekretu batekin erronka eginez. Zure kontaktuak hurrengo iradokizuna edo sekretu horren galdera eman du.</string>
   <string name="shared_secret_hint_should_not_be_empty">Zure iradokizuna ez luke hutsik egon behar</string>
   <string name="shared_secret_can_not_be_empty">Zure partekatutako sekretua ezin da hutsik egon</string>
@@ -427,6 +426,8 @@
   <string name="no_application_found_to_display_location">Kokapena erakutsi dezakeen aplikaziorik ez da aurkitu</string>
   <string name="location">Kokapena</string>
   <string name="received_location">Kokapena jaso da</string>
+  <string name="title_undo_swipe_out_conversation">Elkarrizketa itxi egin da</string>
+  <string name="title_undo_swipe_out_muc">Konferentzia utzi egin da</string>
   <plurals name="select_contact">
     <item quantity="one">Hautatu kontaktu %d</item>
     <item quantity="other">Hautatu %d kontaktu</item>

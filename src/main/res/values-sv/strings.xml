@@ -427,6 +427,10 @@
   <string name="no_application_found_to_display_location">Kunde inte hitta applikation för att visa position</string>
   <string name="location">Position</string>
   <string name="received_location">Mottog position</string>
+  <string name="title_undo_swipe_out_conversation">Konversation stängd</string>
+  <string name="title_undo_swipe_out_muc">Lämnade konferens</string>
+  <string name="pref_dont_trust_system_cas_title">Lita inte på systemets CAs</string>
+  <string name="pref_dont_trust_system_cas_summary">Alla certifikat måste manuellt godkännas</string>
   <plurals name="select_contact">
     <item quantity="one">Välj %d kontakt</item>
     <item quantity="other">Välj %d kontakter</item>

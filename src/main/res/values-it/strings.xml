@@ -357,7 +357,6 @@
   <string name="could_not_change_password">Impossibile cambiare la password</string>
   <string name="otr_session_not_started">Invia un messaggio per avviare una conversazione cifrata</string>
   <string name="ask_question">Fai una domanda</string>
-  <string name="smp_explain_question">Se tu ed il tuo contatto avete un segreto in comune che nessun’altro conosce (come uno scherzo o semplicemente ciò che avete mangiato a pranzo l’ultima volta che vi siete incontrati), potete usare quel segreto per dimostrare la vostra identità reciprocamente.\n\nFornisci un suggerimento o una domanda al tuo contatto che ti risponderà con una domanda Case Sensitive.</string>
   <string name="smp_explain_answer">Il tuo contatto vorrebbe verificare la tua identità. Dovrai rispondere correttamente alla sua domanda con una risposta che condividete. Il tuo contatto ti ha fornito il suggerimento o la domanda seguente.</string>
   <string name="shared_secret_hint_should_not_be_empty">Il suggerimento non dovrebbe essere vuoto</string>
   <string name="shared_secret_can_not_be_empty">Il segreto condiviso non può essere vuoto</string>

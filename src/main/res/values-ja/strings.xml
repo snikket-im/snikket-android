@@ -427,6 +427,10 @@
   <string name="no_application_found_to_display_location">位置を表示するアプリケーションが見つかりません</string>
   <string name="location">位置</string>
   <string name="received_location">位置を受信しました</string>
+  <string name="title_undo_swipe_out_conversation">会話が閉じられました</string>
+  <string name="title_undo_swipe_out_muc">退出した会話</string>
+  <string name="pref_dont_trust_system_cas_title">システムの CA を信頼しない</string>
+  <string name="pref_dont_trust_system_cas_summary">すべての証明書を手動で承認する必要があります</string>
   <plurals name="select_contact">
     <item quantity="other">%d 連絡先を選択</item>
   </plurals>

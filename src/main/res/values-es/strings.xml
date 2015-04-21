@@ -359,7 +359,7 @@
   <string name="could_not_change_password">No se puede cambiar la contraseña</string>
   <string name="otr_session_not_started">Enviar mensaje para empezar una conversación cifrada</string>
   <string name="ask_question">Haz una pregunta</string>
-  <string name="smp_explain_question">Si tu contacto y tú tenéis un secreto en común que nadie más sabe (como un pequeño juego o broma o simplemente lo que tomasteis para comer la última vez os visteis) podéis usar ese secreto para verificar la huella digital de cada uno.\n\nPuedes usar una sugerencia o pregunta para hacer a tu contacto que deberá responder distinguiendo mayúsculas y minúsculas.</string>
+  <string name="smp_explain_question">Si tu contacto y tú tenéis un secreto en común que nadie más sabe (como una broma o simplemente lo que tomasteis para comer la última vez que os visteis) podéis usar ese secreto para verificar la huella digital de cada uno.\n\nPuedes usar una sugerencia o pregunta para hacer a tu contacto que deberá responder distinguiendo mayúsculas y minúsculas.</string>
   <string name="smp_explain_answer">Tu contacto quiere verificar tu huella digital a través de un secreto compartido. Te hace la siguiente sugerencia o pregunta para ese secreto.</string>
   <string name="shared_secret_hint_should_not_be_empty">La pregunta no puede ser vacía</string>
   <string name="shared_secret_can_not_be_empty">El secreto compartido no puede ser vacío</string>
@@ -427,6 +427,10 @@
   <string name="no_application_found_to_display_location">No se ha encontrado ninguna aplicación para mostrar la ubicación</string>
   <string name="location">Ubicación</string>
   <string name="received_location">Ubicación recibida</string>
+  <string name="title_undo_swipe_out_conversation">Conversación cerrada</string>
+  <string name="title_undo_swipe_out_muc">Has salido de la conversación</string>
+  <string name="pref_dont_trust_system_cas_title">No confiar en los CAs del sistema</string>
+  <string name="pref_dont_trust_system_cas_summary">Todos los certificados deben ser aprobados manualmente</string>
   <plurals name="select_contact">
     <item quantity="one">Seleccionado %d contacto</item>
     <item quantity="other">Seleccionados %d contactos</item>
