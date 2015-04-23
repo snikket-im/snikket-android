@@ -1537,6 +1537,9 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 						for (Jid invite : jids) {
 							invite(conversation, invite);
 						}
+						if (account.countPresences() > 1) {
+							directInvite(conversation, account.getJid().toBareJid());
+						}
 						if (callback != null) {
 							callback.success(conversation);
 						}
@@ -2020,6 +2023,11 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	public void invite(Conversation conversation, Jid contact) {
 		MessagePacket packet = mMessageGenerator.invite(conversation, contact);
 		sendMessagePacket(conversation.getAccount(), packet);
+	}
+
+	public void directInvite(Conversation conversation, Jid jid) {
+		MessagePacket packet = mMessageGenerator.directInvite(conversation,jid);
+		sendMessagePacket(conversation.getAccount(),packet);
 	}
 
 	public void resetSendingToWaiting(Account account) {
