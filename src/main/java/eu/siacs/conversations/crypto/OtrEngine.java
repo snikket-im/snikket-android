@@ -182,7 +182,7 @@ public class OtrEngine extends OtrCryptoEngineImpl implements OtrEngineHost {
 		packet.setBody(body);
 		packet.addChild("private", "urn:xmpp:carbons:2");
 		packet.addChild("no-copy", "urn:xmpp:hints");
-		packet.addChild("no-store", "urn:xmpp:hints");
+		packet.addChild("no-permanent-store", "urn:xmpp:hints");
 
 		try {
 			Jid jid = Jid.fromSessionID(session);

@@ -71,6 +71,7 @@ public class MessageGenerator extends AbstractGenerator {
 		MessagePacket packet = preparePacket(message, addDelay);
 		packet.addChild("private", "urn:xmpp:carbons:2");
 		packet.addChild("no-copy", "urn:xmpp:hints");
+		packet.addChild("no-permanent-store", "urn:xmpp:hints");
 		try {
 			packet.setBody(otrSession.transformSending(message.getBody())[0]);
 			return packet;

@@ -36,6 +36,7 @@ import org.openintents.openpgp.util.OpenPgpServiceConnection;
 import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -174,13 +175,22 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		public void onContactStatusChanged(Contact contact, boolean online) {
 			Conversation conversation = find(getConversations(), contact);
 			if (conversation != null) {
-				if (online && contact.getPresences().size() > 1) {
+				if (online) {
 					conversation.endOtrIfNeeded();
+					if (contact.getPresences().size() == 1) {
+						sendUnsentMessages(conversation);
+					}
 				} else {
-					conversation.resetOtrSession();
-				}
-				if (online && (contact.getPresences().size() == 1)) {
-					sendUnsentMessages(conversation);
+					if (contact.getPresences().size() >= 1) {
+						if (conversation.hasValidOtrSession()) {
+							String otrResource = conversation.getOtrSession().getSessionID().getUserID();
+							if (!(Arrays.asList(contact.getPresences().asStringArray()).contains(otrResource))) {
+								conversation.endOtrIfNeeded();
+							}
+						}
+					} else {
+						conversation.endOtrIfNeeded();
+					}
 				}
 			}
 		}
