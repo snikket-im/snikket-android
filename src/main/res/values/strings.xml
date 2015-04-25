@@ -457,8 +457,19 @@
     <string name="received_location">Received location</string>
 	<string name="title_undo_swipe_out_conversation">Conversation closed</string>
 	<string name="title_undo_swipe_out_muc">Left conference</string>
+	<string name="pref_certificate_options">Certificate options</string>
 	<string name="pref_dont_trust_system_cas_title">Don’t trust system CAs</string>
 	<string name="pref_dont_trust_system_cas_summary">All certificates must be manually approved</string>
+	<string name="pref_remove_trusted_certificates_title">Remove certificates</string>
+	<string name="pref_remove_trusted_certificates_summary">Delete manually approved certificates</string>
+	<string name="toast_no_trusted_certs">No manually approved certificates</string>
+	<string name="dialog_manage_certs_title">Remove certificates</string>
+	<string name="dialog_manage_certs_positivebutton">Delete selection</string>
+	<string name="dialog_manage_certs_negativebutton">Cancel</string>
+	<plurals name="toast_delete_certificates">
+		<item quantity="one">%d certificate deleted</item>
+		<item quantity="other">%d certificates deleted</item>
+	</plurals>
 	<plurals name="select_contact">
 		<item quantity="one">Select %d contact</item>
 		<item quantity="other">Select %d contacts</item>
