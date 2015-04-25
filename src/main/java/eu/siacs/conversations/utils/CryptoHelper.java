@@ -91,6 +91,9 @@ public final class CryptoHelper {
 	}
 
 	public static String prettifyFingerprint(String fingerprint) {
+		if (fingerprint.length() < 40) {
+			return fingerprint;
+		}
 		StringBuilder builder = new StringBuilder(fingerprint);
 		builder.insert(8, " ");
 		builder.insert(17, " ");
