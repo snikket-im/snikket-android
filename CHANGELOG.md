@@ -1,5 +1,13 @@
 ###Changelog
 
+####Version 1.3.0
+* swipe conversations to end them
+* quickly enable / disable account via slider
+* share multiple images at once
+* expert option to distrust system CAs
+* mlink compatibility
+* bug fixes
+
 ####Version 1.2.0
 * Send current location. (requires [plugin](https://play.google.com/store/apps/details?id=eu.siacs.conversations.sharelocation))
 * Invite multiple contacts at once
