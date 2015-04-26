@@ -192,7 +192,7 @@ public class JingleConnection implements Downloadable {
 		} else {
 			response = packet.generateResponse(IqPacket.TYPE.ERROR);
 		}
-		account.getXmppConnection().sendIqPacket(response, null);
+		mXmppConnectionService.sendIqPacket(account,response,null);
 	}
 
 	public void init(Message message) {
@@ -459,11 +459,11 @@ public class JingleConnection implements Downloadable {
 	}
 
 	private void sendJinglePacket(JinglePacket packet) {
-		account.getXmppConnection().sendIqPacket(packet, responseListener);
+		mXmppConnectionService.sendIqPacket(account,packet,responseListener);
 	}
 
 	private void sendJinglePacket(JinglePacket packet, OnIqPacketReceived callback) {
-		account.getXmppConnection().sendIqPacket(packet,callback);
+		mXmppConnectionService.sendIqPacket(account,packet,callback);
 	}
 
 	private boolean receiveAccept(JinglePacket packet) {
@@ -556,7 +556,7 @@ public class JingleConnection implements Downloadable {
 							.setAttribute("sid", this.getSessionId());
 					activation.query().addChild("activate")
 							.setContent(this.getCounterPart().toString());
-					this.account.getXmppConnection().sendIqPacket(activation,
+					mXmppConnectionService.sendIqPacket(account,activation,
 							new OnIqPacketReceived() {
 
 								@Override
