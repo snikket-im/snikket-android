@@ -429,8 +429,19 @@
   <string name="received_location">Получено местоположение</string>
   <string name="title_undo_swipe_out_conversation">Conversation се затвори</string>
   <string name="title_undo_swipe_out_muc">Напуснахте беседата</string>
+  <string name="pref_certificate_options">Настройки на сертификата</string>
   <string name="pref_dont_trust_system_cas_title">Да не се вярва на системните сертификати</string>
   <string name="pref_dont_trust_system_cas_summary">Всички сертификати трябва да бъдат одобрени на ръка</string>
+  <string name="pref_remove_trusted_certificates_title">Премахване на сертификатите</string>
+  <string name="pref_remove_trusted_certificates_summary">Изтриване на сертификатите, одобрени на ръка</string>
+  <string name="toast_no_trusted_certs">Няма сертификати, одобрени на ръка</string>
+  <string name="dialog_manage_certs_title">Премахване на сертификатите</string>
+  <string name="dialog_manage_certs_positivebutton">Изтриване на избраните</string>
+  <string name="dialog_manage_certs_negativebutton">Отказ</string>
+  <plurals name="toast_delete_certificates">
+    <item quantity="one">%d сертификат е изтрит</item>
+    <item quantity="other">%d сертификата са изтрити</item>
+  </plurals>
   <plurals name="select_contact">
     <item quantity="one">Изберете %d контакт</item>
     <item quantity="other">Изберете %d контакта</item>

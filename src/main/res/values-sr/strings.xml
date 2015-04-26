@@ -429,8 +429,20 @@
   <string name="received_location">Примљена локација</string>
   <string name="title_undo_swipe_out_conversation">Преписка затворена</string>
   <string name="title_undo_swipe_out_muc">Напусти конференцију</string>
+  <string name="pref_certificate_options">Опције сертификата</string>
   <string name="pref_dont_trust_system_cas_title">Не веруј системским сертификационим телима</string>
   <string name="pref_dont_trust_system_cas_summary">Сви сертификати морају ручно да се одобре</string>
+  <string name="pref_remove_trusted_certificates_title">Уклони сертификате</string>
+  <string name="pref_remove_trusted_certificates_summary">Обриши ручно одобрене сертификате</string>
+  <string name="toast_no_trusted_certs">Нема ручно одобрених сертификата</string>
+  <string name="dialog_manage_certs_title">Уклањање сертификата</string>
+  <string name="dialog_manage_certs_positivebutton">Обриши изабрано</string>
+  <string name="dialog_manage_certs_negativebutton">Одустани</string>
+  <plurals name="toast_delete_certificates">
+    <item quantity="one">%d сертификат обрисан</item>
+    <item quantity="few">%d сертификата обрисана</item>
+    <item quantity="other">%d сертификата обрисано</item>
+  </plurals>
   <plurals name="select_contact">
     <item quantity="one">Изабери %d контакт</item>
     <item quantity="few">Изабери %d контакта</item>

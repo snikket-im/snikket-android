@@ -359,6 +359,7 @@
   <string name="could_not_change_password">Nepodarilo sa zmeniť heslo</string>
   <string name="otr_session_not_started">Poslať správu pre spustenie šifrovaného chatu</string>
   <string name="ask_question">Položiť otázku</string>
+  <string name="smp_explain_question">Ak máte vy a váš kontakt spoločné tajomstvo, ktoré nikto iný nepozná (napríklad nejaký spoločný vtip alebo len čo ste mali na obed, keď ste sa naposledy stretli), môžte použiť toto tajomstvo na overenie vzájomných identifikátorov. \n\nZadáte pomôcku alebo otázku pre váš kontakt, ktorý na ňu správne odpovie. </string>
   <string name="smp_explain_answer">Váš kontakt by chcel overiť váš identifikátor pomocou spoločného tajomstva. Váš kontakt zadal nasledujúcu pomôcku alebo otázku týkajúcu sa tajomstva. </string>
   <string name="shared_secret_hint_should_not_be_empty">Vaša pomôcka by nemala byť prázdna</string>
   <string name="shared_secret_can_not_be_empty">Vaše spoločné tajomstvo nemôže byť prázdne</string>
@@ -426,4 +427,13 @@
   <string name="no_application_found_to_display_location">Nenašla sa aplikácia na zobrazenie polohy</string>
   <string name="location">Poloha</string>
   <string name="received_location">Prijatá poloha</string>
+  <string name="title_undo_swipe_out_conversation">Konverzácia zatvorená</string>
+  <string name="title_undo_swipe_out_muc">Opustil skupinovú konverzáciu</string>
+  <string name="pref_dont_trust_system_cas_title">Nedôverovať systému CAs</string>
+  <string name="pref_dont_trust_system_cas_summary">Všetky certifikáty musia byť ručne schválené</string>
+  <plurals name="select_contact">
+    <item quantity="one">Vybrať %d kontaktu</item>
+    <item quantity="few">Vybrať %d kontaktu</item>
+    <item quantity="other">Vybrať %d kontaktov</item>
+  </plurals>
 </resources>

@@ -429,8 +429,19 @@
   <string name="received_location">Ubicación recibida</string>
   <string name="title_undo_swipe_out_conversation">Conversación cerrada</string>
   <string name="title_undo_swipe_out_muc">Has salido de la conversación</string>
+  <string name="pref_certificate_options">Opciones de Certificados</string>
   <string name="pref_dont_trust_system_cas_title">No confiar en los CAs del sistema</string>
   <string name="pref_dont_trust_system_cas_summary">Todos los certificados deben ser aprobados manualmente</string>
+  <string name="pref_remove_trusted_certificates_title">Eliminar Certificados</string>
+  <string name="pref_remove_trusted_certificates_summary">Eliminar manualmente certificados aceptados</string>
+  <string name="toast_no_trusted_certs">No aceptar certificados manualmente</string>
+  <string name="dialog_manage_certs_title">Eliminar Certificados</string>
+  <string name="dialog_manage_certs_positivebutton">Deshacer selección</string>
+  <string name="dialog_manage_certs_negativebutton">Cancelar</string>
+  <plurals name="toast_delete_certificates">
+    <item quantity="one">%d certificado eliminado</item>
+    <item quantity="other">%d certificados eliminados</item>
+  </plurals>
   <plurals name="select_contact">
     <item quantity="one">Seleccionado %d contacto</item>
     <item quantity="other">Seleccionados %d contactos</item>

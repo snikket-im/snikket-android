@@ -19,7 +19,7 @@
   <string name="title_activity_settings">Ustawienia</string>
   <string name="title_activity_conference_details">Szczegóły konferencji</string>
   <string name="title_activity_contact_details">Szczegóły kontaktu</string>
-  <string name="title_activity_sharewith">Udostępnij przez Conversation</string>
+  <string name="title_activity_sharewith">Udostępnij w konwersacji</string>
   <string name="title_activity_start_conversation">Rozpocznij konwersację</string>
   <string name="title_activity_choose_contact">Wybierz kontakt</string>
   <string name="title_activity_block_list">Czarna lista</string>
@@ -183,6 +183,11 @@
   <string name="server_info_show_more">Informacje o serwerze</string>
   <string name="server_info_mam">XEP-0313: MAM</string>
   <string name="server_info_carbon_messages">XEP-0280: Kopie wiadomości</string>
+  <string name="server_info_csi">XEP-0352: Client State Indication</string>
+  <string name="server_info_blocking">XEP-0191: Blocking Command</string>
+  <string name="server_info_roster_version">XEP-0237: Roster Versioning</string>
+  <string name="server_info_stream_management">XEP-0198: Stream Management</string>
+  <string name="server_info_pep">XEP-0163: PEP (Avatars)</string>
   <string name="server_info_available">dostępny</string>
   <string name="server_info_unavailable">niedostępny</string>
   <string name="missing_public_keys">Brak informacji o kluczu publicznym</string>
@@ -237,7 +242,7 @@
   <string name="connect">Połącz</string>
   <string name="account_already_exists">Konto już istnieje</string>
   <string name="next">Dalej</string>
-  <string name="server_info_session_established">Połączono</string>
+  <string name="server_info_session_established">Połączono z serwerem</string>
   <string name="additional_information">Dodatkowe informacje</string>
   <string name="skip">Pomiń</string>
   <string name="disable_notifications">Wyłącz powiadomienia</string>
@@ -417,4 +422,5 @@
   <string name="title_undo_swipe_out_muc">Opuszczono konferencję</string>
   <string name="pref_dont_trust_system_cas_title">Nie ufaj certyfikatom systemowym</string>
   <string name="pref_dont_trust_system_cas_summary">Wymagaj ręcznego potwierdzania certyfikatów</string>
+  <string name="dialog_manage_certs_negativebutton">Anuluj</string>
 </resources>

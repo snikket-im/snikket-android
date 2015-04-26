@@ -439,7 +439,7 @@
   <string name="dialog_manage_certs_positivebutton">Auswahl löschen</string>
   <string name="dialog_manage_certs_negativebutton">Abbrechen</string>
   <plurals name="toast_delete_certificates">
-	<item quantity="one">%d Zertifikat gelöscht</item>
+    <item quantity="one">%d Zertifikat gelöscht</item>
     <item quantity="other">%d Zertifikate gelöscht</item>
   </plurals>
   <plurals name="select_contact">
