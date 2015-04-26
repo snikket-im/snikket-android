@@ -412,7 +412,7 @@ public class FileBackend {
 			float top = (newHeight - scaledHeight) / 2;
 
 			RectF targetRect = new RectF(left, top, left + scaledWidth, top + scaledHeight);
-			Bitmap dest = Bitmap.createBitmap(newWidth, newHeight, source.getConfig());
+			Bitmap dest = Bitmap.createBitmap(newWidth, newHeight, Bitmap.Config.ARGB_8888);
 			Canvas canvas = new Canvas(dest);
 			canvas.drawBitmap(source, null, targetRect, null);
 			return dest;
@@ -437,7 +437,7 @@ public class FileBackend {
 		float top = (size - outHeight) / 2;
 		RectF target = new RectF(left, top, left + outWidth, top + outHeight);
 
-		Bitmap output = Bitmap.createBitmap(size, size, input.getConfig());
+		Bitmap output = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
 		Canvas canvas = new Canvas(output);
 		canvas.drawBitmap(input, null, target, null);
 		return output;
