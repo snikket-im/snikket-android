@@ -1034,6 +1034,9 @@ public class ConversationActivity extends XmppActivity
 					this.mPendingGeoUri = null;
 				}
 			}
+		} else {
+			mPendingImageUris.clear();
+			mPendingFileUris.clear();
 		}
 	}
 
