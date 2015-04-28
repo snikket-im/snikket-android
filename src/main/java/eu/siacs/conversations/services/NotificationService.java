@@ -493,7 +493,7 @@ public class NotificationService {
 		final int cancelIcon;
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 			mBuilder.setCategory(Notification.CATEGORY_SERVICE);
-			mBuilder.setSmallIcon(R.drawable.ic_import_export_white_48dp);
+			mBuilder.setSmallIcon(R.drawable.ic_import_export_white_24dp);
 			cancelIcon = R.drawable.ic_cancel_white_24dp;
 		} else {
 			mBuilder.setSmallIcon(R.drawable.ic_stat_communication_import_export);
@@ -540,7 +540,7 @@ public class NotificationService {
 		mBuilder.setOngoing(true);
 		//mBuilder.setLights(0xffffffff, 2000, 4000);
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-			mBuilder.setSmallIcon(R.drawable.ic_warning_white_36dp);
+			mBuilder.setSmallIcon(R.drawable.ic_warning_white_24dp);
 		} else {
 			mBuilder.setSmallIcon(R.drawable.ic_stat_alert_warning);
 		}

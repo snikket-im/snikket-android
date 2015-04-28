@@ -375,7 +375,7 @@ public class ConversationActivity extends XmppActivity
 				if (this.getSelectedConversation().getLatestMessage()
 						.getEncryption() != Message.ENCRYPTION_NONE) {
 					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-						menuSecure.setIcon(R.drawable.ic_lock_outline_white_48dp);
+						menuSecure.setIcon(R.drawable.ic_lock_white_24dp);
 					} else {
 						menuSecure.setIcon(R.drawable.ic_action_secure);
 					}
