@@ -34,7 +34,7 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:background="?android:selectableItemBackground"
-        android:padding="8dp"
+        android:padding="@dimen/image_button_padding"
         android:src="?attr/icon_remove"
         android:visibility="invisible" />
 
