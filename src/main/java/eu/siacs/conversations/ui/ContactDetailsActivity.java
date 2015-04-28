@@ -256,16 +256,19 @@ public class ContactDetailsActivity extends XmppActivity implements OnAccountUpd
 		MenuItem unblock = menu.findItem(R.id.action_unblock);
 		MenuItem edit = menu.findItem(R.id.action_edit_contact);
 		MenuItem delete = menu.findItem(R.id.action_delete_contact);
+		if (contact == null) {
+			return true;
+		}
 		final XmppConnection connection = contact.getAccount().getXmppConnection();
 		if (connection != null && connection.getFeatures().blocking()) {
 			if (this.contact.isBlocked()) {
-				menu.findItem(R.id.action_block).setVisible(false);
+				block.setVisible(false);
 			} else {
-				menu.findItem(R.id.action_unblock).setVisible(false);
+				unblock.setVisible(false);
 			}
 		} else {
-			menu.findItem(R.id.action_unblock).setVisible(false);
-			menu.findItem(R.id.action_block).setVisible(false);
+			unblock.setVisible(false);
+			block.setVisible(false);
 		}
 		if (!contact.showInRoster()) {
 			edit.setVisible(false);
@@ -275,6 +278,7 @@ public class ContactDetailsActivity extends XmppActivity implements OnAccountUpd
 	}
 
 	private void populateView() {
+		invalidateOptionsMenu();
 		setTitle(contact.getDisplayName());
 		if (contact.showInRoster()) {
 			send.setVisibility(View.VISIBLE);
