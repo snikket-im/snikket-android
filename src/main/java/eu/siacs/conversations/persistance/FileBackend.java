@@ -155,9 +155,7 @@ public class FileBackend {
 		OutputStream os = null;
 		InputStream is = null;
 		try {
-			if (!file.createNewFile()) {
-				throw new FileCopyException(R.string.error_io_exception);
-			}
+			file.createNewFile();
 			os = new FileOutputStream(file);
 			is = mXmppConnectionService.getContentResolver().openInputStream(uri);
 			byte[] buffer = new byte[1024];
@@ -166,7 +164,10 @@ public class FileBackend {
 				os.write(buffer, 0, length);
 			}
 			os.flush();
+		} catch(FileNotFoundException e) {
+			throw new FileCopyException(R.string.error_file_not_found);
 		} catch (IOException e) {
+			e.printStackTrace();
 			throw new FileCopyException(R.string.error_io_exception);
 		} finally {
 			close(os);
@@ -188,9 +189,7 @@ public class FileBackend {
 		InputStream is = null;
 		OutputStream os = null;
 		try {
-			if (!file.createNewFile()) {
-				throw new FileCopyException(R.string.error_io_exception);
-			}
+			file.createNewFile();
 			is = mXmppConnectionService.getContentResolver().openInputStream(image);
 			os = new FileOutputStream(file);
 
@@ -223,6 +222,7 @@ public class FileBackend {
 		} catch (FileNotFoundException e) {
 			throw new FileCopyException(R.string.error_file_not_found);
 		} catch (IOException e) {
+			e.printStackTrace();
 			throw new FileCopyException(R.string.error_io_exception);
 		} catch (SecurityException e) {
 			throw new FileCopyException(R.string.error_security_exception_during_image_copy);
