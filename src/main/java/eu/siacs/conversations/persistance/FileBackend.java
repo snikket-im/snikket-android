@@ -400,7 +400,9 @@ public class FileBackend {
 			options.inSampleSize = calcSampleSize(image,Math.max(newHeight, newWidth));
 			is = mXmppConnectionService.getContentResolver().openInputStream(image);
 			Bitmap source = BitmapFactory.decodeStream(is, null, options);
-
+			if (source == null) {
+				return null;
+			}
 			int sourceWidth = source.getWidth();
 			int sourceHeight = source.getHeight();
 			float xScale = (float) newWidth / sourceWidth;
@@ -417,8 +419,6 @@ public class FileBackend {
 			canvas.drawBitmap(source, null, targetRect, null);
 			return dest;
 		} catch (FileNotFoundException e) {
-			return null;
-		} catch (IOException e) {
 			return null;
 		} finally {
 			close(is);
