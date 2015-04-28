@@ -454,7 +454,7 @@ public class NotificationService {
 		// nick (matched in case-insensitive manner), followed by optional
 		// punctuation (for example "bob: i disagree" or "how are you alice?"),
 		// followed by another word boundary.
-		return Pattern.compile("\\b" + nick + "\\p{Punct}?\\b",
+		return Pattern.compile("\\b" + Pattern.quote(nick) + "\\p{Punct}?\\b",
 				Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
 	}
 
