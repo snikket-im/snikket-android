@@ -339,12 +339,18 @@ public class XmppConnection implements Runnable {
 								sendInitialPing();
 							} else if (nextTag.isStart("r")) {
 								tagReader.readElement(nextTag);
+								if (Config.EXTENDED_SM_LOGGING) {
+									Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": acknowledging stanza #" + this.stanzasReceived);
+								}
 								final AckPacket ack = new AckPacket(this.stanzasReceived, smVersion);
 								tagWriter.writeStanzaAsync(ack);
 							} else if (nextTag.isStart("a")) {
 								final Element ack = tagReader.readElement(nextTag);
 								lastPacketReceived = SystemClock.elapsedRealtime();
 								final int serverSequence = Integer.parseInt(ack.getAttribute("h"));
+								if (Config.EXTENDED_SM_LOGGING) {
+									Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": server acknowledged stanza #" + serverSequence);
+								}
 								final String msgId = this.messageReceipts.get(serverSequence);
 								if (msgId != null) {
 									if (this.acknowledgedListener != null) {
@@ -598,8 +604,10 @@ public class XmppConnection implements Runnable {
 		} else if (this.streamFeatures.hasChild("sm", "urn:xmpp:sm:"
 					+ smVersion)
 				&& streamId != null) {
-			final ResumePacket resume = new ResumePacket(this.streamId,
-					stanzasReceived, smVersion);
+			if (Config.EXTENDED_SM_LOGGING) {
+				Log.d(Config.LOGTAG,account.getJid().toBareJid()+": resuming after stanza #"+stanzasReceived);
+			}
+			final ResumePacket resume = new ResumePacket(this.streamId, stanzasReceived, smVersion);
 			this.tagWriter.writeStanzaAsync(resume);
 		} else if (this.streamFeatures.hasChild("bind") && shouldBind) {
 			sendBindRequest();
@@ -787,7 +795,7 @@ public class XmppConnection implements Runnable {
 			sendEnableCarbons();
 		}
 		if (getFeatures().blocking() && !features.blockListRequested) {
-			Log.d(Config.LOGTAG, "Requesting block list");
+			Log.d(Config.LOGTAG,account.getJid().toBareJid()+": Requesting block list");
 			this.sendIqPacket(getIqGenerator().generateGetBlockList(), mXmppConnectionService.getIqParser());
 		}
 	}
@@ -894,7 +902,9 @@ public class XmppConnection implements Runnable {
 		}
 		tagWriter.writeStanzaAsync(packet);
 		if (packet instanceof MessagePacket && packet.getId() != null && this.streamId != null) {
-			Log.d(Config.LOGTAG, "request delivery report for stanza " + stanzasSent);
+			if (Config.EXTENDED_SM_LOGGING) {
+				Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": requesting ack for message stanza #" + stanzasSent);
+			}
 			this.messageReceipts.put(stanzasSent, packet.getId());
 			tagWriter.writeStanzaAsync(new RequestPacket(this.smVersion));
 		}
