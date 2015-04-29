@@ -429,8 +429,19 @@
   <string name="received_location">Mottog position</string>
   <string name="title_undo_swipe_out_conversation">Konversation stängd</string>
   <string name="title_undo_swipe_out_muc">Lämnade konferens</string>
+  <string name="pref_certificate_options">Certifikatalternativ</string>
   <string name="pref_dont_trust_system_cas_title">Lita inte på systemets CAs</string>
   <string name="pref_dont_trust_system_cas_summary">Alla certifikat måste manuellt godkännas</string>
+  <string name="pref_remove_trusted_certificates_title">Ta bort certifikat</string>
+  <string name="pref_remove_trusted_certificates_summary">Ta bort manuellt accepterade certifikat</string>
+  <string name="toast_no_trusted_certs">Inga manuellt accepterade certifikat</string>
+  <string name="dialog_manage_certs_title">Ta bort certifikat</string>
+  <string name="dialog_manage_certs_positivebutton">Ta bort val</string>
+  <string name="dialog_manage_certs_negativebutton">Avbryt</string>
+  <plurals name="toast_delete_certificates">
+    <item quantity="one">%d certifikat borttaget</item>
+    <item quantity="other">%d certifikat borttagna</item>
+  </plurals>
   <plurals name="select_contact">
     <item quantity="one">Välj %d kontakt</item>
     <item quantity="other">Välj %d kontakter</item>

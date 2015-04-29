@@ -429,8 +429,18 @@
   <string name="received_location">位置を受信しました</string>
   <string name="title_undo_swipe_out_conversation">会話が閉じられました</string>
   <string name="title_undo_swipe_out_muc">退出した会話</string>
+  <string name="pref_certificate_options">証明書オプション</string>
   <string name="pref_dont_trust_system_cas_title">システムの CA を信頼しない</string>
   <string name="pref_dont_trust_system_cas_summary">すべての証明書を手動で承認する必要があります</string>
+  <string name="pref_remove_trusted_certificates_title">証明書を削除</string>
+  <string name="pref_remove_trusted_certificates_summary">手動で承認された証明書を削除します</string>
+  <string name="toast_no_trusted_certs">手動で承認された証明書はありません</string>
+  <string name="dialog_manage_certs_title">証明書を削除</string>
+  <string name="dialog_manage_certs_positivebutton">選択を削除</string>
+  <string name="dialog_manage_certs_negativebutton">キャンセル</string>
+  <plurals name="toast_delete_certificates">
+    <item quantity="other">%d 証明書を削除しました</item>
+  </plurals>
   <plurals name="select_contact">
     <item quantity="other">%d 連絡先を選択</item>
   </plurals>

@@ -436,7 +436,7 @@
   <string name="pref_remove_trusted_certificates_summary">Eliminar manualmente certificados aceptados</string>
   <string name="toast_no_trusted_certs">No aceptar certificados manualmente</string>
   <string name="dialog_manage_certs_title">Eliminar Certificados</string>
-  <string name="dialog_manage_certs_positivebutton">Deshacer selección</string>
+  <string name="dialog_manage_certs_positivebutton">Eliminar seleccionados</string>
   <string name="dialog_manage_certs_negativebutton">Cancelar</string>
   <plurals name="toast_delete_certificates">
     <item quantity="one">%d certificado eliminado</item>
