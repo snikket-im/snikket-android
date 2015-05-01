@@ -429,8 +429,19 @@
   <string name="received_location">Ελήφθη τοποθεσία</string>
   <string name="title_undo_swipe_out_conversation">Η συζήτηση έκλεισε</string>
   <string name="title_undo_swipe_out_muc">Έφυγε από την συνδιάσκεψη</string>
+  <string name="pref_certificate_options">Επιλογές πιστοποιητικών</string>
   <string name="pref_dont_trust_system_cas_title">Μη έμπιστες αρχές πιστοποίησης συστήματος</string>
   <string name="pref_dont_trust_system_cas_summary">Όλα τα πιστοποιητικά πρέπει να εγκριθούν χειροκίνητα</string>
+  <string name="pref_remove_trusted_certificates_title">Αφαίρεση πιστοποιητικών</string>
+  <string name="pref_remove_trusted_certificates_summary">Διαγραφή με μη αυτόματο τρόπο των αναγνωρισμένων πιστοποιητικών</string>
+  <string name="toast_no_trusted_certs">Δεν υπάρχουν με μη αυτόματο τρόπο αναγνωρισμένα πιστοποιητικα</string>
+  <string name="dialog_manage_certs_title">Αφαίρεση πιστοποιητικών</string>
+  <string name="dialog_manage_certs_positivebutton">Διαγραφή επιλογής</string>
+  <string name="dialog_manage_certs_negativebutton">Ακύρωση</string>
+  <plurals name="toast_delete_certificates">
+    <item quantity="one">%d πιστοποιητικο διαγραφθηκε</item>
+    <item quantity="other">%d πιστοποιητικά διαγραφθηκαν</item>
+  </plurals>
   <plurals name="select_contact">
     <item quantity="one">Επιλογή %d επαφής</item>
     <item quantity="other">Επιλογή %d επαφών</item>
