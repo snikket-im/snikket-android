@@ -581,26 +581,31 @@ public class XmppConnection implements Runnable {
 			} else if (mechanisms.contains("DIGEST-MD5")) {
 				saslMechanism = new DigestMd5(tagWriter, account, mXmppConnectionService.getRNG());
 			}
-			final JSONObject keys = account.getKeys();
-			try {
-				if (keys.has(Account.PINNED_MECHANISM_KEY) &&
-						keys.getInt(Account.PINNED_MECHANISM_KEY) > saslMechanism.getPriority() ) {
-					Log.e(Config.LOGTAG, "Auth failed. Authentication mechanism " + saslMechanism.getMechanism() +
-							" has lower priority (" + String.valueOf(saslMechanism.getPriority()) +
-							") than pinned priority (" + keys.getInt(Account.PINNED_MECHANISM_KEY) +
-							"). Possible downgrade attack?");
-					disconnect(true);
-					changeStatus(Account.State.SECURITY_ERROR);
-						}
-			} catch (final JSONException e) {
-				Log.d(Config.LOGTAG, "Parse error while checking pinned auth mechanism");
+			if (saslMechanism != null) {
+				final JSONObject keys = account.getKeys();
+				try {
+					if (keys.has(Account.PINNED_MECHANISM_KEY) &&
+							keys.getInt(Account.PINNED_MECHANISM_KEY) > saslMechanism.getPriority()) {
+						Log.e(Config.LOGTAG, "Auth failed. Authentication mechanism " + saslMechanism.getMechanism() +
+								" has lower priority (" + String.valueOf(saslMechanism.getPriority()) +
+								") than pinned priority (" + keys.getInt(Account.PINNED_MECHANISM_KEY) +
+								"). Possible downgrade attack?");
+						disconnect(true);
+						changeStatus(Account.State.SECURITY_ERROR);
+					}
+				} catch (final JSONException e) {
+					Log.d(Config.LOGTAG, "Parse error while checking pinned auth mechanism");
+				}
+				Log.d(Config.LOGTAG, account.getJid().toString() + ": Authenticating with " + saslMechanism.getMechanism());
+				auth.setAttribute("mechanism", saslMechanism.getMechanism());
+				if (!saslMechanism.getClientFirstMessage().isEmpty()) {
+					auth.setContent(saslMechanism.getClientFirstMessage());
+				}
+				tagWriter.writeElement(auth);
+			} else {
+				disconnect(true);
+				changeStatus(Account.State.INCOMPATIBLE_SERVER);
 			}
-			Log.d(Config.LOGTAG,account.getJid().toString()+": Authenticating with " + saslMechanism.getMechanism());
-			auth.setAttribute("mechanism", saslMechanism.getMechanism());
-			if (!saslMechanism.getClientFirstMessage().isEmpty()) {
-				auth.setContent(saslMechanism.getClientFirstMessage());
-			}
-			tagWriter.writeElement(auth);
 		} else if (this.streamFeatures.hasChild("sm", "urn:xmpp:sm:"
 					+ smVersion)
 				&& streamId != null) {
