@@ -391,15 +391,17 @@ public class MessageParser extends AbstractParser implements
 
 	private void parseNonMessage(Element packet, Account account) {
 		final Jid from = packet.getAttributeAsJid("from");
+		if (account.getJid().equals(from)) {
+			return;
+		}
 		if (extractChatState(from == null ? null : mXmppConnectionService.find(account,from), packet)) {
 			mXmppConnectionService.updateConversationUi();
 		}
-		Element invite = extractInvite(packet);
-		if (invite != null) {
-			Conversation conversation = mXmppConnectionService.findOrCreateConversation(account, from, true);
+		Invite invite = extractInvite(packet);
+		if (invite != null && invite.jid != null) {
+			Conversation conversation = mXmppConnectionService.findOrCreateConversation(account, invite.jid, true);
 			if (!conversation.getMucOptions().online()) {
-				Element password = invite.findChild("password");
-				conversation.getMucOptions().setPassword(password == null ? null : password.getContent());
+				conversation.getMucOptions().setPassword(invite.password);
 				mXmppConnectionService.databaseBackend.updateConversation(conversation);
 				mXmppConnectionService.joinMuc(conversation);
 				mXmppConnectionService.updateConversationUi();
@@ -439,16 +441,30 @@ public class MessageParser extends AbstractParser implements
 		}
 	}
 
-	private Element extractInvite(Element message) {
+	private class Invite {
+		Jid jid;
+		String password;
+		Invite(Jid jid, String password) {
+			this.jid = jid;
+			this.password = password;
+		}
+	}
+
+	private Invite extractInvite(Element message) {
 		Element x = message.findChild("x","http://jabber.org/protocol/muc#user");
-		if (x == null) {
-			x = message.findChild("x","jabber:x:conference");
-		}
-		if (x != null && x.hasChild("invite")) {
-			return x;
+		if (x != null) {
+			Element invite = x.findChild("invite");
+			if (invite != null) {
+				Element pw = x.findChild("password");
+				return new Invite(message.getAttributeAsJid("from"), pw != null ? pw.getContent(): null);
+			}
 		} else {
-			return null;
+			x = message.findChild("x","jabber:x:conference");
+			if (x != null) {
+				return new Invite(x.getAttributeAsJid("jid"),x.getAttribute("password"));
+			}
 		}
+		return null;
 	}
 
 	private void parseEvent(final Element event, final Jid from, final Account account) {

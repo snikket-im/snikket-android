@@ -8,7 +8,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.IntentSender.SendIntentException;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.ContextMenu;
@@ -268,7 +267,6 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 			if (conversation.getNextCounterpart() != null) {
 				message.setCounterpart(conversation.getNextCounterpart());
 				message.setType(Message.TYPE_PRIVATE);
-				conversation.setNextCounterpart(null);
 			}
 		}
 		if (conversation.getNextEncryption(activity.forceEncryption()) == Message.ENCRYPTION_OTR) {
@@ -316,8 +314,8 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 	@Override
 	public View onCreateView(final LayoutInflater inflater,
 			ViewGroup container, Bundle savedInstanceState) {
-		final View view = inflater.inflate(R.layout.fragment_conversation,
-				container, false);
+		final View view = inflater.inflate(R.layout.fragment_conversation,container, false);
+		view.setOnClickListener(null);
 		mEditMessage = (EditMessage) view.findViewById(R.id.textinput);
 		setupIme();
 		mEditMessage.setOnClickListener(new OnClickListener() {
@@ -720,21 +718,6 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 			final ConversationActivity activity = (ConversationActivity) getActivity();
 			if (this.conversation != null) {
 				updateSnackBar(this.conversation);
-				final Contact contact = this.conversation.getContact();
-				if (this.conversation.isBlocked()) {
-
-				} else if (!contact.showInRoster()
-						&& contact
-						.getOption(Contact.Options.PENDING_SUBSCRIPTION_REQUEST)) {
-
-				} else if (conversation.getMode() == Conversation.MODE_SINGLE) {
-					makeFingerprintWarning();
-				} else if (!conversation.getMucOptions().online()
-						&& conversation.getAccount().getStatus() == Account.State.ONLINE) {
-
-				} else if (this.conversation.isMuted()) {
-
-				}
 				conversation.populateWithMessages(ConversationFragment.this.messageList);
 				for (final Message message : this.messageList) {
 					if (message.getEncryption() == Message.ENCRYPTION_PGP
@@ -781,6 +764,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 					} catch (final NoSuchElementException ignored) {
 
 					}
+					askForPassphraseIntent = null;
 					activity.xmppConnectionService.updateMessage(message);
 				}
 
@@ -878,10 +862,6 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 				}
 			}
 		}
-	}
-
-	protected void makeFingerprintWarning() {
-
 	}
 
 	protected void showSnackbar(final int message, final int action,
@@ -1020,6 +1000,9 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 	}
 
 	public void appendText(String text) {
+		if (text == null) {
+			return;
+		}
 		String previous = this.mEditMessage.getText().toString();
 		if (previous.length() != 0 && !previous.endsWith(" ")) {
 			text = " " + text;

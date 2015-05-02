@@ -359,7 +359,7 @@
   <string name="could_not_change_password">Δεν ήταν δυνατή η αλλαγή του συνθηματικού</string>
   <string name="otr_session_not_started">Αποστολή μηνύματος για την έναρξη κρυπτογραφημένης συνομιλίας</string>
   <string name="ask_question">Ερώτηση</string>
-  <string name="smp_explain_question">Αν εσείς και η επαφή σας έχετε ένα κοινό μυστικό που κανείς άλλος δεν γνωρίζει (κάτι σαν δικό σας αστείο ή απλώς τι φάγατε την τελευταία φορά που συναντηθήκατε) μπορείτε να χρησιμοποιήσετε αυτό το μυστικό για νε επαληθεύσετε τα αποτυπώματά σας.\n\nΠροσφέρετε έναν υπαινιγμό ή μια ερώτηση για την επαφή σας, που θα απαντήσει με μια φράση στην οποία έχουν διαφοροποίηση τα πεζά από τα κεφαλαία.</string>
+  <string name="smp_explain_question">Αν εσείς και η επαφή σας έχετε ένα κοινό μυστικό που κανείς άλλος δεν γνωρίζει (κάτι σαν δικό σας αστείο ή απλώς τι φάγατε την τελευταία φορά που συναντηθήκατε) μπορείτε να χρησιμοποιήσετε αυτό το μυστικό για να επαληθεύσετε τα αποτυπώματά σας.\n\nΠροσφέρετε έναν υπαινιγμό ή μια ερώτηση για την επαφή σας, που θα απαντήσει με μια φράση στην οποία έχουν διαφοροποίηση τα πεζά από τα κεφαλαία.</string>
   <string name="smp_explain_answer">Η επαφή σας θα ήθελε να επαληθεύσει το αποτύπωμά σας χρησιμοποιώντας ένα κοινό μυστικό. Η επαφή σας προμήθευση τον παρακάτω υπαινιγμό ή ερώτηση για το μυστικό αυτό.</string>
   <string name="shared_secret_hint_should_not_be_empty">Ο υπαινιγμός σας δεν μπορεί να είναι κενός</string>
   <string name="shared_secret_can_not_be_empty">Το κοινό μυστικό σας δεν μπορεί να είναι κενό</string>
@@ -427,4 +427,23 @@
   <string name="no_application_found_to_display_location">Δεν βρέθηκε εφαρμογή για την απεικόνιση τοποθεσίας</string>
   <string name="location">Τοποθεσία</string>
   <string name="received_location">Ελήφθη τοποθεσία</string>
+  <string name="title_undo_swipe_out_conversation">Η συζήτηση έκλεισε</string>
+  <string name="title_undo_swipe_out_muc">Έφυγε από την συνδιάσκεψη</string>
+  <string name="pref_certificate_options">Επιλογές πιστοποιητικών</string>
+  <string name="pref_dont_trust_system_cas_title">Μη έμπιστες αρχές πιστοποίησης συστήματος</string>
+  <string name="pref_dont_trust_system_cas_summary">Όλα τα πιστοποιητικά πρέπει να εγκριθούν χειροκίνητα</string>
+  <string name="pref_remove_trusted_certificates_title">Αφαίρεση πιστοποιητικών</string>
+  <string name="pref_remove_trusted_certificates_summary">Διαγραφή με μη αυτόματο τρόπο των αναγνωρισμένων πιστοποιητικών</string>
+  <string name="toast_no_trusted_certs">Δεν υπάρχουν με μη αυτόματο τρόπο αναγνωρισμένα πιστοποιητικα</string>
+  <string name="dialog_manage_certs_title">Αφαίρεση πιστοποιητικών</string>
+  <string name="dialog_manage_certs_positivebutton">Διαγραφή επιλογής</string>
+  <string name="dialog_manage_certs_negativebutton">Ακύρωση</string>
+  <plurals name="toast_delete_certificates">
+    <item quantity="one">%d πιστοποιητικο διαγραφθηκε</item>
+    <item quantity="other">%d πιστοποιητικά διαγραφθηκαν</item>
+  </plurals>
+  <plurals name="select_contact">
+    <item quantity="one">Επιλογή %d επαφής</item>
+    <item quantity="other">Επιλογή %d επαφών</item>
+  </plurals>
 </resources>

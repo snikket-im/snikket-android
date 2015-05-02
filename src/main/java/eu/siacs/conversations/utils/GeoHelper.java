@@ -20,7 +20,7 @@ public class GeoHelper {
 	}
 
 	public static ArrayList<Intent> createGeoIntentsFromMessage(Message message) {
-		final ArrayList<Intent> intents = new ArrayList();
+		final ArrayList<Intent> intents = new ArrayList<>();
 		Matcher matcher = GEO_URI.matcher(message.getBody());
 		if (!matcher.matches()) {
 			return intents;

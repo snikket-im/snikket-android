@@ -36,6 +36,7 @@ import org.openintents.openpgp.util.OpenPgpServiceConnection;
 import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -174,13 +175,22 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		public void onContactStatusChanged(Contact contact, boolean online) {
 			Conversation conversation = find(getConversations(), contact);
 			if (conversation != null) {
-				if (online && contact.getPresences().size() > 1) {
+				if (online) {
 					conversation.endOtrIfNeeded();
+					if (contact.getPresences().size() == 1) {
+						sendUnsentMessages(conversation);
+					}
 				} else {
-					conversation.resetOtrSession();
-				}
-				if (online && (contact.getPresences().size() == 1)) {
-					sendUnsentMessages(conversation);
+					if (contact.getPresences().size() >= 1) {
+						if (conversation.hasValidOtrSession()) {
+							String otrResource = conversation.getOtrSession().getSessionID().getUserID();
+							if (!(Arrays.asList(contact.getPresences().asStringArray()).contains(otrResource))) {
+								conversation.endOtrIfNeeded();
+							}
+						}
+					} else {
+						conversation.endOtrIfNeeded();
+					}
 				}
 			}
 		}
@@ -532,9 +542,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		ExceptionHelper.init(getApplicationContext());
 		PRNGFixes.apply();
 		this.mRandom = new SecureRandom();
-		this.mMemorizingTrustManager = new MemorizingTrustManager(
-				getApplicationContext());
-
+		updateMemorizingTrustmanager();
 		final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
 		final int cacheSize = maxMemory / 8;
 		this.mBitmapCache = new LruCache<String, Bitmap>(cacheSize) {
@@ -1129,6 +1137,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	}
 
 	public void archiveConversation(Conversation conversation) {
+		getNotificationService().clear(conversation);
 		conversation.setStatus(Conversation.STATUS_ARCHIVED);
 		conversation.setNextEncryption(-1);
 		synchronized (this.conversations) {
@@ -1538,6 +1547,9 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 						for (Jid invite : jids) {
 							invite(conversation, invite);
 						}
+						if (account.countPresences() > 1) {
+							directInvite(conversation, account.getJid().toBareJid());
+						}
 						if (callback != null) {
 							callback.success(conversation);
 						}
@@ -1700,6 +1712,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 						}
 					}
 				}
+				sendOfflinePresence(account);
 			}
 			account.getXmppConnection().disconnect(force);
 		}
@@ -2022,6 +2035,11 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		sendMessagePacket(conversation.getAccount(), packet);
 	}
 
+	public void directInvite(Conversation conversation, Jid jid) {
+		MessagePacket packet = mMessageGenerator.directInvite(conversation,jid);
+		sendMessagePacket(conversation.getAccount(),packet);
+	}
+
 	public void resetSendingToWaiting(Account account) {
 		for (Conversation conversation : getConversations()) {
 			if (conversation.getAccount() == account) {
@@ -2185,6 +2203,21 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		return this.mMemorizingTrustManager;
 	}
 
+	public void setMemorizingTrustManager(MemorizingTrustManager trustManager) {
+		this.mMemorizingTrustManager = trustManager;
+	}
+
+	public void updateMemorizingTrustmanager() {
+		final MemorizingTrustManager tm;
+		final boolean dontTrustSystemCAs = getPreferences().getBoolean("dont_trust_system_cas", false);
+		if (dontTrustSystemCAs) {
+			 tm = new MemorizingTrustManager(getApplicationContext(), null);
+		} else {
+			tm = new MemorizingTrustManager(getApplicationContext());
+		}
+		setMemorizingTrustManager(tm);
+	}
+
 	public PowerManager getPowerManager() {
 		return this.pm;
 	}
@@ -2258,6 +2291,10 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 
 	public void sendPresence(final Account account) {
 		sendPresencePacket(account, mPresenceGenerator.sendPresence(account));
+	}
+
+	public void sendOfflinePresence(final Account account) {
+		sendPresencePacket(account, mPresenceGenerator.sendOfflinePresence(account));
 	}
 
 	public MessageGenerator getMessageGenerator() {

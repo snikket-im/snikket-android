@@ -296,6 +296,7 @@
             \n\nhttps://developer.android.com/tools/support-library\n(Apache License, Version 2.0)
             \n\nhttps://github.com/zxing/zxing\n(Apache License, Version 2.0)
             \n\nhttps://github.com/google/material-design-icons\n(CC BY 4.0)
+            \n\nhttps://github.com/timroes/EnhancedListView\n(Apache License, Version 2.0)
     </string>
     <string name="title_pref_quiet_hours">Quiet Hours</string>
     <string name="title_pref_quiet_hours_start_time">Start time</string>
@@ -386,7 +387,7 @@
     <string name="could_not_change_password">Could not change password</string>
     <string name="otr_session_not_started">Send a message to start an encrypted chat</string>
     <string name="ask_question">Ask question</string>
-    <string name="smp_explain_question">If you and your contact have a secret in common that no one else knows (like an inside joke or simply what you had for lunch the last time you met) you can use that secret to verify each other\'s fingerprints.\n\nYou provide a hint or a question for your contact who will respond with a case-sensitive answer.</string>
+    <string name="smp_explain_question">If you and your contact have a secret in common that no one else knows (like an inside joke or simply what you had for lunch the last time you met) you can use that secret to verify each other’s fingerprints.\n\nYou provide a hint or a question for your contact who will respond with a case-sensitive answer.</string>
     <string name="smp_explain_answer">Your contact would like to verify your fingerprint by challenging you with a shared secret. Your contact provided the following hint or question for that secret.</string>
     <string name="shared_secret_hint_should_not_be_empty">Your hint should not be empty</string>
     <string name="shared_secret_can_not_be_empty">Your shared secret can not be empty</string>
@@ -454,6 +455,21 @@
     <string name="no_application_found_to_display_location">No application found to display location</string>
     <string name="location">Location</string>
     <string name="received_location">Received location</string>
+	<string name="title_undo_swipe_out_conversation">Conversation closed</string>
+	<string name="title_undo_swipe_out_muc">Left conference</string>
+	<string name="pref_certificate_options">Certificate options</string>
+	<string name="pref_dont_trust_system_cas_title">Don’t trust system CAs</string>
+	<string name="pref_dont_trust_system_cas_summary">All certificates must be manually approved</string>
+	<string name="pref_remove_trusted_certificates_title">Remove certificates</string>
+	<string name="pref_remove_trusted_certificates_summary">Delete manually approved certificates</string>
+	<string name="toast_no_trusted_certs">No manually approved certificates</string>
+	<string name="dialog_manage_certs_title">Remove certificates</string>
+	<string name="dialog_manage_certs_positivebutton">Delete selection</string>
+	<string name="dialog_manage_certs_negativebutton">Cancel</string>
+	<plurals name="toast_delete_certificates">
+		<item quantity="one">%d certificate deleted</item>
+		<item quantity="other">%d certificates deleted</item>
+	</plurals>
 	<plurals name="select_contact">
 		<item quantity="one">Select %d contact</item>
 		<item quantity="other">Select %d contacts</item>

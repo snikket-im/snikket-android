@@ -427,4 +427,23 @@
   <string name="no_application_found_to_display_location">Kokapena erakutsi dezakeen aplikaziorik ez da aurkitu</string>
   <string name="location">Kokapena</string>
   <string name="received_location">Kokapena jaso da</string>
+  <string name="title_undo_swipe_out_conversation">Elkarrizketa itxi egin da</string>
+  <string name="title_undo_swipe_out_muc">Konferentzia utzi egin da</string>
+  <string name="pref_certificate_options">Ziurtagirien aukerak</string>
+  <string name="pref_dont_trust_system_cas_title">Sistemaren CAtaz ez fidatu</string>
+  <string name="pref_dont_trust_system_cas_summary">Ziurtagiri guztiak eskuz onartu behar dira</string>
+  <string name="pref_remove_trusted_certificates_title">Ziurtagiriak kendu</string>
+  <string name="pref_remove_trusted_certificates_summary">Eskuz ezabatu onartutako ziurtagiriak</string>
+  <string name="toast_no_trusted_certs">Ez dago eskuz onartutako ziurtagiririk</string>
+  <string name="dialog_manage_certs_title">Ziurtagiriak kendu</string>
+  <string name="dialog_manage_certs_positivebutton">Aukeratutakoak ezabatu</string>
+  <string name="dialog_manage_certs_negativebutton">Utzi</string>
+  <plurals name="toast_delete_certificates">
+    <item quantity="one">Ziurtagiri %d ezabatua</item>
+    <item quantity="other">%d ziurtagiri ezabatuak</item>
+  </plurals>
+  <plurals name="select_contact">
+    <item quantity="one">Hautatu kontaktu %d</item>
+    <item quantity="other">Hautatu %d kontaktu</item>
+  </plurals>
 </resources>

@@ -71,6 +71,7 @@ public class MessageGenerator extends AbstractGenerator {
 		MessagePacket packet = preparePacket(message, addDelay);
 		packet.addChild("private", "urn:xmpp:carbons:2");
 		packet.addChild("no-copy", "urn:xmpp:hints");
+		packet.addChild("no-permanent-store", "urn:xmpp:hints");
 		try {
 			packet.setBody(otrSession.transformSending(message.getBody())[0]);
 			return packet;
@@ -172,7 +173,7 @@ public class MessageGenerator extends AbstractGenerator {
 		return receivedPacket;
 	}
 
-	public MessagePacket generateOtrError(Jid to, String id) {
+	public MessagePacket generateOtrError(Jid to, String id, String errorText) {
 		MessagePacket packet = new MessagePacket();
 		packet.setType(MessagePacket.TYPE_ERROR);
 		packet.setAttribute("id",id);
@@ -181,7 +182,7 @@ public class MessageGenerator extends AbstractGenerator {
 		error.setAttribute("code","406");
 		error.setAttribute("type","modify");
 		error.addChild("not-acceptable","urn:ietf:params:xml:ns:xmpp-stanzas");
-		error.addChild("text").setContent("unreadable OTR message received");
+		error.addChild("text").setContent("?OTR Error:" + errorText);
 		return packet;
 	}
 }

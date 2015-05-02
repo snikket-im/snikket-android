@@ -11,6 +11,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
 import eu.siacs.conversations.entities.DownloadableFile;
+import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.utils.CryptoHelper;
 
 public class JingleSocks5Transport extends JingleTransport {
@@ -126,25 +127,19 @@ public class JingleSocks5Transport extends JingleTransport {
 				} catch (NoSuchAlgorithmException e) {
 					callback.onFileTransferAborted();
 				} finally {
-					try {
-						if (fileInputStream != null) {
-							fileInputStream.close();
-						}
-					} catch (IOException e) {
-						callback.onFileTransferAborted();
-					}
+					FileBackend.close(fileInputStream);
 				}
 			}
 		}).start();
 
 	}
 
-	public void receive(final DownloadableFile file,
-			final OnFileTransmissionStatusChanged callback) {
+	public void receive(final DownloadableFile file, final OnFileTransmissionStatusChanged callback) {
 		new Thread(new Runnable() {
 
 			@Override
 			public void run() {
+				OutputStream fileOutputStream = null;
 				try {
 					MessageDigest digest = MessageDigest.getInstance("SHA-1");
 					digest.reset();
@@ -152,7 +147,7 @@ public class JingleSocks5Transport extends JingleTransport {
 					socket.setSoTimeout(30000);
 					file.getParentFile().mkdirs();
 					file.createNewFile();
-					OutputStream fileOutputStream = file.createOutputStream();
+					fileOutputStream = file.createOutputStream();
 					if (fileOutputStream == null) {
 						callback.onFileTransferAborted();
 						return;
@@ -183,6 +178,8 @@ public class JingleSocks5Transport extends JingleTransport {
 					callback.onFileTransferAborted();
 				} catch (NoSuchAlgorithmException e) {
 					callback.onFileTransferAborted();
+				} finally {
+					FileBackend.close(fileOutputStream);
 				}
 			}
 		}).start();

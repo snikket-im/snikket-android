@@ -304,6 +304,7 @@
   <string name="image_transmission_failed">Trasmissione dell’immagine fallita</string>
   <string name="scan_qr_code">Scansiona codice QR</string>
   <string name="show_qr_code">Mostra codice QR</string>
+  <string name="show_block_list">Mostra la black list</string>
   <string name="account_details">Dettagli utente</string>
   <string name="verify_otr">Verifica OTR</string>
   <string name="remote_fingerprint">Impronta remota</string>
@@ -328,6 +329,7 @@
   <string name="choose_file">Scegli file</string>
   <string name="receiving_x_file">Ricezione di %1$s file (%2$d%% completato)</string>
   <string name="download_x_file">Scarica %s</string>
+  <string name="file">file</string>
   <string name="open_x_file">Apri %s</string>
   <string name="sending_file">invio (%1$d%% completato)</string>
   <string name="preparing_file">Preparazione alla trasmissione del file</string>
@@ -357,7 +359,7 @@
   <string name="could_not_change_password">Impossibile cambiare la password</string>
   <string name="otr_session_not_started">Invia un messaggio per avviare una conversazione cifrata</string>
   <string name="ask_question">Fai una domanda</string>
-  <string name="smp_explain_question">Se tu ed il tuo contatto avete un segreto in comune che nessun’altro conosce (come uno scherzo o semplicemente ciò che avete mangiato a pranzo l’ultima volta che vi siete incontrati), potete usare quel segreto per dimostrare la vostra identità reciprocamente.\n\nFornisci un suggerimento o una domanda al tuo contatto che ti risponderà con una domanda Case Sensitive.</string>
+  <string name="smp_explain_question">Se condividi con il tuo contatto un segreto in comune non conosciuto da altri (come uno scherzo privato o semplicemente quel che avete mangiato l\'ultima volta insieme) potete usarlo per verificare le vostre fingerprint.\n\nInvia un suggerimento o una domanda al tuo contatto il quale dovrà rispondere con una risposta controllando le maiuscole.</string>
   <string name="smp_explain_answer">Il tuo contatto vorrebbe verificare la tua identità. Dovrai rispondere correttamente alla sua domanda con una risposta che condividete. Il tuo contatto ti ha fornito il suggerimento o la domanda seguente.</string>
   <string name="shared_secret_hint_should_not_be_empty">Il suggerimento non dovrebbe essere vuoto</string>
   <string name="shared_secret_can_not_be_empty">Il segreto condiviso non può essere vuoto</string>
@@ -400,6 +402,46 @@
   <string name="pref_input_options">Opzioni di ingresso</string>
   <string name="pref_enter_is_send">Invio invia</string>
   <string name="pref_enter_is_send_summary">Il tasto invio spedisce il messaggio</string>
+  <string name="pref_display_enter_key">Mostra il tasto invio</string>
+  <string name="pref_display_enter_key_summary">Cambia il tasto delle faccine nel tastodi invio</string>
+  <string name="audio">audio</string>
+  <string name="video">video</string>
+  <string name="image">immagine</string>
   <string name="pdf_document">Documento PDF</string>
+  <string name="apk">Applicazione Android</string>
+  <string name="vcard">Contatto</string>
   <string name="received_x_file">Ricevuto %s</string>
+  <string name="touch_to_open_conversations">Tocca per avviare Conversations</string>
+  <string name="avatar_has_been_published">Il tuo avatar è stato pubblicato!</string>
+  <string name="sending_x_file">Invio %s</string>
+  <string name="offering_x_file">Inviando %s</string>
+  <string name="hide_offline">Nascondi i contatti offline</string>
+  <string name="disable_account">Disabilita l\'account</string>
+  <string name="contact_is_typing">%s sta digitando...</string>
+  <string name="contact_has_stopped_typing">%s ha smesso di digitare</string>
+  <string name="pref_chat_states_summary">Permetti al tuo contatto di vedere quando stai digitando</string>
+  <string name="send_location">Invia la posizione</string>
+  <string name="show_location">Mostra la posizione</string>
+  <string name="no_application_found_to_display_location">Non è stata trovata alcuna applicazione per mostrare la posizione</string>
+  <string name="location">Posizione</string>
+  <string name="received_location">Posizione ricevuta</string>
+  <string name="title_undo_swipe_out_conversation">Conversazione interrotta</string>
+  <string name="title_undo_swipe_out_muc">Conferenza terminata</string>
+  <string name="pref_certificate_options">Opzioni per i certificati</string>
+  <string name="pref_dont_trust_system_cas_title">Non ti fidare delle CA di sistema</string>
+  <string name="pref_dont_trust_system_cas_summary">Tutti i certificati devono essere accettati manualmente</string>
+  <string name="pref_remove_trusted_certificates_title">Elimina i certificati</string>
+  <string name="pref_remove_trusted_certificates_summary">Cancella manualmente i certificati già accettati</string>
+  <string name="toast_no_trusted_certs">Non sono presenti certificati accettati manualmente</string>
+  <string name="dialog_manage_certs_title">Elimina i certificati</string>
+  <string name="dialog_manage_certs_positivebutton">Cancella la selezione</string>
+  <string name="dialog_manage_certs_negativebutton">Annulla</string>
+  <plurals name="toast_delete_certificates">
+    <item quantity="one">Cancellato il %d certificato</item>
+    <item quantity="other">Cancellati %d certificati</item>
+  </plurals>
+  <plurals name="select_contact">
+    <item quantity="one">Seleziona il %d contatto</item>
+    <item quantity="other">Selezionati %d contatti</item>
+  </plurals>
 </resources>

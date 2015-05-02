@@ -163,8 +163,7 @@ public class PublishProfilePictureActivity extends XmppActivity {
             if (jid != null) {
 				this.account = xmppConnectionService.findAccountByJid(jid);
 				if (this.account.getXmppConnection() != null) {
-					this.support = this.account.getXmppConnection()
-							.getFeatures().pubsub();
+					this.support = this.account.getXmppConnection().getFeatures().pep();
 				}
 				if (this.avatarUri == null) {
 					if (this.account.getAvatar() != null

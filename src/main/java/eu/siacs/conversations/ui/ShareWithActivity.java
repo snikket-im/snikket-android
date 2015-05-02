@@ -18,6 +18,7 @@ import java.net.URLConnection;
 import java.net.URLDecoder;
 import java.nio.charset.UnsupportedCharsetException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import eu.siacs.conversations.Config;
@@ -32,7 +33,7 @@ import eu.siacs.conversations.xmpp.jid.Jid;
 public class ShareWithActivity extends XmppActivity {
 
 	private class Share {
-		public Uri uri;
+		public List<Uri> uris = new ArrayList<>();
 		public boolean image;
 		public String account;
 		public String contact;
@@ -104,7 +105,7 @@ public class ShareWithActivity extends XmppActivity {
 					int position, long arg3) {
 				Conversation conversation = mConversations.get(position);
 				if (conversation.getMode() == Conversation.MODE_SINGLE
-						|| share.uri == null) {
+						|| share.uris.size() == 0) {
 					share(mConversations.get(position));
 				}
 			}
@@ -133,18 +134,32 @@ public class ShareWithActivity extends XmppActivity {
 
 	@Override
 	public void onStart() {
-		final String type = getIntent().getType();
-		final Uri uri = getIntent().getParcelableExtra(Intent.EXTRA_STREAM);
-		if (type != null && uri != null && !type.equalsIgnoreCase("text/plain")) {
-			this.share.uri = uri;
-			this.share.image = type.startsWith("image/") || isImage(uri);
-		} else {
-			this.share.text = getIntent().getStringExtra(Intent.EXTRA_TEXT);
+		super.onStart();
+		Intent intent = getIntent();
+		if (intent == null) {
+			return;
+		}
+		final String type = intent.getType();
+		if (Intent.ACTION_SEND.equals(intent.getAction())) {
+			final Uri uri = getIntent().getParcelableExtra(Intent.EXTRA_STREAM);
+			if (type != null && uri != null && !type.equalsIgnoreCase("text/plain")) {
+				this.share.uris.add(uri);
+				this.share.image = type.startsWith("image/") || isImage(uri);
+			} else {
+				this.share.text = getIntent().getStringExtra(Intent.EXTRA_TEXT);
+			}
+		} else if (Intent.ACTION_SEND_MULTIPLE.equals(intent.getAction())) {
+			this.share.image = type != null && type.startsWith("image/");
+			if (!this.share.image) {
+				return;
+			}
+
+			this.share.uris = intent.getParcelableArrayListExtra(Intent.EXTRA_STREAM);
 		}
 		if (xmppConnectionServiceBound) {
-			xmppConnectionService.populateWithOrderedConversations(mConversations, this.share.uri == null);
+			xmppConnectionService.populateWithOrderedConversations(mConversations, this.share.image);
 		}
-		super.onStart();
+
 	}
 
 	protected boolean isImage(Uri uri) {
@@ -164,7 +179,7 @@ public class ShareWithActivity extends XmppActivity {
 			return;
 		}
 		xmppConnectionService.populateWithOrderedConversations(mConversations,
-				this.share != null && this.share.uri == null);
+				this.share != null && this.share.uris.size() == 0);
 	}
 
 	private void share() {
@@ -188,7 +203,7 @@ public class ShareWithActivity extends XmppActivity {
 	}
 
 	private void share(final Conversation conversation) {
-		if (share.uri != null) {
+		if (share.uris.size() != 0) {
 			selectPresence(conversation, new OnPresenceSelected() {
 				@Override
 				public void onPresenceSelected() {
@@ -196,22 +211,23 @@ public class ShareWithActivity extends XmppActivity {
 						Toast.makeText(getApplicationContext(),
 								getText(R.string.preparing_image),
 								Toast.LENGTH_LONG).show();
-						ShareWithActivity.this.xmppConnectionService
-							.attachImageToConversation(conversation, share.uri,
-									attachFileCallback);
+						for (Iterator<Uri> i = share.uris.iterator(); i.hasNext(); i.remove()) {
+							ShareWithActivity.this.xmppConnectionService
+									.attachImageToConversation(conversation, i.next(),
+											attachFileCallback);
+						}
 					} else {
 						Toast.makeText(getApplicationContext(),
 								getText(R.string.preparing_file),
 								Toast.LENGTH_LONG).show();
 						ShareWithActivity.this.xmppConnectionService
-							.attachFileToConversation(conversation, share.uri,
-									attachFileCallback);
+								.attachFileToConversation(conversation, share.uris.get(0),
+										attachFileCallback);
 					}
 					switchToConversation(conversation, null, true);
 					finish();
 				}
 			});
-
 		} else {
 			switchToConversation(conversation, this.share.text, true);
 			finish();

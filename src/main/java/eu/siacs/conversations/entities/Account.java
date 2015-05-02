@@ -229,11 +229,17 @@ public class Account extends AbstractEntity {
 		return jid.getResourcepart();
 	}
 
-	public void setResource(final String resource) {
-		try {
-			jid = Jid.fromParts(jid.getLocalpart(), jid.getDomainpart(), resource);
-		} catch (final InvalidJidException ignored) {
+	public boolean setResource(final String resource) {
+		final String oldResource = jid.getResourcepart();
+		if (oldResource == null || !oldResource.equals(resource)) {
+			try {
+				jid = Jid.fromParts(jid.getLocalpart(), jid.getDomainpart(), resource);
+				return true;
+			} catch (final InvalidJidException ignored) {
+				return true;
+			}
 		}
+		return false;
 	}
 
 	public Jid getJid() {

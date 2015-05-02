@@ -359,7 +359,6 @@
   <string name="could_not_change_password">Impossible de changer le mot de passe</string>
   <string name="otr_session_not_started">Envoyez un message pour commencer la conversation chiffrée</string>
   <string name="ask_question">Poser une question</string>
-  <string name="smp_explain_question">Si vous et votre contact avez un secret en commun connu par vous deux uniquement (comme une histoire personnelle ou même comme ce que vous avez mangé lors de votre dernière rencontre) vous pouvez utiliser ce secret pour vérifier vos empreintes respectives.\n\nVous envoyez un indice ou une question à votre contact qui devra répondre en faisant attention à la casse.</string>
   <string name="smp_explain_answer">Votre contact voudrait vous identifier de manière sûre grâce à un secret commun. Il vous envoie le message ou la question suivante.</string>
   <string name="shared_secret_hint_should_not_be_empty">Votre indice ne devrait pas être vide</string>
   <string name="shared_secret_can_not_be_empty">Votre secret ne peut être vide</string>
@@ -427,4 +426,8 @@
   <string name="no_application_found_to_display_location">Aucune application trouvée pour afficher la position</string>
   <string name="location">Position</string>
   <string name="received_location">Position reçue</string>
+  <plurals name="select_contact">
+    <item quantity="one">%d contact séléctionné</item>
+    <item quantity="other">%d contacts séléctionnés</item>
+  </plurals>
 </resources>

@@ -359,7 +359,7 @@
   <string name="could_not_change_password">Неуспешна промяна на паролата</string>
   <string name="otr_session_not_started">Изпратете съобщение, за да започнете нешифрован разговор</string>
   <string name="ask_question">Задаване на въпрос</string>
-  <string name="smp_explain_question">Ако Вие и контакта Ви имате някаква тайна информация, която никой друг не знае (като някаква шега или пък просто какво сте обядвали, когато сте се срещнали за последно), можете да я използвате, за да проверите отпечатъците си един на друг.\n\nМожете да подсигурите подсказка или въпрос, на който контакта Ви да отговори, като има предвид, че главните и малките букви се броят за различни.</string>
+  <string name="smp_explain_question">Ако Вие и контактът Ви имате някаква тайна информация, която никой друг не знае (като някаква шега или пък просто какво сте обядвали, когато сте се срещнали за последно), можете да я използвате, за да проверите отпечатъците си един на друг.\n\nМожете да подсигурите подсказка или въпрос, на който контактът Ви да отговори, като има предвид, че главните и малките букви се броят за различни.</string>
   <string name="smp_explain_answer">Вашият контакт би искал да провери отпечатъка Ви, като Ви попита за обща тайна информация. Контактът Ви предостави следната подсказка или въпрос, който да Ви насочи към тази тайна.</string>
   <string name="shared_secret_hint_should_not_be_empty">Подсказката Ви не трябва да е празна</string>
   <string name="shared_secret_can_not_be_empty">Общата Ви тайна не може да е празна</string>
@@ -427,6 +427,21 @@
   <string name="no_application_found_to_display_location">Няма намерено приложение за показване на местоположението</string>
   <string name="location">Местоположение</string>
   <string name="received_location">Получено местоположение</string>
+  <string name="title_undo_swipe_out_conversation">Conversation се затвори</string>
+  <string name="title_undo_swipe_out_muc">Напуснахте беседата</string>
+  <string name="pref_certificate_options">Настройки на сертификата</string>
+  <string name="pref_dont_trust_system_cas_title">Да не се вярва на системните сертификати</string>
+  <string name="pref_dont_trust_system_cas_summary">Всички сертификати трябва да бъдат одобрени на ръка</string>
+  <string name="pref_remove_trusted_certificates_title">Премахване на сертификатите</string>
+  <string name="pref_remove_trusted_certificates_summary">Изтриване на сертификатите, одобрени на ръка</string>
+  <string name="toast_no_trusted_certs">Няма сертификати, одобрени на ръка</string>
+  <string name="dialog_manage_certs_title">Премахване на сертификатите</string>
+  <string name="dialog_manage_certs_positivebutton">Изтриване на избраните</string>
+  <string name="dialog_manage_certs_negativebutton">Отказ</string>
+  <plurals name="toast_delete_certificates">
+    <item quantity="one">%d сертификат е изтрит</item>
+    <item quantity="other">%d сертификата са изтрити</item>
+  </plurals>
   <plurals name="select_contact">
     <item quantity="one">Изберете %d контакт</item>
     <item quantity="other">Изберете %d контакта</item>

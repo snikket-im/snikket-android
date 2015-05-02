@@ -36,7 +36,9 @@
             android:title="@string/pref_chat_states" />
 
     </PreferenceCategory>
-    <PreferenceCategory android:title="@string/pref_notification_settings" >
+    <PreferenceCategory
+        android:title="@string/pref_notification_settings"
+        android:key="notifications">
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="show_notification"
@@ -45,7 +47,8 @@
           <PreferenceScreen
             android:dependency="show_notification"
             android:summary="@string/pref_quiet_hours_summary"
-            android:title="@string/title_pref_quiet_hours">
+            android:title="@string/title_pref_quiet_hours"
+            android:key="quiet_hours">
             <CheckBoxPreference
               android:defaultValue="false"
               android:key="enable_quiet_hours"
@@ -108,10 +111,13 @@
             android:summary="@string/pref_show_dynamic_tags_summary"
             android:title="@string/pref_show_dynamic_tags" />
     </PreferenceCategory>
-    <PreferenceCategory android:title="@string/pref_advanced_options" >
+    <PreferenceCategory
+        android:title="@string/pref_advanced_options"
+        android:key="advanced">
         <PreferenceScreen
             android:summary="@string/pref_expert_options_summary"
-            android:title="@string/pref_expert_options" >
+            android:title="@string/pref_expert_options"
+            android:key="expert">
             <PreferenceCategory android:title="@string/pref_encryption_settings" >
                 <CheckBoxPreference
                     android:defaultValue="false"
@@ -136,6 +142,17 @@
 			        android:title="@string/pref_display_enter_key"
 			        android:summary="@string/pref_display_enter_key_summary" />
 	        </PreferenceCategory>
+			<PreferenceCategory android:title="@string/pref_certificate_options">
+				<CheckBoxPreference
+					android:defaultValue="false"
+					android:key="dont_trust_system_cas"
+					android:title="@string/pref_dont_trust_system_cas_title"
+					android:summary="@string/pref_dont_trust_system_cas_summary" />
+				<Preference
+					android:key="remove_trusted_certificates"
+					android:title="@string/pref_remove_trusted_certificates_title"
+					android:summary="@string/pref_remove_trusted_certificates_summary" />
+			</PreferenceCategory>
             <PreferenceCategory android:title="@string/pref_expert_options_other" >
                 <CheckBoxPreference
                     android:defaultValue="false"

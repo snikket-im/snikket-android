@@ -182,7 +182,7 @@ public class OtrEngine extends OtrCryptoEngineImpl implements OtrEngineHost {
 		packet.setBody(body);
 		packet.addChild("private", "urn:xmpp:carbons:2");
 		packet.addChild("no-copy", "urn:xmpp:hints");
-		packet.addChild("no-store", "urn:xmpp:hints");
+		packet.addChild("no-permanent-store", "urn:xmpp:hints");
 
 		try {
 			Jid jid = Jid.fromSessionID(session);
@@ -202,20 +202,7 @@ public class OtrEngine extends OtrCryptoEngineImpl implements OtrEngineHost {
 
 	@Override
 	public void messageFromAnotherInstanceReceived(SessionID session) {
-		try {
-			Jid jid = Jid.fromSessionID(session);
-			Conversation conversation = mXmppConnectionService.find(account, jid);
-			String id = conversation == null ? null : conversation.getLastReceivedOtrMessageId();
-			if (id != null) {
-				MessagePacket packet = mXmppConnectionService.getMessageGenerator().generateOtrError(jid,id);
-				packet.setFrom(account.getJid());
-				mXmppConnectionService.sendMessagePacket(account,packet);
-				Log.d(Config.LOGTAG,packet.toString());
-				Log.d(Config.LOGTAG,account.getJid().toBareJid().toString()+": unreadable OTR message in "+conversation.getName());
-			}
-		} catch (InvalidJidException e) {
-			return;
-		}
+		sendOtrErrorMessage(session, "Message from another OTR-instance received");
 	}
 
 	@Override
@@ -267,9 +254,28 @@ public class OtrEngine extends OtrCryptoEngineImpl implements OtrEngineHost {
 	}
 
 	@Override
-	public void unreadableMessageReceived(SessionID arg0) throws OtrException {
+	public void unreadableMessageReceived(SessionID session) throws OtrException {
 		Log.d(Config.LOGTAG,"unreadable message received");
-		throw new OtrException(new Exception("unreadable message received"));
+		sendOtrErrorMessage(session, "You sent me an unreadable OTR-encrypted message");
+	}
+
+	public void sendOtrErrorMessage(SessionID session, String errorText) {
+		try {
+			Jid jid = Jid.fromSessionID(session);
+			Conversation conversation = mXmppConnectionService.find(account, jid);
+			String id = conversation == null ? null : conversation.getLastReceivedOtrMessageId();
+			if (id != null) {
+				MessagePacket packet = mXmppConnectionService.getMessageGenerator()
+						.generateOtrError(jid, id, errorText);
+				packet.setFrom(account.getJid());
+				mXmppConnectionService.sendMessagePacket(account,packet);
+				Log.d(Config.LOGTAG,packet.toString());
+				Log.d(Config.LOGTAG,account.getJid().toBareJid().toString()
+						+": unreadable OTR message in "+conversation.getName());
+			}
+		} catch (InvalidJidException e) {
+			return;
+		}
 	}
 
 	@Override

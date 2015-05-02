@@ -427,6 +427,21 @@
   <string name="no_application_found_to_display_location">Geen applicatie gevonden om locatie weer te geven</string>
   <string name="location">Locatie</string>
   <string name="received_location">Locatie ontvangen</string>
+  <string name="title_undo_swipe_out_conversation">Gesprek gesloten</string>
+  <string name="title_undo_swipe_out_muc">Groepsgesprek verlaten</string>
+  <string name="pref_certificate_options">Certificaatopties</string>
+  <string name="pref_dont_trust_system_cas_title">Vertrouw geen systeem-CA\'s.</string>
+  <string name="pref_dont_trust_system_cas_summary">Alle certificaten moeten handmatig goedgekeurd worden</string>
+  <string name="pref_remove_trusted_certificates_title">Verwijder certificaten</string>
+  <string name="pref_remove_trusted_certificates_summary">Verwijder handmatig goedgekeurde certificaten</string>
+  <string name="toast_no_trusted_certs">Geen handmatig goedgekeurde certificaten</string>
+  <string name="dialog_manage_certs_title">Verwijder certificaten</string>
+  <string name="dialog_manage_certs_positivebutton">Verwijder selectie</string>
+  <string name="dialog_manage_certs_negativebutton">Annuleer</string>
+  <plurals name="toast_delete_certificates">
+    <item quantity="one">%d certificaat verwijderd</item>
+    <item quantity="other">%d certificaten verwijderd</item>
+  </plurals>
   <plurals name="select_contact">
     <item quantity="one">Selecteer %d contact</item>
     <item quantity="other">Selecteer %d contacten</item>

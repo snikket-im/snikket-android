@@ -5,6 +5,7 @@ import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
 import android.app.PendingIntent;
+import android.content.ClipData;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
@@ -22,14 +23,15 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
-import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.PopupMenu.OnMenuItemClickListener;
 import android.widget.Toast;
 
 import net.java.otr4j.session.SessionStatus;
+import de.timroes.android.listview.EnhancedListView;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import eu.siacs.conversations.R;
@@ -69,15 +71,16 @@ public class ConversationActivity extends XmppActivity
 
 	private String mOpenConverstaion = null;
 	private boolean mPanelOpen = true;
-	private Uri mPendingImageUri = null;
-	private Uri mPendingFileUri = null;
+	final private List<Uri> mPendingImageUris = new ArrayList<>();
+	final private List<Uri> mPendingFileUris = new ArrayList<>();
 	private Uri mPendingGeoUri = null;
 
 	private View mContentView;
 
 	private List<Conversation> conversationList = new ArrayList<>();
+	private Conversation swipedConversation = null;
 	private Conversation mSelectedConversation = null;
-	private ListView listView;
+	private EnhancedListView listView;
 	private ConversationFragment mConversationFragment;
 
 	private ArrayAdapter<Conversation> listAdapter;
@@ -140,13 +143,14 @@ public class ConversationActivity extends XmppActivity
 	@Override
 	protected void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		if (savedInstanceState != null) {mOpenConverstaion = savedInstanceState.getString(
-				STATE_OPEN_CONVERSATION, null);
-		mPanelOpen = savedInstanceState.getBoolean(STATE_PANEL_OPEN, true);
-		String pending = savedInstanceState.getString(STATE_PENDING_URI, null);
-		if (pending != null) {
-			mPendingImageUri = Uri.parse(pending);
-		}
+		if (savedInstanceState != null) {
+			mOpenConverstaion = savedInstanceState.getString(STATE_OPEN_CONVERSATION, null);
+			mPanelOpen = savedInstanceState.getBoolean(STATE_PANEL_OPEN, true);
+			String pending = savedInstanceState.getString(STATE_PENDING_URI, null);
+			if (pending != null) {
+				mPendingImageUris.clear();
+				mPendingImageUris.add(Uri.parse(pending));
+			}
 		}
 
 		setContentView(R.layout.fragment_conversations_overview);
@@ -156,7 +160,7 @@ public class ConversationActivity extends XmppActivity
 		transaction.replace(R.id.selected_conversation, this.mConversationFragment, "conversation");
 		transaction.commit();
 
-		listView = (ListView) findViewById(R.id.list);
+		listView = (EnhancedListView) findViewById(R.id.list);
 		this.listAdapter = new ConversationAdapter(this, conversationList);
 		listView.setAdapter(this.listAdapter);
 
@@ -178,6 +182,73 @@ public class ConversationActivity extends XmppActivity
 				openConversation();
 			}
 		});
+
+		listView.setDismissCallback(new EnhancedListView.OnDismissCallback() {
+
+			@Override
+			public EnhancedListView.Undoable onDismiss(final EnhancedListView enhancedListView, final int position) {
+
+				final int index = listView.getFirstVisiblePosition();
+				View v = listView.getChildAt(0);
+				final int top = (v == null) ? 0 : (v.getTop() - listView.getPaddingTop());
+
+				swipedConversation = listAdapter.getItem(position);
+				listAdapter.remove(swipedConversation);
+				swipedConversation.markRead();
+				xmppConnectionService.getNotificationService().clear(swipedConversation);
+
+				final boolean formerlySelected = (getSelectedConversation() == swipedConversation);
+				if (position == 0 && listAdapter.getCount() == 0) {
+					endConversation(swipedConversation, false, true);
+					return null;
+				} else if (formerlySelected) {
+					setSelectedConversation(listAdapter.getItem(0));
+					ConversationActivity.this.mConversationFragment
+							.reInit(getSelectedConversation());
+				}
+
+				return new EnhancedListView.Undoable() {
+
+					@Override
+					public void undo() {
+						listAdapter.insert(swipedConversation, position);
+						if (formerlySelected) {
+							setSelectedConversation(swipedConversation);
+							ConversationActivity.this.mConversationFragment
+									.reInit(getSelectedConversation());
+						}
+						swipedConversation = null;
+						listView.setSelectionFromTop(index + (listView.getChildCount() < position ? 1 : 0), top);
+					}
+
+					@Override
+					public void discard() {
+						if (!swipedConversation.isRead()
+								&& swipedConversation.getMode() == Conversation.MODE_SINGLE) {
+							swipedConversation = null;
+							return;
+						}
+						endConversation(swipedConversation, false, false);
+						swipedConversation = null;
+					}
+
+					@Override
+					public String getTitle() {
+						if (swipedConversation.getMode() == Conversation.MODE_MULTI) {
+							return getResources().getString(R.string.title_undo_swipe_out_muc);
+						} else {
+							return getResources().getString(R.string.title_undo_swipe_out_conversation);
+						}
+					}
+				};
+			}
+		});
+		listView.enableSwipeToDismiss();
+		listView.setSwipingLayout(R.id.swipeable_item);
+		listView.setUndoStyle(EnhancedListView.UndoStyle.SINGLE_POPUP);
+		listView.setUndoHideDelay(5000);
+		listView.setRequireTouchBeforeDismiss(false);
+
 		mContentView = findViewById(R.id.content_view_spl);
 		if (mContentView == null) {
 			mContentView = findViewById(R.id.content_view_ll);
@@ -204,6 +275,7 @@ public class ConversationActivity extends XmppActivity
 
 				@Override
 				public void onPanelClosed(View arg0) {
+					listView.discardUndo();
 					openConversation();
 				}
 
@@ -303,7 +375,7 @@ public class ConversationActivity extends XmppActivity
 				if (this.getSelectedConversation().getLatestMessage()
 						.getEncryption() != Message.ENCRYPTION_NONE) {
 					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-						menuSecure.setIcon(R.drawable.ic_lock_outline_white_48dp);
+						menuSecure.setIcon(R.drawable.ic_lock_white_24dp);
 					} else {
 						menuSecure.setIcon(R.drawable.ic_action_secure);
 					}
@@ -340,13 +412,18 @@ public class ConversationActivity extends XmppActivity
 					switch (attachmentChoice) {
 						case ATTACHMENT_CHOICE_CHOOSE_IMAGE:
 							intent.setAction(Intent.ACTION_GET_CONTENT);
+							if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+								intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE,true);
+							}
 							intent.setType("image/*");
 							chooser = true;
 							break;
 						case ATTACHMENT_CHOICE_TAKE_PHOTO:
-							mPendingImageUri = xmppConnectionService.getFileBackend().getTakePhotoUri();
+							Uri uri = xmppConnectionService.getFileBackend().getTakePhotoUri();
 							intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
-							intent.putExtra(MediaStore.EXTRA_OUTPUT, mPendingImageUri);
+							intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+							mPendingImageUris.clear();
+							mPendingImageUris.add(uri);
 							break;
 						case ATTACHMENT_CHOICE_CHOOSE_FILE:
 							chooser = true;
@@ -485,13 +562,21 @@ public class ConversationActivity extends XmppActivity
 	}
 
 	public void endConversation(Conversation conversation) {
-		showConversationsOverview();
+		endConversation(conversation, true, true);
+	}
+
+	public void endConversation(Conversation conversation, boolean showOverview, boolean reinit) {
+		if (showOverview) {
+			showConversationsOverview();
+		}
 		xmppConnectionService.archiveConversation(conversation);
-		if (conversationList.size() > 0) {
-			setSelectedConversation(conversationList.get(0));
-			this.mConversationFragment.reInit(getSelectedConversation());
-		} else {
-			setSelectedConversation(null);
+		if (reinit) {
+			if (conversationList.size() > 0) {
+				setSelectedConversation(conversationList.get(0));
+				this.mConversationFragment.reInit(getSelectedConversation());
+			} else {
+				setSelectedConversation(null);
+			}
 		}
 	}
 
@@ -744,6 +829,7 @@ public class ConversationActivity extends XmppActivity
 
 	@Override
 	public void onPause() {
+		listView.discardUndo();
 		super.onPause();
 		this.mActivityPaused = true;
 		if (this.xmppConnectionServiceBound) {
@@ -779,8 +865,8 @@ public class ConversationActivity extends XmppActivity
 		}
 		savedInstanceState.putBoolean(STATE_PANEL_OPEN,
 				isConversationsOverviewVisable());
-		if (this.mPendingImageUri != null) {
-			savedInstanceState.putString(STATE_PENDING_URI, this.mPendingImageUri.toString());
+		if (this.mPendingImageUris.size() >= 1) {
+			savedInstanceState.putString(STATE_PENDING_URI, this.mPendingImageUris.get(0).toString());
 		}
 		super.onSaveInstanceState(savedInstanceState);
 	}
@@ -819,21 +905,23 @@ public class ConversationActivity extends XmppActivity
 			this.mConversationFragment.reInit(getSelectedConversation());
 		} else {
 			showConversationsOverview();
-			mPendingImageUri = null;
-			mPendingFileUri = null;
+			mPendingImageUris.clear();
+			mPendingFileUris.clear();
 			mPendingGeoUri = null;
 			setSelectedConversation(conversationList.get(0));
 			this.mConversationFragment.reInit(getSelectedConversation());
 		}
 
-		if (mPendingImageUri != null) {
-			attachImageToConversation(getSelectedConversation(),mPendingImageUri);
-			mPendingImageUri = null;
-		} else if (mPendingFileUri != null) {
-			attachFileToConversation(getSelectedConversation(),mPendingFileUri);
-			mPendingFileUri = null;
-		} else if (mPendingGeoUri != null) {
-			attachLocationToConversation(getSelectedConversation(),mPendingGeoUri);
+		for(Iterator<Uri> i = mPendingImageUris.iterator(); i.hasNext(); i.remove()) {
+			attachImageToConversation(getSelectedConversation(),i.next());
+		}
+
+		for(Iterator<Uri> i = mPendingFileUris.iterator(); i.hasNext(); i.remove()) {
+			attachFileToConversation(getSelectedConversation(),i.next());
+		}
+
+		if (mPendingGeoUri != null) {
+			attachLocationToConversation(getSelectedConversation(), mPendingGeoUri);
 			mPendingGeoUri = null;
 		}
 		ExceptionHelper.checkForCrash(this, this.xmppConnectionService);
@@ -841,10 +929,10 @@ public class ConversationActivity extends XmppActivity
 	}
 
 	private void handleViewConversationIntent(final Intent intent) {
-		final String uuid = (String) intent.getExtras().get(CONVERSATION);
-		final String downloadUuid = (String) intent.getExtras().get(MESSAGE);
-		final String text = intent.getExtras().getString(TEXT, "");
-		final String nick = intent.getExtras().getString(NICK, null);
+		final String uuid = intent.getStringExtra(CONVERSATION);
+		final String downloadUuid = intent.getStringExtra(MESSAGE);
+		final String text = intent.getStringExtra(TEXT);
+		final String nick = intent.getStringExtra(NICK);
 		if (selectConversationByUuid(uuid)) {
 			this.mConversationFragment.reInit(getSelectedConversation());
 			if (nick != null) {
@@ -885,6 +973,21 @@ public class ConversationActivity extends XmppActivity
 		xmppConnectionService.getNotificationService().setOpenConversation(null);
 	}
 
+	@SuppressLint("NewApi")
+	private static List<Uri> extractUriFromIntent(final Intent intent) {
+		List<Uri> uris = new ArrayList<>();
+		Uri uri = intent.getData();
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2 && uri == null) {
+			ClipData clipData = intent.getClipData();
+			for(int i = 0; i < clipData.getItemCount(); ++i) {
+				uris.add(clipData.getItemAt(i).getUri());
+			}
+		} else {
+			uris.add(uri);
+		}
+		return uris;
+	}
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode,
 			final Intent data) {
@@ -894,25 +997,34 @@ public class ConversationActivity extends XmppActivity
 				mConversationFragment.hideSnackbar();
 				mConversationFragment.updateMessages();
 			} else if (requestCode == ATTACHMENT_CHOICE_CHOOSE_IMAGE) {
-				mPendingImageUri = data.getData();
+				mPendingImageUris.clear();
+				mPendingImageUris.addAll(extractUriFromIntent(data));
 				if (xmppConnectionServiceBound) {
-					attachImageToConversation(getSelectedConversation(),mPendingImageUri);
-					mPendingImageUri = null;
+					for(Iterator<Uri> i = mPendingImageUris.iterator(); i.hasNext(); i.remove()) {
+						attachImageToConversation(getSelectedConversation(),i.next());
+					}
 				}
 			} else if (requestCode == ATTACHMENT_CHOICE_CHOOSE_FILE || requestCode == ATTACHMENT_CHOICE_RECORD_VOICE) {
-				mPendingFileUri = data.getData();
+				mPendingFileUris.clear();
+				mPendingFileUris.addAll(extractUriFromIntent(data));
 				if (xmppConnectionServiceBound) {
-					attachFileToConversation(getSelectedConversation(),mPendingFileUri);
-					mPendingFileUri = null;
+					for(Iterator<Uri> i = mPendingImageUris.iterator(); i.hasNext(); i.remove()) {
+						attachFileToConversation(getSelectedConversation(), i.next());
+					}
 				}
-			} else if (requestCode == ATTACHMENT_CHOICE_TAKE_PHOTO && mPendingImageUri != null) {
-				if (xmppConnectionServiceBound) {
-					attachImageToConversation(getSelectedConversation(),mPendingImageUri);
-					mPendingImageUri = null;
+			} else if (requestCode == ATTACHMENT_CHOICE_TAKE_PHOTO) {
+				if (mPendingImageUris.size() == 1) {
+					Uri uri = mPendingImageUris.get(0);
+					if (xmppConnectionServiceBound) {
+						attachImageToConversation(getSelectedConversation(), uri);
+						mPendingImageUris.clear();
+					}
+					Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+					intent.setData(uri);
+					sendBroadcast(intent);
+				} else {
+					mPendingImageUris.clear();
 				}
-				Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-				intent.setData(mPendingImageUri);
-				sendBroadcast(intent);
 			} else if (requestCode == ATTACHMENT_CHOICE_LOCATION) {
 				double latitude = data.getDoubleExtra("latitude",0);
 				double longitude = data.getDoubleExtra("longitude",0);
@@ -923,9 +1035,8 @@ public class ConversationActivity extends XmppActivity
 				}
 			}
 		} else {
-			if (requestCode == ATTACHMENT_CHOICE_TAKE_PHOTO) {
-				mPendingImageUri = null;
-			}
+			mPendingImageUris.clear();
+			mPendingFileUris.clear();
 		}
 	}
 
@@ -1013,6 +1124,13 @@ public class ConversationActivity extends XmppActivity
 	public void updateConversationList() {
 		xmppConnectionService
 			.populateWithOrderedConversations(conversationList);
+		if (swipedConversation != null) {
+			if (swipedConversation.isRead()) {
+				conversationList.remove(swipedConversation);
+			} else {
+				listView.discardUndo();
+			}
+		}
 		listAdapter.notifyDataSetChanged();
 	}
 

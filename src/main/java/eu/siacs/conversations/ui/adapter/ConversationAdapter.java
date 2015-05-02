@@ -46,17 +46,10 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 		}
 		Conversation conversation = getItem(position);
 		if (this.activity instanceof ConversationActivity) {
-			ConversationActivity activity = (ConversationActivity) this.activity;
-			if (!activity.isConversationsOverviewHideable()) {
-				if (conversation == activity.getSelectedConversation()) {
-					view.setBackgroundColor(activity
-							.getSecondaryBackgroundColor());
-				} else {
-					view.setBackgroundColor(Color.TRANSPARENT);
-				}
-			} else {
-				view.setBackgroundColor(Color.TRANSPARENT);
-			}
+			View swipeableItem = view.findViewById(R.id.swipeable_item);
+			ConversationActivity a = (ConversationActivity) this.activity;
+			int c = !a.isConversationsOverviewHideable() && conversation == a.getSelectedConversation() ? a.getSecondaryBackgroundColor() : a.getPrimaryBackgroundColor();
+			swipeableItem.setBackgroundColor(c);
 		}
 		TextView convName = (TextView) view.findViewById(R.id.conversation_name);
 		if (conversation.getMode() == Conversation.MODE_SINGLE || activity.useSubjectToIdentifyConference()) {

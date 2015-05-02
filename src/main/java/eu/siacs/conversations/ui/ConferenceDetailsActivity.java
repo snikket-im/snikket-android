@@ -237,6 +237,9 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 		MenuItem menuItemDeleteBookmark = menu.findItem(R.id.action_delete_bookmark);
 		MenuItem menuItemAdvancedMode = menu.findItem(R.id.action_advanced_mode);
 		menuItemAdvancedMode.setChecked(mAdvancedMode);
+		if (mConversation == null) {
+			return true;
+		}
 		Account account = mConversation.getAccount();
 		if (account.hasBookmarkFor(mConversation.getJid().toBareJid())) {
 			menuItemSaveBookmark.setVisible(false);

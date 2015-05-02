@@ -54,4 +54,11 @@ public class PresenceGenerator extends AbstractGenerator {
 		}
 		return packet;
 	}
+
+	public PresencePacket sendOfflinePresence(Account account) {
+		PresencePacket packet = new PresencePacket();
+		packet.setFrom(account.getJid());
+		packet.setAttribute("type","unavailable");
+		return packet;
+	}
 }

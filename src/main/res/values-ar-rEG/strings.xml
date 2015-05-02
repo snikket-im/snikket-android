@@ -260,7 +260,6 @@
   <string name="could_not_change_password">لايمكن تغيير كلمة السر</string>
   <string name="otr_session_not_started">ارسل رساله لبدأ محادثة مشفّرة</string>
   <string name="ask_question">أسال سؤال</string>
-  <string name="smp_explain_question">إذا كنت و جهة اتصالك لديكم سر مشترك غير معروف لأحد آخر (مثل جملة مكرره بينكم او تاريخ ما يخصكم  كتاريخ آخر لقاء بينكم ) استخدماه للتحقق من بصمات الأصابع  \n\n عليك توفير تلميحا أو سؤال لجهة الإتصال بك للحصول على تلك الإجابه وبدأ التواصل</string>
   <string name="smp_explain_answer">سترغب جهة الإتصال بتأكيد بصمتك عبر السر المشترك بينكما لذلك أخبره تلميحا أو إسأله سؤالا يذكره بالسر ليكتبه برده</string>
   <string name="shared_secret_hint_should_not_be_empty">التلميح الذي يراه صديقك لا يمكن ان يكون فارغ</string>
   <string name="shared_secret_can_not_be_empty">السر المشترك بينكما لا يمكن ان يترك فارغا !!</string>

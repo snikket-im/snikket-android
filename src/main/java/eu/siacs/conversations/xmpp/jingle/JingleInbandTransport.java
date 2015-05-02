@@ -11,6 +11,7 @@ import android.util.Base64;
 
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.DownloadableFile;
+import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.OnIqPacketReceived;
@@ -172,6 +173,7 @@ public class JingleInbandTransport extends JingleTransport {
 				connection.updateProgress((int) ((((double) (this.fileSize - this.remainingSize)) / this.fileSize) * 100));
 			}
 		} catch (IOException e) {
+			FileBackend.close(fileInputStream);
 			this.onFileTransmissionStatusChanged.onFileTransferAborted();
 		}
 	}
@@ -198,6 +200,7 @@ public class JingleInbandTransport extends JingleTransport {
 				connection.updateProgress((int) ((((double) (this.fileSize - this.remainingSize)) / this.fileSize) * 100));
 			}
 		} catch (IOException e) {
+			FileBackend.close(fileOutputStream);
 			this.onFileTransmissionStatusChanged.onFileTransferAborted();
 		}
 	}
@@ -207,6 +210,7 @@ public class JingleInbandTransport extends JingleTransport {
 			if (!established) {
 				established = true;
 				connected = true;
+				this.receiveNextBlock("");
 				this.account.getXmppConnection().sendIqPacket(
 						packet.generateResponse(IqPacket.TYPE.RESULT), null);
 			} else {

@@ -90,7 +90,7 @@ public class XmppConnection implements Runnable {
 	private boolean shouldBind = true;
 	private boolean shouldAuthenticate = true;
 	private Element streamFeatures;
-	private final HashMap<String, List<String>> disco = new HashMap<>();
+	private final HashMap<Jid, Info> disco = new HashMap<>();
 
 	private String streamId = null;
 	private int smVersion = 3;
@@ -334,16 +334,23 @@ public class XmppConnection implements Runnable {
 								} catch (final NumberFormatException ignored) {
 								}
 								sendServiceDiscoveryInfo(account.getServer());
+								sendServiceDiscoveryInfo(account.getJid().toBareJid());
 								sendServiceDiscoveryItems(account.getServer());
 								sendInitialPing();
 							} else if (nextTag.isStart("r")) {
 								tagReader.readElement(nextTag);
+								if (Config.EXTENDED_SM_LOGGING) {
+									Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": acknowledging stanza #" + this.stanzasReceived);
+								}
 								final AckPacket ack = new AckPacket(this.stanzasReceived, smVersion);
 								tagWriter.writeStanzaAsync(ack);
 							} else if (nextTag.isStart("a")) {
 								final Element ack = tagReader.readElement(nextTag);
 								lastPacketReceived = SystemClock.elapsedRealtime();
 								final int serverSequence = Integer.parseInt(ack.getAttribute("h"));
+								if (Config.EXTENDED_SM_LOGGING) {
+									Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": server acknowledged stanza #" + serverSequence);
+								}
 								final String msgId = this.messageReceipts.get(serverSequence);
 								if (msgId != null) {
 									if (this.acknowledgedListener != null) {
@@ -597,8 +604,10 @@ public class XmppConnection implements Runnable {
 		} else if (this.streamFeatures.hasChild("sm", "urn:xmpp:sm:"
 					+ smVersion)
 				&& streamId != null) {
-			final ResumePacket resume = new ResumePacket(this.streamId,
-					stanzasReceived, smVersion);
+			if (Config.EXTENDED_SM_LOGGING) {
+				Log.d(Config.LOGTAG,account.getJid().toBareJid()+": resuming after stanza #"+stanzasReceived);
+			}
+			final ResumePacket resume = new ResumePacket(this.streamId, stanzasReceived, smVersion);
 			this.tagWriter.writeStanzaAsync(resume);
 		} else if (this.streamFeatures.hasChild("bind") && shouldBind) {
 			sendBindRequest();
@@ -734,6 +743,7 @@ public class XmppConnection implements Runnable {
 		features.blockListRequested = false;
 		disco.clear();
 		sendServiceDiscoveryInfo(account.getServer());
+		sendServiceDiscoveryInfo(account.getJid().toBareJid());
 		sendServiceDiscoveryItems(account.getServer());
 		if (bindListener != null) {
 			bindListener.onBind(account);
@@ -741,34 +751,35 @@ public class XmppConnection implements Runnable {
 		sendInitialPing();
 	}
 
-	private void sendServiceDiscoveryInfo(final Jid server) {
-		if (disco.containsKey(server.toDomainJid().toString())) {
-			if (account.getServer().equals(server.toDomainJid())) {
+	private void sendServiceDiscoveryInfo(final Jid jid) {
+		if (disco.containsKey(jid)) {
+			if (account.getServer().equals(jid)) {
 				enableAdvancedStreamFeatures();
 			}
 		} else {
 			final IqPacket iq = new IqPacket(IqPacket.TYPE.GET);
-			iq.setTo(server.toDomainJid());
+			iq.setTo(jid);
 			iq.query("http://jabber.org/protocol/disco#info");
 			this.sendIqPacket(iq, new OnIqPacketReceived() {
 
 				@Override
 				public void onIqPacketReceived(final Account account, final IqPacket packet) {
 					final List<Element> elements = packet.query().getChildren();
-					final List<String> features = new ArrayList<>();
+					final Info info = new Info();
 					for (final Element element : elements) {
 						if (element.getName().equals("identity")) {
-							if ("irc".equals(element.getAttribute("type"))) {
-								//add fake feature to not confuse irc and real muc
-								features.add("siacs:no:muc");
+							String type = element.getAttribute("type");
+							String category = element.getAttribute("category");
+							if (type != null && category != null) {
+								info.identities.add(new Pair<>(category,type));
 							}
 						} else if (element.getName().equals("feature")) {
-							features.add(element.getAttribute("var"));
+							info.features.add(element.getAttribute("var"));
 						}
 					}
-					disco.put(server.toDomainJid().toString(), features);
+					disco.put(jid, info);
 
-					if (account.getServer().equals(server.toDomainJid())) {
+					if (account.getServer().equals(jid)) {
 						enableAdvancedStreamFeatures();
 						for (final OnAdvancedStreamFeaturesLoaded listener : advancedStreamFeaturesLoadedListeners) {
 							listener.onAdvancedStreamFeaturesAvailable(account);
@@ -784,7 +795,7 @@ public class XmppConnection implements Runnable {
 			sendEnableCarbons();
 		}
 		if (getFeatures().blocking() && !features.blockListRequested) {
-			Log.d(Config.LOGTAG, "Requesting block list");
+			Log.d(Config.LOGTAG,account.getJid().toBareJid()+": Requesting block list");
 			this.sendIqPacket(getIqGenerator().generateGetBlockList(), mXmppConnectionService.getIqParser());
 		}
 	}
@@ -891,7 +902,9 @@ public class XmppConnection implements Runnable {
 		}
 		tagWriter.writeStanzaAsync(packet);
 		if (packet instanceof MessagePacket && packet.getId() != null && this.streamId != null) {
-			Log.d(Config.LOGTAG, "request delivery report for stanza " + stanzasSent);
+			if (Config.EXTENDED_SM_LOGGING) {
+				Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": requesting ack for message stanza #" + stanzasSent);
+			}
 			this.messageReceipts.put(stanzasSent, packet.getId());
 			tagWriter.writeStanzaAsync(new RequestPacket(this.smVersion));
 		}
@@ -981,11 +994,15 @@ public class XmppConnection implements Runnable {
 		}
 	}
 
+	public void resetStreamId() {
+		this.streamId = null;
+	}
+
 	public List<String> findDiscoItemsByFeature(final String feature) {
 		final List<String> items = new ArrayList<>();
-		for (final Entry<String, List<String>> cursor : disco.entrySet()) {
-			if (cursor.getValue().contains(feature)) {
-				items.add(cursor.getKey());
+		for (final Entry<Jid, Info> cursor : disco.entrySet()) {
+			if (cursor.getValue().features.contains(feature)) {
+				items.add(cursor.getKey().toString());
 			}
 		}
 		return items;
@@ -1004,10 +1021,12 @@ public class XmppConnection implements Runnable {
 	}
 
 	public String getMucServer() {
-		for (final Entry<String, List<String>> cursor : disco.entrySet()) {
-			final List<String> value = cursor.getValue();
-			if (value.contains("http://jabber.org/protocol/muc") && !value.contains("jabber:iq:gateway") && !value.contains("siacs:no:muc")) {
-				return cursor.getKey();
+		for (final Entry<Jid, Info> cursor : disco.entrySet()) {
+			final Info value = cursor.getValue();
+			if (value.features.contains("http://jabber.org/protocol/muc")
+					&& !value.features.contains("jabber:iq:gateway")
+					&& !value.identities.contains(new Pair<>("conference","irc"))) {
+				return cursor.getKey().toString();
 			}
 		}
 		return null;
@@ -1062,6 +1081,11 @@ public class XmppConnection implements Runnable {
 		this.lastConnect = 0;
 	}
 
+	private class Info {
+		public final ArrayList<String> features = new ArrayList<>();
+		public final ArrayList<Pair<String,String>> identities = new ArrayList<>();
+	}
+
 	public class Features {
 		XmppConnection connection;
 		private boolean carbonsEnabled = false;
@@ -1073,8 +1097,8 @@ public class XmppConnection implements Runnable {
 		}
 
 		private boolean hasDiscoFeature(final Jid server, final String feature) {
-			return connection.disco.containsKey(server.toDomainJid().toString()) &&
-				connection.disco.get(server.toDomainJid().toString()).contains(feature);
+			return connection.disco.containsKey(server) &&
+				connection.disco.get(server).features.contains(feature);
 		}
 
 		public boolean carbons() {
@@ -1090,24 +1114,35 @@ public class XmppConnection implements Runnable {
 		}
 
 		public boolean sm() {
-			return streamId != null;
+			return streamId != null
+					|| (connection.streamFeatures != null && connection.streamFeatures.hasChild("sm"));
 		}
 
 		public boolean csi() {
 			return connection.streamFeatures != null && connection.streamFeatures.hasChild("csi", "urn:xmpp:csi:0");
 		}
 
-		public boolean pubsub() {
-			return hasDiscoFeature(account.getServer(),
-					"http://jabber.org/protocol/pubsub#publish");
+		public boolean pep() {
+			final Pair<String,String> needle = new Pair<>("pubsub","pep");
+			Info info = disco.get(account.getServer());
+			if (info != null && info.identities.contains(needle)) {
+				return true;
+			} else {
+				info = disco.get(account.getJid().toBareJid());
+				return info != null && info.identities.contains(needle);
+			}
 		}
 
 		public boolean mam() {
-			return hasDiscoFeature(account.getServer(), "urn:xmpp:mam:0");
+			if (hasDiscoFeature(account.getJid().toBareJid(), "urn:xmpp:mam:0")) {
+				return true;
+			} else {
+				return hasDiscoFeature(account.getServer(), "urn:xmpp:mam:0");
+			}
 		}
 
 		public boolean advancedStreamFeaturesLoaded() {
-			return disco.containsKey(account.getServer().toString());
+			return disco.containsKey(account.getServer());
 		}
 
 		public boolean rosterVersioning() {
