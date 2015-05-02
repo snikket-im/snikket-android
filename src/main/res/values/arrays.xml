@@ -40,4 +40,19 @@
 		<item>-1</item>
 	</integer-array>
 
+	<string-array name="quick_actions">
+		<item>@string/none</item>
+		<item>@string/recently_used</item>
+		<item>@string/attach_take_picture</item>
+		<item>@string/attach_record_voice</item>
+		<item>@string/send_location</item>
+	</string-array>
+
+	<string-array name="quick_action_values">
+		<item>none</item>
+		<item>recent</item>
+		<item>photo</item>
+		<item>voice</item>
+		<item>location</item>
+	</string-array>
 </resources>

@@ -60,11 +60,11 @@ public class ConversationActivity extends XmppActivity
 	public static final int REQUEST_SEND_MESSAGE = 0x0201;
 	public static final int REQUEST_DECRYPT_PGP = 0x0202;
 	public static final int REQUEST_ENCRYPT_MESSAGE = 0x0207;
-	private static final int ATTACHMENT_CHOICE_CHOOSE_IMAGE = 0x0301;
-	private static final int ATTACHMENT_CHOICE_TAKE_PHOTO = 0x0302;
-	private static final int ATTACHMENT_CHOICE_CHOOSE_FILE = 0x0303;
-	private static final int ATTACHMENT_CHOICE_RECORD_VOICE = 0x0304;
-	private static final int ATTACHMENT_CHOICE_LOCATION = 0x0305;
+	public static final int ATTACHMENT_CHOICE_CHOOSE_IMAGE = 0x0301;
+	public static final int ATTACHMENT_CHOICE_TAKE_PHOTO = 0x0302;
+	public static final int ATTACHMENT_CHOICE_CHOOSE_FILE = 0x0303;
+	public static final int ATTACHMENT_CHOICE_RECORD_VOICE = 0x0304;
+	public static final int ATTACHMENT_CHOICE_LOCATION = 0x0305;
 	private static final String STATE_OPEN_CONVERSATION = "state_open_conversation";
 	private static final String STATE_PANEL_OPEN = "state_panel_open";
 	private static final String STATE_PENDING_URI = "state_pending_uri";
@@ -452,7 +452,18 @@ public class ConversationActivity extends XmppActivity
 		}
 	}
 
-	private void attachFile(final int attachmentChoice) {
+	public void attachFile(final int attachmentChoice) {
+		switch (attachmentChoice) {
+			case ATTACHMENT_CHOICE_LOCATION:
+				getPreferences().edit().putString("recently_used_quick_action","location").apply();
+				break;
+			case ATTACHMENT_CHOICE_RECORD_VOICE:
+				getPreferences().edit().putString("recently_used_quick_action","voice").apply();
+				break;
+			case ATTACHMENT_CHOICE_TAKE_PHOTO:
+				getPreferences().edit().putString("recently_used_quick_action","photo").apply();
+				break;
+		}
 		final Conversation conversation = getSelectedConversation();
 		final int encryption = conversation.getNextEncryption(forceEncryption());
 		if (encryption == Message.ENCRYPTION_PGP) {
