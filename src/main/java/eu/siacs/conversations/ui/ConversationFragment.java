@@ -245,6 +245,13 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 					case RECORD_VOICE:
 						activity.attachFile(ConversationActivity.ATTACHMENT_CHOICE_RECORD_VOICE);
 						break;
+					case CANCEL:
+						if (conversation != null && conversation.getMode() == Conversation.MODE_MULTI) {
+							conversation.setNextCounterpart(null);
+							updateChatMsgHint();
+							updateSendButton();
+						}
+						break;
 					default:
 						sendMessage();
 				}
@@ -257,8 +264,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 
 		@Override
 		public void onClick(View v) {
-			Intent intent = new Intent(getActivity(),
-					ConferenceDetailsActivity.class);
+			Intent intent = new Intent(getActivity(), ConferenceDetailsActivity.class);
 			intent.setAction(ConferenceDetailsActivity.ACTION_VIEW_MUC);
 			intent.putExtra("uuid", conversation.getUuid());
 			startActivity(intent);
@@ -269,13 +275,6 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 
 	private void sendMessage() {
 		if (this.conversation == null) {
-			return;
-		}
-		if (mEditMessage.getText().length() < 1) {
-			if (this.conversation.getMode() == Conversation.MODE_MULTI) {
-				conversation.setNextCounterpart(null);
-				updateChatMsgHint();
-			}
 			return;
 		}
 		Message message = new Message(conversation, mEditMessage.getText()
@@ -558,6 +557,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 		this.mEditMessage.setText("");
 		this.conversation.setNextCounterpart(counterpart);
 		updateChatMsgHint();
+		updateSendButton();
 	}
 
 	protected void highlightInConference(String nick) {
@@ -808,7 +808,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 		updateChatMsgHint();
 	}
 
-	enum SendButtonAction {TEXT, TAKE_PHOTO, SEND_LOCATION, RECORD_VOICE}
+	enum SendButtonAction {TEXT, TAKE_PHOTO, SEND_LOCATION, RECORD_VOICE, CANCEL}
 
 	private int getSendButtonImageResource(SendButtonAction action, int status) {
 		switch (action) {
@@ -864,6 +864,19 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 					default:
 						return R.drawable.ic_send_location_offline;
 				}
+			case CANCEL:
+				switch (status) {
+					case Presences.CHAT:
+					case Presences.ONLINE:
+						return R.drawable.ic_send_cancel_online;
+					case Presences.AWAY:
+						return R.drawable.ic_send_cancel_away;
+					case Presences.XA:
+					case Presences.DND:
+						return R.drawable.ic_send_cancel_dnd;
+					default:
+						return R.drawable.ic_send_cancel_offline;
+				}
 		}
 		return R.drawable.ic_send_text_offline;
 	}
@@ -872,10 +885,15 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 		final Conversation c = this.conversation;
 		final SendButtonAction action;
 		final int status;
+		final boolean empty = this.mEditMessage == null || this.mEditMessage.getText().length() == 0;
 		if (c.getMode() == Conversation.MODE_MULTI) {
-			action = SendButtonAction.TEXT;
+			if (empty && c.getNextCounterpart() != null) {
+				action = SendButtonAction.CANCEL;
+			} else {
+				action = SendButtonAction.TEXT;
+			}
 		} else {
-			if (this.mEditMessage == null || this.mEditMessage.getText().length() == 0) {
+			if (empty) {
 				String setting = activity.getPreferences().getString("quick_action","recent");
 				if (setting.equals("recent")) {
 					setting = activity.getPreferences().getString("recently_used_quick_action","text");
