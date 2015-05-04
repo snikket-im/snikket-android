@@ -409,6 +409,7 @@ public class ConversationActivity extends XmppActivity
 				public void onPresenceSelected() {
 					Intent intent = new Intent();
 					boolean chooser = false;
+					String fallbackPackageId = null;
 					switch (attachmentChoice) {
 						case ATTACHMENT_CHOICE_CHOOSE_IMAGE:
 							intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -436,6 +437,7 @@ public class ConversationActivity extends XmppActivity
 							break;
 						case ATTACHMENT_CHOICE_LOCATION:
 							intent.setAction("eu.siacs.conversations.location.request");
+							fallbackPackageId = "eu.siacs.conversations.sharelocation";
 							break;
 					}
 					if (intent.resolveActivity(getPackageManager()) != null) {
@@ -446,9 +448,22 @@ public class ConversationActivity extends XmppActivity
 						} else {
 							startActivityForResult(intent, attachmentChoice);
 						}
+					} else if (fallbackPackageId != null) {
+						startActivity(getInstallApkIntent(fallbackPackageId));
 					}
 				}
 			});
+		}
+	}
+
+	private Intent getInstallApkIntent(final String packageId) {
+		Intent intent = new Intent(Intent.ACTION_VIEW);
+		intent.setData(Uri.parse("market://details?id="+packageId));
+		if (intent.resolveActivity(getPackageManager()) != null) {
+			return intent;
+		} else {
+			intent.setData(Uri.parse("http://play.google.com/store/apps/details?id="+packageId));
+			return intent;
 		}
 	}
 
