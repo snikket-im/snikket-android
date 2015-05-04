@@ -398,61 +398,61 @@ public class ConversationActivity extends XmppActivity
 	}
 
 	private void selectPresenceToAttachFile(final int attachmentChoice, final int encryption) {
+		final OnPresenceSelected callback = new OnPresenceSelected() {
+
+			@Override
+			public void onPresenceSelected() {
+				Intent intent = new Intent();
+				boolean chooser = false;
+				String fallbackPackageId = null;
+				switch (attachmentChoice) {
+					case ATTACHMENT_CHOICE_CHOOSE_IMAGE:
+						intent.setAction(Intent.ACTION_GET_CONTENT);
+						if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+							intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE,true);
+						}
+						intent.setType("image/*");
+						chooser = true;
+						break;
+					case ATTACHMENT_CHOICE_TAKE_PHOTO:
+						Uri uri = xmppConnectionService.getFileBackend().getTakePhotoUri();
+						intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
+						intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+						mPendingImageUris.clear();
+						mPendingImageUris.add(uri);
+						break;
+					case ATTACHMENT_CHOICE_CHOOSE_FILE:
+						chooser = true;
+						intent.setType("*/*");
+						intent.addCategory(Intent.CATEGORY_OPENABLE);
+						intent.setAction(Intent.ACTION_GET_CONTENT);
+						break;
+					case ATTACHMENT_CHOICE_RECORD_VOICE:
+						intent.setAction(MediaStore.Audio.Media.RECORD_SOUND_ACTION);
+						break;
+					case ATTACHMENT_CHOICE_LOCATION:
+						intent.setAction("eu.siacs.conversations.location.request");
+						fallbackPackageId = "eu.siacs.conversations.sharelocation";
+						break;
+				}
+				if (intent.resolveActivity(getPackageManager()) != null) {
+					if (chooser) {
+						startActivityForResult(
+								Intent.createChooser(intent, getString(R.string.perform_action_with)),
+								attachmentChoice);
+					} else {
+						startActivityForResult(intent, attachmentChoice);
+					}
+				} else if (fallbackPackageId != null) {
+					startActivity(getInstallApkIntent(fallbackPackageId));
+				}
+			}
+		};
 		if (attachmentChoice == ATTACHMENT_CHOICE_LOCATION && encryption != Message.ENCRYPTION_OTR) {
 			getSelectedConversation().setNextCounterpart(null);
-			Intent intent = new Intent("eu.siacs.conversations.location.request");
-			startActivityForResult(intent,attachmentChoice);
+			callback.onPresenceSelected();
 		} else {
-			selectPresence(getSelectedConversation(), new OnPresenceSelected() {
-
-				@Override
-				public void onPresenceSelected() {
-					Intent intent = new Intent();
-					boolean chooser = false;
-					String fallbackPackageId = null;
-					switch (attachmentChoice) {
-						case ATTACHMENT_CHOICE_CHOOSE_IMAGE:
-							intent.setAction(Intent.ACTION_GET_CONTENT);
-							if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-								intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE,true);
-							}
-							intent.setType("image/*");
-							chooser = true;
-							break;
-						case ATTACHMENT_CHOICE_TAKE_PHOTO:
-							Uri uri = xmppConnectionService.getFileBackend().getTakePhotoUri();
-							intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
-							intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-							mPendingImageUris.clear();
-							mPendingImageUris.add(uri);
-							break;
-						case ATTACHMENT_CHOICE_CHOOSE_FILE:
-							chooser = true;
-							intent.setType("*/*");
-							intent.addCategory(Intent.CATEGORY_OPENABLE);
-							intent.setAction(Intent.ACTION_GET_CONTENT);
-							break;
-						case ATTACHMENT_CHOICE_RECORD_VOICE:
-							intent.setAction(MediaStore.Audio.Media.RECORD_SOUND_ACTION);
-							break;
-						case ATTACHMENT_CHOICE_LOCATION:
-							intent.setAction("eu.siacs.conversations.location.request");
-							fallbackPackageId = "eu.siacs.conversations.sharelocation";
-							break;
-					}
-					if (intent.resolveActivity(getPackageManager()) != null) {
-						if (chooser) {
-							startActivityForResult(
-									Intent.createChooser(intent, getString(R.string.perform_action_with)),
-									attachmentChoice);
-						} else {
-							startActivityForResult(intent, attachmentChoice);
-						}
-					} else if (fallbackPackageId != null) {
-						startActivity(getInstallApkIntent(fallbackPackageId));
-					}
-				}
-			});
+			selectPresence(getSelectedConversation(),callback);
 		}
 	}
 
