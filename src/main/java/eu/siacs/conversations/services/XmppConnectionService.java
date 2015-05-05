@@ -41,6 +41,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -210,6 +211,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	private HttpConnectionManager mHttpConnectionManager = new HttpConnectionManager(
 			this);
 	private AvatarService mAvatarService = new AvatarService(this);
+	private final List<String> mInProgressAvatarFetches = new ArrayList<>();
 	private MessageArchiveService mMessageArchiveService = new MessageArchiveService(this);
 	private OnConversationUpdate mOnConversationUpdate = null;
 	private Integer convChangedListenerCount = 0;
@@ -328,7 +330,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 			message.setCounterpart(conversation.getNextCounterpart());
 		}
 		if (encryption == Message.ENCRYPTION_DECRYPTED) {
-			getPgpEngine().encrypt(message,callback);
+			getPgpEngine().encrypt(message, callback);
 		} else {
 			callback.success(message);
 		}
@@ -1893,14 +1895,27 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		fetchAvatar(account, avatar, null);
 	}
 
+	private static String generateFetchKey(Account account, final Avatar avatar) {
+		return account.getJid().toBareJid()+"_"+avatar.owner+"_"+avatar.sha1sum;
+	}
+
 	public void fetchAvatar(Account account, final Avatar avatar, final UiCallback<Avatar> callback) {
-		switch (avatar.origin) {
-			case PEP:
-				fetchAvatarPep(account,avatar,callback);
-				break;
-			case VCARD:
-				fetchAvatarVcard(account, avatar, callback);
-				break;
+		final String KEY = generateFetchKey(account, avatar);
+		synchronized(this.mInProgressAvatarFetches) {
+			if (this.mInProgressAvatarFetches.contains(KEY)) {
+				return;
+			} else {
+				switch (avatar.origin) {
+					case PEP:
+						this.mInProgressAvatarFetches.add(KEY);
+						fetchAvatarPep(account, avatar, callback);
+						break;
+					case VCARD:
+						this.mInProgressAvatarFetches.add(KEY);
+						fetchAvatarVcard(account, avatar, callback);
+						break;
+				}
+			}
 		}
 	}
 
@@ -1910,6 +1925,9 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 
 			@Override
 			public void onIqPacketReceived(Account account, IqPacket result) {
+				synchronized (mInProgressAvatarFetches) {
+					mInProgressAvatarFetches.remove(generateFetchKey(account, avatar));
+				}
 				final String ERROR = account.getJid().toBareJid()
 						+ ": fetching avatar for " + avatar.owner + " failed ";
 				if (result.getType() == IqPacket.TYPE.RESULT) {
@@ -1963,6 +1981,9 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		this.sendIqPacket(account,packet,new OnIqPacketReceived() {
 			@Override
 			public void onIqPacketReceived(Account account, IqPacket packet) {
+				synchronized(mInProgressAvatarFetches) {
+					mInProgressAvatarFetches.remove(generateFetchKey(account,avatar));
+				}
 				if (packet.getType() == IqPacket.TYPE.RESULT) {
 					Element vCard = packet.findChild("vCard","vcard-temp");
 					Element photo = vCard != null ? vCard.findChild("PHOTO") : null;
@@ -2043,6 +2064,16 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 				disconnect(account, force);
 			}
 			if (!account.isOptionSet(Account.OPTION_DISABLED)) {
+
+				synchronized (this.mInProgressAvatarFetches) {
+					for(Iterator<String> iterator = this.mInProgressAvatarFetches.iterator(); iterator.hasNext();) {
+						final String KEY = iterator.next();
+						if (KEY.startsWith(account.getJid().toBareJid()+"_")) {
+							iterator.remove();
+						}
+					}
+				}
+
 				if (account.getXmppConnection() == null) {
 					account.setXmppConnection(createConnection(account));
 				}
