@@ -28,7 +28,7 @@ public final class Config {
 
 	public static final boolean NO_PROXY_LOOKUP = false; //useful to debug ibb
 	public static final boolean DISABLE_STRING_PREP = false; // setting to true might increase startup performance
-	public static final boolean EXTENDED_SM_LOGGING = false; // log stanza counts
+	public static final boolean EXTENDED_SM_LOGGING = true; // log stanza counts
 
 	public static final long MILLISECONDS_IN_DAY = 24 * 60 * 60 * 1000;
 	public static final long MAM_MAX_CATCHUP =  MILLISECONDS_IN_DAY / 2;
