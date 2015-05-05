@@ -494,7 +494,7 @@ public class MessageParser extends AbstractParser implements
 					} else {
 						Contact contact = account.getRoster().getContact(
 								from);
-						contact.setAvatar(avatar.getFilename());
+						contact.setAvatar(avatar);
 						mXmppConnectionService.getAvatarService().clear(
 								contact);
 						mXmppConnectionService.updateConversationUi();

@@ -13,6 +13,7 @@ import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.OnPresencePacketReceived;
 import eu.siacs.conversations.xmpp.jid.Jid;
+import eu.siacs.conversations.xmpp.pep.Avatar;
 import eu.siacs.conversations.xmpp.stanzas.PresencePacket;
 
 public class PresenceParser extends AbstractParser implements
@@ -100,6 +101,20 @@ public class PresenceParser extends AbstractParser implements
 				"http://jabber.org/protocol/nick");
 		if (nick != null) {
 			contact.setPresenceName(nick.getContent());
+		}
+		Element x = packet.findChild("x","vcard-temp:x:update");
+		Avatar avatar = Avatar.parsePresence(x);
+		if (avatar != null && !contact.isSelf()) {
+			avatar.owner = from.toBareJid();
+			if (mXmppConnectionService.getFileBackend().isAvatarCached(avatar)) {
+				if (contact.setAvatar(avatar)) {
+					mXmppConnectionService.getAvatarService().clear(contact);
+					mXmppConnectionService.updateConversationUi();
+					mXmppConnectionService.updateRosterUi();
+				}
+			} else {
+				mXmppConnectionService.fetchAvatar(account,avatar);
+			}
 		}
 		mXmppConnectionService.updateRosterUi();
 	}

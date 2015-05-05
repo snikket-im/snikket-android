@@ -15,6 +15,7 @@ import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
+import eu.siacs.conversations.xmpp.pep.Avatar;
 
 public class Contact implements ListItem, Blockable {
 	public static final String TABLENAME = "contacts";
@@ -40,11 +41,11 @@ public class Contact implements ListItem, Blockable {
 	protected int subscription = 0;
 	protected String systemAccount;
 	protected String photoUri;
-	protected String avatar;
 	protected JSONObject keys = new JSONObject();
 	protected JSONArray groups = new JSONArray();
 	protected Presences presences = new Presences();
 	protected Account account;
+	protected Avatar avatar;
 
 	public Contact(final String account, final String systemName, final String serverName,
 			final Jid jid, final int subscription, final String photoUri,
@@ -61,7 +62,11 @@ public class Contact implements ListItem, Blockable {
 		} catch (JSONException e) {
 			this.keys = new JSONObject();
 		}
-		this.avatar = avatar;
+		if (avatar != null) {
+			this.avatar = new Avatar();
+			this.avatar.sha1sum = avatar;
+			this.avatar.origin = Avatar.Origin.VCARD; //always assume worst
+		}
 		try {
 			this.groups = (groups == null ? new JSONArray() : new JSONArray(groups));
 		} catch (JSONException e) {
@@ -187,7 +192,7 @@ public class Contact implements ListItem, Blockable {
 		values.put(SYSTEMACCOUNT, systemAccount);
 		values.put(PHOTOURI, photoUri);
 		values.put(KEYS, keys.toString());
-		values.put(AVATAR, avatar);
+		values.put(AVATAR, avatar == null ? null : avatar.getFilename());
 		values.put(LAST_PRESENCE, lastseen.presence);
 		values.put(LAST_TIME, lastseen.time);
 		values.put(GROUPS, groups.toString());
@@ -411,17 +416,20 @@ public class Contact implements ListItem, Blockable {
 		return getJid().toDomainJid();
 	}
 
-	public boolean setAvatar(String filename) {
-		if (this.avatar != null && this.avatar.equals(filename)) {
+	public boolean setAvatar(Avatar avatar) {
+		if (this.avatar != null && this.avatar.equals(avatar)) {
 			return false;
 		} else {
-			this.avatar = filename;
+			if (this.avatar != null && this.avatar.origin == Avatar.Origin.PEP && avatar.origin == Avatar.Origin.VCARD) {
+				return false;
+			}
+			this.avatar = avatar;
 			return true;
 		}
 	}
 
 	public String getAvatar() {
-		return this.avatar;
+		return avatar == null ? null : avatar.getFilename();
 	}
 
 	public boolean deleteOtrFingerprint(String fingerprint) {
@@ -476,6 +484,10 @@ public class Contact implements ListItem, Blockable {
 		} else {
 			return getJid();
 		}
+	}
+
+	public boolean isSelf() {
+		return account.getJid().toBareJid().equals(getJid().toBareJid());
 	}
 
 	public static class Lastseen {

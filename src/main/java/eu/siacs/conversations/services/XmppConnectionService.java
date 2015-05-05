@@ -1893,9 +1893,19 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		fetchAvatar(account, avatar, null);
 	}
 
-	public void fetchAvatar(Account account, final Avatar avatar,
-							final UiCallback<Avatar> callback) {
-		IqPacket packet = this.mIqGenerator.retrieveAvatar(avatar);
+	public void fetchAvatar(Account account, final Avatar avatar, final UiCallback<Avatar> callback) {
+		switch (avatar.origin) {
+			case PEP:
+				fetchAvatarPep(account,avatar,callback);
+				break;
+			case VCARD:
+				fetchAvatarVcard(account, avatar, callback);
+				break;
+		}
+	}
+
+	private void fetchAvatarPep(Account account, final Avatar avatar, final UiCallback<Avatar> callback) {
+		IqPacket packet = this.mIqGenerator.retrievePepAvatar(avatar);
 		sendIqPacket(account, packet, new OnIqPacketReceived() {
 
 			@Override
@@ -1916,7 +1926,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 							} else {
 								Contact contact = account.getRoster()
 										.getContact(avatar.owner);
-								contact.setAvatar(avatar.getFilename());
+								contact.setAvatar(avatar);
 								getAvatarService().clear(contact);
 								updateConversationUi();
 								updateRosterUi();
@@ -1925,8 +1935,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 								callback.success(avatar);
 							}
 							Log.d(Config.LOGTAG, account.getJid().toBareJid()
-									+ ": succesfully fetched avatar for "
-									+ avatar.owner);
+									+ ": succesfuly fetched pep avatar for " + avatar.owner);
 							return;
 						}
 					} else {
@@ -1949,8 +1958,34 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		});
 	}
 
-	public void checkForAvatar(Account account,
-							   final UiCallback<Avatar> callback) {
+	private void fetchAvatarVcard(final Account account, final Avatar avatar, final UiCallback<Avatar> callback) {
+		IqPacket packet = this.mIqGenerator.retrieveVcardAvatar(avatar);
+		this.sendIqPacket(account,packet,new OnIqPacketReceived() {
+			@Override
+			public void onIqPacketReceived(Account account, IqPacket packet) {
+				if (packet.getType() == IqPacket.TYPE.RESULT) {
+					Element vCard = packet.findChild("vCard","vcard-temp");
+					Element photo = vCard != null ? vCard.findChild("PHOTO") : null;
+					Element binval = photo != null ? photo.findChild("BINVAL") : null;
+					if (binval != null) {
+						avatar.image = binval.getContent();
+						if (getFileBackend().save(avatar)) {
+							Log.d(Config.LOGTAG, account.getJid().toBareJid()
+									+ ": successfully fetched vCard avatar for " + avatar.owner);
+							Contact contact = account.getRoster()
+									.getContact(avatar.owner);
+							contact.setAvatar(avatar);
+							getAvatarService().clear(contact);
+							updateConversationUi();
+							updateRosterUi();
+						}
+					}
+				}
+			}
+		});
+	}
+
+	public void checkForAvatar(Account account, final UiCallback<Avatar> callback) {
 		IqPacket packet = this.mIqGenerator.retrieveAvatarMetaData(null);
 		this.sendIqPacket(account, packet, new OnIqPacketReceived() {
 
@@ -1972,7 +2007,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 									getAvatarService().clear(account);
 									callback.success(avatar);
 								} else {
-									fetchAvatar(account, avatar, callback);
+									fetchAvatarPep(account, avatar, callback);
 								}
 								return;
 							}
