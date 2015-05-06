@@ -647,10 +647,8 @@ public class XmppConnection implements Runnable {
 				if (packet.query().hasChild("username")
 						&& (packet.query().hasChild("password"))) {
 					final IqPacket register = new IqPacket(IqPacket.TYPE.SET);
-					final Element username = new Element("username")
-						.setContent(account.getUsername());
-					final Element password = new Element("password")
-						.setContent(account.getPassword());
+					final Element username = new Element("username").setContent(account.getUsername());
+					final Element password = new Element("password").setContent(account.getPassword());
 					register.query("jabber:iq:register").addChild(username);
 					register.query().addChild(password);
 					sendIqPacket(register, new OnIqPacketReceived() {
@@ -663,7 +661,7 @@ public class XmppConnection implements Runnable {
 								changeStatus(Account.State.REGISTRATION_SUCCESSFUL);
 							} else if (packet.hasChild("error")
 									&& (packet.findChild("error")
-										.hasChild("conflict"))) {
+									.hasChild("conflict"))) {
 								changeStatus(Account.State.REGISTRATION_CONFLICT);
 							} else {
 								changeStatus(Account.State.REGISTRATION_FAILED);
@@ -677,7 +675,7 @@ public class XmppConnection implements Runnable {
 					disconnect(true);
 					Log.d(Config.LOGTAG, account.getJid().toBareJid()
 							+ ": could not register. instructions are"
-							+ instructions.getContent());
+							+ instructions != null ? instructions.getContent() : "");
 				}
 			}
 		});
@@ -692,7 +690,7 @@ public class XmppConnection implements Runnable {
 		}
 		final IqPacket iq = new IqPacket(IqPacket.TYPE.SET);
 		iq.addChild("bind", "urn:ietf:params:xml:ns:xmpp-bind")
-			.addChild("resource").setContent(account.getResource());
+				.addChild("resource").setContent(account.getResource());
 		this.sendUnmodifiedIqPacket(iq, new OnIqPacketReceived() {
 			@Override
 			public void onIqPacketReceived(final Account account, final IqPacket packet) {
