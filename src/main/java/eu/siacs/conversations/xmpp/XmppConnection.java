@@ -437,6 +437,10 @@ public class XmppConnection implements Runnable {
 				throw new IOException("interrupted mid tag");
 			}
 		}
+		if (stanzasReceived == Integer.MAX_VALUE) {
+			resetStreamId();
+			throw new IOException("time to restart the session. cant handle >2 billion pcks");
+		}
 		++stanzasReceived;
 		lastPacketReceived = SystemClock.elapsedRealtime();
 		return element;
@@ -901,6 +905,11 @@ public class XmppConnection implements Runnable {
 	}
 
 	private synchronized void sendPacket(final AbstractStanza packet) {
+		if (stanzasSent == Integer.MAX_VALUE) {
+			resetStreamId();
+			disconnect(true);
+			return;
+		}
 		final String name = packet.getName();
 		if (name.equals("iq") || name.equals("message") || name.equals("presence")) {
 			++stanzasSent;
