@@ -1988,8 +1988,9 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 					Element vCard = packet.findChild("vCard","vcard-temp");
 					Element photo = vCard != null ? vCard.findChild("PHOTO") : null;
 					Element binval = photo != null ? photo.findChild("BINVAL") : null;
-					if (binval != null) {
-						avatar.image = binval.getContent();
+					String image = binval != null ? binval.getContent() : null;
+					if (image != null) {
+						avatar.image = image;
 						if (getFileBackend().save(avatar)) {
 							Log.d(Config.LOGTAG, account.getJid().toBareJid()
 									+ ": successfully fetched vCard avatar for " + avatar.owner);
