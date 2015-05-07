@@ -8,7 +8,9 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
 import android.util.Base64;
+import android.util.Log;
 
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.persistance.FileBackend;
@@ -110,7 +112,11 @@ public class JingleInbandTransport extends JingleTransport {
 		this.onFileTransmissionStatusChanged = callback;
 		this.file = file;
 		try {
-			this.remainingSize = this.file.getSize();
+			if (this.file.getKey() != null) {
+				this.remainingSize = (this.file.getSize() / 16 + 1) * 16;
+			} else {
+				this.remainingSize = this.file.getSize();
+			}
 			this.fileSize = this.remainingSize;
 			this.digest = MessageDigest.getInstance("SHA-1");
 			this.digest.reset();
@@ -150,29 +156,33 @@ public class JingleInbandTransport extends JingleTransport {
 		byte[] buffer = new byte[this.bufferSize];
 		try {
 			int count = fileInputStream.read(buffer);
-			if (count == -1) {
-				file.setSha1Sum(CryptoHelper.bytesToHex(digest.digest()));
-				fileInputStream.close();
-				this.onFileTransmissionStatusChanged.onFileTransmitted(file);
-			} else {
-				this.remainingSize -= count;
-				this.digest.update(buffer);
-				String base64 = Base64.encodeToString(buffer, Base64.NO_WRAP);
-				IqPacket iq = new IqPacket(IqPacket.TYPE.SET);
-				iq.setTo(this.counterpart);
-				Element data = iq.addChild("data",
-						"http://jabber.org/protocol/ibb");
-				data.setAttribute("seq", Integer.toString(this.seq));
-				data.setAttribute("block-size",
-						Integer.toString(this.blockSize));
-				data.setAttribute("sid", this.sessionId);
-				data.setContent(base64);
-				this.account.getXmppConnection().sendIqPacket(iq,
-						this.onAckReceived);
-				this.seq++;
+			this.remainingSize -= count;
+			if (count != buffer.length && count != -1) {
+				int rem = fileInputStream.read(buffer,count,buffer.length-count);
+				if (rem > 0) {
+					count += rem;
+				}
+			}
+			this.digest.update(buffer,0,count);
+			String base64 = Base64.encodeToString(buffer,0,count, Base64.NO_WRAP);
+			IqPacket iq = new IqPacket(IqPacket.TYPE.SET);
+			iq.setTo(this.counterpart);
+			Element data = iq.addChild("data", "http://jabber.org/protocol/ibb");
+			data.setAttribute("seq", Integer.toString(this.seq));
+			data.setAttribute("block-size", Integer.toString(this.blockSize));
+			data.setAttribute("sid", this.sessionId);
+			data.setContent(base64);
+			this.account.getXmppConnection().sendIqPacket(iq, this.onAckReceived);
+			this.seq++;
+			if (this.remainingSize > 0) {
 				connection.updateProgress((int) ((((double) (this.fileSize - this.remainingSize)) / this.fileSize) * 100));
+			} else {
+				file.setSha1Sum(CryptoHelper.bytesToHex(digest.digest()));
+				this.onFileTransmissionStatusChanged.onFileTransmitted(file);
+				fileInputStream.close();
 			}
 		} catch (IOException e) {
+			Log.d(Config.LOGTAG,e.getMessage());
 			FileBackend.close(fileInputStream);
 			this.onFileTransmissionStatusChanged.onFileTransferAborted();
 		}
@@ -182,14 +192,10 @@ public class JingleInbandTransport extends JingleTransport {
 		try {
 			byte[] buffer = Base64.decode(data, Base64.NO_WRAP);
 			if (this.remainingSize < buffer.length) {
-				buffer = Arrays
-						.copyOfRange(buffer, 0, (int) this.remainingSize);
+				buffer = Arrays.copyOfRange(buffer, 0, (int) this.remainingSize);
 			}
 			this.remainingSize -= buffer.length;
-
-
 			this.fileOutputStream.write(buffer);
-
 			this.digest.update(buffer);
 			if (this.remainingSize <= 0) {
 				file.setSha1Sum(CryptoHelper.bytesToHex(digest.digest()));
@@ -200,6 +206,7 @@ public class JingleInbandTransport extends JingleTransport {
 				connection.updateProgress((int) ((((double) (this.fileSize - this.remainingSize)) / this.fileSize) * 100));
 			}
 		} catch (IOException e) {
+			Log.d(Config.LOGTAG,e.getMessage());
 			FileBackend.close(fileOutputStream);
 			this.onFileTransmissionStatusChanged.onFileTransferAborted();
 		}

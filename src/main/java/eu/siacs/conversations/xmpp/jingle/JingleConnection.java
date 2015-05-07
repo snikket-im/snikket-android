@@ -99,7 +99,7 @@ public class JingleConnection implements Downloadable {
 					file.delete();
 				}
 			}
-			Log.d(Config.LOGTAG,"sucessfully transmitted file:" + file.getAbsolutePath());
+			Log.d(Config.LOGTAG,"successfully transmitted file:" + file.getAbsolutePath()+" ("+file.getSha1Sum()+")");
 			if (message.getEncryption() != Message.ENCRYPTION_PGP) {
 				Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
 				intent.setData(Uri.fromFile(file));
