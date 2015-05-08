@@ -85,7 +85,11 @@ public class NotificationService {
 		i.putExtra("messageType", "PEBBLE_ALERT");
 		i.putExtra("sender", "Conversations"); /* XXX: Shouldn't be hardcoded, e.g., AbstractGenerator.APP_NAME); */
 		i.putExtra("notificationData", notificationData);
-
+		// notify Pebble App
+		i.setPackage("com.getpebble.android");
+		mXmppConnectionService.sendBroadcast(i);
+		// notify Gadgetbridge
+		i.setPackage("nodomain.freeyourgadget.gadgetbridge");
 		mXmppConnectionService.sendBroadcast(i);
 	}
 
