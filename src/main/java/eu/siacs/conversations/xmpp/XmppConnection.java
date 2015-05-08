@@ -167,7 +167,7 @@ public class XmppConnection implements Runnable {
 					try {
 						String srvRecordServer;
 						try {
-							srvRecordServer=IDN.toASCII(namePort.getString("name"));
+							srvRecordServer = IDN.toASCII(namePort.getString("name"));
 						} catch (final IllegalArgumentException e) {
 							// TODO: Handle me?`
 							srvRecordServer = "";
@@ -224,6 +224,12 @@ public class XmppConnection implements Runnable {
 			if (socket.isConnected()) {
 				socket.close();
 			}
+		} catch (final IncompatibleServerException e) {
+			this.changeStatus(Account.State.INCOMPATIBLE_SERVER);
+		} catch (final SecurityException e) {
+			this.changeStatus(Account.State.SECURITY_ERROR);
+		} catch (final UnauthorizedException e) {
+			this.changeStatus(Account.State.UNAUTHORIZED);
 		} catch (final UnknownHostException | ConnectException e) {
 			this.changeStatus(Account.State.SERVER_NOT_FOUND);
 		} catch (final IOException | XmlPullParserException | NoSuchAlgorithmException e) {
@@ -231,6 +237,13 @@ public class XmppConnection implements Runnable {
 			this.changeStatus(Account.State.OFFLINE);
 			this.attempt--; //don't count attempt when reconnecting instantly anyway
 		} finally {
+			if (socket != null) {
+				try {
+					socket.close();
+				} catch (IOException e) {
+
+				}
+			}
 			if (wakeLock.isHeld()) {
 				try {
 					wakeLock.release();
@@ -279,8 +292,7 @@ public class XmppConnection implements Runnable {
 								processStream(tagReader.readTag());
 								break;
 							} else if (nextTag.isStart("failure")) {
-								tagReader.readElement(nextTag);
-								changeStatus(Account.State.UNAUTHORIZED);
+								throw new UnauthorizedException();
 							} else if (nextTag.isStart("challenge")) {
 								final String challenge = tagReader.readElement(nextTag).getContent();
 								final Element response = new Element("response");
@@ -542,8 +554,7 @@ public class XmppConnection implements Runnable {
 
 			if (!verifier.verify(account.getServer().getDomainpart(),sslSocket.getSession())) {
 				Log.d(Config.LOGTAG,account.getJid().toBareJid()+": TLS certificate verification failed");
-				disconnect(true);
-				changeStatus(Account.State.SECURITY_ERROR);
+				throw new SecurityException();
 			}
 			tagReader.setInputStream(sslSocket.getInputStream());
 			tagWriter.setOutputStream(sslSocket.getOutputStream());
@@ -554,8 +565,7 @@ public class XmppConnection implements Runnable {
 			sslSocket.close();
 		} catch (final NoSuchAlgorithmException | KeyManagementException e1) {
 			Log.d(Config.LOGTAG,account.getJid().toBareJid()+": TLS certificate verification failed");
-			disconnect(true);
-			changeStatus(Account.State.SECURITY_ERROR);
+			throw new SecurityException();
 		}
 	}
 
@@ -594,8 +604,7 @@ public class XmppConnection implements Runnable {
 								" has lower priority (" + String.valueOf(saslMechanism.getPriority()) +
 								") than pinned priority (" + keys.getInt(Account.PINNED_MECHANISM_KEY) +
 								"). Possible downgrade attack?");
-						disconnect(true);
-						changeStatus(Account.State.SECURITY_ERROR);
+						throw new SecurityException();
 					}
 				} catch (final JSONException e) {
 					Log.d(Config.LOGTAG, "Parse error while checking pinned auth mechanism");
@@ -607,8 +616,7 @@ public class XmppConnection implements Runnable {
 				}
 				tagWriter.writeElement(auth);
 			} else {
-				disconnect(true);
-				changeStatus(Account.State.INCOMPATIBLE_SERVER);
+				throw new IncompatibleServerException();
 			}
 		} else if (this.streamFeatures.hasChild("sm", "urn:xmpp:sm:"
 					+ smVersion)
@@ -1096,6 +1104,18 @@ public class XmppConnection implements Runnable {
 	private class Info {
 		public final ArrayList<String> features = new ArrayList<>();
 		public final ArrayList<Pair<String,String>> identities = new ArrayList<>();
+	}
+
+	private class UnauthorizedException extends IOException {
+
+	}
+
+	private class SecurityException extends IOException {
+
+	}
+
+	private class IncompatibleServerException extends IOException {
+
 	}
 
 	public class Features {
