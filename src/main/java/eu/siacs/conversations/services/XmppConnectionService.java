@@ -424,6 +424,11 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		final String action = intent == null ? null : intent.getAction();
 		if (action != null) {
 			switch (action) {
+				case ConnectivityManager.CONNECTIVITY_ACTION:
+					if (hasInternetConnection() && Config.RESET_ATTEMPT_COUNT_ON_NETWORK_CHANGE) {
+						resetAllAttemptCounts(true);
+					}
+					break;
 				case ACTION_MERGE_PHONE_CONTACTS:
 					if (mRestoredFromDatabase) {
 						PhoneHelper.loadPhoneContacts(getApplicationContext(),
@@ -442,14 +447,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 					toggleForegroundService();
 					break;
 				case ACTION_TRY_AGAIN:
-					for(Account account : accounts) {
-						if (account.hasErrorStatus()) {
-							final XmppConnection connection = account.getXmppConnection();
-							if (connection != null) {
-								connection.resetAttemptCount();
-							}
-						}
-					}
+					resetAllAttemptCounts(false);
 					break;
 				case ACTION_DISABLE_ACCOUNT:
 					try {
@@ -529,6 +527,18 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 			}
 		}
 		return START_STICKY;
+	}
+
+	private void resetAllAttemptCounts(boolean reallyAll) {
+		Log.d(Config.LOGTAG,"resetting all attepmt counts");
+		for(Account account : accounts) {
+			if (account.hasErrorStatus() || reallyAll) {
+				final XmppConnection connection = account.getXmppConnection();
+				if (connection != null) {
+					connection.resetAttemptCount();
+				}
+			}
+		}
 	}
 
 	public boolean hasInternetConnection() {
