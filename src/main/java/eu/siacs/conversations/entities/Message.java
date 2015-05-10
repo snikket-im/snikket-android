@@ -478,10 +478,7 @@ public class Message extends AbstractEntity {
 	}
 
 	public boolean bodyIsHeart() {
-		return body != null &&
-				(body.trim().equals(UIHelper.BLACK_HEART_SUIT)
-				|| body.trim().equals(UIHelper.HEAVY_BLACK_HEART_SUIT)
-				|| body.trim().equals(UIHelper.WHITE_HEART_SUIT));
+		return body != null && UIHelper.HEARTS.contains(body.trim());
 	}
 
 	public ImageParams getImageParams() {

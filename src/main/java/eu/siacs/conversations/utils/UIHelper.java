@@ -1,6 +1,8 @@
 package eu.siacs.conversations.utils;
 
 import java.net.URLConnection;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -18,9 +20,11 @@ import android.util.Pair;
 
 public class UIHelper {
 
-	public static String BLACK_HEART_SUIT = "\u2665";
-	public static String HEAVY_BLACK_HEART_SUIT = "\u2764";
-	public static String WHITE_HEART_SUIT = "\u2661";
+	private static String BLACK_HEART_SUIT = "\u2665";
+	private static String HEAVY_BLACK_HEART_SUIT = "\u2764";
+	private static String WHITE_HEART_SUIT = "\u2661";
+
+	public static final ArrayList<String> HEARTS = new ArrayList<>(Arrays.asList(BLACK_HEART_SUIT,HEAVY_BLACK_HEART_SUIT,WHITE_HEART_SUIT));
 
 	private static final int SHORT_DATE_FLAGS = DateUtils.FORMAT_SHOW_DATE
 		| DateUtils.FORMAT_NO_YEAR | DateUtils.FORMAT_ABBREV_ALL;
