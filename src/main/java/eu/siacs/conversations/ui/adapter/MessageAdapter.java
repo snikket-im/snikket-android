@@ -7,7 +7,9 @@ import android.graphics.Typeface;
 import android.net.Uri;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
+import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -207,10 +209,22 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		viewHolder.image.setVisibility(View.GONE);
 		viewHolder.messageBody.setVisibility(View.VISIBLE);
 		viewHolder.messageBody.setText(getContext().getString(
-					R.string.decryption_failed));
+				R.string.decryption_failed));
 		viewHolder.messageBody.setTextColor(activity.getWarningTextColor());
 		viewHolder.messageBody.setTypeface(null, Typeface.NORMAL);
 		viewHolder.messageBody.setTextIsSelectable(false);
+	}
+
+	private void displayHeartMesage(final ViewHolder viewHolder, final String body) {
+		if (viewHolder.download_button != null) {
+			viewHolder.download_button.setVisibility(View.GONE);
+		}
+		viewHolder.image.setVisibility(View.GONE);
+		viewHolder.messageBody.setVisibility(View.VISIBLE);
+		Spannable span = new SpannableString(body);
+		span.setSpan(new RelativeSizeSpan(4.0f),0,body.length(),Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+		span.setSpan(new ForegroundColorSpan(activity.getWarningTextColor()),0,body.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+		viewHolder.messageBody.setText(span);
 	}
 
 	private void displayTextMessage(final ViewHolder viewHolder, final Message message) {
@@ -289,7 +303,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		viewHolder.image.setVisibility(View.GONE);
 		viewHolder.messageBody.setVisibility(View.GONE);
 		viewHolder.download_button.setVisibility(View.VISIBLE);
-		viewHolder.download_button.setText(activity.getString(R.string.open_x_file, UIHelper.getFileDescriptionString(activity,message)));
+		viewHolder.download_button.setText(activity.getString(R.string.open_x_file, UIHelper.getFileDescriptionString(activity, message)));
 		viewHolder.download_button.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -334,7 +348,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 			scalledH = (int) (params.height / ((double) params.width / target));
 		}
 		viewHolder.image.setLayoutParams(new LinearLayout.LayoutParams(
-					scalledW, scalledH));
+				scalledW, scalledH));
 		activity.loadBitmap(message, viewHolder.image);
 		viewHolder.image.setOnClickListener(new OnClickListener() {
 
@@ -528,7 +542,11 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 			if (GeoHelper.isGeoUri(message.getBody())) {
 				displayLocationMessage(viewHolder,message);
 			} else {
-				displayTextMessage(viewHolder, message);
+				if (message.bodyIsHeart()) {
+					displayHeartMesage(viewHolder," "+message.getBody().trim()+" ");
+				} else {
+					displayTextMessage(viewHolder, message);
+				}
 			}
 		}
 

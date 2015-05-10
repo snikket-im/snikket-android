@@ -9,6 +9,7 @@ import java.util.Arrays;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.utils.GeoHelper;
+import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
 
@@ -95,9 +96,9 @@ public class Message extends AbstractEntity {
 	}
 
 	private Message(final String uuid, final String conversationUUid, final Jid counterpart,
-			final Jid trueCounterpart, final String body, final long timeSent,
-			final int encryption, final int status, final int type, final String remoteMsgId,
-			final String relativeFilePath, final String serverMsgId) {
+					final Jid trueCounterpart, final String body, final long timeSent,
+					final int encryption, final int status, final int type, final String remoteMsgId,
+					final String relativeFilePath, final String serverMsgId) {
 		this.uuid = uuid;
 		this.conversationUuid = conversationUUid;
 		this.counterpart = counterpart;
@@ -179,7 +180,7 @@ public class Message extends AbstractEntity {
 		values.put(TYPE, type);
 		values.put(REMOTE_MSG_ID, remoteMsgId);
 		values.put(RELATIVE_FILE_PATH, relativeFilePath);
-		values.put(SERVER_MSG_ID,serverMsgId);
+		values.put(SERVER_MSG_ID, serverMsgId);
 		return values;
 	}
 
@@ -211,7 +212,7 @@ public class Message extends AbstractEntity {
 				return null;
 			} else {
 				return this.conversation.getAccount().getRoster()
-					.getContactFromRoster(this.trueCounterpart);
+						.getContactFromRoster(this.trueCounterpart);
 			}
 		}
 	}
@@ -359,34 +360,36 @@ public class Message extends AbstractEntity {
 
 	public boolean mergeable(final Message message) {
 		return message != null &&
-			(message.getType() == Message.TYPE_TEXT &&
-			 this.getDownloadable() == null &&
-			 message.getDownloadable() == null &&
-			 message.getEncryption() != Message.ENCRYPTION_PGP &&
-			 this.getType() == message.getType() &&
-			 //this.getStatus() == message.getStatus() &&
-			 isStatusMergeable(this.getStatus(),message.getStatus()) &&
-			 this.getEncryption() == message.getEncryption() &&
-			 this.getCounterpart() != null &&
-			 this.getCounterpart().equals(message.getCounterpart()) &&
-			 (message.getTimeSent() - this.getTimeSent()) <= (Config.MESSAGE_MERGE_WINDOW * 1000) &&
-			 !GeoHelper.isGeoUri(message.getBody()) &&
-			 !GeoHelper.isGeoUri(this.body) &&
-			 !message.bodyContainsDownloadable() &&
-			 !this.bodyContainsDownloadable() &&
-			 !message.getBody().startsWith(ME_COMMAND) &&
-			 !this.getBody().startsWith(ME_COMMAND)
-			);
+				(message.getType() == Message.TYPE_TEXT &&
+						this.getDownloadable() == null &&
+						message.getDownloadable() == null &&
+						message.getEncryption() != Message.ENCRYPTION_PGP &&
+						this.getType() == message.getType() &&
+						//this.getStatus() == message.getStatus() &&
+						isStatusMergeable(this.getStatus(), message.getStatus()) &&
+						this.getEncryption() == message.getEncryption() &&
+						this.getCounterpart() != null &&
+						this.getCounterpart().equals(message.getCounterpart()) &&
+						(message.getTimeSent() - this.getTimeSent()) <= (Config.MESSAGE_MERGE_WINDOW * 1000) &&
+						!GeoHelper.isGeoUri(message.getBody()) &&
+						!GeoHelper.isGeoUri(this.body) &&
+						!message.bodyContainsDownloadable() &&
+						!this.bodyContainsDownloadable() &&
+						!message.getBody().startsWith(ME_COMMAND) &&
+						!this.getBody().startsWith(ME_COMMAND) &&
+						!this.bodyIsHeart() &&
+						!message.bodyIsHeart()
+				);
 	}
 
 	private static boolean isStatusMergeable(int a, int b) {
 		return a == b || (
-				( a == Message.STATUS_SEND_RECEIVED && b == Message.STATUS_UNSEND)
-				|| (a == Message.STATUS_SEND_RECEIVED && b == Message.STATUS_SEND)
-				|| (a == Message.STATUS_UNSEND && b == Message.STATUS_SEND)
-				|| (a == Message.STATUS_UNSEND && b == Message.STATUS_SEND_RECEIVED)
-				|| (a == Message.STATUS_SEND && b == Message.STATUS_UNSEND)
-				|| (a == Message.STATUS_SEND && b == Message.STATUS_SEND_RECEIVED)
+				(a == Message.STATUS_SEND_RECEIVED && b == Message.STATUS_UNSEND)
+						|| (a == Message.STATUS_SEND_RECEIVED && b == Message.STATUS_SEND)
+						|| (a == Message.STATUS_UNSEND && b == Message.STATUS_SEND)
+						|| (a == Message.STATUS_UNSEND && b == Message.STATUS_SEND_RECEIVED)
+						|| (a == Message.STATUS_SEND && b == Message.STATUS_UNSEND)
+						|| (a == Message.STATUS_SEND && b == Message.STATUS_SEND_RECEIVED)
 		);
 	}
 
@@ -443,7 +446,7 @@ public class Message extends AbstractEntity {
 			if (!url.getProtocol().equalsIgnoreCase("http")
 					&& !url.getProtocol().equalsIgnoreCase("https")) {
 				return false;
-					}
+			}
 
 			String sUrlPath = url.getPath();
 			if (sUrlPath == null || sUrlPath.isEmpty()) {
@@ -457,14 +460,14 @@ public class Message extends AbstractEntity {
 			String[] extensionParts = sLastUrlPath.split("\\.");
 			if (extensionParts.length == 2
 					&& Arrays.asList(Downloadable.VALID_IMAGE_EXTENSIONS).contains(
-						extensionParts[extensionParts.length - 1])) {
+					extensionParts[extensionParts.length - 1])) {
 				return true;
 			} else if (extensionParts.length == 3
 					&& Arrays
 					.asList(Downloadable.VALID_CRYPTO_EXTENSIONS)
 					.contains(extensionParts[extensionParts.length - 1])
 					&& Arrays.asList(Downloadable.VALID_IMAGE_EXTENSIONS).contains(
-						extensionParts[extensionParts.length - 2])) {
+					extensionParts[extensionParts.length - 2])) {
 				return true;
 			} else {
 				return false;
@@ -472,6 +475,11 @@ public class Message extends AbstractEntity {
 		} catch (MalformedURLException e) {
 			return false;
 		}
+	}
+
+	public boolean bodyIsHeart() {
+		return body != null &&
+				(body.trim().equals(UIHelper.BLACK_HEART_SUIT) || body.trim().equals(UIHelper.HEAVY_BLACK_HEART_SUIT));
 	}
 
 	public ImageParams getImageParams() {
