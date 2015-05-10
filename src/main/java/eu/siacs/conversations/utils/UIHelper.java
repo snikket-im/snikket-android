@@ -20,6 +20,7 @@ public class UIHelper {
 
 	public static String BLACK_HEART_SUIT = "\u2665";
 	public static String HEAVY_BLACK_HEART_SUIT = "\u2764";
+	public static String WHITE_HEART_SUIT = "\u2661";
 
 	private static final int SHORT_DATE_FLAGS = DateUtils.FORMAT_SHOW_DATE
 		| DateUtils.FORMAT_NO_YEAR | DateUtils.FORMAT_ABBREV_ALL;
