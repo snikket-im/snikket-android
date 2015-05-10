@@ -140,10 +140,10 @@ public class Contact implements ListItem, Blockable {
 				tags.add(new Tag("away", 0xffff9800));
 				break;
 			case Presences.XA:
-				tags.add(new Tag("not available", 0xffe51c23));
+				tags.add(new Tag("not available", 0xfff44336));
 				break;
 			case Presences.DND:
-				tags.add(new Tag("dnd", 0xffe51c23));
+				tags.add(new Tag("dnd", 0xfff44336));
 				break;
 		}
 		if (isBlocked()) {
