@@ -210,12 +210,13 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		viewHolder.messageBody.setTextIsSelectable(false);
 	}
 
-	private void displayHeartMesage(final ViewHolder viewHolder, final String body) {
+	private void displayHeartMessage(final ViewHolder viewHolder, final String body) {
 		if (viewHolder.download_button != null) {
 			viewHolder.download_button.setVisibility(View.GONE);
 		}
 		viewHolder.image.setVisibility(View.GONE);
 		viewHolder.messageBody.setVisibility(View.VISIBLE);
+		viewHolder.messageBody.setIncludeFontPadding(false);
 		Spannable span = new SpannableString(body);
 		span.setSpan(new RelativeSizeSpan(4.0f), 0, body.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 		span.setSpan(new ForegroundColorSpan(activity.getWarningTextColor()), 0, body.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -228,6 +229,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		}
 		viewHolder.image.setVisibility(View.GONE);
 		viewHolder.messageBody.setVisibility(View.VISIBLE);
+		viewHolder.messageBody.setIncludeFontPadding(true);
 		if (message.getBody() != null) {
 			final String nick = UIHelper.getMessageDisplayName(message);
 			final String formattedBody = message.getMergedBody().replaceAll("^" + Message.ME_COMMAND,nick + " ");
@@ -514,7 +516,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 				displayLocationMessage(viewHolder,message);
 			} else {
 				if (message.bodyIsHeart()) {
-					displayHeartMesage(viewHolder," "+message.getBody().trim()+" ");
+					displayHeartMessage(viewHolder, message.getBody().trim());
 				} else {
 					displayTextMessage(viewHolder, message);
 				}
