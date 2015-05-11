@@ -236,7 +236,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 			final SpannableString formattedBody = new SpannableString(body);
 			int i = body.indexOf("\n\n");
 			while(i >= 0) {
-				formattedBody.setSpan(new RelativeSizeSpan(0.2f),i,i+2,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+				formattedBody.setSpan(new RelativeSizeSpan(0.3f),i,i+2,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 				i = body.indexOf("\n\n",i+2);
 			}
 			if (message.getType() != Message.TYPE_PRIVATE) {
