@@ -232,7 +232,13 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		viewHolder.messageBody.setIncludeFontPadding(true);
 		if (message.getBody() != null) {
 			final String nick = UIHelper.getMessageDisplayName(message);
-			final String formattedBody = message.getMergedBody().replaceAll("^" + Message.ME_COMMAND,nick + " ");
+			final String body = message.getMergedBody().replaceAll("^" + Message.ME_COMMAND,nick + " ");
+			final SpannableString formattedBody = new SpannableString(body);
+			int i = body.indexOf("\n\n");
+			while(i >= 0) {
+				formattedBody.setSpan(new RelativeSizeSpan(0.2f),i,i+2,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+				i = body.indexOf("\n\n",i+2);
+			}
 			if (message.getType() != Message.TYPE_PRIVATE) {
 				if (message.hasMeCommand()) {
 					final Spannable span = new SpannableString(formattedBody);
