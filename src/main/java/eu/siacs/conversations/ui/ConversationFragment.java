@@ -117,6 +117,27 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 
 		}
 
+		private int getIndexOf(String uuid, List<Message> messages) {
+			if (uuid == null) {
+				return 0;
+			}
+			for(int i = 0; i < messages.size(); ++i) {
+				if (uuid.equals(messages.get(i).getUuid())) {
+					return i;
+				} else {
+					Message next = messages.get(i);
+					while(next != null && next.wasMergedIntoPrevious()) {
+						if (uuid.equals(next.getUuid())) {
+							return i;
+						}
+						next = next.next();
+					}
+
+				}
+			}
+			return 0;
+		}
+
 		@Override
 		public void onScroll(AbsListView view, int firstVisibleItem,
 							 int visibleItemCount, int totalItemCount) {
@@ -126,7 +147,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 					messagesLoaded = false;
 					activity.xmppConnectionService.loadMoreMessages(conversation, timestamp, new XmppConnectionService.OnMoreMessagesLoaded() {
 						@Override
-						public void onMoreMessagesLoaded(final int count, Conversation conversation) {
+						public void onMoreMessagesLoaded(final int c, Conversation conversation) {
 							if (ConversationFragment.this.conversation != conversation) {
 								return;
 							}
@@ -134,29 +155,18 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 								@Override
 								public void run() {
 									final int oldPosition = messagesView.getFirstVisiblePosition();
+									Message message = messageList.get(oldPosition);
+									String uuid = message != null ? message.getUuid() : null;
 									View v = messagesView.getChildAt(0);
 									final int pxOffset = (v == null) ? 0 : v.getTop();
 									ConversationFragment.this.conversation.populateWithMessages(ConversationFragment.this.messageList);
 									updateStatusMessages();
 									messageListAdapter.notifyDataSetChanged();
-									if (count != 0) {
-										final int newPosition = oldPosition + count;
-										int offset = 0;
-										try {
-											Message tmpMessage = messageList.get(newPosition);
-
-											while (tmpMessage.wasMergedIntoPrevious()) {
-												offset++;
-												tmpMessage = tmpMessage.prev();
-											}
-										} catch (final IndexOutOfBoundsException ignored) {
-
-										}
-										messagesView.setSelectionFromTop(newPosition - offset, pxOffset);
-										messagesLoaded = true;
-										if (messageLoaderToast != null) {
-											messageLoaderToast.cancel();
-										}
+									int pos = getIndexOf(uuid,messageList);
+									messagesView.setSelectionFromTop(pos, pxOffset);
+									messagesLoaded = true;
+									if (messageLoaderToast != null) {
+										messageLoaderToast.cancel();
 									}
 								}
 							});

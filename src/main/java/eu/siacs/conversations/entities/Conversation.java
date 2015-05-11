@@ -16,6 +16,7 @@ import java.security.interfaces.DSAPublicKey;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 
 import eu.siacs.conversations.Config;
@@ -217,6 +218,11 @@ public class Conversation extends AbstractEntity implements Blockable {
 		synchronized (this.messages) {
 			messages.clear();
 			messages.addAll(this.messages);
+		}
+		for(Iterator<Message> iterator = messages.iterator(); iterator.hasNext();) {
+			if (iterator.next().wasMergedIntoPrevious()) {
+				iterator.remove();
+			}
 		}
 	}
 

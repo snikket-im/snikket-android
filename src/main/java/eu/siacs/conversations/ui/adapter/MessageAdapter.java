@@ -12,7 +12,6 @@ import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
@@ -26,7 +25,6 @@ import android.widget.Toast;
 
 import java.util.List;
 
-import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
@@ -44,7 +42,6 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 	private static final int SENT = 0;
 	private static final int RECEIVED = 1;
 	private static final int STATUS = 2;
-	private static final int NULL = 3;
 
 	private ConversationActivity activity;
 
@@ -79,14 +76,12 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 
 	@Override
 	public int getViewTypeCount() {
-		return 4;
+		return 3;
 	}
 
 	@Override
 	public int getItemViewType(int position) {
-		if (getItem(position).wasMergedIntoPrevious()) {
-			return NULL;
-		} else if (getItem(position).getType() == Message.TYPE_STATUS) {
+		if (getItem(position).getType() == Message.TYPE_STATUS) {
 			return STATUS;
 		} else if (getItem(position).getStatus() <= Message.STATUS_RECEIVED) {
 			return RECEIVED;
@@ -222,8 +217,8 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		viewHolder.image.setVisibility(View.GONE);
 		viewHolder.messageBody.setVisibility(View.VISIBLE);
 		Spannable span = new SpannableString(body);
-		span.setSpan(new RelativeSizeSpan(4.0f),0,body.length(),Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-		span.setSpan(new ForegroundColorSpan(activity.getWarningTextColor()),0,body.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+		span.setSpan(new RelativeSizeSpan(4.0f), 0, body.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+		span.setSpan(new ForegroundColorSpan(activity.getWarningTextColor()), 0, body.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 		viewHolder.messageBody.setText(span);
 	}
 
@@ -235,8 +230,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		viewHolder.messageBody.setVisibility(View.VISIBLE);
 		if (message.getBody() != null) {
 			final String nick = UIHelper.getMessageDisplayName(message);
-			final String formattedBody = message.getMergedBody().replaceAll("^" + Message.ME_COMMAND,
-					nick + " ");
+			final String formattedBody = message.getMergedBody().replaceAll("^" + Message.ME_COMMAND,nick + " ");
 			if (message.getType() != Message.TYPE_PRIVATE) {
 				if (message.hasMeCommand()) {
 					final Spannable span = new SpannableString(formattedBody);
@@ -244,7 +238,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 							Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 					viewHolder.messageBody.setText(span);
 				} else {
-					viewHolder.messageBody.setText(message.getMergedBody());
+					viewHolder.messageBody.setText(formattedBody);
 				}
 			} else {
 				String privateMarker;
@@ -373,10 +367,6 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		if (view == null) {
 			viewHolder = new ViewHolder();
 			switch (type) {
-				case NULL:
-					view = activity.getLayoutInflater().inflate(
-							R.layout.message_null, parent, false);
-					break;
 				case SENT:
 					view = activity.getLayoutInflater().inflate(
 							R.layout.message_sent, parent, false);
@@ -443,25 +433,6 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 				viewHolder.status_message.setText(message.getBody());
 			}
 			return view;
-		} else if (type == NULL) {
-			if (viewHolder.message_box != null) {
-				Log.e(Config.LOGTAG, "detected type=NULL but with wrong cached view");
-				view = activity.getLayoutInflater().inflate(R.layout.message_null, parent, false);
-				view.setTag(new ViewHolder());
-			}
-			if (position == getCount() - 1) {
-				view.getLayoutParams().height = 1;
-			} else {
-				view.getLayoutParams().height = 0;
-
-			}
-			view.setLayoutParams(view.getLayoutParams());
-			return view;
-		} else if (message.wasMergedIntoPrevious()) {
-			Log.e(Config.LOGTAG,"detected wasMergedIntoPrevious with wrong type");
-			return view;
-		} else if (viewHolder.messageBody == null || viewHolder.image == null) {
-			return view; //avoiding weird platform bugs
 		} else if (type == RECEIVED) {
 			Contact contact = message.getContact();
 			if (contact != null) {
