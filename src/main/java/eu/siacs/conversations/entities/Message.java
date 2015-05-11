@@ -17,6 +17,8 @@ public class Message extends AbstractEntity {
 
 	public static final String TABLENAME = "messages";
 
+	public static final String MERGE_SEPARATOR = "\u2029\n\n";
+
 	public static final int STATUS_RECEIVED = 0;
 	public static final int STATUS_UNSEND = 1;
 	public static final int STATUS_SEND = 2;
@@ -396,7 +398,7 @@ public class Message extends AbstractEntity {
 	public String getMergedBody() {
 		final Message next = this.next();
 		if (this.mergeable(next)) {
-			return getBody().trim() + "\n\n" + next.getMergedBody();
+			return getBody().trim() + MERGE_SEPARATOR + next.getMergedBody();
 		}
 		return getBody().trim();
 	}

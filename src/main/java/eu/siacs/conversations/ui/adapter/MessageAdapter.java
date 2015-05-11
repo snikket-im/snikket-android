@@ -234,10 +234,11 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 			final String nick = UIHelper.getMessageDisplayName(message);
 			final String body = message.getMergedBody().replaceAll("^" + Message.ME_COMMAND,nick + " ");
 			final SpannableString formattedBody = new SpannableString(body);
-			int i = body.indexOf("\n\n");
+			int i = body.indexOf(Message.MERGE_SEPARATOR);
 			while(i >= 0) {
-				formattedBody.setSpan(new RelativeSizeSpan(0.3f),i,i+2,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-				i = body.indexOf("\n\n",i+2);
+				final int end = i + Message.MERGE_SEPARATOR.length();
+				formattedBody.setSpan(new RelativeSizeSpan(0.3f),i,end,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+				i = body.indexOf(Message.MERGE_SEPARATOR,end);
 			}
 			if (message.getType() != Message.TYPE_PRIVATE) {
 				if (message.hasMeCommand()) {
