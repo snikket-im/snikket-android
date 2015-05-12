@@ -343,8 +343,6 @@ public class MucOptions {
 					setError(ERROR_BANNED);
 				} else if (error != null && error.hasChild("registration-required")) {
 					setError(ERROR_MEMBERS_ONLY);
-				} else {
-					setError(ERROR_UNKNOWN);
 				}
 			}
 		}
