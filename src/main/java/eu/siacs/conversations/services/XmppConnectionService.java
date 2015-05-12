@@ -2108,6 +2108,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	}
 
 	public void invite(Conversation conversation, Jid contact) {
+		Log.d(Config.LOGTAG,conversation.getAccount().getJid().toBareJid()+": inviting "+contact+" to "+conversation.getJid().toBareJid());
 		MessagePacket packet = mMessageGenerator.invite(conversation, contact);
 		sendMessagePacket(conversation.getAccount(), packet);
 	}

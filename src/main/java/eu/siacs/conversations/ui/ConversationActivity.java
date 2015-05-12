@@ -901,6 +901,12 @@ public class ConversationActivity extends XmppActivity
 	void onBackendConnected() {
 		this.xmppConnectionService.getNotificationService().setIsInForeground(true);
 		updateConversationList();
+
+		if (mPendingConferenceInvite != null) {
+			mPendingConferenceInvite.execute(this);
+			mPendingConferenceInvite = null;
+		}
+
 		if (xmppConnectionService.getAccounts().size() == 0) {
 			if (!mRedirected) {
 				this.mRedirected = true;
