@@ -927,9 +927,7 @@ public class ConversationActivity extends XmppActivity
 			}
 			this.mConversationFragment.reInit(getSelectedConversation());
 			mOpenConverstaion = null;
-		} else if (getSelectedConversation() != null) {
-			this.mConversationFragment.reInit(getSelectedConversation());
-		} else {
+		} else if (getSelectedConversation() == null) {
 			showConversationsOverview();
 			mPendingImageUris.clear();
 			mPendingFileUris.clear();
