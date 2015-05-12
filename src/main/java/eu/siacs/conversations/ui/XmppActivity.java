@@ -672,8 +672,6 @@ public abstract class XmppActivity extends Activity {
 			if (xmppConnectionServiceBound && mPendingConferenceInvite != null) {
 				mPendingConferenceInvite.execute(this);
 				mPendingConferenceInvite = null;
-			} else {
-				Log.d(Config.LOGTAG,"putting invite on pending");
 			}
 		}
 	}
