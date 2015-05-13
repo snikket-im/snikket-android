@@ -28,16 +28,18 @@ public class UIHelper {
 	public static final ArrayList<String> HEARTS = new ArrayList<>(Arrays.asList(BLACK_HEART_SUIT,HEAVY_BLACK_HEART_SUIT,WHITE_HEART_SUIT));
 
 	private static final ArrayList<String> LOCATION_QUESTIONS = new ArrayList<>(Arrays.asList(
-			"where are you?", //en
-			"where r u?", //en
-			"whats your 20?", //en
-			"what is your 20?", //en
-			"what's your 20?", //en
-			"whats your twenty?", //en
-			"what is your twenty?", //en
-			"what's your twenty?", //en
-			"wo bist du?", //de
-			"wo sind sie?" //de
+			"where are you", //en
+			"where r u", //en
+			"whats your 20", //en
+			"what is your 20", //en
+			"what's your 20", //en
+			"whats your twenty", //en
+			"what is your twenty", //en
+			"what's your twenty", //en
+			"wo bist du", //de
+			"wo sind sie", //de
+			"wo seid ihr", //de
+			"dónde estás" //es
 		));
 
 	private static final int SHORT_DATE_FLAGS = DateUtils.FORMAT_SHOW_DATE
@@ -256,6 +258,7 @@ public class UIHelper {
 			return false;
 		}
 		String body = message.getBody() == null ? null : message.getBody().trim().toLowerCase(Locale.getDefault());
+		body = body.replace("?","").replace("¿","");
 		return LOCATION_QUESTIONS.contains(body);
 	}
 }
