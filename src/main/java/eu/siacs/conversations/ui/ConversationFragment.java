@@ -59,6 +59,7 @@ import eu.siacs.conversations.ui.adapter.MessageAdapter;
 import eu.siacs.conversations.ui.adapter.MessageAdapter.OnContactPictureClicked;
 import eu.siacs.conversations.ui.adapter.MessageAdapter.OnContactPictureLongClicked;
 import eu.siacs.conversations.utils.GeoHelper;
+import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
 import eu.siacs.conversations.xmpp.jid.Jid;
 
@@ -905,7 +906,9 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 		} else {
 			if (empty) {
 				String setting = activity.getPreferences().getString("quick_action","recent");
-				if (setting.equals("recent")) {
+				if (!setting.equals("none") && UIHelper.receivedLocationQuestion(conversation.getLatestMessage())) {
+					setting = "location";
+				} else if (setting.equals("recent")) {
 					setting = activity.getPreferences().getString("recently_used_quick_action","text");
 				}
 				switch (setting) {

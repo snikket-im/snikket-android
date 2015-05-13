@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Contact;
@@ -25,6 +26,19 @@ public class UIHelper {
 	private static String WHITE_HEART_SUIT = "\u2661";
 
 	public static final ArrayList<String> HEARTS = new ArrayList<>(Arrays.asList(BLACK_HEART_SUIT,HEAVY_BLACK_HEART_SUIT,WHITE_HEART_SUIT));
+
+	private static final ArrayList<String> LOCATION_QUESTIONS = new ArrayList<>(Arrays.asList(
+			"where are you?", //en
+			"where r u?", //en
+			"whats your 20?", //en
+			"what is your 20?", //en
+			"what's your 20?", //en
+			"whats your twenty?", //en
+			"what is your twenty?", //en
+			"what's your twenty?", //en
+			"wo bist du?", //de
+			"wo sind sie?" //de
+		));
 
 	private static final int SHORT_DATE_FLAGS = DateUtils.FORMAT_SHOW_DATE
 		| DateUtils.FORMAT_NO_YEAR | DateUtils.FORMAT_ABBREV_ALL;
@@ -233,5 +247,15 @@ public class UIHelper {
 		} else {
 			return counterpart.toString().trim();
 		}
+	}
+
+	public static boolean receivedLocationQuestion(Message message) {
+		if (message == null
+				|| message.getStatus() != Message.STATUS_RECEIVED
+				|| message.getType() != Message.TYPE_TEXT) {
+			return false;
+		}
+		String body = message.getBody() == null ? null : message.getBody().trim().toLowerCase(Locale.getDefault());
+		return LOCATION_QUESTIONS.contains(body);
 	}
 }
