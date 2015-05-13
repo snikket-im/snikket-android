@@ -1879,6 +1879,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 														   IqPacket result) {
 								if (result.getType() == IqPacket.TYPE.RESULT) {
 									if (account.setAvatar(avatar.getFilename())) {
+										getAvatarService().clear(account);
 										databaseBackend.updateAccount(account);
 									}
 									callback.success(avatar);
