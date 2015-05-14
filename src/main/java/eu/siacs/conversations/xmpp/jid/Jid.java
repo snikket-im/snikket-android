@@ -130,12 +130,19 @@ public final class Jid {
 			if (resourcepart.isEmpty() || resourcepart.length() > 1023) {
 				throw new InvalidJidException(InvalidJidException.INVALID_PART_LENGTH);
 			}
-			dp = IDN.toUnicode(jid.substring(domainpartStart, slashLoc), IDN.USE_STD3_ASCII_RULES);
+			try {
+				dp = IDN.toUnicode(Stringprep.nameprep(jid.substring(domainpartStart, slashLoc)), IDN.USE_STD3_ASCII_RULES);
+			} catch (final StringprepException e) {
+				throw new InvalidJidException(InvalidJidException.STRINGPREP_FAIL, e);
+			}
 			finaljid = finaljid + dp + "/" + rp;
 		} else {
 			resourcepart = "";
-			dp = IDN.toUnicode(jid.substring(domainpartStart, jid.length()),
-					IDN.USE_STD3_ASCII_RULES);
+			try{
+				dp = IDN.toUnicode(Stringprep.nameprep(jid.substring(domainpartStart, jid.length())), IDN.USE_STD3_ASCII_RULES);
+			} catch (final StringprepException e) {
+				throw new InvalidJidException(InvalidJidException.STRINGPREP_FAIL, e);
+			}
 			finaljid = finaljid + dp;
 		}
 

@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.Roster;
+import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
 
 import android.content.Context;
@@ -16,13 +18,14 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteCantOpenDatabaseException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 public class DatabaseBackend extends SQLiteOpenHelper {
 
 	private static DatabaseBackend instance = null;
 
 	private static final String DATABASE_NAME = "history";
-	private static final int DATABASE_VERSION = 13;
+	private static final int DATABASE_VERSION = 14;
 
 	private static String CREATE_CONTATCS_STATEMENT = "create table "
 			+ Contact.TABLENAME + "(" + Contact.ACCOUNT + " TEXT, "
@@ -129,6 +132,88 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		if (oldVersion < 13 && newVersion >= 13) {
 			db.execSQL("delete from "+Contact.TABLENAME);
 			db.execSQL("update "+Account.TABLENAME+" set "+Account.ROSTERVERSION+" = NULL");
+		}
+		if (oldVersion < 14 && newVersion >= 14) {
+			// migrate db to new, canonicalized JID domainpart representation
+
+			// Conversation table
+			Cursor cursor = db.rawQuery("select * from " + Conversation.TABLENAME, new String[0]);
+			while(cursor.moveToNext()) {
+				String newJid;
+				try {
+					newJid = Jid.fromString(
+							cursor.getString(cursor.getColumnIndex(Conversation.CONTACTJID))
+					).toString();
+				} catch (InvalidJidException ignored) {
+					Log.e(Config.LOGTAG, "Failed to migrate Conversation CONTACTJID "
+							+cursor.getString(cursor.getColumnIndex(Conversation.CONTACTJID))
+							+": " + ignored +". Skipping...");
+					continue;
+				}
+
+				String updateArgs[] = {
+						newJid,
+						cursor.getString(cursor.getColumnIndex(Conversation.UUID)),
+				};
+				db.execSQL("update " + Conversation.TABLENAME
+						+ " set " + Conversation.CONTACTJID	+ " = ? "
+						+ " where " + Conversation.UUID + " = ?", updateArgs);
+			}
+			cursor.close();
+
+			// Contact table
+			cursor = db.rawQuery("select * from " + Contact.TABLENAME, new String[0]);
+			while(cursor.moveToNext()) {
+				String newJid;
+				try {
+					newJid = Jid.fromString(
+							cursor.getString(cursor.getColumnIndex(Contact.JID))
+					).toString();
+				} catch (InvalidJidException ignored) {
+					Log.e(Config.LOGTAG, "Failed to migrate Contact JID "
+							+cursor.getString(cursor.getColumnIndex(Contact.JID))
+							+": " + ignored +". Skipping...");
+					continue;
+				}
+
+				String updateArgs[] = {
+						newJid,
+						cursor.getString(cursor.getColumnIndex(Contact.ACCOUNT)),
+						cursor.getString(cursor.getColumnIndex(Contact.JID)),
+				};
+				db.execSQL("update " + Contact.TABLENAME
+						+ " set " + Contact.JID + " = ? "
+						+ " where " + Contact.ACCOUNT + " = ? "
+						+ " AND " + Contact.JID + " = ?", updateArgs);
+			}
+			cursor.close();
+
+			// Account table
+			cursor = db.rawQuery("select * from " + Account.TABLENAME, new String[0]);
+			while(cursor.moveToNext()) {
+				String newServer;
+				try {
+					newServer = Jid.fromParts(
+							cursor.getString(cursor.getColumnIndex(Account.USERNAME)),
+							cursor.getString(cursor.getColumnIndex(Account.SERVER)),
+							"mobile"
+					).getDomainpart();
+				} catch (InvalidJidException ignored) {
+					Log.e(Config.LOGTAG, "Failed to migrate Account SERVER "
+							+cursor.getString(cursor.getColumnIndex(Account.SERVER))
+							+": " + ignored +". Skipping...");
+					continue;
+				}
+
+				String updateArgs[] = {
+						newServer,
+						cursor.getString(cursor.getColumnIndex(Account.UUID)),
+				};
+				db.execSQL("update " + Account.TABLENAME
+						+ " set " + Account.SERVER + " = ? "
+						+ " where " + Account.UUID + " = ?", updateArgs);
+			}
+			cursor.close();
 		}
 	}
 
