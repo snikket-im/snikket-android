@@ -1,5 +1,7 @@
 package eu.siacs.conversations.xmpp.jingle;
 
+import android.util.Log;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -10,6 +12,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.utils.CryptoHelper;
@@ -102,6 +105,7 @@ public class JingleSocks5Transport extends JingleTransport {
 					digest.reset();
 					fileInputStream = file.createInputStream();
 					if (fileInputStream == null) {
+						Log.d(Config.LOGTAG, connection.getAccount().getJid().toBareJid() + ": could not create input stream");
 						callback.onFileTransferAborted();
 						return;
 					}
@@ -121,10 +125,13 @@ public class JingleSocks5Transport extends JingleTransport {
 						callback.onFileTransmitted(file);
 					}
 				} catch (FileNotFoundException e) {
+					Log.d(Config.LOGTAG, connection.getAccount().getJid().toBareJid() + ": "+e.getMessage());
 					callback.onFileTransferAborted();
 				} catch (IOException e) {
+					Log.d(Config.LOGTAG, connection.getAccount().getJid().toBareJid() + ": "+e.getMessage());
 					callback.onFileTransferAborted();
 				} catch (NoSuchAlgorithmException e) {
+					Log.d(Config.LOGTAG, connection.getAccount().getJid().toBareJid() + ": "+e.getMessage());
 					callback.onFileTransferAborted();
 				} finally {
 					FileBackend.close(fileInputStream);
@@ -150,6 +157,7 @@ public class JingleSocks5Transport extends JingleTransport {
 					fileOutputStream = file.createOutputStream();
 					if (fileOutputStream == null) {
 						callback.onFileTransferAborted();
+						Log.d(Config.LOGTAG, connection.getAccount().getJid().toBareJid() + ": could not create output stream");
 						return;
 					}
 					double size = file.getExpectedSize();
@@ -160,6 +168,7 @@ public class JingleSocks5Transport extends JingleTransport {
 						count = inputStream.read(buffer);
 						if (count == -1) {
 							callback.onFileTransferAborted();
+							Log.d(Config.LOGTAG, connection.getAccount().getJid().toBareJid() + ": file ended prematurely with "+remainingSize+" bytes remaining");
 							return;
 						} else {
 							fileOutputStream.write(buffer, 0, count);
@@ -173,10 +182,13 @@ public class JingleSocks5Transport extends JingleTransport {
 					file.setSha1Sum(CryptoHelper.bytesToHex(digest.digest()));
 					callback.onFileTransmitted(file);
 				} catch (FileNotFoundException e) {
+					Log.d(Config.LOGTAG, connection.getAccount().getJid().toBareJid() + ": "+e.getMessage());
 					callback.onFileTransferAborted();
 				} catch (IOException e) {
+					Log.d(Config.LOGTAG, connection.getAccount().getJid().toBareJid() + ": "+e.getMessage());
 					callback.onFileTransferAborted();
 				} catch (NoSuchAlgorithmException e) {
+					Log.d(Config.LOGTAG, connection.getAccount().getJid().toBareJid() + ": "+e.getMessage());
 					callback.onFileTransferAborted();
 				} finally {
 					FileBackend.close(fileOutputStream);

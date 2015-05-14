@@ -97,11 +97,13 @@ public class JingleInbandTransport extends JingleTransport {
 			file.createNewFile();
 			this.fileOutputStream = file.createOutputStream();
 			if (this.fileOutputStream == null) {
+				Log.d(Config.LOGTAG,account.getJid().toBareJid()+": could not create output stream");
 				callback.onFileTransferAborted();
 				return;
 			}
 			this.remainingSize = this.fileSize = file.getExpectedSize();
 		} catch (final NoSuchAlgorithmException | IOException e) {
+			Log.d(Config.LOGTAG,account.getJid().toBareJid()+" "+e.getMessage());
 			callback.onFileTransferAborted();
 		}
     }
@@ -122,6 +124,7 @@ public class JingleInbandTransport extends JingleTransport {
 			this.digest.reset();
 			fileInputStream = this.file.createInputStream();
 			if (fileInputStream == null) {
+				Log.d(Config.LOGTAG,account.getJid().toBareJid()+": could no create input stream");
 				callback.onFileTransferAborted();
 				return;
 			}
@@ -130,6 +133,7 @@ public class JingleInbandTransport extends JingleTransport {
 			}
 		} catch (NoSuchAlgorithmException e) {
 			callback.onFileTransferAborted();
+			Log.d(Config.LOGTAG,account.getJid().toBareJid()+": "+e.getMessage());
 		}
 	}
 
@@ -182,7 +186,7 @@ public class JingleInbandTransport extends JingleTransport {
 				fileInputStream.close();
 			}
 		} catch (IOException e) {
-			Log.d(Config.LOGTAG,e.getMessage());
+			Log.d(Config.LOGTAG,account.getJid().toBareJid()+": "+e.getMessage());
 			FileBackend.close(fileInputStream);
 			this.onFileTransmissionStatusChanged.onFileTransferAborted();
 		}
@@ -206,7 +210,7 @@ public class JingleInbandTransport extends JingleTransport {
 				connection.updateProgress((int) ((((double) (this.fileSize - this.remainingSize)) / this.fileSize) * 100));
 			}
 		} catch (IOException e) {
-			Log.d(Config.LOGTAG,e.getMessage());
+			Log.d(Config.LOGTAG,account.getJid().toBareJid()+": "+e.getMessage());
 			FileBackend.close(fileOutputStream);
 			this.onFileTransmissionStatusChanged.onFileTransferAborted();
 		}
