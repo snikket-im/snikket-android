@@ -29,7 +29,8 @@ public class UIHelper {
 
 	private static final ArrayList<String> LOCATION_QUESTIONS = new ArrayList<>(Arrays.asList(
 			"where are you", //en
-			"where r u", //en
+			"where are you now", //en
+			"where are you right now", //en
 			"whats your 20", //en
 			"what is your 20", //en
 			"what's your 20", //en
@@ -37,9 +38,13 @@ public class UIHelper {
 			"what is your twenty", //en
 			"what's your twenty", //en
 			"wo bist du", //de
-			"wo sind sie", //de
+			"wo bist du jetzt", //de
+			"wo bist du gerade", //de
 			"wo seid ihr", //de
-			"dónde estás" //es
+			"wo seid ihr jetzt", //de
+			"wo seid ihr gerade", //de
+			"dónde estás", //es
+			"donde estas" //es
 		));
 
 	private static final int SHORT_DATE_FLAGS = DateUtils.FORMAT_SHOW_DATE
