@@ -70,10 +70,6 @@ public abstract class AbstractParser {
 		if (item == null) {
 			return null;
 		}
-		Element data = item.findChild("data", "urn:xmpp:avatar:data");
-		if (data == null) {
-			return null;
-		}
-		return data.getContent();
+		return item.findChildContent("data", "urn:xmpp:avatar:data");
 	}
 }

@@ -66,4 +66,27 @@ public class MessagePacket extends AbstractStanza {
 			return TYPE_NORMAL;
 		}
 	}
+
+	public MessagePacket getForwardedMessagePacket(String name, String namespace) {
+		Element wrapper = findChild(name, namespace);
+		if (wrapper == null) {
+			return null;
+		}
+		Element forwarded = wrapper.findChild("forwarded","urn:xmpp:forward:0");
+		if (forwarded == null) {
+			return null;
+		}
+		return MessagePacket.create(forwarded.findChild("message"));
+	}
+
+
+	public static MessagePacket create(Element element) {
+		if (element == null) {
+			return null;
+		}
+		MessagePacket packet = new MessagePacket();
+		packet.setAttributes(element.getAttributes());
+		packet.setChildren(element.getChildren());
+		return packet;
+	}
 }

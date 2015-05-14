@@ -75,12 +75,7 @@ public class Bookmark extends Element implements ListItem {
 	}
 
 	public String getNick() {
-		Element nick = this.findChild("nick");
-		if (nick != null) {
-			return nick.getContent();
-		} else {
-			return null;
-		}
+		return this.findChildContent("nick");
 	}
 
 	public void setNick(String nick) {
@@ -96,12 +91,7 @@ public class Bookmark extends Element implements ListItem {
 	}
 
 	public String getPassword() {
-		Element password = this.findChild("password");
-		if (password != null) {
-			return password.getContent();
-		} else {
-			return null;
-		}
+		return this.findChildContent("password");
 	}
 
 	public void setPassword(String password) {

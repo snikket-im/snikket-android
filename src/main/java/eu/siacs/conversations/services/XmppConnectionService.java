@@ -1994,8 +1994,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 				if (packet.getType() == IqPacket.TYPE.RESULT) {
 					Element vCard = packet.findChild("vCard","vcard-temp");
 					Element photo = vCard != null ? vCard.findChild("PHOTO") : null;
-					Element binval = photo != null ? photo.findChild("BINVAL") : null;
-					String image = binval != null ? binval.getContent() : null;
+					String image = photo != null ? photo.findChildContent("BINVAL") : null;
 					if (image != null) {
 						avatar.image = image;
 						if (getFileBackend().save(avatar)) {
