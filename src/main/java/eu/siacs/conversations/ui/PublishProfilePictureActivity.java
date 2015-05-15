@@ -116,7 +116,9 @@ public class PublishProfilePictureActivity extends XmppActivity {
 				if (mInitialAccountSetup) {
 					Intent intent = new Intent(getApplicationContext(),
 							StartConversationActivity.class);
-					intent.putExtra("init",true);
+					if (xmppConnectionService != null && xmppConnectionService.getAccounts().size() == 1) {
+						intent.putExtra("init", true);
+					}
 					startActivity(intent);
 				}
 				finish();

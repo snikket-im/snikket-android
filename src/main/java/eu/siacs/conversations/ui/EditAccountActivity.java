@@ -223,7 +223,9 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 				if (avatar != null) {
 					intent = new Intent(getApplicationContext(),
 							StartConversationActivity.class);
-					intent.putExtra("init",true);
+					if (xmppConnectionService != null && xmppConnectionService.getAccounts().size() == 1) {
+						intent.putExtra("init", true);
+					}
 				} else {
 					intent = new Intent(getApplicationContext(),
 							PublishProfilePictureActivity.class);
