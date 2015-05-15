@@ -182,6 +182,8 @@ public class MessageParser extends AbstractParser implements
 		Long timestamp = null;
 		final boolean isForwarded;
 		boolean carbon = false; //live carbons or mam-sub
+		MessageArchiveService.Query query = null;
+		String serverMsgId = null;
 		if (original.fromServer(account)) {
 			Pair<MessagePacket, Long> f;
 			f = original.getForwardedMessagePacket("received", "urn:xmpp:carbons:2");
@@ -198,6 +200,14 @@ public class MessageParser extends AbstractParser implements
 				return;
 			}
 
+			final Element result = packet.findChild("result","urn:xmpp:mam:0");
+			if (result != null) {
+				query = mXmppConnectionService.getMessageArchiveService().findQuery(result.getAttribute("queryid"));
+				if (query != null) {
+					query.incrementTotalCount();
+				}
+				serverMsgId = result.getAttribute("id");
+			}
 		} else {
 			packet = original;
 			isForwarded = false;
@@ -211,7 +221,7 @@ public class MessageParser extends AbstractParser implements
 		final Jid to = packet.getTo();
 		final Jid from = packet.getFrom();
 		final Jid counterpart;
-		final String id = packet.getId();
+		final String remoteMsgId = packet.getId();
 		boolean isTypeGroupChat = packet.getType() == MessagePacket.TYPE_GROUPCHAT;
 		boolean properlyAddressed = !to.isBareJid() || account.countPresences() == 1;
 		if (packet.fromAccount(account)) {
@@ -229,7 +239,7 @@ public class MessageParser extends AbstractParser implements
 
 		Invite invite = extractInvite(packet);
 		if (invite != null && invite.jid != null) {
-			Conversation conversation = mXmppConnectionService.findOrCreateConversation(account, invite.jid, true);
+			Conversation conversation = mXmppConnectionService.findOrCreateConversation(account, invite.jid, true,query);
 			if (!conversation.getMucOptions().online()) {
 				conversation.getMucOptions().setPassword(invite.password);
 				mXmppConnectionService.databaseBackend.updateConversation(conversation);
@@ -248,9 +258,9 @@ public class MessageParser extends AbstractParser implements
 			if (isTypeGroupChat) {
 				if (counterpart.getResourcepart().equals(conversation.getMucOptions().getActualNick())) {
 					status = Message.STATUS_SEND;
-					if (mXmppConnectionService.markMessage(conversation, id, Message.STATUS_SEND_RECEIVED)) {
+					if (mXmppConnectionService.markMessage(conversation, remoteMsgId, Message.STATUS_SEND_RECEIVED)) {
 						return;
-					} else if (id == null) {
+					} else if (remoteMsgId == null) {
 						Message message = conversation.findSentMessageWithBody(packet.getBody());
 						if (message != null) {
 							mXmppConnectionService.markMessage(message, Message.STATUS_SEND_RECEIVED);
@@ -264,7 +274,7 @@ public class MessageParser extends AbstractParser implements
 			Message message;
 			if (body != null && body.startsWith("?OTR")) {
 				if (!isForwarded && !isTypeGroupChat && properlyAddressed) {
-					message = parseOtrChat(body, from, id, conversation);
+					message = parseOtrChat(body, from, remoteMsgId, conversation);
 					if (message == null) {
 						return;
 					}
@@ -277,7 +287,8 @@ public class MessageParser extends AbstractParser implements
 				message = new Message(conversation, body, Message.ENCRYPTION_NONE, status);
 			}
 			message.setCounterpart(counterpart);
-			message.setRemoteMsgId(id);
+			message.setRemoteMsgId(remoteMsgId);
+			message.setServerMsgId(serverMsgId);
 			message.setTime(timestamp);
 			message.markable = packet.hasChild("markable", "urn:xmpp:chat-markers:0");
 			if (conversation.getMode() == Conversation.MODE_MULTI) {
@@ -287,6 +298,14 @@ public class MessageParser extends AbstractParser implements
 				}
 			}
 			updateLastseen(packet,account,true);
+			boolean checkForDuplicates = serverMsgId != null || (isTypeGroupChat && packet.hasChild("delay","urn:xmpp:delay"));
+			if (checkForDuplicates && conversation.hasDuplicateMessage(message)) {
+				Log.d(Config.LOGTAG,"skipping duplicate message from "+message.getCounterpart().toString()+" "+message.getBody());
+				return;
+			}
+			if (query != null) {
+				query.incrementMessageCount();
+			}
 			conversation.add(message);
 			if (carbon || status == Message.STATUS_RECEIVED) {
 				mXmppConnectionService.markRead(conversation);
@@ -296,7 +315,7 @@ public class MessageParser extends AbstractParser implements
 			}
 
 
-			if (mXmppConnectionService.confirmMessages() && id != null && !packet.fromAccount(account)) {
+			if (mXmppConnectionService.confirmMessages() && remoteMsgId != null && !isForwarded) {
 				if (packet.hasChild("markable", "urn:xmpp:chat-markers:0")) {
 					MessagePacket receipt = mXmppConnectionService
 							.getMessageGenerator().received(account, packet, "urn:xmpp:chat-markers:0");

@@ -22,7 +22,7 @@ public abstract class AbstractParser {
 	}
 
 	public static Long getTimestamp(Element element, Long defaultValue) {
-		Element delay = element.findChild("delay");
+		Element delay = element.findChild("delay","urn:xmpp:delay");
 		if (delay != null) {
 			String stamp = delay.getAttribute("stamp");
 			if (stamp != null) {
