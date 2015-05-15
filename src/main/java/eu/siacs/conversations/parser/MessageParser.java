@@ -181,7 +181,6 @@ public class MessageParser extends AbstractParser implements
 		final MessagePacket packet;
 		Long timestamp = null;
 		final boolean isForwarded;
-		boolean carbon = false; //live carbons or mam-sub
 		MessageArchiveService.Query query = null;
 		String serverMsgId = null;
 		if (original.fromServer(account)) {
@@ -192,15 +191,14 @@ public class MessageParser extends AbstractParser implements
 			packet = f != null ? f.first : original;
 			timestamp = f != null ? f.second : null;
 			isForwarded = f != null;
-			carbon = original.hasChild("received", "urn:xmpp:carbons:2") || original.hasChild("received", "urn:xmpp:carbons:2");
 
-			Element fin = packet.findChild("fin", "urn:xmpp:mam:0");
+			Element fin = original.findChild("fin", "urn:xmpp:mam:0");
 			if (fin != null) {
 				mXmppConnectionService.getMessageArchiveService().processFin(fin);
 				return;
 			}
 
-			final Element result = packet.findChild("result","urn:xmpp:mam:0");
+			final Element result = original.findChild("result","urn:xmpp:mam:0");
 			if (result != null) {
 				query = mXmppConnectionService.getMessageArchiveService().findQuery(result.getAttribute("queryid"));
 				if (query != null) {
@@ -307,13 +305,14 @@ public class MessageParser extends AbstractParser implements
 				query.incrementMessageCount();
 			}
 			conversation.add(message);
-			if (carbon || status == Message.STATUS_RECEIVED) {
-				mXmppConnectionService.markRead(conversation);
-				account.activateGracePeriod();
-			} else if (!isForwarded) {
-				message.markUnread();
+			if (serverMsgId == null) {
+				if (status == Message.STATUS_SEND) {
+					mXmppConnectionService.markRead(conversation);
+					account.activateGracePeriod();
+				} else {
+					message.markUnread();
+				}
 			}
-
 
 			if (mXmppConnectionService.confirmMessages() && remoteMsgId != null && !isForwarded) {
 				if (packet.hasChild("markable", "urn:xmpp:chat-markers:0")) {
