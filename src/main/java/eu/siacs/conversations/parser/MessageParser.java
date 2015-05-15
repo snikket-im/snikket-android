@@ -181,31 +181,34 @@ public class MessageParser extends AbstractParser implements
 		final MessagePacket packet;
 		Long timestamp = null;
 		final boolean isForwarded;
-		MessageArchiveService.Query query = null;
 		String serverMsgId = null;
-		if (original.fromServer(account)) {
+		final Element fin = original.findChild("fin", "urn:xmpp:mam:0");
+		if (fin != null) {
+			mXmppConnectionService.getMessageArchiveService().processFin(fin,original.getFrom());
+			return;
+		}
+		final Element result = original.findChild("result","urn:xmpp:mam:0");
+		final MessageArchiveService.Query query = result == null ? null : mXmppConnectionService.getMessageArchiveService().findQuery(result.getAttribute("queryid"));
+		if (query != null && query.validFrom(original.getFrom())) {
+			Pair<MessagePacket, Long> f = original.getForwardedMessagePacket("result", "urn:xmpp:mam:0");
+			if (f == null) {
+				return;
+			}
+			timestamp = f.second;
+			packet = f.first;
+			isForwarded = true;
+			serverMsgId = result.getAttribute("id");
+			query.incrementTotalCount();
+		} else if (query != null) {
+			Log.d(Config.LOGTAG,account.getJid().toBareJid()+": received mam result from invalid sender");
+			return;
+		} else if (original.fromServer(account)) {
 			Pair<MessagePacket, Long> f;
 			f = original.getForwardedMessagePacket("received", "urn:xmpp:carbons:2");
 			f = f == null ? original.getForwardedMessagePacket("sent", "urn:xmpp:carbons:2") : f;
-			f = f == null ? original.getForwardedMessagePacket("result", "urn:xmpp:mam:0") : f;
 			packet = f != null ? f.first : original;
 			timestamp = f != null ? f.second : null;
 			isForwarded = f != null;
-
-			Element fin = original.findChild("fin", "urn:xmpp:mam:0");
-			if (fin != null) {
-				mXmppConnectionService.getMessageArchiveService().processFin(fin);
-				return;
-			}
-
-			final Element result = original.findChild("result","urn:xmpp:mam:0");
-			if (result != null) {
-				query = mXmppConnectionService.getMessageArchiveService().findQuery(result.getAttribute("queryid"));
-				if (query != null) {
-					query.incrementTotalCount();
-				}
-				serverMsgId = result.getAttribute("id");
-			}
 		} else {
 			packet = original;
 			isForwarded = false;
@@ -216,9 +219,9 @@ public class MessageParser extends AbstractParser implements
 		final String body = packet.getBody();
 		final String encrypted = packet.findChildContent("x", "jabber:x:encrypted");
 		int status;
+		final Jid counterpart;
 		final Jid to = packet.getTo();
 		final Jid from = packet.getFrom();
-		final Jid counterpart;
 		final String remoteMsgId = packet.getId();
 		boolean isTypeGroupChat = packet.getType() == MessagePacket.TYPE_GROUPCHAT;
 		boolean properlyAddressed = !to.isBareJid() || account.countPresences() == 1;
@@ -312,6 +315,7 @@ public class MessageParser extends AbstractParser implements
 				} else {
 					message.markUnread();
 				}
+				mXmppConnectionService.updateConversationUi();
 			}
 
 			if (mXmppConnectionService.confirmMessages() && remoteMsgId != null && !isForwarded) {
@@ -339,8 +343,7 @@ public class MessageParser extends AbstractParser implements
 				conversation.endOtrIfNeeded();
 			}
 
-			if (message.getEncryption() == Message.ENCRYPTION_NONE
-					|| mXmppConnectionService.saveEncryptedMessages()) {
+			if (message.getEncryption() == Message.ENCRYPTION_NONE || mXmppConnectionService.saveEncryptedMessages()) {
 				mXmppConnectionService.databaseBackend.createMessage(message);
 			}
 			final HttpConnectionManager manager = this.mXmppConnectionService.getHttpConnectionManager();
@@ -349,8 +352,7 @@ public class MessageParser extends AbstractParser implements
 			} else if (!message.isRead()) {
 				mXmppConnectionService.getNotificationService().push(message);
 			}
-			mXmppConnectionService.updateConversationUi();
-		} else {
+		} else { //no body
 			if (packet.hasChild("subject") && isTypeGroupChat) {
 				Conversation conversation = mXmppConnectionService.find(account, from.toBareJid());
 				if (conversation != null && conversation.getMode() == Conversation.MODE_MULTI) {
