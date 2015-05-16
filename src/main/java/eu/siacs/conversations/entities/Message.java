@@ -440,7 +440,7 @@ public class Message extends AbstractEntity {
 		 * "http://example.com/image.jpg text that will not be shown /abc.png"
 		 * or more than one image link in one message.
 		 */
-		if (body.contains(" ")) {
+		if (body.trim().contains(" ")) {
 			return false;
 		}
 		try {
