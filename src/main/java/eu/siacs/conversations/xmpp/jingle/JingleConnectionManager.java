@@ -9,6 +9,7 @@ import android.annotation.SuppressLint;
 import android.util.Log;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
+import eu.siacs.conversations.entities.Downloadable;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.services.AbstractConnectionManager;
 import eu.siacs.conversations.services.XmppConnectionService;
@@ -58,7 +59,12 @@ public class JingleConnectionManager extends AbstractConnectionManager {
 	}
 
 	public JingleConnection createNewConnection(Message message) {
+		Downloadable old = message.getDownloadable();
+		if (old != null) {
+			old.cancel();
+		}
 		JingleConnection connection = new JingleConnection(this);
+		mXmppConnectionService.markMessage(message,Message.STATUS_WAITING);
 		connection.init(message);
 		this.connections.add(connection);
 		return connection;

@@ -271,6 +271,9 @@ public class JingleConnection implements Downloadable {
 		this.mergeCandidates(JingleCandidate.parse(content.socks5transport()
 				.getChildren()));
 		this.fileOffer = packet.getJingleContent().getFileOffer();
+
+		mXmppConnectionService.sendIqPacket(account,packet.generateResponse(IqPacket.TYPE.RESULT),null);
+
 		if (fileOffer != null) {
 			Element fileSize = fileOffer.findChild("size");
 			Element fileNameElement = fileOffer.findChild("name");
@@ -381,6 +384,7 @@ public class JingleConnection implements Downloadable {
 				@Override
 				public void onIqPacketReceived(Account account, IqPacket packet) {
 					if (packet.getType() != IqPacket.TYPE.ERROR) {
+						Log.d(Config.LOGTAG,account.getJid().toBareJid()+": other party received offer");
 						mJingleStatus = JINGLE_STATUS_INITIATED;
 						mXmppConnectionService.markMessage(message, Message.STATUS_OFFERED);
 					} else {

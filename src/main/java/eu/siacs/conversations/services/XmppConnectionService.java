@@ -349,7 +349,6 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		}
 		message.setCounterpart(conversation.getNextCounterpart());
 		message.setType(Message.TYPE_FILE);
-		message.setStatus(Message.STATUS_OFFERED);
 		String path = getFileBackend().getOriginalPath(uri);
 		if (path!=null) {
 			message.setRelativeFilePath(path);
@@ -392,7 +391,6 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		}
 		message.setCounterpart(conversation.getNextCounterpart());
 		message.setType(Message.TYPE_IMAGE);
-		message.setStatus(Message.STATUS_OFFERED);
 		new Thread(new Runnable() {
 
 			@Override
@@ -813,7 +811,6 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 			Presences presences = contact.getPresences();
 			if ((message.getCounterpart() != null)
 					&& (presences.has(message.getCounterpart().getResourcepart()))) {
-				markMessage(message, Message.STATUS_OFFERED);
 				mJingleConnectionManager.createNewConnection(message);
 			} else {
 				if (presences.size() == 1) {
@@ -823,7 +820,6 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 					} catch (InvalidJidException e) {
 						return;
 					}
-					markMessage(message, Message.STATUS_OFFERED);
 					mJingleConnectionManager.createNewConnection(message);
 				}
 			}
