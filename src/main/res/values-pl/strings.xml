@@ -202,6 +202,7 @@
   <string name="install_openkeychain">Wiadomość zaszyfrowana. Zainstaluj OpenKeychain, żeby odszyfrować.</string>
   <string name="unknown_otr_fingerprint">Nieznany odcisk klucza OTR</string>
   <string name="openpgp_messages_found">Znaleziono wiadomości zaszyfrowane przez OpenPGP</string>
+  <string name="reception_failed">Odbiór nieudany</string>
   <string name="your_fingerprint">Twój odcisk klucza</string>
   <string name="otr_fingerprint">Odcisk klucza OTR</string>
   <string name="verify">Weryfikuj</string>
@@ -236,7 +237,9 @@
   <string name="error_publish_avatar_server_reject">Serwer odrzucił żądanie publikacji</string>
   <string name="error_publish_avatar_converting">Wystąpił błąd podczas konwersji obrazu</string>
   <string name="error_saving_avatar">Nie udało się zapisać obrazu w pamięci urządzenia</string>
+  <string name="or_long_press_for_default">(lub przytrzymaj długo, aby ustawić domyślny)</string>
   <string name="error_publish_avatar_no_server_support">Serwer nie udostępnia możliwości publikacji awatarów</string>
+  <string name="private_message">szepcze</string>
   <string name="private_message_to">do %s</string>
   <string name="send_private_message_to">Wyślij prywatną wiadomość do %s</string>
   <string name="connect">Połącz</string>
@@ -252,10 +255,12 @@
   <string name="conference_requires_password">Konferencja jest zabezpieczona hasłem</string>
   <string name="enter_password">Wprowadź hasło</string>
   <string name="missing_presence_updates">Kontakt nie udostępnia powiadomień o obecności</string>
+  <string name="request_presence_updates">Poproś kontakt o udostępnienie powiadomień o obecności.\n\n<small>Pozwoli to na ustalenie klienta, z którego korzysta rozmówca.</small></string>
   <string name="request_now">Zażądaj teraz</string>
   <string name="delete_fingerprint">Usuń odcisk klucza</string>
   <string name="sure_delete_fingerprint">Czy na pewno chcesz usunąć odcisk klucza?</string>
   <string name="ignore">Ignoruj</string>
+  <string name="without_mutual_presence_updates"><b>Uwaga:</b> Wysyłanie bez obustronnych powiadomień o obecności może powodować nieoczekiwane problemy.\n\n<small>Sprawdź subskrypcję powiadomień w szczegółach kontaktu.</small></string>
   <string name="pref_encryption_settings">Ustawienia szyfrowania</string>
   <string name="pref_force_encryption">Wymuszaj szyfrowanie typu end-to-end</string>
   <string name="pref_force_encryption_summary">Szyfruj wszystkie wiadomości (poza konferencjami)</string>
@@ -283,6 +288,7 @@
   <string name="conference_banned">Zbanowano cię w konferencji</string>
   <string name="conference_members_only">To jest zamknięty pokój</string>
   <string name="conference_kicked">Wyrzucono cię z konferencji</string>
+  <string name="using_account">używając konta %s</string>
   <string name="checking_image">Sprawdzanie obrazka na hoście HTTP</string>
   <string name="image_file_deleted">Obraz został usunięty</string>
   <string name="not_connected_try_again">Brak połączenia. Spróbuj ponownie później</string>
@@ -302,6 +308,7 @@
   <string name="account_details">Szczegóły konta</string>
   <string name="verify_otr">Weryfikuj OTR</string>
   <string name="remote_fingerprint">Zdalny odcisk klucza</string>
+  <string name="scan">skanuj</string>
   <string name="or_touch_phones">(lub zetknij telefony)</string>
   <string name="smp">Protokół socialist millionaire</string>
   <string name="shared_secret_hint">Podpowiedź lub pytanie</string>
@@ -309,6 +316,7 @@
   <string name="confirm">Potwierdź</string>
   <string name="in_progress">W toku</string>
   <string name="respond">Odpowiedz</string>
+  <string name="failed">Operacja nieudana</string>
   <string name="secrets_do_not_match">Sekrety są niezgodne</string>
   <string name="try_again">Spróbuj ponownie</string>
   <string name="finish">Zakończ</string>
@@ -382,6 +390,7 @@
   <string name="private_conference">Konferencja prywatna, dla zaakceptowanych uczestników</string>
   <string name="conference_options">Opcje konferencji</string>
   <string name="members_only">Prywatna (tylko zaakceptowani)</string>
+  <string name="non_anonymous">Nieanonimowa</string>
   <string name="modified_conference_options">Opcje konferencji zostały zmienione!</string>
   <string name="could_not_modify_conference_options">Nie udało się zmienić opcji konferencji</string>
   <string name="never">Nigdy</string>
@@ -420,7 +429,23 @@
   <string name="received_location">Otrzymano lokalizację</string>
   <string name="title_undo_swipe_out_conversation">Zamknięto konwersację</string>
   <string name="title_undo_swipe_out_muc">Opuszczono konferencję</string>
+  <string name="pref_certificate_options">Ustawienia certyfikatów</string>
   <string name="pref_dont_trust_system_cas_title">Nie ufaj certyfikatom systemowym</string>
   <string name="pref_dont_trust_system_cas_summary">Wymagaj ręcznego potwierdzania certyfikatów</string>
+  <string name="pref_remove_trusted_certificates_title">Usuń certyfikat</string>
+  <string name="pref_remove_trusted_certificates_summary">Wybierz zaufane certyfikaty do usunięcia</string>
+  <string name="toast_no_trusted_certs">Brak ręcznie zaufanych certyfikatów</string>
+  <string name="dialog_manage_certs_title">Usuń certyfikaty</string>
+  <string name="dialog_manage_certs_positivebutton">Usuń zaznaczone</string>
   <string name="dialog_manage_certs_negativebutton">Anuluj</string>
+  <plurals name="toast_delete_certificates">
+    <item quantity="one">Usunięto %d certyfikat</item>
+    <item quantity="few">Usunięto %d certyfikaty</item>
+    <item quantity="other">Usunięto %d certyfikatów</item>
+  </plurals>
+  <plurals name="select_contact">
+    <item quantity="one">%d kontakt wybrany</item>
+    <item quantity="few">%d kontakty wybrane</item>
+    <item quantity="other">%d kontaktów wybranych</item>
+  </plurals>
 </resources>
