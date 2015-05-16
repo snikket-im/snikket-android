@@ -375,7 +375,9 @@ public class MessageParser extends AbstractParser implements
 		if (displayed != null) {
 			if (packet.fromAccount(account)) {
 				Conversation conversation = mXmppConnectionService.find(account,counterpart.toBareJid());
-				mXmppConnectionService.markRead(conversation);
+				if (conversation != null) {
+					mXmppConnectionService.markRead(conversation);
+				}
 			} else {
 				updateLastseen(packet, account, true);
 				final Message displayedMessage = mXmppConnectionService.markMessage(account, from.toBareJid(), displayed.getAttribute("id"), Message.STATUS_SEND_DISPLAYED);
