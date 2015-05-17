@@ -683,7 +683,7 @@ public class XmppConnection implements Runnable {
 					disconnect(true);
 					Log.d(Config.LOGTAG, account.getJid().toBareJid()
 							+ ": could not register. instructions are"
-							+ instructions != null ? instructions.getContent() : "");
+							+ (instructions != null ? instructions.getContent() : ""));
 				}
 			}
 		});
