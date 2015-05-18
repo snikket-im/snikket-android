@@ -187,7 +187,7 @@ public class XmppConnection implements Runnable {
 									+ srvRecordServer + ":" + srvRecordPort);
 						}
 						socket = new Socket();
-						socket.connect(addr, 20000);
+						socket.connect(addr, Config.SOCKET_TIMEOUT * 1000);
 						socketError = false;
 					} catch (final UnknownHostException e) {
 						Log.d(Config.LOGTAG, account.getJid().toBareJid().toString() + ": " + e.getMessage());
