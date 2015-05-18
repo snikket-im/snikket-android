@@ -213,7 +213,7 @@ public class JingleConnection implements Downloadable {
 
 						@Override
 						public void onPrimaryCandidateFound(boolean success,
-								final JingleCandidate candidate) {
+															final JingleCandidate candidate) {
 							if (success) {
 								final JingleSocks5Transport socksConnection = new JingleSocks5Transport(
 										JingleConnection.this, candidate);
@@ -399,7 +399,9 @@ public class JingleConnection implements Downloadable {
 	private List<Element> getCandidatesAsElements() {
 		List<Element> elements = new ArrayList<>();
 		for (JingleCandidate c : this.candidates) {
-			elements.add(c.toElement());
+			if (c.isOurs()) {
+				elements.add(c.toElement());
+			}
 		}
 		return elements;
 	}
