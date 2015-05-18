@@ -6,7 +6,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.SocketAddress;
 import java.net.UnknownHostException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -56,8 +58,9 @@ public class JingleSocks5Transport extends JingleTransport {
 			@Override
 			public void run() {
 				try {
-					socket = new Socket(candidate.getHost(),
-							candidate.getPort());
+					socket = new Socket();
+					SocketAddress address = new InetSocketAddress(candidate.getHost(),candidate.getPort());
+					socket.connect(address,Config.SOCKET_TIMEOUT * 1000);
 					inputStream = socket.getInputStream();
 					outputStream = socket.getOutputStream();
 					byte[] login = { 0x05, 0x01, 0x00 };
