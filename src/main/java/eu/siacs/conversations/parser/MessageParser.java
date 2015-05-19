@@ -101,6 +101,20 @@ public class MessageParser extends AbstractParser implements
 			this.jid = jid;
 			this.password = password;
 		}
+
+		public boolean execute(Account account) {
+			if (jid != null) {
+				Conversation conversation = mXmppConnectionService.findOrCreateConversation(account, jid, true);
+				if (!conversation.getMucOptions().online()) {
+					conversation.getMucOptions().setPassword(password);
+					mXmppConnectionService.databaseBackend.updateConversation(conversation);
+					mXmppConnectionService.joinMuc(conversation);
+					mXmppConnectionService.updateConversationUi();
+				}
+				return true;
+			}
+			return false;
+		}
 	}
 
 	private Invite extractInvite(Element message) {
@@ -122,34 +136,23 @@ public class MessageParser extends AbstractParser implements
 
 	private void parseEvent(final Element event, final Jid from, final Account account) {
 		Element items = event.findChild("items");
-		if (items == null) {
-			return;
-		}
-		String node = items.getAttribute("node");
-		if (node == null) {
-			return;
-		}
-		if (node.equals("urn:xmpp:avatar:metadata")) {
+		String node = items == null ? null : items.getAttribute("node");
+		if ("urn:xmpp:avatar:metadata".equals(node)) {
 			Avatar avatar = Avatar.parseMetadata(items);
 			if (avatar != null) {
 				avatar.owner = from;
-				if (mXmppConnectionService.getFileBackend().isAvatarCached(
-						avatar)) {
+				if (mXmppConnectionService.getFileBackend().isAvatarCached(avatar)) {
 					if (account.getJid().toBareJid().equals(from)) {
 						if (account.setAvatar(avatar.getFilename())) {
-							mXmppConnectionService.databaseBackend
-									.updateAccount(account);
+							mXmppConnectionService.databaseBackend.updateAccount(account);
 						}
-						mXmppConnectionService.getAvatarService().clear(
-								account);
+						mXmppConnectionService.getAvatarService().clear(account);
 						mXmppConnectionService.updateConversationUi();
 						mXmppConnectionService.updateAccountUi();
 					} else {
-						Contact contact = account.getRoster().getContact(
-								from);
+						Contact contact = account.getRoster().getContact(from);
 						contact.setAvatar(avatar);
-						mXmppConnectionService.getAvatarService().clear(
-								contact);
+						mXmppConnectionService.getAvatarService().clear(contact);
 						mXmppConnectionService.updateConversationUi();
 						mXmppConnectionService.updateRosterUi();
 					}
@@ -157,27 +160,35 @@ public class MessageParser extends AbstractParser implements
 					mXmppConnectionService.fetchAvatar(account, avatar);
 				}
 			}
-		} else if (node.equals("http://jabber.org/protocol/nick")) {
-			Element item = items.findChild("item");
-			if (item != null) {
-				Element nick = item.findChild("nick",
-						"http://jabber.org/protocol/nick");
-				if (nick != null) {
-					if (from != null) {
-						Contact contact = account.getRoster().getContact(
-								from);
-						contact.setPresenceName(nick.getContent());
-						mXmppConnectionService.getAvatarService().clear(account);
-						mXmppConnectionService.updateConversationUi();
-						mXmppConnectionService.updateAccountUi();
-					}
-				}
+		} else if ("http://jabber.org/protocol/nick".equals(node)) {
+			Element i = items.findChild("item");
+			Element nick = i == null ? null : i.findChild("nick", "http://jabber.org/protocol/nick");
+			if (nick != null) {
+				Contact contact = account.getRoster().getContact(from);
+				contact.setPresenceName(nick.getContent());
+				mXmppConnectionService.getAvatarService().clear(account);
+				mXmppConnectionService.updateConversationUi();
+				mXmppConnectionService.updateAccountUi();
 			}
 		}
 	}
 
+	private boolean handleErrorMessage(Account account, MessagePacket packet) {
+		if (packet.getType() == MessagePacket.TYPE_ERROR) {
+			Jid from = packet.getFrom();
+			if (from != null) {
+				mXmppConnectionService.markMessage(account, from.toBareJid(), packet.getId(), Message.STATUS_SEND_FAILED);
+			}
+			return true;
+		}
+		return false;
+	}
+
 	@Override
 	public void onMessagePacketReceived(Account account, MessagePacket original) {
+		if (handleErrorMessage(account, original)) {
+			return;
+		}
 		final MessagePacket packet;
 		Long timestamp = null;
 		final boolean isForwarded;
@@ -207,12 +218,16 @@ public class MessageParser extends AbstractParser implements
 			f = original.getForwardedMessagePacket("received", "urn:xmpp:carbons:2");
 			f = f == null ? original.getForwardedMessagePacket("sent", "urn:xmpp:carbons:2") : f;
 			packet = f != null ? f.first : original;
+			if (handleErrorMessage(account, packet)) {
+				return;
+			}
 			timestamp = f != null ? f.second : null;
 			isForwarded = f != null;
 		} else {
 			packet = original;
 			isForwarded = false;
 		}
+
 		if (timestamp == null) {
 			timestamp = AbstractParser.getTimestamp(packet, System.currentTimeMillis());
 		}
@@ -239,14 +254,7 @@ public class MessageParser extends AbstractParser implements
 		}
 
 		Invite invite = extractInvite(packet);
-		if (invite != null && invite.jid != null) {
-			Conversation conversation = mXmppConnectionService.findOrCreateConversation(account, invite.jid, true,query);
-			if (!conversation.getMucOptions().online()) {
-				conversation.getMucOptions().setPassword(invite.password);
-				mXmppConnectionService.databaseBackend.updateConversation(conversation);
-				mXmppConnectionService.joinMuc(conversation);
-				mXmppConnectionService.updateConversationUi();
-			}
+		if (invite != null && invite.execute(account)) {
 			return;
 		}
 
