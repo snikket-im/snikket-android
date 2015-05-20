@@ -1,5 +1,12 @@
 ###Changelog
 
+####Version 1.4.0
+* send button turns into quick action button to offer faster access to take photo, send location or record audio
+* visually seperate merged messages
+* faster reconnects of failed accounts after network switches 
+* r/o vcard avatars for contacts
+* various bug fixes
+
 ####Version 1.3.0
 * swipe conversations to end them
 * quickly enable / disable account via slider

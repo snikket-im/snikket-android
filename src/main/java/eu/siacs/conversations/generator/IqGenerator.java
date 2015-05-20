@@ -91,11 +91,18 @@ public class IqGenerator extends AbstractGenerator {
 		return publish("urn:xmpp:avatar:metadata", item);
 	}
 
-	public IqPacket retrieveAvatar(final Avatar avatar) {
+	public IqPacket retrievePepAvatar(final Avatar avatar) {
 		final Element item = new Element("item");
 		item.setAttribute("id", avatar.sha1sum);
 		final IqPacket packet = retrieve("urn:xmpp:avatar:data", item);
 		packet.setTo(avatar.owner);
+		return packet;
+	}
+
+	public IqPacket retrieveVcardAvatar(final Avatar avatar) {
+		final IqPacket packet = new IqPacket(IqPacket.TYPE.GET);
+		packet.setTo(avatar.owner);
+		packet.addChild("vCard","vcard-temp");
 		return packet;
 	}
 

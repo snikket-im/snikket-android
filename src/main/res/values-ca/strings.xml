@@ -24,8 +24,8 @@
   <string name="title_activity_choose_contact">Escollir un contacte</string>
   <string name="title_activity_block_list">LLista bloqueix</string>
   <string name="just_now">Ara</string>
-  <string name="minute_ago">1 min avans</string>
-  <string name="minutes_ago">%de minuts avans</string>
+  <string name="minute_ago">1 min abans</string>
+  <string name="minutes_ago">%de minuts abans</string>
   <string name="unread_conversations">Converses sense llegir o no llegides</string>
   <string name="sending">enviant…</string>
   <string name="encrypted_message">Desxifrant missatge. Espera si us plau…</string>
@@ -359,6 +359,7 @@
   <string name="could_not_change_password">No s\'ha pogut canviar la contrasenya</string>
   <string name="otr_session_not_started">Començar a enviar un missatge de conversació xifrat</string>
   <string name="ask_question">Fer una pregunta</string>
+  <string name="smp_explain_question">Si vosté i el seu contacte tenen un secret en comú que ningú més sap (com una broma o simplement el que vau dinar l\'última vegada que es van trobar) pot utilitzar aquest secret per comprovar les empremtes de cadascú.\n\nProporcionaràs una pista o una pregunta a la que el seu contacte donarà una resposta, que distingeix entre majúscules i minúscules.</string>
   <string name="smp_explain_answer">El seu contacte l\'hi agradaria verificar la seva empremta digital per un repte amb un secret compartit.El seu contacte proporciona el següent suggeriment o pregunta per aquest secret.</string>
   <string name="shared_secret_hint_should_not_be_empty">El seu suggeriment no pot estar buit</string>
   <string name="shared_secret_can_not_be_empty">El teu secret compartit no pot estar buit</string>
@@ -416,4 +417,33 @@
   <string name="sending_x_file">Enviant %s</string>
   <string name="offering_x_file">Oferint %s</string>
   <string name="hide_offline">Amaga el fora de línia</string>
+  <string name="disable_account">Deshabilita el compte</string>
+  <string name="contact_is_typing">%s està escrivint...</string>
+  <string name="contact_has_stopped_typing">%s ha deixat d\'escriure</string>
+  <string name="pref_chat_states">Notificacions d\'escriptura</string>
+  <string name="pref_chat_states_summary">Permet el teu contacte saber quan estàs escrivint un missatge nou</string>
+  <string name="send_location">Enviar localització</string>
+  <string name="show_location">Mostrar localització</string>
+  <string name="no_application_found_to_display_location">No s\'ha trobat cap aplicació per mostrar la localització</string>
+  <string name="location">Localització</string>
+  <string name="received_location">Localització rebuda</string>
+  <string name="title_undo_swipe_out_conversation">Conversa tancada</string>
+  <string name="title_undo_swipe_out_muc">S\'ha sortit de la conferència</string>
+  <string name="pref_certificate_options">Opcions de certificats</string>
+  <string name="pref_dont_trust_system_cas_title">No confiar en les CAs del sistema</string>
+  <string name="pref_dont_trust_system_cas_summary">Tots els certificats han de ser aprovats manualment</string>
+  <string name="pref_remove_trusted_certificates_title">Eliminar certificats</string>
+  <string name="pref_remove_trusted_certificates_summary">Esborrar certificats aprovats manualment</string>
+  <string name="toast_no_trusted_certs">No hi ha certificats aprovats manualment</string>
+  <string name="dialog_manage_certs_title">Esborrar certificats</string>
+  <string name="dialog_manage_certs_positivebutton">Esborrar selecció</string>
+  <string name="dialog_manage_certs_negativebutton">Cancel·lar</string>
+  <plurals name="toast_delete_certificates">
+    <item quantity="one">%d certificat esborrat</item>
+    <item quantity="other">%d certificats esborrats</item>
+  </plurals>
+  <plurals name="select_contact">
+    <item quantity="one">Seleccionar %d contacte</item>
+    <item quantity="other">Seleccionar %d contactes</item>
+  </plurals>
 </resources>

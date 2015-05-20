@@ -60,11 +60,11 @@ public class ConversationActivity extends XmppActivity
 	public static final int REQUEST_SEND_MESSAGE = 0x0201;
 	public static final int REQUEST_DECRYPT_PGP = 0x0202;
 	public static final int REQUEST_ENCRYPT_MESSAGE = 0x0207;
-	private static final int ATTACHMENT_CHOICE_CHOOSE_IMAGE = 0x0301;
-	private static final int ATTACHMENT_CHOICE_TAKE_PHOTO = 0x0302;
-	private static final int ATTACHMENT_CHOICE_CHOOSE_FILE = 0x0303;
-	private static final int ATTACHMENT_CHOICE_RECORD_VOICE = 0x0304;
-	private static final int ATTACHMENT_CHOICE_LOCATION = 0x0305;
+	public static final int ATTACHMENT_CHOICE_CHOOSE_IMAGE = 0x0301;
+	public static final int ATTACHMENT_CHOICE_TAKE_PHOTO = 0x0302;
+	public static final int ATTACHMENT_CHOICE_CHOOSE_FILE = 0x0303;
+	public static final int ATTACHMENT_CHOICE_RECORD_VOICE = 0x0304;
+	public static final int ATTACHMENT_CHOICE_LOCATION = 0x0305;
 	private static final String STATE_OPEN_CONVERSATION = "state_open_conversation";
 	private static final String STATE_PANEL_OPEN = "state_panel_open";
 	private static final String STATE_PENDING_URI = "state_pending_uri";
@@ -398,61 +398,88 @@ public class ConversationActivity extends XmppActivity
 	}
 
 	private void selectPresenceToAttachFile(final int attachmentChoice, final int encryption) {
+		final OnPresenceSelected callback = new OnPresenceSelected() {
+
+			@Override
+			public void onPresenceSelected() {
+				Intent intent = new Intent();
+				boolean chooser = false;
+				String fallbackPackageId = null;
+				switch (attachmentChoice) {
+					case ATTACHMENT_CHOICE_CHOOSE_IMAGE:
+						intent.setAction(Intent.ACTION_GET_CONTENT);
+						if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+							intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE,true);
+						}
+						intent.setType("image/*");
+						chooser = true;
+						break;
+					case ATTACHMENT_CHOICE_TAKE_PHOTO:
+						Uri uri = xmppConnectionService.getFileBackend().getTakePhotoUri();
+						intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
+						intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+						mPendingImageUris.clear();
+						mPendingImageUris.add(uri);
+						break;
+					case ATTACHMENT_CHOICE_CHOOSE_FILE:
+						chooser = true;
+						intent.setType("*/*");
+						intent.addCategory(Intent.CATEGORY_OPENABLE);
+						intent.setAction(Intent.ACTION_GET_CONTENT);
+						break;
+					case ATTACHMENT_CHOICE_RECORD_VOICE:
+						intent.setAction(MediaStore.Audio.Media.RECORD_SOUND_ACTION);
+						fallbackPackageId = "eu.siacs.conversations.voicerecorder";
+						break;
+					case ATTACHMENT_CHOICE_LOCATION:
+						intent.setAction("eu.siacs.conversations.location.request");
+						fallbackPackageId = "eu.siacs.conversations.sharelocation";
+						break;
+				}
+				if (intent.resolveActivity(getPackageManager()) != null) {
+					if (chooser) {
+						startActivityForResult(
+								Intent.createChooser(intent, getString(R.string.perform_action_with)),
+								attachmentChoice);
+					} else {
+						startActivityForResult(intent, attachmentChoice);
+					}
+				} else if (fallbackPackageId != null) {
+					startActivity(getInstallApkIntent(fallbackPackageId));
+				}
+			}
+		};
 		if (attachmentChoice == ATTACHMENT_CHOICE_LOCATION && encryption != Message.ENCRYPTION_OTR) {
 			getSelectedConversation().setNextCounterpart(null);
-			Intent intent = new Intent("eu.siacs.conversations.location.request");
-			startActivityForResult(intent,attachmentChoice);
+			callback.onPresenceSelected();
 		} else {
-			selectPresence(getSelectedConversation(), new OnPresenceSelected() {
-
-				@Override
-				public void onPresenceSelected() {
-					Intent intent = new Intent();
-					boolean chooser = false;
-					switch (attachmentChoice) {
-						case ATTACHMENT_CHOICE_CHOOSE_IMAGE:
-							intent.setAction(Intent.ACTION_GET_CONTENT);
-							if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-								intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE,true);
-							}
-							intent.setType("image/*");
-							chooser = true;
-							break;
-						case ATTACHMENT_CHOICE_TAKE_PHOTO:
-							Uri uri = xmppConnectionService.getFileBackend().getTakePhotoUri();
-							intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
-							intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-							mPendingImageUris.clear();
-							mPendingImageUris.add(uri);
-							break;
-						case ATTACHMENT_CHOICE_CHOOSE_FILE:
-							chooser = true;
-							intent.setType("*/*");
-							intent.addCategory(Intent.CATEGORY_OPENABLE);
-							intent.setAction(Intent.ACTION_GET_CONTENT);
-							break;
-						case ATTACHMENT_CHOICE_RECORD_VOICE:
-							intent.setAction(MediaStore.Audio.Media.RECORD_SOUND_ACTION);
-							break;
-						case ATTACHMENT_CHOICE_LOCATION:
-							intent.setAction("eu.siacs.conversations.location.request");
-							break;
-					}
-					if (intent.resolveActivity(getPackageManager()) != null) {
-						if (chooser) {
-							startActivityForResult(
-									Intent.createChooser(intent, getString(R.string.perform_action_with)),
-									attachmentChoice);
-						} else {
-							startActivityForResult(intent, attachmentChoice);
-						}
-					}
-				}
-			});
+			selectPresence(getSelectedConversation(),callback);
 		}
 	}
 
-	private void attachFile(final int attachmentChoice) {
+	private Intent getInstallApkIntent(final String packageId) {
+		Intent intent = new Intent(Intent.ACTION_VIEW);
+		intent.setData(Uri.parse("market://details?id="+packageId));
+		if (intent.resolveActivity(getPackageManager()) != null) {
+			return intent;
+		} else {
+			intent.setData(Uri.parse("http://play.google.com/store/apps/details?id="+packageId));
+			return intent;
+		}
+	}
+
+	public void attachFile(final int attachmentChoice) {
+		switch (attachmentChoice) {
+			case ATTACHMENT_CHOICE_LOCATION:
+				getPreferences().edit().putString("recently_used_quick_action","location").apply();
+				break;
+			case ATTACHMENT_CHOICE_RECORD_VOICE:
+				getPreferences().edit().putString("recently_used_quick_action","voice").apply();
+				break;
+			case ATTACHMENT_CHOICE_TAKE_PHOTO:
+				getPreferences().edit().putString("recently_used_quick_action","photo").apply();
+				break;
+		}
 		final Conversation conversation = getSelectedConversation();
 		final int encryption = conversation.getNextEncryption(forceEncryption());
 		if (encryption == Message.ENCRYPTION_PGP) {
@@ -875,6 +902,12 @@ public class ConversationActivity extends XmppActivity
 	void onBackendConnected() {
 		this.xmppConnectionService.getNotificationService().setIsInForeground(true);
 		updateConversationList();
+
+		if (mPendingConferenceInvite != null) {
+			mPendingConferenceInvite.execute(this);
+			mPendingConferenceInvite = null;
+		}
+
 		if (xmppConnectionService.getAccounts().size() == 0) {
 			if (!mRedirected) {
 				this.mRedirected = true;
@@ -901,9 +934,7 @@ public class ConversationActivity extends XmppActivity
 			}
 			this.mConversationFragment.reInit(getSelectedConversation());
 			mOpenConverstaion = null;
-		} else if (getSelectedConversation() != null) {
-			this.mConversationFragment.reInit(getSelectedConversation());
-		} else {
+		} else if (getSelectedConversation() == null) {
 			showConversationsOverview();
 			mPendingImageUris.clear();
 			mPendingFileUris.clear();

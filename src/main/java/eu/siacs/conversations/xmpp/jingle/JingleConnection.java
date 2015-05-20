@@ -99,7 +99,7 @@ public class JingleConnection implements Downloadable {
 					file.delete();
 				}
 			}
-			Log.d(Config.LOGTAG,"sucessfully transmitted file:" + file.getAbsolutePath());
+			Log.d(Config.LOGTAG,"successfully transmitted file:" + file.getAbsolutePath()+" ("+file.getSha1Sum()+")");
 			if (message.getEncryption() != Message.ENCRYPTION_PGP) {
 				Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
 				intent.setData(Uri.fromFile(file));
@@ -213,7 +213,7 @@ public class JingleConnection implements Downloadable {
 
 						@Override
 						public void onPrimaryCandidateFound(boolean success,
-								final JingleCandidate candidate) {
+															final JingleCandidate candidate) {
 							if (success) {
 								final JingleSocks5Transport socksConnection = new JingleSocks5Transport(
 										JingleConnection.this, candidate);
@@ -271,6 +271,9 @@ public class JingleConnection implements Downloadable {
 		this.mergeCandidates(JingleCandidate.parse(content.socks5transport()
 				.getChildren()));
 		this.fileOffer = packet.getJingleContent().getFileOffer();
+
+		mXmppConnectionService.sendIqPacket(account,packet.generateResponse(IqPacket.TYPE.RESULT),null);
+
 		if (fileOffer != null) {
 			Element fileSize = fileOffer.findChild("size");
 			Element fileNameElement = fileOffer.findChild("name");
@@ -381,6 +384,7 @@ public class JingleConnection implements Downloadable {
 				@Override
 				public void onIqPacketReceived(Account account, IqPacket packet) {
 					if (packet.getType() != IqPacket.TYPE.ERROR) {
+						Log.d(Config.LOGTAG,account.getJid().toBareJid()+": other party received offer");
 						mJingleStatus = JINGLE_STATUS_INITIATED;
 						mXmppConnectionService.markMessage(message, Message.STATUS_OFFERED);
 					} else {
@@ -395,7 +399,9 @@ public class JingleConnection implements Downloadable {
 	private List<Element> getCandidatesAsElements() {
 		List<Element> elements = new ArrayList<>();
 		for (JingleCandidate c : this.candidates) {
-			elements.add(c.toElement());
+			if (c.isOurs()) {
+				elements.add(c.toElement());
+			}
 		}
 		return elements;
 	}

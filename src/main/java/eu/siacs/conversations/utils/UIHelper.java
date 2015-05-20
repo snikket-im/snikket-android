@@ -1,8 +1,11 @@
 package eu.siacs.conversations.utils;
 
 import java.net.URLConnection;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Contact;
@@ -17,6 +20,33 @@ import android.text.format.DateUtils;
 import android.util.Pair;
 
 public class UIHelper {
+
+	private static String BLACK_HEART_SUIT = "\u2665";
+	private static String HEAVY_BLACK_HEART_SUIT = "\u2764";
+	private static String WHITE_HEART_SUIT = "\u2661";
+
+	public static final ArrayList<String> HEARTS = new ArrayList<>(Arrays.asList(BLACK_HEART_SUIT,HEAVY_BLACK_HEART_SUIT,WHITE_HEART_SUIT));
+
+	private static final ArrayList<String> LOCATION_QUESTIONS = new ArrayList<>(Arrays.asList(
+			"where are you", //en
+			"where are you now", //en
+			"where are you right now", //en
+			"whats your 20", //en
+			"what is your 20", //en
+			"what's your 20", //en
+			"whats your twenty", //en
+			"what is your twenty", //en
+			"what's your twenty", //en
+			"wo bist du", //de
+			"wo bist du jetzt", //de
+			"wo bist du gerade", //de
+			"wo seid ihr", //de
+			"wo seid ihr jetzt", //de
+			"wo seid ihr gerade", //de
+			"dónde estás", //es
+			"donde estas" //es
+		));
+
 	private static final int SHORT_DATE_FLAGS = DateUtils.FORMAT_SHOW_DATE
 		| DateUtils.FORMAT_NO_YEAR | DateUtils.FORMAT_ABBREV_ALL;
 	private static final int FULL_DATE_FLAGS = DateUtils.FORMAT_SHOW_TIME
@@ -224,5 +254,16 @@ public class UIHelper {
 		} else {
 			return counterpart.toString().trim();
 		}
+	}
+
+	public static boolean receivedLocationQuestion(Message message) {
+		if (message == null
+				|| message.getStatus() != Message.STATUS_RECEIVED
+				|| message.getType() != Message.TYPE_TEXT) {
+			return false;
+		}
+		String body = message.getBody() == null ? null : message.getBody().trim().toLowerCase(Locale.getDefault());
+		body = body.replace("?","").replace("¿","");
+		return LOCATION_QUESTIONS.contains(body);
 	}
 }

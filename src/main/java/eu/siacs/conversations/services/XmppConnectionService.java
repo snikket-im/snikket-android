@@ -41,6 +41,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -210,6 +211,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	private HttpConnectionManager mHttpConnectionManager = new HttpConnectionManager(
 			this);
 	private AvatarService mAvatarService = new AvatarService(this);
+	private final List<String> mInProgressAvatarFetches = new ArrayList<>();
 	private MessageArchiveService mMessageArchiveService = new MessageArchiveService(this);
 	private OnConversationUpdate mOnConversationUpdate = null;
 	private Integer convChangedListenerCount = 0;
@@ -328,7 +330,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 			message.setCounterpart(conversation.getNextCounterpart());
 		}
 		if (encryption == Message.ENCRYPTION_DECRYPTED) {
-			getPgpEngine().encrypt(message,callback);
+			getPgpEngine().encrypt(message, callback);
 		} else {
 			callback.success(message);
 		}
@@ -347,7 +349,6 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		}
 		message.setCounterpart(conversation.getNextCounterpart());
 		message.setType(Message.TYPE_FILE);
-		message.setStatus(Message.STATUS_OFFERED);
 		String path = getFileBackend().getOriginalPath(uri);
 		if (path!=null) {
 			message.setRelativeFilePath(path);
@@ -390,7 +391,6 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		}
 		message.setCounterpart(conversation.getNextCounterpart());
 		message.setType(Message.TYPE_IMAGE);
-		message.setStatus(Message.STATUS_OFFERED);
 		new Thread(new Runnable() {
 
 			@Override
@@ -422,6 +422,11 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		final String action = intent == null ? null : intent.getAction();
 		if (action != null) {
 			switch (action) {
+				case ConnectivityManager.CONNECTIVITY_ACTION:
+					if (hasInternetConnection() && Config.RESET_ATTEMPT_COUNT_ON_NETWORK_CHANGE) {
+						resetAllAttemptCounts(true);
+					}
+					break;
 				case ACTION_MERGE_PHONE_CONTACTS:
 					if (mRestoredFromDatabase) {
 						PhoneHelper.loadPhoneContacts(getApplicationContext(),
@@ -440,14 +445,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 					toggleForegroundService();
 					break;
 				case ACTION_TRY_AGAIN:
-					for(Account account : accounts) {
-						if (account.hasErrorStatus()) {
-							final XmppConnection connection = account.getXmppConnection();
-							if (connection != null) {
-								connection.resetAttemptCount();
-							}
-						}
-					}
+					resetAllAttemptCounts(false);
 					break;
 				case ACTION_DISABLE_ACCOUNT:
 					try {
@@ -527,6 +525,18 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 			}
 		}
 		return START_STICKY;
+	}
+
+	private void resetAllAttemptCounts(boolean reallyAll) {
+		Log.d(Config.LOGTAG,"resetting all attepmt counts");
+		for(Account account : accounts) {
+			if (account.hasErrorStatus() || reallyAll) {
+				final XmppConnection connection = account.getXmppConnection();
+				if (connection != null) {
+					connection.resetAttemptCount();
+				}
+			}
+		}
 	}
 
 	public boolean hasInternetConnection() {
@@ -801,7 +811,6 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 			Presences presences = contact.getPresences();
 			if ((message.getCounterpart() != null)
 					&& (presences.has(message.getCounterpart().getResourcepart()))) {
-				markMessage(message, Message.STATUS_OFFERED);
 				mJingleConnectionManager.createNewConnection(message);
 			} else {
 				if (presences.size() == 1) {
@@ -811,7 +820,6 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 					} catch (InvalidJidException e) {
 						return;
 					}
-					markMessage(message, Message.STATUS_OFFERED);
 					mJingleConnectionManager.createNewConnection(message);
 				}
 			}
@@ -1867,6 +1875,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 														   IqPacket result) {
 								if (result.getType() == IqPacket.TYPE.RESULT) {
 									if (account.setAvatar(avatar.getFilename())) {
+										getAvatarService().clear(account);
 										databaseBackend.updateAccount(account);
 									}
 									callback.success(avatar);
@@ -1893,13 +1902,39 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		fetchAvatar(account, avatar, null);
 	}
 
-	public void fetchAvatar(Account account, final Avatar avatar,
-							final UiCallback<Avatar> callback) {
-		IqPacket packet = this.mIqGenerator.retrieveAvatar(avatar);
+	private static String generateFetchKey(Account account, final Avatar avatar) {
+		return account.getJid().toBareJid()+"_"+avatar.owner+"_"+avatar.sha1sum;
+	}
+
+	public void fetchAvatar(Account account, final Avatar avatar, final UiCallback<Avatar> callback) {
+		final String KEY = generateFetchKey(account, avatar);
+		synchronized(this.mInProgressAvatarFetches) {
+			if (this.mInProgressAvatarFetches.contains(KEY)) {
+				return;
+			} else {
+				switch (avatar.origin) {
+					case PEP:
+						this.mInProgressAvatarFetches.add(KEY);
+						fetchAvatarPep(account, avatar, callback);
+						break;
+					case VCARD:
+						this.mInProgressAvatarFetches.add(KEY);
+						fetchAvatarVcard(account, avatar, callback);
+						break;
+				}
+			}
+		}
+	}
+
+	private void fetchAvatarPep(Account account, final Avatar avatar, final UiCallback<Avatar> callback) {
+		IqPacket packet = this.mIqGenerator.retrievePepAvatar(avatar);
 		sendIqPacket(account, packet, new OnIqPacketReceived() {
 
 			@Override
 			public void onIqPacketReceived(Account account, IqPacket result) {
+				synchronized (mInProgressAvatarFetches) {
+					mInProgressAvatarFetches.remove(generateFetchKey(account, avatar));
+				}
 				final String ERROR = account.getJid().toBareJid()
 						+ ": fetching avatar for " + avatar.owner + " failed ";
 				if (result.getType() == IqPacket.TYPE.RESULT) {
@@ -1916,7 +1951,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 							} else {
 								Contact contact = account.getRoster()
 										.getContact(avatar.owner);
-								contact.setAvatar(avatar.getFilename());
+								contact.setAvatar(avatar);
 								getAvatarService().clear(contact);
 								updateConversationUi();
 								updateRosterUi();
@@ -1925,8 +1960,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 								callback.success(avatar);
 							}
 							Log.d(Config.LOGTAG, account.getJid().toBareJid()
-									+ ": succesfully fetched avatar for "
-									+ avatar.owner);
+									+ ": succesfuly fetched pep avatar for " + avatar.owner);
 							return;
 						}
 					} else {
@@ -1949,8 +1983,38 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		});
 	}
 
-	public void checkForAvatar(Account account,
-							   final UiCallback<Avatar> callback) {
+	private void fetchAvatarVcard(final Account account, final Avatar avatar, final UiCallback<Avatar> callback) {
+		IqPacket packet = this.mIqGenerator.retrieveVcardAvatar(avatar);
+		this.sendIqPacket(account,packet,new OnIqPacketReceived() {
+			@Override
+			public void onIqPacketReceived(Account account, IqPacket packet) {
+				synchronized(mInProgressAvatarFetches) {
+					mInProgressAvatarFetches.remove(generateFetchKey(account,avatar));
+				}
+				if (packet.getType() == IqPacket.TYPE.RESULT) {
+					Element vCard = packet.findChild("vCard","vcard-temp");
+					Element photo = vCard != null ? vCard.findChild("PHOTO") : null;
+					Element binval = photo != null ? photo.findChild("BINVAL") : null;
+					String image = binval != null ? binval.getContent() : null;
+					if (image != null) {
+						avatar.image = image;
+						if (getFileBackend().save(avatar)) {
+							Log.d(Config.LOGTAG, account.getJid().toBareJid()
+									+ ": successfully fetched vCard avatar for " + avatar.owner);
+							Contact contact = account.getRoster()
+									.getContact(avatar.owner);
+							contact.setAvatar(avatar);
+							getAvatarService().clear(contact);
+							updateConversationUi();
+							updateRosterUi();
+						}
+					}
+				}
+			}
+		});
+	}
+
+	public void checkForAvatar(Account account, final UiCallback<Avatar> callback) {
 		IqPacket packet = this.mIqGenerator.retrieveAvatarMetaData(null);
 		this.sendIqPacket(account, packet, new OnIqPacketReceived() {
 
@@ -1972,7 +2036,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 									getAvatarService().clear(account);
 									callback.success(avatar);
 								} else {
-									fetchAvatar(account, avatar, callback);
+									fetchAvatarPep(account, avatar, callback);
 								}
 								return;
 							}
@@ -2008,6 +2072,16 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 				disconnect(account, force);
 			}
 			if (!account.isOptionSet(Account.OPTION_DISABLED)) {
+
+				synchronized (this.mInProgressAvatarFetches) {
+					for(Iterator<String> iterator = this.mInProgressAvatarFetches.iterator(); iterator.hasNext();) {
+						final String KEY = iterator.next();
+						if (KEY.startsWith(account.getJid().toBareJid()+"_")) {
+							iterator.remove();
+						}
+					}
+				}
+
 				if (account.getXmppConnection() == null) {
 					account.setXmppConnection(createConnection(account));
 				}
@@ -2031,6 +2105,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	}
 
 	public void invite(Conversation conversation, Jid contact) {
+		Log.d(Config.LOGTAG,conversation.getAccount().getJid().toBareJid()+": inviting "+contact+" to "+conversation.getJid().toBareJid());
 		MessagePacket packet = mMessageGenerator.invite(conversation, contact);
 		sendMessagePacket(conversation.getAccount(), packet);
 	}

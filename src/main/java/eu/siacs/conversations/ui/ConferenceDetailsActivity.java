@@ -385,6 +385,10 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 
 	@Override
 	void onBackendConnected() {
+		if (mPendingConferenceInvite != null) {
+			mPendingConferenceInvite.execute(this);
+			mPendingConferenceInvite = null;
+		}
 		if (getIntent().getAction().equals(ACTION_VIEW_MUC)) {
 			this.uuid = getIntent().getExtras().getString("uuid");
 		}

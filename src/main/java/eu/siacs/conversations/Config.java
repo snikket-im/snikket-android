@@ -11,6 +11,7 @@ public final class Config {
 	public static final int PING_MAX_INTERVAL = 300;
 	public static final int PING_MIN_INTERVAL = 30;
 	public static final int PING_TIMEOUT = 10;
+	public static final int SOCKET_TIMEOUT = 15;
 	public static final int CONNECT_TIMEOUT = 90;
 	public static final int CARBON_GRACE_PERIOD = 60;
 	public static final int MINI_GRACE_PERIOD = 750;
@@ -28,7 +29,8 @@ public final class Config {
 
 	public static final boolean NO_PROXY_LOOKUP = false; //useful to debug ibb
 	public static final boolean DISABLE_STRING_PREP = false; // setting to true might increase startup performance
-	public static final boolean EXTENDED_SM_LOGGING = false; // log stanza counts
+	public static final boolean EXTENDED_SM_LOGGING = true; // log stanza counts
+	public static final boolean RESET_ATTEMPT_COUNT_ON_NETWORK_CHANGE = true; //setting to true might increase power consumption
 
 	public static final long MILLISECONDS_IN_DAY = 24 * 60 * 60 * 1000;
 	public static final long MAM_MAX_CATCHUP =  MILLISECONDS_IN_DAY / 2;

@@ -167,7 +167,7 @@ public class XmppConnection implements Runnable {
 					try {
 						String srvRecordServer;
 						try {
-							srvRecordServer=IDN.toASCII(namePort.getString("name"));
+							srvRecordServer = IDN.toASCII(namePort.getString("name"));
 						} catch (final IllegalArgumentException e) {
 							// TODO: Handle me?`
 							srvRecordServer = "";
@@ -187,7 +187,7 @@ public class XmppConnection implements Runnable {
 									+ srvRecordServer + ":" + srvRecordPort);
 						}
 						socket = new Socket();
-						socket.connect(addr, 20000);
+						socket.connect(addr, Config.SOCKET_TIMEOUT * 1000);
 						socketError = false;
 					} catch (final UnknownHostException e) {
 						Log.d(Config.LOGTAG, account.getJid().toBareJid().toString() + ": " + e.getMessage());
@@ -224,6 +224,12 @@ public class XmppConnection implements Runnable {
 			if (socket.isConnected()) {
 				socket.close();
 			}
+		} catch (final IncompatibleServerException e) {
+			this.changeStatus(Account.State.INCOMPATIBLE_SERVER);
+		} catch (final SecurityException e) {
+			this.changeStatus(Account.State.SECURITY_ERROR);
+		} catch (final UnauthorizedException e) {
+			this.changeStatus(Account.State.UNAUTHORIZED);
 		} catch (final UnknownHostException | ConnectException e) {
 			this.changeStatus(Account.State.SERVER_NOT_FOUND);
 		} catch (final IOException | XmlPullParserException | NoSuchAlgorithmException e) {
@@ -231,6 +237,13 @@ public class XmppConnection implements Runnable {
 			this.changeStatus(Account.State.OFFLINE);
 			this.attempt--; //don't count attempt when reconnecting instantly anyway
 		} finally {
+			if (socket != null) {
+				try {
+					socket.close();
+				} catch (IOException e) {
+
+				}
+			}
 			if (wakeLock.isHeld()) {
 				try {
 					wakeLock.release();
@@ -279,8 +292,7 @@ public class XmppConnection implements Runnable {
 								processStream(tagReader.readTag());
 								break;
 							} else if (nextTag.isStart("failure")) {
-								tagReader.readElement(nextTag);
-								changeStatus(Account.State.UNAUTHORIZED);
+								throw new UnauthorizedException();
 							} else if (nextTag.isStart("challenge")) {
 								final String challenge = tagReader.readElement(nextTag).getContent();
 								final Element response = new Element("response");
@@ -437,6 +449,10 @@ public class XmppConnection implements Runnable {
 				throw new IOException("interrupted mid tag");
 			}
 		}
+		if (stanzasReceived == Integer.MAX_VALUE) {
+			resetStreamId();
+			throw new IOException("time to restart the session. cant handle >2 billion pcks");
+		}
 		++stanzasReceived;
 		lastPacketReceived = SystemClock.elapsedRealtime();
 		return element;
@@ -538,8 +554,7 @@ public class XmppConnection implements Runnable {
 
 			if (!verifier.verify(account.getServer().getDomainpart(),sslSocket.getSession())) {
 				Log.d(Config.LOGTAG,account.getJid().toBareJid()+": TLS certificate verification failed");
-				disconnect(true);
-				changeStatus(Account.State.SECURITY_ERROR);
+				throw new SecurityException();
 			}
 			tagReader.setInputStream(sslSocket.getInputStream());
 			tagWriter.setOutputStream(sslSocket.getOutputStream());
@@ -550,8 +565,7 @@ public class XmppConnection implements Runnable {
 			sslSocket.close();
 		} catch (final NoSuchAlgorithmException | KeyManagementException e1) {
 			Log.d(Config.LOGTAG,account.getJid().toBareJid()+": TLS certificate verification failed");
-			disconnect(true);
-			changeStatus(Account.State.SECURITY_ERROR);
+			throw new SecurityException();
 		}
 	}
 
@@ -590,8 +604,7 @@ public class XmppConnection implements Runnable {
 								" has lower priority (" + String.valueOf(saslMechanism.getPriority()) +
 								") than pinned priority (" + keys.getInt(Account.PINNED_MECHANISM_KEY) +
 								"). Possible downgrade attack?");
-						disconnect(true);
-						changeStatus(Account.State.SECURITY_ERROR);
+						throw new SecurityException();
 					}
 				} catch (final JSONException e) {
 					Log.d(Config.LOGTAG, "Parse error while checking pinned auth mechanism");
@@ -603,8 +616,7 @@ public class XmppConnection implements Runnable {
 				}
 				tagWriter.writeElement(auth);
 			} else {
-				disconnect(true);
-				changeStatus(Account.State.INCOMPATIBLE_SERVER);
+				throw new IncompatibleServerException();
 			}
 		} else if (this.streamFeatures.hasChild("sm", "urn:xmpp:sm:"
 					+ smVersion)
@@ -643,10 +655,8 @@ public class XmppConnection implements Runnable {
 				if (packet.query().hasChild("username")
 						&& (packet.query().hasChild("password"))) {
 					final IqPacket register = new IqPacket(IqPacket.TYPE.SET);
-					final Element username = new Element("username")
-						.setContent(account.getUsername());
-					final Element password = new Element("password")
-						.setContent(account.getPassword());
+					final Element username = new Element("username").setContent(account.getUsername());
+					final Element password = new Element("password").setContent(account.getPassword());
 					register.query("jabber:iq:register").addChild(username);
 					register.query().addChild(password);
 					sendIqPacket(register, new OnIqPacketReceived() {
@@ -659,7 +669,7 @@ public class XmppConnection implements Runnable {
 								changeStatus(Account.State.REGISTRATION_SUCCESSFUL);
 							} else if (packet.hasChild("error")
 									&& (packet.findChild("error")
-										.hasChild("conflict"))) {
+									.hasChild("conflict"))) {
 								changeStatus(Account.State.REGISTRATION_CONFLICT);
 							} else {
 								changeStatus(Account.State.REGISTRATION_FAILED);
@@ -673,7 +683,7 @@ public class XmppConnection implements Runnable {
 					disconnect(true);
 					Log.d(Config.LOGTAG, account.getJid().toBareJid()
 							+ ": could not register. instructions are"
-							+ instructions.getContent());
+							+ (instructions != null ? instructions.getContent() : ""));
 				}
 			}
 		});
@@ -688,7 +698,7 @@ public class XmppConnection implements Runnable {
 		}
 		final IqPacket iq = new IqPacket(IqPacket.TYPE.SET);
 		iq.addChild("bind", "urn:ietf:params:xml:ns:xmpp-bind")
-			.addChild("resource").setContent(account.getResource());
+				.addChild("resource").setContent(account.getResource());
 		this.sendUnmodifiedIqPacket(iq, new OnIqPacketReceived() {
 			@Override
 			public void onIqPacketReceived(final Account account, final IqPacket packet) {
@@ -901,6 +911,11 @@ public class XmppConnection implements Runnable {
 	}
 
 	private synchronized void sendPacket(final AbstractStanza packet) {
+		if (stanzasSent == Integer.MAX_VALUE) {
+			resetStreamId();
+			disconnect(true);
+			return;
+		}
 		final String name = packet.getName();
 		if (name.equals("iq") || name.equals("message") || name.equals("presence")) {
 			++stanzasSent;
@@ -1089,6 +1104,18 @@ public class XmppConnection implements Runnable {
 	private class Info {
 		public final ArrayList<String> features = new ArrayList<>();
 		public final ArrayList<Pair<String,String>> identities = new ArrayList<>();
+	}
+
+	private class UnauthorizedException extends IOException {
+
+	}
+
+	private class SecurityException extends IOException {
+
+	}
+
+	private class IncompatibleServerException extends IOException {
+
 	}
 
 	public class Features {

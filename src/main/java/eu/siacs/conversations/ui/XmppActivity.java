@@ -113,6 +113,8 @@ public abstract class XmppActivity extends Activity {
 		}
 	};
 
+	protected ConferenceInvite mPendingConferenceInvite = null;
+
 
 	protected void refreshUi() {
 		final long diff = SystemClock.elapsedRealtime() - mLastUiRefresh;
@@ -367,7 +369,7 @@ public abstract class XmppActivity extends Activity {
 	}
 
 	public void highlightInMuc(Conversation conversation, String nick) {
-		switchToConversation(conversation,null,nick,false);
+		switchToConversation(conversation, null, nick, false);
 	}
 
 	private void switchToConversation(Conversation conversation, String text, String nick, boolean newTask) {
@@ -435,7 +437,7 @@ public abstract class XmppActivity extends Activity {
 
 					@Override
 					public void userInputRequried(PendingIntent pi,
-							Account account) {
+												  Account account) {
 						try {
 							startIntentSenderForResult(pi.getIntentSender(),
 									REQUEST_ANNOUNCE_PGP, null, 0, 0, 0);
@@ -446,13 +448,13 @@ public abstract class XmppActivity extends Activity {
 					@Override
 					public void success(Account account) {
 						xmppConnectionService.databaseBackend
-							.updateAccount(account);
+								.updateAccount(account);
 						xmppConnectionService.sendPresence(account);
 						if (conversation != null) {
 							conversation
-								.setNextEncryption(Message.ENCRYPTION_PGP);
+									.setNextEncryption(Message.ENCRYPTION_PGP);
 							xmppConnectionService.databaseBackend
-								.updateConversation(conversation);
+									.updateConversation(conversation);
 						}
 					}
 
@@ -665,32 +667,11 @@ public abstract class XmppActivity extends Activity {
 	protected void onActivityResult(int requestCode, int resultCode,
 			final Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		if (requestCode == REQUEST_INVITE_TO_CONVERSATION
-				&& resultCode == RESULT_OK) {
-			try {
-				String conversationUuid = data.getStringExtra("conversation");
-				Conversation conversation = xmppConnectionService
-					.findConversationByUuid(conversationUuid);
-				List<Jid> jids = new ArrayList<Jid>();
-				if (data.getBooleanExtra("multiple", false)) {
-					String[] toAdd = data.getStringArrayExtra("contacts");
-					for (String item : toAdd) {
-						jids.add(Jid.fromString(item));
-					}
-				} else {
-					jids.add(Jid.fromString(data.getStringExtra("contact")));
-				}
-
-				if (conversation.getMode() == Conversation.MODE_MULTI) {
-					for (Jid jid : jids) {
-						xmppConnectionService.invite(conversation, jid);
-					}
-				} else {
-					jids.add(conversation.getJid().toBareJid());
-					xmppConnectionService.createAdhocConference(conversation.getAccount(), jids, adhocCallback);
-				}
-			} catch (final InvalidJidException ignored) {
-
+		if (requestCode == REQUEST_INVITE_TO_CONVERSATION && resultCode == RESULT_OK) {
+			mPendingConferenceInvite = ConferenceInvite.parse(data);
+			if (xmppConnectionServiceBound && mPendingConferenceInvite != null) {
+				mPendingConferenceInvite.execute(this);
+				mPendingConferenceInvite = null;
 			}
 		}
 	}
@@ -852,6 +833,48 @@ public abstract class XmppActivity extends Activity {
 			return bitmap;
 		} catch (final WriterException e) {
 			return null;
+		}
+	}
+
+	public static class ConferenceInvite {
+		private String uuid;
+		private List<Jid> jids = new ArrayList<>();
+
+		public static ConferenceInvite parse(Intent data) {
+			ConferenceInvite invite = new ConferenceInvite();
+			invite.uuid = data.getStringExtra("conversation");
+			if (invite.uuid == null) {
+				return null;
+			}
+			try {
+				if (data.getBooleanExtra("multiple", false)) {
+					String[] toAdd = data.getStringArrayExtra("contacts");
+					for (String item : toAdd) {
+						invite.jids.add(Jid.fromString(item));
+					}
+				} else {
+					invite.jids.add(Jid.fromString(data.getStringExtra("contact")));
+				}
+			} catch (final InvalidJidException ignored) {
+				return null;
+			}
+			return invite;
+		}
+
+		public void execute(XmppActivity activity) {
+			XmppConnectionService service = activity.xmppConnectionService;
+			Conversation conversation = service.findConversationByUuid(this.uuid);
+			if (conversation == null) {
+				return;
+			}
+			if (conversation.getMode() == Conversation.MODE_MULTI) {
+				for (Jid jid : jids) {
+					service.invite(conversation, jid);
+				}
+			} else {
+				jids.add(conversation.getJid().toBareJid());
+				service.createAdhocConference(conversation.getAccount(), jids, activity.adhocCallback);
+			}
 		}
 	}
 
