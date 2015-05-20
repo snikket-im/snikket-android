@@ -285,12 +285,11 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 	private Message selectedMessage;
 
 	private void sendMessage() {
-		if (this.conversation == null) {
+		final String body = mEditMessage.getText().toString();
+		if (body.length() == 0 || this.conversation == null) {
 			return;
 		}
-		Message message = new Message(conversation, mEditMessage.getText()
-				.toString(), conversation.getNextEncryption(activity
-				.forceEncryption()));
+		Message message = new Message(conversation, body, conversation.getNextEncryption(activity.forceEncryption()));
 		if (conversation.getMode() == Conversation.MODE_MULTI) {
 			if (conversation.getNextCounterpart() != null) {
 				message.setCounterpart(conversation.getNextCounterpart());
