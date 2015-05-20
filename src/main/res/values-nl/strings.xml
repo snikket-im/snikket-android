@@ -446,4 +446,9 @@
     <item quantity="one">Selecteer %d contact</item>
     <item quantity="other">Selecteer %d contacten</item>
   </plurals>
+  <string name="pref_quick_action_summary">Vervang verzendknop door snelle actie</string>
+  <string name="pref_quick_action">Snelle actie</string>
+  <string name="none">Geen</string>
+  <string name="recently_used">Recent gebruikt</string>
+  <string name="choose_quick_action">Kies snelle actie</string>
 </resources>

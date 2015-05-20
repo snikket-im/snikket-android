@@ -448,4 +448,9 @@
     <item quantity="few">%d kontakty wybrane</item>
     <item quantity="other">%d kontaktów wybranych</item>
   </plurals>
+  <string name="pref_quick_action_summary">Zastąp przycisk wysyłania szybką akcją</string>
+  <string name="pref_quick_action">Szybka akcja</string>
+  <string name="none">Brak</string>
+  <string name="recently_used">Ostatnio używana</string>
+  <string name="choose_quick_action">Wybierz szybką akcję</string>
 </resources>

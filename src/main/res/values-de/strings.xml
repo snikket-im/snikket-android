@@ -446,4 +446,9 @@
     <item quantity="one">%d Kontakt ausgewählt</item>
     <item quantity="other">%d Kontakte ausgewählt</item>
   </plurals>
+  <string name="pref_quick_action_summary">Ersetze Absende-Knopf durch Schnell-Tasten</string>
+  <string name="pref_quick_action">Schnell-Tasten</string>
+  <string name="none">keine</string>
+  <string name="recently_used">zuletzt verwendet</string>
+  <string name="choose_quick_action">wähle Schnell-Taste</string>
 </resources>
