@@ -54,9 +54,14 @@ public class GeoHelper {
 		Intent locationPluginIntent = new Intent("eu.siacs.conversations.location.show");
 		locationPluginIntent.putExtra("latitude",latitude);
 		locationPluginIntent.putExtra("longitude",longitude);
-		locationPluginIntent.putExtra("jid",conversation.getJid().toString());
-		if (conversation.getMode() == Conversation.MODE_SINGLE && message.getStatus() == Message.STATUS_RECEIVED) {
-			locationPluginIntent.putExtra("name",conversation.getName());
+		if (conversation.getMode() == Conversation.MODE_SINGLE) {
+			if (message.getStatus() == Message.STATUS_RECEIVED) {
+				locationPluginIntent.putExtra("name",conversation.getName());
+				locationPluginIntent.putExtra("jid",message.getCounterpart().toString());
+			}
+			else {
+				locationPluginIntent.putExtra("jid",conversation.getAccount().getJid().toString());
+			}
 		}
 		intents.add(locationPluginIntent);
 
