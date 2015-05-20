@@ -100,6 +100,7 @@ import eu.siacs.conversations.xmpp.pep.Avatar;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
 import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
 import eu.siacs.conversations.xmpp.stanzas.PresencePacket;
+import me.leolin.shortcutbadger.ShortcutBadger;
 
 public class XmppConnectionService extends Service implements OnPhoneContactsLoadedListener {
 
@@ -1033,7 +1034,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	}
 
 	public void loadMoreMessages(final Conversation conversation, final long timestamp, final OnMoreMessagesLoaded callback) {
-		Log.d(Config.LOGTAG,"load more messages for "+conversation.getName() + " prior to "+MessageGenerator.getTimestamp(timestamp));
+		Log.d(Config.LOGTAG, "load more messages for " + conversation.getName() + " prior to " + MessageGenerator.getTimestamp(timestamp));
 		if (XmppConnectionService.this.getMessageArchiveService().queryInProgress(conversation,callback)) {
 			return;
 		}
@@ -1985,14 +1986,14 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 
 	private void fetchAvatarVcard(final Account account, final Avatar avatar, final UiCallback<Avatar> callback) {
 		IqPacket packet = this.mIqGenerator.retrieveVcardAvatar(avatar);
-		this.sendIqPacket(account,packet,new OnIqPacketReceived() {
+		this.sendIqPacket(account, packet, new OnIqPacketReceived() {
 			@Override
 			public void onIqPacketReceived(Account account, IqPacket packet) {
-				synchronized(mInProgressAvatarFetches) {
-					mInProgressAvatarFetches.remove(generateFetchKey(account,avatar));
+				synchronized (mInProgressAvatarFetches) {
+					mInProgressAvatarFetches.remove(generateFetchKey(account, avatar));
 				}
 				if (packet.getType() == IqPacket.TYPE.RESULT) {
-					Element vCard = packet.findChild("vCard","vcard-temp");
+					Element vCard = packet.findChild("vCard", "vcard-temp");
 					Element photo = vCard != null ? vCard.findChild("PHOTO") : null;
 					String image = photo != null ? photo.findChildContent("BINVAL") : null;
 					if (image != null) {
@@ -2110,7 +2111,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	}
 
 	public void directInvite(Conversation conversation, Jid jid) {
-		MessagePacket packet = mMessageGenerator.directInvite(conversation,jid);
+		MessagePacket packet = mMessageGenerator.directInvite(conversation, jid);
 		sendMessagePacket(conversation.getAccount(),packet);
 	}
 
@@ -2254,6 +2255,17 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	public void markRead(final Conversation conversation) {
 		mNotificationService.clear(conversation);
 		conversation.markRead();
+		updateUnreadCountBadge();
+	}
+
+	public void updateUnreadCountBadge() {
+		int count = unreadCount();
+		Log.d(Config.LOGTAG,"update unread count to "+count);
+		if (count > 0) {
+			ShortcutBadger.with(getApplicationContext()).count(count);
+		} else {
+			ShortcutBadger.with(getApplicationContext()).remove();
+		}
 	}
 
 	public void sendReadMarker(final Conversation conversation) {

@@ -134,6 +134,7 @@ public class NotificationService {
 	}
 
 	public void push(final Message message) {
+		mXmppConnectionService.updateUnreadCountBadge();
 		if (!notify(message)) {
 			return;
 		}
