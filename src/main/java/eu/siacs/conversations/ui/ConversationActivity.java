@@ -1039,7 +1039,7 @@ public class ConversationActivity extends XmppActivity
 				mPendingFileUris.clear();
 				mPendingFileUris.addAll(extractUriFromIntent(data));
 				if (xmppConnectionServiceBound) {
-					for(Iterator<Uri> i = mPendingImageUris.iterator(); i.hasNext(); i.remove()) {
+					for(Iterator<Uri> i = mPendingFileUris.iterator(); i.hasNext(); i.remove()) {
 						attachFileToConversation(getSelectedConversation(), i.next());
 					}
 				}
