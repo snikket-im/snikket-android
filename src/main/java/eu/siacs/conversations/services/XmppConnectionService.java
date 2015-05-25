@@ -482,9 +482,16 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 						long lastSent = account.getXmppConnection().getLastPingSent();
 						long pingInterval = "ui".equals(action) ? Config.PING_MIN_INTERVAL * 1000 : Config.PING_MAX_INTERVAL * 1000;
 						long msToNextPing = (Math.max(lastReceived,lastSent) + pingInterval) - SystemClock.elapsedRealtime();
-						if (lastSent > lastReceived && (lastSent +  Config.PING_TIMEOUT * 1000) < SystemClock.elapsedRealtime()) {
-							Log.d(Config.LOGTAG, account.getJid().toBareJid()+ ": ping timeout");
-							this.reconnectAccount(account, true);
+						long pingTimeoutIn = (lastSent + Config.PING_TIMEOUT * 1000) - SystemClock.elapsedRealtime();
+						if (lastSent > lastReceived) {
+							if (pingTimeoutIn < 0) {
+								long age = (SystemClock.elapsedRealtime() - account.getXmppConnection().getLastConnect()) / 1000;
+								Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": ping timeout. connection age was: "+age+"s");
+								this.reconnectAccount(account, true);
+							} else {
+								int secs = (int) (pingTimeoutIn / 1000);
+								this.scheduleWakeUpCall(secs,account.getUuid().hashCode());
+							}
 						} else if (msToNextPing <= 0) {
 							account.getXmppConnection().sendPing();
 							Log.d(Config.LOGTAG, account.getJid().toBareJid()+" send ping");
@@ -613,7 +620,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	}
 
 	protected void scheduleWakeUpCall(int seconds, int requestCode) {
-		final long timeToWake = SystemClock.elapsedRealtime() + (seconds + 1) * 1000;
+		final long timeToWake = SystemClock.elapsedRealtime() + (seconds < 0 ? 1 : seconds + 1) * 1000;
 
 		Context context = getApplicationContext();
 		AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
