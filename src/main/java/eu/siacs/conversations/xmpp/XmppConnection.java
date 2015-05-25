@@ -921,7 +921,7 @@ public class XmppConnection implements Runnable {
 			++stanzasSent;
 		}
 		tagWriter.writeStanzaAsync(packet);
-		if (packet instanceof MessagePacket && packet.getId() != null && this.streamId != null) {
+		if (packet instanceof MessagePacket && packet.getId() != null && getFeatures().sm()) {
 			if (Config.EXTENDED_SM_LOGGING) {
 				Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": requesting ack for message stanza #" + stanzasSent);
 			}
