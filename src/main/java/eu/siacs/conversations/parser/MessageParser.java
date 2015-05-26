@@ -307,7 +307,9 @@ public class MessageParser extends AbstractParser implements
 				}
 			}
 			updateLastseen(packet,account,true);
-			boolean checkForDuplicates = serverMsgId != null || (isTypeGroupChat && packet.hasChild("delay","urn:xmpp:delay"));
+			boolean checkForDuplicates = serverMsgId != null
+					|| (isTypeGroupChat && packet.hasChild("delay","urn:xmpp:delay"))
+					|| message.getType() == Message.TYPE_PRIVATE;
 			if (checkForDuplicates && conversation.hasDuplicateMessage(message)) {
 				Log.d(Config.LOGTAG,"skipping duplicate message from "+message.getCounterpart().toString()+" "+message.getBody());
 				return;
