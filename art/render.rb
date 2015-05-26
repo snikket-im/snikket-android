@@ -30,6 +30,10 @@ images = {
         'ic_send_cancel_offline.svg' => ['ic_send_cancel_offline', 36],
         'ic_send_cancel_away.svg' => ['ic_send_cancel_away', 36],
         'ic_send_cancel_dnd.svg' => ['ic_send_cancel_dnd', 36],
+        'ic_send_picture_online.svg' => ['ic_send_picture_online', 36],
+        'ic_send_picture_offline.svg' => ['ic_send_picture_offline', 36],
+        'ic_send_picture_away.svg' => ['ic_send_picture_away', 36],
+        'ic_send_picture_dnd.svg' => ['ic_send_picture_dnd', 36]
 	}
 images.each do |source, result|
 	resolutions.each do |name, factor|
