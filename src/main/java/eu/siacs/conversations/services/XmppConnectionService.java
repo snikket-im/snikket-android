@@ -499,8 +499,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 						long pingTimeoutIn = (lastSent + Config.PING_TIMEOUT * 1000) - SystemClock.elapsedRealtime();
 						if (lastSent > lastReceived) {
 							if (pingTimeoutIn < 0) {
-								long age = (SystemClock.elapsedRealtime() - account.getXmppConnection().getLastConnect()) / 1000;
-								Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": ping timeout. connection age was: "+age+"s");
+								Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": ping timeout");
 								this.reconnectAccount(account, true);
 							} else {
 								int secs = (int) (pingTimeoutIn / 1000);
