@@ -448,4 +448,9 @@
     <item quantity="few">Vybrat %d kontakty</item>
     <item quantity="other">Vybrat %d kontaktů</item>
   </plurals>
+  <string name="pref_quick_action_summary">Nahradit tlačítko odeslání rychlou akcí</string>
+  <string name="pref_quick_action">Rychlá akce</string>
+  <string name="none">Žádná</string>
+  <string name="recently_used">Naposledy použitá</string>
+  <string name="choose_quick_action">Vybrat rychlou akci</string>
 </resources>
