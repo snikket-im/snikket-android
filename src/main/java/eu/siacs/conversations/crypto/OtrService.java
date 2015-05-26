@@ -36,14 +36,14 @@ import net.java.otr4j.session.InstanceTag;
 import net.java.otr4j.session.SessionID;
 import net.java.otr4j.session.FragmenterInstructions;
 
-public class OtrEngine extends OtrCryptoEngineImpl implements OtrEngineHost {
+public class OtrService extends OtrCryptoEngineImpl implements OtrEngineHost {
 
 	private Account account;
 	private OtrPolicy otrPolicy;
 	private KeyPair keyPair;
 	private XmppConnectionService mXmppConnectionService;
 
-	public OtrEngine(XmppConnectionService service, Account account) {
+	public OtrService(XmppConnectionService service, Account account) {
 		this.account = account;
 		this.otrPolicy = new OtrPolicyImpl();
 		this.otrPolicy.setAllowV1(false);
@@ -285,7 +285,7 @@ public class OtrEngine extends OtrCryptoEngineImpl implements OtrEngineHost {
 
 	@Override
 	public void verify(SessionID id, String fingerprint, boolean approved) {
-		Log.d(Config.LOGTAG,"OtrEngine.verify("+id.toString()+","+fingerprint+","+String.valueOf(approved)+")");
+		Log.d(Config.LOGTAG,"OtrService.verify("+id.toString()+","+fingerprint+","+String.valueOf(approved)+")");
 		try {
 			final Jid jid = Jid.fromSessionID(id);
 			Conversation conversation = this.mXmppConnectionService.find(this.account,jid);

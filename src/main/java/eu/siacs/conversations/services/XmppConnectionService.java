@@ -574,7 +574,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		this.accounts = databaseBackend.getAccounts();
 
 		for (final Account account : this.accounts) {
-			account.initOtrEngine(this);
+			account.initAccountServices(this);
 		}
 		restoreFromDatabase();
 
@@ -1176,7 +1176,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	}
 
 	public void createAccount(final Account account) {
-		account.initOtrEngine(this);
+		account.initAccountServices(this);
 		databaseBackend.createAccount(account);
 		this.accounts.add(account);
 		this.reconnectAccountInBackground(account);
@@ -2267,7 +2267,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 
 	public void updateUnreadCountBadge() {
 		int count = unreadCount();
-		Log.d(Config.LOGTAG,"update unread count to "+count);
+		Log.d(Config.LOGTAG, "update unread count to " + count);
 		if (count > 0) {
 			ShortcutBadger.with(getApplicationContext()).count(count);
 		} else {
