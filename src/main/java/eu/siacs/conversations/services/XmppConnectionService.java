@@ -227,7 +227,8 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	private final List<String> mInProgressAvatarFetches = new ArrayList<>();
 	private MessageArchiveService mMessageArchiveService = new MessageArchiveService(this);
 	private OnConversationUpdate mOnConversationUpdate = null;
-	private Integer convChangedListenerCount = 0;
+	private int convChangedListenerCount = 0;
+	private int unreadCount = 0;
 	private OnAccountUpdate mOnAccountUpdate = null;
 	private OnStatusChanged statusListener = new OnStatusChanged() {
 
@@ -2277,13 +2278,16 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		updateUnreadCountBadge();
 	}
 
-	public void updateUnreadCountBadge() {
+	public synchronized void updateUnreadCountBadge() {
 		int count = unreadCount();
-		Log.d(Config.LOGTAG, "update unread count to " + count);
-		if (count > 0) {
-			ShortcutBadger.with(getApplicationContext()).count(count);
-		} else {
-			ShortcutBadger.with(getApplicationContext()).remove();
+		if (unreadCount != count) {
+			Log.d(Config.LOGTAG, "update unread count to " + count);
+			if (count > 0) {
+				ShortcutBadger.with(getApplicationContext()).count(count);
+			} else {
+				ShortcutBadger.with(getApplicationContext()).remove();
+			}
+			unreadCount = count;
 		}
 	}
 
