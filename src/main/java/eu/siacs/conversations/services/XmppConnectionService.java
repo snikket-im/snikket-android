@@ -204,6 +204,18 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	private OnMessagePacketReceived mMessageParser = new MessageParser(this);
 	private OnPresencePacketReceived mPresenceParser = new PresenceParser(this);
 	private IqParser mIqParser = new IqParser(this);
+	private OnIqPacketReceived mDefaultIqHandler = new OnIqPacketReceived() {
+		@Override
+		public void onIqPacketReceived(Account account, IqPacket packet) {
+			if (packet.getType() == IqPacket.TYPE.ERROR) {
+				Element error = packet.findChild("error");
+				String text = error != null ? error.findChildContent("text") : null;
+				if (text != null) {
+					Log.d(Config.LOGTAG,account.getJid().toBareJid()+": received iq error - "+text);
+				}
+			}
+		}
+	};
 	private MessageGenerator mMessageGenerator = new MessageGenerator(this);
 	private PresenceGenerator mPresenceGenerator = new PresenceGenerator(this);
 	private List<Account> accounts;
@@ -903,7 +915,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		for (Bookmark bookmark : account.getBookmarks()) {
 			storage.addChild(bookmark);
 		}
-		sendIqPacket(account, iqPacket, null);
+		sendIqPacket(account, iqPacket, mDefaultIqHandler);
 	}
 
 	public void onPhoneContactsLoaded(final List<Bundle> phoneContacts) {
@@ -1691,7 +1703,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 			}
 		}
 		IqPacket request = this.mIqGenerator.changeAffiliation(conference, jids, after.toString());
-		sendIqPacket(conference.getAccount(), request, null);
+		sendIqPacket(conference.getAccount(), request, mDefaultIqHandler);
 	}
 
 	public void changeRoleInConference(final Conversation conference, final String nick, MucOptions.Role role, final OnRoleChanged callback) {
@@ -1835,7 +1847,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 					&& contact.getOption(Contact.Options.PREEMPTIVE_GRANT);
 			final IqPacket iq = new IqPacket(IqPacket.TYPE.SET);
 			iq.query(Xmlns.ROSTER).addChild(contact.asElement());
-			account.getXmppConnection().sendIqPacket(iq, null);
+			account.getXmppConnection().sendIqPacket(iq, mDefaultIqHandler);
 			if (sendUpdates) {
 				sendPresencePacket(account,
 						mPresenceGenerator.sendPresenceUpdatesTo(contact));
@@ -2065,7 +2077,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 			Element item = iq.query(Xmlns.ROSTER).addChild("item");
 			item.setAttribute("jid", contact.getJid().toString());
 			item.setAttribute("subscription", "remove");
-			account.getXmppConnection().sendIqPacket(iq, null);
+			account.getXmppConnection().sendIqPacket(iq, mDefaultIqHandler);
 		}
 	}
 
