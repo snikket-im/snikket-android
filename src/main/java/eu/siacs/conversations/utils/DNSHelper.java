@@ -37,9 +37,6 @@ public class DNSHelper {
 				Bundle b = queryDNS(host, ip);
 				if (b.containsKey("values")) {
 					return b;
-				} else if (b.containsKey("error")
-						&& "nosrv".equals(b.getString("error", null))) {
-					return b;
 				}
 			}
 		}
@@ -134,26 +131,35 @@ public class DNSHelper {
 
 			}
 
+			ArrayList<Bundle> values = new ArrayList<>();
 			if (result.size() == 0) {
-				bundle.putString("error", "nosrv");
+				DNSMessage response;
+				response = client.query(host, TYPE.A, CLASS.IN, dnsServer.getHostAddress());
+				for(int i = 0; i < response.getAnswers().length; ++i) {
+					values.add(createNamePortBundle(host,5222,response.getAnswers()[i].getPayload()));
+				}
+				response = client.query(host, TYPE.AAAA, CLASS.IN, dnsServer.getHostAddress());
+				for(int i = 0; i < response.getAnswers().length; ++i) {
+					values.add(createNamePortBundle(host,5222,response.getAnswers()[i].getPayload()));
+				}
+				bundle.putParcelableArrayList("values", values);
 				return bundle;
 			}
-			ArrayList<Bundle> values = new ArrayList<>();
 			for (SRV srv : result) {
 				if (ips6.containsKey(srv.getName())) {
 					values.add(createNamePortBundle(srv.getName(),srv.getPort(),ips6));
 				} else {
 					DNSMessage response = client.query(srv.getName(), TYPE.AAAA, CLASS.IN, dnsServer.getHostAddress());
-					if (response.getAnswers().length >= 1) {
-						values.add(createNamePortBundle(srv.getName(),srv.getPort(),response.getAnswers()[0].getPayload()));
+					for(int i = 0; i < response.getAnswers().length; ++i) {
+						values.add(createNamePortBundle(host,5222,response.getAnswers()[i].getPayload()));
 					}
 				}
 				if (ips4.containsKey(srv.getName())) {
 					values.add(createNamePortBundle(srv.getName(),srv.getPort(),ips4));
 				} else {
 					DNSMessage response = client.query(srv.getName(), TYPE.A, CLASS.IN, dnsServer.getHostAddress());
-					if (response.getAnswers().length >= 1) {
-						values.add(createNamePortBundle(srv.getName(),srv.getPort(),response.getAnswers()[0].getPayload()));
+					for(int i = 0; i < response.getAnswers().length; ++i) {
+						values.add(createNamePortBundle(host,5222,response.getAnswers()[i].getPayload()));
 					}
 				}
 				values.add(createNamePortBundle(srv.getName(), srv.getPort()));
@@ -162,6 +168,7 @@ public class DNSHelper {
 		} catch (SocketTimeoutException e) {
 			bundle.putString("error", "timeout");
 		} catch (Exception e) {
+			Log.d(Config.LOGTAG,e.getMessage());
 			bundle.putString("error", "unhandled");
 		}
 		return bundle;

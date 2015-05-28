@@ -200,9 +200,6 @@ public class XmppConnection implements Runnable {
 				if (socketError) {
 					throw new UnknownHostException();
 				}
-			} else if (result.containsKey("error")
-					&& "nosrv".equals(result.getString("error", null))) {
-				socket = new Socket(account.getServer().getDomainpart(), 5222);
 			} else {
 				throw new IOException("unhandled exception in DNS resolver");
 			}
