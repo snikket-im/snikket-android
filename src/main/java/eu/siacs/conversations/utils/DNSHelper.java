@@ -142,11 +142,21 @@ public class DNSHelper {
 			for (SRV srv : result) {
 				if (ips6.containsKey(srv.getName())) {
 					values.add(createNamePortBundle(srv.getName(),srv.getPort(),ips6));
+				} else {
+					DNSMessage response = client.query(srv.getName(), TYPE.AAAA, CLASS.IN, dnsServer.getHostAddress());
+					if (response.getAnswers().length >= 1) {
+						values.add(createNamePortBundle(srv.getName(),srv.getPort(),response.getAnswers()[0].getPayload()));
+					}
 				}
 				if (ips4.containsKey(srv.getName())) {
 					values.add(createNamePortBundle(srv.getName(),srv.getPort(),ips4));
+				} else {
+					DNSMessage response = client.query(srv.getName(), TYPE.A, CLASS.IN, dnsServer.getHostAddress());
+					if (response.getAnswers().length >= 1) {
+						values.add(createNamePortBundle(srv.getName(),srv.getPort(),response.getAnswers()[0].getPayload()));
+					}
 				}
-				values.add(createNamePortBundle(srv.getName(),srv.getPort(),null));
+				values.add(createNamePortBundle(srv.getName(), srv.getPort()));
 			}
 			bundle.putParcelableArrayList("values", values);
 		} catch (SocketTimeoutException e) {
@@ -157,6 +167,13 @@ public class DNSHelper {
 		return bundle;
 	}
 
+	private static Bundle createNamePortBundle(String name, int port) {
+		Bundle namePort = new Bundle();
+		namePort.putString("name", name);
+		namePort.putInt("port", port);
+		return namePort;
+	}
+
 	private static Bundle createNamePortBundle(String name, int port, TreeMap<String, ArrayList<String>> ips) {
 		Bundle namePort = new Bundle();
 		namePort.putString("name", name);
@@ -165,6 +182,18 @@ public class DNSHelper {
 			ArrayList<String> ip = ips.get(name);
 			Collections.shuffle(ip, new Random());
 			namePort.putString("ip", ip.get(0));
+		}
+		return namePort;
+	}
+
+	private static Bundle createNamePortBundle(String name, int port, Data data) {
+		Bundle namePort = new Bundle();
+		namePort.putString("name", name);
+		namePort.putInt("port", port);
+		if (data instanceof A) {
+			namePort.putString("ip", data.toString());
+		} else if (data instanceof AAAA) {
+			namePort.putString("ip","["+data.toString()+"]");
 		}
 		return namePort;
 	}
