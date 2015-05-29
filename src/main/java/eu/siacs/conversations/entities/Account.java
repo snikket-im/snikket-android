@@ -254,6 +254,10 @@ public class Account extends AbstractEntity {
 		return keys;
 	}
 
+	public String getKey(final String name) {
+		return this.keys.optString(name, null);
+	}
+
 	public boolean setKey(final String keyName, final String keyValue) {
 		try {
 			this.keys.put(keyName, keyValue);

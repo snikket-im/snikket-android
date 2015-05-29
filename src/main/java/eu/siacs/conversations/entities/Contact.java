@@ -2,15 +2,19 @@ package eu.siacs.conversations.entities;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.whispersystems.libaxolotl.IdentityKey;
+import org.whispersystems.libaxolotl.InvalidKeyException;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
@@ -183,20 +187,22 @@ public class Contact implements ListItem, Blockable {
 	}
 
 	public ContentValues getContentValues() {
-		final ContentValues values = new ContentValues();
-		values.put(ACCOUNT, accountUuid);
-		values.put(SYSTEMNAME, systemName);
-		values.put(SERVERNAME, serverName);
-		values.put(JID, jid.toString());
-		values.put(OPTIONS, subscription);
-		values.put(SYSTEMACCOUNT, systemAccount);
-		values.put(PHOTOURI, photoUri);
-		values.put(KEYS, keys.toString());
-		values.put(AVATAR, avatar == null ? null : avatar.getFilename());
-		values.put(LAST_PRESENCE, lastseen.presence);
-		values.put(LAST_TIME, lastseen.time);
-		values.put(GROUPS, groups.toString());
-		return values;
+		synchronized (this.keys) {
+			final ContentValues values = new ContentValues();
+			values.put(ACCOUNT, accountUuid);
+			values.put(SYSTEMNAME, systemName);
+			values.put(SERVERNAME, serverName);
+			values.put(JID, jid.toString());
+			values.put(OPTIONS, subscription);
+			values.put(SYSTEMACCOUNT, systemAccount);
+			values.put(PHOTOURI, photoUri);
+			values.put(KEYS, keys.toString());
+			values.put(AVATAR, avatar == null ? null : avatar.getFilename());
+			values.put(LAST_PRESENCE, lastseen.presence);
+			values.put(LAST_TIME, lastseen.time);
+			values.put(GROUPS, groups.toString());
+			return values;
+		}
 	}
 
 	public int getSubscription() {
@@ -281,62 +287,108 @@ public class Contact implements ListItem, Blockable {
 	}
 
 	public ArrayList<String> getOtrFingerprints() {
-		final ArrayList<String> fingerprints = new ArrayList<String>();
-		try {
-			if (this.keys.has("otr_fingerprints")) {
-				final JSONArray prints = this.keys.getJSONArray("otr_fingerprints");
-				for (int i = 0; i < prints.length(); ++i) {
-					final String print = prints.isNull(i) ? null : prints.getString(i);
-					if (print != null && !print.isEmpty()) {
-						fingerprints.add(prints.getString(i));
+		synchronized (this.keys) {
+			final ArrayList<String> fingerprints = new ArrayList<String>();
+			try {
+				if (this.keys.has("otr_fingerprints")) {
+					final JSONArray prints = this.keys.getJSONArray("otr_fingerprints");
+					for (int i = 0; i < prints.length(); ++i) {
+						final String print = prints.isNull(i) ? null : prints.getString(i);
+						if (print != null && !print.isEmpty()) {
+							fingerprints.add(prints.getString(i));
+						}
 					}
 				}
-			}
-		} catch (final JSONException ignored) {
+			} catch (final JSONException ignored) {
 
+			}
+			return fingerprints;
 		}
-		return fingerprints;
 	}
-
 	public boolean addOtrFingerprint(String print) {
-		if (getOtrFingerprints().contains(print)) {
-			return false;
-		}
-		try {
-			JSONArray fingerprints;
-			if (!this.keys.has("otr_fingerprints")) {
-				fingerprints = new JSONArray();
-
-			} else {
-				fingerprints = this.keys.getJSONArray("otr_fingerprints");
+		synchronized (this.keys) {
+			if (getOtrFingerprints().contains(print)) {
+				return false;
+            }
+			try {
+				JSONArray fingerprints;
+				if (!this.keys.has("otr_fingerprints")) {
+					fingerprints = new JSONArray();
+				} else {
+					fingerprints = this.keys.getJSONArray("otr_fingerprints");
+				}
+				fingerprints.put(print);
+				this.keys.put("otr_fingerprints", fingerprints);
+				return true;
+			} catch (final JSONException ignored) {
+				return false;
 			}
-			fingerprints.put(print);
-			this.keys.put("otr_fingerprints", fingerprints);
-			return true;
-		} catch (final JSONException ignored) {
-			return false;
 		}
 	}
 
 	public long getPgpKeyId() {
-		if (this.keys.has("pgp_keyid")) {
-			try {
-				return this.keys.getLong("pgp_keyid");
-			} catch (JSONException e) {
+		synchronized (this.keys) {
+			if (this.keys.has("pgp_keyid")) {
+				try {
+					return this.keys.getLong("pgp_keyid");
+				} catch (JSONException e) {
+					return 0;
+				}
+			} else {
 				return 0;
 			}
-		} else {
-			return 0;
 		}
 	}
 
 	public void setPgpKeyId(long keyId) {
-		try {
-			this.keys.put("pgp_keyid", keyId);
-		} catch (final JSONException ignored) {
-
+		synchronized (this.keys) {
+			try {
+				this.keys.put("pgp_keyid", keyId);
+			} catch (final JSONException ignored) {
+			}
 		}
 	}
+
+	public List<IdentityKey> getTrustedAxolotlIdentityKeys() {
+		synchronized (this.keys) {
+			JSONArray serializedKeyItems = this.keys.optJSONArray("axolotl_identity_key");
+			List<IdentityKey> identityKeys = new ArrayList<>();
+			if(serializedKeyItems != null) {
+				for(int i = 0; i<serializedKeyItems.length();++i) {
+					try {
+						String serializedKeyItem = serializedKeyItems.getString(i);
+						IdentityKey identityKey = new IdentityKey(serializedKeyItem.getBytes(), 0);
+						identityKeys.add(identityKey);
+					} catch (InvalidKeyException e) {
+						Log.e(Config.LOGTAG, "Invalid axolotl identity key encountered at" + this.getJid() + ": " + e.getMessage());
+					} catch (JSONException e) {
+						Log.e(Config.LOGTAG, "Error retrieving axolotl identity key at" + this.getJid() + ": " + e.getMessage());
+					}
+				}
+			}
+			return identityKeys;
+		}
+	}
+
+	public boolean addAxolotlIdentityKey(IdentityKey identityKey, boolean trusted) {
+		synchronized (this.keys) {
+			JSONArray keysList;
+			try {
+				keysList = this.keys.getJSONArray("axolotl_identity_key");
+			} catch (JSONException e) {
+				keysList = new JSONArray();
+			}
+			keysList.put(new String(identityKey.serialize()));
+			try {
+				this.keys.put("axolotl_identity_key", keysList);
+			} catch (JSONException e) {
+				Log.e(Config.LOGTAG, "Error adding Identity Key to Contact " + this.getJid() + ": " + e.getMessage());
+				return false;
+			}
+		}
+		return true;
+	}
+
 
 	public void setOption(int option) {
 		this.subscription |= 1 << option;
@@ -441,24 +493,26 @@ public class Contact implements ListItem, Blockable {
 	}
 
 	public boolean deleteOtrFingerprint(String fingerprint) {
-		boolean success = false;
-		try {
-			if (this.keys.has("otr_fingerprints")) {
-				JSONArray newPrints = new JSONArray();
-				JSONArray oldPrints = this.keys
-					.getJSONArray("otr_fingerprints");
-				for (int i = 0; i < oldPrints.length(); ++i) {
-					if (!oldPrints.getString(i).equals(fingerprint)) {
-						newPrints.put(oldPrints.getString(i));
-					} else {
-						success = true;
+		synchronized (this.keys) {
+			boolean success = false;
+			try {
+				if (this.keys.has("otr_fingerprints")) {
+					JSONArray newPrints = new JSONArray();
+					JSONArray oldPrints = this.keys
+							.getJSONArray("otr_fingerprints");
+					for (int i = 0; i < oldPrints.length(); ++i) {
+						if (!oldPrints.getString(i).equals(fingerprint)) {
+							newPrints.put(oldPrints.getString(i));
+						} else {
+							success = true;
+						}
 					}
+					this.keys.put("otr_fingerprints", newPrints);
 				}
-				this.keys.put("otr_fingerprints", newPrints);
+				return success;
+			} catch (JSONException e) {
+				return false;
 			}
-			return success;
-		} catch (JSONException e) {
-			return false;
 		}
 	}
 

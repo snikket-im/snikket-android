@@ -1,10 +1,12 @@
 package eu.siacs.conversations.persistance;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import eu.siacs.conversations.Config;
+import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
@@ -13,12 +15,18 @@ import eu.siacs.conversations.entities.Roster;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteCantOpenDatabaseException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+
+import org.whispersystems.libaxolotl.AxolotlAddress;
+import org.whispersystems.libaxolotl.state.PreKeyRecord;
+import org.whispersystems.libaxolotl.state.SessionRecord;
+import org.whispersystems.libaxolotl.state.SignedPreKeyRecord;
 
 public class DatabaseBackend extends SQLiteOpenHelper {
 
@@ -38,6 +46,40 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 			+ Account.TABLENAME + "(" + Account.UUID
 			+ ") ON DELETE CASCADE, UNIQUE(" + Contact.ACCOUNT + ", "
 			+ Contact.JID + ") ON CONFLICT REPLACE);";
+
+	private static String CREATE_PREKEYS_STATEMENT = "CREATE TABLE "
+			+ AxolotlService.SQLiteAxolotlStore.PREKEY_TABLENAME + "("
+				+ AxolotlService.SQLiteAxolotlStore.ID + " INTEGER, "
+				+ AxolotlService.SQLiteAxolotlStore.KEY + "TEXT, FOREIGN KEY("
+					+ AxolotlService.SQLiteAxolotlStore.ACCOUNT
+				+ ") REFERENCES " + Account.TABLENAME + "(" + Account.UUID + ") ON DELETE CASCADE, "
+				+ "UNIQUE( " + AxolotlService.SQLiteAxolotlStore.ACCOUNT + ", "
+					+ AxolotlService.SQLiteAxolotlStore.ID
+				+ ") ON CONFLICT REPLACE"
+			+");";
+
+	private static String CREATE_SIGNED_PREKEYS_STATEMENT = "CREATE TABLE "
+			+ AxolotlService.SQLiteAxolotlStore.SIGNED_PREKEY_TABLENAME + "("
+				+ AxolotlService.SQLiteAxolotlStore.ID + " INTEGER, "
+				+ AxolotlService.SQLiteAxolotlStore.KEY + "TEXT, FOREIGN KEY("
+					+ AxolotlService.SQLiteAxolotlStore.ACCOUNT
+				+ ") REFERENCES " + Account.TABLENAME + "(" + Account.UUID + ") ON DELETE CASCADE, "
+				+ "UNIQUE( " + AxolotlService.SQLiteAxolotlStore.ACCOUNT + ", "
+					+ AxolotlService.SQLiteAxolotlStore.ID
+				+ ") ON CONFLICT REPLACE"+
+			");";
+
+	private static String CREATE_SESSIONS_STATEMENT = "CREATE TABLE "
+			+ AxolotlService.SQLiteAxolotlStore.SESSION_TABLENAME + "("
+                + AxolotlService.SQLiteAxolotlStore.NAME + " TEXT, "
+                + AxolotlService.SQLiteAxolotlStore.DEVICE_ID+ " INTEGER, "
+                + AxolotlService.SQLiteAxolotlStore.KEY + "TEXT, FOREIGN KEY("
+                    + AxolotlService.SQLiteAxolotlStore.ACCOUNT
+				+ ") REFERENCES " + Account.TABLENAME + "(" + Account.UUID + ") ON DELETE CASCADE, "
+                + "UNIQUE( " + AxolotlService.SQLiteAxolotlStore.ACCOUNT + ", "
+                    + AxolotlService.SQLiteAxolotlStore.NAME
+				+ ") ON CONFLICT REPLACE"
+			+");";
 
 	private DatabaseBackend(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -311,7 +353,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 				};
 		Cursor cursor = db.query(Conversation.TABLENAME, null,
 				Conversation.ACCOUNT + "=? AND (" + Conversation.CONTACTJID
-						+ " like ? OR "+Conversation.CONTACTJID+"=?)", selectionArgs, null, null, null);
+						+ " like ? OR " + Conversation.CONTACTJID + "=?)", selectionArgs, null, null, null);
 		if (cursor.getCount() == 0)
 			return null;
 		cursor.moveToFirst();
@@ -480,5 +522,224 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		}
 		cursor.close();
 		return list;
+	}
+
+	private Cursor getCursorForSession(Account account, AxolotlAddress contact) {
+		final SQLiteDatabase db = this.getReadableDatabase();
+		String[] columns = null;
+		String[] selectionArgs = {account.getUuid(),
+				contact.getName(),
+				Integer.toString(contact.getDeviceId())};
+		Cursor cursor = db.query(AxolotlService.SQLiteAxolotlStore.SESSION_TABLENAME,
+				columns,
+				AxolotlService.SQLiteAxolotlStore.ACCOUNT + " = ? AND "
+						+ AxolotlService.SQLiteAxolotlStore.NAME + " = ? AND "
+						+ AxolotlService.SQLiteAxolotlStore.DEVICE_ID + " = ? ",
+				selectionArgs,
+				null, null, null);
+
+		return cursor;
+	}
+
+	public SessionRecord loadSession(Account account, AxolotlAddress contact) {
+		SessionRecord session = null;
+        Cursor cursor = getCursorForSession(account, contact);
+		if(cursor.getCount() != 0) {
+			cursor.moveToFirst();
+			try {
+				session = new SessionRecord(cursor.getString(cursor.getColumnIndex(AxolotlService.SQLiteAxolotlStore.KEY)).getBytes());
+			} catch (IOException e) {
+				throw new AssertionError(e);
+			}
+        }
+        cursor.close();
+		return session;
+	}
+
+	public List<Integer> getSubDeviceSessions(Account account, AxolotlAddress contact) {
+		List<Integer> devices = new ArrayList<>();
+		final SQLiteDatabase db = this.getReadableDatabase();
+		String[] columns = {AxolotlService.SQLiteAxolotlStore.DEVICE_ID};
+		String[] selectionArgs = {account.getUuid(),
+				contact.getName()};
+		Cursor cursor = db.query(AxolotlService.SQLiteAxolotlStore.SESSION_TABLENAME,
+				columns,
+				AxolotlService.SQLiteAxolotlStore.ACCOUNT + " = ? AND "
+						+ AxolotlService.SQLiteAxolotlStore.NAME + " = ? AND ",
+				selectionArgs,
+				null, null, null);
+
+		while(cursor.moveToNext()) {
+			devices.add(cursor.getInt(
+					cursor.getColumnIndex(AxolotlService.SQLiteAxolotlStore.DEVICE_ID)));
+		}
+
+		cursor.close();
+		return devices;
+	}
+
+	public boolean containsSession(Account account, AxolotlAddress contact) {
+		Cursor cursor = getCursorForSession(account, contact);
+		int count = cursor.getCount();
+		cursor.close();
+		return count != 0;
+	}
+
+	public void storeSession(Account account, AxolotlAddress contact, SessionRecord session) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		ContentValues values = new ContentValues();
+		values.put(AxolotlService.SQLiteAxolotlStore.NAME, contact.getName());
+		values.put(AxolotlService.SQLiteAxolotlStore.DEVICE_ID, contact.getDeviceId());
+		values.put(AxolotlService.SQLiteAxolotlStore.KEY, session.serialize());
+		values.put(AxolotlService.SQLiteAxolotlStore.ACCOUNT, account.getUuid());
+		db.insert(AxolotlService.SQLiteAxolotlStore.SESSION_TABLENAME, null, values);
+	}
+
+	public void deleteSession(Account account, AxolotlAddress contact) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		String[] args = {account.getUuid(),
+				contact.getName(),
+				Integer.toString(contact.getDeviceId())};
+		db.delete(AxolotlService.SQLiteAxolotlStore.SESSION_TABLENAME,
+				AxolotlService.SQLiteAxolotlStore.ACCOUNT + " = ? AND "
+						+ AxolotlService.SQLiteAxolotlStore.NAME + " = ? AND "
+						+ AxolotlService.SQLiteAxolotlStore.DEVICE_ID + " = ? ",
+				args);
+	}
+
+	public void deleteAllSessions(Account account, AxolotlAddress contact) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		String[] args = {account.getUuid(), contact.getName()};
+		db.delete(AxolotlService.SQLiteAxolotlStore.SESSION_TABLENAME,
+				AxolotlService.SQLiteAxolotlStore.ACCOUNT + "=? AND "
+						+ AxolotlService.SQLiteAxolotlStore.NAME + " = ?",
+				args);
+	}
+
+	private Cursor getCursorForPreKey(Account account, int preKeyId) {
+		SQLiteDatabase db = this.getReadableDatabase();
+		String[] columns = {AxolotlService.SQLiteAxolotlStore.KEY};
+		String[] selectionArgs = {account.getUuid(), Integer.toString(preKeyId)};
+		Cursor cursor = db.query(AxolotlService.SQLiteAxolotlStore.PREKEY_TABLENAME,
+				columns,
+				AxolotlService.SQLiteAxolotlStore.ACCOUNT + "=? AND "
+						+ AxolotlService.SQLiteAxolotlStore.ID + "=?",
+				selectionArgs,
+				null, null, null);
+
+		return cursor;
+	}
+
+	public PreKeyRecord loadPreKey(Account account, int preKeyId) {
+		PreKeyRecord record = null;
+		Cursor cursor = getCursorForPreKey(account, preKeyId);
+		if(cursor.getCount() != 0) {
+			cursor.moveToFirst();
+			try {
+				record = new PreKeyRecord(cursor.getString(cursor.getColumnIndex(AxolotlService.SQLiteAxolotlStore.KEY)).getBytes());
+			} catch (IOException e ) {
+				throw new AssertionError(e);
+			}
+		}
+		cursor.close();
+		return record;
+	}
+
+	public boolean containsPreKey(Account account, int preKeyId) {
+		Cursor cursor = getCursorForPreKey(account, preKeyId);
+		int count = cursor.getCount();
+		cursor.close();
+		return count != 0;
+	}
+
+	public void storePreKey(Account account, PreKeyRecord record) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		ContentValues values = new ContentValues();
+		values.put(AxolotlService.SQLiteAxolotlStore.ID, record.getId());
+		values.put(AxolotlService.SQLiteAxolotlStore.KEY, record.serialize());
+		values.put(AxolotlService.SQLiteAxolotlStore.ACCOUNT, account.getUuid());
+		db.insert(AxolotlService.SQLiteAxolotlStore.PREKEY_TABLENAME, null, values);
+	}
+
+	public void deletePreKey(Account account, int preKeyId) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		String[] args = {account.getUuid(), Integer.toString(preKeyId)};
+		db.delete(AxolotlService.SQLiteAxolotlStore.PREKEY_TABLENAME,
+				AxolotlService.SQLiteAxolotlStore.ACCOUNT + "=? AND "
+						+ AxolotlService.SQLiteAxolotlStore.ID + "=?",
+				args);
+	}
+
+	private Cursor getCursorForSignedPreKey(Account account, int signedPreKeyId) {
+		SQLiteDatabase db = this.getReadableDatabase();
+		String[] columns = {AxolotlService.SQLiteAxolotlStore.KEY};
+		String[] selectionArgs = {account.getUuid(), Integer.toString(signedPreKeyId)};
+		Cursor cursor = db.query(AxolotlService.SQLiteAxolotlStore.SIGNED_PREKEY_TABLENAME,
+				columns,
+				AxolotlService.SQLiteAxolotlStore.ACCOUNT + "=? AND " + AxolotlService.SQLiteAxolotlStore.ID + "=?",
+				selectionArgs,
+				null, null, null);
+
+		return cursor;
+	}
+
+	public SignedPreKeyRecord loadSignedPreKey(Account account, int signedPreKeyId) {
+		SignedPreKeyRecord record = null;
+		Cursor cursor = getCursorForPreKey(account, signedPreKeyId);
+		if(cursor.getCount() != 0) {
+			cursor.moveToFirst();
+			try {
+				record = new SignedPreKeyRecord(cursor.getString(cursor.getColumnIndex(AxolotlService.SQLiteAxolotlStore.KEY)).getBytes());
+			} catch (IOException e ) {
+				throw new AssertionError(e);
+			}
+		}
+		cursor.close();
+		return record;
+	}
+
+	public List<SignedPreKeyRecord> loadSignedPreKeys(Account account) {
+		List<SignedPreKeyRecord> prekeys = new ArrayList<>();
+		SQLiteDatabase db = this.getReadableDatabase();
+		String[] columns = {AxolotlService.SQLiteAxolotlStore.KEY};
+		String[] selectionArgs = {account.getUuid()};
+		Cursor cursor = db.query(AxolotlService.SQLiteAxolotlStore.SIGNED_PREKEY_TABLENAME,
+				columns,
+				AxolotlService.SQLiteAxolotlStore.ACCOUNT + "=?",
+				selectionArgs,
+				null, null, null);
+
+		while(cursor.moveToNext()) {
+			try {
+				prekeys.add(new SignedPreKeyRecord(cursor.getString(cursor.getColumnIndex(AxolotlService.SQLiteAxolotlStore.KEY)).getBytes()));
+			} catch (IOException ignored) {
+			}
+		}
+		return prekeys;
+	}
+
+	public boolean containsSignedPreKey(Account account, int signedPreKeyId) {
+		Cursor cursor = getCursorForPreKey(account, signedPreKeyId);
+		int count = cursor.getCount();
+		cursor.close();
+		return count != 0;
+	}
+
+	public void storeSignedPreKey(Account account, SignedPreKeyRecord record) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		ContentValues values = new ContentValues();
+		values.put(AxolotlService.SQLiteAxolotlStore.ID, record.getId());
+		values.put(AxolotlService.SQLiteAxolotlStore.KEY, record.serialize());
+		values.put(AxolotlService.SQLiteAxolotlStore.ACCOUNT, account.getUuid());
+		db.insert(AxolotlService.SQLiteAxolotlStore.SIGNED_PREKEY_TABLENAME, null, values);
+	}
+
+	public void deleteSignedPreKey(Account account, int signedPreKeyId) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		String[] args = {account.getUuid(), Integer.toString(signedPreKeyId)};
+		db.delete(AxolotlService.SQLiteAxolotlStore.SIGNED_PREKEY_TABLENAME,
+				AxolotlService.SQLiteAxolotlStore.ACCOUNT + "=? AND "
+						+ AxolotlService.SQLiteAxolotlStore.ID + "=?",
+				args);
 	}
 }
