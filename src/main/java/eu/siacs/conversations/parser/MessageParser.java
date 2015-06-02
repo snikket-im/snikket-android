@@ -266,14 +266,14 @@ public class MessageParser extends AbstractParser implements
 			Conversation conversation = mXmppConnectionService.findOrCreateConversation(account, counterpart.toBareJid(), isTypeGroupChat);
 			if (isTypeGroupChat) {
 				if (counterpart.getResourcepart().equals(conversation.getMucOptions().getActualNick())) {
-					status = Message.STATUS_SEND;
-					if (mXmppConnectionService.markMessage(conversation, remoteMsgId, Message.STATUS_SEND_RECEIVED)) {
+					status = Message.STATUS_SEND_RECEIVED;
+					if (mXmppConnectionService.markMessage(conversation, remoteMsgId, status)) {
 						return;
 					} else {
 						Message message = conversation.findSentMessageWithBody(body);
 						if (message != null) {
 							message.setRemoteMsgId(remoteMsgId);
-							mXmppConnectionService.markMessage(message, Message.STATUS_SEND_RECEIVED);
+							mXmppConnectionService.markMessage(message, status);
 							return;
 						}
 					}
