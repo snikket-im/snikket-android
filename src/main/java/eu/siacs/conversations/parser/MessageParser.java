@@ -367,7 +367,7 @@ public class MessageParser extends AbstractParser implements
 			if (packet.hasChild("subject") && isTypeGroupChat) {
 				Conversation conversation = mXmppConnectionService.find(account, from.toBareJid());
 				if (conversation != null && conversation.getMode() == Conversation.MODE_MULTI) {
-					conversation.setHasMessagesLeftOnServer(true);
+					conversation.setHasMessagesLeftOnServer(conversation.countMessages() > 0);
 					conversation.getMucOptions().setSubject(packet.findChildContent("subject"));
 					mXmppConnectionService.updateConversationUi();
 					return;

@@ -249,6 +249,12 @@ public class Conversation extends AbstractEntity implements Blockable {
 		this.mLastReceivedOtrMessageId = id;
 	}
 
+	public int countMessages() {
+		synchronized (this.messages) {
+			return this.messages.size();
+		}
+	}
+
 
 	public interface OnMessageFound {
 		public void onMessageFound(final Message message);
