@@ -46,7 +46,7 @@ android {
 		minSdkVersion 14
 		targetSdkVersion 21
 		versionCode 70
-		versionName "1.5.0-alpha"
+		versionName "1.4.4-beta"
 	}
 
 	compileOptions {
