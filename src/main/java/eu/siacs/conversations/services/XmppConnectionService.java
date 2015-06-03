@@ -927,7 +927,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 			public void run() {
 				Log.d(Config.LOGTAG,"start merging phone contacts with roster");
 				for (Account account : accounts) {
-					account.getRoster().clearSystemAccounts();
+					List<Contact> withSystemAccounts = account.getRoster().getWithSystemAccounts();
 					for (Bundle phoneContact : phoneContacts) {
 						if (Thread.interrupted()) {
 							Log.d(Config.LOGTAG,"interrupted merging phone contacts");
@@ -944,9 +944,18 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 							+ "#"
 							+ phoneContact.getString("lookup");
 						contact.setSystemAccount(systemAccount);
-						contact.setPhotoUri(phoneContact.getString("photouri"));
-						getAvatarService().clear(contact);
+						if (contact.setPhotoUri(phoneContact.getString("photouri"))) {
+							getAvatarService().clear(contact);
+						}
 						contact.setSystemName(phoneContact.getString("displayname"));
+						withSystemAccounts.remove(contact);
+					}
+					for(Contact contact : withSystemAccounts) {
+						contact.setSystemAccount(null);
+						contact.setSystemName(null);
+						if (contact.setPhotoUri(null)) {
+							getAvatarService().clear(contact);
+						}
 					}
 				}
 				Log.d(Config.LOGTAG,"finished merging phone contacts");

@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.provider.ContactsContract;
 import android.provider.ContactsContract.CommonDataKinds;
 import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.Intents;
@@ -126,14 +127,23 @@ public class ContactDetailsActivity extends XmppActivity implements OnAccountUpd
 
 		@Override
 		public void onClick(View v) {
-			AlertDialog.Builder builder = new AlertDialog.Builder(
-					ContactDetailsActivity.this);
-			builder.setTitle(getString(R.string.action_add_phone_book));
-			builder.setMessage(getString(R.string.add_phone_book_text,
+			if (contact.getSystemAccount() == null) {
+				AlertDialog.Builder builder = new AlertDialog.Builder(
+						ContactDetailsActivity.this);
+				builder.setTitle(getString(R.string.action_add_phone_book));
+				builder.setMessage(getString(R.string.add_phone_book_text,
 						contact.getJid()));
-			builder.setNegativeButton(getString(R.string.cancel), null);
-			builder.setPositiveButton(getString(R.string.add), addToPhonebook);
-			builder.create().show();
+				builder.setNegativeButton(getString(R.string.cancel), null);
+				builder.setPositiveButton(getString(R.string.add), addToPhonebook);
+				builder.create().show();
+			} else {
+					String[] systemAccount = contact.getSystemAccount().split("#");
+					long id = Long.parseLong(systemAccount[0]);
+					Uri uri = ContactsContract.Contacts.getLookupUri(id, systemAccount[1]);
+					Intent intent = new Intent(Intent.ACTION_VIEW);
+					intent.setData(uri);
+					startActivity(intent);
+			}
 		}
 	};
 
@@ -340,12 +350,9 @@ public class ContactDetailsActivity extends XmppActivity implements OnAccountUpd
 		} else {
 			contactJidTv.setText(contact.getJid().toString());
 		}
-		accountJidTv.setText(getString(R.string.using_account, contact
-					.getAccount().getJid().toBareJid()));
-		prepareContactBadge(badge, contact);
-		if (contact.getSystemAccount() == null) {
-			badge.setOnClickListener(onBadgeClick);
-		}
+		accountJidTv.setText(getString(R.string.using_account, contact.getAccount().getJid().toBareJid()));
+		badge.setImageBitmap(avatarService().get(contact, getPixel(72)));
+		badge.setOnClickListener(this.onBadgeClick);
 
 		keys.removeAllViews();
 		boolean hasKeys = false;
@@ -417,15 +424,6 @@ public class ContactDetailsActivity extends XmppActivity implements OnAccountUpd
 				tags.addView(tv);
 			}
 		}
-	}
-
-	private void prepareContactBadge(QuickContactBadge badge, Contact contact) {
-		if (contact.getSystemAccount() != null) {
-			String[] systemAccount = contact.getSystemAccount().split("#");
-			long id = Long.parseLong(systemAccount[0]);
-			badge.assignContactUri(Contacts.getLookupUri(id, systemAccount[1]));
-		}
-		badge.setImageBitmap(avatarService().get(contact, getPixel(72)));
 	}
 
 	protected void confirmToDeleteFingerprint(final String fingerprint) {
