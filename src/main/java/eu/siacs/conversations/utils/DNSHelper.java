@@ -47,88 +47,43 @@ public class DNSHelper {
 		Bundle bundle = new Bundle();
 		try {
 			String qname = "_xmpp-client._tcp." + host;
-			Log.d(Config.LOGTAG,
-					"using dns server: " + dnsServer.getHostAddress()
-							+ " to look up " + host);
-			DNSMessage message = client.query(qname, TYPE.SRV, CLASS.IN,
-					dnsServer.getHostAddress());
-
-			// How should we handle priorities and weight?
-			// Wikipedia has a nice article about priorities vs. weights:
-			// https://en.wikipedia.org/wiki/SRV_record#Provisioning_for_high_service_availability
-
-			// we bucket the SRV records based on priority, pick per priority
-			// a random order respecting the weight, and dump that priority by
-			// priority
+			Log.d(Config.LOGTAG, "using dns server: " + dnsServer.getHostAddress() + " to look up " + host);
+			DNSMessage message = client.query(qname, TYPE.SRV, CLASS.IN, dnsServer.getHostAddress());
 
 			TreeMap<Integer, ArrayList<SRV>> priorities = new TreeMap<>();
 			TreeMap<String, ArrayList<String>> ips4 = new TreeMap<>();
 			TreeMap<String, ArrayList<String>> ips6 = new TreeMap<>();
 
-			for (Record[] rrset : new Record[][] { message.getAnswers(),
-					message.getAdditionalResourceRecords() }) {
+			for (Record[] rrset : new Record[][] { message.getAnswers(), message.getAdditionalResourceRecords() }) {
 				for (Record rr : rrset) {
 					Data d = rr.getPayload();
-					if (d instanceof SRV
-							&& NameUtil.idnEquals(qname, rr.getName())) {
+					if (d instanceof SRV && NameUtil.idnEquals(qname, rr.getName())) {
 						SRV srv = (SRV) d;
 						if (!priorities.containsKey(srv.getPriority())) {
-							priorities.put(srv.getPriority(),
-									new ArrayList<SRV>(2));
+							priorities.put(srv.getPriority(),new ArrayList<SRV>());
 						}
 						priorities.get(srv.getPriority()).add(srv);
 					}
 					if (d instanceof A) {
-						A arecord = (A) d;
+						A a = (A) d;
 						if (!ips4.containsKey(rr.getName())) {
-							ips4.put(rr.getName(), new ArrayList<String>(3));
+							ips4.put(rr.getName(), new ArrayList<String>());
 						}
-						ips4.get(rr.getName()).add(arecord.toString());
+						ips4.get(rr.getName()).add(a.toString());
 					}
 					if (d instanceof AAAA) {
 						AAAA aaaa = (AAAA) d;
 						if (!ips6.containsKey(rr.getName())) {
-							ips6.put(rr.getName(), new ArrayList<String>(3));
+							ips6.put(rr.getName(), new ArrayList<String>());
 						}
 						ips6.get(rr.getName()).add("[" + aaaa.toString() + "]");
 					}
 				}
 			}
 
-			Random rnd = new Random();
-			ArrayList<SRV> result = new ArrayList<>(
-					priorities.size() * 2 + 1);
+			ArrayList<SRV> result = new ArrayList<>();
 			for (ArrayList<SRV> s : priorities.values()) {
-
-				// trivial case
-				if (s.size() <= 1) {
-					result.addAll(s);
-					continue;
-				}
-
-				long totalweight = 0l;
-				for (SRV srv : s) {
-					totalweight += srv.getWeight();
-				}
-
-				while (totalweight > 0l && s.size() > 0) {
-					long p = (rnd.nextLong() & 0x7fffffffffffffffl)
-							% totalweight;
-					int i = 0;
-					while (p > 0) {
-						p -= s.get(i++).getPriority();
-					}
-					if (i>0) i--;
-					// remove is expensive, but we have only a few entries
-					// anyway
-					SRV srv = s.remove(i);
-					totalweight -= srv.getWeight();
-					result.add(srv);
-				}
-
-				Collections.shuffle(s, rnd);
 				result.addAll(s);
-
 			}
 
 			ArrayList<Bundle> values = new ArrayList<>();
