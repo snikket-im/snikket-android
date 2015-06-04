@@ -320,7 +320,7 @@ public class MessageParser extends AbstractParser implements
 			}
 			conversation.add(message);
 			if (serverMsgId == null) {
-				if (status == Message.STATUS_SEND) {
+				if (status == Message.STATUS_SEND || status == Message.STATUS_SEND_RECEIVED) {
 					mXmppConnectionService.markRead(conversation);
 					account.activateGracePeriod();
 				} else {
