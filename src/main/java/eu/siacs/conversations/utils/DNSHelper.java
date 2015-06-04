@@ -106,7 +106,7 @@ public class DNSHelper {
 				} else {
 					DNSMessage response = client.query(srv.getName(), TYPE.AAAA, CLASS.IN, dnsServer.getHostAddress());
 					for(int i = 0; i < response.getAnswers().length; ++i) {
-						values.add(createNamePortBundle(host,5222,response.getAnswers()[i].getPayload()));
+						values.add(createNamePortBundle(srv.getName(),srv.getPort(),response.getAnswers()[i].getPayload()));
 					}
 				}
 				if (ips4.containsKey(srv.getName())) {
@@ -114,7 +114,7 @@ public class DNSHelper {
 				} else {
 					DNSMessage response = client.query(srv.getName(), TYPE.A, CLASS.IN, dnsServer.getHostAddress());
 					for(int i = 0; i < response.getAnswers().length; ++i) {
-						values.add(createNamePortBundle(host,5222,response.getAnswers()[i].getPayload()));
+						values.add(createNamePortBundle(srv.getName(),srv.getPort(),response.getAnswers()[i].getPayload()));
 					}
 				}
 				values.add(createNamePortBundle(srv.getName(), srv.getPort()));
