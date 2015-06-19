@@ -20,11 +20,19 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 import java.util.TreeMap;
+import java.util.regex.Pattern;
 
 import android.os.Bundle;
 import android.util.Log;
 
 public class DNSHelper {
+
+	public static final Pattern PATTERN_IPV4 = Pattern.compile("\\A(25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)(\\.(25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)){3}\\z");
+	public static final Pattern PATTERN_IPV6_HEX4DECCOMPRESSED = Pattern.compile("\\A((?:[0-9A-Fa-f]{1,4}(?::[0-9A-Fa-f]{1,4})*)?) ::((?:[0-9A-Fa-f]{1,4}:)*)(25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)(\\.(25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)){3}\\z");
+	public static final Pattern PATTERN_IPV6_6HEX4DEC = Pattern.compile("\\A((?:[0-9A-Fa-f]{1,4}:){6,6})(25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)(\\.(25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)){3}\\z");
+	public static final Pattern PATTERN_IPV6_HEXCOMPRESSED = Pattern.compile("\\A((?:[0-9A-Fa-f]{1,4}(?::[0-9A-Fa-f]{1,4})*)?)::((?:[0-9A-Fa-f]{1,4}(?::[0-9A-Fa-f]{1,4})*)?)\\z");
+	public static final Pattern PATTERN_IPV6 = Pattern.compile("\\A(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}\\z");
+
 	protected static Client client = new Client();
 
 	public static Bundle getSRVRecord(final Jid jid) throws IOException {
@@ -160,15 +168,11 @@ public class DNSHelper {
 		return namePort;
 	}
 
-	final protected static char[] hexArray = "0123456789ABCDEF".toCharArray();
-
-	public static String bytesToHex(byte[] bytes) {
-		char[] hexChars = new char[bytes.length * 2];
-		for (int j = 0; j < bytes.length; j++) {
-			int v = bytes[j] & 0xFF;
-			hexChars[j * 2] = hexArray[v >>> 4];
-			hexChars[j * 2 + 1] = hexArray[v & 0x0F];
-		}
-		return new String(hexChars);
+	public static boolean isIp(final String server) {
+		return PATTERN_IPV4.matcher(server).matches()
+				|| PATTERN_IPV6.matcher(server).matches()
+				|| PATTERN_IPV6_6HEX4DEC.matcher(server).matches()
+				|| PATTERN_IPV6_HEX4DECCOMPRESSED.matcher(server).matches()
+				|| PATTERN_IPV6_HEXCOMPRESSED.matcher(server).matches();
 	}
 }
