@@ -166,12 +166,12 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 		}
 	}
 
-	public void processFin(Element fin) {
+	public void processFin(Element fin, Jid from) {
 		if (fin == null) {
 			return;
 		}
 		Query query = findQuery(fin.getAttribute("queryid"));
-		if (query == null) {
+		if (query == null || !query.validFrom(from)) {
 			return;
 		}
 		boolean complete = fin.getAttributeAsBoolean("complete");
@@ -334,6 +334,14 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 
 		public int getMessageCount() {
 			return this.messageCount;
+		}
+
+		public boolean validFrom(Jid from) {
+			if (muc()) {
+				return getWith().equals(from);
+			} else {
+				return (from == null) || account.getJid().toBareJid().equals(from.toBareJid());
+			}
 		}
 
 		@Override

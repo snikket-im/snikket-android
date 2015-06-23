@@ -45,38 +45,37 @@ public class PresenceParser extends AbstractParser implements
 	}
 
 	public void parseContactPresence(PresencePacket packet, Account account) {
-		PresenceGenerator mPresenceGenerator = mXmppConnectionService
-				.getPresenceGenerator();
-		if (packet.getFrom() == null) {
+		PresenceGenerator mPresenceGenerator = mXmppConnectionService.getPresenceGenerator();
+		final Jid from = packet.getFrom();
+		if (from == null) {
 			return;
 		}
-		final Jid from = packet.getFrom();
-		String type = packet.getAttribute("type");
-		Contact contact = account.getRoster().getContact(packet.getFrom());
+		final String type = packet.getAttribute("type");
+		final Contact contact = account.getRoster().getContact(from);
 		if (type == null) {
-			String presence;
-			if (!from.isBareJid()) {
-				presence = from.getResourcepart();
-			} else {
-				presence = "";
+			String presence = from.isBareJid() ? "" : from.getResourcepart();
+			contact.setPresenceName(packet.findChildContent("nick", "http://jabber.org/protocol/nick"));
+			Avatar avatar = Avatar.parsePresence(packet.findChild("x", "vcard-temp:x:update"));
+			if (avatar != null && !contact.isSelf()) {
+				avatar.owner = from.toBareJid();
+				if (mXmppConnectionService.getFileBackend().isAvatarCached(avatar)) {
+					if (contact.setAvatar(avatar)) {
+						mXmppConnectionService.getAvatarService().clear(contact);
+						mXmppConnectionService.updateConversationUi();
+						mXmppConnectionService.updateRosterUi();
+					}
+				} else {
+					mXmppConnectionService.fetchAvatar(account, avatar);
+				}
 			}
 			int sizeBefore = contact.getPresences().size();
-			contact.updatePresence(presence,
-					Presences.parseShow(packet.findChild("show")));
+			contact.updatePresence(presence, Presences.parseShow(packet.findChild("show")));
 			PgpEngine pgp = mXmppConnectionService.getPgpEngine();
-			if (pgp != null) {
-				Element x = packet.findChild("x", "jabber:x:signed");
-				if (x != null) {
-					Element status = packet.findChild("status");
-					String msg;
-					if (status != null) {
-						msg = status.getContent();
-					} else {
-						msg = "";
-					}
-					contact.setPgpKeyId(pgp.fetchKeyId(account, msg,
-							x.getContent()));
-				}
+			Element x = packet.findChild("x", "jabber:x:signed");
+			if (pgp != null && x != null) {
+				Element status = packet.findChild("status");
+				String msg = status != null ? status.getContent() : "";
+				contact.setPgpKeyId(pgp.fetchKeyId(account, msg, x.getContent()));
 			}
 			boolean online = sizeBefore < contact.getPresences().size();
 			updateLastseen(packet, account, false);
@@ -87,33 +86,13 @@ public class PresenceParser extends AbstractParser implements
 			} else {
 				contact.removePresence(from.getResourcepart());
 			}
-			mXmppConnectionService.onContactStatusChanged
-					.onContactStatusChanged(contact, false);
+			mXmppConnectionService.onContactStatusChanged.onContactStatusChanged(contact, false);
 		} else if (type.equals("subscribe")) {
 			if (contact.getOption(Contact.Options.PREEMPTIVE_GRANT)) {
 				mXmppConnectionService.sendPresencePacket(account,
 						mPresenceGenerator.sendPresenceUpdatesTo(contact));
 			} else {
 				contact.setOption(Contact.Options.PENDING_SUBSCRIPTION_REQUEST);
-			}
-		}
-		Element nick = packet.findChild("nick",
-				"http://jabber.org/protocol/nick");
-		if (nick != null) {
-			contact.setPresenceName(nick.getContent());
-		}
-		Element x = packet.findChild("x","vcard-temp:x:update");
-		Avatar avatar = Avatar.parsePresence(x);
-		if (avatar != null && !contact.isSelf()) {
-			avatar.owner = from.toBareJid();
-			if (mXmppConnectionService.getFileBackend().isAvatarCached(avatar)) {
-				if (contact.setAvatar(avatar)) {
-					mXmppConnectionService.getAvatarService().clear(contact);
-					mXmppConnectionService.updateConversationUi();
-					mXmppConnectionService.updateRosterUi();
-				}
-			} else {
-				mXmppConnectionService.fetchAvatar(account,avatar);
 			}
 		}
 		mXmppConnectionService.updateRosterUi();

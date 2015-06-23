@@ -446,4 +446,9 @@
     <item quantity="one">Изберете %d контакт</item>
     <item quantity="other">Изберете %d контакта</item>
   </plurals>
+  <string name="pref_quick_action_summary">Замяна на бутона за изпращане с бързо действие</string>
+  <string name="pref_quick_action">Бързо действие</string>
+  <string name="none">Нищо</string>
+  <string name="recently_used">Използвани наскоро</string>
+  <string name="choose_quick_action">Изберете бързо действие</string>
 </resources>

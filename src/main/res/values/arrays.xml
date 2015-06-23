@@ -44,6 +44,7 @@
 		<item>@string/none</item>
 		<item>@string/recently_used</item>
 		<item>@string/attach_take_picture</item>
+		<item>@string/attach_choose_picture</item>
 		<item>@string/attach_record_voice</item>
 		<item>@string/send_location</item>
 	</string-array>
@@ -52,6 +53,7 @@
 		<item>none</item>
 		<item>recent</item>
 		<item>photo</item>
+		<item>picture</item>
 		<item>voice</item>
 		<item>location</item>
 	</string-array>

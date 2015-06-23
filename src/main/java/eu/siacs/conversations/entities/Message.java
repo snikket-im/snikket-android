@@ -17,7 +17,7 @@ public class Message extends AbstractEntity {
 
 	public static final String TABLENAME = "messages";
 
-	public static final String MERGE_SEPARATOR = "\u200B\n\n";
+	public static final String MERGE_SEPARATOR = " \u200B\n\n";
 
 	public static final int STATUS_RECEIVED = 0;
 	public static final int STATUS_UNSEND = 1;
@@ -328,7 +328,7 @@ public class Message extends AbstractEntity {
 			return this.remoteMsgId == null
 					&& this.counterpart.equals(message.getCounterpart())
 					&& this.body.equals(message.getBody())
-					&& Math.abs(this.getTimeSent() - message.getTimeSent()) < Config.PING_TIMEOUT * 500;
+					&& Math.abs(this.getTimeSent() - message.getTimeSent()) < Config.MESSAGE_MERGE_WINDOW * 1000;
 		}
 	}
 

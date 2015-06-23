@@ -256,6 +256,9 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 					case RECORD_VOICE:
 						activity.attachFile(ConversationActivity.ATTACHMENT_CHOICE_RECORD_VOICE);
 						break;
+					case CHOOSE_PICTURE:
+						activity.attachFile(ConversationActivity.ATTACHMENT_CHOICE_CHOOSE_IMAGE);
+						break;
 					case CANCEL:
 						if (conversation != null && conversation.getMode() == Conversation.MODE_MULTI) {
 							conversation.setNextCounterpart(null);
@@ -818,7 +821,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 		updateChatMsgHint();
 	}
 
-	enum SendButtonAction {TEXT, TAKE_PHOTO, SEND_LOCATION, RECORD_VOICE, CANCEL}
+	enum SendButtonAction {TEXT, TAKE_PHOTO, SEND_LOCATION, RECORD_VOICE, CANCEL, CHOOSE_PICTURE}
 
 	private int getSendButtonImageResource(SendButtonAction action, int status) {
 		switch (action) {
@@ -887,6 +890,19 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 					default:
 						return R.drawable.ic_send_cancel_offline;
 				}
+			case CHOOSE_PICTURE:
+				switch (status) {
+					case Presences.CHAT:
+					case Presences.ONLINE:
+						return R.drawable.ic_send_picture_online;
+					case Presences.AWAY:
+						return R.drawable.ic_send_picture_away;
+					case Presences.XA:
+					case Presences.DND:
+						return R.drawable.ic_send_picture_dnd;
+					default:
+						return R.drawable.ic_send_picture_offline;
+				}
 		}
 		return R.drawable.ic_send_text_offline;
 	}
@@ -919,6 +935,9 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 						break;
 					case "voice":
 						action = SendButtonAction.RECORD_VOICE;
+						break;
+					case "picture":
+						action = SendButtonAction.CHOOSE_PICTURE;
 						break;
 					default:
 						action = SendButtonAction.TEXT;

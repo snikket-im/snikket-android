@@ -1,5 +1,10 @@
 package eu.siacs.conversations.xmpp.stanzas;
 
+import android.util.Pair;
+
+import java.text.ParseException;
+
+import eu.siacs.conversations.parser.AbstractParser;
 import eu.siacs.conversations.xml.Element;
 
 public class MessagePacket extends AbstractStanza {
@@ -14,12 +19,7 @@ public class MessagePacket extends AbstractStanza {
 	}
 
 	public String getBody() {
-		Element body = this.findChild("body");
-		if (body != null) {
-			return body.getContent();
-		} else {
-			return null;
-		}
+		return findChildContent("body");
 	}
 
 	public void setBody(String text) {
@@ -65,5 +65,32 @@ public class MessagePacket extends AbstractStanza {
 		} else {
 			return TYPE_NORMAL;
 		}
+	}
+
+	public Pair<MessagePacket,Long> getForwardedMessagePacket(String name, String namespace) {
+		Element wrapper = findChild(name, namespace);
+		if (wrapper == null) {
+			return null;
+		}
+		Element forwarded = wrapper.findChild("forwarded", "urn:xmpp:forward:0");
+		if (forwarded == null) {
+			return null;
+		}
+		MessagePacket packet = create(forwarded.findChild("message"));
+		if (packet == null) {
+			return null;
+		}
+		Long timestamp = AbstractParser.getTimestamp(forwarded,null);
+		return new Pair(packet,timestamp);
+	}
+
+	public static MessagePacket create(Element element) {
+		if (element == null) {
+			return null;
+		}
+		MessagePacket packet = new MessagePacket();
+		packet.setAttributes(element.getAttributes());
+		packet.setChildren(element.getChildren());
+		return packet;
 	}
 }

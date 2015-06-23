@@ -249,6 +249,12 @@ public class Conversation extends AbstractEntity implements Blockable {
 		this.mLastReceivedOtrMessageId = id;
 	}
 
+	public int countMessages() {
+		synchronized (this.messages) {
+			return this.messages.size();
+		}
+	}
+
 
 	public interface OnMessageFound {
 		public void onMessageFound(final Message message);
@@ -419,7 +425,7 @@ public class Conversation extends AbstractEntity implements Blockable {
 			final SessionID sessionId = new SessionID(this.getJid().toBareJid().toString(),
 					presence,
 					"xmpp");
-			this.otrSession = new SessionImpl(sessionId, getAccount().getOtrEngine());
+			this.otrSession = new SessionImpl(sessionId, getAccount().getOtrService());
 			try {
 				if (sendStart) {
 					this.otrSession.startSession();
@@ -491,7 +497,7 @@ public class Conversation extends AbstractEntity implements Blockable {
 					return null;
 				}
 				DSAPublicKey remotePubKey = (DSAPublicKey) getOtrSession().getRemotePublicKey();
-				this.otrFingerprint = getAccount().getOtrEngine().getFingerprint(remotePubKey);
+				this.otrFingerprint = getAccount().getOtrService().getFingerprint(remotePubKey);
 			} catch (final OtrCryptoException | UnsupportedOperationException ignored) {
 				return null;
 			}

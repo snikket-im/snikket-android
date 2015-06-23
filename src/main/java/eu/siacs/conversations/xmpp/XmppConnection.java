@@ -26,6 +26,7 @@ import java.net.IDN;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.SocketAddress;
 import java.net.UnknownHostException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
@@ -155,56 +156,62 @@ public class XmppConnection implements Runnable {
 			tagWriter = new TagWriter();
 			packetCallbacks.clear();
 			this.changeStatus(Account.State.CONNECTING);
-			final Bundle result = DNSHelper.getSRVRecord(account.getServer());
-			final ArrayList<Parcelable> values = result.getParcelableArrayList("values");
-			if ("timeout".equals(result.getString("error"))) {
-				throw new IOException("timeout in dns");
-			} else if (values != null) {
-				int i = 0;
-				boolean socketError = true;
-				while (socketError && values.size() > i) {
-					final Bundle namePort = (Bundle) values.get(i);
-					try {
-						String srvRecordServer;
-						try {
-							srvRecordServer = IDN.toASCII(namePort.getString("name"));
-						} catch (final IllegalArgumentException e) {
-							// TODO: Handle me?`
-							srvRecordServer = "";
-						}
-						final int srvRecordPort = namePort.getInt("port");
-						final String srvIpServer = namePort.getString("ip");
-						final InetSocketAddress addr;
-						if (srvIpServer != null) {
-							addr = new InetSocketAddress(srvIpServer, srvRecordPort);
-							Log.d(Config.LOGTAG, account.getJid().toBareJid().toString()
-									+ ": using values from dns " + srvRecordServer
-									+ "[" + srvIpServer + "]:" + srvRecordPort);
-						} else {
-							addr = new InetSocketAddress(srvRecordServer, srvRecordPort);
-							Log.d(Config.LOGTAG, account.getJid().toBareJid().toString()
-									+ ": using values from dns "
-									+ srvRecordServer + ":" + srvRecordPort);
-						}
-						socket = new Socket();
-						socket.connect(addr, Config.SOCKET_TIMEOUT * 1000);
-						socketError = false;
-					} catch (final UnknownHostException e) {
-						Log.d(Config.LOGTAG, account.getJid().toBareJid().toString() + ": " + e.getMessage());
-						i++;
-					} catch (final IOException e) {
-						Log.d(Config.LOGTAG, account.getJid().toBareJid().toString() + ": " + e.getMessage());
-						i++;
-					}
-				}
-				if (socketError) {
+			if (DNSHelper.isIp(account.getServer().toString())) {
+				socket = new Socket();
+				try {
+					socket.connect(new InetSocketAddress(account.getServer().toString(), 5222), Config.SOCKET_TIMEOUT * 1000);
+				} catch (IOException e) {
 					throw new UnknownHostException();
 				}
-			} else if (result.containsKey("error")
-					&& "nosrv".equals(result.getString("error", null))) {
-				socket = new Socket(account.getServer().getDomainpart(), 5222);
 			} else {
-				throw new IOException("unhandled exception in DNS resolver");
+				final Bundle result = DNSHelper.getSRVRecord(account.getServer());
+				final ArrayList<Parcelable> values = result.getParcelableArrayList("values");
+				if ("timeout".equals(result.getString("error"))) {
+					throw new IOException("timeout in dns");
+				} else if (values != null) {
+					int i = 0;
+					boolean socketError = true;
+					while (socketError && values.size() > i) {
+						final Bundle namePort = (Bundle) values.get(i);
+						try {
+							String srvRecordServer;
+							try {
+								srvRecordServer = IDN.toASCII(namePort.getString("name"));
+							} catch (final IllegalArgumentException e) {
+								// TODO: Handle me?`
+								srvRecordServer = "";
+							}
+							final int srvRecordPort = namePort.getInt("port");
+							final String srvIpServer = namePort.getString("ip");
+							final InetSocketAddress addr;
+							if (srvIpServer != null) {
+								addr = new InetSocketAddress(srvIpServer, srvRecordPort);
+								Log.d(Config.LOGTAG, account.getJid().toBareJid().toString()
+										+ ": using values from dns " + srvRecordServer
+										+ "[" + srvIpServer + "]:" + srvRecordPort);
+							} else {
+								addr = new InetSocketAddress(srvRecordServer, srvRecordPort);
+								Log.d(Config.LOGTAG, account.getJid().toBareJid().toString()
+										+ ": using values from dns "
+										+ srvRecordServer + ":" + srvRecordPort);
+							}
+							socket = new Socket();
+							socket.connect(addr, Config.SOCKET_TIMEOUT * 1000);
+							socketError = false;
+						} catch (final UnknownHostException e) {
+							Log.d(Config.LOGTAG, account.getJid().toBareJid().toString() + ": " + e.getMessage());
+							i++;
+						} catch (final IOException e) {
+							Log.d(Config.LOGTAG, account.getJid().toBareJid().toString() + ": " + e.getMessage());
+							i++;
+						}
+					}
+					if (socketError) {
+						throw new UnknownHostException();
+					}
+				} else {
+					throw new IOException("unhandled exception in DNS resolver");
+				}
 			}
 			final OutputStream out = socket.getOutputStream();
 			tagWriter.setOutputStream(out);

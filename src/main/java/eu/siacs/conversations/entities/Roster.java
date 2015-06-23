@@ -2,6 +2,7 @@ package eu.siacs.conversations.entities;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import eu.siacs.conversations.xmpp.jid.Jid;
@@ -55,12 +56,15 @@ public class Roster {
 		}
 	}
 
-	public void clearSystemAccounts() {
-		for (Contact contact : getContacts()) {
-			contact.setPhotoUri(null);
-			contact.setSystemName(null);
-			contact.setSystemAccount(null);
+	public List<Contact> getWithSystemAccounts() {
+		List<Contact> with = getContacts();
+		for(Iterator<Contact> iterator = with.iterator(); iterator.hasNext();) {
+			Contact contact = iterator.next();
+			if (contact.getSystemAccount() == null) {
+				iterator.remove();
+			}
 		}
+		return with;
 	}
 
 	public List<Contact> getContacts() {

@@ -160,13 +160,18 @@ public class JingleInbandTransport extends JingleTransport {
 		byte[] buffer = new byte[this.bufferSize];
 		try {
 			int count = fileInputStream.read(buffer);
-			this.remainingSize -= count;
-			if (count != buffer.length && count != -1) {
+			if (count == -1) {
+				file.setSha1Sum(CryptoHelper.bytesToHex(digest.digest()));
+				this.onFileTransmissionStatusChanged.onFileTransmitted(file);
+				fileInputStream.close();
+				return;
+			} else if (count != buffer.length) {
 				int rem = fileInputStream.read(buffer,count,buffer.length-count);
 				if (rem > 0) {
 					count += rem;
 				}
 			}
+			this.remainingSize -= count;
 			this.digest.update(buffer,0,count);
 			String base64 = Base64.encodeToString(buffer,0,count, Base64.NO_WRAP);
 			IqPacket iq = new IqPacket(IqPacket.TYPE.SET);

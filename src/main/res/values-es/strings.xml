@@ -446,4 +446,9 @@
     <item quantity="one">Seleccionado %d contacto</item>
     <item quantity="other">Seleccionados %d contactos</item>
   </plurals>
+  <string name="pref_quick_action_summary">Cambiar el botón de enviar por botón de acción rápida</string>
+  <string name="pref_quick_action">Acción Rápida</string>
+  <string name="none">Ninguna</string>
+  <string name="recently_used">Usada más recientemente</string>
+  <string name="choose_quick_action">Elegir acción rápida</string>
 </resources>

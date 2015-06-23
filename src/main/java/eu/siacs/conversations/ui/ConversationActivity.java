@@ -479,6 +479,9 @@ public class ConversationActivity extends XmppActivity
 			case ATTACHMENT_CHOICE_TAKE_PHOTO:
 				getPreferences().edit().putString("recently_used_quick_action","photo").apply();
 				break;
+			case ATTACHMENT_CHOICE_CHOOSE_IMAGE:
+				getPreferences().edit().putString("recently_used_quick_action","picture").apply();
+				break;
 		}
 		final Conversation conversation = getSelectedConversation();
 		final int encryption = conversation.getNextEncryption(forceEncryption());

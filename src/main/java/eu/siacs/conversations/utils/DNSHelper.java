@@ -20,11 +20,19 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 import java.util.TreeMap;
+import java.util.regex.Pattern;
 
 import android.os.Bundle;
 import android.util.Log;
 
 public class DNSHelper {
+
+	public static final Pattern PATTERN_IPV4 = Pattern.compile("\\A(25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)(\\.(25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)){3}\\z");
+	public static final Pattern PATTERN_IPV6_HEX4DECCOMPRESSED = Pattern.compile("\\A((?:[0-9A-Fa-f]{1,4}(?::[0-9A-Fa-f]{1,4})*)?) ::((?:[0-9A-Fa-f]{1,4}:)*)(25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)(\\.(25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)){3}\\z");
+	public static final Pattern PATTERN_IPV6_6HEX4DEC = Pattern.compile("\\A((?:[0-9A-Fa-f]{1,4}:){6,6})(25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)(\\.(25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)){3}\\z");
+	public static final Pattern PATTERN_IPV6_HEXCOMPRESSED = Pattern.compile("\\A((?:[0-9A-Fa-f]{1,4}(?::[0-9A-Fa-f]{1,4})*)?)::((?:[0-9A-Fa-f]{1,4}(?::[0-9A-Fa-f]{1,4})*)?)\\z");
+	public static final Pattern PATTERN_IPV6 = Pattern.compile("\\A(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}\\z");
+
 	protected static Client client = new Client();
 
 	public static Bundle getSRVRecord(final Jid jid) throws IOException {
@@ -37,9 +45,6 @@ public class DNSHelper {
 				Bundle b = queryDNS(host, ip);
 				if (b.containsKey("values")) {
 					return b;
-				} else if (b.containsKey("error")
-						&& "nosrv".equals(b.getString("error", null))) {
-					return b;
 				}
 			}
 		}
@@ -50,111 +55,93 @@ public class DNSHelper {
 		Bundle bundle = new Bundle();
 		try {
 			String qname = "_xmpp-client._tcp." + host;
-			Log.d(Config.LOGTAG,
-					"using dns server: " + dnsServer.getHostAddress()
-							+ " to look up " + host);
-			DNSMessage message = client.query(qname, TYPE.SRV, CLASS.IN,
-					dnsServer.getHostAddress());
-
-			// How should we handle priorities and weight?
-			// Wikipedia has a nice article about priorities vs. weights:
-			// https://en.wikipedia.org/wiki/SRV_record#Provisioning_for_high_service_availability
-
-			// we bucket the SRV records based on priority, pick per priority
-			// a random order respecting the weight, and dump that priority by
-			// priority
+			Log.d(Config.LOGTAG, "using dns server: " + dnsServer.getHostAddress() + " to look up " + host);
+			DNSMessage message = client.query(qname, TYPE.SRV, CLASS.IN, dnsServer.getHostAddress());
 
 			TreeMap<Integer, ArrayList<SRV>> priorities = new TreeMap<>();
 			TreeMap<String, ArrayList<String>> ips4 = new TreeMap<>();
 			TreeMap<String, ArrayList<String>> ips6 = new TreeMap<>();
 
-			for (Record[] rrset : new Record[][] { message.getAnswers(),
-					message.getAdditionalResourceRecords() }) {
+			for (Record[] rrset : new Record[][] { message.getAnswers(), message.getAdditionalResourceRecords() }) {
 				for (Record rr : rrset) {
 					Data d = rr.getPayload();
-					if (d instanceof SRV
-							&& NameUtil.idnEquals(qname, rr.getName())) {
+					if (d instanceof SRV && NameUtil.idnEquals(qname, rr.getName())) {
 						SRV srv = (SRV) d;
 						if (!priorities.containsKey(srv.getPriority())) {
-							priorities.put(srv.getPriority(),
-									new ArrayList<SRV>(2));
+							priorities.put(srv.getPriority(),new ArrayList<SRV>());
 						}
 						priorities.get(srv.getPriority()).add(srv);
 					}
 					if (d instanceof A) {
-						A arecord = (A) d;
+						A a = (A) d;
 						if (!ips4.containsKey(rr.getName())) {
-							ips4.put(rr.getName(), new ArrayList<String>(3));
+							ips4.put(rr.getName(), new ArrayList<String>());
 						}
-						ips4.get(rr.getName()).add(arecord.toString());
+						ips4.get(rr.getName()).add(a.toString());
 					}
 					if (d instanceof AAAA) {
 						AAAA aaaa = (AAAA) d;
 						if (!ips6.containsKey(rr.getName())) {
-							ips6.put(rr.getName(), new ArrayList<String>(3));
+							ips6.put(rr.getName(), new ArrayList<String>());
 						}
 						ips6.get(rr.getName()).add("[" + aaaa.toString() + "]");
 					}
 				}
 			}
 
-			Random rnd = new Random();
-			ArrayList<SRV> result = new ArrayList<>(
-					priorities.size() * 2 + 1);
+			ArrayList<SRV> result = new ArrayList<>();
 			for (ArrayList<SRV> s : priorities.values()) {
-
-				// trivial case
-				if (s.size() <= 1) {
-					result.addAll(s);
-					continue;
-				}
-
-				long totalweight = 0l;
-				for (SRV srv : s) {
-					totalweight += srv.getWeight();
-				}
-
-				while (totalweight > 0l && s.size() > 0) {
-					long p = (rnd.nextLong() & 0x7fffffffffffffffl)
-							% totalweight;
-					int i = 0;
-					while (p > 0) {
-						p -= s.get(i++).getPriority();
-					}
-					if (i>0) i--;
-					// remove is expensive, but we have only a few entries
-					// anyway
-					SRV srv = s.remove(i);
-					totalweight -= srv.getWeight();
-					result.add(srv);
-				}
-
-				Collections.shuffle(s, rnd);
 				result.addAll(s);
-
 			}
 
+			ArrayList<Bundle> values = new ArrayList<>();
 			if (result.size() == 0) {
-				bundle.putString("error", "nosrv");
+				DNSMessage response;
+				response = client.query(host, TYPE.A, CLASS.IN, dnsServer.getHostAddress());
+				for(int i = 0; i < response.getAnswers().length; ++i) {
+					values.add(createNamePortBundle(host,5222,response.getAnswers()[i].getPayload()));
+				}
+				response = client.query(host, TYPE.AAAA, CLASS.IN, dnsServer.getHostAddress());
+				for(int i = 0; i < response.getAnswers().length; ++i) {
+					values.add(createNamePortBundle(host,5222,response.getAnswers()[i].getPayload()));
+				}
+				bundle.putParcelableArrayList("values", values);
 				return bundle;
 			}
-			ArrayList<Bundle> values = new ArrayList<>();
 			for (SRV srv : result) {
 				if (ips6.containsKey(srv.getName())) {
 					values.add(createNamePortBundle(srv.getName(),srv.getPort(),ips6));
+				} else {
+					DNSMessage response = client.query(srv.getName(), TYPE.AAAA, CLASS.IN, dnsServer.getHostAddress());
+					for(int i = 0; i < response.getAnswers().length; ++i) {
+						values.add(createNamePortBundle(srv.getName(),srv.getPort(),response.getAnswers()[i].getPayload()));
+					}
 				}
 				if (ips4.containsKey(srv.getName())) {
 					values.add(createNamePortBundle(srv.getName(),srv.getPort(),ips4));
+				} else {
+					DNSMessage response = client.query(srv.getName(), TYPE.A, CLASS.IN, dnsServer.getHostAddress());
+					for(int i = 0; i < response.getAnswers().length; ++i) {
+						values.add(createNamePortBundle(srv.getName(),srv.getPort(),response.getAnswers()[i].getPayload()));
+					}
 				}
-				values.add(createNamePortBundle(srv.getName(),srv.getPort(),null));
+				values.add(createNamePortBundle(srv.getName(), srv.getPort()));
 			}
 			bundle.putParcelableArrayList("values", values);
 		} catch (SocketTimeoutException e) {
 			bundle.putString("error", "timeout");
 		} catch (Exception e) {
+			Log.d(Config.LOGTAG,e.getMessage());
 			bundle.putString("error", "unhandled");
 		}
 		return bundle;
+	}
+
+	private static Bundle createNamePortBundle(String name, int port) {
+		Bundle namePort = new Bundle();
+		namePort.putString("name", name);
+		namePort.putInt("port", port);
+		return namePort;
 	}
 
 	private static Bundle createNamePortBundle(String name, int port, TreeMap<String, ArrayList<String>> ips) {
@@ -169,15 +156,23 @@ public class DNSHelper {
 		return namePort;
 	}
 
-	final protected static char[] hexArray = "0123456789ABCDEF".toCharArray();
-
-	public static String bytesToHex(byte[] bytes) {
-		char[] hexChars = new char[bytes.length * 2];
-		for (int j = 0; j < bytes.length; j++) {
-			int v = bytes[j] & 0xFF;
-			hexChars[j * 2] = hexArray[v >>> 4];
-			hexChars[j * 2 + 1] = hexArray[v & 0x0F];
+	private static Bundle createNamePortBundle(String name, int port, Data data) {
+		Bundle namePort = new Bundle();
+		namePort.putString("name", name);
+		namePort.putInt("port", port);
+		if (data instanceof A) {
+			namePort.putString("ip", data.toString());
+		} else if (data instanceof AAAA) {
+			namePort.putString("ip","["+data.toString()+"]");
 		}
-		return new String(hexChars);
+		return namePort;
+	}
+
+	public static boolean isIp(final String server) {
+		return PATTERN_IPV4.matcher(server).matches()
+				|| PATTERN_IPV6.matcher(server).matches()
+				|| PATTERN_IPV6_6HEX4DEC.matcher(server).matches()
+				|| PATTERN_IPV6_HEX4DECCOMPRESSED.matcher(server).matches()
+				|| PATTERN_IPV6_HEXCOMPRESSED.matcher(server).matches();
 	}
 }

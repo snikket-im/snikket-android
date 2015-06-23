@@ -237,8 +237,16 @@ public class Contact implements ListItem, Blockable {
 		return this.presences.getMostAvailableStatus();
 	}
 
-	public void setPhotoUri(String uri) {
-		this.photoUri = uri;
+	public boolean setPhotoUri(String uri) {
+		if (uri != null && !uri.equals(this.photoUri)) {
+			this.photoUri = uri;
+			return true;
+		} else if (this.photoUri != null && uri == null) {
+			this.photoUri = null;
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	public void setServerName(String serverName) {

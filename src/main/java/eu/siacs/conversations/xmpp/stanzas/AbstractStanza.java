@@ -51,4 +51,8 @@ public class AbstractStanza extends Element {
 			|| getTo().equals(account.getJid().toBareJid())
 			|| getTo().equals(account.getJid());
 	}
+
+	public boolean fromAccount(final Account account) {
+		return getFrom() != null && getFrom().toBareJid().equals(account.getJid().toBareJid());
+	}
 }

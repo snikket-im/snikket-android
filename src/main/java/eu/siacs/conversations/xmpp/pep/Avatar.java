@@ -83,8 +83,7 @@ public class Avatar {
 	}
 
 	public static Avatar parsePresence(Element x) {
-		Element photo = x != null ? x.findChild("photo") : null;
-		String hash = photo != null ? photo.getContent() : null;
+		String hash = x == null ? null : x.findChildContent("photo");
 		if (hash == null) {
 			return null;
 		}
