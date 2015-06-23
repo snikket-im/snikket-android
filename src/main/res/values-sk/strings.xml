@@ -110,7 +110,7 @@
   <string name="pref_conference_notifications_summary">Vždy upozorniť pri novej konferenčnej správe, nie len ak je zvýraznená</string>
   <string name="pref_notification_grace_period">Doba na prečítanie upozornenia</string>
   <string name="pref_notification_grace_period_summary">Neupozorňovať krátko po obdržaní kópie správy</string>
-  <string name="pref_advanced_options">Pokročilé nastavenia</string>
+  <string name="pref_advanced_options">Rozšírené možnosti</string>
   <string name="pref_never_send_crash">Neodosielať detaily o zlyhaní aplikácie</string>
   <string name="pref_never_send_crash_summary">Zaslaním detailov o dôvode zlyhania pomáhate ďalšiemu vývoju aplikácie Conversations</string>
   <string name="pref_confirm_messages">Potvrdzovať správy</string>
@@ -266,7 +266,7 @@
   <string name="pref_force_encryption_summary">Vždy zasielať šifrované správy (okrem skupinových konverzácií)</string>
   <string name="pref_dont_save_encrypted">Neukladať šifrované správy</string>
   <string name="pref_dont_save_encrypted_summary">Varovanie: Toto môže viesť k strate správ</string>
-  <string name="pref_expert_options">Expertné nastavenia</string>
+  <string name="pref_expert_options">Expertné možnosti</string>
   <string name="pref_expert_options_summary">S týmto narábajte veľmi opatrne, prosím</string>
   <string name="title_activity_about">O Conversations</string>
   <string name="pref_about_conversations_summary">Informácie o tvorbe a licencii</string>
@@ -375,7 +375,7 @@
   <string name="no_role">Bez úlohy</string>
   <string name="outcast">Vylúčený</string>
   <string name="member">Člen</string>
-  <string name="advanced_mode">Pokročilý režim</string>
+  <string name="advanced_mode">Rozšírený režim</string>
   <string name="grant_membership">Povoliť členstvo</string>
   <string name="remove_membership">Odobrať členstvo</string>
   <string name="grant_admin_privileges">Povoliť administrátorské výsady</string>
@@ -429,11 +429,23 @@
   <string name="received_location">Prijatá poloha</string>
   <string name="title_undo_swipe_out_conversation">Konverzácia zatvorená</string>
   <string name="title_undo_swipe_out_muc">Opustil skupinovú konverzáciu</string>
+  <string name="pref_certificate_options">Možnosti certifikátu</string>
   <string name="pref_dont_trust_system_cas_title">Nedôverovať systému CAs</string>
   <string name="pref_dont_trust_system_cas_summary">Všetky certifikáty musia byť ručne schválené</string>
+  <string name="pref_remove_trusted_certificates_title">Odstrániť certifikáty</string>
+  <string name="pref_remove_trusted_certificates_summary">Vymazať ručne schválené certifikáty</string>
+  <string name="toast_no_trusted_certs">Žiadne ručne schválené certifikáty</string>
+  <string name="dialog_manage_certs_title">Odstrániť certifikáty</string>
+  <string name="dialog_manage_certs_positivebutton">Vymazať výber</string>
+  <string name="dialog_manage_certs_negativebutton">Zrušiť</string>
   <plurals name="select_contact">
     <item quantity="one">Vybrať %d kontaktu</item>
     <item quantity="few">Vybrať %d kontaktu</item>
     <item quantity="other">Vybrať %d kontaktov</item>
   </plurals>
+  <string name="pref_quick_action_summary">Nahradiť tlačidlo poslať rýchlou akciou</string>
+  <string name="pref_quick_action">Rýchla akcia</string>
+  <string name="none">Žiadny</string>
+  <string name="recently_used">Naposledy použitý</string>
+  <string name="choose_quick_action">Vybrať rýchlu voľbu</string>
 </resources>

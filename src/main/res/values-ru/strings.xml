@@ -450,4 +450,9 @@
     <item quantity="many"></item>
     <item quantity="other">Выбрано %d контактов</item>
   </plurals>
+  <string name="pref_quick_action_summary">Заменить кнопку отправки кнопкой быстрого действия</string>
+  <string name="pref_quick_action">Быстрое действие</string>
+  <string name="none">Нет</string>
+  <string name="recently_used">Последнее выбранное</string>
+  <string name="choose_quick_action">Выбрать быстрое действие</string>
 </resources>
