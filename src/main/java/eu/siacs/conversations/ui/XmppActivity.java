@@ -266,6 +266,29 @@ public abstract class XmppActivity extends Activity {
 		builder.create().show();
 	}
 
+	public void showAxolotlNoSessionsDialog() {
+		Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle("No Sessions");
+		builder.setIconAttribute(android.R.attr.alertDialogIcon);
+		builder.setMessage("Your contact is not Axolotl-capable!");
+		builder.setNegativeButton(getString(R.string.cancel), null);
+		builder.setNeutralButton("Foo",
+				new OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+					}
+				});
+		builder.setPositiveButton("Bar",
+				new OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+					}
+				});
+		builder.create().show();
+	}
+
 	abstract void onBackendConnected();
 
 	protected void registerListeners() {

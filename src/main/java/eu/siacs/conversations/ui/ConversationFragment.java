@@ -303,6 +303,8 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 			sendOtrMessage(message);
 		} else if (conversation.getNextEncryption(activity.forceEncryption()) == Message.ENCRYPTION_PGP) {
 			sendPgpMessage(message);
+		} else if (conversation.getNextEncryption(activity.forceEncryption()) == Message.ENCRYPTION_AXOLOTL) {
+			sendAxolotlMessage(message);
 		} else {
 			sendPlainTextMessage(message);
 		}
@@ -1118,6 +1120,14 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 		builder.setPositiveButton(getString(R.string.send_unencrypted),
 				listener);
 		builder.create().show();
+	}
+
+	protected void sendAxolotlMessage(final Message message) {
+		final ConversationActivity activity = (ConversationActivity) getActivity();
+		final XmppConnectionService xmppService = activity.xmppConnectionService;
+		//message.setCounterpart(conversation.getNextCounterpart());
+		xmppService.sendMessage(message);
+		messageSent();
 	}
 
 	protected void sendOtrMessage(final Message message) {

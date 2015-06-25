@@ -758,6 +758,15 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 						}
 					}
 					break;
+				case Message.ENCRYPTION_AXOLOTL:
+					try {
+						packet = mMessageGenerator.generateAxolotlChat(message);
+						Log.d(Config.LOGTAG, "Succeeded generating axolotl chat message!");
+					} catch (NoSessionsCreatedException e) {
+						message.setStatus(Message.STATUS_WAITING);
+					}
+					break;
+
 			}
 			if (packet != null) {
 				if (account.getXmppConnection().getFeatures().sm() || conversation.getMode() == Conversation.MODE_MULTI) {
