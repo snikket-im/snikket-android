@@ -29,6 +29,11 @@ public class MessagePacket extends AbstractStanza {
 		this.children.add(0, body);
 	}
 
+	public void setAxolotlMessage(Element axolotlMessage) {
+		this.children.remove(findChild("body"));
+		this.children.add(0, axolotlMessage);
+	}
+
 	public void setType(int type) {
 		switch (type) {
 		case TYPE_CHAT:

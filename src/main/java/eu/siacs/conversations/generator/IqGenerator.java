@@ -1,9 +1,17 @@
 package eu.siacs.conversations.generator;
 
 
+import android.util.Base64;
+
+import org.whispersystems.libaxolotl.IdentityKey;
+import org.whispersystems.libaxolotl.ecc.ECPublicKey;
+import org.whispersystems.libaxolotl.state.PreKeyRecord;
+import org.whispersystems.libaxolotl.state.SignedPreKeyRecord;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.DownloadableFile;
@@ -114,6 +122,68 @@ public class IqGenerator extends AbstractGenerator {
 		}
 		return packet;
 	}
+
+	public IqPacket retrieveDeviceIds(final Jid to) {
+		final IqPacket packet = retrieve(AxolotlService.PEP_DEVICE_LIST, null);
+		if(to != null) {
+			packet.setTo(to);
+		}
+		return packet;
+	}
+
+	public IqPacket retrieveBundleForDevice(final Jid to, final int deviceid) {
+		final IqPacket packet = retrieve(AxolotlService.PEP_BUNDLE+":"+deviceid, null);
+		if(to != null) {
+			packet.setTo(to);
+		}
+		return packet;
+	}
+
+	public IqPacket retrievePreKeysForDevice(final Jid to, final int deviceId) {
+		final IqPacket packet = retrieve(AxolotlService.PEP_PREKEYS+":"+deviceId, null);
+		if(to != null) {
+			packet.setTo(to);
+		}
+		return packet;
+	}
+
+    public IqPacket publishDeviceIds(final List<Integer> ids) {
+        final Element item = new Element("item");
+        final Element list = item.addChild("list", AxolotlService.PEP_PREFIX);
+        for(Integer id:ids) {
+            final Element device = new Element("device");
+            device.setAttribute("id", id);
+            list.addChild(device);
+        }
+        return publish(AxolotlService.PEP_DEVICE_LIST, item);
+    }
+
+	public IqPacket publishBundle(final SignedPreKeyRecord signedPreKeyRecord, IdentityKey identityKey, final int deviceId) {
+		final Element item = new Element("item");
+		final Element bundle = item.addChild("bundle", AxolotlService.PEP_PREFIX);
+		final Element signedPreKeyPublic = bundle.addChild("signedPreKeyPublic");
+		signedPreKeyPublic.setAttribute("signedPreKeyId", signedPreKeyRecord.getId());
+		ECPublicKey publicKey = signedPreKeyRecord.getKeyPair().getPublicKey();
+		signedPreKeyPublic.setContent(Base64.encodeToString(publicKey.serialize(),Base64.DEFAULT));
+		final Element signedPreKeySignature = bundle.addChild("signedPreKeySignature");
+		signedPreKeySignature.setContent(Base64.encodeToString(signedPreKeyRecord.getSignature(),Base64.DEFAULT));
+		final Element identityKeyElement = bundle.addChild("identityKey");
+		identityKeyElement.setContent(Base64.encodeToString(identityKey.serialize(), Base64.DEFAULT));
+
+		return publish(AxolotlService.PEP_BUNDLE+":"+deviceId, item);
+	}
+
+    public IqPacket publishPreKeys(final List<PreKeyRecord> prekeyList, final int deviceId) {
+        final Element item = new Element("item");
+        final Element prekeys = item.addChild("prekeys", AxolotlService.PEP_PREFIX);
+        for(PreKeyRecord preKeyRecord:prekeyList) {
+            final Element prekey = prekeys.addChild("preKeyPublic");
+			prekey.setAttribute("preKeyId", preKeyRecord.getId());
+            prekey.setContent(Base64.encodeToString(preKeyRecord.getKeyPair().getPublicKey().serialize(), Base64.DEFAULT));
+        }
+
+		return publish(AxolotlService.PEP_PREKEYS+":"+deviceId, item);
+    }
 
 	public IqPacket queryMessageArchiveManagement(final MessageArchiveService.Query mam) {
 		final IqPacket packet = new IqPacket(IqPacket.TYPE.SET);
