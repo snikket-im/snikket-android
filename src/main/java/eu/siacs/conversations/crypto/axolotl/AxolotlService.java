@@ -1,15 +1,29 @@
 package eu.siacs.conversations.crypto.axolotl;
 
+import android.util.Base64;
 import android.util.Log;
 
 import org.whispersystems.libaxolotl.AxolotlAddress;
+import org.whispersystems.libaxolotl.DuplicateMessageException;
 import org.whispersystems.libaxolotl.IdentityKey;
 import org.whispersystems.libaxolotl.IdentityKeyPair;
 import org.whispersystems.libaxolotl.InvalidKeyException;
 import org.whispersystems.libaxolotl.InvalidKeyIdException;
+import org.whispersystems.libaxolotl.InvalidMessageException;
+import org.whispersystems.libaxolotl.InvalidVersionException;
+import org.whispersystems.libaxolotl.LegacyMessageException;
+import org.whispersystems.libaxolotl.NoSessionException;
+import org.whispersystems.libaxolotl.SessionBuilder;
+import org.whispersystems.libaxolotl.SessionCipher;
+import org.whispersystems.libaxolotl.UntrustedIdentityException;
 import org.whispersystems.libaxolotl.ecc.Curve;
 import org.whispersystems.libaxolotl.ecc.ECKeyPair;
+import org.whispersystems.libaxolotl.ecc.ECPublicKey;
+import org.whispersystems.libaxolotl.protocol.CiphertextMessage;
+import org.whispersystems.libaxolotl.protocol.PreKeyWhisperMessage;
+import org.whispersystems.libaxolotl.protocol.WhisperMessage;
 import org.whispersystems.libaxolotl.state.AxolotlStore;
+import org.whispersystems.libaxolotl.state.PreKeyBundle;
 import org.whispersystems.libaxolotl.state.PreKeyRecord;
 import org.whispersystems.libaxolotl.state.SessionRecord;
 import org.whispersystems.libaxolotl.state.SignedPreKeyRecord;
@@ -17,43 +31,50 @@ import org.whispersystems.libaxolotl.util.KeyHelper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
+import java.util.Set;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
+import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
-import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
 
 public class AxolotlService {
 
-    private Account account;
-    private XmppConnectionService mXmppConnectionService;
-    private SQLiteAxolotlStore axolotlStore;
-    private Map<Jid,XmppAxolotlSession> sessions;
+    private final Account account;
+    private final XmppConnectionService mXmppConnectionService;
+    private final SQLiteAxolotlStore axolotlStore;
+    private final SessionMap sessions;
+    private int ownDeviceId;
 
     public static class SQLiteAxolotlStore implements AxolotlStore {
 
         public static final String PREKEY_TABLENAME = "prekeys";
         public static final String SIGNED_PREKEY_TABLENAME = "signed_prekeys";
-        public static final String SESSION_TABLENAME = "signed_prekeys";
-        public static final String NAME = "name";
+        public static final String SESSION_TABLENAME = "sessions";
+        public static final String ACCOUNT = "account";
         public static final String DEVICE_ID = "device_id";
         public static final String ID = "id";
         public static final String KEY = "key";
-        public static final String ACCOUNT = "account";
+        public static final String NAME = "name";
+        public static final String TRUSTED = "trusted";
 
         public static final String JSONKEY_IDENTITY_KEY_PAIR = "axolotl_key";
         public static final String JSONKEY_REGISTRATION_ID = "axolotl_reg_id";
+        public static final String JSONKEY_CURRENT_PREKEY_ID = "axolotl_cur_prekey_id";
 
         private final Account account;
         private final XmppConnectionService mXmppConnectionService;
 
         private final IdentityKeyPair identityKeyPair;
         private final int localRegistrationId;
+        private int currentPreKeyId = 0;
 
 
         private static IdentityKeyPair generateIdentityKeyPair() {
@@ -75,6 +96,14 @@ public class AxolotlService {
             this.mXmppConnectionService = service;
             this.identityKeyPair = loadIdentityKeyPair();
             this.localRegistrationId = loadRegistrationId();
+            this.currentPreKeyId = loadCurrentPreKeyId();
+            for( SignedPreKeyRecord record:loadSignedPreKeys()) {
+                Log.d(Config.LOGTAG, "Got Axolotl signed prekey record:" + record.getId());
+            }
+        }
+
+        public int getCurrentPreKeyId() {
+            return currentPreKeyId;
         }
 
         // --------------------------------------
@@ -86,21 +115,22 @@ public class AxolotlService {
             IdentityKeyPair ownKey;
             if( serializedKey != null ) {
                 try {
-                    ownKey = new IdentityKeyPair(serializedKey.getBytes());
+                    ownKey = new IdentityKeyPair(Base64.decode(serializedKey,Base64.DEFAULT));
+                    return ownKey;
                 } catch (InvalidKeyException e) {
                     Log.d(Config.LOGTAG, "Invalid key stored for account " + account.getJid() + ": " + e.getMessage());
-                    return null;
+//                    return null;
                 }
-            } else {
+            } //else {
                 Log.d(Config.LOGTAG, "Could not retrieve axolotl key for account " + account.getJid());
                 ownKey = generateIdentityKeyPair();
-                boolean success = this.account.setKey(JSONKEY_IDENTITY_KEY_PAIR, new String(ownKey.serialize()));
+                boolean success = this.account.setKey(JSONKEY_IDENTITY_KEY_PAIR, Base64.encodeToString(ownKey.serialize(), Base64.DEFAULT));
                 if(success) {
                     mXmppConnectionService.databaseBackend.updateAccount(account);
                 } else {
                     Log.e(Config.LOGTAG, "Failed to write new key to the database!");
                 }
-            }
+            //}
             return ownKey;
         }
 
@@ -121,6 +151,19 @@ public class AxolotlService {
             }
             return reg_id;
         }
+
+        private int loadCurrentPreKeyId() {
+            String regIdString = this.account.getKey(JSONKEY_CURRENT_PREKEY_ID);
+            int reg_id;
+            if (regIdString != null) {
+                reg_id = Integer.valueOf(regIdString);
+            } else {
+                Log.d(Config.LOGTAG, "Could not retrieve current prekey id for account " + account.getJid());
+                reg_id = 0;
+            }
+            return reg_id;
+        }
+
 
         /**
          * Get the local client's identity key pair.
@@ -159,7 +202,7 @@ public class AxolotlService {
                 Jid contactJid = Jid.fromString(name);
                 Conversation conversation = this.mXmppConnectionService.find(this.account, contactJid);
                 if (conversation != null) {
-                    conversation.getContact().addAxolotlIdentityKey(identityKey, false);
+                    conversation.getContact().addAxolotlIdentityKey(identityKey);
                     mXmppConnectionService.updateConversationUi();
                     mXmppConnectionService.syncRosterToDisk(conversation.getAccount());
                 }
@@ -188,8 +231,8 @@ public class AxolotlService {
                 Jid contactJid = Jid.fromString(name);
                 Conversation conversation = this.mXmppConnectionService.find(this.account, contactJid);
                 if (conversation != null) {
-                    List<IdentityKey> trustedKeys = conversation.getContact().getTrustedAxolotlIdentityKeys();
-                    return trustedKeys.contains(identityKey);
+                    List<IdentityKey> trustedKeys = conversation.getContact().getAxolotlIdentityKeys();
+                    return trustedKeys.isEmpty() || trustedKeys.contains(identityKey);
                 } else {
                     return false;
                 }
@@ -274,7 +317,15 @@ public class AxolotlService {
         @Override
         public void deleteAllSessions(String name) {
             mXmppConnectionService.databaseBackend.deleteAllSessions(account,
-                    new AxolotlAddress(name,0));
+                    new AxolotlAddress(name, 0));
+        }
+
+        public boolean isTrustedSession(AxolotlAddress address) {
+            return mXmppConnectionService.databaseBackend.isTrustedSession(this.account, address);
+        }
+
+        public void setTrustedSession(AxolotlAddress address, boolean trusted) {
+            mXmppConnectionService.databaseBackend.setTrustedSession(this.account, address,trusted);
         }
 
         // --------------------------------------
@@ -292,7 +343,7 @@ public class AxolotlService {
         public PreKeyRecord loadPreKey(int preKeyId) throws InvalidKeyIdException {
             PreKeyRecord record = mXmppConnectionService.databaseBackend.loadPreKey(account, preKeyId);
             if(record == null) {
-                throw new InvalidKeyIdException("No such PreKeyRecord!");
+                throw new InvalidKeyIdException("No such PreKeyRecord: " + preKeyId);
             }
             return record;
         }
@@ -306,6 +357,13 @@ public class AxolotlService {
         @Override
         public void storePreKey(int preKeyId, PreKeyRecord record) {
             mXmppConnectionService.databaseBackend.storePreKey(account, record);
+            currentPreKeyId = preKeyId;
+            boolean success = this.account.setKey(JSONKEY_CURRENT_PREKEY_ID,Integer.toString(preKeyId));
+            if(success) {
+                mXmppConnectionService.databaseBackend.updateAccount(account);
+            } else {
+                Log.e(Config.LOGTAG, "Failed to write new prekey id to the database!");
+            }
         }
 
         /**
@@ -342,7 +400,7 @@ public class AxolotlService {
         public SignedPreKeyRecord loadSignedPreKey(int signedPreKeyId) throws InvalidKeyIdException {
             SignedPreKeyRecord record = mXmppConnectionService.databaseBackend.loadSignedPreKey(account, signedPreKeyId);
             if(record == null) {
-                throw new InvalidKeyIdException("No such PreKeyRecord!");
+                throw new InvalidKeyIdException("No such SignedPreKeyRecord: " + signedPreKeyId);
             }
             return record;
         }
@@ -388,53 +446,229 @@ public class AxolotlService {
         }
     }
 
-    private static class XmppAxolotlSession {
-        private List<Message> untrustedMessages;
-        private AxolotlStore axolotlStore;
+    public static class XmppAxolotlSession {
+        private SessionCipher cipher;
+        private boolean isTrusted = false;
+        private SQLiteAxolotlStore sqLiteAxolotlStore;
+        private AxolotlAddress remoteAddress;
 
-        public XmppAxolotlSession(SQLiteAxolotlStore axolotlStore) {
-            this.untrustedMessages = new ArrayList<>();
-            this.axolotlStore = axolotlStore;
+        public XmppAxolotlSession(SQLiteAxolotlStore store, AxolotlAddress remoteAddress) {
+            this.cipher = new SessionCipher(store, remoteAddress);
+            this.remoteAddress = remoteAddress;
+            this.sqLiteAxolotlStore = store;
+            this.isTrusted = sqLiteAxolotlStore.isTrustedSession(remoteAddress);
         }
 
         public void trust() {
-            for (Message message : this.untrustedMessages) {
-                message.trust();
-            }
-            this.untrustedMessages = null;
+            sqLiteAxolotlStore.setTrustedSession(remoteAddress, true);
+            this.isTrusted = true;
         }
 
         public boolean isTrusted() {
-            return (this.untrustedMessages == null);
+            return this.isTrusted;
         }
 
-        public String processReceiving(XmppAxolotlMessage incomingMessage) {
-            return null;
+        public byte[] processReceiving(XmppAxolotlMessage.XmppAxolotlMessageHeader incomingHeader) {
+            byte[] plaintext = null;
+            try {
+                try {
+                    PreKeyWhisperMessage message = new PreKeyWhisperMessage(incomingHeader.getContents());
+                    Log.d(Config.LOGTAG,"PreKeyWhisperMessage ID:" + message.getSignedPreKeyId() + "/" + message.getPreKeyId());
+                    plaintext = cipher.decrypt(message);
+                } catch (InvalidMessageException|InvalidVersionException e) {
+                    WhisperMessage message = new WhisperMessage(incomingHeader.getContents());
+                    plaintext = cipher.decrypt(message);
+                } catch (InvalidKeyException|InvalidKeyIdException| UntrustedIdentityException e) {
+                    Log.d(Config.LOGTAG, "Error decrypting axolotl header: " + e.getMessage());
+                }
+            } catch (LegacyMessageException|InvalidMessageException e) {
+                Log.d(Config.LOGTAG, "Error decrypting axolotl header: " + e.getMessage());
+            } catch (DuplicateMessageException|NoSessionException e) {
+                Log.d(Config.LOGTAG, "Error decrypting axolotl header: " + e.getMessage());
+            }
+            return plaintext;
         }
 
-        public XmppAxolotlMessage processSending(String outgoingMessage) {
-            return null;
+        public XmppAxolotlMessage.XmppAxolotlMessageHeader processSending(byte[] outgoingMessage) {
+            CiphertextMessage ciphertextMessage = cipher.encrypt(outgoingMessage);
+            XmppAxolotlMessage.XmppAxolotlMessageHeader header =
+                    new XmppAxolotlMessage.XmppAxolotlMessageHeader(remoteAddress.getDeviceId(),
+                            ciphertextMessage.serialize());
+            return header;
         }
+    }
+
+    private static class AxolotlAddressMap<T> {
+        protected Map<String, Map<Integer,T>> map;
+        protected final Object MAP_LOCK = new Object();
+
+        public AxolotlAddressMap() {
+            this.map = new HashMap<>();
+        }
+
+        public void put(AxolotlAddress address, T value) {
+            synchronized (MAP_LOCK) {
+                Map<Integer, T> devices = map.get(address.getName());
+                if (devices == null) {
+                    devices = new HashMap<>();
+                    map.put(address.getName(), devices);
+                }
+                devices.put(address.getDeviceId(), value);
+            }
+        }
+
+        public T get(AxolotlAddress address) {
+            synchronized (MAP_LOCK) {
+                Map<Integer, T> devices = map.get(address.getName());
+                if(devices == null) {
+                    return null;
+                }
+                return devices.get(address.getDeviceId());
+            }
+        }
+
+        public Map<Integer, T> getAll(AxolotlAddress address) {
+            synchronized (MAP_LOCK) {
+                Map<Integer, T> devices = map.get(address.getName());
+                if(devices == null) {
+                    return new HashMap<>();
+                }
+                return devices;
+            }
+        }
+
+        public boolean hasAny(AxolotlAddress address) {
+            synchronized (MAP_LOCK) {
+                Map<Integer, T> devices = map.get(address.getName());
+                return devices != null && !devices.isEmpty();
+            }
+        }
+
+
+    }
+
+    private static class SessionMap extends AxolotlAddressMap<XmppAxolotlSession> {
+
+        public SessionMap(SQLiteAxolotlStore store, Account account) {
+            super();
+            this.fillMap(store, account);
+        }
+
+        private void fillMap(SQLiteAxolotlStore store, Account account) {
+            for(Contact contact:account.getRoster().getContacts()){
+                Jid bareJid = contact.getJid().toBareJid();
+                if(bareJid == null) {
+                    continue; // FIXME: handle this?
+                }
+                String address = bareJid.toString();
+                List<Integer> deviceIDs = store.getSubDeviceSessions(address);
+                for(Integer deviceId:deviceIDs) {
+                    AxolotlAddress axolotlAddress = new AxolotlAddress(address, deviceId);
+                    this.put(axolotlAddress, new XmppAxolotlSession(store, axolotlAddress));
+                }
+            }
+        }
+
+    }
+
     }
 
     public AxolotlService(Account account, XmppConnectionService connectionService) {
         this.mXmppConnectionService = connectionService;
         this.account = account;
         this.axolotlStore = new SQLiteAxolotlStore(this.account, this.mXmppConnectionService);
-        this.sessions = new HashMap<>();
+        this.sessions = new SessionMap(axolotlStore, account);
+        this.ownDeviceId = axolotlStore.getLocalRegistrationId();
     }
 
-    public void trustSession(Jid counterpart) {
+    public void trustSession(AxolotlAddress counterpart) {
         XmppAxolotlSession session = sessions.get(counterpart);
         if(session != null) {
             session.trust();
         }
     }
 
-    public boolean isTrustedSession(Jid counterpart) {
+    public boolean isTrustedSession(AxolotlAddress counterpart) {
         XmppAxolotlSession session = sessions.get(counterpart);
         return session != null && session.isTrusted();
     }
 
+    private AxolotlAddress getAddressForJid(Jid jid) {
+        return new AxolotlAddress(jid.toString(), 0);
+    }
 
+    private Set<XmppAxolotlSession> findOwnSessions() {
+        AxolotlAddress ownAddress = getAddressForJid(account.getJid());
+        Set<XmppAxolotlSession> ownDeviceSessions = new HashSet<>(this.sessions.getAll(ownAddress).values());
+        return ownDeviceSessions;
+    }
+
+    private Set<XmppAxolotlSession> findSessionsforContact(Contact contact) {
+        AxolotlAddress contactAddress = getAddressForJid(contact.getJid());
+        Set<XmppAxolotlSession> sessions = new HashSet<>(this.sessions.getAll(contactAddress).values());
+        return sessions;
+    }
+
+    private boolean hasAny(Contact contact) {
+        AxolotlAddress contactAddress = getAddressForJid(contact.getJid());
+        return sessions.hasAny(contactAddress);
+    }
+
+    public int getOwnDeviceId() {
+        return ownDeviceId;
+    }
+
+    private void createSessionsIfNeeded(Contact contact) throws NoSessionsCreatedException {
+    }
+
+    public XmppAxolotlMessage processSending(Contact contact, String outgoingMessage) throws NoSessionsCreatedException {
+        XmppAxolotlMessage message = new XmppAxolotlMessage(contact, ownDeviceId, outgoingMessage);
+        createSessionsIfNeeded(contact);
+        Log.d(Config.LOGTAG, "Building axolotl foreign headers...");
+
+        for(XmppAxolotlSession session : findSessionsforContact(contact)) {
+//            if(!session.isTrusted()) {
+                // TODO: handle this properly
+  //              continue;
+    //        }
+            message.addHeader(session.processSending(message.getInnerKey()));
+        }
+        Log.d(Config.LOGTAG, "Building axolotl own headers...");
+        for(XmppAxolotlSession session : findOwnSessions()) {
+    //        if(!session.isTrusted()) {
+                // TODO: handle this properly
+      //          continue;
+        //    }
+            message.addHeader(session.processSending(message.getInnerKey()));
+        }
+
+        return message;
+    }
+
+    public XmppAxolotlMessage.XmppAxolotlPlaintextMessage processReceiving(XmppAxolotlMessage message) {
+        XmppAxolotlMessage.XmppAxolotlPlaintextMessage plaintextMessage = null;
+        AxolotlAddress senderAddress = new AxolotlAddress(message.getContact().getJid().toBareJid().toString(),
+                message.getSenderDeviceId());
+
+        XmppAxolotlSession session = sessions.get(senderAddress);
+        if (session == null) {
+            Log.d(Config.LOGTAG, "No axolotl session found while parsing received message " + message);
+            // TODO: handle this properly
+            session = new XmppAxolotlSession(axolotlStore, senderAddress);
+
+        }
+
+        for(XmppAxolotlMessage.XmppAxolotlMessageHeader header : message.getHeaders()) {
+            if (header.getRecipientDeviceId() == ownDeviceId) {
+                Log.d(Config.LOGTAG, "Found axolotl header matching own device ID, processing...");
+                byte[] payloadKey = session.processReceiving(header);
+                if (payloadKey != null) {
+                    Log.d(Config.LOGTAG, "Got payload key from axolotl header. Decrypting message...");
+                    plaintextMessage = message.decrypt(session, payloadKey);
+                }
+            }
+        }
+
+        return plaintextMessage;
+    }
 }

@@ -52,6 +52,7 @@ import de.duenndns.ssl.MemorizingTrustManager;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.PgpEngine;
+import eu.siacs.conversations.crypto.axolotl.NoSessionsCreatedException;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Blockable;
 import eu.siacs.conversations.entities.Bookmark;
@@ -273,7 +274,11 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 					}
 				}
 				syncDirtyContacts(account);
-				scheduleWakeUpCall(Config.PING_MAX_INTERVAL,account.getUuid().hashCode());
+                account.getAxolotlService().publishOwnDeviceIdIfNeeded();
+                account.getAxolotlService().publishBundleIfNeeded();
+                account.getAxolotlService().publishPreKeysIfNeeded();
+
+				scheduleWakeUpCall(Config.PING_MAX_INTERVAL, account.getUuid().hashCode());
 			} else if (account.getStatus() == Account.State.OFFLINE) {
 				resetSendingToWaiting(account);
 				if (!account.isOptionSet(Account.OPTION_DISABLED)) {

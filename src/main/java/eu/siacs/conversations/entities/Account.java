@@ -20,6 +20,7 @@ import java.util.concurrent.CopyOnWriteArraySet;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.OtrService;
+import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
@@ -122,6 +123,7 @@ public class Account extends AbstractEntity {
 	protected String avatar;
 	protected boolean online = false;
 	private OtrService mOtrService = null;
+	private AxolotlService axolotlService = null;
 	private XmppConnection xmppConnection = null;
 	private long mEndGracePeriod = 0L;
 	private String otrFingerprint;
@@ -281,8 +283,13 @@ public class Account extends AbstractEntity {
 		return values;
 	}
 
+	public AxolotlService getAxolotlService() {
+		return axolotlService;
+	}
+
 	public void initAccountServices(final XmppConnectionService context) {
 		this.mOtrService = new OtrService(context, this);
+		this.axolotlService = new AxolotlService(this, context);
 	}
 
 	public OtrService getOtrService() {

@@ -1,5 +1,19 @@
 package eu.siacs.conversations.persistance;
 
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteCantOpenDatabaseException;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Base64;
+import android.util.Log;
+
+import org.whispersystems.libaxolotl.AxolotlAddress;
+import org.whispersystems.libaxolotl.state.PreKeyRecord;
+import org.whispersystems.libaxolotl.state.SessionRecord;
+import org.whispersystems.libaxolotl.state.SignedPreKeyRecord;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,25 +29,12 @@ import eu.siacs.conversations.entities.Roster;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
 
-import android.content.ContentValues;
-import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteCantOpenDatabaseException;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
-
-import org.whispersystems.libaxolotl.AxolotlAddress;
-import org.whispersystems.libaxolotl.state.PreKeyRecord;
-import org.whispersystems.libaxolotl.state.SessionRecord;
-import org.whispersystems.libaxolotl.state.SignedPreKeyRecord;
-
 public class DatabaseBackend extends SQLiteOpenHelper {
 
 	private static DatabaseBackend instance = null;
 
 	private static final String DATABASE_NAME = "history";
-	private static final int DATABASE_VERSION = 14;
+	private static final int DATABASE_VERSION = 15;
 
 	private static String CREATE_CONTATCS_STATEMENT = "create table "
 			+ Contact.TABLENAME + "(" + Contact.ACCOUNT + " TEXT, "
@@ -49,8 +50,9 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 
 	private static String CREATE_PREKEYS_STATEMENT = "CREATE TABLE "
 			+ AxolotlService.SQLiteAxolotlStore.PREKEY_TABLENAME + "("
+				+ AxolotlService.SQLiteAxolotlStore.ACCOUNT + " TEXT,  "
 				+ AxolotlService.SQLiteAxolotlStore.ID + " INTEGER, "
-				+ AxolotlService.SQLiteAxolotlStore.KEY + "TEXT, FOREIGN KEY("
+				+ AxolotlService.SQLiteAxolotlStore.KEY + " TEXT, FOREIGN KEY("
 					+ AxolotlService.SQLiteAxolotlStore.ACCOUNT
 				+ ") REFERENCES " + Account.TABLENAME + "(" + Account.UUID + ") ON DELETE CASCADE, "
 				+ "UNIQUE( " + AxolotlService.SQLiteAxolotlStore.ACCOUNT + ", "
@@ -60,8 +62,9 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 
 	private static String CREATE_SIGNED_PREKEYS_STATEMENT = "CREATE TABLE "
 			+ AxolotlService.SQLiteAxolotlStore.SIGNED_PREKEY_TABLENAME + "("
+				+ AxolotlService.SQLiteAxolotlStore.ACCOUNT + " TEXT,  "
 				+ AxolotlService.SQLiteAxolotlStore.ID + " INTEGER, "
-				+ AxolotlService.SQLiteAxolotlStore.KEY + "TEXT, FOREIGN KEY("
+				+ AxolotlService.SQLiteAxolotlStore.KEY + " TEXT, FOREIGN KEY("
 					+ AxolotlService.SQLiteAxolotlStore.ACCOUNT
 				+ ") REFERENCES " + Account.TABLENAME + "(" + Account.UUID + ") ON DELETE CASCADE, "
 				+ "UNIQUE( " + AxolotlService.SQLiteAxolotlStore.ACCOUNT + ", "
@@ -71,13 +74,16 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 
 	private static String CREATE_SESSIONS_STATEMENT = "CREATE TABLE "
 			+ AxolotlService.SQLiteAxolotlStore.SESSION_TABLENAME + "("
+				+ AxolotlService.SQLiteAxolotlStore.ACCOUNT + " TEXT,  "
                 + AxolotlService.SQLiteAxolotlStore.NAME + " TEXT, "
-                + AxolotlService.SQLiteAxolotlStore.DEVICE_ID+ " INTEGER, "
-                + AxolotlService.SQLiteAxolotlStore.KEY + "TEXT, FOREIGN KEY("
+                + AxolotlService.SQLiteAxolotlStore.DEVICE_ID + " INTEGER, "
+				+ AxolotlService.SQLiteAxolotlStore.TRUSTED + " INTEGER, "
+                + AxolotlService.SQLiteAxolotlStore.KEY + " TEXT, FOREIGN KEY("
                     + AxolotlService.SQLiteAxolotlStore.ACCOUNT
 				+ ") REFERENCES " + Account.TABLENAME + "(" + Account.UUID + ") ON DELETE CASCADE, "
                 + "UNIQUE( " + AxolotlService.SQLiteAxolotlStore.ACCOUNT + ", "
-                    + AxolotlService.SQLiteAxolotlStore.NAME
+                    + AxolotlService.SQLiteAxolotlStore.NAME + ", "
+					+ AxolotlService.SQLiteAxolotlStore.DEVICE_ID
 				+ ") ON CONFLICT REPLACE"
 			+");";
 
@@ -256,6 +262,14 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 						+ " where " + Account.UUID + " = ?", updateArgs);
 			}
 			cursor.close();
+		}
+		if (oldVersion < 15  && newVersion >= 15) {
+			db.execSQL("DROP TABLE IF EXISTS " + AxolotlService.SQLiteAxolotlStore.SESSION_TABLENAME);
+			db.execSQL(CREATE_SESSIONS_STATEMENT);
+			db.execSQL("DROP TABLE IF EXISTS " + AxolotlService.SQLiteAxolotlStore.PREKEY_TABLENAME);
+			db.execSQL(CREATE_PREKEYS_STATEMENT);
+			db.execSQL("DROP TABLE IF EXISTS " + AxolotlService.SQLiteAxolotlStore.SIGNED_PREKEY_TABLENAME);
+			db.execSQL(CREATE_SIGNED_PREKEYS_STATEMENT);
 		}
 	}
 
@@ -547,7 +561,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		if(cursor.getCount() != 0) {
 			cursor.moveToFirst();
 			try {
-				session = new SessionRecord(cursor.getString(cursor.getColumnIndex(AxolotlService.SQLiteAxolotlStore.KEY)).getBytes());
+				session = new SessionRecord(Base64.decode(cursor.getString(cursor.getColumnIndex(AxolotlService.SQLiteAxolotlStore.KEY)),Base64.DEFAULT));
 			} catch (IOException e) {
 				throw new AssertionError(e);
 			}
@@ -590,7 +604,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		ContentValues values = new ContentValues();
 		values.put(AxolotlService.SQLiteAxolotlStore.NAME, contact.getName());
 		values.put(AxolotlService.SQLiteAxolotlStore.DEVICE_ID, contact.getDeviceId());
-		values.put(AxolotlService.SQLiteAxolotlStore.KEY, session.serialize());
+		values.put(AxolotlService.SQLiteAxolotlStore.KEY, Base64.encodeToString(session.serialize(),Base64.DEFAULT));
 		values.put(AxolotlService.SQLiteAxolotlStore.ACCOUNT, account.getUuid());
 		db.insert(AxolotlService.SQLiteAxolotlStore.SESSION_TABLENAME, null, values);
 	}
@@ -616,6 +630,28 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 				args);
 	}
 
+	public boolean isTrustedSession(Account account, AxolotlAddress contact) {
+		boolean trusted = false;
+		Cursor cursor = getCursorForSession(account, contact);
+		if(cursor.getCount() != 0) {
+			cursor.moveToFirst();
+            trusted = cursor.getInt(cursor.getColumnIndex(
+					AxolotlService.SQLiteAxolotlStore.TRUSTED)) > 0;
+		}
+		cursor.close();
+		return trusted;
+	}
+
+	public void setTrustedSession(Account account, AxolotlAddress contact, boolean trusted) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		ContentValues values = new ContentValues();
+		values.put(AxolotlService.SQLiteAxolotlStore.NAME, contact.getName());
+		values.put(AxolotlService.SQLiteAxolotlStore.DEVICE_ID, contact.getDeviceId());
+		values.put(AxolotlService.SQLiteAxolotlStore.ACCOUNT, account.getUuid());
+		values.put(AxolotlService.SQLiteAxolotlStore.TRUSTED, trusted?1:0);
+		db.insert(AxolotlService.SQLiteAxolotlStore.SESSION_TABLENAME, null, values);
+	}
+
 	private Cursor getCursorForPreKey(Account account, int preKeyId) {
 		SQLiteDatabase db = this.getReadableDatabase();
 		String[] columns = {AxolotlService.SQLiteAxolotlStore.KEY};
@@ -636,7 +672,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		if(cursor.getCount() != 0) {
 			cursor.moveToFirst();
 			try {
-				record = new PreKeyRecord(cursor.getString(cursor.getColumnIndex(AxolotlService.SQLiteAxolotlStore.KEY)).getBytes());
+				record = new PreKeyRecord(Base64.decode(cursor.getString(cursor.getColumnIndex(AxolotlService.SQLiteAxolotlStore.KEY)),Base64.DEFAULT));
 			} catch (IOException e ) {
 				throw new AssertionError(e);
 			}
@@ -656,7 +692,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getWritableDatabase();
 		ContentValues values = new ContentValues();
 		values.put(AxolotlService.SQLiteAxolotlStore.ID, record.getId());
-		values.put(AxolotlService.SQLiteAxolotlStore.KEY, record.serialize());
+		values.put(AxolotlService.SQLiteAxolotlStore.KEY, Base64.encodeToString(record.serialize(),Base64.DEFAULT));
 		values.put(AxolotlService.SQLiteAxolotlStore.ACCOUNT, account.getUuid());
 		db.insert(AxolotlService.SQLiteAxolotlStore.PREKEY_TABLENAME, null, values);
 	}
@@ -685,11 +721,11 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 
 	public SignedPreKeyRecord loadSignedPreKey(Account account, int signedPreKeyId) {
 		SignedPreKeyRecord record = null;
-		Cursor cursor = getCursorForPreKey(account, signedPreKeyId);
+		Cursor cursor = getCursorForSignedPreKey(account, signedPreKeyId);
 		if(cursor.getCount() != 0) {
 			cursor.moveToFirst();
 			try {
-				record = new SignedPreKeyRecord(cursor.getString(cursor.getColumnIndex(AxolotlService.SQLiteAxolotlStore.KEY)).getBytes());
+				record = new SignedPreKeyRecord(Base64.decode(cursor.getString(cursor.getColumnIndex(AxolotlService.SQLiteAxolotlStore.KEY)),Base64.DEFAULT));
 			} catch (IOException e ) {
 				throw new AssertionError(e);
 			}
@@ -711,7 +747,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 
 		while(cursor.moveToNext()) {
 			try {
-				prekeys.add(new SignedPreKeyRecord(cursor.getString(cursor.getColumnIndex(AxolotlService.SQLiteAxolotlStore.KEY)).getBytes()));
+				prekeys.add(new SignedPreKeyRecord(Base64.decode(cursor.getString(cursor.getColumnIndex(AxolotlService.SQLiteAxolotlStore.KEY)), Base64.DEFAULT)));
 			} catch (IOException ignored) {
 			}
 		}
@@ -729,7 +765,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getWritableDatabase();
 		ContentValues values = new ContentValues();
 		values.put(AxolotlService.SQLiteAxolotlStore.ID, record.getId());
-		values.put(AxolotlService.SQLiteAxolotlStore.KEY, record.serialize());
+		values.put(AxolotlService.SQLiteAxolotlStore.KEY, Base64.encodeToString(record.serialize(),Base64.DEFAULT));
 		values.put(AxolotlService.SQLiteAxolotlStore.ACCOUNT, account.getUuid());
 		db.insert(AxolotlService.SQLiteAxolotlStore.SIGNED_PREKEY_TABLENAME, null, values);
 	}

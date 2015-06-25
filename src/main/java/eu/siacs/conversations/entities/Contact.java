@@ -2,6 +2,7 @@ package eu.siacs.conversations.entities;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.util.Base64;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -349,20 +350,38 @@ public class Contact implements ListItem, Blockable {
 		}
 	}
 
-	public List<IdentityKey> getTrustedAxolotlIdentityKeys() {
+	public List<IdentityKey> getAxolotlIdentityKeys() {
 		synchronized (this.keys) {
 			JSONArray serializedKeyItems = this.keys.optJSONArray("axolotl_identity_key");
 			List<IdentityKey> identityKeys = new ArrayList<>();
+			List<Integer> toDelete = new ArrayList<>();
 			if(serializedKeyItems != null) {
 				for(int i = 0; i<serializedKeyItems.length();++i) {
 					try {
 						String serializedKeyItem = serializedKeyItems.getString(i);
-						IdentityKey identityKey = new IdentityKey(serializedKeyItem.getBytes(), 0);
+						IdentityKey identityKey = new IdentityKey(Base64.decode(serializedKeyItem, Base64.DEFAULT), 0);
 						identityKeys.add(identityKey);
 					} catch (InvalidKeyException e) {
-						Log.e(Config.LOGTAG, "Invalid axolotl identity key encountered at" + this.getJid() + ": " + e.getMessage());
+						Log.e(Config.LOGTAG, "Invalid axolotl identity key encountered at contact" + this.getJid() + ": " + e.getMessage() + ", marking for deletion...");
+						toDelete.add(i);
 					} catch (JSONException e) {
-						Log.e(Config.LOGTAG, "Error retrieving axolotl identity key at" + this.getJid() + ": " + e.getMessage());
+						Log.e(Config.LOGTAG, "Error retrieving axolotl identity key at contact " + this.getJid() + ": " + e.getMessage());
+					} catch (IllegalArgumentException e) {
+						Log.e(Config.LOGTAG, "Encountered malformed identity key for contact" + this.getJid() + ": " + e.getMessage() + ", marking for deletion... ");
+						toDelete.add(i);
+					}
+				}
+				if(!toDelete.isEmpty()) {
+					try {
+						JSONArray filteredKeyItems = new JSONArray();
+						for (int i = 0; i < serializedKeyItems.length(); ++i) {
+							if (!toDelete.contains(i)) {
+								filteredKeyItems.put(serializedKeyItems.get(i));
+							}
+						}
+						this.keys.put("axolotl_identity_key", filteredKeyItems);
+					} catch (JSONException e) {
+						//should never happen
 					}
 				}
 			}
@@ -370,23 +389,28 @@ public class Contact implements ListItem, Blockable {
 		}
 	}
 
-	public boolean addAxolotlIdentityKey(IdentityKey identityKey, boolean trusted) {
+	public boolean addAxolotlIdentityKey(IdentityKey identityKey) {
 		synchronized (this.keys) {
-			JSONArray keysList;
-			try {
-				keysList = this.keys.getJSONArray("axolotl_identity_key");
-			} catch (JSONException e) {
-				keysList = new JSONArray();
-			}
-			keysList.put(new String(identityKey.serialize()));
-			try {
-				this.keys.put("axolotl_identity_key", keysList);
-			} catch (JSONException e) {
-				Log.e(Config.LOGTAG, "Error adding Identity Key to Contact " + this.getJid() + ": " + e.getMessage());
-				return false;
-			}
+			if(!getAxolotlIdentityKeys().contains(identityKey)) {
+                JSONArray keysList;
+                try {
+                    keysList = this.keys.getJSONArray("axolotl_identity_key");
+                } catch (JSONException e) {
+                    keysList = new JSONArray();
+                }
+
+				keysList.put(Base64.encodeToString(identityKey.serialize(), Base64.DEFAULT));
+				try {
+					this.keys.put("axolotl_identity_key", keysList);
+				} catch (JSONException e) {
+					Log.e(Config.LOGTAG, "Error adding Identity Key to Contact " + this.getJid() + ": " + e.getMessage());
+					return false;
+				}
+                return true;
+			} else {
+                return false;
+            }
 		}
-		return true;
 	}
 
 
