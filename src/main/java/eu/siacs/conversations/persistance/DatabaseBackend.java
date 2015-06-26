@@ -42,7 +42,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 			+ Contact.JID + " TEXT," + Contact.KEYS + " TEXT,"
 			+ Contact.PHOTOURI + " TEXT," + Contact.OPTIONS + " NUMBER,"
 			+ Contact.SYSTEMACCOUNT + " NUMBER, " + Contact.AVATAR + " TEXT, "
-            + Contact.LAST_PRESENCE + " TEXT, " + Contact.LAST_TIME + " NUMBER, "
+			+ Contact.LAST_PRESENCE + " TEXT, " + Contact.LAST_TIME + " NUMBER, "
 			+ Contact.GROUPS + " TEXT, FOREIGN KEY(" + Contact.ACCOUNT + ") REFERENCES "
 			+ Account.TABLENAME + "(" + Account.UUID
 			+ ") ON DELETE CASCADE, UNIQUE(" + Contact.ACCOUNT + ", "
@@ -75,14 +75,14 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 	private static String CREATE_SESSIONS_STATEMENT = "CREATE TABLE "
 			+ AxolotlService.SQLiteAxolotlStore.SESSION_TABLENAME + "("
 				+ AxolotlService.SQLiteAxolotlStore.ACCOUNT + " TEXT,  "
-                + AxolotlService.SQLiteAxolotlStore.NAME + " TEXT, "
-                + AxolotlService.SQLiteAxolotlStore.DEVICE_ID + " INTEGER, "
+				+ AxolotlService.SQLiteAxolotlStore.NAME + " TEXT, "
+				+ AxolotlService.SQLiteAxolotlStore.DEVICE_ID + " INTEGER, "
 				+ AxolotlService.SQLiteAxolotlStore.TRUSTED + " INTEGER, "
-                + AxolotlService.SQLiteAxolotlStore.KEY + " TEXT, FOREIGN KEY("
-                    + AxolotlService.SQLiteAxolotlStore.ACCOUNT
+				+ AxolotlService.SQLiteAxolotlStore.KEY + " TEXT, FOREIGN KEY("
+					+ AxolotlService.SQLiteAxolotlStore.ACCOUNT
 				+ ") REFERENCES " + Account.TABLENAME + "(" + Account.UUID + ") ON DELETE CASCADE, "
-                + "UNIQUE( " + AxolotlService.SQLiteAxolotlStore.ACCOUNT + ", "
-                    + AxolotlService.SQLiteAxolotlStore.NAME + ", "
+				+ "UNIQUE( " + AxolotlService.SQLiteAxolotlStore.ACCOUNT + ", "
+					+ AxolotlService.SQLiteAxolotlStore.NAME + ", "
 					+ AxolotlService.SQLiteAxolotlStore.DEVICE_ID
 				+ ") ON CONFLICT REPLACE"
 			+");";
@@ -157,12 +157,12 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 			db.execSQL("ALTER TABLE " + Conversation.TABLENAME + " ADD COLUMN "
 					+ Conversation.ATTRIBUTES + " TEXT");
 		}
-        if (oldVersion < 9 && newVersion >= 9) {
-            db.execSQL("ALTER TABLE " + Contact.TABLENAME + " ADD COLUMN "
-                    + Contact.LAST_TIME + " NUMBER");
-            db.execSQL("ALTER TABLE " + Contact.TABLENAME + " ADD COLUMN "
-                    + Contact.LAST_PRESENCE + " TEXT");
-        }
+		if (oldVersion < 9 && newVersion >= 9) {
+			db.execSQL("ALTER TABLE " + Contact.TABLENAME + " ADD COLUMN "
+					+ Contact.LAST_TIME + " NUMBER");
+			db.execSQL("ALTER TABLE " + Contact.TABLENAME + " ADD COLUMN "
+					+ Contact.LAST_PRESENCE + " TEXT");
+		}
 		if (oldVersion < 10 && newVersion >= 10) {
 			db.execSQL("ALTER TABLE " + Message.TABLENAME + " ADD COLUMN "
 					+ Message.RELATIVE_FILE_PATH + " TEXT");
@@ -557,7 +557,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 
 	public SessionRecord loadSession(Account account, AxolotlAddress contact) {
 		SessionRecord session = null;
-        Cursor cursor = getCursorForSession(account, contact);
+		Cursor cursor = getCursorForSession(account, contact);
 		if(cursor.getCount() != 0) {
 			cursor.moveToFirst();
 			try {
@@ -565,8 +565,8 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 			} catch (IOException e) {
 				throw new AssertionError(e);
 			}
-        }
-        cursor.close();
+		}
+		cursor.close();
 		return session;
 	}
 
@@ -635,7 +635,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		Cursor cursor = getCursorForSession(account, contact);
 		if(cursor.getCount() != 0) {
 			cursor.moveToFirst();
-            trusted = cursor.getInt(cursor.getColumnIndex(
+			trusted = cursor.getInt(cursor.getColumnIndex(
 					AxolotlService.SQLiteAxolotlStore.TRUSTED)) > 0;
 		}
 		cursor.close();

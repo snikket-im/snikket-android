@@ -310,7 +310,7 @@ public class Contact implements ListItem, Blockable {
 		synchronized (this.keys) {
 			if (getOtrFingerprints().contains(print)) {
 				return false;
-            }
+			}
 			try {
 				JSONArray fingerprints;
 				if (!this.keys.has("otr_fingerprints")) {
@@ -392,12 +392,12 @@ public class Contact implements ListItem, Blockable {
 	public boolean addAxolotlIdentityKey(IdentityKey identityKey) {
 		synchronized (this.keys) {
 			if(!getAxolotlIdentityKeys().contains(identityKey)) {
-                JSONArray keysList;
-                try {
-                    keysList = this.keys.getJSONArray("axolotl_identity_key");
-                } catch (JSONException e) {
-                    keysList = new JSONArray();
-                }
+				JSONArray keysList;
+				try {
+					keysList = this.keys.getJSONArray("axolotl_identity_key");
+				} catch (JSONException e) {
+					keysList = new JSONArray();
+				}
 
 				keysList.put(Base64.encodeToString(identityKey.serialize(), Base64.DEFAULT));
 				try {
@@ -406,10 +406,10 @@ public class Contact implements ListItem, Blockable {
 					Log.e(Config.LOGTAG, "Error adding Identity Key to Contact " + this.getJid() + ": " + e.getMessage());
 					return false;
 				}
-                return true;
+				return true;
 			} else {
-                return false;
-            }
+				return false;
+			}
 		}
 	}
 

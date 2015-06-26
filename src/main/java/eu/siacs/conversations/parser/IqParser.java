@@ -70,7 +70,7 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
 
 	public String avatarData(final IqPacket packet) {
 		final Element pubsub = packet.findChild("pubsub",
-                "http://jabber.org/protocol/pubsub");
+				"http://jabber.org/protocol/pubsub");
 		if (pubsub == null) {
 			return null;
 		}
@@ -165,19 +165,19 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
 
 	public Map<Integer, ECPublicKey> preKeyPublics(final IqPacket packet) {
 		Map<Integer, ECPublicKey> preKeyRecords = new HashMap<>();
-        Element prekeysItem = getItem(packet);
-        if (prekeysItem == null) {
-            Log.d(Config.LOGTAG, "Couldn't find <item> in preKeyPublic IQ packet: " + packet);
-            return null;
-        }
-        final Element prekeysElement = prekeysItem.findChild("prekeys");
-        if(prekeysElement == null) {
-            Log.d(Config.LOGTAG, "Couldn't find <prekeys> in preKeyPublic IQ packet: " + packet);
-            return null;
-        }
+		Element prekeysItem = getItem(packet);
+		if (prekeysItem == null) {
+			Log.d(Config.LOGTAG, "Couldn't find <item> in preKeyPublic IQ packet: " + packet);
+			return null;
+		}
+		final Element prekeysElement = prekeysItem.findChild("prekeys");
+		if(prekeysElement == null) {
+			Log.d(Config.LOGTAG, "Couldn't find <prekeys> in preKeyPublic IQ packet: " + packet);
+			return null;
+		}
 		for(Element preKeyPublicElement : prekeysElement.getChildren()) {
 			if(!preKeyPublicElement.getName().equals("preKeyPublic")){
-                Log.d(Config.LOGTAG, "Encountered unexpected tag in prekeys list: " + preKeyPublicElement);
+				Log.d(Config.LOGTAG, "Encountered unexpected tag in prekeys list: " + preKeyPublicElement);
 				continue;
 			}
 			Integer preKeyId = Integer.valueOf(preKeyPublicElement.getAttribute("preKeyId"));
@@ -192,37 +192,37 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
 		return preKeyRecords;
 	}
 
-    public PreKeyBundle bundle(final IqPacket bundle) {
-        Element bundleItem = getItem(bundle);
-        if(bundleItem == null) {
-            return null;
-        }
-        final Element bundleElement = bundleItem.findChild("bundle");
-        if(bundleElement == null) {
-            return null;
-        }
-        ECPublicKey signedPreKeyPublic = signedPreKeyPublic(bundleElement);
-        Integer signedPreKeyId = signedPreKeyId(bundleElement);
-        byte[] signedPreKeySignature = signedPreKeySignature(bundleElement);
-        IdentityKey identityKey = identityKey(bundleElement);
-        if(signedPreKeyPublic == null || identityKey == null) {
-            return null;
-        }
+	public PreKeyBundle bundle(final IqPacket bundle) {
+		Element bundleItem = getItem(bundle);
+		if(bundleItem == null) {
+			return null;
+		}
+		final Element bundleElement = bundleItem.findChild("bundle");
+		if(bundleElement == null) {
+			return null;
+		}
+		ECPublicKey signedPreKeyPublic = signedPreKeyPublic(bundleElement);
+		Integer signedPreKeyId = signedPreKeyId(bundleElement);
+		byte[] signedPreKeySignature = signedPreKeySignature(bundleElement);
+		IdentityKey identityKey = identityKey(bundleElement);
+		if(signedPreKeyPublic == null || identityKey == null) {
+			return null;
+		}
 
-        return new PreKeyBundle(0, 0, 0, null,
-                signedPreKeyId, signedPreKeyPublic, signedPreKeySignature, identityKey);
-    }
+		return new PreKeyBundle(0, 0, 0, null,
+				signedPreKeyId, signedPreKeyPublic, signedPreKeySignature, identityKey);
+	}
 
 	public List<PreKeyBundle> preKeys(final IqPacket preKeys) {
 		List<PreKeyBundle> bundles = new ArrayList<>();
 		Map<Integer, ECPublicKey> preKeyPublics = preKeyPublics(preKeys);
-        if ( preKeyPublics != null) {
-            for (Integer preKeyId : preKeyPublics.keySet()) {
-                ECPublicKey preKeyPublic = preKeyPublics.get(preKeyId);
-                bundles.add(new PreKeyBundle(0, 0, preKeyId, preKeyPublic,
-                        0, null, null, null));
-            }
-        }
+		if ( preKeyPublics != null) {
+			for (Integer preKeyId : preKeyPublics.keySet()) {
+				ECPublicKey preKeyPublic = preKeyPublics.get(preKeyId);
+				bundles.add(new PreKeyBundle(0, 0, preKeyId, preKeyPublic,
+						0, null, null, null));
+			}
+		}
 
 		return bundles;
 	}

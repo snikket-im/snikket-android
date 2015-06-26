@@ -274,9 +274,9 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 					}
 				}
 				syncDirtyContacts(account);
-                account.getAxolotlService().publishOwnDeviceIdIfNeeded();
-                account.getAxolotlService().publishBundleIfNeeded();
-                account.getAxolotlService().publishPreKeysIfNeeded();
+				account.getAxolotlService().publishOwnDeviceIdIfNeeded();
+				account.getAxolotlService().publishBundleIfNeeded();
+				account.getAxolotlService().publishPreKeysIfNeeded();
 
 				scheduleWakeUpCall(Config.PING_MAX_INTERVAL, account.getUuid().hashCode());
 			} else if (account.getStatus() == Account.State.OFFLINE) {

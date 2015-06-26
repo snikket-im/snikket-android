@@ -98,17 +98,17 @@ public class MessageParser extends AbstractParser implements
 		}
 	}
 
-    private Message parseAxolotlChat(Element axolotlMessage, Jid from, String id, Conversation conversation) {
-        Message finishedMessage = null;
-        AxolotlService service = conversation.getAccount().getAxolotlService();
-        XmppAxolotlMessage xmppAxolotlMessage = new XmppAxolotlMessage(conversation.getContact(), axolotlMessage);
-        XmppAxolotlMessage.XmppAxolotlPlaintextMessage plaintextMessage = service.processReceiving(xmppAxolotlMessage);
-        if(plaintextMessage != null) {
-            finishedMessage = new Message(conversation, plaintextMessage.getPlaintext(), Message.ENCRYPTION_AXOLOTL, Message.STATUS_RECEIVED);
-        }
+	private Message parseAxolotlChat(Element axolotlMessage, Jid from, String id, Conversation conversation) {
+		Message finishedMessage = null;
+		AxolotlService service = conversation.getAccount().getAxolotlService();
+		XmppAxolotlMessage xmppAxolotlMessage = new XmppAxolotlMessage(conversation.getContact(), axolotlMessage);
+		XmppAxolotlMessage.XmppAxolotlPlaintextMessage plaintextMessage = service.processReceiving(xmppAxolotlMessage);
+		if(plaintextMessage != null) {
+			finishedMessage = new Message(conversation, plaintextMessage.getPlaintext(), Message.ENCRYPTION_AXOLOTL, Message.STATUS_RECEIVED);
+		}
 
-        return finishedMessage;
-    }
+		return finishedMessage;
+	}
 
 	private class Invite {
 		Jid jid;
@@ -187,17 +187,17 @@ public class MessageParser extends AbstractParser implements
 				mXmppConnectionService.updateAccountUi();
 			}
 		} else if (AxolotlService.PEP_DEVICE_LIST.equals(node)) {
-            Log.d(Config.LOGTAG, "Received PEP device list update from "+ from + ", processing...");
-            Element item = items.findChild("item");
+			Log.d(Config.LOGTAG, "Received PEP device list update from "+ from + ", processing...");
+			Element item = items.findChild("item");
 			List<Integer> deviceIds = mXmppConnectionService.getIqParser().deviceIds(item);
-            AxolotlService axolotlService = account.getAxolotlService();
-            if(account.getJid().toBareJid().equals(from)) {
-            } else {
-                Contact contact = account.getRoster().getContact(from);
-                for (Integer deviceId : deviceIds) {
-                    axolotlService.fetchBundleIfNeeded(contact, deviceId);
-                }
-            }
+			AxolotlService axolotlService = account.getAxolotlService();
+			if(account.getJid().toBareJid().equals(from)) {
+			} else {
+				Contact contact = account.getRoster().getContact(from);
+				for (Integer deviceId : deviceIds) {
+					axolotlService.fetchBundleIfNeeded(contact, deviceId);
+				}
+			}
 		}
 	}
 
@@ -262,7 +262,7 @@ public class MessageParser extends AbstractParser implements
 		final String body = packet.getBody();
 		final Element mucUserElement = packet.findChild("x","http://jabber.org/protocol/muc#user");
 		final String pgpEncrypted = packet.findChildContent("x", "jabber:x:encrypted");
-        final Element axolotlEncrypted = packet.findChild("axolotl_message", AxolotlService.PEP_PREFIX);
+		final Element axolotlEncrypted = packet.findChild("axolotl_message", AxolotlService.PEP_PREFIX);
 		int status;
 		final Jid counterpart;
 		final Jid to = packet.getTo();
@@ -324,13 +324,13 @@ public class MessageParser extends AbstractParser implements
 					message = new Message(conversation, body, Message.ENCRYPTION_NONE, status);
 				}
 			} else if (pgpEncrypted != null) {
-                message = new Message(conversation, pgpEncrypted, Message.ENCRYPTION_PGP, status);
-            } else if (axolotlEncrypted != null) {
-                message = parseAxolotlChat(axolotlEncrypted, from, remoteMsgId, conversation);
-                if (message == null) {
-                    return;
-                }
-            } else {
+				message = new Message(conversation, pgpEncrypted, Message.ENCRYPTION_PGP, status);
+			} else if (axolotlEncrypted != null) {
+				message = parseAxolotlChat(axolotlEncrypted, from, remoteMsgId, conversation);
+				if (message == null) {
+					return;
+				}
+			} else {
 				message = new Message(conversation, body, Message.ENCRYPTION_NONE, status);
 			}
 			message.setCounterpart(counterpart);

@@ -752,16 +752,16 @@ public class ConversationActivity extends XmppActivity
 							}
 							break;
 						case R.id.encryption_choice_axolotl:
-                            Log.d(Config.LOGTAG, "Trying to enable axolotl...");
+							Log.d(Config.LOGTAG, "Trying to enable axolotl...");
 							if(conversation.getAccount().getAxolotlService().isContactAxolotlCapable(conversation.getContact())) {
-                                Log.d(Config.LOGTAG, "Enabled axolotl for Contact " + conversation.getContact().getJid() );
+								Log.d(Config.LOGTAG, "Enabled axolotl for Contact " + conversation.getContact().getJid() );
 								conversation.setNextEncryption(Message.ENCRYPTION_AXOLOTL);
 								item.setChecked(true);
 							} else {
-                                Log.d(Config.LOGTAG, "Contact " + conversation.getContact().getJid() + " not axolotl capable!");
+								Log.d(Config.LOGTAG, "Contact " + conversation.getContact().getJid() + " not axolotl capable!");
 								showAxolotlNoSessionsDialog();
 							}
-                            break;
+							break;
 						default:
 							conversation.setNextEncryption(Message.ENCRYPTION_NONE);
 							break;
@@ -794,7 +794,7 @@ public class ConversationActivity extends XmppActivity
 					pgp.setChecked(true);
 					break;
 				case Message.ENCRYPTION_AXOLOTL:
-                    Log.d(Config.LOGTAG, "Axolotl confirmed. Setting menu item checked!");
+					Log.d(Config.LOGTAG, "Axolotl confirmed. Setting menu item checked!");
 					popup.getMenu().findItem(R.id.encryption_choice_axolotl)
 							.setChecked(true);
 					break;
