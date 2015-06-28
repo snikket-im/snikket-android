@@ -364,13 +364,25 @@ public class MessageParser extends AbstractParser implements
 				mXmppConnectionService.getNotificationService().push(message);
 			}
 		} else { //no body
-			if (packet.hasChild("subject") && isTypeGroupChat) {
+			if (isTypeGroupChat) {
 				Conversation conversation = mXmppConnectionService.find(account, from.toBareJid());
-				if (conversation != null && conversation.getMode() == Conversation.MODE_MULTI) {
-					conversation.setHasMessagesLeftOnServer(conversation.countMessages() > 0);
-					conversation.getMucOptions().setSubject(packet.findChildContent("subject"));
-					mXmppConnectionService.updateConversationUi();
-					return;
+				if (packet.hasChild("subject")) {
+					if (conversation != null && conversation.getMode() == Conversation.MODE_MULTI) {
+						conversation.setHasMessagesLeftOnServer(conversation.countMessages() > 0);
+						conversation.getMucOptions().setSubject(packet.findChildContent("subject"));
+						mXmppConnectionService.updateConversationUi();
+						return;
+					}
+				}
+
+				final Element x = packet.findChild("x", "http://jabber.org/protocol/muc#user");
+				if (conversation != null && x != null && from.isBareJid()) {
+					for (Element child : x.getChildren()) {
+						if (child.getName().equals("status")
+								&& MucOptions.STATUS_CODE_ROOM_CONFIG_CHANGED.equals(child.getAttribute("code"))) {
+							mXmppConnectionService.fetchConferenceConfiguration(conversation);
+						}
+					}
 				}
 			}
 		}
