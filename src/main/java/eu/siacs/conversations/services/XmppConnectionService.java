@@ -692,7 +692,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		if (account.getStatus() == Account.State.ONLINE
 				&& account.getXmppConnection() != null) {
 			if (message.needsUploading()) {
-				if (message.getCounterpart() != null) {
+				if (message.getCounterpart() != null || account.httpUploadAvailable()) {
 					if (message.getEncryption() == Message.ENCRYPTION_OTR) {
 						if (!conv.hasValidOtrSession()) {
 							conv.startOtrSession(message.getCounterpart().getResourcepart(),true);
@@ -834,8 +834,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		} else if (message.needsUploading()) {
 			Contact contact = message.getConversation().getContact();
 			Presences presences = contact.getPresences();
-			if ((message.getCounterpart() != null)
-					&& (presences.has(message.getCounterpart().getResourcepart()))) {
+			if (account.httpUploadAvailable() || (message.getCounterpart() != null && presences.has(message.getCounterpart().getResourcepart()))) {
 				this.sendFileMessage(message);
 			} else {
 				if (presences.size() == 1) {

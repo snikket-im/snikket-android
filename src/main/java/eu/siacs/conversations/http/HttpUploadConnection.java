@@ -145,6 +145,7 @@ public class HttpUploadConnection implements Downloadable {
 					Message.ImageParams params = message.getImageParams();
 					message.setBody(mGetUrl.toString()+"|"+String.valueOf(params.size)+"|"+String.valueOf(params.width)+"|"+String.valueOf(params.height));
 					message.setDownloadable(null);
+					message.setCounterpart(message.getConversation().getJid().toBareJid());
 					mXmppConnectionService.resendMessage(message);
 				} else {
 					fail();
