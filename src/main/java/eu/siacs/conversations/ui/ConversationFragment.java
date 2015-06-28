@@ -912,7 +912,8 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 		final SendButtonAction action;
 		final int status;
 		final boolean empty = this.mEditMessage == null || this.mEditMessage.getText().length() == 0;
-		if (c.getMode() == Conversation.MODE_MULTI) {
+		final boolean conference = c.getMode() == Conversation.MODE_MULTI;
+		if (conference && !c.getAccount().httpUploadAvailable()) {
 			if (empty && c.getNextCounterpart() != null) {
 				action = SendButtonAction.CANCEL;
 			} else {
@@ -920,28 +921,32 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 			}
 		} else {
 			if (empty) {
-				String setting = activity.getPreferences().getString("quick_action","recent");
-				if (!setting.equals("none") && UIHelper.receivedLocationQuestion(conversation.getLatestMessage())) {
-					setting = "location";
-				} else if (setting.equals("recent")) {
-					setting = activity.getPreferences().getString("recently_used_quick_action","text");
-				}
-				switch (setting) {
-					case "photo":
-						action = SendButtonAction.TAKE_PHOTO;
-						break;
-					case "location":
-						action = SendButtonAction.SEND_LOCATION;
-						break;
-					case "voice":
-						action = SendButtonAction.RECORD_VOICE;
-						break;
-					case "picture":
-						action = SendButtonAction.CHOOSE_PICTURE;
-						break;
-					default:
-						action = SendButtonAction.TEXT;
-						break;
+				if (conference && c.getNextCounterpart() != null) {
+					action = SendButtonAction.CANCEL;
+				} else {
+					String setting = activity.getPreferences().getString("quick_action", "recent");
+					if (!setting.equals("none") && UIHelper.receivedLocationQuestion(conversation.getLatestMessage())) {
+						setting = "location";
+					} else if (setting.equals("recent")) {
+						setting = activity.getPreferences().getString("recently_used_quick_action", "text");
+					}
+					switch (setting) {
+						case "photo":
+							action = SendButtonAction.TAKE_PHOTO;
+							break;
+						case "location":
+							action = SendButtonAction.SEND_LOCATION;
+							break;
+						case "voice":
+							action = SendButtonAction.RECORD_VOICE;
+							break;
+						case "picture":
+							action = SendButtonAction.CHOOSE_PICTURE;
+							break;
+						default:
+							action = SendButtonAction.TEXT;
+							break;
+					}
 				}
 			} else {
 				action = SendButtonAction.TEXT;
