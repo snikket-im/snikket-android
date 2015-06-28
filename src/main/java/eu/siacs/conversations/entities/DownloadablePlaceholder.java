@@ -28,11 +28,6 @@ public class DownloadablePlaceholder implements Downloadable {
 	}
 
 	@Override
-	public String getMimeType() {
-		return "";
-	}
-
-	@Override
 	public void cancel() {
 
 	}

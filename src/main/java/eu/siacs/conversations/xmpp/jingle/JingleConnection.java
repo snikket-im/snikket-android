@@ -954,24 +954,4 @@ public class JingleConnection implements Downloadable {
 	public int getProgress() {
 		return this.mProgress;
 	}
-
-	@Override
-	public String getMimeType() {
-		if (this.message.getType() == Message.TYPE_FILE) {
-			String mime = null;
-			String path = this.message.getRelativeFilePath();
-			if (path != null && !this.message.getRelativeFilePath().isEmpty()) {
-				mime = URLConnection.guessContentTypeFromName(this.message.getRelativeFilePath());
-				if (mime!=null) {
-					return  mime;
-				} else {
-					return "";
-				}
-			} else {
-				return "";
-			}
-		} else {
-			return "image/webp";
-		}
-	}
 }

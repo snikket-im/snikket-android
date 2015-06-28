@@ -13,7 +13,8 @@ public class HttpConnectionManager extends AbstractConnectionManager {
 		super(service);
 	}
 
-	private List<HttpConnection> connections = new CopyOnWriteArrayList<HttpConnection>();
+	private List<HttpConnection> connections = new CopyOnWriteArrayList<>();
+	private List<HttpUploadConnection> uploadConnections = new CopyOnWriteArrayList<>();
 
 	public HttpConnection createNewConnection(Message message) {
 		HttpConnection connection = new HttpConnection(this);
@@ -22,7 +23,18 @@ public class HttpConnectionManager extends AbstractConnectionManager {
 		return connection;
 	}
 
+	public HttpUploadConnection createNewUploadConnection(Message message) {
+		HttpUploadConnection connection = new HttpUploadConnection(this);
+		connection.init(message);
+		this.uploadConnections.add(connection);
+		return connection;
+	}
+
 	public void finishConnection(HttpConnection connection) {
 		this.connections.remove(connection);
+	}
+
+	public void finishUploadConnection(HttpUploadConnection httpUploadConnection) {
+		this.uploadConnections.remove(httpUploadConnection);
 	}
 }

@@ -302,9 +302,4 @@ public class HttpConnection implements Downloadable {
 	public int getProgress() {
 		return this.mProgress;
 	}
-
-	@Override
-	public String getMimeType() {
-		return "";
-	}
 }

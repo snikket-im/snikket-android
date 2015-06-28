@@ -6,6 +6,7 @@ import java.util.List;
 
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Conversation;
+import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.services.MessageArchiveService;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.PhoneHelper;
@@ -102,7 +103,7 @@ public class IqGenerator extends AbstractGenerator {
 	public IqPacket retrieveVcardAvatar(final Avatar avatar) {
 		final IqPacket packet = new IqPacket(IqPacket.TYPE.GET);
 		packet.setTo(avatar.owner);
-		packet.addChild("vCard","vcard-temp");
+		packet.addChild("vCard", "vcard-temp");
 		return packet;
 	}
 
@@ -192,6 +193,15 @@ public class IqGenerator extends AbstractGenerator {
 		Element item = packet.query("http://jabber.org/protocol/muc#admin").addChild("item");
 		item.setAttribute("nick", nick);
 		item.setAttribute("role", role);
+		return packet;
+	}
+
+	public IqPacket requestHttpUploadSlot(Jid host, DownloadableFile file) {
+		IqPacket packet = new IqPacket(IqPacket.TYPE.GET);
+		packet.setTo(host);
+		Element request = packet.addChild("request",Xmlns.HTTP_UPLOAD);
+		request.addChild("filename").setContent(file.getName());
+		request.addChild("size").setContent(String.valueOf(file.getExpectedSize()));
 		return packet;
 	}
 }

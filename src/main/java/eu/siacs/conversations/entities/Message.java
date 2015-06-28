@@ -586,6 +586,14 @@ public class Message extends AbstractEntity {
 		return type == TYPE_FILE || type == TYPE_IMAGE;
 	}
 
+	public boolean hasFileOnRemoteHost() {
+		return isFileOrImage() && getImageParams().url != null;
+	}
+
+	public boolean needsUploading() {
+		return isFileOrImage() && getImageParams().url == null;
+	}
+
 	public class ImageParams {
 		public URL url;
 		public long size = 0;

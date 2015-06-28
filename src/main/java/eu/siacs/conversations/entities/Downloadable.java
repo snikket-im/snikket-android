@@ -2,27 +2,25 @@ package eu.siacs.conversations.entities;
 
 public interface Downloadable {
 
-	public final String[] VALID_IMAGE_EXTENSIONS = {"webp", "jpeg", "jpg", "png", "jpe"};
-	public final String[] VALID_CRYPTO_EXTENSIONS = {"pgp", "gpg", "otr"};
+	String[] VALID_IMAGE_EXTENSIONS = {"webp", "jpeg", "jpg", "png", "jpe"};
+	String[] VALID_CRYPTO_EXTENSIONS = {"pgp", "gpg", "otr"};
 
-	public static final int STATUS_UNKNOWN = 0x200;
-	public static final int STATUS_CHECKING = 0x201;
-	public static final int STATUS_FAILED = 0x202;
-	public static final int STATUS_OFFER = 0x203;
-	public static final int STATUS_DOWNLOADING = 0x204;
-	public static final int STATUS_DELETED = 0x205;
-	public static final int STATUS_OFFER_CHECK_FILESIZE = 0x206;
-	public static final int STATUS_UPLOADING = 0x207;
+	int STATUS_UNKNOWN = 0x200;
+	int STATUS_CHECKING = 0x201;
+	int STATUS_FAILED = 0x202;
+	int STATUS_OFFER = 0x203;
+	int STATUS_DOWNLOADING = 0x204;
+	int STATUS_DELETED = 0x205;
+	int STATUS_OFFER_CHECK_FILESIZE = 0x206;
+	int STATUS_UPLOADING = 0x207;
 
-	public boolean start();
+	boolean start();
 
-	public int getStatus();
+	int getStatus();
 
-	public long getFileSize();
+	long getFileSize();
 
-	public int getProgress();
+	int getProgress();
 
-	public String getMimeType();
-
-	public void cancel();
+	void cancel();
 }

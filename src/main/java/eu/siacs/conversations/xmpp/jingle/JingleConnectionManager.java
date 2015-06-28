@@ -87,10 +87,10 @@ public class JingleConnectionManager extends AbstractConnectionManager {
 			return;
 		}
 		if (!this.primaryCandidates.containsKey(account.getJid().toBareJid())) {
-			final String proxy = account.getXmppConnection().findDiscoItemByFeature(Xmlns.BYTE_STREAMS);
+			final Jid proxy = account.getXmppConnection().findDiscoItemByFeature(Xmlns.BYTE_STREAMS);
 			if (proxy != null) {
 				IqPacket iq = new IqPacket(IqPacket.TYPE.GET);
-				iq.setAttribute("to", proxy);
+				iq.setTo(proxy);
 				iq.query(Xmlns.BYTE_STREAMS);
 				account.getXmppConnection().sendIqPacket(iq,new OnIqPacketReceived() {
 
@@ -105,11 +105,11 @@ public class JingleConnectionManager extends AbstractConnectionManager {
 								candidate.setHost(host);
 								candidate.setPort(Integer.parseInt(port));
 								candidate.setType(JingleCandidate.TYPE_PROXY);
-								candidate.setJid(Jid.fromString(proxy));
+								candidate.setJid(proxy);
 								candidate.setPriority(655360 + 65535);
 								primaryCandidates.put(account.getJid().toBareJid(),candidate);
 								listener.onPrimaryCandidateFound(true,candidate);
-							} catch (final NumberFormatException | InvalidJidException e) {
+							} catch (final NumberFormatException e) {
 								listener.onPrimaryCandidateFound(false,null);
 								return;
 							}

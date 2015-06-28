@@ -73,7 +73,13 @@ public class MessageGenerator extends AbstractGenerator {
 		packet.addChild("no-copy", "urn:xmpp:hints");
 		packet.addChild("no-permanent-store", "urn:xmpp:hints");
 		try {
-			packet.setBody(otrSession.transformSending(message.getBody())[0]);
+			String content;
+			if (message.hasFileOnRemoteHost()) {
+				content = message.getImageParams().url.toString();
+			} else {
+				content = message.getBody();
+			}
+			packet.setBody(otrSession.transformSending(content)[0]);
 			return packet;
 		} catch (OtrException e) {
 			return null;
@@ -86,7 +92,11 @@ public class MessageGenerator extends AbstractGenerator {
 
 	public MessagePacket generateChat(Message message, boolean addDelay) {
 		MessagePacket packet = preparePacket(message, addDelay);
-		packet.setBody(message.getBody());
+		if (message.hasFileOnRemoteHost()) {
+			packet.setBody(message.getImageParams().url.toString());
+		} else {
+			packet.setBody(message.getBody());
+		}
 		return packet;
 	}
 
@@ -96,13 +106,11 @@ public class MessageGenerator extends AbstractGenerator {
 
 	public MessagePacket generatePgpChat(Message message, boolean addDelay) {
 		MessagePacket packet = preparePacket(message, addDelay);
-		packet.setBody("This is an XEP-0027 encryted message");
+		packet.setBody("This is an XEP-0027 encrypted message");
 		if (message.getEncryption() == Message.ENCRYPTION_DECRYPTED) {
-			packet.addChild("x", "jabber:x:encrypted").setContent(
-					message.getEncryptedBody());
+			packet.addChild("x", "jabber:x:encrypted").setContent(message.getEncryptedBody());
 		} else if (message.getEncryption() == Message.ENCRYPTION_PGP) {
-			packet.addChild("x", "jabber:x:encrypted").setContent(
-					message.getBody());
+			packet.addChild("x", "jabber:x:encrypted").setContent(message.getBody());
 		}
 		return packet;
 	}

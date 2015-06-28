@@ -390,7 +390,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 							callback.success(message);
 						}
 					} catch (FileBackend.FileCopyException e) {
-						callback.error(e.getResId(),message);
+						callback.error(e.getResId(), message);
 					}
 				}
 			});
@@ -671,6 +671,17 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		}
 	}
 
+	private void sendFileMessage(final Message message) {
+		Log.d(Config.LOGTAG, "send file message");
+		final Account account = message.getConversation().getAccount();
+		final XmppConnection connection = account.getXmppConnection();
+		if (connection != null && connection.getFeatures().httpUpload()) {
+			mHttpConnectionManager.createNewUploadConnection(message);
+		} else {
+			mJingleConnectionManager.createNewConnection(message);
+		}
+	}
+
 	public void sendMessage(final Message message) {
 		final Account account = message.getConversation().getAccount();
 		account.deactivateGracePeriod();
@@ -680,7 +691,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		boolean send = false;
 		if (account.getStatus() == Account.State.ONLINE
 				&& account.getXmppConnection() != null) {
-			if (message.getType() == Message.TYPE_IMAGE || message.getType() == Message.TYPE_FILE) {
+			if (message.needsUploading()) {
 				if (message.getCounterpart() != null) {
 					if (message.getEncryption() == Message.ENCRYPTION_OTR) {
 						if (!conv.hasValidOtrSession()) {
@@ -688,11 +699,11 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 							message.setStatus(Message.STATUS_WAITING);
 						} else if (conv.hasValidOtrSession()
 								&& conv.getOtrSession().getSessionStatus() == SessionStatus.ENCRYPTED) {
-							mJingleConnectionManager
-								.createNewConnection(message);
-								}
+							mJingleConnectionManager.createNewConnection(message);
+						}
 					} else {
-						mJingleConnectionManager.createNewConnection(message);
+						this.sendFileMessage(message);
+
 					}
 				} else {
 					if (message.getEncryption() == Message.ENCRYPTION_OTR) {
@@ -791,12 +802,11 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		});
 	}
 
-	private void resendMessage(final Message message) {
+	public void resendMessage(final Message message) {
 		Account account = message.getConversation().getAccount();
 		MessagePacket packet = null;
 		if (message.getEncryption() == Message.ENCRYPTION_OTR) {
-			Presences presences = message.getConversation().getContact()
-				.getPresences();
+			Presences presences = message.getConversation().getContact().getPresences();
 			if (!message.getConversation().hasValidOtrSession()) {
 				if ((message.getCounterpart() != null)
 						&& (presences.has(message.getCounterpart().getResourcepart()))) {
@@ -808,34 +818,25 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 					}
 				}
 			} else {
-				if (message.getConversation().getOtrSession()
-						.getSessionStatus() == SessionStatus.ENCRYPTED) {
+				if (message.getConversation().getOtrSession().getSessionStatus() == SessionStatus.ENCRYPTED) {
 					try {
 						message.setCounterpart(Jid.fromSessionID(message.getConversation().getOtrSession().getSessionID()));
-						if (message.getType() == Message.TYPE_TEXT) {
-							packet = mMessageGenerator.generateOtrChat(message,
-									true);
-						} else if (message.getType() == Message.TYPE_IMAGE || message.getType() == Message.TYPE_FILE) {
+						if (message.needsUploading()) {
 							mJingleConnectionManager.createNewConnection(message);
+						} else {
+							packet = mMessageGenerator.generateOtrChat(message, true);
 						}
 					} catch (final InvalidJidException ignored) {
 
 					}
-						}
+				}
 			}
-		} else if (message.getType() == Message.TYPE_TEXT) {
-			if (message.getEncryption() == Message.ENCRYPTION_NONE) {
-				packet = mMessageGenerator.generateChat(message, true);
-			} else if ((message.getEncryption() == Message.ENCRYPTION_DECRYPTED)
-					|| (message.getEncryption() == Message.ENCRYPTION_PGP)) {
-				packet = mMessageGenerator.generatePgpChat(message, true);
-					}
-		} else if (message.getType() == Message.TYPE_IMAGE || message.getType() == Message.TYPE_FILE) {
+		} else if (message.needsUploading()) {
 			Contact contact = message.getConversation().getContact();
 			Presences presences = contact.getPresences();
 			if ((message.getCounterpart() != null)
 					&& (presences.has(message.getCounterpart().getResourcepart()))) {
-				mJingleConnectionManager.createNewConnection(message);
+				this.sendFileMessage(message);
 			} else {
 				if (presences.size() == 1) {
 					String presence = presences.asStringArray()[0];
@@ -844,8 +845,15 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 					} catch (InvalidJidException e) {
 						return;
 					}
-					mJingleConnectionManager.createNewConnection(message);
+					this.sendFileMessage(message);
 				}
+			}
+		} else {
+			if (message.getEncryption() == Message.ENCRYPTION_NONE) {
+				packet = mMessageGenerator.generateChat(message, true);
+			} else if ((message.getEncryption() == Message.ENCRYPTION_DECRYPTED)
+					|| (message.getEncryption() == Message.ENCRYPTION_PGP)) {
+				packet = mMessageGenerator.generatePgpChat(message, true);
 			}
 		}
 		if (packet != null) {
@@ -1809,15 +1817,15 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 				} catch (InvalidJidException e) {
 					return;
 				}
-				if (message.getType() == Message.TYPE_TEXT) {
+				if (message.needsUploading()) {
+					mJingleConnectionManager.createNewConnection(message);
+				} else {
 					MessagePacket outPacket = mMessageGenerator.generateOtrChat(message, true);
 					if (outPacket != null) {
 						message.setStatus(Message.STATUS_SEND);
 						databaseBackend.updateMessage(message);
 						sendMessagePacket(account, outPacket);
 					}
-				} else if (message.getType() == Message.TYPE_IMAGE || message.getType() == Message.TYPE_FILE) {
-					mJingleConnectionManager.createNewConnection(message);
 				}
 				updateConversationUi();
 			}
