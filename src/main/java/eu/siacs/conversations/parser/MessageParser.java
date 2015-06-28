@@ -233,13 +233,15 @@ public class MessageParser extends AbstractParser implements
 		}
 		final String body = packet.getBody();
 		final String encrypted = packet.findChildContent("x", "jabber:x:encrypted");
+		final Element mucUserElement = packet.findChild("x","http://jabber.org/protocol/muc#user");
 		int status;
 		final Jid counterpart;
 		final Jid to = packet.getTo();
 		final Jid from = packet.getFrom();
 		final String remoteMsgId = packet.getId();
 		boolean isTypeGroupChat = packet.getType() == MessagePacket.TYPE_GROUPCHAT;
-		boolean properlyAddressed = !to.isBareJid() || account.countPresences() == 1;
+		boolean isProperlyAddressed = !to.isBareJid() || account.countPresences() == 1;
+		boolean isMucStatusMessage = from.isBareJid() && mucUserElement != null && mucUserElement.hasChild("status");
 		if (packet.fromAccount(account)) {
 			status = Message.STATUS_SEND;
 			counterpart = to;
@@ -262,7 +264,7 @@ public class MessageParser extends AbstractParser implements
 			mXmppConnectionService.updateConversationUi();
 		}
 
-		if (body != null || encrypted != null) {
+		if ((body != null || encrypted != null) && !isMucStatusMessage) {
 			Conversation conversation = mXmppConnectionService.findOrCreateConversation(account, counterpart.toBareJid(), isTypeGroupChat);
 			if (isTypeGroupChat) {
 				if (counterpart.getResourcepart().equals(conversation.getMucOptions().getActualNick())) {
@@ -283,7 +285,7 @@ public class MessageParser extends AbstractParser implements
 			}
 			Message message;
 			if (body != null && body.startsWith("?OTR")) {
-				if (!isForwarded && !isTypeGroupChat && properlyAddressed) {
+				if (!isForwarded && !isTypeGroupChat && isProperlyAddressed) {
 					message = parseOtrChat(body, from, remoteMsgId, conversation);
 					if (message == null) {
 						return;
@@ -375,9 +377,8 @@ public class MessageParser extends AbstractParser implements
 					}
 				}
 
-				final Element x = packet.findChild("x", "http://jabber.org/protocol/muc#user");
-				if (conversation != null && x != null && from.isBareJid()) {
-					for (Element child : x.getChildren()) {
+				if (conversation != null && isMucStatusMessage) {
+					for (Element child : mucUserElement.getChildren()) {
 						if (child.getName().equals("status")
 								&& MucOptions.STATUS_CODE_ROOM_CONFIG_CHANGED.equals(child.getAttribute("code"))) {
 							mXmppConnectionService.fetchConferenceConfiguration(conversation);
