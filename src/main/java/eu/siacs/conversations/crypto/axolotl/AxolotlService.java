@@ -591,7 +591,7 @@ public class AxolotlService {
 	}
 
 	private Set<XmppAxolotlSession> findOwnSessions() {
-		AxolotlAddress ownAddress = getAddressForJid(account.getJid());
+		AxolotlAddress ownAddress = getAddressForJid(account.getJid().toBareJid());
 		Set<XmppAxolotlSession> ownDeviceSessions = new HashSet<>(this.sessions.getAll(ownAddress).values());
 		return ownDeviceSessions;
 	}
