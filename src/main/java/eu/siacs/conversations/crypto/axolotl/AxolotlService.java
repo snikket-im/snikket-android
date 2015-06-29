@@ -901,13 +901,13 @@ public class AxolotlService {
 
 		XmppAxolotlSession session = sessions.get(senderAddress);
 		if (session == null) {
-			Log.d(Config.LOGTAG, "No axolotl session found while parsing received message " + message);
+			Log.d(Config.LOGTAG, "Account: "+account.getJid()+" No axolotl session found while parsing received message " + message);
 			// TODO: handle this properly
 			session = new XmppAxolotlSession(axolotlStore, senderAddress);
 			sessions.put(senderAddress,session);
 		}
 
-		for(XmppAxolotlMessage.XmppAxolotlMessageHeader header : message.getHeaders()) {
+		for (XmppAxolotlMessage.XmppAxolotlMessageHeader header : message.getHeaders()) {
 			if (header.getRecipientDeviceId() == ownDeviceId) {
 				Log.d(Config.LOGTAG, "Found axolotl header matching own device ID, processing...");
 				byte[] payloadKey = session.processReceiving(header);
