@@ -10,6 +10,7 @@ import org.whispersystems.libaxolotl.state.SignedPreKeyRecord;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.entities.Account;
@@ -131,23 +132,15 @@ public class IqGenerator extends AbstractGenerator {
 		return packet;
 	}
 
-	public IqPacket retrieveBundleForDevice(final Jid to, final int deviceid) {
-		final IqPacket packet = retrieve(AxolotlService.PEP_BUNDLE+":"+deviceid, null);
+	public IqPacket retrieveBundlesForDevice(final Jid to, final int deviceid) {
+		final IqPacket packet = retrieve(AxolotlService.PEP_BUNDLES+":"+deviceid, null);
 		if(to != null) {
 			packet.setTo(to);
 		}
 		return packet;
 	}
 
-	public IqPacket retrievePreKeysForDevice(final Jid to, final int deviceId) {
-		final IqPacket packet = retrieve(AxolotlService.PEP_PREKEYS+":"+deviceId, null);
-		if(to != null) {
-			packet.setTo(to);
-		}
-		return packet;
-	}
-
-	public IqPacket publishDeviceIds(final List<Integer> ids) {
+	public IqPacket publishDeviceIds(final Set<Integer> ids) {
 		final Element item = new Element("item");
 		final Element list = item.addChild("list", AxolotlService.PEP_PREFIX);
 		for(Integer id:ids) {
@@ -158,7 +151,8 @@ public class IqGenerator extends AbstractGenerator {
 		return publish(AxolotlService.PEP_DEVICE_LIST, item);
 	}
 
-	public IqPacket publishBundle(final SignedPreKeyRecord signedPreKeyRecord, IdentityKey identityKey, final int deviceId) {
+	public IqPacket publishBundles(final SignedPreKeyRecord signedPreKeyRecord, final IdentityKey identityKey,
+	                               final List<PreKeyRecord> preKeyRecords, final int deviceId) {
 		final Element item = new Element("item");
 		final Element bundle = item.addChild("bundle", AxolotlService.PEP_PREFIX);
 		final Element signedPreKeyPublic = bundle.addChild("signedPreKeyPublic");
@@ -170,19 +164,14 @@ public class IqGenerator extends AbstractGenerator {
 		final Element identityKeyElement = bundle.addChild("identityKey");
 		identityKeyElement.setContent(Base64.encodeToString(identityKey.serialize(), Base64.DEFAULT));
 
-		return publish(AxolotlService.PEP_BUNDLE+":"+deviceId, item);
-	}
-
-	public IqPacket publishPreKeys(final List<PreKeyRecord> prekeyList, final int deviceId) {
-		final Element item = new Element("item");
-		final Element prekeys = item.addChild("prekeys", AxolotlService.PEP_PREFIX);
-		for(PreKeyRecord preKeyRecord:prekeyList) {
+		final Element prekeys = bundle.addChild("prekeys", AxolotlService.PEP_PREFIX);
+		for(PreKeyRecord preKeyRecord:preKeyRecords) {
 			final Element prekey = prekeys.addChild("preKeyPublic");
 			prekey.setAttribute("preKeyId", preKeyRecord.getId());
 			prekey.setContent(Base64.encodeToString(preKeyRecord.getKeyPair().getPublicKey().serialize(), Base64.DEFAULT));
 		}
 
-		return publish(AxolotlService.PEP_PREKEYS+":"+deviceId, item);
+		return publish(AxolotlService.PEP_BUNDLES+":"+deviceId, item);
 	}
 
 	public IqPacket queryMessageArchiveManagement(final MessageArchiveService.Query mam) {

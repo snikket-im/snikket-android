@@ -30,6 +30,7 @@ import org.whispersystems.libaxolotl.state.SignedPreKeyRecord;
 import org.whispersystems.libaxolotl.util.KeyHelper;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -53,14 +54,16 @@ public class AxolotlService {
 
 	public static final String PEP_PREFIX = "eu.siacs.conversations.axolotl";
 	public static final String PEP_DEVICE_LIST = PEP_PREFIX + ".devicelist";
-	public static final String PEP_PREKEYS = PEP_PREFIX + ".prekeys";
-	public static final String PEP_BUNDLE = PEP_PREFIX + ".bundle";
+	public static final String PEP_BUNDLES = PEP_PREFIX + ".bundles";
+
+	public static final int NUM_KEYS_TO_PUBLISH = 10;
 
 	private final Account account;
 	private final XmppConnectionService mXmppConnectionService;
 	private final SQLiteAxolotlStore axolotlStore;
 	private final SessionMap sessions;
 	private final BundleMap bundleCache;
+	private final Map<Jid, Set<Integer>> deviceIds;
 	private int ownDeviceId;
 
 	public static class SQLiteAxolotlStore implements AxolotlStore {
@@ -565,6 +568,7 @@ public class AxolotlService {
 		this.mXmppConnectionService = connectionService;
 		this.account = account;
 		this.axolotlStore = new SQLiteAxolotlStore(this.account, this.mXmppConnectionService);
+		this.deviceIds = new HashMap<>();
 		this.sessions = new SessionMap(axolotlStore, account);
 		this.bundleCache = new BundleMap();
 		this.ownDeviceId = axolotlStore.getLocalRegistrationId();
@@ -607,80 +611,11 @@ public class AxolotlService {
 		return ownDeviceId;
 	}
 
-	public void fetchBundleIfNeeded(final Contact contact, final Integer deviceId) {
-		final AxolotlAddress address = new AxolotlAddress(contact.getJid().toString(), deviceId);
-		if (sessions.get(address) != null) {
-			return;
+	public void registerDevices(final Jid jid, final Set<Integer> deviceIds) {
+		for(Integer i:deviceIds) {
+			Log.d(Config.LOGTAG, "Adding Device ID:"+ jid + ":"+i);
 		}
-
-		synchronized (bundleCache) {
-			PreKeyBundle bundle = bundleCache.get(address);
-			if (bundle == null) {
-				bundle = new PreKeyBundle(0, deviceId, 0, null, 0, null, null, null);
-				bundleCache.put(address, bundle);
-			}
-
-			if(bundle.getPreKey() == null) {
-				Log.d(Config.LOGTAG, "No preKey in cache, fetching...");
-				IqPacket prekeysPacket = mXmppConnectionService.getIqGenerator().retrievePreKeysForDevice(contact.getJid(), deviceId);
-				mXmppConnectionService.sendIqPacket(account, prekeysPacket, new OnIqPacketReceived() {
-					@Override
-					public void onIqPacketReceived(Account account, IqPacket packet) {
-						synchronized (bundleCache) {
-							Log.d(Config.LOGTAG, "Received preKey IQ packet, processing...");
-							final IqParser parser = mXmppConnectionService.getIqParser();
-							final PreKeyBundle bundle = bundleCache.get(address);
-							final List<PreKeyBundle> preKeyBundleList = parser.preKeys(packet);
-							if (preKeyBundleList.isEmpty()) {
-								Log.d(Config.LOGTAG, "preKey IQ packet invalid: " + packet);
-								return;
-							}
-							Random random = new Random();
-							final PreKeyBundle newBundle = preKeyBundleList.get(random.nextInt(preKeyBundleList.size()));
-							if (bundle == null || newBundle == null) {
-								//should never happen
-								return;
-							}
-
-							final PreKeyBundle mergedBundle = new PreKeyBundle(bundle.getRegistrationId(),
-									bundle.getDeviceId(), newBundle.getPreKeyId(), newBundle.getPreKey(),
-									bundle.getSignedPreKeyId(), bundle.getSignedPreKey(),
-									bundle.getSignedPreKeySignature(), bundle.getIdentityKey());
-
-							bundleCache.put(address, mergedBundle);
-						}
-					}
-				});
-			}
-			if(bundle.getIdentityKey() == null) {
-				Log.d(Config.LOGTAG, "No bundle in cache, fetching...");
-				IqPacket bundlePacket = mXmppConnectionService.getIqGenerator().retrieveBundleForDevice(contact.getJid(), deviceId);
-				mXmppConnectionService.sendIqPacket(account, bundlePacket, new OnIqPacketReceived() {
-					@Override
-					public void onIqPacketReceived(Account account, IqPacket packet) {
-						synchronized (bundleCache) {
-							Log.d(Config.LOGTAG, "Received bundle IQ packet, processing...");
-							final IqParser parser = mXmppConnectionService.getIqParser();
-							final PreKeyBundle bundle = bundleCache.get(address);
-							final PreKeyBundle newBundle = parser.bundle(packet);
-							if( bundle == null || newBundle == null ) {
-								Log.d(Config.LOGTAG, "bundle IQ packet invalid: " + packet);
-								//should never happen
-								return;
-							}
-
-							final PreKeyBundle mergedBundle = new PreKeyBundle(bundle.getRegistrationId(),
-									bundle.getDeviceId(), bundle.getPreKeyId(), bundle.getPreKey(),
-									newBundle.getSignedPreKeyId(), newBundle.getSignedPreKey(),
-									newBundle.getSignedPreKeySignature(), newBundle.getIdentityKey());
-
-							axolotlStore.saveIdentity(contact.getJid().toBareJid().toString(), newBundle.getIdentityKey());
-							bundleCache.put(address, mergedBundle);
-						}
-					}
-				});
-			}
-		}
+		this.deviceIds.put(jid, deviceIds);
 	}
 
 	public void publishOwnDeviceIdIfNeeded() {
@@ -689,14 +624,14 @@ public class AxolotlService {
 			@Override
 			public void onIqPacketReceived(Account account, IqPacket packet) {
 				Element item = mXmppConnectionService.getIqParser().getItem(packet);
-				List<Integer> deviceIds = mXmppConnectionService.getIqParser().deviceIds(item);
-				if(deviceIds == null) {
-					deviceIds = new ArrayList<>();
+				Set<Integer> deviceIds = mXmppConnectionService.getIqParser().deviceIds(item);
+				if (deviceIds == null) {
+					deviceIds = new HashSet<Integer>();
 				}
-				if(!deviceIds.contains(getOwnDeviceId())) {
-					Log.d(Config.LOGTAG, "Own device " + getOwnDeviceId() + " not in PEP devicelist. Publishing...");
+				if (!deviceIds.contains(getOwnDeviceId())) {
 					deviceIds.add(getOwnDeviceId());
 					IqPacket publish = mXmppConnectionService.getIqGenerator().publishDeviceIds(deviceIds);
+					Log.d(Config.LOGTAG, "Own device " + getOwnDeviceId() + " not in PEP devicelist. Publishing: " + publish);
 					mXmppConnectionService.sendIqPacket(account, publish, new OnIqPacketReceived() {
 						@Override
 						public void onIqPacketReceived(Account account, IqPacket packet) {
@@ -708,22 +643,68 @@ public class AxolotlService {
 		});
 	}
 
-	public void publishBundleIfNeeded() {
-		IqPacket packet = mXmppConnectionService.getIqGenerator().retrieveBundleForDevice(account.getJid().toBareJid(), ownDeviceId);
+	private boolean validateBundle(PreKeyBundle bundle) {
+		if (bundle == null || bundle.getIdentityKey() == null
+				|| bundle.getSignedPreKey() == null || bundle.getSignedPreKeySignature() == null) {
+			return false;
+		}
+
+		try {
+			SignedPreKeyRecord signedPreKeyRecord = axolotlStore.loadSignedPreKey(bundle.getSignedPreKeyId());
+			IdentityKey identityKey = axolotlStore.getIdentityKeyPair().getPublicKey();
+			Log.d(Config.LOGTAG,"own identity key:"+identityKey.getFingerprint()+", foreign: "+bundle.getIdentityKey().getFingerprint());
+			Log.d(Config.LOGTAG,"bundle: "+Boolean.toString(bundle.getSignedPreKey().equals(signedPreKeyRecord.getKeyPair().getPublicKey()))
+					+" " + Boolean.toString(Arrays.equals(bundle.getSignedPreKeySignature(), signedPreKeyRecord.getSignature()))
+					+" " + Boolean.toString( bundle.getIdentityKey().equals(identityKey)));
+			return bundle.getSignedPreKey().equals(signedPreKeyRecord.getKeyPair().getPublicKey())
+					&& Arrays.equals(bundle.getSignedPreKeySignature(), signedPreKeyRecord.getSignature())
+					&& bundle.getIdentityKey().equals(identityKey);
+		} catch (InvalidKeyIdException ignored) {
+			return false;
+		}
+	}
+
+	private boolean validatePreKeys(Map<Integer, ECPublicKey> keys) {
+		if(keys == null) { return false; }
+		for(Integer id:keys.keySet()) {
+			try {
+				PreKeyRecord preKeyRecord = axolotlStore.loadPreKey(id);
+				if(!preKeyRecord.getKeyPair().getPublicKey().equals(keys.get(id))) {
+					return false;
+				}
+			} catch (InvalidKeyIdException ignored) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public void publishBundlesIfNeeded() {
+		IqPacket packet = mXmppConnectionService.getIqGenerator().retrieveBundlesForDevice(account.getJid().toBareJid(), ownDeviceId);
 		mXmppConnectionService.sendIqPacket(account, packet, new OnIqPacketReceived() {
 			@Override
 			public void onIqPacketReceived(Account account, IqPacket packet) {
 				PreKeyBundle bundle = mXmppConnectionService.getIqParser().bundle(packet);
-				if(bundle == null) {
-					Log.d(Config.LOGTAG, "Bundle " + getOwnDeviceId() + " not in PEP. Publishing...");
+				Map<Integer, ECPublicKey> keys = mXmppConnectionService.getIqParser().preKeyPublics(packet);
+				SignedPreKeyRecord signedPreKeyRecord;
+				List<PreKeyRecord> preKeyRecords;
+				if (!validateBundle(bundle) || keys.isEmpty() || !validatePreKeys(keys)) {
 					int numSignedPreKeys = axolotlStore.loadSignedPreKeys().size();
 					try {
-						SignedPreKeyRecord signedPreKeyRecord = KeyHelper.generateSignedPreKey(
+						signedPreKeyRecord = KeyHelper.generateSignedPreKey(
 								axolotlStore.getIdentityKeyPair(), numSignedPreKeys + 1);
 						axolotlStore.storeSignedPreKey(signedPreKeyRecord.getId(), signedPreKeyRecord);
-						IqPacket publish = mXmppConnectionService.getIqGenerator().publishBundle(
+
+						preKeyRecords = KeyHelper.generatePreKeys(
+								axolotlStore.getCurrentPreKeyId(), NUM_KEYS_TO_PUBLISH);
+						for (PreKeyRecord record : preKeyRecords) {
+							axolotlStore.storePreKey(record.getId(), record);
+						}
+
+						IqPacket publish = mXmppConnectionService.getIqGenerator().publishBundles(
 								signedPreKeyRecord, axolotlStore.getIdentityKeyPair().getPublicKey(),
-								ownDeviceId);
+								preKeyRecords, ownDeviceId);
+						Log.d(Config.LOGTAG, "Bundle " + getOwnDeviceId() + " not in PEP. Publishing: " + publish);
 						mXmppConnectionService.sendIqPacket(account, publish, new OnIqPacketReceived() {
 							@Override
 							public void onIqPacketReceived(Account account, IqPacket packet) {
@@ -733,48 +714,83 @@ public class AxolotlService {
 						});
 					} catch (InvalidKeyException e) {
 						Log.e(Config.LOGTAG, "Failed to publish bundle " + getOwnDeviceId() + ", reason: " + e.getMessage());
+						return;
 					}
 				}
 			}
 		});
 	}
-
-	public void publishPreKeysIfNeeded() {
-		IqPacket packet = mXmppConnectionService.getIqGenerator().retrievePreKeysForDevice(account.getJid().toBareJid(), ownDeviceId);
-		mXmppConnectionService.sendIqPacket(account, packet, new OnIqPacketReceived() {
-			@Override
-			public void onIqPacketReceived(Account account, IqPacket packet) {
-				Map<Integer, ECPublicKey> keys = mXmppConnectionService.getIqParser().preKeyPublics(packet);
-				if(keys == null || keys.isEmpty()) {
-					Log.d(Config.LOGTAG, "Prekeys " + getOwnDeviceId() + " not in PEP. Publishing...");
-					List<PreKeyRecord> preKeyRecords = KeyHelper.generatePreKeys(
-							axolotlStore.getCurrentPreKeyId(), 100);
-					for(PreKeyRecord record : preKeyRecords) {
-						axolotlStore.storePreKey(record.getId(), record);
-					}
-					IqPacket publish = mXmppConnectionService.getIqGenerator().publishPreKeys(
-							preKeyRecords, ownDeviceId);
-
-					mXmppConnectionService.sendIqPacket(account, publish, new OnIqPacketReceived() {
-						@Override
-						public void onIqPacketReceived(Account account, IqPacket packet) {
-							Log.d(Config.LOGTAG, "Published prekeys, got: " + packet);
-							// TODO: implement this!
-						}
-					});
-				}
-			}
-		});
-	}
-
 
 	public boolean isContactAxolotlCapable(Contact contact) {
-		AxolotlAddress address = new AxolotlAddress(contact.getJid().toBareJid().toString(), 0);
-		return sessions.hasAny(address) || bundleCache.hasAny(address);
+		Jid jid = contact.getJid().toBareJid();
+		AxolotlAddress address = new AxolotlAddress(jid.toString(), 0);
+		return sessions.hasAny(address) ||
+				( deviceIds.containsKey(jid) && !deviceIds.get(jid).isEmpty());
 	}
 
-	public void initiateSynchronousSession(Contact contact) {
+	private void buildSessionFromPEP(final Conversation conversation, final AxolotlAddress address) {
+		Log.d(Config.LOGTAG, "Building new sesstion for " + address.getDeviceId());
 
+		try {
+			IqPacket bundlesPacket = mXmppConnectionService.getIqGenerator().retrieveBundlesForDevice(
+					Jid.fromString(address.getName()), address.getDeviceId());
+			Log.d(Config.LOGTAG, "Retrieving bundle: " + bundlesPacket);
+			mXmppConnectionService.sendIqPacket(account, bundlesPacket, new OnIqPacketReceived() {
+				@Override
+				public void onIqPacketReceived(Account account, IqPacket packet) {
+					Log.d(Config.LOGTAG, "Received preKey IQ packet, processing...");
+					final IqParser parser = mXmppConnectionService.getIqParser();
+					final List<PreKeyBundle> preKeyBundleList = parser.preKeys(packet);
+					final PreKeyBundle bundle = parser.bundle(packet);
+					if (preKeyBundleList.isEmpty() || bundle == null) {
+						Log.d(Config.LOGTAG, "preKey IQ packet invalid: " + packet);
+						fetchStatusMap.put(address, FetchStatus.ERROR);
+						return;
+					}
+					Random random = new Random();
+					final PreKeyBundle preKey = preKeyBundleList.get(random.nextInt(preKeyBundleList.size()));
+					if (preKey == null) {
+						//should never happen
+						fetchStatusMap.put(address, FetchStatus.ERROR);
+						return;
+					}
+
+					final PreKeyBundle preKeyBundle = new PreKeyBundle(0, address.getDeviceId(),
+							preKey.getPreKeyId(), preKey.getPreKey(),
+							bundle.getSignedPreKeyId(), bundle.getSignedPreKey(),
+							bundle.getSignedPreKeySignature(), bundle.getIdentityKey());
+
+					axolotlStore.saveIdentity(address.getName(), bundle.getIdentityKey());
+
+					try {
+						SessionBuilder builder = new SessionBuilder(axolotlStore, address);
+						builder.process(preKeyBundle);
+						XmppAxolotlSession session = new XmppAxolotlSession(axolotlStore, address);
+						sessions.put(address, session);
+						fetchStatusMap.put(address, FetchStatus.SUCCESS);
+					} catch (UntrustedIdentityException|InvalidKeyException e) {
+						Log.d(Config.LOGTAG, "Error building session for " + address + ": "
+								+ e.getClass().getName() + ", " + e.getMessage());
+						fetchStatusMap.put(address, FetchStatus.ERROR);
+					}
+
+					AxolotlAddress ownAddress = new AxolotlAddress(conversation.getAccount().getJid().toBareJid().toString(),0);
+					AxolotlAddress foreignAddress = new AxolotlAddress(conversation.getJid().toBareJid().toString(),0);
+					if (!fetchStatusMap.getAll(ownAddress).containsValue(FetchStatus.PENDING)
+							&& !fetchStatusMap.getAll(foreignAddress).containsValue(FetchStatus.PENDING)) {
+						conversation.findUnsentMessagesWithEncryption(Message.ENCRYPTION_AXOLOTL,
+								new Conversation.OnMessageFound() {
+									@Override
+									public void onMessageFound(Message message) {
+										processSending(message);
+									}
+								});
+					}
+				}
+			});
+		} catch (InvalidJidException e) {
+			Log.e(Config.LOGTAG,"Got address with invalid jid: " + address.getName());
+		}
 	}
 
 	private void createSessionsIfNeeded(Contact contact) throws NoSessionsCreatedException {

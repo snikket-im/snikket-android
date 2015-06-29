@@ -12,8 +12,10 @@ import org.whispersystems.libaxolotl.state.PreKeyBundle;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
@@ -94,8 +96,8 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
 		return items.findChild("item");
 	}
 
-	public List<Integer> deviceIds(final Element item) {
-		List<Integer> deviceIds = new ArrayList<>();
+	public Set<Integer> deviceIds(final Element item) {
+		Set<Integer> deviceIds = new HashSet<>();
 		if (item == null) {
 			return null;
 		}
@@ -165,14 +167,18 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
 
 	public Map<Integer, ECPublicKey> preKeyPublics(final IqPacket packet) {
 		Map<Integer, ECPublicKey> preKeyRecords = new HashMap<>();
-		Element prekeysItem = getItem(packet);
-		if (prekeysItem == null) {
-			Log.d(Config.LOGTAG, "Couldn't find <item> in preKeyPublic IQ packet: " + packet);
+		Element item = getItem(packet);
+		if (item == null) {
+			Log.d(Config.LOGTAG, "Couldn't find <item> in bundle IQ packet: " + packet);
 			return null;
 		}
-		final Element prekeysElement = prekeysItem.findChild("prekeys");
+		final Element bundleElement = item.findChild("bundle");
+		if(bundleElement == null) {
+			return null;
+		}
+		final Element prekeysElement = bundleElement.findChild("prekeys");
 		if(prekeysElement == null) {
-			Log.d(Config.LOGTAG, "Couldn't find <prekeys> in preKeyPublic IQ packet: " + packet);
+			Log.d(Config.LOGTAG, "Couldn't find <prekeys> in bundle IQ packet: " + packet);
 			return null;
 		}
 		for(Element preKeyPublicElement : prekeysElement.getChildren()) {
