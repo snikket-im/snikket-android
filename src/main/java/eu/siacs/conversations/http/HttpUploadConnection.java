@@ -1,5 +1,6 @@
 package eu.siacs.conversations.http;
 
+import android.app.PendingIntent;
 import android.util.Log;
 
 import java.io.IOException;
@@ -16,6 +17,7 @@ import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.services.XmppConnectionService;
+import eu.siacs.conversations.ui.UiCallback;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.Xmlns;
 import eu.siacs.conversations.xml.Element;
@@ -159,7 +161,26 @@ public class HttpUploadConnection implements Downloadable {
 					message.setBody(mGetUrl.toString()+"|"+String.valueOf(params.size)+"|"+String.valueOf(params.width)+"|"+String.valueOf(params.height));
 					message.setDownloadable(null);
 					message.setCounterpart(message.getConversation().getJid().toBareJid());
-					mXmppConnectionService.resendMessage(message);
+					if (message.getEncryption() == Message.ENCRYPTION_DECRYPTED) {
+						mXmppConnectionService.getPgpEngine().encrypt(message, new UiCallback<Message>() {
+							@Override
+							public void success(Message message) {
+								mXmppConnectionService.resendMessage(message);
+							}
+
+							@Override
+							public void error(int errorCode, Message object) {
+								fail();
+							}
+
+							@Override
+							public void userInputRequried(PendingIntent pi, Message object) {
+								fail();
+							}
+						});
+					} else {
+						mXmppConnectionService.resendMessage(message);
+					}
 				} else {
 					fail();
 				}

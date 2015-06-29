@@ -143,11 +143,15 @@ public class PgpEngine {
 		params.putExtra(OpenPgpApi.EXTRA_ACCOUNT_NAME, message
 				.getConversation().getAccount().getJid().toBareJid().toString());
 
-		if (message.getType() == Message.TYPE_TEXT) {
+		if (!message.needsUploading()) {
 			params.putExtra(OpenPgpApi.EXTRA_REQUEST_ASCII_ARMOR, true);
-
-			InputStream is = new ByteArrayInputStream(message.getBody()
-					.getBytes());
+			String body;
+			if (message.hasFileOnRemoteHost()) {
+				body = message.getImageParams().url.toString();
+			} else {
+				body = message.getBody();
+			}
+			InputStream is = new ByteArrayInputStream(body.getBytes());
 			final OutputStream os = new ByteArrayOutputStream();
 			api.executeApiAsync(params, is, os, new IOpenPgpCallback() {
 
@@ -184,7 +188,7 @@ public class PgpEngine {
 					}
 				}
 			});
-		} else if (message.getType() == Message.TYPE_IMAGE || message.getType() == Message.TYPE_FILE) {
+		} else {
 			try {
 				DownloadableFile inputFile = this.mXmppConnectionService
 						.getFileBackend().getFile(message, true);
