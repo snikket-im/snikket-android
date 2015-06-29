@@ -75,6 +75,11 @@ public class XmppAxolotlMessage {
 		public String getPlaintext() {
 			return plaintext;
 		}
+
+		public AxolotlService.XmppAxolotlSession getSession() {
+			return session;
+		}
+
 	}
 
 	public XmppAxolotlMessage(Contact contact, Element axolotlMessage) {
