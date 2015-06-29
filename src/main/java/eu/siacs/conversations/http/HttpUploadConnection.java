@@ -16,6 +16,7 @@ import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.services.XmppConnectionService;
+import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.Xmlns;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.OnIqPacketReceived;
@@ -33,6 +34,8 @@ public class HttpUploadConnection implements Downloadable {
 	private Message message;
 	private URL mGetUrl;
 	private URL mPutUrl;
+
+	private byte[] key = null;
 
 	private long transmitted = 0;
 	private long expected = 1;
@@ -80,6 +83,13 @@ public class HttpUploadConnection implements Downloadable {
 		this.account = message.getConversation().getAccount();
 		this.file = mXmppConnectionService.getFileBackend().getFile(message, false);
 		this.file.setExpectedSize(this.file.getSize());
+
+		if (Config.ENCRYPT_ON_HTTP_UPLOADED) {
+			this.key = new byte[48];
+			mXmppConnectionService.getRNG().nextBytes(this.key);
+			this.file.setKey(this.key);
+		}
+
 		Jid host = account.getXmppConnection().findDiscoItemByFeature(Xmlns.HTTP_UPLOAD);
 		IqPacket request = mXmppConnectionService.getIqGenerator().requestHttpUploadSlot(host,file);
 		mXmppConnectionService.sendIqPacket(account, request, new OnIqPacketReceived() {
@@ -143,6 +153,9 @@ public class HttpUploadConnection implements Downloadable {
 				if (code == 200) {
 					Log.d(Config.LOGTAG, "finished uploading file");
 					Message.ImageParams params = message.getImageParams();
+					if (key != null) {
+						mGetUrl = new URL(mGetUrl.toString() + "#" + CryptoHelper.bytesToHex(key));
+					}
 					message.setBody(mGetUrl.toString()+"|"+String.valueOf(params.size)+"|"+String.valueOf(params.width)+"|"+String.valueOf(params.height));
 					message.setDownloadable(null);
 					message.setCounterpart(message.getConversation().getJid().toBareJid());
