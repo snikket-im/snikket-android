@@ -123,6 +123,9 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 				+ ") ON DELETE CASCADE);");
 
 		db.execSQL(CREATE_CONTATCS_STATEMENT);
+		db.execSQL(CREATE_SESSIONS_STATEMENT);
+		db.execSQL(CREATE_PREKEYS_STATEMENT);
+		db.execSQL(CREATE_SIGNED_PREKEYS_STATEMENT);
 	}
 
 	@Override
@@ -563,6 +566,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 			try {
 				session = new SessionRecord(Base64.decode(cursor.getString(cursor.getColumnIndex(AxolotlService.SQLiteAxolotlStore.KEY)),Base64.DEFAULT));
 			} catch (IOException e) {
+				cursor.close();
 				throw new AssertionError(e);
 			}
 		}
@@ -751,6 +755,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 			} catch (IOException ignored) {
 			}
 		}
+		cursor.close();
 		return prekeys;
 	}
 
