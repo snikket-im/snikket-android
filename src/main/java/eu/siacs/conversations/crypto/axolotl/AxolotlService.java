@@ -68,12 +68,14 @@ public class AxolotlService {
 		public static final String PREKEY_TABLENAME = "prekeys";
 		public static final String SIGNED_PREKEY_TABLENAME = "signed_prekeys";
 		public static final String SESSION_TABLENAME = "sessions";
+		public static final String IDENTITIES_TABLENAME = "identities";
 		public static final String ACCOUNT = "account";
 		public static final String DEVICE_ID = "device_id";
 		public static final String ID = "id";
 		public static final String KEY = "key";
 		public static final String NAME = "name";
 		public static final String TRUSTED = "trusted";
+		public static final String OWN = "ownkey";
 
 		public static final String JSONKEY_IDENTITY_KEY_PAIR = "axolotl_key";
 		public static final String JSONKEY_REGISTRATION_ID = "axolotl_reg_id";
@@ -82,7 +84,7 @@ public class AxolotlService {
 		private final Account account;
 		private final XmppConnectionService mXmppConnectionService;
 
-		private final IdentityKeyPair identityKeyPair;
+		private IdentityKeyPair identityKeyPair;
 		private final int localRegistrationId;
 		private int currentPreKeyId = 0;
 
@@ -104,10 +106,9 @@ public class AxolotlService {
 		public SQLiteAxolotlStore(Account account, XmppConnectionService service) {
 			this.account = account;
 			this.mXmppConnectionService = service;
-			this.identityKeyPair = loadIdentityKeyPair();
 			this.localRegistrationId = loadRegistrationId();
 			this.currentPreKeyId = loadCurrentPreKeyId();
-			for( SignedPreKeyRecord record:loadSignedPreKeys()) {
+			for (SignedPreKeyRecord record : loadSignedPreKeys()) {
 				Log.d(Config.LOGTAG, "Got Axolotl signed prekey record:" + record.getId());
 			}
 		}
@@ -121,26 +122,17 @@ public class AxolotlService {
 		// --------------------------------------
 
 		private IdentityKeyPair loadIdentityKeyPair() {
-			String serializedKey = this.account.getKey(JSONKEY_IDENTITY_KEY_PAIR);
-			IdentityKeyPair ownKey;
-			if( serializedKey != null ) {
-				try {
-					ownKey = new IdentityKeyPair(Base64.decode(serializedKey,Base64.DEFAULT));
-					return ownKey;
-				} catch (InvalidKeyException e) {
-					Log.d(Config.LOGTAG, "Invalid key stored for account " + account.getJid() + ": " + e.getMessage());
-//                    return null;
-				}
-			} //else {
-				Log.d(Config.LOGTAG, "Could not retrieve axolotl key for account " + account.getJid());
+			String ownName = account.getJid().toBareJid().toString();
+			IdentityKeyPair ownKey = mXmppConnectionService.databaseBackend.loadOwnIdentityKeyPair(account,
+					ownName);
+
+			if (ownKey != null) {
+				return ownKey;
+			} else {
+				Log.d(Config.LOGTAG, "Could not retrieve axolotl key for account " + ownName);
 				ownKey = generateIdentityKeyPair();
-				boolean success = this.account.setKey(JSONKEY_IDENTITY_KEY_PAIR, Base64.encodeToString(ownKey.serialize(), Base64.DEFAULT));
-				if(success) {
-					mXmppConnectionService.databaseBackend.updateAccount(account);
-				} else {
-					Log.e(Config.LOGTAG, "Failed to write new key to the database!");
-				}
-			//}
+				mXmppConnectionService.databaseBackend.storeOwnIdentityKeyPair(account, ownName, ownKey);
+			}
 			return ownKey;
 		}
 
@@ -152,8 +144,8 @@ public class AxolotlService {
 			} else {
 				Log.d(Config.LOGTAG, "Could not retrieve axolotl registration id for account " + account.getJid());
 				reg_id = generateRegistrationId();
-				boolean success = this.account.setKey(JSONKEY_REGISTRATION_ID,""+reg_id);
-				if(success) {
+				boolean success = this.account.setKey(JSONKEY_REGISTRATION_ID, Integer.toString(reg_id));
+				if (success) {
 					mXmppConnectionService.databaseBackend.updateAccount(account);
 				} else {
 					Log.e(Config.LOGTAG, "Failed to write new key to the database!");
@@ -182,6 +174,9 @@ public class AxolotlService {
 		 */
 		@Override
 		public IdentityKeyPair getIdentityKeyPair() {
+			if(identityKeyPair == null) {
+				identityKeyPair = loadIdentityKeyPair();
+			}
 			return identityKeyPair;
 		}
 
@@ -208,16 +203,8 @@ public class AxolotlService {
 		 */
 		@Override
 		public void saveIdentity(String name, IdentityKey identityKey) {
-			try {
-				Jid contactJid = Jid.fromString(name);
-				Conversation conversation = this.mXmppConnectionService.find(this.account, contactJid);
-				if (conversation != null) {
-					conversation.getContact().addAxolotlIdentityKey(identityKey);
-					mXmppConnectionService.updateConversationUi();
-					mXmppConnectionService.syncRosterToDisk(conversation.getAccount());
-				}
-			} catch (final InvalidJidException e) {
-				Log.e(Config.LOGTAG, "Failed to save identityKey for contact name " + name + ": " + e.toString());
+			if(!mXmppConnectionService.databaseBackend.loadIdentityKeys(account, name).contains(identityKey)) {
+				mXmppConnectionService.databaseBackend.storeIdentityKey(account, name, identityKey);
 			}
 		}
 
@@ -237,19 +224,8 @@ public class AxolotlService {
 		 */
 		@Override
 		public boolean isTrustedIdentity(String name, IdentityKey identityKey) {
-			try {
-				Jid contactJid = Jid.fromString(name);
-				Conversation conversation = this.mXmppConnectionService.find(this.account, contactJid);
-				if (conversation != null) {
-					List<IdentityKey> trustedKeys = conversation.getContact().getAxolotlIdentityKeys();
-					return trustedKeys.isEmpty() || trustedKeys.contains(identityKey);
-				} else {
-					return false;
-				}
-			} catch (final InvalidJidException e) {
-				Log.e(Config.LOGTAG, "Failed to save identityKey for contact name" + name + ": " + e.toString());
-				return false;
-			}
+			Set<IdentityKey> trustedKeys = mXmppConnectionService.databaseBackend.loadIdentityKeys(account, name);
+			return trustedKeys.isEmpty() || trustedKeys.contains(identityKey);
 		}
 
 		// --------------------------------------

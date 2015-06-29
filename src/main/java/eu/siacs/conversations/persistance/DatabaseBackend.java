@@ -10,13 +10,18 @@ import android.util.Base64;
 import android.util.Log;
 
 import org.whispersystems.libaxolotl.AxolotlAddress;
+import org.whispersystems.libaxolotl.IdentityKey;
+import org.whispersystems.libaxolotl.IdentityKeyPair;
+import org.whispersystems.libaxolotl.InvalidKeyException;
 import org.whispersystems.libaxolotl.state.PreKeyRecord;
 import org.whispersystems.libaxolotl.state.SessionRecord;
 import org.whispersystems.libaxolotl.state.SignedPreKeyRecord;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import eu.siacs.conversations.Config;
@@ -87,6 +92,16 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 				+ ") ON CONFLICT REPLACE"
 			+");";
 
+	private static String CREATE_IDENTITIES_STATEMENT = "CREATE TABLE "
+			+ AxolotlService.SQLiteAxolotlStore.IDENTITIES_TABLENAME + "("
+			+ AxolotlService.SQLiteAxolotlStore.ACCOUNT + " TEXT,  "
+			+ AxolotlService.SQLiteAxolotlStore.NAME + " TEXT, "
+			+ AxolotlService.SQLiteAxolotlStore.OWN + " INTEGER, "
+			+ AxolotlService.SQLiteAxolotlStore.KEY + " TEXT, FOREIGN KEY("
+			+ AxolotlService.SQLiteAxolotlStore.ACCOUNT
+			+ ") REFERENCES " + Account.TABLENAME + "(" + Account.UUID + ") ON DELETE CASCADE "
+			+");";
+
 	private DatabaseBackend(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 	}
@@ -126,6 +141,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		db.execSQL(CREATE_SESSIONS_STATEMENT);
 		db.execSQL(CREATE_PREKEYS_STATEMENT);
 		db.execSQL(CREATE_SIGNED_PREKEYS_STATEMENT);
+		db.execSQL(CREATE_IDENTITIES_STATEMENT);
 	}
 
 	@Override
@@ -273,6 +289,8 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 			db.execSQL(CREATE_PREKEYS_STATEMENT);
 			db.execSQL("DROP TABLE IF EXISTS " + AxolotlService.SQLiteAxolotlStore.SIGNED_PREKEY_TABLENAME);
 			db.execSQL(CREATE_SIGNED_PREKEYS_STATEMENT);
+			db.execSQL("DROP TABLE IF EXISTS " + AxolotlService.SQLiteAxolotlStore.IDENTITIES_TABLENAME);
+			db.execSQL(CREATE_IDENTITIES_STATEMENT);
 		}
 	}
 
@@ -782,5 +800,72 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 				AxolotlService.SQLiteAxolotlStore.ACCOUNT + "=? AND "
 						+ AxolotlService.SQLiteAxolotlStore.ID + "=?",
 				args);
+	}
+
+	private Cursor getIdentityKeyCursor(Account account, String name, boolean own) {
+		final SQLiteDatabase db = this.getReadableDatabase();
+		String[] columns = {AxolotlService.SQLiteAxolotlStore.KEY};
+		String[] selectionArgs = {account.getUuid(),
+				name,
+				own?"1":"0"};
+		Cursor cursor = db.query(AxolotlService.SQLiteAxolotlStore.IDENTITIES_TABLENAME,
+				columns,
+				AxolotlService.SQLiteAxolotlStore.ACCOUNT + " = ? AND "
+						+ AxolotlService.SQLiteAxolotlStore.NAME + " = ? AND "
+						+ AxolotlService.SQLiteAxolotlStore.OWN + " = ? ",
+				selectionArgs,
+				null, null, null);
+
+		return cursor;
+	}
+
+	public IdentityKeyPair loadOwnIdentityKeyPair(Account account, String name) {
+		IdentityKeyPair identityKeyPair = null;
+		Cursor cursor = getIdentityKeyCursor(account, name, true);
+		if(cursor.getCount() != 0) {
+			cursor.moveToFirst();
+			try {
+				identityKeyPair = new IdentityKeyPair(Base64.decode(cursor.getString(cursor.getColumnIndex(AxolotlService.SQLiteAxolotlStore.KEY)),Base64.DEFAULT));
+			} catch (InvalidKeyException e) {
+				Log.d(Config.LOGTAG, "Encountered invalid IdentityKey in database for account" + account.getJid().toBareJid() + ", address: " + name);
+			}
+		}
+		cursor.close();
+
+		return identityKeyPair;
+	}
+
+	public Set<IdentityKey> loadIdentityKeys(Account account, String name) {
+		Set<IdentityKey> identityKeys = new HashSet<>();
+		Cursor cursor = getIdentityKeyCursor(account, name, false);
+
+		while(cursor.moveToNext()) {
+			try {
+				identityKeys.add(new IdentityKey(Base64.decode(cursor.getString(cursor.getColumnIndex(AxolotlService.SQLiteAxolotlStore.KEY)),Base64.DEFAULT),0));
+			} catch (InvalidKeyException e) {
+				Log.d(Config.LOGTAG, "Encountered invalid IdentityKey in database for account"+account.getJid().toBareJid()+", address: "+name);
+			}
+		}
+		cursor.close();
+
+		return identityKeys;
+	}
+
+	private void storeIdentityKey(Account account, String name, boolean own, String base64Serialized) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		ContentValues values = new ContentValues();
+		values.put(AxolotlService.SQLiteAxolotlStore.ACCOUNT, account.getUuid());
+		values.put(AxolotlService.SQLiteAxolotlStore.NAME, name);
+		values.put(AxolotlService.SQLiteAxolotlStore.OWN, own?1:0);
+		values.put(AxolotlService.SQLiteAxolotlStore.KEY, base64Serialized);
+		db.insert(AxolotlService.SQLiteAxolotlStore.IDENTITIES_TABLENAME, null, values);
+	}
+
+	public void storeIdentityKey(Account account, String name, IdentityKey identityKey) {
+		storeIdentityKey(account, name, false, Base64.encodeToString(identityKey.serialize(), Base64.DEFAULT));
+	}
+
+	public void storeOwnIdentityKeyPair(Account account, String name, IdentityKeyPair identityKeyPair) {
+		storeIdentityKey(account, name, true, Base64.encodeToString(identityKeyPair.serialize(),Base64.DEFAULT));
 	}
 }
