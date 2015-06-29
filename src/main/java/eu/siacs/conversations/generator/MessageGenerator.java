@@ -66,16 +66,18 @@ public class MessageGenerator extends AbstractGenerator {
 		delay.setAttribute("stamp", mDateFormat.format(date));
 	}
 
-	public MessagePacket generateAxolotlChat(Message message) throws NoSessionsCreatedException{
+	public MessagePacket generateAxolotlChat(Message message) {
 		return generateAxolotlChat(message, false);
 	}
 
-	public MessagePacket generateAxolotlChat(Message message, boolean addDelay) throws NoSessionsCreatedException{
+	public MessagePacket generateAxolotlChat(Message message, boolean addDelay) {
 		MessagePacket packet = preparePacket(message, addDelay);
 		AxolotlService service = message.getConversation().getAccount().getAxolotlService();
 		Log.d(Config.LOGTAG, "Submitting message to axolotl service for send processing...");
-		XmppAxolotlMessage axolotlMessage = service.processSending(message.getContact(),
-				message.getBody());
+		XmppAxolotlMessage axolotlMessage = service.encrypt(message);
+		if (axolotlMessage == null) {
+			return null;
+		}
 		packet.setAxolotlMessage(axolotlMessage.toXml());
 		return packet;
 	}

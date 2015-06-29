@@ -1,5 +1,6 @@
 package eu.siacs.conversations.crypto.axolotl;
 
+import android.support.annotation.Nullable;
 import android.util.Base64;
 import android.util.Log;
 
@@ -42,13 +43,16 @@ import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
+import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.parser.IqParser;
 import eu.siacs.conversations.services.XmppConnectionService;
+import eu.siacs.conversations.utils.SerialSingleThreadExecutor;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.OnIqPacketReceived;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
+import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
 
 public class AxolotlService {
 
@@ -62,8 +66,9 @@ public class AxolotlService {
 	private final XmppConnectionService mXmppConnectionService;
 	private final SQLiteAxolotlStore axolotlStore;
 	private final SessionMap sessions;
-	private final BundleMap bundleCache;
 	private final Map<Jid, Set<Integer>> deviceIds;
+	private final FetchStatusMap fetchStatusMap;
+	private final SerialSingleThreadExecutor executor;
 	private int ownDeviceId;
 
 	public static class SQLiteAxolotlStore implements AxolotlStore {
@@ -560,7 +565,13 @@ public class AxolotlService {
 
 	}
 
-	private static class BundleMap extends AxolotlAddressMap<PreKeyBundle> {
+	private static enum FetchStatus {
+		PENDING,
+		SUCCESS,
+		ERROR
+	}
+
+	private static class FetchStatusMap extends AxolotlAddressMap<FetchStatus> {
 
 	}
 
@@ -570,7 +581,8 @@ public class AxolotlService {
 		this.axolotlStore = new SQLiteAxolotlStore(this.account, this.mXmppConnectionService);
 		this.deviceIds = new HashMap<>();
 		this.sessions = new SessionMap(axolotlStore, account);
-		this.bundleCache = new BundleMap();
+		this.fetchStatusMap = new FetchStatusMap();
+		this.executor = new SerialSingleThreadExecutor();
 		this.ownDeviceId = axolotlStore.getLocalRegistrationId();
 	}
 
@@ -793,56 +805,93 @@ public class AxolotlService {
 		}
 	}
 
-	private void createSessionsIfNeeded(Contact contact) throws NoSessionsCreatedException {
+	private boolean createSessionsIfNeeded(Conversation conversation) {
+		boolean newSessions = false;
 		Log.d(Config.LOGTAG, "Creating axolotl sessions if needed...");
-		AxolotlAddress address = new AxolotlAddress(contact.getJid().toBareJid().toString(), 0);
-		for(Integer deviceId: bundleCache.getAll(address).keySet()) {
-			Log.d(Config.LOGTAG, "Processing device ID: " + deviceId);
-			AxolotlAddress remoteAddress = new AxolotlAddress(contact.getJid().toBareJid().toString(), deviceId);
-			if(sessions.get(remoteAddress) == null) {
-				Log.d(Config.LOGTAG, "Building new sesstion for " + deviceId);
-				SessionBuilder builder = new SessionBuilder(this.axolotlStore, remoteAddress);
-				try {
-					builder.process(bundleCache.get(remoteAddress));
-					XmppAxolotlSession session = new XmppAxolotlSession(this.axolotlStore, remoteAddress);
-					sessions.put(remoteAddress, session);
-				} catch (InvalidKeyException e) {
-					Log.d(Config.LOGTAG, "Error building session for " + deviceId+ ": InvalidKeyException, " +e.getMessage());
-				} catch (UntrustedIdentityException e) {
-					Log.d(Config.LOGTAG, "Error building session for " + deviceId+ ": UntrustedIdentityException, " +e.getMessage());
-				}
-			} else {
-				Log.d(Config.LOGTAG, "Already have session for " + deviceId);
+		Jid contactJid = conversation.getContact().getJid().toBareJid();
+		Set<AxolotlAddress> addresses = new HashSet<>();
+		if(deviceIds.get(contactJid) != null) {
+			for(Integer foreignId:this.deviceIds.get(contactJid)) {
+				Log.d(Config.LOGTAG, "Found device "+account.getJid().toBareJid()+":"+foreignId);
+				addresses.add(new AxolotlAddress(contactJid.toString(), foreignId));
+			}
+		} else {
+			Log.e(Config.LOGTAG, "Have no target devices in PEP!");
+		}
+		Log.d(Config.LOGTAG, "Checking own account "+account.getJid().toBareJid());
+		if(deviceIds.get(account.getJid().toBareJid()) != null) {
+			for(Integer ownId:this.deviceIds.get(account.getJid().toBareJid())) {
+				Log.d(Config.LOGTAG, "Found device "+account.getJid().toBareJid()+":"+ownId);
+				addresses.add(new AxolotlAddress(account.getJid().toBareJid().toString(), ownId));
 			}
 		}
-		if(!this.hasAny(contact)) {
-			Log.e(Config.LOGTAG, "No Axolotl sessions available!");
-			throw new NoSessionsCreatedException(); // FIXME: proper error handling
+		for (AxolotlAddress address : addresses) {
+			Log.d(Config.LOGTAG, "Processing device: " + address.toString());
+			FetchStatus status = fetchStatusMap.get(address);
+			XmppAxolotlSession session = sessions.get(address);
+			if ( session == null && ( status == null || status == FetchStatus.ERROR) ) {
+				fetchStatusMap.put(address, FetchStatus.PENDING);
+				this.buildSessionFromPEP(conversation,  address);
+				newSessions = true;
+			} else {
+				Log.d(Config.LOGTAG, "Already have session for " +  address.toString());
+			}
 		}
+		return newSessions;
 	}
 
-	public XmppAxolotlMessage processSending(Contact contact, String outgoingMessage) throws NoSessionsCreatedException {
-		XmppAxolotlMessage message = new XmppAxolotlMessage(contact, ownDeviceId, outgoingMessage);
-		createSessionsIfNeeded(contact);
-		Log.d(Config.LOGTAG, "Building axolotl foreign headers...");
+	@Nullable
+	public XmppAxolotlMessage encrypt(Message message ){
+		final XmppAxolotlMessage axolotlMessage = new XmppAxolotlMessage(message.getContact(),
+				ownDeviceId, message.getBody());
 
-		for(XmppAxolotlSession session : findSessionsforContact(contact)) {
-//            if(!session.isTrusted()) {
-				// TODO: handle this properly
-  //              continue;
-	//        }
-			message.addHeader(session.processSending(message.getInnerKey()));
+		if(findSessionsforContact(axolotlMessage.getContact()).isEmpty()) {
+			return null;
+		}
+		Log.d(Config.LOGTAG, "Building axolotl foreign headers...");
+		for (XmppAxolotlSession session : findSessionsforContact(axolotlMessage.getContact())) {
+			Log.d(Config.LOGTAG, session.remoteAddress.toString());
+			//if(!session.isTrusted()) {
+			// TODO: handle this properly
+			//              continue;
+			//        }
+			axolotlMessage.addHeader(session.processSending(axolotlMessage.getInnerKey()));
 		}
 		Log.d(Config.LOGTAG, "Building axolotl own headers...");
-		for(XmppAxolotlSession session : findOwnSessions()) {
-	//        if(!session.isTrusted()) {
-				// TODO: handle this properly
-	  //          continue;
-		//    }
-			message.addHeader(session.processSending(message.getInnerKey()));
+		for (XmppAxolotlSession session : findOwnSessions()) {
+			Log.d(Config.LOGTAG, session.remoteAddress.toString());
+			//        if(!session.isTrusted()) {
+			// TODO: handle this properly
+			//          continue;
+			//    }
+			axolotlMessage.addHeader(session.processSending(axolotlMessage.getInnerKey()));
 		}
 
-		return message;
+		return axolotlMessage;
+	}
+
+	private void processSending(final Message message) {
+		executor.execute(new Runnable() {
+			@Override
+			public void run() {
+				MessagePacket packet = mXmppConnectionService.getMessageGenerator()
+						.generateAxolotlChat(message);
+				if (packet == null) {
+					mXmppConnectionService.markMessage(message, Message.STATUS_SEND_FAILED);
+				} else {
+					mXmppConnectionService.markMessage(message, Message.STATUS_UNSEND);
+					mXmppConnectionService.sendMessagePacket(account, packet);
+				}
+			}
+		});
+	}
+
+	public void sendMessage(Message message) {
+		boolean newSessions = createSessionsIfNeeded(message.getConversation());
+
+		if (!newSessions) {
+			this.processSending(message);
+		}
 	}
 
 	public XmppAxolotlMessage.XmppAxolotlPlaintextMessage processReceiving(XmppAxolotlMessage message) {

@@ -7,6 +7,7 @@ import net.java.otr4j.session.Session;
 import net.java.otr4j.session.SessionStatus;
 
 import java.util.List;
+import java.util.Set;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
@@ -105,6 +106,7 @@ public class MessageParser extends AbstractParser implements
 		XmppAxolotlMessage.XmppAxolotlPlaintextMessage plaintextMessage = service.processReceiving(xmppAxolotlMessage);
 		if(plaintextMessage != null) {
 			finishedMessage = new Message(conversation, plaintextMessage.getPlaintext(), Message.ENCRYPTION_AXOLOTL, Message.STATUS_RECEIVED);
+			finishedMessage.setAxolotlSession(plaintextMessage.getSession());
 		}
 
 		return finishedMessage;
@@ -189,15 +191,9 @@ public class MessageParser extends AbstractParser implements
 		} else if (AxolotlService.PEP_DEVICE_LIST.equals(node)) {
 			Log.d(Config.LOGTAG, "Received PEP device list update from "+ from + ", processing...");
 			Element item = items.findChild("item");
-			List<Integer> deviceIds = mXmppConnectionService.getIqParser().deviceIds(item);
+			Set<Integer> deviceIds = mXmppConnectionService.getIqParser().deviceIds(item);
 			AxolotlService axolotlService = account.getAxolotlService();
-			if(account.getJid().toBareJid().equals(from)) {
-			} else {
-				Contact contact = account.getRoster().getContact(from);
-				for (Integer deviceId : deviceIds) {
-					axolotlService.fetchBundleIfNeeded(contact, deviceId);
-				}
-			}
+			axolotlService.registerDevices(from, deviceIds);
 		}
 	}
 
