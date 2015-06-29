@@ -248,7 +248,7 @@ public class AxolotlService {
 		@Override
 		public SessionRecord loadSession(AxolotlAddress address) {
 			SessionRecord session = mXmppConnectionService.databaseBackend.loadSession(this.account, address);
-			return (session!=null)?session:new SessionRecord();
+			return (session != null) ? session : new SessionRecord();
 		}
 
 		/**
@@ -260,7 +260,7 @@ public class AxolotlService {
 		@Override
 		public List<Integer> getSubDeviceSessions(String name) {
 			return mXmppConnectionService.databaseBackend.getSubDeviceSessions(account,
-					new AxolotlAddress(name,0));
+					new AxolotlAddress(name, 0));
 		}
 
 		/**
@@ -311,7 +311,7 @@ public class AxolotlService {
 		}
 
 		public void setTrustedSession(AxolotlAddress address, boolean trusted) {
-			mXmppConnectionService.databaseBackend.setTrustedSession(this.account, address,trusted);
+			mXmppConnectionService.databaseBackend.setTrustedSession(this.account, address, trusted);
 		}
 
 		// --------------------------------------
@@ -328,7 +328,7 @@ public class AxolotlService {
 		@Override
 		public PreKeyRecord loadPreKey(int preKeyId) throws InvalidKeyIdException {
 			PreKeyRecord record = mXmppConnectionService.databaseBackend.loadPreKey(account, preKeyId);
-			if(record == null) {
+			if (record == null) {
 				throw new InvalidKeyIdException("No such PreKeyRecord: " + preKeyId);
 			}
 			return record;
@@ -344,8 +344,8 @@ public class AxolotlService {
 		public void storePreKey(int preKeyId, PreKeyRecord record) {
 			mXmppConnectionService.databaseBackend.storePreKey(account, record);
 			currentPreKeyId = preKeyId;
-			boolean success = this.account.setKey(JSONKEY_CURRENT_PREKEY_ID,Integer.toString(preKeyId));
-			if(success) {
+			boolean success = this.account.setKey(JSONKEY_CURRENT_PREKEY_ID, Integer.toString(preKeyId));
+			if (success) {
 				mXmppConnectionService.databaseBackend.updateAccount(account);
 			} else {
 				Log.e(Config.LOGTAG, "Failed to write new prekey id to the database!");
@@ -385,7 +385,7 @@ public class AxolotlService {
 		@Override
 		public SignedPreKeyRecord loadSignedPreKey(int signedPreKeyId) throws InvalidKeyIdException {
 			SignedPreKeyRecord record = mXmppConnectionService.databaseBackend.loadSignedPreKey(account, signedPreKeyId);
-			if(record == null) {
+			if (record == null) {
 				throw new InvalidKeyIdException("No such SignedPreKeyRecord: " + signedPreKeyId);
 			}
 			return record;
@@ -459,18 +459,18 @@ public class AxolotlService {
 			try {
 				try {
 					PreKeyWhisperMessage message = new PreKeyWhisperMessage(incomingHeader.getContents());
-					Log.d(Config.LOGTAG,"PreKeyWhisperMessage ID:" + message.getSignedPreKeyId() + "/" + message.getPreKeyId());
+					Log.d(Config.LOGTAG, "PreKeyWhisperMessage ID:" + message.getSignedPreKeyId() + "/" + message.getPreKeyId());
 					plaintext = cipher.decrypt(message);
-				} catch (InvalidMessageException|InvalidVersionException e) {
+				} catch (InvalidMessageException | InvalidVersionException e) {
 					WhisperMessage message = new WhisperMessage(incomingHeader.getContents());
 					plaintext = cipher.decrypt(message);
-				} catch (InvalidKeyException|InvalidKeyIdException| UntrustedIdentityException e) {
-					Log.d(Config.LOGTAG, "Error decrypting axolotl header: " + e.getMessage());
+				} catch (InvalidKeyException | InvalidKeyIdException | UntrustedIdentityException e) {
+					Log.d(Config.LOGTAG, "Error decrypting axolotl header, "+e.getClass().getName()+": " + e.getMessage());
 				}
-			} catch (LegacyMessageException|InvalidMessageException e) {
-				Log.d(Config.LOGTAG, "Error decrypting axolotl header: " + e.getMessage());
-			} catch (DuplicateMessageException|NoSessionException e) {
-				Log.d(Config.LOGTAG, "Error decrypting axolotl header: " + e.getMessage());
+			} catch (LegacyMessageException | InvalidMessageException e) {
+				Log.d(Config.LOGTAG, "Error decrypting axolotl header, "+e.getClass().getName()+": " + e.getMessage());
+			} catch (DuplicateMessageException | NoSessionException e) {
+				Log.d(Config.LOGTAG, "Error decrypting axolotl header, "+e.getClass().getName()+": " + e.getMessage());
 			}
 			return plaintext;
 		}
@@ -485,7 +485,7 @@ public class AxolotlService {
 	}
 
 	private static class AxolotlAddressMap<T> {
-		protected Map<String, Map<Integer,T>> map;
+		protected Map<String, Map<Integer, T>> map;
 		protected final Object MAP_LOCK = new Object();
 
 		public AxolotlAddressMap() {
@@ -506,7 +506,7 @@ public class AxolotlService {
 		public T get(AxolotlAddress address) {
 			synchronized (MAP_LOCK) {
 				Map<Integer, T> devices = map.get(address.getName());
-				if(devices == null) {
+				if (devices == null) {
 					return null;
 				}
 				return devices.get(address.getDeviceId());
@@ -516,7 +516,7 @@ public class AxolotlService {
 		public Map<Integer, T> getAll(AxolotlAddress address) {
 			synchronized (MAP_LOCK) {
 				Map<Integer, T> devices = map.get(address.getName());
-				if(devices == null) {
+				if (devices == null) {
 					return new HashMap<>();
 				}
 				return devices;
@@ -541,14 +541,14 @@ public class AxolotlService {
 		}
 
 		private void fillMap(SQLiteAxolotlStore store, Account account) {
-			for(Contact contact:account.getRoster().getContacts()){
+			for (Contact contact : account.getRoster().getContacts()) {
 				Jid bareJid = contact.getJid().toBareJid();
-				if(bareJid == null) {
+				if (bareJid == null) {
 					continue; // FIXME: handle this?
 				}
 				String address = bareJid.toString();
 				List<Integer> deviceIDs = store.getSubDeviceSessions(address);
-				for(Integer deviceId:deviceIDs) {
+				for (Integer deviceId : deviceIDs) {
 					AxolotlAddress axolotlAddress = new AxolotlAddress(address, deviceId);
 					this.put(axolotlAddress, new XmppAxolotlSession(store, axolotlAddress));
 				}
@@ -572,7 +572,7 @@ public class AxolotlService {
 
 	public void trustSession(AxolotlAddress counterpart) {
 		XmppAxolotlSession session = sessions.get(counterpart);
-		if(session != null) {
+		if (session != null) {
 			session.trust();
 		}
 	}
