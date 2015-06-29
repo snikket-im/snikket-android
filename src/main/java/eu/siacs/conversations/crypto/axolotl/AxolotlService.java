@@ -904,7 +904,7 @@ public class AxolotlService {
 			Log.d(Config.LOGTAG, "No axolotl session found while parsing received message " + message);
 			// TODO: handle this properly
 			session = new XmppAxolotlSession(axolotlStore, senderAddress);
-
+			sessions.put(senderAddress,session);
 		}
 
 		for(XmppAxolotlMessage.XmppAxolotlMessageHeader header : message.getHeaders()) {
