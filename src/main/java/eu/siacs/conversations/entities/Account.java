@@ -44,6 +44,10 @@ public class Account extends AbstractEntity {
 	public static final int OPTION_REGISTER = 2;
 	public static final int OPTION_USECOMPRESSION = 3;
 
+	public boolean httpUploadAvailable() {
+		return xmppConnection != null && xmppConnection.getFeatures().httpUpload();
+	}
+
 	public static enum State {
 		DISABLED,
 		OFFLINE,

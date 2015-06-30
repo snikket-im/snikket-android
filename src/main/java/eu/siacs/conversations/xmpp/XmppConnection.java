@@ -1025,18 +1025,18 @@ public class XmppConnection implements Runnable {
 		this.streamId = null;
 	}
 
-	public List<String> findDiscoItemsByFeature(final String feature) {
-		final List<String> items = new ArrayList<>();
+	public List<Jid> findDiscoItemsByFeature(final String feature) {
+		final List<Jid> items = new ArrayList<>();
 		for (final Entry<Jid, Info> cursor : disco.entrySet()) {
 			if (cursor.getValue().features.contains(feature)) {
-				items.add(cursor.getKey().toString());
+				items.add(cursor.getKey());
 			}
 		}
 		return items;
 	}
 
-	public String findDiscoItemByFeature(final String feature) {
-		final List<String> items = findDiscoItemsByFeature(feature);
+	public Jid findDiscoItemByFeature(final String feature) {
+		final List<Jid> items = findDiscoItemsByFeature(feature);
 		if (items.size() >= 1) {
 			return items.get(0);
 		}
@@ -1190,6 +1190,10 @@ public class XmppConnection implements Runnable {
 
 		public void setBlockListRequested(boolean value) {
 			this.blockListRequested = value;
+		}
+
+		public boolean httpUpload() {
+			return findDiscoItemsByFeature(Xmlns.HTTP_UPLOAD).size() > 0;
 		}
 	}
 

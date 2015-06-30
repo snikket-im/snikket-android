@@ -375,8 +375,8 @@ public class Message extends AbstractEntity {
 						(message.getTimeSent() - this.getTimeSent()) <= (Config.MESSAGE_MERGE_WINDOW * 1000) &&
 						!GeoHelper.isGeoUri(message.getBody()) &&
 						!GeoHelper.isGeoUri(this.body) &&
-						!message.bodyContainsDownloadable() &&
-						!this.bodyContainsDownloadable() &&
+						message.treatAsDownloadable() == Decision.NO &&
+						this.treatAsDownloadable() == Decision.NO &&
 						!message.getBody().startsWith(ME_COMMAND) &&
 						!this.getBody().startsWith(ME_COMMAND) &&
 						!this.bodyIsHeart() &&
@@ -434,48 +434,50 @@ public class Message extends AbstractEntity {
 		return (status > STATUS_RECEIVED || (contact != null && contact.trusted()));
 	}
 
-	public boolean bodyContainsDownloadable() {
-		/**
-		 * there are a few cases where spaces result in an unwanted behavior, e.g.
-		 * "http://example.com/image.jpg text that will not be shown /abc.png"
-		 * or more than one image link in one message.
-		 */
+	public enum Decision {
+		YES,
+		NO,
+		ASK
+	}
+
+	public Decision treatAsDownloadable() {
 		if (body.trim().contains(" ")) {
-			return false;
+			return Decision.NO;
 		}
 		try {
 			URL url = new URL(body);
-			if (!url.getProtocol().equalsIgnoreCase("http")
-					&& !url.getProtocol().equalsIgnoreCase("https")) {
-				return false;
+			if (!url.getProtocol().equalsIgnoreCase("http") && !url.getProtocol().equalsIgnoreCase("https")) {
+				return Decision.NO;
+			}
+			String path = url.getPath();
+			if (path == null || path.isEmpty()) {
+				return Decision.NO;
 			}
 
-			String sUrlPath = url.getPath();
-			if (sUrlPath == null || sUrlPath.isEmpty()) {
-				return false;
-			}
-
-			int iSlashIndex = sUrlPath.lastIndexOf('/') + 1;
-
-			String sLastUrlPath = sUrlPath.substring(iSlashIndex).toLowerCase();
-
-			String[] extensionParts = sLastUrlPath.split("\\.");
-			if (extensionParts.length == 2
-					&& Arrays.asList(Downloadable.VALID_IMAGE_EXTENSIONS).contains(
-					extensionParts[extensionParts.length - 1])) {
-				return true;
-			} else if (extensionParts.length == 3
-					&& Arrays
+			String filename = path.substring(path.lastIndexOf('/') + 1).toLowerCase();
+			String[] extensionParts = filename.split("\\.");
+			String extension;
+			String ref = url.getRef();
+			if (extensionParts.length == 2) {
+				extension = extensionParts[extensionParts.length - 1];
+			} else if (extensionParts.length == 3 && Arrays
 					.asList(Downloadable.VALID_CRYPTO_EXTENSIONS)
-					.contains(extensionParts[extensionParts.length - 1])
-					&& Arrays.asList(Downloadable.VALID_IMAGE_EXTENSIONS).contains(
-					extensionParts[extensionParts.length - 2])) {
-				return true;
+					.contains(extensionParts[extensionParts.length - 1])) {
+				extension = extensionParts[extensionParts.length -2];
 			} else {
-				return false;
+				return Decision.NO;
 			}
+
+			if (Arrays.asList(Downloadable.VALID_IMAGE_EXTENSIONS).contains(extension)) {
+				return Decision.YES;
+			} else if (ref != null && ref.matches("([A-Fa-f0-9]{2}){48}")) {
+				return Decision.ASK;
+			} else {
+				return Decision.NO;
+			}
+
 		} catch (MalformedURLException e) {
-			return false;
+			return Decision.NO;
 		}
 	}
 
@@ -483,12 +485,12 @@ public class Message extends AbstractEntity {
 		return body != null && UIHelper.HEARTS.contains(body.trim());
 	}
 
-	public ImageParams getImageParams() {
-		ImageParams params = getLegacyImageParams();
+	public FileParams getFileParams() {
+		FileParams params = getLegacyFileParams();
 		if (params != null) {
 			return params;
 		}
-		params = new ImageParams();
+		params = new FileParams();
 		if (this.downloadable != null) {
 			params.size = this.downloadable.getFileSize();
 		}
@@ -496,61 +498,64 @@ public class Message extends AbstractEntity {
 			return params;
 		}
 		String parts[] = body.split("\\|");
-		if (parts.length == 1) {
-			try {
-				params.size = Long.parseLong(parts[0]);
-			} catch (NumberFormatException e) {
-				params.origin = parts[0];
+		switch (parts.length) {
+			case 1:
+				try {
+					params.size = Long.parseLong(parts[0]);
+				} catch (NumberFormatException e) {
+					try {
+						params.url = new URL(parts[0]);
+					} catch (MalformedURLException e1) {
+						params.url = null;
+					}
+				}
+				break;
+			case 2:
+			case 4:
 				try {
 					params.url = new URL(parts[0]);
 				} catch (MalformedURLException e1) {
 					params.url = null;
 				}
-			}
-		} else if (parts.length == 3) {
-			try {
-				params.size = Long.parseLong(parts[0]);
-			} catch (NumberFormatException e) {
-				params.size = 0;
-			}
-			try {
-				params.width = Integer.parseInt(parts[1]);
-			} catch (NumberFormatException e) {
-				params.width = 0;
-			}
-			try {
-				params.height = Integer.parseInt(parts[2]);
-			} catch (NumberFormatException e) {
-				params.height = 0;
-			}
-		} else if (parts.length == 4) {
-			params.origin = parts[0];
-			try {
-				params.url = new URL(parts[0]);
-			} catch (MalformedURLException e1) {
-				params.url = null;
-			}
-			try {
-				params.size = Long.parseLong(parts[1]);
-			} catch (NumberFormatException e) {
-				params.size = 0;
-			}
-			try {
-				params.width = Integer.parseInt(parts[2]);
-			} catch (NumberFormatException e) {
-				params.width = 0;
-			}
-			try {
-				params.height = Integer.parseInt(parts[3]);
-			} catch (NumberFormatException e) {
-				params.height = 0;
-			}
+				try {
+					params.size = Long.parseLong(parts[1]);
+				} catch (NumberFormatException e) {
+					params.size = 0;
+				}
+				try {
+					params.width = Integer.parseInt(parts[2]);
+				} catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
+					params.width = 0;
+				}
+				try {
+					params.height = Integer.parseInt(parts[3]);
+				} catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
+					params.height = 0;
+				}
+				break;
+			case 3:
+				try {
+					params.size = Long.parseLong(parts[0]);
+				} catch (NumberFormatException e) {
+					params.size = 0;
+				}
+				try {
+					params.width = Integer.parseInt(parts[1]);
+				} catch (NumberFormatException e) {
+					params.width = 0;
+				}
+				try {
+					params.height = Integer.parseInt(parts[2]);
+				} catch (NumberFormatException e) {
+					params.height = 0;
+				}
+				break;
 		}
 		return params;
 	}
 
-	public ImageParams getLegacyImageParams() {
-		ImageParams params = new ImageParams();
+	public FileParams getLegacyFileParams() {
+		FileParams params = new FileParams();
 		if (body == null) {
 			return params;
 		}
@@ -586,11 +591,18 @@ public class Message extends AbstractEntity {
 		return type == TYPE_FILE || type == TYPE_IMAGE;
 	}
 
-	public class ImageParams {
+	public boolean hasFileOnRemoteHost() {
+		return isFileOrImage() && getFileParams().url != null;
+	}
+
+	public boolean needsUploading() {
+		return isFileOrImage() && getFileParams().url == null;
+	}
+
+	public class FileParams {
 		public URL url;
 		public long size = 0;
 		public int width = 0;
 		public int height = 0;
-		public String origin;
 	}
 }

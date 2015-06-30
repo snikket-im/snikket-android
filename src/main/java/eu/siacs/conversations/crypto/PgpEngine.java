@@ -59,7 +59,7 @@ public class PgpEngine {
 								message.setEncryption(Message.ENCRYPTION_DECRYPTED);
 								final HttpConnectionManager manager = mXmppConnectionService.getHttpConnectionManager();
 								if (message.trusted()
-										&& message.bodyContainsDownloadable()
+										&& message.treatAsDownloadable() == Message.Decision.YES
 										&& manager.getAutoAcceptFileSize() > 0) {
 									manager.createNewConnection(message);
 								}
@@ -98,7 +98,7 @@ public class PgpEngine {
 						switch (result.getIntExtra(OpenPgpApi.RESULT_CODE,
 								OpenPgpApi.RESULT_CODE_ERROR)) {
 						case OpenPgpApi.RESULT_CODE_SUCCESS:
-							URL url = message.getImageParams().url;
+							URL url = message.getFileParams().url;
 							mXmppConnectionService.getFileBackend().updateFileParams(message,url);
 							message.setEncryption(Message.ENCRYPTION_DECRYPTED);
 							PgpEngine.this.mXmppConnectionService
@@ -143,11 +143,15 @@ public class PgpEngine {
 		params.putExtra(OpenPgpApi.EXTRA_ACCOUNT_NAME, message
 				.getConversation().getAccount().getJid().toBareJid().toString());
 
-		if (message.getType() == Message.TYPE_TEXT) {
+		if (!message.needsUploading()) {
 			params.putExtra(OpenPgpApi.EXTRA_REQUEST_ASCII_ARMOR, true);
-
-			InputStream is = new ByteArrayInputStream(message.getBody()
-					.getBytes());
+			String body;
+			if (message.hasFileOnRemoteHost()) {
+				body = message.getFileParams().url.toString();
+			} else {
+				body = message.getBody();
+			}
+			InputStream is = new ByteArrayInputStream(body.getBytes());
 			final OutputStream os = new ByteArrayOutputStream();
 			api.executeApiAsync(params, is, os, new IOpenPgpCallback() {
 
@@ -184,7 +188,7 @@ public class PgpEngine {
 					}
 				}
 			});
-		} else if (message.getType() == Message.TYPE_IMAGE || message.getType() == Message.TYPE_FILE) {
+		} else {
 			try {
 				DownloadableFile inputFile = this.mXmppConnectionService
 						.getFileBackend().getFile(message, true);

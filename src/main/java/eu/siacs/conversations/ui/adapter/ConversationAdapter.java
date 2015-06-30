@@ -3,7 +3,6 @@ package eu.siacs.conversations.ui.adapter;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -69,7 +68,7 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 			convName.setTypeface(null, Typeface.NORMAL);
 		}
 
-		if (message.getImageParams().width > 0
+		if (message.getFileParams().width > 0
 				&& (message.getDownloadable() == null
 				|| message.getDownloadable().getStatus() != Downloadable.STATUS_DELETED)) {
 			mLastMessage.setVisibility(View.GONE);
