@@ -485,12 +485,12 @@ public class Message extends AbstractEntity {
 		return body != null && UIHelper.HEARTS.contains(body.trim());
 	}
 
-	public ImageParams getImageParams() {
-		ImageParams params = getLegacyImageParams();
+	public FileParams getFileParams() {
+		FileParams params = getLegacyFileParams();
 		if (params != null) {
 			return params;
 		}
-		params = new ImageParams();
+		params = new FileParams();
 		if (this.downloadable != null) {
 			params.size = this.downloadable.getFileSize();
 		}
@@ -498,61 +498,64 @@ public class Message extends AbstractEntity {
 			return params;
 		}
 		String parts[] = body.split("\\|");
-		if (parts.length == 1) {
-			try {
-				params.size = Long.parseLong(parts[0]);
-			} catch (NumberFormatException e) {
-				params.origin = parts[0];
+		switch (parts.length) {
+			case 1:
+				try {
+					params.size = Long.parseLong(parts[0]);
+				} catch (NumberFormatException e) {
+					try {
+						params.url = new URL(parts[0]);
+					} catch (MalformedURLException e1) {
+						params.url = null;
+					}
+				}
+				break;
+			case 2:
+			case 4:
 				try {
 					params.url = new URL(parts[0]);
 				} catch (MalformedURLException e1) {
 					params.url = null;
 				}
-			}
-		} else if (parts.length == 3) {
-			try {
-				params.size = Long.parseLong(parts[0]);
-			} catch (NumberFormatException e) {
-				params.size = 0;
-			}
-			try {
-				params.width = Integer.parseInt(parts[1]);
-			} catch (NumberFormatException e) {
-				params.width = 0;
-			}
-			try {
-				params.height = Integer.parseInt(parts[2]);
-			} catch (NumberFormatException e) {
-				params.height = 0;
-			}
-		} else if (parts.length == 4) {
-			params.origin = parts[0];
-			try {
-				params.url = new URL(parts[0]);
-			} catch (MalformedURLException e1) {
-				params.url = null;
-			}
-			try {
-				params.size = Long.parseLong(parts[1]);
-			} catch (NumberFormatException e) {
-				params.size = 0;
-			}
-			try {
-				params.width = Integer.parseInt(parts[2]);
-			} catch (NumberFormatException e) {
-				params.width = 0;
-			}
-			try {
-				params.height = Integer.parseInt(parts[3]);
-			} catch (NumberFormatException e) {
-				params.height = 0;
-			}
+				try {
+					params.size = Long.parseLong(parts[1]);
+				} catch (NumberFormatException e) {
+					params.size = 0;
+				}
+				try {
+					params.width = Integer.parseInt(parts[2]);
+				} catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
+					params.width = 0;
+				}
+				try {
+					params.height = Integer.parseInt(parts[3]);
+				} catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
+					params.height = 0;
+				}
+				break;
+			case 3:
+				try {
+					params.size = Long.parseLong(parts[0]);
+				} catch (NumberFormatException e) {
+					params.size = 0;
+				}
+				try {
+					params.width = Integer.parseInt(parts[1]);
+				} catch (NumberFormatException e) {
+					params.width = 0;
+				}
+				try {
+					params.height = Integer.parseInt(parts[2]);
+				} catch (NumberFormatException e) {
+					params.height = 0;
+				}
+				break;
 		}
 		return params;
 	}
 
-	public ImageParams getLegacyImageParams() {
-		ImageParams params = new ImageParams();
+	public FileParams getLegacyFileParams() {
+		FileParams params = new FileParams();
 		if (body == null) {
 			return params;
 		}
@@ -589,18 +592,17 @@ public class Message extends AbstractEntity {
 	}
 
 	public boolean hasFileOnRemoteHost() {
-		return isFileOrImage() && getImageParams().url != null;
+		return isFileOrImage() && getFileParams().url != null;
 	}
 
 	public boolean needsUploading() {
-		return isFileOrImage() && getImageParams().url == null;
+		return isFileOrImage() && getFileParams().url == null;
 	}
 
-	public class ImageParams {
+	public class FileParams {
 		public URL url;
 		public long size = 0;
 		public int width = 0;
 		public int height = 0;
-		public String origin;
 	}
 }

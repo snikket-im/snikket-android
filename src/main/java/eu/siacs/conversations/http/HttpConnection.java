@@ -269,8 +269,8 @@ public class HttpConnection implements Downloadable {
 		}
 
 		private void updateImageBounds() {
-			message.setType(Message.TYPE_IMAGE);
-			mXmppConnectionService.getFileBackend().updateFileParams(message,mUrl);
+			message.setType(Message.TYPE_FILE);
+			mXmppConnectionService.getFileBackend().updateFileParams(message, mUrl);
 			mXmppConnectionService.updateMessage(message);
 		}
 

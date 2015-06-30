@@ -32,7 +32,7 @@ import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Downloadable;
 import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.entities.Message;
-import eu.siacs.conversations.entities.Message.ImageParams;
+import eu.siacs.conversations.entities.Message.FileParams;
 import eu.siacs.conversations.ui.ConversationActivity;
 import eu.siacs.conversations.utils.GeoHelper;
 import eu.siacs.conversations.utils.UIHelper;
@@ -100,7 +100,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		boolean multiReceived = message.getConversation().getMode() == Conversation.MODE_MULTI
 			&& message.getMergedStatus() <= Message.STATUS_RECEIVED;
 		if (message.getType() == Message.TYPE_IMAGE || message.getType() == Message.TYPE_FILE || message.getDownloadable() != null) {
-			ImageParams params = message.getImageParams();
+			FileParams params = message.getFileParams();
 			if (params.size > (1.5 * 1024 * 1024)) {
 				filesize = params.size / (1024 * 1024)+ " MiB";
 			} else if (params.size > 0) {
@@ -339,7 +339,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		}
 		viewHolder.messageBody.setVisibility(View.GONE);
 		viewHolder.image.setVisibility(View.VISIBLE);
-		ImageParams params = message.getImageParams();
+		FileParams params = message.getFileParams();
 		double target = metrics.density * 288;
 		int scalledW;
 		int scalledH;
@@ -494,7 +494,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		} else if (message.getType() == Message.TYPE_IMAGE && message.getEncryption() != Message.ENCRYPTION_PGP && message.getEncryption() != Message.ENCRYPTION_DECRYPTION_FAILED) {
 			displayImageMessage(viewHolder, message);
 		} else if (message.getType() == Message.TYPE_FILE && message.getEncryption() != Message.ENCRYPTION_PGP && message.getEncryption() != Message.ENCRYPTION_DECRYPTION_FAILED) {
-			if (message.getImageParams().width > 0) {
+			if (message.getFileParams().width > 0) {
 				displayImageMessage(viewHolder,message);
 			} else {
 				displayOpenableMessage(viewHolder, message);

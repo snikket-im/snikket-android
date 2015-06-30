@@ -98,7 +98,7 @@ public class PgpEngine {
 						switch (result.getIntExtra(OpenPgpApi.RESULT_CODE,
 								OpenPgpApi.RESULT_CODE_ERROR)) {
 						case OpenPgpApi.RESULT_CODE_SUCCESS:
-							URL url = message.getImageParams().url;
+							URL url = message.getFileParams().url;
 							mXmppConnectionService.getFileBackend().updateFileParams(message,url);
 							message.setEncryption(Message.ENCRYPTION_DECRYPTED);
 							PgpEngine.this.mXmppConnectionService
@@ -147,7 +147,7 @@ public class PgpEngine {
 			params.putExtra(OpenPgpApi.EXTRA_REQUEST_ASCII_ARMOR, true);
 			String body;
 			if (message.hasFileOnRemoteHost()) {
-				body = message.getImageParams().url.toString();
+				body = message.getFileParams().url.toString();
 			} else {
 				body = message.getBody();
 			}

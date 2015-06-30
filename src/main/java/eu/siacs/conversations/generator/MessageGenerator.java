@@ -75,7 +75,7 @@ public class MessageGenerator extends AbstractGenerator {
 		try {
 			String content;
 			if (message.hasFileOnRemoteHost()) {
-				content = message.getImageParams().url.toString();
+				content = message.getFileParams().url.toString();
 			} else {
 				content = message.getBody();
 			}
@@ -93,7 +93,7 @@ public class MessageGenerator extends AbstractGenerator {
 	public MessagePacket generateChat(Message message, boolean addDelay) {
 		MessagePacket packet = preparePacket(message, addDelay);
 		if (message.hasFileOnRemoteHost()) {
-			packet.setBody(message.getImageParams().url.toString());
+			packet.setBody(message.getFileParams().url.toString());
 		} else {
 			packet.setBody(message.getBody());
 		}

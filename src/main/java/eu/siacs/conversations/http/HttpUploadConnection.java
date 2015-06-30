@@ -154,11 +154,11 @@ public class HttpUploadConnection implements Downloadable {
 				int code = connection.getResponseCode();
 				if (code == 200) {
 					Log.d(Config.LOGTAG, "finished uploading file");
-					Message.ImageParams params = message.getImageParams();
+					Message.FileParams params = message.getFileParams();
 					if (key != null) {
 						mGetUrl = new URL(mGetUrl.toString() + "#" + CryptoHelper.bytesToHex(key));
 					}
-					message.setBody(mGetUrl.toString()+"|"+String.valueOf(params.size)+"|"+String.valueOf(params.width)+"|"+String.valueOf(params.height));
+					mXmppConnectionService.getFileBackend().updateFileParams(message, mGetUrl);
 					message.setDownloadable(null);
 					message.setCounterpart(message.getConversation().getJid().toBareJid());
 					if (message.getEncryption() == Message.ENCRYPTION_DECRYPTED) {

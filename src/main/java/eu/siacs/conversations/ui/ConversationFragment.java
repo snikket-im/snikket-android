@@ -543,7 +543,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 			url = message.getBody();
 		} else {
 			resId = R.string.image_url;
-			url = message.getImageParams().url.toString();
+			url = message.getFileParams().url.toString();
 		}
 		if (activity.copyTextToClipboard(url, resId)) {
 			Toast.makeText(activity, R.string.url_copied_to_clipboard,
