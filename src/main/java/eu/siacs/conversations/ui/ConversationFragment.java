@@ -452,8 +452,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 			if (m.getStatus() != Message.STATUS_SEND_FAILED) {
 				sendAgain.setVisible(false);
 			}
-			if (((m.getType() != Message.TYPE_IMAGE && m.getDownloadable() == null)
-					|| m.getImageParams().url == null) && !GeoHelper.isGeoUri(m.getBody())) {
+			if (!m.hasFileOnRemoteHost() && !GeoHelper.isGeoUri(m.getBody())) {
 				copyUrl.setVisible(false);
 			}
 			if (m.getType() != Message.TYPE_TEXT
