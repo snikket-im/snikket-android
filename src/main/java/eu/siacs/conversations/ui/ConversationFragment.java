@@ -457,7 +457,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 			}
 			if (m.getType() != Message.TYPE_TEXT
 					|| m.getDownloadable() != null
-					|| !m.bodyContainsDownloadable()) {
+					|| m.treatAsDownloadable() == Message.Decision.NO) {
 				downloadImage.setVisible(false);
 			}
 			if (!((m.getDownloadable() != null && !(m.getDownloadable() instanceof DownloadablePlaceholder))

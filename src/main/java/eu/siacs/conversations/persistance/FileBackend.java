@@ -497,7 +497,7 @@ public class FileBackend {
 				message.setBody(url.toString()+"|"+Long.toString(file.getSize()) + '|' + imageWidth + '|' + imageHeight);
 			}
 		} else {
-			message.setBody(Long.toString(file.getSize()));
+			message.setBody(url.toString()+"|"+Long.toString(file.getSize()));
 		}
 
 	}

@@ -360,7 +360,7 @@ public class MessageParser extends AbstractParser implements
 				mXmppConnectionService.databaseBackend.createMessage(message);
 			}
 			final HttpConnectionManager manager = this.mXmppConnectionService.getHttpConnectionManager();
-			if (message.trusted() && message.bodyContainsDownloadable() && manager.getAutoAcceptFileSize() > 0) {
+			if (message.trusted() && message.treatAsDownloadable() == Message.Decision.YES && manager.getAutoAcceptFileSize() > 0) {
 				manager.createNewConnection(message);
 			} else if (!message.isRead()) {
 				mXmppConnectionService.getNotificationService().push(message);

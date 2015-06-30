@@ -375,8 +375,8 @@ public class Message extends AbstractEntity {
 						(message.getTimeSent() - this.getTimeSent()) <= (Config.MESSAGE_MERGE_WINDOW * 1000) &&
 						!GeoHelper.isGeoUri(message.getBody()) &&
 						!GeoHelper.isGeoUri(this.body) &&
-						!message.bodyContainsDownloadable() &&
-						!this.bodyContainsDownloadable() &&
+						message.treatAsDownloadable() == Decision.NO &&
+						this.treatAsDownloadable() == Decision.NO &&
 						!message.getBody().startsWith(ME_COMMAND) &&
 						!this.getBody().startsWith(ME_COMMAND) &&
 						!this.bodyIsHeart() &&
@@ -434,48 +434,50 @@ public class Message extends AbstractEntity {
 		return (status > STATUS_RECEIVED || (contact != null && contact.trusted()));
 	}
 
-	public boolean bodyContainsDownloadable() {
-		/**
-		 * there are a few cases where spaces result in an unwanted behavior, e.g.
-		 * "http://example.com/image.jpg text that will not be shown /abc.png"
-		 * or more than one image link in one message.
-		 */
+	public enum Decision {
+		YES,
+		NO,
+		ASK
+	}
+
+	public Decision treatAsDownloadable() {
 		if (body.trim().contains(" ")) {
-			return false;
+			return Decision.NO;
 		}
 		try {
 			URL url = new URL(body);
-			if (!url.getProtocol().equalsIgnoreCase("http")
-					&& !url.getProtocol().equalsIgnoreCase("https")) {
-				return false;
+			if (!url.getProtocol().equalsIgnoreCase("http") && !url.getProtocol().equalsIgnoreCase("https")) {
+				return Decision.NO;
+			}
+			String path = url.getPath();
+			if (path == null || path.isEmpty()) {
+				return Decision.NO;
 			}
 
-			String sUrlPath = url.getPath();
-			if (sUrlPath == null || sUrlPath.isEmpty()) {
-				return false;
-			}
-
-			int iSlashIndex = sUrlPath.lastIndexOf('/') + 1;
-
-			String sLastUrlPath = sUrlPath.substring(iSlashIndex).toLowerCase();
-
-			String[] extensionParts = sLastUrlPath.split("\\.");
-			if (extensionParts.length == 2
-					&& Arrays.asList(Downloadable.VALID_IMAGE_EXTENSIONS).contains(
-					extensionParts[extensionParts.length - 1])) {
-				return true;
-			} else if (extensionParts.length == 3
-					&& Arrays
+			String filename = path.substring(path.lastIndexOf('/') + 1).toLowerCase();
+			String[] extensionParts = filename.split("\\.");
+			String extension;
+			String ref = url.getRef();
+			if (extensionParts.length == 2) {
+				extension = extensionParts[extensionParts.length - 1];
+			} else if (extensionParts.length == 3 && Arrays
 					.asList(Downloadable.VALID_CRYPTO_EXTENSIONS)
-					.contains(extensionParts[extensionParts.length - 1])
-					&& Arrays.asList(Downloadable.VALID_IMAGE_EXTENSIONS).contains(
-					extensionParts[extensionParts.length - 2])) {
-				return true;
+					.contains(extensionParts[extensionParts.length - 1])) {
+				extension = extensionParts[extensionParts.length -2];
 			} else {
-				return false;
+				return Decision.NO;
 			}
+
+			if (Arrays.asList(Downloadable.VALID_IMAGE_EXTENSIONS).contains(extension)) {
+				return Decision.YES;
+			} else if (ref != null && ref.matches("([A-Fa-f0-9]{2}){48}")) {
+				return Decision.ASK;
+			} else {
+				return Decision.NO;
+			}
+
 		} catch (MalformedURLException e) {
-			return false;
+			return Decision.NO;
 		}
 	}
 

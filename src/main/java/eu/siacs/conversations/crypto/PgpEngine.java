@@ -59,7 +59,7 @@ public class PgpEngine {
 								message.setEncryption(Message.ENCRYPTION_DECRYPTED);
 								final HttpConnectionManager manager = mXmppConnectionService.getHttpConnectionManager();
 								if (message.trusted()
-										&& message.bodyContainsDownloadable()
+										&& message.treatAsDownloadable() == Message.Decision.YES
 										&& manager.getAutoAcceptFileSize() > 0) {
 									manager.createNewConnection(message);
 								}
