@@ -9,6 +9,7 @@ import java.util.Arrays;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.utils.GeoHelper;
+import eu.siacs.conversations.utils.MimeUtils;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
@@ -375,8 +376,8 @@ public class Message extends AbstractEntity {
 						(message.getTimeSent() - this.getTimeSent()) <= (Config.MESSAGE_MERGE_WINDOW * 1000) &&
 						!GeoHelper.isGeoUri(message.getBody()) &&
 						!GeoHelper.isGeoUri(this.body) &&
-						message.treatAsDownloadable() == Decision.NO &&
-						this.treatAsDownloadable() == Decision.NO &&
+						message.treatAsDownloadable() == Decision.NEVER &&
+						this.treatAsDownloadable() == Decision.NEVER &&
 						!message.getBody().startsWith(ME_COMMAND) &&
 						!this.getBody().startsWith(ME_COMMAND) &&
 						!this.bodyIsHeart() &&
@@ -435,49 +436,75 @@ public class Message extends AbstractEntity {
 	}
 
 	public enum Decision {
-		YES,
-		NO,
-		ASK
+		MUST,
+		SHOULD,
+		NEVER,
+	}
+
+	private static String extractRelevantExtension(URL url) {
+		String path = url.getPath();
+		if (path == null || path.isEmpty()) {
+			return null;
+		}
+		String filename = path.substring(path.lastIndexOf('/') + 1).toLowerCase();
+		String[] extensionParts = filename.split("\\.");
+		if (extensionParts.length == 2) {
+			return extensionParts[extensionParts.length - 1];
+		} else if (extensionParts.length == 3 && Arrays
+				.asList(Downloadable.VALID_CRYPTO_EXTENSIONS)
+				.contains(extensionParts[extensionParts.length - 1])) {
+			return extensionParts[extensionParts.length -2];
+		}
+		return null;
+	}
+
+	public String getMimeType() {
+		if (relativeFilePath != null) {
+			int start = relativeFilePath.lastIndexOf('.') + 1;
+			if (start < relativeFilePath.length()) {
+				return MimeUtils.guessMimeTypeFromExtension(relativeFilePath.substring(start));
+			} else {
+				return null;
+			}
+		} else {
+			try {
+				return MimeUtils.guessExtensionFromMimeType(extractRelevantExtension(new URL(body.trim())));
+			} catch (MalformedURLException e) {
+				return null;
+			}
+		}
 	}
 
 	public Decision treatAsDownloadable() {
 		if (body.trim().contains(" ")) {
-			return Decision.NO;
+			return Decision.NEVER;
 		}
 		try {
 			URL url = new URL(body);
 			if (!url.getProtocol().equalsIgnoreCase("http") && !url.getProtocol().equalsIgnoreCase("https")) {
-				return Decision.NO;
+				return Decision.NEVER;
 			}
-			String path = url.getPath();
-			if (path == null || path.isEmpty()) {
-				return Decision.NO;
+			String extension = extractRelevantExtension(url);
+			if (extension == null) {
+				return Decision.NEVER;
 			}
-
-			String filename = path.substring(path.lastIndexOf('/') + 1).toLowerCase();
-			String[] extensionParts = filename.split("\\.");
-			String extension;
 			String ref = url.getRef();
-			if (extensionParts.length == 2) {
-				extension = extensionParts[extensionParts.length - 1];
-			} else if (extensionParts.length == 3 && Arrays
-					.asList(Downloadable.VALID_CRYPTO_EXTENSIONS)
-					.contains(extensionParts[extensionParts.length - 1])) {
-				extension = extensionParts[extensionParts.length -2];
-			} else {
-				return Decision.NO;
-			}
+			boolean encrypted = ref != null && ref.matches("([A-Fa-f0-9]{2}){48}");
 
-			if (Arrays.asList(Downloadable.VALID_IMAGE_EXTENSIONS).contains(extension)) {
-				return Decision.YES;
-			} else if (ref != null && ref.matches("([A-Fa-f0-9]{2}){48}")) {
-				return Decision.ASK;
+			if (encrypted) {
+				if (MimeUtils.guessMimeTypeFromExtension(extension) != null) {
+					return Decision.MUST;
+				} else {
+					return Decision.NEVER;
+				}
+			} else if (Arrays.asList(Downloadable.VALID_IMAGE_EXTENSIONS).contains(extension)) {
+				return Decision.SHOULD;
 			} else {
-				return Decision.NO;
+				return Decision.NEVER;
 			}
 
 		} catch (MalformedURLException e) {
-			return Decision.NO;
+			return Decision.NEVER;
 		}
 	}
 

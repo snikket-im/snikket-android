@@ -457,7 +457,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 			}
 			if (m.getType() != Message.TYPE_TEXT
 					|| m.getDownloadable() != null
-					|| m.treatAsDownloadable() == Message.Decision.NO) {
+					|| m.treatAsDownloadable() == Message.Decision.NEVER) {
 				downloadImage.setVisible(false);
 			}
 			if (!((m.getDownloadable() != null && !(m.getDownloadable() instanceof DownloadablePlaceholder))
@@ -505,8 +505,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 					activity.xmppConnectionService.getFileBackend()
 							.getJingleFileUri(message));
 			shareIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-			String path = message.getRelativeFilePath();
-			String mime = path == null ? null : URLConnection.guessContentTypeFromName(path);
+			String mime = message.getMimeType();
 			if (mime == null) {
 				mime = "image/webp";
 			}

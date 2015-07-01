@@ -199,16 +199,7 @@ public class UIHelper {
 		if (message.getType() == Message.TYPE_IMAGE) {
 			return context.getString(R.string.image);
 		}
-		final String path = message.getRelativeFilePath();
-		if (path == null) {
-			return "";
-		}
-		final String mime;
-		try {
-			mime = URLConnection.guessContentTypeFromName(path.replace("#",""));
-		} catch (final StringIndexOutOfBoundsException ignored) {
-			return context.getString(R.string.file);
-		}
+		final String mime = message.getMimeType();
 		if (mime == null) {
 			return context.getString(R.string.file);
 		} else if (mime.startsWith("audio/")) {
