@@ -1046,13 +1046,14 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		populateWithOrderedConversations(list, true);
 	}
 
-	public void populateWithOrderedConversations(final List<Conversation> list, boolean includeConferences) {
+	public void populateWithOrderedConversations(final List<Conversation> list, boolean includeNoFileUpload) {
 		list.clear();
-		if (includeConferences) {
+		if (includeNoFileUpload) {
 			list.addAll(getConversations());
 		} else {
 			for (Conversation conversation : getConversations()) {
-				if (conversation.getMode() == Conversation.MODE_SINGLE) {
+				if (conversation.getMode() == Conversation.MODE_SINGLE
+						|| conversation.getAccount().httpUploadAvailable()) {
 					list.add(conversation);
 				}
 			}

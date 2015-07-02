@@ -4,7 +4,6 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,10 +12,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URLConnection;
-import java.net.URLDecoder;
-import java.nio.charset.UnsupportedCharsetException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -66,18 +62,17 @@ public class ShareWithActivity extends XmppActivity {
 		}
 	};
 
-	protected void onActivityResult(int requestCode, int resultCode,
-			final Intent data) {
+	protected void onActivityResult(int requestCode, int resultCode, final Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (requestCode == REQUEST_START_NEW_CONVERSATION
 				&& resultCode == RESULT_OK) {
 			share.contact = data.getStringExtra("contact");
 			share.account = data.getStringExtra("account");
-			Log.d(Config.LOGTAG, "contact: " + share.contact + " account:"
-					+ share.account);
 		}
-		if (xmppConnectionServiceBound && share != null
-				&& share.contact != null && share.account != null) {
+		if (xmppConnectionServiceBound
+				&& share != null
+				&& share.contact != null
+				&& share.account != null) {
 			share();
 		}
 	}
@@ -101,13 +96,8 @@ public class ShareWithActivity extends XmppActivity {
 		mListView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1,
-					int position, long arg3) {
-				Conversation conversation = mConversations.get(position);
-				if (conversation.getMode() == Conversation.MODE_SINGLE
-						|| share.uris.size() == 0) {
-					share(mConversations.get(position));
-				}
+			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+				share(mConversations.get(position));
 			}
 		});
 
@@ -123,11 +113,10 @@ public class ShareWithActivity extends XmppActivity {
 	@Override
 	public boolean onOptionsItemSelected(final MenuItem item) {
 		switch (item.getItemId()) {
-		case R.id.action_add:
-			final Intent intent = new Intent(getApplicationContext(),
-					ChooseContactActivity.class);
-			startActivityForResult(intent, REQUEST_START_NEW_CONVERSATION);
-			return true;
+			case R.id.action_add:
+				final Intent intent = new Intent(getApplicationContext(), ChooseContactActivity.class);
+				startActivityForResult(intent, REQUEST_START_NEW_CONVERSATION);
+				return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -157,7 +146,7 @@ public class ShareWithActivity extends XmppActivity {
 			this.share.uris = intent.getParcelableArrayListExtra(Intent.EXTRA_STREAM);
 		}
 		if (xmppConnectionServiceBound) {
-			xmppConnectionService.populateWithOrderedConversations(mConversations, this.share.image);
+			xmppConnectionService.populateWithOrderedConversations(mConversations, this.share.uris.size() == 0);
 		}
 
 	}
@@ -183,28 +172,28 @@ public class ShareWithActivity extends XmppActivity {
 	}
 
 	private void share() {
-        Account account;
-        try {
-            account = xmppConnectionService.findAccountByJid(Jid.fromString(share.account));
-        } catch (final InvalidJidException e) {
-            account = null;
-        }
-        if (account == null) {
+		Account account;
+		try {
+			account = xmppConnectionService.findAccountByJid(Jid.fromString(share.account));
+		} catch (final InvalidJidException e) {
+			account = null;
+		}
+		if (account == null) {
 			return;
 		}
-        final Conversation conversation;
-        try {
-            conversation = xmppConnectionService
-                    .findOrCreateConversation(account, Jid.fromString(share.contact), false);
-        } catch (final InvalidJidException e) {
-            return;
-        }
-        share(conversation);
+		final Conversation conversation;
+		try {
+			conversation = xmppConnectionService
+					.findOrCreateConversation(account, Jid.fromString(share.contact), false);
+		} catch (final InvalidJidException e) {
+			return;
+		}
+		share(conversation);
 	}
 
 	private void share(final Conversation conversation) {
 		if (share.uris.size() != 0) {
-			selectPresence(conversation, new OnPresenceSelected() {
+			OnPresenceSelected callback = new OnPresenceSelected() {
 				@Override
 				public void onPresenceSelected() {
 					if (share.image) {
@@ -227,7 +216,12 @@ public class ShareWithActivity extends XmppActivity {
 					switchToConversation(conversation, null, true);
 					finish();
 				}
-			});
+			};
+			if (conversation.getAccount().httpUploadAvailable()) {
+				callback.onPresenceSelected();
+			} else {
+				selectPresence(conversation, callback);
+			}
 		} else {
 			switchToConversation(conversation, this.share.text, true);
 			finish();
