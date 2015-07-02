@@ -4,6 +4,7 @@ public interface Downloadable {
 
 	String[] VALID_IMAGE_EXTENSIONS = {"webp", "jpeg", "jpg", "png", "jpe"};
 	String[] VALID_CRYPTO_EXTENSIONS = {"pgp", "gpg", "otr"};
+	String[] WELL_KNOWN_EXTENSIONS = {"pdf","m4a"};
 
 	int STATUS_UNKNOWN = 0x200;
 	int STATUS_CHECKING = 0x201;
@@ -13,6 +14,7 @@ public interface Downloadable {
 	int STATUS_DELETED = 0x205;
 	int STATUS_OFFER_CHECK_FILESIZE = 0x206;
 	int STATUS_UPLOADING = 0x207;
+
 
 	boolean start();
 

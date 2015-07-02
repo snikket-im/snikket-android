@@ -497,7 +497,8 @@ public class Message extends AbstractEntity {
 				} else {
 					return Decision.NEVER;
 				}
-			} else if (Arrays.asList(Downloadable.VALID_IMAGE_EXTENSIONS).contains(extension)) {
+			} else if (Arrays.asList(Downloadable.VALID_IMAGE_EXTENSIONS).contains(extension)
+					|| Arrays.asList(Downloadable.WELL_KNOWN_EXTENSIONS).contains(extension)) {
 				return Decision.SHOULD;
 			} else {
 				return Decision.NEVER;
