@@ -82,7 +82,6 @@
 	<string name="send_otr_message">Send OTR encrypted message</string>
 	<string name="send_pgp_message">Send OpenPGP encrypted message</string>
 	<string name="your_nick_has_been_changed">Your nickname has been changed</string>
-	<string name="download_image">Download Image</string>
 	<string name="send_unencrypted">Send unencrypted</string>
 	<string name="decryption_failed">Decryption failed. Maybe you don’t have the proper private key.</string>
 	<string name="openkeychain_required">OpenKeychain</string>
@@ -320,12 +319,12 @@
 	<string name="checking_image">Checking image on HTTP host</string>
 	<string name="image_file_deleted">The image file has been deleted</string>
 	<string name="not_connected_try_again">You are not connected. Try again later</string>
-	<string name="check_image_filesize">Check image file size</string>
+	<string name="check_x_filesize">Check %s size</string>
 	<string name="message_options">Message options</string>
 	<string name="copy_text">Copy text</string>
 	<string name="copy_original_url">Copy original URL</string>
 	<string name="send_again">Send again</string>
-	<string name="image_url">Image URL</string>
+	<string name="file_url">File URL</string>
 	<string name="message_text">Message text</string>
 	<string name="url_copied_to_clipboard">URL copied to clipboard</string>
 	<string name="message_copied_to_clipboard">Message copied to clipboard</string>

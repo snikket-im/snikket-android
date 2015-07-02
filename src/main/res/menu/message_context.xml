@@ -3,21 +3,27 @@
 
     <item
         android:id="@+id/copy_text"
-        android:title="@string/copy_text"/>
+        android:title="@string/copy_text"
+        android:visible="false"/>
     <item
         android:id="@+id/share_with"
-        android:title="@string/share_with"/>
+        android:title="@string/share_with"
+        android:visible="false"/>
     <item
         android:id="@+id/copy_url"
-        android:title="@string/copy_original_url"/>
+        android:title="@string/copy_original_url"
+        android:visible="false"/>
     <item
         android:id="@+id/send_again"
-        android:title="@string/send_again"/>
+        android:title="@string/send_again"
+        android:visible="false"/>
     <item
-        android:id="@+id/download_image"
-        android:title="@string/download_image"/>
+        android:id="@+id/download_file"
+        android:title="@string/download_x_file"
+        android:visible="false"/>
     <item
         android:id="@+id/cancel_transmission"
-        android:title="@string/cancel_transmission" />
+        android:title="@string/cancel_transmission"
+        android:visible="false"/>
 
 </menu>

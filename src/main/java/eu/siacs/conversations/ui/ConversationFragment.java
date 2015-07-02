@@ -34,7 +34,6 @@ import android.widget.Toast;
 
 import net.java.otr4j.session.SessionStatus;
 
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -437,33 +436,36 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 			MenuItem shareWith = menu.findItem(R.id.share_with);
 			MenuItem sendAgain = menu.findItem(R.id.send_again);
 			MenuItem copyUrl = menu.findItem(R.id.copy_url);
-			MenuItem downloadImage = menu.findItem(R.id.download_image);
+			MenuItem downloadFile = menu.findItem(R.id.download_file);
 			MenuItem cancelTransmission = menu.findItem(R.id.cancel_transmission);
-			if ((m.getType() != Message.TYPE_TEXT && m.getType() != Message.TYPE_PRIVATE)
-					|| m.getDownloadable() != null || GeoHelper.isGeoUri(m.getBody())) {
-				copyText.setVisible(false);
+			if ((m.getType() == Message.TYPE_TEXT || m.getType() == Message.TYPE_PRIVATE)
+					&& m.getDownloadable() == null
+					&& !GeoHelper.isGeoUri(m.getBody())
+					&& m.treatAsDownloadable() != Message.Decision.MUST) {
+				copyText.setVisible(true);
 			}
-			if ((m.getType() == Message.TYPE_TEXT
-					|| m.getType() == Message.TYPE_PRIVATE
-					|| m.getDownloadable() != null)
-					&& (!GeoHelper.isGeoUri(m.getBody()))) {
-				shareWith.setVisible(false);
+			if ((m.getType() != Message.TYPE_TEXT
+					&& m.getType() != Message.TYPE_PRIVATE
+					&& m.getDownloadable() == null)
+					|| (GeoHelper.isGeoUri(m.getBody()))) {
+				shareWith.setVisible(true);
 			}
-			if (m.getStatus() != Message.STATUS_SEND_FAILED) {
-				sendAgain.setVisible(false);
+			if (m.getStatus() == Message.STATUS_SEND_FAILED) {
+				sendAgain.setVisible(true);
 			}
-			if (!m.hasFileOnRemoteHost() && !GeoHelper.isGeoUri(m.getBody())) {
-				copyUrl.setVisible(false);
+			if (m.hasFileOnRemoteHost()
+					|| GeoHelper.isGeoUri(m.getBody())
+					|| m.treatAsDownloadable() == Message.Decision.MUST) {
+				copyUrl.setVisible(true);
 			}
-			if (m.getType() != Message.TYPE_TEXT
-					|| m.getDownloadable() != null
-					|| m.treatAsDownloadable() == Message.Decision.NEVER) {
-				downloadImage.setVisible(false);
+			if (m.getType() == Message.TYPE_TEXT && m.getDownloadable() == null && m.treatAsDownloadable() != Message.Decision.NEVER) {
+				downloadFile.setVisible(true);
+				downloadFile.setTitle(activity.getString(R.string.download_x_file,UIHelper.getFileDescriptionString(activity, m)));
 			}
-			if (!((m.getDownloadable() != null && !(m.getDownloadable() instanceof DownloadablePlaceholder))
+			if ((m.getDownloadable() != null && !(m.getDownloadable() instanceof DownloadablePlaceholder))
 					|| (m.isFileOrImage() && (m.getStatus() == Message.STATUS_WAITING
-					|| m.getStatus() == Message.STATUS_OFFERED)))) {
-				cancelTransmission.setVisible(false);
+					|| m.getStatus() == Message.STATUS_OFFERED))) {
+				cancelTransmission.setVisible(true);
 			}
 		}
 	}
@@ -483,8 +485,8 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 			case R.id.copy_url:
 				copyUrl(selectedMessage);
 				return true;
-			case R.id.download_image:
-				downloadImage(selectedMessage);
+			case R.id.download_file:
+				downloadFile(selectedMessage);
 				return true;
 			case R.id.cancel_transmission:
 				cancelTransmission(selectedMessage);
@@ -540,9 +542,12 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 		if (GeoHelper.isGeoUri(message.getBody())) {
 			resId = R.string.location;
 			url = message.getBody();
-		} else {
-			resId = R.string.image_url;
+		} else if (message.hasFileOnRemoteHost()) {
+			resId = R.string.file_url;
 			url = message.getFileParams().url.toString();
+		} else {
+			url = message.getBody().trim();
+			resId = R.string.file_url;
 		}
 		if (activity.copyTextToClipboard(url, resId)) {
 			Toast.makeText(activity, R.string.url_copied_to_clipboard,
@@ -550,7 +555,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 		}
 	}
 
-	private void downloadImage(Message message) {
+	private void downloadFile(Message message) {
 		activity.xmppConnectionService.getHttpConnectionManager()
 				.createNewConnection(message);
 	}

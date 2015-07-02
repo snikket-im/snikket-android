@@ -468,7 +468,7 @@ public class Message extends AbstractEntity {
 			}
 		} else {
 			try {
-				return MimeUtils.guessExtensionFromMimeType(extractRelevantExtension(new URL(body.trim())));
+				return MimeUtils.guessMimeTypeFromExtension(extractRelevantExtension(new URL(body.trim())));
 			} catch (MalformedURLException e) {
 				return null;
 			}

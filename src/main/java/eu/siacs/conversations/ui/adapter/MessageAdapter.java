@@ -487,7 +487,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 			if (downloadable.getStatus() == Downloadable.STATUS_OFFER) {
 				displayDownloadableMessage(viewHolder,message,activity.getString(R.string.download_x_file, UIHelper.getFileDescriptionString(activity, message)));
 			} else if (downloadable.getStatus() == Downloadable.STATUS_OFFER_CHECK_FILESIZE) {
-				displayDownloadableMessage(viewHolder, message, activity.getString(R.string.check_image_filesize));
+				displayDownloadableMessage(viewHolder, message, activity.getString(R.string.check_x_filesize, UIHelper.getFileDescriptionString(activity, message)));
 			} else {
 				displayInfoMessage(viewHolder, UIHelper.getMessagePreview(activity, message).first);
 			}
@@ -521,12 +521,12 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		} else {
 			if (GeoHelper.isGeoUri(message.getBody())) {
 				displayLocationMessage(viewHolder,message);
+			} else if (message.bodyIsHeart()) {
+				displayHeartMessage(viewHolder, message.getBody().trim());
+			} else if (message.treatAsDownloadable() == Message.Decision.MUST) {
+				displayDownloadableMessage(viewHolder, message, activity.getString(R.string.check_x_filesize, UIHelper.getFileDescriptionString(activity, message)));
 			} else {
-				if (message.bodyIsHeart()) {
-					displayHeartMessage(viewHolder, message.getBody().trim());
-				} else {
-					displayTextMessage(viewHolder, message);
-				}
+				displayTextMessage(viewHolder, message);
 			}
 		}
 
