@@ -239,6 +239,12 @@ public class MessageParser extends AbstractParser implements
 		final Jid to = packet.getTo();
 		final Jid from = packet.getFrom();
 		final String remoteMsgId = packet.getId();
+
+		if (from == null || to == null) {
+			Log.d(Config.LOGTAG,"no to or from in: "+packet.toString());
+			return;
+		}
+		
 		boolean isTypeGroupChat = packet.getType() == MessagePacket.TYPE_GROUPCHAT;
 		boolean isProperlyAddressed = !to.isBareJid() || account.countPresences() == 1;
 		boolean isMucStatusMessage = from.isBareJid() && mucUserElement != null && mucUserElement.hasChild("status");
@@ -248,11 +254,6 @@ public class MessageParser extends AbstractParser implements
 		} else {
 			status = Message.STATUS_RECEIVED;
 			counterpart = from;
-		}
-
-		if (from == null || to == null) {
-			Log.d(Config.LOGTAG,"no to or from in: "+packet.toString());
-			return;
 		}
 
 		Invite invite = extractInvite(packet);
