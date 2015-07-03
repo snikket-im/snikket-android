@@ -105,6 +105,7 @@ public class DNSHelper {
 				for(int i = 0; i < response.getAnswers().length; ++i) {
 					values.add(createNamePortBundle(host,5222,response.getAnswers()[i].getPayload()));
 				}
+				values.add(createNamePortBundle(host,5222));
 				bundle.putParcelableArrayList("values", values);
 				return bundle;
 			}
