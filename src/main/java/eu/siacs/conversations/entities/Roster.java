@@ -74,6 +74,9 @@ public class Roster {
 	}
 
 	public void initContact(final Contact contact) {
+		if (contact == null) {
+			return;
+		}
 		contact.setAccount(account);
 		contact.setOption(Contact.Options.IN_ROSTER);
 		synchronized (this.contacts) {
