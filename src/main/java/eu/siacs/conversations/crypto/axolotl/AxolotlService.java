@@ -444,6 +444,7 @@ public class AxolotlService {
 	public static class XmppAxolotlSession {
 		private SessionCipher cipher;
 		private boolean isTrusted = false;
+		private Integer preKeyId = null;
 		private SQLiteAxolotlStore sqLiteAxolotlStore;
 		private AxolotlAddress remoteAddress;
 
@@ -463,6 +464,14 @@ public class AxolotlService {
 			return this.isTrusted;
 		}
 
+		public Integer getPreKeyId() {
+			return preKeyId;
+		}
+
+		public void resetPreKeyId() {
+			preKeyId = null;
+		}
+
 		public byte[] processReceiving(XmppAxolotlMessage.XmppAxolotlMessageHeader incomingHeader) {
 			byte[] plaintext = null;
 			try {
@@ -470,6 +479,9 @@ public class AxolotlService {
 					PreKeyWhisperMessage message = new PreKeyWhisperMessage(incomingHeader.getContents());
 					Log.d(Config.LOGTAG, "PreKeyWhisperMessage ID:" + message.getSignedPreKeyId() + "/" + message.getPreKeyId());
 					plaintext = cipher.decrypt(message);
+					if (message.getPreKeyId().isPresent()) {
+						preKeyId = message.getPreKeyId().get();
+					}
 				} catch (InvalidMessageException | InvalidVersionException e) {
 					WhisperMessage message = new WhisperMessage(incomingHeader.getContents());
 					plaintext = cipher.decrypt(message);
@@ -946,6 +958,12 @@ public class AxolotlService {
 					Log.d(Config.LOGTAG, "Got payload key from axolotl header. Decrypting message...");
 					plaintextMessage = message.decrypt(session, payloadKey);
 				}
+				Integer preKeyId = session.getPreKeyId();
+				if (preKeyId != null) {
+					publishBundlesIfNeeded();
+					session.resetPreKeyId();
+				}
+				break;
 			}
 		}
 
