@@ -52,7 +52,6 @@ import de.duenndns.ssl.MemorizingTrustManager;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.PgpEngine;
-import eu.siacs.conversations.crypto.axolotl.NoSessionsCreatedException;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Blockable;
 import eu.siacs.conversations.entities.Bookmark;
@@ -760,7 +759,10 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 					break;
 				case Message.ENCRYPTION_AXOLOTL:
 					message.setStatus(Message.STATUS_WAITING);
-					account.getAxolotlService().sendMessage(message);
+					packet = account.getAxolotlService().fetchPacketFromCache(message);
+					if (packet == null && account.isOnlineAndConnected()) {
+						account.getAxolotlService().prepareMessage(message);
+					}
 					break;
 
 			}

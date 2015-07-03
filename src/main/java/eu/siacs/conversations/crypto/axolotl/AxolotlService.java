@@ -67,6 +67,7 @@ public class AxolotlService {
 	private final SQLiteAxolotlStore axolotlStore;
 	private final SessionMap sessions;
 	private final Map<Jid, Set<Integer>> deviceIds;
+	private final Map<String, MessagePacket> messageCache;
 	private final FetchStatusMap fetchStatusMap;
 	private final SerialSingleThreadExecutor executor;
 	private int ownDeviceId;
@@ -580,6 +581,7 @@ public class AxolotlService {
 		this.account = account;
 		this.axolotlStore = new SQLiteAxolotlStore(this.account, this.mXmppConnectionService);
 		this.deviceIds = new HashMap<>();
+		this.messageCache = new HashMap<>();
 		this.sessions = new SessionMap(axolotlStore, account);
 		this.fetchStatusMap = new FetchStatusMap();
 		this.executor = new SerialSingleThreadExecutor();
@@ -892,20 +894,35 @@ public class AxolotlService {
 						.generateAxolotlChat(message);
 				if (packet == null) {
 					mXmppConnectionService.markMessage(message, Message.STATUS_SEND_FAILED);
+					//mXmppConnectionService.updateConversationUi();
 				} else {
-					mXmppConnectionService.markMessage(message, Message.STATUS_UNSEND);
-					mXmppConnectionService.sendMessagePacket(account, packet);
+					Log.d(Config.LOGTAG, "Generated message, caching: " + message.getUuid());
+					messageCache.put(message.getUuid(), packet);
+					mXmppConnectionService.resendMessage(message);
 				}
 			}
 		});
 	}
 
-	public void sendMessage(Message message) {
-		boolean newSessions = createSessionsIfNeeded(message.getConversation());
+	public void prepareMessage(Message message) {
+		if (!messageCache.containsKey(message.getUuid())) {
+			boolean newSessions = createSessionsIfNeeded(message.getConversation());
 
-		if (!newSessions) {
-			this.processSending(message);
+			if (!newSessions) {
+				this.processSending(message);
+			}
 		}
+	}
+
+	public MessagePacket fetchPacketFromCache(Message message) {
+		MessagePacket packet = messageCache.get(message.getUuid());
+		if (packet != null) {
+			Log.d(Config.LOGTAG, "Cache hit: " + message.getUuid());
+			messageCache.remove(message.getUuid());
+		} else {
+			Log.d(Config.LOGTAG, "Cache miss: " + message.getUuid());
+		}
+		return packet;
 	}
 
 	public XmppAxolotlMessage.XmppAxolotlPlaintextMessage processReceiving(XmppAxolotlMessage message) {
