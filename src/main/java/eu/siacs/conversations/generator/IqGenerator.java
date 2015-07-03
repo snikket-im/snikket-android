@@ -152,7 +152,7 @@ public class IqGenerator extends AbstractGenerator {
 	}
 
 	public IqPacket publishBundles(final SignedPreKeyRecord signedPreKeyRecord, final IdentityKey identityKey,
-	                               final List<PreKeyRecord> preKeyRecords, final int deviceId) {
+	                               final Set<PreKeyRecord> preKeyRecords, final int deviceId) {
 		final Element item = new Element("item");
 		final Element bundle = item.addChild("bundle", AxolotlService.PEP_PREFIX);
 		final Element signedPreKeyPublic = bundle.addChild("signedPreKeyPublic");

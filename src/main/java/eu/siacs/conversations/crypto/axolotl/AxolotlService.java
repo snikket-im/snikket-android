@@ -655,42 +655,6 @@ public class AxolotlService {
 		});
 	}
 
-	private boolean validateBundle(PreKeyBundle bundle) {
-		if (bundle == null || bundle.getIdentityKey() == null
-				|| bundle.getSignedPreKey() == null || bundle.getSignedPreKeySignature() == null) {
-			return false;
-		}
-
-		try {
-			SignedPreKeyRecord signedPreKeyRecord = axolotlStore.loadSignedPreKey(bundle.getSignedPreKeyId());
-			IdentityKey identityKey = axolotlStore.getIdentityKeyPair().getPublicKey();
-			Log.d(Config.LOGTAG,"own identity key:"+identityKey.getFingerprint()+", foreign: "+bundle.getIdentityKey().getFingerprint());
-			Log.d(Config.LOGTAG,"bundle: "+Boolean.toString(bundle.getSignedPreKey().equals(signedPreKeyRecord.getKeyPair().getPublicKey()))
-					+" " + Boolean.toString(Arrays.equals(bundle.getSignedPreKeySignature(), signedPreKeyRecord.getSignature()))
-					+" " + Boolean.toString( bundle.getIdentityKey().equals(identityKey)));
-			return bundle.getSignedPreKey().equals(signedPreKeyRecord.getKeyPair().getPublicKey())
-					&& Arrays.equals(bundle.getSignedPreKeySignature(), signedPreKeyRecord.getSignature())
-					&& bundle.getIdentityKey().equals(identityKey);
-		} catch (InvalidKeyIdException ignored) {
-			return false;
-		}
-	}
-
-	private boolean validatePreKeys(Map<Integer, ECPublicKey> keys) {
-		if(keys == null) { return false; }
-		for(Integer id:keys.keySet()) {
-			try {
-				PreKeyRecord preKeyRecord = axolotlStore.loadPreKey(id);
-				if(!preKeyRecord.getKeyPair().getPublicKey().equals(keys.get(id))) {
-					return false;
-				}
-			} catch (InvalidKeyIdException ignored) {
-				return false;
-			}
-		}
-		return true;
-	}
-
 	public void publishBundlesIfNeeded() {
 		IqPacket packet = mXmppConnectionService.getIqGenerator().retrieveBundlesForDevice(account.getJid().toBareJid(), ownDeviceId);
 		mXmppConnectionService.sendIqPacket(account, packet, new OnIqPacketReceived() {
@@ -698,25 +662,75 @@ public class AxolotlService {
 			public void onIqPacketReceived(Account account, IqPacket packet) {
 				PreKeyBundle bundle = mXmppConnectionService.getIqParser().bundle(packet);
 				Map<Integer, ECPublicKey> keys = mXmppConnectionService.getIqParser().preKeyPublics(packet);
-				SignedPreKeyRecord signedPreKeyRecord;
-				List<PreKeyRecord> preKeyRecords;
-				if (!validateBundle(bundle) || keys.isEmpty() || !validatePreKeys(keys)) {
+				boolean flush = false;
+				if (bundle == null) {
+					Log.e(Config.LOGTAG, "Received invalid bundle:" + packet);
+					bundle = new PreKeyBundle(-1, -1, -1 , null, -1, null, null, null);
+					flush = true;
+				}
+				if (keys == null) {
+					Log.e(Config.LOGTAG, "Received invalid prekeys:" + packet);
+				}
+				try {
+					boolean changed = false;
+					// Validate IdentityKey
+					IdentityKeyPair identityKeyPair = axolotlStore.getIdentityKeyPair();
+					if (flush || !identityKeyPair.getPublicKey().equals(bundle.getIdentityKey())) {
+						Log.d(Config.LOGTAG, "Adding own IdentityKey " + identityKeyPair.getPublicKey() + " to PEP.");
+						changed = true;
+					}
+
+					// Validate signedPreKeyRecord + ID
+					SignedPreKeyRecord signedPreKeyRecord;
 					int numSignedPreKeys = axolotlStore.loadSignedPreKeys().size();
 					try {
-						signedPreKeyRecord = KeyHelper.generateSignedPreKey(
-								axolotlStore.getIdentityKeyPair(), numSignedPreKeys + 1);
+						signedPreKeyRecord = axolotlStore.loadSignedPreKey(bundle.getSignedPreKeyId());
+						if ( flush
+								||!bundle.getSignedPreKey().equals(signedPreKeyRecord.getKeyPair().getPublicKey())
+								|| !Arrays.equals(bundle.getSignedPreKeySignature(), signedPreKeyRecord.getSignature())) {
+							Log.d(Config.LOGTAG, "Adding new signedPreKey with ID " + (numSignedPreKeys + 1) + " to PEP.");
+							signedPreKeyRecord = KeyHelper.generateSignedPreKey(identityKeyPair, numSignedPreKeys + 1);
+							axolotlStore.storeSignedPreKey(signedPreKeyRecord.getId(), signedPreKeyRecord);
+							changed = true;
+						}
+					} catch (InvalidKeyIdException e) {
+						Log.d(Config.LOGTAG, "Adding new signedPreKey with ID " + (numSignedPreKeys + 1) + " to PEP.");
+						signedPreKeyRecord = KeyHelper.generateSignedPreKey(identityKeyPair, numSignedPreKeys + 1);
 						axolotlStore.storeSignedPreKey(signedPreKeyRecord.getId(), signedPreKeyRecord);
+						changed = true;
+					}
 
-						preKeyRecords = KeyHelper.generatePreKeys(
-								axolotlStore.getCurrentPreKeyId(), NUM_KEYS_TO_PUBLISH);
-						for (PreKeyRecord record : preKeyRecords) {
+					// Validate PreKeys
+					Set<PreKeyRecord> preKeyRecords = new HashSet<>();
+					if (keys != null) {
+						for (Integer id : keys.keySet()) {
+							try {
+								PreKeyRecord preKeyRecord = axolotlStore.loadPreKey(id);
+								if (preKeyRecord.getKeyPair().getPublicKey().equals(keys.get(id))) {
+									preKeyRecords.add(preKeyRecord);
+								}
+							} catch (InvalidKeyIdException ignored) {
+							}
+						}
+					}
+					int newKeys = NUM_KEYS_TO_PUBLISH - preKeyRecords.size();
+					if (newKeys > 0) {
+						List<PreKeyRecord> newRecords = KeyHelper.generatePreKeys(
+								axolotlStore.getCurrentPreKeyId()+1, newKeys);
+						preKeyRecords.addAll(newRecords);
+						for (PreKeyRecord record : newRecords) {
 							axolotlStore.storePreKey(record.getId(), record);
 						}
+						changed = true;
+						Log.d(Config.LOGTAG, "Adding " + newKeys + " new preKeys to PEP.");
+					}
 
+
+					if(changed) {
 						IqPacket publish = mXmppConnectionService.getIqGenerator().publishBundles(
 								signedPreKeyRecord, axolotlStore.getIdentityKeyPair().getPublicKey(),
 								preKeyRecords, ownDeviceId);
-						Log.d(Config.LOGTAG, "Bundle " + getOwnDeviceId() + " not in PEP. Publishing: " + publish);
+						Log.d(Config.LOGTAG, "Bundle " + getOwnDeviceId() + " in PEP not current. Publishing: " + publish);
 						mXmppConnectionService.sendIqPacket(account, publish, new OnIqPacketReceived() {
 							@Override
 							public void onIqPacketReceived(Account account, IqPacket packet) {
@@ -724,10 +738,10 @@ public class AxolotlService {
 								Log.d(Config.LOGTAG, "Published bundle, got: " + packet);
 							}
 						});
-					} catch (InvalidKeyException e) {
+					}
+				} catch (InvalidKeyException e) {
 						Log.e(Config.LOGTAG, "Failed to publish bundle " + getOwnDeviceId() + ", reason: " + e.getMessage());
 						return;
-					}
 				}
 			}
 		});
