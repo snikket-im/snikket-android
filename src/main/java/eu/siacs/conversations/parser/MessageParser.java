@@ -99,13 +99,13 @@ public class MessageParser extends AbstractParser implements
 		}
 	}
 
-	private Message parseAxolotlChat(Element axolotlMessage, Jid from, String id, Conversation conversation) {
+	private Message parseAxolotlChat(Element axolotlMessage, Jid from, String id, Conversation conversation, int status) {
 		Message finishedMessage = null;
 		AxolotlService service = conversation.getAccount().getAxolotlService();
-		XmppAxolotlMessage xmppAxolotlMessage = new XmppAxolotlMessage(conversation.getContact(), axolotlMessage);
+		XmppAxolotlMessage xmppAxolotlMessage = new XmppAxolotlMessage(from.toBareJid(), axolotlMessage);
 		XmppAxolotlMessage.XmppAxolotlPlaintextMessage plaintextMessage = service.processReceiving(xmppAxolotlMessage);
 		if(plaintextMessage != null) {
-			finishedMessage = new Message(conversation, plaintextMessage.getPlaintext(), Message.ENCRYPTION_AXOLOTL, Message.STATUS_RECEIVED);
+			finishedMessage = new Message(conversation, plaintextMessage.getPlaintext(), Message.ENCRYPTION_AXOLOTL, status);
 			finishedMessage.setAxolotlSession(plaintextMessage.getSession());
 		}
 
@@ -322,7 +322,7 @@ public class MessageParser extends AbstractParser implements
 			} else if (pgpEncrypted != null) {
 				message = new Message(conversation, pgpEncrypted, Message.ENCRYPTION_PGP, status);
 			} else if (axolotlEncrypted != null) {
-				message = parseAxolotlChat(axolotlEncrypted, from, remoteMsgId, conversation);
+				message = parseAxolotlChat(axolotlEncrypted, from, remoteMsgId, conversation, status);
 				if (message == null) {
 					return;
 				}

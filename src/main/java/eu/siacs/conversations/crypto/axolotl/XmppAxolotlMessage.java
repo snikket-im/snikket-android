@@ -19,13 +19,14 @@ import javax.crypto.spec.SecretKeySpec;
 
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.xml.Element;
+import eu.siacs.conversations.xmpp.jid.Jid;
 
 public class XmppAxolotlMessage {
 	private byte[] innerKey;
 	private byte[] ciphertext;
 	private byte[] iv;
 	private final Set<XmppAxolotlMessageHeader> headers;
-	private final Contact contact;
+	private final Jid from;
 	private final int sourceDeviceId;
 
 	public static class XmppAxolotlMessageHeader {
@@ -82,8 +83,8 @@ public class XmppAxolotlMessage {
 
 	}
 
-	public XmppAxolotlMessage(Contact contact, Element axolotlMessage) {
-		this.contact = contact;
+	public XmppAxolotlMessage(Jid from, Element axolotlMessage) {
+		this.from = from;
 		this.sourceDeviceId = Integer.parseInt(axolotlMessage.getAttribute("id"));
 		this.headers = new HashSet<>();
 		for(Element child:axolotlMessage.getChildren()) {
@@ -101,8 +102,8 @@ public class XmppAxolotlMessage {
 		}
 	}
 
-	public XmppAxolotlMessage(Contact contact, int sourceDeviceId, String plaintext) {
-		this.contact = contact;
+	public XmppAxolotlMessage(Jid from, int sourceDeviceId, String plaintext) {
+		this.from = from;
 		this.sourceDeviceId = sourceDeviceId;
 		this.headers = new HashSet<>();
 		this.encrypt(plaintext);
@@ -124,8 +125,8 @@ public class XmppAxolotlMessage {
 		}
 	}
 
-	public Contact getContact() {
-		return this.contact;
+	public Jid getFrom() {
+		return this.from;
 	}
 
 	public int getSenderDeviceId() {

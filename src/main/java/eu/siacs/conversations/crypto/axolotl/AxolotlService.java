@@ -856,14 +856,14 @@ public class AxolotlService {
 
 	@Nullable
 	public XmppAxolotlMessage encrypt(Message message ){
-		final XmppAxolotlMessage axolotlMessage = new XmppAxolotlMessage(message.getContact(),
+		final XmppAxolotlMessage axolotlMessage = new XmppAxolotlMessage(message.getContact().getJid().toBareJid(),
 				ownDeviceId, message.getBody());
 
-		if(findSessionsforContact(axolotlMessage.getContact()).isEmpty()) {
+		if(findSessionsforContact(message.getContact()).isEmpty()) {
 			return null;
 		}
 		Log.d(Config.LOGTAG, "Building axolotl foreign headers...");
-		for (XmppAxolotlSession session : findSessionsforContact(axolotlMessage.getContact())) {
+		for (XmppAxolotlSession session : findSessionsforContact(message.getContact())) {
 			Log.d(Config.LOGTAG, session.remoteAddress.toString());
 			//if(!session.isTrusted()) {
 			// TODO: handle this properly
@@ -910,7 +910,7 @@ public class AxolotlService {
 
 	public XmppAxolotlMessage.XmppAxolotlPlaintextMessage processReceiving(XmppAxolotlMessage message) {
 		XmppAxolotlMessage.XmppAxolotlPlaintextMessage plaintextMessage = null;
-		AxolotlAddress senderAddress = new AxolotlAddress(message.getContact().getJid().toBareJid().toString(),
+		AxolotlAddress senderAddress = new AxolotlAddress(message.getFrom().toString(),
 				message.getSenderDeviceId());
 
 		XmppAxolotlSession session = sessions.get(senderAddress);
