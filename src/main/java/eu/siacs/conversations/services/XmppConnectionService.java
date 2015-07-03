@@ -233,7 +233,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	private MessageArchiveService mMessageArchiveService = new MessageArchiveService(this);
 	private OnConversationUpdate mOnConversationUpdate = null;
 	private int convChangedListenerCount = 0;
-	private int unreadCount = 0;
+	private int unreadCount = -1;
 	private OnAccountUpdate mOnAccountUpdate = null;
 	private OnStatusChanged statusListener = new OnStatusChanged() {
 
@@ -602,6 +602,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		this.pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
 		this.wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,"XmppConnectionService");
 		toggleForegroundService();
+		updateUnreadCountBadge();
 	}
 
 	public void toggleForegroundService() {
