@@ -944,12 +944,13 @@ public class AxolotlService {
 		AxolotlAddress senderAddress = new AxolotlAddress(message.getFrom().toString(),
 				message.getSenderDeviceId());
 
+		boolean newSession = false;
 		XmppAxolotlSession session = sessions.get(senderAddress);
 		if (session == null) {
 			Log.d(Config.LOGTAG, "Account: "+account.getJid()+" No axolotl session found while parsing received message " + message);
 			// TODO: handle this properly
 			session = new XmppAxolotlSession(axolotlStore, senderAddress);
-			sessions.put(senderAddress,session);
+			newSession = true;
 		}
 
 		for (XmppAxolotlMessage.XmppAxolotlMessageHeader header : message.getHeaders()) {
@@ -967,6 +968,10 @@ public class AxolotlService {
 				}
 				break;
 			}
+		}
+
+		if (newSession && plaintextMessage != null) {
+			sessions.put(senderAddress,session);
 		}
 
 		return plaintextMessage;
