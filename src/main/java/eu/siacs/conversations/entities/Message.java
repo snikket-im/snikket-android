@@ -435,6 +435,26 @@ public class Message extends AbstractEntity {
 		return (status > STATUS_RECEIVED || (contact != null && contact.trusted()));
 	}
 
+	public boolean fixCounterpart() {
+		Presences presences = conversation.getContact().getPresences();
+		if (counterpart != null && presences.has(counterpart.getResourcepart())) {
+			return true;
+		} else if (presences.size() >= 1) {
+			try {
+				counterpart = Jid.fromParts(conversation.getJid().getLocalpart(),
+						conversation.getJid().getDomainpart(),
+						presences.asStringArray()[0]);
+				return true;
+			} catch (InvalidJidException e) {
+				counterpart = null;
+				return false;
+			}
+		} else {
+			counterpart = null;
+			return false;
+		}
+	}
+
 	public enum Decision {
 		MUST,
 		SHOULD,

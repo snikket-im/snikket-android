@@ -28,6 +28,7 @@ import android.util.LruCache;
 import net.java.otr4j.OtrException;
 import net.java.otr4j.session.Session;
 import net.java.otr4j.session.SessionID;
+import net.java.otr4j.session.SessionImpl;
 import net.java.otr4j.session.SessionStatus;
 
 import org.openintents.openpgp.util.OpenPgpApi;
@@ -684,113 +685,126 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	}
 
 	public void sendMessage(final Message message) {
+		sendMessage(message,false);
+	}
+
+	private void sendMessage(final Message message, final boolean resend) {
 		final Account account = message.getConversation().getAccount();
+		final Conversation conversation = message.getConversation();
 		account.deactivateGracePeriod();
-		final Conversation conv = message.getConversation();
 		MessagePacket packet = null;
 		boolean saveInDb = true;
-		boolean send = false;
-		if (account.getStatus() == Account.State.ONLINE
-				&& account.getXmppConnection() != null) {
-			if (message.needsUploading()) {
-				if (message.getCounterpart() != null || account.httpUploadAvailable()) {
-					if (message.getEncryption() == Message.ENCRYPTION_OTR) {
-						if (!conv.hasValidOtrSession()) {
-							conv.startOtrSession(message.getCounterpart().getResourcepart(),true);
-							message.setStatus(Message.STATUS_WAITING);
-						} else if (conv.hasValidOtrSession()
-								&& conv.getOtrSession().getSessionStatus() == SessionStatus.ENCRYPTED) {
-							mJingleConnectionManager.createNewConnection(message);
-						}
-					} else {
-						this.sendFileMessage(message);
+		message.setStatus(Message.STATUS_WAITING);
 
-					}
-				} else {
-					if (message.getEncryption() == Message.ENCRYPTION_OTR) {
-						conv.startOtrIfNeeded();
-					}
-					message.setStatus(Message.STATUS_WAITING);
+		if (!resend && message.getEncryption() != Message.ENCRYPTION_OTR) {
+			message.getConversation().endOtrIfNeeded();
+			message.getConversation().findUnsentMessagesWithOtrEncryption(new Conversation.OnMessageFound() {
+				@Override
+				public void onMessageFound(Message message) {
+					markMessage(message,Message.STATUS_SEND_FAILED);
 				}
-			} else {
-				if (message.getEncryption() == Message.ENCRYPTION_OTR) {
-					if (!conv.hasValidOtrSession() && (message.getCounterpart() != null)) {
-						conv.startOtrSession(message.getCounterpart().getResourcepart(), true);
-						message.setStatus(Message.STATUS_WAITING);
-					} else if (conv.hasValidOtrSession()) {
-						if (conv.getOtrSession().getSessionStatus() == SessionStatus.ENCRYPTED) {
-							packet = mMessageGenerator.generateOtrChat(message);
-							send = true;
+			});
+		}
+
+		if (account.isOnlineAndConnected()) {
+			switch (message.getEncryption()) {
+				case Message.ENCRYPTION_NONE:
+					if (message.needsUploading()) {
+						if (account.httpUploadAvailable() || message.fixCounterpart()) {
+							this.sendFileMessage(message);
 						} else {
-							message.setStatus(Message.STATUS_WAITING);
-							conv.startOtrIfNeeded();
+							break;
 						}
 					} else {
-						message.setStatus(Message.STATUS_WAITING);
+						packet = mMessageGenerator.generateChat(message,resend);
 					}
-				} else if (message.getEncryption() == Message.ENCRYPTION_DECRYPTED) {
-					message.getConversation().endOtrIfNeeded();
-					message.getConversation().findUnsentMessagesWithOtrEncryption(new Conversation.OnMessageFound() {
-						@Override
-						public void onMessageFound(Message message) {
-							markMessage(message,Message.STATUS_SEND_FAILED);
+					break;
+				case Message.ENCRYPTION_PGP:
+				case Message.ENCRYPTION_DECRYPTED:
+					if (message.needsUploading()) {
+						if (account.httpUploadAvailable() || message.fixCounterpart()) {
+							this.sendFileMessage(message);
+						} else {
+							break;
 						}
-					});
-					packet = mMessageGenerator.generatePgpChat(message);
-					send = true;
+					} else {
+						packet = mMessageGenerator.generatePgpChat(message,resend);
+					}
+					break;
+				case Message.ENCRYPTION_OTR:
+					SessionImpl otrSession = conversation.getOtrSession();
+					if (otrSession != null && otrSession.getSessionStatus() == SessionStatus.ENCRYPTED) {
+						try {
+							message.setCounterpart(Jid.fromSessionID(otrSession.getSessionID()));
+						} catch (InvalidJidException e) {
+							break;
+						}
+						if (message.needsUploading()) {
+							mJingleConnectionManager.createNewConnection(message);
+						} else {
+							packet = mMessageGenerator.generateOtrChat(message,resend);
+						}
+					} else if (otrSession == null) {
+						if (message.fixCounterpart()) {
+							conversation.startOtrSession(message.getCounterpart().getResourcepart(), true);
+						} else {
+							break;
+						}
+					}
+					break;
+			}
+			if (packet != null) {
+				if (account.getXmppConnection().getFeatures().sm() || conversation.getMode() == Conversation.MODE_MULTI) {
+					message.setStatus(Message.STATUS_UNSEND);
 				} else {
-					message.getConversation().endOtrIfNeeded();
-					message.getConversation().findUnsentMessagesWithOtrEncryption(new Conversation.OnMessageFound() {
-						@Override
-						public void onMessageFound(Message message) {
-							markMessage(message,Message.STATUS_SEND_FAILED);
-						}
-					});
-					packet = mMessageGenerator.generateChat(message);
-					send = true;
+					message.setStatus(Message.STATUS_SEND);
 				}
 			}
-			if (!account.getXmppConnection().getFeatures().sm()
-					&& conv.getMode() != Conversation.MODE_MULTI) {
-				message.setStatus(Message.STATUS_SEND);
-					}
 		} else {
-			message.setStatus(Message.STATUS_WAITING);
-			if (message.getType() == Message.TYPE_TEXT) {
-				if (message.getEncryption() == Message.ENCRYPTION_DECRYPTED) {
-					String pgpBody = message.getEncryptedBody();
-					String decryptedBody = message.getBody();
-					message.setBody(pgpBody);
-					message.setEncryption(Message.ENCRYPTION_PGP);
-					databaseBackend.createMessage(message);
-					saveInDb = false;
-					message.setBody(decryptedBody);
-					message.setEncryption(Message.ENCRYPTION_DECRYPTED);
-				} else if (message.getEncryption() == Message.ENCRYPTION_OTR) {
-					if (!conv.hasValidOtrSession()
-							&& message.getCounterpart() != null) {
-						conv.startOtrSession(message.getCounterpart().getResourcepart(), false);
-							}
+			switch(message.getEncryption()) {
+				case Message.ENCRYPTION_DECRYPTED:
+					if (!message.needsUploading()) {
+						String pgpBody = message.getEncryptedBody();
+						String decryptedBody = message.getBody();
+						message.setBody(pgpBody);
+						message.setEncryption(Message.ENCRYPTION_PGP);
+						databaseBackend.createMessage(message);
+						saveInDb = false;
+						message.setBody(decryptedBody);
+						message.setEncryption(Message.ENCRYPTION_DECRYPTED);
+					}
+					break;
+				case Message.ENCRYPTION_OTR:
+					if (!conversation.hasValidOtrSession() && message.getCounterpart() != null) {
+						conversation.startOtrSession(message.getCounterpart().getResourcepart(), false);
+					}
+					break;
+			}
+		}
+
+		if (resend) {
+			if (packet != null) {
+				if (account.getXmppConnection().getFeatures().sm() || conversation.getMode() == Conversation.MODE_MULTI) {
+					markMessage(message,Message.STATUS_UNSEND);
+				} else {
+					markMessage(message,Message.STATUS_SEND);
 				}
 			}
-
-		}
-		conv.add(message);
-		if (saveInDb) {
-			if (message.getEncryption() == Message.ENCRYPTION_NONE
-					|| saveEncryptedMessages()) {
+		} else {
+			conversation.add(message);
+			if (saveInDb && (message.getEncryption() == Message.ENCRYPTION_NONE || saveEncryptedMessages())) {
 				databaseBackend.createMessage(message);
-					}
+			}
+			updateConversationUi();
 		}
-		if ((send) && (packet != null)) {
-			if (conv.setOutgoingChatState(Config.DEFAULT_CHATSTATE)) {
+		if (packet != null) {
+			if (conversation.setOutgoingChatState(Config.DEFAULT_CHATSTATE)) {
 				if (this.sendChatStates()) {
-					packet.addChild(ChatState.toElement(conv.getOutgoingChatState()));
+					packet.addChild(ChatState.toElement(conversation.getOutgoingChatState()));
 				}
 			}
 			sendMessagePacket(account, packet);
 		}
-		updateConversationUi();
 	}
 
 	private void sendUnsentMessages(final Conversation conversation) {
@@ -804,72 +818,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	}
 
 	public void resendMessage(final Message message) {
-		Account account = message.getConversation().getAccount();
-		MessagePacket packet = null;
-		if (message.getEncryption() == Message.ENCRYPTION_OTR) {
-			Presences presences = message.getConversation().getContact().getPresences();
-			if (!message.getConversation().hasValidOtrSession()) {
-				if ((message.getCounterpart() != null)
-						&& (presences.has(message.getCounterpart().getResourcepart()))) {
-					message.getConversation().startOtrSession(message.getCounterpart().getResourcepart(), true);
-				} else {
-					if (presences.size() == 1) {
-						String presence = presences.asStringArray()[0];
-						message.getConversation().startOtrSession(presence, true);
-					}
-				}
-			} else {
-				if (message.getConversation().getOtrSession().getSessionStatus() == SessionStatus.ENCRYPTED) {
-					try {
-						message.setCounterpart(Jid.fromSessionID(message.getConversation().getOtrSession().getSessionID()));
-						if (message.needsUploading()) {
-							mJingleConnectionManager.createNewConnection(message);
-						} else {
-							packet = mMessageGenerator.generateOtrChat(message, true);
-						}
-					} catch (final InvalidJidException ignored) {
-
-					}
-				}
-			}
-		} else if (message.needsUploading()) {
-			Contact contact = message.getConversation().getContact();
-			Presences presences = contact.getPresences();
-			if (account.httpUploadAvailable() || (message.getCounterpart() != null && presences.has(message.getCounterpart().getResourcepart()))) {
-				this.sendFileMessage(message);
-			} else {
-				if (presences.size() == 1) {
-					String presence = presences.asStringArray()[0];
-					try {
-						message.setCounterpart(Jid.fromParts(contact.getJid().getLocalpart(), contact.getJid().getDomainpart(), presence));
-					} catch (InvalidJidException e) {
-						return;
-					}
-					this.sendFileMessage(message);
-				}
-			}
-		} else {
-			if (message.getEncryption() == Message.ENCRYPTION_NONE) {
-				packet = mMessageGenerator.generateChat(message, true);
-			} else if ((message.getEncryption() == Message.ENCRYPTION_DECRYPTED)
-					|| (message.getEncryption() == Message.ENCRYPTION_PGP)) {
-				packet = mMessageGenerator.generatePgpChat(message, true);
-			}
-		}
-		if (packet != null) {
-			if (!account.getXmppConnection().getFeatures().sm()
-					&& message.getConversation().getMode() != Conversation.MODE_MULTI) {
-				markMessage(message, Message.STATUS_SEND);
-			} else {
-				markMessage(message, Message.STATUS_UNSEND);
-			}
-			if (message.getConversation().setOutgoingChatState(Config.DEFAULT_CHATSTATE)) {
-				if (this.sendChatStates()) {
-					packet.addChild(ChatState.toElement(message.getConversation().getOutgoingChatState()));
-				}
-			}
-			sendMessagePacket(account, packet);
-		}
+		sendMessage(message,true);
 	}
 
 	public void fetchRosterFromServer(final Account account) {
