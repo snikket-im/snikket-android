@@ -233,8 +233,9 @@ public class AxolotlService {
 		 */
 		@Override
 		public boolean isTrustedIdentity(String name, IdentityKey identityKey) {
-			Set<IdentityKey> trustedKeys = mXmppConnectionService.databaseBackend.loadIdentityKeys(account, name);
-			return trustedKeys.isEmpty() || trustedKeys.contains(identityKey);
+			//Set<IdentityKey> trustedKeys = mXmppConnectionService.databaseBackend.loadIdentityKeys(account, name);
+			//return trustedKeys.isEmpty() || trustedKeys.contains(identityKey);
+			return true;
 		}
 
 		// --------------------------------------
