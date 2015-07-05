@@ -1,5 +1,6 @@
 package eu.siacs.conversations.crypto.axolotl;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Base64;
 import android.util.Log;
@@ -638,7 +639,7 @@ public class AxolotlService {
 		return ownDeviceId;
 	}
 
-	public void registerDevices(final Jid jid, final Set<Integer> deviceIds) {
+	public void registerDevices(final Jid jid, @NonNull final Set<Integer> deviceIds) {
 		for(Integer i:deviceIds) {
 			Log.d(Config.LOGTAG, "Adding Device ID:"+ jid + ":"+i);
 		}

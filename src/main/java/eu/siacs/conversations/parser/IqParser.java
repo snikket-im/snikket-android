@@ -1,5 +1,6 @@
 package eu.siacs.conversations.parser;
 
+import android.support.annotation.NonNull;
 import android.util.Base64;
 import android.util.Log;
 
@@ -96,26 +97,25 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
 		return items.findChild("item");
 	}
 
+	@NonNull
 	public Set<Integer> deviceIds(final Element item) {
 		Set<Integer> deviceIds = new HashSet<>();
-		if (item == null) {
-			return null;
-		}
-		final Element list = item.findChild("list");
-		if(list == null) {
-			return null;
-		}
-		for(Element device : list.getChildren()) {
-			if(!device.getName().equals("device")) {
-				continue;
-			}
-			try {
-				Integer id = Integer.valueOf(device.getAttribute("id"));
-				deviceIds.add(id);
-			} catch (NumberFormatException e) {
-				Log.e(Config.LOGTAG, "Encountered nvalid <device> node in PEP:" + device.toString()
-					+ ", skipping...");
-				continue;
+		if (item != null) {
+			final Element list = item.findChild("list");
+			if (list != null) {
+				for (Element device : list.getChildren()) {
+					if (!device.getName().equals("device")) {
+						continue;
+					}
+					try {
+						Integer id = Integer.valueOf(device.getAttribute("id"));
+						deviceIds.add(id);
+					} catch (NumberFormatException e) {
+						Log.e(Config.LOGTAG, "Encountered nvalid <device> node in PEP:" + device.toString()
+								+ ", skipping...");
+						continue;
+					}
+				}
 			}
 		}
 		return deviceIds;
