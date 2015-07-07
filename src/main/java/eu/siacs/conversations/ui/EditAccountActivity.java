@@ -1,9 +1,13 @@
 package eu.siacs.conversations.ui;
 
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.app.PendingIntent;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,6 +26,8 @@ import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.Set;
 
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
@@ -54,9 +60,16 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 	private TextView mServerInfoPep;
 	private TextView mSessionEst;
 	private TextView mOtrFingerprint;
+	private TextView mAxolotlFingerprint;
+	private TextView mAxolotlDevicelist;
 	private ImageView mAvatar;
 	private RelativeLayout mOtrFingerprintBox;
+	private RelativeLayout mAxolotlFingerprintBox;
+	private RelativeLayout mAxolotlDevicelistBox;
 	private ImageButton mOtrFingerprintToClipboardButton;
+	private ImageButton mAxolotlFingerprintToClipboardButton;
+	private ImageButton mWipeAxolotlPepButton;
+	private ImageButton mRegenerateAxolotlKeyButton;
 
 	private Jid jidToEdit;
 	private Account mAccount;
@@ -310,6 +323,13 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 		this.mOtrFingerprint = (TextView) findViewById(R.id.otr_fingerprint);
 		this.mOtrFingerprintBox = (RelativeLayout) findViewById(R.id.otr_fingerprint_box);
 		this.mOtrFingerprintToClipboardButton = (ImageButton) findViewById(R.id.action_copy_to_clipboard);
+		this.mAxolotlFingerprint = (TextView) findViewById(R.id.axolotl_fingerprint);
+		this.mAxolotlFingerprintBox = (RelativeLayout) findViewById(R.id.axolotl_fingerprint_box);
+		this.mAxolotlFingerprintToClipboardButton = (ImageButton) findViewById(R.id.action_copy_to_clipboard);
+		this.mRegenerateAxolotlKeyButton = (ImageButton) findViewById(R.id.action_regenerate_axolotl_key);
+		this.mAxolotlDevicelist = (TextView) findViewById(R.id.axolotl_devicelist);
+		this.mAxolotlDevicelistBox = (RelativeLayout) findViewById(R.id.axolotl_devices_box);
+		this.mWipeAxolotlPepButton = (ImageButton) findViewById(R.id.action_wipe_axolotl_pep);
 		this.mSaveButton = (Button) findViewById(R.id.save_button);
 		this.mCancelButton = (Button) findViewById(R.id.cancel_button);
 		this.mSaveButton.setOnClickListener(this.mSaveButtonClickListener);
@@ -477,10 +497,10 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 			} else {
 				this.mServerInfoPep.setText(R.string.server_info_unavailable);
 			}
-			final String fingerprint = this.mAccount.getOtrFingerprint();
-			if (fingerprint != null) {
+			final String otrFingerprint = this.mAccount.getOtrFingerprint();
+			if (otrFingerprint != null) {
 				this.mOtrFingerprintBox.setVisibility(View.VISIBLE);
-				this.mOtrFingerprint.setText(CryptoHelper.prettifyFingerprint(fingerprint));
+				this.mOtrFingerprint.setText(CryptoHelper.prettifyFingerprint(otrFingerprint));
 				this.mOtrFingerprintToClipboardButton
 					.setVisibility(View.VISIBLE);
 				this.mOtrFingerprintToClipboardButton
@@ -489,7 +509,7 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 						@Override
 						public void onClick(final View v) {
 
-							if (copyTextToClipboard(fingerprint, R.string.otr_fingerprint)) {
+							if (copyTextToClipboard(otrFingerprint, R.string.otr_fingerprint)) {
 								Toast.makeText(
 										EditAccountActivity.this,
 										R.string.toast_message_otr_fingerprint,
@@ -499,6 +519,55 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 					});
 			} else {
 				this.mOtrFingerprintBox.setVisibility(View.GONE);
+			}
+			final Set<Integer> ownDevices = this.mAccount.getAxolotlService().getOwnDeviceIds();
+			if (ownDevices != null && !ownDevices.isEmpty()) {
+				this.mAxolotlDevicelistBox.setVisibility(View.VISIBLE);
+				this.mAxolotlDevicelist.setText(TextUtils.join(", ", ownDevices));
+				this.mWipeAxolotlPepButton
+						.setVisibility(View.VISIBLE);
+				this.mWipeAxolotlPepButton
+						.setOnClickListener(new View.OnClickListener() {
+							@Override
+							public void onClick(final View v) {
+								showWipePepDialog();
+							}
+						});
+			} else {
+				this.mAxolotlDevicelistBox.setVisibility(View.GONE);
+			}
+			final String axolotlFingerprint = this.mAccount.getAxolotlService().getOwnPublicKey().getFingerprint();
+			if (axolotlFingerprint != null) {
+				this.mAxolotlFingerprintBox.setVisibility(View.VISIBLE);
+				this.mAxolotlFingerprint.setText(CryptoHelper.prettifyFingerprint(axolotlFingerprint));
+				this.mAxolotlFingerprintToClipboardButton
+						.setVisibility(View.VISIBLE);
+				this.mAxolotlFingerprintToClipboardButton
+						.setOnClickListener(new View.OnClickListener() {
+
+							@Override
+							public void onClick(final View v) {
+
+								if (copyTextToClipboard(axolotlFingerprint, R.string.axolotl_fingerprint)) {
+									Toast.makeText(
+											EditAccountActivity.this,
+											R.string.toast_message_axolotl_fingerprint,
+											Toast.LENGTH_SHORT).show();
+								}
+							}
+						});
+				this.mRegenerateAxolotlKeyButton
+						.setVisibility(View.VISIBLE);
+				this.mRegenerateAxolotlKeyButton
+						.setOnClickListener(new View.OnClickListener() {
+
+							@Override
+							public void onClick(final View v) {
+								showRegenerateAxolotlKeyDialog();
+							}
+						});
+			} else {
+				this.mAxolotlFingerprintBox.setVisibility(View.GONE);
 			}
 		} else {
 			if (this.mAccount.errorStatus()) {
@@ -511,5 +580,37 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 			}
 			this.mStats.setVisibility(View.GONE);
 		}
+	}
+
+	public void showRegenerateAxolotlKeyDialog() {
+		Builder builder = new Builder(this);
+		builder.setTitle("Regenerate Key");
+		builder.setIconAttribute(android.R.attr.alertDialogIcon);
+		builder.setMessage("Are you sure you want to regenerate your Identity Key? (This will also wipe all established sessions and contact Identity Keys)");
+		builder.setNegativeButton(getString(R.string.cancel), null);
+		builder.setPositiveButton("Yes",
+				new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						mAccount.getAxolotlService().regenerateKeys();
+					}
+				});
+		builder.create().show();
+	}
+
+	public void showWipePepDialog() {
+		Builder builder = new Builder(this);
+		builder.setTitle("Wipe PEP");
+		builder.setIconAttribute(android.R.attr.alertDialogIcon);
+		builder.setMessage("Are you sure you want to wipe all other devices from the PEP device ID list?");
+		builder.setNegativeButton(getString(R.string.cancel), null);
+		builder.setPositiveButton("Yes",
+				new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						mAccount.getAxolotlService().wipeOtherPepDevices();
+					}
+				});
+		builder.create().show();
 	}
 }

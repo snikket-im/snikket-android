@@ -207,6 +207,8 @@
 	<string name="reception_failed">Reception failed</string>
 	<string name="your_fingerprint">Your fingerprint</string>
 	<string name="otr_fingerprint">OTR fingerprint</string>
+	<string name="axolotl_fingerprint">Axolotl fingerprint</string>
+	<string name="axolotl_devicelist">Other own Axolotl Devices</string>
 	<string name="verify">Verify</string>
 	<string name="decrypt">Decrypt</string>
 	<string name="conferences">Conferences</string>
@@ -313,6 +315,7 @@
 	<string name="pref_conference_name">Conference name</string>
 	<string name="pref_conference_name_summary">Use room’s subject instead of JID to identify conferences</string>
 	<string name="toast_message_otr_fingerprint">OTR fingerprint copied to clipboard!</string>
+	<string name="toast_message_axolotl_fingerprint">Axolotl fingerprint copied to clipboard!</string>
 	<string name="conference_banned">You are banned from this conference</string>
 	<string name="conference_members_only">This conference is members only</string>
 	<string name="conference_kicked">You have been kicked from this conference</string>
@@ -379,6 +382,9 @@
 	<string name="reset">Reset</string>
 	<string name="account_image_description">Account avatar</string>
 	<string name="copy_otr_clipboard_description">Copy OTR fingerprint to clipboard</string>
+	<string name="copy_axolotl_clipboard_description">Copy Axolotl fingerprint to clipboard</string>
+	<string name="regenerate_axolotl_key">Copy Axolotl fingerprint to clipboard</string>
+	<string name="wipe_axolotl_pep">Wipe other devices from PEP</string>
 	<string name="fetching_history_from_server">Fetching history from server</string>
 	<string name="no_more_history_on_server">No more history on server</string>
 	<string name="updating">Updating…</string>

@@ -176,6 +176,13 @@ public class AxolotlService {
 			return reg_id;
 		}
 
+		public void regenerate() {
+			mXmppConnectionService.databaseBackend.wipeAxolotlDb(account);
+			account.setKey(JSONKEY_CURRENT_PREKEY_ID, Integer.toString(0));
+			identityKeyPair = loadIdentityKeyPair();
+			currentPreKeyId = 0;
+			mXmppConnectionService.updateAccountUi();
+		}
 
 		/**
 		 * Get the local client's identity key pair.
@@ -602,6 +609,10 @@ public class AxolotlService {
 		this.ownDeviceId = axolotlStore.getLocalRegistrationId();
 	}
 
+	public IdentityKey getOwnPublicKey() {
+		return axolotlStore.getIdentityKeyPair().getPublicKey();
+	}
+
 	public void trustSession(AxolotlAddress counterpart) {
 		XmppAxolotlSession session = sessions.get(counterpart);
 		if (session != null) {
@@ -635,8 +646,17 @@ public class AxolotlService {
 		return sessions.hasAny(contactAddress);
 	}
 
+	public void regenerateKeys() {
+		axolotlStore.regenerate();
+		publishBundlesIfNeeded();
+	}
+
 	public int getOwnDeviceId() {
 		return ownDeviceId;
+	}
+
+	public Set<Integer> getOwnDeviceIds() {
+		return this.deviceIds.get(account.getJid().toBareJid());
 	}
 
 	public void registerDevices(final Jid jid, @NonNull final Set<Integer> deviceIds) {
@@ -649,6 +669,19 @@ public class AxolotlService {
 		}
 		this.deviceIds.put(jid, deviceIds);
 		publishOwnDeviceIdIfNeeded();
+	}
+
+	public void wipeOtherPepDevices() {
+		Set<Integer> deviceIds = new HashSet<>();
+		deviceIds.add(getOwnDeviceId());
+		IqPacket publish = mXmppConnectionService.getIqGenerator().publishDeviceIds(deviceIds);
+		Log.d(Config.LOGTAG, "Wiping all other devices from Pep:" + publish);
+		mXmppConnectionService.sendIqPacket(account, publish, new OnIqPacketReceived() {
+			@Override
+			public void onIqPacketReceived(Account account, IqPacket packet) {
+				// TODO: implement this!
+			}
+		});
 	}
 
 	public void publishOwnDeviceIdIfNeeded() {

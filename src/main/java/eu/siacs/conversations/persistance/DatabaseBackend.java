@@ -874,4 +874,25 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		db.execSQL("DROP TABLE IF EXISTS " + AxolotlService.SQLiteAxolotlStore.IDENTITIES_TABLENAME);
 		db.execSQL(CREATE_IDENTITIES_STATEMENT);
 	}
+	
+	public void wipeAxolotlDb(Account account) {
+		String accountName = account.getUuid();
+		Log.d(Config.LOGTAG, ">>> WIPING AXOLOTL DATABASE FOR ACCOUNT " + accountName + " <<<");
+		SQLiteDatabase db = this.getWritableDatabase();
+		String[] deleteArgs= {
+				accountName
+		};
+		db.delete(AxolotlService.SQLiteAxolotlStore.SESSION_TABLENAME,
+				AxolotlService.SQLiteAxolotlStore.ACCOUNT + " = ?",
+				deleteArgs);
+		db.delete(AxolotlService.SQLiteAxolotlStore.PREKEY_TABLENAME,
+				AxolotlService.SQLiteAxolotlStore.ACCOUNT + " = ?",
+				deleteArgs);
+		db.delete(AxolotlService.SQLiteAxolotlStore.SIGNED_PREKEY_TABLENAME,
+				AxolotlService.SQLiteAxolotlStore.ACCOUNT + " = ?",
+				deleteArgs);
+		db.delete(AxolotlService.SQLiteAxolotlStore.IDENTITIES_TABLENAME,
+				AxolotlService.SQLiteAxolotlStore.ACCOUNT + " = ?",
+				deleteArgs);
+	}
 }
