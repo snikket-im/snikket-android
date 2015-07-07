@@ -387,7 +387,7 @@ public class ContactDetailsActivity extends XmppActivity implements OnAccountUpd
 					.findViewById(R.id.button_remove);
 			remove.setVisibility(View.VISIBLE);
 			keyType.setText("Axolotl Fingerprint");
-			key.setText(identityKey.getFingerprint());
+			key.setText(CryptoHelper.prettifyFingerprint(identityKey.getFingerprint()));
 			keys.addView(view);
 			remove.setOnClickListener(new OnClickListener() {
 
