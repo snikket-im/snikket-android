@@ -283,14 +283,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 			cursor.close();
 		}
 		if (oldVersion < 15  && newVersion >= 15) {
-			db.execSQL("DROP TABLE IF EXISTS " + AxolotlService.SQLiteAxolotlStore.SESSION_TABLENAME);
-			db.execSQL(CREATE_SESSIONS_STATEMENT);
-			db.execSQL("DROP TABLE IF EXISTS " + AxolotlService.SQLiteAxolotlStore.PREKEY_TABLENAME);
-			db.execSQL(CREATE_PREKEYS_STATEMENT);
-			db.execSQL("DROP TABLE IF EXISTS " + AxolotlService.SQLiteAxolotlStore.SIGNED_PREKEY_TABLENAME);
-			db.execSQL(CREATE_SIGNED_PREKEYS_STATEMENT);
-			db.execSQL("DROP TABLE IF EXISTS " + AxolotlService.SQLiteAxolotlStore.IDENTITIES_TABLENAME);
-			db.execSQL(CREATE_IDENTITIES_STATEMENT);
+			recreateAxolotlDb();
 		}
 	}
 
@@ -867,5 +860,18 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 
 	public void storeOwnIdentityKeyPair(Account account, String name, IdentityKeyPair identityKeyPair) {
 		storeIdentityKey(account, name, true, Base64.encodeToString(identityKeyPair.serialize(),Base64.DEFAULT));
+	}
+
+	public void recreateAxolotlDb() {
+		Log.d(Config.LOGTAG, ">>> (RE)CREATING AXOLOTL DATABASE <<<");
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.execSQL("DROP TABLE IF EXISTS " + AxolotlService.SQLiteAxolotlStore.SESSION_TABLENAME);
+		db.execSQL(CREATE_SESSIONS_STATEMENT);
+		db.execSQL("DROP TABLE IF EXISTS " + AxolotlService.SQLiteAxolotlStore.PREKEY_TABLENAME);
+		db.execSQL(CREATE_PREKEYS_STATEMENT);
+		db.execSQL("DROP TABLE IF EXISTS " + AxolotlService.SQLiteAxolotlStore.SIGNED_PREKEY_TABLENAME);
+		db.execSQL(CREATE_SIGNED_PREKEYS_STATEMENT);
+		db.execSQL("DROP TABLE IF EXISTS " + AxolotlService.SQLiteAxolotlStore.IDENTITIES_TABLENAME);
+		db.execSQL(CREATE_IDENTITIES_STATEMENT);
 	}
 }
