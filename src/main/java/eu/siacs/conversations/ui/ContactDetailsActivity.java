@@ -377,7 +377,8 @@ public class ContactDetailsActivity extends XmppActivity implements OnAccountUpd
 				}
 			});
 		}
-		for(final IdentityKey identityKey:contact.getAxolotlIdentityKeys()) {
+		for(final IdentityKey identityKey : xmppConnectionService.databaseBackend.loadIdentityKeys(
+				contact.getAccount(), contact.getJid().toBareJid().toString())) {
 			hasKeys = true;
 			View view = inflater.inflate(R.layout.contact_key, keys, false);
 			TextView key = (TextView) view.findViewById(R.id.key);
