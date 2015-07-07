@@ -194,6 +194,7 @@ public class MessageParser extends AbstractParser implements
 			Set<Integer> deviceIds = mXmppConnectionService.getIqParser().deviceIds(item);
 			AxolotlService axolotlService = account.getAxolotlService();
 			axolotlService.registerDevices(from, deviceIds);
+			mXmppConnectionService.updateAccountUi();
 		}
 	}
 

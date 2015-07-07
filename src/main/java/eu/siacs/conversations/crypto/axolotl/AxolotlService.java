@@ -640,10 +640,15 @@ public class AxolotlService {
 	}
 
 	public void registerDevices(final Jid jid, @NonNull final Set<Integer> deviceIds) {
+		if(deviceIds.contains(getOwnDeviceId())) {
+			Log.d(Config.LOGTAG, "Skipping own Device ID:"+ jid + ":"+getOwnDeviceId());
+			deviceIds.remove(getOwnDeviceId());
+		}
 		for(Integer i:deviceIds) {
 			Log.d(Config.LOGTAG, "Adding Device ID:"+ jid + ":"+i);
 		}
 		this.deviceIds.put(jid, deviceIds);
+		publishOwnDeviceIdIfNeeded();
 	}
 
 	public void publishOwnDeviceIdIfNeeded() {
