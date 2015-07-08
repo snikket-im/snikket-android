@@ -820,7 +820,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 			try {
 				identityKeyPair = new IdentityKeyPair(Base64.decode(cursor.getString(cursor.getColumnIndex(AxolotlService.SQLiteAxolotlStore.KEY)),Base64.DEFAULT));
 			} catch (InvalidKeyException e) {
-				Log.d(Config.LOGTAG, "Encountered invalid IdentityKey in database for account" + account.getJid().toBareJid() + ", address: " + name);
+				Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account)+"Encountered invalid IdentityKey in database for account" + account.getJid().toBareJid() + ", address: " + name);
 			}
 		}
 		cursor.close();
@@ -836,7 +836,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 			try {
 				identityKeys.add(new IdentityKey(Base64.decode(cursor.getString(cursor.getColumnIndex(AxolotlService.SQLiteAxolotlStore.KEY)),Base64.DEFAULT),0));
 			} catch (InvalidKeyException e) {
-				Log.d(Config.LOGTAG, "Encountered invalid IdentityKey in database for account"+account.getJid().toBareJid()+", address: "+name);
+				Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account)+"Encountered invalid IdentityKey in database for account"+account.getJid().toBareJid()+", address: "+name);
 			}
 		}
 		cursor.close();
@@ -863,7 +863,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 	}
 
 	public void recreateAxolotlDb() {
-		Log.d(Config.LOGTAG, ">>> (RE)CREATING AXOLOTL DATABASE <<<");
+		Log.d(Config.LOGTAG, AxolotlService.LOGPREFIX+" : "+">>> (RE)CREATING AXOLOTL DATABASE <<<");
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.execSQL("DROP TABLE IF EXISTS " + AxolotlService.SQLiteAxolotlStore.SESSION_TABLENAME);
 		db.execSQL(CREATE_SESSIONS_STATEMENT);
@@ -877,7 +877,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 	
 	public void wipeAxolotlDb(Account account) {
 		String accountName = account.getUuid();
-		Log.d(Config.LOGTAG, ">>> WIPING AXOLOTL DATABASE FOR ACCOUNT " + accountName + " <<<");
+		Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account)+">>> WIPING AXOLOTL DATABASE FOR ACCOUNT " + accountName + " <<<");
 		SQLiteDatabase db = this.getWritableDatabase();
 		String[] deleteArgs= {
 				accountName

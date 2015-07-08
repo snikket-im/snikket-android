@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.Set;
 
 import eu.siacs.conversations.Config;
+import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.services.XmppConnectionService;
@@ -111,7 +112,7 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
 						Integer id = Integer.valueOf(device.getAttribute("id"));
 						deviceIds.add(id);
 					} catch (NumberFormatException e) {
-						Log.e(Config.LOGTAG, "Encountered nvalid <device> node in PEP:" + device.toString()
+						Log.e(Config.LOGTAG, AxolotlService.LOGPREFIX+" : "+"Encountered nvalid <device> node in PEP:" + device.toString()
 								+ ", skipping...");
 						continue;
 					}
@@ -138,7 +139,7 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
 		try {
 			publicKey = Curve.decodePoint(Base64.decode(signedPreKeyPublic.getContent(),Base64.DEFAULT), 0);
 		} catch (InvalidKeyException e) {
-			Log.e(Config.LOGTAG, "Invalid signedPreKeyPublic in PEP: " + e.getMessage());
+			Log.e(Config.LOGTAG, AxolotlService.LOGPREFIX+" : "+"Invalid signedPreKeyPublic in PEP: " + e.getMessage());
 		}
 		return publicKey;
 	}
@@ -160,7 +161,7 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
 		try {
 			identityKey = new IdentityKey(Base64.decode(identityKeyElement.getContent(), Base64.DEFAULT), 0);
 		} catch (InvalidKeyException e) {
-			Log.e(Config.LOGTAG,"Invalid identityKey in PEP: "+e.getMessage());
+			Log.e(Config.LOGTAG,AxolotlService.LOGPREFIX+" : "+"Invalid identityKey in PEP: "+e.getMessage());
 		}
 		return identityKey;
 	}
@@ -169,7 +170,7 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
 		Map<Integer, ECPublicKey> preKeyRecords = new HashMap<>();
 		Element item = getItem(packet);
 		if (item == null) {
-			Log.d(Config.LOGTAG, "Couldn't find <item> in bundle IQ packet: " + packet);
+			Log.d(Config.LOGTAG, AxolotlService.LOGPREFIX+" : "+"Couldn't find <item> in bundle IQ packet: " + packet);
 			return null;
 		}
 		final Element bundleElement = item.findChild("bundle");
@@ -178,12 +179,12 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
 		}
 		final Element prekeysElement = bundleElement.findChild("prekeys");
 		if(prekeysElement == null) {
-			Log.d(Config.LOGTAG, "Couldn't find <prekeys> in bundle IQ packet: " + packet);
+			Log.d(Config.LOGTAG, AxolotlService.LOGPREFIX+" : "+"Couldn't find <prekeys> in bundle IQ packet: " + packet);
 			return null;
 		}
 		for(Element preKeyPublicElement : prekeysElement.getChildren()) {
 			if(!preKeyPublicElement.getName().equals("preKeyPublic")){
-				Log.d(Config.LOGTAG, "Encountered unexpected tag in prekeys list: " + preKeyPublicElement);
+				Log.d(Config.LOGTAG, AxolotlService.LOGPREFIX+" : "+"Encountered unexpected tag in prekeys list: " + preKeyPublicElement);
 				continue;
 			}
 			Integer preKeyId = Integer.valueOf(preKeyPublicElement.getAttribute("preKeyId"));
@@ -191,7 +192,7 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
 				ECPublicKey preKeyPublic = Curve.decodePoint(Base64.decode(preKeyPublicElement.getContent(), Base64.DEFAULT), 0);
 				preKeyRecords.put(preKeyId, preKeyPublic);
 			} catch (InvalidKeyException e) {
-				Log.e(Config.LOGTAG, "Invalid preKeyPublic (ID="+preKeyId+") in PEP: "+ e.getMessage()+", skipping...");
+				Log.e(Config.LOGTAG, AxolotlService.LOGPREFIX+" : "+"Invalid preKeyPublic (ID="+preKeyId+") in PEP: "+ e.getMessage()+", skipping...");
 				continue;
 			}
 		}

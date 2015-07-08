@@ -189,7 +189,7 @@ public class MessageParser extends AbstractParser implements
 				mXmppConnectionService.updateAccountUi();
 			}
 		} else if (AxolotlService.PEP_DEVICE_LIST.equals(node)) {
-			Log.d(Config.LOGTAG, "Received PEP device list update from "+ from + ", processing...");
+			Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account)+"Received PEP device list update from "+ from + ", processing...");
 			Element item = items.findChild("item");
 			Set<Integer> deviceIds = mXmppConnectionService.getIqParser().deviceIds(item);
 			AxolotlService axolotlService = account.getAxolotlService();
