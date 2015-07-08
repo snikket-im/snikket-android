@@ -89,7 +89,6 @@ public class AxolotlService {
 		public static final String TRUSTED = "trusted";
 		public static final String OWN = "ownkey";
 
-		public static final String JSONKEY_IDENTITY_KEY_PAIR = "axolotl_key";
 		public static final String JSONKEY_REGISTRATION_ID = "axolotl_reg_id";
 		public static final String JSONKEY_CURRENT_PREKEY_ID = "axolotl_cur_prekey_id";
 
