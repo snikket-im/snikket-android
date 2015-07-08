@@ -453,11 +453,11 @@ public class AxolotlService {
 	}
 
 	public static class XmppAxolotlSession {
-		private SessionCipher cipher;
+		private final SessionCipher cipher;
 		private boolean isTrusted = false;
 		private Integer preKeyId = null;
-		private SQLiteAxolotlStore sqLiteAxolotlStore;
-		private AxolotlAddress remoteAddress;
+		private final SQLiteAxolotlStore sqLiteAxolotlStore;
+		private final AxolotlAddress remoteAddress;
 		private final Account account;
 
 		public XmppAxolotlSession(Account account, SQLiteAxolotlStore store, AxolotlAddress remoteAddress) {
