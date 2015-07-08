@@ -325,6 +325,9 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 				case Message.ENCRYPTION_OTR:
 					mEditMessage.setHint(getString(R.string.send_otr_message));
 					break;
+				case Message.ENCRYPTION_AXOLOTL:
+					mEditMessage.setHint(getString(R.string.send_axolotl_message));
+					break;
 				case Message.ENCRYPTION_PGP:
 					mEditMessage.setHint(getString(R.string.send_pgp_message));
 					break;
