@@ -110,7 +110,7 @@ public class AxolotlService {
 
 		private static int generateRegistrationId() {
 			Log.i(Config.LOGTAG, AxolotlService.LOGPREFIX+" : "+"Generating axolotl registration ID...");
-			int reg_id = KeyHelper.generateRegistrationId(false);
+			int reg_id = KeyHelper.generateRegistrationId(true);
 			return reg_id;
 		}
 
