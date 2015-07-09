@@ -132,7 +132,7 @@ public class DNSHelper {
 		} catch (SocketTimeoutException e) {
 			bundle.putString("error", "timeout");
 		} catch (Exception e) {
-			Log.d(Config.LOGTAG,e.getMessage());
+			e.printStackTrace();
 			bundle.putString("error", "unhandled");
 		}
 		return bundle;
