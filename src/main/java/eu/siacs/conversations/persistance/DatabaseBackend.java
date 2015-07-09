@@ -594,7 +594,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		Cursor cursor = db.query(AxolotlService.SQLiteAxolotlStore.SESSION_TABLENAME,
 				columns,
 				AxolotlService.SQLiteAxolotlStore.ACCOUNT + " = ? AND "
-						+ AxolotlService.SQLiteAxolotlStore.NAME + " = ? AND ",
+						+ AxolotlService.SQLiteAxolotlStore.NAME + " = ?",
 				selectionArgs,
 				null, null, null);
 
