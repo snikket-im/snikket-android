@@ -383,11 +383,14 @@ public class ContactDetailsActivity extends XmppActivity implements OnAccountUpd
 			View view = inflater.inflate(R.layout.contact_key, keys, false);
 			TextView key = (TextView) view.findViewById(R.id.key);
 			TextView keyType = (TextView) view.findViewById(R.id.key_type);
+			TextView keyTrust = (TextView) view.findViewById(R.id.key_trust);
 			ImageButton remove = (ImageButton) view
 					.findViewById(R.id.button_remove);
 			remove.setVisibility(View.VISIBLE);
+			keyTrust.setVisibility(View.VISIBLE);
 			keyType.setText("Axolotl Fingerprint");
 			key.setText(CryptoHelper.prettifyFingerprint(identityKey.getFingerprint()));
+			keyTrust.setText(contact.getAccount().getAxolotlService().getFingerprintTrust(contact.getJid().toBareJid().toString(), identityKey.getFingerprint().replaceAll("\\s","")).toString());
 			keys.addView(view);
 			remove.setOnClickListener(new OnClickListener() {
 

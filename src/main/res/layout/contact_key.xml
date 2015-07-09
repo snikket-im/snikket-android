@@ -3,12 +3,11 @@
     android:layout_width="wrap_content"
     android:layout_height="match_parent" >
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_toLeftOf="@+id/button_remove"
-        android:orientation="vertical"
         android:padding="8dp" >
 
         <TextView
@@ -16,6 +15,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/black87"
+            android:layout_alignParentLeft="true"
             android:textSize="?attr/TextSizeBody"
             android:typeface="monospace" />
 
@@ -24,8 +24,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/black54"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/key"
             android:textSize="?attr/TextSizeInfo"/>
-    </LinearLayout>
+
+        <TextView
+            android:id="@+id/key_trust"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/key"
+            android:visibility="gone"
+            android:textColor="@color/black54"
+            android:textSize="?attr/TextSizeInfo"/>
+    </RelativeLayout>
 
     <ImageButton
         android:id="@+id/button_remove"
