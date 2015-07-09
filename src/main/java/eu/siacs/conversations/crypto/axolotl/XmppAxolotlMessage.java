@@ -67,10 +67,12 @@ public class XmppAxolotlMessage {
 	public static class XmppAxolotlPlaintextMessage {
 		private final AxolotlService.XmppAxolotlSession session;
 		private final String plaintext;
+		private final String fingerprint;
 
-		public XmppAxolotlPlaintextMessage(AxolotlService.XmppAxolotlSession session, String plaintext) {
+		public XmppAxolotlPlaintextMessage(AxolotlService.XmppAxolotlSession session, String plaintext, String fingerprint) {
 			this.session = session;
 			this.plaintext = plaintext;
+			this.fingerprint = fingerprint;
 		}
 
 		public String getPlaintext() {
@@ -81,6 +83,9 @@ public class XmppAxolotlMessage {
 			return session;
 		}
 
+		public String getFingerprint() {
+			return fingerprint;
+		}
 	}
 
 	public XmppAxolotlMessage(Jid from, Element axolotlMessage) {
@@ -167,7 +172,7 @@ public class XmppAxolotlMessage {
 	}
 
 
-	public XmppAxolotlPlaintextMessage decrypt(AxolotlService.XmppAxolotlSession session, byte[] key) {
+	public XmppAxolotlPlaintextMessage decrypt(AxolotlService.XmppAxolotlSession session, byte[] key, String fingerprint) {
 		XmppAxolotlPlaintextMessage plaintextMessage = null;
 		try {
 
@@ -178,7 +183,7 @@ public class XmppAxolotlMessage {
 			cipher.init(Cipher.DECRYPT_MODE, keySpec, ivSpec);
 
 			String plaintext = new String(cipher.doFinal(ciphertext));
-			plaintextMessage = new XmppAxolotlPlaintextMessage(session, plaintext);
+			plaintextMessage = new XmppAxolotlPlaintextMessage(session, plaintext, fingerprint);
 
 		} catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException
 				| InvalidAlgorithmParameterException | IllegalBlockSizeException

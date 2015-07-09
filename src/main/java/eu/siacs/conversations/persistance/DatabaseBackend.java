@@ -82,7 +82,6 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 				+ AxolotlService.SQLiteAxolotlStore.ACCOUNT + " TEXT,  "
 				+ AxolotlService.SQLiteAxolotlStore.NAME + " TEXT, "
 				+ AxolotlService.SQLiteAxolotlStore.DEVICE_ID + " INTEGER, "
-				+ AxolotlService.SQLiteAxolotlStore.TRUSTED + " INTEGER, "
 				+ AxolotlService.SQLiteAxolotlStore.KEY + " TEXT, FOREIGN KEY("
 					+ AxolotlService.SQLiteAxolotlStore.ACCOUNT
 				+ ") REFERENCES " + Account.TABLENAME + "(" + Account.UUID + ") ON DELETE CASCADE, "
@@ -97,6 +96,8 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 			+ AxolotlService.SQLiteAxolotlStore.ACCOUNT + " TEXT,  "
 			+ AxolotlService.SQLiteAxolotlStore.NAME + " TEXT, "
 			+ AxolotlService.SQLiteAxolotlStore.OWN + " INTEGER, "
+			+ AxolotlService.SQLiteAxolotlStore.FINGERPRINT + " TEXT PRIMARY KEY ON CONFLICT IGNORE, "
+			+ AxolotlService.SQLiteAxolotlStore.TRUSTED + " INTEGER, "
 			+ AxolotlService.SQLiteAxolotlStore.KEY + " TEXT, FOREIGN KEY("
 			+ AxolotlService.SQLiteAxolotlStore.ACCOUNT
 			+ ") REFERENCES " + Account.TABLENAME + "(" + Account.UUID + ") ON DELETE CASCADE "
@@ -132,6 +133,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 				+ Message.STATUS + " NUMBER," + Message.TYPE + " NUMBER, "
 				+ Message.RELATIVE_FILE_PATH + " TEXT, "
 				+ Message.SERVER_MSG_ID + " TEXT, "
+				+ Message.FINGERPRINT + " TEXT, "
 				+ Message.REMOTE_MSG_ID + " TEXT, FOREIGN KEY("
 				+ Message.CONVERSATION + ") REFERENCES "
 				+ Conversation.TABLENAME + "(" + Conversation.UUID
@@ -284,6 +286,8 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		}
 		if (oldVersion < 15  && newVersion >= 15) {
 			recreateAxolotlDb();
+			db.execSQL("ALTER TABLE " + Message.TABLENAME + " ADD COLUMN "
+					+ Message.FINGERPRINT + " TEXT");
 		}
 	}
 
@@ -645,28 +649,6 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 				args);
 	}
 
-	public boolean isTrustedSession(Account account, AxolotlAddress contact) {
-		boolean trusted = false;
-		Cursor cursor = getCursorForSession(account, contact);
-		if(cursor.getCount() != 0) {
-			cursor.moveToFirst();
-			trusted = cursor.getInt(cursor.getColumnIndex(
-					AxolotlService.SQLiteAxolotlStore.TRUSTED)) > 0;
-		}
-		cursor.close();
-		return trusted;
-	}
-
-	public void setTrustedSession(Account account, AxolotlAddress contact, boolean trusted) {
-		SQLiteDatabase db = this.getWritableDatabase();
-		ContentValues values = new ContentValues();
-		values.put(AxolotlService.SQLiteAxolotlStore.NAME, contact.getName());
-		values.put(AxolotlService.SQLiteAxolotlStore.DEVICE_ID, contact.getDeviceId());
-		values.put(AxolotlService.SQLiteAxolotlStore.ACCOUNT, account.getUuid());
-		values.put(AxolotlService.SQLiteAxolotlStore.TRUSTED, trusted?1:0);
-		db.insert(AxolotlService.SQLiteAxolotlStore.SESSION_TABLENAME, null, values);
-	}
-
 	private Cursor getCursorForPreKey(Account account, int preKeyId) {
 		SQLiteDatabase db = this.getReadableDatabase();
 		String[] columns = {AxolotlService.SQLiteAxolotlStore.KEY};
@@ -796,17 +778,28 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 	}
 
 	private Cursor getIdentityKeyCursor(Account account, String name, boolean own) {
+		return getIdentityKeyCursor(account, name, own, null);
+	}
+
+	private Cursor getIdentityKeyCursor(Account account, String name, boolean own, String fingerprint) {
 		final SQLiteDatabase db = this.getReadableDatabase();
-		String[] columns = {AxolotlService.SQLiteAxolotlStore.KEY};
-		String[] selectionArgs = {account.getUuid(),
-				name,
-				own?"1":"0"};
+		String[] columns = {AxolotlService.SQLiteAxolotlStore.TRUSTED,
+				AxolotlService.SQLiteAxolotlStore.KEY};
+		ArrayList<String> selectionArgs = new ArrayList<>(4);
+		selectionArgs.add(account.getUuid());
+		selectionArgs.add(name);
+		selectionArgs.add(own?"1":"0");
+		String selectionString = AxolotlService.SQLiteAxolotlStore.ACCOUNT + " = ? AND "
+				+ AxolotlService.SQLiteAxolotlStore.NAME + " = ? AND "
+				+ AxolotlService.SQLiteAxolotlStore.OWN + " = ? ";
+		if (fingerprint != null){
+			selectionArgs.add(fingerprint);
+			selectionString += "AND " +AxolotlService.SQLiteAxolotlStore.FINGERPRINT + " = ? ";
+		}
 		Cursor cursor = db.query(AxolotlService.SQLiteAxolotlStore.IDENTITIES_TABLENAME,
 				columns,
-				AxolotlService.SQLiteAxolotlStore.ACCOUNT + " = ? AND "
-						+ AxolotlService.SQLiteAxolotlStore.NAME + " = ? AND "
-						+ AxolotlService.SQLiteAxolotlStore.OWN + " = ? ",
-				selectionArgs,
+				selectionString,
+				selectionArgs.toArray(new String[selectionArgs.size()]),
 				null, null, null);
 
 		return cursor;
@@ -844,22 +837,52 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		return identityKeys;
 	}
 
-	private void storeIdentityKey(Account account, String name, boolean own, String base64Serialized) {
+	private void storeIdentityKey(Account account, String name, boolean own, String fingerprint, String base64Serialized) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		ContentValues values = new ContentValues();
 		values.put(AxolotlService.SQLiteAxolotlStore.ACCOUNT, account.getUuid());
 		values.put(AxolotlService.SQLiteAxolotlStore.NAME, name);
-		values.put(AxolotlService.SQLiteAxolotlStore.OWN, own?1:0);
+		values.put(AxolotlService.SQLiteAxolotlStore.OWN, own ? 1 : 0);
+		values.put(AxolotlService.SQLiteAxolotlStore.FINGERPRINT, fingerprint);
 		values.put(AxolotlService.SQLiteAxolotlStore.KEY, base64Serialized);
 		db.insert(AxolotlService.SQLiteAxolotlStore.IDENTITIES_TABLENAME, null, values);
 	}
 
+	public AxolotlService.SQLiteAxolotlStore.Trust isIdentityKeyTrusted(Account account, String name, String fingerprint) {
+		Cursor cursor = getIdentityKeyCursor(account, name, false, fingerprint);
+		AxolotlService.SQLiteAxolotlStore.Trust trust = null;
+		if (cursor.getCount() > 0) {
+			cursor.moveToFirst();
+			int trustValue = cursor.getInt(cursor.getColumnIndex(AxolotlService.SQLiteAxolotlStore.TRUSTED));
+			trust = AxolotlService.SQLiteAxolotlStore.Trust.values()[trustValue];
+		}
+		cursor.close();
+		return trust;
+	}
+
+	public boolean setIdentityKeyTrust(Account account, String name, String fingerprint, AxolotlService.SQLiteAxolotlStore.Trust trust) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		String[] selectionArgs = {
+				account.getUuid(),
+				name,
+				fingerprint
+		};
+		ContentValues values = new ContentValues();
+		values.put(AxolotlService.SQLiteAxolotlStore.TRUSTED, trust.ordinal());
+		int rows = db.update(AxolotlService.SQLiteAxolotlStore.IDENTITIES_TABLENAME, values,
+				AxolotlService.SQLiteAxolotlStore.ACCOUNT + " = ? "
+				+ AxolotlService.SQLiteAxolotlStore.NAME + " = ? "
+				+ AxolotlService.SQLiteAxolotlStore.FINGERPRINT + " = ? ",
+				selectionArgs);
+		return rows == 1;
+	}
+
 	public void storeIdentityKey(Account account, String name, IdentityKey identityKey) {
-		storeIdentityKey(account, name, false, Base64.encodeToString(identityKey.serialize(), Base64.DEFAULT));
+		storeIdentityKey(account, name, false, identityKey.getFingerprint().replaceAll("\\s", ""), Base64.encodeToString(identityKey.serialize(), Base64.DEFAULT));
 	}
 
 	public void storeOwnIdentityKeyPair(Account account, String name, IdentityKeyPair identityKeyPair) {
-		storeIdentityKey(account, name, true, Base64.encodeToString(identityKeyPair.serialize(),Base64.DEFAULT));
+		storeIdentityKey(account, name, true, identityKeyPair.getPublicKey().getFingerprint().replaceAll("\\s", ""), Base64.encodeToString(identityKeyPair.serialize(), Base64.DEFAULT));
 	}
 
 	public void recreateAxolotlDb() {

@@ -54,6 +54,7 @@ public class Message extends AbstractEntity {
 	public static final String REMOTE_MSG_ID = "remoteMsgId";
 	public static final String SERVER_MSG_ID = "serverMsgId";
 	public static final String RELATIVE_FILE_PATH = "relativeFilePath";
+	public static final String FINGERPRINT = "axolotl_fingerprint";
 	public static final String ME_COMMAND = "/me ";
 
 
@@ -67,7 +68,6 @@ public class Message extends AbstractEntity {
 	protected int encryption;
 	protected int status;
 	protected int type;
-	private AxolotlService.XmppAxolotlSession axolotlSession = null;
 	protected String relativeFilePath;
 	protected boolean read = true;
 	protected String remoteMsgId = null;
@@ -76,6 +76,7 @@ public class Message extends AbstractEntity {
 	protected Transferable transferable = null;
 	private Message mNextMessage = null;
 	private Message mPreviousMessage = null;
+	private String axolotlFingerprint = null;
 
 	private Message() {
 
@@ -97,6 +98,7 @@ public class Message extends AbstractEntity {
 				TYPE_TEXT,
 				null,
 				null,
+				null,
 				null);
 		this.conversation = conversation;
 	}
@@ -104,7 +106,7 @@ public class Message extends AbstractEntity {
 	private Message(final String uuid, final String conversationUUid, final Jid counterpart,
 					final Jid trueCounterpart, final String body, final long timeSent,
 					final int encryption, final int status, final int type, final String remoteMsgId,
-					final String relativeFilePath, final String serverMsgId) {
+					final String relativeFilePath, final String serverMsgId, final String fingerprint) {
 		this.uuid = uuid;
 		this.conversationUuid = conversationUUid;
 		this.counterpart = counterpart;
@@ -117,6 +119,7 @@ public class Message extends AbstractEntity {
 		this.remoteMsgId = remoteMsgId;
 		this.relativeFilePath = relativeFilePath;
 		this.serverMsgId = serverMsgId;
+		this.axolotlFingerprint = fingerprint;
 	}
 
 	public static Message fromCursor(Cursor cursor) {
@@ -153,7 +156,8 @@ public class Message extends AbstractEntity {
 				cursor.getInt(cursor.getColumnIndex(TYPE)),
 				cursor.getString(cursor.getColumnIndex(REMOTE_MSG_ID)),
 				cursor.getString(cursor.getColumnIndex(RELATIVE_FILE_PATH)),
-				cursor.getString(cursor.getColumnIndex(SERVER_MSG_ID)));
+				cursor.getString(cursor.getColumnIndex(SERVER_MSG_ID)),
+				cursor.getString(cursor.getColumnIndex(FINGERPRINT)));
 	}
 
 	public static Message createStatusMessage(Conversation conversation, String body) {
@@ -187,6 +191,7 @@ public class Message extends AbstractEntity {
 		values.put(REMOTE_MSG_ID, remoteMsgId);
 		values.put(RELATIVE_FILE_PATH, relativeFilePath);
 		values.put(SERVER_MSG_ID, serverMsgId);
+		values.put(FINGERPRINT, axolotlFingerprint);
 		return values;
 	}
 
@@ -667,11 +672,7 @@ public class Message extends AbstractEntity {
 		public int height = 0;
 	}
 
-	public boolean isTrusted() {
-		return this.axolotlSession != null && this.axolotlSession.isTrusted();
-	}
-
-	public void setAxolotlSession(AxolotlService.XmppAxolotlSession session) {
-		this.axolotlSession = session;
+	public void setAxolotlFingerprint(String fingerprint) {
+		this.axolotlFingerprint = fingerprint;
 	}
 }

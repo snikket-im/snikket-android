@@ -106,7 +106,8 @@ public class MessageParser extends AbstractParser implements
 		XmppAxolotlMessage.XmppAxolotlPlaintextMessage plaintextMessage = service.processReceiving(xmppAxolotlMessage);
 		if(plaintextMessage != null) {
 			finishedMessage = new Message(conversation, plaintextMessage.getPlaintext(), Message.ENCRYPTION_AXOLOTL, status);
-			finishedMessage.setAxolotlSession(plaintextMessage.getSession());
+			finishedMessage.setAxolotlFingerprint(plaintextMessage.getFingerprint());
+			Log.d(Config.LOGTAG, AxolotlService.getLogprefix(finishedMessage.getConversation().getAccount())+" Received Message with session fingerprint: "+plaintextMessage.getFingerprint());
 		}
 
 		return finishedMessage;

@@ -85,6 +85,7 @@ public class AxolotlService {
 		public static final String DEVICE_ID = "device_id";
 		public static final String ID = "id";
 		public static final String KEY = "key";
+		public static final String FINGERPRINT = "fingerprint";
 		public static final String NAME = "name";
 		public static final String TRUSTED = "trusted";
 		public static final String OWN = "ownkey";
@@ -99,6 +100,23 @@ public class AxolotlService {
 		private final int localRegistrationId;
 		private int currentPreKeyId = 0;
 
+		public enum Trust {
+			UNDECIDED, // 0
+			TRUSTED,
+			UNTRUSTED;
+
+			public String toString() {
+				switch(this){
+					case UNDECIDED:
+						return "Trust undecided";
+					case TRUSTED:
+						return "Trusted";
+					case UNTRUSTED:
+					default:
+						return "Untrusted";
+				}
+			}
+		};
 
 		private static IdentityKeyPair generateIdentityKeyPair() {
 			Log.i(Config.LOGTAG, AxolotlService.LOGPREFIX+" : "+"Generating axolotl IdentityKeyPair...");
@@ -242,9 +260,15 @@ public class AxolotlService {
 		 */
 		@Override
 		public boolean isTrustedIdentity(String name, IdentityKey identityKey) {
-			//Set<IdentityKey> trustedKeys = mXmppConnectionService.databaseBackend.loadIdentityKeys(account, name);
-			//return trustedKeys.isEmpty() || trustedKeys.contains(identityKey);
 			return true;
+		}
+
+		public Trust getFingerprintTrust(String name, String fingerprint) {
+			return mXmppConnectionService.databaseBackend.isIdentityKeyTrusted(account, name, fingerprint);
+		}
+
+		public void setFingerprintTrust(String name, String fingerprint, Trust trust) {
+			mXmppConnectionService.databaseBackend.setIdentityKeyTrust(account, name, fingerprint, trust);
 		}
 
 		// --------------------------------------
@@ -323,14 +347,6 @@ public class AxolotlService {
 		public void deleteAllSessions(String name) {
 			mXmppConnectionService.databaseBackend.deleteAllSessions(account,
 					new AxolotlAddress(name, 0));
-		}
-
-		public boolean isTrustedSession(AxolotlAddress address) {
-			return mXmppConnectionService.databaseBackend.isTrustedSession(this.account, address);
-		}
-
-		public void setTrustedSession(AxolotlAddress address, boolean trusted) {
-			mXmppConnectionService.databaseBackend.setTrustedSession(this.account, address, trusted);
 		}
 
 		// --------------------------------------
@@ -453,27 +469,22 @@ public class AxolotlService {
 
 	public static class XmppAxolotlSession {
 		private final SessionCipher cipher;
-		private boolean isTrusted = false;
 		private Integer preKeyId = null;
 		private final SQLiteAxolotlStore sqLiteAxolotlStore;
 		private final AxolotlAddress remoteAddress;
 		private final Account account;
+		private String fingerprint = null;
+
+		public XmppAxolotlSession(Account account, SQLiteAxolotlStore store, AxolotlAddress remoteAddress, String fingerprint) {
+			this(account, store, remoteAddress);
+			this.fingerprint = fingerprint;
+		}
 
 		public XmppAxolotlSession(Account account, SQLiteAxolotlStore store, AxolotlAddress remoteAddress) {
 			this.cipher = new SessionCipher(store, remoteAddress);
 			this.remoteAddress = remoteAddress;
 			this.sqLiteAxolotlStore = store;
 			this.account = account;
-			this.isTrusted = sqLiteAxolotlStore.isTrustedSession(remoteAddress);
-		}
-
-		public void trust() {
-			sqLiteAxolotlStore.setTrustedSession(remoteAddress, true);
-			this.isTrusted = true;
-		}
-
-		public boolean isTrusted() {
-			return this.isTrusted;
 		}
 
 		public Integer getPreKeyId() {
@@ -481,7 +492,12 @@ public class AxolotlService {
 		}
 
 		public void resetPreKeyId() {
+
 			preKeyId = null;
+		}
+
+		public String getFingerprint() {
+			return fingerprint;
 		}
 
 		public byte[] processReceiving(XmppAxolotlMessage.XmppAxolotlMessageHeader incomingHeader) {
@@ -490,9 +506,15 @@ public class AxolotlService {
 				try {
 					PreKeyWhisperMessage message = new PreKeyWhisperMessage(incomingHeader.getContents());
 					Log.i(Config.LOGTAG, AxolotlService.getLogprefix(account)+"PreKeyWhisperMessage received, new session ID:" + message.getSignedPreKeyId() + "/" + message.getPreKeyId());
-					plaintext = cipher.decrypt(message);
-					if (message.getPreKeyId().isPresent()) {
-						preKeyId = message.getPreKeyId().get();
+					String fingerprint = message.getIdentityKey().getFingerprint().replaceAll("\\s", "");
+					if (this.fingerprint != null && !this.fingerprint.equals(fingerprint)) {
+						Log.e(Config.LOGTAG, AxolotlService.getLogprefix(account)+"Had session with fingerprint "+ this.fingerprint+", received message with fingerprint "+fingerprint);
+					} else {
+						this.fingerprint = fingerprint;
+						plaintext = cipher.decrypt(message);
+						if (message.getPreKeyId().isPresent()) {
+							preKeyId = message.getPreKeyId().get();
+						}
 					}
 				} catch (InvalidMessageException | InvalidVersionException e) {
 					Log.i(Config.LOGTAG, AxolotlService.getLogprefix(account)+"WhisperMessage received");
@@ -582,7 +604,9 @@ public class AxolotlService {
 				List<Integer> deviceIDs = store.getSubDeviceSessions(address);
 				for (Integer deviceId : deviceIDs) {
 					AxolotlAddress axolotlAddress = new AxolotlAddress(address, deviceId);
-					this.put(axolotlAddress, new XmppAxolotlSession(account, store, axolotlAddress));
+					Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account)+"Building session for remote address: "+axolotlAddress.toString());
+					String fingerprint = store.loadSession(axolotlAddress).getSessionState().getRemoteIdentityKey().getFingerprint().replaceAll("\\s", "");
+					this.put(axolotlAddress, new XmppAxolotlSession(account, store, axolotlAddress, fingerprint));
 				}
 			}
 		}
@@ -617,18 +641,6 @@ public class AxolotlService {
 
 	public IdentityKey getOwnPublicKey() {
 		return axolotlStore.getIdentityKeyPair().getPublicKey();
-	}
-
-	public void trustSession(AxolotlAddress counterpart) {
-		XmppAxolotlSession session = sessions.get(counterpart);
-		if (session != null) {
-			session.trust();
-		}
-	}
-
-	public boolean isTrustedSession(AxolotlAddress counterpart) {
-		XmppAxolotlSession session = sessions.get(counterpart);
-		return session != null && session.isTrusted();
 	}
 
 	private AxolotlAddress getAddressForJid(Jid jid) {
@@ -808,10 +820,18 @@ public class AxolotlService {
 	}
 
 	public boolean isContactAxolotlCapable(Contact contact) {
+
 		Jid jid = contact.getJid().toBareJid();
 		AxolotlAddress address = new AxolotlAddress(jid.toString(), 0);
 		return sessions.hasAny(address) ||
 				( deviceIds.containsKey(jid) && !deviceIds.get(jid).isEmpty());
+	}
+	public SQLiteAxolotlStore.Trust getFingerprintTrust(String name, String fingerprint) {
+		return axolotlStore.getFingerprintTrust(name, fingerprint);
+	}
+
+	public void setFingerprintTrust(String name, String fingerprint, SQLiteAxolotlStore.Trust trust) {
+		axolotlStore.setFingerprintTrust(name, fingerprint, trust);
 	}
 
 	private void buildSessionFromPEP(final Conversation conversation, final AxolotlAddress address) {
@@ -851,7 +871,7 @@ public class AxolotlService {
 					try {
 						SessionBuilder builder = new SessionBuilder(axolotlStore, address);
 						builder.process(preKeyBundle);
-						XmppAxolotlSession session = new XmppAxolotlSession(account, axolotlStore, address);
+						XmppAxolotlSession session = new XmppAxolotlSession(account, axolotlStore, address, bundle.getIdentityKey().getFingerprint().replaceAll("\\s", ""));
 						sessions.put(address, session);
 						fetchStatusMap.put(address, FetchStatus.SUCCESS);
 					} catch (UntrustedIdentityException|InvalidKeyException e) {
@@ -890,7 +910,7 @@ public class AxolotlService {
 				addresses.add(new AxolotlAddress(contactJid.toString(), foreignId));
 			}
 		} else {
-			Log.w(Config.LOGTAG, AxolotlService.getLogprefix(account)+"Have no target devices in PEP!");
+			Log.w(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Have no target devices in PEP!");
 		}
 		Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account)+"Checking own account "+account.getJid().toBareJid());
 		if(deviceIds.get(account.getJid().toBareJid()) != null) {
@@ -1003,7 +1023,7 @@ public class AxolotlService {
 				byte[] payloadKey = session.processReceiving(header);
 				if (payloadKey != null) {
 					Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account)+"Got payload key from axolotl header. Decrypting message...");
-					plaintextMessage = message.decrypt(session, payloadKey);
+					plaintextMessage = message.decrypt(session, payloadKey, session.getFingerprint());
 				}
 				Integer preKeyId = session.getPreKeyId();
 				if (preKeyId != null) {
