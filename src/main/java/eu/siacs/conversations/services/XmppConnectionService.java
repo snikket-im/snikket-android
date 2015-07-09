@@ -594,9 +594,6 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		this.databaseBackend = DatabaseBackend.getInstance(getApplicationContext());
 		this.accounts = databaseBackend.getAccounts();
 
-		for (final Account account : this.accounts) {
-			account.initAccountServices(this);
-		}
 		restoreFromDatabase();
 
 		getContentResolver().registerContentObserver(ContactsContract.Contacts.CONTENT_URI, true, contactObserver);
@@ -955,6 +952,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 					Log.d(Config.LOGTAG,"restoring roster");
 					for(Account account : accounts) {
 						databaseBackend.readRoster(account.getRoster());
+						account.initAccountServices(XmppConnectionService.this);
 					}
 					getBitmapCache().evictAll();
 					Looper.prepare();
