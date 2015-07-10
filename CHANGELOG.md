@@ -1,5 +1,8 @@
 ###Changelog
 
+####Version 1.5.0
+* upload files to HTTP host and share them in MUCs. requiers new [HttpUploadComponent](https://github.com/siacs/HttpUploadComponent) on server side
+
 ####Version 1.4.5
 * fixes to message parser to not display some ejabberd muc status messages
 
