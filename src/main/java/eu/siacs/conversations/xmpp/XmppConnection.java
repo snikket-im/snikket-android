@@ -366,17 +366,21 @@ public class XmppConnection implements Runnable {
 							} else if (nextTag.isStart("a")) {
 								final Element ack = tagReader.readElement(nextTag);
 								lastPacketReceived = SystemClock.elapsedRealtime();
-								final int serverSequence = Integer.parseInt(ack.getAttribute("h"));
-								if (Config.EXTENDED_SM_LOGGING) {
-									Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": server acknowledged stanza #" + serverSequence);
-								}
-								final String msgId = this.messageReceipts.get(serverSequence);
-								if (msgId != null) {
-									if (this.acknowledgedListener != null) {
-										this.acknowledgedListener.onMessageAcknowledged(
-												account, msgId);
+								try {
+									final int serverSequence = Integer.parseInt(ack.getAttribute("h"));
+									if (Config.EXTENDED_SM_LOGGING) {
+										Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": server acknowledged stanza #" + serverSequence);
 									}
-									this.messageReceipts.remove(serverSequence);
+									final String msgId = this.messageReceipts.get(serverSequence);
+									if (msgId != null) {
+										if (this.acknowledgedListener != null) {
+											this.acknowledgedListener.onMessageAcknowledged(
+													account, msgId);
+										}
+										this.messageReceipts.remove(serverSequence);
+									}
+								} catch (NumberFormatException e) {
+									Log.d(Config.LOGTAG,account.getJid().toBareJid()+": server send ack without sequence number");
 								}
 							} else if (nextTag.isStart("failed")) {
 								tagReader.readElement(nextTag);
