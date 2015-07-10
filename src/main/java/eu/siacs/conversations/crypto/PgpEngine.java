@@ -61,7 +61,7 @@ public class PgpEngine {
 								if (message.trusted()
 										&& message.treatAsDownloadable() != Message.Decision.NEVER
 										&& manager.getAutoAcceptFileSize() > 0) {
-									manager.createNewConnection(message);
+									manager.createNewDownloadConnection(message);
 								}
 								callback.success(message);
 							}

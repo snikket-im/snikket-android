@@ -543,7 +543,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 						Toast.LENGTH_SHORT).show();
 			}
 		} else if (message.treatAsDownloadable() != Message.Decision.NEVER) {
-			activity.xmppConnectionService.getHttpConnectionManager().createNewConnection(message);
+			activity.xmppConnectionService.getHttpConnectionManager().createNewDownloadConnection(message);
 		}
 	}
 

@@ -24,7 +24,7 @@ import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.CryptoHelper;
 
-public class HttpConnection implements Transferable {
+public class HttpDownloadConnection implements Transferable {
 
 	private HttpConnectionManager mHttpConnectionManager;
 	private XmppConnectionService mXmppConnectionService;
@@ -37,7 +37,7 @@ public class HttpConnection implements Transferable {
 	private int mProgress = 0;
 	private long mLastGuiRefresh = 0;
 
-	public HttpConnection(HttpConnectionManager manager) {
+	public HttpDownloadConnection(HttpConnectionManager manager) {
 		this.mHttpConnectionManager = manager;
 		this.mXmppConnectionService = manager.getXmppConnectionService();
 	}
@@ -138,8 +138,8 @@ public class HttpConnection implements Transferable {
 				size = retrieveFileSize();
 			} catch (SSLHandshakeException e) {
 				changeStatus(STATUS_OFFER_CHECK_FILESIZE);
-				HttpConnection.this.acceptedAutomatically = false;
-				HttpConnection.this.mXmppConnectionService.getNotificationService().push(message);
+				HttpDownloadConnection.this.acceptedAutomatically = false;
+				HttpDownloadConnection.this.mXmppConnectionService.getNotificationService().push(message);
 				return;
 			} catch (IOException e) {
 				Log.d(Config.LOGTAG, "io exception in http file size checker: " + e.getMessage());
@@ -151,12 +151,12 @@ public class HttpConnection implements Transferable {
 			}
 			file.setExpectedSize(size);
 			if (size <= mHttpConnectionManager.getAutoAcceptFileSize()) {
-				HttpConnection.this.acceptedAutomatically = true;
+				HttpDownloadConnection.this.acceptedAutomatically = true;
 				new Thread(new FileDownloader(interactive)).start();
 			} else {
 				changeStatus(STATUS_OFFER);
-				HttpConnection.this.acceptedAutomatically = false;
-				HttpConnection.this.mXmppConnectionService.getNotificationService().push(message);
+				HttpDownloadConnection.this.acceptedAutomatically = false;
+				HttpDownloadConnection.this.mXmppConnectionService.getNotificationService().push(message);
 			}
 		}
 

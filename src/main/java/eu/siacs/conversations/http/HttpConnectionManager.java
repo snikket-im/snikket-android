@@ -24,17 +24,17 @@ public class HttpConnectionManager extends AbstractConnectionManager {
 		super(service);
 	}
 
-	private List<HttpConnection> connections = new CopyOnWriteArrayList<>();
+	private List<HttpDownloadConnection> downloadConnections = new CopyOnWriteArrayList<>();
 	private List<HttpUploadConnection> uploadConnections = new CopyOnWriteArrayList<>();
 
-	public HttpConnection createNewConnection(Message message) {
-		return this.createNewConnection(message,false);
+	public HttpDownloadConnection createNewDownloadConnection(Message message) {
+		return this.createNewDownloadConnection(message, false);
 	}
 
-	public HttpConnection createNewConnection(Message message,boolean interactive) {
-		HttpConnection connection = new HttpConnection(this);
+	public HttpDownloadConnection createNewDownloadConnection(Message message, boolean interactive) {
+		HttpDownloadConnection connection = new HttpDownloadConnection(this);
 		connection.init(message,interactive);
-		this.connections.add(connection);
+		this.downloadConnections.add(connection);
 		return connection;
 	}
 
@@ -45,8 +45,8 @@ public class HttpConnectionManager extends AbstractConnectionManager {
 		return connection;
 	}
 
-	public void finishConnection(HttpConnection connection) {
-		this.connections.remove(connection);
+	public void finishConnection(HttpDownloadConnection connection) {
+		this.downloadConnections.remove(connection);
 	}
 
 	public void finishUploadConnection(HttpUploadConnection httpUploadConnection) {
