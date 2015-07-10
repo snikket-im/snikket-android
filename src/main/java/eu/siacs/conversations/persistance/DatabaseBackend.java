@@ -96,11 +96,15 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 			+ AxolotlService.SQLiteAxolotlStore.ACCOUNT + " TEXT,  "
 			+ AxolotlService.SQLiteAxolotlStore.NAME + " TEXT, "
 			+ AxolotlService.SQLiteAxolotlStore.OWN + " INTEGER, "
-			+ AxolotlService.SQLiteAxolotlStore.FINGERPRINT + " TEXT PRIMARY KEY ON CONFLICT IGNORE, "
+			+ AxolotlService.SQLiteAxolotlStore.FINGERPRINT + " TEXT, "
 			+ AxolotlService.SQLiteAxolotlStore.TRUSTED + " INTEGER, "
 			+ AxolotlService.SQLiteAxolotlStore.KEY + " TEXT, FOREIGN KEY("
 			+ AxolotlService.SQLiteAxolotlStore.ACCOUNT
-			+ ") REFERENCES " + Account.TABLENAME + "(" + Account.UUID + ") ON DELETE CASCADE "
+			+ ") REFERENCES " + Account.TABLENAME + "(" + Account.UUID + ") ON DELETE CASCADE, "
+			+ "UNIQUE( " + AxolotlService.SQLiteAxolotlStore.ACCOUNT + ", "
+				+ AxolotlService.SQLiteAxolotlStore.NAME + ", "
+				+ AxolotlService.SQLiteAxolotlStore.FINGERPRINT
+			+ ") ON CONFLICT IGNORE"
 			+");";
 
 	private DatabaseBackend(Context context) {
