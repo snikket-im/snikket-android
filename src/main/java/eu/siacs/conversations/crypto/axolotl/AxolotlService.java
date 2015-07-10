@@ -73,7 +73,6 @@ public class AxolotlService {
 	private final Map<String, MessagePacket> messageCache;
 	private final FetchStatusMap fetchStatusMap;
 	private final SerialSingleThreadExecutor executor;
-	private int ownDeviceId;
 
 	public static class SQLiteAxolotlStore implements AxolotlStore {
 
@@ -97,7 +96,7 @@ public class AxolotlService {
 		private final XmppConnectionService mXmppConnectionService;
 
 		private IdentityKeyPair identityKeyPair;
-		private final int localRegistrationId;
+		private int localRegistrationId;
 		private int currentPreKeyId = 0;
 
 		public enum Trust {
@@ -166,9 +165,13 @@ public class AxolotlService {
 		}
 
 		private int loadRegistrationId() {
+			return loadRegistrationId(false);
+		}
+
+		private int loadRegistrationId(boolean regenerate) {
 			String regIdString = this.account.getKey(JSONKEY_REGISTRATION_ID);
 			int reg_id;
-			if (regIdString != null) {
+			if (!regenerate && regIdString != null) {
 				reg_id = Integer.valueOf(regIdString);
 			} else {
 				Log.i(Config.LOGTAG, AxolotlService.getLogprefix(account)+"Could not retrieve axolotl registration id for account " + account.getJid());
@@ -199,6 +202,7 @@ public class AxolotlService {
 			mXmppConnectionService.databaseBackend.wipeAxolotlDb(account);
 			account.setKey(JSONKEY_CURRENT_PREKEY_ID, Integer.toString(0));
 			identityKeyPair = loadIdentityKeyPair();
+			localRegistrationId = loadRegistrationId(true);
 			currentPreKeyId = 0;
 			mXmppConnectionService.updateAccountUi();
 		}
@@ -584,6 +588,9 @@ public class AxolotlService {
 			}
 		}
 
+		public void clear() {
+			map.clear();
+		}
 
 	}
 
@@ -636,7 +643,6 @@ public class AxolotlService {
 		this.sessions = new SessionMap(axolotlStore, account);
 		this.fetchStatusMap = new FetchStatusMap();
 		this.executor = new SerialSingleThreadExecutor();
-		this.ownDeviceId = axolotlStore.getLocalRegistrationId();
 	}
 
 	public IdentityKey getOwnPublicKey() {
@@ -666,11 +672,14 @@ public class AxolotlService {
 
 	public void regenerateKeys() {
 		axolotlStore.regenerate();
+		sessions.clear();
+		fetchStatusMap.clear();
 		publishBundlesIfNeeded();
+		publishOwnDeviceIdIfNeeded();
 	}
 
 	public int getOwnDeviceId() {
-		return ownDeviceId;
+		return axolotlStore.loadRegistrationId();
 	}
 
 	public Set<Integer> getOwnDeviceIds() {
@@ -728,7 +737,7 @@ public class AxolotlService {
 	}
 
 	public void publishBundlesIfNeeded() {
-		IqPacket packet = mXmppConnectionService.getIqGenerator().retrieveBundlesForDevice(account.getJid().toBareJid(), ownDeviceId);
+		IqPacket packet = mXmppConnectionService.getIqGenerator().retrieveBundlesForDevice(account.getJid().toBareJid(), getOwnDeviceId());
 		mXmppConnectionService.sendIqPacket(account, packet, new OnIqPacketReceived() {
 			@Override
 			public void onIqPacketReceived(Account account, IqPacket packet) {
@@ -801,7 +810,7 @@ public class AxolotlService {
 					if(changed) {
 						IqPacket publish = mXmppConnectionService.getIqGenerator().publishBundles(
 								signedPreKeyRecord, axolotlStore.getIdentityKeyPair().getPublicKey(),
-								preKeyRecords, ownDeviceId);
+								preKeyRecords, getOwnDeviceId());
 						Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account)+ ": Bundle " + getOwnDeviceId() + " in PEP not current. Publishing: " + publish);
 						mXmppConnectionService.sendIqPacket(account, publish, new OnIqPacketReceived() {
 							@Override
@@ -937,7 +946,7 @@ public class AxolotlService {
 	@Nullable
 	public XmppAxolotlMessage encrypt(Message message ){
 		final XmppAxolotlMessage axolotlMessage = new XmppAxolotlMessage(message.getContact().getJid().toBareJid(),
-				ownDeviceId, message.getBody());
+				getOwnDeviceId(), message.getBody());
 
 		if(findSessionsforContact(message.getContact()).isEmpty()) {
 			return null;
@@ -1018,7 +1027,7 @@ public class AxolotlService {
 		}
 
 		for (XmppAxolotlMessage.XmppAxolotlMessageHeader header : message.getHeaders()) {
-			if (header.getRecipientDeviceId() == ownDeviceId) {
+			if (header.getRecipientDeviceId() == getOwnDeviceId()) {
 				Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account)+"Found axolotl header matching own device ID, processing...");
 				byte[] payloadKey = session.processReceiving(header);
 				if (payloadKey != null) {
