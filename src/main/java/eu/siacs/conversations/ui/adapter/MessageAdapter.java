@@ -3,6 +3,7 @@ package eu.siacs.conversations.ui.adapter;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.text.Spannable;
@@ -26,6 +27,7 @@ import android.widget.Toast;
 import java.util.List;
 
 import eu.siacs.conversations.R;
+import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
@@ -154,6 +156,17 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 			viewHolder.indicator.setVisibility(View.GONE);
 		} else {
 			viewHolder.indicator.setVisibility(View.VISIBLE);
+			if (message.getMergedStatus() == Message.STATUS_RECEIVED
+					&& message.getEncryption() == Message.ENCRYPTION_AXOLOTL) {
+				AxolotlService.SQLiteAxolotlStore.Trust trust = message.getConversation()
+						.getAccount().getAxolotlService().getFingerprintTrust(
+								message.getContact().getJid().toBareJid().toString(),
+								message.getAxolotlFingerprint());
+
+				if (trust == null || trust != AxolotlService.SQLiteAxolotlStore.Trust.TRUSTED) {
+					viewHolder.indicator.setColorFilter(Color.RED);
+				}
+			}
 		}
 
 		String formatedTime = UIHelper.readableTimeDifferenceFull(getContext(),

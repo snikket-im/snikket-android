@@ -675,4 +675,8 @@ public class Message extends AbstractEntity {
 	public void setAxolotlFingerprint(String fingerprint) {
 		this.axolotlFingerprint = fingerprint;
 	}
+
+	public String getAxolotlFingerprint() {
+		return axolotlFingerprint;
+	}
 }
