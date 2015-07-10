@@ -874,8 +874,8 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		ContentValues values = new ContentValues();
 		values.put(AxolotlService.SQLiteAxolotlStore.TRUSTED, trust.ordinal());
 		int rows = db.update(AxolotlService.SQLiteAxolotlStore.IDENTITIES_TABLENAME, values,
-				AxolotlService.SQLiteAxolotlStore.ACCOUNT + " = ? "
-				+ AxolotlService.SQLiteAxolotlStore.NAME + " = ? "
+				AxolotlService.SQLiteAxolotlStore.ACCOUNT + " = ? AND "
+				+ AxolotlService.SQLiteAxolotlStore.NAME + " = ? AND "
 				+ AxolotlService.SQLiteAxolotlStore.FINGERPRINT + " = ? ",
 				selectionArgs);
 		return rows == 1;
