@@ -1,6 +1,5 @@
 package eu.siacs.conversations.xmpp.jingle;
 
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -16,9 +15,9 @@ import android.util.Log;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Conversation;
-import eu.siacs.conversations.entities.Downloadable;
+import eu.siacs.conversations.entities.Transferable;
 import eu.siacs.conversations.entities.DownloadableFile;
-import eu.siacs.conversations.entities.DownloadablePlaceholder;
+import eu.siacs.conversations.entities.TransferablePlaceholder;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xml.Element;
@@ -29,7 +28,7 @@ import eu.siacs.conversations.xmpp.jingle.stanzas.JinglePacket;
 import eu.siacs.conversations.xmpp.jingle.stanzas.Reason;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
 
-public class JingleConnection implements Downloadable {
+public class JingleConnection implements Transferable {
 
 	private JingleConnectionManager mJingleConnectionManager;
 	private XmppConnectionService mXmppConnectionService;
@@ -43,7 +42,7 @@ public class JingleConnection implements Downloadable {
 	private int ibbBlockSize = 4096;
 
 	private int mJingleStatus = -1;
-	private int mStatus = Downloadable.STATUS_UNKNOWN;
+	private int mStatus = Transferable.STATUS_UNKNOWN;
 	private Message message;
 	private String sessionId;
 	private Account account;
@@ -199,8 +198,8 @@ public class JingleConnection implements Downloadable {
 		this.contentCreator = "initiator";
 		this.contentName = this.mJingleConnectionManager.nextRandomId();
 		this.message = message;
-		this.message.setDownloadable(this);
-		this.mStatus = Downloadable.STATUS_UPLOADING;
+		this.message.setTransferable(this);
+		this.mStatus = Transferable.STATUS_UPLOADING;
 		this.account = message.getConversation().getAccount();
 		this.initiator = this.account.getJid();
 		this.responder = this.message.getCounterpart();
@@ -256,8 +255,8 @@ public class JingleConnection implements Downloadable {
 						packet.getFrom().toBareJid(), false);
 		this.message = new Message(conversation, "", Message.ENCRYPTION_NONE);
 		this.message.setStatus(Message.STATUS_RECEIVED);
-		this.mStatus = Downloadable.STATUS_OFFER;
-		this.message.setDownloadable(this);
+		this.mStatus = Transferable.STATUS_OFFER;
+		this.message.setTransferable(this);
         final Jid from = packet.getFrom();
 		this.message.setCounterpart(from);
 		this.account = account;
@@ -408,7 +407,7 @@ public class JingleConnection implements Downloadable {
 
 	private void sendAccept() {
 		mJingleStatus = JINGLE_STATUS_ACCEPTED;
-		this.mStatus = Downloadable.STATUS_DOWNLOADING;
+		this.mStatus = Transferable.STATUS_DOWNLOADING;
 		mXmppConnectionService.updateConversationUi();
 		this.mJingleConnectionManager.getPrimaryCandidate(this.account, new OnPrimaryCandidateFound() {
 			@Override
@@ -639,7 +638,7 @@ public class JingleConnection implements Downloadable {
 		this.disconnectSocks5Connections();
 		this.mJingleStatus = JINGLE_STATUS_FINISHED;
 		this.message.setStatus(Message.STATUS_RECEIVED);
-		this.message.setDownloadable(null);
+		this.message.setTransferable(null);
 		this.mXmppConnectionService.updateMessage(message);
 		this.mJingleConnectionManager.finishConnection(this);
 	}
@@ -716,7 +715,7 @@ public class JingleConnection implements Downloadable {
 		if (this.transport != null && this.transport instanceof JingleInbandTransport) {
 			this.transport.disconnect();
 		}
-		this.message.setDownloadable(null);
+		this.message.setTransferable(null);
 		this.mJingleConnectionManager.finishConnection(this);
 	}
 
@@ -728,7 +727,7 @@ public class JingleConnection implements Downloadable {
 		this.sendCancel();
 		this.mJingleConnectionManager.finishConnection(this);
 		if (this.responder.equals(account.getJid())) {
-			this.message.setDownloadable(new DownloadablePlaceholder(Downloadable.STATUS_FAILED));
+			this.message.setTransferable(new TransferablePlaceholder(Transferable.STATUS_FAILED));
 			if (this.file!=null) {
 				file.delete();
 			}
@@ -736,7 +735,7 @@ public class JingleConnection implements Downloadable {
 		} else {
 			this.mXmppConnectionService.markMessage(this.message,
 					Message.STATUS_SEND_FAILED);
-			this.message.setDownloadable(null);
+			this.message.setTransferable(null);
 		}
 	}
 
@@ -748,7 +747,7 @@ public class JingleConnection implements Downloadable {
 		}
 		if (this.message != null) {
 			if (this.responder.equals(account.getJid())) {
-				this.message.setDownloadable(new DownloadablePlaceholder(Downloadable.STATUS_FAILED));
+				this.message.setTransferable(new TransferablePlaceholder(Transferable.STATUS_FAILED));
 				if (this.file!=null) {
 					file.delete();
 				}
@@ -756,7 +755,7 @@ public class JingleConnection implements Downloadable {
 			} else {
 				this.mXmppConnectionService.markMessage(this.message,
 						Message.STATUS_SEND_FAILED);
-				this.message.setDownloadable(null);
+				this.message.setTransferable(null);
 			}
 		}
 		this.mJingleConnectionManager.finishConnection(this);

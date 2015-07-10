@@ -1,10 +1,10 @@
 package eu.siacs.conversations.entities;
 
-public class DownloadablePlaceholder implements Downloadable {
+public class TransferablePlaceholder implements Transferable {
 
 	private int status;
 
-	public DownloadablePlaceholder(int status) {
+	public TransferablePlaceholder(int status) {
 		this.status = status;
 	}
 	@Override

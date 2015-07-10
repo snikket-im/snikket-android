@@ -18,7 +18,6 @@ import android.support.v4.app.NotificationCompat.Builder;
 import android.support.v4.app.TaskStackBuilder;
 import android.text.Html;
 import android.util.DisplayMetrics;
-import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -42,7 +41,6 @@ import eu.siacs.conversations.ui.ManageAccountActivity;
 import eu.siacs.conversations.ui.TimePreference;
 import eu.siacs.conversations.utils.GeoHelper;
 import eu.siacs.conversations.utils.UIHelper;
-import eu.siacs.conversations.xmpp.XmppConnection;
 
 public class NotificationService {
 
@@ -303,7 +301,7 @@ public class NotificationService {
 			final ArrayList<Message> tmp = new ArrayList<>();
 			for (final Message msg : messages) {
 				if (msg.getType() == Message.TYPE_TEXT
-						&& msg.getDownloadable() == null) {
+						&& msg.getTransferable() == null) {
 					tmp.add(msg);
 						}
 			}
@@ -335,7 +333,7 @@ public class NotificationService {
 	private Message getImage(final Iterable<Message> messages) {
 		for (final Message message : messages) {
 			if (message.getType() == Message.TYPE_IMAGE
-					&& message.getDownloadable() == null
+					&& message.getTransferable() == null
 					&& message.getEncryption() != Message.ENCRYPTION_PGP) {
 				return message;
 					}
@@ -346,7 +344,7 @@ public class NotificationService {
 	private Message getFirstDownloadableMessage(final Iterable<Message> messages) {
 		for (final Message message : messages) {
 			if ((message.getType() == Message.TYPE_FILE || message.getType() == Message.TYPE_IMAGE) &&
-					message.getDownloadable() != null) {
+					message.getTransferable() != null) {
 				return message;
 			}
 		}

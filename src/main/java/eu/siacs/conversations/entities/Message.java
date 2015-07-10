@@ -70,7 +70,7 @@ public class Message extends AbstractEntity {
 	protected String remoteMsgId = null;
 	protected String serverMsgId = null;
 	protected Conversation conversation = null;
-	protected Downloadable downloadable = null;
+	protected Transferable transferable = null;
 	private Message mNextMessage = null;
 	private Message mPreviousMessage = null;
 
@@ -308,12 +308,12 @@ public class Message extends AbstractEntity {
 		this.trueCounterpart = trueCounterpart;
 	}
 
-	public Downloadable getDownloadable() {
-		return this.downloadable;
+	public Transferable getTransferable() {
+		return this.transferable;
 	}
 
-	public void setDownloadable(Downloadable downloadable) {
-		this.downloadable = downloadable;
+	public void setTransferable(Transferable transferable) {
+		this.transferable = transferable;
 	}
 
 	public boolean equals(Message message) {
@@ -364,8 +364,8 @@ public class Message extends AbstractEntity {
 	public boolean mergeable(final Message message) {
 		return message != null &&
 				(message.getType() == Message.TYPE_TEXT &&
-						this.getDownloadable() == null &&
-						message.getDownloadable() == null &&
+						this.getTransferable() == null &&
+						message.getTransferable() == null &&
 						message.getEncryption() != Message.ENCRYPTION_PGP &&
 						this.getType() == message.getType() &&
 						//this.getStatus() == message.getStatus() &&
@@ -471,7 +471,7 @@ public class Message extends AbstractEntity {
 		if (extensionParts.length == 2) {
 			return extensionParts[extensionParts.length - 1];
 		} else if (extensionParts.length == 3 && Arrays
-				.asList(Downloadable.VALID_CRYPTO_EXTENSIONS)
+				.asList(Transferable.VALID_CRYPTO_EXTENSIONS)
 				.contains(extensionParts[extensionParts.length - 1])) {
 			return extensionParts[extensionParts.length -2];
 		}
@@ -517,8 +517,8 @@ public class Message extends AbstractEntity {
 				} else {
 					return Decision.NEVER;
 				}
-			} else if (Arrays.asList(Downloadable.VALID_IMAGE_EXTENSIONS).contains(extension)
-					|| Arrays.asList(Downloadable.WELL_KNOWN_EXTENSIONS).contains(extension)) {
+			} else if (Arrays.asList(Transferable.VALID_IMAGE_EXTENSIONS).contains(extension)
+					|| Arrays.asList(Transferable.WELL_KNOWN_EXTENSIONS).contains(extension)) {
 				return Decision.SHOULD;
 			} else {
 				return Decision.NEVER;
@@ -539,8 +539,8 @@ public class Message extends AbstractEntity {
 			return params;
 		}
 		params = new FileParams();
-		if (this.downloadable != null) {
-			params.size = this.downloadable.getFileSize();
+		if (this.transferable != null) {
+			params.size = this.transferable.getFileSize();
 		}
 		if (body == null) {
 			return params;

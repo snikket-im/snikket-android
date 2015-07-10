@@ -1,6 +1,5 @@
 package eu.siacs.conversations.utils;
 
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -10,7 +9,7 @@ import java.util.Locale;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
-import eu.siacs.conversations.entities.Downloadable;
+import eu.siacs.conversations.entities.Transferable;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.xmpp.jid.Jid;
 
@@ -142,24 +141,24 @@ public class UIHelper {
 	}
 
 	public static Pair<String,Boolean> getMessagePreview(final Context context, final Message message) {
-		final Downloadable d = message.getDownloadable();
+		final Transferable d = message.getTransferable();
 		if (d != null ) {
 			switch (d.getStatus()) {
-				case Downloadable.STATUS_CHECKING:
+				case Transferable.STATUS_CHECKING:
 					return new Pair<>(context.getString(R.string.checking_image),true);
-				case Downloadable.STATUS_DOWNLOADING:
+				case Transferable.STATUS_DOWNLOADING:
 					return new Pair<>(context.getString(R.string.receiving_x_file,
 									getFileDescriptionString(context,message),
 									d.getProgress()),true);
-				case Downloadable.STATUS_OFFER:
-				case Downloadable.STATUS_OFFER_CHECK_FILESIZE:
+				case Transferable.STATUS_OFFER:
+				case Transferable.STATUS_OFFER_CHECK_FILESIZE:
 					return new Pair<>(context.getString(R.string.x_file_offered_for_download,
 									getFileDescriptionString(context,message)),true);
-				case Downloadable.STATUS_DELETED:
+				case Transferable.STATUS_DELETED:
 					return new Pair<>(context.getString(R.string.file_deleted),true);
-				case Downloadable.STATUS_FAILED:
+				case Transferable.STATUS_FAILED:
 					return new Pair<>(context.getString(R.string.file_transmission_failed),true);
-				case Downloadable.STATUS_UPLOADING:
+				case Transferable.STATUS_UPLOADING:
 					if (message.getStatus() == Message.STATUS_OFFERED) {
 						return new Pair<>(context.getString(R.string.offering_x_file,
 								getFileDescriptionString(context, message)), true);

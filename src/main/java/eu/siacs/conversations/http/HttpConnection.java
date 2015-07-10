@@ -5,34 +5,26 @@ import android.net.Uri;
 import android.os.SystemClock;
 import android.util.Log;
 
-import org.apache.http.conn.ssl.StrictHostnameVerifier;
-
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
-import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLHandshakeException;
-import javax.net.ssl.SSLSocketFactory;
-import javax.net.ssl.X509TrustManager;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
-import eu.siacs.conversations.entities.Downloadable;
+import eu.siacs.conversations.entities.Transferable;
 import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.CryptoHelper;
 
-public class HttpConnection implements Downloadable {
+public class HttpConnection implements Transferable {
 
 	private HttpConnectionManager mHttpConnectionManager;
 	private XmppConnectionService mXmppConnectionService;
@@ -40,7 +32,7 @@ public class HttpConnection implements Downloadable {
 	private URL mUrl;
 	private Message message;
 	private DownloadableFile file;
-	private int mStatus = Downloadable.STATUS_UNKNOWN;
+	private int mStatus = Transferable.STATUS_UNKNOWN;
 	private boolean acceptedAutomatically = false;
 	private int mProgress = 0;
 	private long mLastGuiRefresh = 0;
@@ -65,12 +57,12 @@ public class HttpConnection implements Downloadable {
 	}
 
 	public void init(Message message) {
-		init(message,false);
+		init(message, false);
 	}
 
 	public void init(Message message, boolean interactive) {
 		this.message = message;
-		this.message.setDownloadable(this);
+		this.message.setTransferable(this);
 		try {
 			mUrl = new URL(message.getBody());
 			String[] parts = mUrl.getPath().toLowerCase().split("\\.");
@@ -110,7 +102,7 @@ public class HttpConnection implements Downloadable {
 
 	public void cancel() {
 		mHttpConnectionManager.finishConnection(this);
-		message.setDownloadable(null);
+		message.setTransferable(null);
 		mXmppConnectionService.updateConversationUi();
 	}
 
@@ -118,7 +110,7 @@ public class HttpConnection implements Downloadable {
 		Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
 		intent.setData(Uri.fromFile(file));
 		mXmppConnectionService.sendBroadcast(intent);
-		message.setDownloadable(null);
+		message.setTransferable(null);
 		mHttpConnectionManager.finishConnection(this);
 		mXmppConnectionService.updateConversationUi();
 		if (acceptedAutomatically) {

@@ -21,7 +21,7 @@ import java.util.concurrent.RejectedExecutionException;
 
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Conversation;
-import eu.siacs.conversations.entities.Downloadable;
+import eu.siacs.conversations.entities.Transferable;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.ui.ConversationActivity;
 import eu.siacs.conversations.ui.XmppActivity;
@@ -69,8 +69,8 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 		}
 
 		if (message.getFileParams().width > 0
-				&& (message.getDownloadable() == null
-				|| message.getDownloadable().getStatus() != Downloadable.STATUS_DELETED)) {
+				&& (message.getTransferable() == null
+				|| message.getTransferable().getStatus() != Transferable.STATUS_DELETED)) {
 			mLastMessage.setVisibility(View.GONE);
 			imagePreview.setVisibility(View.VISIBLE);
 			activity.loadBitmap(message, imagePreview);

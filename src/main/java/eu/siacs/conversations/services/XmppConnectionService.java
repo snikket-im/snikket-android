@@ -57,12 +57,11 @@ import eu.siacs.conversations.entities.Blockable;
 import eu.siacs.conversations.entities.Bookmark;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
-import eu.siacs.conversations.entities.Downloadable;
-import eu.siacs.conversations.entities.DownloadablePlaceholder;
+import eu.siacs.conversations.entities.Transferable;
+import eu.siacs.conversations.entities.TransferablePlaceholder;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.entities.MucOptions.OnRenameListener;
-import eu.siacs.conversations.entities.Presences;
 import eu.siacs.conversations.generator.IqGenerator;
 import eu.siacs.conversations.generator.MessageGenerator;
 import eu.siacs.conversations.generator.PresenceGenerator;
@@ -975,7 +974,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 			@Override
 			public void onMessageFound(Message message) {
 				if (!getFileBackend().isFileAvailable(message)) {
-					message.setDownloadable(new DownloadablePlaceholder(Downloadable.STATUS_DELETED));
+					message.setTransferable(new TransferablePlaceholder(Transferable.STATUS_DELETED));
 				}
 			}
 		});
@@ -986,7 +985,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 			Message message = conversation.findMessageWithFileAndUuid(uuid);
 			if (message != null) {
 				if (!getFileBackend().isFileAvailable(message)) {
-					message.setDownloadable(new DownloadablePlaceholder(Downloadable.STATUS_DELETED));
+					message.setTransferable(new TransferablePlaceholder(Transferable.STATUS_DELETED));
 					updateConversationUi();
 				}
 				return;

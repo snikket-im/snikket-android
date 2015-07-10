@@ -1,6 +1,6 @@
 package eu.siacs.conversations.entities;
 
-public interface Downloadable {
+public interface Transferable {
 
 	String[] VALID_IMAGE_EXTENSIONS = {"webp", "jpeg", "jpg", "png", "jpe"};
 	String[] VALID_CRYPTO_EXTENSIONS = {"pgp", "gpg", "otr"};

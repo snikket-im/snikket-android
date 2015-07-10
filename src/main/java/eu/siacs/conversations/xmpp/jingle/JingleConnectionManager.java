@@ -9,14 +9,13 @@ import android.annotation.SuppressLint;
 import android.util.Log;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
-import eu.siacs.conversations.entities.Downloadable;
+import eu.siacs.conversations.entities.Transferable;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.services.AbstractConnectionManager;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.Xmlns;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.OnIqPacketReceived;
-import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
 import eu.siacs.conversations.xmpp.jingle.stanzas.JinglePacket;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
@@ -59,7 +58,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
 	}
 
 	public JingleConnection createNewConnection(Message message) {
-		Downloadable old = message.getDownloadable();
+		Transferable old = message.getTransferable();
 		if (old != null) {
 			old.cancel();
 		}

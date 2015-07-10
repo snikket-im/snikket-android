@@ -33,7 +33,7 @@ import android.webkit.MimeTypeMap;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
-import eu.siacs.conversations.entities.Downloadable;
+import eu.siacs.conversations.entities.Transferable;
 import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.services.XmppConnectionService;
@@ -80,7 +80,7 @@ public class FileBackend {
 			if (path.startsWith("/")) {
 				return new DownloadableFile(path);
 			} else {
-				if (Arrays.asList(Downloadable.VALID_IMAGE_EXTENSIONS).contains(extension)) {
+				if (Arrays.asList(Transferable.VALID_IMAGE_EXTENSIONS).contains(extension)) {
 					return new DownloadableFile(getConversationsFileDirectory() + path);
 				} else {
 					return new DownloadableFile(getConversationsImageDirectory() + path);
