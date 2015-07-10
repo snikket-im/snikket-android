@@ -160,7 +160,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 				message.getMergedTimeSent());
 		if (message.getStatus() <= Message.STATUS_RECEIVED) {
 			if ((filesize != null) && (info != null)) {
-				viewHolder.time.setText(filesize + " \u00B7 " + info);
+				viewHolder.time.setText(formatedTime + " \u00B7 " + filesize +" \u00B7 " + info);
 			} else if ((filesize == null) && (info != null)) {
 				viewHolder.time.setText(formatedTime + " \u00B7 " + info);
 			} else if ((filesize != null) && (info == null)) {
