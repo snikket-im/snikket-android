@@ -37,6 +37,7 @@ import java.util.List;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
+import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Blockable;
 import eu.siacs.conversations.entities.Contact;
@@ -752,15 +753,10 @@ public class ConversationActivity extends XmppActivity
 							}
 							break;
 						case R.id.encryption_choice_axolotl:
-							Log.d(Config.LOGTAG, "Trying to enable axolotl...");
-							if(conversation.getAccount().getAxolotlService().isContactAxolotlCapable(conversation.getContact())) {
-								Log.d(Config.LOGTAG, "Enabled axolotl for Contact " + conversation.getContact().getJid() );
-								conversation.setNextEncryption(Message.ENCRYPTION_AXOLOTL);
-								item.setChecked(true);
-							} else {
-								Log.d(Config.LOGTAG, "Contact " + conversation.getContact().getJid() + " not axolotl capable!");
-								showAxolotlNoSessionsDialog();
-							}
+							Log.d(Config.LOGTAG, AxolotlService.getLogprefix(conversation.getAccount())
+									+ "Enabled axolotl for Contact " + conversation.getContact().getJid());
+							conversation.setNextEncryption(Message.ENCRYPTION_AXOLOTL);
+							item.setChecked(true);
 							break;
 						default:
 							conversation.setNextEncryption(Message.ENCRYPTION_NONE);
@@ -776,12 +772,17 @@ public class ConversationActivity extends XmppActivity
 			MenuItem otr = popup.getMenu().findItem(R.id.encryption_choice_otr);
 			MenuItem none = popup.getMenu().findItem(R.id.encryption_choice_none);
 			MenuItem pgp = popup.getMenu().findItem(R.id.encryption_choice_pgp);
+			MenuItem axolotl = popup.getMenu().findItem(R.id.encryption_choice_axolotl);
 			if (conversation.getMode() == Conversation.MODE_MULTI) {
 				otr.setEnabled(false);
+				axolotl.setEnabled(false);
 			} else {
 				if (forceEncryption()) {
 					none.setVisible(false);
 				}
+			}
+			if (!conversation.getAccount().getAxolotlService().isContactAxolotlCapable(conversation.getContact())) {
+				axolotl.setEnabled(false);
 			}
 			switch (conversation.getNextEncryption(forceEncryption())) {
 				case Message.ENCRYPTION_NONE:
@@ -794,7 +795,6 @@ public class ConversationActivity extends XmppActivity
 					pgp.setChecked(true);
 					break;
 				case Message.ENCRYPTION_AXOLOTL:
-					Log.d(Config.LOGTAG, "Axolotl confirmed. Setting menu item checked!");
 					popup.getMenu().findItem(R.id.encryption_choice_axolotl)
 							.setChecked(true);
 					break;
