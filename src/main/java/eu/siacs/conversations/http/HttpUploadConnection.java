@@ -10,6 +10,8 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import javax.net.ssl.HttpsURLConnection;
+
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Downloadable;
@@ -133,6 +135,9 @@ public class HttpUploadConnection implements Downloadable {
 			try {
 				Log.d(Config.LOGTAG, "uploading to " + mPutUrl.toString());
 				connection = (HttpURLConnection) mPutUrl.openConnection();
+				if (connection instanceof HttpsURLConnection) {
+					mHttpConnectionManager.setupTrustManager((HttpsURLConnection) connection, true);
+				}
 				connection.setRequestMethod("PUT");
 				connection.setFixedLengthStreamingMode((int) file.getExpectedSize());
 				connection.setDoOutput(true);

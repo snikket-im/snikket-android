@@ -1,11 +1,22 @@
 package eu.siacs.conversations.http;
 
+import org.apache.http.conn.ssl.StrictHostnameVerifier;
+
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.X509TrustManager;
 
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.services.AbstractConnectionManager;
 import eu.siacs.conversations.services.XmppConnectionService;
+import eu.siacs.conversations.utils.CryptoHelper;
 
 public class HttpConnectionManager extends AbstractConnectionManager {
 
@@ -40,5 +51,40 @@ public class HttpConnectionManager extends AbstractConnectionManager {
 
 	public void finishUploadConnection(HttpUploadConnection httpUploadConnection) {
 		this.uploadConnections.remove(httpUploadConnection);
+	}
+
+	public void setupTrustManager(final HttpsURLConnection connection, final boolean interactive) {
+		final X509TrustManager trustManager;
+		final HostnameVerifier hostnameVerifier;
+		if (interactive) {
+			trustManager = mXmppConnectionService.getMemorizingTrustManager();
+			hostnameVerifier = mXmppConnectionService
+					.getMemorizingTrustManager().wrapHostnameVerifier(
+							new StrictHostnameVerifier());
+		} else {
+			trustManager = mXmppConnectionService.getMemorizingTrustManager()
+					.getNonInteractive();
+			hostnameVerifier = mXmppConnectionService
+					.getMemorizingTrustManager()
+					.wrapHostnameVerifierNonInteractive(
+							new StrictHostnameVerifier());
+		}
+		try {
+			final SSLContext sc = SSLContext.getInstance("TLS");
+			sc.init(null, new X509TrustManager[]{trustManager},
+					mXmppConnectionService.getRNG());
+
+			final SSLSocketFactory sf = sc.getSocketFactory();
+			final String[] cipherSuites = CryptoHelper.getOrderedCipherSuites(
+					sf.getSupportedCipherSuites());
+			if (cipherSuites.length > 0) {
+				sc.getDefaultSSLParameters().setCipherSuites(cipherSuites);
+
+			}
+
+			connection.setSSLSocketFactory(sf);
+			connection.setHostnameVerifier(hostnameVerifier);
+		} catch (final KeyManagementException | NoSuchAlgorithmException ignored) {
+		}
 	}
 }

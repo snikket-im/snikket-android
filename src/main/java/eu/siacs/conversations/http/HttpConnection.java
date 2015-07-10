@@ -131,42 +131,6 @@ public class HttpConnection implements Downloadable {
 		mXmppConnectionService.updateConversationUi();
 	}
 
-	private void setupTrustManager(final HttpsURLConnection connection,
-			final boolean interactive) {
-		final X509TrustManager trustManager;
-		final HostnameVerifier hostnameVerifier;
-		if (interactive) {
-			trustManager = mXmppConnectionService.getMemorizingTrustManager();
-			hostnameVerifier = mXmppConnectionService
-				.getMemorizingTrustManager().wrapHostnameVerifier(
-						new StrictHostnameVerifier());
-		} else {
-			trustManager = mXmppConnectionService.getMemorizingTrustManager()
-				.getNonInteractive();
-			hostnameVerifier = mXmppConnectionService
-				.getMemorizingTrustManager()
-				.wrapHostnameVerifierNonInteractive(
-						new StrictHostnameVerifier());
-		}
-		try {
-			final SSLContext sc = SSLContext.getInstance("TLS");
-			sc.init(null, new X509TrustManager[]{trustManager},
-					mXmppConnectionService.getRNG());
-
-			final SSLSocketFactory sf = sc.getSocketFactory();
-			final String[] cipherSuites = CryptoHelper.getOrderedCipherSuites(
-					sf.getSupportedCipherSuites());
-			if (cipherSuites.length > 0) {
-				sc.getDefaultSSLParameters().setCipherSuites(cipherSuites);
-
-			}
-
-			connection.setSSLSocketFactory(sf);
-			connection.setHostnameVerifier(hostnameVerifier);
-		} catch (final KeyManagementException | NoSuchAlgorithmException ignored) {
-		}
-	}
-
 	private class FileSizeChecker implements Runnable {
 
 		private boolean interactive = false;
@@ -210,7 +174,7 @@ public class HttpConnection implements Downloadable {
 			HttpURLConnection connection = (HttpURLConnection) mUrl.openConnection();
 			connection.setRequestMethod("HEAD");
 			if (connection instanceof HttpsURLConnection) {
-				setupTrustManager((HttpsURLConnection) connection, interactive);
+				mHttpConnectionManager.setupTrustManager((HttpsURLConnection) connection, interactive);
 			}
 			connection.connect();
 			String contentLength = connection.getHeaderField("Content-Length");
@@ -252,7 +216,7 @@ public class HttpConnection implements Downloadable {
 		private void download() throws SSLHandshakeException, IOException {
 			HttpURLConnection connection = (HttpURLConnection) mUrl.openConnection();
 			if (connection instanceof HttpsURLConnection) {
-				setupTrustManager((HttpsURLConnection) connection, interactive);
+				mHttpConnectionManager.setupTrustManager((HttpsURLConnection) connection, interactive);
 			}
 			connection.connect();
 			BufferedInputStream is = new BufferedInputStream(connection.getInputStream());
