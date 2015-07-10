@@ -185,7 +185,7 @@ public class ScramSha1 extends SaslMechanism {
 			case RESPONSE_SENT:
 				final String clientCalculatedServerFinalMessage = "v=" +
 					Base64.encodeToString(serverSignature, Base64.NO_WRAP);
-				if (!clientCalculatedServerFinalMessage.equals(new String(Base64.decode(challenge, Base64.DEFAULT)))) {
+				if (challenge == null || !clientCalculatedServerFinalMessage.equals(new String(Base64.decode(challenge, Base64.DEFAULT)))) {
 					throw new AuthenticationException("Server final message does not match calculated final message");
 				}
 				state = State.VALID_SERVER_RESPONSE;

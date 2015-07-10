@@ -32,6 +32,8 @@ public final class Config {
 	public static final boolean EXTENDED_SM_LOGGING = true; // log stanza counts
 	public static final boolean RESET_ATTEMPT_COUNT_ON_NETWORK_CHANGE = true; //setting to true might increase power consumption
 
+	public static final boolean ENCRYPT_ON_HTTP_UPLOADED = false;
+
 	public static final long MILLISECONDS_IN_DAY = 24 * 60 * 60 * 1000;
 	public static final long MAM_MAX_CATCHUP =  MILLISECONDS_IN_DAY / 2;
 	public static final int MAM_MAX_MESSAGES = 500;

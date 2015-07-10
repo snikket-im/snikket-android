@@ -9,14 +9,13 @@ import android.annotation.SuppressLint;
 import android.util.Log;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
-import eu.siacs.conversations.entities.Downloadable;
+import eu.siacs.conversations.entities.Transferable;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.services.AbstractConnectionManager;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.Xmlns;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.OnIqPacketReceived;
-import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
 import eu.siacs.conversations.xmpp.jingle.stanzas.JinglePacket;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
@@ -59,7 +58,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
 	}
 
 	public JingleConnection createNewConnection(Message message) {
-		Downloadable old = message.getDownloadable();
+		Transferable old = message.getTransferable();
 		if (old != null) {
 			old.cancel();
 		}
@@ -87,10 +86,10 @@ public class JingleConnectionManager extends AbstractConnectionManager {
 			return;
 		}
 		if (!this.primaryCandidates.containsKey(account.getJid().toBareJid())) {
-			final String proxy = account.getXmppConnection().findDiscoItemByFeature(Xmlns.BYTE_STREAMS);
+			final Jid proxy = account.getXmppConnection().findDiscoItemByFeature(Xmlns.BYTE_STREAMS);
 			if (proxy != null) {
 				IqPacket iq = new IqPacket(IqPacket.TYPE.GET);
-				iq.setAttribute("to", proxy);
+				iq.setTo(proxy);
 				iq.query(Xmlns.BYTE_STREAMS);
 				account.getXmppConnection().sendIqPacket(iq,new OnIqPacketReceived() {
 
@@ -105,11 +104,11 @@ public class JingleConnectionManager extends AbstractConnectionManager {
 								candidate.setHost(host);
 								candidate.setPort(Integer.parseInt(port));
 								candidate.setType(JingleCandidate.TYPE_PROXY);
-								candidate.setJid(Jid.fromString(proxy));
+								candidate.setJid(proxy);
 								candidate.setPriority(655360 + 65535);
 								primaryCandidates.put(account.getJid().toBareJid(),candidate);
 								listener.onPrimaryCandidateFound(true,candidate);
-							} catch (final NumberFormatException | InvalidJidException e) {
+							} catch (final NumberFormatException e) {
 								listener.onPrimaryCandidateFound(false,null);
 								return;
 							}

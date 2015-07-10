@@ -20,6 +20,8 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 import eu.siacs.conversations.Config;
+import eu.siacs.conversations.utils.MimeUtils;
+
 import android.util.Log;
 
 public class DownloadableFile extends File {
@@ -56,16 +58,11 @@ public class DownloadableFile extends File {
 
 	public String getMimeType() {
 		String path = this.getAbsolutePath();
-		try {
-			String mime = URLConnection.guessContentTypeFromName(path.replace("#",""));
-			if (mime != null) {
-				return mime;
-			} else if (mime == null && path.endsWith(".webp")) {
-				return "image/webp";
-			} else {
-				return "";
-			}
-		} catch (final StringIndexOutOfBoundsException e) {
+		int start = path.lastIndexOf('.') + 1;
+		if (start < path.length()) {
+			String mime = MimeUtils.guessMimeTypeFromExtension(path.substring(start));
+			return mime == null ? "" : mime;
+		} else {
 			return "";
 		}
 	}

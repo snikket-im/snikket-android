@@ -35,10 +35,12 @@ import java.util.Iterator;
 import java.util.List;
 
 import eu.siacs.conversations.R;
+import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Blockable;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
+import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.services.XmppConnectionService.OnAccountUpdate;
 import eu.siacs.conversations.services.XmppConnectionService.OnConversationUpdate;
 import eu.siacs.conversations.services.XmppConnectionService.OnRosterUpdate;
@@ -47,7 +49,7 @@ import eu.siacs.conversations.utils.ExceptionHelper;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
 
 public class ConversationActivity extends XmppActivity
-	implements OnAccountUpdate, OnConversationUpdate, OnRosterUpdate, OnUpdateBlocklist {
+	implements OnAccountUpdate, OnConversationUpdate, OnRosterUpdate, OnUpdateBlocklist, XmppConnectionService.OnShowErrorToast {
 
 	public static final String ACTION_DOWNLOAD = "eu.siacs.conversations.action.DOWNLOAD";
 
@@ -382,7 +384,7 @@ public class ConversationActivity extends XmppActivity
 				}
 				if (this.getSelectedConversation().getMode() == Conversation.MODE_MULTI) {
 					menuContactDetails.setVisible(false);
-					menuAttach.setVisible(false);
+					menuAttach.setVisible(getSelectedConversation().getAccount().httpUploadAvailable());
 					menuInviteContact.setVisible(getSelectedConversation().getMucOptions().canInvite());
 				} else {
 					menuMucDetails.setVisible(false);
@@ -398,6 +400,8 @@ public class ConversationActivity extends XmppActivity
 	}
 
 	private void selectPresenceToAttachFile(final int attachmentChoice, final int encryption) {
+		final Conversation conversation = getSelectedConversation();
+		final Account account = conversation.getAccount();
 		final OnPresenceSelected callback = new OnPresenceSelected() {
 
 			@Override
@@ -449,11 +453,11 @@ public class ConversationActivity extends XmppActivity
 				}
 			}
 		};
-		if (attachmentChoice == ATTACHMENT_CHOICE_LOCATION && encryption != Message.ENCRYPTION_OTR) {
-			getSelectedConversation().setNextCounterpart(null);
+		if ((account.httpUploadAvailable() || attachmentChoice == ATTACHMENT_CHOICE_LOCATION) && encryption != Message.ENCRYPTION_OTR) {
+			conversation.setNextCounterpart(null);
 			callback.onPresenceSelected();
 		} else {
-			selectPresence(getSelectedConversation(),callback);
+			selectPresence(conversation,callback);
 		}
 	}
 
@@ -1267,5 +1271,15 @@ public class ConversationActivity extends XmppActivity
 
 	public boolean enterIsSend() {
 		return getPreferences().getBoolean("enter_is_send",false);
+	}
+
+	@Override
+	public void onShowErrorToast(final int resId) {
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				Toast.makeText(ConversationActivity.this,resId,Toast.LENGTH_SHORT).show();
+			}
+		});
 	}
 }

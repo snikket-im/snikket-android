@@ -366,17 +366,21 @@ public class XmppConnection implements Runnable {
 							} else if (nextTag.isStart("a")) {
 								final Element ack = tagReader.readElement(nextTag);
 								lastPacketReceived = SystemClock.elapsedRealtime();
-								final int serverSequence = Integer.parseInt(ack.getAttribute("h"));
-								if (Config.EXTENDED_SM_LOGGING) {
-									Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": server acknowledged stanza #" + serverSequence);
-								}
-								final String msgId = this.messageReceipts.get(serverSequence);
-								if (msgId != null) {
-									if (this.acknowledgedListener != null) {
-										this.acknowledgedListener.onMessageAcknowledged(
-												account, msgId);
+								try {
+									final int serverSequence = Integer.parseInt(ack.getAttribute("h"));
+									if (Config.EXTENDED_SM_LOGGING) {
+										Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": server acknowledged stanza #" + serverSequence);
 									}
-									this.messageReceipts.remove(serverSequence);
+									final String msgId = this.messageReceipts.get(serverSequence);
+									if (msgId != null) {
+										if (this.acknowledgedListener != null) {
+											this.acknowledgedListener.onMessageAcknowledged(
+													account, msgId);
+										}
+										this.messageReceipts.remove(serverSequence);
+									}
+								} catch (NumberFormatException e) {
+									Log.d(Config.LOGTAG,account.getJid().toBareJid()+": server send ack without sequence number");
 								}
 							} else if (nextTag.isStart("failed")) {
 								tagReader.readElement(nextTag);
@@ -1025,18 +1029,18 @@ public class XmppConnection implements Runnable {
 		this.streamId = null;
 	}
 
-	public List<String> findDiscoItemsByFeature(final String feature) {
-		final List<String> items = new ArrayList<>();
+	public List<Jid> findDiscoItemsByFeature(final String feature) {
+		final List<Jid> items = new ArrayList<>();
 		for (final Entry<Jid, Info> cursor : disco.entrySet()) {
 			if (cursor.getValue().features.contains(feature)) {
-				items.add(cursor.getKey().toString());
+				items.add(cursor.getKey());
 			}
 		}
 		return items;
 	}
 
-	public String findDiscoItemByFeature(final String feature) {
-		final List<String> items = findDiscoItemsByFeature(feature);
+	public Jid findDiscoItemByFeature(final String feature) {
+		final List<Jid> items = findDiscoItemsByFeature(feature);
 		if (items.size() >= 1) {
 			return items.get(0);
 		}
@@ -1190,6 +1194,10 @@ public class XmppConnection implements Runnable {
 
 		public void setBlockListRequested(boolean value) {
 			this.blockListRequested = value;
+		}
+
+		public boolean httpUpload() {
+			return findDiscoItemsByFeature(Xmlns.HTTP_UPLOAD).size() > 0;
 		}
 	}
 

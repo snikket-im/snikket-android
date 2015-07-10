@@ -34,7 +34,6 @@ import android.widget.Toast;
 
 import net.java.otr4j.session.SessionStatus;
 
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -46,9 +45,9 @@ import eu.siacs.conversations.crypto.PgpEngine;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
-import eu.siacs.conversations.entities.Downloadable;
+import eu.siacs.conversations.entities.Transferable;
 import eu.siacs.conversations.entities.DownloadableFile;
-import eu.siacs.conversations.entities.DownloadablePlaceholder;
+import eu.siacs.conversations.entities.TransferablePlaceholder;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.entities.Presences;
@@ -437,34 +436,36 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 			MenuItem shareWith = menu.findItem(R.id.share_with);
 			MenuItem sendAgain = menu.findItem(R.id.send_again);
 			MenuItem copyUrl = menu.findItem(R.id.copy_url);
-			MenuItem downloadImage = menu.findItem(R.id.download_image);
+			MenuItem downloadFile = menu.findItem(R.id.download_file);
 			MenuItem cancelTransmission = menu.findItem(R.id.cancel_transmission);
-			if ((m.getType() != Message.TYPE_TEXT && m.getType() != Message.TYPE_PRIVATE)
-					|| m.getDownloadable() != null || GeoHelper.isGeoUri(m.getBody())) {
-				copyText.setVisible(false);
+			if ((m.getType() == Message.TYPE_TEXT || m.getType() == Message.TYPE_PRIVATE)
+					&& m.getTransferable() == null
+					&& !GeoHelper.isGeoUri(m.getBody())
+					&& m.treatAsDownloadable() != Message.Decision.MUST) {
+				copyText.setVisible(true);
 			}
-			if ((m.getType() == Message.TYPE_TEXT
-					|| m.getType() == Message.TYPE_PRIVATE
-					|| m.getDownloadable() != null)
-					&& (!GeoHelper.isGeoUri(m.getBody()))) {
-				shareWith.setVisible(false);
+			if ((m.getType() != Message.TYPE_TEXT
+					&& m.getType() != Message.TYPE_PRIVATE
+					&& m.getTransferable() == null)
+					|| (GeoHelper.isGeoUri(m.getBody()))) {
+				shareWith.setVisible(true);
 			}
-			if (m.getStatus() != Message.STATUS_SEND_FAILED) {
-				sendAgain.setVisible(false);
+			if (m.getStatus() == Message.STATUS_SEND_FAILED) {
+				sendAgain.setVisible(true);
 			}
-			if (((m.getType() != Message.TYPE_IMAGE && m.getDownloadable() == null)
-					|| m.getImageParams().url == null) && !GeoHelper.isGeoUri(m.getBody())) {
-				copyUrl.setVisible(false);
+			if (m.hasFileOnRemoteHost()
+					|| GeoHelper.isGeoUri(m.getBody())
+					|| m.treatAsDownloadable() == Message.Decision.MUST) {
+				copyUrl.setVisible(true);
 			}
-			if (m.getType() != Message.TYPE_TEXT
-					|| m.getDownloadable() != null
-					|| !m.bodyContainsDownloadable()) {
-				downloadImage.setVisible(false);
+			if (m.getType() == Message.TYPE_TEXT && m.getTransferable() == null && m.treatAsDownloadable() != Message.Decision.NEVER) {
+				downloadFile.setVisible(true);
+				downloadFile.setTitle(activity.getString(R.string.download_x_file,UIHelper.getFileDescriptionString(activity, m)));
 			}
-			if (!((m.getDownloadable() != null && !(m.getDownloadable() instanceof DownloadablePlaceholder))
+			if ((m.getTransferable() != null && !(m.getTransferable() instanceof TransferablePlaceholder))
 					|| (m.isFileOrImage() && (m.getStatus() == Message.STATUS_WAITING
-					|| m.getStatus() == Message.STATUS_OFFERED)))) {
-				cancelTransmission.setVisible(false);
+					|| m.getStatus() == Message.STATUS_OFFERED))) {
+				cancelTransmission.setVisible(true);
 			}
 		}
 	}
@@ -484,8 +485,8 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 			case R.id.copy_url:
 				copyUrl(selectedMessage);
 				return true;
-			case R.id.download_image:
-				downloadImage(selectedMessage);
+			case R.id.download_file:
+				downloadFile(selectedMessage);
 				return true;
 			case R.id.cancel_transmission:
 				cancelTransmission(selectedMessage);
@@ -506,8 +507,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 					activity.xmppConnectionService.getFileBackend()
 							.getJingleFileUri(message));
 			shareIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-			String path = message.getRelativeFilePath();
-			String mime = path == null ? null : URLConnection.guessContentTypeFromName(path);
+			String mime = message.getMimeType();
 			if (mime == null) {
 				mime = "image/webp";
 			}
@@ -529,7 +529,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 			DownloadableFile file = activity.xmppConnectionService.getFileBackend().getFile(message);
 			if (!file.exists()) {
 				Toast.makeText(activity, R.string.file_deleted, Toast.LENGTH_SHORT).show();
-				message.setDownloadable(new DownloadablePlaceholder(Downloadable.STATUS_DELETED));
+				message.setTransferable(new TransferablePlaceholder(Transferable.STATUS_DELETED));
 				return;
 			}
 		}
@@ -542,9 +542,12 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 		if (GeoHelper.isGeoUri(message.getBody())) {
 			resId = R.string.location;
 			url = message.getBody();
+		} else if (message.hasFileOnRemoteHost()) {
+			resId = R.string.file_url;
+			url = message.getFileParams().url.toString();
 		} else {
-			resId = R.string.image_url;
-			url = message.getImageParams().url.toString();
+			url = message.getBody().trim();
+			resId = R.string.file_url;
 		}
 		if (activity.copyTextToClipboard(url, resId)) {
 			Toast.makeText(activity, R.string.url_copied_to_clipboard,
@@ -552,15 +555,15 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 		}
 	}
 
-	private void downloadImage(Message message) {
+	private void downloadFile(Message message) {
 		activity.xmppConnectionService.getHttpConnectionManager()
-				.createNewConnection(message);
+				.createNewDownloadConnection(message);
 	}
 
 	private void cancelTransmission(Message message) {
-		Downloadable downloadable = message.getDownloadable();
-		if (downloadable != null) {
-			downloadable.cancel();
+		Transferable transferable = message.getTransferable();
+		if (transferable != null) {
+			transferable.cancel();
 		} else {
 			activity.xmppConnectionService.markMessage(message, Message.STATUS_SEND_FAILED);
 		}
@@ -754,7 +757,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 					if (message.getEncryption() == Message.ENCRYPTION_PGP
 							&& (message.getStatus() == Message.STATUS_RECEIVED || message
 							.getStatus() >= Message.STATUS_SEND)
-							&& message.getDownloadable() == null) {
+							&& message.getTransferable() == null) {
 						if (!mEncryptedMessages.contains(message)) {
 							mEncryptedMessages.add(message);
 						}
@@ -912,7 +915,8 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 		final SendButtonAction action;
 		final int status;
 		final boolean empty = this.mEditMessage == null || this.mEditMessage.getText().length() == 0;
-		if (c.getMode() == Conversation.MODE_MULTI) {
+		final boolean conference = c.getMode() == Conversation.MODE_MULTI;
+		if (conference && !c.getAccount().httpUploadAvailable()) {
 			if (empty && c.getNextCounterpart() != null) {
 				action = SendButtonAction.CANCEL;
 			} else {
@@ -920,28 +924,32 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 			}
 		} else {
 			if (empty) {
-				String setting = activity.getPreferences().getString("quick_action","recent");
-				if (!setting.equals("none") && UIHelper.receivedLocationQuestion(conversation.getLatestMessage())) {
-					setting = "location";
-				} else if (setting.equals("recent")) {
-					setting = activity.getPreferences().getString("recently_used_quick_action","text");
-				}
-				switch (setting) {
-					case "photo":
-						action = SendButtonAction.TAKE_PHOTO;
-						break;
-					case "location":
-						action = SendButtonAction.SEND_LOCATION;
-						break;
-					case "voice":
-						action = SendButtonAction.RECORD_VOICE;
-						break;
-					case "picture":
-						action = SendButtonAction.CHOOSE_PICTURE;
-						break;
-					default:
-						action = SendButtonAction.TEXT;
-						break;
+				if (conference && c.getNextCounterpart() != null) {
+					action = SendButtonAction.CANCEL;
+				} else {
+					String setting = activity.getPreferences().getString("quick_action", "recent");
+					if (!setting.equals("none") && UIHelper.receivedLocationQuestion(conversation.getLatestMessage())) {
+						setting = "location";
+					} else if (setting.equals("recent")) {
+						setting = activity.getPreferences().getString("recently_used_quick_action", "text");
+					}
+					switch (setting) {
+						case "photo":
+							action = SendButtonAction.TAKE_PHOTO;
+							break;
+						case "location":
+							action = SendButtonAction.SEND_LOCATION;
+							break;
+						case "voice":
+							action = SendButtonAction.RECORD_VOICE;
+							break;
+						case "picture":
+							action = SendButtonAction.CHOOSE_PICTURE;
+							break;
+						default:
+							action = SendButtonAction.TEXT;
+							break;
+					}
 				}
 			} else {
 				action = SendButtonAction.TEXT;

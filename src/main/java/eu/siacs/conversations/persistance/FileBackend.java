@@ -13,6 +13,7 @@ import java.security.DigestOutputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
 
@@ -32,6 +33,7 @@ import android.webkit.MimeTypeMap;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
+import eu.siacs.conversations.entities.Transferable;
 import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.services.XmppConnectionService;
@@ -78,10 +80,10 @@ public class FileBackend {
 			if (path.startsWith("/")) {
 				return new DownloadableFile(path);
 			} else {
-				if (message.getType() == Message.TYPE_FILE) {
+				if (Arrays.asList(Transferable.VALID_IMAGE_EXTENSIONS).contains(extension)) {
 					return new DownloadableFile(getConversationsFileDirectory() + path);
 				} else {
-					return new DownloadableFile(getConversationsImageDirectory()+path);
+					return new DownloadableFile(getConversationsImageDirectory() + path);
 				}
 			}
 		}
@@ -217,7 +219,7 @@ public class FileBackend {
 			long size = file.getSize();
 			int width = scaledBitmap.getWidth();
 			int height = scaledBitmap.getHeight();
-			message.setBody(Long.toString(size) + ',' + width + ',' + height);
+			message.setBody(Long.toString(size) + '|' + width + '|' + height);
 			return file;
 		} catch (FileNotFoundException e) {
 			throw new FileCopyException(R.string.error_file_not_found);
@@ -497,7 +499,11 @@ public class FileBackend {
 				message.setBody(url.toString()+"|"+Long.toString(file.getSize()) + '|' + imageWidth + '|' + imageHeight);
 			}
 		} else {
-			message.setBody(Long.toString(file.getSize()));
+			if (url != null) {
+				message.setBody(url.toString()+"|"+Long.toString(file.getSize()));
+			} else {
+				message.setBody(Long.toString(file.getSize()));
+			}
 		}
 
 	}

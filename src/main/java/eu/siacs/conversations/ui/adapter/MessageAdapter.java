@@ -29,10 +29,10 @@ import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
-import eu.siacs.conversations.entities.Downloadable;
+import eu.siacs.conversations.entities.Transferable;
 import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.entities.Message;
-import eu.siacs.conversations.entities.Message.ImageParams;
+import eu.siacs.conversations.entities.Message.FileParams;
 import eu.siacs.conversations.ui.ConversationActivity;
 import eu.siacs.conversations.utils.GeoHelper;
 import eu.siacs.conversations.utils.UIHelper;
@@ -99,14 +99,14 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		}
 		boolean multiReceived = message.getConversation().getMode() == Conversation.MODE_MULTI
 			&& message.getMergedStatus() <= Message.STATUS_RECEIVED;
-		if (message.getType() == Message.TYPE_IMAGE || message.getType() == Message.TYPE_FILE || message.getDownloadable() != null) {
-			ImageParams params = message.getImageParams();
+		if (message.getType() == Message.TYPE_IMAGE || message.getType() == Message.TYPE_FILE || message.getTransferable() != null) {
+			FileParams params = message.getFileParams();
 			if (params.size > (1.5 * 1024 * 1024)) {
 				filesize = params.size / (1024 * 1024)+ " MiB";
 			} else if (params.size > 0) {
 				filesize = params.size / 1024 + " KiB";
 			}
-			if (message.getDownloadable() != null && message.getDownloadable().getStatus() == Downloadable.STATUS_FAILED) {
+			if (message.getTransferable() != null && message.getTransferable().getStatus() == Transferable.STATUS_FAILED) {
 				error = true;
 			}
 		}
@@ -115,7 +115,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 				info = getContext().getString(R.string.waiting);
 				break;
 			case Message.STATUS_UNSEND:
-				Downloadable d = message.getDownloadable();
+				Transferable d = message.getTransferable();
 				if (d!=null) {
 					info = getContext().getString(R.string.sending_file,d.getProgress());
 				} else {
@@ -160,7 +160,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 				message.getMergedTimeSent());
 		if (message.getStatus() <= Message.STATUS_RECEIVED) {
 			if ((filesize != null) && (info != null)) {
-				viewHolder.time.setText(filesize + " \u00B7 " + info);
+				viewHolder.time.setText(formatedTime + " \u00B7 " + filesize +" \u00B7 " + info);
 			} else if ((filesize == null) && (info != null)) {
 				viewHolder.time.setText(formatedTime + " \u00B7 " + info);
 			} else if ((filesize != null) && (info == null)) {
@@ -339,7 +339,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		}
 		viewHolder.messageBody.setVisibility(View.GONE);
 		viewHolder.image.setVisibility(View.VISIBLE);
-		ImageParams params = message.getImageParams();
+		FileParams params = message.getFileParams();
 		double target = metrics.density * 288;
 		int scalledW;
 		int scalledH;
@@ -482,19 +482,19 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 				}
 			});
 
-		final Downloadable downloadable = message.getDownloadable();
-		if (downloadable != null && downloadable.getStatus() != Downloadable.STATUS_UPLOADING) {
-			if (downloadable.getStatus() == Downloadable.STATUS_OFFER) {
+		final Transferable transferable = message.getTransferable();
+		if (transferable != null && transferable.getStatus() != Transferable.STATUS_UPLOADING) {
+			if (transferable.getStatus() == Transferable.STATUS_OFFER) {
 				displayDownloadableMessage(viewHolder,message,activity.getString(R.string.download_x_file, UIHelper.getFileDescriptionString(activity, message)));
-			} else if (downloadable.getStatus() == Downloadable.STATUS_OFFER_CHECK_FILESIZE) {
-				displayDownloadableMessage(viewHolder, message, activity.getString(R.string.check_image_filesize));
+			} else if (transferable.getStatus() == Transferable.STATUS_OFFER_CHECK_FILESIZE) {
+				displayDownloadableMessage(viewHolder, message, activity.getString(R.string.check_x_filesize, UIHelper.getFileDescriptionString(activity, message)));
 			} else {
 				displayInfoMessage(viewHolder, UIHelper.getMessagePreview(activity, message).first);
 			}
 		} else if (message.getType() == Message.TYPE_IMAGE && message.getEncryption() != Message.ENCRYPTION_PGP && message.getEncryption() != Message.ENCRYPTION_DECRYPTION_FAILED) {
 			displayImageMessage(viewHolder, message);
 		} else if (message.getType() == Message.TYPE_FILE && message.getEncryption() != Message.ENCRYPTION_PGP && message.getEncryption() != Message.ENCRYPTION_DECRYPTION_FAILED) {
-			if (message.getImageParams().width > 0) {
+			if (message.getFileParams().width > 0) {
 				displayImageMessage(viewHolder,message);
 			} else {
 				displayOpenableMessage(viewHolder, message);
@@ -521,12 +521,12 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		} else {
 			if (GeoHelper.isGeoUri(message.getBody())) {
 				displayLocationMessage(viewHolder,message);
+			} else if (message.bodyIsHeart()) {
+				displayHeartMessage(viewHolder, message.getBody().trim());
+			} else if (message.treatAsDownloadable() == Message.Decision.MUST) {
+				displayDownloadableMessage(viewHolder, message, activity.getString(R.string.check_x_filesize, UIHelper.getFileDescriptionString(activity, message)));
 			} else {
-				if (message.bodyIsHeart()) {
-					displayHeartMessage(viewHolder, message.getBody().trim());
-				} else {
-					displayTextMessage(viewHolder, message);
-				}
+				displayTextMessage(viewHolder, message);
 			}
 		}
 
@@ -536,12 +536,14 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 	}
 
 	public void startDownloadable(Message message) {
-		Downloadable downloadable = message.getDownloadable();
-		if (downloadable != null) {
-			if (!downloadable.start()) {
+		Transferable transferable = message.getTransferable();
+		if (transferable != null) {
+			if (!transferable.start()) {
 				Toast.makeText(activity, R.string.not_connected_try_again,
 						Toast.LENGTH_SHORT).show();
 			}
+		} else if (message.treatAsDownloadable() != Message.Decision.NEVER) {
+			activity.xmppConnectionService.getHttpConnectionManager().createNewDownloadConnection(message);
 		}
 	}
 

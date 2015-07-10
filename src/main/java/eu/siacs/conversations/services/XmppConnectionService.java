@@ -28,6 +28,7 @@ import android.util.LruCache;
 import net.java.otr4j.OtrException;
 import net.java.otr4j.session.Session;
 import net.java.otr4j.session.SessionID;
+import net.java.otr4j.session.SessionImpl;
 import net.java.otr4j.session.SessionStatus;
 
 import org.openintents.openpgp.util.OpenPgpApi;
@@ -56,12 +57,11 @@ import eu.siacs.conversations.entities.Blockable;
 import eu.siacs.conversations.entities.Bookmark;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
-import eu.siacs.conversations.entities.Downloadable;
-import eu.siacs.conversations.entities.DownloadablePlaceholder;
+import eu.siacs.conversations.entities.Transferable;
+import eu.siacs.conversations.entities.TransferablePlaceholder;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.entities.MucOptions.OnRenameListener;
-import eu.siacs.conversations.entities.Presences;
 import eu.siacs.conversations.generator.IqGenerator;
 import eu.siacs.conversations.generator.MessageGenerator;
 import eu.siacs.conversations.generator.PresenceGenerator;
@@ -233,6 +233,8 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	private MessageArchiveService mMessageArchiveService = new MessageArchiveService(this);
 	private OnConversationUpdate mOnConversationUpdate = null;
 	private int convChangedListenerCount = 0;
+	private OnShowErrorToast mOnShowErrorToast = null;
+	private int showErrorToastListenerCount = 0;
 	private int unreadCount = -1;
 	private OnAccountUpdate mOnAccountUpdate = null;
 	private OnStatusChanged statusListener = new OnStatusChanged() {
@@ -390,7 +392,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 							callback.success(message);
 						}
 					} catch (FileBackend.FileCopyException e) {
-						callback.error(e.getResId(),message);
+						callback.error(e.getResId(), message);
 					}
 				}
 			});
@@ -630,7 +632,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		}
 		Context context = getApplicationContext();
 		AlarmManager alarmManager = (AlarmManager) context
-			.getSystemService(Context.ALARM_SERVICE);
+				.getSystemService(Context.ALARM_SERVICE);
 		Intent intent = new Intent(context, EventReceiver.class);
 		alarmManager.cancel(PendingIntent.getBroadcast(context, 0, intent, 0));
 		Log.d(Config.LOGTAG, "good bye");
@@ -672,114 +674,138 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		}
 	}
 
-	public void sendMessage(final Message message) {
+	private void sendFileMessage(final Message message) {
+		Log.d(Config.LOGTAG, "send file message");
 		final Account account = message.getConversation().getAccount();
+		final XmppConnection connection = account.getXmppConnection();
+		if (connection != null && connection.getFeatures().httpUpload()) {
+			mHttpConnectionManager.createNewUploadConnection(message);
+		} else {
+			mJingleConnectionManager.createNewConnection(message);
+		}
+	}
+
+	public void sendMessage(final Message message) {
+		sendMessage(message, false);
+	}
+
+	private void sendMessage(final Message message, final boolean resend) {
+		final Account account = message.getConversation().getAccount();
+		final Conversation conversation = message.getConversation();
 		account.deactivateGracePeriod();
-		final Conversation conv = message.getConversation();
 		MessagePacket packet = null;
 		boolean saveInDb = true;
-		boolean send = false;
-		if (account.getStatus() == Account.State.ONLINE
-				&& account.getXmppConnection() != null) {
-			if (message.getType() == Message.TYPE_IMAGE || message.getType() == Message.TYPE_FILE) {
-				if (message.getCounterpart() != null) {
-					if (message.getEncryption() == Message.ENCRYPTION_OTR) {
-						if (!conv.hasValidOtrSession()) {
-							conv.startOtrSession(message.getCounterpart().getResourcepart(),true);
-							message.setStatus(Message.STATUS_WAITING);
-						} else if (conv.hasValidOtrSession()
-								&& conv.getOtrSession().getSessionStatus() == SessionStatus.ENCRYPTED) {
-							mJingleConnectionManager
-								.createNewConnection(message);
-								}
-					} else {
-						mJingleConnectionManager.createNewConnection(message);
-					}
-				} else {
-					if (message.getEncryption() == Message.ENCRYPTION_OTR) {
-						conv.startOtrIfNeeded();
-					}
-					message.setStatus(Message.STATUS_WAITING);
-				}
-			} else {
-				if (message.getEncryption() == Message.ENCRYPTION_OTR) {
-					if (!conv.hasValidOtrSession() && (message.getCounterpart() != null)) {
-						conv.startOtrSession(message.getCounterpart().getResourcepart(), true);
-						message.setStatus(Message.STATUS_WAITING);
-					} else if (conv.hasValidOtrSession()) {
-						if (conv.getOtrSession().getSessionStatus() == SessionStatus.ENCRYPTED) {
-							packet = mMessageGenerator.generateOtrChat(message);
-							send = true;
-						} else {
-							message.setStatus(Message.STATUS_WAITING);
-							conv.startOtrIfNeeded();
-						}
-					} else {
-						message.setStatus(Message.STATUS_WAITING);
-					}
-				} else if (message.getEncryption() == Message.ENCRYPTION_DECRYPTED) {
-					message.getConversation().endOtrIfNeeded();
-					message.getConversation().findUnsentMessagesWithOtrEncryption(new Conversation.OnMessageFound() {
-						@Override
-						public void onMessageFound(Message message) {
-							markMessage(message,Message.STATUS_SEND_FAILED);
-						}
-					});
-					packet = mMessageGenerator.generatePgpChat(message);
-					send = true;
-				} else {
-					message.getConversation().endOtrIfNeeded();
-					message.getConversation().findUnsentMessagesWithOtrEncryption(new Conversation.OnMessageFound() {
-						@Override
-						public void onMessageFound(Message message) {
-							markMessage(message,Message.STATUS_SEND_FAILED);
-						}
-					});
-					packet = mMessageGenerator.generateChat(message);
-					send = true;
-				}
-			}
-			if (!account.getXmppConnection().getFeatures().sm()
-					&& conv.getMode() != Conversation.MODE_MULTI) {
-				message.setStatus(Message.STATUS_SEND);
-					}
-		} else {
-			message.setStatus(Message.STATUS_WAITING);
-			if (message.getType() == Message.TYPE_TEXT) {
-				if (message.getEncryption() == Message.ENCRYPTION_DECRYPTED) {
-					String pgpBody = message.getEncryptedBody();
-					String decryptedBody = message.getBody();
-					message.setBody(pgpBody);
-					message.setEncryption(Message.ENCRYPTION_PGP);
-					databaseBackend.createMessage(message);
-					saveInDb = false;
-					message.setBody(decryptedBody);
-					message.setEncryption(Message.ENCRYPTION_DECRYPTED);
-				} else if (message.getEncryption() == Message.ENCRYPTION_OTR) {
-					if (!conv.hasValidOtrSession()
-							&& message.getCounterpart() != null) {
-						conv.startOtrSession(message.getCounterpart().getResourcepart(), false);
-							}
-				}
-			}
+		message.setStatus(Message.STATUS_WAITING);
 
+		if (!resend && message.getEncryption() != Message.ENCRYPTION_OTR) {
+			message.getConversation().endOtrIfNeeded();
+			message.getConversation().findUnsentMessagesWithOtrEncryption(new Conversation.OnMessageFound() {
+				@Override
+				public void onMessageFound(Message message) {
+					markMessage(message,Message.STATUS_SEND_FAILED);
+				}
+			});
 		}
-		conv.add(message);
-		if (saveInDb) {
-			if (message.getEncryption() == Message.ENCRYPTION_NONE
-					|| saveEncryptedMessages()) {
-				databaseBackend.createMessage(message);
+
+		if (account.isOnlineAndConnected()) {
+			switch (message.getEncryption()) {
+				case Message.ENCRYPTION_NONE:
+					if (message.needsUploading()) {
+						if (account.httpUploadAvailable() || message.fixCounterpart()) {
+							this.sendFileMessage(message);
+						} else {
+							break;
+						}
+					} else {
+						packet = mMessageGenerator.generateChat(message,resend);
 					}
+					break;
+				case Message.ENCRYPTION_PGP:
+				case Message.ENCRYPTION_DECRYPTED:
+					if (message.needsUploading()) {
+						if (account.httpUploadAvailable() || message.fixCounterpart()) {
+							this.sendFileMessage(message);
+						} else {
+							break;
+						}
+					} else {
+						packet = mMessageGenerator.generatePgpChat(message,resend);
+					}
+					break;
+				case Message.ENCRYPTION_OTR:
+					SessionImpl otrSession = conversation.getOtrSession();
+					if (otrSession != null && otrSession.getSessionStatus() == SessionStatus.ENCRYPTED) {
+						try {
+							message.setCounterpart(Jid.fromSessionID(otrSession.getSessionID()));
+						} catch (InvalidJidException e) {
+							break;
+						}
+						if (message.needsUploading()) {
+							mJingleConnectionManager.createNewConnection(message);
+						} else {
+							packet = mMessageGenerator.generateOtrChat(message,resend);
+						}
+					} else if (otrSession == null) {
+						if (message.fixCounterpart()) {
+							conversation.startOtrSession(message.getCounterpart().getResourcepart(), true);
+						} else {
+							break;
+						}
+					}
+					break;
+			}
+			if (packet != null) {
+				if (account.getXmppConnection().getFeatures().sm() || conversation.getMode() == Conversation.MODE_MULTI) {
+					message.setStatus(Message.STATUS_UNSEND);
+				} else {
+					message.setStatus(Message.STATUS_SEND);
+				}
+			}
+		} else {
+			switch(message.getEncryption()) {
+				case Message.ENCRYPTION_DECRYPTED:
+					if (!message.needsUploading()) {
+						String pgpBody = message.getEncryptedBody();
+						String decryptedBody = message.getBody();
+						message.setBody(pgpBody);
+						message.setEncryption(Message.ENCRYPTION_PGP);
+						databaseBackend.createMessage(message);
+						saveInDb = false;
+						message.setBody(decryptedBody);
+						message.setEncryption(Message.ENCRYPTION_DECRYPTED);
+					}
+					break;
+				case Message.ENCRYPTION_OTR:
+					if (!conversation.hasValidOtrSession() && message.getCounterpart() != null) {
+						conversation.startOtrSession(message.getCounterpart().getResourcepart(), false);
+					}
+					break;
+			}
 		}
-		if ((send) && (packet != null)) {
-			if (conv.setOutgoingChatState(Config.DEFAULT_CHATSTATE)) {
+
+		if (resend) {
+			if (packet != null) {
+				if (account.getXmppConnection().getFeatures().sm() || conversation.getMode() == Conversation.MODE_MULTI) {
+					markMessage(message,Message.STATUS_UNSEND);
+				} else {
+					markMessage(message,Message.STATUS_SEND);
+				}
+			}
+		} else {
+			conversation.add(message);
+			if (saveInDb && (message.getEncryption() == Message.ENCRYPTION_NONE || saveEncryptedMessages())) {
+				databaseBackend.createMessage(message);
+			}
+			updateConversationUi();
+		}
+		if (packet != null) {
+			if (conversation.setOutgoingChatState(Config.DEFAULT_CHATSTATE)) {
 				if (this.sendChatStates()) {
-					packet.addChild(ChatState.toElement(conv.getOutgoingChatState()));
+					packet.addChild(ChatState.toElement(conversation.getOutgoingChatState()));
 				}
 			}
 			sendMessagePacket(account, packet);
 		}
-		updateConversationUi();
 	}
 
 	private void sendUnsentMessages(final Conversation conversation) {
@@ -792,77 +818,8 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		});
 	}
 
-	private void resendMessage(final Message message) {
-		Account account = message.getConversation().getAccount();
-		MessagePacket packet = null;
-		if (message.getEncryption() == Message.ENCRYPTION_OTR) {
-			Presences presences = message.getConversation().getContact()
-				.getPresences();
-			if (!message.getConversation().hasValidOtrSession()) {
-				if ((message.getCounterpart() != null)
-						&& (presences.has(message.getCounterpart().getResourcepart()))) {
-					message.getConversation().startOtrSession(message.getCounterpart().getResourcepart(), true);
-				} else {
-					if (presences.size() == 1) {
-						String presence = presences.asStringArray()[0];
-						message.getConversation().startOtrSession(presence, true);
-					}
-				}
-			} else {
-				if (message.getConversation().getOtrSession()
-						.getSessionStatus() == SessionStatus.ENCRYPTED) {
-					try {
-						message.setCounterpart(Jid.fromSessionID(message.getConversation().getOtrSession().getSessionID()));
-						if (message.getType() == Message.TYPE_TEXT) {
-							packet = mMessageGenerator.generateOtrChat(message,
-									true);
-						} else if (message.getType() == Message.TYPE_IMAGE || message.getType() == Message.TYPE_FILE) {
-							mJingleConnectionManager.createNewConnection(message);
-						}
-					} catch (final InvalidJidException ignored) {
-
-					}
-						}
-			}
-		} else if (message.getType() == Message.TYPE_TEXT) {
-			if (message.getEncryption() == Message.ENCRYPTION_NONE) {
-				packet = mMessageGenerator.generateChat(message, true);
-			} else if ((message.getEncryption() == Message.ENCRYPTION_DECRYPTED)
-					|| (message.getEncryption() == Message.ENCRYPTION_PGP)) {
-				packet = mMessageGenerator.generatePgpChat(message, true);
-					}
-		} else if (message.getType() == Message.TYPE_IMAGE || message.getType() == Message.TYPE_FILE) {
-			Contact contact = message.getConversation().getContact();
-			Presences presences = contact.getPresences();
-			if ((message.getCounterpart() != null)
-					&& (presences.has(message.getCounterpart().getResourcepart()))) {
-				mJingleConnectionManager.createNewConnection(message);
-			} else {
-				if (presences.size() == 1) {
-					String presence = presences.asStringArray()[0];
-					try {
-						message.setCounterpart(Jid.fromParts(contact.getJid().getLocalpart(), contact.getJid().getDomainpart(), presence));
-					} catch (InvalidJidException e) {
-						return;
-					}
-					mJingleConnectionManager.createNewConnection(message);
-				}
-			}
-		}
-		if (packet != null) {
-			if (!account.getXmppConnection().getFeatures().sm()
-					&& message.getConversation().getMode() != Conversation.MODE_MULTI) {
-				markMessage(message, Message.STATUS_SEND);
-			} else {
-				markMessage(message, Message.STATUS_UNSEND);
-			}
-			if (message.getConversation().setOutgoingChatState(Config.DEFAULT_CHATSTATE)) {
-				if (this.sendChatStates()) {
-					packet.addChild(ChatState.toElement(message.getConversation().getOutgoingChatState()));
-				}
-			}
-			sendMessagePacket(account, packet);
-		}
+	public void resendMessage(final Message message) {
+		sendMessage(message, true);
 	}
 
 	public void fetchRosterFromServer(final Account account) {
@@ -1017,7 +974,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 			@Override
 			public void onMessageFound(Message message) {
 				if (!getFileBackend().isFileAvailable(message)) {
-					message.setDownloadable(new DownloadablePlaceholder(Downloadable.STATUS_DELETED));
+					message.setTransferable(new TransferablePlaceholder(Transferable.STATUS_DELETED));
 				}
 			}
 		});
@@ -1028,7 +985,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 			Message message = conversation.findMessageWithFileAndUuid(uuid);
 			if (message != null) {
 				if (!getFileBackend().isFileAvailable(message)) {
-					message.setDownloadable(new DownloadablePlaceholder(Downloadable.STATUS_DELETED));
+					message.setTransferable(new TransferablePlaceholder(Transferable.STATUS_DELETED));
 					updateConversationUi();
 				}
 				return;
@@ -1040,13 +997,14 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		populateWithOrderedConversations(list, true);
 	}
 
-	public void populateWithOrderedConversations(final List<Conversation> list, boolean includeConferences) {
+	public void populateWithOrderedConversations(final List<Conversation> list, boolean includeNoFileUpload) {
 		list.clear();
-		if (includeConferences) {
+		if (includeNoFileUpload) {
 			list.addAll(getConversations());
 		} else {
 			for (Conversation conversation : getConversations()) {
-				if (conversation.getMode() == Conversation.MODE_SINGLE) {
+				if (conversation.getMode() == Conversation.MODE_SINGLE
+						|| conversation.getAccount().httpUploadAvailable()) {
 					list.add(conversation);
 				}
 			}
@@ -1284,6 +1242,32 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		}
 	}
 
+	public void setOnShowErrorToastListener(OnShowErrorToast onShowErrorToast) {
+		synchronized (this) {
+			if (checkListeners()) {
+				switchToForeground();
+			}
+			this.mOnShowErrorToast = onShowErrorToast;
+			if (this.showErrorToastListenerCount < 2) {
+				this.showErrorToastListenerCount++;
+			}
+		}
+		this.mOnShowErrorToast = onShowErrorToast;
+	}
+
+	public void removeOnShowErrorToastListener() {
+		synchronized (this) {
+			this.showErrorToastListenerCount--;
+			if (this.showErrorToastListenerCount <= 0) {
+				this.showErrorToastListenerCount = 0;
+				this.mOnShowErrorToast = null;
+				if (checkListeners()) {
+					switchToBackground();
+				}
+			}
+		}
+	}
+
 	public void setOnAccountListChangedListener(OnAccountUpdate listener) {
 		synchronized (this) {
 			if (checkListeners()) {
@@ -1388,7 +1372,8 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		return (this.mOnAccountUpdate == null
 				&& this.mOnConversationUpdate == null
 				&& this.mOnRosterUpdate == null
-				&& this.mOnUpdateBlocklist == null);
+				&& this.mOnUpdateBlocklist == null
+				&& this.mOnShowErrorToast == null);
 	}
 
 	private void switchToForeground() {
@@ -1810,15 +1795,15 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 				} catch (InvalidJidException e) {
 					return;
 				}
-				if (message.getType() == Message.TYPE_TEXT) {
+				if (message.needsUploading()) {
+					mJingleConnectionManager.createNewConnection(message);
+				} else {
 					MessagePacket outPacket = mMessageGenerator.generateOtrChat(message, true);
 					if (outPacket != null) {
 						message.setStatus(Message.STATUS_SEND);
 						databaseBackend.updateMessage(message);
 						sendMessagePacket(account, outPacket);
 					}
-				} else if (message.getType() == Message.TYPE_IMAGE || message.getType() == Message.TYPE_FILE) {
-					mJingleConnectionManager.createNewConnection(message);
 				}
 				updateConversationUi();
 			}
@@ -2239,6 +2224,13 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		return count;
 	}
 
+
+	public void showErrorToastInUi(int resId) {
+		if (mOnShowErrorToast != null) {
+			mOnShowErrorToast.onShowErrorToast(resId);
+		}
+	}
+
 	public void updateConversationUi() {
 		if (mOnConversationUpdate != null) {
 			mOnConversationUpdate.onConversationUpdate();
@@ -2570,6 +2562,10 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		public void onPushSucceeded();
 
 		public void onPushFailed();
+	}
+
+	public interface OnShowErrorToast {
+		void onShowErrorToast(int resId);
 	}
 
 	public class XmppConnectionBinder extends Binder {

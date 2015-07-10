@@ -3,8 +3,7 @@ package eu.siacs.conversations.http;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.SystemClock;
-
-import org.apache.http.conn.ssl.StrictHostnameVerifier;
+import android.util.Log;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -12,25 +11,20 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
-import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLHandshakeException;
-import javax.net.ssl.SSLSocketFactory;
-import javax.net.ssl.X509TrustManager;
 
 import eu.siacs.conversations.Config;
-import eu.siacs.conversations.entities.Downloadable;
+import eu.siacs.conversations.R;
+import eu.siacs.conversations.entities.Transferable;
 import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.CryptoHelper;
 
-public class HttpConnection implements Downloadable {
+public class HttpDownloadConnection implements Transferable {
 
 	private HttpConnectionManager mHttpConnectionManager;
 	private XmppConnectionService mXmppConnectionService;
@@ -38,12 +32,12 @@ public class HttpConnection implements Downloadable {
 	private URL mUrl;
 	private Message message;
 	private DownloadableFile file;
-	private int mStatus = Downloadable.STATUS_UNKNOWN;
+	private int mStatus = Transferable.STATUS_UNKNOWN;
 	private boolean acceptedAutomatically = false;
 	private int mProgress = 0;
 	private long mLastGuiRefresh = 0;
 
-	public HttpConnection(HttpConnectionManager manager) {
+	public HttpDownloadConnection(HttpConnectionManager manager) {
 		this.mHttpConnectionManager = manager;
 		this.mXmppConnectionService = manager.getXmppConnectionService();
 	}
@@ -63,8 +57,12 @@ public class HttpConnection implements Downloadable {
 	}
 
 	public void init(Message message) {
+		init(message, false);
+	}
+
+	public void init(Message message, boolean interactive) {
 		this.message = message;
-		this.message.setDownloadable(this);
+		this.message.setTransferable(this);
 		try {
 			mUrl = new URL(message.getBody());
 			String[] parts = mUrl.getPath().toLowerCase().split("\\.");
@@ -92,7 +90,7 @@ public class HttpConnection implements Downloadable {
 					&& this.file.getKey() == null) {
 				this.message.setEncryption(Message.ENCRYPTION_NONE);
 					}
-			checkFileSize(false);
+			checkFileSize(true);
 		} catch (MalformedURLException e) {
 			this.cancel();
 		}
@@ -104,7 +102,7 @@ public class HttpConnection implements Downloadable {
 
 	public void cancel() {
 		mHttpConnectionManager.finishConnection(this);
-		message.setDownloadable(null);
+		message.setTransferable(null);
 		mXmppConnectionService.updateConversationUi();
 	}
 
@@ -112,7 +110,7 @@ public class HttpConnection implements Downloadable {
 		Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
 		intent.setData(Uri.fromFile(file));
 		mXmppConnectionService.sendBroadcast(intent);
-		message.setDownloadable(null);
+		message.setTransferable(null);
 		mHttpConnectionManager.finishConnection(this);
 		mXmppConnectionService.updateConversationUi();
 		if (acceptedAutomatically) {
@@ -123,42 +121,6 @@ public class HttpConnection implements Downloadable {
 	private void changeStatus(int status) {
 		this.mStatus = status;
 		mXmppConnectionService.updateConversationUi();
-	}
-
-	private void setupTrustManager(final HttpsURLConnection connection,
-			final boolean interactive) {
-		final X509TrustManager trustManager;
-		final HostnameVerifier hostnameVerifier;
-		if (interactive) {
-			trustManager = mXmppConnectionService.getMemorizingTrustManager();
-			hostnameVerifier = mXmppConnectionService
-				.getMemorizingTrustManager().wrapHostnameVerifier(
-						new StrictHostnameVerifier());
-		} else {
-			trustManager = mXmppConnectionService.getMemorizingTrustManager()
-				.getNonInteractive();
-			hostnameVerifier = mXmppConnectionService
-				.getMemorizingTrustManager()
-				.wrapHostnameVerifierNonInteractive(
-						new StrictHostnameVerifier());
-		}
-		try {
-			final SSLContext sc = SSLContext.getInstance("TLS");
-			sc.init(null, new X509TrustManager[]{trustManager},
-					mXmppConnectionService.getRNG());
-
-			final SSLSocketFactory sf = sc.getSocketFactory();
-			final String[] cipherSuites = CryptoHelper.getOrderedCipherSuites(
-					sf.getSupportedCipherSuites());
-			if (cipherSuites.length > 0) {
-				sc.getDefaultSSLParameters().setCipherSuites(cipherSuites);
-
-			}
-
-			connection.setSSLSocketFactory(sf);
-			connection.setHostnameVerifier(hostnameVerifier);
-		} catch (final KeyManagementException | NoSuchAlgorithmException ignored) {
-		}
 	}
 
 	private class FileSizeChecker implements Runnable {
@@ -176,43 +138,46 @@ public class HttpConnection implements Downloadable {
 				size = retrieveFileSize();
 			} catch (SSLHandshakeException e) {
 				changeStatus(STATUS_OFFER_CHECK_FILESIZE);
-				HttpConnection.this.acceptedAutomatically = false;
-				HttpConnection.this.mXmppConnectionService.getNotificationService().push(message);
+				HttpDownloadConnection.this.acceptedAutomatically = false;
+				HttpDownloadConnection.this.mXmppConnectionService.getNotificationService().push(message);
 				return;
 			} catch (IOException e) {
+				Log.d(Config.LOGTAG, "io exception in http file size checker: " + e.getMessage());
+				if (interactive) {
+					mXmppConnectionService.showErrorToastInUi(R.string.file_not_found_on_remote_host);
+				}
 				cancel();
 				return;
 			}
 			file.setExpectedSize(size);
 			if (size <= mHttpConnectionManager.getAutoAcceptFileSize()) {
-				HttpConnection.this.acceptedAutomatically = true;
+				HttpDownloadConnection.this.acceptedAutomatically = true;
 				new Thread(new FileDownloader(interactive)).start();
 			} else {
 				changeStatus(STATUS_OFFER);
-				HttpConnection.this.acceptedAutomatically = false;
-				HttpConnection.this.mXmppConnectionService.getNotificationService().push(message);
+				HttpDownloadConnection.this.acceptedAutomatically = false;
+				HttpDownloadConnection.this.mXmppConnectionService.getNotificationService().push(message);
 			}
 		}
 
-		private long retrieveFileSize() throws IOException,
-						SSLHandshakeException {
-							changeStatus(STATUS_CHECKING);
-							HttpURLConnection connection = (HttpURLConnection) mUrl
-								.openConnection();
-							connection.setRequestMethod("HEAD");
-							if (connection instanceof HttpsURLConnection) {
-								setupTrustManager((HttpsURLConnection) connection, interactive);
-							}
-							connection.connect();
-							String contentLength = connection.getHeaderField("Content-Length");
-							if (contentLength == null) {
-								throw new IOException();
-							}
-							try {
-								return Long.parseLong(contentLength, 10);
-							} catch (NumberFormatException e) {
-								throw new IOException();
-							}
+		private long retrieveFileSize() throws IOException {
+			Log.d(Config.LOGTAG,"retrieve file size. interactive:"+String.valueOf(interactive));
+			changeStatus(STATUS_CHECKING);
+			HttpURLConnection connection = (HttpURLConnection) mUrl.openConnection();
+			connection.setRequestMethod("HEAD");
+			if (connection instanceof HttpsURLConnection) {
+				mHttpConnectionManager.setupTrustManager((HttpsURLConnection) connection, interactive);
+			}
+			connection.connect();
+			String contentLength = connection.getHeaderField("Content-Length");
+			if (contentLength == null) {
+				throw new IOException();
+			}
+			try {
+				return Long.parseLong(contentLength, 10);
+			} catch (NumberFormatException e) {
+				throw new IOException();
+			}
 		}
 
 	}
@@ -235,19 +200,18 @@ public class HttpConnection implements Downloadable {
 			} catch (SSLHandshakeException e) {
 				changeStatus(STATUS_OFFER);
 			} catch (IOException e) {
+				mXmppConnectionService.showErrorToastInUi(R.string.file_not_found_on_remote_host);
 				cancel();
 			}
 		}
 
 		private void download() throws SSLHandshakeException, IOException {
-			HttpURLConnection connection = (HttpURLConnection) mUrl
-				.openConnection();
+			HttpURLConnection connection = (HttpURLConnection) mUrl.openConnection();
 			if (connection instanceof HttpsURLConnection) {
-				setupTrustManager((HttpsURLConnection) connection, interactive);
+				mHttpConnectionManager.setupTrustManager((HttpsURLConnection) connection, interactive);
 			}
 			connection.connect();
-			BufferedInputStream is = new BufferedInputStream(
-					connection.getInputStream());
+			BufferedInputStream is = new BufferedInputStream(connection.getInputStream());
 			file.getParentFile().mkdirs();
 			file.createNewFile();
 			OutputStream os = file.createOutputStream();
@@ -269,8 +233,8 @@ public class HttpConnection implements Downloadable {
 		}
 
 		private void updateImageBounds() {
-			message.setType(Message.TYPE_IMAGE);
-			mXmppConnectionService.getFileBackend().updateFileParams(message,mUrl);
+			message.setType(Message.TYPE_FILE);
+			mXmppConnectionService.getFileBackend().updateFileParams(message, mUrl);
 			mXmppConnectionService.updateMessage(message);
 		}
 
@@ -301,10 +265,5 @@ public class HttpConnection implements Downloadable {
 	@Override
 	public int getProgress() {
 		return this.mProgress;
-	}
-
-	@Override
-	public String getMimeType() {
-		return "";
 	}
 }
