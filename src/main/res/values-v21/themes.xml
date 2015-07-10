@@ -18,6 +18,7 @@
         <item name="attr/icon_download">@drawable/ic_file_download_white_24dp</item>
         <item name="attr/icon_edit">@drawable/ic_edit_white_24dp</item>
         <item name="attr/icon_edit_dark">@drawable/ic_edit_grey600_24dp</item>
+        <item name="attr/icon_done">@drawable/ic_done_black_24dp</item>
         <item name="attr/icon_group">@drawable/ic_group_white_24dp</item>
         <item name="attr/icon_new">@drawable/ic_add_white_24dp</item>
         <item name="attr/icon_new_attachment">@drawable/ic_attach_file_white_24dp</item>
