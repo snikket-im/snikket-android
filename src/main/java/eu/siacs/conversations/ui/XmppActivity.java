@@ -284,6 +284,9 @@ public abstract class XmppActivity extends Activity {
 		if (this instanceof OnUpdateBlocklist) {
 			this.xmppConnectionService.setOnUpdateBlocklistListener((OnUpdateBlocklist) this);
 		}
+		if (this instanceof XmppConnectionService.OnShowErrorToast) {
+			this.xmppConnectionService.setOnShowErrorToastListener((XmppConnectionService.OnShowErrorToast) this);
+		}
 	}
 
 	protected void unregisterListeners() {
@@ -301,6 +304,9 @@ public abstract class XmppActivity extends Activity {
 		}
 		if (this instanceof OnUpdateBlocklist) {
 			this.xmppConnectionService.removeOnUpdateBlocklistListener();
+		}
+		if (this instanceof XmppConnectionService.OnShowErrorToast) {
+			this.xmppConnectionService.removeOnShowErrorToastListener();
 		}
 	}
 
@@ -447,14 +453,11 @@ public abstract class XmppActivity extends Activity {
 
 					@Override
 					public void success(Account account) {
-						xmppConnectionService.databaseBackend
-								.updateAccount(account);
+						xmppConnectionService.databaseBackend.updateAccount(account);
 						xmppConnectionService.sendPresence(account);
 						if (conversation != null) {
-							conversation
-									.setNextEncryption(Message.ENCRYPTION_PGP);
-							xmppConnectionService.databaseBackend
-									.updateConversation(conversation);
+							conversation.setNextEncryption(Message.ENCRYPTION_PGP);
+							xmppConnectionService.databaseBackend.updateConversation(conversation);
 						}
 					}
 

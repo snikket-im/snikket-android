@@ -17,8 +17,12 @@ public class HttpConnectionManager extends AbstractConnectionManager {
 	private List<HttpUploadConnection> uploadConnections = new CopyOnWriteArrayList<>();
 
 	public HttpConnection createNewConnection(Message message) {
+		return this.createNewConnection(message,false);
+	}
+
+	public HttpConnection createNewConnection(Message message,boolean interactive) {
 		HttpConnection connection = new HttpConnection(this);
-		connection.init(message);
+		connection.init(message,interactive);
 		this.connections.add(connection);
 		return connection;
 	}

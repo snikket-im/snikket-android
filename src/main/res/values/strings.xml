@@ -478,4 +478,5 @@
 	<string name="none">None</string>
 	<string name="recently_used">Most recently used</string>
 	<string name="choose_quick_action">Choose quick action</string>
+	<string name="file_not_found_on_remote_host">File not found on remote server</string>
 </resources>

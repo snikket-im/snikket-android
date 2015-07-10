@@ -542,6 +542,8 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 				Toast.makeText(activity, R.string.not_connected_try_again,
 						Toast.LENGTH_SHORT).show();
 			}
+		} else if (message.treatAsDownloadable() != Message.Decision.NEVER) {
+			activity.xmppConnectionService.getHttpConnectionManager().createNewConnection(message);
 		}
 	}
 

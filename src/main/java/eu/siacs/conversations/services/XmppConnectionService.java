@@ -234,6 +234,8 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	private MessageArchiveService mMessageArchiveService = new MessageArchiveService(this);
 	private OnConversationUpdate mOnConversationUpdate = null;
 	private int convChangedListenerCount = 0;
+	private OnShowErrorToast mOnShowErrorToast = null;
+	private int showErrorToastListenerCount = 0;
 	private int unreadCount = -1;
 	private OnAccountUpdate mOnAccountUpdate = null;
 	private OnStatusChanged statusListener = new OnStatusChanged() {
@@ -631,7 +633,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		}
 		Context context = getApplicationContext();
 		AlarmManager alarmManager = (AlarmManager) context
-			.getSystemService(Context.ALARM_SERVICE);
+				.getSystemService(Context.ALARM_SERVICE);
 		Intent intent = new Intent(context, EventReceiver.class);
 		alarmManager.cancel(PendingIntent.getBroadcast(context, 0, intent, 0));
 		Log.d(Config.LOGTAG, "good bye");
@@ -685,7 +687,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	}
 
 	public void sendMessage(final Message message) {
-		sendMessage(message,false);
+		sendMessage(message, false);
 	}
 
 	private void sendMessage(final Message message, final boolean resend) {
@@ -818,7 +820,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	}
 
 	public void resendMessage(final Message message) {
-		sendMessage(message,true);
+		sendMessage(message, true);
 	}
 
 	public void fetchRosterFromServer(final Account account) {
@@ -1241,6 +1243,32 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		}
 	}
 
+	public void setOnShowErrorToastListener(OnShowErrorToast onShowErrorToast) {
+		synchronized (this) {
+			if (checkListeners()) {
+				switchToForeground();
+			}
+			this.mOnShowErrorToast = onShowErrorToast;
+			if (this.showErrorToastListenerCount < 2) {
+				this.showErrorToastListenerCount++;
+			}
+		}
+		this.mOnShowErrorToast = onShowErrorToast;
+	}
+
+	public void removeOnShowErrorToastListener() {
+		synchronized (this) {
+			this.showErrorToastListenerCount--;
+			if (this.showErrorToastListenerCount <= 0) {
+				this.showErrorToastListenerCount = 0;
+				this.mOnShowErrorToast = null;
+				if (checkListeners()) {
+					switchToBackground();
+				}
+			}
+		}
+	}
+
 	public void setOnAccountListChangedListener(OnAccountUpdate listener) {
 		synchronized (this) {
 			if (checkListeners()) {
@@ -1345,7 +1373,8 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		return (this.mOnAccountUpdate == null
 				&& this.mOnConversationUpdate == null
 				&& this.mOnRosterUpdate == null
-				&& this.mOnUpdateBlocklist == null);
+				&& this.mOnUpdateBlocklist == null
+				&& this.mOnShowErrorToast == null);
 	}
 
 	private void switchToForeground() {
@@ -2196,6 +2225,13 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		return count;
 	}
 
+
+	public void showErrorToastInUi(int resId) {
+		if (mOnShowErrorToast != null) {
+			mOnShowErrorToast.onShowErrorToast(resId);
+		}
+	}
+
 	public void updateConversationUi() {
 		if (mOnConversationUpdate != null) {
 			mOnConversationUpdate.onConversationUpdate();
@@ -2527,6 +2563,10 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		public void onPushSucceeded();
 
 		public void onPushFailed();
+	}
+
+	public interface OnShowErrorToast {
+		void onShowErrorToast(int resId);
 	}
 
 	public class XmppConnectionBinder extends Binder {

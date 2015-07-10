@@ -3,6 +3,7 @@ package eu.siacs.conversations.http;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.SystemClock;
+import android.util.Log;
 
 import org.apache.http.conn.ssl.StrictHostnameVerifier;
 
@@ -24,6 +25,7 @@ import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.X509TrustManager;
 
 import eu.siacs.conversations.Config;
+import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Downloadable;
 import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.entities.Message;
@@ -63,6 +65,10 @@ public class HttpConnection implements Downloadable {
 	}
 
 	public void init(Message message) {
+		init(message,false);
+	}
+
+	public void init(Message message, boolean interactive) {
 		this.message = message;
 		this.message.setDownloadable(this);
 		try {
@@ -92,7 +98,7 @@ public class HttpConnection implements Downloadable {
 					&& this.file.getKey() == null) {
 				this.message.setEncryption(Message.ENCRYPTION_NONE);
 					}
-			checkFileSize(false);
+			checkFileSize(true);
 		} catch (MalformedURLException e) {
 			this.cancel();
 		}
@@ -180,6 +186,10 @@ public class HttpConnection implements Downloadable {
 				HttpConnection.this.mXmppConnectionService.getNotificationService().push(message);
 				return;
 			} catch (IOException e) {
+				Log.d(Config.LOGTAG, "io exception in http file size checker: " + e.getMessage());
+				if (interactive) {
+					mXmppConnectionService.showErrorToastInUi(R.string.file_not_found_on_remote_host);
+				}
 				cancel();
 				return;
 			}
@@ -194,25 +204,24 @@ public class HttpConnection implements Downloadable {
 			}
 		}
 
-		private long retrieveFileSize() throws IOException,
-						SSLHandshakeException {
-							changeStatus(STATUS_CHECKING);
-							HttpURLConnection connection = (HttpURLConnection) mUrl
-								.openConnection();
-							connection.setRequestMethod("HEAD");
-							if (connection instanceof HttpsURLConnection) {
-								setupTrustManager((HttpsURLConnection) connection, interactive);
-							}
-							connection.connect();
-							String contentLength = connection.getHeaderField("Content-Length");
-							if (contentLength == null) {
-								throw new IOException();
-							}
-							try {
-								return Long.parseLong(contentLength, 10);
-							} catch (NumberFormatException e) {
-								throw new IOException();
-							}
+		private long retrieveFileSize() throws IOException {
+			Log.d(Config.LOGTAG,"retrieve file size. interactive:"+String.valueOf(interactive));
+			changeStatus(STATUS_CHECKING);
+			HttpURLConnection connection = (HttpURLConnection) mUrl.openConnection();
+			connection.setRequestMethod("HEAD");
+			if (connection instanceof HttpsURLConnection) {
+				setupTrustManager((HttpsURLConnection) connection, interactive);
+			}
+			connection.connect();
+			String contentLength = connection.getHeaderField("Content-Length");
+			if (contentLength == null) {
+				throw new IOException();
+			}
+			try {
+				return Long.parseLong(contentLength, 10);
+			} catch (NumberFormatException e) {
+				throw new IOException();
+			}
 		}
 
 	}
@@ -235,19 +244,18 @@ public class HttpConnection implements Downloadable {
 			} catch (SSLHandshakeException e) {
 				changeStatus(STATUS_OFFER);
 			} catch (IOException e) {
+				mXmppConnectionService.showErrorToastInUi(R.string.file_not_found_on_remote_host);
 				cancel();
 			}
 		}
 
 		private void download() throws SSLHandshakeException, IOException {
-			HttpURLConnection connection = (HttpURLConnection) mUrl
-				.openConnection();
+			HttpURLConnection connection = (HttpURLConnection) mUrl.openConnection();
 			if (connection instanceof HttpsURLConnection) {
 				setupTrustManager((HttpsURLConnection) connection, interactive);
 			}
 			connection.connect();
-			BufferedInputStream is = new BufferedInputStream(
-					connection.getInputStream());
+			BufferedInputStream is = new BufferedInputStream(connection.getInputStream());
 			file.getParentFile().mkdirs();
 			file.createNewFile();
 			OutputStream os = file.createOutputStream();
