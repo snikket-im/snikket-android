@@ -595,13 +595,17 @@ public class AxolotlService {
 	}
 
 	private static class SessionMap extends AxolotlAddressMap<XmppAxolotlSession> {
+		private final XmppConnectionService xmppConnectionService;
+		private final Account account;
 
-		public SessionMap(SQLiteAxolotlStore store, Account account) {
+		public SessionMap(XmppConnectionService service, SQLiteAxolotlStore store, Account account) {
 			super();
-			this.fillMap(store, account);
+			this.xmppConnectionService = service;
+			this.account = account;
+			this.fillMap(store);
 		}
 
-		private void fillMap(SQLiteAxolotlStore store, Account account) {
+		private void fillMap(SQLiteAxolotlStore store) {
 			for (Contact contact : account.getRoster().getContacts()) {
 				Jid bareJid = contact.getJid().toBareJid();
 				if (bareJid == null) {
@@ -618,6 +622,11 @@ public class AxolotlService {
 			}
 		}
 
+		@Override
+		public void put(AxolotlAddress address, XmppAxolotlSession value) {
+			super.put(address, value);
+			xmppConnectionService.syncRosterToDisk(account);
+		}
 	}
 
 	private static enum FetchStatus {
@@ -640,7 +649,7 @@ public class AxolotlService {
 		this.axolotlStore = new SQLiteAxolotlStore(this.account, this.mXmppConnectionService);
 		this.deviceIds = new HashMap<>();
 		this.messageCache = new HashMap<>();
-		this.sessions = new SessionMap(axolotlStore, account);
+		this.sessions = new SessionMap(mXmppConnectionService, axolotlStore, account);
 		this.fetchStatusMap = new FetchStatusMap();
 		this.executor = new SerialSingleThreadExecutor();
 	}
@@ -933,9 +942,16 @@ public class AxolotlService {
 			FetchStatus status = fetchStatusMap.get(address);
 			XmppAxolotlSession session = sessions.get(address);
 			if ( session == null && ( status == null || status == FetchStatus.ERROR) ) {
-				fetchStatusMap.put(address, FetchStatus.PENDING);
-				this.buildSessionFromPEP(conversation,  address);
-				newSessions = true;
+				IdentityKey identityKey = axolotlStore.loadSession(address).getSessionState().getRemoteIdentityKey();
+				if ( identityKey != null ) {
+					Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account)+"Already have session for " +  address.toString() + ", adding to cache...");
+					session = new XmppAxolotlSession(account, axolotlStore, address, identityKey.getFingerprint().replaceAll("\\s", ""));
+					sessions.put(address, session);
+				} else {
+					fetchStatusMap.put(address, FetchStatus.PENDING);
+					this.buildSessionFromPEP(conversation, address);
+					newSessions = true;
+				}
 			} else {
 				Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account)+"Already have session for " +  address.toString());
 			}
@@ -1022,7 +1038,12 @@ public class AxolotlService {
 		if (session == null) {
 			Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account)+"Account: "+account.getJid()+" No axolotl session found while parsing received message " + message);
 			// TODO: handle this properly
-			session = new XmppAxolotlSession(account, axolotlStore, senderAddress);
+			IdentityKey identityKey = axolotlStore.loadSession(senderAddress).getSessionState().getRemoteIdentityKey();
+			if ( identityKey != null ) {
+				session = new XmppAxolotlSession(account, axolotlStore, senderAddress, identityKey.getFingerprint().replaceAll("\\s", ""));
+			} else {
+				session = new XmppAxolotlSession(account, axolotlStore, senderAddress);
+			}
 			newSession = true;
 		}
 
@@ -1044,7 +1065,7 @@ public class AxolotlService {
 		}
 
 		if (newSession && plaintextMessage != null) {
-			sessions.put(senderAddress,session);
+			sessions.put(senderAddress, session);
 		}
 
 		return plaintextMessage;
