@@ -1699,7 +1699,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	public void changeAffiliationsInConference(final Conversation conference, MucOptions.Affiliation before, MucOptions.Affiliation after) {
 		List<Jid> jids = new ArrayList<>();
 		for (MucOptions.User user : conference.getMucOptions().getUsers()) {
-			if (user.getAffiliation() == before) {
+			if (user.getAffiliation() == before && user.getJid() != null) {
 				jids.add(user.getJid());
 			}
 		}
