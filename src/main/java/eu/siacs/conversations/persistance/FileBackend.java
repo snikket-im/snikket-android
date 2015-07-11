@@ -235,6 +235,8 @@ public class FileBackend {
 			} else {
 				throw new FileCopyException(R.string.error_out_of_memory);
 			}
+		} catch (NullPointerException e) {
+			throw new FileCopyException(R.string.error_io_exception);
 		} finally {
 			close(os);
 			close(is);
