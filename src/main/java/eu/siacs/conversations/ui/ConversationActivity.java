@@ -374,8 +374,7 @@ public class ConversationActivity extends XmppActivity
 		} else {
 			menuAdd.setVisible(!isConversationsOverviewHideable());
 			if (this.getSelectedConversation() != null) {
-				if (this.getSelectedConversation().getLatestMessage()
-						.getEncryption() != Message.ENCRYPTION_NONE) {
+				if (this.getSelectedConversation().getNextEncryption(forceEncryption()) != Message.ENCRYPTION_NONE) {
 					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 						menuSecure.setIcon(R.drawable.ic_lock_white_24dp);
 					} else {
@@ -740,14 +739,11 @@ public class ConversationActivity extends XmppActivity
 							break;
 						case R.id.encryption_choice_pgp:
 							if (hasPgp()) {
-								if (conversation.getAccount().getKeys()
-										.has("pgp_signature")) {
-									conversation
-										.setNextEncryption(Message.ENCRYPTION_PGP);
+								if (conversation.getAccount().getKeys().has("pgp_signature")) {
+									conversation.setNextEncryption(Message.ENCRYPTION_PGP);
 									item.setChecked(true);
 								} else {
-									announcePgp(conversation.getAccount(),
-											conversation);
+									announcePgp(conversation.getAccount(),conversation);
 								}
 							} else {
 								showInstallPgpDialog();
@@ -757,16 +753,16 @@ public class ConversationActivity extends XmppActivity
 							conversation.setNextEncryption(Message.ENCRYPTION_NONE);
 							break;
 					}
-					xmppConnectionService.databaseBackend
-						.updateConversation(conversation);
+					xmppConnectionService.databaseBackend.updateConversation(conversation);
 					fragment.updateChatMsgHint();
+					invalidateOptionsMenu();
 					return true;
 				}
 			});
 			popup.inflate(R.menu.encryption_choices);
 			MenuItem otr = popup.getMenu().findItem(R.id.encryption_choice_otr);
-			MenuItem none = popup.getMenu().findItem(
-					R.id.encryption_choice_none);
+			MenuItem none = popup.getMenu().findItem(R.id.encryption_choice_none);
+			MenuItem pgp = popup.getMenu().findItem(R.id.encryption_choice_pgp);
 			if (conversation.getMode() == Conversation.MODE_MULTI) {
 				otr.setEnabled(false);
 			} else {
@@ -782,12 +778,10 @@ public class ConversationActivity extends XmppActivity
 					otr.setChecked(true);
 					break;
 				case Message.ENCRYPTION_PGP:
-					popup.getMenu().findItem(R.id.encryption_choice_pgp)
-						.setChecked(true);
+					pgp.setChecked(true);
 					break;
 				default:
-					popup.getMenu().findItem(R.id.encryption_choice_none)
-						.setChecked(true);
+					none.setChecked(true);
 					break;
 			}
 			popup.show();
