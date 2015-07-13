@@ -3,13 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/primarybackground" >
+    android:background="@color/grey50" >
 
     <ListView
         android:id="@+id/account_list"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:divider="@color/divider"
+        android:divider="@color/black12"
         android:dividerHeight="1dp" >
     </ListView>
 

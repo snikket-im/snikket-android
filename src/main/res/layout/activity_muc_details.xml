@@ -2,7 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:background="@color/secondarybackground">
+            android:background="@color/grey200">
 
 	<LinearLayout
 		android:layout_width="fill_parent"
@@ -26,7 +26,7 @@
 				android:layout_height="wrap_content"
 				android:layout_marginBottom="16dp"
 				android:text="@string/account_settings_example_jabber_id"
-				android:textColor="@color/primarytext"
+				android:textColor="@color/black87"
 				android:textSize="?attr/TextSizeHeadline"
 				android:textStyle="bold"/>
 
@@ -56,7 +56,7 @@
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:singleLine="true"
-						android:textColor="@color/primarytext"
+						android:textColor="@color/black87"
 						android:textSize="?attr/TextSizeHeadline"/>
 
 					<TextView
@@ -64,7 +64,7 @@
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:singleLine="true"
-						android:textColor="@color/primarytext"
+						android:textColor="@color/black87"
 						android:textSize="?attr/TextSizeBody"/>
 				</LinearLayout>
 
@@ -88,7 +88,7 @@
 				android:layout_height="wrap_content"
 			    android:text="@string/private_conference"
 				android:layout_centerVertical="true"
-				android:textColor="@color/primarytext"
+				android:textColor="@color/black87"
 				android:textSize="?attr/TextSizeBody"
 				android:layout_alignParentLeft="true"
 				android:layout_toLeftOf="@+id/change_conference_button"
@@ -113,7 +113,7 @@
 				android:layout_gravity="right"
 				android:layout_marginTop="32dp"
 				android:text="@string/using_account"
-				android:textColor="@color/secondarytext"
+				android:textColor="@color/black54"
 				android:textSize="?attr/TextSizeInfo"/>
 		</LinearLayout>
 

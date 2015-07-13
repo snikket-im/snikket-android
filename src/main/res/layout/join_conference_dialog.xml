@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/your_account"
-        android:textColor="@color/primarytext"
+        android:textColor="@color/black87"
         android:textSize="?attr/TextSizeBody" />
 
     <Spinner
@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="@string/conference_address"
-        android:textColor="@color/primarytext"
+        android:textColor="@color/black87"
         android:textSize="?attr/TextSizeBody" />
 
     <AutoCompleteTextView
@@ -33,8 +33,8 @@
         android:layout_height="wrap_content"
         android:hint="@string/conference_address_example"
         android:inputType="textEmailAddress"
-        android:textColor="@color/primarytext"
-        android:textColorHint="@color/secondarytext" />
+        android:textColor="@color/black87"
+        android:textColorHint="@color/black54" />
 
     <CheckBox
         android:id="@+id/bookmark"

@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/your_account"
-        android:textColor="@color/primarytext"
+        android:textColor="@color/black87"
         android:textSize="?attr/TextSizeBody" />
 
     <Spinner
@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="@string/account_settings_jabber_id"
-        android:textColor="@color/primarytext"
+        android:textColor="@color/black87"
         android:textSize="?attr/TextSizeBody" />
 
     <AutoCompleteTextView
@@ -33,7 +33,7 @@
         android:layout_height="wrap_content"
         android:hint="@string/account_settings_example_jabber_id"
         android:inputType="textEmailAddress"
-        android:textColor="@color/primarytext"
-        android:textColorHint="@color/secondarytext" />
+        android:textColor="@color/black87"
+        android:textColorHint="@color/black54" />
 
 </LinearLayout>

@@ -6,13 +6,13 @@
 	<View
 		android:layout_width="fill_parent"
 		android:layout_height="fill_parent"
-		android:background="@color/primary"/>
+		android:background="@color/green500"/>
 
 	<FrameLayout
 		android:id="@+id/swipeable_item"
 		android:layout_width="fill_parent"
 		android:layout_height="fill_parent"
-		android:background="@color/primarybackground">
+		android:background="@color/grey50">
 
 	<RelativeLayout
 		android:layout_width="fill_parent"
@@ -42,7 +42,7 @@
 				android:layout_alignLeft="@+id/conversation_lastwrapper"
 				android:layout_toLeftOf="@+id/conversation_lastupdate"
 				android:singleLine="true"
-				android:textColor="@color/primarytext"
+				android:textColor="@color/black87"
 				android:textSize="?attr/TextSizeHeadline"
 				android:typeface="sans" />
 
@@ -60,14 +60,14 @@
 					android:layout_height="wrap_content"
 					android:scrollHorizontally="false"
 					android:singleLine="true"
-					android:textColor="@color/primarytext"
+					android:textColor="@color/black87"
 					android:textSize="?attr/TextSizeBody" />
 
 				<ImageView
 					android:id="@+id/conversation_lastimage"
 					android:layout_width="fill_parent"
 					android:layout_height="36dp"
-					android:background="@color/primarytext"
+					android:background="@color/black87"
 					android:scaleType="centerCrop" />
 			</LinearLayout>
 
@@ -78,7 +78,7 @@
 				android:layout_alignBaseline="@+id/conversation_name"
 				android:layout_alignParentRight="true"
 				android:gravity="right"
-				android:textColor="@color/secondarytext"
+				android:textColor="@color/black54"
 				android:textSize="?attr/TextSizeInfo" />
 		</RelativeLayout>
 	</RelativeLayout>

@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/secondarybackground" >
+    android:background="@color/grey200" >
 
     <ListView
         android:id="@+id/messages_view"
@@ -12,7 +12,7 @@
         android:layout_above="@+id/snackbar"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:background="@color/secondarybackground"
+        android:background="@color/grey200"
         android:divider="@null"
         android:dividerHeight="0dp"
         android:listSelector="@android:color/transparent"
@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:background="@color/primarybackground" >
+        android:background="@color/grey50" >
 
         <eu.siacs.conversations.ui.EditMessage
             android:id="@+id/textinput"
@@ -35,7 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_toLeftOf="@+id/textSendButton"
-            android:background="@color/primarybackground"
+            android:background="@color/grey50"
             android:ems="10"
             android:imeOptions="flagNoExtractUi|actionSend"
             android:inputType="textShortMessage|textMultiLine|textCapSentences"
@@ -45,7 +45,7 @@
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
             android:paddingTop="12dp"
-            android:textColor="@color/primarytext" >
+            android:textColor="@color/black87" >
 
             <requestFocus />
         </eu.siacs.conversations.ui.EditMessage>
@@ -80,7 +80,7 @@
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@+id/snackbar_action"
             android:paddingLeft="24dp"
-            android:textColor="@color/ondarktext"
+            android:textColor="@color/white"
             android:textSize="?attr/TextSizeBody" />
 
         <TextView
@@ -94,7 +94,7 @@
             android:paddingRight="24dp"
             android:paddingTop="16dp"
             android:textAllCaps="true"
-            android:textColor="@color/ondarktext"
+            android:textColor="@color/white"
             android:textSize="?attr/TextSizeBody"
             android:textStyle="bold" />
     </RelativeLayout>

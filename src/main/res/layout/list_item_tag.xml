@@ -7,7 +7,7 @@
     android:paddingLeft="4dp"
     android:paddingRight="4dp"
     android:textSize="?attr/TextSizeInfo"
-    android:textColor="@color/ondarktext"
+    android:textColor="@color/white"
     android:textAllCaps="true"
     android:layout_marginRight="8dp"
 />
