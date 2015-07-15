@@ -785,20 +785,28 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		return getIdentityKeyCursor(account, name, own, null);
 	}
 
-	private Cursor getIdentityKeyCursor(Account account, String name, boolean own, String fingerprint) {
+	private Cursor getIdentityKeyCursor(Account account, String fingerprint) {
+		return getIdentityKeyCursor(account, null, null, fingerprint);
+	}
+
+	private Cursor getIdentityKeyCursor(Account account, String name, Boolean own, String fingerprint) {
 		final SQLiteDatabase db = this.getReadableDatabase();
 		String[] columns = {AxolotlService.SQLiteAxolotlStore.TRUSTED,
 				AxolotlService.SQLiteAxolotlStore.KEY};
 		ArrayList<String> selectionArgs = new ArrayList<>(4);
 		selectionArgs.add(account.getUuid());
-		selectionArgs.add(name);
-		selectionArgs.add(own?"1":"0");
-		String selectionString = AxolotlService.SQLiteAxolotlStore.ACCOUNT + " = ? AND "
-				+ AxolotlService.SQLiteAxolotlStore.NAME + " = ? AND "
-				+ AxolotlService.SQLiteAxolotlStore.OWN + " = ? ";
+		String selectionString = AxolotlService.SQLiteAxolotlStore.ACCOUNT + " = ?";
+		if (name != null){
+			selectionArgs.add(name);
+			selectionString += " AND " +AxolotlService.SQLiteAxolotlStore.NAME + " = ?";
+		}
 		if (fingerprint != null){
 			selectionArgs.add(fingerprint);
-			selectionString += "AND " +AxolotlService.SQLiteAxolotlStore.FINGERPRINT + " = ? ";
+			selectionString += " AND " +AxolotlService.SQLiteAxolotlStore.FINGERPRINT + " = ?";
+		}
+		if (own != null){
+			selectionArgs.add(own?"1":"0");
+			selectionString += " AND " +AxolotlService.SQLiteAxolotlStore.OWN + " = ?";
 		}
 		Cursor cursor = db.query(AxolotlService.SQLiteAxolotlStore.IDENTITIES_TABLENAME,
 				columns,
@@ -842,6 +850,10 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 	}
 
 	private void storeIdentityKey(Account account, String name, boolean own, String fingerprint, String base64Serialized) {
+		storeIdentityKey(account, name, own, fingerprint, base64Serialized, AxolotlService.SQLiteAxolotlStore.Trust.UNDECIDED);
+	}
+
+	private void storeIdentityKey(Account account, String name, boolean own, String fingerprint, String base64Serialized, AxolotlService.SQLiteAxolotlStore.Trust trusted) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		ContentValues values = new ContentValues();
 		values.put(AxolotlService.SQLiteAxolotlStore.ACCOUNT, account.getUuid());
@@ -849,11 +861,12 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		values.put(AxolotlService.SQLiteAxolotlStore.OWN, own ? 1 : 0);
 		values.put(AxolotlService.SQLiteAxolotlStore.FINGERPRINT, fingerprint);
 		values.put(AxolotlService.SQLiteAxolotlStore.KEY, base64Serialized);
+		values.put(AxolotlService.SQLiteAxolotlStore.TRUSTED, trusted.ordinal());
 		db.insert(AxolotlService.SQLiteAxolotlStore.IDENTITIES_TABLENAME, null, values);
 	}
 
-	public AxolotlService.SQLiteAxolotlStore.Trust isIdentityKeyTrusted(Account account, String name, String fingerprint) {
-		Cursor cursor = getIdentityKeyCursor(account, name, false, fingerprint);
+	public AxolotlService.SQLiteAxolotlStore.Trust isIdentityKeyTrusted(Account account, String fingerprint) {
+		Cursor cursor = getIdentityKeyCursor(account, fingerprint);
 		AxolotlService.SQLiteAxolotlStore.Trust trust = null;
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
@@ -864,18 +877,16 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		return trust;
 	}
 
-	public boolean setIdentityKeyTrust(Account account, String name, String fingerprint, AxolotlService.SQLiteAxolotlStore.Trust trust) {
+	public boolean setIdentityKeyTrust(Account account, String fingerprint, AxolotlService.SQLiteAxolotlStore.Trust trust) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		String[] selectionArgs = {
 				account.getUuid(),
-				name,
 				fingerprint
 		};
 		ContentValues values = new ContentValues();
 		values.put(AxolotlService.SQLiteAxolotlStore.TRUSTED, trust.ordinal());
 		int rows = db.update(AxolotlService.SQLiteAxolotlStore.IDENTITIES_TABLENAME, values,
 				AxolotlService.SQLiteAxolotlStore.ACCOUNT + " = ? AND "
-				+ AxolotlService.SQLiteAxolotlStore.NAME + " = ? AND "
 				+ AxolotlService.SQLiteAxolotlStore.FINGERPRINT + " = ? ",
 				selectionArgs);
 		return rows == 1;
@@ -886,7 +897,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 	}
 
 	public void storeOwnIdentityKeyPair(Account account, String name, IdentityKeyPair identityKeyPair) {
-		storeIdentityKey(account, name, true, identityKeyPair.getPublicKey().getFingerprint().replaceAll("\\s", ""), Base64.encodeToString(identityKeyPair.serialize(), Base64.DEFAULT));
+		storeIdentityKey(account, name, true, identityKeyPair.getPublicKey().getFingerprint().replaceAll("\\s", ""), Base64.encodeToString(identityKeyPair.serialize(), Base64.DEFAULT), AxolotlService.SQLiteAxolotlStore.Trust.TRUSTED);
 	}
 
 	public void recreateAxolotlDb() {

@@ -393,7 +393,7 @@ public class ContactDetailsActivity extends XmppActivity implements OnAccountUpd
 			final String fingerprint = identityKey.getFingerprint().replaceAll("\\s", "");
 			final Jid bareJid = contactJid.toBareJid();
 			AxolotlService.SQLiteAxolotlStore.Trust trust = contact.getAccount().getAxolotlService()
-					.getFingerprintTrust(bareJid.toString(), fingerprint);
+					.getFingerprintTrust(fingerprint);
 			switch (trust) {
 				case TRUSTED:
 					removeButton.setVisibility(View.VISIBLE);
@@ -413,7 +413,7 @@ public class ContactDetailsActivity extends XmppActivity implements OnAccountUpd
 			removeButton.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					axolotlService.setFingerprintTrust(bareJid.toString(), fingerprint,
+					axolotlService.setFingerprintTrust(fingerprint,
 							AxolotlService.SQLiteAxolotlStore.Trust.UNTRUSTED);
 					refreshUi();
 					xmppConnectionService.updateConversationUi();
@@ -422,7 +422,7 @@ public class ContactDetailsActivity extends XmppActivity implements OnAccountUpd
 			trustButton.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					axolotlService.setFingerprintTrust(bareJid.toString(), fingerprint,
+					axolotlService.setFingerprintTrust(fingerprint,
 							AxolotlService.SQLiteAxolotlStore.Trust.TRUSTED);
 					refreshUi();
 					xmppConnectionService.updateConversationUi();

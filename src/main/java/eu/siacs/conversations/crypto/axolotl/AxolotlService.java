@@ -267,12 +267,12 @@ public class AxolotlService {
 			return true;
 		}
 
-		public Trust getFingerprintTrust(String name, String fingerprint) {
-			return mXmppConnectionService.databaseBackend.isIdentityKeyTrusted(account, name, fingerprint);
+		public Trust getFingerprintTrust(String fingerprint) {
+			return mXmppConnectionService.databaseBackend.isIdentityKeyTrusted(account, fingerprint);
 		}
 
-		public void setFingerprintTrust(String name, String fingerprint, Trust trust) {
-			mXmppConnectionService.databaseBackend.setIdentityKeyTrust(account, name, fingerprint, trust);
+		public void setFingerprintTrust(String fingerprint, Trust trust) {
+			mXmppConnectionService.databaseBackend.setIdentityKeyTrust(account, fingerprint, trust);
 		}
 
 		// --------------------------------------
@@ -844,12 +844,12 @@ public class AxolotlService {
 		return sessions.hasAny(address) ||
 				( deviceIds.containsKey(jid) && !deviceIds.get(jid).isEmpty());
 	}
-	public SQLiteAxolotlStore.Trust getFingerprintTrust(String name, String fingerprint) {
-		return axolotlStore.getFingerprintTrust(name, fingerprint);
+	public SQLiteAxolotlStore.Trust getFingerprintTrust(String fingerprint) {
+		return axolotlStore.getFingerprintTrust(fingerprint);
 	}
 
-	public void setFingerprintTrust(String name, String fingerprint, SQLiteAxolotlStore.Trust trust) {
-		axolotlStore.setFingerprintTrust(name, fingerprint, trust);
+	public void setFingerprintTrust(String fingerprint, SQLiteAxolotlStore.Trust trust) {
+		axolotlStore.setFingerprintTrust(fingerprint, trust);
 	}
 
 	private void buildSessionFromPEP(final Conversation conversation, final AxolotlAddress address) {

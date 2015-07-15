@@ -156,15 +156,15 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 			viewHolder.indicator.setVisibility(View.GONE);
 		} else {
 			viewHolder.indicator.setVisibility(View.VISIBLE);
-			if (message.getMergedStatus() == Message.STATUS_RECEIVED
-					&& message.getEncryption() == Message.ENCRYPTION_AXOLOTL) {
+			if (message.getEncryption() == Message.ENCRYPTION_AXOLOTL) {
 				AxolotlService.SQLiteAxolotlStore.Trust trust = message.getConversation()
 						.getAccount().getAxolotlService().getFingerprintTrust(
-								message.getContact().getJid().toBareJid().toString(),
 								message.getAxolotlFingerprint());
 
-				if (trust == null || trust != AxolotlService.SQLiteAxolotlStore.Trust.TRUSTED) {
+				if(trust == null || trust != AxolotlService.SQLiteAxolotlStore.Trust.TRUSTED) {
 					viewHolder.indicator.setColorFilter(Color.RED);
+				} else {
+					viewHolder.indicator.clearColorFilter();
 				}
 			}
 		}
