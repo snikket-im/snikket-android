@@ -42,6 +42,8 @@ run your own XMPP server for you and your friends. These XEP's are:
 * XEP-0065: SOCKS5 Bytestreams (or mod_proxy65). Will be used to transfer
   files if both parties are behind a firewall (NAT).
 * XEP-0163: Personal Eventing Protocol for avatars
+* XEP-0191: Blocking command lets you blacklist spammers or block contacts
+  without removing them from your roster.
 * XEP-0198: Stream Management allows XMPP to survive small network outages and
   changes of the underlying TCP connection.
 * XEP-0280: Message Carbons which automatically syncs the messages you send to
@@ -54,8 +56,10 @@ run your own XMPP server for you and your friends. These XEP's are:
 * XEP-0352: Client State Indication lets the server know whether or not
   Conversations is in the background. Allows the server to save bandwidth by
   withholding unimportant packages.
-* XEP-0191: Blocking command lets you blacklist spammers or block contacts
   without removing them from your roster.
+* XEP-xxxx: HttpUpload allows you to share files in conferences and with offline
+  contacts. Requires and [additional component](https://github.com/siacs/HttpUploadComponent)
+  on your server.
 
 ## Team
 
