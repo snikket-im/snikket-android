@@ -66,7 +66,6 @@
   <string name="send_otr_message">שלח הודעה מוצפנת OTR</string>
   <string name="send_pgp_message">שלח הודעה מוצפנת OpenPGP</string>
   <string name="your_nick_has_been_changed">שם כינוי שלך השתנה</string>
-  <string name="download_image">הורד תצלום</string>
   <string name="send_unencrypted">שלח לא מוצפנת</string>
   <string name="decryption_failed">פענוח נכשל. אולי אין לך את המפתח הפרטי המתאים.</string>
   <string name="openkeychain_required">OpenKeychain</string>

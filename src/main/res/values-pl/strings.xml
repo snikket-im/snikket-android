@@ -80,7 +80,6 @@
   <string name="send_otr_message">Wyślij zaszyfrowaną wiadomość (OTR)</string>
   <string name="send_pgp_message">Wyślij zaszyfrowaną wiadomość (OpenPGP)</string>
   <string name="your_nick_has_been_changed">Twoja nazwa została zmieniona</string>
-  <string name="download_image">Pobierz obraz</string>
   <string name="send_unencrypted">Wyślij bez szyfrowania</string>
   <string name="decryption_failed">Nie można odszyfrować. Sprawdź poprawność klucza prywatnego.</string>
   <string name="openkeychain_required">OpenKeychain</string>
@@ -289,15 +288,11 @@
   <string name="conference_members_only">To jest zamknięty pokój</string>
   <string name="conference_kicked">Wyrzucono cię z konferencji</string>
   <string name="using_account">używając konta %s</string>
-  <string name="checking_image">Sprawdzanie obrazka na hoście HTTP</string>
-  <string name="image_file_deleted">Obraz został usunięty</string>
   <string name="not_connected_try_again">Brak połączenia. Spróbuj ponownie później</string>
-  <string name="check_image_filesize">Sprawdź rozmiar pliku</string>
   <string name="message_options">Opcje wiadomości</string>
   <string name="copy_text">Skopiuj tekst</string>
   <string name="copy_original_url">Skopiuj oryginalny URL</string>
   <string name="send_again">Wyślij ponownie</string>
-  <string name="image_url">URL obrazu</string>
   <string name="message_text">Treść wiadomości</string>
   <string name="url_copied_to_clipboard">URL obrazu został skopiowany do schowka</string>
   <string name="message_copied_to_clipboard">Wiadomość została skopiowana do schowka</string>

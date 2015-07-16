@@ -80,7 +80,6 @@
   <string name="send_otr_message">OTR 暗号化メッセージを送信</string>
   <string name="send_pgp_message">OpenPGP 暗号化メッセージを送信</string>
   <string name="your_nick_has_been_changed">あなたのニックネームが変更されました</string>
-  <string name="download_image">画像のダウンロード</string>
   <string name="send_unencrypted">暗号化されていない送信</string>
   <string name="decryption_failed">復号化に失敗しました。おそらく秘密鍵が正しくないようです。</string>
   <string name="openkeychain_required">OpenKeychain</string>
@@ -289,15 +288,11 @@
   <string name="conference_members_only">この会議はメンバーのみです</string>
   <string name="conference_kicked">あなたはこの会議からキックされました</string>
   <string name="using_account">アカウント %s を使用</string>
-  <string name="checking_image">HTTP ホストの画像を確認中</string>
-  <string name="image_file_deleted">画像ファイルは削除されました</string>
   <string name="not_connected_try_again">接続されていません。後でもう一度お試しください</string>
-  <string name="check_image_filesize">画像ファイルのサイズを確認</string>
   <string name="message_options">メッセージオプション</string>
   <string name="copy_text">テキストをコピー</string>
   <string name="copy_original_url">元の URL をコピー</string>
   <string name="send_again">再送</string>
-  <string name="image_url">画像 URL</string>
   <string name="message_text">メッセージテキスト</string>
   <string name="url_copied_to_clipboard">URL をクリップボードにコピーしました</string>
   <string name="message_copied_to_clipboard">メッセージをクリップボードにコピーしました</string>

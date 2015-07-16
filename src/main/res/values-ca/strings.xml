@@ -80,7 +80,6 @@
   <string name="send_otr_message">Enviar missatge xifrat amb OTR</string>
   <string name="send_pgp_message">Enviar missatge xifrat amb OpenPGP</string>
   <string name="your_nick_has_been_changed">El teu sobrenom s\'ha modificat</string>
-  <string name="download_image">Descarregar imatge</string>
   <string name="send_unencrypted">Enviar sense xifrar</string>
   <string name="decryption_failed">Ha fallat el desxiframent. Potser no tinguis la clau privada apropiada.</string>
   <string name="openkeychain_required">OpenKeychain</string>
@@ -289,15 +288,11 @@
   <string name="conference_members_only">La sala es nomès per membres</string>
   <string name="conference_kicked">Estàs expulsat d\'aquesta sala</string>
   <string name="using_account">Utlitzant el compte %s</string>
-  <string name="checking_image">Comprovant l\'imatge en el client HTTP</string>
-  <string name="image_file_deleted">L\'arxiu de l\'imatge ha sigut eliminada</string>
   <string name="not_connected_try_again">No estàs connectat. Intenta-ho més tard</string>
-  <string name="check_image_filesize">Comprobant el tamany de l\'imatge</string>
   <string name="message_options">Opcions del missatge</string>
   <string name="copy_text">Copiar el text</string>
   <string name="copy_original_url">Copiar la URL original</string>
   <string name="send_again">Envia una altra vegada</string>
-  <string name="image_url">Imatge URL</string>
   <string name="message_text">Missatge de text</string>
   <string name="url_copied_to_clipboard">URL copiada al portapapers</string>
   <string name="message_copied_to_clipboard">Missatge copiat al portapapers</string>

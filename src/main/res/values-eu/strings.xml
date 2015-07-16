@@ -80,7 +80,6 @@
   <string name="send_otr_message">OTRz enkriptatutako mezua bidali</string>
   <string name="send_pgp_message">OpenPGPz enkriptatutako mezua bidali</string>
   <string name="your_nick_has_been_changed">Zure ezizena aldatu da</string>
-  <string name="download_image">Irudia deskargatu</string>
   <string name="send_unencrypted">Enkriptatu gabe bidali</string>
   <string name="decryption_failed">Desenkriptazioak huts egin du. Agian ez duzu gako pribatu egokia.</string>
   <string name="openkeychain_required">OpenKeychain</string>
@@ -289,15 +288,13 @@
   <string name="conference_members_only">Konferentzia hau kideentzat da soilik</string>
   <string name="conference_kicked">Konferentzia honetatik kanporatua izan zara</string>
   <string name="using_account">%s kontua erabiltzen</string>
-  <string name="checking_image">Irudia egiaztatzen HTTP ostalarian</string>
-  <string name="image_file_deleted">Irudia ezabatu egin da</string>
   <string name="not_connected_try_again">Ez zaude konektatuta. Saiatu beranduago berriz</string>
-  <string name="check_image_filesize">Irudiaren tamaina egiaztatu</string>
+  <string name="check_x_filesize">Egiaztatu %s neurria</string>
   <string name="message_options">Mezuaren aukerak</string>
   <string name="copy_text">Testua kopiatu</string>
   <string name="copy_original_url">Jatorrizko URLa kopiatu</string>
   <string name="send_again">Berriro bidali</string>
-  <string name="image_url">Irudiaren URLa</string>
+  <string name="file_url">Fitxategiaren URLa</string>
   <string name="message_text">Testu mezua</string>
   <string name="url_copied_to_clipboard">URLa arbelera kopiatu da</string>
   <string name="message_copied_to_clipboard">Mezua arbelera kopiatu da</string>
@@ -451,4 +448,5 @@
   <string name="none">Bat ere ez</string>
   <string name="recently_used">Azkenengo aldiz erabilitakoa</string>
   <string name="choose_quick_action">Ekintza azkarra aukeratu</string>
+  <string name="file_not_found_on_remote_host">Fitxategia ez da aurkitu urruneko zerbitzarian</string>
 </resources>

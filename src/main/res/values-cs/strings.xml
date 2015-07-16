@@ -80,7 +80,6 @@
   <string name="send_otr_message">Poslat OTR šifrovanou zprávu</string>
   <string name="send_pgp_message">Poslat OpenPGP šifrovanou zprávu</string>
   <string name="your_nick_has_been_changed">Přezdívka byla změněna</string>
-  <string name="download_image">Stáhnout obrázek</string>
   <string name="send_unencrypted">Poslat nešifrované</string>
   <string name="decryption_failed">Zašifrování se nezdařilo. Možná nemáte správný privátní klíč.</string>
   <string name="openkeychain_required">OpenKeychain</string>
@@ -289,15 +288,13 @@
   <string name="conference_members_only">Tato konference je pouze pro členy</string>
   <string name="conference_kicked">Vykopli tě z této konference</string>
   <string name="using_account">za použití účtu %s</string>
-  <string name="checking_image">Ověřuji obrázek na HTTP hostiteli</string>
-  <string name="image_file_deleted">Obrázek byl smazán</string>
   <string name="not_connected_try_again">Bez připojení. Zkus znovu později</string>
-  <string name="check_image_filesize">Ověřit velikost obrázku</string>
+  <string name="check_x_filesize">Ověřit %s velikost</string>
   <string name="message_options">Možnosti zpráv</string>
   <string name="copy_text">Zkopírovat text</string>
   <string name="copy_original_url">Kopírovat originální URL</string>
   <string name="send_again">Poslat znovu</string>
-  <string name="image_url">URL obrázku</string>
+  <string name="file_url">URL souboru</string>
   <string name="message_text">Text zprávy</string>
   <string name="url_copied_to_clipboard">URL zkopírováno do schránky</string>
   <string name="message_copied_to_clipboard">Zpráva zkopírována do schránky</string>
@@ -453,4 +450,5 @@
   <string name="none">Žádná</string>
   <string name="recently_used">Naposledy použitá</string>
   <string name="choose_quick_action">Vybrat rychlou akci</string>
+  <string name="file_not_found_on_remote_host">Soubor nenalezen na vzdáleném serveru</string>
 </resources>

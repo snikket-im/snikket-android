@@ -64,7 +64,6 @@
   <string name="send_otr_message">發送 OTR 加密訊息</string>
   <string name="send_pgp_message">發送 OpenPGP 加密訊息</string>
   <string name="your_nick_has_been_changed">用戶名稱修改成功</string>
-  <string name="download_image">下載圖片</string>
   <string name="send_unencrypted">不加密發送</string>
   <string name="decryption_failed">解密失敗，可能是私鑰不正確。</string>
   <string name="openkeychain_required">OpenKeychain</string>

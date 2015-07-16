@@ -80,7 +80,6 @@
   <string name="send_otr_message">Αποστολή κρυπτογραφημένου μηνύματος OTR</string>
   <string name="send_pgp_message">Αποστολή κρυπτογραφημένου μηνύματος OpenPGP</string>
   <string name="your_nick_has_been_changed">Το ψευδώνυμό σας έχει αλλάξει</string>
-  <string name="download_image">Μεταφόρτωση εικόνας</string>
   <string name="send_unencrypted">Αποστολή χωρίς κρυπτογράφηση</string>
   <string name="decryption_failed">Η αποκρυπτογράφηση απέτυχε. Ίσως δεν κατέχετε το σωστό ιδιωτικό κλειδί.</string>
   <string name="openkeychain_required">OpenKeychain</string>
@@ -289,15 +288,11 @@
   <string name="conference_members_only">Αυτή η συνδιάσκεψη είναι μόνο για μέλη</string>
   <string name="conference_kicked">Έχετε διωχθει από αυτή την συνδιάσκεψη</string>
   <string name="using_account">χρήση λογαριασμού %s</string>
-  <string name="checking_image">Έλεγχος εικόνας στον διακομιστή HTTP</string>
-  <string name="image_file_deleted">Το αρχείο εικόνας έχει διαγραφεί</string>
   <string name="not_connected_try_again">Δεν είστε συνδεμένοι. Δοκιμάστε ξανά αργότερα</string>
-  <string name="check_image_filesize">Ελέγξτε το μέγεθος του αρχείου εικόνας</string>
   <string name="message_options">Επιλογές μηνυμάτων</string>
   <string name="copy_text">Αντιγραφή κειμένου</string>
   <string name="copy_original_url">Αντιγραφή αρχικής διεύθυνσης URL</string>
   <string name="send_again">Αποστολή ξανά</string>
-  <string name="image_url">Διεύθυνση URL εικόνας</string>
   <string name="message_text">Κείμενο μηνύματος</string>
   <string name="url_copied_to_clipboard">Η διεύθυνση URL αντιγράφηκε στο πρόχειρο</string>
   <string name="message_copied_to_clipboard">Το μήνυμα αντιγράφηκε στο πρόχειρο</string>

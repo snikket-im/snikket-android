@@ -48,7 +48,6 @@
   <string name="send_otr_message">Enviar mensaxe cifrado con OTR</string>
   <string name="send_pgp_message">Enviar mensaxe cifrado con OpenPGP</string>
   <string name="your_nick_has_been_changed">Modificouse o teu apodo</string>
-  <string name="download_image">Descargar imaxe</string>
   <string name="send_unencrypted">Enviar sen cifrar</string>
   <string name="decryption_failed">Fallou o descifrado. Quizábeis non teñas a clave privada apropiada.</string>
   <string name="openkeychain_required">OpenKeychain</string>

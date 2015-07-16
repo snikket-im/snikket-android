@@ -80,7 +80,6 @@
   <string name="send_otr_message">OTRارساله رساله مشفره عبر</string>
   <string name="send_pgp_message">OpenPGPارساله رساله مشفره عبر</string>
   <string name="your_nick_has_been_changed">تم تغيير لقبك بنجاح</string>
-  <string name="download_image">تنزيل الصورة</string>
   <string name="send_unencrypted">إرسال بدون تشفير</string>
   <string name="decryption_failed">فشل فك التشفير. ربما لم يكن لديك المفتاح الخاص الصحيح.</string>
   <string name="openkeychain_required">OpenKeychain</string>
@@ -212,7 +211,6 @@
   <string name="conference_members_only">الغرفة للأعضاء فقط</string>
   <string name="conference_kicked">تم طردك من الغرفة</string>
   <string name="not_connected_try_again">انقطع الإتصال .. حاول مرة أخرى</string>
-  <string name="check_image_filesize">فحص حجم الصورة</string>
   <string name="message_options">خيارات الرساله</string>
   <string name="copy_text">نسخ النص</string>
   <string name="message_text">نص الرسالة</string>

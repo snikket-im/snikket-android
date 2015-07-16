@@ -316,8 +316,7 @@
 	<string name="conference_members_only">This conference is members only</string>
 	<string name="conference_kicked">You have been kicked from this conference</string>
 	<string name="using_account">using account %s</string>
-	<string name="checking_image">Checking image on HTTP host</string>
-	<string name="image_file_deleted">The image file has been deleted</string>
+	<string name="checking_x">Checking %s on HTTP host</string>
 	<string name="not_connected_try_again">You are not connected. Try again later</string>
 	<string name="check_x_filesize">Check %s size</string>
 	<string name="message_options">Message options</string>

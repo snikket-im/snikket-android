@@ -80,7 +80,6 @@
   <string name="send_otr_message">Verstuur OTR versleuteld bericht</string>
   <string name="send_pgp_message">Verstuur OpenPGP versleuteld bericht</string>
   <string name="your_nick_has_been_changed">Je naam is veranderd</string>
-  <string name="download_image">Download afbeelding</string>
   <string name="send_unencrypted">Verstuur onversleuteld</string>
   <string name="decryption_failed">Ontsleutelen mislukt. Misschien heb je niet de juiste private sleutel.</string>
   <string name="openkeychain_required">OpenKeychain</string>
@@ -289,15 +288,13 @@
   <string name="conference_members_only">Dit groepsgesprek is enkel voor leden</string>
   <string name="conference_kicked">Je bent uit dit groepsgesprek geschopt</string>
   <string name="using_account">account %s gebruiken</string>
-  <string name="checking_image">Afbeelding op HTTP host nakijken</string>
-  <string name="image_file_deleted">De afbeelding is verwijderd</string>
   <string name="not_connected_try_again">Je bent niet verbonden. Probeer later opnieuw</string>
-  <string name="check_image_filesize">Bekijk bestandsgrootte van afbeelding</string>
+  <string name="check_x_filesize">Bekijk bestandsgrootte van %s</string>
   <string name="message_options">Berichtopties</string>
   <string name="copy_text">Kopieer tekst</string>
   <string name="copy_original_url">Kopieer oorspronkelijke URL</string>
   <string name="send_again">Verstuur opnieuw</string>
-  <string name="image_url">AfbeeldingsURL</string>
+  <string name="file_url">Bestands-URL</string>
   <string name="message_text">Berichttekst</string>
   <string name="url_copied_to_clipboard">URL gekopieerd naar klembord</string>
   <string name="message_copied_to_clipboard">Bericht gekopieerd naar klembord</string>
@@ -451,4 +448,5 @@
   <string name="none">Geen</string>
   <string name="recently_used">Recent gebruikt</string>
   <string name="choose_quick_action">Kies snelle actie</string>
+  <string name="file_not_found_on_remote_host">Bestand niet gevonden op externe server</string>
 </resources>
