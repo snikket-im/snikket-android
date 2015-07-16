@@ -256,7 +256,7 @@ decrypting and encrypting takes longer than OTR. It is however asynchronous and
 works well with message carbons.
 
 To use OpenPGP you have to install the open source app
-[OpenKeychain](www.openkeychain.org) and then long press on the account in
+[OpenKeychain](http://www.openkeychain.org) and then long press on the account in
 manage accounts and choose renew PGP announcement from the contextual menu.
 
 #### How does the encryption for conferences work?
