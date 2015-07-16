@@ -58,7 +58,7 @@ run your own XMPP server for you and your friends. These XEP's are:
   withholding unimportant packages.
   without removing them from your roster.
 * XEP-xxxx: HttpUpload allows you to share files in conferences and with offline
-  contacts. Requires and [additional component](https://github.com/siacs/HttpUploadComponent)
+  contacts. Requires an [additional component](https://github.com/siacs/HttpUploadComponent)
   on your server.
 
 ## Team
