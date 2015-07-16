@@ -1073,6 +1073,9 @@ public class ConversationActivity extends XmppActivity
 	}
 
 	private void attachLocationToConversation(Conversation conversation, Uri uri) {
+		if (conversation == null) {
+			return;
+		}
 		xmppConnectionService.attachLocationToConversation(conversation,uri, new UiCallback<Message>() {
 
 			@Override
@@ -1093,8 +1096,10 @@ public class ConversationActivity extends XmppActivity
 	}
 
 	private void attachFileToConversation(Conversation conversation, Uri uri) {
-		prepareFileToast = Toast.makeText(getApplicationContext(),
-				getText(R.string.preparing_file), Toast.LENGTH_LONG);
+		if (conversation == null) {
+			return;
+		}
+		prepareFileToast = Toast.makeText(getApplicationContext(),getText(R.string.preparing_file), Toast.LENGTH_LONG);
 		prepareFileToast.show();
 		xmppConnectionService.attachFileToConversation(conversation,uri, new UiCallback<Message>() {
 			@Override
@@ -1116,8 +1121,10 @@ public class ConversationActivity extends XmppActivity
 	}
 
 	private void attachImageToConversation(Conversation conversation, Uri uri) {
-		prepareFileToast = Toast.makeText(getApplicationContext(),
-				getText(R.string.preparing_image), Toast.LENGTH_LONG);
+		if (conversation == null) {
+			return;
+		}
+		prepareFileToast = Toast.makeText(getApplicationContext(),getText(R.string.preparing_image), Toast.LENGTH_LONG);
 		prepareFileToast.show();
 		xmppConnectionService.attachImageToConversation(conversation, uri,
 				new UiCallback<Message>() {
