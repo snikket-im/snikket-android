@@ -56,7 +56,6 @@ run your own XMPP server for you and your friends. These XEP's are:
 * XEP-0352: Client State Indication lets the server know whether or not
   Conversations is in the background. Allows the server to save bandwidth by
   withholding unimportant packages.
-  without removing them from your roster.
 * XEP-xxxx: HttpUpload allows you to share files in conferences and with offline
   contacts. Requires an [additional component](https://github.com/siacs/HttpUploadComponent)
   on your server.
