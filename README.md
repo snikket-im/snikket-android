@@ -56,9 +56,8 @@ run your own XMPP server for you and your friends. These XEP's are:
 * XEP-0352: Client State Indication lets the server know whether or not
   Conversations is in the background. Allows the server to save bandwidth by
   withholding unimportant packages.
-  without removing them from your roster.
 * XEP-xxxx: HttpUpload allows you to share files in conferences and with offline
-  contacts. Requires and [additional component](https://github.com/siacs/HttpUploadComponent)
+  contacts. Requires an [additional component](https://github.com/siacs/HttpUploadComponent)
   on your server.
 
 ## Team
@@ -256,7 +255,7 @@ decrypting and encrypting takes longer than OTR. It is however asynchronous and
 works well with message carbons.
 
 To use OpenPGP you have to install the open source app
-[OpenKeychain](www.openkeychain.org) and then long press on the account in
+[OpenKeychain](http://www.openkeychain.org) and then long press on the account in
 manage accounts and choose renew PGP announcement from the contextual menu.
 
 #### How does the encryption for conferences work?
