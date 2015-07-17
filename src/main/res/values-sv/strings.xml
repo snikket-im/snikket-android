@@ -288,6 +288,7 @@
   <string name="conference_members_only">Medlemsskap krävs för denna konferens</string>
   <string name="conference_kicked">Du har blivit utsparkad från denna konferens</string>
   <string name="using_account">använder konto %s</string>
+  <string name="checking_x">Kontrollerar %s på webbserver</string>
   <string name="not_connected_try_again">Du är inte ansluten. Försök igen senare</string>
   <string name="check_x_filesize">Kontrollera storleken på %s</string>
   <string name="message_options">Meddelandealternativ</string>
@@ -449,4 +450,5 @@
   <string name="recently_used">Senast använd</string>
   <string name="choose_quick_action">Välj snabbfunktion</string>
   <string name="file_not_found_on_remote_host">Filen hittas ej på servern</string>
+  <string name="search_for_contacts_or_groups">Sök efter kontakter eller grupper</string>
 </resources>

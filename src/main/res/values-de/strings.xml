@@ -288,6 +288,7 @@
   <string name="conference_members_only">Die Konferenz ist nur für Mitglieder</string>
   <string name="conference_kicked">Du wurdest aus der Konferenz geworfen</string>
   <string name="using_account">Verwende Konto %s</string>
+  <string name="checking_x">%s auf HTTP-Host prüfen</string>
   <string name="not_connected_try_again">Nicht verbunden, bitte später versuchen</string>
   <string name="check_x_filesize">%s-Größe prüfen</string>
   <string name="message_options">Nachrichtenoptionen</string>
@@ -449,4 +450,5 @@
   <string name="recently_used">zuletzt verwendet</string>
   <string name="choose_quick_action">wähle Schnell-Taste</string>
   <string name="file_not_found_on_remote_host">Datei auf Server nicht gefunden</string>
+  <string name="search_for_contacts_or_groups">Nach Kontakten oder Konferenzen suchen</string>
 </resources>

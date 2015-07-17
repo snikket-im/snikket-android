@@ -288,6 +288,7 @@
   <string name="conference_members_only">Tato konference je pouze pro členy</string>
   <string name="conference_kicked">Vykopli tě z této konference</string>
   <string name="using_account">za použití účtu %s</string>
+  <string name="checking_x">Ověřuji %s na HTTP hostiteli</string>
   <string name="not_connected_try_again">Bez připojení. Zkus znovu později</string>
   <string name="check_x_filesize">Ověřit %s velikost</string>
   <string name="message_options">Možnosti zpráv</string>
@@ -451,4 +452,5 @@
   <string name="recently_used">Naposledy použitá</string>
   <string name="choose_quick_action">Vybrat rychlou akci</string>
   <string name="file_not_found_on_remote_host">Soubor nenalezen na vzdáleném serveru</string>
+  <string name="search_for_contacts_or_groups">Hledat kontakty či skupiny</string>
 </resources>

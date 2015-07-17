@@ -288,8 +288,9 @@
   <string name="conference_members_only">Konferentzia hau kideentzat da soilik</string>
   <string name="conference_kicked">Konferentzia honetatik kanporatua izan zara</string>
   <string name="using_account">%s kontua erabiltzen</string>
+  <string name="checking_x">%s egiaztatzen HTTP ostalarian</string>
   <string name="not_connected_try_again">Ez zaude konektatuta. Saiatu beranduago berriz</string>
-  <string name="check_x_filesize">Egiaztatu %s neurria</string>
+  <string name="check_x_filesize">Egiaztatu %sren neurria</string>
   <string name="message_options">Mezuaren aukerak</string>
   <string name="copy_text">Testua kopiatu</string>
   <string name="copy_original_url">Jatorrizko URLa kopiatu</string>
@@ -449,4 +450,5 @@
   <string name="recently_used">Azkenengo aldiz erabilitakoa</string>
   <string name="choose_quick_action">Ekintza azkarra aukeratu</string>
   <string name="file_not_found_on_remote_host">Fitxategia ez da aurkitu urruneko zerbitzarian</string>
+  <string name="search_for_contacts_or_groups">Kontaktuak edo taldeak bilatu</string>
 </resources>

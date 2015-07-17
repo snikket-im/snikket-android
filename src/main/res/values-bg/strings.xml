@@ -288,6 +288,7 @@
   <string name="conference_members_only">Тази беседа е само за членове</string>
   <string name="conference_kicked">Бяхте изритан от тази конференция</string>
   <string name="using_account">използвайки профила %s</string>
+  <string name="checking_x">Проверяване на %s на HTTP сървъра</string>
   <string name="not_connected_try_again">Не сте свързани. Опитайте отново по-късно</string>
   <string name="check_x_filesize">Проверете размера на %s</string>
   <string name="message_options">Настройки за съобщенята</string>
@@ -449,4 +450,5 @@
   <string name="recently_used">Използвани наскоро</string>
   <string name="choose_quick_action">Изберете бързо действие</string>
   <string name="file_not_found_on_remote_host">Файлът не е открит на отдалечения сървър</string>
+  <string name="search_for_contacts_or_groups">Търсене на контакти или групи</string>
 </resources>
