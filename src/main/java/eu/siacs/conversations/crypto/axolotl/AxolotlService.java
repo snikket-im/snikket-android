@@ -961,8 +961,14 @@ public class AxolotlService {
 
 	@Nullable
 	public XmppAxolotlMessage encrypt(Message message ){
+		final String content;
+		if (message.hasFileOnRemoteHost()) {
+				content = message.getFileParams().url.toString();
+			} else {
+				content = message.getBody();
+			}
 		final XmppAxolotlMessage axolotlMessage = new XmppAxolotlMessage(message.getContact().getJid().toBareJid(),
-				getOwnDeviceId(), message.getBody());
+				getOwnDeviceId(), content);
 
 		if(findSessionsforContact(message.getContact()).isEmpty()) {
 			return null;
