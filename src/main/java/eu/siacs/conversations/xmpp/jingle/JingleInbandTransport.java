@@ -25,7 +25,6 @@ public class JingleInbandTransport extends JingleTransport {
 	private Account account;
 	private Jid counterpart;
 	private int blockSize;
-	private int bufferSize;
 	private int seq = 0;
 	private String sessionId;
 
@@ -58,7 +57,6 @@ public class JingleInbandTransport extends JingleTransport {
 		this.account = connection.getAccount();
 		this.counterpart = connection.getCounterPart();
 		this.blockSize = blocksize;
-		this.bufferSize = blocksize / 4;
 		this.sessionId = sid;
 	}
 
@@ -157,7 +155,7 @@ public class JingleInbandTransport extends JingleTransport {
 	}
 
 	private void sendNextBlock() {
-		byte[] buffer = new byte[this.bufferSize];
+		byte[] buffer = new byte[this.blockSize];
 		try {
 			int count = fileInputStream.read(buffer);
 			if (count == -1) {
