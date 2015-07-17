@@ -80,7 +80,6 @@
   <string name="send_otr_message">Отправить OTR защифрованное сообщение</string>
   <string name="send_pgp_message">Отправить OpenPGP защифрованное сообщение</string>
   <string name="your_nick_has_been_changed">Ваш псевдоним был изменен</string>
-  <string name="download_image">Загрузить изображение</string>
   <string name="send_unencrypted">Отправить в незашифрованном виде</string>
   <string name="decryption_failed">Расшифровка не удалась. Вероятно, что у вас нет надлежащего ключа.</string>
   <string name="openkeychain_required">Установите OpenKeychain</string>
@@ -289,15 +288,11 @@
   <string name="conference_members_only">Эта конференция требует членства</string>
   <string name="conference_kicked">Вы были удалены из конференции</string>
   <string name="using_account">использовать учётную запись %s</string>
-  <string name="checking_image">Проверка изображения на узле HTTP</string>
-  <string name="image_file_deleted">Файл изображения был удалён</string>
   <string name="not_connected_try_again">Вы неподключены. Попробуйте позже</string>
-  <string name="check_image_filesize">Проверить размер файла изображения</string>
   <string name="message_options">Опции сообщения</string>
   <string name="copy_text">Копировать текст</string>
   <string name="copy_original_url">Копировать адрес ссылки</string>
   <string name="send_again">Отправить ещё раз</string>
-  <string name="image_url">Адрес изображения</string>
   <string name="message_text">Текст сообщения</string>
   <string name="url_copied_to_clipboard">Ссылка скопирована в буфер обмена</string>
   <string name="message_copied_to_clipboard">Сообщение скопировано в буфер обмена</string>

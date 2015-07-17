@@ -14,6 +14,8 @@
         android:layout_height="wrap_content"
         android:focusable="true"
         android:inputType="textEmailAddress|textNoSuggestions"
-        android:textColor="@color/ondarktext" />
+        android:textColor="@color/white"
+        android:textColorHint="@color/white70"
+        android:hint="@string/search_for_contacts_or_groups"/>
 
 </RelativeLayout>

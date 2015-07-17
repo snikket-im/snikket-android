@@ -80,7 +80,6 @@
   <string name="send_otr_message">发送 OTR 加密信息</string>
   <string name="send_pgp_message">发送 OpenPGP 加密信息</string>
   <string name="your_nick_has_been_changed">昵称修改成功</string>
-  <string name="download_image">下载图片</string>
   <string name="send_unencrypted">不加密发送</string>
   <string name="decryption_failed">解密失败，可能是私钥不正确。</string>
   <string name="openkeychain_required">OpenKeychain</string>
@@ -289,15 +288,11 @@
   <string name="conference_members_only">此讨论组只允许成员加入</string>
   <string name="conference_kicked">你被从此讨论组踢出</string>
   <string name="using_account">用账户  %s</string>
-  <string name="checking_image">正在 HTTP 托管中检查图片</string>
-  <string name="image_file_deleted">此图片已经被删除</string>
   <string name="not_connected_try_again">你没有连接。请稍后重试</string>
-  <string name="check_image_filesize">检查图片文件尺寸</string>
   <string name="message_options">消息选项</string>
   <string name="copy_text">拷贝文本</string>
   <string name="copy_original_url">拷贝原始URL</string>
   <string name="send_again">再次发送</string>
-  <string name="image_url">图片 URL</string>
   <string name="message_text">消息文本</string>
   <string name="url_copied_to_clipboard">已经拷贝 URL 到剪贴板</string>
   <string name="message_copied_to_clipboard">消息已经拷贝到剪贴板</string>

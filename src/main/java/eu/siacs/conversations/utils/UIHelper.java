@@ -145,7 +145,8 @@ public class UIHelper {
 		if (d != null ) {
 			switch (d.getStatus()) {
 				case Transferable.STATUS_CHECKING:
-					return new Pair<>(context.getString(R.string.checking_image),true);
+					return new Pair<>(context.getString(R.string.checking_x,
+									getFileDescriptionString(context,message)),true);
 				case Transferable.STATUS_DOWNLOADING:
 					return new Pair<>(context.getString(R.string.receiving_x_file,
 									getFileDescriptionString(context,message),

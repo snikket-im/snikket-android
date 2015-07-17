@@ -334,14 +334,14 @@ public abstract class XmppActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		metrics = getResources().getDisplayMetrics();
 		ExceptionHelper.init(getApplicationContext());
-		mPrimaryTextColor = getResources().getColor(R.color.primarytext);
-		mSecondaryTextColor = getResources().getColor(R.color.secondarytext);
-		mColorRed = getResources().getColor(R.color.red);
-		mColorOrange = getResources().getColor(R.color.orange);
-		mColorGreen = getResources().getColor(R.color.green);
-		mPrimaryColor = getResources().getColor(R.color.primary);
-		mPrimaryBackgroundColor = getResources().getColor(R.color.primarybackground);
-		mSecondaryBackgroundColor = getResources().getColor(R.color.secondarybackground);
+		mPrimaryTextColor = getResources().getColor(R.color.black87);
+		mSecondaryTextColor = getResources().getColor(R.color.black54);
+		mColorRed = getResources().getColor(R.color.red500);
+		mColorOrange = getResources().getColor(R.color.orange500);
+		mColorGreen = getResources().getColor(R.color.green500);
+		mPrimaryColor = getResources().getColor(R.color.green500);
+		mPrimaryBackgroundColor = getResources().getColor(R.color.grey50);
+		mSecondaryBackgroundColor = getResources().getColor(R.color.grey200);
 		this.mTheme = findTheme();
 		setTheme(this.mTheme);
 		this.mUsingEnterKey = usingEnterKey();
@@ -717,10 +717,6 @@ public abstract class XmppActivity extends Activity {
 
 	public int getWarningTextColor() {
 		return this.mColorRed;
-	}
-
-	public int getPrimaryColor() {
-		return this.mPrimaryColor;
 	}
 
 	public int getOnlineColor() {

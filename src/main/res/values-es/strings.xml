@@ -80,7 +80,6 @@
   <string name="send_otr_message">Enviar mensaje cifrado con OTR</string>
   <string name="send_pgp_message">Enviar mensaje cifrado con OpenPGP</string>
   <string name="your_nick_has_been_changed">Tu apodo se ha modificado</string>
-  <string name="download_image">Descargar imagen</string>
   <string name="send_unencrypted">Enviar sin cifrar</string>
   <string name="decryption_failed">Falló el descifrado. Tal vez no tengas la clave privada apropiada.</string>
   <string name="openkeychain_required">OpenKeychain</string>
@@ -289,15 +288,14 @@
   <string name="conference_members_only">Esta conversación es solo para miembros</string>
   <string name="conference_kicked">Has sido expulsado de esta conversación</string>
   <string name="using_account">Usando cuenta %s</string>
-  <string name="checking_image">Comprobando imagen en servidor HTTP</string>
-  <string name="image_file_deleted">El archivo de imagen ha sido eliminado</string>
+  <string name="checking_x">Comprobando %s en servidor HTTP</string>
   <string name="not_connected_try_again">No estás conectado. Inténtalo más tarde</string>
-  <string name="check_image_filesize">Comprobar el tamaño del archivo de imagen</string>
+  <string name="check_x_filesize">Comprobar tamaño de %s</string>
   <string name="message_options">Opciones de mensaje</string>
   <string name="copy_text">Copiar texto</string>
   <string name="copy_original_url">Copiar URL original</string>
   <string name="send_again">Volver a enviar</string>
-  <string name="image_url">URL Imagen</string>
+  <string name="file_url">URL de archivo</string>
   <string name="message_text">Mensaje de texto</string>
   <string name="url_copied_to_clipboard">URL copiada al portapapeles</string>
   <string name="message_copied_to_clipboard">Mensaje copiado al portapapeles</string>
@@ -451,4 +449,6 @@
   <string name="none">Ninguna</string>
   <string name="recently_used">Usada más recientemente</string>
   <string name="choose_quick_action">Elegir acción rápida</string>
+  <string name="file_not_found_on_remote_host">Archivo no encontrado en servidor remoto</string>
+  <string name="search_for_contacts_or_groups">Buscar contactos o grupos</string>
 </resources>

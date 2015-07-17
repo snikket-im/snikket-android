@@ -39,7 +39,7 @@ public class JingleConnection implements Transferable {
 	protected static final int JINGLE_STATUS_TRANSMITTING = 5;
 	protected static final int JINGLE_STATUS_FAILED = 99;
 
-	private int ibbBlockSize = 4096;
+	private int ibbBlockSize = 8192;
 
 	private int mJingleStatus = -1;
 	private int mStatus = Transferable.STATUS_UNKNOWN;

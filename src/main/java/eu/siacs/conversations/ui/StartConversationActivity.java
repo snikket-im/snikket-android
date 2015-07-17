@@ -42,6 +42,7 @@ import android.widget.Checkable;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
@@ -263,9 +264,12 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 
 	protected void openConversationForBookmark(int position) {
 		Bookmark bookmark = (Bookmark) conferences.get(position);
-		Conversation conversation = xmppConnectionService
-			.findOrCreateConversation(bookmark.getAccount(),
-					bookmark.getJid(), true);
+		Jid jid = bookmark.getJid();
+		if (jid == null) {
+			Toast.makeText(this,R.string.invalid_jid,Toast.LENGTH_SHORT).show();
+			return;
+		}
+		Conversation conversation = xmppConnectionService.findOrCreateConversation(bookmark.getAccount(),jid, true);
 		conversation.setBookmark(bookmark);
 		if (!conversation.getMucOptions().online()) {
 			xmppConnectionService.joinMuc(conversation);

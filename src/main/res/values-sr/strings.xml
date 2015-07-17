@@ -80,7 +80,6 @@
   <string name="send_otr_message">Пошаљи ОТР шифровану поруку</string>
   <string name="send_pgp_message">Пошаљи ОпенПГП шифровану поруку</string>
   <string name="your_nick_has_been_changed">Ваш надимак је промењен</string>
-  <string name="download_image">Преузми слику</string>
   <string name="send_unencrypted">Пошаљи нешифровано</string>
   <string name="decryption_failed">Шифровање није успело. Можда немате одговарајући лични кључ.</string>
   <string name="openkeychain_required">Отворени кључарник</string>
@@ -289,15 +288,14 @@
   <string name="conference_members_only">Ова конференција је само за чланове</string>
   <string name="conference_kicked">Шутнути сте из ове конференције</string>
   <string name="using_account">преко налога %s</string>
-  <string name="checking_image">Проверавам слику на ХТТП домаћину</string>
-  <string name="image_file_deleted">Ова слика је обрисана</string>
+  <string name="checking_x">Проверавам %s на ХТТП домаћину</string>
   <string name="not_connected_try_again">Нисте повезани. Покушајте поново касније</string>
-  <string name="check_image_filesize">Провери величину слике</string>
+  <string name="check_x_filesize">Провери величину %s</string>
   <string name="message_options">Опције поруке</string>
   <string name="copy_text">Копирај текст</string>
   <string name="copy_original_url">Копирај изворни УРЛ</string>
   <string name="send_again">Пошаљи поново</string>
-  <string name="image_url">УРЛ слике</string>
+  <string name="file_url">УРЛ фајла</string>
   <string name="message_text">Текст поруке</string>
   <string name="url_copied_to_clipboard">УРЛ је копиран на клипборд</string>
   <string name="message_copied_to_clipboard">Порука је копирана на клипборд</string>
@@ -453,4 +451,6 @@
   <string name="none">Ниједна</string>
   <string name="recently_used">Недавно коришћена</string>
   <string name="choose_quick_action">Изаберите брзу радњу</string>
+  <string name="file_not_found_on_remote_host">Фајл није нађен на удаљеном серверу</string>
+  <string name="search_for_contacts_or_groups">Тражите контакте или групе</string>
 </resources>

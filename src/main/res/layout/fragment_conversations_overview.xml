@@ -7,15 +7,15 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="@dimen/conversations_overview_width"
         android:layout_height="match_parent"
-        android:background="@color/primarybackground"
+        android:background="@color/grey50"
         android:orientation="vertical" >
 
         <de.timroes.android.listview.EnhancedListView
             android:id="@+id/list"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="@color/primarybackground"
-            android:divider="@color/divider"
+            android:background="@color/grey50"
+            android:divider="@color/black12"
             android:dividerHeight="1dp" />
     </LinearLayout>
 

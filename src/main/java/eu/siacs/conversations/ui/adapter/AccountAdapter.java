@@ -52,7 +52,7 @@ public class AccountAdapter extends ArrayAdapter<Account> {
 				break;
 		}
 		final Switch tglAccountState = (Switch) view.findViewById(R.id.tgl_account_status);
-		final boolean isDisabled = (account.getStatus() == Account.State.DISABLED) ? true : false;
+		final boolean isDisabled = (account.getStatus() == Account.State.DISABLED);
 		tglAccountState.setOnCheckedChangeListener(null);
 		tglAccountState.setChecked(!isDisabled);
 		tglAccountState.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

@@ -80,7 +80,6 @@
   <string name="send_otr_message">Envoyer un message sécurisé par OTR</string>
   <string name="send_pgp_message">Envoyer un message sécurisé par OpenPGP</string>
   <string name="your_nick_has_been_changed">Votre identifiant a été changé</string>
-  <string name="download_image">Télécharger l\'image</string>
   <string name="send_unencrypted">Envoyer en clair</string>
   <string name="decryption_failed">Echec du déchiffrement. Merci de vérifier la clef privée utilisée.</string>
   <string name="openkeychain_required">OpenKeychain</string>
@@ -289,15 +288,11 @@
   <string name="conference_members_only">Cette conférence est réservée aux membres</string>
   <string name="conference_kicked">Vous avez été éjecté de cette conférence</string>
   <string name="using_account">utiliser le compte %s</string>
-  <string name="checking_image">Vérification de l\'image</string>
-  <string name="image_file_deleted">L\'image a été suprimée</string>
   <string name="not_connected_try_again">Vous n\'êtes pas connecté. Merci de retenter plus tard.</string>
-  <string name="check_image_filesize">Vérifier la taille de l\'image</string>
   <string name="message_options">Options du message</string>
   <string name="copy_text">Copier le texte</string>
   <string name="copy_original_url">Copier l\'URL</string>
   <string name="send_again">Envoyer de nouveau</string>
-  <string name="image_url">URL de l\'image</string>
   <string name="message_text">Message texte</string>
   <string name="url_copied_to_clipboard">URL copiée dans le presse-papier</string>
   <string name="message_copied_to_clipboard">Message copié dans le presse-papier</string>

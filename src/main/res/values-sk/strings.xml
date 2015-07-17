@@ -80,7 +80,6 @@
   <string name="send_otr_message">Poslať OTR šifrovanú správu</string>
   <string name="send_pgp_message">Poslať OpenPGP šifrovanú správu</string>
   <string name="your_nick_has_been_changed">Prezývka sa zmenila</string>
-  <string name="download_image">Stiahnuť obrázok</string>
   <string name="send_unencrypted">Poslať nešifrované</string>
   <string name="decryption_failed">Zašifrovanie zlyhalo. Možno nemáte správny privátny kľúč.</string>
   <string name="openkeychain_required">OpenKeychain</string>
@@ -289,15 +288,13 @@
   <string name="conference_members_only">Táto konverzácia je iba pre členov</string>
   <string name="conference_kicked">Vyčlenili vás z tejto konverzácie</string>
   <string name="using_account">Používa sa účet %s</string>
-  <string name="checking_image">Overuje sa obrázok na serveri HTTP</string>
-  <string name="image_file_deleted">Súbor s obrázkom bol vymazaný</string>
   <string name="not_connected_try_again">Nie ste pripojený. Skúste to neskôr</string>
-  <string name="check_image_filesize">Overiť veľkosť obrázku</string>
+  <string name="check_x_filesize">Overiť %s veľkosť</string>
   <string name="message_options">Možnosti správy</string>
   <string name="copy_text">Skopírovať text</string>
   <string name="copy_original_url">Skopírovať originálny URL</string>
   <string name="send_again">Poslať znova</string>
-  <string name="image_url">Obrázok URL</string>
+  <string name="file_url">URL súbor</string>
   <string name="message_text">Textová správa</string>
   <string name="url_copied_to_clipboard">URL skopírovaný do schránky</string>
   <string name="message_copied_to_clipboard">Správa skopírovaná do schránky</string>
@@ -438,6 +435,11 @@
   <string name="dialog_manage_certs_title">Odstrániť certifikáty</string>
   <string name="dialog_manage_certs_positivebutton">Vymazať výber</string>
   <string name="dialog_manage_certs_negativebutton">Zrušiť</string>
+  <plurals name="toast_delete_certificates">
+    <item quantity="one">%d certifikátu vymazaných</item>
+    <item quantity="few">%d certifikátu vymazaných</item>
+    <item quantity="other">%d certifikátov vymazaných</item>
+  </plurals>
   <plurals name="select_contact">
     <item quantity="one">Vybrať %d kontaktu</item>
     <item quantity="few">Vybrať %d kontaktu</item>
@@ -448,4 +450,5 @@
   <string name="none">Žiadny</string>
   <string name="recently_used">Naposledy použitý</string>
   <string name="choose_quick_action">Vybrať rýchlu voľbu</string>
+  <string name="file_not_found_on_remote_host">Súbor sa na vzdialenom serveri nenašiel</string>
 </resources>

@@ -273,7 +273,7 @@
 	<string name="pref_about_conversations_summary">Build and licensing information</string>
 	<string name="pref_about_message" translatable="false">
 			Conversations • the very last word in instant messaging.
-			\n\nCopyright © 2014 Daniel Gultsch
+			\n\nCopyright © 2014-2015 Daniel Gultsch
 			\n\nThis program is free software: you can redistribute it and/or modify
 			it under the terms of the GNU General Public License as published by
 			the Free Software Foundation, either version 3 of the License, or
@@ -316,8 +316,7 @@
 	<string name="conference_members_only">This conference is members only</string>
 	<string name="conference_kicked">You have been kicked from this conference</string>
 	<string name="using_account">using account %s</string>
-	<string name="checking_image">Checking image on HTTP host</string>
-	<string name="image_file_deleted">The image file has been deleted</string>
+	<string name="checking_x">Checking %s on HTTP host</string>
 	<string name="not_connected_try_again">You are not connected. Try again later</string>
 	<string name="check_x_filesize">Check %s size</string>
 	<string name="message_options">Message options</string>
@@ -479,4 +478,5 @@
 	<string name="recently_used">Most recently used</string>
 	<string name="choose_quick_action">Choose quick action</string>
 	<string name="file_not_found_on_remote_host">File not found on remote server</string>
+	<string name="search_for_contacts_or_groups">Search for contacts or groups</string>
 </resources>

@@ -321,15 +321,25 @@ public class Message extends AbstractEntity {
 			return this.serverMsgId.equals(message.getServerMsgId());
 		} else if (this.body == null || this.counterpart == null) {
 			return false;
-		} else if (message.getRemoteMsgId() != null) {
-			return (message.getRemoteMsgId().equals(this.remoteMsgId) || message.getRemoteMsgId().equals(this.uuid))
-					&& this.counterpart.equals(message.getCounterpart())
-					&& this.body.equals(message.getBody());
 		} else {
-			return this.remoteMsgId == null
-					&& this.counterpart.equals(message.getCounterpart())
-					&& this.body.equals(message.getBody())
-					&& Math.abs(this.getTimeSent() - message.getTimeSent()) < Config.MESSAGE_MERGE_WINDOW * 1000;
+			String body, otherBody;
+			if (this.hasFileOnRemoteHost()) {
+				body = getFileParams().url.toString();
+				otherBody = message.body == null ? null : message.body.trim();
+			} else {
+				body = this.body;
+				otherBody = message.body;
+			}
+			if (message.getRemoteMsgId() != null) {
+				return (message.getRemoteMsgId().equals(this.remoteMsgId) || message.getRemoteMsgId().equals(this.uuid))
+						&& this.counterpart.equals(message.getCounterpart())
+						&& body.equals(otherBody);
+			} else {
+				return this.remoteMsgId == null
+						&& this.counterpart.equals(message.getCounterpart())
+						&& body.equals(otherBody)
+						&& Math.abs(this.getTimeSent() - message.getTimeSent()) < Config.MESSAGE_MERGE_WINDOW * 1000;
+			}
 		}
 	}
 

@@ -28,7 +28,7 @@
         android:layout_toEndOf="@+id/message_photo"
         android:layout_toRightOf="@+id/message_photo"
         android:text="@string/contact_has_read_up_to_this_point"
-        android:textColor="@color/secondarytext"
+        android:textColor="@color/black54"
         android:textSize="?attr/TextSizeInfo"
         android:textStyle="italic"/>
 

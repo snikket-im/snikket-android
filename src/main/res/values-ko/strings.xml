@@ -80,7 +80,6 @@
   <string name="send_otr_message">OTR 암호화된 메세지 전송 </string>
   <string name="send_pgp_message">OpenPGP 암호화된 메세지 전송 </string>
   <string name="your_nick_has_been_changed">닉네임이 변경되었습니다 </string>
-  <string name="download_image">이미지 다운로드 </string>
   <string name="send_unencrypted">암호화하지 않고 전송 </string>
   <string name="decryption_failed">복호화 실패. 올바른 개인 키를 가지고 있지 않은 것 같습니다. </string>
   <string name="openkeychain_required">OpenKeychain </string>
@@ -289,15 +288,11 @@
   <string name="conference_members_only">이 회의는 멤버 전용입니다 </string>
   <string name="conference_kicked">당신은 이 회의에서 추방되었습니다  </string>
   <string name="using_account">using account %s</string>
-  <string name="checking_image">HTTP 호스트에서 이미지 확인중 </string>
-  <string name="image_file_deleted">이미지 파일이 삭제되었습니다 </string>
   <string name="not_connected_try_again">접속중이 아닙니다. 다시 시도하세요. </string>
-  <string name="check_image_filesize">이미지 파일 크기 확인 </string>
   <string name="message_options">메세지 설정 </string>
   <string name="copy_text">텍스트 복사 </string>
   <string name="copy_original_url">원본 URL 복사 </string>
   <string name="send_again">다시 보내기 </string>
-  <string name="image_url">이미지 URL </string>
   <string name="message_text">메세지 텍스트 </string>
   <string name="url_copied_to_clipboard">URL이 클립보드에 복사되었습니다 </string>
   <string name="message_copied_to_clipboard">메세지가 클립보드에 복사되었습니다 </string>

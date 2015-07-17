@@ -79,7 +79,6 @@
   <string name="send_otr_message">Trimite mesaj criptat cu OTR</string>
   <string name="send_pgp_message">Trimite mesaj criptat cu OpenPGP</string>
   <string name="your_nick_has_been_changed">Numele tau a fost schimbat</string>
-  <string name="download_image">Copiaza imagine</string>
   <string name="send_unencrypted">Trimite necriptat</string>
   <string name="decryption_failed">Decriptia a esuat. Poate nu ai cheia privata corecta.</string>
   <string name="openkeychain_required">OpenKeychain</string>

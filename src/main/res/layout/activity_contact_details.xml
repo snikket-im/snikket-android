@@ -2,7 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/secondarybackground" >
+    android:background="@color/grey200" >
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -39,7 +39,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/account_settings_example_jabber_id"
-                    android:textColor="@color/primarytext"
+                    android:textColor="@color/black87"
                     android:textSize="?attr/TextSizeHeadline"
                     android:textStyle="bold" />
 
@@ -61,7 +61,7 @@
                         android:id="@+id/details_lastseen"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/secondarytext"
+                        android:textColor="@color/black54"
                         android:textSize="?attr/TextSizeBody" />
                 </LinearLayout>
 
@@ -78,7 +78,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:text="@string/send_presence_updates"
-                    android:textColor="@color/primarytext"
+                    android:textColor="@color/black87"
                     android:textSize="?attr/TextSizeBody" />
 
                 <CheckBox
@@ -86,7 +86,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/receive_presence_updates"
-                    android:textColor="@color/primarytext"
+                    android:textColor="@color/black87"
                     android:textSize="?attr/TextSizeBody" />
             </LinearLayout>
 
@@ -98,7 +98,7 @@
                 android:layout_below="@+id/details_jidbox"
                 android:layout_marginTop="32dp"
                 android:text="@string/using_account"
-                android:textColor="@color/secondarytext"
+                android:textColor="@color/black54"
                 android:textSize="?attr/TextSizeInfo" />
         </RelativeLayout>
 

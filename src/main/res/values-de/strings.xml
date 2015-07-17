@@ -80,7 +80,6 @@
   <string name="send_otr_message">OTR-verschlüsselt schreiben…</string>
   <string name="send_pgp_message">OpenPGP-verschlüsselt schreiben…</string>
   <string name="your_nick_has_been_changed">Dein Nickname wurde geändert</string>
-  <string name="download_image">Bild herunterladen</string>
   <string name="send_unencrypted">Normal verschicken</string>
   <string name="decryption_failed">Entschlüsselung fehlgeschlagen. Vielleicht hast du nicht den richtigen privaten Schlüssel.</string>
   <string name="openkeychain_required">OpenKeychain</string>
@@ -289,15 +288,14 @@
   <string name="conference_members_only">Die Konferenz ist nur für Mitglieder</string>
   <string name="conference_kicked">Du wurdest aus der Konferenz geworfen</string>
   <string name="using_account">Verwende Konto %s</string>
-  <string name="checking_image">Prüfe Bild auf HTTP-Host</string>
-  <string name="image_file_deleted">Bild wurde gelöscht</string>
+  <string name="checking_x">%s auf HTTP-Host prüfen</string>
   <string name="not_connected_try_again">Nicht verbunden, bitte später versuchen</string>
-  <string name="check_image_filesize">Bildgröße prüfen</string>
+  <string name="check_x_filesize">%s-Größe prüfen</string>
   <string name="message_options">Nachrichtenoptionen</string>
   <string name="copy_text">Text kopieren</string>
   <string name="copy_original_url">Original-URL kopieren</string>
   <string name="send_again">Erneut senden</string>
-  <string name="image_url">Bild-URL</string>
+  <string name="file_url">Datei-URL</string>
   <string name="message_text">Nachrichtentext</string>
   <string name="url_copied_to_clipboard">URL in Zwischenablage kopiert</string>
   <string name="message_copied_to_clipboard">Nachricht in Zwischenablage kopiert</string>
@@ -451,4 +449,6 @@
   <string name="none">keine</string>
   <string name="recently_used">zuletzt verwendet</string>
   <string name="choose_quick_action">wähle Schnell-Taste</string>
+  <string name="file_not_found_on_remote_host">Datei auf Server nicht gefunden</string>
+  <string name="search_for_contacts_or_groups">Nach Kontakten oder Konferenzen suchen</string>
 </resources>
