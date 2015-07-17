@@ -755,10 +755,18 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 					}
 					break;
 				case Message.ENCRYPTION_AXOLOTL:
-					packet = account.getAxolotlService().fetchPacketFromCache(message);
-					if (packet == null) {
-						account.getAxolotlService().prepareMessage(message);
-						message.setAxolotlFingerprint(account.getAxolotlService().getOwnPublicKey().getFingerprint().replaceAll("\\s", ""));
+					if (message.needsUploading()) {
+						if (account.httpUploadAvailable() || message.fixCounterpart()) {
+							this.sendFileMessage(message);
+						} else {
+							break;
+						}
+					} else {
+						packet = account.getAxolotlService().fetchPacketFromCache(message);
+						if (packet == null) {
+							account.getAxolotlService().prepareMessage(message);
+							message.setAxolotlFingerprint(account.getAxolotlService().getOwnPublicKey().getFingerprint().replaceAll("\\s", ""));
+						}
 					}
 					break;
 
