@@ -6,6 +6,8 @@ import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.ui.XmppActivity;
 import eu.siacs.conversations.ui.ManageAccountActivity;
+import eu.siacs.conversations.ui.widget.Switch;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +16,6 @@ import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Switch;
 
 public class AccountAdapter extends ArrayAdapter<Account> {
 
@@ -53,8 +54,7 @@ public class AccountAdapter extends ArrayAdapter<Account> {
 		}
 		final Switch tglAccountState = (Switch) view.findViewById(R.id.tgl_account_status);
 		final boolean isDisabled = (account.getStatus() == Account.State.DISABLED);
-		tglAccountState.setOnCheckedChangeListener(null);
-		tglAccountState.setChecked(!isDisabled);
+		tglAccountState.setChecked(!isDisabled,false);
 		tglAccountState.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(CompoundButton compoundButton, boolean b) {

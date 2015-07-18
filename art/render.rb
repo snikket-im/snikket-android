@@ -33,7 +33,12 @@ images = {
         'ic_send_picture_online.svg' => ['ic_send_picture_online', 36],
         'ic_send_picture_offline.svg' => ['ic_send_picture_offline', 36],
         'ic_send_picture_away.svg' => ['ic_send_picture_away', 36],
-        'ic_send_picture_dnd.svg' => ['ic_send_picture_dnd', 36]
+        'ic_send_picture_dnd.svg' => ['ic_send_picture_dnd', 36],
+	'md_switch_thumb_disable.svg' => ['switch_thumb_disable', 48],
+	'md_switch_thumb_off_normal.svg' => ['switch_thumb_off_normal', 48],
+	'md_switch_thumb_off_pressed.svg' => ['switch_thumb_off_pressed', 48],
+	'md_switch_thumb_on_normal.svg' => ['switch_thumb_on_normal', 48],
+	'md_switch_thumb_on_pressed.svg' => ['switch_thumb_on_pressed', 48],
 	}
 images.each do |source, result|
 	resolutions.each do |name, factor|
