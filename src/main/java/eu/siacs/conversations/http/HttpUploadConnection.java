@@ -157,7 +157,7 @@ public class HttpUploadConnection implements Transferable {
 				os.close();
 				is.close();
 				int code = connection.getResponseCode();
-				if (code == 200) {
+				if (code == 200 || code == 201) {
 					Log.d(Config.LOGTAG, "finished uploading file");
 					Message.FileParams params = message.getFileParams();
 					if (key != null) {
