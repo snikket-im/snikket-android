@@ -368,7 +368,10 @@ public class JingleConnection implements Transferable {
 					message, false);
 			if (message.getEncryption() == Message.ENCRYPTION_OTR) {
 				Conversation conversation = this.message.getConversation();
-				this.mXmppConnectionService.renewSymmetricKey(conversation);
+				if (!this.mXmppConnectionService.renewSymmetricKey(conversation)) {
+					Log.d(Config.LOGTAG,account.getJid().toBareJid()+": could not set symmetric key");
+					cancel();
+				}
 				content.setFileOffer(this.file, true);
 				this.file.setKey(conversation.getSymmetricKey());
 			} else {
