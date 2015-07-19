@@ -3,21 +3,21 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:paddingBottom="0dp"
-    android:paddingLeft="4dp"
-    android:paddingRight="@dimen/activity_vertical_margin"
-    android:paddingTop="0dp">
+    android:paddingBottom="3dp"
+    android:paddingLeft="8dp"
+    android:paddingRight="8dp"
+    android:paddingTop="3dp">
 
     <ImageView
         android:id="@+id/message_photo"
-        android:layout_width="36dp"
-        android:layout_height="40dp"
-        android:paddingBottom="4dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="fitXY"
+        android:paddingBottom="3dp"
+        android:src="@drawable/ic_profile"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_marginLeft="@dimen/message_profile_image_gap"
-        android:scaleType="fitXY"
-        android:src="@drawable/ic_profile" />
+        android:layout_alignParentEnd="true"/>
 
     <LinearLayout
         android:id="@+id/message_box"
@@ -26,14 +26,16 @@
         android:layout_alignParentBottom="true"
         android:layout_toLeftOf="@+id/message_photo"
         android:background="@drawable/message_bubble_sent"
-        android:minHeight="48dp"
+        android:minHeight="53dp"
+        android:layout_marginLeft="-4dp"
         android:longClickable="true">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:gravity="center_vertical"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="2dp">
 
             <ImageView
                 android:id="@+id/message_image"

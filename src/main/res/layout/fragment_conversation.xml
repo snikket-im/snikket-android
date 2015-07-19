@@ -18,9 +18,6 @@
         android:listSelector="@android:color/transparent"
         android:stackFromBottom="true"
         android:transcriptMode="normal"
-        android:paddingTop="@dimen/activity_horizontal_margin"
-        android:paddingBottom="@dimen/activity_horizontal_margin"
-        android:clipToPadding="false"
         tools:listitem="@layout/message_sent">
     </ListView>
 

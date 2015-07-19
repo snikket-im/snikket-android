@@ -3,15 +3,15 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:paddingBottom="2dp"
+    android:paddingBottom="5dp"
     android:paddingLeft="8dp"
     android:paddingRight="8dp"
-    android:paddingTop="2dp" >
+    android:paddingTop="5dp" >
 
     <ImageView
         android:id="@+id/message_photo"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_marginRight="-1.5dp"
