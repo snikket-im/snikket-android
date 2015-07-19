@@ -363,12 +363,17 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 		final MenuItem showBlocklist = menu.findItem(R.id.action_show_block_list);
 		final MenuItem showMoreInfo = menu.findItem(R.id.action_server_info_show_more);
 		final MenuItem changePassword = menu.findItem(R.id.action_change_password_on_server);
+		final MenuItem clearDevices = menu.findItem(R.id.action_clear_devices);
 		if (mAccount != null && mAccount.isOnlineAndConnected()) {
 			if (!mAccount.getXmppConnection().getFeatures().blocking()) {
 				showBlocklist.setVisible(false);
 			}
 			if (!mAccount.getXmppConnection().getFeatures().register()) {
 				changePassword.setVisible(false);
+			}
+			Set<Integer> otherDevices = mAccount.getAxolotlService().getOwnDeviceIds();
+			if (otherDevices == null || otherDevices.isEmpty()) {
+				clearDevices.setVisible(false);
 			}
 		} else {
 			showQrCode.setVisible(false);
@@ -439,6 +444,9 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 				final Intent changePasswordIntent = new Intent(this, ChangePasswordActivity.class);
 				changePasswordIntent.putExtra("account", mAccount.getJid().toString());
 				startActivity(changePasswordIntent);
+				break;
+			case R.id.action_clear_devices:
+				showWipePepDialog();
 				break;
 		}
 		return super.onOptionsItemSelected(item);
@@ -621,11 +629,11 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 
 	public void showWipePepDialog() {
 		Builder builder = new Builder(this);
-		builder.setTitle("Wipe PEP");
+		builder.setTitle(getString(R.string.clear_other_devices));
 		builder.setIconAttribute(android.R.attr.alertDialogIcon);
-		builder.setMessage("Are you sure you want to wipe all other devices from the PEP device ID list?");
+		builder.setMessage(getString(R.string.clear_other_devices_desc));
 		builder.setNegativeButton(getString(R.string.cancel), null);
-		builder.setPositiveButton("Yes",
+		builder.setPositiveButton(getString(R.string.accept),
 				new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
