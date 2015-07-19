@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
+	android:id="@+id/action_contact_details"
+	android:title="@string/action_contact_details"
+	android:visible="false" />
+    <item
         android:id="@+id/start_conversation"
         android:title="@string/start_conversation"
         android:visible="false" />
