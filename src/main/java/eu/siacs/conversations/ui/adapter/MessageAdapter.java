@@ -81,15 +81,31 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		return 3;
 	}
 
+	public int getItemViewType(Message message) {
+		if (message.getType() == Message.TYPE_STATUS) {
+			return STATUS;
+		} else if (message.getStatus() <= Message.STATUS_RECEIVED) {
+			return RECEIVED;
+		}
+
+		return SENT;
+	}
+
 	@Override
 	public int getItemViewType(int position) {
-		if (getItem(position).getType() == Message.TYPE_STATUS) {
-			return STATUS;
-		} else if (getItem(position).getStatus() <= Message.STATUS_RECEIVED) {
-			return RECEIVED;
-		} else {
-			return SENT;
+		return this.getItemViewType(getItem(position));
+	}
+
+	private int getMessageTextColor(Message message) {
+		int type = this.getItemViewType(message);
+
+		if (type == SENT) {
+			return activity.getResources().getColor(R.color.black87);
+		} else if (type == RECEIVED) {
+			return activity.getResources().getColor(R.color.white);
 		}
+
+		return activity.getPrimaryTextColor();
 	}
 
 	private void displayStatus(ViewHolder viewHolder, Message message) {
@@ -150,7 +166,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		if (error) {
 			viewHolder.time.setTextColor(activity.getWarningTextColor());
 		} else {
-			viewHolder.time.setTextColor(activity.getSecondaryTextColor());
+			viewHolder.time.setTextColor(this.getMessageTextColor(message));
 		}
 		if (message.getEncryption() == Message.ENCRYPTION_NONE) {
 			viewHolder.indicator.setVisibility(View.GONE);
@@ -294,7 +310,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		} else {
 			viewHolder.messageBody.setText("");
 		}
-		viewHolder.messageBody.setTextColor(activity.getPrimaryTextColor());
+		viewHolder.messageBody.setTextColor(this.getMessageTextColor(message));
 		viewHolder.messageBody.setTypeface(null, Typeface.NORMAL);
 		viewHolder.messageBody.setTextIsSelectable(true);
 	}
@@ -363,8 +379,9 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 			scalledW = (int) target;
 			scalledH = (int) (params.height / ((double) params.width / target));
 		}
-		viewHolder.image.setLayoutParams(new LinearLayout.LayoutParams(
-				scalledW, scalledH));
+		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(scalledW, scalledH);
+		layoutParams.setMargins(0, (int)(metrics.density * 4), 0, (int)(metrics.density * 4));
+		viewHolder.image.setLayoutParams(layoutParams);
 		activity.loadBitmap(message, viewHolder.image);
 		viewHolder.image.setOnClickListener(new OnClickListener() {
 
