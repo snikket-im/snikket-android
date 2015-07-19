@@ -209,6 +209,8 @@
 	<string name="your_fingerprint">Your fingerprint</string>
 	<string name="otr_fingerprint">OTR fingerprint</string>
 	<string name="axolotl_fingerprint">Axolotl fingerprint</string>
+	<string name="this_device_axolotl_fingerprint">Own Axolotl fingerprint</string>
+	<string name="other_devices">Other devices</string>
 	<string name="axolotl_devicelist">Other own Axolotl Devices</string>
 	<string name="verify">Verify</string>
 	<string name="decrypt">Decrypt</string>

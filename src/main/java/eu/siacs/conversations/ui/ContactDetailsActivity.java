@@ -35,7 +35,6 @@ import java.util.List;
 
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.PgpEngine;
-import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.ListItem;
@@ -381,53 +380,7 @@ public class ContactDetailsActivity extends XmppActivity implements OnAccountUpd
 		for(final IdentityKey identityKey : xmppConnectionService.databaseBackend.loadIdentityKeys(
 				contact.getAccount(), contact.getJid().toBareJid().toString())) {
 			hasKeys = true;
-			View view = inflater.inflate(R.layout.contact_key, keys, false);
-			TextView key = (TextView) view.findViewById(R.id.key);
-			TextView keyType = (TextView) view.findViewById(R.id.key_type);
-			TextView keyTrust = (TextView) view.findViewById(R.id.key_trust);
-			ImageButton removeButton = (ImageButton) view
-					.findViewById(R.id.button_remove);
-			ImageButton trustButton = (ImageButton) view
-					.findViewById(R.id.button_trust);
-			final AxolotlService axolotlService = contact.getAccount().getAxolotlService();
-			final String fingerprint = identityKey.getFingerprint().replaceAll("\\s", "");
-			final Jid bareJid = contactJid.toBareJid();
-			AxolotlService.SQLiteAxolotlStore.Trust trust = contact.getAccount().getAxolotlService()
-					.getFingerprintTrust(fingerprint);
-			switch (trust) {
-				case TRUSTED:
-					removeButton.setVisibility(View.VISIBLE);
-					//Log.d(Config.LOGTAG, AxolotlService.getLogprefix(contact.getAccount()) + "Setting remove button visible!");
-					break;
-				case UNDECIDED:
-				case UNTRUSTED:
-					//Log.d(Config.LOGTAG, AxolotlService.getLogprefix(contact.getAccount()) + "Setting trust button visible!");
-					trustButton.setVisibility(View.VISIBLE);
-					break;
-			}
-			keyType.setText("Axolotl Fingerprint");
-			key.setText(CryptoHelper.prettifyFingerprint(identityKey.getFingerprint()));
-			keyTrust.setText(trust.toString());
-			keyTrust.setVisibility(View.VISIBLE);
-			keys.addView(view);
-			removeButton.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					axolotlService.setFingerprintTrust(fingerprint,
-							AxolotlService.SQLiteAxolotlStore.Trust.UNTRUSTED);
-					refreshUi();
-					xmppConnectionService.updateConversationUi();
-				}
-			});
-			trustButton.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					axolotlService.setFingerprintTrust(fingerprint,
-							AxolotlService.SQLiteAxolotlStore.Trust.TRUSTED);
-					refreshUi();
-					xmppConnectionService.updateConversationUi();
-				}
-			});
+			addFingerprintRow(keys, contact.getAccount(), identityKey);
 		}
 		if (contact.getPgpKeyId() != 0) {
 			hasKeys = true;

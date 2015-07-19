@@ -4,10 +4,10 @@
     android:layout_height="match_parent" >
 
     <RelativeLayout
+        android:id="@+id/key_data"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_toLeftOf="@+id/button_remove"
         android:padding="8dp" >
 
         <TextView
@@ -16,6 +16,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/black87"
             android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@+id/tgl_trust"
             android:textSize="?attr/TextSizeBody"
             android:typeface="monospace" />
 
@@ -37,27 +38,28 @@
             android:visibility="gone"
             android:textColor="@color/black54"
             android:textSize="?attr/TextSizeInfo"/>
-    </RelativeLayout>
 
     <ImageButton
         android:id="@+id/button_remove"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
+        android:layout_toRightOf="@+id/key"
         android:layout_centerVertical="true"
         android:background="?android:selectableItemBackground"
         android:padding="@dimen/image_button_padding"
         android:src="?attr/icon_remove"
-        android:visibility="invisible" />
+        android:visibility="gone" />
 
-    <ImageButton
-        android:id="@+id/button_trust"
+
+    <eu.siacs.conversations.ui.widget.Switch
+        android:id="@+id/tgl_trust"
+        android:visibility="invisible"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:background="?android:selectableItemBackground"
-        android:padding="@dimen/image_button_padding"
-        android:src="?attr/icon_done"
-        android:visibility="invisible" />
+        style="@style/MaterialDesignButton"/>
+
+    </RelativeLayout>
 </RelativeLayout>

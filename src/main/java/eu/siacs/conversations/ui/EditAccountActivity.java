@@ -26,6 +26,8 @@ import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.whispersystems.libaxolotl.IdentityKey;
+
 import java.util.Set;
 
 import eu.siacs.conversations.R;
@@ -69,6 +71,8 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 	private ImageButton mAxolotlFingerprintToClipboardButton;
 	private ImageButton mWipeAxolotlPepButton;
 	private ImageButton mRegenerateAxolotlKeyButton;
+	private LinearLayout keys;
+	private LinearLayout keysCard;
 
 	private Jid jidToEdit;
 	private Account mAccount;
@@ -329,6 +333,8 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 		this.mAxolotlDevicelist = (TextView) findViewById(R.id.axolotl_devicelist);
 		this.mAxolotlDevicelistBox = (RelativeLayout) findViewById(R.id.axolotl_devices_box);
 		this.mWipeAxolotlPepButton = (ImageButton) findViewById(R.id.action_wipe_axolotl_pep);
+		this.keysCard = (LinearLayout) findViewById(R.id.other_device_keys_card);
+		this.keys = (LinearLayout) findViewById(R.id.other_device_keys);
 		this.mSaveButton = (Button) findViewById(R.id.save_button);
 		this.mCancelButton = (Button) findViewById(R.id.cancel_button);
 		this.mSaveButton.setOnClickListener(this.mSaveButtonClickListener);
@@ -567,6 +573,22 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 						});
 			} else {
 				this.mAxolotlFingerprintBox.setVisibility(View.GONE);
+			}
+			final IdentityKey ownKey = mAccount.getAxolotlService().getOwnPublicKey();
+			boolean hasKeys = false;
+			keys.removeAllViews();
+			for(final IdentityKey identityKey : xmppConnectionService.databaseBackend.loadIdentityKeys(
+					mAccount, mAccount.getJid().toBareJid().toString())) {
+				if(ownKey.equals(identityKey)) {
+					continue;
+				}
+				hasKeys = true;
+				addFingerprintRow(keys, mAccount, identityKey);
+			}
+			if (hasKeys) {
+				keysCard.setVisibility(View.VISIBLE);
+			} else {
+				keysCard.setVisibility(View.GONE);
 			}
 		} else {
 			if (this.mAccount.errorStatus()) {
