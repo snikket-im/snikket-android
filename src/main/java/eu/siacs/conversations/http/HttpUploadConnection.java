@@ -88,7 +88,9 @@ public class HttpUploadConnection implements Transferable {
 		this.file = mXmppConnectionService.getFileBackend().getFile(message, false);
 		this.file.setExpectedSize(this.file.getSize());
 
-		if (Config.ENCRYPT_ON_HTTP_UPLOADED) {
+		if (Config.ENCRYPT_ON_HTTP_UPLOADED
+				|| message.getEncryption() == Message.ENCRYPTION_AXOLOTL
+				|| message.getEncryption() == Message.ENCRYPTION_OTR) {
 			this.key = new byte[48];
 			mXmppConnectionService.getRNG().nextBytes(this.key);
 			this.file.setKey(this.key);
