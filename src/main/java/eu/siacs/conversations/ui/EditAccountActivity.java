@@ -62,14 +62,11 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 	private TextView mSessionEst;
 	private TextView mOtrFingerprint;
 	private TextView mAxolotlFingerprint;
-	private TextView mAxolotlDevicelist;
 	private ImageView mAvatar;
 	private RelativeLayout mOtrFingerprintBox;
 	private RelativeLayout mAxolotlFingerprintBox;
-	private RelativeLayout mAxolotlDevicelistBox;
 	private ImageButton mOtrFingerprintToClipboardButton;
 	private ImageButton mAxolotlFingerprintToClipboardButton;
-	private ImageButton mWipeAxolotlPepButton;
 	private ImageButton mRegenerateAxolotlKeyButton;
 	private LinearLayout keys;
 	private LinearLayout keysCard;
@@ -330,9 +327,6 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 		this.mAxolotlFingerprintBox = (RelativeLayout) findViewById(R.id.axolotl_fingerprint_box);
 		this.mAxolotlFingerprintToClipboardButton = (ImageButton) findViewById(R.id.action_copy_axolotl_to_clipboard);
 		this.mRegenerateAxolotlKeyButton = (ImageButton) findViewById(R.id.action_regenerate_axolotl_key);
-		this.mAxolotlDevicelist = (TextView) findViewById(R.id.axolotl_devicelist);
-		this.mAxolotlDevicelistBox = (RelativeLayout) findViewById(R.id.axolotl_devices_box);
-		this.mWipeAxolotlPepButton = (ImageButton) findViewById(R.id.action_wipe_axolotl_pep);
 		this.keysCard = (LinearLayout) findViewById(R.id.other_device_keys_card);
 		this.keys = (LinearLayout) findViewById(R.id.other_device_keys);
 		this.mSaveButton = (Button) findViewById(R.id.save_button);
@@ -532,22 +526,6 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 					});
 			} else {
 				this.mOtrFingerprintBox.setVisibility(View.GONE);
-			}
-			final Set<Integer> ownDevices = this.mAccount.getAxolotlService().getOwnDeviceIds();
-			if (ownDevices != null && !ownDevices.isEmpty()) {
-				this.mAxolotlDevicelistBox.setVisibility(View.VISIBLE);
-				this.mAxolotlDevicelist.setText(TextUtils.join(", ", ownDevices));
-				this.mWipeAxolotlPepButton
-						.setVisibility(View.VISIBLE);
-				this.mWipeAxolotlPepButton
-						.setOnClickListener(new View.OnClickListener() {
-							@Override
-							public void onClick(final View v) {
-								showWipePepDialog();
-							}
-						});
-			} else {
-				this.mAxolotlDevicelistBox.setVisibility(View.GONE);
 			}
 			final String axolotlFingerprint = this.mAccount.getAxolotlService().getOwnPublicKey().getFingerprint();
 			if (axolotlFingerprint != null) {

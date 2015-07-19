@@ -400,49 +400,6 @@
 
                    </LinearLayout>
                </RelativeLayout>
-               <RelativeLayout
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
-                   android:id="@+id/axolotl_devices_box"
-                   android:layout_marginTop="32dp">
-
-                   <LinearLayout
-                       android:layout_width="wrap_content"
-                       android:layout_height="wrap_content"
-                       android:layout_alignParentLeft="true"
-                       android:layout_toLeftOf="@+id/action_wipe_axolotl_pep"
-                       android:orientation="vertical">
-
-                       <TextView
-                           android:id="@+id/axolotl_devicelist"
-                           android:layout_width="wrap_content"
-                           android:layout_height="wrap_content"
-                           android:textColor="@color/black87"
-                           android:textSize="?attr/TextSizeBody"
-                           android:typeface="monospace" />
-
-                       <TextView
-                           android:layout_width="wrap_content"
-                           android:layout_height="wrap_content"
-                           android:textColor="@color/black54"
-                           android:textSize="?attr/TextSizeInfo"
-                           android:text="@string/axolotl_devicelist"/>
-                   </LinearLayout>
-
-                   <ImageButton
-                       android:id="@+id/action_wipe_axolotl_pep"
-                       android:layout_width="wrap_content"
-                       android:layout_height="wrap_content"
-                       android:layout_centerVertical="true"
-                       android:layout_alignParentRight="true"
-                       android:background="?android:selectableItemBackground"
-                       android:padding="@dimen/image_button_padding"
-                       android:src="?attr/icon_remove"
-                       android:visibility="visible"
-                       android:contentDescription="@string/wipe_axolotl_pep"/>
-
-
-               </RelativeLayout>
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/other_device_keys_card"
