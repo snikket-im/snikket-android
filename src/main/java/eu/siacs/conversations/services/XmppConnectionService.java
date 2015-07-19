@@ -830,9 +830,8 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		} else {
 			Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": fetching roster");
 		}
-		iqPacket.query(Xmlns.ROSTER).setAttribute("ver",
-				account.getRosterVersion());
-		account.getXmppConnection().sendIqPacket(iqPacket, mIqParser);
+		iqPacket.query(Xmlns.ROSTER).setAttribute("ver",account.getRosterVersion());
+		sendIqPacket(account,iqPacket,mIqParser);
 	}
 
 	public void fetchBookmarks(final Account account) {
