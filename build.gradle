@@ -94,7 +94,7 @@ android {
 	}
 
 	lintOptions {
-		disable 'ExtraTranslation', 'MissingTranslation', 'InvalidPackage', 'MissingQuantity'
+		disable 'ExtraTranslation', 'MissingTranslation', 'InvalidPackage', 'MissingQuantity', 'AppCompatResource'
 	}
 
 	subprojects {
