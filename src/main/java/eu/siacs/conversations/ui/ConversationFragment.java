@@ -1,5 +1,6 @@
 package eu.siacs.conversations.ui;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.PendingIntent;
@@ -11,6 +12,7 @@ import android.content.IntentSender;
 import android.content.IntentSender.SendIntentException;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Gravity;
@@ -43,6 +45,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.PgpEngine;
+import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
@@ -304,7 +307,9 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 		} else if (conversation.getNextEncryption(activity.forceEncryption()) == Message.ENCRYPTION_PGP) {
 			sendPgpMessage(message);
 		} else if (conversation.getNextEncryption(activity.forceEncryption()) == Message.ENCRYPTION_AXOLOTL) {
-			sendAxolotlMessage(message);
+			if(!activity.trustKeysIfNeeded(ConversationActivity.REQUEST_TRUST_KEYS_TEXT)) {
+				sendAxolotlMessage(message);
+			}
 		} else {
 			sendPlainTextMessage(message);
 		}
@@ -1128,7 +1133,6 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 	protected void sendAxolotlMessage(final Message message) {
 		final ConversationActivity activity = (ConversationActivity) getActivity();
 		final XmppConnectionService xmppService = activity.xmppConnectionService;
-		//message.setCounterpart(conversation.getNextCounterpart());
 		xmppService.sendMessage(message);
 		messageSent();
 	}
@@ -1193,6 +1197,21 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 			activity.xmppConnectionService.sendChatState(conversation);
 		}
 		updateSendButton();
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode,
+	                                final Intent data) {
+		if (resultCode == Activity.RESULT_OK) {
+			if (requestCode == ConversationActivity.REQUEST_TRUST_KEYS_TEXT) {
+				final String body = mEditMessage.getText().toString();
+				Message message = new Message(conversation, body, conversation.getNextEncryption(activity.forceEncryption()));
+				sendAxolotlMessage(message);
+			} else if (requestCode == ConversationActivity.REQUEST_TRUST_KEYS_MENU) {
+				int choice = data.getIntExtra("choice", ConversationActivity.ATTACHMENT_CHOICE_INVALID);
+				activity.selectPresenceToAttachFile(choice, conversation.getNextEncryption(activity.forceEncryption()));
+			}
+		}
 	}
 
 }

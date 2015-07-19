@@ -115,6 +115,10 @@ public class AxolotlService {
 						return "Untrusted";
 				}
 			}
+
+			public static Trust fromBoolean(Boolean trusted) {
+				return trusted?TRUSTED:UNTRUSTED;
+			}
 		};
 
 		private static IdentityKeyPair generateIdentityKeyPair() {
@@ -273,6 +277,10 @@ public class AxolotlService {
 
 		public void setFingerprintTrust(String fingerprint, Trust trust) {
 			mXmppConnectionService.databaseBackend.setIdentityKeyTrust(account, fingerprint, trust);
+		}
+
+		public Set<IdentityKey> getContactUndecidedKeys(String bareJid) {
+			return mXmppConnectionService.databaseBackend.loadIdentityKeys(account, bareJid, Trust.UNDECIDED);
 		}
 
 		// --------------------------------------
@@ -658,6 +666,14 @@ public class AxolotlService {
 		return axolotlStore.getIdentityKeyPair().getPublicKey();
 	}
 
+	public Set<IdentityKey> getPendingKeys() {
+		return axolotlStore.getContactUndecidedKeys(account.getJid().toBareJid().toString());
+	}
+
+	public Set<IdentityKey> getPendingKeys(Contact contact) {
+		return axolotlStore.getContactUndecidedKeys(contact.getJid().toBareJid().toString());
+	}
+
 	private AxolotlAddress getAddressForJid(Jid jid) {
 		return new AxolotlAddress(jid.toString(), 0);
 	}
@@ -852,14 +868,32 @@ public class AxolotlService {
 		axolotlStore.setFingerprintTrust(fingerprint, trust);
 	}
 
-	private void buildSessionFromPEP(final Conversation conversation, final AxolotlAddress address) {
-		Log.i(Config.LOGTAG, AxolotlService.getLogprefix(account)+"Building new sesstion for " + address.getDeviceId());
+	private void buildSessionFromPEP(final Conversation conversation, final AxolotlAddress address, final boolean flushWaitingQueueAfterFetch) {
+		Log.i(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Building new sesstion for " + address.getDeviceId());
 
 		try {
 			IqPacket bundlesPacket = mXmppConnectionService.getIqGenerator().retrieveBundlesForDevice(
 					Jid.fromString(address.getName()), address.getDeviceId());
 			Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account)+"Retrieving bundle: " + bundlesPacket);
 			mXmppConnectionService.sendIqPacket(account, bundlesPacket, new OnIqPacketReceived() {
+				private void finish() {
+					AxolotlAddress ownAddress = new AxolotlAddress(conversation.getAccount().getJid().toBareJid().toString(),0);
+					AxolotlAddress foreignAddress = new AxolotlAddress(conversation.getJid().toBareJid().toString(),0);
+					if (!fetchStatusMap.getAll(ownAddress).containsValue(FetchStatus.PENDING)
+							&& !fetchStatusMap.getAll(foreignAddress).containsValue(FetchStatus.PENDING)) {
+						if (flushWaitingQueueAfterFetch) {
+							conversation.findUnsentMessagesWithEncryption(Message.ENCRYPTION_AXOLOTL,
+									new Conversation.OnMessageFound() {
+										@Override
+										public void onMessageFound(Message message) {
+											processSending(message);
+										}
+									});
+						}
+						mXmppConnectionService.newKeysAvailable();
+					}
+				}
+
 				@Override
 				public void onIqPacketReceived(Account account, IqPacket packet) {
 					Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account)+"Received preKey IQ packet, processing...");
@@ -869,6 +903,7 @@ public class AxolotlService {
 					if (preKeyBundleList.isEmpty() || bundle == null) {
 						Log.e(Config.LOGTAG, AxolotlService.getLogprefix(account)+"preKey IQ packet invalid: " + packet);
 						fetchStatusMap.put(address, FetchStatus.ERROR);
+						finish();
 						return;
 					}
 					Random random = new Random();
@@ -876,6 +911,7 @@ public class AxolotlService {
 					if (preKey == null) {
 						//should never happen
 						fetchStatusMap.put(address, FetchStatus.ERROR);
+						finish();
 						return;
 					}
 
@@ -898,18 +934,7 @@ public class AxolotlService {
 						fetchStatusMap.put(address, FetchStatus.ERROR);
 					}
 
-					AxolotlAddress ownAddress = new AxolotlAddress(conversation.getAccount().getJid().toBareJid().toString(),0);
-					AxolotlAddress foreignAddress = new AxolotlAddress(conversation.getJid().toBareJid().toString(),0);
-					if (!fetchStatusMap.getAll(ownAddress).containsValue(FetchStatus.PENDING)
-							&& !fetchStatusMap.getAll(foreignAddress).containsValue(FetchStatus.PENDING)) {
-						conversation.findUnsentMessagesWithEncryption(Message.ENCRYPTION_AXOLOTL,
-								new Conversation.OnMessageFound() {
-									@Override
-									public void onMessageFound(Message message) {
-										processSending(message);
-									}
-								});
-					}
+					finish();
 				}
 			});
 		} catch (InvalidJidException e) {
@@ -917,46 +942,73 @@ public class AxolotlService {
 		}
 	}
 
-	private boolean createSessionsIfNeeded(Conversation conversation) {
-		boolean newSessions = false;
-		Log.i(Config.LOGTAG, AxolotlService.getLogprefix(account)+"Creating axolotl sessions if needed...");
+	public Set<AxolotlAddress> findDevicesWithoutSession(final Conversation conversation) {
+		Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Finding devices without session for " + conversation.getContact().getJid().toBareJid());
 		Jid contactJid = conversation.getContact().getJid().toBareJid();
 		Set<AxolotlAddress> addresses = new HashSet<>();
 		if(deviceIds.get(contactJid) != null) {
 			for(Integer foreignId:this.deviceIds.get(contactJid)) {
-				Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account)+"Found device "+account.getJid().toBareJid()+":"+foreignId);
-				addresses.add(new AxolotlAddress(contactJid.toString(), foreignId));
+				AxolotlAddress address = new AxolotlAddress(contactJid.toString(), foreignId);
+				if(sessions.get(address) == null) {
+					IdentityKey identityKey = axolotlStore.loadSession(address).getSessionState().getRemoteIdentityKey();
+					if ( identityKey != null ) {
+						Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account)+"Already have session for " +  address.toString() + ", adding to cache...");
+						XmppAxolotlSession session = new XmppAxolotlSession(account, axolotlStore, address, identityKey.getFingerprint().replaceAll("\\s", ""));
+						sessions.put(address, session);
+					} else {
+						Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Found device " + account.getJid().toBareJid() + ":" + foreignId);
+						addresses.add(new AxolotlAddress(contactJid.toString(), foreignId));
+					}
+				}
 			}
 		} else {
 			Log.w(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Have no target devices in PEP!");
 		}
-		Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account)+"Checking own account "+account.getJid().toBareJid());
 		if(deviceIds.get(account.getJid().toBareJid()) != null) {
 			for(Integer ownId:this.deviceIds.get(account.getJid().toBareJid())) {
-				Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account)+"Found device "+account.getJid().toBareJid()+":"+ownId);
-				addresses.add(new AxolotlAddress(account.getJid().toBareJid().toString(), ownId));
-			}
-		}
-		for (AxolotlAddress address : addresses) {
-			Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account)+"Processing device: " + address.toString());
-			FetchStatus status = fetchStatusMap.get(address);
-			XmppAxolotlSession session = sessions.get(address);
-			if ( session == null && ( status == null || status == FetchStatus.ERROR) ) {
-				IdentityKey identityKey = axolotlStore.loadSession(address).getSessionState().getRemoteIdentityKey();
-				if ( identityKey != null ) {
-					Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account)+"Already have session for " +  address.toString() + ", adding to cache...");
-					session = new XmppAxolotlSession(account, axolotlStore, address, identityKey.getFingerprint().replaceAll("\\s", ""));
-					sessions.put(address, session);
-				} else {
-					fetchStatusMap.put(address, FetchStatus.PENDING);
-					this.buildSessionFromPEP(conversation, address);
-					newSessions = true;
+				AxolotlAddress address = new AxolotlAddress(account.getJid().toBareJid().toString(), ownId);
+				if(sessions.get(address) == null) {
+					IdentityKey identityKey = axolotlStore.loadSession(address).getSessionState().getRemoteIdentityKey();
+					if ( identityKey != null ) {
+						Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account)+"Already have session for " +  address.toString() + ", adding to cache...");
+						XmppAxolotlSession session = new XmppAxolotlSession(account, axolotlStore, address, identityKey.getFingerprint().replaceAll("\\s", ""));
+						sessions.put(address, session);
+					} else {
+						Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Found device " + account.getJid().toBareJid() + ":" + ownId);
+						addresses.add(new AxolotlAddress(account.getJid().toBareJid().toString(), ownId));
+					}
 				}
-			} else {
-				Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account)+"Already have session for " +  address.toString());
 			}
 		}
+
+		return addresses;
+	}
+
+	public boolean createSessionsIfNeeded(final Conversation conversation, final boolean flushWaitingQueueAfterFetch) {
+		Log.i(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Creating axolotl sessions if needed...");
+		boolean newSessions = false;
+		Set<AxolotlAddress> addresses = findDevicesWithoutSession(conversation);
+		for (AxolotlAddress address : addresses) {
+			Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Processing device: " + address.toString());
+			FetchStatus status = fetchStatusMap.get(address);
+			if ( status == null || status == FetchStatus.ERROR ) {
+					fetchStatusMap.put(address, FetchStatus.PENDING);
+					this.buildSessionFromPEP(conversation, address, flushWaitingQueueAfterFetch);
+					newSessions = true;
+			} else {
+				Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account)+"Already fetching bundle for " +  address.toString());
+			}
+		}
+
 		return newSessions;
+	}
+
+	public boolean hasPendingKeyFetches(Conversation conversation) {
+		AxolotlAddress ownAddress = new AxolotlAddress(account.getJid().toBareJid().toString(),0);
+		AxolotlAddress foreignAddress = new AxolotlAddress(conversation.getJid().toBareJid().toString(),0);
+		return fetchStatusMap.getAll(ownAddress).containsValue(FetchStatus.PENDING)
+				||fetchStatusMap.getAll(foreignAddress).containsValue(FetchStatus.PENDING);
+
 	}
 
 	@Nullable
@@ -1013,10 +1065,9 @@ public class AxolotlService {
 		});
 	}
 
-	public void prepareMessage(Message message) {
+	public void prepareMessage(final Message message) {
 		if (!messageCache.containsKey(message.getUuid())) {
-			boolean newSessions = createSessionsIfNeeded(message.getConversation());
-
+			boolean newSessions = createSessionsIfNeeded(message.getConversation(), true);
 			if (!newSessions) {
 				this.processSending(message);
 			}

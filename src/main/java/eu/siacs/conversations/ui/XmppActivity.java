@@ -84,6 +84,7 @@ import eu.siacs.conversations.services.XmppConnectionService.XmppConnectionBinde
 import eu.siacs.conversations.ui.widget.Switch;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.ExceptionHelper;
+import eu.siacs.conversations.xmpp.OnNewKeysAvailable;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
@@ -296,6 +297,9 @@ public abstract class XmppActivity extends Activity {
 		if (this instanceof XmppConnectionService.OnShowErrorToast) {
 			this.xmppConnectionService.setOnShowErrorToastListener((XmppConnectionService.OnShowErrorToast) this);
 		}
+		if (this instanceof OnNewKeysAvailable) {
+			this.xmppConnectionService.setOnNewKeysAvailableListener((OnNewKeysAvailable) this);
+		}
 	}
 
 	protected void unregisterListeners() {
@@ -316,6 +320,9 @@ public abstract class XmppActivity extends Activity {
 		}
 		if (this instanceof XmppConnectionService.OnShowErrorToast) {
 			this.xmppConnectionService.removeOnShowErrorToastListener();
+		}
+		if (this instanceof OnNewKeysAvailable) {
+			this.xmppConnectionService.removeOnNewKeysAvailableListener();
 		}
 	}
 
@@ -452,7 +459,7 @@ public abstract class XmppActivity extends Activity {
 
 					@Override
 					public void userInputRequried(PendingIntent pi,
-												  Account account) {
+					                              Account account) {
 						try {
 							startIntentSenderForResult(pi.getIntentSender(),
 									REQUEST_ANNOUNCE_PGP, null, 0, 0, 0);

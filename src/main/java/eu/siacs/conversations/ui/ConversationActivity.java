@@ -65,11 +65,14 @@ public class ConversationActivity extends XmppActivity
 	public static final int REQUEST_SEND_MESSAGE = 0x0201;
 	public static final int REQUEST_DECRYPT_PGP = 0x0202;
 	public static final int REQUEST_ENCRYPT_MESSAGE = 0x0207;
+	public static final int REQUEST_TRUST_KEYS_TEXT = 0x0208;
+	public static final int REQUEST_TRUST_KEYS_MENU = 0x0209;
 	public static final int ATTACHMENT_CHOICE_CHOOSE_IMAGE = 0x0301;
 	public static final int ATTACHMENT_CHOICE_TAKE_PHOTO = 0x0302;
 	public static final int ATTACHMENT_CHOICE_CHOOSE_FILE = 0x0303;
 	public static final int ATTACHMENT_CHOICE_RECORD_VOICE = 0x0304;
 	public static final int ATTACHMENT_CHOICE_LOCATION = 0x0305;
+	public static final int ATTACHMENT_CHOICE_INVALID = 0x0306;
 	private static final String STATE_OPEN_CONVERSATION = "state_open_conversation";
 	private static final String STATE_PANEL_OPEN = "state_panel_open";
 	private static final String STATE_PENDING_URI = "state_pending_uri";
@@ -79,6 +82,7 @@ public class ConversationActivity extends XmppActivity
 	final private List<Uri> mPendingImageUris = new ArrayList<>();
 	final private List<Uri> mPendingFileUris = new ArrayList<>();
 	private Uri mPendingGeoUri = null;
+	private boolean forbidProcessingPendings = false;
 
 	private View mContentView;
 
@@ -401,7 +405,7 @@ public class ConversationActivity extends XmppActivity
 		return true;
 	}
 
-	private void selectPresenceToAttachFile(final int attachmentChoice, final int encryption) {
+	protected void selectPresenceToAttachFile(final int attachmentChoice, final int encryption) {
 		final Conversation conversation = getSelectedConversation();
 		final Account account = conversation.getAccount();
 		final OnPresenceSelected callback = new OnPresenceSelected() {
@@ -537,7 +541,9 @@ public class ConversationActivity extends XmppActivity
 				showInstallPgpDialog();
 			}
 		} else {
-			selectPresenceToAttachFile(attachmentChoice,encryption);
+			if (encryption != Message.ENCRYPTION_AXOLOTL || !trustKeysIfNeeded(REQUEST_TRUST_KEYS_MENU, attachmentChoice)) {
+				selectPresenceToAttachFile(attachmentChoice, encryption);
+			}
 		}
 	}
 
@@ -962,18 +968,23 @@ public class ConversationActivity extends XmppActivity
 			this.mConversationFragment.reInit(getSelectedConversation());
 		}
 
-		for(Iterator<Uri> i = mPendingImageUris.iterator(); i.hasNext(); i.remove()) {
-			attachImageToConversation(getSelectedConversation(),i.next());
-		}
+		if(!forbidProcessingPendings) {
+			for (Iterator<Uri> i = mPendingImageUris.iterator(); i.hasNext(); i.remove()) {
+				Uri foo = i.next();
+				attachImageToConversation(getSelectedConversation(), foo);
+			}
 
-		for(Iterator<Uri> i = mPendingFileUris.iterator(); i.hasNext(); i.remove()) {
-			attachFileToConversation(getSelectedConversation(),i.next());
-		}
+			for (Iterator<Uri> i = mPendingFileUris.iterator(); i.hasNext(); i.remove()) {
+				attachFileToConversation(getSelectedConversation(), i.next());
+			}
 
-		if (mPendingGeoUri != null) {
-			attachLocationToConversation(getSelectedConversation(), mPendingGeoUri);
-			mPendingGeoUri = null;
+			if (mPendingGeoUri != null) {
+				attachLocationToConversation(getSelectedConversation(), mPendingGeoUri);
+				mPendingGeoUri = null;
+			}
 		}
+		forbidProcessingPendings = false;
+
 		ExceptionHelper.checkForCrash(this, this.xmppConnectionService);
 		setIntent(new Intent());
 	}
@@ -1083,6 +1094,9 @@ public class ConversationActivity extends XmppActivity
 					attachLocationToConversation(getSelectedConversation(), mPendingGeoUri);
 					this.mPendingGeoUri = null;
 				}
+			} else if (requestCode == REQUEST_TRUST_KEYS_TEXT || requestCode == REQUEST_TRUST_KEYS_MENU) {
+				this.forbidProcessingPendings = !xmppConnectionServiceBound;
+				mConversationFragment.onActivityResult(requestCode, resultCode, data);
 			}
 		} else {
 			mPendingImageUris.clear();
@@ -1233,6 +1247,26 @@ public class ConversationActivity extends XmppActivity
 
 	public boolean indicateReceived() {
 		return getPreferences().getBoolean("indicate_received", false);
+	}
+
+	protected boolean trustKeysIfNeeded(int requestCode) {
+		return trustKeysIfNeeded(requestCode, ATTACHMENT_CHOICE_INVALID);
+	}
+
+	protected boolean trustKeysIfNeeded(int requestCode, int attachmentChoice) {
+		AxolotlService axolotlService = mSelectedConversation.getAccount().getAxolotlService();
+		if(!axolotlService.getPendingKeys(mSelectedConversation.getContact()).isEmpty()
+				|| !axolotlService.findDevicesWithoutSession(mSelectedConversation).isEmpty()) {
+			axolotlService.createSessionsIfNeeded(mSelectedConversation, false);
+			Intent intent = new Intent(getApplicationContext(), TrustKeysActivity.class);
+			intent.putExtra("contact", mSelectedConversation.getContact().getJid().toBareJid().toString());
+			intent.putExtra("account", mSelectedConversation.getAccount().getJid().toBareJid().toString());
+			intent.putExtra("choice", attachmentChoice);
+			startActivityForResult(intent, requestCode);
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	@Override

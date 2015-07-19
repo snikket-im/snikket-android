@@ -211,6 +211,9 @@
 	<string name="axolotl_fingerprint">Axolotl fingerprint</string>
 	<string name="this_device_axolotl_fingerprint">Own Axolotl fingerprint</string>
 	<string name="other_devices">Other devices</string>
+	<string name="trust_keys">Trust Axolotl Keys</string>
+	<string name="fetching_keys">Fetching keys...</string>
+	<string name="done">Done</string>
 	<string name="axolotl_devicelist">Other own Axolotl Devices</string>
 	<string name="verify">Verify</string>
 	<string name="decrypt">Decrypt</string>

@@ -834,10 +834,19 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 	}
 
 	public Set<IdentityKey> loadIdentityKeys(Account account, String name) {
+		return loadIdentityKeys(account, name, null);
+	}
+
+	public Set<IdentityKey> loadIdentityKeys(Account account, String name, AxolotlService.SQLiteAxolotlStore.Trust trust) {
 		Set<IdentityKey> identityKeys = new HashSet<>();
 		Cursor cursor = getIdentityKeyCursor(account, name, false);
 
 		while(cursor.moveToNext()) {
+			if ( trust != null &&
+					cursor.getInt(cursor.getColumnIndex(AxolotlService.SQLiteAxolotlStore.TRUSTED))
+							!= trust.ordinal()) {
+				continue;
+			}
 			try {
 				identityKeys.add(new IdentityKey(Base64.decode(cursor.getString(cursor.getColumnIndex(AxolotlService.SQLiteAxolotlStore.KEY)),Base64.DEFAULT),0));
 			} catch (InvalidKeyException e) {
