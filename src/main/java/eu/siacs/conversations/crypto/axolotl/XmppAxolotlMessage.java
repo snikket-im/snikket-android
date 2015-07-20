@@ -6,6 +6,8 @@ import android.util.Base64;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.SecureRandom;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -107,26 +109,30 @@ public class XmppAxolotlMessage {
 		}
 	}
 
-	public XmppAxolotlMessage(Jid from, int sourceDeviceId, String plaintext) {
+	public XmppAxolotlMessage(Jid from, int sourceDeviceId, String plaintext) throws CryptoFailedException{
 		this.from = from;
 		this.sourceDeviceId = sourceDeviceId;
 		this.headers = new HashSet<>();
 		this.encrypt(plaintext);
 	}
 
-	private void encrypt(String plaintext) {
+	private void encrypt(String plaintext) throws CryptoFailedException {
 		try {
 			KeyGenerator generator = KeyGenerator.getInstance("AES");
 			generator.init(128);
 			SecretKey secretKey = generator.generateKey();
-			Cipher cipher = Cipher.getInstance("AES/CTR/NoPadding");
-			cipher.init(Cipher.ENCRYPT_MODE, secretKey);
+			SecureRandom random = new SecureRandom();
+			this.iv = new byte[16];
+			random.nextBytes(iv);
+			IvParameterSpec ivSpec = new IvParameterSpec(iv);
+			Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding", "BC");
+			cipher.init(Cipher.ENCRYPT_MODE, secretKey, ivSpec);
 			this.innerKey = secretKey.getEncoded();
-			this.iv = cipher.getIV();
 			this.ciphertext = cipher.doFinal(plaintext.getBytes());
 		} catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException
-				| IllegalBlockSizeException | BadPaddingException e) {
-
+				| IllegalBlockSizeException | BadPaddingException | NoSuchProviderException
+				| InvalidAlgorithmParameterException e) {
+			throw new CryptoFailedException(e);
 		}
 	}
 
@@ -174,11 +180,11 @@ public class XmppAxolotlMessage {
 	}
 
 
-	public XmppAxolotlPlaintextMessage decrypt(AxolotlService.XmppAxolotlSession session, byte[] key, String fingerprint) {
+	public XmppAxolotlPlaintextMessage decrypt(AxolotlService.XmppAxolotlSession session, byte[] key, String fingerprint) throws CryptoFailedException {
 		XmppAxolotlPlaintextMessage plaintextMessage = null;
 		try {
 
-			Cipher cipher = Cipher.getInstance("AES/CTR/NoPadding");
+			Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding", "BC");
 			SecretKeySpec keySpec = new SecretKeySpec(key, "AES");
 			IvParameterSpec ivSpec = new IvParameterSpec(iv);
 
@@ -189,8 +195,8 @@ public class XmppAxolotlMessage {
 
 		} catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException
 				| InvalidAlgorithmParameterException | IllegalBlockSizeException
-				| BadPaddingException e) {
-			throw new AssertionError(e);
+				| BadPaddingException | NoSuchProviderException e) {
+			throw new CryptoFailedException(e);
 		}
 		return plaintextMessage;
 	}

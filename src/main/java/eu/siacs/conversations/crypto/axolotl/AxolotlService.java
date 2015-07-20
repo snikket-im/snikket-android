@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.whispersystems.libaxolotl.AxolotlAddress;
 import org.whispersystems.libaxolotl.DuplicateMessageException;
 import org.whispersystems.libaxolotl.IdentityKey;
@@ -30,6 +31,7 @@ import org.whispersystems.libaxolotl.state.SessionRecord;
 import org.whispersystems.libaxolotl.state.SignedPreKeyRecord;
 import org.whispersystems.libaxolotl.util.KeyHelper;
 
+import java.security.Security;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -678,6 +680,9 @@ public class AxolotlService {
 	}
 
 	public AxolotlService(Account account, XmppConnectionService connectionService) {
+		if (Security.getProvider("BC") == null) {
+			Security.addProvider(new BouncyCastleProvider());
+		}
 		this.mXmppConnectionService = connectionService;
 		this.account = account;
 		this.axolotlStore = new SQLiteAxolotlStore(this.account, this.mXmppConnectionService);
@@ -1050,11 +1055,17 @@ public class AxolotlService {
 		final String content;
 		if (message.hasFileOnRemoteHost()) {
 				content = message.getFileParams().url.toString();
-			} else {
-				content = message.getBody();
-			}
-		final XmppAxolotlMessage axolotlMessage = new XmppAxolotlMessage(message.getContact().getJid().toBareJid(),
-				getOwnDeviceId(), content);
+		} else {
+			content = message.getBody();
+		}
+		final XmppAxolotlMessage axolotlMessage;
+		try {
+			axolotlMessage = new XmppAxolotlMessage(message.getContact().getJid().toBareJid(),
+					getOwnDeviceId(), content);
+		} catch (CryptoFailedException e) {
+			Log.w(Config.LOGTAG, getLogprefix(account) + "Failed to encrypt message: " + e.getMessage());
+			return null;
+		}
 
 		if(findSessionsforContact(message.getContact()).isEmpty()) {
 			return null;
@@ -1143,7 +1154,12 @@ public class AxolotlService {
 				byte[] payloadKey = session.processReceiving(header);
 				if (payloadKey != null) {
 					Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account)+"Got payload key from axolotl header. Decrypting message...");
-					plaintextMessage = message.decrypt(session, payloadKey, session.getFingerprint());
+					try{
+						plaintextMessage = message.decrypt(session, payloadKey, session.getFingerprint());
+					} catch (CryptoFailedException e) {
+						Log.w(Config.LOGTAG, getLogprefix(account) + "Failed to decrypt message: " + e.getMessage());
+						break;
+					}
 				}
 				Integer preKeyId = session.getPreKeyId();
 				if (preKeyId != null) {
