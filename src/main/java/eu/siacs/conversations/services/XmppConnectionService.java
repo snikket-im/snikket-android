@@ -1347,17 +1347,17 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 				switchToForeground();
 			}
 			this.mOnUpdateBlocklist = listener;
-			if (this.newKeysAvailableListenerCount < 2) {
-				this.newKeysAvailableListenerCount++;
+			if (this.updateBlocklistListenerCount < 2) {
+				this.updateBlocklistListenerCount++;
 			}
 		}
 	}
 
 	public void removeOnUpdateBlocklistListener() {
 		synchronized (this) {
-			this.newKeysAvailableListenerCount--;
-			if (this.newKeysAvailableListenerCount <= 0) {
-				this.newKeysAvailableListenerCount = 0;
+			this.updateBlocklistListenerCount--;
+			if (this.updateBlocklistListenerCount <= 0) {
+				this.updateBlocklistListenerCount = 0;
 				this.mOnUpdateBlocklist = null;
 				if (checkListeners()) {
 					switchToBackground();
