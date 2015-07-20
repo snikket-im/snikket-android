@@ -288,7 +288,7 @@
   <string name="conference_members_only">Die Konferenz ist nur für Mitglieder</string>
   <string name="conference_kicked">Du wurdest aus der Konferenz geworfen</string>
   <string name="using_account">Verwende Konto %s</string>
-  <string name="checking_x">%s auf HTTP-Host prüfen</string>
+  <string name="checking_x">%s wird auf HTTP-Host geprüft</string>
   <string name="not_connected_try_again">Nicht verbunden, bitte später versuchen</string>
   <string name="check_x_filesize">%s-Größe prüfen</string>
   <string name="message_options">Nachrichtenoptionen</string>
