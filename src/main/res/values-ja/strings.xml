@@ -288,11 +288,14 @@
   <string name="conference_members_only">この会議はメンバーのみです</string>
   <string name="conference_kicked">あなたはこの会議からキックされました</string>
   <string name="using_account">アカウント %s を使用</string>
+  <string name="checking_x">HTTP ホストの %s を確認中</string>
   <string name="not_connected_try_again">接続されていません。後でもう一度お試しください</string>
+  <string name="check_x_filesize">%s サイズを確認</string>
   <string name="message_options">メッセージオプション</string>
   <string name="copy_text">テキストをコピー</string>
   <string name="copy_original_url">元の URL をコピー</string>
   <string name="send_again">再送</string>
+  <string name="file_url">ファイル URL</string>
   <string name="message_text">メッセージテキスト</string>
   <string name="url_copied_to_clipboard">URL をクリップボードにコピーしました</string>
   <string name="message_copied_to_clipboard">メッセージをクリップボードにコピーしました</string>
@@ -444,4 +447,6 @@
   <string name="none">なし</string>
   <string name="recently_used">最近使用した</string>
   <string name="choose_quick_action">クイックアクションの選択</string>
+  <string name="file_not_found_on_remote_host">リモートサーバーにファイルが見つかりません</string>
+  <string name="search_for_contacts_or_groups">連絡先またはグループの検索</string>
 </resources>
