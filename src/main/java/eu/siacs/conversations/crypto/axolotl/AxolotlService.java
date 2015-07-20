@@ -892,7 +892,7 @@ public class AxolotlService {
 									new Conversation.OnMessageFound() {
 										@Override
 										public void onMessageFound(Message message) {
-											processSending(message);
+											processSending(message,false);
 										}
 									});
 						}
@@ -1053,7 +1053,7 @@ public class AxolotlService {
 		return axolotlMessage;
 	}
 
-	private void processSending(final Message message) {
+	private void processSending(final Message message, final boolean delay) {
 		executor.execute(new Runnable() {
 			@Override
 			public void run() {
@@ -1065,17 +1065,17 @@ public class AxolotlService {
 				} else {
 					Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account)+"Generated message, caching: " + message.getUuid());
 					messageCache.put(message.getUuid(), packet);
-					mXmppConnectionService.resendMessage(message);
+					mXmppConnectionService.resendMessage(message,delay);
 				}
 			}
 		});
 	}
 
-	public void prepareMessage(final Message message) {
+	public void prepareMessage(final Message message,final boolean delay) {
 		if (!messageCache.containsKey(message.getUuid())) {
 			boolean newSessions = createSessionsIfNeeded(message.getConversation(), true);
 			if (!newSessions) {
-				this.processSending(message);
+				this.processSending(message,delay);
 			}
 		}
 	}

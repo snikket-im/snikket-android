@@ -33,6 +33,7 @@ public class HttpUploadConnection implements Transferable {
 	private XmppConnectionService mXmppConnectionService;
 
 	private boolean canceled = false;
+	private boolean delayed = false;
 	private Account account;
 	private DownloadableFile file;
 	private Message message;
@@ -80,13 +81,14 @@ public class HttpUploadConnection implements Transferable {
 		mXmppConnectionService.markMessage(message,Message.STATUS_SEND_FAILED);
 	}
 
-	public void init(Message message) {
+	public void init(Message message, boolean delay) {
 		this.message = message;
 		message.setTransferable(this);
 		mXmppConnectionService.markMessage(message,Message.STATUS_UNSEND);
 		this.account = message.getConversation().getAccount();
 		this.file = mXmppConnectionService.getFileBackend().getFile(message, false);
 		this.file.setExpectedSize(this.file.getSize());
+		this.delayed = delay;
 
 		if (Config.ENCRYPT_ON_HTTP_UPLOADED
 				|| message.getEncryption() == Message.ENCRYPTION_AXOLOTL
@@ -172,7 +174,7 @@ public class HttpUploadConnection implements Transferable {
 						mXmppConnectionService.getPgpEngine().encrypt(message, new UiCallback<Message>() {
 							@Override
 							public void success(Message message) {
-								mXmppConnectionService.resendMessage(message);
+								mXmppConnectionService.resendMessage(message,delayed);
 							}
 
 							@Override
@@ -186,7 +188,7 @@ public class HttpUploadConnection implements Transferable {
 							}
 						});
 					} else {
-						mXmppConnectionService.resendMessage(message);
+						mXmppConnectionService.resendMessage(message,delayed);
 					}
 				} else {
 					fail();
