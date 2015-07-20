@@ -372,6 +372,7 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 			showBlocklist.setVisible(false);
 			showMoreInfo.setVisible(false);
 			changePassword.setVisible(false);
+			clearDevices.setVisible(false);
 		}
 		return true;
 	}
