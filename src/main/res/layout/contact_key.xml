@@ -18,7 +18,8 @@
             android:layout_alignParentLeft="true"
             android:layout_toLeftOf="@+id/tgl_trust"
             android:textSize="?attr/TextSizeBody"
-            android:typeface="monospace" />
+            android:typeface="monospace"
+            android:fontFamily="monospace"/>
 
         <TextView
             android:id="@+id/key_type"

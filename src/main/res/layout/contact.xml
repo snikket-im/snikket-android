@@ -51,6 +51,7 @@
             android:textColor="@color/black87"
             android:textSize="?attr/TextSizeHeadline"
             android:typeface="monospace"
+            android:fontFamily="monospace"
             android:visibility="gone" />
     </LinearLayout>
 
