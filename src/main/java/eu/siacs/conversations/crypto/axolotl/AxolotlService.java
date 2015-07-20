@@ -281,6 +281,10 @@ public class AxolotlService {
 			return mXmppConnectionService.databaseBackend.loadIdentityKeys(account, bareJid, Trust.UNDECIDED);
 		}
 
+		public long getContactNumTrustedKeys(String bareJid) {
+			return mXmppConnectionService.databaseBackend.numTrustedKeys(account, bareJid);
+		}
+
 		// --------------------------------------
 		// SessionStore
 		// --------------------------------------
@@ -670,6 +674,10 @@ public class AxolotlService {
 
 	public Set<IdentityKey> getPendingKeys(Contact contact) {
 		return axolotlStore.getContactUndecidedKeys(contact.getJid().toBareJid().toString());
+	}
+
+	public long getNumTrustedKeys(Contact contact) {
+		return axolotlStore.getContactNumTrustedKeys(contact.getJid().toBareJid().toString());
 	}
 
 	private AxolotlAddress getAddressForJid(Jid jid) {

@@ -3,6 +3,7 @@ package eu.siacs.conversations.persistance;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteCantOpenDatabaseException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -856,6 +857,19 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		cursor.close();
 
 		return identityKeys;
+	}
+
+	public long numTrustedKeys(Account account, String name) {
+		SQLiteDatabase db = getReadableDatabase();
+		String[] args = {
+				account.getUuid(),
+				name
+		};
+		return DatabaseUtils.queryNumEntries(db, AxolotlService.SQLiteAxolotlStore.IDENTITIES_TABLENAME,
+				AxolotlService.SQLiteAxolotlStore.ACCOUNT + " = ?"
+				+ " AND " + AxolotlService.SQLiteAxolotlStore.NAME + " = ?",
+				args
+		);
 	}
 
 	private void storeIdentityKey(Account account, String name, boolean own, String fingerprint, String base64Serialized) {

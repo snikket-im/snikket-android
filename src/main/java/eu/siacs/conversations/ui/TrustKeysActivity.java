@@ -27,6 +27,8 @@ import eu.siacs.conversations.xmpp.jid.Jid;
 public class TrustKeysActivity extends XmppActivity implements OnNewKeysAvailable {
 	private Jid accountJid;
 	private Jid contactJid;
+	private boolean hasOtherTrustedKeys = false;
+	private boolean hasPendingFetches = false;
 
 	private Contact contact;
 	private TextView ownKeysTitle;
@@ -153,6 +155,17 @@ public class TrustKeysActivity extends XmppActivity implements OnNewKeysAvailabl
 			foreignKeysTitle.setText(contactJid.toString());
 			foreignKeysCard.setVisibility(View.VISIBLE);
 		}
+		if(hasPendingFetches) {
+			setFetching();
+			lock();
+		} else {
+			if (!hasOtherTrustedKeys && !foreignKeysToTrust.values().contains(true)){
+				lock();
+			} else {
+				unlock();
+			}
+			setDone();
+		}
 	}
 
 	private void getFingerprints(final Account account) {
@@ -183,9 +196,12 @@ public class TrustKeysActivity extends XmppActivity implements OnNewKeysAvailabl
 			foreignKeysToTrust.clear();
 			getFingerprints(account);
 
+			if(account.getAxolotlService().getNumTrustedKeys(contact) > 0) {
+				hasOtherTrustedKeys = true;
+			}
 			Conversation conversation = xmppConnectionService.findOrCreateConversation(account, contactJid, false);
 			if(account.getAxolotlService().hasPendingKeyFetches(conversation)) {
-				lock();
+				hasPendingFetches = true;
 			}
 
 			populateView();
@@ -199,7 +215,7 @@ public class TrustKeysActivity extends XmppActivity implements OnNewKeysAvailabl
 			public void run() {
 				final Account account = xmppConnectionService
 						.findAccountByJid(accountJid);
-				unlock();
+				hasPendingFetches = false;
 				getFingerprints(account);
 				refreshUi();
 			}
@@ -221,13 +237,19 @@ public class TrustKeysActivity extends XmppActivity implements OnNewKeysAvailabl
 
 	private void unlock() {
 		mSaveButton.setEnabled(true);
-		mSaveButton.setText(getString(R.string.done));
 		mSaveButton.setTextColor(getPrimaryTextColor());
 	}
 
 	private void lock() {
 		mSaveButton.setEnabled(false);
-		mSaveButton.setText(getString(R.string.fetching_keys));
 		mSaveButton.setTextColor(getSecondaryTextColor());
+	}
+
+	private void setDone() {
+		mSaveButton.setText(getString(R.string.done));
+	}
+
+	private void setFetching() {
+		mSaveButton.setText(getString(R.string.fetching_keys));
 	}
 }
