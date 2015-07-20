@@ -228,4 +228,8 @@ public class ShareWithActivity extends XmppActivity {
 
 	}
 
+	public void refreshUiReal() {
+		//nothing to do. This Activity doesn't implement any listeners
+	}
+
 }

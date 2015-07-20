@@ -151,34 +151,33 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 			finish();
 		}
 	};
+
+	public void refreshUiReal() {
+		invalidateOptionsMenu();
+		if (mAccount != null
+				&& mAccount.getStatus() != Account.State.ONLINE
+				&& mFetchingAvatar) {
+			startActivity(new Intent(getApplicationContext(),
+						ManageAccountActivity.class));
+			finish();
+		} else if (jidToEdit == null && mAccount != null
+				&& mAccount.getStatus() == Account.State.ONLINE) {
+			if (!mFetchingAvatar) {
+				mFetchingAvatar = true;
+				xmppConnectionService.checkForAvatar(mAccount,
+						mAvatarFetchCallback);
+			}
+		} else {
+			updateSaveButton();
+		}
+		if (mAccount != null) {
+			updateAccountInformation(false);
+		}
+	}
+
 	@Override
 	public void onAccountUpdate() {
-		runOnUiThread(new Runnable() {
-
-			@Override
-			public void run() {
-				invalidateOptionsMenu();
-				if (mAccount != null
-						&& mAccount.getStatus() != Account.State.ONLINE
-						&& mFetchingAvatar) {
-					startActivity(new Intent(getApplicationContext(),
-								ManageAccountActivity.class));
-					finish();
-				} else if (jidToEdit == null && mAccount != null
-						&& mAccount.getStatus() == Account.State.ONLINE) {
-					if (!mFetchingAvatar) {
-						mFetchingAvatar = true;
-						xmppConnectionService.checkForAvatar(mAccount,
-								mAvatarFetchCallback);
-					}
-				} else {
-					updateSaveButton();
-				}
-				if (mAccount != null) {
-					updateAccountInformation(false);
-				}
-			}
-		});
+		refreshUi();
 	}
 	private final UiCallback<Avatar> mAvatarFetchCallback = new UiCallback<Avatar>() {
 

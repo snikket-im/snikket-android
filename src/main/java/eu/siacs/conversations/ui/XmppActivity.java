@@ -125,7 +125,7 @@ public abstract class XmppActivity extends Activity {
 	protected ConferenceInvite mPendingConferenceInvite = null;
 
 
-	protected void refreshUi() {
+	protected final void refreshUi() {
 		final long diff = SystemClock.elapsedRealtime() - mLastUiRefresh;
 		if (diff > Config.REFRESH_UI_INTERVAL) {
 			mRefreshUiHandler.removeCallbacks(mRefreshUiRunnable);
@@ -137,9 +137,7 @@ public abstract class XmppActivity extends Activity {
 		}
 	}
 
-	protected void refreshUiReal() {
-
-	};
+	abstract protected void refreshUiReal();
 
 	protected interface OnValueEdited {
 		public void onValueEdited(String value);

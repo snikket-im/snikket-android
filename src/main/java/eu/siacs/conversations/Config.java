@@ -24,7 +24,6 @@ public final class Config {
 	public static final int PAGE_SIZE = 50;
 	public static final int MAX_NUM_PAGES = 3;
 
-	public static final int PROGRESS_UI_UPDATE_INTERVAL = 750;
 	public static final int REFRESH_UI_INTERVAL = 500;
 
 	public static final boolean NO_PROXY_LOOKUP = false; //useful to debug ibb

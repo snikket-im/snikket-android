@@ -210,16 +210,10 @@ public class TrustKeysActivity extends XmppActivity implements OnNewKeysAvailabl
 
 	@Override
 	public void onNewKeysAvailable() {
-		runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				final Account account = xmppConnectionService
-						.findAccountByJid(accountJid);
-				hasPendingFetches = false;
-				getFingerprints(account);
-				refreshUi();
-			}
-		});
+		final Account account = xmppConnectionService.findAccountByJid(accountJid);
+		hasPendingFetches = false;
+		getFingerprints(account);
+		refreshUi();
 	}
 
 	private void commitTrusts() {

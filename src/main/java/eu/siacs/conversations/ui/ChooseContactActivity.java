@@ -149,4 +149,8 @@ public class ChooseContactActivity extends AbstractSearchableListItemActivity {
 		return result.toArray(new String[result.size()]);
 	}
 
+
+	public void refreshUiReal() {
+		//nothing to do. This Activity doesn't implement any listeners
+	}
 }

@@ -244,10 +244,7 @@ public class HttpDownloadConnection implements Transferable {
 
 	public void updateProgress(int i) {
 		this.mProgress = i;
-		if (SystemClock.elapsedRealtime() - this.mLastGuiRefresh > Config.PROGRESS_UI_UPDATE_INTERVAL) {
-			this.mLastGuiRefresh = SystemClock.elapsedRealtime();
-			mXmppConnectionService.updateConversationUi();
-		}
+		mXmppConnectionService.updateConversationUi();
 	}
 
 	@Override

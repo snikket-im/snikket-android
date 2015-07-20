@@ -60,7 +60,6 @@ public class JingleConnection implements Transferable {
 	private String contentCreator;
 
 	private int mProgress = 0;
-	private long mLastGuiRefresh = 0;
 
 	private boolean receivedCandidate = false;
 	private boolean sentCandidate = false;
@@ -902,10 +901,7 @@ public class JingleConnection implements Transferable {
 
 	public void updateProgress(int i) {
 		this.mProgress = i;
-		if (SystemClock.elapsedRealtime() - this.mLastGuiRefresh > Config.PROGRESS_UI_UPDATE_INTERVAL) {
-			this.mLastGuiRefresh = SystemClock.elapsedRealtime();
-			mXmppConnectionService.updateConversationUi();
-		}
+		mXmppConnectionService.updateConversationUi();
 	}
 
 	interface OnProxyActivated {

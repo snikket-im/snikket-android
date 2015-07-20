@@ -103,4 +103,8 @@ public class ChangePasswordActivity extends XmppActivity implements XmppConnecti
 		});
 
 	}
+
+	public void refreshUiReal() {
+
+	}
 }

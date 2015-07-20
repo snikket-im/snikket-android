@@ -1290,6 +1290,7 @@ public class ConversationActivity extends XmppActivity
 			ConversationActivity.this.mConversationFragment.updateMessages();
 			updateActionBarTitle();
 		}
+		invalidateOptionsMenu();
 	}
 
 	@Override
@@ -1310,12 +1311,6 @@ public class ConversationActivity extends XmppActivity
 	@Override
 	public void OnUpdateBlocklist(Status status) {
 		this.refreshUi();
-		runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				invalidateOptionsMenu();
-			}
-		});
 	}
 
 	public void unblockConversation(final Blockable conversation) {

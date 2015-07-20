@@ -159,6 +159,11 @@ public class ContactDetailsActivity extends XmppActivity implements OnAccountUpd
 	}
 
 	@Override
+	public void OnUpdateBlocklist(final Status status) {
+		refreshUi();
+	}
+
+	@Override
 	protected void refreshUiReal() {
 		invalidateOptionsMenu();
 		populateView();
@@ -463,17 +468,5 @@ public class ContactDetailsActivity extends XmppActivity implements OnAccountUpd
 			this.contact = account.getRoster().getContact(contactJid);
 			populateView();
 		}
-	}
-
-	@Override
-	public void OnUpdateBlocklist(final Status status) {
-		runOnUiThread(new Runnable() {
-
-			@Override
-			public void run() {
-				invalidateOptionsMenu();
-				populateView();
-			}
-		});
 	}
 }

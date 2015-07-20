@@ -251,4 +251,8 @@ public class PublishProfilePictureActivity extends XmppActivity {
 		this.publishButton.setTextColor(getSecondaryTextColor());
 	}
 
+	public void refreshUiReal() {
+		//nothing to do. This Activity doesn't implement any listeners
+	}
+
 }
