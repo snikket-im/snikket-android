@@ -38,6 +38,7 @@ import de.timroes.android.listview.EnhancedListView;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
+import eu.siacs.conversations.crypto.axolotl.AxolotlService.SQLiteAxolotlStore.Trust;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Blockable;
 import eu.siacs.conversations.entities.Contact;
@@ -1255,13 +1256,17 @@ public class ConversationActivity extends XmppActivity
 
 	protected boolean trustKeysIfNeeded(int requestCode, int attachmentChoice) {
 		AxolotlService axolotlService = mSelectedConversation.getAccount().getAxolotlService();
-		if(!axolotlService.getPendingKeys(mSelectedConversation.getContact()).isEmpty()
-				|| !axolotlService.findDevicesWithoutSession(mSelectedConversation).isEmpty()) {
+		boolean hasPendingKeys = !axolotlService.getKeysWithTrust(Trust.UNDECIDED,
+				mSelectedConversation.getContact()).isEmpty()
+				|| !axolotlService.findDevicesWithoutSession(mSelectedConversation).isEmpty();
+		boolean hasNoTrustedKeys = axolotlService.getNumTrustedKeys(mSelectedConversation.getContact()) == 0;
+		if( hasPendingKeys || hasNoTrustedKeys) {
 			axolotlService.createSessionsIfNeeded(mSelectedConversation, false);
 			Intent intent = new Intent(getApplicationContext(), TrustKeysActivity.class);
 			intent.putExtra("contact", mSelectedConversation.getContact().getJid().toBareJid().toString());
 			intent.putExtra("account", mSelectedConversation.getAccount().getJid().toBareJid().toString());
 			intent.putExtra("choice", attachmentChoice);
+			intent.putExtra("has_no_trusted", hasNoTrustedKeys);
 			startActivityForResult(intent, requestCode);
 			return true;
 		} else {

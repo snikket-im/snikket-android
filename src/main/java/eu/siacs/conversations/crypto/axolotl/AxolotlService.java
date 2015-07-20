@@ -278,8 +278,8 @@ public class AxolotlService {
 			mXmppConnectionService.databaseBackend.setIdentityKeyTrust(account, fingerprint, trust);
 		}
 
-		public Set<IdentityKey> getContactUndecidedKeys(String bareJid) {
-			return mXmppConnectionService.databaseBackend.loadIdentityKeys(account, bareJid, Trust.UNDECIDED);
+		public Set<IdentityKey> getContactUndecidedKeys(String bareJid, Trust trust) {
+			return mXmppConnectionService.databaseBackend.loadIdentityKeys(account, bareJid, trust);
 		}
 
 		public long getContactNumTrustedKeys(String bareJid) {
@@ -692,12 +692,12 @@ public class AxolotlService {
 		return axolotlStore.getIdentityKeyPair().getPublicKey();
 	}
 
-	public Set<IdentityKey> getPendingKeys() {
-		return axolotlStore.getContactUndecidedKeys(account.getJid().toBareJid().toString());
+	public Set<IdentityKey> getKeysWithTrust(SQLiteAxolotlStore.Trust trust) {
+		return axolotlStore.getContactUndecidedKeys(account.getJid().toBareJid().toString(), trust);
 	}
 
-	public Set<IdentityKey> getPendingKeys(Contact contact) {
-		return axolotlStore.getContactUndecidedKeys(contact.getJid().toBareJid().toString());
+	public Set<IdentityKey> getKeysWithTrust(SQLiteAxolotlStore.Trust trust, Contact contact) {
+		return axolotlStore.getContactUndecidedKeys(contact.getJid().toBareJid().toString(), trust);
 	}
 
 	public long getNumTrustedKeys(Contact contact) {

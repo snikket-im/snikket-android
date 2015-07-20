@@ -29,6 +29,7 @@ public class TrustKeysActivity extends XmppActivity implements OnNewKeysAvailabl
 	private Jid contactJid;
 	private boolean hasOtherTrustedKeys = false;
 	private boolean hasPendingFetches = false;
+	private boolean hasNoTrustedKeys = true;
 
 	private Contact contact;
 	private TextView ownKeysTitle;
@@ -89,6 +90,7 @@ public class TrustKeysActivity extends XmppActivity implements OnNewKeysAvailabl
 			this.contactJid = Jid.fromString(getIntent().getExtras().getString("contact"));
 		} catch (final InvalidJidException ignored) {
 		}
+		hasNoTrustedKeys = getIntent().getBooleanExtra("has_no_trusted", false);
 
 		ownKeysTitle = (TextView) findViewById(R.id.own_keys_title);
 		ownKeys = (LinearLayout) findViewById(R.id.own_keys_details);
@@ -169,13 +171,17 @@ public class TrustKeysActivity extends XmppActivity implements OnNewKeysAvailabl
 	}
 
 	private void getFingerprints(final Account account) {
-		Set<IdentityKey> ownKeysSet = account.getAxolotlService().getPendingKeys();
+		Set<IdentityKey> ownKeysSet = account.getAxolotlService().getKeysWithTrust(Trust.UNDECIDED);
+		Set<IdentityKey> foreignKeysSet = account.getAxolotlService().getKeysWithTrust(Trust.UNDECIDED, contact);
+		if (hasNoTrustedKeys) {
+			ownKeysSet.addAll(account.getAxolotlService().getKeysWithTrust(Trust.UNTRUSTED));
+			foreignKeysSet.addAll(account.getAxolotlService().getKeysWithTrust(Trust.UNTRUSTED, contact));
+		}
 		for(final IdentityKey identityKey : ownKeysSet) {
 			if(!ownKeysToTrust.containsKey(identityKey)) {
 				ownKeysToTrust.put(identityKey, false);
 			}
 		}
-		Set<IdentityKey> foreignKeysSet = account.getAxolotlService().getPendingKeys(contact);
 		for(final IdentityKey identityKey : foreignKeysSet) {
 			if(!foreignKeysToTrust.containsKey(identityKey)) {
 				foreignKeysToTrust.put(identityKey, false);
