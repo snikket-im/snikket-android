@@ -1,9 +1,10 @@
 package eu.siacs.conversations.services;
 
-import eu.siacs.conversations.persistance.DatabaseBackend;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+
+import eu.siacs.conversations.persistance.DatabaseBackend;
 
 public class EventReceiver extends BroadcastReceiver {
 	@Override

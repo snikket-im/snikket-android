@@ -11,7 +11,6 @@ import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.jid.Jid;
-import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
 
 public abstract class AbstractParser {
 

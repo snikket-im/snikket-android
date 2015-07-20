@@ -29,12 +29,12 @@ import android.widget.PopupMenu.OnMenuItemClickListener;
 import android.widget.Toast;
 
 import net.java.otr4j.session.SessionStatus;
-import de.timroes.android.listview.EnhancedListView;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import de.timroes.android.listview.EnhancedListView;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;

@@ -2,7 +2,6 @@ package eu.siacs.conversations.crypto.axolotl;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Base64;
 import android.util.Log;
 
 import org.whispersystems.libaxolotl.AxolotlAddress;
@@ -31,7 +30,6 @@ import org.whispersystems.libaxolotl.state.SessionRecord;
 import org.whispersystems.libaxolotl.state.SignedPreKeyRecord;
 import org.whispersystems.libaxolotl.util.KeyHelper;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;

@@ -2,7 +2,6 @@ package eu.siacs.conversations.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -12,14 +11,11 @@ import android.widget.TextView;
 
 import org.whispersystems.libaxolotl.IdentityKey;
 
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
-import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService.SQLiteAxolotlStore.Trust;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;

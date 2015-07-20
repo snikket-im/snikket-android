@@ -1,9 +1,9 @@
 package eu.siacs.conversations.xmpp.pep;
 
+import android.util.Base64;
+
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.jid.Jid;
-
-import android.util.Base64;
 
 public class Avatar {
 

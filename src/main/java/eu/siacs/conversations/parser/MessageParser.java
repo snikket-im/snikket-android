@@ -6,7 +6,6 @@ import android.util.Pair;
 import net.java.otr4j.session.Session;
 import net.java.otr4j.session.SessionStatus;
 
-import java.util.List;
 import java.util.Set;
 
 import eu.siacs.conversations.Config;

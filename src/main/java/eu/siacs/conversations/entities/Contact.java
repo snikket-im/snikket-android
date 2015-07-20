@@ -2,20 +2,15 @@ package eu.siacs.conversations.entities;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.util.Base64;
-import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.whispersystems.libaxolotl.IdentityKey;
-import org.whispersystems.libaxolotl.InvalidKeyException;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import eu.siacs.conversations.Config;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;

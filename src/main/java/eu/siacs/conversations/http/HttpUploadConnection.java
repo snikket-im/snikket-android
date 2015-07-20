@@ -14,9 +14,9 @@ import javax.net.ssl.HttpsURLConnection;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
-import eu.siacs.conversations.entities.Transferable;
 import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.entities.Message;
+import eu.siacs.conversations.entities.Transferable;
 import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.ui.UiCallback;

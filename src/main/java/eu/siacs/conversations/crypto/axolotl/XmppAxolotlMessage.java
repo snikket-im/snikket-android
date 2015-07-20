@@ -3,8 +3,8 @@ package eu.siacs.conversations.crypto.axolotl;
 import android.util.Base64;
 
 import java.security.InvalidAlgorithmParameterException;
-import java.security.NoSuchAlgorithmException;
 import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -17,7 +17,6 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
-import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.jid.Jid;
 

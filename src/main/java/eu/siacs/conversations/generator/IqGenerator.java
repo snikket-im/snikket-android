@@ -18,7 +18,6 @@ import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.services.MessageArchiveService;
 import eu.siacs.conversations.services.XmppConnectionService;
-import eu.siacs.conversations.utils.PhoneHelper;
 import eu.siacs.conversations.utils.Xmlns;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.forms.Data;

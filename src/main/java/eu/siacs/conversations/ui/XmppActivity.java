@@ -56,7 +56,6 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
-import com.kyleduo.switchbutton.SwitchButton;
 
 import net.java.otr4j.session.SessionID;
 

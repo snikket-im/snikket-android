@@ -2,17 +2,16 @@ package eu.siacs.conversations.generator;
 
 import android.util.Log;
 
+import net.java.otr4j.OtrException;
+import net.java.otr4j.session.Session;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import net.java.otr4j.OtrException;
-import net.java.otr4j.session.Session;
-
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
-import eu.siacs.conversations.crypto.axolotl.NoSessionsCreatedException;
 import eu.siacs.conversations.crypto.axolotl.XmppAxolotlMessage;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Conversation;

@@ -2,8 +2,6 @@ package eu.siacs.conversations.xmpp.stanzas;
 
 import android.util.Pair;
 
-import java.text.ParseException;
-
 import eu.siacs.conversations.parser.AbstractParser;
 import eu.siacs.conversations.xml.Element;
 

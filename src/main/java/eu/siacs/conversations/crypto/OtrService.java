@@ -1,5 +1,20 @@
 package eu.siacs.conversations.crypto;
 
+import android.util.Log;
+
+import net.java.otr4j.OtrEngineHost;
+import net.java.otr4j.OtrException;
+import net.java.otr4j.OtrPolicy;
+import net.java.otr4j.OtrPolicyImpl;
+import net.java.otr4j.crypto.OtrCryptoEngineImpl;
+import net.java.otr4j.crypto.OtrCryptoException;
+import net.java.otr4j.session.FragmenterInstructions;
+import net.java.otr4j.session.InstanceTag;
+import net.java.otr4j.session.SessionID;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.math.BigInteger;
 import java.security.KeyFactory;
 import java.security.KeyPair;
@@ -11,30 +26,14 @@ import java.security.spec.DSAPrivateKeySpec;
 import java.security.spec.DSAPublicKeySpec;
 import java.security.spec.InvalidKeySpecException;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import android.util.Log;
-
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.services.XmppConnectionService;
-import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
 import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
-
-import net.java.otr4j.OtrEngineHost;
-import net.java.otr4j.OtrException;
-import net.java.otr4j.OtrPolicy;
-import net.java.otr4j.OtrPolicyImpl;
-import net.java.otr4j.crypto.OtrCryptoEngineImpl;
-import net.java.otr4j.crypto.OtrCryptoException;
-import net.java.otr4j.session.InstanceTag;
-import net.java.otr4j.session.SessionID;
-import net.java.otr4j.session.FragmenterInstructions;
 
 public class OtrService extends OtrCryptoEngineImpl implements OtrEngineHost {
 

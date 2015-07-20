@@ -1,14 +1,14 @@
 package eu.siacs.conversations.xmpp.jingle;
 
+import android.util.Base64;
+import android.util.Log;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
-
-import android.util.Base64;
-import android.util.Log;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;

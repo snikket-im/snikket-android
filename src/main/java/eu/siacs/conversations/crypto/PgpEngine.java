@@ -1,5 +1,13 @@
 package eu.siacs.conversations.crypto;
 
+import android.app.PendingIntent;
+import android.content.Intent;
+import android.net.Uri;
+
+import org.openintents.openpgp.OpenPgpSignatureResult;
+import org.openintents.openpgp.util.OpenPgpApi;
+import org.openintents.openpgp.util.OpenPgpApi.IOpenPgpCallback;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
@@ -8,10 +16,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
-
-import org.openintents.openpgp.OpenPgpSignatureResult;
-import org.openintents.openpgp.util.OpenPgpApi;
-import org.openintents.openpgp.util.OpenPgpApi.IOpenPgpCallback;
 
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
@@ -22,9 +26,6 @@ import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.http.HttpConnectionManager;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.ui.UiCallback;
-import android.app.PendingIntent;
-import android.content.Intent;
-import android.net.Uri;
 
 public class PgpEngine {
 	private OpenPgpApi api;
