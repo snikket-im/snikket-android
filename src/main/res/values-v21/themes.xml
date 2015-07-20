@@ -6,6 +6,9 @@
         <item name="android:colorPrimaryDark">@color/green700</item>
         <item name="android:colorAccent">@color/accent</item>
 
+        <item name="android:windowActionModeOverlay">true</item>
+        <item name="android:actionModeBackground">@color/accent</item>
+
         <item name="TextSizeInfo">12sp</item>
         <item name="TextSizeBody">14sp</item>
         <item name="TextSizeHeadline">20sp</item>
