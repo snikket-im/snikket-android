@@ -99,10 +99,28 @@ public class AxolotlService {
 		private int currentPreKeyId = 0;
 
 		public enum Trust {
-			UNDECIDED, // 0
-			TRUSTED,
-			UNTRUSTED,
-			COMPROMISED;
+			UNDECIDED(0),
+			TRUSTED(1),
+			UNTRUSTED(2),
+			COMPROMISED(3);
+
+			private static final Map<Integer, Trust> trustsByValue = new HashMap<>();
+
+			static {
+				for (Trust trust : Trust.values()) {
+					trustsByValue.put(trust.getCode(), trust);
+				}
+			}
+
+			private final int code;
+
+			Trust(int code){
+				this.code = code;
+			}
+
+			public int getCode() {
+				return this.code;
+			}
 
 			public String toString() {
 				switch(this){
@@ -118,6 +136,10 @@ public class AxolotlService {
 
 			public static Trust fromBoolean(Boolean trusted) {
 				return trusted?TRUSTED:UNTRUSTED;
+			}
+
+			public static Trust fromCode(int code) {
+				return trustsByValue.get(code);
 			}
 		};
 

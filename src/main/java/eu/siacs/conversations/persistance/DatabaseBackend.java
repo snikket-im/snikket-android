@@ -845,7 +845,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		while(cursor.moveToNext()) {
 			if ( trust != null &&
 					cursor.getInt(cursor.getColumnIndex(AxolotlService.SQLiteAxolotlStore.TRUSTED))
-							!= trust.ordinal()) {
+							!= trust.getCode()) {
 				continue;
 			}
 			try {
@@ -864,7 +864,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		String[] args = {
 				account.getUuid(),
 				name,
-				String.valueOf(AxolotlService.SQLiteAxolotlStore.Trust.TRUSTED.ordinal())
+				String.valueOf(AxolotlService.SQLiteAxolotlStore.Trust.TRUSTED.getCode())
 		};
 		return DatabaseUtils.queryNumEntries(db, AxolotlService.SQLiteAxolotlStore.IDENTITIES_TABLENAME,
 				AxolotlService.SQLiteAxolotlStore.ACCOUNT + " = ?"
@@ -886,7 +886,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		values.put(AxolotlService.SQLiteAxolotlStore.OWN, own ? 1 : 0);
 		values.put(AxolotlService.SQLiteAxolotlStore.FINGERPRINT, fingerprint);
 		values.put(AxolotlService.SQLiteAxolotlStore.KEY, base64Serialized);
-		values.put(AxolotlService.SQLiteAxolotlStore.TRUSTED, trusted.ordinal());
+		values.put(AxolotlService.SQLiteAxolotlStore.TRUSTED, trusted.getCode());
 		db.insert(AxolotlService.SQLiteAxolotlStore.IDENTITIES_TABLENAME, null, values);
 	}
 
@@ -896,7 +896,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
 			int trustValue = cursor.getInt(cursor.getColumnIndex(AxolotlService.SQLiteAxolotlStore.TRUSTED));
-			trust = AxolotlService.SQLiteAxolotlStore.Trust.values()[trustValue];
+			trust = AxolotlService.SQLiteAxolotlStore.Trust.fromCode(trustValue);
 		}
 		cursor.close();
 		return trust;
@@ -909,7 +909,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 				fingerprint
 		};
 		ContentValues values = new ContentValues();
-		values.put(AxolotlService.SQLiteAxolotlStore.TRUSTED, trust.ordinal());
+		values.put(AxolotlService.SQLiteAxolotlStore.TRUSTED, trust.getCode());
 		int rows = db.update(AxolotlService.SQLiteAxolotlStore.IDENTITIES_TABLENAME, values,
 				AxolotlService.SQLiteAxolotlStore.ACCOUNT + " = ? AND "
 				+ AxolotlService.SQLiteAxolotlStore.FINGERPRINT + " = ? ",
