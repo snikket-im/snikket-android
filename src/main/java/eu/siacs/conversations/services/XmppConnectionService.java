@@ -52,6 +52,7 @@ import de.duenndns.ssl.MemorizingTrustManager;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.PgpEngine;
+import eu.siacs.conversations.crypto.axolotl.XmppAxolotlMessage;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Blockable;
 import eu.siacs.conversations.entities.Bookmark;
@@ -765,10 +766,12 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 							break;
 						}
 					} else {
-						packet = account.getAxolotlService().fetchPacketFromCache(message);
-						if (packet == null) {
+						XmppAxolotlMessage axolotlMessage = account.getAxolotlService().fetchAxolotlMessageFromCache(message);
+						if (axolotlMessage == null) {
 							account.getAxolotlService().prepareMessage(message,delay);
 							message.setAxolotlFingerprint(account.getAxolotlService().getOwnPublicKey().getFingerprint().replaceAll("\\s", ""));
+						} else {
+							packet = mMessageGenerator.generateAxolotlChat(message, axolotlMessage);
 						}
 					}
 					break;
@@ -839,7 +842,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 
 			@Override
 			public void onMessageFound(Message message) {
-				resendMessage(message,true);
+				resendMessage(message, true);
 			}
 		});
 	}
@@ -1851,7 +1854,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 				} else {
 					MessagePacket outPacket = mMessageGenerator.generateOtrChat(message);
 					if (outPacket != null) {
-						mMessageGenerator.addDelay(outPacket,message.getTimeSent());
+						mMessageGenerator.addDelay(outPacket, message.getTimeSent());
 						message.setStatus(Message.STATUS_SEND);
 						databaseBackend.updateMessage(message);
 						sendMessagePacket(account, outPacket);

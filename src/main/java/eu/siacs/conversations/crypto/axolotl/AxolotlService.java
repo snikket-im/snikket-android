@@ -68,7 +68,7 @@ public class AxolotlService {
 	private final SQLiteAxolotlStore axolotlStore;
 	private final SessionMap sessions;
 	private final Map<Jid, Set<Integer>> deviceIds;
-	private final Map<String, MessagePacket> messageCache;
+	private final Map<String, XmppAxolotlMessage> messageCache;
 	private final FetchStatusMap fetchStatusMap;
 	private final SerialSingleThreadExecutor executor;
 
@@ -1085,14 +1085,13 @@ public class AxolotlService {
 		executor.execute(new Runnable() {
 			@Override
 			public void run() {
-				MessagePacket packet = mXmppConnectionService.getMessageGenerator()
-						.generateAxolotlChat(message);
-				if (packet == null) {
+				XmppAxolotlMessage axolotlMessage = encrypt(message);
+				if (axolotlMessage == null) {
 					mXmppConnectionService.markMessage(message, Message.STATUS_SEND_FAILED);
 					//mXmppConnectionService.updateConversationUi();
 				} else {
 					Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account)+"Generated message, caching: " + message.getUuid());
-					messageCache.put(message.getUuid(), packet);
+					messageCache.put(message.getUuid(), axolotlMessage);
 					mXmppConnectionService.resendMessage(message,delay);
 				}
 			}
@@ -1108,15 +1107,15 @@ public class AxolotlService {
 		}
 	}
 
-	public MessagePacket fetchPacketFromCache(Message message) {
-		MessagePacket packet = messageCache.get(message.getUuid());
-		if (packet != null) {
+	public XmppAxolotlMessage fetchAxolotlMessageFromCache(Message message) {
+		XmppAxolotlMessage axolotlMessage = messageCache.get(message.getUuid());
+		if (axolotlMessage != null) {
 			Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account)+"Cache hit: " + message.getUuid());
 			messageCache.remove(message.getUuid());
 		} else {
 			Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account)+"Cache miss: " + message.getUuid());
 		}
-		return packet;
+		return axolotlMessage;
 	}
 
 	public XmppAxolotlMessage.XmppAxolotlPlaintextMessage processReceiving(XmppAxolotlMessage message) {
