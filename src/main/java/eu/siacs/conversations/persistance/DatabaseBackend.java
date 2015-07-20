@@ -289,7 +289,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 			cursor.close();
 		}
 		if (oldVersion < 15  && newVersion >= 15) {
-			recreateAxolotlDb();
+			recreateAxolotlDb(db);
 			db.execSQL("ALTER TABLE " + Message.TABLENAME + " ADD COLUMN "
 					+ Message.FINGERPRINT + " TEXT");
 		}
@@ -910,8 +910,11 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 	}
 
 	public void recreateAxolotlDb() {
+		recreateAxolotlDb(getWritableDatabase());
+	}
+
+	public void recreateAxolotlDb(SQLiteDatabase db) {
 		Log.d(Config.LOGTAG, AxolotlService.LOGPREFIX+" : "+">>> (RE)CREATING AXOLOTL DATABASE <<<");
-		SQLiteDatabase db = this.getWritableDatabase();
 		db.execSQL("DROP TABLE IF EXISTS " + AxolotlService.SQLiteAxolotlStore.SESSION_TABLENAME);
 		db.execSQL(CREATE_SESSIONS_STATEMENT);
 		db.execSQL("DROP TABLE IF EXISTS " + AxolotlService.SQLiteAxolotlStore.PREKEY_TABLENAME);
