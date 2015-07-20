@@ -1,13 +1,5 @@
 package eu.siacs.conversations.ui.adapter;
 
-import java.util.List;
-
-import eu.siacs.conversations.R;
-import eu.siacs.conversations.entities.Account;
-import eu.siacs.conversations.ui.XmppActivity;
-import eu.siacs.conversations.ui.ManageAccountActivity;
-import eu.siacs.conversations.ui.widget.Switch;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +8,14 @@ import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.util.List;
+
+import eu.siacs.conversations.R;
+import eu.siacs.conversations.entities.Account;
+import eu.siacs.conversations.ui.ManageAccountActivity;
+import eu.siacs.conversations.ui.XmppActivity;
+import eu.siacs.conversations.ui.widget.Switch;
 
 public class AccountAdapter extends ArrayAdapter<Account> {
 

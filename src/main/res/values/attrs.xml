@@ -14,6 +14,7 @@
     <attr name="icon_download" format="reference"/>
     <attr name="icon_edit" format="reference"/>
     <attr name="icon_edit_dark" format="reference"/>
+    <attr name="icon_done" format="reference"/>
     <attr name="icon_group" format="reference"/>
     <attr name="icon_new" format="reference"/>
     <attr name="icon_new_attachment" format="reference"/>

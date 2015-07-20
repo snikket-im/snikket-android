@@ -1,5 +1,6 @@
 package eu.siacs.conversations.ui;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.PendingIntent;
@@ -46,12 +47,12 @@ import eu.siacs.conversations.crypto.PgpEngine;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
-import eu.siacs.conversations.entities.Transferable;
 import eu.siacs.conversations.entities.DownloadableFile;
-import eu.siacs.conversations.entities.TransferablePlaceholder;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.entities.Presences;
+import eu.siacs.conversations.entities.Transferable;
+import eu.siacs.conversations.entities.TransferablePlaceholder;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.ui.XmppActivity.OnPresenceSelected;
 import eu.siacs.conversations.ui.XmppActivity.OnValueEdited;
@@ -303,6 +304,10 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 			sendOtrMessage(message);
 		} else if (conversation.getNextEncryption(activity.forceEncryption()) == Message.ENCRYPTION_PGP) {
 			sendPgpMessage(message);
+		} else if (conversation.getNextEncryption(activity.forceEncryption()) == Message.ENCRYPTION_AXOLOTL) {
+			if(!activity.trustKeysIfNeeded(ConversationActivity.REQUEST_TRUST_KEYS_TEXT)) {
+				sendAxolotlMessage(message);
+			}
 		} else {
 			sendPlainTextMessage(message);
 		}
@@ -322,6 +327,9 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 					break;
 				case Message.ENCRYPTION_OTR:
 					mEditMessage.setHint(getString(R.string.send_otr_message));
+					break;
+				case Message.ENCRYPTION_AXOLOTL:
+					mEditMessage.setHint(getString(R.string.send_axolotl_message));
 					break;
 				case Message.ENCRYPTION_PGP:
 					mEditMessage.setHint(getString(R.string.send_pgp_message));
@@ -1120,6 +1128,13 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 		builder.create().show();
 	}
 
+	protected void sendAxolotlMessage(final Message message) {
+		final ConversationActivity activity = (ConversationActivity) getActivity();
+		final XmppConnectionService xmppService = activity.xmppConnectionService;
+		xmppService.sendMessage(message);
+		messageSent();
+	}
+
 	protected void sendOtrMessage(final Message message) {
 		final ConversationActivity activity = (ConversationActivity) getActivity();
 		final XmppConnectionService xmppService = activity.xmppConnectionService;
@@ -1180,6 +1195,21 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 			activity.xmppConnectionService.sendChatState(conversation);
 		}
 		updateSendButton();
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode,
+	                                final Intent data) {
+		if (resultCode == Activity.RESULT_OK) {
+			if (requestCode == ConversationActivity.REQUEST_TRUST_KEYS_TEXT) {
+				final String body = mEditMessage.getText().toString();
+				Message message = new Message(conversation, body, conversation.getNextEncryption(activity.forceEncryption()));
+				sendAxolotlMessage(message);
+			} else if (requestCode == ConversationActivity.REQUEST_TRUST_KEYS_MENU) {
+				int choice = data.getIntExtra("choice", ConversationActivity.ATTACHMENT_CHOICE_INVALID);
+				activity.selectPresenceToAttachFile(choice, conversation.getNextEncryption(activity.forceEncryption()));
+			}
+		}
 	}
 
 }

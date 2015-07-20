@@ -1,12 +1,18 @@
 package eu.siacs.conversations.generator;
 
+import android.util.Log;
+
+import net.java.otr4j.OtrException;
+import net.java.otr4j.session.Session;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import net.java.otr4j.OtrException;
-import net.java.otr4j.session.Session;
+import eu.siacs.conversations.Config;
+import eu.siacs.conversations.crypto.axolotl.AxolotlService;
+import eu.siacs.conversations.crypto.axolotl.XmppAxolotlMessage;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
@@ -57,6 +63,22 @@ public class MessageGenerator extends AbstractGenerator {
 		Element delay = packet.addChild("delay", "urn:xmpp:delay");
 		Date date = new Date(timestamp);
 		delay.setAttribute("stamp", mDateFormat.format(date));
+	}
+
+	public MessagePacket generateAxolotlChat(Message message) {
+		return generateAxolotlChat(message, false);
+	}
+
+	public MessagePacket generateAxolotlChat(Message message, boolean addDelay) {
+		MessagePacket packet = preparePacket(message, addDelay);
+		AxolotlService service = message.getConversation().getAccount().getAxolotlService();
+		Log.d(Config.LOGTAG, AxolotlService.getLogprefix(message.getConversation().getAccount())+"Submitting message to axolotl service for send processing...");
+		XmppAxolotlMessage axolotlMessage = service.encrypt(message);
+		if (axolotlMessage == null) {
+			return null;
+		}
+		packet.setAxolotlMessage(axolotlMessage.toXml());
+		return packet;
 	}
 
 	public MessagePacket generateOtrChat(Message message) {

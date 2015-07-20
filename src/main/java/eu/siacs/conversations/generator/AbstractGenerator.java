@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.PhoneHelper;
 
@@ -28,7 +29,8 @@ public abstract class AbstractGenerator {
 			"urn:xmpp:avatar:metadata+notify",
 			"urn:xmpp:ping",
 			"jabber:iq:version",
-			"http://jabber.org/protocol/chatstates"};
+			"http://jabber.org/protocol/chatstates",
+			AxolotlService.PEP_DEVICE_LIST+"+notify"};
 	private final String[] MESSAGE_CONFIRMATION_FEATURES = {
 			"urn:xmpp:chat-markers:0",
 			"urn:xmpp:receipts"

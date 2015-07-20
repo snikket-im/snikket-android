@@ -1,12 +1,12 @@
 package eu.siacs.conversations.ui.adapter;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-
 import android.content.Context;
 import android.widget.ArrayAdapter;
 import android.widget.Filter;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 public class KnownHostsAdapter extends ArrayAdapter<String> {
 	private ArrayList<String> domains;

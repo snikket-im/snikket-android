@@ -1,17 +1,7 @@
 package eu.siacs.conversations.utils;
 
-import de.measite.minidns.Client;
-import de.measite.minidns.DNSMessage;
-import de.measite.minidns.Record;
-import de.measite.minidns.Record.TYPE;
-import de.measite.minidns.Record.CLASS;
-import de.measite.minidns.record.SRV;
-import de.measite.minidns.record.A;
-import de.measite.minidns.record.AAAA;
-import de.measite.minidns.record.Data;
-import de.measite.minidns.util.NameUtil;
-import eu.siacs.conversations.Config;
-import eu.siacs.conversations.xmpp.jid.Jid;
+import android.os.Bundle;
+import android.util.Log;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -22,8 +12,18 @@ import java.util.Random;
 import java.util.TreeMap;
 import java.util.regex.Pattern;
 
-import android.os.Bundle;
-import android.util.Log;
+import de.measite.minidns.Client;
+import de.measite.minidns.DNSMessage;
+import de.measite.minidns.Record;
+import de.measite.minidns.Record.CLASS;
+import de.measite.minidns.Record.TYPE;
+import de.measite.minidns.record.A;
+import de.measite.minidns.record.AAAA;
+import de.measite.minidns.record.Data;
+import de.measite.minidns.record.SRV;
+import de.measite.minidns.util.NameUtil;
+import eu.siacs.conversations.Config;
+import eu.siacs.conversations.xmpp.jid.Jid;
 
 public class DNSHelper {
 

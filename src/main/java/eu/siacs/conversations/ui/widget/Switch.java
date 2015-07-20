@@ -7,8 +7,6 @@ import android.view.ViewConfiguration;
 
 import com.kyleduo.switchbutton.SwitchButton;
 
-import eu.siacs.conversations.Config;
-
 public class Switch extends SwitchButton {
 
 	private int mTouchSlop;

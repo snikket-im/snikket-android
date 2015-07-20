@@ -6,7 +6,11 @@ import android.util.Pair;
 import net.java.otr4j.session.Session;
 import net.java.otr4j.session.SessionStatus;
 
+import java.util.Set;
+
 import eu.siacs.conversations.Config;
+import eu.siacs.conversations.crypto.axolotl.AxolotlService;
+import eu.siacs.conversations.crypto.axolotl.XmppAxolotlMessage;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
@@ -94,6 +98,20 @@ public class MessageParser extends AbstractParser implements
 		}
 	}
 
+	private Message parseAxolotlChat(Element axolotlMessage, Jid from, String id, Conversation conversation, int status) {
+		Message finishedMessage = null;
+		AxolotlService service = conversation.getAccount().getAxolotlService();
+		XmppAxolotlMessage xmppAxolotlMessage = new XmppAxolotlMessage(from.toBareJid(), axolotlMessage);
+		XmppAxolotlMessage.XmppAxolotlPlaintextMessage plaintextMessage = service.processReceiving(xmppAxolotlMessage);
+		if(plaintextMessage != null) {
+			finishedMessage = new Message(conversation, plaintextMessage.getPlaintext(), Message.ENCRYPTION_AXOLOTL, status);
+			finishedMessage.setAxolotlFingerprint(plaintextMessage.getFingerprint());
+			Log.d(Config.LOGTAG, AxolotlService.getLogprefix(finishedMessage.getConversation().getAccount())+" Received Message with session fingerprint: "+plaintextMessage.getFingerprint());
+		}
+
+		return finishedMessage;
+	}
+
 	private class Invite {
 		Jid jid;
 		String password;
@@ -170,6 +188,13 @@ public class MessageParser extends AbstractParser implements
 				mXmppConnectionService.updateConversationUi();
 				mXmppConnectionService.updateAccountUi();
 			}
+		} else if (AxolotlService.PEP_DEVICE_LIST.equals(node)) {
+			Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account)+"Received PEP device list update from "+ from + ", processing...");
+			Element item = items.findChild("item");
+			Set<Integer> deviceIds = mXmppConnectionService.getIqParser().deviceIds(item);
+			AxolotlService axolotlService = account.getAxolotlService();
+			axolotlService.registerDevices(from, deviceIds);
+			mXmppConnectionService.updateAccountUi();
 		}
 	}
 
@@ -232,8 +257,9 @@ public class MessageParser extends AbstractParser implements
 			timestamp = AbstractParser.getTimestamp(packet, System.currentTimeMillis());
 		}
 		final String body = packet.getBody();
-		final String encrypted = packet.findChildContent("x", "jabber:x:encrypted");
 		final Element mucUserElement = packet.findChild("x","http://jabber.org/protocol/muc#user");
+		final String pgpEncrypted = packet.findChildContent("x", "jabber:x:encrypted");
+		final Element axolotlEncrypted = packet.findChild("axolotl_message", AxolotlService.PEP_PREFIX);
 		int status;
 		final Jid counterpart;
 		final Jid to = packet.getTo();
@@ -261,11 +287,11 @@ public class MessageParser extends AbstractParser implements
 			return;
 		}
 
-		if (extractChatState(mXmppConnectionService.find(account,from), packet)) {
+		if (extractChatState(mXmppConnectionService.find(account, from), packet)) {
 			mXmppConnectionService.updateConversationUi();
 		}
 
-		if ((body != null || encrypted != null) && !isMucStatusMessage) {
+		if ((body != null || pgpEncrypted != null || axolotlEncrypted != null) && !isMucStatusMessage) {
 			Conversation conversation = mXmppConnectionService.findOrCreateConversation(account, counterpart.toBareJid(), isTypeGroupChat);
 			if (isTypeGroupChat) {
 				if (counterpart.getResourcepart().equals(conversation.getMucOptions().getActualNick())) {
@@ -294,8 +320,13 @@ public class MessageParser extends AbstractParser implements
 				} else {
 					message = new Message(conversation, body, Message.ENCRYPTION_NONE, status);
 				}
-			} else if (encrypted != null) {
-				message = new Message(conversation, encrypted, Message.ENCRYPTION_PGP, status);
+			} else if (pgpEncrypted != null) {
+				message = new Message(conversation, pgpEncrypted, Message.ENCRYPTION_PGP, status);
+			} else if (axolotlEncrypted != null) {
+				message = parseAxolotlChat(axolotlEncrypted, from, remoteMsgId, conversation, status);
+				if (message == null) {
+					return;
+				}
 			} else {
 				message = new Message(conversation, body, Message.ENCRYPTION_NONE, status);
 			}

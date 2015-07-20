@@ -1,12 +1,13 @@
 package eu.siacs.conversations.entities;
 
+import android.util.Log;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.URLConnection;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.Key;
@@ -21,8 +22,6 @@ import javax.crypto.spec.SecretKeySpec;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.utils.MimeUtils;
-
-import android.util.Log;
 
 public class DownloadableFile extends File {
 

@@ -3,12 +3,11 @@
     android:layout_width="wrap_content"
     android:layout_height="match_parent" >
 
-    <LinearLayout
+    <RelativeLayout
+        android:id="@+id/key_data"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_toLeftOf="@+id/button_remove"
-        android:orientation="vertical"
         android:padding="8dp" >
 
         <TextView
@@ -16,6 +15,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/black87"
+            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@+id/tgl_trust"
             android:textSize="?attr/TextSizeBody"
             android:typeface="monospace" />
 
@@ -24,18 +25,41 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/black54"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/key"
             android:textSize="?attr/TextSizeInfo"/>
-    </LinearLayout>
+
+        <TextView
+            android:id="@+id/key_trust"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/key"
+            android:visibility="gone"
+            android:textColor="@color/black54"
+            android:textSize="?attr/TextSizeInfo"/>
 
     <ImageButton
         android:id="@+id/button_remove"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
+        android:layout_toRightOf="@+id/key"
         android:layout_centerVertical="true"
         android:background="?android:selectableItemBackground"
         android:padding="@dimen/image_button_padding"
         android:src="?attr/icon_remove"
-        android:visibility="invisible" />
+        android:visibility="gone" />
 
+
+    <eu.siacs.conversations.ui.widget.Switch
+        android:id="@+id/tgl_trust"
+        android:visibility="invisible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        style="@style/MD"/>
+
+    </RelativeLayout>
 </RelativeLayout>

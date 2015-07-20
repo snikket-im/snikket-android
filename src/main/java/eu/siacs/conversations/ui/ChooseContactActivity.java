@@ -13,11 +13,11 @@ import android.widget.AbsListView.MultiChoiceModeListener;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import java.util.Set;
-import java.util.HashSet;
-import java.util.Collections;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;

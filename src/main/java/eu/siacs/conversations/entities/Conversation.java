@@ -179,13 +179,13 @@ public class Conversation extends AbstractEntity implements Blockable {
 		}
 	}
 
-	public void findUnsentMessagesWithOtrEncryption(OnMessageFound onMessageFound) {
+	public void findUnsentMessagesWithEncryption(int encryptionType, OnMessageFound onMessageFound) {
 		synchronized (this.messages) {
 			for (Message message : this.messages) {
 				if ((message.getStatus() == Message.STATUS_UNSEND || message.getStatus() == Message.STATUS_WAITING)
-						&& (message.getEncryption() == Message.ENCRYPTION_OTR)) {
+						&& (message.getEncryption() == encryptionType)) {
 					onMessageFound.onMessageFound(message);
-						}
+				}
 			}
 		}
 	}

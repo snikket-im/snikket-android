@@ -8,6 +8,7 @@ import java.net.URL;
 import java.util.Arrays;
 
 import eu.siacs.conversations.Config;
+import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.utils.GeoHelper;
 import eu.siacs.conversations.utils.MimeUtils;
 import eu.siacs.conversations.utils.UIHelper;
@@ -34,6 +35,7 @@ public class Message extends AbstractEntity {
 	public static final int ENCRYPTION_OTR = 2;
 	public static final int ENCRYPTION_DECRYPTED = 3;
 	public static final int ENCRYPTION_DECRYPTION_FAILED = 4;
+	public static final int ENCRYPTION_AXOLOTL = 5;
 
 	public static final int TYPE_TEXT = 0;
 	public static final int TYPE_IMAGE = 1;
@@ -52,6 +54,7 @@ public class Message extends AbstractEntity {
 	public static final String REMOTE_MSG_ID = "remoteMsgId";
 	public static final String SERVER_MSG_ID = "serverMsgId";
 	public static final String RELATIVE_FILE_PATH = "relativeFilePath";
+	public static final String FINGERPRINT = "axolotl_fingerprint";
 	public static final String ME_COMMAND = "/me ";
 
 
@@ -73,6 +76,7 @@ public class Message extends AbstractEntity {
 	protected Transferable transferable = null;
 	private Message mNextMessage = null;
 	private Message mPreviousMessage = null;
+	private String axolotlFingerprint = null;
 
 	private Message() {
 
@@ -94,6 +98,7 @@ public class Message extends AbstractEntity {
 				TYPE_TEXT,
 				null,
 				null,
+				null,
 				null);
 		this.conversation = conversation;
 	}
@@ -101,7 +106,7 @@ public class Message extends AbstractEntity {
 	private Message(final String uuid, final String conversationUUid, final Jid counterpart,
 					final Jid trueCounterpart, final String body, final long timeSent,
 					final int encryption, final int status, final int type, final String remoteMsgId,
-					final String relativeFilePath, final String serverMsgId) {
+					final String relativeFilePath, final String serverMsgId, final String fingerprint) {
 		this.uuid = uuid;
 		this.conversationUuid = conversationUUid;
 		this.counterpart = counterpart;
@@ -114,6 +119,7 @@ public class Message extends AbstractEntity {
 		this.remoteMsgId = remoteMsgId;
 		this.relativeFilePath = relativeFilePath;
 		this.serverMsgId = serverMsgId;
+		this.axolotlFingerprint = fingerprint;
 	}
 
 	public static Message fromCursor(Cursor cursor) {
@@ -150,7 +156,8 @@ public class Message extends AbstractEntity {
 				cursor.getInt(cursor.getColumnIndex(TYPE)),
 				cursor.getString(cursor.getColumnIndex(REMOTE_MSG_ID)),
 				cursor.getString(cursor.getColumnIndex(RELATIVE_FILE_PATH)),
-				cursor.getString(cursor.getColumnIndex(SERVER_MSG_ID)));
+				cursor.getString(cursor.getColumnIndex(SERVER_MSG_ID)),
+				cursor.getString(cursor.getColumnIndex(FINGERPRINT)));
 	}
 
 	public static Message createStatusMessage(Conversation conversation, String body) {
@@ -184,6 +191,7 @@ public class Message extends AbstractEntity {
 		values.put(REMOTE_MSG_ID, remoteMsgId);
 		values.put(RELATIVE_FILE_PATH, relativeFilePath);
 		values.put(SERVER_MSG_ID, serverMsgId);
+		values.put(FINGERPRINT, axolotlFingerprint);
 		return values;
 	}
 
@@ -391,7 +399,8 @@ public class Message extends AbstractEntity {
 						!message.getBody().startsWith(ME_COMMAND) &&
 						!this.getBody().startsWith(ME_COMMAND) &&
 						!this.bodyIsHeart() &&
-						!message.bodyIsHeart()
+						!message.bodyIsHeart() &&
+						this.isTrusted() == message.isTrusted()
 				);
 	}
 
@@ -662,5 +671,18 @@ public class Message extends AbstractEntity {
 		public long size = 0;
 		public int width = 0;
 		public int height = 0;
+	}
+
+	public void setAxolotlFingerprint(String fingerprint) {
+		this.axolotlFingerprint = fingerprint;
+	}
+
+	public String getAxolotlFingerprint() {
+		return axolotlFingerprint;
+	}
+
+	public boolean isTrusted() {
+		return conversation.getAccount().getAxolotlService().getFingerprintTrust(axolotlFingerprint)
+				== AxolotlService.SQLiteAxolotlStore.Trust.TRUSTED;
 	}
 }

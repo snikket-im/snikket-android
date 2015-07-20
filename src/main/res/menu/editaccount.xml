@@ -20,4 +20,8 @@
 	<item android:id="@+id/action_change_password_on_server"
           android:title="@string/change_password"
           android:showAsAction="never" />
+
+    <item android:id="@+id/action_clear_devices"
+          android:title="@string/clear_other_devices"
+          android:showAsAction="never"/>
 </menu>
