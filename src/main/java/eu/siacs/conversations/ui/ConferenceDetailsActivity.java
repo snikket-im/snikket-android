@@ -274,6 +274,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 					name = user.getJid().toBareJid().toString();
 				}
 				menu.setHeaderTitle(name);
+				MenuItem showContactDetails = menu.findItem(R.id.action_contact_details);
 				MenuItem startConversation = menu.findItem(R.id.start_conversation);
 				MenuItem giveMembership = menu.findItem(R.id.give_membership);
 				MenuItem removeMembership = menu.findItem(R.id.remove_membership);
@@ -282,6 +283,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 				MenuItem removeFromRoom = menu.findItem(R.id.remove_from_room);
 				MenuItem banFromConference = menu.findItem(R.id.ban_from_conference);
 				startConversation.setVisible(true);
+				showContactDetails.setVisible(true);
 				if (self.getAffiliation().ranks(MucOptions.Affiliation.ADMIN) &&
 						self.getAffiliation().outranks(user.getAffiliation())) {
 					if (mAdvancedMode) {
@@ -309,6 +311,9 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
+			case R.id.action_contact_details:
+				switchToContactDetails(mSelectedUser.getContact());
+				return true;
 			case R.id.start_conversation:
 				startConversation(mSelectedUser);
 				return true;
