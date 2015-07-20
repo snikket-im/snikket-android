@@ -100,7 +100,8 @@ public class AxolotlService {
 		public enum Trust {
 			UNDECIDED, // 0
 			TRUSTED,
-			UNTRUSTED;
+			UNTRUSTED,
+			COMPROMISED;
 
 			public String toString() {
 				switch(this){
@@ -514,41 +515,64 @@ public class AxolotlService {
 			return fingerprint;
 		}
 
+		private SQLiteAxolotlStore.Trust getTrust() {
+			return sqLiteAxolotlStore.getFingerprintTrust(fingerprint);
+		}
+
+		@Nullable
 		public byte[] processReceiving(XmppAxolotlMessage.XmppAxolotlMessageHeader incomingHeader) {
 			byte[] plaintext = null;
-			try {
-				try {
-					PreKeyWhisperMessage message = new PreKeyWhisperMessage(incomingHeader.getContents());
-					Log.i(Config.LOGTAG, AxolotlService.getLogprefix(account)+"PreKeyWhisperMessage received, new session ID:" + message.getSignedPreKeyId() + "/" + message.getPreKeyId());
-					String fingerprint = message.getIdentityKey().getFingerprint().replaceAll("\\s", "");
-					if (this.fingerprint != null && !this.fingerprint.equals(fingerprint)) {
-						Log.e(Config.LOGTAG, AxolotlService.getLogprefix(account)+"Had session with fingerprint "+ this.fingerprint+", received message with fingerprint "+fingerprint);
-					} else {
-						this.fingerprint = fingerprint;
-						plaintext = cipher.decrypt(message);
-						if (message.getPreKeyId().isPresent()) {
-							preKeyId = message.getPreKeyId().get();
+			switch (getTrust()) {
+				case UNDECIDED:
+				case TRUSTED:
+					try {
+						try {
+							PreKeyWhisperMessage message = new PreKeyWhisperMessage(incomingHeader.getContents());
+							Log.i(Config.LOGTAG, AxolotlService.getLogprefix(account)+"PreKeyWhisperMessage received, new session ID:" + message.getSignedPreKeyId() + "/" + message.getPreKeyId());
+							String fingerprint = message.getIdentityKey().getFingerprint().replaceAll("\\s", "");
+							if (this.fingerprint != null && !this.fingerprint.equals(fingerprint)) {
+								Log.e(Config.LOGTAG, AxolotlService.getLogprefix(account)+"Had session with fingerprint "+ this.fingerprint+", received message with fingerprint "+fingerprint);
+							} else {
+								this.fingerprint = fingerprint;
+								plaintext = cipher.decrypt(message);
+								if (message.getPreKeyId().isPresent()) {
+									preKeyId = message.getPreKeyId().get();
+								}
+							}
+						} catch (InvalidMessageException | InvalidVersionException e) {
+							Log.i(Config.LOGTAG, AxolotlService.getLogprefix(account)+"WhisperMessage received");
+							WhisperMessage message = new WhisperMessage(incomingHeader.getContents());
+							plaintext = cipher.decrypt(message);
+						} catch (InvalidKeyException | InvalidKeyIdException | UntrustedIdentityException e) {
+							Log.w(Config.LOGTAG, AxolotlService.getLogprefix(account)+"Error decrypting axolotl header, "+e.getClass().getName()+": " + e.getMessage());
 						}
+					} catch (LegacyMessageException | InvalidMessageException | DuplicateMessageException | NoSessionException  e) {
+						Log.w(Config.LOGTAG, AxolotlService.getLogprefix(account)+"Error decrypting axolotl header, "+e.getClass().getName()+": " + e.getMessage());
 					}
-				} catch (InvalidMessageException | InvalidVersionException e) {
-					Log.i(Config.LOGTAG, AxolotlService.getLogprefix(account)+"WhisperMessage received");
-					WhisperMessage message = new WhisperMessage(incomingHeader.getContents());
-					plaintext = cipher.decrypt(message);
-				} catch (InvalidKeyException | InvalidKeyIdException | UntrustedIdentityException e) {
-					Log.w(Config.LOGTAG, AxolotlService.getLogprefix(account)+"Error decrypting axolotl header, "+e.getClass().getName()+": " + e.getMessage());
-				}
-			} catch (LegacyMessageException | InvalidMessageException | DuplicateMessageException | NoSessionException  e) {
-				Log.w(Config.LOGTAG, AxolotlService.getLogprefix(account)+"Error decrypting axolotl header, "+e.getClass().getName()+": " + e.getMessage());
+
+					break;
+
+				case COMPROMISED:
+				case UNTRUSTED:
+				default:
+					// ignore
+					break;
 			}
 			return plaintext;
 		}
 
-		public XmppAxolotlMessage.XmppAxolotlMessageHeader processSending(byte[] outgoingMessage) {
-			CiphertextMessage ciphertextMessage = cipher.encrypt(outgoingMessage);
-			XmppAxolotlMessage.XmppAxolotlMessageHeader header =
-					new XmppAxolotlMessage.XmppAxolotlMessageHeader(remoteAddress.getDeviceId(),
-							ciphertextMessage.serialize());
-			return header;
+		@Nullable
+		public XmppAxolotlMessage.XmppAxolotlMessageHeader processSending(@NonNull byte[] outgoingMessage) {
+			SQLiteAxolotlStore.Trust trust = getTrust();
+			if (trust == SQLiteAxolotlStore.Trust.TRUSTED) {
+				CiphertextMessage ciphertextMessage = cipher.encrypt(outgoingMessage);
+				XmppAxolotlMessage.XmppAxolotlMessageHeader header =
+						new XmppAxolotlMessage.XmppAxolotlMessageHeader(remoteAddress.getDeviceId(),
+								ciphertextMessage.serialize());
+				return header;
+			} else {
+				return null;
+			}
 		}
 	}
 
@@ -740,6 +764,10 @@ public class AxolotlService {
 				// TODO: implement this!
 			}
 		});
+	}
+
+	public void purgeKey(IdentityKey identityKey) {
+		axolotlStore.setFingerprintTrust(identityKey.getFingerprint().replaceAll("\\s",""), SQLiteAxolotlStore.Trust.COMPROMISED);
 	}
 
 	public void publishOwnDeviceIdIfNeeded() {

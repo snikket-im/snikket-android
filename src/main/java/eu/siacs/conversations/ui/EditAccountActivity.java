@@ -566,8 +566,7 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 				if(ownKey.equals(identityKey)) {
 					continue;
 				}
-				hasKeys = true;
-				addFingerprintRow(keys, mAccount, identityKey);
+				hasKeys |= addFingerprintRow(keys, mAccount, identityKey);
 			}
 			if (hasKeys) {
 				keysCard.setVisibility(View.VISIBLE);

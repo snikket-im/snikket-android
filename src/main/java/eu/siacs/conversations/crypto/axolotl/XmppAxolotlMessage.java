@@ -1,5 +1,6 @@
 package eu.siacs.conversations.crypto.axolotl;
 
+import android.support.annotation.Nullable;
 import android.util.Base64;
 
 import java.security.InvalidAlgorithmParameterException;
@@ -145,8 +146,10 @@ public class XmppAxolotlMessage {
 		return headers;
 	}
 
-	public void addHeader(XmppAxolotlMessageHeader header) {
-		headers.add(header);
+	public void addHeader(@Nullable XmppAxolotlMessageHeader header) {
+		if (header != null) {
+			headers.add(header);
+		}
 	}
 
 	public byte[] getInnerKey(){

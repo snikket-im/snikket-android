@@ -393,6 +393,9 @@
 	<string name="wipe_axolotl_pep">Wipe other devices from PEP</string>
 	<string name="clear_other_devices">Clear devices</string>
 	<string name="clear_other_devices_desc">Are you sure you want to clear all other devices from the axolotl announcement? The next time your devices connect, they will reannounce themselves, but they might not receive messages sent in the meantime.</string>
+	<string name="purge_key">Purge key</string>
+	<string name="purge_key_desc_part1">Are you sure you want to purge this key?</string>
+	<string name="purge_key_desc_part2">It will irreversibly be considered compromised, and you can never build a session with it again.</string>
 	<string name="fetching_history_from_server">Fetching history from server</string>
 	<string name="no_more_history_on_server">No more history on server</string>
 	<string name="updating">Updating…</string>

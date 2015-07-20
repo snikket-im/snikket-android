@@ -384,8 +384,7 @@ public class ContactDetailsActivity extends XmppActivity implements OnAccountUpd
 		}
 		for(final IdentityKey identityKey : xmppConnectionService.databaseBackend.loadIdentityKeys(
 				contact.getAccount(), contact.getJid().toBareJid().toString())) {
-			hasKeys = true;
-			addFingerprintRow(keys, contact.getAccount(), identityKey);
+			hasKeys |= addFingerprintRow(keys, contact.getAccount(), identityKey);
 		}
 		if (contact.getPgpKeyId() != 0) {
 			hasKeys = true;
