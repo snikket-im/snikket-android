@@ -863,11 +863,13 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		SQLiteDatabase db = getReadableDatabase();
 		String[] args = {
 				account.getUuid(),
-				name
+				name,
+				String.valueOf(AxolotlService.SQLiteAxolotlStore.Trust.TRUSTED.ordinal())
 		};
 		return DatabaseUtils.queryNumEntries(db, AxolotlService.SQLiteAxolotlStore.IDENTITIES_TABLENAME,
 				AxolotlService.SQLiteAxolotlStore.ACCOUNT + " = ?"
-				+ " AND " + AxolotlService.SQLiteAxolotlStore.NAME + " = ?",
+				+ " AND " + AxolotlService.SQLiteAxolotlStore.NAME + " = ?"
+				+ " AND " + AxolotlService.SQLiteAxolotlStore.TRUSTED + " = ?",
 				args
 		);
 	}
