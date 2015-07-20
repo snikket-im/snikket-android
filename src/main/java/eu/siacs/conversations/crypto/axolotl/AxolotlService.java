@@ -524,6 +524,7 @@ public class AxolotlService {
 			byte[] plaintext = null;
 			switch (getTrust()) {
 				case UNDECIDED:
+				case UNTRUSTED:
 				case TRUSTED:
 					try {
 						try {
@@ -553,7 +554,6 @@ public class AxolotlService {
 					break;
 
 				case COMPROMISED:
-				case UNTRUSTED:
 				default:
 					// ignore
 					break;
