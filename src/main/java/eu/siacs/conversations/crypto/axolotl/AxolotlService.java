@@ -53,7 +53,6 @@ import eu.siacs.conversations.xmpp.OnIqPacketReceived;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
-import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
 
 public class AxolotlService {
 
