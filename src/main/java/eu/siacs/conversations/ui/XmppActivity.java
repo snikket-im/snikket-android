@@ -680,6 +680,7 @@ public abstract class XmppActivity extends Activity {
 				keyType.setTextColor(getSecondaryTextColor());
 				break;
 			case INACTIVE:
+				trustToggle.setOnClickListener(null);
 				trustToggle.setChecked(true, false);
 				trustToggle.setEnabled(false);
 				key.setTextColor(getTertiaryTextColor());
