@@ -662,21 +662,28 @@ public class AxolotlService {
 			this.fillMap(store);
 		}
 
+		private void putDevicesForJid(String bareJid, List<Integer> deviceIds, SQLiteAxolotlStore store) {
+			for (Integer deviceId : deviceIds) {
+				AxolotlAddress axolotlAddress = new AxolotlAddress(bareJid, deviceId);
+				Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account)+"Building session for remote address: "+axolotlAddress.toString());
+				String fingerprint = store.loadSession(axolotlAddress).getSessionState().getRemoteIdentityKey().getFingerprint().replaceAll("\\s", "");
+				this.put(axolotlAddress, new XmppAxolotlSession(account, store, axolotlAddress, fingerprint));
+			}
+		}
+
 		private void fillMap(SQLiteAxolotlStore store) {
+			List<Integer> deviceIds = store.getSubDeviceSessions(account.getJid().toBareJid().toString());
+			putDevicesForJid(account.getJid().toBareJid().toString(), deviceIds, store);
 			for (Contact contact : account.getRoster().getContacts()) {
 				Jid bareJid = contact.getJid().toBareJid();
 				if (bareJid == null) {
 					continue; // FIXME: handle this?
 				}
 				String address = bareJid.toString();
-				List<Integer> deviceIDs = store.getSubDeviceSessions(address);
-				for (Integer deviceId : deviceIDs) {
-					AxolotlAddress axolotlAddress = new AxolotlAddress(address, deviceId);
-					Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account)+"Building session for remote address: "+axolotlAddress.toString());
-					String fingerprint = store.loadSession(axolotlAddress).getSessionState().getRemoteIdentityKey().getFingerprint().replaceAll("\\s", "");
-					this.put(axolotlAddress, new XmppAxolotlSession(account, store, axolotlAddress, fingerprint));
-				}
+				deviceIds = store.getSubDeviceSessions(address);
+				putDevicesForJid(address, deviceIds, store);
 			}
+
 		}
 
 		@Override
