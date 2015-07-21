@@ -265,14 +265,16 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 			final User self = mConversation.getMucOptions().getSelf();
 			this.mSelectedUser = user;
 			String name;
+			final Contact contact = user.getContact();
+			if (contact != null) {
+				name = contact.getDisplayName();
+			} else if (user.getJid() != null){
+				name = user.getJid().toBareJid().toString();
+			} else {
+				name = user.getName();
+			}
+			menu.setHeaderTitle(name);
 			if (user.getJid() != null) {
-				final Contact contact = user.getContact();
-				if (contact != null) {
-					name = contact.getDisplayName();
-				} else {
-					name = user.getJid().toBareJid().toString();
-				}
-				menu.setHeaderTitle(name);
 				MenuItem showContactDetails = menu.findItem(R.id.action_contact_details);
 				MenuItem startConversation = menu.findItem(R.id.start_conversation);
 				MenuItem giveMembership = menu.findItem(R.id.give_membership);
@@ -303,6 +305,9 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 						removeAdminPrivileges.setVisible(true);
 					}
 				}
+			} else {
+				MenuItem sendPrivateMessage = menu.findItem(R.id.send_private_message);
+				sendPrivateMessage.setVisible(true);
 			}
 
 		}
@@ -339,6 +344,9 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 			case R.id.ban_from_conference:
 				xmppConnectionService.changeAffiliationInConference(mConversation,mSelectedUser.getJid(), MucOptions.Affiliation.OUTCAST,this);
 				xmppConnectionService.changeRoleInConference(mConversation,mSelectedUser.getName(), MucOptions.Role.NONE,this);
+				return true;
+			case R.id.send_private_message:
+				privateMsgInMuc(mConversation,mSelectedUser.getName());
 				return true;
 			default:
 				return super.onContextItemSelected(item);

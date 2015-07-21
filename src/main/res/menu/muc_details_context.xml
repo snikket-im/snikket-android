@@ -9,6 +9,10 @@
         android:title="@string/action_contact_details"
         android:visible="false"/>
     <item
+        android:id="@+id/send_private_message"
+        android:title="@string/send_private_message"
+        android:visible="false"/>
+    <item
         android:id="@+id/give_membership"
         android:title="@string/grant_membership"
         android:visible="false"/>

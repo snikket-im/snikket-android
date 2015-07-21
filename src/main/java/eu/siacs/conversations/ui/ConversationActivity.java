@@ -51,6 +51,8 @@ import eu.siacs.conversations.services.XmppConnectionService.OnRosterUpdate;
 import eu.siacs.conversations.ui.adapter.ConversationAdapter;
 import eu.siacs.conversations.utils.ExceptionHelper;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
+import eu.siacs.conversations.xmpp.jid.InvalidJidException;
+import eu.siacs.conversations.xmpp.jid.Jid;
 
 public class ConversationActivity extends XmppActivity
 	implements OnAccountUpdate, OnConversationUpdate, OnRosterUpdate, OnUpdateBlocklist, XmppConnectionService.OnShowErrorToast {
@@ -62,6 +64,7 @@ public class ConversationActivity extends XmppActivity
 	public static final String MESSAGE = "messageUuid";
 	public static final String TEXT = "text";
 	public static final String NICK = "nick";
+	public static final String PRIVATE_MESSAGE = "pm";
 
 	public static final int REQUEST_SEND_MESSAGE = 0x0201;
 	public static final int REQUEST_DECRYPT_PGP = 0x0202;
@@ -464,7 +467,7 @@ public class ConversationActivity extends XmppActivity
 			conversation.setNextCounterpart(null);
 			callback.onPresenceSelected();
 		} else {
-			selectPresence(conversation,callback);
+			selectPresence(conversation, callback);
 		}
 	}
 
@@ -474,7 +477,7 @@ public class ConversationActivity extends XmppActivity
 		if (intent.resolveActivity(getPackageManager()) != null) {
 			return intent;
 		} else {
-			intent.setData(Uri.parse("http://play.google.com/store/apps/details?id="+packageId));
+			intent.setData(Uri.parse("http://play.google.com/store/apps/details?id=" + packageId));
 			return intent;
 		}
 	}
@@ -831,7 +834,7 @@ public class ConversationActivity extends XmppActivity
 						}
 						conversation.setMutedTill(till);
 						ConversationActivity.this.xmppConnectionService.databaseBackend
-							.updateConversation(conversation);
+								.updateConversation(conversation);
 						updateConversationList();
 						ConversationActivity.this.mConversationFragment.updateMessages();
 						invalidateOptionsMenu();
@@ -995,10 +998,21 @@ public class ConversationActivity extends XmppActivity
 		final String downloadUuid = intent.getStringExtra(MESSAGE);
 		final String text = intent.getStringExtra(TEXT);
 		final String nick = intent.getStringExtra(NICK);
+		final boolean pm = intent.getBooleanExtra(PRIVATE_MESSAGE,false);
 		if (selectConversationByUuid(uuid)) {
 			this.mConversationFragment.reInit(getSelectedConversation());
 			if (nick != null) {
-				this.mConversationFragment.highlightInConference(nick);
+				if (pm) {
+					Jid jid = getSelectedConversation().getJid();
+					try {
+						Jid next = Jid.fromParts(jid.getLocalpart(),jid.getDomainpart(),nick);
+						this.mConversationFragment.privateMessageWith(next);
+					} catch (final InvalidJidException ignored) {
+						//do nothing
+					}
+				} else {
+					this.mConversationFragment.highlightInConference(nick);
+				}
 			} else {
 				this.mConversationFragment.appendText(text);
 			}
