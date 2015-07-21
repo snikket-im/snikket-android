@@ -42,12 +42,13 @@ import eu.siacs.conversations.services.XmppConnectionService.OnAccountUpdate;
 import eu.siacs.conversations.services.XmppConnectionService.OnRosterUpdate;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.UIHelper;
+import eu.siacs.conversations.xmpp.OnKeyStatusUpdated;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
 
-public class ContactDetailsActivity extends XmppActivity implements OnAccountUpdate, OnRosterUpdate, OnUpdateBlocklist {
+public class ContactDetailsActivity extends XmppActivity implements OnAccountUpdate, OnRosterUpdate, OnUpdateBlocklist, OnKeyStatusUpdated {
 	public static final String ACTION_VIEW_CONTACT = "view_contact";
 
 	private Contact contact;
@@ -467,5 +468,10 @@ public class ContactDetailsActivity extends XmppActivity implements OnAccountUpd
 			this.contact = account.getRoster().getContact(contactJid);
 			populateView();
 		}
+	}
+
+	@Override
+	public void onKeyStatusUpdated() {
+		refreshUi();
 	}
 }

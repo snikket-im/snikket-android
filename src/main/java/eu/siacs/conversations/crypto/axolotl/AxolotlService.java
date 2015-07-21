@@ -102,7 +102,8 @@ public class AxolotlService {
 			UNDECIDED(0),
 			TRUSTED(1),
 			UNTRUSTED(2),
-			COMPROMISED(3);
+			COMPROMISED(3),
+			INACTIVE(4);
 
 			private static final Map<Integer, Trust> trustsByValue = new HashMap<>();
 
@@ -125,12 +126,16 @@ public class AxolotlService {
 			public String toString() {
 				switch(this){
 					case UNDECIDED:
-						return "Trust undecided";
+						return "Trust undecided "+getCode();
 					case TRUSTED:
-						return "Trusted";
+						return "Trusted "+getCode();
+					case COMPROMISED:
+						return "Compromised "+getCode();
+					case INACTIVE:
+						return "Inactive "+getCode();
 					case UNTRUSTED:
 					default:
-						return "Untrusted";
+						return "Untrusted "+getCode();
 				}
 			}
 
@@ -538,14 +543,20 @@ public class AxolotlService {
 			return fingerprint;
 		}
 
-		private SQLiteAxolotlStore.Trust getTrust() {
+		protected void setTrust(SQLiteAxolotlStore.Trust trust) {
+			sqLiteAxolotlStore.setFingerprintTrust(fingerprint, trust);
+		}
+
+		protected SQLiteAxolotlStore.Trust getTrust() {
 			return sqLiteAxolotlStore.getFingerprintTrust(fingerprint);
 		}
 
 		@Nullable
 		public byte[] processReceiving(XmppAxolotlMessage.XmppAxolotlMessageHeader incomingHeader) {
 			byte[] plaintext = null;
-			switch (getTrust()) {
+			SQLiteAxolotlStore.Trust trust = getTrust();
+			switch (trust) {
+				case INACTIVE:
 				case UNDECIDED:
 				case UNTRUSTED:
 				case TRUSTED:
@@ -572,6 +583,10 @@ public class AxolotlService {
 						}
 					} catch (LegacyMessageException | InvalidMessageException | DuplicateMessageException | NoSessionException  e) {
 						Log.w(Config.LOGTAG, AxolotlService.getLogprefix(account)+"Error decrypting axolotl header, "+e.getClass().getName()+": " + e.getMessage());
+					}
+
+					if (plaintext != null && trust == SQLiteAxolotlStore.Trust.INACTIVE) {
+						setTrust(SQLiteAxolotlStore.Trust.TRUSTED);
 					}
 
 					break;
@@ -774,15 +789,32 @@ public class AxolotlService {
 		return this.deviceIds.get(account.getJid().toBareJid());
 	}
 
+	private void setTrustOnSessions(final Jid jid, @NonNull final Set<Integer> deviceIds,
+	                                final SQLiteAxolotlStore.Trust from,
+	                                final SQLiteAxolotlStore.Trust to) {
+		for(Integer deviceId:deviceIds) {
+			AxolotlAddress address = new AxolotlAddress(jid.toBareJid().toString(), deviceId);
+			XmppAxolotlSession session = sessions.get(address);
+			if (session != null && session.getFingerprint() != null
+					&& session.getTrust() == from) {
+				session.setTrust(to);
+			}
+		}
+	}
+
 	public void registerDevices(final Jid jid, @NonNull final Set<Integer> deviceIds) {
 		if(deviceIds.contains(getOwnDeviceId())) {
-			Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account)+"Skipping own Device ID:"+ jid + ":"+getOwnDeviceId());
 			deviceIds.remove(getOwnDeviceId());
 		}
-		for(Integer i:deviceIds) {
-			Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account)+"Adding Device ID:"+ jid + ":"+i);
-		}
+		Set<Integer> expiredDevices = new HashSet<>(axolotlStore.getSubDeviceSessions(jid.toBareJid().toString()));
+		expiredDevices.removeAll(deviceIds);
+		setTrustOnSessions(jid, expiredDevices, SQLiteAxolotlStore.Trust.TRUSTED,
+				SQLiteAxolotlStore.Trust.INACTIVE);
+		Set<Integer> newDevices = new HashSet<>(deviceIds);
+		setTrustOnSessions(jid, newDevices, SQLiteAxolotlStore.Trust.INACTIVE,
+				SQLiteAxolotlStore.Trust.TRUSTED);
 		this.deviceIds.put(jid, deviceIds);
+		mXmppConnectionService.keyStatusUpdated();
 		publishOwnDeviceIdIfNeeded();
 	}
 
@@ -957,7 +989,7 @@ public class AxolotlService {
 										}
 									});
 						}
-						mXmppConnectionService.newKeysAvailable();
+						mXmppConnectionService.keyStatusUpdated();
 					}
 				}
 

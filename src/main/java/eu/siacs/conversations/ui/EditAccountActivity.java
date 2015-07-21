@@ -35,12 +35,13 @@ import eu.siacs.conversations.services.XmppConnectionService.OnAccountUpdate;
 import eu.siacs.conversations.ui.adapter.KnownHostsAdapter;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.UIHelper;
+import eu.siacs.conversations.xmpp.OnKeyStatusUpdated;
 import eu.siacs.conversations.xmpp.XmppConnection.Features;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
 import eu.siacs.conversations.xmpp.pep.Avatar;
 
-public class EditAccountActivity extends XmppActivity implements OnAccountUpdate{
+public class EditAccountActivity extends XmppActivity implements OnAccountUpdate, OnKeyStatusUpdated {
 
 	private AutoCompleteTextView mAccountJid;
 	private EditText mPassword;
@@ -617,5 +618,10 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 					}
 				});
 		builder.create().show();
+	}
+
+	@Override
+	public void onKeyStatusUpdated() {
+		refreshUi();
 	}
 }

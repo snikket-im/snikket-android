@@ -86,7 +86,7 @@ import eu.siacs.conversations.xmpp.OnContactStatusChanged;
 import eu.siacs.conversations.xmpp.OnIqPacketReceived;
 import eu.siacs.conversations.xmpp.OnMessageAcknowledged;
 import eu.siacs.conversations.xmpp.OnMessagePacketReceived;
-import eu.siacs.conversations.xmpp.OnNewKeysAvailable;
+import eu.siacs.conversations.xmpp.OnKeyStatusUpdated;
 import eu.siacs.conversations.xmpp.OnPresencePacketReceived;
 import eu.siacs.conversations.xmpp.OnStatusChanged;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
@@ -309,8 +309,8 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	private int rosterChangedListenerCount = 0;
 	private OnMucRosterUpdate mOnMucRosterUpdate = null;
 	private int mucRosterChangedListenerCount = 0;
-	private OnNewKeysAvailable mOnNewKeysAvailable = null;
-	private int newKeysAvailableListenerCount = 0;
+	private OnKeyStatusUpdated mOnKeyStatusUpdated = null;
+	private int keyStatusUpdatedListenerCount = 0;
 	private SecureRandom mRandom;
 	private OpenPgpServiceConnection pgpServiceConnection;
 	private PgpEngine mPgpEngine = null;
@@ -1372,30 +1372,31 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		}
 	}
 
-	public void setOnNewKeysAvailableListener(final OnNewKeysAvailable listener) {
+	public void setOnKeyStatusUpdatedListener(final OnKeyStatusUpdated listener) {
 		synchronized (this) {
 			if (checkListeners()) {
 				switchToForeground();
 			}
-			this.mOnNewKeysAvailable = listener;
-			if (this.newKeysAvailableListenerCount < 2) {
-				this.newKeysAvailableListenerCount++;
+			this.mOnKeyStatusUpdated = listener;
+			if (this.keyStatusUpdatedListenerCount < 2) {
+				this.keyStatusUpdatedListenerCount++;
 			}
 		}
 	}
 
 	public void removeOnNewKeysAvailableListener() {
 		synchronized (this) {
-			this.newKeysAvailableListenerCount--;
-			if (this.newKeysAvailableListenerCount <= 0) {
-				this.newKeysAvailableListenerCount = 0;
-				this.mOnNewKeysAvailable = null;
+			this.keyStatusUpdatedListenerCount--;
+			if (this.keyStatusUpdatedListenerCount <= 0) {
+				this.keyStatusUpdatedListenerCount = 0;
+				this.mOnKeyStatusUpdated = null;
 				if (checkListeners()) {
 					switchToBackground();
 				}
 			}
 		}
 	}
+
 	public void setOnMucRosterUpdateListener(OnMucRosterUpdate listener) {
 		synchronized (this) {
 			if (checkListeners()) {
@@ -1427,7 +1428,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 				&& this.mOnRosterUpdate == null
 				&& this.mOnUpdateBlocklist == null
 				&& this.mOnShowErrorToast == null
-				&& this.mOnNewKeysAvailable == null);
+				&& this.mOnKeyStatusUpdated == null);
 	}
 
 	private void switchToForeground() {
@@ -2316,9 +2317,9 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		}
 	}
 
-	public void newKeysAvailable() {
-		if(mOnNewKeysAvailable != null) {
-			mOnNewKeysAvailable.onNewKeysAvailable();
+	public void keyStatusUpdated() {
+		if(mOnKeyStatusUpdated != null) {
+			mOnKeyStatusUpdated.onKeyStatusUpdated();
 		}
 	}
 

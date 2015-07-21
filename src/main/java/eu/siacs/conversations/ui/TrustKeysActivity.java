@@ -20,11 +20,11 @@ import eu.siacs.conversations.crypto.axolotl.AxolotlService.SQLiteAxolotlStore.T
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
-import eu.siacs.conversations.xmpp.OnNewKeysAvailable;
+import eu.siacs.conversations.xmpp.OnKeyStatusUpdated;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
 
-public class TrustKeysActivity extends XmppActivity implements OnNewKeysAvailable {
+public class TrustKeysActivity extends XmppActivity implements OnKeyStatusUpdated {
 	private Jid accountJid;
 	private Jid contactJid;
 	private boolean hasOtherTrustedKeys = false;
@@ -215,7 +215,7 @@ public class TrustKeysActivity extends XmppActivity implements OnNewKeysAvailabl
 	}
 
 	@Override
-	public void onNewKeysAvailable() {
+	public void onKeyStatusUpdated() {
 		final Account account = xmppConnectionService.findAccountByJid(accountJid);
 		hasPendingFetches = false;
 		getFingerprints(account);

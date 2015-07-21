@@ -83,7 +83,7 @@ import eu.siacs.conversations.services.XmppConnectionService.XmppConnectionBinde
 import eu.siacs.conversations.ui.widget.Switch;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.ExceptionHelper;
-import eu.siacs.conversations.xmpp.OnNewKeysAvailable;
+import eu.siacs.conversations.xmpp.OnKeyStatusUpdated;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
@@ -99,6 +99,7 @@ public abstract class XmppActivity extends Activity {
 
 	protected int mPrimaryTextColor;
 	protected int mSecondaryTextColor;
+	protected int mTertiaryTextColor;
 	protected int mPrimaryBackgroundColor;
 	protected int mSecondaryBackgroundColor;
 	protected int mColorRed;
@@ -294,8 +295,8 @@ public abstract class XmppActivity extends Activity {
 		if (this instanceof XmppConnectionService.OnShowErrorToast) {
 			this.xmppConnectionService.setOnShowErrorToastListener((XmppConnectionService.OnShowErrorToast) this);
 		}
-		if (this instanceof OnNewKeysAvailable) {
-			this.xmppConnectionService.setOnNewKeysAvailableListener((OnNewKeysAvailable) this);
+		if (this instanceof OnKeyStatusUpdated) {
+			this.xmppConnectionService.setOnKeyStatusUpdatedListener((OnKeyStatusUpdated) this);
 		}
 	}
 
@@ -318,7 +319,7 @@ public abstract class XmppActivity extends Activity {
 		if (this instanceof XmppConnectionService.OnShowErrorToast) {
 			this.xmppConnectionService.removeOnShowErrorToastListener();
 		}
-		if (this instanceof OnNewKeysAvailable) {
+		if (this instanceof OnKeyStatusUpdated) {
 			this.xmppConnectionService.removeOnNewKeysAvailableListener();
 		}
 	}
@@ -349,6 +350,7 @@ public abstract class XmppActivity extends Activity {
 		ExceptionHelper.init(getApplicationContext());
 		mPrimaryTextColor = getResources().getColor(R.color.black87);
 		mSecondaryTextColor = getResources().getColor(R.color.black54);
+		mTertiaryTextColor = getResources().getColor(R.color.black12);
 		mColorRed = getResources().getColor(R.color.red500);
 		mColorOrange = getResources().getColor(R.color.orange500);
 		mColorGreen = getResources().getColor(R.color.green500);
@@ -668,10 +670,20 @@ public abstract class XmppActivity extends Activity {
 			case TRUSTED:
 				trustToggle.setChecked(trust == AxolotlService.SQLiteAxolotlStore.Trust.TRUSTED, false);
 				trustToggle.setEnabled(true);
+				key.setTextColor(getPrimaryTextColor());
+				keyType.setTextColor(getSecondaryTextColor());
 				break;
 			case UNDECIDED:
 				trustToggle.setChecked(false, false);
 				trustToggle.setEnabled(false);
+				key.setTextColor(getPrimaryTextColor());
+				keyType.setTextColor(getSecondaryTextColor());
+				break;
+			case INACTIVE:
+				trustToggle.setChecked(true, false);
+				trustToggle.setEnabled(false);
+				key.setTextColor(getTertiaryTextColor());
+				keyType.setTextColor(getTertiaryTextColor());
 				break;
 		}
 
@@ -823,6 +835,10 @@ public abstract class XmppActivity extends Activity {
 
 		}
 	};
+
+	public int getTertiaryTextColor() {
+		return this.mTertiaryTextColor;
+	}
 
 	public int getSecondaryTextColor() {
 		return this.mSecondaryTextColor;
