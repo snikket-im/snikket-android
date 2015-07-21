@@ -177,7 +177,13 @@ public class MessageParser extends AbstractParser implements
 		if (packet.getType() == MessagePacket.TYPE_ERROR) {
 			Jid from = packet.getFrom();
 			if (from != null) {
-				mXmppConnectionService.markMessage(account, from.toBareJid(), packet.getId(), Message.STATUS_SEND_FAILED);
+				Message message = mXmppConnectionService.markMessage(account,
+						from.toBareJid(),
+						packet.getId(),
+						Message.STATUS_SEND_FAILED);
+				if (message.getEncryption() == Message.ENCRYPTION_OTR) {
+					message.getConversation().endOtrIfNeeded();
+				}
 			}
 			return true;
 		}
