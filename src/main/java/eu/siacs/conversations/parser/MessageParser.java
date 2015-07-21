@@ -181,7 +181,7 @@ public class MessageParser extends AbstractParser implements
 						from.toBareJid(),
 						packet.getId(),
 						Message.STATUS_SEND_FAILED);
-				if (message.getEncryption() == Message.ENCRYPTION_OTR) {
+				if (message != null && message.getEncryption() == Message.ENCRYPTION_OTR) {
 					message.getConversation().endOtrIfNeeded();
 				}
 			}
