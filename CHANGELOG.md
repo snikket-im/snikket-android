@@ -1,5 +1,9 @@
 ###Changelog
 
+####Version 1.5.1
+* fixed rare crashes
+* improved otr support
+
 ####Version 1.5.0
 * upload files to HTTP host and share them in MUCs. requires new [HttpUploadComponent](https://github.com/siacs/HttpUploadComponent) on server side
 
