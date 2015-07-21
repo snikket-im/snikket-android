@@ -29,6 +29,7 @@ import org.whispersystems.libaxolotl.IdentityKey;
 
 import java.util.Set;
 
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.services.XmppConnectionService.OnAccountUpdate;
@@ -547,16 +548,18 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 								}
 							}
 						});
-				this.mRegenerateAxolotlKeyButton
-						.setVisibility(View.VISIBLE);
-				this.mRegenerateAxolotlKeyButton
-						.setOnClickListener(new View.OnClickListener() {
+				if (Config.SHOW_REGENERATE_AXOLOTL_KEYS_BUTTON) {
+					this.mRegenerateAxolotlKeyButton
+							.setVisibility(View.VISIBLE);
+					this.mRegenerateAxolotlKeyButton
+							.setOnClickListener(new View.OnClickListener() {
 
-							@Override
-							public void onClick(final View v) {
-								showRegenerateAxolotlKeyDialog();
-							}
-						});
+								@Override
+								public void onClick(final View v) {
+									showRegenerateAxolotlKeyDialog();
+								}
+							});
+				}
 			} else {
 				this.mAxolotlFingerprintBox.setVisibility(View.GONE);
 			}

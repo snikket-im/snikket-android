@@ -400,7 +400,7 @@
                            android:background="?android:selectableItemBackground"
                            android:padding="@dimen/image_button_padding"
                            android:src="?attr/icon_refresh"
-                           android:visibility="visible"
+                           android:visibility="gone"
                            android:contentDescription="@string/regenerate_axolotl_key"/>
 
                    </LinearLayout>
