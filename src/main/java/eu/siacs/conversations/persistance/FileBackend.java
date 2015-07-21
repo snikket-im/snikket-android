@@ -184,8 +184,18 @@ public class FileBackend {
 		return this.copyImageToPrivateStorage(message, image, 0);
 	}
 
-	private DownloadableFile copyImageToPrivateStorage(Message message,
-			Uri image, int sampleSize) throws FileCopyException {
+	private DownloadableFile copyImageToPrivateStorage(Message message,Uri image, int sampleSize) throws FileCopyException {
+		switch(Config.IMAGE_FORMAT) {
+			case JPEG:
+				message.setRelativeFilePath(message.getUuid()+".jpg");
+				break;
+			case PNG:
+				message.setRelativeFilePath(message.getUuid()+".png");
+				break;
+			case WEBP:
+				message.setRelativeFilePath(message.getUuid()+".webp");
+				break;
+		}
 		DownloadableFile file = getFile(message);
 		file.getParentFile().mkdirs();
 		InputStream is = null;
@@ -205,13 +215,13 @@ public class FileBackend {
 			if (originalBitmap == null) {
 				throw new FileCopyException(R.string.error_not_an_image_file);
 			}
-			Bitmap scaledBitmap = resize(originalBitmap, IMAGE_SIZE);
+			Bitmap scaledBitmap = resize(originalBitmap, Config.IMAGE_SIZE);
 			int rotation = getRotation(image);
 			if (rotation > 0) {
 				scaledBitmap = rotate(scaledBitmap, rotation);
 			}
 
-			boolean success = scaledBitmap.compress(Bitmap.CompressFormat.WEBP, 75, os);
+			boolean success = scaledBitmap.compress(Config.IMAGE_FORMAT, Config.IMAGE_QUALITY, os);
 			if (!success) {
 				throw new FileCopyException(R.string.error_compressing_image);
 			}
