@@ -80,6 +80,7 @@ public class MessageGenerator extends AbstractGenerator {
 		packet.addChild("private", "urn:xmpp:carbons:2");
 		packet.addChild("no-copy", "urn:xmpp:hints");
 		packet.addChild("no-permanent-store", "urn:xmpp:hints");
+		packet.addChild("no-permanent-storage", "urn:xmpp:hints");
 		try {
 			String content;
 			if (message.hasFileOnRemoteHost()) {

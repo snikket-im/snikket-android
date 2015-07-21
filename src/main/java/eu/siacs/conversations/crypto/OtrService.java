@@ -182,7 +182,7 @@ public class OtrService extends OtrCryptoEngineImpl implements OtrEngineHost {
 		packet.addChild("private", "urn:xmpp:carbons:2");
 		packet.addChild("no-copy", "urn:xmpp:hints");
 		packet.addChild("no-permanent-store", "urn:xmpp:hints");
-
+		packet.addChild("no-permanent-store", "urn:xmpp:hints");
 		try {
 			Jid jid = Jid.fromSessionID(session);
 			Conversation conversation = mXmppConnectionService.find(account,jid);
