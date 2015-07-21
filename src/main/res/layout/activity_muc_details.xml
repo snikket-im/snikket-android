@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:background="@color/grey200">
+			xmlns:app="http://schemas.android.com/apk/res-auto"
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"
+			android:background="@color/grey200">
 
 	<LinearLayout
 		android:layout_width="fill_parent"
@@ -35,13 +36,13 @@
 				android:layout_height="wrap_content"
 				android:layout_marginBottom="32dp">
 
-				<ImageView
+				<com.makeramen.roundedimageview.RoundedImageView
 					android:id="@+id/your_photo"
 					android:layout_width="48dp"
 					android:layout_height="48dp"
 					android:layout_alignParentLeft="true"
-					android:src="@drawable/ic_profile">
-				</ImageView>
+					android:src="@drawable/ic_profile"
+					app:riv_corner_radius="2dp" />
 
 				<LinearLayout
 					android:layout_width="fill_parent"
