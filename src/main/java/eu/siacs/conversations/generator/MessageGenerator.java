@@ -115,6 +115,7 @@ public class MessageGenerator extends AbstractGenerator {
 	public MessagePacket generateChatState(Conversation conversation) {
 		final Account account = conversation.getAccount();
 		MessagePacket packet = new MessagePacket();
+		packet.setType(MessagePacket.TYPE_CHAT);
 		packet.setTo(conversation.getJid().toBareJid());
 		packet.setFrom(account.getJid());
 		packet.addChild(ChatState.toElement(conversation.getOutgoingChatState()));
@@ -123,7 +124,7 @@ public class MessageGenerator extends AbstractGenerator {
 
 	public MessagePacket confirm(final Account account, final Jid to, final String id) {
 		MessagePacket packet = new MessagePacket();
-		packet.setType(MessagePacket.TYPE_NORMAL);
+		packet.setType(MessagePacket.TYPE_CHAT);
 		packet.setTo(to);
 		packet.setFrom(account.getJid());
 		Element received = packet.addChild("displayed","urn:xmpp:chat-markers:0");
@@ -131,8 +132,7 @@ public class MessageGenerator extends AbstractGenerator {
 		return packet;
 	}
 
-	public MessagePacket conferenceSubject(Conversation conversation,
-			String subject) {
+	public MessagePacket conferenceSubject(Conversation conversation,String subject) {
 		MessagePacket packet = new MessagePacket();
 		packet.setType(MessagePacket.TYPE_GROUPCHAT);
 		packet.setTo(conversation.getJid().toBareJid());
@@ -166,10 +166,9 @@ public class MessageGenerator extends AbstractGenerator {
 		return packet;
 	}
 
-	public MessagePacket received(Account account,
-			MessagePacket originalMessage, String namespace) {
+	public MessagePacket received(Account account, MessagePacket originalMessage, String namespace, int type) {
 		MessagePacket receivedPacket = new MessagePacket();
-		receivedPacket.setType(MessagePacket.TYPE_NORMAL);
+		receivedPacket.setType(type);
 		receivedPacket.setTo(originalMessage.getFrom());
 		receivedPacket.setFrom(account.getJid());
 		Element received = receivedPacket.addChild("received", namespace);

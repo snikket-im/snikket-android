@@ -263,7 +263,7 @@ public class MessageParser extends AbstractParser implements
 			timestamp = AbstractParser.getTimestamp(packet, System.currentTimeMillis());
 		}
 		final String body = packet.getBody();
-		final Element mucUserElement = packet.findChild("x","http://jabber.org/protocol/muc#user");
+		final Element mucUserElement = packet.findChild("x", "http://jabber.org/protocol/muc#user");
 		final String pgpEncrypted = packet.findChildContent("x", "jabber:x:encrypted");
 		final Element axolotlEncrypted = packet.findChild("axolotl_message", AxolotlService.PEP_PREFIX);
 		int status;
@@ -369,15 +369,19 @@ public class MessageParser extends AbstractParser implements
 				mXmppConnectionService.updateConversationUi();
 			}
 
-			if (mXmppConnectionService.confirmMessages() && remoteMsgId != null && !isForwarded) {
+			if (mXmppConnectionService.confirmMessages() && remoteMsgId != null && !isForwarded && !isTypeGroupChat) {
 				if (packet.hasChild("markable", "urn:xmpp:chat-markers:0")) {
-					MessagePacket receipt = mXmppConnectionService
-							.getMessageGenerator().received(account, packet, "urn:xmpp:chat-markers:0");
+					MessagePacket receipt = mXmppConnectionService.getMessageGenerator().received(account,
+							packet,
+							"urn:xmpp:chat-markers:0",
+							MessagePacket.TYPE_CHAT);
 					mXmppConnectionService.sendMessagePacket(account, receipt);
 				}
 				if (packet.hasChild("request", "urn:xmpp:receipts")) {
-					MessagePacket receipt = mXmppConnectionService
-							.getMessageGenerator().received(account, packet, "urn:xmpp:receipts");
+					MessagePacket receipt = mXmppConnectionService.getMessageGenerator().received(account,
+							packet,
+							"urn:xmpp:receipts",
+							packet.getType());
 					mXmppConnectionService.sendMessagePacket(account, receipt);
 				}
 			}
