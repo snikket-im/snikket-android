@@ -385,11 +385,11 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 				if (message.getStatus() <= Message.STATUS_RECEIVED) {
 					if (message.getConversation().getMode() == Conversation.MODE_MULTI) {
 						if (message.getCounterpart() != null) {
-							if (!message.getCounterpart().isBareJid()) {
-								highlightInConference(message.getCounterpart().getResourcepart());
-							} else {
-								highlightInConference(message.getCounterpart().toString());
+							String user = message.getCounterpart().isBareJid() ? message.getCounterpart().toString() : message.getCounterpart().getResourcepart();
+							if (!message.getConversation().getMucOptions().isUserInRoom(user)) {
+								Toast.makeText(activity,activity.getString(R.string.user_has_left_conference,user),Toast.LENGTH_SHORT).show();
 							}
+							highlightInConference(user);
 						}
 					} else {
 						activity.switchToContactDetails(message.getContact());
@@ -410,7 +410,14 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 						if (message.getStatus() <= Message.STATUS_RECEIVED) {
 							if (message.getConversation().getMode() == Conversation.MODE_MULTI) {
 								if (message.getCounterpart() != null) {
-									privateMessageWith(message.getCounterpart());
+									String user = message.getCounterpart().getResourcepart();
+									if (user != null) {
+										if (message.getConversation().getMucOptions().isUserInRoom(user)) {
+											privateMessageWith(message.getCounterpart());
+										} else {
+											Toast.makeText(activity, activity.getString(R.string.user_has_left_conference, user), Toast.LENGTH_SHORT).show();
+										}
+									}
 								}
 							}
 						} else {

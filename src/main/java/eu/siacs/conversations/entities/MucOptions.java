@@ -264,6 +264,15 @@ public class MucOptions {
 		users.add(user);
 	}
 
+	public boolean isUserInRoom(String name) {
+		for (int i = 0; i < users.size(); ++i) {
+			if (users.get(i).getName().equals(name)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public void processPacket(PresencePacket packet, PgpEngine pgp) {
 		final Jid from = packet.getFrom();
 		if (!from.isBareJid()) {

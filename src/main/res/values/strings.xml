@@ -498,4 +498,5 @@
 	<string name="file_not_found_on_remote_host">File not found on remote server</string>
 	<string name="search_for_contacts_or_groups">Search for contacts or groups</string>
 	<string name="send_private_message">Send private message</string>
+	<string name="user_has_left_conference">%s has left the conference!</string>
 </resources>
