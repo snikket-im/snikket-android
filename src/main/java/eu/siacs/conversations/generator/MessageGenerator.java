@@ -119,6 +119,8 @@ public class MessageGenerator extends AbstractGenerator {
 		packet.setTo(conversation.getJid().toBareJid());
 		packet.setFrom(account.getJid());
 		packet.addChild(ChatState.toElement(conversation.getOutgoingChatState()));
+		packet.addChild("no-store", "urn:xmpp:hints");
+		packet.addChild("no-storage", "urn:xmpp:hints"); //wrong! don't copy this. Its *store*
 		return packet;
 	}
 
