@@ -803,8 +803,16 @@ public class AxolotlService {
 	}
 
 	public void registerDevices(final Jid jid, @NonNull final Set<Integer> deviceIds) {
-		if(deviceIds.contains(getOwnDeviceId())) {
-			deviceIds.remove(getOwnDeviceId());
+		if(jid.toBareJid().equals(account.getJid().toBareJid())) {
+			if (deviceIds.contains(getOwnDeviceId())) {
+				deviceIds.remove(getOwnDeviceId());
+			}
+			for(Integer deviceId : deviceIds) {
+				AxolotlAddress ownDeviceAddress = new AxolotlAddress(jid.toBareJid().toString(),deviceId);
+				if(sessions.get(ownDeviceAddress) == null) {
+					buildSessionFromPEP(null, ownDeviceAddress, false);
+				}
+			}
 		}
 		Set<Integer> expiredDevices = new HashSet<>(axolotlStore.getSubDeviceSessions(jid.toBareJid().toString()));
 		expiredDevices.removeAll(deviceIds);
@@ -976,11 +984,10 @@ public class AxolotlService {
 			Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account)+"Retrieving bundle: " + bundlesPacket);
 			mXmppConnectionService.sendIqPacket(account, bundlesPacket, new OnIqPacketReceived() {
 				private void finish() {
-					AxolotlAddress ownAddress = new AxolotlAddress(conversation.getAccount().getJid().toBareJid().toString(),0);
-					AxolotlAddress foreignAddress = new AxolotlAddress(conversation.getJid().toBareJid().toString(),0);
+					AxolotlAddress ownAddress = new AxolotlAddress(account.getJid().toBareJid().toString(),0);
 					if (!fetchStatusMap.getAll(ownAddress).containsValue(FetchStatus.PENDING)
-							&& !fetchStatusMap.getAll(foreignAddress).containsValue(FetchStatus.PENDING)) {
-						if (flushWaitingQueueAfterFetch) {
+							&& !fetchStatusMap.getAll(address).containsValue(FetchStatus.PENDING)) {
+						if (flushWaitingQueueAfterFetch && conversation != null) {
 							conversation.findUnsentMessagesWithEncryption(Message.ENCRYPTION_AXOLOTL,
 									new Conversation.OnMessageFound() {
 										@Override
