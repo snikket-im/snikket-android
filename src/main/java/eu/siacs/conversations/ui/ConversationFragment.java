@@ -571,7 +571,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 
 	private void downloadFile(Message message) {
 		activity.xmppConnectionService.getHttpConnectionManager()
-				.createNewDownloadConnection(message);
+				.createNewDownloadConnection(message,true);
 	}
 
 	private void cancelTransmission(Message message) {

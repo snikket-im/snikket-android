@@ -35,7 +35,6 @@ public class HttpDownloadConnection implements Transferable {
 	private int mStatus = Transferable.STATUS_UNKNOWN;
 	private boolean acceptedAutomatically = false;
 	private int mProgress = 0;
-	private long mLastGuiRefresh = 0;
 
 	public HttpDownloadConnection(HttpConnectionManager manager) {
 		this.mHttpConnectionManager = manager;
