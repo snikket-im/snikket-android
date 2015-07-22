@@ -519,6 +519,13 @@ public class Conversation extends AbstractEntity implements Blockable {
 		return getContact().getOtrFingerprints().contains(getOtrFingerprint());
 	}
 
+	/**
+	 * short for is Private and Non-anonymous
+	 */
+	public boolean isPnNA() {
+		return mode == MODE_SINGLE || (getMucOptions().membersOnly() && getMucOptions().nonanonymous());
+	}
+
 	public synchronized MucOptions getMucOptions() {
 		if (this.mucOptions == null) {
 			this.mucOptions = new MucOptions(this);

@@ -64,7 +64,7 @@ public class NotificationService {
 		return (message.getStatus() == Message.STATUS_RECEIVED)
 			&& notificationsEnabled()
 			&& !message.getConversation().isMuted()
-			&& (message.getConversation().getMode() == Conversation.MODE_SINGLE
+			&& (message.getConversation().isPnNA()
 					|| conferenceNotificationsEnabled()
 					|| wasHighlightedOrPrivate(message)
 				 );
