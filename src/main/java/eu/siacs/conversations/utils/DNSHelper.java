@@ -38,17 +38,14 @@ public class DNSHelper {
 	public static Bundle getSRVRecord(final Jid jid) throws IOException {
         final String host = jid.getDomainpart();
 		String dns[] = client.findDNS();
-
-		if (dns != null) {
-			for (String dnsserver : dns) {
-				InetAddress ip = InetAddress.getByName(dnsserver);
-				Bundle b = queryDNS(host, ip);
-				if (b.containsKey("values")) {
-					return b;
-				}
+		for (int i = 0; i < dns.length; ++i) {
+			InetAddress ip = InetAddress.getByName(dns[i]);
+			Bundle b = queryDNS(host, ip);
+			if (b.containsKey("values") || i == dns.length - 1) {
+				return b;
 			}
 		}
-		return queryDNS(host, InetAddress.getByName("8.8.8.8"));
+		return null;
 	}
 
 	public static Bundle queryDNS(String host, InetAddress dnsServer) {

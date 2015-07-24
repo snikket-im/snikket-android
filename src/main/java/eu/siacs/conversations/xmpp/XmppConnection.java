@@ -164,6 +164,9 @@ public class XmppConnection implements Runnable {
 				}
 			} else {
 				final Bundle result = DNSHelper.getSRVRecord(account.getServer());
+				if (result == null) {
+					throw new IOException("unhandled exception in DNS resolver");
+				}
 				final ArrayList<Parcelable> values = result.getParcelableArrayList("values");
 				if ("timeout".equals(result.getString("error"))) {
 					throw new IOException("timeout in dns");
