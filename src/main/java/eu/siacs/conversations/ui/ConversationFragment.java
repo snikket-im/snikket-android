@@ -832,7 +832,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 					} catch (final NoSuchElementException ignored) {
 
 					}
-					activity.xmppConnectionService.updateConversationUi();
+					activity.refreshUi();
 				}
 			});
 		}
