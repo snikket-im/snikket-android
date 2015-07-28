@@ -67,11 +67,11 @@ public class XmppAxolotlMessage {
 	}
 
 	public static class XmppAxolotlPlaintextMessage {
-		private final AxolotlService.XmppAxolotlSession session;
+		private final XmppAxolotlSession session;
 		private final String plaintext;
 		private final String fingerprint;
 
-		public XmppAxolotlPlaintextMessage(AxolotlService.XmppAxolotlSession session, String plaintext, String fingerprint) {
+		public XmppAxolotlPlaintextMessage(XmppAxolotlSession session, String plaintext, String fingerprint) {
 			this.session = session;
 			this.plaintext = plaintext;
 			this.fingerprint = fingerprint;
@@ -81,7 +81,7 @@ public class XmppAxolotlMessage {
 			return plaintext;
 		}
 
-		public AxolotlService.XmppAxolotlSession getSession() {
+		public XmppAxolotlSession getSession() {
 			return session;
 		}
 
@@ -180,7 +180,7 @@ public class XmppAxolotlMessage {
 	}
 
 
-	public XmppAxolotlPlaintextMessage decrypt(AxolotlService.XmppAxolotlSession session, byte[] key, String fingerprint) throws CryptoFailedException {
+	public XmppAxolotlPlaintextMessage decrypt(XmppAxolotlSession session, byte[] key, String fingerprint) throws CryptoFailedException {
 		XmppAxolotlPlaintextMessage plaintextMessage = null;
 		try {
 

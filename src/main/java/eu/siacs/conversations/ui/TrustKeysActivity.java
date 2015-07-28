@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.Set;
 
 import eu.siacs.conversations.R;
-import eu.siacs.conversations.crypto.axolotl.AxolotlService.SQLiteAxolotlStore.Trust;
+import eu.siacs.conversations.crypto.axolotl.SQLiteAxolotlStore.Trust;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
