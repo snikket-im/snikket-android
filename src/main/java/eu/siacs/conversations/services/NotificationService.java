@@ -332,9 +332,10 @@ public class NotificationService {
 
 	private Message getImage(final Iterable<Message> messages) {
 		for (final Message message : messages) {
-			if (message.getType() == Message.TYPE_IMAGE
+			if (message.getType() != Message.TYPE_TEXT
 					&& message.getTransferable() == null
-					&& message.getEncryption() != Message.ENCRYPTION_PGP) {
+					&& message.getEncryption() != Message.ENCRYPTION_PGP
+					&& message.getFileParams().height > 0) {
 				return message;
 					}
 		}
