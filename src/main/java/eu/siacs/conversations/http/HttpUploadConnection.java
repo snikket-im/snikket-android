@@ -194,7 +194,7 @@ public class HttpUploadConnection implements Transferable {
 					fail();
 				}
 			} catch (IOException e) {
-				Log.d(Config.LOGTAG, e.getMessage());
+				Log.d(Config.LOGTAG,"http upload failed "+e.getMessage());
 				fail();
 			} finally {
 				FileBackend.close(is);
