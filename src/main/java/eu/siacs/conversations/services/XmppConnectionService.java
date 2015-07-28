@@ -2533,8 +2533,9 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 			}
 		}
 		for (final Message msg : messages) {
+			msg.setTime(System.currentTimeMillis());
 			markMessage(msg, Message.STATUS_WAITING);
-			this.resendMessage(msg,true);
+			this.resendMessage(msg,false);
 		}
 	}
 
