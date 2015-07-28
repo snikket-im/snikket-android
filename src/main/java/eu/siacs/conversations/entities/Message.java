@@ -416,11 +416,14 @@ public class Message extends AbstractEntity {
 	}
 
 	public String getMergedBody() {
-		final Message next = this.next();
-		if (this.mergeable(next)) {
-			return getBody().trim() + MERGE_SEPARATOR + next.getMergedBody();
+		StringBuilder body = new StringBuilder(this.body.trim());
+		Message current = this;
+		while(current.mergeable(current.next())) {
+			current = current.next();
+			body.append(MERGE_SEPARATOR);
+			body.append(current.getBody().trim());
 		}
-		return getBody().trim();
+		return body.toString();
 	}
 
 	public boolean hasMeCommand() {
@@ -428,20 +431,23 @@ public class Message extends AbstractEntity {
 	}
 
 	public int getMergedStatus() {
-		final Message next = this.next();
-		if (this.mergeable(next)) {
-			return next.getStatus();
+		int status = this.status;
+		Message current = this;
+		while(current.mergeable(current.next())) {
+			current = current.next();
+			status = current.status;
 		}
-		return getStatus();
+		return status;
 	}
 
 	public long getMergedTimeSent() {
-		Message next = this.next();
-		if (this.mergeable(next)) {
-			return next.getMergedTimeSent();
-		} else {
-			return getTimeSent();
+		long time = this.timeSent;
+		Message current = this;
+		while(current.mergeable(current.next())) {
+			current = current.next();
+			time = current.timeSent;
 		}
+		return time;
 	}
 
 	public boolean wasMergedIntoPrevious() {
