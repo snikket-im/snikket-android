@@ -621,9 +621,6 @@ public abstract class XmppActivity extends Activity {
 									(isChecked) ? SQLiteAxolotlStore.Trust.TRUSTED :
 											SQLiteAxolotlStore.Trust.UNTRUSTED);
 						}
-						refreshUi();
-						xmppConnectionService.updateAccountUi();
-						xmppConnectionService.updateConversationUi();
 					}
 				},
 				new View.OnClickListener() {
@@ -631,9 +628,7 @@ public abstract class XmppActivity extends Activity {
 					public void onClick(View v) {
 						account.getAxolotlService().setFingerprintTrust(fingerprint,
 								SQLiteAxolotlStore.Trust.UNTRUSTED);
-						refreshUi();
-						xmppConnectionService.updateAccountUi();
-						xmppConnectionService.updateConversationUi();
+						v.setEnabled(true);
 					}
 				}
 
