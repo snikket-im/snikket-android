@@ -41,7 +41,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 	private static DatabaseBackend instance = null;
 
 	private static final String DATABASE_NAME = "history";
-	private static final int DATABASE_VERSION = 15;
+	private static final int DATABASE_VERSION = 16;
 
 	private static String CREATE_CONTATCS_STATEMENT = "create table "
 			+ Contact.TABLENAME + "(" + Contact.ACCOUNT + " TEXT, "
@@ -294,6 +294,10 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 			recreateAxolotlDb(db);
 			db.execSQL("ALTER TABLE " + Message.TABLENAME + " ADD COLUMN "
 					+ Message.FINGERPRINT + " TEXT");
+		}
+		if (oldVersion < 16 && newVersion >= 16) {
+			db.execSQL("ALTER TABLE " + Message.TABLENAME + " ADD COLUMN "
+					+ Message.CARBON + " INTEGER");
 		}
 	}
 

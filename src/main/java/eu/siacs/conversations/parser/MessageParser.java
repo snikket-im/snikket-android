@@ -230,6 +230,7 @@ public class MessageParser extends AbstractParser implements
 		final MessagePacket packet;
 		Long timestamp = null;
 		final boolean isForwarded;
+		boolean isCarbon = false;
 		String serverMsgId = null;
 		final Element fin = original.findChild("fin", "urn:xmpp:mam:0");
 		if (fin != null) {
@@ -260,7 +261,8 @@ public class MessageParser extends AbstractParser implements
 				return;
 			}
 			timestamp = f != null ? f.second : null;
-			isForwarded = f != null;
+			isCarbon = f != null;
+			isForwarded = isCarbon;
 		} else {
 			packet = original;
 			isForwarded = false;
@@ -346,6 +348,7 @@ public class MessageParser extends AbstractParser implements
 			message.setCounterpart(counterpart);
 			message.setRemoteMsgId(remoteMsgId);
 			message.setServerMsgId(serverMsgId);
+			message.setCarbon(isCarbon);
 			message.setTime(timestamp);
 			message.markable = packet.hasChild("markable", "urn:xmpp:chat-markers:0");
 			if (conversation.getMode() == Conversation.MODE_MULTI) {

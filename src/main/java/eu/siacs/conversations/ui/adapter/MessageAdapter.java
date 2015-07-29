@@ -567,7 +567,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 					wasEncrypted = true;
 					break;
 				}
-				if (iterator.getRemoteMsgId() == null && iterator.getType() == SENT) {
+				if (!iterator.isCarbon() && iterator.getType() == SENT) {
 					break;
 				}
 			}
@@ -577,7 +577,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 					willBeEncrypted = true;
 					break;
 				}
-				if (iterator.getRemoteMsgId() == null && iterator.getType() == SENT) {
+				if (!iterator.isCarbon() && iterator.getType() == SENT) {
 					break;
 				}
 			}

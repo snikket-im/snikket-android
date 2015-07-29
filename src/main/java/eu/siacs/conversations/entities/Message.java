@@ -51,6 +51,7 @@ public class Message extends AbstractEntity {
 	public static final String ENCRYPTION = "encryption";
 	public static final String STATUS = "status";
 	public static final String TYPE = "type";
+	public static final String CARBON = "carbon";
 	public static final String REMOTE_MSG_ID = "remoteMsgId";
 	public static final String SERVER_MSG_ID = "serverMsgId";
 	public static final String RELATIVE_FILE_PATH = "relativeFilePath";
@@ -68,6 +69,7 @@ public class Message extends AbstractEntity {
 	protected int encryption;
 	protected int status;
 	protected int type;
+	protected boolean carbon = false;
 	protected String relativeFilePath;
 	protected boolean read = true;
 	protected String remoteMsgId = null;
@@ -85,8 +87,11 @@ public class Message extends AbstractEntity {
 	public Message(Conversation conversation, String body, int encryption) {
 		this(conversation, body, encryption, STATUS_UNSEND);
 	}
-
 	public Message(Conversation conversation, String body, int encryption, int status) {
+		this(conversation, body, encryption, status, false);
+	}
+
+	public Message(Conversation conversation, String body, int encryption, int status, boolean carbon) {
 		this(java.util.UUID.randomUUID().toString(),
 				conversation.getUuid(),
 				conversation.getJid() == null ? null : conversation.getJid().toBareJid(),
@@ -96,6 +101,7 @@ public class Message extends AbstractEntity {
 				encryption,
 				status,
 				TYPE_TEXT,
+				false,
 				null,
 				null,
 				null,
@@ -105,8 +111,9 @@ public class Message extends AbstractEntity {
 
 	private Message(final String uuid, final String conversationUUid, final Jid counterpart,
 					final Jid trueCounterpart, final String body, final long timeSent,
-					final int encryption, final int status, final int type, final String remoteMsgId,
-					final String relativeFilePath, final String serverMsgId, final String fingerprint) {
+					final int encryption, final int status, final int type, final boolean carbon,
+					final String remoteMsgId, final String relativeFilePath,
+					final String serverMsgId, final String fingerprint) {
 		this.uuid = uuid;
 		this.conversationUuid = conversationUUid;
 		this.counterpart = counterpart;
@@ -116,6 +123,7 @@ public class Message extends AbstractEntity {
 		this.encryption = encryption;
 		this.status = status;
 		this.type = type;
+		this.carbon = carbon;
 		this.remoteMsgId = remoteMsgId;
 		this.relativeFilePath = relativeFilePath;
 		this.serverMsgId = serverMsgId;
@@ -154,6 +162,7 @@ public class Message extends AbstractEntity {
 				cursor.getInt(cursor.getColumnIndex(ENCRYPTION)),
 				cursor.getInt(cursor.getColumnIndex(STATUS)),
 				cursor.getInt(cursor.getColumnIndex(TYPE)),
+				cursor.getInt(cursor.getColumnIndex(CARBON))>0,
 				cursor.getString(cursor.getColumnIndex(REMOTE_MSG_ID)),
 				cursor.getString(cursor.getColumnIndex(RELATIVE_FILE_PATH)),
 				cursor.getString(cursor.getColumnIndex(SERVER_MSG_ID)),
@@ -188,6 +197,7 @@ public class Message extends AbstractEntity {
 		values.put(ENCRYPTION, encryption);
 		values.put(STATUS, status);
 		values.put(TYPE, type);
+		values.put(CARBON, carbon ? 1 : 0);
 		values.put(REMOTE_MSG_ID, remoteMsgId);
 		values.put(RELATIVE_FILE_PATH, relativeFilePath);
 		values.put(SERVER_MSG_ID, serverMsgId);
@@ -310,6 +320,14 @@ public class Message extends AbstractEntity {
 
 	public void setType(int type) {
 		this.type = type;
+	}
+
+	public boolean isCarbon() {
+		return carbon;
+	}
+
+	public void setCarbon(boolean carbon) {
+		this.carbon = carbon;
 	}
 
 	public void setTrueCounterpart(Jid trueCounterpart) {
