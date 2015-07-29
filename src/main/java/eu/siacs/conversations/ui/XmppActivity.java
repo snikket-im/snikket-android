@@ -424,10 +424,15 @@ public abstract class XmppActivity extends Activity {
 	}
 
 	public void switchToContactDetails(Contact contact) {
+		switchToContactDetails(contact, null);
+	}
+
+	public void switchToContactDetails(Contact contact, String messageFingerprint) {
 		Intent intent = new Intent(this, ContactDetailsActivity.class);
 		intent.setAction(ContactDetailsActivity.ACTION_VIEW_CONTACT);
 		intent.putExtra("account", contact.getAccount().getJid().toBareJid().toString());
 		intent.putExtra("contact", contact.getJid().toString());
+		intent.putExtra("fingerprint", messageFingerprint);
 		startActivity(intent);
 	}
 
@@ -608,11 +613,11 @@ public abstract class XmppActivity extends Activity {
 		builder.create().show();
 	}
 
-	protected boolean addFingerprintRow(LinearLayout keys, final Account account, IdentityKey identityKey) {
+	protected boolean addFingerprintRow(LinearLayout keys, final Account account, IdentityKey identityKey, boolean highlight) {
 		final String fingerprint = identityKey.getFingerprint().replaceAll("\\s", "");
 		final SQLiteAxolotlStore.Trust trust = account.getAxolotlService()
 				.getFingerprintTrust(fingerprint);
-		return addFingerprintRowWithListeners(keys, account, identityKey, trust, true,
+		return addFingerprintRowWithListeners(keys, account, identityKey, highlight, trust, true,
 				new CompoundButton.OnCheckedChangeListener() {
 					@Override
 					public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -636,12 +641,13 @@ public abstract class XmppActivity extends Activity {
 	}
 
 	protected boolean addFingerprintRowWithListeners(LinearLayout keys, final Account account,
-	                                              final IdentityKey identityKey,
-	                                              SQLiteAxolotlStore.Trust trust,
-	                                              boolean showTag,
-	                                              CompoundButton.OnCheckedChangeListener
-			                                             onCheckedChangeListener,
-	                                              View.OnClickListener onClickListener) {
+	                                                 final IdentityKey identityKey,
+	                                                 boolean highlight,
+	                                                 SQLiteAxolotlStore.Trust trust,
+	                                                 boolean showTag,
+	                                                 CompoundButton.OnCheckedChangeListener
+			                                                 onCheckedChangeListener,
+	                                                 View.OnClickListener onClickListener) {
 		if (trust == SQLiteAxolotlStore.Trust.COMPROMISED) {
 			return false;
 		}
@@ -687,6 +693,12 @@ public abstract class XmppActivity extends Activity {
 			keyType.setText(getString(R.string.axolotl_fingerprint));
 		} else {
 			keyType.setVisibility(View.GONE);
+		}
+		if (highlight) {
+			keyType.setTextColor(getResources().getColor(R.color.accent));
+			keyType.setText(getString(R.string.axolotl_fingerprint_selected_message));
+		} else {
+			keyType.setText(getString(R.string.axolotl_fingerprint));
 		}
 
 		key.setText(CryptoHelper.prettifyFingerprint(identityKey.getFingerprint()));

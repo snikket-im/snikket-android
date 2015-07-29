@@ -118,7 +118,7 @@ public class TrustKeysActivity extends XmppActivity implements OnKeyStatusUpdate
 		boolean hasForeignKeys = false;
 		for(final IdentityKey identityKey : ownKeysToTrust.keySet()) {
 			hasOwnKeys = true;
-			addFingerprintRowWithListeners(ownKeys, contact.getAccount(), identityKey,
+			addFingerprintRowWithListeners(ownKeys, contact.getAccount(), identityKey, false,
 					Trust.fromBoolean(ownKeysToTrust.get(identityKey)), false,
 					new CompoundButton.OnCheckedChangeListener() {
 						@Override
@@ -134,7 +134,7 @@ public class TrustKeysActivity extends XmppActivity implements OnKeyStatusUpdate
 		}
 		for(final IdentityKey identityKey : foreignKeysToTrust.keySet()) {
 			hasForeignKeys = true;
-			addFingerprintRowWithListeners(foreignKeys, contact.getAccount(), identityKey,
+			addFingerprintRowWithListeners(foreignKeys, contact.getAccount(), identityKey, false,
 					Trust.fromBoolean(foreignKeysToTrust.get(identityKey)), false,
 					new CompoundButton.OnCheckedChangeListener() {
 						@Override

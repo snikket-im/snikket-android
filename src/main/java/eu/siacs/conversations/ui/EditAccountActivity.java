@@ -74,6 +74,7 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 
 	private Jid jidToEdit;
 	private Account mAccount;
+	private String messageFingerprint;
 
 	private boolean mFetchingAvatar = false;
 
@@ -388,6 +389,7 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 			} catch (final InvalidJidException | NullPointerException ignored) {
 				this.jidToEdit = null;
 			}
+			this.messageFingerprint = getIntent().getStringExtra("fingerprint");
 			if (this.jidToEdit != null) {
 				this.mRegisterNew.setVisibility(View.GONE);
 				if (getActionBar() != null) {
@@ -571,7 +573,8 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 				if(ownKey.equals(identityKey)) {
 					continue;
 				}
-				hasKeys |= addFingerprintRow(keys, mAccount, identityKey);
+				boolean highlight = identityKey.getFingerprint().replaceAll("\\s", "").equals(messageFingerprint);
+				hasKeys |= addFingerprintRow(keys, mAccount, identityKey, highlight);
 			}
 			if (hasKeys) {
 				keysCard.setVisibility(View.VISIBLE);

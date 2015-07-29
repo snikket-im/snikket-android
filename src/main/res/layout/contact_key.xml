@@ -28,6 +28,7 @@
             android:textColor="@color/black54"
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/key"
+            android:maxLines="1"
             android:textSize="?attr/TextSizeInfo"/>
 
         <TextView

@@ -392,12 +392,13 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 							highlightInConference(user);
 						}
 					} else {
-						activity.switchToContactDetails(message.getContact());
+						activity.switchToContactDetails(message.getContact(), message.getAxolotlFingerprint());
 					}
 				} else {
 					Account account = message.getConversation().getAccount();
 					Intent intent = new Intent(activity, EditAccountActivity.class);
 					intent.putExtra("jid", account.getJid().toBareJid().toString());
+					intent.putExtra("fingerprint", message.getAxolotlFingerprint());
 					startActivity(intent);
 				}
 			}
