@@ -64,7 +64,8 @@ public class XmppAxolotlSession {
 	}
 
 	protected SQLiteAxolotlStore.Trust getTrust() {
-		return sqLiteAxolotlStore.getFingerprintTrust(fingerprint);
+		SQLiteAxolotlStore.Trust trust = sqLiteAxolotlStore.getFingerprintTrust(fingerprint);
+		return (trust == null)? SQLiteAxolotlStore.Trust.UNDECIDED : trust;
 	}
 
 	@Nullable
