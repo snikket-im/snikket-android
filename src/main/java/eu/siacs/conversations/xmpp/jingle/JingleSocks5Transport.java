@@ -106,7 +106,7 @@ public class JingleSocks5Transport extends JingleTransport {
 				try {
 					MessageDigest digest = MessageDigest.getInstance("SHA-1");
 					digest.reset();
-					fileInputStream = file.createInputStream();
+					fileInputStream = createInputStream(file); //file.createInputStream();
 					if (fileInputStream == null) {
 						Log.d(Config.LOGTAG, connection.getAccount().getJid().toBareJid() + ": could not create input stream");
 						callback.onFileTransferAborted();
@@ -157,7 +157,7 @@ public class JingleSocks5Transport extends JingleTransport {
 					socket.setSoTimeout(30000);
 					file.getParentFile().mkdirs();
 					file.createNewFile();
-					fileOutputStream = file.createOutputStream();
+					fileOutputStream = createOutputStream(file);
 					if (fileOutputStream == null) {
 						callback.onFileTransferAborted();
 						Log.d(Config.LOGTAG, connection.getAccount().getJid().toBareJid() + ": could not create output stream");

@@ -2,10 +2,17 @@ package eu.siacs.conversations.http;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.os.SystemClock;
 import android.util.Log;
 
+import org.bouncycastle.crypto.engines.AESEngine;
+import org.bouncycastle.crypto.io.CipherOutputStream;
+import org.bouncycastle.crypto.modes.AEADBlockCipher;
+import org.bouncycastle.crypto.modes.GCMBlockCipher;
+import org.bouncycastle.crypto.params.AEADParameters;
+import org.bouncycastle.crypto.params.KeyParameter;
+
 import java.io.BufferedInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
@@ -206,7 +213,7 @@ public class HttpDownloadConnection implements Transferable {
 			}
 		}
 
-		private void download() throws SSLHandshakeException, IOException {
+		private void download() throws IOException {
 			HttpURLConnection connection = (HttpURLConnection) mUrl.openConnection();
 			if (connection instanceof HttpsURLConnection) {
 				mHttpConnectionManager.setupTrustManager((HttpsURLConnection) connection, interactive);
@@ -215,9 +222,13 @@ public class HttpDownloadConnection implements Transferable {
 			BufferedInputStream is = new BufferedInputStream(connection.getInputStream());
 			file.getParentFile().mkdirs();
 			file.createNewFile();
-			OutputStream os = file.createOutputStream();
-			if (os == null) {
-				throw new IOException();
+			OutputStream os;
+			if (file.getKey() != null) {
+				AEADBlockCipher cipher = new GCMBlockCipher(new AESEngine());
+				cipher.init(false, new AEADParameters(new KeyParameter(file.getKey()), 128, file.getIv()));
+				os = new CipherOutputStream(new FileOutputStream(file), cipher);
+			} else {
+				os = new FileOutputStream(file);
 			}
 			long transmitted = 0;
 			long expected = file.getExpectedSize();

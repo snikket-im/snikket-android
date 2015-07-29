@@ -1,8 +1,18 @@
 package eu.siacs.conversations.http;
 
 import android.app.PendingIntent;
+import android.content.Intent;
+import android.net.Uri;
 import android.util.Log;
 
+import org.bouncycastle.crypto.engines.AESEngine;
+import org.bouncycastle.crypto.io.CipherInputStream;
+import org.bouncycastle.crypto.modes.AEADBlockCipher;
+import org.bouncycastle.crypto.modes.GCMBlockCipher;
+import org.bouncycastle.crypto.params.AEADParameters;
+import org.bouncycastle.crypto.params.KeyParameter;
+
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -43,7 +53,7 @@ public class HttpUploadConnection implements Transferable {
 	private byte[] key = null;
 
 	private long transmitted = 0;
-	private long expected = 1;
+	private int expected = 1;
 
 	public HttpUploadConnection(HttpConnectionManager httpConnectionManager) {
 		this.mHttpConnectionManager = httpConnectionManager;
@@ -142,14 +152,21 @@ public class HttpUploadConnection implements Transferable {
 				if (connection instanceof HttpsURLConnection) {
 					mHttpConnectionManager.setupTrustManager((HttpsURLConnection) connection, true);
 				}
+				if (file.getKey() != null) {
+					AEADBlockCipher cipher = new GCMBlockCipher(new AESEngine());
+					cipher.init(true, new AEADParameters(new KeyParameter(file.getKey()), 128, file.getIv()));
+					expected = cipher.getOutputSize((int) file.getSize());
+					is = new CipherInputStream(new FileInputStream(file), cipher);
+				} else {
+					expected = (int) file.getSize();
+					is = new FileInputStream(file);
+				}
 				connection.setRequestMethod("PUT");
-				connection.setFixedLengthStreamingMode((int) file.getExpectedSize());
+				connection.setFixedLengthStreamingMode(expected);
 				connection.setDoOutput(true);
 				connection.connect();
 				os = connection.getOutputStream();
-				is = file.createInputStream();
 				transmitted = 0;
-				expected = file.getExpectedSize();
 				int count = -1;
 				byte[] buffer = new byte[4096];
 				while (((count = is.read(buffer)) != -1) && !canceled) {
@@ -163,11 +180,13 @@ public class HttpUploadConnection implements Transferable {
 				int code = connection.getResponseCode();
 				if (code == 200 || code == 201) {
 					Log.d(Config.LOGTAG, "finished uploading file");
-					Message.FileParams params = message.getFileParams();
 					if (key != null) {
 						mGetUrl = new URL(mGetUrl.toString() + "#" + CryptoHelper.bytesToHex(key));
 					}
 					mXmppConnectionService.getFileBackend().updateFileParams(message, mGetUrl);
+					Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+					intent.setData(Uri.fromFile(file));
+					mXmppConnectionService.sendBroadcast(intent);
 					message.setTransferable(null);
 					message.setCounterpart(message.getConversation().getJid().toBareJid());
 					if (message.getEncryption() == Message.ENCRYPTION_DECRYPTED) {
@@ -188,12 +207,13 @@ public class HttpUploadConnection implements Transferable {
 							}
 						});
 					} else {
-						mXmppConnectionService.resendMessage(message,delayed);
+						mXmppConnectionService.resendMessage(message, delayed);
 					}
 				} else {
 					fail();
 				}
 			} catch (IOException e) {
+				e.printStackTrace();
 				Log.d(Config.LOGTAG,"http upload failed "+e.getMessage());
 				fail();
 			} finally {

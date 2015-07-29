@@ -93,7 +93,7 @@ public class JingleInbandTransport extends JingleTransport {
 			digest.reset();
 			file.getParentFile().mkdirs();
 			file.createNewFile();
-			this.fileOutputStream = file.createOutputStream();
+			this.fileOutputStream = createOutputStream(file);
 			if (this.fileOutputStream == null) {
 				Log.d(Config.LOGTAG,account.getJid().toBareJid()+": could not create output stream");
 				callback.onFileTransferAborted();
@@ -120,7 +120,7 @@ public class JingleInbandTransport extends JingleTransport {
 			this.fileSize = this.remainingSize;
 			this.digest = MessageDigest.getInstance("SHA-1");
 			this.digest.reset();
-			fileInputStream = this.file.createInputStream();
+			fileInputStream = createInputStream(this.file);
 			if (fileInputStream == null) {
 				Log.d(Config.LOGTAG,account.getJid().toBareJid()+": could no create input stream");
 				callback.onFileTransferAborted();
