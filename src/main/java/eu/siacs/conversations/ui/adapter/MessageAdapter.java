@@ -182,6 +182,8 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 				} else {
 					viewHolder.indicator.clearColorFilter();
 				}
+			} else {
+				viewHolder.indicator.clearColorFilter();
 			}
 		}
 
