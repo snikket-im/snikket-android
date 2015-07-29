@@ -560,6 +560,36 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 			}
 		}
 
+		if (type == RECEIVED) {
+			boolean wasEncrypted = false;
+			for (Message iterator = message.prev(); iterator != null; iterator = iterator.prev()){
+				if (iterator.getEncryption() != Message.ENCRYPTION_NONE) {
+					wasEncrypted = true;
+					break;
+				}
+				if (iterator.getRemoteMsgId() == null && iterator.getType() == SENT) {
+					break;
+				}
+			}
+			boolean willBeEncrypted = conversation.getNextEncryption(false) != Message.ENCRYPTION_NONE;
+			for (Message iterator = message.next(); iterator != null; iterator = iterator.next()){
+				if (iterator.getEncryption() != Message.ENCRYPTION_NONE) {
+					willBeEncrypted = true;
+					break;
+				}
+				if (iterator.getRemoteMsgId() == null && iterator.getType() == SENT) {
+					break;
+				}
+			}
+
+			if ( willBeEncrypted && wasEncrypted
+					&& message.getEncryption() == Message.ENCRYPTION_NONE) {
+				viewHolder.message_box.setBackgroundResource(R.drawable.message_bubble_received_warning);
+			} else {
+				viewHolder.message_box.setBackgroundResource(R.drawable.message_bubble_received);
+			}
+		}
+
 		displayStatus(viewHolder, message);
 
 		return view;
