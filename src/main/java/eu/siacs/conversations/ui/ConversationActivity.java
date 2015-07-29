@@ -775,6 +775,7 @@ public class ConversationActivity extends XmppActivity
 					xmppConnectionService.databaseBackend.updateConversation(conversation);
 					fragment.updateChatMsgHint();
 					invalidateOptionsMenu();
+					refreshUi();
 					return true;
 				}
 			});
