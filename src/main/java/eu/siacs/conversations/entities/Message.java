@@ -709,4 +709,35 @@ public class Message extends AbstractEntity {
 		return conversation.getAccount().getAxolotlService().getFingerprintTrust(axolotlFingerprint)
 				== SQLiteAxolotlStore.Trust.TRUSTED;
 	}
+
+	private  int getPreviousEncryption() {
+		for (Message iterator = this.prev(); iterator != null; iterator = iterator.prev()){
+			if( iterator.isCarbon() || iterator.getStatus() == STATUS_RECEIVED ) {
+				continue;
+			}
+			return iterator.getEncryption();
+		}
+		return ENCRYPTION_NONE;
+	}
+
+	private int getNextEncryption() {
+		for (Message iterator = this.next(); iterator != null; iterator = iterator.next()){
+			if( iterator.isCarbon() || iterator.getStatus() == STATUS_RECEIVED ) {
+				continue;
+			}
+			return iterator.getEncryption();
+		}
+		return conversation.getNextEncryption(false);
+	}
+
+	public boolean isValidInSession() {
+		int pastEncryption = this.getPreviousEncryption();
+		int futureEncryption = this.getNextEncryption();
+
+		boolean inUnencryptedSession = pastEncryption == ENCRYPTION_NONE
+				|| futureEncryption == ENCRYPTION_NONE
+				|| pastEncryption != futureEncryption;
+
+		return inUnencryptedSession || this.getEncryption() == pastEncryption;
+	}
 }
