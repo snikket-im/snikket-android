@@ -474,7 +474,6 @@
 	<string name="received_location">Received location</string>
 	<string name="title_undo_swipe_out_conversation">Conversation closed</string>
 	<string name="title_undo_swipe_out_muc">Left conference</string>
-	<string name="pref_certificate_options">Certificate options</string>
 	<string name="pref_dont_trust_system_cas_title">Don’t trust system CAs</string>
 	<string name="pref_dont_trust_system_cas_summary">All certificates must be manually approved</string>
 	<string name="pref_remove_trusted_certificates_title">Remove certificates</string>
