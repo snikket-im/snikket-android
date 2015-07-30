@@ -96,19 +96,15 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		return this.getItemViewType(getItem(position));
 	}
 
-	private int getMessageTextColor(Message message) {
-		int type = this.getItemViewType(message);
-
+	private int getMessageTextColor(int type, boolean primary) {
 		if (type == SENT) {
-			return activity.getResources().getColor(R.color.black87);
-		} else if (type == RECEIVED) {
-			return activity.getResources().getColor(R.color.white);
+			return activity.getResources().getColor(primary ? R.color.black87 : R.color.black54);
+		} else {
+			return activity.getResources().getColor(primary ? R.color.white : R.color.white70);
 		}
-
-		return activity.getPrimaryTextColor();
 	}
 
-	private void displayStatus(ViewHolder viewHolder, Message message) {
+	private void displayStatus(ViewHolder viewHolder, Message message, int type) {
 		String filesize = null;
 		String info = null;
 		boolean error = false;
@@ -163,10 +159,10 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 				}
 				break;
 		}
-		if (error) {
+		if (error && type == SENT) {
 			viewHolder.time.setTextColor(activity.getWarningTextColor());
 		} else {
-			viewHolder.time.setTextColor(this.getMessageTextColor(message));
+			viewHolder.time.setTextColor(this.getMessageTextColor(type,false));
 		}
 		if (message.getEncryption() == Message.ENCRYPTION_NONE) {
 			viewHolder.indicator.setVisibility(View.GONE);
@@ -178,12 +174,23 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 								message.getAxolotlFingerprint());
 
 				if(trust == null || trust != SQLiteAxolotlStore.Trust.TRUSTED) {
-					viewHolder.indicator.setColorFilter(Color.RED);
+					viewHolder.indicator.setColorFilter(activity.getWarningTextColor());
+					viewHolder.indicator.setAlpha(1.0f);
 				} else {
 					viewHolder.indicator.clearColorFilter();
+					if (type == SENT) {
+						viewHolder.indicator.setAlpha(0.57f);
+					} else {
+						viewHolder.indicator.setAlpha(0.7f);
+					}
 				}
 			} else {
 				viewHolder.indicator.clearColorFilter();
+				if (type == SENT) {
+					viewHolder.indicator.setAlpha(0.57f);
+				} else {
+					viewHolder.indicator.setAlpha(0.7f);
+				}
 			}
 		}
 
@@ -216,19 +223,19 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		}
 	}
 
-	private void displayInfoMessage(ViewHolder viewHolder, String text) {
+	private void displayInfoMessage(ViewHolder viewHolder, String text, int type) {
 		if (viewHolder.download_button != null) {
 			viewHolder.download_button.setVisibility(View.GONE);
 		}
 		viewHolder.image.setVisibility(View.GONE);
 		viewHolder.messageBody.setVisibility(View.VISIBLE);
 		viewHolder.messageBody.setText(text);
-		viewHolder.messageBody.setTextColor(activity.getSecondaryTextColor());
+		viewHolder.messageBody.setTextColor(getMessageTextColor(type,false));
 		viewHolder.messageBody.setTypeface(null, Typeface.ITALIC);
 		viewHolder.messageBody.setTextIsSelectable(false);
 	}
 
-	private void displayDecryptionFailed(ViewHolder viewHolder) {
+	private void displayDecryptionFailed(ViewHolder viewHolder, int type) {
 		if (viewHolder.download_button != null) {
 			viewHolder.download_button.setVisibility(View.GONE);
 		}
@@ -236,7 +243,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		viewHolder.messageBody.setVisibility(View.VISIBLE);
 		viewHolder.messageBody.setText(getContext().getString(
 				R.string.decryption_failed));
-		viewHolder.messageBody.setTextColor(activity.getWarningTextColor());
+		viewHolder.messageBody.setTextColor(getMessageTextColor(type,false));
 		viewHolder.messageBody.setTypeface(null, Typeface.NORMAL);
 		viewHolder.messageBody.setTextIsSelectable(false);
 	}
@@ -254,7 +261,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		viewHolder.messageBody.setText(span);
 	}
 
-	private void displayTextMessage(final ViewHolder viewHolder, final Message message) {
+	private void displayTextMessage(final ViewHolder viewHolder, final Message message, int type) {
 		if (viewHolder.download_button != null) {
 			viewHolder.download_button.setVisibility(View.GONE);
 		}
@@ -312,7 +319,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		} else {
 			viewHolder.messageBody.setText("");
 		}
-		viewHolder.messageBody.setTextColor(this.getMessageTextColor(message));
+		viewHolder.messageBody.setTextColor(this.getMessageTextColor(type,true));
 		viewHolder.messageBody.setTypeface(null, Typeface.NORMAL);
 		viewHolder.messageBody.setTextIsSelectable(true);
 	}
@@ -521,7 +528,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 			} else if (transferable.getStatus() == Transferable.STATUS_OFFER_CHECK_FILESIZE) {
 				displayDownloadableMessage(viewHolder, message, activity.getString(R.string.check_x_filesize, UIHelper.getFileDescriptionString(activity, message)));
 			} else {
-				displayInfoMessage(viewHolder, UIHelper.getMessagePreview(activity, message).first);
+				displayInfoMessage(viewHolder, UIHelper.getMessagePreview(activity, message).first,type);
 			}
 		} else if (message.getType() == Message.TYPE_IMAGE && message.getEncryption() != Message.ENCRYPTION_PGP && message.getEncryption() != Message.ENCRYPTION_DECRYPTION_FAILED) {
 			displayImageMessage(viewHolder, message);
@@ -533,10 +540,9 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 			}
 		} else if (message.getEncryption() == Message.ENCRYPTION_PGP) {
 			if (activity.hasPgp()) {
-				displayInfoMessage(viewHolder,activity.getString(R.string.encrypted_message));
+				displayInfoMessage(viewHolder,activity.getString(R.string.encrypted_message),type);
 			} else {
-				displayInfoMessage(viewHolder,
-						activity.getString(R.string.install_openkeychain));
+				displayInfoMessage(viewHolder,activity.getString(R.string.install_openkeychain),type);
 				if (viewHolder != null) {
 					viewHolder.message_box
 						.setOnClickListener(new OnClickListener() {
@@ -549,7 +555,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 				}
 			}
 		} else if (message.getEncryption() == Message.ENCRYPTION_DECRYPTION_FAILED) {
-			displayDecryptionFailed(viewHolder);
+			displayDecryptionFailed(viewHolder,type);
 		} else {
 			if (GeoHelper.isGeoUri(message.getBody())) {
 				displayLocationMessage(viewHolder,message);
@@ -558,7 +564,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 			} else if (message.treatAsDownloadable() == Message.Decision.MUST) {
 				displayDownloadableMessage(viewHolder, message, activity.getString(R.string.check_x_filesize, UIHelper.getFileDescriptionString(activity, message)));
 			} else {
-				displayTextMessage(viewHolder, message);
+				displayTextMessage(viewHolder, message, type);
 			}
 		}
 
@@ -592,7 +598,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 			}
 		}
 
-		displayStatus(viewHolder, message);
+		displayStatus(viewHolder, message, type);
 
 		return view;
 	}

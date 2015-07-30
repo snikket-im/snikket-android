@@ -80,7 +80,6 @@
                     android:gravity="center_vertical"
                     android:text="@string/sending"
                     android:textColor="@color/black54"
-                    android:alpha="0.54"
                     android:textSize="?attr/TextSizeInfo" />
 
                 <ImageView

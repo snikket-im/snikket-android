@@ -89,7 +89,6 @@
                     android:gravity="center_vertical"
                     android:text="@string/sending"
                     android:textColor="@color/white70"
-                    android:alpha="0.70"
                     android:textSize="?attr/TextSizeInfo" />
             </LinearLayout>
         </LinearLayout>
