@@ -73,11 +73,9 @@ public class MessageParser extends AbstractParser implements
 			body = otrSession.transformReceiving(body);
 			SessionStatus status = otrSession.getSessionStatus();
 			if (body == null && status == SessionStatus.ENCRYPTED) {
-				conversation.setNextEncryption(Message.ENCRYPTION_OTR);
 				mXmppConnectionService.onOtrSessionEstablished(conversation);
 				return null;
 			} else if (body == null && status == SessionStatus.FINISHED) {
-				conversation.setNextEncryption(Message.ENCRYPTION_NONE);
 				conversation.resetOtrSession();
 				mXmppConnectionService.updateConversationUi();
 				return null;

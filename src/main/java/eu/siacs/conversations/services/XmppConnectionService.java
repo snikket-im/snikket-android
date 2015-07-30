@@ -349,7 +349,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	public void attachLocationToConversation(final Conversation conversation,
 											 final Uri uri,
 											 final UiCallback<Message> callback) {
-		int encryption = conversation.getNextEncryption(forceEncryption());
+		int encryption = conversation.getNextEncryption();
 		if (encryption == Message.ENCRYPTION_PGP) {
 			encryption = Message.ENCRYPTION_DECRYPTED;
 		}
@@ -368,12 +368,10 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 			final Uri uri,
 			final UiCallback<Message> callback) {
 		final Message message;
-		if (conversation.getNextEncryption(forceEncryption()) == Message.ENCRYPTION_PGP) {
-			message = new Message(conversation, "",
-					Message.ENCRYPTION_DECRYPTED);
+		if (conversation.getNextEncryption() == Message.ENCRYPTION_PGP) {
+			message = new Message(conversation, "", Message.ENCRYPTION_DECRYPTED);
 		} else {
-			message = new Message(conversation, "",
-					conversation.getNextEncryption(forceEncryption()));
+			message = new Message(conversation, "", conversation.getNextEncryption());
 		}
 		message.setCounterpart(conversation.getNextCounterpart());
 		message.setType(Message.TYPE_FILE);
@@ -409,12 +407,10 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	public void attachImageToConversation(final Conversation conversation,
 			final Uri uri, final UiCallback<Message> callback) {
 		final Message message;
-		if (conversation.getNextEncryption(forceEncryption()) == Message.ENCRYPTION_PGP) {
-			message = new Message(conversation, "",
-					Message.ENCRYPTION_DECRYPTED);
+		if (conversation.getNextEncryption() == Message.ENCRYPTION_PGP) {
+			message = new Message(conversation, "", Message.ENCRYPTION_DECRYPTED);
 		} else {
-			message = new Message(conversation, "",
-					conversation.getNextEncryption(forceEncryption()));
+			message = new Message(conversation, "",conversation.getNextEncryption());
 		}
 		message.setCounterpart(conversation.getNextCounterpart());
 		message.setType(Message.TYPE_IMAGE);
@@ -424,7 +420,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 			public void run() {
 				try {
 					getFileBackend().copyImageToPrivateStorage(message, uri);
-					if (conversation.getNextEncryption(forceEncryption()) == Message.ENCRYPTION_PGP) {
+					if (conversation.getNextEncryption() == Message.ENCRYPTION_PGP) {
 						getPgpEngine().encrypt(message, callback);
 					} else {
 						callback.success(message);

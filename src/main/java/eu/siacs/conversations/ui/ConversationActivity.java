@@ -385,7 +385,7 @@ public class ConversationActivity extends XmppActivity
 		} else {
 			menuAdd.setVisible(!isConversationsOverviewHideable());
 			if (this.getSelectedConversation() != null) {
-				if (this.getSelectedConversation().getNextEncryption(forceEncryption()) != Message.ENCRYPTION_NONE) {
+				if (this.getSelectedConversation().getNextEncryption() != Message.ENCRYPTION_NONE) {
 					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 						menuSecure.setIcon(R.drawable.ic_lock_white_24dp);
 					} else {
@@ -498,7 +498,7 @@ public class ConversationActivity extends XmppActivity
 				break;
 		}
 		final Conversation conversation = getSelectedConversation();
-		final int encryption = conversation.getNextEncryption(forceEncryption());
+		final int encryption = conversation.getNextEncryption();
 		if (encryption == Message.ENCRYPTION_PGP) {
 			if (hasPgp()) {
 				if (conversation.getContact().getPgpKeyId() != 0) {
@@ -787,15 +787,10 @@ public class ConversationActivity extends XmppActivity
 			if (conversation.getMode() == Conversation.MODE_MULTI) {
 				otr.setEnabled(false);
 				axolotl.setEnabled(false);
-			} else {
-				if (forceEncryption()) {
-					none.setVisible(false);
-				}
-			}
-			if (!conversation.getAccount().getAxolotlService().isContactAxolotlCapable(conversation.getContact())) {
+			} else if (!conversation.getAccount().getAxolotlService().isContactAxolotlCapable(conversation.getContact())) {
 				axolotl.setEnabled(false);
 			}
-			switch (conversation.getNextEncryption(forceEncryption())) {
+			switch (conversation.getNextEncryption()) {
 				case Message.ENCRYPTION_NONE:
 					none.setChecked(true);
 					break;
@@ -806,8 +801,7 @@ public class ConversationActivity extends XmppActivity
 					pgp.setChecked(true);
 					break;
 				case Message.ENCRYPTION_AXOLOTL:
-					popup.getMenu().findItem(R.id.encryption_choice_axolotl)
-							.setChecked(true);
+					axolotl.setChecked(true);
 					break;
 				default:
 					none.setChecked(true);
@@ -820,8 +814,7 @@ public class ConversationActivity extends XmppActivity
 	protected void muteConversationDialog(final Conversation conversation) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(R.string.disable_notifications);
-		final int[] durations = getResources().getIntArray(
-				R.array.mute_options_durations);
+		final int[] durations = getResources().getIntArray(R.array.mute_options_durations);
 		builder.setItems(R.array.mute_options_descriptions,
 				new OnClickListener() {
 
@@ -1251,10 +1244,6 @@ public class ConversationActivity extends XmppActivity
 
 					}
 				});
-	}
-
-	public boolean forceEncryption() {
-		return getPreferences().getBoolean("force_encryption", false);
 	}
 
 	public boolean useSendButtonToIndicateStatus() {

@@ -727,7 +727,7 @@ public class Message extends AbstractEntity {
 			}
 			return iterator.getEncryption();
 		}
-		return conversation.getNextEncryption(false);
+		return conversation.getNextEncryption();
 	}
 
 	public boolean isValidInSession() {
