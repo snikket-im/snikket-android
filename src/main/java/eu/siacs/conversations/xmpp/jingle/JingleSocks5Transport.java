@@ -106,13 +106,13 @@ public class JingleSocks5Transport extends JingleTransport {
 				try {
 					MessageDigest digest = MessageDigest.getInstance("SHA-1");
 					digest.reset();
-					fileInputStream = createInputStream(file); //file.createInputStream();
+					fileInputStream = connection.getFileInputStream();
 					if (fileInputStream == null) {
 						Log.d(Config.LOGTAG, connection.getAccount().getJid().toBareJid() + ": could not create input stream");
 						callback.onFileTransferAborted();
 						return;
 					}
-					long size = file.getSize();
+					long size = file.getExpectedSize();
 					long transmitted = 0;
 					int count;
 					byte[] buffer = new byte[8192];
@@ -157,7 +157,7 @@ public class JingleSocks5Transport extends JingleTransport {
 					socket.setSoTimeout(30000);
 					file.getParentFile().mkdirs();
 					file.createNewFile();
-					fileOutputStream = createOutputStream(file);
+					fileOutputStream = connection.getFileOutputStream();
 					if (fileOutputStream == null) {
 						callback.onFileTransferAborted();
 						Log.d(Config.LOGTAG, connection.getAccount().getJid().toBareJid() + ": could not create output stream");

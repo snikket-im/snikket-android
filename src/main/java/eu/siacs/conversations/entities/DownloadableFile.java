@@ -24,15 +24,7 @@ public class DownloadableFile extends File {
 	}
 
 	public long getExpectedSize() {
-		if (this.aeskey != null) {
-			if (this.expectedSize == 0) {
-				return 0;
-			} else {
-				return (this.expectedSize / 16 + 1) * 16;
-			}
-		} else {
-			return this.expectedSize;
-		}
+		return this.expectedSize;
 	}
 
 	public String getMimeType() {
@@ -58,23 +50,31 @@ public class DownloadableFile extends File {
 		this.sha1sum = sum;
 	}
 
-	public void setKey(byte[] key) {
-		if (key.length == 48) {
+	public void setKeyAndIv(byte[] keyIvCombo) {
+		if (keyIvCombo.length == 48) {
 			byte[] secretKey = new byte[32];
 			byte[] iv = new byte[16];
-			System.arraycopy(key, 0, iv, 0, 16);
-			System.arraycopy(key, 16, secretKey, 0, 32);
+			System.arraycopy(keyIvCombo, 0, iv, 0, 16);
+			System.arraycopy(keyIvCombo, 16, secretKey, 0, 32);
 			this.aeskey = secretKey;
 			this.iv = iv;
-		} else if (key.length >= 32) {
+		} else if (keyIvCombo.length >= 32) {
 			byte[] secretKey = new byte[32];
-			System.arraycopy(key, 0, secretKey, 0, 32);
+			System.arraycopy(keyIvCombo, 0, secretKey, 0, 32);
 			this.aeskey = secretKey;
-		} else if (key.length >= 16) {
+		} else if (keyIvCombo.length >= 16) {
 			byte[] secretKey = new byte[16];
-			System.arraycopy(key, 0, secretKey, 0, 16);
+			System.arraycopy(keyIvCombo, 0, secretKey, 0, 16);
 			this.aeskey = secretKey;
 		}
+	}
+
+	public void setKey(byte[] key) {
+		this.aeskey = key;
+	}
+
+	public void setIv(byte[] iv) {
+		this.iv = iv;
 	}
 
 	public byte[] getKey() {

@@ -4,15 +4,8 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
+import android.util.Pair;
 
-import org.bouncycastle.crypto.engines.AESEngine;
-import org.bouncycastle.crypto.io.CipherInputStream;
-import org.bouncycastle.crypto.modes.AEADBlockCipher;
-import org.bouncycastle.crypto.modes.GCMBlockCipher;
-import org.bouncycastle.crypto.params.AEADParameters;
-import org.bouncycastle.crypto.params.KeyParameter;
-
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -28,6 +21,7 @@ import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.Transferable;
 import eu.siacs.conversations.persistance.FileBackend;
+import eu.siacs.conversations.services.AbstractConnectionManager;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.ui.UiCallback;
 import eu.siacs.conversations.utils.CryptoHelper;
@@ -105,7 +99,7 @@ public class HttpUploadConnection implements Transferable {
 				|| message.getEncryption() == Message.ENCRYPTION_OTR) {
 			this.key = new byte[48];
 			mXmppConnectionService.getRNG().nextBytes(this.key);
-			this.file.setKey(this.key);
+			this.file.setKeyAndIv(this.key);
 		}
 
 		Jid host = account.getXmppConnection().findDiscoItemByFeature(Xmlns.HTTP_UPLOAD);
@@ -152,15 +146,9 @@ public class HttpUploadConnection implements Transferable {
 				if (connection instanceof HttpsURLConnection) {
 					mHttpConnectionManager.setupTrustManager((HttpsURLConnection) connection, true);
 				}
-				if (file.getKey() != null) {
-					AEADBlockCipher cipher = new GCMBlockCipher(new AESEngine());
-					cipher.init(true, new AEADParameters(new KeyParameter(file.getKey()), 128, file.getIv()));
-					expected = cipher.getOutputSize((int) file.getSize());
-					is = new CipherInputStream(new FileInputStream(file), cipher);
-				} else {
-					expected = (int) file.getSize();
-					is = new FileInputStream(file);
-				}
+				Pair<InputStream,Integer> pair = AbstractConnectionManager.createInputStream(file,true);
+				is = pair.first;
+				expected = pair.second;
 				connection.setRequestMethod("PUT");
 				connection.setFixedLengthStreamingMode(expected);
 				connection.setDoOutput(true);

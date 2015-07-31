@@ -755,6 +755,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 					}
 					break;
 				case Message.ENCRYPTION_AXOLOTL:
+					message.setAxolotlFingerprint(account.getAxolotlService().getOwnPublicKey().getFingerprint().replaceAll("\\s", ""));
 					if (message.needsUploading()) {
 						if (account.httpUploadAvailable() || message.fixCounterpart()) {
 							this.sendFileMessage(message,delay);
@@ -765,7 +766,6 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 						XmppAxolotlMessage axolotlMessage = account.getAxolotlService().fetchAxolotlMessageFromCache(message);
 						if (axolotlMessage == null) {
 							account.getAxolotlService().preparePayloadMessage(message, delay);
-							message.setAxolotlFingerprint(account.getAxolotlService().getOwnPublicKey().getFingerprint().replaceAll("\\s", ""));
 						} else {
 							packet = mMessageGenerator.generateAxolotlChat(message, axolotlMessage);
 						}

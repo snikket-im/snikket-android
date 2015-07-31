@@ -4,15 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
 
-import org.bouncycastle.crypto.engines.AESEngine;
-import org.bouncycastle.crypto.io.CipherOutputStream;
-import org.bouncycastle.crypto.modes.AEADBlockCipher;
-import org.bouncycastle.crypto.modes.GCMBlockCipher;
-import org.bouncycastle.crypto.params.AEADParameters;
-import org.bouncycastle.crypto.params.KeyParameter;
-
 import java.io.BufferedInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
@@ -28,6 +20,8 @@ import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.Transferable;
+import eu.siacs.conversations.persistance.FileBackend;
+import eu.siacs.conversations.services.AbstractConnectionManager;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.CryptoHelper;
 
@@ -90,7 +84,7 @@ public class HttpDownloadConnection implements Transferable {
 			this.file = mXmppConnectionService.getFileBackend().getFile(message, false);
 			String reference = mUrl.getRef();
 			if (reference != null && reference.length() == 96) {
-				this.file.setKey(CryptoHelper.hexToBytes(reference));
+				this.file.setKeyAndIv(CryptoHelper.hexToBytes(reference));
 			}
 
 			if ((this.message.getEncryption() == Message.ENCRYPTION_OTR
@@ -194,6 +188,8 @@ public class HttpDownloadConnection implements Transferable {
 
 		private boolean interactive = false;
 
+		private OutputStream os;
+
 		public FileDownloader(boolean interactive) {
 			this.interactive = interactive;
 		}
@@ -206,8 +202,10 @@ public class HttpDownloadConnection implements Transferable {
 				updateImageBounds();
 				finish();
 			} catch (SSLHandshakeException e) {
+				FileBackend.close(os);
 				changeStatus(STATUS_OFFER);
 			} catch (IOException e) {
+				FileBackend.close(os);
 				mXmppConnectionService.showErrorToastInUi(R.string.file_not_found_on_remote_host);
 				cancel();
 			}
@@ -222,14 +220,7 @@ public class HttpDownloadConnection implements Transferable {
 			BufferedInputStream is = new BufferedInputStream(connection.getInputStream());
 			file.getParentFile().mkdirs();
 			file.createNewFile();
-			OutputStream os;
-			if (file.getKey() != null) {
-				AEADBlockCipher cipher = new GCMBlockCipher(new AESEngine());
-				cipher.init(false, new AEADParameters(new KeyParameter(file.getKey()), 128, file.getIv()));
-				os = new CipherOutputStream(new FileOutputStream(file), cipher);
-			} else {
-				os = new FileOutputStream(file);
-			}
+			os = AbstractConnectionManager.createOutputStream(file,true);
 			long transmitted = 0;
 			long expected = file.getExpectedSize();
 			int count = -1;

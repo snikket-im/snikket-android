@@ -1,6 +1,13 @@
 package eu.siacs.conversations.xmpp.jingle;
 
 import android.util.Log;
+import android.util.Pair;
+
+import org.bouncycastle.crypto.engines.AESEngine;
+import org.bouncycastle.crypto.modes.AEADBlockCipher;
+import org.bouncycastle.crypto.modes.GCMBlockCipher;
+import org.bouncycastle.crypto.params.AEADParameters;
+import org.bouncycastle.crypto.params.KeyParameter;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -31,58 +38,4 @@ public abstract class JingleTransport {
 			final OnFileTransmissionStatusChanged callback);
 
 	public abstract void disconnect();
-
-	protected InputStream createInputStream(DownloadableFile file) {
-		FileInputStream is;
-		try {
-			is = new FileInputStream(file);
-			if (file.getKey() == null) {
-				return is;
-			}
-		} catch (FileNotFoundException e) {
-			return null;
-		}
-		try {
-			IvParameterSpec ips = new IvParameterSpec(file.getIv());
-			Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-			cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(file.getKey(), "AES"), ips);
-			Log.d(Config.LOGTAG, "opening encrypted input stream");
-			return new CipherInputStream(is, cipher);
-		} catch (InvalidKeyException e) {
-			return null;
-		} catch (NoSuchAlgorithmException e) {
-			return null;
-		} catch (NoSuchPaddingException e) {
-			return null;
-		} catch (InvalidAlgorithmParameterException e) {
-			return null;
-		}
-	}
-
-	protected OutputStream createOutputStream(DownloadableFile file) {
-		FileOutputStream os;
-		try {
-			os = new FileOutputStream(file);
-			if (file.getKey() == null) {
-				return os;
-			}
-		} catch (FileNotFoundException e) {
-			return null;
-		}
-		try {
-			IvParameterSpec ips = new IvParameterSpec(file.getIv());
-			Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-			cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(file.getKey(), "AES"), ips);
-			Log.d(Config.LOGTAG, "opening encrypted output stream");
-			return new CipherOutputStream(os, cipher);
-		} catch (InvalidKeyException e) {
-			return null;
-		} catch (NoSuchAlgorithmException e) {
-			return null;
-		} catch (NoSuchPaddingException e) {
-			return null;
-		} catch (InvalidAlgorithmParameterException e) {
-			return null;
-		}
-	}
 }

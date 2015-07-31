@@ -25,17 +25,18 @@ public class Content extends Element {
 		this.transportId = sid;
 	}
 
-	public void setFileOffer(DownloadableFile actualFile, boolean otr) {
+	public Element setFileOffer(DownloadableFile actualFile, boolean otr) {
 		Element description = this.addChild("description",
 				"urn:xmpp:jingle:apps:file-transfer:3");
 		Element offer = description.addChild("offer");
 		Element file = offer.addChild("file");
-		file.addChild("size").setContent(Long.toString(actualFile.getSize()));
+		file.addChild("size").setContent(Long.toString(actualFile.getExpectedSize()));
 		if (otr) {
 			file.addChild("name").setContent(actualFile.getName() + ".otr");
 		} else {
 			file.addChild("name").setContent(actualFile.getName());
 		}
+		return file;
 	}
 
 	public Element getFileOffer() {

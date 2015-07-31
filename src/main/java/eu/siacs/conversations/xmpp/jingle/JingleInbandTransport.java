@@ -93,7 +93,7 @@ public class JingleInbandTransport extends JingleTransport {
 			digest.reset();
 			file.getParentFile().mkdirs();
 			file.createNewFile();
-			this.fileOutputStream = createOutputStream(file);
+			this.fileOutputStream = connection.getFileOutputStream();
 			if (this.fileOutputStream == null) {
 				Log.d(Config.LOGTAG,account.getJid().toBareJid()+": could not create output stream");
 				callback.onFileTransferAborted();
@@ -112,15 +112,11 @@ public class JingleInbandTransport extends JingleTransport {
 		this.onFileTransmissionStatusChanged = callback;
 		this.file = file;
 		try {
-			if (this.file.getKey() != null) {
-				this.remainingSize = (this.file.getSize() / 16 + 1) * 16;
-			} else {
-				this.remainingSize = this.file.getSize();
-			}
+			this.remainingSize = this.file.getExpectedSize();
 			this.fileSize = this.remainingSize;
 			this.digest = MessageDigest.getInstance("SHA-1");
 			this.digest.reset();
-			fileInputStream = createInputStream(this.file);
+			fileInputStream = connection.getFileInputStream();
 			if (fileInputStream == null) {
 				Log.d(Config.LOGTAG,account.getJid().toBareJid()+": could no create input stream");
 				callback.onFileTransferAborted();
