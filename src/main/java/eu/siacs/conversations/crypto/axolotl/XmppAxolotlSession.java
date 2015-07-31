@@ -23,16 +23,12 @@ import eu.siacs.conversations.entities.Account;
 
 public class XmppAxolotlSession {
 	private final SessionCipher cipher;
-	private Integer preKeyId = null;
 	private final SQLiteAxolotlStore sqLiteAxolotlStore;
-
-	public AxolotlAddress getRemoteAddress() {
-		return remoteAddress;
-	}
-
 	private final AxolotlAddress remoteAddress;
 	private final Account account;
 	private String fingerprint = null;
+	private Integer preKeyId = null;
+	private boolean fresh = true;
 
 	public XmppAxolotlSession(Account account, SQLiteAxolotlStore store, AxolotlAddress remoteAddress, String fingerprint) {
 		this(account, store, remoteAddress);
@@ -57,6 +53,18 @@ public class XmppAxolotlSession {
 
 	public String getFingerprint() {
 		return fingerprint;
+	}
+
+	public AxolotlAddress getRemoteAddress() {
+		return remoteAddress;
+	}
+
+	public boolean isFresh() {
+		return fresh;
+	}
+
+	public void setNotFresh() {
+		this.fresh = false;
 	}
 
 	protected void setTrust(SQLiteAxolotlStore.Trust trust) {

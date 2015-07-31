@@ -64,6 +64,30 @@ public class XmppAxolotlMessage {
 		}
 	}
 
+	public static class XmppAxolotlKeyTransportMessage {
+		private final String fingerprint;
+		private final byte[] key;
+		private final byte[] iv;
+
+		public XmppAxolotlKeyTransportMessage(String fingerprint, byte[] key, byte[] iv) {
+			this.fingerprint = fingerprint;
+			this.key = key;
+			this.iv = iv;
+		}
+
+		public String getFingerprint() {
+			return fingerprint;
+		}
+
+		public byte[] getKey() {
+			return key;
+		}
+
+		public byte[] getIv() {
+			return iv;
+		}
+	}
+
 	private XmppAxolotlMessage(final Element axolotlMessage, final Jid from) throws IllegalArgumentException {
 		this.from = from;
 		Element header = axolotlMessage.findChild(HEADER);
@@ -188,9 +212,16 @@ public class XmppAxolotlMessage {
 		return encryptionElement;
 	}
 
-	public byte[] unpackKey(XmppAxolotlSession session, Integer sourceDeviceId) {
+	private byte[] unpackKey(XmppAxolotlSession session, Integer sourceDeviceId) {
 		byte[] encryptedKey = keys.get(sourceDeviceId);
 		return (encryptedKey != null) ? session.processReceiving(encryptedKey) : null;
+	}
+
+	public XmppAxolotlKeyTransportMessage getParameters(XmppAxolotlSession session, Integer sourceDeviceId) {
+		byte[] key = unpackKey(session, sourceDeviceId);
+		return (key != null)
+				? new XmppAxolotlKeyTransportMessage(session.getFingerprint(), key, getIV())
+				: null;
 	}
 
 	public XmppAxolotlPlaintextMessage decrypt(XmppAxolotlSession session, Integer sourceDeviceId) throws CryptoFailedException {

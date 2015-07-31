@@ -100,7 +100,7 @@ public class MessageParser extends AbstractParser implements
 		Message finishedMessage = null;
 		AxolotlService service = conversation.getAccount().getAxolotlService();
 		XmppAxolotlMessage xmppAxolotlMessage = XmppAxolotlMessage.fromElement(axolotlMessage, from.toBareJid());
-		XmppAxolotlMessage.XmppAxolotlPlaintextMessage plaintextMessage = service.processReceiving(xmppAxolotlMessage);
+		XmppAxolotlMessage.XmppAxolotlPlaintextMessage plaintextMessage = service.processReceivingPayloadMessage(xmppAxolotlMessage);
 		if(plaintextMessage != null) {
 			finishedMessage = new Message(conversation, plaintextMessage.getPlaintext(), Message.ENCRYPTION_AXOLOTL, status);
 			finishedMessage.setAxolotlFingerprint(plaintextMessage.getFingerprint());

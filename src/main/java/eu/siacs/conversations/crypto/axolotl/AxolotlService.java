@@ -150,7 +150,12 @@ public class AxolotlService {
 		@Override
 		public void put(AxolotlAddress address, XmppAxolotlSession value) {
 			super.put(address, value);
+			value.setNotFresh();
 			xmppConnectionService.syncRosterToDisk(account);
+		}
+
+		public void put(XmppAxolotlSession session) {
+			this.put(session.getRemoteAddress(), session);
 		}
 	}
 
@@ -641,24 +646,32 @@ public class AxolotlService {
 		return axolotlMessage;
 	}
 
-	public XmppAxolotlMessage.XmppAxolotlPlaintextMessage processReceiving(XmppAxolotlMessage message) {
-		XmppAxolotlMessage.XmppAxolotlPlaintextMessage plaintextMessage = null;
+	private XmppAxolotlSession recreateUncachedSession(AxolotlAddress address) {
+		IdentityKey identityKey = axolotlStore.loadSession(address).getSessionState().getRemoteIdentityKey();
+		return (identityKey != null)
+				? new XmppAxolotlSession(account, axolotlStore, address,
+						identityKey.getFingerprint().replaceAll("\\s", ""))
+				: null;
+	}
+
+	private XmppAxolotlSession getReceivingSession(XmppAxolotlMessage message) {
 		AxolotlAddress senderAddress = new AxolotlAddress(message.getFrom().toString(),
 				message.getSenderDeviceId());
-
-		boolean newSession = false;
 		XmppAxolotlSession session = sessions.get(senderAddress);
 		if (session == null) {
 			Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Account: " + account.getJid() + " No axolotl session found while parsing received message " + message);
-			IdentityKey identityKey = axolotlStore.loadSession(senderAddress).getSessionState().getRemoteIdentityKey();
-			if (identityKey != null) {
-				session = new XmppAxolotlSession(account, axolotlStore, senderAddress, identityKey.getFingerprint().replaceAll("\\s", ""));
-			} else {
+			session = recreateUncachedSession(senderAddress);
+			if (session == null) {
 				session = new XmppAxolotlSession(account, axolotlStore, senderAddress);
 			}
-			newSession = true;
 		}
+		return session;
+	}
 
+	public XmppAxolotlMessage.XmppAxolotlPlaintextMessage processReceivingPayloadMessage(XmppAxolotlMessage message) {
+		XmppAxolotlMessage.XmppAxolotlPlaintextMessage plaintextMessage = null;
+
+		XmppAxolotlSession session = getReceivingSession(message);
 		try {
 			plaintextMessage = message.decrypt(session, getOwnDeviceId());
 			Integer preKeyId = session.getPreKeyId();
@@ -670,10 +683,23 @@ public class AxolotlService {
 			Log.w(Config.LOGTAG, getLogprefix(account) + "Failed to decrypt message: " + e.getMessage());
 		}
 
-		if (newSession && plaintextMessage != null) {
-			sessions.put(senderAddress, session);
+		if (session.isFresh() && plaintextMessage != null) {
+			sessions.put(session);
 		}
 
 		return plaintextMessage;
+	}
+
+	public XmppAxolotlMessage.XmppAxolotlKeyTransportMessage processReceivingKeyTransportMessage(XmppAxolotlMessage message) {
+		XmppAxolotlMessage.XmppAxolotlKeyTransportMessage keyTransportMessage = null;
+
+		XmppAxolotlSession session = getReceivingSession(message);
+		keyTransportMessage = message.getParameters(session, getOwnDeviceId());
+
+		if (session.isFresh() && keyTransportMessage != null) {
+			sessions.put(session);
+		}
+
+		return keyTransportMessage;
 	}
 }
