@@ -583,23 +583,15 @@ public class AxolotlService {
 		if(findSessionsforContact(message.getContact()).isEmpty()) {
 			return null;
 		}
-		Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account)+"Building axolotl foreign headers...");
+		Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account)+"Building axolotl foreign keyElements...");
 		for (XmppAxolotlSession session : findSessionsforContact(message.getContact())) {
 			Log.v(Config.LOGTAG, AxolotlService.getLogprefix(account)+session.getRemoteAddress().toString());
-			//if(!session.isTrusted()) {
-			// TODO: handle this properly
-			//              continue;
-			//        }
-			axolotlMessage.addHeader(session.processSending(axolotlMessage.getInnerKey()));
+			axolotlMessage.addKeyElement(session.processSending(axolotlMessage.getInnerKey()));
 		}
-		Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account)+"Building axolotl own headers...");
+		Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account)+"Building axolotl own keyElements...");
 		for (XmppAxolotlSession session : findOwnSessions()) {
 			Log.v(Config.LOGTAG, AxolotlService.getLogprefix(account)+session.getRemoteAddress().toString());
-			//        if(!session.isTrusted()) {
-			// TODO: handle this properly
-			//          continue;
-			//    }
-			axolotlMessage.addHeader(session.processSending(axolotlMessage.getInnerKey()));
+			axolotlMessage.addKeyElement(session.processSending(axolotlMessage.getInnerKey()));
 		}
 
 		return axolotlMessage;
@@ -651,7 +643,6 @@ public class AxolotlService {
 		XmppAxolotlSession session = sessions.get(senderAddress);
 		if (session == null) {
 			Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account)+"Account: "+account.getJid()+" No axolotl session found while parsing received message " + message);
-			// TODO: handle this properly
 			IdentityKey identityKey = axolotlStore.loadSession(senderAddress).getSessionState().getRemoteIdentityKey();
 			if ( identityKey != null ) {
 				session = new XmppAxolotlSession(account, axolotlStore, senderAddress, identityKey.getFingerprint().replaceAll("\\s", ""));
@@ -661,12 +652,12 @@ public class AxolotlService {
 			newSession = true;
 		}
 
-		for (XmppAxolotlMessage.XmppAxolotlMessageHeader header : message.getHeaders()) {
-			if (header.getRecipientDeviceId() == getOwnDeviceId()) {
-				Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account)+"Found axolotl header matching own device ID, processing...");
-				byte[] payloadKey = session.processReceiving(header);
+		for (XmppAxolotlMessage.XmppAxolotlKeyElement keyElement : message.getKeyElements()) {
+			if (keyElement.getRecipientDeviceId() == getOwnDeviceId()) {
+				Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account)+"Found axolotl keyElement matching own device ID, processing...");
+				byte[] payloadKey = session.processReceiving(keyElement);
 				if (payloadKey != null) {
-					Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account)+"Got payload key from axolotl header. Decrypting message...");
+					Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account)+"Got payload key from axolotl keyElement. Decrypting message...");
 					try{
 						plaintextMessage = message.decrypt(session, payloadKey, session.getFingerprint());
 					} catch (CryptoFailedException e) {

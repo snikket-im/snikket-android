@@ -272,7 +272,7 @@ public class MessageParser extends AbstractParser implements
 		final String body = packet.getBody();
 		final Element mucUserElement = packet.findChild("x", "http://jabber.org/protocol/muc#user");
 		final String pgpEncrypted = packet.findChildContent("x", "jabber:x:encrypted");
-		final Element axolotlEncrypted = packet.findChild("axolotl_message", AxolotlService.PEP_PREFIX);
+		final Element axolotlEncrypted = packet.findChild(XmppAxolotlMessage.TAGNAME, AxolotlService.PEP_PREFIX);
 		int status;
 		final Jid counterpart;
 		final Jid to = packet.getTo();

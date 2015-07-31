@@ -69,7 +69,7 @@ public class XmppAxolotlSession {
 	}
 
 	@Nullable
-	public byte[] processReceiving(XmppAxolotlMessage.XmppAxolotlMessageHeader incomingHeader) {
+	public byte[] processReceiving(XmppAxolotlMessage.XmppAxolotlKeyElement incomingHeader) {
 		byte[] plaintext = null;
 		SQLiteAxolotlStore.Trust trust = getTrust();
 		switch (trust) {
@@ -117,12 +117,12 @@ public class XmppAxolotlSession {
 	}
 
 	@Nullable
-	public XmppAxolotlMessage.XmppAxolotlMessageHeader processSending(@NonNull byte[] outgoingMessage) {
+	public XmppAxolotlMessage.XmppAxolotlKeyElement processSending(@NonNull byte[] outgoingMessage) {
 		SQLiteAxolotlStore.Trust trust = getTrust();
 		if (trust == SQLiteAxolotlStore.Trust.TRUSTED) {
 			CiphertextMessage ciphertextMessage = cipher.encrypt(outgoingMessage);
-			XmppAxolotlMessage.XmppAxolotlMessageHeader header =
-					new XmppAxolotlMessage.XmppAxolotlMessageHeader(remoteAddress.getDeviceId(),
+			XmppAxolotlMessage.XmppAxolotlKeyElement header =
+					new XmppAxolotlMessage.XmppAxolotlKeyElement(remoteAddress.getDeviceId(),
 							ciphertextMessage.serialize());
 			return header;
 		} else {
