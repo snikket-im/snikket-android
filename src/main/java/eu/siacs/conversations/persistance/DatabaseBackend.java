@@ -140,6 +140,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 				+ Message.RELATIVE_FILE_PATH + " TEXT, "
 				+ Message.SERVER_MSG_ID + " TEXT, "
 				+ Message.FINGERPRINT + " TEXT, "
+				+ Message.CARBON + " INTEGER, "
 				+ Message.REMOTE_MSG_ID + " TEXT, FOREIGN KEY("
 				+ Message.CONVERSATION + ") REFERENCES "
 				+ Conversation.TABLENAME + "(" + Conversation.UUID
