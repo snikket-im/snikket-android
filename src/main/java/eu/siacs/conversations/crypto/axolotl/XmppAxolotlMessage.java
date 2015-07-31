@@ -1,6 +1,5 @@
 package eu.siacs.conversations.crypto.axolotl;
 
-import android.support.annotation.Nullable;
 import android.util.Base64;
 import android.util.Log;
 
@@ -9,8 +8,9 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.SecureRandom;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -26,9 +26,11 @@ import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.jid.Jid;
 
 public class XmppAxolotlMessage {
-	public static final String TAGNAME = "encrypted";
+	public static final String CONTAINERTAG = "encrypted";
 	public static final String HEADER = "header";
 	public static final String SOURCEID = "sid";
+	public static final String KEYTAG = "key";
+	public static final String REMOTEID = "rid";
 	public static final String IVTAG = "iv";
 	public static final String PAYLOAD = "payload";
 
@@ -39,54 +41,15 @@ public class XmppAxolotlMessage {
 	private byte[] innerKey;
 	private byte[] ciphertext = null;
 	private byte[] iv = null;
-	private final Set<XmppAxolotlKeyElement> keyElements;
+	private final Map<Integer, byte[]> keys;
 	private final Jid from;
 	private final int sourceDeviceId;
 
-	public static class XmppAxolotlKeyElement {
-		public static final String TAGNAME = "key";
-		public static final String REMOTEID = "rid";
-
-		private final int recipientDeviceId;
-		private final byte[] content;
-
-		public XmppAxolotlKeyElement(int deviceId, byte[] content) {
-			this.recipientDeviceId = deviceId;
-			this.content = content;
-		}
-
-		public XmppAxolotlKeyElement(Element keyElement) {
-			if (TAGNAME.equals(keyElement.getName())) {
-				this.recipientDeviceId = Integer.parseInt(keyElement.getAttribute(REMOTEID));
-				this.content = Base64.decode(keyElement.getContent(), Base64.DEFAULT);
-			} else {
-				throw new IllegalArgumentException("Argument not a <" + TAGNAME + "> Element!");
-			}
-		}
-
-		public int getRecipientDeviceId() {
-			return recipientDeviceId;
-		}
-
-		public byte[] getContents() {
-			return content;
-		}
-
-		public Element toXml() {
-			Element keyElement = new Element(TAGNAME);
-			keyElement.setAttribute(REMOTEID, getRecipientDeviceId());
-			keyElement.setContent(Base64.encodeToString(getContents(), Base64.DEFAULT));
-			return keyElement;
-		}
-	}
-
 	public static class XmppAxolotlPlaintextMessage {
-		private final XmppAxolotlSession session;
 		private final String plaintext;
 		private final String fingerprint;
 
-		public XmppAxolotlPlaintextMessage(XmppAxolotlSession session, String plaintext, String fingerprint) {
-			this.session = session;
+		public XmppAxolotlPlaintextMessage(String plaintext, String fingerprint) {
 			this.plaintext = plaintext;
 			this.fingerprint = fingerprint;
 		}
@@ -95,24 +58,28 @@ public class XmppAxolotlMessage {
 			return plaintext;
 		}
 
-		public XmppAxolotlSession getSession() {
-			return session;
-		}
 
 		public String getFingerprint() {
 			return fingerprint;
 		}
 	}
 
-	public XmppAxolotlMessage(Jid from, Element axolotlMessage) throws IllegalArgumentException {
+	private XmppAxolotlMessage(final Element axolotlMessage, final Jid from) throws IllegalArgumentException {
 		this.from = from;
 		Element header = axolotlMessage.findChild(HEADER);
 		this.sourceDeviceId = Integer.parseInt(header.getAttribute(SOURCEID));
-		this.keyElements = new HashSet<>();
-		for (Element keyElement : header.getChildren()) {
+		List<Element> keyElements = header.getChildren();
+		this.keys = new HashMap<>(keyElements.size());
+		for (Element keyElement : keyElements) {
 			switch (keyElement.getName()) {
-				case XmppAxolotlKeyElement.TAGNAME:
-					keyElements.add(new XmppAxolotlKeyElement(keyElement));
+				case KEYTAG:
+					try {
+						Integer recipientId = Integer.parseInt(keyElement.getAttribute(REMOTEID));
+						byte[] key = Base64.decode(keyElement.getContent(), Base64.DEFAULT);
+						this.keys.put(recipientId, key);
+					} catch (NumberFormatException e) {
+						throw new IllegalArgumentException(e);
+					}
 					break;
 				case IVTAG:
 					if (this.iv != null) {
@@ -134,14 +101,13 @@ public class XmppAxolotlMessage {
 	public XmppAxolotlMessage(Jid from, int sourceDeviceId) {
 		this.from = from;
 		this.sourceDeviceId = sourceDeviceId;
-		this.keyElements = new HashSet<>();
+		this.keys = new HashMap<>();
 		this.iv = generateIv();
 		this.innerKey = generateKey();
 	}
 
-	public XmppAxolotlMessage(Jid from, int sourceDeviceId, String plaintext) throws CryptoFailedException {
-		this(from, sourceDeviceId);
-		this.encrypt(plaintext);
+	public static XmppAxolotlMessage fromElement(Element element, Jid from) {
+		return new XmppAxolotlMessage(element, from);
 	}
 
 	private static byte[] generateKey() {
@@ -162,7 +128,7 @@ public class XmppAxolotlMessage {
 		return iv;
 	}
 
-	private void encrypt(String plaintext) throws CryptoFailedException {
+	public void encrypt(String plaintext) throws CryptoFailedException {
 		try {
 			SecretKey secretKey = new SecretKeySpec(innerKey, KEYTYPE);
 			IvParameterSpec ivSpec = new IvParameterSpec(iv);
@@ -189,13 +155,10 @@ public class XmppAxolotlMessage {
 		return ciphertext;
 	}
 
-	public Set<XmppAxolotlKeyElement> getKeyElements() {
-		return keyElements;
-	}
-
-	public void addKeyElement(@Nullable XmppAxolotlKeyElement keyElement) {
-		if (keyElement != null) {
-			keyElements.add(keyElement);
+	public void addDevice(XmppAxolotlSession session) {
+		byte[] key = session.processSending(innerKey);
+		if (key != null) {
+			keys.put(session.getRemoteAddress().getDeviceId(), key);
 		}
 	}
 
@@ -207,12 +170,15 @@ public class XmppAxolotlMessage {
 		return this.iv;
 	}
 
-	public Element toXml() {
-		Element encryptionElement = new Element(TAGNAME, AxolotlService.PEP_PREFIX);
+	public Element toElement() {
+		Element encryptionElement = new Element(CONTAINERTAG, AxolotlService.PEP_PREFIX);
 		Element headerElement = encryptionElement.addChild(HEADER);
 		headerElement.setAttribute(SOURCEID, sourceDeviceId);
-		for (XmppAxolotlKeyElement header : keyElements) {
-			headerElement.addChild(header.toXml());
+		for (Map.Entry<Integer, byte[]> keyEntry : keys.entrySet()) {
+			Element keyElement = new Element(KEYTAG);
+			keyElement.setAttribute(REMOTEID, keyEntry.getKey());
+			keyElement.setContent(Base64.encodeToString(keyEntry.getValue(), Base64.DEFAULT));
+			headerElement.addChild(keyElement);
 		}
 		headerElement.addChild(IVTAG).setContent(Base64.encodeToString(iv, Base64.DEFAULT));
 		if (ciphertext != null) {
@@ -222,24 +188,30 @@ public class XmppAxolotlMessage {
 		return encryptionElement;
 	}
 
+	public byte[] unpackKey(XmppAxolotlSession session, Integer sourceDeviceId) {
+		byte[] encryptedKey = keys.get(sourceDeviceId);
+		return (encryptedKey != null) ? session.processReceiving(encryptedKey) : null;
+	}
 
-	public XmppAxolotlPlaintextMessage decrypt(XmppAxolotlSession session, byte[] key, String fingerprint) throws CryptoFailedException {
+	public XmppAxolotlPlaintextMessage decrypt(XmppAxolotlSession session, Integer sourceDeviceId) throws CryptoFailedException {
 		XmppAxolotlPlaintextMessage plaintextMessage = null;
-		try {
+		byte[] key = unpackKey(session, sourceDeviceId);
+		if (key != null) {
+			try {
+				Cipher cipher = Cipher.getInstance(CIPHERMODE, PROVIDER);
+				SecretKeySpec keySpec = new SecretKeySpec(key, KEYTYPE);
+				IvParameterSpec ivSpec = new IvParameterSpec(iv);
 
-			Cipher cipher = Cipher.getInstance(CIPHERMODE, PROVIDER);
-			SecretKeySpec keySpec = new SecretKeySpec(key, KEYTYPE);
-			IvParameterSpec ivSpec = new IvParameterSpec(iv);
+				cipher.init(Cipher.DECRYPT_MODE, keySpec, ivSpec);
 
-			cipher.init(Cipher.DECRYPT_MODE, keySpec, ivSpec);
+				String plaintext = new String(cipher.doFinal(ciphertext));
+				plaintextMessage = new XmppAxolotlPlaintextMessage(plaintext, session.getFingerprint());
 
-			String plaintext = new String(cipher.doFinal(ciphertext));
-			plaintextMessage = new XmppAxolotlPlaintextMessage(session, plaintext, fingerprint);
-
-		} catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException
-				| InvalidAlgorithmParameterException | IllegalBlockSizeException
-				| BadPaddingException | NoSuchProviderException e) {
-			throw new CryptoFailedException(e);
+			} catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException
+					| InvalidAlgorithmParameterException | IllegalBlockSizeException
+					| BadPaddingException | NoSuchProviderException e) {
+				throw new CryptoFailedException(e);
+			}
 		}
 		return plaintextMessage;
 	}

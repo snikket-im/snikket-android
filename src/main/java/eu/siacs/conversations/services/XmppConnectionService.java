@@ -764,7 +764,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 					} else {
 						XmppAxolotlMessage axolotlMessage = account.getAxolotlService().fetchAxolotlMessageFromCache(message);
 						if (axolotlMessage == null) {
-							account.getAxolotlService().prepareMessage(message,delay);
+							account.getAxolotlService().preparePayloadMessage(message, delay);
 							message.setAxolotlFingerprint(account.getAxolotlService().getOwnPublicKey().getFingerprint().replaceAll("\\s", ""));
 						} else {
 							packet = mMessageGenerator.generateAxolotlChat(message, axolotlMessage);

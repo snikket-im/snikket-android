@@ -256,7 +256,7 @@ public class AxolotlService {
 			for (Integer deviceId : deviceIds) {
 				AxolotlAddress ownDeviceAddress = new AxolotlAddress(jid.toBareJid().toString(), deviceId);
 				if (sessions.get(ownDeviceAddress) == null) {
-					buildSessionFromPEP(null, ownDeviceAddress, false);
+					buildSessionFromPEP(ownDeviceAddress);
 				}
 			}
 		}
@@ -422,7 +422,7 @@ public class AxolotlService {
 		axolotlStore.setFingerprintTrust(fingerprint, trust);
 	}
 
-	private void buildSessionFromPEP(final Conversation conversation, final AxolotlAddress address, final boolean flushWaitingQueueAfterFetch) {
+	private void buildSessionFromPEP(final AxolotlAddress address) {
 		Log.i(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Building new sesstion for " + address.getDeviceId());
 
 		try {
@@ -434,15 +434,6 @@ public class AxolotlService {
 					AxolotlAddress ownAddress = new AxolotlAddress(account.getJid().toBareJid().toString(), 0);
 					if (!fetchStatusMap.getAll(ownAddress).containsValue(FetchStatus.PENDING)
 							&& !fetchStatusMap.getAll(address).containsValue(FetchStatus.PENDING)) {
-						if (flushWaitingQueueAfterFetch && conversation != null) {
-							conversation.findUnsentMessagesWithEncryption(Message.ENCRYPTION_AXOLOTL,
-									new Conversation.OnMessageFound() {
-										@Override
-										public void onMessageFound(Message message) {
-											processSending(message, false);
-										}
-									});
-						}
 						mXmppConnectionService.keyStatusUpdated();
 					}
 				}
@@ -537,7 +528,7 @@ public class AxolotlService {
 		return addresses;
 	}
 
-	public boolean createSessionsIfNeeded(final Conversation conversation, final boolean flushWaitingQueueAfterFetch) {
+	public boolean createSessionsIfNeeded(final Conversation conversation) {
 		Log.i(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Creating axolotl sessions if needed...");
 		boolean newSessions = false;
 		Set<AxolotlAddress> addresses = findDevicesWithoutSession(conversation);
@@ -546,7 +537,9 @@ public class AxolotlService {
 			FetchStatus status = fetchStatusMap.get(address);
 			if (status == null || status == FetchStatus.ERROR) {
 				fetchStatusMap.put(address, FetchStatus.PENDING);
-				this.buildSessionFromPEP(conversation, address, flushWaitingQueueAfterFetch);
+				this.buildSessionFromPEP(address);
+				newSessions = true;
+			} else if (status == FetchStatus.PENDING) {
 				newSessions = true;
 			} else {
 				Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Already fetching bundle for " + address.toString());
@@ -565,40 +558,52 @@ public class AxolotlService {
 	}
 
 	@Nullable
-	public XmppAxolotlMessage encrypt(Message message) {
-		final String content;
-		if (message.hasFileOnRemoteHost()) {
-			content = message.getFileParams().url.toString();
-		} else {
-			content = message.getBody();
-		}
-		final XmppAxolotlMessage axolotlMessage;
-		try {
-			axolotlMessage = new XmppAxolotlMessage(message.getContact().getJid().toBareJid(),
-					getOwnDeviceId(), content);
-		} catch (CryptoFailedException e) {
-			Log.w(Config.LOGTAG, getLogprefix(account) + "Failed to encrypt message: " + e.getMessage());
-			return null;
-		}
+	private XmppAxolotlMessage buildHeader(Contact contact) {
+		final XmppAxolotlMessage axolotlMessage = new XmppAxolotlMessage(
+				contact.getJid().toBareJid(), getOwnDeviceId());
 
-		if (findSessionsforContact(message.getContact()).isEmpty()) {
+		Set<XmppAxolotlSession> contactSessions = findSessionsforContact(contact);
+		Set<XmppAxolotlSession> ownSessions = findOwnSessions();
+		if (contactSessions.isEmpty()) {
 			return null;
 		}
 		Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Building axolotl foreign keyElements...");
-		for (XmppAxolotlSession session : findSessionsforContact(message.getContact())) {
+		for (XmppAxolotlSession session : contactSessions) {
 			Log.v(Config.LOGTAG, AxolotlService.getLogprefix(account) + session.getRemoteAddress().toString());
-			axolotlMessage.addKeyElement(session.processSending(axolotlMessage.getInnerKey()));
+			axolotlMessage.addDevice(session);
 		}
 		Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Building axolotl own keyElements...");
-		for (XmppAxolotlSession session : findOwnSessions()) {
+		for (XmppAxolotlSession session : ownSessions) {
 			Log.v(Config.LOGTAG, AxolotlService.getLogprefix(account) + session.getRemoteAddress().toString());
-			axolotlMessage.addKeyElement(session.processSending(axolotlMessage.getInnerKey()));
+			axolotlMessage.addDevice(session);
 		}
 
 		return axolotlMessage;
 	}
 
-	private void processSending(final Message message, final boolean delay) {
+	@Nullable
+	public XmppAxolotlMessage encrypt(Message message) {
+		XmppAxolotlMessage axolotlMessage = buildHeader(message.getContact());
+
+		if (axolotlMessage != null) {
+			final String content;
+			if (message.hasFileOnRemoteHost()) {
+				content = message.getFileParams().url.toString();
+			} else {
+				content = message.getBody();
+			}
+			try {
+				axolotlMessage.encrypt(content);
+			} catch (CryptoFailedException e) {
+				Log.w(Config.LOGTAG, getLogprefix(account) + "Failed to encrypt message: " + e.getMessage());
+				return null;
+			}
+		}
+
+		return axolotlMessage;
+	}
+
+	public void preparePayloadMessage(final Message message, final boolean delay) {
 		executor.execute(new Runnable() {
 			@Override
 			public void run() {
@@ -615,13 +620,14 @@ public class AxolotlService {
 		});
 	}
 
-	public void prepareMessage(final Message message, final boolean delay) {
-		if (!messageCache.containsKey(message.getUuid())) {
-			boolean newSessions = createSessionsIfNeeded(message.getConversation(), true);
-			if (!newSessions) {
-				this.processSending(message, delay);
+	public void prepareKeyTransportMessage(final Contact contact, final OnMessageCreatedCallback onMessageCreatedCallback) {
+		executor.execute(new Runnable() {
+			@Override
+			public void run() {
+				XmppAxolotlMessage axolotlMessage = buildHeader(contact);
+				onMessageCreatedCallback.run(axolotlMessage);
 			}
-		}
+		});
 	}
 
 	public XmppAxolotlMessage fetchAxolotlMessageFromCache(Message message) {
@@ -653,26 +659,15 @@ public class AxolotlService {
 			newSession = true;
 		}
 
-		for (XmppAxolotlMessage.XmppAxolotlKeyElement keyElement : message.getKeyElements()) {
-			if (keyElement.getRecipientDeviceId() == getOwnDeviceId()) {
-				Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Found axolotl keyElement matching own device ID, processing...");
-				byte[] payloadKey = session.processReceiving(keyElement);
-				if (payloadKey != null) {
-					Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Got payload key from axolotl keyElement. Decrypting message...");
-					try {
-						plaintextMessage = message.decrypt(session, payloadKey, session.getFingerprint());
-					} catch (CryptoFailedException e) {
-						Log.w(Config.LOGTAG, getLogprefix(account) + "Failed to decrypt message: " + e.getMessage());
-						break;
-					}
-				}
-				Integer preKeyId = session.getPreKeyId();
-				if (preKeyId != null) {
-					publishBundlesIfNeeded();
-					session.resetPreKeyId();
-				}
-				break;
+		try {
+			plaintextMessage = message.decrypt(session, getOwnDeviceId());
+			Integer preKeyId = session.getPreKeyId();
+			if (preKeyId != null) {
+				publishBundlesIfNeeded();
+				session.resetPreKeyId();
 			}
+		} catch (CryptoFailedException e) {
+			Log.w(Config.LOGTAG, getLogprefix(account) + "Failed to decrypt message: " + e.getMessage());
 		}
 
 		if (newSession && plaintextMessage != null) {

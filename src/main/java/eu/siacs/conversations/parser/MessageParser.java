@@ -99,7 +99,7 @@ public class MessageParser extends AbstractParser implements
 	private Message parseAxolotlChat(Element axolotlMessage, Jid from, String id, Conversation conversation, int status) {
 		Message finishedMessage = null;
 		AxolotlService service = conversation.getAccount().getAxolotlService();
-		XmppAxolotlMessage xmppAxolotlMessage = new XmppAxolotlMessage(from.toBareJid(), axolotlMessage);
+		XmppAxolotlMessage xmppAxolotlMessage = XmppAxolotlMessage.fromElement(axolotlMessage, from.toBareJid());
 		XmppAxolotlMessage.XmppAxolotlPlaintextMessage plaintextMessage = service.processReceiving(xmppAxolotlMessage);
 		if(plaintextMessage != null) {
 			finishedMessage = new Message(conversation, plaintextMessage.getPlaintext(), Message.ENCRYPTION_AXOLOTL, status);
@@ -272,7 +272,7 @@ public class MessageParser extends AbstractParser implements
 		final String body = packet.getBody();
 		final Element mucUserElement = packet.findChild("x", "http://jabber.org/protocol/muc#user");
 		final String pgpEncrypted = packet.findChildContent("x", "jabber:x:encrypted");
-		final Element axolotlEncrypted = packet.findChild(XmppAxolotlMessage.TAGNAME, AxolotlService.PEP_PREFIX);
+		final Element axolotlEncrypted = packet.findChild(XmppAxolotlMessage.CONTAINERTAG, AxolotlService.PEP_PREFIX);
 		int status;
 		final Jid counterpart;
 		final Jid to = packet.getTo();

@@ -69,7 +69,7 @@ public class XmppAxolotlSession {
 	}
 
 	@Nullable
-	public byte[] processReceiving(XmppAxolotlMessage.XmppAxolotlKeyElement incomingHeader) {
+	public byte[] processReceiving(byte[] encryptedKey) {
 		byte[] plaintext = null;
 		SQLiteAxolotlStore.Trust trust = getTrust();
 		switch (trust) {
@@ -79,7 +79,7 @@ public class XmppAxolotlSession {
 			case TRUSTED:
 				try {
 					try {
-						PreKeyWhisperMessage message = new PreKeyWhisperMessage(incomingHeader.getContents());
+						PreKeyWhisperMessage message = new PreKeyWhisperMessage(encryptedKey);
 						Log.i(Config.LOGTAG, AxolotlService.getLogprefix(account) + "PreKeyWhisperMessage received, new session ID:" + message.getSignedPreKeyId() + "/" + message.getPreKeyId());
 						String fingerprint = message.getIdentityKey().getFingerprint().replaceAll("\\s", "");
 						if (this.fingerprint != null && !this.fingerprint.equals(fingerprint)) {
@@ -93,7 +93,7 @@ public class XmppAxolotlSession {
 						}
 					} catch (InvalidMessageException | InvalidVersionException e) {
 						Log.i(Config.LOGTAG, AxolotlService.getLogprefix(account) + "WhisperMessage received");
-						WhisperMessage message = new WhisperMessage(incomingHeader.getContents());
+						WhisperMessage message = new WhisperMessage(encryptedKey);
 						plaintext = cipher.decrypt(message);
 					} catch (InvalidKeyException | InvalidKeyIdException | UntrustedIdentityException e) {
 						Log.w(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Error decrypting axolotl header, " + e.getClass().getName() + ": " + e.getMessage());
@@ -117,14 +117,11 @@ public class XmppAxolotlSession {
 	}
 
 	@Nullable
-	public XmppAxolotlMessage.XmppAxolotlKeyElement processSending(@NonNull byte[] outgoingMessage) {
+	public byte[] processSending(@NonNull byte[] outgoingMessage) {
 		SQLiteAxolotlStore.Trust trust = getTrust();
 		if (trust == SQLiteAxolotlStore.Trust.TRUSTED) {
 			CiphertextMessage ciphertextMessage = cipher.encrypt(outgoingMessage);
-			XmppAxolotlMessage.XmppAxolotlKeyElement header =
-					new XmppAxolotlMessage.XmppAxolotlKeyElement(remoteAddress.getDeviceId(),
-							ciphertextMessage.serialize());
-			return header;
+			return ciphertextMessage.serialize();
 		} else {
 			return null;
 		}

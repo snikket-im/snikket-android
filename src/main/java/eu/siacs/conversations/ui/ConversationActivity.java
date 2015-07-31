@@ -1265,7 +1265,7 @@ public class ConversationActivity extends XmppActivity
 				|| !axolotlService.findDevicesWithoutSession(mSelectedConversation).isEmpty();
 		boolean hasNoTrustedKeys = axolotlService.getNumTrustedKeys(mSelectedConversation.getContact()) == 0;
 		if( hasPendingKeys || hasNoTrustedKeys) {
-			axolotlService.createSessionsIfNeeded(mSelectedConversation, false);
+			axolotlService.createSessionsIfNeeded(mSelectedConversation);
 			Intent intent = new Intent(getApplicationContext(), TrustKeysActivity.class);
 			intent.putExtra("contact", mSelectedConversation.getContact().getJid().toBareJid().toString());
 			intent.putExtra("account", mSelectedConversation.getAccount().getJid().toBareJid().toString());

@@ -63,7 +63,7 @@ public class MessageGenerator extends AbstractGenerator {
 		if (axolotlMessage == null) {
 			return null;
 		}
-		packet.setAxolotlMessage(axolotlMessage.toXml());
+		packet.setAxolotlMessage(axolotlMessage.toElement());
 		return packet;
 	}
 
