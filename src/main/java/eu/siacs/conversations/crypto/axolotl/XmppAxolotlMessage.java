@@ -56,11 +56,11 @@ public class XmppAxolotlMessage {
 		}
 
 		public XmppAxolotlKeyElement(Element keyElement) {
-			if(TAGNAME.equals(keyElement.getName())) {
+			if (TAGNAME.equals(keyElement.getName())) {
 				this.recipientDeviceId = Integer.parseInt(keyElement.getAttribute(REMOTEID));
-				this.content = Base64.decode(keyElement.getContent(),Base64.DEFAULT);
+				this.content = Base64.decode(keyElement.getContent(), Base64.DEFAULT);
 			} else {
-				throw new IllegalArgumentException("Argument not a <"+TAGNAME+"> Element!");
+				throw new IllegalArgumentException("Argument not a <" + TAGNAME + "> Element!");
 			}
 		}
 
@@ -109,24 +109,24 @@ public class XmppAxolotlMessage {
 		Element header = axolotlMessage.findChild(HEADER);
 		this.sourceDeviceId = Integer.parseInt(header.getAttribute(SOURCEID));
 		this.keyElements = new HashSet<>();
-		for(Element keyElement:header.getChildren()) {
-			switch(keyElement.getName()) {
+		for (Element keyElement : header.getChildren()) {
+			switch (keyElement.getName()) {
 				case XmppAxolotlKeyElement.TAGNAME:
 					keyElements.add(new XmppAxolotlKeyElement(keyElement));
 					break;
 				case IVTAG:
-					if ( this.iv != null) {
+					if (this.iv != null) {
 						throw new IllegalArgumentException("Duplicate iv entry");
 					}
-					iv = Base64.decode(keyElement.getContent(),Base64.DEFAULT);
+					iv = Base64.decode(keyElement.getContent(), Base64.DEFAULT);
 					break;
 				default:
-					Log.w(Config.LOGTAG, "Unexpected element in header: "+ keyElement.toString());
+					Log.w(Config.LOGTAG, "Unexpected element in header: " + keyElement.toString());
 					break;
 			}
 		}
 		Element payloadElement = axolotlMessage.findChild(PAYLOAD);
-		if ( payloadElement != null ) {
+		if (payloadElement != null) {
 			ciphertext = Base64.decode(payloadElement.getContent(), Base64.DEFAULT);
 		}
 	}
@@ -139,7 +139,7 @@ public class XmppAxolotlMessage {
 		this.innerKey = generateKey();
 	}
 
-	public XmppAxolotlMessage(Jid from, int sourceDeviceId, String plaintext) throws CryptoFailedException{
+	public XmppAxolotlMessage(Jid from, int sourceDeviceId, String plaintext) throws CryptoFailedException {
 		this(from, sourceDeviceId);
 		this.encrypt(plaintext);
 	}
@@ -199,7 +199,7 @@ public class XmppAxolotlMessage {
 		}
 	}
 
-	public byte[] getInnerKey(){
+	public byte[] getInnerKey() {
 		return innerKey;
 	}
 
@@ -208,14 +208,14 @@ public class XmppAxolotlMessage {
 	}
 
 	public Element toXml() {
-		Element encryptionElement= new Element(TAGNAME, AxolotlService.PEP_PREFIX);
+		Element encryptionElement = new Element(TAGNAME, AxolotlService.PEP_PREFIX);
 		Element headerElement = encryptionElement.addChild(HEADER);
 		headerElement.setAttribute(SOURCEID, sourceDeviceId);
-		for(XmppAxolotlKeyElement header: keyElements) {
+		for (XmppAxolotlKeyElement header : keyElements) {
 			headerElement.addChild(header.toXml());
 		}
 		headerElement.addChild(IVTAG).setContent(Base64.encodeToString(iv, Base64.DEFAULT));
-		if ( ciphertext != null ) {
+		if (ciphertext != null) {
 			Element payload = encryptionElement.addChild(PAYLOAD);
 			payload.setContent(Base64.encodeToString(ciphertext, Base64.DEFAULT));
 		}
