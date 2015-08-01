@@ -47,7 +47,8 @@ public class HttpUploadConnection implements Transferable {
 	private byte[] key = null;
 
 	private long transmitted = 0;
-	private int expected = 1;
+
+	private InputStream mFileInputStream;
 
 	public HttpUploadConnection(HttpConnectionManager httpConnectionManager) {
 		this.mHttpConnectionManager = httpConnectionManager;
@@ -71,7 +72,7 @@ public class HttpUploadConnection implements Transferable {
 
 	@Override
 	public int getProgress() {
-		return (int) ((((double) transmitted) / expected) * 100);
+		return (int) ((((double) transmitted) / file.getExpectedSize()) * 100);
 	}
 
 	@Override
@@ -82,18 +83,17 @@ public class HttpUploadConnection implements Transferable {
 	private void fail() {
 		mHttpConnectionManager.finishUploadConnection(this);
 		message.setTransferable(null);
-		mXmppConnectionService.markMessage(message,Message.STATUS_SEND_FAILED);
+		mXmppConnectionService.markMessage(message, Message.STATUS_SEND_FAILED);
+		FileBackend.close(mFileInputStream);
 	}
 
 	public void init(Message message, boolean delay) {
 		this.message = message;
 		message.setTransferable(this);
-		mXmppConnectionService.markMessage(message,Message.STATUS_UNSEND);
+		mXmppConnectionService.markMessage(message, Message.STATUS_UNSEND);
 		this.account = message.getConversation().getAccount();
 		this.file = mXmppConnectionService.getFileBackend().getFile(message, false);
-		this.file.setExpectedSize(this.file.getSize());
 		this.delayed = delay;
-
 		if (Config.ENCRYPT_ON_HTTP_UPLOADED
 				|| message.getEncryption() == Message.ENCRYPTION_AXOLOTL
 				|| message.getEncryption() == Message.ENCRYPTION_OTR) {
@@ -101,7 +101,9 @@ public class HttpUploadConnection implements Transferable {
 			mXmppConnectionService.getRNG().nextBytes(this.key);
 			this.file.setKeyAndIv(this.key);
 		}
-
+		Pair<InputStream,Integer> pair = AbstractConnectionManager.createInputStream(file,true);
+		this.file.setExpectedSize(pair.second);
+		this.mFileInputStream = pair.first;
 		Jid host = account.getXmppConnection().findDiscoItemByFeature(Xmlns.HTTP_UPLOAD);
 		IqPacket request = mXmppConnectionService.getIqGenerator().requestHttpUploadSlot(host,file);
 		mXmppConnectionService.sendIqPacket(account, request, new OnIqPacketReceived() {
@@ -138,7 +140,6 @@ public class HttpUploadConnection implements Transferable {
 
 		private void upload() {
 			OutputStream os = null;
-			InputStream is = null;
 			HttpURLConnection connection = null;
 			try {
 				Log.d(Config.LOGTAG, "uploading to " + mPutUrl.toString());
@@ -146,25 +147,22 @@ public class HttpUploadConnection implements Transferable {
 				if (connection instanceof HttpsURLConnection) {
 					mHttpConnectionManager.setupTrustManager((HttpsURLConnection) connection, true);
 				}
-				Pair<InputStream,Integer> pair = AbstractConnectionManager.createInputStream(file,true);
-				is = pair.first;
-				expected = pair.second;
 				connection.setRequestMethod("PUT");
-				connection.setFixedLengthStreamingMode(expected);
+				connection.setFixedLengthStreamingMode((int) file.getExpectedSize());
 				connection.setDoOutput(true);
 				connection.connect();
 				os = connection.getOutputStream();
 				transmitted = 0;
 				int count = -1;
 				byte[] buffer = new byte[4096];
-				while (((count = is.read(buffer)) != -1) && !canceled) {
+				while (((count = mFileInputStream.read(buffer)) != -1) && !canceled) {
 					transmitted += count;
 					os.write(buffer, 0, count);
 					mXmppConnectionService.updateConversationUi();
 				}
 				os.flush();
 				os.close();
-				is.close();
+				mFileInputStream.close();
 				int code = connection.getResponseCode();
 				if (code == 200 || code == 201) {
 					Log.d(Config.LOGTAG, "finished uploading file");
@@ -205,7 +203,7 @@ public class HttpUploadConnection implements Transferable {
 				Log.d(Config.LOGTAG,"http upload failed "+e.getMessage());
 				fail();
 			} finally {
-				FileBackend.close(is);
+				FileBackend.close(mFileInputStream);
 				FileBackend.close(os);
 				if (connection != null) {
 					connection.disconnect();
