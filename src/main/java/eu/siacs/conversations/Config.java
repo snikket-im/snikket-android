@@ -20,7 +20,7 @@ public final class Config {
 	public static final Bitmap.CompressFormat AVATAR_FORMAT = Bitmap.CompressFormat.WEBP;
 
 	public static final int IMAGE_SIZE = 1920;
-	public static final Bitmap.CompressFormat IMAGE_FORMAT = Bitmap.CompressFormat.WEBP;
+	public static final Bitmap.CompressFormat IMAGE_FORMAT = Bitmap.CompressFormat.JPEG;
 	public static final int IMAGE_QUALITY = 75;
 
 	public static final int MESSAGE_MERGE_WINDOW = 20;
