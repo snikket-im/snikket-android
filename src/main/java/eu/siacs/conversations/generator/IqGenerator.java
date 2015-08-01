@@ -254,12 +254,15 @@ public class IqGenerator extends AbstractGenerator {
 		return packet;
 	}
 
-	public IqPacket requestHttpUploadSlot(Jid host, DownloadableFile file) {
+	public IqPacket requestHttpUploadSlot(Jid host, DownloadableFile file, String mime) {
 		IqPacket packet = new IqPacket(IqPacket.TYPE.GET);
 		packet.setTo(host);
 		Element request = packet.addChild("request",Xmlns.HTTP_UPLOAD);
 		request.addChild("filename").setContent(file.getName());
 		request.addChild("size").setContent(String.valueOf(file.getExpectedSize()));
+		if (mime != null) {
+			request.addChild("content-type", mime);
+		}
 		return packet;
 	}
 }

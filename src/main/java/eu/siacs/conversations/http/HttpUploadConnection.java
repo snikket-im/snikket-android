@@ -41,6 +41,7 @@ public class HttpUploadConnection implements Transferable {
 	private Account account;
 	private DownloadableFile file;
 	private Message message;
+	private String mime;
 	private URL mGetUrl;
 	private URL mPutUrl;
 
@@ -93,6 +94,7 @@ public class HttpUploadConnection implements Transferable {
 		mXmppConnectionService.markMessage(message, Message.STATUS_UNSEND);
 		this.account = message.getConversation().getAccount();
 		this.file = mXmppConnectionService.getFileBackend().getFile(message, false);
+		this.mime = this.file.getMimeType();
 		this.delayed = delay;
 		if (Config.ENCRYPT_ON_HTTP_UPLOADED
 				|| message.getEncryption() == Message.ENCRYPTION_AXOLOTL
@@ -105,7 +107,7 @@ public class HttpUploadConnection implements Transferable {
 		this.file.setExpectedSize(pair.second);
 		this.mFileInputStream = pair.first;
 		Jid host = account.getXmppConnection().findDiscoItemByFeature(Xmlns.HTTP_UPLOAD);
-		IqPacket request = mXmppConnectionService.getIqGenerator().requestHttpUploadSlot(host,file);
+		IqPacket request = mXmppConnectionService.getIqGenerator().requestHttpUploadSlot(host,file,mime);
 		mXmppConnectionService.sendIqPacket(account, request, new OnIqPacketReceived() {
 			@Override
 			public void onIqPacketReceived(Account account, IqPacket packet) {
@@ -149,6 +151,7 @@ public class HttpUploadConnection implements Transferable {
 				}
 				connection.setRequestMethod("PUT");
 				connection.setFixedLengthStreamingMode((int) file.getExpectedSize());
+				connection.setRequestProperty("Content-Type", mime == null ? "application/octet-stream" : mime);
 				connection.setDoOutput(true);
 				connection.connect();
 				os = connection.getOutputStream();
