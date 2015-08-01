@@ -38,7 +38,7 @@ import de.timroes.android.listview.EnhancedListView;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
-import eu.siacs.conversations.crypto.axolotl.SQLiteAxolotlStore.Trust;
+import eu.siacs.conversations.crypto.axolotl.XmppAxolotlSession;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Blockable;
 import eu.siacs.conversations.entities.Contact;
@@ -1260,7 +1260,7 @@ public class ConversationActivity extends XmppActivity
 
 	protected boolean trustKeysIfNeeded(int requestCode, int attachmentChoice) {
 		AxolotlService axolotlService = mSelectedConversation.getAccount().getAxolotlService();
-		boolean hasPendingKeys = !axolotlService.getKeysWithTrust(Trust.UNDECIDED,
+		boolean hasPendingKeys = !axolotlService.getKeysWithTrust(XmppAxolotlSession.Trust.UNDECIDED,
 				mSelectedConversation.getContact()).isEmpty()
 				|| !axolotlService.findDevicesWithoutSession(mSelectedConversation).isEmpty();
 		boolean hasNoTrustedKeys = axolotlService.getNumTrustedKeys(mSelectedConversation.getContact()) == 0;

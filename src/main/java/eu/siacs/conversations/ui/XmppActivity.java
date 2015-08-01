@@ -70,7 +70,7 @@ import java.util.concurrent.RejectedExecutionException;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
-import eu.siacs.conversations.crypto.axolotl.SQLiteAxolotlStore;
+import eu.siacs.conversations.crypto.axolotl.XmppAxolotlSession;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
@@ -615,24 +615,22 @@ public abstract class XmppActivity extends Activity {
 
 	protected boolean addFingerprintRow(LinearLayout keys, final Account account, IdentityKey identityKey, boolean highlight) {
 		final String fingerprint = identityKey.getFingerprint().replaceAll("\\s", "");
-		final SQLiteAxolotlStore.Trust trust = account.getAxolotlService()
+		final XmppAxolotlSession.Trust trust = account.getAxolotlService()
 				.getFingerprintTrust(fingerprint);
 		return addFingerprintRowWithListeners(keys, account, identityKey, highlight, trust, true,
 				new CompoundButton.OnCheckedChangeListener() {
 					@Override
 					public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-						if (isChecked != (trust == SQLiteAxolotlStore.Trust.TRUSTED)) {
-							account.getAxolotlService().setFingerprintTrust(fingerprint,
-									(isChecked) ? SQLiteAxolotlStore.Trust.TRUSTED :
-											SQLiteAxolotlStore.Trust.UNTRUSTED);
-						}
+						account.getAxolotlService().setFingerprintTrust(fingerprint,
+								(isChecked) ? XmppAxolotlSession.Trust.TRUSTED :
+										XmppAxolotlSession.Trust.UNTRUSTED);
 					}
 				},
 				new View.OnClickListener() {
 					@Override
 					public void onClick(View v) {
 						account.getAxolotlService().setFingerprintTrust(fingerprint,
-								SQLiteAxolotlStore.Trust.UNTRUSTED);
+								XmppAxolotlSession.Trust.UNTRUSTED);
 						v.setEnabled(true);
 					}
 				}
@@ -643,12 +641,12 @@ public abstract class XmppActivity extends Activity {
 	protected boolean addFingerprintRowWithListeners(LinearLayout keys, final Account account,
 	                                                 final IdentityKey identityKey,
 	                                                 boolean highlight,
-	                                                 SQLiteAxolotlStore.Trust trust,
+	                                                 XmppAxolotlSession.Trust trust,
 	                                                 boolean showTag,
 	                                                 CompoundButton.OnCheckedChangeListener
 			                                                 onCheckedChangeListener,
 	                                                 View.OnClickListener onClickListener) {
-		if (trust == SQLiteAxolotlStore.Trust.COMPROMISED) {
+		if (trust == XmppAxolotlSession.Trust.COMPROMISED) {
 			return false;
 		}
 		View view = getLayoutInflater().inflate(R.layout.contact_key, keys, false);
@@ -669,7 +667,7 @@ public abstract class XmppActivity extends Activity {
 		switch (trust) {
 			case UNTRUSTED:
 			case TRUSTED:
-				trustToggle.setChecked(trust == SQLiteAxolotlStore.Trust.TRUSTED, false);
+				trustToggle.setChecked(trust == XmppAxolotlSession.Trust.TRUSTED, false);
 				trustToggle.setEnabled(true);
 				key.setTextColor(getPrimaryTextColor());
 				keyType.setTextColor(getSecondaryTextColor());
@@ -680,7 +678,15 @@ public abstract class XmppActivity extends Activity {
 				key.setTextColor(getPrimaryTextColor());
 				keyType.setTextColor(getSecondaryTextColor());
 				break;
-			case INACTIVE:
+			case INACTIVE_UNTRUSTED:
+			case INACTIVE_UNDECIDED:
+				trustToggle.setOnClickListener(null);
+				trustToggle.setChecked(false, false);
+				trustToggle.setEnabled(false);
+				key.setTextColor(getTertiaryTextColor());
+				keyType.setTextColor(getTertiaryTextColor());
+				break;
+			case INACTIVE_TRUSTED:
 				trustToggle.setOnClickListener(null);
 				trustToggle.setChecked(true, false);
 				trustToggle.setEnabled(false);

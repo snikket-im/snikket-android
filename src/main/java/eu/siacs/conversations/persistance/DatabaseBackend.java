@@ -28,6 +28,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.crypto.axolotl.SQLiteAxolotlStore;
+import eu.siacs.conversations.crypto.axolotl.XmppAxolotlSession;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
@@ -844,7 +845,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		return loadIdentityKeys(account, name, null);
 	}
 
-	public Set<IdentityKey> loadIdentityKeys(Account account, String name, SQLiteAxolotlStore.Trust trust) {
+	public Set<IdentityKey> loadIdentityKeys(Account account, String name, XmppAxolotlSession.Trust trust) {
 		Set<IdentityKey> identityKeys = new HashSet<>();
 		Cursor cursor = getIdentityKeyCursor(account, name, false);
 
@@ -870,7 +871,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		String[] args = {
 				account.getUuid(),
 				name,
-				String.valueOf(SQLiteAxolotlStore.Trust.TRUSTED.getCode())
+				String.valueOf(XmppAxolotlSession.Trust.TRUSTED.getCode())
 		};
 		return DatabaseUtils.queryNumEntries(db, SQLiteAxolotlStore.IDENTITIES_TABLENAME,
 				SQLiteAxolotlStore.ACCOUNT + " = ?"
@@ -881,10 +882,10 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 	}
 
 	private void storeIdentityKey(Account account, String name, boolean own, String fingerprint, String base64Serialized) {
-		storeIdentityKey(account, name, own, fingerprint, base64Serialized, SQLiteAxolotlStore.Trust.UNDECIDED);
+		storeIdentityKey(account, name, own, fingerprint, base64Serialized, XmppAxolotlSession.Trust.UNDECIDED);
 	}
 
-	private void storeIdentityKey(Account account, String name, boolean own, String fingerprint, String base64Serialized, SQLiteAxolotlStore.Trust trusted) {
+	private void storeIdentityKey(Account account, String name, boolean own, String fingerprint, String base64Serialized, XmppAxolotlSession.Trust trusted) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		ContentValues values = new ContentValues();
 		values.put(SQLiteAxolotlStore.ACCOUNT, account.getUuid());
@@ -896,19 +897,19 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		db.insert(SQLiteAxolotlStore.IDENTITIES_TABLENAME, null, values);
 	}
 
-	public SQLiteAxolotlStore.Trust isIdentityKeyTrusted(Account account, String fingerprint) {
+	public XmppAxolotlSession.Trust isIdentityKeyTrusted(Account account, String fingerprint) {
 		Cursor cursor = getIdentityKeyCursor(account, fingerprint);
-		SQLiteAxolotlStore.Trust trust = null;
+		XmppAxolotlSession.Trust trust = null;
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
 			int trustValue = cursor.getInt(cursor.getColumnIndex(SQLiteAxolotlStore.TRUSTED));
-			trust = SQLiteAxolotlStore.Trust.fromCode(trustValue);
+			trust = XmppAxolotlSession.Trust.fromCode(trustValue);
 		}
 		cursor.close();
 		return trust;
 	}
 
-	public boolean setIdentityKeyTrust(Account account, String fingerprint, SQLiteAxolotlStore.Trust trust) {
+	public boolean setIdentityKeyTrust(Account account, String fingerprint, XmppAxolotlSession.Trust trust) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		String[] selectionArgs = {
 				account.getUuid(),
@@ -928,7 +929,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 	}
 
 	public void storeOwnIdentityKeyPair(Account account, String name, IdentityKeyPair identityKeyPair) {
-		storeIdentityKey(account, name, true, identityKeyPair.getPublicKey().getFingerprint().replaceAll("\\s", ""), Base64.encodeToString(identityKeyPair.serialize(), Base64.DEFAULT), SQLiteAxolotlStore.Trust.TRUSTED);
+		storeIdentityKey(account, name, true, identityKeyPair.getPublicKey().getFingerprint().replaceAll("\\s", ""), Base64.encodeToString(identityKeyPair.serialize(), Base64.DEFAULT), XmppAxolotlSession.Trust.TRUSTED);
 	}
 
 	public void recreateAxolotlDb() {

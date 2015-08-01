@@ -191,11 +191,11 @@ public class AxolotlService {
 		return axolotlStore.getIdentityKeyPair().getPublicKey();
 	}
 
-	public Set<IdentityKey> getKeysWithTrust(SQLiteAxolotlStore.Trust trust) {
+	public Set<IdentityKey> getKeysWithTrust(XmppAxolotlSession.Trust trust) {
 		return axolotlStore.getContactKeysWithTrust(account.getJid().toBareJid().toString(), trust);
 	}
 
-	public Set<IdentityKey> getKeysWithTrust(SQLiteAxolotlStore.Trust trust, Contact contact) {
+	public Set<IdentityKey> getKeysWithTrust(XmppAxolotlSession.Trust trust, Contact contact) {
 		return axolotlStore.getContactKeysWithTrust(contact.getJid().toBareJid().toString(), trust);
 	}
 
@@ -241,8 +241,8 @@ public class AxolotlService {
 	}
 
 	private void setTrustOnSessions(final Jid jid, @NonNull final Set<Integer> deviceIds,
-	                                final SQLiteAxolotlStore.Trust from,
-	                                final SQLiteAxolotlStore.Trust to) {
+	                                final XmppAxolotlSession.Trust from,
+	                                final XmppAxolotlSession.Trust to) {
 		for (Integer deviceId : deviceIds) {
 			AxolotlAddress address = new AxolotlAddress(jid.toBareJid().toString(), deviceId);
 			XmppAxolotlSession session = sessions.get(address);
@@ -267,11 +267,19 @@ public class AxolotlService {
 		}
 		Set<Integer> expiredDevices = new HashSet<>(axolotlStore.getSubDeviceSessions(jid.toBareJid().toString()));
 		expiredDevices.removeAll(deviceIds);
-		setTrustOnSessions(jid, expiredDevices, SQLiteAxolotlStore.Trust.TRUSTED,
-				SQLiteAxolotlStore.Trust.INACTIVE);
+		setTrustOnSessions(jid, expiredDevices, XmppAxolotlSession.Trust.TRUSTED,
+				XmppAxolotlSession.Trust.INACTIVE_TRUSTED);
+		setTrustOnSessions(jid, expiredDevices, XmppAxolotlSession.Trust.UNDECIDED,
+				XmppAxolotlSession.Trust.INACTIVE_UNDECIDED);
+		setTrustOnSessions(jid, expiredDevices, XmppAxolotlSession.Trust.UNTRUSTED,
+				XmppAxolotlSession.Trust.INACTIVE_UNTRUSTED);
 		Set<Integer> newDevices = new HashSet<>(deviceIds);
-		setTrustOnSessions(jid, newDevices, SQLiteAxolotlStore.Trust.INACTIVE,
-				SQLiteAxolotlStore.Trust.TRUSTED);
+		setTrustOnSessions(jid, newDevices, XmppAxolotlSession.Trust.INACTIVE_TRUSTED,
+				XmppAxolotlSession.Trust.TRUSTED);
+		setTrustOnSessions(jid, newDevices, XmppAxolotlSession.Trust.INACTIVE_UNDECIDED,
+				XmppAxolotlSession.Trust.UNDECIDED);
+		setTrustOnSessions(jid, newDevices, XmppAxolotlSession.Trust.INACTIVE_UNTRUSTED,
+				XmppAxolotlSession.Trust.UNTRUSTED);
 		this.deviceIds.put(jid, deviceIds);
 		mXmppConnectionService.keyStatusUpdated();
 		publishOwnDeviceIdIfNeeded();
@@ -291,7 +299,7 @@ public class AxolotlService {
 	}
 
 	public void purgeKey(IdentityKey identityKey) {
-		axolotlStore.setFingerprintTrust(identityKey.getFingerprint().replaceAll("\\s", ""), SQLiteAxolotlStore.Trust.COMPROMISED);
+		axolotlStore.setFingerprintTrust(identityKey.getFingerprint().replaceAll("\\s", ""), XmppAxolotlSession.Trust.COMPROMISED);
 	}
 
 	public void publishOwnDeviceIdIfNeeded() {
@@ -419,11 +427,11 @@ public class AxolotlService {
 				(deviceIds.containsKey(jid) && !deviceIds.get(jid).isEmpty());
 	}
 
-	public SQLiteAxolotlStore.Trust getFingerprintTrust(String fingerprint) {
+	public XmppAxolotlSession.Trust getFingerprintTrust(String fingerprint) {
 		return axolotlStore.getFingerprintTrust(fingerprint);
 	}
 
-	public void setFingerprintTrust(String fingerprint, SQLiteAxolotlStore.Trust trust) {
+	public void setFingerprintTrust(String fingerprint, XmppAxolotlSession.Trust trust) {
 		axolotlStore.setFingerprintTrust(fingerprint, trust);
 	}
 

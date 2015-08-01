@@ -15,9 +15,7 @@ import org.whispersystems.libaxolotl.state.SessionRecord;
 import org.whispersystems.libaxolotl.state.SignedPreKeyRecord;
 import org.whispersystems.libaxolotl.util.KeyHelper;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import eu.siacs.conversations.Config;
@@ -51,63 +49,13 @@ public class SQLiteAxolotlStore implements AxolotlStore {
 	private int localRegistrationId;
 	private int currentPreKeyId = 0;
 
-	private final LruCache<String, Trust> trustCache =
-			new LruCache<String, Trust>(NUM_TRUSTS_TO_CACHE) {
+	private final LruCache<String, XmppAxolotlSession.Trust> trustCache =
+			new LruCache<String, XmppAxolotlSession.Trust>(NUM_TRUSTS_TO_CACHE) {
 				@Override
-				protected Trust create(String fingerprint) {
+				protected XmppAxolotlSession.Trust create(String fingerprint) {
 					return mXmppConnectionService.databaseBackend.isIdentityKeyTrusted(account, fingerprint);
 				}
 			};
-
-	public enum Trust {
-		UNDECIDED(0),
-		TRUSTED(1),
-		UNTRUSTED(2),
-		COMPROMISED(3),
-		INACTIVE(4);
-
-		private static final Map<Integer, Trust> trustsByValue = new HashMap<>();
-
-		static {
-			for (Trust trust : Trust.values()) {
-				trustsByValue.put(trust.getCode(), trust);
-			}
-		}
-
-		private final int code;
-
-		Trust(int code) {
-			this.code = code;
-		}
-
-		public int getCode() {
-			return this.code;
-		}
-
-		public String toString() {
-			switch (this) {
-				case UNDECIDED:
-					return "Trust undecided " + getCode();
-				case TRUSTED:
-					return "Trusted " + getCode();
-				case COMPROMISED:
-					return "Compromised " + getCode();
-				case INACTIVE:
-					return "Inactive " + getCode();
-				case UNTRUSTED:
-				default:
-					return "Untrusted " + getCode();
-			}
-		}
-
-		public static Trust fromBoolean(Boolean trusted) {
-			return trusted ? TRUSTED : UNTRUSTED;
-		}
-
-		public static Trust fromCode(int code) {
-			return trustsByValue.get(code);
-		}
-	}
 
 	private static IdentityKeyPair generateIdentityKeyPair() {
 		Log.i(Config.LOGTAG, AxolotlService.LOGPREFIX + " : " + "Generating axolotl IdentityKeyPair...");
@@ -258,16 +206,16 @@ public class SQLiteAxolotlStore implements AxolotlStore {
 		return true;
 	}
 
-	public Trust getFingerprintTrust(String fingerprint) {
+	public XmppAxolotlSession.Trust getFingerprintTrust(String fingerprint) {
 		return (fingerprint == null)? null : trustCache.get(fingerprint);
 	}
 
-	public void setFingerprintTrust(String fingerprint, Trust trust) {
+	public void setFingerprintTrust(String fingerprint, XmppAxolotlSession.Trust trust) {
 		mXmppConnectionService.databaseBackend.setIdentityKeyTrust(account, fingerprint, trust);
 		trustCache.remove(fingerprint);
 	}
 
-	public Set<IdentityKey> getContactKeysWithTrust(String bareJid, Trust trust) {
+	public Set<IdentityKey> getContactKeysWithTrust(String bareJid, XmppAxolotlSession.Trust trust) {
 		return mXmppConnectionService.databaseBackend.loadIdentityKeys(account, bareJid, trust);
 	}
 

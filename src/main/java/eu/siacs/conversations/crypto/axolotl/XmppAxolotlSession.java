@@ -18,6 +18,9 @@ import org.whispersystems.libaxolotl.protocol.CiphertextMessage;
 import org.whispersystems.libaxolotl.protocol.PreKeyWhisperMessage;
 import org.whispersystems.libaxolotl.protocol.WhisperMessage;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
 
@@ -29,6 +32,62 @@ public class XmppAxolotlSession {
 	private String fingerprint = null;
 	private Integer preKeyId = null;
 	private boolean fresh = true;
+
+	public enum Trust {
+		UNDECIDED(0),
+		TRUSTED(1),
+		UNTRUSTED(2),
+		COMPROMISED(3),
+		INACTIVE_TRUSTED(4),
+		INACTIVE_UNDECIDED(5),
+		INACTIVE_UNTRUSTED(6);
+
+		private static final Map<Integer, Trust> trustsByValue = new HashMap<>();
+
+		static {
+			for (Trust trust : Trust.values()) {
+				trustsByValue.put(trust.getCode(), trust);
+			}
+		}
+
+		private final int code;
+
+		Trust(int code) {
+			this.code = code;
+		}
+
+		public int getCode() {
+			return this.code;
+		}
+
+		public String toString() {
+			switch (this) {
+				case UNDECIDED:
+					return "Trust undecided " + getCode();
+				case TRUSTED:
+					return "Trusted " + getCode();
+				case COMPROMISED:
+					return "Compromised " + getCode();
+				case INACTIVE_TRUSTED:
+					return "Inactive (Trusted)" + getCode();
+				case INACTIVE_UNDECIDED:
+					return "Inactive (Undecided)" + getCode();
+				case INACTIVE_UNTRUSTED:
+					return "Inactive (Untrusted)" + getCode();
+				case UNTRUSTED:
+				default:
+					return "Untrusted " + getCode();
+			}
+		}
+
+		public static Trust fromBoolean(Boolean trusted) {
+			return trusted ? TRUSTED : UNTRUSTED;
+		}
+
+		public static Trust fromCode(int code) {
+			return trustsByValue.get(code);
+		}
+	}
 
 	public XmppAxolotlSession(Account account, SQLiteAxolotlStore store, AxolotlAddress remoteAddress, String fingerprint) {
 		this(account, store, remoteAddress);
@@ -67,21 +126,21 @@ public class XmppAxolotlSession {
 		this.fresh = false;
 	}
 
-	protected void setTrust(SQLiteAxolotlStore.Trust trust) {
+	protected void setTrust(Trust trust) {
 		sqLiteAxolotlStore.setFingerprintTrust(fingerprint, trust);
 	}
 
-	protected SQLiteAxolotlStore.Trust getTrust() {
-		SQLiteAxolotlStore.Trust trust = sqLiteAxolotlStore.getFingerprintTrust(fingerprint);
-		return (trust == null) ? SQLiteAxolotlStore.Trust.UNDECIDED : trust;
+	protected Trust getTrust() {
+		Trust trust = sqLiteAxolotlStore.getFingerprintTrust(fingerprint);
+		return (trust == null) ? Trust.UNDECIDED : trust;
 	}
 
 	@Nullable
 	public byte[] processReceiving(byte[] encryptedKey) {
 		byte[] plaintext = null;
-		SQLiteAxolotlStore.Trust trust = getTrust();
+		Trust trust = getTrust();
 		switch (trust) {
-			case INACTIVE:
+			case INACTIVE_TRUSTED:
 			case UNDECIDED:
 			case UNTRUSTED:
 			case TRUSTED:
@@ -110,8 +169,8 @@ public class XmppAxolotlSession {
 					Log.w(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Error decrypting axolotl header, " + e.getClass().getName() + ": " + e.getMessage());
 				}
 
-				if (plaintext != null && trust == SQLiteAxolotlStore.Trust.INACTIVE) {
-					setTrust(SQLiteAxolotlStore.Trust.TRUSTED);
+				if (plaintext != null && trust == Trust.INACTIVE_TRUSTED) {
+					setTrust(Trust.TRUSTED);
 				}
 
 				break;
@@ -126,8 +185,8 @@ public class XmppAxolotlSession {
 
 	@Nullable
 	public byte[] processSending(@NonNull byte[] outgoingMessage) {
-		SQLiteAxolotlStore.Trust trust = getTrust();
-		if (trust == SQLiteAxolotlStore.Trust.TRUSTED) {
+		Trust trust = getTrust();
+		if (trust == Trust.TRUSTED) {
 			CiphertextMessage ciphertextMessage = cipher.encrypt(outgoingMessage);
 			return ciphertextMessage.serialize();
 		} else {

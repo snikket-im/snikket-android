@@ -27,7 +27,7 @@ import android.widget.Toast;
 import java.util.List;
 
 import eu.siacs.conversations.R;
-import eu.siacs.conversations.crypto.axolotl.SQLiteAxolotlStore;
+import eu.siacs.conversations.crypto.axolotl.XmppAxolotlSession;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
@@ -169,11 +169,11 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		} else {
 			viewHolder.indicator.setVisibility(View.VISIBLE);
 			if (message.getEncryption() == Message.ENCRYPTION_AXOLOTL) {
-				SQLiteAxolotlStore.Trust trust = message.getConversation()
+				XmppAxolotlSession.Trust trust = message.getConversation()
 						.getAccount().getAxolotlService().getFingerprintTrust(
 								message.getAxolotlFingerprint());
 
-				if(trust == null || trust != SQLiteAxolotlStore.Trust.TRUSTED) {
+				if(trust == null || trust != XmppAxolotlSession.Trust.TRUSTED) {
 					viewHolder.indicator.setColorFilter(activity.getWarningTextColor());
 					viewHolder.indicator.setAlpha(1.0f);
 				} else {

@@ -8,7 +8,7 @@ import java.net.URL;
 import java.util.Arrays;
 
 import eu.siacs.conversations.Config;
-import eu.siacs.conversations.crypto.axolotl.SQLiteAxolotlStore;
+import eu.siacs.conversations.crypto.axolotl.XmppAxolotlSession;
 import eu.siacs.conversations.utils.GeoHelper;
 import eu.siacs.conversations.utils.MimeUtils;
 import eu.siacs.conversations.utils.UIHelper;
@@ -707,7 +707,7 @@ public class Message extends AbstractEntity {
 
 	public boolean isTrusted() {
 		return conversation.getAccount().getAxolotlService().getFingerprintTrust(axolotlFingerprint)
-				== SQLiteAxolotlStore.Trust.TRUSTED;
+				== XmppAxolotlSession.Trust.TRUSTED;
 	}
 
 	private  int getPreviousEncryption() {
