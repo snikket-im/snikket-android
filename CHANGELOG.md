@@ -1,5 +1,11 @@
 ###Changelog
 
+####Version 1.6.0
+* new multi-end-to-multi-end encryption method
+* redesigned chat bubbles
+* show unexpected encryption changes as red chat bubbles
+* always notify in private/non-anonymous conferences
+
 ####Version 1.5.1
 * fixed rare crashes
 * improved otr support
