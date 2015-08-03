@@ -33,6 +33,7 @@ import org.whispersystems.libaxolotl.IdentityKey;
 
 import java.util.List;
 
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.PgpEngine;
 import eu.siacs.conversations.entities.Account;
@@ -359,7 +360,13 @@ public class ContactDetailsActivity extends XmppActivity implements OnAccountUpd
 		} else {
 			contactJidTv.setText(contact.getJid().toString());
 		}
-		accountJidTv.setText(getString(R.string.using_account, contact.getAccount().getJid().toBareJid()));
+		String account;
+		if (Config.DOMAIN_LOCK != null) {
+			account = contact.getAccount().getJid().getLocalpart();
+		} else {
+			account = contact.getAccount().getJid().toBareJid().toString();
+		}
+		accountJidTv.setText(getString(R.string.using_account, account));
 		badge.setImageBitmap(avatarService().get(contact, getPixel(72)));
 		badge.setOnClickListener(this.onBadgeClick);
 

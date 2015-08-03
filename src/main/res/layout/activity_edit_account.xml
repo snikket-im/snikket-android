@@ -42,6 +42,7 @@
                     android:orientation="vertical"
                     android:layout_toRightOf="@+id/avater">
                 <TextView
+                    android:id="@+id/account_jid_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/account_settings_jabber_id"

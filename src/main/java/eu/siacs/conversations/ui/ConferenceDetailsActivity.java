@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.PgpEngine;
 import eu.siacs.conversations.entities.Account;
@@ -421,8 +422,13 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 	private void updateView() {
 		final MucOptions mucOptions = mConversation.getMucOptions();
 		final User self = mucOptions.getSelf();
-		mAccountJid.setText(getString(R.string.using_account, mConversation
-					.getAccount().getJid().toBareJid()));
+		String account;
+		if (Config.DOMAIN_LOCK != null) {
+			account = mConversation.getAccount().getJid().getLocalpart();
+		} else {
+			account = mConversation.getAccount().getJid().toBareJid().toString();
+		}
+		mAccountJid.setText(getString(R.string.using_account, account));
 		mYourPhoto.setImageBitmap(avatarService().get(mConversation.getAccount(), getPixel(48)));
 		setTitle(mConversation.getName());
 		mFullJid.setText(mConversation.getJid().toBareJid().toString());

@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.utils.PhoneHelper;
@@ -192,7 +193,13 @@ public class PublishProfilePictureActivity extends XmppActivity {
 				} else {
 					loadImageIntoPreview(avatarUri);
 				}
-				this.accountTextView.setText(this.account.getJid().toBareJid().toString());
+				String account;
+				if (Config.DOMAIN_LOCK != null) {
+					account = this.account.getJid().getLocalpart();
+				} else {
+					account = this.account.getJid().toBareJid().toString();
+				}
+				this.accountTextView.setText(account);
 			}
 		}
 

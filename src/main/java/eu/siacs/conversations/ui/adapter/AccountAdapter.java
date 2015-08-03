@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.ui.ManageAccountActivity;
@@ -35,7 +36,11 @@ public class AccountAdapter extends ArrayAdapter<Account> {
 			view = inflater.inflate(R.layout.account_row, parent, false);
 		}
 		TextView jid = (TextView) view.findViewById(R.id.account_jid);
-		jid.setText(account.getJid().toBareJid().toString());
+		if (Config.DOMAIN_LOCK != null) {
+			jid.setText(account.getJid().getLocalpart());
+		} else {
+			jid.setText(account.getJid().toBareJid().toString());
+		}
 		TextView statusView = (TextView) view.findViewById(R.id.account_status);
 		ImageView imageView = (ImageView) view.findViewById(R.id.account_image);
 		imageView.setImageBitmap(activity.avatarService().get(account, activity.getPixel(48)));
