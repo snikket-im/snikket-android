@@ -105,8 +105,6 @@
   <string name="pref_vibrate_summary">Επίσης δόνηση όταν έρχεται ένα νέο μήνυμα</string>
   <string name="pref_sound">Ήχος</string>
   <string name="pref_sound_summary">Αναπαραγωγή ήχου κλήσης με την ειδοποίηση</string>
-  <string name="pref_conference_notifications">Ειδοποιήσεις συνδιασκέψεων</string>
-  <string name="pref_conference_notifications_summary">Ειδοποίηση πάντα όταν ένα νέο μήνυμα συνδιάσκεψης λαμβάνεται αντί για μόνο όταν τονίζεται</string>
   <string name="pref_notification_grace_period">Περίοδος χάριτος ειδοποιήσεων</string>
   <string name="pref_notification_grace_period_summary">Απενεργοποίηση ειδοποιήσεων για λίγο χρόνο μετά από τη λήψη ακριβούς αντιγράφου</string>
   <string name="pref_advanced_options">Προχωρημένες επιλογές</string>
@@ -424,7 +422,6 @@
   <string name="received_location">Ελήφθη τοποθεσία</string>
   <string name="title_undo_swipe_out_conversation">Η συζήτηση έκλεισε</string>
   <string name="title_undo_swipe_out_muc">Έφυγε από την συνδιάσκεψη</string>
-  <string name="pref_certificate_options">Επιλογές πιστοποιητικών</string>
   <string name="pref_dont_trust_system_cas_title">Μη έμπιστες αρχές πιστοποίησης συστήματος</string>
   <string name="pref_dont_trust_system_cas_summary">Όλα τα πιστοποιητικά πρέπει να εγκριθούν χειροκίνητα</string>
   <string name="pref_remove_trusted_certificates_title">Αφαίρεση πιστοποιητικών</string>

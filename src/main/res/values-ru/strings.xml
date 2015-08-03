@@ -105,8 +105,6 @@
   <string name="pref_vibrate_summary">Использовать вибрацию когда приходят новые сообщения</string>
   <string name="pref_sound">Звуковой сигнал</string>
   <string name="pref_sound_summary">Выберите звуковой сигнал для сообщений</string>
-  <string name="pref_conference_notifications">Уведомления конференции</string>
-  <string name="pref_conference_notifications_summary">Всегда сообщать при получении нового сообщения в конференции</string>
   <string name="pref_notification_grace_period">Отсрочка уведомлений</string>
   <string name="pref_notification_grace_period_summary">Не использовать уведомления, если вы прочитали сообщение на другом устройстве</string>
   <string name="pref_advanced_options">Дополнительные параметры</string>
@@ -424,7 +422,6 @@
   <string name="received_location">Получено местоположение</string>
   <string name="title_undo_swipe_out_conversation">Беседа окончена</string>
   <string name="title_undo_swipe_out_muc">Покинул беседу</string>
-  <string name="pref_certificate_options">Опции сертификата</string>
   <string name="pref_dont_trust_system_cas_title">Не доверять системным УЦ</string>
   <string name="pref_dont_trust_system_cas_summary">Все сертификаты должны быть подтверждены вручную</string>
   <string name="pref_remove_trusted_certificates_title">Удалить сертификат</string>

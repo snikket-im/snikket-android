@@ -105,8 +105,6 @@
   <string name="pref_vibrate_summary">Vibrer lors de l\'arrivée d\'un message</string>
   <string name="pref_sound">Sonore</string>
   <string name="pref_sound_summary">Jouer une sonnerie lors de l\'arrivée d\'un message</string>
-  <string name="pref_conference_notifications">Notifications lors des conférences</string>
-  <string name="pref_conference_notifications_summary">Toujours notifier l\'arrivée d\'un message provenant d\'une conférence.</string>
   <string name="pref_notification_grace_period">Période sans notification</string>
   <string name="pref_notification_grace_period_summary">Désactiver momentanément les notifications après l\'arrivée d\'une copie carbone.</string>
   <string name="pref_advanced_options">Options avancées</string>

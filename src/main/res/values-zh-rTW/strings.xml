@@ -89,8 +89,6 @@
   <string name="pref_vibrate_summary">收到新訊息時震動</string>
   <string name="pref_sound">聲音</string>
   <string name="pref_sound_summary">收到新訊息時播放鈴聲</string>
-  <string name="pref_conference_notifications">群組通知</string>
-  <string name="pref_conference_notifications_summary">當有新訊息時總是通知，而不是被標記時才通知</string>
   <string name="pref_notification_grace_period">通知限期</string>
   <string name="pref_notification_grace_period_summary">收到副本後，關閉通知一小段時間</string>
   <string name="pref_advanced_options">進階選項</string>

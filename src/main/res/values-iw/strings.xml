@@ -90,8 +90,6 @@
   <string name="pref_vibrate_summary">הרטט גם כאשר הודעה חדשה מגיעה</string>
   <string name="pref_sound">צליל</string>
   <string name="pref_sound_summary">נגן צלצול עם התראה</string>
-  <string name="pref_conference_notifications">התראות ועידה</string>
-  <string name="pref_conference_notifications_summary">תמיד תודיע כאשר הודעת ועידה חדשה מגיעה במקום רק כאשר מודגשת</string>
   <string name="pref_notification_grace_period">משך ארכת התראה</string>
   <string name="pref_notification_grace_period_summary">נטרל התראות לזמן קצר לאחר שהודעת פחם התקבלה</string>
   <string name="pref_advanced_options">אפשרויות מתקדמות</string>

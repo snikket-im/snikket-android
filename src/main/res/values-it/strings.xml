@@ -60,7 +60,7 @@
   <string name="crash_report_title">Errore di Conversations</string>
   <string name="crash_report_message">Se scegli di inviare una segnalazione dell’errore aiuterai lo sviluppo di Conversations\n<b>Attenzione:</b> Questo utilizzerà il tuo account XMPP per inviare la segnalazione agli sviluppatori.</string>
   <string name="send_now">Invia adesso</string>
-  <string name="send_never">Non chiedere mai più</string>
+  <string name="send_never">Non chiedere più</string>
   <string name="problem_connecting_to_account">Impossibile collegarsi tramite questo utente</string>
   <string name="problem_connecting_to_accounts">Impossibile collegarsi tramite più utenti</string>
   <string name="touch_to_fix">Tocca qui per gestire i tuoi utenti</string>
@@ -105,8 +105,6 @@
   <string name="pref_vibrate_summary">Vibra anche quando arriva un nuovo messaggio</string>
   <string name="pref_sound">Suono</string>
   <string name="pref_sound_summary">Riproduci una suoneria con la notifica</string>
-  <string name="pref_conference_notifications">Notifiche Conferenze</string>
-  <string name="pref_conference_notifications_summary">Notifica sempre quando arriva un nuovo messaggio da una conferenza, invece che solo quando in primo piano</string>
   <string name="pref_notification_grace_period">Periodo tra notifiche</string>
   <string name="pref_notification_grace_period_summary">Disabilita le notifiche per un breve lasso di tempo dopo che un messaggio è stato ricevuto</string>
   <string name="pref_advanced_options">Opzioni Avanzate</string>
@@ -293,6 +291,7 @@
   <string name="copy_text">Copia testo</string>
   <string name="copy_original_url">Copia URL originale</string>
   <string name="send_again">Invia di nuovo</string>
+  <string name="file_url">URL del file</string>
   <string name="message_text">Messaggio di testo</string>
   <string name="url_copied_to_clipboard">URL copiato</string>
   <string name="message_copied_to_clipboard">Messaggio copiato</string>
@@ -406,6 +405,7 @@
   <string name="apk">Applicazione Android</string>
   <string name="vcard">Contatto</string>
   <string name="received_x_file">Ricevuto %s</string>
+  <string name="disable_foreground_service">Disabilita i servizi in background</string>
   <string name="touch_to_open_conversations">Tocca per avviare Conversations</string>
   <string name="avatar_has_been_published">Il tuo avatar è stato pubblicato!</string>
   <string name="sending_x_file">Invio %s</string>
@@ -422,7 +422,6 @@
   <string name="received_location">Posizione ricevuta</string>
   <string name="title_undo_swipe_out_conversation">Conversazione interrotta</string>
   <string name="title_undo_swipe_out_muc">Conferenza terminata</string>
-  <string name="pref_certificate_options">Opzioni per i certificati</string>
   <string name="pref_dont_trust_system_cas_title">Non ti fidare delle CA di sistema</string>
   <string name="pref_dont_trust_system_cas_summary">Tutti i certificati devono essere accettati manualmente</string>
   <string name="pref_remove_trusted_certificates_title">Elimina i certificati</string>
@@ -439,4 +438,8 @@
     <item quantity="one">Seleziona il %d contatto</item>
     <item quantity="other">Selezionati %d contatti</item>
   </plurals>
+  <string name="none">Nessuno</string>
+  <string name="recently_used">Usati recentemente</string>
+  <string name="file_not_found_on_remote_host">File non trovato sul server remoto</string>
+  <string name="search_for_contacts_or_groups">Cerca contatti o gruppi</string>
 </resources>

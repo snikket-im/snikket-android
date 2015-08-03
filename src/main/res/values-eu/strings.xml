@@ -105,8 +105,6 @@
   <string name="pref_vibrate_summary">Dardaratu ere mezu berri bat heltzerakoan</string>
   <string name="pref_sound">Soinua</string>
   <string name="pref_sound_summary">Dei-tonua jo jakinarazpenarekin</string>
-  <string name="pref_conference_notifications">Konferentzien jakinarazpenak</string>
-  <string name="pref_conference_notifications_summary">Beti jakinarazi konferentzia mezu berri bat heltzerakoan eta ez soilik nabarmentzerakoan</string>
   <string name="pref_notification_grace_period">Jakinarazpenen grazia epea</string>
   <string name="pref_notification_grace_period_summary">Jakinarazpenak denbora labur baterako ezgaitu ikatz-kopia bat jaso ondoren</string>
   <string name="pref_advanced_options">Aukera aurreratuak</string>
@@ -427,7 +425,6 @@
   <string name="received_location">Kokapena jaso da</string>
   <string name="title_undo_swipe_out_conversation">Elkarrizketa itxi egin da</string>
   <string name="title_undo_swipe_out_muc">Konferentzia utzi egin da</string>
-  <string name="pref_certificate_options">Ziurtagirien aukerak</string>
   <string name="pref_dont_trust_system_cas_title">Sistemaren CAtaz ez fidatu</string>
   <string name="pref_dont_trust_system_cas_summary">Ziurtagiri guztiak eskuz onartu behar dira</string>
   <string name="pref_remove_trusted_certificates_title">Ziurtagiriak kendu</string>

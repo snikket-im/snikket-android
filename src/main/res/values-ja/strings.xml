@@ -105,8 +105,6 @@
   <string name="pref_vibrate_summary">新しいメッセージが到着したときに振動もします</string>
   <string name="pref_sound">サウンド</string>
   <string name="pref_sound_summary">通知で着信音を再生します</string>
-  <string name="pref_conference_notifications">会議通知</string>
-  <string name="pref_conference_notifications_summary">新しい会議メッセージが到着したとき、ハイライト表示ではなく、常に通知します</string>
   <string name="pref_notification_grace_period">通知猶予期間</string>
   <string name="pref_notification_grace_period_summary">カーボンコピーを受信した後、短時間、通知を無効にします</string>
   <string name="pref_advanced_options">詳細オプション</string>
@@ -427,7 +425,6 @@
   <string name="received_location">位置を受信しました</string>
   <string name="title_undo_swipe_out_conversation">会話が閉じられました</string>
   <string name="title_undo_swipe_out_muc">退出した会話</string>
-  <string name="pref_certificate_options">証明書オプション</string>
   <string name="pref_dont_trust_system_cas_title">システムの CA を信頼しない</string>
   <string name="pref_dont_trust_system_cas_summary">すべての証明書を手動で承認する必要があります</string>
   <string name="pref_remove_trusted_certificates_title">証明書を削除</string>

@@ -105,8 +105,6 @@
   <string name="pref_vibrate_summary">Вибрирај кад стигне нова порука</string>
   <string name="pref_sound">Звук</string>
   <string name="pref_sound_summary">Звуци обавештења</string>
-  <string name="pref_conference_notifications">Обавештења конференције</string>
-  <string name="pref_conference_notifications_summary">Увек обавести кад нова порука у конференцији стигне уместо само кад је означена</string>
   <string name="pref_notification_grace_period">Период одгоде обавештења</string>
   <string name="pref_notification_grace_period_summary">Онемогући обавештења на кратко по примању карбон копије</string>
   <string name="pref_advanced_options">Напредне поставке</string>
@@ -427,7 +425,6 @@
   <string name="received_location">Примљена локација</string>
   <string name="title_undo_swipe_out_conversation">Преписка затворена</string>
   <string name="title_undo_swipe_out_muc">Напусти конференцију</string>
-  <string name="pref_certificate_options">Опције сертификата</string>
   <string name="pref_dont_trust_system_cas_title">Не веруј системским сертификационим телима</string>
   <string name="pref_dont_trust_system_cas_summary">Сви сертификати морају ручно да се одобре</string>
   <string name="pref_remove_trusted_certificates_title">Уклони сертификате</string>

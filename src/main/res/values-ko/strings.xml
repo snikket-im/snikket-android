@@ -105,8 +105,6 @@
   <string name="pref_vibrate_summary">새 메세지 도착시 진동 </string>
   <string name="pref_sound">소리 </string>
   <string name="pref_sound_summary">알림과 동시에 벨소리 재생 </string>
-  <string name="pref_conference_notifications">회의 알림 </string>
-  <string name="pref_conference_notifications_summary">새 회의 메세지가 도착시, 강조됐을 때 뿐만 아니라 항상 알림 </string>
   <string name="pref_notification_grace_period">알림 유예 </string>
   <string name="pref_notification_grace_period_summary">Carbon Copy 수신 후에 잠시동안 알림 해제</string>
   <string name="pref_advanced_options">추가 설정 </string>
@@ -424,7 +422,6 @@
   <string name="received_location">위치 수신 </string>
   <string name="title_undo_swipe_out_conversation">대화 끝남 </string>
   <string name="title_undo_swipe_out_muc">회의에서 나감 </string>
-  <string name="pref_certificate_options">인증 설정 </string>
   <string name="pref_dont_trust_system_cas_title">시스템 CA를 신뢰하지 않음 </string>
   <string name="pref_dont_trust_system_cas_summary">모든 인증서는 수동으로 승인되어야 함 </string>
   <string name="pref_remove_trusted_certificates_title">인증서 삭제 </string>

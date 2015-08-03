@@ -105,8 +105,6 @@
   <string name="pref_vibrate_summary">Vibriere, wenn eine neue Nachricht ankommt</string>
   <string name="pref_sound">Klingelton</string>
   <string name="pref_sound_summary">Spiele Klingelton, wenn eine neue Nachricht ankommt</string>
-  <string name="pref_conference_notifications">Konferenz-Benachrichtigungen</string>
-  <string name="pref_conference_notifications_summary">Benachrichtige mich bei jeder Konferenz-Nachricht und nicht nur, wenn ich angesprochen werde</string>
   <string name="pref_notification_grace_period">Gnadenfrist</string>
   <string name="pref_notification_grace_period_summary">Deaktiviere Benachrichtigungen für eine kurze Zeit nach Erhalt einer Nachricht, die von einem anderen deiner Clients kommt.</string>
   <string name="pref_advanced_options">Erweiterte Optionen</string>
@@ -427,7 +425,6 @@
   <string name="received_location">Standort empfangen</string>
   <string name="title_undo_swipe_out_conversation">Unterhaltung beendet</string>
   <string name="title_undo_swipe_out_muc">Konferenz verlassen</string>
-  <string name="pref_certificate_options">Zertifikats-Optionen</string>
   <string name="pref_dont_trust_system_cas_title">Misstraue Zertifizierungsstellen</string>
   <string name="pref_dont_trust_system_cas_summary">Alle Zertifikate müssen manuell bestätigt werden</string>
   <string name="pref_remove_trusted_certificates_title">Zertifikate löschen</string>
