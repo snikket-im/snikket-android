@@ -55,6 +55,7 @@
                 android:autoLink="web"
                 android:textColorLink="@color/white"
                 android:textColor="@color/white"
+                android:textColorHighlight="@color/grey800"
                 android:textSize="?attr/TextSizeBody" />
 
             <Button
