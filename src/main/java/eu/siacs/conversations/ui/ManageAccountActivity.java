@@ -18,6 +18,7 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.List;
 
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.services.XmppConnectionService.OnAccountUpdate;
@@ -81,6 +82,7 @@ public class ManageAccountActivity extends XmppActivity implements OnAccountUpda
 			menu.findItem(R.id.mgmt_account_publish_avatar).setVisible(false);
 		} else {
 			menu.findItem(R.id.mgmt_account_enable).setVisible(false);
+			menu.findItem(R.id.mgmt_account_announce_pgp).setVisible(!Config.HIDE_PGP_IN_UI);
 		}
 		menu.setHeaderTitle(this.selectedAccount.getJid().toBareJid().toString());
 	}
