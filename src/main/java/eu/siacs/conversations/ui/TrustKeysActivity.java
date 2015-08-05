@@ -124,9 +124,7 @@ public class TrustKeysActivity extends XmppActivity implements OnKeyStatusUpdate
 						@Override
 						public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 							ownKeysToTrust.put(identityKey, isChecked);
-							refreshUi();
-							xmppConnectionService.updateAccountUi();
-							xmppConnectionService.updateConversationUi();
+							// own fingerprints have no impact on locked status.
 						}
 					},
 					null
@@ -140,9 +138,7 @@ public class TrustKeysActivity extends XmppActivity implements OnKeyStatusUpdate
 						@Override
 						public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 							foreignKeysToTrust.put(identityKey, isChecked);
-							refreshUi();
-							xmppConnectionService.updateAccountUi();
-							xmppConnectionService.updateConversationUi();
+							lockOrUnlockAsNeeded();
 						}
 					},
 					null
@@ -161,11 +157,7 @@ public class TrustKeysActivity extends XmppActivity implements OnKeyStatusUpdate
 			setFetching();
 			lock();
 		} else {
-			if (!hasOtherTrustedKeys && !foreignKeysToTrust.values().contains(true)){
-				lock();
-			} else {
-				unlock();
-			}
+			lockOrUnlockAsNeeded();
 			setDone();
 		}
 	}
@@ -243,6 +235,14 @@ public class TrustKeysActivity extends XmppActivity implements OnKeyStatusUpdate
 	private void lock() {
 		mSaveButton.setEnabled(false);
 		mSaveButton.setTextColor(getSecondaryTextColor());
+	}
+
+	private void lockOrUnlockAsNeeded() {
+		if (!hasOtherTrustedKeys && !foreignKeysToTrust.values().contains(true)){
+			lock();
+		} else {
+			unlock();
+		}
 	}
 
 	private void setDone() {
