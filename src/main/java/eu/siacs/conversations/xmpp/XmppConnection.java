@@ -34,6 +34,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -709,6 +710,7 @@ public class XmppConnection implements Runnable {
 			} catch (final InterruptedException ignored) {
 			}
 		}
+		clearIqCallbacks();
 		final IqPacket iq = new IqPacket(IqPacket.TYPE.SET);
 		iq.addChild("bind", "urn:ietf:params:xml:ns:xmpp-bind")
 				.addChild("resource").setContent(account.getResource());
@@ -737,6 +739,17 @@ public class XmppConnection implements Runnable {
 				}
 			}
 		});
+	}
+
+	private void clearIqCallbacks() {
+		Log.d(Config.LOGTAG,account.getJid().toBareJid()+": clearing iq iq callbacks");
+		final IqPacket failurePacket = new IqPacket(IqPacket.TYPE.ERROR);
+		Iterator<Entry<String, Pair<IqPacket, OnIqPacketReceived>>> iterator = this.packetCallbacks.entrySet().iterator();
+		while(iterator.hasNext()) {
+			Entry<String, Pair<IqPacket, OnIqPacketReceived>> entry = iterator.next();
+			entry.getValue().second.onIqPacketReceived(account,failurePacket);
+			iterator.remove();
+		}
 	}
 
 	private void sendStartSession() {
