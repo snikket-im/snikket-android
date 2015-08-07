@@ -49,7 +49,7 @@ public class AxolotlService {
 
 	public static final String LOGPREFIX = "AxolotlService";
 
-	public static final int NUM_KEYS_TO_PUBLISH = 10;
+	public static final int NUM_KEYS_TO_PUBLISH = 100;
 
 	private final Account account;
 	private final XmppConnectionService mXmppConnectionService;
