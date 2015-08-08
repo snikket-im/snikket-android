@@ -111,7 +111,7 @@ public class TrustKeysActivity extends XmppActivity implements OnKeyStatusUpdate
 	}
 
 	private void populateView() {
-		setTitle(getString(R.string.trust_keys));
+		setTitle(getString(R.string.trust_omemo_fingerprints));
 		ownKeys.removeAllViews();
 		foreignKeys.removeAllViews();
 		boolean hasOwnKeys = false;

@@ -577,10 +577,10 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 							@Override
 							public void onClick(final View v) {
 
-								if (copyTextToClipboard(axolotlFingerprint, R.string.axolotl_fingerprint)) {
+								if (copyTextToClipboard(axolotlFingerprint, R.string.omemo_fingerprint)) {
 									Toast.makeText(
 											EditAccountActivity.this,
-											R.string.toast_message_axolotl_fingerprint,
+											R.string.toast_message_omemo_fingerprint,
 											Toast.LENGTH_SHORT).show();
 								}
 							}

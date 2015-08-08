@@ -6,14 +6,14 @@
             android:id="@+id/encryption_choice_none"
             android:title="@string/encryption_choice_none"/>
         <item
+            android:id="@+id/encryption_choice_axolotl"
+            android:title="@string/encryption_choice_omemo"/>
+        <item
             android:id="@+id/encryption_choice_otr"
             android:title="@string/encryption_choice_otr"/>
         <item
             android:id="@+id/encryption_choice_pgp"
             android:title="@string/encryption_choice_pgp"/>
-        <item
-            android:id="@+id/encryption_choice_axolotl"
-            android:title="@string/encryption_choice_axolotl"/>
     </group>
 
 </menu>

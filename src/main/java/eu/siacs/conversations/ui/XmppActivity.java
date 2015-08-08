@@ -696,15 +696,15 @@ public abstract class XmppActivity extends Activity {
 		}
 
 		if (showTag) {
-			keyType.setText(getString(R.string.axolotl_fingerprint));
+			keyType.setText(getString(R.string.omemo_fingerprint));
 		} else {
 			keyType.setVisibility(View.GONE);
 		}
 		if (highlight) {
 			keyType.setTextColor(getResources().getColor(R.color.accent));
-			keyType.setText(getString(R.string.axolotl_fingerprint_selected_message));
+			keyType.setText(getString(R.string.omemo_fingerprint_selected_message));
 		} else {
-			keyType.setText(getString(R.string.axolotl_fingerprint));
+			keyType.setText(getString(R.string.omemo_fingerprint));
 		}
 
 		key.setText(CryptoHelper.prettifyFingerprint(identityKey.getFingerprint()));

@@ -374,7 +374,7 @@
                            android:layout_height="wrap_content"
                            android:textColor="@color/black54"
                            android:textSize="?attr/TextSizeInfo"
-                           android:text="@string/this_device_axolotl_fingerprint"/>
+                           android:text="@string/this_device_omemo_fingerprint"/>
                    </LinearLayout>
 
                    <LinearLayout
@@ -393,7 +393,7 @@
                            android:padding="@dimen/image_button_padding"
                            android:src="?attr/icon_copy"
                            android:visibility="visible"
-                           android:contentDescription="@string/copy_axolotl_clipboard_description"/>
+                           android:contentDescription="@string/copy_omemo_clipboard_description"/>
                        <ImageButton
                            android:id="@+id/action_regenerate_axolotl_key"
                            android:layout_width="wrap_content"
@@ -402,7 +402,7 @@
                            android:padding="@dimen/image_button_padding"
                            android:src="?attr/icon_refresh"
                            android:visibility="gone"
-                           android:contentDescription="@string/regenerate_axolotl_key"/>
+                           android:contentDescription="@string/regenerate_omemo_key"/>
 
                    </LinearLayout>
                </RelativeLayout>
