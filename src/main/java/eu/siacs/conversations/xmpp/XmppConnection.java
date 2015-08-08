@@ -81,7 +81,6 @@ public class XmppConnection implements Runnable {
 	private static final int PACKET_IQ = 0;
 	private static final int PACKET_MESSAGE = 1;
 	private static final int PACKET_PRESENCE = 2;
-	private final Context applicationContext;
 	protected Account account;
 	private final WakeLock wakeLock;
 	private Socket socket;
@@ -123,7 +122,6 @@ public class XmppConnection implements Runnable {
 				PowerManager.PARTIAL_WAKE_LOCK, account.getJid().toBareJid().toString());
 		tagWriter = new TagWriter();
 		mXmppConnectionService = service;
-		applicationContext = service.getApplicationContext();
 	}
 
 	protected void changeStatus(final Account.State nextStatus) {
@@ -529,14 +527,6 @@ public class XmppConnection implements Runnable {
 		final Tag startTLS = Tag.empty("starttls");
 		startTLS.setAttribute("xmlns", "urn:ietf:params:xml:ns:xmpp-tls");
 		tagWriter.writeTag(startTLS);
-	}
-
-	private SharedPreferences getPreferences() {
-		return PreferenceManager.getDefaultSharedPreferences(applicationContext);
-	}
-
-	private boolean enableLegacySSL() {
-		return getPreferences().getBoolean("enable_legacy_ssl", false);
 	}
 
 	private void switchOverToTls(final Tag currentTag) throws XmlPullParserException, IOException {
