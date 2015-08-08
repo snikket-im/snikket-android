@@ -97,15 +97,13 @@ public class JingleConnection implements Transferable {
 		public void onFileTransmitted(DownloadableFile file) {
 			if (responder.equals(account.getJid())) {
 				sendSuccess();
-				if (acceptedAutomatically) {
-					message.markUnread();
-					JingleConnection.this.mXmppConnectionService
-							.getNotificationService().push(message);
-				}
 				mXmppConnectionService.getFileBackend().updateFileParams(message);
 				mXmppConnectionService.databaseBackend.createMessage(message);
-				mXmppConnectionService.markMessage(message,
-						Message.STATUS_RECEIVED);
+				mXmppConnectionService.markMessage(message,Message.STATUS_RECEIVED);
+				if (acceptedAutomatically) {
+					message.markUnread();
+					JingleConnection.this.mXmppConnectionService.getNotificationService().push(message);
+				}
 			} else {
 				if (message.getEncryption() == Message.ENCRYPTION_PGP || message.getEncryption() == Message.ENCRYPTION_DECRYPTED) {
 					file.delete();
