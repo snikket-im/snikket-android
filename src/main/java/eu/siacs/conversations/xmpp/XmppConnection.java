@@ -951,7 +951,7 @@ public class XmppConnection implements Runnable {
 			++stanzasSent;
 		}
 		tagWriter.writeStanzaAsync(packet);
-		if ((packet instanceof MessagePacket || packet instanceof IqPacket) && packet.getId() != null && getFeatures().sm()) {
+		if ((packet instanceof MessagePacket || packet instanceof IqPacket) && packet.getId() != null && this.streamId != null) {
 			if (Config.EXTENDED_SM_LOGGING) {
 				Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": requesting ack for stanza #" + stanzasSent);
 			}
@@ -1024,7 +1024,7 @@ public class XmppConnection implements Runnable {
 					if (tagWriter.isActive()) {
 						tagWriter.finish();
 						try {
-							while (!tagWriter.finished()) {
+							while (!tagWriter.finished() && socket.isConnected()) {
 								Log.d(Config.LOGTAG, "not yet finished");
 								Thread.sleep(100);
 							}
