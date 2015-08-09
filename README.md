@@ -81,6 +81,7 @@ run your own XMPP server for you and your friends. These XEP's are:
 #### Logo
 * [Ilia Rostovtsev](https://github.com/qooob) (Progress)
 * [Diego Turtulici](http://efesto.eigenlab.org/~diesys) (Original)
+* [fiaxh](https://github.com/fiaxh) (OMEMO)
 
 #### Translations
 Translations are managed on [Transifex](https://www.transifex.com/projects/p/conversations/)
