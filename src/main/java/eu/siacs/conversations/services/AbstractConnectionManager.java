@@ -1,5 +1,7 @@
 package eu.siacs.conversations.services;
 
+import android.content.Context;
+import android.os.PowerManager;
 import android.util.Log;
 import android.util.Pair;
 
@@ -117,5 +119,10 @@ public class AbstractConnectionManager {
 		} catch (InvalidAlgorithmParameterException e) {
 			return null;
 		}
+	}
+
+	public PowerManager.WakeLock createWakeLock(String name) {
+		PowerManager powerManager = (PowerManager) mXmppConnectionService.getSystemService(Context.POWER_SERVICE);
+		return powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,name);
 	}
 }

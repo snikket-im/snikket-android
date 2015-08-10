@@ -1,5 +1,6 @@
 package eu.siacs.conversations.xmpp.jingle;
 
+import android.os.PowerManager;
 import android.util.Log;
 
 import java.io.FileNotFoundException;
@@ -96,14 +97,15 @@ public class JingleSocks5Transport extends JingleTransport {
 
 	}
 
-	public void send(final DownloadableFile file,
-			final OnFileTransmissionStatusChanged callback) {
+	public void send(final DownloadableFile file, final OnFileTransmissionStatusChanged callback) {
 		new Thread(new Runnable() {
 
 			@Override
 			public void run() {
 				InputStream fileInputStream = null;
+				final PowerManager.WakeLock wakeLock = connection.getConnectionManager().createWakeLock("jingle_send_"+connection.getSessionId());
 				try {
+					wakeLock.acquire();
 					MessageDigest digest = MessageDigest.getInstance("SHA-1");
 					digest.reset();
 					fileInputStream = connection.getFileInputStream();
@@ -138,6 +140,7 @@ public class JingleSocks5Transport extends JingleTransport {
 					callback.onFileTransferAborted();
 				} finally {
 					FileBackend.close(fileInputStream);
+					wakeLock.release();
 				}
 			}
 		}).start();
@@ -150,7 +153,9 @@ public class JingleSocks5Transport extends JingleTransport {
 			@Override
 			public void run() {
 				OutputStream fileOutputStream = null;
+				final PowerManager.WakeLock wakeLock = connection.getConnectionManager().createWakeLock("jingle_receive_"+connection.getSessionId());
 				try {
+					wakeLock.acquire();
 					MessageDigest digest = MessageDigest.getInstance("SHA-1");
 					digest.reset();
 					inputStream.skip(45);
@@ -166,7 +171,7 @@ public class JingleSocks5Transport extends JingleTransport {
 					double size = file.getExpectedSize();
 					long remainingSize = file.getExpectedSize();
 					byte[] buffer = new byte[8192];
-					int count = buffer.length;
+					int count;
 					while (remainingSize > 0) {
 						count = inputStream.read(buffer);
 						if (count == -1) {
@@ -194,7 +199,9 @@ public class JingleSocks5Transport extends JingleTransport {
 					Log.d(Config.LOGTAG, connection.getAccount().getJid().toBareJid() + ": "+e.getMessage());
 					callback.onFileTransferAborted();
 				} finally {
+					wakeLock.release();
 					FileBackend.close(fileOutputStream);
+					FileBackend.close(inputStream);
 				}
 			}
 		}).start();
@@ -209,27 +216,9 @@ public class JingleSocks5Transport extends JingleTransport {
 	}
 
 	public void disconnect() {
-		if (this.outputStream != null) {
-			try {
-				this.outputStream.close();
-			} catch (IOException e) {
-
-			}
-		}
-		if (this.inputStream != null) {
-			try {
-				this.inputStream.close();
-			} catch (IOException e) {
-
-			}
-		}
-		if (this.socket != null) {
-			try {
-				this.socket.close();
-			} catch (IOException e) {
-
-			}
-		}
+		FileBackend.close(inputStream);
+		FileBackend.close(outputStream);
+		FileBackend.close(socket);
 	}
 
 	public boolean isEstablished() {

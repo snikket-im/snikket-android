@@ -2,6 +2,7 @@ package eu.siacs.conversations.http;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.PowerManager;
 import android.util.Log;
 
 import java.io.BufferedInputStream;
@@ -228,7 +229,9 @@ public class HttpDownloadConnection implements Transferable {
 
 		private void download()  throws IOException {
 			InputStream is = null;
+			PowerManager.WakeLock wakeLock = mHttpConnectionManager.createWakeLock("http_download_"+message.getUuid());
 			try {
+				wakeLock.acquire();
 				HttpURLConnection connection = (HttpURLConnection) mUrl.openConnection();
 				if (connection instanceof HttpsURLConnection) {
 					mHttpConnectionManager.setupTrustManager((HttpsURLConnection) connection, interactive);
@@ -253,6 +256,7 @@ public class HttpDownloadConnection implements Transferable {
 			} finally {
 				FileBackend.close(os);
 				FileBackend.close(is);
+				wakeLock.release();
 			}
 		}
 

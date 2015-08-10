@@ -3,6 +3,7 @@ package eu.siacs.conversations.http;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.PowerManager;
 import android.util.Log;
 import android.util.Pair;
 
@@ -143,7 +144,9 @@ public class HttpUploadConnection implements Transferable {
 		private void upload() {
 			OutputStream os = null;
 			HttpURLConnection connection = null;
+			PowerManager.WakeLock wakeLock = mHttpConnectionManager.createWakeLock("http_upload_"+message.getUuid());
 			try {
+				wakeLock.acquire();
 				Log.d(Config.LOGTAG, "uploading to " + mPutUrl.toString());
 				connection = (HttpURLConnection) mPutUrl.openConnection();
 				if (connection instanceof HttpsURLConnection) {
@@ -211,6 +214,7 @@ public class HttpUploadConnection implements Transferable {
 				if (connection != null) {
 					connection.disconnect();
 				}
+				wakeLock.release();
 			}
 		}
 	}
