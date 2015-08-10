@@ -494,11 +494,13 @@
 	<string name="none">None</string>
 	<string name="recently_used">Most recently used</string>
 	<string name="choose_quick_action">Choose quick action</string>
-	<string name="file_not_found_on_remote_host">File not found on remote server</string>
 	<string name="search_for_contacts_or_groups">Search for contacts or groups</string>
 	<string name="send_private_message">Send private message</string>
 	<string name="user_has_left_conference">%s has left the conference!</string>
 	<string name="username">Username</string>
 	<string name="username_hint">Username</string>
 	<string name="invalid_username">This is not a valid username</string>
+	<string name="download_failed_server_not_found">Download failed: Server not found</string>
+	<string name="download_failed_file_not_found">Download failed: File not found</string>
+	<string name="download_failed_could_not_connect">Download failed: Could not connect to host</string>
 </resources>

@@ -6,6 +6,7 @@ import android.util.Log;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -125,6 +126,17 @@ public class HttpDownloadConnection implements Transferable {
 		mXmppConnectionService.updateConversationUi();
 	}
 
+	private void showToastForException(Exception e) {
+		e.printStackTrace();
+		if (e instanceof java.net.UnknownHostException) {
+			mXmppConnectionService.showErrorToastInUi(R.string.download_failed_server_not_found);
+		} else if (e instanceof java.net.ConnectException) {
+			mXmppConnectionService.showErrorToastInUi(R.string.download_failed_could_not_connect);
+		} else {
+			mXmppConnectionService.showErrorToastInUi(R.string.download_failed_file_not_found);
+		}
+	}
+
 	private class FileSizeChecker implements Runnable {
 
 		private boolean interactive = false;
@@ -146,7 +158,7 @@ public class HttpDownloadConnection implements Transferable {
 			} catch (IOException e) {
 				Log.d(Config.LOGTAG, "io exception in http file size checker: " + e.getMessage());
 				if (interactive) {
-					mXmppConnectionService.showErrorToastInUi(R.string.file_not_found_on_remote_host);
+					showToastForException(e);
 				}
 				cancel();
 				return;
@@ -163,20 +175,23 @@ public class HttpDownloadConnection implements Transferable {
 		}
 
 		private long retrieveFileSize() throws IOException {
-			Log.d(Config.LOGTAG,"retrieve file size. interactive:"+String.valueOf(interactive));
-			changeStatus(STATUS_CHECKING);
-			HttpURLConnection connection = (HttpURLConnection) mUrl.openConnection();
-			connection.setRequestMethod("HEAD");
-			if (connection instanceof HttpsURLConnection) {
-				mHttpConnectionManager.setupTrustManager((HttpsURLConnection) connection, interactive);
-			}
-			connection.connect();
-			String contentLength = connection.getHeaderField("Content-Length");
-			if (contentLength == null) {
-				throw new IOException();
-			}
 			try {
+				Log.d(Config.LOGTAG, "retrieve file size. interactive:" + String.valueOf(interactive));
+				changeStatus(STATUS_CHECKING);
+				HttpURLConnection connection = (HttpURLConnection) mUrl.openConnection();
+				connection.setRequestMethod("HEAD");
+				if (connection instanceof HttpsURLConnection) {
+					mHttpConnectionManager.setupTrustManager((HttpsURLConnection) connection, interactive);
+				}
+				connection.connect();
+				String contentLength = connection.getHeaderField("Content-Length");
+				connection.disconnect();
+				if (contentLength == null) {
+					throw new IOException();
+				}
 				return Long.parseLong(contentLength, 10);
+			} catch (IOException e) {
+				throw e;
 			} catch (NumberFormatException e) {
 				throw new IOException();
 			}
@@ -202,37 +217,43 @@ public class HttpDownloadConnection implements Transferable {
 				updateImageBounds();
 				finish();
 			} catch (SSLHandshakeException e) {
-				FileBackend.close(os);
 				changeStatus(STATUS_OFFER);
 			} catch (IOException e) {
-				FileBackend.close(os);
-				mXmppConnectionService.showErrorToastInUi(R.string.file_not_found_on_remote_host);
+				if (interactive) {
+					showToastForException(e);
+				}
 				cancel();
 			}
 		}
 
-		private void download() throws IOException {
-			HttpURLConnection connection = (HttpURLConnection) mUrl.openConnection();
-			if (connection instanceof HttpsURLConnection) {
-				mHttpConnectionManager.setupTrustManager((HttpsURLConnection) connection, interactive);
+		private void download()  throws IOException {
+			InputStream is = null;
+			try {
+				HttpURLConnection connection = (HttpURLConnection) mUrl.openConnection();
+				if (connection instanceof HttpsURLConnection) {
+					mHttpConnectionManager.setupTrustManager((HttpsURLConnection) connection, interactive);
+				}
+				connection.connect();
+				is = new BufferedInputStream(connection.getInputStream());
+				file.getParentFile().mkdirs();
+				file.createNewFile();
+				os = AbstractConnectionManager.createOutputStream(file, true);
+				long transmitted = 0;
+				long expected = file.getExpectedSize();
+				int count = -1;
+				byte[] buffer = new byte[1024];
+				while ((count = is.read(buffer)) != -1) {
+					transmitted += count;
+					os.write(buffer, 0, count);
+					updateProgress((int) ((((double) transmitted) / expected) * 100));
+				}
+				os.flush();
+			} catch (IOException e) {
+				throw e;
+			} finally {
+				FileBackend.close(os);
+				FileBackend.close(is);
 			}
-			connection.connect();
-			BufferedInputStream is = new BufferedInputStream(connection.getInputStream());
-			file.getParentFile().mkdirs();
-			file.createNewFile();
-			os = AbstractConnectionManager.createOutputStream(file,true);
-			long transmitted = 0;
-			long expected = file.getExpectedSize();
-			int count = -1;
-			byte[] buffer = new byte[1024];
-			while ((count = is.read(buffer)) != -1) {
-				transmitted += count;
-				os.write(buffer, 0, count);
-				updateProgress((int) ((((double) transmitted) / expected) * 100));
-			}
-			os.flush();
-			os.close();
-			is.close();
 		}
 
 		private void updateImageBounds() {
