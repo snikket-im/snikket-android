@@ -272,7 +272,7 @@ public class JingleConnection implements Transferable {
 										});
 								mergeCandidate(candidate);
 							} else {
-								Log.d(Config.LOGTAG,"no primary candidate of our own was found");
+								Log.d(Config.LOGTAG, "no primary candidate of our own was found");
 								sendInitRequest();
 							}
 						}
@@ -391,7 +391,11 @@ public class JingleConnection implements Transferable {
 					}
 				}
 				this.mFileOutputStream = AbstractConnectionManager.createOutputStream(this.file,message.getEncryption() == Message.ENCRYPTION_AXOLOTL);
-				this.file.setExpectedSize(size);
+				if (message.getEncryption() == Message.ENCRYPTION_OTR && Config.REPORT_WRONG_FILESIZE_IN_OTR_JINGLE) {
+					this.file.setExpectedSize((size / 16 + 1) * 16);
+				} else {
+					this.file.setExpectedSize(size);
+				}
 				Log.d(Config.LOGTAG, "receiving file: expecting size of " + this.file.getExpectedSize());
 			} else {
 				this.sendCancel();
