@@ -303,8 +303,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 				}
 				final Spannable span = new SpannableString(privateMarker + " "
 						+ formattedBody);
-				span.setSpan(new ForegroundColorSpan(activity
-							.getSecondaryTextColor()), 0, privateMarker
+				span.setSpan(new ForegroundColorSpan(getMessageTextColor(type,false)), 0, privateMarker
 						.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 				span.setSpan(new StyleSpan(Typeface.BOLD), 0,
 						privateMarker.length(),
