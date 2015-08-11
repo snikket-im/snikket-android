@@ -7,6 +7,7 @@ import android.os.PowerManager;
 import android.util.Log;
 import android.util.Pair;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -104,7 +105,13 @@ public class HttpUploadConnection implements Transferable {
 			mXmppConnectionService.getRNG().nextBytes(this.key);
 			this.file.setKeyAndIv(this.key);
 		}
-		Pair<InputStream,Integer> pair = AbstractConnectionManager.createInputStream(file,true);
+		Pair<InputStream,Integer> pair;
+		try {
+			pair = AbstractConnectionManager.createInputStream(file, true);
+		} catch (FileNotFoundException e) {
+			fail();
+			return;
+		}
 		this.file.setExpectedSize(pair.second);
 		this.mFileInputStream = pair.first;
 		Jid host = account.getXmppConnection().findDiscoItemByFeature(Xmlns.HTTP_UPLOAD);

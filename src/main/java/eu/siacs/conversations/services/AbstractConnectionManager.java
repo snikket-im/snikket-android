@@ -51,17 +51,13 @@ public class AbstractConnectionManager {
 		}
 	}
 
-	public static Pair<InputStream,Integer> createInputStream(DownloadableFile file, boolean gcm) {
+	public static Pair<InputStream,Integer> createInputStream(DownloadableFile file, boolean gcm) throws FileNotFoundException {
 		FileInputStream is;
 		int size;
-		try {
-			is = new FileInputStream(file);
-			size = (int) file.getSize();
-			if (file.getKey() == null) {
-				return new Pair<InputStream,Integer>(is,size);
-			}
-		} catch (FileNotFoundException e) {
-			return null;
+		is = new FileInputStream(file);
+		size = (int) file.getSize();
+		if (file.getKey() == null) {
+			return new Pair<InputStream,Integer>(is,size);
 		}
 		try {
 			if (gcm) {

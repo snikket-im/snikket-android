@@ -39,6 +39,7 @@ import eu.siacs.conversations.entities.Transferable;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.ExifHelper;
+import eu.siacs.conversations.utils.FileUtils;
 import eu.siacs.conversations.xmpp.pep.Avatar;
 
 public class FileBackend {
@@ -126,25 +127,25 @@ public class FileBackend {
 		return Bitmap.createBitmap(bitmap, 0, 0, w, h, mtx, true);
 	}
 
-	public String getOriginalPath(Uri uri) {
-		String path = null;
-		if (uri.getScheme().equals("file")) {
-			return uri.getPath();
-		} else if (uri.toString().startsWith("content://media/")) {
-			String[] projection = {MediaStore.MediaColumns.DATA};
-			Cursor metaCursor = mXmppConnectionService.getContentResolver().query(uri,
-					projection, null, null, null);
-			if (metaCursor != null) {
-				try {
-					if (metaCursor.moveToFirst()) {
-						path = metaCursor.getString(0);
-					}
-				} finally {
-					metaCursor.close();
-				}
-			}
+	public boolean useImageAsIs(Uri uri) {
+		String path = getOriginalPath(uri);
+		if (path == null) {
+			return false;
 		}
-		return path;
+		Log.d(Config.LOGTAG,"using image as is. path: "+path);
+		BitmapFactory.Options options = new BitmapFactory.Options();
+		options.inJustDecodeBounds = true;
+		try {
+			BitmapFactory.decodeStream(mXmppConnectionService.getContentResolver().openInputStream(uri), null, options);
+			return (options.outWidth <= Config.IMAGE_SIZE && options.outHeight <= Config.IMAGE_SIZE && options.outMimeType.contains(Config.IMAGE_FORMAT.name().toLowerCase()));
+		} catch (FileNotFoundException e) {
+			return false;
+		}
+	}
+
+	public String getOriginalPath(Uri uri) {
+		Log.d(Config.LOGTAG,"get original path for uri: "+uri.toString());
+		return FileUtils.getPath(mXmppConnectionService,uri);
 	}
 
 	public DownloadableFile copyFileToPrivateStorage(Message message, Uri uri) throws FileCopyException {

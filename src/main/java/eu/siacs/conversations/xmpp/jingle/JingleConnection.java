@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.util.Log;
 import android.util.Pair;
 
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -413,26 +414,31 @@ public class JingleConnection implements Transferable {
 			content.setTransportId(this.transportId);
 			this.file = this.mXmppConnectionService.getFileBackend().getFile(message, false);
 			Pair<InputStream,Integer> pair;
-			if (message.getEncryption() == Message.ENCRYPTION_OTR) {
-				Conversation conversation = this.message.getConversation();
-				if (!this.mXmppConnectionService.renewSymmetricKey(conversation)) {
-					Log.d(Config.LOGTAG,account.getJid().toBareJid()+": could not set symmetric key");
-					cancel();
+			try {
+				if (message.getEncryption() == Message.ENCRYPTION_OTR) {
+					Conversation conversation = this.message.getConversation();
+					if (!this.mXmppConnectionService.renewSymmetricKey(conversation)) {
+						Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": could not set symmetric key");
+						cancel();
+					}
+					this.file.setKeyAndIv(conversation.getSymmetricKey());
+					pair = AbstractConnectionManager.createInputStream(this.file, false);
+					this.file.setExpectedSize(pair.second);
+					content.setFileOffer(this.file, true);
+				} else if (message.getEncryption() == Message.ENCRYPTION_AXOLOTL) {
+					this.file.setKey(mXmppAxolotlMessage.getInnerKey());
+					this.file.setIv(mXmppAxolotlMessage.getIV());
+					pair = AbstractConnectionManager.createInputStream(this.file, true);
+					this.file.setExpectedSize(pair.second);
+					content.setFileOffer(this.file, false).addChild(mXmppAxolotlMessage.toElement());
+				} else {
+					pair = AbstractConnectionManager.createInputStream(this.file, false);
+					this.file.setExpectedSize(pair.second);
+					content.setFileOffer(this.file, false);
 				}
-				this.file.setKeyAndIv(conversation.getSymmetricKey());
-				pair = AbstractConnectionManager.createInputStream(this.file,false);
-				this.file.setExpectedSize(pair.second);
-				content.setFileOffer(this.file, true);
-			} else if (message.getEncryption() == Message.ENCRYPTION_AXOLOTL) {
-				this.file.setKey(mXmppAxolotlMessage.getInnerKey());
-				this.file.setIv(mXmppAxolotlMessage.getIV());
-				pair = AbstractConnectionManager.createInputStream(this.file,true);
-				this.file.setExpectedSize(pair.second);
-				content.setFileOffer(this.file, false).addChild(mXmppAxolotlMessage.toElement());
-			} else {
-				pair = AbstractConnectionManager.createInputStream(this.file,false);
-				this.file.setExpectedSize(pair.second);
-				content.setFileOffer(this.file, false);
+			} catch (FileNotFoundException e) {
+				cancel();
+				return;
 			}
 			this.mFileInputStream = pair.first;
 			this.transportId = this.mJingleConnectionManager.nextRandomId();
