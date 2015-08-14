@@ -60,6 +60,7 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 	private TextView mServerInfoCSI;
 	private TextView mServerInfoBlocking;
 	private TextView mServerInfoPep;
+	private TextView mServerInfoHttpUpload;
 	private TextView mSessionEst;
 	private TextView mOtrFingerprint;
 	private TextView mAxolotlFingerprint;
@@ -347,6 +348,7 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 		this.mServerInfoBlocking = (TextView) findViewById(R.id.server_info_blocking);
 		this.mServerInfoSm = (TextView) findViewById(R.id.server_info_sm);
 		this.mServerInfoPep = (TextView) findViewById(R.id.server_info_pep);
+		this.mServerInfoHttpUpload = (TextView) findViewById(R.id.server_info_http_upload);
 		this.mOtrFingerprint = (TextView) findViewById(R.id.otr_fingerprint);
 		this.mOtrFingerprintBox = (RelativeLayout) findViewById(R.id.otr_fingerprint_box);
 		this.mOtrFingerprintToClipboardButton = (ImageButton) findViewById(R.id.action_copy_to_clipboard);
@@ -541,6 +543,11 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 				this.mServerInfoPep.setText(R.string.server_info_available);
 			} else {
 				this.mServerInfoPep.setText(R.string.server_info_unavailable);
+			}
+			if (features.httpUpload()) {
+				this.mServerInfoHttpUpload.setText(R.string.server_info_available);
+			} else {
+				this.mServerInfoHttpUpload.setText(R.string.server_info_unavailable);
 			}
 			final String otrFingerprint = this.mAccount.getOtrFingerprint();
 			if (otrFingerprint != null) {
