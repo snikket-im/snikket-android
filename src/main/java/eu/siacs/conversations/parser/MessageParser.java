@@ -6,7 +6,11 @@ import android.util.Pair;
 import net.java.otr4j.session.Session;
 import net.java.otr4j.session.SessionStatus;
 
+import java.util.Set;
+
 import eu.siacs.conversations.Config;
+import eu.siacs.conversations.crypto.axolotl.AxolotlService;
+import eu.siacs.conversations.crypto.axolotl.XmppAxolotlMessage;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
@@ -69,11 +73,9 @@ public class MessageParser extends AbstractParser implements
 			body = otrSession.transformReceiving(body);
 			SessionStatus status = otrSession.getSessionStatus();
 			if (body == null && status == SessionStatus.ENCRYPTED) {
-				conversation.setNextEncryption(Message.ENCRYPTION_OTR);
 				mXmppConnectionService.onOtrSessionEstablished(conversation);
 				return null;
 			} else if (body == null && status == SessionStatus.FINISHED) {
-				conversation.setNextEncryption(Message.ENCRYPTION_NONE);
 				conversation.resetOtrSession();
 				mXmppConnectionService.updateConversationUi();
 				return null;
@@ -92,6 +94,20 @@ public class MessageParser extends AbstractParser implements
 			conversation.resetOtrSession();
 			return null;
 		}
+	}
+
+	private Message parseAxolotlChat(Element axolotlMessage, Jid from, String id, Conversation conversation, int status) {
+		Message finishedMessage = null;
+		AxolotlService service = conversation.getAccount().getAxolotlService();
+		XmppAxolotlMessage xmppAxolotlMessage = XmppAxolotlMessage.fromElement(axolotlMessage, from.toBareJid());
+		XmppAxolotlMessage.XmppAxolotlPlaintextMessage plaintextMessage = service.processReceivingPayloadMessage(xmppAxolotlMessage);
+		if(plaintextMessage != null) {
+			finishedMessage = new Message(conversation, plaintextMessage.getPlaintext(), Message.ENCRYPTION_AXOLOTL, status);
+			finishedMessage.setAxolotlFingerprint(plaintextMessage.getFingerprint());
+			Log.d(Config.LOGTAG, AxolotlService.getLogprefix(finishedMessage.getConversation().getAccount())+" Received Message with session fingerprint: "+plaintextMessage.getFingerprint());
+		}
+
+		return finishedMessage;
 	}
 
 	private class Invite {
@@ -170,6 +186,13 @@ public class MessageParser extends AbstractParser implements
 				mXmppConnectionService.updateConversationUi();
 				mXmppConnectionService.updateAccountUi();
 			}
+		} else if (AxolotlService.PEP_DEVICE_LIST.equals(node)) {
+			Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account)+"Received PEP device list update from "+ from + ", processing...");
+			Element item = items.findChild("item");
+			Set<Integer> deviceIds = mXmppConnectionService.getIqParser().deviceIds(item);
+			AxolotlService axolotlService = account.getAxolotlService();
+			axolotlService.registerDevices(from, deviceIds);
+			mXmppConnectionService.updateAccountUi();
 		}
 	}
 
@@ -177,6 +200,13 @@ public class MessageParser extends AbstractParser implements
 		if (packet.getType() == MessagePacket.TYPE_ERROR) {
 			Jid from = packet.getFrom();
 			if (from != null) {
+				Element error = packet.findChild("error");
+				String text = error == null ? null : error.findChildContent("text");
+				if (text != null) {
+					Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": sending message to "+ from+ " failed - " + text);
+				} else if (error != null) {
+					Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": sending message to "+ from+ " failed - " + error);
+				}
 				Message message = mXmppConnectionService.markMessage(account,
 						from.toBareJid(),
 						packet.getId(),
@@ -198,6 +228,7 @@ public class MessageParser extends AbstractParser implements
 		final MessagePacket packet;
 		Long timestamp = null;
 		final boolean isForwarded;
+		boolean isCarbon = false;
 		String serverMsgId = null;
 		final Element fin = original.findChild("fin", "urn:xmpp:mam:0");
 		if (fin != null) {
@@ -228,7 +259,8 @@ public class MessageParser extends AbstractParser implements
 				return;
 			}
 			timestamp = f != null ? f.second : null;
-			isForwarded = f != null;
+			isCarbon = f != null;
+			isForwarded = isCarbon;
 		} else {
 			packet = original;
 			isForwarded = false;
@@ -238,8 +270,9 @@ public class MessageParser extends AbstractParser implements
 			timestamp = AbstractParser.getTimestamp(packet, System.currentTimeMillis());
 		}
 		final String body = packet.getBody();
-		final String encrypted = packet.findChildContent("x", "jabber:x:encrypted");
-		final Element mucUserElement = packet.findChild("x","http://jabber.org/protocol/muc#user");
+		final Element mucUserElement = packet.findChild("x", "http://jabber.org/protocol/muc#user");
+		final String pgpEncrypted = packet.findChildContent("x", "jabber:x:encrypted");
+		final Element axolotlEncrypted = packet.findChild(XmppAxolotlMessage.CONTAINERTAG, AxolotlService.PEP_PREFIX);
 		int status;
 		final Jid counterpart;
 		final Jid to = packet.getTo();
@@ -267,11 +300,11 @@ public class MessageParser extends AbstractParser implements
 			return;
 		}
 
-		if (extractChatState(mXmppConnectionService.find(account,from), packet)) {
+		if (extractChatState(mXmppConnectionService.find(account, from), packet)) {
 			mXmppConnectionService.updateConversationUi();
 		}
 
-		if ((body != null || encrypted != null) && !isMucStatusMessage) {
+		if ((body != null || pgpEncrypted != null || axolotlEncrypted != null) && !isMucStatusMessage) {
 			Conversation conversation = mXmppConnectionService.findOrCreateConversation(account, counterpart.toBareJid(), isTypeGroupChat);
 			if (isTypeGroupChat) {
 				if (counterpart.getResourcepart().equals(conversation.getMucOptions().getActualNick())) {
@@ -300,14 +333,20 @@ public class MessageParser extends AbstractParser implements
 				} else {
 					message = new Message(conversation, body, Message.ENCRYPTION_NONE, status);
 				}
-			} else if (encrypted != null) {
-				message = new Message(conversation, encrypted, Message.ENCRYPTION_PGP, status);
+			} else if (pgpEncrypted != null) {
+				message = new Message(conversation, pgpEncrypted, Message.ENCRYPTION_PGP, status);
+			} else if (axolotlEncrypted != null) {
+				message = parseAxolotlChat(axolotlEncrypted, from, remoteMsgId, conversation, status);
+				if (message == null) {
+					return;
+				}
 			} else {
 				message = new Message(conversation, body, Message.ENCRYPTION_NONE, status);
 			}
 			message.setCounterpart(counterpart);
 			message.setRemoteMsgId(remoteMsgId);
 			message.setServerMsgId(serverMsgId);
+			message.setCarbon(isCarbon);
 			message.setTime(timestamp);
 			message.markable = packet.hasChild("markable", "urn:xmpp:chat-markers:0");
 			if (conversation.getMode() == Conversation.MODE_MULTI) {
@@ -338,15 +377,19 @@ public class MessageParser extends AbstractParser implements
 				mXmppConnectionService.updateConversationUi();
 			}
 
-			if (mXmppConnectionService.confirmMessages() && remoteMsgId != null && !isForwarded) {
+			if (mXmppConnectionService.confirmMessages() && remoteMsgId != null && !isForwarded && !isTypeGroupChat) {
 				if (packet.hasChild("markable", "urn:xmpp:chat-markers:0")) {
-					MessagePacket receipt = mXmppConnectionService
-							.getMessageGenerator().received(account, packet, "urn:xmpp:chat-markers:0");
+					MessagePacket receipt = mXmppConnectionService.getMessageGenerator().received(account,
+							packet,
+							"urn:xmpp:chat-markers:0",
+							MessagePacket.TYPE_CHAT);
 					mXmppConnectionService.sendMessagePacket(account, receipt);
 				}
 				if (packet.hasChild("request", "urn:xmpp:receipts")) {
-					MessagePacket receipt = mXmppConnectionService
-							.getMessageGenerator().received(account, packet, "urn:xmpp:receipts");
+					MessagePacket receipt = mXmppConnectionService.getMessageGenerator().received(account,
+							packet,
+							"urn:xmpp:receipts",
+							packet.getType());
 					mXmppConnectionService.sendMessagePacket(account, receipt);
 				}
 			}

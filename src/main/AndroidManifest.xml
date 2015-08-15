@@ -131,6 +131,10 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".ui.TrustKeysActivity"
+            android:label="@string/trust_omemo_fingerprints"
+            android:windowSoftInputMode="stateAlwaysHidden"/>
+        <activity
             android:name="de.duenndns.ssl.MemorizingActivity"
             android:theme="@style/ConversationsTheme"
             tools:replace="android:theme"/>

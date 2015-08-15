@@ -38,9 +38,9 @@ public class HttpConnectionManager extends AbstractConnectionManager {
 		return connection;
 	}
 
-	public HttpUploadConnection createNewUploadConnection(Message message) {
+	public HttpUploadConnection createNewUploadConnection(Message message, boolean delay) {
 		HttpUploadConnection connection = new HttpUploadConnection(this);
-		connection.init(message);
+		connection.init(message,delay);
 		this.uploadConnections.add(connection);
 		return connection;
 	}

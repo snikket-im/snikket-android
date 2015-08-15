@@ -105,8 +105,6 @@
   <string name="pref_vibrate_summary">收到新消息时震动</string>
   <string name="pref_sound">声音</string>
   <string name="pref_sound_summary">收到新消息时的铃声</string>
-  <string name="pref_conference_notifications">讨论组通知</string>
-  <string name="pref_conference_notifications_summary">当有新的消息时总是通知而不是亮屏时才通知</string>
   <string name="pref_notification_grace_period">通知限期</string>
   <string name="pref_notification_grace_period_summary">接收副本短时间内关闭通知</string>
   <string name="pref_advanced_options">高级选项</string>
@@ -424,7 +422,6 @@
   <string name="received_location">位置已收到</string>
   <string name="title_undo_swipe_out_conversation">Conversation 已关闭</string>
   <string name="title_undo_swipe_out_muc">离开讨论组</string>
-  <string name="pref_certificate_options">证书选项</string>
   <string name="pref_dont_trust_system_cas_title">不相信系统 CA</string>
   <string name="pref_dont_trust_system_cas_summary">所有证书必须人工通过</string>
   <string name="pref_remove_trusted_certificates_title">移除证书</string>

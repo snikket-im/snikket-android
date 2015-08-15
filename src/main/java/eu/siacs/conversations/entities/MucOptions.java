@@ -1,5 +1,7 @@
 package eu.siacs.conversations.entities;
 
+import android.annotation.SuppressLint;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -10,8 +12,6 @@ import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
 import eu.siacs.conversations.xmpp.stanzas.PresencePacket;
-
-import android.annotation.SuppressLint;
 
 @SuppressLint("DefaultLocale")
 public class MucOptions {
@@ -262,6 +262,15 @@ public class MucOptions {
 			}
 		}
 		users.add(user);
+	}
+
+	public boolean isUserInRoom(String name) {
+		for (int i = 0; i < users.size(); ++i) {
+			if (users.get(i).getName().equals(name)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public void processPacket(PresencePacket packet, PgpEngine pgp) {

@@ -39,6 +39,9 @@ public class IqPacket extends AbstractStanza {
 
 	public TYPE getType() {
 		final String type = getAttribute("type");
+		if (type == null) {
+			return TYPE.INVALID;
+		}
 		switch (type) {
 			case "error":
 				return TYPE.ERROR;

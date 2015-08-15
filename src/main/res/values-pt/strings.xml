@@ -99,8 +99,6 @@
   <string name="pref_vibrate_summary">Vibrar também quando uma nova mensagem for recebida</string>
   <string name="pref_sound">Som</string>
   <string name="pref_sound_summary">Tocar um som com a notificação</string>
-  <string name="pref_conference_notifications">Notificações de conferência</string>
-  <string name="pref_conference_notifications_summary">Sempre notificar quando uma nova mensagem de conferencia for recebida ao invés de apenas quando a mesma for ressaltada</string>
   <string name="pref_notification_grace_period">Período de carência da notificação</string>
   <string name="pref_notification_grace_period_summary">Desativar notificações por um curto período após a copia oculta ser recebida</string>
   <string name="pref_advanced_options">Opções avançadas</string>

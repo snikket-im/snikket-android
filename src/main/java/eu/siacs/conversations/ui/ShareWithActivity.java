@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Conversation;
@@ -227,6 +226,10 @@ public class ShareWithActivity extends XmppActivity {
 			finish();
 		}
 
+	}
+
+	public void refreshUiReal() {
+		//nothing to do. This Activity doesn't implement any listeners
 	}
 
 }

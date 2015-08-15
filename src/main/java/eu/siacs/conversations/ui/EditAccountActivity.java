@@ -1,6 +1,8 @@
 package eu.siacs.conversations.ui;
 
+import android.app.AlertDialog.Builder;
 import android.app.PendingIntent;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -23,18 +25,24 @@ import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.whispersystems.libaxolotl.IdentityKey;
+
+import java.util.Set;
+
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.services.XmppConnectionService.OnAccountUpdate;
 import eu.siacs.conversations.ui.adapter.KnownHostsAdapter;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.UIHelper;
+import eu.siacs.conversations.xmpp.OnKeyStatusUpdated;
 import eu.siacs.conversations.xmpp.XmppConnection.Features;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
 import eu.siacs.conversations.xmpp.pep.Avatar;
 
-public class EditAccountActivity extends XmppActivity implements OnAccountUpdate{
+public class EditAccountActivity extends XmppActivity implements OnAccountUpdate, OnKeyStatusUpdated {
 
 	private AutoCompleteTextView mAccountJid;
 	private EditText mPassword;
@@ -52,14 +60,23 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 	private TextView mServerInfoCSI;
 	private TextView mServerInfoBlocking;
 	private TextView mServerInfoPep;
+	private TextView mServerInfoHttpUpload;
 	private TextView mSessionEst;
 	private TextView mOtrFingerprint;
+	private TextView mAxolotlFingerprint;
+	private TextView mAccountJidLabel;
 	private ImageView mAvatar;
 	private RelativeLayout mOtrFingerprintBox;
+	private RelativeLayout mAxolotlFingerprintBox;
 	private ImageButton mOtrFingerprintToClipboardButton;
+	private ImageButton mAxolotlFingerprintToClipboardButton;
+	private ImageButton mRegenerateAxolotlKeyButton;
+	private LinearLayout keys;
+	private LinearLayout keysCard;
 
 	private Jid jidToEdit;
 	private Account mAccount;
+	private String messageFingerprint;
 
 	private boolean mFetchingAvatar = false;
 
@@ -72,17 +89,34 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 				xmppConnectionService.updateAccount(mAccount);
 				return;
 			}
-			final boolean registerNewAccount = mRegisterNew.isChecked();
+			final boolean registerNewAccount = mRegisterNew.isChecked() && !Config.DISALLOW_REGISTRATION_IN_UI;
+			if (Config.DOMAIN_LOCK != null && mAccountJid.getText().toString().contains("@")) {
+				mAccountJid.setError(getString(R.string.invalid_username));
+				mAccountJid.requestFocus();
+				return;
+			}
 			final Jid jid;
 			try {
-				jid = Jid.fromString(mAccountJid.getText().toString());
+				if (Config.DOMAIN_LOCK != null) {
+					jid = Jid.fromParts(mAccountJid.getText().toString(),Config.DOMAIN_LOCK,null);
+				} else {
+					jid = Jid.fromString(mAccountJid.getText().toString());
+				}
 			} catch (final InvalidJidException e) {
-				mAccountJid.setError(getString(R.string.invalid_jid));
+				if (Config.DOMAIN_LOCK != null) {
+					mAccountJid.setError(getString(R.string.invalid_username));
+				} else {
+					mAccountJid.setError(getString(R.string.invalid_jid));
+				}
 				mAccountJid.requestFocus();
 				return;
 			}
 			if (jid.isDomainJid()) {
-				mAccountJid.setError(getString(R.string.invalid_jid));
+				if (Config.DOMAIN_LOCK != null) {
+					mAccountJid.setError(getString(R.string.invalid_username));
+				} else {
+					mAccountJid.setError(getString(R.string.invalid_jid));
+				}
 				mAccountJid.requestFocus();
 				return;
 			}
@@ -108,13 +142,9 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 				mAccount.setOption(Account.OPTION_REGISTER, registerNewAccount);
 				xmppConnectionService.updateAccount(mAccount);
 			} else {
-				try {
-					if (xmppConnectionService.findAccountByJid(Jid.fromString(mAccountJid.getText().toString())) != null) {
-						mAccountJid.setError(getString(R.string.account_already_exists));
-						mAccountJid.requestFocus();
-						return;
-					}
-				} catch (final InvalidJidException e) {
+				if (xmppConnectionService.findAccountByJid(jid) != null) {
+					mAccountJid.setError(getString(R.string.account_already_exists));
+					mAccountJid.requestFocus();
 					return;
 				}
 				mAccount = new Account(jid.toBareJid(), password);
@@ -139,34 +169,33 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 			finish();
 		}
 	};
+
+	public void refreshUiReal() {
+		invalidateOptionsMenu();
+		if (mAccount != null
+				&& mAccount.getStatus() != Account.State.ONLINE
+				&& mFetchingAvatar) {
+			startActivity(new Intent(getApplicationContext(),
+						ManageAccountActivity.class));
+			finish();
+		} else if (jidToEdit == null && mAccount != null
+				&& mAccount.getStatus() == Account.State.ONLINE) {
+			if (!mFetchingAvatar) {
+				mFetchingAvatar = true;
+				xmppConnectionService.checkForAvatar(mAccount,
+						mAvatarFetchCallback);
+			}
+		} else {
+			updateSaveButton();
+		}
+		if (mAccount != null) {
+			updateAccountInformation(false);
+		}
+	}
+
 	@Override
 	public void onAccountUpdate() {
-		runOnUiThread(new Runnable() {
-
-			@Override
-			public void run() {
-				invalidateOptionsMenu();
-				if (mAccount != null
-						&& mAccount.getStatus() != Account.State.ONLINE
-						&& mFetchingAvatar) {
-					startActivity(new Intent(getApplicationContext(),
-								ManageAccountActivity.class));
-					finish();
-				} else if (jidToEdit == null && mAccount != null
-						&& mAccount.getStatus() == Account.State.ONLINE) {
-					if (!mFetchingAvatar) {
-						mFetchingAvatar = true;
-						xmppConnectionService.checkForAvatar(mAccount,
-								mAvatarFetchCallback);
-					}
-				} else {
-					updateSaveButton();
-				}
-				if (mAccount != null) {
-					updateAccountInformation(false);
-				}
-			}
-		});
+		refreshUi();
 	}
 	private final UiCallback<Avatar> mAvatarFetchCallback = new UiCallback<Avatar>() {
 
@@ -271,10 +300,17 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 	}
 
 	protected boolean accountInfoEdited() {
-		return this.mAccount != null && (!this.mAccount.getJid().toBareJid().toString().equals(
-					this.mAccountJid.getText().toString())
-			|| !this.mAccount.getPassword().equals(
-						this.mPassword.getText().toString()));
+		if (this.mAccount == null) {
+			return false;
+		}
+		final String unmodified;
+		if (Config.DOMAIN_LOCK != null) {
+			unmodified = this.mAccount.getJid().getLocalpart();
+		} else {
+			unmodified = this.mAccount.getJid().toBareJid().toString();
+		}
+		return !unmodified.equals(this.mAccountJid.getText().toString()) ||
+				!this.mAccount.getPassword().equals(this.mPassword.getText().toString());
 	}
 
 	@Override
@@ -292,6 +328,11 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 		setContentView(R.layout.activity_edit_account);
 		this.mAccountJid = (AutoCompleteTextView) findViewById(R.id.account_jid);
 		this.mAccountJid.addTextChangedListener(this.mTextWatcher);
+		this.mAccountJidLabel = (TextView) findViewById(R.id.account_jid_label);
+		if (Config.DOMAIN_LOCK != null) {
+			this.mAccountJidLabel.setText(R.string.username);
+			this.mAccountJid.setHint(R.string.username_hint);
+		}
 		this.mPassword = (EditText) findViewById(R.id.account_password);
 		this.mPassword.addTextChangedListener(this.mTextWatcher);
 		this.mPasswordConfirm = (EditText) findViewById(R.id.account_password_confirm);
@@ -307,9 +348,16 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 		this.mServerInfoBlocking = (TextView) findViewById(R.id.server_info_blocking);
 		this.mServerInfoSm = (TextView) findViewById(R.id.server_info_sm);
 		this.mServerInfoPep = (TextView) findViewById(R.id.server_info_pep);
+		this.mServerInfoHttpUpload = (TextView) findViewById(R.id.server_info_http_upload);
 		this.mOtrFingerprint = (TextView) findViewById(R.id.otr_fingerprint);
 		this.mOtrFingerprintBox = (RelativeLayout) findViewById(R.id.otr_fingerprint_box);
 		this.mOtrFingerprintToClipboardButton = (ImageButton) findViewById(R.id.action_copy_to_clipboard);
+		this.mAxolotlFingerprint = (TextView) findViewById(R.id.axolotl_fingerprint);
+		this.mAxolotlFingerprintBox = (RelativeLayout) findViewById(R.id.axolotl_fingerprint_box);
+		this.mAxolotlFingerprintToClipboardButton = (ImageButton) findViewById(R.id.action_copy_axolotl_to_clipboard);
+		this.mRegenerateAxolotlKeyButton = (ImageButton) findViewById(R.id.action_regenerate_axolotl_key);
+		this.keysCard = (LinearLayout) findViewById(R.id.other_device_keys_card);
+		this.keys = (LinearLayout) findViewById(R.id.other_device_keys);
 		this.mSaveButton = (Button) findViewById(R.id.save_button);
 		this.mCancelButton = (Button) findViewById(R.id.cancel_button);
 		this.mSaveButton.setOnClickListener(this.mSaveButtonClickListener);
@@ -328,6 +376,9 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 			}
 		};
 		this.mRegisterNew.setOnCheckedChangeListener(OnCheckedShowConfirmPassword);
+		if (Config.DISALLOW_REGISTRATION_IN_UI) {
+			this.mRegisterNew.setVisibility(View.GONE);
+		}
 	}
 
 	@Override
@@ -338,6 +389,7 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 		final MenuItem showBlocklist = menu.findItem(R.id.action_show_block_list);
 		final MenuItem showMoreInfo = menu.findItem(R.id.action_server_info_show_more);
 		final MenuItem changePassword = menu.findItem(R.id.action_change_password_on_server);
+		final MenuItem clearDevices = menu.findItem(R.id.action_clear_devices);
 		if (mAccount != null && mAccount.isOnlineAndConnected()) {
 			if (!mAccount.getXmppConnection().getFeatures().blocking()) {
 				showBlocklist.setVisible(false);
@@ -345,11 +397,16 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 			if (!mAccount.getXmppConnection().getFeatures().register()) {
 				changePassword.setVisible(false);
 			}
+			Set<Integer> otherDevices = mAccount.getAxolotlService().getOwnDeviceIds();
+			if (otherDevices == null || otherDevices.isEmpty()) {
+				clearDevices.setVisible(false);
+			}
 		} else {
 			showQrCode.setVisible(false);
 			showBlocklist.setVisible(false);
 			showMoreInfo.setVisible(false);
 			changePassword.setVisible(false);
+			clearDevices.setVisible(false);
 		}
 		return true;
 	}
@@ -363,6 +420,7 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 			} catch (final InvalidJidException | NullPointerException ignored) {
 				this.jidToEdit = null;
 			}
+			this.messageFingerprint = getIntent().getStringExtra("fingerprint");
 			if (this.jidToEdit != null) {
 				this.mRegisterNew.setVisibility(View.GONE);
 				if (getActionBar() != null) {
@@ -379,9 +437,6 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 
 	@Override
 	protected void onBackendConnected() {
-		final KnownHostsAdapter mKnownHostsAdapter = new KnownHostsAdapter(this,
-				android.R.layout.simple_list_item_1,
-				xmppConnectionService.getKnownHosts());
 		if (this.jidToEdit != null) {
 			this.mAccount = xmppConnectionService.findAccountByJid(jidToEdit);
 			updateAccountInformation(true);
@@ -394,7 +449,12 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 			this.mCancelButton.setEnabled(false);
 			this.mCancelButton.setTextColor(getSecondaryTextColor());
 		}
-		this.mAccountJid.setAdapter(mKnownHostsAdapter);
+		if (Config.DOMAIN_LOCK == null) {
+			final KnownHostsAdapter mKnownHostsAdapter = new KnownHostsAdapter(this,
+					android.R.layout.simple_list_item_1,
+					xmppConnectionService.getKnownHosts());
+			this.mAccountJid.setAdapter(mKnownHostsAdapter);
+		}
 		updateSaveButton();
 	}
 
@@ -415,13 +475,20 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 				changePasswordIntent.putExtra("account", mAccount.getJid().toString());
 				startActivity(changePasswordIntent);
 				break;
+			case R.id.action_clear_devices:
+				showWipePepDialog();
+				break;
 		}
 		return super.onOptionsItemSelected(item);
 	}
 
 	private void updateAccountInformation(boolean init) {
 		if (init) {
-			this.mAccountJid.setText(this.mAccount.getJid().toBareJid().toString());
+			if (Config.DOMAIN_LOCK != null) {
+				this.mAccountJid.setText(this.mAccount.getJid().getLocalpart());
+			} else {
+				this.mAccountJid.setText(this.mAccount.getJid().toBareJid().toString());
+			}
 			this.mPassword.setText(this.mAccount.getPassword());
 		}
 		if (this.jidToEdit != null) {
@@ -477,10 +544,15 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 			} else {
 				this.mServerInfoPep.setText(R.string.server_info_unavailable);
 			}
-			final String fingerprint = this.mAccount.getOtrFingerprint();
-			if (fingerprint != null) {
+			if (features.httpUpload()) {
+				this.mServerInfoHttpUpload.setText(R.string.server_info_available);
+			} else {
+				this.mServerInfoHttpUpload.setText(R.string.server_info_unavailable);
+			}
+			final String otrFingerprint = this.mAccount.getOtrFingerprint();
+			if (otrFingerprint != null) {
 				this.mOtrFingerprintBox.setVisibility(View.VISIBLE);
-				this.mOtrFingerprint.setText(CryptoHelper.prettifyFingerprint(fingerprint));
+				this.mOtrFingerprint.setText(CryptoHelper.prettifyFingerprint(otrFingerprint));
 				this.mOtrFingerprintToClipboardButton
 					.setVisibility(View.VISIBLE);
 				this.mOtrFingerprintToClipboardButton
@@ -489,7 +561,7 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 						@Override
 						public void onClick(final View v) {
 
-							if (copyTextToClipboard(fingerprint, R.string.otr_fingerprint)) {
+							if (copyTextToClipboard(otrFingerprint, R.string.otr_fingerprint)) {
 								Toast.makeText(
 										EditAccountActivity.this,
 										R.string.toast_message_otr_fingerprint,
@@ -499,6 +571,57 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 					});
 			} else {
 				this.mOtrFingerprintBox.setVisibility(View.GONE);
+			}
+			final String axolotlFingerprint = this.mAccount.getAxolotlService().getOwnPublicKey().getFingerprint();
+			if (axolotlFingerprint != null) {
+				this.mAxolotlFingerprintBox.setVisibility(View.VISIBLE);
+				this.mAxolotlFingerprint.setText(CryptoHelper.prettifyFingerprint(axolotlFingerprint));
+				this.mAxolotlFingerprintToClipboardButton
+						.setVisibility(View.VISIBLE);
+				this.mAxolotlFingerprintToClipboardButton
+						.setOnClickListener(new View.OnClickListener() {
+
+							@Override
+							public void onClick(final View v) {
+
+								if (copyTextToClipboard(axolotlFingerprint, R.string.omemo_fingerprint)) {
+									Toast.makeText(
+											EditAccountActivity.this,
+											R.string.toast_message_omemo_fingerprint,
+											Toast.LENGTH_SHORT).show();
+								}
+							}
+						});
+				if (Config.SHOW_REGENERATE_AXOLOTL_KEYS_BUTTON) {
+					this.mRegenerateAxolotlKeyButton
+							.setVisibility(View.VISIBLE);
+					this.mRegenerateAxolotlKeyButton
+							.setOnClickListener(new View.OnClickListener() {
+
+								@Override
+								public void onClick(final View v) {
+									showRegenerateAxolotlKeyDialog();
+								}
+							});
+				}
+			} else {
+				this.mAxolotlFingerprintBox.setVisibility(View.GONE);
+			}
+			final IdentityKey ownKey = mAccount.getAxolotlService().getOwnPublicKey();
+			boolean hasKeys = false;
+			keys.removeAllViews();
+			for(final IdentityKey identityKey : xmppConnectionService.databaseBackend.loadIdentityKeys(
+					mAccount, mAccount.getJid().toBareJid().toString())) {
+				if(ownKey.equals(identityKey)) {
+					continue;
+				}
+				boolean highlight = identityKey.getFingerprint().replaceAll("\\s", "").equals(messageFingerprint);
+				hasKeys |= addFingerprintRow(keys, mAccount, identityKey, highlight);
+			}
+			if (hasKeys) {
+				keysCard.setVisibility(View.VISIBLE);
+			} else {
+				keysCard.setVisibility(View.GONE);
 			}
 		} else {
 			if (this.mAccount.errorStatus()) {
@@ -511,5 +634,42 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 			}
 			this.mStats.setVisibility(View.GONE);
 		}
+	}
+
+	public void showRegenerateAxolotlKeyDialog() {
+		Builder builder = new Builder(this);
+		builder.setTitle("Regenerate Key");
+		builder.setIconAttribute(android.R.attr.alertDialogIcon);
+		builder.setMessage("Are you sure you want to regenerate your Identity Key? (This will also wipe all established sessions and contact Identity Keys)");
+		builder.setNegativeButton(getString(R.string.cancel), null);
+		builder.setPositiveButton("Yes",
+				new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						mAccount.getAxolotlService().regenerateKeys();
+					}
+				});
+		builder.create().show();
+	}
+
+	public void showWipePepDialog() {
+		Builder builder = new Builder(this);
+		builder.setTitle(getString(R.string.clear_other_devices));
+		builder.setIconAttribute(android.R.attr.alertDialogIcon);
+		builder.setMessage(getString(R.string.clear_other_devices_desc));
+		builder.setNegativeButton(getString(R.string.cancel), null);
+		builder.setPositiveButton(getString(R.string.accept),
+				new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						mAccount.getAxolotlService().wipeOtherPepDevices();
+					}
+				});
+		builder.create().show();
+	}
+
+	@Override
+	public void onKeyStatusUpdated() {
+		refreshUi();
 	}
 }

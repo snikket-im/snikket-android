@@ -29,9 +29,11 @@ import android.widget.QuickContactBadge;
 import android.widget.TextView;
 
 import org.openintents.openpgp.util.OpenPgpUtils;
+import org.whispersystems.libaxolotl.IdentityKey;
 
 import java.util.List;
 
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.PgpEngine;
 import eu.siacs.conversations.entities.Account;
@@ -41,12 +43,13 @@ import eu.siacs.conversations.services.XmppConnectionService.OnAccountUpdate;
 import eu.siacs.conversations.services.XmppConnectionService.OnRosterUpdate;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.UIHelper;
+import eu.siacs.conversations.xmpp.OnKeyStatusUpdated;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
 
-public class ContactDetailsActivity extends XmppActivity implements OnAccountUpdate, OnRosterUpdate, OnUpdateBlocklist {
+public class ContactDetailsActivity extends XmppActivity implements OnAccountUpdate, OnRosterUpdate, OnUpdateBlocklist, OnKeyStatusUpdated {
 	public static final String ACTION_VIEW_CONTACT = "view_contact";
 
 	private Contact contact;
@@ -108,6 +111,7 @@ public class ContactDetailsActivity extends XmppActivity implements OnAccountUpd
 	private LinearLayout keys;
 	private LinearLayout tags;
 	private boolean showDynamicTags;
+	private String messageFingerprint;
 
 	private DialogInterface.OnClickListener addToPhonebook = new DialogInterface.OnClickListener() {
 
@@ -158,6 +162,11 @@ public class ContactDetailsActivity extends XmppActivity implements OnAccountUpd
 	}
 
 	@Override
+	public void OnUpdateBlocklist(final Status status) {
+		refreshUi();
+	}
+
+	@Override
 	protected void refreshUiReal() {
 		invalidateOptionsMenu();
 		populateView();
@@ -185,6 +194,7 @@ public class ContactDetailsActivity extends XmppActivity implements OnAccountUpd
 			} catch (final InvalidJidException ignored) {
 			}
 		}
+		this.messageFingerprint = getIntent().getStringExtra("fingerprint");
 		setContentView(R.layout.activity_contact_details);
 
 		contactJidTv = (TextView) findViewById(R.id.details_contactjid);
@@ -350,7 +360,13 @@ public class ContactDetailsActivity extends XmppActivity implements OnAccountUpd
 		} else {
 			contactJidTv.setText(contact.getJid().toString());
 		}
-		accountJidTv.setText(getString(R.string.using_account, contact.getAccount().getJid().toBareJid()));
+		String account;
+		if (Config.DOMAIN_LOCK != null) {
+			account = contact.getAccount().getJid().getLocalpart();
+		} else {
+			account = contact.getAccount().getJid().toBareJid().toString();
+		}
+		accountJidTv.setText(getString(R.string.using_account, account));
 		badge.setImageBitmap(avatarService().get(contact, getPixel(72)));
 		badge.setOnClickListener(this.onBadgeClick);
 
@@ -362,19 +378,24 @@ public class ContactDetailsActivity extends XmppActivity implements OnAccountUpd
 			View view = inflater.inflate(R.layout.contact_key, keys, false);
 			TextView key = (TextView) view.findViewById(R.id.key);
 			TextView keyType = (TextView) view.findViewById(R.id.key_type);
-			ImageButton remove = (ImageButton) view
+			ImageButton removeButton = (ImageButton) view
 				.findViewById(R.id.button_remove);
-			remove.setVisibility(View.VISIBLE);
+			removeButton.setVisibility(View.VISIBLE);
 			keyType.setText("OTR Fingerprint");
 			key.setText(CryptoHelper.prettifyFingerprint(otrFingerprint));
 			keys.addView(view);
-			remove.setOnClickListener(new OnClickListener() {
+			removeButton.setOnClickListener(new OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
 					confirmToDeleteFingerprint(otrFingerprint);
 				}
 			});
+		}
+		for(final IdentityKey identityKey : xmppConnectionService.databaseBackend.loadIdentityKeys(
+				contact.getAccount(), contact.getJid().toBareJid().toString())) {
+			boolean highlight = identityKey.getFingerprint().replaceAll("\\s", "").equals(messageFingerprint);
+			hasKeys |= addFingerprintRow(keys, contact.getAccount(), identityKey, highlight);
 		}
 		if (contact.getPgpKeyId() != 0) {
 			hasKeys = true;
@@ -460,14 +481,7 @@ public class ContactDetailsActivity extends XmppActivity implements OnAccountUpd
 	}
 
 	@Override
-	public void OnUpdateBlocklist(final Status status) {
-		runOnUiThread(new Runnable() {
-
-			@Override
-			public void run() {
-				invalidateOptionsMenu();
-				populateView();
-			}
-		});
+	public void onKeyStatusUpdated() {
+		refreshUi();
 	}
 }

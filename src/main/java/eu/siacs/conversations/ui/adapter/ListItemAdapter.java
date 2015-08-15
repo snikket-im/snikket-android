@@ -1,15 +1,5 @@
 package eu.siacs.conversations.ui.adapter;
 
-import java.lang.ref.WeakReference;
-import java.util.List;
-import java.util.concurrent.RejectedExecutionException;
-
-import eu.siacs.conversations.R;
-import eu.siacs.conversations.entities.ListItem;
-import eu.siacs.conversations.ui.XmppActivity;
-import eu.siacs.conversations.utils.UIHelper;
-import eu.siacs.conversations.xmpp.jid.Jid;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
@@ -25,6 +15,16 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import java.lang.ref.WeakReference;
+import java.util.List;
+import java.util.concurrent.RejectedExecutionException;
+
+import eu.siacs.conversations.R;
+import eu.siacs.conversations.entities.ListItem;
+import eu.siacs.conversations.ui.XmppActivity;
+import eu.siacs.conversations.utils.UIHelper;
+import eu.siacs.conversations.xmpp.jid.Jid;
 
 public class ListItemAdapter extends ArrayAdapter<ListItem> {
 

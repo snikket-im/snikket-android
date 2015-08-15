@@ -21,6 +21,11 @@ public class Element {
 		this.name = name;
 	}
 
+	public Element(String name, String xmlns) {
+		this.name = name;
+		this.setAttribute("xmlns", xmlns);
+	}
+
 	public Element addChild(Element child) {
 		this.content = null;
 		children.add(child);

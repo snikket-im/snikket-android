@@ -105,8 +105,6 @@
   <string name="pref_vibrate_summary">Tril ook wanneer een nieuw bericht arriveert</string>
   <string name="pref_sound">Geluid</string>
   <string name="pref_sound_summary">Speel ringtone af bij melding</string>
-  <string name="pref_conference_notifications">Groepsgespreksmeldingen</string>
-  <string name="pref_conference_notifications_summary">Toon altijd meldingen als er nieuwe berichten arriveren in groepsgesprekken in plaats van alleen wanneer gemarkeerd</string>
   <string name="pref_notification_grace_period">Uitstelperiode voor meldingen</string>
   <string name="pref_notification_grace_period_summary">Zet meldingen voor korte tijd uit als er een carbon copy wordt ontvangen</string>
   <string name="pref_advanced_options">Geavanceerde instellingen</string>
@@ -288,6 +286,7 @@
   <string name="conference_members_only">Dit groepsgesprek is enkel voor leden</string>
   <string name="conference_kicked">Je bent uit dit groepsgesprek geschopt</string>
   <string name="using_account">account %s gebruiken</string>
+  <string name="checking_x">%s op HTTP host nakijken</string>
   <string name="not_connected_try_again">Je bent niet verbonden. Probeer later opnieuw</string>
   <string name="check_x_filesize">Bekijk bestandsgrootte van %s</string>
   <string name="message_options">Berichtopties</string>
@@ -417,7 +416,7 @@
   <string name="disable_account">Account uitzetten</string>
   <string name="contact_is_typing">%s is aan het typen...</string>
   <string name="contact_has_stopped_typing">%s is gestopt met typen</string>
-  <string name="pref_chat_states">Type-meldingen</string>
+  <string name="pref_chat_states">Aan het typen meldingen</string>
   <string name="pref_chat_states_summary">Laat je contacten weten wanneer je een nieuw bericht aan het schrijven bent</string>
   <string name="send_location">Locatie versturen</string>
   <string name="show_location">Locatie weergeven</string>
@@ -426,7 +425,6 @@
   <string name="received_location">Locatie ontvangen</string>
   <string name="title_undo_swipe_out_conversation">Gesprek gesloten</string>
   <string name="title_undo_swipe_out_muc">Groepsgesprek verlaten</string>
-  <string name="pref_certificate_options">Certificaatopties</string>
   <string name="pref_dont_trust_system_cas_title">Vertrouw geen systeem-CA\'s.</string>
   <string name="pref_dont_trust_system_cas_summary">Alle certificaten moeten handmatig goedgekeurd worden</string>
   <string name="pref_remove_trusted_certificates_title">Verwijder certificaten</string>
@@ -449,4 +447,5 @@
   <string name="recently_used">Recent gebruikt</string>
   <string name="choose_quick_action">Kies snelle actie</string>
   <string name="file_not_found_on_remote_host">Bestand niet gevonden op externe server</string>
+  <string name="search_for_contacts_or_groups">Zoeken naar contacten of groepen</string>
 </resources>

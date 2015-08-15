@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import eu.siacs.conversations.R;
@@ -102,6 +101,10 @@ public class ChangePasswordActivity extends XmppActivity implements XmppConnecti
 				mChangePasswordButton.setText(R.string.change_password);
 			}
 		});
+
+	}
+
+	public void refreshUiReal() {
 
 	}
 }

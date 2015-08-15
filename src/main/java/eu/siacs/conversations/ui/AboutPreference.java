@@ -2,7 +2,6 @@ package eu.siacs.conversations.ui;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.preference.Preference;
 import android.util.AttributeSet;
 

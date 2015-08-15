@@ -105,8 +105,6 @@
   <string name="pref_vibrate_summary">Също така да има и вибрация при получаване на ново съобщение</string>
   <string name="pref_sound">Звук</string>
   <string name="pref_sound_summary">Изпълнение на звук с известието</string>
-  <string name="pref_conference_notifications">Известия за беседите</string>
-  <string name="pref_conference_notifications_summary">Известяване винаги, когато пристигне ново съобщение в беседа, а не само когато тя е отбелязана</string>
   <string name="pref_notification_grace_period">Продължителност на отсрочване на известията</string>
   <string name="pref_notification_grace_period_summary">Изключва известията за кратко, след като бъде получено копие на съобщение</string>
   <string name="pref_advanced_options">Разширени настройки</string>
@@ -427,7 +425,6 @@
   <string name="received_location">Получено местоположение</string>
   <string name="title_undo_swipe_out_conversation">Conversation се затвори</string>
   <string name="title_undo_swipe_out_muc">Напуснахте беседата</string>
-  <string name="pref_certificate_options">Настройки на сертификата</string>
   <string name="pref_dont_trust_system_cas_title">Да не се вярва на системните сертификати</string>
   <string name="pref_dont_trust_system_cas_summary">Всички сертификати трябва да бъдат одобрени на ръка</string>
   <string name="pref_remove_trusted_certificates_title">Премахване на сертификатите</string>

@@ -1,28 +1,8 @@
 package eu.siacs.conversations.entities;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.URLConnection;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.Key;
-import java.security.NoSuchAlgorithmException;
 
-import javax.crypto.Cipher;
-import javax.crypto.CipherInputStream;
-import javax.crypto.CipherOutputStream;
-import javax.crypto.NoSuchPaddingException;
-import javax.crypto.spec.IvParameterSpec;
-import javax.crypto.spec.SecretKeySpec;
-
-import eu.siacs.conversations.Config;
 import eu.siacs.conversations.utils.MimeUtils;
-
-import android.util.Log;
 
 public class DownloadableFile extends File {
 
@@ -30,8 +10,7 @@ public class DownloadableFile extends File {
 
 	private long expectedSize = 0;
 	private String sha1sum;
-	private Key aeskey;
-	private String mime;
+	private byte[] aeskey;
 
 	private byte[] iv = { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08,
 			0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0xf };
@@ -45,15 +24,7 @@ public class DownloadableFile extends File {
 	}
 
 	public long getExpectedSize() {
-		if (this.aeskey != null) {
-			if (this.expectedSize == 0) {
-				return 0;
-			} else {
-				return (this.expectedSize / 16 + 1) * 16;
-			}
-		} else {
-			return this.expectedSize;
-		}
+		return this.expectedSize;
 	}
 
 	public String getMimeType() {
@@ -79,91 +50,38 @@ public class DownloadableFile extends File {
 		this.sha1sum = sum;
 	}
 
-	public void setKey(byte[] key) {
-		if (key.length == 48) {
+	public void setKeyAndIv(byte[] keyIvCombo) {
+		if (keyIvCombo.length == 48) {
 			byte[] secretKey = new byte[32];
 			byte[] iv = new byte[16];
-			System.arraycopy(key, 0, iv, 0, 16);
-			System.arraycopy(key, 16, secretKey, 0, 32);
-			this.aeskey = new SecretKeySpec(secretKey, "AES");
+			System.arraycopy(keyIvCombo, 0, iv, 0, 16);
+			System.arraycopy(keyIvCombo, 16, secretKey, 0, 32);
+			this.aeskey = secretKey;
 			this.iv = iv;
-		} else if (key.length >= 32) {
+		} else if (keyIvCombo.length >= 32) {
 			byte[] secretKey = new byte[32];
-			System.arraycopy(key, 0, secretKey, 0, 32);
-			this.aeskey = new SecretKeySpec(secretKey, "AES");
-		} else if (key.length >= 16) {
+			System.arraycopy(keyIvCombo, 0, secretKey, 0, 32);
+			this.aeskey = secretKey;
+		} else if (keyIvCombo.length >= 16) {
 			byte[] secretKey = new byte[16];
-			System.arraycopy(key, 0, secretKey, 0, 16);
-			this.aeskey = new SecretKeySpec(secretKey, "AES");
+			System.arraycopy(keyIvCombo, 0, secretKey, 0, 16);
+			this.aeskey = secretKey;
 		}
 	}
 
-	public Key getKey() {
+	public void setKey(byte[] key) {
+		this.aeskey = key;
+	}
+
+	public void setIv(byte[] iv) {
+		this.iv = iv;
+	}
+
+	public byte[] getKey() {
 		return this.aeskey;
 	}
 
-	public InputStream createInputStream() {
-		if (this.getKey() == null) {
-			try {
-				return new FileInputStream(this);
-			} catch (FileNotFoundException e) {
-				return null;
-			}
-		} else {
-			try {
-				IvParameterSpec ips = new IvParameterSpec(iv);
-				Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-				cipher.init(Cipher.ENCRYPT_MODE, this.getKey(), ips);
-				Log.d(Config.LOGTAG, "opening encrypted input stream");
-				return new CipherInputStream(new FileInputStream(this), cipher);
-			} catch (NoSuchAlgorithmException e) {
-				Log.d(Config.LOGTAG, "no such algo: " + e.getMessage());
-				return null;
-			} catch (NoSuchPaddingException e) {
-				Log.d(Config.LOGTAG, "no such padding: " + e.getMessage());
-				return null;
-			} catch (InvalidKeyException e) {
-				Log.d(Config.LOGTAG, "invalid key: " + e.getMessage());
-				return null;
-			} catch (InvalidAlgorithmParameterException e) {
-				Log.d(Config.LOGTAG, "invavid iv:" + e.getMessage());
-				return null;
-			} catch (FileNotFoundException e) {
-				return null;
-			}
-		}
-	}
-
-	public OutputStream createOutputStream() {
-		if (this.getKey() == null) {
-			try {
-				return new FileOutputStream(this);
-			} catch (FileNotFoundException e) {
-				return null;
-			}
-		} else {
-			try {
-				IvParameterSpec ips = new IvParameterSpec(this.iv);
-				Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-				cipher.init(Cipher.DECRYPT_MODE, this.getKey(), ips);
-				Log.d(Config.LOGTAG, "opening encrypted output stream");
-				return new CipherOutputStream(new FileOutputStream(this),
-						cipher);
-			} catch (NoSuchAlgorithmException e) {
-				Log.d(Config.LOGTAG, "no such algo: " + e.getMessage());
-				return null;
-			} catch (NoSuchPaddingException e) {
-				Log.d(Config.LOGTAG, "no such padding: " + e.getMessage());
-				return null;
-			} catch (InvalidKeyException e) {
-				Log.d(Config.LOGTAG, "invalid key: " + e.getMessage());
-				return null;
-			} catch (InvalidAlgorithmParameterException e) {
-				Log.d(Config.LOGTAG, "invavid iv:" + e.getMessage());
-				return null;
-			} catch (FileNotFoundException e) {
-				return null;
-			}
-		}
+	public byte[] getIv() {
+		return this.iv;
 	}
 }

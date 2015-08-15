@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/grey200" >
+                xmlns:tools="http://schemas.android.com/tools"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/grey200">
 
     <ScrollView
         android:layout_width="fill_parent"
@@ -27,18 +28,21 @@
                 android:background="@drawable/infocard_border"
                 android:orientation="vertical"
                 android:padding="@dimen/infocard_padding">
-                <ImageView android:id="@+id/avater"
+                <com.makeramen.roundedimageview.RoundedImageView
+                    android:id="@+id/avater"
                     android:layout_width="72dp"
                     android:layout_height="72dp"
                     android:layout_alignParentTop="true"
                     android:layout_marginRight="16dp"
-                    android:contentDescription="@string/account_image_description"/>
+                    android:contentDescription="@string/account_image_description"
+                    app:riv_corner_radius="2dp"/>
                 <LinearLayout
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:layout_toRightOf="@+id/avater">
                 <TextView
+                    android:id="@+id/account_jid_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/account_settings_jabber_id"
@@ -299,6 +303,26 @@
                             android:textSize="?attr/TextSizeBody"
                             tools:ignore="RtlHardcoded"/>
                     </TableRow>
+                    <TableRow
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content" >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/server_info_http_upload"
+                            android:textColor="@color/black87"
+                            android:textSize="?attr/TextSizeBody" />
+
+                        <TextView
+                            android:id="@+id/server_info_http_upload"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right"
+                            android:textColor="@color/black87"
+                            android:textSize="?attr/TextSizeBody"
+                            tools:ignore="RtlHardcoded"/>
+                    </TableRow>
                 </TableLayout>
 
                 <RelativeLayout
@@ -320,7 +344,8 @@
                             android:layout_height="wrap_content"
                             android:textColor="@color/black87"
                             android:textSize="?attr/TextSizeBody"
-                            android:typeface="monospace" />
+                            android:typeface="monospace"
+                            android:fontFamily="monospace"/>
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -342,6 +367,96 @@
                         android:visibility="visible"
                         android:contentDescription="@string/copy_otr_clipboard_description"/>
                 </RelativeLayout>
+               <RelativeLayout
+                   android:layout_width="wrap_content"
+                   android:layout_height="match_parent"
+                   android:id="@+id/axolotl_fingerprint_box"
+                   android:layout_marginTop="32dp">
+
+                   <LinearLayout
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:layout_alignParentLeft="true"
+                       android:layout_toLeftOf="@+id/axolotl_actions"
+                       android:orientation="vertical">
+
+                       <TextView
+                           android:id="@+id/axolotl_fingerprint"
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:textColor="@color/black87"
+                           android:textSize="?attr/TextSizeBody"
+                           android:typeface="monospace"
+                           android:fontFamily="monospace"/>
+
+                       <TextView
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:textColor="@color/black54"
+                           android:textSize="?attr/TextSizeInfo"
+                           android:text="@string/this_device_omemo_fingerprint"/>
+                   </LinearLayout>
+
+                   <LinearLayout
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:id="@+id/axolotl_actions"
+                       android:layout_centerVertical="true"
+                       android:layout_alignParentRight="true"
+                       android:orientation="vertical">
+
+                       <ImageButton
+                           android:id="@+id/action_copy_axolotl_to_clipboard"
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:background="?android:selectableItemBackground"
+                           android:padding="@dimen/image_button_padding"
+                           android:src="?attr/icon_copy"
+                           android:visibility="visible"
+                           android:contentDescription="@string/copy_omemo_clipboard_description"/>
+                       <ImageButton
+                           android:id="@+id/action_regenerate_axolotl_key"
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:background="?android:selectableItemBackground"
+                           android:padding="@dimen/image_button_padding"
+                           android:src="?attr/icon_refresh"
+                           android:visibility="gone"
+                           android:contentDescription="@string/regenerate_omemo_key"/>
+
+                   </LinearLayout>
+               </RelativeLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/other_device_keys_card"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:background="@drawable/infocard_border"
+                android:orientation="vertical"
+                android:padding="@dimen/infocard_padding"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/other_device_keys_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black87"
+                    android:textSize="?attr/TextSizeHeadline"
+                    android:textStyle="bold"
+                    android:text="@string/other_devices"/>
+
+                <LinearLayout
+                    android:id="@+id/other_device_keys"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:divider="?android:dividerHorizontal"
+                    android:orientation="vertical"
+                    android:showDividers="middle" >
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

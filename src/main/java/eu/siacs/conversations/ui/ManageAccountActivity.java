@@ -1,26 +1,28 @@
 package eu.siacs.conversations.ui;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import eu.siacs.conversations.R;
-import eu.siacs.conversations.entities.Account;
-import eu.siacs.conversations.services.XmppConnectionService.OnAccountUpdate;
-import eu.siacs.conversations.ui.adapter.AccountAdapter;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import eu.siacs.conversations.Config;
+import eu.siacs.conversations.R;
+import eu.siacs.conversations.entities.Account;
+import eu.siacs.conversations.services.XmppConnectionService.OnAccountUpdate;
+import eu.siacs.conversations.ui.adapter.AccountAdapter;
 
 public class ManageAccountActivity extends XmppActivity implements OnAccountUpdate {
 
@@ -80,6 +82,7 @@ public class ManageAccountActivity extends XmppActivity implements OnAccountUpda
 			menu.findItem(R.id.mgmt_account_publish_avatar).setVisible(false);
 		} else {
 			menu.findItem(R.id.mgmt_account_enable).setVisible(false);
+			menu.findItem(R.id.mgmt_account_announce_pgp).setVisible(!Config.HIDE_PGP_IN_UI);
 		}
 		menu.setHeaderTitle(this.selectedAccount.getJid().toBareJid().toString());
 	}

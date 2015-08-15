@@ -8,6 +8,7 @@ import java.net.URL;
 import java.util.Arrays;
 
 import eu.siacs.conversations.Config;
+import eu.siacs.conversations.crypto.axolotl.XmppAxolotlSession;
 import eu.siacs.conversations.utils.GeoHelper;
 import eu.siacs.conversations.utils.MimeUtils;
 import eu.siacs.conversations.utils.UIHelper;
@@ -34,6 +35,7 @@ public class Message extends AbstractEntity {
 	public static final int ENCRYPTION_OTR = 2;
 	public static final int ENCRYPTION_DECRYPTED = 3;
 	public static final int ENCRYPTION_DECRYPTION_FAILED = 4;
+	public static final int ENCRYPTION_AXOLOTL = 5;
 
 	public static final int TYPE_TEXT = 0;
 	public static final int TYPE_IMAGE = 1;
@@ -49,9 +51,11 @@ public class Message extends AbstractEntity {
 	public static final String ENCRYPTION = "encryption";
 	public static final String STATUS = "status";
 	public static final String TYPE = "type";
+	public static final String CARBON = "carbon";
 	public static final String REMOTE_MSG_ID = "remoteMsgId";
 	public static final String SERVER_MSG_ID = "serverMsgId";
 	public static final String RELATIVE_FILE_PATH = "relativeFilePath";
+	public static final String FINGERPRINT = "axolotl_fingerprint";
 	public static final String ME_COMMAND = "/me ";
 
 
@@ -65,6 +69,7 @@ public class Message extends AbstractEntity {
 	protected int encryption;
 	protected int status;
 	protected int type;
+	protected boolean carbon = false;
 	protected String relativeFilePath;
 	protected boolean read = true;
 	protected String remoteMsgId = null;
@@ -73,6 +78,7 @@ public class Message extends AbstractEntity {
 	protected Transferable transferable = null;
 	private Message mNextMessage = null;
 	private Message mPreviousMessage = null;
+	private String axolotlFingerprint = null;
 
 	private Message() {
 
@@ -81,8 +87,11 @@ public class Message extends AbstractEntity {
 	public Message(Conversation conversation, String body, int encryption) {
 		this(conversation, body, encryption, STATUS_UNSEND);
 	}
-
 	public Message(Conversation conversation, String body, int encryption, int status) {
+		this(conversation, body, encryption, status, false);
+	}
+
+	public Message(Conversation conversation, String body, int encryption, int status, boolean carbon) {
 		this(java.util.UUID.randomUUID().toString(),
 				conversation.getUuid(),
 				conversation.getJid() == null ? null : conversation.getJid().toBareJid(),
@@ -92,6 +101,8 @@ public class Message extends AbstractEntity {
 				encryption,
 				status,
 				TYPE_TEXT,
+				false,
+				null,
 				null,
 				null,
 				null);
@@ -100,8 +111,9 @@ public class Message extends AbstractEntity {
 
 	private Message(final String uuid, final String conversationUUid, final Jid counterpart,
 					final Jid trueCounterpart, final String body, final long timeSent,
-					final int encryption, final int status, final int type, final String remoteMsgId,
-					final String relativeFilePath, final String serverMsgId) {
+					final int encryption, final int status, final int type, final boolean carbon,
+					final String remoteMsgId, final String relativeFilePath,
+					final String serverMsgId, final String fingerprint) {
 		this.uuid = uuid;
 		this.conversationUuid = conversationUUid;
 		this.counterpart = counterpart;
@@ -111,9 +123,11 @@ public class Message extends AbstractEntity {
 		this.encryption = encryption;
 		this.status = status;
 		this.type = type;
+		this.carbon = carbon;
 		this.remoteMsgId = remoteMsgId;
 		this.relativeFilePath = relativeFilePath;
 		this.serverMsgId = serverMsgId;
+		this.axolotlFingerprint = fingerprint;
 	}
 
 	public static Message fromCursor(Cursor cursor) {
@@ -148,9 +162,11 @@ public class Message extends AbstractEntity {
 				cursor.getInt(cursor.getColumnIndex(ENCRYPTION)),
 				cursor.getInt(cursor.getColumnIndex(STATUS)),
 				cursor.getInt(cursor.getColumnIndex(TYPE)),
+				cursor.getInt(cursor.getColumnIndex(CARBON))>0,
 				cursor.getString(cursor.getColumnIndex(REMOTE_MSG_ID)),
 				cursor.getString(cursor.getColumnIndex(RELATIVE_FILE_PATH)),
-				cursor.getString(cursor.getColumnIndex(SERVER_MSG_ID)));
+				cursor.getString(cursor.getColumnIndex(SERVER_MSG_ID)),
+				cursor.getString(cursor.getColumnIndex(FINGERPRINT)));
 	}
 
 	public static Message createStatusMessage(Conversation conversation, String body) {
@@ -181,9 +197,11 @@ public class Message extends AbstractEntity {
 		values.put(ENCRYPTION, encryption);
 		values.put(STATUS, status);
 		values.put(TYPE, type);
+		values.put(CARBON, carbon ? 1 : 0);
 		values.put(REMOTE_MSG_ID, remoteMsgId);
 		values.put(RELATIVE_FILE_PATH, relativeFilePath);
 		values.put(SERVER_MSG_ID, serverMsgId);
+		values.put(FINGERPRINT, axolotlFingerprint);
 		return values;
 	}
 
@@ -304,6 +322,14 @@ public class Message extends AbstractEntity {
 		this.type = type;
 	}
 
+	public boolean isCarbon() {
+		return carbon;
+	}
+
+	public void setCarbon(boolean carbon) {
+		this.carbon = carbon;
+	}
+
 	public void setTrueCounterpart(Jid trueCounterpart) {
 		this.trueCounterpart = trueCounterpart;
 	}
@@ -391,7 +417,8 @@ public class Message extends AbstractEntity {
 						!message.getBody().startsWith(ME_COMMAND) &&
 						!this.getBody().startsWith(ME_COMMAND) &&
 						!this.bodyIsHeart() &&
-						!message.bodyIsHeart()
+						!message.bodyIsHeart() &&
+						this.isTrusted() == message.isTrusted()
 				);
 	}
 
@@ -407,11 +434,14 @@ public class Message extends AbstractEntity {
 	}
 
 	public String getMergedBody() {
-		final Message next = this.next();
-		if (this.mergeable(next)) {
-			return getBody().trim() + MERGE_SEPARATOR + next.getMergedBody();
+		StringBuilder body = new StringBuilder(this.body.trim());
+		Message current = this;
+		while(current.mergeable(current.next())) {
+			current = current.next();
+			body.append(MERGE_SEPARATOR);
+			body.append(current.getBody().trim());
 		}
-		return getBody().trim();
+		return body.toString();
 	}
 
 	public boolean hasMeCommand() {
@@ -419,20 +449,23 @@ public class Message extends AbstractEntity {
 	}
 
 	public int getMergedStatus() {
-		final Message next = this.next();
-		if (this.mergeable(next)) {
-			return next.getStatus();
+		int status = this.status;
+		Message current = this;
+		while(current.mergeable(current.next())) {
+			current = current.next();
+			status = current.status;
 		}
-		return getStatus();
+		return status;
 	}
 
 	public long getMergedTimeSent() {
-		Message next = this.next();
-		if (this.mergeable(next)) {
-			return next.getMergedTimeSent();
-		} else {
-			return getTimeSent();
+		long time = this.timeSent;
+		Message current = this;
+		while(current.mergeable(current.next())) {
+			current = current.next();
+			time = current.timeSent;
 		}
+		return time;
 	}
 
 	public boolean wasMergedIntoPrevious() {
@@ -662,5 +695,49 @@ public class Message extends AbstractEntity {
 		public long size = 0;
 		public int width = 0;
 		public int height = 0;
+	}
+
+	public void setAxolotlFingerprint(String fingerprint) {
+		this.axolotlFingerprint = fingerprint;
+	}
+
+	public String getAxolotlFingerprint() {
+		return axolotlFingerprint;
+	}
+
+	public boolean isTrusted() {
+		return conversation.getAccount().getAxolotlService().getFingerprintTrust(axolotlFingerprint)
+				== XmppAxolotlSession.Trust.TRUSTED;
+	}
+
+	private  int getPreviousEncryption() {
+		for (Message iterator = this.prev(); iterator != null; iterator = iterator.prev()){
+			if( iterator.isCarbon() || iterator.getStatus() == STATUS_RECEIVED ) {
+				continue;
+			}
+			return iterator.getEncryption();
+		}
+		return ENCRYPTION_NONE;
+	}
+
+	private int getNextEncryption() {
+		for (Message iterator = this.next(); iterator != null; iterator = iterator.next()){
+			if( iterator.isCarbon() || iterator.getStatus() == STATUS_RECEIVED ) {
+				continue;
+			}
+			return iterator.getEncryption();
+		}
+		return conversation.getNextEncryption();
+	}
+
+	public boolean isValidInSession() {
+		int pastEncryption = this.getPreviousEncryption();
+		int futureEncryption = this.getNextEncryption();
+
+		boolean inUnencryptedSession = pastEncryption == ENCRYPTION_NONE
+				|| futureEncryption == ENCRYPTION_NONE
+				|| pastEncryption != futureEncryption;
+
+		return inUnencryptedSession || this.getEncryption() == pastEncryption;
 	}
 }

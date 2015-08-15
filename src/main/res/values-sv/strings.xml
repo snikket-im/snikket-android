@@ -105,8 +105,6 @@
   <string name="pref_vibrate_summary">Vibrera när meddelande tagits emot</string>
   <string name="pref_sound">Ljud</string>
   <string name="pref_sound_summary">Spela ljud med notifiering</string>
-  <string name="pref_conference_notifications">Konferensnotifieringar</string>
-  <string name="pref_conference_notifications_summary">Notifiera alltid när nytt konferensmeddelande tagits emot i stället för endast vid highlight</string>
   <string name="pref_notification_grace_period">Notifieringsfrist</string>
   <string name="pref_notification_grace_period_summary">Inaktivera notifieringar en kort stund efter att en carbon copy tagits emot</string>
   <string name="pref_advanced_options">Avancerade inställningar</string>
@@ -427,7 +425,6 @@
   <string name="received_location">Mottog position</string>
   <string name="title_undo_swipe_out_conversation">Konversation stängd</string>
   <string name="title_undo_swipe_out_muc">Lämnade konferens</string>
-  <string name="pref_certificate_options">Certifikatalternativ</string>
   <string name="pref_dont_trust_system_cas_title">Lita inte på systemets CAs</string>
   <string name="pref_dont_trust_system_cas_summary">Alla certifikat måste manuellt godkännas</string>
   <string name="pref_remove_trusted_certificates_title">Ta bort certifikat</string>

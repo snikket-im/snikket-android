@@ -2,11 +2,12 @@ package eu.siacs.conversations.http;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.os.SystemClock;
+import android.os.PowerManager;
 import android.util.Log;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -18,9 +19,11 @@ import javax.net.ssl.SSLHandshakeException;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
-import eu.siacs.conversations.entities.Transferable;
 import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.entities.Message;
+import eu.siacs.conversations.entities.Transferable;
+import eu.siacs.conversations.persistance.FileBackend;
+import eu.siacs.conversations.services.AbstractConnectionManager;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.CryptoHelper;
 
@@ -35,7 +38,6 @@ public class HttpDownloadConnection implements Transferable {
 	private int mStatus = Transferable.STATUS_UNKNOWN;
 	private boolean acceptedAutomatically = false;
 	private int mProgress = 0;
-	private long mLastGuiRefresh = 0;
 
 	public HttpDownloadConnection(HttpConnectionManager manager) {
 		this.mHttpConnectionManager = manager;
@@ -70,7 +72,8 @@ public class HttpDownloadConnection implements Transferable {
 			String secondToLast = parts.length >= 2 ? parts[parts.length -2] : null;
 			if ("pgp".equals(lastPart) || "gpg".equals(lastPart)) {
 				this.message.setEncryption(Message.ENCRYPTION_PGP);
-			} else if (message.getEncryption() != Message.ENCRYPTION_OTR) {
+			} else if (message.getEncryption() != Message.ENCRYPTION_OTR
+					&& message.getEncryption() != Message.ENCRYPTION_AXOLOTL) {
 				this.message.setEncryption(Message.ENCRYPTION_NONE);
 			}
 			String extension;
@@ -83,10 +86,11 @@ public class HttpDownloadConnection implements Transferable {
 			this.file = mXmppConnectionService.getFileBackend().getFile(message, false);
 			String reference = mUrl.getRef();
 			if (reference != null && reference.length() == 96) {
-				this.file.setKey(CryptoHelper.hexToBytes(reference));
+				this.file.setKeyAndIv(CryptoHelper.hexToBytes(reference));
 			}
 
-			if (this.message.getEncryption() == Message.ENCRYPTION_OTR
+			if ((this.message.getEncryption() == Message.ENCRYPTION_OTR
+					|| this.message.getEncryption() == Message.ENCRYPTION_AXOLOTL)
 					&& this.file.getKey() == null) {
 				this.message.setEncryption(Message.ENCRYPTION_NONE);
 					}
@@ -123,6 +127,17 @@ public class HttpDownloadConnection implements Transferable {
 		mXmppConnectionService.updateConversationUi();
 	}
 
+	private void showToastForException(Exception e) {
+		e.printStackTrace();
+		if (e instanceof java.net.UnknownHostException) {
+			mXmppConnectionService.showErrorToastInUi(R.string.download_failed_server_not_found);
+		} else if (e instanceof java.net.ConnectException) {
+			mXmppConnectionService.showErrorToastInUi(R.string.download_failed_could_not_connect);
+		} else {
+			mXmppConnectionService.showErrorToastInUi(R.string.download_failed_file_not_found);
+		}
+	}
+
 	private class FileSizeChecker implements Runnable {
 
 		private boolean interactive = false;
@@ -144,7 +159,7 @@ public class HttpDownloadConnection implements Transferable {
 			} catch (IOException e) {
 				Log.d(Config.LOGTAG, "io exception in http file size checker: " + e.getMessage());
 				if (interactive) {
-					mXmppConnectionService.showErrorToastInUi(R.string.file_not_found_on_remote_host);
+					showToastForException(e);
 				}
 				cancel();
 				return;
@@ -161,20 +176,23 @@ public class HttpDownloadConnection implements Transferable {
 		}
 
 		private long retrieveFileSize() throws IOException {
-			Log.d(Config.LOGTAG,"retrieve file size. interactive:"+String.valueOf(interactive));
-			changeStatus(STATUS_CHECKING);
-			HttpURLConnection connection = (HttpURLConnection) mUrl.openConnection();
-			connection.setRequestMethod("HEAD");
-			if (connection instanceof HttpsURLConnection) {
-				mHttpConnectionManager.setupTrustManager((HttpsURLConnection) connection, interactive);
-			}
-			connection.connect();
-			String contentLength = connection.getHeaderField("Content-Length");
-			if (contentLength == null) {
-				throw new IOException();
-			}
 			try {
+				Log.d(Config.LOGTAG, "retrieve file size. interactive:" + String.valueOf(interactive));
+				changeStatus(STATUS_CHECKING);
+				HttpURLConnection connection = (HttpURLConnection) mUrl.openConnection();
+				connection.setRequestMethod("HEAD");
+				if (connection instanceof HttpsURLConnection) {
+					mHttpConnectionManager.setupTrustManager((HttpsURLConnection) connection, interactive);
+				}
+				connection.connect();
+				String contentLength = connection.getHeaderField("Content-Length");
+				connection.disconnect();
+				if (contentLength == null) {
+					throw new IOException();
+				}
 				return Long.parseLong(contentLength, 10);
+			} catch (IOException e) {
+				throw e;
 			} catch (NumberFormatException e) {
 				throw new IOException();
 			}
@@ -185,6 +203,8 @@ public class HttpDownloadConnection implements Transferable {
 	private class FileDownloader implements Runnable {
 
 		private boolean interactive = false;
+
+		private OutputStream os;
 
 		public FileDownloader(boolean interactive) {
 			this.interactive = interactive;
@@ -200,36 +220,44 @@ public class HttpDownloadConnection implements Transferable {
 			} catch (SSLHandshakeException e) {
 				changeStatus(STATUS_OFFER);
 			} catch (IOException e) {
-				mXmppConnectionService.showErrorToastInUi(R.string.file_not_found_on_remote_host);
+				if (interactive) {
+					showToastForException(e);
+				}
 				cancel();
 			}
 		}
 
-		private void download() throws SSLHandshakeException, IOException {
-			HttpURLConnection connection = (HttpURLConnection) mUrl.openConnection();
-			if (connection instanceof HttpsURLConnection) {
-				mHttpConnectionManager.setupTrustManager((HttpsURLConnection) connection, interactive);
+		private void download()  throws IOException {
+			InputStream is = null;
+			PowerManager.WakeLock wakeLock = mHttpConnectionManager.createWakeLock("http_download_"+message.getUuid());
+			try {
+				wakeLock.acquire();
+				HttpURLConnection connection = (HttpURLConnection) mUrl.openConnection();
+				if (connection instanceof HttpsURLConnection) {
+					mHttpConnectionManager.setupTrustManager((HttpsURLConnection) connection, interactive);
+				}
+				connection.connect();
+				is = new BufferedInputStream(connection.getInputStream());
+				file.getParentFile().mkdirs();
+				file.createNewFile();
+				os = AbstractConnectionManager.createOutputStream(file, true);
+				long transmitted = 0;
+				long expected = file.getExpectedSize();
+				int count = -1;
+				byte[] buffer = new byte[1024];
+				while ((count = is.read(buffer)) != -1) {
+					transmitted += count;
+					os.write(buffer, 0, count);
+					updateProgress((int) ((((double) transmitted) / expected) * 100));
+				}
+				os.flush();
+			} catch (IOException e) {
+				throw e;
+			} finally {
+				FileBackend.close(os);
+				FileBackend.close(is);
+				wakeLock.release();
 			}
-			connection.connect();
-			BufferedInputStream is = new BufferedInputStream(connection.getInputStream());
-			file.getParentFile().mkdirs();
-			file.createNewFile();
-			OutputStream os = file.createOutputStream();
-			if (os == null) {
-				throw new IOException();
-			}
-			long transmitted = 0;
-			long expected = file.getExpectedSize();
-			int count = -1;
-			byte[] buffer = new byte[1024];
-			while ((count = is.read(buffer)) != -1) {
-				transmitted += count;
-				os.write(buffer, 0, count);
-				updateProgress((int) ((((double) transmitted) / expected) * 100));
-			}
-			os.flush();
-			os.close();
-			is.close();
 		}
 
 		private void updateImageBounds() {
@@ -242,10 +270,7 @@ public class HttpDownloadConnection implements Transferable {
 
 	public void updateProgress(int i) {
 		this.mProgress = i;
-		if (SystemClock.elapsedRealtime() - this.mLastGuiRefresh > Config.PROGRESS_UI_UPDATE_INTERVAL) {
-			this.mLastGuiRefresh = SystemClock.elapsedRealtime();
-			mXmppConnectionService.updateConversationUi();
-		}
+		mXmppConnectionService.updateConversationUi();
 	}
 
 	@Override

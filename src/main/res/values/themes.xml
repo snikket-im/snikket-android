@@ -18,6 +18,7 @@
         <item name="attr/icon_download">@drawable/ic_action_download</item>
         <item name="attr/icon_edit">@drawable/ic_action_edit</item>
         <item name="attr/icon_edit_dark">@drawable/ic_action_edit_dark</item>
+        <item name="attr/icon_done">@drawable/ic_action_done</item>
 
         <item name="attr/icon_group">@drawable/ic_action_group</item>
         <item name="attr/icon_new">@drawable/ic_action_new</item>

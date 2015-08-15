@@ -105,8 +105,6 @@
   <string name="pref_vibrate_summary">Vibrovať pri prijatí novej správy</string>
   <string name="pref_sound">Zvuk</string>
   <string name="pref_sound_summary">Prehrať zvuk spolu s upozornením</string>
-  <string name="pref_conference_notifications">Upozornenia pri skupinovej konverzácii</string>
-  <string name="pref_conference_notifications_summary">Vždy upozorniť pri novej konferenčnej správe, nie len ak je zvýraznená</string>
   <string name="pref_notification_grace_period">Doba na prečítanie upozornenia</string>
   <string name="pref_notification_grace_period_summary">Neupozorňovať krátko po obdržaní kópie správy</string>
   <string name="pref_advanced_options">Rozšírené možnosti</string>
@@ -426,7 +424,6 @@
   <string name="received_location">Prijatá poloha</string>
   <string name="title_undo_swipe_out_conversation">Konverzácia zatvorená</string>
   <string name="title_undo_swipe_out_muc">Opustil skupinovú konverzáciu</string>
-  <string name="pref_certificate_options">Možnosti certifikátu</string>
   <string name="pref_dont_trust_system_cas_title">Nedôverovať systému CAs</string>
   <string name="pref_dont_trust_system_cas_summary">Všetky certifikáty musia byť ručne schválené</string>
   <string name="pref_remove_trusted_certificates_title">Odstrániť certifikáty</string>

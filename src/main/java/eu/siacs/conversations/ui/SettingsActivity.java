@@ -1,19 +1,6 @@
 package eu.siacs.conversations.ui;
 
-import java.security.KeyStoreException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Locale;
-
-import de.duenndns.ssl.MemorizingTrustManager;
-
-import eu.siacs.conversations.R;
-import eu.siacs.conversations.entities.Account;
-import eu.siacs.conversations.xmpp.XmppConnection;
-
 import android.app.AlertDialog;
-import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -24,6 +11,17 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.widget.Toast;
+
+import java.security.KeyStoreException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Locale;
+
+import de.duenndns.ssl.MemorizingTrustManager;
+import eu.siacs.conversations.R;
+import eu.siacs.conversations.entities.Account;
+import eu.siacs.conversations.xmpp.XmppConnection;
 
 public class SettingsActivity extends XmppActivity implements
 		OnSharedPreferenceChangeListener {
@@ -180,6 +178,10 @@ public class SettingsActivity extends XmppActivity implements
 				xmppConnectionService.reconnectAccountInBackground(account);
 			}
 		}
+	}
+
+	public void refreshUiReal() {
+		//nothing to do. This Activity doesn't implement any listeners
 	}
 
 }

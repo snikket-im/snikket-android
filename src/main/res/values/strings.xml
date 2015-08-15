@@ -80,6 +80,7 @@
 	<string name="choose_presence">Choose presence to contact</string>
 	<string name="send_plain_text_message">Send plain text message</string>
 	<string name="send_otr_message">Send OTR encrypted message</string>
+	<string name="send_omemo_message">Send OMEMO encrypted message</string>
 	<string name="send_pgp_message">Send OpenPGP encrypted message</string>
 	<string name="your_nick_has_been_changed">Your nickname has been changed</string>
 	<string name="send_unencrypted">Send unencrypted</string>
@@ -107,8 +108,8 @@
 	<string name="pref_vibrate_summary">Also vibrate when a new message arrives</string>
 	<string name="pref_sound">Sound</string>
 	<string name="pref_sound_summary">Play ringtone with notification</string>
-	<string name="pref_conference_notifications">Conference notifications</string>
-	<string name="pref_conference_notifications_summary">Always notify when a new conference message arrives instead of only when highlighted</string>
+	<string name="pref_conference_notifications">Notifications in Public Conferences</string>
+	<string name="pref_conference_notifications_summary">Always notify when a message arrives in a public conference instead of only when highlighted</string>
 	<string name="pref_notification_grace_period">Notification grace period</string>
 	<string name="pref_notification_grace_period_summary">Disable notifications for a short time after a carbon copy was received</string>
 	<string name="pref_advanced_options">Advanced Options</string>
@@ -154,6 +155,7 @@
 	<string name="encryption_choice_none">Plain text</string>
 	<string name="encryption_choice_otr">OTR</string>
 	<string name="encryption_choice_pgp">OpenPGP</string>
+	<string name="encryption_choice_omemo">OMEMO</string>
 	<string name="mgmt_account_edit">Edit account</string>
 	<string name="mgmt_account_delete">Delete account</string>
 	<string name="mgmt_account_disable">Temporarily disable</string>
@@ -189,6 +191,7 @@
 	<string name="server_info_roster_version">XEP-0237: Roster Versioning</string>
 	<string name="server_info_stream_management">XEP-0198: Stream Management</string>
 	<string name="server_info_pep">XEP-0163: PEP (Avatars)</string>
+	<string name="server_info_http_upload">XEP-xxxx: HTTP File Upload</string>
 	<string name="server_info_available">available</string>
 	<string name="server_info_unavailable">unavailable</string>
 	<string name="missing_public_keys">Missing public key announcements</string>
@@ -206,6 +209,13 @@
 	<string name="reception_failed">Reception failed</string>
 	<string name="your_fingerprint">Your fingerprint</string>
 	<string name="otr_fingerprint">OTR fingerprint</string>
+	<string name="omemo_fingerprint">OMEMO fingerprint</string>
+	<string name="omemo_fingerprint_selected_message">OMEMO fingerprint of message</string>
+	<string name="this_device_omemo_fingerprint">Own OMEMO fingerprint</string>
+	<string name="other_devices">Other devices</string>
+	<string name="trust_omemo_fingerprints">Trust OMEMO Fingerprints</string>
+	<string name="fetching_keys">Fetching keys...</string>
+	<string name="done">Done</string>
 	<string name="verify">Verify</string>
 	<string name="decrypt">Decrypt</string>
 	<string name="conferences">Conferences</string>
@@ -312,6 +322,7 @@
 	<string name="pref_conference_name">Conference name</string>
 	<string name="pref_conference_name_summary">Use room’s subject instead of JID to identify conferences</string>
 	<string name="toast_message_otr_fingerprint">OTR fingerprint copied to clipboard!</string>
+	<string name="toast_message_omemo_fingerprint">OMEMO fingerprint copied to clipboard!</string>
 	<string name="conference_banned">You are banned from this conference</string>
 	<string name="conference_members_only">This conference is members only</string>
 	<string name="conference_kicked">You have been kicked from this conference</string>
@@ -378,6 +389,14 @@
 	<string name="reset">Reset</string>
 	<string name="account_image_description">Account avatar</string>
 	<string name="copy_otr_clipboard_description">Copy OTR fingerprint to clipboard</string>
+	<string name="copy_omemo_clipboard_description">Copy OMEMO fingerprint to clipboard</string>
+	<string name="regenerate_omemo_key">Regenerate OMEMO key</string>
+	<string name="wipe_omemo_pep">Wipe other devices from PEP</string>
+	<string name="clear_other_devices">Clear devices</string>
+	<string name="clear_other_devices_desc">Are you sure you want to clear all other devices from the OMEMO announcement? The next time your devices connect, they will reannounce themselves, but they might not receive messages sent in the meantime.</string>
+	<string name="purge_key">Purge key</string>
+	<string name="purge_key_desc_part1">Are you sure you want to purge this key?</string>
+	<string name="purge_key_desc_part2">It will irreversibly be considered compromised, and you can never build a session with it again.</string>
 	<string name="fetching_history_from_server">Fetching history from server</string>
 	<string name="no_more_history_on_server">No more history on server</string>
 	<string name="updating">Updating…</string>
@@ -455,7 +474,6 @@
 	<string name="received_location">Received location</string>
 	<string name="title_undo_swipe_out_conversation">Conversation closed</string>
 	<string name="title_undo_swipe_out_muc">Left conference</string>
-	<string name="pref_certificate_options">Certificate options</string>
 	<string name="pref_dont_trust_system_cas_title">Don’t trust system CAs</string>
 	<string name="pref_dont_trust_system_cas_summary">All certificates must be manually approved</string>
 	<string name="pref_remove_trusted_certificates_title">Remove certificates</string>
@@ -477,6 +495,13 @@
 	<string name="none">None</string>
 	<string name="recently_used">Most recently used</string>
 	<string name="choose_quick_action">Choose quick action</string>
-	<string name="file_not_found_on_remote_host">File not found on remote server</string>
 	<string name="search_for_contacts_or_groups">Search for contacts or groups</string>
+	<string name="send_private_message">Send private message</string>
+	<string name="user_has_left_conference">%s has left the conference!</string>
+	<string name="username">Username</string>
+	<string name="username_hint">Username</string>
+	<string name="invalid_username">This is not a valid username</string>
+	<string name="download_failed_server_not_found">Download failed: Server not found</string>
+	<string name="download_failed_file_not_found">Download failed: File not found</string>
+	<string name="download_failed_could_not_connect">Download failed: Could not connect to host</string>
 </resources>

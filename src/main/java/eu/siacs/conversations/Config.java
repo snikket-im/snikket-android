@@ -8,6 +8,11 @@ public final class Config {
 
 	public static final String LOGTAG = "conversations";
 
+
+	public static final String DOMAIN_LOCK = null; //only allow account creation for this domain
+	public static final boolean DISALLOW_REGISTRATION_IN_UI = false; //hide the register checkbox
+	public static final boolean HIDE_PGP_IN_UI = false; //some more consumer focused clients might want to disable OpenPGP
+
 	public static final int PING_MAX_INTERVAL = 300;
 	public static final int PING_MIN_INTERVAL = 30;
 	public static final int PING_TIMEOUT = 10;
@@ -19,12 +24,15 @@ public final class Config {
 	public static final int AVATAR_SIZE = 192;
 	public static final Bitmap.CompressFormat AVATAR_FORMAT = Bitmap.CompressFormat.WEBP;
 
+	public static final int IMAGE_SIZE = 1920;
+	public static final Bitmap.CompressFormat IMAGE_FORMAT = Bitmap.CompressFormat.JPEG;
+	public static final int IMAGE_QUALITY = 75;
+
 	public static final int MESSAGE_MERGE_WINDOW = 20;
 
 	public static final int PAGE_SIZE = 50;
 	public static final int MAX_NUM_PAGES = 3;
 
-	public static final int PROGRESS_UI_UPDATE_INTERVAL = 750;
 	public static final int REFRESH_UI_INTERVAL = 500;
 
 	public static final boolean NO_PROXY_LOOKUP = false; //useful to debug ibb
@@ -33,6 +41,10 @@ public final class Config {
 	public static final boolean RESET_ATTEMPT_COUNT_ON_NETWORK_CHANGE = true; //setting to true might increase power consumption
 
 	public static final boolean ENCRYPT_ON_HTTP_UPLOADED = false;
+
+	public static final boolean REPORT_WRONG_FILESIZE_IN_OTR_JINGLE = true;
+
+	public static final boolean SHOW_REGENERATE_AXOLOTL_KEYS_BUTTON = false;
 
 	public static final long MILLISECONDS_IN_DAY = 24 * 60 * 60 * 1000;
 	public static final long MAM_MAX_CATCHUP =  MILLISECONDS_IN_DAY / 2;

@@ -96,11 +96,10 @@ public final class CryptoHelper {
 		} else if (fingerprint.length() < 40) {
 			return fingerprint;
 		}
-		StringBuilder builder = new StringBuilder(fingerprint);
-		builder.insert(8, " ");
-		builder.insert(17, " ");
-		builder.insert(26, " ");
-		builder.insert(35, " ");
+		StringBuilder builder = new StringBuilder(fingerprint.replaceAll("\\s",""));
+		for(int i=8;i<builder.length();i+=9) {
+			builder.insert(i, ' ');
+		}
 		return builder.toString();
 	}
 

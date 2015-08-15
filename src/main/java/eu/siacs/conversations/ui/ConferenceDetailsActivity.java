@@ -27,8 +27,8 @@ import org.openintents.openpgp.util.OpenPgpUtils;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.PgpEngine;
 import eu.siacs.conversations.entities.Account;
@@ -38,8 +38,8 @@ import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.entities.MucOptions.User;
 import eu.siacs.conversations.services.XmppConnectionService;
-import eu.siacs.conversations.services.XmppConnectionService.OnMucRosterUpdate;
 import eu.siacs.conversations.services.XmppConnectionService.OnConversationUpdate;
+import eu.siacs.conversations.services.XmppConnectionService.OnMucRosterUpdate;
 import eu.siacs.conversations.xmpp.jid.Jid;
 
 public class ConferenceDetailsActivity extends XmppActivity implements OnConversationUpdate, OnMucRosterUpdate, XmppConnectionService.OnAffiliationChanged, XmppConnectionService.OnRoleChanged, XmppConnectionService.OnConferenceOptionsPushed {
@@ -266,14 +266,17 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 			final User self = mConversation.getMucOptions().getSelf();
 			this.mSelectedUser = user;
 			String name;
+			final Contact contact = user.getContact();
+			if (contact != null) {
+				name = contact.getDisplayName();
+			} else if (user.getJid() != null){
+				name = user.getJid().toBareJid().toString();
+			} else {
+				name = user.getName();
+			}
+			menu.setHeaderTitle(name);
 			if (user.getJid() != null) {
-				final Contact contact = user.getContact();
-				if (contact != null) {
-					name = contact.getDisplayName();
-				} else {
-					name = user.getJid().toBareJid().toString();
-				}
-				menu.setHeaderTitle(name);
+				MenuItem showContactDetails = menu.findItem(R.id.action_contact_details);
 				MenuItem startConversation = menu.findItem(R.id.start_conversation);
 				MenuItem giveMembership = menu.findItem(R.id.give_membership);
 				MenuItem removeMembership = menu.findItem(R.id.remove_membership);
@@ -282,6 +285,9 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 				MenuItem removeFromRoom = menu.findItem(R.id.remove_from_room);
 				MenuItem banFromConference = menu.findItem(R.id.ban_from_conference);
 				startConversation.setVisible(true);
+				if (contact != null) {
+					showContactDetails.setVisible(true);
+				}
 				if (self.getAffiliation().ranks(MucOptions.Affiliation.ADMIN) &&
 						self.getAffiliation().outranks(user.getAffiliation())) {
 					if (mAdvancedMode) {
@@ -300,15 +306,24 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 						removeAdminPrivileges.setVisible(true);
 					}
 				}
+			} else {
+				MenuItem sendPrivateMessage = menu.findItem(R.id.send_private_message);
+				sendPrivateMessage.setVisible(true);
 			}
 
 		}
-		super.onCreateContextMenu(menu,v,menuInfo);
+		super.onCreateContextMenu(menu, v, menuInfo);
 	}
 
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
+			case R.id.action_contact_details:
+				Contact contact = mSelectedUser.getContact();
+				if (contact != null) {
+					switchToContactDetails(contact);
+				}
+				return true;
 			case R.id.start_conversation:
 				startConversation(mSelectedUser);
 				return true;
@@ -330,6 +345,9 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 			case R.id.ban_from_conference:
 				xmppConnectionService.changeAffiliationInConference(mConversation,mSelectedUser.getJid(), MucOptions.Affiliation.OUTCAST,this);
 				xmppConnectionService.changeRoleInConference(mConversation,mSelectedUser.getName(), MucOptions.Role.NONE,this);
+				return true;
+			case R.id.send_private_message:
+				privateMsgInMuc(mConversation,mSelectedUser.getName());
 				return true;
 			default:
 				return super.onContextItemSelected(item);
@@ -404,8 +422,13 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 	private void updateView() {
 		final MucOptions mucOptions = mConversation.getMucOptions();
 		final User self = mucOptions.getSelf();
-		mAccountJid.setText(getString(R.string.using_account, mConversation
-					.getAccount().getJid().toBareJid()));
+		String account;
+		if (Config.DOMAIN_LOCK != null) {
+			account = mConversation.getAccount().getJid().getLocalpart();
+		} else {
+			account = mConversation.getAccount().getJid().toBareJid().toString();
+		}
+		mAccountJid.setText(getString(R.string.using_account, account));
 		mYourPhoto.setImageBitmap(avatarService().get(mConversation.getAccount(), getPixel(48)));
 		setTitle(mConversation.getName());
 		mFullJid.setText(mConversation.getJid().toBareJid().toString());

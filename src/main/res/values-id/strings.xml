@@ -105,8 +105,6 @@
   <string name="pref_vibrate_summary">Juga aktifkan getaran bila pesan baru tiba</string>
   <string name="pref_sound">Suara</string>
   <string name="pref_sound_summary">mainkan suara saat menerima notifikasi</string>
-  <string name="pref_conference_notifications">Notifikasi Conference</string>
-  <string name="pref_conference_notifications_summary">Selalu memberitahukan bila pesan conference baru diterima daripada hanya dicetak tebal</string>
   <string name="pref_notification_grace_period">Tenggang waktu pemberitahuan</string>
   <string name="pref_notification_grace_period_summary">Nonaktifkan pemberitahuan untuk waktu yang singkat setelah salinan diterima</string>
   <string name="pref_advanced_options">Opsi Lanjutan</string>
@@ -424,7 +422,6 @@
   <string name="received_location">Lokasi yang diterima</string>
   <string name="title_undo_swipe_out_conversation">Percakapan tertutup</string>
   <string name="title_undo_swipe_out_muc">Tinggalkan conference</string>
-  <string name="pref_certificate_options">Opsi Sertifikat</string>
   <string name="pref_dont_trust_system_cas_title">Jangan percaya sistem CA</string>
   <string name="pref_dont_trust_system_cas_summary">Semua sertifikat harus disetujui secara manual</string>
   <string name="pref_remove_trusted_certificates_title">Hapus sertifikat</string>

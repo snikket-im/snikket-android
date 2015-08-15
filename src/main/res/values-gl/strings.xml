@@ -69,8 +69,6 @@
   <string name="pref_vibrate_summary">Treme cando chega unha novo mensaxe</string>
   <string name="pref_sound">Son</string>
   <string name="pref_sound_summary">Reproduce un ton ca notificación</string>
-  <string name="pref_conference_notifications">Notificacións de conferencia</string>
-  <string name="pref_conference_notifications_summary">Siempre notifica cuando chega unha mensaxe de conferencia e non solo cuando chega unha mensaxe destacada</string>
   <string name="pref_notification_grace_period">Notificacións Carbons</string>
   <string name="pref_notification_grace_period_summary">Deshabilita as notificacións durante un corto periodo de tiempo despois de recibir a copia da mensaxe carbón</string>
   <string name="pref_advanced_options">Opcións avanzadas</string>

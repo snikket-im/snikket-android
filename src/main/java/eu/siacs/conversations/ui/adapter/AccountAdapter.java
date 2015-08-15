@@ -1,11 +1,5 @@
 package eu.siacs.conversations.ui.adapter;
 
-import java.util.List;
-
-import eu.siacs.conversations.R;
-import eu.siacs.conversations.entities.Account;
-import eu.siacs.conversations.ui.XmppActivity;
-import eu.siacs.conversations.ui.ManageAccountActivity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +8,15 @@ import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Switch;
+
+import java.util.List;
+
+import eu.siacs.conversations.Config;
+import eu.siacs.conversations.R;
+import eu.siacs.conversations.entities.Account;
+import eu.siacs.conversations.ui.ManageAccountActivity;
+import eu.siacs.conversations.ui.XmppActivity;
+import eu.siacs.conversations.ui.widget.Switch;
 
 public class AccountAdapter extends ArrayAdapter<Account> {
 
@@ -34,7 +36,11 @@ public class AccountAdapter extends ArrayAdapter<Account> {
 			view = inflater.inflate(R.layout.account_row, parent, false);
 		}
 		TextView jid = (TextView) view.findViewById(R.id.account_jid);
-		jid.setText(account.getJid().toBareJid().toString());
+		if (Config.DOMAIN_LOCK != null) {
+			jid.setText(account.getJid().getLocalpart());
+		} else {
+			jid.setText(account.getJid().toBareJid().toString());
+		}
 		TextView statusView = (TextView) view.findViewById(R.id.account_status);
 		ImageView imageView = (ImageView) view.findViewById(R.id.account_image);
 		imageView.setImageBitmap(activity.avatarService().get(account, activity.getPixel(48)));
@@ -53,8 +59,7 @@ public class AccountAdapter extends ArrayAdapter<Account> {
 		}
 		final Switch tglAccountState = (Switch) view.findViewById(R.id.tgl_account_status);
 		final boolean isDisabled = (account.getStatus() == Account.State.DISABLED);
-		tglAccountState.setOnCheckedChangeListener(null);
-		tglAccountState.setChecked(!isDisabled);
+		tglAccountState.setChecked(!isDisabled,false);
 		tglAccountState.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(CompoundButton compoundButton, boolean b) {

@@ -55,21 +55,20 @@ public class BlocklistActivity extends AbstractSearchableListItemActivity implem
 			}
 			Collections.sort(getListItems());
 		}
-		runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				getListItemAdapter().notifyDataSetChanged();
-			}
-		});
+		getListItemAdapter().notifyDataSetChanged();
 	}
 
-	@Override
-	public void OnUpdateBlocklist(final OnUpdateBlocklist.Status status) {
+	protected void refreshUiReal() {
 		final Editable editable = getSearchEditText().getText();
 		if (editable != null) {
 			filterContacts(editable.toString());
 		} else {
 			filterContacts();
 		}
+	}
+
+	@Override
+	public void OnUpdateBlocklist(final OnUpdateBlocklist.Status status) {
+		refreshUi();
 	}
 }

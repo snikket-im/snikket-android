@@ -105,8 +105,6 @@
   <string name="pref_vibrate_summary">Vibra quan arriba un nou missatge</string>
   <string name="pref_sound">So</string>
   <string name="pref_sound_summary">Reprodueix el to de trucada amb la notificació</string>
-  <string name="pref_conference_notifications">Notificacions de conferència</string>
-  <string name="pref_conference_notifications_summary">Sempre notifica quan arriba un nou missatge de conferència en comptes de només quan està destacat</string>
   <string name="pref_notification_grace_period">Notificació del període d\'espera</string>
   <string name="pref_notification_grace_period_summary">Desactiva les notificacions durant un breu termini després de rebre una còpia de missatges carbon</string>
   <string name="pref_advanced_options">Opcions avançades</string>
@@ -424,7 +422,6 @@
   <string name="received_location">Localització rebuda</string>
   <string name="title_undo_swipe_out_conversation">Conversa tancada</string>
   <string name="title_undo_swipe_out_muc">S\'ha sortit de la conferència</string>
-  <string name="pref_certificate_options">Opcions de certificats</string>
   <string name="pref_dont_trust_system_cas_title">No confiar en les CAs del sistema</string>
   <string name="pref_dont_trust_system_cas_summary">Tots els certificats han de ser aprovats manualment</string>
   <string name="pref_remove_trusted_certificates_title">Eliminar certificats</string>
