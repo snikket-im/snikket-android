@@ -18,10 +18,6 @@ public class AbstractStanza extends Element {
 		return getAttributeAsJid("from");
 	}
 
-	public String getId() {
-		return this.getAttribute("id");
-	}
-
 	public void setTo(final Jid to) {
 		if (to != null) {
 			setAttribute("to", to.toString());
@@ -32,10 +28,6 @@ public class AbstractStanza extends Element {
 		if (from != null) {
 			setAttribute("from", from.toString());
 		}
-	}
-
-	public void setId(final String id) {
-		setAttribute("id", id);
 	}
 
 	public boolean fromServer(final Account account) {

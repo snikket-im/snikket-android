@@ -5,7 +5,7 @@ import android.util.Pair;
 import eu.siacs.conversations.parser.AbstractParser;
 import eu.siacs.conversations.xml.Element;
 
-public class MessagePacket extends AbstractStanza {
+public class MessagePacket extends AbstractAcknowledgeableStanza {
 	public static final int TYPE_CHAT = 0;
 	public static final int TYPE_NORMAL = 2;
 	public static final int TYPE_GROUPCHAT = 3;

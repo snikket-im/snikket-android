@@ -2,9 +2,9 @@ package eu.siacs.conversations.xmpp.stanzas;
 
 import eu.siacs.conversations.xml.Element;
 
-public class IqPacket extends AbstractStanza {
+public class IqPacket extends AbstractAcknowledgeableStanza {
 
-	public static enum TYPE {
+	public enum TYPE {
 		ERROR,
 		SET,
 		RESULT,

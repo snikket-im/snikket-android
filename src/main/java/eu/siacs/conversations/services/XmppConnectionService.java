@@ -149,14 +149,25 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 
 		@Override
 		public void onBind(final Account account) {
+			resetSendingToWaiting(account);
 			account.getRoster().clearPresences();
-			account.pendingConferenceJoins.clear();
-			account.pendingConferenceLeaves.clear();
 			fetchRosterFromServer(account);
 			fetchBookmarks(account);
 			sendPresence(account);
 			connectMultiModeConversations(account);
-			updateConversationUi();
+			for (Conversation conversation : account.pendingConferenceLeaves) {
+				leaveMuc(conversation);
+			}
+			account.pendingConferenceLeaves.clear();
+			for (Conversation conversation : account.pendingConferenceJoins) {
+				joinMuc(conversation);
+			}
+			account.pendingConferenceJoins.clear();
+			mMessageArchiveService.executePendingQueries(account);
+			mJingleConnectionManager.cancelInTransmission();
+			syncDirtyContacts(account);
+			account.getAxolotlService().publishOwnDeviceIdIfNeeded();
+			account.getAxolotlService().publishBundlesIfNeeded();
 		}
 	};
 	private final OnMessageAcknowledged mOnMessageAcknowledgedListener = new OnMessageAcknowledged() {
@@ -248,14 +259,15 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 				mOnAccountUpdate.onAccountUpdate();
 			}
 			if (account.getStatus() == Account.State.ONLINE) {
-				for (Conversation conversation : account.pendingConferenceLeaves) {
-					leaveMuc(conversation);
+				if (connection != null && connection.getFeatures().csi()) {
+					if (checkListeners()) {
+						Log.d(Config.LOGTAG, account.getJid().toBareJid()+ " sending csi//inactive");
+						connection.sendInactive();
+					} else {
+						Log.d(Config.LOGTAG, account.getJid().toBareJid()+ " sending csi//active");
+						connection.sendActive();
+					}
 				}
-				for (Conversation conversation : account.pendingConferenceJoins) {
-					joinMuc(conversation);
-				}
-				mMessageArchiveService.executePendingQueries(account);
-				mJingleConnectionManager.cancelInTransmission();
 				List<Conversation> conversations = getConversations();
 				for (Conversation conversation : conversations) {
 					if (conversation.getAccount() == account) {
@@ -263,21 +275,6 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 						sendUnsentMessages(conversation);
 					}
 				}
-				if (connection != null && connection.getFeatures().csi()) {
-					if (checkListeners()) {
-						Log.d(Config.LOGTAG, account.getJid().toBareJid()
-								+ " sending csi//inactive");
-						connection.sendInactive();
-					} else {
-						Log.d(Config.LOGTAG, account.getJid().toBareJid()
-								+ " sending csi//active");
-						connection.sendActive();
-					}
-				}
-				syncDirtyContacts(account);
-				account.getAxolotlService().publishOwnDeviceIdIfNeeded();
-				account.getAxolotlService().publishBundlesIfNeeded();
-
 				scheduleWakeUpCall(Config.PING_MAX_INTERVAL, account.getUuid().hashCode());
 			} else if (account.getStatus() == Account.State.OFFLINE) {
 				if (!account.isOptionSet(Account.OPTION_DISABLED)) {
@@ -859,7 +856,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 			Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": fetching roster");
 		}
 		iqPacket.query(Xmlns.ROSTER).setAttribute("ver", account.getRosterVersion());
-		sendIqPacket(account,iqPacket,mIqParser);
+		sendIqPacket(account, iqPacket, mIqParser);
 	}
 
 	public void fetchBookmarks(final Account account) {
@@ -1477,6 +1474,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 			}
 		}
 	}
+
 
 	public void joinMuc(Conversation conversation) {
 		Account account = conversation.getAccount();
