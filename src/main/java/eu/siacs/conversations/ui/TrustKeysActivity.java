@@ -32,6 +32,8 @@ public class TrustKeysActivity extends XmppActivity implements OnKeyStatusUpdate
 	private boolean hasNoTrustedKeys = true;
 
 	private Contact contact;
+	private TextView keyErrorMessage;
+	private LinearLayout keyErrorMessageCard;
 	private TextView ownKeysTitle;
 	private LinearLayout ownKeys;
 	private LinearLayout ownKeysCard;
@@ -92,6 +94,8 @@ public class TrustKeysActivity extends XmppActivity implements OnKeyStatusUpdate
 		}
 		hasNoTrustedKeys = getIntent().getBooleanExtra("has_no_trusted", false);
 
+		keyErrorMessageCard = (LinearLayout) findViewById(R.id.key_error_message_card);
+		keyErrorMessage = (TextView) findViewById(R.id.key_error_message);
 		ownKeysTitle = (TextView) findViewById(R.id.own_keys_title);
 		ownKeys = (LinearLayout) findViewById(R.id.own_keys_details);
 		ownKeysCard = (LinearLayout) findViewById(R.id.own_keys_card);
@@ -157,6 +161,12 @@ public class TrustKeysActivity extends XmppActivity implements OnKeyStatusUpdate
 			setFetching();
 			lock();
 		} else {
+			if (!hasForeignKeys && !hasOtherTrustedKeys) {
+				keyErrorMessageCard.setVisibility(View.VISIBLE);
+				keyErrorMessage.setText(R.string.error_no_keys_to_trust);
+				ownKeys.removeAllViews(); ownKeysCard.setVisibility(View.GONE);
+				foreignKeys.removeAllViews(); foreignKeysCard.setVisibility(View.GONE);
+			}
 			lockOrUnlockAsNeeded();
 			setDone();
 		}
