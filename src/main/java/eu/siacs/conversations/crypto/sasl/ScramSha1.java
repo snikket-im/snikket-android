@@ -101,6 +101,9 @@ public class ScramSha1 extends SaslMechanism {
 	public String getResponse(final String challenge) throws AuthenticationException {
 		switch (state) {
 			case AUTH_TEXT_SENT:
+				if (challenge == null) {
+					throw new AuthenticationException("challenge can not be null");
+				}
 				serverFirstMessage = Base64.decode(challenge, Base64.DEFAULT);
 				final Tokenizer tokenizer = new Tokenizer(serverFirstMessage);
 				String nonce = "";

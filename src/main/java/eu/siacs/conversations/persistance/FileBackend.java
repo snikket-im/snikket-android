@@ -358,11 +358,7 @@ public class FileBackend {
 					file.delete();
 					return false;
 				}
-			} catch (FileNotFoundException e) {
-				return false;
-			} catch (IOException e) {
-				return false;
-			} catch (NoSuchAlgorithmException e) {
+			} catch (IllegalArgumentException | IOException | NoSuchAlgorithmException e) {
 				return false;
 			} finally {
 				close(os);
