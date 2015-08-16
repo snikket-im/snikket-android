@@ -198,10 +198,7 @@ public class XmppConnection implements Runnable {
 							socket = new Socket();
 							socket.connect(addr, Config.SOCKET_TIMEOUT * 1000);
 							socketError = false;
-						} catch (final UnknownHostException e) {
-							Log.d(Config.LOGTAG, account.getJid().toBareJid().toString() + ": " + e.getMessage());
-							i++;
-						} catch (final IOException e) {
+						} catch (final Throwable e) {
 							Log.d(Config.LOGTAG, account.getJid().toBareJid().toString() + ": " + e.getMessage());
 							i++;
 						}
