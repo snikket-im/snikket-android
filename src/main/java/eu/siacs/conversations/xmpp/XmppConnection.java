@@ -152,7 +152,6 @@ public class XmppConnection implements Runnable {
 			shouldAuthenticate = shouldBind = !account.isOptionSet(Account.OPTION_REGISTER);
 			tagReader = new XmlReader(wakeLock);
 			tagWriter = new TagWriter();
-			packetCallbacks.clear();
 			this.changeStatus(Account.State.CONNECTING);
 			if (DNSHelper.isIp(account.getServer().toString())) {
 				socket = new Socket();
@@ -489,26 +488,28 @@ public class XmppConnection implements Runnable {
 				this.jingleListener.onJinglePacketReceived(account,(JinglePacket) packet);
 			}
 		} else {
-			if (packetCallbacks.containsKey(packet.getId())) {
-				final Pair<IqPacket, OnIqPacketReceived> packetCallbackDuple = packetCallbacks.get(packet.getId());
-				// Packets to the server should have responses from the server
-				if (packetCallbackDuple.first.toServer(account)) {
-					if (packet.fromServer(account)) {
-						packetCallbackDuple.second.onIqPacketReceived(account, packet);
-						packetCallbacks.remove(packet.getId());
+			synchronized (this.packetCallbacks) {
+				if (packetCallbacks.containsKey(packet.getId())) {
+					final Pair<IqPacket, OnIqPacketReceived> packetCallbackDuple = packetCallbacks.get(packet.getId());
+					// Packets to the server should have responses from the server
+					if (packetCallbackDuple.first.toServer(account)) {
+						if (packet.fromServer(account)) {
+							packetCallbackDuple.second.onIqPacketReceived(account, packet);
+							packetCallbacks.remove(packet.getId());
+						} else {
+							Log.e(Config.LOGTAG, account.getJid().toBareJid().toString() + ": ignoring spoofed iq packet");
+						}
 					} else {
-						Log.e(Config.LOGTAG,account.getJid().toBareJid().toString()+": ignoring spoofed iq packet");
+						if (packet.getFrom().equals(packetCallbackDuple.first.getTo())) {
+							packetCallbackDuple.second.onIqPacketReceived(account, packet);
+							packetCallbacks.remove(packet.getId());
+						} else {
+							Log.e(Config.LOGTAG, account.getJid().toBareJid().toString() + ": ignoring spoofed iq packet");
+						}
 					}
-				} else {
-					if (packet.getFrom().equals(packetCallbackDuple.first.getTo())) {
-						packetCallbackDuple.second.onIqPacketReceived(account, packet);
-						packetCallbacks.remove(packet.getId());
-					} else {
-						Log.e(Config.LOGTAG,account.getJid().toBareJid().toString()+": ignoring spoofed iq packet");
-					}
+				} else if (packet.getType() == IqPacket.TYPE.GET || packet.getType() == IqPacket.TYPE.SET) {
+					this.unregisteredIqListener.onIqPacketReceived(account, packet);
 				}
-			} else if (packet.getType() == IqPacket.TYPE.GET|| packet.getType() == IqPacket.TYPE.SET) {
-				this.unregisteredIqListener.onIqPacketReceived(account, packet);
 			}
 		}
 	}
@@ -739,13 +740,15 @@ public class XmppConnection implements Runnable {
 	}
 
 	private void clearIqCallbacks() {
-		Log.d(Config.LOGTAG,account.getJid().toBareJid()+": clearing iq iq callbacks");
+		Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": clearing iq iq callbacks");
 		final IqPacket failurePacket = new IqPacket(IqPacket.TYPE.ERROR);
-		Iterator<Entry<String, Pair<IqPacket, OnIqPacketReceived>>> iterator = this.packetCallbacks.entrySet().iterator();
-		while(iterator.hasNext()) {
-			Entry<String, Pair<IqPacket, OnIqPacketReceived>> entry = iterator.next();
-			entry.getValue().second.onIqPacketReceived(account,failurePacket);
-			iterator.remove();
+		synchronized (this.packetCallbacks) {
+			Iterator<Entry<String, Pair<IqPacket, OnIqPacketReceived>>> iterator = this.packetCallbacks.entrySet().iterator();
+			while (iterator.hasNext()) {
+				Entry<String, Pair<IqPacket, OnIqPacketReceived>> entry = iterator.next();
+				entry.getValue().second.onIqPacketReceived(account, failurePacket);
+				iterator.remove();
+			}
 		}
 	}
 
@@ -917,7 +920,9 @@ public class XmppConnection implements Runnable {
 			packet.setAttribute("id", id);
 		}
 		if (callback != null) {
-			packetCallbacks.put(packet.getId(), new Pair<>(packet, callback));
+			synchronized (this.packetCallbacks) {
+				packetCallbacks.put(packet.getId(), new Pair<>(packet, callback));
+			}
 		}
 		this.sendPacket(packet);
 	}
