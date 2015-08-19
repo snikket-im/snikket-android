@@ -49,6 +49,7 @@ import eu.siacs.conversations.crypto.sasl.Plain;
 import eu.siacs.conversations.crypto.sasl.SaslMechanism;
 import eu.siacs.conversations.crypto.sasl.ScramSha1;
 import eu.siacs.conversations.entities.Account;
+import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.generator.IqGenerator;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.CryptoHelper;
@@ -316,7 +317,7 @@ public class XmppConnection implements Runnable {
 											+ ") enabled (resumable)");
 								} else {
 									Log.d(Config.LOGTAG, account.getJid().toBareJid().toString()
-											+ ": stream managment(" + smVersion + ") enabled");
+											+ ": stream management(" + smVersion + ") enabled");
 								}
 								this.lastSessionStarted = SystemClock.elapsedRealtime();
 								this.stanzasReceived = 0;
@@ -343,6 +344,13 @@ public class XmppConnection implements Runnable {
 									mStanzaQueue.clear();
 									Log.d(Config.LOGTAG,"resending "+failedStanzas.size()+" stanzas");
 									for(AbstractAcknowledgeableStanza packet : failedStanzas) {
+										if (packet instanceof MessagePacket) {
+											MessagePacket message = (MessagePacket) packet;
+											mXmppConnectionService.markMessage(account,
+													message.getTo().toBareJid(),
+													message.getId(),
+													Message.STATUS_UNSEND);
+										}
 										sendPacket(packet);
 									}
 								} catch (final NumberFormatException ignored) {
@@ -764,7 +772,7 @@ public class XmppConnection implements Runnable {
 		sendServiceDiscoveryInfo(account.getServer());
 		sendServiceDiscoveryInfo(account.getJid().toBareJid());
 		sendServiceDiscoveryItems(account.getServer());
-		Log.d(Config.LOGTAG, account.getJid().toBareJid()+ ": online with resource " + account.getResource());
+		Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": online with resource " + account.getResource());
 		changeStatus(Account.State.ONLINE);
 		if (bindListener != null) {
 			bindListener.onBind(account);

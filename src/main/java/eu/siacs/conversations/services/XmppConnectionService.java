@@ -149,7 +149,6 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 
 		@Override
 		public void onBind(final Account account) {
-			resetSendingToWaiting(account);
 			account.getRoster().clearPresences();
 			fetchRosterFromServer(account);
 			fetchBookmarks(account);
