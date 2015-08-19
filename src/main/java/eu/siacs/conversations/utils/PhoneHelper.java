@@ -97,7 +97,7 @@ public class PhoneHelper {
 		if (packageName != null) {
 			try {
 				return context.getPackageManager().getPackageInfo(packageName, 0).versionName;
-			} catch (final PackageManager.NameNotFoundException e) {
+			} catch (final PackageManager.NameNotFoundException | RuntimeException e) {
 				return "unknown";
 			}
 		} else {
