@@ -78,6 +78,7 @@
   <string name="choose_presence">Hautatu agerpena kontaktuarentzat</string>
   <string name="send_plain_text_message">Testu mezua bidali</string>
   <string name="send_otr_message">OTRz enkriptatutako mezua bidali</string>
+  <string name="send_omemo_message">OMEMOz enkriptatutako mezua bidali</string>
   <string name="send_pgp_message">OpenPGPz enkriptatutako mezua bidali</string>
   <string name="your_nick_has_been_changed">Zure ezizena aldatu da</string>
   <string name="send_unencrypted">Enkriptatu gabe bidali</string>
@@ -105,6 +106,8 @@
   <string name="pref_vibrate_summary">Dardaratu ere mezu berri bat heltzerakoan</string>
   <string name="pref_sound">Soinua</string>
   <string name="pref_sound_summary">Dei-tonua jo jakinarazpenarekin</string>
+  <string name="pref_conference_notifications">Konferentzia publikoen jakinarazpenak</string>
+  <string name="pref_conference_notifications_summary">Beti jakinarazi konferentzia publiko batean mezu berri bat heltzerakoan eta ez soilik nabarmentzerakoan</string>
   <string name="pref_notification_grace_period">Jakinarazpenen grazia epea</string>
   <string name="pref_notification_grace_period_summary">Jakinarazpenak denbora labur baterako ezgaitu ikatz-kopia bat jaso ondoren</string>
   <string name="pref_advanced_options">Aukera aurreratuak</string>
@@ -150,6 +153,7 @@
   <string name="encryption_choice_none">Testu laua</string>
   <string name="encryption_choice_otr">OTR</string>
   <string name="encryption_choice_pgp">OpenPGP</string>
+  <string name="encryption_choice_omemo">OMEMO</string>
   <string name="mgmt_account_edit">Kontua editatu</string>
   <string name="mgmt_account_delete">Kontua ezabatu</string>
   <string name="mgmt_account_disable">Aldi baterako ezgaitu</string>
@@ -202,6 +206,13 @@
   <string name="reception_failed">Jasotzeak huts egin du</string>
   <string name="your_fingerprint">Zure hatz-marka</string>
   <string name="otr_fingerprint">OTR hatz-marka</string>
+  <string name="omemo_fingerprint">OMEMO hatz-marka</string>
+  <string name="omemo_fingerprint_selected_message">Mezuaren OMEMO hatz-marka</string>
+  <string name="this_device_omemo_fingerprint">Norberaren OMEMO hatz-marka</string>
+  <string name="other_devices">Beste gailuak</string>
+  <string name="trust_omemo_fingerprints">OMEMO hatz-marketaz fidatu</string>
+  <string name="fetching_keys">Gakoak eskuratzen...</string>
+  <string name="done">Eginda</string>
   <string name="verify">Egiaztatu</string>
   <string name="decrypt">Desenkriptatu</string>
   <string name="conferences">Konferentziak</string>
@@ -282,6 +293,7 @@
   <string name="pref_conference_name">Konferentziaren izena</string>
   <string name="pref_conference_name_summary">Erabili gelaren gaia konferentziak identifikatzeko eta ez JIDa</string>
   <string name="toast_message_otr_fingerprint">OTR hatz-marka arbelara kopiatu da</string>
+  <string name="toast_message_omemo_fingerprint">OMEMO hatz-marka arbelara kopiatu da</string>
   <string name="conference_banned">Konferentzia honetara sartzea debekatuta duzu</string>
   <string name="conference_members_only">Konferentzia hau kideentzat da soilik</string>
   <string name="conference_kicked">Konferentzia honetatik kanporatua izan zara</string>
@@ -348,6 +360,14 @@
   <string name="reset">Berrezarri</string>
   <string name="account_image_description">Kontuaren profileko argazkia</string>
   <string name="copy_otr_clipboard_description">OTR hatz-marka arbelera kopiatu</string>
+  <string name="copy_omemo_clipboard_description">OMEMO hatz-marka arbelara kopiatu</string>
+  <string name="regenerate_omemo_key">OMEMO gakoa birsortu</string>
+  <string name="wipe_omemo_pep">Beste gailuak PEPetik garbitu</string>
+  <string name="clear_other_devices">Gailuak garbitu</string>
+  <string name="clear_other_devices_desc">Ziur al zaude OMEMO iragarpenetik beste gailu guztiak garbitu nahi dituzulaz? Zure gailuak konektatzen diren hurrengoan, beraiek berriragarriko dira, baina agian ez dute mezurik jasoko bitartean.</string>
+  <string name="purge_key">Gakoa purgatu</string>
+  <string name="purge_key_desc_part1">Ziur al zaude gako hau purgatu nahi duzulaz?</string>
+  <string name="purge_key_desc_part2">Modu itzulezinean arriskutsutzat hartuko da, eta ezingo duzu gakoarekin berriro saio berri bat sortu.</string>
   <string name="fetching_history_from_server">Mezuak zerbitzaritik eskuratzen</string>
   <string name="no_more_history_on_server">Mezu gehiagorik ez zerbitzarian</string>
   <string name="updating">Eguneratzen...</string>
@@ -446,6 +466,13 @@
   <string name="none">Bat ere ez</string>
   <string name="recently_used">Azkenengo aldiz erabilitakoa</string>
   <string name="choose_quick_action">Ekintza azkarra aukeratu</string>
-  <string name="file_not_found_on_remote_host">Fitxategia ez da aurkitu urruneko zerbitzarian</string>
   <string name="search_for_contacts_or_groups">Kontaktuak edo taldeak bilatu</string>
+  <string name="send_private_message">Mezu pribatua bidali</string>
+  <string name="user_has_left_conference">%s(e)k konferentzia utzi egin du</string>
+  <string name="username">Erabiltzaile izena</string>
+  <string name="username_hint">Erabiltzaile izena</string>
+  <string name="invalid_username">Hau ez da erabiltzaile izen baliodun bat</string>
+  <string name="download_failed_server_not_found">Deskargak huts egin du: zerbitzaria ez da aurkitu</string>
+  <string name="download_failed_file_not_found">Deskargak huts egin du: fitxategia ez da aurkitu</string>
+  <string name="download_failed_could_not_connect">Deskargak huts egin du: ezin izan da ostalarira konektatu</string>
 </resources>

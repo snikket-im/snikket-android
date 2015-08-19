@@ -78,6 +78,7 @@
   <string name="choose_presence">Ressource des Kontakts auswählen</string>
   <string name="send_plain_text_message">Normal schreiben…</string>
   <string name="send_otr_message">OTR-verschlüsselt schreiben…</string>
+  <string name="send_omemo_message">OMEMO-verschlüsselt schreiben…</string>
   <string name="send_pgp_message">OpenPGP-verschlüsselt schreiben…</string>
   <string name="your_nick_has_been_changed">Dein Nickname wurde geändert</string>
   <string name="send_unencrypted">Normal verschicken</string>
@@ -105,6 +106,8 @@
   <string name="pref_vibrate_summary">Vibriere, wenn eine neue Nachricht ankommt</string>
   <string name="pref_sound">Klingelton</string>
   <string name="pref_sound_summary">Spiele Klingelton, wenn eine neue Nachricht ankommt</string>
+  <string name="pref_conference_notifications">öffentliche Konferenz-Benachrichtigungen</string>
+  <string name="pref_conference_notifications_summary">Bei jeder Nachricht in öffentlichen Konferenzen benachrichtigen und nicht nur, wenn ich angesprochen werde</string>
   <string name="pref_notification_grace_period">Gnadenfrist</string>
   <string name="pref_notification_grace_period_summary">Deaktiviere Benachrichtigungen für eine kurze Zeit nach Erhalt einer Nachricht, die von einem anderen deiner Clients kommt.</string>
   <string name="pref_advanced_options">Erweiterte Optionen</string>
@@ -150,6 +153,7 @@
   <string name="encryption_choice_none">Klartext</string>
   <string name="encryption_choice_otr">OTR</string>
   <string name="encryption_choice_pgp">OpenPGP</string>
+  <string name="encryption_choice_omemo">OMEMO</string>
   <string name="mgmt_account_edit">Konto bearbeiten</string>
   <string name="mgmt_account_delete">Löschen</string>
   <string name="mgmt_account_disable">Vorübergehend abschalten</string>
@@ -202,6 +206,13 @@
   <string name="reception_failed">Empfang ist fehlgeschlagen</string>
   <string name="your_fingerprint">Dein Fingerabdruck</string>
   <string name="otr_fingerprint">OTR-Fingerabdruck</string>
+  <string name="omemo_fingerprint">OMEMO-Fingerabdruck</string>
+  <string name="omemo_fingerprint_selected_message">OMEMO-Fingerabdruck der Nachricht</string>
+  <string name="this_device_omemo_fingerprint">Eigener OMEMO-Fingerabdruck</string>
+  <string name="other_devices">Andere Geräte</string>
+  <string name="trust_omemo_fingerprints">OMEMO-Fingerabdruck vertrauen</string>
+  <string name="fetching_keys">Schlüssel abrufen...</string>
+  <string name="done">Erledigt</string>
   <string name="verify">Verifizieren</string>
   <string name="decrypt">Entschlüsseln</string>
   <string name="conferences">Konferenzen</string>
@@ -282,6 +293,7 @@
   <string name="pref_conference_name">Konferenz-Name</string>
   <string name="pref_conference_name_summary">Konferenz-Thema statt Raum-JID als Namen verwenden</string>
   <string name="toast_message_otr_fingerprint">OTR-Fingerabdruck in die Zwischenablage kopiert!</string>
+  <string name="toast_message_omemo_fingerprint">OMEMO-Fingerabdruck in die Zwischenablage kopiert!</string>
   <string name="conference_banned">Du wurdest von der Konferenz ausgeschlossen</string>
   <string name="conference_members_only">Die Konferenz ist nur für Mitglieder</string>
   <string name="conference_kicked">Du wurdest aus der Konferenz geworfen</string>
@@ -348,6 +360,14 @@
   <string name="reset">Zurücksetzen</string>
   <string name="account_image_description">Konto-Avatar</string>
   <string name="copy_otr_clipboard_description">OTR-Fingerabdruck in Zwischenablage kopieren</string>
+  <string name="copy_omemo_clipboard_description">OMEMO-Fingerabdruck in Zwischenablage kopieren</string>
+  <string name="regenerate_omemo_key">OMEMO-Schlüssel erneuern</string>
+  <string name="wipe_omemo_pep">Andere Geräte von PEP entfernen</string>
+  <string name="clear_other_devices">Geräte entfernen</string>
+  <string name="clear_other_devices_desc">Alle anderen Geräte aus der OMEMO-Bekanntmachung entfernen? Die Bekanntmachung wird bei der nächsten Verbindung erneuert, möglicherweise werden aber nicht alle Nachrichten empfangen, die in der Zwischenzeit versendet wurden.</string>
+  <string name="purge_key">Schlüssel löschen</string>
+  <string name="purge_key_desc_part1">Soll dieser Schlüssel gelöscht werden?</string>
+  <string name="purge_key_desc_part2">Dieser Vorgang kann nicht rückgängig gemacht werden und es kann nie wieder eine Verbindung mit diesem Schlüssel hergestellt werden.</string>
   <string name="fetching_history_from_server">Lade Chatverlauf…</string>
   <string name="no_more_history_on_server">Keine weiteren Nachrichten vorhanden</string>
   <string name="updating">Aktualisiere…</string>
@@ -446,6 +466,13 @@
   <string name="none">keine</string>
   <string name="recently_used">zuletzt verwendet</string>
   <string name="choose_quick_action">wähle Schnell-Taste</string>
-  <string name="file_not_found_on_remote_host">Datei auf Server nicht gefunden</string>
   <string name="search_for_contacts_or_groups">Nach Kontakten oder Konferenzen suchen</string>
+  <string name="send_private_message">Private Nachricht senden</string>
+  <string name="user_has_left_conference">%s hat die Konferenz verlassen!</string>
+  <string name="username">Benutzername</string>
+  <string name="username_hint">Benutzername</string>
+  <string name="invalid_username">Ungültiger Benutzername</string>
+  <string name="download_failed_server_not_found">Download fehlgeschlagen: Server nicht gefunden</string>
+  <string name="download_failed_file_not_found">Download fehlgeschlagen: Datei nicht gefunden</string>
+  <string name="download_failed_could_not_connect">Download fehlgeschlagen: keine Verbindung zum Host</string>
 </resources>

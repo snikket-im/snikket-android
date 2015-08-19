@@ -78,6 +78,7 @@
   <string name="choose_presence">Избор присутности за контакта</string>
   <string name="send_plain_text_message">Пошаљи обичну текстуалну поруку</string>
   <string name="send_otr_message">Пошаљи ОТР шифровану поруку</string>
+  <string name="send_omemo_message">Пошаљи ОМЕМО шифровану поруку</string>
   <string name="send_pgp_message">Пошаљи ОпенПГП шифровану поруку</string>
   <string name="your_nick_has_been_changed">Ваш надимак је промењен</string>
   <string name="send_unencrypted">Пошаљи нешифровано</string>
@@ -105,6 +106,8 @@
   <string name="pref_vibrate_summary">Вибрирај кад стигне нова порука</string>
   <string name="pref_sound">Звук</string>
   <string name="pref_sound_summary">Звуци обавештења</string>
+  <string name="pref_conference_notifications">Обавештења у јавним конференцијама</string>
+  <string name="pref_conference_notifications_summary">Увек обавести кад стигне порука у конференцији уместо само кад је означена</string>
   <string name="pref_notification_grace_period">Период одгоде обавештења</string>
   <string name="pref_notification_grace_period_summary">Онемогући обавештења на кратко по примању карбон копије</string>
   <string name="pref_advanced_options">Напредне поставке</string>
@@ -150,6 +153,7 @@
   <string name="encryption_choice_none">Обичан текст</string>
   <string name="encryption_choice_otr">ОТР</string>
   <string name="encryption_choice_pgp">ОпенПГП</string>
+  <string name="encryption_choice_omemo">ОМЕМО</string>
   <string name="mgmt_account_edit">Уреди налог</string>
   <string name="mgmt_account_delete">Обриши налог</string>
   <string name="mgmt_account_disable">Привремено онемогући</string>
@@ -202,6 +206,13 @@
   <string name="reception_failed">Примање није успело</string>
   <string name="your_fingerprint">Ваш отисак</string>
   <string name="otr_fingerprint">ОТР отисак</string>
+  <string name="omemo_fingerprint">ОМЕМО отисак</string>
+  <string name="omemo_fingerprint_selected_message">ОМЕМО отисак поруке</string>
+  <string name="this_device_omemo_fingerprint">Сопствени ОМЕМО отисак</string>
+  <string name="other_devices">Остали уређаји</string>
+  <string name="trust_omemo_fingerprints">Поуздај се у ОМЕМО отиске</string>
+  <string name="fetching_keys">Добављам кључеве...</string>
+  <string name="done">Готово</string>
   <string name="verify">Овери</string>
   <string name="decrypt">Дешифруј</string>
   <string name="conferences">Конференције</string>
@@ -282,6 +293,7 @@
   <string name="pref_conference_name">Име конференције</string>
   <string name="pref_conference_name_summary">Предмет собе уместо ЈИД-а идентификује конференцију</string>
   <string name="toast_message_otr_fingerprint">ОТР отисак копиран на клипборд!</string>
+  <string name="toast_message_omemo_fingerprint">ОМЕМО отисак копиран на клипборд!</string>
   <string name="conference_banned">Забрањени сте на овој конференцији</string>
   <string name="conference_members_only">Ова конференција је само за чланове</string>
   <string name="conference_kicked">Шутнути сте из ове конференције</string>
@@ -348,6 +360,14 @@
   <string name="reset">Ресетуј</string>
   <string name="account_image_description">Аватар налога</string>
   <string name="copy_otr_clipboard_description">Копирај ОТР отисак на клипборд</string>
+  <string name="copy_omemo_clipboard_description">Копирај ОМЕМО отисак на клипборд</string>
+  <string name="regenerate_omemo_key">Поново генериши ОМЕМО кључ</string>
+  <string name="wipe_omemo_pep">Уклони остале уређаје са ПЕП-а</string>
+  <string name="clear_other_devices">Очисти уређаје</string>
+  <string name="clear_other_devices_desc">Желите ли заиста да уклоните све остале уређаје са ОМЕМО објаве? Када се ваши уређаји следећи пут повежу, објавиће се сами, али у међувремену можда неће примати поруке.</string>
+  <string name="purge_key">Очисти кључ</string>
+  <string name="purge_key_desc_part1">Желите ли заиста да очистите овај кључ?</string>
+  <string name="purge_key_desc_part2">Неповратно ће бити сматран компровитованим, и њиме више никад нећете моћи да успоставите сесију.</string>
   <string name="fetching_history_from_server">Добављам историјат са сервера</string>
   <string name="no_more_history_on_server">Нема више историјата на серверу</string>
   <string name="updating">Ажурирам…</string>
@@ -425,7 +445,7 @@
   <string name="received_location">Примљена локација</string>
   <string name="title_undo_swipe_out_conversation">Преписка затворена</string>
   <string name="title_undo_swipe_out_muc">Напусти конференцију</string>
-  <string name="pref_dont_trust_system_cas_title">Не веруј системским сертификационим телима</string>
+  <string name="pref_dont_trust_system_cas_title">Не поуздај се у системска сертификациона тела</string>
   <string name="pref_dont_trust_system_cas_summary">Сви сертификати морају ручно да се одобре</string>
   <string name="pref_remove_trusted_certificates_title">Уклони сертификате</string>
   <string name="pref_remove_trusted_certificates_summary">Обриши ручно одобрене сертификате</string>
@@ -448,6 +468,13 @@
   <string name="none">Ниједна</string>
   <string name="recently_used">Недавно коришћена</string>
   <string name="choose_quick_action">Изаберите брзу радњу</string>
-  <string name="file_not_found_on_remote_host">Фајл није нађен на удаљеном серверу</string>
   <string name="search_for_contacts_or_groups">Тражите контакте или групе</string>
+  <string name="send_private_message">Пошаљи личну поруку</string>
+  <string name="user_has_left_conference">%s напусти конференцију!</string>
+  <string name="username">Корисничко име</string>
+  <string name="username_hint">Корисничко име</string>
+  <string name="invalid_username">Ово није исправно корисничко име</string>
+  <string name="download_failed_server_not_found">Преузимање није успело: сервер није нађен</string>
+  <string name="download_failed_file_not_found">Преузимање није успело: фајл није нађен</string>
+  <string name="download_failed_could_not_connect">Преузимање није успело: не могу да се повежем са домаћином</string>
 </resources>
