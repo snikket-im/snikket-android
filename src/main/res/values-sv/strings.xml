@@ -78,6 +78,7 @@
   <string name="choose_presence">Välj tillgänglighet till kontakt</string>
   <string name="send_plain_text_message">Skicka meddelande i klartext</string>
   <string name="send_otr_message">Skicka OTR-krypterat meddelande</string>
+  <string name="send_omemo_message">Skicka OMEMO-krypterat meddelande</string>
   <string name="send_pgp_message">Skicka OpenPGP-krypterat meddelande</string>
   <string name="your_nick_has_been_changed">Ditt nick har ändrats</string>
   <string name="send_unencrypted">Skicka okrypterat</string>
@@ -105,6 +106,8 @@
   <string name="pref_vibrate_summary">Vibrera när meddelande tagits emot</string>
   <string name="pref_sound">Ljud</string>
   <string name="pref_sound_summary">Spela ljud med notifiering</string>
+  <string name="pref_conference_notifications">Notifieringar i publika konferenser</string>
+  <string name="pref_conference_notifications_summary">Notifiera alltid för meddelande i en publik konferens istället för endast vid highlight</string>
   <string name="pref_notification_grace_period">Notifieringsfrist</string>
   <string name="pref_notification_grace_period_summary">Inaktivera notifieringar en kort stund efter att en carbon copy tagits emot</string>
   <string name="pref_advanced_options">Avancerade inställningar</string>
@@ -150,6 +153,7 @@
   <string name="encryption_choice_none">Klartext</string>
   <string name="encryption_choice_otr">OTR</string>
   <string name="encryption_choice_pgp">OpenPGP</string>
+  <string name="encryption_choice_omemo">OMEMO</string>
   <string name="mgmt_account_edit">Ändra konto</string>
   <string name="mgmt_account_delete">Ta bort</string>
   <string name="mgmt_account_disable">Inaktivera tillfälligt</string>
@@ -202,6 +206,13 @@
   <string name="reception_failed">Mottagning misslyckades</string>
   <string name="your_fingerprint">Ditt fingeravtryck</string>
   <string name="otr_fingerprint">OTR-fingeravtryck</string>
+  <string name="omemo_fingerprint">OMEMO-fingeravtryck</string>
+  <string name="omemo_fingerprint_selected_message">Meddelandets OMEMO-fingeravtryck</string>
+  <string name="this_device_omemo_fingerprint">Eget OMEMO-fingeravtryck</string>
+  <string name="other_devices">Andra enheter</string>
+  <string name="trust_omemo_fingerprints">Lita på OMEMO-fingeravtryck</string>
+  <string name="fetching_keys">Hämtar nycklar...</string>
+  <string name="done">Klar</string>
   <string name="verify">Verifiera</string>
   <string name="decrypt">Avkryptera</string>
   <string name="conferences">Konferenser</string>
@@ -282,6 +293,7 @@
   <string name="pref_conference_name">Konferensnamn</string>
   <string name="pref_conference_name_summary">Använd konferensens ämne istället för JID för att identifiera konferenser</string>
   <string name="toast_message_otr_fingerprint">OTR-fingeravtryck har kopierats till urklipp!</string>
+  <string name="toast_message_omemo_fingerprint">OMEMO-fingeravtryck har kopierats till urklipp!</string>
   <string name="conference_banned">Du är bannlyst från denna konferens</string>
   <string name="conference_members_only">Medlemsskap krävs för denna konferens</string>
   <string name="conference_kicked">Du har blivit utsparkad från denna konferens</string>
@@ -348,6 +360,14 @@
   <string name="reset">Återställ</string>
   <string name="account_image_description">Kontots avatarbild</string>
   <string name="copy_otr_clipboard_description">Kopiera OTR-fingeravtryck till urklipp</string>
+  <string name="copy_omemo_clipboard_description">Kopiera OMEMO-fingeravtryck till urklipp</string>
+  <string name="regenerate_omemo_key">Regenerera OMEMO-nyckel</string>
+  <string name="wipe_omemo_pep">Rensa andra enheter från PEP</string>
+  <string name="clear_other_devices">Rensa enheter</string>
+  <string name="clear_other_devices_desc">Är du säker på att du vill rensa alla andra enheter från OMEMO-annonsering? Nästa gång dina enheter ansluter kommer de att återannonsera sig, men de kanske inte tar emot enheter under tiden.</string>
+  <string name="purge_key">Rensa nyckel</string>
+  <string name="purge_key_desc_part1">Är du säker på att du vill rensa denna nyckel?</string>
+  <string name="purge_key_desc_part2">Den kommer att antas oåterkalleligt komprometterat och du kommer aldrig kunna bygga en session med den igen.</string>
   <string name="fetching_history_from_server">Hämtar historik från server</string>
   <string name="no_more_history_on_server">Ingen mer historik på server</string>
   <string name="updating">Uppdaterar…</string>
@@ -446,6 +466,13 @@
   <string name="none">Ingen</string>
   <string name="recently_used">Senast använd</string>
   <string name="choose_quick_action">Välj snabbfunktion</string>
-  <string name="file_not_found_on_remote_host">Filen hittas ej på servern</string>
   <string name="search_for_contacts_or_groups">Sök efter kontakter eller grupper</string>
+  <string name="send_private_message">Skicka privat meddelande</string>
+  <string name="user_has_left_conference">%s har lämnat konferensen!</string>
+  <string name="username">Användarnamn</string>
+  <string name="username_hint">Användarnamn</string>
+  <string name="invalid_username">Inte ett giltigt användanamn</string>
+  <string name="download_failed_server_not_found">Nerladdning gick fel: Server hittades inte</string>
+  <string name="download_failed_file_not_found">Nerladdning gick fel: Filen hittades inte</string>
+  <string name="download_failed_could_not_connect">Nerladdningen gick fel: Kunder inte ansluta till server</string>
 </resources>

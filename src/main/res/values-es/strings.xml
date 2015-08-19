@@ -78,6 +78,7 @@
   <string name="choose_presence">Selecciona recurso del contacto</string>
   <string name="send_plain_text_message">Enviar mensaje de texto</string>
   <string name="send_otr_message">Enviar mensaje cifrado con OTR</string>
+  <string name="send_omemo_message">Enviar mensaje cifrado con OMEMO </string>
   <string name="send_pgp_message">Enviar mensaje cifrado con OpenPGP</string>
   <string name="your_nick_has_been_changed">Tu apodo se ha modificado</string>
   <string name="send_unencrypted">Enviar sin cifrar</string>
@@ -105,6 +106,8 @@
   <string name="pref_vibrate_summary">Vibra cuando llega un nuevo mensaje</string>
   <string name="pref_sound">Sonido</string>
   <string name="pref_sound_summary">Reproduce tono con la notificación</string>
+  <string name="pref_conference_notifications">Notif. conversación grupo pública</string>
+  <string name="pref_conference_notifications_summary">Siempre notifica cuando llega un mensaje a una conversación en grupo pública y no solo cuando alguien menciona tu nombre en un mensaje</string>
   <string name="pref_notification_grace_period">Notificaciones Carbons</string>
   <string name="pref_notification_grace_period_summary">Deshabilita las notificaciones durante un corto periodo de tiempo después de recibir la copia del mensaje carbon</string>
   <string name="pref_advanced_options">Opciones avanzadas</string>
@@ -150,6 +153,7 @@
   <string name="encryption_choice_none">Texto plano</string>
   <string name="encryption_choice_otr">OTR</string>
   <string name="encryption_choice_pgp">OpenPGP</string>
+  <string name="encryption_choice_omemo">OMEMO</string>
   <string name="mgmt_account_edit">Editar cuenta</string>
   <string name="mgmt_account_delete">Eliminar cuenta</string>
   <string name="mgmt_account_disable">Deshabilitar temporalmente</string>
@@ -202,6 +206,13 @@
   <string name="reception_failed">Error al recibir</string>
   <string name="your_fingerprint">Tu huella digital</string>
   <string name="otr_fingerprint">Huella digital OTR</string>
+  <string name="omemo_fingerprint">Huella digital OMEMO</string>
+  <string name="omemo_fingerprint_selected_message">Huella digital OMEMO del mensaje</string>
+  <string name="this_device_omemo_fingerprint">Tu huella digital OMEMO</string>
+  <string name="other_devices">Otros dispositivos</string>
+  <string name="trust_omemo_fingerprints">Huellas digitales OMEMO de confianza</string>
+  <string name="fetching_keys">Buscando claves...</string>
+  <string name="done">Hecho</string>
   <string name="verify">Verificar</string>
   <string name="decrypt">Descifrar</string>
   <string name="conferences">Conversación Grupo</string>
@@ -282,6 +293,7 @@
   <string name="pref_conference_name">Nombre conversación grupo</string>
   <string name="pref_conference_name_summary">Usar el asunto de la conversación en lugar del identificador jabber como nombre en las conversaciones en grupo</string>
   <string name="toast_message_otr_fingerprint">¡Huella digital OTR copiada al portapapeles!</string>
+  <string name="toast_message_omemo_fingerprint">¡Huella digital OMEMO copiada al portapapeles!</string>
   <string name="conference_banned">Tu entrada a esta conversación ha sido prohibida</string>
   <string name="conference_members_only">Esta conversación es solo para miembros</string>
   <string name="conference_kicked">Has sido expulsado de esta conversación</string>
@@ -348,6 +360,14 @@
   <string name="reset">Reinicializar</string>
   <string name="account_image_description">Imagen de perfil</string>
   <string name="copy_otr_clipboard_description">Copiar huella digital OTR al portapapeles</string>
+  <string name="copy_omemo_clipboard_description">Copiar huella digital OMEMO al portapapeles</string>
+  <string name="regenerate_omemo_key">Regenerar clave OMEMO</string>
+  <string name="wipe_omemo_pep">Limpiar otros dispositivos de PEP</string>
+  <string name="clear_other_devices">Limpiar dispositivos</string>
+  <string name="clear_other_devices_desc">¿Estás seguro de que quieres limpiar todos los otros dispositivos del anuncio OMEMO? La próxima vez que tus dispositivos conecten, tendrán que volver a anunciarse, pero estos podrían no recibir los mensajes enviados durante el proceso.</string>
+  <string name="purge_key">Eliminar clave</string>
+  <string name="purge_key_desc_part1">¿Estás seguro de que quieres eliminar esta clave?</string>
+  <string name="purge_key_desc_part2">Esto será irreversible y nunca podrás iniciar sesión con esta clave de nuevo.</string>
   <string name="fetching_history_from_server">Buscando historial en el servidor</string>
   <string name="no_more_history_on_server">No hay más historial en el servidor</string>
   <string name="updating">Actualizando…</string>
@@ -446,6 +466,13 @@
   <string name="none">Ninguna</string>
   <string name="recently_used">Usada más recientemente</string>
   <string name="choose_quick_action">Elegir acción rápida</string>
-  <string name="file_not_found_on_remote_host">Archivo no encontrado en servidor remoto</string>
   <string name="search_for_contacts_or_groups">Buscar contactos o grupos</string>
+  <string name="send_private_message">Enviar mensaje privado</string>
+  <string name="user_has_left_conference">¡%s ha dejado la conversación!</string>
+  <string name="username">Usuario</string>
+  <string name="username_hint">Usuario</string>
+  <string name="invalid_username">Esto no es un usuario válido</string>
+  <string name="download_failed_server_not_found">Error al descargar: Servidor no encontrado</string>
+  <string name="download_failed_file_not_found">Error al descargar: Archivo no encontrado</string>
+  <string name="download_failed_could_not_connect">Error al descargar: No se ha podido conectar con el servidor</string>
 </resources>

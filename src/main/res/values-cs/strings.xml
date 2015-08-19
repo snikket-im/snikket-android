@@ -78,6 +78,7 @@
   <string name="choose_presence">Vybrat aktualizaci stavu pro kontakt</string>
   <string name="send_plain_text_message">Poslat textovou zprávu</string>
   <string name="send_otr_message">Poslat OTR šifrovanou zprávu</string>
+  <string name="send_omemo_message">Poslat OMEMO šifrovanou zprávu</string>
   <string name="send_pgp_message">Poslat OpenPGP šifrovanou zprávu</string>
   <string name="your_nick_has_been_changed">Přezdívka byla změněna</string>
   <string name="send_unencrypted">Poslat nešifrované</string>
@@ -105,6 +106,8 @@
   <string name="pref_vibrate_summary">Vibrovat při přijetí nové zprávy</string>
   <string name="pref_sound">Zvuk</string>
   <string name="pref_sound_summary">Přehrát zvuk společně s upozorněním</string>
+  <string name="pref_conference_notifications">Upozornění ve veřejných konferencích</string>
+  <string name="pref_conference_notifications_summary">Vždy upozornit při příchodu zprávy ve veřejných konferencích místo jen pouze pokud je zvýrazněno</string>
   <string name="pref_notification_grace_period">Četnost upozornění</string>
   <string name="pref_notification_grace_period_summary">Neupozorňovat krátce poté co byla obdržena kopie zprávy</string>
   <string name="pref_advanced_options">Pokročilé nastavení</string>
@@ -150,6 +153,7 @@
   <string name="encryption_choice_none">Čistý text</string>
   <string name="encryption_choice_otr">OTR</string>
   <string name="encryption_choice_pgp">OpenPGP</string>
+  <string name="encryption_choice_omemo">OMEMO</string>
   <string name="mgmt_account_edit">Upravit účet</string>
   <string name="mgmt_account_delete">Smazat účet</string>
   <string name="mgmt_account_disable">Dočasně vypnout</string>
@@ -202,6 +206,13 @@
   <string name="reception_failed">Příjem selhal</string>
   <string name="your_fingerprint">Váš identifikátor</string>
   <string name="otr_fingerprint">OTR identifikátor</string>
+  <string name="omemo_fingerprint">OMEMO otisk</string>
+  <string name="omemo_fingerprint_selected_message">OMEMO otisk zprávy</string>
+  <string name="this_device_omemo_fingerprint">Můj OMEMO otisk</string>
+  <string name="other_devices">Ostatní přístroje</string>
+  <string name="trust_omemo_fingerprints">Věřit OMEMO otiskům</string>
+  <string name="fetching_keys">Získávám klíče...</string>
+  <string name="done">Hotovo</string>
   <string name="verify">Ověřit</string>
   <string name="decrypt">Dešifrovat</string>
   <string name="conferences">Konference</string>
@@ -282,6 +293,7 @@
   <string name="pref_conference_name">Jméno konference</string>
   <string name="pref_conference_name_summary">Pro identifikaci konferencí použít téma místnosti místo jejího JID</string>
   <string name="toast_message_otr_fingerprint">OTR otisk zkopírován do schránky!</string>
+  <string name="toast_message_omemo_fingerprint">OMEMO otisk zkopírován do schránky!</string>
   <string name="conference_banned">Vstup do konference byl zakázán</string>
   <string name="conference_members_only">Tato konference je pouze pro členy</string>
   <string name="conference_kicked">Vykopli tě z této konference</string>
@@ -348,6 +360,14 @@
   <string name="reset">Reset</string>
   <string name="account_image_description">Avatar účtu</string>
   <string name="copy_otr_clipboard_description">Zkopírovat otisk OTR do schránky</string>
+  <string name="copy_omemo_clipboard_description">Zkopírovat OMEMO otisk do schránky</string>
+  <string name="regenerate_omemo_key">Znovu vytvořit OMEMO klíč</string>
+  <string name="wipe_omemo_pep">Smazat ostatní přístroje z PEP</string>
+  <string name="clear_other_devices">Smazat přístroje</string>
+  <string name="clear_other_devices_desc">Opravdu chcete vymazat ostatní přístroje z OMEMO upozornění? Až se příště vaše přístroje připojí, znovu se ohlásí, ale pravděpodobně neobdrží zprávy odeslané v mezičase mezi přihlášeními.</string>
+  <string name="purge_key">Vymazat klíč</string>
+  <string name="purge_key_desc_part1">Opravdu si přejete vymazat tento klíč?</string>
+  <string name="purge_key_desc_part2">Bude neodvolatelně pokládán jako kompromitovaný a již s jeho pomocí nebudete moci nikdy spustit jiné sezení.</string>
   <string name="fetching_history_from_server">Načíst historii ze serveru</string>
   <string name="no_more_history_on_server">Na serveru není žádná další historie</string>
   <string name="updating">Aktualizuji...</string>
@@ -448,6 +468,13 @@
   <string name="none">Žádná</string>
   <string name="recently_used">Naposledy použitá</string>
   <string name="choose_quick_action">Vybrat rychlou akci</string>
-  <string name="file_not_found_on_remote_host">Soubor nenalezen na vzdáleném serveru</string>
   <string name="search_for_contacts_or_groups">Hledat kontakty či skupiny</string>
+  <string name="send_private_message">Poslat soukromou zprávu</string>
+  <string name="user_has_left_conference">%s opustil(a) konferenci!</string>
+  <string name="username">Uživatelské jméno</string>
+  <string name="username_hint">Uživatelské jméno</string>
+  <string name="invalid_username">Toto není platné uživatelské jméno</string>
+  <string name="download_failed_server_not_found">Stahování selhalo: Server nenalezen</string>
+  <string name="download_failed_file_not_found">Stahování selhalo: Soubor nenalezen</string>
+  <string name="download_failed_could_not_connect">Stahování selhalo: Nelze se připojit k hostu</string>
 </resources>

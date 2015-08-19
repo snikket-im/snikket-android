@@ -447,5 +447,7 @@
   <string name="none">Žiadny</string>
   <string name="recently_used">Naposledy použitý</string>
   <string name="choose_quick_action">Vybrať rýchlu voľbu</string>
-  <string name="file_not_found_on_remote_host">Súbor sa na vzdialenom serveri nenašiel</string>
+  <string name="search_for_contacts_or_groups">Hľadať kontakty alebo skupiny</string>
+  <string name="send_private_message">Poslať súkromnú správu</string>
+  <string name="user_has_left_conference">%s opustil skupinovú konverzáciu!</string>
 </resources>
