@@ -414,7 +414,7 @@ public class XmppConnection implements Runnable {
 		this.sendIqPacket(iq, new OnIqPacketReceived() {
 			@Override
 			public void onIqPacketReceived(final Account account, final IqPacket packet) {
-				if (packet.getType() == IqPacket.TYPE.RESULT) {
+				if (packet.getType() != IqPacket.TYPE.TIMEOUT) {
 					Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": online with resource " + account.getResource());
 					changeStatus(Account.State.ONLINE);
 				} else {
@@ -739,7 +739,7 @@ public class XmppConnection implements Runnable {
 	}
 
 	private void clearIqCallbacks() {
-		final IqPacket failurePacket = new IqPacket(IqPacket.TYPE.ERROR);
+		final IqPacket failurePacket = new IqPacket(IqPacket.TYPE.TIMEOUT);
 		final ArrayList<OnIqPacketReceived> callbacks = new ArrayList<>();
 		synchronized (this.packetCallbacks) {
 			if (this.packetCallbacks.size() == 0) {

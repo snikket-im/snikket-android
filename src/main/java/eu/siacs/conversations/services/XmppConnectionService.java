@@ -214,7 +214,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	private OnIqPacketReceived mDefaultIqHandler = new OnIqPacketReceived() {
 		@Override
 		public void onIqPacketReceived(Account account, IqPacket packet) {
-			if (packet.getType() == IqPacket.TYPE.ERROR) {
+			if (packet.getType() != IqPacket.TYPE.RESULT) {
 				Element error = packet.findChild("error");
 				String text = error != null ? error.findChildContent("text") : null;
 				if (text != null) {
@@ -1678,7 +1678,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		sendIqPacket(conversation.getAccount(), request, new OnIqPacketReceived() {
 			@Override
 			public void onIqPacketReceived(Account account, IqPacket packet) {
-				if (packet.getType() != IqPacket.TYPE.ERROR) {
+				if (packet.getType() == IqPacket.TYPE.RESULT) {
 					ArrayList<String> features = new ArrayList<>();
 					for (Element child : packet.query().getChildren()) {
 						if (child != null && child.getName().equals("feature")) {
@@ -1702,7 +1702,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		sendIqPacket(conversation.getAccount(), request, new OnIqPacketReceived() {
 			@Override
 			public void onIqPacketReceived(Account account, IqPacket packet) {
-				if (packet.getType() != IqPacket.TYPE.ERROR) {
+				if (packet.getType() == IqPacket.TYPE.RESULT) {
 					Data data = Data.parse(packet.query().findChild("x", "jabber:x:data"));
 					for (Field field : data.getFields()) {
 						if (options.containsKey(field.getName())) {
@@ -1716,12 +1716,10 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 					sendIqPacket(account, set, new OnIqPacketReceived() {
 						@Override
 						public void onIqPacketReceived(Account account, IqPacket packet) {
-							if (packet.getType() == IqPacket.TYPE.RESULT) {
-								if (callback != null) {
+							if (callback != null) {
+								if (packet.getType() == IqPacket.TYPE.RESULT) {
 									callback.onPushSucceeded();
-								}
-							} else {
-								if (callback != null) {
+								} else {
 									callback.onPushFailed();
 								}
 							}

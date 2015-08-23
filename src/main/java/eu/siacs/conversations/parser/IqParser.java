@@ -236,7 +236,7 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
 
 	@Override
 	public void onIqPacketReceived(final Account account, final IqPacket packet) {
-		if (packet.getType() == IqPacket.TYPE.ERROR) {
+		if (packet.getType() == IqPacket.TYPE.ERROR || packet.getType() == IqPacket.TYPE.TIMEOUT) {
 			return;
 		} else if (packet.hasChild("query", Xmlns.ROSTER) && packet.fromServer(account)) {
 			final Element query = packet.findChild("query");

@@ -4,12 +4,13 @@ import eu.siacs.conversations.xml.Element;
 
 public class IqPacket extends AbstractStanza {
 
-	public static enum TYPE {
+	public enum TYPE {
 		ERROR,
 		SET,
 		RESULT,
 		GET,
-		INVALID
+		INVALID,
+		TIMEOUT
 	}
 
 	public IqPacket(final TYPE type) {
