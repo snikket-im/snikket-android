@@ -48,8 +48,8 @@ android {
 	defaultConfig {
 		minSdkVersion 14
 		targetSdkVersion 21
-		versionCode 84
-		versionName "1.6.0"
+		versionCode 85
+		versionName "1.6.1"
 	}
 
 	compileOptions {
