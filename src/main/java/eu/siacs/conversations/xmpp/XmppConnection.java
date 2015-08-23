@@ -414,9 +414,12 @@ public class XmppConnection implements Runnable {
 		this.sendIqPacket(iq, new OnIqPacketReceived() {
 			@Override
 			public void onIqPacketReceived(final Account account, final IqPacket packet) {
-				Log.d(Config.LOGTAG, account.getJid().toBareJid().toString()
-						+ ": online with resource " + account.getResource());
-				changeStatus(Account.State.ONLINE);
+				if (packet.getType() == IqPacket.TYPE.RESULT) {
+					Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": online with resource " + account.getResource());
+					changeStatus(Account.State.ONLINE);
+				} else {
+					Log.d(Config.LOGTAG,account.getJid().toBareJid()+": initial ping failed");
+				}
 			}
 		});
 	}
@@ -656,8 +659,8 @@ public class XmppConnection implements Runnable {
 
 			@Override
 			public void onIqPacketReceived(final Account account, final IqPacket packet) {
-				final Element instructions = packet.query().findChild("instructions");
-				if (packet.query().hasChild("username")
+				if (packet.getType() == IqPacket.TYPE.RESULT
+						&& packet.query().hasChild("username")
 						&& (packet.query().hasChild("password"))) {
 					final IqPacket register = new IqPacket(IqPacket.TYPE.SET);
 					final Element username = new Element("username").setContent(account.getUsername());
@@ -684,6 +687,7 @@ public class XmppConnection implements Runnable {
 						}
 					});
 				} else {
+					final Element instructions = packet.query().findChild("instructions");
 					changeStatus(Account.State.REGISTRATION_FAILED);
 					disconnect(true);
 					Log.d(Config.LOGTAG, account.getJid().toBareJid()
@@ -735,10 +739,13 @@ public class XmppConnection implements Runnable {
 	}
 
 	private void clearIqCallbacks() {
-		Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": clearing "+this.packetCallbacks.size()+" iq callbacks");
 		final IqPacket failurePacket = new IqPacket(IqPacket.TYPE.ERROR);
 		final ArrayList<OnIqPacketReceived> callbacks = new ArrayList<>();
 		synchronized (this.packetCallbacks) {
+			if (this.packetCallbacks.size() == 0) {
+				return;
+			}
+			Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": clearing "+this.packetCallbacks.size()+" iq callbacks");
 			final Iterator<Pair<IqPacket, OnIqPacketReceived>> iterator = this.packetCallbacks.values().iterator();
 			while (iterator.hasNext()) {
 				Pair<IqPacket, OnIqPacketReceived> entry = iterator.next();
@@ -749,6 +756,7 @@ public class XmppConnection implements Runnable {
 		for(OnIqPacketReceived callback : callbacks) {
 			callback.onIqPacketReceived(account,failurePacket);
 		}
+		Log.d(Config.LOGTAG,account.getJid().toBareJid()+": done clearing iq callbacks");
 	}
 
 	private void sendStartSession() {
@@ -760,7 +768,7 @@ public class XmppConnection implements Runnable {
 				if (packet.getType() == IqPacket.TYPE.RESULT) {
 					sendPostBindInitialization();
 				} else {
-					Log.d(Config.LOGTAG,account.getJid().toBareJid()+": could not init sessions");
+					Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": could not init sessions");
 					disconnect(true);
 				}
 			}
@@ -805,26 +813,29 @@ public class XmppConnection implements Runnable {
 
 				@Override
 				public void onIqPacketReceived(final Account account, final IqPacket packet) {
-					final List<Element> elements = packet.query().getChildren();
-					final Info info = new Info();
-					for (final Element element : elements) {
-						if (element.getName().equals("identity")) {
-							String type = element.getAttribute("type");
-							String category = element.getAttribute("category");
-							if (type != null && category != null) {
-								info.identities.add(new Pair<>(category,type));
+					if (packet.getType() == IqPacket.TYPE.RESULT) {
+						final List<Element> elements = packet.query().getChildren();
+						final Info info = new Info();
+						for (final Element element : elements) {
+							if (element.getName().equals("identity")) {
+								String type = element.getAttribute("type");
+								String category = element.getAttribute("category");
+								if (type != null && category != null) {
+									info.identities.add(new Pair<>(category, type));
+								}
+							} else if (element.getName().equals("feature")) {
+								info.features.add(element.getAttribute("var"));
 							}
-						} else if (element.getName().equals("feature")) {
-							info.features.add(element.getAttribute("var"));
 						}
-					}
-					disco.put(jid, info);
-
-					if (account.getServer().equals(jid)) {
-						enableAdvancedStreamFeatures();
-						for (final OnAdvancedStreamFeaturesLoaded listener : advancedStreamFeaturesLoadedListeners) {
-							listener.onAdvancedStreamFeaturesAvailable(account);
+						disco.put(jid, info);
+						if (account.getServer().equals(jid)) {
+							enableAdvancedStreamFeatures();
+							for (final OnAdvancedStreamFeaturesLoaded listener : advancedStreamFeaturesLoadedListeners) {
+								listener.onAdvancedStreamFeaturesAvailable(account);
+							}
 						}
+					} else {
+						Log.d(Config.LOGTAG,account.getJid().toBareJid()+": could not query disco info for "+jid.toString());
 					}
 				}
 			});
@@ -849,14 +860,18 @@ public class XmppConnection implements Runnable {
 
 			@Override
 			public void onIqPacketReceived(final Account account, final IqPacket packet) {
-				final List<Element> elements = packet.query().getChildren();
-				for (final Element element : elements) {
-					if (element.getName().equals("item")) {
-						final Jid jid = element.getAttributeAsJid("jid");
-						if (jid != null && !jid.equals(account.getServer())) {
-							sendServiceDiscoveryInfo(jid);
+				if (packet.getType() == IqPacket.TYPE.RESULT) {
+					final List<Element> elements = packet.query().getChildren();
+					for (final Element element : elements) {
+						if (element.getName().equals("item")) {
+							final Jid jid = element.getAttributeAsJid("jid");
+							if (jid != null && !jid.equals(account.getServer())) {
+								sendServiceDiscoveryInfo(jid);
+							}
 						}
 					}
+				} else {
+					Log.d(Config.LOGTAG,account.getJid().toBareJid()+": could not query disco items of "+server);
 				}
 			}
 		});
