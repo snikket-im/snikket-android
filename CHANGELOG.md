@@ -1,5 +1,8 @@
 ###Changelog
 
+####Version 1.6.1
+* fixed crashes
+
 ####Version 1.6.0
 * new multi-end-to-multi-end encryption method
 * redesigned chat bubbles

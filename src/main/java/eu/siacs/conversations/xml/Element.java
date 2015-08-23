@@ -69,10 +69,9 @@ public class Element {
 
 	public Element findChild(String name, String xmlns) {
 		for (Element child : this.children) {
-			if (child.getName().equals(name)
-					&& (child.getAttribute("xmlns").equals(xmlns))) {
+			if (name.equals(child.getName()) && xmlns.equals(child.getAttribute("xmlns"))) {
 				return child;
-					}
+			}
 		}
 		return null;
 	}

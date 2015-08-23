@@ -867,28 +867,31 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 
 			@Override
 			public void onIqPacketReceived(final Account account, final IqPacket packet) {
-				final Element query = packet.query();
-				final List<Bookmark> bookmarks = new CopyOnWriteArrayList<>();
-				final Element storage = query.findChild("storage",
-						"storage:bookmarks");
-				if (storage != null) {
-					for (final Element item : storage.getChildren()) {
-						if (item.getName().equals("conference")) {
-							final Bookmark bookmark = Bookmark.parse(item, account);
-							bookmarks.add(bookmark);
-							Conversation conversation = find(bookmark);
-							if (conversation != null) {
-								conversation.setBookmark(bookmark);
-							} else if (bookmark.autojoin() && bookmark.getJid() != null) {
-								conversation = findOrCreateConversation(
-										account, bookmark.getJid(), true);
-								conversation.setBookmark(bookmark);
-								joinMuc(conversation);
+				if (packet.getType() == IqPacket.TYPE.RESULT) {
+					final Element query = packet.query();
+					final List<Bookmark> bookmarks = new CopyOnWriteArrayList<>();
+					final Element storage = query.findChild("storage", "storage:bookmarks");
+					if (storage != null) {
+						for (final Element item : storage.getChildren()) {
+							if (item.getName().equals("conference")) {
+								final Bookmark bookmark = Bookmark.parse(item, account);
+								bookmarks.add(bookmark);
+								Conversation conversation = find(bookmark);
+								if (conversation != null) {
+									conversation.setBookmark(bookmark);
+								} else if (bookmark.autojoin() && bookmark.getJid() != null) {
+									conversation = findOrCreateConversation(
+											account, bookmark.getJid(), true);
+									conversation.setBookmark(bookmark);
+									joinMuc(conversation);
+								}
 							}
 						}
 					}
+					account.setBookmarks(bookmarks);
+				} else {
+					Log.d(Config.LOGTAG,account.getJid().toBareJid()+": could not fetch bookmarks");
 				}
-				account.setBookmarks(bookmarks);
 			}
 		};
 		sendIqPacket(account, iqPacket, callback);
@@ -1952,10 +1955,8 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 						final IqPacket packet = XmppConnectionService.this.mIqGenerator
 								.publishAvatarMetadata(avatar);
 						sendIqPacket(account, packet, new OnIqPacketReceived() {
-
 							@Override
-							public void onIqPacketReceived(Account account,
-														   IqPacket result) {
+							public void onIqPacketReceived(Account account, IqPacket result) {
 								if (result.getType() == IqPacket.TYPE.RESULT) {
 									if (account.setAvatar(avatar.getFilename())) {
 										getAvatarService().clear(account);
