@@ -458,7 +458,7 @@ public final class MimeUtils {
         if (extension == null || extension.isEmpty()) {
             return null;
         }
-        return extensionToMimeTypeMap.get(extension);
+        return extensionToMimeTypeMap.get(extension.toLowerCase());
     }
     /**
      * Returns true if the given extension has a registered MIME type.
