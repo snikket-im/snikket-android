@@ -1,5 +1,8 @@
 ###Changelog
 
+####Version 1.6.2
+* fixed issues with connection time out when server does not support ping
+
 ####Version 1.6.1
 * fixed crashes
 
