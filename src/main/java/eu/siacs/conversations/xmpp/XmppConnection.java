@@ -750,13 +750,13 @@ public class XmppConnection implements Runnable {
 			while (iterator.hasNext()) {
 				Pair<IqPacket, OnIqPacketReceived> entry = iterator.next();
 				callbacks.add(entry.second);
+				iterator.remove();
 			}
-			this.packetCallbacks.clear();
 		}
 		for(OnIqPacketReceived callback : callbacks) {
 			callback.onIqPacketReceived(account,failurePacket);
 		}
-		Log.d(Config.LOGTAG,account.getJid().toBareJid()+": done clearing iq callbacks");
+		Log.d(Config.LOGTAG,account.getJid().toBareJid()+": done clearing iq callbacks. "+this.packetCallbacks.size()+" left");
 	}
 
 	private void sendStartSession() {
