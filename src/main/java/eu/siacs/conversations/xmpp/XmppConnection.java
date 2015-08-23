@@ -85,7 +85,7 @@ public class XmppConnection implements Runnable {
 	private XmlReader tagReader;
 	private TagWriter tagWriter;
 	private final Features features = new Features(this);
-	private boolean shouldBind = true;
+	private boolean needsBinding = true;
 	private boolean shouldAuthenticate = true;
 	private Element streamFeatures;
 	private final HashMap<Jid, Info> disco = new HashMap<>();
@@ -147,7 +147,7 @@ public class XmppConnection implements Runnable {
 		lastPingSent = SystemClock.elapsedRealtime();
 		this.attempt++;
 		try {
-			shouldAuthenticate = shouldBind = !account.isOptionSet(Account.OPTION_REGISTER);
+			shouldAuthenticate = needsBinding = !account.isOptionSet(Account.OPTION_REGISTER);
 			tagReader = new XmlReader(wakeLock);
 			tagWriter = new TagWriter();
 			this.changeStatus(Account.State.CONNECTING);
@@ -615,19 +615,18 @@ public class XmppConnection implements Runnable {
 			} else {
 				throw new IncompatibleServerException();
 			}
-		} else if (this.streamFeatures.hasChild("sm", "urn:xmpp:sm:"
-					+ smVersion)
-				&& streamId != null) {
+		} else if (this.streamFeatures.hasChild("sm", "urn:xmpp:sm:" + smVersion) && streamId != null) {
 			if (Config.EXTENDED_SM_LOGGING) {
 				Log.d(Config.LOGTAG,account.getJid().toBareJid()+": resuming after stanza #"+stanzasReceived);
 			}
 			final ResumePacket resume = new ResumePacket(this.streamId, stanzasReceived, smVersion);
 			this.tagWriter.writeStanzaAsync(resume);
-		} else if (this.streamFeatures.hasChild("bind") && shouldBind) {
-			sendBindRequest();
-		} else {
-			disconnect(true);
-			changeStatus(Account.State.INCOMPATIBLE_SERVER);
+		} else if (needsBinding) {
+			if (this.streamFeatures.hasChild("bind")) {
+				sendBindRequest();
+			} else {
+				throw new IncompatibleServerException();
+			}
 		}
 	}
 
@@ -694,6 +693,7 @@ public class XmppConnection implements Runnable {
 			} catch (final InterruptedException ignored) {
 			}
 		}
+		needsBinding = false;
 		clearIqCallbacks();
 		final IqPacket iq = new IqPacket(IqPacket.TYPE.SET);
 		iq.addChild("bind", "urn:ietf:params:xml:ns:xmpp-bind")
