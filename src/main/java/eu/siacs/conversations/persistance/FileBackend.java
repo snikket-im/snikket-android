@@ -133,7 +133,6 @@ public class FileBackend {
 		if (path == null) {
 			return false;
 		}
-		Log.d(Config.LOGTAG,"using image as is. path: "+path);
 		BitmapFactory.Options options = new BitmapFactory.Options();
 		options.inJustDecodeBounds = true;
 		try {
