@@ -9,7 +9,8 @@ public class IqPacket extends AbstractAcknowledgeableStanza {
 		SET,
 		RESULT,
 		GET,
-		INVALID
+		INVALID,
+		TIMEOUT
 	}
 
 	public IqPacket(final TYPE type) {

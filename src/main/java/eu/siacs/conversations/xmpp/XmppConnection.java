@@ -728,7 +728,7 @@ public class XmppConnection implements Runnable {
 	}
 
 	private void clearIqCallbacks() {
-		final IqPacket failurePacket = new IqPacket(IqPacket.TYPE.ERROR);
+		final IqPacket failurePacket = new IqPacket(IqPacket.TYPE.TIMEOUT);
 		final ArrayList<OnIqPacketReceived> callbacks = new ArrayList<>();
 		synchronized (this.packetCallbacks) {
 			if (this.packetCallbacks.size() == 0) {

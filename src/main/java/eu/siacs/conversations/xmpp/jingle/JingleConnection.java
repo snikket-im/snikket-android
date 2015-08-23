@@ -85,7 +85,7 @@ public class JingleConnection implements Transferable {
 
 		@Override
 		public void onIqPacketReceived(Account account, IqPacket packet) {
-			if (packet.getType() == IqPacket.TYPE.ERROR) {
+			if (packet.getType() != IqPacket.TYPE.RESULT) {
 				fail();
 			}
 		}
@@ -449,7 +449,7 @@ public class JingleConnection implements Transferable {
 
 				@Override
 				public void onIqPacketReceived(Account account, IqPacket packet) {
-					if (packet.getType() != IqPacket.TYPE.ERROR) {
+					if (packet.getType() == IqPacket.TYPE.RESULT) {
 						Log.d(Config.LOGTAG,account.getJid().toBareJid()+": other party received offer");
 						mJingleStatus = JINGLE_STATUS_INITIATED;
 						mXmppConnectionService.markMessage(message, Message.STATUS_OFFERED);
@@ -634,12 +634,11 @@ public class JingleConnection implements Transferable {
 								@Override
 								public void onIqPacketReceived(Account account,
 										IqPacket packet) {
-									if (packet.getType() == IqPacket.TYPE.ERROR) {
+									if (packet.getType() != IqPacket.TYPE.RESULT) {
 										onProxyActivated.failed();
 									} else {
 										onProxyActivated.success();
-										sendProxyActivated(connection
-												.getCandidate().getCid());
+										sendProxyActivated(connection.getCandidate().getCid());
 									}
 								}
 							});

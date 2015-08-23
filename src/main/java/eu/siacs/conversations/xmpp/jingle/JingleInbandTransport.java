@@ -74,7 +74,7 @@ public class JingleInbandTransport extends JingleTransport {
 					@Override
 					public void onIqPacketReceived(Account account,
 							IqPacket packet) {
-						if (packet.getType() == IqPacket.TYPE.ERROR) {
+						if (packet.getType() != IqPacket.TYPE.RESULT) {
 							callback.failed();
 						} else {
 							callback.established();
