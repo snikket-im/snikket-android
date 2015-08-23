@@ -1,13 +1,10 @@
 package eu.siacs.conversations.xmpp;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.os.SystemClock;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.util.Pair;
 import android.util.SparseArray;
@@ -37,7 +34,6 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.net.ssl.HostnameVerifier;
@@ -103,7 +99,7 @@ public class XmppConnection implements Runnable {
 	private long lastConnect = 0;
 	private long lastSessionStarted = 0;
 	private int attempt = 0;
-	private final Map<String, Pair<IqPacket, OnIqPacketReceived>> packetCallbacks = new Hashtable<>();
+	private final Hashtable<String, Pair<IqPacket, OnIqPacketReceived>> packetCallbacks = new Hashtable<>();
 	private OnPresencePacketReceived presenceListener = null;
 	private OnJinglePacketReceived jingleListener = null;
 	private OnIqPacketReceived unregisteredIqListener = null;
@@ -727,9 +723,11 @@ public class XmppConnection implements Runnable {
 							sendPostBindInitialization();
 						}
 					} else {
+						Log.d(Config.LOGTAG,account.getJid()+": disconnecting because of bind failure");
 						disconnect(true);
 					}
 				} else {
+					Log.d(Config.LOGTAG,account.getJid()+": disconnecting because of bind failure");
 					disconnect(true);
 				}
 			}
@@ -737,15 +735,19 @@ public class XmppConnection implements Runnable {
 	}
 
 	private void clearIqCallbacks() {
-		Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": clearing iq iq callbacks");
+		Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": clearing "+this.packetCallbacks.size()+" iq callbacks");
 		final IqPacket failurePacket = new IqPacket(IqPacket.TYPE.ERROR);
+		final ArrayList<OnIqPacketReceived> callbacks = new ArrayList<>();
 		synchronized (this.packetCallbacks) {
-			Iterator<Entry<String, Pair<IqPacket, OnIqPacketReceived>>> iterator = this.packetCallbacks.entrySet().iterator();
+			final Iterator<Pair<IqPacket, OnIqPacketReceived>> iterator = this.packetCallbacks.values().iterator();
 			while (iterator.hasNext()) {
-				Entry<String, Pair<IqPacket, OnIqPacketReceived>> entry = iterator.next();
-				entry.getValue().second.onIqPacketReceived(account, failurePacket);
-				iterator.remove();
+				Pair<IqPacket, OnIqPacketReceived> entry = iterator.next();
+				callbacks.add(entry.second);
 			}
+			this.packetCallbacks.clear();
+		}
+		for(OnIqPacketReceived callback : callbacks) {
+			callback.onIqPacketReceived(account,failurePacket);
 		}
 	}
 
@@ -758,6 +760,7 @@ public class XmppConnection implements Runnable {
 				if (packet.getType() == IqPacket.TYPE.RESULT) {
 					sendPostBindInitialization();
 				} else {
+					Log.d(Config.LOGTAG,account.getJid().toBareJid()+": could not init sessions");
 					disconnect(true);
 				}
 			}
@@ -887,6 +890,8 @@ public class XmppConnection implements Runnable {
 			Log.d(Config.LOGTAG,
 					account.getJid().toBareJid() + ": switching resource due to conflict ("
 					+ account.getResource() + ")");
+		} else if (streamError != null) {
+			Log.d(Config.LOGTAG,account.getJid().toBareJid()+": stream error "+streamError.toString());
 		}
 	}
 

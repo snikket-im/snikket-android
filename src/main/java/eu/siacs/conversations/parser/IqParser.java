@@ -236,7 +236,9 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
 
 	@Override
 	public void onIqPacketReceived(final Account account, final IqPacket packet) {
-		if (packet.hasChild("query", Xmlns.ROSTER) && packet.fromServer(account)) {
+		if (packet.getType() == IqPacket.TYPE.ERROR) {
+			return;
+		} else if (packet.hasChild("query", Xmlns.ROSTER) && packet.fromServer(account)) {
 			final Element query = packet.findChild("query");
 			// If this is in response to a query for the whole roster:
 			if (packet.getType() == IqPacket.TYPE.RESULT) {
@@ -306,15 +308,13 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
 			final IqPacket response = packet.generateResponse(IqPacket.TYPE.RESULT);
 			mXmppConnectionService.sendIqPacket(account, response, null);
 		} else {
-			if ((packet.getType() == IqPacket.TYPE.GET)
-					|| (packet.getType() == IqPacket.TYPE.SET)) {
+			if (packet.getType() == IqPacket.TYPE.GET || packet.getType() == IqPacket.TYPE.SET) {
 				final IqPacket response = packet.generateResponse(IqPacket.TYPE.ERROR);
 				final Element error = response.addChild("error");
 				error.setAttribute("type", "cancel");
-				error.addChild("feature-not-implemented",
-						"urn:ietf:params:xml:ns:xmpp-stanzas");
+				error.addChild("feature-not-implemented","urn:ietf:params:xml:ns:xmpp-stanzas");
 				account.getXmppConnection().sendIqPacket(response, null);
-					}
+			}
 		}
 	}
 
