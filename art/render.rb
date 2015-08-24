@@ -45,6 +45,7 @@ images = {
 	'md_switch_thumb_on_pressed.svg' => ['switch_thumb_on_pressed', 48],
 	'message_bubble_received.svg' => ['message_bubble_received.9', 0],
 	'message_bubble_received_warning.svg' => ['message_bubble_received_warning.9', 0],
+	'message_bubble_received_white.svg' => ['message_bubble_received_white.9', 0],
 	'message_bubble_sent.svg' => ['message_bubble_sent.9', 0],
 	}
 

@@ -966,6 +966,9 @@ public class ConversationActivity extends XmppActivity
 			mPendingGeoUri = null;
 			setSelectedConversation(conversationList.get(0));
 			this.mConversationFragment.reInit(getSelectedConversation());
+		} else {
+			this.mConversationFragment.messageListAdapter.updatePreferences();
+			this.mConversationFragment.messagesView.invalidateViews();
 		}
 
 		if(!forbidProcessingPendings) {
@@ -1144,7 +1147,7 @@ public class ConversationActivity extends XmppActivity
 		}
 		prepareFileToast = Toast.makeText(getApplicationContext(),getText(R.string.preparing_file), Toast.LENGTH_LONG);
 		prepareFileToast.show();
-		xmppConnectionService.attachFileToConversation(conversation,uri, new UiCallback<Message>() {
+		xmppConnectionService.attachFileToConversation(conversation, uri, new UiCallback<Message>() {
 			@Override
 			public void success(Message message) {
 				hidePrepareFileToast();
@@ -1174,7 +1177,7 @@ public class ConversationActivity extends XmppActivity
 
 					@Override
 					public void userInputRequried(PendingIntent pi,
-							Message object) {
+												  Message object) {
 						hidePrepareFileToast();
 					}
 
@@ -1254,6 +1257,10 @@ public class ConversationActivity extends XmppActivity
 
 	public boolean indicateReceived() {
 		return getPreferences().getBoolean("indicate_received", false);
+	}
+
+	public boolean useWhiteBackground() {
+		return getPreferences().getBoolean("use_white_background",false);
 	}
 
 	protected boolean trustKeysIfNeeded(int requestCode) {
