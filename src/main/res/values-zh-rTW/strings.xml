@@ -60,7 +60,7 @@
   <string name="delete_messages">刪除訊息</string>
   <string name="also_end_conversation">之後結束這對話</string>
   <string name="choose_presence">選擇狀態訊息</string>
-  <string name="send_plain_text_message">發送純文字訊息</string>
+  <string name="send_unencrypted_message">發送純文字訊息</string>
   <string name="send_otr_message">發送 OTR 加密訊息</string>
   <string name="send_pgp_message">發送 OpenPGP 加密訊息</string>
   <string name="your_nick_has_been_changed">用戶名稱修改成功</string>
@@ -129,7 +129,7 @@
   <string name="account_status_regis_conflict">該用戶名稱已被使用</string>
   <string name="account_status_regis_success">註冊完成</string>
   <string name="account_status_regis_not_sup">伺服器不支持註冊</string>
-  <string name="encryption_choice_none">純文字內容</string>
+  <string name="encryption_choice_unencrypted">純文字內容</string>
   <string name="encryption_choice_otr">OTR</string>
   <string name="encryption_choice_pgp">OpenPGP</string>
   <string name="mgmt_account_edit">編輯帳戶</string>

@@ -78,7 +78,7 @@
 	<string name="delete_messages">Delete messages</string>
 	<string name="also_end_conversation">End this conversations afterwards</string>
 	<string name="choose_presence">Choose presence to contact</string>
-	<string name="send_plain_text_message">Send plain text message</string>
+	<string name="send_unencrypted_message">Send unencrypted message</string>
 	<string name="send_otr_message">Send OTR encrypted message</string>
 	<string name="send_omemo_message">Send OMEMO encrypted message</string>
 	<string name="send_pgp_message">Send OpenPGP encrypted message</string>
@@ -152,7 +152,7 @@
 	<string name="account_status_regis_not_sup">Server does not support registration</string>
 	<string name="account_status_security_error">Security error</string>
 	<string name="account_status_incompatible_server">Incompatible server</string>
-	<string name="encryption_choice_none">Plain text</string>
+	<string name="encryption_choice_unencrypted">Unencrypted</string>
 	<string name="encryption_choice_otr">OTR</string>
 	<string name="encryption_choice_pgp">OpenPGP</string>
 	<string name="encryption_choice_omemo">OMEMO</string>

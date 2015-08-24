@@ -76,7 +76,7 @@
   <string name="delete_messages">حذف الرسائل</string>
   <string name="also_end_conversation">انهاء هذه المحادثة بعد الكلمات</string>
   <string name="choose_presence">اختيار ظهورك لجهات الإتصال</string>
-  <string name="send_plain_text_message">ارسال رسالة غير مشفّرة</string>
+  <string name="send_unencrypted_message">ارسال رسالة غير مشفّرة</string>
   <string name="send_otr_message">OTRارساله رساله مشفره عبر</string>
   <string name="send_pgp_message">OpenPGPارساله رساله مشفره عبر</string>
   <string name="your_nick_has_been_changed">تم تغيير لقبك بنجاح</string>
@@ -128,7 +128,7 @@
   <string name="account_status_regis_conflict">اسم المستخدم مستخدم من قبل</string>
   <string name="account_status_regis_success">تم تسجيل حسابك بنجاح</string>
   <string name="account_status_regis_not_sup">تسجيل الحسابات غير متاح على هذا السرفر</string>
-  <string name="encryption_choice_none">رساله عادية</string>
+  <string name="encryption_choice_unencrypted">رساله عادية</string>
   <string name="encryption_choice_otr">OTRرسالة مشفرة عبر</string>
   <string name="encryption_choice_pgp">OpenPGPرسالة مشفرة عبر</string>
   <string name="mgmt_account_edit">تعديل الحساب</string>

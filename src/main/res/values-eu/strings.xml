@@ -76,7 +76,7 @@
   <string name="delete_messages">Mezuak ezabatu</string>
   <string name="also_end_conversation">Elkarrizketa hau jarraian amaitu</string>
   <string name="choose_presence">Hautatu agerpena kontaktuarentzat</string>
-  <string name="send_plain_text_message">Testu mezua bidali</string>
+  <string name="send_unencrypted_message">Testu mezua bidali</string>
   <string name="send_otr_message">OTRz enkriptatutako mezua bidali</string>
   <string name="send_omemo_message">OMEMOz enkriptatutako mezua bidali</string>
   <string name="send_pgp_message">OpenPGPz enkriptatutako mezua bidali</string>
@@ -150,7 +150,7 @@
   <string name="account_status_regis_not_sup">Zerbitzariak ez du erregistratzea onartzen</string>
   <string name="account_status_security_error">Segurtasun akatsa</string>
   <string name="account_status_incompatible_server">Zerbitzari ez bateragarria</string>
-  <string name="encryption_choice_none">Testu laua</string>
+  <string name="encryption_choice_unencrypted">Testu laua</string>
   <string name="encryption_choice_otr">OTR</string>
   <string name="encryption_choice_pgp">OpenPGP</string>
   <string name="encryption_choice_omemo">OMEMO</string>

@@ -76,7 +76,7 @@
   <string name="delete_messages">Vymazať správy</string>
   <string name="also_end_conversation">Následne ukončiť aj túto konverzáciu</string>
   <string name="choose_presence">Vybrať aktualizáciu stavu pre kontakt</string>
-  <string name="send_plain_text_message">Poslať textovú správu</string>
+  <string name="send_unencrypted_message">Poslať textovú správu</string>
   <string name="send_otr_message">Poslať OTR šifrovanú správu</string>
   <string name="send_pgp_message">Poslať OpenPGP šifrovanú správu</string>
   <string name="your_nick_has_been_changed">Prezývka sa zmenila</string>
@@ -147,7 +147,7 @@
   <string name="account_status_regis_not_sup">Server nepodporuje registráciu</string>
   <string name="account_status_security_error">Bezpečnostná chyba</string>
   <string name="account_status_incompatible_server">Nekompatibilný server</string>
-  <string name="encryption_choice_none">Čistý text</string>
+  <string name="encryption_choice_unencrypted">Čistý text</string>
   <string name="encryption_choice_otr">OTR</string>
   <string name="encryption_choice_pgp">OpenPGP</string>
   <string name="mgmt_account_edit">Upraviť účet</string>

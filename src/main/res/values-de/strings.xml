@@ -76,7 +76,7 @@
   <string name="delete_messages">Nachrichten löschen</string>
   <string name="also_end_conversation">Diese Unterhaltung danach beenden</string>
   <string name="choose_presence">Ressource des Kontakts auswählen</string>
-  <string name="send_plain_text_message">Normal schreiben…</string>
+  <string name="send_unencrypted_message">Normal schreiben…</string>
   <string name="send_otr_message">OTR-verschlüsselt schreiben…</string>
   <string name="send_omemo_message">OMEMO-verschlüsselt schreiben…</string>
   <string name="send_pgp_message">OpenPGP-verschlüsselt schreiben…</string>
@@ -150,7 +150,7 @@
   <string name="account_status_regis_not_sup">Der Server unterstützt keine Registrierung</string>
   <string name="account_status_security_error">Sicherheitsfehler</string>
   <string name="account_status_incompatible_server">Inkompatibler Server</string>
-  <string name="encryption_choice_none">Klartext</string>
+  <string name="encryption_choice_unencrypted">Klartext</string>
   <string name="encryption_choice_otr">OTR</string>
   <string name="encryption_choice_pgp">OpenPGP</string>
   <string name="encryption_choice_omemo">OMEMO</string>

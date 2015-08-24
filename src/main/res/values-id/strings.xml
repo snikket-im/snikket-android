@@ -76,7 +76,7 @@
   <string name="delete_messages">Hapus pesan</string>
   <string name="also_end_conversation">Akhiri percakapan setelahnya</string>
   <string name="choose_presence">Pilih kehadiran untuk kontak</string>
-  <string name="send_plain_text_message">Kirim pesan teks biasa</string>
+  <string name="send_unencrypted_message">Kirim pesan teks biasa</string>
   <string name="send_otr_message">Kirim pesan terenskripsi OTR</string>
   <string name="send_pgp_message">Kirim pesan terenskripsi OpenPGP</string>
   <string name="your_nick_has_been_changed">Nick kamu telah dirubah</string>
@@ -147,7 +147,7 @@
   <string name="account_status_regis_not_sup">Server tidak mendukung pendaftaran akun.</string>
   <string name="account_status_security_error">Kesalahan keamanan</string>
   <string name="account_status_incompatible_server">Server tidak cocok</string>
-  <string name="encryption_choice_none">Teks biasa</string>
+  <string name="encryption_choice_unencrypted">Teks biasa</string>
   <string name="encryption_choice_otr">OTR</string>
   <string name="encryption_choice_pgp">OpenPGP</string>
   <string name="mgmt_account_edit">Ubah akun</string>

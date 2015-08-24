@@ -76,7 +76,7 @@
   <string name="delete_messages">メッセージを削除</string>
   <string name="also_end_conversation">その後、この会話を終了</string>
   <string name="choose_presence">連絡する参加を選択</string>
-  <string name="send_plain_text_message">プレーンテキストを送信</string>
+  <string name="send_unencrypted_message">プレーンテキストを送信</string>
   <string name="send_otr_message">OTR 暗号化メッセージを送信</string>
   <string name="send_omemo_message">OMEMO 暗号化メッセージを送信</string>
   <string name="send_pgp_message">OpenPGP 暗号化メッセージを送信</string>
@@ -150,7 +150,7 @@
   <string name="account_status_regis_not_sup">サーバーが登録をサポートしていません</string>
   <string name="account_status_security_error">セキュリティ エラー</string>
   <string name="account_status_incompatible_server">互換性のないサーバー</string>
-  <string name="encryption_choice_none">プレーンテキスト</string>
+  <string name="encryption_choice_unencrypted">プレーンテキスト</string>
   <string name="encryption_choice_otr">OTR</string>
   <string name="encryption_choice_pgp">OpenPGP</string>
   <string name="encryption_choice_omemo">OMEMO</string>

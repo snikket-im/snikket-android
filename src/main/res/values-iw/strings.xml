@@ -62,7 +62,7 @@
   <string name="delete_messages">מחק הודעות</string>
   <string name="also_end_conversation">סיים את דיון זה לאחר מכן</string>
   <string name="choose_presence">בחר נוכחות לאיש קשר</string>
-  <string name="send_plain_text_message">שלח הודעת טקסט גלוי</string>
+  <string name="send_unencrypted_message">שלח הודעת טקסט גלוי</string>
   <string name="send_otr_message">שלח הודעה מוצפנת OTR</string>
   <string name="send_pgp_message">שלח הודעה מוצפנת OpenPGP</string>
   <string name="your_nick_has_been_changed">שם כינוי שלך השתנה</string>
@@ -130,7 +130,7 @@
   <string name="account_status_regis_conflict">שם משתמש כבר מצוי בשימוש</string>
   <string name="account_status_regis_success">הרשמה הושלמה</string>
   <string name="account_status_regis_not_sup">שרת לא תומך הרשמה</string>
-  <string name="encryption_choice_none">טקסט גלוי</string>
+  <string name="encryption_choice_unencrypted">טקסט גלוי</string>
   <string name="encryption_choice_otr">OTR</string>
   <string name="encryption_choice_pgp">OpenPGP</string>
   <string name="mgmt_account_edit">ערוך חשבון</string>
