@@ -954,7 +954,7 @@ public class XmppConnection implements Runnable {
 			AbstractAcknowledgeableStanza stanza = (AbstractAcknowledgeableStanza) packet;
 			++stanzasSent;
 			this.mStanzaQueue.put(stanzasSent, stanza);
-			if (stanza instanceof MessagePacket && stanza.getId() != null && this.streamId != null) {
+			if (stanza instanceof MessagePacket && stanza.getId() != null && getFeatures().sm()) {
 				if (Config.EXTENDED_SM_LOGGING) {
 					Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": requesting ack for message stanza #" + stanzasSent);
 				}
