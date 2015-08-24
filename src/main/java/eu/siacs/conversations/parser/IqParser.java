@@ -138,7 +138,7 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
 		}
 		try {
 			publicKey = Curve.decodePoint(Base64.decode(signedPreKeyPublic.getContent(),Base64.DEFAULT), 0);
-		} catch (InvalidKeyException e) {
+		} catch (InvalidKeyException | IllegalArgumentException e) {
 			Log.e(Config.LOGTAG, AxolotlService.LOGPREFIX+" : "+"Invalid signedPreKeyPublic in PEP: " + e.getMessage());
 		}
 		return publicKey;
