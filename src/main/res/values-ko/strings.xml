@@ -76,7 +76,6 @@
   <string name="delete_messages">메세지 삭제 </string>
   <string name="also_end_conversation">나중에 이 대화 끝내기 </string>
   <string name="choose_presence">연락할 프레즌스 선택 </string>
-  <string name="send_unencrypted_message">평문 메세지 전송 </string>
   <string name="send_otr_message">OTR 암호화된 메세지 전송 </string>
   <string name="send_pgp_message">OpenPGP 암호화된 메세지 전송 </string>
   <string name="your_nick_has_been_changed">닉네임이 변경되었습니다 </string>
@@ -147,7 +146,6 @@
   <string name="account_status_regis_not_sup">서버가 등록을 지원하지 않습니다</string>
   <string name="account_status_security_error">보안 오류 </string>
   <string name="account_status_incompatible_server">호환되지 않는 서버 </string>
-  <string name="encryption_choice_unencrypted">평문 </string>
   <string name="encryption_choice_otr">OTR</string>
   <string name="encryption_choice_pgp">OpenPGP </string>
   <string name="mgmt_account_edit">계정 편집 </string>

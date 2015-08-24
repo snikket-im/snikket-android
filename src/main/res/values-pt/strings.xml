@@ -74,7 +74,6 @@
   <string name="delete_messages">Remover mensagens</string>
   <string name="also_end_conversation">Finalizar essa conversa ao final</string>
   <string name="choose_presence">Escolha a presença do contato</string>
-  <string name="send_unencrypted_message">Enviar mensagem de texto puro</string>
   <string name="send_otr_message">Enviar mensagem criptografada com OTR</string>
   <string name="send_pgp_message">Enviar mensagem criptografada com OpenPGP</string>
   <string name="your_nick_has_been_changed">Seu apelido foi alterado</string>
@@ -137,7 +136,6 @@
   <string name="account_status_regis_not_sup">O servidor não aceita o registro</string>
   <string name="account_status_security_error">Erro de segurança</string>
   <string name="account_status_incompatible_server">Servidor incompatível</string>
-  <string name="encryption_choice_unencrypted">Texto puro</string>
   <string name="encryption_choice_otr">OTR</string>
   <string name="encryption_choice_pgp">OpenPGP</string>
   <string name="mgmt_account_edit">Editar conta</string>

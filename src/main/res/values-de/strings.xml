@@ -76,7 +76,7 @@
   <string name="delete_messages">Nachrichten löschen</string>
   <string name="also_end_conversation">Diese Unterhaltung danach beenden</string>
   <string name="choose_presence">Ressource des Kontakts auswählen</string>
-  <string name="send_unencrypted_message">Normal schreiben…</string>
+  <string name="send_unencrypted_message">Sende unverschlüsselte Nachricht</string>
   <string name="send_otr_message">OTR-verschlüsselt schreiben…</string>
   <string name="send_omemo_message">OMEMO-verschlüsselt schreiben…</string>
   <string name="send_pgp_message">OpenPGP-verschlüsselt schreiben…</string>
@@ -150,7 +150,7 @@
   <string name="account_status_regis_not_sup">Der Server unterstützt keine Registrierung</string>
   <string name="account_status_security_error">Sicherheitsfehler</string>
   <string name="account_status_incompatible_server">Inkompatibler Server</string>
-  <string name="encryption_choice_unencrypted">Klartext</string>
+  <string name="encryption_choice_unencrypted">Unverschlüsselt</string>
   <string name="encryption_choice_otr">OTR</string>
   <string name="encryption_choice_pgp">OpenPGP</string>
   <string name="encryption_choice_omemo">OMEMO</string>
@@ -189,6 +189,7 @@
   <string name="server_info_roster_version">XEP-0237: Roster Versioning</string>
   <string name="server_info_stream_management">XEP-0198: Stream Management</string>
   <string name="server_info_pep">XEP-0163: PEP (Avatare)</string>
+  <string name="server_info_http_upload">XEP-xxxx: HTTP File Upload</string>
   <string name="server_info_available">ja</string>
   <string name="server_info_unavailable">nein</string>
   <string name="missing_public_keys">Öffentlicher Schlüssel fehlt</string>
@@ -368,6 +369,7 @@
   <string name="purge_key">Schlüssel löschen</string>
   <string name="purge_key_desc_part1">Soll dieser Schlüssel gelöscht werden?</string>
   <string name="purge_key_desc_part2">Dieser Vorgang kann nicht rückgängig gemacht werden und es kann nie wieder eine Verbindung mit diesem Schlüssel hergestellt werden.</string>
+  <string name="error_trustkeys_title">Fehler</string>
   <string name="fetching_history_from_server">Lade Chatverlauf…</string>
   <string name="no_more_history_on_server">Keine weiteren Nachrichten vorhanden</string>
   <string name="updating">Aktualisiere…</string>

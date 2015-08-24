@@ -76,7 +76,6 @@
   <string name="delete_messages">删除消息</string>
   <string name="also_end_conversation">之后结束该会话</string>
   <string name="choose_presence">添加在线用户至联系人</string>
-  <string name="send_unencrypted_message">发送纯文本信息</string>
   <string name="send_otr_message">发送 OTR 加密信息</string>
   <string name="send_pgp_message">发送 OpenPGP 加密信息</string>
   <string name="your_nick_has_been_changed">昵称修改成功</string>
@@ -147,7 +146,6 @@
   <string name="account_status_regis_not_sup">服务器不支持注册</string>
   <string name="account_status_security_error">安全错误</string>
   <string name="account_status_incompatible_server">服务器不兼容</string>
-  <string name="encryption_choice_unencrypted">纯文本内容</string>
   <string name="encryption_choice_otr">OTR</string>
   <string name="encryption_choice_pgp">OpenPGP</string>
   <string name="mgmt_account_edit">编辑账号</string>

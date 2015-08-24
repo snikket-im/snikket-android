@@ -76,7 +76,6 @@
   <string name="delete_messages">Обриши поруке</string>
   <string name="also_end_conversation">Окончај ову преписку након тога</string>
   <string name="choose_presence">Избор присутности за контакта</string>
-  <string name="send_unencrypted_message">Пошаљи обичну текстуалну поруку</string>
   <string name="send_otr_message">Пошаљи ОТР шифровану поруку</string>
   <string name="send_omemo_message">Пошаљи ОМЕМО шифровану поруку</string>
   <string name="send_pgp_message">Пошаљи ОпенПГП шифровану поруку</string>
@@ -150,7 +149,6 @@
   <string name="account_status_regis_not_sup">Сервер не подржава регистрацију</string>
   <string name="account_status_security_error">Безбедносна грешка</string>
   <string name="account_status_incompatible_server">Некомпатибилан сервер</string>
-  <string name="encryption_choice_unencrypted">Обичан текст</string>
   <string name="encryption_choice_otr">ОТР</string>
   <string name="encryption_choice_pgp">ОпенПГП</string>
   <string name="encryption_choice_omemo">ОМЕМО</string>

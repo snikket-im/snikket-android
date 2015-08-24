@@ -76,7 +76,6 @@
   <string name="delete_messages">Ta bort meddelanden</string>
   <string name="also_end_conversation">Avsluta sedan denna konversation</string>
   <string name="choose_presence">Välj tillgänglighet till kontakt</string>
-  <string name="send_unencrypted_message">Skicka meddelande i klartext</string>
   <string name="send_otr_message">Skicka OTR-krypterat meddelande</string>
   <string name="send_omemo_message">Skicka OMEMO-krypterat meddelande</string>
   <string name="send_pgp_message">Skicka OpenPGP-krypterat meddelande</string>
@@ -150,7 +149,6 @@
   <string name="account_status_regis_not_sup">Servern stödjer inte registrering</string>
   <string name="account_status_security_error">Säkerhetsfel</string>
   <string name="account_status_incompatible_server">Inkompatibel server</string>
-  <string name="encryption_choice_unencrypted">Klartext</string>
   <string name="encryption_choice_otr">OTR</string>
   <string name="encryption_choice_pgp">OpenPGP</string>
   <string name="encryption_choice_omemo">OMEMO</string>

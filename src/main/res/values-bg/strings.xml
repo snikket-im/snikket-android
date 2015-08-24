@@ -76,7 +76,6 @@
   <string name="delete_messages">Изтриване на съобщенията</string>
   <string name="also_end_conversation">Този разговор да приключи след това</string>
   <string name="choose_presence">Изберете присъствие за контакта</string>
-  <string name="send_unencrypted_message">Изпр. на обикновено текстово съобщение</string>
   <string name="send_otr_message">Изпр. на съобщение, шифр. чрез OTP</string>
   <string name="send_omemo_message">Изпр. на съобщение, шифр. чрез OMEMO</string>
   <string name="send_pgp_message">Изпр. на съобщение, шифр. чрез OpenPGP</string>
@@ -150,7 +149,6 @@
   <string name="account_status_regis_not_sup">Сървърът не поддържа регистриране</string>
   <string name="account_status_security_error">Грешка в сигурността</string>
   <string name="account_status_incompatible_server">Несъвместим сървър</string>
-  <string name="encryption_choice_unencrypted">Обикновен текст</string>
   <string name="encryption_choice_otr">OTR</string>
   <string name="encryption_choice_pgp">OpenPGP</string>
   <string name="encryption_choice_omemo">OMEMO</string>

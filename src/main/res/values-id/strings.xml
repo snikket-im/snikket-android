@@ -76,7 +76,6 @@
   <string name="delete_messages">Hapus pesan</string>
   <string name="also_end_conversation">Akhiri percakapan setelahnya</string>
   <string name="choose_presence">Pilih kehadiran untuk kontak</string>
-  <string name="send_unencrypted_message">Kirim pesan teks biasa</string>
   <string name="send_otr_message">Kirim pesan terenskripsi OTR</string>
   <string name="send_pgp_message">Kirim pesan terenskripsi OpenPGP</string>
   <string name="your_nick_has_been_changed">Nick kamu telah dirubah</string>
@@ -147,7 +146,6 @@
   <string name="account_status_regis_not_sup">Server tidak mendukung pendaftaran akun.</string>
   <string name="account_status_security_error">Kesalahan keamanan</string>
   <string name="account_status_incompatible_server">Server tidak cocok</string>
-  <string name="encryption_choice_unencrypted">Teks biasa</string>
   <string name="encryption_choice_otr">OTR</string>
   <string name="encryption_choice_pgp">OpenPGP</string>
   <string name="mgmt_account_edit">Ubah akun</string>
@@ -202,6 +200,8 @@
   <string name="reception_failed">Penerimaan gagal</string>
   <string name="your_fingerprint">Fingerprint Anda</string>
   <string name="otr_fingerprint">OTR fingerprint</string>
+  <string name="other_devices">Perangkat lainnya</string>
+  <string name="done">Selesai</string>
   <string name="verify">Verifikasi</string>
   <string name="decrypt">Deskripsi</string>
   <string name="conferences">Conferences</string>
@@ -287,10 +287,12 @@
   <string name="conference_kicked">Anda telah ditendang dari conference ini</string>
   <string name="using_account">menggunakan akun %s</string>
   <string name="not_connected_try_again">Anda tidak terhubung. Coba lagi nanti</string>
+  <string name="check_x_filesize">Cek %s ukuran</string>
   <string name="message_options">Opsi pesan</string>
   <string name="copy_text">Salin teks</string>
   <string name="copy_original_url">Salin URL asli</string>
   <string name="send_again">Kirim lagi</string>
+  <string name="file_url">URL Berkas</string>
   <string name="message_text">Pesan teks</string>
   <string name="url_copied_to_clipboard">URL disalin ke clipboard</string>
   <string name="message_copied_to_clipboard">Pesan disalin ke clipboard</string>
@@ -345,6 +347,7 @@
   <string name="reset">Ulang</string>
   <string name="account_image_description">Avatar akun</string>
   <string name="copy_otr_clipboard_description">Salin OTR fingerprint ke clipboard</string>
+  <string name="clear_other_devices">Bersihkan perangkat</string>
   <string name="fetching_history_from_server">Mengambil data dari server</string>
   <string name="no_more_history_on_server">Tidak ada data lagi di server</string>
   <string name="updating">Merubah...</string>
@@ -441,4 +444,13 @@
   <string name="none">Tak satupun</string>
   <string name="recently_used">Maling sering digunakan</string>
   <string name="choose_quick_action">Pilih aksi cepat</string>
+  <string name="search_for_contacts_or_groups">Cari grup atau daftar kontak</string>
+  <string name="send_private_message">Kirim pesan pribadi</string>
+  <string name="user_has_left_conference">%s meninggalkan conference!</string>
+  <string name="username">Username</string>
+  <string name="username_hint">Username</string>
+  <string name="invalid_username">Username ini tidak valid</string>
+  <string name="download_failed_server_not_found">Unduhan gagal: Server tidak ditemukan</string>
+  <string name="download_failed_file_not_found">Unduh gagal: Berkas tidak ditemukan</string>
+  <string name="download_failed_could_not_connect">Unduhan gagal: Tidak dapat terhubung ke host</string>
 </resources>

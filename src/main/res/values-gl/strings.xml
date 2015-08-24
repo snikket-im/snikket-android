@@ -44,7 +44,6 @@
   <string name="delete_messages">Borrar mensaxes</string>
   <string name="also_end_conversation">Terminar esta conversa máis tarde</string>
   <string name="choose_presence">Selecciona recurso del contacto</string>
-  <string name="send_unencrypted_message">Enviar mensaxe de texto</string>
   <string name="send_otr_message">Enviar mensaxe cifrado con OTR</string>
   <string name="send_pgp_message">Enviar mensaxe cifrado con OpenPGP</string>
   <string name="your_nick_has_been_changed">Modificouse o teu apodo</string>
@@ -107,7 +106,6 @@
   <string name="account_status_regis_conflict">O identificador xa está en uso</string>
   <string name="account_status_regis_success">Rexistro completado</string>
   <string name="account_status_regis_not_sup">O servidor non soporta rexistros</string>
-  <string name="encryption_choice_unencrypted">Texto plano</string>
   <string name="encryption_choice_otr">OTR</string>
   <string name="encryption_choice_pgp">OpenPGP</string>
   <string name="mgmt_account_edit">Editar conta</string>

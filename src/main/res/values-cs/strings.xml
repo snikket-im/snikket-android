@@ -76,7 +76,6 @@
   <string name="delete_messages">Smazat zprávy</string>
   <string name="also_end_conversation">Poté ukončit i tuto konverzaci</string>
   <string name="choose_presence">Vybrat aktualizaci stavu pro kontakt</string>
-  <string name="send_unencrypted_message">Poslat textovou zprávu</string>
   <string name="send_otr_message">Poslat OTR šifrovanou zprávu</string>
   <string name="send_omemo_message">Poslat OMEMO šifrovanou zprávu</string>
   <string name="send_pgp_message">Poslat OpenPGP šifrovanou zprávu</string>
@@ -150,7 +149,6 @@
   <string name="account_status_regis_not_sup">Server nepodporuje registrace</string>
   <string name="account_status_security_error">Bezpečnostní chyba</string>
   <string name="account_status_incompatible_server">Nekompatibilní server</string>
-  <string name="encryption_choice_unencrypted">Čistý text</string>
   <string name="encryption_choice_otr">OTR</string>
   <string name="encryption_choice_pgp">OpenPGP</string>
   <string name="encryption_choice_omemo">OMEMO</string>

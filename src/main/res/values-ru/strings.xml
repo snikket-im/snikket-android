@@ -76,7 +76,6 @@
   <string name="delete_messages">Удалить сообщения</string>
   <string name="also_end_conversation">Завершить беседу</string>
   <string name="choose_presence">Укажите статус для контакта</string>
-  <string name="send_unencrypted_message">Отправить незашифрованное текстовое сообщение</string>
   <string name="send_otr_message">Отправить OTR защифрованное сообщение</string>
   <string name="send_pgp_message">Отправить OpenPGP защифрованное сообщение</string>
   <string name="your_nick_has_been_changed">Ваш псевдоним был изменен</string>
@@ -147,7 +146,6 @@
   <string name="account_status_regis_not_sup">Сервер не поддерживает регистрацию</string>
   <string name="account_status_security_error">Ошибка безопасности</string>
   <string name="account_status_incompatible_server">Несовместимый сервер</string>
-  <string name="encryption_choice_unencrypted">Без шифрования</string>
   <string name="encryption_choice_otr">OTR</string>
   <string name="encryption_choice_pgp">OpenPGP</string>
   <string name="mgmt_account_edit">Редактировать аккаунт</string>

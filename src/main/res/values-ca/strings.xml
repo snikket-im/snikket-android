@@ -76,7 +76,6 @@
   <string name="delete_messages">Esborrar missatges</string>
   <string name="also_end_conversation">Finalitzar aquesta conversa més tard</string>
   <string name="choose_presence">Selecciona recurs del contacte</string>
-  <string name="send_unencrypted_message">Enviar missatge de text</string>
   <string name="send_otr_message">Enviar missatge xifrat amb OTR</string>
   <string name="send_pgp_message">Enviar missatge xifrat amb OpenPGP</string>
   <string name="your_nick_has_been_changed">El teu sobrenom s\'ha modificat</string>
@@ -147,7 +146,6 @@
   <string name="account_status_regis_not_sup">El servidor no admet el registre</string>
   <string name="account_status_security_error">Error de seguretat</string>
   <string name="account_status_incompatible_server">Servidor incompatible</string>
-  <string name="encryption_choice_unencrypted">Text pla</string>
   <string name="encryption_choice_otr">OTR</string>
   <string name="encryption_choice_pgp">OpenPGP</string>
   <string name="mgmt_account_edit">Edita compte</string>

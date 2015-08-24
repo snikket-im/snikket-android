@@ -76,7 +76,6 @@
   <string name="delete_messages">Διαγραφή μηνυμάτων</string>
   <string name="also_end_conversation">Τερματισμός αυτής της συζήτησης αμέσως μετά</string>
   <string name="choose_presence">Επιλέξτε παρουσία για επικοινωνία</string>
-  <string name="send_unencrypted_message">Αποστολή απλού μηνύματος κειμένου</string>
   <string name="send_otr_message">Αποστολή κρυπτογραφημένου μηνύματος OTR</string>
   <string name="send_pgp_message">Αποστολή κρυπτογραφημένου μηνύματος OpenPGP</string>
   <string name="your_nick_has_been_changed">Το ψευδώνυμό σας έχει αλλάξει</string>
@@ -147,7 +146,6 @@
   <string name="account_status_regis_not_sup">Ο διακομιστής δεν υποστηρίζει εγγραφή</string>
   <string name="account_status_security_error">Σφάλμα ασφάλειας</string>
   <string name="account_status_incompatible_server">Μη συμβατός διακομιστής</string>
-  <string name="encryption_choice_unencrypted">Απλό κείμενο</string>
   <string name="encryption_choice_otr">OTR</string>
   <string name="encryption_choice_pgp">OpenPGP</string>
   <string name="mgmt_account_edit">Επεξεργασία λογαριασμού</string>

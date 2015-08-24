@@ -76,7 +76,6 @@
   <string name="delete_messages">Usuń wiadomości</string>
   <string name="also_end_conversation">Zakończ konwersację po usunięciu historii</string>
   <string name="choose_presence">Wybierz widoczność dla kontaktu</string>
-  <string name="send_unencrypted_message">Wyślij wiadomość jawną</string>
   <string name="send_otr_message">Wyślij zaszyfrowaną wiadomość (OTR)</string>
   <string name="send_pgp_message">Wyślij zaszyfrowaną wiadomość (OpenPGP)</string>
   <string name="your_nick_has_been_changed">Twoja nazwa została zmieniona</string>
@@ -147,7 +146,6 @@
   <string name="account_status_regis_not_sup">Serwer nie umożliwia rejestracji</string>
   <string name="account_status_security_error">Błąd zabezpieczeń</string>
   <string name="account_status_incompatible_server">Serwer niekompatybilny</string>
-  <string name="encryption_choice_unencrypted">Tekst jawny</string>
   <string name="encryption_choice_otr">OTR</string>
   <string name="encryption_choice_pgp">OpenPGP</string>
   <string name="mgmt_account_edit">Edytuj konto</string>

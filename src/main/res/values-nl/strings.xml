@@ -76,7 +76,6 @@
   <string name="delete_messages">Berichten verwijderen</string>
   <string name="also_end_conversation">Beëindig dit gesprek na afloop</string>
   <string name="choose_presence">Kies aanwezigheid om te tonen aan contact</string>
-  <string name="send_unencrypted_message">Verstuur onversleuteld bericht</string>
   <string name="send_otr_message">Verstuur OTR-versleuteld bericht</string>
   <string name="send_omemo_message">Verstuur OMEMO-versleuteld bericht</string>
   <string name="send_pgp_message">Verstuur OpenPGP-versleuteld bericht</string>
@@ -150,7 +149,6 @@
   <string name="account_status_regis_not_sup">Server ondersteunt geen registratie</string>
   <string name="account_status_security_error">Fout bij beveiliging</string>
   <string name="account_status_incompatible_server">Incompatibele server</string>
-  <string name="encryption_choice_unencrypted">Onversleuteld</string>
   <string name="encryption_choice_otr">OTR</string>
   <string name="encryption_choice_pgp">OpenPGP</string>
   <string name="encryption_choice_omemo">OMEMO</string>
