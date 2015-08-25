@@ -104,15 +104,17 @@ public class FileUtils {
 		};
 
 		try {
-			cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs,
-					null);
+			cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs,null);
 			if (cursor != null && cursor.moveToFirst()) {
 				final int column_index = cursor.getColumnIndexOrThrow(column);
 				return cursor.getString(column_index);
 			}
+		} catch(Exception e) {
+			return null;
 		} finally {
-			if (cursor != null)
+			if (cursor != null) {
 				cursor.close();
+			}
 		}
 		return null;
 	}
