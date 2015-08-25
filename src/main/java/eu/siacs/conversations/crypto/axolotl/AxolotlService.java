@@ -282,7 +282,9 @@ public class AxolotlService {
 				XmppAxolotlSession.Trust.UNTRUSTED);
 		this.deviceIds.put(jid, deviceIds);
 		mXmppConnectionService.keyStatusUpdated();
-		publishOwnDeviceIdIfNeeded();
+		if (account.getJid().toBareJid().equals(jid.toBareJid())) {
+			publishOwnDeviceIdIfNeeded();
+		}
 	}
 
 	public void wipeOtherPepDevices() {
@@ -320,12 +322,14 @@ public class AxolotlService {
 						mXmppConnectionService.sendIqPacket(account, publish, new OnIqPacketReceived() {
 							@Override
 							public void onIqPacketReceived(Account account, IqPacket packet) {
-								// TODO: implement this!
+								if (packet.getType() != IqPacket.TYPE.RESULT) {
+									Log.d(Config.LOGTAG, getLogprefix(account)+ "Error received while publishing own device id"  + packet.findChild("error"));
+								}
 							}
 						});
 					}
 				} else {
-					Log.d(Config.LOGTAG, getLogprefix(account) + "Error received while publishing device ID:" + packet.findChild("error"));
+					Log.d(Config.LOGTAG, getLogprefix(account) + "Error received while retrieving Device Ids" + packet.findChild("error"));
 				}
 			}
 		});
