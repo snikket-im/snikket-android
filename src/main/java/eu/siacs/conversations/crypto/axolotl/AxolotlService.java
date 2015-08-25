@@ -257,6 +257,8 @@ public class AxolotlService {
 		if (jid.toBareJid().equals(account.getJid().toBareJid())) {
 			if (deviceIds.contains(getOwnDeviceId())) {
 				deviceIds.remove(getOwnDeviceId());
+			} else {
+				publishOwnDeviceId(deviceIds);
 			}
 			for (Integer deviceId : deviceIds) {
 				AxolotlAddress ownDeviceAddress = new AxolotlAddress(jid.toBareJid().toString(), deviceId);
@@ -282,9 +284,6 @@ public class AxolotlService {
 				XmppAxolotlSession.Trust.UNTRUSTED);
 		this.deviceIds.put(jid, deviceIds);
 		mXmppConnectionService.keyStatusUpdated();
-		if (account.getJid().toBareJid().equals(jid.toBareJid())) {
-			publishOwnDeviceIdIfNeeded();
-		}
 	}
 
 	public void wipeOtherPepDevices() {
@@ -312,24 +311,25 @@ public class AxolotlService {
 				if (packet.getType() == IqPacket.TYPE.RESULT) {
 					Element item = mXmppConnectionService.getIqParser().getItem(packet);
 					Set<Integer> deviceIds = mXmppConnectionService.getIqParser().deviceIds(item);
-					if (deviceIds == null) {
-						deviceIds = new HashSet<Integer>();
-					}
 					if (!deviceIds.contains(getOwnDeviceId())) {
-						deviceIds.add(getOwnDeviceId());
-						IqPacket publish = mXmppConnectionService.getIqGenerator().publishDeviceIds(deviceIds);
-						Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Own device " + getOwnDeviceId() + " not in PEP devicelist. Publishing: " + publish);
-						mXmppConnectionService.sendIqPacket(account, publish, new OnIqPacketReceived() {
-							@Override
-							public void onIqPacketReceived(Account account, IqPacket packet) {
-								if (packet.getType() != IqPacket.TYPE.RESULT) {
-									Log.d(Config.LOGTAG, getLogprefix(account)+ "Error received while publishing own device id"  + packet.findChild("error"));
-								}
-							}
-						});
+						publishOwnDeviceId(deviceIds);
 					}
 				} else {
 					Log.d(Config.LOGTAG, getLogprefix(account) + "Error received while retrieving Device Ids" + packet.findChild("error"));
+				}
+			}
+		});
+	}
+
+	public void publishOwnDeviceId(Set<Integer> deviceIds) {
+		deviceIds.add(getOwnDeviceId());
+		IqPacket publish = mXmppConnectionService.getIqGenerator().publishDeviceIds(deviceIds);
+		Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Own device " + getOwnDeviceId() + " not in PEP devicelist. Publishing: " + publish);
+		mXmppConnectionService.sendIqPacket(account, publish, new OnIqPacketReceived() {
+			@Override
+			public void onIqPacketReceived(Account account, IqPacket packet) {
+				if (packet.getType() != IqPacket.TYPE.RESULT) {
+					Log.d(Config.LOGTAG, getLogprefix(account) + "Error received while publishing own device id" + packet.findChild("error"));
 				}
 			}
 		});
