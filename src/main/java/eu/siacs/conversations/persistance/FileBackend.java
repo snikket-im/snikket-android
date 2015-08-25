@@ -137,6 +137,9 @@ public class FileBackend {
 		options.inJustDecodeBounds = true;
 		try {
 			BitmapFactory.decodeStream(mXmppConnectionService.getContentResolver().openInputStream(uri), null, options);
+			if (options == null || options.outMimeType == null) {
+				return false;
+			}
 			return (options.outWidth <= Config.IMAGE_SIZE && options.outHeight <= Config.IMAGE_SIZE && options.outMimeType.contains(Config.IMAGE_FORMAT.name().toLowerCase()));
 		} catch (FileNotFoundException e) {
 			return false;
