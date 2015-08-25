@@ -50,6 +50,7 @@ public class AxolotlService {
 	public static final String LOGPREFIX = "AxolotlService";
 
 	public static final int NUM_KEYS_TO_PUBLISH = 100;
+	public static final int publishTriesThreshold = 3;
 
 	private final Account account;
 	private final XmppConnectionService mXmppConnectionService;
@@ -59,6 +60,8 @@ public class AxolotlService {
 	private final Map<String, XmppAxolotlMessage> messageCache;
 	private final FetchStatusMap fetchStatusMap;
 	private final SerialSingleThreadExecutor executor;
+	private int numPublishTriesOnEmptyPep = 0;
+	private boolean pepBroken = false;
 
 	private static class AxolotlAddressMap<T> {
 		protected Map<String, Map<Integer, T>> map;
@@ -255,6 +258,10 @@ public class AxolotlService {
 
 	public void registerDevices(final Jid jid, @NonNull final Set<Integer> deviceIds) {
 		if (jid.toBareJid().equals(account.getJid().toBareJid())) {
+			if (!deviceIds.isEmpty()) {
+				pepBroken = false;
+				numPublishTriesOnEmptyPep = 0;
+			}
 			if (deviceIds.contains(getOwnDeviceId())) {
 				deviceIds.remove(getOwnDeviceId());
 			} else {
@@ -287,6 +294,10 @@ public class AxolotlService {
 	}
 
 	public void wipeOtherPepDevices() {
+		if (pepBroken) {
+			Log.d(Config.LOGTAG, getLogprefix(account) + "wipeOtherPepDevices called, but PEP is broken. Ignoring... ");
+			return;
+		}
 		Set<Integer> deviceIds = new HashSet<>();
 		deviceIds.add(getOwnDeviceId());
 		IqPacket publish = mXmppConnectionService.getIqGenerator().publishDeviceIds(deviceIds);
@@ -304,6 +315,10 @@ public class AxolotlService {
 	}
 
 	public void publishOwnDeviceIdIfNeeded() {
+		if (pepBroken) {
+			Log.d(Config.LOGTAG, getLogprefix(account) + "publishOwnDeviceIdIfNeeded called, but PEP is broken. Ignoring... ");
+			return;
+		}
 		IqPacket packet = mXmppConnectionService.getIqGenerator().retrieveDeviceIds(account.getJid().toBareJid());
 		mXmppConnectionService.sendIqPacket(account, packet, new OnIqPacketReceived() {
 			@Override
@@ -322,20 +337,38 @@ public class AxolotlService {
 	}
 
 	public void publishOwnDeviceId(Set<Integer> deviceIds) {
-		deviceIds.add(getOwnDeviceId());
-		IqPacket publish = mXmppConnectionService.getIqGenerator().publishDeviceIds(deviceIds);
-		Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Own device " + getOwnDeviceId() + " not in PEP devicelist. Publishing: " + publish);
-		mXmppConnectionService.sendIqPacket(account, publish, new OnIqPacketReceived() {
-			@Override
-			public void onIqPacketReceived(Account account, IqPacket packet) {
-				if (packet.getType() != IqPacket.TYPE.RESULT) {
-					Log.d(Config.LOGTAG, getLogprefix(account) + "Error received while publishing own device id" + packet.findChild("error"));
+		if (!deviceIds.contains(getOwnDeviceId())) {
+			Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Own device " + getOwnDeviceId() + " not in PEP devicelist.");
+			if (deviceIds.isEmpty()) {
+				if (numPublishTriesOnEmptyPep >= publishTriesThreshold) {
+					Log.w(Config.LOGTAG, getLogprefix(account) + "Own device publish attempt threshold exceeded, aborting...");
+					pepBroken = true;
+					return;
+				} else {
+					numPublishTriesOnEmptyPep++;
+					Log.w(Config.LOGTAG, getLogprefix(account) + "Own device list empty, attempting to publish (try " + numPublishTriesOnEmptyPep + ")");
 				}
+			} else {
+				numPublishTriesOnEmptyPep = 0;
 			}
-		});
+			deviceIds.add(getOwnDeviceId());
+			IqPacket publish = mXmppConnectionService.getIqGenerator().publishDeviceIds(deviceIds);
+			mXmppConnectionService.sendIqPacket(account, publish, new OnIqPacketReceived() {
+				@Override
+				public void onIqPacketReceived(Account account, IqPacket packet) {
+					if (packet.getType() != IqPacket.TYPE.RESULT) {
+						Log.d(Config.LOGTAG, getLogprefix(account) + "Error received while publishing own device id" + packet.findChild("error"));
+					}
+				}
+			});
+		}
 	}
 
 	public void publishBundlesIfNeeded() {
+		if (!pepBroken) {
+			Log.d(Config.LOGTAG, getLogprefix(account) + "publishBundlesIfNeeded called, but PEP is broken. Ignoring... ");
+			return;
+		}
 		IqPacket packet = mXmppConnectionService.getIqGenerator().retrieveBundlesForDevice(account.getJid().toBareJid(), getOwnDeviceId());
 		mXmppConnectionService.sendIqPacket(account, packet, new OnIqPacketReceived() {
 			@Override
