@@ -318,7 +318,6 @@ public class XmppConnection implements Runnable {
 									Log.d(Config.LOGTAG, account.getJid().toBareJid().toString()
 											+ ": stream management(" + smVersion + ") enabled");
 								}
-								this.lastSessionStarted = SystemClock.elapsedRealtime();
 								this.stanzasReceived = 0;
 								final RequestPacket r = new RequestPacket(smVersion);
 								tagWriter.writeStanzaAsync(r);
@@ -784,6 +783,7 @@ public class XmppConnection implements Runnable {
 		sendServiceDiscoveryInfo(account.getJid().toBareJid());
 		sendServiceDiscoveryItems(account.getServer());
 		Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": online with resource " + account.getResource());
+		this.lastSessionStarted = SystemClock.elapsedRealtime();
 		changeStatus(Account.State.ONLINE);
 		if (bindListener != null) {
 			bindListener.onBind(account);
@@ -1100,12 +1100,7 @@ public class XmppConnection implements Runnable {
 	}
 
 	public long getLastSessionEstablished() {
-		final long diff;
-		if (this.lastSessionStarted == 0) {
-			diff = SystemClock.elapsedRealtime() - this.lastConnect;
-		} else {
-			diff = SystemClock.elapsedRealtime() - this.lastSessionStarted;
-		}
+		final long diff = SystemClock.elapsedRealtime() - this.lastSessionStarted;
 		return System.currentTimeMillis() - diff;
 	}
 
