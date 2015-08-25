@@ -3,7 +3,6 @@ package eu.siacs.conversations.ui.adapter;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.text.Spannable;
