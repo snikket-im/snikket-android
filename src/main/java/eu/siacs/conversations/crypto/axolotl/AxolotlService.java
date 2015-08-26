@@ -323,14 +323,14 @@ public class AxolotlService {
 		mXmppConnectionService.sendIqPacket(account, packet, new OnIqPacketReceived() {
 			@Override
 			public void onIqPacketReceived(Account account, IqPacket packet) {
-				if (packet.getType() == IqPacket.TYPE.RESULT) {
+				if (packet.getType() == IqPacket.TYPE.TIMEOUT) {
+					Log.d(Config.LOGTAG, getLogprefix(account) + "Timeout received while retrieving own Device Ids.");
+				} else {
 					Element item = mXmppConnectionService.getIqParser().getItem(packet);
 					Set<Integer> deviceIds = mXmppConnectionService.getIqParser().deviceIds(item);
 					if (!deviceIds.contains(getOwnDeviceId())) {
 						publishOwnDeviceId(deviceIds);
 					}
-				} else {
-					Log.d(Config.LOGTAG, getLogprefix(account) + "Error received while retrieving Device Ids" + packet.findChild("error"));
 				}
 			}
 		});
