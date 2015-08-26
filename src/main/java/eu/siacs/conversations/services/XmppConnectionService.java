@@ -2216,7 +2216,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		}
 		for (Conversation conversation : getConversations()) {
 			if (conversation.getJid().toBareJid().equals(recipient) && conversation.getAccount() == account) {
-				final Message message = conversation.findSentMessageWithUuid(uuid);
+				final Message message = conversation.findSentMessageWithUuidOrRemoteId(uuid);
 				if (message != null) {
 					markMessage(message, status);
 				}
@@ -2226,8 +2226,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		return null;
 	}
 
-	public boolean markMessage(Conversation conversation, String uuid,
-							   int status) {
+	public boolean markMessage(Conversation conversation, String uuid, int status) {
 		if (uuid == null) {
 			return false;
 		} else {

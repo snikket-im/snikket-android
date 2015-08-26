@@ -201,14 +201,25 @@ public class Conversation extends AbstractEntity implements Blockable {
 		}
 	}
 
-	public Message findSentMessageWithUuid(String uuid) {
+	public Message findSentMessageWithUuidOrRemoteId(String id) {
 		synchronized (this.messages) {
 			for (Message message : this.messages) {
-				if (uuid.equals(message.getUuid())
-						|| (message.getStatus() >= Message.STATUS_SEND && uuid
-							.equals(message.getRemoteMsgId()))) {
+				if (id.equals(message.getUuid())
+						|| (message.getStatus() >= Message.STATUS_SEND
+						&& id.equals(message.getRemoteMsgId()))) {
 					return message;
-							}
+				}
+			}
+		}
+		return null;
+	}
+
+	public Message findSentMessageWithUuid(String id) {
+		synchronized (this.messages) {
+			for (Message message : this.messages) {
+				if (id.equals(message.getUuid())) {
+					return message;
+				}
 			}
 		}
 		return null;
