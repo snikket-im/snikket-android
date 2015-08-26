@@ -231,8 +231,7 @@ public class AxolotlService {
 		axolotlStore.regenerate();
 		sessions.clear();
 		fetchStatusMap.clear();
-		publishBundlesIfNeeded();
-		publishOwnDeviceIdIfNeeded();
+		publishBundlesIfNeeded(true);
 	}
 
 	public int getOwnDeviceId() {
@@ -365,7 +364,7 @@ public class AxolotlService {
 		}
 	}
 
-	public void publishBundlesIfNeeded() {
+	public void publishBundlesIfNeeded(final boolean announceAfter) {
 		if (pepBroken) {
 			Log.d(Config.LOGTAG, getLogprefix(account) + "publishBundlesIfNeeded called, but PEP is broken. Ignoring... ");
 			return;
@@ -448,10 +447,23 @@ public class AxolotlService {
 						mXmppConnectionService.sendIqPacket(account, publish, new OnIqPacketReceived() {
 							@Override
 							public void onIqPacketReceived(Account account, IqPacket packet) {
-								// TODO: implement this!
-								Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Published bundle, got: " + packet);
+								if (packet.getType() == IqPacket.TYPE.RESULT) {
+									Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Successfully published bundle. ");
+									if (announceAfter) {
+										Log.d(Config.LOGTAG, getLogprefix(account) + "Announcing device " + getOwnDeviceId());
+										publishOwnDeviceIdIfNeeded();
+									}
+								} else {
+									Log.d(Config.LOGTAG, getLogprefix(account) + "Error received while publishing bundle: " + packet.findChild("error"));
+								}
 							}
 						});
+					} else {
+						Log.d(Config.LOGTAG, getLogprefix(account) + "Bundle " + getOwnDeviceId() + " in PEP was current");
+						if (announceAfter) {
+							Log.d(Config.LOGTAG, getLogprefix(account) + "Announcing device " + getOwnDeviceId());
+							publishOwnDeviceIdIfNeeded();
+						}
 					}
 				} catch (InvalidKeyException e) {
 					Log.e(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Failed to publish bundle " + getOwnDeviceId() + ", reason: " + e.getMessage());
@@ -733,7 +745,7 @@ public class AxolotlService {
 			plaintextMessage = message.decrypt(session, getOwnDeviceId());
 			Integer preKeyId = session.getPreKeyId();
 			if (preKeyId != null) {
-				publishBundlesIfNeeded();
+				publishBundlesIfNeeded(false);
 				session.resetPreKeyId();
 			}
 		} catch (CryptoFailedException e) {

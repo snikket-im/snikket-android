@@ -165,8 +165,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 			mMessageArchiveService.executePendingQueries(account);
 			mJingleConnectionManager.cancelInTransmission();
 			syncDirtyContacts(account);
-			account.getAxolotlService().publishOwnDeviceIdIfNeeded();
-			account.getAxolotlService().publishBundlesIfNeeded();
+			account.getAxolotlService().publishBundlesIfNeeded(true);
 		}
 	};
 	private final OnMessageAcknowledged mOnMessageAcknowledgedListener = new OnMessageAcknowledged() {
