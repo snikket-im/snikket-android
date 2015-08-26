@@ -704,8 +704,11 @@ public class XmppConnection implements Runnable {
 		this.sendUnmodifiedIqPacket(iq, new OnIqPacketReceived() {
 			@Override
 			public void onIqPacketReceived(final Account account, final IqPacket packet) {
+				if (packet.getType() == IqPacket.TYPE.TIMEOUT) {
+					return;
+				}
 				final Element bind = packet.findChild("bind");
-				if (bind != null) {
+				if (bind != null && packet.getType() == IqPacket.TYPE.RESULT) {
 					final Element jid = bind.findChild("jid");
 					if (jid != null && jid.getContent() != null) {
 						try {
@@ -757,7 +760,9 @@ public class XmppConnection implements Runnable {
 		this.sendUnmodifiedIqPacket(startSession, new OnIqPacketReceived() {
 			@Override
 			public void onIqPacketReceived(Account account, IqPacket packet) {
-				if (packet.getType() == IqPacket.TYPE.RESULT) {
+				if (packet.getType() == IqPacket.TYPE.TIMEOUT) {
+					return;
+				} else if (packet.getType() == IqPacket.TYPE.RESULT) {
 					sendPostBindInitialization();
 				} else {
 					Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": could not init sessions");
