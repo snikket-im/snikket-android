@@ -1,5 +1,8 @@
 ###Changelog
 
+####Version 1.6.6
+* best 1.6 release yet
+
 ####Version 1.6.5
 * more OMEMO fixes
 
