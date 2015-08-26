@@ -472,28 +472,32 @@ public class XmppConnection implements Runnable {
 				this.jingleListener.onJinglePacketReceived(account,(JinglePacket) packet);
 			}
 		} else {
+			OnIqPacketReceived callback = null;
 			synchronized (this.packetCallbacks) {
 				if (packetCallbacks.containsKey(packet.getId())) {
 					final Pair<IqPacket, OnIqPacketReceived> packetCallbackDuple = packetCallbacks.get(packet.getId());
 					// Packets to the server should have responses from the server
 					if (packetCallbackDuple.first.toServer(account)) {
 						if (packet.fromServer(account)) {
-							packetCallbackDuple.second.onIqPacketReceived(account, packet);
+							callback = packetCallbackDuple.second;
 							packetCallbacks.remove(packet.getId());
 						} else {
 							Log.e(Config.LOGTAG, account.getJid().toBareJid().toString() + ": ignoring spoofed iq packet");
 						}
 					} else {
 						if (packet.getFrom().equals(packetCallbackDuple.first.getTo())) {
-							packetCallbackDuple.second.onIqPacketReceived(account, packet);
+							callback = packetCallbackDuple.second;
 							packetCallbacks.remove(packet.getId());
 						} else {
 							Log.e(Config.LOGTAG, account.getJid().toBareJid().toString() + ": ignoring spoofed iq packet");
 						}
 					}
 				} else if (packet.getType() == IqPacket.TYPE.GET || packet.getType() == IqPacket.TYPE.SET) {
-					this.unregisteredIqListener.onIqPacketReceived(account, packet);
+					callback = this.unregisteredIqListener;
 				}
+			}
+			if (callback != null) {
+				callback.onIqPacketReceived(account,packet);
 			}
 		}
 	}
