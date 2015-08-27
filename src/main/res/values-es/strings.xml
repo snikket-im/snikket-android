@@ -76,6 +76,7 @@
   <string name="delete_messages">Borrar mensajes</string>
   <string name="also_end_conversation">Además, terminar esta conversación</string>
   <string name="choose_presence">Selecciona recurso del contacto</string>
+  <string name="send_unencrypted_message">Enviar mensaje sin cifrar</string>
   <string name="send_otr_message">Enviar mensaje cifrado con OTR</string>
   <string name="send_omemo_message">Enviar mensaje cifrado con OMEMO </string>
   <string name="send_pgp_message">Enviar mensaje cifrado con OpenPGP</string>
@@ -149,6 +150,7 @@
   <string name="account_status_regis_not_sup">El servidor no soporta registros</string>
   <string name="account_status_security_error">Error de seguridad</string>
   <string name="account_status_incompatible_server">Servidor incompatible</string>
+  <string name="encryption_choice_unencrypted">Sin cifrado</string>
   <string name="encryption_choice_otr">OTR</string>
   <string name="encryption_choice_pgp">OpenPGP</string>
   <string name="encryption_choice_omemo">OMEMO</string>
@@ -366,6 +368,8 @@
   <string name="purge_key">Eliminar clave</string>
   <string name="purge_key_desc_part1">¿Estás seguro de que quieres eliminar esta clave?</string>
   <string name="purge_key_desc_part2">Esto será irreversible y nunca podrás iniciar sesión con esta clave de nuevo.</string>
+  <string name="error_no_keys_to_trust">No hay claves usables disponibles para este contacto. Si has eliminado alguna de sus claves, tus contactos necesitarán generar nuevas claves.</string>
+  <string name="error_trustkeys_title">Error</string>
   <string name="fetching_history_from_server">Buscando historial en el servidor</string>
   <string name="no_more_history_on_server">No hay más historial en el servidor</string>
   <string name="updating">Actualizando…</string>
@@ -473,4 +477,6 @@
   <string name="download_failed_server_not_found">Error al descargar: Servidor no encontrado</string>
   <string name="download_failed_file_not_found">Error al descargar: Archivo no encontrado</string>
   <string name="download_failed_could_not_connect">Error al descargar: No se ha podido conectar con el servidor</string>
+  <string name="pref_use_white_background">Usar fondo blanco</string>
+  <string name="pref_use_white_background_summary">Mostrar mensajes recibidos en texto negro con fondo blanco</string>
 </resources>

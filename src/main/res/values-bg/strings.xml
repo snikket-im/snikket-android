@@ -76,6 +76,7 @@
   <string name="delete_messages">Изтриване на съобщенията</string>
   <string name="also_end_conversation">Този разговор да приключи след това</string>
   <string name="choose_presence">Изберете присъствие за контакта</string>
+  <string name="send_unencrypted_message">Изпр. на нешифр. съобщение</string>
   <string name="send_otr_message">Изпр. на съобщение, шифр. чрез OTP</string>
   <string name="send_omemo_message">Изпр. на съобщение, шифр. чрез OMEMO</string>
   <string name="send_pgp_message">Изпр. на съобщение, шифр. чрез OpenPGP</string>
@@ -149,6 +150,7 @@
   <string name="account_status_regis_not_sup">Сървърът не поддържа регистриране</string>
   <string name="account_status_security_error">Грешка в сигурността</string>
   <string name="account_status_incompatible_server">Несъвместим сървър</string>
+  <string name="encryption_choice_unencrypted">Нешифровано</string>
   <string name="encryption_choice_otr">OTR</string>
   <string name="encryption_choice_pgp">OpenPGP</string>
   <string name="encryption_choice_omemo">OMEMO</string>
@@ -366,6 +368,8 @@
   <string name="purge_key">Изтриване на ключа</string>
   <string name="purge_key_desc_part1">Сигурни ли сте, че искате да изтриете този ключ?</string>
   <string name="purge_key_desc_part2">След това той ще бъде необратимо приет за грешен и повече няма да можете да създавате сесии с него.</string>
+  <string name="error_no_keys_to_trust">Няма ключове, които могат да бъдат използвани за този контакт. Ако сте изчистили някои от ключовете му, то той трябва да създаде нови.</string>
+  <string name="error_trustkeys_title">Грешка</string>
   <string name="fetching_history_from_server">Получаване на историята от сървъра</string>
   <string name="no_more_history_on_server">Няма повече история на сървъра</string>
   <string name="updating">Актуализиране...</string>
@@ -473,4 +477,6 @@
   <string name="download_failed_server_not_found">Неуспешно сваляне: Сървърът не е открит</string>
   <string name="download_failed_file_not_found">Неуспешно сваляне: Файлът не е открит</string>
   <string name="download_failed_could_not_connect">Неуспешно сваляне: Неуспешна връзка със сървъра</string>
+  <string name="pref_use_white_background">Използване на бял фон</string>
+  <string name="pref_use_white_background_summary">Показване на получените съобщения с черен текст на бял фон</string>
 </resources>

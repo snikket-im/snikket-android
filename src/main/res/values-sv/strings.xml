@@ -76,6 +76,7 @@
   <string name="delete_messages">Ta bort meddelanden</string>
   <string name="also_end_conversation">Avsluta sedan denna konversation</string>
   <string name="choose_presence">Välj tillgänglighet till kontakt</string>
+  <string name="send_unencrypted_message">Skicka okrypterat meddelande</string>
   <string name="send_otr_message">Skicka OTR-krypterat meddelande</string>
   <string name="send_omemo_message">Skicka OMEMO-krypterat meddelande</string>
   <string name="send_pgp_message">Skicka OpenPGP-krypterat meddelande</string>
@@ -149,6 +150,7 @@
   <string name="account_status_regis_not_sup">Servern stödjer inte registrering</string>
   <string name="account_status_security_error">Säkerhetsfel</string>
   <string name="account_status_incompatible_server">Inkompatibel server</string>
+  <string name="encryption_choice_unencrypted">Okrypterat</string>
   <string name="encryption_choice_otr">OTR</string>
   <string name="encryption_choice_pgp">OpenPGP</string>
   <string name="encryption_choice_omemo">OMEMO</string>
@@ -181,11 +183,11 @@
   <string name="muc_details_other_members">Andra medlemmar</string>
   <string name="server_info_show_more">Server info</string>
   <string name="server_info_mam">XEP-0313: Message Archive</string>
-  <string name="server_info_carbon_messages">Carbon Messages</string>
+  <string name="server_info_carbon_messages">XEP-0280: Message Carbons</string>
   <string name="server_info_csi">XEP-0352: Client State Indication</string>
   <string name="server_info_blocking">XEP-0191: Blocking Command</string>
   <string name="server_info_roster_version">XEP-0237: Roster Versioning</string>
-  <string name="server_info_stream_management">Stream Management</string>
+  <string name="server_info_stream_management">XEP-0198: Stream Management</string>
   <string name="server_info_pep">XEP-0163: PEP (Avatarbilder)</string>
   <string name="server_info_available">tillgänglig</string>
   <string name="server_info_unavailable">otillgänglig</string>
@@ -366,6 +368,8 @@
   <string name="purge_key">Rensa nyckel</string>
   <string name="purge_key_desc_part1">Är du säker på att du vill rensa denna nyckel?</string>
   <string name="purge_key_desc_part2">Den kommer att antas oåterkalleligt komprometterat och du kommer aldrig kunna bygga en session med den igen.</string>
+  <string name="error_no_keys_to_trust">Det finns inga användbara nycklar tillgängliga för den här kontakten. Om du har rensat någon av dennes nycklar behöver de generera nya.</string>
+  <string name="error_trustkeys_title">Fel</string>
   <string name="fetching_history_from_server">Hämtar historik från server</string>
   <string name="no_more_history_on_server">Ingen mer historik på server</string>
   <string name="updating">Uppdaterar…</string>
@@ -473,4 +477,6 @@
   <string name="download_failed_server_not_found">Nerladdning gick fel: Server hittades inte</string>
   <string name="download_failed_file_not_found">Nerladdning gick fel: Filen hittades inte</string>
   <string name="download_failed_could_not_connect">Nerladdningen gick fel: Kunder inte ansluta till server</string>
+  <string name="pref_use_white_background">Använd vit bakgrund</string>
+  <string name="pref_use_white_background_summary">Visa mottagna meddelanden som svart text på vit bakgrund</string>
 </resources>

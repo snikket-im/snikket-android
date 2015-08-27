@@ -76,6 +76,7 @@
   <string name="delete_messages">Mezuak ezabatu</string>
   <string name="also_end_conversation">Elkarrizketa hau jarraian amaitu</string>
   <string name="choose_presence">Hautatu agerpena kontaktuarentzat</string>
+  <string name="send_unencrypted_message">Enkriptatu gabeko mezua bidali</string>
   <string name="send_otr_message">OTRz enkriptatutako mezua bidali</string>
   <string name="send_omemo_message">OMEMOz enkriptatutako mezua bidali</string>
   <string name="send_pgp_message">OpenPGPz enkriptatutako mezua bidali</string>
@@ -149,6 +150,7 @@
   <string name="account_status_regis_not_sup">Zerbitzariak ez du erregistratzea onartzen</string>
   <string name="account_status_security_error">Segurtasun akatsa</string>
   <string name="account_status_incompatible_server">Zerbitzari ez bateragarria</string>
+  <string name="encryption_choice_unencrypted">Enkriptatu gabe</string>
   <string name="encryption_choice_otr">OTR</string>
   <string name="encryption_choice_pgp">OpenPGP</string>
   <string name="encryption_choice_omemo">OMEMO</string>
@@ -366,6 +368,8 @@
   <string name="purge_key">Gakoa purgatu</string>
   <string name="purge_key_desc_part1">Ziur al zaude gako hau purgatu nahi duzulaz?</string>
   <string name="purge_key_desc_part2">Modu itzulezinean arriskutsutzat hartuko da, eta ezingo duzu gakoarekin berriro saio berri bat sortu.</string>
+  <string name="error_no_keys_to_trust">Kontaktu honetarako gako erabilgarririk ez dago. Bere gakoak purgatu badituzu, berri batzuk sortu behar dituzte.</string>
+  <string name="error_trustkeys_title">Akatsa</string>
   <string name="fetching_history_from_server">Mezuak zerbitzaritik eskuratzen</string>
   <string name="no_more_history_on_server">Mezu gehiagorik ez zerbitzarian</string>
   <string name="updating">Eguneratzen...</string>
@@ -473,4 +477,6 @@
   <string name="download_failed_server_not_found">Deskargak huts egin du: zerbitzaria ez da aurkitu</string>
   <string name="download_failed_file_not_found">Deskargak huts egin du: fitxategia ez da aurkitu</string>
   <string name="download_failed_could_not_connect">Deskargak huts egin du: ezin izan da ostalarira konektatu</string>
+  <string name="pref_use_white_background">Atzeko-planoan kolore zuria erabili</string>
+  <string name="pref_use_white_background_summary">Jasotako mezuak testu beltza atzeko-plano zuri baten gainean bezala erakutsi</string>
 </resources>
