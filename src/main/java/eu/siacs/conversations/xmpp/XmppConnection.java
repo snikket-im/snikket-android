@@ -159,7 +159,7 @@ public class XmppConnection implements Runnable {
 					throw new UnknownHostException();
 				}
 			} else {
-				final Bundle result = DNSHelper.getSRVRecord(account.getServer());
+				final Bundle result = DNSHelper.getSRVRecord(account.getServer(),mXmppConnectionService);
 				if (result == null) {
 					throw new IOException("unhandled exception in DNS resolver");
 				}

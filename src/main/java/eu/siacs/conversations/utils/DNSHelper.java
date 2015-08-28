@@ -1,13 +1,21 @@
 package eu.siacs.conversations.utils;
 
+import android.annotation.TargetApi;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.LinkProperties;
+import android.net.Network;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.SocketTimeoutException;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 import java.util.TreeMap;
 import java.util.regex.Pattern;
@@ -35,17 +43,42 @@ public class DNSHelper {
 
 	protected static Client client = new Client();
 
-	public static Bundle getSRVRecord(final Jid jid) throws IOException {
+	public static Bundle getSRVRecord(final Jid jid, Context context) throws IOException {
         final String host = jid.getDomainpart();
-		String dns[] = client.findDNS();
-		for (int i = 0; i < dns.length; ++i) {
-			InetAddress ip = InetAddress.getByName(dns[i]);
-			Bundle b = queryDNS(host, ip);
-			if (b.containsKey("values") || i == dns.length - 1) {
+		final List<InetAddress> servers = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ? getDnsServers(context) : getDnsServersPreLolipop();
+		Bundle b = null;
+		for(InetAddress server : servers) {
+			b = queryDNS(host, server);
+			if (b.containsKey("values")) {
 				return b;
 			}
 		}
-		return null;
+		return b;
+	}
+
+	@TargetApi(21)
+	private static List<InetAddress> getDnsServers(Context context) {
+		List<InetAddress> servers = new ArrayList<>();
+		ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+		Network[] networks = connectivityManager.getAllNetworks();
+		for(int i = 0; i < networks.length; ++i) {
+			LinkProperties linkProperties = connectivityManager.getLinkProperties(networks[i]);
+			servers.addAll(linkProperties.getDnsServers());
+		}
+		return servers.size() > 0 ? servers : getDnsServersPreLolipop();
+	}
+
+	private static List<InetAddress> getDnsServersPreLolipop() {
+		List<InetAddress> servers = new ArrayList<>();
+		String[] dns = client.findDNS();
+		for(int i = 0; i < dns.length; ++i) {
+			try {
+				servers.add(InetAddress.getByName(dns[i]));
+			} catch (UnknownHostException e) {
+				//ignore
+			}
+		}
+		return servers;
 	}
 
 	public static Bundle queryDNS(String host, InetAddress dnsServer) {
