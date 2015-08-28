@@ -182,7 +182,6 @@
   <string name="server_info_blocking">XEP-0191: Blocking Command </string>
   <string name="server_info_roster_version">XEP-0237: Roster Versioning </string>
   <string name="server_info_stream_management">XEP-0198: Stream Management </string>
-  <string name="server_info_pep">XEP-0163: PEP (Avatars) </string>
   <string name="server_info_available">가능 </string>
   <string name="server_info_unavailable">불가 </string>
   <string name="missing_public_keys">공개 키 선언 누락 </string>

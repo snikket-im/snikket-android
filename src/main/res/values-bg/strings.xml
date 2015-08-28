@@ -188,7 +188,8 @@
   <string name="server_info_blocking">XEP-0191: Команда за блокиране</string>
   <string name="server_info_roster_version">XEP-0237: Поддържане на версия на списъка</string>
   <string name="server_info_stream_management">XEP-0198: Управление на потоците</string>
-  <string name="server_info_pep">XEP-0163: PEP (Аватари)</string>
+  <string name="server_info_pep">XEP-0163: PEP (Аватари / OMEMO)</string>
+  <string name="server_info_http_upload">XEP-0363: Качване на файл през HTTP</string>
   <string name="server_info_available">налично</string>
   <string name="server_info_unavailable">не е налично</string>
   <string name="missing_public_keys">Липсват обявления за публичен ключ</string>

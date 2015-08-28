@@ -182,7 +182,6 @@
   <string name="server_info_blocking">XEP-0191:  Команда Блокирования</string>
   <string name="server_info_roster_version">XEP-0237: Управление версиями списков</string>
   <string name="server_info_stream_management">XEP-0198: Управление потоками</string>
-  <string name="server_info_pep">XEP-0163: PEP (Аватары)</string>
   <string name="server_info_available">доступен</string>
   <string name="server_info_unavailable">недоступен</string>
   <string name="missing_public_keys">Отсутствие анонсирования открытых ключей</string>

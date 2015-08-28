@@ -186,7 +186,6 @@
   <string name="server_info_blocking">XEP-0191: Příkaz blokování</string>
   <string name="server_info_roster_version">XEP-0237: Verzování seznamu</string>
   <string name="server_info_stream_management">XEP-0198: Nastavení proudu</string>
-  <string name="server_info_pep">XEP-0163: PEP (Avatars)</string>
   <string name="server_info_available">dostupný</string>
   <string name="server_info_unavailable">nedostupný</string>
   <string name="missing_public_keys">Chybí oznámení o veřejném klíči</string>

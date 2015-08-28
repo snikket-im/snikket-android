@@ -182,7 +182,6 @@
   <string name="server_info_blocking">XEP-0191: Ordre de bloqueix</string>
   <string name="server_info_roster_version">XEP-0237: Plantilla de les versions</string>
   <string name="server_info_stream_management">XEP-0198: Gestió de la transmissió</string>
-  <string name="server_info_pep">XEP-0163: PEP(Avatars)</string>
   <string name="server_info_available">Disponible</string>
   <string name="server_info_unavailable">No disponible</string>
   <string name="missing_public_keys">Clau pública d\'invitació perduda</string>
