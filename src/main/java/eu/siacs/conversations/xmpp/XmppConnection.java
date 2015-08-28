@@ -722,11 +722,11 @@ public class XmppConnection implements Runnable {
 							sendPostBindInitialization();
 						}
 					} else {
-						Log.d(Config.LOGTAG,account.getJid()+": disconnecting because of bind failure");
+						Log.d(Config.LOGTAG, account.getJid() + ": disconnecting because of bind failure");
 						disconnect(true);
 					}
 				} else {
-					Log.d(Config.LOGTAG,account.getJid()+": disconnecting because of bind failure");
+					Log.d(Config.LOGTAG, account.getJid() + ": disconnecting because of bind failure");
 					disconnect(true);
 				}
 			}
@@ -751,7 +751,7 @@ public class XmppConnection implements Runnable {
 		for(OnIqPacketReceived callback : callbacks) {
 			callback.onIqPacketReceived(account,failurePacket);
 		}
-		Log.d(Config.LOGTAG,account.getJid().toBareJid()+": done clearing iq callbacks. "+this.packetCallbacks.size()+" left");
+		Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": done clearing iq callbacks. " + this.packetCallbacks.size() + " left");
 	}
 
 	private void sendStartSession() {
@@ -1036,15 +1036,23 @@ public class XmppConnection implements Runnable {
 					if (tagWriter.isActive()) {
 						tagWriter.finish();
 						try {
-							while (!tagWriter.finished() && socket.isConnected()) {
-								Log.d(Config.LOGTAG, "not yet finished");
-								Thread.sleep(100);
+							int i = 0;
+							boolean warned = false;
+							while (!tagWriter.finished() && socket.isConnected() && i <= 10) {
+								if (!warned) {
+									Log.d(Config.LOGTAG, account.getJid().toBareJid()+": waiting for tag writer to finish");
+									warned = true;
+								}
+								Thread.sleep(200);
+								i++;
+							}
+							if (warned) {
+								Log.d(Config.LOGTAG,account.getJid().toBareJid()+": tag writer has finished");
 							}
 							tagWriter.writeTag(Tag.end("stream:stream"));
 							socket.close();
 						} catch (final IOException e) {
-							Log.d(Config.LOGTAG,
-									"io exception during disconnect");
+							Log.d(Config.LOGTAG,"io exception during disconnect");
 						} catch (final InterruptedException e) {
 							Log.d(Config.LOGTAG, "interrupted");
 						}
