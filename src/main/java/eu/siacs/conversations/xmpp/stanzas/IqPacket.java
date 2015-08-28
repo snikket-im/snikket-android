@@ -52,6 +52,8 @@ public class IqPacket extends AbstractAcknowledgeableStanza {
 				return TYPE.SET;
 			case "get":
 				return TYPE.GET;
+			case "timeout":
+				return TYPE.TIMEOUT;
 			default:
 				return TYPE.INVALID;
 		}
