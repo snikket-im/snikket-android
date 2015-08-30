@@ -149,7 +149,12 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
 		if(signedPreKeySignature == null) {
 			return null;
 		}
-		return Base64.decode(signedPreKeySignature.getContent(),Base64.DEFAULT);
+		try {
+			return Base64.decode(signedPreKeySignature.getContent(), Base64.DEFAULT);
+		} catch (IllegalArgumentException e) {
+			Log.e(Config.LOGTAG,AxolotlService.LOGPREFIX+" : Invalid base64 in signedPreKeySignature");
+			return null;
+		}
 	}
 
 	public IdentityKey identityKey(final Element bundle) {
@@ -160,7 +165,7 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
 		}
 		try {
 			identityKey = new IdentityKey(Base64.decode(identityKeyElement.getContent(), Base64.DEFAULT), 0);
-		} catch (InvalidKeyException e) {
+		} catch (InvalidKeyException | IllegalArgumentException e) {
 			Log.e(Config.LOGTAG,AxolotlService.LOGPREFIX+" : "+"Invalid identityKey in PEP: "+e.getMessage());
 		}
 		return identityKey;
@@ -191,7 +196,7 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
 			try {
 				ECPublicKey preKeyPublic = Curve.decodePoint(Base64.decode(preKeyPublicElement.getContent(), Base64.DEFAULT), 0);
 				preKeyRecords.put(preKeyId, preKeyPublic);
-			} catch (InvalidKeyException e) {
+			} catch (InvalidKeyException | IllegalArgumentException e) {
 				Log.e(Config.LOGTAG, AxolotlService.LOGPREFIX+" : "+"Invalid preKeyPublic (ID="+preKeyId+") in PEP: "+ e.getMessage()+", skipping...");
 				continue;
 			}
