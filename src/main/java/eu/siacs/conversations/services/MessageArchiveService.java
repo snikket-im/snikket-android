@@ -68,7 +68,15 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 	}
 
 	public Query query(final Conversation conversation) {
-		return query(conversation,conversation.getAccount().getXmppConnection().getLastSessionEstablished());
+		if (conversation.getLastMessageTransmitted() < 0 && conversation.countMessages() == 0) {
+			return query(conversation,
+					0,
+					System.currentTimeMillis());
+		} else {
+			return query(conversation,
+					conversation.getLastMessageTransmitted(),
+					conversation.getAccount().getXmppConnection().getLastSessionEstablished());
+		}
 	}
 
 	public Query query(final Conversation conversation, long end) {
