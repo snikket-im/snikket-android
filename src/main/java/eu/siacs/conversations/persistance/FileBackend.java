@@ -131,11 +131,16 @@ public class FileBackend {
 		if (path == null) {
 			return false;
 		}
+		File file = new File(path);
+		long size = file.length();
+		if (size == 0 || size >= 524288 ) {
+			return false;
+		}
 		BitmapFactory.Options options = new BitmapFactory.Options();
 		options.inJustDecodeBounds = true;
 		try {
 			BitmapFactory.decodeStream(mXmppConnectionService.getContentResolver().openInputStream(uri), null, options);
-			if (options == null || options.outMimeType == null) {
+			if (options == null || options.outMimeType == null || options.outHeight <= 0 || options.outWidth <= 0) {
 				return false;
 			}
 			return (options.outWidth <= Config.IMAGE_SIZE && options.outHeight <= Config.IMAGE_SIZE && options.outMimeType.contains(Config.IMAGE_FORMAT.name().toLowerCase()));
