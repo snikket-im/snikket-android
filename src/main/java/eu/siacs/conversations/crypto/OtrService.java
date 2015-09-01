@@ -29,6 +29,7 @@ import java.security.spec.InvalidKeySpecException;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Conversation;
+import eu.siacs.conversations.generator.MessageGenerator;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
@@ -179,10 +180,7 @@ public class OtrService extends OtrCryptoEngineImpl implements OtrEngineHost {
 			packet.setAttribute("to", session.getAccountID() + "/" + session.getUserID());
 		}
 		packet.setBody(body);
-		packet.addChild("private", "urn:xmpp:carbons:2");
-		packet.addChild("no-copy", "urn:xmpp:hints");
-		packet.addChild("no-permanent-store", "urn:xmpp:hints");
-		packet.addChild("no-permanent-storage", "urn:xmpp:hints");
+		MessageGenerator.addMessageHints(packet);
 		try {
 			Jid jid = Jid.fromSessionID(session);
 			Conversation conversation = mXmppConnectionService.find(account,jid);

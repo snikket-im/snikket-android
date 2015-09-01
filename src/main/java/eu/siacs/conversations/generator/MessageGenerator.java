@@ -64,8 +64,15 @@ public class MessageGenerator extends AbstractGenerator {
 			return null;
 		}
 		packet.setAxolotlMessage(axolotlMessage.toElement());
-		packet.addChild("pretty-please-store","urn:xmpp:hints");
+		packet.addChild("pretty-please-store", "urn:xmpp:hints");
 		return packet;
+	}
+
+	public static void addMessageHints(MessagePacket packet) {
+		packet.addChild("private", "urn:xmpp:carbons:2");
+		packet.addChild("no-copy", "urn:xmpp:hints");
+		packet.addChild("no-permanent-store", "urn:xmpp:hints");
+		packet.addChild("no-permanent-storage", "urn:xmpp:hints"); //do not copy this. this is wrong. it is *store*
 	}
 
 	public MessagePacket generateOtrChat(Message message) {
@@ -74,10 +81,7 @@ public class MessageGenerator extends AbstractGenerator {
 			return null;
 		}
 		MessagePacket packet = preparePacket(message);
-		packet.addChild("private", "urn:xmpp:carbons:2");
-		packet.addChild("no-copy", "urn:xmpp:hints");
-		packet.addChild("no-permanent-store", "urn:xmpp:hints");
-		packet.addChild("no-permanent-storage", "urn:xmpp:hints");
+		addMessageHints(packet);
 		try {
 			String content;
 			if (message.hasFileOnRemoteHost()) {
