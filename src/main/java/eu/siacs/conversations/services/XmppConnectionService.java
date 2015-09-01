@@ -1881,8 +1881,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 			MessagePacket packet = new MessagePacket();
 			packet.setType(MessagePacket.TYPE_CHAT);
 			packet.setFrom(account.getJid());
-			packet.addChild("private", "urn:xmpp:carbons:2");
-			packet.addChild("no-copy", "urn:xmpp:hints");
+			MessageGenerator.addMessageHints(packet);
 			packet.setAttribute("to", otrSession.getSessionID().getAccountID() + "/"
 					+ otrSession.getSessionID().getUserID());
 			try {

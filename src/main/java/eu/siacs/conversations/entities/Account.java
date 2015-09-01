@@ -62,7 +62,8 @@ public class Account extends AbstractEntity {
 		REGISTRATION_SUCCESSFUL,
 		REGISTRATION_NOT_SUPPORTED(true),
 		SECURITY_ERROR(true),
-		INCOMPATIBLE_SERVER(true);
+		INCOMPATIBLE_SERVER(true),
+		DNS_TIMEOUT(true);
 
 		private final boolean isError;
 
@@ -106,6 +107,8 @@ public class Account extends AbstractEntity {
 					return R.string.account_status_security_error;
 				case INCOMPATIBLE_SERVER:
 					return R.string.account_status_incompatible_server;
+				case DNS_TIMEOUT:
+					return R.string.account_status_dns_timeout;
 				default:
 					return R.string.account_status_unknown;
 			}

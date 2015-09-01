@@ -165,7 +165,7 @@ public class XmppConnection implements Runnable {
 				}
 				final ArrayList<Parcelable> values = result.getParcelableArrayList("values");
 				if ("timeout".equals(result.getString("error"))) {
-					throw new IOException("timeout in dns");
+					throw new DnsTimeoutException();
 				} else if (values != null) {
 					int i = 0;
 					boolean socketError = true;
@@ -234,6 +234,8 @@ public class XmppConnection implements Runnable {
 			this.changeStatus(Account.State.UNAUTHORIZED);
 		} catch (final UnknownHostException | ConnectException e) {
 			this.changeStatus(Account.State.SERVER_NOT_FOUND);
+		} catch (final DnsTimeoutException e) {
+			this.changeStatus(Account.State.DNS_TIMEOUT);
 		} catch (final IOException | XmlPullParserException | NoSuchAlgorithmException e) {
 			Log.d(Config.LOGTAG, account.getJid().toBareJid().toString() + ": " + e.getMessage());
 			this.changeStatus(Account.State.OFFLINE);
@@ -1160,6 +1162,10 @@ public class XmppConnection implements Runnable {
 	}
 
 	private class IncompatibleServerException extends IOException {
+
+	}
+
+	private class DnsTimeoutException extends IOException {
 
 	}
 
