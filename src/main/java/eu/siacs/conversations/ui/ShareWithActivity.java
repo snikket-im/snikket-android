@@ -131,6 +131,7 @@ public class ShareWithActivity extends XmppActivity {
 		if (Intent.ACTION_SEND.equals(intent.getAction())) {
 			final Uri uri = getIntent().getParcelableExtra(Intent.EXTRA_STREAM);
 			if (type != null && uri != null && !type.equalsIgnoreCase("text/plain")) {
+				this.share.uris.clear();
 				this.share.uris.add(uri);
 				this.share.image = type.startsWith("image/") || isImage(uri);
 			} else {
