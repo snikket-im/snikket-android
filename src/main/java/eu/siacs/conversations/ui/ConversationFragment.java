@@ -232,7 +232,9 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 			if (actionId == EditorInfo.IME_ACTION_SEND) {
 				InputMethodManager imm = (InputMethodManager) v.getContext()
 						.getSystemService(Context.INPUT_METHOD_SERVICE);
-				imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+				if (imm.isFullscreenMode()) {
+					imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+				}
 				sendMessage();
 				return true;
 			} else {
