@@ -506,17 +506,25 @@ public class Message extends AbstractEntity {
 
 	private static String extractRelevantExtension(URL url) {
 		String path = url.getPath();
+		return extractRelevantExtension(path);
+	}
+
+	private static String extractRelevantExtension(String path) {
 		if (path == null || path.isEmpty()) {
 			return null;
 		}
+		
 		String filename = path.substring(path.lastIndexOf('/') + 1).toLowerCase();
-		String[] extensionParts = filename.split("\\.");
-		if (extensionParts.length == 2) {
-			return extensionParts[extensionParts.length - 1];
-		} else if (extensionParts.length == 3 && Arrays
-				.asList(Transferable.VALID_CRYPTO_EXTENSIONS)
-				.contains(extensionParts[extensionParts.length - 1])) {
-			return extensionParts[extensionParts.length -2];
+		int dotPosition = filename.lastIndexOf(".");
+
+		if (dotPosition != -1) {
+			String extension = filename.substring(dotPosition + 1);
+			// we want the real file extension, not the crypto one
+			if (Arrays.asList(Transferable.VALID_CRYPTO_EXTENSIONS).contains(extension)) {
+				return extractRelevantExtension(path.substring(0,dotPosition));
+			} else {
+				return extension;
+			}
 		}
 		return null;
 	}
