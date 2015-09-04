@@ -36,7 +36,7 @@ public class EditMessage extends EditText {
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_ENTER) {
+		if (keyCode == KeyEvent.KEYCODE_ENTER && !event.isShiftPressed()) {
 			if (keyboardListener != null && keyboardListener.onEnterPressed()) {
 				return true;
 			}
