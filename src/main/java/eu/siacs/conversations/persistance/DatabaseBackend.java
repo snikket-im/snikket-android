@@ -312,7 +312,11 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 				AxolotlAddress ownAddress = new AxolotlAddress(account.getJid().toBareJid().toString(), ownDeviceId);
 				deleteSession(db, account, ownAddress);
 				IdentityKeyPair identityKeyPair = loadOwnIdentityKeyPair(db, account);
-				setIdentityKeyTrust(db, account, identityKeyPair.getPublicKey().getFingerprint().replaceAll("\\s", ""), XmppAxolotlSession.Trust.TRUSTED );
+				if (identityKeyPair != null) {
+					setIdentityKeyTrust(db, account, identityKeyPair.getPublicKey().getFingerprint().replaceAll("\\s", ""), XmppAxolotlSession.Trust.TRUSTED);
+				} else {
+					Log.d(Config.LOGTAG,account.getJid().toBareJid()+": could not load own identity key pair");
+				}
 			}
 		}
 	}
