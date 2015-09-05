@@ -337,9 +337,10 @@ public class AxolotlService {
 	}
 
 	public void publishOwnDeviceId(Set<Integer> deviceIds) {
-		if (!deviceIds.contains(getOwnDeviceId())) {
+		Set<Integer> deviceIdsCopy = new HashSet<>(deviceIds);
+		if (!deviceIdsCopy.contains(getOwnDeviceId())) {
 			Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Own device " + getOwnDeviceId() + " not in PEP devicelist.");
-			if (deviceIds.isEmpty()) {
+			if (deviceIdsCopy.isEmpty()) {
 				if (numPublishTriesOnEmptyPep >= publishTriesThreshold) {
 					Log.w(Config.LOGTAG, getLogprefix(account) + "Own device publish attempt threshold exceeded, aborting...");
 					pepBroken = true;
@@ -351,8 +352,8 @@ public class AxolotlService {
 			} else {
 				numPublishTriesOnEmptyPep = 0;
 			}
-			deviceIds.add(getOwnDeviceId());
-			IqPacket publish = mXmppConnectionService.getIqGenerator().publishDeviceIds(deviceIds);
+			deviceIdsCopy.add(getOwnDeviceId());
+			IqPacket publish = mXmppConnectionService.getIqGenerator().publishDeviceIds(deviceIdsCopy);
 			mXmppConnectionService.sendIqPacket(account, publish, new OnIqPacketReceived() {
 				@Override
 				public void onIqPacketReceived(Account account, IqPacket packet) {
@@ -490,7 +491,10 @@ public class AxolotlService {
 	}
 
 	private void buildSessionFromPEP(final AxolotlAddress address) {
-		Log.i(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Building new sesstion for " + address.getDeviceId());
+		Log.i(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Building new sesstion for " + address.toString());
+		if (address.getDeviceId() == getOwnDeviceId()) {
+			throw new AssertionError("We should NEVER build a session with ourselves. What happened here?!");
+		}
 
 		try {
 			IqPacket bundlesPacket = mXmppConnectionService.getIqGenerator().retrieveBundlesForDevice(

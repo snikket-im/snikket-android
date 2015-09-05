@@ -89,15 +89,14 @@ public class SQLiteAxolotlStore implements AxolotlStore {
 
 	private IdentityKeyPair loadIdentityKeyPair() {
 		String ownName = account.getJid().toBareJid().toString();
-		IdentityKeyPair ownKey = mXmppConnectionService.databaseBackend.loadOwnIdentityKeyPair(account,
-				ownName);
+		IdentityKeyPair ownKey = mXmppConnectionService.databaseBackend.loadOwnIdentityKeyPair(account);
 
 		if (ownKey != null) {
 			return ownKey;
 		} else {
-			Log.i(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Could not retrieve axolotl key for account " + ownName);
+			Log.i(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Could not retrieve own IdentityKeyPair");
 			ownKey = generateIdentityKeyPair();
-			mXmppConnectionService.databaseBackend.storeOwnIdentityKeyPair(account, ownName, ownKey);
+			mXmppConnectionService.databaseBackend.storeOwnIdentityKeyPair(account, ownKey);
 		}
 		return ownKey;
 	}

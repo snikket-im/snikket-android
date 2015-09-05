@@ -42,7 +42,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 	private static DatabaseBackend instance = null;
 
 	private static final String DATABASE_NAME = "history";
-	private static final int DATABASE_VERSION = 16;
+	private static final int DATABASE_VERSION = 17;
 
 	private static String CREATE_CONTATCS_STATEMENT = "create table "
 			+ Contact.TABLENAME + "(" + Contact.ACCOUNT + " TEXT, "
@@ -301,6 +301,20 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 			db.execSQL("ALTER TABLE " + Message.TABLENAME + " ADD COLUMN "
 					+ Message.CARBON + " INTEGER");
 		}
+		if (oldVersion < 17 && newVersion >= 17) {
+			List<Account> accounts = getAccounts(db);
+			for (Account account : accounts) {
+				String ownDeviceIdString = account.getKey(SQLiteAxolotlStore.JSONKEY_REGISTRATION_ID);
+				if ( ownDeviceIdString == null ) {
+					continue;
+				}
+				int ownDeviceId = Integer.valueOf(ownDeviceIdString);
+				AxolotlAddress ownAddress = new AxolotlAddress(account.getJid().toBareJid().toString(), ownDeviceId);
+				deleteSession(db, account, ownAddress);
+				IdentityKeyPair identityKeyPair = loadOwnIdentityKeyPair(db, account);
+				setIdentityKeyTrust(db, account, identityKeyPair.getPublicKey().getFingerprint().replaceAll("\\s", ""), XmppAxolotlSession.Trust.TRUSTED );
+			}
+		}
 	}
 
 	public static synchronized DatabaseBackend getInstance(Context context) {
@@ -414,8 +428,12 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 	}
 
 	public List<Account> getAccounts() {
-		List<Account> list = new ArrayList<>();
 		SQLiteDatabase db = this.getReadableDatabase();
+		return getAccounts(db);
+	}
+
+	private List<Account> getAccounts(SQLiteDatabase db) {
+		List<Account> list = new ArrayList<>();
 		Cursor cursor = db.query(Account.TABLENAME, null, null, null, null,
 				null, null);
 		while (cursor.moveToNext()) {
@@ -602,8 +620,12 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 	}
 
 	public List<Integer> getSubDeviceSessions(Account account, AxolotlAddress contact) {
-		List<Integer> devices = new ArrayList<>();
 		final SQLiteDatabase db = this.getReadableDatabase();
+		return getSubDeviceSessions(db, account, contact);
+	}
+
+	private List<Integer> getSubDeviceSessions(SQLiteDatabase db, Account account, AxolotlAddress contact) {
+		List<Integer> devices = new ArrayList<>();
 		String[] columns = {SQLiteAxolotlStore.DEVICE_ID};
 		String[] selectionArgs = {account.getUuid(),
 				contact.getName()};
@@ -642,6 +664,10 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 
 	public void deleteSession(Account account, AxolotlAddress contact) {
 		SQLiteDatabase db = this.getWritableDatabase();
+		deleteSession(db, account, contact);
+	}
+
+	private void deleteSession(SQLiteDatabase db, Account account, AxolotlAddress contact) {
 		String[] args = {account.getUuid(),
 				contact.getName(),
 				Integer.toString(contact.getDeviceId())};
@@ -790,15 +816,24 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 	}
 
 	private Cursor getIdentityKeyCursor(Account account, String name, boolean own) {
-		return getIdentityKeyCursor(account, name, own, null);
+		final SQLiteDatabase db = this.getReadableDatabase();
+		return getIdentityKeyCursor(db, account, name, own);
+	}
+
+	private Cursor getIdentityKeyCursor(SQLiteDatabase db, Account account, String name, boolean own) {
+		return 	getIdentityKeyCursor(db, account, name, own, null);
 	}
 
 	private Cursor getIdentityKeyCursor(Account account, String fingerprint) {
-		return getIdentityKeyCursor(account, null, null, fingerprint);
+		final SQLiteDatabase db = this.getReadableDatabase();
+		return getIdentityKeyCursor(db, account, fingerprint);
 	}
 
-	private Cursor getIdentityKeyCursor(Account account, String name, Boolean own, String fingerprint) {
-		final SQLiteDatabase db = this.getReadableDatabase();
+	private Cursor getIdentityKeyCursor(SQLiteDatabase db, Account account, String fingerprint) {
+		return getIdentityKeyCursor(db, account, null, null, fingerprint);
+	}
+
+	private Cursor getIdentityKeyCursor(SQLiteDatabase db, Account account, String name, Boolean own, String fingerprint) {
 		String[] columns = {SQLiteAxolotlStore.TRUSTED,
 				SQLiteAxolotlStore.KEY};
 		ArrayList<String> selectionArgs = new ArrayList<>(4);
@@ -825,9 +860,15 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		return cursor;
 	}
 
-	public IdentityKeyPair loadOwnIdentityKeyPair(Account account, String name) {
+	public IdentityKeyPair loadOwnIdentityKeyPair(Account account) {
+		SQLiteDatabase db = getReadableDatabase();
+		return loadOwnIdentityKeyPair(db, account);
+	}
+
+	private IdentityKeyPair loadOwnIdentityKeyPair(SQLiteDatabase db, Account account) {
+		String name = account.getJid().toBareJid().toString();
 		IdentityKeyPair identityKeyPair = null;
-		Cursor cursor = getIdentityKeyCursor(account, name, true);
+		Cursor cursor = getIdentityKeyCursor(db, account, name, true);
 		if(cursor.getCount() != 0) {
 			cursor.moveToFirst();
 			try {
@@ -911,6 +952,10 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 
 	public boolean setIdentityKeyTrust(Account account, String fingerprint, XmppAxolotlSession.Trust trust) {
 		SQLiteDatabase db = this.getWritableDatabase();
+		return setIdentityKeyTrust(db, account, fingerprint, trust);
+	}
+
+	private boolean setIdentityKeyTrust(SQLiteDatabase db, Account account, String fingerprint, XmppAxolotlSession.Trust trust) {
 		String[] selectionArgs = {
 				account.getUuid(),
 				fingerprint
@@ -928,8 +973,8 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		storeIdentityKey(account, name, false, identityKey.getFingerprint().replaceAll("\\s", ""), Base64.encodeToString(identityKey.serialize(), Base64.DEFAULT));
 	}
 
-	public void storeOwnIdentityKeyPair(Account account, String name, IdentityKeyPair identityKeyPair) {
-		storeIdentityKey(account, name, true, identityKeyPair.getPublicKey().getFingerprint().replaceAll("\\s", ""), Base64.encodeToString(identityKeyPair.serialize(), Base64.DEFAULT), XmppAxolotlSession.Trust.TRUSTED);
+	public void storeOwnIdentityKeyPair(Account account, IdentityKeyPair identityKeyPair) {
+		storeIdentityKey(account, account.getJid().toBareJid().toString(), true, identityKeyPair.getPublicKey().getFingerprint().replaceAll("\\s", ""), Base64.encodeToString(identityKeyPair.serialize(), Base64.DEFAULT), XmppAxolotlSession.Trust.TRUSTED);
 	}
 
 	public void recreateAxolotlDb() {
