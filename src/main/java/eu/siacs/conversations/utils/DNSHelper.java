@@ -127,13 +127,21 @@ public class DNSHelper {
 			ArrayList<Bundle> values = new ArrayList<>();
 			if (result.size() == 0) {
 				DNSMessage response;
-				response = client.query(host, TYPE.A, CLASS.IN, dnsServer.getHostAddress());
-				for(int i = 0; i < response.getAnswers().length; ++i) {
-					values.add(createNamePortBundle(host,5222,response.getAnswers()[i].getPayload()));
+				try {
+					response = client.query(host, TYPE.A, CLASS.IN, dnsServer.getHostAddress());
+					for (int i = 0; i < response.getAnswers().length; ++i) {
+						values.add(createNamePortBundle(host, 5222, response.getAnswers()[i].getPayload()));
+					}
+				} catch (SocketTimeoutException e) {
+					Log.d(Config.LOGTAG,"ignoring timeout exception when querying A record on "+dnsServer.getHostAddress());
 				}
-				response = client.query(host, TYPE.AAAA, CLASS.IN, dnsServer.getHostAddress());
-				for(int i = 0; i < response.getAnswers().length; ++i) {
-					values.add(createNamePortBundle(host,5222,response.getAnswers()[i].getPayload()));
+				try {
+					response = client.query(host, TYPE.AAAA, CLASS.IN, dnsServer.getHostAddress());
+					for (int i = 0; i < response.getAnswers().length; ++i) {
+						values.add(createNamePortBundle(host, 5222, response.getAnswers()[i].getPayload()));
+					}
+				} catch (SocketTimeoutException e) {
+					Log.d(Config.LOGTAG,"ignoring timeout exception when querying AAAA record on "+dnsServer.getHostAddress());
 				}
 				values.add(createNamePortBundle(host,5222));
 				bundle.putParcelableArrayList("values", values);
@@ -143,9 +151,13 @@ public class DNSHelper {
 				if (ips6.containsKey(srv.getName())) {
 					values.add(createNamePortBundle(srv.getName(),srv.getPort(),ips6));
 				} else {
-					DNSMessage response = client.query(srv.getName(), TYPE.AAAA, CLASS.IN, dnsServer.getHostAddress());
-					for(int i = 0; i < response.getAnswers().length; ++i) {
-						values.add(createNamePortBundle(srv.getName(),srv.getPort(),response.getAnswers()[i].getPayload()));
+					try {
+						DNSMessage response = client.query(srv.getName(), TYPE.AAAA, CLASS.IN, dnsServer.getHostAddress());
+						for (int i = 0; i < response.getAnswers().length; ++i) {
+							values.add(createNamePortBundle(srv.getName(), srv.getPort(), response.getAnswers()[i].getPayload()));
+						}
+					} catch (SocketTimeoutException e) {
+						Log.d(Config.LOGTAG,"ignoring timeout exception when querying AAAA record on "+dnsServer.getHostAddress());
 					}
 				}
 				if (ips4.containsKey(srv.getName())) {
