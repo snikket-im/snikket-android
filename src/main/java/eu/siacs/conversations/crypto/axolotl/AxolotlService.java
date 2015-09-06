@@ -536,8 +536,6 @@ public class AxolotlService {
 								bundle.getSignedPreKeyId(), bundle.getSignedPreKey(),
 								bundle.getSignedPreKeySignature(), bundle.getIdentityKey());
 
-						axolotlStore.saveIdentity(address.getName(), bundle.getIdentityKey());
-
 						try {
 							SessionBuilder builder = new SessionBuilder(axolotlStore, address);
 							builder.process(preKeyBundle);
