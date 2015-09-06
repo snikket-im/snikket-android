@@ -243,6 +243,10 @@ public class AxolotlService {
 		return sessions.hasAny(contactAddress);
 	}
 
+	public boolean isPepBroken() {
+		return this.pepBroken;
+	}
+
 	public void regenerateKeys() {
 		axolotlStore.regenerate();
 		sessions.clear();

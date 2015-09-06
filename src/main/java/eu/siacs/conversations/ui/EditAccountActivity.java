@@ -29,6 +29,7 @@ import java.util.Set;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
+import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.services.XmppConnectionService.OnAccountUpdate;
 import eu.siacs.conversations.ui.adapter.KnownHostsAdapter;
@@ -538,7 +539,12 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 				this.mServerInfoSm.setText(R.string.server_info_unavailable);
 			}
 			if (features.pep()) {
-				this.mServerInfoPep.setText(R.string.server_info_available);
+				AxolotlService axolotlService = this.mAccount.getAxolotlService();
+				if (axolotlService != null && axolotlService.isPepBroken()) {
+					this.mServerInfoPep.setText(R.string.server_info_broken);
+				} else {
+					this.mServerInfoPep.setText(R.string.server_info_available);
+				}
 			} else {
 				this.mServerInfoPep.setText(R.string.server_info_unavailable);
 			}
