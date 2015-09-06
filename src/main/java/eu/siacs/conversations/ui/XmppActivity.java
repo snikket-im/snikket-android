@@ -59,8 +59,6 @@ import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 
 import net.java.otr4j.session.SessionID;
 
-import org.whispersystems.libaxolotl.IdentityKey;
-
 import java.io.FileNotFoundException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -613,11 +611,10 @@ public abstract class XmppActivity extends Activity {
 		builder.create().show();
 	}
 
-	protected boolean addFingerprintRow(LinearLayout keys, final Account account, IdentityKey identityKey, boolean highlight) {
-		final String fingerprint = identityKey.getFingerprint().replaceAll("\\s", "");
+	protected boolean addFingerprintRow(LinearLayout keys, final Account account, final String fingerprint, boolean highlight) {
 		final XmppAxolotlSession.Trust trust = account.getAxolotlService()
 				.getFingerprintTrust(fingerprint);
-		return addFingerprintRowWithListeners(keys, account, identityKey, highlight, trust, true,
+		return addFingerprintRowWithListeners(keys, account, fingerprint, highlight, trust, true,
 				new CompoundButton.OnCheckedChangeListener() {
 					@Override
 					public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -639,7 +636,7 @@ public abstract class XmppActivity extends Activity {
 	}
 
 	protected boolean addFingerprintRowWithListeners(LinearLayout keys, final Account account,
-	                                                 final IdentityKey identityKey,
+	                                                 final String fingerprint,
 	                                                 boolean highlight,
 	                                                 XmppAxolotlSession.Trust trust,
 	                                                 boolean showTag,
@@ -659,7 +656,7 @@ public abstract class XmppActivity extends Activity {
 		view.setOnLongClickListener(new View.OnLongClickListener() {
 			@Override
 			public boolean onLongClick(View v) {
-				showPurgeKeyDialog(account, identityKey);
+				showPurgeKeyDialog(account, fingerprint);
 				return true;
 			}
 		});
@@ -707,24 +704,24 @@ public abstract class XmppActivity extends Activity {
 			keyType.setText(getString(R.string.omemo_fingerprint));
 		}
 
-		key.setText(CryptoHelper.prettifyFingerprint(identityKey.getFingerprint()));
+		key.setText(CryptoHelper.prettifyFingerprint(fingerprint));
 		keys.addView(view);
 		return true;
 	}
 
-	public void showPurgeKeyDialog(final Account account, final IdentityKey identityKey) {
+	public void showPurgeKeyDialog(final Account account, final String fingerprint) {
 		Builder builder = new Builder(this);
 		builder.setTitle(getString(R.string.purge_key));
 		builder.setIconAttribute(android.R.attr.alertDialogIcon);
 		builder.setMessage(getString(R.string.purge_key_desc_part1)
-				+ "\n\n" + CryptoHelper.prettifyFingerprint(identityKey.getFingerprint())
+				+ "\n\n" + CryptoHelper.prettifyFingerprint(fingerprint)
 				+ "\n\n" + getString(R.string.purge_key_desc_part2));
 		builder.setNegativeButton(getString(R.string.cancel), null);
 		builder.setPositiveButton(getString(R.string.accept),
 				new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						account.getAxolotlService().purgeKey(identityKey);
+						account.getAxolotlService().purgeKey(fingerprint);
 						refreshUi();
 					}
 				});

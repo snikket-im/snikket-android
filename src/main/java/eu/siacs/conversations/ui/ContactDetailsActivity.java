@@ -29,7 +29,6 @@ import android.widget.QuickContactBadge;
 import android.widget.TextView;
 
 import org.openintents.openpgp.util.OpenPgpUtils;
-import org.whispersystems.libaxolotl.IdentityKey;
 
 import java.util.List;
 
@@ -392,10 +391,9 @@ public class ContactDetailsActivity extends XmppActivity implements OnAccountUpd
 				}
 			});
 		}
-		for(final IdentityKey identityKey : xmppConnectionService.databaseBackend.loadIdentityKeys(
-				contact.getAccount(), contact.getJid().toBareJid().toString())) {
-			boolean highlight = identityKey.getFingerprint().replaceAll("\\s", "").equals(messageFingerprint);
-			hasKeys |= addFingerprintRow(keys, contact.getAccount(), identityKey, highlight);
+		for (final String fingerprint : contact.getAccount().getAxolotlService().getFingerprintsForContact(contact)) {
+			boolean highlight = fingerprint.equals(messageFingerprint);
+			hasKeys |= addFingerprintRow(keys, contact.getAccount(), fingerprint, highlight);
 		}
 		if (contact.getPgpKeyId() != 0) {
 			hasKeys = true;

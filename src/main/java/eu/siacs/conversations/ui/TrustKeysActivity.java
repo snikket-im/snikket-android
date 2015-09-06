@@ -43,8 +43,8 @@ public class TrustKeysActivity extends XmppActivity implements OnKeyStatusUpdate
 	private Button mSaveButton;
 	private Button mCancelButton;
 
-	private final Map<IdentityKey, Boolean> ownKeysToTrust = new HashMap<>();
-	private final Map<IdentityKey, Boolean> foreignKeysToTrust = new HashMap<>();
+	private final Map<String, Boolean> ownKeysToTrust = new HashMap<>();
+	private final Map<String, Boolean> foreignKeysToTrust = new HashMap<>();
 
 	private final OnClickListener mSaveButtonListener = new OnClickListener() {
 		@Override
@@ -120,28 +120,28 @@ public class TrustKeysActivity extends XmppActivity implements OnKeyStatusUpdate
 		foreignKeys.removeAllViews();
 		boolean hasOwnKeys = false;
 		boolean hasForeignKeys = false;
-		for(final IdentityKey identityKey : ownKeysToTrust.keySet()) {
+		for(final String fingerprint : ownKeysToTrust.keySet()) {
 			hasOwnKeys = true;
-			addFingerprintRowWithListeners(ownKeys, contact.getAccount(), identityKey, false,
-					XmppAxolotlSession.Trust.fromBoolean(ownKeysToTrust.get(identityKey)), false,
+			addFingerprintRowWithListeners(ownKeys, contact.getAccount(), fingerprint, false,
+					XmppAxolotlSession.Trust.fromBoolean(ownKeysToTrust.get(fingerprint)), false,
 					new CompoundButton.OnCheckedChangeListener() {
 						@Override
 						public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-							ownKeysToTrust.put(identityKey, isChecked);
+							ownKeysToTrust.put(fingerprint, isChecked);
 							// own fingerprints have no impact on locked status.
 						}
 					},
 					null
 			);
 		}
-		for(final IdentityKey identityKey : foreignKeysToTrust.keySet()) {
+		for(final String fingerprint : foreignKeysToTrust.keySet()) {
 			hasForeignKeys = true;
-			addFingerprintRowWithListeners(foreignKeys, contact.getAccount(), identityKey, false,
-					XmppAxolotlSession.Trust.fromBoolean(foreignKeysToTrust.get(identityKey)), false,
+			addFingerprintRowWithListeners(foreignKeys, contact.getAccount(), fingerprint, false,
+					XmppAxolotlSession.Trust.fromBoolean(foreignKeysToTrust.get(fingerprint)), false,
 					new CompoundButton.OnCheckedChangeListener() {
 						@Override
 						public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-							foreignKeysToTrust.put(identityKey, isChecked);
+							foreignKeysToTrust.put(fingerprint, isChecked);
 							lockOrUnlockAsNeeded();
 						}
 					},
@@ -181,12 +181,12 @@ public class TrustKeysActivity extends XmppActivity implements OnKeyStatusUpdate
 		}
 		for(final IdentityKey identityKey : ownKeysSet) {
 			if(!ownKeysToTrust.containsKey(identityKey)) {
-				ownKeysToTrust.put(identityKey, false);
+				ownKeysToTrust.put(identityKey.getFingerprint().replaceAll("\\s", ""), false);
 			}
 		}
 		for(final IdentityKey identityKey : foreignKeysSet) {
 			if(!foreignKeysToTrust.containsKey(identityKey)) {
-				foreignKeysToTrust.put(identityKey, false);
+				foreignKeysToTrust.put(identityKey.getFingerprint().replaceAll("\\s", ""), false);
 			}
 		}
 	}
@@ -225,15 +225,15 @@ public class TrustKeysActivity extends XmppActivity implements OnKeyStatusUpdate
 	}
 
 	private void commitTrusts() {
-		for(IdentityKey identityKey:ownKeysToTrust.keySet()) {
+		for(final String fingerprint :ownKeysToTrust.keySet()) {
 			contact.getAccount().getAxolotlService().setFingerprintTrust(
-					identityKey.getFingerprint().replaceAll("\\s", ""),
-					XmppAxolotlSession.Trust.fromBoolean(ownKeysToTrust.get(identityKey)));
+					fingerprint,
+					XmppAxolotlSession.Trust.fromBoolean(ownKeysToTrust.get(fingerprint)));
 		}
-		for(IdentityKey identityKey:foreignKeysToTrust.keySet()) {
+		for(final String fingerprint:foreignKeysToTrust.keySet()) {
 			contact.getAccount().getAxolotlService().setFingerprintTrust(
-					identityKey.getFingerprint().replaceAll("\\s", ""),
-					XmppAxolotlSession.Trust.fromBoolean(foreignKeysToTrust.get(identityKey)));
+					fingerprint,
+					XmppAxolotlSession.Trust.fromBoolean(foreignKeysToTrust.get(fingerprint)));
 		}
 	}
 

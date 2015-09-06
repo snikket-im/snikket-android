@@ -190,8 +190,8 @@ public class AxolotlService {
 		this.executor = new SerialSingleThreadExecutor();
 	}
 
-	public IdentityKey getOwnPublicKey() {
-		return axolotlStore.getIdentityKeyPair().getPublicKey();
+	public String getOwnFingerprint() {
+		return axolotlStore.getIdentityKeyPair().getPublicKey().getFingerprint().replaceAll("\\s", "");
 	}
 
 	public Set<IdentityKey> getKeysWithTrust(XmppAxolotlSession.Trust trust) {
@@ -220,6 +220,22 @@ public class AxolotlService {
 		AxolotlAddress contactAddress = getAddressForJid(contact.getJid());
 		Set<XmppAxolotlSession> sessions = new HashSet<>(this.sessions.getAll(contactAddress).values());
 		return sessions;
+	}
+
+	public Set<String> getFingerprintsForOwnSessions() {
+		Set<String> fingerprints = new HashSet<>();
+		for (XmppAxolotlSession session : findOwnSessions()) {
+			fingerprints.add(session.getFingerprint());
+		}
+		return fingerprints;
+	}
+
+	public Set<String> getFingerprintsForContact(final Contact contact) {
+		Set<String> fingerprints = new HashSet<>();
+		for (XmppAxolotlSession session : findSessionsforContact(contact)) {
+			fingerprints.add(session.getFingerprint());
+		}
+		return fingerprints;
 	}
 
 	private boolean hasAny(Contact contact) {
@@ -310,8 +326,8 @@ public class AxolotlService {
 		});
 	}
 
-	public void purgeKey(IdentityKey identityKey) {
-		axolotlStore.setFingerprintTrust(identityKey.getFingerprint().replaceAll("\\s", ""), XmppAxolotlSession.Trust.COMPROMISED);
+	public void purgeKey(final String fingerprint) {
+		axolotlStore.setFingerprintTrust(fingerprint.replaceAll("\\s", ""), XmppAxolotlSession.Trust.COMPROMISED);
 	}
 
 	public void publishOwnDeviceIdIfNeeded() {

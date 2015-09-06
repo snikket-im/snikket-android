@@ -91,7 +91,7 @@ public class XmppAxolotlSession {
 
 	public XmppAxolotlSession(Account account, SQLiteAxolotlStore store, AxolotlAddress remoteAddress, String fingerprint) {
 		this(account, store, remoteAddress);
-		this.fingerprint = fingerprint;
+		this.fingerprint = fingerprint.replaceAll("\\s","");
 	}
 
 	public XmppAxolotlSession(Account account, SQLiteAxolotlStore store, AxolotlAddress remoteAddress) {
