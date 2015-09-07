@@ -857,6 +857,10 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 		updateChatMsgHint();
 	}
 
+	public void setFocusOnInputField() {
+		mEditMessage.requestFocus();
+	}
+
 	enum SendButtonAction {TEXT, TAKE_PHOTO, SEND_LOCATION, RECORD_VOICE, CANCEL, CHOOSE_PICTURE}
 
 	private int getSendButtonImageResource(SendButtonAction action, int status) {

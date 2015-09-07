@@ -17,6 +17,7 @@ import android.provider.MediaStore;
 import android.support.v4.widget.SlidingPaneLayout;
 import android.support.v4.widget.SlidingPaneLayout.PanelSlideListener;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -87,6 +88,8 @@ public class ConversationActivity extends XmppActivity
 	final private List<Uri> mPendingFileUris = new ArrayList<>();
 	private Uri mPendingGeoUri = null;
 	private boolean forbidProcessingPendings = false;
+
+	private boolean conversationWasSelectedByKeyboard = false;
 
 	private View mContentView;
 
@@ -190,6 +193,7 @@ public class ConversationActivity extends XmppActivity
 				if (getSelectedConversation() != conversationList.get(position)) {
 					setSelectedConversation(conversationList.get(position));
 					ConversationActivity.this.mConversationFragment.reInit(getSelectedConversation());
+					conversationWasSelectedByKeyboard = false;
 				}
 				hideConversationsOverview();
 				openConversation();
@@ -474,7 +478,7 @@ public class ConversationActivity extends XmppActivity
 
 	private Intent getInstallApkIntent(final String packageId) {
 		Intent intent = new Intent(Intent.ACTION_VIEW);
-		intent.setData(Uri.parse("market://details?id="+packageId));
+		intent.setData(Uri.parse("market://details?id=" + packageId));
 		if (intent.resolveActivity(getPackageManager()) != null) {
 			return intent;
 		} else {
@@ -713,13 +717,13 @@ public class ConversationActivity extends XmppActivity
 				intent.putExtra("account", conversation.getAccount().getJid().toBareJid().toString());
 				switch (menuItem.getItemId()) {
 					case R.id.scan_fingerprint:
-						intent.putExtra("mode",VerifyOTRActivity.MODE_SCAN_FINGERPRINT);
+						intent.putExtra("mode", VerifyOTRActivity.MODE_SCAN_FINGERPRINT);
 						break;
 					case R.id.ask_question:
-						intent.putExtra("mode",VerifyOTRActivity.MODE_ASK_QUESTION);
+						intent.putExtra("mode", VerifyOTRActivity.MODE_ASK_QUESTION);
 						break;
 					case R.id.manual_verification:
-						intent.putExtra("mode",VerifyOTRActivity.MODE_MANUAL_VERIFICATION);
+						intent.putExtra("mode", VerifyOTRActivity.MODE_MANUAL_VERIFICATION);
 						break;
 				}
 				startActivity(intent);
@@ -853,6 +857,76 @@ public class ConversationActivity extends XmppActivity
 			showConversationsOverview();
 		} else {
 			moveTaskToBack(true);
+		}
+	}
+
+	@Override
+	public boolean onKeyUp(int key, KeyEvent event) {
+		final boolean modifier = event.isCtrlPressed();
+		final boolean upKey = key == KeyEvent.KEYCODE_DPAD_UP || key == KeyEvent.KEYCODE_DPAD_LEFT;
+		final boolean downKey = key == KeyEvent.KEYCODE_DPAD_DOWN || key == KeyEvent.KEYCODE_DPAD_RIGHT;
+		if (modifier && key == KeyEvent.KEYCODE_TAB && isConversationsOverviewHideable()) {
+			toggleConversationsOverview();
+			return true;
+		} else if (modifier && downKey) {
+			if (isConversationsOverviewHideable() && !isConversationsOverviewVisable()) {
+				showConversationsOverview();;
+			}
+			selectDownConversation();
+			return true;
+		} else if (modifier && upKey) {
+			if (isConversationsOverviewHideable() && !isConversationsOverviewVisable()) {
+				showConversationsOverview();;
+			}
+			selectUpConversation();
+			return true;
+		} else {
+			return super.onKeyUp(key, event);
+		}
+	}
+
+	private void toggleConversationsOverview() {
+		if (isConversationsOverviewVisable()) {
+			hideConversationsOverview();
+			if (mConversationFragment != null) {
+				mConversationFragment.setFocusOnInputField();
+			}
+		} else {
+			showConversationsOverview();
+		}
+	}
+
+	private void selectUpConversation() {
+		Log.d(Config.LOGTAG,"select up conversation");
+		if (this.mSelectedConversation != null) {
+			int index = this.conversationList.indexOf(this.mSelectedConversation);
+			if (index > 0) {
+				int next = index - 1;
+				this.conversationWasSelectedByKeyboard = true;
+				setSelectedConversation(this.conversationList.get(next));
+				this.mConversationFragment.reInit(getSelectedConversation());
+				if (next > listView.getLastVisiblePosition() -1  || next < listView.getFirstVisiblePosition() + 1) {
+					this.listView.setSelection(next);
+				}
+				openConversation();
+			}
+		}
+	}
+
+	private void selectDownConversation() {
+		Log.d(Config.LOGTAG, "select down conversation");
+		if (this.mSelectedConversation != null) {
+			int index = this.conversationList.indexOf(this.mSelectedConversation);
+			if (index != -1 && index < this.conversationList.size() - 1) {
+				int next = index + 1;
+				this.conversationWasSelectedByKeyboard = true;
+				setSelectedConversation(this.conversationList.get(next));
+				this.mConversationFragment.reInit(getSelectedConversation());
+				if (next > listView.getLastVisiblePosition() -1 || next < listView.getFirstVisiblePosition() + 1) {
+					this.listView.setSelection(next);
+				}
+				openConversation();
+			}
 		}
 	}
 
@@ -1348,5 +1422,9 @@ public class ConversationActivity extends XmppActivity
 				Toast.makeText(ConversationActivity.this,resId,Toast.LENGTH_SHORT).show();
 			}
 		});
+	}
+
+	public boolean highlightSelectedConversations() {
+		return !isConversationsOverviewHideable() || this.conversationWasSelectedByKeyboard;
 	}
 }
