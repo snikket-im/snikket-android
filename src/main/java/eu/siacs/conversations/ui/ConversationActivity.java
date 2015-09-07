@@ -20,6 +20,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Surface;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -862,19 +863,37 @@ public class ConversationActivity extends XmppActivity
 
 	@Override
 	public boolean onKeyUp(int key, KeyEvent event) {
+		int rotation = getWindowManager().getDefaultDisplay().getRotation();
+		final int upKey;
+		final int downKey;
+		switch(rotation) {
+			case Surface.ROTATION_90:
+				upKey = KeyEvent.KEYCODE_DPAD_LEFT;
+				downKey = KeyEvent.KEYCODE_DPAD_RIGHT;
+				break;
+			case Surface.ROTATION_180:
+				upKey = KeyEvent.KEYCODE_DPAD_DOWN;
+				downKey = KeyEvent.KEYCODE_DPAD_UP;
+				break;
+			case Surface.ROTATION_270:
+				upKey = KeyEvent.KEYCODE_DPAD_RIGHT;
+				downKey = KeyEvent.KEYCODE_DPAD_LEFT;
+				break;
+			default:
+				upKey = KeyEvent.KEYCODE_DPAD_UP;
+				downKey = KeyEvent.KEYCODE_DPAD_DOWN;
+		}
 		final boolean modifier = event.isCtrlPressed();
-		final boolean upKey = key == KeyEvent.KEYCODE_DPAD_UP || key == KeyEvent.KEYCODE_DPAD_LEFT;
-		final boolean downKey = key == KeyEvent.KEYCODE_DPAD_DOWN || key == KeyEvent.KEYCODE_DPAD_RIGHT;
 		if (modifier && key == KeyEvent.KEYCODE_TAB && isConversationsOverviewHideable()) {
 			toggleConversationsOverview();
 			return true;
-		} else if (modifier && downKey) {
+		} else if (modifier && key == downKey) {
 			if (isConversationsOverviewHideable() && !isConversationsOverviewVisable()) {
 				showConversationsOverview();;
 			}
 			selectDownConversation();
 			return true;
-		} else if (modifier && upKey) {
+		} else if (modifier && key == upKey) {
 			if (isConversationsOverviewHideable() && !isConversationsOverviewVisable()) {
 				showConversationsOverview();;
 			}
