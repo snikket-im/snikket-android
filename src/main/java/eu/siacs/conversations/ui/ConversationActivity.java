@@ -883,7 +883,7 @@ public class ConversationActivity extends XmppActivity
 				upKey = KeyEvent.KEYCODE_DPAD_UP;
 				downKey = KeyEvent.KEYCODE_DPAD_DOWN;
 		}
-		final boolean modifier = event.isCtrlPressed();
+		final boolean modifier = event.isCtrlPressed() || event.isAltPressed();
 		if (modifier && key == KeyEvent.KEYCODE_TAB && isConversationsOverviewHideable()) {
 			toggleConversationsOverview();
 			return true;
@@ -891,14 +891,32 @@ public class ConversationActivity extends XmppActivity
 			if (isConversationsOverviewHideable() && !isConversationsOverviewVisable()) {
 				showConversationsOverview();;
 			}
-			selectDownConversation();
-			return true;
+			return selectDownConversation();
 		} else if (modifier && key == upKey) {
 			if (isConversationsOverviewHideable() && !isConversationsOverviewVisable()) {
-				showConversationsOverview();;
+				showConversationsOverview();
 			}
-			selectUpConversation();
-			return true;
+			return selectUpConversation();
+		} else if (modifier && key == KeyEvent.KEYCODE_1) {
+			return openConversationByIndex(0);
+		} else if (modifier && key == KeyEvent.KEYCODE_2) {
+			return openConversationByIndex(1);
+		} else if (modifier && key == KeyEvent.KEYCODE_3) {
+			return openConversationByIndex(2);
+		} else if (modifier && key == KeyEvent.KEYCODE_4) {
+			return openConversationByIndex(3);
+		} else if (modifier && key == KeyEvent.KEYCODE_5) {
+			return openConversationByIndex(4);
+		} else if (modifier && key == KeyEvent.KEYCODE_6) {
+			return openConversationByIndex(5);
+		} else if (modifier && key == KeyEvent.KEYCODE_7) {
+			return openConversationByIndex(6);
+		} else if (modifier && key == KeyEvent.KEYCODE_8) {
+			return openConversationByIndex(7);
+		} else if (modifier && key == KeyEvent.KEYCODE_9) {
+			return openConversationByIndex(8);
+		} else if (modifier && key == KeyEvent.KEYCODE_0) {
+			return openConversationByIndex(9);
 		} else {
 			return super.onKeyUp(key, event);
 		}
@@ -915,37 +933,38 @@ public class ConversationActivity extends XmppActivity
 		}
 	}
 
-	private void selectUpConversation() {
-		Log.d(Config.LOGTAG,"select up conversation");
+	private boolean selectUpConversation() {
 		if (this.mSelectedConversation != null) {
 			int index = this.conversationList.indexOf(this.mSelectedConversation);
 			if (index > 0) {
-				int next = index - 1;
-				this.conversationWasSelectedByKeyboard = true;
-				setSelectedConversation(this.conversationList.get(next));
-				this.mConversationFragment.reInit(getSelectedConversation());
-				if (next > listView.getLastVisiblePosition() -1  || next < listView.getFirstVisiblePosition() + 1) {
-					this.listView.setSelection(next);
-				}
-				openConversation();
+				return openConversationByIndex(index - 1);
 			}
 		}
+		return false;
 	}
 
-	private void selectDownConversation() {
-		Log.d(Config.LOGTAG, "select down conversation");
+	private boolean selectDownConversation() {
 		if (this.mSelectedConversation != null) {
 			int index = this.conversationList.indexOf(this.mSelectedConversation);
 			if (index != -1 && index < this.conversationList.size() - 1) {
-				int next = index + 1;
-				this.conversationWasSelectedByKeyboard = true;
-				setSelectedConversation(this.conversationList.get(next));
-				this.mConversationFragment.reInit(getSelectedConversation());
-				if (next > listView.getLastVisiblePosition() -1 || next < listView.getFirstVisiblePosition() + 1) {
-					this.listView.setSelection(next);
-				}
-				openConversation();
+				return openConversationByIndex(index + 1);
 			}
+		}
+		return false;
+	}
+
+	private boolean openConversationByIndex(int index) {
+		try {
+			this.conversationWasSelectedByKeyboard = true;
+			setSelectedConversation(this.conversationList.get(index));
+			this.mConversationFragment.reInit(getSelectedConversation());
+			if (index > listView.getLastVisiblePosition() - 1 || index < listView.getFirstVisiblePosition() + 1) {
+				this.listView.setSelection(index);
+			}
+			openConversation();
+			return true;
+		} catch (IndexOutOfBoundsException e) {
+			return false;
 		}
 	}
 

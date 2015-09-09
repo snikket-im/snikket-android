@@ -1200,6 +1200,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 		if (status == Account.State.ONLINE && conversation.setOutgoingChatState(ChatState.COMPOSING)) {
 			activity.xmppConnectionService.sendChatState(conversation);
 		}
+		activity.hideConversationsOverview();
 		updateSendButton();
 	}
 
