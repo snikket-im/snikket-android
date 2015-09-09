@@ -1,5 +1,8 @@
 ###Changelog
 
+####Version 1.6.9
+* basic keyboard support
+
 ####Version 1.6.8
 * reworked 'enter is send' setting
 * reworked DNS server discovery on lolipop devices
