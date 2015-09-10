@@ -84,6 +84,7 @@ public class DNSHelper {
 	public static Bundle queryDNS(String host, InetAddress dnsServer) {
 		Bundle bundle = new Bundle();
 		try {
+			client.setTimeout(Config.PING_TIMEOUT * 1000);
 			String qname = "_xmpp-client._tcp." + host;
 			Log.d(Config.LOGTAG, "using dns server: " + dnsServer.getHostAddress() + " to look up " + host);
 			DNSMessage message = client.query(qname, TYPE.SRV, CLASS.IN, dnsServer.getHostAddress());
