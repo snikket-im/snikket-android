@@ -4,7 +4,7 @@ public interface Transferable {
 
 	String[] VALID_IMAGE_EXTENSIONS = {"webp", "jpeg", "jpg", "png", "jpe"};
 	String[] VALID_CRYPTO_EXTENSIONS = {"pgp", "gpg", "otr"};
-	String[] WELL_KNOWN_EXTENSIONS = {"pdf","m4a"};
+	String[] WELL_KNOWN_EXTENSIONS = {"pdf","m4a","mp4"};
 
 	int STATUS_UNKNOWN = 0x200;
 	int STATUS_CHECKING = 0x201;
