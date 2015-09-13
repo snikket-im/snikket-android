@@ -76,6 +76,7 @@
   <string name="delete_messages">Berichten verwijderen</string>
   <string name="also_end_conversation">Beëindig dit gesprek na afloop</string>
   <string name="choose_presence">Kies aanwezigheid om te tonen aan contact</string>
+  <string name="send_unencrypted_message">Verstuur onversleuteld bericht</string>
   <string name="send_otr_message">Verstuur OTR-versleuteld bericht</string>
   <string name="send_omemo_message">Verstuur OMEMO-versleuteld bericht</string>
   <string name="send_pgp_message">Verstuur OpenPGP-versleuteld bericht</string>
@@ -149,6 +150,7 @@
   <string name="account_status_regis_not_sup">Server ondersteunt geen registratie</string>
   <string name="account_status_security_error">Fout bij beveiliging</string>
   <string name="account_status_incompatible_server">Incompatibele server</string>
+  <string name="encryption_choice_unencrypted">Onversleuteld</string>
   <string name="encryption_choice_otr">OTR</string>
   <string name="encryption_choice_pgp">OpenPGP</string>
   <string name="encryption_choice_omemo">OMEMO</string>
@@ -186,6 +188,8 @@
   <string name="server_info_blocking">XEP-0191: Blocking Command</string>
   <string name="server_info_roster_version">XEP-0237: Roster Versioning</string>
   <string name="server_info_stream_management">XEP-0198: Stream Management</string>
+  <string name="server_info_pep">XEP-0163: PEP (Avatars / OMEMO)</string>
+  <string name="server_info_http_upload">XEP-0363: HTTP File Upload</string>
   <string name="server_info_available">beschikbaar</string>
   <string name="server_info_unavailable">niet beschikbaar</string>
   <string name="missing_public_keys">Ontbrekende publieke sleutel-aankondigingen</string>
@@ -365,6 +369,8 @@
   <string name="purge_key">Sleutel verwijderen</string>
   <string name="purge_key_desc_part1">Ben je zeker dat je deze sleutel wil verwijderen?</string>
   <string name="purge_key_desc_part2">Ze zal onherroepelijk beschouwd worden als gecompromitteerd en je zal er nooit meer een nieuwe sessie mee kunnen bouwen.</string>
+  <string name="error_no_keys_to_trust">Er zijn geen bruikbare sleutels beschikbaar voor dit contact. Als je zijn/haar sleutels hebt verwijderd dient hij/zij nieuwe aan te maken.</string>
+  <string name="error_trustkeys_title">Fout</string>
   <string name="fetching_history_from_server">Geschiedenis van server halen</string>
   <string name="no_more_history_on_server">Geen verdere geschiedenis op server</string>
   <string name="updating">Bijwerken…</string>
@@ -472,4 +478,6 @@
   <string name="download_failed_server_not_found">Downloaden mislukt: server niet gevonden</string>
   <string name="download_failed_file_not_found">Downloaden mislukt: bestand niet gevonden</string>
   <string name="download_failed_could_not_connect">Downloaden mislukt: kon geen verbinding maken met host</string>
+  <string name="pref_use_white_background">Gebruik witte achtergrond</string>
+  <string name="pref_use_white_background_summary">Toon ontvangen berichten als zwarte tekst op een witte achtergrond</string>
 </resources>

@@ -76,6 +76,7 @@
   <string name="delete_messages">Usuń wiadomości</string>
   <string name="also_end_conversation">Zakończ konwersację po usunięciu historii</string>
   <string name="choose_presence">Wybierz widoczność dla kontaktu</string>
+  <string name="send_unencrypted_message">Wyślij wiadomość bez szyfrowania</string>
   <string name="send_otr_message">Wyślij zaszyfrowaną wiadomość (OTR)</string>
   <string name="send_pgp_message">Wyślij zaszyfrowaną wiadomość (OpenPGP)</string>
   <string name="your_nick_has_been_changed">Twoja nazwa została zmieniona</string>
@@ -104,6 +105,7 @@
   <string name="pref_vibrate_summary">Wibruj, gdy nadejdzie wiadomość</string>
   <string name="pref_sound">Dźwięk</string>
   <string name="pref_sound_summary">Odtwórz dźwięk z powiadomieniem</string>
+  <string name="pref_conference_notifications">Powiadomienia konfrencji</string>
   <string name="pref_notification_grace_period">Opóźnienie powiadomień</string>
   <string name="pref_notification_grace_period_summary">Wyłącz powiadomienia przez krótki czas po otrzymaniu kopii wiadomości</string>
   <string name="pref_advanced_options">Opcje zaawansowane</string>
@@ -146,8 +148,10 @@
   <string name="account_status_regis_not_sup">Serwer nie umożliwia rejestracji</string>
   <string name="account_status_security_error">Błąd zabezpieczeń</string>
   <string name="account_status_incompatible_server">Serwer niekompatybilny</string>
+  <string name="encryption_choice_unencrypted">Bez szyfrowania</string>
   <string name="encryption_choice_otr">OTR</string>
   <string name="encryption_choice_pgp">OpenPGP</string>
+  <string name="encryption_choice_omemo">OMEMO</string>
   <string name="mgmt_account_edit">Edytuj konto</string>
   <string name="mgmt_account_delete">Usuń konto</string>
   <string name="mgmt_account_disable">Wyłącz tymczasowo</string>
@@ -182,6 +186,8 @@
   <string name="server_info_blocking">XEP-0191: Blocking Command</string>
   <string name="server_info_roster_version">XEP-0237: Roster Versioning</string>
   <string name="server_info_stream_management">XEP-0198: Stream Management</string>
+  <string name="server_info_pep">XEP-0163: PEP (Awatary / OMEMO)</string>
+  <string name="server_info_http_upload">XEP-0363: Przesyłanie plików przez HTTP</string>
   <string name="server_info_available">dostępny</string>
   <string name="server_info_unavailable">niedostępny</string>
   <string name="missing_public_keys">Brak informacji o kluczu publicznym</string>
@@ -200,6 +206,8 @@
   <string name="your_fingerprint">Twój odcisk klucza</string>
   <string name="otr_fingerprint">Odcisk klucza OTR</string>
   <string name="other_devices">Pozostałe urządzenia</string>
+  <string name="fetching_keys">Pobieranie kluczy...</string>
+  <string name="done">Ukończono</string>
   <string name="verify">Weryfikuj</string>
   <string name="decrypt">Odszyfruj</string>
   <string name="conferences">Konferencje</string>
@@ -280,15 +288,19 @@
   <string name="pref_conference_name">Nazwa konferencji</string>
   <string name="pref_conference_name_summary">Nazywaj konferencję tematem zamiast Jabber ID</string>
   <string name="toast_message_otr_fingerprint">Odcisk klucza OTR został skopiowany do schowka</string>
+  <string name="toast_message_omemo_fingerprint">Odcisk klucza OMEMO został skopiowany do schowka!</string>
   <string name="conference_banned">Zbanowano cię w konferencji</string>
   <string name="conference_members_only">To jest zamknięty pokój</string>
   <string name="conference_kicked">Wyrzucono cię z konferencji</string>
   <string name="using_account">używając konta %s</string>
+  <string name="checking_x">Sprawdzanie %s na hoście HTTP</string>
   <string name="not_connected_try_again">Brak połączenia. Spróbuj ponownie później</string>
+  <string name="check_x_filesize">Sprawdź rozmiar %s</string>
   <string name="message_options">Opcje wiadomości</string>
   <string name="copy_text">Skopiuj tekst</string>
   <string name="copy_original_url">Skopiuj oryginalny URL</string>
   <string name="send_again">Wyślij ponownie</string>
+  <string name="file_url">URL pliku</string>
   <string name="message_text">Treść wiadomości</string>
   <string name="url_copied_to_clipboard">URL obrazu został skopiowany do schowka</string>
   <string name="message_copied_to_clipboard">Wiadomość została skopiowana do schowka</string>
@@ -343,6 +355,12 @@
   <string name="reset">Resetuj</string>
   <string name="account_image_description">Awatar konta</string>
   <string name="copy_otr_clipboard_description">Skopiuj odcisk klucza OTR do schowka</string>
+  <string name="copy_omemo_clipboard_description">Skopiuj odcisk klucza OMEMO do schowka</string>
+  <string name="regenerate_omemo_key">Wygeneruj ponownie klucz OMEMO</string>
+  <string name="clear_other_devices">Wyczyść urządzenia</string>
+  <string name="purge_key">Skasuj klucz</string>
+  <string name="purge_key_desc_part1">Czy na pewno chcesz skasować usunąć odcisk klucza?</string>
+  <string name="error_trustkeys_title">Błąd</string>
   <string name="fetching_history_from_server">Pobieranie historii z serwera</string>
   <string name="no_more_history_on_server">Koniec historii na serwerze</string>
   <string name="updating">Aktualizowanie...</string>
@@ -443,5 +461,15 @@
   <string name="none">Brak</string>
   <string name="recently_used">Ostatnio używana</string>
   <string name="choose_quick_action">Wybierz szybką akcję</string>
+  <string name="search_for_contacts_or_groups">Szukaj kontaktów i grup</string>
+  <string name="send_private_message">Wyślij wiadomość prywatną</string>
   <string name="user_has_left_conference">%s opuścił(a) konferencję!</string>
+  <string name="username">Nazwa użytkownika</string>
+  <string name="username_hint">Nazwa użytkownika</string>
+  <string name="invalid_username">Błędna nazwa użytkownika</string>
+  <string name="download_failed_server_not_found">Pobieranie nieudane: Nie odnaleziono serwera</string>
+  <string name="download_failed_file_not_found">Pobieranie nieudane: Nie odnaleziono pliku</string>
+  <string name="download_failed_could_not_connect">Pobieranie nieudane: Nie można połączyć z hostem</string>
+  <string name="pref_use_white_background">Białe tło</string>
+  <string name="pref_use_white_background_summary">Pokazuj otrzymane wiadomości jako czarny tekst na białym tle</string>
 </resources>

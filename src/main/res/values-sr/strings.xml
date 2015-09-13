@@ -188,6 +188,8 @@
   <string name="server_info_blocking">XEP-0191: наредба блокирања</string>
   <string name="server_info_roster_version">XEP-0237: верзионисање ростера</string>
   <string name="server_info_stream_management">XEP-0198: менаџмент тока</string>
+  <string name="server_info_pep">XEP-0163: PEP (аватари/ОМЕМО)</string>
+  <string name="server_info_http_upload">XEP-0363: ХТТП отпремање фајлова</string>
   <string name="server_info_available">доступан</string>
   <string name="server_info_unavailable">недоступан</string>
   <string name="missing_public_keys">Недостају објаве јавног кључа</string>

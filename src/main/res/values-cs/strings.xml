@@ -76,6 +76,7 @@
   <string name="delete_messages">Smazat zprávy</string>
   <string name="also_end_conversation">Poté ukončit i tuto konverzaci</string>
   <string name="choose_presence">Vybrat aktualizaci stavu pro kontakt</string>
+  <string name="send_unencrypted_message">Odeslat nešifrovanou zprávu</string>
   <string name="send_otr_message">Poslat OTR šifrovanou zprávu</string>
   <string name="send_omemo_message">Poslat OMEMO šifrovanou zprávu</string>
   <string name="send_pgp_message">Poslat OpenPGP šifrovanou zprávu</string>
@@ -149,6 +150,7 @@
   <string name="account_status_regis_not_sup">Server nepodporuje registrace</string>
   <string name="account_status_security_error">Bezpečnostní chyba</string>
   <string name="account_status_incompatible_server">Nekompatibilní server</string>
+  <string name="encryption_choice_unencrypted">Nešifrováno</string>
   <string name="encryption_choice_otr">OTR</string>
   <string name="encryption_choice_pgp">OpenPGP</string>
   <string name="encryption_choice_omemo">OMEMO</string>
@@ -186,6 +188,8 @@
   <string name="server_info_blocking">XEP-0191: Příkaz blokování</string>
   <string name="server_info_roster_version">XEP-0237: Verzování seznamu</string>
   <string name="server_info_stream_management">XEP-0198: Nastavení proudu</string>
+  <string name="server_info_pep">XEP-0163: PEP (Avatars / OMEMO)</string>
+  <string name="server_info_http_upload">XEP-0363: HTTP File Upload</string>
   <string name="server_info_available">dostupný</string>
   <string name="server_info_unavailable">nedostupný</string>
   <string name="missing_public_keys">Chybí oznámení o veřejném klíči</string>
@@ -365,6 +369,8 @@
   <string name="purge_key">Vymazat klíč</string>
   <string name="purge_key_desc_part1">Opravdu si přejete vymazat tento klíč?</string>
   <string name="purge_key_desc_part2">Bude neodvolatelně pokládán jako kompromitovaný a již s jeho pomocí nebudete moci nikdy spustit jiné sezení.</string>
+  <string name="error_no_keys_to_trust">Pro tento kontakt nejsou dostupné žádné použitelné klíče. Pokud jste smazali jakýkoliv z jeho klíčů bude třeba vygenerovat nové.</string>
+  <string name="error_trustkeys_title">Chyba</string>
   <string name="fetching_history_from_server">Načíst historii ze serveru</string>
   <string name="no_more_history_on_server">Na serveru není žádná další historie</string>
   <string name="updating">Aktualizuji...</string>
@@ -474,4 +480,6 @@
   <string name="download_failed_server_not_found">Stahování selhalo: Server nenalezen</string>
   <string name="download_failed_file_not_found">Stahování selhalo: Soubor nenalezen</string>
   <string name="download_failed_could_not_connect">Stahování selhalo: Nelze se připojit k hostu</string>
+  <string name="pref_use_white_background">Použít bílé pozadí</string>
+  <string name="pref_use_white_background_summary">Zobrazovat přijaté zprávy jako černý text na bílém pozadí</string>
 </resources>

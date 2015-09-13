@@ -76,6 +76,7 @@
   <string name="delete_messages">メッセージを削除</string>
   <string name="also_end_conversation">その後、この会話を終了</string>
   <string name="choose_presence">連絡する参加を選択</string>
+  <string name="send_unencrypted_message">暗号化されていないメッセージを送信</string>
   <string name="send_otr_message">OTR 暗号化メッセージを送信</string>
   <string name="send_omemo_message">OMEMO 暗号化メッセージを送信</string>
   <string name="send_pgp_message">OpenPGP 暗号化メッセージを送信</string>
@@ -149,6 +150,7 @@
   <string name="account_status_regis_not_sup">サーバーが登録をサポートしていません</string>
   <string name="account_status_security_error">セキュリティ エラー</string>
   <string name="account_status_incompatible_server">互換性のないサーバー</string>
+  <string name="encryption_choice_unencrypted">暗号化されていない</string>
   <string name="encryption_choice_otr">OTR</string>
   <string name="encryption_choice_pgp">OpenPGP</string>
   <string name="encryption_choice_omemo">OMEMO</string>
@@ -186,6 +188,8 @@
   <string name="server_info_blocking">XEP-0191: ブロッキング コマンド</string>
   <string name="server_info_roster_version">XEP-0237: 名簿バージョニング</string>
   <string name="server_info_stream_management">XEP-0198: ストリーム管理</string>
+  <string name="server_info_pep">XEP-0163: PEP (アバター / OMEMO)</string>
+  <string name="server_info_http_upload">XEP-0363: HTTP ファイルアップロード</string>
   <string name="server_info_available">利用可能</string>
   <string name="server_info_unavailable">利用不可</string>
   <string name="missing_public_keys">公開鍵の通知がありません</string>
@@ -365,6 +369,8 @@
   <string name="purge_key">鍵を消去</string>
   <string name="purge_key_desc_part1">この鍵を消去してもよろしいですか?</string>
   <string name="purge_key_desc_part2">これは不可逆的に侵害とみなされ、あなたは再びそのセッションを構築することはできません。</string>
+  <string name="error_no_keys_to_trust">この連絡先で利用可能な鍵はありません。あなたがその鍵を消去している場合は、新しいものを生成してもらう必要があります。</string>
+  <string name="error_trustkeys_title">エラー</string>
   <string name="fetching_history_from_server">サーバーから履歴を取得中</string>
   <string name="no_more_history_on_server">サーバーにこれ以上履歴はありません</string>
   <string name="updating">アップデート中…</string>
@@ -470,4 +476,6 @@
   <string name="download_failed_server_not_found">ダウンロードに失敗しました: サーバーが見つかりません</string>
   <string name="download_failed_file_not_found">ダウンロードに失敗しました: ファイルが見つかりません</string>
   <string name="download_failed_could_not_connect">ダウンロードに失敗しました: ホストに接続できませんでした</string>
+  <string name="pref_use_white_background">白い背景を使用する</string>
+  <string name="pref_use_white_background_summary">白地に黒の文字で、受け取ったメッセージを表示します</string>
 </resources>
