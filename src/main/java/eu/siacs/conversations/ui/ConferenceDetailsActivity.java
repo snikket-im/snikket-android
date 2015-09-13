@@ -102,11 +102,29 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 			final MucOptions mucOptions = mConversation.getMucOptions();
 			AlertDialog.Builder builder = new AlertDialog.Builder(ConferenceDetailsActivity.this);
 			builder.setTitle(R.string.conference_options);
-			String[] options = {getString(R.string.members_only),
-					getString(R.string.non_anonymous)};
-			final boolean[] values = new boolean[options.length];
-			values[0] = mucOptions.membersOnly();
-			values[1] = mucOptions.nonanonymous();
+			final String[] options;
+			final boolean[] values;
+			if (mAdvancedMode) {
+				options = new String[]{
+						getString(R.string.members_only),
+						getString(R.string.moderated),
+						getString(R.string.non_anonymous)
+				};
+				values = new boolean[]{
+						mucOptions.membersOnly(),
+						mucOptions.moderated(),
+						mucOptions.nonanonymous()
+				};
+			} else {
+				options = new String[]{
+						getString(R.string.members_only),
+						getString(R.string.non_anonymous)
+				};
+				values = new boolean[]{
+						mucOptions.membersOnly(),
+						mucOptions.nonanonymous()
+				};
+			}
 			builder.setMultiChoiceItems(options,values,new DialogInterface.OnMultiChoiceClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which, boolean isChecked) {
@@ -124,7 +142,12 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 					}
 					Bundle options = new Bundle();
 					options.putString("muc#roomconfig_membersonly", values[0] ? "1" : "0");
-					options.putString("muc#roomconfig_whois", values[1] ? "anyone" : "moderators");
+					if (values.length == 2) {
+						options.putString("muc#roomconfig_whois", values[1] ? "anyone" : "moderators");
+					} else if (values.length == 3) {
+						options.putString("muc#roomconfig_moderatedroom", values[1] ? "1" : "0");
+						options.putString("muc#roomconfig_whois", values[2] ? "anyone" : "moderators");
+					}
 					options.putString("muc#roomconfig_persistentroom", "1");
 					xmppConnectionService.pushConferenceConfiguration(mConversation,
 							options,
@@ -193,6 +216,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 						});
 			}
 		});
+		this.mAdvancedMode = getPreferences().getBoolean("advanced_muc_mode", false);
 	}
 
 	@Override
@@ -215,6 +239,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 			case R.id.action_advanced_mode:
 				this.mAdvancedMode = !menuItem.isChecked();
 				menuItem.setChecked(this.mAdvancedMode);
+				getPreferences().edit().putBoolean("advanced_muc_mode", mAdvancedMode).commit();
 				invalidateOptionsMenu();
 				updateView();
 				break;

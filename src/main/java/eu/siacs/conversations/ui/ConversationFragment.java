@@ -320,11 +320,13 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 	}
 
 	public void updateChatMsgHint() {
-		if (conversation.getMode() == Conversation.MODE_MULTI
-				&& conversation.getNextCounterpart() != null) {
+		final boolean multi = conversation.getMode() == Conversation.MODE_MULTI;
+		if (multi && conversation.getNextCounterpart() != null) {
 			this.mEditMessage.setHint(getString(
 					R.string.send_private_message_to,
 					conversation.getNextCounterpart().getResourcepart()));
+		} else if (multi && !conversation.getMucOptions().participating()) {
+			this.mEditMessage.setHint(R.string.you_are_not_participating);
 		} else {
 			switch (conversation.getNextEncryption()) {
 				case Message.ENCRYPTION_NONE:
@@ -664,6 +666,9 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 		if (this.conversation.getMode() == Conversation.MODE_MULTI) {
 			this.conversation.setNextCounterpart(null);
 		}
+		boolean canWrite = this.conversation.getMode() == Conversation.MODE_SINGLE || this.conversation.getMucOptions().participating();
+		this.mEditMessage.setEnabled(canWrite);
+		this.mSendButton.setEnabled(canWrite);
 		this.mEditMessage.setKeyboardListener(null);
 		this.mEditMessage.setText("");
 		this.mEditMessage.append(this.conversation.getNextMessage());

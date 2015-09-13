@@ -440,8 +440,10 @@
 	<string name="public_conference">Publicly accessible conference</string>
 	<string name="private_conference">Private, members only conference</string>
 	<string name="conference_options">Conference options</string>
-	<string name="members_only">Private (Members only)</string>
+	<string name="members_only">Private, members only</string>
 	<string name="non_anonymous">Non-anonymous</string>
+	<string name="moderated">Moderated</string>
+	<string name="you_are_not_participating">You are not participating</string>
 	<string name="modified_conference_options">Modified conference options!</string>
 	<string name="could_not_modify_conference_options">Could not modify conference options</string>
 	<string name="never">Never</string>
