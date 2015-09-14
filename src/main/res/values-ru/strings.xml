@@ -76,6 +76,7 @@
   <string name="delete_messages">Удалить сообщения</string>
   <string name="also_end_conversation">Завершить беседу</string>
   <string name="choose_presence">Укажите статус для контакта</string>
+  <string name="send_unencrypted_message">Отправить незащифрованное сообщение</string>
   <string name="send_otr_message">Отправить OTR защифрованное сообщение</string>
   <string name="send_pgp_message">Отправить OpenPGP защифрованное сообщение</string>
   <string name="your_nick_has_been_changed">Ваш псевдоним был изменен</string>
@@ -146,6 +147,7 @@
   <string name="account_status_regis_not_sup">Сервер не поддерживает регистрацию</string>
   <string name="account_status_security_error">Ошибка безопасности</string>
   <string name="account_status_incompatible_server">Несовместимый сервер</string>
+  <string name="encryption_choice_unencrypted">Без шифра</string>
   <string name="encryption_choice_otr">OTR</string>
   <string name="encryption_choice_pgp">OpenPGP</string>
   <string name="mgmt_account_edit">Редактировать аккаунт</string>
@@ -199,6 +201,13 @@
   <string name="reception_failed">Прием не удался</string>
   <string name="your_fingerprint">Контрольная сумма</string>
   <string name="otr_fingerprint">OTR контрольная сумма</string>
+  <string name="omemo_fingerprint">OMEMO контрольная сумма</string>
+  <string name="omemo_fingerprint_selected_message">OMEMO контрольная сумма сообщения</string>
+  <string name="this_device_omemo_fingerprint">Собственная OMEMO контрольная сумма</string>
+  <string name="other_devices">Другие устройства</string>
+  <string name="trust_omemo_fingerprints">Доверенные контрольные суммы OMEMO</string>
+  <string name="fetching_keys">Получение ключей...</string>
+  <string name="done">Готово</string>
   <string name="verify">Подтвердить</string>
   <string name="decrypt">Дешифровать</string>
   <string name="conferences">Конференции</string>
@@ -342,6 +351,11 @@
   <string name="reset">Сброс</string>
   <string name="account_image_description">Изображение учётной записи</string>
   <string name="copy_otr_clipboard_description">Скопировать OTR-отпечаток в буфер обмена</string>
+  <string name="copy_omemo_clipboard_description">Скопировать OMEMO-отпечаток в буфер обмена</string>
+  <string name="regenerate_omemo_key">Создать заново ключ OMEMO</string>
+  <string name="wipe_omemo_pep">Стереть другие устройства из PEP</string>
+  <string name="clear_other_devices">Очистить устройства</string>
+  <string name="clear_other_devices_desc">Вы уверены, что хотите очистить все остальные устройства из анонса ключей OMEMO? При соединении устройств в следующий раз новые ключи анонсируются автоматически, но устройства могут не получить сообщения, посланные до этого.</string>
   <string name="fetching_history_from_server">Получение истории с сервера</string>
   <string name="no_more_history_on_server">На сервере больше нет истории</string>
   <string name="updating">Обновление...</string>
