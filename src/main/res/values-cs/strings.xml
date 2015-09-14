@@ -408,7 +408,6 @@
   <string name="public_conference">Veřejně přístupná konference</string>
   <string name="private_conference">Soukromá konference pouze pro členy</string>
   <string name="conference_options">Nastavení konference</string>
-  <string name="members_only">Soukromá (pouze členové)</string>
   <string name="non_anonymous">Neanonymní</string>
   <string name="modified_conference_options">Nastavení konference upravena!</string>
   <string name="could_not_modify_conference_options">Nepodařilo se upravit nastavení konference!</string>

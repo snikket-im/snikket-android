@@ -408,7 +408,6 @@
   <string name="public_conference">Publikt tillgänglig konferens</string>
   <string name="private_conference">Privat konferens där medlemsskap krävs</string>
   <string name="conference_options">Konferensalternativ</string>
-  <string name="members_only">Privat (endast för medlemmar)</string>
   <string name="non_anonymous">Icke-anonymt</string>
   <string name="modified_conference_options">Ändrade konferensalternativ</string>
   <string name="could_not_modify_conference_options">Kunde inte ändra konferensalternativ</string>

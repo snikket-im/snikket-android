@@ -380,7 +380,6 @@
   <string name="public_conference">Conferenza pubblicamente accessibile</string>
   <string name="private_conference">Conferenza privata</string>
   <string name="conference_options">Opzioni conferenza</string>
-  <string name="members_only">Privata (solo membri)</string>
   <string name="non_anonymous">Non anonimo</string>
   <string name="modified_conference_options">Modificate le opzioni della conferenza!</string>
   <string name="could_not_modify_conference_options">Impossibile modificare opzioni conferenza</string>

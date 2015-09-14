@@ -408,7 +408,6 @@
   <string name="public_conference">Conversación de acceso público</string>
   <string name="private_conference">Conversación privada solo para miembros</string>
   <string name="conference_options">Opciones de conversación</string>
-  <string name="members_only">Privada (solo miembros)</string>
   <string name="non_anonymous">No anónima</string>
   <string name="modified_conference_options">¡Modificadas las opciones de la conversación!</string>
   <string name="could_not_modify_conference_options">No se pueden modificar las opciones de la conversación</string>

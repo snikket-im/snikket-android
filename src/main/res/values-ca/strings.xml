@@ -379,7 +379,6 @@
   <string name="public_conference">Comferència de la conversació  d\'accés pùblic</string>
   <string name="private_conference">Privada, únicament els membres de la conferència de conversació</string>
   <string name="conference_options">Opcions de la sala</string>
-  <string name="members_only">Privat( Nomès membres)</string>
   <string name="non_anonymous">Sense anonimat</string>
   <string name="modified_conference_options">Modificat opcions de la sala!</string>
   <string name="could_not_modify_conference_options">No s\'ha pogut modificar les opcions de la sala</string>

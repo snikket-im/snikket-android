@@ -384,7 +384,6 @@
   <string name="public_conference">Conference umum</string>
   <string name="private_conference">Rahasia, hanya member conference</string>
   <string name="conference_options">Opsi conference</string>
-  <string name="members_only">Rahasia (Hanya member)</string>
   <string name="non_anonymous">Non Anonymous</string>
   <string name="modified_conference_options">Opsi conference dimodifikasi!</string>
   <string name="could_not_modify_conference_options">Tidak dapat merubah pengaturan conference</string>

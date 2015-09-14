@@ -379,7 +379,6 @@
   <string name="public_conference">Συνδιάσκεψη δημόσιας πρόσβασης</string>
   <string name="private_conference">Ιδιωτική συνδιάσκεψη, μόνο για μέλη</string>
   <string name="conference_options">Επιλογές συνδιάσκεψης</string>
-  <string name="members_only">Ιδιωτική (μόνο για μέλη)</string>
   <string name="non_anonymous">Μη-ανώνυμα</string>
   <string name="modified_conference_options">Μεταβολή των επιλογών συνδιάσκεψης!</string>
   <string name="could_not_modify_conference_options">Δεν ήταν δυνατή η μεταβολή των επιλογών συνδιάσκεψης</string>

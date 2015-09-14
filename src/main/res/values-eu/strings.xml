@@ -408,7 +408,6 @@
   <string name="public_conference">Publikoki edonor sar daiteken konferentzia</string>
   <string name="private_conference">Konferentzia pribatua, kideentzat soilik</string>
   <string name="conference_options">Konferentziaren aukerak</string>
-  <string name="members_only">Pribatua (kideak soilik)</string>
   <string name="non_anonymous">Ez anonimoa</string>
   <string name="modified_conference_options">Konferentziaren aukerak aldatu dira</string>
   <string name="could_not_modify_conference_options">Konferentziaren aukerak ezin izan dira aldatu</string>

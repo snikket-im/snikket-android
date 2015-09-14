@@ -408,7 +408,6 @@
   <string name="public_conference">Јавно доступна конференција</string>
   <string name="private_conference">Лична, само за чланове конференција</string>
   <string name="conference_options">Опције конференције</string>
-  <string name="members_only">Лична (само чланови)</string>
   <string name="non_anonymous">Неанонимна</string>
   <string name="modified_conference_options">Поставке конференције измењене!</string>
   <string name="could_not_modify_conference_options">Не могу да изменим поставке конференције</string>

@@ -398,7 +398,6 @@
   <string name="public_conference">Konferencja publiczna</string>
   <string name="private_conference">Konferencja prywatna, dla zaakceptowanych uczestników</string>
   <string name="conference_options">Opcje konferencji</string>
-  <string name="members_only">Prywatna (tylko zaakceptowani)</string>
   <string name="non_anonymous">Nieanonimowa</string>
   <string name="modified_conference_options">Opcje konferencji zostały zmienione!</string>
   <string name="could_not_modify_conference_options">Nie udało się zmienić opcji konferencji</string>

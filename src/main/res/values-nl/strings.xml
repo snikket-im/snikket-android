@@ -408,7 +408,6 @@
   <string name="public_conference">Publiek toegankelijk groepsgesprek</string>
   <string name="private_conference">Privé groepsgesprek, enkel toegankelijk voor leden</string>
   <string name="conference_options">Groepsgespreksopties</string>
-  <string name="members_only">Privé (alleen leden)</string>
   <string name="non_anonymous">Niet anoniem</string>
   <string name="modified_conference_options">Groepsgespreksopties aangepast!</string>
   <string name="could_not_modify_conference_options">Kon groepsgespreksopties niet aanpassen</string>

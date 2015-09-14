@@ -381,7 +381,6 @@
   <string name="public_conference">Verejne prístupná skupinová konverzácia</string>
   <string name="private_conference">Súkromná konverzácia iba pre členov</string>
   <string name="conference_options">Možnosti skupinovej konverzácie</string>
-  <string name="members_only">Súkromný (Iba pre členov)</string>
   <string name="non_anonymous">Neanonymný</string>
   <string name="modified_conference_options">Možnosti skupinovej konverzácie nastavené!</string>
   <string name="could_not_modify_conference_options">Nepodarilo sa nastaviť možnosti skupinovej konverzácie</string>

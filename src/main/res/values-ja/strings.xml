@@ -408,7 +408,6 @@
   <string name="public_conference">公開アクセス可能な会議</string>
   <string name="private_conference">プライベート、メンバーのみの会議</string>
   <string name="conference_options">会議オプション</string>
-  <string name="members_only">プライベート (メンバーのみ)</string>
   <string name="non_anonymous">匿名でない</string>
   <string name="modified_conference_options">会議オプションを変更しました!</string>
   <string name="could_not_modify_conference_options">会議オプションを変更できません</string>

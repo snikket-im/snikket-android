@@ -379,7 +379,6 @@
   <string name="public_conference">공개적으로 접근 가능한 회의 </string>
   <string name="private_conference">멤버 전용 사설 회의 </string>
   <string name="conference_options">회의 설정 </string>
-  <string name="members_only">사설 (멤버 전용) </string>
   <string name="non_anonymous">익명 아님 </string>
   <string name="modified_conference_options">회의 설정 변경됨  </string>
   <string name="could_not_modify_conference_options">회의 설정을 변경할 수 없습니다 </string>

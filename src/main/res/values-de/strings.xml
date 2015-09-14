@@ -408,7 +408,6 @@
   <string name="public_conference">Öffentlich zugängliche Konferenz</string>
   <string name="private_conference">Private Konferenz nur für Mitglieder</string>
   <string name="conference_options">Konferenz-Optionen</string>
-  <string name="members_only">Privat (Nur für Mitglieder)</string>
   <string name="non_anonymous">De-anonymisiert</string>
   <string name="modified_conference_options">Konferenz-Optionen wurden modifiziert!</string>
   <string name="could_not_modify_conference_options">Konferenz-Optionen konnten nicht modifiziert werden</string>

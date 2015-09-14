@@ -379,7 +379,6 @@
   <string name="public_conference">公开访问的讨论组</string>
   <string name="private_conference">私密，只有成员可以加入的讨论组</string>
   <string name="conference_options">讨论组选项</string>
-  <string name="members_only">私密(只对成员开放)</string>
   <string name="non_anonymous">非匿名</string>
   <string name="modified_conference_options">讨论组选项已修改！</string>
   <string name="could_not_modify_conference_options">不能修改讨论组选项</string>

@@ -284,7 +284,6 @@
   <string name="public_conference">الوصول العام للغرفة</string>
   <string name="private_conference">الخاص , اعضاء الغرفة فقط</string>
   <string name="conference_options">اعدادت المؤتمر</string>
-  <string name="members_only">الخاص (الأعضاء فقط)</string>
   <string name="non_anonymous">لا تسمح للمجهولين بالدخول</string>
   <string name="modified_conference_options">تم تعديل اعدادات المؤتمر!</string>
   <string name="could_not_modify_conference_options">لا يمكن تعديل اعدادات المؤتمر</string>

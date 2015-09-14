@@ -379,7 +379,6 @@
   <string name="public_conference">Публичная конференция</string>
   <string name="private_conference">Приватная конференция только для членов</string>
   <string name="conference_options">Настройки конференции</string>
-  <string name="members_only">Закрытый доступ (только для участников)</string>
   <string name="non_anonymous">Не анонимно </string>
   <string name="modified_conference_options">Настройки конференции изменены!</string>
   <string name="could_not_modify_conference_options">Не удалось изменить настройки конференции</string>
