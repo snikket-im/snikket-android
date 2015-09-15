@@ -408,7 +408,10 @@
   <string name="public_conference">Публично достъпни беседи</string>
   <string name="private_conference">Частни беседи, само за членове</string>
   <string name="conference_options">Настройки на беседата</string>
+  <string name="members_only">Частно, само за членове</string>
   <string name="non_anonymous">Не-анонимна</string>
+  <string name="moderated">С модератор</string>
+  <string name="you_are_not_participating">Вие не участвате</string>
   <string name="modified_conference_options">Настройките на беседата бяха променени!</string>
   <string name="could_not_modify_conference_options">Неуспешна промяна на настройките на беседата</string>
   <string name="never">Никога</string>

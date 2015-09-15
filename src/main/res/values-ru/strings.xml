@@ -443,13 +443,13 @@
   <plurals name="toast_delete_certificates">
     <item quantity="one">Удалён %d сертификат</item>
     <item quantity="few">Удалено %d сертификатов</item>
-    <item quantity="many"></item>
+    <item quantity="many">Удалено %d сертификатов</item>
     <item quantity="other">Удалено %d сертификатов</item>
   </plurals>
   <plurals name="select_contact">
     <item quantity="one">Выбран %d контакт</item>
     <item quantity="few">Выбрано %d контактов</item>
-    <item quantity="many"></item>
+    <item quantity="many">Выбрано %d контактов</item>
     <item quantity="other">Выбрано %d контактов</item>
   </plurals>
   <string name="pref_quick_action_summary">Заменить кнопку отправки кнопкой быстрого действия</string>

@@ -408,7 +408,10 @@
   <string name="public_conference">Publikt tillgänglig konferens</string>
   <string name="private_conference">Privat konferens där medlemsskap krävs</string>
   <string name="conference_options">Konferensalternativ</string>
+  <string name="members_only">Privat, medlemsskap krävs</string>
   <string name="non_anonymous">Icke-anonymt</string>
+  <string name="moderated">Modererad</string>
+  <string name="you_are_not_participating">Du deltar ej</string>
   <string name="modified_conference_options">Ändrade konferensalternativ</string>
   <string name="could_not_modify_conference_options">Kunde inte ändra konferensalternativ</string>
   <string name="never">Aldrig</string>
@@ -479,4 +482,6 @@
   <string name="download_failed_could_not_connect">Nerladdningen gick fel: Kunder inte ansluta till server</string>
   <string name="pref_use_white_background">Använd vit bakgrund</string>
   <string name="pref_use_white_background_summary">Visa mottagna meddelanden som svart text på vit bakgrund</string>
+  <string name="account_status_dns_timeout">Timeout för DNS</string>
+  <string name="server_info_broken">Sönder</string>
 </resources>

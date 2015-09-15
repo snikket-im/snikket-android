@@ -408,7 +408,10 @@
   <string name="public_conference">Conférence accessible au public</string>
   <string name="private_conference">Conférence privée, réservée aux membres</string>
   <string name="conference_options">Options de la conférence</string>
+  <string name="members_only">Privé, membres uniquement</string>
   <string name="non_anonymous">Non anonyme</string>
+  <string name="moderated">Modéré</string>
+  <string name="you_are_not_participating">Vous ne participez pas</string>
   <string name="modified_conference_options">Options de la conférence modifiée!</string>
   <string name="could_not_modify_conference_options">Impossible de modifier les options de la conférence</string>
   <string name="never">Jamais</string>
@@ -479,4 +482,6 @@
   <string name="download_failed_could_not_connect">Échec du téléchargement: Impossible de se connecter au serveur</string>
   <string name="pref_use_white_background">Utiliser un fond blanc</string>
   <string name="pref_use_white_background_summary">Afficher les messages reçus en texte noir sur fond blanc</string>
+  <string name="account_status_dns_timeout">Expiration dans le DNS</string>
+  <string name="server_info_broken">Détraqué</string>
 </resources>

@@ -408,7 +408,10 @@
   <string name="public_conference">Publikoki edonor sar daiteken konferentzia</string>
   <string name="private_conference">Konferentzia pribatua, kideentzat soilik</string>
   <string name="conference_options">Konferentziaren aukerak</string>
+  <string name="members_only">Pribatua, kideentzat soilik</string>
   <string name="non_anonymous">Ez anonimoa</string>
+  <string name="moderated">Moderatua</string>
+  <string name="you_are_not_participating">Ez zara parte hartzen ari</string>
   <string name="modified_conference_options">Konferentziaren aukerak aldatu dira</string>
   <string name="could_not_modify_conference_options">Konferentziaren aukerak ezin izan dira aldatu</string>
   <string name="never">Inoiz</string>
@@ -479,4 +482,6 @@
   <string name="download_failed_could_not_connect">Deskargak huts egin du: ezin izan da ostalarira konektatu</string>
   <string name="pref_use_white_background">Atzeko-planoan kolore zuria erabili</string>
   <string name="pref_use_white_background_summary">Jasotako mezuak testu beltza atzeko-plano zuri baten gainean bezala erakutsi</string>
+  <string name="account_status_dns_timeout">DNSan denboraz kanpoko arazoa</string>
+  <string name="server_info_broken">Hondatuta</string>
 </resources>
