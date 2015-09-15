@@ -70,11 +70,14 @@ public class HttpUploadConnection implements Transferable {
 
 	@Override
 	public long getFileSize() {
-		return this.file.getExpectedSize();
+		return file == null ? 0 : file.getExpectedSize();
 	}
 
 	@Override
 	public int getProgress() {
+		if (file == null) {
+			return 0;
+		}
 		return (int) ((((double) transmitted) / file.getExpectedSize()) * 100);
 	}
 
@@ -92,8 +95,6 @@ public class HttpUploadConnection implements Transferable {
 
 	public void init(Message message, boolean delay) {
 		this.message = message;
-		message.setTransferable(this);
-		mXmppConnectionService.markMessage(message, Message.STATUS_UNSEND);
 		this.account = message.getConversation().getAccount();
 		this.file = mXmppConnectionService.getFileBackend().getFile(message, false);
 		this.mime = this.file.getMimeType();
@@ -139,6 +140,8 @@ public class HttpUploadConnection implements Transferable {
 				}
 			}
 		});
+		message.setTransferable(this);
+		mXmppConnectionService.markMessage(message, Message.STATUS_UNSEND);
 	}
 
 	private class FileUploader implements Runnable {
