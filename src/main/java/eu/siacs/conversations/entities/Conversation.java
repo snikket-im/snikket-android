@@ -340,8 +340,8 @@ public class Conversation extends AbstractEntity implements Blockable {
 		if (getMode() == MODE_MULTI) {
 			if (getMucOptions().getSubject() != null) {
 				return getMucOptions().getSubject();
-			} else if (bookmark != null && bookmark.getName() != null) {
-				return bookmark.getName();
+			} else if (bookmark != null && bookmark.getBookmarkName() != null) {
+				return bookmark.getBookmarkName();
 			} else {
 				String generatedName = getMucOptions().createNameFromParticipants();
 				if (generatedName != null) {

@@ -50,8 +50,8 @@ public class Bookmark extends Element implements ListItem {
 		if (this.mJoinedConversation != null
 				&& (this.mJoinedConversation.getMucOptions().getSubject() != null)) {
 			return this.mJoinedConversation.getMucOptions().getSubject();
-		} else if (getName() != null) {
-			return getName();
+		} else if (getBookmarkName() != null) {
+			return getBookmarkName();
 		} else {
 			return this.getJid().getLocalpart();
 		}
@@ -134,12 +134,8 @@ public class Bookmark extends Element implements ListItem {
 		this.mJoinedConversation = conversation;
 	}
 
-	public String getName() {
+	public String getBookmarkName() {
 		return this.getAttribute("name");
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public void unregisterConversation() {

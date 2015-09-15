@@ -16,7 +16,7 @@ public class Field extends Element {
 		super("field");
 	}
 
-	public String getName() {
+	public String getFieldName() {
 		return this.getAttribute("var");
 	}
 

@@ -1701,8 +1701,8 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 				if (packet.getType() == IqPacket.TYPE.RESULT) {
 					Data data = Data.parse(packet.query().findChild("x", "jabber:x:data"));
 					for (Field field : data.getFields()) {
-						if (options.containsKey(field.getName())) {
-							field.setValue(options.getString(field.getName()));
+						if (options.containsKey(field.getFieldName())) {
+							field.setValue(options.getString(field.getFieldName()));
 						}
 					}
 					data.submit();

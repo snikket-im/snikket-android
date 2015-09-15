@@ -176,7 +176,7 @@ public class IqGenerator extends AbstractGenerator {
 	public IqPacket queryMessageArchiveManagement(final MessageArchiveService.Query mam) {
 		final IqPacket packet = new IqPacket(IqPacket.TYPE.SET);
 		final Element query = packet.query("urn:xmpp:mam:0");
-		query.setAttribute("queryid",mam.getQueryId());
+		query.setAttribute("queryid", mam.getQueryId());
 		final Data data = new Data();
 		data.setFormType("urn:xmpp:mam:0");
 		if (mam.muc()) {
@@ -184,8 +184,9 @@ public class IqGenerator extends AbstractGenerator {
 		} else if (mam.getWith()!=null) {
 			data.put("with", mam.getWith().toString());
 		}
-		data.put("start",getTimestamp(mam.getStart()));
-		data.put("end",getTimestamp(mam.getEnd()));
+		data.put("start", getTimestamp(mam.getStart()));
+		data.put("end", getTimestamp(mam.getEnd()));
+		data.submit();
 		query.addChild(data);
 		if (mam.getPagingOrder() == MessageArchiveService.PagingOrder.REVERSE) {
 			query.addChild("set", "http://jabber.org/protocol/rsm").addChild("before").setContent(mam.getReference());
