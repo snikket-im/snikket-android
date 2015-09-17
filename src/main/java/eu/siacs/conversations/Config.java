@@ -13,6 +13,8 @@ public final class Config {
 	public static final boolean DISALLOW_REGISTRATION_IN_UI = false; //hide the register checkbox
 	public static final boolean HIDE_PGP_IN_UI = false; //some more consumer focused clients might want to disable OpenPGP
 
+	public static final boolean LEGACY_NAMESPACE_HTTP_UPLOAD = false;
+
 	public static final int PING_MAX_INTERVAL = 300;
 	public static final int PING_MIN_INTERVAL = 30;
 	public static final int PING_TIMEOUT = 15;
