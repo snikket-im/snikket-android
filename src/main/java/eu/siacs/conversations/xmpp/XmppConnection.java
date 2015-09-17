@@ -480,7 +480,7 @@ public class XmppConnection implements Runnable {
 					final Pair<IqPacket, OnIqPacketReceived> packetCallbackDuple = packetCallbacks.get(packet.getId());
 					// Packets to the server should have responses from the server
 					if (packetCallbackDuple.first.toServer(account)) {
-						if (packet.fromServer(account)) {
+						if (packet.fromServer(account) || account.getJid().getDomainpart().equals("chat.facebook.com")) {
 							callback = packetCallbackDuple.second;
 							packetCallbacks.remove(packet.getId());
 						} else {
