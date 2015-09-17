@@ -394,6 +394,20 @@ public class AxolotlService {
 		mXmppConnectionService.sendIqPacket(account, packet, new OnIqPacketReceived() {
 			@Override
 			public void onIqPacketReceived(Account account, IqPacket packet) {
+
+				if (packet.getType() == IqPacket.TYPE.TIMEOUT) {
+					return; //ignore timeout. do nothing
+				}
+
+				if (packet.getType() == IqPacket.TYPE.ERROR) {
+					Element error = packet.findChild("error");
+					if (error == null || !error.hasChild("item-not-found")) {
+						pepBroken = true;
+						Log.w(Config.LOGTAG, AxolotlService.getLogprefix(account) + "request for device bundles came back with something other than item-not-found" + packet);
+						return;
+					}
+				}
+
 				PreKeyBundle bundle = mXmppConnectionService.getIqParser().bundle(packet);
 				Map<Integer, ECPublicKey> keys = mXmppConnectionService.getIqParser().preKeyPublics(packet);
 				boolean flush = false;
