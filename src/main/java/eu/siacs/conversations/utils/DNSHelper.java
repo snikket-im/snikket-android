@@ -45,7 +45,7 @@ public class DNSHelper {
 
 	public static Bundle getSRVRecord(final Jid jid, Context context) throws IOException {
         final String host = jid.getDomainpart();
-		final List<InetAddress> servers = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ? getDnsServers(context) : getDnsServersPreLolipop();
+		final List<InetAddress> servers = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ? getDnsServers(context) : getDnsServersPreLollipop();
 		Bundle b = null;
 		for(InetAddress server : servers) {
 			b = queryDNS(host, server);
@@ -60,15 +60,23 @@ public class DNSHelper {
 	private static List<InetAddress> getDnsServers(Context context) {
 		List<InetAddress> servers = new ArrayList<>();
 		ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-		Network[] networks = connectivityManager.getAllNetworks();
+		Network[] networks = connectivityManager == null ? null : connectivityManager.getAllNetworks();
+		if (networks == null) {
+			return getDnsServersPreLollipop();
+		}
 		for(int i = 0; i < networks.length; ++i) {
 			LinkProperties linkProperties = connectivityManager.getLinkProperties(networks[i]);
-			servers.addAll(linkProperties.getDnsServers());
+			if (linkProperties != null) {
+				servers.addAll(linkProperties.getDnsServers());
+			}
 		}
-		return servers.size() > 0 ? servers : getDnsServersPreLolipop();
+		if (servers.size() > 0) {
+			Log.d(Config.LOGTAG,"used lollipop variant to discover dns servers in "+networks.length+" networks");
+		}
+		return servers.size() > 0 ? servers : getDnsServersPreLollipop();
 	}
 
-	private static List<InetAddress> getDnsServersPreLolipop() {
+	private static List<InetAddress> getDnsServersPreLollipop() {
 		List<InetAddress> servers = new ArrayList<>();
 		String[] dns = client.findDNS();
 		for(int i = 0; i < dns.length; ++i) {
