@@ -210,7 +210,11 @@ public class ConversationActivity extends XmppActivity
 				View v = listView.getChildAt(0);
 				final int top = (v == null) ? 0 : (v.getTop() - listView.getPaddingTop());
 
-				swipedConversation = listAdapter.getItem(position);
+				try {
+					swipedConversation = listAdapter.getItem(position);
+				} catch (IndexOutOfBoundsException e) {
+					return null;
+				}
 				listAdapter.remove(swipedConversation);
 				swipedConversation.markRead();
 				xmppConnectionService.getNotificationService().clear(swipedConversation);
