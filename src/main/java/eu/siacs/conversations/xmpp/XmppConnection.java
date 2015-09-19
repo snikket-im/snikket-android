@@ -913,7 +913,6 @@ public class XmppConnection implements Runnable {
 
 	private void sendStartStream() throws IOException {
 		final Tag stream = Tag.start("stream:stream");
-		stream.setAttribute("from", account.getJid().toBareJid().toString());
 		stream.setAttribute("to", account.getServer().toString());
 		stream.setAttribute("version", "1.0");
 		stream.setAttribute("xml:lang", "en");
