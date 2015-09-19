@@ -7,6 +7,7 @@ import android.net.LinkProperties;
 import android.net.Network;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 
 import java.io.IOException;
@@ -46,12 +47,18 @@ public class DNSHelper {
 	public static Bundle getSRVRecord(final Jid jid, Context context) throws IOException {
         final String host = jid.getDomainpart();
 		final List<InetAddress> servers = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ? getDnsServers(context) : getDnsServersPreLollipop();
-		Bundle b = null;
+		Bundle b = new Bundle();
 		for(InetAddress server : servers) {
 			b = queryDNS(host, server);
 			if (b.containsKey("values")) {
 				return b;
 			}
+		}
+		if (!b.containsKey("values")) {
+			Log.d(Config.LOGTAG,"all dns queries failed. provide fallback A record");
+			ArrayList<Parcelable> values = new ArrayList<>();
+			values.add(createNamePortBundle(host,5222));
+			b.putParcelableArrayList("values",values);
 		}
 		return b;
 	}
