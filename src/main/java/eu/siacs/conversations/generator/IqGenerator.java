@@ -262,7 +262,7 @@ public class IqGenerator extends AbstractGenerator {
 		request.addChild("filename").setContent(file.getName());
 		request.addChild("size").setContent(String.valueOf(file.getExpectedSize()));
 		if (mime != null) {
-			request.addChild("content-type", mime);
+			request.addChild("content-type").setContent(mime);
 		}
 		return packet;
 	}
