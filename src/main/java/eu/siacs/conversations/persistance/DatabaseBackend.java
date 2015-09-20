@@ -21,6 +21,7 @@ import org.whispersystems.libaxolotl.state.SignedPreKeyRecord;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -405,6 +406,43 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		}
 		cursor.close();
 		return list;
+	}
+
+	public Iterable<Message> getMessagesIterable(final Conversation conversation){
+		return new Iterable<Message>() {
+			@Override
+			public Iterator<Message> iterator() {
+				class MessageIterator implements Iterator<Message>{
+					SQLiteDatabase db = getReadableDatabase();
+					String[] selectionArgs = { conversation.getUuid() };
+					Cursor cursor = db.query(Message.TABLENAME, null, Message.CONVERSATION
+							+ "=?", selectionArgs, null, null, Message.TIME_SENT
+							+ " ASC", null);
+
+					public MessageIterator() {
+						cursor.moveToFirst();
+					}
+
+					@Override
+					public boolean hasNext() {
+						return !cursor.isAfterLast();
+					}
+
+					@Override
+					public Message next() {
+						Message message = Message.fromCursor(cursor);
+						cursor.moveToNext();
+						return message;
+					}
+
+					@Override
+					public void remove() {
+						throw new UnsupportedOperationException();
+					}
+				}
+				return new MessageIterator();
+			}
+		};
 	}
 
 	public Conversation findConversation(final Account account, final Jid contactJid) {
