@@ -497,16 +497,14 @@ public class NotificationService {
 		final int cancelIcon;
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 			mBuilder.setCategory(Notification.CATEGORY_SERVICE);
-			mBuilder.setSmallIcon(R.drawable.ic_import_export_white_24dp);
 			cancelIcon = R.drawable.ic_cancel_white_24dp;
 		} else {
-			mBuilder.setSmallIcon(R.drawable.ic_stat_communication_import_export);
 			cancelIcon = R.drawable.ic_action_cancel;
 		}
+		mBuilder.setSmallIcon(R.drawable.ic_link_white_24dp);
 		mBuilder.addAction(cancelIcon,
 				mXmppConnectionService.getString(R.string.disable_foreground_service),
 				createDisableForeground());
-		setNotificationColor(mBuilder);
 		return mBuilder.build();
 	}
 

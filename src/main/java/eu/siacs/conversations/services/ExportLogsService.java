@@ -4,6 +4,7 @@ import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 
@@ -48,7 +49,7 @@ public class ExportLogsService extends Service {
 							NotificationManager mNotifyManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 							NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getBaseContext());
 							mBuilder.setContentTitle(getString(R.string.notification_export_logs_title))
-									.setSmallIcon(R.drawable.ic_notification)
+									.setSmallIcon(R.drawable.ic_import_export_white_24dp)
 									.setProgress(conversations.size(), 0, false);
 							startForeground(NOTIFICATION_ID, mBuilder.build());
 
