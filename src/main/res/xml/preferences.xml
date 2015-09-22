@@ -170,6 +170,10 @@
                     android:key="keep_foreground_service"
                     android:summary="@string/pref_keep_foreground_service_summary"
                     android:title="@string/pref_keep_foreground_service"/>
+                <eu.siacs.conversations.ui.ExportLogsPreference
+                        android:key="export_logs"
+                        android:title="@string/pref_export_logs"
+                        android:summary="@string/pref_export_logs_summary"/>
             </PreferenceCategory>
         </PreferenceScreen>
 

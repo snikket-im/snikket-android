@@ -149,6 +149,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="eu.siacs.conversations.ui.SettingsActivity" />
         </activity>
+        <service android:name=".services.ExportLogsService" />
     </application>
 
 </manifest>
