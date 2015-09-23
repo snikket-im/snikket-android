@@ -36,8 +36,8 @@ public abstract class AbstractGenerator {
 			"urn:xmpp:receipts"
 	};
 	private String mVersion = null;
-	public final String IDENTITY_NAME = "Conversations";
-	public final String IDENTITY_TYPE = "phone";
+	protected final String IDENTITY_NAME = "Conversations";
+	protected final String IDENTITY_TYPE = "phone";
 
 	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US);
 
@@ -54,7 +54,7 @@ public abstract class AbstractGenerator {
 		return this.mVersion;
 	}
 
-	protected String getIdentityName() {
+	public String getIdentityName() {
 		return IDENTITY_NAME + " " + getIdentityVersion();
 	}
 

@@ -165,6 +165,7 @@ public class HttpUploadConnection implements Transferable {
 				connection.setRequestMethod("PUT");
 				connection.setFixedLengthStreamingMode((int) file.getExpectedSize());
 				connection.setRequestProperty("Content-Type", mime == null ? "application/octet-stream" : mime);
+				connection.setRequestProperty("User-Agent",mXmppConnectionService.getIqGenerator().getIdentityName());
 				connection.setDoOutput(true);
 				connection.connect();
 				os = connection.getOutputStream();

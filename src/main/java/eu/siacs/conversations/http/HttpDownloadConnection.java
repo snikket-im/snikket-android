@@ -181,6 +181,7 @@ public class HttpDownloadConnection implements Transferable {
 				changeStatus(STATUS_CHECKING);
 				HttpURLConnection connection = (HttpURLConnection) mUrl.openConnection();
 				connection.setRequestMethod("HEAD");
+				connection.setRequestProperty("User-Agent", mXmppConnectionService.getIqGenerator().getIdentityName());
 				if (connection instanceof HttpsURLConnection) {
 					mHttpConnectionManager.setupTrustManager((HttpsURLConnection) connection, interactive);
 				}
@@ -236,6 +237,7 @@ public class HttpDownloadConnection implements Transferable {
 				if (connection instanceof HttpsURLConnection) {
 					mHttpConnectionManager.setupTrustManager((HttpsURLConnection) connection, interactive);
 				}
+				connection.setRequestProperty("User-Agent",mXmppConnectionService.getIqGenerator().getIdentityName());
 				connection.connect();
 				is = new BufferedInputStream(connection.getInputStream());
 				file.getParentFile().mkdirs();
