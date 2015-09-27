@@ -1,5 +1,6 @@
 package eu.siacs.conversations.ui.adapter;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -322,7 +323,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 			viewHolder.messageBody.setText("");
 		}
 		viewHolder.messageBody.setTextColor(this.getMessageTextColor(darkBackground, true));
-		viewHolder.messageBody.setLinkTextColor(this.getMessageTextColor(darkBackground,true));
+		viewHolder.messageBody.setLinkTextColor(this.getMessageTextColor(darkBackground, true));
 		viewHolder.messageBody.setHighlightColor(activity.getResources().getColor(darkBackground ? R.color.grey800 : R.color.grey500));
 		viewHolder.messageBody.setTypeface(null, Typeface.NORMAL);
 		viewHolder.messageBody.setTextIsSelectable(true);
@@ -612,10 +613,14 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		PackageManager manager = activity.getPackageManager();
 		List<ResolveInfo> infos = manager.queryIntentActivities(openIntent, 0);
 		if (infos.size() > 0) {
-			getContext().startActivity(openIntent);
-		} else {
-			Toast.makeText(activity,R.string.no_application_found_to_open_file,Toast.LENGTH_SHORT).show();
+			try {
+				getContext().startActivity(openIntent);
+				return;
+			}  catch (ActivityNotFoundException e) {
+				//ignored
+			}
 		}
+		Toast.makeText(activity,R.string.no_application_found_to_open_file,Toast.LENGTH_SHORT).show();
 	}
 
 	public void showLocation(Message message) {
