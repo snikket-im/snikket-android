@@ -37,6 +37,7 @@ import android.widget.Toast;
 import net.java.otr4j.session.SessionStatus;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -1224,6 +1225,48 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 			activity.xmppConnectionService.sendChatState(conversation);
 		}
 		updateSendButton();
+	}
+
+	private int completionIndex = 0;
+	private int lastCompletionLength = 0;
+	private String incomplete;
+	private int lastCompletionCursor;
+	private boolean firstWord = false;
+
+	@Override
+	public boolean onTabPressed(boolean repeated) {
+		if (conversation == null || conversation.getMode() == Conversation.MODE_SINGLE) {
+			return false;
+		}
+		if (repeated) {
+			completionIndex++;
+		} else {
+			lastCompletionLength = 0;
+			completionIndex = 0;
+			final String content = mEditMessage.getText().toString();
+			lastCompletionCursor = mEditMessage.getSelectionEnd();
+			int start = lastCompletionCursor > 0 ? content.lastIndexOf(" ",lastCompletionCursor-1) + 1 : 0;
+			firstWord = start == 0;
+			incomplete = content.substring(start,lastCompletionCursor);
+		}
+		List<String> completions = new ArrayList<>();
+		for(MucOptions.User user : conversation.getMucOptions().getUsers()) {
+			if (user.getName().startsWith(incomplete)) {
+				completions.add(user.getName()+(firstWord ? ": " : " "));
+			}
+		}
+		Collections.sort(completions);
+		if (completions.size() > completionIndex) {
+			String completion = completions.get(completionIndex).substring(incomplete.length());
+			mEditMessage.getEditableText().delete(lastCompletionCursor,lastCompletionCursor + lastCompletionLength);
+			mEditMessage.getEditableText().insert(lastCompletionCursor, completion);
+			lastCompletionLength = completion.length();
+		} else {
+			completionIndex = -1;
+			mEditMessage.getEditableText().delete(lastCompletionCursor,lastCompletionCursor + lastCompletionLength);
+			lastCompletionLength = 0;
+		}
+		return true;
 	}
 
 	@Override
