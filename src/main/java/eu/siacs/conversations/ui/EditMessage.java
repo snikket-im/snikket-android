@@ -37,13 +37,13 @@ public class EditMessage extends EditText {
 	protected KeyboardListener keyboardListener;
 
 	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_ENTER && !event.isShiftPressed()) {
+	public boolean onKeyDown(int keyCode, KeyEvent e) {
+		if (keyCode == KeyEvent.KEYCODE_ENTER && !e.isShiftPressed()) {
 			lastInputWasTab = false;
 			if (keyboardListener != null && keyboardListener.onEnterPressed()) {
 				return true;
 			}
-		} else if (keyCode == KeyEvent.KEYCODE_TAB) {
+		} else if (keyCode == KeyEvent.KEYCODE_TAB && !e.isAltPressed() && !e.isCtrlPressed()) {
 			if (keyboardListener != null && keyboardListener.onTabPressed(this.lastInputWasTab)) {
 				lastInputWasTab = true;
 				return true;
@@ -51,7 +51,7 @@ public class EditMessage extends EditText {
 		} else {
 			lastInputWasTab = false;
 		}
-		return super.onKeyDown(keyCode, event);
+		return super.onKeyDown(keyCode, e);
 	}
 
 	@Override
