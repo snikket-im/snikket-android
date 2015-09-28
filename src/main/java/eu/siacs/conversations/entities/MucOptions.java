@@ -308,7 +308,9 @@ public class MucOptions {
 							this.error = ERROR_NO_ERROR;
 							self = user;
 							if (mNickChangingInProgress) {
-								onRenameListener.onSuccess();
+								if (onRenameListener != null) {
+									onRenameListener.onSuccess();
+								}
 								mNickChangingInProgress = false;
 							} else if (this.onJoinListener != null) {
 								this.onJoinListener.onSuccess();
