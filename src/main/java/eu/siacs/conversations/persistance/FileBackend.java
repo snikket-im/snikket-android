@@ -260,6 +260,10 @@ public class FileBackend {
 		}
 	}
 
+	private int getRotation(File file) {
+		return getRotation(Uri.parse("file://"+file.getAbsolutePath()));
+	}
+
 	private int getRotation(Uri image) {
 		InputStream is = null;
 		try {
@@ -274,8 +278,7 @@ public class FileBackend {
 
 	public Bitmap getThumbnail(Message message, int size, boolean cacheOnly)
 			throws FileNotFoundException {
-		Bitmap thumbnail = mXmppConnectionService.getBitmapCache().get(
-				message.getUuid());
+		Bitmap thumbnail = mXmppConnectionService.getBitmapCache().get(message.getUuid());
 		if ((thumbnail == null) && (!cacheOnly)) {
 			File file = getFile(message);
 			BitmapFactory.Options options = new BitmapFactory.Options();
@@ -285,8 +288,12 @@ public class FileBackend {
 				throw new FileNotFoundException();
 			}
 			thumbnail = resize(fullsize, size);
-			this.mXmppConnectionService.getBitmapCache().put(message.getUuid(),
-					thumbnail);
+			fullsize.recycle();
+			int rotation = getRotation(file);
+			if (rotation > 0) {
+				thumbnail = rotate(thumbnail, rotation);
+			}
+			this.mXmppConnectionService.getBitmapCache().put(message.getUuid(),thumbnail);
 		}
 		return thumbnail;
 	}
@@ -512,8 +519,10 @@ public class FileBackend {
 			BitmapFactory.Options options = new BitmapFactory.Options();
 			options.inJustDecodeBounds = true;
 			BitmapFactory.decodeFile(file.getAbsolutePath(), options);
-			int imageHeight = options.outHeight;
-			int imageWidth = options.outWidth;
+			int rotation = getRotation(file);
+			boolean rotated = rotation == 90 || rotation == 270;
+			int imageHeight = rotated ? options.outWidth : options.outHeight;
+			int imageWidth = rotated ? options.outHeight : options.outWidth;
 			if (url == null) {
 				message.setBody(Long.toString(file.getSize()) + '|' + imageWidth + '|' + imageHeight);
 			} else {
