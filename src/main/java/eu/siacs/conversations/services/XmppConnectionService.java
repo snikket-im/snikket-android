@@ -282,7 +282,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 				}
 			} else if (account.getStatus() == Account.State.REGISTRATION_SUCCESSFUL) {
 				databaseBackend.updateAccount(account);
-				reconnectAccount(account, true);
+				reconnectAccount(account, true, false);
 			} else if ((account.getStatus() != Account.State.CONNECTING)
 					&& (account.getStatus() != Account.State.NO_INTERNET)) {
 				if (connection != null) {
@@ -442,6 +442,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		final String action = intent == null ? null : intent.getAction();
+		boolean interactive = false;
 		if (action != null) {
 			switch (action) {
 				case ConnectivityManager.CONNECTIVITY_ACTION:
@@ -468,6 +469,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 					break;
 				case ACTION_TRY_AGAIN:
 					resetAllAttemptCounts(false);
+					interactive = true;
 					break;
 				case ACTION_DISABLE_ACCOUNT:
 					try {
@@ -508,7 +510,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 						if (lastSent > lastReceived) {
 							if (pingTimeoutIn < 0) {
 								Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": ping timeout");
-								this.reconnectAccount(account, true);
+								this.reconnectAccount(account, true, interactive);
 							} else {
 								int secs = (int) (pingTimeoutIn / 1000);
 								this.scheduleWakeUpCall(secs,account.getUuid().hashCode());
@@ -521,18 +523,18 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 							this.scheduleWakeUpCall((int) (msToNextPing / 1000), account.getUuid().hashCode());
 						}
 					} else if (account.getStatus() == Account.State.OFFLINE) {
-						reconnectAccount(account,true);
+						reconnectAccount(account,true, interactive);
 					} else if (account.getStatus() == Account.State.CONNECTING) {
 						long timeout = Config.CONNECT_TIMEOUT - ((SystemClock.elapsedRealtime() - account.getXmppConnection().getLastConnect()) / 1000);
 						if (timeout < 0) {
 							Log.d(Config.LOGTAG, account.getJid() + ": time out during connect reconnecting");
-							reconnectAccount(account, true);
+							reconnectAccount(account, true, interactive);
 						} else {
 							scheduleWakeUpCall((int) timeout,account.getUuid().hashCode());
 						}
 					} else {
 						if (account.getXmppConnection().getTimeToNextAttempt() <= 0) {
-							reconnectAccount(account, true);
+							reconnectAccount(account, true, interactive);
 						}
 					}
 
@@ -1208,7 +1210,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	public void updateAccount(final Account account) {
 		this.statusListener.onStatusChanged(account);
 		databaseBackend.updateAccount(account);
-		reconnectAccount(account, false);
+		reconnectAccount(account, false, true);
 		updateAccountUi();
 		getNotificationService().updateErrorNotification();
 	}
@@ -2145,7 +2147,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		this.databaseBackend.updateConversation(conversation);
 	}
 
-	public void reconnectAccount(final Account account, final boolean force) {
+	private void reconnectAccount(final Account account, final boolean force, final boolean interactive) {
 		synchronized (account) {
 			if (account.getXmppConnection() != null) {
 				disconnect(account, force);
@@ -2165,6 +2167,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 					account.setXmppConnection(createConnection(account));
 				}
 				Thread thread = new Thread(account.getXmppConnection());
+				account.getXmppConnection().setInteractive(interactive);
 				thread.start();
 				scheduleWakeUpCall(Config.CONNECT_TIMEOUT, account.getUuid().hashCode());
 			} else {
@@ -2178,7 +2181,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				reconnectAccount(account,false);
+				reconnectAccount(account,false,true);
 			}
 		}).start();
 	}

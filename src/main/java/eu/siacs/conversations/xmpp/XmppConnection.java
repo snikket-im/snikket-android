@@ -42,6 +42,7 @@ import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.X509TrustManager;
 
+import de.duenndns.ssl.MemorizingTrustManager;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.crypto.sasl.DigestMd5;
 import eu.siacs.conversations.crypto.sasl.Plain;
@@ -100,6 +101,7 @@ public class XmppConnection implements Runnable {
 	private long lastPingSent = 0;
 	private long lastConnect = 0;
 	private long lastSessionStarted = 0;
+	private boolean mInteractive = false;
 	private int attempt = 0;
 	private final Hashtable<String, Pair<IqPacket, OnIqPacketReceived>> packetCallbacks = new Hashtable<>();
 	private OnPresencePacketReceived presenceListener = null;
@@ -515,9 +517,15 @@ public class XmppConnection implements Runnable {
 		tagReader.readTag();
 		try {
 			final SSLContext sc = SSLContext.getInstance("TLS");
-			sc.init(null,new X509TrustManager[]{this.mXmppConnectionService.getMemorizingTrustManager()},mXmppConnectionService.getRNG());
+			MemorizingTrustManager trustManager = this.mXmppConnectionService.getMemorizingTrustManager();
+			sc.init(null,new X509TrustManager[]{mInteractive ? trustManager : trustManager.getNonInteractive()},mXmppConnectionService.getRNG());
 			final SSLSocketFactory factory = sc.getSocketFactory();
-			final HostnameVerifier verifier = this.mXmppConnectionService.getMemorizingTrustManager().wrapHostnameVerifier(new StrictHostnameVerifier());
+			final HostnameVerifier verifier;
+			if (mInteractive) {
+				verifier = trustManager.wrapHostnameVerifier(new StrictHostnameVerifier());
+			} else {
+				verifier = trustManager.wrapHostnameVerifierNonInteractive(new StrictHostnameVerifier());
+			}
 			final InetAddress address = socket == null ? null : socket.getInetAddress();
 
 			if (factory == null || address == null || verifier == null) {
@@ -839,7 +847,7 @@ public class XmppConnection implements Runnable {
 			sendEnableCarbons();
 		}
 		if (getFeatures().blocking() && !features.blockListRequested) {
-			Log.d(Config.LOGTAG,account.getJid().toBareJid()+": Requesting block list");
+			Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": Requesting block list");
 			this.sendIqPacket(getIqGenerator().generateGetBlockList(), mXmppConnectionService.getIqParser());
 		}
 	}
@@ -1136,6 +1144,10 @@ public class XmppConnection implements Runnable {
 	public void resetAttemptCount() {
 		this.attempt = 0;
 		this.lastConnect = 0;
+	}
+
+	public void setInteractive(boolean interactive) {
+		this.mInteractive = interactive;
 	}
 
 	private class Info {
