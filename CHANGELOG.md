@@ -1,5 +1,10 @@
 ###Changelog
 
+####Version 1.6.11
+* tab completion for MUC nicks
+* history export
+* bug fixes
+
 ####Version 1.6.10
 * fixed facebook login
 * fixed bug with ejabberd mam
