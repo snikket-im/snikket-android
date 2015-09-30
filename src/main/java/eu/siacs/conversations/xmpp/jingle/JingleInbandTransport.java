@@ -176,6 +176,7 @@ public class JingleInbandTransport extends JingleTransport {
 			data.setAttribute("sid", this.sessionId);
 			data.setContent(base64);
 			this.account.getXmppConnection().sendIqPacket(iq, this.onAckReceived);
+			this.account.getXmppConnection().r(); //don't fill up stanza queue too much
 			this.seq++;
 			if (this.remainingSize > 0) {
 				connection.updateProgress((int) ((((double) (this.fileSize - this.remainingSize)) / this.fileSize) * 100));

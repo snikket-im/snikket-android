@@ -957,7 +957,6 @@ public class XmppConnection implements Runnable {
 			disconnect(true);
 			return;
 		}
-		final String name = packet.getName();
 		tagWriter.writeStanzaAsync(packet);
 		if (packet instanceof AbstractAcknowledgeableStanza) {
 			AbstractAcknowledgeableStanza stanza = (AbstractAcknowledgeableStanza) packet;
@@ -973,9 +972,7 @@ public class XmppConnection implements Runnable {
 	}
 
 	public void sendPing() {
-		if (streamFeatures.hasChild("sm")) {
-			tagWriter.writeStanzaAsync(new RequestPacket(smVersion));
-		} else {
+		if (!r()) {
 			final IqPacket iq = new IqPacket(IqPacket.TYPE.GET);
 			iq.setFrom(account.getJid());
 			iq.addChild("ping", "urn:xmpp:ping");
@@ -1086,8 +1083,13 @@ public class XmppConnection implements Runnable {
 		return null;
 	}
 
-	public void r() {
-		this.tagWriter.writeStanzaAsync(new RequestPacket(smVersion));
+	public boolean r() {
+		if (getFeatures().sm()) {
+			this.tagWriter.writeStanzaAsync(new RequestPacket(smVersion));
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	public String getMucServer() {
