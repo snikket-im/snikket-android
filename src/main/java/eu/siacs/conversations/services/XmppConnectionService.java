@@ -1471,9 +1471,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	private void connectMultiModeConversations(Account account) {
 		List<Conversation> conversations = getConversations();
 		for (Conversation conversation : conversations) {
-			if ((conversation.getMode() == Conversation.MODE_MULTI)
-					&& (conversation.getAccount() == account)) {
-				conversation.resetMucOptions();
+			if (conversation.getMode() == Conversation.MODE_MULTI && conversation.getAccount() == account) {
 				joinMuc(conversation);
 			}
 		}
@@ -1485,6 +1483,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		account.pendingConferenceJoins.remove(conversation);
 		account.pendingConferenceLeaves.remove(conversation);
 		if (account.getStatus() == Account.State.ONLINE) {
+			conversation.resetMucOptions();
 			final String nick = conversation.getMucOptions().getProposedNick();
 			final Jid joinJid = conversation.getMucOptions().createJoinJid(nick);
 			if (joinJid == null) {
