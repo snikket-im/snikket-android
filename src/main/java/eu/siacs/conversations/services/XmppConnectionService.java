@@ -154,14 +154,6 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 			fetchBookmarks(account);
 			sendPresence(account);
 			connectMultiModeConversations(account);
-			for (Conversation conversation : account.pendingConferenceLeaves) {
-				leaveMuc(conversation);
-			}
-			account.pendingConferenceLeaves.clear();
-			for (Conversation conversation : account.pendingConferenceJoins) {
-				joinMuc(conversation);
-			}
-			account.pendingConferenceJoins.clear();
 			mMessageArchiveService.executePendingQueries(account);
 			mJingleConnectionManager.cancelInTransmission();
 			syncDirtyContacts(account);
@@ -273,6 +265,14 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 						sendUnsentMessages(conversation);
 					}
 				}
+				for (Conversation conversation : account.pendingConferenceLeaves) {
+					leaveMuc(conversation);
+				}
+				account.pendingConferenceLeaves.clear();
+				for (Conversation conversation : account.pendingConferenceJoins) {
+					joinMuc(conversation);
+				}
+				account.pendingConferenceJoins.clear();
 				scheduleWakeUpCall(Config.PING_MAX_INTERVAL, account.getUuid().hashCode());
 			} else if (account.getStatus() == Account.State.OFFLINE) {
 				resetSendingToWaiting(account);
@@ -1472,17 +1472,20 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		List<Conversation> conversations = getConversations();
 		for (Conversation conversation : conversations) {
 			if (conversation.getMode() == Conversation.MODE_MULTI && conversation.getAccount() == account) {
-				joinMuc(conversation);
+				joinMuc(conversation,true);
 			}
 		}
 	}
 
-
 	public void joinMuc(Conversation conversation) {
+		joinMuc(conversation,false);
+	}
+
+	private void joinMuc(Conversation conversation, boolean now) {
 		Account account = conversation.getAccount();
 		account.pendingConferenceJoins.remove(conversation);
 		account.pendingConferenceLeaves.remove(conversation);
-		if (account.getStatus() == Account.State.ONLINE) {
+		if (account.getStatus() == Account.State.ONLINE || now) {
 			conversation.resetMucOptions();
 			final String nick = conversation.getMucOptions().getProposedNick();
 			final Jid joinJid = conversation.getMucOptions().createJoinJid(nick);
