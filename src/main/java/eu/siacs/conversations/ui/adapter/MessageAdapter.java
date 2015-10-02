@@ -274,7 +274,12 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		viewHolder.messageBody.setIncludeFontPadding(true);
 		if (message.getBody() != null) {
 			final String nick = UIHelper.getMessageDisplayName(message);
-			final String body = message.getMergedBody().replaceAll("^" + Message.ME_COMMAND,nick + " ");
+			String body;
+			try {
+				body = message.getMergedBody().replaceAll("^" + Message.ME_COMMAND, nick + " ");
+			} catch (ArrayIndexOutOfBoundsException e) {
+				body = message.getMergedBody();
+			}
 			final SpannableString formattedBody = new SpannableString(body);
 			int i = body.indexOf(Message.MERGE_SEPARATOR);
 			while(i >= 0) {
