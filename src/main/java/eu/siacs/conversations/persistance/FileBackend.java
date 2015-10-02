@@ -112,7 +112,11 @@ public class FileBackend {
 				scalledW = size;
 				scalledH = (int) (h / ((double) w / size));
 			}
-			return Bitmap.createScaledBitmap(originalBitmap, scalledW, scalledH, true);
+			Bitmap result = Bitmap.createScaledBitmap(originalBitmap, scalledW, scalledH, true);
+			if (originalBitmap != null && !originalBitmap.isRecycled()) {
+				originalBitmap.recycle();
+			}
+			return result;
 		} else {
 			return originalBitmap;
 		}
@@ -123,7 +127,11 @@ public class FileBackend {
 		int h = bitmap.getHeight();
 		Matrix mtx = new Matrix();
 		mtx.postRotate(degree);
-		return Bitmap.createBitmap(bitmap, 0, 0, w, h, mtx, true);
+		Bitmap result = Bitmap.createBitmap(bitmap, 0, 0, w, h, mtx, true);
+		if (bitmap != null && !bitmap.isRecycled()) {
+			bitmap.recycle();
+		}
+		return result;
 	}
 
 	public boolean useImageAsIs(Uri uri) {
@@ -227,7 +235,6 @@ public class FileBackend {
 			if (rotation > 0) {
 				scaledBitmap = rotate(scaledBitmap, rotation);
 			}
-
 			boolean success = scaledBitmap.compress(Config.IMAGE_FORMAT, Config.IMAGE_QUALITY, os);
 			if (!success) {
 				throw new FileCopyException(R.string.error_compressing_image);
@@ -288,7 +295,6 @@ public class FileBackend {
 				throw new FileNotFoundException();
 			}
 			thumbnail = resize(fullsize, size);
-			fullsize.recycle();
 			int rotation = getRotation(file);
 			if (rotation > 0) {
 				thumbnail = rotate(thumbnail, rotation);
@@ -447,6 +453,9 @@ public class FileBackend {
 			Bitmap dest = Bitmap.createBitmap(newWidth, newHeight, Bitmap.Config.ARGB_8888);
 			Canvas canvas = new Canvas(dest);
 			canvas.drawBitmap(source, null, targetRect, null);
+			if (source != null && !source.isRecycled()) {
+				source.recycle();
+			}
 			return dest;
 		} catch (FileNotFoundException e) {
 			return null;
@@ -470,6 +479,9 @@ public class FileBackend {
 		Bitmap output = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
 		Canvas canvas = new Canvas(output);
 		canvas.drawBitmap(input, null, target, null);
+		if (input != null && !input.isRecycled()) {
+			input.recycle();
+		}
 		return output;
 	}
 
