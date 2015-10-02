@@ -87,7 +87,7 @@
 				android:id="@+id/muc_conference_type"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-			    android:text="@string/private_conference"
+				android:text="@string/private_conference"
 				android:layout_centerVertical="true"
 				android:textColor="@color/black87"
 				android:textSize="?attr/TextSizeBody"
@@ -106,6 +106,35 @@
 				android:padding="@dimen/image_button_padding"
 				android:src="?attr/icon_settings"/>
 				</RelativeLayout>
+
+			<TableLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:id="@+id/muc_info_more"
+				android:stretchColumns="1"
+				android:visibility="gone">
+
+				<TableRow
+					android:layout_width="fill_parent"
+					android:layout_height="match_parent">
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="@string/server_info_mam"
+						android:textColor="@color/black87"
+						android:textSize="?attr/TextSizeBody" />
+
+					<TextView
+						android:id="@+id/muc_info_mam"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_gravity="right"
+						android:textColor="@color/black87"
+						android:textSize="?attr/TextSizeBody" />
+				</TableRow>
+
+			</TableLayout>
 
 			<TextView
 				android:id="@+id/details_account"

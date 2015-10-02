@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -61,6 +62,8 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 	private LinearLayout membersView;
 	private LinearLayout mMoreDetails;
 	private TextView mConferenceType;
+	private TableLayout mConferenceInfoTable;
+	private TextView mConferenceInfoMam;
 	private ImageButton mChangeConferenceSettingsButton;
 	private Button mInviteButton;
 	private String uuid = null;
@@ -194,7 +197,6 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 		mMoreDetails.setVisibility(View.GONE);
 		mChangeConferenceSettingsButton = (ImageButton) findViewById(R.id.change_conference_button);
 		mChangeConferenceSettingsButton.setOnClickListener(this.mChangeConferenceSettings);
-		mConferenceType = (TextView) findViewById(R.id.muc_conference_type);
 		mInviteButton = (Button) findViewById(R.id.invite);
 		mInviteButton.setOnClickListener(inviteListener);
 		mConferenceType = (TextView) findViewById(R.id.muc_conference_type);
@@ -217,6 +219,9 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 			}
 		});
 		this.mAdvancedMode = getPreferences().getBoolean("advanced_muc_mode", false);
+		this.mConferenceInfoTable = (TableLayout) findViewById(R.id.muc_info_more);
+		mConferenceInfoTable.setVisibility(this.mAdvancedMode ? View.VISIBLE : View.GONE);
+		this.mConferenceInfoMam = (TextView) findViewById(R.id.muc_info_mam);
 	}
 
 	@Override
@@ -240,6 +245,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 				this.mAdvancedMode = !menuItem.isChecked();
 				menuItem.setChecked(this.mAdvancedMode);
 				getPreferences().edit().putBoolean("advanced_muc_mode", mAdvancedMode).commit();
+				mConferenceInfoTable.setVisibility(this.mAdvancedMode ? View.VISIBLE : View.GONE);
 				invalidateOptionsMenu();
 				updateView();
 				break;
@@ -472,6 +478,11 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 				mConferenceType.setText(R.string.private_conference);
 			} else {
 				mConferenceType.setText(R.string.public_conference);
+			}
+			if (mucOptions.mamSupport()) {
+				mConferenceInfoMam.setText(R.string.server_info_available);
+			} else {
+				mConferenceInfoMam.setText(R.string.server_info_unavailable);
 			}
 			if (self.getAffiliation().ranks(MucOptions.Affiliation.OWNER)) {
 				mChangeConferenceSettingsButton.setVisibility(View.VISIBLE);

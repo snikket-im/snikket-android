@@ -247,6 +247,11 @@ public class MucOptions {
 		return hasFeature("muc_membersonly");
 	}
 
+	public boolean mamSupport() {
+		// Update with "urn:xmpp:mam:1" once we support it
+		return hasFeature("urn:xmpp:mam:0");
+	}
+
 	public boolean nonanonymous() {
 		return hasFeature("muc_nonanonymous");
 	}
