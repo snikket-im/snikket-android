@@ -1078,13 +1078,15 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 					checkDeletedFiles(conversation);
 					callback.onMoreMessagesLoaded(messages.size(), conversation);
 				} else if (conversation.hasMessagesLeftOnServer()
-						&& account.isOnlineAndConnected()
-						&& account.getXmppConnection().getFeatures().mam()) {
-					MessageArchiveService.Query query = getMessageArchiveService().query(conversation,0,timestamp - 1);
-					if (query != null) {
-						query.setCallback(callback);
+						&& account.isOnlineAndConnected()) {
+					if ((conversation.getMode() == Conversation.MODE_SINGLE && account.getXmppConnection().getFeatures().mam())
+							|| (conversation.getMode() == Conversation.MODE_MULTI && conversation.getMucOptions().mamSupport())) {
+						MessageArchiveService.Query query = getMessageArchiveService().query(conversation,0,timestamp - 1);
+						if (query != null) {
+							query.setCallback(callback);
+						}
+						callback.informUser(R.string.fetching_history_from_server);
 					}
-					callback.informUser(R.string.fetching_history_from_server);
 				}
 			}
 		};
