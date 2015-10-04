@@ -1064,10 +1064,10 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	}
 
 	public void loadMoreMessages(final Conversation conversation, final long timestamp, final OnMoreMessagesLoaded callback) {
-		Log.d(Config.LOGTAG, "load more messages for " + conversation.getName() + " prior to " + MessageGenerator.getTimestamp(timestamp));
 		if (XmppConnectionService.this.getMessageArchiveService().queryInProgress(conversation,callback)) {
 			return;
 		}
+		Log.d(Config.LOGTAG, "load more messages for " + conversation.getName() + " prior to " + MessageGenerator.getTimestamp(timestamp));
 		Runnable runnable = new Runnable() {
 			@Override
 			public void run() {
@@ -1480,7 +1480,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	}
 
 	public void joinMuc(Conversation conversation) {
-		joinMuc(conversation,false);
+		joinMuc(conversation, false);
 	}
 
 	private void joinMuc(Conversation conversation, boolean now) {
@@ -1489,32 +1489,47 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		account.pendingConferenceLeaves.remove(conversation);
 		if (account.getStatus() == Account.State.ONLINE || now) {
 			conversation.resetMucOptions();
-			final String nick = conversation.getMucOptions().getProposedNick();
-			final Jid joinJid = conversation.getMucOptions().createJoinJid(nick);
-			if (joinJid == null) {
-				return; //safety net
-			}
-			Log.d(Config.LOGTAG, account.getJid().toBareJid().toString() + ": joining conversation " + joinJid.toString());
-			PresencePacket packet = new PresencePacket();
-			packet.setFrom(conversation.getAccount().getJid());
-			packet.setTo(joinJid);
-			Element x = packet.addChild("x", "http://jabber.org/protocol/muc");
-			if (conversation.getMucOptions().getPassword() != null) {
-				x.addChild("password").setContent(conversation.getMucOptions().getPassword());
-			}
-			x.addChild("history").setAttribute("since", PresenceGenerator.getTimestamp(conversation.getLastMessageTransmitted()));
-			String sig = account.getPgpSignature();
-			if (sig != null) {
-				packet.addChild("status").setContent("online");
-				packet.addChild("x", "jabber:x:signed").setContent(sig);
-			}
-			sendPresencePacket(account, packet);
-			fetchConferenceConfiguration(conversation);
-			if (!joinJid.equals(conversation.getJid())) {
-				conversation.setContactJid(joinJid);
-				databaseBackend.updateConversation(conversation);
-			}
-			conversation.setHasMessagesLeftOnServer(false);
+			fetchConferenceConfiguration(conversation, new OnConferenceConfigurationFetched() {
+				@Override
+				public void onConferenceConfigurationFetched(Conversation conversation) {
+					Account account = conversation.getAccount();
+					final String nick = conversation.getMucOptions().getProposedNick();
+					final Jid joinJid = conversation.getMucOptions().createJoinJid(nick);
+					if (joinJid == null) {
+						return; //safety net
+					}
+					Log.d(Config.LOGTAG, account.getJid().toBareJid().toString() + ": joining conversation " + joinJid.toString());
+					PresencePacket packet = new PresencePacket();
+					packet.setFrom(conversation.getAccount().getJid());
+					packet.setTo(joinJid);
+					Element x = packet.addChild("x", "http://jabber.org/protocol/muc");
+					if (conversation.getMucOptions().getPassword() != null) {
+						x.addChild("password").setContent(conversation.getMucOptions().getPassword());
+					}
+
+					if (conversation.getMucOptions().mamSupport()) {
+						// Use MAM instead of the limited muc history to get history
+						x.addChild("history").setAttribute("maxchars", "0");
+						getMessageArchiveService().catchupMUC(conversation);
+					} else {
+						// Fallback to muc history
+						x.addChild("history").setAttribute("since", PresenceGenerator.getTimestamp(conversation.getLastMessageTransmitted()));
+					}
+					String sig = account.getPgpSignature();
+					if (sig != null) {
+						packet.addChild("status").setContent("online");
+						packet.addChild("x", "jabber:x:signed").setContent(sig);
+					}
+					sendPresencePacket(account, packet);
+					fetchConferenceConfiguration(conversation);
+					if (!joinJid.equals(conversation.getJid())) {
+						conversation.setContactJid(joinJid);
+						databaseBackend.updateConversation(conversation);
+					}
+					conversation.setHasMessagesLeftOnServer(false);
+				}
+			});
+
 		} else {
 			account.pendingConferenceJoins.add(conversation);
 		}
@@ -1674,6 +1689,10 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	}
 
 	public void fetchConferenceConfiguration(final Conversation conversation) {
+		fetchConferenceConfiguration(conversation, null);
+	}
+
+	public void fetchConferenceConfiguration(final Conversation conversation, final OnConferenceConfigurationFetched callback) {
 		IqPacket request = new IqPacket(IqPacket.TYPE.GET);
 		request.setTo(conversation.getJid().toBareJid());
 		request.query("http://jabber.org/protocol/disco#info");
@@ -1691,6 +1710,9 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 						}
 					}
 					conversation.getMucOptions().updateFeatures(features);
+					if (callback != null) {
+						callback.onConferenceConfigurationFetched(conversation);
+					}
 					updateConversationUi();
 				}
 			}
@@ -2629,6 +2651,10 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 
 	public interface OnMucRosterUpdate {
 		public void onMucRosterUpdate();
+	}
+
+	public interface OnConferenceConfigurationFetched {
+		public void onConferenceConfigurationFetched(Conversation conversation);
 	}
 
 	public interface OnConferenceOptionsPushed {

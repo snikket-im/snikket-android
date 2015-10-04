@@ -54,6 +54,18 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 		this.execute(query);
 	}
 
+	public void catchupMUC(final Conversation conversation) {
+		if (conversation.getLastMessageTransmitted() < 0 && conversation.countMessages() == 0) {
+			query(conversation,
+					0,
+					System.currentTimeMillis());
+		} else {
+			query(conversation,
+					conversation.getLastMessageTransmitted(),
+					System.currentTimeMillis());
+		}
+	}
+
 	private long getLastMessageTransmitted(final Account account) {
 		long timestamp = 0;
 		for(final Conversation conversation : mXmppConnectionService.getConversations()) {
