@@ -408,7 +408,10 @@
   <string name="public_conference">Јавно доступна конференција</string>
   <string name="private_conference">Лична, само за чланове конференција</string>
   <string name="conference_options">Опције конференције</string>
+  <string name="members_only">Лична, само чланови</string>
   <string name="non_anonymous">Неанонимна</string>
+  <string name="moderated">Уређивана</string>
+  <string name="you_are_not_participating">Не учествујете</string>
   <string name="modified_conference_options">Поставке конференције измењене!</string>
   <string name="could_not_modify_conference_options">Не могу да изменим поставке конференције</string>
   <string name="never">никад</string>
@@ -481,4 +484,6 @@
   <string name="download_failed_could_not_connect">Преузимање није успело: не могу да се повежем са домаћином</string>
   <string name="pref_use_white_background">Користи белу позадину</string>
   <string name="pref_use_white_background_summary">Приказ примљених порука црним текстом на белој позадини</string>
+  <string name="account_status_dns_timeout">Прековреме за ДНС</string>
+  <string name="server_info_broken">Оштећен</string>
 </resources>

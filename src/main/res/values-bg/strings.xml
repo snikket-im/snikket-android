@@ -482,4 +482,6 @@
   <string name="download_failed_could_not_connect">Неуспешно сваляне: Неуспешна връзка със сървъра</string>
   <string name="pref_use_white_background">Използване на бял фон</string>
   <string name="pref_use_white_background_summary">Показване на получените съобщения с черен текст на бял фон</string>
+  <string name="account_status_dns_timeout">Време на изчакване на DNS</string>
+  <string name="server_info_broken">Недостъпен</string>
 </resources>

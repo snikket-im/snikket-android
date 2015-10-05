@@ -408,7 +408,10 @@
   <string name="public_conference">Publiek toegankelijk groepsgesprek</string>
   <string name="private_conference">Privé groepsgesprek, enkel toegankelijk voor leden</string>
   <string name="conference_options">Groepsgespreksopties</string>
+  <string name="members_only">Privé, enkel leden</string>
   <string name="non_anonymous">Niet anoniem</string>
+  <string name="moderated">Gemodereerd</string>
+  <string name="you_are_not_participating">Je neemt geen deel</string>
   <string name="modified_conference_options">Groepsgespreksopties aangepast!</string>
   <string name="could_not_modify_conference_options">Kon groepsgespreksopties niet aanpassen</string>
   <string name="never">Nooit</string>
@@ -479,4 +482,6 @@
   <string name="download_failed_could_not_connect">Downloaden mislukt: kon geen verbinding maken met host</string>
   <string name="pref_use_white_background">Gebruik witte achtergrond</string>
   <string name="pref_use_white_background_summary">Toon ontvangen berichten als zwarte tekst op een witte achtergrond</string>
+  <string name="account_status_dns_timeout">Time-out in DNS</string>
+  <string name="server_info_broken">Gebroken</string>
 </resources>
