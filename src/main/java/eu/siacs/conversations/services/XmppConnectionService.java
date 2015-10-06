@@ -1510,7 +1510,6 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 					if (conversation.getMucOptions().mamSupport()) {
 						// Use MAM instead of the limited muc history to get history
 						x.addChild("history").setAttribute("maxchars", "0");
-						getMessageArchiveService().catchupMUC(conversation);
 					} else {
 						// Fallback to muc history
 						x.addChild("history").setAttribute("since", PresenceGenerator.getTimestamp(conversation.getLastMessageTransmitted()));
@@ -1527,6 +1526,9 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 						databaseBackend.updateConversation(conversation);
 					}
 					conversation.setHasMessagesLeftOnServer(false);
+					if (conversation.getMucOptions().mamSupport()) {
+						getMessageArchiveService().catchupMUC(conversation);
+					}
 				}
 			});
 
