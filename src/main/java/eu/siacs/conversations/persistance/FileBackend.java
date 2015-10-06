@@ -58,33 +58,23 @@ public class FileBackend {
 	}
 
 	public DownloadableFile getFile(Message message, boolean decrypted) {
-		String path = message.getRelativeFilePath();
-		String extension;
-		if (path != null && !path.isEmpty()) {
-			String[] parts = path.split("\\.");
-			extension = "."+parts[parts.length - 1];
-		} else {
-			if (message.getType() == Message.TYPE_IMAGE || message.getType() == Message.TYPE_TEXT) {
-				extension = ".webp";
-			} else {
-				extension = "";
-			}
-			path = message.getUuid()+extension;
-		}
 		final boolean encrypted = !decrypted
 				&& (message.getEncryption() == Message.ENCRYPTION_PGP
 				|| message.getEncryption() == Message.ENCRYPTION_DECRYPTED);
 		if (encrypted) {
-			return new DownloadableFile(getConversationsFileDirectory()+message.getUuid()+extension+".pgp");
+			return new DownloadableFile(getConversationsFileDirectory()+message.getUuid()+".pgp");
 		} else {
-			if (path.startsWith("/")) {
+			String path = message.getRelativeFilePath();
+			if (path == null) {
+				path = message.getUuid();
+			} else if (path.startsWith("/")) {
 				return new DownloadableFile(path);
+			}
+			String mime = message.getMimeType();
+			if (mime != null && mime.startsWith("image")) {
+				return new DownloadableFile(getConversationsImageDirectory() + path);
 			} else {
-				if (Arrays.asList(Transferable.VALID_IMAGE_EXTENSIONS).contains(extension)) {
-					return new DownloadableFile(getConversationsFileDirectory() + path);
-				} else {
-					return new DownloadableFile(getConversationsImageDirectory() + path);
-				}
+				return new DownloadableFile(getConversationsFileDirectory() + path);
 			}
 		}
 	}
