@@ -40,6 +40,10 @@ public class MessageParser extends AbstractParser implements
 			Jid from = packet.getFrom();
 			if (from.toBareJid().equals(account.getJid().toBareJid())) {
 				conversation.setOutgoingChatState(state);
+				if (state == ChatState.ACTIVE || state == ChatState.COMPOSING) {
+					mXmppConnectionService.markRead(conversation);
+					account.activateGracePeriod();
+				}
 				return false;
 			} else {
 				return conversation.setIncomingChatState(state);
@@ -300,7 +304,7 @@ public class MessageParser extends AbstractParser implements
 			return;
 		}
 
-		if (extractChatState(mXmppConnectionService.find(account, from), packet)) {
+		if (extractChatState(mXmppConnectionService.find(account, counterpart.toBareJid()), packet)) {
 			mXmppConnectionService.updateConversationUi();
 		}
 
