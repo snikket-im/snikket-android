@@ -662,7 +662,11 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 
 	@Override
 	public void onDestroy() {
-		unregisterReceiver(this.mEventReceiver);
+		try {
+			unregisterReceiver(this.mEventReceiver);
+		} catch (IllegalArgumentException e) {
+			//ignored
+		}
 		super.onDestroy();
 	}
 
@@ -672,12 +676,16 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 			filter.addAction(Intent.ACTION_SCREEN_OFF);
 			registerReceiver(this.mEventReceiver, filter);
 		} else {
-			unregisterReceiver(this.mEventReceiver);
+			try {
+				unregisterReceiver(this.mEventReceiver);
+			} catch (IllegalArgumentException e) {
+				//ignored
+			}
 		}
 	}
 
 	public void toggleForegroundService() {
-		if (getPreferences().getBoolean("keep_foreground_service",false)) {
+		if (getPreferences().getBoolean("keep_foreground_service", false)) {
 			startForeground(NotificationService.FOREGROUND_NOTIFICATION_ID, this.mNotificationService.createForegroundNotification());
 		} else {
 			stopForeground(true);
