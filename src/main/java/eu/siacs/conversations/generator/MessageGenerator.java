@@ -114,7 +114,6 @@ public class MessageGenerator extends AbstractGenerator {
 			if (fileParams.width > 0 && fileParams.height > 0) {
 				addXhtmlImImage(packet,fileParams);
 			}
-			packet.addChild("x","jabber:x:oob").addChild("url").setContent(fileParams.url.toString());
 		} else {
 			content = message.getBody();
 		}
