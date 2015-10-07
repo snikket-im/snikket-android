@@ -68,6 +68,15 @@ public class MessageGenerator extends AbstractGenerator {
 		return packet;
 	}
 
+	public static void addXhtmlImImage(MessagePacket packet, Message.FileParams params) {
+		Element html = packet.addChild("html","http://jabber.org/protocol/xhtml-im");
+		Element body = html.addChild("body","http://www.w3.org/1999/xhtml");
+		Element img = body.addChild("img");
+		img.setAttribute("src",params.url.toString());
+		img.setAttribute("height",params.height);
+		img.setAttribute("width",params.width);
+	}
+
 	public static void addMessageHints(MessagePacket packet) {
 		packet.addChild("private", "urn:xmpp:carbons:2");
 		packet.addChild("no-copy", "urn:xmpp:hints");
@@ -98,11 +107,18 @@ public class MessageGenerator extends AbstractGenerator {
 
 	public MessagePacket generateChat(Message message) {
 		MessagePacket packet = preparePacket(message);
+		String content;
 		if (message.hasFileOnRemoteHost()) {
-			packet.setBody(message.getFileParams().url.toString());
+			Message.FileParams fileParams = message.getFileParams();
+			content = fileParams.url.toString();
+			if (fileParams.width > 0 && fileParams.height > 0) {
+				addXhtmlImImage(packet,fileParams);
+			}
+			packet.addChild("x","jabber:x:oob").addChild("url").setContent(fileParams.url.toString());
 		} else {
-			packet.setBody(message.getBody());
+			content = message.getBody();
 		}
+		packet.setBody(content);
 		return packet;
 	}
 
