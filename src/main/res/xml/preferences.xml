@@ -159,6 +159,18 @@
                     android:summary="@string/pref_display_enter_key_summary"
                     android:title="@string/pref_display_enter_key"/>
             </PreferenceCategory>
+            <PreferenceCategory android:title="@string/pref_presence_settings">
+                <CheckBoxPreference
+                    android:defaultValue="false"
+                    android:key="away_when_screen_off"
+                    android:summary="@string/pref_away_when_screen_off_summary"
+                    android:title="@string/pref_away_when_screen_off"/>
+                <CheckBoxPreference
+                    android:defaultValue="false"
+                    android:key="xa_on_silent_mode"
+                    android:summary="@string/pref_xa_on_silent_mode_summary"
+                    android:title="@string/pref_xa_on_silent_mode"/>
+            </PreferenceCategory>
             <PreferenceCategory android:title="@string/pref_expert_options_other">
                 <CheckBoxPreference
                     android:defaultValue="false"

@@ -148,13 +148,14 @@ public class SettingsActivity extends XmppActivity implements
 			}
 		} else if (name.equals("keep_foreground_service")) {
 			xmppConnectionService.toggleForegroundService();
-		} else if (name.equals("confirm_messages")) {
+		} else if (name.equals("confirm_messages")
+				|| name.equals("xa_on_silent_mode")
+				|| name.equals("away_when_screen_off")) {
 			if (xmppConnectionServiceBound) {
-				for (Account account : xmppConnectionService.getAccounts()) {
-					if (!account.isOptionSet(Account.OPTION_DISABLED)) {
-						xmppConnectionService.sendPresence(account);
-					}
+				if (name.equals("away_when_screen_off")) {
+					xmppConnectionService.toggleScreenEventReceiver();
 				}
+				xmppConnectionService.refreshAllPresences();
 			}
 		} else if (name.equals("dont_trust_system_cas")) {
 			xmppConnectionService.updateMemorizingTrustmanager();

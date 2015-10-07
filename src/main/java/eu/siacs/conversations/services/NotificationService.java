@@ -115,29 +115,13 @@ public class NotificationService {
 		return mXmppConnectionService.getPreferences().getBoolean("always_notify_in_conference", false);
 	}
 
-	@SuppressLint("NewApi")
-	@SuppressWarnings("deprecation")
-	private boolean isInteractive() {
-		final PowerManager pm = (PowerManager) mXmppConnectionService
-			.getSystemService(Context.POWER_SERVICE);
-
-		final boolean isScreenOn;
-		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-			isScreenOn = pm.isScreenOn();
-		} else {
-			isScreenOn = pm.isInteractive();
-		}
-
-		return isScreenOn;
-	}
-
 	public void push(final Message message) {
 		mXmppConnectionService.updateUnreadCountBadge();
 		if (!notify(message)) {
 			return;
 		}
 
-		final boolean isScreenOn = isInteractive();
+		final boolean isScreenOn = mXmppConnectionService.isInteractive();
 
 		if (this.mIsInForeground && isScreenOn && this.mOpenConversation == message.getConversation()) {
 			return;

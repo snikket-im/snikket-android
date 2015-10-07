@@ -30,6 +30,7 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
                 <action android:name="android.intent.action.ACTION_SHUTDOWN" />
+                <action android:name="android.media.RINGER_MODE_CHANGED" />
             </intent-filter>
         </receiver>
 

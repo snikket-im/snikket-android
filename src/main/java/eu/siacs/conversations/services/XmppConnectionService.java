@@ -6,13 +6,16 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.ContentObserver;
 import android.graphics.Bitmap;
+import android.media.AudioManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Binder;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.FileObserver;
 import android.os.IBinder;
@@ -61,6 +64,7 @@ import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.entities.MucOptions.OnRenameListener;
+import eu.siacs.conversations.entities.Presences;
 import eu.siacs.conversations.entities.Transferable;
 import eu.siacs.conversations.entities.TransferablePlaceholder;
 import eu.siacs.conversations.generator.IqGenerator;
@@ -313,6 +317,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	private PowerManager pm;
 	private LruCache<String, Bitmap> mBitmapCache;
 	private Thread mPhoneContactMergerThread;
+	private EventReceiver mEventReceiver = new EventReceiver();
 
 	private boolean mRestoredFromDatabase = false;
 	public boolean areMessagesInitialized() {
@@ -444,6 +449,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		final String action = intent == null ? null : intent.getAction();
 		boolean interactive = false;
 		if (action != null) {
+			Log.d(Config.LOGTAG,"action: "+action);
 			switch (action) {
 				case ConnectivityManager.CONNECTIVITY_ACTION:
 					if (hasInternetConnection() && Config.RESET_ATTEMPT_COUNT_ON_NETWORK_CHANGE) {
@@ -481,6 +487,17 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 						}
 					} catch (final InvalidJidException ignored) {
 						break;
+					}
+					break;
+				case AudioManager.RINGER_MODE_CHANGED_ACTION:
+					if (xaOnSilentMode()) {
+						refreshAllPresences();
+					}
+					break;
+				case Intent.ACTION_SCREEN_OFF:
+				case Intent.ACTION_SCREEN_ON:
+					if (awayWhenScreenOff()) {
+						refreshAllPresences();
 					}
 					break;
 			}
@@ -544,10 +561,6 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 				}
 			}
 		}
-		/*PowerManager pm = (PowerManager) this.getSystemService(Context.POWER_SERVICE);
-			if (!pm.isScreenOn()) {
-			removeStaleListeners();
-			}*/
 		if (wakeLock.isHeld()) {
 			try {
 				wakeLock.release();
@@ -555,6 +568,43 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 			}
 		}
 		return START_STICKY;
+	}
+
+	private boolean xaOnSilentMode() {
+		return getPreferences().getBoolean("xa_on_silent_mode", false);
+	}
+
+	private boolean awayWhenScreenOff() {
+		return getPreferences().getBoolean("away_when_screen_off", false);
+	}
+
+	private int getTargetPresence() {
+		if (xaOnSilentMode() && isPhoneSilenced()) {
+			return Presences.XA;
+		} else if (awayWhenScreenOff() && !isInteractive()) {
+			return Presences.AWAY;
+		} else {
+			return Presences.ONLINE;
+		}
+	}
+
+	@SuppressLint("NewApi")
+	@SuppressWarnings("deprecation")
+	public boolean isInteractive() {
+		final PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+
+		final boolean isScreenOn;
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+			isScreenOn = pm.isScreenOn();
+		} else {
+			isScreenOn = pm.isInteractive();
+		}
+		return isScreenOn;
+	}
+
+	private boolean isPhoneSilenced() {
+		AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+		return audioManager.getRingerMode() == AudioManager.RINGER_MODE_SILENT;
 	}
 
 	private void resetAllAttemptCounts(boolean reallyAll) {
@@ -599,6 +649,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 
 		getContentResolver().registerContentObserver(ContactsContract.Contacts.CONTENT_URI, true, contactObserver);
 		this.fileObserver.startWatching();
+
 		this.pgpServiceConnection = new OpenPgpServiceConnection(getApplicationContext(), "org.sufficientlysecure.keychain");
 		this.pgpServiceConnection.bindToService();
 
@@ -606,6 +657,23 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		this.wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,"XmppConnectionService");
 		toggleForegroundService();
 		updateUnreadCountBadge();
+		toggleScreenEventReceiver();
+	}
+
+	@Override
+	public void onDestroy() {
+		unregisterReceiver(this.mEventReceiver);
+		super.onDestroy();
+	}
+
+	public void toggleScreenEventReceiver() {
+		if (awayWhenScreenOff()) {
+			final IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_ON);
+			filter.addAction(Intent.ACTION_SCREEN_OFF);
+			registerReceiver(this.mEventReceiver, filter);
+		} else {
+			unregisterReceiver(this.mEventReceiver);
+		}
 	}
 
 	public void toggleForegroundService() {
@@ -2502,7 +2570,15 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	}
 
 	public void sendPresence(final Account account) {
-		sendPresencePacket(account, mPresenceGenerator.sendPresence(account));
+		sendPresencePacket(account, mPresenceGenerator.selfPresence(account, getTargetPresence()));
+	}
+
+	public void refreshAllPresences() {
+		for (Account account : getAccounts()) {
+			if (!account.isOptionSet(Account.OPTION_DISABLED)) {
+				sendPresence(account);
+			}
+		}
 	}
 
 	public void sendOfflinePresence(final Account account) {

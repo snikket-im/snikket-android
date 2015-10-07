@@ -519,4 +519,9 @@
 	<string name="pref_use_white_background_summary">Show received messages as black text on a white background</string>
 	<string name="account_status_dns_timeout">Timeout in DNS</string>
 	<string name="server_info_broken">Broken</string>
+	<string name="pref_presence_settings">Presence settings</string>
+	<string name="pref_away_when_screen_off">Away when screen is off</string>
+	<string name="pref_away_when_screen_off_summary">Marks your resource as away when the screen is turned off</string>
+	<string name="pref_xa_on_silent_mode">Not available in silent mode</string>
+	<string name="pref_xa_on_silent_mode_summary">Marks your resource as not available when phone is in silent mode</string>
 </resources>

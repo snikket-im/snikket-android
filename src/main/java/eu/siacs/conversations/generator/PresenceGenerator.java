@@ -2,6 +2,7 @@ package eu.siacs.conversations.generator;
 
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
+import eu.siacs.conversations.entities.Presences;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.stanzas.PresencePacket;
@@ -36,8 +37,22 @@ public class PresenceGenerator extends AbstractGenerator {
 		return subscription("subscribed", contact);
 	}
 
-	public PresencePacket sendPresence(Account account) {
+	public PresencePacket selfPresence(Account account, int presence) {
 		PresencePacket packet = new PresencePacket();
+		switch(presence) {
+			case Presences.AWAY:
+				packet.addChild("show").setContent("away");
+				break;
+			case Presences.XA:
+				packet.addChild("show").setContent("xa");
+				break;
+			case Presences.CHAT:
+				packet.addChild("show").setContent("chat");
+				break;
+			case Presences.DND:
+				packet.addChild("show").setContent("dnd");
+				break;
+		}
 		packet.setFrom(account.getJid());
 		String sig = account.getPgpSignature();
 		if (sig != null) {
