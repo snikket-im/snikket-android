@@ -25,6 +25,8 @@ import android.os.PowerManager.WakeLock;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
+import android.security.KeyChain;
+import android.security.KeyChainException;
 import android.util.Log;
 import android.util.LruCache;
 
@@ -34,11 +36,22 @@ import net.java.otr4j.session.SessionID;
 import net.java.otr4j.session.SessionImpl;
 import net.java.otr4j.session.SessionStatus;
 
+import org.bouncycastle.asn1.x500.RDN;
+import org.bouncycastle.asn1.x500.X500Name;
+import org.bouncycastle.asn1.x500.style.BCStyle;
+import org.bouncycastle.asn1.x500.style.IETFUtils;
+import org.bouncycastle.cert.jcajce.JcaX509CertificateHolder;
+import org.bouncycastle.jce.PrincipalUtil;
+import org.bouncycastle.jce.X509Principal;
 import org.openintents.openpgp.util.OpenPgpApi;
 import org.openintents.openpgp.util.OpenPgpServiceConnection;
 
 import java.math.BigInteger;
+import java.security.PrivateKey;
 import java.security.SecureRandom;
+import java.security.cert.CertificateEncodingException;
+import java.security.cert.CertificateParsingException;
+import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -1283,6 +1296,43 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		this.accounts.add(account);
 		this.reconnectAccountInBackground(account);
 		updateAccountUi();
+	}
+
+	public void createAccountFromKey(final String alias, final OnAccountCreated callback) {
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					X509Certificate[] chain = KeyChain.getCertificateChain(XmppConnectionService.this, alias);
+					PrivateKey key = KeyChain.getPrivateKey(XmppConnectionService.this, alias);
+					X500Name x500name = new JcaX509CertificateHolder(chain[0]).getSubject();
+					String email = IETFUtils.valueToString(x500name.getRDNs(BCStyle.EmailAddress)[0].getFirst().getValue());
+					String name = IETFUtils.valueToString(x500name.getRDNs(BCStyle.CN)[0].getFirst().getValue());
+					Jid jid = Jid.fromString(email);
+					if (findAccountByJid(jid) == null) {
+						Account account = new Account(jid, "");
+						account.setPrivateKeyAlias(alias);
+						account.setOption(Account.OPTION_DISABLED, true);
+						createAccount(account);
+						callback.onAccountCreated(account);
+					} else {
+						callback.informUser(R.string.account_already_exists);
+					}
+				} catch (KeyChainException e) {
+					callback.informUser(R.string.unable_to_parse_certificate);
+				} catch (InterruptedException e) {
+					callback.informUser(R.string.unable_to_parse_certificate);
+					e.printStackTrace();
+				} catch (CertificateEncodingException e) {
+					callback.informUser(R.string.unable_to_parse_certificate);
+					e.printStackTrace();
+				} catch (InvalidJidException e) {
+					callback.informUser(R.string.unable_to_parse_certificate);
+					e.printStackTrace();
+				}
+			}
+		}).start();
+
 	}
 
 	public void updateAccount(final Account account) {
@@ -2699,54 +2749,59 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		}
 	}
 
-	public interface OnMoreMessagesLoaded {
-		public void onMoreMessagesLoaded(int count, Conversation conversation);
+	public interface OnAccountCreated {
+		void onAccountCreated(Account account);
+		void informUser(int r);
+	}
 
-		public void informUser(int r);
+	public interface OnMoreMessagesLoaded {
+		void onMoreMessagesLoaded(int count, Conversation conversation);
+
+		void informUser(int r);
 	}
 
 	public interface OnAccountPasswordChanged {
-		public void onPasswordChangeSucceeded();
+		void onPasswordChangeSucceeded();
 
-		public void onPasswordChangeFailed();
+		void onPasswordChangeFailed();
 	}
 
 	public interface OnAffiliationChanged {
-		public void onAffiliationChangedSuccessful(Jid jid);
+		void onAffiliationChangedSuccessful(Jid jid);
 
-		public void onAffiliationChangeFailed(Jid jid, int resId);
+		void onAffiliationChangeFailed(Jid jid, int resId);
 	}
 
 	public interface OnRoleChanged {
-		public void onRoleChangedSuccessful(String nick);
+		void onRoleChangedSuccessful(String nick);
 
-		public void onRoleChangeFailed(String nick, int resid);
+		void onRoleChangeFailed(String nick, int resid);
 	}
 
 	public interface OnConversationUpdate {
-		public void onConversationUpdate();
+		void onConversationUpdate();
 	}
 
 	public interface OnAccountUpdate {
-		public void onAccountUpdate();
+		void onAccountUpdate();
 	}
 
 	public interface OnRosterUpdate {
-		public void onRosterUpdate();
+		void onRosterUpdate();
 	}
 
 	public interface OnMucRosterUpdate {
-		public void onMucRosterUpdate();
+		void onMucRosterUpdate();
 	}
 
 	public interface OnConferenceConfigurationFetched {
-		public void onConferenceConfigurationFetched(Conversation conversation);
+		void onConferenceConfigurationFetched(Conversation conversation);
 	}
 
 	public interface OnConferenceOptionsPushed {
-		public void onPushSucceeded();
+		void onPushSucceeded();
 
-		public void onPushFailed();
+		void onPushFailed();
 	}
 
 	public interface OnShowErrorToast {

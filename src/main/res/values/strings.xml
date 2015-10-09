@@ -524,4 +524,7 @@
 	<string name="pref_away_when_screen_off_summary">Marks your resource as away when the screen is turned off</string>
 	<string name="pref_xa_on_silent_mode">Not available in silent mode</string>
 	<string name="pref_xa_on_silent_mode_summary">Marks your resource as not available when phone is in silent mode</string>
+	<string name="action_add_account_from_key">Add account from key</string>
+	<string name="unable_to_parse_certificate">Unable to parse certificate</string>
+	<string name="authenticate_with_certificate">Leave empty to authenticate w/ certificate</string>
 </resources>

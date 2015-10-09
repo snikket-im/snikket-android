@@ -194,16 +194,12 @@ public class Account extends AbstractEntity {
 		return jid.getLocalpart();
 	}
 
-	public void setUsername(final String username) throws InvalidJidException {
-		jid = Jid.fromParts(username, jid.getDomainpart(), jid.getResourcepart());
+	public void setJid(final Jid jid) {
+		this.jid = jid;
 	}
 
 	public Jid getServer() {
 		return jid.toDomainJid();
-	}
-
-	public void setServer(final String server) throws InvalidJidException {
-		jid = Jid.fromParts(jid.getLocalpart(), server, jid.getResourcepart());
 	}
 
 	public String getPassword() {
@@ -270,6 +266,14 @@ public class Account extends AbstractEntity {
 		} catch (final JSONException e) {
 			return false;
 		}
+	}
+
+	public boolean setPrivateKeyAlias(String alias) {
+		return setKey("private_key_alias", alias);
+	}
+
+	public String getPrivateKeyAlias() {
+		return getKey("private_key_alias");
 	}
 
 	@Override
