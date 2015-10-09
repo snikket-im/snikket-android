@@ -152,7 +152,9 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 				mAccount.setOption(Account.OPTION_REGISTER, registerNewAccount);
 				xmppConnectionService.createAccount(mAccount);
 			}
-			if (jidToEdit != null && !mAccount.isOptionSet(Account.OPTION_DISABLED)) {
+			if (jidToEdit != null
+					&& !mAccount.isOptionSet(Account.OPTION_DISABLED)
+					&& !registerNewAccount) {
 				finish();
 			} else {
 				updateSaveButton();
