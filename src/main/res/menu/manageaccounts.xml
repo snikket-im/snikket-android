@@ -11,7 +11,7 @@
 		android:showAsAction="never"
 		android:icon="?attr/icon_add_person"
 		android:title="@string/action_add_account_from_key"
-		android:visible="false"/>
+		android:visible="true"/>
 	<item
 		android:id="@+id/action_enable_all"
 		android:title="@string/enable_all_accounts"/>
