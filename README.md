@@ -16,7 +16,7 @@ Conversations: the very last word in instant messaging
 
 ## Features
 
-* End-to-end encryption with either [OTR](https://otr.cypherpunks.ca/) or [OpenPGP](http://www.openpgp.org/about_openpgp/)
+* End-to-end encryption with [OMEMO](http://conversations.im/omemo/), [OTR](https://otr.cypherpunks.ca/), or [OpenPGP](http://www.openpgp.org/about_openpgp/)
 * Send and receive images as well as other kind of files
 * Share your location via an external [plug-in](https://play.google.com/store/apps/details?id=eu.siacs.conversations.sharelocation&referrer=utm_source%3Dgithub)
 * Indication when your contact has read your message
@@ -236,11 +236,9 @@ I am available for hire. Contact me via XMPP: `inputmice@siacs.eu`
 
 ### Security
 
-#### Why are there two end-to-end encryption methods and which one should I choose?
+#### Why are there three end-to-end encryption methods and which one should I choose?
 
-In most cases OTR should be the encryption method of choice. It works out of the
-box with most contacts as long as they are online. However PGP can, in some
-cases, (message carbons to multiple clients) be more flexible.
+In most cases OTR should be the encryption method of choice. It works out of the box with most contacts as long as they are online. However, openPGP can, in some cases, (message carbons to multiple clients) be more flexible. Unlike OTR, OMEMO works even when a contact is offline, and works with multiple devices. It also allows asynchronous file-transfer when the server has [HTTP File Upload](http://xmpp.org/extensions/xep-0363.html). However, OMEMO is not as widely supported as OTR and is currently implemented only by Conversations. OMEMO should be preffered over OTR for contacts who use Conversations.
 
 #### How do I use OpenPGP
 
