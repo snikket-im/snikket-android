@@ -93,7 +93,7 @@ Translations are managed on [Transifex](https://www.transifex.com/projects/p/con
 #### How do I install Conversations?
 
 Conversations is entirely open source and licensed under GPLv3. So if you are a
-software developer you can check out the sources from GitHub and use ant to
+software developer you can check out the sources from GitHub and use Gradle to
 build your apk file.
 
 The more convenient way — which not only gives you automatic updates but also
