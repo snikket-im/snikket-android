@@ -140,9 +140,6 @@ public class AxolotlService {
 			putDevicesForJid(account.getJid().toBareJid().toString(), deviceIds, store);
 			for (Contact contact : account.getRoster().getContacts()) {
 				Jid bareJid = contact.getJid().toBareJid();
-				if (bareJid == null) {
-					continue; // FIXME: handle this?
-				}
 				String address = bareJid.toString();
 				deviceIds = store.getSubDeviceSessions(address);
 				putDevicesForJid(address, deviceIds, store);
@@ -162,7 +159,7 @@ public class AxolotlService {
 		}
 	}
 
-	private static enum FetchStatus {
+	private enum FetchStatus {
 		PENDING,
 		SUCCESS,
 		ERROR
@@ -212,14 +209,12 @@ public class AxolotlService {
 
 	private Set<XmppAxolotlSession> findOwnSessions() {
 		AxolotlAddress ownAddress = getAddressForJid(account.getJid().toBareJid());
-		Set<XmppAxolotlSession> ownDeviceSessions = new HashSet<>(this.sessions.getAll(ownAddress).values());
-		return ownDeviceSessions;
+		return new HashSet<>(this.sessions.getAll(ownAddress).values());
 	}
 
 	private Set<XmppAxolotlSession> findSessionsforContact(Contact contact) {
 		AxolotlAddress contactAddress = getAddressForJid(contact.getJid());
-		Set<XmppAxolotlSession> sessions = new HashSet<>(this.sessions.getAll(contactAddress).values());
-		return sessions;
+		return new HashSet<>(this.sessions.getAll(contactAddress).values());
 	}
 
 	public Set<String> getFingerprintsForOwnSessions() {
@@ -509,10 +504,8 @@ public class AxolotlService {
 	}
 
 	public boolean isContactAxolotlCapable(Contact contact) {
-
 		Jid jid = contact.getJid().toBareJid();
-		AxolotlAddress address = new AxolotlAddress(jid.toString(), 0);
-		return sessions.hasAny(address) ||
+		return hasAny(contact) ||
 				(deviceIds.containsKey(jid) && !deviceIds.get(jid).isEmpty());
 	}
 
@@ -796,7 +789,7 @@ public class AxolotlService {
 	}
 
 	public XmppAxolotlMessage.XmppAxolotlKeyTransportMessage processReceivingKeyTransportMessage(XmppAxolotlMessage message) {
-		XmppAxolotlMessage.XmppAxolotlKeyTransportMessage keyTransportMessage = null;
+		XmppAxolotlMessage.XmppAxolotlKeyTransportMessage keyTransportMessage;
 
 		XmppAxolotlSession session = getReceivingSession(message);
 		keyTransportMessage = message.getParameters(session, getOwnDeviceId());
