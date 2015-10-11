@@ -619,6 +619,9 @@ public abstract class XmppActivity extends Activity {
 	protected boolean addFingerprintRow(LinearLayout keys, final Account account, final String fingerprint, boolean highlight) {
 		final XmppAxolotlSession.Trust trust = account.getAxolotlService()
 				.getFingerprintTrust(fingerprint);
+		if (trust == null) {
+			return false;
+		}
 		return addFingerprintRowWithListeners(keys, account, fingerprint, highlight, trust, true,
 				new CompoundButton.OnCheckedChangeListener() {
 					@Override
