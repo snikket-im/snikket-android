@@ -176,7 +176,7 @@ public final class Jid {
 			return resourcepart.isEmpty() ? this : fromParts(localpart, domainpart, "");
 		} catch (final InvalidJidException e) {
 			// This should never happen.
-			return null;
+			throw new AssertionError("Jid " + this.toString() + " invalid");
 		}
 	}
 
@@ -185,7 +185,7 @@ public final class Jid {
 			return resourcepart.isEmpty() && localpart.isEmpty() ? this : fromString(getDomainpart());
 		} catch (final InvalidJidException e) {
 			// This should never happen.
-			return null;
+			throw new AssertionError("Jid " + this.toString() + " invalid");
 		}
 	}
 
