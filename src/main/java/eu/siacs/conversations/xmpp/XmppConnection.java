@@ -1,10 +1,15 @@
 package eu.siacs.conversations.xmpp;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.wifi.WifiConfiguration;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.os.SystemClock;
+import android.util.Base64;
 import android.util.Log;
 import android.util.Pair;
 import android.util.SparseArray;
@@ -14,6 +19,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.xmlpull.v1.XmlPullParserException;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -24,6 +30,8 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -59,6 +67,8 @@ import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Tag;
 import eu.siacs.conversations.xml.TagWriter;
 import eu.siacs.conversations.xml.XmlReader;
+import eu.siacs.conversations.xmpp.forms.Data;
+import eu.siacs.conversations.xmpp.forms.Field;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
 import eu.siacs.conversations.xmpp.jingle.OnJinglePacketReceived;
@@ -115,6 +125,29 @@ public class XmppConnection implements Runnable {
 	private XmppConnectionService mXmppConnectionService = null;
 
 	private SaslMechanism saslMechanism;
+
+	private OnIqPacketReceived createPacketReceiveHandler() {
+		OnIqPacketReceived receiver = new OnIqPacketReceived() {
+			@Override
+			public void onIqPacketReceived(Account account, IqPacket packet) {
+				if (packet.getType() == IqPacket.TYPE.RESULT) {
+					account.setOption(Account.OPTION_REGISTER,
+							false);
+					changeStatus(Account.State.REGISTRATION_SUCCESSFUL);
+				} else if (packet.hasChild("error")
+						&& (packet.findChild("error")
+						.hasChild("conflict"))) {
+					changeStatus(Account.State.REGISTRATION_CONFLICT);
+				} else {
+					changeStatus(Account.State.REGISTRATION_FAILED);
+					Log.d(Config.LOGTAG, packet.toString());
+				}
+				disconnect(true);
+			}
+		};
+
+		return receiver;
+	}
 
 	public XmppConnection(final Account account, final XmppConnectionService service) {
 		this.account = account;
@@ -643,6 +676,15 @@ public class XmppConnection implements Runnable {
 		return mechanisms;
 	}
 
+	public void sendCaptchaRegistryRequest(String id, Data data) {
+		if (data == null) {
+			setAccountCreationFailed("");
+		} else {
+			IqPacket request = getIqGenerator().generateCreateAccountWithCaptcha(account, id, data);
+			sendIqPacket(request, createPacketReceiveHandler());
+		}
+	}
+
 	private void sendRegistryRequest() {
 		final IqPacket register = new IqPacket(IqPacket.TYPE.GET);
 		register.query("jabber:iq:register");
@@ -651,6 +693,7 @@ public class XmppConnection implements Runnable {
 
 			@Override
 			public void onIqPacketReceived(final Account account, final IqPacket packet) {
+				boolean failed = false;
 				if (packet.getType() == IqPacket.TYPE.RESULT
 						&& packet.query().hasChild("username")
 						&& (packet.query().hasChild("password"))) {
@@ -659,35 +702,58 @@ public class XmppConnection implements Runnable {
 					final Element password = new Element("password").setContent(account.getPassword());
 					register.query("jabber:iq:register").addChild(username);
 					register.query().addChild(password);
-					sendIqPacket(register, new OnIqPacketReceived() {
+					sendIqPacket(register, createPacketReceiveHandler());
+				} else if (packet.getType() == IqPacket.TYPE.RESULT
+						&& (packet.query().hasChild("x", "jabber:x:data"))) {
+					final Data data = Data.parse(packet.query().findChild("x", "jabber:x:data"));
+					final Element blob = packet.query().findChild("data", "urn:xmpp:bob");
+					final String id = packet.getId();
 
-						@Override
-						public void onIqPacketReceived(final Account account, final IqPacket packet) {
-							if (packet.getType() == IqPacket.TYPE.RESULT) {
-								account.setOption(Account.OPTION_REGISTER,
-										false);
-								changeStatus(Account.State.REGISTRATION_SUCCESSFUL);
-							} else if (packet.hasChild("error")
-									&& (packet.findChild("error")
-									.hasChild("conflict"))) {
-								changeStatus(Account.State.REGISTRATION_CONFLICT);
-							} else {
-								changeStatus(Account.State.REGISTRATION_FAILED);
-								Log.d(Config.LOGTAG, packet.toString());
-							}
-							disconnect(true);
+					Bitmap captcha = null;
+					if (blob != null) {
+						try {
+							final String base64Blob = blob.getContent();
+							final byte[] strBlob = Base64.decode(base64Blob, Base64.DEFAULT);
+							InputStream stream = new ByteArrayInputStream(strBlob);
+							captcha = BitmapFactory.decodeStream(stream);
+						} catch (Exception e) {
+
 						}
-					});
+					} else {
+						try {
+							Field url = data.getFieldByName("url");
+							String urlString = url.findChildContent("value");
+
+							URL uri = new URL(urlString);
+							captcha = BitmapFactory.decodeStream(uri.openConnection().getInputStream());
+						} catch(MalformedURLException e) {
+							Log.e(Config.LOGTAG, e.toString());
+						} catch(IOException e) {
+							Log.e(Config.LOGTAG, e.toString());
+						}
+					}
+
+					if (captcha != null) {
+						failed = !mXmppConnectionService.displayCaptchaRequest(account, id, data, captcha);
+					}
 				} else {
+					failed = true;
+				}
+
+				if (failed) {
 					final Element instructions = packet.query().findChild("instructions");
-					changeStatus(Account.State.REGISTRATION_FAILED);
-					disconnect(true);
-					Log.d(Config.LOGTAG, account.getJid().toBareJid()
-							+ ": could not register. instructions are"
-							+ (instructions != null ? instructions.getContent() : ""));
+					setAccountCreationFailed((instructions != null) ? instructions.getContent() : "");
 				}
 			}
 		});
+	}
+
+	private void setAccountCreationFailed(String instructions) {
+		changeStatus(Account.State.REGISTRATION_FAILED);
+		disconnect(true);
+		Log.d(Config.LOGTAG, account.getJid().toBareJid()
+				+ ": could not register. instructions are"
+				+ instructions);
 	}
 
 	private void sendBindRequest() {

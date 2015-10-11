@@ -527,4 +527,7 @@
 	<string name="action_add_account_from_key">Add account from key</string>
 	<string name="unable_to_parse_certificate">Unable to parse certificate</string>
 	<string name="authenticate_with_certificate">Leave empty to authenticate w/ certificate</string>
+	<string name="captcha_ocr">Captcha text</string>
+	<string name="captcha_required">Captcha required</string>
+	<string name="captcha_hint">enter the text from the image</string>
 </resources>

@@ -281,6 +281,9 @@ public abstract class XmppActivity extends Activity {
 		if (this instanceof XmppConnectionService.OnAccountUpdate) {
 			this.xmppConnectionService.setOnAccountListChangedListener((XmppConnectionService.OnAccountUpdate) this);
 		}
+		if (this instanceof XmppConnectionService.OnCaptchaRequested) {
+			this.xmppConnectionService.setOnCaptchaRequestedListener((XmppConnectionService.OnCaptchaRequested) this);
+		}
 		if (this instanceof XmppConnectionService.OnRosterUpdate) {
 			this.xmppConnectionService.setOnRosterUpdateListener((XmppConnectionService.OnRosterUpdate) this);
 		}
@@ -304,6 +307,9 @@ public abstract class XmppActivity extends Activity {
 		}
 		if (this instanceof XmppConnectionService.OnAccountUpdate) {
 			this.xmppConnectionService.removeOnAccountListChangedListener();
+		}
+		if (this instanceof XmppConnectionService.OnCaptchaRequested) {
+			this.xmppConnectionService.removeOnCaptchaRequestedListener();
 		}
 		if (this instanceof XmppConnectionService.OnRosterUpdate) {
 			this.xmppConnectionService.removeOnRosterUpdateListener();

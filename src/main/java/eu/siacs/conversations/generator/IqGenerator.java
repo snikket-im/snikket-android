@@ -266,4 +266,14 @@ public class IqGenerator extends AbstractGenerator {
 		}
 		return packet;
 	}
+
+	public IqPacket generateCreateAccountWithCaptcha(Account account, String id, Data data) {
+		final IqPacket register = new IqPacket(IqPacket.TYPE.SET);
+
+		register.setTo(account.getServer());
+		register.setId(id);
+		register.query("jabber:iq:register").addChild(data);
+
+		return register;
+	}
 }
