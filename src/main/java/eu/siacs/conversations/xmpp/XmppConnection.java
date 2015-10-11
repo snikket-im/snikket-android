@@ -9,6 +9,8 @@ import android.os.Parcelable;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.os.SystemClock;
+import android.security.KeyChain;
+import android.security.KeyChainException;
 import android.util.Base64;
 import android.util.Log;
 import android.util.Pair;
@@ -33,7 +35,12 @@ import java.net.UnknownHostException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.KeyManagementException;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
+import java.security.Principal;
+import java.security.PrivateKey;
+import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -45,14 +52,17 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.KeyManager;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.X509KeyManager;
 import javax.net.ssl.X509TrustManager;
 
 import de.duenndns.ssl.MemorizingTrustManager;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.crypto.sasl.DigestMd5;
+import eu.siacs.conversations.crypto.sasl.External;
 import eu.siacs.conversations.crypto.sasl.Plain;
 import eu.siacs.conversations.crypto.sasl.SaslMechanism;
 import eu.siacs.conversations.crypto.sasl.ScramSha1;
@@ -125,6 +135,46 @@ public class XmppConnection implements Runnable {
 	private XmppConnectionService mXmppConnectionService = null;
 
 	private SaslMechanism saslMechanism;
+
+	private X509KeyManager mKeyManager = new X509KeyManager() {
+		@Override
+		public String chooseClientAlias(String[] strings, Principal[] principals, Socket socket) {
+			return account.getPrivateKeyAlias();
+		}
+
+		@Override
+		public String chooseServerAlias(String s, Principal[] principals, Socket socket) {
+			return null;
+		}
+
+		@Override
+		public X509Certificate[] getCertificateChain(String alias) {
+			try {
+				return KeyChain.getCertificateChain(mXmppConnectionService, alias);
+			} catch (Exception e) {
+				return new X509Certificate[0];
+			}
+		}
+
+		@Override
+		public String[] getClientAliases(String s, Principal[] principals) {
+			return new String[0];
+		}
+
+		@Override
+		public String[] getServerAliases(String s, Principal[] principals) {
+			return new String[0];
+		}
+
+		@Override
+		public PrivateKey getPrivateKey(String alias) {
+			try {
+				return KeyChain.getPrivateKey(mXmppConnectionService, alias);
+			} catch (Exception e) {
+				return null;
+			}
+		}
+	};
 
 	private OnIqPacketReceived createPacketReceiveHandler() {
 		OnIqPacketReceived receiver = new OnIqPacketReceived() {
@@ -551,7 +601,13 @@ public class XmppConnection implements Runnable {
 		try {
 			final SSLContext sc = SSLContext.getInstance("TLS");
 			MemorizingTrustManager trustManager = this.mXmppConnectionService.getMemorizingTrustManager();
-			sc.init(null,new X509TrustManager[]{mInteractive ? trustManager : trustManager.getNonInteractive()},mXmppConnectionService.getRNG());
+			KeyManager[] keyManager;
+			if (account.getPrivateKeyAlias() != null && account.getPassword().isEmpty()) {
+				keyManager = new KeyManager[]{ mKeyManager };
+			} else {
+				keyManager = null;
+			}
+			sc.init(keyManager,new X509TrustManager[]{mInteractive ? trustManager : trustManager.getNonInteractive()},mXmppConnectionService.getRNG());
 			final SSLSocketFactory factory = sc.getSocketFactory();
 			final HostnameVerifier verifier;
 			if (mInteractive) {
@@ -598,7 +654,7 @@ public class XmppConnection implements Runnable {
 			processStream(tagReader.readTag());
 			sslSocket.close();
 		} catch (final NoSuchAlgorithmException | KeyManagementException e1) {
-			Log.d(Config.LOGTAG,account.getJid().toBareJid()+": TLS certificate verification failed");
+			Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": TLS certificate verification failed");
 			throw new SecurityException();
 		}
 	}
@@ -622,7 +678,9 @@ public class XmppConnection implements Runnable {
 					.findChild("mechanisms"));
 			final Element auth = new Element("auth");
 			auth.setAttribute("xmlns", "urn:ietf:params:xml:ns:xmpp-sasl");
-			if (mechanisms.contains("SCRAM-SHA-1")) {
+			if (mechanisms.contains("EXTERNAL")) {
+				saslMechanism = new External(tagWriter, account, mXmppConnectionService.getRNG());
+			} else if (mechanisms.contains("SCRAM-SHA-1")) {
 				saslMechanism = new ScramSha1(tagWriter, account, mXmppConnectionService.getRNG());
 			} else if (mechanisms.contains("PLAIN")) {
 				saslMechanism = new Plain(tagWriter, account);
