@@ -1,6 +1,15 @@
 package eu.siacs.conversations.utils;
 
+import android.util.Pair;
+
+import org.bouncycastle.asn1.x500.X500Name;
+import org.bouncycastle.asn1.x500.style.BCStyle;
+import org.bouncycastle.asn1.x500.style.IETFUtils;
+import org.bouncycastle.cert.jcajce.JcaX509CertificateHolder;
+
 import java.security.SecureRandom;
+import java.security.cert.CertificateEncodingException;
+import java.security.cert.X509Certificate;
 import java.text.Normalizer;
 import java.util.Arrays;
 import java.util.Collection;
@@ -9,6 +18,8 @@ import java.util.LinkedHashSet;
 import java.util.List;
 
 import eu.siacs.conversations.Config;
+import eu.siacs.conversations.xmpp.jid.InvalidJidException;
+import eu.siacs.conversations.xmpp.jid.Jid;
 
 public final class CryptoHelper {
 	public static final String FILETRANSFER = "?FILETRANSFERv1:";
@@ -124,5 +135,13 @@ public final class CryptoHelper {
 				}
 			}
 		}
+	}
+
+	public static Pair<Jid,String> extractJidAndName(X509Certificate certificate) throws CertificateEncodingException, InvalidJidException {
+		X500Name x500name = new JcaX509CertificateHolder(certificate).getSubject();
+		//String xmpp = IETFUtils.valueToString(x500name.getRDNs(new ASN1ObjectIdentifier("1.3.6.1.5.5.7.8.5"))[0].getFirst().getValue());
+		String email = IETFUtils.valueToString(x500name.getRDNs(BCStyle.EmailAddress)[0].getFirst().getValue());
+		String name = IETFUtils.valueToString(x500name.getRDNs(BCStyle.CN)[0].getFirst().getValue());
+		return new Pair<>(Jid.fromString(email),name);
 	}
 }

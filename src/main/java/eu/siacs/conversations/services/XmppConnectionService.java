@@ -30,6 +30,7 @@ import android.security.KeyChainException;
 import android.util.Log;
 import android.util.LruCache;
 import android.util.DisplayMetrics;
+import android.util.Pair;
 
 import net.java.otr4j.OtrException;
 import net.java.otr4j.session.Session;
@@ -37,21 +38,17 @@ import net.java.otr4j.session.SessionID;
 import net.java.otr4j.session.SessionImpl;
 import net.java.otr4j.session.SessionStatus;
 
-import org.bouncycastle.asn1.x500.RDN;
 import org.bouncycastle.asn1.x500.X500Name;
 import org.bouncycastle.asn1.x500.style.BCStyle;
 import org.bouncycastle.asn1.x500.style.IETFUtils;
 import org.bouncycastle.cert.jcajce.JcaX509CertificateHolder;
-import org.bouncycastle.jce.PrincipalUtil;
-import org.bouncycastle.jce.X509Principal;
 import org.openintents.openpgp.util.OpenPgpApi;
 import org.openintents.openpgp.util.OpenPgpServiceConnection;
 
 import java.math.BigInteger;
-import java.security.PrivateKey;
 import java.security.SecureRandom;
 import java.security.cert.CertificateEncodingException;
-import java.security.cert.CertificateParsingException;
+import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -175,7 +172,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 			mMessageArchiveService.executePendingQueries(account);
 			mJingleConnectionManager.cancelInTransmission();
 			syncDirtyContacts(account);
-			account.getAxolotlService().publishBundlesIfNeeded(true);
+			account.getAxolotlService().publishBundlesIfNeeded(true, false);
 		}
 	};
 	private final OnMessageAcknowledged mOnMessageAcknowledgedListener = new OnMessageAcknowledged() {
@@ -1307,17 +1304,18 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 			public void run() {
 				try {
 					X509Certificate[] chain = KeyChain.getCertificateChain(XmppConnectionService.this, alias);
-					PrivateKey key = KeyChain.getPrivateKey(XmppConnectionService.this, alias);
-					X500Name x500name = new JcaX509CertificateHolder(chain[0]).getSubject();
-					String email = IETFUtils.valueToString(x500name.getRDNs(BCStyle.EmailAddress)[0].getFirst().getValue());
-					String name = IETFUtils.valueToString(x500name.getRDNs(BCStyle.CN)[0].getFirst().getValue());
-					Jid jid = Jid.fromString(email);
-					if (findAccountByJid(jid) == null) {
-						Account account = new Account(jid, "");
+					Pair<Jid,String> info = CryptoHelper.extractJidAndName(chain[0]);
+					if (findAccountByJid(info.first) == null) {
+						Account account = new Account(info.first, "");
 						account.setPrivateKeyAlias(alias);
 						account.setOption(Account.OPTION_DISABLED, true);
 						createAccount(account);
 						callback.onAccountCreated(account);
+						try {
+							getMemorizingTrustManager().getNonInteractive().checkClientTrusted(chain, "RSA");
+						} catch (CertificateException e) {
+							callback.informUser(R.string.certificate_chain_is_not_trusted);
+						}
 					} else {
 						callback.informUser(R.string.account_already_exists);
 					}
@@ -1336,6 +1334,34 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 			}
 		}).start();
 
+	}
+
+	public void updateKeyInAccount(final Account account, final String alias) {
+		Log.d(Config.LOGTAG,"update key in account "+alias);
+		try {
+			X509Certificate[] chain = KeyChain.getCertificateChain(XmppConnectionService.this, alias);
+			Pair<Jid, String> info = CryptoHelper.extractJidAndName(chain[0]);
+			if (account.getJid().toBareJid().equals(info.first)) {
+				account.setPrivateKeyAlias(alias);
+				databaseBackend.updateAccount(account);
+				try {
+					getMemorizingTrustManager().getNonInteractive().checkClientTrusted(chain, "RSA");
+				} catch (CertificateException e) {
+					showErrorToastInUi(R.string.certificate_chain_is_not_trusted);
+				}
+				account.getAxolotlService().regenerateKeys(true);
+			} else {
+				showErrorToastInUi(R.string.jid_does_not_match_certificate);
+			}
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} catch (KeyChainException e) {
+			e.printStackTrace();
+		} catch (InvalidJidException e) {
+			e.printStackTrace();
+		} catch (CertificateEncodingException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void updateAccount(final Account account) {

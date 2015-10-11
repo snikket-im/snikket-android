@@ -2,16 +2,20 @@ package eu.siacs.conversations.generator;
 
 
 import android.util.Base64;
+import android.util.Log;
 
 import org.whispersystems.libaxolotl.IdentityKey;
 import org.whispersystems.libaxolotl.ecc.ECPublicKey;
 import org.whispersystems.libaxolotl.state.PreKeyRecord;
 import org.whispersystems.libaxolotl.state.SignedPreKeyRecord;
 
+import java.security.cert.CertificateEncodingException;
+import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Conversation;
@@ -171,6 +175,23 @@ public class IqGenerator extends AbstractGenerator {
 		}
 
 		return publish(AxolotlService.PEP_BUNDLES+":"+deviceId, item);
+	}
+
+	public IqPacket publishVerification(byte[] signature, X509Certificate[] certificates, final int deviceId) {
+		final Element item = new Element("item");
+		final Element verification = item.addChild("verification", AxolotlService.PEP_PREFIX);
+		final Element chain = verification.addChild("chain");
+		for(int i = 0; i < certificates.length; ++i) {
+			try {
+				Element certificate = chain.addChild("certificate");
+				certificate.setContent(Base64.encodeToString(certificates[i].getEncoded(), Base64.DEFAULT));
+				certificate.setAttribute("index",i);
+			} catch (CertificateEncodingException e) {
+				Log.d(Config.LOGTAG, "could not encode certificate");
+			}
+		}
+		verification.addChild("signature").setContent(Base64.encodeToString(signature, Base64.DEFAULT));
+		return publish(AxolotlService.PEP_VERIFICATION+":"+deviceId, item);
 	}
 
 	public IqPacket queryMessageArchiveManagement(final MessageArchiveService.Query mam) {
