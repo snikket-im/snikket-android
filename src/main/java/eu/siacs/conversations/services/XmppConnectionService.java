@@ -29,6 +29,7 @@ import android.security.KeyChain;
 import android.security.KeyChainException;
 import android.util.Log;
 import android.util.LruCache;
+import android.util.DisplayMetrics;
 
 import net.java.otr4j.OtrException;
 import net.java.otr4j.session.Session;
@@ -257,6 +258,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	private int showErrorToastListenerCount = 0;
 	private int unreadCount = -1;
 	private OnAccountUpdate mOnAccountUpdate = null;
+	private OnCaptchaRequested mOnCaptchaRequested = null;
 	private OnStatusChanged statusListener = new OnStatusChanged() {
 
 		@Override
@@ -315,6 +317,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		}
 	};
 	private int accountChangedListenerCount = 0;
+	private int captchaRequestedListenerCount = 0;
 	private OnRosterUpdate mOnRosterUpdate = null;
 	private OnUpdateBlocklist mOnUpdateBlocklist = null;
 	private int updateBlocklistListenerCount = 0;
@@ -1459,6 +1462,31 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		}
 	}
 
+	public void setOnCaptchaRequestedListener(OnCaptchaRequested listener) {
+		synchronized (this) {
+			if (checkListeners()) {
+				switchToForeground();
+			}
+			this.mOnCaptchaRequested = listener;
+			if (this.captchaRequestedListenerCount < 2) {
+				this.captchaRequestedListenerCount++;
+			}
+		}
+	}
+
+	public void removeOnCaptchaRequestedListener() {
+		synchronized (this) {
+			this.captchaRequestedListenerCount--;
+			if (this.captchaRequestedListenerCount <= 0) {
+				this.mOnCaptchaRequested = null;
+				this.captchaRequestedListenerCount = 0;
+				if (checkListeners()) {
+					switchToBackground();
+				}
+			}
+		}
+	}
+
 	public void setOnRosterUpdateListener(final OnRosterUpdate listener) {
 		synchronized (this) {
 			if (checkListeners()) {
@@ -1563,6 +1591,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		return (this.mOnAccountUpdate == null
 				&& this.mOnConversationUpdate == null
 				&& this.mOnRosterUpdate == null
+				&& this.mOnCaptchaRequested == null
 				&& this.mOnUpdateBlocklist == null
 				&& this.mOnShowErrorToast == null
 				&& this.mOnKeyStatusUpdated == null);
@@ -2464,6 +2493,20 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		}
 	}
 
+	public boolean displayCaptchaRequest(Account account, String id, Data data, Bitmap captcha) {
+		boolean rc = false;
+		if (mOnCaptchaRequested != null) {
+			DisplayMetrics metrics = getApplicationContext().getResources().getDisplayMetrics();
+			Bitmap scaled = Bitmap.createScaledBitmap(captcha, (int)(captcha.getWidth() * metrics.scaledDensity),
+						(int)(captcha.getHeight() * metrics.scaledDensity), false);
+
+			mOnCaptchaRequested.onCaptchaRequested(account, id, data, scaled);
+			rc = true;
+		}
+
+		return rc;
+	}
+
 	public void updateBlocklistUi(final OnUpdateBlocklist.Status status) {
 		if (mOnUpdateBlocklist != null) {
 			mOnUpdateBlocklist.OnUpdateBlocklist(status);
@@ -2617,6 +2660,13 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		XmppConnection connection = account.getXmppConnection();
 		if (connection != null) {
 			connection.sendPresencePacket(packet);
+		}
+	}
+
+	public void sendCreateAccountWithCaptchaPacket(Account account, String id, Data data) {
+		XmppConnection connection = account.getXmppConnection();
+		if (connection != null) {
+			connection.sendCaptchaRegistryRequest(id, data);
 		}
 	}
 
@@ -2784,6 +2834,13 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 
 	public interface OnAccountUpdate {
 		void onAccountUpdate();
+	}
+
+	public interface OnCaptchaRequested {
+		void onCaptchaRequested(Account account,
+					String id,
+					Data data,
+					Bitmap captcha);
 	}
 
 	public interface OnRosterUpdate {

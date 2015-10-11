@@ -1,9 +1,11 @@
 package eu.siacs.conversations.ui;
 
+import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -31,17 +33,20 @@ import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.entities.Account;
+import eu.siacs.conversations.services.XmppConnectionService.OnCaptchaRequested;
 import eu.siacs.conversations.services.XmppConnectionService.OnAccountUpdate;
 import eu.siacs.conversations.ui.adapter.KnownHostsAdapter;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.OnKeyStatusUpdated;
 import eu.siacs.conversations.xmpp.XmppConnection.Features;
+import eu.siacs.conversations.xmpp.forms.Data;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
 import eu.siacs.conversations.xmpp.pep.Avatar;
 
-public class EditAccountActivity extends XmppActivity implements OnAccountUpdate, OnKeyStatusUpdated {
+public class EditAccountActivity extends XmppActivity implements OnAccountUpdate,
+		OnKeyStatusUpdated, OnCaptchaRequested {
 
 	private AutoCompleteTextView mAccountJid;
 	private EditText mPassword;
@@ -72,6 +77,7 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 	private ImageButton mRegenerateAxolotlKeyButton;
 	private LinearLayout keys;
 	private LinearLayout keysCard;
+	private AlertDialog mCaptchaDialog = null;
 
 	private Jid jidToEdit;
 	private boolean mInitMode = false;
@@ -680,5 +686,71 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 	@Override
 	public void onKeyStatusUpdated() {
 		refreshUi();
+	}
+
+	@Override
+	public void onCaptchaRequested(final Account account, final String id, final Data data,
+								   final Bitmap captcha) {
+		final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		final ImageView view = new ImageView(this);
+		final LinearLayout layout = new LinearLayout(this);
+		final EditText input = new EditText(this);
+
+		view.setImageBitmap(captcha);
+		view.setScaleType(ImageView.ScaleType.FIT_CENTER);
+
+		input.setHint(getString(R.string.captcha_hint));
+
+		layout.setOrientation(LinearLayout.VERTICAL);
+		layout.addView(view);
+		layout.addView(input);
+
+		builder.setTitle(getString(R.string.captcha_required));
+		builder.setView(layout);
+
+		builder.setPositiveButton(getString(R.string.ok),
+				new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						String rc = input.getText().toString();
+						data.put("username", account.getUsername());
+						data.put("password", account.getPassword());
+						data.put("ocr", rc);
+						data.submit();
+
+						if (xmppConnectionServiceBound) {
+							xmppConnectionService.sendCreateAccountWithCaptchaPacket(
+									account, id, data);
+						}
+					}
+				});
+		builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				if (xmppConnectionService != null) {
+					xmppConnectionService.sendCreateAccountWithCaptchaPacket(account, null, null);
+				}
+			}
+		});
+
+		builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+			@Override
+			public void onCancel(DialogInterface dialog) {
+				if (xmppConnectionService != null) {
+					xmppConnectionService.sendCreateAccountWithCaptchaPacket(account, null, null);
+				}
+			}
+		});
+
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				if ((mCaptchaDialog != null) && mCaptchaDialog.isShowing()) {
+					mCaptchaDialog.dismiss();
+				}
+				mCaptchaDialog = builder.create();
+				mCaptchaDialog.show();
+			}
+		});
 	}
 }
