@@ -48,6 +48,8 @@ public final class Config {
 
 	public static final boolean SHOW_REGENERATE_AXOLOTL_KEYS_BUTTON = false;
 
+	public static final boolean X509_VERIFICATION = false; //use x509 certificates to verify OMEMO keys
+
 	public static final long MILLISECONDS_IN_DAY = 24 * 60 * 60 * 1000;
 	public static final long MAM_MAX_CATCHUP =  MILLISECONDS_IN_DAY / 2;
 	public static final int MAM_MAX_MESSAGES = 500;

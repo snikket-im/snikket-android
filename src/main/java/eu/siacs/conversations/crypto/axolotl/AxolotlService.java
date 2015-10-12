@@ -504,10 +504,10 @@ public class AxolotlService {
 
 
 					if (changed) {
-						if (account.getPrivateKeyAlias() == null) {
-							publishDeviceBundle(signedPreKeyRecord, preKeyRecords, announce, wipe);
-						} else {
+						if (account.getPrivateKeyAlias() != null && Config.X509_VERIFICATION) {
 							publishDeviceVerificationAndBundle(signedPreKeyRecord, preKeyRecords, announce, wipe);
+						} else {
+							publishDeviceBundle(signedPreKeyRecord, preKeyRecords, announce, wipe);
 						}
 					} else {
 						Log.d(Config.LOGTAG, getLogprefix(account) + "Bundle " + getOwnDeviceId() + " in PEP was current");

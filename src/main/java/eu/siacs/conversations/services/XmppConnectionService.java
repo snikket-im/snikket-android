@@ -1311,25 +1311,18 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 						account.setOption(Account.OPTION_DISABLED, true);
 						createAccount(account);
 						callback.onAccountCreated(account);
-						try {
-							getMemorizingTrustManager().getNonInteractive().checkClientTrusted(chain, "RSA");
-						} catch (CertificateException e) {
-							callback.informUser(R.string.certificate_chain_is_not_trusted);
+						if (Config.X509_VERIFICATION) {
+							try {
+								getMemorizingTrustManager().getNonInteractive().checkClientTrusted(chain, "RSA");
+							} catch (CertificateException e) {
+								callback.informUser(R.string.certificate_chain_is_not_trusted);
+							}
 						}
 					} else {
 						callback.informUser(R.string.account_already_exists);
 					}
-				} catch (KeyChainException e) {
+				} catch (Exception e) {
 					callback.informUser(R.string.unable_to_parse_certificate);
-				} catch (InterruptedException e) {
-					callback.informUser(R.string.unable_to_parse_certificate);
-					e.printStackTrace();
-				} catch (CertificateEncodingException e) {
-					callback.informUser(R.string.unable_to_parse_certificate);
-					e.printStackTrace();
-				} catch (InvalidJidException e) {
-					callback.informUser(R.string.unable_to_parse_certificate);
-					e.printStackTrace();
 				}
 			}
 		}).start();
@@ -1344,12 +1337,14 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 			if (account.getJid().toBareJid().equals(info.first)) {
 				account.setPrivateKeyAlias(alias);
 				databaseBackend.updateAccount(account);
-				try {
-					getMemorizingTrustManager().getNonInteractive().checkClientTrusted(chain, "RSA");
-				} catch (CertificateException e) {
-					showErrorToastInUi(R.string.certificate_chain_is_not_trusted);
+				if (Config.X509_VERIFICATION) {
+					try {
+						getMemorizingTrustManager().getNonInteractive().checkClientTrusted(chain, "RSA");
+					} catch (CertificateException e) {
+						showErrorToastInUi(R.string.certificate_chain_is_not_trusted);
+					}
+					account.getAxolotlService().regenerateKeys(true);
 				}
-				account.getAxolotlService().regenerateKeys(true);
 			} else {
 				showErrorToastInUi(R.string.jid_does_not_match_certificate);
 			}

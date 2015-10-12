@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.security.KeyChain;
 import android.security.KeyChainAliasCallback;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
@@ -103,6 +102,14 @@ public class ManageAccountActivity extends XmppActivity implements OnAccountUpda
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.manageaccounts, menu);
 		MenuItem enableAll = menu.findItem(R.id.action_enable_all);
+		MenuItem addAccount = menu.findItem(R.id.action_add_account);
+		MenuItem addAccountWithCertificate = menu.findItem(R.id.action_add_account_with_cert);
+
+		if (Config.X509_VERIFICATION) {
+			addAccount.setVisible(false);
+			addAccountWithCertificate.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+		}
+
 		if (!accountsLeftToEnable()) {
 			enableAll.setVisible(false);
 		}
@@ -149,7 +156,7 @@ public class ManageAccountActivity extends XmppActivity implements OnAccountUpda
 			case R.id.action_enable_all:
 				enableAllAccounts();
 				break;
-			case R.id.action_add_account_from_key:
+			case R.id.action_add_account_with_cert:
 				addAccountFromKey();
 				break;
 			default:
