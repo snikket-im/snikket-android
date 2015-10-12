@@ -737,8 +737,7 @@ public class JingleConnection implements Transferable {
 		JinglePacket answer = bootstrapPacket("transport-accept");
 		Content content = new Content("initiator", "a-file-offer");
 		content.setTransportId(this.transportId);
-		content.ibbTransport().setAttribute("block-size",
-				Integer.toString(this.ibbBlockSize));
+		content.ibbTransport().setAttribute("block-size",this.ibbBlockSize);
 		answer.setContent(content);
 		this.sendJinglePacket(answer);
 		return true;

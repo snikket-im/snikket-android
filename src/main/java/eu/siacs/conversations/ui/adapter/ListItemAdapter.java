@@ -92,7 +92,7 @@ public class ListItemAdapter extends ArrayAdapter<ListItem> {
 	}
 
 	public interface OnTagClickedListener {
-		public void onTagClicked(String tag);
+		void onTagClicked(String tag);
 	}
 
 	class BitmapWorkerTask extends AsyncTask<ListItem, Void, Bitmap> {

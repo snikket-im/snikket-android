@@ -3,9 +3,9 @@ package eu.siacs.conversations.ui;
 import android.app.PendingIntent;
 
 public interface UiCallback<T> {
-	public void success(T object);
+	void success(T object);
 
-	public void error(int errorCode, T object);
+	void error(int errorCode, T object);
 
-	public void userInputRequried(PendingIntent pi, T object);
+	void userInputRequried(PendingIntent pi, T object);
 }

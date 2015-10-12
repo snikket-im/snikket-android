@@ -1,16 +1,13 @@
 package eu.siacs.conversations.xmpp;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.wifi.WifiConfiguration;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.os.SystemClock;
 import android.security.KeyChain;
-import android.security.KeyChainException;
 import android.util.Base64;
 import android.util.Log;
 import android.util.Pair;
@@ -35,8 +32,6 @@ import java.net.UnknownHostException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.KeyManagementException;
-import java.security.KeyStore;
-import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.Principal;
 import java.security.PrivateKey;
@@ -177,7 +172,7 @@ public class XmppConnection implements Runnable {
 	};
 
 	private OnIqPacketReceived createPacketReceiveHandler() {
-		OnIqPacketReceived receiver = new OnIqPacketReceived() {
+		return new OnIqPacketReceived() {
 			@Override
 			public void onIqPacketReceived(Account account, IqPacket packet) {
 				if (packet.getType() == IqPacket.TYPE.RESULT) {
@@ -195,8 +190,6 @@ public class XmppConnection implements Runnable {
 				disconnect(true);
 			}
 		};
-
-		return receiver;
 	}
 
 	public XmppConnection(final Account account, final XmppConnectionService service) {
@@ -775,17 +768,14 @@ public class XmppConnection implements Runnable {
 							InputStream stream = new ByteArrayInputStream(strBlob);
 							captcha = BitmapFactory.decodeStream(stream);
 						} catch (Exception e) {
-
+							//ignored
 						}
 					} else {
 						try {
 							Field url = data.getFieldByName("url");
 							String urlString = url.findChildContent("value");
-
 							URL uri = new URL(urlString);
 							captcha = BitmapFactory.decodeStream(uri.openConnection().getInputStream());
-						} catch(MalformedURLException e) {
-							Log.e(Config.LOGTAG, e.toString());
 						} catch(IOException e) {
 							Log.e(Config.LOGTAG, e.toString());
 						}
@@ -885,11 +875,9 @@ public class XmppConnection implements Runnable {
 		this.sendUnmodifiedIqPacket(startSession, new OnIqPacketReceived() {
 			@Override
 			public void onIqPacketReceived(Account account, IqPacket packet) {
-				if (packet.getType() == IqPacket.TYPE.TIMEOUT) {
-					return;
-				} else if (packet.getType() == IqPacket.TYPE.RESULT) {
+				if (packet.getType() == IqPacket.TYPE.RESULT) {
 					sendPostBindInitialization();
-				} else {
+				} else if (packet.getType() != IqPacket.TYPE.TIMEOUT){
 					Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": could not init sessions");
 					disconnect(true);
 				}

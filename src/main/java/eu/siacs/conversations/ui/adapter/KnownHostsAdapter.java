@@ -15,7 +15,7 @@ public class KnownHostsAdapter extends ArrayAdapter<String> {
 		@Override
 		protected FilterResults performFiltering(CharSequence constraint) {
 			if (constraint != null) {
-				ArrayList<String> suggestions = new ArrayList<String>();
+				ArrayList<String> suggestions = new ArrayList<>();
 				final String[] split = constraint.toString().split("@");
 				if (split.length == 1) {
 					for (String domain : domains) {
@@ -58,10 +58,9 @@ public class KnownHostsAdapter extends ArrayAdapter<String> {
 		}
 	};
 
-	public KnownHostsAdapter(Context context, int viewResourceId,
-			List<String> mKnownHosts) {
+	public KnownHostsAdapter(Context context, int viewResourceId, List<String> mKnownHosts) {
 		super(context, viewResourceId, new ArrayList<String>());
-		domains = new ArrayList<String>(mKnownHosts);
+		domains = new ArrayList<>(mKnownHosts);
 	}
 
 	@Override

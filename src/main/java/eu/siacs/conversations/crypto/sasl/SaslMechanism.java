@@ -11,7 +11,7 @@ public abstract class SaslMechanism {
 	final protected Account account;
 	final protected SecureRandom rng;
 
-	protected static enum State {
+	protected enum State {
 		INITIAL,
 		AUTH_TEXT_SENT,
 		RESPONSE_SENT,

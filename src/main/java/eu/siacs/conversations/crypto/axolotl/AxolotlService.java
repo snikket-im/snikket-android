@@ -409,19 +409,9 @@ public class AxolotlService {
 					publishDeviceBundle(signedPreKeyRecord, preKeyRecords, announceAfter, wipe);
 				}
 			});
-		} catch (KeyChainException e) {
-			e.printStackTrace();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		} catch (NoSuchAlgorithmException e) {
-			Log.d(Config.LOGTAG,"no such algo "+e.getMessage());
-			e.printStackTrace();
-		} catch (java.security.InvalidKeyException e) {
-			e.printStackTrace();
-		} catch (SignatureException e) {
+		} catch (Exception  e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	public void publishBundlesIfNeeded(final boolean announce, final boolean wipe) {
@@ -530,7 +520,6 @@ public class AxolotlService {
 					}
 				} catch (InvalidKeyException e) {
 					Log.e(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Failed to publish bundle " + getOwnDeviceId() + ", reason: " + e.getMessage());
-					return;
 				}
 			}
 		});
@@ -639,7 +628,6 @@ public class AxolotlService {
 						fetchStatusMap.put(address, FetchStatus.ERROR);
 						Log.d(Config.LOGTAG, getLogprefix(account) + "Error received while building session:" + packet.findChild("error"));
 						finish();
-						return;
 					}
 				}
 			});
