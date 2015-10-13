@@ -78,6 +78,7 @@
   <string name="choose_presence">Wybierz widoczność dla kontaktu</string>
   <string name="send_unencrypted_message">Wyślij wiadomość bez szyfrowania</string>
   <string name="send_otr_message">Wyślij zaszyfrowaną wiadomość (OTR)</string>
+  <string name="send_omemo_message">Wyślij wiadomość zaszyfrowaną OMEMO</string>
   <string name="send_pgp_message">Wyślij zaszyfrowaną wiadomość (OpenPGP)</string>
   <string name="your_nick_has_been_changed">Twoja nazwa została zmieniona</string>
   <string name="send_unencrypted">Wyślij bez szyfrowania</string>
@@ -106,6 +107,7 @@
   <string name="pref_sound">Dźwięk</string>
   <string name="pref_sound_summary">Odtwórz dźwięk z powiadomieniem</string>
   <string name="pref_conference_notifications">Powiadomienia konfrencji</string>
+  <string name="pref_conference_notifications_summary">Zawsze powiadamiaj przy odebraniu wiadomości w publicznej konferencji, a nie tylko przy wywołaniu nicka.</string>
   <string name="pref_notification_grace_period">Opóźnienie powiadomień</string>
   <string name="pref_notification_grace_period_summary">Wyłącz powiadomienia przez krótki czas po otrzymaniu kopii wiadomości</string>
   <string name="pref_advanced_options">Opcje zaawansowane</string>
@@ -205,7 +207,11 @@
   <string name="reception_failed">Odbiór nieudany</string>
   <string name="your_fingerprint">Twój odcisk klucza</string>
   <string name="otr_fingerprint">Odcisk klucza OTR</string>
+  <string name="omemo_fingerprint">Odcisk OMEMO</string>
+  <string name="omemo_fingerprint_selected_message">Odcisk OMEMO wiadomości</string>
+  <string name="this_device_omemo_fingerprint">Własny odcisk OMEMO</string>
   <string name="other_devices">Pozostałe urządzenia</string>
+  <string name="trust_omemo_fingerprints">Zaufane odciski OMEMO</string>
   <string name="fetching_keys">Pobieranie kluczy...</string>
   <string name="done">Ukończono</string>
   <string name="verify">Weryfikuj</string>
@@ -357,9 +363,13 @@
   <string name="copy_otr_clipboard_description">Skopiuj odcisk klucza OTR do schowka</string>
   <string name="copy_omemo_clipboard_description">Skopiuj odcisk klucza OMEMO do schowka</string>
   <string name="regenerate_omemo_key">Wygeneruj ponownie klucz OMEMO</string>
+  <string name="wipe_omemo_pep">Usuń inne urządzenia z PEP</string>
   <string name="clear_other_devices">Wyczyść urządzenia</string>
+  <string name="clear_other_devices_desc">Czy na pewno chcesz usunąć wszystkie inne urządzenia z ogłoszenia OMEMO? Następnym razem gdy połączą się Twoje urdzącenia, ogłoszą się one ponownie, ale mogą nie otrzymać wiadomości wysłanych w międzyczasie.</string>
   <string name="purge_key">Skasuj klucz</string>
   <string name="purge_key_desc_part1">Czy na pewno chcesz skasować usunąć odcisk klucza?</string>
+  <string name="purge_key_desc_part2">Zostanie bez odwołania uznane za zdradzone, i nigdy więcej nie będzie można stworzyć z nim sesji.</string>
+  <string name="error_no_keys_to_trust">Nie ma dostępnych żadnych użytecznych kluczy dla tego kontaktu. Jeśli usunąłeś jakieś jego klucze, kontakt będzie musiał wygenerować nowe.</string>
   <string name="error_trustkeys_title">Błąd</string>
   <string name="fetching_history_from_server">Pobieranie historii z serwera</string>
   <string name="no_more_history_on_server">Koniec historii na serwerze</string>
@@ -398,7 +408,10 @@
   <string name="public_conference">Konferencja publiczna</string>
   <string name="private_conference">Konferencja prywatna, dla zaakceptowanych uczestników</string>
   <string name="conference_options">Opcje konferencji</string>
+  <string name="members_only">Prywatne, tylko dla członków.</string>
   <string name="non_anonymous">Nieanonimowa</string>
+  <string name="moderated">Moderowany</string>
+  <string name="you_are_not_participating">Nie bierzesz udziału</string>
   <string name="modified_conference_options">Opcje konferencji zostały zmienione!</string>
   <string name="could_not_modify_conference_options">Nie udało się zmienić opcji konferencji</string>
   <string name="never">Nigdy</string>
@@ -471,4 +484,6 @@
   <string name="download_failed_could_not_connect">Pobieranie nieudane: Nie można połączyć z hostem</string>
   <string name="pref_use_white_background">Białe tło</string>
   <string name="pref_use_white_background_summary">Pokazuj otrzymane wiadomości jako czarny tekst na białym tle</string>
+  <string name="account_status_dns_timeout">DNS timeout</string>
+  <string name="server_info_broken">Zepsute</string>
 </resources>
