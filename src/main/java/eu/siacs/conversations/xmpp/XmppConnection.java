@@ -29,7 +29,6 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
@@ -286,7 +285,7 @@ public class XmppConnection implements Runnable {
 			Tag nextTag;
 			while ((nextTag = tagReader.readTag()) != null) {
 				if (nextTag.isStart("stream")) {
-					processStream(nextTag);
+					processStream();
 					break;
 				} else {
 					throw new IOException("unknown tag on connect");
@@ -338,11 +337,9 @@ public class XmppConnection implements Runnable {
 		connect();
 	}
 
-	private void processStream(final Tag currentTag) throws XmlPullParserException,
-					IOException, NoSuchAlgorithmException {
+	private void processStream() throws XmlPullParserException, IOException, NoSuchAlgorithmException {
 						Tag nextTag = tagReader.readTag();
-
-						while ((nextTag != null) && (!nextTag.isEnd("stream"))) {
+						while (nextTag != null && !nextTag.isEnd("stream")) {
 							if (nextTag.isStart("error")) {
 								processStreamError(nextTag);
 							} else if (nextTag.isStart("features")) {
@@ -362,7 +359,11 @@ public class XmppConnection implements Runnable {
 										String.valueOf(saslMechanism.getPriority()));
 								tagReader.reset();
 								sendStartStream();
-								processStream(tagReader.readTag());
+								if (tagReader.readTag().isStart("stream")) {
+									processStream();
+								} else {
+									throw new IOException("server didn't restart stream after successful auth");
+								}
 								break;
 							} else if (nextTag.isStart("failure")) {
 								throw new UnauthorizedException();
@@ -458,6 +459,7 @@ public class XmppConnection implements Runnable {
 							}
 							nextTag = tagReader.readTag();
 						}
+						Log.d(Config.LOGTAG,account.getJid().toBareJid()+": last tag was "+nextTag);
 						if (account.getStatus() == Account.State.ONLINE) {
 							account. setStatus(Account.State.OFFLINE);
 							if (statusListener != null) {
@@ -644,7 +646,11 @@ public class XmppConnection implements Runnable {
 			sendStartStream();
 			Log.d(Config.LOGTAG, account.getJid().toBareJid()+ ": TLS connection established");
 			features.encryptionEnabled = true;
-			processStream(tagReader.readTag());
+			if (tagReader.readTag().isStart("stream")) {
+				processStream();
+			} else {
+				throw new IOException("server didn't restart stream after STARTTLS");
+			}
 			sslSocket.close();
 		} catch (final NoSuchAlgorithmException | KeyManagementException e1) {
 			Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": TLS certificate verification failed");
