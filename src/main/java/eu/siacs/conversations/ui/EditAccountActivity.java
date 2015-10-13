@@ -518,10 +518,11 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 
 	private void updateAccountInformation(boolean init) {
 		if (init) {
+			this.mAccountJid.getEditableText().clear();
 			if (Config.DOMAIN_LOCK != null) {
-				this.mAccountJid.setText(this.mAccount.getJid().getLocalpart());
+				this.mAccountJid.getEditableText().append(this.mAccount.getJid().getLocalpart());
 			} else {
-				this.mAccountJid.setText(this.mAccount.getJid().toBareJid().toString());
+				this.mAccountJid.getEditableText().append(this.mAccount.getJid().toBareJid().toString());
 			}
 			this.mPassword.setText(this.mAccount.getPassword());
 		}
