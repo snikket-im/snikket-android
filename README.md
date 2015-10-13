@@ -41,7 +41,7 @@ run your own XMPP server for you and your friends. These XEP's are:
 
 * [XEP-0065: SOCKS5 Bytestreams](http://xmpp.org/extensions/xep-0065.html) (or mod_proxy65). Will be used to transfer
   files if both parties are behind a firewall (NAT).
-* [XEP-0163: Personal Eventing Protocol](http://xmpp.org/extensions/xep-0163.html) for avatars
+* [XEP-0163: Personal Eventing Protocol](http://xmpp.org/extensions/xep-0163.html) for avatars and OMEMO.
 * [XEP-0191: Blocking command](http://xmpp.org/extensions/xep-0191.html) lets you blacklist spammers or block contacts
   without removing them from your roster.
 * [XEP-0198: Stream Management](http://xmpp.org/extensions/xep-0198.html) allows XMPP to survive small network outages and
@@ -58,7 +58,7 @@ run your own XMPP server for you and your friends. These XEP's are:
   withholding unimportant packages.
 * [XEP-0363: HTTP File Upload](http://xmpp.org/extensions/xep-0363.html) allows you to share files in conferences and with offline
   contacts. Requires an [additional component](https://github.com/siacs/HttpUploadComponent)
-  on your server.
+  on your server. Alternatively, an [Ejabberd contrib-module](https://github.com/processone/ejabberd-contrib/tree/master/mod_http_upload) and a [Prosody module](http://modules.prosody.im/mod_http_upload.html) are available.
 
 ## Team
 
