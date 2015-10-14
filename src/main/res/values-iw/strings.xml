@@ -73,7 +73,6 @@
   <string name="clear_conversation_history">נקה היסטוריית שיחה</string>
   <string name="clear_histor_msg">האם ברצונך למחוק את כל ההודעות בשיחה זאת?\n\n<b>אזהרה:</b> פעולה זו לא תשפיע על הודעות מאוחסנות על מכשירים או שרתים אחרים.</string>
   <string name="delete_messages">מחק הודעות</string>
-  <string name="also_end_conversation">בנוסף, סיים שיחה זו</string>
   <string name="choose_presence">בחר נוכחות לאיש קשר</string>
   <string name="send_unencrypted_message">שלח הודעה בלתי מוצפנת</string>
   <string name="send_otr_message">שלח הודעה בהצפנת OTR</string>

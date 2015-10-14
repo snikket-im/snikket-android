@@ -74,7 +74,6 @@
   <string name="clear_conversation_history">Elkarrizketa historia garbitu</string>
   <string name="clear_histor_msg">Elkarrizketa honetako mezu guztiak ezabatu nahi al dituzu?\n\n<b>Abisua:</b> Honek ez du beste gailu edo zerbitzarietan gordetako mezuetan eraginik izango.</string>
   <string name="delete_messages">Mezuak ezabatu</string>
-  <string name="also_end_conversation">Elkarrizketa hau jarraian amaitu</string>
   <string name="choose_presence">Hautatu agerpena kontaktuarentzat</string>
   <string name="send_unencrypted_message">Enkriptatu gabeko mezua bidali</string>
   <string name="send_otr_message">OTRz enkriptatutako mezua bidali</string>

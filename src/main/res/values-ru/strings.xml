@@ -74,7 +74,6 @@
   <string name="clear_conversation_history">Очистить историю</string>
   <string name="clear_histor_msg">Вы хотите удалить все сообщения в этой беседе?\n\n<b>Предупреждение:</b> Данная операция не повлияет на сообщения, хранящиеся на других устройствах.</string>
   <string name="delete_messages">Удалить сообщения</string>
-  <string name="also_end_conversation">Завершить беседу</string>
   <string name="choose_presence">Укажите статус для контакта</string>
   <string name="send_unencrypted_message">Отправить незащифрованное сообщение</string>
   <string name="send_otr_message">Отправить OTR защифрованное сообщение</string>

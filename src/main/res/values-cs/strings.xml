@@ -74,7 +74,6 @@
   <string name="clear_conversation_history">Smaže historii konverzací</string>
   <string name="clear_histor_msg">Chcete smazat všechny zprávy v této konverzaci?\n\n<b>Varování:</b> Toto neovlivní zprávy uložené na jiných přístrojích nebo serverech.</string>
   <string name="delete_messages">Smazat zprávy</string>
-  <string name="also_end_conversation">Poté ukončit i tuto konverzaci</string>
   <string name="choose_presence">Vybrat aktualizaci stavu pro kontakt</string>
   <string name="send_unencrypted_message">Odeslat nešifrovanou zprávu</string>
   <string name="send_otr_message">Poslat OTR šifrovanou zprávu</string>

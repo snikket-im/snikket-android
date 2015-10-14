@@ -74,7 +74,7 @@
   <string name="clear_conversation_history">Limpiar historial de conversación</string>
   <string name="clear_histor_msg">¿Quieres borrar todos los mensajes de esta conversación?\n\n<b>Aviso:</b> Esto no afectará a los mensajes guardados en otros dispositivos o servidores.</string>
   <string name="delete_messages">Borrar mensajes</string>
-  <string name="also_end_conversation">Además, terminar esta conversación</string>
+  <string name="also_end_conversation">Terminar esta conversación después</string>
   <string name="choose_presence">Selecciona recurso del contacto</string>
   <string name="send_unencrypted_message">Enviar mensaje sin cifrar</string>
   <string name="send_otr_message">Enviar mensaje cifrado con OTR</string>
@@ -335,6 +335,9 @@
   <string name="conversations_foreground_service">Conversations</string>
   <string name="pref_keep_foreground_service">Servicio en primer plano</string>
   <string name="pref_keep_foreground_service_summary">Mantener el servicio en primer plano previene que el sistema cierre la conexión</string>
+  <string name="pref_export_logs">Exportar logs</string>
+  <string name="pref_export_logs_summary">Escribir logs en la tarjeta SD</string>
+  <string name="notification_export_logs_title">Escribiendo logs en la tarjeta SD</string>
   <string name="choose_file">Seleccionar archivo</string>
   <string name="receiving_x_file">Recibiendo %1$s (%2$d%% completado)</string>
   <string name="download_x_file">Descargar %s</string>
@@ -483,4 +486,19 @@
   <string name="pref_use_white_background">Usar fondo blanco</string>
   <string name="pref_use_white_background_summary">Mostrar mensajes recibidos en texto negro con fondo blanco</string>
   <string name="account_status_dns_timeout">Timeout en DNS</string>
+  <string name="server_info_broken">Error</string>
+  <string name="pref_presence_settings">Opciones de presencia</string>
+  <string name="pref_away_when_screen_off">Ausente con pantalla apagada</string>
+  <string name="pref_away_when_screen_off_summary">Cambia tu estado a ausente cuando la pantalla está apagada</string>
+  <string name="pref_xa_on_silent_mode">No disponible en modo silencio</string>
+  <string name="pref_xa_on_silent_mode_summary">Cambia tu estado a no disponible cuando el teléfono está en modo silencio</string>
+  <string name="action_add_account_with_certificate">Añadir cuenta con certificado</string>
+  <string name="unable_to_parse_certificate">No se ha podido leer el certificado</string>
+  <string name="authenticate_with_certificate">Dejar vacío para autenticar certificado w/ </string>
+  <string name="captcha_ocr">Texto captcha</string>
+  <string name="captcha_required">Captcha requerido</string>
+  <string name="captcha_hint">Introduce el texto de la imagen</string>
+  <string name="certificate_chain_is_not_trusted">La cadena de certificados no es de confianza</string>
+  <string name="jid_does_not_match_certificate">El identificador Jabber no coincide con el del certificado</string>
+  <string name="action_renew_certificate">Renovar certificado</string>
 </resources>

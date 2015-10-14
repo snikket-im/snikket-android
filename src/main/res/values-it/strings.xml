@@ -74,7 +74,6 @@
   <string name="clear_conversation_history">Pulisci la cronologia della Conversazione</string>
   <string name="clear_histor_msg">Vuoi cancellare tutti i messaggi di questa Conversazione?\n\n<b>Attenzione:</b> Questo non influenzerà i messaggi presenti su altri dispositivi o server.</string>
   <string name="delete_messages">Elimina messaggi</string>
-  <string name="also_end_conversation">Termina questa conversazione in seguito</string>
   <string name="choose_presence">Choose presence to contact</string>
   <string name="send_otr_message">Messaggio OTR</string>
   <string name="send_pgp_message">Messaggio OpenPGP</string>

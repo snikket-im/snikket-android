@@ -72,7 +72,6 @@
   <string name="clear_conversation_history">Limpar o histórico de conversas</string>
   <string name="clear_histor_msg">Você deseja remover todas as mensagens nessa conversa?\n\n&lt;b&gt;Atenção:&lt;b&gt; Isso não irá influenciar mensagens salvas em outros dispositivos ou servidores.</string>
   <string name="delete_messages">Remover mensagens</string>
-  <string name="also_end_conversation">Finalizar essa conversa ao final</string>
   <string name="choose_presence">Escolha a presença do contato</string>
   <string name="send_otr_message">Enviar mensagem criptografada com OTR</string>
   <string name="send_pgp_message">Enviar mensagem criptografada com OpenPGP</string>

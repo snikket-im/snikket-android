@@ -74,7 +74,6 @@
   <string name="clear_conversation_history">Netejar historial de conversa</string>
   <string name="clear_histor_msg">Vols esborrar tots els missatges d\'aquesta conversa?\n\n<b>Avís:</b> Això no afectarà els missatges desats en altres dispositius o servidors.</string>
   <string name="delete_messages">Esborrar missatges</string>
-  <string name="also_end_conversation">Finalitzar aquesta conversa més tard</string>
   <string name="choose_presence">Selecciona recurs del contacte</string>
   <string name="send_otr_message">Enviar missatge xifrat amb OTR</string>
   <string name="send_pgp_message">Enviar missatge xifrat amb OpenPGP</string>

@@ -74,7 +74,6 @@
   <string name="clear_conversation_history">Vymazať históriu konverzácií</string>
   <string name="clear_histor_msg">Chcete vymazať všetky správy v tejto konverzácii?\n\n<b>Varovanie:</b> Toto neovplyvní správy uložené v iných zariadeniach alebo serveroch.</string>
   <string name="delete_messages">Vymazať správy</string>
-  <string name="also_end_conversation">Následne ukončiť aj túto konverzáciu</string>
   <string name="choose_presence">Vybrať aktualizáciu stavu pre kontakt</string>
   <string name="send_otr_message">Poslať OTR šifrovanú správu</string>
   <string name="send_pgp_message">Poslať OpenPGP šifrovanú správu</string>

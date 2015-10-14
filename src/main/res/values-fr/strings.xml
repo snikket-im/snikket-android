@@ -74,7 +74,6 @@
   <string name="clear_conversation_history">Vider l\'historique de la conversation</string>
   <string name="clear_histor_msg">Voulez-vous supprimer tous les messages de cette conversation ?\n\n<b>Attention :</b> Les messages seront supprimés uniquement sur cet appareil.</string>
   <string name="delete_messages">Supprimer les messages</string>
-  <string name="also_end_conversation">Terminer cette conversation après</string>
   <string name="choose_presence">Choisir le status de présence</string>
   <string name="send_unencrypted_message">Envoyer un message non chiffré</string>
   <string name="send_otr_message">Envoyer un message chiffré avec OTR</string>

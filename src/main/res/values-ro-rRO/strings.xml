@@ -73,7 +73,6 @@
   <string name="clear_conversation_history">Sterge istoria conversatiei</string>
   <string name="clear_histor_msg">Doresti sa stergi toate mesajele din Conversatii?\n\n<b>Atentie:</b> Aceasta actiune nu va influenta mesajele aflate pe alte telefoane/tabelete/servere.</string>
   <string name="delete_messages">Sterge mesajele</string>
-  <string name="also_end_conversation">Termina conversatia aceasta dupa</string>
   <string name="choose_presence">Alege prezenta pentru a contacta</string>
   <string name="send_otr_message">Trimite mesaj criptat cu OTR</string>
   <string name="send_pgp_message">Trimite mesaj criptat cu OpenPGP</string>

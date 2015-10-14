@@ -74,7 +74,7 @@
   <string name="clear_conversation_history">Изчистване на историята на разговорите</string>
   <string name="clear_histor_msg">Искате ли да изтриете всички съобщения от този разговор?\n\n<b>Внимание:</b> Това няма да изтрие съобщенията, съхранявани на други устройства или на сървърите.</string>
   <string name="delete_messages">Изтриване на съобщенията</string>
-  <string name="also_end_conversation">Този разговор да приключи след това</string>
+  <string name="also_end_conversation">Приключване на този разговор след това</string>
   <string name="choose_presence">Изберете присъствие за контакта</string>
   <string name="send_unencrypted_message">Изпр. на нешифр. съобщение</string>
   <string name="send_otr_message">Изпр. на съобщение, шифр. чрез OTP</string>
@@ -335,6 +335,9 @@
   <string name="conversations_foreground_service">Conversations</string>
   <string name="pref_keep_foreground_service">Услугата да е на преден план</string>
   <string name="pref_keep_foreground_service_summary">Предотвратява прекъсването на връзката Ви от операционната система</string>
+  <string name="pref_export_logs">Изнасяне на журналите</string>
+  <string name="pref_export_logs_summary">Записване на журналите в картата с памет</string>
+  <string name="notification_export_logs_title">Записване на журналите в картата с памет</string>
   <string name="choose_file">Изберете файл</string>
   <string name="receiving_x_file">Получаване на %1$s (%2$d%% завършено)</string>
   <string name="download_x_file">Сваляне на %s</string>
@@ -483,5 +486,19 @@
   <string name="pref_use_white_background">Използване на бял фон</string>
   <string name="pref_use_white_background_summary">Показване на получените съобщения с черен текст на бял фон</string>
   <string name="account_status_dns_timeout">Време на изчакване на DNS</string>
-  <string name="server_info_broken">Недостъпен</string>
+  <string name="server_info_broken">Повредено</string>
+  <string name="pref_presence_settings">Настройки за присъствието</string>
+  <string name="pref_away_when_screen_off">Отсъстващ, когато екранът е изключен</string>
+  <string name="pref_away_when_screen_off_summary">Преминава в състояние „отсъстващ“ когато екранът бъде изключен</string>
+  <string name="pref_xa_on_silent_mode">Недостъпен, в тих режим</string>
+  <string name="pref_xa_on_silent_mode_summary">Преминава в състояние „недостъпен“ когато телефонът е в тих режим</string>
+  <string name="action_add_account_with_certificate">Добавяне на профил със сертификат</string>
+  <string name="unable_to_parse_certificate">Неуспешно прочитане на сертификата</string>
+  <string name="authenticate_with_certificate">Оставете празно за удостоверяване със сертификат</string>
+  <string name="captcha_ocr">Текст за проверка</string>
+  <string name="captcha_required">Проверката е задължителна</string>
+  <string name="captcha_hint">въведете текста от изображението</string>
+  <string name="certificate_chain_is_not_trusted">Сертификатът не е потвърден</string>
+  <string name="jid_does_not_match_certificate">Jabber идентификатора не съответства на сертификата</string>
+  <string name="action_renew_certificate">Подновяване на сертификата</string>
 </resources>

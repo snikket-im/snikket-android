@@ -58,7 +58,6 @@
   <string name="clear_conversation_history">清除對話記錄</string>
   <string name="clear_histor_msg">你確定要刪除該對話中所有訊息嗎？\n\n<b>警告:</b> 這將不會影響其他設備或伺服器儲存的訊息。</string>
   <string name="delete_messages">刪除訊息</string>
-  <string name="also_end_conversation">之後結束這對話</string>
   <string name="choose_presence">選擇狀態訊息</string>
   <string name="send_otr_message">發送 OTR 加密訊息</string>
   <string name="send_pgp_message">發送 OpenPGP 加密訊息</string>

@@ -74,7 +74,6 @@
   <string name="clear_conversation_history">Rensa konversationshistorik</string>
   <string name="clear_histor_msg">Vill du ta bort alla meddelanden i denna konversation?\n\n<b>Varning:</b> Detta kommer inte påverka meddelanden lagrade på andra enheter eller servrar.</string>
   <string name="delete_messages">Ta bort meddelanden</string>
-  <string name="also_end_conversation">Avsluta sedan denna konversation</string>
   <string name="choose_presence">Välj tillgänglighet till kontakt</string>
   <string name="send_unencrypted_message">Skicka okrypterat meddelande</string>
   <string name="send_otr_message">Skicka OTR-krypterat meddelande</string>

@@ -90,9 +90,14 @@
   <string name="pref_never_send_crash">Aldri send feilrettingsrapporter</string>
   <string name="pref_confirm_messages">Bekreft meldinger</string>
   <string name="pref_ui_options">Valg for grensesnitt</string>
-  <string name="openpgp_error">OpenKeychain rapporterte en feil</string>
+  <string name="openpgp_error">Feilmelding fra OpenKeychain</string>
   <string name="accept">Godta</string>
   <string name="error">En feil har inntruffet</string>
+  <string name="subscriptions">Abonnement</string>
+  <string name="your_account">Din konto</string>
+  <string name="keys">Nøkler</string>
+  <string name="attach_choose_picture">Velg bilde</string>
+  <string name="attach_take_picture">Ta bilde</string>
   <string name="account_status_unknown">Ukjent</string>
   <string name="account_status_disabled">Midlertidig avskrudd</string>
   <string name="account_status_online">Pålogget</string>

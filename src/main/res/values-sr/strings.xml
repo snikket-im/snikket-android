@@ -74,7 +74,6 @@
   <string name="clear_conversation_history">Брисање историјата преписки</string>
   <string name="clear_histor_msg">Желите ли да обришете све поруке ове преписке?\n\n<b>Упозорење:</b> Ово неће утицати на поруке складиштене на осталим уређајима или серверима.</string>
   <string name="delete_messages">Обриши поруке</string>
-  <string name="also_end_conversation">Окончај ову преписку након тога</string>
   <string name="choose_presence">Избор присутности за контакта</string>
   <string name="send_unencrypted_message">Пошаљи нешифровану поруку</string>
   <string name="send_otr_message">Пошаљи ОТР шифровану поруку</string>

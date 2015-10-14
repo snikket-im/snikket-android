@@ -74,7 +74,6 @@
   <string name="clear_conversation_history">Gespreksgeschiedenis wissen</string>
   <string name="clear_histor_msg">Wil je alle berichten in dit gesprek verwijderen?\n\n<b>Waarschuwing:</b> Dit zal geen invloed hebben op de berichten opgeslagen op andere apparaten of servers.</string>
   <string name="delete_messages">Berichten verwijderen</string>
-  <string name="also_end_conversation">Beëindig dit gesprek na afloop</string>
   <string name="choose_presence">Kies aanwezigheid om te tonen aan contact</string>
   <string name="send_unencrypted_message">Verstuur onversleuteld bericht</string>
   <string name="send_otr_message">Verstuur OTR-versleuteld bericht</string>

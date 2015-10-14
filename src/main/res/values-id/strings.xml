@@ -74,7 +74,6 @@
   <string name="clear_conversation_history">Hapus Riwayat Percakapan</string>
   <string name="clear_histor_msg">Apakah Anda ingin menghapus semua pesan dalam Percakapan ini\n\n<b>Peringatan:</b>ini tidak akan mempengaruhi pesan yang disimpan pada perangkat atau server lain.</string>
   <string name="delete_messages">Hapus pesan</string>
-  <string name="also_end_conversation">Akhiri percakapan setelahnya</string>
   <string name="choose_presence">Pilih kehadiran untuk kontak</string>
   <string name="send_otr_message">Kirim pesan terenskripsi OTR</string>
   <string name="send_pgp_message">Kirim pesan terenskripsi OpenPGP</string>

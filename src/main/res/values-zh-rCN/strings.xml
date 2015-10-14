@@ -74,7 +74,6 @@
   <string name="clear_conversation_history">清除会话记录</string>
   <string name="clear_histor_msg">删除该会话中所有信息？\n\n<b>注:</b> 该操作不会影响其他设备或服务器保存的信息。</string>
   <string name="delete_messages">删除消息</string>
-  <string name="also_end_conversation">之后结束该会话</string>
   <string name="choose_presence">添加在线用户至联系人</string>
   <string name="send_otr_message">发送 OTR 加密信息</string>
   <string name="send_pgp_message">发送 OpenPGP 加密信息</string>
