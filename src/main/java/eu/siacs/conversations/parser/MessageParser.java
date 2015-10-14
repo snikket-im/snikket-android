@@ -315,7 +315,7 @@ public class MessageParser extends AbstractParser implements
 					status = Message.STATUS_SEND_RECEIVED;
 					if (mXmppConnectionService.markMessage(conversation, remoteMsgId, status)) {
 						return;
-					} else if (remoteMsgId == null) {
+					} else if (remoteMsgId == null || Config.IGNORE_ID_REWRITE_IN_MUC) {
 						Message message = conversation.findSentMessageWithBody(packet.getBody());
 						if (message != null) {
 							mXmppConnectionService.markMessage(message, status);
