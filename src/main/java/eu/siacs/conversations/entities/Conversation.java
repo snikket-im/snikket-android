@@ -111,6 +111,16 @@ public class Conversation extends AbstractEntity implements Blockable {
 		}
 	}
 
+	public void findUnreadMessages(OnMessageFound onMessageFound) {
+		synchronized (this.messages) {
+			for(Message message : this.messages) {
+				if (!message.isRead()) {
+					onMessageFound.onMessageFound(message);
+				}
+			}
+		}
+	}
+
 	public void findMessagesWithFiles(final OnMessageFound onMessageFound) {
 		synchronized (this.messages) {
 			for (final Message message : this.messages) {
@@ -266,9 +276,8 @@ public class Conversation extends AbstractEntity implements Blockable {
 		}
 	}
 
-
 	public interface OnMessageFound {
-		public void onMessageFound(final Message message);
+		void onMessageFound(final Message message);
 	}
 
 	public Conversation(final String name, final Account account, final Jid contactJid,
@@ -301,13 +310,18 @@ public class Conversation extends AbstractEntity implements Blockable {
 		return (this.messages.size() == 0) || this.messages.get(this.messages.size() - 1).isRead();
 	}
 
-	public void markRead() {
-		for (int i = this.messages.size() - 1; i >= 0; --i) {
-			if (messages.get(i).isRead()) {
-				break;
+	public List<Message> markRead() {
+		final List<Message> unread = new ArrayList<>();
+		synchronized (this.messages) {
+			for (int i = this.messages.size() - 1; i >= 0; --i) {
+				if (this.messages.get(i).isRead()) {
+					break;
+				}
+				this.messages.get(i).markRead();
+				unread.add(this.messages.get(i));
 			}
-			this.messages.get(i).markRead();
 		}
+		return unread;
 	}
 
 	public Message getLatestMarkableMessage() {

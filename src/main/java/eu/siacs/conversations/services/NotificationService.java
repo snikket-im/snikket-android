@@ -1,6 +1,5 @@
 package eu.siacs.conversations.services;
 
-import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -10,7 +9,6 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
-import android.os.PowerManager;
 import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationCompat.BigPictureStyle;
@@ -115,31 +113,45 @@ public class NotificationService {
 		return mXmppConnectionService.getPreferences().getBoolean("always_notify_in_conference", false);
 	}
 
+	public void pushFromBacklog(final Message message) {
+		if (notify(message)) {
+			pushToStack(message);
+		}
+	}
+
+	public void finishBacklog() {
+		synchronized (notifications) {
+			mXmppConnectionService.updateUnreadCountBadge();
+			updateNotification(false);
+		}
+	}
+
+	private void pushToStack(final Message message) {
+		final String conversationUuid = message.getConversationUuid();
+		if (notifications.containsKey(conversationUuid)) {
+			notifications.get(conversationUuid).add(message);
+		} else {
+			final ArrayList<Message> mList = new ArrayList<>();
+			mList.add(message);
+			notifications.put(conversationUuid, mList);
+		}
+	}
+
 	public void push(final Message message) {
 		mXmppConnectionService.updateUnreadCountBadge();
 		if (!notify(message)) {
 			return;
 		}
-
 		final boolean isScreenOn = mXmppConnectionService.isInteractive();
-
 		if (this.mIsInForeground && isScreenOn && this.mOpenConversation == message.getConversation()) {
 			return;
 		}
-
 		synchronized (notifications) {
-			final String conversationUuid = message.getConversationUuid();
-			if (notifications.containsKey(conversationUuid)) {
-				notifications.get(conversationUuid).add(message);
-			} else {
-				final ArrayList<Message> mList = new ArrayList<>();
-				mList.add(message);
-				notifications.put(conversationUuid, mList);
-			}
+			pushToStack(message);
 			final Account account = message.getConversation().getAccount();
 			final boolean doNotify = (!(this.mIsInForeground && this.mOpenConversation == null) || !isScreenOn)
-				&& !account.inGracePeriod()
-				&& !this.inMiniGracePeriod(account);
+					&& !account.inGracePeriod()
+					&& !this.inMiniGracePeriod(account);
 			updateNotification(doNotify);
 			if (doNotify) {
 				notifyPebble(message);

@@ -56,6 +56,7 @@ public class Message extends AbstractEntity {
 	public static final String SERVER_MSG_ID = "serverMsgId";
 	public static final String RELATIVE_FILE_PATH = "relativeFilePath";
 	public static final String FINGERPRINT = "axolotl_fingerprint";
+	public static final String READ = "read";
 	public static final String ME_COMMAND = "/me ";
 
 
@@ -87,11 +88,8 @@ public class Message extends AbstractEntity {
 	public Message(Conversation conversation, String body, int encryption) {
 		this(conversation, body, encryption, STATUS_UNSEND);
 	}
-	public Message(Conversation conversation, String body, int encryption, int status) {
-		this(conversation, body, encryption, status, false);
-	}
 
-	public Message(Conversation conversation, String body, int encryption, int status, boolean carbon) {
+	public Message(Conversation conversation, String body, int encryption, int status) {
 		this(java.util.UUID.randomUUID().toString(),
 				conversation.getUuid(),
 				conversation.getJid() == null ? null : conversation.getJid().toBareJid(),
@@ -105,7 +103,8 @@ public class Message extends AbstractEntity {
 				null,
 				null,
 				null,
-				null);
+				null,
+				true);
 		this.conversation = conversation;
 	}
 
@@ -113,7 +112,7 @@ public class Message extends AbstractEntity {
 					final Jid trueCounterpart, final String body, final long timeSent,
 					final int encryption, final int status, final int type, final boolean carbon,
 					final String remoteMsgId, final String relativeFilePath,
-					final String serverMsgId, final String fingerprint) {
+					final String serverMsgId, final String fingerprint, final boolean read) {
 		this.uuid = uuid;
 		this.conversationUuid = conversationUUid;
 		this.counterpart = counterpart;
@@ -128,6 +127,7 @@ public class Message extends AbstractEntity {
 		this.relativeFilePath = relativeFilePath;
 		this.serverMsgId = serverMsgId;
 		this.axolotlFingerprint = fingerprint;
+		this.read = read;
 	}
 
 	public static Message fromCursor(Cursor cursor) {
@@ -166,7 +166,8 @@ public class Message extends AbstractEntity {
 				cursor.getString(cursor.getColumnIndex(REMOTE_MSG_ID)),
 				cursor.getString(cursor.getColumnIndex(RELATIVE_FILE_PATH)),
 				cursor.getString(cursor.getColumnIndex(SERVER_MSG_ID)),
-				cursor.getString(cursor.getColumnIndex(FINGERPRINT)));
+				cursor.getString(cursor.getColumnIndex(FINGERPRINT)),
+				cursor.getInt(cursor.getColumnIndex(READ)) > 0);
 	}
 
 	public static Message createStatusMessage(Conversation conversation, String body) {
@@ -202,6 +203,7 @@ public class Message extends AbstractEntity {
 		values.put(RELATIVE_FILE_PATH, relativeFilePath);
 		values.put(SERVER_MSG_ID, serverMsgId);
 		values.put(FINGERPRINT, axolotlFingerprint);
+		values.put(READ,read);
 		return values;
 	}
 

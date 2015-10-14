@@ -1072,7 +1072,14 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 					for (Conversation conversation : conversations) {
 						conversation.addAll(0, databaseBackend.getMessages(conversation, Config.PAGE_SIZE));
 						checkDeletedFiles(conversation);
+						conversation.findUnreadMessages(new Conversation.OnMessageFound() {
+							@Override
+							public void onMessageFound(Message message) {
+								mNotificationService.pushFromBacklog(message);
+							}
+						});
 					}
+					mNotificationService.finishBacklog();
 					mRestoredFromDatabase = true;
 					Log.d(Config.LOGTAG,"restored all messages");
 					updateConversationUi();
@@ -1330,7 +1337,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	}
 
 	public void updateKeyInAccount(final Account account, final String alias) {
-		Log.d(Config.LOGTAG,"update key in account "+alias);
+		Log.d(Config.LOGTAG, "update key in account " + alias);
 		try {
 			X509Certificate[] chain = KeyChain.getCertificateChain(XmppConnectionService.this, alias);
 			Pair<Jid, String> info = CryptoHelper.extractJidAndName(chain[0]);
@@ -2566,7 +2573,9 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 
 	public void markRead(final Conversation conversation) {
 		mNotificationService.clear(conversation);
-		conversation.markRead();
+		for(Message message : conversation.markRead()) {
+			databaseBackend.updateMessage(message);
+		}
 		updateUnreadCountBadge();
 	}
 

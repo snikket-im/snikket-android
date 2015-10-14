@@ -43,7 +43,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 	private static DatabaseBackend instance = null;
 
 	private static final String DATABASE_NAME = "history";
-	private static final int DATABASE_VERSION = 17;
+	private static final int DATABASE_VERSION = 18;
 
 	private static String CREATE_CONTATCS_STATEMENT = "create table "
 			+ Contact.TABLENAME + "(" + Contact.ACCOUNT + " TEXT, "
@@ -143,6 +143,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 				+ Message.SERVER_MSG_ID + " TEXT, "
 				+ Message.FINGERPRINT + " TEXT, "
 				+ Message.CARBON + " INTEGER, "
+				+ Message.READ + " NUMBER DEFAULT 1, "
 				+ Message.REMOTE_MSG_ID + " TEXT, FOREIGN KEY("
 				+ Message.CONVERSATION + ") REFERENCES "
 				+ Conversation.TABLENAME + "(" + Conversation.UUID
@@ -319,6 +320,9 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 					Log.d(Config.LOGTAG,account.getJid().toBareJid()+": could not load own identity key pair");
 				}
 			}
+		}
+		if (oldVersion < 18 && newVersion >= 18) {
+			db.execSQL("ALTER TABLE " + Message.TABLENAME + " ADD COLUMN "+ Message.READ+ " NUMBER DEFAULT 1");
 		}
 	}
 

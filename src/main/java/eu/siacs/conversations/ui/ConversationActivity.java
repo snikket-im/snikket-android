@@ -216,8 +216,7 @@ public class ConversationActivity extends XmppActivity
 					return null;
 				}
 				listAdapter.remove(swipedConversation);
-				swipedConversation.markRead();
-				xmppConnectionService.getNotificationService().clear(swipedConversation);
+				xmppConnectionService.markRead(swipedConversation);
 
 				final boolean formerlySelected = (getSelectedConversation() == swipedConversation);
 				if (position == 0 && listAdapter.getCount() == 0) {
