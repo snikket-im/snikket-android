@@ -674,6 +674,15 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	}
 
 	@Override
+	public void onTrimMemory(int level) {
+		super.onTrimMemory(level);
+		if (level >= TRIM_MEMORY_COMPLETE) {
+			Log.d(Config.LOGTAG,"clear cache due to low memory");
+			getBitmapCache().evictAll();
+		}
+	}
+
+	@Override
 	public void onDestroy() {
 		try {
 			unregisterReceiver(this.mEventReceiver);
