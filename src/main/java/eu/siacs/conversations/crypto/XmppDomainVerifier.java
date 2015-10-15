@@ -14,6 +14,7 @@ import org.bouncycastle.asn1.x500.style.IETFUtils;
 import org.bouncycastle.cert.jcajce.JcaX509CertificateHolder;
 
 import java.io.IOException;
+import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -29,8 +30,12 @@ public class XmppDomainVerifier implements HostnameVerifier {
 	@Override
 	public boolean verify(String domain, SSLSession sslSession) {
 		try {
-			X509Certificate[] chain = (X509Certificate[]) sslSession.getPeerCertificates();
-			Collection<List<?>> alternativeNames = chain[0].getSubjectAlternativeNames();
+			Certificate[] chain = sslSession.getPeerCertificates();
+			if (chain.length == 0 || !(chain[0] instanceof X509Certificate)) {
+				return false;
+			}
+			X509Certificate certificate = (X509Certificate) chain[0];
+			Collection<List<?>> alternativeNames = certificate.getSubjectAlternativeNames();
 			List<String> xmppAddrs = new ArrayList<>();
 			List<String> srvNames = new ArrayList<>();
 			List<String> domains = new ArrayList<>();
@@ -80,7 +85,7 @@ public class XmppDomainVerifier implements HostnameVerifier {
 				}
 			}
 			if (srvNames.size() == 0 && xmppAddrs.size() == 0 && domains.size() == 0) {
-				X500Name x500name = new JcaX509CertificateHolder(chain[0]).getSubject();
+				X500Name x500name = new JcaX509CertificateHolder(certificate).getSubject();
 				RDN[] rdns = x500name.getRDNs(BCStyle.CN);
 				for(int i = 0; i < rdns.length; ++i) {
 					domains.add(IETFUtils.valueToString(x500name.getRDNs(BCStyle.CN)[i].getFirst().getValue()));
@@ -97,7 +102,8 @@ public class XmppDomainVerifier implements HostnameVerifier {
 		for(String entry : haystack) {
 			if (entry.startsWith("*.")) {
 				int i = needle.indexOf('.');
-				if (i != -1 && needle.substring(i).equals(entry.substring(2))) {
+				Log.d(LOGTAG,"comparing "+needle.substring(i)+ " and "+entry.substring(1));
+				if (i != -1 && needle.substring(i).equals(entry.substring(1))) {
 					Log.d(LOGTAG,"domain "+needle+" matched "+entry);
 					return true;
 				}
