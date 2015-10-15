@@ -50,6 +50,7 @@ public class PgpEngine {
 
 				@Override
 				public void onReturn(Intent result) {
+					notifyPgpDecryptionService(message.getContact().getAccount(), OpenPgpApi.ACTION_DECRYPT_VERIFY, result);
 					switch (result.getIntExtra(OpenPgpApi.RESULT_CODE,
 							OpenPgpApi.RESULT_CODE_ERROR)) {
 					case OpenPgpApi.RESULT_CODE_SUCCESS:
@@ -64,6 +65,7 @@ public class PgpEngine {
 										&& manager.getAutoAcceptFileSize() > 0) {
 									manager.createNewDownloadConnection(message);
 								}
+								mXmppConnectionService.updateMessage(message);
 								callback.success(message);
 							}
 						} catch (IOException e) {
@@ -158,6 +160,7 @@ public class PgpEngine {
 
 				@Override
 				public void onReturn(Intent result) {
+					notifyPgpDecryptionService(message.getContact().getAccount(), OpenPgpApi.ACTION_ENCRYPT, result);
 					switch (result.getIntExtra(OpenPgpApi.RESULT_CODE,
 							OpenPgpApi.RESULT_CODE_ERROR)) {
 					case OpenPgpApi.RESULT_CODE_SUCCESS:
@@ -203,6 +206,7 @@ public class PgpEngine {
 
 					@Override
 					public void onReturn(Intent result) {
+						notifyPgpDecryptionService(message.getContact().getAccount(), OpenPgpApi.ACTION_ENCRYPT, result);
 						switch (result.getIntExtra(OpenPgpApi.RESULT_CODE,
 								OpenPgpApi.RESULT_CODE_ERROR)) {
 						case OpenPgpApi.RESULT_CODE_SUCCESS:
@@ -252,6 +256,7 @@ public class PgpEngine {
 		InputStream is = new ByteArrayInputStream(pgpSig.toString().getBytes());
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
 		Intent result = api.executeApi(params, is, os);
+		notifyPgpDecryptionService(account, OpenPgpApi.ACTION_DECRYPT_VERIFY, result);
 		switch (result.getIntExtra(OpenPgpApi.RESULT_CODE,
 				OpenPgpApi.RESULT_CODE_ERROR)) {
 		case OpenPgpApi.RESULT_CODE_SUCCESS:
@@ -282,6 +287,7 @@ public class PgpEngine {
 
 			@Override
 			public void onReturn(Intent result) {
+				notifyPgpDecryptionService(account, OpenPgpApi.ACTION_SIGN, result);
 				switch (result.getIntExtra(OpenPgpApi.RESULT_CODE, 0)) {
 				case OpenPgpApi.RESULT_CODE_SUCCESS:
 					StringBuilder signatureBuilder = new StringBuilder();
@@ -367,5 +373,18 @@ public class PgpEngine {
 		Intent result = api.executeApi(params, null, null);
 		return (PendingIntent) result
 				.getParcelableExtra(OpenPgpApi.RESULT_INTENT);
+	}
+
+	private void notifyPgpDecryptionService(Account account, String action, final Intent result) {
+		switch (result.getIntExtra(OpenPgpApi.RESULT_CODE, 0)) {
+			case OpenPgpApi.RESULT_CODE_SUCCESS:
+				if (OpenPgpApi.ACTION_SIGN.equals(action)) {
+					account.getPgpDecryptionService().onKeychainUnlocked();
+				}
+				break;
+			case OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED:
+				account.getPgpDecryptionService().onKeychainLocked();
+				break;
+		}
 	}
 }

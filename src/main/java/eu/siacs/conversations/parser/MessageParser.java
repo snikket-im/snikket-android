@@ -3,6 +3,7 @@ package eu.siacs.conversations.parser;
 import android.util.Log;
 import android.util.Pair;
 
+import eu.siacs.conversations.crypto.PgpDecryptionService;
 import net.java.otr4j.session.Session;
 import net.java.otr4j.session.SessionStatus;
 
@@ -112,6 +113,13 @@ public class MessageParser extends AbstractParser implements
 		}
 
 		return finishedMessage;
+	}
+
+	private Message parsePGPChat(final Conversation conversation, String pgpEncrypted, int status) {
+		final Message message = new Message(conversation, pgpEncrypted, Message.ENCRYPTION_PGP, status);
+		PgpDecryptionService pgpDecryptionService = conversation.getAccount().getPgpDecryptionService();
+		pgpDecryptionService.add(message);
+		return message;
 	}
 
 	private class Invite {
@@ -337,7 +345,7 @@ public class MessageParser extends AbstractParser implements
 					message = new Message(conversation, body, Message.ENCRYPTION_NONE, status);
 				}
 			} else if (pgpEncrypted != null) {
-				message = new Message(conversation, pgpEncrypted, Message.ENCRYPTION_PGP, status);
+				message = parsePGPChat(conversation, pgpEncrypted, status);
 			} else if (axolotlEncrypted != null) {
 				message = parseAxolotlChat(axolotlEncrypted, from, remoteMsgId, conversation, status);
 				if (message == null) {

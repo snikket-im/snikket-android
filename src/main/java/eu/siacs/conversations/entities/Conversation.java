@@ -777,6 +777,7 @@ public class Conversation extends AbstractEntity implements Blockable {
 		synchronized (this.messages) {
 			this.messages.addAll(index, messages);
 		}
+		account.getPgpDecryptionService().addAll(messages);
 	}
 
 	public void sort() {

@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.os.SystemClock;
 
+import eu.siacs.conversations.crypto.PgpDecryptionService;
 import net.java.otr4j.crypto.OtrCryptoEngineImpl;
 import net.java.otr4j.crypto.OtrCryptoException;
 
@@ -127,6 +128,7 @@ public class Account extends AbstractEntity {
 	protected boolean online = false;
 	private OtrService mOtrService = null;
 	private AxolotlService axolotlService = null;
+	private PgpDecryptionService pgpDecryptionService = null;
 	private XmppConnection xmppConnection = null;
 	private long mEndGracePeriod = 0L;
 	private String otrFingerprint;
@@ -300,10 +302,15 @@ public class Account extends AbstractEntity {
 		if (xmppConnection != null) {
 			xmppConnection.addOnAdvancedStreamFeaturesAvailableListener(axolotlService);
 		}
+		this.pgpDecryptionService = new PgpDecryptionService(context);
 	}
 
 	public OtrService getOtrService() {
 		return this.mOtrService;
+	}
+
+	public PgpDecryptionService getPgpDecryptionService() {
+		return pgpDecryptionService;
 	}
 
 	public XmppConnection getXmppConnection() {
