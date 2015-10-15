@@ -27,6 +27,9 @@ public class XmppDomainVerifier implements HostnameVerifier {
 
 	private final String LOGTAG = "XmppDomainVerifier";
 
+	private final String SRVName = "1.3.6.1.5.5.7.8.7";
+	private final String xmppAddr = "1.3.6.1.5.5.7.8.5";
+
 	@Override
 	public boolean verify(String domain, SSLSession sslSession) {
 		try {
@@ -53,14 +56,14 @@ public class XmppDomainVerifier implements HostnameVerifier {
 										String oid = sequence.getObjectAt(0).toString();
 										ASN1Primitive value  = ((DERTaggedObject) sequence.getObjectAt(1)).getObject();
 										switch (oid) {
-											case "1.3.6.1.5.5.7.8.5":
+											case xmppAddr:
 												if (value instanceof DERUTF8String) {
 													xmppAddrs.add(((DERUTF8String) value).getString());
 												} else if (value instanceof DERIA5String) {
 													xmppAddrs.add(((DERIA5String) value).getString());
 												}
 												break;
-											case "1.3.6.1.5.5.7.8.7":
+											case SRVName:
 												if (value instanceof DERUTF8String) {
 													srvNames.add(((DERUTF8String) value).getString());
 												} else if (value instanceof DERIA5String) {
