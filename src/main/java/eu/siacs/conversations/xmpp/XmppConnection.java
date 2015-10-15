@@ -55,6 +55,7 @@ import javax.net.ssl.X509TrustManager;
 
 import de.duenndns.ssl.MemorizingTrustManager;
 import eu.siacs.conversations.Config;
+import eu.siacs.conversations.crypto.XmppDomainVerifier;
 import eu.siacs.conversations.crypto.sasl.DigestMd5;
 import eu.siacs.conversations.crypto.sasl.External;
 import eu.siacs.conversations.crypto.sasl.Plain;
@@ -606,9 +607,9 @@ public class XmppConnection implements Runnable {
 			final SSLSocketFactory factory = sc.getSocketFactory();
 			final HostnameVerifier verifier;
 			if (mInteractive) {
-				verifier = trustManager.wrapHostnameVerifier(new StrictHostnameVerifier());
+				verifier = trustManager.wrapHostnameVerifier(new XmppDomainVerifier());
 			} else {
-				verifier = trustManager.wrapHostnameVerifierNonInteractive(new StrictHostnameVerifier());
+				verifier = trustManager.wrapHostnameVerifierNonInteractive(new XmppDomainVerifier());
 			}
 			final InetAddress address = socket == null ? null : socket.getInetAddress();
 
