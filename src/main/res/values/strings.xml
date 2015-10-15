@@ -30,7 +30,8 @@
 	<string name="minutes_ago">%d mins ago</string>
 	<string name="unread_conversations">unread Conversations</string>
 	<string name="sending">sending…</string>
-	<string name="encrypted_message">Decrypting message. Please wait…</string>
+	<string name="message_decrypting">Decrypting message. Please wait…</string>
+	<string name="pgp_message">OpenPGP encrypted message</string>
 	<string name="nick_in_use">Nickname is already in use</string>
 	<string name="admin">Admin</string>
 	<string name="owner">Owner</string>
