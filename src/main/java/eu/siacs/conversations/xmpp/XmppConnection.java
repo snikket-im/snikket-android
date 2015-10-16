@@ -783,7 +783,7 @@ public class XmppConnection implements Runnable {
 							String urlString = url.findChildContent("value");
 							URL uri = new URL(urlString);
 							captcha = BitmapFactory.decodeStream(uri.openConnection().getInputStream());
-						} catch(IOException e) {
+						} catch (IOException e) {
 							Log.e(Config.LOGTAG, e.toString());
 						}
 					}
@@ -884,7 +884,7 @@ public class XmppConnection implements Runnable {
 			public void onIqPacketReceived(Account account, IqPacket packet) {
 				if (packet.getType() == IqPacket.TYPE.RESULT) {
 					sendPostBindInitialization();
-				} else if (packet.getType() != IqPacket.TYPE.TIMEOUT){
+				} else if (packet.getType() != IqPacket.TYPE.TIMEOUT) {
 					Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": could not init sessions");
 					disconnect(true);
 				}
@@ -1139,44 +1139,41 @@ public class XmppConnection implements Runnable {
 	}
 
 	public void disconnect(final boolean force) {
-		Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": disconnecting");
-		try {
-			if (force) {
+		Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": disconnecting force="+Boolean.valueOf(force));
+		if (force) {
+			try {
 				socket.close();
-				return;
+			} catch(Exception e) {
+				Log.d(Config.LOGTAG,account.getJid().toBareJid().toString()+": exception during force close ("+e.getMessage()+")");
 			}
-			new Thread(new Runnable() {
-
-				@Override
-				public void run() {
-					if (tagWriter.isActive()) {
-						tagWriter.finish();
-						try {
-							int i = 0;
-							boolean warned = false;
-							while (!tagWriter.finished() && socket.isConnected() && i <= 10) {
-								if (!warned) {
-									Log.d(Config.LOGTAG, account.getJid().toBareJid()+": waiting for tag writer to finish");
-									warned = true;
-								}
-								Thread.sleep(200);
-								i++;
-							}
-							if (warned) {
-								Log.d(Config.LOGTAG,account.getJid().toBareJid()+": tag writer has finished");
-							}
-							tagWriter.writeTag(Tag.end("stream:stream"));
-							socket.close();
-						} catch (final IOException e) {
-							Log.d(Config.LOGTAG,"io exception during disconnect");
-						} catch (final InterruptedException e) {
-							Log.d(Config.LOGTAG, "interrupted");
+			return;
+		} else {
+			resetStreamId();
+			if (tagWriter.isActive()) {
+				tagWriter.finish();
+				try {
+					int i = 0;
+					boolean warned = false;
+					while (!tagWriter.finished() && socket.isConnected() && i <= 10) {
+						if (!warned) {
+							Log.d(Config.LOGTAG, account.getJid().toBareJid()+": waiting for tag writer to finish");
+							warned = true;
 						}
+						Thread.sleep(200);
+						i++;
 					}
+					if (warned) {
+						Log.d(Config.LOGTAG,account.getJid().toBareJid()+": tag writer has finished");
+					}
+					Log.d(Config.LOGTAG,account.getJid().toBareJid()+": closing stream");
+					tagWriter.writeTag(Tag.end("stream:stream"));
+					socket.close();
+				} catch (final IOException e) {
+					Log.d(Config.LOGTAG,account.getJid().toBareJid()+": io exception during disconnect ("+e.getMessage()+")");
+				} catch (final InterruptedException e) {
+					Log.d(Config.LOGTAG, "interrupted");
 				}
-			}).start();
-		} catch (final IOException e) {
-			Log.d(Config.LOGTAG, "io exception during disconnect");
+			}
 		}
 	}
 
