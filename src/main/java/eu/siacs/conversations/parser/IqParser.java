@@ -3,6 +3,7 @@ package eu.siacs.conversations.parser;
 import android.support.annotation.NonNull;
 import android.util.Base64;
 import android.util.Log;
+import android.util.Pair;
 
 import org.whispersystems.libaxolotl.IdentityKey;
 import org.whispersystems.libaxolotl.InvalidKeyException;
@@ -10,6 +11,10 @@ import org.whispersystems.libaxolotl.ecc.Curve;
 import org.whispersystems.libaxolotl.ecc.ECPublicKey;
 import org.whispersystems.libaxolotl.state.PreKeyBundle;
 
+import java.io.ByteArrayInputStream;
+import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -202,6 +207,30 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
 			}
 		}
 		return preKeyRecords;
+	}
+
+	public Pair<X509Certificate[],byte[]> verification(final IqPacket packet) {
+		Element item = getItem(packet);
+		Element verification = item != null ? item.findChild("verification",AxolotlService.PEP_PREFIX) : null;
+		Element chain = verification != null ? verification.findChild("chain") : null;
+		Element signature = verification != null ? verification.findChild("signature") : null;
+		if (chain != null && signature != null) {
+			List<Element> certElements = chain.getChildren();
+			X509Certificate[] certificates = new X509Certificate[certElements.size()];
+			try {
+				CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
+				int i = 0;
+				for(Element cert : certElements) {
+					certificates[i] = (X509Certificate) certificateFactory.generateCertificate(new ByteArrayInputStream(Base64.decode(cert.getContent(),Base64.DEFAULT)));
+					++i;
+				}
+				return new Pair<>(certificates,Base64.decode(signature.getContent(),Base64.DEFAULT));
+			} catch (CertificateException e) {
+				return null;
+			}
+		} else {
+			return null;
+		}
 	}
 
 	public PreKeyBundle bundle(final IqPacket bundle) {

@@ -60,6 +60,7 @@ import de.duenndns.ssl.MemorizingTrustManager;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.PgpEngine;
+import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.crypto.axolotl.XmppAxolotlMessage;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Blockable;
@@ -256,7 +257,6 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 			mMessageArchiveService.executePendingQueries(account);
 			mJingleConnectionManager.cancelInTransmission();
 			syncDirtyContacts(account);
-			account.getAxolotlService().publishBundlesIfNeeded(true, false);
 		}
 	};
 	private OnStatusChanged statusListener = new OnStatusChanged() {
@@ -459,7 +459,6 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		final String action = intent == null ? null : intent.getAction();
 		boolean interactive = false;
 		if (action != null) {
-			Log.d(Config.LOGTAG, "action: " + action);
 			switch (action) {
 				case ConnectivityManager.CONNECTIVITY_ACTION:
 					if (hasInternetConnection() && Config.RESET_ATTEMPT_COUNT_ON_NETWORK_CHANGE) {
@@ -760,6 +759,10 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		connection.setOnBindListener(this.mOnBindListener);
 		connection.setOnMessageAcknowledgeListener(this.mOnMessageAcknowledgedListener);
 		connection.addOnAdvancedStreamFeaturesAvailableListener(this.mMessageArchiveService);
+		AxolotlService axolotlService = account.getAxolotlService();
+		if (axolotlService != null) {
+			connection.addOnAdvancedStreamFeaturesAvailableListener(axolotlService);
+		}
 		return connection;
 	}
 
@@ -1066,8 +1069,8 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 				public void run() {
 					Log.d(Config.LOGTAG, "restoring roster");
 					for (Account account : accounts) {
-						databaseBackend.readRoster(account.getRoster());
 						account.initAccountServices(XmppConnectionService.this);
+						databaseBackend.readRoster(account.getRoster());
 					}
 					getBitmapCache().evictAll();
 					Looper.prepare();

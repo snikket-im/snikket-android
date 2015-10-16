@@ -947,11 +947,10 @@ public class XmppConnection implements Runnable {
 							}
 						}
 						disco.put(jid, info);
-						if (account.getServer().equals(jid)) {
+						if ((jid.equals(account.getServer()) || jid.equals(account.getJid().toBareJid()))
+								&& disco.containsKey(account.getServer())
+								&& disco.containsKey(account.getJid().toBareJid())) {
 							enableAdvancedStreamFeatures();
-							for (final OnAdvancedStreamFeaturesLoaded listener : advancedStreamFeaturesLoadedListeners) {
-								listener.onAdvancedStreamFeaturesAvailable(account);
-							}
 						}
 					} else {
 						Log.d(Config.LOGTAG,account.getJid().toBareJid()+": could not query disco info for "+jid.toString());
@@ -968,6 +967,9 @@ public class XmppConnection implements Runnable {
 		if (getFeatures().blocking() && !features.blockListRequested) {
 			Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": Requesting block list");
 			this.sendIqPacket(getIqGenerator().generateGetBlockList(), mXmppConnectionService.getIqParser());
+		}
+		for (final OnAdvancedStreamFeaturesLoaded listener : advancedStreamFeaturesLoadedListeners) {
+			listener.onAdvancedStreamFeaturesAvailable(account);
 		}
 	}
 

@@ -137,9 +137,13 @@ public class IqGenerator extends AbstractGenerator {
 
 	public IqPacket retrieveBundlesForDevice(final Jid to, final int deviceid) {
 		final IqPacket packet = retrieve(AxolotlService.PEP_BUNDLES+":"+deviceid, null);
-		if(to != null) {
-			packet.setTo(to);
-		}
+		packet.setTo(to);
+		return packet;
+	}
+
+	public IqPacket retrieveVerificationForDevice(final Jid to, final int deviceid) {
+		final IqPacket packet = retrieve(AxolotlService.PEP_VERIFICATION+":"+deviceid, null);
+		packet.setTo(to);
 		return packet;
 	}
 

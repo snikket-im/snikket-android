@@ -297,6 +297,9 @@ public class Account extends AbstractEntity {
 	public void initAccountServices(final XmppConnectionService context) {
 		this.mOtrService = new OtrService(context, this);
 		this.axolotlService = new AxolotlService(this, context);
+		if (xmppConnection != null) {
+			xmppConnection.addOnAdvancedStreamFeaturesAvailableListener(axolotlService);
+		}
 	}
 
 	public OtrService getOtrService() {

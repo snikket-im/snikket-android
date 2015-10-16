@@ -1,16 +1,21 @@
 package eu.siacs.conversations.utils;
 
+import android.util.Log;
 import android.util.Pair;
 
 import org.bouncycastle.asn1.x500.X500Name;
 import org.bouncycastle.asn1.x500.style.BCStyle;
 import org.bouncycastle.asn1.x500.style.IETFUtils;
 import org.bouncycastle.cert.jcajce.JcaX509CertificateHolder;
+import org.bouncycastle.jce.PrincipalUtil;
 
 import java.security.SecureRandom;
 import java.security.cert.CertificateEncodingException;
+import java.security.cert.CertificateParsingException;
 import java.security.cert.X509Certificate;
+import java.security.cert.X509Extension;
 import java.text.Normalizer;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
@@ -137,11 +142,26 @@ public final class CryptoHelper {
 		}
 	}
 
-	public static Pair<Jid,String> extractJidAndName(X509Certificate certificate) throws CertificateEncodingException, InvalidJidException {
+	public static Pair<Jid,String> extractJidAndName(X509Certificate certificate) throws CertificateEncodingException, InvalidJidException, CertificateParsingException {
+		Collection<List<?>> alternativeNames = certificate.getSubjectAlternativeNames();
+		List<String> emails = new ArrayList<>();
+		if (alternativeNames != null) {
+			for(List<?> san : alternativeNames) {
+				Integer type = (Integer) san.get(0);
+				if (type == 1) {
+					emails.add((String) san.get(1));
+				}
+			}
+		}
 		X500Name x500name = new JcaX509CertificateHolder(certificate).getSubject();
-		//String xmpp = IETFUtils.valueToString(x500name.getRDNs(new ASN1ObjectIdentifier("1.3.6.1.5.5.7.8.5"))[0].getFirst().getValue());
-		String email = IETFUtils.valueToString(x500name.getRDNs(BCStyle.EmailAddress)[0].getFirst().getValue());
+		if (emails.size() == 0) {
+			emails.add(IETFUtils.valueToString(x500name.getRDNs(BCStyle.EmailAddress)[0].getFirst().getValue()));
+		}
 		String name = IETFUtils.valueToString(x500name.getRDNs(BCStyle.CN)[0].getFirst().getValue());
-		return new Pair<>(Jid.fromString(email),name);
+		if (emails.size() >= 1) {
+			return new Pair<>(Jid.fromString(emails.get(0)), name);
+		} else {
+			return null;
+		}
 	}
 }
