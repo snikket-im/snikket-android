@@ -2558,9 +2558,9 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		}
 	}
 
-	public void keyStatusUpdated() {
+	public void keyStatusUpdated(AxolotlService.FetchStatus report) {
 		if (mOnKeyStatusUpdated != null) {
-			mOnKeyStatusUpdated.onKeyStatusUpdated();
+			mOnKeyStatusUpdated.onKeyStatusUpdated(report);
 		}
 	}
 

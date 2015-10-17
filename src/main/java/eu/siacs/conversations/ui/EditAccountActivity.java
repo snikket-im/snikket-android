@@ -708,7 +708,7 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 	}
 
 	@Override
-	public void onKeyStatusUpdated() {
+	public void onKeyStatusUpdated(AxolotlService.FetchStatus report) {
 		refreshUi();
 	}
 

@@ -533,4 +533,6 @@
 	<string name="certificate_chain_is_not_trusted">Certificate chain is not trusted</string>
 	<string name="jid_does_not_match_certificate">Jabber ID does not match certificate</string>
 	<string name="action_renew_certificate">Renew certificate</string>
+	<string name="error_fetching_omemo_key">Error fetching OMEMO key!</string>
+	<string name="verified_omemo_key_with_certificate">Verified OMEMO key with certificate!</string>
 </resources>

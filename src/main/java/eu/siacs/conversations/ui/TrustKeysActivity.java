@@ -21,7 +21,6 @@ import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.crypto.axolotl.XmppAxolotlSession;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
-import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.xmpp.OnKeyStatusUpdated;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
@@ -29,8 +28,6 @@ import eu.siacs.conversations.xmpp.jid.Jid;
 public class TrustKeysActivity extends XmppActivity implements OnKeyStatusUpdated {
 	private Jid accountJid;
 	private Jid contactJid;
-
-	private boolean hasNoTrustedKeys = true;
 
 	private Contact contact;
 	private Account mAccount;
@@ -91,7 +88,6 @@ public class TrustKeysActivity extends XmppActivity implements OnKeyStatusUpdate
 			this.contactJid = Jid.fromString(getIntent().getExtras().getString("contact"));
 		} catch (final InvalidJidException ignored) {
 		}
-		hasNoTrustedKeys = getIntent().getBooleanExtra("has_no_trusted", false);
 
 		keyErrorMessageCard = (LinearLayout) findViewById(R.id.key_error_message_card);
 		keyErrorMessage = (TextView) findViewById(R.id.key_error_message);
@@ -172,11 +168,12 @@ public class TrustKeysActivity extends XmppActivity implements OnKeyStatusUpdate
 	}
 
 	private boolean reloadFingerprints() {
+		ownKeysToTrust.clear();
+		foreignKeysToTrust.clear();
 		AxolotlService service = this.mAccount.getAxolotlService();
 		Set<IdentityKey> ownKeysSet = service.getKeysWithTrust(XmppAxolotlSession.Trust.UNDECIDED);
 		Set<IdentityKey> foreignKeysSet = service.getKeysWithTrust(XmppAxolotlSession.Trust.UNDECIDED, contact);
-		if (hasNoTrustedKeys) {
-			ownKeysSet.addAll(service.getKeysWithTrust(XmppAxolotlSession.Trust.UNTRUSTED));
+		if (hasNoOtherTrustedKeys() && ownKeysSet.size() == 0) {
 			foreignKeysSet.addAll(service.getKeysWithTrust(XmppAxolotlSession.Trust.UNTRUSTED, contact));
 		}
 		for(final IdentityKey identityKey : ownKeysSet) {
@@ -200,8 +197,6 @@ public class TrustKeysActivity extends XmppActivity implements OnKeyStatusUpdate
 				return;
 			}
 			this.contact = this.mAccount.getRoster().getContact(contactJid);
-			ownKeysToTrust.clear();
-			foreignKeysToTrust.clear();
 			reloadFingerprints();
 			populateView();
 		}
@@ -217,7 +212,23 @@ public class TrustKeysActivity extends XmppActivity implements OnKeyStatusUpdate
 
 
 	@Override
-	public void onKeyStatusUpdated() {
+	public void onKeyStatusUpdated(final AxolotlService.FetchStatus report) {
+		if (report != null) {
+			runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					switch (report) {
+						case ERROR:
+							Toast.makeText(TrustKeysActivity.this,R.string.error_fetching_omemo_key,Toast.LENGTH_SHORT).show();
+							break;
+						case SUCCESS_VERIFIED:
+							Toast.makeText(TrustKeysActivity.this,R.string.verified_omemo_key_with_certificate,Toast.LENGTH_LONG).show();
+							break;
+					}
+				}
+			});
+
+		}
 		boolean keysToTrust = reloadFingerprints();
 		if (keysToTrust || hasPendingKeyFetches() || hasNoOtherTrustedKeys()) {
 			refreshUi();
@@ -225,7 +236,6 @@ public class TrustKeysActivity extends XmppActivity implements OnKeyStatusUpdate
 			runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
-					Toast.makeText(TrustKeysActivity.this, "Nothing to do", Toast.LENGTH_SHORT).show();
 					finishOk();
 				}
 			});

@@ -35,6 +35,7 @@ import java.util.List;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.PgpEngine;
+import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.ListItem;
@@ -479,7 +480,7 @@ public class ContactDetailsActivity extends XmppActivity implements OnAccountUpd
 	}
 
 	@Override
-	public void onKeyStatusUpdated() {
+	public void onKeyStatusUpdated(AxolotlService.FetchStatus report) {
 		refreshUi();
 	}
 }
