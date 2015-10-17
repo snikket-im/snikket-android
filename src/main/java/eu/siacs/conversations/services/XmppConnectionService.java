@@ -722,7 +722,13 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		for (final Account account : accounts) {
 			databaseBackend.writeRoster(account.getRoster());
 			if (account.getXmppConnection() != null) {
-				disconnect(account, false);
+				new Thread(new Runnable() {
+					@Override
+					public void run() {
+						disconnect(account, false);
+					}
+				}).start();
+
 			}
 		}
 		Context context = getApplicationContext();
