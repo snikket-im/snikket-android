@@ -678,7 +678,7 @@ public class XmppConnection implements Runnable {
 					.findChild("mechanisms"));
 			final Element auth = new Element("auth");
 			auth.setAttribute("xmlns", "urn:ietf:params:xml:ns:xmpp-sasl");
-			if (mechanisms.contains("EXTERNAL")) {
+			if (mechanisms.contains("EXTERNAL") && account.getPrivateKeyAlias() != null) {
 				saslMechanism = new External(tagWriter, account, mXmppConnectionService.getRNG());
 			} else if (mechanisms.contains("SCRAM-SHA-1")) {
 				saslMechanism = new ScramSha1(tagWriter, account, mXmppConnectionService.getRNG());
