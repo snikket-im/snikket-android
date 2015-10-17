@@ -322,6 +322,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 		setTrustOnSessions(jid, newDevices, XmppAxolotlSession.Trust.INACTIVE_UNTRUSTED,
 				XmppAxolotlSession.Trust.UNTRUSTED);
 		this.deviceIds.put(jid, deviceIds);
+		findDevicesWithoutSession(jid);
 		mXmppConnectionService.keyStatusUpdated(null);
 	}
 
@@ -697,8 +698,11 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 	}
 
 	public Set<AxolotlAddress> findDevicesWithoutSession(final Conversation conversation) {
-		Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Finding devices without session for " + conversation.getContact().getJid().toBareJid());
-		Jid contactJid = conversation.getContact().getJid().toBareJid();
+		return findDevicesWithoutSession(conversation.getContact().getJid().toBareJid());
+	}
+
+	public Set<AxolotlAddress> findDevicesWithoutSession(final Jid contactJid) {
+		Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Finding devices without session for " + contactJid);
 		Set<AxolotlAddress> addresses = new HashSet<>();
 		if (deviceIds.get(contactJid) != null) {
 			for (Integer foreignId : this.deviceIds.get(contactJid)) {
