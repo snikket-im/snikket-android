@@ -22,6 +22,7 @@ import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.Transferable;
+import eu.siacs.conversations.entities.TransferablePlaceholder;
 import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.services.AbstractConnectionManager;
 import eu.siacs.conversations.services.XmppConnectionService;
@@ -66,7 +67,11 @@ public class HttpDownloadConnection implements Transferable {
 		this.message = message;
 		this.message.setTransferable(this);
 		try {
-			mUrl = new URL(message.getBody());
+			if (message.hasFileOnRemoteHost()) {
+				mUrl = message.getFileParams().url;
+			} else {
+				mUrl = new URL(message.getBody());
+			}
 			String[] parts = mUrl.getPath().toLowerCase().split("\\.");
 			String lastPart = parts.length >= 1 ? parts[parts.length - 1] : null;
 			String secondToLast = parts.length >= 2 ? parts[parts.length -2] : null;
@@ -106,7 +111,11 @@ public class HttpDownloadConnection implements Transferable {
 
 	public void cancel() {
 		mHttpConnectionManager.finishConnection(this);
-		message.setTransferable(null);
+		if (message.isFileOrImage()) {
+			message.setTransferable(new TransferablePlaceholder(Transferable.STATUS_DELETED));
+		} else {
+			message.setTransferable(null);
+		}
 		mXmppConnectionService.updateConversationUi();
 	}
 

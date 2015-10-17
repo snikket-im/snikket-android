@@ -489,7 +489,8 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 					|| m.treatAsDownloadable() == Message.Decision.MUST) {
 				copyUrl.setVisible(true);
 			}
-			if (m.getType() == Message.TYPE_TEXT && m.getTransferable() == null && m.treatAsDownloadable() != Message.Decision.NEVER) {
+			if ((m.getType() == Message.TYPE_TEXT && m.getTransferable() == null && m.treatAsDownloadable() != Message.Decision.NEVER)
+					|| (m.isFileOrImage() && m.getTransferable() instanceof TransferablePlaceholder && m.hasFileOnRemoteHost())){
 				downloadFile.setVisible(true);
 				downloadFile.setTitle(activity.getString(R.string.download_x_file,UIHelper.getFileDescriptionString(activity, m)));
 			}
