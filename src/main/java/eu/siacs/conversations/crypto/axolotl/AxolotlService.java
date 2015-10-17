@@ -179,6 +179,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 		PENDING,
 		SUCCESS,
 		SUCCESS_VERIFIED,
+		TIMEOUT,
 		ERROR
 	}
 
@@ -643,7 +644,9 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 
 				@Override
 				public void onIqPacketReceived(Account account, IqPacket packet) {
-					if (packet.getType() == IqPacket.TYPE.RESULT) {
+					if (packet.getType() == IqPacket.TYPE.TIMEOUT) {
+						fetchStatusMap.put(address, FetchStatus.TIMEOUT);
+					} else if (packet.getType() == IqPacket.TYPE.RESULT) {
 						Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Received preKey IQ packet, processing...");
 						final IqParser parser = mXmppConnectionService.getIqParser();
 						final List<PreKeyBundle> preKeyBundleList = parser.preKeys(packet);
@@ -715,7 +718,11 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 						sessions.put(address, session);
 					} else {
 						Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Found device " + account.getJid().toBareJid() + ":" + foreignId);
-						addresses.add(new AxolotlAddress(contactJid.toString(), foreignId));
+						if (fetchStatusMap.get(address) != FetchStatus.ERROR) {
+							addresses.add(address);
+						} else {
+							Log.d(Config.LOGTAG,getLogprefix(account)+"skipping over "+address+" because it's broken");
+						}
 					}
 				}
 			}
@@ -733,7 +740,11 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 						sessions.put(address, session);
 					} else {
 						Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Found device " + account.getJid().toBareJid() + ":" + ownId);
-						addresses.add(new AxolotlAddress(account.getJid().toBareJid().toString(), ownId));
+						if (fetchStatusMap.get(address) != FetchStatus.ERROR) {
+							addresses.add(address);
+						} else {
+							Log.d(Config.LOGTAG,getLogprefix(account)+"skipping over "+address+" because it's broken");
+						}
 					}
 				}
 			}
@@ -749,7 +760,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 		for (AxolotlAddress address : addresses) {
 			Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Processing device: " + address.toString());
 			FetchStatus status = fetchStatusMap.get(address);
-			if (status == null || status == FetchStatus.ERROR) {
+			if (status == null || status == FetchStatus.TIMEOUT) {
 				fetchStatusMap.put(address, FetchStatus.PENDING);
 				this.buildSessionFromPEP(address);
 				newSessions = true;
