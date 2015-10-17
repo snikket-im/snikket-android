@@ -1,5 +1,13 @@
 ###Changelog
 
+####Version 1.7.0
+* CAPTCHA support
+* SASL EXTERNAL (client certifiates)
+* fetching MUC history via MAM
+* redownload deleted files from HTTP hosts
+* Expert setting to automatically set presence
+* bug fixes
+
 ####Version 1.6.11
 * tab completion for MUC nicks
 * history export
