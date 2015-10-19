@@ -458,16 +458,18 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 							} else {
 								final Bookmark bookmark = new Bookmark(account,conferenceJid.toBareJid());
 								bookmark.setAutojoin(true);
+								String nick = conferenceJid.getResourcepart();
+								if (nick != null && !nick.isEmpty()) {
+									bookmark.setNick(nick);
+								}
 								account.getBookmarks().add(bookmark);
-								xmppConnectionService
-									.pushBookmarks(account);
+								xmppConnectionService.pushBookmarks(account);
 								final Conversation conversation = xmppConnectionService
 									.findOrCreateConversation(account,
 											conferenceJid, true);
 								conversation.setBookmark(bookmark);
 								if (!conversation.getMucOptions().online()) {
-									xmppConnectionService
-										.joinMuc(conversation);
+									xmppConnectionService.joinMuc(conversation);
 								}
 								dialog.dismiss();
 								switchToConversation(conversation);
