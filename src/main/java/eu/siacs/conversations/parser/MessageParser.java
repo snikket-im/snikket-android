@@ -353,7 +353,11 @@ public class MessageParser extends AbstractParser implements
 			message.setTime(timestamp);
 			message.markable = packet.hasChild("markable", "urn:xmpp:chat-markers:0");
 			if (conversation.getMode() == Conversation.MODE_MULTI) {
-				message.setTrueCounterpart(conversation.getMucOptions().getTrueCounterpart(counterpart.getResourcepart()));
+				Jid trueCounterpart = conversation.getMucOptions().getTrueCounterpart(counterpart.getResourcepart());
+				message.setTrueCounterpart(trueCounterpart);
+				if (trueCounterpart != null) {
+					updateLastseen(packet,account,trueCounterpart,false);
+				}
 				if (!isTypeGroupChat) {
 					message.setType(Message.TYPE_PRIVATE);
 				}
