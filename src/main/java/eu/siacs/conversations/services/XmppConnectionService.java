@@ -1636,6 +1636,9 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	}
 
 	private void switchToForeground() {
+		for (Conversation conversation : getConversations()) {
+			conversation.setIncomingChatState(ChatState.ACTIVE);
+		}
 		for (Account account : getAccounts()) {
 			if (account.getStatus() == Account.State.ONLINE) {
 				XmppConnection connection = account.getXmppConnection();
@@ -1655,9 +1658,6 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 					connection.sendInactive();
 				}
 			}
-		}
-		for (Conversation conversation : getConversations()) {
-			conversation.setIncomingChatState(ChatState.ACTIVE);
 		}
 		this.mNotificationService.setIsInForeground(false);
 		Log.d(Config.LOGTAG, "app switched into background");
