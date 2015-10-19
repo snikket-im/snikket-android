@@ -812,7 +812,7 @@ public class XmppConnection implements Runnable {
 	}
 
 	private void sendBindRequest() {
-		while(!mXmppConnectionService.areMessagesInitialized()) {
+		while(!mXmppConnectionService.areMessagesInitialized() && socket != null && !socket.isClosed()) {
 			try {
 				Thread.sleep(500);
 			} catch (final InterruptedException ignored) {
@@ -907,7 +907,9 @@ public class XmppConnection implements Runnable {
 		}
 		features.carbonsEnabled = false;
 		features.blockListRequested = false;
-		disco.clear();
+		synchronized (this.disco) {
+			this.disco.clear();
+		}
 		sendServiceDiscoveryInfo(account.getServer());
 		sendServiceDiscoveryInfo(account.getJid().toBareJid());
 		sendServiceDiscoveryItems(account.getServer());
@@ -920,19 +922,16 @@ public class XmppConnection implements Runnable {
 	}
 
 	private void sendServiceDiscoveryInfo(final Jid jid) {
-		if (disco.containsKey(jid)) {
-			if (account.getServer().equals(jid)) {
-				enableAdvancedStreamFeatures();
-			}
-		} else {
-			final IqPacket iq = new IqPacket(IqPacket.TYPE.GET);
-			iq.setTo(jid);
-			iq.query("http://jabber.org/protocol/disco#info");
-			this.sendIqPacket(iq, new OnIqPacketReceived() {
+		final IqPacket iq = new IqPacket(IqPacket.TYPE.GET);
+		iq.setTo(jid);
+		iq.query("http://jabber.org/protocol/disco#info");
+		this.sendIqPacket(iq, new OnIqPacketReceived() {
 
-				@Override
-				public void onIqPacketReceived(final Account account, final IqPacket packet) {
-					if (packet.getType() == IqPacket.TYPE.RESULT) {
+			@Override
+			public void onIqPacketReceived(final Account account, final IqPacket packet) {
+				if (packet.getType() == IqPacket.TYPE.RESULT) {
+					boolean advancedStreamFeaturesLoaded = false;
+					synchronized (XmppConnection.this.disco) {
 						final List<Element> elements = packet.query().getChildren();
 						final Info info = new Info();
 						for (final Element element : elements) {
@@ -947,17 +946,17 @@ public class XmppConnection implements Runnable {
 							}
 						}
 						disco.put(jid, info);
-						if ((jid.equals(account.getServer()) || jid.equals(account.getJid().toBareJid()))
-								&& disco.containsKey(account.getServer())
-								&& disco.containsKey(account.getJid().toBareJid())) {
-							enableAdvancedStreamFeatures();
-						}
-					} else {
-						Log.d(Config.LOGTAG,account.getJid().toBareJid()+": could not query disco info for "+jid.toString());
+						advancedStreamFeaturesLoaded = disco.containsKey(account.getServer())
+								&& disco.containsKey(account.getJid().toBareJid());
 					}
+					if (advancedStreamFeaturesLoaded && (jid.equals(account.getServer()) || jid.equals(account.getJid().toBareJid()))) {
+						enableAdvancedStreamFeatures();
+					}
+				} else {
+					Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": could not query disco info for " + jid.toString());
 				}
-			});
-		}
+			}
+		});
 	}
 
 	private void enableAdvancedStreamFeatures() {
@@ -1184,13 +1183,15 @@ public class XmppConnection implements Runnable {
 	}
 
 	public List<Jid> findDiscoItemsByFeature(final String feature) {
-		final List<Jid> items = new ArrayList<>();
-		for (final Entry<Jid, Info> cursor : disco.entrySet()) {
-			if (cursor.getValue().features.contains(feature)) {
-				items.add(cursor.getKey());
+		synchronized (this.disco) {
+			final List<Jid> items = new ArrayList<>();
+			for (final Entry<Jid, Info> cursor : this.disco.entrySet()) {
+				if (cursor.getValue().features.contains(feature)) {
+					items.add(cursor.getKey());
+				}
 			}
+			return items;
 		}
-		return items;
 	}
 
 	public Jid findDiscoItemByFeature(final String feature) {
@@ -1211,12 +1212,14 @@ public class XmppConnection implements Runnable {
 	}
 
 	public String getMucServer() {
-		for (final Entry<Jid, Info> cursor : disco.entrySet()) {
-			final Info value = cursor.getValue();
-			if (value.features.contains("http://jabber.org/protocol/muc")
-					&& !value.features.contains("jabber:iq:gateway")
-					&& !value.identities.contains(new Pair<>("conference","irc"))) {
-				return cursor.getKey().toString();
+		synchronized (this.disco) {
+			for (final Entry<Jid, Info> cursor : disco.entrySet()) {
+				final Info value = cursor.getValue();
+				if (value.features.contains("http://jabber.org/protocol/muc")
+						&& !value.features.contains("jabber:iq:gateway")
+						&& !value.identities.contains(new Pair<>("conference", "irc"))) {
+					return cursor.getKey().toString();
+				}
 			}
 		}
 		return null;
@@ -1302,8 +1305,10 @@ public class XmppConnection implements Runnable {
 		}
 
 		private boolean hasDiscoFeature(final Jid server, final String feature) {
-			return connection.disco.containsKey(server) &&
-				connection.disco.get(server).features.contains(feature);
+			synchronized (XmppConnection.this.disco) {
+				return connection.disco.containsKey(server) &&
+						connection.disco.get(server).features.contains(feature);
+			}
 		}
 
 		public boolean carbons() {
@@ -1328,13 +1333,15 @@ public class XmppConnection implements Runnable {
 		}
 
 		public boolean pep() {
-			final Pair<String,String> needle = new Pair<>("pubsub","pep");
-			Info info = disco.get(account.getServer());
-			if (info != null && info.identities.contains(needle)) {
-				return true;
-			} else {
-				info = disco.get(account.getJid().toBareJid());
-				return info != null && info.identities.contains(needle);
+			synchronized (XmppConnection.this.disco) {
+				final Pair<String, String> needle = new Pair<>("pubsub", "pep");
+				Info info = disco.get(account.getServer());
+				if (info != null && info.identities.contains(needle)) {
+					return true;
+				} else {
+					info = disco.get(account.getJid().toBareJid());
+					return info != null && info.identities.contains(needle);
+				}
 			}
 		}
 
@@ -1347,7 +1354,9 @@ public class XmppConnection implements Runnable {
 		}
 
 		public boolean advancedStreamFeaturesLoaded() {
-			return disco.containsKey(account.getServer());
+			synchronized (XmppConnection.this.disco) {
+				return disco.containsKey(account.getServer());
+			}
 		}
 
 		public boolean rosterVersioning() {
