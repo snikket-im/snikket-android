@@ -541,7 +541,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 			shareIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 			String mime = message.getMimeType();
 			if (mime == null) {
-				mime = "image/webp";
+				mime = "*/*";
 			}
 			shareIntent.setType(mime);
 		}

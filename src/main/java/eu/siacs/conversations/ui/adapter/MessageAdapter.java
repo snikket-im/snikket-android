@@ -603,7 +603,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 						Toast.LENGTH_SHORT).show();
 			}
 		} else if (message.treatAsDownloadable() != Message.Decision.NEVER) {
-			activity.xmppConnectionService.getHttpConnectionManager().createNewDownloadConnection(message,true);
+			activity.xmppConnectionService.getHttpConnectionManager().createNewDownloadConnection(message, true);
 		}
 	}
 
@@ -614,16 +614,21 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 			return;
 		}
 		Intent openIntent = new Intent(Intent.ACTION_VIEW);
-		openIntent.setDataAndType(Uri.fromFile(file), file.getMimeType());
+		String mime = file.getMimeType();
+		if (mime == null) {
+			mime = "*/*";
+		}
+		openIntent.setDataAndType(Uri.fromFile(file), mime);
 		PackageManager manager = activity.getPackageManager();
 		List<ResolveInfo> infos = manager.queryIntentActivities(openIntent, 0);
-		if (infos.size() > 0) {
-			try {
-				getContext().startActivity(openIntent);
-				return;
-			}  catch (ActivityNotFoundException e) {
-				//ignored
-			}
+		if (infos.size() == 0) {
+			openIntent.setDataAndType(Uri.fromFile(file),"*/*");
+		}
+		try {
+			getContext().startActivity(openIntent);
+			return;
+		}  catch (ActivityNotFoundException e) {
+			//ignored
 		}
 		Toast.makeText(activity,R.string.no_application_found_to_open_file,Toast.LENGTH_SHORT).show();
 	}
