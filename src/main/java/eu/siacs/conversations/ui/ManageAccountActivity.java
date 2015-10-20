@@ -1,6 +1,8 @@
 package eu.siacs.conversations.ui;
 
+import android.app.ActionBar;
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
@@ -20,6 +22,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
@@ -35,6 +38,7 @@ public class ManageAccountActivity extends XmppActivity implements OnAccountUpda
 	protected final List<Account> accountList = new ArrayList<>();
 	protected ListView accountListView;
 	protected AccountAdapter mAccountAdapter;
+	protected AtomicBoolean mInvokedAddAccount = new AtomicBoolean(false);
 
 	@Override
 	public void onAccountUpdate() {
@@ -46,6 +50,11 @@ public class ManageAccountActivity extends XmppActivity implements OnAccountUpda
 		synchronized (this.accountList) {
 			accountList.clear();
 			accountList.addAll(xmppConnectionService.getAccounts());
+		}
+		ActionBar actionBar = getActionBar();
+		if (actionBar != null) {
+			actionBar.setHomeButtonEnabled(this.accountList.size() > 0);
+			actionBar.setDisplayHomeAsUpEnabled(this.accountList.size() > 0);
 		}
 		invalidateOptionsMenu();
 		mAccountAdapter.notifyDataSetChanged();
@@ -93,9 +102,12 @@ public class ManageAccountActivity extends XmppActivity implements OnAccountUpda
 
 	@Override
 	void onBackendConnected() {
-		this.accountList.clear();
-		this.accountList.addAll(xmppConnectionService.getAccounts());
-		mAccountAdapter.notifyDataSetChanged();
+		refreshUiReal();
+		if (Config.X509_VERIFICATION && this.accountList.size() == 0) {
+			if (mInvokedAddAccount.compareAndSet(false,true)) {
+				addAccountFromKey();
+			}
+		}
 	}
 
 	@Override
@@ -195,7 +207,11 @@ public class ManageAccountActivity extends XmppActivity implements OnAccountUpda
 	}
 
 	private void addAccountFromKey() {
-		KeyChain.choosePrivateKeyAlias(this, this, null, null, null, -1, null);
+		try {
+			KeyChain.choosePrivateKeyAlias(this, this, null, null, null, -1, null);
+		} catch (ActivityNotFoundException e) {
+			Toast.makeText(this,R.string.device_does_not_support_certificates,Toast.LENGTH_LONG).show();
+		}
 	}
 
 	private void publishAvatar(Account account) {

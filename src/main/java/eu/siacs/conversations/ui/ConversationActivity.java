@@ -35,6 +35,7 @@ import net.java.otr4j.session.SessionStatus;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import de.timroes.android.listview.EnhancedListView;
 import eu.siacs.conversations.Config;
@@ -105,7 +106,7 @@ public class ConversationActivity extends XmppActivity
 	private Toast prepareFileToast;
 
 	private boolean mActivityPaused = false;
-	private boolean mRedirected = true;
+	private AtomicBoolean mRedirected = new AtomicBoolean(false);
 
 	public Conversation getSelectedConversation() {
 		return this.mSelectedConversation;
@@ -631,6 +632,12 @@ public class ConversationActivity extends XmppActivity
 				this.mConversationFragment.reInit(getSelectedConversation());
 			} else {
 				setSelectedConversation(null);
+				if (mRedirected.compareAndSet(false,true)) {
+					Intent intent = new Intent(this, StartConversationActivity.class);
+					intent.putExtra("init",true);
+					startActivity(intent);
+					finish();
+				}
 			}
 		}
 	}
@@ -985,7 +992,7 @@ public class ConversationActivity extends XmppActivity
 	@Override
 	public void onStart() {
 		super.onStart();
-		this.mRedirected = false;
+		this.mRedirected.set(false);
 		if (this.xmppConnectionServiceBound) {
 			this.onBackendConnected();
 		}
@@ -1049,14 +1056,16 @@ public class ConversationActivity extends XmppActivity
 		}
 
 		if (xmppConnectionService.getAccounts().size() == 0) {
-			if (!mRedirected) {
-				this.mRedirected = true;
-				startActivity(new Intent(this, EditAccountActivity.class));
+			if (mRedirected.compareAndSet(false,true)) {
+				if (Config.X509_VERIFICATION) {
+					startActivity(new Intent(this, ManageAccountActivity.class));
+				} else {
+					startActivity(new Intent(this, EditAccountActivity.class));
+				}
 				finish();
 			}
 		} else if (conversationList.size() <= 0) {
-			if (!mRedirected) {
-				this.mRedirected = true;
+			if (mRedirected.compareAndSet(false,true)) {
 				Intent intent = new Intent(this, StartConversationActivity.class);
 				intent.putExtra("init",true);
 				startActivity(intent);
@@ -1349,7 +1358,7 @@ public class ConversationActivity extends XmppActivity
 
 					@Override
 					public void userInputRequried(PendingIntent pi,
-							Message message) {
+												  Message message) {
 						ConversationActivity.this.runIntent(pi,
 								ConversationActivity.REQUEST_SEND_MESSAGE);
 					}
@@ -1406,25 +1415,11 @@ public class ConversationActivity extends XmppActivity
 	@Override
 	protected void refreshUiReal() {
 		updateConversationList();
-		if (xmppConnectionService != null && xmppConnectionService.getAccounts().size() == 0) {
-			if (!mRedirected) {
-				this.mRedirected = true;
-				startActivity(new Intent(this, EditAccountActivity.class));
-				finish();
-			}
-		} else if (conversationList.size() == 0) {
-			if (!mRedirected) {
-				this.mRedirected = true;
-				Intent intent = new Intent(this, StartConversationActivity.class);
-				intent.putExtra("init",true);
-				startActivity(intent);
-				finish();
-			}
-		} else {
+		if (conversationList.size() > 0) {
 			ConversationActivity.this.mConversationFragment.updateMessages();
 			updateActionBarTitle();
+			invalidateOptionsMenu();
 		}
-		invalidateOptionsMenu();
 	}
 
 	@Override

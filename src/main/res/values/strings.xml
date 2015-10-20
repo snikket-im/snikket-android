@@ -535,4 +535,5 @@
 	<string name="action_renew_certificate">Renew certificate</string>
 	<string name="error_fetching_omemo_key">Error fetching OMEMO key!</string>
 	<string name="verified_omemo_key_with_certificate">Verified OMEMO key with certificate!</string>
+	<string name="device_does_not_support_certificates">Your device does not support the selection of client certificates!</string>
 </resources>

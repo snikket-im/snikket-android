@@ -4,33 +4,35 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_CONTACTS" />
-    <uses-permission android:name="android.permission.READ_PROFILE" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.NFC" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_CONTACTS"/>
+    <uses-permission android:name="android.permission.READ_PROFILE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.NFC"/>
 
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" tools:node="remove" />
+    <uses-permission
+        android:name="android.permission.READ_PHONE_STATE"
+        tools:node="remove"/>
 
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/ConversationsTheme"
-        tools:replace="android:label" >
-        <service android:name=".services.XmppConnectionService" />
+        tools:replace="android:label">
+        <service android:name=".services.XmppConnectionService"/>
 
-        <receiver android:name=".services.EventReceiver" >
+        <receiver android:name=".services.EventReceiver">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-                <action android:name="android.intent.action.ACTION_SHUTDOWN" />
-                <action android:name="android.media.RINGER_MODE_CHANGED" />
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+                <action android:name="android.intent.action.ACTION_SHUTDOWN"/>
+                <action android:name="android.media.RINGER_MODE_CHANGED"/>
             </intent-filter>
         </receiver>
 
@@ -38,100 +40,102 @@
             android:name=".ui.ConversationActivity"
             android:label="@string/app_name"
             android:launchMode="singleTask"
-            android:windowSoftInputMode="stateHidden" >
+            android:windowSoftInputMode="stateHidden">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
         <activity
             android:name=".ui.StartConversationActivity"
             android:configChanges="orientation|screenSize"
-            android:launchMode="singleTask"
-            android:label="@string/title_activity_start_conversation" >
+            android:label="@string/title_activity_start_conversation"
+            android:launchMode="singleTask">
             <intent-filter>
-                <action android:name="android.intent.action.SENDTO" />
+                <action android:name="android.intent.action.SENDTO"/>
 
-                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.DEFAULT"/>
 
-                <data android:scheme="imto" />
-                <data android:host="jabber" />
+                <data android:scheme="imto"/>
+                <data android:host="jabber"/>
             </intent-filter>
             <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.VIEW"/>
 
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
 
-                <data android:scheme="xmpp" />
+                <data android:scheme="xmpp"/>
             </intent-filter>
             <intent-filter>
-                <action android:name="android.nfc.action.NDEF_DISCOVERED" />
+                <action android:name="android.nfc.action.NDEF_DISCOVERED"/>
 
-                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.DEFAULT"/>
 
-                <data android:scheme="xmpp" />
+                <data android:scheme="xmpp"/>
             </intent-filter>
         </activity>
         <activity
             android:name=".ui.SettingsActivity"
-            android:label="@string/title_activity_settings" />
+            android:label="@string/title_activity_settings"/>
         <activity
             android:name=".ui.ChooseContactActivity"
-            android:label="@string/title_activity_choose_contact" />
+            android:label="@string/title_activity_choose_contact"/>
         <activity
             android:name=".ui.BlocklistActivity"
-            android:label="@string/title_activity_block_list" />
-	    <activity
-		    android:name=".ui.ChangePasswordActivity"
-		    android:label="@string/change_password_on_server" />
+            android:label="@string/title_activity_block_list"/>
+        <activity
+            android:name=".ui.ChangePasswordActivity"
+            android:label="@string/change_password_on_server"/>
         <activity
             android:name=".ui.ManageAccountActivity"
             android:configChanges="orientation|screenSize"
-            android:label="@string/title_activity_manage_accounts" />
+            android:label="@string/title_activity_manage_accounts"
+            android:launchMode="singleTask"/>
         <activity
             android:name=".ui.EditAccountActivity"
-            android:windowSoftInputMode="stateHidden|adjustResize" />
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="stateHidden|adjustResize"/>
         <activity
             android:name=".ui.ConferenceDetailsActivity"
             android:label="@string/title_activity_conference_details"
-            android:windowSoftInputMode="stateHidden" />
+            android:windowSoftInputMode="stateHidden"/>
         <activity
             android:name=".ui.ContactDetailsActivity"
             android:label="@string/title_activity_contact_details"
-            android:windowSoftInputMode="stateHidden" />
+            android:windowSoftInputMode="stateHidden"/>
         <activity
             android:name=".ui.PublishProfilePictureActivity"
             android:label="@string/mgmt_account_publish_avatar"
-            android:windowSoftInputMode="stateHidden" />
+            android:windowSoftInputMode="stateHidden"/>
         <activity
             android:name=".ui.VerifyOTRActivity"
             android:label="@string/verify_otr"
-            android:windowSoftInputMode="stateHidden" />
+            android:windowSoftInputMode="stateHidden"/>
         <activity
             android:name=".ui.ShareWithActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name">
             <intent-filter>
-                <action android:name="android.intent.action.SEND" />
+                <action android:name="android.intent.action.SEND"/>
 
-                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.DEFAULT"/>
 
-                <data android:mimeType="text/plain" />
+                <data android:mimeType="text/plain"/>
             </intent-filter>
             <intent-filter>
-                <action android:name="android.intent.action.SEND" />
+                <action android:name="android.intent.action.SEND"/>
 
-                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.DEFAULT"/>
 
-                <data android:mimeType="*/*" />
+                <data android:mimeType="*/*"/>
             </intent-filter>
             <intent-filter>
-                <action android:name="android.intent.action.SEND_MULTIPLE" />
+                <action android:name="android.intent.action.SEND_MULTIPLE"/>
 
-                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.DEFAULT"/>
 
-                <data android:mimeType="image/*" />
+                <data android:mimeType="image/*"/>
             </intent-filter>
         </activity>
         <activity
@@ -145,12 +149,13 @@
         <activity
             android:name=".ui.AboutActivity"
             android:label="@string/title_activity_about"
-            android:parentActivityName=".ui.SettingsActivity" >
+            android:parentActivityName=".ui.SettingsActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="eu.siacs.conversations.ui.SettingsActivity" />
+                android:value="eu.siacs.conversations.ui.SettingsActivity"/>
         </activity>
-        <service android:name=".services.ExportLogsService" />
+
+        <service android:name=".services.ExportLogsService"/>
     </application>
 
 </manifest>
