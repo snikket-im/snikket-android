@@ -313,12 +313,11 @@ public class Conversation extends AbstractEntity implements Blockable {
 	public List<Message> markRead() {
 		final List<Message> unread = new ArrayList<>();
 		synchronized (this.messages) {
-			for (int i = this.messages.size() - 1; i >= 0; --i) {
-				if (this.messages.get(i).isRead()) {
-					break;
+			for(Message message : this.messages) {
+				if (!message.isRead()) {
+					message.markRead();
+					unread.add(message);
 				}
-				this.messages.get(i).markRead();
-				unread.add(this.messages.get(i));
 			}
 		}
 		return unread;
