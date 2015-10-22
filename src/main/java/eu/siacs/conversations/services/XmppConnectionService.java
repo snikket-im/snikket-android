@@ -1683,8 +1683,8 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		if (account.getStatus() == Account.State.ONLINE || now) {
 			conversation.resetMucOptions();
 			fetchConferenceConfiguration(conversation, new OnConferenceConfigurationFetched() {
-				@Override
-				public void onConferenceConfigurationFetched(Conversation conversation) {
+
+				private void join(Conversation conversation) {
 					Account account = conversation.getAccount();
 					final String nick = conversation.getMucOptions().getProposedNick();
 					final Jid joinJid = conversation.getMucOptions().createJoinJid(nick);
@@ -1722,6 +1722,27 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 					if (conversation.getMucOptions().mamSupport()) {
 						getMessageArchiveService().catchupMUC(conversation);
 					}
+				}
+
+				@Override
+				public void onConferenceConfigurationFetched(Conversation conversation) {
+					join(conversation);
+				}
+
+				@Override
+				public void onFetchFailed(final Conversation conversation, Element error) {
+					conversation.getMucOptions().setOnJoinListener(new MucOptions.OnJoinListener() {
+						@Override
+						public void onSuccess() {
+							fetchConferenceConfiguration(conversation);
+						}
+
+						@Override
+						public void onFailure() {
+
+						}
+					});
+					join(conversation);
 				}
 			});
 
@@ -1913,6 +1934,10 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 						callback.onConferenceConfigurationFetched(conversation);
 					}
 					updateConversationUi();
+				} else if (packet.getType() == IqPacket.TYPE.ERROR) {
+					if (callback != null) {
+						callback.onFetchFailed(conversation, packet.getError());
+					}
 				}
 			}
 		});
@@ -2901,6 +2926,8 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 
 	public interface OnConferenceConfigurationFetched {
 		void onConferenceConfigurationFetched(Conversation conversation);
+
+		void onFetchFailed(Conversation conversation, Element error);
 	}
 
 	public interface OnConferenceOptionsPushed {

@@ -1,5 +1,7 @@
 package eu.siacs.conversations.xmpp.stanzas;
 
+import eu.siacs.conversations.xml.Element;
+
 abstract public class AbstractAcknowledgeableStanza extends AbstractStanza {
 
 	protected AbstractAcknowledgeableStanza(String name) {
@@ -13,5 +15,17 @@ abstract public class AbstractAcknowledgeableStanza extends AbstractStanza {
 
 	public void setId(final String id) {
 		setAttribute("id", id);
+	}
+
+	public Element getError() {
+		Element error = findChild("error");
+		if (error != null) {
+			for(Element element : error.getChildren()) {
+				if (!element.getName().equals("text")) {
+					return element;
+				}
+			}
+		}
+		return null;
 	}
 }
