@@ -5,6 +5,7 @@
     android:background="@color/grey200" >
 
     <LinearLayout
+        android:id="@+id/details_main_layout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical" >

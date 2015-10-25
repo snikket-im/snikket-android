@@ -5,6 +5,7 @@ import android.app.AlertDialog.Builder;
 import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.security.KeyChain;
@@ -51,6 +52,7 @@ import eu.siacs.conversations.xmpp.pep.Avatar;
 public class EditAccountActivity extends XmppActivity implements OnAccountUpdate,
 		OnKeyStatusUpdated, OnCaptchaRequested, KeyChainAliasCallback, XmppConnectionService.OnShowErrorToast {
 
+	private LinearLayout mMainLayout;
 	private AutoCompleteTextView mAccountJid;
 	private EditText mPassword;
 	private EditText mPasswordConfirm;
@@ -333,6 +335,7 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 	protected void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_edit_account);
+		this.mMainLayout = (LinearLayout) findViewById(R.id.account_main_layout);
 		this.mAccountJid = (AutoCompleteTextView) findViewById(R.id.account_jid);
 		this.mAccountJid.addTextChangedListener(this.mTextWatcher);
 		this.mAccountJidLabel = (TextView) findViewById(R.id.account_jid_label);
@@ -476,6 +479,12 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 			this.mAccountJid.setAdapter(mKnownHostsAdapter);
 		}
 		updateSaveButton();
+	}
+
+	@Override
+	public void onConfigurationChanged (Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+		UIHelper.resetChildMargins(mMainLayout);
 	}
 
 	@Override
