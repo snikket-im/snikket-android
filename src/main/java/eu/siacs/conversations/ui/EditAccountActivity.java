@@ -476,6 +476,7 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 			this.mAccountJid.setAdapter(mKnownHostsAdapter);
 		}
 		updateSaveButton();
+		invalidateOptionsMenu();
 	}
 
 	@Override
