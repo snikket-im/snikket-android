@@ -36,6 +36,7 @@ import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.Message.FileParams;
 import eu.siacs.conversations.entities.Transferable;
 import eu.siacs.conversations.ui.ConversationActivity;
+import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.GeoHelper;
 import eu.siacs.conversations.utils.UIHelper;
 
@@ -462,6 +463,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 						.findViewById(R.id.message_time);
 					viewHolder.indicatorReceived = (ImageView) view
 						.findViewById(R.id.indicator_received);
+					viewHolder.encryption = (TextView) view.findViewById(R.id.message_encryption);
 					break;
 				case STATUS:
 					view = activity.getLayoutInflater().inflate(R.layout.message_status, parent, false);
@@ -585,8 +587,11 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 				} else {
 					viewHolder.message_box.setBackgroundResource(R.drawable.message_bubble_received);
 				}
+				viewHolder.encryption.setVisibility(View.GONE);
 			} else {
 				viewHolder.message_box.setBackgroundResource(R.drawable.message_bubble_received_warning);
+				viewHolder.encryption.setVisibility(View.VISIBLE);
+				viewHolder.encryption.setText(CryptoHelper.encryptionTypeToText(message.getEncryption()));
 			}
 		}
 
@@ -667,5 +672,6 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		protected TextView messageBody;
 		protected ImageView contact_picture;
 		protected TextView status_message;
+		protected TextView encryption;
 	}
 }

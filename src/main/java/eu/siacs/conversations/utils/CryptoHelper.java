@@ -23,6 +23,8 @@ import java.util.LinkedHashSet;
 import java.util.List;
 
 import eu.siacs.conversations.Config;
+import eu.siacs.conversations.R;
+import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
 
@@ -162,6 +164,19 @@ public final class CryptoHelper {
 			return new Pair<>(Jid.fromString(emails.get(0)), name);
 		} else {
 			return null;
+		}
+	}
+
+	public static int encryptionTypeToText(int encryption) {
+		switch (encryption) {
+			case Message.ENCRYPTION_OTR:
+				return R.string.encryption_choice_otr;
+			case Message.ENCRYPTION_AXOLOTL:
+				return R.string.encryption_choice_omemo;
+			case Message.ENCRYPTION_NONE:
+				return R.string.encryption_choice_unencrypted;
+			default:
+				return R.string.encryption_choice_pgp;
 		}
 	}
 }

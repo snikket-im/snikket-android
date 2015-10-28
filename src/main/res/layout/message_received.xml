@@ -72,6 +72,17 @@
                 android:orientation="horizontal"
                 android:paddingBottom="2dp">
 
+                <TextView
+                    android:id="@+id/message_encryption"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical"
+                    android:layout_marginRight="4sp"
+                    android:textColor="@color/white70"
+                    android:textStyle="bold"
+                    android:textSize="?attr/TextSizeInfo" />
+
                 <ImageView
                     android:id="@+id/security_indicator"
                     android:layout_width="?attr/TextSizeInfo"
