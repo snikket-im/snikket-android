@@ -1,5 +1,8 @@
 ###Changelog
 
+####Versrion 1.7.1
+* performance improvements when opening a conversation
+
 ####Version 1.7.0
 * CAPTCHA support
 * SASL EXTERNAL (client certifiates)
