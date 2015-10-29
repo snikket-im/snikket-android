@@ -1417,7 +1417,13 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 			if (account.getXmppConnection() != null) {
 				this.disconnect(account, true);
 			}
-			databaseBackend.deleteAccount(account);
+			Runnable runnable = new Runnable() {
+				@Override
+				public void run() {
+					databaseBackend.deleteAccount(account);
+				}
+			};
+			mDatabaseExecutor.execute(runnable);
 			this.accounts.remove(account);
 			updateAccountUi();
 			getNotificationService().updateErrorNotification();
@@ -2617,8 +2623,17 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 
 	public void markRead(final Conversation conversation) {
 		mNotificationService.clear(conversation);
-		for (Message message : conversation.markRead()) {
-			databaseBackend.updateMessage(message);
+		final List<Message> readMessages = conversation.markRead();
+		if (readMessages.size() > 0) {
+			Runnable runnable = new Runnable() {
+				@Override
+				public void run() {
+					for (Message message : readMessages) {
+						databaseBackend.updateMessage(message);
+					}
+				}
+			};
+			mDatabaseExecutor.execute(runnable);
 		}
 		updateUnreadCountBadge();
 	}
@@ -2834,12 +2849,13 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		conversation.clearMessages();
 		conversation.setHasMessagesLeftOnServer(false); //avoid messages getting loaded through mam
 		conversation.resetLastMessageTransmitted();
-		new Thread(new Runnable() {
+		Runnable runnable = new Runnable() {
 			@Override
 			public void run() {
 				databaseBackend.deleteMessagesInConversation(conversation);
 			}
-		}).start();
+		};
+		mDatabaseExecutor.execute(runnable);
 	}
 
 	public void sendBlockRequest(final Blockable blockable) {
