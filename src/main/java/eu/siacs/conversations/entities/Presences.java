@@ -15,7 +15,7 @@ public class Presences {
 	public static final int DND = 3;
 	public static final int OFFLINE = 4;
 
-	private Hashtable<String, Integer> presences = new Hashtable<String, Integer>();
+	private final Hashtable<String, Integer> presences = new Hashtable<>();
 
 	public Hashtable<String, Integer> getPresences() {
 		return this.presences;
