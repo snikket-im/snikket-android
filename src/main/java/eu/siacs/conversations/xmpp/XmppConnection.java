@@ -360,7 +360,8 @@ public class XmppConnection implements Runnable {
 										String.valueOf(saslMechanism.getPriority()));
 								tagReader.reset();
 								sendStartStream();
-								if (tagReader.readTag().isStart("stream")) {
+								final Tag tag = tagReader.readTag();
+								if (tag != null && tag.isStart("stream")) {
 									processStream();
 								} else {
 									throw new IOException("server didn't restart stream after successful auth");
@@ -647,7 +648,8 @@ public class XmppConnection implements Runnable {
 			sendStartStream();
 			Log.d(Config.LOGTAG, account.getJid().toBareJid()+ ": TLS connection established");
 			features.encryptionEnabled = true;
-			if (tagReader.readTag().isStart("stream")) {
+			final Tag tag = tagReader.readTag();
+			if (tag != null && tag.isStart("stream")) {
 				processStream();
 			} else {
 				throw new IOException("server didn't restart stream after STARTTLS");
