@@ -37,6 +37,7 @@ public class Account extends AbstractEntity {
 	public static final String ROSTERVERSION = "rosterversion";
 	public static final String KEYS = "keys";
 	public static final String AVATAR = "avatar";
+	public static final String DISPLAY_NAME = "display_name";
 
 	public static final String PINNED_MECHANISM_KEY = "pinned_mechanism";
 
@@ -47,6 +48,14 @@ public class Account extends AbstractEntity {
 
 	public boolean httpUploadAvailable() {
 		return xmppConnection != null && xmppConnection.getFeatures().httpUpload();
+	}
+
+	public void setDisplayName(String displayName) {
+		this.displayName = displayName;
+	}
+
+	public String getDisplayName() {
+		return displayName;
 	}
 
 	public static enum State {
@@ -124,6 +133,7 @@ public class Account extends AbstractEntity {
 	protected State status = State.OFFLINE;
 	protected JSONObject keys = new JSONObject();
 	protected String avatar;
+	protected String displayName = null;
 	protected boolean online = false;
 	private OtrService mOtrService = null;
 	private AxolotlService axolotlService = null;
@@ -140,12 +150,12 @@ public class Account extends AbstractEntity {
 
 	public Account(final Jid jid, final String password) {
 		this(java.util.UUID.randomUUID().toString(), jid,
-				password, 0, null, "", null);
+				password, 0, null, "", null, null);
 	}
 
 	public Account(final String uuid, final Jid jid,
 			final String password, final int options, final String rosterVersion, final String keys,
-			final String avatar) {
+			final String avatar, String displayName) {
 		this.uuid = uuid;
 		this.jid = jid;
 		if (jid.isBareJid()) {
@@ -160,6 +170,7 @@ public class Account extends AbstractEntity {
 			this.keys = new JSONObject();
 		}
 		this.avatar = avatar;
+		this.displayName = displayName;
 	}
 
 	public static Account fromCursor(final Cursor cursor) {
@@ -175,7 +186,8 @@ public class Account extends AbstractEntity {
 				cursor.getInt(cursor.getColumnIndex(OPTIONS)),
 				cursor.getString(cursor.getColumnIndex(ROSTERVERSION)),
 				cursor.getString(cursor.getColumnIndex(KEYS)),
-				cursor.getString(cursor.getColumnIndex(AVATAR)));
+				cursor.getString(cursor.getColumnIndex(AVATAR)),
+				cursor.getString(cursor.getColumnIndex(DISPLAY_NAME)));
 	}
 
 	public boolean isOptionSet(final int option) {
@@ -287,6 +299,7 @@ public class Account extends AbstractEntity {
 		values.put(KEYS, this.keys.toString());
 		values.put(ROSTERVERSION, rosterVersion);
 		values.put(AVATAR, avatar);
+		values.put(DISPLAY_NAME, displayName);
 		return values;
 	}
 

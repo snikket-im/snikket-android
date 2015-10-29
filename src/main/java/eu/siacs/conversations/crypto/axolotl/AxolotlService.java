@@ -515,6 +515,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 
 					if (changed) {
 						if (account.getPrivateKeyAlias() != null && Config.X509_VERIFICATION) {
+							mXmppConnectionService.publishDisplayName(account);
 							publishDeviceVerificationAndBundle(signedPreKeyRecord, preKeyRecords, announce, wipe);
 						} else {
 							publishDeviceBundle(signedPreKeyRecord, preKeyRecords, announce, wipe);

@@ -183,7 +183,7 @@ public class MessageParser extends AbstractParser implements
 		} else if ("http://jabber.org/protocol/nick".equals(node)) {
 			Element i = items.findChild("item");
 			Element nick = i == null ? null : i.findChild("nick", "http://jabber.org/protocol/nick");
-			if (nick != null) {
+			if (nick != null && nick.getContent() != null) {
 				Contact contact = account.getRoster().getContact(from);
 				contact.setPresenceName(nick.getContent());
 				mXmppConnectionService.getAvatarService().clear(account);

@@ -82,6 +82,12 @@ public class IqGenerator extends AbstractGenerator {
 		return packet;
 	}
 
+	public IqPacket publishNick(String nick) {
+		final Element item = new Element("item");
+		item.addChild("nick","http://jabber.org/protocol/nick").setContent(nick);
+		return publish("http://jabber.org/protocol/nick", item);
+	}
+
 	public IqPacket publishAvatar(Avatar avatar) {
 		final Element item = new Element("item");
 		item.setAttribute("id", avatar.sha1sum);

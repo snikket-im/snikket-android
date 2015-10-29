@@ -1331,6 +1331,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 						Account account = new Account(info.first, "");
 						account.setPrivateKeyAlias(alias);
 						account.setOption(Account.OPTION_DISABLED, true);
+						account.setDisplayName(info.second);
 						createAccount(account);
 						callback.onAccountCreated(account);
 						if (Config.X509_VERIFICATION) {
@@ -1359,6 +1360,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 			Pair<Jid, String> info = CryptoHelper.extractJidAndName(chain[0]);
 			if (account.getJid().toBareJid().equals(info.first)) {
 				account.setPrivateKeyAlias(alias);
+				account.setDisplayName(info.second);
 				databaseBackend.updateAccount(account);
 				if (Config.X509_VERIFICATION) {
 					try {
@@ -2865,6 +2867,21 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 					if (packet.getType() == IqPacket.TYPE.RESULT) {
 						account.getBlocklist().remove(jid);
 						updateBlocklistUi(OnUpdateBlocklist.Status.UNBLOCKED);
+					}
+				}
+			});
+		}
+	}
+
+	public void publishDisplayName(Account account) {
+		String displayName = account.getDisplayName();
+		if (displayName != null && !displayName.isEmpty()) {
+			IqPacket publish = mIqGenerator.publishNick(displayName);
+			sendIqPacket(account, publish, new OnIqPacketReceived() {
+				@Override
+				public void onIqPacketReceived(Account account, IqPacket packet) {
+					if (packet.getType() == IqPacket.TYPE.ERROR) {
+						Log.d(Config.LOGTAG,account.getJid().toBareJid()+": could not publish nick");
 					}
 				}
 			});
