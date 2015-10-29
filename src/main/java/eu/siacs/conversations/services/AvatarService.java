@@ -16,6 +16,7 @@ import eu.siacs.conversations.entities.Bookmark;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.ListItem;
+import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.utils.UIHelper;
 
@@ -179,9 +180,13 @@ public class AvatarService {
 	}
 
 	public Bitmap get(Account account, int size) {
+		return get(account, size, false);
+	}
+
+	public Bitmap get(Account account, int size, boolean cachedOnly) {
 		final String KEY = key(account, size);
 		Bitmap avatar = mXmppConnectionService.getBitmapCache().get(KEY);
-		if (avatar != null) {
+		if (avatar != null || cachedOnly) {
 			return avatar;
 		}
 		avatar = mXmppConnectionService.getFileBackend().getAvatar(
@@ -191,6 +196,19 @@ public class AvatarService {
 		}
 		mXmppConnectionService.getBitmapCache().put(KEY, avatar);
 		return avatar;
+	}
+
+	public Bitmap get(Message message, int size, boolean cachedOnly) {
+		if (message.getStatus() == Message.STATUS_RECEIVED) {
+			Contact contact = message.getContact();
+			if (contact != null) {
+				return get(contact, size, cachedOnly);
+			} else {
+				return get(UIHelper.getMessageDisplayName(message), size, cachedOnly);
+			}
+		} else  {
+			return get(message.getConversation().getAccount(), size, cachedOnly);
+		}
 	}
 
 	public void clear(Account account) {
@@ -291,5 +309,4 @@ public class AvatarService {
 		Rect dst = new Rect(dstleft, dsttop, dstright, dstbottom);
 		canvas.drawBitmap(bm, null, dst, null);
 	}
-
 }

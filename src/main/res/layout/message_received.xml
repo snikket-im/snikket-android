@@ -11,8 +11,8 @@
 
     <com.makeramen.roundedimageview.RoundedImageView
         android:id="@+id/message_photo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:scaleType="fitXY"

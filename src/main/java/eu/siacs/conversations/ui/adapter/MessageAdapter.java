@@ -4,8 +4,13 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -24,7 +29,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
+import java.util.concurrent.RejectedExecutionException;
 
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.axolotl.XmppAxolotlSession;
@@ -493,17 +500,8 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 				viewHolder.status_message.setText(message.getBody());
 			}
 			return view;
-		} else if (type == RECEIVED) {
-			Contact contact = message.getContact();
-			if (contact != null) {
-				viewHolder.contact_picture.setImageBitmap(activity.avatarService().get(contact, activity.getPixel(48)));
-			} else if (conversation.getMode() == Conversation.MODE_MULTI) {
-				viewHolder.contact_picture.setImageBitmap(activity.avatarService().get(
-						UIHelper.getMessageDisplayName(message),
-						activity.getPixel(48)));
-			}
-		} else if (type == SENT) {
-			viewHolder.contact_picture.setImageBitmap(activity.avatarService().get(account, activity.getPixel(48)));
+		} else {
+			loadAvatar(message,viewHolder.contact_picture);
 		}
 
 		viewHolder.contact_picture
@@ -673,5 +671,88 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		protected ImageView contact_picture;
 		protected TextView status_message;
 		protected TextView encryption;
+	}
+
+	class BitmapWorkerTask extends AsyncTask<Message, Void, Bitmap> {
+		private final WeakReference<ImageView> imageViewReference;
+		private Message message = null;
+
+		public BitmapWorkerTask(ImageView imageView) {
+			imageViewReference = new WeakReference<>(imageView);
+		}
+
+		@Override
+		protected Bitmap doInBackground(Message... params) {
+			return activity.avatarService().get(params[0], activity.getPixel(48), isCancelled());
+		}
+
+		@Override
+		protected void onPostExecute(Bitmap bitmap) {
+			if (bitmap != null) {
+				final ImageView imageView = imageViewReference.get();
+				if (imageView != null) {
+					imageView.setImageBitmap(bitmap);
+					imageView.setBackgroundColor(0x00000000);
+				}
+			}
+		}
+	}
+
+	public void loadAvatar(Message message, ImageView imageView) {
+		if (cancelPotentialWork(message, imageView)) {
+			final Bitmap bm = activity.avatarService().get(message, activity.getPixel(48), true);
+			if (bm != null) {
+				imageView.setImageBitmap(bm);
+				imageView.setBackgroundColor(0x00000000);
+			} else {
+				imageView.setBackgroundColor(UIHelper.getColorForName(UIHelper.getMessageDisplayName(message)));
+				imageView.setImageDrawable(null);
+				final BitmapWorkerTask task = new BitmapWorkerTask(imageView);
+				final AsyncDrawable asyncDrawable = new AsyncDrawable(activity.getResources(), null, task);
+				imageView.setImageDrawable(asyncDrawable);
+				try {
+					task.execute(message);
+				} catch (final RejectedExecutionException ignored) {
+				}
+			}
+		}
+	}
+
+	public static boolean cancelPotentialWork(Message message, ImageView imageView) {
+		final BitmapWorkerTask bitmapWorkerTask = getBitmapWorkerTask(imageView);
+
+		if (bitmapWorkerTask != null) {
+			final Message oldMessage = bitmapWorkerTask.message;
+			if (oldMessage == null || message != oldMessage) {
+				bitmapWorkerTask.cancel(true);
+			} else {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	private static BitmapWorkerTask getBitmapWorkerTask(ImageView imageView) {
+		if (imageView != null) {
+			final Drawable drawable = imageView.getDrawable();
+			if (drawable instanceof AsyncDrawable) {
+				final AsyncDrawable asyncDrawable = (AsyncDrawable) drawable;
+				return asyncDrawable.getBitmapWorkerTask();
+			}
+		}
+		return null;
+	}
+
+	static class AsyncDrawable extends BitmapDrawable {
+		private final WeakReference<BitmapWorkerTask> bitmapWorkerTaskReference;
+
+		public AsyncDrawable(Resources res, Bitmap bitmap, BitmapWorkerTask bitmapWorkerTask) {
+			super(res, bitmap);
+			bitmapWorkerTaskReference = new WeakReference<>(bitmapWorkerTask);
+		}
+
+		public BitmapWorkerTask getBitmapWorkerTask() {
+			return bitmapWorkerTaskReference.get();
+		}
 	}
 }
