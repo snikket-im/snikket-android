@@ -550,7 +550,11 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 			}
 		} else if (message.getEncryption() == Message.ENCRYPTION_PGP) {
 			if (activity.hasPgp()) {
-				displayInfoMessage(viewHolder,activity.getString(R.string.encrypted_message),darkBackground);
+				if (account.getPgpDecryptionService().isRunning()) {
+					displayInfoMessage(viewHolder, activity.getString(R.string.message_decrypting), darkBackground);
+				} else {
+					displayInfoMessage(viewHolder, activity.getString(R.string.pgp_message), darkBackground);
+				}
 			} else {
 				displayInfoMessage(viewHolder,activity.getString(R.string.install_openkeychain),darkBackground);
 				if (viewHolder != null) {

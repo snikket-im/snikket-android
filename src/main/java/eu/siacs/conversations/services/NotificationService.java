@@ -177,7 +177,7 @@ public class NotificationService {
 		mBuilder.setColor(mXmppConnectionService.getResources().getColor(R.color.primary));
 	}
 
-	private void updateNotification(final boolean notify) {
+	public void updateNotification(final boolean notify) {
 		final NotificationManager notificationManager = (NotificationManager) mXmppConnectionService
 			.getSystemService(Context.NOTIFICATION_SERVICE);
 		final SharedPreferences preferences = mXmppConnectionService.getPreferences();
