@@ -1088,8 +1088,8 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 				public void run() {
 					Log.d(Config.LOGTAG, "restoring roster");
 					for (Account account : accounts) {
-						account.initAccountServices(XmppConnectionService.this);
 						databaseBackend.readRoster(account.getRoster());
+						account.initAccountServices(XmppConnectionService.this); //roster needs to be loaded at this stage
 					}
 					getBitmapCache().evictAll();
 					Looper.prepare();

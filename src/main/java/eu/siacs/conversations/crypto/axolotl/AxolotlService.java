@@ -323,7 +323,6 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 		setTrustOnSessions(jid, newDevices, XmppAxolotlSession.Trust.INACTIVE_UNTRUSTED,
 				XmppAxolotlSession.Trust.UNTRUSTED);
 		this.deviceIds.put(jid, deviceIds);
-		findDevicesWithoutSession(jid);
 		mXmppConnectionService.keyStatusUpdated(null);
 	}
 
