@@ -674,12 +674,16 @@ public abstract class XmppActivity extends Activity {
 				return true;
 			}
 		});
-
+		boolean x509 = trust == XmppAxolotlSession.Trust.TRUSTED_X509 || trust == XmppAxolotlSession.Trust.INACTIVE_TRUSTED_X509;
 		switch (trust) {
 			case UNTRUSTED:
 			case TRUSTED:
-				trustToggle.setChecked(trust == XmppAxolotlSession.Trust.TRUSTED, false);
-				trustToggle.setEnabled(true);
+			case TRUSTED_X509:
+				trustToggle.setChecked(trust.trusted(), false);
+				trustToggle.setEnabled(trust != XmppAxolotlSession.Trust.TRUSTED_X509);
+				if (trust == XmppAxolotlSession.Trust.TRUSTED_X509) {
+					trustToggle.setOnClickListener(null);
+				}
 				key.setTextColor(getPrimaryTextColor());
 				keyType.setTextColor(getSecondaryTextColor());
 				break;
@@ -698,6 +702,7 @@ public abstract class XmppActivity extends Activity {
 				keyType.setTextColor(getTertiaryTextColor());
 				break;
 			case INACTIVE_TRUSTED:
+			case INACTIVE_TRUSTED_X509:
 				trustToggle.setOnClickListener(null);
 				trustToggle.setChecked(true, false);
 				trustToggle.setEnabled(false);
@@ -707,15 +712,15 @@ public abstract class XmppActivity extends Activity {
 		}
 
 		if (showTag) {
-			keyType.setText(getString(R.string.omemo_fingerprint));
+			keyType.setText(getString(x509 ? R.string.omemo_fingerprint_x509 : R.string.omemo_fingerprint));
 		} else {
 			keyType.setVisibility(View.GONE);
 		}
 		if (highlight) {
 			keyType.setTextColor(getResources().getColor(R.color.accent));
-			keyType.setText(getString(R.string.omemo_fingerprint_selected_message));
+			keyType.setText(getString(x509 ? R.string.omemo_fingerprint_x509_selected_message : R.string.omemo_fingerprint_selected_message));
 		} else {
-			keyType.setText(getString(R.string.omemo_fingerprint));
+			keyType.setText(getString(x509 ? R.string.omemo_fingerprint_x509 : R.string.omemo_fingerprint));
 		}
 
 		key.setText(CryptoHelper.prettifyFingerprint(fingerprint));

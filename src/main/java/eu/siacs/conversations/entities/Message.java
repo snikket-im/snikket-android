@@ -716,8 +716,8 @@ public class Message extends AbstractEntity {
 	}
 
 	public boolean isTrusted() {
-		return conversation.getAccount().getAxolotlService().getFingerprintTrust(axolotlFingerprint)
-				== XmppAxolotlSession.Trust.TRUSTED;
+		XmppAxolotlSession.Trust t = conversation.getAccount().getAxolotlService().getFingerprintTrust(axolotlFingerprint);
+		return t != null && t.trusted();
 	}
 
 	private  int getPreviousEncryption() {

@@ -962,12 +962,13 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		String[] args = {
 				account.getUuid(),
 				name,
-				String.valueOf(XmppAxolotlSession.Trust.TRUSTED.getCode())
+				String.valueOf(XmppAxolotlSession.Trust.TRUSTED.getCode()),
+				String.valueOf(XmppAxolotlSession.Trust.TRUSTED_X509.getCode())
 		};
 		return DatabaseUtils.queryNumEntries(db, SQLiteAxolotlStore.IDENTITIES_TABLENAME,
 				SQLiteAxolotlStore.ACCOUNT + " = ?"
 				+ " AND " + SQLiteAxolotlStore.NAME + " = ?"
-				+ " AND " + SQLiteAxolotlStore.TRUSTED + " = ?",
+				+ " AND (" + SQLiteAxolotlStore.TRUSTED + " = ? OR "+SQLiteAxolotlStore.TRUSTED+ " = ?)",
 				args
 		);
 	}

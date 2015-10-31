@@ -40,7 +40,9 @@ public class XmppAxolotlSession {
 		COMPROMISED(3),
 		INACTIVE_TRUSTED(4),
 		INACTIVE_UNDECIDED(5),
-		INACTIVE_UNTRUSTED(6);
+		INACTIVE_UNTRUSTED(6),
+		TRUSTED_X509(7),
+		INACTIVE_TRUSTED_X509(8);
 
 		private static final Map<Integer, Trust> trustsByValue = new HashMap<>();
 
@@ -74,6 +76,10 @@ public class XmppAxolotlSession {
 					return "Inactive (Undecided)" + getCode();
 				case INACTIVE_UNTRUSTED:
 					return "Inactive (Untrusted)" + getCode();
+				case TRUSTED_X509:
+					return "Trusted (X509) " + getCode();
+				case INACTIVE_TRUSTED_X509:
+					return "Inactive (Trusted (X509)) " + getCode();
 				case UNTRUSTED:
 				default:
 					return "Untrusted " + getCode();
@@ -86,6 +92,14 @@ public class XmppAxolotlSession {
 
 		public static Trust fromCode(int code) {
 			return trustsByValue.get(code);
+		}
+
+		public boolean trusted() {
+			return this == TRUSTED_X509 || this == TRUSTED;
+		}
+
+		public boolean trustedInactive() {
+			return this == INACTIVE_TRUSTED_X509 || this == INACTIVE_TRUSTED;
 		}
 	}
 
@@ -144,6 +158,8 @@ public class XmppAxolotlSession {
 			case UNDECIDED:
 			case UNTRUSTED:
 			case TRUSTED:
+			case INACTIVE_TRUSTED_X509:
+			case TRUSTED_X509:
 				try {
 					try {
 						PreKeyWhisperMessage message = new PreKeyWhisperMessage(encryptedKey);
@@ -169,8 +185,12 @@ public class XmppAxolotlSession {
 					Log.w(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Error decrypting axolotl header, " + e.getClass().getName() + ": " + e.getMessage());
 				}
 
-				if (plaintext != null && trust == Trust.INACTIVE_TRUSTED) {
-					setTrust(Trust.TRUSTED);
+				if (plaintext != null) {
+					if (trust == Trust.INACTIVE_TRUSTED) {
+						setTrust(Trust.TRUSTED);
+					} else if (trust == Trust.INACTIVE_TRUSTED_X509) {
+						setTrust(Trust.TRUSTED_X509);
+					}
 				}
 
 				break;
@@ -186,7 +206,7 @@ public class XmppAxolotlSession {
 	@Nullable
 	public byte[] processSending(@NonNull byte[] outgoingMessage) {
 		Trust trust = getTrust();
-		if (trust == Trust.TRUSTED) {
+		if (trust.trusted()) {
 			CiphertextMessage ciphertextMessage = cipher.encrypt(outgoingMessage);
 			return ciphertextMessage.serialize();
 		} else {

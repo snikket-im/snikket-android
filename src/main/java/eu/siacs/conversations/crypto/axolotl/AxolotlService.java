@@ -311,6 +311,8 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 		expiredDevices.removeAll(deviceIds);
 		setTrustOnSessions(jid, expiredDevices, XmppAxolotlSession.Trust.TRUSTED,
 				XmppAxolotlSession.Trust.INACTIVE_TRUSTED);
+		setTrustOnSessions(jid, expiredDevices, XmppAxolotlSession.Trust.TRUSTED_X509,
+				XmppAxolotlSession.Trust.INACTIVE_TRUSTED_X509);
 		setTrustOnSessions(jid, expiredDevices, XmppAxolotlSession.Trust.UNDECIDED,
 				XmppAxolotlSession.Trust.INACTIVE_UNDECIDED);
 		setTrustOnSessions(jid, expiredDevices, XmppAxolotlSession.Trust.UNTRUSTED,
@@ -318,6 +320,8 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 		Set<Integer> newDevices = new HashSet<>(deviceIds);
 		setTrustOnSessions(jid, newDevices, XmppAxolotlSession.Trust.INACTIVE_TRUSTED,
 				XmppAxolotlSession.Trust.TRUSTED);
+		setTrustOnSessions(jid, newDevices, XmppAxolotlSession.Trust.INACTIVE_TRUSTED_X509,
+				XmppAxolotlSession.Trust.TRUSTED_X509);
 		setTrustOnSessions(jid, newDevices, XmppAxolotlSession.Trust.INACTIVE_UNDECIDED,
 				XmppAxolotlSession.Trust.UNDECIDED);
 		setTrustOnSessions(jid, newDevices, XmppAxolotlSession.Trust.INACTIVE_UNTRUSTED,
@@ -592,7 +596,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 								try {
 									mXmppConnectionService.getMemorizingTrustManager().getNonInteractive().checkClientTrusted(verification.first, "RSA");
 									Log.d(Config.LOGTAG, "verified session with x.509 signature. fingerprint was: "+session.getFingerprint());
-									setFingerprintTrust(session.getFingerprint(), XmppAxolotlSession.Trust.TRUSTED);
+									setFingerprintTrust(session.getFingerprint(), XmppAxolotlSession.Trust.TRUSTED_X509);
 									fetchStatusMap.put(address, FetchStatus.SUCCESS_VERIFIED);
 									finishBuildingSessionsFromPEP(address);
 									return;
