@@ -82,6 +82,7 @@
 	<string name="send_unencrypted_message">Send unencrypted message</string>
 	<string name="send_otr_message">Send OTR encrypted message</string>
 	<string name="send_omemo_message">Send OMEMO encrypted message</string>
+	<string name="send_omemo_x509_message">Send OMEMO (X.509 verified) encrypted message</string>
 	<string name="send_pgp_message">Send OpenPGP encrypted message</string>
 	<string name="your_nick_has_been_changed">Your nickname has been changed</string>
 	<string name="send_unencrypted">Send unencrypted</string>
@@ -211,9 +212,9 @@
 	<string name="your_fingerprint">Your fingerprint</string>
 	<string name="otr_fingerprint">OTR fingerprint</string>
 	<string name="omemo_fingerprint">OMEMO fingerprint</string>
-	<string name="omemo_fingerprint_x509">OMEMO fingerprint (X509 verified)</string>
+	<string name="omemo_fingerprint_x509">OMEMO fingerprint (X.509 verified)</string>
 	<string name="omemo_fingerprint_selected_message">OMEMO fingerprint of message</string>
-	<string name="omemo_fingerprint_x509_selected_message">OMEMO fingerprint (X509 verified) of message</string>
+	<string name="omemo_fingerprint_x509_selected_message">OMEMO fingerprint (X.509 verified) of message</string>
 	<string name="this_device_omemo_fingerprint">Own OMEMO fingerprint</string>
 	<string name="other_devices">Other devices</string>
 	<string name="trust_omemo_fingerprints">Trust OMEMO Fingerprints</string>

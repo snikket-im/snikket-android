@@ -46,6 +46,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.PgpEngine;
+import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
@@ -363,7 +364,12 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 					mEditMessage.setHint(getString(R.string.send_otr_message));
 					break;
 				case Message.ENCRYPTION_AXOLOTL:
-					mEditMessage.setHint(getString(R.string.send_omemo_message));
+					AxolotlService axolotlService = conversation.getAccount().getAxolotlService();
+					if (axolotlService.trustedSessionVerified(conversation)) {
+						mEditMessage.setHint(getString(R.string.send_omemo_x509_message));
+					} else {
+						mEditMessage.setHint(getString(R.string.send_omemo_message));
+					}
 					break;
 				case Message.ENCRYPTION_PGP:
 					mEditMessage.setHint(getString(R.string.send_pgp_message));

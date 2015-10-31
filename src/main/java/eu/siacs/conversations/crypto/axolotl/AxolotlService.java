@@ -778,6 +778,22 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 		return newSessions;
 	}
 
+	public boolean trustedSessionVerified(final Conversation conversation) {
+		Set<XmppAxolotlSession> sessions = findSessionsforContact(conversation.getContact());
+		sessions.addAll(findOwnSessions());
+		boolean verified = false;
+		for(XmppAxolotlSession session : sessions) {
+			if (session.getTrust().trusted()) {
+				if (session.getTrust() == XmppAxolotlSession.Trust.TRUSTED_X509) {
+					verified = true;
+				} else {
+					return false;
+				}
+			}
+		}
+		return verified;
+	}
+
 	public boolean hasPendingKeyFetches(Account account, Contact contact) {
 		AxolotlAddress ownAddress = new AxolotlAddress(account.getJid().toBareJid().toString(), 0);
 		AxolotlAddress foreignAddress = new AxolotlAddress(contact.getJid().toBareJid().toString(), 0);
