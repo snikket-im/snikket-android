@@ -134,6 +134,18 @@ which can point to any hostname port combination. If your server doesn’t provi
 those please contact your admin and have them read
 [this](http://prosody.im/doc/dns#srv_records)
 
+#### I get 'Incompatible Server'
+
+As regular user you should be picking a different server. The server you selected
+is probably insecure and/or very old.
+
+If you are a server administrator you should make sure that your server provides
+STARTTLS. XMPP over TLS (on a different port) is not sufficient.
+
+On rare occasions this error message might also be caused by a server not providing
+a login (SASL) mechanism that Conversations is able to handle. Conversations supports
+SCRAM-SHA1, PLAIN, EXTERNAL (client certs) and DIGEST-MD5.
+
 #### Conversations doesn't work for me. Where can I get help?
 
 You can join our conference room on `conversations@conference.siacs.eu`.
