@@ -812,7 +812,9 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		final Conversation conversation = message.getConversation();
 		account.deactivateGracePeriod();
 		MessagePacket packet = null;
-		boolean saveInDb = true;
+		final boolean addToConversation = conversation.getMode() != Conversation.MODE_MULTI
+				|| account.getServerIdentity() != XmppConnection.Identity.SLACK;
+		boolean saveInDb = addToConversation;
 		message.setStatus(Message.STATUS_WAITING);
 
 		if (!resend && message.getEncryption() != Message.ENCRYPTION_OTR) {
@@ -924,7 +926,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		}
 
 		if (resend) {
-			if (packet != null) {
+			if (packet != null && addToConversation) {
 				if (account.getXmppConnection().getFeatures().sm() || conversation.getMode() == Conversation.MODE_MULTI) {
 					markMessage(message, Message.STATUS_UNSEND);
 				} else {
@@ -932,7 +934,9 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 				}
 			}
 		} else {
-			conversation.add(message);
+			if (addToConversation) {
+				conversation.add(message);
+			}
 			if (saveInDb && (message.getEncryption() == Message.ENCRYPTION_NONE || saveEncryptedMessages())) {
 				databaseBackend.createMessage(message);
 			}

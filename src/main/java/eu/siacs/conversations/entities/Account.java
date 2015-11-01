@@ -59,6 +59,14 @@ public class Account extends AbstractEntity {
 		return displayName;
 	}
 
+	public XmppConnection.Identity getServerIdentity() {
+		if (xmppConnection == null) {
+			return XmppConnection.Identity.UNKNOWN;
+		} else {
+			return xmppConnection.getServerIdentity();
+		}
+	}
+
 	public static enum State {
 		DISABLED,
 		OFFLINE,

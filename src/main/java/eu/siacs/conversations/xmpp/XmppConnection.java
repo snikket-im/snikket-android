@@ -170,6 +170,7 @@ public class XmppConnection implements Runnable {
 			}
 		}
 	};
+	private Identity mServerIdentity = Identity.UNKNOWN;
 
 	private OnIqPacketReceived createPacketReceiveHandler() {
 		return new OnIqPacketReceived() {
@@ -224,6 +225,9 @@ public class XmppConnection implements Runnable {
 		lastConnect = SystemClock.elapsedRealtime();
 		lastPingSent = SystemClock.elapsedRealtime();
 		this.attempt++;
+		if (account.getJid().getDomainpart().equals("chat.facebook.com")) {
+			mServerIdentity = Identity.FACEBOOK;
+		}
 		try {
 			shouldAuthenticate = needsBinding = !account.isOptionSet(Account.OPTION_REGISTER);
 			tagReader = new XmlReader(wakeLock);
@@ -461,7 +465,7 @@ public class XmppConnection implements Runnable {
 							}
 							nextTag = tagReader.readTag();
 						}
-						Log.d(Config.LOGTAG,account.getJid().toBareJid()+": last tag was "+nextTag);
+						Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": last tag was " + nextTag);
 						if (account.getStatus() == Account.State.ONLINE) {
 							account. setStatus(Account.State.OFFLINE);
 							if (statusListener != null) {
@@ -553,7 +557,7 @@ public class XmppConnection implements Runnable {
 					final Pair<IqPacket, OnIqPacketReceived> packetCallbackDuple = packetCallbacks.get(packet.getId());
 					// Packets to the server should have responses from the server
 					if (packetCallbackDuple.first.toServer(account)) {
-						if (packet.fromServer(account) || account.getJid().getDomainpart().equals("chat.facebook.com")) {
+						if (packet.fromServer(account) || mServerIdentity == Identity.FACEBOOK) {
 							callback = packetCallbackDuple.second;
 							packetCallbacks.remove(packet.getId());
 						} else {
@@ -940,8 +944,25 @@ public class XmppConnection implements Runnable {
 							if (element.getName().equals("identity")) {
 								String type = element.getAttribute("type");
 								String category = element.getAttribute("category");
+								String name = element.getAttribute("name");
 								if (type != null && category != null) {
 									info.identities.add(new Pair<>(category, type));
+									if (type.equals("im") && category.equals("server")) {
+										if (name != null && jid.equals(account.getServer())) {
+											switch (name) {
+												case "Prosody":
+													mServerIdentity = Identity.PROSODY;
+													break;
+												case "ejabberd":
+													mServerIdentity = Identity.EJABBERD;
+													break;
+												case "Slack-XMPP":
+													mServerIdentity = Identity.SLACK;
+													break;
+											}
+											Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": server name: " + name);
+										}
+									}
 								}
 							} else if (element.getName().equals("feature")) {
 								info.features.add(element.getAttribute("var"));
@@ -1274,6 +1295,10 @@ public class XmppConnection implements Runnable {
 		this.mInteractive = interactive;
 	}
 
+	public Identity getServerIdentity() {
+		return mServerIdentity;
+	}
+
 	private class Info {
 		public final ArrayList<String> features = new ArrayList<>();
 		public final ArrayList<Pair<String,String>> identities = new ArrayList<>();
@@ -1293,6 +1318,13 @@ public class XmppConnection implements Runnable {
 
 	private class DnsTimeoutException extends IOException {
 
+	}
+	public enum Identity {
+		FACEBOOK,
+		SLACK,
+		EJABBERD,
+		PROSODY,
+		UNKNOWN
 	}
 
 	public class Features {
