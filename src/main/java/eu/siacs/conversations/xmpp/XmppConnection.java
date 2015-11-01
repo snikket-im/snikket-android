@@ -1170,7 +1170,6 @@ public class XmppConnection implements Runnable {
 					}
 					Log.d(Config.LOGTAG,account.getJid().toBareJid()+": closing stream");
 					tagWriter.writeTag(Tag.end("stream:stream"));
-					socket.close();
 				} catch (final IOException e) {
 					Log.d(Config.LOGTAG,account.getJid().toBareJid()+": io exception during disconnect ("+e.getMessage()+")");
 				} catch (final InterruptedException e) {
