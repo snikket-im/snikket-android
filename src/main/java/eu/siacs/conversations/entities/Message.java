@@ -171,7 +171,7 @@ public class Message extends AbstractEntity {
 	}
 
 	public static Message createStatusMessage(Conversation conversation, String body) {
-		Message message = new Message();
+		final Message message = new Message();
 		message.setType(Message.TYPE_STATUS);
 		message.setConversation(conversation);
 		message.setBody(body);
