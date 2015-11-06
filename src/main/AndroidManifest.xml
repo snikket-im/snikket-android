@@ -153,7 +153,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="eu.siacs.conversations.ui.SettingsActivity"/>
         </activity>
-
+        <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
         <service android:name=".services.ExportLogsService"/>
     </application>
 

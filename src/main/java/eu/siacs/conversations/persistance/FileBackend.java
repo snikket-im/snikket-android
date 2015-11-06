@@ -486,14 +486,14 @@ public class FileBackend {
 		return calcSampleSize(options, size);
 	}
 
-	private int calcSampleSize(File image, int size) {
+	public static int calcSampleSize(File image, int size) {
 		BitmapFactory.Options options = new BitmapFactory.Options();
 		options.inJustDecodeBounds = true;
 		BitmapFactory.decodeFile(image.getAbsolutePath(), options);
 		return calcSampleSize(options, size);
 	}
 
-	public static int calcSampleSize(BitmapFactory.Options options, int size) {
+	private static int calcSampleSize(BitmapFactory.Options options, int size) {
 		int height = options.outHeight;
 		int width = options.outWidth;
 		int inSampleSize = 1;
