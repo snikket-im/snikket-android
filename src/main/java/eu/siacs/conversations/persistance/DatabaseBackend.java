@@ -304,6 +304,12 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 			db.execSQL("ALTER TABLE " + Message.TABLENAME + " ADD COLUMN "
 					+ Message.CARBON + " INTEGER");
 		}
+		if (oldVersion < 19 && newVersion >= 19) {
+			db.execSQL("ALTER TABLE " + Account.TABLENAME + " ADD COLUMN "+ Account.DISPLAY_NAME+ " TEXT");
+		}
+		/* Any migrations that alter the Account table need to happen BEFORE this migration, as it
+		 * depends on account de-serialization.
+		 */
 		if (oldVersion < 17 && newVersion >= 17) {
 			List<Account> accounts = getAccounts(db);
 			for (Account account : accounts) {
@@ -324,9 +330,6 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		}
 		if (oldVersion < 18 && newVersion >= 18) {
 			db.execSQL("ALTER TABLE " + Message.TABLENAME + " ADD COLUMN "+ Message.READ+ " NUMBER DEFAULT 1");
-		}
-		if (oldVersion < 19 && newVersion >= 19) {
-			db.execSQL("ALTER TABLE " + Account.TABLENAME + " ADD COLUMN "+ Account.DISPLAY_NAME+ " TEXT");
 		}
 	}
 
