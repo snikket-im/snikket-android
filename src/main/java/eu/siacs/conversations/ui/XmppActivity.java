@@ -476,8 +476,7 @@ public abstract class XmppActivity extends Activity {
 		if (account.getPgpId() == -1) {
 			choosePgpSignId(account);
 		} else {
-			xmppConnectionService.getPgpEngine().generateSignature(account,
-					"online", new UiCallback<Account>() {
+			xmppConnectionService.getPgpEngine().generateSignature(account, "", new UiCallback<Account>() {
 
 				@Override
 				public void userInputRequried(PendingIntent pi,
