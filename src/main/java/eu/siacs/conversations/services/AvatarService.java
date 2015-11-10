@@ -130,11 +130,10 @@ public class AvatarService {
 
 		if (count == 0) {
 			String name = mucOptions.getConversation().getName();
-			final String letter = name.isEmpty() ? "X" : name.substring(0,1);
-			final int color = UIHelper.getColorForName(name);
-			drawTile(canvas, letter, color, 0, 0, size, size);
+			drawTile(canvas, name, 0, 0, size, size);
 		} else if (count == 1) {
-			drawTile(canvas, users.get(0), 0, 0, size, size);
+			drawTile(canvas, users.get(0), 0, 0, size / 2 - 1, size);
+			drawTile(canvas, mucOptions.getConversation().getAccount(), size / 2 + 1, 0, size, size);
 		} else if (count == 2) {
 			drawTile(canvas, users.get(0), 0, 0, size / 2 - 1, size);
 			drawTile(canvas, users.get(1), size / 2 + 1, 0, size, size);
@@ -243,9 +242,7 @@ public class AvatarService {
 		bitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
 		Canvas canvas = new Canvas(bitmap);
 		final String trimmedName = name.trim();
-		final String letter = trimmedName.isEmpty() ? "X" : trimmedName.substring(0,1);
-		final int color = UIHelper.getColorForName(name);
-		drawTile(canvas, letter, color, 0, 0, size, size);
+		drawTile(canvas, trimmedName, 0, 0, size, size);
 		mXmppConnectionService.getBitmapCache().put(KEY, bitmap);
 		return bitmap;
 	}
@@ -259,7 +256,7 @@ public class AvatarService {
 		return PREFIX_GENERIC + "_" + name + "_" + String.valueOf(size);
 	}
 
-	private void drawTile(Canvas canvas, String letter, int tileColor,
+	private boolean drawTile(Canvas canvas, String letter, int tileColor,
 						  int left, int top, int right, int bottom) {
 		letter = letter.toUpperCase(Locale.getDefault());
 		Paint tilePaint = new Paint(), textPaint = new Paint();
@@ -276,9 +273,10 @@ public class AvatarService {
 		float width = textPaint.measureText(letter);
 		canvas.drawText(letter, (right + left) / 2 - width / 2, (top + bottom)
 				/ 2 + rect.height() / 2, textPaint);
+		return true;
 	}
 
-	private void drawTile(Canvas canvas, MucOptions.User user, int left,
+	private boolean drawTile(Canvas canvas, MucOptions.User user, int left,
 						  int top, int right, int bottom) {
 		Contact contact = user.getContact();
 		if (contact != null) {
@@ -289,24 +287,54 @@ public class AvatarService {
 				uri = mXmppConnectionService.getFileBackend().getAvatarUri(
 						contact.getAvatar());
 			}
-			if (uri != null) {
-				Bitmap bitmap = mXmppConnectionService.getFileBackend()
-						.cropCenter(uri, bottom - top, right - left);
-				if (bitmap != null) {
-					drawTile(canvas, bitmap, left, top, right, bottom);
-					return;
-				}
+			if (drawTile(canvas, uri, left, top, right, bottom)) {
+				return true;
 			}
 		}
 		String name = contact != null ? contact.getDisplayName() : user.getName();
-		final String letter = name.isEmpty() ? "X" : name.substring(0,1);
-		final int color = UIHelper.getColorForName(name);
-		drawTile(canvas, letter, color, left, top, right, bottom);
+		drawTile(canvas, name, left, top, right, bottom);
+		return true;
 	}
 
-	private void drawTile(Canvas canvas, Bitmap bm, int dstleft, int dsttop,
+	private boolean drawTile(Canvas canvas, Account account, int left, int top, int right, int bottom) {
+		String avatar = account.getAvatar();
+		if (avatar != null) {
+			Uri uri = mXmppConnectionService.getFileBackend().getAvatarUri(avatar);
+			if (uri != null) {
+				drawTile(canvas, uri, left, top, right, bottom);
+			}
+		} else {
+			drawTile(canvas, account.getJid().toBareJid().toString(), left, top, right, bottom);
+		}
+		return true;
+	}
+
+	private boolean drawTile(Canvas canvas, String name, int left, int top, int right, int bottom) {
+		if (name != null) {
+			final String letter = name.isEmpty() ? "X" : name.substring(0, 1);
+			final int color = UIHelper.getColorForName(name);
+			drawTile(canvas, letter, color, left, top, right, bottom);
+			return true;
+		}
+		return false;
+	}
+
+	private boolean drawTile(Canvas canvas, Uri uri, int left, int top, int right, int bottom) {
+		if (uri != null) {
+			Bitmap bitmap = mXmppConnectionService.getFileBackend()
+					.cropCenter(uri, bottom - top, right - left);
+			if (bitmap != null) {
+				drawTile(canvas, bitmap, left, top, right, bottom);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private boolean drawTile(Canvas canvas, Bitmap bm, int dstleft, int dsttop,
 						  int dstright, int dstbottom) {
 		Rect dst = new Rect(dstleft, dsttop, dstright, dstbottom);
 		canvas.drawBitmap(bm, null, dst, null);
+		return true;
 	}
 }
