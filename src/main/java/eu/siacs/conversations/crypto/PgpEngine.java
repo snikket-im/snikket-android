@@ -50,7 +50,7 @@ public class PgpEngine {
 
 				@Override
 				public void onReturn(Intent result) {
-					notifyPgpDecryptionService(message.getContact().getAccount(), OpenPgpApi.ACTION_DECRYPT_VERIFY, result);
+					notifyPgpDecryptionService(message.getConversation().getAccount(), OpenPgpApi.ACTION_DECRYPT_VERIFY, result);
 					switch (result.getIntExtra(OpenPgpApi.RESULT_CODE,
 							OpenPgpApi.RESULT_CODE_ERROR)) {
 					case OpenPgpApi.RESULT_CODE_SUCCESS:
@@ -160,7 +160,7 @@ public class PgpEngine {
 
 				@Override
 				public void onReturn(Intent result) {
-					notifyPgpDecryptionService(message.getContact().getAccount(), OpenPgpApi.ACTION_ENCRYPT, result);
+					notifyPgpDecryptionService(message.getConversation().getAccount(), OpenPgpApi.ACTION_ENCRYPT, result);
 					switch (result.getIntExtra(OpenPgpApi.RESULT_CODE,
 							OpenPgpApi.RESULT_CODE_ERROR)) {
 					case OpenPgpApi.RESULT_CODE_SUCCESS:
@@ -206,7 +206,7 @@ public class PgpEngine {
 
 					@Override
 					public void onReturn(Intent result) {
-						notifyPgpDecryptionService(message.getContact().getAccount(), OpenPgpApi.ACTION_ENCRYPT, result);
+						notifyPgpDecryptionService(message.getConversation().getAccount(), OpenPgpApi.ACTION_ENCRYPT, result);
 						switch (result.getIntExtra(OpenPgpApi.RESULT_CODE,
 								OpenPgpApi.RESULT_CODE_ERROR)) {
 						case OpenPgpApi.RESULT_CODE_SUCCESS:
