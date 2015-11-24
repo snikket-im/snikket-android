@@ -127,6 +127,10 @@ public class Account extends AbstractEntity {
 
 	public List<Conversation> pendingConferenceJoins = new CopyOnWriteArrayList<>();
 	public List<Conversation> pendingConferenceLeaves = new CopyOnWriteArrayList<>();
+
+	private static final String KEY_PGP_SIGNATURE = "pgp_signature";
+	private static final String KEY_PGP_ID = "pgp_id";
+
 	protected Jid jid;
 	protected String password;
 	protected int options = 0;
@@ -371,15 +375,45 @@ public class Account extends AbstractEntity {
 	}
 
 	public String getPgpSignature() {
-		if (keys.has("pgp_signature")) {
+		if (keys.has(KEY_PGP_SIGNATURE)) {
 			try {
-				return keys.getString("pgp_signature");
+				return keys.getString(KEY_PGP_SIGNATURE);
 			} catch (final JSONException e) {
 				return null;
 			}
 		} else {
 			return null;
 		}
+	}
+
+	public boolean setPgpSignature(String signature) {
+		try {
+			keys.put(KEY_PGP_SIGNATURE, signature);
+		} catch (JSONException e) {
+			return false;
+		}
+		return true;
+	}
+
+	public long getPgpId() {
+		if (keys.has(KEY_PGP_ID)) {
+			try {
+				return keys.getLong(KEY_PGP_ID);
+			} catch (JSONException e) {
+				return -1;
+			}
+		} else {
+			return -1;
+		}
+	}
+
+	public boolean setPgpSignId(long pgpID) {
+		try {
+			keys.put(KEY_PGP_ID, pgpID);
+		} catch (JSONException e) {
+			return false;
+		}
+		return true;
 	}
 
 	public Roster getRoster() {

@@ -56,6 +56,7 @@ import eu.siacs.conversations.utils.ExceptionHelper;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
+import org.openintents.openpgp.util.OpenPgpApi;
 
 public class ConversationActivity extends XmppActivity
 	implements OnAccountUpdate, OnConversationUpdate, OnRosterUpdate, OnUpdateBlocklist, XmppConnectionService.OnShowErrorToast {
@@ -768,7 +769,7 @@ public class ConversationActivity extends XmppActivity
 							break;
 						case R.id.encryption_choice_pgp:
 							if (hasPgp()) {
-								if (conversation.getAccount().getKeys().has("pgp_signature")) {
+								if (conversation.getAccount().getPgpSignature() != null) {
 									conversation.setNextEncryption(Message.ENCRYPTION_PGP);
 									item.setChecked(true);
 								} else {
@@ -1195,6 +1196,15 @@ public class ConversationActivity extends XmppActivity
 		if (resultCode == RESULT_OK) {
 			if (requestCode == REQUEST_DECRYPT_PGP) {
 				mConversationFragment.onActivityResult(requestCode, resultCode, data);
+			} else if (requestCode == REQUEST_CHOOSE_PGP_ID) {
+				if (data.getExtras().containsKey(OpenPgpApi.EXTRA_SIGN_KEY_ID)) {
+					mSelectedConversation.getAccount().setPgpSignId(data.getExtras().getLong(OpenPgpApi.EXTRA_SIGN_KEY_ID));
+					announcePgp(mSelectedConversation.getAccount(), null);
+				} else {
+					choosePgpSignId(mSelectedConversation.getAccount());
+				}
+			} else if (requestCode == REQUEST_ANNOUNCE_PGP) {
+				announcePgp(mSelectedConversation.getAccount(), null);
 			} else if (requestCode == ATTACHMENT_CHOICE_CHOOSE_IMAGE) {
 				mPendingImageUris.clear();
 				mPendingImageUris.addAll(extractUriFromIntent(data));

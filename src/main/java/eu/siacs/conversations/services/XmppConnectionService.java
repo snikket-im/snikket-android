@@ -37,7 +37,7 @@ import net.java.otr4j.session.SessionID;
 import net.java.otr4j.session.SessionImpl;
 import net.java.otr4j.session.SessionStatus;
 
-import org.openintents.openpgp.IOpenPgpService;
+import org.openintents.openpgp.IOpenPgpService2;
 import org.openintents.openpgp.util.OpenPgpApi;
 import org.openintents.openpgp.util.OpenPgpServiceConnection;
 
@@ -662,7 +662,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 
 		this.pgpServiceConnection = new OpenPgpServiceConnection(getApplicationContext(), "org.sufficientlysecure.keychain", new OpenPgpServiceConnection.OnBound() {
 			@Override
-			public void onBound(IOpenPgpService service) {
+			public void onBound(IOpenPgpService2 service) {
 				for (Account account : accounts) {
 					if (account.getPgpDecryptionService() != null) {
 						account.getPgpDecryptionService().onOpenPgpServiceBound();

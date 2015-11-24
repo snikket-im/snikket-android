@@ -30,6 +30,7 @@ import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.services.XmppConnectionService.OnAccountUpdate;
 import eu.siacs.conversations.ui.adapter.AccountAdapter;
+import org.openintents.openpgp.util.OpenPgpApi;
 
 public class ManageAccountActivity extends XmppActivity implements OnAccountUpdate, KeyChainAliasCallback, XmppConnectionService.OnAccountCreated {
 
@@ -148,7 +149,7 @@ public class ManageAccountActivity extends XmppActivity implements OnAccountUpda
 			deleteAccount(selectedAccount);
 			return true;
 		case R.id.mgmt_account_announce_pgp:
-			publishOpenPGPPublicKey(selectedAccount);
+			choosePgpSignId(selectedAccount);
 			return true;
 		default:
 			return super.onContextItemSelected(item);
@@ -311,7 +312,14 @@ public class ManageAccountActivity extends XmppActivity implements OnAccountUpda
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (resultCode == RESULT_OK) {
-			if (requestCode == REQUEST_ANNOUNCE_PGP) {
+			if (requestCode == REQUEST_CHOOSE_PGP_ID) {
+				if (data.getExtras().containsKey(OpenPgpApi.EXTRA_SIGN_KEY_ID)) {
+					selectedAccount.setPgpSignId(data.getExtras().getLong(OpenPgpApi.EXTRA_SIGN_KEY_ID));
+					announcePgp(selectedAccount, null);
+				} else {
+					choosePgpSignId(selectedAccount);
+				}
+			} else if (requestCode == REQUEST_ANNOUNCE_PGP) {
 				announcePgp(selectedAccount, null);
 			}
 		}

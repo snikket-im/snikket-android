@@ -56,7 +56,6 @@ public class PresenceGenerator extends AbstractGenerator {
 		packet.setFrom(account.getJid());
 		String sig = account.getPgpSignature();
 		if (sig != null) {
-			packet.addChild("status").setContent("online");
 			packet.addChild("x", "jabber:x:signed").setContent(sig);
 		}
 		String capHash = getCapHash();

@@ -90,6 +90,7 @@ public abstract class XmppActivity extends Activity {
 
 	protected static final int REQUEST_ANNOUNCE_PGP = 0x0101;
 	protected static final int REQUEST_INVITE_TO_CONVERSATION = 0x0102;
+	protected static final int REQUEST_CHOOSE_PGP_ID = 0x0103;
 
 	public XmppConnectionService xmppConnectionService;
 	public boolean xmppConnectionServiceBound = false;
@@ -472,34 +473,59 @@ public abstract class XmppActivity extends Activity {
 	}
 
 	protected void announcePgp(Account account, final Conversation conversation) {
-		xmppConnectionService.getPgpEngine().generateSignature(account,
-				"online", new UiCallback<Account>() {
+		if (account.getPgpId() == -1) {
+			choosePgpSignId(account);
+		} else {
+			xmppConnectionService.getPgpEngine().generateSignature(account, "", new UiCallback<Account>() {
 
-					@Override
-					public void userInputRequried(PendingIntent pi,
-												  Account account) {
-						try {
-							startIntentSenderForResult(pi.getIntentSender(),
-									REQUEST_ANNOUNCE_PGP, null, 0, 0, 0);
-						} catch (final SendIntentException ignored) {
-						}
+				@Override
+				public void userInputRequried(PendingIntent pi,
+											  Account account) {
+					try {
+						startIntentSenderForResult(pi.getIntentSender(),
+								REQUEST_ANNOUNCE_PGP, null, 0, 0, 0);
+					} catch (final SendIntentException ignored) {
 					}
+				}
 
-					@Override
-					public void success(Account account) {
-						xmppConnectionService.databaseBackend.updateAccount(account);
-						xmppConnectionService.sendPresence(account);
-						if (conversation != null) {
-							conversation.setNextEncryption(Message.ENCRYPTION_PGP);
-							xmppConnectionService.databaseBackend.updateConversation(conversation);
-						}
+				@Override
+				public void success(Account account) {
+					xmppConnectionService.databaseBackend.updateAccount(account);
+					xmppConnectionService.sendPresence(account);
+					if (conversation != null) {
+						conversation.setNextEncryption(Message.ENCRYPTION_PGP);
+						xmppConnectionService.databaseBackend.updateConversation(conversation);
 					}
+				}
 
-					@Override
-					public void error(int error, Account account) {
-						displayErrorDialog(error);
-					}
-				});
+				@Override
+				public void error(int error, Account account) {
+					displayErrorDialog(error);
+				}
+			});
+		}
+	}
+
+	protected void choosePgpSignId(Account account) {
+		xmppConnectionService.getPgpEngine().chooseKey(account, new UiCallback<Account>() {
+			@Override
+			public void success(Account account1) {
+			}
+
+			@Override
+			public void error(int errorCode, Account object) {
+
+			}
+
+			@Override
+			public void userInputRequried(PendingIntent pi, Account object) {
+				try {
+					startIntentSenderForResult(pi.getIntentSender(),
+							REQUEST_CHOOSE_PGP_ID, null, 0, 0, 0);
+				} catch (final SendIntentException ignored) {
+				}
+			}
+		});
 	}
 
 	protected void displayErrorDialog(final int errorCode) {

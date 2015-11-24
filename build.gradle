@@ -25,8 +25,8 @@ repositories {
 }
 
 dependencies {
-	compile project(':libs:openpgp-api-lib')
 	compile project(':libs:MemorizingTrustManager')
+	compile 'org.sufficientlysecure:openpgp-api:9.0'
 	compile 'com.android.support:support-v13:23.0.1'
 	compile 'org.bouncycastle:bcprov-jdk15on:1.52'
 	compile 'org.bouncycastle:bcmail-jdk15on:1.52'
