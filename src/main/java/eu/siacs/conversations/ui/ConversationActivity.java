@@ -17,6 +17,7 @@ import android.provider.MediaStore;
 import android.support.v4.widget.SlidingPaneLayout;
 import android.support.v4.widget.SlidingPaneLayout.PanelSlideListener;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -510,22 +511,22 @@ public class ConversationActivity extends XmppActivity
 		}
 		final Conversation conversation = getSelectedConversation();
 		final int encryption = conversation.getNextEncryption();
+		final int mode = conversation.getMode();
 		if (encryption == Message.ENCRYPTION_PGP) {
 			if (hasPgp()) {
-				if (conversation.getContact().getPgpKeyId() != 0) {
+				if (mode == Conversation.MODE_SINGLE && conversation.getContact().getPgpKeyId() != 0) {
 					xmppConnectionService.getPgpEngine().hasKey(
 							conversation.getContact(),
 							new UiCallback<Contact>() {
 
 								@Override
-								public void userInputRequried(PendingIntent pi,
-										Contact contact) {
-									ConversationActivity.this.runIntent(pi,attachmentChoice);
+								public void userInputRequried(PendingIntent pi, Contact contact) {
+									ConversationActivity.this.runIntent(pi, attachmentChoice);
 								}
 
 								@Override
 								public void success(Contact contact) {
-									selectPresenceToAttachFile(attachmentChoice,encryption);
+									selectPresenceToAttachFile(attachmentChoice, encryption);
 								}
 
 								@Override
@@ -533,6 +534,16 @@ public class ConversationActivity extends XmppActivity
 									displayErrorDialog(error);
 								}
 							});
+				} else if (mode == Conversation.MODE_MULTI && conversation.getMucOptions().pgpKeysInUse()) {
+					if (!conversation.getMucOptions().everybodyHasKeys()) {
+						Toast warning = Toast
+								.makeText(this,
+										R.string.missing_public_keys,
+										Toast.LENGTH_LONG);
+						warning.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+						warning.show();
+					}
+					selectPresenceToAttachFile(attachmentChoice, encryption);
 				} else {
 					final ConversationFragment fragment = (ConversationFragment) getFragmentManager()
 						.findFragmentByTag("conversation");

@@ -1369,7 +1369,7 @@ public class XmppConnection implements Runnable {
 		}
 
 		public boolean httpUpload() {
-			return findDiscoItemsByFeature(Xmlns.HTTP_UPLOAD).size() > 0;
+			return !Config.DISABLE_HTTP_UPLOAD && findDiscoItemsByFeature(Xmlns.HTTP_UPLOAD).size() > 0;
 		}
 	}
 

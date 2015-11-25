@@ -61,21 +61,25 @@ public class FileBackend {
 		final boolean encrypted = !decrypted
 				&& (message.getEncryption() == Message.ENCRYPTION_PGP
 				|| message.getEncryption() == Message.ENCRYPTION_DECRYPTED);
-		if (encrypted) {
-			return new DownloadableFile(getConversationsFileDirectory()+message.getUuid()+".pgp");
+		final DownloadableFile file;
+		String path = message.getRelativeFilePath();
+		if (path == null) {
+			path = message.getUuid();
+		}
+		if (path.startsWith("/")) {
+			file = new DownloadableFile(path);
 		} else {
-			String path = message.getRelativeFilePath();
-			if (path == null) {
-				path = message.getUuid();
-			} else if (path.startsWith("/")) {
-				return new DownloadableFile(path);
-			}
 			String mime = message.getMimeType();
 			if (mime != null && mime.startsWith("image")) {
-				return new DownloadableFile(getConversationsImageDirectory() + path);
+				file = new DownloadableFile(getConversationsImageDirectory() + path);
 			} else {
-				return new DownloadableFile(getConversationsFileDirectory() + path);
+				file = new DownloadableFile(getConversationsFileDirectory() + path);
 			}
+		}
+		if (encrypted) {
+			return new DownloadableFile(getConversationsFileDirectory() + file.getName() + ".pgp");
+		} else {
+			return file;
 		}
 	}
 

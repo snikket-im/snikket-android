@@ -6,7 +6,6 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.IntentSender.SendIntentException;
-import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
@@ -42,7 +41,6 @@ import eu.siacs.conversations.entities.MucOptions.User;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.services.XmppConnectionService.OnConversationUpdate;
 import eu.siacs.conversations.services.XmppConnectionService.OnMucRosterUpdate;
-import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.jid.Jid;
 
 public class ConferenceDetailsActivity extends XmppActivity implements OnConversationUpdate, OnMucRosterUpdate, XmppConnectionService.OnAffiliationChanged, XmppConnectionService.OnRoleChanged, XmppConnectionService.OnConferenceOptionsPushed {
@@ -55,7 +53,6 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 			inviteToConversation(mConversation);
 		}
 	};
-	private LinearLayout mMainLayout;
 	private TextView mYourNick;
 	private ImageView mYourPhoto;
 	private ImageButton mEditNickButton;
@@ -190,7 +187,6 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_muc_details);
-		mMainLayout = (LinearLayout) findViewById(R.id.muc_main_layout);
 		mYourNick = (TextView) findViewById(R.id.muc_your_nick);
 		mYourPhoto = (ImageView) findViewById(R.id.your_photo);
 		mEditNickButton = (ImageButton) findViewById(R.id.edit_nick_button);
@@ -452,12 +448,6 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 				updateView();
 			}
 		}
-	}
-
-	@Override
-	public void onConfigurationChanged (Configuration newConfig) {
-		super.onConfigurationChanged(newConfig);
-		UIHelper.resetChildMargins(mMainLayout);
 	}
 
 	private void updateView() {

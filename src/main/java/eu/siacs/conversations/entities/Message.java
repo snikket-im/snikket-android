@@ -523,7 +523,7 @@ public class Message extends AbstractEntity {
 			String extension = filename.substring(dotPosition + 1);
 			// we want the real file extension, not the crypto one
 			if (Arrays.asList(Transferable.VALID_CRYPTO_EXTENSIONS).contains(extension)) {
-				return extractRelevantExtension(path.substring(0,dotPosition));
+				return extractRelevantExtension(filename.substring(0,dotPosition));
 			} else {
 				return extension;
 			}

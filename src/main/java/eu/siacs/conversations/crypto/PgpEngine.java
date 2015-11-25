@@ -24,6 +24,7 @@ import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.http.HttpConnectionManager;
+import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.ui.UiCallback;
 
@@ -96,6 +97,7 @@ public class PgpEngine {
 
 					@Override
 					public void onReturn(Intent result) {
+						notifyPgpDecryptionService(message.getConversation().getAccount(), OpenPgpApi.ACTION_DECRYPT_VERIFY, result);
 						switch (result.getIntExtra(OpenPgpApi.RESULT_CODE,
 								OpenPgpApi.RESULT_CODE_ERROR)) {
 						case OpenPgpApi.RESULT_CODE_SUCCESS:
@@ -196,8 +198,8 @@ public class PgpEngine {
 						.getFileBackend().getFile(message, false);
 				outputFile.getParentFile().mkdirs();
 				outputFile.createNewFile();
-				InputStream is = new FileInputStream(inputFile);
-				OutputStream os = new FileOutputStream(outputFile);
+				final InputStream is = new FileInputStream(inputFile);
+				final OutputStream os = new FileOutputStream(outputFile);
 				api.executeApiAsync(params, is, os, new IOpenPgpCallback() {
 
 					@Override
@@ -206,6 +208,12 @@ public class PgpEngine {
 						switch (result.getIntExtra(OpenPgpApi.RESULT_CODE,
 								OpenPgpApi.RESULT_CODE_ERROR)) {
 						case OpenPgpApi.RESULT_CODE_SUCCESS:
+							try {
+								os.flush();
+							} catch (IOException ignored) {
+								//ignored
+							}
+							FileBackend.close(os);
 							callback.success(message);
 							break;
 						case OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED:

@@ -7,7 +7,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender.SendIntentException;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -100,7 +99,6 @@ public class ContactDetailsActivity extends XmppActivity implements OnAccountUpd
 			}
 		}
 	};
-	private LinearLayout mainLayout;
 	private Jid accountJid;
 	private Jid contactJid;
 	private TextView contactJidTv;
@@ -199,7 +197,6 @@ public class ContactDetailsActivity extends XmppActivity implements OnAccountUpd
 		this.messageFingerprint = getIntent().getStringExtra("fingerprint");
 		setContentView(R.layout.activity_contact_details);
 
-		mainLayout = (LinearLayout) findViewById(R.id.details_main_layout);
 		contactJidTv = (TextView) findViewById(R.id.details_contactjid);
 		accountJidTv = (TextView) findViewById(R.id.details_account);
 		lastseen = (TextView) findViewById(R.id.details_lastseen);
@@ -298,12 +295,6 @@ public class ContactDetailsActivity extends XmppActivity implements OnAccountUpd
 			delete.setVisible(false);
 		}
 		return true;
-	}
-
-	@Override
-	public void onConfigurationChanged (Configuration newConfig) {
-		super.onConfigurationChanged(newConfig);
-		UIHelper.resetChildMargins(mainLayout);
 	}
 
 	private void populateView() {

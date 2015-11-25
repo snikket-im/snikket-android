@@ -83,7 +83,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
 
 	public void getPrimaryCandidate(Account account,
 			final OnPrimaryCandidateFound listener) {
-		if (Config.NO_PROXY_LOOKUP) {
+		if (Config.DISABLE_PROXY_LOOKUP) {
 			listener.onPrimaryCandidateFound(false, null);
 			return;
 		}

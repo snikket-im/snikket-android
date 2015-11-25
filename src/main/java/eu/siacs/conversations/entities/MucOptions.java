@@ -107,10 +107,6 @@ public class MucOptions {
 
 	}
 
-	public interface OnJoinListener extends OnEventListener {
-
-	}
-
 	public class User {
 		private Role role = Role.NONE;
 		private Affiliation affiliation = Affiliation.NONE;
@@ -215,7 +211,6 @@ public class MucOptions {
 	private boolean isOnline = false;
 	private int error = ERROR_UNKNOWN;
 	private OnRenameListener onRenameListener = null;
-	private OnJoinListener onJoinListener = null;
 	private User self = new User();
 	private String subject = null;
 	private String password = null;
@@ -317,9 +312,6 @@ public class MucOptions {
 									onRenameListener.onSuccess();
 								}
 								mNickChangingInProgress = false;
-							} else if (this.onJoinListener != null) {
-								this.onJoinListener.onSuccess();
-								this.onJoinListener = null;
 							}
 						} else {
 							addUser(user);
@@ -328,14 +320,11 @@ public class MucOptions {
 							Element signed = packet.findChild("x", "jabber:x:signed");
 							if (signed != null) {
 								Element status = packet.findChild("status");
-								String msg;
-								if (status != null) {
-									msg = status.getContent();
-								} else {
-									msg = "";
+								String msg = status == null ? "" : status.getContent();
+								long keyId = pgp.fetchKeyId(account, msg, signed.getContent());
+								if (keyId != 0) {
+									user.setPgpKeyId(keyId);
 								}
-								user.setPgpKeyId(pgp.fetchKeyId(account, msg,
-										signed.getContent()));
 							}
 						}
 					}
@@ -381,10 +370,6 @@ public class MucOptions {
 	private void setError(int error) {
 		this.isOnline = false;
 		this.error = error;
-		if (onJoinListener != null) {
-			onJoinListener.onFailure();
-			onJoinListener = null;
-		}
 	}
 
 	private List<String> getStatusCodes(Element x) {
@@ -436,10 +421,6 @@ public class MucOptions {
 
 	public void setOnRenameListener(OnRenameListener listener) {
 		this.onRenameListener = listener;
-	}
-
-	public void setOnJoinListener(OnJoinListener listener) {
-		this.onJoinListener = listener;
 	}
 
 	public void setOffline() {
