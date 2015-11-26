@@ -221,7 +221,11 @@ public class JingleConnection implements Transferable {
 			conversation.getAccount().getAxolotlService().prepareKeyTransportMessage(conversation.getContact(), new OnMessageCreatedCallback() {
 				@Override
 				public void run(XmppAxolotlMessage xmppAxolotlMessage) {
-					init(message, xmppAxolotlMessage);
+					if (xmppAxolotlMessage != null) {
+						init(message, xmppAxolotlMessage);
+					} else {
+						fail();
+					}
 				}
 			});
 		} else {
