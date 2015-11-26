@@ -1733,7 +1733,6 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 						packet.addChild("x", "jabber:x:signed").setContent(sig);
 					}
 					sendPresencePacket(account, packet);
-					fetchConferenceConfiguration(conversation);
 					if (onConferenceJoined != null) {
 						onConferenceJoined.onConferenceJoined(conversation);
 					}
@@ -1755,6 +1754,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 				@Override
 				public void onFetchFailed(final Conversation conversation, Element error) {
 					join(conversation);
+					fetchConferenceConfiguration(conversation);
 				}
 			});
 
