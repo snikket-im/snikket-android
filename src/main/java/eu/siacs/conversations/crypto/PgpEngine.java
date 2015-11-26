@@ -130,18 +130,18 @@ public class PgpEngine {
 		}
 	}
 
-	public void encrypt(final Message message,
-			final UiCallback<Message> callback) {
-
+	public void encrypt(final Message message, final UiCallback<Message> callback) {
 		Intent params = new Intent();
 		params.setAction(OpenPgpApi.ACTION_ENCRYPT);
-		if (message.getConversation().getMode() == Conversation.MODE_SINGLE) {
-			long[] keys = { message.getConversation().getContact()
-					.getPgpKeyId() };
+		final Conversation conversation = message.getConversation();
+		if (conversation.getMode() == Conversation.MODE_SINGLE) {
+			long[] keys = {
+					conversation.getContact().getPgpKeyId(),
+					conversation.getAccount().getPgpId()
+			};
 			params.putExtra(OpenPgpApi.EXTRA_KEY_IDS, keys);
 		} else {
-			params.putExtra(OpenPgpApi.EXTRA_KEY_IDS, message.getConversation()
-					.getMucOptions().getPgpKeyIds());
+			params.putExtra(OpenPgpApi.EXTRA_KEY_IDS, conversation.getMucOptions().getPgpKeyIds());
 		}
 
 		if (!message.needsUploading()) {
