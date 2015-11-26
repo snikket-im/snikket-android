@@ -47,4 +47,8 @@ public class Field extends Element {
 		field.setChildren(element.getChildren());
 		return field;
 	}
+
+	public String getValue() {
+		return findChildContent("value");
+	}
 }

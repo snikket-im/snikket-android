@@ -1940,13 +1940,18 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 			public void onIqPacketReceived(Account account, IqPacket packet) {
 				if (packet.getType() == IqPacket.TYPE.RESULT) {
 					ArrayList<String> features = new ArrayList<>();
-					for (Element child : packet.query().getChildren()) {
+					Element query = packet.query();
+					for (Element child : query.getChildren()) {
 						if (child != null && child.getName().equals("feature")) {
 							String var = child.getAttribute("var");
 							if (var != null) {
 								features.add(var);
 							}
 						}
+					}
+					Element form = query.findChild("x","jabber:x:data");
+					if (form != null) {
+						conversation.getMucOptions().updateFormData(Data.parse(form));
 					}
 					conversation.getMucOptions().updateFeatures(features);
 					if (callback != null) {

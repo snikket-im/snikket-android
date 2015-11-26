@@ -9,6 +9,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.PgpEngine;
 import eu.siacs.conversations.xml.Element;
+import eu.siacs.conversations.xmpp.forms.Data;
+import eu.siacs.conversations.xmpp.forms.Field;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
 import eu.siacs.conversations.xmpp.stanzas.PresencePacket;
@@ -207,6 +209,7 @@ public class MucOptions {
 	private Account account;
 	private List<User> users = new CopyOnWriteArrayList<>();
 	private List<String> features = new ArrayList<>();
+	private Data form = new Data();
 	private Conversation conversation;
 	private boolean isOnline = false;
 	private int error = ERROR_UNKNOWN;
@@ -226,12 +229,22 @@ public class MucOptions {
 		this.features.addAll(features);
 	}
 
+	public void updateFormData(Data form) {
+		this.form = form;
+	}
+
 	public boolean hasFeature(String feature) {
 		return this.features.contains(feature);
 	}
 
 	public boolean canInvite() {
-		 return !membersOnly() || self.getAffiliation().ranks(Affiliation.ADMIN);
+		Field field = this.form.getFieldByName("muc#roomconfig_allowinvites");
+		return !membersOnly() || self.getRole().ranks(Role.MODERATOR) || (field != null && "1".equals(field.getValue()));
+	}
+
+	public boolean canChangeSubject() {
+		Field field = this.form.getFieldByName("muc#roomconfig_changesubject");
+		return self.getRole().ranks(Role.MODERATOR) || (field != null && "1".equals(field.getValue()));
 	}
 
 	public boolean participating() {
@@ -472,11 +485,12 @@ public class MucOptions {
 				ids.add(user.getPgpKeyId());
 			}
 		}
-		long[] primitivLongArray = new long[ids.size()];
+		ids.add(account.getPgpId());
+		long[] primitiveLongArray = new long[ids.size()];
 		for (int i = 0; i < ids.size(); ++i) {
-			primitivLongArray[i] = ids.get(i);
+			primitiveLongArray[i] = ids.get(i);
 		}
-		return primitivLongArray;
+		return primitiveLongArray;
 	}
 
 	public boolean pgpKeysInUse() {
