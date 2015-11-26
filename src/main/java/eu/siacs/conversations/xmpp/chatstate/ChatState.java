@@ -4,7 +4,7 @@ import eu.siacs.conversations.xml.Element;
 
 public enum ChatState {
 
-	ACTIVE, INACTIVE, GONE, COMPOSING, PAUSED, mIncomingChatState;
+	ACTIVE, INACTIVE, GONE, COMPOSING, PAUSED;
 
 	public static ChatState parse(Element element) {
 		final String NAMESPACE = "http://jabber.org/protocol/chatstates";
