@@ -12,7 +12,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
+import java.net.Proxy;
 import java.net.URL;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -46,6 +49,7 @@ public class HttpUploadConnection implements Transferable {
 	private String mime;
 	private URL mGetUrl;
 	private URL mPutUrl;
+	private boolean mUseTor = false;
 
 	private byte[] key = null;
 
@@ -56,6 +60,7 @@ public class HttpUploadConnection implements Transferable {
 	public HttpUploadConnection(HttpConnectionManager httpConnectionManager) {
 		this.mHttpConnectionManager = httpConnectionManager;
 		this.mXmppConnectionService = httpConnectionManager.getXmppConnectionService();
+		this.mUseTor = mXmppConnectionService.useTorToConnect();
 	}
 
 	@Override
@@ -158,7 +163,11 @@ public class HttpUploadConnection implements Transferable {
 			try {
 				wakeLock.acquire();
 				Log.d(Config.LOGTAG, "uploading to " + mPutUrl.toString());
-				connection = (HttpURLConnection) mPutUrl.openConnection();
+				if (mUseTor) {
+					connection = (HttpURLConnection) mPutUrl.openConnection(mHttpConnectionManager.getProxy());
+				} else {
+					connection = (HttpURLConnection) mPutUrl.openConnection();
+				}
 				if (connection instanceof HttpsURLConnection) {
 					mHttpConnectionManager.setupTrustManager((HttpsURLConnection) connection, true);
 				}

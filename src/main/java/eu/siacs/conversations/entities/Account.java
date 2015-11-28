@@ -2,6 +2,8 @@ package eu.siacs.conversations.entities;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.os.Bundle;
+import android.os.Parcelable;
 import android.os.SystemClock;
 
 import eu.siacs.conversations.crypto.PgpDecryptionService;
@@ -13,6 +15,7 @@ import org.json.JSONObject;
 
 import java.security.PublicKey;
 import java.security.interfaces.DSAPublicKey;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -39,6 +42,8 @@ public class Account extends AbstractEntity {
 	public static final String KEYS = "keys";
 	public static final String AVATAR = "avatar";
 	public static final String DISPLAY_NAME = "display_name";
+	public static final String HOSTNAME = "hostname";
+	public static final String PORT = "port";
 
 	public static final String PINNED_MECHANISM_KEY = "pinned_mechanism";
 
@@ -67,7 +72,20 @@ public class Account extends AbstractEntity {
 		}
 	}
 
-	public static enum State {
+	public ArrayList<Parcelable> getHostnamePortBundles() {
+		ArrayList<Parcelable> values = new ArrayList<>();
+		Bundle hostPort = new Bundle();
+		if (hostname != null && !hostname.isEmpty()) {
+			hostPort.putString("name", hostname);
+		} else {
+			hostPort.putString("name", getServer().toString());
+		}
+		hostPort.putInt("port", port);
+		values.add(hostPort);
+		return values;
+	}
+
+	public enum State {
 		DISABLED,
 		OFFLINE,
 		CONNECTING,
@@ -147,6 +165,8 @@ public class Account extends AbstractEntity {
 	protected JSONObject keys = new JSONObject();
 	protected String avatar;
 	protected String displayName = null;
+	protected String hostname = null;
+	protected int port = 5222;
 	protected boolean online = false;
 	private OtrService mOtrService = null;
 	private AxolotlService axolotlService = null;
@@ -164,12 +184,12 @@ public class Account extends AbstractEntity {
 
 	public Account(final Jid jid, final String password) {
 		this(java.util.UUID.randomUUID().toString(), jid,
-				password, 0, null, "", null, null);
+				password, 0, null, "", null, null, null, 5222);
 	}
 
 	public Account(final String uuid, final Jid jid,
 			final String password, final int options, final String rosterVersion, final String keys,
-			final String avatar, String displayName) {
+			final String avatar, String displayName, String hostname, int port) {
 		this.uuid = uuid;
 		this.jid = jid;
 		if (jid.isBareJid()) {
@@ -185,6 +205,8 @@ public class Account extends AbstractEntity {
 		}
 		this.avatar = avatar;
 		this.displayName = displayName;
+		this.hostname = hostname;
+		this.port = port;
 	}
 
 	public static Account fromCursor(final Cursor cursor) {
@@ -201,7 +223,9 @@ public class Account extends AbstractEntity {
 				cursor.getString(cursor.getColumnIndex(ROSTERVERSION)),
 				cursor.getString(cursor.getColumnIndex(KEYS)),
 				cursor.getString(cursor.getColumnIndex(AVATAR)),
-				cursor.getString(cursor.getColumnIndex(DISPLAY_NAME)));
+				cursor.getString(cursor.getColumnIndex(DISPLAY_NAME)),
+				cursor.getString(cursor.getColumnIndex(HOSTNAME)),
+				cursor.getInt(cursor.getColumnIndex(PORT)));
 	}
 
 	public boolean isOptionSet(final int option) {
@@ -234,6 +258,22 @@ public class Account extends AbstractEntity {
 
 	public void setPassword(final String password) {
 		this.password = password;
+	}
+
+	public void setHostname(String hostname) {
+		this.hostname = hostname;
+	}
+
+	public String getHostname() {
+		return this.hostname == null ? "" : this.hostname;
+	}
+
+	public void setPort(int port) {
+		this.port = port;
+	}
+
+	public int getPort() {
+		return this.port;
 	}
 
 	public State getStatus() {
@@ -314,6 +354,8 @@ public class Account extends AbstractEntity {
 		values.put(ROSTERVERSION, rosterVersion);
 		values.put(AVATAR, avatar);
 		values.put(DISPLAY_NAME, displayName);
+		values.put(HOSTNAME, hostname);
+		values.put(PORT, port);
 		return values;
 	}
 

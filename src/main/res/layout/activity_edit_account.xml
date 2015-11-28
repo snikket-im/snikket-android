@@ -78,7 +78,59 @@
                     android:textColorHint="@color/black54"
                     android:textSize="?attr/TextSizeBody" />
 
-                <CheckBox
+                    <LinearLayout
+                        android:id="@+id/name_port"
+                        android:layout_marginTop="8dp"
+                        android:orientation="horizontal"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:weightSum="1">
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.8">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/account_settings_hostname"
+                                android:textColor="@color/black87"
+                                android:textSize="?attr/TextSizeBody"
+                                android:id="@+id/textView"/>
+                            <EditText
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/black87"
+                                android:textColorHint="@color/black54"
+                                android:textSize="?attr/TextSizeBody"
+                                android:id="@+id/hostname"
+                                android:inputType="textNoSuggestions"
+                                android:hint="@string/hostname_or_onion"/>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.2"
+                            >
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/account_settings_port"
+                                android:textColor="@color/black87"
+                                android:textSize="?attr/TextSizeBody"/>
+                            <EditText
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:inputType="number"
+                                android:maxLength="5"
+                                android:textColor="@color/black87"
+                                android:textColorHint="@color/black54"
+                                android:textSize="?attr/TextSizeBody"
+                                android:id="@+id/port"/>
+                        </LinearLayout>
+                    </LinearLayout>
+                    <CheckBox
                     android:id="@+id/account_register_new"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

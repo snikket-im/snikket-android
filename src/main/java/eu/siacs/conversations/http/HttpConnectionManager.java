@@ -1,7 +1,13 @@
 package eu.siacs.conversations.http;
 
+import android.os.Build;
+
 import org.apache.http.conn.ssl.StrictHostnameVerifier;
 
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
@@ -85,6 +91,14 @@ public class HttpConnectionManager extends AbstractConnectionManager {
 			connection.setSSLSocketFactory(sf);
 			connection.setHostnameVerifier(hostnameVerifier);
 		} catch (final KeyManagementException | NoSuchAlgorithmException ignored) {
+		}
+	}
+
+	public Proxy getProxy() throws IOException {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+			return new Proxy(Proxy.Type.SOCKS, new InetSocketAddress(InetAddress.getLocalHost(), 9050));
+		} else {
+			return new Proxy(Proxy.Type.HTTP, new InetSocketAddress(InetAddress.getLocalHost(), 8118));
 		}
 	}
 }

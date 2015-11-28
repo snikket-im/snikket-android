@@ -2,6 +2,10 @@ package eu.siacs.conversations;
 
 import android.graphics.Bitmap;
 
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
+
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
 
 public final class Config {

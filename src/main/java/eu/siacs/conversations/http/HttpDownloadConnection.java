@@ -10,7 +10,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
+import java.net.Proxy;
 import java.net.URL;
 import java.util.Arrays;
 
@@ -39,10 +42,12 @@ public class HttpDownloadConnection implements Transferable {
 	private int mStatus = Transferable.STATUS_UNKNOWN;
 	private boolean acceptedAutomatically = false;
 	private int mProgress = 0;
+	private boolean mUseTor = false;
 
 	public HttpDownloadConnection(HttpConnectionManager manager) {
 		this.mHttpConnectionManager = manager;
 		this.mXmppConnectionService = manager.getXmppConnectionService();
+		this.mUseTor = mXmppConnectionService.useTorToConnect();
 	}
 
 	@Override
@@ -191,8 +196,15 @@ public class HttpDownloadConnection implements Transferable {
 			try {
 				Log.d(Config.LOGTAG, "retrieve file size. interactive:" + String.valueOf(interactive));
 				changeStatus(STATUS_CHECKING);
-				HttpURLConnection connection = (HttpURLConnection) mUrl.openConnection();
+				HttpURLConnection connection;
+				if (mUseTor) {
+					connection = (HttpURLConnection) mUrl.openConnection(mHttpConnectionManager.getProxy());
+				} else {
+					connection = (HttpURLConnection) mUrl.openConnection();
+				}
 				connection.setRequestMethod("HEAD");
+				Log.d(Config.LOGTAG,"url: "+connection.getURL().toString());
+				Log.d(Config.LOGTAG,"connection: "+connection.toString());
 				connection.setRequestProperty("User-Agent", mXmppConnectionService.getIqGenerator().getIdentityName());
 				if (connection instanceof HttpsURLConnection) {
 					mHttpConnectionManager.setupTrustManager((HttpsURLConnection) connection, interactive);
@@ -245,7 +257,12 @@ public class HttpDownloadConnection implements Transferable {
 			PowerManager.WakeLock wakeLock = mHttpConnectionManager.createWakeLock("http_download_"+message.getUuid());
 			try {
 				wakeLock.acquire();
-				HttpURLConnection connection = (HttpURLConnection) mUrl.openConnection();
+				HttpURLConnection connection;
+				if (mUseTor) {
+					connection = (HttpURLConnection) mUrl.openConnection(mHttpConnectionManager.getProxy());
+				} else {
+					connection = (HttpURLConnection) mUrl.openConnection();
+				}
 				if (connection instanceof HttpsURLConnection) {
 					mHttpConnectionManager.setupTrustManager((HttpsURLConnection) connection, interactive);
 				}

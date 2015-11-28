@@ -27,6 +27,7 @@ import java.net.ConnectException;
 import java.net.IDN;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.net.URL;
@@ -233,16 +234,23 @@ public class XmppConnection implements Runnable {
 			tagReader = new XmlReader(wakeLock);
 			tagWriter = new TagWriter();
 			this.changeStatus(Account.State.CONNECTING);
+			final boolean useTor = mXmppConnectionService.useTorToConnect();
+			final Proxy TOR_PROXY = new Proxy(Proxy.Type.SOCKS, new InetSocketAddress(InetAddress.getLocalHost(), 9050));
 			if (DNSHelper.isIp(account.getServer().toString())) {
-				socket = new Socket();
+				socket = useTor ? new Socket(TOR_PROXY) : new Socket();
 				try {
 					socket.connect(new InetSocketAddress(account.getServer().toString(), 5222), Config.SOCKET_TIMEOUT * 1000);
 				} catch (IOException e) {
 					throw new UnknownHostException();
 				}
 			} else {
-				final Bundle result = DNSHelper.getSRVRecord(account.getServer(),mXmppConnectionService);
-				final ArrayList<Parcelable> values = result.getParcelableArrayList("values");
+				final ArrayList<Parcelable> values;
+				if (useTor) {
+					values = account.getHostnamePortBundles();
+				} else {
+					final Bundle result = DNSHelper.getSRVRecord(account.getServer(),mXmppConnectionService);
+					values = result.getParcelableArrayList("values");
+				}
 				int i = 0;
 				boolean socketError = true;
 				while (socketError && values.size() > i) {
@@ -269,11 +277,11 @@ public class XmppConnection implements Runnable {
 									+ ": using values from dns "
 									+ srvRecordServer + ":" + srvRecordPort);
 						}
-						socket = new Socket();
+						socket = useTor ? new Socket(TOR_PROXY) : new Socket();
 						socket.connect(addr, Config.SOCKET_TIMEOUT * 1000);
 						socketError = false;
 					} catch (final Throwable e) {
-						Log.d(Config.LOGTAG, account.getJid().toBareJid().toString() + ": " + e.getMessage());
+						Log.d(Config.LOGTAG, account.getJid().toBareJid().toString() + ": " + e.getMessage() +"("+e.getClass().getName()+")");
 						i++;
 					}
 				}

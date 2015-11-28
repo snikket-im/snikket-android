@@ -7,7 +7,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.net.Socket;
 import java.net.SocketAddress;
 import java.net.UnknownHostException;
@@ -59,7 +61,9 @@ public class JingleSocks5Transport extends JingleTransport {
 			@Override
 			public void run() {
 				try {
-					socket = new Socket();
+					final boolean useTor = connection.getConnectionManager().getXmppConnectionService().useTorToConnect();
+					final Proxy TOR_PROXY = new Proxy(Proxy.Type.SOCKS, new InetSocketAddress(InetAddress.getLocalHost(), 9050));
+					socket = useTor ? new Socket(TOR_PROXY) : new Socket();
 					SocketAddress address = new InetSocketAddress(candidate.getHost(),candidate.getPort());
 					socket.connect(address,Config.SOCKET_TIMEOUT * 1000);
 					inputStream = socket.getInputStream();
