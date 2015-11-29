@@ -129,6 +129,31 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 				mAccountJid.requestFocus();
 				return;
 			}
+			String hostname = null;
+			int numericPort = 5222;
+			if (mUseTor) {
+				hostname = mHostname.getText().toString();
+				final String port = mPort.getText().toString();
+				if (hostname.contains(" ")) {
+					mHostname.setError(getString(R.string.not_valid_hostname));
+					mHostname.requestFocus();
+					return;
+				}
+				try {
+					numericPort = Integer.parseInt(port);
+					if (numericPort < 0 || numericPort > 65535) {
+						mPort.setError(getString(R.string.not_a_valid_port));
+						mPort.requestFocus();
+						return;
+					}
+
+				} catch (NumberFormatException e) {
+					mPort.setError(getString(R.string.not_a_valid_port));
+					mPort.requestFocus();
+					return;
+				}
+			}
+
 			if (jid.isDomainJid()) {
 				if (Config.DOMAIN_LOCK != null) {
 					mAccountJid.setError(getString(R.string.invalid_username));
@@ -140,8 +165,6 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 			}
 			final String password = mPassword.getText().toString();
 			final String passwordConfirm = mPasswordConfirm.getText().toString();
-			final String hostname = mHostname.getText().toString();
-			final String port = mPort.getText().toString();
 			if (registerNewAccount) {
 				if (!password.equals(passwordConfirm)) {
 					mPasswordConfirm.setError(getString(R.string.passwords_do_not_match));
@@ -151,29 +174,12 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 			}
 			if (mAccount != null) {
 				mAccount.setJid(jid);
+				mAccount.setPort(numericPort);
+				mAccount.setHostname(hostname);
 				mAccountJid.setError(null);
 				mPasswordConfirm.setError(null);
 				mAccount.setPassword(password);
 				mAccount.setOption(Account.OPTION_REGISTER, registerNewAccount);
-				if (hostname.contains(" ")) {
-					mHostname.setError(getString(R.string.not_valid_hostname));
-					mHostname.requestFocus();
-					return;
-				}
-				mAccount.setHostname(hostname);
-				try {
-					int numericPort = Integer.parseInt(port);
-					if (numericPort < 0 || numericPort > 65535) {
-						mPort.setError(getString(R.string.not_a_valid_port));
-						mPort.requestFocus();
-						return;
-					}
-					mAccount.setPort(numericPort);
-				} catch (NumberFormatException e) {
-					mPort.setError(getString(R.string.not_a_valid_port));
-					mPort.requestFocus();
-					return;
-				}
 				xmppConnectionService.updateAccount(mAccount);
 			} else {
 				if (xmppConnectionService.findAccountByJid(jid) != null) {
@@ -182,11 +188,15 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 					return;
 				}
 				mAccount = new Account(jid.toBareJid(), password);
+				mAccount.setPort(numericPort);
+				mAccount.setHostname(hostname);
 				mAccount.setOption(Account.OPTION_USETLS, true);
 				mAccount.setOption(Account.OPTION_USECOMPRESSION, true);
 				mAccount.setOption(Account.OPTION_REGISTER, registerNewAccount);
 				xmppConnectionService.createAccount(mAccount);
 			}
+			mHostname.setError(null);
+			mPort.setError(null);
 			if (!mAccount.isOptionSet(Account.OPTION_DISABLED)
 					&& !registerNewAccount
 					&& !mInitMode) {

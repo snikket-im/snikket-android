@@ -2,8 +2,6 @@ package eu.siacs.conversations.entities;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.os.Bundle;
-import android.os.Parcelable;
 import android.os.SystemClock;
 
 import eu.siacs.conversations.crypto.PgpDecryptionService;
@@ -15,7 +13,6 @@ import org.json.JSONObject;
 
 import java.security.PublicKey;
 import java.security.interfaces.DSAPublicKey;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -70,19 +67,6 @@ public class Account extends AbstractEntity {
 		} else {
 			return xmppConnection.getServerIdentity();
 		}
-	}
-
-	public ArrayList<Parcelable> getHostnamePortBundles() {
-		ArrayList<Parcelable> values = new ArrayList<>();
-		Bundle hostPort = new Bundle();
-		if (hostname != null && !hostname.isEmpty()) {
-			hostPort.putString("name", hostname);
-		} else {
-			hostPort.putString("name", getServer().toString());
-		}
-		hostPort.putInt("port", port);
-		values.add(hostPort);
-		return values;
 	}
 
 	public enum State {
@@ -266,6 +250,10 @@ public class Account extends AbstractEntity {
 
 	public String getHostname() {
 		return this.hostname == null ? "" : this.hostname;
+	}
+
+	public boolean isOnion() {
+		return getServer().toString().toLowerCase().endsWith(".onion");
 	}
 
 	public void setPort(int port) {

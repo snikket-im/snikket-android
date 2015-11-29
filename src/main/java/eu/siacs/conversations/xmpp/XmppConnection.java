@@ -13,7 +13,6 @@ import android.util.Log;
 import android.util.Pair;
 import android.util.SparseArray;
 
-import org.apache.http.conn.ssl.StrictHostnameVerifier;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.xmlpull.v1.XmlPullParserException;
@@ -27,10 +26,10 @@ import java.net.ConnectException;
 import java.net.IDN;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
-import java.net.Proxy;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.net.URL;
+import java.nio.ByteBuffer;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.Principal;
@@ -234,23 +233,44 @@ public class XmppConnection implements Runnable {
 			tagReader = new XmlReader(wakeLock);
 			tagWriter = new TagWriter();
 			this.changeStatus(Account.State.CONNECTING);
-			final boolean useTor = mXmppConnectionService.useTorToConnect();
-			final Proxy TOR_PROXY = new Proxy(Proxy.Type.SOCKS, new InetSocketAddress(InetAddress.getLocalHost(), 9050));
-			if (DNSHelper.isIp(account.getServer().toString())) {
-				socket = useTor ? new Socket(TOR_PROXY) : new Socket();
+			final boolean useTor = mXmppConnectionService.useTorToConnect() || account.isOnion();
+			if (useTor) {
+				InetSocketAddress proxyAddress = new InetSocketAddress(InetAddress.getLocalHost(), 9050);
+				byte[] destination;
+				if (account.getHostname() == null || account.getHostname().isEmpty()) {
+					destination = account.getServer().toString().getBytes();
+				} else {
+					destination = account.getHostname().getBytes();
+				}
+				Log.d(Config.LOGTAG,"connecting via tor to "+new String(destination));
+				socket = new Socket();
+				socket.connect(proxyAddress, Config.CONNECT_TIMEOUT * 1000);
+				InputStream proxyIs = socket.getInputStream();
+				OutputStream proxyOs = socket.getOutputStream();
+				proxyOs.write(new byte[]{0x05, 0x01, 0x00});
+				byte[] response = new byte[2];
+				proxyIs.read(response);
+				ByteBuffer request = ByteBuffer.allocate(7 + destination.length);
+				request.put(new byte[]{0x05, 0x01, 0x00, 0x03});
+				request.put((byte) destination.length);
+				request.put(destination);
+				request.putShort((short) account.getPort());
+				proxyOs.write(request.array());
+				response = new byte[7 + destination.length];
+				proxyIs.read(response);
+				if (response[1] != 0x00) {
+					throw new UnknownHostException();
+				}
+			} else if (DNSHelper.isIp(account.getServer().toString())) {
+				socket = new Socket();
 				try {
 					socket.connect(new InetSocketAddress(account.getServer().toString(), 5222), Config.SOCKET_TIMEOUT * 1000);
 				} catch (IOException e) {
 					throw new UnknownHostException();
 				}
 			} else {
-				final ArrayList<Parcelable> values;
-				if (useTor) {
-					values = account.getHostnamePortBundles();
-				} else {
-					final Bundle result = DNSHelper.getSRVRecord(account.getServer(),mXmppConnectionService);
-					values = result.getParcelableArrayList("values");
-				}
+				final Bundle result = DNSHelper.getSRVRecord(account.getServer(),mXmppConnectionService);
+				final ArrayList<Parcelable>values = result.getParcelableArrayList("values");
 				int i = 0;
 				boolean socketError = true;
 				while (socketError && values.size() > i) {
@@ -277,7 +297,7 @@ public class XmppConnection implements Runnable {
 									+ ": using values from dns "
 									+ srvRecordServer + ":" + srvRecordPort);
 						}
-						socket = useTor ? new Socket(TOR_PROXY) : new Socket();
+						socket = new Socket();
 						socket.connect(addr, Config.SOCKET_TIMEOUT * 1000);
 						socketError = false;
 					} catch (final Throwable e) {
