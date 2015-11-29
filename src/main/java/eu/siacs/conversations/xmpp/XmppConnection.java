@@ -67,6 +67,7 @@ import eu.siacs.conversations.generator.IqGenerator;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.DNSHelper;
+import eu.siacs.conversations.utils.SocksSocketFactory;
 import eu.siacs.conversations.utils.Xmlns;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Tag;
@@ -235,32 +236,14 @@ public class XmppConnection implements Runnable {
 			this.changeStatus(Account.State.CONNECTING);
 			final boolean useTor = mXmppConnectionService.useTorToConnect() || account.isOnion();
 			if (useTor) {
-				InetSocketAddress proxyAddress = new InetSocketAddress(InetAddress.getLocalHost(), 9050);
-				byte[] destination;
+				String destination;
 				if (account.getHostname() == null || account.getHostname().isEmpty()) {
-					destination = account.getServer().toString().getBytes();
+					destination = account.getServer().toString();
 				} else {
-					destination = account.getHostname().getBytes();
+					destination = account.getHostname();
 				}
-				Log.d(Config.LOGTAG,"connecting via tor to "+new String(destination));
-				socket = new Socket();
-				socket.connect(proxyAddress, Config.CONNECT_TIMEOUT * 1000);
-				InputStream proxyIs = socket.getInputStream();
-				OutputStream proxyOs = socket.getOutputStream();
-				proxyOs.write(new byte[]{0x05, 0x01, 0x00});
-				byte[] response = new byte[2];
-				proxyIs.read(response);
-				ByteBuffer request = ByteBuffer.allocate(7 + destination.length);
-				request.put(new byte[]{0x05, 0x01, 0x00, 0x03});
-				request.put((byte) destination.length);
-				request.put(destination);
-				request.putShort((short) account.getPort());
-				proxyOs.write(request.array());
-				response = new byte[7 + destination.length];
-				proxyIs.read(response);
-				if (response[1] != 0x00) {
-					throw new UnknownHostException();
-				}
+				Log.d(Config.LOGTAG,account.getJid().toBareJid()+": connect to "+destination+" via TOR");
+				socket = SocksSocketFactory.createSocketOverTor(destination,account.getPort());
 			} else if (DNSHelper.isIp(account.getServer().toString())) {
 				socket = new Socket();
 				try {
