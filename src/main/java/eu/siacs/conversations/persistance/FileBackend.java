@@ -493,7 +493,7 @@ public class FileBackend {
 		return calcSampleSize(options, size);
 	}
 
-	private int calcSampleSize(BitmapFactory.Options options, int size) {
+	public static int calcSampleSize(BitmapFactory.Options options, int size) {
 		int height = options.outHeight;
 		int width = options.outWidth;
 		int inSampleSize = 1;
