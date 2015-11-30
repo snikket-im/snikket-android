@@ -95,10 +95,6 @@ public class HttpConnectionManager extends AbstractConnectionManager {
 	}
 
 	public Proxy getProxy() throws IOException {
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-			return new Proxy(Proxy.Type.SOCKS, new InetSocketAddress(InetAddress.getLocalHost(), 9050));
-		} else {
-			return new Proxy(Proxy.Type.HTTP, new InetSocketAddress(InetAddress.getLocalHost(), 8118));
-		}
+		return new Proxy(Proxy.Type.HTTP, new InetSocketAddress(InetAddress.getLocalHost(), 8118));
 	}
 }
