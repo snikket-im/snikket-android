@@ -29,7 +29,6 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.net.URL;
-import java.nio.ByteBuffer;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.Principal;
@@ -318,8 +317,8 @@ public class XmppConnection implements Runnable {
 			this.changeStatus(Account.State.UNAUTHORIZED);
 		} catch (final UnknownHostException | ConnectException e) {
 			this.changeStatus(Account.State.SERVER_NOT_FOUND);
-		} catch (final DnsTimeoutException e) {
-			this.changeStatus(Account.State.DNS_TIMEOUT);
+		} catch (final SocksSocketFactory.SocksProxyNotFoundException e) {
+			this.changeStatus(Account.State.TOR_NOT_AVAILABLE);
 		} catch (final IOException | XmlPullParserException | NoSuchAlgorithmException e) {
 			Log.d(Config.LOGTAG, account.getJid().toBareJid().toString() + ": " + e.getMessage());
 			this.changeStatus(Account.State.OFFLINE);
@@ -1327,9 +1326,6 @@ public class XmppConnection implements Runnable {
 
 	}
 
-	private class DnsTimeoutException extends IOException {
-
-	}
 	public enum Identity {
 		FACEBOOK,
 		SLACK,
