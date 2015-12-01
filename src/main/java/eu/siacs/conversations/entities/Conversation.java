@@ -612,9 +612,16 @@ public class Conversation extends AbstractEntity implements Blockable {
 		if (next == -1) {
 			int outgoing = this.getMostRecentlyUsedOutgoingEncryption();
 			if (outgoing == Message.ENCRYPTION_NONE) {
-				return this.getMostRecentlyUsedIncomingEncryption();
+				next = this.getMostRecentlyUsedIncomingEncryption();
 			} else {
-				return outgoing;
+				next = outgoing;
+			}
+		}
+		if (Config.PARANOID_MODE && mode == MODE_SINGLE && next <= 0) {
+			if (getAccount().getAxolotlService().isContactAxolotlCapable(getContact())) {
+				return Message.ENCRYPTION_AXOLOTL;
+			} else {
+				return Message.ENCRYPTION_OTR;
 			}
 		}
 		return next;

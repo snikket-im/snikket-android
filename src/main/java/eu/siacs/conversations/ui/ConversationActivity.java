@@ -815,6 +815,7 @@ public class ConversationActivity extends XmppActivity
 			MenuItem pgp = popup.getMenu().findItem(R.id.encryption_choice_pgp);
 			MenuItem axolotl = popup.getMenu().findItem(R.id.encryption_choice_axolotl);
 			pgp.setVisible(!Config.HIDE_PGP_IN_UI);
+			none.setVisible(!Config.PARANOID_MODE);
 			if (conversation.getMode() == Conversation.MODE_MULTI) {
 				otr.setVisible(false);
 				axolotl.setVisible(false);

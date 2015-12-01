@@ -9,7 +9,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
+import android.preference.PreferenceCategory;
 import android.preference.PreferenceManager;
+import android.preference.PreferenceScreen;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.security.KeyStoreException;
@@ -19,6 +22,7 @@ import java.util.Collections;
 import java.util.Locale;
 
 import de.duenndns.ssl.MemorizingTrustManager;
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.xmpp.XmppConnection;
@@ -54,6 +58,14 @@ public class SettingsActivity extends XmppActivity implements
 				entries.add(0, Build.MODEL);
 				resources.setEntries(entries.toArray(new CharSequence[entries.size()]));
 				resources.setEntryValues(entries.toArray(new CharSequence[entries.size()]));
+			}
+		}
+
+		if (Config.PARANOID_MODE) {
+			PreferenceCategory connectionOptions = (PreferenceCategory) mSettingsFragment.findPreference("connection_options");
+			PreferenceScreen expert = (PreferenceScreen) mSettingsFragment.findPreference("expert");
+			if (connectionOptions != null) {
+				expert.removePreference(connectionOptions);
 			}
 		}
 

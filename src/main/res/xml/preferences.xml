@@ -147,7 +147,9 @@
                     android:summary="@string/pref_remove_trusted_certificates_summary"
                     android:title="@string/pref_remove_trusted_certificates_title"/>
             </PreferenceCategory>
-            <PreferenceCategory android:title="@string/pref_connection_options">
+            <PreferenceCategory
+                android:title="@string/pref_connection_options"
+                android:key="connection_options">
                 <CheckBoxPreference
                     android:defaultValue="false"
                     android:key="use_tor"
