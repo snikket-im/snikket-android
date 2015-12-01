@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.security.KeyChain;
 import android.security.KeyChainAliasCallback;
+import android.util.Pair;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
@@ -30,16 +31,24 @@ import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.services.XmppConnectionService.OnAccountUpdate;
 import eu.siacs.conversations.ui.adapter.AccountAdapter;
+import eu.siacs.conversations.xmpp.jid.InvalidJidException;
+import eu.siacs.conversations.xmpp.jid.Jid;
+
 import org.openintents.openpgp.util.OpenPgpApi;
 
 public class ManageAccountActivity extends XmppActivity implements OnAccountUpdate, KeyChainAliasCallback, XmppConnectionService.OnAccountCreated {
 
+	private final String STATE_SELECTED_ACCOUNT = "selected_account";
+
 	protected Account selectedAccount = null;
+	protected Jid selectedAccountJid = null;
 
 	protected final List<Account> accountList = new ArrayList<>();
 	protected ListView accountListView;
 	protected AccountAdapter mAccountAdapter;
 	protected AtomicBoolean mInvokedAddAccount = new AtomicBoolean(false);
+
+	protected Pair<Integer, Intent> mPostponedActivityResult = null;
 
 	@Override
 	public void onAccountUpdate() {
@@ -68,6 +77,17 @@ public class ManageAccountActivity extends XmppActivity implements OnAccountUpda
 
 		setContentView(R.layout.manage_accounts);
 
+		if (savedInstanceState != null) {
+			String jid = savedInstanceState.getString(STATE_SELECTED_ACCOUNT);
+			if (jid != null) {
+				try {
+					this.selectedAccountJid = Jid.fromString(jid);
+				} catch (InvalidJidException e) {
+					this.selectedAccountJid = null;
+				}
+			}
+		}
+
 		accountListView = (ListView) findViewById(R.id.account_list);
 		this.mAccountAdapter = new AccountAdapter(this, accountList);
 		accountListView.setAdapter(this.mAccountAdapter);
@@ -83,12 +103,19 @@ public class ManageAccountActivity extends XmppActivity implements OnAccountUpda
 	}
 
 	@Override
-	public void onCreateContextMenu(ContextMenu menu, View v,
-			ContextMenuInfo menuInfo) {
+	public void onSaveInstanceState(final Bundle savedInstanceState) {
+		if (selectedAccount != null) {
+			savedInstanceState.putString(STATE_SELECTED_ACCOUNT, selectedAccount.getJid().toBareJid().toString());
+		}
+		super.onSaveInstanceState(savedInstanceState);
+	}
+
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
 		ManageAccountActivity.this.getMenuInflater().inflate(
 				R.menu.manageaccounts_context, menu);
-		AdapterView.AdapterContextMenuInfo acmi = (AdapterContextMenuInfo) menuInfo;
+		AdapterContextMenuInfo acmi = (AdapterContextMenuInfo) menuInfo;
 		this.selectedAccount = accountList.get(acmi.position);
 		if (this.selectedAccount.isOptionSet(Account.OPTION_DISABLED)) {
 			menu.findItem(R.id.mgmt_account_disable).setVisible(false);
@@ -103,9 +130,15 @@ public class ManageAccountActivity extends XmppActivity implements OnAccountUpda
 
 	@Override
 	void onBackendConnected() {
+		if (selectedAccountJid != null) {
+			this.selectedAccount = xmppConnectionService.findAccountByJid(selectedAccountJid);
+		}
 		refreshUiReal();
+		if (this.mPostponedActivityResult != null) {
+			this.onActivityResult(mPostponedActivityResult.first, RESULT_OK, mPostponedActivityResult.second);
+		}
 		if (Config.X509_VERIFICATION && this.accountList.size() == 0) {
-			if (mInvokedAddAccount.compareAndSet(false,true)) {
+			if (mInvokedAddAccount.compareAndSet(false, true)) {
 				addAccountFromKey();
 			}
 		}
@@ -136,23 +169,23 @@ public class ManageAccountActivity extends XmppActivity implements OnAccountUpda
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case R.id.mgmt_account_publish_avatar:
-			publishAvatar(selectedAccount);
-			return true;
-		case R.id.mgmt_account_disable:
-			disableAccount(selectedAccount);
-			return true;
-		case R.id.mgmt_account_enable:
-			enableAccount(selectedAccount);
-			return true;
-		case R.id.mgmt_account_delete:
-			deleteAccount(selectedAccount);
-			return true;
-		case R.id.mgmt_account_announce_pgp:
-			choosePgpSignId(selectedAccount);
-			return true;
-		default:
-			return super.onContextItemSelected(item);
+			case R.id.mgmt_account_publish_avatar:
+				publishAvatar(selectedAccount);
+				return true;
+			case R.id.mgmt_account_disable:
+				disableAccount(selectedAccount);
+				return true;
+			case R.id.mgmt_account_enable:
+				enableAccount(selectedAccount);
+				return true;
+			case R.id.mgmt_account_delete:
+				deleteAccount(selectedAccount);
+				return true;
+			case R.id.mgmt_account_announce_pgp:
+				publishOpenPGPPublicKey(selectedAccount);
+				return true;
+			default:
+				return super.onContextItemSelected(item);
 		}
 	}
 
@@ -184,9 +217,9 @@ public class ManageAccountActivity extends XmppActivity implements OnAccountUpda
 			Intent contactsIntent = new Intent(this,
 					StartConversationActivity.class);
 			contactsIntent.setFlags(
-			// if activity exists in stack, pop the stack and go back to it
+					// if activity exists in stack, pop the stack and go back to it
 					Intent.FLAG_ACTIVITY_CLEAR_TOP |
-					// otherwise, make a new task for it
+							// otherwise, make a new task for it
 							Intent.FLAG_ACTIVITY_NEW_TASK |
 							// don't use the new activity animation; finish
 							// animation runs instead
@@ -211,7 +244,7 @@ public class ManageAccountActivity extends XmppActivity implements OnAccountUpda
 		try {
 			KeyChain.choosePrivateKeyAlias(this, this, null, null, null, -1, null);
 		} catch (ActivityNotFoundException e) {
-			Toast.makeText(this,R.string.device_does_not_support_certificates,Toast.LENGTH_LONG).show();
+			Toast.makeText(this, R.string.device_does_not_support_certificates, Toast.LENGTH_LONG).show();
 		}
 	}
 
@@ -231,7 +264,7 @@ public class ManageAccountActivity extends XmppActivity implements OnAccountUpda
 				}
 			}
 		}
-		for(Account account : list) {
+		for (Account account : list) {
 			disableAccount(account);
 		}
 	}
@@ -267,7 +300,7 @@ public class ManageAccountActivity extends XmppActivity implements OnAccountUpda
 				}
 			}
 		}
-		for(Account account : list) {
+		for (Account account : list) {
 			enableAccount(account);
 		}
 	}
@@ -284,7 +317,7 @@ public class ManageAccountActivity extends XmppActivity implements OnAccountUpda
 
 	private void publishOpenPGPPublicKey(Account account) {
 		if (ManageAccountActivity.this.hasPgp()) {
-			announcePgp(account, null);
+			choosePgpSignId(selectedAccount);
 		} else {
 			this.showInstallPgpDialog();
 		}
@@ -312,15 +345,20 @@ public class ManageAccountActivity extends XmppActivity implements OnAccountUpda
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (resultCode == RESULT_OK) {
-			if (requestCode == REQUEST_CHOOSE_PGP_ID) {
-				if (data.getExtras().containsKey(OpenPgpApi.EXTRA_SIGN_KEY_ID)) {
-					selectedAccount.setPgpSignId(data.getExtras().getLong(OpenPgpApi.EXTRA_SIGN_KEY_ID));
+			if (xmppConnectionServiceBound) {
+				if (requestCode == REQUEST_CHOOSE_PGP_ID) {
+					if (data.getExtras().containsKey(OpenPgpApi.EXTRA_SIGN_KEY_ID)) {
+						selectedAccount.setPgpSignId(data.getExtras().getLong(OpenPgpApi.EXTRA_SIGN_KEY_ID));
+						announcePgp(selectedAccount, null);
+					} else {
+						choosePgpSignId(selectedAccount);
+					}
+				} else if (requestCode == REQUEST_ANNOUNCE_PGP) {
 					announcePgp(selectedAccount, null);
-				} else {
-					choosePgpSignId(selectedAccount);
 				}
-			} else if (requestCode == REQUEST_ANNOUNCE_PGP) {
-				announcePgp(selectedAccount, null);
+				this.mPostponedActivityResult = null;
+			} else {
+				this.mPostponedActivityResult = new Pair<>(requestCode, data);
 			}
 		}
 	}
@@ -342,7 +380,7 @@ public class ManageAccountActivity extends XmppActivity implements OnAccountUpda
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				Toast.makeText(ManageAccountActivity.this,r,Toast.LENGTH_LONG).show();
+				Toast.makeText(ManageAccountActivity.this, r, Toast.LENGTH_LONG).show();
 			}
 		});
 	}

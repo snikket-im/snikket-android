@@ -17,6 +17,7 @@ import android.provider.MediaStore;
 import android.support.v4.widget.SlidingPaneLayout;
 import android.support.v4.widget.SlidingPaneLayout.PanelSlideListener;
 import android.util.Log;
+import android.util.Pair;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -109,6 +110,7 @@ public class ConversationActivity extends XmppActivity
 
 	private boolean mActivityPaused = false;
 	private AtomicBoolean mRedirected = new AtomicBoolean(false);
+	private Pair<Integer, Intent> mPostponedActivityResult;
 
 	public Conversation getSelectedConversation() {
 		return this.mSelectedConversation;
@@ -1101,11 +1103,16 @@ public class ConversationActivity extends XmppActivity
 			mPendingFileUris.clear();
 			mPendingGeoUri = null;
 			setSelectedConversation(conversationList.get(0));
+			mPostponedActivityResult = null;
 			this.mConversationFragment.reInit(getSelectedConversation());
 		} else {
 			this.mConversationFragment.messageListAdapter.updatePreferences();
 			this.mConversationFragment.messagesView.invalidateViews();
 			this.mConversationFragment.setupIme();
+		}
+
+		if (this.mPostponedActivityResult != null) {
+			this.onActivityResult(mPostponedActivityResult.first, RESULT_OK, mPostponedActivityResult.second);
 		}
 
 		if(!forbidProcessingPendings) {
@@ -1208,14 +1215,24 @@ public class ConversationActivity extends XmppActivity
 			if (requestCode == REQUEST_DECRYPT_PGP) {
 				mConversationFragment.onActivityResult(requestCode, resultCode, data);
 			} else if (requestCode == REQUEST_CHOOSE_PGP_ID) {
-				if (data.getExtras().containsKey(OpenPgpApi.EXTRA_SIGN_KEY_ID)) {
-					mSelectedConversation.getAccount().setPgpSignId(data.getExtras().getLong(OpenPgpApi.EXTRA_SIGN_KEY_ID));
-					announcePgp(mSelectedConversation.getAccount(), null);
+				if (xmppConnectionServiceBound) {
+					if (data.getExtras().containsKey(OpenPgpApi.EXTRA_SIGN_KEY_ID)) {
+						mSelectedConversation.getAccount().setPgpSignId(data.getExtras().getLong(OpenPgpApi.EXTRA_SIGN_KEY_ID));
+						announcePgp(mSelectedConversation.getAccount(), null);
+					} else {
+						choosePgpSignId(mSelectedConversation.getAccount());
+					}
+					this.mPostponedActivityResult = null;
 				} else {
-					choosePgpSignId(mSelectedConversation.getAccount());
+					this.mPostponedActivityResult = new Pair<>(requestCode, data);
 				}
 			} else if (requestCode == REQUEST_ANNOUNCE_PGP) {
-				announcePgp(mSelectedConversation.getAccount(), null);
+				if (xmppConnectionServiceBound) {
+					announcePgp(mSelectedConversation.getAccount(), null);
+					this.mPostponedActivityResult = null;
+				} else {
+					this.mPostponedActivityResult = new Pair<>(requestCode, data);
+				}
 			} else if (requestCode == ATTACHMENT_CHOICE_CHOOSE_IMAGE) {
 				mPendingImageUris.clear();
 				mPendingImageUris.addAll(extractUriFromIntent(data));
