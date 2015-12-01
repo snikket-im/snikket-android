@@ -7,6 +7,7 @@ import eu.siacs.conversations.crypto.PgpDecryptionService;
 import net.java.otr4j.session.Session;
 import net.java.otr4j.session.SessionStatus;
 
+import java.util.ArrayList;
 import java.util.Set;
 
 import eu.siacs.conversations.Config;
@@ -393,17 +394,17 @@ public class MessageParser extends AbstractParser implements
 			}
 
 			if (mXmppConnectionService.confirmMessages() && remoteMsgId != null && !isForwarded && !isTypeGroupChat) {
+				ArrayList<String> receiptsNamespaces = new ArrayList<>();
 				if (packet.hasChild("markable", "urn:xmpp:chat-markers:0")) {
-					MessagePacket receipt = mXmppConnectionService.getMessageGenerator().received(account,
-							packet,
-							"urn:xmpp:chat-markers:0",
-							MessagePacket.TYPE_CHAT);
-					mXmppConnectionService.sendMessagePacket(account, receipt);
+					receiptsNamespaces.add("urn:xmpp:chat-markers:0");
 				}
 				if (packet.hasChild("request", "urn:xmpp:receipts")) {
+					receiptsNamespaces.add("urn:xmpp:receipts");
+				}
+				if (receiptsNamespaces.size() > 0) {
 					MessagePacket receipt = mXmppConnectionService.getMessageGenerator().received(account,
 							packet,
-							"urn:xmpp:receipts",
+							receiptsNamespaces,
 							packet.getType());
 					mXmppConnectionService.sendMessagePacket(account, receipt);
 				}

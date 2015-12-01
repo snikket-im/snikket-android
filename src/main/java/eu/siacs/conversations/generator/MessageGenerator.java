@@ -4,6 +4,7 @@ import net.java.otr4j.OtrException;
 import net.java.otr4j.session.Session;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -72,9 +73,9 @@ public class MessageGenerator extends AbstractGenerator {
 		Element html = packet.addChild("html","http://jabber.org/protocol/xhtml-im");
 		Element body = html.addChild("body","http://www.w3.org/1999/xhtml");
 		Element img = body.addChild("img");
-		img.setAttribute("src",params.url.toString());
-		img.setAttribute("height",params.height);
-		img.setAttribute("width",params.width);
+		img.setAttribute("src", params.url.toString());
+		img.setAttribute("height", params.height);
+		img.setAttribute("width", params.width);
 	}
 
 	public static void addMessageHints(MessagePacket packet) {
@@ -188,13 +189,14 @@ public class MessageGenerator extends AbstractGenerator {
 		return packet;
 	}
 
-	public MessagePacket received(Account account, MessagePacket originalMessage, String namespace, int type) {
+	public MessagePacket received(Account account, MessagePacket originalMessage, ArrayList<String> namespaces, int type) {
 		MessagePacket receivedPacket = new MessagePacket();
 		receivedPacket.setType(type);
 		receivedPacket.setTo(originalMessage.getFrom());
 		receivedPacket.setFrom(account.getJid());
-		Element received = receivedPacket.addChild("received", namespace);
-		received.setAttribute("id", originalMessage.getId());
+		for(String namespace : namespaces) {
+			receivedPacket.addChild("received", namespace).setAttribute("id", originalMessage.getId());
+		}
 		return receivedPacket;
 	}
 
