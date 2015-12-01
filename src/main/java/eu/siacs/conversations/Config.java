@@ -16,6 +16,8 @@ public final class Config {
 	public static final String DOMAIN_LOCK = null; //only allow account creation for this domain
 	public static final boolean DISALLOW_REGISTRATION_IN_UI = false; //hide the register checkbox
 	public static final boolean HIDE_PGP_IN_UI = false; //some more consumer focused clients might want to disable OpenPGP
+	public static final boolean PARANOID_MODE = false; //disables ability to send unencrypted 1-on-1 chats and forces TOR
+	public static final boolean SHOW_CONNECTED_ACCOUNTS = true; //show number of connected accounts in foreground notification
 
 	public static final boolean LEGACY_NAMESPACE_HTTP_UPLOAD = false;
 
