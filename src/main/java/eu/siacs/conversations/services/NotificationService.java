@@ -234,8 +234,13 @@ public class NotificationService {
 			if (messages.size() > 0) {
 				conversation = messages.get(0).getConversation();
 				final String name = conversation.getName();
-				style.addLine(Html.fromHtml("<b>" + name + "</b> "
-						+ UIHelper.getMessagePreview(mXmppConnectionService, messages.get(0)).first));
+				if (Config.PARANOID_MODE) {
+					int count = messages.size();
+					style.addLine(Html.fromHtml("<b>"+name+"</b> "+mXmppConnectionService.getResources().getQuantityString(R.plurals.x_messages,count,count)));
+				} else {
+					style.addLine(Html.fromHtml("<b>" + name + "</b> "
+							+ UIHelper.getMessagePreview(mXmppConnectionService, messages.get(0)).first));
+				}
 				names.append(name);
 				names.append(", ");
 			}
@@ -264,25 +269,30 @@ public class NotificationService {
 			mBuilder.setLargeIcon(mXmppConnectionService.getAvatarService()
 					.get(conversation, getPixel(64)));
 			mBuilder.setContentTitle(conversation.getName());
-			Message message;
-			if ((message = getImage(messages)) != null) {
-				modifyForImage(mBuilder, message, messages, notify);
+			if (Config.PARANOID_MODE) {
+				int count = messages.size();
+				mBuilder.setContentText(mXmppConnectionService.getResources().getQuantityString(R.plurals.x_messages,count,count));
 			} else {
-				modifyForTextOnly(mBuilder, messages, notify);
-			}
-			if ((message = getFirstDownloadableMessage(messages)) != null) {
-				mBuilder.addAction(
-						Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ?
-								R.drawable.ic_file_download_white_24dp : R.drawable.ic_action_download,
-						mXmppConnectionService.getResources().getString(R.string.download_x_file,
-								UIHelper.getFileDescriptionString(mXmppConnectionService, message)),
-						createDownloadIntent(message)
-				);
-			}
-			if ((message = getFirstLocationMessage(messages)) != null) {
-				mBuilder.addAction(R.drawable.ic_room_white_24dp,
-						mXmppConnectionService.getString(R.string.show_location),
-						createShowLocationIntent(message));
+				Message message;
+				if ((message = getImage(messages)) != null) {
+					modifyForImage(mBuilder, message, messages, notify);
+				} else {
+					modifyForTextOnly(mBuilder, messages, notify);
+				}
+				if ((message = getFirstDownloadableMessage(messages)) != null) {
+					mBuilder.addAction(
+							Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ?
+									R.drawable.ic_file_download_white_24dp : R.drawable.ic_action_download,
+							mXmppConnectionService.getResources().getString(R.string.download_x_file,
+									UIHelper.getFileDescriptionString(mXmppConnectionService, message)),
+							createDownloadIntent(message)
+					);
+				}
+				if ((message = getFirstLocationMessage(messages)) != null) {
+					mBuilder.addAction(R.drawable.ic_room_white_24dp,
+							mXmppConnectionService.getString(R.string.show_location),
+							createShowLocationIntent(message));
+				}
 			}
 			mBuilder.setContentIntent(createContentIntent(conversation));
 		}

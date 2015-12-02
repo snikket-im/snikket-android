@@ -549,4 +549,8 @@
 	<string name="not_a_valid_port">This is not a valid port number</string>
 	<string name="not_valid_hostname">This is not a valid hostname</string>
 	<string name="connected_accounts">%1$d of %2$d accounts connected</string>
+	<plurals name="x_messages">
+		<item quantity="one">%d message</item>
+		<item quantity="other">%d messages</item>
+	</plurals>
 </resources>
