@@ -6,6 +6,7 @@ import eu.siacs.conversations.crypto.PgpEngine;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
+import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.entities.Presences;
 import eu.siacs.conversations.generator.PresenceGenerator;
@@ -44,8 +45,8 @@ public class PresenceParser extends AbstractParser implements
 		}
 	}
 
-	public void parseContactPresence(PresencePacket packet, Account account) {
-		PresenceGenerator mPresenceGenerator = mXmppConnectionService.getPresenceGenerator();
+	public void parseContactPresence(final PresencePacket packet, final Account account) {
+		final PresenceGenerator mPresenceGenerator = mXmppConnectionService.getPresenceGenerator();
 		final Jid from = packet.getFrom();
 		if (from == null) {
 			return;
@@ -93,6 +94,17 @@ public class PresenceParser extends AbstractParser implements
 						mPresenceGenerator.sendPresenceUpdatesTo(contact));
 			} else {
 				contact.setOption(Contact.Options.PENDING_SUBSCRIPTION_REQUEST);
+				final String statusMessage = packet.findChildContent("status");
+				if (statusMessage != null && !statusMessage.isEmpty()) {
+					final Conversation conversation = mXmppConnectionService.findOrCreateConversation(
+							account, contact.getJid().toBareJid(), false);
+					conversation.add(new Message(
+							conversation,
+							statusMessage,
+							Message.ENCRYPTION_NONE,
+							Message.STATUS_RECEIVED
+					));
+				}
 			}
 		}
 		mXmppConnectionService.updateRosterUi();

@@ -1322,6 +1322,13 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 				leaveMuc(conversation);
 			} else {
 				conversation.endOtrIfNeeded();
+				if (conversation.getContact().getOption(Contact.Options.PENDING_SUBSCRIPTION_REQUEST)) {
+					Log.d(Config.LOGTAG, "Canceling presence request from " + conversation.getJid().toString());
+					sendPresencePacket(
+							conversation.getAccount(),
+							mPresenceGenerator.stopPresenceUpdatesTo(conversation.getContact())
+					);
+				}
 			}
 			this.databaseBackend.updateConversation(conversation);
 			this.conversations.remove(conversation);
