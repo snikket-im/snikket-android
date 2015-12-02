@@ -27,7 +27,6 @@
   <string name="minutes_ago">%d minutos atrás</string>
   <string name="unread_conversations">Conversas não lidas</string>
   <string name="sending">enviando...</string>
-  <string name="encrypted_message">Descriptografando mensagem. Por favor aguarde...</string>
   <string name="nick_in_use">O apelido já está em uso</string>
   <string name="admin">Administrador</string>
   <string name="owner">Dono</string>
@@ -154,7 +153,6 @@
   <string name="passwords_do_not_match">As senhas não combina</string>
   <string name="invalid_jid">Esse não é um ID Jabber válido</string>
   <string name="error_out_of_memory">Memória insuficiente. A imagem é muito grande</string>
-  <string name="add_phone_book_text">Você tem certeza que deseja adicionar %s à sua lista de contato do telefone?</string>
   <string name="contact_status_online">online</string>
   <string name="contact_status_free_to_chat">disponível para conversa</string>
   <string name="contact_status_away">fora</string>
@@ -281,7 +279,6 @@
   <string name="vcard">Contato</string>
   <string name="sending_x_file">Enviando %s</string>
   <string name="offering_x_file">Oferecendo %s</string>
-  <string name="contact_is_typing">%s está digitando...</string>
   <string name="contact_has_stopped_typing">%s parou de digitar</string>
   <string name="pref_chat_states">Notificações de digitação</string>
   <string name="send_location">Enviar localização</string>

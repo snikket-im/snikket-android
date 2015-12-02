@@ -9,7 +9,7 @@
   <string name="action_secure">דיון מאובטח</string>
   <string name="action_add_account">הוסף חשבון</string>
   <string name="action_edit_contact">ערוך שם</string>
-  <string name="action_add_phone_book">הוסף אל פנקס טלפונים</string>
+  <string name="action_add_phone_book">הוסף לפנקס הטלפונים</string>
   <string name="action_delete_contact">מחק מרשימת אנשי הקשר</string>
   <string name="action_block_contact">חסום איש קשר</string>
   <string name="action_unblock_contact">בטל חסימת איש קשר</string>
@@ -28,7 +28,6 @@
   <string name="minutes_ago">לפני %d דקות</string>
   <string name="unread_conversations">שיחות שלא נקראו</string>
   <string name="sending">שולח...</string>
-  <string name="encrypted_message">מפענח הודעה. אנא המתן…</string>
   <string name="nick_in_use">שם כינוי כבר בשימוש</string>
   <string name="admin">מנהל</string>
   <string name="owner">בעלים</string>
@@ -36,10 +35,10 @@
   <string name="participant">משתתף</string>
   <string name="visitor">מבקר</string>
   <string name="remove_contact_text">האם ברצונך להסיר את %s מתוך רשימת אנשי הקשר? השיחה המשוייכת עם איש קשר זה לא תוסר.</string>
-  <string name="block_contact_text">האם ברצונך לחסום קבלת הודעות מ- %s?</string>
-  <string name="unblock_contact_text">האם ברצונך לבטל את החסימה ולאפשר קבלת הודעות מ- %s?</string>
-  <string name="block_domain_text">לחסום את כל האנשים מ- %s?</string>
-  <string name="unblock_domain_text">לבטל את חסימת כל האנשים מ- %s?</string>
+  <string name="block_contact_text">האם ברצונך לחסום קבלת הודעות מאת %s?</string>
+  <string name="unblock_contact_text">האם ברצונך לבטל את החסימה ולאפשר קבלת הודעות מאת %s?</string>
+  <string name="block_domain_text">לחסום את כל האנשים מתוך %s?</string>
+  <string name="unblock_domain_text">לבטל את חסימת כל האנשים מתוך %s?</string>
   <string name="contact_blocked">איש קשר נחסם</string>
   <string name="remove_bookmark_text">האם ברצונך להסיר את %s בתור סימנייה? הדיונים אשר משוייכים עם סימנייה זו לא יוסרו.</string>
   <string name="register_account">צור חשבון חדש בשרת</string>
@@ -49,6 +48,7 @@
   <string name="invite_contact">הזמן איש קשר</string>
   <string name="contacts">אנשי קשר</string>
   <string name="cancel">ביטול</string>
+  <string name="set">הגדר</string>
   <string name="add">הוסף</string>
   <string name="edit">ערוך</string>
   <string name="delete">מחק</string>
@@ -57,7 +57,7 @@
   <string name="save">שמור</string>
   <string name="ok">אישור</string>
   <string name="crash_report_title">Conversations קרסה</string>
-  <string name="crash_report_message">על ידי שליחת Stacktraces אתה עוזר להתקדמות הפיתוח של Conversations\n<b>אזהרה:</b> פעולה זו תעשה שימוש בחשבון ה- XMPP שלך כדי לשלוח עקבות מחסנית אל המפתח.</string>
+  <string name="crash_report_message">על ידי שליחת Stacktraces אתה עוזר להתקדמות הפיתוח של Conversations\n<b>אזהרה:</b> פעולה זו תעשה שימוש בחשבון XMPP שלך כדי לשלוח עקבות מחסנית אל המפתח.</string>
   <string name="send_now">שלח עכשיו</string>
   <string name="send_never">לעולם אל תשאל שוב</string>
   <string name="problem_connecting_to_account">התחברות לחשבון נכשלה</string>
@@ -73,6 +73,7 @@
   <string name="clear_conversation_history">נקה היסטוריית שיחה</string>
   <string name="clear_histor_msg">האם ברצונך למחוק את כל ההודעות בשיחה זאת?\n\n<b>אזהרה:</b> פעולה זו לא תשפיע על הודעות מאוחסנות על מכשירים או שרתים אחרים.</string>
   <string name="delete_messages">מחק הודעות</string>
+  <string name="also_end_conversation">סיים את השיחה לאחר מכן</string>
   <string name="choose_presence">בחר נוכחות לאיש קשר</string>
   <string name="send_unencrypted_message">שלח הודעה בלתי מוצפנת</string>
   <string name="send_otr_message">שלח הודעה בהצפנת OTR</string>
@@ -91,10 +92,9 @@
   <string name="contact_has_no_pgp_key">Conversations אינה מסוגלת להצפין את הודעותיך משום שאיש הקשר שלך אינו מכריז על המפתח הפומבי שלו או שלה.\n\n<small>אנא בקש מאיש הקשר שלך להגדיר את OpenPGP.</small></string>
   <string name="no_pgp_keys">לא נמצאו מפתחות OpenPGP</string>
   <string name="contacts_have_no_pgp_keys">Conversations אינה מסוגלת להצפין את הודעותיך משום שאנשי הקשר שלך אינם מכריזים על המפתח הפומבי שלהם.\n\n<small>אנא בקש מאנשי הקשר שלך לארגן OpenPGP.</small></string>
-  <string name="encrypted_message_received"><i>הודעה מוצפנת התקבלה. לחץ כדי לצפות ולפענח.</i></string>
   <string name="pref_general">כללי</string>
-  <string name="pref_xmpp_resource">XMPP resource</string>
-  <string name="pref_xmpp_resource_summary">השם שאפליקציה זו שולחת לשרת</string>
+  <string name="pref_xmpp_resource">משאב XMPP</string>
+  <string name="pref_xmpp_resource_summary">השם שבעזרתו לקוח זה מזהה את עצמו</string>
   <string name="pref_accept_files">קבל קבצים</string>
   <string name="pref_accept_files_summary">קבל אוטומטית קבצים שגודלם קטן מ…</string>
   <string name="pref_notification_settings">הגדרות התראות</string>
@@ -170,7 +170,6 @@
   <string name="passwords_do_not_match">סיסמאות לא תואמות</string>
   <string name="invalid_jid">מזהה ה Jabber אינו תקין</string>
   <string name="error_out_of_memory">חסר זיכרון. תצלום גדול מדי</string>
-  <string name="add_phone_book_text">האם ברצונך להוסיף את %s אל רשימת קשר טלפונית?</string>
   <string name="contact_status_online">מקוון</string>
   <string name="contact_status_free_to_chat">חופשי לשיחה</string>
   <string name="contact_status_away">נעדר</string>
@@ -210,7 +209,6 @@
   <string name="this_device_omemo_fingerprint">טביעת אצבע OMEMO שלי</string>
   <string name="other_devices">מכשירים אחרים</string>
   <string name="trust_omemo_fingerprints">סמוך על טביעות אצבע OMEMO</string>
-  <string name="fetching_keys">משיג מפתחות...</string>
   <string name="done">בוצע</string>
   <string name="verify">אמת</string>
   <string name="decrypt">פענח</string>
@@ -330,6 +328,9 @@
   <string name="no_otr_session_found">לא נמצא OTR Session תקין</string>
   <string name="pref_keep_foreground_service">השאר שירות ב Foreground</string>
   <string name="pref_keep_foreground_service_summary">מונע ממערכת ההפעלה לנתק את החיבור לשרת</string>
+  <string name="pref_export_logs">ייצא Logs</string>
+  <string name="pref_export_logs_summary">יצוא logs לכרטיס הזיכרון</string>
+  <string name="notification_export_logs_title">מייצא logs לכרטיס זיכרון</string>
   <string name="choose_file">בחר קובץ</string>
   <string name="receiving_x_file">מקבל %1$s ( הושלם %2$d%% )</string>
   <string name="download_x_file">הורד %s</string>
@@ -433,7 +434,6 @@
   <string name="offering_x_file">מציע %s</string>
   <string name="hide_offline">הסתר בלתי מקוונים</string>
   <string name="disable_account">השבת חשבון</string>
-  <string name="contact_is_typing">%s מקליד...</string>
   <string name="contact_has_stopped_typing">%s הפסיק/ה להקליד</string>
   <string name="pref_chat_states">התראות הקלדה</string>
   <string name="pref_chat_states_summary">אפשר לאנשי הקשר שלך לדעת כאשר אתה מקליד הודעה חדשה</string>
@@ -448,7 +448,7 @@
   <string name="pref_dont_trust_system_cas_summary">כל החתימות הדיגטליות יצטרכו לעבור אימות ידני</string>
   <string name="pref_remove_trusted_certificates_title">מחק חתימות דיגטליות</string>
   <string name="pref_remove_trusted_certificates_summary">מחק חתימות דיגטליות שאומתו באופן ידני</string>
-  <string name="toast_no_trusted_certs">אין חתימת דיגטליות שאושרו ידנית</string>
+  <string name="toast_no_trusted_certs">אין חתימות דיגטליות שאושרו ידנית</string>
   <string name="dialog_manage_certs_title">מחק חתימות דיגטליות</string>
   <string name="dialog_manage_certs_positivebutton">מחק פריטים שנבחרו</string>
   <string name="dialog_manage_certs_negativebutton">ביטול</string>
@@ -476,6 +476,19 @@
   <string name="download_failed_could_not_connect">ההורדה נכשלה: נכשל ביצוע חיבור לשרת</string>
   <string name="pref_use_white_background">השתמש ברקע לבן</string>
   <string name="pref_use_white_background_summary">הראה הודעות שהתקבלו בטקסט שחור על גבי רקע לבען</string>
-  <string name="account_status_dns_timeout">Timeout in DNS</string>
   <string name="server_info_broken">לא עובד</string>
+  <string name="pref_presence_settings">הגדרות נוכחות Presence</string>
+  <string name="pref_away_when_screen_off">העבר למצב \"לא נמצא\" כאשר המסך כבוי</string>
+  <string name="pref_away_when_screen_off_summary">מעביר את המכשיר לסטטוס \"לא נמצא\" כאשר המסך כבוי</string>
+  <string name="pref_xa_on_silent_mode">העבר למצב \"לא זמין\" כאשר במצב שקט</string>
+  <string name="pref_xa_on_silent_mode_summary">מעביר את המכשיר לסטטוס \"לא זמין\" כאשר הפלאפון נמצא במצב שקט.</string>
+  <string name="action_add_account_with_certificate">הוסף חשבון עם certificate</string>
+  <string name="unable_to_parse_certificate">תקלה בקריאת ה- certificate</string>
+  <string name="authenticate_with_certificate">השאר ריק כדי להזדהות ללא certificate</string>
+  <string name="captcha_ocr">טקסט Captcha</string>
+  <string name="captcha_required">דרוש טקסט Captcha</string>
+  <string name="captcha_hint">נא להזין את הטקסט שבתמונה</string>
+  <string name="certificate_chain_is_not_trusted">שרשרת תעודה אינה מהימנה</string>
+  <string name="jid_does_not_match_certificate">אין התאמה בין ה- JID לבין ה- certificate</string>
+  <string name="action_renew_certificate">חידוש certificate</string>
 </resources>

@@ -28,7 +28,6 @@
   <string name="minutes_ago">%d 分前</string>
   <string name="unread_conversations">未読の会話</string>
   <string name="sending">送信中…</string>
-  <string name="encrypted_message">メッセージを復号しています。しばらくお待ちください…</string>
   <string name="nick_in_use">ニックネームは既に使用されています</string>
   <string name="admin">管理者</string>
   <string name="owner">オーナー</string>
@@ -74,6 +73,7 @@
   <string name="clear_conversation_history">会話履歴をクリア</string>
   <string name="clear_histor_msg">この会話のすべてのメッセージを削除しますか?\n\n<b>警告:</b> これは、他のデバイスやサーバーに保存されているメッセージには影響しません。</string>
   <string name="delete_messages">メッセージを削除</string>
+  <string name="also_end_conversation">その後、この会話を終了</string>
   <string name="choose_presence">連絡する参加を選択</string>
   <string name="send_unencrypted_message">暗号化されていないメッセージを送信</string>
   <string name="send_otr_message">OTR 暗号化メッセージを送信</string>
@@ -92,7 +92,6 @@
   <string name="contact_has_no_pgp_key">連絡先が公開鍵を通知しないため、Conversations はあなたのメッセージを暗号化することができません。\n\n<small>連絡先に OpenPGP をセットアップするように依頼してください。</small></string>
   <string name="no_pgp_keys">OpenPGP の鍵はありません</string>
   <string name="contacts_have_no_pgp_keys">連絡先が公開鍵を通知しないため、Conversations はあなたのメッセージを暗号化することができません。\n\n<small>連絡先に OpenPGP をセットアップするように依頼してください。</small></string>
-  <string name="encrypted_message_received"><i>暗号化されたメッセージを受信しました。タッチすると、表示および復号化します。</i></string>
   <string name="pref_general">全般</string>
   <string name="pref_xmpp_resource">XMPP リソース</string>
   <string name="pref_xmpp_resource_summary">自分自身を識別するこのクライアントの名前</string>
@@ -171,7 +170,6 @@
   <string name="passwords_do_not_match">パスワードが一致しません</string>
   <string name="invalid_jid">これは有効な Jabber ID ではありません</string>
   <string name="error_out_of_memory">メモリ不足です。画像が大きすぎます</string>
-  <string name="add_phone_book_text">電話の連絡先リストに %s を追加しますか?</string>
   <string name="contact_status_online">オンライン</string>
   <string name="contact_status_free_to_chat">自由にチャットできます</string>
   <string name="contact_status_away">離席中</string>
@@ -211,7 +209,6 @@
   <string name="this_device_omemo_fingerprint">自分の OMEMO フィンガープリント</string>
   <string name="other_devices">他のデバイス</string>
   <string name="trust_omemo_fingerprints">OMEMO フィンガープリントを信頼</string>
-  <string name="fetching_keys">鍵の取得中...</string>
   <string name="done">完了</string>
   <string name="verify">検証</string>
   <string name="decrypt">復号化</string>
@@ -334,6 +331,9 @@
   <string name="conversations_foreground_service">Conversations</string>
   <string name="pref_keep_foreground_service">サービスをフォアグラウンドに保持</string>
   <string name="pref_keep_foreground_service_summary">オペレーティングシステムが接続を切断するのを防止します</string>
+  <string name="pref_export_logs">ログをエクスポート</string>
+  <string name="pref_export_logs_summary">ログを SD カードに書き込みます</string>
+  <string name="notification_export_logs_title">ログを SD カードに書き込み中</string>
   <string name="choose_file">ファイルの選択</string>
   <string name="receiving_x_file">%1$s 受信中 (%2$d%% 完了)</string>
   <string name="download_x_file">%s のダウンロード</string>
@@ -438,7 +438,6 @@
   <string name="offering_x_file">%s の依頼中</string>
   <string name="hide_offline">オフラインを非表示にする</string>
   <string name="disable_account">アカウントを無効にする</string>
-  <string name="contact_is_typing">%s は入力中...</string>
   <string name="contact_has_stopped_typing">%s は入力を停止しました</string>
   <string name="pref_chat_states">入力中通知</string>
   <string name="pref_chat_states_summary">あなたが新しいメッセージを書いている時に、連絡先に知らせます</string>
@@ -479,6 +478,19 @@
   <string name="download_failed_could_not_connect">ダウンロードに失敗しました: ホストに接続できませんでした</string>
   <string name="pref_use_white_background">白い背景を使用する</string>
   <string name="pref_use_white_background_summary">白地に黒の文字で、受け取ったメッセージを表示します</string>
-  <string name="account_status_dns_timeout">DNS でタイムアウト</string>
   <string name="server_info_broken">壊れています</string>
+  <string name="pref_presence_settings">参加設定</string>
+  <string name="pref_away_when_screen_off">画面がオフのときは離席</string>
+  <string name="pref_away_when_screen_off_summary">画面がオフになっているとき、リソースを離席としてマークします</string>
+  <string name="pref_xa_on_silent_mode">サイレントモード時は利用不可</string>
+  <string name="pref_xa_on_silent_mode_summary">サイレントモードのとき、リソースを利用不可としてマークします</string>
+  <string name="action_add_account_with_certificate">アカウントに証明書を追加</string>
+  <string name="unable_to_parse_certificate">証明書を解析できません</string>
+  <string name="authenticate_with_certificate">空にすると、証明書で認証します</string>
+  <string name="captcha_ocr">キャプチャ テキスト</string>
+  <string name="captcha_required">キャプチャが必要です</string>
+  <string name="captcha_hint">画像からテキストを入力してください</string>
+  <string name="certificate_chain_is_not_trusted">証明書チェーンは信頼済ではありません</string>
+  <string name="jid_does_not_match_certificate">Jabber ID が証明書と一致しません</string>
+  <string name="action_renew_certificate">証明書を更新</string>
 </resources>

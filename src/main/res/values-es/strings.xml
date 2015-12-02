@@ -28,7 +28,6 @@
   <string name="minutes_ago">hace %d min</string>
   <string name="unread_conversations">conversaciones por leer</string>
   <string name="sending">enviando…</string>
-  <string name="encrypted_message">Descifrando mensaje. Espera por favor…</string>
   <string name="nick_in_use">El apodo ya está en uso</string>
   <string name="admin">Administrador</string>
   <string name="owner">Propietario</string>
@@ -74,7 +73,7 @@
   <string name="clear_conversation_history">Limpiar historial de conversación</string>
   <string name="clear_histor_msg">¿Quieres borrar todos los mensajes de esta conversación?\n\n<b>Aviso:</b> Esto no afectará a los mensajes guardados en otros dispositivos o servidores.</string>
   <string name="delete_messages">Borrar mensajes</string>
-  <string name="also_end_conversation">Terminar esta conversación después</string>
+  <string name="also_end_conversation">Además, terminar esta conversación</string>
   <string name="choose_presence">Selecciona recurso del contacto</string>
   <string name="send_unencrypted_message">Enviar mensaje sin cifrar</string>
   <string name="send_otr_message">Enviar mensaje cifrado con OTR</string>
@@ -93,7 +92,6 @@
   <string name="contact_has_no_pgp_key">Conversations no ha podido cifrar tus mensajes porque tu contacto no está anunciando su clave publica.\n\n<small>Por favor, pide a tu contacto que configure OpenPGP.</small></string>
   <string name="no_pgp_keys">Claves OpenPGP no encontradas</string>
   <string name="contacts_have_no_pgp_keys">Conversations no ha podido cifrar tus mensajes porque tus contactos no están anunciando su clave publica.\n\n<small>Por favor, pide a tus contactos que configuren OpenPGP.</small></string>
-  <string name="encrypted_message_received"><i>Mensaje cifrado recibido. Pulsa para ver.</i></string>
   <string name="pref_general">General</string>
   <string name="pref_xmpp_resource">Recurso</string>
   <string name="pref_xmpp_resource_summary">El nombre que identifica el cliente que estás utilizando</string>
@@ -172,7 +170,6 @@
   <string name="passwords_do_not_match">Las contraseñas no coinciden</string>
   <string name="invalid_jid">El identificador no es un identificador Jabber válido</string>
   <string name="error_out_of_memory">Sin memoria. La imagen es demasiado grande</string>
-  <string name="add_phone_book_text">¿Quieres añadir a %s a tus contactos del teléfono?</string>
   <string name="contact_status_online">Disponible</string>
   <string name="contact_status_free_to_chat">Hablador</string>
   <string name="contact_status_away">Ausente</string>
@@ -212,7 +209,6 @@
   <string name="this_device_omemo_fingerprint">Tu huella digital OMEMO</string>
   <string name="other_devices">Otros dispositivos</string>
   <string name="trust_omemo_fingerprints">Huellas digitales OMEMO de confianza</string>
-  <string name="fetching_keys">Buscando claves...</string>
   <string name="done">Hecho</string>
   <string name="verify">Verificar</string>
   <string name="decrypt">Descifrar</string>
@@ -442,7 +438,6 @@
   <string name="offering_x_file">Ofreciendo %s</string>
   <string name="hide_offline">Ocultar desconectados</string>
   <string name="disable_account">Deshabilitar Cuenta</string>
-  <string name="contact_is_typing">%s está escribiendo...</string>
   <string name="contact_has_stopped_typing">%s ha dejado de escribir</string>
   <string name="pref_chat_states">Notificación de escritura</string>
   <string name="pref_chat_states_summary">Permite a tus contactos saber cuando estás escribiendo un nuevo mensaje</string>
@@ -485,7 +480,6 @@
   <string name="download_failed_could_not_connect">Error al descargar: No se ha podido conectar con el servidor</string>
   <string name="pref_use_white_background">Usar fondo blanco</string>
   <string name="pref_use_white_background_summary">Mostrar mensajes recibidos en texto negro con fondo blanco</string>
-  <string name="account_status_dns_timeout">Timeout en DNS</string>
   <string name="server_info_broken">Error</string>
   <string name="pref_presence_settings">Opciones de presencia</string>
   <string name="pref_away_when_screen_off">Ausente con pantalla apagada</string>

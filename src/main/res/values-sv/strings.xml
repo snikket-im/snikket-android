@@ -28,7 +28,6 @@
   <string name="minutes_ago">%d min sedan</string>
   <string name="unread_conversations">olästa konversationer</string>
   <string name="sending">skickar…</string>
-  <string name="encrypted_message">Avkrypterar meddelande. Vänta…</string>
   <string name="nick_in_use">Nick används redan</string>
   <string name="admin">Admin</string>
   <string name="owner">Ägare</string>
@@ -74,6 +73,7 @@
   <string name="clear_conversation_history">Rensa konversationshistorik</string>
   <string name="clear_histor_msg">Vill du ta bort alla meddelanden i denna konversation?\n\n<b>Varning:</b> Detta kommer inte påverka meddelanden lagrade på andra enheter eller servrar.</string>
   <string name="delete_messages">Ta bort meddelanden</string>
+  <string name="also_end_conversation">Avsluta denna konversation efteråt</string>
   <string name="choose_presence">Välj tillgänglighet till kontakt</string>
   <string name="send_unencrypted_message">Skicka okrypterat meddelande</string>
   <string name="send_otr_message">Skicka OTR-krypterat meddelande</string>
@@ -92,7 +92,6 @@
   <string name="contact_has_no_pgp_key">Conversations kan inte avkryptera ditt meddelande eftersom din kontakt inte annonserar sin publika nyckel.\n\n<small>Be din kontakt att sätta upp OpenPGP.</small></string>
   <string name="no_pgp_keys">Inga OpenPGP-nycklar funna</string>
   <string name="contacts_have_no_pgp_keys">Conversations kan inte avkryptera ditt meddelande eftersom din kontakt inte annonserar sin publika nyckel.\n\n<small>Be din kontakt att sätta upp OpenPGP.</small></string>
-  <string name="encrypted_message_received"><i>Krypterat meddelande mottaget. Tryck för att se och avkryptera.</i></string>
   <string name="pref_general">Generellt</string>
   <string name="pref_xmpp_resource">XMPP resurs</string>
   <string name="pref_xmpp_resource_summary">Namnet som klienten identifierar sig med</string>
@@ -171,7 +170,6 @@
   <string name="passwords_do_not_match">Lösenorden är inte lika</string>
   <string name="invalid_jid">Detta är inte ett korrekt Jabber ID</string>
   <string name="error_out_of_memory">Slut på minne. Bilden är för stor</string>
-  <string name="add_phone_book_text">Vill du lägga till %s i din telefons kontaktlista?</string>
   <string name="contact_status_online">online</string>
   <string name="contact_status_free_to_chat">tillgänglig</string>
   <string name="contact_status_away">borta</string>
@@ -211,7 +209,6 @@
   <string name="this_device_omemo_fingerprint">Eget OMEMO-fingeravtryck</string>
   <string name="other_devices">Andra enheter</string>
   <string name="trust_omemo_fingerprints">Lita på OMEMO-fingeravtryck</string>
-  <string name="fetching_keys">Hämtar nycklar...</string>
   <string name="done">Klar</string>
   <string name="verify">Verifiera</string>
   <string name="decrypt">Avkryptera</string>
@@ -334,6 +331,9 @@
   <string name="conversations_foreground_service">Conversations</string>
   <string name="pref_keep_foreground_service">Håll tjänst i förgrunden</string>
   <string name="pref_keep_foreground_service_summary">Förehindrar operativsystemet att ta ner uppkopplingen</string>
+  <string name="pref_export_logs">Exportera loggar</string>
+  <string name="pref_export_logs_summary">Skriv loggar till SD-kort</string>
+  <string name="notification_export_logs_title">Skriver loggar till SD-kort</string>
   <string name="choose_file">Välj fil</string>
   <string name="receiving_x_file">Tar emot %1$s (%2$d%% klart)</string>
   <string name="download_x_file">Ladda ner %s</string>
@@ -438,7 +438,6 @@
   <string name="offering_x_file">Erbjuder %s</string>
   <string name="hide_offline">Dölj ej anslutna</string>
   <string name="disable_account">Deaktivera konton</string>
-  <string name="contact_is_typing">%s skriver...</string>
   <string name="contact_has_stopped_typing">%s har slutat skriva</string>
   <string name="pref_chat_states">Skriv-notifieringar</string>
   <string name="pref_chat_states_summary">Låter dina kontakter veta när du skriver ett nytt meddelande</string>
@@ -481,6 +480,19 @@
   <string name="download_failed_could_not_connect">Nerladdningen gick fel: Kunder inte ansluta till server</string>
   <string name="pref_use_white_background">Använd vit bakgrund</string>
   <string name="pref_use_white_background_summary">Visa mottagna meddelanden som svart text på vit bakgrund</string>
-  <string name="account_status_dns_timeout">Timeout för DNS</string>
   <string name="server_info_broken">Sönder</string>
+  <string name="pref_presence_settings">Tillgänglighetsinställningar</string>
+  <string name="pref_away_when_screen_off">Status borta när skärmen är av</string>
+  <string name="pref_away_when_screen_off_summary">Sätter din tillgänglighet till borta när skrämen är av</string>
+  <string name="pref_xa_on_silent_mode">Status ej tillgänglig i tyst läge</string>
+  <string name="pref_xa_on_silent_mode_summary">Sätter din tillgänglighet till ej tillgänglig när enheten är i tyst läge</string>
+  <string name="action_add_account_with_certificate">Lägg till konto med certifikat</string>
+  <string name="unable_to_parse_certificate">Kan inte läsa certifikat</string>
+  <string name="authenticate_with_certificate">Lämna tom för att för att logga in med certifikat</string>
+  <string name="captcha_ocr">Captcha text</string>
+  <string name="captcha_required">Captcha krävs</string>
+  <string name="captcha_hint">skriv in texten från bilden</string>
+  <string name="certificate_chain_is_not_trusted">Certifikatskedjan är inte betrodd</string>
+  <string name="jid_does_not_match_certificate">Jabber ID matchar inte certifikat</string>
+  <string name="action_renew_certificate">Förnya certifikat</string>
 </resources>

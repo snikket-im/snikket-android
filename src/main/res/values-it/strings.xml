@@ -28,7 +28,6 @@
   <string name="minutes_ago">%d min fa</string>
   <string name="unread_conversations">Conversazioni non lette</string>
   <string name="sending">invio…</string>
-  <string name="encrypted_message">Decifrazione del messaggio. Attendere prego…</string>
   <string name="nick_in_use">Nome utente già in uso</string>
   <string name="admin">Amministratore</string>
   <string name="owner">Proprietario</string>
@@ -90,7 +89,6 @@
   <string name="contact_has_no_pgp_key">Conversations non è in grado di cifrare i tuoi messaggi perché il contatto non sta annunciando la sua chiave pubblica.\n\n<small>Per favore chiedi al tuo contatto di configurare OpenPGP.</small></string>
   <string name="no_pgp_keys">Nessuna chiave OpenPGP trovata</string>
   <string name="contacts_have_no_pgp_keys">Conversations non è in grado di cifrare i tuoi messaggi perché i contatti non stanno annunciando la propria chiave pubblica.\n\n<small>Per favore chiedi ai tuoi contatti di configurare OpenPGP.</small></string>
-  <string name="encrypted_message_received"><i>Messaggio cifrato ricevuto. Tocca per decifrare.</i></string>
   <string name="pref_general">Generale</string>
   <string name="pref_xmpp_resource">Risorsa XMPP</string>
   <string name="pref_xmpp_resource_summary">Il nome con il quale questo client si identifica</string>
@@ -165,7 +163,6 @@
   <string name="passwords_do_not_match">Le Password non corrispondono</string>
   <string name="invalid_jid">Questo non è un ID Jabber valido</string>
   <string name="error_out_of_memory">Memoria esaurita. L’immagine è tropppo grande</string>
-  <string name="add_phone_book_text">Vuoi aggiungere %s alla rubrica del telefono?</string>
   <string name="contact_status_online">online</string>
   <string name="contact_status_free_to_chat">vuole chattare</string>
   <string name="contact_status_away">assente</string>
@@ -407,7 +404,6 @@
   <string name="offering_x_file">Inviando %s</string>
   <string name="hide_offline">Nascondi i contatti offline</string>
   <string name="disable_account">Disabilita l\'account</string>
-  <string name="contact_is_typing">%s sta digitando...</string>
   <string name="contact_has_stopped_typing">%s ha smesso di digitare</string>
   <string name="pref_chat_states_summary">Permetti al tuo contatto di vedere quando stai digitando</string>
   <string name="send_location">Invia la posizione</string>

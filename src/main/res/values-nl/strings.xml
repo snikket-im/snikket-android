@@ -28,7 +28,6 @@
   <string name="minutes_ago">%d min. geleden</string>
   <string name="unread_conversations">ongelezen gesprekken</string>
   <string name="sending">versturen…</string>
-  <string name="encrypted_message">Bericht aan het ontsleutelen. Even geduld…</string>
   <string name="nick_in_use">Naam is al in gebruik</string>
   <string name="admin">Beheerder</string>
   <string name="owner">Eigenaar</string>
@@ -92,7 +91,6 @@
   <string name="contact_has_no_pgp_key">Conversations kan je berichten niet versleutelen omdat je contact geen publieke sleutel heeft ingesteld.\n\n<small>Vraag je contact om OpenPGP te configureren.</small></string>
   <string name="no_pgp_keys">Geen OpenPGP-sleutels gevonden</string>
   <string name="contacts_have_no_pgp_keys">Conversations kan je berichten niet versleutelen omdat je contacten geen publieke sleutel hebben ingesteld.\n\n<small>Vraag je contacten om OpenPGP te configureren.</small></string>
-  <string name="encrypted_message_received"><i>Versleuteld bericht ontvangen. Raak aan om te bekijken en te ontsleutelen.</i></string>
   <string name="pref_general">Algemeen</string>
   <string name="pref_xmpp_resource">XMPP-bron</string>
   <string name="pref_xmpp_resource_summary">De naam waarmee deze cliënt zich identificeert</string>
@@ -171,7 +169,6 @@
   <string name="passwords_do_not_match">Wachtwoorden komen niet overeen</string>
   <string name="invalid_jid">Dit is geen geldige Jabber-ID</string>
   <string name="error_out_of_memory">Geen geheugen beschikbaar. Afbeelding is te groot</string>
-  <string name="add_phone_book_text">Wil je %s toevoegen aan de contactenlijst op je telefoon?</string>
   <string name="contact_status_online">online</string>
   <string name="contact_status_free_to_chat">beschikbaar</string>
   <string name="contact_status_away">weg</string>
@@ -211,7 +208,6 @@
   <string name="this_device_omemo_fingerprint">Eigen OMEMO-vingerafdruk</string>
   <string name="other_devices">Andere apparaten</string>
   <string name="trust_omemo_fingerprints">Vertrouw OMEMO-vingerafdrukken</string>
-  <string name="fetching_keys">Ophalen van de sleutels...</string>
   <string name="done">Klaar</string>
   <string name="verify">Bevestigen</string>
   <string name="decrypt">Ontsleutelen</string>
@@ -438,7 +434,6 @@
   <string name="offering_x_file">Bezig met aanbieden van %s</string>
   <string name="hide_offline">Offline contacten verbergen</string>
   <string name="disable_account">Account uitschakelen</string>
-  <string name="contact_is_typing">%s is aan het typen...</string>
   <string name="contact_has_stopped_typing">%s is gestopt met typen</string>
   <string name="pref_chat_states">Aan-het-typen-meldingen</string>
   <string name="pref_chat_states_summary">Laat je contacten weten wanneer je een nieuw bericht aan het schrijven bent</string>
@@ -481,6 +476,6 @@
   <string name="download_failed_could_not_connect">Downloaden mislukt: kon geen verbinding maken met host</string>
   <string name="pref_use_white_background">Gebruik witte achtergrond</string>
   <string name="pref_use_white_background_summary">Toon ontvangen berichten als zwarte tekst op een witte achtergrond</string>
-  <string name="account_status_dns_timeout">Time-out in DNS</string>
   <string name="server_info_broken">Gebroken</string>
+  <string name="jid_does_not_match_certificate">Jabber-ID komt niet overeen met certificaat</string>
 </resources>

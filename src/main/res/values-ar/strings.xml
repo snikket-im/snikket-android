@@ -28,7 +28,6 @@
   <string name="minutes_ago">دقائق %d منذ</string>
   <string name="unread_conversations">محادثات غير مقروءة</string>
   <string name="sending">ارسال</string>
-  <string name="encrypted_message">رسالة مشفّرة .. الرجاء الإنتظار</string>
   <string name="nick_in_use">اللقب مستخدم من قبل</string>
   <string name="admin">مدير</string>
   <string name="owner">مالك</string>
@@ -90,7 +89,6 @@
   <string name="contact_has_no_pgp_key">Conversations::لا يستطيع تشفير الرساله\n\n<small>من فضلك أخبر صديقك بتنصيب تطبيق OpenPGP.</small></string>
   <string name="no_pgp_keys">OpenPGP-لايوجد مفاتيح</string>
   <string name="contacts_have_no_pgp_keys">Conversations::لا يستطيع تشفير الرساله\n\n<small>من فضلك أخبر صديقك بتنصيب تطبيق OpenPGP.</small></string>
-  <string name="encrypted_message_received"><i>تلقيت رساله مشفّرة .. لمسه بأناملك لعرضها.</i></string>
   <string name="pref_general">عام</string>
   <string name="pref_xmpp_resource">الريسورس</string>
   <string name="pref_accept_files">ضبط استقبال الملفات</string>

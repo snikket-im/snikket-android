@@ -28,7 +28,6 @@
   <string name="minutes_ago">%d min lalu</string>
   <string name="unread_conversations">Percakapan belum dibaca</string>
   <string name="sending">mengirim...</string>
-  <string name="encrypted_message">Menerjemahkan pesan. Tunggu sebentar...</string>
   <string name="nick_in_use">Nick ini sudah digunakan</string>
   <string name="admin">Administrator</string>
   <string name="owner">Pemilik</string>
@@ -90,7 +89,6 @@
   <string name="contact_has_no_pgp_key">Conversations tidak dapat mengenkripsi pesan Anda karena kontak tidak mengumumkan kunci publiknya.\n\n<small>Silakan meminta kontak Anda untuk menyetel OpenPGP</small></string>
   <string name="no_pgp_keys">Tidak ada kunci OpenPGP ditemukan</string>
   <string name="contacts_have_no_pgp_keys">Percakapan tidak dapat mengenkripsi pesan Anda karena kontak tidak mengumumkan kunci publik mereka.\n\n<small>Silakan meminta kontak Anda untuk setup OpenPGP.</small></string>
-  <string name="encrypted_message_received"><i>Pesan terenkripsi diterima. Sentuh untuk membongkar dan melihatnya.</i></string>
   <string name="pref_general">Umum</string>
   <string name="pref_xmpp_resource">XMPP resource</string>
   <string name="pref_xmpp_resource_summary">Identifikasi nama klien ini dengan</string>
@@ -165,7 +163,6 @@
   <string name="passwords_do_not_match">Password tidak sama</string>
   <string name="invalid_jid">Jabber ID tidak valid</string>
   <string name="error_out_of_memory">Memori habis. Gambar terlalu besar</string>
-  <string name="add_phone_book_text">Apakah anda ingin menambahkan %s ke daftar kontak anda?</string>
   <string name="contact_status_online">online</string>
   <string name="contact_status_free_to_chat">bebas untuk chatting</string>
   <string name="contact_status_away">pergi</string>
@@ -411,7 +408,6 @@
   <string name="offering_x_file">Menawarkan %s</string>
   <string name="hide_offline">Sembunyikan Offline</string>
   <string name="disable_account">Nonaktifkan Akun</string>
-  <string name="contact_is_typing">%s sedang mengetik...</string>
   <string name="contact_has_stopped_typing">%s telah berhenti mengetik</string>
   <string name="pref_chat_states">Notifikasi ketik pesan</string>
   <string name="pref_chat_states_summary">Biarkan kontak Anda tahu ketika Anda sedang menulis pesan baru</string>

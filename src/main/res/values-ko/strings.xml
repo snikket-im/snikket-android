@@ -28,7 +28,6 @@
   <string name="minutes_ago">%d 분 전 </string>
   <string name="unread_conversations">읽지 않은 대화 </string>
   <string name="sending">보내는중... </string>
-  <string name="encrypted_message">메세지 복호화중입니다. 기다리세요...</string>
   <string name="nick_in_use">사용중인 별명입니다 </string>
   <string name="admin">관리자 </string>
   <string name="owner">소유자 </string>
@@ -90,7 +89,6 @@
   <string name="contact_has_no_pgp_key">당신의 연락처가 그들의 공개 키를 선언하지 않고 있기 때문에 Conversations는 당신의 메세지를 암호화할 수 없습니다. OpenPGP를 설정하도록 당신의 연락처에게 물어보세요. </string>
   <string name="no_pgp_keys">OpenPGP 키가 발견되지 않음 </string>
   <string name="contacts_have_no_pgp_keys">당신의 연락처가 그들의 공개 키를 선언하지 않고 있기 때문에 Conversations는 당신의 메세지를 암호화할 수 없습니다. OpenPGP를 설정하도록 당신의 연락처에게 물어보세요.  </string>
-  <string name="encrypted_message_received">암호화된 메세지 수신됨. 터치해서 복호화 및 열람하세요. </string>
   <string name="pref_general">일반 </string>
   <string name="pref_xmpp_resource">XMPP 자원 </string>
   <string name="pref_xmpp_resource_summary">이 클라이언트가 자신을 알아보는 이름</string>
@@ -165,7 +163,6 @@
   <string name="passwords_do_not_match">암호가 일치하지 않습니다 </string>
   <string name="invalid_jid">올바른 Jabber ID가 아닙니다 </string>
   <string name="error_out_of_memory">메모리 부족. 이미지 용량이 너무 큽니다 </string>
-  <string name="add_phone_book_text">%s를 기기의 연락처 목록에 추가하시겠습니까? </string>
   <string name="contact_status_online">접속중 </string>
   <string name="contact_status_free_to_chat">대화 가능 </string>
   <string name="contact_status_away">자리 비움 </string>
@@ -406,7 +403,6 @@
   <string name="offering_x_file">%s 제공중 </string>
   <string name="hide_offline">오프라인 숨기기 </string>
   <string name="disable_account">계정 해제 </string>
-  <string name="contact_is_typing">%s 이(가) 입력중입니다... </string>
   <string name="contact_has_stopped_typing">%s 이(가) 입력을 중단했습니다 </string>
   <string name="pref_chat_states">입력 알림 </string>
   <string name="pref_chat_states_summary">새 메세지를 작성할 때 이를 연락처에게 알립니다 </string>

@@ -27,8 +27,7 @@
   <string name="minute_ago">pred 1 minútou</string>
   <string name="minutes_ago">pred %d minútami</string>
   <string name="unread_conversations">neprečítané konverzácie</string>
-  <string name="sending">odosielam…</string>
-  <string name="encrypted_message">Dešifrujem správu. Čakajte, prosím…</string>
+  <string name="sending">posielam...</string>
   <string name="nick_in_use">Prezývka už existuje</string>
   <string name="admin">Administrátor</string>
   <string name="owner">Vlastník</string>
@@ -74,8 +73,11 @@
   <string name="clear_conversation_history">Vymazať históriu konverzácií</string>
   <string name="clear_histor_msg">Chcete vymazať všetky správy v tejto konverzácii?\n\n<b>Varovanie:</b> Toto neovplyvní správy uložené v iných zariadeniach alebo serveroch.</string>
   <string name="delete_messages">Vymazať správy</string>
+  <string name="also_end_conversation">Neskôr ukončiť konverzáciu</string>
   <string name="choose_presence">Vybrať aktualizáciu stavu pre kontakt</string>
+  <string name="send_unencrypted_message">Poslať nezašifrovanú správu</string>
   <string name="send_otr_message">Poslať OTR šifrovanú správu</string>
+  <string name="send_omemo_message">Poslať OMEMO šifrovanú správu</string>
   <string name="send_pgp_message">Poslať OpenPGP šifrovanú správu</string>
   <string name="your_nick_has_been_changed">Prezývka sa zmenila</string>
   <string name="send_unencrypted">Poslať nešifrované</string>
@@ -90,7 +92,6 @@
   <string name="contact_has_no_pgp_key">Nie je možné zašifrovať správu v aplikácii Conversations, pretože druhá strana neoznamuje svoj verejný kľúč.\n\n<small>Požiadajte svoj kontakt o nastavenie OpenPGP.</small></string>
   <string name="no_pgp_keys">Nenašli sa žiadne OpenPGP kľúče</string>
   <string name="contacts_have_no_pgp_keys">Nie je možné zašifrovať správy v aplikácii Conversations, pretože kontakty neoznamujú svoj verejný kľúč.\n\n<small>Požiadajte svoje kontakty o nastavenie OpenPGP.</small></string>
-  <string name="encrypted_message_received"><i>Bola prijatá šifrovaná správa. Kliknite pre dešifrovanie a prečítanie.</i></string>
   <string name="pref_general">Všeobecné</string>
   <string name="pref_xmpp_resource">XMPP zdroj</string>
   <string name="pref_xmpp_resource_summary">Meno, ktorým sa tento klient identifikuje</string>
@@ -103,6 +104,8 @@
   <string name="pref_vibrate_summary">Vibrovať pri prijatí novej správy</string>
   <string name="pref_sound">Zvuk</string>
   <string name="pref_sound_summary">Prehrať zvuk spolu s upozornením</string>
+  <string name="pref_conference_notifications">Upozornenia vo verejných konverzáciách</string>
+  <string name="pref_conference_notifications_summary">Vždy upozorniť na prichádzajúcu správu vo verejnej konverzácii, nie len keď je zvýraznená</string>
   <string name="pref_notification_grace_period">Doba na prečítanie upozornenia</string>
   <string name="pref_notification_grace_period_summary">Neupozorňovať krátko po obdržaní kópie správy</string>
   <string name="pref_advanced_options">Rozšírené možnosti</string>
@@ -145,8 +148,10 @@
   <string name="account_status_regis_not_sup">Server nepodporuje registráciu</string>
   <string name="account_status_security_error">Bezpečnostná chyba</string>
   <string name="account_status_incompatible_server">Nekompatibilný server</string>
+  <string name="encryption_choice_unencrypted">Nezašifrovaný</string>
   <string name="encryption_choice_otr">OTR</string>
   <string name="encryption_choice_pgp">OpenPGP</string>
+  <string name="encryption_choice_omemo">OMEMO</string>
   <string name="mgmt_account_edit">Upraviť účet</string>
   <string name="mgmt_account_delete">Vymazať účet</string>
   <string name="mgmt_account_disable">Dočasne vypnúť</string>
@@ -165,7 +170,6 @@
   <string name="passwords_do_not_match">Heslá nezodpovedajú</string>
   <string name="invalid_jid">Toto nie je platné Jabber ID</string>
   <string name="error_out_of_memory">Nedostatok pamäti. Obrázok je príliš veľký</string>
-  <string name="add_phone_book_text">Chcete pridať %s do svojho telefónneho zoznamu?</string>
   <string name="contact_status_online">online</string>
   <string name="contact_status_free_to_chat">dostupný pre chat</string>
   <string name="contact_status_away">preč</string>
@@ -181,6 +185,8 @@
   <string name="server_info_blocking">XEP-0191: Blocking Command</string>
   <string name="server_info_roster_version">XEP-0237: Roster Versioning</string>
   <string name="server_info_stream_management">XEP-0198: Stream Management</string>
+  <string name="server_info_pep">XEP-0163: PEP (Avatars / OMEMO)</string>
+  <string name="server_info_http_upload">XEP-0363: HTTP File Upload</string>
   <string name="server_info_available">dostupný</string>
   <string name="server_info_unavailable">nedostupný</string>
   <string name="missing_public_keys">Chýba oznámenie o verejnom kľúči</string>
@@ -198,6 +204,12 @@
   <string name="reception_failed">Príjem zlyhal</string>
   <string name="your_fingerprint">Váš identifikátor</string>
   <string name="otr_fingerprint">OTR identifikátor</string>
+  <string name="omemo_fingerprint">OMEMO identifikátor</string>
+  <string name="omemo_fingerprint_selected_message">OMEMO identifkátor správy</string>
+  <string name="this_device_omemo_fingerprint">Vlastný OMEMO identifikátor</string>
+  <string name="other_devices">Ostatné zariadenia</string>
+  <string name="trust_omemo_fingerprints">Dôverovať OMEMO identifikátoru</string>
+  <string name="done">Dokončený</string>
   <string name="verify">Overiť</string>
   <string name="decrypt">Dešifrovať</string>
   <string name="conferences">Skupinové konverzácie</string>
@@ -282,6 +294,7 @@
   <string name="conference_members_only">Táto konverzácia je iba pre členov</string>
   <string name="conference_kicked">Vyčlenili vás z tejto konverzácie</string>
   <string name="using_account">Používa sa účet %s</string>
+  <string name="checking_x">Overiť %s na HTTP host</string>
   <string name="not_connected_try_again">Nie ste pripojený. Skúste to neskôr</string>
   <string name="check_x_filesize">Overiť %s veľkosť</string>
   <string name="message_options">Možnosti správy</string>
@@ -343,6 +356,8 @@
   <string name="reset">Vymazať</string>
   <string name="account_image_description">Avatar účtu</string>
   <string name="copy_otr_clipboard_description">Skopírovať OTR identifikátor do schránky</string>
+  <string name="copy_omemo_clipboard_description">Skopírovať OMEMO identifikátor do schránky</string>
+  <string name="error_trustkeys_title">Chyba</string>
   <string name="fetching_history_from_server">Načítať históriu zo serveru</string>
   <string name="no_more_history_on_server">Na serveri nie je žiadna ďalšia história</string>
   <string name="updating">Aktualizujem...</string>
@@ -381,6 +396,7 @@
   <string name="private_conference">Súkromná konverzácia iba pre členov</string>
   <string name="conference_options">Možnosti skupinovej konverzácie</string>
   <string name="non_anonymous">Neanonymný</string>
+  <string name="you_are_not_participating">Nezúčastňujete sa</string>
   <string name="modified_conference_options">Možnosti skupinovej konverzácie nastavené!</string>
   <string name="could_not_modify_conference_options">Nepodarilo sa nastaviť možnosti skupinovej konverzácie</string>
   <string name="never">Nikdy</string>
@@ -408,7 +424,6 @@
   <string name="offering_x_file">Ponúkam %s</string>
   <string name="hide_offline">Skryť neprihlásených</string>
   <string name="disable_account">Vypnúť účet</string>
-  <string name="contact_is_typing">%s píše...</string>
   <string name="contact_has_stopped_typing">%s prestal písať</string>
   <string name="pref_chat_states">Upozornenia pri písaní</string>
   <string name="pref_chat_states_summary">Upozorniť kontakt, keď píšete novú správu</string>
@@ -445,4 +460,14 @@
   <string name="search_for_contacts_or_groups">Hľadať kontakty alebo skupiny</string>
   <string name="send_private_message">Poslať súkromnú správu</string>
   <string name="user_has_left_conference">%s opustil skupinovú konverzáciu!</string>
+  <string name="username">Užívateľské meno</string>
+  <string name="username_hint">Užívateľské meno</string>
+  <string name="invalid_username">Toto nie je platné užívateľské meno</string>
+  <string name="pref_xa_on_silent_mode">Nedostupný v tichom režime</string>
+  <string name="action_add_account_with_certificate">Pridať účet s certifikátom</string>
+  <string name="unable_to_parse_certificate">Neschopný analyzovať certifikát</string>
+  <string name="captcha_ocr">Text CAPTCHA</string>
+  <string name="captcha_required">Potrebný CAPTCHA</string>
+  <string name="captcha_hint">vložiť text z obrázku</string>
+  <string name="action_renew_certificate">Obnoviť certifikát</string>
 </resources>

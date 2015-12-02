@@ -28,7 +28,6 @@
   <string name="minutes_ago">πριν από %d λεπτά</string>
   <string name="unread_conversations">μη αναγνωσμένες Συζητήσεις</string>
   <string name="sending">αποστολή...</string>
-  <string name="encrypted_message">Αποκρυπτογράφηση μηνύματος. Παρακαλώ περιμένετε...</string>
   <string name="nick_in_use">Το ψευδώνυμο είναι ήδη σε χρήση</string>
   <string name="admin">Διαχειριστής</string>
   <string name="owner">Κάτοχος</string>
@@ -90,7 +89,6 @@
   <string name="contact_has_no_pgp_key">Το Conversations αδυνατεί να κρυπτογραφήσει τα μηνύματά σας γιατί η επαφή σας δεν ανακοινώνει το δημόσιο κλειδί της.\n\n<small>Παρακαλώ ζητήστε από την επαφή σας να εγκαταστήσει το OpenPGP.</small></string>
   <string name="no_pgp_keys">Δεν βρέθηκαν κλειδιά OpenPGP</string>
   <string name="contacts_have_no_pgp_keys">Το Conversations αδυνατεί να κρυπτογραφήσει τα μηνύματά σας γιατί οι επαφές σας δεν ανακοινώνουν το δημόσιο κλειδί τους.\n\n<small>Παρακαλώ ζητήστε από τις επαφές σας να εγκαταστήσουν το OpenPGP.</small></string>
-  <string name="encrypted_message_received"><i>Λήψη κρυπτογραφημένου μηνύματος. Επιλέξτε για ανάγνωση και αποκρυπτογράφηση.</i></string>
   <string name="pref_general">Γενικά</string>
   <string name="pref_xmpp_resource">πόρος XMPP</string>
   <string name="pref_xmpp_resource_summary">Το όνομα με το οποίο ταυτοποιείται αυτό το πρόγραμμα-πελάτης</string>
@@ -165,7 +163,6 @@
   <string name="passwords_do_not_match">Τα συνθηματικά δεν ταιριάζουν</string>
   <string name="invalid_jid">Αυτή δεν είναι έγκυρη ταυτότητα Jabber</string>
   <string name="error_out_of_memory">Πλήρης μνήμη. Η εικόνα είναι πολύ μεγάλη</string>
-  <string name="add_phone_book_text">Θέλετε να προσθέσετε την επαφή %s στον τηλεφωνικό κατάλογο του τηλεφώνου σας;</string>
   <string name="contact_status_online">συνδεμένος</string>
   <string name="contact_status_free_to_chat">ελεύθερος για συνομιλία</string>
   <string name="contact_status_away">λείπω</string>
@@ -406,7 +403,6 @@
   <string name="offering_x_file">Προσφορά του %s</string>
   <string name="hide_offline">Απόκρυψη των εκτός σύνδεσης</string>
   <string name="disable_account">Απενεργοποίηση λογαριασμού</string>
-  <string name="contact_is_typing">Ο χρήστης %s γράφει...</string>
   <string name="contact_has_stopped_typing">Ο χρήστης %s σταμάτησε να γράφει</string>
   <string name="pref_chat_states">Ειδοποιήσεις πληκτρολόγησης</string>
   <string name="pref_chat_states_summary">Επιτρέψτε στην επαφή σας να γνωρίζει πότε γράφετε ένα νέο μήνυμα</string>

@@ -14,7 +14,6 @@
   <string name="minutes_ago">min</string>
   <string name="unread_conversations">conversas sen ler</string>
   <string name="sending">enviando…</string>
-  <string name="encrypted_message">Descifrando mensaxe. Agarda uns intres…</string>
   <string name="nick_in_use">O apodo xa está en uso</string>
   <string name="moderator">Moderador</string>
   <string name="participant">Participante</string>
@@ -55,7 +54,6 @@
   <string name="offering">ofrecendo…</string>
   <string name="no_pgp_key">Clave OpenPGP non atopada</string>
   <string name="contact_has_no_pgp_key">Conversations non foi quen de cifrar as túas mensaxes porque o teu contactos non está anunciando a súa clave pública.\n\n<small>Por favor, pídelle ao teu contacto que configure OpenPGP.</small></string>
-  <string name="encrypted_message_received"><i>Mensaxe cifrado recibido. Pulsa para ver.</i></string>
   <string name="pref_xmpp_resource">Recurso</string>
   <string name="pref_xmpp_resource_summary">O nome que identifica o cliente que estás a empregar</string>
   <string name="pref_accept_files">Aceptar arquivos</string>

@@ -28,7 +28,6 @@
   <string name="minutes_ago">%d min lehenago</string>
   <string name="unread_conversations">irakurri gabeko elkarrizketak</string>
   <string name="sending">bidaltzen…</string>
-  <string name="encrypted_message">Mezua desenkriptatzen. Mesedez itxaron…</string>
   <string name="nick_in_use">Ezizena erabilita dagoeneko</string>
   <string name="admin">Administratzailea</string>
   <string name="owner">Jabea</string>
@@ -74,6 +73,7 @@
   <string name="clear_conversation_history">Elkarrizketa historia garbitu</string>
   <string name="clear_histor_msg">Elkarrizketa honetako mezu guztiak ezabatu nahi al dituzu?\n\n<b>Abisua:</b> Honek ez du beste gailu edo zerbitzarietan gordetako mezuetan eraginik izango.</string>
   <string name="delete_messages">Mezuak ezabatu</string>
+  <string name="also_end_conversation">Elkarrizketa hau jarraian amaitu</string>
   <string name="choose_presence">Hautatu agerpena kontaktuarentzat</string>
   <string name="send_unencrypted_message">Enkriptatu gabeko mezua bidali</string>
   <string name="send_otr_message">OTRz enkriptatutako mezua bidali</string>
@@ -92,7 +92,6 @@
   <string name="contact_has_no_pgp_key">Conversations ez da zure mezuak enkriptatzeko gai zure kontaktua bere gako publikoa jakinarazten ez dagoelako.\n\n<small>Mesedez eskatu ezaiozu zure kontaktuari openPGP konfigura dezan.</small></string>
   <string name="no_pgp_keys">Ez da OpenPGP gakorik aurkitu</string>
   <string name="contacts_have_no_pgp_keys">Conversations ez da zure mezuak enkriptatzeko gai zure kontaktuak haien gako publikoa jakinarazten ez daudelako.\n\n<small>Mesedez eskatu ezaiezu zure kontakuei OpenPGP konfigura dezaten.</small></string>
-  <string name="encrypted_message_received"><i>Enkriptatutako mezua jaso da. Ukitu ikusi eta desenkriptatzeko.</i></string>
   <string name="pref_general">Orokorrak</string>
   <string name="pref_xmpp_resource">XMPP baliabidea</string>
   <string name="pref_xmpp_resource_summary">Bezero honek bere burua aurkezteko erabiltzen duen izena</string>
@@ -171,7 +170,6 @@
   <string name="passwords_do_not_match">Pasahitzak ez dute bat egiten</string>
   <string name="invalid_jid">Hau ez da Jabber ID baliodun bat</string>
   <string name="error_out_of_memory">Memoriarik gabe. Irudia handiegia da</string>
-  <string name="add_phone_book_text">%s zure telefono kontaktu zerrendara gehitu nahi al duzu?</string>
   <string name="contact_status_online">konektatuta</string>
   <string name="contact_status_free_to_chat">hitzegiteko aske</string>
   <string name="contact_status_away">kanpoan</string>
@@ -211,7 +209,6 @@
   <string name="this_device_omemo_fingerprint">Norberaren OMEMO hatz-marka</string>
   <string name="other_devices">Beste gailuak</string>
   <string name="trust_omemo_fingerprints">OMEMO hatz-marketaz fidatu</string>
-  <string name="fetching_keys">Gakoak eskuratzen...</string>
   <string name="done">Eginda</string>
   <string name="verify">Egiaztatu</string>
   <string name="decrypt">Desenkriptatu</string>
@@ -334,6 +331,9 @@
   <string name="conversations_foreground_service">Conversations</string>
   <string name="pref_keep_foreground_service">Zerbitzua atzeko planoan mantendu</string>
   <string name="pref_keep_foreground_service_summary">Sistema eragileak zure konexioa hiltzea galarazten du</string>
+  <string name="pref_export_logs">Erregistroak esportatu</string>
+  <string name="pref_export_logs_summary">Erregistroak SD txartelean gorde</string>
+  <string name="notification_export_logs_title">Erregistroak SD txartelean gordetzen</string>
   <string name="choose_file">Fitxategia aukeratu</string>
   <string name="receiving_x_file">%1$s jasotzen (%2$d%% osatua)</string>
   <string name="download_x_file">%s deskargatu</string>
@@ -438,7 +438,6 @@
   <string name="offering_x_file">%s eskeintzen...</string>
   <string name="hide_offline">Lineaz kanpokoak ezkutatu</string>
   <string name="disable_account">Kontua ezgaitu</string>
-  <string name="contact_is_typing">%s idazten ari da...</string>
   <string name="contact_has_stopped_typing">%s(e)k idazteari utzi dio</string>
   <string name="pref_chat_states">Idazketa jakinarazpenak</string>
   <string name="pref_chat_states_summary">Zure kontaktuak mezu berri bat noiz idazten ari zaren jakin dezan baimendu</string>
@@ -481,6 +480,19 @@
   <string name="download_failed_could_not_connect">Deskargak huts egin du: ezin izan da ostalarira konektatu</string>
   <string name="pref_use_white_background">Atzeko-planoan kolore zuria erabili</string>
   <string name="pref_use_white_background_summary">Jasotako mezuak testu beltza atzeko-plano zuri baten gainean bezala erakutsi</string>
-  <string name="account_status_dns_timeout">DNSan denboraz kanpoko arazoa</string>
   <string name="server_info_broken">Hondatuta</string>
+  <string name="pref_presence_settings">Presentzia ezarpenak</string>
+  <string name="pref_away_when_screen_off">Urrun pantaila itzalita dagoenean</string>
+  <string name="pref_away_when_screen_off_summary">Zure baliabidea urrun bezala markatzen du pantaila itzalita dagoenean</string>
+  <string name="pref_xa_on_silent_mode">Ez eskuragarri modu isilean</string>
+  <string name="pref_xa_on_silent_mode_summary">Zure baliabidea ez eskuragarri bezala markatzen du mugikorra modu isilean dagoenean</string>
+  <string name="action_add_account_with_certificate">Kontua ziurtagiriarekin gehitu</string>
+  <string name="unable_to_parse_certificate">Ezin izan da ziurtagiria aztertu</string>
+  <string name="authenticate_with_certificate">Utzi hutsik ziurtagiririk gabe autentifikatzeko</string>
+  <string name="captcha_ocr">Captcharen testua</string>
+  <string name="captcha_required">Captcha beharrezkoa da</string>
+  <string name="captcha_hint">Sartu irudiaren testua</string>
+  <string name="certificate_chain_is_not_trusted">Ziurtagiriaren katea ez da fidagarria</string>
+  <string name="jid_does_not_match_certificate">Jabber IDa ez du ziurtagiriarekin bat egiten</string>
+  <string name="action_renew_certificate">Ziurtagiria berriztu</string>
 </resources>

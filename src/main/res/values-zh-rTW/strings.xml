@@ -21,7 +21,6 @@
   <string name="minutes_ago">%d 分鐘前</string>
   <string name="unread_conversations">未讀對話</string>
   <string name="sending">正在發送…</string>
-  <string name="encrypted_message">正在解密訊息中，請稍候…</string>
   <string name="nick_in_use">該用戶名稱已被使用</string>
   <string name="admin">管理員</string>
   <string name="owner">擁有人</string>
@@ -74,7 +73,6 @@
   <string name="contact_has_no_pgp_key">Conversations 不能將你的訊息加密，因為聯絡人沒有公佈他/她的公鑰。\n\n<small>請通知聯絡人設定 OpenPGP。</small></string>
   <string name="no_pgp_keys">找不到多條 OpenPGP 鑰匙</string>
   <string name="contacts_have_no_pgp_keys">Conversations 不能將你的訊息加密，因為多位聯絡人沒有公佈他/她的公鑰。\n\n<small>請通知聯絡人設定 OpenPGP。</small></string>
-  <string name="encrypted_message_received"><i>已收到加密訊息，點擊進行解密和查看。</i></string>
   <string name="pref_general">一般</string>
   <string name="pref_xmpp_resource">XMPP 資源</string>
   <string name="pref_xmpp_resource_summary">客戶端標示名稱</string>
@@ -147,7 +145,6 @@
   <string name="passwords_do_not_match">密碼不一致</string>
   <string name="invalid_jid">該 Jabber ID 無效</string>
   <string name="error_out_of_memory">空間不足，圖片過大</string>
-  <string name="add_phone_book_text">你確定要新增 %s 為聯絡人嗎？</string>
   <string name="contact_status_online">線上</string>
   <string name="contact_status_free_to_chat">目前有空</string>
   <string name="contact_status_away">離開</string>
