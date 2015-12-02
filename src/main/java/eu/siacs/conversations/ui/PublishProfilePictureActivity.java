@@ -1,14 +1,11 @@
 package eu.siacs.conversations.ui;
 
 import android.app.PendingIntent;
-import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Parcel;
-import android.provider.MediaStore;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
@@ -21,7 +18,6 @@ import com.soundcloud.android.crop.Crop;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
@@ -232,18 +228,18 @@ public class PublishProfilePictureActivity extends XmppActivity {
 		}
 	}
 
-	private Bitmap loadScaledBitmap(String filePath, int reqSize) {
+	private Bitmap loadScaledBitmap(Uri uri, int reqSize) throws FileNotFoundException {
 		final BitmapFactory.Options options = new BitmapFactory.Options();
 		options.inJustDecodeBounds = true;
-		BitmapFactory.decodeFile(filePath,options);
-		options.inSampleSize = FileBackend.calcSampleSize(new File(filePath), reqSize);
+		BitmapFactory.decodeStream(getContentResolver().openInputStream(uri));
+		options.inSampleSize = FileBackend.calcSampleSize(options, reqSize);
 		options.inJustDecodeBounds = false;
-		return BitmapFactory.decodeFile(filePath,options);
+		return BitmapFactory.decodeStream(getContentResolver().openInputStream(uri));
 	}
 	protected void loadImageIntoPreview(Uri uri) {
 		Bitmap bm = null;
 		try{
-			bm = loadScaledBitmap(uri.getPath(), Config.AVATAR_SIZE);
+			bm = loadScaledBitmap(uri, Config.AVATAR_SIZE);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
