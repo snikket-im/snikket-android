@@ -491,7 +491,7 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 				}
 			}
 		}
-		this.mUseTor = getPreferences().getBoolean("use_tor", false);
+		this.mUseTor = Config.PARANOID_MODE || getPreferences().getBoolean("use_tor", false);
 		this.mNamePort.setVisibility(mUseTor ? View.VISIBLE : View.GONE);
 	}
 
