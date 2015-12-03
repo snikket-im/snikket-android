@@ -494,8 +494,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 		}
 		LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		membersView.removeAllViews();
-		final ArrayList<User> users = new ArrayList<>();
-		users.addAll(mConversation.getMucOptions().getUsers());
+		final ArrayList<User> users = mucOptions.getUsers();
 		Collections.sort(users,new Comparator<User>() {
 			@Override
 			public int compare(User lhs, User rhs) {
@@ -527,20 +526,17 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 				});
 				tvKey.setText(OpenPgpUtils.convertKeyIdToHex(user.getPgpKeyId()));
 			}
-			Bitmap bm;
 			Contact contact = user.getContact();
 			if (contact != null) {
-				bm = avatarService().get(contact, getPixel(48));
 				tvDisplayName.setText(contact.getDisplayName());
 				tvStatus.setText(user.getName() + " \u2022 " + getStatus(user));
 			} else {
-				bm = avatarService().get(user.getName(), getPixel(48));
 				tvDisplayName.setText(user.getName());
 				tvStatus.setText(getStatus(user));
 
 			}
 			ImageView iv = (ImageView) view.findViewById(R.id.contact_photo);
-			iv.setImageBitmap(bm);
+			iv.setImageBitmap(avatarService().get(user, getPixel(48), false));
 			membersView.addView(view);
 			if (mConversation.getMucOptions().canInvite()) {
 				mInviteButton.setVisibility(View.VISIBLE);

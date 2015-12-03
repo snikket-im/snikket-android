@@ -2358,12 +2358,22 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 						if (getFileBackend().save(avatar)) {
 							Log.d(Config.LOGTAG, account.getJid().toBareJid()
 									+ ": successfully fetched vCard avatar for " + avatar.owner);
-							Contact contact = account.getRoster()
-									.getContact(avatar.owner);
-							contact.setAvatar(avatar);
-							getAvatarService().clear(contact);
-							updateConversationUi();
-							updateRosterUi();
+							if (avatar.owner.isBareJid()) {
+								Contact contact = account.getRoster()
+										.getContact(avatar.owner);
+								contact.setAvatar(avatar);
+								getAvatarService().clear(contact);
+								updateConversationUi();
+								updateRosterUi();
+							} else {
+								Conversation conversation = find(account,avatar.owner.toBareJid());
+								if (conversation != null && conversation.getMode() == Conversation.MODE_MULTI) {
+									MucOptions.User user = conversation.getMucOptions().findUser(avatar.owner.getResourcepart());
+									if (user != null) {
+										user.setAvatar(avatar);
+									}
+								}
+							}
 						}
 					}
 				}

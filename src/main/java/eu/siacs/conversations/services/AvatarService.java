@@ -58,6 +58,22 @@ public class AvatarService {
 		return avatar;
 	}
 
+	public Bitmap get(final MucOptions.User user, final int size, boolean cachedOnly) {
+		final String KEY = key(user, size);
+		Bitmap avatar = this.mXmppConnectionService.getBitmapCache().get(KEY);
+		if (avatar != null || cachedOnly) {
+			return avatar;
+		}
+		if (user.getAvatar() != null) {
+			avatar = mXmppConnectionService.getFileBackend().getAvatar(user.getAvatar(), size);
+		}
+		if (avatar == null) {
+			avatar = get(user.getName(), size, cachedOnly);
+		}
+		this.mXmppConnectionService.getBitmapCache().put(KEY, avatar);
+		return avatar;
+	}
+
 	public void clear(Contact contact) {
 		synchronized (this.sizes) {
 			for (Integer size : sizes) {
@@ -75,6 +91,16 @@ public class AvatarService {
 		}
 		return PREFIX_CONTACT + "_" + contact.getAccount().getJid().toBareJid() + "_"
 				+ contact.getJid() + "_" + String.valueOf(size);
+	}
+
+	private String key(MucOptions.User user, int size) {
+		synchronized (this.sizes) {
+			if (!this.sizes.contains(size)) {
+				this.sizes.add(size);
+			}
+		}
+		return PREFIX_CONTACT + "_" + user.getAccount().getJid().toBareJid() + "_"
+				+ user.getFullJid() + "_" + String.valueOf(size);
 	}
 
 	public Bitmap get(ListItem item, int size) {
@@ -122,7 +148,7 @@ public class AvatarService {
 		if (bitmap != null || cachedOnly) {
 			return bitmap;
 		}
-		final List<MucOptions.User> users = new ArrayList<>(mucOptions.getUsers());
+		final List<MucOptions.User> users = mucOptions.getUsers();
 		int count = users.size();
 		bitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
 		Canvas canvas = new Canvas(bitmap);
@@ -198,15 +224,20 @@ public class AvatarService {
 	}
 
 	public Bitmap get(Message message, int size, boolean cachedOnly) {
+		final Conversation conversation = message.getConversation();
 		if (message.getStatus() == Message.STATUS_RECEIVED) {
-			Contact contact = message.getContact();
-			if (contact != null) {
-				return get(contact, size, cachedOnly);
-			} else {
-				return get(UIHelper.getMessageDisplayName(message), size, cachedOnly);
+			Contact c = message.getContact();
+			if (c != null && (c.getProfilePhoto() != null || c.getAvatar() != null)) {
+				return get(c, size, cachedOnly);
+			} else if (message.getConversation().getMode() == Conversation.MODE_MULTI){
+				MucOptions.User user = conversation.getMucOptions().findUser(message.getCounterpart().getResourcepart());
+				if (user != null) {
+					return get(user,size,cachedOnly);
+				}
 			}
+			return get(UIHelper.getMessageDisplayName(message), size, cachedOnly);
 		} else  {
-			return get(message.getConversation().getAccount(), size, cachedOnly);
+			return get(conversation.getAccount(), size, cachedOnly);
 		}
 	}
 
@@ -287,6 +318,11 @@ public class AvatarService {
 				uri = mXmppConnectionService.getFileBackend().getAvatarUri(
 						contact.getAvatar());
 			}
+			if (drawTile(canvas, uri, left, top, right, bottom)) {
+				return true;
+			}
+		} else if (user.getAvatar() != null) {
+			Uri uri = mXmppConnectionService.getFileBackend().getAvatarUri(user.getAvatar());
 			if (drawTile(canvas, uri, left, top, right, bottom)) {
 				return true;
 			}
