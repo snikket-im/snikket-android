@@ -413,13 +413,13 @@ public class Account extends AbstractEntity {
 	}
 
 	public String getPgpSignature() {
-		if (keys.has(KEY_PGP_SIGNATURE)) {
-			try {
+		try {
+			if (keys.has(KEY_PGP_SIGNATURE) && !"null".equals(keys.getString(KEY_PGP_SIGNATURE))) {
 				return keys.getString(KEY_PGP_SIGNATURE);
-			} catch (final JSONException e) {
+			} else {
 				return null;
 			}
-		} else {
+		} catch (final JSONException e) {
 			return null;
 		}
 	}
@@ -427,6 +427,15 @@ public class Account extends AbstractEntity {
 	public boolean setPgpSignature(String signature) {
 		try {
 			keys.put(KEY_PGP_SIGNATURE, signature);
+		} catch (JSONException e) {
+			return false;
+		}
+		return true;
+	}
+
+	public boolean unsetPgpSignature() {
+		try {
+			keys.put(KEY_PGP_SIGNATURE, JSONObject.NULL);
 		} catch (JSONException e) {
 			return false;
 		}
