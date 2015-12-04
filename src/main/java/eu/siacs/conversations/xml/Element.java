@@ -182,4 +182,8 @@ public class Element {
 		String attr = getAttribute(name);
 		return (attr != null && (attr.equalsIgnoreCase("true") || attr.equalsIgnoreCase("1")));
 	}
+
+	public String getNamespace() {
+		return getAttribute("xmlns");
+	}
 }
