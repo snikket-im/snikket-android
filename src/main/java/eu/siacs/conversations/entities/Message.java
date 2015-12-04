@@ -361,7 +361,9 @@ public class Message extends AbstractEntity {
 			if (message.getRemoteMsgId() != null) {
 				return (message.getRemoteMsgId().equals(this.remoteMsgId) || message.getRemoteMsgId().equals(this.uuid))
 						&& this.counterpart.equals(message.getCounterpart())
-						&& body.equals(otherBody);
+						&& (body.equals(otherBody)
+						||(message.getEncryption() == Message.ENCRYPTION_PGP
+						&&  message.getRemoteMsgId().matches("[0-9a-f]{8}-[0-9a-f]{4}-4[0-9]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}"))) ;
 			} else {
 				return this.remoteMsgId == null
 						&& this.counterpart.equals(message.getCounterpart())
