@@ -59,6 +59,15 @@ public class AvatarService {
 	}
 
 	public Bitmap get(final MucOptions.User user, final int size, boolean cachedOnly) {
+		Contact c = user.getContact();
+		if (c != null && (c.getProfilePhoto() != null || c.getAvatar() != null)) {
+			return get(c, size, cachedOnly);
+		} else {
+			return getImpl(user, size, cachedOnly);
+		}
+	}
+
+	private Bitmap getImpl(final MucOptions.User user, final int size, boolean cachedOnly) {
 		final String KEY = key(user, size);
 		Bitmap avatar = this.mXmppConnectionService.getBitmapCache().get(KEY);
 		if (avatar != null || cachedOnly) {
@@ -232,7 +241,7 @@ public class AvatarService {
 			} else if (message.getConversation().getMode() == Conversation.MODE_MULTI){
 				MucOptions.User user = conversation.getMucOptions().findUser(message.getCounterpart().getResourcepart());
 				if (user != null) {
-					return get(user,size,cachedOnly);
+					return getImpl(user,size,cachedOnly);
 				}
 			}
 			return get(UIHelper.getMessageDisplayName(message), size, cachedOnly);
