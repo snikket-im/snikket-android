@@ -2367,7 +2367,11 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 								if (conversation != null && conversation.getMode() == Conversation.MODE_MULTI) {
 									MucOptions.User user = conversation.getMucOptions().findUser(avatar.owner.getResourcepart());
 									if (user != null) {
-										user.setAvatar(avatar);
+										if (user.setAvatar(avatar)) {
+											getAvatarService().clear(user);
+											updateConversationUi();
+											updateMucRosterUi();
+										}
 									}
 								}
 							}

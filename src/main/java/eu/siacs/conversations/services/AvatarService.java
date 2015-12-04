@@ -197,8 +197,7 @@ public class AvatarService {
 	public void clear(MucOptions options) {
 		synchronized (this.sizes) {
 			for (Integer size : sizes) {
-				this.mXmppConnectionService.getBitmapCache().remove(
-						key(options, size));
+				this.mXmppConnectionService.getBitmapCache().remove(key(options, size));
 			}
 		}
 	}
@@ -253,8 +252,15 @@ public class AvatarService {
 	public void clear(Account account) {
 		synchronized (this.sizes) {
 			for (Integer size : sizes) {
-				this.mXmppConnectionService.getBitmapCache().remove(
-						key(account, size));
+				this.mXmppConnectionService.getBitmapCache().remove(key(account, size));
+			}
+		}
+	}
+
+	public void clear(MucOptions.User user) {
+		synchronized (this.sizes) {
+			for (Integer size : sizes) {
+				this.mXmppConnectionService.getBitmapCache().remove(key(user, size));
 			}
 		}
 	}
@@ -346,12 +352,12 @@ public class AvatarService {
 		if (avatar != null) {
 			Uri uri = mXmppConnectionService.getFileBackend().getAvatarUri(avatar);
 			if (uri != null) {
-				drawTile(canvas, uri, left, top, right, bottom);
+				if (drawTile(canvas, uri, left, top, right, bottom)) {
+					return true;
+				}
 			}
-		} else {
-			drawTile(canvas, account.getJid().toBareJid().toString(), left, top, right, bottom);
 		}
-		return true;
+		return drawTile(canvas, account.getJid().toBareJid().toString(), left, top, right, bottom);
 	}
 
 	private boolean drawTile(Canvas canvas, String name, int left, int top, int right, int bottom) {

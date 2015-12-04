@@ -213,8 +213,13 @@ public class MucOptions {
 			return getAccount().getRoster().getContactFromRoster(getJid());
 		}
 
-		public void setAvatar(Avatar avatar) {
-			this.avatar = avatar;
+		public boolean setAvatar(Avatar avatar) {
+			if (this.avatar != null && this.avatar.equals(avatar)) {
+				return false;
+			} else {
+				this.avatar = avatar;
+				return true;
+			}
 		}
 
 		public String getAvatar() {

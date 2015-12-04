@@ -35,7 +35,7 @@ public class PresenceParser extends AbstractParser implements
 			processConferencePresence(packet, mucOptions);
 			final List<MucOptions.User> tileUserAfter = mucOptions.getUsers(5);
 			if (!tileUserAfter.equals(tileUserBefore)) {
-				mXmppConnectionService.getAvatarService().clear(conversation);
+				mXmppConnectionService.getAvatarService().clear(mucOptions);
 			}
 			if (before != mucOptions.online() || (mucOptions.online() && count != mucOptions.getUserCount())) {
 				mXmppConnectionService.updateConversationUi();
@@ -86,7 +86,9 @@ public class PresenceParser extends AbstractParser implements
 						if (avatar != null) {
 							avatar.owner = from;
 							if (mXmppConnectionService.getFileBackend().isAvatarCached(avatar)) {
-								user.setAvatar(avatar);
+								if (user.setAvatar(avatar)) {
+									mXmppConnectionService.getAvatarService().clear(user);
+								}
 							} else {
 								mXmppConnectionService.fetchAvatar(mucOptions.getAccount(), avatar);
 							}
