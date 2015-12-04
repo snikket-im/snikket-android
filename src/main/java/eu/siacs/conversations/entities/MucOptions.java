@@ -246,7 +246,7 @@ public class MucOptions {
 	public MucOptions(Conversation conversation) {
 		this.account = conversation.getAccount();
 		this.conversation = conversation;
-		this.self = new User(this,conversation.getJid());
+		this.self = new User(this,createJoinJid(getProposedNick()));
 	}
 
 	public void updateFeatures(ArrayList<String> features) {

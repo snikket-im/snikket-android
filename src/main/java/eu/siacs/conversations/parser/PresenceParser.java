@@ -1,11 +1,8 @@
 package eu.siacs.conversations.parser;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.List;
 
-import eu.siacs.conversations.Config;
 import eu.siacs.conversations.crypto.PgpEngine;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
@@ -93,7 +90,6 @@ public class PresenceParser extends AbstractParser implements
 							} else {
 								mXmppConnectionService.fetchAvatar(mucOptions.getAccount(), avatar);
 							}
-							Log.d(Config.LOGTAG, "user " + avatar.owner + " has avatar");
 						}
 					}
 				}

@@ -1720,9 +1720,6 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 					Account account = conversation.getAccount();
 					final String nick = conversation.getMucOptions().getProposedNick();
 					final Jid joinJid = conversation.getMucOptions().createJoinJid(nick);
-					if (joinJid == null) {
-						return; //safety net
-					}
 					Log.d(Config.LOGTAG, account.getJid().toBareJid().toString() + ": joining conversation " + joinJid.toString());
 					PresencePacket packet = new PresencePacket();
 					packet.setFrom(conversation.getAccount().getJid());
