@@ -365,7 +365,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 					break;
 				case Message.ENCRYPTION_AXOLOTL:
 					AxolotlService axolotlService = conversation.getAccount().getAxolotlService();
-					if (axolotlService.trustedSessionVerified(conversation)) {
+					if (axolotlService != null && axolotlService.trustedSessionVerified(conversation)) {
 						mEditMessage.setHint(getString(R.string.send_omemo_x509_message));
 					} else {
 						mEditMessage.setHint(getString(R.string.send_omemo_message));

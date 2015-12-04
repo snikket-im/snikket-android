@@ -227,10 +227,11 @@ public class DNSHelper {
 	}
 
 	public static boolean isIp(final String server) {
-		return PATTERN_IPV4.matcher(server).matches()
+		return server != null && (
+				PATTERN_IPV4.matcher(server).matches()
 				|| PATTERN_IPV6.matcher(server).matches()
 				|| PATTERN_IPV6_6HEX4DEC.matcher(server).matches()
 				|| PATTERN_IPV6_HEX4DECCOMPRESSED.matcher(server).matches()
-				|| PATTERN_IPV6_HEXCOMPRESSED.matcher(server).matches();
+				|| PATTERN_IPV6_HEXCOMPRESSED.matcher(server).matches());
 	}
 }
