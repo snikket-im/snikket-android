@@ -192,6 +192,10 @@ public class ShareWithActivity extends XmppActivity {
 	}
 
 	private void share(final Conversation conversation) {
+		if (conversation.getNextEncryption() == Message.ENCRYPTION_PGP && !hasPgp()) {
+			showInstallPgpDialog();
+			return;
+		}
 		if (share.uris.size() != 0) {
 			OnPresenceSelected callback = new OnPresenceSelected() {
 				@Override
