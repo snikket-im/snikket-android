@@ -998,6 +998,7 @@ public class ConversationActivity extends XmppActivity
 		if (xmppConnectionServiceBound) {
 			if (intent != null && VIEW_CONVERSATION.equals(intent.getType())) {
 				handleViewConversationIntent(intent);
+				setIntent(new Intent());
 			}
 		} else {
 			setIntent(intent);
@@ -1049,15 +1050,24 @@ public class ConversationActivity extends XmppActivity
 	public void onSaveInstanceState(final Bundle savedInstanceState) {
 		Conversation conversation = getSelectedConversation();
 		if (conversation != null) {
-			savedInstanceState.putString(STATE_OPEN_CONVERSATION,
-					conversation.getUuid());
+			savedInstanceState.putString(STATE_OPEN_CONVERSATION,conversation.getUuid());
+		} else {
+			savedInstanceState.remove(STATE_OPEN_CONVERSATION);
 		}
-		savedInstanceState.putBoolean(STATE_PANEL_OPEN,
-				isConversationsOverviewVisable());
+		savedInstanceState.putBoolean(STATE_PANEL_OPEN,isConversationsOverviewVisable());
 		if (this.mPendingImageUris.size() >= 1) {
 			savedInstanceState.putString(STATE_PENDING_URI, this.mPendingImageUris.get(0).toString());
+		} else {
+			savedInstanceState.remove(STATE_PENDING_URI);
 		}
 		super.onSaveInstanceState(savedInstanceState);
+	}
+
+	private void clearPending() {
+		mPendingImageUris.clear();
+		mPendingFileUris.clear();
+		mPendingGeoUri = null;
+		mPostponedActivityResult = null;
 	}
 
 	@Override
@@ -1087,6 +1097,7 @@ public class ConversationActivity extends XmppActivity
 				finish();
 			}
 		} else if (getIntent() != null && VIEW_CONVERSATION.equals(getIntent().getType())) {
+			clearPending();
 			handleViewConversationIntent(getIntent());
 		} else if (selectConversationByUuid(mOpenConverstaion)) {
 			if (mPanelOpen) {
@@ -1100,11 +1111,8 @@ public class ConversationActivity extends XmppActivity
 			mOpenConverstaion = null;
 		} else if (getSelectedConversation() == null) {
 			showConversationsOverview();
-			mPendingImageUris.clear();
-			mPendingFileUris.clear();
-			mPendingGeoUri = null;
+			clearPending();
 			setSelectedConversation(conversationList.get(0));
-			mPostponedActivityResult = null;
 			this.mConversationFragment.reInit(getSelectedConversation());
 		} else {
 			this.mConversationFragment.messageListAdapter.updatePreferences();
