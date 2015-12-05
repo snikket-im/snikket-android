@@ -1,5 +1,17 @@
 ###Changelog
 
+####Version 1.8.0
+* TOR/ORBOT support in advanced settings
+* show vcard avatars of participants in a conference
+
+####Version 1.7.3
+* fixed PGP encrypted file transfer
+* fixed repeating messages in slack conferences
+
+####Version 1.7.2
+* decode PGP messages in background
+
+
 ####Versrion 1.7.1
 * performance improvements when opening a conversation
 
