@@ -1,5 +1,6 @@
 package eu.siacs.conversations.ui;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.AlertDialog;
@@ -10,6 +11,7 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.IntentSender.SendIntentException;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -49,6 +51,7 @@ import eu.siacs.conversations.entities.Blockable;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
+import eu.siacs.conversations.entities.Transferable;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.services.XmppConnectionService.OnAccountUpdate;
 import eu.siacs.conversations.services.XmppConnectionService.OnConversationUpdate;
@@ -77,6 +80,7 @@ public class ConversationActivity extends XmppActivity
 	public static final int REQUEST_ENCRYPT_MESSAGE = 0x0207;
 	public static final int REQUEST_TRUST_KEYS_TEXT = 0x0208;
 	public static final int REQUEST_TRUST_KEYS_MENU = 0x0209;
+	public static final int REQUEST_START_DOWNLOAD = 0x0210;
 	public static final int ATTACHMENT_CHOICE_CHOOSE_IMAGE = 0x0301;
 	public static final int ATTACHMENT_CHOICE_TAKE_PHOTO = 0x0302;
 	public static final int ATTACHMENT_CHOICE_CHOOSE_FILE = 0x0303;
@@ -93,6 +97,7 @@ public class ConversationActivity extends XmppActivity
 	final private List<Uri> mPendingFileUris = new ArrayList<>();
 	private Uri mPendingGeoUri = null;
 	private boolean forbidProcessingPendings = false;
+	private Message mPendingDownloadableMessage = null;
 
 	private boolean conversationWasSelectedByKeyboard = false;
 
@@ -497,6 +502,11 @@ public class ConversationActivity extends XmppActivity
 	}
 
 	public void attachFile(final int attachmentChoice) {
+		if (attachmentChoice != ATTACHMENT_CHOICE_LOCATION) {
+			if (!hasStoragePermission(attachmentChoice)) {
+				return;
+			}
+		}
 		switch (attachmentChoice) {
 			case ATTACHMENT_CHOICE_LOCATION:
 				getPreferences().edit().putString("recently_used_quick_action","location").apply();
@@ -575,7 +585,51 @@ public class ConversationActivity extends XmppActivity
 		}
 	}
 
+	public boolean hasStoragePermission(int attachmentChoice) {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+			if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+				requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, attachmentChoice);
+				return false;
+			} else {
+				return true;
+			}
+		} else {
+			return true;
+		}
+	}
+
 	@Override
+	public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+		if (grantResults.length > 0)
+			if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+				if (requestCode == REQUEST_START_DOWNLOAD) {
+					if (this.mPendingDownloadableMessage != null) {
+						startDownloadable(this.mPendingDownloadableMessage);
+					}
+				} else {
+					attachFile(requestCode);
+				}
+			} else {
+				Toast.makeText(this,R.string.no_storage_permission,Toast.LENGTH_SHORT).show();
+		}
+	}
+
+	public void startDownloadable(Message message) {
+		if (!hasStoragePermission(ConversationActivity.REQUEST_START_DOWNLOAD)) {
+			this.mPendingDownloadableMessage = message;
+			return;
+		}
+		Transferable transferable = message.getTransferable();
+		if (transferable != null) {
+			if (!transferable.start()) {
+				Toast.makeText(this, R.string.not_connected_try_again,Toast.LENGTH_SHORT).show();
+			}
+		} else if (message.treatAsDownloadable() != Message.Decision.NEVER) {
+			xmppConnectionService.getHttpConnectionManager().createNewDownloadConnection(message, true);
+		}
+	}
+
+		@Override
 	public boolean onOptionsItemSelected(final MenuItem item) {
 		if (item.getItemId() == android.R.id.home) {
 			showConversationsOverview();
@@ -1176,7 +1230,7 @@ public class ConversationActivity extends XmppActivity
 			if (downloadUuid != null) {
 				final Message message = mSelectedConversation.findMessageWithFileAndUuid(downloadUuid);
 				if (message != null) {
-					mConversationFragment.messageListAdapter.startDownloadable(message);
+					startDownloadable(message);
 				}
 			}
 		}

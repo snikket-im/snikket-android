@@ -182,7 +182,7 @@ public class HttpDownloadConnection implements Transferable {
 				return;
 			}
 			file.setExpectedSize(size);
-			if (size <= mHttpConnectionManager.getAutoAcceptFileSize()) {
+			if (mHttpConnectionManager.hasStoragePermission() && size <= mHttpConnectionManager.getAutoAcceptFileSize()) {
 				HttpDownloadConnection.this.acceptedAutomatically = true;
 				new Thread(new FileDownloader(interactive)).start();
 			} else {

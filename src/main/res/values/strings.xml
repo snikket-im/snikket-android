@@ -557,4 +557,5 @@
 	</plurals>
 	<string name="shared_file_with_x">Shared file with %s</string>
 	<string name="shared_image_with_x">Shared image with %s</string>
+	<string name="no_storage_permission">Conversations need access to external storage</string>
 </resources>

@@ -1,6 +1,9 @@
 package eu.siacs.conversations.services;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.PowerManager;
 import android.util.Log;
 import android.util.Pair;
@@ -48,6 +51,14 @@ public class AbstractConnectionManager {
 			return Long.parseLong(config);
 		} catch (NumberFormatException e) {
 			return 524288;
+		}
+	}
+
+	public boolean hasStoragePermission() {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+			return mXmppConnectionService.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+		} else {
+			return true;
 		}
 	}
 
