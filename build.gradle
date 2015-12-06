@@ -48,11 +48,11 @@ dependencies {
 
 android {
 	compileSdkVersion 23
-	buildToolsVersion "23.0.1"
+	buildToolsVersion "23.0.2"
 
 	defaultConfig {
 		minSdkVersion 14
-		targetSdkVersion 21
+		targetSdkVersion 23
 		versionCode 109
 		versionName "1.8.0"
 		project.ext.set(archivesBaseName, archivesBaseName + "-" + versionName);

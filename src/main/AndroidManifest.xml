@@ -136,6 +136,9 @@
 
                 <data android:mimeType="image/*"/>
             </intent-filter>
+            <meta-data
+                android:name="android.service.chooser.chooser_target_service"
+                android:value=".services.ContactChooserTargetService" />
         </activity>
         <activity
             android:name=".ui.TrustKeysActivity"
@@ -155,6 +158,12 @@
         </activity>
         <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
         <service android:name=".services.ExportLogsService"/>
+        <service android:name=".services.ContactChooserTargetService"
+                 android:permission="android.permission.BIND_CHOOSER_TARGET_SERVICE">
+            <intent-filter>
+                <action android:name="android.service.chooser.ChooserTargetService" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

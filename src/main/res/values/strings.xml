@@ -91,6 +91,7 @@
 	<string name="openkeychain_required_long">Conversations utilizes a third party app called <b>OpenKeychain</b> to encrypt and decrypt messages and to manage your public keys.\n\nOpenKeychain is licensed under GPLv3 and available on F-Droid and Google Play.\n\n<small>(Please restart Conversations afterwards.)</small></string>
 	<string name="restart">Restart</string>
 	<string name="install">Install</string>
+	<string name="openkeychain_not_installed">Please install OpenKeychain</string>
 	<string name="offering">offering…</string>
 	<string name="waiting">waiting…</string>
 	<string name="no_pgp_key">No OpenPGP Key found</string>
@@ -554,4 +555,6 @@
 		<item quantity="one">%d message</item>
 		<item quantity="other">%d messages</item>
 	</plurals>
+	<string name="shared_file_with_x">Shared file with %s</string>
+	<string name="shared_image_with_x">Shared image with %s</string>
 </resources>
