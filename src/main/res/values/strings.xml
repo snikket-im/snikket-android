@@ -558,4 +558,7 @@
 	<string name="shared_file_with_x">Shared file with %s</string>
 	<string name="shared_image_with_x">Shared image with %s</string>
 	<string name="no_storage_permission">Conversations need access to external storage</string>
+	<string name="sync_with_contacts">Synchronize with contacts</string>
+	<string name="sync_with_contacts_long">Conversations wants to match your XMPP roster with your contacts to show their full names and avatars.\n\nConversations will only read your contacts and match them locally without uploading them to your server.</string>
+	<string name="sync_now">Synchronize now</string>
 </resources>

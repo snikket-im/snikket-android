@@ -410,6 +410,8 @@ public class FileBackend {
 				}
 				return cropCenterSquare(input, size);
 			}
+		} catch (SecurityException e) {
+			return null; // happens for example on Android 6.0 if contacts permissions get revoked
 		} catch (FileNotFoundException e) {
 			return null;
 		} finally {
@@ -424,7 +426,7 @@ public class FileBackend {
 		InputStream is = null;
 		try {
 			BitmapFactory.Options options = new BitmapFactory.Options();
-			options.inSampleSize = calcSampleSize(image,Math.max(newHeight, newWidth));
+			options.inSampleSize = calcSampleSize(image, Math.max(newHeight, newWidth));
 			is = mXmppConnectionService.getContentResolver().openInputStream(image);
 			if (is == null) {
 				return null;
@@ -451,6 +453,8 @@ public class FileBackend {
 				source.recycle();
 			}
 			return dest;
+		} catch (SecurityException e) {
+			return null; //android 6.0 with revoked permissions for example
 		} catch (FileNotFoundException e) {
 			return null;
 		} finally {
@@ -479,7 +483,7 @@ public class FileBackend {
 		return output;
 	}
 
-	private int calcSampleSize(Uri image, int size) throws FileNotFoundException {
+	private int calcSampleSize(Uri image, int size) throws FileNotFoundException, SecurityException {
 		BitmapFactory.Options options = new BitmapFactory.Options();
 		options.inJustDecodeBounds = true;
 		BitmapFactory.decodeStream(mXmppConnectionService.getContentResolver().openInputStream(image), null, options);

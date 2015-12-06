@@ -1,5 +1,6 @@
 package eu.siacs.conversations.ui;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.ActionBar;
@@ -13,6 +14,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
@@ -51,6 +53,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
@@ -89,6 +92,9 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 	private Invite mPendingInvite = null;
 	private Menu mOptionsMenu;
 	private EditText mSearchEditText;
+	private AtomicBoolean mRequestedContactsPermission = new AtomicBoolean(false);
+	private final int REQUEST_SYNC_CONTACTS = 0x3b28cf;
+
 	private MenuItem.OnActionExpandListener mOnActionExpandListener = new MenuItem.OnActionExpandListener() {
 
 		@Override
@@ -245,6 +251,12 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 
 	}
 
+	@Override
+	public void onStart() {
+		super.onStart();
+		askForContactsPermissions();
+	}
+
 	protected void openConversationForContact(int position) {
 		Contact contact = (Contact) contacts.get(position);
 		Conversation conversation = xmppConnectionService
@@ -369,7 +381,7 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 						final Jid accountJid;
 						try {
 							if (Config.DOMAIN_LOCK != null) {
-								accountJid = Jid.fromParts((String) spinner.getSelectedItem(),Config.DOMAIN_LOCK,null);
+								accountJid = Jid.fromParts((String) spinner.getSelectedItem(), Config.DOMAIN_LOCK, null);
 							} else {
 								accountJid = Jid.fromString((String) spinner.getSelectedItem());
 							}
@@ -432,7 +444,7 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 						final Jid accountJid;
 						try {
 							if (Config.DOMAIN_LOCK != null) {
-								accountJid = Jid.fromParts((String) spinner.getSelectedItem(),Config.DOMAIN_LOCK,null);
+								accountJid = Jid.fromParts((String) spinner.getSelectedItem(), Config.DOMAIN_LOCK, null);
 							} else {
 								accountJid = Jid.fromString((String) spinner.getSelectedItem());
 							}
@@ -447,7 +459,7 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 							return;
 						}
 						final Account account = xmppConnectionService
-							.findAccountByJid(accountJid);
+								.findAccountByJid(accountJid);
 						if (account == null) {
 							dialog.dismiss();
 							return;
@@ -456,7 +468,7 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 							if (account.hasBookmarkFor(conferenceJid)) {
 								jid.setError(getString(R.string.bookmark_already_exists));
 							} else {
-								final Bookmark bookmark = new Bookmark(account,conferenceJid.toBareJid());
+								final Bookmark bookmark = new Bookmark(account, conferenceJid.toBareJid());
 								bookmark.setAutojoin(true);
 								String nick = conferenceJid.getResourcepart();
 								if (nick != null && !nick.isEmpty()) {
@@ -465,8 +477,8 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 								account.getBookmarks().add(bookmark);
 								xmppConnectionService.pushBookmarks(account);
 								final Conversation conversation = xmppConnectionService
-									.findOrCreateConversation(account,
-											conferenceJid, true);
+										.findOrCreateConversation(account,
+												conferenceJid, true);
 								conversation.setBookmark(bookmark);
 								if (!conversation.getMucOptions().online()) {
 									xmppConnectionService.joinMuc(conversation);
@@ -476,8 +488,8 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 							}
 						} else {
 							final Conversation conversation = xmppConnectionService
-								.findOrCreateConversation(account,
-										conferenceJid, true);
+									.findOrCreateConversation(account,
+											conferenceJid, true);
 							if (!conversation.getMucOptions().online()) {
 								xmppConnectionService.joinMuc(conversation);
 							}
@@ -578,6 +590,41 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 			}
 		}
 		super.onActivityResult(requestCode, requestCode, intent);
+	}
+
+	private void askForContactsPermissions() {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+			if (checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+				if (mRequestedContactsPermission.compareAndSet(false, true)) {
+					if (shouldShowRequestPermissionRationale(Manifest.permission.READ_CONTACTS)) {
+						AlertDialog.Builder builder = new AlertDialog.Builder(this);
+						builder.setTitle(R.string.sync_with_contacts);
+						builder.setMessage(R.string.sync_with_contacts_long);
+						builder.setPositiveButton(R.string.sync_now, new OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+									requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, REQUEST_SYNC_CONTACTS);
+								}
+							}
+						});
+						builder.create().show();
+					} else {
+						requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, 0);
+					}
+				}
+			}
+		}
+	}
+
+	@Override
+	public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+		if (grantResults.length > 0)
+			if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+				if (requestCode == REQUEST_SYNC_CONTACTS && xmppConnectionServiceBound) {
+					xmppConnectionService.loadPhoneContacts();
+				}
+			}
 	}
 
 	@Override

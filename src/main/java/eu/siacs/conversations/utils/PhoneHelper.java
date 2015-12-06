@@ -1,5 +1,6 @@
 package eu.siacs.conversations.utils;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Loader;
@@ -7,6 +8,7 @@ import android.content.Loader.OnLoadCompleteListener;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.provider.ContactsContract.Profile;
@@ -17,6 +19,11 @@ import java.util.concurrent.RejectedExecutionException;
 public class PhoneHelper {
 
 	public static void loadPhoneContacts(Context context,final List<Bundle> phoneContacts, final OnPhoneContactsLoadedListener listener) {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+				&& context.checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+			listener.onPhoneContactsLoaded(phoneContacts);
+			return;
+		}
 		final String[] PROJECTION = new String[] { ContactsContract.Data._ID,
 				ContactsContract.Data.DISPLAY_NAME,
 				ContactsContract.Data.PHOTO_URI,
@@ -74,6 +81,10 @@ public class PhoneHelper {
 	}
 
 	public static Uri getSefliUri(Context context) {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+				&& context.checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+			return null;
+		}
 		String[] mProjection = new String[] { Profile._ID, Profile.PHOTO_URI };
 		Cursor mProfileCursor = context.getContentResolver().query(
 				Profile.CONTENT_URI, mProjection, null, null, null);

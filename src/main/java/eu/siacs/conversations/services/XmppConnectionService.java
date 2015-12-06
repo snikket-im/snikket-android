@@ -468,9 +468,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 					break;
 				case ACTION_MERGE_PHONE_CONTACTS:
 					if (mRestoredFromDatabase) {
-						PhoneHelper.loadPhoneContacts(getApplicationContext(),
-								new CopyOnWriteArrayList<Bundle>(),
-								this);
+						loadPhoneContacts();
 					}
 					return START_STICKY;
 				case Intent.ACTION_SHUTDOWN:
@@ -1097,9 +1095,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 					}
 					getBitmapCache().evictAll();
 					Looper.prepare();
-					PhoneHelper.loadPhoneContacts(getApplicationContext(),
-							new CopyOnWriteArrayList<Bundle>(),
-							XmppConnectionService.this);
+					loadPhoneContacts();
 					Log.d(Config.LOGTAG, "restoring messages");
 					for (Conversation conversation : conversations) {
 						conversation.addAll(0, databaseBackend.getMessages(conversation, Config.PAGE_SIZE));
@@ -1119,6 +1115,12 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 			};
 			mDatabaseExecutor.execute(runnable);
 		}
+	}
+
+	public void loadPhoneContacts() {
+		PhoneHelper.loadPhoneContacts(getApplicationContext(),
+				new CopyOnWriteArrayList<Bundle>(),
+				XmppConnectionService.this);
 	}
 
 	public List<Conversation> getConversations() {
