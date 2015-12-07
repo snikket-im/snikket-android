@@ -28,6 +28,8 @@
   <string name="minutes_ago">%d min sedan</string>
   <string name="unread_conversations">olästa konversationer</string>
   <string name="sending">skickar…</string>
+  <string name="message_decrypting">Avkrypterar meddelande. Vänta…</string>
+  <string name="pgp_message">OpenPGP-krypterat meddelande</string>
   <string name="nick_in_use">Nick används redan</string>
   <string name="admin">Admin</string>
   <string name="owner">Ägare</string>
@@ -78,6 +80,7 @@
   <string name="send_unencrypted_message">Skicka okrypterat meddelande</string>
   <string name="send_otr_message">Skicka OTR-krypterat meddelande</string>
   <string name="send_omemo_message">Skicka OMEMO-krypterat meddelande</string>
+  <string name="send_omemo_x509_message">Skicka v\\OMEMO-krypterat meddelande</string>
   <string name="send_pgp_message">Skicka OpenPGP-krypterat meddelande</string>
   <string name="your_nick_has_been_changed">Ditt nick har ändrats</string>
   <string name="send_unencrypted">Skicka okrypterat</string>
@@ -86,12 +89,14 @@
   <string name="openkeychain_required_long">Conversations använder en tredjeparts-applikation som heter <b>OpenKeychain</b> för att kryptera och avkryptera meddelanden och hantera dina publika nycklar.\n\nOpenKeychain är licensierad under GPLv3 och tillgänglig på F-Droid och Google Play.\n\n<small>(Starta om Conversations efter installation.)</small></string>
   <string name="restart">Starta om</string>
   <string name="install">Installera</string>
+  <string name="openkeychain_not_installed">Installera OpenKeychain</string>
   <string name="offering">erbjuder…</string>
   <string name="waiting">väntar…</string>
   <string name="no_pgp_key">Ingen OpenPGP-nyckel funnen</string>
   <string name="contact_has_no_pgp_key">Conversations kan inte avkryptera ditt meddelande eftersom din kontakt inte annonserar sin publika nyckel.\n\n<small>Be din kontakt att sätta upp OpenPGP.</small></string>
   <string name="no_pgp_keys">Inga OpenPGP-nycklar funna</string>
   <string name="contacts_have_no_pgp_keys">Conversations kan inte avkryptera ditt meddelande eftersom din kontakt inte annonserar sin publika nyckel.\n\n<small>Be din kontakt att sätta upp OpenPGP.</small></string>
+  <string name="encrypted_message_received"><i>Krypterat meddelande mottaget. Tryck för att avkryptera.</i></string>
   <string name="pref_general">Generellt</string>
   <string name="pref_xmpp_resource">XMPP resurs</string>
   <string name="pref_xmpp_resource_summary">Namnet som klienten identifierar sig med</string>
@@ -170,6 +175,7 @@
   <string name="passwords_do_not_match">Lösenorden är inte lika</string>
   <string name="invalid_jid">Detta är inte ett korrekt Jabber ID</string>
   <string name="error_out_of_memory">Slut på minne. Bilden är för stor</string>
+  <string name="add_phone_book_text">Vill du lägga till %s i din enhets kontaktlista?</string>
   <string name="contact_status_online">online</string>
   <string name="contact_status_free_to_chat">tillgänglig</string>
   <string name="contact_status_away">borta</string>
@@ -205,10 +211,13 @@
   <string name="your_fingerprint">Ditt fingeravtryck</string>
   <string name="otr_fingerprint">OTR-fingeravtryck</string>
   <string name="omemo_fingerprint">OMEMO-fingeravtryck</string>
+  <string name="omemo_fingerprint_x509">v\\OMEMO-fingeravtryck</string>
   <string name="omemo_fingerprint_selected_message">Meddelandets OMEMO-fingeravtryck</string>
+  <string name="omemo_fingerprint_x509_selected_message">Meddelandets v\\OMEMO-fingeravtryck</string>
   <string name="this_device_omemo_fingerprint">Eget OMEMO-fingeravtryck</string>
   <string name="other_devices">Andra enheter</string>
   <string name="trust_omemo_fingerprints">Lita på OMEMO-fingeravtryck</string>
+  <string name="fetching_keys">Hämtar nycklar...</string>
   <string name="done">Klar</string>
   <string name="verify">Verifiera</string>
   <string name="decrypt">Avkryptera</string>
@@ -438,6 +447,7 @@
   <string name="offering_x_file">Erbjuder %s</string>
   <string name="hide_offline">Dölj ej anslutna</string>
   <string name="disable_account">Deaktivera konton</string>
+  <string name="contact_is_typing">%s skriver...</string>
   <string name="contact_has_stopped_typing">%s har slutat skriva</string>
   <string name="pref_chat_states">Skriv-notifieringar</string>
   <string name="pref_chat_states_summary">Låter dina kontakter veta när du skriver ett nytt meddelande</string>
@@ -480,6 +490,7 @@
   <string name="download_failed_could_not_connect">Nerladdningen gick fel: Kunder inte ansluta till server</string>
   <string name="pref_use_white_background">Använd vit bakgrund</string>
   <string name="pref_use_white_background_summary">Visa mottagna meddelanden som svart text på vit bakgrund</string>
+  <string name="account_status_tor_unavailable">TOR-nätverk ej tillgängligt</string>
   <string name="server_info_broken">Sönder</string>
   <string name="pref_presence_settings">Tillgänglighetsinställningar</string>
   <string name="pref_away_when_screen_off">Status borta när skärmen är av</string>
@@ -495,4 +506,25 @@
   <string name="certificate_chain_is_not_trusted">Certifikatskedjan är inte betrodd</string>
   <string name="jid_does_not_match_certificate">Jabber ID matchar inte certifikat</string>
   <string name="action_renew_certificate">Förnya certifikat</string>
+  <string name="error_fetching_omemo_key">Misslyckades med att hämta OMEMO-nyckel!</string>
+  <string name="verified_omemo_key_with_certificate">Verifierade OMEMO-nyckel med certifikat!</string>
+  <string name="device_does_not_support_certificates">Din enhet stödjer inte val av klientcertifikat!</string>
+  <string name="pref_connection_options">Anslutningsalternativ</string>
+  <string name="pref_use_tor">Ansluten via TOR</string>
+  <string name="pref_use_tor_summary">Tunnla alla anslutningar genom TOR-nätverket. Kräver Orbot</string>
+  <string name="account_settings_hostname">Servernamn</string>
+  <string name="account_settings_port">Port</string>
+  <string name="hostname_or_onion">Server- eller .onion-adress</string>
+  <string name="not_a_valid_port">Inte ett giltigt portnummer</string>
+  <string name="not_valid_hostname">Inte ett giltigt servernamn</string>
+  <string name="connected_accounts">%1$d av %2$d konton anslutna</string>
+  <plurals name="x_messages">
+    <item quantity="one">%d meddelande</item>
+    <item quantity="other">%d meddelanden</item>
+  </plurals>
+  <string name="shared_file_with_x">Delade fil med %s</string>
+  <string name="shared_image_with_x">Delade bild med %s</string>
+  <string name="no_storage_permission">Conversations behöver access till extern lagring</string>
+  <string name="sync_with_contacts">Synkronisera med kontakter</string>
+  <string name="sync_with_contacts_long">Conversations vill matcha din XMPP-kontaktlista med dina kontakter för att visa deras namn och profilbild.\n\nConversations läser endast dina kontakter för att matcha dem lokalt utan att ladda upp dem till din server.\n\nDu kommer nu få frågan om tillåtelse för att använda kontakterna.</string>
 </resources>

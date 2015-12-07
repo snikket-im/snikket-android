@@ -28,6 +28,8 @@
   <string name="minutes_ago">před %d minutami</string>
   <string name="unread_conversations">nepřečtené konverzace</string>
   <string name="sending">odesílám…</string>
+  <string name="message_decrypting">Dešifrování zprávy. Chvíli strpení...</string>
+  <string name="pgp_message">OpenPGP šifrovaná zpráva</string>
   <string name="nick_in_use">Přezdívka se již používá</string>
   <string name="admin">Administrátor</string>
   <string name="owner">Vlastník</string>
@@ -78,6 +80,7 @@
   <string name="send_unencrypted_message">Odeslat nešifrovanou zprávu</string>
   <string name="send_otr_message">Poslat OTR šifrovanou zprávu</string>
   <string name="send_omemo_message">Poslat OMEMO šifrovanou zprávu</string>
+  <string name="send_omemo_x509_message">Odeslat v\\OMEMO šifrovanou zprávu</string>
   <string name="send_pgp_message">Poslat OpenPGP šifrovanou zprávu</string>
   <string name="your_nick_has_been_changed">Přezdívka byla změněna</string>
   <string name="send_unencrypted">Poslat nešifrované</string>
@@ -92,6 +95,7 @@
   <string name="contact_has_no_pgp_key">Není možné zašifrovat zprávu v aplikaci Konverzace, protože druhá strana neoznamuje svůj veřejný klíč.\n\n<small>Požádejte svůj kontakt ať si nastaví OpenPGP.</small></string>
   <string name="no_pgp_keys">Nebyly nalezeny žádné OpenPGP klíče</string>
   <string name="contacts_have_no_pgp_keys">Není možné zašifrovat zprávy v aplikaci Konverzace, protože kontakty neoznamují svůj veřejný klíč.\n\n<small>Požádejte své kontakty ať si nastaví OpenPGP.</small></string>
+  <string name="encrypted_message_received"><i>Obdržena šifrovaná zpráva. Dešifrovat dotykem.</i></string>
   <string name="pref_general">Obecné</string>
   <string name="pref_xmpp_resource">XMPP zdroj</string>
   <string name="pref_xmpp_resource_summary">Jméno se kterým se tento klient identifikuje</string>
@@ -170,6 +174,7 @@
   <string name="passwords_do_not_match">Hesla nesouhlasí</string>
   <string name="invalid_jid">Toto není platné Jabber ID</string>
   <string name="error_out_of_memory">Nedostatek paměti. Obrázek je příliš velký</string>
+  <string name="add_phone_book_text">Chcete přidat %s do svého seznamu kontaktů v přístroji?</string>
   <string name="contact_status_online">online</string>
   <string name="contact_status_free_to_chat">volný pro chat</string>
   <string name="contact_status_away">pryč</string>
@@ -205,10 +210,13 @@
   <string name="your_fingerprint">Váš identifikátor</string>
   <string name="otr_fingerprint">OTR identifikátor</string>
   <string name="omemo_fingerprint">OMEMO otisk</string>
+  <string name="omemo_fingerprint_x509">v\\OMEMO otisk</string>
   <string name="omemo_fingerprint_selected_message">OMEMO otisk zprávy</string>
+  <string name="omemo_fingerprint_x509_selected_message">v\\OMEMO otisk zprávy</string>
   <string name="this_device_omemo_fingerprint">Můj OMEMO otisk</string>
   <string name="other_devices">Ostatní přístroje</string>
   <string name="trust_omemo_fingerprints">Věřit OMEMO otiskům</string>
+  <string name="fetching_keys">Získávání klíčů...</string>
   <string name="done">Hotovo</string>
   <string name="verify">Ověřit</string>
   <string name="decrypt">Dešifrovat</string>
@@ -438,6 +446,7 @@
   <string name="offering_x_file">Nabízím %s</string>
   <string name="hide_offline">Skrýt offline</string>
   <string name="disable_account">Vypnout účet</string>
+  <string name="contact_is_typing">%s píše...</string>
   <string name="contact_has_stopped_typing">%s přestal(a) psát</string>
   <string name="pref_chat_states">Upozornění při psaní</string>
   <string name="pref_chat_states_summary">Oznamovat kontaktům že píšete novou zprávu</string>
@@ -482,6 +491,7 @@
   <string name="download_failed_could_not_connect">Stahování selhalo: Nelze se připojit k hostu</string>
   <string name="pref_use_white_background">Použít bílé pozadí</string>
   <string name="pref_use_white_background_summary">Zobrazovat přijaté zprávy jako černý text na bílém pozadí</string>
+  <string name="account_status_tor_unavailable">TOR síť nedostupná</string>
   <string name="server_info_broken">Rozbité</string>
   <string name="pref_presence_settings">Nastavení přítomnosti</string>
   <string name="pref_away_when_screen_off">Pryč při vypnuté obrazovce</string>
@@ -497,4 +507,21 @@
   <string name="certificate_chain_is_not_trusted">Řetězec certifikátů není důvěryhodný</string>
   <string name="jid_does_not_match_certificate">Jabber ID neodpovídá certifikátu</string>
   <string name="action_renew_certificate">Obnovit certifikát</string>
+  <string name="error_fetching_omemo_key">Chyba získání OMEMO klíče!</string>
+  <string name="verified_omemo_key_with_certificate">OMEMO klíč ověřen certifikátem!</string>
+  <string name="device_does_not_support_certificates">Tento přístroj nepodporuje výběr klientského certifikátu!</string>
+  <string name="pref_connection_options">Možnosti připojení</string>
+  <string name="pref_use_tor">Připojit přes Tor</string>
+  <string name="pref_use_tor_summary">Posílat všechna spojení pomocí sítě TOR. Vyžaduje Orbot</string>
+  <string name="account_settings_hostname">Hostname</string>
+  <string name="account_settings_port">Port</string>
+  <string name="hostname_or_onion">Server- nebo .onion-adresa</string>
+  <string name="not_a_valid_port">Toto není platné číslo portu</string>
+  <string name="not_valid_hostname">Toto není platné hostname</string>
+  <string name="connected_accounts">%1$d z %2$d účtů připojeno</string>
+  <plurals name="x_messages">
+    <item quantity="one">%d zpráva</item>
+    <item quantity="few">%d zprávy</item>
+    <item quantity="other">%d zpráv</item>
+  </plurals>
 </resources>

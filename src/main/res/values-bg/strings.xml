@@ -27,7 +27,9 @@
   <string name="minute_ago">преди 1 минута</string>
   <string name="minutes_ago">преди %d минути</string>
   <string name="unread_conversations">непрочетени разговори</string>
-  <string name="sending">изпращане...</string>
+  <string name="sending">изпращане…</string>
+  <string name="message_decrypting">Дешифроване на съобщението. Моля, изчакайте…</string>
+  <string name="pgp_message">Съобщение, шифр. чрез OpenPGP</string>
   <string name="nick_in_use">Псевдонимът вече се използва</string>
   <string name="admin">Администратор</string>
   <string name="owner">Собственик</string>
@@ -43,7 +45,7 @@
   <string name="remove_bookmark_text">Искате ли да премахнете отметката за %s? Разговорът, свързан с тази отметка, няма да бъде премахнат.</string>
   <string name="register_account">Регистриране на нов профил на сървъра</string>
   <string name="change_password_on_server">Промяна на паролата в сървъра</string>
-  <string name="share_with">Споделяне с...</string>
+  <string name="share_with">Споделяне с…</string>
   <string name="start_conversation">Започване на разговор</string>
   <string name="invite_contact">Канене на контакт</string>
   <string name="contacts">Контакти</string>
@@ -78,6 +80,7 @@
   <string name="send_unencrypted_message">Изпр. на нешифр. съобщение</string>
   <string name="send_otr_message">Изпр. на съобщение, шифр. чрез OTP</string>
   <string name="send_omemo_message">Изпр. на съобщение, шифр. чрез OMEMO</string>
+  <string name="send_omemo_x509_message">Изпр. на съобщение, шифр. чрез v\\OMEMO</string>
   <string name="send_pgp_message">Изпр. на съобщение, шифр. чрез OpenPGP</string>
   <string name="your_nick_has_been_changed">Псевдонимът Ви беше променен</string>
   <string name="send_unencrypted">Изпращане нешифровано</string>
@@ -86,17 +89,18 @@
   <string name="openkeychain_required_long">Conversations използва външно приложение с име <b>OpenKeychain</b>, за да шифрова и дешифрова съобщенията и да управлява публичните Ви ключове.\n\nOpenKeychain е лицензирано под условията на GPLv3 и е налично в F-Droid и Google Play.\n\n<small>(Моля, рестартирайте Conversations след това.)</small></string>
   <string name="restart">Рестартиране</string>
   <string name="install">Инсталиране</string>
-  <string name="offering">предлагане...</string>
-  <string name="waiting">изчакване...</string>
+  <string name="offering">предлагане…</string>
+  <string name="waiting">изчакване…</string>
   <string name="no_pgp_key">Не е открит OpenPGP ключ</string>
   <string name="contact_has_no_pgp_key">Conversations не може да шифрова съобщенията Ви, тъй като Вашият контакт не обявява публичния си ключ.\n\n<small>Моля, помолете го/я да инсталира и настрои OpenPGP.</small></string>
   <string name="no_pgp_keys">Не са открити OpenPGP ключове</string>
   <string name="contacts_have_no_pgp_keys">Conversations не може да шифрова съобщенията Ви, тъй като Вашите контакти не обявяват публичните си ключове.\n\n<small>Моля, помолете го да инсталират и настроят OpenPGP.</small></string>
+  <string name="encrypted_message_received"><i>Получено е шифровано съобщение. Докоснете, за да го дешифровате.</i></string>
   <string name="pref_general">Общи</string>
   <string name="pref_xmpp_resource">XMPP ресурс</string>
   <string name="pref_xmpp_resource_summary">Името, с което се определя този клиент</string>
   <string name="pref_accept_files">Приемане на файлове</string>
-  <string name="pref_accept_files_summary">Автоматично приемане на файлове с размер, по-малък от...</string>
+  <string name="pref_accept_files_summary">Автоматично приемане на файлове с размер, по-малък от…</string>
   <string name="pref_notification_settings">Настройки за известията</string>
   <string name="pref_notifications">Известия</string>
   <string name="pref_notifications_summary">Известяване при получаване на ново съобщение</string>
@@ -170,6 +174,7 @@
   <string name="passwords_do_not_match">Паролите са различни</string>
   <string name="invalid_jid">Това не е правилен Jabber идентификатор</string>
   <string name="error_out_of_memory">Няма достатъчно памет. Изображението е твърде голямо.</string>
+  <string name="add_phone_book_text">Искате ли да добавите %s към списъка си контакти на устройството си?</string>
   <string name="contact_status_online">на линия</string>
   <string name="contact_status_free_to_chat">свободен за разговор</string>
   <string name="contact_status_away">отсъстващ</string>
@@ -205,10 +210,13 @@
   <string name="your_fingerprint">Вашият отпечатък</string>
   <string name="otr_fingerprint">Отпечатък OTR</string>
   <string name="omemo_fingerprint">Отпечатък OMEMO</string>
+  <string name="omemo_fingerprint_x509">Отпечатък v\\OMEMO</string>
   <string name="omemo_fingerprint_selected_message">Отпечатък OMEMO на съобщението</string>
+  <string name="omemo_fingerprint_x509_selected_message">Отпечатък v\\OMEMO на съобщението</string>
   <string name="this_device_omemo_fingerprint">Собствен отпечатък OMEMO</string>
   <string name="other_devices">Други устройства</string>
   <string name="trust_omemo_fingerprints">Доверяване на отпечатъци OMEMO</string>
+  <string name="fetching_keys">Изтегляне на ключове…</string>
   <string name="done">Готово</string>
   <string name="verify">Потвърждаване</string>
   <string name="decrypt">Дешифроване</string>
@@ -238,7 +246,7 @@
   <string name="publish">Публикуване</string>
   <string name="touch_to_choose_picture">Докоснете аватара, за да изберете изображение от галерията</string>
   <string name="publish_avatar_explanation">Забележка: Всеки, абониран за актуализации на присъствието Ви, ще може да вижда тази снимка.</string>
-  <string name="publishing">Публикуване...</string>
+  <string name="publishing">Публикуване…</string>
   <string name="error_publish_avatar_server_reject">Сървърът отказа Вашето публикуване</string>
   <string name="error_publish_avatar_converting">Нещо се обърка при преобразуването на снимката Ви</string>
   <string name="error_saving_avatar">Неуспешно запазване на аватара на диска</string>
@@ -352,7 +360,7 @@
   <string name="pref_show_dynamic_tags">Динамични етикети</string>
   <string name="pref_show_dynamic_tags_summary">Показване на етикети, предназначени само за четене под контактите</string>
   <string name="enable_notifications">Включване на известията</string>
-  <string name="conference_with">Започване на беседа с...</string>
+  <string name="conference_with">Започване на беседа с…</string>
   <string name="no_conference_server_found">Не е открит сървър за беседата</string>
   <string name="conference_creation_failed">Неуспешно създаване на беседа!</string>
   <string name="conference_created">Беседата беше създадена!</string>
@@ -372,7 +380,7 @@
   <string name="error_trustkeys_title">Грешка</string>
   <string name="fetching_history_from_server">Получаване на историята от сървъра</string>
   <string name="no_more_history_on_server">Няма повече история на сървъра</string>
-  <string name="updating">Актуализиране...</string>
+  <string name="updating">Актуализиране…</string>
   <string name="password_changed">Паролата е променена!</string>
   <string name="could_not_change_password">Неуспешна промяна на паролата</string>
   <string name="otr_session_not_started">Изпратете съобщение, за да започнете нешифрован разговор</string>
@@ -438,6 +446,7 @@
   <string name="offering_x_file">Предлагане на %s</string>
   <string name="hide_offline">Скриване на тези извън линия</string>
   <string name="disable_account">Деактивиране на профила</string>
+  <string name="contact_is_typing">%s пише…</string>
   <string name="contact_has_stopped_typing">%s спря да пише</string>
   <string name="pref_chat_states">Известия за писането</string>
   <string name="pref_chat_states_summary">Позволяване на контакта Ви да вижда, когато пишете ново съобщение</string>
@@ -480,6 +489,7 @@
   <string name="download_failed_could_not_connect">Неуспешно сваляне: Неуспешна връзка със сървъра</string>
   <string name="pref_use_white_background">Използване на бял фон</string>
   <string name="pref_use_white_background_summary">Показване на получените съобщения с черен текст на бял фон</string>
+  <string name="account_status_tor_unavailable">Мрежата на TOR не е достъпна</string>
   <string name="server_info_broken">Повредено</string>
   <string name="pref_presence_settings">Настройки за присъствието</string>
   <string name="pref_away_when_screen_off">Отсъстващ, когато екранът е изключен</string>
@@ -495,4 +505,20 @@
   <string name="certificate_chain_is_not_trusted">Сертификатът не е потвърден</string>
   <string name="jid_does_not_match_certificate">Jabber идентификатора не съответства на сертификата</string>
   <string name="action_renew_certificate">Подновяване на сертификата</string>
+  <string name="error_fetching_omemo_key">Грешка при получаването на ключа за OMEMO!</string>
+  <string name="verified_omemo_key_with_certificate">Ключът за OMEMO беше потвърден със сертификат!</string>
+  <string name="device_does_not_support_certificates">Устройството Ви не поддържа избраните клиентски сертификати!</string>
+  <string name="pref_connection_options">Настройки за връзката</string>
+  <string name="pref_use_tor">Свързване през Tor</string>
+  <string name="pref_use_tor_summary">Всички връзки да минават през мрежата на TOR. Изисква Orbot</string>
+  <string name="account_settings_hostname">Име на сървър</string>
+  <string name="account_settings_port">Порт</string>
+  <string name="hostname_or_onion">Адрес на сървър или .onion</string>
+  <string name="not_a_valid_port">Това не е правилен номер на порт</string>
+  <string name="not_valid_hostname">Това не е правилно име на сървър</string>
+  <string name="connected_accounts">%1$d от %2$d свързани профила</string>
+  <plurals name="x_messages">
+    <item quantity="one">%d съобщение</item>
+    <item quantity="other">%d съобщения</item>
+  </plurals>
 </resources>

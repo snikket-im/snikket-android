@@ -28,6 +28,8 @@
   <string name="minutes_ago">пре %d минута</string>
   <string name="unread_conversations">непрочитане преписке</string>
   <string name="sending">шаљем…</string>
+  <string name="message_decrypting">Дешифрујем поруку, сачекајте…</string>
+  <string name="pgp_message">ОпенПГП шифрована порука</string>
   <string name="nick_in_use">Надимак је већ у употреби</string>
   <string name="admin">Администратор</string>
   <string name="owner">Власник</string>
@@ -62,7 +64,7 @@
   <string name="send_never">Не питај више</string>
   <string name="problem_connecting_to_account">Не могу да се повежем са налогом</string>
   <string name="problem_connecting_to_accounts">Не могу да се повежем са више налога</string>
-  <string name="touch_to_fix">Додирните овде да бисте управљали вашим налозима</string>
+  <string name="touch_to_fix">Тапните овде да бисте управљали вашим налозима</string>
   <string name="attach_file">Приложи фајл</string>
   <string name="not_in_roster">Контакт није на вашем списку контаката. Желите ли да га додате?</string>
   <string name="add_contact">Додај контакт</string>
@@ -78,6 +80,7 @@
   <string name="send_unencrypted_message">Пошаљи нешифровану поруку</string>
   <string name="send_otr_message">Пошаљи ОТР шифровану поруку</string>
   <string name="send_omemo_message">Пошаљи ОМЕМО шифровану поруку</string>
+  <string name="send_omemo_x509_message">Пошаљи v\\ОМЕМО шифровану поруку</string>
   <string name="send_pgp_message">Пошаљи ОпенПГП шифровану поруку</string>
   <string name="your_nick_has_been_changed">Ваш надимак је промењен</string>
   <string name="send_unencrypted">Пошаљи нешифровано</string>
@@ -92,6 +95,7 @@
   <string name="contact_has_no_pgp_key">Конверзација није могла да шифрује ваше поруке јер ваш контакт не објављује свој јавни кључ.\n\n<small>Замолите вашег контакта да постави ОпенПГП.</small></string>
   <string name="no_pgp_keys">Нема ОпенПГП кључева</string>
   <string name="contacts_have_no_pgp_keys">Конверзација није могла да шифрује ваше поруке јер ваши контакти не објављују свој јавни кључ.\n\n<small>Замолите ваше контакте да поставе ОпенПГП.</small></string>
+  <string name="encrypted_message_received"><i>Примљена је шифрована порука. Тапните за дешифровање.</i></string>
   <string name="pref_general">Опште</string>
   <string name="pref_xmpp_resource">ИксМПП ресурс</string>
   <string name="pref_xmpp_resource_summary">Име са којим се овај клијент идентификује</string>
@@ -170,6 +174,7 @@
   <string name="passwords_do_not_match">Лозинке се не поклапају</string>
   <string name="invalid_jid">Ово није исправан Џабер ИД</string>
   <string name="error_out_of_memory">Нестало меморије. Слика је превелика</string>
+  <string name="add_phone_book_text">Желите ли да додате %s у именик вашег уређаја?</string>
   <string name="contact_status_online">на вези</string>
   <string name="contact_status_free_to_chat">слободан за ћаскање</string>
   <string name="contact_status_away">одсутан</string>
@@ -205,10 +210,13 @@
   <string name="your_fingerprint">Ваш отисак</string>
   <string name="otr_fingerprint">ОТР отисак</string>
   <string name="omemo_fingerprint">ОМЕМО отисак</string>
+  <string name="omemo_fingerprint_x509">v\\ОМЕМО отисак</string>
   <string name="omemo_fingerprint_selected_message">ОМЕМО отисак поруке</string>
+  <string name="omemo_fingerprint_x509_selected_message">v\\ОМЕМО отисак поруке</string>
   <string name="this_device_omemo_fingerprint">Сопствени ОМЕМО отисак</string>
   <string name="other_devices">Остали уређаји</string>
   <string name="trust_omemo_fingerprints">Поуздај се у ОМЕМО отиске</string>
+  <string name="fetching_keys">Добављам кључеве…</string>
   <string name="done">Готово</string>
   <string name="verify">Овери</string>
   <string name="decrypt">Дешифруј</string>
@@ -236,7 +244,7 @@
   <string name="add_back">Додај га</string>
   <string name="contact_has_read_up_to_this_point">%s је прочитао довде</string>
   <string name="publish">Објави</string>
-  <string name="touch_to_choose_picture">Додирните аватар да изаберете слику из галерије</string>
+  <string name="touch_to_choose_picture">Тапните аватар да изаберете слику из галерије</string>
   <string name="publish_avatar_explanation">Имајте на уму: Свима који су претплаћени на ваше ажурирање присутности биће дозвољено да виде ову слику.</string>
   <string name="publishing">Објављујем…</string>
   <string name="error_publish_avatar_server_reject">Сервер је одбио вашу објаву</string>
@@ -432,12 +440,13 @@
   <string name="vcard">Контакт</string>
   <string name="received_x_file">Примљено %s</string>
   <string name="disable_foreground_service">Искључи сервис у првом плану</string>
-  <string name="touch_to_open_conversations">Додирните да отворите Конверзацију</string>
+  <string name="touch_to_open_conversations">Тапните да отворите Конверзацију</string>
   <string name="avatar_has_been_published">Аватар је објављен!</string>
   <string name="sending_x_file">Шаљем %s</string>
   <string name="offering_x_file">Нудим %s</string>
   <string name="hide_offline">Сакриј неповезане</string>
   <string name="disable_account">Искључи налог</string>
+  <string name="contact_is_typing">%s куца…</string>
   <string name="contact_has_stopped_typing">%s престаде да куца</string>
   <string name="pref_chat_states">Обавештења о куцању</string>
   <string name="pref_chat_states_summary">Обзнаните контакту кад куцате нову поруку</string>
@@ -482,6 +491,7 @@
   <string name="download_failed_could_not_connect">Преузимање није успело: не могу да се повежем са домаћином</string>
   <string name="pref_use_white_background">Користи белу позадину</string>
   <string name="pref_use_white_background_summary">Приказ примљених порука црним текстом на белој позадини</string>
+  <string name="account_status_tor_unavailable">Тор мрежа недоступна</string>
   <string name="server_info_broken">Оштећен</string>
   <string name="pref_presence_settings">Поставке присутности</string>
   <string name="pref_away_when_screen_off">Одсутан кад је екран искључен</string>
@@ -493,4 +503,21 @@
   <string name="certificate_chain_is_not_trusted">Ланац сертификата није поуздан</string>
   <string name="jid_does_not_match_certificate">Џабер ИД не одговара сертификату</string>
   <string name="action_renew_certificate">Обнови сертификат</string>
+  <string name="error_fetching_omemo_key">Грешка добављања ОМЕМО кључа!</string>
+  <string name="verified_omemo_key_with_certificate">Оверен ОМЕМО кључ помоћу сертификата!</string>
+  <string name="device_does_not_support_certificates">Ваш уређај не подржава избор сертификата клијента!</string>
+  <string name="pref_connection_options">Опције повезивања</string>
+  <string name="pref_use_tor">Повежи се преко Тора</string>
+  <string name="pref_use_tor_summary">Тунеловање свих веза кроз Тор мрежу. Захтева Орбот</string>
+  <string name="account_settings_hostname">Име домаћина</string>
+  <string name="account_settings_port">Порт</string>
+  <string name="hostname_or_onion">Сервер или .onion адреса</string>
+  <string name="not_a_valid_port">Ово није исправан број порта</string>
+  <string name="not_valid_hostname">Ово није исправно име домаћина</string>
+  <string name="connected_accounts">%1$d од %2$d налога повезано</string>
+  <plurals name="x_messages">
+    <item quantity="one">%d порука</item>
+    <item quantity="few">%d поруке</item>
+    <item quantity="other">%d порука</item>
+  </plurals>
 </resources>

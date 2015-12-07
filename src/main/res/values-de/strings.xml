@@ -28,6 +28,8 @@
   <string name="minutes_ago">vor %d Minuten</string>
   <string name="unread_conversations">ungelesene Unterhaltungen</string>
   <string name="sending">senden…</string>
+  <string name="message_decrypting">Nachricht wird entschlüsselt. Bitte warten …</string>
+  <string name="pgp_message">OpenPGP-verschlüsselte Nachricht</string>
   <string name="nick_in_use">Nickname wird bereits verwendet</string>
   <string name="admin">Administrator</string>
   <string name="owner">Eigentümer</string>
@@ -78,6 +80,7 @@
   <string name="send_unencrypted_message">Unverschlüsselt schreiben…</string>
   <string name="send_otr_message">OTR-verschlüsselt schreiben…</string>
   <string name="send_omemo_message">OMEMO-verschlüsselt schreiben…</string>
+  <string name="send_omemo_x509_message">v\\OMEMO-verschlüsselte Nachricht senden</string>
   <string name="send_pgp_message">OpenPGP-verschlüsselt schreiben…</string>
   <string name="your_nick_has_been_changed">Dein Nickname wurde geändert</string>
   <string name="send_unencrypted">Unverschlüsselt senden</string>
@@ -92,6 +95,7 @@
   <string name="contact_has_no_pgp_key">Conversations ist nicht in der Lage, deine Nachrichten zu verschlüsseln, weil dein Kontakt seinen oder ihren Schlüssel nicht preisgibt.\n\n<small>Bitte sag deinem Kontakt, er oder sie möge OpenPGP einrichten.</small></string>
   <string name="no_pgp_keys">Keine OpenPGP-Schlüssel gefunden</string>
   <string name="contacts_have_no_pgp_keys">Conversations ist nicht in der Lage, deine Nachrichten zu verschlüsseln, weil deine Kontakte ihre Schlüssel nicht preisgeben.\n\n<small>Bitte sage deinen Kontakten, sie mögen OpenPGP einrichten.</small></string>
+  <string name="encrypted_message_received"><i>Verschlüsselte Nachricht erhalten. Drücke hier, um sie zu entschlüsseln.</i></string>
   <string name="pref_general">Allgemeines</string>
   <string name="pref_xmpp_resource">XMPP-Ressource</string>
   <string name="pref_xmpp_resource_summary">Der Name, mit dem sich der Client selbst identifiziert</string>
@@ -170,6 +174,7 @@
   <string name="passwords_do_not_match">Passwörter stimmen nicht überein</string>
   <string name="invalid_jid">Ungültige Jabber-ID</string>
   <string name="error_out_of_memory">Zu wenig Speicher vorhanden. Das Bild ist zu groß</string>
+  <string name="add_phone_book_text">Möchtest du %s zum Telefonbuch hinzufügen?</string>
   <string name="contact_status_online">online</string>
   <string name="contact_status_free_to_chat">bereit</string>
   <string name="contact_status_away">abwesend</string>
@@ -205,10 +210,13 @@
   <string name="your_fingerprint">Dein Fingerabdruck</string>
   <string name="otr_fingerprint">OTR-Fingerabdruck</string>
   <string name="omemo_fingerprint">OMEMO-Fingerabdruck</string>
+  <string name="omemo_fingerprint_x509">v\\OMEMO-Fingerabdruck</string>
   <string name="omemo_fingerprint_selected_message">OMEMO-Fingerabdruck der Nachricht</string>
+  <string name="omemo_fingerprint_x509_selected_message">v\\OMEMO-Fingerabdruck der Nachricht</string>
   <string name="this_device_omemo_fingerprint">Eigener OMEMO-Fingerabdruck</string>
   <string name="other_devices">Andere Geräte</string>
   <string name="trust_omemo_fingerprints">OMEMO-Fingerabdruck vertrauen</string>
+  <string name="fetching_keys">Schlüssel empfangen…</string>
   <string name="done">Erledigt</string>
   <string name="verify">Überprüfen</string>
   <string name="decrypt">Entschlüsseln</string>
@@ -438,6 +446,7 @@
   <string name="offering_x_file">%s wird angeboten</string>
   <string name="hide_offline">Offline verstecken</string>
   <string name="disable_account">Konto abschalten</string>
+  <string name="contact_is_typing">%s schreibt…</string>
   <string name="contact_has_stopped_typing">%s schreibt nicht mehr</string>
   <string name="pref_chat_states">Tipp-Benachrichtigung</string>
   <string name="pref_chat_states_summary">Informiere deine Kontakte, wenn du eine Nachricht eintippst.</string>
@@ -480,6 +489,7 @@
   <string name="download_failed_could_not_connect">Download fehlgeschlagen: keine Verbindung zum Host</string>
   <string name="pref_use_white_background">Weißen Hintergrund benutzen</string>
   <string name="pref_use_white_background_summary">Empfangene Nachrichten als schwarzen Text auf weißem Hintergrund anzeigen</string>
+  <string name="account_status_tor_unavailable">TOR-Netzwerk nicht verfügbar</string>
   <string name="server_info_broken">Fehlerhaft</string>
   <string name="pref_presence_settings">Status Einstellungen</string>
   <string name="pref_away_when_screen_off">Abwesend bei abgeschaltetem Bildschirm</string>
@@ -495,4 +505,20 @@
   <string name="certificate_chain_is_not_trusted">Zertifikat wird nicht vertraut</string>
   <string name="jid_does_not_match_certificate">Jabber-ID stimmt nicht dem Zertifikat überein</string>
   <string name="action_renew_certificate">Zertifikat erneuern</string>
+  <string name="error_fetching_omemo_key">Kann OMEMO Schlüssel nicht empfangen!</string>
+  <string name="verified_omemo_key_with_certificate">OMEMO Schlüssel mit Zertifikat bestätigt!</string>
+  <string name="device_does_not_support_certificates">Dein Gerät unterstützt das Auswählen von Client-Zertifikaten nicht!</string>
+  <string name="pref_connection_options">Verbindungs-Optionen</string>
+  <string name="pref_use_tor">Mit TOR verbinden</string>
+  <string name="pref_use_tor_summary">Alle Verbindungen über das TOR-Netzwerk tunneln. Benötigt Orbot</string>
+  <string name="account_settings_hostname">Hostname</string>
+  <string name="account_settings_port">Port</string>
+  <string name="hostname_or_onion">Server- oder .onion-Adresse</string>
+  <string name="not_a_valid_port">Dies ist keine gültige Port-Nummer</string>
+  <string name="not_valid_hostname">Dies ist kein gültiger Hostname</string>
+  <string name="connected_accounts">%1$d von %2$d Konten verbunden</string>
+  <plurals name="x_messages">
+    <item quantity="one">%d Nachricht</item>
+    <item quantity="other">%d Nachrichten</item>
+  </plurals>
 </resources>

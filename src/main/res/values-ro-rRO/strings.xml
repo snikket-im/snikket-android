@@ -28,6 +28,8 @@
   <string name="minutes_ago">acum %d minute</string>
   <string name="unread_conversations">conversatii necitite</string>
   <string name="sending">trimitere...</string>
+  <string name="message_decrypting">Decriptez mesaj. Te rog asteapta...</string>
+  <string name="pgp_message">Mesaj criptat cu OpenPGP</string>
   <string name="nick_in_use">Nume utilizator este deja folosit.</string>
   <string name="admin">Administrator</string>
   <string name="owner">Proprietar</string>
@@ -78,6 +80,7 @@
   <string name="send_unencrypted_message">Trimite mesaje necriptate</string>
   <string name="send_otr_message">Trimite mesaj criptat cu OTR</string>
   <string name="send_omemo_message">Trimite mesaj criptat cu OMEMO</string>
+  <string name="send_omemo_x509_message">Trimite mesaj criptat cu v\\OMEMO</string>
   <string name="send_pgp_message">Trimite mesaj criptat cu OpenPGP</string>
   <string name="your_nick_has_been_changed">Numele tau a fost schimbat</string>
   <string name="send_unencrypted">Trimite necriptat</string>
@@ -92,6 +95,7 @@
   <string name="contact_has_no_pgp_key">Conversations nu a putut sa cripteze mesajele tale din cauza contactului care nu isi anunta cheia publica.\n\n<small>Roaga contactul sa isi configureze OpenPGP.</small></string>
   <string name="no_pgp_keys">Nu am gasit chei OpenPGP</string>
   <string name="contacts_have_no_pgp_keys">Conversations nu poate cripta mesajele tale pentru contactele tale care nu isi anunta cheia publica.\n\n<small>Te rog cere contactelor sa configureze OpenPGP.</small></string>
+  <string name="encrypted_message_received"><i>Ai primit mesaj criptat. Apasa aici pentru a-l decripta.</i></string>
   <string name="pref_general">General</string>
   <string name="pref_xmpp_resource">resursa XMPP</string>
   <string name="pref_xmpp_resource_summary">Numele cu care acest client se identifica</string>
@@ -170,6 +174,7 @@
   <string name="passwords_do_not_match">Parolele nu sunt identice</string>
   <string name="invalid_jid">Acesta nu este un ID Jabber valabil</string>
   <string name="error_out_of_memory">Memorie epuizata. Imaginea este prea mare.</string>
+  <string name="add_phone_book_text">Vrei sa adaugi pe %s in lista de contacte a dispozitivului?</string>
   <string name="contact_status_online">conectat</string>
   <string name="contact_status_free_to_chat">disponibil pentru conversatie</string>
   <string name="contact_status_away">plecat</string>
@@ -205,10 +210,13 @@
   <string name="your_fingerprint">Amprenta ta</string>
   <string name="otr_fingerprint">Amprenta OTR</string>
   <string name="omemo_fingerprint">Amprenta OMEMO</string>
+  <string name="omemo_fingerprint_x509">Amprenta v\\OMEMO</string>
   <string name="omemo_fingerprint_selected_message">Amprenta OMEMO a mesajului</string>
+  <string name="omemo_fingerprint_x509_selected_message">Amprenta v\\OMEMO a mesajului</string>
   <string name="this_device_omemo_fingerprint">Amprenta OMEMO proprie</string>
   <string name="other_devices">Alte dispozitive</string>
   <string name="trust_omemo_fingerprints">Amprente OMEMO de incredere</string>
+  <string name="fetching_keys">Se preiau cheile...</string>
   <string name="done">Gata</string>
   <string name="verify">Verifica</string>
   <string name="decrypt">Decripteaza</string>
@@ -438,6 +446,7 @@
   <string name="offering_x_file">Ofer %s</string>
   <string name="hide_offline">Ascunde deconectat</string>
   <string name="disable_account">Dezactiveaza cont</string>
+  <string name="contact_is_typing">%s tasteaza...</string>
   <string name="contact_has_stopped_typing">%s s-a oprit din scris</string>
   <string name="pref_chat_states">Notificari cand cineva scrie</string>
   <string name="pref_chat_states_summary">Anunta contactul cand scrii un mou mesa</string>
@@ -482,6 +491,7 @@
   <string name="download_failed_could_not_connect">Descarcarea a esuat. Nu s-a putut realiza conexiunea cu gazda.</string>
   <string name="pref_use_white_background">Foloseste un fundal alb</string>
   <string name="pref_use_white_background_summary">Arata mesajele primite cu negru pe fond alb</string>
+  <string name="account_status_tor_unavailable">Retea TOR indisponibila</string>
   <string name="server_info_broken">Deteriorat</string>
   <string name="pref_presence_settings">Setari de prezenta</string>
   <string name="pref_away_when_screen_off">Plecat cand ecranul este oprit</string>
@@ -497,4 +507,21 @@
   <string name="certificate_chain_is_not_trusted">Seria de certificate nu este de incredere</string>
   <string name="jid_does_not_match_certificate">ID-ul Jabber nu corespunde cu certificatul</string>
   <string name="action_renew_certificate">Innoieste certificatul</string>
+  <string name="error_fetching_omemo_key">Eroare la preluarea cheii OMEMO!</string>
+  <string name="verified_omemo_key_with_certificate">Verifica cheia OMEMO cu un certificat</string>
+  <string name="device_does_not_support_certificates">Dispozitivul nu permite selectia unui certificat pentru client!</string>
+  <string name="pref_connection_options">Optiuni conexiune</string>
+  <string name="pref_use_tor">Conectare prin TOR</string>
+  <string name="pref_use_tor_summary">Toate conexiunile trec prin TOR. Necesita Orbot.</string>
+  <string name="account_settings_hostname">Nume gazda</string>
+  <string name="account_settings_port">Port</string>
+  <string name="hostname_or_onion">Adresa server- sau .onion</string>
+  <string name="not_a_valid_port">Acesta nu este un numar de port valabil</string>
+  <string name="not_valid_hostname">Acesta nu este un nume de gazda valabila</string>
+  <string name="connected_accounts">%1$d din %2$d conturi conectate</string>
+  <plurals name="x_messages">
+    <item quantity="one">%d mesaj</item>
+    <item quantity="few">%d mesaje</item>
+    <item quantity="other">%d mesaje</item>
+  </plurals>
 </resources>

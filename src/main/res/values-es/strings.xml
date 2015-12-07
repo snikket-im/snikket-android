@@ -28,6 +28,8 @@
   <string name="minutes_ago">hace %d min</string>
   <string name="unread_conversations">conversaciones por leer</string>
   <string name="sending">enviando…</string>
+  <string name="message_decrypting">Descifrando mensaje. Por favor, espera...</string>
+  <string name="pgp_message">Mensaje cifrado con OpenPGP</string>
   <string name="nick_in_use">El apodo ya está en uso</string>
   <string name="admin">Administrador</string>
   <string name="owner">Propietario</string>
@@ -78,6 +80,7 @@
   <string name="send_unencrypted_message">Enviar mensaje sin cifrar</string>
   <string name="send_otr_message">Enviar mensaje cifrado con OTR</string>
   <string name="send_omemo_message">Enviar mensaje cifrado con OMEMO </string>
+  <string name="send_omemo_x509_message">Enviar mensaje cifrado v\\OMEMO</string>
   <string name="send_pgp_message">Enviar mensaje cifrado con OpenPGP</string>
   <string name="your_nick_has_been_changed">Tu apodo se ha modificado</string>
   <string name="send_unencrypted">Enviar sin cifrar</string>
@@ -86,12 +89,14 @@
   <string name="openkeychain_required_long">Conversations utiliza una aplicación de terceros llamada <b>OpenKeychain</b> para cifrar y descifrar mensajes y gestionar tus claves públicas.\n\nOpenKeychain está publicado bajo licencia GPLv3 y disponible on F-Droid y Google Play.\n\n<small>(Por favor, reinicie Conversations después.)</small></string>
   <string name="restart">Reiniciar</string>
   <string name="install">Instalar</string>
+  <string name="openkeychain_not_installed">Por favor, instala OpenKeyChain</string>
   <string name="offering">ofreciendo…</string>
   <string name="waiting">esperando…</string>
   <string name="no_pgp_key">Clave OpenPGP no encontrada</string>
   <string name="contact_has_no_pgp_key">Conversations no ha podido cifrar tus mensajes porque tu contacto no está anunciando su clave publica.\n\n<small>Por favor, pide a tu contacto que configure OpenPGP.</small></string>
   <string name="no_pgp_keys">Claves OpenPGP no encontradas</string>
   <string name="contacts_have_no_pgp_keys">Conversations no ha podido cifrar tus mensajes porque tus contactos no están anunciando su clave publica.\n\n<small>Por favor, pide a tus contactos que configuren OpenPGP.</small></string>
+  <string name="encrypted_message_received"><i>Mensaje cifrado recibido. Pulsa para descifrar.</i></string>
   <string name="pref_general">General</string>
   <string name="pref_xmpp_resource">Recurso</string>
   <string name="pref_xmpp_resource_summary">El nombre que identifica el cliente que estás utilizando</string>
@@ -170,6 +175,7 @@
   <string name="passwords_do_not_match">Las contraseñas no coinciden</string>
   <string name="invalid_jid">El identificador no es un identificador Jabber válido</string>
   <string name="error_out_of_memory">Sin memoria. La imagen es demasiado grande</string>
+  <string name="add_phone_book_text">¿Quieres añadir a %s a tu lista de dispositivos?</string>
   <string name="contact_status_online">Disponible</string>
   <string name="contact_status_free_to_chat">Hablador</string>
   <string name="contact_status_away">Ausente</string>
@@ -205,10 +211,13 @@
   <string name="your_fingerprint">Tu huella digital</string>
   <string name="otr_fingerprint">Huella digital OTR</string>
   <string name="omemo_fingerprint">Huella digital OMEMO</string>
+  <string name="omemo_fingerprint_x509">Huella digital v\\OMEMO</string>
   <string name="omemo_fingerprint_selected_message">Huella digital OMEMO del mensaje</string>
+  <string name="omemo_fingerprint_x509_selected_message">huella digital v\\OMEMO del mensaje</string>
   <string name="this_device_omemo_fingerprint">Tu huella digital OMEMO</string>
   <string name="other_devices">Otros dispositivos</string>
   <string name="trust_omemo_fingerprints">Huellas digitales OMEMO de confianza</string>
+  <string name="fetching_keys">Buscando claves...</string>
   <string name="done">Hecho</string>
   <string name="verify">Verificar</string>
   <string name="decrypt">Descifrar</string>
@@ -438,6 +447,7 @@
   <string name="offering_x_file">Ofreciendo %s</string>
   <string name="hide_offline">Ocultar desconectados</string>
   <string name="disable_account">Deshabilitar Cuenta</string>
+  <string name="contact_is_typing">%s está escribiendo...</string>
   <string name="contact_has_stopped_typing">%s ha dejado de escribir</string>
   <string name="pref_chat_states">Notificación de escritura</string>
   <string name="pref_chat_states_summary">Permite a tus contactos saber cuando estás escribiendo un nuevo mensaje</string>
@@ -480,6 +490,7 @@
   <string name="download_failed_could_not_connect">Error al descargar: No se ha podido conectar con el servidor</string>
   <string name="pref_use_white_background">Usar fondo blanco</string>
   <string name="pref_use_white_background_summary">Mostrar mensajes recibidos en texto negro con fondo blanco</string>
+  <string name="account_status_tor_unavailable">Red Tor no disponible</string>
   <string name="server_info_broken">Error</string>
   <string name="pref_presence_settings">Opciones de presencia</string>
   <string name="pref_away_when_screen_off">Ausente con pantalla apagada</string>
@@ -495,4 +506,25 @@
   <string name="certificate_chain_is_not_trusted">La cadena de certificados no es de confianza</string>
   <string name="jid_does_not_match_certificate">El identificador Jabber no coincide con el del certificado</string>
   <string name="action_renew_certificate">Renovar certificado</string>
+  <string name="error_fetching_omemo_key">¡Error buscando clave OMEMO!</string>
+  <string name="verified_omemo_key_with_certificate">¡Clave OMEMO con certificado verificada!</string>
+  <string name="device_does_not_support_certificates">¡Tu dispositivo no soporta la elección de certificados de cliente!</string>
+  <string name="pref_connection_options">Opciones de conexión</string>
+  <string name="pref_use_tor">Conectar via Tor</string>
+  <string name="pref_use_tor_summary">Todas las conexiones se realizan a través de la red TOR. Requiere Orbot</string>
+  <string name="account_settings_hostname">Hostname</string>
+  <string name="account_settings_port">Puerto</string>
+  <string name="hostname_or_onion">Server- or .onion-Address</string>
+  <string name="not_a_valid_port">Éste no es un número de puerto válido</string>
+  <string name="not_valid_hostname">Éste no es un hostame válido</string>
+  <string name="connected_accounts">%1$d de %2$d cuentas conectadas</string>
+  <plurals name="x_messages">
+    <item quantity="one">%d mensaje</item>
+    <item quantity="other">%d mensajes</item>
+  </plurals>
+  <string name="shared_file_with_x">Archivo compartido con %s</string>
+  <string name="shared_image_with_x">Imagen compartida con %s</string>
+  <string name="no_storage_permission">Conversations necesita acceder al almacenamiento externo</string>
+  <string name="sync_with_contacts">Sincronizar contactos</string>
+  <string name="sync_with_contacts_long">Conversations quiere cruzar tu lista de contactos de XMPP con tus contactos del móvil para mostrar sus nombres completos y sus fotos de perfil.\n\nConversations solo leerá tus contactos y los cruzará localmente sin subirlos a tu servidor.\n\nEl sistema te preguntará para conceder los permisos de acceso a tus contactos del móvil.</string>
 </resources>
