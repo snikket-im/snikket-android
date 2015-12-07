@@ -600,7 +600,7 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 						AlertDialog.Builder builder = new AlertDialog.Builder(this);
 						builder.setTitle(R.string.sync_with_contacts);
 						builder.setMessage(R.string.sync_with_contacts_long);
-						builder.setPositiveButton(R.string.sync_now, new OnClickListener() {
+						builder.setPositiveButton(R.string.next, new OnClickListener() {
 							@Override
 							public void onClick(DialogInterface dialog, int which) {
 								if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
