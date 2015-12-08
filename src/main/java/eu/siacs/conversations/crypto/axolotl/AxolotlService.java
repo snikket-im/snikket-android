@@ -924,7 +924,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 		}
 
 		if (session.isFresh() && plaintextMessage != null) {
-			sessions.put(session);
+			putFreshSession(session);
 		}
 
 		return plaintextMessage;
@@ -937,9 +937,21 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 		keyTransportMessage = message.getParameters(session, getOwnDeviceId());
 
 		if (session.isFresh() && keyTransportMessage != null) {
-			sessions.put(session);
+			putFreshSession(session);
 		}
 
 		return keyTransportMessage;
+	}
+
+	private void putFreshSession(XmppAxolotlSession session) {
+		sessions.put(session);
+		if (Config.X509_VERIFICATION) {
+			IdentityKey identityKey = axolotlStore.loadSession(session.getRemoteAddress()).getSessionState().getRemoteIdentityKey();
+			if (identityKey != null) {
+				verifySessionWithPEP(session, identityKey);
+			} else {
+				Log.e(Config.LOGTAG,account.getJid().toBareJid()+": identity key was empty after reloading for x509 verification");
+			}
+		}
 	}
 }
