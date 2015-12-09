@@ -116,6 +116,7 @@ public class XmppConnection implements Runnable {
 	private long lastPingSent = 0;
 	private long lastConnect = 0;
 	private long lastSessionStarted = 0;
+	private int mPendingServiceDiscoveries = 0;
 	private boolean mInteractive = false;
 	private int attempt = 0;
 	private final Hashtable<String, Pair<IqPacket, OnIqPacketReceived>> packetCallbacks = new Hashtable<>();
@@ -926,18 +927,16 @@ public class XmppConnection implements Runnable {
 		synchronized (this.disco) {
 			this.disco.clear();
 		}
+		mPendingServiceDiscoveries = 0;
+		sendServiceDiscoveryItems(account.getServer());
 		sendServiceDiscoveryInfo(account.getServer());
 		sendServiceDiscoveryInfo(account.getJid().toBareJid());
-		sendServiceDiscoveryItems(account.getServer());
 		Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": online with resource " + account.getResource());
 		this.lastSessionStarted = SystemClock.elapsedRealtime();
-		changeStatus(Account.State.ONLINE);
-		if (bindListener != null) {
-			bindListener.onBind(account);
-		}
 	}
 
 	private void sendServiceDiscoveryInfo(final Jid jid) {
+		mPendingServiceDiscoveries++;
 		final IqPacket iq = new IqPacket(IqPacket.TYPE.GET);
 		iq.setTo(jid);
 		iq.query("http://jabber.org/protocol/disco#info");
@@ -987,6 +986,16 @@ public class XmppConnection implements Runnable {
 					}
 				} else {
 					Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": could not query disco info for " + jid.toString());
+				}
+				if (packet.getType() != IqPacket.TYPE.TIMEOUT) {
+					mPendingServiceDiscoveries--;
+					if (mPendingServiceDiscoveries <= 0) {
+						Log.d(Config.LOGTAG,account.getJid().toBareJid()+": done with service discovery");
+						changeStatus(Account.State.ONLINE);
+						if (bindListener != null) {
+							bindListener.onBind(account);
+						}
+					}
 				}
 			}
 		});
