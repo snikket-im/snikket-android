@@ -77,7 +77,12 @@ public class AvatarService {
 			avatar = mXmppConnectionService.getFileBackend().getAvatar(user.getAvatar(), size);
 		}
 		if (avatar == null) {
-			avatar = get(user.getName(), size, cachedOnly);
+			Contact contact = user.getContact();
+			if (contact != null) {
+				avatar = get(contact, size, cachedOnly);
+			} else {
+				avatar = get(user.getName(), size, cachedOnly);
+			}
 		}
 		this.mXmppConnectionService.getBitmapCache().put(KEY, avatar);
 		return avatar;

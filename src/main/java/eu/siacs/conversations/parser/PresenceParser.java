@@ -110,7 +110,10 @@ public class PresenceParser extends AbstractParser implements
 						mucOptions.setError(MucOptions.ERROR_UNKNOWN);
 					}
 				} else if (!from.isBareJid()){
-					mucOptions.deleteUser(from.getResourcepart());
+					MucOptions.User user = mucOptions.deleteUser(from.getResourcepart());
+					if (user != null) {
+						mXmppConnectionService.getAvatarService().clear(user);
+					}
 				}
 			} else if (type.equals("error")) {
 				Element error = packet.findChild("error");

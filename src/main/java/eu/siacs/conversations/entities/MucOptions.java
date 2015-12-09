@@ -302,15 +302,15 @@ public class MucOptions {
 		return hasFeature("muc_moderated");
 	}
 
-	public void deleteUser(String name) {
+	public User deleteUser(String name) {
 		synchronized (this.users) {
 			for (int i = 0; i < users.size(); ++i) {
 				if (users.get(i).getName().equals(name)) {
-					users.remove(i);
-					return;
+					return users.remove(i);
 				}
 			}
 		}
+		return null;
 	}
 
 	public void addUser(User user) {
