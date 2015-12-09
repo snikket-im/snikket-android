@@ -276,6 +276,8 @@ public class NotificationService {
 				Message message;
 				if ((message = getImage(messages)) != null) {
 					modifyForImage(mBuilder, message, messages, notify);
+				} else if (conversation.getMode() == Conversation.MODE_MULTI) {
+					modifyForConference(mBuilder, conversation, messages, notify);
 				} else {
 					modifyForTextOnly(mBuilder, messages, notify);
 				}
@@ -333,6 +335,21 @@ public class NotificationService {
 		builder.setContentText(UIHelper.getMessagePreview(mXmppConnectionService, messages.get(0)).first);
 		if (notify) {
 			builder.setTicker(UIHelper.getMessagePreview(mXmppConnectionService, messages.get(messages.size() - 1)).first);
+		}
+	}
+
+	private void modifyForConference(Builder builder, Conversation conversation, List<Message> messages, boolean notify) {
+		final Message first = messages.get(0);
+		final Message last = messages.get(messages.size() - 1);
+		final NotificationCompat.InboxStyle style = new NotificationCompat.InboxStyle();
+		style.setBigContentTitle(conversation.getName());
+		for(Message message : messages) {
+			style.addLine(Html.fromHtml("<b>"+UIHelper.getMessageDisplayName(message)+"</b> "+UIHelper.getMessagePreview(mXmppConnectionService,message).first));
+		}
+		builder.setContentText(UIHelper.getMessageDisplayName(first)+ ": " +UIHelper.getMessagePreview(mXmppConnectionService, messages.get(0)).first);
+		builder.setStyle(style);
+		if (notify) {
+			builder.setTicker(UIHelper.getMessageDisplayName(last) + ": " + UIHelper.getMessagePreview(mXmppConnectionService,last).first);
 		}
 	}
 
