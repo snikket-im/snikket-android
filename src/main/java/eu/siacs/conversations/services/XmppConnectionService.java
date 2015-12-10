@@ -1107,7 +1107,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 							}
 						});
 					}
-					mNotificationService.finishBacklog();
+					mNotificationService.finishBacklog(false);
 					mRestoredFromDatabase = true;
 					Log.d(Config.LOGTAG, "restored all messages");
 					updateConversationUi();

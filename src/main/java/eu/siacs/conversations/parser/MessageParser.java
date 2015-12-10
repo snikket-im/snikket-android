@@ -397,15 +397,21 @@ public class MessageParser extends AbstractParser implements
 			}
 
 			conversation.add(message);
-			if (query != null) {
-				query.incrementMessageCount();
-			} else {
+
+			if (query == null || query.getWith() == null) { //either no mam or catchup
 				if (status == Message.STATUS_SEND || status == Message.STATUS_SEND_RECEIVED) {
 					mXmppConnectionService.markRead(conversation);
-					account.activateGracePeriod();
+					if (query == null) {
+						account.activateGracePeriod();
+					}
 				} else {
 					message.markUnread();
 				}
+			}
+
+			if (query != null) {
+				query.incrementMessageCount();
+			} else {
 				mXmppConnectionService.updateConversationUi();
 			}
 
@@ -445,7 +451,11 @@ public class MessageParser extends AbstractParser implements
 			if (message.trusted() && message.treatAsDownloadable() != Message.Decision.NEVER && manager.getAutoAcceptFileSize() > 0) {
 				manager.createNewDownloadConnection(message);
 			} else if (!message.isRead()) {
-				mXmppConnectionService.getNotificationService().push(message);
+				if (query == null) {
+					mXmppConnectionService.getNotificationService().push(message);
+				} else if (query.getWith() == null) { // mam catchup
+					mXmppConnectionService.getNotificationService().pushFromBacklog(message);
+				}
 			}
 		} else { //no body
 			if (isTypeGroupChat) {
