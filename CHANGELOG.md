@@ -1,5 +1,11 @@
 ###Changelog
 
+####Version 1.8.1
+* enabled direct share on Android 6.0
+* ask for permissions on Android 6.0
+* notify on MAM catchup messages
+* bug fixes
+
 ####Version 1.8.0
 * TOR/ORBOT support in advanced settings
 * show vcard avatars of participants in a conference
