@@ -35,7 +35,15 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 		this.mXmppConnectionService = service;
 	}
 
-	public void catchup(final Account account) {
+	private void catchup(final Account account) {
+		synchronized (this.queries) {
+			for(Iterator<Query> iterator = this.queries.iterator(); iterator.hasNext();) {
+				Query query = iterator.next();
+				if (query.getAccount() == account) {
+					iterator.remove();
+				}
+			}
+		}
 		long startCatchup = getLastMessageTransmitted(account);
 		long endCatchup = account.getXmppConnection().getLastSessionEstablished();
 		if (startCatchup == 0) {
@@ -131,7 +139,14 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 			this.mXmppConnectionService.sendIqPacket(account, packet, new OnIqPacketReceived() {
 				@Override
 				public void onIqPacketReceived(Account account, IqPacket packet) {
-					if (packet.getType() != IqPacket.TYPE.RESULT) {
+					if (packet.getType() == IqPacket.TYPE.TIMEOUT) {
+						synchronized (MessageArchiveService.this.queries) {
+							MessageArchiveService.this.queries.remove(query);
+							if (query.hasCallback()) {
+								query.callback();
+							}
+						}
+					} else if (packet.getType() != IqPacket.TYPE.RESULT) {
 						Log.d(Config.LOGTAG, account.getJid().toBareJid().toString() + ": error executing mam: " + packet.toString());
 						finalizeQuery(query);
 					}

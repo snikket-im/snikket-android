@@ -425,7 +425,7 @@ public class MessageParser extends AbstractParser implements
 					mXmppConnectionService.sendMessagePacket(account, receipt);
 				}
 			}
-			if (account.getXmppConnection() != null && account.getXmppConnection().getFeatures().advancedStreamFeaturesLoaded()) {
+			if (account.isOnlineAndConnected() && query == null) {
 				if (conversation.setLastMessageTransmitted(System.currentTimeMillis())) {
 					mXmppConnectionService.updateConversation(conversation);
 				}
