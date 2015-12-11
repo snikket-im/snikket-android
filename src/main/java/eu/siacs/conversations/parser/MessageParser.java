@@ -329,7 +329,7 @@ public class MessageParser extends AbstractParser implements
 		}
 
 		if ((body != null || pgpEncrypted != null || axolotlEncrypted != null) && !isMucStatusMessage) {
-			Conversation conversation = mXmppConnectionService.findOrCreateConversation(account, counterpart.toBareJid(), isTypeGroupChat);
+			Conversation conversation = mXmppConnectionService.findOrCreateConversation(account, counterpart.toBareJid(), isTypeGroupChat, query);
 			if (isTypeGroupChat) {
 				if (counterpart.getResourcepart().equals(conversation.getMucOptions().getActualNick())) {
 					status = Message.STATUS_SEND_RECEIVED;
@@ -429,11 +429,6 @@ public class MessageParser extends AbstractParser implements
 							receiptsNamespaces,
 							packet.getType());
 					mXmppConnectionService.sendMessagePacket(account, receipt);
-				}
-			}
-			if (account.isOnlineAndConnected() && query == null) {
-				if (conversation.setLastMessageTransmitted(System.currentTimeMillis())) {
-					mXmppConnectionService.updateConversation(conversation);
 				}
 			}
 

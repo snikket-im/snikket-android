@@ -1,6 +1,7 @@
 package eu.siacs.conversations.services;
 
 import android.util.Log;
+import android.util.Pair;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -75,16 +76,8 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 	}
 
 	private long getLastMessageTransmitted(final Account account) {
-		long timestamp = 0;
-		for(final Conversation conversation : mXmppConnectionService.getConversations()) {
-			if (conversation.getAccount() == account) {
-				long tmp = conversation.getLastMessageTransmitted();
-				if (tmp > timestamp) {
-					timestamp = tmp;
-				}
-			}
-		}
-		return timestamp;
+		Pair<Long,String> pair = mXmppConnectionService.databaseBackend.getLastMessageReceived(account);
+		return pair == null ? 0 : pair.first;
 	}
 
 	public Query query(final Conversation conversation) {
@@ -166,24 +159,18 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 		final Conversation conversation = query.getConversation();
 		if (conversation != null) {
 			conversation.sort();
-			if (conversation.setLastMessageTransmitted(query.getEnd())) {
-				this.mXmppConnectionService.databaseBackend.updateConversation(conversation);
-			}
 			conversation.setHasMessagesLeftOnServer(query.getMessageCount() > 0);
-			if (query.hasCallback()) {
-				query.callback();
-			} else {
-				this.mXmppConnectionService.updateConversationUi();
-			}
 		} else {
 			for(Conversation tmp : this.mXmppConnectionService.getConversations()) {
 				if (tmp.getAccount() == query.getAccount()) {
 					tmp.sort();
-					if (tmp.setLastMessageTransmitted(query.getEnd())) {
-						this.mXmppConnectionService.databaseBackend.updateConversation(tmp);
-					}
 				}
 			}
+		}
+		if (query.hasCallback()) {
+			query.callback();
+		} else {
+			this.mXmppConnectionService.updateConversationUi();
 		}
 	}
 

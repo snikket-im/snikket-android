@@ -46,7 +46,6 @@ public class Conversation extends AbstractEntity implements Blockable {
 	public static final String ATTRIBUTE_NEXT_ENCRYPTION = "next_encryption";
 	public static final String ATTRIBUTE_MUC_PASSWORD = "muc_password";
 	public static final String ATTRIBUTE_MUTED_TILL = "muted_till";
-	public static final String ATTRIBUTE_LAST_MESSAGE_TRANSMITTED = "last_message_transmitted";
 
 	private String name;
 	private String contactUuid;
@@ -693,33 +692,16 @@ public class Conversation extends AbstractEntity implements Blockable {
 		}
 	}
 
-	public void resetLastMessageTransmitted() {
-		this.setAttribute(ATTRIBUTE_LAST_MESSAGE_TRANSMITTED,String.valueOf(-1));
-	}
-
-	public boolean setLastMessageTransmitted(long value) {
-		long before = getLastMessageTransmitted();
-		if (value - before > 1000) {
-			this.setAttribute(ATTRIBUTE_LAST_MESSAGE_TRANSMITTED, String.valueOf(value));
-			return true;
-		} else {
-			return false;
-		}
-	}
-
 	public long getLastMessageTransmitted() {
-		long timestamp = getLongAttribute(ATTRIBUTE_LAST_MESSAGE_TRANSMITTED,0);
-		if (timestamp == 0) {
-			synchronized (this.messages) {
-				for(int i = this.messages.size() - 1; i >= 0; --i) {
-					Message message = this.messages.get(i);
-					if (message.getStatus() == Message.STATUS_RECEIVED) {
-						return message.getTimeSent();
-					}
+		synchronized (this.messages) {
+			for(int i = this.messages.size() - 1; i >= 0; --i) {
+				Message message = this.messages.get(i);
+				if (message.getStatus() == Message.STATUS_RECEIVED || message.isCarbon()) {
+					return message.getTimeSent();
 				}
 			}
 		}
-		return timestamp;
+		return 0;
 	}
 
 	public void setMutedTill(long value) {
