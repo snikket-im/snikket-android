@@ -205,7 +205,7 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 		if (complete || relevant == null || abort) {
 			this.finalizeQuery(query);
 			Log.d(Config.LOGTAG,query.getAccount().getJid().toBareJid().toString()+": finished mam after "+query.getTotalCount()+" messages");
-			if (query.getWith() == null && query.getTotalCount() > 0) {
+			if (query.getWith() == null && query.getMessageCount() > 0) {
 				mXmppConnectionService.getNotificationService().finishBacklog(true);
 			}
 		} else {
