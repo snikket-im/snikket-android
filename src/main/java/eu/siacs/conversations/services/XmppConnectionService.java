@@ -250,9 +250,9 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 			account.getRoster().clearPresences();
 			fetchRosterFromServer(account);
 			fetchBookmarks(account);
+			mMessageArchiveService.executePendingQueries(account);
 			sendPresence(account);
 			connectMultiModeConversations(account);
-			mMessageArchiveService.executePendingQueries(account);
 			mJingleConnectionManager.cancelInTransmission();
 			syncDirtyContacts(account);
 		}
@@ -1015,6 +1015,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	}
 
 	public void pushBookmarks(Account account) {
+		Log.d(Config.LOGTAG, account.getJid().toBareJid()+": pushing bookmarks");
 		IqPacket iqPacket = new IqPacket(IqPacket.TYPE.SET);
 		Element query = iqPacket.query("jabber:iq:private");
 		Element storage = query.addChild("storage", "storage:bookmarks");

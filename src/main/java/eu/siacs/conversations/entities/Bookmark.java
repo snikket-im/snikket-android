@@ -138,6 +138,16 @@ public class Bookmark extends Element implements ListItem {
 		return this.getAttribute("name");
 	}
 
+	public boolean setBookmarkName(String name) {
+		String before = getBookmarkName();
+		if (name != null && !name.equals(before)) {
+			this.setAttribute("name", name);
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	public void unregisterConversation() {
 		if (this.mJoinedConversation != null) {
 			this.mJoinedConversation.deregisterWithBookmark();

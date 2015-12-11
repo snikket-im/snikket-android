@@ -420,6 +420,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 		if (!mConversation.getJid().isBareJid()) {
 			bookmark.setNick(mConversation.getJid().getResourcepart());
 		}
+		bookmark.setBookmarkName(mConversation.getMucOptions().getSubject());
 		bookmark.setAutojoin(true);
 		account.getBookmarks().add(bookmark);
 		xmppConnectionService.pushBookmarks(account);

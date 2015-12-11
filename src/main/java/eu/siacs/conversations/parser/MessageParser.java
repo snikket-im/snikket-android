@@ -14,6 +14,7 @@ import eu.siacs.conversations.Config;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.crypto.axolotl.XmppAxolotlMessage;
 import eu.siacs.conversations.entities.Account;
+import eu.siacs.conversations.entities.Bookmark;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
@@ -387,7 +388,7 @@ public class MessageParser extends AbstractParser implements
 					message.setType(Message.TYPE_PRIVATE);
 				}
 			}
-			updateLastseen(packet,account,true);
+			updateLastseen(packet, account, true);
 			boolean checkForDuplicates = query != null
 					|| (isTypeGroupChat && packet.hasChild("delay","urn:xmpp:delay"))
 					|| message.getType() == Message.TYPE_PRIVATE;
@@ -458,7 +459,14 @@ public class MessageParser extends AbstractParser implements
 				if (packet.hasChild("subject")) {
 					if (conversation != null && conversation.getMode() == Conversation.MODE_MULTI) {
 						conversation.setHasMessagesLeftOnServer(conversation.countMessages() > 0);
-						conversation.getMucOptions().setSubject(packet.findChildContent("subject"));
+						String subject = packet.findChildContent("subject");
+						conversation.getMucOptions().setSubject(subject);
+						final Bookmark bookmark = conversation.getBookmark();
+						if (bookmark != null && bookmark.getBookmarkName() == null) {
+							if (bookmark.setBookmarkName(subject)) {
+								mXmppConnectionService.pushBookmarks(account);
+							}
+						}
 						mXmppConnectionService.updateConversationUi();
 						return;
 					}
