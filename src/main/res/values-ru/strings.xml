@@ -28,6 +28,8 @@
   <string name="minutes_ago">%d мин. назад</string>
   <string name="unread_conversations">непрочитанных сообщений</string>
   <string name="sending">отправка…</string>
+  <string name="message_decrypting">Расшифровка сообщения. Подождите...</string>
+  <string name="pgp_message">OpenPGP зашифрованное сообщение</string>
   <string name="nick_in_use">Имя уже используется</string>
   <string name="admin">Администратор</string>
   <string name="owner">Владелец</string>
@@ -78,6 +80,7 @@
   <string name="send_unencrypted_message">Отправить незащифрованное сообщение</string>
   <string name="send_otr_message">Отправить OTR защифрованное сообщение</string>
   <string name="send_omemo_message">Отправить OMEMO защифрованное сообщение</string>
+  <string name="send_omemo_x509_message">Послать v\\OMEMO зашифрованное сообщение</string>
   <string name="send_pgp_message">Отправить OpenPGP защифрованное сообщение</string>
   <string name="your_nick_has_been_changed">Ваш псевдоним был изменен</string>
   <string name="send_unencrypted">Отправить в незашифрованном виде</string>
@@ -86,12 +89,14 @@
   <string name="openkeychain_required_long">Conversations использует стороннее приложение под названием <b>OpenKeychain</b> для шифрования и расшифрования сообщений и управления открытыми ключами.\nПрограмма OpenKeychain распространяется под лицензией GPLv3 и доступна для загрузки через F-Droid или Google Play.\n\n<small>(Потребуется перезапуск Conversations после установки.)</small></string>
   <string name="restart">Перезапуск</string>
   <string name="install">Установка</string>
+  <string name="openkeychain_not_installed">Установите OpenKeychain пожалуйста</string>
   <string name="offering">предложение…</string>
   <string name="waiting">ожидание…</string>
   <string name="no_pgp_key">Нет OpenPGP ключа</string>
   <string name="contact_has_no_pgp_key">Conversations не может зашифровать сообщение, потому что удаленный пользователь не анонсирует свой открытый ключ.\n\n<small>Пожалуйста, попросите удаленного пользователя тоже установить OpenPGP.</small></string>
   <string name="no_pgp_keys">Нет OpenPGP ключей</string>
   <string name="contacts_have_no_pgp_keys">Conversations не может зашифровать сообщения, потому что удаленные пользователи не анонсируют свои открытые ключи.\n\n<small>Пожалуйста, попросите удаленных пользователей тоже установить OpenPGP.</small></string>
+  <string name="encrypted_message_received"><i>Получено зашифрованное сообщение. Нажмите, чтобы расшифровать.</i></string>
   <string name="pref_general">Общие</string>
   <string name="pref_xmpp_resource">Название ресурса</string>
   <string name="pref_xmpp_resource_summary">Имя которым Conversations идентифицирует себя</string>
@@ -170,6 +175,7 @@
   <string name="passwords_do_not_match">Пароли не совпадают</string>
   <string name="invalid_jid">Недопустимый JID (Джаббер ID)</string>
   <string name="error_out_of_memory">Недостаточно памяти. Изображение слишком большое</string>
+  <string name="add_phone_book_text">Вы хотите добавить %s в список контактов устройства?</string>
   <string name="contact_status_online">в сети</string>
   <string name="contact_status_free_to_chat">свободен для общения</string>
   <string name="contact_status_away">скоро буду</string>
@@ -205,10 +211,13 @@
   <string name="your_fingerprint">Контрольная сумма</string>
   <string name="otr_fingerprint">OTR контрольная сумма</string>
   <string name="omemo_fingerprint">OMEMO отпечаток</string>
+  <string name="omemo_fingerprint_x509">v\\OMEMO отпечаток</string>
   <string name="omemo_fingerprint_selected_message">OMEMO отпечаток сообщения</string>
+  <string name="omemo_fingerprint_x509_selected_message">v\\OMEMO отпечаток сообщения</string>
   <string name="this_device_omemo_fingerprint">Собственный OMEMO отпечаток</string>
   <string name="other_devices">Другие устройства</string>
   <string name="trust_omemo_fingerprints">Доверенные отпечатки OMEMO</string>
+  <string name="fetching_keys">Получение ключей…</string>
   <string name="done">Готово</string>
   <string name="verify">Подтвердить</string>
   <string name="decrypt">Дешифровать</string>
@@ -438,6 +447,7 @@
   <string name="offering_x_file">Предложен %s</string>
   <string name="hide_offline">Скрыть пользователей вне сети</string>
   <string name="disable_account">Отключить учётную запись</string>
+  <string name="contact_is_typing">%s печатает…</string>
   <string name="contact_has_stopped_typing">%s прекратил набор</string>
   <string name="pref_chat_states">Оповещения о наборе</string>
   <string name="pref_chat_states_summary">Позволяет вашим контактам видеть когда вы пишете новое сообщение</string>
@@ -484,6 +494,7 @@
   <string name="download_failed_could_not_connect">Загрузка не удалась: не удалось подключиться к серверу</string>
   <string name="pref_use_white_background">Использовать белый фон</string>
   <string name="pref_use_white_background_summary">Показывать принятые сообщения черным текстом на белом фоне</string>
+  <string name="account_status_tor_unavailable">Сеть TOR недоступна</string>
   <string name="server_info_broken">Повреждено</string>
   <string name="pref_presence_settings">Настройки присутствия</string>
   <string name="pref_away_when_screen_off">Вышел когда экран выключен</string>
@@ -499,4 +510,21 @@
   <string name="certificate_chain_is_not_trusted">Цепочка сертификата не доверена</string>
   <string name="jid_does_not_match_certificate">Jabber ID не соответствует сертификату</string>
   <string name="action_renew_certificate">Обновить сертификат</string>
+  <string name="error_fetching_omemo_key">Ошибка при получении OMEMO ключа!</string>
+  <string name="verified_omemo_key_with_certificate">Проверен OMEMO ключ с сертификатом!</string>
+  <string name="device_does_not_support_certificates">Ваше устройство не поддерживает выбор клиентских сертификатов!</string>
+  <string name="pref_connection_options">Настройки соединения</string>
+  <string name="pref_use_tor">Соединение через Tor</string>
+  <string name="pref_use_tor_summary">Направить все соединения через сеть TOR. Требуется Orbot</string>
+  <string name="account_settings_hostname">Имя сервера</string>
+  <string name="account_settings_port">Порт</string>
+  <string name="hostname_or_onion">Сервер- или .onion-Адрес</string>
+  <string name="not_a_valid_port">Это недопустимый номер порта</string>
+  <string name="not_valid_hostname">Это недопустимое имя сервера</string>
+  <string name="connected_accounts">%1$d из %2$d аккаунтов соединены</string>
+  <string name="shared_file_with_x">Общий файл с %s</string>
+  <string name="shared_image_with_x">Общее изображение с %s</string>
+  <string name="no_storage_permission">Conversations требуется доступ к внешнему хранилищу</string>
+  <string name="sync_with_contacts">Синхронизировать с контактами</string>
+  <string name="sync_with_contacts_long">Conversations ожидает совпадения вашего XMPP ростера с вашими контактами для отображения их полных имен и аватаров.\n\nConversations только считает ваши контакты и сопоставит их локально без отправки их на ваш сервер.\n\nСейчас вы получите запрос на разрешение доступа к вашим контактам.</string>
 </resources>

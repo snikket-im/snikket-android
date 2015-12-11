@@ -19,7 +19,7 @@
   <string name="title_activity_settings">Поставке</string>
   <string name="title_activity_conference_details">Детаљи групног ћаскања</string>
   <string name="title_activity_contact_details">Детаљи контакта</string>
-  <string name="title_activity_sharewith">Подели са преписком</string>
+  <string name="title_activity_sharewith">Подели у преписци</string>
   <string name="title_activity_start_conversation">Почни преписку</string>
   <string name="title_activity_choose_contact">Изабери контакт</string>
   <string name="title_activity_block_list">Списак блокираних</string>
@@ -45,7 +45,7 @@
   <string name="remove_bookmark_text">Желите ли да уклоните %s са обележивача? Преписка са овим контактом неће бити уклоњена.</string>
   <string name="register_account">Региструј нови налог на серверу</string>
   <string name="change_password_on_server">Промени лозинку на серверу</string>
-  <string name="share_with">Подели са…</string>
+  <string name="share_with">Подели помоћу…</string>
   <string name="start_conversation">Почни преписку</string>
   <string name="invite_contact">Позови контакта</string>
   <string name="contacts">Контакти</string>
@@ -89,6 +89,7 @@
   <string name="openkeychain_required_long">Конверзација користи апликацију <b>Отворени кључарник</b> за шифровање и дешифровање порука и управљање вашим јавним кључевима.\n\nОтворени кључарник је лиценциран под ГПЛв3 и доступан је на Ф-дроиду у Гугловој Плеј продавници.\n\n<small>(Поново покрените Конверзацију након тога.)</small></string>
   <string name="restart">Поново покрени</string>
   <string name="install">Инсталирај</string>
+  <string name="openkeychain_not_installed">Инсталирајте Отворени кључарник</string>
   <string name="offering">нудим…</string>
   <string name="waiting">чекам…</string>
   <string name="no_pgp_key">Нема ОпенПГП кључа</string>
@@ -499,6 +500,9 @@
   <string name="pref_xa_on_silent_mode">Недоступан у тихом режиму</string>
   <string name="pref_xa_on_silent_mode_summary">Означава ваш ресурс недоступним кад је телефон у тихом режиму</string>
   <string name="unable_to_parse_certificate">Не могу да рашчланим сертификат</string>
+  <string name="authenticate_with_certificate">Оставите празно за аутентификацију сертификатом</string>
+  <string name="captcha_ocr">Текст стопке</string>
+  <string name="captcha_required">Потребна стопка</string>
   <string name="captcha_hint">унесите текст са слике</string>
   <string name="certificate_chain_is_not_trusted">Ланац сертификата није поуздан</string>
   <string name="jid_does_not_match_certificate">Џабер ИД не одговара сертификату</string>
@@ -520,4 +524,8 @@
     <item quantity="few">%d поруке</item>
     <item quantity="other">%d порука</item>
   </plurals>
+  <string name="shared_file_with_x">Подељен фајл са %s</string>
+  <string name="shared_image_with_x">Подељена слика са %s</string>
+  <string name="no_storage_permission">Конверзацији је потребан приступ спољашњем складишту</string>
+  <string name="sync_with_contacts">Синхронизуј са контактима</string>
 </resources>
