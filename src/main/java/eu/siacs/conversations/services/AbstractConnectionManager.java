@@ -95,10 +95,18 @@ public class AbstractConnectionManager {
 		}
 	}
 
+	public static OutputStream createAppendedOutputStream(DownloadableFile file) {
+		return createOutputStream(file, false, true);
+	}
+
 	public static OutputStream createOutputStream(DownloadableFile file, boolean gcm) {
+		return createOutputStream(file, gcm, false);
+	}
+
+	private static OutputStream createOutputStream(DownloadableFile file, boolean gcm, boolean append) {
 		FileOutputStream os;
 		try {
-			os = new FileOutputStream(file);
+			os = new FileOutputStream(file, append);
 			if (file.getKey() == null) {
 				return os;
 			}

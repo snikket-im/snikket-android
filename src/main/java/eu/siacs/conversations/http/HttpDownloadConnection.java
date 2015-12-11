@@ -16,6 +16,7 @@ import java.net.MalformedURLException;
 import java.net.Proxy;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.concurrent.CancellationException;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLHandshakeException;
@@ -43,6 +44,7 @@ public class HttpDownloadConnection implements Transferable {
 	private boolean acceptedAutomatically = false;
 	private int mProgress = 0;
 	private boolean mUseTor = false;
+	private boolean canceled = false;
 
 	public HttpDownloadConnection(HttpConnectionManager manager) {
 		this.mHttpConnectionManager = manager;
@@ -114,7 +116,9 @@ public class HttpDownloadConnection implements Transferable {
 		new Thread(new FileSizeChecker(interactive)).start();
 	}
 
+	@Override
 	public void cancel() {
+		this.canceled = true;
 		mHttpConnectionManager.finishConnection(this);
 		if (message.isFileOrImage()) {
 			message.setTransferable(new TransferablePlaceholder(Transferable.STATUS_DELETED));
@@ -150,7 +154,7 @@ public class HttpDownloadConnection implements Transferable {
 			mXmppConnectionService.showErrorToastInUi(R.string.download_failed_server_not_found);
 		} else if (e instanceof java.net.ConnectException) {
 			mXmppConnectionService.showErrorToastInUi(R.string.download_failed_could_not_connect);
-		} else {
+		} else if (!(e instanceof  CancellationException)) {
 			mXmppConnectionService.showErrorToastInUi(R.string.download_failed_file_not_found);
 		}
 	}
@@ -244,7 +248,7 @@ public class HttpDownloadConnection implements Transferable {
 				finish();
 			} catch (SSLHandshakeException e) {
 				changeStatus(STATUS_OFFER);
-			} catch (IOException e) {
+			} catch (Exception e) {
 				if (interactive) {
 					showToastForException(e);
 				}
@@ -252,7 +256,7 @@ public class HttpDownloadConnection implements Transferable {
 			}
 		}
 
-		private void download()  throws IOException {
+		private void download()  throws Exception {
 			InputStream is = null;
 			PowerManager.WakeLock wakeLock = mHttpConnectionManager.createWakeLock("http_download_"+message.getUuid());
 			try {
@@ -267,24 +271,47 @@ public class HttpDownloadConnection implements Transferable {
 					mHttpConnectionManager.setupTrustManager((HttpsURLConnection) connection, interactive);
 				}
 				connection.setRequestProperty("User-Agent",mXmppConnectionService.getIqGenerator().getIdentityName());
+				final boolean tryResume = file.exists() && file.getKey() == null;
+				if (tryResume) {
+					Log.d(Config.LOGTAG,"http download trying resume");
+					long size = file.getSize();
+					connection.setRequestProperty("Range", "bytes="+size+"-");
+				}
 				connection.connect();
 				is = new BufferedInputStream(connection.getInputStream());
-				file.getParentFile().mkdirs();
-				file.createNewFile();
-				os = AbstractConnectionManager.createOutputStream(file, true);
+				boolean serverResumed = "bytes".equals(connection.getHeaderField("Accept-Ranges"));
 				long transmitted = 0;
 				long expected = file.getExpectedSize();
+				if (tryResume && serverResumed) {
+					Log.d(Config.LOGTAG,"server resumed");
+					transmitted = file.getSize();
+					updateProgress((int) ((((double) transmitted) / expected) * 100));
+					os = AbstractConnectionManager.createAppendedOutputStream(file);
+				} else {
+					file.getParentFile().mkdirs();
+					file.createNewFile();
+					os = AbstractConnectionManager.createOutputStream(file, true);
+				}
 				int count = -1;
 				byte[] buffer = new byte[1024];
 				while ((count = is.read(buffer)) != -1) {
 					transmitted += count;
 					os.write(buffer, 0, count);
 					updateProgress((int) ((((double) transmitted) / expected) * 100));
+					if (canceled) {
+						throw new CancellationException();
+					}
 				}
-				os.flush();
-			} catch (IOException e) {
+			} catch (CancellationException | IOException e) {
 				throw e;
 			} finally {
+				if (os != null) {
+					try {
+						os.flush();
+					} catch (final IOException ignored) {
+
+					}
+				}
 				FileBackend.close(os);
 				FileBackend.close(is);
 				wakeLock.release();
