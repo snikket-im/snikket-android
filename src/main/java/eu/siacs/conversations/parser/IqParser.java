@@ -117,8 +117,7 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
 						Integer id = Integer.valueOf(device.getAttribute("id"));
 						deviceIds.add(id);
 					} catch (NumberFormatException e) {
-						Log.e(Config.LOGTAG, AxolotlService.LOGPREFIX+" : "+"Encountered nvalid <device> node in PEP:" + device.toString()
-								+ ", skipping...");
+						Log.e(Config.LOGTAG, AxolotlService.LOGPREFIX+" : "+"Encountered invalid <device> node in PEP ("+e.getMessage()+"):" + device.toString()+ ", skipping...");
 						continue;
 					}
 				}
