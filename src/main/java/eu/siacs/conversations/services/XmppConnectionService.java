@@ -248,12 +248,12 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		@Override
 		public void onBind(final Account account) {
 			account.getRoster().clearPresences();
+			mJingleConnectionManager.cancelInTransmission();
 			fetchRosterFromServer(account);
 			fetchBookmarks(account);
-			mMessageArchiveService.executePendingQueries(account);
 			sendPresence(account);
+			mMessageArchiveService.executePendingQueries(account);
 			connectMultiModeConversations(account);
-			mJingleConnectionManager.cancelInTransmission();
 			syncDirtyContacts(account);
 		}
 	};
