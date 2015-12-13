@@ -28,6 +28,8 @@
   <string name="minutes_ago">%d 分前</string>
   <string name="unread_conversations">未読の会話</string>
   <string name="sending">送信中…</string>
+  <string name="message_decrypting">メッセージを復号化しています。しばらくお待ちください…</string>
+  <string name="pgp_message">OpenPGP 暗号化メッセージ</string>
   <string name="nick_in_use">ニックネームは既に使用されています</string>
   <string name="admin">管理者</string>
   <string name="owner">オーナー</string>
@@ -78,6 +80,7 @@
   <string name="send_unencrypted_message">暗号化されていないメッセージを送信</string>
   <string name="send_otr_message">OTR 暗号化メッセージを送信</string>
   <string name="send_omemo_message">OMEMO 暗号化メッセージを送信</string>
+  <string name="send_omemo_x509_message">v\\OMEMO 暗号化メッセージを送信</string>
   <string name="send_pgp_message">OpenPGP 暗号化メッセージを送信</string>
   <string name="your_nick_has_been_changed">あなたのニックネームが変更されました</string>
   <string name="send_unencrypted">暗号化されていない送信</string>
@@ -86,12 +89,14 @@
   <string name="openkeychain_required_long">Conversations は <b>OpenKeychain</b> と呼ばれるサードパーティのアプリを利用して、メッセージの暗号化および復号化、そしてあなたの公開鍵を管理します。\n\nOpenKeychain は GPLv3 ライセンスの下で、F-Droid および Google Play から利用可能です。\n\n<small>(後で Conversations を再起動してください。)</small></string>
   <string name="restart">再起動</string>
   <string name="install">インストール</string>
+  <string name="openkeychain_not_installed">OpenKeychain をインストールしてください</string>
   <string name="offering">依頼中…</string>
   <string name="waiting">待機中…</string>
   <string name="no_pgp_key">OpenPGP の鍵はありません</string>
   <string name="contact_has_no_pgp_key">連絡先が公開鍵を通知しないため、Conversations はあなたのメッセージを暗号化することができません。\n\n<small>連絡先に OpenPGP をセットアップするように依頼してください。</small></string>
   <string name="no_pgp_keys">OpenPGP の鍵はありません</string>
   <string name="contacts_have_no_pgp_keys">連絡先が公開鍵を通知しないため、Conversations はあなたのメッセージを暗号化することができません。\n\n<small>連絡先に OpenPGP をセットアップするように依頼してください。</small></string>
+  <string name="encrypted_message_received"><i>暗号化されたメッセージを受信しました。タッチすると復号化します。</i></string>
   <string name="pref_general">全般</string>
   <string name="pref_xmpp_resource">XMPP リソース</string>
   <string name="pref_xmpp_resource_summary">自分自身を識別するこのクライアントの名前</string>
@@ -170,6 +175,7 @@
   <string name="passwords_do_not_match">パスワードが一致しません</string>
   <string name="invalid_jid">これは有効な Jabber ID ではありません</string>
   <string name="error_out_of_memory">メモリ不足です。画像が大きすぎます</string>
+  <string name="add_phone_book_text">お使いのデバイスの連絡先リストに %s を追加しますか?</string>
   <string name="contact_status_online">オンライン</string>
   <string name="contact_status_free_to_chat">自由にチャットできます</string>
   <string name="contact_status_away">離席中</string>
@@ -205,10 +211,13 @@
   <string name="your_fingerprint">あなたのフィンガープリント</string>
   <string name="otr_fingerprint">OTR フィンガープリント</string>
   <string name="omemo_fingerprint">OMEMO フィンガープリント</string>
+  <string name="omemo_fingerprint_x509">v\\OMEMO フィンガープリント</string>
   <string name="omemo_fingerprint_selected_message">メッセージの OMEMO フィンガープリント</string>
+  <string name="omemo_fingerprint_x509_selected_message">メッセージの v\\OMEMO フィンガープリント</string>
   <string name="this_device_omemo_fingerprint">自分の OMEMO フィンガープリント</string>
   <string name="other_devices">他のデバイス</string>
   <string name="trust_omemo_fingerprints">OMEMO フィンガープリントを信頼</string>
+  <string name="fetching_keys">鍵の取得中…</string>
   <string name="done">完了</string>
   <string name="verify">検証</string>
   <string name="decrypt">復号化</string>
@@ -438,6 +447,7 @@
   <string name="offering_x_file">%s の依頼中</string>
   <string name="hide_offline">オフラインを非表示にする</string>
   <string name="disable_account">アカウントを無効にする</string>
+  <string name="contact_is_typing">%s は入力中…</string>
   <string name="contact_has_stopped_typing">%s は入力を停止しました</string>
   <string name="pref_chat_states">入力中通知</string>
   <string name="pref_chat_states_summary">あなたが新しいメッセージを書いている時に、連絡先に知らせます</string>
@@ -478,6 +488,7 @@
   <string name="download_failed_could_not_connect">ダウンロードに失敗しました: ホストに接続できませんでした</string>
   <string name="pref_use_white_background">白い背景を使用する</string>
   <string name="pref_use_white_background_summary">白地に黒の文字で、受け取ったメッセージを表示します</string>
+  <string name="account_status_tor_unavailable">TOR ネットワークは利用できません</string>
   <string name="server_info_broken">壊れています</string>
   <string name="pref_presence_settings">参加設定</string>
   <string name="pref_away_when_screen_off">画面がオフのときは離席</string>
@@ -493,4 +504,24 @@
   <string name="certificate_chain_is_not_trusted">証明書チェーンは信頼済ではありません</string>
   <string name="jid_does_not_match_certificate">Jabber ID が証明書と一致しません</string>
   <string name="action_renew_certificate">証明書を更新</string>
+  <string name="error_fetching_omemo_key">OMEMO 鍵の取得中にエラー!</string>
+  <string name="verified_omemo_key_with_certificate">OMEMO 鍵の取得中にエラー!</string>
+  <string name="device_does_not_support_certificates">お使いのデバイスはクライアント証明書の選択をサポートしていません!</string>
+  <string name="pref_connection_options">接続オプション</string>
+  <string name="pref_use_tor">Tor 経由で接続</string>
+  <string name="pref_use_tor_summary">TOR ネットワークを介してすべての接続をトンネルします。 Orbot が必要です</string>
+  <string name="account_settings_hostname">ホスト名</string>
+  <string name="account_settings_port">ポート</string>
+  <string name="hostname_or_onion">サーバーまたは .onion アドレス</string>
+  <string name="not_a_valid_port">これは有効なポート番号ではありません</string>
+  <string name="not_valid_hostname">これは有効なホスト名ではありません</string>
+  <string name="connected_accounts">%1$d / %2$d アカウントが接続しました</string>
+  <plurals name="x_messages">
+    <item quantity="other">%d メッセージ</item>
+  </plurals>
+  <string name="shared_file_with_x">%s でファイルを共有</string>
+  <string name="shared_image_with_x">%s で画像を共有</string>
+  <string name="no_storage_permission">Conversations は外部ストレージにアクセスが必要です</string>
+  <string name="sync_with_contacts">連絡先と同期</string>
+  <string name="sync_with_contacts_long">Conversations はフルネームやアバターを表示するために、連絡先と XMPP 名簿と一致するようにしたいです。\n\nConversations は、サーバーにアップロードすることはなく、ローカルで連絡先を読んで一致させるだけです。\n\n今、連絡先へのアクセス許可を付与するように求められます。</string>
 </resources>
