@@ -2568,7 +2568,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	}
 
 	public boolean useTorToConnect() {
-		return Config.PARANOID_MODE || getPreferences().getBoolean("use_tor", false);
+		return Config.FORCE_ORBOT || getPreferences().getBoolean("use_tor", false);
 	}
 
 	public int unreadCount() {

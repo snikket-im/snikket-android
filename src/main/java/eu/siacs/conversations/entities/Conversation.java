@@ -616,7 +616,7 @@ public class Conversation extends AbstractEntity implements Blockable {
 				next = outgoing;
 			}
 		}
-		if (Config.PARANOID_MODE && mode == MODE_SINGLE && next <= 0) {
+		if (Config.FORCE_ENCRYPTION && mode == MODE_SINGLE && next <= 0) {
 			if (getAccount().getAxolotlService().isContactAxolotlCapable(getContact())) {
 				return Message.ENCRYPTION_AXOLOTL;
 			} else {

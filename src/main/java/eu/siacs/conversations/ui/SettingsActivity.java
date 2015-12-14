@@ -61,7 +61,7 @@ public class SettingsActivity extends XmppActivity implements
 			}
 		}
 
-		if (Config.PARANOID_MODE) {
+		if (Config.FORCE_ORBOT) {
 			PreferenceCategory connectionOptions = (PreferenceCategory) mSettingsFragment.findPreference("connection_options");
 			PreferenceScreen expert = (PreferenceScreen) mSettingsFragment.findPreference("expert");
 			if (connectionOptions != null) {

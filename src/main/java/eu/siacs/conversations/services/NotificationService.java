@@ -234,7 +234,7 @@ public class NotificationService {
 			if (messages.size() > 0) {
 				conversation = messages.get(0).getConversation();
 				final String name = conversation.getName();
-				if (Config.PARANOID_MODE) {
+				if (Config.HIDE_MESSAGE_TEXT_IN_NOTIFICATION) {
 					int count = messages.size();
 					style.addLine(Html.fromHtml("<b>"+name+"</b> "+mXmppConnectionService.getResources().getQuantityString(R.plurals.x_messages,count,count)));
 				} else {
@@ -269,7 +269,7 @@ public class NotificationService {
 			mBuilder.setLargeIcon(mXmppConnectionService.getAvatarService()
 					.get(conversation, getPixel(64)));
 			mBuilder.setContentTitle(conversation.getName());
-			if (Config.PARANOID_MODE) {
+			if (Config.HIDE_MESSAGE_TEXT_IN_NOTIFICATION) {
 				int count = messages.size();
 				mBuilder.setContentText(mXmppConnectionService.getResources().getQuantityString(R.plurals.x_messages,count,count));
 			} else {
