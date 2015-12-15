@@ -116,7 +116,9 @@ public class XmppConnection implements Runnable {
 	private long lastPingSent = 0;
 	private long lastConnect = 0;
 	private long lastSessionStarted = 0;
+	private long lastDiscoStarted = 0;
 	private int mPendingServiceDiscoveries = 0;
+	private final ArrayList<String> mPendingServiceDiscoveriesIds = new ArrayList<>();
 	private boolean mInteractive = false;
 	private int attempt = 0;
 	private final Hashtable<String, Pair<IqPacket, OnIqPacketReceived>> packetCallbacks = new Hashtable<>();
@@ -225,6 +227,7 @@ public class XmppConnection implements Runnable {
 		features.encryptionEnabled = false;
 		lastConnect = SystemClock.elapsedRealtime();
 		lastPingSent = SystemClock.elapsedRealtime();
+		lastDiscoStarted = Long.MAX_VALUE;
 		this.attempt++;
 		if (account.getJid().getDomainpart().equals("chat.facebook.com")) {
 			mServerIdentity = Identity.FACEBOOK;
@@ -893,6 +896,29 @@ public class XmppConnection implements Runnable {
 		Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": done clearing iq callbacks. " + this.packetCallbacks.size() + " left");
 	}
 
+	public void sendDiscoTimeout() {
+		final IqPacket failurePacket = new IqPacket(IqPacket.TYPE.ERROR); //don't use timeout
+		final ArrayList<OnIqPacketReceived> callbacks = new ArrayList<>();
+		synchronized (this.mPendingServiceDiscoveriesIds) {
+			for(String id : mPendingServiceDiscoveriesIds) {
+				synchronized (this.packetCallbacks) {
+					Pair<IqPacket, OnIqPacketReceived> pair = this.packetCallbacks.remove(id);
+					if (pair != null) {
+						callbacks.add(pair.second);
+					}
+				}
+			}
+			this.mPendingServiceDiscoveriesIds.clear();
+		}
+		if (callbacks.size() > 0) {
+			Log.d(Config.LOGTAG,account.getJid().toBareJid()+": sending disco timeout");
+			resetStreamId(); //we don't want to live with this for ever
+		}
+		for(OnIqPacketReceived callback : callbacks) {
+			callback.onIqPacketReceived(account,failurePacket);
+		}
+	}
+
 	private void sendStartSession() {
 		final IqPacket startSession = new IqPacket(IqPacket.TYPE.SET);
 		startSession.addChild("session", "urn:ietf:params:xml:ns:xmpp-session");
@@ -928,10 +954,12 @@ public class XmppConnection implements Runnable {
 			this.disco.clear();
 		}
 		mPendingServiceDiscoveries = 0;
+		lastDiscoStarted = SystemClock.elapsedRealtime();
+		Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": starting service discovery");
+		mXmppConnectionService.scheduleWakeUpCall(Config.CONNECT_DISCO_TIMEOUT, account.getUuid().hashCode());
 		sendServiceDiscoveryItems(account.getServer());
 		sendServiceDiscoveryInfo(account.getServer());
 		sendServiceDiscoveryInfo(account.getJid().toBareJid());
-		Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": online with resource " + account.getResource());
 		this.lastSessionStarted = SystemClock.elapsedRealtime();
 	}
 
@@ -940,7 +968,7 @@ public class XmppConnection implements Runnable {
 		final IqPacket iq = new IqPacket(IqPacket.TYPE.GET);
 		iq.setTo(jid);
 		iq.query("http://jabber.org/protocol/disco#info");
-		this.sendIqPacket(iq, new OnIqPacketReceived() {
+		String id = this.sendIqPacket(iq, new OnIqPacketReceived() {
 
 			@Override
 			public void onIqPacketReceived(final Account account, final IqPacket packet) {
@@ -991,6 +1019,7 @@ public class XmppConnection implements Runnable {
 					mPendingServiceDiscoveries--;
 					if (mPendingServiceDiscoveries <= 0) {
 						Log.d(Config.LOGTAG,account.getJid().toBareJid()+": done with service discovery");
+						Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": online with resource " + account.getResource());
 						changeStatus(Account.State.ONLINE);
 						if (bindListener != null) {
 							bindListener.onBind(account);
@@ -999,6 +1028,9 @@ public class XmppConnection implements Runnable {
 				}
 			}
 		});
+		synchronized (this.mPendingServiceDiscoveriesIds) {
+			this.mPendingServiceDiscoveriesIds.add(id);
+		}
 	}
 
 	private void enableAdvancedStreamFeatures() {
@@ -1033,7 +1065,7 @@ public class XmppConnection implements Runnable {
 						}
 					}
 				} else {
-					Log.d(Config.LOGTAG,account.getJid().toBareJid()+": could not query disco items of "+server);
+					Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": could not query disco items of " + server);
 				}
 			}
 		});
@@ -1086,13 +1118,12 @@ public class XmppConnection implements Runnable {
 		return new BigInteger(50, mXmppConnectionService.getRNG()).toString(32);
 	}
 
-	public void sendIqPacket(final IqPacket packet, final OnIqPacketReceived callback) {
+	public String sendIqPacket(final IqPacket packet, final OnIqPacketReceived callback) {
 		packet.setFrom(account.getJid());
-		this.sendUnmodifiedIqPacket(packet, callback);
-
+		return this.sendUnmodifiedIqPacket(packet, callback);
 	}
 
-	private synchronized void sendUnmodifiedIqPacket(final IqPacket packet, final OnIqPacketReceived callback) {
+	private synchronized String sendUnmodifiedIqPacket(final IqPacket packet, final OnIqPacketReceived callback) {
 		if (packet.getId() == null) {
 			final String id = nextRandomId();
 			packet.setAttribute("id", id);
@@ -1103,6 +1134,7 @@ public class XmppConnection implements Runnable {
 			}
 		}
 		this.sendPacket(packet);
+		return packet.getId();
 	}
 
 	public void sendMessagePacket(final MessagePacket packet) {
@@ -1293,6 +1325,9 @@ public class XmppConnection implements Runnable {
 		return this.lastPingSent;
 	}
 
+	public long getLastDiscoStarted() {
+		return this.lastDiscoStarted;
+	}
 	public long getLastPacketReceived() {
 		return this.lastPacketReceived;
 	}

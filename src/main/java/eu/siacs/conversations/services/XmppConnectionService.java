@@ -547,12 +547,18 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 					} else if (account.getStatus() == Account.State.OFFLINE) {
 						reconnectAccount(account, true, interactive);
 					} else if (account.getStatus() == Account.State.CONNECTING) {
-						long timeout = Config.CONNECT_TIMEOUT - ((SystemClock.elapsedRealtime() - account.getXmppConnection().getLastConnect()) / 1000);
+						long secondsSinceLastConnect = (SystemClock.elapsedRealtime() - account.getXmppConnection().getLastConnect()) / 1000;
+						long secondsSinceLastDisco = (SystemClock.elapsedRealtime() - account.getXmppConnection().getLastDiscoStarted()) / 1000;
+						long discoTimeout = Config.CONNECT_DISCO_TIMEOUT - secondsSinceLastDisco;
+						long timeout = Config.CONNECT_TIMEOUT - secondsSinceLastConnect;
 						if (timeout < 0) {
 							Log.d(Config.LOGTAG, account.getJid() + ": time out during connect reconnecting");
 							reconnectAccount(account, true, interactive);
+						} else if (discoTimeout < 0) {
+							account.getXmppConnection().sendDiscoTimeout();
+							scheduleWakeUpCall((int) Math.min(timeout,discoTimeout), account.getUuid().hashCode());
 						} else {
-							scheduleWakeUpCall((int) timeout, account.getUuid().hashCode());
+							scheduleWakeUpCall((int) Math.min(timeout,discoTimeout), account.getUuid().hashCode());
 						}
 					} else {
 						if (account.getXmppConnection().getTimeToNextAttempt() <= 0) {
@@ -748,7 +754,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		stopSelf();
 	}
 
-	protected void scheduleWakeUpCall(int seconds, int requestCode) {
+	public void scheduleWakeUpCall(int seconds, int requestCode) {
 		final long timeToWake = SystemClock.elapsedRealtime() + (seconds < 0 ? 1 : seconds + 1) * 1000;
 
 		Context context = getApplicationContext();
