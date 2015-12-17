@@ -152,6 +152,7 @@ public class MessageGenerator extends AbstractGenerator {
 		packet.setFrom(account.getJid());
 		Element received = packet.addChild("displayed","urn:xmpp:chat-markers:0");
 		received.setAttribute("id", id);
+		packet.addChild("store", "urn:xmpp:hints");
 		return packet;
 	}
 
