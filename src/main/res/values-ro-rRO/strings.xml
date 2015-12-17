@@ -3,7 +3,7 @@
   <string name="action_settings">Setari</string>
   <string name="action_add">Conversatie noua</string>
   <string name="action_accounts">Configureaza conturi</string>
-  <string name="action_end_conversation">Termina conversatie</string>
+  <string name="action_end_conversation">Termina conversatia</string>
   <string name="action_contact_details">Detalii contact</string>
   <string name="action_muc_details">Detalii conferinta</string>
   <string name="action_secure">Securizeaza conferinta</string>
@@ -59,7 +59,7 @@
   <string name="save">Salveaza</string>
   <string name="ok">DA</string>
   <string name="crash_report_title">Conversations s-a oprit neasteptat</string>
-  <string name="crash_report_message">Trimitand date ajuti la dezvoltarea aplicatiei Conversations\n<b>Atentie:</b> Se va utiliza contul XMPP pentru a trimite informatii catre programatori.</string>
+  <string name="crash_report_message">Trimitand jurnalele de eroare ajuti la buna dezvoltarea a aplicatiei Conversations\n<b>Atentie:</b> Se va utiliza contul XMPP pentru a trimite informatiile din jurnal catre programatori.</string>
   <string name="send_now">Trimite acum</string>
   <string name="send_never">Nu ma mai intreba</string>
   <string name="problem_connecting_to_account">Nu ma pot conecta la cont</string>
@@ -71,8 +71,8 @@
   <string name="send_failed">trimitere esuata</string>
   <string name="send_rejected">respins</string>
   <string name="preparing_image">Pregatesc imaginea pentru transmisie</string>
-  <string name="action_clear_history">Sterge istoria</string>
-  <string name="clear_conversation_history">Sterge istoria conversatiei</string>
+  <string name="action_clear_history">Sterge istoric</string>
+  <string name="clear_conversation_history">Sterge istoricul conversatiei</string>
   <string name="clear_histor_msg">Doresti sa stergi toate mesajele din aceasta conversatie?\n\n<b>Atentie:</b> Aceasta actiune nu va influenta mesajele aflate pe alte telefoane/tabelete/servere.</string>
   <string name="delete_messages">Sterge mesajele</string>
   <string name="also_end_conversation">Dupa, incheie conversatia</string>
@@ -89,6 +89,7 @@
   <string name="openkeychain_required_long">Conversations utilizeaza o aplicatia externa <b>OpenKeychain</b> pentru a cripta si decripta mesaje si a administra cheile publice.\n\nOpenKeychain este licentiat sub GPLv3 si se gaseste pentru copiere pe F-Droid si Google Play.\n\n<small>(Te rog sa repornesti Conversations dupa)</small></string>
   <string name="restart">Reporneste</string>
   <string name="install">Instaleaza</string>
+  <string name="openkeychain_not_installed">Te rog instaleaza OpenKeychain</string>
   <string name="offering">transmit...</string>
   <string name="waiting">in asteptare...</string>
   <string name="no_pgp_key">Nu am gasit cheie OpenPGP</string>
@@ -97,7 +98,7 @@
   <string name="contacts_have_no_pgp_keys">Conversations nu poate cripta mesajele tale pentru contactele tale care nu isi anunta cheia publica.\n\n<small>Te rog cere contactelor sa configureze OpenPGP.</small></string>
   <string name="encrypted_message_received"><i>Ai primit mesaj criptat. Apasa aici pentru a-l decripta.</i></string>
   <string name="pref_general">General</string>
-  <string name="pref_xmpp_resource">resursa XMPP</string>
+  <string name="pref_xmpp_resource">Nume client XMPP</string>
   <string name="pref_xmpp_resource_summary">Numele cu care acest client se identifica</string>
   <string name="pref_accept_files">Accepta fisiere</string>
   <string name="pref_accept_files_summary">Accepta automat fisiere mai mici decat...</string>
@@ -107,13 +108,13 @@
   <string name="pref_vibrate">Vibreaza</string>
   <string name="pref_vibrate_summary">Vibreaza cand un nou mesaj este primit</string>
   <string name="pref_sound">Sunet</string>
-  <string name="pref_sound_summary">Ton de apel cu notificare</string>
+  <string name="pref_sound_summary">Ton de apel pentru notificare</string>
   <string name="pref_conference_notifications">Notificari in Conferintele Publice</string>
-  <string name="pref_conference_notifications_summary">Notifica cand un mesaj apare in conferintele publice in loc doar sa fie evidentiat</string>
+  <string name="pref_conference_notifications_summary">Notifica mereu la mesajele scrise in conferintele publice nu doar la cele evidentiate</string>
   <string name="pref_notification_grace_period">Perioada de gratie notificari </string>
   <string name="pref_notification_grace_period_summary">Opreste notificari pentru o scurta perioada dupa ce o copie a mesajului a fost primita</string>
   <string name="pref_advanced_options">Optiuni avansate</string>
-  <string name="pref_never_send_crash">Nu trimite rapoarte de errori</string>
+  <string name="pref_never_send_crash">Nu trimite rapoarte de erori</string>
   <string name="pref_never_send_crash_summary">Trimitand date ajuti la dezvoltarea aplicatiei Conversations\n<b>Atentie:</b> Se va utiliza contul XMPP pentru a trimite informatii catre programatori.</string>
   <string name="pref_confirm_messages">Confirma mesaje</string>
   <string name="pref_confirm_messages_summary">Notifica contactul cand ai primit un mesaj si l-ai citit</string>
@@ -290,7 +291,7 @@
   <string name="pref_quiet_hours_summary">Notificarile vor fi reduse la tacere in timpul orelor de liniste</string>
   <string name="pref_use_larger_font">Mareste marimea literelor</string>
   <string name="pref_use_larger_font_summary">Foloseste marimea mai mare de text in toata aplicatia</string>
-  <string name="pref_use_send_button_to_indicate_status">Butonul de trimitere indica startea</string>
+  <string name="pref_use_send_button_to_indicate_status">Butonul de trimitere indica starea</string>
   <string name="pref_use_indicate_received">Cere raport de primire</string>
   <string name="pref_use_indicate_received_summary">Mesajele primite vor fi marcate cu un semn verde daca este suportat</string>
   <string name="pref_use_send_button_to_indicate_status_summary">Coloreaza butonul de trimitere pentru a indica starea contactului</string>
@@ -358,7 +359,7 @@
   <string name="manually_verify">Verifica manual</string>
   <string name="are_you_sure_verify_fingerprint">Sigur vrei sa verifici amprenta OTR a persoanei de contact?</string>
   <string name="pref_show_dynamic_tags">Arata etichetele dinamice</string>
-  <string name="pref_show_dynamic_tags_summary">Arata etichete doar pentru citire sub contacte </string>
+  <string name="pref_show_dynamic_tags_summary">Arata etichete de stare sub contacte </string>
   <string name="enable_notifications">Activeaza notificari</string>
   <string name="conference_with">Creeaza conferinta cu...</string>
   <string name="no_conference_server_found">Serverul conferintei nu a fost gasita</string>
@@ -449,7 +450,7 @@
   <string name="contact_is_typing">%s tasteaza...</string>
   <string name="contact_has_stopped_typing">%s s-a oprit din scris</string>
   <string name="pref_chat_states">Notificari cand cineva scrie</string>
-  <string name="pref_chat_states_summary">Anunta contactul cand scrii un mou mesa</string>
+  <string name="pref_chat_states_summary">Anunta contactul cand scrii un nou mesaj</string>
   <string name="send_location">Trimite locatia</string>
   <string name="show_location">Arata locatia</string>
   <string name="no_application_found_to_display_location">Nu s-a gasit nici o aplicatie care sa afiseze locatia</string>
@@ -475,11 +476,11 @@
     <item quantity="few">Selecteaza %d contacte</item>
     <item quantity="other">Selecteaza %d contacte</item>
   </plurals>
-  <string name="pref_quick_action_summary">Inlocuieste butonul de trimitere cu actiune rapida</string>
+  <string name="pref_quick_action_summary">Inlocuieste butonul de trimitere cu o actiune rapida</string>
   <string name="pref_quick_action">Actiune rapida</string>
   <string name="none">Nimic</string>
   <string name="recently_used">Folosit recent</string>
-  <string name="choose_quick_action">Alege actiune rapida</string>
+  <string name="choose_quick_action">Alege actiunea rapida</string>
   <string name="search_for_contacts_or_groups">Cauta contacte sau grupuri</string>
   <string name="send_private_message">trimite mesaj privat</string>
   <string name="user_has_left_conference">%s a parasit conferinta!</string>
@@ -495,9 +496,9 @@
   <string name="server_info_broken">Deteriorat</string>
   <string name="pref_presence_settings">Setari de prezenta</string>
   <string name="pref_away_when_screen_off">Plecat cand ecranul este oprit</string>
-  <string name="pref_away_when_screen_off_summary">Marcheaza resursa drept plecata cand ecranul este oprit</string>
+  <string name="pref_away_when_screen_off_summary">Marcheaza clientul drept plecat cand ecranul este oprit</string>
   <string name="pref_xa_on_silent_mode">Indisponibil in mod silentios</string>
-  <string name="pref_xa_on_silent_mode_summary">Marcheaza resursa drept indisponibila cand dispozitivul este in mod silentios</string>
+  <string name="pref_xa_on_silent_mode_summary">Marcheaza clientul drept indisponibil cand dispozitivul este in mod silentios</string>
   <string name="action_add_account_with_certificate">Adauga un cont cu certificat</string>
   <string name="unable_to_parse_certificate">Nu se poate analiza certificatul</string>
   <string name="authenticate_with_certificate">Lasa gol pentru a autentifica cu un certificat</string>
@@ -524,4 +525,9 @@
     <item quantity="few">%d mesaje</item>
     <item quantity="other">%d mesaje</item>
   </plurals>
+  <string name="shared_file_with_x">Partajeaza fisierul cu %s...</string>
+  <string name="shared_image_with_x">Partajeaza imaginea cu %s.</string>
+  <string name="no_storage_permission">Conversations are nevoie de acces la stocarea externa</string>
+  <string name="sync_with_contacts">Sincronizeaza cu contactele</string>
+  <string name="sync_with_contacts_long">Conversations doreste sa potriveasta lista de contacte XMPP cu cea din dispozitiv pentru a putea afisa numule lor complete si avatarele.\n\nConversations doar v-a citi si potrivi local fara sa le incarce catre vreun server.\n\nUrmeaza sa fii intrebat daca doresti sa permiti accesul la contacte.</string>
 </resources>
