@@ -304,17 +304,17 @@ public class MessageParser extends AbstractParser implements
 		final Jid from = packet.getFrom();
 		final String remoteMsgId = packet.getId();
 
-		if (from == null || to == null) {
-			Log.d(Config.LOGTAG,"no to or from in: "+packet.toString());
+		if (from == null) {
+			Log.d(Config.LOGTAG,"no from in: "+packet.toString());
 			return;
 		}
 		
 		boolean isTypeGroupChat = packet.getType() == MessagePacket.TYPE_GROUPCHAT;
-		boolean isProperlyAddressed = !to.isBareJid() || account.countPresences() == 1;
+		boolean isProperlyAddressed = (to != null ) && (!to.isBareJid() || account.countPresences() == 1);
 		boolean isMucStatusMessage = from.isBareJid() && mucUserElement != null && mucUserElement.hasChild("status");
 		if (packet.fromAccount(account)) {
 			status = Message.STATUS_SEND;
-			counterpart = to;
+			counterpart = to != null ? to : account.getJid();
 		} else {
 			status = Message.STATUS_RECEIVED;
 			counterpart = from;
