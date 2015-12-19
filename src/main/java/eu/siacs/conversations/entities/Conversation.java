@@ -20,6 +20,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import eu.siacs.conversations.Config;
+import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
@@ -607,6 +608,14 @@ public class Conversation extends AbstractEntity implements Blockable {
 	}
 
 	public int getNextEncryption() {
+		final AxolotlService axolotlService = getAccount().getAxolotlService();
+		if (Config.X509_VERIFICATION && mode == MODE_SINGLE) {
+			if (axolotlService != null && axolotlService.isContactAxolotlCapable(getContact())) {
+				return Message.ENCRYPTION_AXOLOTL;
+			} else {
+				return Message.ENCRYPTION_NONE;
+			}
+		}
 		int next = this.getIntAttribute(ATTRIBUTE_NEXT_ENCRYPTION, -1);
 		if (next == -1) {
 			int outgoing = this.getMostRecentlyUsedOutgoingEncryption();
@@ -617,7 +626,7 @@ public class Conversation extends AbstractEntity implements Blockable {
 			}
 		}
 		if (Config.FORCE_ENCRYPTION && mode == MODE_SINGLE && next <= 0) {
-			if (getAccount().getAxolotlService().isContactAxolotlCapable(getContact())) {
+			if (axolotlService != null && axolotlService.isContactAxolotlCapable(getContact())) {
 				return Message.ENCRYPTION_AXOLOTL;
 			} else {
 				return Message.ENCRYPTION_OTR;
