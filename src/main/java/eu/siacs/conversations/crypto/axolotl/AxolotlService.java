@@ -580,6 +580,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 	}
 
 	private void verifySessionWithPEP(final XmppAxolotlSession session, final IdentityKey identityKey) {
+		Log.d(Config.LOGTAG,"trying to verify fresh session ("+session.getRemoteAddress().getName()+") with pep");
 		final AxolotlAddress address = session.getRemoteAddress();
 		try {
 			IqPacket packet = mXmppConnectionService.getIqGenerator().retrieveVerificationForDevice(Jid.fromString(address.getName()), address.getDeviceId());
@@ -607,6 +608,8 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 						} catch (Exception e) {
 							Log.d(Config.LOGTAG, "error during verification " + e.getMessage());
 						}
+					} else {
+						Log.d(Config.LOGTAG,"no verification found");
 					}
 					fetchStatusMap.put(address, FetchStatus.SUCCESS);
 					finishBuildingSessionsFromPEP(address);
@@ -944,6 +947,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 	}
 
 	private void putFreshSession(XmppAxolotlSession session) {
+		Log.d(Config.LOGTAG,"put fresh session");
 		sessions.put(session);
 		if (Config.X509_VERIFICATION) {
 			IdentityKey identityKey = axolotlStore.loadSession(session.getRemoteAddress()).getSessionState().getRemoteIdentityKey();
