@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
@@ -104,10 +105,12 @@ public class Contact implements ListItem, Blockable {
 	}
 
 	public String getDisplayName() {
-		if (this.systemName != null) {
+		if (this.systemName != null && !Config.X509_VERIFICATION) {
 			return this.systemName;
 		} else if (this.serverName != null) {
 			return this.serverName;
+		} else if (this.systemName != null) {
+			return this.systemName;
 		} else if (this.presenceName != null) {
 			return this.presenceName;
 		} else if (jid.hasLocalpart()) {
