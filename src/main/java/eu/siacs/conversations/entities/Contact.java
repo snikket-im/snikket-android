@@ -105,12 +105,12 @@ public class Contact implements ListItem, Blockable {
 	}
 
 	public String getDisplayName() {
-		if (this.systemName != null && !Config.X509_VERIFICATION) {
+		if (this.presenceName != null && Config.X509_VERIFICATION) {
+			return this.presenceName;
+		} else if (this.systemName != null) {
 			return this.systemName;
 		} else if (this.serverName != null) {
 			return this.serverName;
-		} else if (this.systemName != null) {
-			return this.systemName;
 		} else if (this.presenceName != null) {
 			return this.presenceName;
 		} else if (jid.hasLocalpart()) {
