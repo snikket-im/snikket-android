@@ -28,6 +28,8 @@
   <string name="minutes_ago">Il y a %d minutes</string>
   <string name="unread_conversations">Conversations non lues</string>
   <string name="sending">Envoi…</string>
+  <string name="message_decrypting">Déchiffrement du message. Veuillez patienter...</string>
+  <string name="pgp_message">Message chiffré avec OpenPGP</string>
   <string name="nick_in_use">Cet identifiant est déjà utilisé.</string>
   <string name="admin">Administrateur</string>
   <string name="owner">Propriétaire</string>
@@ -78,6 +80,7 @@
   <string name="send_unencrypted_message">Envoyer un message non chiffré</string>
   <string name="send_otr_message">Envoyer un message chiffré avec OTR</string>
   <string name="send_omemo_message">Envoyé un message chiffré avec OMEMO</string>
+  <string name="send_omemo_x509_message">Envoyé un message chiffré avec \\OMEMO</string>
   <string name="send_pgp_message">Envoyer un message chiffré avec OpenPGP</string>
   <string name="your_nick_has_been_changed">Votre identifiant a été changé</string>
   <string name="send_unencrypted">Envoyer en clair</string>
@@ -86,12 +89,14 @@
   <string name="openkeychain_required_long">Conversations requiert une application tierce nommée <b>OpenKeychain</b> pour chiffrer et déchiffrer les messages.\n\nOpenKeychain est sous licence GPLv3 et est disponible sur F-Droid et Google Play.\n\n<small>(Veuillez redémarrer Conversations apres l\'installation de l\'app)</small></string>
   <string name="restart">Redémarrer</string>
   <string name="install">Installer</string>
+  <string name="openkeychain_not_installed">Veuillez installer OpenKeychain</string>
   <string name="offering">Proposition…</string>
   <string name="waiting">Patientez…</string>
   <string name="no_pgp_key">Aucune clef OpenPGP trouvée.</string>
   <string name="contact_has_no_pgp_key">Conversations ne peut pas chiffrer vos messages car votre correspondant n\'a pas communiqué sa clef publique.\n\n<small>Demandez-lui de configurer OpenPGP.</small></string>
   <string name="no_pgp_keys">Aucune clef OpenPGP n\'a été trouvée.</string>
   <string name="contacts_have_no_pgp_keys">Conversations ne peut pas chiffrer votre message car vos contacts ne communiquent pas leur clef publique.\n\n<small>Demandez-leur de configurer OpenPGP.</small></string>
+  <string name="encrypted_message_received"><i>Message chiffré reçu. Appuyez pour déchiffrer.</i></string>
   <string name="pref_general">Général</string>
   <string name="pref_xmpp_resource">Ressource XMPP</string>
   <string name="pref_xmpp_resource_summary">Nom utilisé par ce client pour s\'identifier</string>
@@ -170,6 +175,7 @@
   <string name="passwords_do_not_match">Les deux mots de passe ne correspondent pas.</string>
   <string name="invalid_jid">Cet identifiant n\'est pas valide.</string>
   <string name="error_out_of_memory">Plus de mémoire disponible. L\'image est trop volumineuse.</string>
+  <string name="add_phone_book_text">Voulez-vous ajouter %s aux contacts de l\'appareil ?</string>
   <string name="contact_status_online">En ligne</string>
   <string name="contact_status_free_to_chat">Disponible</string>
   <string name="contact_status_away">Absent</string>
@@ -189,7 +195,7 @@
   <string name="server_info_http_upload">XEP-0363 : Envoi de fichiers via HTTP</string>
   <string name="server_info_available">supporté</string>
   <string name="server_info_unavailable">non supporté</string>
-  <string name="missing_public_keys">Aucune annonce de clef publique</string>
+  <string name="missing_public_keys">Annonce de clef publique manquante</string>
   <string name="last_seen_now">en ligne à l\'instant</string>
   <string name="last_seen_min">en ligne il y a 1 minute</string>
   <string name="last_seen_mins">en ligne il y a %d minutes</string>
@@ -205,10 +211,13 @@
   <string name="your_fingerprint">Votre empreinte</string>
   <string name="otr_fingerprint">Empreinte OTR</string>
   <string name="omemo_fingerprint">Empreinte OMEMO</string>
+  <string name="omemo_fingerprint_x509">v\\Empreinte OMEMO</string>
   <string name="omemo_fingerprint_selected_message">Empreinte OMEMO du message</string>
+  <string name="omemo_fingerprint_x509_selected_message">v\\Empreinte OMEMO du message</string>
   <string name="this_device_omemo_fingerprint">Votre empreinte OMEMO</string>
   <string name="other_devices">Autres appareils</string>
   <string name="trust_omemo_fingerprints">Faire confiance aux empreintes OMEMO</string>
+  <string name="fetching_keys">Récupération des clefs...</string>
   <string name="done">Terminé</string>
   <string name="verify">Vérifier</string>
   <string name="decrypt">Déchiffrer</string>
@@ -227,13 +236,13 @@
   <string name="conference_address_example">salle@conference.exemple.com</string>
   <string name="save_as_bookmark">Enregistrer comme favori</string>
   <string name="delete_bookmark">Supprimer le favori</string>
-  <string name="bookmark_already_exists">Ce favori existe déjà</string>
+  <string name="bookmark_already_exists">Le favori existe déjà</string>
   <string name="you">Vous</string>
   <string name="action_edit_subject">Modifier le sujet de la conférence</string>
   <string name="conference_not_found">Impossible de trouver la conférence</string>
   <string name="leave">Partir</string>
   <string name="contact_added_you">Votre correspondant vous a ajouté dans sa liste de contacts</string>
-  <string name="add_back">Ajouter également</string>
+  <string name="add_back">Ré-ajouter</string>
   <string name="contact_has_read_up_to_this_point">%s a tout lu jusqu\'à ici</string>
   <string name="publish">Publier</string>
   <string name="touch_to_choose_picture">Toucher l\'avatar pour choisir une image depuis la galerie.</string>
@@ -333,7 +342,7 @@
   <string name="pref_keep_foreground_service_summary">Évite que le système ne ferme votre connexion.</string>
   <string name="pref_export_logs">Exporter les historiques</string>
   <string name="pref_export_logs_summary">Sauvegarder les historiques sur la carte SD</string>
-  <string name="notification_export_logs_title">Sauvegarde des historiques sur la carte SD en cours...</string>
+  <string name="notification_export_logs_title">Sauvegarde des historiques sur la carte SD...</string>
   <string name="choose_file">Choix du fichier</string>
   <string name="receiving_x_file">Réception %1$s (%2$d%% complété)</string>
   <string name="download_x_file">Télécharger %s</string>
@@ -438,6 +447,7 @@
   <string name="offering_x_file">En train de proposer un(e) %s</string>
   <string name="hide_offline">Se cacher hors-ligne</string>
   <string name="disable_account">Désactiver le compte</string>
+  <string name="contact_is_typing">%s est en train d\'écrire</string>
   <string name="contact_has_stopped_typing">%s a arrêté d\'écrire</string>
   <string name="pref_chat_states">Notifications d\'écriture</string>
   <string name="pref_chat_states_summary">Informer votre contact lorsque vous êtes en train d\'écrire un message.</string>
@@ -480,6 +490,7 @@
   <string name="download_failed_could_not_connect">Échec du téléchargement : impossible de se connecter à l\'hôte</string>
   <string name="pref_use_white_background">Utiliser un fond blanc</string>
   <string name="pref_use_white_background_summary">Afficher les messages reçus en texte noir sur fond blanc.</string>
+  <string name="account_status_tor_unavailable">Réseau Tor indisponible</string>
   <string name="server_info_broken">Détraqué</string>
   <string name="pref_presence_settings">Options de présence</string>
   <string name="pref_away_when_screen_off">Absent quand l\'écran est éteint</string>
@@ -495,4 +506,25 @@
   <string name="certificate_chain_is_not_trusted">La chaîne de certificats n\'est pas digne de confiance</string>
   <string name="jid_does_not_match_certificate">L\'identifiant ne correspond pas au certificat</string>
   <string name="action_renew_certificate">Renouveler le certificat</string>
+  <string name="error_fetching_omemo_key">Erreur lors de la récupération de la clef OMEMO !</string>
+  <string name="verified_omemo_key_with_certificate">Clef OMEMO vérifiée avec un certificat !</string>
+  <string name="device_does_not_support_certificates">Votre appareil ne supporte pas la sélection de certificats client !</string>
+  <string name="pref_connection_options">Options de connexion</string>
+  <string name="pref_use_tor">Connection via Tor</string>
+  <string name="pref_use_tor_summary">Faire transiter toutes les connexions sur le réseau Tor. Requiert Orbot</string>
+  <string name="account_settings_hostname">Nom d\'hôte</string>
+  <string name="account_settings_port">Port</string>
+  <string name="hostname_or_onion">Adresse du serveur ou .onion</string>
+  <string name="not_a_valid_port">Ce numéro de port n\'est pas valide</string>
+  <string name="not_valid_hostname">Ce nom d\'hôte n\'est pas valide</string>
+  <string name="connected_accounts">%1$d compte(s) sur %2$d connecté(s)</string>
+  <plurals name="x_messages">
+    <item quantity="one">%d message</item>
+    <item quantity="other">%d messages</item>
+  </plurals>
+  <string name="shared_file_with_x">Fichier partagé avec %s</string>
+  <string name="shared_image_with_x">Image partagée avec %s</string>
+  <string name="no_storage_permission">Conversations a besoin d\'accéder au stockage externe</string>
+  <string name="sync_with_contacts">Synchroniser avec contacts</string>
+  <string name="sync_with_contacts_long">Conversations souhaite associer vos contacts XMPP avec les contacts de votre appareil, pour utiliser leur nom complet et leur avatar.\n\nConversations va uniquement lire vos contacts et les associer localement, sans les uploader sur le serveur XMPP.\n\nVotre appareil va maintenant vous demander la permission d\'accéder à vos contacts.</string>
 </resources>

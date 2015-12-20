@@ -89,13 +89,14 @@
   <string name="openkeychain_required_long">Conversations benutzt eine Drittanwendung namens <b>OpenKeychain</b>, um Nachrichten zu ver- und entschlüsseln und um deine Schlüssel zu verwalten.\n\nOpenKeychain ist GPLv3-lizenziert und kann über F-Droid oder Google Play bezogen werden.\n\n<small>(Bitte starte Conversations danach neu.)</small></string>
   <string name="restart">Neu starten</string>
   <string name="install">Installieren</string>
+  <string name="openkeychain_not_installed">Bitte OpenKeychain installieren</string>
   <string name="offering">angeboten…</string>
   <string name="waiting">warten…</string>
   <string name="no_pgp_key">Kein OpenPGP-Schlüssel gefunden</string>
   <string name="contact_has_no_pgp_key">Conversations ist nicht in der Lage, deine Nachrichten zu verschlüsseln, weil dein Kontakt seinen oder ihren Schlüssel nicht preisgibt.\n\n<small>Bitte sag deinem Kontakt, er oder sie möge OpenPGP einrichten.</small></string>
   <string name="no_pgp_keys">Keine OpenPGP-Schlüssel gefunden</string>
   <string name="contacts_have_no_pgp_keys">Conversations ist nicht in der Lage, deine Nachrichten zu verschlüsseln, weil deine Kontakte ihre Schlüssel nicht preisgeben.\n\n<small>Bitte sage deinen Kontakten, sie mögen OpenPGP einrichten.</small></string>
-  <string name="encrypted_message_received"><i>Verschlüsselte Nachricht erhalten. Drücke hier, um sie zu entschlüsseln.</i></string>
+  <string name="encrypted_message_received"><i>Verschlüsselte Nachricht erhalten. Antippen zum Entschlüsseln.</i></string>
   <string name="pref_general">Allgemeines</string>
   <string name="pref_xmpp_resource">XMPP-Ressource</string>
   <string name="pref_xmpp_resource_summary">Der Name, mit dem sich der Client selbst identifiziert</string>
@@ -216,7 +217,7 @@
   <string name="this_device_omemo_fingerprint">Eigener OMEMO-Fingerabdruck</string>
   <string name="other_devices">Andere Geräte</string>
   <string name="trust_omemo_fingerprints">OMEMO-Fingerabdruck vertrauen</string>
-  <string name="fetching_keys">Schlüssel empfangen…</string>
+  <string name="fetching_keys">Schlüssel werden abgerufen …</string>
   <string name="done">Erledigt</string>
   <string name="verify">Überprüfen</string>
   <string name="decrypt">Entschlüsseln</string>
@@ -521,4 +522,9 @@
     <item quantity="one">%d Nachricht</item>
     <item quantity="other">%d Nachrichten</item>
   </plurals>
+  <string name="shared_file_with_x">Datei mit %s geteilt</string>
+  <string name="shared_image_with_x">Bild mit %s geteilt</string>
+  <string name="no_storage_permission">Conversations benötigt Zugriff auf externen Speicher</string>
+  <string name="sync_with_contacts">Mit Kontakten synchronisieren</string>
+  <string name="sync_with_contacts_long">Conversations möchte deine XMPP-Kontaktliste mit deinen Kontakten abgleichen, um deren vollständige Namen und Avatare anzuzeigen.\n\nConversations wird deine Kontakte nur lokal lesen und abgleichen und überträgt diese nicht auf den Server.\n\nDu wirst nun gefragt, ob du den Zugriff auf deine Kontakte erlauben möchtest.</string>
 </resources>
