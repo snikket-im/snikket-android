@@ -126,6 +126,7 @@ public class TrustKeysActivity extends XmppActivity implements OnKeyStatusUpdate
 							// own fingerprints have no impact on locked status.
 						}
 					},
+					null,
 					null
 			);
 		}
@@ -140,6 +141,7 @@ public class TrustKeysActivity extends XmppActivity implements OnKeyStatusUpdate
 							lockOrUnlockAsNeeded();
 						}
 					},
+					null,
 					null
 			);
 		}

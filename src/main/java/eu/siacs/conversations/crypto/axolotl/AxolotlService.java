@@ -575,6 +575,10 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 		return axolotlStore.getFingerprintTrust(fingerprint);
 	}
 
+	public X509Certificate getFingerprintCertificate(String fingerprint) {
+		return axolotlStore.getFingerprintCertificate(fingerprint);
+	}
+
 	public void setFingerprintTrust(String fingerprint, XmppAxolotlSession.Trust trust) {
 		axolotlStore.setFingerprintTrust(fingerprint, trust);
 	}

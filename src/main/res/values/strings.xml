@@ -560,4 +560,11 @@
 	<string name="no_storage_permission">Conversations need access to external storage</string>
 	<string name="sync_with_contacts">Synchronize with contacts</string>
 	<string name="sync_with_contacts_long">Conversations wants to match your XMPP roster with your contacts to show their full names and avatars.\n\nConversations will only read your contacts and match them locally without uploading them to your server.\n\nYou will now be asked to grant permission to access your contacts.</string>
+	<string name="certificate_information">Certificate Information</string>
+	<string name="certificate_subject">Subject</string>
+	<string name="certificate_issuer">Issuer</string>
+	<string name="certificate_cn">Common Name</string>
+	<string name="certificate_o">Organization</string>
+	<string name="certificate_sha1">SHA1</string>
+	<string name="certicate_info_not_available">(Not available)</string>
 </resources>

@@ -648,7 +648,7 @@ public abstract class XmppActivity extends Activity {
 		builder.create().show();
 	}
 
-	protected boolean addFingerprintRow(LinearLayout keys, final Account account, final String fingerprint, boolean highlight) {
+	protected boolean addFingerprintRow(LinearLayout keys, final Account account, final String fingerprint, boolean highlight, View.OnClickListener onKeyClickedListener) {
 		final XmppAxolotlSession.Trust trust = account.getAxolotlService()
 				.getFingerprintTrust(fingerprint);
 		if (trust == null) {
@@ -670,7 +670,8 @@ public abstract class XmppActivity extends Activity {
 								XmppAxolotlSession.Trust.UNTRUSTED);
 						v.setEnabled(true);
 					}
-				}
+				},
+				onKeyClickedListener
 
 		);
 	}
@@ -682,13 +683,16 @@ public abstract class XmppActivity extends Activity {
 	                                                 boolean showTag,
 	                                                 CompoundButton.OnCheckedChangeListener
 			                                                 onCheckedChangeListener,
-	                                                 View.OnClickListener onClickListener) {
+	                                                 View.OnClickListener onClickListener,
+													 View.OnClickListener onKeyClickedListener) {
 		if (trust == XmppAxolotlSession.Trust.COMPROMISED) {
 			return false;
 		}
 		View view = getLayoutInflater().inflate(R.layout.contact_key, keys, false);
 		TextView key = (TextView) view.findViewById(R.id.key);
+		key.setOnClickListener(onKeyClickedListener);
 		TextView keyType = (TextView) view.findViewById(R.id.key_type);
+		keyType.setOnClickListener(onKeyClickedListener);
 		Switch trustToggle = (Switch) view.findViewById(R.id.tgl_trust);
 		trustToggle.setVisibility(View.VISIBLE);
 		trustToggle.setOnCheckedChangeListener(onCheckedChangeListener);

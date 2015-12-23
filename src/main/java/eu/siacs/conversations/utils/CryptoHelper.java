@@ -1,5 +1,6 @@
 package eu.siacs.conversations.utils;
 
+import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
 
@@ -9,6 +10,7 @@ import org.bouncycastle.asn1.x500.style.IETFUtils;
 import org.bouncycastle.cert.jcajce.JcaX509CertificateHolder;
 import org.bouncycastle.jce.PrincipalUtil;
 
+import java.security.MessageDigest;
 import java.security.SecureRandom;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateParsingException;
@@ -121,6 +123,14 @@ public final class CryptoHelper {
 		return builder.toString();
 	}
 
+	public static String prettifyFingerprintCert(String fingerprint) {
+		StringBuilder builder = new StringBuilder(fingerprint);
+		for(int i=2;i < builder.length(); i+=3) {
+			builder.insert(i,':');
+		}
+		return builder.toString();
+	}
+
 	public static String[] getOrderedCipherSuites(final String[] platformSupportedCipherSuites) {
 		final Collection<String> cipherSuites = new LinkedHashSet<>(Arrays.asList(Config.ENABLED_CIPHERS));
 		final List<String> platformCiphers = Arrays.asList(platformSupportedCipherSuites);
@@ -164,6 +174,46 @@ public final class CryptoHelper {
 			return new Pair<>(Jid.fromString(emails.get(0)), name);
 		} else {
 			return null;
+		}
+	}
+
+	public static Bundle extractCertificateInformation(X509Certificate certificate) {
+		Bundle information = new Bundle();
+		try {
+			JcaX509CertificateHolder holder = new JcaX509CertificateHolder(certificate);
+			X500Name subject = holder.getSubject();
+			try {
+				information.putString("subject_cn", subject.getRDNs(BCStyle.CN)[0].getFirst().getValue().toString());
+			} catch (Exception e) {
+				//ignored
+			}
+			try {
+				information.putString("subject_o",subject.getRDNs(BCStyle.O)[0].getFirst().getValue().toString());
+			} catch (Exception e) {
+				//ignored
+			}
+
+			X500Name issuer = holder.getIssuer();
+			try {
+				information.putString("issuer_cn", issuer.getRDNs(BCStyle.CN)[0].getFirst().getValue().toString());
+			} catch (Exception e) {
+				//ignored
+			}
+			try {
+				information.putString("issuer_o", issuer.getRDNs(BCStyle.O)[0].getFirst().getValue().toString());
+			} catch (Exception e) {
+				//ignored
+			}
+			try {
+				MessageDigest md = MessageDigest.getInstance("SHA-1");
+				byte[] fingerprint = md.digest(certificate.getEncoded());
+				information.putString("sha1", prettifyFingerprintCert(bytesToHex(fingerprint)));
+			} catch (Exception e) {
+
+			}
+			return information;
+		} catch (CertificateEncodingException e) {
+			return information;
 		}
 	}
 

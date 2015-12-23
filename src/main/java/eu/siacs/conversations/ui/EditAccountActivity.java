@@ -710,7 +710,7 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 					continue;
 				}
 				boolean highlight = fingerprint.equals(messageFingerprint);
-				hasKeys |= addFingerprintRow(keys, mAccount, fingerprint, highlight);
+				hasKeys |= addFingerprintRow(keys, mAccount, fingerprint, highlight, null);
 			}
 			if (hasKeys) {
 				keysCard.setVisibility(View.VISIBLE);

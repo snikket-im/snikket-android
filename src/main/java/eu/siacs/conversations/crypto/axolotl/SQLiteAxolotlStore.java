@@ -219,6 +219,10 @@ public class SQLiteAxolotlStore implements AxolotlStore {
 		mXmppConnectionService.databaseBackend.setIdentityKeyCertificate(account, fingerprint, x509Certificate);
 	}
 
+	public X509Certificate getFingerprintCertificate(String fingerprint) {
+		return mXmppConnectionService.databaseBackend.getIdentityKeyCertifcate(account, fingerprint);
+	}
+
 	public Set<IdentityKey> getContactKeysWithTrust(String bareJid, XmppAxolotlSession.Trust trust) {
 		return mXmppConnectionService.databaseBackend.loadIdentityKeys(account, bareJid, trust);
 	}
