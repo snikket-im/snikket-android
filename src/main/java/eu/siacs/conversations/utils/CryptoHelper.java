@@ -1,21 +1,17 @@
 package eu.siacs.conversations.utils;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.util.Pair;
 
 import org.bouncycastle.asn1.x500.X500Name;
 import org.bouncycastle.asn1.x500.style.BCStyle;
 import org.bouncycastle.asn1.x500.style.IETFUtils;
 import org.bouncycastle.cert.jcajce.JcaX509CertificateHolder;
-import org.bouncycastle.jce.PrincipalUtil;
 
 import java.security.MessageDigest;
-import java.security.SecureRandom;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateParsingException;
 import java.security.cert.X509Certificate;
-import java.security.cert.X509Extension;
 import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,8 +29,6 @@ import eu.siacs.conversations.xmpp.jid.Jid;
 public final class CryptoHelper {
 	public static final String FILETRANSFER = "?FILETRANSFERv1:";
 	private final static char[] hexArray = "0123456789abcdef".toCharArray();
-	private final static char[] vowels = "aeiou".toCharArray();
-	private final static char[] consonants = "bcdfghjklmnpqrstvwxyz".toCharArray();
 	final public static byte[] ONE = new byte[] { 0, 0, 0, 1 };
 
 	public static String bytesToHex(byte[] bytes) {
@@ -66,22 +60,6 @@ public final class CryptoHelper {
 		System.arraycopy(a, 0, result, 0, a.length);
 		System.arraycopy(b, 0, result, a.length, b.length);
 		return result;
-	}
-
-	public static String randomMucName(SecureRandom random) {
-		return randomWord(3, random) + "." + randomWord(7, random);
-	}
-
-	private static String randomWord(int lenght, SecureRandom random) {
-		StringBuilder builder = new StringBuilder(lenght);
-		for (int i = 0; i < lenght; ++i) {
-			if (i % 2 == 0) {
-				builder.append(consonants[random.nextInt(consonants.length)]);
-			} else {
-				builder.append(vowels[random.nextInt(vowels.length)]);
-			}
-		}
-		return builder.toString();
 	}
 
 	/**

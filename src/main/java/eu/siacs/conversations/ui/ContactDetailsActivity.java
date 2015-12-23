@@ -28,6 +28,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.QuickContactBadge;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.openintents.openpgp.util.OpenPgpUtils;
 
@@ -455,13 +456,13 @@ public class ContactDetailsActivity extends XmppActivity implements OnAccountUpd
 	}
 
 	private void onOmemoKeyClicked(Account account, String fingerprint) {
-		Log.d(Config.LOGTAG,"on omemo key clicked");
 		final XmppAxolotlSession.Trust trust = account.getAxolotlService().getFingerprintTrust(fingerprint);
-		if (trust != null) {
+		if (trust != null && trust == XmppAxolotlSession.Trust.TRUSTED_X509) {
 			X509Certificate x509Certificate = account.getAxolotlService().getFingerprintCertificate(fingerprint);
 			if (x509Certificate != null) {
-				Log.d(Config.LOGTAG, "certificate for fingerprint " + fingerprint + " was not null");
 				showCertificateInformationDialog(CryptoHelper.extractCertificateInformation(x509Certificate));
+			} else {
+				Toast.makeText(this,R.string.certificate_not_found, Toast.LENGTH_SHORT).show();
 			}
 		}
 	}

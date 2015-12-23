@@ -567,4 +567,5 @@
 	<string name="certificate_o">Organization</string>
 	<string name="certificate_sha1">SHA1</string>
 	<string name="certicate_info_not_available">(Not available)</string>
+	<string name="certificate_not_found">No certificate found</string>
 </resources>
