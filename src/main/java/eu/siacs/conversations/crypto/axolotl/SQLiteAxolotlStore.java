@@ -15,6 +15,7 @@ import org.whispersystems.libaxolotl.state.SessionRecord;
 import org.whispersystems.libaxolotl.state.SignedPreKeyRecord;
 import org.whispersystems.libaxolotl.util.KeyHelper;
 
+import java.security.cert.X509Certificate;
 import java.util.List;
 import java.util.Set;
 
@@ -36,6 +37,7 @@ public class SQLiteAxolotlStore implements AxolotlStore {
 	public static final String NAME = "name";
 	public static final String TRUSTED = "trusted";
 	public static final String OWN = "ownkey";
+	public static final String CERTIFICATE = "certificate";
 
 	public static final String JSONKEY_REGISTRATION_ID = "axolotl_reg_id";
 	public static final String JSONKEY_CURRENT_PREKEY_ID = "axolotl_cur_prekey_id";
@@ -211,6 +213,10 @@ public class SQLiteAxolotlStore implements AxolotlStore {
 	public void setFingerprintTrust(String fingerprint, XmppAxolotlSession.Trust trust) {
 		mXmppConnectionService.databaseBackend.setIdentityKeyTrust(account, fingerprint, trust);
 		trustCache.remove(fingerprint);
+	}
+
+	public void setFingerprintCertificate(String fingerprint, X509Certificate x509Certificate) {
+		mXmppConnectionService.databaseBackend.setIdentityKeyCertificate(account, fingerprint, x509Certificate);
 	}
 
 	public Set<IdentityKey> getContactKeysWithTrust(String bareJid, XmppAxolotlSession.Trust trust) {

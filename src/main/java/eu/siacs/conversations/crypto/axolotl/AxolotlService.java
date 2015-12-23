@@ -597,8 +597,10 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 							if (verifier.verify(verification.second)) {
 								try {
 									mXmppConnectionService.getMemorizingTrustManager().getNonInteractive().checkClientTrusted(verification.first, "RSA");
-									Log.d(Config.LOGTAG, "verified session with x.509 signature. fingerprint was: "+session.getFingerprint());
-									setFingerprintTrust(session.getFingerprint(), XmppAxolotlSession.Trust.TRUSTED_X509);
+									String fingerprint = session.getFingerprint();
+									Log.d(Config.LOGTAG, "verified session with x.509 signature. fingerprint was: "+fingerprint);
+									setFingerprintTrust(fingerprint, XmppAxolotlSession.Trust.TRUSTED_X509);
+									axolotlStore.setFingerprintCertificate(fingerprint, verification.first[0]);
 									fetchStatusMap.put(address, FetchStatus.SUCCESS_VERIFIED);
 									finishBuildingSessionsFromPEP(address);
 									return;
