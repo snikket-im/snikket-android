@@ -697,13 +697,16 @@ public abstract class XmppActivity extends Activity {
 		trustToggle.setVisibility(View.VISIBLE);
 		trustToggle.setOnCheckedChangeListener(onCheckedChangeListener);
 		trustToggle.setOnClickListener(onClickListener);
-		view.setOnLongClickListener(new View.OnLongClickListener() {
+		final View.OnLongClickListener purge = new View.OnLongClickListener() {
 			@Override
 			public boolean onLongClick(View v) {
 				showPurgeKeyDialog(account, fingerprint);
 				return true;
 			}
-		});
+		};
+		view.setOnLongClickListener(purge);
+		key.setOnLongClickListener(purge);
+		keyType.setOnLongClickListener(purge);
 		boolean x509 = trust == XmppAxolotlSession.Trust.TRUSTED_X509 || trust == XmppAxolotlSession.Trust.INACTIVE_TRUSTED_X509;
 		switch (trust) {
 			case UNTRUSTED:
@@ -753,7 +756,7 @@ public abstract class XmppActivity extends Activity {
 			keyType.setText(getString(x509 ? R.string.omemo_fingerprint_x509 : R.string.omemo_fingerprint));
 		}
 
-		key.setText(CryptoHelper.prettifyFingerprint(fingerprint));
+		key.setText(CryptoHelper.prettifyFingerprint(fingerprint.substring(2)));
 		keys.addView(view);
 		return true;
 	}
@@ -763,7 +766,7 @@ public abstract class XmppActivity extends Activity {
 		builder.setTitle(getString(R.string.purge_key));
 		builder.setIconAttribute(android.R.attr.alertDialogIcon);
 		builder.setMessage(getString(R.string.purge_key_desc_part1)
-				+ "\n\n" + CryptoHelper.prettifyFingerprint(fingerprint)
+				+ "\n\n" + CryptoHelper.prettifyFingerprint(fingerprint.substring(2))
 				+ "\n\n" + getString(R.string.purge_key_desc_part2));
 		builder.setNegativeButton(getString(R.string.cancel), null);
 		builder.setPositiveButton(getString(R.string.accept),
