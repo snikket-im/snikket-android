@@ -19,6 +19,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Locale;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
@@ -94,7 +95,7 @@ public final class CryptoHelper {
 		} else if (fingerprint.length() < 40) {
 			return fingerprint;
 		}
-		StringBuilder builder = new StringBuilder(fingerprint.replaceAll("\\s",""));
+		StringBuilder builder = new StringBuilder(fingerprint.toLowerCase(Locale.US).replaceAll("\\s", ""));
 		for(int i=8;i<builder.length();i+=9) {
 			builder.insert(i, ' ');
 		}
