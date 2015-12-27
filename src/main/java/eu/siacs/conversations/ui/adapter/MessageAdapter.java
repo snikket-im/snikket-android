@@ -38,7 +38,6 @@ import java.util.regex.Matcher;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.axolotl.XmppAxolotlSession;
 import eu.siacs.conversations.entities.Account;
-import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.entities.Message;
@@ -348,6 +347,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		viewHolder.messageBody.setLinkTextColor(this.getMessageTextColor(darkBackground, true));
 		viewHolder.messageBody.setHighlightColor(activity.getResources().getColor(darkBackground ? R.color.grey800 : R.color.grey500));
 		viewHolder.messageBody.setTypeface(null, Typeface.NORMAL);
+		viewHolder.messageBody.setOnLongClickListener(openContextMenu);
 	}
 
 	private void displayDownloadableMessage(ViewHolder viewHolder,
