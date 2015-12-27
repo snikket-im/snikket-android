@@ -609,15 +609,15 @@ public class Conversation extends AbstractEntity implements Blockable {
 
 	public int getNextEncryption() {
 		final AxolotlService axolotlService = getAccount().getAxolotlService();
-		if (Config.X509_VERIFICATION && mode == MODE_SINGLE) {
-			if (axolotlService != null && axolotlService.isContactAxolotlCapable(getContact())) {
-				return Message.ENCRYPTION_AXOLOTL;
-			} else {
-				return Message.ENCRYPTION_NONE;
-			}
-		}
 		int next = this.getIntAttribute(ATTRIBUTE_NEXT_ENCRYPTION, -1);
 		if (next == -1) {
+			if (Config.X509_VERIFICATION && mode == MODE_SINGLE) {
+				if (axolotlService != null && axolotlService.isContactAxolotlCapable(getContact())) {
+					return Message.ENCRYPTION_AXOLOTL;
+				} else {
+					return Message.ENCRYPTION_NONE;
+				}
+			}
 			int outgoing = this.getMostRecentlyUsedOutgoingEncryption();
 			if (outgoing == Message.ENCRYPTION_NONE) {
 				next = this.getMostRecentlyUsedIncomingEncryption();
