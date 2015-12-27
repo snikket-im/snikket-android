@@ -50,6 +50,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
@@ -992,13 +993,16 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 			public void onIqPacketReceived(final Account account, final IqPacket packet) {
 				if (packet.getType() == IqPacket.TYPE.RESULT) {
 					final Element query = packet.query();
-					final List<Bookmark> bookmarks = new CopyOnWriteArrayList<>();
+					final HashMap<Jid, Bookmark> bookmarks = new HashMap<>();
 					final Element storage = query.findChild("storage", "storage:bookmarks");
 					if (storage != null) {
 						for (final Element item : storage.getChildren()) {
 							if (item.getName().equals("conference")) {
 								final Bookmark bookmark = Bookmark.parse(item, account);
-								bookmarks.add(bookmark);
+								Bookmark old = bookmarks.put(bookmark.getJid(), bookmark);
+								if (old != null && old.getBookmarkName() != null && bookmark.getBookmarkName() == null) {
+									bookmark.setBookmarkName(old.getBookmarkName());
+								}
 								Conversation conversation = find(bookmark);
 								if (conversation != null) {
 									conversation.setBookmark(bookmark);
@@ -1011,7 +1015,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 							}
 						}
 					}
-					account.setBookmarks(bookmarks);
+					account.setBookmarks(new ArrayList<>(bookmarks.values()));
 				} else {
 					Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": could not fetch bookmarks");
 				}
