@@ -1,5 +1,12 @@
 ###Changelog
 
+####Version 1.8.3
+* brought text selection back
+
+####Version 1.8.2
+* fixed stuck at 'connecting...' bug
+* make message box behave correctly with multiple links
+
 ####Version 1.8.1
 * enabled direct share on Android 6.0
 * ask for permissions on Android 6.0
