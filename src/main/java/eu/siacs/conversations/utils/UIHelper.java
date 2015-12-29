@@ -131,7 +131,7 @@ public class UIHelper {
 	}
 
 	public static int getColorForName(String name) {
-		if (name.isEmpty()) {
+		if (name == null || name.isEmpty()) {
 			return 0xFF202020;
 		}
 		int colors[] = {0xFFe91e63, 0xFF9c27b0, 0xFF673ab7, 0xFF3f51b5,
