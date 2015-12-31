@@ -382,13 +382,14 @@ public class MessageParser extends AbstractParser implements
 				Jid trueCounterpart = conversation.getMucOptions().getTrueCounterpart(counterpart.getResourcepart());
 				message.setTrueCounterpart(trueCounterpart);
 				if (trueCounterpart != null) {
-					updateLastseen(packet,account,trueCounterpart,false);
+					updateLastseen(timestamp, account, trueCounterpart, false);
 				}
 				if (!isTypeGroupChat) {
 					message.setType(Message.TYPE_PRIVATE);
 				}
+			} else {
+				updateLastseen(timestamp, account, packet.getFrom(), true);
 			}
-			updateLastseen(packet, account, true);
 			boolean checkForDuplicates = query != null
 					|| (isTypeGroupChat && packet.hasChild("delay","urn:xmpp:delay"))
 					|| message.getType() == Message.TYPE_PRIVATE;
@@ -498,7 +499,7 @@ public class MessageParser extends AbstractParser implements
 					mXmppConnectionService.markRead(conversation);
 				}
 			} else {
-				updateLastseen(packet, account, true);
+				updateLastseen(timestamp, account, packet.getFrom(), true);
 				final Message displayedMessage = mXmppConnectionService.markMessage(account, from.toBareJid(), displayed.getAttribute("id"), Message.STATUS_SEND_DISPLAYED);
 				Message message = displayedMessage == null ? null : displayedMessage.prev();
 				while (message != null
