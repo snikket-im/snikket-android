@@ -731,7 +731,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 						XmppAxolotlSession session = new XmppAxolotlSession(account, axolotlStore, address, identityKey);
 						sessions.put(address, session);
 					} else {
-						Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Found device " + account.getJid().toBareJid() + ":" + foreignId);
+						Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Found device " + contactJid + ":" + foreignId);
 						if (fetchStatusMap.get(address) != FetchStatus.ERROR) {
 							addresses.add(address);
 						} else {
