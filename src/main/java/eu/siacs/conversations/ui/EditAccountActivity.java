@@ -670,7 +670,7 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 			final String axolotlFingerprint = this.mAccount.getAxolotlService().getOwnFingerprint();
 			if (axolotlFingerprint != null) {
 				this.mAxolotlFingerprintBox.setVisibility(View.VISIBLE);
-				this.mAxolotlFingerprint.setText(CryptoHelper.prettifyFingerprint(axolotlFingerprint));
+				this.mAxolotlFingerprint.setText(CryptoHelper.prettifyFingerprint(axolotlFingerprint.substring(2)));
 				this.mAxolotlFingerprintToClipboardButton
 						.setVisibility(View.VISIBLE);
 				this.mAxolotlFingerprintToClipboardButton
@@ -679,7 +679,7 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 							@Override
 							public void onClick(final View v) {
 
-								if (copyTextToClipboard(axolotlFingerprint, R.string.omemo_fingerprint)) {
+								if (copyTextToClipboard(axolotlFingerprint.substring(2), R.string.omemo_fingerprint)) {
 									Toast.makeText(
 											EditAccountActivity.this,
 											R.string.toast_message_omemo_fingerprint,
