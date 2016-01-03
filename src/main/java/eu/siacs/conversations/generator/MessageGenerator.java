@@ -103,6 +103,7 @@ public class MessageGenerator extends AbstractGenerator {
 		if (message.hasFileOnRemoteHost()) {
 			Message.FileParams fileParams = message.getFileParams();
 			content = fileParams.url.toString();
+			packet.addChild("x","jabber:x:oob").addChild("url").setContent(content);
 		} else {
 			content = message.getBody();
 		}
