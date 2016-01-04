@@ -2215,8 +2215,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 							  final UiCallback<Avatar> callback) {
 		final Bitmap.CompressFormat format = Config.AVATAR_FORMAT;
 		final int size = Config.AVATAR_SIZE;
-		final Avatar avatar = getFileBackend()
-				.getPepAvatar(image, size, format);
+		final Avatar avatar = getFileBackend().getPepAvatar(image, size, format);
 		if (avatar != null) {
 			avatar.height = size;
 			avatar.width = size;

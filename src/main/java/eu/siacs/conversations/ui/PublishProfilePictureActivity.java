@@ -23,6 +23,8 @@ import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.persistance.FileBackend;
+import eu.siacs.conversations.utils.ExifHelper;
+import eu.siacs.conversations.utils.FileUtils;
 import eu.siacs.conversations.utils.PhoneHelper;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
@@ -31,17 +33,16 @@ import eu.siacs.conversations.xmpp.pep.Avatar;
 public class PublishProfilePictureActivity extends XmppActivity {
 
 	private static final int REQUEST_CHOOSE_FILE = 0xac23;
-
 	private ImageView avatar;
 	private TextView accountTextView;
 	private TextView hintOrWarning;
 	private TextView secondaryHint;
 	private Button cancelButton;
 	private Button publishButton;
-
-	final static int REQUEST_CROP_PICTURE = 92374;
 	private Uri avatarUri;
 	private Uri defaultUri;
+	private Account account;
+	private boolean support = false;
 	private OnLongClickListener backToDefaultListener = new OnLongClickListener() {
 
 		@Override
@@ -51,8 +52,6 @@ public class PublishProfilePictureActivity extends XmppActivity {
 			return true;
 		}
 	};
-	private Account account;
-	private boolean support = false;
 	private boolean mInitialAccountSetup;
 	private UiCallback<Avatar> avatarPublication = new UiCallback<Avatar>() {
 
@@ -65,7 +64,7 @@ public class PublishProfilePictureActivity extends XmppActivity {
 					if (mInitialAccountSetup) {
 						Intent intent = new Intent(getApplicationContext(),
 								StartConversationActivity.class);
-						intent.putExtra("init",true);
+						intent.putExtra("init", true);
 						startActivity(intent);
 					}
 					Toast.makeText(PublishProfilePictureActivity.this,
@@ -140,8 +139,7 @@ public class PublishProfilePictureActivity extends XmppActivity {
 				Intent attachFileIntent = new Intent();
 				attachFileIntent.setType("image/*");
 				attachFileIntent.setAction(Intent.ACTION_GET_CONTENT);
-				Intent chooser = Intent.createChooser(attachFileIntent,
-						getString(R.string.attach_file));
+				Intent chooser = Intent.createChooser(attachFileIntent, getString(R.string.attach_file));
 				startActivityForResult(chooser, REQUEST_CHOOSE_FILE);
 			}
 		});
@@ -149,32 +147,38 @@ public class PublishProfilePictureActivity extends XmppActivity {
 	}
 
 	@Override
-	protected void onActivityResult(int requestCode, int resultCode,
-			final Intent data) {
+	protected void onActivityResult(int requestCode, int resultCode, final Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (resultCode == RESULT_OK) {
-			if (requestCode == REQUEST_CHOOSE_FILE) {
-				this.avatarUri = data.getData();
-				Uri destination = Uri.fromFile(new File(getCacheDir(), "croppedAvatar"));
-				Crop.of(this.avatarUri, destination).asSquare().start(PublishProfilePictureActivity.this);
+			switch (requestCode) {
+				case REQUEST_CHOOSE_FILE:
+					Uri source = data.getData();
+					String original = FileUtils.getPath(this, source);
+					if (original != null) {
+						source = Uri.parse("file://"+original);
+					}
+					Uri destination = Uri.fromFile(new File(getCacheDir(), "croppedAvatar"));
+					final int size = getPixel(192);
+					Crop.of(source, destination).asSquare().withMaxSize(size, size).start(this);
+					break;
+				case Crop.REQUEST_CROP:
+					this.avatarUri = Uri.fromFile(new File(getCacheDir(), "croppedAvatar"));
+					loadImageIntoPreview(this.avatarUri);
+					break;
 			}
-		}
-		if (requestCode == Crop.REQUEST_CROP) {
-			this.avatarUri = Uri.fromFile(new File(getCacheDir(), "croppedAvatar"));
-			loadImageIntoPreview(this.avatarUri);
 		}
 	}
 
 	@Override
 	protected void onBackendConnected() {
 		if (getIntent() != null) {
-            Jid jid;
-            try {
-                jid = Jid.fromString(getIntent().getStringExtra("account"));
-            } catch (InvalidJidException e) {
-                jid = null;
-            }
-            if (jid != null) {
+			Jid jid;
+			try {
+				jid = Jid.fromString(getIntent().getStringExtra("account"));
+			} catch (InvalidJidException e) {
+				jid = null;
+			}
+			if (jid != null) {
 				this.account = xmppConnectionService.findAccountByJid(jid);
 				if (this.account.getXmppConnection() != null) {
 					this.support = this.account.getXmppConnection().getFeatures().pep();
@@ -182,8 +186,7 @@ public class PublishProfilePictureActivity extends XmppActivity {
 				if (this.avatarUri == null) {
 					if (this.account.getAvatar() != null
 							|| this.defaultUri == null) {
-						this.avatar.setImageBitmap(avatarService().get(account,
-								getPixel(194)));
+						this.avatar.setImageBitmap(avatarService().get(account, getPixel(192)));
 						if (this.defaultUri != null) {
 							this.avatar
 									.setOnLongClickListener(this.backToDefaultListener);
@@ -220,8 +223,7 @@ public class PublishProfilePictureActivity extends XmppActivity {
 	protected void onStart() {
 		super.onStart();
 		if (getIntent() != null) {
-			this.mInitialAccountSetup = getIntent().getBooleanExtra("setup",
-					false);
+			this.mInitialAccountSetup = getIntent().getBooleanExtra("setup", false);
 		}
 		if (this.mInitialAccountSetup) {
 			this.cancelButton.setText(R.string.skip);
@@ -231,15 +233,18 @@ public class PublishProfilePictureActivity extends XmppActivity {
 	private Bitmap loadScaledBitmap(Uri uri, int reqSize) throws FileNotFoundException {
 		final BitmapFactory.Options options = new BitmapFactory.Options();
 		options.inJustDecodeBounds = true;
-		BitmapFactory.decodeStream(getContentResolver().openInputStream(uri));
+		BitmapFactory.decodeStream(getContentResolver().openInputStream(uri), null, options);
+		int rotation = ExifHelper.getOrientation(getContentResolver().openInputStream(uri));
 		options.inSampleSize = FileBackend.calcSampleSize(options, reqSize);
 		options.inJustDecodeBounds = false;
-		return BitmapFactory.decodeStream(getContentResolver().openInputStream(uri));
+		Bitmap bm = BitmapFactory.decodeStream(getContentResolver().openInputStream(uri), null, options);
+		return FileBackend.rotate(bm,rotation);
 	}
+
 	protected void loadImageIntoPreview(Uri uri) {
 		Bitmap bm = null;
-		try{
-			bm = loadScaledBitmap(uri, Config.AVATAR_SIZE);
+		try {
+			bm = loadScaledBitmap(uri, getPixel(192));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

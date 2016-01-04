@@ -42,9 +42,6 @@ import eu.siacs.conversations.utils.FileUtils;
 import eu.siacs.conversations.xmpp.pep.Avatar;
 
 public class FileBackend {
-
-	private static int IMAGE_SIZE = 1920;
-
 	private final SimpleDateFormat imageDateFormat = new SimpleDateFormat("yyyyMMdd_HHmmssSSS", Locale.US);
 
 	private XmppConnectionService mXmppConnectionService;
@@ -116,7 +113,10 @@ public class FileBackend {
 		}
 	}
 
-	public Bitmap rotate(Bitmap bitmap, int degree) {
+	public static Bitmap rotate(Bitmap bitmap, int degree) {
+		if (degree == 0) {
+			return bitmap;
+		}
 		int w = bitmap.getWidth();
 		int h = bitmap.getHeight();
 		Matrix mtx = new Matrix();
@@ -226,9 +226,7 @@ public class FileBackend {
 			}
 			Bitmap scaledBitmap = resize(originalBitmap, Config.IMAGE_SIZE);
 			int rotation = getRotation(image);
-			if (rotation > 0) {
-				scaledBitmap = rotate(scaledBitmap, rotation);
-			}
+			scaledBitmap = rotate(scaledBitmap, rotation);
 			boolean success = scaledBitmap.compress(Config.IMAGE_FORMAT, Config.IMAGE_QUALITY, os);
 			if (!success) {
 				throw new FileCopyException(R.string.error_compressing_image);
@@ -289,10 +287,7 @@ public class FileBackend {
 				throw new FileNotFoundException();
 			}
 			thumbnail = resize(fullsize, size);
-			int rotation = getRotation(file);
-			if (rotation > 0) {
-				thumbnail = rotate(thumbnail, rotation);
-			}
+			thumbnail = rotate(thumbnail, getRotation(file));
 			this.mXmppConnectionService.getBitmapCache().put(message.getUuid(),thumbnail);
 		}
 		return thumbnail;
@@ -404,10 +399,7 @@ public class FileBackend {
 			if (input == null) {
 				return null;
 			} else {
-				int rotation = getRotation(image);
-				if (rotation > 0) {
-					input = rotate(input, rotation);
-				}
+				input = rotate(input, getRotation(image));
 				return cropCenterSquare(input, size);
 			}
 		} catch (SecurityException e) {
