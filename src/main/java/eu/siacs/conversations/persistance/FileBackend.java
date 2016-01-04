@@ -152,7 +152,6 @@ public class FileBackend {
 	}
 
 	public String getOriginalPath(Uri uri) {
-		Log.d(Config.LOGTAG,"get original path for uri: "+uri.toString());
 		return FileUtils.getPath(mXmppConnectionService,uri);
 	}
 
