@@ -1,5 +1,10 @@
 ###Changelog
 
+####Versin 1.8.4
+* prompt to trust own OMEMO devices
+* fixed rotation issues in avatar publication
+* invite non-contact JIDs to conferences
+
 ####Version 1.8.3
 * brought text selection back
 
