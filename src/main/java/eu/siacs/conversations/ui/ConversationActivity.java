@@ -1499,11 +1499,12 @@ public class ConversationActivity extends XmppActivity
 
 	protected boolean trustKeysIfNeeded(int requestCode, int attachmentChoice) {
 		AxolotlService axolotlService = mSelectedConversation.getAccount().getAxolotlService();
-		boolean hasPendingKeys = !axolotlService.getKeysWithTrust(XmppAxolotlSession.Trust.UNDECIDED,
-				mSelectedConversation.getContact()).isEmpty()
-				|| !axolotlService.findDevicesWithoutSession(mSelectedConversation).isEmpty();
+		Contact contact = mSelectedConversation.getContact();
+		boolean hasUndecidedOwn = !axolotlService.getKeysWithTrust(XmppAxolotlSession.Trust.UNDECIDED).isEmpty();
+		boolean hasUndecidedContact = !axolotlService.getKeysWithTrust(XmppAxolotlSession.Trust.UNDECIDED,contact).isEmpty();
+		boolean hasPendingKeys = !axolotlService.findDevicesWithoutSession(mSelectedConversation).isEmpty();
 		boolean hasNoTrustedKeys = axolotlService.getNumTrustedKeys(mSelectedConversation.getContact()) == 0;
-		if( hasPendingKeys || hasNoTrustedKeys) {
+		if(hasUndecidedOwn || hasUndecidedContact || hasPendingKeys || hasNoTrustedKeys) {
 			axolotlService.createSessionsIfNeeded(mSelectedConversation);
 			Intent intent = new Intent(getApplicationContext(), TrustKeysActivity.class);
 			intent.putExtra("contact", mSelectedConversation.getContact().getJid().toBareJid().toString());
