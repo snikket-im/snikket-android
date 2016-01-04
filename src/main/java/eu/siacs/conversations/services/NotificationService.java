@@ -115,7 +115,9 @@ public class NotificationService {
 
 	public void pushFromBacklog(final Message message) {
 		if (notify(message)) {
-			pushToStack(message);
+			synchronized (notifications) {
+				pushToStack(message);
+			}
 		}
 	}
 
