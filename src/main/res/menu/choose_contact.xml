@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
         android:id="@+id/action_search"
@@ -8,4 +8,10 @@
         android:showAsAction="collapseActionView|always"
         android:title="@string/search"/>
 
+    <item
+        android:id="@+id/action_create_contact"
+        android:icon="?attr/icon_add_person"
+        android:showAsAction="always"
+        android:title="@string/create_contact"
+        android:visible="false"/>
 </menu>

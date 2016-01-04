@@ -349,69 +349,37 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 
 	@SuppressLint("InflateParams")
 	protected void showCreateContactDialog(final String prefilledJid, final String fingerprint) {
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle(R.string.create_contact);
-		View dialogView = getLayoutInflater().inflate(R.layout.create_contact_dialog, null);
-		final Spinner spinner = (Spinner) dialogView.findViewById(R.id.account);
-		final AutoCompleteTextView jid = (AutoCompleteTextView) dialogView.findViewById(R.id.jid);
-		jid.setAdapter(new KnownHostsAdapter(this,android.R.layout.simple_list_item_1, mKnownHosts));
-		if (prefilledJid != null) {
-			jid.append(prefilledJid);
-			if (fingerprint!=null) {
-				jid.setFocusable(false);
-				jid.setFocusableInTouchMode(false);
-				jid.setClickable(false);
-				jid.setCursorVisible(false);
+		EnterJidDialog dialog = new EnterJidDialog(
+			this, mKnownHosts, mActivatedAccounts,
+			getString(R.string.create_contact), getString(R.string.create),
+			prefilledJid, null, fingerprint == null
+		);
+
+		dialog.setOnEnterJidDialogPositiveListener(new EnterJidDialog.OnEnterJidDialogPositiveListener() {
+			@Override
+			public boolean onEnterJidDialogPositive(Jid accountJid, Jid contactJid) throws EnterJidDialog.JidError {
+				if (!xmppConnectionServiceBound) {
+					return false;
+				}
+
+				final Account account = xmppConnectionService.findAccountByJid(accountJid);
+				if (account == null) {
+					return true;
+				}
+
+				final Contact contact = account.getRoster().getContact(contactJid);
+				if (contact.showInRoster()) {
+					throw new EnterJidDialog.JidError(getString(R.string.contact_already_exists));
+				} else {
+					contact.addOtrFingerprint(fingerprint);
+					xmppConnectionService.createContact(contact);
+					switchToConversation(contact);
+					return true;
+				}
 			}
-		}
-		populateAccountSpinner(spinner);
-		builder.setView(dialogView);
-		builder.setNegativeButton(R.string.cancel, null);
-		builder.setPositiveButton(R.string.create, null);
-		final AlertDialog dialog = builder.create();
+		});
+
 		dialog.show();
-		dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(
-				new View.OnClickListener() {
-
-					@Override
-					public void onClick(final View v) {
-						if (!xmppConnectionServiceBound) {
-							return;
-						}
-						final Jid accountJid;
-						try {
-							if (Config.DOMAIN_LOCK != null) {
-								accountJid = Jid.fromParts((String) spinner.getSelectedItem(), Config.DOMAIN_LOCK, null);
-							} else {
-								accountJid = Jid.fromString((String) spinner.getSelectedItem());
-							}
-						} catch (final InvalidJidException e) {
-							return;
-						}
-						final Jid contactJid;
-						try {
-							contactJid = Jid.fromString(jid.getText().toString());
-						} catch (final InvalidJidException e) {
-							jid.setError(getString(R.string.invalid_jid));
-							return;
-						}
-						final Account account = xmppConnectionService.findAccountByJid(accountJid);
-						if (account == null) {
-							dialog.dismiss();
-							return;
-						}
-						final Contact contact = account.getRoster().getContact(contactJid);
-						if (contact.showInRoster()) {
-							jid.setError(getString(R.string.contact_already_exists));
-						} else {
-							contact.addOtrFingerprint(fingerprint);
-							xmppConnectionService.createContact(contact);
-							dialog.dismiss();
-							switchToConversation(contact);
-						}
-					}
-				});
-
 	}
 
 	@SuppressLint("InflateParams")

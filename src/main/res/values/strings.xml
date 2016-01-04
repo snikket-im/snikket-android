@@ -226,12 +226,14 @@
 	<string name="conferences">Conferences</string>
 	<string name="search">Search</string>
 	<string name="create_contact">Create Contact</string>
+	<string name="enter_contact">Enter Contact</string>
 	<string name="join_conference">Join Conference</string>
 	<string name="delete_contact">Delete Contact</string>
 	<string name="view_contact_details">View contact details</string>
 	<string name="block_contact">Block contact</string>
 	<string name="unblock_contact">Unblock contact</string>
 	<string name="create">Create</string>
+	<string name="select">Select</string>
 	<string name="contact_already_exists">The contact already exists</string>
 	<string name="join">Join</string>
 	<string name="conference_address">Conference address</string>
