@@ -693,8 +693,16 @@ public class Conversation extends AbstractEntity implements Blockable {
 		synchronized (this.messages) {
 			for (int i = this.messages.size() - 1; i >= 0; --i) {
 				Message message = this.messages.get(i);
-				if ((message.getStatus() == Message.STATUS_UNSEND || message.getStatus() == Message.STATUS_SEND) && message.getBody() != null && message.getBody().equals(body)) {
-					return message;
+				if (message.getStatus() == Message.STATUS_UNSEND || message.getStatus() == Message.STATUS_SEND) {
+					String otherBody;
+					if (message.hasFileOnRemoteHost()) {
+						otherBody = message.getFileParams().url.toString();
+					} else {
+						otherBody = message.body;
+					}
+					if (otherBody != null && otherBody.equals(body)) {
+						return message;
+					}
 				}
 			}
 			return null;
