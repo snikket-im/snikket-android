@@ -266,7 +266,6 @@
 	<string name="skip">Skip</string>
 	<string name="disable_notifications">Disable notifications</string>
 	<string name="disable_notifications_for_this_conversation">Disable notifications for this conversation</string>
-	<string name="notifications_disabled">Notifications are disabled</string>
 	<string name="enable">Enable</string>
 	<string name="conference_requires_password">Conference requires password</string>
 	<string name="enter_password">Enter password</string>

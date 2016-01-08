@@ -742,14 +742,6 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 		}
 	};
 
-	private OnClickListener mUnmuteClickListener = new OnClickListener() {
-
-		@Override
-		public void onClick(final View v) {
-			activity.unmuteConversation(conversation);
-		}
-	};
-
 	private OnClickListener mAnswerSmpClickListener = new OnClickListener() {
 		@Override
 		public void onClick(View view) {
@@ -805,8 +797,6 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 				&& (conversation.getOtrSession().getSessionStatus() == SessionStatus.ENCRYPTED)
 				&& (!conversation.isOtrFingerprintVerified())) {
 			showSnackbar(R.string.unknown_otr_fingerprint, R.string.verify, clickToVerify);
-		} else if (conversation.isMuted()) {
-			showSnackbar(R.string.notifications_disabled, R.string.enable, this.mUnmuteClickListener);
 		} else {
 			hideSnackbar();
 		}
