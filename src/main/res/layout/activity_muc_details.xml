@@ -108,6 +108,33 @@
 				android:src="?attr/icon_settings"/>
 				</RelativeLayout>
 
+			<RelativeLayout
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content">
+				<TextView
+					android:id="@+id/notification_status_text"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="@string/notify_on_all_messages"
+					android:layout_centerVertical="true"
+					android:textColor="@color/black87"
+					android:textSize="?attr/TextSizeBody"
+					android:layout_alignParentLeft="true"
+					android:layout_toLeftOf="@+id/notification_status_button"
+					/>
+				<ImageButton
+					android:id="@+id/notification_status_button"
+					style="?android:attr/buttonStyleSmall"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_gravity="center_horizontal"
+					android:layout_alignParentRight="true"
+					android:layout_centerVertical="true"
+					android:background="?android:selectableItemBackground"
+					android:padding="@dimen/image_button_padding"
+					android:src="@drawable/ic_notifications_grey600_24dp"/>
+			</RelativeLayout>
+
 			<TableLayout
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"

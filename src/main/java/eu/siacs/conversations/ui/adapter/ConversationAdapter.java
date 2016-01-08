@@ -102,8 +102,11 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 		} else if (muted_till >= System.currentTimeMillis()) {
 			notificationStatus.setVisibility(View.VISIBLE);
 			notificationStatus.setImageResource(R.drawable.ic_notifications_paused_grey600_24dp);
-		} else {
+		} else if (conversation.alwaysNotify()) {
 			notificationStatus.setVisibility(View.GONE);
+		} else {
+			notificationStatus.setVisibility(View.VISIBLE);
+			notificationStatus.setImageResource(R.drawable.ic_notifications_none_grey600_24dp);
 		}
 
 		mTimestamp.setText(UIHelper.readableTimeDifference(activity,conversation.getLatestMessage().getTimeSent()));

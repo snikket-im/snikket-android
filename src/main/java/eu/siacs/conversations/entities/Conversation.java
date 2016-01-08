@@ -47,6 +47,7 @@ public class Conversation extends AbstractEntity implements Blockable {
 	public static final String ATTRIBUTE_NEXT_ENCRYPTION = "next_encryption";
 	public static final String ATTRIBUTE_MUC_PASSWORD = "muc_password";
 	public static final String ATTRIBUTE_MUTED_TILL = "muted_till";
+	public static final String ATTRIBUTE_ALWAYS_NOTIFY = "always_notify";
 
 	private String name;
 	private String contactUuid;
@@ -546,7 +547,7 @@ public class Conversation extends AbstractEntity implements Blockable {
 	/**
 	 * short for is Private and Non-anonymous
 	 */
-	public boolean isPnNA() {
+	private boolean isPnNA() {
 		return mode == MODE_SINGLE || (getMucOptions().membersOnly() && getMucOptions().nonanonymous());
 	}
 
@@ -729,6 +730,10 @@ public class Conversation extends AbstractEntity implements Blockable {
 		return System.currentTimeMillis() < this.getLongAttribute(ATTRIBUTE_MUTED_TILL, 0);
 	}
 
+	public boolean alwaysNotify() {
+		return mode == MODE_SINGLE || getBooleanAttribute(ATTRIBUTE_ALWAYS_NOTIFY,isPnNA());
+	}
+
 	public boolean setAttribute(String key, String value) {
 		try {
 			this.attributes.put(key, value);
@@ -769,6 +774,15 @@ public class Conversation extends AbstractEntity implements Blockable {
 			} catch (NumberFormatException e) {
 				return defaultValue;
 			}
+		}
+	}
+
+	public boolean getBooleanAttribute(String key, boolean defaultValue) {
+		String value = this.getAttribute(key);
+		if (value == null) {
+			return defaultValue;
+		} else {
+			return Boolean.parseBoolean(value);
 		}
 	}
 
