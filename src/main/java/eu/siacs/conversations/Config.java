@@ -17,6 +17,8 @@ public final class Config {
 	public static final boolean HIDE_MESSAGE_TEXT_IN_NOTIFICATION = false;
 	public static final boolean SHOW_CONNECTED_ACCOUNTS = false; //show number of connected accounts in foreground notification
 
+	public static final boolean ALWAYS_NOTIFY_BY_DEFAULT = false;
+
 	public static final boolean LEGACY_NAMESPACE_HTTP_UPLOAD = false;
 
 	public static final int PING_MAX_INTERVAL = 300;
