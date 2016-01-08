@@ -59,6 +59,7 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 		TextView mLastMessage = (TextView) view.findViewById(R.id.conversation_lastmsg);
 		TextView mTimestamp = (TextView) view.findViewById(R.id.conversation_lastupdate);
 		ImageView imagePreview = (ImageView) view.findViewById(R.id.conversation_lastimage);
+		ImageView notificationStatus = (ImageView) view.findViewById(R.id.notification_status);
 
 		Message message = conversation.getLatestMessage();
 
@@ -92,6 +93,17 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 					mLastMessage.setTypeface(null,Typeface.BOLD);
 				}
 			}
+		}
+
+		long muted_till = conversation.getLongAttribute(Conversation.ATTRIBUTE_MUTED_TILL,0);
+		if (muted_till == Long.MAX_VALUE) {
+			notificationStatus.setVisibility(View.VISIBLE);
+			notificationStatus.setImageResource(R.drawable.ic_notifications_off_grey600_24dp);
+		} else if (muted_till >= System.currentTimeMillis()) {
+			notificationStatus.setVisibility(View.VISIBLE);
+			notificationStatus.setImageResource(R.drawable.ic_notifications_paused_grey600_24dp);
+		} else {
+			notificationStatus.setVisibility(View.GONE);
 		}
 
 		mTimestamp.setText(UIHelper.readableTimeDifference(activity,conversation.getLatestMessage().getTimeSent()));

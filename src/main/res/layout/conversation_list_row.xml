@@ -1,88 +1,109 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-			 xmlns:app="http://schemas.android.com/apk/res-auto"
-			 android:layout_width="fill_parent"
-			 android:layout_height="wrap_content"
-			 android:descendantFocusability="blocksDescendants">
+             xmlns:app="http://schemas.android.com/apk/res-auto"
+             android:layout_width="fill_parent"
+             android:layout_height="wrap_content"
+             android:descendantFocusability="blocksDescendants">
 
-	<View
-		android:layout_width="fill_parent"
-		android:layout_height="fill_parent"
-		android:background="@color/primary"/>
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@color/primary"/>
 
-	<FrameLayout
-		android:id="@+id/swipeable_item"
-		android:layout_width="fill_parent"
-		android:layout_height="fill_parent"
-		android:background="@color/grey50">
+    <FrameLayout
+        android:id="@+id/swipeable_item"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@color/grey50">
 
-	<RelativeLayout
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:background="?android:selectableItemBackground"
-		android:orientation="horizontal"
-		android:padding="8dp" >
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="?android:selectableItemBackground"
+            android:orientation="horizontal"
+            android:padding="8dp">
 
-		<com.makeramen.roundedimageview.RoundedImageView
-			android:id="@+id/conversation_image"
-			android:layout_width="56dp"
-			android:layout_height="56dp"
-			android:layout_alignParentLeft="true"
-			android:scaleType="centerCrop"
-			app:riv_corner_radius="2dp" />
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/conversation_image"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_alignParentLeft="true"
+                android:scaleType="centerCrop"
+                app:riv_corner_radius="2dp"/>
 
-		<RelativeLayout
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:layout_centerVertical="true"
-			android:layout_toRightOf="@+id/conversation_image"
-			android:paddingLeft="8dp" >
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/conversation_image"
+                android:paddingLeft="8dp">
 
-			<TextView
-				android:id="@+id/conversation_name"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_alignLeft="@+id/conversation_lastwrapper"
-				android:layout_toLeftOf="@+id/conversation_lastupdate"
-				android:singleLine="true"
-				android:textColor="@color/black87"
-				android:textSize="?attr/TextSizeHeadline"
-				android:typeface="sans" />
+                <TextView
+                    android:id="@+id/conversation_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/conversation_lastwrapper"
+                    android:layout_toLeftOf="@+id/conversation_lastupdate"
+                    android:paddingRight="4dp"
+                    android:singleLine="true"
+                    android:text="Awesome groupchat"
+                    android:textColor="@color/black87"
+                    android:textSize="?attr/TextSizeHeadline"
+                    android:typeface="sans"/>
 
-			<LinearLayout
-				android:id="@+id/conversation_lastwrapper"
-				android:layout_width="fill_parent"
-				android:layout_height="wrap_content"
-				android:layout_below="@id/conversation_name"
-				android:orientation="vertical"
-				android:paddingTop="3dp" >
+                <RelativeLayout
+                    android:id="@+id/conversation_lastwrapper"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/conversation_name"
+                    android:layout_marginTop="4dp">
 
-				<TextView
-					android:id="@+id/conversation_lastmsg"
-					android:layout_width="fill_parent"
-					android:layout_height="wrap_content"
-					android:scrollHorizontally="false"
-					android:singleLine="true"
-					android:textColor="@color/black87"
-					android:textSize="?attr/TextSizeBody" />
+                    <LinearLayout android:layout_width="match_parent"
+                                  android:layout_height="wrap_content"
+                                  android:layout_alignParentLeft="true"
+                                  android:layout_centerVertical="true"
+                                  android:layout_toLeftOf="@+id/notification_status"
+                                  android:orientation="vertical">
+                        <TextView
+                            android:id="@+id/conversation_lastmsg"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:scrollHorizontally="false"
+                            android:singleLine="true"
+                            android:text="This is a placeholder text to show the last messages"
+                            android:textColor="@color/black87"
+                            android:textSize="?attr/TextSizeBody"/>
 
-				<ImageView
-					android:id="@+id/conversation_lastimage"
-					android:layout_width="fill_parent"
-					android:layout_height="36dp"
-					android:background="@color/black87"
-					android:scaleType="centerCrop" />
-			</LinearLayout>
+                        <com.makeramen.roundedimageview.RoundedImageView
+                            android:id="@+id/conversation_lastimage"
+                            android:layout_width="fill_parent"
+                            android:layout_height="36dp"
+                            android:background="@color/black87"
+                            android:scaleType="centerCrop"
+                            android:visibility="gone"
+                            app:riv_corner_radius="2dp"/>
+                    </LinearLayout>
+                    <ImageView
+                        android:id="@+id/notification_status"
+                        android:layout_width="16sp"
+                        android:layout_height="16sp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="4dp"
+                        android:src="@drawable/ic_notifications_grey600_24dp"
+                        />
+                </RelativeLayout>
 
-			<TextView
-				android:id="@+id/conversation_lastupdate"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_alignBaseline="@+id/conversation_name"
-				android:layout_alignParentRight="true"
-				android:gravity="right"
-				android:textColor="@color/black54"
-				android:textSize="?attr/TextSizeInfo" />
-		</RelativeLayout>
-	</RelativeLayout>
-	</FrameLayout>
+                <TextView
+                    android:id="@+id/conversation_lastupdate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/conversation_name"
+                    android:layout_alignParentRight="true"
+                    android:gravity="right"
+                    android:text="23:42"
+                    android:textColor="@color/black54"
+                    android:textSize="?attr/TextSizeInfo"/>
+            </RelativeLayout>
+        </RelativeLayout>
+    </FrameLayout>
 </FrameLayout>
