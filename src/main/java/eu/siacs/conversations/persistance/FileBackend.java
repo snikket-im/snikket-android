@@ -135,7 +135,7 @@ public class FileBackend {
 		}
 		File file = new File(path);
 		long size = file.length();
-		if (size == 0 || size >= 524288 ) {
+		if (size == 0 || size >= Config.IMAGE_MAX_SIZE ) {
 			return false;
 		}
 		BitmapFactory.Options options = new BitmapFactory.Options();
@@ -211,8 +211,6 @@ public class FileBackend {
 		try {
 			file.createNewFile();
 			is = mXmppConnectionService.getContentResolver().openInputStream(image);
-			os = new FileOutputStream(file);
-
 			Bitmap originalBitmap;
 			BitmapFactory.Options options = new BitmapFactory.Options();
 			int inSampleSize = (int) Math.pow(2, sampleSize);
@@ -226,12 +224,20 @@ public class FileBackend {
 			Bitmap scaledBitmap = resize(originalBitmap, Config.IMAGE_SIZE);
 			int rotation = getRotation(image);
 			scaledBitmap = rotate(scaledBitmap, rotation);
-			boolean success = scaledBitmap.compress(Config.IMAGE_FORMAT, Config.IMAGE_QUALITY, os);
-			if (!success) {
-				throw new FileCopyException(R.string.error_compressing_image);
+			boolean targetSizeReached = false;
+			long size = 0;
+			int quality = Config.IMAGE_QUALITY;
+			while(!targetSizeReached) {
+				os = new FileOutputStream(file);
+				boolean success = scaledBitmap.compress(Config.IMAGE_FORMAT, quality, os);
+				if (!success) {
+					throw new FileCopyException(R.string.error_compressing_image);
+				}
+				os.flush();
+				size = file.getSize();
+				targetSizeReached = size <= Config.IMAGE_MAX_SIZE || quality <= 50;
+				quality -= 5;
 			}
-			os.flush();
-			long size = file.getSize();
 			int width = scaledBitmap.getWidth();
 			int height = scaledBitmap.getHeight();
 			message.setBody(Long.toString(size) + '|' + width + '|' + height);
