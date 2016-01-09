@@ -22,7 +22,13 @@
             android:key="auto_accept_file_size"
             android:summary="@string/pref_accept_files_summary"
             android:title="@string/pref_accept_files"/>
-
+        <ListPreference
+            android:defaultValue="auto"
+            android:entries="@array/picture_compression_entries"
+            android:entryValues="@array/picture_compression_values"
+            android:key="picture_compression"
+            android:summary="@string/pref_picture_compression_summary"
+            android:title="@string/pref_picture_compression"/>
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="confirm_messages"
@@ -92,8 +98,8 @@
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="use_white_background"
-            android:title="@string/pref_use_white_background"
-            android:summary="@string/pref_use_white_background_summary"/>
+            android:summary="@string/pref_use_white_background_summary"
+            android:title="@string/pref_use_white_background"/>
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="use_larger_font"
@@ -142,13 +148,13 @@
                     android:title="@string/pref_remove_trusted_certificates_title"/>
             </PreferenceCategory>
             <PreferenceCategory
-                android:title="@string/pref_connection_options"
-                android:key="connection_options">
+                android:key="connection_options"
+                android:title="@string/pref_connection_options">
                 <CheckBoxPreference
                     android:defaultValue="false"
                     android:key="use_tor"
-                    android:title="@string/pref_use_tor"
-                    android:summary="@string/pref_use_tor_summary"/>
+                    android:summary="@string/pref_use_tor_summary"
+                    android:title="@string/pref_use_tor"/>
             </PreferenceCategory>
             <PreferenceCategory android:title="@string/pref_input_options">
                 <CheckBoxPreference
@@ -186,9 +192,9 @@
                     android:summary="@string/pref_keep_foreground_service_summary"
                     android:title="@string/pref_keep_foreground_service"/>
                 <eu.siacs.conversations.ui.ExportLogsPreference
-                        android:key="export_logs"
-                        android:title="@string/pref_export_logs"
-                        android:summary="@string/pref_export_logs_summary"/>
+                    android:key="export_logs"
+                    android:summary="@string/pref_export_logs_summary"
+                    android:title="@string/pref_export_logs"/>
             </PreferenceCategory>
         </PreferenceScreen>
 

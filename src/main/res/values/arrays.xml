@@ -57,4 +57,16 @@
 		<item>voice</item>
 		<item>location</item>
 	</string-array>
+
+	<string-array name="picture_compression_values">
+		<item>never</item>
+		<item>auto</item>
+		<item>always</item>
+	</string-array>
+
+	<string-array name="picture_compression_entries">
+		<item>@string/never</item>
+		<item>@string/automatically</item>
+		<item>@string/always</item>
+	</string-array>
 </resources>

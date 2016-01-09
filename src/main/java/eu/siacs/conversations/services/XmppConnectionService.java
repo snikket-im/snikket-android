@@ -414,8 +414,10 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	}
 
 	public void attachImageToConversation(final Conversation conversation, final Uri uri, final UiCallback<Message> callback) {
-		if (getFileBackend().useImageAsIs(uri)) {
-			Log.d(Config.LOGTAG, "using image as is");
+		final String compressPictures = getCompressPicturesPreference();
+		if ("never".equals(compressPictures)
+				|| ("auto".equals(compressPictures) && getFileBackend().useImageAsIs(uri))) {
+			Log.d(Config.LOGTAG,conversation.getAccount().getJid().toBareJid()+ ": not compressing picture. sending as file");
 			attachFileToConversation(conversation, uri, callback);
 			return;
 		}
@@ -588,6 +590,10 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 
 	private boolean awayWhenScreenOff() {
 		return getPreferences().getBoolean("away_when_screen_off", false);
+	}
+
+	private String getCompressPicturesPreference() {
+		return getPreferences().getString("picture_compression", "auto");
 	}
 
 	private int getTargetPresence() {

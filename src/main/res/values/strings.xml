@@ -287,7 +287,7 @@
 	<string name="pref_about_conversations_summary">Build and licensing information</string>
 	<string name="pref_about_message" translatable="false">
 			Conversations • the very last word in instant messaging.
-			\n\nCopyright © 2014-2015 Daniel Gultsch
+			\n\nCopyright © 2014-2016 Daniel Gultsch
 			\n\nThis program is free software: you can redistribute it and/or modify
 			it under the terms of the GNU General Public License as published by
 			the Free Software Foundation, either version 3 of the License, or
@@ -571,4 +571,8 @@
 	<string name="notify_only_when_highlighted">Notify only when highlighted</string>
 	<string name="notify_never">Notifications disabled</string>
 	<string name="notify_paused">Notifications paused</string>
+	<string name="pref_picture_compression">Compress Pictures</string>
+	<string name="pref_picture_compression_summary">Resize and compressed pictures</string>
+	<string name="always">Always</string>
+	<string name="automatically">Automatically</string>
 </resources>
