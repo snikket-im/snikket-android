@@ -9,6 +9,9 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
@@ -69,6 +72,19 @@ public class ServiceDiscoveryResult {
 			}
 
 			return r;
+		}
+
+		public JSONObject toJSON() {
+			try {
+				JSONObject o = new JSONObject();
+				o.put("category", this.getCategory());
+				o.put("type", this.getType());
+				o.put("lang", this.getLang());
+				o.put("name", this.getName());
+				return o;
+			} catch(JSONException e) {
+				return null;
+			}
 		}
 	}
 
@@ -153,6 +169,24 @@ public class ServiceDiscoveryResult {
 		try {
 			return md.digest(s.toString().getBytes("UTF-8"));
 		} catch(UnsupportedEncodingException e) {
+			return null;
+		}
+	}
+
+	public JSONObject toJSON() {
+		try {
+			JSONObject o = new JSONObject();
+
+			JSONArray ids = new JSONArray();
+			for(Identity id : this.getIdentities()) {
+				ids.put(id.toJSON());
+			}
+			o.put("identites", ids);
+
+			o.put("features", new JSONArray(this.getFeatures()));
+
+			return o;
+		} catch(JSONException e) {
 			return null;
 		}
 	}
