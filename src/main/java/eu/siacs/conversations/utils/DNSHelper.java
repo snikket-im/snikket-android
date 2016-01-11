@@ -19,6 +19,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.TreeMap;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 import de.measite.minidns.Client;
@@ -57,7 +58,7 @@ public class DNSHelper {
 		if (!b.containsKey("values")) {
 			Log.d(Config.LOGTAG,"all dns queries failed. provide fallback A record");
 			ArrayList<Parcelable> values = new ArrayList<>();
-			values.add(createNamePortBundle(host,5222));
+			values.add(createNamePortBundle(host, 5222, false));
 			b.putParcelableArrayList("values",values);
 		}
 		return b;
@@ -96,57 +97,73 @@ public class DNSHelper {
 		return servers;
 	}
 
+	private static class TlsSrv {
+		private final SRV srv;
+		private final boolean tls;
+
+		public TlsSrv(SRV srv, boolean tls) {
+			this.srv = srv;
+			this.tls = tls;
+		}
+	}
+
+	private static void fillSrvMaps(final String qname, final InetAddress dnsServer, final Map<Integer, List<TlsSrv>> priorities, final Map<String, List<String>> ips4, final Map<String, List<String>> ips6, final boolean tls) throws IOException {
+		final DNSMessage message = client.query(qname, TYPE.SRV, CLASS.IN, dnsServer.getHostAddress());
+		for (Record[] rrset : new Record[][] { message.getAnswers(), message.getAdditionalResourceRecords() }) {
+			for (Record rr : rrset) {
+				Data d = rr.getPayload();
+				if (d instanceof SRV && NameUtil.idnEquals(qname, rr.getName())) {
+					SRV srv = (SRV) d;
+					if (!priorities.containsKey(srv.getPriority())) {
+						priorities.put(srv.getPriority(),new ArrayList<TlsSrv>());
+					}
+					priorities.get(srv.getPriority()).add(new TlsSrv(srv, tls));
+				}
+				if (d instanceof A) {
+					A a = (A) d;
+					if (!ips4.containsKey(rr.getName())) {
+						ips4.put(rr.getName(), new ArrayList<String>());
+					}
+					ips4.get(rr.getName()).add(a.toString());
+				}
+				if (d instanceof AAAA) {
+					AAAA aaaa = (AAAA) d;
+					if (!ips6.containsKey(rr.getName())) {
+						ips6.put(rr.getName(), new ArrayList<String>());
+					}
+					ips6.get(rr.getName()).add("[" + aaaa.toString() + "]");
+				}
+			}
+		}
+	}
+
 	public static Bundle queryDNS(String host, InetAddress dnsServer) {
 		Bundle bundle = new Bundle();
 		try {
 			client.setTimeout(Config.PING_TIMEOUT * 1000);
-			String qname = "_xmpp-client._tcp." + host;
+			final String qname = "_xmpp-client._tcp." + host;
+			final String tlsQname = "_xmpps-client._tcp." + host;
 			Log.d(Config.LOGTAG, "using dns server: " + dnsServer.getHostAddress() + " to look up " + host);
-			DNSMessage message = client.query(qname, TYPE.SRV, CLASS.IN, dnsServer.getHostAddress());
 
-			TreeMap<Integer, ArrayList<SRV>> priorities = new TreeMap<>();
-			TreeMap<String, ArrayList<String>> ips4 = new TreeMap<>();
-			TreeMap<String, ArrayList<String>> ips6 = new TreeMap<>();
+			final Map<Integer, List<TlsSrv>> priorities = new TreeMap<>();
+			final Map<String, List<String>> ips4 = new TreeMap<>();
+			final Map<String, List<String>> ips6 = new TreeMap<>();
 
-			for (Record[] rrset : new Record[][] { message.getAnswers(), message.getAdditionalResourceRecords() }) {
-				for (Record rr : rrset) {
-					Data d = rr.getPayload();
-					if (d instanceof SRV && NameUtil.idnEquals(qname, rr.getName())) {
-						SRV srv = (SRV) d;
-						if (!priorities.containsKey(srv.getPriority())) {
-							priorities.put(srv.getPriority(),new ArrayList<SRV>());
-						}
-						priorities.get(srv.getPriority()).add(srv);
-					}
-					if (d instanceof A) {
-						A a = (A) d;
-						if (!ips4.containsKey(rr.getName())) {
-							ips4.put(rr.getName(), new ArrayList<String>());
-						}
-						ips4.get(rr.getName()).add(a.toString());
-					}
-					if (d instanceof AAAA) {
-						AAAA aaaa = (AAAA) d;
-						if (!ips6.containsKey(rr.getName())) {
-							ips6.put(rr.getName(), new ArrayList<String>());
-						}
-						ips6.get(rr.getName()).add("[" + aaaa.toString() + "]");
-					}
-				}
-			}
+			fillSrvMaps(qname, dnsServer, priorities, ips4, ips6, false);
+			fillSrvMaps(tlsQname, dnsServer, priorities, ips4, ips6, true);
 
-			ArrayList<SRV> result = new ArrayList<>();
-			for (ArrayList<SRV> s : priorities.values()) {
+			final List<TlsSrv> result = new ArrayList<>();
+			for (final List<TlsSrv> s : priorities.values()) {
 				result.addAll(s);
 			}
 
-			ArrayList<Bundle> values = new ArrayList<>();
+			final ArrayList<Bundle> values = new ArrayList<>();
 			if (result.size() == 0) {
 				DNSMessage response;
 				try {
 					response = client.query(host, TYPE.A, CLASS.IN, dnsServer.getHostAddress());
 					for (int i = 0; i < response.getAnswers().length; ++i) {
-						values.add(createNamePortBundle(host, 5222, response.getAnswers()[i].getPayload()));
+						values.add(createNamePortBundle(host, 5222, response.getAnswers()[i].getPayload(), false));
 					}
 				} catch (SocketTimeoutException e) {
 					Log.d(Config.LOGTAG,"ignoring timeout exception when querying A record on "+dnsServer.getHostAddress());
@@ -154,37 +171,38 @@ public class DNSHelper {
 				try {
 					response = client.query(host, TYPE.AAAA, CLASS.IN, dnsServer.getHostAddress());
 					for (int i = 0; i < response.getAnswers().length; ++i) {
-						values.add(createNamePortBundle(host, 5222, response.getAnswers()[i].getPayload()));
+						values.add(createNamePortBundle(host, 5222, response.getAnswers()[i].getPayload(), false));
 					}
 				} catch (SocketTimeoutException e) {
 					Log.d(Config.LOGTAG,"ignoring timeout exception when querying AAAA record on "+dnsServer.getHostAddress());
 				}
-				values.add(createNamePortBundle(host,5222));
+				values.add(createNamePortBundle(host, 5222, false));
 				bundle.putParcelableArrayList("values", values);
 				return bundle;
 			}
-			for (SRV srv : result) {
+			for (final TlsSrv tlsSrv : result) {
+				final SRV srv = tlsSrv.srv;
 				if (ips6.containsKey(srv.getName())) {
-					values.add(createNamePortBundle(srv.getName(),srv.getPort(),ips6));
+					values.add(createNamePortBundle(srv.getName(),srv.getPort(),ips6, tlsSrv.tls));
 				} else {
 					try {
 						DNSMessage response = client.query(srv.getName(), TYPE.AAAA, CLASS.IN, dnsServer.getHostAddress());
 						for (int i = 0; i < response.getAnswers().length; ++i) {
-							values.add(createNamePortBundle(srv.getName(), srv.getPort(), response.getAnswers()[i].getPayload()));
+							values.add(createNamePortBundle(srv.getName(), srv.getPort(), response.getAnswers()[i].getPayload(), tlsSrv.tls));
 						}
 					} catch (SocketTimeoutException e) {
 						Log.d(Config.LOGTAG,"ignoring timeout exception when querying AAAA record on "+dnsServer.getHostAddress());
 					}
 				}
 				if (ips4.containsKey(srv.getName())) {
-					values.add(createNamePortBundle(srv.getName(),srv.getPort(),ips4));
+					values.add(createNamePortBundle(srv.getName(),srv.getPort(),ips4, tlsSrv.tls));
 				} else {
 					DNSMessage response = client.query(srv.getName(), TYPE.A, CLASS.IN, dnsServer.getHostAddress());
 					for(int i = 0; i < response.getAnswers().length; ++i) {
-						values.add(createNamePortBundle(srv.getName(),srv.getPort(),response.getAnswers()[i].getPayload()));
+						values.add(createNamePortBundle(srv.getName(),srv.getPort(),response.getAnswers()[i].getPayload(), tlsSrv.tls));
 					}
 				}
-				values.add(createNamePortBundle(srv.getName(), srv.getPort()));
+				values.add(createNamePortBundle(srv.getName(), srv.getPort(), tlsSrv.tls));
 			}
 			bundle.putParcelableArrayList("values", values);
 		} catch (SocketTimeoutException e) {
@@ -195,28 +213,31 @@ public class DNSHelper {
 		return bundle;
 	}
 
-	private static Bundle createNamePortBundle(String name, int port) {
+	private static Bundle createNamePortBundle(String name, int port, final boolean tls) {
 		Bundle namePort = new Bundle();
 		namePort.putString("name", name);
+		namePort.putBoolean("tls", tls);
 		namePort.putInt("port", port);
 		return namePort;
 	}
 
-	private static Bundle createNamePortBundle(String name, int port, TreeMap<String, ArrayList<String>> ips) {
+	private static Bundle createNamePortBundle(String name, int port, Map<String, List<String>> ips, final boolean tls) {
 		Bundle namePort = new Bundle();
 		namePort.putString("name", name);
+		namePort.putBoolean("tls", tls);
 		namePort.putInt("port", port);
 		if (ips!=null) {
-			ArrayList<String> ip = ips.get(name);
+			List<String> ip = ips.get(name);
 			Collections.shuffle(ip, new Random());
 			namePort.putString("ip", ip.get(0));
 		}
 		return namePort;
 	}
 
-	private static Bundle createNamePortBundle(String name, int port, Data data) {
+	private static Bundle createNamePortBundle(String name, int port, Data data, final boolean tls) {
 		Bundle namePort = new Bundle();
 		namePort.putString("name", name);
+		namePort.putBoolean("tls", tls);
 		namePort.putInt("port", port);
 		if (data instanceof A) {
 			namePort.putString("ip", data.toString());
