@@ -1,6 +1,11 @@
 ###Changelog
 
-####Versin 1.8.4
+####Version 1.9.0
+* Per conference notification settings
+* Let user decide whether to compress pictures
+* Ask user to exclude Conversations from battery optimizations
+
+####Version 1.8.4
 * prompt to trust own OMEMO devices
 * fixed rotation issues in avatar publication
 * invite non-contact JIDs to conferences
