@@ -575,4 +575,8 @@
 	<string name="pref_picture_compression_summary">Resize and compressed pictures</string>
 	<string name="always">Always</string>
 	<string name="automatically">Automatically</string>
+	<string name="battery_optimizations_enabled">Battery optimizations enabled</string>
+	<string name="battery_optimizations_enabled_explained">Your phone is doing some heavy battery optimizations on Conversations that might lead to delayed notifications or even message loss. It is recommended to disable those.</string>
+	<string name="battery_optimizations_enabled_dialog">Your phone is doing some heavy battery optimizations on Conversations that might lead to delayed notifications or even message loss.\n\nYou will now be asked to disable those.</string>
+	<string name="disable">Disable</string>
 </resources>

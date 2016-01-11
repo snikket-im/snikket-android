@@ -24,6 +24,7 @@ import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.services.XmppConnectionService;
+import eu.siacs.conversations.ui.ConversationActivity;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
 
@@ -35,14 +36,13 @@ public class ExceptionHelper {
 		}
 	}
 
-	public static void checkForCrash(Context context,
-			final XmppConnectionService service) {
+	public static boolean checkForCrash(ConversationActivity activity, final XmppConnectionService service) {
 		try {
 			final SharedPreferences preferences = PreferenceManager
-					.getDefaultSharedPreferences(context);
+					.getDefaultSharedPreferences(activity);
 			boolean neverSend = preferences.getBoolean("never_send", false);
 			if (neverSend) {
-				return;
+				return false;
 			}
 			List<Account> accounts = service.getAccounts();
 			Account account = null;
@@ -53,24 +53,25 @@ public class ExceptionHelper {
 				}
 			}
 			if (account == null) {
-				return;
+				return false;
 			}
 			final Account finalAccount = account;
-			FileInputStream file = context.openFileInput("stacktrace.txt");
+			FileInputStream file = activity.openFileInput("stacktrace.txt");
 			InputStreamReader inputStreamReader = new InputStreamReader(file);
 			BufferedReader stacktrace = new BufferedReader(inputStreamReader);
 			final StringBuilder report = new StringBuilder();
-			PackageManager pm = context.getPackageManager();
+			PackageManager pm = activity.getPackageManager();
 			PackageInfo packageInfo = null;
 			try {
-				packageInfo = pm.getPackageInfo(context.getPackageName(), 0);
+				packageInfo = pm.getPackageInfo(activity.getPackageName(), 0);
 				report.append("Version: " + packageInfo.versionName + '\n');
 				report.append("Last Update: "
-						+ DateUtils.formatDateTime(context,
-								packageInfo.lastUpdateTime,
-								DateUtils.FORMAT_SHOW_TIME
-										| DateUtils.FORMAT_SHOW_DATE) + '\n');
+						+ DateUtils.formatDateTime(activity,
+						packageInfo.lastUpdateTime,
+						DateUtils.FORMAT_SHOW_TIME
+								| DateUtils.FORMAT_SHOW_DATE) + '\n');
 			} catch (NameNotFoundException e) {
+				return false;
 			}
 			String line;
 			while ((line = stacktrace.readLine()) != null) {
@@ -78,11 +79,11 @@ public class ExceptionHelper {
 				report.append('\n');
 			}
 			file.close();
-			context.deleteFile("stacktrace.txt");
-			AlertDialog.Builder builder = new AlertDialog.Builder(context);
-			builder.setTitle(context.getString(R.string.crash_report_title));
-			builder.setMessage(context.getText(R.string.crash_report_message));
-			builder.setPositiveButton(context.getText(R.string.send_now),
+			activity.deleteFile("stacktrace.txt");
+			AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+			builder.setTitle(activity.getString(R.string.crash_report_title));
+			builder.setMessage(activity.getText(R.string.crash_report_message));
+			builder.setPositiveButton(activity.getText(R.string.send_now),
 					new OnClickListener() {
 
 						@Override
@@ -91,18 +92,18 @@ public class ExceptionHelper {
 							Log.d(Config.LOGTAG, "using account="
 									+ finalAccount.getJid().toBareJid()
 									+ " to send in stack trace");
-                            Conversation conversation = null;
-                            try {
-                                conversation = service.findOrCreateConversation(finalAccount,
-                                        Jid.fromString("bugs@siacs.eu"), false);
-                            } catch (final InvalidJidException ignored) {
-                            }
-                            Message message = new Message(conversation, report
+							Conversation conversation = null;
+							try {
+								conversation = service.findOrCreateConversation(finalAccount,
+										Jid.fromString("bugs@siacs.eu"), false);
+							} catch (final InvalidJidException ignored) {
+							}
+							Message message = new Message(conversation, report
 									.toString(), Message.ENCRYPTION_NONE);
 							service.sendMessage(message);
 						}
 					});
-			builder.setNegativeButton(context.getText(R.string.send_never),
+			builder.setNegativeButton(activity.getText(R.string.send_never),
 					new OnClickListener() {
 
 						@Override
@@ -112,8 +113,9 @@ public class ExceptionHelper {
 						}
 					});
 			builder.create().show();
+			return true;
 		} catch (final IOException ignored) {
-        }
-
+			return false;
+		}
 	}
 }

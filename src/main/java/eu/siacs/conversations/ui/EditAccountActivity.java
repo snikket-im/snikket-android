@@ -5,9 +5,10 @@ import android.app.AlertDialog.Builder;
 import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.security.KeyChain;
 import android.security.KeyChainAliasCallback;
 import android.text.Editable;
@@ -52,16 +53,17 @@ import eu.siacs.conversations.xmpp.pep.Avatar;
 public class EditAccountActivity extends XmppActivity implements OnAccountUpdate,
 		OnKeyStatusUpdated, OnCaptchaRequested, KeyChainAliasCallback, XmppConnectionService.OnShowErrorToast {
 
-	private LinearLayout mMainLayout;
 	private AutoCompleteTextView mAccountJid;
 	private EditText mPassword;
 	private EditText mPasswordConfirm;
 	private CheckBox mRegisterNew;
 	private Button mCancelButton;
 	private Button mSaveButton;
+	private Button mDisableBatterOptimizations;
 	private TableLayout mMoreTable;
 
 	private LinearLayout mStats;
+	private RelativeLayout mBatteryOptimizations;
 	private TextView mServerInfoSm;
 	private TextView mServerInfoRosterVersion;
 	private TextView mServerInfoCarbons;
@@ -311,6 +313,14 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 		});
 	}
 
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (requestCode == REQUEST_BATTERY_OP) {
+			updateAccountInformation(mAccount == null);
+		}
+	}
+
 	protected void updateSaveButton() {
 		if (accountInfoEdited() && !mInitMode) {
 			this.mSaveButton.setText(R.string.save);
@@ -372,7 +382,6 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 	protected void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_edit_account);
-		this.mMainLayout = (LinearLayout) findViewById(R.id.account_main_layout);
 		this.mAccountJid = (AutoCompleteTextView) findViewById(R.id.account_jid);
 		this.mAccountJid.addTextChangedListener(this.mTextWatcher);
 		this.mAccountJidLabel = (TextView) findViewById(R.id.account_jid_label);
@@ -387,6 +396,17 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 		this.mAvatar.setOnClickListener(this.mAvatarClickListener);
 		this.mRegisterNew = (CheckBox) findViewById(R.id.account_register_new);
 		this.mStats = (LinearLayout) findViewById(R.id.stats);
+		this.mBatteryOptimizations = (RelativeLayout) findViewById(R.id.battery_optimization);
+		this.mDisableBatterOptimizations = (Button) findViewById(R.id.batt_op_disable);
+		this.mDisableBatterOptimizations.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+				Uri uri = Uri.parse("package:"+getPackageName());
+				intent.setData(uri);
+				startActivityForResult(intent,REQUEST_BATTERY_OP);
+			}
+		});
 		this.mSessionEst = (TextView) findViewById(R.id.session_est);
 		this.mServerInfoRosterVersion = (TextView) findViewById(R.id.server_info_roster_version);
 		this.mServerInfoCarbons = (TextView) findViewById(R.id.server_info_carbons);
@@ -595,6 +615,7 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 		}
 		if (this.mAccount.isOnlineAndConnected() && !this.mFetchingAvatar) {
 			this.mStats.setVisibility(View.VISIBLE);
+			this.mBatteryOptimizations.setVisibility(showBatteryOptimizationWarning() ? View.VISIBLE : View.GONE);
 			this.mSessionEst.setText(UIHelper.readableTimeDifferenceFull(this, this.mAccount.getXmppConnection()
 					.getLastSessionEstablished()));
 			Features features = this.mAccount.getXmppConnection().getFeatures();
