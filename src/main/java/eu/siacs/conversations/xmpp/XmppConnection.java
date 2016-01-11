@@ -255,12 +255,10 @@ public class XmppConnection implements Runnable {
 					throw new UnknownHostException();
 				}
 			} else {
-				final Bundle result = DNSHelper.getSRVRecord(account.getServer(),mXmppConnectionService);
+				final Bundle result = DNSHelper.getSRVRecord(account.getServer(), mXmppConnectionService);
 				final ArrayList<Parcelable>values = result.getParcelableArrayList("values");
-				int i = 0;
-				boolean socketError = true;
-				while (socketError && values.size() > i) {
-					final Bundle namePort = (Bundle) values.get(i);
+				for(Iterator<Parcelable> iterator = values.iterator(); iterator.hasNext();) {
+					final Bundle namePort = (Bundle) iterator.next();
 					try {
 						String srvRecordServer;
 						try {
@@ -285,22 +283,18 @@ public class XmppConnection implements Runnable {
 						}
 						socket = new Socket();
 						socket.connect(addr, Config.SOCKET_TIMEOUT * 1000);
-						socketError = false;
+						tagWriter.setOutputStream(socket.getOutputStream());
+						tagReader.setInputStream(socket.getInputStream());
+						tagWriter.beginDocument();
+						sendStartStream();
 					} catch (final Throwable e) {
 						Log.d(Config.LOGTAG, account.getJid().toBareJid().toString() + ": " + e.getMessage() +"("+e.getClass().getName()+")");
-						i++;
+						if (!iterator.hasNext()) {
+							throw new UnknownHostException();
+						}
 					}
 				}
-				if (socketError) {
-					throw new UnknownHostException();
-				}
 			}
-			final OutputStream out = socket.getOutputStream();
-			tagWriter.setOutputStream(out);
-			final InputStream in = socket.getInputStream();
-			tagReader.setInputStream(in);
-			tagWriter.beginDocument();
-			sendStartStream();
 			Tag nextTag;
 			while ((nextTag = tagReader.readTag()) != null) {
 				if (nextTag.isStart("stream")) {
