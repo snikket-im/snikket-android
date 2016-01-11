@@ -103,8 +103,6 @@
   <string name="pref_vibrate_summary">Wibruj, gdy nadejdzie wiadomość</string>
   <string name="pref_sound">Dźwięk</string>
   <string name="pref_sound_summary">Odtwórz dźwięk z powiadomieniem</string>
-  <string name="pref_conference_notifications">Powiadomienia konfrencji</string>
-  <string name="pref_conference_notifications_summary">Zawsze powiadamiaj przy odebraniu wiadomości w publicznej konferencji, a nie tylko przy wywołaniu nicka.</string>
   <string name="pref_notification_grace_period">Opóźnienie powiadomień</string>
   <string name="pref_notification_grace_period_summary">Wyłącz powiadomienia przez krótki czas po otrzymaniu kopii wiadomości</string>
   <string name="pref_advanced_options">Opcje zaawansowane</string>
@@ -254,7 +252,6 @@
   <string name="skip">Pomiń</string>
   <string name="disable_notifications">Wyłącz powiadomienia</string>
   <string name="disable_notifications_for_this_conversation">Wyłącz powiadomienia tej konwersacji</string>
-  <string name="notifications_disabled">Powiadomienia są wyłączone</string>
   <string name="enable">Włącz</string>
   <string name="conference_requires_password">Konferencja jest zabezpieczona hasłem</string>
   <string name="enter_password">Wprowadź hasło</string>

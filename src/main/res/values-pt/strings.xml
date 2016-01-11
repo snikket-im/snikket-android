@@ -224,7 +224,6 @@
   <string name="skip">Pular</string>
   <string name="disable_notifications">Desativar notificações</string>
   <string name="disable_notifications_for_this_conversation">Desativar notificações para essa conversa</string>
-  <string name="notifications_disabled">As notificações foram desativadas</string>
   <string name="enable">Ativar</string>
   <string name="conference_requires_password">Essa conferencia requer uma senha</string>
   <string name="enter_password">Informar a senha</string>

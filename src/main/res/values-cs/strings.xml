@@ -89,6 +89,7 @@
   <string name="openkeychain_required_long">Konverzace využívá aplikaci třetí strany, <b>OpenKeychain</b>, k šifrování a dešifrování zpráv a ke správě veřejných klíčů.\n\nOpenKeychain je licencován pod GPLv3 a dostupný na F-Droid a Google Play.\n\n<small>(Po instalaci prosím restartujte aplikaci Konverzace.)</small></string>
   <string name="restart">Restartovat</string>
   <string name="install">Instalovat</string>
+  <string name="openkeychain_not_installed">Nainstalujte prosím OpenKeychain</string>
   <string name="offering">nabízí…</string>
   <string name="waiting">čekám…</string>
   <string name="no_pgp_key">Nebyl nalezen žádný OpenPGP klíč</string>
@@ -108,8 +109,6 @@
   <string name="pref_vibrate_summary">Vibrovat při přijetí nové zprávy</string>
   <string name="pref_sound">Zvuk</string>
   <string name="pref_sound_summary">Přehrát zvuk společně s upozorněním</string>
-  <string name="pref_conference_notifications">Upozornění ve veřejných konferencích</string>
-  <string name="pref_conference_notifications_summary">Vždy upozornit při příchodu zprávy ve veřejných konferencích místo jen pouze pokud je zvýrazněno</string>
   <string name="pref_notification_grace_period">Četnost upozornění</string>
   <string name="pref_notification_grace_period_summary">Neupozorňovat krátce poté co byla obdržena kopie zprávy</string>
   <string name="pref_advanced_options">Pokročilé nastavení</string>
@@ -263,7 +262,6 @@
   <string name="skip">Přeskočit</string>
   <string name="disable_notifications">Vypnout upozornění</string>
   <string name="disable_notifications_for_this_conversation">Vypnout upozornění pro tuto konverzaci</string>
-  <string name="notifications_disabled">Upozornění jsou vypnuta</string>
   <string name="enable">Povolit</string>
   <string name="conference_requires_password">Konference vyžaduje heslo</string>
   <string name="enter_password">Vložit heslo</string>
@@ -524,4 +522,9 @@
     <item quantity="few">%d zprávy</item>
     <item quantity="other">%d zpráv</item>
   </plurals>
+  <string name="shared_file_with_x">Soubor sdílen s %s</string>
+  <string name="shared_image_with_x">Obrázek sdílen s %s</string>
+  <string name="no_storage_permission">Conversations vyžaduje přístup k externímu úložišti</string>
+  <string name="sync_with_contacts">Synchronizovat s kontakty</string>
+  <string name="sync_with_contacts_long">Aplikace Conversations by ráda porovnala váš XMPP seznam s vašimi kontakty, aby mohla zobrazit plná jména a avatary.\n\nConversations načte a porovná kontakty pouze lokálně, bez jejich nahrávání na server.\n\nNyní budete dotázáni na udělení práv pro přístup k seznamu kontaktů.</string>
 </resources>

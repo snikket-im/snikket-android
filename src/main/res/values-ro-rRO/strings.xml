@@ -109,8 +109,6 @@
   <string name="pref_vibrate_summary">Vibreaza cand un nou mesaj este primit</string>
   <string name="pref_sound">Sunet</string>
   <string name="pref_sound_summary">Ton de apel pentru notificare</string>
-  <string name="pref_conference_notifications">Notificari in Conferintele Publice</string>
-  <string name="pref_conference_notifications_summary">Notifica mereu la mesajele scrise in conferintele publice nu doar la cele evidentiate</string>
   <string name="pref_notification_grace_period">Perioada de gratie notificari </string>
   <string name="pref_notification_grace_period_summary">Opreste notificari pentru o scurta perioada dupa ce o copie a mesajului a fost primita</string>
   <string name="pref_advanced_options">Optiuni avansate</string>
@@ -264,7 +262,6 @@
   <string name="skip">Sari</string>
   <string name="disable_notifications">Dezactiveaza notificari</string>
   <string name="disable_notifications_for_this_conversation">Dezactiveaza notificarile pentru aceasta conversatie</string>
-  <string name="notifications_disabled">Notificari dezactivate</string>
   <string name="enable">Activeaza</string>
   <string name="conference_requires_password">Conferinta necesita parola</string>
   <string name="enter_password">Introdu parola</string>

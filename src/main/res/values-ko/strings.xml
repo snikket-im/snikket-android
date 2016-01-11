@@ -240,7 +240,6 @@
   <string name="skip">건너뛰기 </string>
   <string name="disable_notifications">알림 해제 </string>
   <string name="disable_notifications_for_this_conversation">이 대화의 알림 해제 </string>
-  <string name="notifications_disabled">알림이 해제되었습니다 </string>
   <string name="enable">사용 </string>
   <string name="conference_requires_password">회의에 암호가 필요합니다 </string>
   <string name="enter_password">암호 입력 </string>

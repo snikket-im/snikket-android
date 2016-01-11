@@ -242,7 +242,6 @@
   <string name="skip">Lewati</string>
   <string name="disable_notifications">Nonaktifkan notifikasi</string>
   <string name="disable_notifications_for_this_conversation">Nonaktifkan notifikasi untuk percakapan ini</string>
-  <string name="notifications_disabled">Notifikasi telah dimatikan</string>
   <string name="enable">Aktifkan</string>
   <string name="conference_requires_password">Conference membutuhkan password</string>
   <string name="enter_password">Masukan password</string>

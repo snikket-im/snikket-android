@@ -240,7 +240,6 @@
   <string name="skip">Παράλειψη</string>
   <string name="disable_notifications">Απενεργοποίηση ειδοποιήσεων</string>
   <string name="disable_notifications_for_this_conversation">Απενεργοποίηση ειδοποιήσεων για αυτή την συζήτηση</string>
-  <string name="notifications_disabled">Οι ειδοποιήσεις είναι απενεργοποιημένες</string>
   <string name="enable">Ενεργοποίηση</string>
   <string name="conference_requires_password">Η συζήτηση απαιτεί συνθηματικό</string>
   <string name="enter_password">Εισαγωγή συνθηματικού</string>

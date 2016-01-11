@@ -107,8 +107,6 @@
   <string name="pref_vibrate_summary">Vibra anche quando arriva un nuovo messaggio</string>
   <string name="pref_sound">Suono</string>
   <string name="pref_sound_summary">Riproduci una suoneria con la notifica</string>
-  <string name="pref_conference_notifications">Notifiche in Conferenze Pubbliche</string>
-  <string name="pref_conference_notifications_summary">Notifica sempre quando arriva un messaggio in una conferenza pubblica anziché solo quando è evidenziata</string>
   <string name="pref_notification_grace_period">Periodo tra notifiche</string>
   <string name="pref_notification_grace_period_summary">Disabilita le notifiche per un breve lasso di tempo dopo che un messaggio è stato ricevuto</string>
   <string name="pref_advanced_options">Opzioni Avanzate</string>
@@ -261,7 +259,6 @@
   <string name="skip">Salta</string>
   <string name="disable_notifications">Disabilita le notifiche</string>
   <string name="disable_notifications_for_this_conversation">Disabilita le notifiche per questa conversazione</string>
-  <string name="notifications_disabled">Le notifiche sono disabilitate</string>
   <string name="enable">Abilita</string>
   <string name="conference_requires_password">La conferenza richiede una password</string>
   <string name="enter_password">Inserisci la password</string>

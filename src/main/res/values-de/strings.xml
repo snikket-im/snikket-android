@@ -109,8 +109,6 @@
   <string name="pref_vibrate_summary">Vibrieren bei Erhalt einer neuen Nachricht</string>
   <string name="pref_sound">Benachrichtigungston</string>
   <string name="pref_sound_summary">Benachrichtigungston wiedergeben</string>
-  <string name="pref_conference_notifications">Benachrichtigungen in öffentlichen Konferenzen</string>
-  <string name="pref_conference_notifications_summary">Bei jeder Nachricht in öffentlichen Konferenzen benachrichtigen und nicht nur, wenn ich angesprochen werde</string>
   <string name="pref_notification_grace_period">Gnadenfrist</string>
   <string name="pref_notification_grace_period_summary">Deaktiviere Benachrichtigungen für eine kurze Zeit nach Erhalt einer Nachricht, die von einem anderen deiner Clients kommt.</string>
   <string name="pref_advanced_options">Erweiterte Optionen</string>
@@ -245,7 +243,7 @@
   <string name="add_back">Auch hinzufügen</string>
   <string name="contact_has_read_up_to_this_point">%s hat bis zu diesem Punkt gelesen</string>
   <string name="publish">Veröffentlichen</string>
-  <string name="touch_to_choose_picture">Avatar anklicken, um ein Bild aus der Galerie auszuwählen</string>
+  <string name="touch_to_choose_picture">Avatar antippen, um Bild aus Galerie auszuwählen</string>
   <string name="publish_avatar_explanation">Achtung: Jeder, der deinen Status sehen darf, sieht auch deinen Avatar.</string>
   <string name="publishing">Veröffentliche…</string>
   <string name="error_publish_avatar_server_reject">Der Server hat die Veröffentlichung des Avatars abgelehnt.</string>
@@ -264,7 +262,6 @@
   <string name="skip">Überspringen</string>
   <string name="disable_notifications">Benachrichtigungen deaktivieren</string>
   <string name="disable_notifications_for_this_conversation">Benachrichtigungen für diese Unterhaltung deaktivieren</string>
-  <string name="notifications_disabled">Benachrichtigungen sind deaktiviert</string>
   <string name="enable">Aktivieren</string>
   <string name="conference_requires_password">Konferenz ist passwortgeschützt</string>
   <string name="enter_password">Passwort eingeben</string>
@@ -510,7 +507,7 @@
   <string name="verified_omemo_key_with_certificate">OMEMO Schlüssel mit Zertifikat bestätigt!</string>
   <string name="device_does_not_support_certificates">Dein Gerät unterstützt das Auswählen von Client-Zertifikaten nicht!</string>
   <string name="pref_connection_options">Verbindungs-Optionen</string>
-  <string name="pref_use_tor">Mit TOR verbinden</string>
+  <string name="pref_use_tor">Über TOR verbinden</string>
   <string name="pref_use_tor_summary">Alle Verbindungen über das TOR-Netzwerk tunneln. Benötigt Orbot</string>
   <string name="account_settings_hostname">Hostname</string>
   <string name="account_settings_port">Port</string>

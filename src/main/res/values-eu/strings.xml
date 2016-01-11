@@ -109,8 +109,6 @@
   <string name="pref_vibrate_summary">Dardaratu ere mezu berri bat heltzerakoan</string>
   <string name="pref_sound">Soinua</string>
   <string name="pref_sound_summary">Dei-tonua jo jakinarazpenarekin</string>
-  <string name="pref_conference_notifications">Konferentzia publikoen jakinarazpenak</string>
-  <string name="pref_conference_notifications_summary">Beti jakinarazi konferentzia publiko batean mezu berri bat heltzerakoan eta ez soilik nabarmentzerakoan</string>
   <string name="pref_notification_grace_period">Jakinarazpenen grazia epea</string>
   <string name="pref_notification_grace_period_summary">Jakinarazpenak denbora labur baterako ezgaitu ikatz-kopia bat jaso ondoren</string>
   <string name="pref_advanced_options">Aukera aurreratuak</string>
@@ -264,7 +262,6 @@
   <string name="skip">Orain ez</string>
   <string name="disable_notifications">Jakinarazpenak ezgaitu</string>
   <string name="disable_notifications_for_this_conversation">Elkarrizketa honetarako jakinarazpenak ezgaitu</string>
-  <string name="notifications_disabled">Jakinarazpenak ezgaituta daude</string>
   <string name="enable">Gaitu</string>
   <string name="conference_requires_password">Konferentziak pasahitza behar du</string>
   <string name="enter_password">Sartu pasahitza</string>

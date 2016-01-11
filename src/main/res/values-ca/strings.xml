@@ -240,7 +240,6 @@
   <string name="skip">Saltar</string>
   <string name="disable_notifications">Deshabilitar notificacions</string>
   <string name="disable_notifications_for_this_conversation">Deshabilitar notificacions per aquesta conversació</string>
-  <string name="notifications_disabled">Les notificacions estàn deshabilitades</string>
   <string name="enable">Habilitat</string>
   <string name="conference_requires_password">La sala requereix una contrasenya</string>
   <string name="enter_password">Introduir-ho la contrasenya</string>

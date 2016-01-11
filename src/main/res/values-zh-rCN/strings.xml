@@ -109,8 +109,6 @@
   <string name="pref_vibrate_summary">收到新消息时震动</string>
   <string name="pref_sound">声音</string>
   <string name="pref_sound_summary">收到新消息时的铃声</string>
-  <string name="pref_conference_notifications">公共讨论组内通知</string>
-  <string name="pref_conference_notifications_summary">收到公共讨论组消息时总是通知，而不是仅在高亮时通知</string>
   <string name="pref_notification_grace_period">通知限期</string>
   <string name="pref_notification_grace_period_summary">接收副本短时间内关闭通知</string>
   <string name="pref_advanced_options">高级选项</string>
@@ -264,7 +262,6 @@
   <string name="skip">忽略</string>
   <string name="disable_notifications">关闭通知</string>
   <string name="disable_notifications_for_this_conversation">关闭该会话消息</string>
-  <string name="notifications_disabled">通知已关闭</string>
   <string name="enable">打开通知</string>
   <string name="conference_requires_password">讨论组设有密码</string>
   <string name="enter_password">输入密码</string>

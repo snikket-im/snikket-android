@@ -109,8 +109,6 @@
   <string name="pref_vibrate_summary">Vibra cuando llega un nuevo mensaje</string>
   <string name="pref_sound">Sonido</string>
   <string name="pref_sound_summary">Reproduce tono con la notificación</string>
-  <string name="pref_conference_notifications">Notif. conversación grupo pública</string>
-  <string name="pref_conference_notifications_summary">Siempre notifica cuando llega un mensaje a una conversación en grupo pública y no solo cuando alguien menciona tu nombre en un mensaje</string>
   <string name="pref_notification_grace_period">Notificaciones Carbons</string>
   <string name="pref_notification_grace_period_summary">Deshabilita las notificaciones durante un corto periodo de tiempo después de recibir la copia del mensaje carbon</string>
   <string name="pref_advanced_options">Opciones avanzadas</string>
@@ -264,7 +262,6 @@
   <string name="skip">Omitir</string>
   <string name="disable_notifications">Deshabilitar notificaciones</string>
   <string name="disable_notifications_for_this_conversation">Deshabilitar notificaciones para esta conversación</string>
-  <string name="notifications_disabled">Las notificaciones están deshabilitadas</string>
   <string name="enable">Habilitar</string>
   <string name="conference_requires_password">Esta conversación requiere contraseña</string>
   <string name="enter_password">Introduce la contraseña</string>

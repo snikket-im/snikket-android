@@ -103,8 +103,6 @@
   <string name="pref_vibrate_summary">Tril ook wanneer een nieuw bericht arriveert</string>
   <string name="pref_sound">Geluid</string>
   <string name="pref_sound_summary">Speel beltoon af bij melding</string>
-  <string name="pref_conference_notifications">Meldingen bij groepsgespreken</string>
-  <string name="pref_conference_notifications_summary">Laat altijd een melding zien wanneer er berichten zijn ontvangen in groepsgesprekken in plaats van alleen bij het noemen van je naam</string>
   <string name="pref_notification_grace_period">Uitstelperiode voor meldingen</string>
   <string name="pref_notification_grace_period_summary">Schakel meldingen voor korte tijd uit als er een carbon copy wordt ontvangen</string>
   <string name="pref_advanced_options">Geavanceerde instellingen</string>
@@ -254,7 +252,6 @@
   <string name="skip">Overslaan</string>
   <string name="disable_notifications">Meldingen uitschakelen</string>
   <string name="disable_notifications_for_this_conversation">Meldingen uitschakelen voor dit gesprek</string>
-  <string name="notifications_disabled">Meldingen zijn uitgeschakeld</string>
   <string name="enable">Inschakelen</string>
   <string name="conference_requires_password">Wachtwoord nodig voor toegang tot groepsgesprek</string>
   <string name="enter_password">Wachtwoord invoeren</string>

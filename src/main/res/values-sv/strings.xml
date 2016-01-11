@@ -109,8 +109,6 @@
   <string name="pref_vibrate_summary">Vibrera när meddelande tagits emot</string>
   <string name="pref_sound">Ljud</string>
   <string name="pref_sound_summary">Spela ljud med notifiering</string>
-  <string name="pref_conference_notifications">Notifieringar i publika konferenser</string>
-  <string name="pref_conference_notifications_summary">Notifiera alltid för meddelande i en publik konferens istället för endast vid highlight</string>
   <string name="pref_notification_grace_period">Notifieringsfrist</string>
   <string name="pref_notification_grace_period_summary">Inaktivera notifieringar en kort stund efter att en carbon copy tagits emot</string>
   <string name="pref_advanced_options">Avancerade inställningar</string>
@@ -264,7 +262,6 @@
   <string name="skip">Hoppa över</string>
   <string name="disable_notifications">Inaktivera notifieringar</string>
   <string name="disable_notifications_for_this_conversation">Inaktivera notifieringar för denna konversation</string>
-  <string name="notifications_disabled">Notifieringar är inaktiverade</string>
   <string name="enable">Aktivera</string>
   <string name="conference_requires_password">Konferensen kräver lösenord</string>
   <string name="enter_password">Fyll i lösenord</string>

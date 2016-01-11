@@ -109,8 +109,6 @@
   <string name="pref_vibrate_summary">Вибрирај кад стигне нова порука</string>
   <string name="pref_sound">Звук</string>
   <string name="pref_sound_summary">Звуци обавештења</string>
-  <string name="pref_conference_notifications">Обавештења у групним ћаскањима</string>
-  <string name="pref_conference_notifications_summary">Увек обавештавај кад стигне порука у групном ћаскању уместо само кад је означена</string>
   <string name="pref_notification_grace_period">Период одгоде обавештења</string>
   <string name="pref_notification_grace_period_summary">Искључи обавештења на кратко по примању карбон копије</string>
   <string name="pref_advanced_options">Напредне поставке</string>
@@ -264,7 +262,6 @@
   <string name="skip">Прескочи</string>
   <string name="disable_notifications">Искључи обавештења</string>
   <string name="disable_notifications_for_this_conversation">Искључи обавештења за ову преписку</string>
-  <string name="notifications_disabled">Обавештења су искључена</string>
   <string name="enable">Укључи</string>
   <string name="conference_requires_password">Групно ћаскање захтева лозинку</string>
   <string name="enter_password">Унесите лозинку</string>

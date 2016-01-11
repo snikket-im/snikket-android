@@ -89,6 +89,7 @@
   <string name="openkeychain_required_long">Conversations използва външно приложение с име <b>OpenKeychain</b>, за да шифрова и дешифрова съобщенията и да управлява публичните Ви ключове.\n\nOpenKeychain е лицензирано под условията на GPLv3 и е налично в F-Droid и Google Play.\n\n<small>(Моля, рестартирайте Conversations след това.)</small></string>
   <string name="restart">Рестартиране</string>
   <string name="install">Инсталиране</string>
+  <string name="openkeychain_not_installed">Моля, инсталирайте OpenKeychain</string>
   <string name="offering">предлагане…</string>
   <string name="waiting">изчакване…</string>
   <string name="no_pgp_key">Не е открит OpenPGP ключ</string>
@@ -108,8 +109,6 @@
   <string name="pref_vibrate_summary">Също така да има и вибрация при получаване на ново съобщение</string>
   <string name="pref_sound">Звук</string>
   <string name="pref_sound_summary">Изпълнение на звук с известието</string>
-  <string name="pref_conference_notifications">Известия в публичните беседи</string>
-  <string name="pref_conference_notifications_summary">Известяване винаги, когато пристигне ново съобщение в публична беседа, а не само когато тя е отбелязана</string>
   <string name="pref_notification_grace_period">Продължителност на отсрочване на известията</string>
   <string name="pref_notification_grace_period_summary">Изключва известията за кратко, след като бъде получено копие на съобщение</string>
   <string name="pref_advanced_options">Разширени настройки</string>
@@ -263,7 +262,6 @@
   <string name="skip">Пропускане</string>
   <string name="disable_notifications">Изключване на известията</string>
   <string name="disable_notifications_for_this_conversation">Изключване на известията за този разговор</string>
-  <string name="notifications_disabled">Известията са изключени</string>
   <string name="enable">Включване</string>
   <string name="conference_requires_password">Беседата изисква парола</string>
   <string name="enter_password">Въведете парола</string>
@@ -521,4 +519,9 @@
     <item quantity="one">%d съобщение</item>
     <item quantity="other">%d съобщения</item>
   </plurals>
+  <string name="shared_file_with_x">Файлът е споделен с %s</string>
+  <string name="shared_image_with_x">Изображението е споделено с %s</string>
+  <string name="no_storage_permission">Conversations се нуждае от достъп до външно място за съхранение</string>
+  <string name="sync_with_contacts">Синхронизиране с контактите</string>
+  <string name="sync_with_contacts_long">Conversations иска да съчетае Вашия списък в XMPP с контактите Ви, за да показва пълните им имена и снимки..\n\nConversations единствено ще чете контактите Ви и ще ги използва вътрешно, без да ги качва на сървъра Ви.\n\nЩе бъдете помолен/а за позволение за достъп до контактите Ви.</string>
 </resources>

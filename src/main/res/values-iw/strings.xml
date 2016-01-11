@@ -108,8 +108,6 @@
   <string name="pref_vibrate_summary">הרטט גם כאשר הודעה חדשה מגיעה</string>
   <string name="pref_sound">צליל</string>
   <string name="pref_sound_summary">נגן צלצול עם כל התראה</string>
-  <string name="pref_conference_notifications">התראות בועידות ציבוריות</string>
-  <string name="pref_conference_notifications_summary">תמיד </string>
   <string name="pref_notification_grace_period">משך תקופת ארכה</string>
   <string name="pref_notification_grace_period_summary">נטרל התראות לזמן קצר לאחר שהודעת Carbon Copy מתקבלת</string>
   <string name="pref_advanced_options">אפשרויות מתקדמות</string>
@@ -259,7 +257,6 @@
   <string name="skip">דלג</string>
   <string name="disable_notifications">השבת התראות</string>
   <string name="disable_notifications_for_this_conversation">השבת התראות עבור השיחה הנוכחית</string>
-  <string name="notifications_disabled">ההתראות מושבתות</string>
   <string name="enable">הפעל</string>
   <string name="conference_requires_password">ועידה זאת דורשת סיסמא</string>
   <string name="enter_password">הכנס סיסמא</string>

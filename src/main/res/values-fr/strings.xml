@@ -109,8 +109,6 @@
   <string name="pref_vibrate_summary">Vibrer lors de l\'arrivée d\'un message.</string>
   <string name="pref_sound">Sonore</string>
   <string name="pref_sound_summary">Jouer une sonnerie pour notifier.</string>
-  <string name="pref_conference_notifications">Notifications et conf. publiques</string>
-  <string name="pref_conference_notifications_summary">Toujours notifier de l\'arrivée d\'un message dans une conférence publique, même si votre nom n\'y apparaît pas.</string>
   <string name="pref_notification_grace_period">Période sans notification</string>
   <string name="pref_notification_grace_period_summary">Désactiver momentanément les notifications après l\'arrivée d\'une copie carbone.</string>
   <string name="pref_advanced_options">Options avancées</string>
@@ -264,7 +262,6 @@
   <string name="skip">Passer</string>
   <string name="disable_notifications">Désactiver les notifications</string>
   <string name="disable_notifications_for_this_conversation">Désactiver les notifications pour cette conversation</string>
-  <string name="notifications_disabled">Notifications désactivées</string>
   <string name="enable">Activer</string>
   <string name="conference_requires_password">La conférence nécessite un mot de passe</string>
   <string name="enter_password">Entrer le mot de passe</string>

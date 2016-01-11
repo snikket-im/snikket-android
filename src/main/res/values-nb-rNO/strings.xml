@@ -109,8 +109,6 @@
   <string name="pref_vibrate_summary">Vibrer også når ny melding ankommer</string>
   <string name="pref_sound">Lyd</string>
   <string name="pref_sound_summary">Spill av ringetone med merknad</string>
-  <string name="pref_conference_notifications">Varslinger i offentlige konferanser</string>
-  <string name="pref_conference_notifications_summary">Alltid varsle om nye meldinger i konferanser, i steden for bare når navnet ditt er markert</string>
   <string name="pref_notification_grace_period">Notifiseringsfrist</string>
   <string name="pref_notification_grace_period_summary">Skru av varslinger en liten stund etter mottak av karbon-kopi</string>
   <string name="pref_advanced_options">Avanserte valg</string>
@@ -264,7 +262,6 @@
   <string name="skip">Hopp over</string>
   <string name="disable_notifications">Skru av varslinger</string>
   <string name="disable_notifications_for_this_conversation">Skru av varslinger for denne samtalen</string>
-  <string name="notifications_disabled">Varslinger avskrudd</string>
   <string name="enable">Skru på</string>
   <string name="conference_requires_password">Konferansen krever passord</string>
   <string name="enter_password">Skriv inn passord</string>

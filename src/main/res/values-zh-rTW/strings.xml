@@ -215,7 +215,6 @@
   <string name="skip">略過</string>
   <string name="disable_notifications">關閉通知</string>
   <string name="disable_notifications_for_this_conversation">關閉該對話消息</string>
-  <string name="notifications_disabled">通知已關閉</string>
   <string name="enable">打開通知</string>
   <string name="conference_requires_password">群組設有密碼</string>
   <string name="enter_password">輸入密碼</string>

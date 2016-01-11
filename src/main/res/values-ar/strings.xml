@@ -193,7 +193,6 @@
   <string name="skip">تجاهل</string>
   <string name="disable_notifications">ايقاف التنبيهات</string>
   <string name="disable_notifications_for_this_conversation">ايقاف التنبيهات لتلك المحادثة</string>
-  <string name="notifications_disabled">التنبيهات غير فعاله</string>
   <string name="enable">تفعيل</string>
   <string name="conference_requires_password">الغرفة تطلب كلمة مرور</string>
   <string name="enter_password">أدخل كلمة المرور</string>

@@ -109,8 +109,6 @@
   <string name="pref_vibrate_summary">Использовать вибрацию когда приходят новые сообщения</string>
   <string name="pref_sound">Звуковой сигнал</string>
   <string name="pref_sound_summary">Выберите звуковой сигнал для сообщений</string>
-  <string name="pref_conference_notifications">Уведомления в публичных конференциях</string>
-  <string name="pref_conference_notifications_summary">Всегда уведомлять, когда сообщение появляется в публичной конференции вместо простого подсвечивания</string>
   <string name="pref_notification_grace_period">Отсрочка уведомлений</string>
   <string name="pref_notification_grace_period_summary">Не использовать уведомления, если вы прочитали сообщение на другом устройстве</string>
   <string name="pref_advanced_options">Дополнительные параметры</string>
@@ -264,7 +262,6 @@
   <string name="skip">Пропустить</string>
   <string name="disable_notifications">Отключить уведомления</string>
   <string name="disable_notifications_for_this_conversation">Отключить уведомления для текущей беседы</string>
-  <string name="notifications_disabled">Уведомления отключены</string>
   <string name="enable">Включить</string>
   <string name="conference_requires_password">Конференция требует авторизации</string>
   <string name="enter_password">Введите пароль</string>
