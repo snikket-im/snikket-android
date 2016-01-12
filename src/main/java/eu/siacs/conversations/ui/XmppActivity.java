@@ -786,8 +786,32 @@ public abstract class XmppActivity extends Activity {
 				new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						account.getAxolotlService().purgeKey(fingerprint);
-						refreshUi();
+						Builder builder = new Builder(XmppActivity.this);
+						builder.setTitle(getString(R.string.purge_key));
+						builder.setIconAttribute(android.R.attr.alertDialogIcon);
+						builder.setMessage(getString(R.string.purge_key_warning));
+						builder.setNegativeButton(getString(R.string.cancel), null);
+						builder.setPositiveButton(getString(R.string.accept),
+								new DialogInterface.OnClickListener() {
+									@Override
+									public void onClick(DialogInterface dialog, int which) {
+										Builder builder = new Builder(XmppActivity.this);
+										builder.setTitle(getString(R.string.purge_key));
+										builder.setIconAttribute(android.R.attr.alertDialogIcon);
+										builder.setMessage(getString(R.string.purge_key_warning2));
+										builder.setNegativeButton(getString(R.string.cancel), null);
+										builder.setPositiveButton(getString(R.string.accept),
+												new DialogInterface.OnClickListener() {
+													@Override
+													public void onClick(DialogInterface dialog, int which) {
+														account.getAxolotlService().purgeKey(fingerprint);
+														refreshUi();
+													}
+												});
+										builder.create().show();
+									}
+								});
+						builder.create().show();
 					}
 				});
 		builder.create().show();
