@@ -20,7 +20,7 @@ import org.xmlpull.v1.XmlPullParserException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
+import java.lang.reflect.Method;
 import java.math.BigInteger;
 import java.net.ConnectException;
 import java.net.IDN;
@@ -247,6 +247,7 @@ public class XmppConnection implements Runnable {
 				}
 				Log.d(Config.LOGTAG,account.getJid().toBareJid()+": connect to "+destination+" via TOR");
 				socket = SocksSocketFactory.createSocketOverTor(destination,account.getPort());
+				startXmpp();
 			} else if (DNSHelper.isIp(account.getServer().toString())) {
 				socket = new Socket();
 				try {
@@ -254,13 +255,12 @@ public class XmppConnection implements Runnable {
 				} catch (IOException e) {
 					throw new UnknownHostException();
 				}
+				startXmpp();
 			} else {
-				final Bundle result = DNSHelper.getSRVRecord(account.getServer(),mXmppConnectionService);
+				final Bundle result = DNSHelper.getSRVRecord(account.getServer(), mXmppConnectionService);
 				final ArrayList<Parcelable>values = result.getParcelableArrayList("values");
-				int i = 0;
-				boolean socketError = true;
-				while (socketError && values.size() > i) {
-					final Bundle namePort = (Bundle) values.get(i);
+				for(Iterator<Parcelable> iterator = values.iterator(); iterator.hasNext();) {
+					final Bundle namePort = (Bundle) iterator.next();
 					try {
 						String srvRecordServer;
 						try {
@@ -271,48 +271,55 @@ public class XmppConnection implements Runnable {
 						}
 						final int srvRecordPort = namePort.getInt("port");
 						final String srvIpServer = namePort.getString("ip");
+						// if tls is true, encryption is implied and must not be started
+						features.encryptionEnabled = namePort.getBoolean("tls");
 						final InetSocketAddress addr;
 						if (srvIpServer != null) {
 							addr = new InetSocketAddress(srvIpServer, srvRecordPort);
 							Log.d(Config.LOGTAG, account.getJid().toBareJid().toString()
 									+ ": using values from dns " + srvRecordServer
-									+ "[" + srvIpServer + "]:" + srvRecordPort);
+									+ "[" + srvIpServer + "]:" + srvRecordPort + " tls: " + features.encryptionEnabled);
 						} else {
 							addr = new InetSocketAddress(srvRecordServer, srvRecordPort);
 							Log.d(Config.LOGTAG, account.getJid().toBareJid().toString()
 									+ ": using values from dns "
-									+ srvRecordServer + ":" + srvRecordPort);
+									+ srvRecordServer + ":" + srvRecordPort + " tls: " + features.encryptionEnabled);
 						}
-						socket = new Socket();
-						socket.connect(addr, Config.SOCKET_TIMEOUT * 1000);
-						socketError = false;
+
+						if (!features.encryptionEnabled) {
+							socket = new Socket();
+							socket.connect(addr, Config.SOCKET_TIMEOUT * 1000);
+						} else {
+							final TlsFactoryVerifier tlsFactoryVerifier = getTlsFactoryVerifier();
+							socket = tlsFactoryVerifier.factory.createSocket();
+
+							if (socket == null) {
+								throw new IOException("could not initialize ssl socket");
+							}
+
+							setSSLSocketSecurity((SSLSocket) socket);
+							this.setSNIHost(tlsFactoryVerifier.factory, (SSLSocket) socket, account.getServer().getDomainpart());
+							this.setAlpnProtocol(tlsFactoryVerifier.factory, (SSLSocket) socket, "xmpp-client");
+
+							socket.connect(addr, Config.SOCKET_TIMEOUT * 1000);
+
+							if (!tlsFactoryVerifier.verifier.verify(account.getServer().getDomainpart(), ((SSLSocket) socket).getSession())) {
+								Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": TLS certificate verification failed");
+								throw new SecurityException();
+							}
+						}
+
+						if(startXmpp())
+							break; // successfully connected to server that speaks xmpp
 					} catch (final Throwable e) {
 						Log.d(Config.LOGTAG, account.getJid().toBareJid().toString() + ": " + e.getMessage() +"("+e.getClass().getName()+")");
-						i++;
+						if (!iterator.hasNext()) {
+							throw new UnknownHostException();
+						}
 					}
 				}
-				if (socketError) {
-					throw new UnknownHostException();
-				}
 			}
-			final OutputStream out = socket.getOutputStream();
-			tagWriter.setOutputStream(out);
-			final InputStream in = socket.getInputStream();
-			tagReader.setInputStream(in);
-			tagWriter.beginDocument();
-			sendStartStream();
-			Tag nextTag;
-			while ((nextTag = tagReader.readTag()) != null) {
-				if (nextTag.isStart("stream")) {
-					processStream();
-					break;
-				} else {
-					throw new IOException("unknown tag on connect");
-				}
-			}
-			if (socket.isConnected()) {
-				socket.close();
-			}
+			processStream();
 		} catch (final IncompatibleServerException e) {
 			this.changeStatus(Account.State.INCOMPATIBLE_SERVER);
 		} catch (final SecurityException e) {
@@ -342,6 +349,99 @@ public class XmppConnection implements Runnable {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Starts xmpp protocol, call after connecting to socket
+	 * @return true if server returns with valid xmpp, false otherwise
+	 * @throws IOException Unknown tag on connect
+	 * @throws XmlPullParserException Bad Xml
+	 * @throws NoSuchAlgorithmException Other error
+     */
+	private boolean startXmpp() throws IOException, XmlPullParserException, NoSuchAlgorithmException {
+		tagWriter.setOutputStream(socket.getOutputStream());
+		tagReader.setInputStream(socket.getInputStream());
+		tagWriter.beginDocument();
+		sendStartStream();
+		Tag nextTag;
+		while ((nextTag = tagReader.readTag()) != null) {
+			if (nextTag.isStart("stream")) {
+				return true;
+			} else {
+				throw new IOException("unknown tag on connect");
+			}
+		}
+		if (socket.isConnected()) {
+			socket.close();
+		}
+		return false;
+	}
+
+	private void setSNIHost(final SSLSocketFactory factory, final SSLSocket socket, final String hostname) {
+		if (factory instanceof android.net.SSLCertificateSocketFactory && android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
+			((android.net.SSLCertificateSocketFactory) factory).setHostname(socket, hostname);
+		} else {
+			try {
+				socket.getClass().getMethod("setHostname", String.class).invoke(socket, hostname);
+			} catch (Throwable e) {
+				// ignore any error, we just can't set the hostname...
+			}
+		}
+	}
+
+	private void setAlpnProtocol(final SSLSocketFactory factory, final SSLSocket socket, final String protocol) {
+		try {
+			if (factory instanceof android.net.SSLCertificateSocketFactory && android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+				// can't call directly because of @hide?
+				//((android.net.SSLCertificateSocketFactory)factory).setAlpnProtocols(new byte[][]{protocol.getBytes("UTF-8")});
+				android.net.SSLCertificateSocketFactory.class.getMethod("setAlpnProtocols", byte[][].class).invoke(socket, new Object[]{new byte[][]{protocol.getBytes("UTF-8")}});
+			} else {
+				final Method method = socket.getClass().getMethod("setAlpnProtocols", byte[].class);
+				// the concatenation of 8-bit, length prefixed protocol names, just one in our case...
+				// http://tools.ietf.org/html/draft-agl-tls-nextprotoneg-04#page-4
+				final byte[] protocolUTF8Bytes = protocol.getBytes("UTF-8");
+				final byte[] lengthPrefixedProtocols = new byte[protocolUTF8Bytes.length + 1];
+				lengthPrefixedProtocols[0] = (byte) protocol.length(); // cannot be over 255 anyhow
+				System.arraycopy(protocolUTF8Bytes, 0, lengthPrefixedProtocols, 1, protocolUTF8Bytes.length);
+				method.invoke(socket, new Object[]{lengthPrefixedProtocols});
+			}
+		} catch (Throwable e) {
+			// ignore any error, we just can't set the alpn protocol...
+		}
+	}
+
+	private static class TlsFactoryVerifier {
+		private final SSLSocketFactory factory;
+		private final HostnameVerifier verifier;
+
+		public TlsFactoryVerifier(final SSLSocketFactory factory, final HostnameVerifier verifier) throws IOException {
+			this.factory = factory;
+			this.verifier = verifier;
+			if (factory == null || verifier == null) {
+				throw new IOException("could not setup ssl");
+			}
+		}
+	}
+
+	private TlsFactoryVerifier getTlsFactoryVerifier() throws NoSuchAlgorithmException, KeyManagementException, IOException {
+		final SSLContext sc = SSLContext.getInstance("TLS");
+		MemorizingTrustManager trustManager = this.mXmppConnectionService.getMemorizingTrustManager();
+		KeyManager[] keyManager;
+		if (account.getPrivateKeyAlias() != null && account.getPassword().isEmpty()) {
+			keyManager = new KeyManager[]{mKeyManager};
+		} else {
+			keyManager = null;
+		}
+		sc.init(keyManager, new X509TrustManager[]{mInteractive ? trustManager : trustManager.getNonInteractive()}, mXmppConnectionService.getRNG());
+		final SSLSocketFactory factory = sc.getSocketFactory();
+		final HostnameVerifier verifier;
+		if (mInteractive) {
+			verifier = trustManager.wrapHostnameVerifier(new XmppDomainVerifier());
+		} else {
+			verifier = trustManager.wrapHostnameVerifierNonInteractive(new XmppDomainVerifier());
+		}
+
+		return new TlsFactoryVerifier(factory, verifier);
 	}
 
 	@Override
@@ -605,53 +705,42 @@ public class XmppConnection implements Runnable {
 		tagWriter.writeTag(startTLS);
 	}
 
+	private void setSSLSocketSecurity(final SSLSocket sslSocket) throws NoSuchAlgorithmException {
+		final String[] supportProtocols;
+		final Collection<String> supportedProtocols = new LinkedList<>(
+				Arrays.asList(sslSocket.getSupportedProtocols()));
+		supportedProtocols.remove("SSLv3");
+		supportProtocols = supportedProtocols.toArray(new String[supportedProtocols.size()]);
+
+		sslSocket.setEnabledProtocols(supportProtocols);
+
+		final String[] cipherSuites = CryptoHelper.getOrderedCipherSuites(
+				sslSocket.getSupportedCipherSuites());
+		//Log.d(Config.LOGTAG, "Using ciphers: " + Arrays.toString(cipherSuites));
+		if (cipherSuites.length > 0) {
+			sslSocket.setEnabledCipherSuites(cipherSuites);
+		}
+	}
+
 	private void switchOverToTls(final Tag currentTag) throws XmlPullParserException, IOException {
 		tagReader.readTag();
 		try {
-			final SSLContext sc = SSLContext.getInstance("TLS");
-			MemorizingTrustManager trustManager = this.mXmppConnectionService.getMemorizingTrustManager();
-			KeyManager[] keyManager;
-			if (account.getPrivateKeyAlias() != null && account.getPassword().isEmpty()) {
-				keyManager = new KeyManager[]{ mKeyManager };
-			} else {
-				keyManager = null;
-			}
-			sc.init(keyManager,new X509TrustManager[]{mInteractive ? trustManager : trustManager.getNonInteractive()},mXmppConnectionService.getRNG());
-			final SSLSocketFactory factory = sc.getSocketFactory();
-			final HostnameVerifier verifier;
-			if (mInteractive) {
-				verifier = trustManager.wrapHostnameVerifier(new XmppDomainVerifier());
-			} else {
-				verifier = trustManager.wrapHostnameVerifierNonInteractive(new XmppDomainVerifier());
-			}
+			final TlsFactoryVerifier tlsFactoryVerifier = getTlsFactoryVerifier();
 			final InetAddress address = socket == null ? null : socket.getInetAddress();
 
-			if (factory == null || address == null || verifier == null) {
+			if (address == null) {
 				throw new IOException("could not setup ssl");
 			}
 
-			final SSLSocket sslSocket = (SSLSocket) factory.createSocket(socket,address.getHostAddress(), socket.getPort(),true);
+			final SSLSocket sslSocket = (SSLSocket) tlsFactoryVerifier.factory.createSocket(socket, address.getHostAddress(), socket.getPort(), true);
 
 			if (sslSocket == null) {
 				throw new IOException("could not initialize ssl socket");
 			}
 
-			final String[] supportProtocols;
-			final Collection<String> supportedProtocols = new LinkedList<>(
-					Arrays.asList(sslSocket.getSupportedProtocols()));
-			supportedProtocols.remove("SSLv3");
-			supportProtocols = supportedProtocols.toArray(new String[supportedProtocols.size()]);
+			setSSLSocketSecurity(sslSocket);
 
-			sslSocket.setEnabledProtocols(supportProtocols);
-
-			final String[] cipherSuites = CryptoHelper.getOrderedCipherSuites(
-					sslSocket.getSupportedCipherSuites());
-			//Log.d(Config.LOGTAG, "Using ciphers: " + Arrays.toString(cipherSuites));
-			if (cipherSuites.length > 0) {
-				sslSocket.setEnabledCipherSuites(cipherSuites);
-			}
-
-			if (!verifier.verify(account.getServer().getDomainpart(),sslSocket.getSession())) {
+			if (!tlsFactoryVerifier.verifier.verify(account.getServer().getDomainpart(), sslSocket.getSession())) {
 				Log.d(Config.LOGTAG,account.getJid().toBareJid()+": TLS certificate verification failed");
 				throw new SecurityException();
 			}
