@@ -306,8 +306,10 @@ public class XmppConnection implements Runnable {
 							}
 						}
 
-						if(startXmpp())
+						if (startXmpp())
 							break; // successfully connected to server that speaks xmpp
+					} catch(final SecurityException e) {
+						throw e;
 					} catch (final Throwable e) {
 						Log.d(Config.LOGTAG, account.getJid().toBareJid().toString() + ": " + e.getMessage() +"("+e.getClass().getName()+")");
 						if (!iterator.hasNext()) {
