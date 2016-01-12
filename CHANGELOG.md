@@ -3,6 +3,7 @@
 ####Version 1.9.0
 * Per conference notification settings
 * Let user decide whether to compress pictures
+* Support for XEP-0368
 * Ask user to exclude Conversations from battery optimizations
 
 ####Version 1.8.4
