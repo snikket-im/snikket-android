@@ -9,7 +9,6 @@
   <string name="action_secure">安全に会話</string>
   <string name="action_add_account">アカウントを追加</string>
   <string name="action_edit_contact">名前の編集</string>
-  <string name="action_add_phone_book">電話帳に追加</string>
   <string name="action_delete_contact">名簿から削除</string>
   <string name="action_block_contact">連絡先をブロック</string>
   <string name="action_unblock_contact">連絡先のブロックを解除</string>
@@ -173,7 +172,6 @@
   <string name="passwords_do_not_match">パスワードが一致しません</string>
   <string name="invalid_jid">これは有効な Jabber ID ではありません</string>
   <string name="error_out_of_memory">メモリ不足です。画像が大きすぎます</string>
-  <string name="add_phone_book_text">お使いのデバイスの連絡先リストに %s を追加しますか?</string>
   <string name="contact_status_online">オンライン</string>
   <string name="contact_status_free_to_chat">自由にチャットできます</string>
   <string name="contact_status_away">離席中</string>
@@ -320,7 +318,6 @@
   <string name="verify_otr">OTR を検証</string>
   <string name="remote_fingerprint">リモート フィンガープリント</string>
   <string name="scan">スキャン</string>
-  <string name="or_touch_phones">(または電話をタッチ)</string>
   <string name="smp">ソーシャリスト ミリオネア プロトコル</string>
   <string name="shared_secret_hint">ヒントまたは質問</string>
   <string name="shared_secret_secret">共有の秘密</string>
@@ -491,7 +488,6 @@
   <string name="pref_away_when_screen_off">画面がオフのときは離席</string>
   <string name="pref_away_when_screen_off_summary">画面がオフになっているとき、リソースを離席としてマークします</string>
   <string name="pref_xa_on_silent_mode">サイレントモード時は利用不可</string>
-  <string name="pref_xa_on_silent_mode_summary">サイレントモードのとき、リソースを利用不可としてマークします</string>
   <string name="action_add_account_with_certificate">アカウントに証明書を追加</string>
   <string name="unable_to_parse_certificate">証明書を解析できません</string>
   <string name="authenticate_with_certificate">空にすると、証明書で認証します</string>

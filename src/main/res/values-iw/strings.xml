@@ -9,7 +9,6 @@
   <string name="action_secure">דיון מאובטח</string>
   <string name="action_add_account">הוסף חשבון</string>
   <string name="action_edit_contact">ערוך שם</string>
-  <string name="action_add_phone_book">הוסף לפנקס הטלפונים</string>
   <string name="action_delete_contact">מחק מרשימת אנשי הקשר</string>
   <string name="action_block_contact">חסום איש קשר</string>
   <string name="action_unblock_contact">בטל חסימת איש קשר</string>
@@ -172,7 +171,6 @@
   <string name="passwords_do_not_match">סיסמאות לא תואמות</string>
   <string name="invalid_jid">מזהה ה Jabber אינו תקין</string>
   <string name="error_out_of_memory">חסר זיכרון. תצלום גדול מדי</string>
-  <string name="add_phone_book_text">האם ברצונך להוסיף את %s לתוך רשימת הקשר של המכשיר שלך?</string>
   <string name="contact_status_online">מקוון</string>
   <string name="contact_status_free_to_chat">חופשי לשיחה</string>
   <string name="contact_status_away">נעדר</string>
@@ -314,7 +312,6 @@
   <string name="verify_otr">אמת OTR</string>
   <string name="remote_fingerprint">טביעת אצבע מרוחקת</string>
   <string name="scan">סרוק</string>
-  <string name="or_touch_phones">(או קיים מגע בין הניידים)</string>
   <string name="smp">Socialist Millionaire Protocol</string>
   <string name="shared_secret_hint">שאלה או רמז</string>
   <string name="shared_secret_secret">סוד משותף</string>
@@ -485,7 +482,6 @@
   <string name="pref_away_when_screen_off">העבר למצב \"לא נמצא\" כאשר המסך כבוי</string>
   <string name="pref_away_when_screen_off_summary">מעביר את המכשיר לסטטוס \"לא נמצא\" כאשר המסך כבוי</string>
   <string name="pref_xa_on_silent_mode">העבר למצב \"לא זמין\" כאשר במצב שקט</string>
-  <string name="pref_xa_on_silent_mode_summary">מעביר את המכשיר לסטטוס \"לא זמין\" כאשר הפלאפון נמצא במצב שקט.</string>
   <string name="action_add_account_with_certificate">הוסף חשבון עם תעודה</string>
   <string name="unable_to_parse_certificate">תקלה בפענוח תעודה</string>
   <string name="authenticate_with_certificate">השאר ריק כדי להזדהות בלי תעודה</string>

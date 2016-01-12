@@ -9,7 +9,6 @@
   <string name="action_secure">Conversazione sicura</string>
   <string name="action_add_account">Aggiungi utente</string>
   <string name="action_edit_contact">Modifica il nome</string>
-  <string name="action_add_phone_book">Aggiungi alla rubrica</string>
   <string name="action_delete_contact">Cancella dalla lista</string>
   <string name="action_block_contact">Blocca contatto</string>
   <string name="action_unblock_contact">Sblocca contatto</string>
@@ -171,7 +170,6 @@
   <string name="passwords_do_not_match">Le Password non corrispondono</string>
   <string name="invalid_jid">Questo non è un ID Jabber valido</string>
   <string name="error_out_of_memory">Memoria esaurita. L’immagine è tropppo grande</string>
-  <string name="add_phone_book_text">Vuoi aggiungere %s alla lista contatti del tuo dispositivo?</string>
   <string name="contact_status_online">online</string>
   <string name="contact_status_free_to_chat">vuole chattare</string>
   <string name="contact_status_away">assente</string>
@@ -317,7 +315,6 @@
   <string name="verify_otr">Verifica OTR</string>
   <string name="remote_fingerprint">Impronta remota</string>
   <string name="scan">scan</string>
-  <string name="or_touch_phones">(o fai toccare i dispositivi)</string>
   <string name="smp">Socialist Millionaire Protocol</string>
   <string name="shared_secret_hint">Suggerimento o Domanda</string>
   <string name="shared_secret_secret">Segreto condiviso</string>
@@ -486,7 +483,6 @@
   <string name="server_info_broken">Rotto</string>
   <string name="pref_presence_settings">Impostazioni presenza</string>
   <string name="pref_xa_on_silent_mode">Non disponibile in modalità silenzioso</string>
-  <string name="pref_xa_on_silent_mode_summary">Segna la tua risorsa come non disponibile quando il telefono è in modalità silenzioso</string>
   <string name="action_add_account_with_certificate">Aggiungi account con certificato</string>
   <string name="unable_to_parse_certificate">Impossibile analizzare il certificato</string>
   <string name="authenticate_with_certificate">Lasciare vuoto per autenticarsi con certificato</string>

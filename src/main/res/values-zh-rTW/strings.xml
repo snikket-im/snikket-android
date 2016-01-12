@@ -8,7 +8,6 @@
   <string name="action_secure">安全對話</string>
   <string name="action_add_account">新增帳戶</string>
   <string name="action_edit_contact">編輯姓名</string>
-  <string name="action_add_phone_book">新增到手機通訊錄</string>
   <string name="action_delete_contact">從列表中刪除</string>
   <string name="title_activity_manage_accounts">管理帳戶</string>
   <string name="title_activity_conference_details">群組詳情</string>

@@ -9,7 +9,6 @@
   <string name="action_secure">Conversation sécurisée</string>
   <string name="action_add_account">Ajouter un compte</string>
   <string name="action_edit_contact">Modifier le nom</string>
-  <string name="action_add_phone_book">Ajouter aux contacts</string>
   <string name="action_delete_contact">Retirer des contacts</string>
   <string name="action_block_contact">Bloquer le contact</string>
   <string name="action_unblock_contact">Débloquer le contact</string>
@@ -173,7 +172,6 @@
   <string name="passwords_do_not_match">Les deux mots de passe ne correspondent pas.</string>
   <string name="invalid_jid">Cet identifiant n\'est pas valide.</string>
   <string name="error_out_of_memory">Plus de mémoire disponible. L\'image est trop volumineuse.</string>
-  <string name="add_phone_book_text">Voulez-vous ajouter %s aux contacts de l\'appareil ?</string>
   <string name="contact_status_online">En ligne</string>
   <string name="contact_status_free_to_chat">Disponible</string>
   <string name="contact_status_away">Absent</string>
@@ -320,7 +318,6 @@
   <string name="verify_otr">Vérifier l\'OTR</string>
   <string name="remote_fingerprint">Supprimer l\'empreinte</string>
   <string name="scan">Scanner</string>
-  <string name="or_touch_phones">(ou faites se toucher les appareils)</string>
   <string name="smp">Socialist Millionaire Protocol</string>
   <string name="shared_secret_hint">Indice ou question</string>
   <string name="shared_secret_secret">Secret partagé</string>
@@ -493,7 +490,6 @@
   <string name="pref_away_when_screen_off">Absent quand l\'écran est éteint</string>
   <string name="pref_away_when_screen_off_summary">Marquer cette ressource comme absente quand l\'écran est éteint.</string>
   <string name="pref_xa_on_silent_mode">Indisponible en mode silencieux</string>
-  <string name="pref_xa_on_silent_mode_summary">Marque cette ressource comme indisponible quand l\'appareil est en mode silencieux</string>
   <string name="action_add_account_with_certificate">Ajouter un compte avec un certificat</string>
   <string name="unable_to_parse_certificate">Impossible d\'analyser le certificat</string>
   <string name="authenticate_with_certificate">Laisser vide pour s\'identifier avec un certificat</string>

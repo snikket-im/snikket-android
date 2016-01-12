@@ -9,7 +9,6 @@
   <string name="action_secure">Ασφαλής συζήτηση</string>
   <string name="action_add_account">Προσθήκη λογαριασμού</string>
   <string name="action_edit_contact">Επεξεργασία ονόματος</string>
-  <string name="action_add_phone_book">Προσθήκη στον τηλεφωνικό κατάλογο</string>
   <string name="action_delete_contact">Διαγραφή από τη λίστα επαφών</string>
   <string name="action_block_contact">Αποκλεισμός επαφής</string>
   <string name="action_unblock_contact">Άρση αποκλεισμού επαφής</string>
@@ -294,7 +293,6 @@
   <string name="verify_otr">Επαλήθευση OTR</string>
   <string name="remote_fingerprint">Απομακρυσμένο αποτύπωμα</string>
   <string name="scan">σάρωση</string>
-  <string name="or_touch_phones">(ή τηλέφωνα επαφής)</string>
   <string name="smp">Πρωτόκολλο Socialist Millionaire</string>
   <string name="shared_secret_hint">Υπαινιγμός ή ερώτηση</string>
   <string name="shared_secret_secret">Κοινό μυστικό</string>

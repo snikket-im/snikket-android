@@ -9,7 +9,6 @@
   <string name="action_secure">Conversa segura</string>
   <string name="action_add_account">Afegir compte</string>
   <string name="action_edit_contact">Edita el nom</string>
-  <string name="action_add_phone_book">Afegir a l\'agenda</string>
   <string name="action_delete_contact">Elimina de la llista de contactes</string>
   <string name="action_block_contact">Bloqueja contacte</string>
   <string name="action_unblock_contact">Desbloqueja contacte</string>
@@ -294,7 +293,6 @@
   <string name="verify_otr">Verificar OTR</string>
   <string name="remote_fingerprint">Empremta digital remota</string>
   <string name="scan">Escanejar</string>
-  <string name="or_touch_phones">( o toca altres mòbils)</string>
   <string name="smp">Protocol de socialistes millionaris</string>
   <string name="shared_secret_hint">Pista o pregunta</string>
   <string name="shared_secret_secret">Secret compartit</string>

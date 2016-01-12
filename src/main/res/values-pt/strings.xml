@@ -9,7 +9,6 @@
   <string name="action_secure">Conversa segura</string>
   <string name="action_add_account">Adicionar conta</string>
   <string name="action_edit_contact">Editar nome</string>
-  <string name="action_add_phone_book">Adicionar aos contatos</string>
   <string name="action_block_contact">Bloquear contato</string>
   <string name="action_unblock_contact">Desbloquear contato</string>
   <string name="action_block_domain">Bloquear domínio</string>

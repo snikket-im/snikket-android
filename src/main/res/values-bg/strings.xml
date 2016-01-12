@@ -9,7 +9,7 @@
   <string name="action_secure">Защитен разговор</string>
   <string name="action_add_account">Добавяне на профил</string>
   <string name="action_edit_contact">Редактиране на името</string>
-  <string name="action_add_phone_book">Добавяне към списъка с телефонни номера</string>
+  <string name="action_add_phone_book">Добавяне към адресния указател</string>
   <string name="action_delete_contact">Изтриване от списъка</string>
   <string name="action_block_contact">Блокиране на контакта</string>
   <string name="action_unblock_contact">Деблокиране на контакта</string>
@@ -173,7 +173,7 @@
   <string name="passwords_do_not_match">Паролите са различни</string>
   <string name="invalid_jid">Това не е правилен Jabber идентификатор</string>
   <string name="error_out_of_memory">Няма достатъчно памет. Изображението е твърде голямо.</string>
-  <string name="add_phone_book_text">Искате ли да добавите %s към списъка си контакти на устройството си?</string>
+  <string name="add_phone_book_text">Искате ли да добавите %s към адресния си указател?</string>
   <string name="contact_status_online">на линия</string>
   <string name="contact_status_free_to_chat">свободен за разговор</string>
   <string name="contact_status_away">отсъстващ</string>
@@ -222,12 +222,14 @@
   <string name="conferences">Беседи</string>
   <string name="search">Търсене</string>
   <string name="create_contact">Създаване на контакт</string>
+  <string name="enter_contact">Въведете контакт</string>
   <string name="join_conference">Присъединяване към беседа</string>
   <string name="delete_contact">Изтриване на контакт</string>
   <string name="view_contact_details">Преглед на подр. за контакта</string>
   <string name="block_contact">Блокиране на контакт</string>
   <string name="unblock_contact">Деблокиране на контакт</string>
   <string name="create">Създаване</string>
+  <string name="select">Избиране</string>
   <string name="contact_already_exists">Контактът вече съществува</string>
   <string name="join">Присъединяване</string>
   <string name="conference_address">Адрес на беседата</string>
@@ -320,7 +322,6 @@
   <string name="verify_otr">Проверка на OTR</string>
   <string name="remote_fingerprint">Отдалечен отпечатък</string>
   <string name="scan">сканиране</string>
-  <string name="or_touch_phones">(или докоснете телефоните)</string>
   <string name="smp">Протокол „Socialist Millionaire“</string>
   <string name="shared_secret_hint">Подсказка или въпрос</string>
   <string name="shared_secret_secret">Обща тайна</string>
@@ -493,7 +494,7 @@
   <string name="pref_away_when_screen_off">Отсъстващ, когато екранът е изключен</string>
   <string name="pref_away_when_screen_off_summary">Преминава в състояние „отсъстващ“ когато екранът бъде изключен</string>
   <string name="pref_xa_on_silent_mode">Недостъпен, в тих режим</string>
-  <string name="pref_xa_on_silent_mode_summary">Преминава в състояние „недостъпен“ когато телефонът е в тих режим</string>
+  <string name="pref_xa_on_silent_mode_summary">Преминава в състояние „недостъпен“ когато устройството е в тих режим</string>
   <string name="action_add_account_with_certificate">Добавяне на профил със сертификат</string>
   <string name="unable_to_parse_certificate">Неуспешно прочитане на сертификата</string>
   <string name="authenticate_with_certificate">Оставете празно за удостоверяване със сертификат</string>
@@ -524,4 +525,24 @@
   <string name="no_storage_permission">Conversations се нуждае от достъп до външно място за съхранение</string>
   <string name="sync_with_contacts">Синхронизиране с контактите</string>
   <string name="sync_with_contacts_long">Conversations иска да съчетае Вашия списък в XMPP с контактите Ви, за да показва пълните им имена и снимки..\n\nConversations единствено ще чете контактите Ви и ще ги използва вътрешно, без да ги качва на сървъра Ви.\n\nЩе бъдете помолен/а за позволение за достъп до контактите Ви.</string>
+  <string name="certificate_information">Информация за сертификата</string>
+  <string name="certificate_subject">Обект</string>
+  <string name="certificate_issuer">Издател</string>
+  <string name="certificate_cn">Име</string>
+  <string name="certificate_o">Организация</string>
+  <string name="certificate_sha1">Контролна сума SHA1</string>
+  <string name="certicate_info_not_available">(Няма)</string>
+  <string name="certificate_not_found">Няма намерен сертификат</string>
+  <string name="notify_on_all_messages">Известяване за всички съобщения</string>
+  <string name="notify_only_when_highlighted">Известяване само на осветените</string>
+  <string name="notify_never">Известията са изключени</string>
+  <string name="notify_paused">Известията са спрени временно</string>
+  <string name="pref_picture_compression">Компресиране на снимките</string>
+  <string name="pref_picture_compression_summary">Преоразмеряване и компресиране на снимките</string>
+  <string name="always">Винаги</string>
+  <string name="automatically">Автоматично</string>
+  <string name="battery_optimizations_enabled">Оптимизациите за използв. на батерията са вкл.</string>
+  <string name="battery_optimizations_enabled_explained">Устройството Ви прилага сериозни оптимизации за използването на батерията върху Conversations, а те може да доведат до забавени известия и дори пропуснати съобщения.\nПрепоръчително е до ги изключите.</string>
+  <string name="battery_optimizations_enabled_dialog">Устройството Ви прилага сериозни оптимизации за използването на батерията върху Conversations, а те може да доведат до забавени известия и дори пропуснати съобщения.\n\nСега ще Ви бъде предложено да ги изключите.</string>
+  <string name="disable">Изключване</string>
 </resources>

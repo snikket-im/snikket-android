@@ -9,7 +9,7 @@
   <string name="action_secure">Säker konversation</string>
   <string name="action_add_account">Lägg till konto</string>
   <string name="action_edit_contact">Ändra namn</string>
-  <string name="action_add_phone_book">Lägg till i telefonbok</string>
+  <string name="action_add_phone_book">Lägg till i kontakter</string>
   <string name="action_delete_contact">Ta bort kontakt</string>
   <string name="action_block_contact">Blockera kontakt</string>
   <string name="action_unblock_contact">Avblockera kontakt</string>
@@ -173,7 +173,7 @@
   <string name="passwords_do_not_match">Lösenorden är inte lika</string>
   <string name="invalid_jid">Detta är inte ett korrekt Jabber-ID</string>
   <string name="error_out_of_memory">Slut på minne. Bilden är för stor</string>
-  <string name="add_phone_book_text">Vill du lägga till %s i din enhets kontaktlista?</string>
+  <string name="add_phone_book_text">Vill du lägga till %s i din enhets kontakter?</string>
   <string name="contact_status_online">online</string>
   <string name="contact_status_free_to_chat">tillgänglig</string>
   <string name="contact_status_away">borta</string>
@@ -222,12 +222,14 @@
   <string name="conferences">Konferenser</string>
   <string name="search">Sök</string>
   <string name="create_contact">Skapa kontakt</string>
+  <string name="enter_contact">Fyll i kontakt</string>
   <string name="join_conference">Gå med i konferens</string>
   <string name="delete_contact">Ta bort kontakt</string>
   <string name="view_contact_details">Se kontaktdetaljer</string>
   <string name="block_contact">Blockera kontakt</string>
   <string name="unblock_contact">Avblockera kontakt</string>
   <string name="create">Skapa</string>
+  <string name="select">Välj</string>
   <string name="contact_already_exists">Kontakten finns redan</string>
   <string name="join">Gå med</string>
   <string name="conference_address">Konferensadress</string>
@@ -320,7 +322,6 @@
   <string name="verify_otr">Verifiera OTR</string>
   <string name="remote_fingerprint">Fjärr-fingeravtryck</string>
   <string name="scan">skanna</string>
-  <string name="or_touch_phones">(eller nudda telefoner)</string>
   <string name="smp">Socialist Millionaire Protocol</string>
   <string name="shared_secret_hint">Ledtråd eller fråga</string>
   <string name="shared_secret_secret">Delad hemlighet</string>
@@ -524,4 +525,24 @@
   <string name="no_storage_permission">Conversations behöver access till extern lagring</string>
   <string name="sync_with_contacts">Synkronisera med kontakter</string>
   <string name="sync_with_contacts_long">Conversations vill matcha din XMPP-kontaktlista med dina kontakter för att visa deras namn och profilbild.\n\nConversations läser endast dina kontakter för att matcha dem lokalt utan att ladda upp dem till din server.\n\nDu kommer nu få frågan om tillåtelse för att använda kontakterna.</string>
+  <string name="certificate_information">Certifikatinformation</string>
+  <string name="certificate_subject">Ämne</string>
+  <string name="certificate_issuer">Utfärdare</string>
+  <string name="certificate_cn">Common Name</string>
+  <string name="certificate_o">Organisation</string>
+  <string name="certificate_sha1">SHA1</string>
+  <string name="certicate_info_not_available">(Ej tillgänglig)</string>
+  <string name="certificate_not_found">Inget certifikat funnet</string>
+  <string name="notify_on_all_messages">Notifiera för alla meddelanden</string>
+  <string name="notify_only_when_highlighted">Notifiera endast vid highlight</string>
+  <string name="notify_never">Notifieringar deaktiverade</string>
+  <string name="notify_paused">Notifieringar pausade</string>
+  <string name="pref_picture_compression">Komprimera bilder</string>
+  <string name="pref_picture_compression_summary">Storleksjustera och komprimera bilder</string>
+  <string name="always">Alltid</string>
+  <string name="automatically">Automatiskt</string>
+  <string name="battery_optimizations_enabled">Batterioptimeringar aktiverade</string>
+  <string name="battery_optimizations_enabled_explained">Din enhet har kraftiga batterioptimeringar som påverkar Conversations på så sätt att inkommande meddelanden kan försenas eller kan till och med gå förlorade.\nDet är rekommenderat att deaktivera batterioptimeringarna.</string>
+  <string name="battery_optimizations_enabled_dialog">Din enhet har kraftiga batterioptimeringar som påverkar Conversations på så sätt att inkommande meddelanden kan försenas eller kan till och med gå förlorade.\nDu kommer nu att bli ombedd att stänga av batterioptimeringarna för Conversations.</string>
+  <string name="disable">Deaktivera</string>
 </resources>

@@ -9,7 +9,6 @@
   <string name="action_secure">Защищенная беседа</string>
   <string name="action_add_account">Добавить аккаунт</string>
   <string name="action_edit_contact">Редактировать контакт</string>
-  <string name="action_add_phone_book">Добавить в телефонную книгу</string>
   <string name="action_delete_contact">Удалить из списка</string>
   <string name="action_block_contact">Заблокировать контакт</string>
   <string name="action_unblock_contact">Разблокировать контакт</string>
@@ -173,7 +172,6 @@
   <string name="passwords_do_not_match">Пароли не совпадают</string>
   <string name="invalid_jid">Недопустимый JID (Джаббер ID)</string>
   <string name="error_out_of_memory">Недостаточно памяти. Изображение слишком большое</string>
-  <string name="add_phone_book_text">Вы хотите добавить %s в список контактов устройства?</string>
   <string name="contact_status_online">в сети</string>
   <string name="contact_status_free_to_chat">свободен для общения</string>
   <string name="contact_status_away">скоро буду</string>
@@ -320,7 +318,6 @@
   <string name="verify_otr">Подтвердить OTR</string>
   <string name="remote_fingerprint">Удалённый отпечаток</string>
   <string name="scan">поиск</string>
-  <string name="or_touch_phones">(или сенсорные телефоны)</string>
   <string name="smp">Socialist Millionaire Protocol</string>
   <string name="shared_secret_hint">Подсказка или вопрос</string>
   <string name="shared_secret_secret">Общий секретный ключ</string>
@@ -497,7 +494,6 @@
   <string name="pref_away_when_screen_off">Вышел когда экран выключен</string>
   <string name="pref_away_when_screen_off_summary">Отмечает ваш ресурс как \"вышел\" когда экран выключен</string>
   <string name="pref_xa_on_silent_mode">Не доступен в режиме без звука</string>
-  <string name="pref_xa_on_silent_mode_summary">Отмечает ваш ресурс как \"не доступен\" когда телефон в беззвучном режиме</string>
   <string name="action_add_account_with_certificate">Добавить аккаунт с сертификатом</string>
   <string name="unable_to_parse_certificate">Невозможно разобрать сертификат</string>
   <string name="authenticate_with_certificate">Оставить пустым для входа с сертификатом</string>

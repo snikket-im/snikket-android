@@ -9,7 +9,6 @@
   <string name="action_secure">Amankan Percakapan</string>
   <string name="action_add_account">Tambah Akun</string>
   <string name="action_edit_contact">Ubah Nama</string>
-  <string name="action_add_phone_book">Tambah ke buku telepon</string>
   <string name="action_delete_contact">Hapus dari roster</string>
   <string name="action_block_contact">Blokir kontak</string>
   <string name="action_unblock_contact">Batal blokir kontak</string>
@@ -298,7 +297,6 @@
   <string name="verify_otr">Verifikasi OTR</string>
   <string name="remote_fingerprint">Remote Sidik jari</string>
   <string name="scan">pindai</string>
-  <string name="or_touch_phones">(atau menyentuh telepon)</string>
   <string name="smp">Socialist Millionaire Protocol</string>
   <string name="shared_secret_hint">Petunjuk atau Pertanyaan</string>
   <string name="shared_secret_secret">Rahasia bersama</string>

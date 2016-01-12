@@ -9,7 +9,6 @@
   <string name="action_secure">안전한 대화 </string>
   <string name="action_add_account">계정 추가 </string>
   <string name="action_edit_contact">이름 편집 </string>
-  <string name="action_add_phone_book">주소록에 추가 </string>
   <string name="action_delete_contact">명단에서 삭제 </string>
   <string name="action_block_contact">연락처 </string>
   <string name="action_unblock_contact">연락처 차단 해제 </string>
@@ -294,7 +293,6 @@
   <string name="verify_otr">OTR 검증 </string>
   <string name="remote_fingerprint">Remote Fingerprint</string>
   <string name="scan">스캔 </string>
-  <string name="or_touch_phones">(혹은 기기 터치) </string>
   <string name="smp">Socialist Millionaire Protocol</string>
   <string name="shared_secret_hint">힌트 혹은 질문 </string>
   <string name="shared_secret_secret">공유된 비밀 </string>

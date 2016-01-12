@@ -9,7 +9,6 @@
   <string name="action_secure">Konwersacja szyfrowana</string>
   <string name="action_add_account">Dodaj konto</string>
   <string name="action_edit_contact">Edytuj nazwę</string>
-  <string name="action_add_phone_book">Dodaj do książki telefonicznej</string>
   <string name="action_delete_contact">Usuń z rostera</string>
   <string name="action_block_contact">Zablokuj kontakt</string>
   <string name="action_unblock_contact">Odblokuj kontakt</string>
@@ -310,7 +309,6 @@
   <string name="verify_otr">Weryfikuj OTR</string>
   <string name="remote_fingerprint">Zdalny odcisk klucza</string>
   <string name="scan">skanuj</string>
-  <string name="or_touch_phones">(lub zetknij telefony)</string>
   <string name="smp">Protokół socialist millionaire</string>
   <string name="shared_secret_hint">Podpowiedź lub pytanie</string>
   <string name="shared_secret_secret">Wspólny sekret</string>

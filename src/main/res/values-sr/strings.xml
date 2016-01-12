@@ -173,7 +173,7 @@
   <string name="passwords_do_not_match">Лозинке се не поклапају</string>
   <string name="invalid_jid">Ово није исправан Џабер ИД</string>
   <string name="error_out_of_memory">Нестало меморије. Слика је превелика</string>
-  <string name="add_phone_book_text">Желите ли да додате %s у именик вашег уређаја?</string>
+  <string name="add_phone_book_text">Желите ли да додате %s у ваш именик?</string>
   <string name="contact_status_online">на вези</string>
   <string name="contact_status_free_to_chat">слободан за ћаскање</string>
   <string name="contact_status_away">одсутан</string>
@@ -222,12 +222,14 @@
   <string name="conferences">Групна ћаскања</string>
   <string name="search">Тражи</string>
   <string name="create_contact">Направи контакт</string>
+  <string name="enter_contact">Унеси контакт</string>
   <string name="join_conference">Придружи се групном ћаскању</string>
   <string name="delete_contact">Обриши контакт</string>
   <string name="view_contact_details">Прикажи детаље контакта</string>
   <string name="block_contact">Блокирај контакт</string>
   <string name="unblock_contact">Одблокирај контакт</string>
   <string name="create">Направи</string>
+  <string name="select">Изабери</string>
   <string name="contact_already_exists">Контакт већ постоји</string>
   <string name="join">Придружи се</string>
   <string name="conference_address">Адреса групног ћаскања</string>
@@ -320,7 +322,6 @@
   <string name="verify_otr">Овери ОТР</string>
   <string name="remote_fingerprint">Отисак удаљеног</string>
   <string name="scan">очитај</string>
-  <string name="or_touch_phones">(или додирните телефоне)</string>
   <string name="smp">Социјалистички милионер протокол</string>
   <string name="shared_secret_hint">Наговештај или питање</string>
   <string name="shared_secret_secret">Заједничка тајна</string>
@@ -495,7 +496,7 @@
   <string name="pref_away_when_screen_off">Одсутан кад је екран искључен</string>
   <string name="pref_away_when_screen_off_summary">Означава ваш ресурс одсутним кад је екран искључен</string>
   <string name="pref_xa_on_silent_mode">Недоступан у тихом режиму</string>
-  <string name="pref_xa_on_silent_mode_summary">Означава ваш ресурс недоступним кад је телефон у тихом режиму</string>
+  <string name="pref_xa_on_silent_mode_summary">Означава ваш ресурс недоступним кад је уређај у тихом режиму</string>
   <string name="unable_to_parse_certificate">Не могу да рашчланим сертификат</string>
   <string name="authenticate_with_certificate">Оставите празно за аутентификацију сертификатом</string>
   <string name="captcha_ocr">Текст стопке</string>
@@ -525,4 +526,17 @@
   <string name="shared_image_with_x">Подељена слика са %s</string>
   <string name="no_storage_permission">Конверзацији је потребан приступ спољашњем складишту</string>
   <string name="sync_with_contacts">Синхронизуј са контактима</string>
+  <string name="certificate_information">Подаци о сертификату</string>
+  <string name="certificate_subject">Предмет</string>
+  <string name="certificate_issuer">Издавач</string>
+  <string name="certificate_cn">Заједничко име</string>
+  <string name="certificate_o">Организација</string>
+  <string name="certificate_sha1">СХА1</string>
+  <string name="certicate_info_not_available">(није доступно)</string>
+  <string name="certificate_not_found">Сертификат није нађен</string>
+  <string name="notify_on_all_messages">Обавештења за све поруке</string>
+  <string name="notify_only_when_highlighted">Обавештења само за означене поруке</string>
+  <string name="notify_never">Обавештења искључена</string>
+  <string name="notify_paused">Обавештења паузирана</string>
+  <string name="pref_picture_compression">Компресуј слике</string>
 </resources>

@@ -9,7 +9,7 @@
   <string name="action_secure">Securizeaza conferinta</string>
   <string name="action_add_account">Adauga cont</string>
   <string name="action_edit_contact">Editeaza nume</string>
-  <string name="action_add_phone_book">Adauga in agenda</string>
+  <string name="action_add_phone_book">Adauga la lista de contacte</string>
   <string name="action_delete_contact">Sterge din lista</string>
   <string name="action_block_contact">Blocheaza contact</string>
   <string name="action_unblock_contact">Deblocheaza contact</string>
@@ -173,7 +173,7 @@
   <string name="passwords_do_not_match">Parolele nu sunt identice</string>
   <string name="invalid_jid">Acesta nu este un ID Jabber valabil</string>
   <string name="error_out_of_memory">Memorie epuizata. Imaginea este prea mare.</string>
-  <string name="add_phone_book_text">Vrei sa adaugi pe %s in lista de contacte a dispozitivului?</string>
+  <string name="add_phone_book_text">Vrei sa adaugi pe %s in lista de contacte?</string>
   <string name="contact_status_online">conectat</string>
   <string name="contact_status_free_to_chat">disponibil pentru conversatie</string>
   <string name="contact_status_away">plecat</string>
@@ -222,12 +222,14 @@
   <string name="conferences">Conferinte</string>
   <string name="search">Cauta</string>
   <string name="create_contact">Adauga contact</string>
+  <string name="enter_contact">Introdu contact</string>
   <string name="join_conference">Alatura-te conferintei</string>
   <string name="delete_contact">Sterge contact</string>
   <string name="view_contact_details">Arata detalii contact</string>
   <string name="block_contact">Blocheaza contact</string>
   <string name="unblock_contact">Deblocheaza contact</string>
   <string name="create">Creeaza</string>
+  <string name="select">Selecteaza</string>
   <string name="contact_already_exists">Contactul exista deja</string>
   <string name="join">Alatura-te</string>
   <string name="conference_address">Adresa conferinta</string>
@@ -320,7 +322,6 @@
   <string name="verify_otr">Verifica OTR</string>
   <string name="remote_fingerprint">Amprenta la distanta</string>
   <string name="scan">scaneaza</string>
-  <string name="or_touch_phones">(sau dispozitive touch)</string>
   <string name="smp">Socialist Millionaire Protocol</string>
   <string name="shared_secret_hint">Indiciu sau Intrebare</string>
   <string name="shared_secret_secret">Secret impartasit</string>
@@ -495,7 +496,7 @@
   <string name="pref_away_when_screen_off">Plecat cand ecranul este oprit</string>
   <string name="pref_away_when_screen_off_summary">Marcheaza clientul drept plecat cand ecranul este oprit</string>
   <string name="pref_xa_on_silent_mode">Indisponibil in mod silentios</string>
-  <string name="pref_xa_on_silent_mode_summary">Marcheaza clientul drept indisponibil cand dispozitivul este in mod silentios</string>
+  <string name="pref_xa_on_silent_mode_summary">Declara clientul drept indisponibil atunci cand dispozitivul este in mod silentios</string>
   <string name="action_add_account_with_certificate">Adauga un cont cu certificat</string>
   <string name="unable_to_parse_certificate">Nu se poate analiza certificatul</string>
   <string name="authenticate_with_certificate">Lasa gol pentru a autentifica cu un certificat</string>
@@ -527,4 +528,25 @@
   <string name="no_storage_permission">Conversations are nevoie de acces la stocarea externa</string>
   <string name="sync_with_contacts">Sincronizeaza cu contactele</string>
   <string name="sync_with_contacts_long">Conversations doreste sa potriveasta lista de contacte XMPP cu cea din dispozitiv pentru a putea afisa numule lor complete si avatarele.\n\nConversations doar v-a citi si potrivi local fara sa le incarce catre vreun server.\n\nUrmeaza sa fii intrebat daca doresti sa permiti accesul la contacte.</string>
+  <string name="certificate_information">Informatii despre certificat</string>
+  <string name="certificate_subject">Subiect</string>
+  <string name="certificate_issuer">
+Emitent</string>
+  <string name="certificate_cn">Nume comun</string>
+  <string name="certificate_o">Organizatie</string>
+  <string name="certificate_sha1">SHA1</string>
+  <string name="certicate_info_not_available">(Indisponibil)</string>
+  <string name="certificate_not_found">Certificat inexistent</string>
+  <string name="notify_on_all_messages">Notifica la toate mesajele</string>
+  <string name="notify_only_when_highlighted">Notifica numai la evidentiere</string>
+  <string name="notify_never">Notificari dezactivate</string>
+  <string name="notify_paused">Notificari suspendate</string>
+  <string name="pref_picture_compression">Comprima imaginile</string>
+  <string name="pref_picture_compression_summary">Redimensioneaza si comprima imaginile</string>
+  <string name="always">Mereu</string>
+  <string name="automatically">Automat</string>
+  <string name="battery_optimizations_enabled">Optimizare baterie activata</string>
+  <string name="battery_optimizations_enabled_explained">Dispozitivul dumneavoastra incearca sa optimizeze agresiv consumul bateriei pentru Conversations, asta poate duce la notificari intarziate sau chiar pierderi de mesaje.\nEste recomandat sa dezactivati aceste optimizari.</string>
+  <string name="battery_optimizations_enabled_dialog">Dispozitivul dumneavoastra incearca sa optimizeze agresiv consumul bateriei pentru Conversations, asta poate duce la notificari intarziate sau chiar pierderi de mesaje.\nIn continuare veti fi rugat sa dezactivati aceste optimizari.</string>
+  <string name="disable">Dezactivat</string>
 </resources>

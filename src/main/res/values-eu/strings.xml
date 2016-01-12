@@ -9,7 +9,6 @@
   <string name="action_secure">Elkarrizketa segurua</string>
   <string name="action_add_account">Kontua gehitu</string>
   <string name="action_edit_contact">Izena editatu</string>
-  <string name="action_add_phone_book">Telefono kontaktuetara gehitu</string>
   <string name="action_delete_contact">Zerrendatik ezabatu</string>
   <string name="action_block_contact">Kontaktua blokeatu</string>
   <string name="action_unblock_contact">Kontaktua desblokeatu</string>
@@ -173,7 +172,6 @@
   <string name="passwords_do_not_match">Pasahitzak ez dute bat egiten</string>
   <string name="invalid_jid">Hau ez da Jabber ID baliodun bat</string>
   <string name="error_out_of_memory">Memoriarik gabe. Irudia handiegia da</string>
-  <string name="add_phone_book_text">%s zure gailuko kontaktu zerrendara gehitu nahi al duzu?</string>
   <string name="contact_status_online">konektatuta</string>
   <string name="contact_status_free_to_chat">hitzegiteko aske</string>
   <string name="contact_status_away">kanpoan</string>
@@ -320,7 +318,6 @@
   <string name="verify_otr">OTR egiaztatu</string>
   <string name="remote_fingerprint">Urruneko hatz-marka</string>
   <string name="scan">eskaneatu</string>
-  <string name="or_touch_phones">(edo telefonoak ikutu)</string>
   <string name="smp">Socialist Millionaire protokoloa</string>
   <string name="shared_secret_hint">Iradokizuna edo galdera</string>
   <string name="shared_secret_secret">Partekatutako sekretua</string>
@@ -493,7 +490,6 @@
   <string name="pref_away_when_screen_off">Urrun pantaila itzalita dagoenean</string>
   <string name="pref_away_when_screen_off_summary">Zure baliabidea urrun bezala markatzen du pantaila itzalita dagoenean</string>
   <string name="pref_xa_on_silent_mode">Ez eskuragarri modu isilean</string>
-  <string name="pref_xa_on_silent_mode_summary">Zure baliabidea ez eskuragarri bezala markatzen du mugikorra modu isilean dagoenean</string>
   <string name="action_add_account_with_certificate">Kontua ziurtagiriarekin gehitu</string>
   <string name="unable_to_parse_certificate">Ezin izan da ziurtagiria aztertu</string>
   <string name="authenticate_with_certificate">Utzi hutsik ziurtagiririk gabe autentifikatzeko</string>

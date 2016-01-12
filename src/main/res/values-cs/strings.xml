@@ -9,7 +9,6 @@
   <string name="action_secure">Zabezpečená konverzace</string>
   <string name="action_add_account">Přidat účet</string>
   <string name="action_edit_contact">Upravit jméno</string>
-  <string name="action_add_phone_book">Přidat do telefonního seznamu</string>
   <string name="action_delete_contact">Smazat ze seznamu</string>
   <string name="action_block_contact">Zablokovat kontakt</string>
   <string name="action_unblock_contact">Odblokovat kontakt</string>
@@ -173,7 +172,6 @@
   <string name="passwords_do_not_match">Hesla nesouhlasí</string>
   <string name="invalid_jid">Toto není platné Jabber ID</string>
   <string name="error_out_of_memory">Nedostatek paměti. Obrázek je příliš velký</string>
-  <string name="add_phone_book_text">Chcete přidat %s do svého seznamu kontaktů v přístroji?</string>
   <string name="contact_status_online">online</string>
   <string name="contact_status_free_to_chat">volný pro chat</string>
   <string name="contact_status_away">pryč</string>
@@ -320,7 +318,6 @@
   <string name="verify_otr">Ověřit OTR</string>
   <string name="remote_fingerprint">Vzdálený otisk</string>
   <string name="scan">skenovat</string>
-  <string name="or_touch_phones">(nebo dotykové telefony)</string>
   <string name="smp">Socialist Millionaire Protocol</string>
   <string name="shared_secret_hint">Nápověda nebo Otázka</string>
   <string name="shared_secret_secret">Sdílené tajemství</string>
@@ -495,7 +492,6 @@
   <string name="pref_away_when_screen_off">Pryč při vypnuté obrazovce</string>
   <string name="pref_away_when_screen_off_summary">Při vypnuté obrazovce označí váš stav jako pryč</string>
   <string name="pref_xa_on_silent_mode">Nedostupný při vypnutém zvuku</string>
-  <string name="pref_xa_on_silent_mode_summary">Při vypnutém zvuku označí váš stav jako nedostupný</string>
   <string name="action_add_account_with_certificate">Přidat účet s certifikátem</string>
   <string name="unable_to_parse_certificate">Nelze načíst certifikát</string>
   <string name="authenticate_with_certificate">Nechat prázdné pro ověření s certifikátem</string>

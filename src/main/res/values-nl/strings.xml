@@ -9,7 +9,6 @@
   <string name="action_secure">Beveiligd gesprek</string>
   <string name="action_add_account">Account toevoegen</string>
   <string name="action_edit_contact">Naam veranderen</string>
-  <string name="action_add_phone_book">Toevoegen aan telefoonboek</string>
   <string name="action_delete_contact">Verwijderen uit lijst</string>
   <string name="action_block_contact">Contact blokkeren</string>
   <string name="action_unblock_contact">Contact deblokkeren</string>
@@ -310,7 +309,6 @@
   <string name="verify_otr">OTR bevestigen</string>
   <string name="remote_fingerprint">Externe vingerafdruk</string>
   <string name="scan">scan</string>
-  <string name="or_touch_phones">(of raak gsm\'s aan)</string>
   <string name="smp">Socialist Millionaire Protocol</string>
   <string name="shared_secret_hint">Hint of vraag</string>
   <string name="shared_secret_secret">Gedeeld geheim</string>

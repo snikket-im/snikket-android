@@ -9,7 +9,6 @@
   <string name="action_secure">Conversación segura</string>
   <string name="action_add_account">Añadir cuenta</string>
   <string name="action_edit_contact">Editar contacto</string>
-  <string name="action_add_phone_book">Añadir a contactos del teléfono</string>
   <string name="action_delete_contact">Eliminar contacto de la lista</string>
   <string name="action_block_contact">Bloquear contacto</string>
   <string name="action_unblock_contact">Desbloquear contacto</string>
@@ -173,7 +172,6 @@
   <string name="passwords_do_not_match">Las contraseñas no coinciden</string>
   <string name="invalid_jid">El identificador no es un identificador Jabber válido</string>
   <string name="error_out_of_memory">Sin memoria. La imagen es demasiado grande</string>
-  <string name="add_phone_book_text">¿Quieres añadir a %s a tu lista de dispositivos?</string>
   <string name="contact_status_online">Disponible</string>
   <string name="contact_status_free_to_chat">Hablador</string>
   <string name="contact_status_away">Ausente</string>
@@ -320,7 +318,6 @@
   <string name="verify_otr">Verificar OTR</string>
   <string name="remote_fingerprint">Huella digital remota</string>
   <string name="scan">escanear</string>
-  <string name="or_touch_phones">(o une los teléfonos)</string>
   <string name="smp">Protocolo del Socialista Millonario</string>
   <string name="shared_secret_hint">Sugerencia o pregunta</string>
   <string name="shared_secret_secret">Secreto compartido</string>
@@ -493,7 +490,6 @@
   <string name="pref_away_when_screen_off">Ausente con pantalla apagada</string>
   <string name="pref_away_when_screen_off_summary">Cambia tu estado a ausente cuando la pantalla está apagada</string>
   <string name="pref_xa_on_silent_mode">No disponible en modo silencio</string>
-  <string name="pref_xa_on_silent_mode_summary">Cambia tu estado a no disponible cuando el teléfono está en modo silencio</string>
   <string name="action_add_account_with_certificate">Añadir cuenta con certificado</string>
   <string name="unable_to_parse_certificate">No se ha podido leer el certificado</string>
   <string name="authenticate_with_certificate">Dejar vacío para autenticar certificado w/ </string>

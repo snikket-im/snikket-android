@@ -9,7 +9,6 @@
   <string name="action_secure">安全对话</string>
   <string name="action_add_account">添加账号</string>
   <string name="action_edit_contact">编辑姓名</string>
-  <string name="action_add_phone_book">添加到手机通讯录</string>
   <string name="action_delete_contact">从列表中删除</string>
   <string name="action_block_contact">屏蔽联系人</string>
   <string name="action_unblock_contact">解除联系人屏蔽</string>
@@ -173,7 +172,6 @@
   <string name="passwords_do_not_match">密码不一致</string>
   <string name="invalid_jid">该 Jabber ID 无效</string>
   <string name="error_out_of_memory">空间不足。图片过大</string>
-  <string name="add_phone_book_text">你想把 %s 加到你设备的联系人列表吗？</string>
   <string name="contact_status_online">在线</string>
   <string name="contact_status_free_to_chat">自由畅聊</string>
   <string name="contact_status_away">离开</string>
@@ -320,7 +318,6 @@
   <string name="verify_otr">验证 OTR</string>
   <string name="remote_fingerprint">远程指纹</string>
   <string name="scan">扫描</string>
-  <string name="or_touch_phones">(或轻触手机)</string>
   <string name="smp">Socialist Millionaire Protocol</string>
   <string name="shared_secret_hint">提示或问题</string>
   <string name="shared_secret_secret">共知的秘密</string>
@@ -491,7 +488,6 @@
   <string name="pref_away_when_screen_off">关闭屏幕时离开</string>
   <string name="pref_away_when_screen_off_summary">当屏幕关闭时将标记您的资源为离开状态</string>
   <string name="pref_xa_on_silent_mode">静音模式时不可用</string>
-  <string name="pref_xa_on_silent_mode_summary">当设备处于静音模式时将标记您的资源为不可用状态</string>
   <string name="action_add_account_with_certificate">使用证书添加账户</string>
   <string name="unable_to_parse_certificate">无法解析证书</string>
   <string name="authenticate_with_certificate">留空以认证 w/ 证书</string>
