@@ -20,7 +20,6 @@ import org.xmlpull.v1.XmlPullParserException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Method;
 import java.math.BigInteger;
 import java.net.ConnectException;
 import java.net.IDN;
@@ -35,12 +34,9 @@ import java.security.Principal;
 import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
 
@@ -66,6 +62,7 @@ import eu.siacs.conversations.generator.IqGenerator;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.DNSHelper;
+import eu.siacs.conversations.utils.SSLSocketHelper;
 import eu.siacs.conversations.utils.SocksSocketFactory;
 import eu.siacs.conversations.utils.Xmlns;
 import eu.siacs.conversations.xml.Element;
@@ -297,9 +294,9 @@ public class XmppConnection implements Runnable {
 								throw new IOException("could not initialize ssl socket");
 							}
 
-							setSSLSocketSecurity((SSLSocket) socket);
-							this.setSNIHost(tlsFactoryVerifier.factory, (SSLSocket) socket, account.getServer().getDomainpart());
-							this.setAlpnProtocol(tlsFactoryVerifier.factory, (SSLSocket) socket, "xmpp-client");
+							SSLSocketHelper.setSecurity((SSLSocket) socket);
+							SSLSocketHelper.setSNIHost(tlsFactoryVerifier.factory, (SSLSocket) socket, account.getServer().getDomainpart());
+							SSLSocketHelper.setAlpnProtocol(tlsFactoryVerifier.factory, (SSLSocket) socket, "xmpp-client");
 
 							socket.connect(addr, Config.SOCKET_TIMEOUT * 1000);
 
@@ -375,39 +372,6 @@ public class XmppConnection implements Runnable {
 			socket.close();
 		}
 		return false;
-	}
-
-	private void setSNIHost(final SSLSocketFactory factory, final SSLSocket socket, final String hostname) {
-		if (factory instanceof android.net.SSLCertificateSocketFactory && android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
-			((android.net.SSLCertificateSocketFactory) factory).setHostname(socket, hostname);
-		} else {
-			try {
-				socket.getClass().getMethod("setHostname", String.class).invoke(socket, hostname);
-			} catch (Throwable e) {
-				// ignore any error, we just can't set the hostname...
-			}
-		}
-	}
-
-	private void setAlpnProtocol(final SSLSocketFactory factory, final SSLSocket socket, final String protocol) {
-		try {
-			if (factory instanceof android.net.SSLCertificateSocketFactory && android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
-				// can't call directly because of @hide?
-				//((android.net.SSLCertificateSocketFactory)factory).setAlpnProtocols(new byte[][]{protocol.getBytes("UTF-8")});
-				android.net.SSLCertificateSocketFactory.class.getMethod("setAlpnProtocols", byte[][].class).invoke(socket, new Object[]{new byte[][]{protocol.getBytes("UTF-8")}});
-			} else {
-				final Method method = socket.getClass().getMethod("setAlpnProtocols", byte[].class);
-				// the concatenation of 8-bit, length prefixed protocol names, just one in our case...
-				// http://tools.ietf.org/html/draft-agl-tls-nextprotoneg-04#page-4
-				final byte[] protocolUTF8Bytes = protocol.getBytes("UTF-8");
-				final byte[] lengthPrefixedProtocols = new byte[protocolUTF8Bytes.length + 1];
-				lengthPrefixedProtocols[0] = (byte) protocol.length(); // cannot be over 255 anyhow
-				System.arraycopy(protocolUTF8Bytes, 0, lengthPrefixedProtocols, 1, protocolUTF8Bytes.length);
-				method.invoke(socket, new Object[]{lengthPrefixedProtocols});
-			}
-		} catch (Throwable e) {
-			// ignore any error, we just can't set the alpn protocol...
-		}
 	}
 
 	private static class TlsFactoryVerifier {
@@ -705,22 +669,7 @@ public class XmppConnection implements Runnable {
 		tagWriter.writeTag(startTLS);
 	}
 
-	private void setSSLSocketSecurity(final SSLSocket sslSocket) throws NoSuchAlgorithmException {
-		final String[] supportProtocols;
-		final Collection<String> supportedProtocols = new LinkedList<>(
-				Arrays.asList(sslSocket.getSupportedProtocols()));
-		supportedProtocols.remove("SSLv3");
-		supportProtocols = supportedProtocols.toArray(new String[supportedProtocols.size()]);
 
-		sslSocket.setEnabledProtocols(supportProtocols);
-
-		final String[] cipherSuites = CryptoHelper.getOrderedCipherSuites(
-				sslSocket.getSupportedCipherSuites());
-		//Log.d(Config.LOGTAG, "Using ciphers: " + Arrays.toString(cipherSuites));
-		if (cipherSuites.length > 0) {
-			sslSocket.setEnabledCipherSuites(cipherSuites);
-		}
-	}
 
 	private void switchOverToTls(final Tag currentTag) throws XmlPullParserException, IOException {
 		tagReader.readTag();
@@ -738,7 +687,7 @@ public class XmppConnection implements Runnable {
 				throw new IOException("could not initialize ssl socket");
 			}
 
-			setSSLSocketSecurity(sslSocket);
+			SSLSocketHelper.setSecurity(sslSocket);
 
 			if (!tlsFactoryVerifier.verifier.verify(account.getServer().getDomainpart(), sslSocket.getSession())) {
 				Log.d(Config.LOGTAG,account.getJid().toBareJid()+": TLS certificate verification failed");
