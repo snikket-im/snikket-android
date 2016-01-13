@@ -42,6 +42,8 @@ public class TrustKeysActivity extends XmppActivity implements OnKeyStatusUpdate
 	private Button mSaveButton;
 	private Button mCancelButton;
 
+	private AxolotlService.FetchStatus lastFetchReport = AxolotlService.FetchStatus.SUCCESS;
+
 	private final Map<String, Boolean> ownKeysToTrust = new HashMap<>();
 	private final Map<String, Boolean> foreignKeysToTrust = new HashMap<>();
 
@@ -160,7 +162,11 @@ public class TrustKeysActivity extends XmppActivity implements OnKeyStatusUpdate
 		} else {
 			if (!hasForeignKeys && hasNoOtherTrustedKeys()) {
 				keyErrorMessageCard.setVisibility(View.VISIBLE);
-				keyErrorMessage.setText(R.string.error_no_keys_to_trust);
+				if (lastFetchReport == AxolotlService.FetchStatus.ERROR) {
+					keyErrorMessage.setText(R.string.error_no_keys_to_trust_server_error);
+				} else {
+					keyErrorMessage.setText(R.string.error_no_keys_to_trust);
+				}
 				ownKeys.removeAllViews(); ownKeysCard.setVisibility(View.GONE);
 				foreignKeys.removeAllViews(); foreignKeysCard.setVisibility(View.GONE);
 			}
@@ -216,6 +222,7 @@ public class TrustKeysActivity extends XmppActivity implements OnKeyStatusUpdate
 	@Override
 	public void onKeyStatusUpdated(final AxolotlService.FetchStatus report) {
 		if (report != null) {
+			lastFetchReport = report;
 			runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
