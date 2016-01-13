@@ -232,9 +232,9 @@ public class NotificationService {
 				final String name = conversation.getName();
 				if (Config.HIDE_MESSAGE_TEXT_IN_NOTIFICATION) {
 					int count = messages.size();
-					style.addLine(Html.fromHtml("<b>"+name+"</b> "+mXmppConnectionService.getResources().getQuantityString(R.plurals.x_messages,count,count)));
+					style.addLine(Html.fromHtml("<b>"+name+"</b>: "+mXmppConnectionService.getResources().getQuantityString(R.plurals.x_messages,count,count)));
 				} else {
-					style.addLine(Html.fromHtml("<b>" + name + "</b> "
+					style.addLine(Html.fromHtml("<b>" + name + "</b>: "
 							+ UIHelper.getMessagePreview(mXmppConnectionService, messages.get(0)).first));
 				}
 				names.append(name);
@@ -339,13 +339,18 @@ public class NotificationService {
 		final Message last = messages.get(messages.size() - 1);
 		final NotificationCompat.InboxStyle style = new NotificationCompat.InboxStyle();
 		style.setBigContentTitle(conversation.getName());
+
 		for(Message message : messages) {
-			style.addLine(Html.fromHtml("<b>"+UIHelper.getMessageDisplayName(message)+"</b> "+UIHelper.getMessagePreview(mXmppConnectionService,message).first));
+			if (message.hasMeCommand()) {
+				style.addLine(UIHelper.getMessagePreview(mXmppConnectionService,message).first);
+			} else {
+				style.addLine(Html.fromHtml("<b>" + UIHelper.getMessageDisplayName(message) + "</b>: " + UIHelper.getMessagePreview(mXmppConnectionService, message).first));
+			}
 		}
-		builder.setContentText(UIHelper.getMessageDisplayName(first)+ ": " +UIHelper.getMessagePreview(mXmppConnectionService, messages.get(0)).first);
+		builder.setContentText((first.hasMeCommand() ? "" :UIHelper.getMessageDisplayName(first)+ ": ") +UIHelper.getMessagePreview(mXmppConnectionService, first).first);
 		builder.setStyle(style);
 		if (notify) {
-			builder.setTicker(UIHelper.getMessageDisplayName(last) + ": " + UIHelper.getMessagePreview(mXmppConnectionService,last).first);
+			builder.setTicker((last.hasMeCommand() ? "" : UIHelper.getMessageDisplayName(last) + ": ") + UIHelper.getMessagePreview(mXmppConnectionService,last).first);
 		}
 	}
 
