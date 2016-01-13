@@ -577,6 +577,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 	public void writeRoster(final Roster roster) {
 		final Account account = roster.getAccount();
 		final SQLiteDatabase db = this.getWritableDatabase();
+		db.beginTransaction();
 		for (Contact contact : roster.getContacts()) {
 			if (contact.getOption(Contact.Options.IN_ROSTER)) {
 				db.insert(Contact.TABLENAME, null, contact.getContentValues());
@@ -586,6 +587,8 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 				db.delete(Contact.TABLENAME, where, whereArgs);
 			}
 		}
+		db.setTransactionSuccessful();
+		db.endTransaction();
 		account.setRosterVersion(roster.getVersion());
 		updateAccount(account);
 	}
