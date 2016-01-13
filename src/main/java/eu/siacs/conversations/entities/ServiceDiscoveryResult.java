@@ -1,6 +1,7 @@
 package eu.siacs.conversations.entities;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.util.Base64;
 import java.io.UnsupportedEncodingException;
 import java.lang.Comparable;
@@ -17,6 +18,10 @@ import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
 
 public class ServiceDiscoveryResult {
+	public static final String TABLENAME = "discovery_results";
+	public static final String HASH = "hash";
+	public static final String VER = "ver";
+	public static final String RESULT = "result";
 
 	protected static String blankNull(String s) {
 		return s == null ? "" : s;
@@ -36,10 +41,21 @@ public class ServiceDiscoveryResult {
 		}
 
 		public Identity(final Element el) {
-			this.category = el.getAttribute("category");
-			this.type = el.getAttribute("type");
-			this.lang = el.getAttribute("xml:lang");
-			this.name = el.getAttribute("name");
+			this(
+				el.getAttribute("category"),
+				el.getAttribute("type"),
+				el.getAttribute("xml:lang"),
+				el.getAttribute("name")
+			);
+		}
+
+		public Identity(final JSONObject o) {
+			this(
+				o.optString("category", null),
+				o.optString("type", null),
+				o.optString("lang", null),
+				o.optString("name", null)
+			);
 		}
 
 		public String getCategory() {
@@ -88,17 +104,15 @@ public class ServiceDiscoveryResult {
 		}
 	}
 
+	protected final String hash;
+	protected final byte[] ver;
 	protected final List<Identity> identities;
 	protected final List<String> features;
-
-	public ServiceDiscoveryResult(final List<Identity> identities, final List<String> features) {
-		this.identities = identities;
-		this.features = features;
-	}
 
 	public ServiceDiscoveryResult(final IqPacket packet) {
 		this.identities = new ArrayList<>();
 		this.features = new ArrayList<>();
+		this.hash = "sha-1"; // We only support sha-1 for now
 
 		final List<Element> elements = packet.query().getChildren();
 
@@ -114,6 +128,33 @@ public class ServiceDiscoveryResult {
 				}
 			}
 		}
+
+		this.ver = this.mkCapHash();
+	}
+
+	public ServiceDiscoveryResult(String hash, byte[] ver, JSONObject o) throws JSONException {
+		this.identities = new ArrayList<>();
+		this.features = new ArrayList<>();
+		this.hash = hash;
+		this.ver = ver;
+
+		JSONArray identities = o.optJSONArray("identities");
+		for(int i = 0; i < identities.length(); i++) {
+			this.identities.add(new Identity(identities.getJSONObject(i)));
+		}
+
+		JSONArray features = o.optJSONArray("features");
+		for(int i = 0; i < features.length(); i++) {
+			this.features.add(features.getString(i));
+		}
+	}
+
+	public ServiceDiscoveryResult(Cursor cursor) throws JSONException {
+		this(
+			cursor.getString(cursor.getColumnIndex(HASH)),
+			Base64.decode(cursor.getString(cursor.getColumnIndex(VER)), Base64.DEFAULT),
+			new JSONObject(cursor.getString(cursor.getColumnIndex(RESULT)))
+		);
 	}
 
 	public List<Identity> getIdentities() {
@@ -135,7 +176,7 @@ public class ServiceDiscoveryResult {
 		return false;
 	}
 
-	public byte[] getCapHash() {
+	protected byte[] mkCapHash() {
 		StringBuilder s = new StringBuilder();
 
 		List<Identity> identities = this.getIdentities();
@@ -191,4 +232,11 @@ public class ServiceDiscoveryResult {
 		}
 	}
 
+	public ContentValues getContentValues() {
+		final ContentValues values = new ContentValues();
+		values.put(HASH, this.hash);
+		values.put(VER, new String(Base64.encode(this.ver, Base64.DEFAULT)).trim());
+		values.put(RESULT, this.toJSON().toString());
+		return values;
+	}
 }

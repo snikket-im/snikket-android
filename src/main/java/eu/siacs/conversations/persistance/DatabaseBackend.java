@@ -31,6 +31,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
+import org.json.JSONException;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
@@ -41,6 +42,7 @@ import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.Roster;
+import eu.siacs.conversations.entities.ServiceDiscoveryResult;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
 
@@ -49,7 +51,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 	private static DatabaseBackend instance = null;
 
 	private static final String DATABASE_NAME = "history";
-	private static final int DATABASE_VERSION = 22;
+	private static final int DATABASE_VERSION = 23;
 
 	private static String CREATE_CONTATCS_STATEMENT = "create table "
 			+ Contact.TABLENAME + "(" + Contact.ACCOUNT + " TEXT, "
@@ -62,6 +64,14 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 			+ Account.TABLENAME + "(" + Account.UUID
 			+ ") ON DELETE CASCADE, UNIQUE(" + Contact.ACCOUNT + ", "
 			+ Contact.JID + ") ON CONFLICT REPLACE);";
+
+	private static String CREATE_DISCOVERY_RESULTS_STATEMENT = "create table "
+			+ ServiceDiscoveryResult.TABLENAME + "("
+			+ ServiceDiscoveryResult.HASH + " TEXT, "
+			+ ServiceDiscoveryResult.VER + " TEXT, "
+			+ ServiceDiscoveryResult.RESULT + " TEXT, "
+			+ "UNIQUE(" + ServiceDiscoveryResult.HASH + ", "
+			+ ServiceDiscoveryResult.VER + ") ON CONFLICT REPLACE);";
 
 	private static String CREATE_PREKEYS_STATEMENT = "CREATE TABLE "
 			+ SQLiteAxolotlStore.PREKEY_TABLENAME + "("
@@ -158,6 +168,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 				+ ") ON DELETE CASCADE);");
 
 		db.execSQL(CREATE_CONTATCS_STATEMENT);
+		db.execSQL(CREATE_DISCOVERY_RESULTS_STATEMENT);
 		db.execSQL(CREATE_SESSIONS_STATEMENT);
 		db.execSQL(CREATE_PREKEYS_STATEMENT);
 		db.execSQL(CREATE_SIGNED_PREKEYS_STATEMENT);
@@ -355,6 +366,10 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		if (oldVersion < 22 && newVersion >= 22) {
 			db.execSQL("ALTER TABLE " + SQLiteAxolotlStore.IDENTITIES_TABLENAME + " ADD COLUMN " + SQLiteAxolotlStore.CERTIFICATE);
 		}
+
+		if (oldVersion < 23 && newVersion >= 23) {
+			db.execSQL(CREATE_DISCOVERY_RESULTS_STATEMENT);
+		}
 	}
 
 	public static synchronized DatabaseBackend getInstance(Context context) {
@@ -377,6 +392,30 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 	public void createAccount(Account account) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.insert(Account.TABLENAME, null, account.getContentValues());
+	}
+
+	public void insertDiscoveryResult(ServiceDiscoveryResult result) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.insert(ServiceDiscoveryResult.TABLENAME, null, result.getContentValues());
+	}
+
+	public ServiceDiscoveryResult findDiscoveryResult(final String hash, final String ver) {
+		SQLiteDatabase db = this.getReadableDatabase();
+		String[] selectionArgs = {hash, ver};
+		Cursor cursor = db.query(ServiceDiscoveryResult.TABLENAME, null,
+				ServiceDiscoveryResult.HASH + "=? AND " + ServiceDiscoveryResult.VER + "=?",
+				selectionArgs, null, null, null);
+		if (cursor.getCount() == 0)
+			return null;
+		cursor.moveToFirst();
+
+		ServiceDiscoveryResult result = null;
+		try {
+			result = new ServiceDiscoveryResult(cursor);
+		} catch (JSONException e) { /* result is still null */ }
+
+		cursor.close();
+		return result;
 	}
 
 	public CopyOnWriteArrayList<Conversation> getConversations(int status) {
