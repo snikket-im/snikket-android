@@ -2,6 +2,7 @@ package eu.siacs.conversations.ui;
 
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -136,14 +137,33 @@ public class PublishProfilePictureActivity extends XmppActivity {
 
 			@Override
 			public void onClick(View v) {
-				Intent attachFileIntent = new Intent();
-				attachFileIntent.setType("image/*");
-				attachFileIntent.setAction(Intent.ACTION_GET_CONTENT);
-				Intent chooser = Intent.createChooser(attachFileIntent, getString(R.string.attach_file));
-				startActivityForResult(chooser, REQUEST_CHOOSE_FILE);
+				if (hasStoragePermission(REQUEST_CHOOSE_FILE)) {
+					chooseAvatar();
+				}
+
 			}
 		});
 		this.defaultUri = PhoneHelper.getSefliUri(getApplicationContext());
+	}
+
+	private void chooseAvatar() {
+		Intent attachFileIntent = new Intent();
+		attachFileIntent.setType("image/*");
+		attachFileIntent.setAction(Intent.ACTION_GET_CONTENT);
+		Intent chooser = Intent.createChooser(attachFileIntent, getString(R.string.attach_file));
+		startActivityForResult(chooser, REQUEST_CHOOSE_FILE);
+	}
+
+	@Override
+	public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+		if (grantResults.length > 0)
+			if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+				if (requestCode == REQUEST_CHOOSE_FILE) {
+					chooseAvatar();
+				}
+			} else {
+				Toast.makeText(this, R.string.no_storage_permission, Toast.LENGTH_SHORT).show();
+			}
 	}
 
 	@Override

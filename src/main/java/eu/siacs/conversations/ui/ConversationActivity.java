@@ -1,6 +1,5 @@
 package eu.siacs.conversations.ui;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.AlertDialog;
@@ -584,19 +583,6 @@ public class ConversationActivity extends XmppActivity
 			if (encryption != Message.ENCRYPTION_AXOLOTL || !trustKeysIfNeeded(REQUEST_TRUST_KEYS_MENU, attachmentChoice)) {
 				selectPresenceToAttachFile(attachmentChoice, encryption);
 			}
-		}
-	}
-
-	public boolean hasStoragePermission(int attachmentChoice) {
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-			if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-				requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, attachmentChoice);
-				return false;
-			} else {
-				return true;
-			}
-		} else {
-			return true;
 		}
 	}
 
@@ -1359,7 +1345,7 @@ public class ConversationActivity extends XmppActivity
 	}
 
 	private void openBatteryOptimizationDialogIfNeeded() {
-		if (showBatteryOptimizationWarning() && getPreferences().getBoolean("show_battery_optimization", true)) {
+		if (showBatteryOptimizationWarning() && getPreferences().getBoolean("show_battery_optimizationF", true)) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			builder.setTitle(R.string.battery_optimizations_enabled);
 			builder.setMessage(R.string.battery_optimizations_enabled_dialog);
