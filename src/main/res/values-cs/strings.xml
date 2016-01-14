@@ -9,6 +9,7 @@
   <string name="action_secure">Zabezpečená konverzace</string>
   <string name="action_add_account">Přidat účet</string>
   <string name="action_edit_contact">Upravit jméno</string>
+  <string name="action_add_phone_book">Přidat do adresáře</string>
   <string name="action_delete_contact">Smazat ze seznamu</string>
   <string name="action_block_contact">Zablokovat kontakt</string>
   <string name="action_unblock_contact">Odblokovat kontakt</string>
@@ -172,6 +173,7 @@
   <string name="passwords_do_not_match">Hesla nesouhlasí</string>
   <string name="invalid_jid">Toto není platné Jabber ID</string>
   <string name="error_out_of_memory">Nedostatek paměti. Obrázek je příliš velký</string>
+  <string name="add_phone_book_text">Chcete přidat %s do svého adresáře?</string>
   <string name="contact_status_online">online</string>
   <string name="contact_status_free_to_chat">volný pro chat</string>
   <string name="contact_status_away">pryč</string>
@@ -220,12 +222,14 @@
   <string name="conferences">Konference</string>
   <string name="search">Hledat</string>
   <string name="create_contact">Vytvořit kontakt</string>
+  <string name="enter_contact">Vložit kontakt</string>
   <string name="join_conference">Připojit ke konferenci</string>
   <string name="delete_contact">Smazat kontakt</string>
   <string name="view_contact_details">Zobrazit detaily kontaktu</string>
   <string name="block_contact">Zablokovat kontakt</string>
   <string name="unblock_contact">Odblokovat kontakt</string>
   <string name="create">Vytvořit</string>
+  <string name="select">Vybrat</string>
   <string name="contact_already_exists">Kontakt již existuje</string>
   <string name="join">Vstoupit</string>
   <string name="conference_address">Adresa konference</string>
@@ -371,6 +375,7 @@
   <string name="purge_key">Vymazat klíč</string>
   <string name="purge_key_desc_part1">Opravdu si přejete vymazat tento klíč?</string>
   <string name="purge_key_desc_part2">Bude neodvolatelně pokládán jako kompromitovaný a již s jeho pomocí nebudete moci nikdy spustit jiné sezení.</string>
+  <string name="error_no_keys_to_trust_server_error">Pro tento kontakt nejsou dostupné žádné použitelné klíče.\nNahrání klíčů ze serveru nebylo úspěšné. Možná je něco špatně se serverem vašeho kontaktu.</string>
   <string name="error_no_keys_to_trust">Pro tento kontakt nejsou dostupné žádné použitelné klíče. Pokud jste smazali jakýkoliv z jeho klíčů bude třeba vygenerovat nové.</string>
   <string name="error_trustkeys_title">Chyba</string>
   <string name="fetching_history_from_server">Načíst historii ze serveru</string>
@@ -486,12 +491,13 @@
   <string name="download_failed_could_not_connect">Stahování selhalo: Nelze se připojit k hostu</string>
   <string name="pref_use_white_background">Použít bílé pozadí</string>
   <string name="pref_use_white_background_summary">Zobrazovat přijaté zprávy jako černý text na bílém pozadí</string>
-  <string name="account_status_tor_unavailable">TOR síť nedostupná</string>
+  <string name="account_status_tor_unavailable">Tor síť není dostupná</string>
   <string name="server_info_broken">Rozbité</string>
   <string name="pref_presence_settings">Nastavení přítomnosti</string>
   <string name="pref_away_when_screen_off">Pryč při vypnuté obrazovce</string>
   <string name="pref_away_when_screen_off_summary">Při vypnuté obrazovce označí váš stav jako pryč</string>
   <string name="pref_xa_on_silent_mode">Nedostupný při vypnutém zvuku</string>
+  <string name="pref_xa_on_silent_mode_summary">Při tichém módu označí váš stav jako nedostupný</string>
   <string name="action_add_account_with_certificate">Přidat účet s certifikátem</string>
   <string name="unable_to_parse_certificate">Nelze načíst certifikát</string>
   <string name="authenticate_with_certificate">Nechat prázdné pro ověření s certifikátem</string>
@@ -506,7 +512,7 @@
   <string name="device_does_not_support_certificates">Tento přístroj nepodporuje výběr klientského certifikátu!</string>
   <string name="pref_connection_options">Možnosti připojení</string>
   <string name="pref_use_tor">Připojit přes Tor</string>
-  <string name="pref_use_tor_summary">Posílat všechna spojení pomocí sítě TOR. Vyžaduje Orbot</string>
+  <string name="pref_use_tor_summary">Vedení všech připojení po Tor síti vyžaduje aplikaci Orbot</string>
   <string name="account_settings_hostname">Hostname</string>
   <string name="account_settings_port">Port</string>
   <string name="hostname_or_onion">Server- nebo .onion-adresa</string>
@@ -523,4 +529,24 @@
   <string name="no_storage_permission">Conversations vyžaduje přístup k externímu úložišti</string>
   <string name="sync_with_contacts">Synchronizovat s kontakty</string>
   <string name="sync_with_contacts_long">Aplikace Conversations by ráda porovnala váš XMPP seznam s vašimi kontakty, aby mohla zobrazit plná jména a avatary.\n\nConversations načte a porovná kontakty pouze lokálně, bez jejich nahrávání na server.\n\nNyní budete dotázáni na udělení práv pro přístup k seznamu kontaktů.</string>
+  <string name="certificate_information">Informace certifikátu</string>
+  <string name="certificate_subject">Předmět</string>
+  <string name="certificate_issuer">Vydavatel</string>
+  <string name="certificate_cn">Jméno</string>
+  <string name="certificate_o">Organizace</string>
+  <string name="certificate_sha1">SHA1</string>
+  <string name="certicate_info_not_available">(Nedostupné)</string>
+  <string name="certificate_not_found">Certifikát nenalezen</string>
+  <string name="notify_on_all_messages">Upozorňovat na všechny zprávy</string>
+  <string name="notify_only_when_highlighted">Upozorňovat pouze pokud zvýrazněno</string>
+  <string name="notify_never">Upozornění vypnuta</string>
+  <string name="notify_paused">Upozornění pozastavena</string>
+  <string name="pref_picture_compression">Komprimovat obrázky</string>
+  <string name="pref_picture_compression_summary">Upravené a komprimované obrázky</string>
+  <string name="always">Vždy</string>
+  <string name="automatically">Automaticky</string>
+  <string name="battery_optimizations_enabled">Povolena optimalizace využití baterie</string>
+  <string name="battery_optimizations_enabled_explained">Tento přístroj provádí agresivní optimalizace využití baterie pro konverzace. Ty mohou způsobit zpoždění upozornění nebo ztrátu zpráv.\nJe doporučeno tyto vypnout.</string>
+  <string name="battery_optimizations_enabled_dialog">Tento přístroj provádí agresivní optimalizace využití baterie pro konverzace. Ty mohou způsobit zpoždění upozornění nebo ztrátu zpráv.\nnyní budete vyzváni k jejich vypnutí.</string>
+  <string name="disable">Vypnout</string>
 </resources>

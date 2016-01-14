@@ -375,6 +375,7 @@
   <string name="purge_key">Изтриване на ключа</string>
   <string name="purge_key_desc_part1">Сигурни ли сте, че искате да изтриете този ключ?</string>
   <string name="purge_key_desc_part2">След това той ще бъде необратимо приет за грешен и повече няма да можете да създавате сесии с него.</string>
+  <string name="error_no_keys_to_trust_server_error">Няма ключове, които могат да бъдат използвани за този контакт.\nИзтеглянето на нови ключове от сървъра беше неуспешно. Възможно е да има проблем със сървъра на контактите Ви.</string>
   <string name="error_no_keys_to_trust">Няма ключове, които могат да бъдат използвани за този контакт. Ако сте изчистили някои от ключовете му, то той трябва да създаде нови.</string>
   <string name="error_trustkeys_title">Грешка</string>
   <string name="fetching_history_from_server">Получаване на историята от сървъра</string>
@@ -488,7 +489,7 @@
   <string name="download_failed_could_not_connect">Неуспешно сваляне: Неуспешна връзка със сървъра</string>
   <string name="pref_use_white_background">Използване на бял фон</string>
   <string name="pref_use_white_background_summary">Показване на получените съобщения с черен текст на бял фон</string>
-  <string name="account_status_tor_unavailable">Мрежата на TOR не е достъпна</string>
+  <string name="account_status_tor_unavailable">Мрежата на Тор е недостъпна</string>
   <string name="server_info_broken">Повредено</string>
   <string name="pref_presence_settings">Настройки за присъствието</string>
   <string name="pref_away_when_screen_off">Отсъстващ, когато екранът е изключен</string>
@@ -508,8 +509,8 @@
   <string name="verified_omemo_key_with_certificate">Ключът за OMEMO беше потвърден със сертификат!</string>
   <string name="device_does_not_support_certificates">Устройството Ви не поддържа избраните клиентски сертификати!</string>
   <string name="pref_connection_options">Настройки за връзката</string>
-  <string name="pref_use_tor">Свързване през Tor</string>
-  <string name="pref_use_tor_summary">Всички връзки да минават през мрежата на TOR. Изисква Orbot</string>
+  <string name="pref_use_tor">Свързване през Тор</string>
+  <string name="pref_use_tor_summary">Всички връзки да минават през мрежата на Тор. Изисква Орбот</string>
   <string name="account_settings_hostname">Име на сървър</string>
   <string name="account_settings_port">Порт</string>
   <string name="hostname_or_onion">Адрес на сървър или .onion</string>

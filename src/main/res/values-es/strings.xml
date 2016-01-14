@@ -9,6 +9,7 @@
   <string name="action_secure">Conversación segura</string>
   <string name="action_add_account">Añadir cuenta</string>
   <string name="action_edit_contact">Editar contacto</string>
+  <string name="action_add_phone_book">Añadir a contactos</string>
   <string name="action_delete_contact">Eliminar contacto de la lista</string>
   <string name="action_block_contact">Bloquear contacto</string>
   <string name="action_unblock_contact">Desbloquear contacto</string>
@@ -172,6 +173,7 @@
   <string name="passwords_do_not_match">Las contraseñas no coinciden</string>
   <string name="invalid_jid">El identificador no es un identificador Jabber válido</string>
   <string name="error_out_of_memory">Sin memoria. La imagen es demasiado grande</string>
+  <string name="add_phone_book_text">¿Quieres añadir a %s a tus contactos?</string>
   <string name="contact_status_online">Disponible</string>
   <string name="contact_status_free_to_chat">Hablador</string>
   <string name="contact_status_away">Ausente</string>
@@ -220,12 +222,14 @@
   <string name="conferences">Conversación Grupo</string>
   <string name="search">Buscar</string>
   <string name="create_contact">Crear Contacto</string>
+  <string name="enter_contact">Introducir contacto</string>
   <string name="join_conference">Unirse a Conversación en grupo</string>
   <string name="delete_contact">Eliminar Contacto</string>
   <string name="view_contact_details">Ver detalles del contacto</string>
   <string name="block_contact">Bloquear contacto</string>
   <string name="unblock_contact">Desbloquear contacto</string>
   <string name="create">Crear</string>
+  <string name="select">Seleccionar</string>
   <string name="contact_already_exists">El contacto ya existe</string>
   <string name="join">Unirse</string>
   <string name="conference_address">Dirección</string>
@@ -484,12 +488,12 @@
   <string name="download_failed_could_not_connect">Error al descargar: No se ha podido conectar con el servidor</string>
   <string name="pref_use_white_background">Usar fondo blanco</string>
   <string name="pref_use_white_background_summary">Mostrar mensajes recibidos en texto negro con fondo blanco</string>
-  <string name="account_status_tor_unavailable">Red Tor no disponible</string>
   <string name="server_info_broken">Error</string>
   <string name="pref_presence_settings">Opciones de presencia</string>
   <string name="pref_away_when_screen_off">Ausente con pantalla apagada</string>
   <string name="pref_away_when_screen_off_summary">Cambia tu estado a ausente cuando la pantalla está apagada</string>
   <string name="pref_xa_on_silent_mode">No disponible en modo silencio</string>
+  <string name="pref_xa_on_silent_mode_summary">Cambiar el recurso a no disponible cuando el dispositivo esté en modo silencio</string>
   <string name="action_add_account_with_certificate">Añadir cuenta con certificado</string>
   <string name="unable_to_parse_certificate">No se ha podido leer el certificado</string>
   <string name="authenticate_with_certificate">Dejar vacío para autenticar certificado w/ </string>
@@ -504,7 +508,6 @@
   <string name="device_does_not_support_certificates">¡Tu dispositivo no soporta la elección de certificados de cliente!</string>
   <string name="pref_connection_options">Opciones de conexión</string>
   <string name="pref_use_tor">Conectar via Tor</string>
-  <string name="pref_use_tor_summary">Todas las conexiones se realizan a través de la red TOR. Requiere Orbot</string>
   <string name="account_settings_hostname">Hostname</string>
   <string name="account_settings_port">Puerto</string>
   <string name="hostname_or_onion">Server- or .onion-Address</string>
@@ -520,4 +523,19 @@
   <string name="no_storage_permission">Conversations necesita acceder al almacenamiento externo</string>
   <string name="sync_with_contacts">Sincronizar contactos</string>
   <string name="sync_with_contacts_long">Conversations quiere cruzar tu lista de contactos de XMPP con tus contactos del móvil para mostrar sus nombres completos y sus fotos de perfil.\n\nConversations solo leerá tus contactos y los cruzará localmente sin subirlos a tu servidor.\n\nEl sistema te preguntará para conceder los permisos de acceso a tus contactos del móvil.</string>
+  <string name="certificate_information">Información de certificados</string>
+  <string name="certificate_subject">Asunto</string>
+  <string name="certificate_issuer">Editor</string>
+  <string name="certificate_cn">Nombre</string>
+  <string name="certificate_o">Organización</string>
+  <string name="certificate_sha1">SHA1</string>
+  <string name="certicate_info_not_available">(No disponible)</string>
+  <string name="certificate_not_found">Certificado no encontrado</string>
+  <string name="notify_on_all_messages">Notificar para todos los mensajes</string>
+  <string name="notify_only_when_highlighted">Notificar solo cuando se recibe un mensjae resaltado</string>
+  <string name="notify_never">Notificaciones deshabilitadas</string>
+  <string name="notify_paused">Notificaciones pausadas</string>
+  <string name="pref_picture_compression">Comprimir imagenes</string>
+  <string name="pref_picture_compression_summary">Redimiensionar y comprimir imágenes</string>
+  <string name="always">Siempre</string>
 </resources>

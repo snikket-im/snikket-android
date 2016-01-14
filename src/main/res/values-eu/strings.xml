@@ -484,7 +484,6 @@
   <string name="download_failed_could_not_connect">Deskargak huts egin du: ezin izan da ostalarira konektatu</string>
   <string name="pref_use_white_background">Atzeko-planoan kolore zuria erabili</string>
   <string name="pref_use_white_background_summary">Jasotako mezuak testu beltza atzeko-plano zuri baten gainean bezala erakutsi</string>
-  <string name="account_status_tor_unavailable">TOR sarea ez dago eskuragarri</string>
   <string name="server_info_broken">Hondatuta</string>
   <string name="pref_presence_settings">Presentzia ezarpenak</string>
   <string name="pref_away_when_screen_off">Urrun pantaila itzalita dagoenean</string>
@@ -504,7 +503,6 @@
   <string name="device_does_not_support_certificates">Zure gailuak ez du bezero ziurtagiriak aukeratzea onartzen!</string>
   <string name="pref_connection_options">Konexioaren aukerak</string>
   <string name="pref_use_tor">Tor bidez konektatu</string>
-  <string name="pref_use_tor_summary">Konexio guztiak TOR sarean zehar igaro. Orbot behar du</string>
   <string name="account_settings_hostname">Ostalariaren izena</string>
   <string name="account_settings_port">Ataka</string>
   <string name="hostname_or_onion">Zerbitzari- edo .onion-helbidea</string>

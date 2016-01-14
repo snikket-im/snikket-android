@@ -476,7 +476,6 @@
   <string name="download_failed_could_not_connect">ההורדה נכשלה: נכשל ביצוע חיבור לשרת</string>
   <string name="pref_use_white_background">השתמש ברקע לבן</string>
   <string name="pref_use_white_background_summary">הראה הודעות שהתקבלו בטקסט שחור על גבי רקע לבען</string>
-  <string name="account_status_tor_unavailable">רשת TOR לא זמינה</string>
   <string name="server_info_broken">לא עובד</string>
   <string name="pref_presence_settings">הגדרות נוכחות Presence</string>
   <string name="pref_away_when_screen_off">העבר למצב \"לא נמצא\" כאשר המסך כבוי</string>

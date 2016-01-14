@@ -9,6 +9,7 @@
   <string name="action_secure">安全に会話</string>
   <string name="action_add_account">アカウントを追加</string>
   <string name="action_edit_contact">名前の編集</string>
+  <string name="action_add_phone_book">アドレス帳に追加</string>
   <string name="action_delete_contact">名簿から削除</string>
   <string name="action_block_contact">連絡先をブロック</string>
   <string name="action_unblock_contact">連絡先のブロックを解除</string>
@@ -172,6 +173,7 @@
   <string name="passwords_do_not_match">パスワードが一致しません</string>
   <string name="invalid_jid">これは有効な Jabber ID ではありません</string>
   <string name="error_out_of_memory">メモリ不足です。画像が大きすぎます</string>
+  <string name="add_phone_book_text">%s をお使いのアドレス帳に追加しますか?</string>
   <string name="contact_status_online">オンライン</string>
   <string name="contact_status_free_to_chat">自由にチャットできます</string>
   <string name="contact_status_away">離席中</string>
@@ -220,12 +222,14 @@
   <string name="conferences">会議</string>
   <string name="search">検索</string>
   <string name="create_contact">連絡先を作成</string>
+  <string name="enter_contact">連絡先を入力</string>
   <string name="join_conference">会議に参加</string>
   <string name="delete_contact">連絡先を削除</string>
   <string name="view_contact_details">連絡先の詳細を表示</string>
   <string name="block_contact">連絡先をブロック</string>
   <string name="unblock_contact">連絡先のブロックを解除</string>
   <string name="create">作成</string>
+  <string name="select">選択</string>
   <string name="contact_already_exists">連絡先はすでに存在します</string>
   <string name="join">参加</string>
   <string name="conference_address">会議アドレス</string>
@@ -371,6 +375,7 @@
   <string name="purge_key">鍵を消去</string>
   <string name="purge_key_desc_part1">この鍵を消去してもよろしいですか?</string>
   <string name="purge_key_desc_part2">これは不可逆的に侵害とみなされ、あなたは再びそのセッションを構築することはできません。</string>
+  <string name="error_no_keys_to_trust_server_error">この連絡先で利用可能な鍵がありません。\nサーバーから新しい鍵の取得に失敗しました。おそらく、お使いの連絡先サーバーに何か問題があります。</string>
   <string name="error_no_keys_to_trust">この連絡先で利用可能な鍵はありません。あなたがその鍵を消去している場合は、新しいものを生成してもらう必要があります。</string>
   <string name="error_trustkeys_title">エラー</string>
   <string name="fetching_history_from_server">サーバーから履歴を取得中</string>
@@ -482,12 +487,13 @@
   <string name="download_failed_could_not_connect">ダウンロードに失敗しました: ホストに接続できませんでした</string>
   <string name="pref_use_white_background">白い背景を使用する</string>
   <string name="pref_use_white_background_summary">白地に黒の文字で、受け取ったメッセージを表示します</string>
-  <string name="account_status_tor_unavailable">TOR ネットワークは利用できません</string>
+  <string name="account_status_tor_unavailable">Tor ネットワークが利用できません</string>
   <string name="server_info_broken">壊れています</string>
   <string name="pref_presence_settings">参加設定</string>
   <string name="pref_away_when_screen_off">画面がオフのときは離席</string>
   <string name="pref_away_when_screen_off_summary">画面がオフになっているとき、リソースを離席としてマークします</string>
   <string name="pref_xa_on_silent_mode">サイレントモード時は利用不可</string>
+  <string name="pref_xa_on_silent_mode_summary">デバイスがサイレントモードのとき、リソースが利用不可としてマークします</string>
   <string name="action_add_account_with_certificate">アカウントに証明書を追加</string>
   <string name="unable_to_parse_certificate">証明書を解析できません</string>
   <string name="authenticate_with_certificate">空にすると、証明書で認証します</string>
@@ -502,7 +508,7 @@
   <string name="device_does_not_support_certificates">お使いのデバイスはクライアント証明書の選択をサポートしていません!</string>
   <string name="pref_connection_options">接続オプション</string>
   <string name="pref_use_tor">Tor 経由で接続</string>
-  <string name="pref_use_tor_summary">TOR ネットワークを介してすべての接続をトンネルします。 Orbot が必要です</string>
+  <string name="pref_use_tor_summary">Tor ネットワークを介してすべての接続をトンネルします。 Orbot が必要です</string>
   <string name="account_settings_hostname">ホスト名</string>
   <string name="account_settings_port">ポート</string>
   <string name="hostname_or_onion">サーバーまたは .onion アドレス</string>
@@ -517,4 +523,24 @@
   <string name="no_storage_permission">Conversations は外部ストレージにアクセスが必要です</string>
   <string name="sync_with_contacts">連絡先と同期</string>
   <string name="sync_with_contacts_long">Conversations はフルネームやアバターを表示するために、連絡先と XMPP 名簿と一致するようにしたいです。\n\nConversations は、サーバーにアップロードすることはなく、ローカルで連絡先を読んで一致させるだけです。\n\n今、連絡先へのアクセス許可を付与するように求められます。</string>
+  <string name="certificate_information">証明書情報</string>
+  <string name="certificate_subject">表題</string>
+  <string name="certificate_issuer">発行者</string>
+  <string name="certificate_cn">一般名称</string>
+  <string name="certificate_o">組織</string>
+  <string name="certificate_sha1">SHA1</string>
+  <string name="certicate_info_not_available">(利用不可)</string>
+  <string name="certificate_not_found">証明書がありません</string>
+  <string name="notify_on_all_messages">すべてのメッセージで通知</string>
+  <string name="notify_only_when_highlighted">ハイライトされたときにのみ通知</string>
+  <string name="notify_never">通知は無効</string>
+  <string name="notify_paused">通知は一時停止</string>
+  <string name="pref_picture_compression">写真を圧縮</string>
+  <string name="pref_picture_compression_summary">写真をサイズ変更や圧縮します</string>
+  <string name="always">常に</string>
+  <string name="automatically">自動</string>
+  <string name="battery_optimizations_enabled">バッテリー最適化が有効</string>
+  <string name="battery_optimizations_enabled_explained">お使いのデバイスは、Conversations で、通知の遅延やメッセージの損失につながる可能性のある、いくつかの重いバッテリーの最適化を行っています。\nそれらを無効にすることをお勧めします。</string>
+  <string name="battery_optimizations_enabled_dialog">お使いのデバイスは、Conversations で通知の遅延やメッセージの損失につながる可能性のある、いくつかの重いバッテリーの最適化を行っています。\n\n今、それらを無効にするように求められます。</string>
+  <string name="disable">無効</string>
 </resources>

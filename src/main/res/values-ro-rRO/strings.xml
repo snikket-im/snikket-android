@@ -375,6 +375,7 @@
   <string name="purge_key">Sterge cheia</string>
   <string name="purge_key_desc_part1">Sigur vrei sa stergi aceasta cheie?</string>
   <string name="purge_key_desc_part2">Va fi considera compromisa ireversibil si nu vei mai putea crea o sesiune cu ea niciodata.</string>
+  <string name="error_no_keys_to_trust_server_error">Nu exista chei utilizabile pentru acest contact.\nIncercarea de a descarca o cheie de pe server a esuat. Se poate sa fie o problema cu serverul de contacte.</string>
   <string name="error_no_keys_to_trust">Nu exista chei disponibile si utilizabile pentru acest contact. Daca ai sters vreuna din cheile contactului, trebuie sa generezi o alta noua.</string>
   <string name="error_trustkeys_title">Eroare</string>
   <string name="fetching_history_from_server">Descarc istoric de pe server</string>
@@ -490,7 +491,7 @@
   <string name="download_failed_could_not_connect">Descarcarea a esuat. Nu s-a putut realiza conexiunea cu gazda.</string>
   <string name="pref_use_white_background">Foloseste un fundal alb</string>
   <string name="pref_use_white_background_summary">Arata mesajele primite cu negru pe fond alb</string>
-  <string name="account_status_tor_unavailable">Retea TOR indisponibila</string>
+  <string name="account_status_tor_unavailable">Reteaua Tor nu este disponibila</string>
   <string name="server_info_broken">Deteriorat</string>
   <string name="pref_presence_settings">Setari de prezenta</string>
   <string name="pref_away_when_screen_off">Plecat cand ecranul este oprit</string>
@@ -511,7 +512,7 @@
   <string name="device_does_not_support_certificates">Dispozitivul nu permite selectia unui certificat pentru client!</string>
   <string name="pref_connection_options">Optiuni conexiune</string>
   <string name="pref_use_tor">Conectare prin TOR</string>
-  <string name="pref_use_tor_summary">Toate conexiunile trec prin TOR. Necesita Orbot.</string>
+  <string name="pref_use_tor_summary">Trimite toate conexiunile prin reteaua Tor. Necesita OrBot</string>
   <string name="account_settings_hostname">Nume gazda</string>
   <string name="account_settings_port">Port</string>
   <string name="hostname_or_onion">Adresa server- sau .onion</string>

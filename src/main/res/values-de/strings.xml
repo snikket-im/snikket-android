@@ -375,6 +375,7 @@
   <string name="purge_key">Schlüssel löschen</string>
   <string name="purge_key_desc_part1">Soll dieser Schlüssel gelöscht werden?</string>
   <string name="purge_key_desc_part2">Dieser Vorgang kann nicht rückgängig gemacht werden und es kann nie wieder eine Verbindung mit diesem Schlüssel hergestellt werden.</string>
+  <string name="error_no_keys_to_trust_server_error">Für dieses Kontakt sind keine benutzbaren Schlüssel verfügbar.\nNeue Schlüssel vom Server herunterzuladen war nicht erfolgreich. Vielleicht stimmt etwas mit dem Server deines Kontakts nicht.</string>
   <string name="error_no_keys_to_trust">Es sind keine Schlüssel für diesen Kontakt verfügbar. Falls sie gelöscht wurden, müssen diese neu erstellt werden.</string>
   <string name="error_trustkeys_title">Fehler</string>
   <string name="fetching_history_from_server">Lade Chatverlauf…</string>
@@ -488,7 +489,7 @@
   <string name="download_failed_could_not_connect">Download fehlgeschlagen: keine Verbindung zum Host</string>
   <string name="pref_use_white_background">Weißen Hintergrund benutzen</string>
   <string name="pref_use_white_background_summary">Empfangene Nachrichten als schwarzen Text auf weißem Hintergrund anzeigen</string>
-  <string name="account_status_tor_unavailable">TOR-Netzwerk nicht verfügbar</string>
+  <string name="account_status_tor_unavailable">Tor-Netzwerk nicht verfügbar</string>
   <string name="server_info_broken">Fehlerhaft</string>
   <string name="pref_presence_settings">Status Einstellungen</string>
   <string name="pref_away_when_screen_off">Abwesend bei abgeschaltetem Bildschirm</string>
@@ -509,7 +510,7 @@
   <string name="device_does_not_support_certificates">Dein Gerät unterstützt das Auswählen von Client-Zertifikaten nicht!</string>
   <string name="pref_connection_options">Verbindungs-Optionen</string>
   <string name="pref_use_tor">Über TOR verbinden</string>
-  <string name="pref_use_tor_summary">Alle Verbindungen über das TOR-Netzwerk tunneln. Benötigt Orbot</string>
+  <string name="pref_use_tor_summary">Alle Verbindungen über das Tor-Netzwerk tunneln. Benötigt Orbot</string>
   <string name="account_settings_hostname">Hostname</string>
   <string name="account_settings_port">Port</string>
   <string name="hostname_or_onion">Server- oder .onion-Adresse</string>
