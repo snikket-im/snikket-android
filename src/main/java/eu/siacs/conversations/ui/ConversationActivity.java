@@ -1345,7 +1345,7 @@ public class ConversationActivity extends XmppActivity
 	}
 
 	private void openBatteryOptimizationDialogIfNeeded() {
-		if (showBatteryOptimizationWarning() && getPreferences().getBoolean("show_battery_optimizationF", true)) {
+		if (showBatteryOptimizationWarning() && getPreferences().getBoolean("show_battery_optimization", true)) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			builder.setTitle(R.string.battery_optimizations_enabled);
 			builder.setMessage(R.string.battery_optimizations_enabled_dialog);
