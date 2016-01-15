@@ -2478,7 +2478,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 				Thread thread = new Thread(account.getXmppConnection());
 				account.getXmppConnection().setInteractive(interactive);
 				thread.start();
-				scheduleWakeUpCall(Config.CONNECT_TIMEOUT, account.getUuid().hashCode());
+				scheduleWakeUpCall(Config.CONNECT_DISCO_TIMEOUT, account.getUuid().hashCode());
 			} else {
 				account.getRoster().clearPresences();
 				account.setXmppConnection(null);

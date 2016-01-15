@@ -226,8 +226,16 @@ public class XmppConnection implements Runnable {
 		lastPingSent = SystemClock.elapsedRealtime();
 		lastDiscoStarted = Long.MAX_VALUE;
 		this.attempt++;
-		if (account.getJid().getDomainpart().equals("chat.facebook.com")) {
-			mServerIdentity = Identity.FACEBOOK;
+		switch (account.getJid().getDomainpart()) {
+			case "chat.facebook.com":
+				mServerIdentity = Identity.FACEBOOK;
+				break;
+			case "nimbuzz.com":
+				mServerIdentity = Identity.NIMBUZZ;
+				break;
+			default:
+				mServerIdentity = Identity.UNKNOWN;
+				break;
 		}
 		try {
 			shouldAuthenticate = needsBinding = !account.isOptionSet(Account.OPTION_REGISTER);
@@ -718,10 +726,12 @@ public class XmppConnection implements Runnable {
 		this.streamFeatures = tagReader.readElement(currentTag);
 		if (this.streamFeatures.hasChild("starttls") && !features.encryptionEnabled) {
 			sendStartTLS();
-		} else if (this.streamFeatures.hasChild("register")
-				&& account.isOptionSet(Account.OPTION_REGISTER)
-				&& features.encryptionEnabled) {
-			sendRegistryRequest();
+		} else if (this.streamFeatures.hasChild("register") && account.isOptionSet(Account.OPTION_REGISTER)) {
+			if (features.encryptionEnabled) {
+				sendRegistryRequest();
+			} else {
+				throw new IncompatibleServerException();
+			}
 		} else if (!this.streamFeatures.hasChild("register")
 				&& account.isOptionSet(Account.OPTION_REGISTER)) {
 			changeStatus(Account.State.REGISTRATION_NOT_SUPPORTED);
@@ -987,7 +997,7 @@ public class XmppConnection implements Runnable {
 		synchronized (this.disco) {
 			this.disco.clear();
 		}
-		mPendingServiceDiscoveries = 0;
+		mPendingServiceDiscoveries = mServerIdentity == Identity.NIMBUZZ ? 1 : 0;
 		lastDiscoStarted = SystemClock.elapsedRealtime();
 		Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": starting service discovery");
 		mXmppConnectionService.scheduleWakeUpCall(Config.CONNECT_DISCO_TIMEOUT, account.getUuid().hashCode());
@@ -998,7 +1008,9 @@ public class XmppConnection implements Runnable {
 	}
 
 	private void sendServiceDiscoveryInfo(final Jid jid) {
-		mPendingServiceDiscoveries++;
+		if (mServerIdentity != Identity.NIMBUZZ) {
+			mPendingServiceDiscoveries++;
+		}
 		final IqPacket iq = new IqPacket(IqPacket.TYPE.GET);
 		iq.setTo(jid);
 		iq.query("http://jabber.org/protocol/disco#info");
@@ -1007,7 +1019,7 @@ public class XmppConnection implements Runnable {
 			@Override
 			public void onIqPacketReceived(final Account account, final IqPacket packet) {
 				if (packet.getType() == IqPacket.TYPE.RESULT) {
-					boolean advancedStreamFeaturesLoaded = false;
+					boolean advancedStreamFeaturesLoaded;
 					synchronized (XmppConnection.this.disco) {
 						final List<Element> elements = packet.query().getChildren();
 						final Info info = new Info();
@@ -1018,7 +1030,9 @@ public class XmppConnection implements Runnable {
 								String name = element.getAttribute("name");
 								if (type != null && category != null) {
 									info.identities.add(new Pair<>(category, type));
-									if (type.equals("im") && category.equals("server")) {
+									if (mServerIdentity == Identity.UNKNOWN
+											&& type.equals("im")
+											&& category.equals("server")) {
 										if (name != null && jid.equals(account.getServer())) {
 											switch (name) {
 												case "Prosody":
@@ -1051,7 +1065,7 @@ public class XmppConnection implements Runnable {
 				}
 				if (packet.getType() != IqPacket.TYPE.TIMEOUT) {
 					mPendingServiceDiscoveries--;
-					if (mPendingServiceDiscoveries <= 0) {
+					if (mPendingServiceDiscoveries == 0) {
 						Log.d(Config.LOGTAG,account.getJid().toBareJid()+": done with service discovery");
 						Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": online with resource " + account.getResource());
 						changeStatus(Account.State.ONLINE);
@@ -1409,6 +1423,7 @@ public class XmppConnection implements Runnable {
 		SLACK,
 		EJABBERD,
 		PROSODY,
+		NIMBUZZ,
 		UNKNOWN
 	}
 
