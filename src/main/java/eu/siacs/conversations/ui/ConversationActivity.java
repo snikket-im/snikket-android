@@ -112,8 +112,6 @@ public class ConversationActivity extends XmppActivity
 
 	private ArrayAdapter<Conversation> listAdapter;
 
-	private Toast prepareFileToast;
-
 	private boolean mActivityPaused = false;
 	private AtomicBoolean mRedirected = new AtomicBoolean(false);
 	private Pair<Integer, Intent> mPostponedActivityResult;
@@ -1250,6 +1248,9 @@ public class ConversationActivity extends XmppActivity
 	@SuppressLint("NewApi")
 	private static List<Uri> extractUriFromIntent(final Intent intent) {
 		List<Uri> uris = new ArrayList<>();
+		if (intent == null) {
+			return uris;
+		}
 		Uri uri = intent.getData();
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2 && uri == null) {
 			ClipData clipData = intent.getClipData();
@@ -1397,17 +1398,18 @@ public class ConversationActivity extends XmppActivity
 		if (conversation == null) {
 			return;
 		}
-		prepareFileToast = Toast.makeText(getApplicationContext(),getText(R.string.preparing_file), Toast.LENGTH_LONG);
+		final Toast prepareFileToast = Toast.makeText(getApplicationContext(),getText(R.string.preparing_file), Toast.LENGTH_LONG);
 		prepareFileToast.show();
 		xmppConnectionService.attachFileToConversation(conversation, uri, new UiCallback<Message>() {
 			@Override
 			public void success(Message message) {
-				hidePrepareFileToast();
+				hidePrepareFileToast(prepareFileToast);
 				xmppConnectionService.sendMessage(message);
 			}
 
 			@Override
 			public void error(int errorCode, Message message) {
+				hidePrepareFileToast(prepareFileToast);
 				displayErrorDialog(errorCode);
 			}
 
@@ -1422,32 +1424,31 @@ public class ConversationActivity extends XmppActivity
 		if (conversation == null) {
 			return;
 		}
-		prepareFileToast = Toast.makeText(getApplicationContext(),getText(R.string.preparing_image), Toast.LENGTH_LONG);
+		final Toast prepareFileToast = Toast.makeText(getApplicationContext(),getText(R.string.preparing_image), Toast.LENGTH_LONG);
 		prepareFileToast.show();
 		xmppConnectionService.attachImageToConversation(conversation, uri,
 				new UiCallback<Message>() {
 
 					@Override
-					public void userInputRequried(PendingIntent pi,
-												  Message object) {
-						hidePrepareFileToast();
+					public void userInputRequried(PendingIntent pi, Message object) {
+						hidePrepareFileToast(prepareFileToast);
 					}
 
 					@Override
 					public void success(Message message) {
-						hidePrepareFileToast();
+						hidePrepareFileToast(prepareFileToast);
 						xmppConnectionService.sendMessage(message);
 					}
 
 					@Override
 					public void error(int error, Message message) {
-						hidePrepareFileToast();
+						hidePrepareFileToast(prepareFileToast);
 						displayErrorDialog(error);
 					}
 				});
 	}
 
-	private void hidePrepareFileToast() {
+	private void hidePrepareFileToast(final Toast prepareFileToast) {
 		if (prepareFileToast != null) {
 			runOnUiThread(new Runnable() {
 
