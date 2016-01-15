@@ -186,6 +186,13 @@ public class PublishProfilePictureActivity extends XmppActivity {
 					loadImageIntoPreview(this.avatarUri);
 					break;
 			}
+		} else {
+			if (requestCode == Crop.REQUEST_CROP) {
+				Throwable throwable = Crop.getError(data);
+				if (throwable != null && throwable instanceof OutOfMemoryError) {
+					Toast.makeText(this,R.string.selection_too_large, Toast.LENGTH_SHORT).show();
+				}
+			}
 		}
 	}
 
