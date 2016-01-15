@@ -606,15 +606,19 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 	}
 
 	public Pair<Long, String> getLastMessageReceived(Account account) {
-		SQLiteDatabase db = this.getReadableDatabase();
-		String sql = "select messages.timeSent,messages.serverMsgId from accounts join conversations on accounts.uuid=conversations.accountUuid join messages on conversations.uuid=messages.conversationUuid where accounts.uuid=? and (messages.status=0 or messages.carbon=1 or messages.serverMsgId not null) order by messages.timesent desc limit 1";
-		String[] args = {account.getUuid()};
-		Cursor cursor = db.rawQuery(sql, args);
-		if (cursor.getCount() == 0) {
+		try {
+			SQLiteDatabase db = this.getReadableDatabase();
+			String sql = "select messages.timeSent,messages.serverMsgId from accounts join conversations on accounts.uuid=conversations.accountUuid join messages on conversations.uuid=messages.conversationUuid where accounts.uuid=? and (messages.status=0 or messages.carbon=1 or messages.serverMsgId not null) order by messages.timesent desc limit 1";
+			String[] args = {account.getUuid()};
+			Cursor cursor = db.rawQuery(sql, args);
+			if (cursor.getCount() == 0) {
+				return null;
+			} else {
+				cursor.moveToFirst();
+				return new Pair<>(cursor.getLong(0), cursor.getString(1));
+			}
+		} catch (Exception e) {
 			return null;
-		} else {
-			cursor.moveToFirst();
-			return new Pair<>(cursor.getLong(0), cursor.getString(1));
 		}
 	}
 
