@@ -150,8 +150,7 @@ public class ConversationActivity extends XmppActivity
 
 	public boolean isConversationsOverviewHideable() {
 		if (mContentView instanceof SlidingPaneLayout) {
-			SlidingPaneLayout mSlidingPaneLayout = (SlidingPaneLayout) mContentView;
-			return mSlidingPaneLayout.isSlideable();
+			return true;
 		} else {
 			return false;
 		}
@@ -1147,6 +1146,7 @@ public class ConversationActivity extends XmppActivity
 			} else {
 				if (isConversationsOverviewHideable()) {
 					openConversation();
+					updateActionBarTitle(true);
 				}
 			}
 			this.mConversationFragment.reInit(getSelectedConversation());
@@ -1327,7 +1327,13 @@ public class ConversationActivity extends XmppActivity
 				}
 			} else if (requestCode == REQUEST_TRUST_KEYS_TEXT || requestCode == REQUEST_TRUST_KEYS_MENU) {
 				this.forbidProcessingPendings = !xmppConnectionServiceBound;
-				mConversationFragment.onActivityResult(requestCode, resultCode, data);
+				if (xmppConnectionServiceBound) {
+					mConversationFragment.onActivityResult(requestCode, resultCode, data);
+					this.mPostponedActivityResult = null;
+				} else {
+					this.mPostponedActivityResult = new Pair<>(requestCode, data);
+				}
+
 			}
 		} else {
 			mPendingImageUris.clear();
