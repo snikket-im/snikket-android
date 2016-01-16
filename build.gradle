@@ -29,7 +29,7 @@ repositories {
 
 dependencies {
 	compile project(':libs:MemorizingTrustManager')
-	compile 'org.sufficientlysecure:openpgp-api:9.0'
+	compile 'org.sufficientlysecure:openpgp-api:10.0'
 	compile 'com.soundcloud.android:android-crop:1.0.1@aar'
 	compile 'com.android.support:support-v13:23.0.1'
 	compile 'org.bouncycastle:bcprov-jdk15on:1.52'
