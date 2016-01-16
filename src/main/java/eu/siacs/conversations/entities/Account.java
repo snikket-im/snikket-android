@@ -162,16 +162,12 @@ public class Account extends AbstractEntity {
 	private List<Bookmark> bookmarks = new CopyOnWriteArrayList<>();
 	private final Collection<Jid> blocklist = new CopyOnWriteArraySet<>();
 
-	public Account() {
-		this.uuid = "0";
-	}
-
 	public Account(final Jid jid, final String password) {
 		this(java.util.UUID.randomUUID().toString(), jid,
 				password, 0, null, "", null, null, null, 5222);
 	}
 
-	public Account(final String uuid, final Jid jid,
+	private Account(final String uuid, final Jid jid,
 			final String password, final int options, final String rosterVersion, final String keys,
 			final String avatar, String displayName, String hostname, int port) {
 		this.uuid = uuid;
