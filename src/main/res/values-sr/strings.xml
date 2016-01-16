@@ -498,6 +498,7 @@
   <string name="pref_away_when_screen_off_summary">Означава ваш ресурс одсутним кад је екран искључен</string>
   <string name="pref_xa_on_silent_mode">Недоступан у тихом режиму</string>
   <string name="pref_xa_on_silent_mode_summary">Означава ваш ресурс недоступним кад је уређај у тихом режиму</string>
+  <string name="action_add_account_with_certificate">Додај налог сертификатом</string>
   <string name="unable_to_parse_certificate">Не могу да рашчланим сертификат</string>
   <string name="authenticate_with_certificate">Оставите празно за аутентификацију сертификатом</string>
   <string name="captcha_ocr">Текст стопке</string>
@@ -527,6 +528,7 @@
   <string name="shared_image_with_x">Подељена слика са %s</string>
   <string name="no_storage_permission">Конверзацији је потребан приступ спољашњем складишту</string>
   <string name="sync_with_contacts">Синхронизуј са контактима</string>
+  <string name="sync_with_contacts_long">Конверзација жели да поклапи ваш ИксМПП именик са контактима на вашем уређају да би приказала њихова пуна имена и аватаре.\n\nКонверзација ће само да очита ваше контакте и упореди их локално без отпремања на сервер.\n\nСада ћете бити упитани за дозволу приступа вашим контактима.</string>
   <string name="certificate_information">Подаци о сертификату</string>
   <string name="certificate_subject">Предмет</string>
   <string name="certificate_issuer">Издавач</string>
@@ -540,4 +542,11 @@
   <string name="notify_never">Обавештења искључена</string>
   <string name="notify_paused">Обавештења паузирана</string>
   <string name="pref_picture_compression">Компресуј слике</string>
+  <string name="pref_picture_compression_summary">Промена величине и компресије слике</string>
+  <string name="always">увек</string>
+  <string name="automatically">аутоматски</string>
+  <string name="battery_optimizations_enabled">Оптимизација батерије је укључена</string>
+  <string name="battery_optimizations_enabled_explained">Ваш уређај користи оптимизацију потрошње батерије за Конверзацију што може да доведе до застоја обавештења или чак губитка порука.\nПрепоручљиво је да то искључите.</string>
+  <string name="battery_optimizations_enabled_dialog">Ваш уређај користи оптимизацију потрошње батерије за Конверзацију што може да доведе до застоја обавештења или чак губитка порука.\n\nСада ћете бити упитани да то искључите.</string>
+  <string name="disable">Искључи</string>
 </resources>

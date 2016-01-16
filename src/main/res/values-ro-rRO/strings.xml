@@ -285,7 +285,7 @@
   <string name="pref_about_conversations_summary">Informatii despre versiune si licenta</string>
   <string name="title_pref_quiet_hours">Ore de liniste</string>
   <string name="title_pref_quiet_hours_start_time">Ora de pornire</string>
-  <string name="title_pref_quiet_hours_end_time">Ora de inchidere</string>
+  <string name="title_pref_quiet_hours_end_time">Ora de oprire</string>
   <string name="title_pref_enable_quiet_hours">Activeaza orar de liniste</string>
   <string name="pref_quiet_hours_summary">Notificarile vor fi reduse la tacere in timpul orelor de liniste</string>
   <string name="pref_use_larger_font">Mareste marimea literelor</string>
