@@ -875,6 +875,14 @@ public class XmppConnection implements Runnable {
 				+ instructions);
 	}
 
+	public void resetEverything() {
+		resetStreamId();
+		clearIqCallbacks();
+		synchronized (this.disco) {
+			disco.clear();
+		}
+	}
+
 	private void sendBindRequest() {
 		while(!mXmppConnectionService.areMessagesInitialized() && socket != null && !socket.isClosed()) {
 			try {
