@@ -1270,9 +1270,12 @@ public class ConversationActivity extends XmppActivity
 			if (requestCode == REQUEST_DECRYPT_PGP) {
 				mConversationFragment.onActivityResult(requestCode, resultCode, data);
 			} else if (requestCode == REQUEST_CHOOSE_PGP_ID) {
+				// the user chose OpenPGP for encryption and selected his key in the PGP provider
 				if (xmppConnectionServiceBound) {
 					if (data.getExtras().containsKey(OpenPgpApi.EXTRA_SIGN_KEY_ID)) {
+						// associate selected PGP keyId with the account
 						mSelectedConversation.getAccount().setPgpSignId(data.getExtras().getLong(OpenPgpApi.EXTRA_SIGN_KEY_ID));
+						// we need to announce the key as described in XEP-027
 						announcePgp(mSelectedConversation.getAccount(), null);
 					} else {
 						choosePgpSignId(mSelectedConversation.getAccount());
@@ -1283,7 +1286,7 @@ public class ConversationActivity extends XmppActivity
 				}
 			} else if (requestCode == REQUEST_ANNOUNCE_PGP) {
 				if (xmppConnectionServiceBound) {
-					announcePgp(mSelectedConversation.getAccount(), null);
+					announcePgp(mSelectedConversation.getAccount(), mSelectedConversation);
 					this.mPostponedActivityResult = null;
 				} else {
 					this.mPostponedActivityResult = new Pair<>(requestCode, data);
