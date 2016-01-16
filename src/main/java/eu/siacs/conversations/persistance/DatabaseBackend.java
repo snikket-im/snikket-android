@@ -379,22 +379,6 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		db.insert(Account.TABLENAME, null, account.getContentValues());
 	}
 
-	public void createContact(Contact contact) {
-		SQLiteDatabase db = this.getWritableDatabase();
-		db.insert(Contact.TABLENAME, null, contact.getContentValues());
-	}
-
-	public int getConversationCount() {
-		SQLiteDatabase db = this.getReadableDatabase();
-		Cursor cursor = db.rawQuery("select count(uuid) as count from "
-				+ Conversation.TABLENAME + " where " + Conversation.STATUS
-				+ "=" + Conversation.STATUS_AVAILABLE, null);
-		cursor.moveToFirst();
-		int count = cursor.getInt(0);
-		cursor.close();
-		return count;
-	}
-
 	public CopyOnWriteArrayList<Conversation> getConversations(int status) {
 		CopyOnWriteArrayList<Conversation> list = new CopyOnWriteArrayList<>();
 		SQLiteDatabase db = this.getReadableDatabase();
@@ -593,12 +577,6 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		updateAccount(account);
 	}
 
-	public void deleteMessage(Message message) {
-		SQLiteDatabase db = this.getWritableDatabase();
-		String[] args = {message.getUuid()};
-		db.delete(Message.TABLENAME, Message.UUID + "=?", args);
-	}
-
 	public void deleteMessagesInConversation(Conversation conversation) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		String[] args = {conversation.getUuid()};
@@ -620,67 +598,6 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		} catch (Exception e) {
 			return null;
 		}
-	}
-
-	public Conversation findConversationByUuid(String conversationUuid) {
-		SQLiteDatabase db = this.getReadableDatabase();
-		String[] selectionArgs = {conversationUuid};
-		Cursor cursor = db.query(Conversation.TABLENAME, null,
-				Conversation.UUID + "=?", selectionArgs, null, null, null);
-		if (cursor.getCount() == 0) {
-			return null;
-		}
-		cursor.moveToFirst();
-		Conversation conversation = Conversation.fromCursor(cursor);
-		cursor.close();
-		return conversation;
-	}
-
-	public Message findMessageByUuid(String messageUuid) {
-		SQLiteDatabase db = this.getReadableDatabase();
-		String[] selectionArgs = {messageUuid};
-		Cursor cursor = db.query(Message.TABLENAME, null, Message.UUID + "=?",
-				selectionArgs, null, null, null);
-		if (cursor.getCount() == 0) {
-			return null;
-		}
-		cursor.moveToFirst();
-		Message message = Message.fromCursor(cursor);
-		cursor.close();
-		return message;
-	}
-
-	public Account findAccountByUuid(String accountUuid) {
-		SQLiteDatabase db = this.getReadableDatabase();
-		String[] selectionArgs = {accountUuid};
-		Cursor cursor = db.query(Account.TABLENAME, null, Account.UUID + "=?",
-				selectionArgs, null, null, null);
-		if (cursor.getCount() == 0) {
-			return null;
-		}
-		cursor.moveToFirst();
-		Account account = Account.fromCursor(cursor);
-		cursor.close();
-		return account;
-	}
-
-	public List<Message> getImageMessages(Conversation conversation) {
-		ArrayList<Message> list = new ArrayList<>();
-		SQLiteDatabase db = this.getReadableDatabase();
-		Cursor cursor;
-		String[] selectionArgs = {conversation.getUuid(), String.valueOf(Message.TYPE_IMAGE)};
-		cursor = db.query(Message.TABLENAME, null, Message.CONVERSATION
-				+ "=? AND " + Message.TYPE + "=?", selectionArgs, null, null, null);
-		if (cursor.getCount() > 0) {
-			cursor.moveToLast();
-			do {
-				Message message = Message.fromCursor(cursor);
-				message.setConversation(conversation);
-				list.add(message);
-			} while (cursor.moveToPrevious());
-		}
-		cursor.close();
-		return list;
 	}
 
 	private Cursor getCursorForSession(Account account, AxolotlAddress contact) {
