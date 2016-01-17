@@ -14,9 +14,11 @@ import eu.siacs.conversations.entities.ServiceDiscoveryResult;
 import eu.siacs.conversations.generator.PresenceGenerator;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xml.Element;
+import eu.siacs.conversations.xmpp.OnIqPacketReceived;
 import eu.siacs.conversations.xmpp.OnPresencePacketReceived;
 import eu.siacs.conversations.xmpp.jid.Jid;
 import eu.siacs.conversations.xmpp.pep.Avatar;
+import eu.siacs.conversations.xmpp.stanzas.IqPacket;
 import eu.siacs.conversations.xmpp.stanzas.PresencePacket;
 
 public class PresenceParser extends AbstractParser implements
@@ -161,7 +163,7 @@ public class PresenceParser extends AbstractParser implements
 		final String type = packet.getAttribute("type");
 		final Contact contact = account.getRoster().getContact(from);
 		if (type == null) {
-			String presence = from.isBareJid() ? "" : from.getResourcepart();
+			final String presence = from.isBareJid() ? "" : from.getResourcepart();
 			contact.setPresenceName(packet.findChildContent("nick", "http://jabber.org/protocol/nick"));
 			Avatar avatar = Avatar.parsePresence(packet.findChild("x", "vcard-temp:x:update"));
 			if (avatar != null && !contact.isSelf()) {
@@ -180,11 +182,30 @@ public class PresenceParser extends AbstractParser implements
 
 			ServiceDiscoveryResult disco = null;
 			Element caps = packet.findChild("c", "http://jabber.org/protocol/caps");
+
 			if (caps != null) {
 				disco = mXmppConnectionService.databaseBackend.
 					findDiscoveryResult(caps.getAttribute("hash"), caps.getAttribute("ver"));
 			}
-			contact.updatePresence(presence, new Presence(packet.findChild("show"), disco));
+
+			if (disco != null || caps == null) {
+				contact.updatePresence(presence, new Presence(packet.findChild("show"), disco));
+			} else {
+				IqPacket request = new IqPacket(IqPacket.TYPE.GET);
+				request.setTo(from);
+				request.query("http://jabber.org/protocol/disco#info");
+
+				mXmppConnectionService.sendIqPacket(account, request, new OnIqPacketReceived() {
+					@Override
+					public void onIqPacketReceived(Account account, IqPacket discoPacket) {
+						if (discoPacket.getType() == IqPacket.TYPE.RESULT) {
+							ServiceDiscoveryResult disco = new ServiceDiscoveryResult(discoPacket);
+							contact.updatePresence(presence, new Presence(packet.findChild("show"), disco));
+							mXmppConnectionService.databaseBackend.insertDiscoveryResult(disco);
+						}
+					}
+				});
+			}
 
 			PgpEngine pgp = mXmppConnectionService.getPgpEngine();
 			Element x = packet.findChild("x", "jabber:x:signed");
