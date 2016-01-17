@@ -53,6 +53,7 @@ import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.MucOptions;
+import eu.siacs.conversations.entities.Presence;
 import eu.siacs.conversations.entities.Presences;
 import eu.siacs.conversations.entities.Transferable;
 import eu.siacs.conversations.entities.TransferablePlaceholder;
@@ -859,82 +860,82 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 
 	enum SendButtonAction {TEXT, TAKE_PHOTO, SEND_LOCATION, RECORD_VOICE, CANCEL, CHOOSE_PICTURE}
 
-	private int getSendButtonImageResource(SendButtonAction action, int status) {
+	private int getSendButtonImageResource(SendButtonAction action, Presence.Status status) {
 		switch (action) {
 			case TEXT:
 				switch (status) {
-					case Presences.CHAT:
-					case Presences.ONLINE:
+					case CHAT:
+					case ONLINE:
 						return R.drawable.ic_send_text_online;
-					case Presences.AWAY:
+					case AWAY:
 						return R.drawable.ic_send_text_away;
-					case Presences.XA:
-					case Presences.DND:
+					case XA:
+					case DND:
 						return R.drawable.ic_send_text_dnd;
 					default:
 						return R.drawable.ic_send_text_offline;
 				}
 			case TAKE_PHOTO:
 				switch (status) {
-					case Presences.CHAT:
-					case Presences.ONLINE:
+					case CHAT:
+					case ONLINE:
 						return R.drawable.ic_send_photo_online;
-					case Presences.AWAY:
+					case AWAY:
 						return R.drawable.ic_send_photo_away;
-					case Presences.XA:
-					case Presences.DND:
+					case XA:
+					case DND:
 						return R.drawable.ic_send_photo_dnd;
 					default:
 						return R.drawable.ic_send_photo_offline;
 				}
 			case RECORD_VOICE:
 				switch (status) {
-					case Presences.CHAT:
-					case Presences.ONLINE:
+					case CHAT:
+					case ONLINE:
 						return R.drawable.ic_send_voice_online;
-					case Presences.AWAY:
+					case AWAY:
 						return R.drawable.ic_send_voice_away;
-					case Presences.XA:
-					case Presences.DND:
+					case XA:
+					case DND:
 						return R.drawable.ic_send_voice_dnd;
 					default:
 						return R.drawable.ic_send_voice_offline;
 				}
 			case SEND_LOCATION:
 				switch (status) {
-					case Presences.CHAT:
-					case Presences.ONLINE:
+					case CHAT:
+					case ONLINE:
 						return R.drawable.ic_send_location_online;
-					case Presences.AWAY:
+					case AWAY:
 						return R.drawable.ic_send_location_away;
-					case Presences.XA:
-					case Presences.DND:
+					case XA:
+					case DND:
 						return R.drawable.ic_send_location_dnd;
 					default:
 						return R.drawable.ic_send_location_offline;
 				}
 			case CANCEL:
 				switch (status) {
-					case Presences.CHAT:
-					case Presences.ONLINE:
+					case CHAT:
+					case ONLINE:
 						return R.drawable.ic_send_cancel_online;
-					case Presences.AWAY:
+					case AWAY:
 						return R.drawable.ic_send_cancel_away;
-					case Presences.XA:
-					case Presences.DND:
+					case XA:
+					case DND:
 						return R.drawable.ic_send_cancel_dnd;
 					default:
 						return R.drawable.ic_send_cancel_offline;
 				}
 			case CHOOSE_PICTURE:
 				switch (status) {
-					case Presences.CHAT:
-					case Presences.ONLINE:
+					case CHAT:
+					case ONLINE:
 						return R.drawable.ic_send_picture_online;
-					case Presences.AWAY:
+					case AWAY:
 						return R.drawable.ic_send_picture_away;
-					case Presences.XA:
-					case Presences.DND:
+					case XA:
+					case DND:
 						return R.drawable.ic_send_picture_dnd;
 					default:
 						return R.drawable.ic_send_picture_offline;
@@ -946,7 +947,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 	public void updateSendButton() {
 		final Conversation c = this.conversation;
 		final SendButtonAction action;
-		final int status;
+		final Presence.Status status;
 		final boolean empty = this.mEditMessage == null || this.mEditMessage.getText().length() == 0;
 		final boolean conference = c.getMode() == Conversation.MODE_MULTI;
 		if (conference && !c.getAccount().httpUploadAvailable()) {
@@ -993,10 +994,10 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 			if (c.getMode() == Conversation.MODE_SINGLE) {
 				status = c.getContact().getMostAvailableStatus();
 			} else {
-				status = c.getMucOptions().online() ? Presences.ONLINE : Presences.OFFLINE;
+				status = c.getMucOptions().online() ? Presence.Status.ONLINE : Presence.Status.OFFLINE;
 			}
 		} else {
-			status = Presences.OFFLINE;
+			status = Presence.Status.OFFLINE;
 		}
 		this.mSendButton.setTag(action);
 		this.mSendButton.setImageResource(getSendButtonImageResource(action, status));

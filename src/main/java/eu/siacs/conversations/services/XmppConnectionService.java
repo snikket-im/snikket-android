@@ -72,6 +72,7 @@ import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.entities.MucOptions.OnRenameListener;
+import eu.siacs.conversations.entities.Presence;
 import eu.siacs.conversations.entities.Presences;
 import eu.siacs.conversations.entities.Transferable;
 import eu.siacs.conversations.entities.TransferablePlaceholder;
@@ -596,13 +597,13 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		return getPreferences().getString("picture_compression", "auto");
 	}
 
-	private int getTargetPresence() {
+	private Presence.Status getTargetPresence() {
 		if (xaOnSilentMode() && isPhoneSilenced()) {
-			return Presences.XA;
+			return Presence.Status.XA;
 		} else if (awayWhenScreenOff() && !isInteractive()) {
-			return Presences.AWAY;
+			return Presence.Status.AWAY;
 		} else {
-			return Presences.ONLINE;
+			return Presence.Status.ONLINE;
 		}
 	}
 

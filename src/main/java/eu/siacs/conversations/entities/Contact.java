@@ -135,17 +135,17 @@ public class Contact implements ListItem, Blockable {
 			tags.add(new Tag(group, UIHelper.getColorForName(group)));
 		}
 		switch (getMostAvailableStatus()) {
-			case Presences.CHAT:
-			case Presences.ONLINE:
+			case CHAT:
+			case ONLINE:
 				tags.add(new Tag("online", 0xff259b24));
 				break;
-			case Presences.AWAY:
+			case AWAY:
 				tags.add(new Tag("away", 0xffff9800));
 				break;
-			case Presences.XA:
+			case XA:
 				tags.add(new Tag("not available", 0xfff44336));
 				break;
-			case Presences.DND:
+			case DND:
 				tags.add(new Tag("dnd", 0xfff44336));
 				break;
 		}
@@ -225,8 +225,8 @@ public class Contact implements ListItem, Blockable {
 		this.presences = pres;
 	}
 
-	public void updatePresence(final String resource, final int status) {
-		this.presences.updatePresence(resource, status);
+	public void updatePresence(final String resource, final Presence presence) {
+		this.presences.updatePresence(resource, presence);
 	}
 
 	public void removePresence(final String resource) {
@@ -238,8 +238,13 @@ public class Contact implements ListItem, Blockable {
 		this.resetOption(Options.PENDING_SUBSCRIPTION_REQUEST);
 	}
 
-	public int getMostAvailableStatus() {
-		return this.presences.getMostAvailableStatus();
+	public Presence.Status getMostAvailableStatus() {
+		Presence p = this.presences.getMostAvailablePresence();
+		if (p == null) {
+			return Presence.Status.OFFLINE;
+		}
+
+		return p.getStatus();
 	}
 
 	public boolean setPhotoUri(String uri) {
