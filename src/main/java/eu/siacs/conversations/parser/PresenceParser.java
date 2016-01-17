@@ -9,8 +9,8 @@ import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.MucOptions;
-import eu.siacs.conversations.entities.Presences;
 import eu.siacs.conversations.entities.Presence;
+import eu.siacs.conversations.entities.ServiceDiscoveryResult;
 import eu.siacs.conversations.generator.PresenceGenerator;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xml.Element;
@@ -177,7 +177,15 @@ public class PresenceParser extends AbstractParser implements
 				}
 			}
 			int sizeBefore = contact.getPresences().size();
-			contact.updatePresence(presence, new Presence(packet.findChild("show")));
+
+			ServiceDiscoveryResult disco = null;
+			Element caps = packet.findChild("c", "http://jabber.org/protocol/caps");
+			if (caps != null) {
+				disco = mXmppConnectionService.databaseBackend.
+					findDiscoveryResult(caps.getAttribute("hash"), caps.getAttribute("ver"));
+			}
+			contact.updatePresence(presence, new Presence(packet.findChild("show"), disco));
+
 			PgpEngine pgp = mXmppConnectionService.getPgpEngine();
 			Element x = packet.findChild("x", "jabber:x:signed");
 			if (pgp != null && x != null) {

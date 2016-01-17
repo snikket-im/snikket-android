@@ -22,8 +22,11 @@ public class Presence implements Comparable {
 	}
 
 	protected final Status status;
+	protected final ServiceDiscoveryResult disco;
 
-	public Presence(Element show) {
+	public Presence(Element show, ServiceDiscoveryResult disco) {
+		this.disco = disco;
+
 		if ((show == null) || (show.getContent() == null)) {
 			this.status = Status.ONLINE;
 		} else if (show.getContent().equals("away")) {
