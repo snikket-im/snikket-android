@@ -187,7 +187,7 @@ public class PublishProfilePictureActivity extends XmppActivity {
 					break;
 			}
 		} else {
-			if (requestCode == Crop.REQUEST_CROP) {
+			if (requestCode == Crop.REQUEST_CROP  && data != null) {
 				Throwable throwable = Crop.getError(data);
 				if (throwable != null && throwable instanceof OutOfMemoryError) {
 					Toast.makeText(this,R.string.selection_too_large, Toast.LENGTH_SHORT).show();
