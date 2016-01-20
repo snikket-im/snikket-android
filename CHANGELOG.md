@@ -1,5 +1,12 @@
 ###Changelog
 
+####Version 1.9.2
+* prevent startup crash on Sailfish OS
+* minor bug fixes
+
+####Version 1.9.1
+* minor bug fixes incl. a workaround for nimbuzz.com
+
 ####Version 1.9.0
 * Per conference notification settings
 * Let user decide whether to compress pictures
