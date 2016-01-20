@@ -546,4 +546,5 @@
   <string name="battery_optimizations_enabled_explained">Tu dispositivo está realizando optimizaciones de uso de batería en Conversations que pueden hacer que los mensajes se retrasen o incluso hacer que se pierdan.\nEs recomendable deshabilitarlas.</string>
   <string name="battery_optimizations_enabled_dialog">Tu dispositivo está realizando optimizaciones de uso de batería en Conversations que pueden hacer que los mensajes se retrasen o incluso hacer que se pierdan.\n\nEl sistema te preguntará ahora para deshabilitarlas.</string>
   <string name="disable">Deshabilitar</string>
+  <string name="selection_too_large">El área seleccionada es demasiado grande</string>
 </resources>

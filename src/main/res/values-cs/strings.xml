@@ -549,4 +549,5 @@
   <string name="battery_optimizations_enabled_explained">Tento přístroj provádí agresivní optimalizace využití baterie pro konverzace. Ty mohou způsobit zpoždění upozornění nebo ztrátu zpráv.\nJe doporučeno tyto vypnout.</string>
   <string name="battery_optimizations_enabled_dialog">Tento přístroj provádí agresivní optimalizace využití baterie pro konverzace. Ty mohou způsobit zpoždění upozornění nebo ztrátu zpráv.\nnyní budete vyzváni k jejich vypnutí.</string>
   <string name="disable">Vypnout</string>
+  <string name="selection_too_large">Vybraný obsah je příliš dlouhý</string>
 </resources>

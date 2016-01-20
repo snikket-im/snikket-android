@@ -550,4 +550,5 @@ Emitent</string>
   <string name="battery_optimizations_enabled_explained">Dispozitivul dumneavoastra incearca sa optimizeze agresiv consumul bateriei pentru Conversations, asta poate duce la notificari intarziate sau chiar pierderi de mesaje.\nEste recomandat sa dezactivati aceste optimizari.</string>
   <string name="battery_optimizations_enabled_dialog">Dispozitivul dumneavoastra incearca sa optimizeze agresiv consumul bateriei pentru Conversations, asta poate duce la notificari intarziate sau chiar pierderi de mesaje.\nIn continuare veti fi rugat sa dezactivati aceste optimizari.</string>
   <string name="disable">Dezactivat</string>
+  <string name="selection_too_large">Zona selectata este prea mare</string>
 </resources>

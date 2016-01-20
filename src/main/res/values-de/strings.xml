@@ -375,7 +375,7 @@
   <string name="purge_key">Schlüssel löschen</string>
   <string name="purge_key_desc_part1">Soll dieser Schlüssel gelöscht werden?</string>
   <string name="purge_key_desc_part2">Dieser Vorgang kann nicht rückgängig gemacht werden und es kann nie wieder eine Verbindung mit diesem Schlüssel hergestellt werden.</string>
-  <string name="error_no_keys_to_trust_server_error">Für dieses Kontakt sind keine benutzbaren Schlüssel verfügbar.\nNeue Schlüssel vom Server herunterzuladen war nicht erfolgreich. Vielleicht stimmt etwas mit dem Server deines Kontakts nicht.</string>
+  <string name="error_no_keys_to_trust_server_error">Für diesen Kontakt sind keine benutzbaren Schlüssel verfügbar.\nNeue Schlüssel vom Server herunterzuladen war nicht erfolgreich. Vielleicht stimmt etwas mit dem Server deines Kontakts nicht.</string>
   <string name="error_no_keys_to_trust">Es sind keine Schlüssel für diesen Kontakt verfügbar. Falls sie gelöscht wurden, müssen diese neu erstellt werden.</string>
   <string name="error_trustkeys_title">Fehler</string>
   <string name="fetching_history_from_server">Lade Chatverlauf…</string>
@@ -546,4 +546,5 @@
   <string name="battery_optimizations_enabled_explained">Dein Telefon wendet Batterioptimierungen bei Conversations an, welche verspätete Benachrichtigungen oder Nachrichtenverlust verursachen können.\nEs ist empfehlenswert diese zu deaktivieren.</string>
   <string name="battery_optimizations_enabled_dialog">Dein Telefon wendet Batterioptimierungen bei Conversations an, welche verspätete Benachrichtigungen oder Nachrichtenverlust verursachen können. Es ist empfehlenswert dies zu deaktivieren.</string>
   <string name="disable">Deaktivieren</string>
+  <string name="selection_too_large">Der ausgewählte Bereich ist zu groß</string>
 </resources>

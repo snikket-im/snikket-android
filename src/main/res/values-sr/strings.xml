@@ -549,4 +549,5 @@
   <string name="battery_optimizations_enabled_explained">Ваш уређај користи оптимизацију потрошње батерије за Конверзацију што може да доведе до застоја обавештења или чак губитка порука.\nПрепоручљиво је да то искључите.</string>
   <string name="battery_optimizations_enabled_dialog">Ваш уређај користи оптимизацију потрошње батерије за Конверзацију што може да доведе до застоја обавештења или чак губитка порука.\n\nСада ћете бити упитани да то искључите.</string>
   <string name="disable">Искључи</string>
+  <string name="selection_too_large">Назначена површина је превелика</string>
 </resources>

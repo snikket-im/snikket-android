@@ -543,4 +543,5 @@
   <string name="battery_optimizations_enabled_explained">お使いのデバイスは、Conversations で、通知の遅延やメッセージの損失につながる可能性のある、いくつかの重いバッテリーの最適化を行っています。\nそれらを無効にすることをお勧めします。</string>
   <string name="battery_optimizations_enabled_dialog">お使いのデバイスは、Conversations で通知の遅延やメッセージの損失につながる可能性のある、いくつかの重いバッテリーの最適化を行っています。\n\n今、それらを無効にするように求められます。</string>
   <string name="disable">無効</string>
+  <string name="selection_too_large">選択した範囲が大きすぎます</string>
 </resources>

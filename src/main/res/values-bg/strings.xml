@@ -546,4 +546,5 @@
   <string name="battery_optimizations_enabled_explained">Устройството Ви прилага сериозни оптимизации за използването на батерията върху Conversations, а те може да доведат до забавени известия и дори пропуснати съобщения.\nПрепоръчително е до ги изключите.</string>
   <string name="battery_optimizations_enabled_dialog">Устройството Ви прилага сериозни оптимизации за използването на батерията върху Conversations, а те може да доведат до забавени известия и дори пропуснати съобщения.\n\nСега ще Ви бъде предложено да ги изключите.</string>
   <string name="disable">Изключване</string>
+  <string name="selection_too_large">Избраната област е твърде голяма</string>
 </resources>

@@ -9,6 +9,7 @@
   <string name="action_secure">Conversation sécurisée</string>
   <string name="action_add_account">Ajouter un compte</string>
   <string name="action_edit_contact">Modifier le nom</string>
+  <string name="action_add_phone_book">Ajouter au carnet d\'adresses</string>
   <string name="action_delete_contact">Retirer des contacts</string>
   <string name="action_block_contact">Bloquer le contact</string>
   <string name="action_unblock_contact">Débloquer le contact</string>
@@ -172,6 +173,7 @@
   <string name="passwords_do_not_match">Les deux mots de passe ne correspondent pas.</string>
   <string name="invalid_jid">Cet identifiant n\'est pas valide.</string>
   <string name="error_out_of_memory">Plus de mémoire disponible. L\'image est trop volumineuse.</string>
+  <string name="add_phone_book_text">Voulez-vous ajouter %s à votre carnet d\'adresses ?</string>
   <string name="contact_status_online">En ligne</string>
   <string name="contact_status_free_to_chat">Disponible</string>
   <string name="contact_status_away">Absent</string>
@@ -220,12 +222,14 @@
   <string name="conferences">Conférences</string>
   <string name="search">Rechercher</string>
   <string name="create_contact">Ajouter un contact</string>
+  <string name="enter_contact">Ajouter contact</string>
   <string name="join_conference">Rejoindre la conférence</string>
   <string name="delete_contact">Supprimer le contact</string>
   <string name="view_contact_details">Afficher les détails du contact</string>
   <string name="block_contact">Bloquer le contact</string>
   <string name="unblock_contact">Débloquer le contact</string>
   <string name="create">Ajouter</string>
+  <string name="select">Sélectionner</string>
   <string name="contact_already_exists">Le contact existe déjà.</string>
   <string name="join">Rejoindre</string>
   <string name="conference_address">Adresse de la conférence</string>
@@ -371,6 +375,7 @@
   <string name="purge_key">Supprimer la clef</string>
   <string name="purge_key_desc_part1">Êtes-vous sûr de vouloir supprimer cette clef ?</string>
   <string name="purge_key_desc_part2">Elle sera considérée compromise de manière irréversible, et vous ne pourrez plus générer de session avec.</string>
+  <string name="error_no_keys_to_trust_server_error">Il n\'y a aucune clef utilisable disponible pour ce contact.\nLa récupération de nouvelles clefs sur le serveur a échoué. Peut-être y a-t-il un problème avec votre serveur de contacts.</string>
   <string name="error_no_keys_to_trust">il n\'y a pas de clef disponible pour ce contact. Si vous avez purgé toutes ses clefs, il doit en générer de nouvelles.</string>
   <string name="error_trustkeys_title">Erreur</string>
   <string name="fetching_history_from_server">Récupération de l\'historique sur le serveur</string>
@@ -484,11 +489,13 @@
   <string name="download_failed_could_not_connect">Échec du téléchargement : impossible de se connecter à l\'hôte</string>
   <string name="pref_use_white_background">Utiliser un fond blanc</string>
   <string name="pref_use_white_background_summary">Afficher les messages reçus en texte noir sur fond blanc.</string>
+  <string name="account_status_tor_unavailable">Réseau Tor inaccessible</string>
   <string name="server_info_broken">Détraqué</string>
   <string name="pref_presence_settings">Options de présence</string>
   <string name="pref_away_when_screen_off">Absent quand l\'écran est éteint</string>
   <string name="pref_away_when_screen_off_summary">Marquer cette ressource comme absente quand l\'écran est éteint.</string>
   <string name="pref_xa_on_silent_mode">Indisponible en mode silencieux</string>
+  <string name="pref_xa_on_silent_mode_summary">Marque cette ressource comme indisponible quand l\'appareil est en mode silencieux</string>
   <string name="action_add_account_with_certificate">Ajouter un compte avec un certificat</string>
   <string name="unable_to_parse_certificate">Impossible d\'analyser le certificat</string>
   <string name="authenticate_with_certificate">Laisser vide pour s\'identifier avec un certificat</string>
@@ -503,6 +510,7 @@
   <string name="device_does_not_support_certificates">Votre appareil ne supporte pas la sélection de certificats client !</string>
   <string name="pref_connection_options">Options de connexion</string>
   <string name="pref_use_tor">Connection via Tor</string>
+  <string name="pref_use_tor_summary">Rediriger toutes les connexions via le réseau Tor. Nécessite Orbot.</string>
   <string name="account_settings_hostname">Nom d\'hôte</string>
   <string name="account_settings_port">Port</string>
   <string name="hostname_or_onion">Adresse du serveur ou .onion</string>
@@ -518,4 +526,25 @@
   <string name="no_storage_permission">Conversations a besoin d\'accéder au stockage externe</string>
   <string name="sync_with_contacts">Synchroniser avec contacts</string>
   <string name="sync_with_contacts_long">Conversations souhaite associer vos contacts XMPP avec les contacts de votre appareil, pour utiliser leur nom complet et leur avatar.\n\nConversations va uniquement lire vos contacts et les associer localement, sans les uploader sur le serveur XMPP.\n\nVotre appareil va maintenant vous demander la permission d\'accéder à vos contacts.</string>
+  <string name="certificate_information">Informations du certificat</string>
+  <string name="certificate_subject">Sujet</string>
+  <string name="certificate_issuer">Émetteur</string>
+  <string name="certificate_cn">Nom commun</string>
+  <string name="certificate_o">Organisation</string>
+  <string name="certificate_sha1">SHA-1</string>
+  <string name="certicate_info_not_available">(Non disponible)</string>
+  <string name="certificate_not_found">Aucun certificat trouvé</string>
+  <string name="notify_on_all_messages">Notifier pour tous les messages</string>
+  <string name="notify_only_when_highlighted">Notifier uniquement quand surligné</string>
+  <string name="notify_never">Notifications désactivées</string>
+  <string name="notify_paused">Notifications en pause</string>
+  <string name="pref_picture_compression">Compresser images</string>
+  <string name="pref_picture_compression_summary">Redimensionner et compresser les images</string>
+  <string name="always">Toujours</string>
+  <string name="automatically">Automatiquement</string>
+  <string name="battery_optimizations_enabled">Optimisations de batterie activées</string>
+  <string name="battery_optimizations_enabled_explained">Votre appareil applique sur Conversations des optimisations de batterie très strictes qui pourraient provoquer des retards dans les notifications, voire des pertes de messages.\nNous vous recommandons de les désactiver.</string>
+  <string name="battery_optimizations_enabled_dialog">Votre appareil applique sur Conversations des optimisations de batterie très strictes qui pourraient provoquer des retards dans les notifications, voire des pertes de messages.\nVous allez maintenant avoir la possibilité de les désactiver.</string>
+  <string name="disable">Désactiver</string>
+  <string name="selection_too_large">La zone sélectionnée est trop grande</string>
 </resources>

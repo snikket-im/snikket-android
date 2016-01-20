@@ -546,4 +546,5 @@
   <string name="battery_optimizations_enabled_explained">Din enhet har kraftiga batterioptimeringar som påverkar Conversations på så sätt att inkommande meddelanden kan försenas eller kan till och med gå förlorade.\nDet är rekommenderat att deaktivera batterioptimeringarna.</string>
   <string name="battery_optimizations_enabled_dialog">Din enhet har kraftiga batterioptimeringar som påverkar Conversations på så sätt att inkommande meddelanden kan försenas eller kan till och med gå förlorade.\nDu kommer nu att bli ombedd att stänga av batterioptimeringarna för Conversations.</string>
   <string name="disable">Deaktivera</string>
+  <string name="selection_too_large">The valda området är för stort</string>
 </resources>

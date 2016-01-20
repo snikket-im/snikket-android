@@ -9,6 +9,7 @@
   <string name="action_secure">Защищенная беседа</string>
   <string name="action_add_account">Добавить аккаунт</string>
   <string name="action_edit_contact">Редактировать контакт</string>
+  <string name="action_add_phone_book">Добавить в адресную книгу</string>
   <string name="action_delete_contact">Удалить из списка</string>
   <string name="action_block_contact">Заблокировать контакт</string>
   <string name="action_unblock_contact">Разблокировать контакт</string>
@@ -172,6 +173,7 @@
   <string name="passwords_do_not_match">Пароли не совпадают</string>
   <string name="invalid_jid">Недопустимый JID (Джаббер ID)</string>
   <string name="error_out_of_memory">Недостаточно памяти. Изображение слишком большое</string>
+  <string name="add_phone_book_text">Вы хотите добавить %s в вашу адресную книгу?</string>
   <string name="contact_status_online">в сети</string>
   <string name="contact_status_free_to_chat">свободен для общения</string>
   <string name="contact_status_away">скоро буду</string>
@@ -220,12 +222,14 @@
   <string name="conferences">Конференции</string>
   <string name="search">Поиск</string>
   <string name="create_contact">Создать контакт</string>
+  <string name="enter_contact">Добавить контакт</string>
   <string name="join_conference">Присоединиться к конференции</string>
   <string name="delete_contact">Удалить Контакт</string>
   <string name="view_contact_details">Посмотреть данные контакта</string>
   <string name="block_contact">Заблокировать контакт</string>
   <string name="unblock_contact">Разблокировать контакт</string>
   <string name="create">Создать</string>
+  <string name="select">Select</string>
   <string name="contact_already_exists">Контакт уже существует</string>
   <string name="join">Присоединиться</string>
   <string name="conference_address">Адрес конференции</string>
@@ -488,6 +492,7 @@
   <string name="download_failed_could_not_connect">Загрузка не удалась: не удалось подключиться к серверу</string>
   <string name="pref_use_white_background">Использовать белый фон</string>
   <string name="pref_use_white_background_summary">Показывать принятые сообщения черным текстом на белом фоне</string>
+  <string name="account_status_tor_unavailable">Сеть Tor недоступна</string>
   <string name="server_info_broken">Повреждено</string>
   <string name="pref_presence_settings">Настройки присутствия</string>
   <string name="pref_away_when_screen_off">Вышел когда экран выключен</string>
@@ -507,6 +512,7 @@
   <string name="device_does_not_support_certificates">Ваше устройство не поддерживает выбор клиентских сертификатов!</string>
   <string name="pref_connection_options">Настройки соединения</string>
   <string name="pref_use_tor">Соединение через Tor</string>
+  <string name="pref_use_tor_summary">Направить все соединения через сеть TOR. Требуется Orbot</string>
   <string name="account_settings_hostname">Имя сервера</string>
   <string name="account_settings_port">Порт</string>
   <string name="hostname_or_onion">Сервер- или .onion-Адрес</string>
@@ -518,4 +524,20 @@
   <string name="no_storage_permission">Conversations требуется доступ к внешнему хранилищу</string>
   <string name="sync_with_contacts">Синхронизировать с контактами</string>
   <string name="sync_with_contacts_long">Conversations ожидает совпадения вашего XMPP ростера с вашими контактами для отображения их полных имен и аватаров.\n\nConversations только считает ваши контакты и сопоставит их локально без отправки их на ваш сервер.\n\nСейчас вы получите запрос на разрешение доступа к вашим контактам.</string>
+  <string name="certificate_information">Информация о сертификате</string>
+  <string name="certificate_subject">Subject</string>
+  <string name="certificate_issuer">Выпустил</string>
+  <string name="certificate_o">Организация</string>
+  <string name="certificate_sha1">SHA-1</string>
+  <string name="certicate_info_not_available">(недоступно)</string>
+  <string name="certificate_not_found">Сертификатов не найдено</string>
+  <string name="notify_on_all_messages">Уведомлять о всех сообщениях</string>
+  <string name="notify_never">Уведомления запрещены</string>
+  <string name="notify_paused">Уведомления приостановлены</string>
+  <string name="pref_picture_compression">Сжать изображения</string>
+  <string name="always">Всегда</string>
+  <string name="automatically">Автоматически</string>
+  <string name="battery_optimizations_enabled">Оптимизации энергопотребления разрешены</string>
+  <string name="disable">Запретить</string>
+  <string name="selection_too_large">Выбранная область слишком большая</string>
 </resources>

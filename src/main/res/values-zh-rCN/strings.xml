@@ -9,6 +9,7 @@
   <string name="action_secure">安全对话</string>
   <string name="action_add_account">添加账号</string>
   <string name="action_edit_contact">编辑姓名</string>
+  <string name="action_add_phone_book">添加到地址薄</string>
   <string name="action_delete_contact">从列表中删除</string>
   <string name="action_block_contact">屏蔽联系人</string>
   <string name="action_unblock_contact">解除联系人屏蔽</string>
@@ -172,6 +173,7 @@
   <string name="passwords_do_not_match">密码不一致</string>
   <string name="invalid_jid">该 Jabber ID 无效</string>
   <string name="error_out_of_memory">空间不足。图片过大</string>
+  <string name="add_phone_book_text">是否添加 %s 到地址薄？</string>
   <string name="contact_status_online">在线</string>
   <string name="contact_status_free_to_chat">自由畅聊</string>
   <string name="contact_status_away">离开</string>
@@ -220,12 +222,14 @@
   <string name="conferences">讨论组</string>
   <string name="search">查找</string>
   <string name="create_contact">创建联系人</string>
+  <string name="enter_contact">输入联系人</string>
   <string name="join_conference">加入讨论组</string>
   <string name="delete_contact">删除联系人</string>
   <string name="view_contact_details">查看联系人详细信息</string>
   <string name="block_contact">屏蔽联系人</string>
   <string name="unblock_contact">解除联系人屏蔽</string>
   <string name="create">创建</string>
+  <string name="select">选择</string>
   <string name="contact_already_exists">联系人已存在</string>
   <string name="join">加入</string>
   <string name="conference_address">讨论组地址</string>
@@ -371,7 +375,8 @@
   <string name="purge_key">清除密钥</string>
   <string name="purge_key_desc_part1">是否确认清除该密钥？</string>
   <string name="purge_key_desc_part2">这是不可逆的损坏，你不能用此再建立一个会话了。</string>
-  <string name="error_no_keys_to_trust">他们没有密钥可用于此次会话。如果你曾经清除过他们的密钥，那么他们需要生成新的密钥。</string>
+  <string name="error_no_keys_to_trust_server_error">此联系人没有可用的密钥。\n从服务器获取密钥失败。也许你的联系人所在服务器发生问题。</string>
+  <string name="error_no_keys_to_trust">此联系人没有可用的密钥。如果你曾经清除过他们的密钥，那么需要他们生成新的密钥。</string>
   <string name="error_trustkeys_title">错误</string>
   <string name="fetching_history_from_server">从服务器获取历史记录</string>
   <string name="no_more_history_on_server">服务器上没有更多历史记录</string>
@@ -482,11 +487,13 @@
   <string name="download_failed_could_not_connect">下载失败：无法连接到服务器</string>
   <string name="pref_use_white_background">使用白色背景</string>
   <string name="pref_use_white_background_summary">收到的消息将显示为白底黑字</string>
+  <string name="account_status_tor_unavailable">Tor network 不可用</string>
   <string name="server_info_broken">损坏</string>
   <string name="pref_presence_settings">上线设置</string>
   <string name="pref_away_when_screen_off">关闭屏幕时离开</string>
   <string name="pref_away_when_screen_off_summary">当屏幕关闭时将标记您的资源为离开状态</string>
   <string name="pref_xa_on_silent_mode">静音模式时不可用</string>
+  <string name="pref_xa_on_silent_mode_summary">当设备进入静音模式时把资源标识改为不可用</string>
   <string name="action_add_account_with_certificate">使用证书添加账户</string>
   <string name="unable_to_parse_certificate">无法解析证书</string>
   <string name="authenticate_with_certificate">留空以认证 w/ 证书</string>
@@ -501,6 +508,7 @@
   <string name="device_does_not_support_certificates">您的设备不支持设备证书选择！</string>
   <string name="pref_connection_options">连接选项</string>
   <string name="pref_use_tor">通过 Tor 连接</string>
+  <string name="pref_use_tor_summary">所有连接使用 Tor 网络隧道。需要 Orbot</string>
   <string name="account_settings_hostname">主机名</string>
   <string name="account_settings_port">端口</string>
   <string name="hostname_or_onion">服务器 - 或者 .orion 地址</string>
@@ -515,4 +523,27 @@
   <string name="no_storage_permission">Conversations 需要访问外部存储</string>
   <string name="sync_with_contacts">与联系人同步</string>
   <string name="sync_with_contacts_long">Conversations 会匹配你的 XMPP 花名册与你的联系人，以显示他们的全名和头像。\n\nConversations 只会读取你的联系人并在本地匹配，不会上传到你的服务器。\n\n现在将要询问你是否给予访问你联系人的权限。</string>
+  <string name="certificate_information">证书详情</string>
+  <string name="certificate_subject">主题</string>
+  <string name="certificate_issuer">发行人</string>
+  <string name="certificate_cn">通用名称</string>
+  <string name="certificate_o">组织</string>
+  <string name="certificate_sha1">SHA1</string>
+  <string name="certicate_info_not_available">(不可用）</string>
+  <string name="certificate_not_found">未发现证书</string>
+  <string name="notify_on_all_messages">为所有信息显示通知</string>
+  <string name="notify_only_when_highlighted">仅当高亮时显示通知</string>
+  <string name="notify_never">禁用通知</string>
+  <string name="notify_paused">暂停通知</string>
+  <string name="pref_picture_compression">压缩图片</string>
+  <string name="pref_picture_compression_summary">缩小并压缩图片</string>
+  <string name="always">总是</string>
+  <string name="automatically">自动</string>
+  <string name="battery_optimizations_enabled">启用节电模式</string>
+  <string name="battery_optimizations_enabled_explained">你的设备正在为Conversations进行电池优化，这可能导致通知的延迟甚至消息的丢失。
+建议不要这样做</string>
+  <string name="battery_optimizations_enabled_dialog">你的设备正在为Conversations进行电池优化，这可能导致通知的延迟甚至消息的丢失。
+你将会被提示禁用该功能。</string>
+  <string name="disable">禁用</string>
+  <string name="selection_too_large">选择区域过大</string>
 </resources>
