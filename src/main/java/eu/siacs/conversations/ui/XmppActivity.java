@@ -95,6 +95,8 @@ public abstract class XmppActivity extends Activity {
 	protected static final int REQUEST_CHOOSE_PGP_ID = 0x0103;
 	protected static final int REQUEST_BATTERY_OP = 0x13849ff;
 
+	public static final String ACCOUNT_EXTRA = "account";
+
 	public XmppConnectionService xmppConnectionService;
 	public boolean xmppConnectionServiceBound = false;
 	protected boolean registeredListeners = false;
@@ -977,7 +979,7 @@ public abstract class XmppActivity extends Activity {
 				@Override
 				public NdefMessage createNdefMessage(NfcEvent nfcEvent) {
 					return new NdefMessage(new NdefRecord[]{
-						NdefRecord.createUri(getShareableUri()),
+							NdefRecord.createUri(getShareableUri()),
 							NdefRecord.createApplicationRecord("eu.siacs.conversations")
 					});
 				}
@@ -1054,6 +1056,16 @@ public abstract class XmppActivity extends Activity {
 			bitmap.setPixels(pixels, 0, width, 0, 0, width, height);
 			return bitmap;
 		} catch (final WriterException e) {
+			return null;
+		}
+	}
+
+	protected Account extractAccount(Intent intent) {
+		String jid = intent != null ? intent.getStringExtra(ACCOUNT_EXTRA) : null;
+		Log.d(Config.LOGTAG,"jid: "+jid);
+		try {
+			return jid != null ? xmppConnectionService.findAccountByJid(Jid.fromString(jid)) : null;
+		} catch (InvalidJidException e) {
 			return null;
 		}
 	}
