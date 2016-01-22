@@ -51,4 +51,16 @@ public class Field extends Element {
 	public String getValue() {
 		return findChildContent("value");
 	}
+
+	public String getLabel() {
+		return getAttribute("label");
+	}
+
+	public String getType() {
+		return getAttribute("type");
+	}
+
+	public boolean isRequired() {
+		return hasChild("required");
+	}
 }

@@ -76,10 +76,14 @@ public class Data extends Element {
 	}
 
 	public void setFormType(String formType) {
-		this.put("FORM_TYPE",formType);
+		this.put("FORM_TYPE", formType);
 	}
 
 	public String getFormType() {
 		return this.getAttribute("FORM_TYPE");
+	}
+
+	public String getTitle() {
+		return findChildContent("title");
 	}
 }
