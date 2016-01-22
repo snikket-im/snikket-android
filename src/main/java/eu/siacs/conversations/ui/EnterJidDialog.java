@@ -19,8 +19,8 @@ import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
 
 public class EnterJidDialog {
-	public static interface OnEnterJidDialogPositiveListener {
-		public boolean onEnterJidDialogPositive(Jid account, Jid contact) throws EnterJidDialog.JidError;
+	public interface OnEnterJidDialogPositiveListener {
+		boolean onEnterJidDialogPositive(Jid account, Jid contact) throws EnterJidDialog.JidError;
 	}
 
 	public static class JidError extends Exception {
@@ -40,7 +40,7 @@ public class EnterJidDialog {
 	protected OnEnterJidDialogPositiveListener listener = null;
 
 	public EnterJidDialog(
-		final Context context, List<String> knownHosts, List<String> activatedAccounts,
+		final Context context, List<String> knownHosts, final List<String> activatedAccounts,
 		final String title, final String positiveButton,
 		final String prefilledJid, final String account, boolean allowEditJid
 	) {
@@ -60,17 +60,17 @@ public class EnterJidDialog {
 			}
 		}
 
-		ArrayAdapter<String> adapter;
+
 		if (account == null) {
-			adapter = new ArrayAdapter<>(context,
-				android.R.layout.simple_spinner_item, activatedAccounts);
+			StartConversationActivity.populateAccountSpinner(context, activatedAccounts, spinner);
 		} else {
-			adapter = new ArrayAdapter<>(context,
-				android.R.layout.simple_spinner_item, new String[] { account });
+			ArrayAdapter<String> adapter = new ArrayAdapter<>(context,
+				android.R.layout.simple_spinner_item,
+					new String[] { account });
 			spinner.setEnabled(false);
+			adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+			spinner.setAdapter(adapter);
 		}
-		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		spinner.setAdapter(adapter);
 
 		builder.setView(dialogView);
 		builder.setNegativeButton(R.string.cancel, null);
@@ -81,6 +81,9 @@ public class EnterJidDialog {
 			@Override
 			public void onClick(final View v) {
 				final Jid accountJid;
+				if (!spinner.isEnabled() && account == null) {
+					return;
+				}
 				try {
 					if (Config.DOMAIN_LOCK != null) {
 						accountJid = Jid.fromParts((String) spinner.getSelectedItem(), Config.DOMAIN_LOCK, null);

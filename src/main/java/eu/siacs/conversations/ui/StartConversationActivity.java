@@ -393,7 +393,7 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 		if (prefilledJid != null) {
 			jid.append(prefilledJid);
 		}
-		populateAccountSpinner(spinner);
+		populateAccountSpinner(this, mActivatedAccounts, spinner);
 		final Checkable bookmarkCheckBox = (CheckBox) dialogView
 			.findViewById(R.id.bookmark);
 		builder.setView(dialogView);
@@ -411,7 +411,6 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 						}
 						final Account account = getSelectedAccount(spinner);
 						if (account == null) {
-							dialog.dismiss();
 							return;
 						}
 						final Jid conferenceJid;
@@ -459,6 +458,9 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 	}
 
 	private Account getSelectedAccount(Spinner spinner) {
+		if (!spinner.isEnabled()) {
+			return null;
+		}
 		Jid jid;
 		try {
 			if (Config.DOMAIN_LOCK != null) {
@@ -479,11 +481,21 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 		switchToConversation(conversation);
 	}
 
-	private void populateAccountSpinner(Spinner spinner) {
-		ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-				android.R.layout.simple_spinner_item, mActivatedAccounts);
-		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		spinner.setAdapter(adapter);
+	public static void populateAccountSpinner(Context context, List<String> accounts, Spinner spinner) {
+		if (accounts.size() > 0) {
+			ArrayAdapter<String> adapter = new ArrayAdapter<>(context,
+					android.R.layout.simple_spinner_item, accounts);
+			adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+			spinner.setAdapter(adapter);
+			spinner.setEnabled(true);
+		} else {
+			ArrayAdapter<String> adapter = new ArrayAdapter<>(context,
+					android.R.layout.simple_spinner_item,
+					Arrays.asList(new String[]{context.getString(R.string.no_accounts)}));
+			adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+			spinner.setAdapter(adapter);
+			spinner.setEnabled(false);
+		}
 	}
 
 	@Override
