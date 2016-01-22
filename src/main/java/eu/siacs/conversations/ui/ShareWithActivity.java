@@ -84,7 +84,7 @@ public class ShareWithActivity extends XmppActivity {
 		if (requestCode == REQUEST_START_NEW_CONVERSATION
 				&& resultCode == RESULT_OK) {
 			share.contact = data.getStringExtra("contact");
-			share.account = data.getStringExtra("account");
+			share.account = data.getStringExtra(EXTRA_ACCOUNT);
 		}
 		if (xmppConnectionServiceBound
 				&& share != null

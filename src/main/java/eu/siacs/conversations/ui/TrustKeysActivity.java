@@ -83,7 +83,7 @@ public class TrustKeysActivity extends XmppActivity implements OnKeyStatusUpdate
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_trust_keys);
 		try {
-			this.accountJid = Jid.fromString(getIntent().getExtras().getString("account"));
+			this.accountJid = Jid.fromString(getIntent().getExtras().getString(EXTRA_ACCOUNT));
 		} catch (final InvalidJidException ignored) {
 		}
 		try {

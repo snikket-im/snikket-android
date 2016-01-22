@@ -35,7 +35,7 @@ public class BlocklistActivity extends AbstractSearchableListItemActivity implem
 	@Override
 	public void onBackendConnected() {
 		for (final Account account : xmppConnectionService.getAccounts()) {
-			if (account.getJid().toString().equals(getIntent().getStringExtra("account"))) {
+			if (account.getJid().toString().equals(getIntent().getStringExtra(EXTRA_ACCOUNT))) {
 				this.account = account;
 				break;
 			}

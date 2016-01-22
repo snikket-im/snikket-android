@@ -50,14 +50,7 @@ public class ChangePasswordActivity extends XmppActivity implements XmppConnecti
 
 	@Override
 	void onBackendConnected() {
-		try {
-			final String jid = getIntent() == null ? null : getIntent().getStringExtra("account");
-			if (jid != null) {
-				this.mAccount = xmppConnectionService.findAccountByJid(Jid.fromString(jid));
-			}
-		} catch (final InvalidJidException ignored) {
-
-		}
+		this.mAccount = extractAccount(getIntent());
 
 	}
 

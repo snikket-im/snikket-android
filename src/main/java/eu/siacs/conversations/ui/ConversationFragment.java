@@ -748,7 +748,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 			Intent intent = new Intent(activity, VerifyOTRActivity.class);
 			intent.setAction(VerifyOTRActivity.ACTION_VERIFY_CONTACT);
 			intent.putExtra("contact", conversation.getContact().getJid().toBareJid().toString());
-			intent.putExtra("account", conversation.getAccount().getJid().toBareJid().toString());
+			intent.putExtra(VerifyOTRActivity.EXTRA_ACCOUNT, conversation.getAccount().getJid().toBareJid().toString());
 			intent.putExtra("mode", VerifyOTRActivity.MODE_ANSWER_QUESTION);
 			startActivity(intent);
 		}

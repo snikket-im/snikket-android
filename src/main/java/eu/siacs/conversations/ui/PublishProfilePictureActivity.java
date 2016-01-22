@@ -198,52 +198,43 @@ public class PublishProfilePictureActivity extends XmppActivity {
 
 	@Override
 	protected void onBackendConnected() {
-		if (getIntent() != null) {
-			Jid jid;
-			try {
-				jid = Jid.fromString(getIntent().getStringExtra("account"));
-			} catch (InvalidJidException e) {
-				jid = null;
+		this.account = extractAccount(getIntent());
+		if (this.account != null) {
+			if (this.account.getXmppConnection() != null) {
+				this.support = this.account.getXmppConnection().getFeatures().pep();
 			}
-			if (jid != null) {
-				this.account = xmppConnectionService.findAccountByJid(jid);
-				if (this.account.getXmppConnection() != null) {
-					this.support = this.account.getXmppConnection().getFeatures().pep();
-				}
-				if (this.avatarUri == null) {
-					if (this.account.getAvatar() != null
-							|| this.defaultUri == null) {
-						this.avatar.setImageBitmap(avatarService().get(account, getPixel(192)));
-						if (this.defaultUri != null) {
-							this.avatar
-									.setOnLongClickListener(this.backToDefaultListener);
-						} else {
-							this.secondaryHint.setVisibility(View.INVISIBLE);
-						}
-						if (!support) {
-							this.hintOrWarning
-									.setTextColor(getWarningTextColor());
-							this.hintOrWarning
-									.setText(R.string.error_publish_avatar_no_server_support);
-						}
+			if (this.avatarUri == null) {
+				if (this.account.getAvatar() != null
+						|| this.defaultUri == null) {
+					this.avatar.setImageBitmap(avatarService().get(account, getPixel(192)));
+					if (this.defaultUri != null) {
+						this.avatar
+								.setOnLongClickListener(this.backToDefaultListener);
 					} else {
-						this.avatarUri = this.defaultUri;
-						loadImageIntoPreview(this.defaultUri);
 						this.secondaryHint.setVisibility(View.INVISIBLE);
 					}
+					if (!support) {
+						this.hintOrWarning
+								.setTextColor(getWarningTextColor());
+						this.hintOrWarning
+								.setText(R.string.error_publish_avatar_no_server_support);
+					}
 				} else {
-					loadImageIntoPreview(avatarUri);
+					this.avatarUri = this.defaultUri;
+					loadImageIntoPreview(this.defaultUri);
+					this.secondaryHint.setVisibility(View.INVISIBLE);
 				}
-				String account;
-				if (Config.DOMAIN_LOCK != null) {
-					account = this.account.getJid().getLocalpart();
-				} else {
-					account = this.account.getJid().toBareJid().toString();
-				}
-				this.accountTextView.setText(account);
+			} else {
+				loadImageIntoPreview(avatarUri);
 			}
+			String account;
+			if (Config.DOMAIN_LOCK != null) {
+				account = this.account.getJid().getLocalpart();
+			} else {
+				account = this.account.getJid().toBareJid().toString();
+			}
+			this.accountTextView.setText(account);
 		}
-
 	}
 
 	@Override

@@ -196,9 +196,8 @@ public class VerifyOTRActivity extends XmppActivity implements XmppConnectionSer
 
 	protected boolean handleIntent(Intent intent) {
 		if (intent != null && intent.getAction().equals(ACTION_VERIFY_CONTACT)) {
-			try {
-				this.mAccount = this.xmppConnectionService.findAccountByJid(Jid.fromString(intent.getExtras().getString("account")));
-			} catch (final InvalidJidException ignored) {
+			this.mAccount = extractAccount(intent);
+			if (this.mAccount == null) {
 				return false;
 			}
 			try {

@@ -251,7 +251,7 @@ public class ManageAccountActivity extends XmppActivity implements OnAccountUpda
 	private void publishAvatar(Account account) {
 		Intent intent = new Intent(getApplicationContext(),
 				PublishProfilePictureActivity.class);
-		intent.putExtra("account", account.getJid().toString());
+		intent.putExtra(EXTRA_ACCOUNT, account.getJid().toString());
 		startActivity(intent);
 	}
 

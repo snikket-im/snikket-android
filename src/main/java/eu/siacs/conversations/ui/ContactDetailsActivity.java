@@ -190,7 +190,7 @@ public class ContactDetailsActivity extends XmppActivity implements OnAccountUpd
 		super.onCreate(savedInstanceState);
 		if (getIntent().getAction().equals(ACTION_VIEW_CONTACT)) {
 			try {
-				this.accountJid = Jid.fromString(getIntent().getExtras().getString("account"));
+				this.accountJid = Jid.fromString(getIntent().getExtras().getString(EXTRA_ACCOUNT));
 			} catch (final InvalidJidException ignored) {
 			}
 			try {

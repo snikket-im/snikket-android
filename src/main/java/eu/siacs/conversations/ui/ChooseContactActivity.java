@@ -113,11 +113,11 @@ public class ChooseContactActivity extends AbstractSearchableListItemActivity {
 				final Intent data = new Intent();
 				final ListItem mListItem = getListItems().get(position);
 				data.putExtra("contact", mListItem.getJid().toString());
-				String account = request.getStringExtra("account");
+				String account = request.getStringExtra(EXTRA_ACCOUNT);
 				if (account == null && mListItem instanceof Contact) {
 					account = ((Contact) mListItem).getAccount().getJid().toBareJid().toString();
 				}
-				data.putExtra("account", account);
+				data.putExtra(EXTRA_ACCOUNT, account);
 				data.putExtra("conversation",
 						request.getStringExtra("conversation"));
 				data.putExtra("multiple", false);
@@ -181,7 +181,7 @@ public class ChooseContactActivity extends AbstractSearchableListItemActivity {
 		EnterJidDialog dialog = new EnterJidDialog(
 			this, mKnownHosts, mActivatedAccounts,
 			getString(R.string.enter_contact), getString(R.string.select),
-			null, getIntent().getStringExtra("account"), true
+			null, getIntent().getStringExtra(EXTRA_ACCOUNT), true
 		);
 
 		dialog.setOnEnterJidDialogPositiveListener(new EnterJidDialog.OnEnterJidDialogPositiveListener() {
@@ -190,7 +190,7 @@ public class ChooseContactActivity extends AbstractSearchableListItemActivity {
 				final Intent request = getIntent();
 				final Intent data = new Intent();
 				data.putExtra("contact", contactJid.toString());
-				data.putExtra("account", accountJid.toString());
+				data.putExtra(EXTRA_ACCOUNT, accountJid.toString());
 				data.putExtra("conversation",
 						request.getStringExtra("conversation"));
 				data.putExtra("multiple", false);

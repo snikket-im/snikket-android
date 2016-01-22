@@ -283,7 +283,7 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 		public void onClick(final View view) {
 			if (mAccount != null) {
 				final Intent intent = new Intent(getApplicationContext(), PublishProfilePictureActivity.class);
-				intent.putExtra("account", mAccount.getJid().toBareJid().toString());
+				intent.putExtra(EXTRA_ACCOUNT, mAccount.getJid().toBareJid().toString());
 				startActivity(intent);
 			}
 		}
@@ -304,7 +304,7 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 				} else {
 					intent = new Intent(getApplicationContext(),
 							PublishProfilePictureActivity.class);
-					intent.putExtra("account", mAccount.getJid().toBareJid().toString());
+					intent.putExtra(EXTRA_ACCOUNT, mAccount.getJid().toBareJid().toString());
 					intent.putExtra("setup", true);
 				}
 				startActivity(intent);
@@ -552,7 +552,7 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 		switch (item.getItemId()) {
 			case R.id.action_show_block_list:
 				final Intent showBlocklistIntent = new Intent(this, BlocklistActivity.class);
-				showBlocklistIntent.putExtra("account", mAccount.getJid().toString());
+				showBlocklistIntent.putExtra(EXTRA_ACCOUNT, mAccount.getJid().toString());
 				startActivity(showBlocklistIntent);
 				break;
 			case R.id.action_server_info_show_more:
@@ -561,7 +561,7 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 				break;
 			case R.id.action_change_password_on_server:
 				final Intent changePasswordIntent = new Intent(this, ChangePasswordActivity.class);
-				changePasswordIntent.putExtra("account", mAccount.getJid().toString());
+				changePasswordIntent.putExtra(EXTRA_ACCOUNT, mAccount.getJid().toString());
 				startActivity(changePasswordIntent);
 				break;
 			case R.id.action_clear_devices:
