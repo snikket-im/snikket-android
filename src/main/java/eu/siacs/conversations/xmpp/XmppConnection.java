@@ -727,7 +727,7 @@ public class XmppConnection implements Runnable {
 		if (this.streamFeatures.hasChild("starttls") && !features.encryptionEnabled) {
 			sendStartTLS();
 		} else if (this.streamFeatures.hasChild("register") && account.isOptionSet(Account.OPTION_REGISTER)) {
-			if (features.encryptionEnabled) {
+			if (features.encryptionEnabled || Config.ALLOW_NON_TLS_CONNECTIONS) {
 				sendRegistryRequest();
 			} else {
 				throw new IncompatibleServerException();
@@ -737,7 +737,8 @@ public class XmppConnection implements Runnable {
 			changeStatus(Account.State.REGISTRATION_NOT_SUPPORTED);
 			disconnect(true);
 		} else if (this.streamFeatures.hasChild("mechanisms")
-				&& shouldAuthenticate && features.encryptionEnabled) {
+				&& shouldAuthenticate
+				&& (features.encryptionEnabled || Config.ALLOW_NON_TLS_CONNECTIONS)) {
 			final List<String> mechanisms = extractMechanisms(streamFeatures
 					.findChild("mechanisms"));
 			final Element auth = new Element("auth");

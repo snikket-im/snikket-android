@@ -12,7 +12,8 @@ public final class Config {
 	public static final String DOMAIN_LOCK = null; //only allow account creation for this domain
 	public static final boolean DISALLOW_REGISTRATION_IN_UI = false; //hide the register checkbox
 	public static final boolean HIDE_PGP_IN_UI = false; //some more consumer focused clients might want to disable OpenPGP
-	public static final boolean FORCE_ENCRYPTION = false; //disables ability to send unencrypted 1-on-1
+	public static final boolean FORCE_E2E_ENCRYPTION = false; //disables ability to send unencrypted 1-on-1
+	public static final boolean ALLOW_NON_TLS_CONNECTIONS = false; //very dangerous. you should have a good reason to set this to true
 	public static final boolean FORCE_ORBOT = false; // always use TOR
 	public static final boolean HIDE_MESSAGE_TEXT_IN_NOTIFICATION = false;
 	public static final boolean SHOW_CONNECTED_ACCOUNTS = false; //show number of connected accounts in foreground notification
