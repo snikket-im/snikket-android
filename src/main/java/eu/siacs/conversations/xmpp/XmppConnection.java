@@ -879,6 +879,7 @@ public class XmppConnection implements Runnable {
 	public void resetEverything() {
 		resetStreamId();
 		clearIqCallbacks();
+		mStanzaQueue.clear();
 		synchronized (this.disco) {
 			disco.clear();
 		}
