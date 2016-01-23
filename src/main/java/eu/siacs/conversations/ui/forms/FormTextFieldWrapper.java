@@ -1,7 +1,9 @@
 package eu.siacs.conversations.ui.forms;
 
 import android.content.Context;
+import android.text.Editable;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -22,6 +24,21 @@ public class FormTextFieldWrapper extends FormFieldWrapper {
 		if ("text-private".equals(field.getType())) {
 			editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
 		}
+		editText.addTextChangedListener(new TextWatcher() {
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+			}
+
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+				editText.setError(null);
+				invokeOnFormFieldValuesEdited();
+			}
+
+			@Override
+			public void afterTextChanged(Editable s) {
+			}
+		});
 	}
 
 	@Override
@@ -38,14 +55,22 @@ public class FormTextFieldWrapper extends FormFieldWrapper {
 	public List<String> getValues() {
 		List<String> values = new ArrayList<>();
 		for (String line : getValue().split("\\n")) {
-			values.add(line);
+			if (line.length() > 0) {
+				values.add(line);
+			}
 		}
 		return values;
 	}
 
 	@Override
 	public boolean validates() {
-		return getValue().trim().length() > 0 || !field.isRequired();
+		if (getValue().trim().length() > 0 || !field.isRequired()) {
+			return true;
+		} else {
+			editText.setError(context.getString(R.string.this_field_is_required));
+			editText.requestFocus();
+			return false;
+		}
 	}
 
 	@Override

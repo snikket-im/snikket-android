@@ -23,6 +23,8 @@ public class FormJidSingleFieldWrapper extends FormTextFieldWrapper {
 			try {
 				Jid.fromString(value);
 			} catch (InvalidJidException e) {
+				editText.setError(context.getString(R.string.invalid_jid));
+				editText.requestFocus();
 				return false;
 			}
 		}

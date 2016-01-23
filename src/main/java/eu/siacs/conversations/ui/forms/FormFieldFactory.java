@@ -20,7 +20,7 @@ public class FormFieldFactory {
 		typeTable.put("boolean", FormBooleanFieldWrapper.class);
 	}
 
-	public static FormFieldWrapper createFromField(Context context, Field field) {
+	protected static FormFieldWrapper createFromField(Context context, Field field) {
 		Class clazz = typeTable.get(field.getType());
 		if (clazz == null) {
 			clazz = FormTextFieldWrapper.class;

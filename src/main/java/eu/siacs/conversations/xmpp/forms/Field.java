@@ -1,7 +1,9 @@
 package eu.siacs.conversations.xmpp.forms;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 import eu.siacs.conversations.xml.Element;
 
@@ -50,6 +52,19 @@ public class Field extends Element {
 
 	public String getValue() {
 		return findChildContent("value");
+	}
+
+	public List<String> getValues() {
+		List<String> values = new ArrayList<>();
+		for(Element child : getChildren()) {
+			if ("value".equals(child.getName())) {
+				String content = child.getContent();
+				if (content != null) {
+					values.add(content);
+				}
+			}
+		}
+		return values;
 	}
 
 	public String getLabel() {
