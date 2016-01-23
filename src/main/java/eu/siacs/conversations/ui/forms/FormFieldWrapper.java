@@ -19,7 +19,11 @@ public abstract class FormFieldWrapper {
 		this.field = field;
 		LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		this.view = inflater.inflate(getLayoutResource(), null);
-		setLabel(field.getLabel(), field.isRequired());
+		String label = field.getLabel();
+		if (label == null) {
+			label = field.getFieldName();
+		}
+		setLabel(label, field.isRequired());
 	}
 
 	public void submit() {
@@ -33,6 +37,8 @@ public abstract class FormFieldWrapper {
 	protected abstract void setLabel(String label, boolean required);
 
 	abstract List<String> getValues();
+
+	abstract boolean validates();
 
 	abstract protected int getLayoutResource();
 

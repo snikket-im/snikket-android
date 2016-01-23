@@ -1,6 +1,7 @@
 package eu.siacs.conversations.ui.forms;
 
 import android.content.Context;
+import android.text.InputType;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
@@ -20,7 +21,10 @@ public class FormTextFieldWrapper extends FormFieldWrapper {
 	protected FormTextFieldWrapper(Context context, Field field) {
 		super(context, field);
 		editText = (EditText) view.findViewById(R.id.field);
-		editText.setSingleLine("text-single".equals(field.getType()));
+		editText.setSingleLine(!"text-multi".equals(field.getType()));
+		if ("text-private".equals(field.getType())) {
+			editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+		}
 	}
 
 	@Override
@@ -36,13 +40,22 @@ public class FormTextFieldWrapper extends FormFieldWrapper {
 		textView.setText(spannableString);
 	}
 
+	protected String getValue() {
+		return editText.getText().toString();
+	}
+
 	@Override
-	List<String> getValues() {
+	public List<String> getValues() {
 		List<String> values = new ArrayList<>();
-		for (String line : editText.getText().toString().split("\\n")) {
+		for (String line : getValue().split("\\n")) {
 			values.add(line);
 		}
 		return values;
+	}
+
+	@Override
+	public boolean validates() {
+		return getValue().trim().length() > 0 || !field.isRequired();
 	}
 
 	@Override
