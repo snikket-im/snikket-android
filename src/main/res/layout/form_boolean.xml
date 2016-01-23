@@ -4,18 +4,10 @@
               android:layout_height="match_parent"
               android:paddingTop="8dp"
               android:orientation="vertical">
-    <TextView
-        android:id="@+id/label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/black87"
-        android:textSize="?attr/TextSizeBody"/>
-
-    <EditText
+    <CheckBox
         android:id="@+id/field"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/black87"
-        android:textColorHint="@color/black54"
         android:textSize="?attr/TextSizeBody"/>
 </LinearLayout>

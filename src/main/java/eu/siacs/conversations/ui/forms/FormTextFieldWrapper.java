@@ -2,9 +2,6 @@ package eu.siacs.conversations.ui.forms;
 
 import android.content.Context;
 import android.text.InputType;
-import android.text.SpannableString;
-import android.text.style.ForegroundColorSpan;
-import android.text.style.StyleSpan;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -30,14 +27,7 @@ public class FormTextFieldWrapper extends FormFieldWrapper {
 	@Override
 	protected void setLabel(String label, boolean required) {
 		TextView textView = (TextView) view.findViewById(R.id.label);
-		SpannableString spannableString = new SpannableString(label + (required ? " *" : ""));
-		if (required) {
-			int start = label.length();
-			int end = label.length() + 2;
-			spannableString.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), start, end, 0);
-			spannableString.setSpan(new ForegroundColorSpan(context.getResources().getColor(R.color.accent)), start, end, 0);
-		}
-		textView.setText(spannableString);
+		textView.setText(createSpannableLabelString(label, required));
 	}
 
 	protected String getValue() {
