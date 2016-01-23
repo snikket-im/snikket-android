@@ -162,7 +162,8 @@ public class TrustKeysActivity extends XmppActivity implements OnKeyStatusUpdate
 		} else {
 			if (!hasForeignKeys && hasNoOtherTrustedKeys()) {
 				keyErrorMessageCard.setVisibility(View.VISIBLE);
-				if (lastFetchReport == AxolotlService.FetchStatus.ERROR) {
+				if (lastFetchReport == AxolotlService.FetchStatus.ERROR
+						|| contact.getAccount().getAxolotlService().fetchMapHasErrors(contact)) {
 					keyErrorMessage.setText(R.string.error_no_keys_to_trust_server_error);
 				} else {
 					keyErrorMessage.setText(R.string.error_no_keys_to_trust);

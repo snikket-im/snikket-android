@@ -79,6 +79,19 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 		}
 	}
 
+	public boolean fetchMapHasErrors(Contact contact) {
+		Jid jid = contact.getJid().toBareJid();
+		if (deviceIds.get(jid) != null) {
+			for (Integer foreignId : this.deviceIds.get(jid)) {
+				AxolotlAddress address = new AxolotlAddress(jid.toString(), foreignId);
+				if (fetchStatusMap.getAll(address).containsValue(FetchStatus.ERROR)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
 	private static class AxolotlAddressMap<T> {
 		protected Map<String, Map<Integer, T>> map;
 		protected final Object MAP_LOCK = new Object();
