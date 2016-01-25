@@ -243,6 +243,7 @@ public class XmppConnection implements Runnable {
 			tagWriter = new TagWriter();
 			this.changeStatus(Account.State.CONNECTING);
 			final boolean useTor = mXmppConnectionService.useTorToConnect() || account.isOnion();
+			final boolean extended = mXmppConnectionService.showExtendedConnectionOptions();
 			if (useTor) {
 				String destination;
 				if (account.getHostname() == null || account.getHostname().isEmpty()) {
@@ -250,8 +251,16 @@ public class XmppConnection implements Runnable {
 				} else {
 					destination = account.getHostname();
 				}
-				Log.d(Config.LOGTAG,account.getJid().toBareJid()+": connect to "+destination+" via TOR");
-				socket = SocksSocketFactory.createSocketOverTor(destination,account.getPort());
+				Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": connect to " + destination + " via TOR");
+				socket = SocksSocketFactory.createSocketOverTor(destination, account.getPort());
+				startXmpp();
+			} else if (extended && account.getHostname() != null && !account.getHostname().isEmpty()) {
+				socket = new Socket();
+				try {
+					socket.connect(new InetSocketAddress(account.getHostname(), account.getPort()), Config.SOCKET_TIMEOUT * 1000);
+				} catch (IOException e) {
+					throw new UnknownHostException();
+				}
 				startXmpp();
 			} else if (DNSHelper.isIp(account.getServer().toString())) {
 				socket = new Socket();

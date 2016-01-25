@@ -529,6 +529,9 @@
 	<string name="pref_away_when_screen_off_summary">Marks your resource as away when the screen is turned off</string>
 	<string name="pref_xa_on_silent_mode">Not available in silent mode</string>
 	<string name="pref_xa_on_silent_mode_summary">Marks your resource as not available when device is in silent mode</string>
+	<string name="pref_show_connection_options">Extended connection options</string>
+	<string name="pref_show_connection_options_summary">Show hostname and port options when setting up an account</string>
+	<string name="hostname_example">xmpp.example.com</string>
 	<string name="action_add_account_with_certificate">Add account with certificate</string>
 	<string name="unable_to_parse_certificate">Unable to parse certificate</string>
 	<string name="authenticate_with_certificate">Leave empty to authenticate w/ certificate</string>

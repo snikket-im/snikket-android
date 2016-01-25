@@ -1969,7 +1969,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 							}
 						}
 					}
-					Element form = query.findChild("x","jabber:x:data");
+					Element form = query.findChild("x", "jabber:x:data");
 					if (form != null) {
 						conversation.getMucOptions().updateFormData(Data.parse(form));
 					}
@@ -2378,7 +2378,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 								updateConversationUi();
 								updateRosterUi();
 							} else {
-								Conversation conversation = find(account,avatar.owner.toBareJid());
+								Conversation conversation = find(account, avatar.owner.toBareJid());
 								if (conversation != null && conversation.getMode() == Conversation.MODE_MULTI) {
 									MucOptions.User user = conversation.getMucOptions().findUser(avatar.owner.getResourcepart());
 									if (user != null) {
@@ -2584,6 +2584,10 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 
 	public boolean useTorToConnect() {
 		return Config.FORCE_ORBOT || getPreferences().getBoolean("use_tor", false);
+	}
+
+	public boolean showExtendedConnectionOptions() {
+		return getPreferences().getBoolean("show_connection_options", false);
 	}
 
 	public int unreadCount() {

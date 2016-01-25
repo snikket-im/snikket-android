@@ -155,6 +155,11 @@
                     android:key="use_tor"
                     android:summary="@string/pref_use_tor_summary"
                     android:title="@string/pref_use_tor"/>
+                <CheckBoxPreference
+                    android:defaultValue="false"
+                    android:key="show_connection_options"
+                    android:summary="@string/pref_show_connection_options_summary"
+                    android:title="@string/pref_show_connection_options"/>
             </PreferenceCategory>
             <PreferenceCategory android:title="@string/pref_input_options">
                 <CheckBoxPreference

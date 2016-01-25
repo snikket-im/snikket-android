@@ -5,6 +5,7 @@ import android.app.AlertDialog.Builder;
 import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -91,7 +92,7 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 
 	private Jid jidToEdit;
 	private boolean mInitMode = false;
-	private boolean mUseTor = false;
+	private boolean mShowOptions = false;
 	private Account mAccount;
 	private String messageFingerprint;
 
@@ -133,7 +134,7 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 			}
 			String hostname = null;
 			int numericPort = 5222;
-			if (mUseTor) {
+			if (mShowOptions) {
 				hostname = mHostname.getText().toString();
 				final String port = mPort.getText().toString();
 				if (hostname.contains(" ")) {
@@ -511,8 +512,11 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 				}
 			}
 		}
-		this.mUseTor = Config.FORCE_ORBOT || getPreferences().getBoolean("use_tor", false);
-		this.mNamePort.setVisibility(mUseTor ? View.VISIBLE : View.GONE);
+		SharedPreferences preferences = getPreferences();
+		boolean useTor = Config.FORCE_ORBOT || preferences.getBoolean("use_tor", false);
+		this.mShowOptions = useTor || preferences.getBoolean("show_connection_options", false);
+		mHostname.setHint(useTor ? R.string.hostname_or_onion : R.string.hostname_example);
+		this.mNamePort.setVisibility(mShowOptions ? View.VISIBLE : View.GONE);
 	}
 
 	@Override
@@ -598,7 +602,7 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 			this.mHostname.getEditableText().append(this.mAccount.getHostname());
 			this.mPort.setText("");
 			this.mPort.getEditableText().append(String.valueOf(this.mAccount.getPort()));
-			this.mNamePort.setVisibility(mUseTor ? View.VISIBLE : View.GONE);
+			this.mNamePort.setVisibility(mShowOptions ? View.VISIBLE : View.GONE);
 
 		}
 		if (!mInitMode) {
@@ -740,12 +744,24 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 			}
 		} else {
 			if (this.mAccount.errorStatus()) {
-				this.mAccountJid.setError(getString(this.mAccount.getStatus().getReadableId()));
+				final EditText errorTextField;
+				if (this.mAccount.getStatus() == Account.State.UNAUTHORIZED) {
+					errorTextField = this.mPassword;
+				} else if (mShowOptions
+						&& this.mAccount.getStatus() == Account.State.SERVER_NOT_FOUND
+						&& this.mHostname.getText().length() > 0) {
+					errorTextField = this.mHostname;
+				} else {
+					errorTextField = this.mAccountJid;
+				}
+				errorTextField.setError(getString(this.mAccount.getStatus().getReadableId()));
 				if (init || !accountInfoEdited()) {
-					this.mAccountJid.requestFocus();
+					errorTextField.requestFocus();
 				}
 			} else {
 				this.mAccountJid.setError(null);
+				this.mPassword.setError(null);
+				this.mHostname.setError(null);
 			}
 			this.mStats.setVisibility(View.GONE);
 		}
