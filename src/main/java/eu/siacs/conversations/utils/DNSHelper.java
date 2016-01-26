@@ -5,6 +5,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.LinkProperties;
 import android.net.Network;
+import android.net.RouteInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -75,13 +76,27 @@ public class DNSHelper {
 		for(int i = 0; i < networks.length; ++i) {
 			LinkProperties linkProperties = connectivityManager.getLinkProperties(networks[i]);
 			if (linkProperties != null) {
-				servers.addAll(linkProperties.getDnsServers());
+				if (hasDefaultRoute(linkProperties)) {
+					servers.addAll(0, linkProperties.getDnsServers());
+				} else {
+					servers.addAll(linkProperties.getDnsServers());
+				}
 			}
 		}
 		if (servers.size() > 0) {
-			Log.d(Config.LOGTAG,"used lollipop variant to discover dns servers in "+networks.length+" networks");
+			Log.d(Config.LOGTAG, "used lollipop variant to discover dns servers in " + networks.length + " networks");
 		}
 		return servers.size() > 0 ? servers : getDnsServersPreLollipop();
+	}
+
+	@TargetApi(Build.VERSION_CODES.LOLLIPOP)
+	private static boolean hasDefaultRoute(LinkProperties linkProperties) {
+		for(RouteInfo route: linkProperties.getRoutes()) {
+			if (route.isDefaultRoute()) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	private static List<InetAddress> getDnsServersPreLollipop() {
