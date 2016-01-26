@@ -78,9 +78,10 @@ public class ListItemAdapter extends ArrayAdapter<ListItem> {
 		}
 		final Jid jid = item.getJid();
 		if (jid != null) {
+			tvJid.setVisibility(View.VISIBLE);
 			tvJid.setText(jid.toString());
 		} else {
-			tvJid.setText("");
+			tvJid.setVisibility(View.GONE);
 		}
 		tvName.setText(item.getDisplayName());
 		loadAvatar(item,picture);
