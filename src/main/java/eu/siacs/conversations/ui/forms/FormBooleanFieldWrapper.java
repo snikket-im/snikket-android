@@ -40,6 +40,15 @@ public class FormBooleanFieldWrapper extends FormFieldWrapper {
 	}
 
 	@Override
+	protected void setValues(List<String> values) {
+		if (values.size() == 0) {
+			checkBox.setChecked(false);
+		} else {
+			checkBox.setChecked(Boolean.parseBoolean(values.get(0)));
+		}
+	}
+
+	@Override
 	public boolean validates() {
 		if (checkBox.isChecked() || !field.isRequired()) {
 			return true;
@@ -62,5 +71,10 @@ public class FormBooleanFieldWrapper extends FormFieldWrapper {
 	@Override
 	protected int getLayoutResource() {
 		return R.layout.form_boolean;
+	}
+
+	@Override
+	void setReadOnly(boolean readOnly) {
+		checkBox.setEnabled(!readOnly);
 	}
 }

@@ -63,6 +63,18 @@ public class FormTextFieldWrapper extends FormFieldWrapper {
 	}
 
 	@Override
+	protected void setValues(List<String> values) {
+		StringBuilder builder = new StringBuilder("");
+		for(int i = 0; i < values.size(); ++i) {
+			builder.append(values.get(i));
+			if (i < values.size() - 1 && "text-multi".equals(field.getType())) {
+				builder.append("\n");
+			}
+		}
+		editText.setText(builder.toString());
+	}
+
+	@Override
 	public boolean validates() {
 		if (getValue().trim().length() > 0 || !field.isRequired()) {
 			return true;
@@ -76,5 +88,10 @@ public class FormTextFieldWrapper extends FormFieldWrapper {
 	@Override
 	protected int getLayoutResource() {
 		return R.layout.form_text;
+	}
+
+	@Override
+	void setReadOnly(boolean readOnly) {
+		editText.setEnabled(!readOnly);
 	}
 }

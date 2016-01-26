@@ -45,9 +45,13 @@ public abstract class FormFieldWrapper {
 
 	abstract List<String> getValues();
 
+	protected abstract void setValues(List<String> values);
+
 	abstract boolean validates();
 
 	abstract protected int getLayoutResource();
+
+	abstract void setReadOnly(boolean readOnly);
 
 	protected SpannableString createSpannableLabelString(String label, boolean required) {
 		SpannableString spannableString = new SpannableString(label + (required ? " *" : ""));
@@ -61,11 +65,8 @@ public abstract class FormFieldWrapper {
 	}
 
 	protected void invokeOnFormFieldValuesEdited() {
-		Log.d(Config.LOGTAG, "invoke on form field values edited");
 		if (this.onFormFieldValuesEditedListener != null) {
 			this.onFormFieldValuesEditedListener.onFormFieldValuesEdited();
-		} else {
-			Log.d(Config.LOGTAG,"listener is null");
 		}
 	}
 
@@ -79,7 +80,9 @@ public abstract class FormFieldWrapper {
 
 	protected static <F extends FormFieldWrapper> FormFieldWrapper createFromField(Class<F> c, Context context, Field field) {
 		try {
-			return c.getDeclaredConstructor(Context.class, Field.class).newInstance(context,field);
+			F fieldWrapper = c.getDeclaredConstructor(Context.class, Field.class).newInstance(context,field);
+			fieldWrapper.setValues(field.getValues());
+			return fieldWrapper;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;

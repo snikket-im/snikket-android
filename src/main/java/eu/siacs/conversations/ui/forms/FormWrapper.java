@@ -52,6 +52,12 @@ public class FormWrapper {
 		}
 	}
 
+	public void setReadOnly(boolean b) {
+		for(FormFieldWrapper fieldWrapper : fieldWrappers) {
+			fieldWrapper.setReadOnly(b);
+		}
+	}
+
 	public boolean edited() {
 		boolean edited = false;
 		for(FormFieldWrapper fieldWrapper : fieldWrappers) {

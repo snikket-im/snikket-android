@@ -3,6 +3,8 @@ package eu.siacs.conversations.ui.forms;
 import android.content.Context;
 import android.text.InputType;
 
+import java.util.List;
+
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.xmpp.forms.Field;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
@@ -29,5 +31,14 @@ public class FormJidSingleFieldWrapper extends FormTextFieldWrapper {
 			}
 		}
 		return super.validates();
+	}
+
+	@Override
+	protected void setValues(List<String> values) {
+		StringBuilder builder = new StringBuilder("");
+		for(String value : values) {
+			builder.append(value);
+		}
+		editText.setText(builder.toString());
 	}
 }

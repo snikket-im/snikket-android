@@ -53,16 +53,16 @@ public class Data extends Element {
 
 	public void submit() {
 		this.setAttribute("type","submit");
-		removeNonFieldChildren();
+		removeUnnecessaryChildren();
 		for(Field field : getFields()) {
 			field.removeNonValueChildren();
 		}
 	}
 
-	private void removeNonFieldChildren() {
+	private void removeUnnecessaryChildren() {
 		for(Iterator<Element> iterator = this.children.iterator(); iterator.hasNext();) {
 			Element element = iterator.next();
-			if (!element.getName().equals("field")) {
+			if (!element.getName().equals("field") && !element.getName().equals("title")) {
 				iterator.remove();
 			}
 		}
