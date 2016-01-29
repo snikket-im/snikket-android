@@ -743,13 +743,20 @@ public class Message extends AbstractEntity {
 	}
 
 	public boolean isValidInSession() {
-		int pastEncryption = this.getPreviousEncryption();
-		int futureEncryption = this.getNextEncryption();
+		int pastEncryption = getCleanedEncryption(this.getPreviousEncryption());
+		int futureEncryption = getCleanedEncryption(this.getNextEncryption());
 
 		boolean inUnencryptedSession = pastEncryption == ENCRYPTION_NONE
 				|| futureEncryption == ENCRYPTION_NONE
 				|| pastEncryption != futureEncryption;
 
-		return inUnencryptedSession || this.getEncryption() == pastEncryption;
+		return inUnencryptedSession || getCleanedEncryption(this.getEncryption()) == pastEncryption;
+	}
+
+	private static int getCleanedEncryption(int encryption) {
+		if (encryption == ENCRYPTION_DECRYPTED || encryption == ENCRYPTION_DECRYPTION_FAILED) {
+			return ENCRYPTION_PGP;
+		}
+		return encryption;
 	}
 }
