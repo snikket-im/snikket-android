@@ -549,7 +549,7 @@ public class XmppConnection implements Runnable {
 			} else if (nextTag.isStart("failed")) {
 				tagReader.readElement(nextTag);
 				Log.d(Config.LOGTAG, account.getJid().toBareJid().toString() + ": resumption failed");
-				streamId = null;
+				resetStreamId();
 				if (account.getStatus() != Account.State.ONLINE) {
 					sendBindRequest();
 				}
@@ -1290,7 +1290,6 @@ public class XmppConnection implements Runnable {
 			}
 			return;
 		} else {
-			resetStreamId();
 			if (tagWriter.isActive()) {
 				tagWriter.finish();
 				try {
