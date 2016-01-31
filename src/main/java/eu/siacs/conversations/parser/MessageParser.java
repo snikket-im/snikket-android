@@ -454,7 +454,7 @@ public class MessageParser extends AbstractParser implements
 					mXmppConnectionService.getNotificationService().pushFromBacklog(message);
 				}
 			}
-		} else { //no body
+		} else if (!packet.hasChild("body")){ //no body
 			if (isTypeGroupChat) {
 				Conversation conversation = mXmppConnectionService.find(account, from.toBareJid());
 				if (packet.hasChild("subject")) {
