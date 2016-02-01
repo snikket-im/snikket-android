@@ -426,7 +426,7 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 								jid.setError(getString(R.string.bookmark_already_exists));
 							} else {
 								final Bookmark bookmark = new Bookmark(account, conferenceJid.toBareJid());
-								bookmark.setAutojoin(true);
+								bookmark.setAutojoin(getPreferences().getBoolean("autojoin", true));
 								String nick = conferenceJid.getResourcepart();
 								if (nick != null && !nick.isEmpty()) {
 									bookmark.setNick(nick);
