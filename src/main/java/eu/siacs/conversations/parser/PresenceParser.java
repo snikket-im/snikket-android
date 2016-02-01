@@ -1,8 +1,12 @@
 package eu.siacs.conversations.parser;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 
+
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.crypto.PgpEngine;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
@@ -35,6 +39,7 @@ public class PresenceParser extends AbstractParser implements
 			processConferencePresence(packet, mucOptions);
 			final List<MucOptions.User> tileUserAfter = mucOptions.getUsers(5);
 			if (!tileUserAfter.equals(tileUserBefore)) {
+				Log.d(Config.LOGTAG,account.getJid().toBareJid()+": update tiles for "+conversation.getName());
 				mXmppConnectionService.getAvatarService().clear(mucOptions);
 			}
 			if (before != mucOptions.online() || (mucOptions.online() && count != mucOptions.getUserCount())) {
@@ -56,12 +61,13 @@ public class PresenceParser extends AbstractParser implements
 				if (x != null) {
 					Element item = x.findChild("item");
 					if (item != null && !from.isBareJid()) {
+						mucOptions.setError(MucOptions.ERROR_NO_ERROR);
 						MucOptions.User user = new MucOptions.User(mucOptions,from);
 						user.setAffiliation(item.getAttribute("affiliation"));
 						user.setRole(item.getAttribute("role"));
 						user.setJid(item.getAttributeAsJid("jid"));
 						if (codes.contains(MucOptions.STATUS_CODE_SELF_PRESENCE) || packet.getFrom().equals(mucOptions.getConversation().getJid())) {
-							mucOptions.setError(MucOptions.ERROR_NO_ERROR);
+							mucOptions.setOnline();
 							mucOptions.setSelf(user);
 							if (mucOptions.mNickChangingInProgress) {
 								if (mucOptions.onRenameListener != null) {
@@ -108,6 +114,7 @@ public class PresenceParser extends AbstractParser implements
 						mucOptions.setError(MucOptions.ERROR_MEMBERS_ONLY);
 					} else {
 						mucOptions.setError(MucOptions.ERROR_UNKNOWN);
+						Log.d(Config.LOGTAG, "unknown error in conference: " + packet);
 					}
 				} else if (!from.isBareJid()){
 					MucOptions.User user = mucOptions.deleteUser(from.getResourcepart());

@@ -769,7 +769,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 				case MucOptions.ERROR_NICK_IN_USE:
 					showSnackbar(R.string.nick_in_use, R.string.edit, clickToMuc);
 					break;
-				case MucOptions.ERROR_UNKNOWN:
+				case MucOptions.ERROR_NO_RESPONSE:
 					showSnackbar(R.string.conference_not_found, R.string.leave, leaveMuc);
 					break;
 				case MucOptions.ERROR_PASSWORD_REQUIRED:
@@ -783,6 +783,9 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 					break;
 				case MucOptions.KICKED_FROM_ROOM:
 					showSnackbar(R.string.conference_kicked, R.string.join, joinMuc);
+					break;
+				case MucOptions.ERROR_UNKNOWN:
+					showSnackbar(R.string.conference_unknown_error, R.string.try_again, joinMuc);
 					break;
 				default:
 					break;

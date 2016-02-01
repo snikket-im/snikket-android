@@ -242,6 +242,7 @@
 	<string name="you">You</string>
 	<string name="action_edit_subject">Edit conference subject</string>
 	<string name="conference_not_found">Conference not found</string>
+	<string name="conference_unknown_error">Unknown error received</string>2
 	<string name="leave">Leave</string>
 	<string name="contact_added_you">Contact added you to contact list</string>
 	<string name="add_back">Add back</string>
