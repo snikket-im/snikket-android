@@ -1,5 +1,11 @@
 ###Changelog
 
+####Version 1.9.3
+* expert setting that enables host and port configuration
+* expert setting opt-out of bookmark autojoin handling
+* offer to rejoin a conference after server sent unavailable
+* internal rewrites
+
 ####Version 1.9.2
 * prevent startup crash on Sailfish OS
 * minor bug fixes
