@@ -803,7 +803,7 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 			final AdapterView.AdapterContextMenuInfo acmi = (AdapterContextMenuInfo) menuInfo;
 			if (mResContextMenu == R.menu.conference_context) {
 				activity.conference_context_id = acmi.position;
-			} else {
+			} else if (mResContextMenu == R.menu.contact_context){
 				activity.contact_context_id = acmi.position;
 				final Blockable contact = (Contact) activity.contacts.get(acmi.position);
 				final MenuItem blockUnblockItem = menu.findItem(R.id.context_contact_block_unblock);
