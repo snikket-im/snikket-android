@@ -187,6 +187,12 @@
             </PreferenceCategory>
             <PreferenceCategory android:title="@string/pref_expert_options_other">
                 <CheckBoxPreference
+                    android:key="autojoin"
+                    android:defaultValue="true"
+                    android:title="@string/pref_autojoin"
+                    android:summary="@string/pref_autojoin_summary"
+                    />
+                <CheckBoxPreference
                     android:defaultValue="false"
                     android:key="indicate_received"
                     android:summary="@string/pref_use_indicate_received_summary"

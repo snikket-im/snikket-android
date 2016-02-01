@@ -286,7 +286,7 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 		if (!conversation.getMucOptions().online()) {
 			xmppConnectionService.joinMuc(conversation);
 		}
-		if (!bookmark.autojoin()) {
+		if (!bookmark.autojoin() && getPreferences().getBoolean("autojoin", true)) {
 			bookmark.setAutojoin(true);
 			xmppConnectionService.pushBookmarks(bookmark.getAccount());
 		}

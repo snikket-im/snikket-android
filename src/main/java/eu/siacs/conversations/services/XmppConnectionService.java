@@ -1001,6 +1001,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 					final Element query = packet.query();
 					final HashMap<Jid, Bookmark> bookmarks = new HashMap<>();
 					final Element storage = query.findChild("storage", "storage:bookmarks");
+					final boolean autojoin = respectAutojoin();
 					if (storage != null) {
 						for (final Element item : storage.getChildren()) {
 							if (item.getName().equals("conference")) {
@@ -1012,7 +1013,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 								Conversation conversation = find(bookmark);
 								if (conversation != null) {
 									conversation.setBookmark(bookmark);
-								} else if (bookmark.autojoin() && bookmark.getJid() != null) {
+								} else if (bookmark.autojoin() && bookmark.getJid() != null && autojoin) {
 									conversation = findOrCreateConversation(
 											account, bookmark.getJid(), true);
 									conversation.setBookmark(bookmark);
@@ -1330,7 +1331,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 			if (conversation.getMode() == Conversation.MODE_MULTI) {
 				if (conversation.getAccount().getStatus() == Account.State.ONLINE) {
 					Bookmark bookmark = conversation.getBookmark();
-					if (bookmark != null && bookmark.autojoin()) {
+					if (bookmark != null && bookmark.autojoin() && respectAutojoin()) {
 						bookmark.setAutojoin(false);
 						pushBookmarks(bookmark.getAccount());
 					}
@@ -1791,7 +1792,9 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		if (conversation.getMode() == Conversation.MODE_MULTI) {
 			conversation.getMucOptions().setPassword(password);
 			if (conversation.getBookmark() != null) {
-				conversation.getBookmark().setAutojoin(true);
+				if (respectAutojoin()) {
+					conversation.getBookmark().setAutojoin(true);
+				}
 				pushBookmarks(conversation.getAccount());
 			}
 			databaseBackend.updateConversation(conversation);
@@ -2576,6 +2579,10 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 
 	public boolean saveEncryptedMessages() {
 		return !getPreferences().getBoolean("dont_save_encrypted", false);
+	}
+
+	private boolean respectAutojoin() {
+		return getPreferences().getBoolean("autojoin", true);
 	}
 
 	public boolean indicateReceived() {
