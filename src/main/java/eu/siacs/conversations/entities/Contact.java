@@ -38,6 +38,7 @@ public class Contact implements ListItem, Blockable {
 	protected String systemName;
 	protected String serverName;
 	protected String presenceName;
+	protected String commonName;
 	protected Jid jid;
 	protected int subscription = 0;
 	protected String systemAccount;
@@ -105,8 +106,8 @@ public class Contact implements ListItem, Blockable {
 	}
 
 	public String getDisplayName() {
-		if (this.presenceName != null && Config.X509_VERIFICATION) {
-			return this.presenceName;
+		if (this.commonName != null && Config.X509_VERIFICATION) {
+			return this.commonName;
 		} else if (this.systemName != null) {
 			return this.systemName;
 		} else if (this.serverName != null) {
@@ -508,6 +509,10 @@ public class Contact implements ListItem, Blockable {
 
 	public boolean isSelf() {
 		return account.getJid().toBareJid().equals(getJid().toBareJid());
+	}
+
+	public void setCommonName(String cn) {
+		this.commonName = cn;
 	}
 
 	public static class Lastseen {
