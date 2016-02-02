@@ -1,29 +1,21 @@
 package eu.siacs.conversations.entities;
 
+import java.util.Collections;
 import java.util.Hashtable;
 import java.util.Iterator;
-import java.util.Map.Entry;
 
 import eu.siacs.conversations.xml.Element;
 
 public class Presences {
+	private final Hashtable<String, Presence> presences = new Hashtable<>();
 
-	public static final int CHAT = -1;
-	public static final int ONLINE = 0;
-	public static final int AWAY = 1;
-	public static final int XA = 2;
-	public static final int DND = 3;
-	public static final int OFFLINE = 4;
-
-	private final Hashtable<String, Integer> presences = new Hashtable<>();
-
-	public Hashtable<String, Integer> getPresences() {
+	public Hashtable<String, Presence> getPresences() {
 		return this.presences;
 	}
 
-	public void updatePresence(String resource, int status) {
+	public void updatePresence(String resource, Presence presence) {
 		synchronized (this.presences) {
-			this.presences.put(resource, status);
+			this.presences.put(resource, presence);
 		}
 	}
 
@@ -39,32 +31,10 @@ public class Presences {
 		}
 	}
 
-	public int getMostAvailableStatus() {
-		int status = OFFLINE;
+	public Presence getMostAvailablePresence() {
 		synchronized (this.presences) {
-			Iterator<Entry<String, Integer>> it = presences.entrySet().iterator();
-			while (it.hasNext()) {
-				Entry<String, Integer> entry = it.next();
-				if (entry.getValue() < status)
-					status = entry.getValue();
-			}
-		}
-		return status;
-	}
-
-	public static int parseShow(Element show) {
-		if ((show == null) || (show.getContent() == null)) {
-			return Presences.ONLINE;
-		} else if (show.getContent().equals("away")) {
-			return Presences.AWAY;
-		} else if (show.getContent().equals("xa")) {
-			return Presences.XA;
-		} else if (show.getContent().equals("chat")) {
-			return Presences.CHAT;
-		} else if (show.getContent().equals("dnd")) {
-			return Presences.DND;
-		} else {
-			return Presences.OFFLINE;
+			if (presences.size() < 1) { return null; }
+			return Collections.min(presences.values());
 		}
 	}
 
