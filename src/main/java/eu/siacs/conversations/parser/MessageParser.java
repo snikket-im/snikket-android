@@ -271,7 +271,7 @@ public class MessageParser extends AbstractParser implements
 			packet = f.first;
 			isForwarded = true;
 			serverMsgId = result.getAttribute("id");
-			query.incrementTotalCount();
+			query.incrementMessageCount();
 		} else if (query != null) {
 			Log.d(Config.LOGTAG,account.getJid().toBareJid()+": received mam result from invalid sender");
 			return;
@@ -411,9 +411,7 @@ public class MessageParser extends AbstractParser implements
 				}
 			}
 
-			if (query != null) {
-				query.incrementMessageCount();
-			} else {
+			if (query == null) {
 				mXmppConnectionService.updateConversationUi();
 			}
 
