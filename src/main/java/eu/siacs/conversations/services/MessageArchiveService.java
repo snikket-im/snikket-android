@@ -201,10 +201,10 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 		Element last = set == null ? null : set.findChild("last");
 		Element first = set == null ? null : set.findChild("first");
 		Element relevant = query.getPagingOrder() == PagingOrder.NORMAL ? last : first;
-		boolean abort = (query.getStart() == 0 && query.getMessageCount() >= Config.PAGE_SIZE) || query.getMessageCount() >= Config.MAM_MAX_MESSAGES;
+		boolean abort = (query.getStart() == 0 && query.getTotalCount() >= Config.PAGE_SIZE) || query.getTotalCount() >= Config.MAM_MAX_MESSAGES;
 		if (complete || relevant == null || abort) {
 			this.finalizeQuery(query);
-			Log.d(Config.LOGTAG,query.getAccount().getJid().toBareJid().toString()+": finished mam after "+query.getMessageCount()+" messages");
+			Log.d(Config.LOGTAG,query.getAccount().getJid().toBareJid().toString()+": finished mam after "+query.getTotalCount()+" messages");
 			if (query.getWith() == null && query.getMessageCount() > 0) {
 				mXmppConnectionService.getNotificationService().finishBacklog(true);
 			}
@@ -246,6 +246,7 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 	}
 
 	public class Query {
+		private int totalCount = 0;
 		private int messageCount = 0;
 		private long start;
 		private long end;
@@ -278,6 +279,7 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 			Query query = new Query(this.account,this.start,this.end);
 			query.reference = reference;
 			query.conversation = conversation;
+			query.totalCount = totalCount;
 			query.callback = callback;
 			return query;
 		}
@@ -343,8 +345,16 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 			return this.account;
 		}
 
+		public void incrementTotalCount() {
+			this.totalCount++;
+		}
+
 		public void incrementMessageCount() {
 			this.messageCount++;
+		}
+
+		public int getTotalCount() {
+			return this.totalCount;
 		}
 
 		public int getMessageCount() {
