@@ -1022,7 +1022,19 @@ public class XmppConnection implements Runnable {
 		Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": starting service discovery");
 		mXmppConnectionService.scheduleWakeUpCall(Config.CONNECT_DISCO_TIMEOUT, account.getUuid().hashCode());
 		sendServiceDiscoveryItems(account.getServer());
-		sendServiceDiscoveryInfo(account.getServer());
+		Element caps = streamFeatures.findChild("c");
+		final String hash = caps == null ? null : caps.getAttribute("hash");
+		final String ver = caps == null ? null : caps.getAttribute("ver");
+		ServiceDiscoveryResult discoveryResult = null;
+		if (hash != null && ver != null) {
+			discoveryResult = mXmppConnectionService.databaseBackend.findDiscoveryResult(hash, ver);
+		}
+		if (discoveryResult == null) {
+			sendServiceDiscoveryInfo(account.getServer());
+		} else {
+			Log.d(Config.LOGTAG,account.getJid().toBareJid()+": server caps came from cache");
+			disco.put(account.getServer(), discoveryResult);
+		}
 		sendServiceDiscoveryInfo(account.getJid().toBareJid());
 		this.lastSessionStarted = SystemClock.elapsedRealtime();
 	}
@@ -1059,6 +1071,9 @@ public class XmppConnection implements Runnable {
 									}
 									Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": server name: " + id.getName());
 								}
+						}
+						if (jid.equals(account.getServer())) {
+							mXmppConnectionService.databaseBackend.insertDiscoveryResult(result);
 						}
 						disco.put(jid, result);
 						advancedStreamFeaturesLoaded = disco.containsKey(account.getServer())

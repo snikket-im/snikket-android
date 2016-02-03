@@ -80,7 +80,8 @@ public class Data extends Element {
 	}
 
 	public String getFormType() {
-		return this.getAttribute("FORM_TYPE");
+		Field typeFiled = this.getFieldByName("FORM_TYPE");
+		return typeFiled == null ? "" : typeFiled.getValue();
 	}
 
 	public String getTitle() {

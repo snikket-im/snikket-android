@@ -9,12 +9,14 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import eu.siacs.conversations.xml.Element;
+import eu.siacs.conversations.xmpp.forms.Data;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
 
 public class ServiceDiscoveryResult {
@@ -108,10 +110,12 @@ public class ServiceDiscoveryResult {
 	protected final byte[] ver;
 	protected final List<Identity> identities;
 	protected final List<String> features;
+	protected final List<Data> forms;
 
 	public ServiceDiscoveryResult(final IqPacket packet) {
 		this.identities = new ArrayList<>();
 		this.features = new ArrayList<>();
+		this.forms = new ArrayList<>();
 		this.hash = "sha-1"; // We only support sha-1 for now
 
 		final List<Element> elements = packet.query().getChildren();
@@ -126,6 +130,8 @@ public class ServiceDiscoveryResult {
 				if (element.getAttribute("var") != null) {
 					features.add(element.getAttribute("var"));
 				}
+			} else if (element.getName().equals("x") && "jabber:x:data".equals(element.getAttribute("xmlns"))) {
+				forms.add(Data.parse(element));
 			}
 		}
 		this.ver = this.mkCapHash();
@@ -134,6 +140,7 @@ public class ServiceDiscoveryResult {
 	public ServiceDiscoveryResult(String hash, byte[] ver, JSONObject o) throws JSONException {
 		this.identities = new ArrayList<>();
 		this.features = new ArrayList<>();
+		this.forms = new ArrayList<>();
 		this.hash = hash;
 		this.ver = ver;
 
@@ -204,7 +211,17 @@ public class ServiceDiscoveryResult {
 			s.append(feature + "<");
 		}
 
-		// TODO: data forms?
+		Collections.sort(forms, new Comparator<Data>() {
+			@Override
+			public int compare(Data lhs, Data rhs) {
+				return lhs.getFormType().compareTo(rhs.getFormType());
+			}
+		});
+
+		for(Data form : forms) {
+			s.append(form.getFormType()+"<");
+			//TODO append fields and values
+		}
 
 		MessageDigest md;
 		try {
