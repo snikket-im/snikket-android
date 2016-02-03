@@ -345,12 +345,9 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 			return this.account;
 		}
 
-		public void incrementTotalCount() {
-			this.totalCount++;
-		}
-
 		public void incrementMessageCount() {
 			this.messageCount++;
+			this.totalCount++;
 		}
 
 		public int getTotalCount() {
