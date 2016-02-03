@@ -128,7 +128,6 @@ public class ServiceDiscoveryResult {
 				}
 			}
 		}
-
 		this.ver = this.mkCapHash();
 	}
 
@@ -139,14 +138,21 @@ public class ServiceDiscoveryResult {
 		this.ver = ver;
 
 		JSONArray identities = o.optJSONArray("identities");
-		for(int i = 0; i < identities.length(); i++) {
-			this.identities.add(new Identity(identities.getJSONObject(i)));
+		if (identities != null) {
+			for (int i = 0; i < identities.length(); i++) {
+				this.identities.add(new Identity(identities.getJSONObject(i)));
+			}
 		}
-
 		JSONArray features = o.optJSONArray("features");
-		for(int i = 0; i < features.length(); i++) {
-			this.features.add(features.getString(i));
+		if (features != null) {
+			for (int i = 0; i < features.length(); i++) {
+				this.features.add(features.getString(i));
+			}
 		}
+	}
+
+	public String getVer() {
+		return new String(Base64.encode(this.ver, Base64.DEFAULT)).trim();
 	}
 
 	public ServiceDiscoveryResult(Cursor cursor) throws JSONException {
@@ -235,7 +241,7 @@ public class ServiceDiscoveryResult {
 	public ContentValues getContentValues() {
 		final ContentValues values = new ContentValues();
 		values.put(HASH, this.hash);
-		values.put(VER, new String(Base64.encode(this.ver, Base64.DEFAULT)).trim());
+		values.put(VER, getVer());
 		values.put(RESULT, this.toJSON().toString());
 		return values;
 	}

@@ -74,6 +74,8 @@ import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.entities.MucOptions.OnRenameListener;
 import eu.siacs.conversations.entities.Presence;
 import eu.siacs.conversations.entities.Presences;
+import eu.siacs.conversations.entities.Roster;
+import eu.siacs.conversations.entities.ServiceDiscoveryResult;
 import eu.siacs.conversations.entities.Transferable;
 import eu.siacs.conversations.entities.TransferablePlaceholder;
 import eu.siacs.conversations.generator.IqGenerator;
@@ -245,6 +247,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	private OnKeyStatusUpdated mOnKeyStatusUpdated = null;
 	private int keyStatusUpdatedListenerCount = 0;
 	private SecureRandom mRandom;
+	private LruCache<Pair<String,String>,ServiceDiscoveryResult> discoCache = new LruCache<>(20);
 	private final OnBindListener mOnBindListener = new OnBindListener() {
 
 		@Override
@@ -2956,10 +2959,64 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 				@Override
 				public void onIqPacketReceived(Account account, IqPacket packet) {
 					if (packet.getType() == IqPacket.TYPE.ERROR) {
-						Log.d(Config.LOGTAG,account.getJid().toBareJid()+": could not publish nick");
+						Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": could not publish nick");
 					}
 				}
 			});
+		}
+	}
+
+	private ServiceDiscoveryResult getCachedServiceDiscoveryResult(Pair<String,String> key) {
+		ServiceDiscoveryResult result = discoCache.get(key);
+		if (result != null) {
+			return result;
+		} else {
+			result = databaseBackend.findDiscoveryResult(key.first, key.second);
+			if (result != null) {
+				discoCache.put(key, result);
+			}
+			return result;
+		}
+	}
+
+	public void fetchCaps(Account account, final Jid jid, final Presence presence) {
+		final Pair<String,String> key = new Pair<>(presence.getHash(), presence.getVer());
+		ServiceDiscoveryResult disco = getCachedServiceDiscoveryResult(key);
+		if (disco != null) {
+			presence.setServiceDiscoveryResult(disco);
+		} else {
+			if (!account.inProgressDiscoFetches.contains(key)) {
+				account.inProgressDiscoFetches.add(key);
+				IqPacket request = new IqPacket(IqPacket.TYPE.GET);
+				request.setTo(jid);
+				request.query("http://jabber.org/protocol/disco#info");
+				Log.d(Config.LOGTAG,account.getJid().toBareJid()+": making disco request for "+key.second+" to "+jid);
+				sendIqPacket(account, request, new OnIqPacketReceived() {
+					@Override
+					public void onIqPacketReceived(Account account, IqPacket discoPacket) {
+						if (discoPacket.getType() == IqPacket.TYPE.RESULT) {
+							ServiceDiscoveryResult disco = new ServiceDiscoveryResult(discoPacket);
+							if (presence.getVer().equals(disco.getVer())) {
+								databaseBackend.insertDiscoveryResult(disco);
+								injectServiceDiscorveryResult(account.getRoster(), presence.getHash(), presence.getVer(), disco);
+							} else {
+								Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": mismatch in caps for contact " + jid+" "+presence.getVer()+" vs "+disco.getVer());
+							}
+						}
+						account.inProgressDiscoFetches.remove(key);
+					}
+				});
+			}
+		}
+	}
+
+	private void injectServiceDiscorveryResult(Roster roster, String hash, String ver, ServiceDiscoveryResult disco) {
+		for(Contact contact : roster.getContacts()) {
+			for(Presence presence : contact.getPresences().getPresences().values()) {
+				if (hash.equals(presence.getHash()) && ver.equals(presence.getVer())) {
+					presence.setServiceDiscoveryResult(disco);
+				}
+			}
 		}
 	}
 

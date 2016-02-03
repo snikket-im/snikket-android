@@ -22,23 +22,31 @@ public class Presence implements Comparable {
 	}
 
 	protected final Status status;
-	protected final ServiceDiscoveryResult disco;
+	protected ServiceDiscoveryResult disco;
+	protected final String ver;
+	protected final String hash;
 
-	public Presence(Element show, ServiceDiscoveryResult disco) {
-		this.disco = disco;
+	private Presence(Status status, String ver, String hash) {
+		this.status = status;
+		this.ver = ver;
+		this.hash = hash;
+	}
 
+	public static Presence parse(Element show, Element caps) {
+		final String hash = caps == null ? null : caps.getAttribute("hash");
+		final String ver = caps == null ? null : caps.getAttribute("ver");
 		if ((show == null) || (show.getContent() == null)) {
-			this.status = Status.ONLINE;
+			return new Presence(Status.ONLINE, ver, hash);
 		} else if (show.getContent().equals("away")) {
-			this.status = Status.AWAY;
+			return new Presence(Status.AWAY, ver, hash);
 		} else if (show.getContent().equals("xa")) {
-			this.status = Status.XA;
+			return new Presence(Status.XA, ver, hash);
 		} else if (show.getContent().equals("chat")) {
-			this.status = Status.CHAT;
+			return new Presence(Status.CHAT, ver, hash);
 		} else if (show.getContent().equals("dnd")) {
-			this.status = Status.DND;
+			return new Presence(Status.DND, ver, hash);
 		} else {
-			this.status = Status.OFFLINE;
+			return new Presence(Status.OFFLINE, ver, hash);
 		}
 	}
 
@@ -48,5 +56,21 @@ public class Presence implements Comparable {
 
 	public Status getStatus() {
 		return this.status;
+	}
+
+	public boolean hasCaps() {
+		return ver != null && hash != null;
+	}
+
+	public String getVer() {
+		return this.ver;
+	}
+
+	public String getHash() {
+		return this.hash;
+	}
+
+	public void setServiceDiscoveryResult(ServiceDiscoveryResult disco) {
+		this.disco = disco;
 	}
 }

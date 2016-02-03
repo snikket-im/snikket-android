@@ -3,6 +3,7 @@ package eu.siacs.conversations.entities;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.os.SystemClock;
+import android.util.Pair;
 
 import eu.siacs.conversations.crypto.PgpDecryptionService;
 import net.java.otr4j.crypto.OtrCryptoEngineImpl;
@@ -14,6 +15,7 @@ import org.json.JSONObject;
 import java.security.PublicKey;
 import java.security.interfaces.DSAPublicKey;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CopyOnWriteArraySet;
@@ -48,6 +50,7 @@ public class Account extends AbstractEntity {
 	public static final int OPTION_DISABLED = 1;
 	public static final int OPTION_REGISTER = 2;
 	public static final int OPTION_USECOMPRESSION = 3;
+	public final HashSet<Pair<String, String>> inProgressDiscoFetches = new HashSet<>();
 
 	public boolean httpUploadAvailable() {
 		return xmppConnection != null && xmppConnection.getFeatures().httpUpload();
