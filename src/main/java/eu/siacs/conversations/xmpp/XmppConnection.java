@@ -408,7 +408,7 @@ public class XmppConnection implements Runnable {
 	}
 
 	private TlsFactoryVerifier getTlsFactoryVerifier() throws NoSuchAlgorithmException, KeyManagementException, IOException {
-		final SSLContext sc = SSLContext.getInstance("TLS");
+		final SSLContext sc = SSLSocketHelper.getSSLContext();
 		MemorizingTrustManager trustManager = this.mXmppConnectionService.getMemorizingTrustManager();
 		KeyManager[] keyManager;
 		if (account.getPrivateKeyAlias() != null && account.getPassword().isEmpty()) {

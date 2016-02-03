@@ -1,11 +1,14 @@
 package eu.siacs.conversations.utils;
 
+import android.os.Build;
+
 import java.lang.reflect.Method;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
 
+import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 
@@ -57,6 +60,14 @@ public class SSLSocketHelper {
 			}
 		} catch (Throwable e) {
 			// ignore any error, we just can't set the alpn protocol...
+		}
+	}
+
+	public static SSLContext getSSLContext() throws NoSuchAlgorithmException {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+			return SSLContext.getInstance("TLSv1.2");
+		} else {
+			return SSLContext.getInstance("TLS");
 		}
 	}
 }

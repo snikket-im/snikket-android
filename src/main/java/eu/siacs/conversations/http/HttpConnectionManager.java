@@ -23,6 +23,7 @@ import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.services.AbstractConnectionManager;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.CryptoHelper;
+import eu.siacs.conversations.utils.SSLSocketHelper;
 
 public class HttpConnectionManager extends AbstractConnectionManager {
 
@@ -76,7 +77,7 @@ public class HttpConnectionManager extends AbstractConnectionManager {
 							new StrictHostnameVerifier());
 		}
 		try {
-			final SSLContext sc = SSLContext.getInstance("TLS");
+			final SSLContext sc = SSLSocketHelper.getSSLContext();
 			sc.init(null, new X509TrustManager[]{trustManager},
 					mXmppConnectionService.getRNG());
 
