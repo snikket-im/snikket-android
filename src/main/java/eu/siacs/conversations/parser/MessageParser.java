@@ -398,7 +398,11 @@ public class MessageParser extends AbstractParser implements
 				return;
 			}
 
-			conversation.add(message);
+			if (query != null && query.getPagingOrder() == MessageArchiveService.PagingOrder.REVERSE) {
+				conversation.prepend(message);
+			} else {
+				conversation.add(message);
+			}
 
 			if (query == null || query.getWith() == null) { //either no mam or catchup
 				if (status == Message.STATUS_SEND || status == Message.STATUS_SEND_RECEIVED) {
