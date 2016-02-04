@@ -1216,7 +1216,6 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		if (XmppConnectionService.this.getMessageArchiveService().queryInProgress(conversation, callback)) {
 			return;
 		} else if (timestamp == 0) {
-			callback.onMoreMessagesLoaded(0, conversation);
 			return;
 		}
 		Log.d(Config.LOGTAG, "load more messages for " + conversation.getName() + " prior to " + MessageGenerator.getTimestamp(timestamp));
@@ -1230,7 +1229,8 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 					checkDeletedFiles(conversation);
 					callback.onMoreMessagesLoaded(messages.size(), conversation);
 				} else if (conversation.hasMessagesLeftOnServer()
-						&& account.isOnlineAndConnected()) {
+						&& account.isOnlineAndConnected()
+						&& conversation.getLastClearHistory() == 0) {
 					if ((conversation.getMode() == Conversation.MODE_SINGLE && account.getXmppConnection().getFeatures().mam())
 							|| (conversation.getMode() == Conversation.MODE_MULTI && conversation.getMucOptions().mamSupport())) {
 						MessageArchiveService.Query query = getMessageArchiveService().query(conversation, 0, timestamp);

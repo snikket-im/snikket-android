@@ -146,7 +146,12 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 							 int visibleItemCount, int totalItemCount) {
 			synchronized (ConversationFragment.this.messageList) {
 				if (firstVisibleItem < 5 && messagesLoaded && messageList.size() > 0) {
-					long timestamp = ConversationFragment.this.messageList.get(0).getTimeSent();
+					long timestamp;
+					if (messageList.get(0).getType() == Message.TYPE_STATUS && messageList.size() >= 2) {
+						timestamp = messageList.get(1).getTimeSent();
+					} else {
+						timestamp = messageList.get(0).getTimeSent();
+					}
 					messagesLoaded = false;
 					activity.xmppConnectionService.loadMoreMessages(conversation, timestamp, new XmppConnectionService.OnMoreMessagesLoaded() {
 						@Override
