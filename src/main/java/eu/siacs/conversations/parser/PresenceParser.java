@@ -42,7 +42,6 @@ public class PresenceParser extends AbstractParser implements
 			processConferencePresence(packet, mucOptions);
 			final List<MucOptions.User> tileUserAfter = mucOptions.getUsers(5);
 			if (!tileUserAfter.equals(tileUserBefore)) {
-				Log.d(Config.LOGTAG,account.getJid().toBareJid()+": update tiles for "+conversation.getName());
 				mXmppConnectionService.getAvatarService().clear(mucOptions);
 			}
 			if (before != mucOptions.online() || (mucOptions.online() && count != mucOptions.getUserCount())) {
