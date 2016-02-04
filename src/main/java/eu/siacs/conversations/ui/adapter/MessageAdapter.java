@@ -428,6 +428,19 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		viewHolder.image.setOnLongClickListener(openContextMenu);
 	}
 
+	private void loadMoreMessages(Conversation conversation) {
+		conversation.setLastClearHistory(0);
+		conversation.setHasMessagesLeftOnServer(true);
+		conversation.setFirstMamReference(null);
+		long timestamp = conversation.getLastMessageTransmitted();
+		if (timestamp == 0) {
+			timestamp = System.currentTimeMillis();
+		}
+		activity.setMessagesLoaded();
+		activity.xmppConnectionService.getMessageArchiveService().query(conversation, 0, timestamp);
+		Toast.makeText(activity, R.string.fetching_history_from_server,Toast.LENGTH_LONG).show();
+	}
+
 	@Override
 	public View getView(int position, View view, ViewGroup parent) {
 		final Message message = getItem(position);
@@ -484,6 +497,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 					view = activity.getLayoutInflater().inflate(R.layout.message_status, parent, false);
 					viewHolder.contact_picture = (ImageView) view.findViewById(R.id.message_photo);
 					viewHolder.status_message = (TextView) view.findViewById(R.id.status_message);
+					viewHolder.load_more_messages = (Button) view.findViewById(R.id.load_more_messages);
 					break;
 				default:
 					viewHolder = null;
@@ -500,16 +514,31 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		boolean darkBackground = (type == RECEIVED && (!isInValidSession || !mUseWhiteBackground));
 
 		if (type == STATUS) {
-			if (conversation.getMode() == Conversation.MODE_SINGLE) {
-				viewHolder.contact_picture.setImageBitmap(activity
-						.avatarService().get(conversation.getContact(),
-							activity.getPixel(32)));
-				viewHolder.contact_picture.setAlpha(0.5f);
+			if ("LOAD_MORE".equals(message.getBody())) {
+				viewHolder.status_message.setVisibility(View.GONE);
+				viewHolder.contact_picture.setVisibility(View.GONE);
+				viewHolder.load_more_messages.setVisibility(View.VISIBLE);
+				viewHolder.load_more_messages.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						loadMoreMessages(message.getConversation());
+					}
+				});
+			} else {
+				viewHolder.status_message.setVisibility(View.VISIBLE);
+				viewHolder.contact_picture.setVisibility(View.VISIBLE);
+				viewHolder.load_more_messages.setVisibility(View.GONE);
+				if (conversation.getMode() == Conversation.MODE_SINGLE) {
+					viewHolder.contact_picture.setImageBitmap(activity
+							.avatarService().get(conversation.getContact(),
+									activity.getPixel(32)));
+					viewHolder.contact_picture.setAlpha(0.5f);
+				}
 				viewHolder.status_message.setText(message.getBody());
 			}
 			return view;
 		} else {
-			loadAvatar(message,viewHolder.contact_picture);
+			loadAvatar(message, viewHolder.contact_picture);
 		}
 
 		viewHolder.contact_picture
@@ -671,6 +700,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		protected ImageView contact_picture;
 		protected TextView status_message;
 		protected TextView encryption;
+		public Button load_more_messages;
 	}
 
 	class BitmapWorkerTask extends AsyncTask<Message, Void, Bitmap> {

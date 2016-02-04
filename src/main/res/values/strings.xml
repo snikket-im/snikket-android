@@ -560,6 +560,7 @@
 		<item quantity="one">%d message</item>
 		<item quantity="other">%d messages</item>
 	</plurals>
+	<string name="load_more_messages">Load more messages</string>
 	<string name="shared_file_with_x">Shared file with %s</string>
 	<string name="shared_image_with_x">Shared image with %s</string>
 	<string name="no_storage_permission">Conversations need access to external storage</string>

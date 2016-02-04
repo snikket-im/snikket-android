@@ -1215,6 +1215,9 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	public void loadMoreMessages(final Conversation conversation, final long timestamp, final OnMoreMessagesLoaded callback) {
 		if (XmppConnectionService.this.getMessageArchiveService().queryInProgress(conversation, callback)) {
 			return;
+		} else if (timestamp == 0) {
+			callback.onMoreMessagesLoaded(0, conversation);
+			return;
 		}
 		Log.d(Config.LOGTAG, "load more messages for " + conversation.getName() + " prior to " + MessageGenerator.getTimestamp(timestamp));
 		Runnable runnable = new Runnable() {
@@ -2911,6 +2914,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	public void clearConversationHistory(final Conversation conversation) {
 		conversation.clearMessages();
 		conversation.setHasMessagesLeftOnServer(false); //avoid messages getting loaded through mam
+		conversation.setLastClearHistory(System.currentTimeMillis());
 		Runnable runnable = new Runnable() {
 			@Override
 			public void run() {

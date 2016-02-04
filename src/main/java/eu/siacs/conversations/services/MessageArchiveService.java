@@ -24,13 +24,13 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 
 	private final XmppConnectionService mXmppConnectionService;
 
-	private final HashSet<Query> queries = new HashSet<Query>();
-	private final ArrayList<Query> pendingQueries = new ArrayList<Query>();
+	private final HashSet<Query> queries = new HashSet<>();
+	private final ArrayList<Query> pendingQueries = new ArrayList<>();
 
 	public enum PagingOrder {
 		NORMAL,
 		REVERSE
-	};
+	}
 
 	public MessageArchiveService(final XmppConnectionService service) {
 		this.mXmppConnectionService = service;
@@ -137,7 +137,7 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 						synchronized (MessageArchiveService.this.queries) {
 							MessageArchiveService.this.queries.remove(query);
 							if (query.hasCallback()) {
-								query.callback();
+								query.callback(false);
 							}
 						}
 					} else if (packet.getType() != IqPacket.TYPE.RESULT) {
@@ -169,7 +169,7 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 			}
 		}
 		if (query.hasCallback()) {
-			query.callback();
+			query.callback(done);
 		} else {
 			this.mXmppConnectionService.updateConversationUi();
 		}
@@ -329,10 +329,10 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 			this.callback = callback;
 		}
 
-		public void callback() {
+		public void callback(boolean done) {
 			if (this.callback != null) {
 				this.callback.onMoreMessagesLoaded(messageCount,conversation);
-				if (messageCount == 0) {
+				if (done) {
 					this.callback.informUser(R.string.no_more_history_on_server);
 				}
 			}
@@ -375,7 +375,8 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 		public String toString() {
 			StringBuilder builder = new StringBuilder();
 			if (this.muc()) {
-				builder.append("to="+this.getWith().toString());
+				builder.append("to=");
+				builder.append(this.getWith().toString());
 			} else {
 				builder.append("with=");
 				if (this.getWith() == null) {

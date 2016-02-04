@@ -286,6 +286,14 @@ public class Conversation extends AbstractEntity implements Blockable {
 		return this.mFirstMamReference;
 	}
 
+	public void setLastClearHistory(long time) {
+		setAttribute("last_clear_history",String.valueOf(time));
+	}
+
+	public long getLastClearHistory() {
+		return getLongAttribute("last_clear_history", 0);
+	}
+
 	public interface OnMessageFound {
 		void onMessageFound(final Message message);
 	}
@@ -720,6 +728,10 @@ public class Conversation extends AbstractEntity implements Blockable {
 	}
 
 	public long getLastMessageTransmitted() {
+		long last_clear = getLastClearHistory();
+		if (last_clear != 0) {
+			return last_clear;
+		}
 		synchronized (this.messages) {
 			for(int i = this.messages.size() - 1; i >= 0; --i) {
 				Message message = this.messages.get(i);

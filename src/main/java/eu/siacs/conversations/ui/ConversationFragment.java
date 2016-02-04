@@ -40,12 +40,9 @@ import net.java.otr4j.session.SessionStatus;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
-import eu.siacs.conversations.crypto.PgpEngine;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
@@ -317,6 +314,10 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 	};
 	private ConversationActivity activity;
 	private Message selectedMessage;
+
+	public void setMessagesLoaded() {
+		this.messagesLoaded = true;
+	}
 
 	private void sendMessage() {
 		final String body = mEditMessage.getText().toString();
@@ -1008,6 +1009,9 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 
 	protected void updateStatusMessages() {
 		synchronized (this.messageList) {
+			if (conversation.getLastClearHistory() != 0) {
+				this.messageList.add(0, Message.createLoadMoreMessage(conversation));
+			}
 			if (conversation.getMode() == Conversation.MODE_SINGLE) {
 				ChatState state = conversation.getIncomingChatState();
 				if (state == ChatState.COMPOSING) {

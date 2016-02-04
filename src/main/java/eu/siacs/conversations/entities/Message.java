@@ -178,6 +178,14 @@ public class Message extends AbstractEntity {
 		return message;
 	}
 
+	public static Message createLoadMoreMessage(Conversation conversation) {
+		final Message message = new Message();
+		message.setType(Message.TYPE_STATUS);
+		message.setConversation(conversation);
+		message.setBody("LOAD_MORE");
+		return message;
+	}
+
 	@Override
 	public ContentValues getContentValues() {
 		ContentValues values = new ContentValues();

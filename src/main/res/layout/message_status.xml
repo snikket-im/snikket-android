@@ -9,6 +9,15 @@
                 android:paddingRight="8dp"
                 android:paddingTop="5dp">
 
+    <Button
+        android:id="@+id/load_more_messages"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/load_more_messages"
+        android:textColor="@color/accent" android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"/>
+
     <com.makeramen.roundedimageview.RoundedImageView
         android:id="@+id/message_photo"
         android:layout_width="32dp"
