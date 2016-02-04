@@ -1230,7 +1230,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 						&& account.isOnlineAndConnected()) {
 					if ((conversation.getMode() == Conversation.MODE_SINGLE && account.getXmppConnection().getFeatures().mam())
 							|| (conversation.getMode() == Conversation.MODE_MULTI && conversation.getMucOptions().mamSupport())) {
-						MessageArchiveService.Query query = getMessageArchiveService().query(conversation, 0, timestamp - 1);
+						MessageArchiveService.Query query = getMessageArchiveService().query(conversation, 0, timestamp);
 						if (query != null) {
 							query.setCallback(callback);
 						}

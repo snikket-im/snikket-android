@@ -102,6 +102,7 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 				return null;
 			}
 			final Query query = new Query(conversation, start, end,PagingOrder.REVERSE);
+			query.reference = conversation.getFirstMamReference();
 			this.queries.add(query);
 			this.execute(query);
 			return query;
@@ -141,7 +142,7 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 						}
 					} else if (packet.getType() != IqPacket.TYPE.RESULT) {
 						Log.d(Config.LOGTAG, account.getJid().toBareJid().toString() + ": error executing mam: " + packet.toString());
-						finalizeQuery(query);
+						finalizeQuery(query, true);
 					}
 				}
 			});
@@ -152,14 +153,14 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 		}
 	}
 
-	private void finalizeQuery(Query query) {
+	private void finalizeQuery(Query query, boolean done) {
 		synchronized (this.queries) {
 			this.queries.remove(query);
 		}
 		final Conversation conversation = query.getConversation();
 		if (conversation != null) {
 			conversation.sort();
-			conversation.setHasMessagesLeftOnServer(query.getMessageCount() > 0);
+			conversation.setHasMessagesLeftOnServer(!done);
 		} else {
 			for(Conversation tmp : this.mXmppConnectionService.getConversations()) {
 				if (tmp.getAccount() == query.getAccount()) {
@@ -202,9 +203,13 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 		Element first = set == null ? null : set.findChild("first");
 		Element relevant = query.getPagingOrder() == PagingOrder.NORMAL ? last : first;
 		boolean abort = (query.getStart() == 0 && query.getTotalCount() >= Config.PAGE_SIZE) || query.getTotalCount() >= Config.MAM_MAX_MESSAGES;
+		if (query.getConversation() != null) {
+			query.getConversation().setFirstMamReference(first == null ? null : first.getContent());
+		}
 		if (complete || relevant == null || abort) {
-			this.finalizeQuery(query);
-			Log.d(Config.LOGTAG,query.getAccount().getJid().toBareJid().toString()+": finished mam after "+query.getTotalCount()+" messages");
+			final boolean done = (complete || query.getMessageCount() == 0) && query.getStart() == 0;
+			this.finalizeQuery(query, done);
+			Log.d(Config.LOGTAG,query.getAccount().getJid().toBareJid()+": finished mam after "+query.getTotalCount()+" messages. messages left="+Boolean.toString(!done));
 			if (query.getWith() == null && query.getMessageCount() > 0) {
 				mXmppConnectionService.getNotificationService().finishBacklog(true);
 			}
@@ -216,7 +221,7 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 				nextQuery = query.prev(first == null ? null : first.getContent());
 			}
 			this.execute(nextQuery);
-			this.finalizeQuery(query);
+			this.finalizeQuery(query, false);
 			synchronized (this.queries) {
 				this.queries.remove(query);
 				this.queries.add(nextQuery);

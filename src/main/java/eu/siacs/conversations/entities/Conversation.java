@@ -81,6 +81,7 @@ public class Conversation extends AbstractEntity implements Blockable {
 	private ChatState mOutgoingChatState = Config.DEFAULT_CHATSTATE;
 	private ChatState mIncomingChatState = Config.DEFAULT_CHATSTATE;
 	private String mLastReceivedOtrMessageId = null;
+	private String mFirstMamReference = null;
 
 	public boolean hasMessagesLeftOnServer() {
 		return messagesLeftOnServer;
@@ -275,6 +276,14 @@ public class Conversation extends AbstractEntity implements Blockable {
 		synchronized (this.messages) {
 			return this.messages.size();
 		}
+	}
+
+	public void setFirstMamReference(String reference) {
+		this.mFirstMamReference = reference;
+	}
+
+	public String getFirstMamReference() {
+		return this.mFirstMamReference;
 	}
 
 	public interface OnMessageFound {
