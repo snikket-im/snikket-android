@@ -69,4 +69,10 @@
 		<item>@string/automatically</item>
 		<item>@string/always</item>
 	</string-array>
+
+	<string-array name="mam_prefs">
+		<item>@string/never</item>
+		<item>@string/contacts</item>
+		<item>@string/always</item>
+	</string-array>
 </resources>

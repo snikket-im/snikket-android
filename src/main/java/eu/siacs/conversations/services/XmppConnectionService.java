@@ -3024,6 +3024,33 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		}
 	}
 
+	public void fetchMamPreferences(Account account, final OnMamPreferencesFetched callback) {
+		IqPacket request = new IqPacket(IqPacket.TYPE.GET);
+		request.addChild("prefs","urn:xmpp:mam:0");
+		sendIqPacket(account, request, new OnIqPacketReceived() {
+			@Override
+			public void onIqPacketReceived(Account account, IqPacket packet) {
+				Element prefs = packet.findChild("prefs","urn:xmpp:mam:0");
+				if (packet.getType() == IqPacket.TYPE.RESULT && prefs != null) {
+					callback.onPreferencesFetched(prefs);
+				} else {
+					callback.onPreferencesFetchFailed();
+				}
+			}
+		});
+	}
+
+	public interface OnMamPreferencesFetched {
+		void onPreferencesFetched(Element prefs);
+		void onPreferencesFetchFailed();
+	}
+
+	public void pushMamPreferences(Account account, Element prefs) {
+		IqPacket set = new IqPacket(IqPacket.TYPE.SET);
+		set.addChild(prefs);
+		sendIqPacket(account, set, null);
+	}
+
 	public interface OnAccountCreated {
 		void onAccountCreated(Account account);
 
