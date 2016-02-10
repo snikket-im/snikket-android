@@ -282,7 +282,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 				}
 				List<Conversation> conversations = getConversations();
 				for (Conversation conversation : conversations) {
-					if (conversation.getAccount() == account) {
+					if (conversation.getAccount() == account && conversation.getMode() == Conversation.MODE_SINGLE) {
 						conversation.startOtrIfNeeded();
 						sendUnsentMessages(conversation);
 					}
@@ -1776,6 +1776,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 					if (conversation.getMucOptions().mamSupport()) {
 						getMessageArchiveService().catchupMUC(conversation);
 					}
+					sendUnsentMessages(conversation);
 				}
 
 				@Override
