@@ -6,7 +6,6 @@ import android.util.Log;
 import android.util.Pair;
 
 import org.whispersystems.libaxolotl.IdentityKey;
-import org.whispersystems.libaxolotl.InvalidKeyException;
 import org.whispersystems.libaxolotl.ecc.Curve;
 import org.whispersystems.libaxolotl.ecc.ECPublicKey;
 import org.whispersystems.libaxolotl.state.PreKeyBundle;
@@ -142,7 +141,7 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
 		}
 		try {
 			publicKey = Curve.decodePoint(Base64.decode(signedPreKeyPublic.getContent(),Base64.DEFAULT), 0);
-		} catch (InvalidKeyException | IllegalArgumentException | NullPointerException e) {
+		} catch (Throwable e) {
 			Log.e(Config.LOGTAG, AxolotlService.LOGPREFIX+" : "+"Invalid signedPreKeyPublic in PEP: " + e.getMessage());
 		}
 		return publicKey;
@@ -155,7 +154,7 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
 		}
 		try {
 			return Base64.decode(signedPreKeySignature.getContent(), Base64.DEFAULT);
-		} catch (IllegalArgumentException e) {
+		} catch (Throwable e) {
 			Log.e(Config.LOGTAG,AxolotlService.LOGPREFIX+" : Invalid base64 in signedPreKeySignature");
 			return null;
 		}
@@ -169,7 +168,7 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
 		}
 		try {
 			identityKey = new IdentityKey(Base64.decode(identityKeyElement.getContent(), Base64.DEFAULT), 0);
-		} catch (InvalidKeyException | IllegalArgumentException | NullPointerException e) {
+		} catch (Throwable e) {
 			Log.e(Config.LOGTAG,AxolotlService.LOGPREFIX+" : "+"Invalid identityKey in PEP: "+e.getMessage());
 		}
 		return identityKey;
@@ -200,7 +199,7 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
 			try {
 				ECPublicKey preKeyPublic = Curve.decodePoint(Base64.decode(preKeyPublicElement.getContent(), Base64.DEFAULT), 0);
 				preKeyRecords.put(preKeyId, preKeyPublic);
-			} catch (InvalidKeyException | IllegalArgumentException | NullPointerException e) {
+			} catch (Throwable e) {
 				Log.e(Config.LOGTAG, AxolotlService.LOGPREFIX+" : "+"Invalid preKeyPublic (ID="+preKeyId+") in PEP: "+ e.getMessage()+", skipping...");
 				continue;
 			}
