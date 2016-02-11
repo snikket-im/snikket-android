@@ -240,6 +240,7 @@
   <string name="you">Já</string>
   <string name="action_edit_subject">Upravit jméno konference</string>
   <string name="conference_not_found">Konference nenalezena</string>
+  <string name="conference_unknown_error">Došlo k neznámé chybě</string>
   <string name="leave">Odejít</string>
   <string name="contact_added_you">Kontakt přidán do seznamu</string>
   <string name="add_back">Opět přidat</string>
@@ -297,6 +298,8 @@
   <string name="pref_expert_options_other">Další</string>
   <string name="pref_conference_name">Jméno konference</string>
   <string name="pref_conference_name_summary">Pro identifikaci konferencí použít téma místnosti místo jejího JID</string>
+  <string name="pref_autojoin">Automaticky vstupovat do konferencí</string>
+  <string name="pref_autojoin_summary">Používat autojoin nastavení v záložkách konferencí</string>
   <string name="toast_message_otr_fingerprint">OTR otisk zkopírován do schránky!</string>
   <string name="toast_message_omemo_fingerprint">OMEMO otisk zkopírován do schránky!</string>
   <string name="conference_banned">Vstup do konference byl zakázán</string>
@@ -498,9 +501,15 @@
   <string name="pref_away_when_screen_off_summary">Při vypnuté obrazovce označí váš stav jako pryč</string>
   <string name="pref_xa_on_silent_mode">Nedostupný při vypnutém zvuku</string>
   <string name="pref_xa_on_silent_mode_summary">Při tichém módu označí váš stav jako nedostupný</string>
+  <string name="pref_show_connection_options">Rozšířené možnosti připojení</string>
+  <string name="pref_show_connection_options_summary">Zobrazovat hodnoty hostname a port při nastavování účtu</string>
+  <string name="hostname_example">xmpp.server.cz</string>
   <string name="action_add_account_with_certificate">Přidat účet s certifikátem</string>
   <string name="unable_to_parse_certificate">Nelze načíst certifikát</string>
   <string name="authenticate_with_certificate">Nechat prázdné pro ověření s certifikátem</string>
+  <string name="mam_prefs">Nastavení archivace</string>
+  <string name="fetching_mam_prefs">Získávání nastavení archivace. Chvíli strpení...</string>
+  <string name="unable_to_fetch_mam_prefs">Získání nastavení archivace se nezdařilo</string>
   <string name="captcha_ocr">Captcha text</string>
   <string name="captcha_required">Captcha vyžadována</string>
   <string name="captcha_hint">opište text z obrázku</string>
@@ -524,6 +533,7 @@
     <item quantity="few">%d zprávy</item>
     <item quantity="other">%d zpráv</item>
   </plurals>
+  <string name="load_more_messages">Načíst více zpráv</string>
   <string name="shared_file_with_x">Soubor sdílen s %s</string>
   <string name="shared_image_with_x">Obrázek sdílen s %s</string>
   <string name="no_storage_permission">Conversations vyžaduje přístup k externímu úložišti</string>
@@ -550,4 +560,6 @@
   <string name="battery_optimizations_enabled_dialog">Tento přístroj provádí agresivní optimalizace využití baterie pro konverzace. Ty mohou způsobit zpoždění upozornění nebo ztrátu zpráv.\nnyní budete vyzváni k jejich vypnutí.</string>
   <string name="disable">Vypnout</string>
   <string name="selection_too_large">Vybraný obsah je příliš dlouhý</string>
+  <string name="no_accounts">(Žádné aktivované účty)</string>
+  <string name="this_field_is_required">Toto pole je vyžadováno</string>
 </resources>

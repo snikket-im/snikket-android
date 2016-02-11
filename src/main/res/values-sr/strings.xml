@@ -240,6 +240,7 @@
   <string name="you">Ви</string>
   <string name="action_edit_subject">Уреди предмет групног ћаскања</string>
   <string name="conference_not_found">Групно ћаскање није нађено</string>
+  <string name="conference_unknown_error">Примљена је непозната грешка</string>
   <string name="leave">Напусти</string>
   <string name="contact_added_you">Контакт вас је додао на списак контаката</string>
   <string name="add_back">Додај га</string>
@@ -498,6 +499,7 @@
   <string name="pref_away_when_screen_off_summary">Означава ваш ресурс одсутним кад је екран искључен</string>
   <string name="pref_xa_on_silent_mode">Недоступан у тихом режиму</string>
   <string name="pref_xa_on_silent_mode_summary">Означава ваш ресурс недоступним кад је уређај у тихом режиму</string>
+  <string name="hostname_example">xmpp.primer.com</string>
   <string name="action_add_account_with_certificate">Додај налог сертификатом</string>
   <string name="unable_to_parse_certificate">Не могу да рашчланим сертификат</string>
   <string name="authenticate_with_certificate">Оставите празно за аутентификацију сертификатом</string>
@@ -524,6 +526,7 @@
     <item quantity="few">%d поруке</item>
     <item quantity="other">%d порука</item>
   </plurals>
+  <string name="load_more_messages">Учитај још порука</string>
   <string name="shared_file_with_x">Подељен фајл са %s</string>
   <string name="shared_image_with_x">Подељена слика са %s</string>
   <string name="no_storage_permission">Конверзацији је потребан приступ спољашњем складишту</string>
@@ -550,4 +553,6 @@
   <string name="battery_optimizations_enabled_dialog">Ваш уређај користи оптимизацију потрошње батерије за Конверзацију што може да доведе до застоја обавештења или чак губитка порука.\n\nСада ћете бити упитани да то искључите.</string>
   <string name="disable">Искључи</string>
   <string name="selection_too_large">Назначена површина је превелика</string>
+  <string name="no_accounts">(Нема активираних налога)</string>
+  <string name="this_field_is_required">Ово поље је захтевано</string>
 </resources>
