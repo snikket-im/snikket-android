@@ -259,6 +259,9 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 			fetchRosterFromServer(account);
 			fetchBookmarks(account);
 			sendPresence(account);
+			if (mPushManagementService.pushAvailable(account)) {
+				mPushManagementService.registerPushTokenOnServer(account);
+			}
 			mMessageArchiveService.executePendingQueries(account);
 			connectMultiModeConversations(account);
 			syncDirtyContacts(account);
@@ -298,11 +301,6 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 				}
 				account.pendingConferenceJoins.clear();
 				scheduleWakeUpCall(Config.PING_MAX_INTERVAL, account.getUuid().hashCode());
-
-				if (mPushManagementService.pushAvailable(account)) {
-					mPushManagementService.registerPushTokenOnServer(account);
-				}
-
 			} else if (account.getStatus() == Account.State.OFFLINE) {
 				resetSendingToWaiting(account);
 				if (!account.isOptionSet(Account.OPTION_DISABLED)) {
