@@ -400,6 +400,26 @@
                             tools:ignore="RtlHardcoded"/>
                     </TableRow>
                     <TableRow
+                        android:id="@+id/push_row"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/server_info_push"
+                            android:textColor="@color/black87"
+                            android:textSize="?attr/TextSizeBody"/>
+
+                        <TextView
+                            android:id="@+id/server_info_push"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right"
+                            android:textColor="@color/black87"
+                            android:textSize="?attr/TextSizeBody"/>
+                    </TableRow>
+                    <TableRow
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content">
 
@@ -416,8 +436,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="right"
                             android:textColor="@color/black87"
-                            android:textSize="?attr/TextSizeBody"
-                            tools:ignore="RtlHardcoded"/>
+                            android:textSize="?attr/TextSizeBody"/>
                     </TableRow>
                 </TableLayout>
 

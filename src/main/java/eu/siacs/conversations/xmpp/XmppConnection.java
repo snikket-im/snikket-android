@@ -1495,17 +1495,13 @@ public class XmppConnection implements Runnable {
 		}
 
 		public boolean mam() {
-			if (hasDiscoFeature(account.getJid().toBareJid(), "urn:xmpp:mam:0")) {
-				return true;
-			} else {
-				return hasDiscoFeature(account.getServer(), "urn:xmpp:mam:0");
-			}
+			return hasDiscoFeature(account.getJid().toBareJid(), "urn:xmpp:mam:0")
+				|| hasDiscoFeature(account.getServer(), "urn:xmpp:mam:0");
 		}
 
-		public boolean advancedStreamFeaturesLoaded() {
-			synchronized (XmppConnection.this.disco) {
-				return disco.containsKey(account.getServer());
-			}
+		public boolean push() {
+			return hasDiscoFeature(account.getJid().toBareJid(), "urn:xmpp:push:0")
+					|| hasDiscoFeature(account.getServer(), "urn:xmpp:push:0");
 		}
 
 		public boolean rosterVersioning() {

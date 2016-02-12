@@ -29,6 +29,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -77,6 +78,7 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 	private TextView mServerInfoBlocking;
 	private TextView mServerInfoPep;
 	private TextView mServerInfoHttpUpload;
+	private TextView mServerInfoPush;
 	private TextView mSessionEst;
 	private TextView mOtrFingerprint;
 	private TextView mAxolotlFingerprint;
@@ -223,6 +225,7 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 		}
 	};
 	private Toast mFetchingMamPrefsToast;
+	private TableRow mPushRow;
 
 	public void refreshUiReal() {
 		invalidateOptionsMenu();
@@ -422,6 +425,8 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 		this.mServerInfoSm = (TextView) findViewById(R.id.server_info_sm);
 		this.mServerInfoPep = (TextView) findViewById(R.id.server_info_pep);
 		this.mServerInfoHttpUpload = (TextView) findViewById(R.id.server_info_http_upload);
+		this.mPushRow = (TableRow) findViewById(R.id.push_row);
+		this.mServerInfoPush = (TextView) findViewById(R.id.server_info_push);
 		this.mOtrFingerprint = (TextView) findViewById(R.id.otr_fingerprint);
 		this.mOtrFingerprintBox = (RelativeLayout) findViewById(R.id.otr_fingerprint_box);
 		this.mOtrFingerprintToClipboardButton = (ImageButton) findViewById(R.id.action_copy_to_clipboard);
@@ -679,6 +684,14 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 				this.mServerInfoHttpUpload.setText(R.string.server_info_available);
 			} else {
 				this.mServerInfoHttpUpload.setText(R.string.server_info_unavailable);
+			}
+
+			this.mPushRow.setVisibility(xmppConnectionService.getPushManagementService().available() ? View.VISIBLE : View.GONE);
+
+			if (features.push()) {
+				this.mServerInfoPush.setText(R.string.server_info_available);
+			} else {
+				this.mServerInfoPush.setText(R.string.server_info_unavailable);
 			}
 			final String otrFingerprint = this.mAccount.getOtrFingerprint();
 			if (otrFingerprint != null) {

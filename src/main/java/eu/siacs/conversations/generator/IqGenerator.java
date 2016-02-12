@@ -289,7 +289,7 @@ public class IqGenerator extends AbstractGenerator {
 	public IqPacket requestHttpUploadSlot(Jid host, DownloadableFile file, String mime) {
 		IqPacket packet = new IqPacket(IqPacket.TYPE.GET);
 		packet.setTo(host);
-		Element request = packet.addChild("request",Xmlns.HTTP_UPLOAD);
+		Element request = packet.addChild("request", Xmlns.HTTP_UPLOAD);
 		request.addChild("filename").setContent(file.getName());
 		request.addChild("size").setContent(String.valueOf(file.getExpectedSize()));
 		if (mime != null) {
@@ -306,5 +306,19 @@ public class IqGenerator extends AbstractGenerator {
 		register.query("jabber:iq:register").addChild(data);
 
 		return register;
+	}
+
+	public IqPacket pushTokenToAppServer(Jid appServer, String token, String deviceId) {
+		IqPacket packet = new IqPacket(IqPacket.TYPE.SET);
+		packet.setTo(appServer);
+		Element command = packet.addChild("command", "http://jabber.org/protocol/commands");
+		command.setAttribute("node","register-push-gcm");
+		command.setAttribute("action","execute");
+		Data data = new Data();
+		data.put("token", token);
+		data.put("device-id", deviceId);
+		data.submit();
+		command.addChild(data);
+		return packet;
 	}
 }

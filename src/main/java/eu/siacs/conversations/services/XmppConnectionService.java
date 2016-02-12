@@ -73,7 +73,6 @@ import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.entities.MucOptions.OnRenameListener;
 import eu.siacs.conversations.entities.Presence;
-import eu.siacs.conversations.entities.Presences;
 import eu.siacs.conversations.entities.Roster;
 import eu.siacs.conversations.entities.ServiceDiscoveryResult;
 import eu.siacs.conversations.entities.Transferable;
@@ -127,6 +126,8 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	public static final String ACTION_TRY_AGAIN = "try_again";
 	public static final String ACTION_DISABLE_ACCOUNT = "disable_account";
 	private static final String ACTION_MERGE_PHONE_CONTACTS = "merge_phone_contacts";
+	public static final String ACTION_GCM_TOKEN_REFRESH = "gcm_token_refresh";
+	public static final String ACTION_GCM_MESSAGE_RECEIVED = "gcm_message_received";
 	private final SerialSingleThreadExecutor mFileAddingExecutor = new SerialSingleThreadExecutor();
 	private final SerialSingleThreadExecutor mDatabaseExecutor = new SerialSingleThreadExecutor();
 	private final IBinder mBinder = new XmppConnectionBinder();
@@ -198,6 +199,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 			this);
 	private AvatarService mAvatarService = new AvatarService(this);
 	private MessageArchiveService mMessageArchiveService = new MessageArchiveService(this);
+	private PushManagementService mPushManagementService = new PushManagementService(this);
 	private OnConversationUpdate mOnConversationUpdate = null;
 	private final FileObserver fileObserver = new FileObserver(
 			FileBackend.getConversationsImageDirectory()) {
@@ -265,7 +267,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	private OnStatusChanged statusListener = new OnStatusChanged() {
 
 		@Override
-		public void onStatusChanged(Account account) {
+		public void onStatusChanged(final Account account) {
 			XmppConnection connection = account.getXmppConnection();
 			if (mOnAccountUpdate != null) {
 				mOnAccountUpdate.onAccountUpdate();
@@ -296,6 +298,11 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 				}
 				account.pendingConferenceJoins.clear();
 				scheduleWakeUpCall(Config.PING_MAX_INTERVAL, account.getUuid().hashCode());
+
+				if (mPushManagementService.pushAvailable(account)) {
+					mPushManagementService.registerPushTokenOnServer(account);
+				}
+
 			} else if (account.getStatus() == Account.State.OFFLINE) {
 				resetSendingToWaiting(account);
 				if (!account.isOptionSet(Account.OPTION_DISABLED)) {
@@ -512,6 +519,11 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 						refreshAllPresences();
 					}
 					break;
+				case ACTION_GCM_TOKEN_REFRESH:
+					refreshAllGcmTokens();
+					break;
+				case ACTION_GCM_MESSAGE_RECEIVED:
+					Log.d(Config.LOGTAG,"gcm push message arrived in service. extras="+intent.getExtras());
 			}
 		}
 		this.wakeLock.acquire();
@@ -572,7 +584,6 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 							reconnectAccount(account, true, interactive);
 						}
 					}
-
 				}
 				if (mOnAccountUpdate != null) {
 					mOnAccountUpdate.onAccountUpdate();
@@ -2845,6 +2856,14 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		}
 	}
 
+	private void refreshAllGcmTokens() {
+		for(Account account : getAccounts()) {
+			if (account.isOnlineAndConnected() && mPushManagementService.pushAvailable(account)) {
+				mPushManagementService.registerPushTokenOnServer(account);
+			}
+		}
+	}
+
 	public void sendOfflinePresence(final Account account) {
 		sendPresencePacket(account, mPresenceGenerator.sendOfflinePresence(account));
 	}
@@ -3005,7 +3024,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 								databaseBackend.insertDiscoveryResult(disco);
 								injectServiceDiscorveryResult(account.getRoster(), presence.getHash(), presence.getVer(), disco);
 							} else {
-								Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": mismatch in caps for contact " + jid+" "+presence.getVer()+" vs "+disco.getVer());
+								Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": mismatch in caps for contact " + jid + " " + presence.getVer() + " vs " + disco.getVer());
 							}
 						}
 						account.inProgressDiscoFetches.remove(key);
@@ -3039,6 +3058,10 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 				}
 			}
 		});
+	}
+
+	public PushManagementService getPushManagementService() {
+		return mPushManagementService;
 	}
 
 	public interface OnMamPreferencesFetched {
