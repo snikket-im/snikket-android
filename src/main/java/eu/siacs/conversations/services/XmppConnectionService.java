@@ -259,7 +259,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 			fetchRosterFromServer(account);
 			fetchBookmarks(account);
 			sendPresence(account);
-			if (mPushManagementService.pushAvailable(account)) {
+			if (mPushManagementService.available(account)) {
 				mPushManagementService.registerPushTokenOnServer(account);
 			}
 			mMessageArchiveService.executePendingQueries(account);
@@ -2856,7 +2856,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 
 	private void refreshAllGcmTokens() {
 		for(Account account : getAccounts()) {
-			if (account.isOnlineAndConnected() && mPushManagementService.pushAvailable(account)) {
+			if (account.isOnlineAndConnected() && mPushManagementService.available(account)) {
 				mPushManagementService.registerPushTokenOnServer(account);
 			}
 		}

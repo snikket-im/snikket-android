@@ -20,7 +20,7 @@ import eu.siacs.conversations.xmpp.stanzas.IqPacket;
 
 public class PushManagementService {
 
-	private static final String APP_SERVER = "push.conversations.im";
+	private static final String APP_SERVER = "push.siacs.eu";
 
 	protected final XmppConnectionService mXmppConnectionService;
 
@@ -64,12 +64,13 @@ public class PushManagementService {
 
 	}
 
-	public boolean available() {
-		return GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(mXmppConnectionService) == ConnectionResult.SUCCESS;
+
+	public boolean available(Account account) {
+		return account.getXmppConnection().getFeatures().push() && playServicesAvailable();
 	}
 
-	public boolean pushAvailable(Account account) {
-		return account.getXmppConnection().getFeatures().push() && available();
+	private boolean playServicesAvailable() {
+		return GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(mXmppConnectionService) == ConnectionResult.SUCCESS;
 	}
 
 	interface OnGcmInstanceTokenRetrieved {

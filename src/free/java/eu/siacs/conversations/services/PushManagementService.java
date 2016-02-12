@@ -14,7 +14,7 @@ public class PushManagementService {
 		//stub implementation. only affects playstore flavor
 	}
 
-	public boolean available() {
+	public boolean available(Account account) {
 		return false;
 	}
 }
