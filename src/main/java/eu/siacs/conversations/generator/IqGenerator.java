@@ -25,6 +25,7 @@ import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.Xmlns;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.forms.Data;
+import eu.siacs.conversations.xmpp.forms.Field;
 import eu.siacs.conversations.xmpp.jid.Jid;
 import eu.siacs.conversations.xmpp.pep.Avatar;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
@@ -319,6 +320,18 @@ public class IqGenerator extends AbstractGenerator {
 		data.put("device-id", deviceId);
 		data.submit();
 		command.addChild(data);
+		return packet;
+	}
+
+	public IqPacket enablePush(Jid jid, String node, String secret) {
+		IqPacket packet = new IqPacket(IqPacket.TYPE.SET);
+		Element enable = packet.addChild("enable","urn:xmpp:push:0");
+		enable.setAttribute("jid",jid.toString());
+		enable.setAttribute("node", node);
+		Data data = new Data();
+		data.setFormType("http://jabber.org/protocol/pubsub#publish-options");
+		data.put("secret",secret);
+		enable.addChild(data);
 		return packet;
 	}
 }

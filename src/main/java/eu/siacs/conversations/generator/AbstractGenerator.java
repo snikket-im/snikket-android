@@ -15,6 +15,8 @@ import java.util.TimeZone;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.PhoneHelper;
+import eu.siacs.conversations.xmpp.jid.Jid;
+import eu.siacs.conversations.xmpp.stanzas.IqPacket;
 
 public abstract class AbstractGenerator {
 	private final String[] FEATURES = {
