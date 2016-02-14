@@ -15,6 +15,7 @@ import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.OnIqPacketReceived;
+import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.forms.Data;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
@@ -100,7 +101,8 @@ public class PushManagementService {
 
 
 	public boolean available(Account account) {
-		return account.getXmppConnection().getFeatures().push() && playServicesAvailable();
+		final XmppConnection connection = account.getXmppConnection();
+		return connection != null && connection.getFeatures().push() && playServicesAvailable();
 	}
 
 	private boolean playServicesAvailable() {
