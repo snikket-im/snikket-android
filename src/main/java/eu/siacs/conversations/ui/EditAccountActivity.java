@@ -686,9 +686,9 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 				this.mServerInfoHttpUpload.setText(R.string.server_info_unavailable);
 			}
 
-			this.mPushRow.setVisibility(xmppConnectionService.getPushManagementService().available(mAccount) ? View.VISIBLE : View.GONE);
+			this.mPushRow.setVisibility(xmppConnectionService.getPushManagementService().isStub() ? View.GONE : View.VISIBLE);
 
-			if (features.push()) {
+			if (xmppConnectionService.getPushManagementService().available(mAccount)) {
 				this.mServerInfoPush.setText(R.string.server_info_available);
 			} else {
 				this.mServerInfoPush.setText(R.string.server_info_unavailable);

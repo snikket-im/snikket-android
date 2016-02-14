@@ -76,9 +76,9 @@ public class PushManagementService {
 			@Override
 			public void onIqPacketReceived(Account account, IqPacket packet) {
 				if (packet.getType() == IqPacket.TYPE.RESULT) {
-					Log.d(Config.LOGTAG,account.getJid().toBareJid()+": successfully enabled push on server");
+					Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": successfully enabled push on server");
 				} else if (packet.getType() == IqPacket.TYPE.ERROR) {
-					Log.d(Config.LOGTAG,account.getJid().toBareJid()+": enabling push on server failed");
+					Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": enabling push on server failed");
 				}
 			}
 		});
@@ -107,6 +107,10 @@ public class PushManagementService {
 
 	private boolean playServicesAvailable() {
 		return GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(mXmppConnectionService) == ConnectionResult.SUCCESS;
+	}
+
+	public boolean isStub() {
+		return false;
 	}
 
 	interface OnGcmInstanceTokenRetrieved {
