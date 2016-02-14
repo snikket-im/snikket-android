@@ -1606,6 +1606,7 @@ public class ConversationActivity extends XmppActivity
 	public void setMessagesLoaded() {
 		if (mConversationFragment != null) {
 			mConversationFragment.setMessagesLoaded();
+			mConversationFragment.updateMessages();
 		}
 	}
 }

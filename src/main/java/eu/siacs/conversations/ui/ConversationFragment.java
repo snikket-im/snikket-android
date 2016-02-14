@@ -62,6 +62,7 @@ import eu.siacs.conversations.ui.adapter.MessageAdapter.OnContactPictureClicked;
 import eu.siacs.conversations.ui.adapter.MessageAdapter.OnContactPictureLongClicked;
 import eu.siacs.conversations.utils.GeoHelper;
 import eu.siacs.conversations.utils.UIHelper;
+import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
 import eu.siacs.conversations.xmpp.jid.Jid;
 
@@ -1014,7 +1015,10 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 
 	protected void updateStatusMessages() {
 		synchronized (this.messageList) {
-			if (conversation.getLastClearHistory() != 0) {
+			final XmppConnection connection = conversation.getAccount().getXmppConnection();
+			if (conversation.getLastClearHistory() != 0
+					&& connection != null
+					&& connection.getFeatures().mam()) {
 				this.messageList.add(0, Message.createLoadMoreMessage(conversation));
 			}
 			if (conversation.getMode() == Conversation.MODE_SINGLE) {
