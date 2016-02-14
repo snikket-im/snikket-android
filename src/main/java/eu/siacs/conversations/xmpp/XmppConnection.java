@@ -61,7 +61,6 @@ import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.ServiceDiscoveryResult;
 import eu.siacs.conversations.generator.IqGenerator;
 import eu.siacs.conversations.services.XmppConnectionService;
-import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.DNSHelper;
 import eu.siacs.conversations.utils.SSLSocketHelper;
 import eu.siacs.conversations.utils.SocksSocketFactory;
@@ -352,13 +351,7 @@ public class XmppConnection implements Runnable {
 			this.changeStatus(Account.State.OFFLINE);
 			this.attempt--; //don't count attempt when reconnecting instantly anyway
 		} finally {
-			if (socket != null) {
-				try {
-					socket.close();
-				} catch (IOException e) {
-
-				}
-			}
+			forceCloseSocket();
 			if (wakeLock.isHeld()) {
 				try {
 					wakeLock.release();
@@ -430,13 +423,7 @@ public class XmppConnection implements Runnable {
 
 	@Override
 	public void run() {
-		try {
-			if (socket != null) {
-				socket.close();
-			}
-		} catch (final IOException ignored) {
-
-		}
+		forceCloseSocket();
 		connect();
 	}
 
@@ -1283,14 +1270,45 @@ public class XmppConnection implements Runnable {
 		}
 	}
 
+	public void waitForPush() {
+		if (tagWriter.isActive()) {
+			tagWriter.finish();
+			new Thread(new Runnable() {
+				@Override
+				public void run() {
+					try {
+						while(!tagWriter.finished()) {
+							Thread.sleep(10);
+						}
+						socket.close();
+						Log.d(Config.LOGTAG,account.getJid().toBareJid()+": closed tcp without closing stream");
+					} catch (IOException e) {
+						e.printStackTrace();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+			}).start();
+		} else {
+			forceCloseSocket();
+			Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": closed tcp without closing stream (no waiting)");
+		}
+	}
+
+	private void forceCloseSocket() {
+		if (socket != null) {
+			try {
+				socket.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
 	public void disconnect(final boolean force) {
 		Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": disconnecting force="+Boolean.valueOf(force));
 		if (force) {
-			try {
-				socket.close();
-			} catch(Exception e) {
-				Log.d(Config.LOGTAG,account.getJid().toBareJid().toString()+": exception during force close ("+e.getMessage()+")");
-			}
+			forceCloseSocket();
 			return;
 		} else {
 			if (tagWriter.isActive()) {

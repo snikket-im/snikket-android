@@ -303,7 +303,12 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 				scheduleWakeUpCall(Config.PING_MAX_INTERVAL, account.getUuid().hashCode());
 			} else if (account.getStatus() == Account.State.OFFLINE) {
 				resetSendingToWaiting(account);
-				if (!account.isOptionSet(Account.OPTION_DISABLED)) {
+				final boolean disabled = account.isOptionSet(Account.OPTION_DISABLED);
+				final boolean pushMode = Config.CLOSE_TCP_WHEN_SWITCHING_TO_BACKGROUND
+						&& mPushManagementService.available(account)
+						&& checkListeners();
+				Log.d(Config.LOGTAG,account.getJid().toBareJid()+": push mode "+Boolean.toString(pushMode));
+				if (!disabled && !pushMode) {
 					int timeToReconnect = mRandom.nextInt(20) + 10;
 					scheduleWakeUpCall(timeToReconnect, account.getUuid().hashCode());
 				}
@@ -469,6 +474,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		final String action = intent == null ? null : intent.getAction();
 		boolean interactive = false;
 		if (action != null) {
+			Log.d(Config.LOGTAG,"start reason: "+action);
 			switch (action) {
 				case ConnectivityManager.CONNECTIVITY_ACTION:
 					if (hasInternetConnection() && Config.RESET_ATTEMPT_COUNT_ON_NETWORK_CHANGE) {
@@ -762,16 +768,18 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 						disconnect(account, false);
 					}
 				}).start();
-
+				cancelWakeUpCall(account.getUuid().hashCode());
 			}
 		}
-		Context context = getApplicationContext();
-		AlarmManager alarmManager = (AlarmManager) context
-				.getSystemService(Context.ALARM_SERVICE);
-		Intent intent = new Intent(context, EventReceiver.class);
-		alarmManager.cancel(PendingIntent.getBroadcast(context, 0, intent, 0));
 		Log.d(Config.LOGTAG, "good bye");
 		stopSelf();
+	}
+
+	private void cancelWakeUpCall(int requestCode) {
+		final AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+		final Intent intent = new Intent(this, EventReceiver.class);
+		intent.setAction("ping");
+		alarmManager.cancel(PendingIntent.getBroadcast(this, requestCode, intent, 0));
 	}
 
 	public void scheduleWakeUpCall(int seconds, int requestCode) {
@@ -1719,8 +1727,14 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		for (Account account : getAccounts()) {
 			if (account.getStatus() == Account.State.ONLINE) {
 				XmppConnection connection = account.getXmppConnection();
-				if (connection != null && connection.getFeatures().csi()) {
-					connection.sendInactive();
+				if (connection != null) {
+					if (connection.getFeatures().csi()) {
+						connection.sendInactive();
+					}
+					if (Config.CLOSE_TCP_WHEN_SWITCHING_TO_BACKGROUND && mPushManagementService.available(account)) {
+						connection.waitForPush();
+						cancelWakeUpCall(account.getUuid().hashCode());
+					}
 				}
 			}
 		}
