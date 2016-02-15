@@ -366,11 +366,7 @@ public class ConversationActivity extends XmppActivity
 
 	public void sendReadMarkerIfNecessary(final Conversation conversation) {
 		if (!mActivityPaused && conversation != null) {
-			if (!conversation.isRead()) {
-				xmppConnectionService.sendReadMarker(conversation);
-			} else {
-				xmppConnectionService.markRead(conversation);
-			}
+			xmppConnectionService.sendReadMarker(conversation);
 		}
 	}
 
