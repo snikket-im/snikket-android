@@ -6,6 +6,10 @@
         android:title="@string/copy_text"
         android:visible="false"/>
     <item
+        android:id="@+id/correct_message"
+        android:title="@string/correct_message"
+        android:visible="false"/>
+    <item
         android:id="@+id/share_with"
         android:title="@string/share_with"
         android:visible="false"/>

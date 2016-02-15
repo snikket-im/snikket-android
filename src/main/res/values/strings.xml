@@ -593,4 +593,6 @@
 	<string name="selection_too_large">The selected area is too large</string>
 	<string name="no_accounts">(No activated accounts)</string>
 	<string name="this_field_is_required">This field is required</string>
+	<string name="correct_message">Correct message</string>
+	<string name="send_corrected_message">Send corrected message</string>
 </resources>

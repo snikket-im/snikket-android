@@ -123,6 +123,16 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		if (viewHolder.indicatorReceived != null) {
 			viewHolder.indicatorReceived.setVisibility(View.GONE);
 		}
+
+		if (viewHolder.edit_indicator != null) {
+			if (message.edited()) {
+				viewHolder.edit_indicator.setVisibility(View.VISIBLE);
+				viewHolder.edit_indicator.setImageResource(darkBackground ? R.drawable.ic_mode_edit_white_18dp : R.drawable.ic_mode_edit_black_18dp);
+				viewHolder.edit_indicator.setAlpha(darkBackground ? 0.7f : 0.57f);
+			} else {
+				viewHolder.edit_indicator.setVisibility(View.GONE);
+			}
+		}
 		boolean multiReceived = message.getConversation().getMode() == Conversation.MODE_MULTI
 			&& message.getMergedStatus() <= Message.STATUS_RECEIVED;
 		if (message.getType() == Message.TYPE_IMAGE || message.getType() == Message.TYPE_FILE || message.getTransferable() != null) {
@@ -179,7 +189,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		if (message.getEncryption() == Message.ENCRYPTION_NONE) {
 			viewHolder.indicator.setVisibility(View.GONE);
 		} else {
-			viewHolder.indicator.setImageResource(darkBackground ? R.drawable.ic_secure_indicator_white : R.drawable.ic_secure_indicator);
+			viewHolder.indicator.setImageResource(darkBackground ? R.drawable.ic_lock_white_18dp : R.drawable.ic_lock_black_18dp);
 			viewHolder.indicator.setVisibility(View.VISIBLE);
 			if (message.getEncryption() == Message.ENCRYPTION_AXOLOTL) {
 				XmppAxolotlSession.Trust trust = message.getConversation()
@@ -463,6 +473,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 						.findViewById(R.id.download_button);
 					viewHolder.indicator = (ImageView) view
 						.findViewById(R.id.security_indicator);
+					viewHolder.edit_indicator = (ImageView) view.findViewById(R.id.edit_indicator);
 					viewHolder.image = (ImageView) view
 						.findViewById(R.id.message_image);
 					viewHolder.messageBody = (TextView) view
@@ -483,6 +494,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 						.findViewById(R.id.download_button);
 					viewHolder.indicator = (ImageView) view
 						.findViewById(R.id.security_indicator);
+					viewHolder.edit_indicator = (ImageView) view.findViewById(R.id.edit_indicator);
 					viewHolder.image = (ImageView) view
 						.findViewById(R.id.message_image);
 					viewHolder.messageBody = (TextView) view
@@ -701,6 +713,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		protected TextView status_message;
 		protected TextView encryption;
 		public Button load_more_messages;
+		public ImageView edit_indicator;
 	}
 
 	class BitmapWorkerTask extends AsyncTask<Message, Void, Bitmap> {

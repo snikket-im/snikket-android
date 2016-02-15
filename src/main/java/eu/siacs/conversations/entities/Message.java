@@ -52,6 +52,7 @@ public class Message extends AbstractEntity {
 	public static final String STATUS = "status";
 	public static final String TYPE = "type";
 	public static final String CARBON = "carbon";
+	public static final String EDITED = "edited";
 	public static final String REMOTE_MSG_ID = "remoteMsgId";
 	public static final String SERVER_MSG_ID = "serverMsgId";
 	public static final String RELATIVE_FILE_PATH = "relativeFilePath";
@@ -71,6 +72,7 @@ public class Message extends AbstractEntity {
 	protected int status;
 	protected int type;
 	protected boolean carbon = false;
+	protected String edited = null;
 	protected String relativeFilePath;
 	protected boolean read = true;
 	protected String remoteMsgId = null;
@@ -104,7 +106,8 @@ public class Message extends AbstractEntity {
 				null,
 				null,
 				null,
-				true);
+				true,
+				null);
 		this.conversation = conversation;
 	}
 
@@ -112,7 +115,8 @@ public class Message extends AbstractEntity {
 					final Jid trueCounterpart, final String body, final long timeSent,
 					final int encryption, final int status, final int type, final boolean carbon,
 					final String remoteMsgId, final String relativeFilePath,
-					final String serverMsgId, final String fingerprint, final boolean read) {
+					final String serverMsgId, final String fingerprint, final boolean read,
+					final String edited) {
 		this.uuid = uuid;
 		this.conversationUuid = conversationUUid;
 		this.counterpart = counterpart;
@@ -128,6 +132,7 @@ public class Message extends AbstractEntity {
 		this.serverMsgId = serverMsgId;
 		this.axolotlFingerprint = fingerprint;
 		this.read = read;
+		this.edited = edited;
 	}
 
 	public static Message fromCursor(Cursor cursor) {
@@ -162,12 +167,13 @@ public class Message extends AbstractEntity {
 				cursor.getInt(cursor.getColumnIndex(ENCRYPTION)),
 				cursor.getInt(cursor.getColumnIndex(STATUS)),
 				cursor.getInt(cursor.getColumnIndex(TYPE)),
-				cursor.getInt(cursor.getColumnIndex(CARBON))>0,
+				cursor.getInt(cursor.getColumnIndex(CARBON)) > 0,
 				cursor.getString(cursor.getColumnIndex(REMOTE_MSG_ID)),
 				cursor.getString(cursor.getColumnIndex(RELATIVE_FILE_PATH)),
 				cursor.getString(cursor.getColumnIndex(SERVER_MSG_ID)),
 				cursor.getString(cursor.getColumnIndex(FINGERPRINT)),
-				cursor.getInt(cursor.getColumnIndex(READ)) > 0);
+				cursor.getInt(cursor.getColumnIndex(READ)) > 0,
+				cursor.getString(cursor.getColumnIndex(EDITED)));
 	}
 
 	public static Message createStatusMessage(Conversation conversation, String body) {
@@ -211,7 +217,8 @@ public class Message extends AbstractEntity {
 		values.put(RELATIVE_FILE_PATH, relativeFilePath);
 		values.put(SERVER_MSG_ID, serverMsgId);
 		values.put(FINGERPRINT, axolotlFingerprint);
-		values.put(READ,read);
+		values.put(READ,read ? 1 : 0);
+		values.put(EDITED, edited);
 		return values;
 	}
 
@@ -340,8 +347,20 @@ public class Message extends AbstractEntity {
 		this.carbon = carbon;
 	}
 
+	public void setEdited(String edited) {
+		this.edited = edited;
+	}
+
+	public boolean edited() {
+		return this.edited != null;
+	}
+
 	public void setTrueCounterpart(Jid trueCounterpart) {
 		this.trueCounterpart = trueCounterpart;
+	}
+
+	public Jid getTrueCounterpart() {
+		return this.trueCounterpart;
 	}
 
 	public Transferable getTransferable() {
@@ -421,6 +440,7 @@ public class Message extends AbstractEntity {
 						this.getEncryption() == message.getEncryption() &&
 						this.getCounterpart() != null &&
 						this.getCounterpart().equals(message.getCounterpart()) &&
+						this.edited() == message.edited() &&
 						(message.getTimeSent() - this.getTimeSent()) <= (Config.MESSAGE_MERGE_WINDOW * 1000) &&
 						!GeoHelper.isGeoUri(message.getBody()) &&
 						!GeoHelper.isGeoUri(this.body) &&
@@ -508,6 +528,14 @@ public class Message extends AbstractEntity {
 			counterpart = null;
 			return false;
 		}
+	}
+
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
+	}
+
+	public String getEditedId() {
+		return edited;
 	}
 
 	public enum Decision {

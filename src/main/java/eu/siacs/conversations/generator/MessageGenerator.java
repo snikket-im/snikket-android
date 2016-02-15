@@ -47,6 +47,9 @@ public class MessageGenerator extends AbstractGenerator {
 		}
 		packet.setFrom(account.getJid());
 		packet.setId(message.getUuid());
+		if (message.edited()) {
+			packet.addChild("replace","urn:xmpp:message-correct:0").setAttribute("id",message.getEditedId());
+		}
 		return packet;
 	}
 

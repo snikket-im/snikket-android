@@ -51,7 +51,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 	private static DatabaseBackend instance = null;
 
 	private static final String DATABASE_NAME = "history";
-	private static final int DATABASE_VERSION = 23;
+	private static final int DATABASE_VERSION = 24;
 
 	private static String CREATE_CONTATCS_STATEMENT = "create table "
 			+ Contact.TABLENAME + "(" + Contact.ACCOUNT + " TEXT, "
@@ -161,6 +161,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 				+ Message.SERVER_MSG_ID + " TEXT, "
 				+ Message.FINGERPRINT + " TEXT, "
 				+ Message.CARBON + " INTEGER, "
+				+ Message.EDITED + " TEXT, "
 				+ Message.READ + " NUMBER DEFAULT 1, "
 				+ Message.REMOTE_MSG_ID + " TEXT, FOREIGN KEY("
 				+ Message.CONVERSATION + ") REFERENCES "
@@ -369,6 +370,10 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 
 		if (oldVersion < 23 && newVersion >= 23) {
 			db.execSQL(CREATE_DISCOVERY_RESULTS_STATEMENT);
+		}
+
+		if (oldVersion < 24 && newVersion >= 24) {
+			db.execSQL("ALTER TABLE " + Message.TABLENAME + " ADD COLUMN " + Message.EDITED + " TEXT");
 		}
 	}
 
@@ -582,6 +587,13 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 	public void updateMessage(Message message) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		String[] args = {message.getUuid()};
+		db.update(Message.TABLENAME, message.getContentValues(), Message.UUID
+				+ "=?", args);
+	}
+
+	public void updateMessage(Message message, String uuid) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		String[] args = {uuid};
 		db.update(Message.TABLENAME, message.getContentValues(), Message.UUID
 				+ "=?", args);
 	}

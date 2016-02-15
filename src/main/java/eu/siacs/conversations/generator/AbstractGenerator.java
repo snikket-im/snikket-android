@@ -31,6 +31,7 @@ public abstract class AbstractGenerator {
 			"urn:xmpp:avatar:metadata+notify",
 			"http://jabber.org/protocol/nick+notify",
 			"urn:xmpp:ping",
+			"urn:xmpp:message-correct:0",
 			"jabber:iq:version",
 			"http://jabber.org/protocol/chatstates",
 			AxolotlService.PEP_DEVICE_LIST+"+notify"};

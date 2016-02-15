@@ -69,6 +69,7 @@ public class EditMessage extends EditText {
 				this.isUserTyping = false;
 				this.keyboardListener.onTextDeleted();
 			}
+			this.keyboardListener.onTextChanged();
 		}
 	}
 
@@ -84,6 +85,7 @@ public class EditMessage extends EditText {
 		void onTypingStarted();
 		void onTypingStopped();
 		void onTextDeleted();
+		void onTextChanged();
 		boolean onTabPressed(boolean repeated);
 	}
 
