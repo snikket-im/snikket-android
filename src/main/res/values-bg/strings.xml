@@ -240,6 +240,7 @@
   <string name="you">Вие</string>
   <string name="action_edit_subject">Редактиране на темата на беседата</string>
   <string name="conference_not_found">Беседата не е открита</string>
+  <string name="conference_unknown_error">Беше получена непозната грешка</string>
   <string name="leave">Напускане</string>
   <string name="contact_added_you">Контактът е добавен във Вашия списък от контакти</string>
   <string name="add_back">Добавяне обратно</string>
@@ -297,6 +298,8 @@
   <string name="pref_expert_options_other">Други</string>
   <string name="pref_conference_name">Име на беседата</string>
   <string name="pref_conference_name_summary">Използване на темата на стаята вместо JID идентификатора за беседите</string>
+  <string name="pref_autojoin">Автоматично присъединяване към беседите</string>
+  <string name="pref_autojoin_summary">Спазване на флага за автоматично присъединяване в отметките на беседите</string>
   <string name="toast_message_otr_fingerprint">Отпечатъкът OTR е копиран!</string>
   <string name="toast_message_omemo_fingerprint">Отпечатъкът OMEMO е копиран!</string>
   <string name="conference_banned">Достъпът Ви до тази беседа беше забранен</string>
@@ -496,9 +499,15 @@
   <string name="pref_away_when_screen_off_summary">Преминава в състояние „отсъстващ“ когато екранът бъде изключен</string>
   <string name="pref_xa_on_silent_mode">Недостъпен, в тих режим</string>
   <string name="pref_xa_on_silent_mode_summary">Преминава в състояние „недостъпен“ когато устройството е в тих режим</string>
+  <string name="pref_show_connection_options">Разширени настройки на връзката</string>
+  <string name="pref_show_connection_options_summary">Показване на настройките за сървър и порт при установка на профил</string>
+  <string name="hostname_example">xmpp.example.com</string>
   <string name="action_add_account_with_certificate">Добавяне на профил със сертификат</string>
   <string name="unable_to_parse_certificate">Неуспешно прочитане на сертификата</string>
   <string name="authenticate_with_certificate">Оставете празно за удостоверяване със сертификат</string>
+  <string name="mam_prefs">Настройки за архивирането</string>
+  <string name="fetching_mam_prefs">Получаване на настройките за архивирането. Моля, изчакайте…</string>
+  <string name="unable_to_fetch_mam_prefs">Неуспешно получаване на настройките за архивирането</string>
   <string name="captcha_ocr">Текст за проверка</string>
   <string name="captcha_required">Проверката е задължителна</string>
   <string name="captcha_hint">въведете текста от изображението</string>
@@ -521,6 +530,7 @@
     <item quantity="one">%d съобщение</item>
     <item quantity="other">%d съобщения</item>
   </plurals>
+  <string name="load_more_messages">Зареждане на още съобщения</string>
   <string name="shared_file_with_x">Файлът е споделен с %s</string>
   <string name="shared_image_with_x">Изображението е споделено с %s</string>
   <string name="no_storage_permission">Conversations се нуждае от достъп до външно място за съхранение</string>
@@ -547,4 +557,6 @@
   <string name="battery_optimizations_enabled_dialog">Устройството Ви прилага сериозни оптимизации за използването на батерията върху Conversations, а те може да доведат до забавени известия и дори пропуснати съобщения.\n\nСега ще Ви бъде предложено да ги изключите.</string>
   <string name="disable">Изключване</string>
   <string name="selection_too_large">Избраната област е твърде голяма</string>
+  <string name="no_accounts">(Няма активирани профили)</string>
+  <string name="this_field_is_required">Това поле е задължително</string>
 </resources>

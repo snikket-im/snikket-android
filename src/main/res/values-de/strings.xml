@@ -240,6 +240,7 @@
   <string name="you">Du</string>
   <string name="action_edit_subject">Konferenz-Thema bearbeiten</string>
   <string name="conference_not_found">Konferenz nicht gefunden</string>
+  <string name="conference_unknown_error">Unbekannter Fehler</string>
   <string name="leave">Verlassen</string>
   <string name="contact_added_you">Der Kontakt hat dich zur Kontaktliste hinzugefügt</string>
   <string name="add_back">Auch hinzufügen</string>
@@ -297,6 +298,8 @@
   <string name="pref_expert_options_other">Sonstiges</string>
   <string name="pref_conference_name">Konferenz-Name</string>
   <string name="pref_conference_name_summary">Konferenz-Thema statt Raum-JID als Namen verwenden</string>
+  <string name="pref_autojoin">Unterhaltung automatisch beitreten</string>
+  <string name="pref_autojoin_summary">Autojoin Flag in Unterhaltungslesezeichen beachten</string>
   <string name="toast_message_otr_fingerprint">OTR-Fingerabdruck in die Zwischenablage kopiert!</string>
   <string name="toast_message_omemo_fingerprint">OMEMO-Fingerabdruck in die Zwischenablage kopiert!</string>
   <string name="conference_banned">Du wurdest von der Konferenz ausgeschlossen</string>
@@ -496,9 +499,15 @@
   <string name="pref_away_when_screen_off_summary">Setzt deinen Status auf \"abwesend\", solange dein Bildschirm abgeschaltet ist</string>
   <string name="pref_xa_on_silent_mode">Nicht verfügbar bei Stummschaltung</string>
   <string name="pref_xa_on_silent_mode_summary">Setzt deinen Status auf \"nicht verfügbar\", solange dein Telefon lautlos ist</string>
+  <string name="pref_show_connection_options">Erweiterte Verbindungs-Optionen</string>
+  <string name="pref_show_connection_options_summary">Zeige Hostname- und Port-Optionen</string>
+  <string name="hostname_example">xmpp.domain.de</string>
   <string name="action_add_account_with_certificate">Konto mit Zertifikat hinzufügen</string>
   <string name="unable_to_parse_certificate">Zertifikat kann nicht gelesen werden</string>
   <string name="authenticate_with_certificate">Leer lassen, um mit Zertifikat anzumelden</string>
+  <string name="mam_prefs">Archivierungseinstellungen</string>
+  <string name="fetching_mam_prefs">Archivierungseinstellungen werden abgerufen. Bitte warten ...</string>
+  <string name="unable_to_fetch_mam_prefs">Archivierungseinstellungen konnten nicht abgerufen werden</string>
   <string name="captcha_ocr">Captcha Text</string>
   <string name="captcha_required">Captcha erforderlich</string>
   <string name="captcha_hint">Text aus Captcha eintragen</string>
@@ -521,6 +530,7 @@
     <item quantity="one">%d Nachricht</item>
     <item quantity="other">%d Nachrichten</item>
   </plurals>
+  <string name="load_more_messages">Weitere Nachrichten laden</string>
   <string name="shared_file_with_x">Datei mit %s geteilt</string>
   <string name="shared_image_with_x">Bild mit %s geteilt</string>
   <string name="no_storage_permission">Conversations benötigt Zugriff auf externen Speicher</string>
@@ -547,4 +557,6 @@
   <string name="battery_optimizations_enabled_dialog">Dein Telefon wendet Batterioptimierungen bei Conversations an, welche verspätete Benachrichtigungen oder Nachrichtenverlust verursachen können. Es ist empfehlenswert dies zu deaktivieren.</string>
   <string name="disable">Deaktivieren</string>
   <string name="selection_too_large">Der ausgewählte Bereich ist zu groß</string>
+  <string name="no_accounts">(Keine aktivierten Konten)</string>
+  <string name="this_field_is_required">Dieses Feld ist erforderlich</string>
 </resources>

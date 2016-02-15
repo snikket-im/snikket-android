@@ -240,6 +240,7 @@
   <string name="you">Tu</string>
   <string name="action_edit_subject">Editeaza titlul conferintei</string>
   <string name="conference_not_found">Conferinta nu a fost gasita</string>
+  <string name="conference_unknown_error">A fost primita o eroare necunoscuta</string>
   <string name="leave">Paraseste</string>
   <string name="contact_added_you">Contactul a fost adaugat in lista </string>
   <string name="add_back">Adauga inapoi</string>
@@ -297,6 +298,8 @@
   <string name="pref_expert_options_other">Altele</string>
   <string name="pref_conference_name">Titlu conferinta</string>
   <string name="pref_conference_name_summary">Foloseste subiectul camerei in locul JID pentru a identifica conferinta</string>
+  <string name="pref_autojoin">Alatura-te automat conferintelor</string>
+  <string name="pref_autojoin_summary">Respecta setarea de alaturare automata la o conferinta conform semnului de carte</string>
   <string name="toast_message_otr_fingerprint">Amprenta OTR copiata in memorie</string>
   <string name="toast_message_omemo_fingerprint">Amprenta OMEMO copiata in memorie!</string>
   <string name="conference_banned">Ti-a fost interzis accesul la aceasta conferinta</string>
@@ -498,9 +501,15 @@
   <string name="pref_away_when_screen_off_summary">Marcheaza clientul drept plecat cand ecranul este oprit</string>
   <string name="pref_xa_on_silent_mode">Indisponibil in mod silentios</string>
   <string name="pref_xa_on_silent_mode_summary">Declara clientul drept indisponibil atunci cand dispozitivul este in mod silentios</string>
+  <string name="pref_show_connection_options">Optiuni avansate conexiune</string>
+  <string name="pref_show_connection_options_summary">Arata optiunea de setare a numelui de gazda si a portului atunci cand se configureaza un cont</string>
+  <string name="hostname_example">xmpp.example.com</string>
   <string name="action_add_account_with_certificate">Adauga un cont cu certificat</string>
   <string name="unable_to_parse_certificate">Nu se poate analiza certificatul</string>
   <string name="authenticate_with_certificate">Lasa gol pentru a autentifica cu un certificat</string>
+  <string name="mam_prefs">Preferinte arhivare</string>
+  <string name="fetching_mam_prefs">Descarc preferinte arhivare. Va rugam asteptati...</string>
+  <string name="unable_to_fetch_mam_prefs">Nu s-au putut descarca setarile de arhivare</string>
   <string name="captcha_ocr">Text captcha de verificare</string>
   <string name="captcha_required">Text captcha de verificare necesar</string>
   <string name="captcha_hint">introdu textul din imagine</string>
@@ -524,6 +533,7 @@
     <item quantity="few">%d mesaje</item>
     <item quantity="other">%d mesaje</item>
   </plurals>
+  <string name="load_more_messages">Incarca mai multe mesaje</string>
   <string name="shared_file_with_x">Partajeaza fisierul cu %s...</string>
   <string name="shared_image_with_x">Partajeaza imaginea cu %s.</string>
   <string name="no_storage_permission">Conversations are nevoie de acces la stocarea externa</string>
@@ -551,4 +561,6 @@ Emitent</string>
   <string name="battery_optimizations_enabled_dialog">Dispozitivul dumneavoastra incearca sa optimizeze agresiv consumul bateriei pentru Conversations, asta poate duce la notificari intarziate sau chiar pierderi de mesaje.\nIn continuare veti fi rugat sa dezactivati aceste optimizari.</string>
   <string name="disable">Dezactivat</string>
   <string name="selection_too_large">Zona selectata este prea mare</string>
+  <string name="no_accounts">(Nici un cont activat)</string>
+  <string name="this_field_is_required">Acest camp este obligatoriu</string>
 </resources>

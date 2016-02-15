@@ -240,6 +240,7 @@
   <string name="you">Siz</string>
   <string name="action_edit_subject">Grup sohbet konusunu düzenle</string>
   <string name="conference_not_found">Grup sohbet bulunamadı</string>
+  <string name="conference_unknown_error">Bilinmeyen hata alındı</string>
   <string name="leave">Ayrıl</string>
   <string name="contact_added_you">Kişi sizi listesine ekledi</string>
   <string name="add_back">Siz de ekleyin</string>
@@ -297,6 +298,8 @@
   <string name="pref_expert_options_other">Diğer</string>
   <string name="pref_conference_name">Grup sohbet ismi</string>
   <string name="pref_conference_name_summary">Grup sohbetleri tanımlamak için JID yerine odanın konusunu kullan</string>
+  <string name="pref_autojoin">Grup sohbet\'e otomatik olarak katıl</string>
+  <string name="pref_autojoin_summary">Grup sohbet yer imlerinde otomatik katıl bayrağına riayet et</string>
   <string name="toast_message_otr_fingerprint">OTR parmak izi panoya kopyalandı!</string>
   <string name="toast_message_omemo_fingerprint">OMEMO parmak izi panoya kopyalandı!</string>
   <string name="conference_banned">Grup sohbetinden atıldınız</string>
@@ -494,9 +497,15 @@
   <string name="pref_away_when_screen_off_summary">Ekran kapandığında çevrimiçi durum bildiriminizi uzakta olarak değiştirir</string>
   <string name="pref_xa_on_silent_mode">Sessiz moddayken erişilemez</string>
   <string name="pref_xa_on_silent_mode_summary">Telefonunuz sessizdeyken, durum bildiriminizi müsait değil olarak değiştirir</string>
+  <string name="pref_show_connection_options">Genişletilmiş bağlantı seçenekleri</string>
+  <string name="pref_show_connection_options_summary">Hesap oluştururken sunucu adıyla port seçeneğini göster</string>
+  <string name="hostname_example">xmpp.ornek.com</string>
   <string name="action_add_account_with_certificate">Sertifikalı hesap ekle</string>
   <string name="unable_to_parse_certificate">Sertifika çözümlenemedi</string>
   <string name="authenticate_with_certificate">w/ sertifikasının kimlik denetimi için boş bırak </string>
+  <string name="mam_prefs">Arşivleme tercihleri</string>
+  <string name="fetching_mam_prefs">Arşivleme tercihleri alınıyor. Lütfen bekleyin...</string>
+  <string name="unable_to_fetch_mam_prefs">Arşivleme tercihleri alınamadı</string>
   <string name="captcha_ocr">Captcha metni</string>
   <string name="captcha_required">Captcha gerekli</string>
   <string name="captcha_hint">resimdeki metni girin</string>
@@ -518,6 +527,7 @@
   <plurals name="x_messages">
     <item quantity="other">%d ileti</item>
   </plurals>
+  <string name="load_more_messages">Daha fazla ileti yükle</string>
   <string name="shared_file_with_x">%s ile paylaşılan dosyalar</string>
   <string name="shared_image_with_x">%s ile paylaşılan resim</string>
   <string name="no_storage_permission">Conversations’ın harici depolama alanına erişmesi gerek </string>
@@ -544,4 +554,6 @@
   <string name="battery_optimizations_enabled_dialog">Cihazınız Conversations üzerinde yoğun pil optimizasyonu yaptığı için bildirimlerde gecikmeler olabilir hatta bazı ileti kayıpları yaşanabilir.\n Şimdi bunları devre dışı bırakmanız istenecek.</string>
   <string name="disable">Devre dışı</string>
   <string name="selection_too_large">Seçilen alan çok büyük</string>
+  <string name="no_accounts">(Aktif hesap bulunmuyor)</string>
+  <string name="this_field_is_required">Bu alan zorunludur</string>
 </resources>

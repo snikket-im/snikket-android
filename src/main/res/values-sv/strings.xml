@@ -240,6 +240,7 @@
   <string name="you">Du</string>
   <string name="action_edit_subject">Ändra konferensämne</string>
   <string name="conference_not_found">Konferens hittades inte</string>
+  <string name="conference_unknown_error">Mottog okänt fel</string>
   <string name="leave">Lämna</string>
   <string name="contact_added_you">Kontakten lade till dig i sin kontaktlista</string>
   <string name="add_back">Addera tillbaka</string>
@@ -297,6 +298,8 @@
   <string name="pref_expert_options_other">Annat</string>
   <string name="pref_conference_name">Konferensnamn</string>
   <string name="pref_conference_name_summary">Använd konferensens ämne istället för JID för att identifiera konferenser</string>
+  <string name="pref_autojoin">Anslut till konferenser automatiskt</string>
+  <string name="pref_autojoin_summary">Respektera flaggan för automatisk anslutning till konferenser i bokmärkena</string>
   <string name="toast_message_otr_fingerprint">OTR-fingeravtryck har kopierats till urklipp!</string>
   <string name="toast_message_omemo_fingerprint">OMEMO-fingeravtryck har kopierats till urklipp!</string>
   <string name="conference_banned">Du är bannlyst från denna konferens</string>
@@ -496,9 +499,15 @@
   <string name="pref_away_when_screen_off_summary">Sätter din tillgänglighet till borta när skrämen är av</string>
   <string name="pref_xa_on_silent_mode">Status ej tillgänglig i tyst läge</string>
   <string name="pref_xa_on_silent_mode_summary">Sätter din tillgänglighet till ej tillgänglig när enheten är i tyst läge</string>
+  <string name="pref_show_connection_options">Utökade anslutningsalternativ</string>
+  <string name="pref_show_connection_options_summary">Visa val av servernamn och port vid inställning av konto</string>
+  <string name="hostname_example">xmpp.example.com</string>
   <string name="action_add_account_with_certificate">Lägg till konto med certifikat</string>
   <string name="unable_to_parse_certificate">Kan inte läsa certifikat</string>
   <string name="authenticate_with_certificate">Lämna tom för att för att logga in med certifikat</string>
+  <string name="mam_prefs">Arkiveringsinställningar</string>
+  <string name="fetching_mam_prefs">Hämtar arkiveringsinställningar, vänta...</string>
+  <string name="unable_to_fetch_mam_prefs">Kan ej hämta arkiveringsinställningar</string>
   <string name="captcha_ocr">CAPTCHA-text</string>
   <string name="captcha_required">CAPTCHA krävs</string>
   <string name="captcha_hint">skriv in texten från bilden</string>
@@ -521,6 +530,7 @@
     <item quantity="one">%d meddelande</item>
     <item quantity="other">%d meddelanden</item>
   </plurals>
+  <string name="load_more_messages">Ladda fler meddelanden</string>
   <string name="shared_file_with_x">Delade fil med %s</string>
   <string name="shared_image_with_x">Delade bild med %s</string>
   <string name="no_storage_permission">Conversations behöver access till extern lagring</string>
@@ -547,4 +557,6 @@
   <string name="battery_optimizations_enabled_dialog">Din enhet har kraftiga batterioptimeringar som påverkar Conversations på så sätt att inkommande meddelanden kan försenas eller kan till och med gå förlorade.\nDu kommer nu att bli ombedd att stänga av batterioptimeringarna för Conversations.</string>
   <string name="disable">Deaktivera</string>
   <string name="selection_too_large">The valda området är för stort</string>
+  <string name="no_accounts">(Inget konto aktiverat)</string>
+  <string name="this_field_is_required">Detta fält måste fyllas i</string>
 </resources>

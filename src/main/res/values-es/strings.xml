@@ -104,7 +104,7 @@
   <string name="pref_accept_files_summary">De forma automática aceptar archivos menores que…</string>
   <string name="pref_notification_settings">Ajustes de notificación</string>
   <string name="pref_notifications">Notificaciones</string>
-  <string name="pref_notifications_summary">Notifica cuando llega un nuevo mensaje</string>
+  <string name="pref_notifications_summary">Notificar cuando llega un nuevo mensaje</string>
   <string name="pref_vibrate">Vibrar</string>
   <string name="pref_vibrate_summary">Vibra cuando llega un nuevo mensaje</string>
   <string name="pref_sound">Sonido</string>
@@ -240,6 +240,7 @@
   <string name="you">Tú</string>
   <string name="action_edit_subject">Editar asunto de la conversación</string>
   <string name="conference_not_found">Conversación no encontrada</string>
+  <string name="conference_unknown_error">Error desconocido</string>
   <string name="leave">Salir</string>
   <string name="contact_added_you">El contacto te ha añadido a su lista de contactos</string>
   <string name="add_back">Añadir contacto</string>
@@ -297,6 +298,8 @@
   <string name="pref_expert_options_other">Otros</string>
   <string name="pref_conference_name">Nombre conversación grupo</string>
   <string name="pref_conference_name_summary">Usar el asunto de la conversación en lugar del identificador jabber como nombre en las conversaciones en grupo</string>
+  <string name="pref_autojoin">Unirse a conversaciones en grupo automáticamente</string>
+  <string name="pref_autojoin_summary">Respetar la opción de unirse automáticamente de los marcadores de las conversaciones en grupo</string>
   <string name="toast_message_otr_fingerprint">¡Huella digital OTR copiada al portapapeles!</string>
   <string name="toast_message_omemo_fingerprint">¡Huella digital OMEMO copiada al portapapeles!</string>
   <string name="conference_banned">Tu entrada a esta conversación ha sido prohibida</string>
@@ -357,7 +360,7 @@
   <string name="manually_verify">Verificar manualmente</string>
   <string name="are_you_sure_verify_fingerprint">¿Estás seguro de que quieres verificar el contacto?</string>
   <string name="pref_show_dynamic_tags">Mostrar etiquetas</string>
-  <string name="pref_show_dynamic_tags_summary">Muestra información en forma de etiquetas debajo de los contactos</string>
+  <string name="pref_show_dynamic_tags_summary">Mostrar información en forma de etiquetas debajo de los contactos</string>
   <string name="enable_notifications">Habilitar notificaciones</string>
   <string name="conference_with">Crear conversación en grupo</string>
   <string name="no_conference_server_found">No se ha encontrado el servidor para crear la conversación</string>
@@ -431,7 +434,7 @@
   <string name="pref_enter_is_send">Intro para enviar</string>
   <string name="pref_enter_is_send_summary">Usar la tecla intro para enviar el mensaje</string>
   <string name="pref_display_enter_key">Mostrar tecla Intro</string>
-  <string name="pref_display_enter_key_summary">Cambia la tecla de emoticonos por la tecla Intro</string>
+  <string name="pref_display_enter_key_summary">Cambiar la tecla de emoticonos por la tecla Intro</string>
   <string name="audio">audio</string>
   <string name="video">vídeo</string>
   <string name="image">imagen</string>
@@ -449,7 +452,7 @@
   <string name="contact_is_typing">%s está escribiendo...</string>
   <string name="contact_has_stopped_typing">%s ha dejado de escribir</string>
   <string name="pref_chat_states">Notificación de escritura</string>
-  <string name="pref_chat_states_summary">Permite a tus contactos saber cuando estás escribiendo un nuevo mensaje</string>
+  <string name="pref_chat_states_summary">Permitir a tus contactos saber cuando estás escribiendo un nuevo mensaje</string>
   <string name="send_location">Enviar ubicación</string>
   <string name="show_location">Mostrar ubicación</string>
   <string name="no_application_found_to_display_location">No se ha encontrado ninguna aplicación para mostrar la ubicación</string>
@@ -495,10 +498,16 @@
   <string name="pref_away_when_screen_off">Ausente con pantalla apagada</string>
   <string name="pref_away_when_screen_off_summary">Cambia tu estado a ausente cuando la pantalla está apagada</string>
   <string name="pref_xa_on_silent_mode">No disponible en modo silencio</string>
-  <string name="pref_xa_on_silent_mode_summary">Cambiar el recurso a no disponible cuando el dispositivo esté en modo silencio</string>
+  <string name="pref_xa_on_silent_mode_summary">Cambia tu estado a no disponible cuando el dispositivo está en modo silencio</string>
+  <string name="pref_show_connection_options">Opciones de conexión avanzadas</string>
+  <string name="pref_show_connection_options_summary">Mostrar las opciones de hostname y puerto cuando se está creando una nueva cuenta</string>
+  <string name="hostname_example">xmpp.ejemplo.com</string>
   <string name="action_add_account_with_certificate">Añadir cuenta con certificado</string>
   <string name="unable_to_parse_certificate">No se ha podido leer el certificado</string>
   <string name="authenticate_with_certificate">Dejar vacío para autenticar certificado w/ </string>
+  <string name="mam_prefs">Preferencias de archivado</string>
+  <string name="fetching_mam_prefs">Buscando las preferencias de archivado. Por favor, espera...</string>
+  <string name="unable_to_fetch_mam_prefs">No se ha podido conseguir las preferencias de archivado</string>
   <string name="captcha_ocr">Texto captcha</string>
   <string name="captcha_required">Captcha requerido</string>
   <string name="captcha_hint">Introduce el texto de la imagen</string>
@@ -521,6 +530,7 @@
     <item quantity="one">%d mensaje</item>
     <item quantity="other">%d mensajes</item>
   </plurals>
+  <string name="load_more_messages">Cargar más mensajes</string>
   <string name="shared_file_with_x">Archivo compartido con %s</string>
   <string name="shared_image_with_x">Imagen compartida con %s</string>
   <string name="no_storage_permission">Conversations necesita acceder al almacenamiento externo</string>
@@ -538,8 +548,8 @@
   <string name="notify_only_when_highlighted">Notificar solo cuando se recibe un mensjae resaltado</string>
   <string name="notify_never">Notificaciones deshabilitadas</string>
   <string name="notify_paused">Notificaciones pausadas</string>
-  <string name="pref_picture_compression">Comprimir imagenes</string>
-  <string name="pref_picture_compression_summary">Redimiensionar y comprimir imágenes</string>
+  <string name="pref_picture_compression">Comprimir imágenes</string>
+  <string name="pref_picture_compression_summary">Redimensionar y comprimir imágenes</string>
   <string name="always">Siempre</string>
   <string name="automatically">Automáticamente</string>
   <string name="battery_optimizations_enabled">Optimizaciones de uso de batería habilitadas</string>
@@ -547,4 +557,6 @@
   <string name="battery_optimizations_enabled_dialog">Tu dispositivo está realizando optimizaciones de uso de batería en Conversations que pueden hacer que los mensajes se retrasen o incluso hacer que se pierdan.\n\nEl sistema te preguntará ahora para deshabilitarlas.</string>
   <string name="disable">Deshabilitar</string>
   <string name="selection_too_large">El área seleccionada es demasiado grande</string>
+  <string name="no_accounts">(No hay cuentas activas)</string>
+  <string name="this_field_is_required">Este campo es requerido</string>
 </resources>

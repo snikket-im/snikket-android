@@ -392,7 +392,7 @@
   <string name="manual_verification_explanation">Kontu handiz konpara ezazu beheko hatz-marka zure kontaktuaren hatz-markarekin.\nEnkriptatutako email bat edota telefono dei bat bezalako edozein komunikabide fidagarriren bat erabili dezakezu horiek trukatzeko.</string>
   <string name="change_password">Pasahitza aldatu</string>
   <string name="current_password">Oraingo pasahitza</string>
-  <string name="new_password">Pasahitza berria</string>
+  <string name="new_password">Pasahitz berria</string>
   <string name="password_should_not_be_empty">Pasahitza ez luke hutsik egon behar</string>
   <string name="enable_all_accounts">Kontu guztiak gaitu</string>
   <string name="disable_all_accounts">Kontu guztiak ezgaitu</string>
@@ -546,4 +546,5 @@
   <string name="battery_optimizations_enabled_explained">Zure gailua jakinarazpen atzeratuak edota mezuen galera ekar lezaketen bateriaren optimizazio handiak egiten ari da Conversationsen.\nHoriek ezgaitzea gomendatzen da.</string>
   <string name="battery_optimizations_enabled_dialog">Zure gailua jakinarazpen atzeratuak edota mezuen galera ekar lezaketen bateriaren optimizazio handiak egiten ari da Conversationsen.\nJarraian hauek ezgaitzea eskatuko zaizu.</string>
   <string name="disable">Ezgaitu</string>
+  <string name="selection_too_large">Hautatutako zatia handiegia da</string>
 </resources>

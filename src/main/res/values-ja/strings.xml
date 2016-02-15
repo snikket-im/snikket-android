@@ -240,6 +240,7 @@
   <string name="you">あなた</string>
   <string name="action_edit_subject">会議の件名を編集</string>
   <string name="conference_not_found">会議が見つかりません</string>
+  <string name="conference_unknown_error">不明なエラーを受け取りました</string>
   <string name="leave">退出</string>
   <string name="contact_added_you">連絡先があなたを連絡先リストに追加しました</string>
   <string name="add_back">戻りを追加</string>
@@ -297,6 +298,8 @@
   <string name="pref_expert_options_other">その他</string>
   <string name="pref_conference_name">会議名</string>
   <string name="pref_conference_name_summary">会議を識別するために JID の代わりにルームのテーマを使用します</string>
+  <string name="pref_autojoin">自動的に会議に参加</string>
+  <string name="pref_autojoin_summary">会議ブックマークの自動参加フラグを尊重します</string>
   <string name="toast_message_otr_fingerprint">OTR フィンガープリントをクリップボードにコピーしました!</string>
   <string name="toast_message_omemo_fingerprint">OMEMO フィンガープリントをクリップボードにコピーしました!</string>
   <string name="conference_banned">あなたはこの会議から禁止されています</string>
@@ -494,9 +497,15 @@
   <string name="pref_away_when_screen_off_summary">画面がオフになっているとき、リソースを離席としてマークします</string>
   <string name="pref_xa_on_silent_mode">サイレントモード時は利用不可</string>
   <string name="pref_xa_on_silent_mode_summary">デバイスがサイレントモードのとき、リソースが利用不可としてマークします</string>
+  <string name="pref_show_connection_options">拡張接続オプション</string>
+  <string name="pref_show_connection_options_summary">アカウントを設定するときにホスト名とポートのオプションを表示します</string>
+  <string name="hostname_example">xmpp.example.com</string>
   <string name="action_add_account_with_certificate">アカウントに証明書を追加</string>
   <string name="unable_to_parse_certificate">証明書を解析できません</string>
   <string name="authenticate_with_certificate">空にすると、証明書で認証します</string>
+  <string name="mam_prefs">アーカイブの設定</string>
+  <string name="fetching_mam_prefs">アーカイブの設定を取得しています。しばらくお待ちください…</string>
+  <string name="unable_to_fetch_mam_prefs">アーカイブの設定を取得できません</string>
   <string name="captcha_ocr">キャプチャ テキスト</string>
   <string name="captcha_required">キャプチャが必要です</string>
   <string name="captcha_hint">画像からテキストを入力してください</string>
@@ -518,6 +527,7 @@
   <plurals name="x_messages">
     <item quantity="other">%d メッセージ</item>
   </plurals>
+  <string name="load_more_messages">さらにメッセージをロード</string>
   <string name="shared_file_with_x">%s でファイルを共有</string>
   <string name="shared_image_with_x">%s で画像を共有</string>
   <string name="no_storage_permission">Conversations は外部ストレージにアクセスが必要です</string>
@@ -544,4 +554,6 @@
   <string name="battery_optimizations_enabled_dialog">お使いのデバイスは、Conversations で通知の遅延やメッセージの損失につながる可能性のある、いくつかの重いバッテリーの最適化を行っています。\n\n今、それらを無効にするように求められます。</string>
   <string name="disable">無効</string>
   <string name="selection_too_large">選択した範囲が大きすぎます</string>
+  <string name="no_accounts">(アクティベートしたアカウントはありません)</string>
+  <string name="this_field_is_required">このフィールドは必須です</string>
 </resources>
