@@ -132,7 +132,9 @@ within the create account dialog.
 Conversations will automatically look up the SRV records for your domain name
 which can point to any hostname port combination. If your server doesn’t provide
 those please contact your admin and have them read
-[this](http://prosody.im/doc/dns#srv_records)
+[this](http://prosody.im/doc/dns#srv_records). If your server operator is unwilling
+to fix this you can enable advanced server settings in the expert settings of
+Conversations.
 
 #### I get 'Incompatible Server'
 
@@ -145,6 +147,13 @@ STARTTLS. XMPP over TLS (on a different port) is not sufficient.
 On rare occasions this error message might also be caused by a server not providing
 a login (SASL) mechanism that Conversations is able to handle. Conversations supports
 SCRAM-SHA1, PLAIN, EXTERNAL (client certs) and DIGEST-MD5.
+
+#### How do XEP-0357: Push Notifications work?
+You need to be runnning the Play Store version of Conversations and your server needs to support push notifications. Because *Google Cloud Notifications (GCM)* are tied with an API key to a specific app your server can not initiate the push message directly. Instead your server will send the push notification to the Conversations App server (operated by us) which then acts as a proxy and initiates the push message for you. The push message send form our App server through GCM doesn’t contain any personal information. It is just an empty message which will wake up your device and tell Conversations to reconnect to your server. The information send from your server to our App server depends on the configuartion of your server but can be limited to your account name. (In any case the Conversations App server won't redirect any information through GCM even if your server sends this information.)
+
+In summary Google will never get hold of any personal information besides that *something* happend. (Which doesn’t even have to be a message but can be some automated event as well.) We - as the operator of the App server - will just get hold of your account name (without being able to tie this to your specific device).
+
+If you don’t want this simply pick a server which does not offer Push Notifications or build Conversations yourself without support for push notifications. (This is available via a gradle build flavor.) Non-play store source of Conversations like the Amazon App store will also offer a version without push notifications. Conversations will just work as before and maintain its own TCP connection in the background.
 
 #### Conversations doesn't work for me. Where can I get help?
 
