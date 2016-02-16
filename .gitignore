@@ -2,6 +2,8 @@
 *.swp
 .settings
 
+src/playstore/res/values/gcm.xml
+
 # https://github.com/github/gitignore/blob/master/Gradle.gitignore
 .gradle/
 build/
