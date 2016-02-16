@@ -517,15 +517,18 @@ public class Conversation extends AbstractEntity implements Blockable {
 		return mSmp;
 	}
 
-	public void startOtrIfNeeded() {
-		if (this.otrSession != null
-				&& this.otrSession.getSessionStatus() != SessionStatus.ENCRYPTED) {
+	public boolean startOtrIfNeeded() {
+		if (this.otrSession != null && this.otrSession.getSessionStatus() != SessionStatus.ENCRYPTED) {
 			try {
 				this.otrSession.startSession();
+				return true;
 			} catch (OtrException e) {
 				this.resetOtrSession();
+				return false;
 			}
-				}
+		} else {
+			return true;
+		}
 	}
 
 	public boolean endOtrIfNeeded() {

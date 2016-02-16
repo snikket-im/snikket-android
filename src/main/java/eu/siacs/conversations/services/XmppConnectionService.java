@@ -288,7 +288,9 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 				List<Conversation> conversations = getConversations();
 				for (Conversation conversation : conversations) {
 					if (conversation.getAccount() == account && conversation.getMode() == Conversation.MODE_SINGLE) {
-						conversation.startOtrIfNeeded();
+						if (!conversation.startOtrIfNeeded()) {
+							Log.d(Config.LOGTAG,account.getJid().toBareJid()+": couldn't start OTR with "+conversation.getContact().getJid()+" when needed");
+						}
 						sendUnsentMessages(conversation);
 					}
 				}
@@ -900,8 +902,11 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 						if (message.fixCounterpart()) {
 							conversation.startOtrSession(message.getCounterpart().getResourcepart(), true);
 						} else {
+							Log.d(Config.LOGTAG,account.getJid().toBareJid()+": could not fix counterpart for OTR message to contact "+message.getContact().getJid());
 							break;
 						}
+					} else {
+						Log.d(Config.LOGTAG,account.getJid().toBareJid()+" OTR session with "+message.getContact()+" is in wrong state: "+otrSession.getSessionStatus().toString());
 					}
 					break;
 				case Message.ENCRYPTION_AXOLOTL:
@@ -946,6 +951,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 					break;
 				case Message.ENCRYPTION_OTR:
 					if (!conversation.hasValidOtrSession() && message.getCounterpart() != null) {
+						Log.d(Config.LOGTAG,account.getJid().toBareJid()+": create otr session without starting for "+message.getContact().getJid());
 						conversation.startOtrSession(message.getCounterpart().getResourcepart(), false);
 					}
 					break;
