@@ -162,7 +162,8 @@ public class SettingsActivity extends XmppActivity implements
 			xmppConnectionService.toggleForegroundService();
 		} else if (name.equals("confirm_messages")
 				|| name.equals("xa_on_silent_mode")
-				|| name.equals("away_when_screen_off")) {
+				|| name.equals("away_when_screen_off")
+				|| name.equals("allow_message_correction")) {
 			if (xmppConnectionServiceBound) {
 				if (name.equals("away_when_screen_off")) {
 					xmppConnectionService.toggleScreenEventReceiver();

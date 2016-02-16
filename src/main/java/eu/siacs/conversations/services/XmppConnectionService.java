@@ -2615,6 +2615,10 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		return getPreferences().getBoolean("confirm_messages", true);
 	}
 
+	public boolean allowMessageCorrection() {
+		return getPreferences().getBoolean("allow_message_correction", true);
+	}
+
 	public boolean sendChatStates() {
 		return getPreferences().getBoolean("chat_states", false);
 	}

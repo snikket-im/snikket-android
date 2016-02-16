@@ -393,7 +393,7 @@ public class MessageParser extends AbstractParser implements
 				updateLastseen(timestamp, account, packet.getFrom(), true);
 			}
 
-			if (replacementId != null) {
+			if (replacementId != null && mXmppConnectionService.allowMessageCorrection()) {
 				Message replacedMessage = conversation.findMessageWithRemoteIdAndCounterpart(replacementId, counterpart);
 				if (replacedMessage != null) {
 					final boolean fingerprintsMatch = replacedMessage.getAxolotlFingerprint() == null
