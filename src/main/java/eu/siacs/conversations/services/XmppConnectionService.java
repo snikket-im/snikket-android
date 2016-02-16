@@ -2726,7 +2726,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		return null;
 	}
 
-	public void markRead(final Conversation conversation) {
+	public boolean markRead(final Conversation conversation) {
 		mNotificationService.clear(conversation);
 		final List<Message> readMessages = conversation.markRead();
 		if (readMessages.size() > 0) {
@@ -2739,8 +2739,11 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 				}
 			};
 			mDatabaseExecutor.execute(runnable);
+			updateUnreadCountBadge();
+			return true;
+		} else {
+			return false;
 		}
-		updateUnreadCountBadge();
 	}
 
 	public synchronized void updateUnreadCountBadge() {
@@ -2758,7 +2761,9 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 
 	public void sendReadMarker(final Conversation conversation) {
 		final Message markable = conversation.getLatestMarkableMessage();
-		this.markRead(conversation);
+		if (this.markRead(conversation)) {
+			updateConversationUi();
+		}
 		if (confirmMessages() && markable != null && markable.getRemoteMsgId() != null) {
 			Log.d(Config.LOGTAG, conversation.getAccount().getJid().toBareJid() + ": sending read marker to " + markable.getCounterpart().toString());
 			Account account = conversation.getAccount();
@@ -2766,7 +2771,6 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 			MessagePacket packet = mMessageGenerator.confirm(account, to, markable.getRemoteMsgId());
 			this.sendMessagePacket(conversation.getAccount(), packet);
 		}
-		updateConversationUi();
 	}
 
 	public SecureRandom getRNG() {
