@@ -477,7 +477,6 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		final String action = intent == null ? null : intent.getAction();
 		boolean interactive = false;
 		if (action != null) {
-			Log.d(Config.LOGTAG,"start reason: "+action);
 			switch (action) {
 				case ConnectivityManager.CONNECTIVITY_ACTION:
 					if (hasInternetConnection() && Config.RESET_ATTEMPT_COUNT_ON_NETWORK_CHANGE) {
