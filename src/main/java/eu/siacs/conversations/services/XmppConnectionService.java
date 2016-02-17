@@ -287,7 +287,8 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 				}
 				List<Conversation> conversations = getConversations();
 				for (Conversation conversation : conversations) {
-					if (conversation.getAccount() == account && conversation.getMode() == Conversation.MODE_SINGLE) {
+					if (conversation.getAccount() == account
+							&& !account.pendingConferenceJoins.contains(conversation)) {
 						if (!conversation.startOtrIfNeeded()) {
 							Log.d(Config.LOGTAG,account.getJid().toBareJid()+": couldn't start OTR with "+conversation.getContact().getJid()+" when needed");
 						}
@@ -1757,20 +1758,20 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		List<Conversation> conversations = getConversations();
 		for (Conversation conversation : conversations) {
 			if (conversation.getMode() == Conversation.MODE_MULTI && conversation.getAccount() == account) {
-				joinMuc(conversation, true, null);
+				joinMuc(conversation);
 			}
 		}
 	}
 
 	public void joinMuc(Conversation conversation) {
-		joinMuc(conversation, false, null);
+		joinMuc(conversation, null);
 	}
 
-	private void joinMuc(Conversation conversation, boolean now, final OnConferenceJoined onConferenceJoined) {
+	private void joinMuc(Conversation conversation, final OnConferenceJoined onConferenceJoined) {
 		Account account = conversation.getAccount();
 		account.pendingConferenceJoins.remove(conversation);
 		account.pendingConferenceLeaves.remove(conversation);
-		if (account.getStatus() == Account.State.ONLINE || now) {
+		if (account.getStatus() == Account.State.ONLINE) {
 			conversation.resetMucOptions();
 			fetchConferenceConfiguration(conversation, new OnConferenceConfigurationFetched() {
 
@@ -1949,7 +1950,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 				String name = new BigInteger(75, getRNG()).toString(32);
 				Jid jid = Jid.fromParts(name, server, null);
 				final Conversation conversation = findOrCreateConversation(account, jid, true);
-				joinMuc(conversation, true, new OnConferenceJoined() {
+				joinMuc(conversation, new OnConferenceJoined() {
 					@Override
 					public void onConferenceJoined(final Conversation conversation) {
 						Bundle options = new Bundle();

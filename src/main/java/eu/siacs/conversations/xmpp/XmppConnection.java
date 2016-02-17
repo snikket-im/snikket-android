@@ -1077,10 +1077,10 @@ public class XmppConnection implements Runnable {
 					if (mPendingServiceDiscoveries == 0) {
 						Log.d(Config.LOGTAG,account.getJid().toBareJid()+": done with service discovery");
 						Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": online with resource " + account.getResource());
-						changeStatus(Account.State.ONLINE);
 						if (bindListener != null) {
 							bindListener.onBind(account);
 						}
+						changeStatus(Account.State.ONLINE);
 					}
 				}
 			}
