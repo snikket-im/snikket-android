@@ -428,6 +428,21 @@ public class Message extends AbstractEntity {
 		}
 	}
 
+	public boolean isLastCorrectableMessage() {
+		Message next = next();
+		while(next != null) {
+			if (next.isCorrectable()) {
+				return false;
+			}
+			next = next.next();
+		}
+		return isCorrectable();
+	}
+
+	private boolean isCorrectable() {
+		return getStatus() != STATUS_RECEIVED && !isCarbon();
+	}
+
 	public boolean mergeable(final Message message) {
 		return message != null &&
 				(message.getType() == Message.TYPE_TEXT &&

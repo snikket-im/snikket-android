@@ -336,6 +336,7 @@ public class MessageParser extends AbstractParser implements
 			if (isTypeGroupChat) {
 				if (counterpart.getResourcepart().equals(conversation.getMucOptions().getActualNick())) {
 					status = Message.STATUS_SEND_RECEIVED;
+					isCarbon = true; //not really carbon but received from another resource
 					if (mXmppConnectionService.markMessage(conversation, remoteMsgId, status)) {
 						return;
 					} else if (remoteMsgId == null || Config.IGNORE_ID_REWRITE_IN_MUC) {
@@ -395,7 +396,10 @@ public class MessageParser extends AbstractParser implements
 			}
 
 			if (replacementId != null && mXmppConnectionService.allowMessageCorrection()) {
-				Message replacedMessage = conversation.findMessageWithRemoteIdAndCounterpart(replacementId, counterpart);
+				Message replacedMessage = conversation.findMessageWithRemoteIdAndCounterpart(replacementId,
+						counterpart,
+						message.getStatus() == Message.STATUS_RECEIVED,
+						message.isCarbon());
 				if (replacedMessage != null) {
 					final boolean fingerprintsMatch = replacedMessage.getAxolotlFingerprint() == null
 							|| replacedMessage.getAxolotlFingerprint().equals(message.getAxolotlFingerprint());

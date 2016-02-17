@@ -514,6 +514,10 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 
 	private void populateContextMenu(ContextMenu menu) {
 		final Message m = this.selectedMessage;
+		Message relevantForCorrection = m;
+		while(relevantForCorrection.mergeable(relevantForCorrection.next())) {
+			relevantForCorrection = relevantForCorrection.next();
+		}
 		if (m.getType() != Message.TYPE_STATUS) {
 			activity.getMenuInflater().inflate(R.menu.message_context, menu);
 			menu.setHeaderTitle(R.string.message_options);
@@ -530,9 +534,8 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 					&& m.treatAsDownloadable() != Message.Decision.MUST) {
 				copyText.setVisible(true);
 			}
-			if (m.getType() == Message.TYPE_TEXT
-					&& m.getStatus() != Message.STATUS_RECEIVED
-					&& !m.isCarbon()) {
+			if (relevantForCorrection.getType() == Message.TYPE_TEXT
+					&& relevantForCorrection.isLastCorrectableMessage()) {
 				correctMessage.setVisible(true);
 			}
 			if ((m.getType() != Message.TYPE_TEXT
