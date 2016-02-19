@@ -1,6 +1,7 @@
 package eu.siacs.conversations.entities;
 
 import java.lang.Comparable;
+import java.util.Locale;
 
 import eu.siacs.conversations.xml.Element;
 
@@ -32,21 +33,24 @@ public class Presence implements Comparable {
 		this.hash = hash;
 	}
 
-	public static Presence parse(Element show, Element caps) {
+	public static Presence parse(String show, Element caps) {
 		final String hash = caps == null ? null : caps.getAttribute("hash");
 		final String ver = caps == null ? null : caps.getAttribute("ver");
-		if ((show == null) || (show.getContent() == null)) {
+		if (show == null) {
 			return new Presence(Status.ONLINE, ver, hash);
-		} else if (show.getContent().equals("away")) {
-			return new Presence(Status.AWAY, ver, hash);
-		} else if (show.getContent().equals("xa")) {
-			return new Presence(Status.XA, ver, hash);
-		} else if (show.getContent().equals("chat")) {
-			return new Presence(Status.CHAT, ver, hash);
-		} else if (show.getContent().equals("dnd")) {
-			return new Presence(Status.DND, ver, hash);
 		} else {
-			return new Presence(Status.OFFLINE, ver, hash);
+			switch (show.toLowerCase(Locale.US)) {
+				case "away":
+					return new Presence(Status.AWAY, ver, hash);
+				case "xa":
+					return new Presence(Status.XA, ver, hash);
+				case "dnd":
+					return new Presence(Status.DND, ver, hash);
+				case "chat":
+					return new Presence(Status.CHAT, ver, hash);
+				default:
+					return new Presence(Status.ONLINE, ver, hash);
+			}
 		}
 	}
 

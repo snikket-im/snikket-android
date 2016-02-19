@@ -186,7 +186,7 @@ public class PresenceParser extends AbstractParser implements
 			}
 			int sizeBefore = contact.getPresences().size();
 
-			final Element show = packet.findChild("show");
+			final String show = packet.findChildContent("show");
 			final Element caps = packet.findChild("c", "http://jabber.org/protocol/caps");
 			final Presence presence = Presence.parse(show, caps);
 			contact.updatePresence(resource, presence);
