@@ -738,9 +738,6 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 
 		this.keychainUnlock = KEYCHAIN_UNLOCK_NOT_REQUIRED;
 		this.conversation = conversation;
-		if (this.conversation.getMode() == Conversation.MODE_MULTI) {
-			this.conversation.setNextCounterpart(null);
-		}
 		boolean canWrite = this.conversation.getMode() == Conversation.MODE_SINGLE || this.conversation.getMucOptions().participating();
 		this.mEditMessage.setEnabled(canWrite);
 		this.mSendButton.setEnabled(canWrite);
