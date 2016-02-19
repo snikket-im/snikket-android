@@ -117,13 +117,6 @@ public class MessageParser extends AbstractParser implements
 		return finishedMessage;
 	}
 
-	private Message parsePGPChat(final Conversation conversation, String pgpEncrypted, int status) {
-		final Message message = new Message(conversation, pgpEncrypted, Message.ENCRYPTION_PGP, status);
-		PgpDecryptionService pgpDecryptionService = conversation.getAccount().getPgpDecryptionService();
-		pgpDecryptionService.add(message);
-		return message;
-	}
-
 	private class Invite {
 		Jid jid;
 		String password;
@@ -362,7 +355,7 @@ public class MessageParser extends AbstractParser implements
 					message = new Message(conversation, body, Message.ENCRYPTION_NONE, status);
 				}
 			} else if (pgpEncrypted != null) {
-				message = parsePGPChat(conversation, pgpEncrypted, status);
+				message = new Message(conversation, pgpEncrypted, Message.ENCRYPTION_PGP, status);
 			} else if (axolotlEncrypted != null) {
 				message = parseAxolotlChat(axolotlEncrypted, from, remoteMsgId, conversation, status);
 				if (message == null) {
@@ -410,12 +403,16 @@ public class MessageParser extends AbstractParser implements
 						replacedMessage.setBody(message.getBody());
 						replacedMessage.setEdited(replacedMessage.getRemoteMsgId());
 						replacedMessage.setRemoteMsgId(remoteMsgId);
+						replacedMessage.setEncryption(message.getEncryption());
 						if (replacedMessage.getStatus() == Message.STATUS_RECEIVED) {
 							replacedMessage.markUnread();
 						}
 						mXmppConnectionService.updateMessage(replacedMessage);
 						if (mXmppConnectionService.confirmMessages() && remoteMsgId != null && !isForwarded && !isTypeGroupChat) {
 							sendMessageReceipts(account, packet);
+						}
+						if (replacedMessage.getEncryption() == Message.ENCRYPTION_PGP) {
+							conversation.getAccount().getPgpDecryptionService().add(replacedMessage);
 						}
 						return;
 					} else {
@@ -436,6 +433,10 @@ public class MessageParser extends AbstractParser implements
 				conversation.prepend(message);
 			} else {
 				conversation.add(message);
+			}
+
+			if (message.getEncryption() == Message.ENCRYPTION_PGP) {
+				conversation.getAccount().getPgpDecryptionService().add(message);
 			}
 
 			if (query == null || query.getWith() == null) { //either no mam or catchup
