@@ -50,6 +50,7 @@ import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.OnKeyStatusUpdated;
+import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.XmppConnection.Features;
 import eu.siacs.conversations.xmpp.forms.Data;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
@@ -304,15 +305,14 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 			@Override
 			public void run() {
 				final Intent intent;
-				if (avatar != null) {
-					intent = new Intent(getApplicationContext(),
-							StartConversationActivity.class);
+				final XmppConnection connection = mAccount.getXmppConnection();
+				if (avatar != null || (connection != null && !connection.getFeatures().pep())) {
+					intent = new Intent(getApplicationContext(), StartConversationActivity.class);
 					if (xmppConnectionService != null && xmppConnectionService.getAccounts().size() == 1) {
 						intent.putExtra("init", true);
 					}
 				} else {
-					intent = new Intent(getApplicationContext(),
-							PublishProfilePictureActivity.class);
+					intent = new Intent(getApplicationContext(), PublishProfilePictureActivity.class);
 					intent.putExtra(EXTRA_ACCOUNT, mAccount.getJid().toBareJid().toString());
 					intent.putExtra("setup", true);
 				}
