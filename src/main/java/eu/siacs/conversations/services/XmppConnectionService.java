@@ -2159,6 +2159,11 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		updateConversationUi();
 	}
 
+	public void updateMessage(Message message, String uuid) {
+		databaseBackend.updateMessage(message, uuid);
+		updateConversationUi();
+	}
+
 	protected void syncDirtyContacts(Account account) {
 		for (Contact contact : account.getRoster().getContacts()) {
 			if (contact.getOption(Contact.Options.DIRTY_PUSH)) {

@@ -9,6 +9,7 @@ import net.java.otr4j.session.SessionStatus;
 
 import java.util.ArrayList;
 import java.util.Set;
+import java.util.UUID;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
@@ -400,6 +401,8 @@ public class MessageParser extends AbstractParser implements
 							&& replacedMessage.getTrueCounterpart().equals(message.getTrueCounterpart());
 					if (fingerprintsMatch && (trueCountersMatch || conversation.getMode() == Conversation.MODE_SINGLE)) {
 						Log.d(Config.LOGTAG, "replaced message '" + replacedMessage.getBody() + "' with '" + message.getBody() + "'");
+						final String uuid = replacedMessage.getUuid();
+						replacedMessage.setUuid(UUID.randomUUID().toString());
 						replacedMessage.setBody(message.getBody());
 						replacedMessage.setEdited(replacedMessage.getRemoteMsgId());
 						replacedMessage.setRemoteMsgId(remoteMsgId);
@@ -407,7 +410,7 @@ public class MessageParser extends AbstractParser implements
 						if (replacedMessage.getStatus() == Message.STATUS_RECEIVED) {
 							replacedMessage.markUnread();
 						}
-						mXmppConnectionService.updateMessage(replacedMessage);
+						mXmppConnectionService.updateMessage(replacedMessage, uuid);
 						if (mXmppConnectionService.confirmMessages() && remoteMsgId != null && !isForwarded && !isTypeGroupChat) {
 							sendMessageReceipts(account, packet);
 						}
