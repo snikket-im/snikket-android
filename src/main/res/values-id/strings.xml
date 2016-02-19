@@ -93,7 +93,6 @@
   <string name="pref_xmpp_resource_summary">Identifikasi nama klien ini dengan</string>
   <string name="pref_accept_files">Terima berkas</string>
   <string name="pref_accept_files_summary">Otomatis menerima berkas lebih kecil dari...</string>
-  <string name="pref_notification_settings">Pengaturan Notifikasi</string>
   <string name="pref_notifications">Notifikasi</string>
   <string name="pref_notifications_summary">Notifikasikan jika pesan baru tiba</string>
   <string name="pref_vibrate">Getar</string>
@@ -102,12 +101,10 @@
   <string name="pref_sound_summary">mainkan suara saat menerima notifikasi</string>
   <string name="pref_notification_grace_period">Tenggang waktu pemberitahuan</string>
   <string name="pref_notification_grace_period_summary">Nonaktifkan pemberitahuan untuk waktu yang singkat setelah salinan diterima</string>
-  <string name="pref_advanced_options">Opsi Lanjutan</string>
   <string name="pref_never_send_crash">Jangan kirim laporan kerusakan</string>
   <string name="pref_never_send_crash_summary">Dengan mengirimkan kesalahan Anda membantu pengembangan Aplikasi Conversations</string>
   <string name="pref_confirm_messages">Konfirmasi Pesan</string>
   <string name="pref_confirm_messages_summary">Biarkan kontak Anda tahu kapan Anda telah menerima dan membaca pesan</string>
-  <string name="pref_ui_options">Opsi Tampilan</string>
   <string name="openpgp_error">OpenKeychain melaporkan kesalahan</string>
   <string name="error_decrypting_file">I/O Error menerjemahkan berkas</string>
   <string name="accept">Menerima</string>
@@ -251,12 +248,10 @@
   <string name="sure_delete_fingerprint">Apakah anda yakin menghapus sidik jari?</string>
   <string name="ignore">Abaikan</string>
   <string name="without_mutual_presence_updates"><b>Perhatian</b> Mengirim ini tanpa kehadiran sesama pembaruan bisa menyebabkan masalah tak terduga.\n\n<small>Pergi ke kontak untuk memverifikasi langganan kehadiran anda.</small></string>
-  <string name="pref_encryption_settings">Pengaturan enskripsi</string>
   <string name="pref_force_encryption">Paksa enskripsi end-to-end</string>
   <string name="pref_force_encryption_summary">Selalu mengirim pesan terenkripsi (kecuali untuk conferences)</string>
   <string name="pref_dont_save_encrypted">jangan simpan pesan terenskripsi</string>
   <string name="pref_dont_save_encrypted_summary">Peringatan: Hal ini bisa mengakibatkan hilangnya pesan</string>
-  <string name="pref_expert_options">Pengaturan lanjutan</string>
   <string name="pref_expert_options_summary">Harap berhati-hati dengan ini</string>
   <string name="title_activity_about">Tentang Conversations</string>
   <string name="pref_about_conversations_summary">Build dan informasi lisensi</string>
@@ -386,7 +381,6 @@
   <string name="two_hours">2 jam</string>
   <string name="eight_hours">8 jam</string>
   <string name="until_further_notice">Sampai pemberitahuan selanjutnya</string>
-  <string name="pref_input_options">Opsi input</string>
   <string name="pref_enter_is_send">Enter untuk mengirim</string>
   <string name="pref_enter_is_send_summary">Gunakan enter untuk mengrim pesan</string>
   <string name="pref_display_enter_key">Tampilkan masukan kunci</string>

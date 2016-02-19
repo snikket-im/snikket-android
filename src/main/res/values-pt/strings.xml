@@ -88,7 +88,6 @@
   <string name="pref_xmpp_resource_summary">O nome pelo qual esse cliente se identifica</string>
   <string name="pref_accept_files">Aceitar arquivos</string>
   <string name="pref_accept_files_summary">Automaticamente aceita arquivos menores que...</string>
-  <string name="pref_notification_settings">Configurações de notificação</string>
   <string name="pref_notifications">Notificações</string>
   <string name="pref_notifications_summary">Notificar quando uma nova mensagem for recebida</string>
   <string name="pref_vibrate">Vibrar</string>
@@ -97,12 +96,10 @@
   <string name="pref_sound_summary">Tocar um som com a notificação</string>
   <string name="pref_notification_grace_period">Período de carência da notificação</string>
   <string name="pref_notification_grace_period_summary">Desativar notificações por um curto período após a copia oculta ser recebida</string>
-  <string name="pref_advanced_options">Opções avançadas</string>
   <string name="pref_never_send_crash">Nunca enviar relatórios de quebra</string>
   <string name="pref_never_send_crash_summary">Ao enviar os stack traces você ajuda o desenvolvimento do aplicativo</string>
   <string name="pref_confirm_messages">Confirmar mensanges</string>
   <string name="pref_confirm_messages_summary">Permitir que um contato saiba quando você recebeu e leu uma mensagem</string>
-  <string name="pref_ui_options">Opções de UI</string>
   <string name="openpgp_error">O OpenKeychain informou um erro</string>
   <string name="error_decrypting_file">Erro de I/O de critpografia</string>
   <string name="accept">Aceitar</string>
@@ -230,12 +227,10 @@
   <string name="request_now">Solicitar agora</string>
   <string name="delete_fingerprint">Remover impressão</string>
   <string name="sure_delete_fingerprint">Tem certeza que deseja remover essa assinatura?</string>
-  <string name="pref_encryption_settings">Configurações de criptografia</string>
   <string name="pref_force_encryption">Forçar criptografia ponto-a-ponto</string>
   <string name="pref_force_encryption_summary">Sempre envie mensagem criptografada (exceto para conferências)</string>
   <string name="pref_dont_save_encrypted">Não salve mensagens criptografadas</string>
   <string name="pref_dont_save_encrypted_summary">Atenção: Isso pode levar a perda de mensagens</string>
-  <string name="pref_expert_options">Opções de expert</string>
   <string name="pref_expert_options_summary">Por favor tenha cuidado com essas</string>
   <string name="title_activity_about">Sobre Conversas</string>
   <string name="pref_about_conversations_summary">Informação de licença e construção</string>
@@ -265,7 +260,6 @@
   <string name="two_hours">2 horas</string>
   <string name="eight_hours">8 horas</string>
   <string name="until_further_notice">Até segunda ordem</string>
-  <string name="pref_input_options">Opções de entrada</string>
   <string name="pref_enter_is_send">O enter envia</string>
   <string name="pref_enter_is_send_summary">Use o enter para enviar a mensagem</string>
   <string name="pref_display_enter_key">Exibir tecla enter</string>

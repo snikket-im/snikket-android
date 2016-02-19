@@ -102,7 +102,7 @@
   <string name="pref_xmpp_resource_summary">Jméno se kterým se tento klient identifikuje</string>
   <string name="pref_accept_files">Přijímat soubory</string>
   <string name="pref_accept_files_summary">Automaticky přijímat soubory menší než…</string>
-  <string name="pref_notification_settings">Nastavení upozornění</string>
+  <string name="pref_notification_settings">Upozornění</string>
   <string name="pref_notifications">Upozornění</string>
   <string name="pref_notifications_summary">Upozornit při přijetí nové zprávy</string>
   <string name="pref_vibrate">Vibrovat</string>
@@ -111,12 +111,12 @@
   <string name="pref_sound_summary">Přehrát zvuk společně s upozorněním</string>
   <string name="pref_notification_grace_period">Četnost upozornění</string>
   <string name="pref_notification_grace_period_summary">Neupozorňovat krátce poté co byla obdržena kopie zprávy</string>
-  <string name="pref_advanced_options">Pokročilé nastavení</string>
+  <string name="pref_advanced_options">Rozšířené</string>
   <string name="pref_never_send_crash">Neodesílat detaily o pádu aplikace</string>
   <string name="pref_never_send_crash_summary">Zasláním detailů o důvodu selhání pomůžete dalšímu vývoji aplikace Konverzace</string>
   <string name="pref_confirm_messages">Potvrzovat zprávy</string>
   <string name="pref_confirm_messages_summary">Oznamovat kontaktům, že zpráva byla přijata a přečtena</string>
-  <string name="pref_ui_options">Nastavení UI</string>
+  <string name="pref_ui_options">UI</string>
   <string name="openpgp_error">OpenKeychain nahlásil chybu</string>
   <string name="error_decrypting_file">I/O chyba dešifrování souboru</string>
   <string name="accept">Přijmout</string>
@@ -191,6 +191,7 @@
   <string name="server_info_stream_management">XEP-0198: Nastavení proudu</string>
   <string name="server_info_pep">XEP-0163: PEP (Avatars / OMEMO)</string>
   <string name="server_info_http_upload">XEP-0363: HTTP File Upload</string>
+  <string name="server_info_push">XEP-0357: Push</string>
   <string name="server_info_available">dostupný</string>
   <string name="server_info_unavailable">nedostupný</string>
   <string name="missing_public_keys">Chybí oznámení o veřejném klíči</string>
@@ -275,9 +276,11 @@
   <string name="sure_delete_fingerprint">Chcete opravdu smazat tento identifikátor?</string>
   <string name="ignore">Ignorovat</string>
   <string name="without_mutual_presence_updates"><b>Varování:</b> Odeslání bez povolení změn stavu může způsobit nečekané problémy na obou stranách.\n\n<small>Přejdi na detaily kontaktu pro ověření povolení o změnách stavu.</small></string>
-  <string name="pref_encryption_settings">Nastavení šifrování</string>
+  <string name="pref_security_settings">Zabezpečení</string>
   <string name="pref_force_encryption">Vynutit šifrování</string>
   <string name="pref_force_encryption_summary">Vždy zasílat šifrované zprávy (mimo konference)</string>
+  <string name="pref_allow_message_correction">Povolit opravu zpráv</string>
+  <string name="pref_allow_message_correction_summary">Povolí kontaktům zpětné upravování jejich zpráv</string>
   <string name="pref_dont_save_encrypted">Neukládat šifrované zprávy</string>
   <string name="pref_dont_save_encrypted_summary">Varování: Toto může vést ke ztrátě zpráv</string>
   <string name="pref_expert_options">Expertní nastavení</string>
@@ -430,7 +433,7 @@
   <string name="two_hours">2 hodiny</string>
   <string name="eight_hours">8 hodin</string>
   <string name="until_further_notice">Než opět změním</string>
-  <string name="pref_input_options">Nastavení zadávání</string>
+  <string name="pref_input_options">Vstup</string>
   <string name="pref_enter_is_send">Enter odesílá</string>
   <string name="pref_enter_is_send_summary">Použít klávesu enter pro odesílání zpráv</string>
   <string name="pref_display_enter_key">Zobrazit klávesu enter</string>
@@ -496,20 +499,21 @@
   <string name="pref_use_white_background_summary">Zobrazovat přijaté zprávy jako černý text na bílém pozadí</string>
   <string name="account_status_tor_unavailable">Tor síť není dostupná</string>
   <string name="server_info_broken">Rozbité</string>
-  <string name="pref_presence_settings">Nastavení přítomnosti</string>
+  <string name="pref_presence_settings">Stav</string>
   <string name="pref_away_when_screen_off">Pryč při vypnuté obrazovce</string>
   <string name="pref_away_when_screen_off_summary">Při vypnuté obrazovce označí váš stav jako pryč</string>
   <string name="pref_xa_on_silent_mode">Nedostupný při vypnutém zvuku</string>
   <string name="pref_xa_on_silent_mode_summary">Při tichém módu označí váš stav jako nedostupný</string>
-  <string name="pref_show_connection_options">Rozšířené možnosti připojení</string>
-  <string name="pref_show_connection_options_summary">Zobrazovat hodnoty hostname a port při nastavování účtu</string>
+  <string name="pref_show_connection_options">Rozšířená nastavení připojení</string>
+  <string name="pref_show_connection_options_summary">Zobrazovat nastavení hostname a port  při vytváření účtu</string>
   <string name="hostname_example">xmpp.server.cz</string>
   <string name="action_add_account_with_certificate">Přidat účet s certifikátem</string>
   <string name="unable_to_parse_certificate">Nelze načíst certifikát</string>
   <string name="authenticate_with_certificate">Nechat prázdné pro ověření s certifikátem</string>
   <string name="mam_prefs">Nastavení archivace</string>
+  <string name="server_side_mam_prefs">Nastavení archivace na serveru</string>
   <string name="fetching_mam_prefs">Získávání nastavení archivace. Chvíli strpení...</string>
-  <string name="unable_to_fetch_mam_prefs">Získání nastavení archivace se nezdařilo</string>
+  <string name="unable_to_fetch_mam_prefs">Nelze získat nastavení archivace</string>
   <string name="captcha_ocr">Captcha text</string>
   <string name="captcha_required">Captcha vyžadována</string>
   <string name="captcha_hint">opište text z obrázku</string>
@@ -519,7 +523,7 @@
   <string name="error_fetching_omemo_key">Chyba získání OMEMO klíče!</string>
   <string name="verified_omemo_key_with_certificate">OMEMO klíč ověřen certifikátem!</string>
   <string name="device_does_not_support_certificates">Tento přístroj nepodporuje výběr klientského certifikátu!</string>
-  <string name="pref_connection_options">Možnosti připojení</string>
+  <string name="pref_connection_options">Připojení</string>
   <string name="pref_use_tor">Připojit přes Tor</string>
   <string name="pref_use_tor_summary">Vedení všech připojení po Tor síti vyžaduje aplikaci Orbot</string>
   <string name="account_settings_hostname">Hostname</string>
@@ -544,7 +548,7 @@
   <string name="certificate_issuer">Vydavatel</string>
   <string name="certificate_cn">Jméno</string>
   <string name="certificate_o">Organizace</string>
-  <string name="certificate_sha1">SHA1</string>
+  <string name="certificate_sha1">SHA-1</string>
   <string name="certicate_info_not_available">(Nedostupné)</string>
   <string name="certificate_not_found">Certifikát nenalezen</string>
   <string name="notify_on_all_messages">Upozorňovat na všechny zprávy</string>
@@ -552,7 +556,7 @@
   <string name="notify_never">Upozornění vypnuta</string>
   <string name="notify_paused">Upozornění pozastavena</string>
   <string name="pref_picture_compression">Komprimovat obrázky</string>
-  <string name="pref_picture_compression_summary">Upravené a komprimované obrázky</string>
+  <string name="pref_picture_compression_summary">Upravit velikost a komprimovat obrázky</string>
   <string name="always">Vždy</string>
   <string name="automatically">Automaticky</string>
   <string name="battery_optimizations_enabled">Povolena optimalizace využití baterie</string>
@@ -562,4 +566,6 @@
   <string name="selection_too_large">Vybraný obsah je příliš dlouhý</string>
   <string name="no_accounts">(Žádné aktivované účty)</string>
   <string name="this_field_is_required">Toto pole je vyžadováno</string>
+  <string name="correct_message">Opravit zprávu</string>
+  <string name="send_corrected_message">Odeslat opravenou zprávu</string>
 </resources>

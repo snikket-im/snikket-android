@@ -92,14 +92,12 @@
   <string name="pref_xmpp_resource">الريسورس</string>
   <string name="pref_accept_files">ضبط استقبال الملفات</string>
   <string name="pref_accept_files_summary">اقبل تلقائيا الملفات أقل من</string>
-  <string name="pref_notification_settings">اعدادات الإشعارات</string>
   <string name="pref_notifications">الإشعارات</string>
   <string name="pref_notifications_summary">أخبرني عندما تصل رساله جديده</string>
   <string name="pref_vibrate">إعداد الإهتزاز</string>
   <string name="pref_vibrate_summary">تفعيل الاهتزاز عندما تصل رساله جديده</string>
   <string name="pref_sound">التبيه الصوتي</string>
   <string name="pref_sound_summary">سماع صوت عندما تصل رساله</string>
-  <string name="pref_advanced_options">اعدادات متقدمّة</string>
   <string name="pref_never_send_crash">لا ترسل تقارير أخطاء</string>
   <string name="pref_never_send_crash_summary">الغاء ارسال تقارير الأخطاء يقلل من فرص حل المشكلة سريعا فكن متعاون</string>
   <string name="pref_confirm_messages">تأكيد الرسالة</string>
@@ -288,7 +286,6 @@
   <string name="two_hours">ساعتين</string>
   <string name="eight_hours">8 ساعات</string>
   <string name="until_further_notice">حتى إشعار آخر</string>
-  <string name="pref_input_options">خيارات الادخال</string>
   <string name="pref_enter_is_send">أدخل للإرسال</string>
   <string name="pref_enter_is_send_summary">استخدام مفتاح الدخول لإرسال رسالة</string>
   <string name="pref_display_enter_key">عرض مفتاح الادخال</string>

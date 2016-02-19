@@ -102,7 +102,7 @@
   <string name="pref_xmpp_resource_summary">Namnet klienten identifierar sig med</string>
   <string name="pref_accept_files">Acceptera filer</string>
   <string name="pref_accept_files_summary">Acceptera automatiskt filer som är mindre än…</string>
-  <string name="pref_notification_settings">Notifieringsinställningar</string>
+  <string name="pref_notification_settings">Notifiering</string>
   <string name="pref_notifications">Notifieringar</string>
   <string name="pref_notifications_summary">Notifiera när meddelande tagits emot</string>
   <string name="pref_vibrate">Vibrera</string>
@@ -111,12 +111,12 @@
   <string name="pref_sound_summary">Spela ljud med notifiering</string>
   <string name="pref_notification_grace_period">Notifieringsfrist</string>
   <string name="pref_notification_grace_period_summary">Inaktivera notifieringar en kort stund efter att en carbon copy tagits emot</string>
-  <string name="pref_advanced_options">Avancerade inställningar</string>
+  <string name="pref_advanced_options">Avancerat</string>
   <string name="pref_never_send_crash">Skicka aldrig krasch-rapporter</string>
   <string name="pref_never_send_crash_summary">Genom att skicka in stack traces hjälper du utvecklarna av Conversations</string>
   <string name="pref_confirm_messages">Bekräfta meddelanden</string>
   <string name="pref_confirm_messages_summary">Låter dina kontakter veta när du har tagit emot och läst ett meddelande</string>
-  <string name="pref_ui_options">UI-inställningar</string>
+  <string name="pref_ui_options">Gränssnitt</string>
   <string name="openpgp_error">OpenKeychain rapporterade ett fel</string>
   <string name="error_decrypting_file">I/O-fel vid avkryptering av fil</string>
   <string name="accept">Acceptera</string>
@@ -191,6 +191,7 @@
   <string name="server_info_stream_management">XEP-0198: Stream Management</string>
   <string name="server_info_pep">XEP-0163: PEP (Avatarbilder / OMEMO)</string>
   <string name="server_info_http_upload">XEP-0363: Ladda upp via HTTP</string>
+  <string name="server_info_push">XEP-0357: Push</string>
   <string name="server_info_available">tillgänglig</string>
   <string name="server_info_unavailable">otillgänglig</string>
   <string name="missing_public_keys">Annonsering om publik nyckel saknas</string>
@@ -275,9 +276,11 @@
   <string name="sure_delete_fingerprint">Är du säker på att du vill ta bort detta fingeravtryck?</string>
   <string name="ignore">Ignorera</string>
   <string name="without_mutual_presence_updates"><b>Varning:</b> Skicka detta utan gemensamma tillgänglighetsuppdateringar kan ge oväntade problem.\n\n<small>Gå till kontaktdetaljer för att verifiera dina tillgänglighetsuppdateringar.</small></string>
-  <string name="pref_encryption_settings">Krypteringsinställningar</string>
+  <string name="pref_security_settings">Säkerhet</string>
   <string name="pref_force_encryption">Tvinga kryptering</string>
   <string name="pref_force_encryption_summary">Sänd alltid krypterade meddelanden (utom för konferenser)</string>
+  <string name="pref_allow_message_correction">Tillåt korrigeringar av meddelanden</string>
+  <string name="pref_allow_message_correction_summary">Tillåt att dina kontakter kan ändra sina meddelanden i efterhand</string>
   <string name="pref_dont_save_encrypted">Spara inte krypterade meddelanden</string>
   <string name="pref_dont_save_encrypted_summary">Varning: Detta kan leda till att meddelanden förloras</string>
   <string name="pref_expert_options">Expertinställningar</string>
@@ -430,7 +433,7 @@
   <string name="two_hours">2 timmar</string>
   <string name="eight_hours">8 timmar</string>
   <string name="until_further_notice">Tills vidare</string>
-  <string name="pref_input_options">Inmatningsalternativ</string>
+  <string name="pref_input_options">Input</string>
   <string name="pref_enter_is_send">Skicka med enter</string>
   <string name="pref_enter_is_send_summary">Använd enter-knappen för att skicka meddelande</string>
   <string name="pref_display_enter_key">Visa enter-knappen</string>
@@ -494,18 +497,19 @@
   <string name="pref_use_white_background_summary">Visa mottagna meddelanden som svart text på vit bakgrund</string>
   <string name="account_status_tor_unavailable">Tor-nätverk ej tillgängligt</string>
   <string name="server_info_broken">Sönder</string>
-  <string name="pref_presence_settings">Tillgänglighetsinställningar</string>
+  <string name="pref_presence_settings">Tillgänglighet</string>
   <string name="pref_away_when_screen_off">Status borta när skärmen är av</string>
   <string name="pref_away_when_screen_off_summary">Sätter din tillgänglighet till borta när skrämen är av</string>
   <string name="pref_xa_on_silent_mode">Status ej tillgänglig i tyst läge</string>
   <string name="pref_xa_on_silent_mode_summary">Sätter din tillgänglighet till ej tillgänglig när enheten är i tyst läge</string>
-  <string name="pref_show_connection_options">Utökade anslutningsalternativ</string>
+  <string name="pref_show_connection_options">Utökade anslutningsinställningar</string>
   <string name="pref_show_connection_options_summary">Visa val av servernamn och port vid inställning av konto</string>
   <string name="hostname_example">xmpp.example.com</string>
   <string name="action_add_account_with_certificate">Lägg till konto med certifikat</string>
   <string name="unable_to_parse_certificate">Kan inte läsa certifikat</string>
   <string name="authenticate_with_certificate">Lämna tom för att för att logga in med certifikat</string>
   <string name="mam_prefs">Arkiveringsinställningar</string>
+  <string name="server_side_mam_prefs">Arkiveringsinställningar på servern</string>
   <string name="fetching_mam_prefs">Hämtar arkiveringsinställningar, vänta...</string>
   <string name="unable_to_fetch_mam_prefs">Kan ej hämta arkiveringsinställningar</string>
   <string name="captcha_ocr">CAPTCHA-text</string>
@@ -517,7 +521,7 @@
   <string name="error_fetching_omemo_key">Misslyckades med att hämta OMEMO-nyckel!</string>
   <string name="verified_omemo_key_with_certificate">Verifierade OMEMO-nyckel med certifikat!</string>
   <string name="device_does_not_support_certificates">Din enhet stödjer inte val av klientcertifikat!</string>
-  <string name="pref_connection_options">Anslutningsalternativ</string>
+  <string name="pref_connection_options">Anslutning</string>
   <string name="pref_use_tor">Ansluten via Tor</string>
   <string name="pref_use_tor_summary">Tunnla alla anslutningar genom Tor-nätverket. Kräver Orbot</string>
   <string name="account_settings_hostname">Servernamn</string>
@@ -541,7 +545,7 @@
   <string name="certificate_issuer">Utfärdare</string>
   <string name="certificate_cn">Common Name</string>
   <string name="certificate_o">Organisation</string>
-  <string name="certificate_sha1">SHA1</string>
+  <string name="certificate_sha1">SHA-1</string>
   <string name="certicate_info_not_available">(Ej tillgänglig)</string>
   <string name="certificate_not_found">Inget certifikat funnet</string>
   <string name="notify_on_all_messages">Notifiera för alla meddelanden</string>
@@ -559,4 +563,6 @@
   <string name="selection_too_large">The valda området är för stort</string>
   <string name="no_accounts">(Inget konto aktiverat)</string>
   <string name="this_field_is_required">Detta fält måste fyllas i</string>
+  <string name="correct_message">Korrigera meddelanden</string>
+  <string name="send_corrected_message">Skicka korrigerat meddelande</string>
 </resources>

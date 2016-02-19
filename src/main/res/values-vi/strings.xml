@@ -102,7 +102,6 @@
   <string name="pref_xmpp_resource_summary">Tên của máy trạm này được tự đặt là</string>
   <string name="pref_accept_files">Chấp thuận các tập tin</string>
   <string name="pref_accept_files_summary">Tự động chấp thuận các tập tin nhỏ hơn...</string>
-  <string name="pref_notification_settings">Cài đặt thông báo</string>
   <string name="pref_notifications">Thông báo</string>
   <string name="pref_notifications_summary">Thông báo khi có tin nhắn mới</string>
   <string name="pref_vibrate">Rung</string>
@@ -111,12 +110,10 @@
   <string name="pref_sound_summary">Chơi nhạc chuông cùng với thông báo</string>
   <string name="pref_notification_grace_period">Thời gian gia hạn thông báo</string>
   <string name="pref_notification_grace_period_summary">Tắt thông báo trong một thời gian ngắn sau khi nhận được bản sao giấy than</string>
-  <string name="pref_advanced_options">Tuỳ chọn nâng cao</string>
   <string name="pref_never_send_crash">Không bao giờ gửi báo cáo dừng chạy</string>
   <string name="pref_never_send_crash_summary">Bằng việc gửi báo cáo hoạt động, bạn đang hỗ trợ nhóm phát triển của Conversations</string>
   <string name="pref_confirm_messages">Xác nhận tin nhắn</string>
   <string name="pref_confirm_messages_summary">Báo cho liên hệ của bạn biết khi bạn đã nhận và đọc tin nhắn</string>
-  <string name="pref_ui_options">Tuỳ chọn UI</string>
   <string name="openpgp_error">OpenKeychain đã báo cáo một lỗi</string>
   <string name="error_decrypting_file">Tập tin giải mã lỗi I/O</string>
   <string name="accept">Chấp thuận</string>
@@ -274,12 +271,10 @@
   <string name="sure_delete_fingerprint">Có chắc là bạn muốn xoá dấu vân tay này?</string>
   <string name="ignore">Bỏ qua</string>
   <string name="without_mutual_presence_updates"><b>Cảnh báo:</b> Gửi mà không có cập nhật hiện diện của nhau có thể gây ra vấn đề khó lường.\n\n<small>Vào chi tiết liên hệ để xác minh đăng ký hiện diện của bạn.</small></string>
-  <string name="pref_encryption_settings">Cài đặt mã hoá</string>
   <string name="pref_force_encryption">Bắt buộc mã hoá hai đầu</string>
   <string name="pref_force_encryption_summary">Luôn gửi tin nhắn được mã hoá (ngoại trừ trong diễn đàn)</string>
   <string name="pref_dont_save_encrypted">Đừng lưu tin nhắn được mã hoá</string>
   <string name="pref_dont_save_encrypted_summary">Cảnh báo: Có thể làm mất tin nhắn</string>
-  <string name="pref_expert_options">Tuỳ chọn chuyên sâu</string>
   <string name="pref_expert_options_summary">Xin hãy cẩn trọng với chúng</string>
   <string name="title_activity_about">Thông tin về Conversations</string>
   <string name="pref_about_conversations_summary">Thông tin bản dựng và giấy phép</string>
@@ -427,7 +422,6 @@
   <string name="two_hours">2 tiếng</string>
   <string name="eight_hours">8 tiếng</string>
   <string name="until_further_notice">Cho đến thông báo tiếp theo</string>
-  <string name="pref_input_options">Tuỳ chọn nhập liệu</string>
   <string name="pref_enter_is_send">Bấm Enter để gửi</string>
   <string name="pref_enter_is_send_summary">Bấm nút Enter để gửi tin nhắn</string>
   <string name="pref_display_enter_key">Hiện nút Enter</string>
@@ -489,7 +483,6 @@
   <string name="pref_use_white_background_summary">Hiện các tin nhắn nhận được dưới dạng chữ đen trên nền trắng</string>
   <string name="account_status_tor_unavailable">Mạng Tor chưa sẵn sàng</string>
   <string name="server_info_broken">Bị hỏng</string>
-  <string name="pref_presence_settings">Cài đặt sự hiện diện</string>
   <string name="pref_away_when_screen_off">Vắng mặt khi màn hình tắt</string>
   <string name="pref_away_when_screen_off_summary">Hiện ứng dụng là \'vắng mặt\' khi màn hình tắt</string>
   <string name="pref_xa_on_silent_mode">Không sẵn sàng trong chế độ yên lặng</string>
@@ -506,7 +499,6 @@
   <string name="error_fetching_omemo_key">Lỗi nhập khoá OMEMO!</string>
   <string name="verified_omemo_key_with_certificate">Khoá OMEMO đã xác minh với chứng nhận!</string>
   <string name="device_does_not_support_certificates">Thiết bị không hỗ trợ chọn lựa các chứng chỉ của máy trạm!</string>
-  <string name="pref_connection_options">Tuỳ chọn hội thoại</string>
   <string name="pref_use_tor">Kết nối đến Tor</string>
   <string name="pref_use_tor_summary">Chuyển toàn bộ kết nối thông qua mạng Tor. Cần có Orbot</string>
   <string name="account_settings_hostname">Tên máy chủ</string>
@@ -528,7 +520,6 @@
   <string name="certificate_issuer">Nhà phát hành</string>
   <string name="certificate_cn">Tên thường</string>
   <string name="certificate_o">Tổ chức</string>
-  <string name="certificate_sha1">SHA-1</string>
   <string name="certicate_info_not_available">(Không sẵn sàng)</string>
   <string name="certificate_not_found">Không thấy chứng nhận nào</string>
   <string name="notify_on_all_messages">Thông báo tất cả tin nhắn</string>
@@ -536,7 +527,6 @@
   <string name="notify_never">Đã tắt thông báo</string>
   <string name="notify_paused">Đã dừng thông báo</string>
   <string name="pref_picture_compression">Nén hình ảnh</string>
-  <string name="pref_picture_compression_summary">Sửa kích cỡ và các hình ảnh đã nén</string>
   <string name="always">Luôn luôn</string>
   <string name="automatically">Tự động</string>
   <string name="battery_optimizations_enabled">Đã bật tối ưu pin</string>

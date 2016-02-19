@@ -102,7 +102,6 @@
   <string name="pref_xmpp_resource_summary">Navnet denne klienten identifiserer seg med</string>
   <string name="pref_accept_files">Godta filer</string>
   <string name="pref_accept_files_summary">Automatisk godkjenning av filer mindre enn...</string>
-  <string name="pref_notification_settings">Varslingsinnstillinger</string>
   <string name="pref_notifications">Varslinger</string>
   <string name="pref_notifications_summary">Varsle når en ny melding ankommer</string>
   <string name="pref_vibrate">Vibrer</string>
@@ -111,12 +110,10 @@
   <string name="pref_sound_summary">Spill av ringetone ved varsel</string>
   <string name="pref_notification_grace_period">Stilleperiode</string>
   <string name="pref_notification_grace_period_summary">Deaktiver varslinger for en kort periode etter at en kopi er mottatt</string>
-  <string name="pref_advanced_options">Avanserte valg</string>
   <string name="pref_never_send_crash">Aldri send feilrettingsrapporter</string>
   <string name="pref_never_send_crash_summary">Ved å sende inn stabelsporinger hjelper du den pågående utviklingen av Conversations</string>
   <string name="pref_confirm_messages">Bekreft meldinger</string>
   <string name="pref_confirm_messages_summary">La din kontakt få vite når du har mottatt og lest en melding</string>
-  <string name="pref_ui_options">Valg for grensesnitt</string>
   <string name="openpgp_error">Feilmelding fra OpenKeychain</string>
   <string name="error_decrypting_file">I/O-feil ved dekryptering av fil</string>
   <string name="accept">Godta</string>
@@ -274,12 +271,10 @@
   <string name="sure_delete_fingerprint">Bekreft fjerning av fingeravtrykk.</string>
   <string name="ignore">Ignorer</string>
   <string name="without_mutual_presence_updates"><b>Advarsel:</b> Å sende dette uten at tilstandsoppdateringer er i overenstemmelse kan forårsake uventede problemer.\n\n<small>Gå til kontaktdetaljer for å bekrefte dine tilstedeværelsesabonnementer.</small></string>
-  <string name="pref_encryption_settings">Krypteringsinnstillinger</string>
   <string name="pref_force_encryption">Krev ende-til-ende-kryptering</string>
   <string name="pref_force_encryption_summary">Alltid send meldinger kryptert (bortsett fra konferanser)</string>
   <string name="pref_dont_save_encrypted">Ikke lagre krypterte meldinger</string>
   <string name="pref_dont_save_encrypted_summary">Advarsel: Dette kan føre til at meldinger går tapt</string>
-  <string name="pref_expert_options">Ekspertinnstillinger</string>
   <string name="pref_expert_options_summary">Vær forsiktig med disse</string>
   <string name="title_activity_about">Om Conversations</string>
   <string name="pref_about_conversations_summary">Utgave og lisensinformasjon</string>
@@ -427,7 +422,6 @@
   <string name="two_hours">2 timer</string>
   <string name="eight_hours">8 timer</string>
   <string name="until_further_notice">Til videre beskjed</string>
-  <string name="pref_input_options">Inndata-valg</string>
   <string name="pref_enter_is_send">Enter er forsendelsesknapp</string>
   <string name="pref_enter_is_send_summary">Bruk enter for å sende en melding</string>
   <string name="pref_display_enter_key">Vis enter-tast</string>
@@ -491,7 +485,6 @@
   <string name="pref_use_white_background_summary">Vis mottatte meldinger som svart tekst på hvit bakgrunn</string>
   <string name="account_status_tor_unavailable">Tor-nettverk utilgjengelig</string>
   <string name="server_info_broken">Knekt</string>
-  <string name="pref_presence_settings">Tilstedeværelse-innstillinger</string>
   <string name="pref_away_when_screen_off">Borte når skjermen er av</string>
   <string name="pref_away_when_screen_off_summary">Markerer din ressurs som borte når skjermen er avskrudd</string>
   <string name="pref_xa_on_silent_mode">Ikke tilgjengelig i stille-modus</string>
@@ -508,7 +501,6 @@
   <string name="error_fetching_omemo_key">Feil ved innhenting av OMEMO-nøkkel!</string>
   <string name="verified_omemo_key_with_certificate">Bekreftet OMEMO-nøkkel med sertifikat!</string>
   <string name="device_does_not_support_certificates">Din enhet støtter ikke valg av klientsertifikat!</string>
-  <string name="pref_connection_options">Tilkoblingsalternativ</string>
   <string name="pref_use_tor">Koble til via Tor</string>
   <string name="pref_use_tor_summary">Send alle tilkoblinger i tunnel gjennom Tor-nettverket. Krever Orbot</string>
   <string name="account_settings_hostname">Tjenernavn</string>
@@ -531,7 +523,6 @@
   <string name="certificate_issuer">Utsteder</string>
   <string name="certificate_cn">Vanlig navn</string>
   <string name="certificate_o">Organisasjon</string>
-  <string name="certificate_sha1">SHA1</string>
   <string name="certicate_info_not_available">(Ikke tilgjengelig)</string>
   <string name="certificate_not_found">Fant ikke noe sertifikat</string>
   <string name="notify_on_all_messages">Varsle ved alle meldinger</string>
@@ -539,7 +530,6 @@
   <string name="notify_never">Varslinger deaktivert</string>
   <string name="notify_paused">Varslinger pauset</string>
   <string name="pref_picture_compression">Komprimer bilder</string>
-  <string name="pref_picture_compression_summary">Komprimer og juster bildestørrelser</string>
   <string name="always">Alltid</string>
   <string name="automatically">Automatisk</string>
   <string name="battery_optimizations_enabled">Batterioptimaliseringer aktivert</string>

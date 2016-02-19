@@ -102,7 +102,7 @@
   <string name="pref_xmpp_resource_summary">İstemci kimliği</string>
   <string name="pref_accept_files">Dosyaları kabul et</string>
   <string name="pref_accept_files_summary">…‘den küçük olan dosyaları otomatik olarak kabul et</string>
-  <string name="pref_notification_settings">Bildirim Ayarları</string>
+  <string name="pref_notification_settings">Bildirim</string>
   <string name="pref_notifications">Bildirimler</string>
   <string name="pref_notifications_summary">Yeni ileti geldiğinde bildir</string>
   <string name="pref_vibrate">Titreşim</string>
@@ -111,12 +111,12 @@
   <string name="pref_sound_summary">Bildirimle birlikte zil çalsın</string>
   <string name="pref_notification_grace_period">Bildirim mühleti</string>
   <string name="pref_notification_grace_period_summary">Karbon kopya alındıktan sonra kısa bir süre için bildirimleri kapa</string>
-  <string name="pref_advanced_options">İleri Seçenekler</string>
+  <string name="pref_advanced_options">Gelişmiş</string>
   <string name="pref_never_send_crash">Asla çöküş raporu gönderme</string>
   <string name="pref_never_send_crash_summary">Çöküş raporu göndermeniz Conversations\n’ın geliştirilmesine katkıda bulunacaktır.</string>
   <string name="pref_confirm_messages">İletileri onayla</string>
   <string name="pref_confirm_messages_summary">Karşı tarafa ileti alındı ve okundu raporu gönder.</string>
-  <string name="pref_ui_options">Arabirim Seçenekleri</string>
+  <string name="pref_ui_options">Arabirim</string>
   <string name="openpgp_error">OpenKeychain bir hata bildirdi</string>
   <string name="error_decrypting_file">Dosyanın deşifresinde G/Ç hatası</string>
   <string name="accept">Kabul et</string>
@@ -191,6 +191,7 @@
   <string name="server_info_stream_management">XEP-0198: Stream Management</string>
   <string name="server_info_pep">XEP-0163: PEP (Avatars / OMEMO)</string>
   <string name="server_info_http_upload">XEP-0363: HTTP File Upload</string>
+  <string name="server_info_push">XEP-0357: Push</string>
   <string name="server_info_available">mevcut</string>
   <string name="server_info_unavailable">mevcut değil</string>
   <string name="missing_public_keys">Kayıp genel anahtar bildirimleri</string>
@@ -275,9 +276,11 @@
   <string name="sure_delete_fingerprint">Bu parmak izini silmek istediğinizden emin misiniz?</string>
   <string name="ignore">Yok say</string>
   <string name="without_mutual_presence_updates"><b>Uyarı:</b> Karşılıklı çevrimiçi durum bildirimi güncellemeleri olmaksızın bunu göndermeniz beklenmedik sorunlara sebep olabilir.\n\n\n\n<small>Çevrimiçi durum bildirimi aboneliklerinizi kontrol etmek için kişi bilgilerine gidin.</small></string>
-  <string name="pref_encryption_settings">Şifreleme ayarları</string>
+  <string name="pref_security_settings">Güvenlik</string>
   <string name="pref_force_encryption">Uçtan uca şifrelemeye zorla</string>
   <string name="pref_force_encryption_summary">Her zaman şifrelenmiş ileti gönder (Conversations hariç)</string>
+  <string name="pref_allow_message_correction">İleti düzeltmeye izin ver</string>
+  <string name="pref_allow_message_correction_summary">Kişilerinizin geçmiş iletilerini düzeltmelerine izin ver</string>
   <string name="pref_dont_save_encrypted">Şifrelenmiş iletileri kaydetme</string>
   <string name="pref_dont_save_encrypted_summary">Uyarı: Bu, iletilerin kaybedilmesine neden olabilir</string>
   <string name="pref_expert_options">Uzman seçenekleri</string>
@@ -430,7 +433,7 @@
   <string name="two_hours">2 saat</string>
   <string name="eight_hours">8 saat</string>
   <string name="until_further_notice">İkinci bildirime kadar</string>
-  <string name="pref_input_options">Girdi seçenekleri</string>
+  <string name="pref_input_options">Girdi</string>
   <string name="pref_enter_is_send">Enter=gönder</string>
   <string name="pref_enter_is_send_summary">İleti göndermek için \"enter\" tuşunu kullanın</string>
   <string name="pref_display_enter_key">\"Enter\" tuşunu göster</string>
@@ -492,7 +495,7 @@
   <string name="pref_use_white_background_summary">Alınan iletileri beyaz arka plan üzerinde siyah yazıyla göster</string>
   <string name="account_status_tor_unavailable">Tor ağına erişilemiyor</string>
   <string name="server_info_broken">Bozuk</string>
-  <string name="pref_presence_settings">Çevrimiçi durum bildirim ayarları</string>
+  <string name="pref_presence_settings">Durum</string>
   <string name="pref_away_when_screen_off">Ekran kapandığında uzakta</string>
   <string name="pref_away_when_screen_off_summary">Ekran kapandığında çevrimiçi durum bildiriminizi uzakta olarak değiştirir</string>
   <string name="pref_xa_on_silent_mode">Sessiz moddayken erişilemez</string>
@@ -504,6 +507,7 @@
   <string name="unable_to_parse_certificate">Sertifika çözümlenemedi</string>
   <string name="authenticate_with_certificate">w/ sertifikasının kimlik denetimi için boş bırak </string>
   <string name="mam_prefs">Arşivleme tercihleri</string>
+  <string name="server_side_mam_prefs">Sunucu tarafı arşivleme tercihleri</string>
   <string name="fetching_mam_prefs">Arşivleme tercihleri alınıyor. Lütfen bekleyin...</string>
   <string name="unable_to_fetch_mam_prefs">Arşivleme tercihleri alınamadı</string>
   <string name="captcha_ocr">Captcha metni</string>
@@ -515,7 +519,7 @@
   <string name="error_fetching_omemo_key">OMEMO anahtarı alınırken hata oluştu!</string>
   <string name="verified_omemo_key_with_certificate">Sertifikalı OMEMO anahtarı onaylandı!</string>
   <string name="device_does_not_support_certificates">Cihazınız seçilen istemci sertifikalarını desteklemiyor!</string>
-  <string name="pref_connection_options">Bağlantı seçenekleri</string>
+  <string name="pref_connection_options">Bağlantı</string>
   <string name="pref_use_tor">Tor üzerinden bağlan</string>
   <string name="pref_use_tor_summary">Bütün bağlantıları Tor ağı üzerinden aktar. Orbot gerekir.</string>
   <string name="account_settings_hostname">Sunucu adı</string>
@@ -538,7 +542,7 @@
   <string name="certificate_issuer">Veren</string>
   <string name="certificate_cn">Ortak ad</string>
   <string name="certificate_o">Organizasyon</string>
-  <string name="certificate_sha1">SHA1</string>
+  <string name="certificate_sha1">SHA-1</string>
   <string name="certicate_info_not_available">(mevcut değil)</string>
   <string name="certificate_not_found">Sertifika bulunamadı</string>
   <string name="notify_on_all_messages">Tüm iletilerde uyar</string>
@@ -556,4 +560,6 @@
   <string name="selection_too_large">Seçilen alan çok büyük</string>
   <string name="no_accounts">(Aktif hesap bulunmuyor)</string>
   <string name="this_field_is_required">Bu alan zorunludur</string>
+  <string name="correct_message">ileti düzelt</string>
+  <string name="send_corrected_message">Düzeltilmiş iletiyi gönder</string>
 </resources>

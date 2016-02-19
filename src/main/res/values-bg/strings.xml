@@ -102,7 +102,7 @@
   <string name="pref_xmpp_resource_summary">Името, с което се определя този клиент</string>
   <string name="pref_accept_files">Приемане на файлове</string>
   <string name="pref_accept_files_summary">Автоматично приемане на файлове с размер, по-малък от…</string>
-  <string name="pref_notification_settings">Настройки за известията</string>
+  <string name="pref_notification_settings">Известие</string>
   <string name="pref_notifications">Известия</string>
   <string name="pref_notifications_summary">Известяване при получаване на ново съобщение</string>
   <string name="pref_vibrate">Вибрация</string>
@@ -111,12 +111,12 @@
   <string name="pref_sound_summary">Изпълнение на звук с известието</string>
   <string name="pref_notification_grace_period">Продължителност на отсрочване на известията</string>
   <string name="pref_notification_grace_period_summary">Изключва известията за кратко, след като бъде получено копие на съобщение</string>
-  <string name="pref_advanced_options">Разширени настройки</string>
+  <string name="pref_advanced_options">Разширени</string>
   <string name="pref_never_send_crash">Никога да не се изпращат доклади за сривове</string>
   <string name="pref_never_send_crash_summary">Изпращайки проследявания на стека, Вие помагате за непрекъснатото развитие на Conversations</string>
   <string name="pref_confirm_messages">Потвърждаване на съобщенията</string>
   <string name="pref_confirm_messages_summary">Уведомява контакта Ви, че сте приели и прочели съобщението му</string>
-  <string name="pref_ui_options">Настройки на интерфейса</string>
+  <string name="pref_ui_options">Потр. интерфейс</string>
   <string name="openpgp_error">OpenKeychain докладва за грешка</string>
   <string name="error_decrypting_file">В/И грешка при дешифроването на файла</string>
   <string name="accept">Приемане</string>
@@ -191,6 +191,7 @@
   <string name="server_info_stream_management">XEP-0198: Управление на потоците</string>
   <string name="server_info_pep">XEP-0163: PEP (Аватари / OMEMO)</string>
   <string name="server_info_http_upload">XEP-0363: Качване на файл през HTTP</string>
+  <string name="server_info_push">XEP-0357: Изпращане</string>
   <string name="server_info_available">налично</string>
   <string name="server_info_unavailable">не е налично</string>
   <string name="missing_public_keys">Липсват обявления за публичен ключ</string>
@@ -275,12 +276,14 @@
   <string name="sure_delete_fingerprint">Сигурни ли сте, че искате да изтриете този отпечатък?</string>
   <string name="ignore">Пренебрегване</string>
   <string name="without_mutual_presence_updates"><b>Внимание:</b> Изпращането на това без съвместни актуализации на присъствието може да доведе до неочаквани проблеми.\n\n<small>Погледнете подробностите за контакта, за да проверите дали сте абониран за актуализации на присъствието.</small></string>
-  <string name="pref_encryption_settings">Настройки за шифроване</string>
+  <string name="pref_security_settings">Сигурност</string>
   <string name="pref_force_encryption">Налагане на шифроване в двете посоки</string>
   <string name="pref_force_encryption_summary">Съобщенията да се изпращат винаги шифровани (освен в беседите)</string>
+  <string name="pref_allow_message_correction">Позволяване на поправянето на съобщения</string>
+  <string name="pref_allow_message_correction_summary">Позволяване на контактите да редактират съобщенията си след като са ги изпратили.</string>
   <string name="pref_dont_save_encrypted">Шифрованите съобщения да не се запазват</string>
   <string name="pref_dont_save_encrypted_summary">Внимание: Това може да доведе до загуба на съобщения</string>
-  <string name="pref_expert_options">Настройки за напреднали</string>
+  <string name="pref_expert_options">Експертни настройки</string>
   <string name="pref_expert_options_summary">Моля, бъдете внимателни с тези</string>
   <string name="title_activity_about">Относно Conversations</string>
   <string name="pref_about_conversations_summary">Информация за версията и лицензите</string>
@@ -430,7 +433,7 @@
   <string name="two_hours">2 часа</string>
   <string name="eight_hours">8 часа</string>
   <string name="until_further_notice">До отмяна</string>
-  <string name="pref_input_options">Настройки за въвеждане</string>
+  <string name="pref_input_options">Въвеждане</string>
   <string name="pref_enter_is_send">Enter изпраща</string>
   <string name="pref_enter_is_send_summary">Натискането на клавиша Enter изпраща съобщението</string>
   <string name="pref_display_enter_key">Показване на клавиша Enter</string>
@@ -494,18 +497,19 @@
   <string name="pref_use_white_background_summary">Показване на получените съобщения с черен текст на бял фон</string>
   <string name="account_status_tor_unavailable">Мрежата на Тор е недостъпна</string>
   <string name="server_info_broken">Повредено</string>
-  <string name="pref_presence_settings">Настройки за присъствието</string>
+  <string name="pref_presence_settings">Присъствие</string>
   <string name="pref_away_when_screen_off">Отсъстващ, когато екранът е изключен</string>
   <string name="pref_away_when_screen_off_summary">Преминава в състояние „отсъстващ“ когато екранът бъде изключен</string>
   <string name="pref_xa_on_silent_mode">Недостъпен, в тих режим</string>
   <string name="pref_xa_on_silent_mode_summary">Преминава в състояние „недостъпен“ когато устройството е в тих режим</string>
-  <string name="pref_show_connection_options">Разширени настройки на връзката</string>
+  <string name="pref_show_connection_options">Разширени настройки за връзката</string>
   <string name="pref_show_connection_options_summary">Показване на настройките за сървър и порт при установка на профил</string>
   <string name="hostname_example">xmpp.example.com</string>
   <string name="action_add_account_with_certificate">Добавяне на профил със сертификат</string>
   <string name="unable_to_parse_certificate">Неуспешно прочитане на сертификата</string>
   <string name="authenticate_with_certificate">Оставете празно за удостоверяване със сертификат</string>
   <string name="mam_prefs">Настройки за архивирането</string>
+  <string name="server_side_mam_prefs">Настройки за архивирането на сървъра</string>
   <string name="fetching_mam_prefs">Получаване на настройките за архивирането. Моля, изчакайте…</string>
   <string name="unable_to_fetch_mam_prefs">Неуспешно получаване на настройките за архивирането</string>
   <string name="captcha_ocr">Текст за проверка</string>
@@ -517,7 +521,7 @@
   <string name="error_fetching_omemo_key">Грешка при получаването на ключа за OMEMO!</string>
   <string name="verified_omemo_key_with_certificate">Ключът за OMEMO беше потвърден със сертификат!</string>
   <string name="device_does_not_support_certificates">Устройството Ви не поддържа избраните клиентски сертификати!</string>
-  <string name="pref_connection_options">Настройки за връзката</string>
+  <string name="pref_connection_options">Връзка</string>
   <string name="pref_use_tor">Свързване през Тор</string>
   <string name="pref_use_tor_summary">Всички връзки да минават през мрежата на Тор. Изисква Орбот</string>
   <string name="account_settings_hostname">Име на сървър</string>
@@ -541,7 +545,7 @@
   <string name="certificate_issuer">Издател</string>
   <string name="certificate_cn">Име</string>
   <string name="certificate_o">Организация</string>
-  <string name="certificate_sha1">Контролна сума SHA1</string>
+  <string name="certificate_sha1">SHA-1</string>
   <string name="certicate_info_not_available">(Няма)</string>
   <string name="certificate_not_found">Няма намерен сертификат</string>
   <string name="notify_on_all_messages">Известяване за всички съобщения</string>
@@ -559,4 +563,6 @@
   <string name="selection_too_large">Избраната област е твърде голяма</string>
   <string name="no_accounts">(Няма активирани профили)</string>
   <string name="this_field_is_required">Това поле е задължително</string>
+  <string name="correct_message">Поправяне на съобщението</string>
+  <string name="send_corrected_message">Изпращане на поправеното съобщение</string>
 </resources>

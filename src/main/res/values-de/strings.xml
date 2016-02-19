@@ -102,7 +102,7 @@
   <string name="pref_xmpp_resource_summary">Der Name, mit dem sich der Client selbst identifiziert</string>
   <string name="pref_accept_files">Dateien annehmen</string>
   <string name="pref_accept_files_summary">Dateien automatisch annehmen, die kleiner sind als …</string>
-  <string name="pref_notification_settings">Benachrichtigungen</string>
+  <string name="pref_notification_settings">Benachrichtigung</string>
   <string name="pref_notifications">Benachrichtigungen</string>
   <string name="pref_notifications_summary">Benachrichtigen bei Erhalt einer neuen Nachricht</string>
   <string name="pref_vibrate">Vibrieren</string>
@@ -111,7 +111,7 @@
   <string name="pref_sound_summary">Benachrichtigungston wiedergeben</string>
   <string name="pref_notification_grace_period">Gnadenfrist</string>
   <string name="pref_notification_grace_period_summary">Deaktiviere Benachrichtigungen für eine kurze Zeit nach Erhalt einer Nachricht, die von einem anderen deiner Clients kommt.</string>
-  <string name="pref_advanced_options">Erweiterte Optionen</string>
+  <string name="pref_advanced_options">Erweitert</string>
   <string name="pref_never_send_crash">Niemals Absturzberichte senden</string>
   <string name="pref_never_send_crash_summary">Wenn du Absturzberichte einschickst, hilfst du Conversations stetig zu verbessern</string>
   <string name="pref_confirm_messages">Lese- und Empfangsbestätigung senden</string>
@@ -191,6 +191,7 @@
   <string name="server_info_stream_management">XEP-0198: Stream Management</string>
   <string name="server_info_pep">XEP-0163: PEP (Avatare/OMEMO)</string>
   <string name="server_info_http_upload">XEP-0363: HTTP File Upload</string>
+  <string name="server_info_push">XEP-0357: Push</string>
   <string name="server_info_available">ja</string>
   <string name="server_info_unavailable">nein</string>
   <string name="missing_public_keys">Öffentlicher Schlüssel fehlt</string>
@@ -275,12 +276,14 @@
   <string name="sure_delete_fingerprint">Soll dieser Fingerabdruck wirklich gelöscht werden?</string>
   <string name="ignore">Ignorieren</string>
   <string name="without_mutual_presence_updates"><b>Achtung:</b> Ohne gegenseitige Kenntnis des Online-Status kann es zu unerwarteten Problemen kommen.\n\n<small>Bitte die Einstellungen in den Kontakt-Details prüfen.</small></string>
-  <string name="pref_encryption_settings">Verschlüsselungs-Einstellungen</string>
+  <string name="pref_security_settings">Sicherheit</string>
   <string name="pref_force_encryption">Ende-zu-Ende-Verschlüsselung erzwingen</string>
   <string name="pref_force_encryption_summary">Nachrichten immer verschlüsseln (außer für Konferenzen)</string>
+  <string name="pref_allow_message_correction">Nachrichtenkorrektur erlauben</string>
+  <string name="pref_allow_message_correction_summary">Erlaube Deinen Kontakten das nachträgliche Korrigieren ihrer Nachrichten</string>
   <string name="pref_dont_save_encrypted">Verschlüsselte Nachrichten nicht speichern</string>
   <string name="pref_dont_save_encrypted_summary">Achtung: kann zu Nachrichtenverlust führen</string>
-  <string name="pref_expert_options">Einstellungen für Experten</string>
+  <string name="pref_expert_options">Experteneinstellungen</string>
   <string name="pref_expert_options_summary">Hier bitte vorsichtig sein</string>
   <string name="title_activity_about">Über Conversations</string>
   <string name="pref_about_conversations_summary">Versions- und Lizenzinformationen</string>
@@ -299,7 +302,7 @@
   <string name="pref_conference_name">Konferenz-Name</string>
   <string name="pref_conference_name_summary">Konferenz-Thema statt Raum-JID als Namen verwenden</string>
   <string name="pref_autojoin">Unterhaltung automatisch beitreten</string>
-  <string name="pref_autojoin_summary">Autojoin Flag in Unterhaltungslesezeichen beachten</string>
+  <string name="pref_autojoin_summary">Autojoin-Flag in Konferenzlesezeichen beachten</string>
   <string name="toast_message_otr_fingerprint">OTR-Fingerabdruck in die Zwischenablage kopiert!</string>
   <string name="toast_message_omemo_fingerprint">OMEMO-Fingerabdruck in die Zwischenablage kopiert!</string>
   <string name="conference_banned">Du wurdest von der Konferenz ausgeschlossen</string>
@@ -430,7 +433,7 @@
   <string name="two_hours">2 Stunden</string>
   <string name="eight_hours">8 Stunden</string>
   <string name="until_further_notice">Bis auf Weiteres</string>
-  <string name="pref_input_options">Eingabe-Optionen</string>
+  <string name="pref_input_options">Eingabe</string>
   <string name="pref_enter_is_send">Eingabe-Taste (Enter) sendet Nachricht</string>
   <string name="pref_enter_is_send_summary">Eingabe-Taste (Enter) zum Versenden einer Nachricht verwenden</string>
   <string name="pref_display_enter_key">Zeige Eingabe-Taste (Enter)</string>
@@ -494,19 +497,20 @@
   <string name="pref_use_white_background_summary">Empfangene Nachrichten als schwarzen Text auf weißem Hintergrund anzeigen</string>
   <string name="account_status_tor_unavailable">Tor-Netzwerk nicht verfügbar</string>
   <string name="server_info_broken">Fehlerhaft</string>
-  <string name="pref_presence_settings">Status Einstellungen</string>
+  <string name="pref_presence_settings">Status</string>
   <string name="pref_away_when_screen_off">Abwesend bei abgeschaltetem Bildschirm</string>
   <string name="pref_away_when_screen_off_summary">Setzt deinen Status auf \"abwesend\", solange dein Bildschirm abgeschaltet ist</string>
   <string name="pref_xa_on_silent_mode">Nicht verfügbar bei Stummschaltung</string>
   <string name="pref_xa_on_silent_mode_summary">Setzt deinen Status auf \"nicht verfügbar\", solange dein Telefon lautlos ist</string>
   <string name="pref_show_connection_options">Erweiterte Verbindungs-Optionen</string>
-  <string name="pref_show_connection_options_summary">Zeige Hostname- und Port-Optionen</string>
+  <string name="pref_show_connection_options_summary">Hostname- und Port-Optionen bei Kontoeinrichtung anzeigen</string>
   <string name="hostname_example">xmpp.domain.de</string>
   <string name="action_add_account_with_certificate">Konto mit Zertifikat hinzufügen</string>
   <string name="unable_to_parse_certificate">Zertifikat kann nicht gelesen werden</string>
   <string name="authenticate_with_certificate">Leer lassen, um mit Zertifikat anzumelden</string>
   <string name="mam_prefs">Archivierungseinstellungen</string>
-  <string name="fetching_mam_prefs">Archivierungseinstellungen werden abgerufen. Bitte warten ...</string>
+  <string name="server_side_mam_prefs">Archivierungseinstellungen des Servers</string>
+  <string name="fetching_mam_prefs">Archivierungseinstellungen werden abgerufen. Bitte warten …</string>
   <string name="unable_to_fetch_mam_prefs">Archivierungseinstellungen konnten nicht abgerufen werden</string>
   <string name="captcha_ocr">Captcha Text</string>
   <string name="captcha_required">Captcha erforderlich</string>
@@ -517,7 +521,7 @@
   <string name="error_fetching_omemo_key">Kann OMEMO Schlüssel nicht empfangen!</string>
   <string name="verified_omemo_key_with_certificate">OMEMO Schlüssel mit Zertifikat bestätigt!</string>
   <string name="device_does_not_support_certificates">Dein Gerät unterstützt das Auswählen von Client-Zertifikaten nicht!</string>
-  <string name="pref_connection_options">Verbindungs-Optionen</string>
+  <string name="pref_connection_options">Verbindung</string>
   <string name="pref_use_tor">Über TOR verbinden</string>
   <string name="pref_use_tor_summary">Alle Verbindungen über das Tor-Netzwerk tunneln. Benötigt Orbot</string>
   <string name="account_settings_hostname">Hostname</string>
@@ -539,9 +543,9 @@
   <string name="certificate_information">Zertifikatinformationen</string>
   <string name="certificate_subject">Betreff</string>
   <string name="certificate_issuer">Aussteller</string>
-  <string name="certificate_cn">Gemeinsamer Name</string>
+  <string name="certificate_cn">Name</string>
   <string name="certificate_o">Organisation</string>
-  <string name="certificate_sha1">SHA1</string>
+  <string name="certificate_sha1">SHA-1</string>
   <string name="certicate_info_not_available">(Nicht verfügbar)</string>
   <string name="certificate_not_found">Kein Zertifikat gefunden</string>
   <string name="notify_on_all_messages">Bei allen Nachrichten benachrichtigen</string>
@@ -559,4 +563,6 @@
   <string name="selection_too_large">Der ausgewählte Bereich ist zu groß</string>
   <string name="no_accounts">(Keine aktivierten Konten)</string>
   <string name="this_field_is_required">Dieses Feld ist erforderlich</string>
+  <string name="correct_message">Nachricht korrigieren</string>
+  <string name="send_corrected_message">Korrigierte Nachricht senden</string>
 </resources>

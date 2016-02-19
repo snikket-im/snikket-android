@@ -93,7 +93,6 @@
   <string name="pref_xmpp_resource_summary">Το όνομα με το οποίο ταυτοποιείται αυτό το πρόγραμμα-πελάτης</string>
   <string name="pref_accept_files">Αποδοχή αρχείων</string>
   <string name="pref_accept_files_summary">Αυτόματη αποδοχή αρχείων μικρότερα από...</string>
-  <string name="pref_notification_settings">Επιλογές ειδοποιήσεων</string>
   <string name="pref_notifications">Ειδοποιήσεις</string>
   <string name="pref_notifications_summary">Ειδοποίηση όταν λαμβάνεται ένα νέο μήνυμα</string>
   <string name="pref_vibrate">Δόνηση</string>
@@ -102,12 +101,10 @@
   <string name="pref_sound_summary">Αναπαραγωγή ήχου κλήσης με την ειδοποίηση</string>
   <string name="pref_notification_grace_period">Περίοδος χάριτος ειδοποιήσεων</string>
   <string name="pref_notification_grace_period_summary">Απενεργοποίηση ειδοποιήσεων για λίγο χρόνο μετά από τη λήψη ακριβούς αντιγράφου</string>
-  <string name="pref_advanced_options">Προχωρημένες επιλογές</string>
   <string name="pref_never_send_crash">Να μην αποστέλλονται αναφορές λαθών</string>
   <string name="pref_never_send_crash_summary">Στέλνοντας ίχνη στοίβας βοηθάτε την συνεχόμενη ανάπτυξη του Conversations</string>
   <string name="pref_confirm_messages">Επιβεβαίωση μηνυμάτων</string>
   <string name="pref_confirm_messages_summary">Επιτρέψτε στην επαφή σας να ειδοποιείται όταν έχετε λάβει και διαβάσει ένα μήνυμα</string>
-  <string name="pref_ui_options">Επιλογές διεπαφής χρήστη</string>
   <string name="openpgp_error">Το OpenKeychain ανέφερε κάποιο σφάλμα</string>
   <string name="error_decrypting_file">Σφάλμα εισόδου/εξόδου κατά την αποκρυπτογράφηση αρχείου</string>
   <string name="accept">Αποδοχή</string>
@@ -249,12 +246,10 @@
   <string name="sure_delete_fingerprint">Είστε βέβαιοι ότι θέλετε να διαγράψετε αυτό το αποτύπωμα;</string>
   <string name="ignore">Αγνόηση</string>
   <string name="without_mutual_presence_updates"><b>Προειδοποίηση:</b> Η αποστολή αυτού χωρίς αμφίδρομες ενημερώσεις παρουσίας μπορεί να προκαλέσει απροσδόκητα προβλήματα.\n\n<small>Πηγαίνετε στις λεπτομέρειες επαφής για να επαληθεύσετε τις συνδρομές παρουσίας σας.</small></string>
-  <string name="pref_encryption_settings">Ρυθμίσεις κρυπτογράφησης</string>
   <string name="pref_force_encryption">Επιβολή κρυπτογράφησης από άκρη σε άκρη</string>
   <string name="pref_force_encryption_summary">Πάντα αποστολή κρυπτογραφημένων μηνυμάτων (εκτός από συνδιασκέψεις)</string>
   <string name="pref_dont_save_encrypted">Χωρίς αποθήκευση κρυπτογραφημένων μηνυμάτων</string>
   <string name="pref_dont_save_encrypted_summary">Προειδοποίηση: Αυτό μπορεί να οδηγήσει σε απώλεια μηνυμάτων</string>
-  <string name="pref_expert_options">Επιλογές για προχωρημένους</string>
   <string name="pref_expert_options_summary">Παρακαλώ να είστε προσεκτικοί με αυτά</string>
   <string name="title_activity_about">Σχετικά με το Conversations</string>
   <string name="pref_about_conversations_summary">Πληροφορίες δημιουργίας και αδειών</string>
@@ -381,7 +376,6 @@
   <string name="two_hours">2 ώρες</string>
   <string name="eight_hours">8 ώρες</string>
   <string name="until_further_notice">Μέχρι νεωτέρας</string>
-  <string name="pref_input_options">Επιλογές εισόδου</string>
   <string name="pref_enter_is_send">Αποστολή με το πλήκτρο Enter</string>
   <string name="pref_enter_is_send_summary">Χρήση του πλήκτρου Enter για την αποστολή μηνύματος</string>
   <string name="pref_display_enter_key">Εμφάνιση του πλήκτρου Enter</string>

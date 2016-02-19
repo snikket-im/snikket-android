@@ -93,7 +93,6 @@
   <string name="pref_xmpp_resource_summary">El nom que identifica aquest client amb</string>
   <string name="pref_accept_files">Acceptar fitxers</string>
   <string name="pref_accept_files_summary">Accepta fitxers automàticament amb una mida menor a…</string>
-  <string name="pref_notification_settings">Ajustos de notificacions</string>
   <string name="pref_notifications">Notificacions</string>
   <string name="pref_notifications_summary">Notifica quan arriba un nou missatge</string>
   <string name="pref_vibrate">Vibra</string>
@@ -102,12 +101,10 @@
   <string name="pref_sound_summary">Reprodueix el to de trucada amb la notificació</string>
   <string name="pref_notification_grace_period">Notificació del període d\'espera</string>
   <string name="pref_notification_grace_period_summary">Desactiva les notificacions durant un breu termini després de rebre una còpia de missatges carbon</string>
-  <string name="pref_advanced_options">Opcions avançades</string>
   <string name="pref_never_send_crash">Mai enviïs informes d\'errors</string>
   <string name="pref_never_send_crash_summary">Enviant traces d\'execució d\'ajudes al futur desenvolupament del Conversations.</string>
   <string name="pref_confirm_messages">Confirmant missatges</string>
   <string name="pref_confirm_messages_summary">Deixeu que el seu contacte sàpiga quan heu rebut i llegit un missatge</string>
-  <string name="pref_ui_options">Opcions de UI</string>
   <string name="openpgp_error">OpenKeychain ha reportat un error</string>
   <string name="error_decrypting_file">I/O Error al desxifrar un arxiu</string>
   <string name="accept">Acceptar</string>
@@ -249,12 +246,10 @@
   <string name="sure_delete_fingerprint">Estàs segur que t\'agradaria eliminar l\'empremta digital?</string>
   <string name="ignore">Ignorar</string>
   <string name="without_mutual_presence_updates"><b>Perill:</b>L\'enviament d\'aquest sense actualitzacions de presència podria causar problemes inesperats.\n\n<small> Ves als detalls del contacte per verificar les subscripcions de presència.</small></string>
-  <string name="pref_encryption_settings">Configuració del xifratge</string>
   <string name="pref_force_encryption">Força d\'extrema extrem del xifrat</string>
   <string name="pref_force_encryption_summary">Enviar sempre missatges xifrat( Excepte per les sales)</string>
   <string name="pref_dont_save_encrypted">No guardar els misstages xifrats</string>
   <string name="pref_dont_save_encrypted_summary">Perill: Podria portar a la pèrdua dels missatges</string>
-  <string name="pref_expert_options">Opcions per a experts</string>
   <string name="pref_expert_options_summary">Aneu amb cura amb aixó</string>
   <string name="title_activity_about">Sobre Conversations</string>
   <string name="pref_about_conversations_summary">Informació sobre la construció i la seva llicència</string>
@@ -381,7 +376,6 @@
   <string name="two_hours">2 Hores</string>
   <string name="eight_hours">8 Hores</string>
   <string name="until_further_notice">Fins nou avís</string>
-  <string name="pref_input_options">Opcions d\'entrada</string>
   <string name="pref_enter_is_send">Entra per enviar</string>
   <string name="pref_enter_is_send_summary">Utilitza el botó enter per enviar el missatge</string>
   <string name="pref_display_enter_key">Mostra el botó enter</string>

@@ -58,7 +58,6 @@
   <string name="pref_xmpp_resource_summary">O nome que identifica o cliente que estás a empregar</string>
   <string name="pref_accept_files">Aceptar arquivos</string>
   <string name="pref_accept_files_summary">De forma automática aceptar arquivos menores de…</string>
-  <string name="pref_notification_settings">Axustes de notificación</string>
   <string name="pref_notifications">Notificacións</string>
   <string name="pref_notifications_summary">Notifica cuando chega unha nova mensaxe</string>
   <string name="pref_vibrate">Tremer</string>
@@ -67,10 +66,8 @@
   <string name="pref_sound_summary">Reproduce un ton ca notificación</string>
   <string name="pref_notification_grace_period">Notificacións Carbons</string>
   <string name="pref_notification_grace_period_summary">Deshabilita as notificacións durante un corto periodo de tiempo despois de recibir a copia da mensaxe carbón</string>
-  <string name="pref_advanced_options">Opcións avanzadas</string>
   <string name="pref_never_send_crash">Nunca enviar informe de erros</string>
   <string name="pref_never_send_crash_summary">Enviando volcados de pilas axudas al desenrolo de Conversations</string>
-  <string name="pref_ui_options">Opcións de interfaz</string>
   <string name="openpgp_error">OpenKeychain reportou un erro</string>
   <string name="error_decrypting_file">I/O Erro descifrando arquivo</string>
   <string name="accept">Aceptar</string>

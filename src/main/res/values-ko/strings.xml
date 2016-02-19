@@ -102,7 +102,6 @@
   <string name="pref_xmpp_resource_summary">이 클라이언트가 자신을 알아보는 이름</string>
   <string name="pref_accept_files">파일 수락 </string>
   <string name="pref_accept_files_summary">이 크기보다 작은 파일을 자동으로 수락 </string>
-  <string name="pref_notification_settings">알림 설정 </string>
   <string name="pref_notifications">알림 </string>
   <string name="pref_notifications_summary">새 메세지 도착시 알림 </string>
   <string name="pref_vibrate">진동 </string>
@@ -111,12 +110,10 @@
   <string name="pref_sound_summary">알림과 동시에 벨소리 재생 </string>
   <string name="pref_notification_grace_period">알림 유예 </string>
   <string name="pref_notification_grace_period_summary">Carbon Copy 수신 후에 잠시동안 알림 해제</string>
-  <string name="pref_advanced_options">추가 설정 </string>
   <string name="pref_never_send_crash">충돌 보고서 보내지 않음 </string>
   <string name="pref_never_send_crash_summary">Stack trace 정보를 보냄으로서 Conversations의 개발에 기여할 수 있습니다 </string>
   <string name="pref_confirm_messages">메세지 확인 </string>
   <string name="pref_confirm_messages_summary">메세지를 수신하고 읽었는지를 연락처에게 알려줌 </string>
-  <string name="pref_ui_options">사용자 환경 설정 </string>
   <string name="openpgp_error">OpenKeychain이 오류를 보고합니다 </string>
   <string name="error_decrypting_file">파일 복호화 입출력 오류 </string>
   <string name="accept">수락 </string>
@@ -274,12 +271,10 @@
   <string name="sure_delete_fingerprint">이 핑거프린트를 삭제하시겠습니까? </string>
   <string name="ignore">무시 </string>
   <string name="without_mutual_presence_updates">경고: 상호간의 프레즌스 업데이트 없이 이것을 보내면 예기치 못한 문제를 발생시킬 수 있습니다. 당신의 프레즌스 구독을 검증하기 위해 연락처 상세 정보로 가세요. </string>
-  <string name="pref_encryption_settings">암호화 설정 </string>
   <string name="pref_force_encryption">강제적인 종단간 암호화</string>
   <string name="pref_force_encryption_summary">언제나 암호화 메세지로 전송 (회의 제외) </string>
   <string name="pref_dont_save_encrypted">암호화된 메세지 저장하지 않음 </string>
   <string name="pref_dont_save_encrypted_summary">경고: 메세지가 손실될 수 있습니다 </string>
-  <string name="pref_expert_options">전문가 설정 </string>
   <string name="pref_expert_options_summary">설정시 주의하시기 바랍니다</string>
   <string name="title_activity_about">Conversations에 대해서 </string>
   <string name="pref_about_conversations_summary">빌드 및 라이센스 정보 </string>
@@ -427,7 +422,6 @@
   <string name="two_hours">2시간 </string>
   <string name="eight_hours">8시간 </string>
   <string name="until_further_notice">나중에 알릴때까지 </string>
-  <string name="pref_input_options">입력 설정 </string>
   <string name="pref_enter_is_send">엔터 키로 전송  </string>
   <string name="pref_enter_is_send_summary">엔터 키로 메세지를 보냅니다 </string>
   <string name="pref_display_enter_key">엔터 키 표시 </string>
@@ -489,7 +483,6 @@
   <string name="pref_use_white_background_summary">받은 메세지를 하얀색 배경에 검은색 글씨로 표시</string>
   <string name="account_status_tor_unavailable">Tor 네트워크 사용할 수 없음</string>
   <string name="server_info_broken">손상됨</string>
-  <string name="pref_presence_settings">프레즌스 설정</string>
   <string name="pref_away_when_screen_off">화면이 꺼져있을 경우 자리 비움으로 표시</string>
   <string name="pref_away_when_screen_off_summary">화면이 꺼져있을 경우에 자리 비움으로 상태를 표시함</string>
   <string name="pref_xa_on_silent_mode">음소거 모드에서는 사용할 수 없음</string>
@@ -505,7 +498,6 @@
   <string name="error_fetching_omemo_key">OMEMO key를 가져오는 도중 오류가 발생했습니다</string>
   <string name="verified_omemo_key_with_certificate">OMEMO 키와 인증서 검증됨</string>
   <string name="device_does_not_support_certificates">기기가 선택된 클라이언트 인증서를 지원하지 않습니다</string>
-  <string name="pref_connection_options">접속 옵션</string>
   <string name="pref_use_tor">Tor를 통해 접속</string>
   <string name="pref_use_tor_summary">모든 연결을 Tor 네트워크를 통하도록 유도함. Orbot이 필요합니다</string>
   <string name="account_settings_hostname">호스트 이름</string>
@@ -527,7 +519,6 @@
   <string name="certificate_issuer">발행자</string>
   <string name="certificate_cn">이름</string>
   <string name="certificate_o">단체</string>
-  <string name="certificate_sha1">SHA1</string>
   <string name="certicate_info_not_available">(사용할 수 없음)</string>
   <string name="certificate_not_found">인증서가 발견되지 않았습니다</string>
   <string name="notify_on_all_messages">모든 메세지를 알림</string>
@@ -535,7 +526,6 @@
   <string name="notify_never">알림 해제됨</string>
   <string name="notify_paused">알림 일시중지됨</string>
   <string name="pref_picture_compression">사진 압축</string>
-  <string name="pref_picture_compression_summary">사진의 크기를 줄이고 압축함</string>
   <string name="always">항상</string>
   <string name="automatically">자동</string>
   <string name="battery_optimizations_enabled">배터리 최적화 사용됨</string>

@@ -102,7 +102,7 @@
   <string name="pref_xmpp_resource_summary">Numele cu care acest client se identifica</string>
   <string name="pref_accept_files">Accepta fisiere</string>
   <string name="pref_accept_files_summary">Accepta automat fisiere mai mici decat...</string>
-  <string name="pref_notification_settings">Setari notificari</string>
+  <string name="pref_notification_settings">Notificare</string>
   <string name="pref_notifications">Notificari</string>
   <string name="pref_notifications_summary">Notifica cand un nou mesaj este primit</string>
   <string name="pref_vibrate">Vibreaza</string>
@@ -191,6 +191,7 @@
   <string name="server_info_stream_management">XEP-0198: Management flux</string>
   <string name="server_info_pep">XEP-0163: PEP (Avatare / OMEMO)</string>
   <string name="server_info_http_upload">XEP-0363: Incarcare fisiere prin HTTP</string>
+  <string name="server_info_push">XEP-0357: Push</string>
   <string name="server_info_available">disponibil</string>
   <string name="server_info_unavailable">indisponibil</string>
   <string name="missing_public_keys">Cheile publice ce nu au fost anuntate</string>
@@ -275,9 +276,11 @@
   <string name="sure_delete_fingerprint">Sigur vrei sa stergi amprenta</string>
   <string name="ignore">Ignora</string>
   <string name="without_mutual_presence_updates"><b>Atentie:</b> Trimitand aceasta fara actualizari de prezenta reciproce, ar putea produce probleme neprevazute.\n\n<small>Mergi la lista de contacte, la detalii, sa iti verifici abonarile la actualizarile de prezenta.</small></string>
-  <string name="pref_encryption_settings">Setari criptare</string>
+  <string name="pref_security_settings">Siguranta</string>
   <string name="pref_force_encryption">Forteaza criptarea conexiunii de la un capat la altul</string>
   <string name="pref_force_encryption_summary">Trimite mereu mesajele criptate (exceptand conferintele)</string>
+  <string name="pref_allow_message_correction">Permite corectia mesajelor</string>
+  <string name="pref_allow_message_correction_summary">Permite contactelor sa isi editeze mesajele din trecut</string>
   <string name="pref_dont_save_encrypted">Nu salva mesaje criptate</string>
   <string name="pref_dont_save_encrypted_summary">Atentie: Asta poate duce la pierderea de mesaje</string>
   <string name="pref_expert_options">Optiuni expert</string>
@@ -508,8 +511,9 @@
   <string name="unable_to_parse_certificate">Nu se poate analiza certificatul</string>
   <string name="authenticate_with_certificate">Lasa gol pentru a autentifica cu un certificat</string>
   <string name="mam_prefs">Preferinte arhivare</string>
+  <string name="server_side_mam_prefs">Preferinte arhivare pe server</string>
   <string name="fetching_mam_prefs">Descarc preferinte arhivare. Va rugam asteptati...</string>
-  <string name="unable_to_fetch_mam_prefs">Nu s-au putut descarca setarile de arhivare</string>
+  <string name="unable_to_fetch_mam_prefs">Nu s-au putut descarca preferintele de arhivare</string>
   <string name="captcha_ocr">Text captcha de verificare</string>
   <string name="captcha_required">Text captcha de verificare necesar</string>
   <string name="captcha_hint">introdu textul din imagine</string>
@@ -545,7 +549,7 @@
 Emitent</string>
   <string name="certificate_cn">Nume comun</string>
   <string name="certificate_o">Organizatie</string>
-  <string name="certificate_sha1">SHA1</string>
+  <string name="certificate_sha1">SHA-1</string>
   <string name="certicate_info_not_available">(Indisponibil)</string>
   <string name="certificate_not_found">Certificat inexistent</string>
   <string name="notify_on_all_messages">Notifica la toate mesajele</string>
@@ -563,4 +567,6 @@ Emitent</string>
   <string name="selection_too_large">Zona selectata este prea mare</string>
   <string name="no_accounts">(Nici un cont activat)</string>
   <string name="this_field_is_required">Acest camp este obligatoriu</string>
+  <string name="correct_message">Corectie mesaj</string>
+  <string name="send_corrected_message">Trimite text corectat</string>
 </resources>

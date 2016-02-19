@@ -102,7 +102,7 @@
   <string name="pref_xmpp_resource_summary">自分自身を識別するこのクライアントの名前</string>
   <string name="pref_accept_files">ファイルを受取</string>
   <string name="pref_accept_files_summary">自動的に小さいファイルを受取…</string>
-  <string name="pref_notification_settings">通知設定</string>
+  <string name="pref_notification_settings">通知</string>
   <string name="pref_notifications">通知</string>
   <string name="pref_notifications_summary">新しいメッセージが到着したときに通知します</string>
   <string name="pref_vibrate">振動</string>
@@ -111,12 +111,12 @@
   <string name="pref_sound_summary">通知で着信音を再生します</string>
   <string name="pref_notification_grace_period">通知猶予期間</string>
   <string name="pref_notification_grace_period_summary">カーボンコピーを受信した後、短時間、通知を無効にします</string>
-  <string name="pref_advanced_options">詳細オプション</string>
+  <string name="pref_advanced_options">詳細</string>
   <string name="pref_never_send_crash">クラッシュレポートを送信しない</string>
   <string name="pref_never_send_crash_summary">スタックトレースを送信することで、あなたは Conversations の継続的な開発を支援しています</string>
   <string name="pref_confirm_messages">メッセージの確認</string>
   <string name="pref_confirm_messages_summary">あなたがメッセージを受け取って読んだことを、連絡先に知らせます</string>
-  <string name="pref_ui_options">UI オプション</string>
+  <string name="pref_ui_options">UI</string>
   <string name="openpgp_error">OpenKeychain がエラーを報告しました</string>
   <string name="error_decrypting_file">ファイルの復号化中に I/O エラー</string>
   <string name="accept">受付</string>
@@ -191,6 +191,7 @@
   <string name="server_info_stream_management">XEP-0198: ストリーム管理</string>
   <string name="server_info_pep">XEP-0163: PEP (アバター / OMEMO)</string>
   <string name="server_info_http_upload">XEP-0363: HTTP ファイルアップロード</string>
+  <string name="server_info_push">XEP-0357: プッシュ</string>
   <string name="server_info_available">利用可能</string>
   <string name="server_info_unavailable">利用不可</string>
   <string name="missing_public_keys">公開鍵の通知がありません</string>
@@ -275,12 +276,14 @@
   <string name="sure_delete_fingerprint">このフィンガープリントを削除してもよろしいですか?</string>
   <string name="ignore">無視</string>
   <string name="without_mutual_presence_updates"><b>警告:</b> 相互の参加アップデートなしにこれを送信すると、予期しない問題が発生する可能性があります。\n\n<small>あなたの参加サブスクリプションを検証するために、連絡先の詳細に移動します。</small></string>
-  <string name="pref_encryption_settings">暗号化設定</string>
+  <string name="pref_security_settings">セキュリティ</string>
   <string name="pref_force_encryption">強制的にエンドツーエンド暗号化を使用する</string>
   <string name="pref_force_encryption_summary">常に暗号化されたメッセージを送信します (会議を除く)</string>
+  <string name="pref_allow_message_correction">メッセージの修正を許可</string>
+  <string name="pref_allow_message_correction_summary">連絡先が、遡及的に自分のメッセージを編集することを許可します</string>
   <string name="pref_dont_save_encrypted">暗号化されたメッセージを保存しない</string>
   <string name="pref_dont_save_encrypted_summary">警告: これはメッセージの損失につながる可能性があります</string>
-  <string name="pref_expert_options">上級者オプション</string>
+  <string name="pref_expert_options">エキスパート設定</string>
   <string name="pref_expert_options_summary">ご利用は注意してください</string>
   <string name="title_activity_about">Conversations について</string>
   <string name="pref_about_conversations_summary">ビルドおよびライセンス情報</string>
@@ -430,7 +433,7 @@
   <string name="two_hours">2 時間</string>
   <string name="eight_hours">8 時間</string>
   <string name="until_further_notice">通知があるまで</string>
-  <string name="pref_input_options">入力オプション</string>
+  <string name="pref_input_options">入力</string>
   <string name="pref_enter_is_send">Enter は送信</string>
   <string name="pref_enter_is_send_summary">Enter キーをメッセージの送信に使用します</string>
   <string name="pref_display_enter_key">Enter キーを表示</string>
@@ -492,18 +495,19 @@
   <string name="pref_use_white_background_summary">白地に黒の文字で、受け取ったメッセージを表示します</string>
   <string name="account_status_tor_unavailable">Tor ネットワークが利用できません</string>
   <string name="server_info_broken">壊れています</string>
-  <string name="pref_presence_settings">参加設定</string>
+  <string name="pref_presence_settings">参加</string>
   <string name="pref_away_when_screen_off">画面がオフのときは離席</string>
   <string name="pref_away_when_screen_off_summary">画面がオフになっているとき、リソースを離席としてマークします</string>
   <string name="pref_xa_on_silent_mode">サイレントモード時は利用不可</string>
   <string name="pref_xa_on_silent_mode_summary">デバイスがサイレントモードのとき、リソースが利用不可としてマークします</string>
-  <string name="pref_show_connection_options">拡張接続オプション</string>
-  <string name="pref_show_connection_options_summary">アカウントを設定するときにホスト名とポートのオプションを表示します</string>
+  <string name="pref_show_connection_options">拡張接続設定</string>
+  <string name="pref_show_connection_options_summary">アカウントを設定するときにホスト名とポートの設定を表示します</string>
   <string name="hostname_example">xmpp.example.com</string>
   <string name="action_add_account_with_certificate">アカウントに証明書を追加</string>
   <string name="unable_to_parse_certificate">証明書を解析できません</string>
   <string name="authenticate_with_certificate">空にすると、証明書で認証します</string>
   <string name="mam_prefs">アーカイブの設定</string>
+  <string name="server_side_mam_prefs">サーバーサイドのアーカイブの設定</string>
   <string name="fetching_mam_prefs">アーカイブの設定を取得しています。しばらくお待ちください…</string>
   <string name="unable_to_fetch_mam_prefs">アーカイブの設定を取得できません</string>
   <string name="captcha_ocr">キャプチャ テキスト</string>
@@ -515,7 +519,7 @@
   <string name="error_fetching_omemo_key">OMEMO 鍵の取得中にエラー!</string>
   <string name="verified_omemo_key_with_certificate">OMEMO 鍵の取得中にエラー!</string>
   <string name="device_does_not_support_certificates">お使いのデバイスはクライアント証明書の選択をサポートしていません!</string>
-  <string name="pref_connection_options">接続オプション</string>
+  <string name="pref_connection_options">接続</string>
   <string name="pref_use_tor">Tor 経由で接続</string>
   <string name="pref_use_tor_summary">Tor ネットワークを介してすべての接続をトンネルします。 Orbot が必要です</string>
   <string name="account_settings_hostname">ホスト名</string>
@@ -538,7 +542,7 @@
   <string name="certificate_issuer">発行者</string>
   <string name="certificate_cn">一般名称</string>
   <string name="certificate_o">組織</string>
-  <string name="certificate_sha1">SHA1</string>
+  <string name="certificate_sha1">SHA-1</string>
   <string name="certicate_info_not_available">(利用不可)</string>
   <string name="certificate_not_found">証明書がありません</string>
   <string name="notify_on_all_messages">すべてのメッセージで通知</string>
@@ -546,7 +550,7 @@
   <string name="notify_never">通知は無効</string>
   <string name="notify_paused">通知は一時停止</string>
   <string name="pref_picture_compression">写真を圧縮</string>
-  <string name="pref_picture_compression_summary">写真をサイズ変更や圧縮します</string>
+  <string name="pref_picture_compression_summary">写真のサイズ変更と圧縮</string>
   <string name="always">常に</string>
   <string name="automatically">自動</string>
   <string name="battery_optimizations_enabled">バッテリー最適化が有効</string>
@@ -556,4 +560,6 @@
   <string name="selection_too_large">選択した範囲が大きすぎます</string>
   <string name="no_accounts">(アクティベートしたアカウントはありません)</string>
   <string name="this_field_is_required">このフィールドは必須です</string>
+  <string name="correct_message">メッセージを修正</string>
+  <string name="send_corrected_message">修正したメッセージを送信</string>
 </resources>

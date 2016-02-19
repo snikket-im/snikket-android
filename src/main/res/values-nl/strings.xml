@@ -102,7 +102,6 @@
   <string name="pref_xmpp_resource_summary">De naam waarmee deze cliënt zich identificeert</string>
   <string name="pref_accept_files">Aanvaard bestanden</string>
   <string name="pref_accept_files_summary">Aanvaard automatisch bestanden kleiner dan…</string>
-  <string name="pref_notification_settings">Meldingsinstellingen</string>
   <string name="pref_notifications">Meldingen</string>
   <string name="pref_notifications_summary">Melding als een nieuw bericht arriveert</string>
   <string name="pref_vibrate">Trillen</string>
@@ -111,12 +110,10 @@
   <string name="pref_sound_summary">Speel beltoon af bij melding</string>
   <string name="pref_notification_grace_period">Uitstelperiode voor meldingen</string>
   <string name="pref_notification_grace_period_summary">Schakel meldingen voor korte tijd uit als er een carbon copy wordt ontvangen</string>
-  <string name="pref_advanced_options">Geavanceerde instellingen</string>
   <string name="pref_never_send_crash">Verstuur nooit crashrapportages</string>
   <string name="pref_never_send_crash_summary">Door crashrapportages te versturen help je de ontwikkeling van Conversations</string>
   <string name="pref_confirm_messages">Bevestig berichten</string>
   <string name="pref_confirm_messages_summary">Laat je contacten weten wanneer je berichten hebt ontvangen en gelezen</string>
-  <string name="pref_ui_options">UI-opties</string>
   <string name="openpgp_error">OpenKeychain rapporteerde een fout</string>
   <string name="error_decrypting_file">I/O-fout tijdens ontsleutelen van bestand</string>
   <string name="accept">Aanvaarden</string>
@@ -274,12 +271,10 @@
   <string name="sure_delete_fingerprint">Ben je zeker dat je deze vingerafdruk wil verwijderen?</string>
   <string name="ignore">Negeren</string>
   <string name="without_mutual_presence_updates"><b>Waarschuwing:</b> Dit verzenden zonder wederzijdse aanwezigheidsupdates kan voor onverwachte problemen zorgen.\n\n<small>Ga naar contactgegevens om je aanwezigheidsupdates te bevestigen.</small></string>
-  <string name="pref_encryption_settings">Versleutelingsinstellingen</string>
   <string name="pref_force_encryption">Verplicht end-to-end-versleuteling</string>
   <string name="pref_force_encryption_summary">Stuur berichten altijd versleuteld (behalve in groepsgesprekken)</string>
   <string name="pref_dont_save_encrypted">Sla versleutelde berichten niet op</string>
   <string name="pref_dont_save_encrypted_summary">Waarschuwing: dit kan leiden tot verlies van berichten</string>
-  <string name="pref_expert_options">Expert-instellingen</string>
   <string name="pref_expert_options_summary">Wees voorzichtig met deze instellingen</string>
   <string name="title_activity_about">Over Conversations</string>
   <string name="pref_about_conversations_summary">Build en licentie-informatie</string>
@@ -427,7 +422,6 @@
   <string name="two_hours">2 uur</string>
   <string name="eight_hours">8 uur</string>
   <string name="until_further_notice">Voor onbepaalde duur</string>
-  <string name="pref_input_options">Invoer-opties</string>
   <string name="pref_enter_is_send">Enter is versturen</string>
   <string name="pref_enter_is_send_summary">Gebruik de enter-toets om berichten te versturen</string>
   <string name="pref_display_enter_key">Toon enter-toets</string>
@@ -491,7 +485,6 @@
   <string name="pref_use_white_background_summary">Toon ontvangen berichten als zwarte tekst op een witte achtergrond</string>
   <string name="account_status_tor_unavailable">Tor-netwerk niet beschikbaar</string>
   <string name="server_info_broken">Gebroken</string>
-  <string name="pref_presence_settings">Aanwezigheidsinstellingen</string>
   <string name="pref_away_when_screen_off">Even weg wanneer scherm uit staat</string>
   <string name="pref_away_when_screen_off_summary">Stelt je bron in als even weg wanneer het scherm uitgeschakeld is</string>
   <string name="pref_xa_on_silent_mode">Niet beschikbaar in stille modus</string>
@@ -508,7 +501,6 @@
   <string name="error_fetching_omemo_key">Fout bij ophalen van OMEMO-sleutel!</string>
   <string name="verified_omemo_key_with_certificate">OMEMO-sleutel geverifieerd met certificaat!</string>
   <string name="device_does_not_support_certificates">Je apparaat ondersteunt de selectie van cliënt-certificaten niet!</string>
-  <string name="pref_connection_options">Verbindingsopties</string>
   <string name="pref_use_tor">Verbinden via Tor</string>
   <string name="pref_use_tor_summary">Tunnel alle verbindingen door het Tor-netwerk. Vereist Orbot</string>
   <string name="account_settings_hostname">Hostnaam</string>
@@ -531,7 +523,6 @@
   <string name="certificate_issuer">Uitgever</string>
   <string name="certificate_cn">Algemene naam</string>
   <string name="certificate_o">Organisatie</string>
-  <string name="certificate_sha1">SHA1</string>
   <string name="certicate_info_not_available">(Niet beschikbaar)</string>
   <string name="certificate_not_found">Geen certificaat gevonden</string>
   <string name="notify_on_all_messages">Melding bij alle berichten</string>
@@ -539,7 +530,6 @@
   <string name="notify_never">Meldingen uitgeschakeld</string>
   <string name="notify_paused">Meldingen gepauzeerd</string>
   <string name="pref_picture_compression">Afbeeldingen comprimeren</string>
-  <string name="pref_picture_compression_summary">Afbeeldingen verkleinen en comprimeren</string>
   <string name="always">Altijd</string>
   <string name="automatically">Automatisch</string>
   <string name="battery_optimizations_enabled">Batterij-optimalisaties ingeschakeld</string>

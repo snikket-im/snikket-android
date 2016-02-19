@@ -96,7 +96,6 @@
   <string name="pref_xmpp_resource_summary">Meno, ktorým sa tento klient identifikuje</string>
   <string name="pref_accept_files">Prijať súbory</string>
   <string name="pref_accept_files_summary">Automaticky prijať súbory menšie ako…</string>
-  <string name="pref_notification_settings">Nastavenia upozornení</string>
   <string name="pref_notifications">Upozornenia</string>
   <string name="pref_notifications_summary">Upozorniť pri prijatí novej správy</string>
   <string name="pref_vibrate">Vibrovať</string>
@@ -105,12 +104,10 @@
   <string name="pref_sound_summary">Prehrať zvuk spolu s upozornením</string>
   <string name="pref_notification_grace_period">Doba na prečítanie upozornenia</string>
   <string name="pref_notification_grace_period_summary">Neupozorňovať krátko po obdržaní kópie správy</string>
-  <string name="pref_advanced_options">Rozšírené možnosti</string>
   <string name="pref_never_send_crash">Neodosielať detaily o zlyhaní aplikácie</string>
   <string name="pref_never_send_crash_summary">Zaslaním detailov o dôvode zlyhania pomáhate ďalšiemu vývoju aplikácie Conversations</string>
   <string name="pref_confirm_messages">Potvrdzovať správy</string>
   <string name="pref_confirm_messages_summary">Oznámi kontaktom, že správa bola prijatá a prečítaná</string>
-  <string name="pref_ui_options">Možnosti UI</string>
   <string name="openpgp_error">OpenKeychain nahlásil chybu</string>
   <string name="error_decrypting_file">I/O chyba dešifrovania súboru</string>
   <string name="accept">Prijať</string>
@@ -262,12 +259,10 @@
   <string name="sure_delete_fingerprint">Naozaj chcete vymazať tento identifikátor?</string>
   <string name="ignore">Ignorovať</string>
   <string name="without_mutual_presence_updates"><b>Varovanie:</b> Odoslanie bez povolenia zmien stavu môže spôsobiť nečakané problémy na obidvoch stranách.\n\n<small>Prejdi na detaily kontaktu pre overenie povolenia o zmenách stavu.</small></string>
-  <string name="pref_encryption_settings">Nastavenie šifrovania</string>
   <string name="pref_force_encryption">Vynútiť šifrovanie</string>
   <string name="pref_force_encryption_summary">Vždy zasielať šifrované správy (okrem skupinových konverzácií)</string>
   <string name="pref_dont_save_encrypted">Neukladať šifrované správy</string>
   <string name="pref_dont_save_encrypted_summary">Varovanie: Toto môže viesť k strate správ</string>
-  <string name="pref_expert_options">Expertné možnosti</string>
   <string name="pref_expert_options_summary">S týmto narábajte veľmi opatrne, prosím</string>
   <string name="title_activity_about">O Conversations</string>
   <string name="pref_about_conversations_summary">Informácie o tvorbe a licencii</string>
@@ -400,7 +395,6 @@
   <string name="two_hours">2 hodiny</string>
   <string name="eight_hours">8 hodín</string>
   <string name="until_further_notice">Až do odvolania</string>
-  <string name="pref_input_options">Možnosti zadávaní</string>
   <string name="pref_enter_is_send">Enter odosiela</string>
   <string name="pref_enter_is_send_summary">Použiť klávesu enter na odoslanie správy</string>
   <string name="pref_display_enter_key">Zobraziť klávesu enter</string>

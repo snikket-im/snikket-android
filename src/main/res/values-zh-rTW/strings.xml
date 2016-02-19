@@ -77,7 +77,6 @@
   <string name="pref_xmpp_resource_summary">客戶端標示名稱</string>
   <string name="pref_accept_files">接收文件</string>
   <string name="pref_accept_files_summary">自動接收小於 … 的文件</string>
-  <string name="pref_notification_settings">通知設定</string>
   <string name="pref_notifications">通知</string>
   <string name="pref_notifications_summary">收到新訊息時通知</string>
   <string name="pref_vibrate">震動</string>
@@ -86,12 +85,10 @@
   <string name="pref_sound_summary">收到新訊息時播放鈴聲</string>
   <string name="pref_notification_grace_period">通知限期</string>
   <string name="pref_notification_grace_period_summary">收到副本後，關閉通知一小段時間</string>
-  <string name="pref_advanced_options">進階選項</string>
   <string name="pref_never_send_crash">總是不發送故障報告</string>
   <string name="pref_never_send_crash_summary">發送「堆疊追蹤」給 Conversations 的開發人員能幫助改進本程式</string>
   <string name="pref_confirm_messages">確認訊息</string>
   <string name="pref_confirm_messages_summary">讓你的聯絡人知道你已收到及閱讀訊息</string>
-  <string name="pref_ui_options">介面選項</string>
   <string name="openpgp_error">OpenKeychain 回報了一個錯誤</string>
   <string name="error_decrypting_file">解密文件時出現 I/O 錯誤</string>
   <string name="accept">接受</string>
@@ -224,12 +221,10 @@
   <string name="sure_delete_fingerprint">你確定刪除該指紋嗎？</string>
   <string name="ignore">忽略</string>
   <string name="without_mutual_presence_updates"><b>警告:</b> 在沒有互相關注狀態訊息的情況下發送或會引起不能預計的問題。\n\n<small>請檢視聯絡人詳情頁面以確認你們的關注狀態。</small></string>
-  <string name="pref_encryption_settings">加密設定</string>
   <string name="pref_force_encryption">強制要求端到端加密</string>
   <string name="pref_force_encryption_summary">總是發送加密訊息 (群組訊息除外)</string>
   <string name="pref_dont_save_encrypted">不儲存加密訊息</string>
   <string name="pref_dont_save_encrypted_summary">警告: 此操作或會導致訊息丟失</string>
-  <string name="pref_expert_options">專家選項</string>
   <string name="pref_expert_options_summary">請小心設定</string>
   <string name="pref_use_larger_font">增加字體大小</string>
   <string name="pref_use_larger_font_summary">讓整個 app 界面使用更大號的字體</string>
