@@ -102,6 +102,7 @@
   <string name="pref_xmpp_resource_summary">客户端标识名称</string>
   <string name="pref_accept_files">接收文件</string>
   <string name="pref_accept_files_summary">自动接收小于 … 的文件</string>
+  <string name="pref_notification_settings">通知</string>
   <string name="pref_notifications">通知</string>
   <string name="pref_notifications_summary">收到新消息时通知</string>
   <string name="pref_vibrate">震动</string>
@@ -110,10 +111,12 @@
   <string name="pref_sound_summary">收到新消息时的铃声</string>
   <string name="pref_notification_grace_period">通知限期</string>
   <string name="pref_notification_grace_period_summary">接收副本短时间内关闭通知</string>
+  <string name="pref_advanced_options">高级</string>
   <string name="pref_never_send_crash">总不发送崩溃报告</string>
   <string name="pref_never_send_crash_summary">发送堆栈跟踪帮助 Conversations 开发人员</string>
   <string name="pref_confirm_messages">确认消息</string>
   <string name="pref_confirm_messages_summary">当你已收到消息并且已阅时通知好友</string>
+  <string name="pref_ui_options">UI</string>
   <string name="openpgp_error">OpenKeychain 报告了一个错误</string>
   <string name="error_decrypting_file">解密文件时出现 I/O 错误</string>
   <string name="accept">接受</string>
@@ -188,6 +191,7 @@
   <string name="server_info_stream_management">XEP-0198: 流管理</string>
   <string name="server_info_pep">XEP-0163: PEP (替身 / OMEMO)</string>
   <string name="server_info_http_upload">XEP-0363: HTTP 文件上传</string>
+  <string name="server_info_push">XEP-0357: Push</string>
   <string name="server_info_available">有效</string>
   <string name="server_info_unavailable">无效</string>
   <string name="missing_public_keys">缺少公钥通知</string>
@@ -272,10 +276,14 @@
   <string name="sure_delete_fingerprint">是否确定删除该指纹?</string>
   <string name="ignore">忽略</string>
   <string name="without_mutual_presence_updates"><b>警告:</b>在没有相互更新在线联系人的情况下发送将会出现未知问题。\n\n<small>前往联系人详情以验证您订阅的在线联系人。</small></string>
+  <string name="pref_security_settings">安全</string>
   <string name="pref_force_encryption">强制要求端对端加密</string>
   <string name="pref_force_encryption_summary"> 总是发送加密信息(讨论组信息除外)</string>
+  <string name="pref_allow_message_correction">允许更正消息</string>
+  <string name="pref_allow_message_correction_summary">允许您的联系人追回编辑他们的信息</string>
   <string name="pref_dont_save_encrypted">不保存加密信息</string>
   <string name="pref_dont_save_encrypted_summary">警告:此操作将会导致信息丢失</string>
+  <string name="pref_expert_options">高级设置</string>
   <string name="pref_expert_options_summary">请谨慎使用</string>
   <string name="title_activity_about">关于 Conversations</string>
   <string name="pref_about_conversations_summary">编译及许可证信息</string>
@@ -425,6 +433,7 @@
   <string name="two_hours">2 个小时</string>
   <string name="eight_hours">8 个小时</string>
   <string name="until_further_notice">直到新的通知</string>
+  <string name="pref_input_options">输入</string>
   <string name="pref_enter_is_send">回车是发送</string>
   <string name="pref_enter_is_send_summary">用回车键来发送消息</string>
   <string name="pref_display_enter_key">显示回车键</string>
@@ -486,14 +495,21 @@
   <string name="pref_use_white_background_summary">收到的消息将显示为白底黑字</string>
   <string name="account_status_tor_unavailable">Tor network 不可用</string>
   <string name="server_info_broken">损坏</string>
+  <string name="pref_presence_settings">存在</string>
   <string name="pref_away_when_screen_off">关闭屏幕时离开</string>
   <string name="pref_away_when_screen_off_summary">当屏幕关闭时将标记您的资源为离开状态</string>
   <string name="pref_xa_on_silent_mode">静音模式时不可用</string>
   <string name="pref_xa_on_silent_mode_summary">当设备进入静音模式时把资源标识改为不可用</string>
+  <string name="pref_show_connection_options">高级边接设置</string>
+  <string name="pref_show_connection_options_summary">注册账户时显示主机名和端口</string>
   <string name="hostname_example">xmpp.example.com</string>
   <string name="action_add_account_with_certificate">使用证书添加账户</string>
   <string name="unable_to_parse_certificate">无法解析证书</string>
   <string name="authenticate_with_certificate">留空以认证 w/ 证书</string>
+  <string name="mam_prefs">压缩设置</string>
+  <string name="server_side_mam_prefs">服务端压缩设置</string>
+  <string name="fetching_mam_prefs">正在获取压缩设置。请稍后...</string>
+  <string name="unable_to_fetch_mam_prefs">获取压缩设置失败</string>
   <string name="captcha_ocr">验证码</string>
   <string name="captcha_required">需要验证码</string>
   <string name="captcha_hint">输入图片中的文字</string>
@@ -503,6 +519,7 @@
   <string name="error_fetching_omemo_key">获取 OMEMO 密钥错误！</string>
   <string name="verified_omemo_key_with_certificate">请用证书验证 OMEMO 密钥！</string>
   <string name="device_does_not_support_certificates">您的设备不支持设备证书选择！</string>
+  <string name="pref_connection_options">连接</string>
   <string name="pref_use_tor">通过 Tor 连接</string>
   <string name="pref_use_tor_summary">所有连接使用 Tor 网络隧道。需要 Orbot</string>
   <string name="account_settings_hostname">主机名</string>
@@ -525,6 +542,7 @@
   <string name="certificate_issuer">发行人</string>
   <string name="certificate_cn">通用名称</string>
   <string name="certificate_o">组织</string>
+  <string name="certificate_sha1">SHA-1</string>
   <string name="certicate_info_not_available">(不可用）</string>
   <string name="certificate_not_found">未发现证书</string>
   <string name="notify_on_all_messages">为所有信息显示通知</string>
@@ -532,6 +550,7 @@
   <string name="notify_never">禁用通知</string>
   <string name="notify_paused">暂停通知</string>
   <string name="pref_picture_compression">压缩图片</string>
+  <string name="pref_picture_compression_summary">裁剪并压缩图片</string>
   <string name="always">总是</string>
   <string name="automatically">自动</string>
   <string name="battery_optimizations_enabled">启用节电模式</string>
@@ -543,4 +562,6 @@
   <string name="selection_too_large">选择区域过大</string>
   <string name="no_accounts">(没有激活的账户)</string>
   <string name="this_field_is_required">必填</string>
+  <string name="correct_message">更正消息</string>
+  <string name="send_corrected_message">发送更正后的消息</string>
 </resources>

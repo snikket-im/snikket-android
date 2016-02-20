@@ -102,6 +102,7 @@
   <string name="pref_xmpp_resource_summary">De naam waarmee deze cliënt zich identificeert</string>
   <string name="pref_accept_files">Aanvaard bestanden</string>
   <string name="pref_accept_files_summary">Aanvaard automatisch bestanden kleiner dan…</string>
+  <string name="pref_notification_settings">Melding</string>
   <string name="pref_notifications">Meldingen</string>
   <string name="pref_notifications_summary">Melding als een nieuw bericht arriveert</string>
   <string name="pref_vibrate">Trillen</string>
@@ -110,10 +111,12 @@
   <string name="pref_sound_summary">Speel beltoon af bij melding</string>
   <string name="pref_notification_grace_period">Uitstelperiode voor meldingen</string>
   <string name="pref_notification_grace_period_summary">Schakel meldingen voor korte tijd uit als er een carbon copy wordt ontvangen</string>
+  <string name="pref_advanced_options">Geavanceerd</string>
   <string name="pref_never_send_crash">Verstuur nooit crashrapportages</string>
   <string name="pref_never_send_crash_summary">Door crashrapportages te versturen help je de ontwikkeling van Conversations</string>
   <string name="pref_confirm_messages">Bevestig berichten</string>
   <string name="pref_confirm_messages_summary">Laat je contacten weten wanneer je berichten hebt ontvangen en gelezen</string>
+  <string name="pref_ui_options">Gebruikersomgeving</string>
   <string name="openpgp_error">OpenKeychain rapporteerde een fout</string>
   <string name="error_decrypting_file">I/O-fout tijdens ontsleutelen van bestand</string>
   <string name="accept">Aanvaarden</string>
@@ -188,6 +191,7 @@
   <string name="server_info_stream_management">XEP-0198: Stream Management</string>
   <string name="server_info_pep">XEP-0163: PEP (Avatars / OMEMO)</string>
   <string name="server_info_http_upload">XEP-0363: HTTP File Upload</string>
+  <string name="server_info_push">XEP-0357: Push</string>
   <string name="server_info_available">beschikbaar</string>
   <string name="server_info_unavailable">niet beschikbaar</string>
   <string name="missing_public_keys">Ontbrekende publieke sleutel-aankondigingen</string>
@@ -237,6 +241,7 @@
   <string name="you">Jij</string>
   <string name="action_edit_subject">Onderwerp van groepsgesprek bewerken</string>
   <string name="conference_not_found">Groepsgesprek niet gevonden</string>
+  <string name="conference_unknown_error">Onbekende fout ontvangen</string>
   <string name="leave">Verlaten</string>
   <string name="contact_added_you">Contact heeft je toegevoegd aan zijn/haar contacten</string>
   <string name="add_back">Contact toevoegen aan eigen contacten</string>
@@ -271,10 +276,14 @@
   <string name="sure_delete_fingerprint">Ben je zeker dat je deze vingerafdruk wil verwijderen?</string>
   <string name="ignore">Negeren</string>
   <string name="without_mutual_presence_updates"><b>Waarschuwing:</b> Dit verzenden zonder wederzijdse aanwezigheidsupdates kan voor onverwachte problemen zorgen.\n\n<small>Ga naar contactgegevens om je aanwezigheidsupdates te bevestigen.</small></string>
+  <string name="pref_security_settings">Beveiliging</string>
   <string name="pref_force_encryption">Verplicht end-to-end-versleuteling</string>
   <string name="pref_force_encryption_summary">Stuur berichten altijd versleuteld (behalve in groepsgesprekken)</string>
+  <string name="pref_allow_message_correction">Berichtverbetering toestaan</string>
+  <string name="pref_allow_message_correction_summary">Sta je contacten toe hun berichten na het versturen te verbeteren</string>
   <string name="pref_dont_save_encrypted">Sla versleutelde berichten niet op</string>
   <string name="pref_dont_save_encrypted_summary">Waarschuwing: dit kan leiden tot verlies van berichten</string>
+  <string name="pref_expert_options">Instellingen voor experts</string>
   <string name="pref_expert_options_summary">Wees voorzichtig met deze instellingen</string>
   <string name="title_activity_about">Over Conversations</string>
   <string name="pref_about_conversations_summary">Build en licentie-informatie</string>
@@ -292,6 +301,8 @@
   <string name="pref_expert_options_other">Andere</string>
   <string name="pref_conference_name">Groepsgespreksnaam</string>
   <string name="pref_conference_name_summary">Gebruik onderwerp van kamer ipv JID om groepsgesprekken te identificeren</string>
+  <string name="pref_autojoin">Automatisch deelnemen aan groepsgesprekken</string>
+  <string name="pref_autojoin_summary">Respecteer de autojoin-vlag bij groepsgespreksbladwijzers</string>
   <string name="toast_message_otr_fingerprint">OTR-vingerafdruk gekopieerd naar klembord!</string>
   <string name="toast_message_omemo_fingerprint">OMEMO-vingerafdruk gekopieerd naar klembord!</string>
   <string name="conference_banned">Je bent verbannen uit dit groepsgesprek</string>
@@ -422,6 +433,7 @@
   <string name="two_hours">2 uur</string>
   <string name="eight_hours">8 uur</string>
   <string name="until_further_notice">Voor onbepaalde duur</string>
+  <string name="pref_input_options">Invoer</string>
   <string name="pref_enter_is_send">Enter is versturen</string>
   <string name="pref_enter_is_send_summary">Gebruik de enter-toets om berichten te versturen</string>
   <string name="pref_display_enter_key">Toon enter-toets</string>
@@ -485,13 +497,21 @@
   <string name="pref_use_white_background_summary">Toon ontvangen berichten als zwarte tekst op een witte achtergrond</string>
   <string name="account_status_tor_unavailable">Tor-netwerk niet beschikbaar</string>
   <string name="server_info_broken">Gebroken</string>
+  <string name="pref_presence_settings">Aanwezigheid</string>
   <string name="pref_away_when_screen_off">Even weg wanneer scherm uit staat</string>
   <string name="pref_away_when_screen_off_summary">Stelt je bron in als even weg wanneer het scherm uitgeschakeld is</string>
   <string name="pref_xa_on_silent_mode">Niet beschikbaar in stille modus</string>
   <string name="pref_xa_on_silent_mode_summary">Stelt je bron in als niet beschikbaar wanneer je apparaat in stille modus staat</string>
+  <string name="pref_show_connection_options">Uitgebreide verbindingsinstellingen</string>
+  <string name="pref_show_connection_options_summary">Toon hostnaam- en poortinstellingen bij instellen van een account</string>
+  <string name="hostname_example">xmpp.voorbeeld.be</string>
   <string name="action_add_account_with_certificate">Account met certificaat toevoegen</string>
   <string name="unable_to_parse_certificate">Kan certificaat niet verwerken</string>
   <string name="authenticate_with_certificate">Laat leeg om te authenticeren met certificaat</string>
+  <string name="mam_prefs">Archiefvoorkeuren</string>
+  <string name="server_side_mam_prefs">Voorkeuren voor archief aan serverzijde</string>
+  <string name="fetching_mam_prefs">Ophalen van archiefvoorkeuren. Even geduld…</string>
+  <string name="unable_to_fetch_mam_prefs">Kon archiefvoorkeuren niet ophalen</string>
   <string name="captcha_ocr">Captcha-tekst</string>
   <string name="captcha_required">Captcha vereist</string>
   <string name="captcha_hint">voer de tekst van de afbeelding in</string>
@@ -501,6 +521,7 @@
   <string name="error_fetching_omemo_key">Fout bij ophalen van OMEMO-sleutel!</string>
   <string name="verified_omemo_key_with_certificate">OMEMO-sleutel geverifieerd met certificaat!</string>
   <string name="device_does_not_support_certificates">Je apparaat ondersteunt de selectie van cliënt-certificaten niet!</string>
+  <string name="pref_connection_options">Verbinding</string>
   <string name="pref_use_tor">Verbinden via Tor</string>
   <string name="pref_use_tor_summary">Tunnel alle verbindingen door het Tor-netwerk. Vereist Orbot</string>
   <string name="account_settings_hostname">Hostnaam</string>
@@ -513,6 +534,7 @@
     <item quantity="one">%d bericht</item>
     <item quantity="other">%d berichten</item>
   </plurals>
+  <string name="load_more_messages">Laad meer berichten</string>
   <string name="shared_file_with_x">Bestand gedeeld met %s</string>
   <string name="shared_image_with_x">Afbeelding gedeeld met %s</string>
   <string name="no_storage_permission">Conversations heeft toegang nodig tot de externe opslag</string>
@@ -523,6 +545,7 @@
   <string name="certificate_issuer">Uitgever</string>
   <string name="certificate_cn">Algemene naam</string>
   <string name="certificate_o">Organisatie</string>
+  <string name="certificate_sha1">SHA-1</string>
   <string name="certicate_info_not_available">(Niet beschikbaar)</string>
   <string name="certificate_not_found">Geen certificaat gevonden</string>
   <string name="notify_on_all_messages">Melding bij alle berichten</string>
@@ -530,6 +553,7 @@
   <string name="notify_never">Meldingen uitgeschakeld</string>
   <string name="notify_paused">Meldingen gepauzeerd</string>
   <string name="pref_picture_compression">Afbeeldingen comprimeren</string>
+  <string name="pref_picture_compression_summary">Verklein en comprimeer afbeeldingen</string>
   <string name="always">Altijd</string>
   <string name="automatically">Automatisch</string>
   <string name="battery_optimizations_enabled">Batterij-optimalisaties ingeschakeld</string>
@@ -537,4 +561,8 @@
   <string name="battery_optimizations_enabled_dialog">Je apparaat voert sterke batterij-optimalisaties uit op Conversations, die kunnen leiden tot vertraagde meldingen of zelfs verlies van berichten.\nJe zal nu gevraagd worden deze optimalisaties uit te schakelen.</string>
   <string name="disable">Uitschakelen</string>
   <string name="selection_too_large">Het gekozen vlak is te groot</string>
+  <string name="no_accounts">(Geen actieve accounts)</string>
+  <string name="this_field_is_required">Dit veld is vereist</string>
+  <string name="correct_message">Bericht verbeteren</string>
+  <string name="send_corrected_message">Verbeterd bericht sturen</string>
 </resources>
