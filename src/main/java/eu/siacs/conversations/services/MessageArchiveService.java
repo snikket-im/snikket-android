@@ -189,6 +189,10 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 		}
 	}
 
+	public boolean queryInProgress(Conversation conversation) {
+		return queryInProgress(conversation, null);
+	}
+
 	public void processFin(Element fin, Jid from) {
 		if (fin == null) {
 			return;

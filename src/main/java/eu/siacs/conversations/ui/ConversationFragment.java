@@ -53,6 +53,7 @@ import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.entities.Presence;
 import eu.siacs.conversations.entities.Transferable;
 import eu.siacs.conversations.entities.TransferablePlaceholder;
+import eu.siacs.conversations.services.MessageArchiveService;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.ui.XmppActivity.OnPresenceSelected;
 import eu.siacs.conversations.ui.XmppActivity.OnValueEdited;
@@ -1052,10 +1053,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 
 	protected void updateStatusMessages() {
 		synchronized (this.messageList) {
-			final XmppConnection connection = conversation.getAccount().getXmppConnection();
-			if (conversation.getLastClearHistory() != 0
-					&& connection != null
-					&& connection.getFeatures().mam()) {
+			if (showLoadMoreMessages(conversation)) {
 				this.messageList.add(0, Message.createLoadMoreMessage(conversation));
 			}
 			if (conversation.getMode() == Conversation.MODE_SINGLE) {
@@ -1081,8 +1079,14 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 		}
 	}
 
-	protected void showSnackbar(final int message, final int action,
-								final OnClickListener clickListener) {
+	private boolean showLoadMoreMessages(final Conversation c) {
+		final XmppConnection connection = c.getAccount().getXmppConnection();
+		final boolean mam = connection != null && connection.getFeatures().mam();
+		final MessageArchiveService service = activity.xmppConnectionService.getMessageArchiveService();
+		return mam && (c.getLastClearHistory() != 0  || (c.countMessages() == 0 && c.hasMessagesLeftOnServer()  && !service.queryInProgress(c)));
+	}
+
+	protected void showSnackbar(final int message, final int action, final OnClickListener clickListener) {
 		snackbar.setVisibility(View.VISIBLE);
 		snackbar.setOnClickListener(null);
 		snackbarMessage.setText(message);
