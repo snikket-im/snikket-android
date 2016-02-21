@@ -37,25 +37,24 @@ public class PgpEngine {
 		this.mXmppConnectionService = service;
 	}
 
-	public void decrypt(final Message message,
-			final UiCallback<Message> callback) {
+	public void decrypt(final Message message, final UiCallback<Message> callback) {
 		Intent params = new Intent();
 		params.setAction(OpenPgpApi.ACTION_DECRYPT_VERIFY);
+		final String uuid = message.getUuid();
 		if (message.getType() == Message.TYPE_TEXT) {
-			InputStream is = new ByteArrayInputStream(message.getBody()
-					.getBytes());
+			InputStream is = new ByteArrayInputStream(message.getBody().getBytes());
 			final OutputStream os = new ByteArrayOutputStream();
 			api.executeApiAsync(params, is, os, new IOpenPgpCallback() {
 
 				@Override
 				public void onReturn(Intent result) {
 					notifyPgpDecryptionService(message.getConversation().getAccount(), OpenPgpApi.ACTION_DECRYPT_VERIFY, result);
-					switch (result.getIntExtra(OpenPgpApi.RESULT_CODE,
-							OpenPgpApi.RESULT_CODE_ERROR)) {
+					switch (result.getIntExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_ERROR)) {
 					case OpenPgpApi.RESULT_CODE_SUCCESS:
 						try {
 							os.flush();
-							if (message.getEncryption() == Message.ENCRYPTION_PGP) {
+							if (message.getEncryption() == Message.ENCRYPTION_PGP
+									&& message.getUuid().equals(uuid)) {
 								message.setBody(os.toString());
 								message.setEncryption(Message.ENCRYPTION_DECRYPTED);
 								final HttpConnectionManager manager = mXmppConnectionService.getHttpConnectionManager();
