@@ -282,7 +282,9 @@ public class MucOptions {
 	}
 
 	public boolean participating() {
-		return !online() || self.getRole().ranks(Role.PARTICIPANT);
+		return !online()
+				|| self.getRole().ranks(Role.PARTICIPANT)
+				|| hasFeature("muc_unmoderated");
 	}
 
 	public boolean membersOnly() {
