@@ -63,7 +63,7 @@ public class PresenceParser extends AbstractParser implements
 				if (x != null) {
 					Element item = x.findChild("item");
 					if (item != null && !from.isBareJid()) {
-						mucOptions.setError(MucOptions.ERROR_NO_ERROR);
+						mucOptions.setError(MucOptions.Error.NONE);
 						MucOptions.User user = new MucOptions.User(mucOptions,from);
 						user.setAffiliation(item.getAttribute("affiliation"));
 						user.setRole(item.getAttribute("role"));
@@ -109,13 +109,17 @@ public class PresenceParser extends AbstractParser implements
 					if (codes.contains(MucOptions.STATUS_CODE_CHANGED_NICK)) {
 						mucOptions.mNickChangingInProgress = true;
 					} else if (codes.contains(MucOptions.STATUS_CODE_KICKED)) {
-						mucOptions.setError(MucOptions.KICKED_FROM_ROOM);
+						mucOptions.setError(MucOptions.Error.KICKED);
 					} else if (codes.contains(MucOptions.STATUS_CODE_BANNED)) {
-						mucOptions.setError(MucOptions.ERROR_BANNED);
+						mucOptions.setError(MucOptions.Error.BANNED);
 					} else if (codes.contains(MucOptions.STATUS_CODE_LOST_MEMBERSHIP)) {
-						mucOptions.setError(MucOptions.ERROR_MEMBERS_ONLY);
+						mucOptions.setError(MucOptions.Error.MEMBERS_ONLY);
+					} else if (codes.contains(MucOptions.STATUS_CODE_AFFILIATION_CHANGE)) {
+						mucOptions.setError(MucOptions.Error.MEMBERS_ONLY);
+					} else if (codes.contains(MucOptions.STATUS_CODE_SHUTDOWN)) {
+						mucOptions.setError(MucOptions.Error.SHUTDOWN);
 					} else {
-						mucOptions.setError(MucOptions.ERROR_UNKNOWN);
+						mucOptions.setError(MucOptions.Error.UNKNOWN);
 						Log.d(Config.LOGTAG, "unknown error in conference: " + packet);
 					}
 				} else if (!from.isBareJid()){
@@ -132,14 +136,14 @@ public class PresenceParser extends AbstractParser implements
 							mucOptions.onRenameListener.onFailure();
 						}
 					} else {
-						mucOptions.setError(MucOptions.ERROR_NICK_IN_USE);
+						mucOptions.setError(MucOptions.Error.NICK_IN_USE);
 					}
 				} else if (error != null && error.hasChild("not-authorized")) {
-					mucOptions.setError(MucOptions.ERROR_PASSWORD_REQUIRED);
+					mucOptions.setError(MucOptions.Error.PASSWORD_REQUIRED);
 				} else if (error != null && error.hasChild("forbidden")) {
-					mucOptions.setError(MucOptions.ERROR_BANNED);
+					mucOptions.setError(MucOptions.Error.BANNED);
 				} else if (error != null && error.hasChild("registration-required")) {
-					mucOptions.setError(MucOptions.ERROR_MEMBERS_ONLY);
+					mucOptions.setError(MucOptions.Error.BANNED);
 				}
 			}
 		}

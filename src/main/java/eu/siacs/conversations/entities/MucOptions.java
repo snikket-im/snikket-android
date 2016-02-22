@@ -91,22 +91,26 @@ public class MucOptions {
 		}
 	}
 
-	public static final int ERROR_NO_ERROR = 0;
-	public static final int ERROR_NICK_IN_USE = 1;
-	public static final int ERROR_UNKNOWN = 2;
-	public static final int ERROR_PASSWORD_REQUIRED = 3;
-	public static final int ERROR_BANNED = 4;
-	public static final int ERROR_MEMBERS_ONLY = 5;
-	public static final int ERROR_NO_RESPONSE = 6;
-
-	public static final int KICKED_FROM_ROOM = 9;
+	public enum Error {
+		NO_RESPONSE,
+		NONE,
+		NICK_IN_USE,
+		PASSWORD_REQUIRED,
+		BANNED,
+		MEMBERS_ONLY,
+		KICKED,
+		SHUTDOWN,
+		UNKNOWN
+	}
 
 	public static final String STATUS_CODE_ROOM_CONFIG_CHANGED = "104";
 	public static final String STATUS_CODE_SELF_PRESENCE = "110";
 	public static final String STATUS_CODE_BANNED = "301";
 	public static final String STATUS_CODE_CHANGED_NICK = "303";
 	public static final String STATUS_CODE_KICKED = "307";
-	public static final String STATUS_CODE_LOST_MEMBERSHIP = "321";
+	public static final String STATUS_CODE_AFFILIATION_CHANGE = "321";
+	public static final String STATUS_CODE_LOST_MEMBERSHIP = "322";
+	public static final String STATUS_CODE_SHUTDOWN = "332";
 
 	private interface OnEventListener {
 		void onSuccess();
@@ -245,7 +249,7 @@ public class MucOptions {
 	private Data form = new Data();
 	private Conversation conversation;
 	private boolean isOnline = false;
-	private int error = ERROR_NO_RESPONSE;
+	private Error error = Error.NONE;
 	public OnRenameListener onRenameListener = null;
 	private User self;
 	private String subject = null;
@@ -324,8 +328,8 @@ public class MucOptions {
 		return findUser(name) != null;
 	}
 
-	public void setError(int error) {
-		this.isOnline = isOnline && error == ERROR_NO_ERROR;
+	public void setError(Error error) {
+		this.isOnline = isOnline && error == Error.NONE;
 		this.error = error;
 	}
 
@@ -379,7 +383,7 @@ public class MucOptions {
 		return this.isOnline;
 	}
 
-	public int getError() {
+	public Error getError() {
 		return this.error;
 	}
 
@@ -389,7 +393,7 @@ public class MucOptions {
 
 	public void setOffline() {
 		this.users.clear();
-		this.error = ERROR_NO_RESPONSE;
+		this.error = Error.NO_RESPONSE;
 		this.isOnline = false;
 	}
 

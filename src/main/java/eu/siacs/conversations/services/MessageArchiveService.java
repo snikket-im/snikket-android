@@ -227,7 +227,6 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 			this.execute(nextQuery);
 			this.finalizeQuery(query, false);
 			synchronized (this.queries) {
-				this.queries.remove(query);
 				this.queries.add(nextQuery);
 			}
 		}

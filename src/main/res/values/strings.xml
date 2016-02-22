@@ -241,8 +241,7 @@
 	<string name="bookmark_already_exists">This bookmark already exists</string>
 	<string name="you">You</string>
 	<string name="action_edit_subject">Edit conference subject</string>
-	<string name="conference_not_found">Conference not found</string>
-	<string name="conference_unknown_error">Unknown error received</string>2
+	<string name="joining_conference">Joining conference…</string>
 	<string name="leave">Leave</string>
 	<string name="contact_added_you">Contact added you to contact list</string>
 	<string name="add_back">Add back</string>
@@ -340,6 +339,8 @@
 	<string name="conference_banned">You are banned from this conference</string>
 	<string name="conference_members_only">This conference is members only</string>
 	<string name="conference_kicked">You have been kicked from this conference</string>
+	<string name="conference_shutdown">The conference was shut down</string>
+	<string name="conference_unknown_error">You are no longer in this conference</string>
 	<string name="using_account">using account %s</string>
 	<string name="checking_x">Checking %s on HTTP host</string>
 	<string name="not_connected_try_again">You are not connected. Try again later</string>
