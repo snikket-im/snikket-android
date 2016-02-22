@@ -1083,10 +1083,18 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 	}
 
 	private boolean showLoadMoreMessages(final Conversation c) {
-		final XmppConnection connection = c.getAccount().getXmppConnection();
-		final boolean mam = connection != null && connection.getFeatures().mam();
+		final boolean mam = hasMamSupport(c);
 		final MessageArchiveService service = activity.xmppConnectionService.getMessageArchiveService();
 		return mam && (c.getLastClearHistory() != 0  || (c.countMessages() == 0 && c.hasMessagesLeftOnServer()  && !service.queryInProgress(c)));
+	}
+
+	private boolean hasMamSupport(final Conversation c) {
+		if (c.getMode() == Conversation.MODE_SINGLE) {
+			final XmppConnection connection = c.getAccount().getXmppConnection();
+			return connection != null && connection.getFeatures().mam();
+		} else {
+			return c.getMucOptions().mamSupport();
+		}
 	}
 
 	protected void showSnackbar(final int message, final int action, final OnClickListener clickListener) {
