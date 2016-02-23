@@ -16,4 +16,4 @@ android:
   licenses:
     - '.+'
 script:
-    - ./gradlew assembleFreeRelease
+    - ./gradlew assembleFreeRelease -PdisablePreDex
