@@ -16,4 +16,4 @@ android:
   licenses:
     - '.+'
 scrpit:
-	- TERM=dumb./gradlew assembleFreeRelease
+    - ./gradlew assembleFreeRelease
