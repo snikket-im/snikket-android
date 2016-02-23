@@ -411,6 +411,7 @@ public class MessageParser extends AbstractParser implements
 							replacedMessage.markUnread();
 						}
 						mXmppConnectionService.updateMessage(replacedMessage, uuid);
+						mXmppConnectionService.getNotificationService().updateNotification(false);
 						if (mXmppConnectionService.confirmMessages() && remoteMsgId != null && !isForwarded && !isTypeGroupChat) {
 							sendMessageReceipts(account, packet);
 						}
