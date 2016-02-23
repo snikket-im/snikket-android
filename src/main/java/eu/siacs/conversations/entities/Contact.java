@@ -45,7 +45,7 @@ public class Contact implements ListItem, Blockable {
 	protected String photoUri;
 	protected JSONObject keys = new JSONObject();
 	protected JSONArray groups = new JSONArray();
-	protected Presences presences = new Presences();
+	protected final Presences presences = new Presences();
 	protected Account account;
 	protected Avatar avatar;
 
@@ -220,10 +220,6 @@ public class Contact implements ListItem, Blockable {
 
 	public Presences getPresences() {
 		return this.presences;
-	}
-
-	public void setPresences(Presences pres) {
-		this.presences = pres;
 	}
 
 	public void updatePresence(final String resource, final Presence presence) {
