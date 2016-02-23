@@ -305,11 +305,13 @@ to sign up for the beta test.
 
 #### How do I build Conversations
 
-Make sure to have ANDROID_HOME point to your Android SDK
+Make sure to have ANDROID_HOME point to your Android SDK. Use the Android SDK Manager to install missing dependencies.
 
     git clone https://github.com/siacs/Conversations.git
     cd Conversations
-    ./gradlew build
+    ./gradlew assembleFreeRelease
+
+There are two build flavors available. *free* and *playstore*. Unless you know what you are doing you only need *free*.
 
 
 [![Build Status](https://travis-ci.org/siacs/Conversations.svg?branch=development)](https://travis-ci.org/siacs/Conversations)
