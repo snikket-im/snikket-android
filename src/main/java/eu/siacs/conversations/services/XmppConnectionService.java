@@ -1772,6 +1772,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		account.pendingConferenceLeaves.remove(conversation);
 		if (account.getStatus() == Account.State.ONLINE) {
 			conversation.resetMucOptions();
+			conversation.setHasMessagesLeftOnServer(false);
 			fetchConferenceConfiguration(conversation, new OnConferenceConfigurationFetched() {
 
 				private void join(Conversation conversation) {
@@ -1806,7 +1807,6 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 						conversation.setContactJid(joinJid);
 						databaseBackend.updateConversation(conversation);
 					}
-					conversation.setHasMessagesLeftOnServer(false);
 					if (conversation.getMucOptions().mamSupport()) {
 						getMessageArchiveService().catchupMUC(conversation);
 					}
@@ -1828,6 +1828,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		} else {
 			account.pendingConferenceJoins.add(conversation);
 			conversation.resetMucOptions();
+			conversation.setHasMessagesLeftOnServer(false);
 			updateConversationUi();
 		}
 	}
