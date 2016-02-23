@@ -45,9 +45,9 @@ public class ExportLogsService extends Service {
 			new Thread(new Runnable() {
 				@Override
 				public void run() {
-					running.set(false);
 					export();
 					stopForeground(true);
+					running.set(false);
 					stopSelf();
 				}
 			}).start();
