@@ -523,6 +523,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 			activity.getMenuInflater().inflate(R.menu.message_context, menu);
 			menu.setHeaderTitle(R.string.message_options);
 			MenuItem copyText = menu.findItem(R.id.copy_text);
+			MenuItem retryDecryption = menu.findItem(R.id.retry_decryption);
 			MenuItem correctMessage = menu.findItem(R.id.correct_message);
 			MenuItem shareWith = menu.findItem(R.id.share_with);
 			MenuItem sendAgain = menu.findItem(R.id.send_again);
@@ -534,6 +535,9 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 					&& !GeoHelper.isGeoUri(m.getBody())
 					&& m.treatAsDownloadable() != Message.Decision.MUST) {
 				copyText.setVisible(true);
+			}
+			if (m.getEncryption() == Message.ENCRYPTION_DECRYPTION_FAILED) {
+				retryDecryption.setVisible(true);
 			}
 			if (relevantForCorrection.getType() == Message.TYPE_TEXT
 					&& relevantForCorrection.isLastCorrectableMessage()) {
@@ -589,6 +593,9 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 				return true;
 			case R.id.cancel_transmission:
 				cancelTransmission(selectedMessage);
+				return true;
+			case R.id.retry_decryption:
+				retryDecryption(selectedMessage);
 				return true;
 			default:
 				return super.onContextItemSelected(item);
@@ -671,6 +678,12 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 		} else {
 			activity.xmppConnectionService.markMessage(message, Message.STATUS_SEND_FAILED);
 		}
+	}
+
+	private void retryDecryption(Message message) {
+		message.setEncryption(Message.ENCRYPTION_PGP);
+		activity.xmppConnectionService.updateConversationUi();
+		conversation.getAccount().getPgpDecryptionService().add(message);
 	}
 
 	protected void privateMessageWith(final Jid counterpart) {
