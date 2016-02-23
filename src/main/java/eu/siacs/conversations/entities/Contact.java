@@ -382,11 +382,13 @@ public class Contact implements ListItem, Blockable {
 					this.resetOption(Options.TO);
 					this.setOption(Options.FROM);
 					this.resetOption(Options.PREEMPTIVE_GRANT);
+					this.resetOption(Options.PENDING_SUBSCRIPTION_REQUEST);
 					break;
 				case "both":
 					this.setOption(Options.TO);
 					this.setOption(Options.FROM);
 					this.resetOption(Options.PREEMPTIVE_GRANT);
+					this.resetOption(Options.PENDING_SUBSCRIPTION_REQUEST);
 					break;
 				case "none":
 					this.resetOption(Options.FROM);
