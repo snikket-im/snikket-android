@@ -15,5 +15,5 @@ android:
     - extra-google-google_play_services
   licenses:
     - '.+'
-scrpit:
+script:
     - ./gradlew assembleFreeRelease
