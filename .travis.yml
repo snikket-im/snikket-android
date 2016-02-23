@@ -15,3 +15,5 @@ android:
     - extra-google-google_play_services
   licenses:
     - '.+'
+scrpit:
+	- TERM=dumb./gradlew assembleFreeRelease
