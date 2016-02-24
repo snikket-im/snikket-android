@@ -673,11 +673,15 @@ public class Conversation extends AbstractEntity implements Blockable {
 				next = outgoing;
 			}
 		}
-		if (Config.FORCE_E2E_ENCRYPTION && mode == MODE_SINGLE && next <= 0) {
-			if (axolotlService != null && axolotlService.isContactAxolotlCapable(getContact())) {
+		if (!Config.supportUnencrypted()
+				&& (mode == MODE_SINGLE || Config.supportOpenPgpOnly())
+				&& next <= 0) {
+			if (Config.supportOmemo() && (axolotlService != null && axolotlService.isContactAxolotlCapable(getContact()) || !Config.multipleEncryptionChoices())) {
 				return Message.ENCRYPTION_AXOLOTL;
-			} else {
+			} else if (Config.supportOtr()) {
 				return Message.ENCRYPTION_OTR;
+			} else if (Config.supportOpenPgp()) {
+				return Message.ENCRYPTION_PGP;
 			}
 		}
 		return next;
