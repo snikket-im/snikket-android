@@ -6,7 +6,6 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.IntentSender.SendIntentException;
-import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.ContextMenu;
@@ -512,7 +511,11 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 		mAccountJid.setText(getString(R.string.using_account, account));
 		mYourPhoto.setImageBitmap(avatarService().get(mConversation.getAccount(), getPixel(48)));
 		setTitle(mConversation.getName());
-		mFullJid.setText(mConversation.getJid().toBareJid().toString());
+		if (Config.LOCK_DOMAINS_IN_CONVERSATIONS && mConversation.getJid().getDomainpart().equals(Config.CONFERENCE_DOMAIN_LOCK)) {
+			mFullJid.setText(mConversation.getJid().getLocalpart());
+		} else {
+			mFullJid.setText(mConversation.getJid().toBareJid().toString());
+		}
 		mYourNick.setText(mucOptions.getActualNick());
 		mRoleAffiliaton = (TextView) findViewById(R.id.muc_role);
 		if (mucOptions.online()) {

@@ -121,6 +121,17 @@ public class Contact implements ListItem, Blockable {
 		}
 	}
 
+	@Override
+	public String getDisplayJid() {
+		if (Config.LOCK_DOMAINS_IN_CONVERSATIONS && jid != null && jid.getDomainpart().equals(Config.DOMAIN_LOCK)) {
+			return jid.getLocalpart();
+		} else if (jid != null) {
+			return jid.toString();
+		} else {
+			return null;
+		}
+	}
+
 	public String getProfilePhoto() {
 		return this.photoUri;
 	}

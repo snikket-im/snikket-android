@@ -76,10 +76,10 @@ public class ListItemAdapter extends ArrayAdapter<ListItem> {
 				tagLayout.addView(tv);
 			}
 		}
-		final Jid jid = item.getJid();
+		final String jid = item.getDisplayJid();
 		if (jid != null) {
 			tvJid.setVisibility(View.VISIBLE);
-			tvJid.setText(jid.toString());
+			tvJid.setText(jid);
 		} else {
 			tvJid.setVisibility(View.GONE);
 		}

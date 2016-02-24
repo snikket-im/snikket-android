@@ -5,13 +5,15 @@ import java.util.List;
 import eu.siacs.conversations.xmpp.jid.Jid;
 
 public interface ListItem extends Comparable<ListItem> {
-	public String getDisplayName();
+	String getDisplayName();
 
-	public Jid getJid();
+	String getDisplayJid();
 
-	public List<Tag> getTags();
+	Jid getJid();
 
-	public final class Tag {
+	List<Tag> getTags();
+
+	final class Tag {
 		private final String name;
 		private final int color;
 
@@ -29,5 +31,5 @@ public interface ListItem extends Comparable<ListItem> {
 		}
 	}
 
-	public boolean match(final String needle);
+	boolean match(final String needle);
 }

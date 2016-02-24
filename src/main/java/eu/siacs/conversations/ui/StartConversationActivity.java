@@ -44,6 +44,7 @@ import android.widget.Checkable;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
@@ -64,7 +65,6 @@ import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.ListItem;
 import eu.siacs.conversations.entities.Presence;
-import eu.siacs.conversations.entities.Presences;
 import eu.siacs.conversations.services.XmppConnectionService.OnRosterUpdate;
 import eu.siacs.conversations.ui.adapter.KnownHostsAdapter;
 import eu.siacs.conversations.ui.adapter.ListItemAdapter;
@@ -390,7 +390,13 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 		final View dialogView = getLayoutInflater().inflate(R.layout.join_conference_dialog, null);
 		final Spinner spinner = (Spinner) dialogView.findViewById(R.id.account);
 		final AutoCompleteTextView jid = (AutoCompleteTextView) dialogView.findViewById(R.id.jid);
-		jid.setAdapter(new KnownHostsAdapter(this, android.R.layout.simple_list_item_1, mKnownConferenceHosts));
+		final boolean lock = Config.LOCK_DOMAINS_IN_CONVERSATIONS && Config.CONFERENCE_DOMAIN_LOCK != null;
+		final TextView jabberIdDesc = (TextView) dialogView.findViewById(R.id.jabber_id);
+		jabberIdDesc.setText(lock ? R.string.conference_name : R.string.conference_address);
+		jid.setHint(lock ? R.string.conference_name : R.string.conference_address_example);
+		if (!lock) {
+			jid.setAdapter(new KnownHostsAdapter(this, android.R.layout.simple_list_item_1, mKnownConferenceHosts));
+		}
 		if (prefilledJid != null) {
 			jid.append(prefilledJid);
 		}
@@ -416,9 +422,13 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 						}
 						final Jid conferenceJid;
 						try {
-							conferenceJid = Jid.fromString(jid.getText().toString());
+							if (lock) {
+								conferenceJid = Jid.fromParts(jid.getText().toString(),Config.CONFERENCE_DOMAIN_LOCK, null);
+							} else {
+								conferenceJid = Jid.fromString(jid.getText().toString());
+							}
 						} catch (final InvalidJidException e) {
-							jid.setError(getString(R.string.invalid_jid));
+							jid.setError(getString(lock ? R.string.invalid_conference_name : R.string.invalid_jid));
 							return;
 						}
 

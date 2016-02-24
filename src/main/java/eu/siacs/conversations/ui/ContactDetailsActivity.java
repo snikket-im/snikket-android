@@ -139,7 +139,7 @@ public class ContactDetailsActivity extends XmppActivity implements OnAccountUpd
 						ContactDetailsActivity.this);
 				builder.setTitle(getString(R.string.action_add_phone_book));
 				builder.setMessage(getString(R.string.add_phone_book_text,
-						contact.getJid()));
+						contact.getDisplayJid()));
 				builder.setNegativeButton(getString(R.string.cancel), null);
 				builder.setPositiveButton(getString(R.string.add), addToPhonebook);
 				builder.create().show();
@@ -236,7 +236,7 @@ public class ContactDetailsActivity extends XmppActivity implements OnAccountUpd
 				builder.setTitle(getString(R.string.action_delete_contact))
 					.setMessage(
 							getString(R.string.remove_contact_text,
-								contact.getJid()))
+								contact.getDisplayJid()))
 					.setPositiveButton(getString(R.string.delete),
 							removeFromRoster).create().show();
 				break;
@@ -358,10 +358,10 @@ public class ContactDetailsActivity extends XmppActivity implements OnAccountUpd
 		}
 
 		if (contact.getPresences().size() > 1) {
-			contactJidTv.setText(contact.getJid() + " ("
+			contactJidTv.setText(contact.getDisplayJid() + " ("
 					+ contact.getPresences().size() + ")");
 		} else {
-			contactJidTv.setText(contact.getJid().toString());
+			contactJidTv.setText(contact.getDisplayJid());
 		}
 		String account;
 		if (Config.DOMAIN_LOCK != null) {

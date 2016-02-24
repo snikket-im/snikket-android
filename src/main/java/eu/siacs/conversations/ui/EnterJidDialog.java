@@ -2,13 +2,12 @@ package eu.siacs.conversations.ui;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface.OnClickListener;
-import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -44,12 +43,17 @@ public class EnterJidDialog {
 		final String title, final String positiveButton,
 		final String prefilledJid, final String account, boolean allowEditJid
 	) {
+		final boolean lock = Config.LOCK_DOMAINS_IN_CONVERSATIONS && Config.DOMAIN_LOCK != null;
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
 		builder.setTitle(title);
 		View dialogView = LayoutInflater.from(context).inflate(R.layout.enter_jid_dialog, null);
+		final TextView jabberIdDesc = (TextView) dialogView.findViewById(R.id.jabber_id);
+		jabberIdDesc.setText(lock ? R.string.username : R.string.account_settings_jabber_id);
 		final Spinner spinner = (Spinner) dialogView.findViewById(R.id.account);
 		final AutoCompleteTextView jid = (AutoCompleteTextView) dialogView.findViewById(R.id.jid);
-		jid.setAdapter(new KnownHostsAdapter(context,android.R.layout.simple_list_item_1, knownHosts));
+		if (!lock) {
+			jid.setAdapter(new KnownHostsAdapter(context, android.R.layout.simple_list_item_1, knownHosts));
+		}
 		if (prefilledJid != null) {
 			jid.append(prefilledJid);
 			if (!allowEditJid) {
@@ -60,6 +64,7 @@ public class EnterJidDialog {
 			}
 		}
 
+		jid.setHint(Config.LOCK_DOMAINS_IN_CONVERSATIONS && Config.DOMAIN_LOCK != null ? R.string.username_hint : R.string.account_settings_example_jabber_id);
 
 		if (account == null) {
 			StartConversationActivity.populateAccountSpinner(context, activatedAccounts, spinner);
@@ -95,9 +100,13 @@ public class EnterJidDialog {
 				}
 				final Jid contactJid;
 				try {
-					contactJid = Jid.fromString(jid.getText().toString());
+					if (lock) {
+						contactJid = Jid.fromParts(jid.getText().toString(), Config.DOMAIN_LOCK, null);
+					} else {
+						contactJid = Jid.fromString(jid.getText().toString());
+					}
 				} catch (final InvalidJidException e) {
-					jid.setError(context.getString(R.string.invalid_jid));
+					jid.setError(context.getString(lock ? R.string.invalid_username : R.string.invalid_jid));
 					return;
 				}
 

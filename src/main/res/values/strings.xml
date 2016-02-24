@@ -522,6 +522,8 @@
 	<string name="username">Username</string>
 	<string name="username_hint">Username</string>
 	<string name="invalid_username">This is not a valid username</string>
+	<string name="conference_name">Conference name</string>
+	<string name="invalid_conference_name">This is not a valid conference name</string>
 	<string name="download_failed_server_not_found">Download failed: Server not found</string>
 	<string name="download_failed_file_not_found">Download failed: File not found</string>
 	<string name="download_failed_could_not_connect">Download failed: Could not connect to host</string>
