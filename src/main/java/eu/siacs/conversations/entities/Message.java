@@ -449,6 +449,7 @@ public class Message extends AbstractEntity {
 						this.getTransferable() == null &&
 						message.getTransferable() == null &&
 						message.getEncryption() != Message.ENCRYPTION_PGP &&
+						message.getEncryption() != Message.ENCRYPTION_DECRYPTION_FAILED &&
 						this.getType() == message.getType() &&
 						//this.getStatus() == message.getStatus() &&
 						isStatusMergeable(this.getStatus(), message.getStatus()) &&

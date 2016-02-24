@@ -97,7 +97,6 @@
 	<string name="contact_has_no_pgp_key">Conversations is unable to encrypt your messages because your contact is not announcing his or hers public key.\n\n<small>Please ask your contact to setup OpenPGP.</small></string>
 	<string name="no_pgp_keys">No OpenPGP Keys found</string>
 	<string name="contacts_have_no_pgp_keys">Conversations is unable to encrypt your messages because your contacts are not announcing their public key.\n\n<small>Please ask your contacts to setup OpenPGP.</small></string>
-	<string name="encrypted_message_received"><i>Encrypted message received. Touch to decrypt.</i></string>
 	<string name="pref_general">General</string>
 	<string name="pref_xmpp_resource">XMPP resource</string>
 	<string name="pref_xmpp_resource_summary">The name this client identifies itself with</string>
