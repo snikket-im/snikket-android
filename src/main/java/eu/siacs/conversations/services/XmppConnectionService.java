@@ -2629,7 +2629,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	}
 
 	public boolean allowMessageCorrection() {
-		return getPreferences().getBoolean("allow_message_correction", true);
+		return getPreferences().getBoolean("allow_message_correction", false);
 	}
 
 	public boolean sendChatStates() {
