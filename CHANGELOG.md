@@ -1,5 +1,9 @@
 ###Changelog
 
+####Version 1.10.1
+* made message correction opt-in
+* various bug fixes
+
 ####Version 1.10.0
 * Support for XEP-0357: Push Notifications
 * Support for XEP-0308: Last Message Correction
