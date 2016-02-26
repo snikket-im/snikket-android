@@ -262,7 +262,6 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 			if (mPushManagementService.available(account)) {
 				mPushManagementService.registerPushTokenOnServer(account);
 			}
-			mMessageArchiveService.executePendingQueries(account);
 			connectMultiModeConversations(account);
 			syncDirtyContacts(account);
 		}
@@ -276,6 +275,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 				mOnAccountUpdate.onAccountUpdate();
 			}
 			if (account.getStatus() == Account.State.ONLINE) {
+				mMessageArchiveService.executePendingQueries(account);
 				if (connection != null && connection.getFeatures().csi()) {
 					if (checkListeners()) {
 						Log.d(Config.LOGTAG, account.getJid().toBareJid() + " sending csi//inactive");
