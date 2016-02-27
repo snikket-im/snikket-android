@@ -533,7 +533,7 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 			mSearchEditText.append(mInitialJid);
 			filter(mInitialJid);
 		}
-		return true;
+		return super.onCreateOptionsMenu(menu);
 	}
 
 	@Override

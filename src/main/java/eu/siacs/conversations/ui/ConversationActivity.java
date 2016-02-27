@@ -420,7 +420,7 @@ public class ConversationActivity extends XmppActivity
 				}
 			}
 		}
-		return true;
+		return super.onCreateOptionsMenu(menu);
 	}
 
 	protected void selectPresenceToAttachFile(final int attachmentChoice, final int encryption) {

@@ -42,6 +42,7 @@ import android.preference.PreferenceManager;
 import android.text.InputType;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -375,6 +376,19 @@ public abstract class XmppActivity extends Activity {
 		if (ab!=null) {
 			ab.setDisplayHomeAsUpEnabled(true);
 		}
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		final MenuItem menuSettings = menu.findItem(R.id.action_settings);
+		final MenuItem menuManageAccounts = menu.findItem(R.id.action_accounts);
+		if (menuSettings != null) {
+			menuSettings.setVisible(!Config.LOCK_SETTINGS);
+		}
+		if (menuManageAccounts != null) {
+			menuManageAccounts.setVisible(!Config.LOCK_SETTINGS);
+		}
+		return super.onCreateOptionsMenu(menu);
 	}
 
 	protected boolean showBatteryOptimizationWarning() {

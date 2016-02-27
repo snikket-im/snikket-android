@@ -333,7 +333,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.muc_details, menu);
-		return true;
+		return super.onCreateOptionsMenu(menu);
 	}
 
 	@Override

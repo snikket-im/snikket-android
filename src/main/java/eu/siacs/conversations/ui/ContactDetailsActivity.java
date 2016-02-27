@@ -297,7 +297,7 @@ public class ContactDetailsActivity extends XmppActivity implements OnAccountUpd
 			edit.setVisible(false);
 			delete.setVisible(false);
 		}
-		return true;
+		return super.onCreateOptionsMenu(menu);
 	}
 
 	private void populateView() {
