@@ -740,6 +740,7 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 					Presence.Status s = p == null ? Presence.Status.OFFLINE : p.getStatus();
 					if (contact.showInRoster() && contact.match(needle)
 							&& (!this.mHideOfflineContacts
+							|| (needle != null && !needle.trim().isEmpty())
 							|| s.compareTo(Presence.Status.OFFLINE) < 0)) {
 						this.contacts.add(contact);
 					}
