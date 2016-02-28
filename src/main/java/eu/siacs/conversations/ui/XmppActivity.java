@@ -799,7 +799,7 @@ public abstract class XmppActivity extends Activity {
 				+ "\n\n" + CryptoHelper.prettifyFingerprint(fingerprint.substring(2))
 				+ "\n\n" + getString(R.string.purge_key_desc_part2));
 		builder.setNegativeButton(getString(R.string.cancel), null);
-		builder.setPositiveButton(getString(R.string.accept),
+		builder.setPositiveButton(getString(R.string.purge_key),
 				new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
