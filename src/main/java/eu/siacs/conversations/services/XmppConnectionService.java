@@ -1782,9 +1782,8 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 
 				private void join(Conversation conversation) {
 					Account account = conversation.getAccount();
-					final String nick = conversation.getMucOptions().getProposedNick();
-					final Jid joinJid = conversation.getMucOptions().createJoinJid(nick);
 					final MucOptions mucOptions = conversation.getMucOptions();
+					final Jid joinJid = mucOptions.getSelf().getFullJid();
 					Log.d(Config.LOGTAG, account.getJid().toBareJid().toString() + ": joining conversation " + joinJid.toString());
 					PresencePacket packet = new PresencePacket();
 					packet.setFrom(conversation.getAccount().getJid());
@@ -1947,7 +1946,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		account.pendingConferenceLeaves.remove(conversation);
 		if (account.getStatus() == Account.State.ONLINE || now) {
 			PresencePacket packet = new PresencePacket();
-			packet.setTo(conversation.getJid());
+			packet.setTo(conversation.getMucOptions().getSelf().getFullJid());
 			packet.setFrom(conversation.getAccount().getJid());
 			packet.setAttribute("type", "unavailable");
 			sendPresencePacket(conversation.getAccount(), packet);
@@ -2047,9 +2046,9 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		sendIqPacket(conversation.getAccount(), request, new OnIqPacketReceived() {
 			@Override
 			public void onIqPacketReceived(Account account, IqPacket packet) {
-				if (packet.getType() == IqPacket.TYPE.RESULT) {
+				Element query = packet.findChild("query","http://jabber.org/protocol/disco#info");
+				if (packet.getType() == IqPacket.TYPE.RESULT && query != null) {
 					ArrayList<String> features = new ArrayList<>();
-					Element query = packet.query();
 					for (Element child : query.getChildren()) {
 						if (child != null && child.getName().equals("feature")) {
 							String var = child.getAttribute("var");
@@ -2066,6 +2065,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 					if (callback != null) {
 						callback.onConferenceConfigurationFetched(conversation);
 					}
+					Log.d(Config.LOGTAG,account.getJid().toBareJid()+": fetched muc configuration for "+conversation.getJid().toBareJid()+" - "+features.toString());
 					updateConversationUi();
 				} else if (packet.getType() == IqPacket.TYPE.ERROR) {
 					if (callback != null) {

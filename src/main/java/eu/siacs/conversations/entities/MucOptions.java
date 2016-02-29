@@ -248,7 +248,7 @@ public class MucOptions {
 	private Account account;
 	private final Map<String, User> users = Collections.synchronizedMap(new LinkedHashMap<String, User>());
 	private final Set<Jid> members = Collections.synchronizedSet(new HashSet<Jid>());
-	private List<String> features = new ArrayList<>();
+	private final List<String> features = new ArrayList<>();
 	private Data form = new Data();
 	private Conversation conversation;
 	private boolean isOnline = false;
