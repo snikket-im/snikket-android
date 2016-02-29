@@ -17,6 +17,7 @@ import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
+import android.text.util.Linkify;
 import android.util.DisplayMetrics;
 import android.util.Patterns;
 import android.view.View;
@@ -34,6 +35,7 @@ import java.lang.ref.WeakReference;
 import java.util.List;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.axolotl.XmppAxolotlSession;
@@ -53,6 +55,11 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 	private static final int SENT = 0;
 	private static final int RECEIVED = 1;
 	private static final int STATUS = 2;
+	private static final Pattern XMPP_PATTERN = Pattern
+			.compile("xmpp\\:(?:(?:["
+					+ Patterns.GOOD_IRI_CHAR
+					+ "\\;\\/\\?\\@\\&\\=\\#\\~\\-\\.\\+\\!\\*\\'\\(\\)\\,\\_])"
+					+ "|(?:\\%[a-fA-F0-9]{2}))+");
 
 	private ConversationActivity activity;
 
@@ -349,6 +356,9 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 				urlCount++;
 			}
 			viewHolder.messageBody.setTextIsSelectable(urlCount <= 1);
+			viewHolder.messageBody.setAutoLinkMask(0);
+			Linkify.addLinks(viewHolder.messageBody, Linkify.WEB_URLS);
+			Linkify.addLinks(viewHolder.messageBody, XMPP_PATTERN, "xmpp");
 		} else {
 			viewHolder.messageBody.setText("");
 			viewHolder.messageBody.setTextIsSelectable(false);
