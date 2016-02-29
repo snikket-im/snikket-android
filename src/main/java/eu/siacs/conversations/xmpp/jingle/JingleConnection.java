@@ -218,7 +218,7 @@ public class JingleConnection implements Transferable {
 	public void init(final Message message) {
 		if (message.getEncryption() == Message.ENCRYPTION_AXOLOTL) {
 			Conversation conversation = message.getConversation();
-			conversation.getAccount().getAxolotlService().prepareKeyTransportMessage(conversation.getContact(), new OnMessageCreatedCallback() {
+			conversation.getAccount().getAxolotlService().prepareKeyTransportMessage(conversation, new OnMessageCreatedCallback() {
 				@Override
 				public void run(XmppAxolotlMessage xmppAxolotlMessage) {
 					if (xmppAxolotlMessage != null) {

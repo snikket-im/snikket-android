@@ -81,13 +81,14 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 		}
 	}
 
-	public boolean fetchMapHasErrors(Contact contact) {
-		Jid jid = contact.getJid().toBareJid();
-		if (deviceIds.get(jid) != null) {
-			for (Integer foreignId : this.deviceIds.get(jid)) {
-				AxolotlAddress address = new AxolotlAddress(jid.toString(), foreignId);
-				if (fetchStatusMap.getAll(address).containsValue(FetchStatus.ERROR)) {
-					return true;
+	public boolean fetchMapHasErrors(List<Jid> jids) {
+		for(Jid jid : jids) {
+			if (deviceIds.get(jid) != null) {
+				for (Integer foreignId : this.deviceIds.get(jid)) {
+					AxolotlAddress address = new AxolotlAddress(jid.toString(), foreignId);
+					if (fetchStatusMap.getAll(address).containsValue(FetchStatus.ERROR)) {
+						return true;
+					}
 				}
 			}
 		}
@@ -242,12 +243,29 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 		return axolotlStore.getContactKeysWithTrust(account.getJid().toBareJid().toString(), trust);
 	}
 
-	public Set<IdentityKey> getKeysWithTrust(XmppAxolotlSession.Trust trust, Contact contact) {
-		return axolotlStore.getContactKeysWithTrust(contact.getJid().toBareJid().toString(), trust);
+	public Set<IdentityKey> getKeysWithTrust(XmppAxolotlSession.Trust trust, Jid jid) {
+		return axolotlStore.getContactKeysWithTrust(jid.toBareJid().toString(), trust);
 	}
 
-	public long getNumTrustedKeys(Contact contact) {
-		return axolotlStore.getContactNumTrustedKeys(contact.getJid().toBareJid().toString());
+	public Set<IdentityKey> getKeysWithTrust(XmppAxolotlSession.Trust trust, List<Jid> jids) {
+		Set<IdentityKey> keys = new HashSet<>();
+		for(Jid jid : jids) {
+			keys.addAll(axolotlStore.getContactKeysWithTrust(jid.toString(), trust));
+		}
+		return keys;
+	}
+
+	public long getNumTrustedKeys(Jid jid) {
+		return axolotlStore.getContactNumTrustedKeys(jid.toBareJid().toString());
+	}
+
+	public boolean anyTargetHasNoTrustedKeys(List<Jid> jids) {
+		for(Jid jid : jids) {
+			if (axolotlStore.getContactNumTrustedKeys(jid.toBareJid().toString()) == 0) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	private AxolotlAddress getAddressForJid(Jid jid) {
@@ -259,9 +277,17 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 		return new HashSet<>(this.sessions.getAll(ownAddress).values());
 	}
 
-	private Set<XmppAxolotlSession> findSessionsforContact(Contact contact) {
+	private Set<XmppAxolotlSession> findSessionsForContact(Contact contact) {
 		AxolotlAddress contactAddress = getAddressForJid(contact.getJid());
 		return new HashSet<>(this.sessions.getAll(contactAddress).values());
+	}
+
+	private Set<XmppAxolotlSession> findSessionsForConversation(Conversation conversation) {
+		HashSet<XmppAxolotlSession> sessions = new HashSet<>();
+		for(Jid jid : getCryptoTargets(conversation)) {
+			sessions.addAll(this.sessions.getAll(getAddressForJid(jid)).values());
+		}
+		return sessions;
 	}
 
 	public Set<String> getFingerprintsForOwnSessions() {
@@ -274,15 +300,14 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 
 	public Set<String> getFingerprintsForContact(final Contact contact) {
 		Set<String> fingerprints = new HashSet<>();
-		for (XmppAxolotlSession session : findSessionsforContact(contact)) {
+		for (XmppAxolotlSession session : findSessionsForContact(contact)) {
 			fingerprints.add(session.getFingerprint());
 		}
 		return fingerprints;
 	}
 
-	private boolean hasAny(Contact contact) {
-		AxolotlAddress contactAddress = getAddressForJid(contact.getJid());
-		return sessions.hasAny(contactAddress);
+	private boolean hasAny(Jid jid) {
+		return sessions.hasAny(getAddressForJid(jid));
 	}
 
 	public boolean isPepBroken() {
@@ -594,10 +619,25 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 		});
 	}
 
-	public boolean isContactAxolotlCapable(Contact contact) {
-		Jid jid = contact.getJid().toBareJid();
-		return hasAny(contact) ||
-				(deviceIds.containsKey(jid) && !deviceIds.get(jid).isEmpty());
+	public boolean isConversationAxolotlCapable(Conversation conversation) {
+		final List<Jid> jids = getCryptoTargets(conversation);
+		for(Jid jid : jids) {
+			if (!hasAny(jid) && (!deviceIds.containsKey(jid) || deviceIds.get(jid).isEmpty())) {
+				return false;
+			}
+		}
+		return jids.size() > 0;
+	}
+
+	public List<Jid> getCryptoTargets(Conversation conversation) {
+		final List<Jid> jids;
+		if (conversation.getMode() == Conversation.MODE_SINGLE) {
+			jids = Arrays.asList(conversation.getJid().toBareJid());
+		} else {
+			jids = conversation.getMucOptions().getMembers();
+			jids.remove(account.getJid().toBareJid());
+		}
+		return jids;
 	}
 
 	public XmppAxolotlSession.Trust getFingerprintTrust(String fingerprint) {
@@ -753,33 +793,31 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 	}
 
 	public Set<AxolotlAddress> findDevicesWithoutSession(final Conversation conversation) {
-		return findDevicesWithoutSession(conversation.getContact().getJid().toBareJid());
-	}
-
-	public Set<AxolotlAddress> findDevicesWithoutSession(final Jid contactJid) {
-		Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Finding devices without session for " + contactJid);
 		Set<AxolotlAddress> addresses = new HashSet<>();
-		if (deviceIds.get(contactJid) != null) {
-			for (Integer foreignId : this.deviceIds.get(contactJid)) {
-				AxolotlAddress address = new AxolotlAddress(contactJid.toString(), foreignId);
-				if (sessions.get(address) == null) {
-					IdentityKey identityKey = axolotlStore.loadSession(address).getSessionState().getRemoteIdentityKey();
-					if (identityKey != null) {
-						Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Already have session for " + address.toString() + ", adding to cache...");
-						XmppAxolotlSession session = new XmppAxolotlSession(account, axolotlStore, address, identityKey);
-						sessions.put(address, session);
-					} else {
-						Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Found device " + contactJid + ":" + foreignId);
-						if (fetchStatusMap.get(address) != FetchStatus.ERROR) {
-							addresses.add(address);
+		for(Jid jid : getCryptoTargets(conversation)) {
+			Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Finding devices without session for " + jid);
+			if (deviceIds.get(jid) != null) {
+				for (Integer foreignId : this.deviceIds.get(jid)) {
+					AxolotlAddress address = new AxolotlAddress(jid.toString(), foreignId);
+					if (sessions.get(address) == null) {
+						IdentityKey identityKey = axolotlStore.loadSession(address).getSessionState().getRemoteIdentityKey();
+						if (identityKey != null) {
+							Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Already have session for " + address.toString() + ", adding to cache...");
+							XmppAxolotlSession session = new XmppAxolotlSession(account, axolotlStore, address, identityKey);
+							sessions.put(address, session);
 						} else {
-							Log.d(Config.LOGTAG,getLogprefix(account)+"skipping over "+address+" because it's broken");
+							Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Found device " + jid + ":" + foreignId);
+							if (fetchStatusMap.get(address) != FetchStatus.ERROR) {
+								addresses.add(address);
+							} else {
+								Log.d(Config.LOGTAG, getLogprefix(account) + "skipping over " + address + " because it's broken");
+							}
 						}
 					}
 				}
+			} else {
+				Log.w(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Have no target devices in PEP!");
 			}
-		} else {
-			Log.w(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Have no target devices in PEP!");
 		}
 		if (deviceIds.get(account.getJid().toBareJid()) != null) {
 			for (Integer ownId : this.deviceIds.get(account.getJid().toBareJid())) {
@@ -827,7 +865,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 	}
 
 	public boolean trustedSessionVerified(final Conversation conversation) {
-		Set<XmppAxolotlSession> sessions = findSessionsforContact(conversation.getContact());
+		Set<XmppAxolotlSession> sessions = findSessionsForConversation(conversation);
 		sessions.addAll(findOwnSessions());
 		boolean verified = false;
 		for(XmppAxolotlSession session : sessions) {
@@ -842,26 +880,32 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 		return verified;
 	}
 
-	public boolean hasPendingKeyFetches(Account account, Contact contact) {
+	public boolean hasPendingKeyFetches(Account account, List<Jid> jids) {
 		AxolotlAddress ownAddress = new AxolotlAddress(account.getJid().toBareJid().toString(), 0);
-		AxolotlAddress foreignAddress = new AxolotlAddress(contact.getJid().toBareJid().toString(), 0);
-		return fetchStatusMap.getAll(ownAddress).containsValue(FetchStatus.PENDING)
-				|| fetchStatusMap.getAll(foreignAddress).containsValue(FetchStatus.PENDING);
-
+		if (fetchStatusMap.getAll(ownAddress).containsValue(FetchStatus.PENDING)) {
+			return true;
+		}
+		for(Jid jid : jids) {
+			AxolotlAddress foreignAddress = new AxolotlAddress(jid.toBareJid().toString(), 0);
+			if (fetchStatusMap.getAll(foreignAddress).containsValue(FetchStatus.PENDING)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	@Nullable
-	private XmppAxolotlMessage buildHeader(Contact contact) {
+	private XmppAxolotlMessage buildHeader(Conversation conversation) {
 		final XmppAxolotlMessage axolotlMessage = new XmppAxolotlMessage(
-				contact.getJid().toBareJid(), getOwnDeviceId());
+				account.getJid().toBareJid(), getOwnDeviceId());
 
-		Set<XmppAxolotlSession> contactSessions = findSessionsforContact(contact);
+		Set<XmppAxolotlSession> remoteSessions = findSessionsForConversation(conversation);
 		Set<XmppAxolotlSession> ownSessions = findOwnSessions();
-		if (contactSessions.isEmpty()) {
+		if (remoteSessions.isEmpty()) {
 			return null;
 		}
 		Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Building axolotl foreign keyElements...");
-		for (XmppAxolotlSession session : contactSessions) {
+		for (XmppAxolotlSession session : remoteSessions) {
 			Log.v(Config.LOGTAG, AxolotlService.getLogprefix(account) + session.getRemoteAddress().toString());
 			axolotlMessage.addDevice(session);
 		}
@@ -876,7 +920,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 
 	@Nullable
 	public XmppAxolotlMessage encrypt(Message message) {
-		XmppAxolotlMessage axolotlMessage = buildHeader(message.getContact());
+		XmppAxolotlMessage axolotlMessage = buildHeader(message.getConversation());
 
 		if (axolotlMessage != null) {
 			final String content;
@@ -913,11 +957,11 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 		});
 	}
 
-	public void prepareKeyTransportMessage(final Contact contact, final OnMessageCreatedCallback onMessageCreatedCallback) {
+	public void prepareKeyTransportMessage(final Conversation conversation, final OnMessageCreatedCallback onMessageCreatedCallback) {
 		executor.execute(new Runnable() {
 			@Override
 			public void run() {
-				XmppAxolotlMessage axolotlMessage = buildHeader(contact);
+				XmppAxolotlMessage axolotlMessage = buildHeader(conversation);
 				onMessageCreatedCallback.run(axolotlMessage);
 			}
 		});

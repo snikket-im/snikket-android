@@ -4,9 +4,11 @@ import android.annotation.SuppressLint;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.xmpp.forms.Data;
@@ -245,6 +247,7 @@ public class MucOptions {
 
 	private Account account;
 	private final Map<String, User> users = Collections.synchronizedMap(new LinkedHashMap<String, User>());
+	private final Set<Jid> members = Collections.synchronizedSet(new HashSet<Jid>());
 	private List<String> features = new ArrayList<>();
 	private Data form = new Data();
 	private Conversation conversation;
@@ -500,5 +503,13 @@ public class MucOptions {
 
 	public Conversation getConversation() {
 		return this.conversation;
+	}
+
+	public void putMember(Jid jid) {
+		members.add(jid);
+	}
+
+	public List<Jid> getMembers() {
+		return new ArrayList<>(members);
 	}
 }

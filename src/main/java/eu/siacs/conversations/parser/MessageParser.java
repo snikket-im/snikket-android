@@ -103,7 +103,7 @@ public class MessageParser extends AbstractParser implements
 		}
 	}
 
-	private Message parseAxolotlChat(Element axolotlMessage, Jid from, String id, Conversation conversation, int status) {
+	private Message parseAxolotlChat(Element axolotlMessage, Jid from,  Conversation conversation, int status) {
 		Message finishedMessage = null;
 		AxolotlService service = conversation.getAccount().getAxolotlService();
 		XmppAxolotlMessage xmppAxolotlMessage = XmppAxolotlMessage.fromElement(axolotlMessage, from.toBareJid());
@@ -357,7 +357,17 @@ public class MessageParser extends AbstractParser implements
 			} else if (pgpEncrypted != null && Config.supportOpenPgp()) {
 				message = new Message(conversation, pgpEncrypted, Message.ENCRYPTION_PGP, status);
 			} else if (axolotlEncrypted != null && Config.supportOmemo()) {
-				message = parseAxolotlChat(axolotlEncrypted, from, remoteMsgId, conversation, status);
+				Jid origin;
+				if (conversation.getMode() == Conversation.MODE_MULTI) {
+					origin = conversation.getMucOptions().getTrueCounterpart(counterpart.getResourcepart());
+					if (origin == null) {
+						Log.d(Config.LOGTAG,"axolotl message in non anonymous conference received");
+						return;
+					}
+				} else {
+					origin = from;
+				}
+				message = parseAxolotlChat(axolotlEncrypted, origin, conversation, status);
 				if (message == null) {
 					return;
 				}

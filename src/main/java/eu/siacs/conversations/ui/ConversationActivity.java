@@ -408,7 +408,7 @@ public class ConversationActivity extends XmppActivity
 					menuContactDetails.setVisible(false);
 					menuAttach.setVisible(getSelectedConversation().getAccount().httpUploadAvailable() && getSelectedConversation().getMucOptions().participating());
 					menuInviteContact.setVisible(getSelectedConversation().getMucOptions().canInvite());
-					menuSecure.setVisible(Config.supportOpenPgp() && Config.multipleEncryptionChoices()); //only if pgp is supported we have a choice
+					menuSecure.setVisible((Config.supportOpenPgp() || Config.supportOmemo()) && Config.multipleEncryptionChoices()); //only if pgp is supported we have a choice
 				} else {
 					menuMucDetails.setVisible(false);
 					menuSecure.setVisible(Config.multipleEncryptionChoices());
@@ -856,8 +856,8 @@ public class ConversationActivity extends XmppActivity
 			axolotl.setVisible(Config.supportOmemo());
 			if (conversation.getMode() == Conversation.MODE_MULTI) {
 				otr.setVisible(false);
-				axolotl.setVisible(false);
-			} else if (!conversation.getAccount().getAxolotlService().isContactAxolotlCapable(conversation.getContact())) {
+			}
+			if (!conversation.getAccount().getAxolotlService().isConversationAxolotlCapable(conversation)) {
 				axolotl.setEnabled(false);
 			}
 			switch (conversation.getNextEncryption()) {
@@ -1530,18 +1530,21 @@ public class ConversationActivity extends XmppActivity
 
 	protected boolean trustKeysIfNeeded(int requestCode, int attachmentChoice) {
 		AxolotlService axolotlService = mSelectedConversation.getAccount().getAxolotlService();
-		Contact contact = mSelectedConversation.getContact();
+		final List<Jid> targets = axolotlService.getCryptoTargets(mSelectedConversation);
 		boolean hasUndecidedOwn = !axolotlService.getKeysWithTrust(XmppAxolotlSession.Trust.UNDECIDED).isEmpty();
-		boolean hasUndecidedContact = !axolotlService.getKeysWithTrust(XmppAxolotlSession.Trust.UNDECIDED,contact).isEmpty();
+		boolean hasUndecidedContacts = !axolotlService.getKeysWithTrust(XmppAxolotlSession.Trust.UNDECIDED, targets).isEmpty();
 		boolean hasPendingKeys = !axolotlService.findDevicesWithoutSession(mSelectedConversation).isEmpty();
-		boolean hasNoTrustedKeys = axolotlService.getNumTrustedKeys(mSelectedConversation.getContact()) == 0;
-		if(hasUndecidedOwn || hasUndecidedContact || hasPendingKeys || hasNoTrustedKeys) {
+		boolean hasNoTrustedKeys = axolotlService.anyTargetHasNoTrustedKeys(targets);
+		if(hasUndecidedOwn || hasUndecidedContacts || hasPendingKeys || hasNoTrustedKeys) {
 			axolotlService.createSessionsIfNeeded(mSelectedConversation);
 			Intent intent = new Intent(getApplicationContext(), TrustKeysActivity.class);
-			intent.putExtra("contact", mSelectedConversation.getContact().getJid().toBareJid().toString());
+			String[] contacts = new String[targets.size()];
+			for(int i = 0; i < contacts.length; ++i) {
+				contacts[i] = targets.get(i).toString();
+			}
+			intent.putExtra("contacts", contacts);
 			intent.putExtra(EXTRA_ACCOUNT, mSelectedConversation.getAccount().getJid().toBareJid().toString());
 			intent.putExtra("choice", attachmentChoice);
-			intent.putExtra("has_no_trusted", hasNoTrustedKeys);
 			startActivityForResult(intent, requestCode);
 			return true;
 		} else {

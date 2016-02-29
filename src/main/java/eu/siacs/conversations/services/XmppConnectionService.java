@@ -1784,6 +1784,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 					Account account = conversation.getAccount();
 					final String nick = conversation.getMucOptions().getProposedNick();
 					final Jid joinJid = conversation.getMucOptions().createJoinJid(nick);
+					final MucOptions mucOptions = conversation.getMucOptions();
 					Log.d(Config.LOGTAG, account.getJid().toBareJid().toString() + ": joining conversation " + joinJid.toString());
 					PresencePacket packet = new PresencePacket();
 					packet.setFrom(conversation.getAccount().getJid());
@@ -1793,7 +1794,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 						x.addChild("password").setContent(conversation.getMucOptions().getPassword());
 					}
 
-					if (conversation.getMucOptions().mamSupport()) {
+					if (mucOptions.mamSupport()) {
 						// Use MAM instead of the limited muc history to get history
 						x.addChild("history").setAttribute("maxchars", "0");
 					} else {
@@ -1812,8 +1813,12 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 						conversation.setContactJid(joinJid);
 						databaseBackend.updateConversation(conversation);
 					}
-					if (conversation.getMucOptions().mamSupport()) {
+
+					if (mucOptions.mamSupport()) {
 						getMessageArchiveService().catchupMUC(conversation);
+					}
+					if (mucOptions.membersOnly() && mucOptions.nonanonymous()) {
+						fetchConferenceMembers(conversation);
 					}
 					sendUnsentMessages(conversation);
 				}
@@ -1836,6 +1841,37 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 			conversation.setHasMessagesLeftOnServer(false);
 			updateConversationUi();
 		}
+	}
+
+	private void fetchConferenceMembers(final Conversation conversation) {
+		final Account account = conversation.getAccount();
+		final String[] affiliations = {"member","admin","owner"};
+		OnIqPacketReceived callback = new OnIqPacketReceived() {
+
+			private int i = 0;
+
+			@Override
+			public void onIqPacketReceived(Account account, IqPacket packet) {
+				Element query = packet.query("http://jabber.org/protocol/muc#admin");
+				if (packet.getType() == IqPacket.TYPE.RESULT && query != null) {
+					for(Element child : query.getChildren()) {
+						if ("item".equals(child.getName())) {
+							conversation.getMucOptions().putMember(child.getAttributeAsJid("jid"));
+						}
+					}
+				} else {
+					Log.d(Config.LOGTAG,account.getJid().toBareJid()+": could not request affiliation "+affiliations[i]+" in "+conversation.getJid().toBareJid());
+				}
+				++i;
+				if (i >= affiliations.length) {
+					Log.d(Config.LOGTAG,account.getJid().toBareJid()+": retrieved members for "+conversation.getJid().toBareJid()+": "+conversation.getMucOptions().getMembers());
+				}
+			}
+		};
+		for(String affiliation : affiliations) {
+			sendIqPacket(account, mIqGenerator.queryAffiliation(conversation, affiliation), callback);
+		}
+		Log.d(Config.LOGTAG,account.getJid().toBareJid()+": fetching members for "+conversation.getName());
 	}
 
 	public void providePasswordForMuc(Conversation conversation, String password) {

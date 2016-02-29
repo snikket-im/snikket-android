@@ -64,10 +64,14 @@ public class PresenceParser extends AbstractParser implements
 					Element item = x.findChild("item");
 					if (item != null && !from.isBareJid()) {
 						mucOptions.setError(MucOptions.Error.NONE);
-						MucOptions.User user = new MucOptions.User(mucOptions,from);
+						MucOptions.User user = new MucOptions.User(mucOptions, from);
 						user.setAffiliation(item.getAttribute("affiliation"));
 						user.setRole(item.getAttribute("role"));
-						user.setJid(item.getAttributeAsJid("jid"));
+						Jid real = item.getAttributeAsJid("jid");
+						if (real != null) {
+							user.setJid(real);
+							mucOptions.putMember(real.toBareJid());
+						}
 						if (codes.contains(MucOptions.STATUS_CODE_SELF_PRESENCE) || packet.getFrom().equals(mucOptions.getConversation().getJid())) {
 							mucOptions.setOnline();
 							mucOptions.setSelf(user);

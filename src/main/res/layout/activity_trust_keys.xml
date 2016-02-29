@@ -80,34 +80,11 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/foreign_keys_card"
+                android:id="@+id/foreign_keys"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                android:layout_marginRight="@dimen/activity_horizontal_margin"
-                android:layout_marginTop="@dimen/activity_vertical_margin"
-                android:layout_marginBottom="@dimen/activity_vertical_margin"
-                android:background="@drawable/infocard_border"
-                android:orientation="vertical"
-                android:padding="@dimen/infocard_padding"
-                android:visibility="gone">
-
-                <TextView
-                    android:id="@+id/foreign_keys_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/black87"
-                    android:textSize="?attr/TextSizeHeadline"
-                    android:textStyle="bold"/>
-
-                <LinearLayout
-                    android:id="@+id/foreign_keys_details"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:divider="?android:dividerHorizontal"
-                    android:showDividers="middle"
-                    android:orientation="vertical">
-                </LinearLayout>
+                android:visibility="gone"
+                android:orientation="vertical">
 
             </LinearLayout>
 

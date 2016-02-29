@@ -335,4 +335,11 @@ public class IqGenerator extends AbstractGenerator {
 		enable.addChild(data);
 		return packet;
 	}
+
+	public IqPacket queryAffiliation(Conversation conversation, String affiliation) {
+		IqPacket packet = new IqPacket(IqPacket.TYPE.GET);
+		packet.setTo(conversation.getJid().toBareJid());
+		packet.query("http://jabber.org/protocol/muc#admin").addChild("item").setAttribute("affiliation",affiliation);
+		return packet;
+	}
 }
