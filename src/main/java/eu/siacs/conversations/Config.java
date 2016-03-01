@@ -22,10 +22,6 @@ public final class Config {
 		return (ENCRYPTION_MASK & OPENPGP) != 0;
 	}
 
-	public static boolean supportOpenPgpOnly() {
-		return supportOpenPgp() && !multipleEncryptionChoices();
-	}
-
 	public static boolean supportOtr() {
 		return (ENCRYPTION_MASK & OTR) != 0;
 	}
