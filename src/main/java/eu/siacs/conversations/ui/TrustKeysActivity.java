@@ -10,8 +10,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import android.util.Log;
-
 import org.whispersystems.libaxolotl.IdentityKey;
 
 import java.util.ArrayList;
@@ -20,7 +18,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.crypto.axolotl.XmppAxolotlSession;
@@ -301,9 +298,8 @@ public class TrustKeysActivity extends XmppActivity implements OnKeyStatusUpdate
 			}
 		}
 		if (mConversation != null && mConversation.getMode() == Conversation.MODE_MULTI) {
-			Log.d(Config.LOGTAG,"commiting accepted crypto targets: "+acceptedTargets);
 			mConversation.setAcceptedCryptoTargets(acceptedTargets);
-			//xmppConnectionService.updateConversation(mConversation);
+			xmppConnectionService.updateConversation(mConversation);
 		}
 	}
 
