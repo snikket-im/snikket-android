@@ -1,5 +1,8 @@
 ###Changelog
 
+####Version 1.11.0
+* OMEMO encrypted conferences
+
 ####Version 1.10.1
 * made message correction opt-in
 * various bug fixes

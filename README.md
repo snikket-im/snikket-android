@@ -261,7 +261,9 @@ I am available for hire. Contact me via XMPP: `inputmice@siacs.eu`
 
 #### Why are there three end-to-end encryption methods and which one should I choose?
 
-In most cases OTR should be the encryption method of choice. It works out of the box with most contacts as long as they are online. However, openPGP can, in some cases, (message carbons to multiple clients) be more flexible. Unlike OTR, OMEMO works even when a contact is offline, and works with multiple devices. It also allows asynchronous file-transfer when the server has [HTTP File Upload](http://xmpp.org/extensions/xep-0363.html). However, OMEMO is not as widely supported as OTR and is currently implemented only by Conversations. OMEMO should be preferred over OTR for contacts who use Conversations.
+* OTR is a legacy encryption method. It works out of the box with most contacts as long as they are online.
+* OMEMO works even when a contact is offline, and works with multiple devices. It also allows asynchronous file-transfer when the server has [HTTP File Upload](http://xmpp.org/extensions/xep-0363.html). However, OMEMO is not as widely supported as OTR and is currently implemented only by Conversations and Gajim. OMEMO should be preferred over OTR for contacts who use Conversations.
+* OpenPGP (XEP-0027) is a very old encryption method that has some advantages over OTR but should only be used by experts who know what they are doing.
 
 #### How do I use OpenPGP
 
@@ -282,12 +284,28 @@ manage accounts and choose renew PGP announcement from the contextual menu.
 
 #### How does the encryption for conferences work?
 
-For conferences the only supported encryption method is OpenPGP (OTR does not
-work with multiple participants). Every participant has to announce their
-OpenPGP key (see answer above). If you would like to send encrypted messages to
-a conference you have to make sure that you have every participant's public key
-in your OpenKeychain. Right now there is no check in Conversations to ensure
-that. You have to take care of that yourself. Go to the conference details and
+For conferences only OMEMO and OpenPGP are suppored as encryption method. (OTR
+does not work with multiple participants).
+
+##### OMEMO
+
+OMEMO encryption works only in private (members only) conferences that are non-anonymous.
+You need to have presence subscription with every member of the conference.
+You can verify that by going into the conference details, long press every member and start
+a conversation with them. (Or select 'contact details' if they are already in your contact
+list)
+
+The owner of a conference can make a public conference private by going into the conference
+details and hit the settings button (the one with the gears) and select both *private* and
+*members only*.
+
+##### OpenPGP
+
+Every participant has to announce their OpenPGP key (see answer above).
+If you would like to send encrypted messages to a conference you have to make
+sure that you have every participant's public key in your OpenKeychain.
+Right now there is no check in Conversations to ensurethat.
+You have to take care of that yourself. Go to the conference details and
 touch every key id (The hexadecimal number below a contact). This will send you
 to OpenKeychain which will assist you on adding the key.  This works best in
 very small conferences with contacts you are already using OpenPGP with. This
