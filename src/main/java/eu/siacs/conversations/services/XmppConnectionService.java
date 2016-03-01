@@ -611,6 +611,10 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		return getPreferences().getBoolean("xa_on_silent_mode", false);
 	}
 
+	private boolean treatVibrateAsSilent() {
+		return getPreferences().getBoolean("treat_vibrate_as_silent", false);
+	}
+
 	private boolean awayWhenScreenOff() {
 		return getPreferences().getBoolean("away_when_screen_off", false);
 	}
@@ -645,7 +649,11 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 
 	private boolean isPhoneSilenced() {
 		AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-		return audioManager.getRingerMode() == AudioManager.RINGER_MODE_SILENT;
+		if (treatVibrateAsSilent()) {
+			return audioManager.getRingerMode() != AudioManager.RINGER_MODE_NORMAL;
+		} else {
+			return audioManager.getRingerMode() == AudioManager.RINGER_MODE_SILENT;
+		}
 	}
 
 	private void resetAllAttemptCounts(boolean reallyAll) {

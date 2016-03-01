@@ -189,6 +189,12 @@
                     android:key="xa_on_silent_mode"
                     android:summary="@string/pref_xa_on_silent_mode_summary"
                     android:title="@string/pref_xa_on_silent_mode"/>
+                <CheckBoxPreference
+                    android:dependency="xa_on_silent_mode"
+                    android:defaultValue="false"
+                    android:key="treat_vibrate_as_silent"
+                    android:title="@string/pref_treat_vibrate_as_silent"
+                    android:summary="@string/pref_treat_vibrate_as_silent_summary"/>
             </PreferenceCategory>
             <PreferenceCategory android:title="@string/pref_expert_options_other">
                 <CheckBoxPreference

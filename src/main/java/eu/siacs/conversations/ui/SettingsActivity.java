@@ -21,6 +21,7 @@ import java.security.KeyStoreException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
 
 import de.duenndns.ssl.MemorizingTrustManager;
@@ -154,8 +155,13 @@ public class SettingsActivity extends XmppActivity implements
 	}
 
 	@Override
-	public void onSharedPreferenceChanged(SharedPreferences preferences,
-			String name) {
+	public void onSharedPreferenceChanged(SharedPreferences preferences, String name) {
+		final List<String> resendPresence = Arrays.asList(
+				"confirm_messages",
+				"xa_on_silent_mode",
+				"away_when_screen_off",
+				"allow_message_correction",
+				"treat_vibrate_as_silent");
 		if (name.equals("resource")) {
 			String resource = preferences.getString("resource", "mobile")
 					.toLowerCase(Locale.US);
@@ -174,10 +180,7 @@ public class SettingsActivity extends XmppActivity implements
 			}
 		} else if (name.equals("keep_foreground_service")) {
 			xmppConnectionService.toggleForegroundService();
-		} else if (name.equals("confirm_messages")
-				|| name.equals("xa_on_silent_mode")
-				|| name.equals("away_when_screen_off")
-				|| name.equals("allow_message_correction")) {
+		} else if (resendPresence.contains(name)) {
 			if (xmppConnectionServiceBound) {
 				if (name.equals("away_when_screen_off")) {
 					xmppConnectionService.toggleScreenEventReceiver();
