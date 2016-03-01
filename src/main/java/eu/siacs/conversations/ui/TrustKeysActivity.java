@@ -10,6 +10,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import android.util.Log;
+
 import org.whispersystems.libaxolotl.IdentityKey;
 
 import java.util.ArrayList;
@@ -18,19 +20,21 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.crypto.axolotl.XmppAxolotlSession;
 import eu.siacs.conversations.entities.Account;
+import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.xmpp.OnKeyStatusUpdated;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
 
 public class TrustKeysActivity extends XmppActivity implements OnKeyStatusUpdated {
-	private Jid accountJid;
 	private List<Jid> contactJids;
 
 	private Account mAccount;
+	private Conversation mConversation;
 	private TextView keyErrorMessage;
 	private LinearLayout keyErrorMessageCard;
 	private TextView ownKeysTitle;
@@ -71,10 +75,6 @@ public class TrustKeysActivity extends XmppActivity implements OnKeyStatusUpdate
 	protected void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_trust_keys);
-		try {
-			this.accountJid = Jid.fromString(getIntent().getExtras().getString(EXTRA_ACCOUNT));
-		} catch (final InvalidJidException ignored) {
-		}
 		this.contactJids = new ArrayList<>();
 		for(String jid : getIntent().getStringArrayExtra("contacts")) {
 			try {
@@ -126,13 +126,15 @@ public class TrustKeysActivity extends XmppActivity implements OnKeyStatusUpdate
 
 		synchronized (this.foreignKeysToTrust) {
 			for (Map.Entry<Jid, Map<String, Boolean>> entry : foreignKeysToTrust.entrySet()) {
+				hasForeignKeys = true;
 				final LinearLayout layout = (LinearLayout) getLayoutInflater().inflate(R.layout.keys_card, foreignKeys, false);
+				final Jid jid = entry.getKey();
 				final TextView header = (TextView) layout.findViewById(R.id.foreign_keys_title);
 				final LinearLayout keysContainer = (LinearLayout) layout.findViewById(R.id.foreign_keys_details);
-				header.setText(entry.getKey().toString());
+				final TextView informNoKeys = (TextView) layout.findViewById(R.id.no_keys_to_accept);
+				header.setText(jid.toString());
 				final Map<String, Boolean> fingerprints = entry.getValue();
 				for (final String fingerprint : fingerprints.keySet()) {
-					hasForeignKeys = true;
 					addFingerprintRowWithListeners(keysContainer, mAccount, fingerprint, false,
 							XmppAxolotlSession.Trust.fromBoolean(fingerprints.get(fingerprint)), false,
 							new CompoundButton.OnCheckedChangeListener() {
@@ -146,11 +148,17 @@ public class TrustKeysActivity extends XmppActivity implements OnKeyStatusUpdate
 							null
 					);
 				}
+				if (fingerprints.size() == 0) {
+					informNoKeys.setVisibility(View.VISIBLE);
+					informNoKeys.setText(getString(R.string.no_keys_just_confirm,mAccount.getRoster().getContact(jid).getDisplayName()));
+				} else {
+					informNoKeys.setVisibility(View.GONE);
+				}
 				foreignKeys.addView(layout);
 			}
 		}
 
-		ownKeysTitle.setText(accountJid.toString());
+		ownKeysTitle.setText(mAccount.getJid().toBareJid().toString());
 		ownKeysCard.setVisibility(hasOwnKeys ? View.VISIBLE : View.GONE);
 		foreignKeys.setVisibility(hasForeignKeys ? View.VISIBLE : View.GONE);
 		if(hasPendingKeyFetches()) {
@@ -176,6 +184,7 @@ public class TrustKeysActivity extends XmppActivity implements OnKeyStatusUpdate
 	}
 
 	private boolean reloadFingerprints() {
+		List<Jid> acceptedTargets = mConversation == null ? new ArrayList<Jid>() : mConversation.getAcceptedCryptoTargets();
 		ownKeysToTrust.clear();
 		AxolotlService service = this.mAccount.getAxolotlService();
 		Set<IdentityKey> ownKeysSet = service.getKeysWithTrust(XmppAxolotlSession.Trust.UNDECIDED);
@@ -197,7 +206,7 @@ public class TrustKeysActivity extends XmppActivity implements OnKeyStatusUpdate
 						foreignFingerprints.put(identityKey.getFingerprint().replaceAll("\\s", ""), false);
 					}
 				}
-				if (foreignFingerprints.size() > 0) {
+				if (foreignFingerprints.size() > 0 || !acceptedTargets.contains(jid)) {
 					foreignKeysToTrust.put(jid, foreignFingerprints);
 				}
 			}
@@ -207,11 +216,11 @@ public class TrustKeysActivity extends XmppActivity implements OnKeyStatusUpdate
 
 	@Override
 	public void onBackendConnected() {
-		if (accountJid != null) {
-			this.mAccount = xmppConnectionService.findAccountByJid(accountJid);
-			if (this.mAccount == null) {
-				return;
-			}
+		Intent intent = getIntent();
+		this.mAccount = extractAccount(intent);
+		if (this.mAccount != null && intent != null) {
+			String uuid = intent.getStringExtra("conversation");
+			this.mConversation = xmppConnectionService.findConversationByUuid(uuid);
 			reloadFingerprints();
 			populateView();
 		}
@@ -276,14 +285,25 @@ public class TrustKeysActivity extends XmppActivity implements OnKeyStatusUpdate
 					fingerprint,
 					XmppAxolotlSession.Trust.fromBoolean(ownKeysToTrust.get(fingerprint)));
 		}
+		List<Jid> acceptedTargets = mConversation == null ? new ArrayList<Jid>() : mConversation.getAcceptedCryptoTargets();
 		synchronized (this.foreignKeysToTrust) {
-			for (Map<String, Boolean> value : foreignKeysToTrust.values()) {
+			for (Map.Entry<Jid, Map<String, Boolean>> entry : foreignKeysToTrust.entrySet()) {
+				Jid jid = entry.getKey();
+				Map<String, Boolean> value = entry.getValue();
+				if (!acceptedTargets.contains(jid)) {
+					acceptedTargets.add(jid);
+				}
 				for (final String fingerprint : value.keySet()) {
 					mAccount.getAxolotlService().setFingerprintTrust(
 							fingerprint,
 							XmppAxolotlSession.Trust.fromBoolean(value.get(fingerprint)));
 				}
 			}
+		}
+		if (mConversation != null && mConversation.getMode() == Conversation.MODE_MULTI) {
+			Log.d(Config.LOGTAG,"commiting accepted crypto targets: "+acceptedTargets);
+			mConversation.setAcceptedCryptoTargets(acceptedTargets);
+			//xmppConnectionService.updateConversation(mConversation);
 		}
 	}
 

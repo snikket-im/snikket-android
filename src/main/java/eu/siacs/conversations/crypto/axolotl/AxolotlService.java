@@ -284,7 +284,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 
 	private Set<XmppAxolotlSession> findSessionsForConversation(Conversation conversation) {
 		HashSet<XmppAxolotlSession> sessions = new HashSet<>();
-		for(Jid jid : getCryptoTargets(conversation)) {
+		for(Jid jid : conversation.getAcceptedCryptoTargets()) {
 			sessions.addAll(this.sessions.getAll(getAddressForJid(jid)).values());
 		}
 		return sessions;

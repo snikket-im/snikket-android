@@ -1531,11 +1531,12 @@ public class ConversationActivity extends XmppActivity
 	protected boolean trustKeysIfNeeded(int requestCode, int attachmentChoice) {
 		AxolotlService axolotlService = mSelectedConversation.getAccount().getAxolotlService();
 		final List<Jid> targets = axolotlService.getCryptoTargets(mSelectedConversation);
+		boolean hasUnaccepted = !mSelectedConversation.getAcceptedCryptoTargets().containsAll(targets);
 		boolean hasUndecidedOwn = !axolotlService.getKeysWithTrust(XmppAxolotlSession.Trust.UNDECIDED).isEmpty();
 		boolean hasUndecidedContacts = !axolotlService.getKeysWithTrust(XmppAxolotlSession.Trust.UNDECIDED, targets).isEmpty();
 		boolean hasPendingKeys = !axolotlService.findDevicesWithoutSession(mSelectedConversation).isEmpty();
 		boolean hasNoTrustedKeys = axolotlService.anyTargetHasNoTrustedKeys(targets);
-		if(hasUndecidedOwn || hasUndecidedContacts || hasPendingKeys || hasNoTrustedKeys) {
+		if(hasUndecidedOwn || hasUndecidedContacts || hasPendingKeys || hasNoTrustedKeys || hasUnaccepted) {
 			axolotlService.createSessionsIfNeeded(mSelectedConversation);
 			Intent intent = new Intent(getApplicationContext(), TrustKeysActivity.class);
 			String[] contacts = new String[targets.size()];
@@ -1545,6 +1546,7 @@ public class ConversationActivity extends XmppActivity
 			intent.putExtra("contacts", contacts);
 			intent.putExtra(EXTRA_ACCOUNT, mSelectedConversation.getAccount().getJid().toBareJid().toString());
 			intent.putExtra("choice", attachmentChoice);
+			intent.putExtra("conversation",mSelectedConversation.getUuid());
 			startActivityForResult(intent, requestCode);
 			return true;
 		} else {
