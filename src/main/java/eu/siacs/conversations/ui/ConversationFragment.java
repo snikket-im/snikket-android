@@ -123,7 +123,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 
 		private int getIndexOf(String uuid, List<Message> messages) {
 			if (uuid == null) {
-				return 0;
+				return messages.size() - 1;
 			}
 			for(int i = 0; i < messages.size(); ++i) {
 				if (uuid.equals(messages.get(i).getUuid())) {
@@ -164,7 +164,12 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 								@Override
 								public void run() {
 									final int oldPosition = messagesView.getFirstVisiblePosition();
-									Message message = messageList.get(oldPosition);
+									final Message message;
+									if (oldPosition < messageList.size()) {
+										message = messageList.get(oldPosition);
+									}  else {
+										message = null;
+									}
 									String uuid = message != null ? message.getUuid() : null;
 									View v = messagesView.getChildAt(0);
 									final int pxOffset = (v == null) ? 0 : v.getTop();
