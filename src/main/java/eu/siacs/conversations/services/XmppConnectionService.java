@@ -254,6 +254,14 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 
 		@Override
 		public void onBind(final Account account) {
+			synchronized (mInProgressAvatarFetches) {
+				for (Iterator<String> iterator = mInProgressAvatarFetches.iterator(); iterator.hasNext(); ) {
+					final String KEY = iterator.next();
+					if (KEY.startsWith(account.getJid().toBareJid() + "_")) {
+						iterator.remove();
+					}
+				}
+			}
 			account.getRoster().clearPresences();
 			mJingleConnectionManager.cancelInTransmission();
 			fetchRosterFromServer(account);
@@ -2559,14 +2567,6 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 				account.setXmppConnection(connection);
 			}
 			if (!account.isOptionSet(Account.OPTION_DISABLED)) {
-				synchronized (this.mInProgressAvatarFetches) {
-					for (Iterator<String> iterator = this.mInProgressAvatarFetches.iterator(); iterator.hasNext(); ) {
-						final String KEY = iterator.next();
-						if (KEY.startsWith(account.getJid().toBareJid() + "_")) {
-							iterator.remove();
-						}
-					}
-				}
 				if (!force) {
 					disconnect(account, false);
 					try {
