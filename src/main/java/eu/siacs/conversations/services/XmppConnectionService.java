@@ -2554,9 +2554,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	private void reconnectAccount(final Account account, final boolean force, final boolean interactive) {
 		synchronized (account) {
 			XmppConnection connection = account.getXmppConnection();
-			if (connection != null) {
-				disconnect(account, force);
-			} else {
+			if (connection == null) {
 				connection = createConnection(account);
 				account.setXmppConnection(connection);
 			}
@@ -2570,6 +2568,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 					}
 				}
 				if (!force) {
+					disconnect(account, false);
 					try {
 						Log.d(Config.LOGTAG, "wait for disconnect");
 						Thread.sleep(500); //sleep  wait for disconnect
@@ -2582,6 +2581,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 				thread.start();
 				scheduleWakeUpCall(Config.CONNECT_DISCO_TIMEOUT, account.getUuid().hashCode());
 			} else {
+				disconnect(account, force);
 				account.getRoster().clearPresences();
 				connection.resetEverything();
 			}
