@@ -53,6 +53,7 @@ import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.entities.Presence;
 import eu.siacs.conversations.entities.Transferable;
 import eu.siacs.conversations.entities.TransferablePlaceholder;
+import eu.siacs.conversations.http.HttpDownloadConnection;
 import eu.siacs.conversations.services.MessageArchiveService;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.ui.XmppActivity.OnPresenceSelected;
@@ -520,6 +521,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 
 	private void populateContextMenu(ContextMenu menu) {
 		final Message m = this.selectedMessage;
+		final Transferable t = m.getTransferable();
 		Message relevantForCorrection = m;
 		while(relevantForCorrection.mergeable(relevantForCorrection.next())) {
 			relevantForCorrection = relevantForCorrection.next();
@@ -536,7 +538,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 			MenuItem downloadFile = menu.findItem(R.id.download_file);
 			MenuItem cancelTransmission = menu.findItem(R.id.cancel_transmission);
 			if ((m.getType() == Message.TYPE_TEXT || m.getType() == Message.TYPE_PRIVATE)
-					&& m.getTransferable() == null
+					&& t == null
 					&& !GeoHelper.isGeoUri(m.getBody())
 					&& m.treatAsDownloadable() != Message.Decision.MUST) {
 				copyText.setVisible(true);
@@ -550,7 +552,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 			}
 			if ((m.getType() != Message.TYPE_TEXT
 					&& m.getType() != Message.TYPE_PRIVATE
-					&& m.getTransferable() == null)
+					&& t == null)
 					|| (GeoHelper.isGeoUri(m.getBody()))) {
 				shareWith.setVisible(true);
 			}
@@ -559,15 +561,16 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 			}
 			if (m.hasFileOnRemoteHost()
 					|| GeoHelper.isGeoUri(m.getBody())
-					|| m.treatAsDownloadable() == Message.Decision.MUST) {
+					|| m.treatAsDownloadable() == Message.Decision.MUST
+					|| (t != null && t instanceof HttpDownloadConnection)) {
 				copyUrl.setVisible(true);
 			}
-			if ((m.getType() == Message.TYPE_TEXT && m.getTransferable() == null && m.treatAsDownloadable() != Message.Decision.NEVER)
-					|| (m.isFileOrImage() && m.getTransferable() instanceof TransferablePlaceholder && m.hasFileOnRemoteHost())){
+			if ((m.getType() == Message.TYPE_TEXT && t == null && m.treatAsDownloadable() != Message.Decision.NEVER)
+					|| (m.isFileOrImage() && t instanceof TransferablePlaceholder && m.hasFileOnRemoteHost())){
 				downloadFile.setVisible(true);
 				downloadFile.setTitle(activity.getString(R.string.download_x_file,UIHelper.getFileDescriptionString(activity, m)));
 			}
-			if ((m.getTransferable() != null && !(m.getTransferable() instanceof TransferablePlaceholder))
+			if ((t != null && !(t instanceof TransferablePlaceholder))
 					|| (m.isFileOrImage() && (m.getStatus() == Message.STATUS_WAITING
 					|| m.getStatus() == Message.STATUS_OFFERED))) {
 				cancelTransmission.setVisible(true);
