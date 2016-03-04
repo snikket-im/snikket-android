@@ -602,4 +602,5 @@
 	<string name="correct_message">Correct message</string>
 	<string name="send_corrected_message">Send corrected message</string>
 	<string name="no_keys_just_confirm">You already trust this contact. By selecting \'done\' you are just confirming that %s is part of this conference.</string>
+	<string name="select_image_and_crop">Select image and crop</string>
 </resources>
