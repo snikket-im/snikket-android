@@ -31,6 +31,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.lang.ref.WeakReference;
+import java.net.URL;
 import java.util.List;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.regex.Matcher;
@@ -625,7 +626,19 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 			} else if (message.bodyIsHeart()) {
 				displayHeartMessage(viewHolder, message.getBody().trim());
 			} else if (message.treatAsDownloadable() == Message.Decision.MUST) {
-				displayDownloadableMessage(viewHolder, message, activity.getString(R.string.check_x_filesize, UIHelper.getFileDescriptionString(activity, message)));
+				try {
+					URL url = new URL(message.getBody());
+					displayDownloadableMessage(viewHolder,
+							message,
+							activity.getString(R.string.check_x_filesize_on_host,
+									UIHelper.getFileDescriptionString(activity, message),
+									url.getHost()));
+				} catch (Exception e) {
+					displayDownloadableMessage(viewHolder,
+							message,
+							activity.getString(R.string.check_x_filesize,
+									UIHelper.getFileDescriptionString(activity, message)));
+				}
 			} else {
 				displayTextMessage(viewHolder, message, darkBackground);
 			}

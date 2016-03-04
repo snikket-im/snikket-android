@@ -344,6 +344,7 @@
 	<string name="checking_x">Checking %s on HTTP host</string>
 	<string name="not_connected_try_again">You are not connected. Try again later</string>
 	<string name="check_x_filesize">Check %s size</string>
+	<string name="check_x_filesize_on_host">Check %1$s size on %2$s</string>
 	<string name="message_options">Message options</string>
 	<string name="copy_text">Copy text</string>
 	<string name="copy_original_url">Copy original URL</string>
