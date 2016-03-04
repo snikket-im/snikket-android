@@ -6,6 +6,7 @@ import android.util.Pair;
 import net.java.otr4j.session.Session;
 import net.java.otr4j.session.SessionStatus;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.UUID;
@@ -290,7 +291,9 @@ public class MessageParser extends AbstractParser implements
 		final String body = packet.getBody();
 		final Element mucUserElement = packet.findChild("x", "http://jabber.org/protocol/muc#user");
 		final String pgpEncrypted = packet.findChildContent("x", "jabber:x:encrypted");
-		final Element replaceElement = packet.findChild("replace","urn:xmpp:message-correct:0");
+		final Element replaceElement = packet.findChild("replace", "urn:xmpp:message-correct:0");
+		final Element oob = packet.findChild("x", "jabber:x:oob");
+		final boolean isOob = oob!= null && body != null && body.equals(oob.findChildContent("url"));
 		final String replacementId = replaceElement == null ? null : replaceElement.getAttribute("id");
 		final Element axolotlEncrypted = packet.findChild(XmppAxolotlMessage.CONTAINERTAG, AxolotlService.PEP_PREFIX);
 		int status;
@@ -384,6 +387,7 @@ public class MessageParser extends AbstractParser implements
 			message.setServerMsgId(serverMsgId);
 			message.setCarbon(isCarbon);
 			message.setTime(timestamp);
+			message.setOob(isOob);
 			message.markable = packet.hasChild("markable", "urn:xmpp:chat-markers:0");
 			if (conversation.getMode() == Conversation.MODE_MULTI) {
 				Jid trueCounterpart = conversation.getMucOptions().getTrueCounterpart(counterpart.getResourcepart());

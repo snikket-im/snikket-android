@@ -187,10 +187,13 @@ public class UIHelper {
 						UIHelper.getMessageDisplayName(message) + " "), false);
 			} else if (GeoHelper.isGeoUri(message.getBody())) {
 				if (message.getStatus() == Message.STATUS_RECEIVED) {
-					return new Pair<>(context.getString(R.string.received_location),true);
+					return new Pair<>(context.getString(R.string.received_location), true);
 				} else {
 					return new Pair<>(context.getString(R.string.location), true);
 				}
+			} else if (message.treatAsDownloadable() == Message.Decision.MUST) {
+				return new Pair<>(context.getString(R.string.x_file_offered_for_download,
+						getFileDescriptionString(context,message)),true);
 			} else{
 				return new Pair<>(message.getBody().trim(), false);
 			}

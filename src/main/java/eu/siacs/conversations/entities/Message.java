@@ -52,6 +52,7 @@ public class Message extends AbstractEntity {
 	public static final String STATUS = "status";
 	public static final String TYPE = "type";
 	public static final String CARBON = "carbon";
+	public static final String OOB = "oob";
 	public static final String EDITED = "edited";
 	public static final String REMOTE_MSG_ID = "remoteMsgId";
 	public static final String SERVER_MSG_ID = "serverMsgId";
@@ -72,6 +73,7 @@ public class Message extends AbstractEntity {
 	protected int status;
 	protected int type;
 	protected boolean carbon = false;
+	protected boolean oob = false;
 	protected String edited = null;
 	protected String relativeFilePath;
 	protected boolean read = true;
@@ -107,7 +109,8 @@ public class Message extends AbstractEntity {
 				null,
 				null,
 				true,
-				null);
+				null,
+				false);
 		this.conversation = conversation;
 	}
 
@@ -116,7 +119,7 @@ public class Message extends AbstractEntity {
 					final int encryption, final int status, final int type, final boolean carbon,
 					final String remoteMsgId, final String relativeFilePath,
 					final String serverMsgId, final String fingerprint, final boolean read,
-					final String edited) {
+					final String edited, final boolean oob) {
 		this.uuid = uuid;
 		this.conversationUuid = conversationUUid;
 		this.counterpart = counterpart;
@@ -133,6 +136,7 @@ public class Message extends AbstractEntity {
 		this.axolotlFingerprint = fingerprint;
 		this.read = read;
 		this.edited = edited;
+		this.oob = oob;
 	}
 
 	public static Message fromCursor(Cursor cursor) {
@@ -173,7 +177,8 @@ public class Message extends AbstractEntity {
 				cursor.getString(cursor.getColumnIndex(SERVER_MSG_ID)),
 				cursor.getString(cursor.getColumnIndex(FINGERPRINT)),
 				cursor.getInt(cursor.getColumnIndex(READ)) > 0,
-				cursor.getString(cursor.getColumnIndex(EDITED)));
+				cursor.getString(cursor.getColumnIndex(EDITED)),
+				cursor.getInt(cursor.getColumnIndex(OOB)) > 0);
 	}
 
 	public static Message createStatusMessage(Conversation conversation, String body) {
@@ -219,6 +224,7 @@ public class Message extends AbstractEntity {
 		values.put(FINGERPRINT, axolotlFingerprint);
 		values.put(READ,read ? 1 : 0);
 		values.put(EDITED, edited);
+		values.put(OOB, oob ? 1 : 0);
 		return values;
 	}
 
@@ -554,6 +560,10 @@ public class Message extends AbstractEntity {
 		return edited;
 	}
 
+	public void setOob(boolean isOob) {
+		this.oob = isOob;
+	}
+
 	public enum Decision {
 		MUST,
 		SHOULD,
@@ -610,6 +620,8 @@ public class Message extends AbstractEntity {
 			URL url = new URL(body);
 			if (!url.getProtocol().equalsIgnoreCase("http") && !url.getProtocol().equalsIgnoreCase("https")) {
 				return Decision.NEVER;
+			} else if (oob) {
+				return Decision.MUST;
 			}
 			String extension = extractRelevantExtension(url);
 			if (extension == null) {
