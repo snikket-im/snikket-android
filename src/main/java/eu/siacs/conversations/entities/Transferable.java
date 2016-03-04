@@ -1,10 +1,13 @@
 package eu.siacs.conversations.entities;
 
+import java.util.Arrays;
+import java.util.List;
+
 public interface Transferable {
 
-	String[] VALID_IMAGE_EXTENSIONS = {"webp", "jpeg", "jpg", "png", "jpe"};
-	String[] VALID_CRYPTO_EXTENSIONS = {"pgp", "gpg", "otr"};
-	String[] WELL_KNOWN_EXTENSIONS = {"pdf","m4a","mp4"};
+	List<String> VALID_IMAGE_EXTENSIONS = Arrays.asList("webp", "jpeg", "jpg", "png", "jpe");
+	List<String> VALID_CRYPTO_EXTENSIONS = Arrays.asList("pgp", "gpg", "otr");
+	List<String> WELL_KNOWN_EXTENSIONS = Arrays.asList("pdf","m4a","mp4","3gp","aac","amr","mp3");
 
 	int STATUS_UNKNOWN = 0x200;
 	int STATUS_CHECKING = 0x201;

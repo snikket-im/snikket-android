@@ -576,7 +576,7 @@ public class Message extends AbstractEntity {
 		if (dotPosition != -1) {
 			String extension = filename.substring(dotPosition + 1);
 			// we want the real file extension, not the crypto one
-			if (Arrays.asList(Transferable.VALID_CRYPTO_EXTENSIONS).contains(extension)) {
+			if (Transferable.VALID_CRYPTO_EXTENSIONS.contains(extension)) {
 				return extractRelevantExtension(filename.substring(0,dotPosition));
 			} else {
 				return extension;
@@ -624,8 +624,8 @@ public class Message extends AbstractEntity {
 				} else {
 					return Decision.NEVER;
 				}
-			} else if (Arrays.asList(Transferable.VALID_IMAGE_EXTENSIONS).contains(extension)
-					|| Arrays.asList(Transferable.WELL_KNOWN_EXTENSIONS).contains(extension)) {
+			} else if (Transferable.VALID_IMAGE_EXTENSIONS.contains(extension)
+					|| Transferable.WELL_KNOWN_EXTENSIONS.contains(extension)) {
 				return Decision.SHOULD;
 			} else {
 				return Decision.NEVER;

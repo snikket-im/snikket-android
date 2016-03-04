@@ -89,7 +89,7 @@ public class HttpDownloadConnection implements Transferable {
 				this.message.setEncryption(Message.ENCRYPTION_NONE);
 			}
 			String extension;
-			if (Arrays.asList(VALID_CRYPTO_EXTENSIONS).contains(lastPart)) {
+			if (VALID_CRYPTO_EXTENSIONS.contains(lastPart)) {
 				extension = secondToLast;
 			} else {
 				extension = lastPart;
