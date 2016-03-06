@@ -641,11 +641,12 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 			this.mRegisterNew.setChecked(false);
 		}
 		if (this.mAccount.isOnlineAndConnected() && !this.mFetchingAvatar) {
+			Features features = this.mAccount.getXmppConnection().getFeatures();
 			this.mStats.setVisibility(View.VISIBLE);
-			this.mBatteryOptimizations.setVisibility(showBatteryOptimizationWarning() ? View.VISIBLE : View.GONE);
+			boolean showOptimizingWarning = !xmppConnectionService.getPushManagementService().available(mAccount) && isOptimizingBattery();
+			this.mBatteryOptimizations.setVisibility(showOptimizingWarning ? View.VISIBLE : View.GONE);
 			this.mSessionEst.setText(UIHelper.readableTimeDifferenceFull(this, this.mAccount.getXmppConnection()
 					.getLastSessionEstablished()));
-			Features features = this.mAccount.getXmppConnection().getFeatures();
 			if (features.rosterVersioning()) {
 				this.mServerInfoRosterVersion.setText(R.string.server_info_available);
 			} else {

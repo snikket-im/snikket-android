@@ -391,7 +391,7 @@ public abstract class XmppActivity extends Activity {
 		return super.onCreateOptionsMenu(menu);
 	}
 
-	protected boolean showBatteryOptimizationWarning() {
+	protected boolean isOptimizingBattery() {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 			PowerManager pm = (PowerManager) getSystemService(POWER_SERVICE);
 			return !pm.isIgnoringBatteryOptimizations(getPackageName());
