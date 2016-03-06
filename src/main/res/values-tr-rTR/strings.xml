@@ -96,7 +96,6 @@
   <string name="contact_has_no_pgp_key">Kişi ortak anahtarını yayınlamadığı için Conversations iletilerinizi şifreleyemiyor.\n\n<small>Lütfen kişiden OpenPGP’yi ayarlamasını isteyin.</small></string>
   <string name="no_pgp_keys">Herhangi bir OpenPGP anahtarı bulunamadı</string>
   <string name="contacts_have_no_pgp_keys">Kişiler ortak anahtarlarını yayınlamadığı için Conversations iletilerinizi şifreleyemiyor.\n\n<small>Lütfen kişilerden OpenPGP’yi ayarlamalarını isteyin.</small></string>
-  <string name="encrypted_message_received"><i>Şifreli ileti alındı. Deşifre etmek için dokunun.</i></string>
   <string name="pref_general">Genel</string>
   <string name="pref_xmpp_resource">XMPP kaynağı</string>
   <string name="pref_xmpp_resource_summary">İstemci kimliği</string>
@@ -240,8 +239,7 @@
   <string name="bookmark_already_exists">Bu yer imi zaten mevcut</string>
   <string name="you">Siz</string>
   <string name="action_edit_subject">Grup sohbet konusunu düzenle</string>
-  <string name="conference_not_found">Grup sohbet bulunamadı</string>
-  <string name="conference_unknown_error">Bilinmeyen hata alındı</string>
+  <string name="joining_conference">Grup sohbete katiliyor</string>
   <string name="leave">Ayrıl</string>
   <string name="contact_added_you">Kişi sizi listesine ekledi</string>
   <string name="add_back">Siz de ekleyin</string>
@@ -308,10 +306,13 @@
   <string name="conference_banned">Grup sohbetinden atıldınız</string>
   <string name="conference_members_only">Bu grup sohbet sadece üyelere açıktır</string>
   <string name="conference_kicked">Grup sohbetinden atıldınız</string>
+  <string name="conference_shutdown">Grup sohbet sona erdi</string>
+  <string name="conference_unknown_error">Artık bu grup sohbet içerisinde değilsiniz.</string>
   <string name="using_account">%s hesabını kullanarak</string>
   <string name="checking_x">HTTP sunucusundaki %s \'leri kontrol ediyor</string>
   <string name="not_connected_try_again">Bağlı değilsiniz. Daha sonra yeniden deneyin</string>
   <string name="check_x_filesize">%s boyutunu kontrol edin</string>
+  <string name="check_x_filesize_on_host">%2$s üzerindeki %1$s boyutunu kontrol edin</string>
   <string name="message_options">İleti seçenekleri</string>
   <string name="copy_text">Metni kopyala</string>
   <string name="copy_original_url">Orijinal URL\'i kopyala</string>
@@ -488,6 +489,8 @@
   <string name="username">Kullanıcı adı</string>
   <string name="username_hint">Kullanıcı adı</string>
   <string name="invalid_username">Kullanıcı adı geçerli değil</string>
+  <string name="conference_name">Grup sohbet ismi</string>
+  <string name="invalid_conference_name">Bu grup sohbet adı geçerli değil</string>
   <string name="download_failed_server_not_found">İndirme başarısız: Sunucu bulunamadı</string>
   <string name="download_failed_file_not_found">İndirme başarısız: Dosya bulunamadı</string>
   <string name="download_failed_could_not_connect">İndirme başarısız: Sunucuya bağlanılamadı</string>
@@ -500,6 +503,8 @@
   <string name="pref_away_when_screen_off_summary">Ekran kapandığında çevrimiçi durum bildiriminizi uzakta olarak değiştirir</string>
   <string name="pref_xa_on_silent_mode">Sessiz moddayken erişilemez</string>
   <string name="pref_xa_on_silent_mode_summary">Telefonunuz sessizdeyken, durum bildiriminizi müsait değil olarak değiştirir</string>
+  <string name="pref_treat_vibrate_as_silent">titreş modunu sessiz mod olarak değerlendir</string>
+  <string name="pref_treat_vibrate_as_silent_summary">cihazınız titreşim modundaysa durum bildiriminizi müsahit değil olarak değiştirir</string>
   <string name="pref_show_connection_options">Genişletilmiş bağlantı seçenekleri</string>
   <string name="pref_show_connection_options_summary">Hesap oluştururken sunucu adıyla port seçeneğini göster</string>
   <string name="hostname_example">xmpp.ornek.com</string>
@@ -562,4 +567,7 @@
   <string name="this_field_is_required">Bu alan zorunludur</string>
   <string name="correct_message">ileti düzelt</string>
   <string name="send_corrected_message">Düzeltilmiş iletiyi gönder</string>
+  <string name="no_keys_just_confirm">Bu kişiye zaten güveniyor durumdasınız. \"tamam\" seçeneğini işaretleyerek, sadece %s \'in bu grup sohbete katılabileceğini teyid ediyorsunuz.</string>
+  <string name="select_image_and_crop">Resmi seçip kırpın</string>
+  <string name="this_account_is_disabled">Bu hesabı devre dışı bıraktınız</string>
 </resources>

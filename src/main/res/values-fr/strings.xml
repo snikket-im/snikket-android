@@ -79,8 +79,8 @@
   <string name="choose_presence">Choisir le status de présence</string>
   <string name="send_unencrypted_message">Envoyer un message non chiffré</string>
   <string name="send_otr_message">Envoyer un message chiffré avec OTR</string>
-  <string name="send_omemo_message">Envoyé un message chiffré avec OMEMO</string>
-  <string name="send_omemo_x509_message">Envoyé un message chiffré avec \\OMEMO</string>
+  <string name="send_omemo_message">Envoyer un message chiffré avec OMEMO</string>
+  <string name="send_omemo_x509_message">Envoyer un message chiffré avec \\OMEMO</string>
   <string name="send_pgp_message">Envoyer un message chiffré avec OpenPGP</string>
   <string name="your_nick_has_been_changed">Votre identifiant a été changé</string>
   <string name="send_unencrypted">Envoyer en clair</string>
@@ -96,7 +96,6 @@
   <string name="contact_has_no_pgp_key">Conversations ne peut pas chiffrer vos messages car votre contact n\'a pas communiqué sa clef publique.\n\n<small>Demandez-lui de configurer OpenPGP.</small></string>
   <string name="no_pgp_keys">Aucune clef OpenPGP n\'a été trouvée.</string>
   <string name="contacts_have_no_pgp_keys">Conversations ne peut pas chiffrer votre message car vos contacts ne communiquent pas leur clef publique.\n\n<small>Demandez-leur de configurer OpenPGP.</small></string>
-  <string name="encrypted_message_received"><i>Message chiffré reçu. Appuyez pour déchiffrer.</i></string>
   <string name="pref_general">Général</string>
   <string name="pref_xmpp_resource">Ressource XMPP</string>
   <string name="pref_xmpp_resource_summary">Nom utilisé par ce client pour s\'identifier</string>
@@ -171,7 +170,7 @@
   <string name="password">Mot de passe</string>
   <string name="confirm_password">Confirmer le mot de passe</string>
   <string name="passwords_do_not_match">Les deux mots de passe ne correspondent pas.</string>
-  <string name="invalid_jid">Cet identifiant n\'est pas valide.</string>
+  <string name="invalid_jid">Cet identifiant n\'est pas valide</string>
   <string name="error_out_of_memory">Plus de mémoire disponible. L\'image est trop volumineuse.</string>
   <string name="add_phone_book_text">Voulez-vous ajouter %s à votre carnet d\'adresses ?</string>
   <string name="contact_status_online">En ligne</string>
@@ -240,8 +239,7 @@
   <string name="bookmark_already_exists">Le favori existe déjà</string>
   <string name="you">Vous</string>
   <string name="action_edit_subject">Modifier le sujet de la conférence</string>
-  <string name="conference_not_found">Impossible de trouver la conférence</string>
-  <string name="conference_unknown_error">Erreur inconnue reçue</string>
+  <string name="joining_conference">Connexion à la conférence...</string>
   <string name="leave">Partir</string>
   <string name="contact_added_you">Votre correspondant vous a ajouté dans sa liste de contacts</string>
   <string name="add_back">Ré-ajouter</string>
@@ -308,10 +306,13 @@
   <string name="conference_banned">Vous êtes banni de cette conférence</string>
   <string name="conference_members_only">Cette conférence est réservée aux membres</string>
   <string name="conference_kicked">Vous avez été éjecté de cette conférence</string>
+  <string name="conference_shutdown">La conférence a été fermée</string>
+  <string name="conference_unknown_error">Vous n\'êtes plus dans cette conférence</string>
   <string name="using_account">avec le compte %s</string>
   <string name="checking_x">Vérification de %s sur l\'hôte HTTP</string>
   <string name="not_connected_try_again">Vous n\'êtes pas connecté. Essayez plus tard.</string>
   <string name="check_x_filesize">Vérification de la taille de %s</string>
+  <string name="check_x_filesize_on_host">Vérification de la taille de %1$s sur %2$s</string>
   <string name="message_options">Options du message</string>
   <string name="copy_text">Copier le texte</string>
   <string name="copy_original_url">Copier l\'URL</string>
@@ -489,7 +490,9 @@
   <string name="user_has_left_conference">%s a quitté la conférence !</string>
   <string name="username">Identifiant</string>
   <string name="username_hint">Identifiant</string>
-  <string name="invalid_username">Ce n\'est pas un identifiant valide</string>
+  <string name="invalid_username">Cet identifiant n\'est pas valide</string>
+  <string name="conference_name">Nom de la conférence </string>
+  <string name="invalid_conference_name">Ce nom de conférence n\'est pas valide</string>
   <string name="download_failed_server_not_found">Échec du téléchargement : impossible de trouver le serveur</string>
   <string name="download_failed_file_not_found">Échec du téléchargement : impossible de trouver le fichier</string>
   <string name="download_failed_could_not_connect">Échec du téléchargement : impossible de se connecter à l\'hôte</string>
@@ -502,6 +505,8 @@
   <string name="pref_away_when_screen_off_summary">Marquer cette ressource comme absente quand l\'écran est éteint.</string>
   <string name="pref_xa_on_silent_mode">Indisponible en mode silencieux</string>
   <string name="pref_xa_on_silent_mode_summary">Marque cette ressource comme indisponible quand l\'appareil est en mode silencieux</string>
+  <string name="pref_treat_vibrate_as_silent">Indisponible en mode vibreur</string>
+  <string name="pref_treat_vibrate_as_silent_summary">Marque cette ressource comme indisponible quand l\'appareil est en mode vibreur</string>
   <string name="pref_show_connection_options">Paramètres de connexioin avancés</string>
   <string name="pref_show_connection_options_summary">Montrer le nom d\'hôte et le port lors du paramétrage d\'un compte</string>
   <string name="hostname_example">xmpp.example.com</string>
@@ -565,4 +570,7 @@
   <string name="this_field_is_required">Ce champ est requis</string>
   <string name="correct_message">Corriger le message</string>
   <string name="send_corrected_message">Envoyer le message corrigé</string>
+  <string name="no_keys_just_confirm">Vous faites déjà confiance à ce contact. En sélectionnant « Terminé » vous confirmerez seulement que %s est membre de cette conférence.</string>
+  <string name="select_image_and_crop">Sélectionner et découper une image</string>
+  <string name="this_account_is_disabled">Vous avez désactivé ce compte</string>
 </resources>

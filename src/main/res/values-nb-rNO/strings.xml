@@ -96,7 +96,6 @@
   <string name="contact_has_no_pgp_key">Conversations kan ikke kryptere din melding fordi din kontakt ikke annonserer sin offentlige nøkkel.\n\n<small>Spør din kontakt om å sette opp OpenPGP.</small></string>
   <string name="no_pgp_keys">Ingen OpenPGP-nøkler funnet</string>
   <string name="contacts_have_no_pgp_keys">Conversations kan ikke kryptere din melding fordi dine kontakter ikke annonserer sine offentlige nøkkler.\n\n<small>Spør din kontakt om å sette opp OpenPGP.</small></string>
-  <string name="encrypted_message_received"><i>Kryptert melding mottatt. Trykk for å dekryptere.</i></string>
   <string name="pref_general">Generelt</string>
   <string name="pref_xmpp_resource">XMPP-ressurs</string>
   <string name="pref_xmpp_resource_summary">Navnet denne klienten identifiserer seg med</string>
@@ -236,7 +235,6 @@
   <string name="bookmark_already_exists">Dette bokmerket finnes allerede</string>
   <string name="you">Deg</string>
   <string name="action_edit_subject">Rediger temaet for konferansen</string>
-  <string name="conference_not_found">Fant ikke konferansen</string>
   <string name="leave">Forlat</string>
   <string name="contact_added_you">Kontakt la deg til i sin liste</string>
   <string name="add_back">Gjengjeld tjenesten</string>

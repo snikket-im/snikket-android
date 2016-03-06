@@ -96,7 +96,6 @@
   <string name="contact_has_no_pgp_key">連絡先が公開鍵を通知しないため、Conversations はあなたのメッセージを暗号化することができません。\n\n<small>連絡先に OpenPGP をセットアップするように依頼してください。</small></string>
   <string name="no_pgp_keys">OpenPGP の鍵はありません</string>
   <string name="contacts_have_no_pgp_keys">連絡先が公開鍵を通知しないため、Conversations はあなたのメッセージを暗号化することができません。\n\n<small>連絡先に OpenPGP をセットアップするように依頼してください。</small></string>
-  <string name="encrypted_message_received"><i>暗号化されたメッセージを受信しました。タッチすると復号化します。</i></string>
   <string name="pref_general">全般</string>
   <string name="pref_xmpp_resource">XMPP リソース</string>
   <string name="pref_xmpp_resource_summary">自分自身を識別するこのクライアントの名前</string>
@@ -240,8 +239,7 @@
   <string name="bookmark_already_exists">このブックマークはすでに存在します</string>
   <string name="you">あなた</string>
   <string name="action_edit_subject">会議の件名を編集</string>
-  <string name="conference_not_found">会議が見つかりません</string>
-  <string name="conference_unknown_error">不明なエラーを受け取りました</string>
+  <string name="joining_conference">会議に参加中…</string>
   <string name="leave">退出</string>
   <string name="contact_added_you">連絡先があなたを連絡先リストに追加しました</string>
   <string name="add_back">戻りを追加</string>
@@ -308,6 +306,8 @@
   <string name="conference_banned">あなたはこの会議から禁止されています</string>
   <string name="conference_members_only">この会議はメンバーのみです</string>
   <string name="conference_kicked">あなたはこの会議からキックされました</string>
+  <string name="conference_shutdown">会議は停止しました</string>
+  <string name="conference_unknown_error">あなたはもうこの会議に参加していません</string>
   <string name="using_account">アカウント %s を使用</string>
   <string name="checking_x">HTTP ホストの %s を確認中</string>
   <string name="not_connected_try_again">接続されていません。後でもう一度お試しください</string>
@@ -488,6 +488,8 @@
   <string name="username">ユーザー名</string>
   <string name="username_hint">ユーザー名</string>
   <string name="invalid_username">これは有効なユーザー名ではありません</string>
+  <string name="conference_name">会議名</string>
+  <string name="invalid_conference_name">これは有効な会議名ではありません</string>
   <string name="download_failed_server_not_found">ダウンロードに失敗しました: サーバーが見つかりません</string>
   <string name="download_failed_file_not_found">ダウンロードに失敗しました: ファイルが見つかりません</string>
   <string name="download_failed_could_not_connect">ダウンロードに失敗しました: ホストに接続できませんでした</string>

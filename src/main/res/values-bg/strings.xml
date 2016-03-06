@@ -96,7 +96,6 @@
   <string name="contact_has_no_pgp_key">Conversations не може да шифрова съобщенията Ви, тъй като Вашият контакт не обявява публичния си ключ.\n\n<small>Моля, помолете го/я да инсталира и настрои OpenPGP.</small></string>
   <string name="no_pgp_keys">Не са открити OpenPGP ключове</string>
   <string name="contacts_have_no_pgp_keys">Conversations не може да шифрова съобщенията Ви, тъй като Вашите контакти не обявяват публичните си ключове.\n\n<small>Моля, помолете го да инсталират и настроят OpenPGP.</small></string>
-  <string name="encrypted_message_received"><i>Получено е шифровано съобщение. Докоснете, за да го дешифровате.</i></string>
   <string name="pref_general">Общи</string>
   <string name="pref_xmpp_resource">XMPP ресурс</string>
   <string name="pref_xmpp_resource_summary">Името, с което се определя този клиент</string>
@@ -240,8 +239,7 @@
   <string name="bookmark_already_exists">Вече съществува такава отметка</string>
   <string name="you">Вие</string>
   <string name="action_edit_subject">Редактиране на темата на беседата</string>
-  <string name="conference_not_found">Беседата не е открита</string>
-  <string name="conference_unknown_error">Беше получена непозната грешка</string>
+  <string name="joining_conference">Присъединяване към беседата…</string>
   <string name="leave">Напускане</string>
   <string name="contact_added_you">Контактът е добавен във Вашия списък от контакти</string>
   <string name="add_back">Добавяне обратно</string>
@@ -308,10 +306,13 @@
   <string name="conference_banned">Достъпът Ви до тази беседа беше забранен</string>
   <string name="conference_members_only">Тази беседа е само за членове</string>
   <string name="conference_kicked">Бяхте изритан от тази конференция</string>
+  <string name="conference_shutdown">Беседата приключи</string>
+  <string name="conference_unknown_error">Вече не участвате в тази беседа</string>
   <string name="using_account">използвайки профила %s</string>
   <string name="checking_x">Проверяване на %s на HTTP сървъра</string>
   <string name="not_connected_try_again">Не сте свързани. Опитайте отново по-късно</string>
   <string name="check_x_filesize">Проверете размера на %s</string>
+  <string name="check_x_filesize_on_host">Проверете размера на %1$s на %2$s</string>
   <string name="message_options">Настройки за съобщенята</string>
   <string name="copy_text">Копиране на текста</string>
   <string name="copy_original_url">Копиране на оригиналния адрес</string>
@@ -490,6 +491,8 @@
   <string name="username">Потребителско име</string>
   <string name="username_hint">Потребителско име</string>
   <string name="invalid_username">Това не е правилно потребителско име</string>
+  <string name="conference_name">Име на беседата</string>
+  <string name="invalid_conference_name">Това не е правилно име на беседа</string>
   <string name="download_failed_server_not_found">Неуспешно сваляне: Сървърът не е открит</string>
   <string name="download_failed_file_not_found">Неуспешно сваляне: Файлът не е открит</string>
   <string name="download_failed_could_not_connect">Неуспешно сваляне: Неуспешна връзка със сървъра</string>
@@ -502,6 +505,8 @@
   <string name="pref_away_when_screen_off_summary">Преминава в състояние „отсъстващ“ когато екранът бъде изключен</string>
   <string name="pref_xa_on_silent_mode">Недостъпен, в тих режим</string>
   <string name="pref_xa_on_silent_mode_summary">Преминава в състояние „недостъпен“ когато устройството е в тих режим</string>
+  <string name="pref_treat_vibrate_as_silent">Тих режим при режим на вибриране</string>
+  <string name="pref_treat_vibrate_as_silent_summary">Преминава в състояние „недостъпен“ когато устройството е в режим на вибриране.</string>
   <string name="pref_show_connection_options">Разширени настройки за връзката</string>
   <string name="pref_show_connection_options_summary">Показване на настройките за сървър и порт при установка на профил</string>
   <string name="hostname_example">xmpp.example.com</string>
@@ -565,4 +570,7 @@
   <string name="this_field_is_required">Това поле е задължително</string>
   <string name="correct_message">Поправяне на съобщението</string>
   <string name="send_corrected_message">Изпращане на поправеното съобщение</string>
+  <string name="no_keys_just_confirm">Вие вече имате доверие на този контакт. Избирайки „готово“, Вие просто потвърждавате, че %s е част от тази беседа.</string>
+  <string name="select_image_and_crop">Изберете изображение и изрежете</string>
+  <string name="this_account_is_disabled">Вие сте деактивирали този профил</string>
 </resources>

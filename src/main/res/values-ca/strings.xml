@@ -211,7 +211,6 @@
   <string name="bookmark_already_exists">Aquesta llista de favorits ja existeix</string>
   <string name="you">Tu</string>
   <string name="action_edit_subject">Editar el tema de la sala</string>
-  <string name="conference_not_found">Sala no trobada</string>
   <string name="leave">Sortir</string>
   <string name="contact_added_you">Afegir un contacte a la llista de contactes</string>
   <string name="add_back">Afegir nou</string>

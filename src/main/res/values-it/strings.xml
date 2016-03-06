@@ -96,12 +96,12 @@
   <string name="contact_has_no_pgp_key">Conversations non è in grado di cifrare i tuoi messaggi perché il contatto non sta annunciando la sua chiave pubblica.\n\n<small>Per favore chiedi al tuo contatto di configurare OpenPGP.</small></string>
   <string name="no_pgp_keys">Nessuna chiave OpenPGP trovata</string>
   <string name="contacts_have_no_pgp_keys">Conversations non è in grado di cifrare i tuoi messaggi perché i contatti non stanno annunciando la propria chiave pubblica.\n\n<small>Per favore chiedi ai tuoi contatti di configurare OpenPGP.</small></string>
-  <string name="encrypted_message_received"><i>Messaggio cifrato ricevuto. Tocca per decifrare.</i></string>
   <string name="pref_general">Generale</string>
   <string name="pref_xmpp_resource">Risorsa XMPP</string>
   <string name="pref_xmpp_resource_summary">Il nome con il quale questo client si identifica</string>
   <string name="pref_accept_files">Accetta i file</string>
   <string name="pref_accept_files_summary">Accetta automaticamente i file più piccoli di…</string>
+  <string name="pref_notification_settings">Notifiche</string>
   <string name="pref_notifications">Notifiche</string>
   <string name="pref_notifications_summary">Notifica quando arriva un nuovo messaggio</string>
   <string name="pref_vibrate">Vibra</string>
@@ -110,10 +110,12 @@
   <string name="pref_sound_summary">Riproduci una suoneria con la notifica</string>
   <string name="pref_notification_grace_period">Periodo tra notifiche</string>
   <string name="pref_notification_grace_period_summary">Disabilita le notifiche per un breve lasso di tempo dopo che un messaggio è stato ricevuto</string>
+  <string name="pref_advanced_options">Avanzate</string>
   <string name="pref_never_send_crash">Non inviare mai segnalazioni di errore</string>
   <string name="pref_never_send_crash_summary">Se scegli di inviare una segnalazione dell’errore aiuterai lo sviluppo di Conversations</string>
   <string name="pref_confirm_messages">Conferma Messaggi</string>
   <string name="pref_confirm_messages_summary">Fai sapere ai tuoi contatti quando hai ricevuto il messaggio e l’hai letto</string>
+  <string name="pref_ui_options">Interfaccia Utente</string>
   <string name="openpgp_error">OpenKeychain ha riportato un errore</string>
   <string name="error_decrypting_file">Errore di I/O nel decifrare il file</string>
   <string name="accept">Accetta</string>
@@ -188,6 +190,7 @@
   <string name="server_info_stream_management">XEP-0198: Stream Management</string>
   <string name="server_info_pep">XEP-0163: PEP (Avatars / OMEMO)</string>
   <string name="server_info_http_upload">XEP-0363: HTTP File Upload</string>
+  <string name="server_info_push">XEP-0357: Push</string>
   <string name="server_info_available">disponibile</string>
   <string name="server_info_unavailable">non disponibile</string>
   <string name="missing_public_keys">Annuncio chiave pubblica non effettuato</string>
@@ -236,7 +239,7 @@
   <string name="bookmark_already_exists">Questo segnalibro esiste già</string>
   <string name="you">Tu</string>
   <string name="action_edit_subject">Modifica soggetto conferenza</string>
-  <string name="conference_not_found">Conferenza non trovata</string>
+  <string name="joining_conference">Entro in conferenza...</string>
   <string name="leave">Abbandona</string>
   <string name="contact_added_you">Il contatto ti ha aggiunto alla sua lista contatti</string>
   <string name="add_back">Add back</string>
@@ -271,10 +274,14 @@
   <string name="sure_delete_fingerprint">Sei sicuro di voler eliminare questa impronta?</string>
   <string name="ignore">Ignora</string>
   <string name="without_mutual_presence_updates"><b>Attenzione:</b> Inviando questo messaggio senza aggiornamenti della presenza reciproci potrebbe causare problemi inaspettati.\n\n<small>Vai nei dettagli del contatto per verificare le tue sottoscrizioni alla presenza.</small></string>
+  <string name="pref_security_settings">Sicurezza</string>
   <string name="pref_force_encryption">Forza cifratura end-to-end</string>
   <string name="pref_force_encryption_summary">Manda sempre messaggi cifrati (ad eccezione delle conferenze)</string>
+  <string name="pref_allow_message_correction">Permetti correzione del messaggio</string>
+  <string name="pref_allow_message_correction_summary">Consenti ai tuoi contatti di modificare retroattivamente i loro messaggi</string>
   <string name="pref_dont_save_encrypted">Non salvare i messaggi cifrati</string>
   <string name="pref_dont_save_encrypted_summary">Attenzione: Questo potrebbe comportare la perdita di messaggi</string>
+  <string name="pref_expert_options">Impostazioni esperto</string>
   <string name="pref_expert_options_summary">Fai attenzione con queste impostazioni</string>
   <string name="title_activity_about">Info su Conversations</string>
   <string name="pref_about_conversations_summary">Informazioni sulla licenza</string>
@@ -292,11 +299,15 @@
   <string name="pref_expert_options_other">Altro</string>
   <string name="pref_conference_name">Nome della conferenza</string>
   <string name="pref_conference_name_summary">Usa il soggetto della stanza al posto del JID per identificare le conferenze</string>
+  <string name="pref_autojoin">Entra automaticamente in conferenza</string>
+  <string name="pref_autojoin_summary">Rispetta l\'opzione di entrata automatica nei segnalibri di conferenze</string>
   <string name="toast_message_otr_fingerprint">Impronta OTR copiata!</string>
   <string name="toast_message_omemo_fingerprint">Fingerprint OMEMO copiata negli appunti|</string>
   <string name="conference_banned">Sei stato bandito da questa conferenza</string>
   <string name="conference_members_only">Questa conferenza è solo per membri</string>
   <string name="conference_kicked">Sei stato buttato fuori dalla conferenza</string>
+  <string name="conference_shutdown">La conferenza è stata chiusa</string>
+  <string name="conference_unknown_error">Non sei più in questa conferenza</string>
   <string name="using_account">usando l’utente %s</string>
   <string name="checking_x">Controllo %s su host HTTP</string>
   <string name="not_connected_try_again">Non sei connesso. Riprova più tardi</string>
@@ -422,6 +433,7 @@
   <string name="two_hours">2 ore</string>
   <string name="eight_hours">8 ore</string>
   <string name="until_further_notice">Fino a nuovo avviso</string>
+  <string name="pref_input_options">Input</string>
   <string name="pref_enter_is_send">Invio spedisce</string>
   <string name="pref_enter_is_send_summary">Il tasto invio spedisce il messaggio</string>
   <string name="pref_display_enter_key">Mostra il tasto invio</string>
@@ -478,6 +490,8 @@
   <string name="username">Utente</string>
   <string name="username_hint">Utente</string>
   <string name="invalid_username">Questo non è un nome utente valido</string>
+  <string name="conference_name">Nome conferenza</string>
+  <string name="invalid_conference_name">Questo non è un nome di conferenza valido</string>
   <string name="download_failed_server_not_found">Download fallito: Server non trovato</string>
   <string name="download_failed_file_not_found">Download fallito: File non trovato</string>
   <string name="download_failed_could_not_connect">Download fallito: Impossibile connettersi all\'host</string>
@@ -485,13 +499,21 @@
   <string name="pref_use_white_background_summary">Mostra i messaggi ricevuti con testo nero su sfondo bianco</string>
   <string name="account_status_tor_unavailable">Rete Tor non disponibile</string>
   <string name="server_info_broken">Rotto</string>
+  <string name="pref_presence_settings">Presenza</string>
   <string name="pref_away_when_screen_off">\"Non disponibile\" a schermo spento</string>
   <string name="pref_away_when_screen_off_summary">Imposta la tua risorsa come non disponibile quando lo schermo è spento</string>
   <string name="pref_xa_on_silent_mode">Non disponibile in modalità silenzioso</string>
   <string name="pref_xa_on_silent_mode_summary">Imposta la tua risorsa come non disponibile quando il dispositivo è in modalità silenziosa</string>
+  <string name="pref_show_connection_options">Impostazioni estese di connessione</string>
+  <string name="pref_show_connection_options_summary">Mostra nome host e impostazioni della porta quando configuri un account</string>
+  <string name="hostname_example">xmpp.esempio.it</string>
   <string name="action_add_account_with_certificate">Aggiungi account con certificato</string>
   <string name="unable_to_parse_certificate">Impossibile analizzare il certificato</string>
   <string name="authenticate_with_certificate">Lasciare vuoto per autenticarsi con certificato</string>
+  <string name="mam_prefs">Preferenze di archiviazione</string>
+  <string name="server_side_mam_prefs">Preferenze di archiviazione lato server</string>
+  <string name="fetching_mam_prefs">Raccolta preferenze di archiviazione. Attendere prego...</string>
+  <string name="unable_to_fetch_mam_prefs">Impossibile raccogliere le preferenze di archiviazione</string>
   <string name="captcha_ocr">Testo captcha</string>
   <string name="captcha_required">Captcha richiest</string>
   <string name="captcha_hint">inserire il testo dall\'immagine</string>
@@ -501,6 +523,7 @@
   <string name="error_fetching_omemo_key">Errore ricezione chiave OMEMO!</string>
   <string name="verified_omemo_key_with_certificate">Chiave OMEMO verificata con certificato!</string>
   <string name="device_does_not_support_certificates">Il tuo dispositivo non supporta la selezione di certificati utente!</string>
+  <string name="pref_connection_options">Connessione</string>
   <string name="pref_use_tor">Connettiti via Tor</string>
   <string name="pref_use_tor_summary">Indirizza tutte le connessioni attraverso la rete Tor. Richiede Orbot</string>
   <string name="account_settings_hostname">Nome host</string>
@@ -513,6 +536,7 @@
     <item quantity="one">%d messaggio</item>
     <item quantity="other">%d messaggi</item>
   </plurals>
+  <string name="load_more_messages">Carica altri messaggi</string>
   <string name="shared_file_with_x">Condividi file con %s</string>
   <string name="shared_image_with_x">Immagine condivisa con %s</string>
   <string name="no_storage_permission">Conversations necessita di accesso alla memoria esterna</string>
@@ -523,6 +547,7 @@
   <string name="certificate_issuer">Emittente</string>
   <string name="certificate_cn">Nome comune</string>
   <string name="certificate_o">Organizzazione</string>
+  <string name="certificate_sha1">SHA-1</string>
   <string name="certicate_info_not_available">(Non disponibile)</string>
   <string name="certificate_not_found">Nessun certificato trovato</string>
   <string name="notify_on_all_messages">Notifica per tutti i messaggi</string>
@@ -530,6 +555,7 @@
   <string name="notify_never">Notifiche disabilitate</string>
   <string name="notify_paused">Notifiche in pausa</string>
   <string name="pref_picture_compression">Comprimi immagini</string>
+  <string name="pref_picture_compression_summary">Ridimensiona e comprimi immagini</string>
   <string name="always">Sempre</string>
   <string name="automatically">Automaticamente</string>
   <string name="battery_optimizations_enabled">Ottimizzazioni batteria abilitate</string>
@@ -537,4 +563,8 @@
   <string name="battery_optimizations_enabled_dialog">Il tuo dispositivo sta facendo delle ingenti ottimizzazioni della batteria per Conversations che potrebbero portare ritardi alle notifiche o anche perdita di messaggi.\n\nTi verrà ora chiesto di disabilitarle.</string>
   <string name="disable">Disabilita</string>
   <string name="selection_too_large">L\'area selezionata è troppo grande</string>
+  <string name="no_accounts">(Nessun account attivo)</string>
+  <string name="this_field_is_required">Questo campo è obbligatorio</string>
+  <string name="correct_message">Correggi messaggio</string>
+  <string name="send_corrected_message">Invia messaggio corretto</string>
 </resources>

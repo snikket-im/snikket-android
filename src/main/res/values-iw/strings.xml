@@ -94,7 +94,6 @@
   <string name="contact_has_no_pgp_key">Conversations אינה מסוגלת להצפין את הודעותיך משום שאיש הקשר שלך אינו מכריז על המפתח הפומבי שלו או שלה.\n\n<small>אנא בקש מאיש הקשר שלך להגדיר את OpenPGP.</small></string>
   <string name="no_pgp_keys">לא נמצאו מפתחות OpenPGP</string>
   <string name="contacts_have_no_pgp_keys">Conversations אינה מסוגלת להצפין את הודעותיך משום שאנשי הקשר שלך אינם מכריזים על המפתח הפומבי שלהם.\n\n<small>אנא בקש מאנשי הקשר שלך לארגן OpenPGP.</small></string>
-  <string name="encrypted_message_received"><i>הודעה מוצפנת תנקבלה. גע כדי לפענח צופן.</i></string>
   <string name="pref_general">כללי</string>
   <string name="pref_xmpp_resource">משאב XMPP</string>
   <string name="pref_xmpp_resource_summary">השם שבעזרתו לקוח זה מזהה את עצמו</string>
@@ -228,7 +227,6 @@
   <string name="bookmark_already_exists">סימנייה זו כבר קיימת</string>
   <string name="you">אני</string>
   <string name="action_edit_subject">ערוך נושא ועידה</string>
-  <string name="conference_not_found">ועידה לא נמצאה</string>
   <string name="leave">עזוב</string>
   <string name="contact_added_you">איש קשר הוסיף אותך אל רשימת קשר</string>
   <string name="add_back">הוסף בחזרה</string>

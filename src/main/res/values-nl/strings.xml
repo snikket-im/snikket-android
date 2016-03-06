@@ -96,7 +96,6 @@
   <string name="contact_has_no_pgp_key">Conversations kan je berichten niet versleutelen omdat je contact geen publieke sleutel heeft ingesteld.\n\n<small>Vraag je contact om OpenPGP te configureren.</small></string>
   <string name="no_pgp_keys">Geen OpenPGP-sleutels gevonden</string>
   <string name="contacts_have_no_pgp_keys">Conversations kan je berichten niet versleutelen omdat je contacten geen publieke sleutel hebben ingesteld.\n\n<small>Vraag je contacten om OpenPGP te configureren.</small></string>
-  <string name="encrypted_message_received"><i>Versleuteld bericht ontvangen. Raak aan om te ontsleutelen.</i></string>
   <string name="pref_general">Algemeen</string>
   <string name="pref_xmpp_resource">XMPP-bron</string>
   <string name="pref_xmpp_resource_summary">De naam waarmee deze cliënt zich identificeert</string>
@@ -240,8 +239,7 @@
   <string name="bookmark_already_exists">Deze bladwijzer bestaat al</string>
   <string name="you">Jij</string>
   <string name="action_edit_subject">Onderwerp van groepsgesprek bewerken</string>
-  <string name="conference_not_found">Groepsgesprek niet gevonden</string>
-  <string name="conference_unknown_error">Onbekende fout ontvangen</string>
+  <string name="joining_conference">Deelnemen aan groepsgesprek…</string>
   <string name="leave">Verlaten</string>
   <string name="contact_added_you">Contact heeft je toegevoegd aan zijn/haar contacten</string>
   <string name="add_back">Contact toevoegen aan eigen contacten</string>
@@ -308,10 +306,13 @@
   <string name="conference_banned">Je bent verbannen uit dit groepsgesprek</string>
   <string name="conference_members_only">Dit groepsgesprek is enkel voor leden</string>
   <string name="conference_kicked">Je bent uit dit groepsgesprek geschopt</string>
+  <string name="conference_shutdown">Het groepsgesprek is uitgeschakeld</string>
+  <string name="conference_unknown_error">Je neemt niet langer deel aan dit groepsgesprek</string>
   <string name="using_account">met account %s</string>
   <string name="checking_x">%s op HTTP-host nakijken</string>
   <string name="not_connected_try_again">Je bent niet verbonden. Probeer later opnieuw</string>
   <string name="check_x_filesize">Bestandsgrootte van %s controleren</string>
+  <string name="check_x_filesize_on_host">Bestandsgrootte van %1$s op %2$s controleren</string>
   <string name="message_options">Berichtopties</string>
   <string name="copy_text">Tekst kopiëren</string>
   <string name="copy_original_url">Oorspronkelijke URL kopiëren</string>
@@ -490,6 +491,8 @@
   <string name="username">Gebruikersnaam</string>
   <string name="username_hint">Gebruikersnaam</string>
   <string name="invalid_username">Dit is geen geldige gebruikersnaam</string>
+  <string name="conference_name">Groepsgespreksnaam</string>
+  <string name="invalid_conference_name">Dit is geen geldige groepsgespreksnaam</string>
   <string name="download_failed_server_not_found">Downloaden mislukt: server niet gevonden</string>
   <string name="download_failed_file_not_found">Downloaden mislukt: bestand niet gevonden</string>
   <string name="download_failed_could_not_connect">Downloaden mislukt: kon geen verbinding maken met host</string>
@@ -502,6 +505,8 @@
   <string name="pref_away_when_screen_off_summary">Stelt je bron in als even weg wanneer het scherm uitgeschakeld is</string>
   <string name="pref_xa_on_silent_mode">Niet beschikbaar in stille modus</string>
   <string name="pref_xa_on_silent_mode_summary">Stelt je bron in als niet beschikbaar wanneer je apparaat in stille modus staat</string>
+  <string name="pref_treat_vibrate_as_silent">Trillen behandelen als stille modus</string>
+  <string name="pref_treat_vibrate_as_silent_summary">Stelt je bron in als niet beschikbaar wanneer je apparaat in trilmodus staat</string>
   <string name="pref_show_connection_options">Uitgebreide verbindingsinstellingen</string>
   <string name="pref_show_connection_options_summary">Toon hostnaam- en poortinstellingen bij instellen van een account</string>
   <string name="hostname_example">xmpp.voorbeeld.be</string>
@@ -565,4 +570,7 @@
   <string name="this_field_is_required">Dit veld is vereist</string>
   <string name="correct_message">Bericht verbeteren</string>
   <string name="send_corrected_message">Verbeterd bericht sturen</string>
+  <string name="no_keys_just_confirm">Je vertrouwt dit contact al. Door \'klaar\' te kiezen bevestig je enkel dat %s deel uitmaakt van dit groepsgesprek.</string>
+  <string name="select_image_and_crop">Afbeelding kiezen en bijsnijden</string>
+  <string name="this_account_is_disabled">Je hebt deze account uitgeschakeld</string>
 </resources>

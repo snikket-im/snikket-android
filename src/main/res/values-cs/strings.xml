@@ -96,7 +96,6 @@
   <string name="contact_has_no_pgp_key">Není možné zašifrovat zprávu v aplikaci Konverzace, protože druhá strana neoznamuje svůj veřejný klíč.\n\n<small>Požádejte svůj kontakt ať si nastaví OpenPGP.</small></string>
   <string name="no_pgp_keys">Nebyly nalezeny žádné OpenPGP klíče</string>
   <string name="contacts_have_no_pgp_keys">Není možné zašifrovat zprávy v aplikaci Konverzace, protože kontakty neoznamují svůj veřejný klíč.\n\n<small>Požádejte své kontakty ať si nastaví OpenPGP.</small></string>
-  <string name="encrypted_message_received"><i>Obdržena šifrovaná zpráva. Dešifrovat dotykem.</i></string>
   <string name="pref_general">Obecné</string>
   <string name="pref_xmpp_resource">XMPP zdroj</string>
   <string name="pref_xmpp_resource_summary">Jméno se kterým se tento klient identifikuje</string>
@@ -240,8 +239,7 @@
   <string name="bookmark_already_exists">Tato záložka již existuje</string>
   <string name="you">Já</string>
   <string name="action_edit_subject">Upravit jméno konference</string>
-  <string name="conference_not_found">Konference nenalezena</string>
-  <string name="conference_unknown_error">Došlo k neznámé chybě</string>
+  <string name="joining_conference">Připojování ke konferenci...</string>
   <string name="leave">Odejít</string>
   <string name="contact_added_you">Kontakt přidán do seznamu</string>
   <string name="add_back">Opět přidat</string>
@@ -308,6 +306,8 @@
   <string name="conference_banned">Vstup do konference byl zakázán</string>
   <string name="conference_members_only">Tato konference je pouze pro členy</string>
   <string name="conference_kicked">Vykopli tě z této konference</string>
+  <string name="conference_shutdown">Konference byla ukončena</string>
+  <string name="conference_unknown_error">Již nejste v této konferenci</string>
   <string name="using_account">za použití účtu %s</string>
   <string name="checking_x">Ověřuji %s na HTTP hostiteli</string>
   <string name="not_connected_try_again">Bez připojení. Zkus znovu později</string>
@@ -492,6 +492,8 @@
   <string name="username">Uživatelské jméno</string>
   <string name="username_hint">Uživatelské jméno</string>
   <string name="invalid_username">Toto není platné uživatelské jméno</string>
+  <string name="conference_name">Jméno konferenc</string>
+  <string name="invalid_conference_name">Toto není platné jméno konference</string>
   <string name="download_failed_server_not_found">Stahování selhalo: Server nenalezen</string>
   <string name="download_failed_file_not_found">Stahování selhalo: Soubor nenalezen</string>
   <string name="download_failed_could_not_connect">Stahování selhalo: Nelze se připojit k hostu</string>

@@ -96,7 +96,6 @@
   <string name="contact_has_no_pgp_key">Conversations ist nicht in der Lage, deine Nachrichten zu verschlüsseln, weil dein Kontakt seinen oder ihren Schlüssel nicht preisgibt.\n\n<small>Bitte sag deinem Kontakt, er oder sie möge OpenPGP einrichten.</small></string>
   <string name="no_pgp_keys">Keine OpenPGP-Schlüssel gefunden</string>
   <string name="contacts_have_no_pgp_keys">Conversations ist nicht in der Lage, deine Nachrichten zu verschlüsseln, weil deine Kontakte ihre Schlüssel nicht preisgeben.\n\n<small>Bitte sage deinen Kontakten, sie mögen OpenPGP einrichten.</small></string>
-  <string name="encrypted_message_received"><i>Verschlüsselte Nachricht erhalten. Antippen zum Entschlüsseln.</i></string>
   <string name="pref_general">Allgemeines</string>
   <string name="pref_xmpp_resource">XMPP-Ressource</string>
   <string name="pref_xmpp_resource_summary">Der Name, mit dem sich der Client selbst identifiziert</string>
@@ -160,7 +159,7 @@
   <string name="mgmt_account_disable">Vorübergehend abschalten</string>
   <string name="mgmt_account_publish_avatar">Avatar veröffentlichen</string>
   <string name="mgmt_account_publish_pgp">Öffentlichen OpenPGP-Schlüssel veröffentlichen</string>
-  <string name="mgmt_account_enable">Anschalten</string>
+  <string name="mgmt_account_enable">Aktivieren </string>
   <string name="mgmt_account_are_you_sure">Bist du dir sicher?</string>
   <string name="mgmt_account_delete_confirm_text">Wenn du dein Konto löschst, gehen alle Gesprächsverläufe verloren</string>
   <string name="attach_record_voice">Sprache aufzeichnen</string>
@@ -217,7 +216,7 @@
   <string name="other_devices">Andere Geräte</string>
   <string name="trust_omemo_fingerprints">OMEMO-Fingerabdruck vertrauen</string>
   <string name="fetching_keys">Schlüssel werden abgerufen …</string>
-  <string name="done">Erledigt</string>
+  <string name="done">Fertig</string>
   <string name="verify">Überprüfen</string>
   <string name="decrypt">Entschlüsseln</string>
   <string name="conferences">Konferenzen</string>
@@ -240,8 +239,7 @@
   <string name="bookmark_already_exists">Die Konferenz befindet sich bereits auf deiner Kontaktliste</string>
   <string name="you">Du</string>
   <string name="action_edit_subject">Konferenz-Thema bearbeiten</string>
-  <string name="conference_not_found">Konferenz nicht gefunden</string>
-  <string name="conference_unknown_error">Unbekannter Fehler</string>
+  <string name="joining_conference">Konferenz wird betreten…</string>
   <string name="leave">Verlassen</string>
   <string name="contact_added_you">Der Kontakt hat dich zur Kontaktliste hinzugefügt</string>
   <string name="add_back">Auch hinzufügen</string>
@@ -301,17 +299,20 @@
   <string name="pref_expert_options_other">Sonstiges</string>
   <string name="pref_conference_name">Konferenz-Name</string>
   <string name="pref_conference_name_summary">Konferenz-Thema statt Raum-JID als Namen verwenden</string>
-  <string name="pref_autojoin">Unterhaltung automatisch beitreten</string>
+  <string name="pref_autojoin">Konferenzen automatisch beitreten</string>
   <string name="pref_autojoin_summary">Autojoin-Flag in Konferenzlesezeichen beachten</string>
   <string name="toast_message_otr_fingerprint">OTR-Fingerabdruck in die Zwischenablage kopiert!</string>
   <string name="toast_message_omemo_fingerprint">OMEMO-Fingerabdruck in die Zwischenablage kopiert!</string>
   <string name="conference_banned">Du wurdest von der Konferenz ausgeschlossen</string>
   <string name="conference_members_only">Die Konferenz ist nur für Mitglieder</string>
   <string name="conference_kicked">Du wurdest aus der Konferenz geworfen</string>
+  <string name="conference_shutdown">Konferenz wurde geschlossen</string>
+  <string name="conference_unknown_error">Du bist nicht länger in dieser Konferenz</string>
   <string name="using_account">Verwendetes Konto: %s</string>
   <string name="checking_x">%s auf HTTP-Host wird überprüft</string>
   <string name="not_connected_try_again">Nicht verbunden, bitte später versuchen</string>
   <string name="check_x_filesize">%s-Größe prüfen</string>
+  <string name="check_x_filesize_on_host">%1$s-Größe auf %2$s prüfen</string>
   <string name="message_options">Nachrichtenoptionen</string>
   <string name="copy_text">Text kopieren</string>
   <string name="copy_original_url">Original-URL kopieren</string>
@@ -400,7 +401,7 @@
   <string name="current_password">Aktuelles Passwort</string>
   <string name="new_password">Neues Passwort</string>
   <string name="password_should_not_be_empty">Das Passwort darf nicht leer sein</string>
-  <string name="enable_all_accounts">Alle Konten anschalten</string>
+  <string name="enable_all_accounts">Alle Konten aktiveren</string>
   <string name="disable_all_accounts">Alle Konten abschalten</string>
   <string name="perform_action_with">Aktion durchführen mit</string>
   <string name="no_affiliation">Keine Zugehörigkeit</string>
@@ -490,6 +491,8 @@
   <string name="username">Benutzername</string>
   <string name="username_hint">Benutzername</string>
   <string name="invalid_username">Ungültiger Benutzername</string>
+  <string name="conference_name">Konferenz-Name</string>
+  <string name="invalid_conference_name">Dies ist kein gültiger Konferenz-Name</string>
   <string name="download_failed_server_not_found">Download fehlgeschlagen: Server nicht gefunden</string>
   <string name="download_failed_file_not_found">Download fehlgeschlagen: Datei nicht gefunden</string>
   <string name="download_failed_could_not_connect">Download fehlgeschlagen: keine Verbindung zum Host</string>
@@ -501,7 +504,9 @@
   <string name="pref_away_when_screen_off">Abwesend bei abgeschaltetem Bildschirm</string>
   <string name="pref_away_when_screen_off_summary">Setzt deinen Status auf \"abwesend\", solange dein Bildschirm abgeschaltet ist</string>
   <string name="pref_xa_on_silent_mode">Nicht verfügbar bei Stummschaltung</string>
-  <string name="pref_xa_on_silent_mode_summary">Setzt deinen Status auf \"nicht verfügbar\", solange dein Telefon lautlos ist</string>
+  <string name="pref_xa_on_silent_mode_summary">Setzt deinen Status auf \"nicht verfügbar\", solange dein Gerät lautlos ist</string>
+  <string name="pref_treat_vibrate_as_silent">Behandle Vibration als Stumm</string>
+  <string name="pref_treat_vibrate_as_silent_summary">Setze deinen Status auf \"nicht verfügbar\" solange dein Gerät auf \"vibrieren\" ist.</string>
   <string name="pref_show_connection_options">Erweiterte Verbindungs-Optionen</string>
   <string name="pref_show_connection_options_summary">Hostname- und Port-Optionen bei Kontoeinrichtung anzeigen</string>
   <string name="hostname_example">xmpp.domain.de</string>
@@ -565,4 +570,7 @@
   <string name="this_field_is_required">Dieses Feld ist erforderlich</string>
   <string name="correct_message">Nachricht korrigieren</string>
   <string name="send_corrected_message">Korrigierte Nachricht senden</string>
+  <string name="no_keys_just_confirm">Du vertraust diesem Kontakt bereits. In dem du \'Fertig\' auswählst bestätigst Du, dass %s Teil dieser Konferenz ist.</string>
+  <string name="select_image_and_crop">Bild auswählen und zuschneiden</string>
+  <string name="this_account_is_disabled">Du hast diesen Account deaktiviert</string>
 </resources>

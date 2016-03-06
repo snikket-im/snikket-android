@@ -96,7 +96,6 @@
   <string name="contact_has_no_pgp_key">O Conversations não conseguiu criptografar suas mensagens porque o seu contato não está anunciando a chave pública dele(a).\n\n<small>Por favor, solicite ao seu contato para configurar o OpenPGP.</small></string>
   <string name="no_pgp_keys">Não foi encontrada nenhuma chave OpenPGP</string>
   <string name="contacts_have_no_pgp_keys">O Conversations não conseguiu criptografar suas mensagens porque os seus contatos não estão anunciando a chave pública deles(as).\n\n<small>Por favor, solicite aos seus contatos que configurem o OpenPGP.</small></string>
-  <string name="encrypted_message_received"><i>Foi recebida uma mensagem criptografada. Toque para descriptografar.</i></string>
   <string name="pref_general">Geral</string>
   <string name="pref_xmpp_resource">Recurso XMPP</string>
   <string name="pref_xmpp_resource_summary">O nome pelo qual esse cliente se identifica</string>
@@ -240,8 +239,7 @@
   <string name="bookmark_already_exists">Esse favorito já existe</string>
   <string name="you">Você</string>
   <string name="action_edit_subject">Editar o assunto da conferência</string>
-  <string name="conference_not_found">A conferência não foi encontrada</string>
-  <string name="conference_unknown_error">Foi recebido um erro desconhecido</string>
+  <string name="joining_conference">Entrando na conferência...</string>
   <string name="leave">Sair</string>
   <string name="contact_added_you">O contato foi adicionado à sua lista de contatos</string>
   <string name="add_back">Adicionar novamente</string>
@@ -308,6 +306,8 @@
   <string name="conference_banned">Você foi banido dessa conferência</string>
   <string name="conference_members_only">Essa conferência é restrita a seus membros</string>
   <string name="conference_kicked">Você foi expulso dessa conferência</string>
+  <string name="conference_shutdown">A conferência foi encerrada</string>
+  <string name="conference_unknown_error">Você não está mais participando dessa conferência</string>
   <string name="using_account">usando a conta %s</string>
   <string name="checking_x">Verificando %s no host HTTP</string>
   <string name="not_connected_try_again">Você não está conectado. Tente novamente mais tarde.</string>
@@ -490,6 +490,8 @@
   <string name="username">Nome de usuário</string>
   <string name="username_hint">Nome de usuário</string>
   <string name="invalid_username">Esse não é um nome de usuário válido</string>
+  <string name="conference_name">Nome da conferência</string>
+  <string name="invalid_conference_name">Esse nome de conferência não é válido</string>
   <string name="download_failed_server_not_found">Não foi possível fazer o download: servidor não encontrado</string>
   <string name="download_failed_file_not_found">Não foi possível fazer o download: arquivo não encontrado</string>
   <string name="download_failed_could_not_connect">Não foi possível fazer o download: não foi possível conectar ao host</string>

@@ -96,7 +96,6 @@
   <string name="contact_has_no_pgp_key">Conversations không thể mã hoá tin nhắn vì liên hệ của bạn không thông báo khoá công cộng của anh/chị ấy.\n\n<small>Hãy yêu cầu liên hệ đó cài đặt OpenPGP.</small></string>
   <string name="no_pgp_keys">Không tìm thấy các khoá OpenPGP</string>
   <string name="contacts_have_no_pgp_keys">Conversations không thể mã hoá tin nhắn vì các liên hệ của bạn không thông báo khoá công cộng của họ.\n\n<small>Hãy yêu cầu họ cài đặt OpenPGP.</small></string>
-  <string name="encrypted_message_received"><i>Đã nhận tin nhắn được mã hoá. Chạm để giải mã.</i></string>
   <string name="pref_general">Tổng quan</string>
   <string name="pref_xmpp_resource">Ứng dụng XMPP</string>
   <string name="pref_xmpp_resource_summary">Tên của máy trạm này được tự đặt là</string>
@@ -236,7 +235,6 @@
   <string name="bookmark_already_exists">Đã có đánh dấu này rồi</string>
   <string name="you">Bạn</string>
   <string name="action_edit_subject">Chỉnh sửa tiêu đề diễn đàn</string>
-  <string name="conference_not_found">Không tìm thấy diễn đàn</string>
   <string name="leave">Rời khỏi</string>
   <string name="contact_added_you">Liên hệ đã thêm bạn vào danh bạ</string>
   <string name="add_back">Thêm họ vào</string>

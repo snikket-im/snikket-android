@@ -96,7 +96,6 @@
   <string name="contact_has_no_pgp_key">Conversations не может зашифровать сообщение, потому что удаленный пользователь не анонсирует свой открытый ключ.\n\n<small>Пожалуйста, попросите удаленного пользователя тоже установить OpenPGP.</small></string>
   <string name="no_pgp_keys">Нет OpenPGP ключей</string>
   <string name="contacts_have_no_pgp_keys">Conversations не может зашифровать сообщения, потому что удаленные пользователи не анонсируют свои открытые ключи.\n\n<small>Пожалуйста, попросите удаленных пользователей тоже установить OpenPGP.</small></string>
-  <string name="encrypted_message_received"><i>Получено зашифрованное сообщение. Нажмите, чтобы расшифровать.</i></string>
   <string name="pref_general">Общие</string>
   <string name="pref_xmpp_resource">Название ресурса</string>
   <string name="pref_xmpp_resource_summary">Имя которым Conversations идентифицирует себя</string>
@@ -236,7 +235,6 @@
   <string name="bookmark_already_exists">Такая закладка уже существует</string>
   <string name="you">Вы</string>
   <string name="action_edit_subject">Редактировать тему конференции</string>
-  <string name="conference_not_found">Конференция не найдена</string>
   <string name="leave">Покинуть</string>
   <string name="contact_added_you">Собеседник добавил вас в список контактов</string>
   <string name="add_back">Добавить в ответ</string>

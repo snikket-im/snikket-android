@@ -96,7 +96,6 @@
   <string name="contact_has_no_pgp_key">Conversations no ha podido cifrar tus mensajes porque tu contacto no está anunciando su clave publica.\n\n<small>Por favor, pide a tu contacto que configure OpenPGP.</small></string>
   <string name="no_pgp_keys">Claves OpenPGP no encontradas</string>
   <string name="contacts_have_no_pgp_keys">Conversations no ha podido cifrar tus mensajes porque tus contactos no están anunciando su clave publica.\n\n<small>Por favor, pide a tus contactos que configuren OpenPGP.</small></string>
-  <string name="encrypted_message_received"><i>Mensaje cifrado recibido. Pulsa para descifrar.</i></string>
   <string name="pref_general">General</string>
   <string name="pref_xmpp_resource">Recurso</string>
   <string name="pref_xmpp_resource_summary">El nombre que identifica el cliente que estás utilizando</string>
@@ -240,8 +239,7 @@
   <string name="bookmark_already_exists">Este marcador ya existe</string>
   <string name="you">Tú</string>
   <string name="action_edit_subject">Editar asunto de la conversación</string>
-  <string name="conference_not_found">Conversación no encontrada</string>
-  <string name="conference_unknown_error">Error desconocido</string>
+  <string name="joining_conference">Uniéndose a conversación...</string>
   <string name="leave">Salir</string>
   <string name="contact_added_you">El contacto te ha añadido a su lista de contactos</string>
   <string name="add_back">Añadir contacto</string>
@@ -308,10 +306,13 @@
   <string name="conference_banned">Tu entrada a esta conversación ha sido prohibida</string>
   <string name="conference_members_only">Esta conversación es solo para miembros</string>
   <string name="conference_kicked">Has sido expulsado de esta conversación</string>
+  <string name="conference_shutdown">La conversación ha sido cerrada</string>
+  <string name="conference_unknown_error">Ya no estás dentro de esta conversación</string>
   <string name="using_account">Usando cuenta %s</string>
   <string name="checking_x">Comprobando %s en servidor HTTP</string>
   <string name="not_connected_try_again">No estás conectado. Inténtalo más tarde</string>
   <string name="check_x_filesize">Comprobar tamaño de %s</string>
+  <string name="check_x_filesize_on_host">Comprobar tamaño de %1$s en %2$s</string>
   <string name="message_options">Opciones de mensaje</string>
   <string name="copy_text">Copiar texto</string>
   <string name="copy_original_url">Copiar URL original</string>
@@ -490,6 +491,8 @@
   <string name="username">Usuario</string>
   <string name="username_hint">Usuario</string>
   <string name="invalid_username">Esto no es un usuario válido</string>
+  <string name="conference_name">Nombre de la conversación</string>
+  <string name="invalid_conference_name">Nombre de conversación no válido</string>
   <string name="download_failed_server_not_found">Error al descargar: Servidor no encontrado</string>
   <string name="download_failed_file_not_found">Error al descargar: Archivo no encontrado</string>
   <string name="download_failed_could_not_connect">Error al descargar: No se ha podido conectar con el servidor</string>
@@ -502,6 +505,8 @@
   <string name="pref_away_when_screen_off_summary">Cambia tu estado a ausente cuando la pantalla está apagada</string>
   <string name="pref_xa_on_silent_mode">No disponible en modo silencio</string>
   <string name="pref_xa_on_silent_mode_summary">Cambia tu estado a no disponible cuando el dispositivo está en modo silencio</string>
+  <string name="pref_treat_vibrate_as_silent">Modo vibración como modo silencio</string>
+  <string name="pref_treat_vibrate_as_silent_summary">Cambia tu estado a no disponible cuando el dispositivo está en modo vibración</string>
   <string name="pref_show_connection_options">Opciones de conexión</string>
   <string name="pref_show_connection_options_summary">Mostrar el hostname y el puerto cuando se está creando una cuenta</string>
   <string name="hostname_example">xmpp.ejemplo.com</string>
@@ -565,4 +570,7 @@
   <string name="this_field_is_required">Este campo es requerido</string>
   <string name="correct_message">Corregir mensaje</string>
   <string name="send_corrected_message">Enviar mensaje corregido</string>
+  <string name="no_keys_just_confirm">Ya confías en este contacto. Seleccionando \'hecho\', estás confirmando que %s es parte de esta conversación.</string>
+  <string name="select_image_and_crop">Seleccionar imagen y recortar</string>
+  <string name="this_account_is_disabled">Has deshabilitado esta cuenta</string>
 </resources>

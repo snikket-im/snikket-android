@@ -96,7 +96,6 @@
   <string name="contact_has_no_pgp_key">Conversations nu a putut sa cripteze mesajele tale din cauza contactului care nu isi anunta cheia publica.\n\n<small>Roaga contactul sa isi configureze OpenPGP.</small></string>
   <string name="no_pgp_keys">Nu am gasit chei OpenPGP</string>
   <string name="contacts_have_no_pgp_keys">Conversations nu poate cripta mesajele tale pentru contactele tale care nu isi anunta cheia publica.\n\n<small>Te rog cere contactelor sa configureze OpenPGP.</small></string>
-  <string name="encrypted_message_received"><i>Ai primit mesaj criptat. Apasa aici pentru a-l decripta.</i></string>
   <string name="pref_general">General</string>
   <string name="pref_xmpp_resource">Nume client XMPP</string>
   <string name="pref_xmpp_resource_summary">Numele cu care acest client se identifica</string>
@@ -240,8 +239,7 @@
   <string name="bookmark_already_exists">Acest semn de carte exista</string>
   <string name="you">Tu</string>
   <string name="action_edit_subject">Editeaza titlul conferintei</string>
-  <string name="conference_not_found">Conferinta nu a fost gasita</string>
-  <string name="conference_unknown_error">A fost primita o eroare necunoscuta</string>
+  <string name="joining_conference">Alatura-te conferintei</string>
   <string name="leave">Paraseste</string>
   <string name="contact_added_you">Contactul a fost adaugat in lista </string>
   <string name="add_back">Adauga inapoi</string>
@@ -308,10 +306,13 @@
   <string name="conference_banned">Ti-a fost interzis accesul la aceasta conferinta</string>
   <string name="conference_members_only">Aceasta conferinta este rezervata membrilor</string>
   <string name="conference_kicked">Ai fost dat afara din conferinta</string>
+  <string name="conference_shutdown">Conferinta a fost inchisa</string>
+  <string name="conference_unknown_error">Nu mai participi la aceasta conferinta</string>
   <string name="using_account">folosind cont %s</string>
   <string name="checking_x">Verifica %s pe gazda HTTP</string>
   <string name="not_connected_try_again">Nu esti conectat. Incearca din nou mai tarziu.</string>
   <string name="check_x_filesize">Verifica marimea %s</string>
+  <string name="check_x_filesize_on_host">Verifica marimea %1$s pe %2$s</string>
   <string name="message_options">Optiuni mesaje</string>
   <string name="copy_text">Copiaza text</string>
   <string name="copy_original_url">Copiaza URL original</string>
@@ -492,6 +493,8 @@
   <string name="username">Nume utilizator</string>
   <string name="username_hint">Nume utilizator</string>
   <string name="invalid_username">Acesta nu este un nume de utilizator valabil</string>
+  <string name="conference_name">Titlu conferinta</string>
+  <string name="invalid_conference_name">Acesta nu este un nume de conferinta valabil</string>
   <string name="download_failed_server_not_found">Descarcarea a esuat: Serverul nu a fost gasit</string>
   <string name="download_failed_file_not_found">Descarcare esuata: Fisierul nu a fost gasit</string>
   <string name="download_failed_could_not_connect">Descarcarea a esuat. Nu s-a putut realiza conexiunea cu gazda.</string>
@@ -501,9 +504,11 @@
   <string name="server_info_broken">Deteriorat</string>
   <string name="pref_presence_settings">Setari de prezenta</string>
   <string name="pref_away_when_screen_off">Plecat cand ecranul este oprit</string>
-  <string name="pref_away_when_screen_off_summary">Marcheaza clientul drept plecat cand ecranul este oprit</string>
+  <string name="pref_away_when_screen_off_summary">Declara clientul drept plecat cand ecranul este oprit</string>
   <string name="pref_xa_on_silent_mode">Indisponibil in mod silentios</string>
   <string name="pref_xa_on_silent_mode_summary">Declara clientul drept indisponibil atunci cand dispozitivul este in mod silentios</string>
+  <string name="pref_treat_vibrate_as_silent">Trateaza modul vibratie ca silentios</string>
+  <string name="pref_treat_vibrate_as_silent_summary">Declara clientul drept indisponibil atunci cand dispozitivul este in mod vibratie</string>
   <string name="pref_show_connection_options">Optiuni avansate conexiune</string>
   <string name="pref_show_connection_options_summary">Arata optiunea de setare a numelui de gazda si a portului atunci cand se configureaza un cont</string>
   <string name="hostname_example">xmpp.example.com</string>
@@ -569,4 +574,7 @@ Emitent</string>
   <string name="this_field_is_required">Acest camp este obligatoriu</string>
   <string name="correct_message">Corectie mesaj</string>
   <string name="send_corrected_message">Trimite text corectat</string>
+  <string name="no_keys_just_confirm">Deja ai incredere in acest contact. Selectand \'gata\' doar confirmi ca %s ia parte la conferinta.</string>
+  <string name="select_image_and_crop">Selecteaza imaginea si decupeaza</string>
+  <string name="this_account_is_disabled">Ai dezactivat acest cont</string>
 </resources>

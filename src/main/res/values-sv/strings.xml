@@ -96,7 +96,6 @@
   <string name="contact_has_no_pgp_key">Conversations kan inte kryptera ditt meddelande eftersom din kontakt inte annonserar sin publika nyckel.\n\n<small>Be din kontakt att sätta upp OpenPGP.</small></string>
   <string name="no_pgp_keys">Inga OpenPGP-nycklar funna</string>
   <string name="contacts_have_no_pgp_keys">Conversations kan inte kryptera ditt meddelande eftersom din kontakt inte annonserar sin publika nyckel.\n\n<small>Be din kontakt att sätta upp OpenPGP.</small></string>
-  <string name="encrypted_message_received"><i>Krypterat meddelande mottaget. Tryck för att avkryptera.</i></string>
   <string name="pref_general">Generellt</string>
   <string name="pref_xmpp_resource">XMPP-resurs</string>
   <string name="pref_xmpp_resource_summary">Namnet klienten identifierar sig med</string>
@@ -240,8 +239,7 @@
   <string name="bookmark_already_exists">Detta bokmärke finns redan</string>
   <string name="you">Du</string>
   <string name="action_edit_subject">Ändra konferensämne</string>
-  <string name="conference_not_found">Konferens hittades inte</string>
-  <string name="conference_unknown_error">Mottog okänt fel</string>
+  <string name="joining_conference">Går med i konferens...</string>
   <string name="leave">Lämna</string>
   <string name="contact_added_you">Kontakten lade till dig i sin kontaktlista</string>
   <string name="add_back">Addera tillbaka</string>
@@ -308,10 +306,13 @@
   <string name="conference_banned">Du är bannlyst från denna konferens</string>
   <string name="conference_members_only">Medlemsskap krävs för denna konferens</string>
   <string name="conference_kicked">Du har blivit utsparkad från denna konferens</string>
+  <string name="conference_shutdown">Konferensen stängdes ner</string>
+  <string name="conference_unknown_error">Du är inte längre med i denna konferens</string>
   <string name="using_account">använder konto %s</string>
   <string name="checking_x">Kontrollerar %s på webbserver</string>
   <string name="not_connected_try_again">Du är inte ansluten. Försök igen senare</string>
-  <string name="check_x_filesize">Kontrollera storleken på %s</string>
+  <string name="check_x_filesize">Kontrollera filstorleken på %s</string>
+  <string name="check_x_filesize_on_host">Kontrollera filstorlek för %1$s på %2$s</string>
   <string name="message_options">Meddelandealternativ</string>
   <string name="copy_text">Kopiera text</string>
   <string name="copy_original_url">Kopiera orginal-URL</string>
@@ -490,6 +491,8 @@
   <string name="username">Användarnamn</string>
   <string name="username_hint">Användarnamn</string>
   <string name="invalid_username">Inte ett giltigt användanamn</string>
+  <string name="conference_name">Konferensnamn</string>
+  <string name="invalid_conference_name">Detta är inte ett giltigt konferensnamn</string>
   <string name="download_failed_server_not_found">Nerladdning gick fel: Server hittades inte</string>
   <string name="download_failed_file_not_found">Nerladdning gick fel: Filen hittades inte</string>
   <string name="download_failed_could_not_connect">Nerladdningen gick fel: Kunder inte ansluta till server</string>
@@ -502,6 +505,8 @@
   <string name="pref_away_when_screen_off_summary">Sätter din tillgänglighet till borta när skrämen är av</string>
   <string name="pref_xa_on_silent_mode">Status ej tillgänglig i tyst läge</string>
   <string name="pref_xa_on_silent_mode_summary">Sätter din tillgänglighet till ej tillgänglig när enheten är i tyst läge</string>
+  <string name="pref_treat_vibrate_as_silent">Hantera vibrationsläge som tyst läge</string>
+  <string name="pref_treat_vibrate_as_silent_summary">Sätter din tillgänglighet till ej tillgänglig när enheten är i vibratorläge</string>
   <string name="pref_show_connection_options">Utökade anslutningsinställningar</string>
   <string name="pref_show_connection_options_summary">Visa val av servernamn och port vid inställning av konto</string>
   <string name="hostname_example">xmpp.example.com</string>
@@ -565,4 +570,7 @@
   <string name="this_field_is_required">Detta fält måste fyllas i</string>
   <string name="correct_message">Korrigera meddelanden</string>
   <string name="send_corrected_message">Skicka korrigerat meddelande</string>
+  <string name="no_keys_just_confirm">Du litar redan på denna kontakt. Genom att välja \'klar\' bekräftar du att %s är med i denna konferens.</string>
+  <string name="select_image_and_crop">Välj bild och beskär</string>
+  <string name="this_account_is_disabled">Du har deaktiverat detta konto</string>
 </resources>

@@ -96,7 +96,6 @@
   <string name="contact_has_no_pgp_key">Conversations ez da zure mezuak enkriptatzeko gai zure kontaktua bere gako publikoa jakinarazten ez dagoelako.\n\n<small>Mesedez eskatu ezaiozu zure kontaktuari openPGP konfigura dezan.</small></string>
   <string name="no_pgp_keys">Ez da OpenPGP gakorik aurkitu</string>
   <string name="contacts_have_no_pgp_keys">Conversations ez da zure mezuak enkriptatzeko gai zure kontaktuak haien gako publikoa jakinarazten ez daudelako.\n\n<small>Mesedez eskatu ezaiezu zure kontakuei OpenPGP konfigura dezaten.</small></string>
-  <string name="encrypted_message_received"><i>Enkriptatutako mezua jaso da. Ukitu desenkriptatzeko.</i></string>
   <string name="pref_general">Orokorrak</string>
   <string name="pref_xmpp_resource">XMPP baliabidea</string>
   <string name="pref_xmpp_resource_summary">Bezero honek bere burua aurkezteko erabiltzen duen izena</string>
@@ -240,8 +239,7 @@
   <string name="bookmark_already_exists">Laster-marka hau existitzen da dagoeneko</string>
   <string name="you">Zu</string>
   <string name="action_edit_subject">Konferentziaren gaia editatu</string>
-  <string name="conference_not_found">Konferentzia ez da aurkitu</string>
-  <string name="conference_unknown_error">Akats ezezaguna jaso da</string>
+  <string name="joining_conference">Konferentziara batzen...</string>
   <string name="leave">Alde egin</string>
   <string name="contact_added_you">Kontaktuak bere zerrendara gehitu zaitu</string>
   <string name="add_back">Bera gehitu</string>
@@ -308,6 +306,8 @@
   <string name="conference_banned">Konferentzia honetara sartzea debekatuta duzu</string>
   <string name="conference_members_only">Konferentzia hau kideentzat da soilik</string>
   <string name="conference_kicked">Konferentzia honetatik kanporatua izan zara</string>
+  <string name="conference_shutdown">Konferentzia itzali egin da</string>
+  <string name="conference_unknown_error">Ez zaude dagoeneko konferentzia honetan</string>
   <string name="using_account">%s kontua erabiltzen</string>
   <string name="checking_x">%s egiaztatzen HTTP ostalarian</string>
   <string name="not_connected_try_again">Ez zaude konektatuta. Saiatu beranduago berriz</string>
@@ -490,6 +490,8 @@
   <string name="username">Erabiltzaile izena</string>
   <string name="username_hint">Erabiltzaile izena</string>
   <string name="invalid_username">Hau ez da erabiltzaile izen baliodun bat</string>
+  <string name="conference_name">Konferentziaren izena</string>
+  <string name="invalid_conference_name">Hau ez da konferentzia batentzako izen balioduna</string>
   <string name="download_failed_server_not_found">Deskargak huts egin du: zerbitzaria ez da aurkitu</string>
   <string name="download_failed_file_not_found">Deskargak huts egin du: fitxategia ez da aurkitu</string>
   <string name="download_failed_could_not_connect">Deskargak huts egin du: ezin izan da ostalarira konektatu</string>
