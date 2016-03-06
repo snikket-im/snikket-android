@@ -777,6 +777,17 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 		}
 	}
 
+	private OnClickListener mEnableAccountListener = new OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			final Account account = conversation == null ? null : conversation.getAccount();
+			if (account != null) {
+				account.setOption(Account.OPTION_DISABLED, false);
+				activity.xmppConnectionService.updateAccount(account);
+			}
+		}
+	};
+
 	private OnClickListener mUnblockClickListener = new OnClickListener() {
 		@Override
 		public void onClick(final View v) {
@@ -822,7 +833,9 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 		final Account account = conversation.getAccount();
 		final Contact contact = conversation.getContact();
 		final int mode = conversation.getMode();
-		if (conversation.isBlocked()) {
+		if (account.getStatus() == Account.State.DISABLED) {
+			showSnackbar(R.string.this_account_is_disabled, R.string.enable, this.mEnableAccountListener);
+		} else if (conversation.isBlocked()) {
 			showSnackbar(R.string.contact_blocked, R.string.unblock, this.mUnblockClickListener);
 		} else if (!contact.showInRoster() && contact.getOption(Contact.Options.PENDING_SUBSCRIPTION_REQUEST)) {
 			showSnackbar(R.string.contact_added_you, R.string.add_back, this.mAddBackClickListener);
