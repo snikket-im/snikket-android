@@ -197,6 +197,12 @@ connection again. When the client fails to do so because the network
 connectivity is out for longer than that all messages sent to that client will
 be returned to the sender resulting in a delivery failed.
 
+Instead of returning a message to the sender both ejabberd and prosody have the
+ability to store messages in offline storage when the disconnecting client is
+the only client. In prosody this is available via an extra module called
+```mod_smacks_offline```. In ejabberd this is available via some configuration
+settings.
+
 Other less common reasons are that the message you sent didn't meet some
 criteria enforced by the server (too large, too many). Another reason could be
 that the recipient is offline and the server doesn't provide offline storage.
