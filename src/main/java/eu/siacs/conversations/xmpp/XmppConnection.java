@@ -915,11 +915,11 @@ public class XmppConnection implements Runnable {
 							sendPostBindInitialization();
 						}
 					} else {
-						Log.d(Config.LOGTAG, account.getJid() + ": disconnecting because of bind failure");
+						Log.d(Config.LOGTAG, account.getJid() + ": disconnecting because of bind failure. (no jid)");
 						disconnect(true);
 					}
 				} else {
-					Log.d(Config.LOGTAG, account.getJid() + ": disconnecting because of bind failure");
+					Log.d(Config.LOGTAG, account.getJid() + ": disconnecting because of bind failure ("+packet.toString());
 					disconnect(true);
 				}
 			}
