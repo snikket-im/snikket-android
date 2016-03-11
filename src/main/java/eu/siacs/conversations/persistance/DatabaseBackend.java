@@ -415,8 +415,10 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		Cursor cursor = db.query(ServiceDiscoveryResult.TABLENAME, null,
 				ServiceDiscoveryResult.HASH + "=? AND " + ServiceDiscoveryResult.VER + "=?",
 				selectionArgs, null, null, null);
-		if (cursor.getCount() == 0)
+		if (cursor.getCount() == 0) {
+			cursor.close();
 			return null;
+		}
 		cursor.moveToFirst();
 
 		ServiceDiscoveryResult result = null;
