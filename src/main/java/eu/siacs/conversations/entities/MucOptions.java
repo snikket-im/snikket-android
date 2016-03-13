@@ -345,17 +345,8 @@ public class MucOptions {
 	}
 
 	public List<User> getUsers(int max) {
-		ArrayList<User> users = new ArrayList<>();
-		int i = 1;
-		for(User user : this.users.values()) {
-			users.add(user);
-			if (i >= max) {
-				break;
-			} else {
-				++i;
-			}
-		}
-		return users;
+		ArrayList<User> users = getUsers();
+		return users.subList(0, Math.min(max, users.size()));
 	}
 
 	public int getUserCount() {
