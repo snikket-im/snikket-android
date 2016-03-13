@@ -1570,9 +1570,14 @@ public class ConversationActivity extends XmppActivity
 	protected void refreshUiReal() {
 		updateConversationList();
 		if (conversationList.size() > 0) {
+			if (!this.mConversationFragment.isAdded()) {
+				Log.d(Config.LOGTAG,"fragment NOT added to activity. detached="+Boolean.toString(mConversationFragment.isDetached()));
+			}
 			ConversationActivity.this.mConversationFragment.updateMessages();
 			updateActionBarTitle();
 			invalidateOptionsMenu();
+		} else {
+			Log.d(Config.LOGTAG,"not updating conversations fragment because conversations list size was 0");
 		}
 	}
 
