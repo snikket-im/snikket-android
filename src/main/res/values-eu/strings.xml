@@ -312,6 +312,7 @@
   <string name="checking_x">%s egiaztatzen HTTP ostalarian</string>
   <string name="not_connected_try_again">Ez zaude konektatuta. Saiatu beranduago berriz</string>
   <string name="check_x_filesize">Egiaztatu %sren neurria</string>
+  <string name="check_x_filesize_on_host">Egiaztatu %1$sren neurria %2$s ostalarian</string>
   <string name="message_options">Mezuaren aukerak</string>
   <string name="copy_text">Testua kopiatu</string>
   <string name="copy_original_url">Jatorrizko URLa kopiatu</string>
@@ -504,6 +505,8 @@
   <string name="pref_away_when_screen_off_summary">Zure baliabidea urrun bezala markatzen du pantaila itzalita dagoenean</string>
   <string name="pref_xa_on_silent_mode">Ez eskuragarri modu isilean</string>
   <string name="pref_xa_on_silent_mode_summary">Zure baliabidea ez eskuragarri bezala markatzen du gailua modu isilean dagoenean</string>
+  <string name="pref_treat_vibrate_as_silent">Dardara modu isila bezala tratatu</string>
+  <string name="pref_treat_vibrate_as_silent_summary">Zure baliabidea ez eskuragarri bezala markatzen du gailua dardara moduan dagoenean</string>
   <string name="pref_show_connection_options">Konexioaren ezarpen luzatuak</string>
   <string name="pref_show_connection_options_summary">Ostalariaren izena eta ataka ezarpenak erakutsi kontu bat ezartzerakoan</string>
   <string name="hostname_example">xmpp.adibidea.com</string>
@@ -567,4 +570,7 @@
   <string name="this_field_is_required">Datu hau beharrezkoa da</string>
   <string name="correct_message">Mezua zuzendu</string>
   <string name="send_corrected_message">Mezu zuzendua bidali</string>
+  <string name="no_keys_just_confirm">Kontaktu honetaz fidatzen zara dagoeneko. \'Eginda\' hautatuz %s konferentzia honen kidea dela egiaztatzen duzu besterik gabe.</string>
+  <string name="select_image_and_crop">Irudia hautatu eta moztu</string>
+  <string name="this_account_is_disabled">Kontu hau ezgaitu duzu</string>
 </resources>

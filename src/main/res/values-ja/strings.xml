@@ -312,6 +312,7 @@
   <string name="checking_x">HTTP ホストの %s を確認中</string>
   <string name="not_connected_try_again">接続されていません。後でもう一度お試しください</string>
   <string name="check_x_filesize">%s サイズを確認</string>
+  <string name="check_x_filesize_on_host">%2$s で %1$s のサイズを確認</string>
   <string name="message_options">メッセージオプション</string>
   <string name="copy_text">テキストをコピー</string>
   <string name="copy_original_url">元の URL をコピー</string>
@@ -502,6 +503,8 @@
   <string name="pref_away_when_screen_off_summary">画面がオフになっているとき、リソースを離席としてマークします</string>
   <string name="pref_xa_on_silent_mode">サイレントモード時は利用不可</string>
   <string name="pref_xa_on_silent_mode_summary">デバイスがサイレントモードのとき、リソースが利用不可としてマークします</string>
+  <string name="pref_treat_vibrate_as_silent">バイブレートをサイレントモードとして扱う</string>
+  <string name="pref_treat_vibrate_as_silent_summary">デバイスがバイブレートのとき、リソースを利用不可としてマークします</string>
   <string name="pref_show_connection_options">拡張接続設定</string>
   <string name="pref_show_connection_options_summary">アカウントを設定するときにホスト名とポートの設定を表示します</string>
   <string name="hostname_example">xmpp.example.com</string>
@@ -564,4 +567,7 @@
   <string name="this_field_is_required">このフィールドは必須です</string>
   <string name="correct_message">メッセージを修正</string>
   <string name="send_corrected_message">修正したメッセージを送信</string>
+  <string name="no_keys_just_confirm">既にこの連絡先を信頼しています。\'完了\' を選択すると、%s がこの会議の参加者であることを確認します。</string>
+  <string name="select_image_and_crop">画像の選択とトリミング</string>
+  <string name="this_account_is_disabled">このアカウントを無効にしました</string>
 </resources>

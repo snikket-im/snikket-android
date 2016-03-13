@@ -505,8 +505,8 @@
   <string name="pref_away_when_screen_off_summary">Setzt deinen Status auf \"abwesend\", solange dein Bildschirm abgeschaltet ist</string>
   <string name="pref_xa_on_silent_mode">Nicht verfügbar bei Stummschaltung</string>
   <string name="pref_xa_on_silent_mode_summary">Setzt deinen Status auf \"nicht verfügbar\", solange dein Gerät lautlos ist</string>
-  <string name="pref_treat_vibrate_as_silent">Behandle Vibration als Stumm</string>
-  <string name="pref_treat_vibrate_as_silent_summary">Setze deinen Status auf \"nicht verfügbar\" solange dein Gerät auf \"vibrieren\" ist.</string>
+  <string name="pref_treat_vibrate_as_silent">Vibration als Lautlos behandeln</string>
+  <string name="pref_treat_vibrate_as_silent_summary">Setzt deinen Status auf \"nicht verfügbar\", solange das Gerät auf Vibration geschaltet ist</string>
   <string name="pref_show_connection_options">Erweiterte Verbindungs-Optionen</string>
   <string name="pref_show_connection_options_summary">Hostname- und Port-Optionen bei Kontoeinrichtung anzeigen</string>
   <string name="hostname_example">xmpp.domain.de</string>
@@ -570,7 +570,7 @@
   <string name="this_field_is_required">Dieses Feld ist erforderlich</string>
   <string name="correct_message">Nachricht korrigieren</string>
   <string name="send_corrected_message">Korrigierte Nachricht senden</string>
-  <string name="no_keys_just_confirm">Du vertraust diesem Kontakt bereits. In dem du \'Fertig\' auswählst bestätigst Du, dass %s Teil dieser Konferenz ist.</string>
+  <string name="no_keys_just_confirm">Du vertraust diesem Kontakt bereits. Durch Auswählen von \"Fertig\" bestätigst du, dass %s Teil dieser Konferenz ist.</string>
   <string name="select_image_and_crop">Bild auswählen und zuschneiden</string>
   <string name="this_account_is_disabled">Du hast diesen Account deaktiviert</string>
 </resources>
