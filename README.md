@@ -56,9 +56,8 @@ run your own XMPP server for you and your friends. These XEP's are:
 * [XEP-0352: Client State Indication](http://xmpp.org/extensions/xep-0352.html) lets the server know whether or not
   Conversations is in the background. Allows the server to save bandwidth by
   withholding unimportant packages.
-* [XEP-0363: HTTP File Upload](http://xmpp.org/extensions/xep-0363.html) allows you to share files in conferences and with offline
-  contacts. Requires an [additional component](https://github.com/siacs/HttpUploadComponent)
-  on your server. Alternatively, an [Ejabberd contrib-module](https://github.com/processone/ejabberd-contrib/tree/master/mod_http_upload) and a [Prosody module](http://modules.prosody.im/mod_http_upload.html) are available.
+* [XEP-0363: HTTP File Upload](http://xmpp.org/extensions/xep-0363.html) allows you to share files in conferences
+  and with offline contacts.
 
 ## Team
 
