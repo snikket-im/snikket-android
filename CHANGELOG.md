@@ -1,5 +1,8 @@
 ###Changelog
 
+####Version 1.11.1
+* fixed some bugs when sharing files with Conversations
+
 ####Version 1.11.0
 * OMEMO encrypted conferences
 
