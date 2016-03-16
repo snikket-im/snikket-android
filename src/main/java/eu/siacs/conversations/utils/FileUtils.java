@@ -10,6 +10,8 @@ import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 
+import java.io.File;
+
 public class FileUtils {
 
 	/**
@@ -77,7 +79,14 @@ public class FileUtils {
 		}
 		// MediaStore (and general)
 		else if ("content".equalsIgnoreCase(uri.getScheme())) {
-			return getDataColumn(context, uri, null, null);
+			String path = getDataColumn(context, uri, null, null);
+			if (path != null) {
+				File file = new File(path);
+				if (!file.canRead()) {
+					return null;
+				}
+			}
+			return path;
 		}
 		// File
 		else if ("file".equalsIgnoreCase(uri.getScheme())) {
