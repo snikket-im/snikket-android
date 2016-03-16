@@ -72,6 +72,8 @@
 	<string name="send_failed">delivery failed</string>
 	<string name="send_rejected">rejected</string>
 	<string name="preparing_image">Preparing image for transmission</string>
+	<string name="preparing_images">Preparing images for transmission</string>
+	<string name="sharing_files_please_wait">Sharing files. Please wait…</string>
 	<string name="action_clear_history">Clear history</string>
 	<string name="clear_conversation_history">Clear Conversation History</string>
 	<string name="clear_histor_msg">Do you want to delete all messages within this Conversation?\n\n<b>Warning:</b> This will not influence messages stored on other devices or servers.</string>
@@ -574,6 +576,7 @@
 	<string name="load_more_messages">Load more messages</string>
 	<string name="shared_file_with_x">Shared file with %s</string>
 	<string name="shared_image_with_x">Shared image with %s</string>
+	<string name="shared_images_with_x">Shared images with %s</string>
 	<string name="no_storage_permission">Conversations need access to external storage</string>
 	<string name="sync_with_contacts">Synchronize with contacts</string>
 	<string name="sync_with_contacts_long">Conversations wants to match your XMPP roster with your contacts to show their full names and avatars.\n\nConversations will only read your contacts and match them locally without uploading them to your server.\n\nYou will now be asked to grant permission to access your contacts.</string>
