@@ -181,23 +181,24 @@ public class ShareWithActivity extends XmppActivity implements XmppConnectionSer
 			return;
 		}
 		final String type = intent.getType();
-		Log.d(Config.LOGTAG, "action: "+intent.getAction()+ ", type:"+type);
+		final String action = intent.getAction();
+		Log.d(Config.LOGTAG, "action: "+action+ ", type:"+type);
 		share.uuid = intent.getStringExtra("uuid");
-		if (Intent.ACTION_SEND.equals(intent.getAction())) {
-			final Uri uri = getIntent().getParcelableExtra(Intent.EXTRA_STREAM);
-			if (type != null && uri != null && !type.equalsIgnoreCase("text/plain")) {
+		if (Intent.ACTION_SEND.equals(action)) {
+			final String text = intent.getStringExtra(Intent.EXTRA_TEXT);
+			final Uri uri = intent.getParcelableExtra(Intent.EXTRA_STREAM);
+			if (type != null && uri != null && text == null) {
 				this.share.uris.clear();
 				this.share.uris.add(uri);
 				this.share.image = type.startsWith("image/") || isImage(uri);
 			} else {
-				this.share.text = getIntent().getStringExtra(Intent.EXTRA_TEXT);
+				this.share.text = text;
 			}
-		} else if (Intent.ACTION_SEND_MULTIPLE.equals(intent.getAction())) {
+		} else if (Intent.ACTION_SEND_MULTIPLE.equals(action)) {
 			this.share.image = type != null && type.startsWith("image/");
 			if (!this.share.image) {
 				return;
 			}
-
 			this.share.uris = intent.getParcelableArrayListExtra(Intent.EXTRA_STREAM);
 		}
 		if (xmppConnectionServiceBound) {
