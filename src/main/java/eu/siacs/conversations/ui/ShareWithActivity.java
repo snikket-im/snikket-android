@@ -187,7 +187,7 @@ public class ShareWithActivity extends XmppActivity implements XmppConnectionSer
 		if (Intent.ACTION_SEND.equals(action)) {
 			final String text = intent.getStringExtra(Intent.EXTRA_TEXT);
 			final Uri uri = intent.getParcelableExtra(Intent.EXTRA_STREAM);
-			if (type != null && uri != null && text == null) {
+			if (type != null && uri != null && (text == null || !type.equals("text/plain"))) {
 				this.share.uris.clear();
 				this.share.uris.add(uri);
 				this.share.image = type.startsWith("image/") || isImage(uri);
