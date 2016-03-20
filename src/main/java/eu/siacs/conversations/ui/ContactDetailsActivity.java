@@ -456,7 +456,7 @@ public class ContactDetailsActivity extends XmppActivity implements OnAccountUpd
 
 	private void onOmemoKeyClicked(Account account, String fingerprint) {
 		final XmppAxolotlSession.Trust trust = account.getAxolotlService().getFingerprintTrust(fingerprint);
-		if (trust != null && trust == XmppAxolotlSession.Trust.TRUSTED_X509) {
+		if (Config.X509_VERIFICATION && trust != null && trust == XmppAxolotlSession.Trust.TRUSTED_X509) {
 			X509Certificate x509Certificate = account.getAxolotlService().getFingerprintCertificate(fingerprint);
 			if (x509Certificate != null) {
 				showCertificateInformationDialog(CryptoHelper.extractCertificateInformation(x509Certificate));
