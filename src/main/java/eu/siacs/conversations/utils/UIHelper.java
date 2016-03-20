@@ -225,9 +225,10 @@ public class UIHelper {
 	}
 
 	public static String getMessageDisplayName(final Message message) {
+		final Conversation conversation = message.getConversation();
 		if (message.getStatus() == Message.STATUS_RECEIVED) {
 			final Contact contact = message.getContact();
-			if (message.getConversation().getMode() == Conversation.MODE_MULTI) {
+			if (conversation.getMode() == Conversation.MODE_MULTI) {
 				if (contact != null) {
 					return contact.getDisplayName();
 				} else {
@@ -237,10 +238,10 @@ public class UIHelper {
 				return contact != null ? contact.getDisplayName() : "";
 			}
 		} else {
-			if (message.getConversation().getMode() == Conversation.MODE_MULTI) {
-				return getDisplayedMucCounterpart(message.getConversation().getJid());
+			if (conversation.getMode() == Conversation.MODE_MULTI) {
+				return conversation.getMucOptions().getSelf().getName();
 			} else {
-				final Jid jid = message.getConversation().getAccount().getJid();
+				final Jid jid = conversation.getAccount().getJid();
 				return jid.hasLocalpart() ? jid.getLocalpart() : jid.toDomainJid().toString();
 			}
 		}
