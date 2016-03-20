@@ -219,12 +219,16 @@ public class XmppConnection implements Runnable {
 		}
 	}
 
+	public void prepareNewConnection() {
+		this.lastConnect = SystemClock.elapsedRealtime();
+		this.lastPingSent = SystemClock.elapsedRealtime();
+		this.lastDiscoStarted = Long.MAX_VALUE;
+		this.changeStatus(Account.State.CONNECTING);
+	}
+
 	protected void connect() {
 		Log.d(Config.LOGTAG, account.getJid().toBareJid().toString() + ": connecting");
 		features.encryptionEnabled = false;
-		lastConnect = SystemClock.elapsedRealtime();
-		lastPingSent = SystemClock.elapsedRealtime();
-		lastDiscoStarted = Long.MAX_VALUE;
 		this.attempt++;
 		switch (account.getJid().getDomainpart()) {
 			case "chat.facebook.com":

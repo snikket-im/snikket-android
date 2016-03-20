@@ -2578,6 +2578,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 				}
 				Thread thread = new Thread(connection);
 				connection.setInteractive(interactive);
+				connection.prepareNewConnection();
 				thread.start();
 				scheduleWakeUpCall(Config.CONNECT_DISCO_TIMEOUT, account.getUuid().hashCode());
 			} else {
