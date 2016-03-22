@@ -665,7 +665,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	}
 
 	private void resetAllAttemptCounts(boolean reallyAll) {
-		Log.d(Config.LOGTAG, "resetting all attepmt counts");
+		Log.d(Config.LOGTAG, "resetting all attempt counts");
 		for (Account account : accounts) {
 			if (account.hasErrorStatus() || reallyAll) {
 				final XmppConnection connection = account.getXmppConnection();
