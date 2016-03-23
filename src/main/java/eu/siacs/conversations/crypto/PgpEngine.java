@@ -2,7 +2,6 @@ package eu.siacs.conversations.crypto;
 
 import android.app.PendingIntent;
 import android.content.Intent;
-import android.net.Uri;
 
 import org.openintents.openpgp.OpenPgpSignatureResult;
 import org.openintents.openpgp.util.OpenPgpApi;
@@ -106,7 +105,7 @@ public class PgpEngine {
 							PgpEngine.this.mXmppConnectionService
 									.updateMessage(message);
 							inputFile.delete();
-							mXmppConnectionService.getFileBackend().addImageFileToMedia(outputFile);
+							mXmppConnectionService.getFileBackend().updateMediaScanner(outputFile);
 							callback.success(message);
 							return;
 						case OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED:

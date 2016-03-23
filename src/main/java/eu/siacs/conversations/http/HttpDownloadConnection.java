@@ -1,7 +1,5 @@
 package eu.siacs.conversations.http;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.os.PowerManager;
 import android.util.Log;
 
@@ -10,12 +8,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
-import java.net.Proxy;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.concurrent.CancellationException;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -94,7 +88,7 @@ public class HttpDownloadConnection implements Transferable {
 			} else {
 				extension = lastPart;
 			}
-			message.setRelativeFilePath(message.getUuid()+"."+extension);
+			message.setRelativeFilePath(message.getUuid() + "." + extension);
 			this.file = mXmppConnectionService.getFileBackend().getFile(message, false);
 			String reference = mUrl.getRef();
 			if (reference != null && reference.length() == 96) {
@@ -129,7 +123,7 @@ public class HttpDownloadConnection implements Transferable {
 	}
 
 	private void finish() {
-		mXmppConnectionService.getFileBackend().addImageFileToMedia(file);
+		mXmppConnectionService.getFileBackend().updateMediaScanner(file);
 		message.setTransferable(null);
 		mHttpConnectionManager.finishConnection(this);
 		if (message.getEncryption() == Message.ENCRYPTION_PGP) {

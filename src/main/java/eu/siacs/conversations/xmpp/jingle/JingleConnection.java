@@ -1,7 +1,5 @@
 package eu.siacs.conversations.xmpp.jingle;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.util.Log;
 import android.util.Pair;
 
@@ -9,7 +7,6 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -111,7 +108,7 @@ public class JingleConnection implements Transferable {
 			}
 			Log.d(Config.LOGTAG,"successfully transmitted file:" + file.getAbsolutePath()+" ("+file.getSha1Sum()+")");
 			if (message.getEncryption() != Message.ENCRYPTION_PGP) {
-				mXmppConnectionService.getFileBackend().addImageFileToMedia(file);
+				mXmppConnectionService.getFileBackend().updateMediaScanner(file);
 			} else {
 				account.getPgpDecryptionService().add(message);
 			}

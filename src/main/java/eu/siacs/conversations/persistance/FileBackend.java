@@ -27,7 +27,6 @@ import java.security.DigestOutputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
 
@@ -35,7 +34,6 @@ import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.entities.Message;
-import eu.siacs.conversations.entities.Transferable;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.ExifHelper;
@@ -62,13 +60,23 @@ public class FileBackend {
 		}
 	}
 
-	public void addImageFileToMedia(File file) {
+	public void updateMediaScanner(File file) {
 		if (file.getAbsolutePath().startsWith(getConversationsImageDirectory())) {
 			Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
 			intent.setData(Uri.fromFile(file));
 			mXmppConnectionService.sendBroadcast(intent);
 		} else {
 			createNoMedia();
+		}
+	}
+
+	public boolean deleteFile(Message message) {
+		File file = getFile(message);
+		if (file.delete()) {
+			updateMediaScanner(file);
+			return true;
+		} else {
+			return false;
 		}
 	}
 
