@@ -111,9 +111,7 @@ public class JingleConnection implements Transferable {
 			}
 			Log.d(Config.LOGTAG,"successfully transmitted file:" + file.getAbsolutePath()+" ("+file.getSha1Sum()+")");
 			if (message.getEncryption() != Message.ENCRYPTION_PGP) {
-				Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-				intent.setData(Uri.fromFile(file));
-				mXmppConnectionService.sendBroadcast(intent);
+				mXmppConnectionService.getFileBackend().addImageFileToMedia(file);
 			} else {
 				account.getPgpDecryptionService().add(message);
 			}

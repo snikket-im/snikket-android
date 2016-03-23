@@ -129,9 +129,7 @@ public class HttpDownloadConnection implements Transferable {
 	}
 
 	private void finish() {
-		Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-		intent.setData(Uri.fromFile(file));
-		mXmppConnectionService.sendBroadcast(intent);
+		mXmppConnectionService.getFileBackend().addImageFileToMedia(file);
 		message.setTransferable(null);
 		mHttpConnectionManager.finishConnection(this);
 		if (message.getEncryption() == Message.ENCRYPTION_PGP) {

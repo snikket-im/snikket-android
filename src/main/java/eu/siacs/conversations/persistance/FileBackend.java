@@ -1,5 +1,6 @@
 package eu.siacs.conversations.persistance;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -48,6 +49,27 @@ public class FileBackend {
 
 	public FileBackend(XmppConnectionService service) {
 		this.mXmppConnectionService = service;
+	}
+
+	private void createNoMedia() {
+		final File nomedia = new File(getConversationsFileDirectory()+".nomedia");
+		if (!nomedia.exists()) {
+			try {
+				nomedia.createNewFile();
+			} catch (Exception e) {
+				Log.d(Config.LOGTAG, "could not create nomedia file");
+			}
+		}
+	}
+
+	public void addImageFileToMedia(File file) {
+		if (file.getAbsolutePath().startsWith(getConversationsImageDirectory())) {
+			Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+			intent.setData(Uri.fromFile(file));
+			mXmppConnectionService.sendBroadcast(intent);
+		} else {
+			createNoMedia();
+		}
 	}
 
 	public DownloadableFile getFile(Message message) {

@@ -196,9 +196,7 @@ public class HttpUploadConnection implements Transferable {
 						mGetUrl = new URL(mGetUrl.toString() + "#" + CryptoHelper.bytesToHex(key));
 					}
 					mXmppConnectionService.getFileBackend().updateFileParams(message, mGetUrl);
-					Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-					intent.setData(Uri.fromFile(file));
-					mXmppConnectionService.sendBroadcast(intent);
+					mXmppConnectionService.getFileBackend().addImageFileToMedia(file);
 					message.setTransferable(null);
 					message.setCounterpart(message.getConversation().getJid().toBareJid());
 					if (message.getEncryption() == Message.ENCRYPTION_DECRYPTED) {
