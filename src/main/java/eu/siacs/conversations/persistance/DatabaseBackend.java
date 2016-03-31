@@ -524,8 +524,10 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		Cursor cursor = db.query(Conversation.TABLENAME, null,
 				Conversation.ACCOUNT + "=? AND (" + Conversation.CONTACTJID
 						+ " like ? OR " + Conversation.CONTACTJID + "=?)", selectionArgs, null, null, null);
-		if (cursor.getCount() == 0)
+		if (cursor.getCount() == 0) {
+			cursor.close();
 			return null;
+		}
 		cursor.moveToFirst();
 		Conversation conversation = Conversation.fromCursor(cursor);
 		cursor.close();
@@ -575,12 +577,15 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		try {
 			cursor.moveToFirst();
 			int count = cursor.getInt(0);
-			cursor.close();
 			return (count > 0);
 		} catch (SQLiteCantOpenDatabaseException e) {
 			return true; // better safe than sorry
 		} catch (RuntimeException e) {
 			return true; // better safe than sorry
+		} finally {
+			if (cursor != null) {
+				cursor.close();
+			}
 		}
 	}
 
@@ -642,11 +647,12 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 	}
 
 	public Pair<Long, String> getLastMessageReceived(Account account) {
+		Cursor cursor = null;
 		try {
 			SQLiteDatabase db = this.getReadableDatabase();
 			String sql = "select messages.timeSent,messages.serverMsgId from accounts join conversations on accounts.uuid=conversations.accountUuid join messages on conversations.uuid=messages.conversationUuid where accounts.uuid=? and (messages.status=0 or messages.carbon=1 or messages.serverMsgId not null) order by messages.timesent desc limit 1";
 			String[] args = {account.getUuid()};
-			Cursor cursor = db.rawQuery(sql, args);
+			cursor = db.rawQuery(sql, args);
 			if (cursor.getCount() == 0) {
 				return null;
 			} else {
@@ -655,6 +661,10 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 			}
 		} catch (Exception e) {
 			return null;
+		} finally {
+			if (cursor != null) {
+				cursor.close();
+			}
 		}
 	}
 
