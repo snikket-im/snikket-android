@@ -6,12 +6,12 @@ import android.util.Pair;
 import net.java.otr4j.session.Session;
 import net.java.otr4j.session.SessionStatus;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.UUID;
 
 import eu.siacs.conversations.Config;
+import eu.siacs.conversations.crypto.OtrService;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.crypto.axolotl.XmppAxolotlMessage;
 import eu.siacs.conversations.entities.Account;
@@ -95,8 +95,11 @@ public class MessageParser extends AbstractParser implements
 				conversation.setSymmetricKey(CryptoHelper.hexToBytes(key));
 				return null;
 			}
+			final OtrService otrService = conversation.getAccount().getOtrService();
 			Message finishedMessage = new Message(conversation, body, Message.ENCRYPTION_OTR, Message.STATUS_RECEIVED);
+			finishedMessage.setFingerprint(otrService.getFingerprint(otrSession.getRemotePublicKey()));
 			conversation.setLastReceivedOtrMessageId(null);
+
 			return finishedMessage;
 		} catch (Exception e) {
 			conversation.resetOtrSession();
@@ -111,7 +114,7 @@ public class MessageParser extends AbstractParser implements
 		XmppAxolotlMessage.XmppAxolotlPlaintextMessage plaintextMessage = service.processReceivingPayloadMessage(xmppAxolotlMessage);
 		if(plaintextMessage != null) {
 			finishedMessage = new Message(conversation, plaintextMessage.getPlaintext(), Message.ENCRYPTION_AXOLOTL, status);
-			finishedMessage.setAxolotlFingerprint(plaintextMessage.getFingerprint());
+			finishedMessage.setFingerprint(plaintextMessage.getFingerprint());
 			Log.d(Config.LOGTAG, AxolotlService.getLogprefix(finishedMessage.getConversation().getAccount())+" Received Message with session fingerprint: "+plaintextMessage.getFingerprint());
 		}
 
@@ -408,8 +411,8 @@ public class MessageParser extends AbstractParser implements
 						message.getStatus() == Message.STATUS_RECEIVED,
 						message.isCarbon());
 				if (replacedMessage != null) {
-					final boolean fingerprintsMatch = replacedMessage.getAxolotlFingerprint() == null
-							|| replacedMessage.getAxolotlFingerprint().equals(message.getAxolotlFingerprint());
+					final boolean fingerprintsMatch = replacedMessage.getFingerprint() == null
+							|| replacedMessage.getFingerprint().equals(message.getFingerprint());
 					final boolean trueCountersMatch = replacedMessage.getTrueCounterpart() != null
 							&& replacedMessage.getTrueCounterpart().equals(message.getTrueCounterpart());
 					if (fingerprintsMatch && (trueCountersMatch || conversation.getMode() == Conversation.MODE_SINGLE)) {

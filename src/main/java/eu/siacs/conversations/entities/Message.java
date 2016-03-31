@@ -773,11 +773,11 @@ public class Message extends AbstractEntity {
 		public int height = 0;
 	}
 
-	public void setAxolotlFingerprint(String fingerprint) {
+	public void setFingerprint(String fingerprint) {
 		this.axolotlFingerprint = fingerprint;
 	}
 
-	public String getAxolotlFingerprint() {
+	public String getFingerprint() {
 		return axolotlFingerprint;
 	}
 

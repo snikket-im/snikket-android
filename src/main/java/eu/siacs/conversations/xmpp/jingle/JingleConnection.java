@@ -378,7 +378,7 @@ public class JingleConnection implements Transferable {
 						message.setEncryption(Message.ENCRYPTION_AXOLOTL);
 						this.file.setKey(transportMessage.getKey());
 						this.file.setIv(transportMessage.getIv());
-						message.setAxolotlFingerprint(transportMessage.getFingerprint());
+						message.setFingerprint(transportMessage.getFingerprint());
 					} else {
 						Log.d(Config.LOGTAG,"could not process KeyTransportMessage");
 					}

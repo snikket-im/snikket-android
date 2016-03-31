@@ -931,7 +931,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 					}
 					break;
 				case Message.ENCRYPTION_AXOLOTL:
-					message.setAxolotlFingerprint(account.getAxolotlService().getOwnFingerprint());
+					message.setFingerprint(account.getAxolotlService().getOwnFingerprint());
 					if (message.needsUploading()) {
 						if (account.httpUploadAvailable() || message.fixCounterpart()) {
 							this.sendFileMessage(message, delay);
@@ -977,7 +977,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 					}
 					break;
 				case Message.ENCRYPTION_AXOLOTL:
-					message.setAxolotlFingerprint(account.getAxolotlService().getOwnFingerprint());
+					message.setFingerprint(account.getAxolotlService().getOwnFingerprint());
 					break;
 			}
 		}

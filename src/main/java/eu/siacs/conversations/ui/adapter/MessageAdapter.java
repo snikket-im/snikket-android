@@ -202,7 +202,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 			if (message.getEncryption() == Message.ENCRYPTION_AXOLOTL) {
 				XmppAxolotlSession.Trust trust = message.getConversation()
 						.getAccount().getAxolotlService().getFingerprintTrust(
-								message.getAxolotlFingerprint());
+								message.getFingerprint());
 
 				if(trust == null || (!trust.trusted() && !trust.trustedInactive())) {
 					viewHolder.indicator.setColorFilter(activity.getWarningTextColor());
