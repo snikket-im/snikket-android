@@ -52,20 +52,16 @@ public class DownloadableFile extends File {
 
 	public void setKeyAndIv(byte[] keyIvCombo) {
 		if (keyIvCombo.length == 48) {
-			byte[] secretKey = new byte[32];
-			byte[] iv = new byte[16];
-			System.arraycopy(keyIvCombo, 0, iv, 0, 16);
-			System.arraycopy(keyIvCombo, 16, secretKey, 0, 32);
-			this.aeskey = secretKey;
-			this.iv = iv;
+			this.aeskey = new byte[32];
+			this.iv = new byte[16];
+			System.arraycopy(keyIvCombo, 0, this.iv, 0, 16);
+			System.arraycopy(keyIvCombo, 16, this.aeskey, 0, 32);
 		} else if (keyIvCombo.length >= 32) {
-			byte[] secretKey = new byte[32];
-			System.arraycopy(keyIvCombo, 0, secretKey, 0, 32);
-			this.aeskey = secretKey;
+			this.aeskey = new byte[32];
+			System.arraycopy(keyIvCombo, 0, aeskey, 0, 32);
 		} else if (keyIvCombo.length >= 16) {
-			byte[] secretKey = new byte[16];
-			System.arraycopy(keyIvCombo, 0, secretKey, 0, 16);
-			this.aeskey = secretKey;
+			this.aeskey = new byte[16];
+			System.arraycopy(keyIvCombo, 0, this.aeskey, 0, 16);
 		}
 	}
 
