@@ -1541,14 +1541,27 @@ public class XmppConnection implements Runnable {
 				if (items.size() > 0) {
 					try {
 						long maxsize = Long.parseLong(items.get(0).getValue().getExtendedDiscoInformation(Xmlns.HTTP_UPLOAD, "max-file-size"));
-						return maxsize <= filesize;
+						return filesize <= maxsize;
 					} catch (Exception e) {
-						return filesize <= 0;
+						return true;
 					}
 				} else {
 					return false;
 				}
 			}
+		}
+
+		public long getMaxHttpUploadSize() {
+			List<Entry<Jid, ServiceDiscoveryResult>> items = findDiscoItemsByFeature(Xmlns.HTTP_UPLOAD);
+				if (items.size() > 0) {
+					try {
+						return Long.parseLong(items.get(0).getValue().getExtendedDiscoInformation(Xmlns.HTTP_UPLOAD, "max-file-size"));
+					} catch (Exception e) {
+						return -1;
+					}
+				} else {
+					return -1;
+				}
 		}
 	}
 

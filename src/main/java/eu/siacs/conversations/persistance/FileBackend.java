@@ -1,6 +1,8 @@
 package eu.siacs.conversations.persistance;
 
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -8,6 +10,7 @@ import android.graphics.Matrix;
 import android.graphics.RectF;
 import android.net.Uri;
 import android.os.Environment;
+import android.provider.OpenableColumns;
 import android.util.Base64;
 import android.util.Base64OutputStream;
 import android.util.Log;
@@ -28,6 +31,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import eu.siacs.conversations.Config;
@@ -108,6 +112,24 @@ public class FileBackend {
 		} else {
 			return file;
 		}
+	}
+
+	public static long getFileSize(Context context, Uri uri) {
+		Cursor cursor = context.getContentResolver().query(uri, null, null, null, null);
+		if (cursor != null && cursor.moveToFirst()) {
+			return cursor.getLong(cursor.getColumnIndex(OpenableColumns.SIZE));
+		} else {
+			return -1;
+		}
+	}
+
+	public static boolean allFilesUnderSize(Context context, List<Uri> uris, long max) {
+		for(Uri uri : uris) {
+			if (FileBackend.getFileSize(context, uri) > max) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	public static String getConversationsFileDirectory() {

@@ -24,6 +24,7 @@ import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
+import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.ui.adapter.ConversationAdapter;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
@@ -259,6 +260,7 @@ public class ShareWithActivity extends XmppActivity implements XmppConnectionSer
 	}
 
 	private void share(final Conversation conversation) {
+		final Account account = conversation.getAccount();
 		mListView.setEnabled(false);
 		if (conversation.getNextEncryption() == Message.ENCRYPTION_PGP && !hasPgp()) {
 			if (share.uuid == null) {
@@ -270,6 +272,9 @@ public class ShareWithActivity extends XmppActivity implements XmppConnectionSer
 			return;
 		}
 		if (share.uris.size() != 0) {
+			final long max = account.getXmppConnection()
+					.getFeatures()
+					.getMaxHttpUploadSize();
 			OnPresenceSelected callback = new OnPresenceSelected() {
 				@Override
 				public void onPresenceSelected() {
@@ -290,7 +295,11 @@ public class ShareWithActivity extends XmppActivity implements XmppConnectionSer
 					}
 				}
 			};
-			if (conversation.getAccount().httpUploadAvailable()) {
+			if (account.httpUploadAvailable()
+					&& (
+					(share.image && !neverCompressPictures())
+					|| conversation.getMode() == Conversation.MODE_MULTI
+					|| FileBackend.allFilesUnderSize(this, share.uris, max))) {
 				callback.onPresenceSelected();
 			} else {
 				selectPresence(conversation, callback);

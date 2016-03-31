@@ -847,7 +847,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	private void sendFileMessage(final Message message, final boolean delay) {
 		Log.d(Config.LOGTAG, "send file message");
 		final Account account = message.getConversation().getAccount();
-		if (account.httpUploadAvailable()) {
+		if (account.httpUploadAvailable(fileBackend.getFile(message,false).getSize())) {
 			mHttpConnectionManager.createNewUploadConnection(message, delay);
 		} else {
 			mJingleConnectionManager.createNewConnection(message);
@@ -884,7 +884,8 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 			switch (message.getEncryption()) {
 				case Message.ENCRYPTION_NONE:
 					if (message.needsUploading()) {
-						if (account.httpUploadAvailable() || message.fixCounterpart()) {
+						if (account.httpUploadAvailable(fileBackend.getFile(message,false).getSize())
+								|| message.fixCounterpart()) {
 							this.sendFileMessage(message, delay);
 						} else {
 							break;
@@ -896,7 +897,8 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 				case Message.ENCRYPTION_PGP:
 				case Message.ENCRYPTION_DECRYPTED:
 					if (message.needsUploading()) {
-						if (account.httpUploadAvailable() || message.fixCounterpart()) {
+						if (account.httpUploadAvailable(fileBackend.getFile(message,false).getSize())
+								|| message.fixCounterpart()) {
 							this.sendFileMessage(message, delay);
 						} else {
 							break;
@@ -932,7 +934,8 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 				case Message.ENCRYPTION_AXOLOTL:
 					message.setFingerprint(account.getAxolotlService().getOwnFingerprint());
 					if (message.needsUploading()) {
-						if (account.httpUploadAvailable() || message.fixCounterpart()) {
+						if (account.httpUploadAvailable(fileBackend.getFile(message,false).getSize())
+								|| message.fixCounterpart()) {
 							this.sendFileMessage(message, delay);
 						} else {
 							break;
