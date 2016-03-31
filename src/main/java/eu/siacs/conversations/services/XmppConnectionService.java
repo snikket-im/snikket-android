@@ -847,8 +847,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	private void sendFileMessage(final Message message, final boolean delay) {
 		Log.d(Config.LOGTAG, "send file message");
 		final Account account = message.getConversation().getAccount();
-		final XmppConnection connection = account.getXmppConnection();
-		if (connection != null && connection.getFeatures().httpUpload()) {
+		if (account.httpUploadAvailable()) {
 			mHttpConnectionManager.createNewUploadConnection(message, delay);
 		} else {
 			mJingleConnectionManager.createNewConnection(message);

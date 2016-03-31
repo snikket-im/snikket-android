@@ -190,6 +190,19 @@ public class ServiceDiscoveryResult {
 		return false;
 	}
 
+	public String getExtendedDiscoInformation(String formType, String name) {
+		for(Data form : this.forms) {
+			if (formType.equals(form.getFormType())) {
+				for(Field field: form.getFields()) {
+					if (name.equals(field.getFieldName())) {
+						return field.getValue();
+					}
+				}
+			}
+		}
+		return null;
+	}
+
 	protected byte[] mkCapHash() {
 		StringBuilder s = new StringBuilder();
 

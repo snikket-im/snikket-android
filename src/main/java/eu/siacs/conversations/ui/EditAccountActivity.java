@@ -688,7 +688,7 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 			} else {
 				this.mServerInfoPep.setText(R.string.server_info_unavailable);
 			}
-			if (features.httpUpload()) {
+			if (features.httpUpload(0)) {
 				this.mServerInfoHttpUpload.setText(R.string.server_info_available);
 			} else {
 				this.mServerInfoHttpUpload.setText(R.string.server_info_unavailable);

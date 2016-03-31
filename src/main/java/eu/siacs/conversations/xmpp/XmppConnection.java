@@ -1346,12 +1346,12 @@ public class XmppConnection implements Runnable {
 		this.streamId = null;
 	}
 
-	public List<Jid> findDiscoItemsByFeature(final String feature) {
+	private List<Entry<Jid, ServiceDiscoveryResult>> findDiscoItemsByFeature(final String feature) {
 		synchronized (this.disco) {
-			final List<Jid> items = new ArrayList<>();
+			final List<Entry<Jid, ServiceDiscoveryResult>> items = new ArrayList<>();
 			for (final Entry<Jid, ServiceDiscoveryResult> cursor : this.disco.entrySet()) {
 				if (cursor.getValue().getFeatures().contains(feature)) {
-					items.add(cursor.getKey());
+					items.add(cursor);
 				}
 			}
 			return items;
@@ -1359,9 +1359,9 @@ public class XmppConnection implements Runnable {
 	}
 
 	public Jid findDiscoItemByFeature(final String feature) {
-		final List<Jid> items = findDiscoItemsByFeature(feature);
+		final List<Entry<Jid, ServiceDiscoveryResult>> items = findDiscoItemsByFeature(feature);
 		if (items.size() >= 1) {
-			return items.get(0);
+			return items.get(0).getKey();
 		}
 		return null;
 	}
@@ -1505,7 +1505,6 @@ public class XmppConnection implements Runnable {
 
 		public boolean pep() {
 			synchronized (XmppConnection.this.disco) {
-				final Pair<String, String> needle = new Pair<>("pubsub", "pep");
 				ServiceDiscoveryResult info = disco.get(account.getServer());
 				if (info != null && info.hasIdentity("pubsub", "pep")) {
 					return true;
@@ -1534,8 +1533,22 @@ public class XmppConnection implements Runnable {
 			this.blockListRequested = value;
 		}
 
-		public boolean httpUpload() {
-			return !Config.DISABLE_HTTP_UPLOAD && findDiscoItemsByFeature(Xmlns.HTTP_UPLOAD).size() > 0;
+		public boolean httpUpload(long filesize) {
+			if (Config.DISABLE_HTTP_UPLOAD) {
+				return false;
+			} else {
+				List<Entry<Jid, ServiceDiscoveryResult>> items = findDiscoItemsByFeature(Xmlns.HTTP_UPLOAD);
+				if (items.size() > 0) {
+					try {
+						long maxsize = Long.parseLong(items.get(0).getValue().getExtendedDiscoInformation(Xmlns.HTTP_UPLOAD, "max-file-size"));
+						return maxsize <= filesize;
+					} catch (Exception e) {
+						return filesize <= 0;
+					}
+				} else {
+					return false;
+				}
+			}
 		}
 	}
 

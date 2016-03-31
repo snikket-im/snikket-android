@@ -52,8 +52,12 @@ public class Account extends AbstractEntity {
 	public static final int OPTION_USECOMPRESSION = 3;
 	public final HashSet<Pair<String, String>> inProgressDiscoFetches = new HashSet<>();
 
+	public boolean httpUploadAvailable(long filesize) {
+		return xmppConnection != null && xmppConnection.getFeatures().httpUpload(filesize);
+	}
+
 	public boolean httpUploadAvailable() {
-		return xmppConnection != null && xmppConnection.getFeatures().httpUpload();
+		return httpUploadAvailable(0);
 	}
 
 	public void setDisplayName(String displayName) {
