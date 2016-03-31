@@ -17,6 +17,7 @@ import org.json.JSONObject;
 
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.forms.Data;
+import eu.siacs.conversations.xmpp.forms.Field;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
 
 public class ServiceDiscoveryResult {
@@ -219,8 +220,22 @@ public class ServiceDiscoveryResult {
 		});
 
 		for(Data form : forms) {
-			s.append(form.getFormType()+"<");
-			//TODO append fields and values
+			s.append(form.getFormType() + "<");
+			List<Field> fields = form.getFields();
+			Collections.sort(fields, new Comparator<Field>() {
+				@Override
+				public int compare(Field lhs, Field rhs) {
+					return lhs.getFieldName().compareTo(rhs.getFieldName());
+				}
+			});
+			for(Field field : fields) {
+				s.append(field.getFieldName()+"<");
+				List<String> values = field.getValues();
+				Collections.sort(values);
+				for(String value : values) {
+					s.append(value+"<");
+				}
+			}
 		}
 
 		MessageDigest md;

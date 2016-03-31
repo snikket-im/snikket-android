@@ -9,6 +9,8 @@ import eu.siacs.conversations.xml.Element;
 
 public class Data extends Element {
 
+	private static final String FORM_TYPE = "FORM_TYPE";
+
 	public Data() {
 		super("x");
 		this.setAttribute("xmlns","jabber:x:data");
@@ -17,7 +19,8 @@ public class Data extends Element {
 	public List<Field> getFields() {
 		ArrayList<Field> fields = new ArrayList<Field>();
 		for(Element child : getChildren()) {
-			if (child.getName().equals("field")) {
+			if (child.getName().equals("field")
+					&& !FORM_TYPE.equals(child.getAttribute("var"))) {
 				fields.add(Field.parse(child));
 			}
 		}
@@ -26,7 +29,8 @@ public class Data extends Element {
 
 	public Field getFieldByName(String needle) {
 		for(Element child : getChildren()) {
-			if (child.getName().equals("field") && needle.equals(child.getAttribute("var"))) {
+			if (child.getName().equals("field")
+					&& needle.equals(child.getAttribute("var"))) {
 				return Field.parse(child);
 			}
 		}
@@ -76,11 +80,11 @@ public class Data extends Element {
 	}
 
 	public void setFormType(String formType) {
-		this.put("FORM_TYPE", formType);
+		this.put(FORM_TYPE, formType);
 	}
 
 	public String getFormType() {
-		String type = getValue("FORM_TYPE");
+		String type = getValue(FORM_TYPE);
 		return type == null ? "" : type;
 	}
 
