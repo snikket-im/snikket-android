@@ -114,7 +114,7 @@ public class FileBackend {
 		}
 	}
 
-	public static long getFileSize(Context context, Uri uri) {
+	private static long getFileSize(Context context, Uri uri) {
 		Cursor cursor = context.getContentResolver().query(uri, null, null, null, null);
 		if (cursor != null && cursor.moveToFirst()) {
 			return cursor.getLong(cursor.getColumnIndex(OpenableColumns.SIZE));
@@ -124,6 +124,9 @@ public class FileBackend {
 	}
 
 	public static boolean allFilesUnderSize(Context context, List<Uri> uris, long max) {
+		if (max <= 0) {
+			return true; //exception to be compatible with HTTP Upload < v0.2
+		}
 		for(Uri uri : uris) {
 			if (FileBackend.getFileSize(context, uri) > max) {
 				return false;

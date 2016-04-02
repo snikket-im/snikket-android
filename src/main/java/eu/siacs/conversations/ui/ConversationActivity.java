@@ -1317,8 +1317,7 @@ public class ConversationActivity extends XmppActivity
 						}
 					}
 				};
-				if (max <= 0
-						|| c.getMode() == Conversation.MODE_MULTI
+				if (c.getMode() == Conversation.MODE_MULTI
 						|| FileBackend.allFilesUnderSize(this, uris, max)
 						|| c.getNextEncryption() == Message.ENCRYPTION_OTR) {
 					callback.onPresenceSelected();
