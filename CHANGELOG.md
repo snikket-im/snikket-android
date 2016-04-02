@@ -1,5 +1,9 @@
 ###Changelog
 
+####Version 1.11.3
+* check maximum file size when using HTTP Upload
+* properly calculate caps hash
+
 ####Version 1.11.2
 * only add image files to media scanner
 * allow to delete files
