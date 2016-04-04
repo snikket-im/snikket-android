@@ -2571,12 +2571,6 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 			if (!account.isOptionSet(Account.OPTION_DISABLED)) {
 				if (!force) {
 					disconnect(account, false);
-					try {
-						Log.d(Config.LOGTAG, "wait for disconnect");
-						Thread.sleep(500); //sleep  wait for disconnect
-					} catch (InterruptedException e) {
-						//ignored
-					}
 				}
 				Thread thread = new Thread(connection);
 				connection.setInteractive(interactive);
