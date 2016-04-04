@@ -71,6 +71,8 @@
   <string name="send_failed">доставянето се провали</string>
   <string name="send_rejected">отказано</string>
   <string name="preparing_image">Подготовка на изображението за изпращане</string>
+  <string name="preparing_images">Подготовка на изображенията за изпращане</string>
+  <string name="sharing_files_please_wait">Споделяне на файлове. Моля, изчакайте…</string>
   <string name="action_clear_history">Изчистване на историята</string>
   <string name="clear_conversation_history">Изчистване на историята на разговорите</string>
   <string name="clear_histor_msg">Искате ли да изтриете всички съобщения от този разговор?\n\n<b>Внимание:</b> Това няма да изтрие съобщенията, съхранявани на други устройства или на сървърите.</string>
@@ -351,6 +353,7 @@
   <string name="choose_file">Изберете файл</string>
   <string name="receiving_x_file">Получаване на %1$s (%2$d%% завършено)</string>
   <string name="download_x_file">Сваляне на %s</string>
+  <string name="delete_x_file">Изтриване на %s</string>
   <string name="file">файл</string>
   <string name="open_x_file">Отваряне на %s</string>
   <string name="sending_file">изпращане (%1$d%% завършено)</string>
@@ -542,6 +545,7 @@
   <string name="load_more_messages">Зареждане на още съобщения</string>
   <string name="shared_file_with_x">Файлът е споделен с %s</string>
   <string name="shared_image_with_x">Изображението е споделено с %s</string>
+  <string name="shared_images_with_x">Изображения, споделени с %s</string>
   <string name="no_storage_permission">Conversations се нуждае от достъп до външно място за съхранение</string>
   <string name="sync_with_contacts">Синхронизиране с контактите</string>
   <string name="sync_with_contacts_long">Conversations иска да съчетае Вашия списък в XMPP с контактите Ви, за да показва пълните им имена и снимки..\n\nConversations единствено ще чете контактите Ви и ще ги използва вътрешно, без да ги качва на сървъра Ви.\n\nЩе бъдете помолен/а за позволение за достъп до контактите Ви.</string>

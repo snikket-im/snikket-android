@@ -76,7 +76,7 @@
   <string name="clear_histor_msg">Voulez-vous supprimer tous les messages de cette conversation ?\n\n<b>Attention :</b> Les messages seront supprimés uniquement sur cet appareil.</string>
   <string name="delete_messages">Supprimer les messages</string>
   <string name="also_end_conversation">Fermer cette conversation ensuite</string>
-  <string name="choose_presence">Choisir le status de présence</string>
+  <string name="choose_presence">Choisir le statut de présence</string>
   <string name="send_unencrypted_message">Envoyer un message non chiffré</string>
   <string name="send_otr_message">Envoyer un message chiffré avec OTR</string>
   <string name="send_omemo_message">Envoyer un message chiffré avec OMEMO</string>
@@ -86,7 +86,7 @@
   <string name="send_unencrypted">Envoyer en clair</string>
   <string name="decryption_failed">Echec du déchiffrement. Avez-vous la bonne clef privée ?</string>
   <string name="openkeychain_required">OpenKeychain</string>
-  <string name="openkeychain_required_long">Conversations requiert une application tierce nommée <b>OpenKeychain</b> pour chiffrer et déchiffrer les messages.\n\nOpenKeychain est sous licence GPLv3 et est disponible sur F-Droid et Google Play.\n\n<small>(Veuillez redémarrer Conversations apres l\'installation de l\'app)</small></string>
+  <string name="openkeychain_required_long">Conversations requiert une application tierce nommée <b>OpenKeychain</b> pour chiffrer et déchiffrer les messages.\n\nOpenKeychain est sous licence GPLv3 et est disponible sur F-Droid et Google Play.\n\n<small>(Veuillez redémarrer Conversations après l\'installation de l\'app)</small></string>
   <string name="restart">Redémarrer</string>
   <string name="install">Installer</string>
   <string name="openkeychain_not_installed">Veuillez installer OpenKeychain</string>
@@ -184,9 +184,9 @@
   <string name="server_info_show_more">Infos sur le serveur</string>
   <string name="server_info_mam">XEP-0313 : MAM</string>
   <string name="server_info_carbon_messages">XEP-0280 : Copies carbone</string>
-  <string name="server_info_csi">XEP-0352 : Indication status client</string>
+  <string name="server_info_csi">XEP-0352 : Indication statut client</string>
   <string name="server_info_blocking">XEP-0191 : Commande de bloquage</string>
-  <string name="server_info_roster_version">XEP-0237 : Versionnement contacts</string>
+  <string name="server_info_roster_version">XEP-0237 : Révision contacts</string>
   <string name="server_info_stream_management">XEP-0198 : Gestion des flux</string>
   <string name="server_info_pep">XEP-0163 : PEP (Avatars / OMEMO)</string>
   <string name="server_info_http_upload">XEP-0363 : Envoi de fichiers via HTTP</string>
@@ -271,7 +271,7 @@
   <string name="request_presence_updates">Veuillez demander à votre contact de partager ses mises à jour de présence.\n\n<small>Elles seront utilisées pour déterminer son client.</small></string>
   <string name="request_now">Demander maintenant</string>
   <string name="delete_fingerprint">Supprimer l\'empreinte</string>
-  <string name="sure_delete_fingerprint">Etes-vous sûr de vouloir supprimer l\'empreinte ?</string>
+  <string name="sure_delete_fingerprint">Êtes-vous sûr de vouloir supprimer l\'empreinte ?</string>
   <string name="ignore">Ignorer</string>
   <string name="without_mutual_presence_updates"><b>Attention :</b> peut poser problème si l\'un des deux correspondants n\'a pas activé les mises à jour de présence.\n\n<small>Vérifiez dans les détails du contact que vous y avez bien souscrit.</small></string>
   <string name="pref_security_settings">Sécurité</string>
@@ -284,7 +284,7 @@
   <string name="pref_expert_options">Paramètres avancés</string>
   <string name="pref_expert_options_summary">À utiliser avec précaution.</string>
   <string name="title_activity_about">À propos</string>
-  <string name="pref_about_conversations_summary">Informations sur la version et les licenses</string>
+  <string name="pref_about_conversations_summary">Informations sur la version et les licences</string>
   <string name="title_pref_quiet_hours">Heures tranquilles</string>
   <string name="title_pref_quiet_hours_start_time">Heure de début</string>
   <string name="title_pref_quiet_hours_end_time">Heure de fin</string>
@@ -297,7 +297,7 @@
   <string name="pref_use_indicate_received_summary">Les messages reçus seront marqués d\'une coche verte (si supporté).</string>
   <string name="pref_use_send_button_to_indicate_status_summary">Le bouton Envoyer change de couleur pour indiquer le statut du contact.</string>
   <string name="pref_expert_options_other">Autres</string>
-  <string name="pref_conference_name">Nom de la conférence </string>
+  <string name="pref_conference_name">Nom de la conférence</string>
   <string name="pref_conference_name_summary">Identifier les conférences par leur sujet plutôt que leur JID.</string>
   <string name="pref_autojoin">Rejoindre automatiquement les conférences</string>
   <string name="pref_autojoin_summary">Respecter le paramètre de connexion automatique des favoris de conférence</string>
@@ -322,7 +322,7 @@
   <string name="url_copied_to_clipboard">URL copiée dans le presse-papier</string>
   <string name="message_copied_to_clipboard">Message copié dans le presse-papier</string>
   <string name="image_transmission_failed">Échec lors de l\'envoi de l\'image</string>
-  <string name="scan_qr_code">Scanner un QR code</string>
+  <string name="scan_qr_code">Scanner un code QR</string>
   <string name="show_qr_code">Afficher le code QR</string>
   <string name="show_block_list">Afficher la liste des contacts bloqués</string>
   <string name="account_details">Détails du compte</string>
@@ -392,7 +392,7 @@
   <string name="could_not_change_password">Impossible de changer le mot de passe</string>
   <string name="otr_session_not_started">Envoyez un message pour commencer la conversation chiffrée</string>
   <string name="ask_question">Poser une question</string>
-  <string name="smp_explain_question">Si vous et votre contact avez en commun un secret que personne d\'autre ne connait (comme une blague ou ce que vous avez mangé lors de votre dernière rencontre), vous pouvez utiliser ce secret pour vérifier vos empreintes respectives.\n\nVous donnez un indice ou posez votre question à votre contact, qui répondra en faisant attention à la casse.</string>
+  <string name="smp_explain_question">Si vous et votre contact avez en commun un secret que personne d\'autre ne connaît (comme une blague ou ce que vous avez mangé lors de votre dernière rencontre), vous pouvez utiliser ce secret pour vérifier vos empreintes respectives.\n\nVous donnez un indice ou posez votre question à votre contact, qui répondra en faisant attention à la casse.</string>
   <string name="smp_explain_answer">Votre contact souhaite confirmer votre identité grâce à un secret partagé. Il vous a envoyé le message/indice suivant concernant ce secret.</string>
   <string name="shared_secret_hint_should_not_be_empty">Votre indice ne doit pas être vide</string>
   <string name="shared_secret_can_not_be_empty">Votre secret partagé ne doit pas être vide</string>
@@ -438,7 +438,7 @@
   <string name="pref_enter_is_send">Touche Entrée pour envoyer</string>
   <string name="pref_enter_is_send_summary">Utiliser la touche Entrée pour envoyer un message.</string>
   <string name="pref_display_enter_key">Afficher la touche Entrée</string>
-  <string name="pref_display_enter_key_summary">Remplacer le bouton des Émoticônes par un bouton Entrée.</string>
+  <string name="pref_display_enter_key_summary">Remplacer la touche Émoticônes par une touche Entrée.</string>
   <string name="audio">audio</string>
   <string name="video">vidéo</string>
   <string name="image">image</string>
@@ -451,7 +451,7 @@
   <string name="avatar_has_been_published">L\'avatar a été publié !</string>
   <string name="sending_x_file">%s en cours d\'envoi</string>
   <string name="offering_x_file">En train de proposer un(e) %s</string>
-  <string name="hide_offline">Se cacher hors-ligne</string>
+  <string name="hide_offline">Cacher contacts hors-ligne</string>
   <string name="disable_account">Désactiver le compte</string>
   <string name="contact_is_typing">%s est en train d\'écrire</string>
   <string name="contact_has_stopped_typing">%s a arrêté d\'écrire</string>
@@ -477,7 +477,7 @@
     <item quantity="other">%d certificats supprimés</item>
   </plurals>
   <plurals name="select_contact">
-    <item quantity="one">%d contact séléctionné</item>
+    <item quantity="one">%d contact sélectionné</item>
     <item quantity="other">%d contacts sélectionnés</item>
   </plurals>
   <string name="pref_quick_action_summary">Remplacer le bouton Envoyer par une action rapide.</string>
@@ -491,7 +491,7 @@
   <string name="username">Identifiant</string>
   <string name="username_hint">Identifiant</string>
   <string name="invalid_username">Cet identifiant n\'est pas valide</string>
-  <string name="conference_name">Nom de la conférence </string>
+  <string name="conference_name">Nom de la conférence</string>
   <string name="invalid_conference_name">Ce nom de conférence n\'est pas valide</string>
   <string name="download_failed_server_not_found">Échec du téléchargement : impossible de trouver le serveur</string>
   <string name="download_failed_file_not_found">Échec du téléchargement : impossible de trouver le fichier</string>
@@ -507,7 +507,7 @@
   <string name="pref_xa_on_silent_mode_summary">Marque cette ressource comme indisponible quand l\'appareil est en mode silencieux</string>
   <string name="pref_treat_vibrate_as_silent">Indisponible en mode vibreur</string>
   <string name="pref_treat_vibrate_as_silent_summary">Marque cette ressource comme indisponible quand l\'appareil est en mode vibreur</string>
-  <string name="pref_show_connection_options">Paramètres de connexioin avancés</string>
+  <string name="pref_show_connection_options">Paramètres de connexion avancés</string>
   <string name="pref_show_connection_options_summary">Montrer le nom d\'hôte et le port lors du paramétrage d\'un compte</string>
   <string name="hostname_example">xmpp.example.com</string>
   <string name="action_add_account_with_certificate">Ajouter un compte avec un certificat</string>
@@ -527,7 +527,7 @@
   <string name="verified_omemo_key_with_certificate">Clef OMEMO vérifiée avec un certificat !</string>
   <string name="device_does_not_support_certificates">Votre appareil ne supporte pas la sélection de certificats client !</string>
   <string name="pref_connection_options">Connexion</string>
-  <string name="pref_use_tor">Connection via Tor</string>
+  <string name="pref_use_tor">Connexion via Tor</string>
   <string name="pref_use_tor_summary">Rediriger toutes les connexions via le réseau Tor. Nécessite Orbot.</string>
   <string name="account_settings_hostname">Nom d\'hôte</string>
   <string name="account_settings_port">Port</string>
@@ -544,7 +544,7 @@
   <string name="shared_image_with_x">Image partagée avec %s</string>
   <string name="no_storage_permission">Conversations a besoin d\'accéder au stockage externe</string>
   <string name="sync_with_contacts">Synchroniser avec contacts</string>
-  <string name="sync_with_contacts_long">Conversations souhaite associer vos contacts XMPP avec les contacts de votre appareil, pour utiliser leur nom complet et leur avatar.\n\nConversations va uniquement lire vos contacts et les associer localement, sans les uploader sur le serveur XMPP.\n\nVotre appareil va maintenant vous demander la permission d\'accéder à vos contacts.</string>
+  <string name="sync_with_contacts_long">Conversations souhaite associer vos contacts XMPP avec les contacts de votre appareil, pour utiliser leur nom complet et leur avatar.\n\nConversations va uniquement lire vos contacts et les associer localement, sans les envoyer sur le serveur XMPP.\n\nVotre appareil va maintenant vous demander la permission d\'accéder à vos contacts.</string>
   <string name="certificate_information">Informations du certificat</string>
   <string name="certificate_subject">Sujet</string>
   <string name="certificate_issuer">Émetteur</string>

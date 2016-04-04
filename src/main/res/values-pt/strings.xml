@@ -1,27 +1,27 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources>
-  <string name="action_settings">Configurações</string>
+  <string name="action_settings">Definições</string>
   <string name="action_add">Nova conversa</string>
   <string name="action_accounts">Gerir contas</string>
   <string name="action_end_conversation">Finalizar essa conversa</string>
-  <string name="action_contact_details">Detalhes do contato</string>
+  <string name="action_contact_details">Detalhes do contacto</string>
   <string name="action_muc_details">Detalhes da conferência</string>
   <string name="action_secure">Conversa segura</string>
   <string name="action_add_account">Adicionar conta</string>
   <string name="action_edit_contact">Editar nome</string>
   <string name="action_add_phone_book">Adicionar ao livro de endereços</string>
   <string name="action_delete_contact">Apagar da lista</string>
-  <string name="action_block_contact">Bloquear contato</string>
-  <string name="action_unblock_contact">Desbloquear contato</string>
+  <string name="action_block_contact">Bloquear contacto</string>
+  <string name="action_unblock_contact">Desbloquear contacto</string>
   <string name="action_block_domain">Bloquear domínio</string>
   <string name="action_unblock_domain">Desbloquear domínio</string>
   <string name="title_activity_manage_accounts">Gerir contas</string>
-  <string name="title_activity_settings">Configurações</string>
+  <string name="title_activity_settings">Definições</string>
   <string name="title_activity_conference_details">Detalhes da conferência</string>
-  <string name="title_activity_contact_details">Detalhes do contato</string>
+  <string name="title_activity_contact_details">Detalhes do contacto</string>
   <string name="title_activity_sharewith">Compartilhar conversa</string>
   <string name="title_activity_start_conversation">Iniciar conversa</string>
-  <string name="title_activity_choose_contact">Escolher contato</string>
+  <string name="title_activity_choose_contact">Escolher contacto</string>
   <string name="title_activity_block_list">Bloquear lista</string>
   <string name="just_now">agora há pouco</string>
   <string name="minute_ago">1 minuto atrás</string>
@@ -71,6 +71,8 @@
   <string name="send_failed">a entrega falhou</string>
   <string name="send_rejected">rejeitado</string>
   <string name="preparing_image">Preparando a imagem para transmissão</string>
+  <string name="preparing_images">Preparando as imagens para a transmissão</string>
+  <string name="sharing_files_please_wait">Partilhando os ficheiros. Por favor aguarde...</string>
   <string name="action_clear_history">Limpar histórico</string>
   <string name="clear_conversation_history">Limpar o histórico de conversas</string>
   <string name="clear_histor_msg">Deseja remover todas as mensagens nesta conversa?\n\n&lt;b&gt;Aviso:&lt;b&gt; Isto não irá influenciar mensagens guardadas noutros dispositivos ou servidores.</string>
@@ -267,7 +269,7 @@
   <string name="enable">Ativar</string>
   <string name="conference_requires_password">Esta conferência requer uma palavra-passe</string>
   <string name="enter_password">Inserir palavra-passe</string>
-  <string name="missing_presence_updates">Atualizações de presença inexistente para o contato</string>
+  <string name="missing_presence_updates">Atualizações de presença inexistente para o contacto</string>
   <string name="request_presence_updates">Por favor peça atualizações de presença ao seu contacto primeiro.\n\n<small>Isto irá ser utilizado para determinar que cliente(s) o seu contacto está a utilizar.</small></string>
   <string name="request_now">Solicitar agora</string>
   <string name="delete_fingerprint">Remover impressão digital</string>
@@ -351,6 +353,7 @@
   <string name="choose_file">Escolher ficheiro</string>
   <string name="receiving_x_file">A receber %1$s (%2$d%% concluído)</string>
   <string name="download_x_file">Transferir %s</string>
+  <string name="delete_x_file">Remover %s</string>
   <string name="file">ficheiro</string>
   <string name="open_x_file">Abrir %s</string>
   <string name="sending_file">a enviar (%1$d%% concluído)</string>
@@ -542,6 +545,7 @@
   <string name="load_more_messages">Carregar mais mensagens</string>
   <string name="shared_file_with_x">Ficheiro partilhado com %s</string>
   <string name="shared_image_with_x">Imagem partilhada com %s</string>
+  <string name="shared_images_with_x">Imagens partilhadas com %s</string>
   <string name="no_storage_permission">Conversations necessita de acesso ao armazenamento externo</string>
   <string name="sync_with_contacts">Sincronizar com contactos</string>
   <string name="sync_with_contacts_long">A aplicação Conversations deseja fazer a correspondência entre a sua lista de contactos XMPP e os seus contactos para mostrar os seus nomes completos e os seus avatares.\n\nA aplicação Conversations irá apenas ler os seus contactos e fazer a correspondência localmente sem enviar os dados para o seu servidor.\n\nIrá agora ser-lhe pedido para dar permissão para aceder aos seus contactos.</string>

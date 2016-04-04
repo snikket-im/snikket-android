@@ -71,6 +71,8 @@
   <string name="send_failed">Error al enviar</string>
   <string name="send_rejected">rechazado</string>
   <string name="preparing_image">Preparando imagen para enviar</string>
+  <string name="preparing_images">Preparando imágenes para enviar</string>
+  <string name="sharing_files_please_wait">Compartiendo ficheros. Por favor, espera...</string>
   <string name="action_clear_history">Limpiar historial</string>
   <string name="clear_conversation_history">Limpiar historial de conversación</string>
   <string name="clear_histor_msg">¿Quieres borrar todos los mensajes de esta conversación?\n\n<b>Aviso:</b> Esto no afectará a los mensajes guardados en otros dispositivos o servidores.</string>
@@ -351,6 +353,7 @@
   <string name="choose_file">Seleccionar archivo</string>
   <string name="receiving_x_file">Recibiendo %1$s (%2$d%% completado)</string>
   <string name="download_x_file">Descargar %s</string>
+  <string name="delete_x_file">Eliminar %s</string>
   <string name="file">archivo</string>
   <string name="open_x_file">Abrir %s</string>
   <string name="sending_file">Enviando (%1$d%% completado)</string>
@@ -542,6 +545,7 @@
   <string name="load_more_messages">Cargar más mensajes</string>
   <string name="shared_file_with_x">Archivo compartido con %s</string>
   <string name="shared_image_with_x">Imagen compartida con %s</string>
+  <string name="shared_images_with_x">Imágenes compartidas con %s</string>
   <string name="no_storage_permission">Conversations necesita acceder al almacenamiento externo</string>
   <string name="sync_with_contacts">Sincronizar contactos</string>
   <string name="sync_with_contacts_long">Conversations quiere cruzar tu lista de contactos de XMPP con tus contactos del móvil para mostrar sus nombres completos y sus fotos de perfil.\n\nConversations solo leerá tus contactos y los cruzará localmente sin subirlos a tu servidor.\n\nEl sistema te preguntará ahora para conceder los permisos de acceso a tus contactos del móvil.</string>

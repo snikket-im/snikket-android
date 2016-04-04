@@ -71,6 +71,8 @@
   <string name="send_failed">trimitere esuata</string>
   <string name="send_rejected">respins</string>
   <string name="preparing_image">Pregatesc imaginea pentru transmisie</string>
+  <string name="preparing_images">Pregatesc imaginile pentru transmisie</string>
+  <string name="sharing_files_please_wait">Trimitere fisiere. Te rog asteapta...</string>
   <string name="action_clear_history">Sterge istoric</string>
   <string name="clear_conversation_history">Sterge istoricul conversatiei</string>
   <string name="clear_histor_msg">Doresti sa stergi toate mesajele din aceasta conversatie?\n\n<b>Atentie:</b> Aceasta actiune nu va influenta mesajele aflate pe alte telefoane/tabelete/servere.</string>
@@ -351,6 +353,7 @@
   <string name="choose_file">Alege un fisier</string>
   <string name="receiving_x_file">Primesc %1$s (%2$d%% complet)</string>
   <string name="download_x_file">Descarca %s</string>
+  <string name="delete_x_file">Sterge %s</string>
   <string name="file">fisier</string>
   <string name="open_x_file">Deschide %s</string>
   <string name="sending_file">trimit (%1$d%% complet)</string>
@@ -545,6 +548,7 @@
   <string name="load_more_messages">Incarca mai multe mesaje</string>
   <string name="shared_file_with_x">Partajeaza fisierul cu %s...</string>
   <string name="shared_image_with_x">Partajeaza imaginea cu %s.</string>
+  <string name="shared_images_with_x">Partajeaza imaginile cu %s.</string>
   <string name="no_storage_permission">Conversations are nevoie de acces la stocarea externa</string>
   <string name="sync_with_contacts">Sincronizeaza cu contactele</string>
   <string name="sync_with_contacts_long">Conversations doreste sa potriveasta lista de contacte XMPP cu cea din dispozitiv pentru a putea afisa numule lor complete si avatarele.\n\nConversations doar v-a citi si potrivi local fara sa le incarce catre vreun server.\n\nUrmeaza sa fii intrebat daca doresti sa permiti accesul la contacte.</string>

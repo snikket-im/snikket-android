@@ -71,6 +71,8 @@
   <string name="send_failed">Zustellung fehlgeschlagen</string>
   <string name="send_rejected">abgelehnt</string>
   <string name="preparing_image">Bild wird für Übertragung vorbereitet</string>
+  <string name="preparing_images">Bilder werden für Übertragung vorbereitet</string>
+  <string name="sharing_files_please_wait">Teile Dateien. Bitte warten…</string>
   <string name="action_clear_history">Verlauf löschen</string>
   <string name="clear_conversation_history">Verlauf löschen</string>
   <string name="clear_histor_msg">Möchtest du alle Nachrichten in dieser Unterhaltung löschen?\n\n<b>Achtung:</b> Dies beeinflusst nicht Nachrichten, die auf anderen Geräten oder Servern gespeichert sind.</string>
@@ -159,7 +161,7 @@
   <string name="mgmt_account_disable">Vorübergehend abschalten</string>
   <string name="mgmt_account_publish_avatar">Avatar veröffentlichen</string>
   <string name="mgmt_account_publish_pgp">Öffentlichen OpenPGP-Schlüssel veröffentlichen</string>
-  <string name="mgmt_account_enable">Aktivieren </string>
+  <string name="mgmt_account_enable">Konto aktivieren </string>
   <string name="mgmt_account_are_you_sure">Bist du dir sicher?</string>
   <string name="mgmt_account_delete_confirm_text">Wenn du dein Konto löschst, gehen alle Gesprächsverläufe verloren</string>
   <string name="attach_record_voice">Sprache aufzeichnen</string>
@@ -351,6 +353,7 @@
   <string name="choose_file">Datei auswählen</string>
   <string name="receiving_x_file">Empfange %1$s (%2$d%% abgeschlossen)</string>
   <string name="download_x_file">%s herunterladen</string>
+  <string name="delete_x_file">%s löschen</string>
   <string name="file">Datei</string>
   <string name="open_x_file">%s öffnen</string>
   <string name="sending_file">Senden (%1$d%% abgeschlossen)</string>
@@ -542,6 +545,7 @@
   <string name="load_more_messages">Weitere Nachrichten laden</string>
   <string name="shared_file_with_x">Datei mit %s geteilt</string>
   <string name="shared_image_with_x">Bild mit %s geteilt</string>
+  <string name="shared_images_with_x">Bilder mit %s geteilt</string>
   <string name="no_storage_permission">Conversations benötigt Zugriff auf externen Speicher</string>
   <string name="sync_with_contacts">Mit Kontakten synchronisieren</string>
   <string name="sync_with_contacts_long">Conversations möchte deine XMPP-Kontaktliste mit deinen Kontakten abgleichen, um deren vollständige Namen und Avatare anzuzeigen.\n\nConversations wird deine Kontakte nur lokal lesen und abgleichen und überträgt diese nicht auf den Server.\n\nDu wirst nun gefragt, ob du den Zugriff auf deine Kontakte erlauben möchtest.</string>
@@ -572,5 +576,5 @@
   <string name="send_corrected_message">Korrigierte Nachricht senden</string>
   <string name="no_keys_just_confirm">Du vertraust diesem Kontakt bereits. Durch Auswählen von \"Fertig\" bestätigst du, dass %s Teil dieser Konferenz ist.</string>
   <string name="select_image_and_crop">Bild auswählen und zuschneiden</string>
-  <string name="this_account_is_disabled">Du hast diesen Account deaktiviert</string>
+  <string name="this_account_is_disabled">Du hast dieses Konto deaktiviert</string>
 </resources>

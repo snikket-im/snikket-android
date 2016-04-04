@@ -71,6 +71,8 @@
   <string name="send_failed">испорука није успела</string>
   <string name="send_rejected">одбијено</string>
   <string name="preparing_image">Припремам слику за пренос</string>
+  <string name="preparing_images">Припремам слике за пренос</string>
+  <string name="sharing_files_please_wait">Делим фајлове, сачекајте…</string>
   <string name="action_clear_history">Очисти историјат</string>
   <string name="clear_conversation_history">Брисање историјата преписки</string>
   <string name="clear_histor_msg">Желите ли да обришете све поруке ове преписке?\n\n<b>Упозорење:</b> Ово неће утицати на поруке складиштене на осталим уређајима или серверима.</string>
@@ -351,6 +353,7 @@
   <string name="choose_file">Изабери фајл</string>
   <string name="receiving_x_file">Примам %1$s (%2$d%% завршено)</string>
   <string name="download_x_file">Преузми %s</string>
+  <string name="delete_x_file">Обриши %s</string>
   <string name="file">фајл</string>
   <string name="open_x_file">Отвори %s</string>
   <string name="sending_file">шаљем (%1$d%% завршено)</string>
@@ -545,6 +548,7 @@
   <string name="load_more_messages">Учитај још порука</string>
   <string name="shared_file_with_x">Подељен фајл са %s</string>
   <string name="shared_image_with_x">Подељена слика са %s</string>
+  <string name="shared_images_with_x">Подељене слике са %s</string>
   <string name="no_storage_permission">Конверзацији је потребан приступ спољашњем складишту</string>
   <string name="sync_with_contacts">Синхронизуј са контактима</string>
   <string name="sync_with_contacts_long">Конверзација жели да поклапи ваш ИксМПП именик са контактима на вашем уређају да би приказала њихова пуна имена и аватаре.\n\nКонверзација ће само да очита ваше контакте и упореди их локално без отпремања на сервер.\n\nСада ћете бити упитани за дозволу приступа вашим контактима.</string>

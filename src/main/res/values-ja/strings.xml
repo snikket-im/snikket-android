@@ -71,6 +71,8 @@
   <string name="send_failed">配信に失敗しました</string>
   <string name="send_rejected">拒否されました</string>
   <string name="preparing_image">転送用画像の準備中</string>
+  <string name="preparing_images">転送用画像の準備中</string>
+  <string name="sharing_files_please_wait">フィルを共有しています。しばらくお待ちください…</string>
   <string name="action_clear_history">履歴をクリア</string>
   <string name="clear_conversation_history">会話履歴をクリア</string>
   <string name="clear_histor_msg">この会話のすべてのメッセージを削除しますか?\n\n<b>警告:</b> これは、他のデバイスやサーバーに保存されているメッセージには影響しません。</string>
@@ -351,6 +353,7 @@
   <string name="choose_file">ファイルの選択</string>
   <string name="receiving_x_file">%1$s 受信中 (%2$d%% 完了)</string>
   <string name="download_x_file">%s のダウンロード</string>
+  <string name="delete_x_file">%s を削除</string>
   <string name="file">ファイル</string>
   <string name="open_x_file">%s を開く</string>
   <string name="sending_file">送信中 (%1$d%% 完了)</string>
@@ -539,6 +542,7 @@
   <string name="load_more_messages">さらにメッセージをロード</string>
   <string name="shared_file_with_x">%s でファイルを共有</string>
   <string name="shared_image_with_x">%s で画像を共有</string>
+  <string name="shared_images_with_x">%s で画像を共有</string>
   <string name="no_storage_permission">Conversations は外部ストレージにアクセスが必要です</string>
   <string name="sync_with_contacts">連絡先と同期</string>
   <string name="sync_with_contacts_long">Conversations はフルネームやアバターを表示するために、連絡先と XMPP 名簿と一致するようにしたいです。\n\nConversations は、サーバーにアップロードすることはなく、ローカルで連絡先を読んで一致させるだけです。\n\n今、連絡先へのアクセス許可を付与するように求められます。</string>

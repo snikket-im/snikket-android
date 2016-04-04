@@ -504,6 +504,8 @@
   <string name="pref_away_when_screen_off_summary">Imposta la tua risorsa come non disponibile quando lo schermo è spento</string>
   <string name="pref_xa_on_silent_mode">Non disponibile in modalità silenzioso</string>
   <string name="pref_xa_on_silent_mode_summary">Imposta la tua risorsa come non disponibile quando il dispositivo è in modalità silenziosa</string>
+  <string name="pref_treat_vibrate_as_silent">Tratta vibrazione come modalità silenziosa</string>
+  <string name="pref_treat_vibrate_as_silent_summary">Segna la tua risorsa come non disponibile quando il dispositivo ha solo la vibrazione</string>
   <string name="pref_show_connection_options">Impostazioni estese di connessione</string>
   <string name="pref_show_connection_options_summary">Mostra nome host e impostazioni della porta quando configuri un account</string>
   <string name="hostname_example">xmpp.esempio.it</string>
@@ -567,4 +569,7 @@
   <string name="this_field_is_required">Questo campo è obbligatorio</string>
   <string name="correct_message">Correggi messaggio</string>
   <string name="send_corrected_message">Invia messaggio corretto</string>
+  <string name="no_keys_just_confirm">Ti fidi già di questo contatto. Selezionando \'fatto\' stai solo confermando che %s fa parte di questa conferenza.</string>
+  <string name="select_image_and_crop">Seleziona immagine e ritagliala</string>
+  <string name="this_account_is_disabled">Hai disabilitato questo account</string>
 </resources>

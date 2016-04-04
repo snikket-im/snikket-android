@@ -71,6 +71,8 @@
   <string name="send_failed">afleveren mislukt</string>
   <string name="send_rejected">geweigerd</string>
   <string name="preparing_image">Bezig met voorbereiden van versturen van afbeelding</string>
+  <string name="preparing_images">Bezig met voorbereiden van versturen van afbeeldingen</string>
+  <string name="sharing_files_please_wait">Bestanden delen. Even geduld…</string>
   <string name="action_clear_history">Geschiedenis wissen</string>
   <string name="clear_conversation_history">Gespreksgeschiedenis wissen</string>
   <string name="clear_histor_msg">Wil je alle berichten in dit gesprek verwijderen?\n\n<b>Waarschuwing:</b> Dit zal geen invloed hebben op de berichten opgeslagen op andere apparaten of servers.</string>
@@ -351,6 +353,7 @@
   <string name="choose_file">Bestand kiezen</string>
   <string name="receiving_x_file">Ontvangen van %1$s (%2$d%% voltooid)</string>
   <string name="download_x_file">%s downloaden</string>
+  <string name="delete_x_file">%s verwijderen</string>
   <string name="file">bestand</string>
   <string name="open_x_file">%s openen</string>
   <string name="sending_file">versturen (%1$d%% voltooid)</string>
@@ -542,6 +545,7 @@
   <string name="load_more_messages">Laad meer berichten</string>
   <string name="shared_file_with_x">Bestand gedeeld met %s</string>
   <string name="shared_image_with_x">Afbeelding gedeeld met %s</string>
+  <string name="shared_images_with_x">Afbeeldingen gedeeld met %s</string>
   <string name="no_storage_permission">Conversations heeft toegang nodig tot de externe opslag</string>
   <string name="sync_with_contacts">Synchroniseer met contacten</string>
   <string name="sync_with_contacts_long">Conversations wil je XMPP-rooster met je contacten vergelijken om hun volledige namen en profielfoto\'s te tonen.\n\nConversations zal je contacten enkel lokaal lezen en vergelijken zonder ze te uploaden naar je server.\n\nJe zal nu gevraagd worden Conversations toegang te verlenen tot je contacten.</string>

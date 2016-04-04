@@ -71,6 +71,8 @@
   <string name="send_failed">sändning misslyckades</string>
   <string name="send_rejected">avvisad</string>
   <string name="preparing_image">Förbereder bild för sändning</string>
+  <string name="preparing_images">Förbereder bilder för överföring</string>
+  <string name="sharing_files_please_wait">Delar filer. Vänta...</string>
   <string name="action_clear_history">Rensa historik</string>
   <string name="clear_conversation_history">Rensa konversationshistorik</string>
   <string name="clear_histor_msg">Vill du ta bort alla meddelanden i denna konversation?\n\n<b>Varning:</b> Detta kommer inte påverka meddelanden lagrade på andra enheter eller servrar.</string>
@@ -351,6 +353,7 @@
   <string name="choose_file">Välj fil</string>
   <string name="receiving_x_file">Tar emot %1$s (%2$d%% klart)</string>
   <string name="download_x_file">Ladda ner %s</string>
+  <string name="delete_x_file">Ta bort %s</string>
   <string name="file">fil</string>
   <string name="open_x_file">Öppna %s</string>
   <string name="sending_file">skickar (%1$d%% klart)</string>
@@ -542,6 +545,7 @@
   <string name="load_more_messages">Ladda fler meddelanden</string>
   <string name="shared_file_with_x">Delade fil med %s</string>
   <string name="shared_image_with_x">Delade bild med %s</string>
+  <string name="shared_images_with_x">Delade bilder med %s</string>
   <string name="no_storage_permission">Conversations behöver access till extern lagring</string>
   <string name="sync_with_contacts">Synkronisera med kontakter</string>
   <string name="sync_with_contacts_long">Conversations vill matcha din XMPP-kontaktlista med dina kontakter för att visa deras namn och profilbild.\n\nConversations läser endast dina kontakter för att matcha dem lokalt utan att ladda upp dem till din server.\n\nDu kommer nu få frågan om tillåtelse för att använda kontakterna.</string>
