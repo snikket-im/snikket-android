@@ -39,6 +39,8 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.KeyManager;
@@ -114,7 +116,8 @@ public class XmppConnection implements Runnable {
 	private long lastConnect = 0;
 	private long lastSessionStarted = 0;
 	private long lastDiscoStarted = 0;
-	private int mPendingServiceDiscoveries = 0;
+	private AtomicInteger mPendingServiceDiscoveries = new AtomicInteger(0);
+	private AtomicBoolean mIsServiceItemsDiscoveryPending = new AtomicBoolean(true);
 	private final ArrayList<String> mPendingServiceDiscoveriesIds = new ArrayList<>();
 	private boolean mInteractive = false;
 	private int attempt = 0;
@@ -923,7 +926,7 @@ public class XmppConnection implements Runnable {
 						disconnect(true);
 					}
 				} else {
-					Log.d(Config.LOGTAG, account.getJid() + ": disconnecting because of bind failure ("+packet.toString());
+					Log.d(Config.LOGTAG, account.getJid() + ": disconnecting because of bind failure (" + packet.toString());
 					disconnect(true);
 				}
 			}
@@ -1008,7 +1011,8 @@ public class XmppConnection implements Runnable {
 		synchronized (this.disco) {
 			this.disco.clear();
 		}
-		mPendingServiceDiscoveries = mServerIdentity == Identity.NIMBUZZ ? 1 : 0;
+		mPendingServiceDiscoveries.set(mServerIdentity == Identity.NIMBUZZ ? 1 : 0);
+		mIsServiceItemsDiscoveryPending.set(true);
 		lastDiscoStarted = SystemClock.elapsedRealtime();
 		Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": starting service discovery");
 		mXmppConnectionService.scheduleWakeUpCall(Config.CONNECT_DISCO_TIMEOUT, account.getUuid().hashCode());
@@ -1032,7 +1036,7 @@ public class XmppConnection implements Runnable {
 
 	private void sendServiceDiscoveryInfo(final Jid jid) {
 		if (mServerIdentity != Identity.NIMBUZZ) {
-			mPendingServiceDiscoveries++;
+			mPendingServiceDiscoveries.incrementAndGet();
 		}
 		final IqPacket iq = new IqPacket(IqPacket.TYPE.GET);
 		iq.setTo(jid);
@@ -1077,14 +1081,8 @@ public class XmppConnection implements Runnable {
 					Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": could not query disco info for " + jid.toString());
 				}
 				if (packet.getType() != IqPacket.TYPE.TIMEOUT) {
-					mPendingServiceDiscoveries--;
-					if (mPendingServiceDiscoveries == 0) {
-						Log.d(Config.LOGTAG,account.getJid().toBareJid()+": done with service discovery");
-						Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": online with resource " + account.getResource());
-						if (bindListener != null) {
-							bindListener.onBind(account);
-						}
-						changeStatus(Account.State.ONLINE);
+					if (mPendingServiceDiscoveries.decrementAndGet() == 0 && !mIsServiceItemsDiscoveryPending.get()) {
+						finalizeBind();
 					}
 				}
 			}
@@ -1092,6 +1090,14 @@ public class XmppConnection implements Runnable {
 		synchronized (this.mPendingServiceDiscoveriesIds) {
 			this.mPendingServiceDiscoveriesIds.add(id);
 		}
+	}
+
+	private void finalizeBind() {
+		Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": online with resource " + account.getResource());
+		if (bindListener != null) {
+			bindListener.onBind(account);
+		}
+		changeStatus(Account.State.ONLINE);
 	}
 
 	private void enableAdvancedStreamFeatures() {
@@ -1127,6 +1133,12 @@ public class XmppConnection implements Runnable {
 					}
 				} else {
 					Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": could not query disco items of " + server);
+				}
+				if (packet.getType() != IqPacket.TYPE.TIMEOUT) {
+					mIsServiceItemsDiscoveryPending.set(false);
+					if (mPendingServiceDiscoveries.get() == 0) {
+						finalizeBind();
+					}
 				}
 			}
 		});
