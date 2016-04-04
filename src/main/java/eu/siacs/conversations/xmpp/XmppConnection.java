@@ -1016,7 +1016,6 @@ public class XmppConnection implements Runnable {
 		lastDiscoStarted = SystemClock.elapsedRealtime();
 		Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": starting service discovery");
 		mXmppConnectionService.scheduleWakeUpCall(Config.CONNECT_DISCO_TIMEOUT, account.getUuid().hashCode());
-		sendServiceDiscoveryItems(account.getServer());
 		Element caps = streamFeatures.findChild("c");
 		final String hash = caps == null ? null : caps.getAttribute("hash");
 		final String ver = caps == null ? null : caps.getAttribute("ver");
@@ -1031,6 +1030,7 @@ public class XmppConnection implements Runnable {
 			disco.put(account.getServer(), discoveryResult);
 		}
 		sendServiceDiscoveryInfo(account.getJid().toBareJid());
+		sendServiceDiscoveryItems(account.getServer());
 		this.lastSessionStarted = SystemClock.elapsedRealtime();
 	}
 
