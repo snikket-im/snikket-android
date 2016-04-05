@@ -2581,6 +2581,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 				disconnect(account, force);
 				account.getRoster().clearPresences();
 				connection.resetEverything();
+				account.getAxolotlService().resetBrokenness();
 			}
 		}
 	}

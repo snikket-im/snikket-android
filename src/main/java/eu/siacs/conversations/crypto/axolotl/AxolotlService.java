@@ -314,6 +314,11 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 		return this.pepBroken;
 	}
 
+	public void resetBrokenness() {
+		this.pepBroken = false;
+		numPublishTriesOnEmptyPep = 0;
+	}
+
 	public void regenerateKeys(boolean wipeOther) {
 		axolotlStore.regenerate();
 		sessions.clear();
@@ -448,7 +453,8 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 			mXmppConnectionService.sendIqPacket(account, publish, new OnIqPacketReceived() {
 				@Override
 				public void onIqPacketReceived(Account account, IqPacket packet) {
-					if (packet.getType() != IqPacket.TYPE.RESULT) {
+					if (packet.getType() == IqPacket.TYPE.ERROR) {
+						pepBroken = true;
 						Log.d(Config.LOGTAG, getLogprefix(account) + "Error received while publishing own device id" + packet.findChild("error"));
 					}
 				}
@@ -612,7 +618,8 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 						Log.d(Config.LOGTAG, getLogprefix(account) + "Announcing device " + getOwnDeviceId());
 						publishOwnDeviceIdIfNeeded();
 					}
-				} else {
+				} else if (packet.getType() == IqPacket.TYPE.ERROR) {
+					pepBroken = true;
 					Log.d(Config.LOGTAG, getLogprefix(account) + "Error received while publishing bundle: " + packet.findChild("error"));
 				}
 			}
