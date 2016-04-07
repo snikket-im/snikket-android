@@ -23,6 +23,7 @@ import java.io.File;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
+import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.utils.FileUtils;
 import eu.siacs.conversations.utils.PhoneHelper;
 import eu.siacs.conversations.xmpp.pep.Avatar;
@@ -187,9 +188,13 @@ public class PublishProfilePictureActivity extends XmppActivity {
 	protected void onActivityResult(int requestCode, int resultCode, final Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (resultCode == RESULT_OK) {
+			Uri source = data.getData();
 			switch (requestCode) {
 				case REQUEST_CHOOSE_FILE_AND_CROP:
-					Uri source = data.getData();
+					if (FileBackend.weOwnFile(source)) {
+						Toast.makeText(this,R.string.security_error_invalid_file_access,Toast.LENGTH_SHORT).show();
+						return;
+					}
 					String original = FileUtils.getPath(this, source);
 					if (original != null) {
 						source = Uri.parse("file://"+original);
@@ -199,7 +204,11 @@ public class PublishProfilePictureActivity extends XmppActivity {
 					Crop.of(source, destination).asSquare().withMaxSize(size, size).start(this);
 					break;
 				case REQUEST_CHOOSE_FILE:
-					this.avatarUri = data.getData();
+					if (FileBackend.weOwnFile(source)) {
+						Toast.makeText(this,R.string.security_error_invalid_file_access,Toast.LENGTH_SHORT).show();
+						return;
+					}
+					this.avatarUri = source;
 					if (xmppConnectionServiceBound) {
 						loadImageIntoPreview(this.avatarUri);
 					}

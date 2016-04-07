@@ -1,5 +1,7 @@
 package eu.siacs.conversations.persistance;
 
+import android.annotation.TargetApi;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -9,8 +11,13 @@ import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.RectF;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
+import android.os.ParcelFileDescriptor;
 import android.provider.OpenableColumns;
+import android.system.ErrnoException;
+import android.system.Os;
+import android.system.StructStat;
 import android.util.Base64;
 import android.util.Base64OutputStream;
 import android.util.Log;
@@ -19,6 +26,7 @@ import android.webkit.MimeTypeMap;
 import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
 import java.io.File;
+import java.io.FileDescriptor;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -644,6 +652,31 @@ public class FileBackend {
 				socket.close();
 			} catch (IOException e) {
 			}
+		}
+	}
+
+
+	public static boolean weOwnFile(Uri uri) {
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+			return false;
+		} else {
+			return uri != null
+					&& ContentResolver.SCHEME_FILE.equals(uri.getScheme())
+					&& weOwnFileLollipop(uri);
+		}
+	}
+
+	@TargetApi(Build.VERSION_CODES.LOLLIPOP)
+	private static boolean weOwnFileLollipop(Uri uri) {
+		try {
+			File file = new File(uri.getPath());
+			FileDescriptor fd = ParcelFileDescriptor.open(file, ParcelFileDescriptor.MODE_READ_ONLY).getFileDescriptor();
+			StructStat st = Os.fstat(fd);
+			return st.st_uid == android.os.Process.myUid();
+		} catch (ErrnoException e) {
+			return true;
+		} catch (FileNotFoundException e) {
+			return false;
 		}
 	}
 }

@@ -403,6 +403,11 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	public void attachFileToConversation(final Conversation conversation,
 										 final Uri uri,
 										 final UiCallback<Message> callback) {
+		if (FileBackend.weOwnFile(uri)) {
+			Log.d(Config.LOGTAG,"trying to attach file that belonged to us");
+			callback.error(R.string.security_error_invalid_file_access, null);
+			return;
+		}
 		final Message message;
 		if (conversation.getNextEncryption() == Message.ENCRYPTION_PGP) {
 			message = new Message(conversation, "", Message.ENCRYPTION_DECRYPTED);
@@ -441,6 +446,11 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	}
 
 	public void attachImageToConversation(final Conversation conversation, final Uri uri, final UiCallback<Message> callback) {
+		if (FileBackend.weOwnFile(uri)) {
+			Log.d(Config.LOGTAG,"trying to attach file that belonged to us");
+			callback.error(R.string.security_error_invalid_file_access, null);
+			return;
+		}
 		final String compressPictures = getCompressPicturesPreference();
 		if ("never".equals(compressPictures)
 				|| ("auto".equals(compressPictures) && getFileBackend().useImageAsIs(uri))) {
