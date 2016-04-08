@@ -1,5 +1,8 @@
 ###Changelog
 
+####Version 1.11.5
+* check file ownership to not accidentally share private files
+
 ####Version 1.11.4
 * fixed a bug where contacts are shown as offline
 * improved broken PEP detection
