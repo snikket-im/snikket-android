@@ -71,6 +71,8 @@
   <string name="send_failed">não foi entregue</string>
   <string name="send_rejected">rejeitada</string>
   <string name="preparing_image">Preparando a imagem para transmissão</string>
+  <string name="preparing_images">Preparando as imagens para o envio</string>
+  <string name="sharing_files_please_wait">Compartilhando arquivos. Por favor, aguarde...</string>
   <string name="action_clear_history">Limpar o histórico</string>
   <string name="clear_conversation_history">Limpa o histórico de conversas</string>
   <string name="clear_histor_msg">Deseja excluir todas as mensagens dessa conversa?\n\n<b>Atenção:</b> Isso não afetará mensagens armazenadas em outros dispositivos ou servidores.</string>
@@ -97,7 +99,7 @@
   <string name="no_pgp_keys">Não foi encontrada nenhuma chave OpenPGP</string>
   <string name="contacts_have_no_pgp_keys">O Conversations não conseguiu criptografar suas mensagens porque os seus contatos não estão anunciando a chave pública deles(as).\n\n<small>Por favor, solicite aos seus contatos que configurem o OpenPGP.</small></string>
   <string name="pref_general">Geral</string>
-  <string name="pref_xmpp_resource">Recurso XMPP</string>
+  <string name="pref_xmpp_resource">Identificação XMPP</string>
   <string name="pref_xmpp_resource_summary">O nome pelo qual esse cliente se identifica</string>
   <string name="pref_accept_files">Aceitar arquivos</string>
   <string name="pref_accept_files_summary">Aceitar automaticamente arquivos menores que...</string>
@@ -312,6 +314,7 @@
   <string name="checking_x">Verificando %s no host HTTP</string>
   <string name="not_connected_try_again">Você não está conectado. Tente novamente mais tarde.</string>
   <string name="check_x_filesize">Verificar o tamanho de %s</string>
+  <string name="check_x_filesize_on_host">Verifique o tamanho de %1$s em %2$s</string>
   <string name="message_options">Opções da mensagem</string>
   <string name="copy_text">Copiar o texto</string>
   <string name="copy_original_url">Copiar a URL original</string>
@@ -350,6 +353,7 @@
   <string name="choose_file">Selecione o arquivo</string>
   <string name="receiving_x_file">Recebendo %1$s (completou %2$d%%)</string>
   <string name="download_x_file">Baixar %s</string>
+  <string name="delete_x_file">Excluir %s</string>
   <string name="file">arquivo</string>
   <string name="open_x_file">Abrir %s</string>
   <string name="sending_file">enviando (completou %1$d%%)</string>
@@ -501,9 +505,11 @@
   <string name="server_info_broken">Quebrado</string>
   <string name="pref_presence_settings">Presença</string>
   <string name="pref_away_when_screen_off">Afastado quando a tela estiver desligada</string>
-  <string name="pref_away_when_screen_off_summary">Marcar o seu status como afastado quando a tela estiver desligada</string>
+  <string name="pref_away_when_screen_off_summary">Definir o seu status como afastado quando a tela estiver desligada</string>
   <string name="pref_xa_on_silent_mode">Não disponível quando em modo silencioso</string>
-  <string name="pref_xa_on_silent_mode_summary">Marcar o seu status como não disponível quando o dispositivo estiver em modo silencioso</string>
+  <string name="pref_xa_on_silent_mode_summary">Definir o seu status como não disponível quando o dispositivo estiver em modo silencioso</string>
+  <string name="pref_treat_vibrate_as_silent">Considerar o modo de vibração como silencioso</string>
+  <string name="pref_treat_vibrate_as_silent_summary">Definir o seu status como indisponível quando o dispositivo estiver em modo de vibração</string>
   <string name="pref_show_connection_options">Configurações detalhadas da conexão</string>
   <string name="pref_show_connection_options_summary">Exibe o nome de host e configurações da porta ao configurar uma conta</string>
   <string name="hostname_example">xmpp.example.com</string>
@@ -539,6 +545,7 @@
   <string name="load_more_messages">Carregar mais mensagens</string>
   <string name="shared_file_with_x">Arquivo compartilhado com %s</string>
   <string name="shared_image_with_x">Imagem compartilhada com %s</string>
+  <string name="shared_images_with_x">Imagens compartilhadas com %s</string>
   <string name="no_storage_permission">O Conversations necessita de acesso ao armazenamento externo</string>
   <string name="sync_with_contacts">Sincronizar com os contatos</string>
   <string name="sync_with_contacts_long">O Conversations quer procurar por correspondências entre contatos da sua conta Jabber e do seu telefone, para complementar as informações de nome completo e avatares\n\nO Conversations fará a verificação localmente, sem enviar nenhuma informação sua para o servidor\n\nVocê será solicitado a fornecer permissão de acesso aos seus contatos agora.</string>
@@ -567,4 +574,7 @@
   <string name="this_field_is_required">Este campo é necessário</string>
   <string name="correct_message">Corrigir a mensagem</string>
   <string name="send_corrected_message">Enviar a mensagem corrigida</string>
+  <string name="no_keys_just_confirm">Você já confia nesse contato. Ao selecionar \'Concluído\', você está apenas confirmando que %s é parte dessa conferência.</string>
+  <string name="select_image_and_crop">Selecione e recorte a imagem</string>
+  <string name="this_account_is_disabled">Você desabilitou essa conta</string>
 </resources>

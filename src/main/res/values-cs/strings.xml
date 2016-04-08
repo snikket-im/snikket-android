@@ -71,6 +71,8 @@
   <string name="send_failed">doručení selhalo</string>
   <string name="send_rejected">zamítnuto</string>
   <string name="preparing_image">Připravuji obrázek na přenos</string>
+  <string name="preparing_images">Příprava obrázků pro přenos</string>
+  <string name="sharing_files_please_wait">Sdílení souborů. Chvíli strpení...</string>
   <string name="action_clear_history">Smazat historii</string>
   <string name="clear_conversation_history">Smaže historii konverzací</string>
   <string name="clear_histor_msg">Chcete smazat všechny zprávy v této konverzaci?\n\n<b>Varování:</b> Toto neovlivní zprávy uložené na jiných přístrojích nebo serverech.</string>
@@ -312,6 +314,7 @@
   <string name="checking_x">Ověřuji %s na HTTP hostiteli</string>
   <string name="not_connected_try_again">Bez připojení. Zkus znovu později</string>
   <string name="check_x_filesize">Ověřit %s velikost</string>
+  <string name="check_x_filesize_on_host">Kontrola %1$s velikosti na %2$s</string>
   <string name="message_options">Možnosti zpráv</string>
   <string name="copy_text">Zkopírovat text</string>
   <string name="copy_original_url">Kopírovat originální URL</string>
@@ -350,6 +353,7 @@
   <string name="choose_file">Vybrat soubor</string>
   <string name="receiving_x_file">Přijímám %1$s (%2$d%% dokončeno)</string>
   <string name="download_x_file">Stáhnout %s</string>
+  <string name="delete_x_file">Smazat %s</string>
   <string name="file">soubor</string>
   <string name="open_x_file">Otevřít %s</string>
   <string name="sending_file">odesílám (%1$d%% přeneseno)</string>
@@ -506,6 +510,8 @@
   <string name="pref_away_when_screen_off_summary">Při vypnuté obrazovce označí váš stav jako pryč</string>
   <string name="pref_xa_on_silent_mode">Nedostupný při vypnutém zvuku</string>
   <string name="pref_xa_on_silent_mode_summary">Při tichém módu označí váš stav jako nedostupný</string>
+  <string name="pref_treat_vibrate_as_silent">Vibrační mód brát stejně jako tichý</string>
+  <string name="pref_treat_vibrate_as_silent_summary">Označí vaše zdroje jako nedostupné při přepnutí do vibračního módu</string>
   <string name="pref_show_connection_options">Rozšířená nastavení připojení</string>
   <string name="pref_show_connection_options_summary">Zobrazovat nastavení hostname a port  při vytváření účtu</string>
   <string name="hostname_example">xmpp.server.cz</string>
@@ -542,6 +548,7 @@
   <string name="load_more_messages">Načíst více zpráv</string>
   <string name="shared_file_with_x">Soubor sdílen s %s</string>
   <string name="shared_image_with_x">Obrázek sdílen s %s</string>
+  <string name="shared_images_with_x">Obrázky sdíleny s %s</string>
   <string name="no_storage_permission">Conversations vyžaduje přístup k externímu úložišti</string>
   <string name="sync_with_contacts">Synchronizovat s kontakty</string>
   <string name="sync_with_contacts_long">Aplikace Conversations by ráda porovnala váš XMPP seznam s vašimi kontakty, aby mohla zobrazit plná jména a avatary.\n\nConversations načte a porovná kontakty pouze lokálně, bez jejich nahrávání na server.\n\nNyní budete dotázáni na udělení práv pro přístup k seznamu kontaktů.</string>
@@ -570,4 +577,7 @@
   <string name="this_field_is_required">Toto pole je vyžadováno</string>
   <string name="correct_message">Opravit zprávu</string>
   <string name="send_corrected_message">Odeslat opravenou zprávu</string>
+  <string name="no_keys_just_confirm">Tomuto kontaktu již důvěřujete. Vybráním možnosti \'hotovo\' jen potvrzujete, že %s je součástí této konference.</string>
+  <string name="select_image_and_crop">Vybrat obrázek a oříznout</string>
+  <string name="this_account_is_disabled">Tento účet byl vypnut</string>
 </resources>
