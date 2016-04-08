@@ -15,7 +15,6 @@ import android.os.Build;
 import android.os.Environment;
 import android.os.ParcelFileDescriptor;
 import android.provider.OpenableColumns;
-import android.system.ErrnoException;
 import android.system.Os;
 import android.system.StructStat;
 import android.util.Base64;
@@ -673,10 +672,10 @@ public class FileBackend {
 			FileDescriptor fd = ParcelFileDescriptor.open(file, ParcelFileDescriptor.MODE_READ_ONLY).getFileDescriptor();
 			StructStat st = Os.fstat(fd);
 			return st.st_uid == android.os.Process.myUid();
-		} catch (ErrnoException e) {
-			return true;
 		} catch (FileNotFoundException e) {
 			return false;
+		} catch (Exception e) {
+			return true;
 		}
 	}
 }
