@@ -1117,7 +1117,7 @@ public class XmppConnection implements Runnable {
 		final IqPacket iq = new IqPacket(IqPacket.TYPE.GET);
 		iq.setTo(server.toDomainJid());
 		iq.query("http://jabber.org/protocol/disco#items");
-		this.sendIqPacket(iq, new OnIqPacketReceived() {
+		String id = this.sendIqPacket(iq, new OnIqPacketReceived() {
 
 			@Override
 			public void onIqPacketReceived(final Account account, final IqPacket packet) {
@@ -1142,6 +1142,9 @@ public class XmppConnection implements Runnable {
 				}
 			}
 		});
+		synchronized (this.mPendingServiceDiscoveriesIds) {
+			this.mPendingServiceDiscoveriesIds.add(id);
+		}
 	}
 
 	private void sendEnableCarbons() {
