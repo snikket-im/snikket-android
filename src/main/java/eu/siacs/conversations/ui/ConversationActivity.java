@@ -411,6 +411,7 @@ public class ConversationActivity extends XmppActivity
 					menuInviteContact.setVisible(getSelectedConversation().getMucOptions().canInvite());
 					menuSecure.setVisible((Config.supportOpenPgp() || Config.supportOmemo()) && Config.multipleEncryptionChoices()); //only if pgp is supported we have a choice
 				} else {
+					menuContactDetails.setVisible(!this.getSelectedConversation().withSelf());
 					menuMucDetails.setVisible(false);
 					menuSecure.setVisible(Config.multipleEncryptionChoices());
 				}

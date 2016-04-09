@@ -468,7 +468,9 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 							highlightInConference(user);
 						}
 					} else {
-						activity.switchToContactDetails(message.getContact(), message.getFingerprint());
+						if (!message.getContact().isSelf()) {
+							activity.switchToContactDetails(message.getContact(), message.getFingerprint());
+						}
 					}
 				} else {
 					Account account = message.getConversation().getAccount();
