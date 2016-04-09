@@ -241,12 +241,11 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 				mFetchingAvatar = true;
 				xmppConnectionService.checkForAvatar(mAccount, mAvatarFetchCallback);
 			}
-		} else {
-			updateSaveButton();
 		}
 		if (mAccount != null) {
 			updateAccountInformation(false);
 		}
+		updateSaveButton();
 	}
 
 	@Override
@@ -335,7 +334,8 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 			this.mSaveButton.setText(R.string.save);
 			this.mSaveButton.setEnabled(true);
 			this.mSaveButton.setTextColor(getPrimaryTextColor());
-		} else if (mAccount != null && (mAccount.getStatus() == Account.State.CONNECTING || mFetchingAvatar)) {
+		} else if (mAccount != null
+				&& (mAccount.getStatus() == Account.State.CONNECTING || mAccount.getStatus() == Account.State.REGISTRATION_SUCCESSFUL|| mFetchingAvatar)) {
 			this.mSaveButton.setEnabled(false);
 			this.mSaveButton.setTextColor(getSecondaryTextColor());
 			this.mSaveButton.setText(R.string.account_status_connecting);
@@ -536,6 +536,7 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 	protected void onBackendConnected() {
 		if (this.jidToEdit != null) {
 			this.mAccount = xmppConnectionService.findAccountByJid(jidToEdit);
+			this.mInitMode |= this.mAccount.isOptionSet(Account.OPTION_REGISTER);
 			if (this.mAccount != null) {
 				if (this.mAccount.getPrivateKeyAlias() != null) {
 					this.mPassword.setHint(R.string.authenticate_with_certificate);
@@ -631,6 +632,8 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 		if (!mInitMode) {
 			this.mAvatar.setVisibility(View.VISIBLE);
 			this.mAvatar.setImageBitmap(avatarService().get(this.mAccount, getPixel(72)));
+		} else {
+			this.mAvatar.setVisibility(View.GONE);
 		}
 		if (this.mAccount.isOptionSet(Account.OPTION_REGISTER)) {
 			this.mRegisterNew.setVisibility(View.VISIBLE);
