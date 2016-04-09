@@ -79,7 +79,12 @@
             android:key="vibrate_on_notification"
             android:summary="@string/pref_vibrate_summary"
             android:title="@string/pref_vibrate"/>
-
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:dependency="show_notification"
+            android:key="led"
+            android:title="@string/pref_led"
+            android:summary="@string/pref_led_summary"/>
         <RingtonePreference
             android:defaultValue="content://settings/system/notification_sound"
             android:dependency="show_notification"

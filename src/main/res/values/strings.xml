@@ -108,9 +108,11 @@
 	<string name="pref_notifications">Notifications</string>
 	<string name="pref_notifications_summary">Notify when a new message arrives</string>
 	<string name="pref_vibrate">Vibrate</string>
-	<string name="pref_vibrate_summary">Also vibrate when a new message arrives</string>
-	<string name="pref_sound">Sound</string>
-	<string name="pref_sound_summary">Play ringtone with notification</string>
+	<string name="pref_vibrate_summary">Vibrate when a new message arrives</string>
+	<string name="pref_led">LED Notification</string>
+	<string name="pref_led_summary">Blink notification light when a new message arrives</string>
+	<string name="pref_sound">Ringtone</string>
+	<string name="pref_sound_summary">Play sound when a new message arrives</string>
 	<string name="pref_notification_grace_period">Notification grace period</string>
 	<string name="pref_notification_grace_period_summary">Disable notifications for a short time after a carbon copy was received</string>
 	<string name="pref_advanced_options">Advanced</string>
