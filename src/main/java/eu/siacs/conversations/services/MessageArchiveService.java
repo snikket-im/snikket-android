@@ -61,11 +61,8 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 			}
 			query = new Query(account, startCatchup, endCatchup);
 		} else {
-			if (pair.second == null) {
-				query = new Query(account, startCatchup, endCatchup);
-			} else {
-				query = new Query(account, pair.second, endCatchup);
-			}
+			query = new Query(account, startCatchup, endCatchup);
+			query.reference = pair.second;
 		}
 		this.queries.add(query);
 		this.execute(query);
@@ -285,14 +282,7 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 			this.end = end;
 			this.queryId = new BigInteger(50, mXmppConnectionService.getRNG()).toString(32);
 		}
-
-		public Query(Account account, String reference, long end) {
-			this.account = account;
-			this.reference = reference;
-			this.end = end;
-			this.queryId = new BigInteger(50, mXmppConnectionService.getRNG()).toString(32);
-		}
-
+		
 		private Query page(String reference) {
 			Query query = new Query(this.account,this.start,this.end);
 			query.reference = reference;
