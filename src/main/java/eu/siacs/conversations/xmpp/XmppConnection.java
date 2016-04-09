@@ -560,7 +560,6 @@ public class XmppConnection implements Runnable {
 			}
 			nextTag = tagReader.readTag();
 		}
-		throw new IOException("reached end of stream. last tag was "+nextTag);
 	}
 
 	private void acknowledgeStanzaUpTo(int serverCount) {
