@@ -45,8 +45,10 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 				}
 			}
 		}
-		long startCatchup = getLastMessageTransmitted(account);
+		Pair<Long,String> pair = mXmppConnectionService.databaseBackend.getLastMessageReceived(account);
+		long startCatchup = pair == null ? 0 : pair.first;
 		long endCatchup = account.getXmppConnection().getLastSessionEstablished();
+		final Query query;
 		if (startCatchup == 0) {
 			return;
 		} else if (endCatchup - startCatchup >= Config.MAM_MAX_CATCHUP) {
@@ -57,8 +59,14 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 					this.query(conversation,startCatchup);
 				}
 			}
+			query = new Query(account, startCatchup, endCatchup);
+		} else {
+			if (pair.second == null) {
+				query = new Query(account, startCatchup, endCatchup);
+			} else {
+				query = new Query(account, pair.second, endCatchup);
+			}
 		}
-		final Query query = new Query(account, startCatchup, endCatchup);
 		this.queries.add(query);
 		this.execute(query);
 	}
@@ -73,11 +81,6 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 					conversation.getLastMessageTransmitted(),
 					System.currentTimeMillis());
 		}
-	}
-
-	private long getLastMessageTransmitted(final Account account) {
-		Pair<Long,String> pair = mXmppConnectionService.databaseBackend.getLastMessageReceived(account);
-		return pair == null ? 0 : pair.first;
 	}
 
 	public Query query(final Conversation conversation) {
@@ -279,6 +282,13 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 		public Query(Account account, long start, long end) {
 			this.account = account;
 			this.start = start;
+			this.end = end;
+			this.queryId = new BigInteger(50, mXmppConnectionService.getRNG()).toString(32);
+		}
+
+		public Query(Account account, String reference, long end) {
+			this.account = account;
+			this.reference = reference;
 			this.end = end;
 			this.queryId = new BigInteger(50, mXmppConnectionService.getRNG()).toString(32);
 		}
