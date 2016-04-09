@@ -183,16 +183,18 @@ public class XmppConnection implements Runnable {
 				if (packet.getType() == IqPacket.TYPE.RESULT) {
 					account.setOption(Account.OPTION_REGISTER,
 							false);
+					forceCloseSocket();
 					changeStatus(Account.State.REGISTRATION_SUCCESSFUL);
 				} else if (packet.hasChild("error")
 						&& (packet.findChild("error")
 						.hasChild("conflict"))) {
+					forceCloseSocket();
 					changeStatus(Account.State.REGISTRATION_CONFLICT);
 				} else {
+					forceCloseSocket();
 					changeStatus(Account.State.REGISTRATION_FAILED);
 					Log.d(Config.LOGTAG, packet.toString());
 				}
-				disconnect(true);
 			}
 		};
 	}
@@ -739,47 +741,12 @@ public class XmppConnection implements Runnable {
 			}
 		} else if (!this.streamFeatures.hasChild("register")
 				&& account.isOptionSet(Account.OPTION_REGISTER)) {
+			forceCloseSocket();
 			changeStatus(Account.State.REGISTRATION_NOT_SUPPORTED);
-			disconnect(true);
 		} else if (this.streamFeatures.hasChild("mechanisms")
 				&& shouldAuthenticate
 				&& (features.encryptionEnabled || Config.ALLOW_NON_TLS_CONNECTIONS)) {
-			final List<String> mechanisms = extractMechanisms(streamFeatures
-					.findChild("mechanisms"));
-			final Element auth = new Element("auth");
-			auth.setAttribute("xmlns", "urn:ietf:params:xml:ns:xmpp-sasl");
-			if (mechanisms.contains("EXTERNAL") && account.getPrivateKeyAlias() != null) {
-				saslMechanism = new External(tagWriter, account, mXmppConnectionService.getRNG());
-			} else if (mechanisms.contains("SCRAM-SHA-1")) {
-				saslMechanism = new ScramSha1(tagWriter, account, mXmppConnectionService.getRNG());
-			} else if (mechanisms.contains("PLAIN")) {
-				saslMechanism = new Plain(tagWriter, account);
-			} else if (mechanisms.contains("DIGEST-MD5")) {
-				saslMechanism = new DigestMd5(tagWriter, account, mXmppConnectionService.getRNG());
-			}
-			if (saslMechanism != null) {
-				final JSONObject keys = account.getKeys();
-				try {
-					if (keys.has(Account.PINNED_MECHANISM_KEY) &&
-							keys.getInt(Account.PINNED_MECHANISM_KEY) > saslMechanism.getPriority()) {
-						Log.e(Config.LOGTAG, "Auth failed. Authentication mechanism " + saslMechanism.getMechanism() +
-								" has lower priority (" + String.valueOf(saslMechanism.getPriority()) +
-								") than pinned priority (" + keys.getInt(Account.PINNED_MECHANISM_KEY) +
-								"). Possible downgrade attack?");
-						throw new SecurityException();
-					}
-				} catch (final JSONException e) {
-					Log.d(Config.LOGTAG, "Parse error while checking pinned auth mechanism");
-				}
-				Log.d(Config.LOGTAG, account.getJid().toString() + ": Authenticating with " + saslMechanism.getMechanism());
-				auth.setAttribute("mechanism", saslMechanism.getMechanism());
-				if (!saslMechanism.getClientFirstMessage().isEmpty()) {
-					auth.setContent(saslMechanism.getClientFirstMessage());
-				}
-				tagWriter.writeElement(auth);
-			} else {
-				throw new IncompatibleServerException();
-			}
+			authenticate();
 		} else if (this.streamFeatures.hasChild("sm", "urn:xmpp:sm:" + smVersion) && streamId != null) {
 			if (Config.EXTENDED_SM_LOGGING) {
 				Log.d(Config.LOGTAG,account.getJid().toBareJid()+": resuming after stanza #"+stanzasReceived);
@@ -792,6 +759,45 @@ public class XmppConnection implements Runnable {
 			} else {
 				throw new IncompatibleServerException();
 			}
+		}
+	}
+
+	private void authenticate() throws IOException {
+		final List<String> mechanisms = extractMechanisms(streamFeatures
+				.findChild("mechanisms"));
+		final Element auth = new Element("auth");
+		auth.setAttribute("xmlns", "urn:ietf:params:xml:ns:xmpp-sasl");
+		if (mechanisms.contains("EXTERNAL") && account.getPrivateKeyAlias() != null) {
+			saslMechanism = new External(tagWriter, account, mXmppConnectionService.getRNG());
+		} else if (mechanisms.contains("SCRAM-SHA-1")) {
+			saslMechanism = new ScramSha1(tagWriter, account, mXmppConnectionService.getRNG());
+		} else if (mechanisms.contains("PLAIN")) {
+			saslMechanism = new Plain(tagWriter, account);
+		} else if (mechanisms.contains("DIGEST-MD5")) {
+			saslMechanism = new DigestMd5(tagWriter, account, mXmppConnectionService.getRNG());
+		}
+		if (saslMechanism != null) {
+			final JSONObject keys = account.getKeys();
+			try {
+				if (keys.has(Account.PINNED_MECHANISM_KEY) &&
+						keys.getInt(Account.PINNED_MECHANISM_KEY) > saslMechanism.getPriority()) {
+					Log.e(Config.LOGTAG, "Auth failed. Authentication mechanism " + saslMechanism.getMechanism() +
+							" has lower priority (" + String.valueOf(saslMechanism.getPriority()) +
+							") than pinned priority (" + keys.getInt(Account.PINNED_MECHANISM_KEY) +
+							"). Possible downgrade attack?");
+					throw new SecurityException();
+				}
+			} catch (final JSONException e) {
+				Log.d(Config.LOGTAG, "Parse error while checking pinned auth mechanism");
+			}
+			Log.d(Config.LOGTAG, account.getJid().toString() + ": Authenticating with " + saslMechanism.getMechanism());
+			auth.setAttribute("mechanism", saslMechanism.getMechanism());
+			if (!saslMechanism.getClientFirstMessage().isEmpty()) {
+				auth.setContent(saslMechanism.getClientFirstMessage());
+			}
+			tagWriter.writeElement(auth);
+		} else {
+			throw new IncompatibleServerException();
 		}
 	}
 
