@@ -107,9 +107,6 @@
   <string name="pref_notifications">Meldingen</string>
   <string name="pref_notifications_summary">Melding als een nieuw bericht arriveert</string>
   <string name="pref_vibrate">Trillen</string>
-  <string name="pref_vibrate_summary">Tril ook wanneer een nieuw bericht arriveert</string>
-  <string name="pref_sound">Geluid</string>
-  <string name="pref_sound_summary">Speel beltoon af bij melding</string>
   <string name="pref_notification_grace_period">Uitstelperiode voor meldingen</string>
   <string name="pref_notification_grace_period_summary">Schakel meldingen voor korte tijd uit als er een carbon copy wordt ontvangen</string>
   <string name="pref_advanced_options">Geavanceerd</string>

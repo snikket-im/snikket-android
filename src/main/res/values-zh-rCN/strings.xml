@@ -71,6 +71,8 @@
   <string name="send_failed">传递失败</string>
   <string name="send_rejected">拒绝</string>
   <string name="preparing_image">准备传输图像</string>
+  <string name="preparing_images">正在传输图像</string>
+  <string name="sharing_files_please_wait">正在分享文件，请稍候…</string>
   <string name="action_clear_history">清除历史记录</string>
   <string name="clear_conversation_history">清除会话记录</string>
   <string name="clear_histor_msg">删除该会话中所有信息？\n\n<b>注:</b> 该操作不会影响其他设备或服务器保存的信息。</string>
@@ -105,9 +107,6 @@
   <string name="pref_notifications">通知</string>
   <string name="pref_notifications_summary">收到新消息时通知</string>
   <string name="pref_vibrate">震动</string>
-  <string name="pref_vibrate_summary">收到新消息时震动</string>
-  <string name="pref_sound">声音</string>
-  <string name="pref_sound_summary">收到新消息时的铃声</string>
   <string name="pref_notification_grace_period">通知限期</string>
   <string name="pref_notification_grace_period_summary">接收副本短时间内关闭通知</string>
   <string name="pref_advanced_options">高级</string>
@@ -351,6 +350,7 @@
   <string name="choose_file">选择文件</string>
   <string name="receiving_x_file">接收中 %1$s (已完成 %2$d%%)</string>
   <string name="download_x_file">下载 %s</string>
+  <string name="delete_x_file">删除 %s</string>
   <string name="file">文件</string>
   <string name="open_x_file"> 打开 %s</string>
   <string name="sending_file">发送中 (已完成 %1$d%%)</string>
@@ -505,7 +505,7 @@
   <string name="pref_xa_on_silent_mode_summary">当设备进入静音模式时把资源标识改为不可用</string>
   <string name="pref_treat_vibrate_as_silent">静音模式开启振动</string>
   <string name="pref_treat_vibrate_as_silent_summary">当设备进入振动模式时把资源标识改为不可用</string>
-  <string name="pref_show_connection_options">高级边接设置</string>
+  <string name="pref_show_connection_options">高级连接设置</string>
   <string name="pref_show_connection_options_summary">注册账户时显示主机名和端口</string>
   <string name="hostname_example">xmpp.example.com</string>
   <string name="action_add_account_with_certificate">使用证书添加账户</string>
@@ -526,7 +526,7 @@
   <string name="device_does_not_support_certificates">您的设备不支持设备证书选择！</string>
   <string name="pref_connection_options">连接</string>
   <string name="pref_use_tor">通过 Tor 连接</string>
-  <string name="pref_use_tor_summary">所有连接使用 Tor 网络隧道。需要 Orbot</string>
+  <string name="pref_use_tor_summary">所有连接使用 Tor 网络传输，需要 Orbot</string>
   <string name="account_settings_hostname">主机名</string>
   <string name="account_settings_port">端口</string>
   <string name="hostname_or_onion">服务器 - 或者 .orion 地址</string>
@@ -539,6 +539,7 @@
   <string name="load_more_messages">载入更多消息</string>
   <string name="shared_file_with_x">用 %s 分享文件</string>
   <string name="shared_image_with_x">用 %s 分享图片</string>
+  <string name="shared_images_with_x">图片分享自 %s</string>
   <string name="no_storage_permission">Conversations 需要访问外部存储</string>
   <string name="sync_with_contacts">与联系人同步</string>
   <string name="sync_with_contacts_long">Conversations 会匹配你的 XMPP 花名册与你的联系人，以显示他们的全名和头像。\n\nConversations 只会读取你的联系人并在本地匹配，不会上传到你的服务器。\n\n现在将要询问你是否给予访问你联系人的权限。</string>

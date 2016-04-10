@@ -104,9 +104,6 @@
   <string name="pref_notifications">Varslinger</string>
   <string name="pref_notifications_summary">Varsle når en ny melding ankommer</string>
   <string name="pref_vibrate">Vibrer</string>
-  <string name="pref_vibrate_summary">Vibrer også når ny melding ankommer</string>
-  <string name="pref_sound">Lyd</string>
-  <string name="pref_sound_summary">Spill av ringetone ved varsel</string>
   <string name="pref_notification_grace_period">Stilleperiode</string>
   <string name="pref_notification_grace_period_summary">Deaktiver varslinger for en kort periode etter at en kopi er mottatt</string>
   <string name="pref_never_send_crash">Aldri send feilrettingsrapporter</string>

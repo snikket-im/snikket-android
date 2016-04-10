@@ -95,9 +95,6 @@
   <string name="pref_notifications">الإشعارات</string>
   <string name="pref_notifications_summary">أخبرني عندما تصل رساله جديده</string>
   <string name="pref_vibrate">إعداد الإهتزاز</string>
-  <string name="pref_vibrate_summary">تفعيل الاهتزاز عندما تصل رساله جديده</string>
-  <string name="pref_sound">التبيه الصوتي</string>
-  <string name="pref_sound_summary">سماع صوت عندما تصل رساله</string>
   <string name="pref_never_send_crash">لا ترسل تقارير أخطاء</string>
   <string name="pref_never_send_crash_summary">الغاء ارسال تقارير الأخطاء يقلل من فرص حل المشكلة سريعا فكن متعاون</string>
   <string name="pref_confirm_messages">تأكيد الرسالة</string>

@@ -99,9 +99,6 @@
   <string name="pref_notifications">Upozornenia</string>
   <string name="pref_notifications_summary">Upozorniť pri prijatí novej správy</string>
   <string name="pref_vibrate">Vibrovať</string>
-  <string name="pref_vibrate_summary">Vibrovať pri prijatí novej správy</string>
-  <string name="pref_sound">Zvuk</string>
-  <string name="pref_sound_summary">Prehrať zvuk spolu s upozornením</string>
   <string name="pref_notification_grace_period">Doba na prečítanie upozornenia</string>
   <string name="pref_notification_grace_period_summary">Neupozorňovať krátko po obdržaní kópie správy</string>
   <string name="pref_never_send_crash">Neodosielať detaily o zlyhaní aplikácie</string>

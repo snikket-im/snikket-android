@@ -104,9 +104,6 @@
   <string name="pref_notifications">Thông báo</string>
   <string name="pref_notifications_summary">Thông báo khi có tin nhắn mới</string>
   <string name="pref_vibrate">Rung</string>
-  <string name="pref_vibrate_summary">Rung khi có tin nhắn mới</string>
-  <string name="pref_sound">Âm báo</string>
-  <string name="pref_sound_summary">Chơi nhạc chuông cùng với thông báo</string>
   <string name="pref_notification_grace_period">Thời gian gia hạn thông báo</string>
   <string name="pref_notification_grace_period_summary">Tắt thông báo trong một thời gian ngắn sau khi nhận được bản sao giấy than</string>
   <string name="pref_never_send_crash">Không bao giờ gửi báo cáo dừng chạy</string>

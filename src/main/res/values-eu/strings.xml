@@ -107,9 +107,6 @@
   <string name="pref_notifications">Jakinarazpenak</string>
   <string name="pref_notifications_summary">Mezu berri bat heltzerakoan jakinarazi</string>
   <string name="pref_vibrate">Dardaratu</string>
-  <string name="pref_vibrate_summary">Dardaratu ere mezu berri bat heltzerakoan</string>
-  <string name="pref_sound">Soinua</string>
-  <string name="pref_sound_summary">Dei-tonua jo jakinarazpenarekin</string>
   <string name="pref_notification_grace_period">Jakinarazpenen grazia epea</string>
   <string name="pref_notification_grace_period_summary">Jakinarazpenak denbora labur baterako ezgaitu ikatz-kopia bat jaso ondoren</string>
   <string name="pref_advanced_options">Aurreratua</string>

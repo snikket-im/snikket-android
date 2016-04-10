@@ -105,11 +105,13 @@
   <string name="pref_accept_files_summary">Aceitar automaticamente arquivos menores que...</string>
   <string name="pref_notification_settings">Notificação</string>
   <string name="pref_notifications">Notificações</string>
-  <string name="pref_notifications_summary">Notificar quando uma nova mensagem for recebida</string>
+  <string name="pref_notifications_summary">Notificar ao receber uma nova mensagem</string>
   <string name="pref_vibrate">Vibração</string>
-  <string name="pref_vibrate_summary">Vibrar quando uma nova mensagem for recebida</string>
-  <string name="pref_sound">Som</string>
-  <string name="pref_sound_summary">Som de notificação</string>
+  <string name="pref_vibrate_summary">Vibrar ao receber uma nova mensagem</string>
+  <string name="pref_led">Notificação via LED</string>
+  <string name="pref_led_summary">Piscar a luz de notificação ao receber uma nova mensagem</string>
+  <string name="pref_sound">Toque</string>
+  <string name="pref_sound_summary">Tocar um som ao receber uma nova mensagem</string>
   <string name="pref_notification_grace_period">Tempo de espera da notificação</string>
   <string name="pref_notification_grace_period_summary">Desativar notificações por um curto período após uma copia ser recebida</string>
   <string name="pref_advanced_options">Avançado</string>
@@ -577,4 +579,5 @@
   <string name="no_keys_just_confirm">Você já confia nesse contato. Ao selecionar \'Concluído\', você está apenas confirmando que %s é parte dessa conferência.</string>
   <string name="select_image_and_crop">Selecione e recorte a imagem</string>
   <string name="this_account_is_disabled">Você desabilitou essa conta</string>
+  <string name="security_error_invalid_file_access">Erro de segurança: Acesso inválido ao arquivo</string>
 </resources>

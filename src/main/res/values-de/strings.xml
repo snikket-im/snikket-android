@@ -108,6 +108,8 @@
   <string name="pref_notifications_summary">Benachrichtigen bei Erhalt einer neuen Nachricht</string>
   <string name="pref_vibrate">Vibrieren</string>
   <string name="pref_vibrate_summary">Vibrieren bei Erhalt einer neuen Nachricht</string>
+  <string name="pref_led">LED Benachrichtigung</string>
+  <string name="pref_led_summary">Blinke bei Erhalt einer neuen Nachricht</string>
   <string name="pref_sound">Benachrichtigungston</string>
   <string name="pref_sound_summary">Benachrichtigungston wiedergeben</string>
   <string name="pref_notification_grace_period">Gnadenfrist</string>
@@ -577,4 +579,5 @@
   <string name="no_keys_just_confirm">Du vertraust diesem Kontakt bereits. Durch Auswählen von \"Fertig\" bestätigst du, dass %s Teil dieser Konferenz ist.</string>
   <string name="select_image_and_crop">Bild auswählen und zuschneiden</string>
   <string name="this_account_is_disabled">Du hast dieses Konto deaktiviert</string>
+  <string name="security_error_invalid_file_access">Sicherheitsfehler: Dateizugriff nicht erlaubt</string>
 </resources>

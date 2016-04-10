@@ -105,9 +105,6 @@
   <string name="pref_notifications">Уведомление</string>
   <string name="pref_notifications_summary">Использовать звуковое уведомление когда приходят новые сообщения</string>
   <string name="pref_vibrate">Вибрация</string>
-  <string name="pref_vibrate_summary">Использовать вибрацию когда приходят новые сообщения</string>
-  <string name="pref_sound">Звуковой сигнал</string>
-  <string name="pref_sound_summary">Выберите звуковой сигнал для сообщений</string>
   <string name="pref_notification_grace_period">Отсрочка уведомлений</string>
   <string name="pref_notification_grace_period_summary">Не использовать уведомления, если вы прочитали сообщение на другом устройстве</string>
   <string name="pref_advanced_options">Дополнительно</string>

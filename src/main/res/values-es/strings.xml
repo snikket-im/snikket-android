@@ -107,9 +107,6 @@
   <string name="pref_notifications">Notificaciones</string>
   <string name="pref_notifications_summary">Notificar cuando llega un nuevo mensaje</string>
   <string name="pref_vibrate">Vibrar</string>
-  <string name="pref_vibrate_summary">Vibra cuando llega un nuevo mensaje</string>
-  <string name="pref_sound">Sonido</string>
-  <string name="pref_sound_summary">Reproduce tono con la notificación</string>
   <string name="pref_notification_grace_period">Notificaciones Carbons</string>
   <string name="pref_notification_grace_period_summary">Deshabilita las notificaciones durante un corto periodo de tiempo después de recibir la copia del mensaje carbon</string>
   <string name="pref_advanced_options">Avanzado</string>

@@ -80,9 +80,6 @@
   <string name="pref_notifications">通知</string>
   <string name="pref_notifications_summary">收到新訊息時通知</string>
   <string name="pref_vibrate">震動</string>
-  <string name="pref_vibrate_summary">收到新訊息時震動</string>
-  <string name="pref_sound">聲音</string>
-  <string name="pref_sound_summary">收到新訊息時播放鈴聲</string>
   <string name="pref_notification_grace_period">通知限期</string>
   <string name="pref_notification_grace_period_summary">收到副本後，關閉通知一小段時間</string>
   <string name="pref_never_send_crash">總是不發送故障報告</string>

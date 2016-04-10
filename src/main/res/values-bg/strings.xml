@@ -107,9 +107,11 @@
   <string name="pref_notifications">Известия</string>
   <string name="pref_notifications_summary">Известяване при получаване на ново съобщение</string>
   <string name="pref_vibrate">Вибрация</string>
-  <string name="pref_vibrate_summary">Също така да има и вибрация при получаване на ново съобщение</string>
-  <string name="pref_sound">Звук</string>
-  <string name="pref_sound_summary">Изпълнение на звук с известието</string>
+  <string name="pref_vibrate_summary">Вибриране при получаване на ново съобщение</string>
+  <string name="pref_led">Известие чрез светодиода</string>
+  <string name="pref_led_summary">Мигане на индикаторния светодиод при получаване на ново съобщение</string>
+  <string name="pref_sound">Тон на звънене</string>
+  <string name="pref_sound_summary">Изпълнение на звук при получаване на ново съобщение</string>
   <string name="pref_notification_grace_period">Продължителност на отсрочване на известията</string>
   <string name="pref_notification_grace_period_summary">Изключва известията за кратко, след като бъде получено копие на съобщение</string>
   <string name="pref_advanced_options">Разширени</string>
@@ -577,4 +579,5 @@
   <string name="no_keys_just_confirm">Вие вече имате доверие на този контакт. Избирайки „готово“, Вие просто потвърждавате, че %s е част от тази беседа.</string>
   <string name="select_image_and_crop">Изберете изображение и изрежете</string>
   <string name="this_account_is_disabled">Вие сте деактивирали този профил</string>
+  <string name="security_error_invalid_file_access">Грешка в сигурността: неправилен достъп до файл</string>
 </resources>
