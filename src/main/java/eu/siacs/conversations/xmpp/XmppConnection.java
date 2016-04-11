@@ -1530,13 +1530,15 @@ public class XmppConnection implements Runnable {
 
 		public boolean pep() {
 			synchronized (XmppConnection.this.disco) {
-				ServiceDiscoveryResult info = disco.get(account.getServer());
-				if (info != null && info.hasIdentity("pubsub", "pep")) {
-					return true;
-				} else {
-					info = disco.get(account.getJid().toBareJid());
-					return info != null && info.hasIdentity("pubsub", "pep");
-				}
+				ServiceDiscoveryResult info = disco.get(account.getJid().toBareJid());
+				return info != null && info.hasIdentity("pubsub", "pep");
+			}
+		}
+
+		public boolean pepPersistent() {
+			synchronized (XmppConnection.this.disco) {
+				ServiceDiscoveryResult info = disco.get(account.getJid().toBareJid());
+				return info != null && info.getFeatures().contains("http://jabber.org/protocol/pubsub#persistent-items");
 			}
 		}
 

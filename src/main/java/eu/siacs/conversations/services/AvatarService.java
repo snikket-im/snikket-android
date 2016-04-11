@@ -6,11 +6,13 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.net.Uri;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Bookmark;
 import eu.siacs.conversations.entities.Contact;
@@ -19,8 +21,10 @@ import eu.siacs.conversations.entities.ListItem;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.utils.UIHelper;
+import eu.siacs.conversations.xmpp.OnAdvancedStreamFeaturesLoaded;
+import eu.siacs.conversations.xmpp.XmppConnection;
 
-public class AvatarService {
+public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 
 	private static final int FG_COLOR = 0xFFFAFAFA;
 	private static final int TRANSPARENT = 0x00000000;
@@ -227,8 +231,7 @@ public class AvatarService {
 		if (avatar != null || cachedOnly) {
 			return avatar;
 		}
-		avatar = mXmppConnectionService.getFileBackend().getAvatar(
-				account.getAvatar(), size);
+		avatar = mXmppConnectionService.getFileBackend().getAvatar(account.getAvatar(), size);
 		if (avatar == null) {
 			avatar = get(account.getJid().toBareJid().toString(), size,false);
 		}
@@ -387,10 +390,20 @@ public class AvatarService {
 		return false;
 	}
 
-	private boolean drawTile(Canvas canvas, Bitmap bm, int dstleft, int dsttop,
-						  int dstright, int dstbottom) {
+	private boolean drawTile(Canvas canvas, Bitmap bm, int dstleft, int dsttop, int dstright, int dstbottom) {
 		Rect dst = new Rect(dstleft, dsttop, dstright, dstbottom);
 		canvas.drawBitmap(bm, null, dst, null);
 		return true;
+	}
+
+	@Override
+	public void onAdvancedStreamFeaturesAvailable(Account account) {
+		XmppConnection.Features features = account.getXmppConnection().getFeatures();
+		if (features.pep() && !features.pepPersistent()) {
+			Log.d(Config.LOGTAG,account.getJid().toBareJid()+": has pep but is not persistent");
+			if (account.getAvatar() != null) {
+				mXmppConnectionService.republishAvatarIfNeeded(account);
+			}
+		}
 	}
 }

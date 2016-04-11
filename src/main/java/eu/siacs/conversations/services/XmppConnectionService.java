@@ -840,6 +840,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		connection.setOnBindListener(this.mOnBindListener);
 		connection.setOnMessageAcknowledgeListener(this.mOnMessageAcknowledgedListener);
 		connection.addOnAdvancedStreamFeaturesAvailableListener(this.mMessageArchiveService);
+		connection.addOnAdvancedStreamFeaturesAvailableListener(this.mAvatarService);
 		AxolotlService axolotlService = account.getAxolotlService();
 		if (axolotlService != null) {
 			connection.addOnAdvancedStreamFeaturesAvailableListener(axolotlService);
@@ -2338,9 +2339,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		}
 	}
 
-	public void publishAvatar(final Account account,
-							  final Uri image,
-							  final UiCallback<Avatar> callback) {
+	public void publishAvatar(Account account, Uri image, UiCallback<Avatar> callback) {
 		final Bitmap.CompressFormat format = Config.AVATAR_FORMAT;
 		final int size = Config.AVATAR_SIZE;
 		final Avatar avatar = getFileBackend().getPepAvatar(image, size, format);
@@ -2358,40 +2357,96 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 				callback.error(R.string.error_saving_avatar, avatar);
 				return;
 			}
-			final IqPacket packet = this.mIqGenerator.publishAvatar(avatar);
-			this.sendIqPacket(account, packet, new OnIqPacketReceived() {
+			publishAvatar(account, avatar, callback);
+		} else {
+			callback.error(R.string.error_publish_avatar_converting, null);
+		}
+	}
 
-				@Override
-				public void onIqPacketReceived(Account account, IqPacket result) {
-					if (result.getType() == IqPacket.TYPE.RESULT) {
-						final IqPacket packet = XmppConnectionService.this.mIqGenerator
-								.publishAvatarMetadata(avatar);
-						sendIqPacket(account, packet, new OnIqPacketReceived() {
-							@Override
-							public void onIqPacketReceived(Account account, IqPacket result) {
-								if (result.getType() == IqPacket.TYPE.RESULT) {
-									if (account.setAvatar(avatar.getFilename())) {
-										getAvatarService().clear(account);
-										databaseBackend.updateAccount(account);
-									}
+	public void publishAvatar(Account account, final Avatar avatar, final UiCallback<Avatar> callback) {
+		final IqPacket packet = this.mIqGenerator.publishAvatar(avatar);
+		this.sendIqPacket(account, packet, new OnIqPacketReceived() {
+
+			@Override
+			public void onIqPacketReceived(Account account, IqPacket result) {
+				if (result.getType() == IqPacket.TYPE.RESULT) {
+					final IqPacket packet = XmppConnectionService.this.mIqGenerator
+							.publishAvatarMetadata(avatar);
+					sendIqPacket(account, packet, new OnIqPacketReceived() {
+						@Override
+						public void onIqPacketReceived(Account account, IqPacket result) {
+							if (result.getType() == IqPacket.TYPE.RESULT) {
+								if (account.setAvatar(avatar.getFilename())) {
+									getAvatarService().clear(account);
+									databaseBackend.updateAccount(account);
+								}
+								if (callback != null) {
 									callback.success(avatar);
 								} else {
+									Log.d(Config.LOGTAG,account.getJid().toBareJid()+": published avatar");
+								}
+							} else {
+								if (callback != null) {
 									callback.error(
 											R.string.error_publish_avatar_server_reject,
 											avatar);
 								}
 							}
-						});
-					} else {
+						}
+					});
+				} else {
+					if (callback != null) {
 						callback.error(
 								R.string.error_publish_avatar_server_reject,
 								avatar);
 					}
 				}
-			});
-		} else {
-			callback.error(R.string.error_publish_avatar_converting, null);
+			}
+		});
+	}
+
+	public void republishAvatarIfNeeded(Account account) {
+		if (account.getAxolotlService().isPepBroken()) {
+			Log.d(Config.LOGTAG,account.getJid().toBareJid()+": skipping republication of avatar because pep is broken");
+			return;
 		}
+		IqPacket packet = this.mIqGenerator.retrieveAvatarMetaData(null);
+		this.sendIqPacket(account, packet, new OnIqPacketReceived() {
+
+			private Avatar parseAvatar(IqPacket packet) {
+				Element pubsub = packet.findChild("pubsub", "http://jabber.org/protocol/pubsub");
+				if (pubsub != null) {
+					Element items = pubsub.findChild("items");
+					if (items != null) {
+						return Avatar.parseMetadata(items);
+					}
+				}
+				return null;
+			}
+
+			private boolean errorIsItemNotFound(IqPacket packet) {
+				Element error = packet.findChild("error");
+				return packet.getType() == IqPacket.TYPE.ERROR
+						&& error != null
+						&& error.hasChild("item-not-found");
+			}
+
+			@Override
+			public void onIqPacketReceived(Account account, IqPacket packet) {
+				if (packet.getType() == IqPacket.TYPE.RESULT || errorIsItemNotFound(packet)) {
+					Avatar serverAvatar = parseAvatar(packet);
+					if (serverAvatar == null && account.getAvatar() != null) {
+						Avatar avatar = fileBackend.getStoredPepAvatar(account.getAvatar());
+						if (avatar != null) {
+							Log.d(Config.LOGTAG,account.getJid().toBareJid()+": avatar on server was null. republishing");
+							publishAvatar(account, fileBackend.getStoredPepAvatar(account.getAvatar()), null);
+						} else {
+							Log.e(Config.LOGTAG, account.getJid().toBareJid()+": error rereading avatar");
+						}
+					}
+				}
+			}
+		});
 	}
 
 	public void fetchAvatar(Account account, Avatar avatar) {
@@ -2526,8 +2581,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 			@Override
 			public void onIqPacketReceived(Account account, IqPacket packet) {
 				if (packet.getType() == IqPacket.TYPE.RESULT) {
-					Element pubsub = packet.findChild("pubsub",
-							"http://jabber.org/protocol/pubsub");
+					Element pubsub = packet.findChild("pubsub","http://jabber.org/protocol/pubsub");
 					if (pubsub != null) {
 						Element items = pubsub.findChild("items");
 						if (items != null) {
