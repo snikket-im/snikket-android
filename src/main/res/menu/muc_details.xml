@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
         android:id="@+id/action_edit_subject"
@@ -8,26 +8,33 @@
         android:showAsAction="always"
         android:title="@string/action_edit_subject"/>
     <item
+        android:id="@+id/action_share"
+        android:icon="?attr/icon_share"
+        android:showAsAction="always"
+        android:orderInCategory="15"
+        android:title="@string/share_uri_with"/>
+
+    <item
         android:id="@+id/action_show_qr_code"
-        android:title="@string/show_qr_code"
-        android:showAsAction="never" />
+        android:showAsAction="never"
+        android:title="@string/show_qr_code"/>
     <item
         android:id="@+id/action_save_as_bookmark"
-        android:title="@string/save_as_bookmark"
         android:orderInCategory="80"
-        android:showAsAction="never" />
+        android:showAsAction="never"
+        android:title="@string/save_as_bookmark"/>
     <item
         android:id="@+id/action_delete_bookmark"
-        android:title="@string/delete_bookmark"
         android:orderInCategory="80"
-        android:showAsAction="never" />
-	<item
-		android:id="@+id/action_advanced_mode"
-		android:title="@string/advanced_mode"
-		android:checkable="true"
-		android:checked="false"
-		android:orderInCategory="85"
-		android:showAsAction="never" />
+        android:showAsAction="never"
+        android:title="@string/delete_bookmark"/>
+    <item
+        android:id="@+id/action_advanced_mode"
+        android:checkable="true"
+        android:checked="false"
+        android:orderInCategory="85"
+        android:showAsAction="never"
+        android:title="@string/advanced_mode"/>
     <item
         android:id="@+id/action_accounts"
         android:orderInCategory="90"

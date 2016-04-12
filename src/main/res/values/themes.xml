@@ -30,6 +30,7 @@
         <item name="attr/icon_secure">@drawable/ic_action_secure</item>
         <item name="attr/icon_settings">@drawable/ic_action_settings</item>
         <item name="attr/icon_import_export">@drawable/ic_stat_communication_import_export</item>
+        <item name="attr/icon_share">@drawable/ic_action_share</item>
     </style>
 
     <style name="ConversationsTheme.LargerText" parent="ConversationsTheme">

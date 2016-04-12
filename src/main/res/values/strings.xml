@@ -612,4 +612,6 @@
 	<string name="select_image_and_crop">Select image and crop</string>
 	<string name="this_account_is_disabled">You have disabled this account</string>
 	<string name="security_error_invalid_file_access">Security error: Invalid file access</string>
+	<string name="no_application_to_share_uri">No application found to share URI</string>
+	<string name="share_uri_with">Share URI with…</string>
 </resources>

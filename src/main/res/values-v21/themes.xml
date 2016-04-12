@@ -32,6 +32,7 @@
         <item name="attr/icon_secure">@drawable/ic_lock_open_white_24dp</item>
         <item name="attr/icon_settings">@drawable/ic_settings_grey600_24dp</item>
         <item name="attr/icon_import_export">@drawable/ic_import_export_white_24dp</item>
+        <item name="attr/icon_share">@drawable/ic_share_white_24dp</item>
 
     </style>
 

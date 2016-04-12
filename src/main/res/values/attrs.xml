@@ -24,6 +24,7 @@
     <attr name="icon_search" format="reference"/>
     <attr name="icon_secure" format="reference"/>
     <attr name="icon_settings" format="reference"/>
+    <attr name="icon_share" format="reference"/>
     <attr name="icon_import_export" format="reference"/>
 
 </resources>
