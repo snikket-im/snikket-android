@@ -2456,9 +2456,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	public void fetchAvatar(Account account, final Avatar avatar, final UiCallback<Avatar> callback) {
 		final String KEY = generateFetchKey(account, avatar);
 		synchronized (this.mInProgressAvatarFetches) {
-			if (this.mInProgressAvatarFetches.contains(KEY)) {
-				return;
-			} else {
+			if (!this.mInProgressAvatarFetches.contains(KEY)) {
 				switch (avatar.origin) {
 					case PEP:
 						this.mInProgressAvatarFetches.add(KEY);
