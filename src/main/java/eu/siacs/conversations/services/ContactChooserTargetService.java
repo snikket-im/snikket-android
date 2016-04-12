@@ -52,7 +52,7 @@ public class ContactChooserTargetService extends ChooserTargetService implements
 				final Conversation conversation = conversations.get(i);
 				final String name = conversation.getName();
 				final Icon icon = Icon.createWithBitmap(mXmppConnectionService.getAvatarService().get(conversation, pixel));
-				final float score = (1.0f / MAX_TARGETS) * i;
+				final float score = 1 - (1.0f / MAX_TARGETS) * i;
 				final Bundle extras = new Bundle();
 				extras.putString("uuid", conversation.getUuid());
 				chooserTargets.add(new ChooserTarget(name, icon, score, componentName, extras));
