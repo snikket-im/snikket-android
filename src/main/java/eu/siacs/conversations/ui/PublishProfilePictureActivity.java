@@ -191,7 +191,7 @@ public class PublishProfilePictureActivity extends XmppActivity {
 			Uri source = data.getData();
 			switch (requestCode) {
 				case REQUEST_CHOOSE_FILE_AND_CROP:
-					if (FileBackend.weOwnFile(source)) {
+					if (FileBackend.weOwnFile(this, source)) {
 						Toast.makeText(this,R.string.security_error_invalid_file_access,Toast.LENGTH_SHORT).show();
 						return;
 					}
@@ -204,7 +204,7 @@ public class PublishProfilePictureActivity extends XmppActivity {
 					Crop.of(source, destination).asSquare().withMaxSize(size, size).start(this);
 					break;
 				case REQUEST_CHOOSE_FILE:
-					if (FileBackend.weOwnFile(source)) {
+					if (FileBackend.weOwnFile(this, source)) {
 						Toast.makeText(this,R.string.security_error_invalid_file_access,Toast.LENGTH_SHORT).show();
 						return;
 					}

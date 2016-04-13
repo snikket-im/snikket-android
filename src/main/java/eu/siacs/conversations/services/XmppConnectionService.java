@@ -403,7 +403,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	public void attachFileToConversation(final Conversation conversation,
 										 final Uri uri,
 										 final UiCallback<Message> callback) {
-		if (FileBackend.weOwnFile(uri)) {
+		if (FileBackend.weOwnFile(this, uri)) {
 			Log.d(Config.LOGTAG,"trying to attach file that belonged to us");
 			callback.error(R.string.security_error_invalid_file_access, null);
 			return;
@@ -446,7 +446,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	}
 
 	public void attachImageToConversation(final Conversation conversation, final Uri uri, final UiCallback<Message> callback) {
-		if (FileBackend.weOwnFile(uri)) {
+		if (FileBackend.weOwnFile(this, uri)) {
 			Log.d(Config.LOGTAG,"trying to attach file that belonged to us");
 			callback.error(R.string.security_error_invalid_file_access, null);
 			return;
