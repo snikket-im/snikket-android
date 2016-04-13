@@ -469,6 +469,9 @@ public class MucOptions {
 	}
 
 	public Jid getTrueCounterpart(String name) {
+		if (name.equals(getSelf().getName())) {
+			return account.getJid().toBareJid();
+		}
 		User user = findUser(name);
 		return user == null ? null : user.getJid();
 	}
