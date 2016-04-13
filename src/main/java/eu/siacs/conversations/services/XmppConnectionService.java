@@ -801,7 +801,6 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 						disconnect(account, false);
 					}
 				}).start();
-				cancelWakeUpCall(account.getUuid().hashCode());
 			}
 		}
 		Log.d(Config.LOGTAG, "good bye");
