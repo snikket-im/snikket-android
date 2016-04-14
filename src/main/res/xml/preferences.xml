@@ -15,20 +15,6 @@
             android:key="resource"
             android:summary="@string/pref_xmpp_resource_summary"
             android:title="@string/pref_xmpp_resource"/>
-        <ListPreference
-            android:defaultValue="524288"
-            android:entries="@array/filesizes"
-            android:entryValues="@array/filesizes_values"
-            android:key="auto_accept_file_size"
-            android:summary="@string/pref_accept_files_summary"
-            android:title="@string/pref_accept_files"/>
-        <ListPreference
-            android:defaultValue="auto"
-            android:entries="@array/picture_compression_entries"
-            android:entryValues="@array/picture_compression_values"
-            android:key="picture_compression"
-            android:summary="@string/pref_picture_compression_summary"
-            android:title="@string/pref_picture_compression"/>
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="confirm_messages"
@@ -92,7 +78,28 @@
             android:ringtoneType="notification"
             android:summary="@string/pref_sound_summary"
             android:title="@string/pref_sound"/>
-
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:title="@string/pref_attachments">
+        <ListPreference
+            android:defaultValue="524288"
+            android:entries="@array/filesizes"
+            android:entryValues="@array/filesizes_values"
+            android:key="auto_accept_file_size"
+            android:summary="@string/pref_accept_files_summary"
+            android:title="@string/pref_accept_files"/>
+        <ListPreference
+            android:defaultValue="auto"
+            android:entries="@array/picture_compression_entries"
+            android:entryValues="@array/picture_compression_values"
+            android:key="picture_compression"
+            android:summary="@string/pref_picture_compression_summary"
+            android:title="@string/pref_picture_compression"/>
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="return_to_previous"
+            android:title="@string/pref_return_to_previous"
+            android:summary="@string/pref_return_to_previous_summary"/>
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/pref_ui_options">
         <CheckBoxPreference

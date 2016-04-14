@@ -32,6 +32,8 @@ import eu.siacs.conversations.xmpp.jid.Jid;
 
 public class ShareWithActivity extends XmppActivity implements XmppConnectionService.OnConversationUpdate {
 
+	private boolean mReturnToPrevious = false;
+
 	@Override
 	public void onConversationUpdate() {
 		refreshUi();
@@ -80,7 +82,7 @@ public class ShareWithActivity extends XmppActivity implements XmppConnectionSer
 							resId = R.string.shared_file_with_x;
 						}
 						replaceToast(getString(resId, message.getConversation().getName()));
-						if (share.uuid != null) {
+						if (mReturnToPrevious) {
 							finish();
 						} else {
 							switchToConversation(message.getConversation());
@@ -181,6 +183,7 @@ public class ShareWithActivity extends XmppActivity implements XmppConnectionSer
 		if (intent == null) {
 			return;
 		}
+		this.mReturnToPrevious = getPreferences().getBoolean("return_to_previous", false);
 		final String type = intent.getType();
 		final String action = intent.getAction();
 		Log.d(Config.LOGTAG, "action: "+action+ ", type:"+type);
@@ -305,7 +308,27 @@ public class ShareWithActivity extends XmppActivity implements XmppConnectionSer
 				selectPresence(conversation, callback);
 			}
 		} else {
-			switchToConversation(conversation, this.share.text, true);
+			if (mReturnToPrevious && this.share.text != null && !this.share.text.isEmpty() ) {
+				final OnPresenceSelected callback = new OnPresenceSelected() {
+					@Override
+					public void onPresenceSelected() {
+						Message message = new Message(conversation,share.text, conversation.getNextEncryption());
+						if (conversation.getNextEncryption() == Message.ENCRYPTION_OTR) {
+							message.setCounterpart(conversation.getNextCounterpart());
+						}
+						xmppConnectionService.sendMessage(message);
+						replaceToast(getString(R.string.shared_text_with_x, conversation.getName()));
+						finish();
+					}
+				};
+				if (conversation.getNextEncryption() == Message.ENCRYPTION_OTR) {
+					selectPresence(conversation, callback);
+				} else {
+					callback.onPresenceSelected();
+				}
+			} else {
+				switchToConversation(conversation, this.share.text, true);
+			}
 		}
 
 	}

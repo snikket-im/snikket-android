@@ -104,6 +104,9 @@
 	<string name="pref_xmpp_resource_summary">The name this client identifies itself with</string>
 	<string name="pref_accept_files">Accept files</string>
 	<string name="pref_accept_files_summary">Automatically accept files smaller than…</string>
+	<string name="pref_attachments">Attachments</string>
+	<string name="pref_return_to_previous">Quick Sharing</string>
+	<string name="pref_return_to_previous_summary">Immediately return to previous activity instead of opening the conversation after sharing something</string>
 	<string name="pref_notification_settings">Notification</string>
 	<string name="pref_notifications">Notifications</string>
 	<string name="pref_notifications_summary">Notify when a new message arrives</string>
@@ -580,6 +583,7 @@
 	<string name="shared_file_with_x">Shared file with %s</string>
 	<string name="shared_image_with_x">Shared image with %s</string>
 	<string name="shared_images_with_x">Shared images with %s</string>
+	<string name="shared_text_with_x">Shared text with %s</string>
 	<string name="no_storage_permission">Conversations need access to external storage</string>
 	<string name="sync_with_contacts">Synchronize with contacts</string>
 	<string name="sync_with_contacts_long">Conversations wants to match your XMPP roster with your contacts to show their full names and avatars.\n\nConversations will only read your contacts and match them locally without uploading them to your server.\n\nYou will now be asked to grant permission to access your contacts.</string>
