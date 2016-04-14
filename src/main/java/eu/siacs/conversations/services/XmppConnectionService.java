@@ -509,7 +509,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 					}
 					return START_STICKY;
 				case Intent.ACTION_SHUTDOWN:
-					logoutAndSave();
+					logoutAndSave(true);
 					return START_NOT_STICKY;
 				case ACTION_CLEAR_NOTIFICATION:
 					mNotificationService.clear();
@@ -787,12 +787,16 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	public void onTaskRemoved(final Intent rootIntent) {
 		super.onTaskRemoved(rootIntent);
 		if (!getPreferences().getBoolean("keep_foreground_service", false)) {
-			this.logoutAndSave();
+			this.logoutAndSave(false);
 		}
 	}
 
-	private void logoutAndSave() {
+	private void logoutAndSave(boolean stop) {
+		int activeAccounts = 0;
 		for (final Account account : accounts) {
+			if (account.getStatus() != Account.State.DISABLED) {
+				activeAccounts++;
+			}
 			databaseBackend.writeRoster(account.getRoster());
 			if (account.getXmppConnection() != null) {
 				new Thread(new Runnable() {
@@ -803,8 +807,10 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 				}).start();
 			}
 		}
-		Log.d(Config.LOGTAG, "good bye");
-		stopSelf();
+		if (stop || activeAccounts == 0) {
+			Log.d(Config.LOGTAG, "good bye");
+			stopSelf();
+		}
 	}
 
 	private void cancelWakeUpCall(int requestCode) {
