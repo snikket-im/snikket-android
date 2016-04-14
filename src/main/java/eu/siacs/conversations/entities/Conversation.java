@@ -809,7 +809,7 @@ public class Conversation extends AbstractEntity implements Blockable {
 	}
 
 	public boolean alwaysNotify() {
-		return mode == MODE_SINGLE || getBooleanAttribute(ATTRIBUTE_ALWAYS_NOTIFY, Config.ALWAYS_NOTIFY_BY_DEFAULT || isPnNA());
+		return mode == MODE_SINGLE || getBooleanAttribute(ATTRIBUTE_ALWAYS_NOTIFY, true);
 	}
 
 	public boolean setAttribute(String key, String value) {
