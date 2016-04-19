@@ -1125,6 +1125,8 @@ public class ConversationActivity extends XmppActivity
 			if (mRedirected.compareAndSet(false, true)) {
 				if (Config.X509_VERIFICATION) {
 					startActivity(new Intent(this, ManageAccountActivity.class));
+				} else if (Config.MAGIC_CREATE_DOMAIN != null) {
+					startActivity(new Intent(this, WelcomeActivity.class));
 				} else {
 					startActivity(new Intent(this, EditAccountActivity.class));
 				}
@@ -1132,9 +1134,14 @@ public class ConversationActivity extends XmppActivity
 			}
 		} else if (conversationList.size() <= 0) {
 			if (mRedirected.compareAndSet(false, true)) {
-				Intent intent = new Intent(this, StartConversationActivity.class);
-				intent.putExtra("init", true);
-				startActivity(intent);
+				Account pendingAccount = xmppConnectionService.getPendingAccount();
+				if (pendingAccount == null) {
+					Intent intent = new Intent(this, StartConversationActivity.class);
+					intent.putExtra("init", true);
+					startActivity(intent);
+				} else {
+					switchToAccount(pendingAccount, true);
+				}
 				finish();
 			}
 		} else if (getIntent() != null && VIEW_CONVERSATION.equals(getIntent().getType())) {

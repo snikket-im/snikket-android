@@ -618,4 +618,11 @@
 	<string name="security_error_invalid_file_access">Security error: Invalid file access</string>
 	<string name="no_application_to_share_uri">No application found to share URI</string>
 	<string name="share_uri_with">Share URI with…</string>
+	<string name="welcome_header">Join the Conversation</string>
+	<string name="welcome_text">XMPP is a provider independent protocol. You can use this client with what ever XMPP server you choose.\nHowever for your convenience we made it easy to create an account on conversations.im; a provider specially suited for the use with Conversations.</string>
+	<string name="magic_create_text">We will guide you through the process of creating an account on conversations.im.\nWhen picking conversations.im as a provider you will be able to communicate with users of other providers by giving them your full Jabber ID.</string>
+	<string name="your_full_jid_will_be">Your full Jabber ID will be: %s</string>
+	<string name="create_account">Create Account</string>
+	<string name="use_own_provider">Use my own provider</string>
+	<string name="pick_your_username">Pick your username</string>
 </resources>

@@ -78,6 +78,16 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".ui.WelcomeActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTask"/>
+        <activity
+            android:name=".ui.MagicCreateActivity"
+            android:label="@string/create_account"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTask"/>
+        <activity
             android:name=".ui.SettingsActivity"
             android:label="@string/title_activity_settings"/>
         <activity
@@ -139,7 +149,7 @@
             </intent-filter>
             <meta-data
                 android:name="android.service.chooser.chooser_target_service"
-                android:value=".services.ContactChooserTargetService" />
+                android:value=".services.ContactChooserTargetService"/>
         </activity>
         <activity
             android:name=".ui.TrustKeysActivity"
@@ -157,12 +167,12 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="eu.siacs.conversations.ui.SettingsActivity"/>
         </activity>
-        <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
+        <activity android:name="com.soundcloud.android.crop.CropImageActivity"/>
         <service android:name=".services.ExportLogsService"/>
         <service android:name=".services.ContactChooserTargetService"
                  android:permission="android.permission.BIND_CHOOSER_TARGET_SERVICE">
             <intent-filter>
-                <action android:name="android.service.chooser.ChooserTargetService" />
+                <action android:name="android.service.chooser.ChooserTargetService"/>
             </intent-filter>
         </service>
     </application>

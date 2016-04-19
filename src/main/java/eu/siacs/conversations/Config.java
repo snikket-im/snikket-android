@@ -38,6 +38,7 @@ public final class Config {
 
 
 	public static final String DOMAIN_LOCK = null; //only allow account creation for this domain
+	public static final String MAGIC_CREATE_DOMAIN = null;
 	public static final String CONFERENCE_DOMAIN_LOCK = null; //only allow conference creation for this domain
 	public static final boolean LOCK_DOMAINS_IN_CONVERSATIONS = false; //only add contacts and conferences for own domains
 

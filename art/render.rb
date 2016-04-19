@@ -12,6 +12,7 @@ resolutions = {
 
 images = {
 	'conversations_baloon.svg' => ['ic_launcher', 48],
+   'conversations_baloon.svg' => ['main_logo', 200],
 	'conversations_mono.svg' => ['ic_notification', 24],
 	'ic_received_indicator.svg' => ['ic_received_indicator', 12],
 	'ic_send_text_offline.svg' => ['ic_send_text_offline', 36],
