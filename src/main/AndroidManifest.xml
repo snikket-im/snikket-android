@@ -88,6 +88,12 @@
             android:screenOrientation="portrait"
             android:launchMode="singleTask"/>
         <activity
+            android:name=".ui.SetPresenceActivity"
+            android:label="@string/change_presence"
+            android:configChanges="orientation|screenSize"
+            android:windowSoftInputMode="stateHidden|adjustResize"
+            android:launchMode="singleTask"/>
+        <activity
             android:name=".ui.SettingsActivity"
             android:label="@string/title_activity_settings"/>
         <activity

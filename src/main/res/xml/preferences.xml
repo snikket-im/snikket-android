@@ -193,14 +193,22 @@
             <PreferenceCategory android:title="@string/pref_presence_settings">
                 <CheckBoxPreference
                     android:defaultValue="false"
+                    android:key="manually_change_presence"
+                    android:title="@string/pref_manually_change_presence"
+                    android:summary="@string/pref_manually_change_presence_summary"
+                    android:disableDependentsState="true"/>
+                <CheckBoxPreference
+                    android:defaultValue="false"
                     android:key="away_when_screen_off"
                     android:summary="@string/pref_away_when_screen_off_summary"
-                    android:title="@string/pref_away_when_screen_off"/>
+                    android:title="@string/pref_away_when_screen_off"
+                    android:dependency="manually_change_presence"/>
                 <CheckBoxPreference
                     android:defaultValue="false"
                     android:key="xa_on_silent_mode"
                     android:summary="@string/pref_xa_on_silent_mode_summary"
-                    android:title="@string/pref_xa_on_silent_mode"/>
+                    android:title="@string/pref_xa_on_silent_mode"
+                    android:dependency="manually_change_presence"/>
                 <CheckBoxPreference
                     android:dependency="xa_on_silent_mode"
                     android:defaultValue="false"

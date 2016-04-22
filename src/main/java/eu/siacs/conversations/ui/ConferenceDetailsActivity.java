@@ -643,17 +643,6 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 		}
 	}
 
-	@SuppressWarnings("deprecation")
-	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-	private void setListItemBackgroundOnView(View view) {
-		int sdk = android.os.Build.VERSION.SDK_INT;
-		if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
-			view.setBackgroundDrawable(getResources().getDrawable(R.drawable.greybackground));
-		} else {
-			view.setBackground(getResources().getDrawable(R.drawable.greybackground));
-		}
-	}
-
 	private void viewPgpKey(User user) {
 		PgpEngine pgp = xmppConnectionService.getPgpEngine();
 		if (pgp != null) {

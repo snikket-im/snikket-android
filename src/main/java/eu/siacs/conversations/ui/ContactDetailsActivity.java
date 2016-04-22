@@ -439,7 +439,7 @@ public class ContactDetailsActivity extends XmppActivity implements OnAccountUpd
 			keys.setVisibility(View.GONE);
 		}
 
-		List<ListItem.Tag> tagList = contact.getTags();
+		List<ListItem.Tag> tagList = contact.getTags(this);
 		if (tagList.size() == 0 || !this.showDynamicTags) {
 			tags.setVisibility(View.GONE);
 		} else {

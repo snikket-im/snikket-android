@@ -43,6 +43,8 @@ public class Account extends AbstractEntity {
 	public static final String DISPLAY_NAME = "display_name";
 	public static final String HOSTNAME = "hostname";
 	public static final String PORT = "port";
+	public static final String STATUS = "status";
+	public static final String STATUS_MESSAGE = "status_message";
 
 	public static final String PINNED_MECHANISM_KEY = "pinned_mechanism";
 
@@ -168,15 +170,18 @@ public class Account extends AbstractEntity {
 	private final Roster roster = new Roster(this);
 	private List<Bookmark> bookmarks = new CopyOnWriteArrayList<>();
 	private final Collection<Jid> blocklist = new CopyOnWriteArraySet<>();
+	private Presence.Status presenceStatus = Presence.Status.ONLINE;
+	private String presenceStatusMessage = null;
 
 	public Account(final Jid jid, final String password) {
 		this(java.util.UUID.randomUUID().toString(), jid,
-				password, 0, null, "", null, null, null, 5222);
+				password, 0, null, "", null, null, null, 5222, Presence.Status.ONLINE, null);
 	}
 
 	private Account(final String uuid, final Jid jid,
-			final String password, final int options, final String rosterVersion, final String keys,
-			final String avatar, String displayName, String hostname, int port) {
+					final String password, final int options, final String rosterVersion, final String keys,
+					final String avatar, String displayName, String hostname, int port,
+					final Presence.Status status, String statusMessage) {
 		this.uuid = uuid;
 		this.jid = jid;
 		if (jid.isBareJid()) {
@@ -194,6 +199,8 @@ public class Account extends AbstractEntity {
 		this.displayName = displayName;
 		this.hostname = hostname;
 		this.port = port;
+		this.presenceStatus = status;
+		this.presenceStatusMessage = statusMessage;
 	}
 
 	public static Account fromCursor(final Cursor cursor) {
@@ -212,7 +219,9 @@ public class Account extends AbstractEntity {
 				cursor.getString(cursor.getColumnIndex(AVATAR)),
 				cursor.getString(cursor.getColumnIndex(DISPLAY_NAME)),
 				cursor.getString(cursor.getColumnIndex(HOSTNAME)),
-				cursor.getInt(cursor.getColumnIndex(PORT)));
+				cursor.getInt(cursor.getColumnIndex(PORT)),
+				Presence.Status.fromShowString(cursor.getString(cursor.getColumnIndex(STATUS))),
+				cursor.getString(cursor.getColumnIndex(STATUS_MESSAGE)));
 	}
 
 	public boolean isOptionSet(final int option) {
@@ -287,6 +296,22 @@ public class Account extends AbstractEntity {
 		return getXmppConnection() != null && getStatus().isError() && getXmppConnection().getAttempt() >= 3;
 	}
 
+	public void setPresenceStatus(Presence.Status status) {
+		this.presenceStatus = status;
+	}
+
+	public Presence.Status getPresenceStatus() {
+		return this.presenceStatus;
+	}
+
+	public void setPresenceStatusMessage(String message) {
+		this.presenceStatusMessage = message;
+	}
+
+	public String getPresenceStatusMessage() {
+		return this.presenceStatusMessage;
+	}
+
 	public String getResource() {
 		return jid.getResourcepart();
 	}
@@ -347,6 +372,8 @@ public class Account extends AbstractEntity {
 		values.put(DISPLAY_NAME, displayName);
 		values.put(HOSTNAME, hostname);
 		values.put(PORT, port);
+		values.put(STATUS, presenceStatus.toShowString());
+		values.put(STATUS_MESSAGE, presenceStatusMessage);
 		return values;
 	}
 

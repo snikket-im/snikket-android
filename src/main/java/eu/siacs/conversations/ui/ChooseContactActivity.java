@@ -144,7 +144,7 @@ public class ChooseContactActivity extends AbstractSearchableListItemActivity {
 				for (final Contact contact : account.getRoster().getContacts()) {
 					if (contact.showInRoster() &&
 							!filterContacts.contains(contact.getJid().toBareJid().toString())
-							&& contact.match(needle)) {
+							&& contact.match(this, needle)) {
 						getListItems().add(contact);
 					}
 				}

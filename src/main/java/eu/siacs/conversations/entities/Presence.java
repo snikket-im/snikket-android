@@ -17,8 +17,26 @@ public class Presence implements Comparable {
 				case XA:   return "xa";
 				case DND:  return "dnd";
 			}
-
 			return null;
+		}
+
+		public static Status fromShowString(String show) {
+			if (show == null) {
+				return ONLINE;
+			} else {
+				switch (show.toLowerCase(Locale.US)) {
+					case "away":
+						return AWAY;
+					case "xa":
+						return XA;
+					case "dnd":
+						return DND;
+					case "chat":
+						return CHAT;
+					default:
+						return ONLINE;
+				}
+			}
 		}
 	}
 
@@ -26,32 +44,19 @@ public class Presence implements Comparable {
 	protected ServiceDiscoveryResult disco;
 	protected final String ver;
 	protected final String hash;
+	protected final String message;
 
-	private Presence(Status status, String ver, String hash) {
+	private Presence(Status status, String ver, String hash, String message) {
 		this.status = status;
 		this.ver = ver;
 		this.hash = hash;
+		this.message = message;
 	}
 
-	public static Presence parse(String show, Element caps) {
+	public static Presence parse(String show, Element caps, String message) {
 		final String hash = caps == null ? null : caps.getAttribute("hash");
 		final String ver = caps == null ? null : caps.getAttribute("ver");
-		if (show == null) {
-			return new Presence(Status.ONLINE, ver, hash);
-		} else {
-			switch (show.toLowerCase(Locale.US)) {
-				case "away":
-					return new Presence(Status.AWAY, ver, hash);
-				case "xa":
-					return new Presence(Status.XA, ver, hash);
-				case "dnd":
-					return new Presence(Status.DND, ver, hash);
-				case "chat":
-					return new Presence(Status.CHAT, ver, hash);
-				default:
-					return new Presence(Status.ONLINE, ver, hash);
-			}
-		}
+		return new Presence(Status.fromShowString(show), ver, hash, message);
 	}
 
 	public int compareTo(Object other) {

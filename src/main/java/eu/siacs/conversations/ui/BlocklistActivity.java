@@ -49,7 +49,7 @@ public class BlocklistActivity extends AbstractSearchableListItemActivity implem
 		if (account != null) {
 			for (final Jid jid : account.getBlocklist()) {
 				final Contact contact = account.getRoster().getContact(jid);
-				if (contact.match(needle) && contact.isBlocked()) {
+				if (contact.match(this, needle) && contact.isBlocked()) {
 					getListItems().add(contact);
 				}
 			}

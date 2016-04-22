@@ -41,6 +41,7 @@ import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
+import eu.siacs.conversations.entities.PresenceTemplate;
 import eu.siacs.conversations.entities.Roster;
 import eu.siacs.conversations.entities.ServiceDiscoveryResult;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
@@ -51,7 +52,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 	private static DatabaseBackend instance = null;
 
 	private static final String DATABASE_NAME = "history";
-	private static final int DATABASE_VERSION = 25;
+	private static final int DATABASE_VERSION = 26;
 
 	private static String CREATE_CONTATCS_STATEMENT = "create table "
 			+ Contact.TABLENAME + "(" + Contact.ACCOUNT + " TEXT, "
@@ -72,6 +73,14 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 			+ ServiceDiscoveryResult.RESULT + " TEXT, "
 			+ "UNIQUE(" + ServiceDiscoveryResult.HASH + ", "
 			+ ServiceDiscoveryResult.VER + ") ON CONFLICT REPLACE);";
+
+	private static String CREATE_PRESENCE_TEMPLATES_STATEMENT = "CREATE TABLE "
+			+ PresenceTemplate.TABELNAME + "("
+			+ PresenceTemplate.UUID + " TEXT, "
+			+ PresenceTemplate.LAST_USED + " NUMBER,"
+			+ PresenceTemplate.MESSAGE + " TEXT,"
+			+ PresenceTemplate.STATUS + " TEXT,"
+			+ "UNIQUE("+PresenceTemplate.MESSAGE + "," +PresenceTemplate.STATUS+") ON CONFLICT REPLACE);";
 
 	private static String CREATE_PREKEYS_STATEMENT = "CREATE TABLE "
 			+ SQLiteAxolotlStore.PREKEY_TABLENAME + "("
@@ -175,6 +184,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		db.execSQL(CREATE_PREKEYS_STATEMENT);
 		db.execSQL(CREATE_SIGNED_PREKEYS_STATEMENT);
 		db.execSQL(CREATE_IDENTITIES_STATEMENT);
+		db.execSQL(CREATE_PRESENCE_TEMPLATES_STATEMENT);
 	}
 
 	@Override
@@ -331,6 +341,10 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 			db.execSQL("ALTER TABLE " + Account.TABLENAME + " ADD COLUMN " + Account.HOSTNAME + " TEXT");
 			db.execSQL("ALTER TABLE " + Account.TABLENAME + " ADD COLUMN " + Account.PORT + " NUMBER DEFAULT 5222");
 		}
+		if (oldVersion < 26 && newVersion >= 26) {
+			db.execSQL("ALTER TABLE " + Account.TABLENAME + " ADD COLUMN " + Account.STATUS + " TEXT");
+			db.execSQL("ALTER TABLE " + Account.TABLENAME + " ADD COLUMN " + Account.STATUS_MESSAGE + " TEXT");
+		}
 		/* Any migrations that alter the Account table need to happen BEFORE this migration, as it
 		 * depends on account de-serialization.
 		 */
@@ -380,6 +394,10 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		if (oldVersion < 25 && newVersion >= 25) {
 			db.execSQL("ALTER TABLE " + Message.TABLENAME + " ADD COLUMN " + Message.OOB + " INTEGER");
 		}
+
+		if (oldVersion <  26 && newVersion >= 26) {
+			db.execSQL(CREATE_PRESENCE_TEMPLATES_STATEMENT);
+		}
 	}
 
 	public static synchronized DatabaseBackend getInstance(Context context) {
@@ -428,6 +446,30 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 
 		cursor.close();
 		return result;
+	}
+
+	public void insertPresenceTemplate(PresenceTemplate template) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.insert(PresenceTemplate.TABELNAME, null, template.getContentValues());
+	}
+
+	public List<PresenceTemplate> getPresenceTemplates() {
+		ArrayList<PresenceTemplate> templates = new ArrayList<>();
+		SQLiteDatabase db = this.getReadableDatabase();
+		Cursor cursor = db.query(PresenceTemplate.TABELNAME,null,null,null,null,null,PresenceTemplate.LAST_USED+" desc");
+		while (cursor.moveToNext()) {
+			templates.add(PresenceTemplate.fromCursor(cursor));
+		}
+		cursor.close();
+		return templates;
+	}
+
+	public void deletePresenceTemplate(PresenceTemplate template) {
+		Log.d(Config.LOGTAG,"deleting presence template with uuid "+template.getUuid());
+		SQLiteDatabase db = this.getWritableDatabase();
+		String where = PresenceTemplate.UUID+"=?";
+		String[] whereArgs = {template.getUuid()};
+		db.delete(PresenceTemplate.TABELNAME,where,whereArgs);
 	}
 
 	public CopyOnWriteArrayList<Conversation> getConversations(int status) {

@@ -536,6 +536,17 @@ public abstract class XmppActivity extends Activity {
 		}
 	}
 
+	@SuppressWarnings("deprecation")
+	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+	protected void setListItemBackgroundOnView(View view) {
+		int sdk = android.os.Build.VERSION.SDK_INT;
+		if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+			view.setBackgroundDrawable(getResources().getDrawable(R.drawable.greybackground));
+		} else {
+			view.setBackground(getResources().getDrawable(R.drawable.greybackground));
+		}
+	}
+
 	protected void choosePgpSignId(Account account) {
 		xmppConnectionService.getPgpEngine().chooseKey(account, new UiCallback<Account>() {
 			@Override
@@ -1004,6 +1015,10 @@ public abstract class XmppActivity extends Activity {
 
 	protected boolean neverCompressPictures() {
 		return getPreferences().getString("picture_compression", "auto").equals("never");
+	}
+
+	protected boolean manuallyChangePresence() {
+		return getPreferences().getBoolean("manually_change_presence", false);
 	}
 
 	protected void unregisterNdefPushMessageCallback() {

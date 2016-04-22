@@ -75,4 +75,12 @@
 		<item>@string/contacts</item>
 		<item>@string/always</item>
 	</string-array>
+
+	<string-array name="presence_show_options">
+		<item>@string/presence_chat</item>
+		<item>@string/presence_online</item>
+		<item>@string/presence_away</item>
+		<item>@string/presence_xa</item>
+		<item>@string/presence_dnd</item>
+	</string-array>
 </resources>

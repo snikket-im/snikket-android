@@ -1,6 +1,7 @@
 package eu.siacs.conversations.entities;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 
 import org.json.JSONArray;
@@ -141,25 +142,14 @@ public class Contact implements ListItem, Blockable {
 	}
 
 	@Override
-	public List<Tag> getTags() {
+	public List<Tag> getTags(Context context) {
 		final ArrayList<Tag> tags = new ArrayList<>();
 		for (final String group : getGroups()) {
 			tags.add(new Tag(group, UIHelper.getColorForName(group)));
 		}
-		switch (getMostAvailableStatus()) {
-			case CHAT:
-			case ONLINE:
-				tags.add(new Tag("online", 0xff259b24));
-				break;
-			case AWAY:
-				tags.add(new Tag("away", 0xffff9800));
-				break;
-			case XA:
-				tags.add(new Tag("not available", 0xfff44336));
-				break;
-			case DND:
-				tags.add(new Tag("dnd", 0xfff44336));
-				break;
+		Presence.Status status = getMostAvailableStatus();
+		if (status != Presence.Status.OFFLINE) {
+			tags.add(UIHelper.getTagForStatus(context, status));
 		}
 		if (isBlocked()) {
 			tags.add(new Tag("blocked", 0xff2e2f3b));
@@ -167,7 +157,7 @@ public class Contact implements ListItem, Blockable {
 		return tags;
 	}
 
-	public boolean match(String needle) {
+	public boolean match(Context context, String needle) {
 		if (needle == null || needle.isEmpty()) {
 			return true;
 		}
@@ -175,7 +165,7 @@ public class Contact implements ListItem, Blockable {
 		String[] parts = needle.split("\\s+");
 		if (parts.length > 1) {
 			for(int i = 0; i < parts.length; ++i) {
-				if (!match(parts[i])) {
+				if (!match(context, parts[i])) {
 					return false;
 				}
 			}
@@ -183,13 +173,13 @@ public class Contact implements ListItem, Blockable {
 		} else {
 			return jid.toString().contains(needle) ||
 				getDisplayName().toLowerCase(Locale.US).contains(needle) ||
-				matchInTag(needle);
+				matchInTag(context, needle);
 		}
 	}
 
-	private boolean matchInTag(String needle) {
+	private boolean matchInTag(Context context, String needle) {
 		needle = needle.toLowerCase(Locale.US);
-		for (Tag tag : getTags()) {
+		for (Tag tag : getTags(context)) {
 			if (tag.getName().toLowerCase(Locale.US).contains(needle)) {
 				return true;
 			}

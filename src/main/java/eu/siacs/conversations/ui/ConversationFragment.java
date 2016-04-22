@@ -474,9 +474,15 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 					}
 				} else {
 					Account account = message.getConversation().getAccount();
-					Intent intent = new Intent(activity, EditAccountActivity.class);
-					intent.putExtra("jid", account.getJid().toBareJid().toString());
-					intent.putExtra("fingerprint", message.getFingerprint());
+					Intent intent;
+					if (activity.manuallyChangePresence()) {
+						intent = new Intent(activity, SetPresenceActivity.class);
+						intent.putExtra(SetPresenceActivity.EXTRA_ACCOUNT, account.getJid().toBareJid().toString());
+					} else {
+						intent = new Intent(activity, EditAccountActivity.class);
+						intent.putExtra("jid", account.getJid().toBareJid().toString());
+						intent.putExtra("fingerprint", message.getFingerprint());
+					}
 					startActivity(intent);
 				}
 			}

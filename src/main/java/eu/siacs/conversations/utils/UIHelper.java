@@ -14,7 +14,9 @@ import java.util.Locale;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
+import eu.siacs.conversations.entities.ListItem;
 import eu.siacs.conversations.entities.Message;
+import eu.siacs.conversations.entities.Presence;
 import eu.siacs.conversations.entities.Transferable;
 import eu.siacs.conversations.xmpp.jid.Jid;
 
@@ -266,5 +268,20 @@ public class UIHelper {
 		String body = message.getBody() == null ? null : message.getBody().trim().toLowerCase(Locale.getDefault());
 		body = body.replace("?","").replace("¿","");
 		return LOCATION_QUESTIONS.contains(body);
+	}
+
+	public static ListItem.Tag getTagForStatus(Context context, Presence.Status status) {
+		switch (status) {
+			case CHAT:
+				return new ListItem.Tag(context.getString(R.string.presence_chat), 0xff259b24);
+			case AWAY:
+				return new ListItem.Tag(context.getString(R.string.presence_away), 0xffff9800);
+			case XA:
+				return new ListItem.Tag(context.getString(R.string.presence_xa), 0xfff44336);
+			case DND:
+				return new ListItem.Tag(context.getString(R.string.presence_dnd), 0xfff44336);
+			default:
+				return new ListItem.Tag(context.getString(R.string.presence_online), 0xff259b24);
+		}
 	}
 }

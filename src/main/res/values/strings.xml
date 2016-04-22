@@ -625,4 +625,14 @@
 	<string name="create_account">Create Account</string>
 	<string name="use_own_provider">Use my own provider</string>
 	<string name="pick_your_username">Pick your username</string>
+	<string name="pref_manually_change_presence">Manually change presence</string>
+	<string name="pref_manually_change_presence_summary">Touch your avatar to change your presence</string>
+	<string name="change_presence">Change Presence</string>
+	<string name="status_message">Status message</string>
+	<string name="all_accounts_on_this_device">Set for all accounts on this device</string>
+	<string name="presence_chat">Free for Chat</string>
+	<string name="presence_online">Online</string>
+	<string name="presence_away">Away</string>
+	<string name="presence_xa">Not Available</string>
+	<string name="presence_dnd">Busy</string>
 </resources>

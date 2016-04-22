@@ -73,6 +73,7 @@ import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.entities.MucOptions.OnRenameListener;
 import eu.siacs.conversations.entities.Presence;
+import eu.siacs.conversations.entities.PresenceTemplate;
 import eu.siacs.conversations.entities.Roster;
 import eu.siacs.conversations.entities.ServiceDiscoveryResult;
 import eu.siacs.conversations.entities.Transferable;
@@ -629,6 +630,10 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		return getPreferences().getBoolean("xa_on_silent_mode", false);
 	}
 
+	private boolean manuallyChangePresence() {
+		return getPreferences().getBoolean("manually_change_presence", false);
+	}
+
 	private boolean treatVibrateAsSilent() {
 		return getPreferences().getBoolean("treat_vibrate_as_silent", false);
 	}
@@ -762,7 +767,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	}
 
 	public void toggleScreenEventReceiver() {
-		if (awayWhenScreenOff()) {
+		if (awayWhenScreenOff() && !manuallyChangePresence()) {
 			final IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_ON);
 			filter.addAction(Intent.ACTION_SCREEN_OFF);
 			registerReceiver(this.mEventReceiver, filter);
@@ -2998,7 +3003,17 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	}
 
 	public void sendPresence(final Account account) {
-		sendPresencePacket(account, mPresenceGenerator.selfPresence(account, getTargetPresence()));
+		PresencePacket packet;
+		if (manuallyChangePresence()) {
+			packet =  mPresenceGenerator.selfPresence(account, account.getPresenceStatus());
+			String message = account.getPresenceStatusMessage();
+			if (message != null && !message.isEmpty()) {
+				packet.addChild(new Element("status").setContent(message));
+			}
+		} else {
+			packet = mPresenceGenerator.selfPresence(account, getTargetPresence());
+		}
+		sendPresencePacket(account, packet);
 	}
 
 	public void refreshAllPresences() {
@@ -3227,6 +3242,27 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 			}
 		}
 		return pending;
+	}
+
+	public void changeStatus(Account account, Presence.Status status, String statusMessage) {
+		databaseBackend.insertPresenceTemplate(new PresenceTemplate(status, statusMessage));
+		changeStatusReal(account, status, statusMessage);
+	}
+
+	private void changeStatusReal(Account account, Presence.Status status, String statusMessage) {
+		account.setPresenceStatus(status);
+		account.setPresenceStatusMessage(statusMessage);
+		databaseBackend.updateAccount(account);
+		if (!account.isOptionSet(Account.OPTION_DISABLED)) {
+			sendPresence(account);
+		}
+	}
+
+	public void changeStatus(Presence.Status status, String statusMessage) {
+		databaseBackend.insertPresenceTemplate(new PresenceTemplate(status, statusMessage));
+		for(Account account : getAccounts()) {
+			changeStatusReal(account, status, statusMessage);
+		}
 	}
 
 	public interface OnMamPreferencesFetched {

@@ -62,7 +62,7 @@ public class ListItemAdapter extends ArrayAdapter<ListItem> {
 		ImageView picture = (ImageView) view.findViewById(R.id.contact_photo);
 		LinearLayout tagLayout = (LinearLayout) view.findViewById(R.id.tags);
 
-		List<ListItem.Tag> tags = item.getTags();
+		List<ListItem.Tag> tags = item.getTags(activity);
 		if (tags.size() == 0 || !this.showDynamicTags) {
 			tagLayout.setVisibility(View.GONE);
 		} else {
