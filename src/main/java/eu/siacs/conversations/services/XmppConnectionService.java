@@ -3245,7 +3245,9 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	}
 
 	public void changeStatus(Account account, Presence.Status status, String statusMessage) {
-		databaseBackend.insertPresenceTemplate(new PresenceTemplate(status, statusMessage));
+		if (!statusMessage.isEmpty()) {
+			databaseBackend.insertPresenceTemplate(new PresenceTemplate(status, statusMessage));
+		}
 		changeStatusReal(account, status, statusMessage);
 	}
 
@@ -3259,7 +3261,9 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	}
 
 	public void changeStatus(Presence.Status status, String statusMessage) {
-		databaseBackend.insertPresenceTemplate(new PresenceTemplate(status, statusMessage));
+		if (!statusMessage.isEmpty()) {
+			databaseBackend.insertPresenceTemplate(new PresenceTemplate(status, statusMessage));
+		}
 		for(Account account : getAccounts()) {
 			changeStatusReal(account, status, statusMessage);
 		}
