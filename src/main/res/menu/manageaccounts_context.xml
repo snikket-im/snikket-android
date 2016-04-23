@@ -5,6 +5,9 @@
         android:id="@+id/mgmt_account_enable"
         android:title="@string/mgmt_account_enable"/>
     <item
+        android:id="@+id/mgmt_account_change_presence"
+        android:title="@string/change_presence"/>
+    <item
         android:id="@+id/mgmt_account_publish_avatar"
         android:title="@string/mgmt_account_publish_avatar"/>
     <item

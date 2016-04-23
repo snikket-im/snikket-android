@@ -477,9 +477,6 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 		final MenuItem renewCertificate = menu.findItem(R.id.action_renew_certificate);
 		final MenuItem mamPrefs = menu.findItem(R.id.action_mam_prefs);
 		final MenuItem changePresence = menu.findItem(R.id.action_change_presence);
-
-		changePresence.setVisible(manuallyChangePresence());
-
 		renewCertificate.setVisible(mAccount != null && mAccount.getPrivateKeyAlias() != null);
 
 		if (mAccount != null && mAccount.isOnlineAndConnected()) {
@@ -494,6 +491,7 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 			if (otherDevices == null || otherDevices.isEmpty()) {
 				clearDevices.setVisible(false);
 			}
+			changePresence.setVisible(manuallyChangePresence());
 		} else {
 			showQrCode.setVisible(false);
 			showBlocklist.setVisible(false);
@@ -501,6 +499,7 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 			changePassword.setVisible(false);
 			clearDevices.setVisible(false);
 			mamPrefs.setVisible(false);
+			changePresence.setVisible(false);
 		}
 		return super.onCreateOptionsMenu(menu);
 	}
