@@ -10,16 +10,6 @@ buildscript {
 	}
 }
 
-allprojects {
-	repositories {
-		jcenter()
-		mavenCentral()
-		maven {
-			url 'http://lorenzo.villani.me/android-cropimage/'
-		}
-	}
-}
-
 apply plugin: 'com.android.application'
 
 repositories {
