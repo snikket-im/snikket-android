@@ -45,26 +45,29 @@
                     android:textStyle="bold" />
 
                 <LinearLayout
+                    android:id="@+id/tags"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical" >
-
-                    <LinearLayout
-                        android:id="@+id/tags"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:layout_marginBottom="4dp"
-                        android:orientation="horizontal">
-                    </LinearLayout>
-
-                    <TextView
-                        android:id="@+id/details_lastseen"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/black54"
-                        android:textSize="?attr/TextSizeBody" />
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
+                    android:orientation="horizontal">
                 </LinearLayout>
+
+                <TextView
+                    android:id="@+id/details_lastseen"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black54"
+                    android:textSize="?attr/TextSizeBody" />
+
+                <TextView
+                    android:layout_marginTop="8dp"
+                    android:id="@+id/status_message"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black87"
+                    android:textStyle="italic"
+                    android:textSize="?attr/TextSizeBody" />
 
                 <Button
                     android:id="@+id/add_contact_button"

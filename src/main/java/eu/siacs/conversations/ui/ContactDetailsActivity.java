@@ -42,6 +42,7 @@ import eu.siacs.conversations.crypto.axolotl.XmppAxolotlSession;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.ListItem;
+import eu.siacs.conversations.entities.Presence;
 import eu.siacs.conversations.services.XmppConnectionService.OnAccountUpdate;
 import eu.siacs.conversations.services.XmppConnectionService.OnRosterUpdate;
 import eu.siacs.conversations.utils.CryptoHelper;
@@ -107,6 +108,7 @@ public class ContactDetailsActivity extends XmppActivity implements OnAccountUpd
 	private TextView contactJidTv;
 	private TextView accountJidTv;
 	private TextView lastseen;
+	private TextView statusMessage;
 	private CheckBox send;
 	private CheckBox receive;
 	private Button addContactButton;
@@ -203,6 +205,7 @@ public class ContactDetailsActivity extends XmppActivity implements OnAccountUpd
 		contactJidTv = (TextView) findViewById(R.id.details_contactjid);
 		accountJidTv = (TextView) findViewById(R.id.details_account);
 		lastseen = (TextView) findViewById(R.id.details_lastseen);
+		statusMessage = (TextView) findViewById(R.id.status_message);
 		send = (CheckBox) findViewById(R.id.details_send_presence);
 		receive = (CheckBox) findViewById(R.id.details_receive_presence);
 		badge = (QuickContactBadge) findViewById(R.id.details_contact_badge);
@@ -310,6 +313,25 @@ public class ContactDetailsActivity extends XmppActivity implements OnAccountUpd
 			send.setOnCheckedChangeListener(null);
 			receive.setOnCheckedChangeListener(null);
 
+			List<String> statusMessages = contact.getPresences().getStatusMessages();
+			if (statusMessages.size() == 0) {
+				statusMessage.setVisibility(View.GONE);
+			} else {
+				StringBuilder builder = new StringBuilder();
+				statusMessage.setVisibility(View.VISIBLE);
+				int s = statusMessages.size();
+				for(int i = 0; i < s; ++i) {
+					if (s > 1) {
+						builder.append("• ");
+					}
+					builder.append(statusMessages.get(i));
+					if (i < s - 1) {
+						builder.append("\n");
+					}
+				}
+				statusMessage.setText(builder);
+			}
+
 			if (contact.getOption(Contact.Options.FROM)) {
 				send.setText(R.string.send_presence_updates);
 				send.setChecked(true);
@@ -342,13 +364,13 @@ public class ContactDetailsActivity extends XmppActivity implements OnAccountUpd
 				receive.setEnabled(false);
 				send.setEnabled(false);
 			}
-
 			send.setOnCheckedChangeListener(this.mOnSendCheckedChange);
 			receive.setOnCheckedChangeListener(this.mOnReceiveCheckedChange);
 		} else {
 			addContactButton.setVisibility(View.VISIBLE);
 			send.setVisibility(View.GONE);
 			receive.setVisibility(View.GONE);
+			statusMessage.setVisibility(View.GONE);
 		}
 
 		if (contact.isBlocked() && !this.showDynamicTags) {

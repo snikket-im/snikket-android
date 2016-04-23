@@ -1,8 +1,10 @@
 package eu.siacs.conversations.entities;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.List;
 
 import eu.siacs.conversations.xml.Element;
 
@@ -56,5 +58,17 @@ public class Presences {
 		synchronized (this.presences) {
 			return presences.containsKey(presence);
 		}
+	}
+
+	public List<String> getStatusMessages() {
+		ArrayList<String> messages = new ArrayList<>();
+		synchronized (this.presences) {
+			for(Presence presence : this.presences.values()) {
+				if (presence.message != null && !presence.message.trim().isEmpty()) {
+					messages.add(presence.message.trim());
+				}
+			}
+		}
+		return messages;
 	}
 }
