@@ -144,13 +144,19 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		db.execSQL("PRAGMA foreign_keys=ON;");
-		db.execSQL("create table " + Account.TABLENAME + "(" + Account.UUID
-				+ " TEXT PRIMARY KEY," + Account.USERNAME + " TEXT,"
-				+ Account.SERVER + " TEXT," + Account.PASSWORD + " TEXT,"
+		db.execSQL("create table " + Account.TABLENAME + "(" + Account.UUID+ " TEXT PRIMARY KEY,"
+				+ Account.USERNAME + " TEXT,"
+				+ Account.SERVER + " TEXT,"
+				+ Account.PASSWORD + " TEXT,"
 				+ Account.DISPLAY_NAME + " TEXT, "
-				+ Account.ROSTERVERSION + " TEXT," + Account.OPTIONS
-				+ " NUMBER, " + Account.AVATAR + " TEXT, " + Account.KEYS
-				+ " TEXT, " + Account.HOSTNAME + " TEXT, " + Account.PORT + " NUMBER DEFAULT 5222)");
+				+ Account.STATUS + " TEXT,"
+				+ Account.STATUS_MESSAGE + " TEXT,"
+				+ Account.ROSTERVERSION + " TEXT,"
+				+ Account.OPTIONS + " NUMBER, "
+				+ Account.AVATAR + " TEXT, "
+				+ Account.KEYS + " TEXT, "
+				+ Account.HOSTNAME + " TEXT, "
+				+ Account.PORT + " NUMBER DEFAULT 5222)");
 		db.execSQL("create table " + Conversation.TABLENAME + " ("
 				+ Conversation.UUID + " TEXT PRIMARY KEY, " + Conversation.NAME
 				+ " TEXT, " + Conversation.CONTACT + " TEXT, "
@@ -329,6 +335,8 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 			recreateAxolotlDb(db);
 			db.execSQL("ALTER TABLE " + Message.TABLENAME + " ADD COLUMN "
 					+ Message.FINGERPRINT + " TEXT");
+		} else if (oldVersion < 22 && newVersion >= 22) {
+			db.execSQL("ALTER TABLE " + SQLiteAxolotlStore.IDENTITIES_TABLENAME + " ADD COLUMN " + SQLiteAxolotlStore.CERTIFICATE);
 		}
 		if (oldVersion < 16 && newVersion >= 16) {
 			db.execSQL("ALTER TABLE " + Message.TABLENAME + " ADD COLUMN "
@@ -377,10 +385,6 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 				db.update(Account.TABLENAME, account.getContentValues(), Account.UUID
 						+ "=?", new String[]{account.getUuid()});
 			}
-		}
-
-		if (oldVersion < 22 && newVersion >= 22) {
-			db.execSQL("ALTER TABLE " + SQLiteAxolotlStore.IDENTITIES_TABLENAME + " ADD COLUMN " + SQLiteAxolotlStore.CERTIFICATE);
 		}
 
 		if (oldVersion < 23 && newVersion >= 23) {
