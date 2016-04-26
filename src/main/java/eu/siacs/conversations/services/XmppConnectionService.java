@@ -1513,6 +1513,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 			public void onIqPacketReceived(final Account account, final IqPacket packet) {
 				if (packet.getType() == IqPacket.TYPE.RESULT) {
 					account.setPassword(newPassword);
+					account.setOption(Account.OPTION_MAGIC_CREATE, false);
 					databaseBackend.updateAccount(account);
 					callback.onPasswordChangeSucceeded();
 				} else {

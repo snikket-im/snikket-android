@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.security.SecureRandom;
 
@@ -60,12 +61,14 @@ public class MagicCreateActivity extends XmppActivity implements TextWatcher {
 							account = new Account(jid, createPassword());
 							account.setOption(Account.OPTION_REGISTER, true);
 							account.setOption(Account.OPTION_DISABLED, true);
+							account.setOption(Account.OPTION_MAGIC_CREATE, true);
 							xmppConnectionService.createAccount(account);
 						}
 						Intent intent = new Intent(MagicCreateActivity.this, EditAccountActivity.class);
 						intent.putExtra("jid", account.getJid().toBareJid().toString());
 						intent.putExtra("init", true);
 						intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+						Toast.makeText(MagicCreateActivity.this, R.string.secure_password_generated, Toast.LENGTH_SHORT).show();
 						startActivity(intent);
 					} catch (InvalidJidException e) {
 						mUsername.setError(getString(R.string.invalid_username));

@@ -1,9 +1,11 @@
 package eu.siacs.conversations.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import eu.siacs.conversations.R;
@@ -22,7 +24,7 @@ public class ChangePasswordActivity extends XmppActivity implements XmppConnecti
 				final String currentPassword = mCurrentPassword.getText().toString();
 				final String newPassword = mNewPassword.getText().toString();
 				final String newPasswordConfirm = mNewPasswordConfirm.getText().toString();
-				if (!currentPassword.equals(mAccount.getPassword())) {
+				if (!mAccount.isOptionSet(Account.OPTION_MAGIC_CREATE) && !currentPassword.equals(mAccount.getPassword())) {
 					mCurrentPassword.requestFocus();
 					mCurrentPassword.setError(getString(R.string.account_status_unauthorized));
 				} else if (!newPassword.equals(newPasswordConfirm)) {
@@ -43,6 +45,7 @@ public class ChangePasswordActivity extends XmppActivity implements XmppConnecti
 			}
 		}
 	};
+	private TextView mCurrentPasswordLabel;
 	private EditText mCurrentPassword;
 	private EditText mNewPassword;
 	private EditText mNewPasswordConfirm;
@@ -51,7 +54,13 @@ public class ChangePasswordActivity extends XmppActivity implements XmppConnecti
 	@Override
 	void onBackendConnected() {
 		this.mAccount = extractAccount(getIntent());
-
+		if (this.mAccount != null && this.mAccount.isOptionSet(Account.OPTION_MAGIC_CREATE)) {
+			this.mCurrentPasswordLabel.setVisibility(View.GONE);
+			this.mCurrentPassword.setVisibility(View.GONE);
+		} else {
+			this.mCurrentPasswordLabel.setVisibility(View.VISIBLE);
+			this.mCurrentPassword.setVisibility(View.VISIBLE);
+		}
 	}
 
 	@Override
@@ -67,9 +76,18 @@ public class ChangePasswordActivity extends XmppActivity implements XmppConnecti
 		});
 		this.mChangePasswordButton = (Button) findViewById(R.id.right_button);
 		this.mChangePasswordButton.setOnClickListener(this.mOnChangePasswordButtonClicked);
+		this.mCurrentPasswordLabel = (TextView) findViewById(R.id.current_password_label);
 		this.mCurrentPassword = (EditText) findViewById(R.id.current_password);
 		this.mNewPassword = (EditText) findViewById(R.id.new_password);
 		this.mNewPasswordConfirm = (EditText) findViewById(R.id.new_password_confirm);
+	}
+
+	@Override
+	protected void onStart() {
+		super.onStart();
+		Intent intent = getIntent();
+		String password = intent != null ? intent.getStringExtra("password") : "";
+		this.mNewPassword.getEditableText().append(password);
 	}
 
 	@Override
