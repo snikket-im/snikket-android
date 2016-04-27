@@ -63,9 +63,7 @@ public class Bookmark extends Element implements ListItem {
 	@Override
 	public String getDisplayJid() {
 		Jid jid = getJid();
-		if (Config.LOCK_DOMAINS_IN_CONVERSATIONS && jid != null && jid.getDomainpart().equals(Config.CONFERENCE_DOMAIN_LOCK)) {
-			return jid.getLocalpart();
-		} else if (jid != null) {
+		if (jid != null) {
 			return jid.toString();
 		} else {
 			return null;

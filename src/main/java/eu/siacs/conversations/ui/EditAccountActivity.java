@@ -674,12 +674,6 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 			this.mNamePort.setVisibility(mShowOptions ? View.VISIBLE : View.GONE);
 
 		}
-		mPassword.setEnabled(!Config.LOCK_SETTINGS);
-		mAccountJid.setEnabled(!Config.LOCK_SETTINGS);
-		mHostname.setEnabled(!Config.LOCK_SETTINGS);
-		mPort.setEnabled(!Config.LOCK_SETTINGS);
-		mPasswordConfirm.setEnabled(!Config.LOCK_SETTINGS);
-		mRegisterNew.setEnabled(!Config.LOCK_SETTINGS);
 
 		if (!mInitMode) {
 			this.mAvatar.setVisibility(View.VISIBLE);

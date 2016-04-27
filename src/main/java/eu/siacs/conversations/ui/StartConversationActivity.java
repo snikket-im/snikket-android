@@ -390,13 +390,10 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 		final View dialogView = getLayoutInflater().inflate(R.layout.join_conference_dialog, null);
 		final Spinner spinner = (Spinner) dialogView.findViewById(R.id.account);
 		final AutoCompleteTextView jid = (AutoCompleteTextView) dialogView.findViewById(R.id.jid);
-		final boolean lock = Config.LOCK_DOMAINS_IN_CONVERSATIONS && Config.CONFERENCE_DOMAIN_LOCK != null;
 		final TextView jabberIdDesc = (TextView) dialogView.findViewById(R.id.jabber_id);
-		jabberIdDesc.setText(lock ? R.string.conference_name : R.string.conference_address);
-		jid.setHint(lock ? R.string.conference_name : R.string.conference_address_example);
-		if (!lock) {
-			jid.setAdapter(new KnownHostsAdapter(this, android.R.layout.simple_list_item_1, mKnownConferenceHosts));
-		}
+		jabberIdDesc.setText(R.string.conference_address);
+		jid.setHint(R.string.conference_address_example);
+		jid.setAdapter(new KnownHostsAdapter(this, android.R.layout.simple_list_item_1, mKnownConferenceHosts));
 		if (prefilledJid != null) {
 			jid.append(prefilledJid);
 		}
@@ -422,13 +419,9 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 						}
 						final Jid conferenceJid;
 						try {
-							if (lock) {
-								conferenceJid = Jid.fromParts(jid.getText().toString(),Config.CONFERENCE_DOMAIN_LOCK, null);
-							} else {
-								conferenceJid = Jid.fromString(jid.getText().toString());
-							}
+							conferenceJid = Jid.fromString(jid.getText().toString());
 						} catch (final InvalidJidException e) {
-							jid.setError(getString(lock ? R.string.invalid_conference_name : R.string.invalid_jid));
+							jid.setError(getString(R.string.invalid_jid));
 							return;
 						}
 
