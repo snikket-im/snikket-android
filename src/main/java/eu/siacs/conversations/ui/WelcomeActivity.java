@@ -28,7 +28,6 @@ public class WelcomeActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				startActivity(new Intent(WelcomeActivity.this, EditAccountActivity.class));
-				finish();
 			}
 		});
 

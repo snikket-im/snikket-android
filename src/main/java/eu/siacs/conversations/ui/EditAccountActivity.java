@@ -315,15 +315,19 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 			public void run() {
 				final Intent intent;
 				final XmppConnection connection = mAccount.getXmppConnection();
+				final boolean wasFirstAccount = xmppConnectionService != null && xmppConnectionService.getAccounts().size() == 1;
 				if (avatar != null || (connection != null && !connection.getFeatures().pep())) {
 					intent = new Intent(getApplicationContext(), StartConversationActivity.class);
-					if (xmppConnectionService != null && xmppConnectionService.getAccounts().size() == 1) {
+					if (wasFirstAccount) {
 						intent.putExtra("init", true);
 					}
 				} else {
 					intent = new Intent(getApplicationContext(), PublishProfilePictureActivity.class);
 					intent.putExtra(EXTRA_ACCOUNT, mAccount.getJid().toBareJid().toString());
 					intent.putExtra("setup", true);
+				}
+				if (wasFirstAccount) {
+					intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 				}
 				startActivity(intent);
 				finish();
@@ -577,8 +581,8 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 				updateAccountInformation(true);
 			}
 		}
-		if (this.xmppConnectionService.getAccounts().size() == 0
-				|| this.mAccount == xmppConnectionService.getPendingAccount()) {
+		if ((Config.MAGIC_CREATE_DOMAIN == null && this.xmppConnectionService.getAccounts().size() == 0)
+				|| (this.mAccount != null && this.mAccount == xmppConnectionService.getPendingAccount())) {
 			if (getActionBar() != null) {
 				getActionBar().setDisplayHomeAsUpEnabled(false);
 				getActionBar().setDisplayShowHomeEnabled(false);
