@@ -557,9 +557,8 @@
 	<string name="server_side_mam_prefs">Server-side archiving preferences</string>
 	<string name="fetching_mam_prefs">Fetching archiving preferences. Please wait…</string>
 	<string name="unable_to_fetch_mam_prefs">Unable to fetch archiving preferences</string>
-	<string name="captcha_ocr">Captcha text</string>
 	<string name="captcha_required">Captcha required</string>
-	<string name="captcha_hint">enter the text from the image</string>
+	<string name="captcha_hint">Enter the text from the image above</string>
 	<string name="certificate_chain_is_not_trusted">Certificate chain is not trusted</string>
 	<string name="jid_does_not_match_certificate">Jabber ID does not match certificate</string>
 	<string name="action_renew_certificate">Renew certificate</string>

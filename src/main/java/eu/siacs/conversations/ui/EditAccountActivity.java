@@ -892,65 +892,55 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 	}
 
 	@Override
-	public void onCaptchaRequested(final Account account, final String id, final Data data,
-								   final Bitmap captcha) {
-		final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		final ImageView view = new ImageView(this);
-		final LinearLayout layout = new LinearLayout(this);
-		final EditText input = new EditText(this);
-
-		view.setImageBitmap(captcha);
-		view.setScaleType(ImageView.ScaleType.FIT_CENTER);
-
-		input.setHint(getString(R.string.captcha_hint));
-
-		layout.setOrientation(LinearLayout.VERTICAL);
-		layout.addView(view);
-		layout.addView(input);
-
-		builder.setTitle(getString(R.string.captcha_required));
-		builder.setView(layout);
-
-		builder.setPositiveButton(getString(R.string.ok),
-				new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						String rc = input.getText().toString();
-						data.put("username", account.getUsername());
-						data.put("password", account.getPassword());
-						data.put("ocr", rc);
-						data.submit();
-
-						if (xmppConnectionServiceBound) {
-							xmppConnectionService.sendCreateAccountWithCaptchaPacket(
-									account, id, data);
-						}
-					}
-				});
-		builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				if (xmppConnectionService != null) {
-					xmppConnectionService.sendCreateAccountWithCaptchaPacket(account, null, null);
-				}
-			}
-		});
-
-		builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
-			@Override
-			public void onCancel(DialogInterface dialog) {
-				if (xmppConnectionService != null) {
-					xmppConnectionService.sendCreateAccountWithCaptchaPacket(account, null, null);
-				}
-			}
-		});
-
+	public void onCaptchaRequested(final Account account, final String id, final Data data, final Bitmap captcha) {
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
 				if ((mCaptchaDialog != null) && mCaptchaDialog.isShowing()) {
 					mCaptchaDialog.dismiss();
 				}
+				final AlertDialog.Builder builder = new AlertDialog.Builder(EditAccountActivity.this);
+				final View view = getLayoutInflater().inflate(R.layout.captcha, null);
+				final ImageView imageView = (ImageView) view.findViewById(R.id.captcha);
+				final EditText input = (EditText) view.findViewById(R.id.input);
+				imageView.setImageBitmap(captcha);
+
+				builder.setTitle(getString(R.string.captcha_required));
+				builder.setView(view);
+
+				builder.setPositiveButton(getString(R.string.ok),
+						new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								String rc = input.getText().toString();
+								data.put("username", account.getUsername());
+								data.put("password", account.getPassword());
+								data.put("ocr", rc);
+								data.submit();
+
+								if (xmppConnectionServiceBound) {
+									xmppConnectionService.sendCreateAccountWithCaptchaPacket(
+											account, id, data);
+								}
+							}
+						});
+				builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						if (xmppConnectionService != null) {
+							xmppConnectionService.sendCreateAccountWithCaptchaPacket(account, null, null);
+						}
+					}
+				});
+
+				builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+					@Override
+					public void onCancel(DialogInterface dialog) {
+						if (xmppConnectionService != null) {
+							xmppConnectionService.sendCreateAccountWithCaptchaPacket(account, null, null);
+						}
+					}
+				});
 				mCaptchaDialog = builder.create();
 				mCaptchaDialog.show();
 			}
