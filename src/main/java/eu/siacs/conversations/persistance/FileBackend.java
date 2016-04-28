@@ -20,6 +20,7 @@ import android.system.StructStat;
 import android.util.Base64;
 import android.util.Base64OutputStream;
 import android.util.Log;
+import android.util.LruCache;
 import android.webkit.MimeTypeMap;
 
 import java.io.ByteArrayOutputStream;
@@ -344,20 +345,28 @@ public class FileBackend {
 		}
 	}
 
-	public Bitmap getThumbnail(Message message, int size, boolean cacheOnly)
-			throws FileNotFoundException {
-		Bitmap thumbnail = mXmppConnectionService.getBitmapCache().get(message.getUuid());
+	public Bitmap getThumbnail(Message message, int size, boolean cacheOnly) throws FileNotFoundException {
+		final String uuid = message.getUuid();
+		final LruCache<String,Bitmap> cache = mXmppConnectionService.getBitmapCache();
+		Log.d(Config.LOGTAG,"get thumbnail for "+uuid+" cacheOnly="+Boolean.toString(cacheOnly));
+		Bitmap thumbnail = cache.get(uuid);
 		if ((thumbnail == null) && (!cacheOnly)) {
-			File file = getFile(message);
-			BitmapFactory.Options options = new BitmapFactory.Options();
-			options.inSampleSize = calcSampleSize(file, size);
-			Bitmap fullsize = BitmapFactory.decodeFile(file.getAbsolutePath(),options);
-			if (fullsize == null) {
-				throw new FileNotFoundException();
+			synchronized (cache) {
+				thumbnail = cache.get(uuid);
+				if (thumbnail != null) {
+					return thumbnail;
+				}
+				File file = getFile(message);
+				BitmapFactory.Options options = new BitmapFactory.Options();
+				options.inSampleSize = calcSampleSize(file, size);
+				Bitmap fullsize = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
+				if (fullsize == null) {
+					throw new FileNotFoundException();
+				}
+				thumbnail = resize(fullsize, size);
+				thumbnail = rotate(thumbnail, getRotation(file));
+				this.mXmppConnectionService.getBitmapCache().put(uuid, thumbnail);
 			}
-			thumbnail = resize(fullsize, size);
-			thumbnail = rotate(thumbnail, getRotation(file));
-			this.mXmppConnectionService.getBitmapCache().put(message.getUuid(),thumbnail);
 		}
 		return thumbnail;
 	}
