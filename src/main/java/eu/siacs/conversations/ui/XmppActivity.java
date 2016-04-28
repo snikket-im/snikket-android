@@ -1146,6 +1146,9 @@ public abstract class XmppActivity extends Activity {
 
 		@Override
 		protected Bitmap doInBackground(Message... params) {
+			if (isCancelled()) {
+				return null;
+			}
 			message = params[0];
 			try {
 				return xmppConnectionService.getFileBackend().getThumbnail(
@@ -1157,7 +1160,7 @@ public abstract class XmppActivity extends Activity {
 
 		@Override
 		protected void onPostExecute(Bitmap bitmap) {
-			if (bitmap != null) {
+			if (bitmap != null && !isCancelled()) {
 				final ImageView imageView = imageViewReference.get();
 				if (imageView != null) {
 					imageView.setImageBitmap(bitmap);
@@ -1176,6 +1179,7 @@ public abstract class XmppActivity extends Activity {
 			bm = null;
 		}
 		if (bm != null) {
+			cancelPotentialWork(message, imageView);
 			imageView.setImageBitmap(bm);
 			imageView.setBackgroundColor(0x00000000);
 		} else {
@@ -1189,13 +1193,13 @@ public abstract class XmppActivity extends Activity {
 				try {
 					task.execute(message);
 				} catch (final RejectedExecutionException ignored) {
+					ignored.printStackTrace();
 				}
 			}
 		}
 	}
 
-	public static boolean cancelPotentialWork(Message message,
-			ImageView imageView) {
+	public static boolean cancelPotentialWork(Message message, ImageView imageView) {
 		final BitmapWorkerTask bitmapWorkerTask = getBitmapWorkerTask(imageView);
 
 		if (bitmapWorkerTask != null) {
