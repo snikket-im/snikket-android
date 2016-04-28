@@ -199,7 +199,7 @@ public class PresenceParser extends AbstractParser implements
 			final String message = packet.findChildContent("status");
 			final Presence presence = Presence.parse(show, caps, message);
 			contact.updatePresence(resource, presence);
-			if (presence.hasCaps() && Config.REQUEST_DISCO) {
+			if (presence.hasCaps() && !from.equals(account.getJid())) {
 				mXmppConnectionService.fetchCaps(account, from, presence);
 			}
 
