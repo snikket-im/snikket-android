@@ -3,6 +3,7 @@ package eu.siacs.conversations.ui;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.PendingIntent;
+import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -445,7 +446,11 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 				Intent intent = new Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
 				Uri uri = Uri.parse("package:"+getPackageName());
 				intent.setData(uri);
-				startActivityForResult(intent,REQUEST_BATTERY_OP);
+				try {
+					startActivityForResult(intent, REQUEST_BATTERY_OP);
+				} catch (ActivityNotFoundException e) {
+					Toast.makeText(EditAccountActivity.this, R.string.device_does_not_support_battery_op, Toast.LENGTH_SHORT).show();
+				}
 			}
 		});
 		this.mSessionEst = (TextView) findViewById(R.id.session_est);

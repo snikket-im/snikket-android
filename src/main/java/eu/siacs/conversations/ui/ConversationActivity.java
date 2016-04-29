@@ -5,6 +5,7 @@ import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
 import android.app.PendingIntent;
+import android.content.ActivityNotFoundException;
 import android.content.ClipData;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
@@ -1392,7 +1393,11 @@ public class ConversationActivity extends XmppActivity
 					Intent intent = new Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
 					Uri uri = Uri.parse("package:" + getPackageName());
 					intent.setData(uri);
-					startActivityForResult(intent, REQUEST_BATTERY_OP);
+					try {
+						startActivityForResult(intent, REQUEST_BATTERY_OP);
+					} catch (ActivityNotFoundException e) {
+						Toast.makeText(ConversationActivity.this, R.string.device_does_not_support_battery_op, Toast.LENGTH_SHORT).show();
+					}
 				}
 			});
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
