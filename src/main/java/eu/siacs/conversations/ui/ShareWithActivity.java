@@ -27,6 +27,7 @@ import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.ui.adapter.ConversationAdapter;
+import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
 
@@ -264,6 +265,8 @@ public class ShareWithActivity extends XmppActivity implements XmppConnectionSer
 
 	private void share(final Conversation conversation) {
 		final Account account = conversation.getAccount();
+		final XmppConnection connection = account.getXmppConnection();
+		final long max = connection == null ? -1 : connection.getFeatures().getMaxHttpUploadSize();
 		mListView.setEnabled(false);
 		if (conversation.getNextEncryption() == Message.ENCRYPTION_PGP && !hasPgp()) {
 			if (share.uuid == null) {
@@ -275,9 +278,6 @@ public class ShareWithActivity extends XmppActivity implements XmppConnectionSer
 			return;
 		}
 		if (share.uris.size() != 0) {
-			final long max = account.getXmppConnection()
-					.getFeatures()
-					.getMaxHttpUploadSize();
 			OnPresenceSelected callback = new OnPresenceSelected() {
 				@Override
 				public void onPresenceSelected() {
