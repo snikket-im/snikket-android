@@ -393,7 +393,7 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 		final TextView jabberIdDesc = (TextView) dialogView.findViewById(R.id.jabber_id);
 		jabberIdDesc.setText(R.string.conference_address);
 		jid.setHint(R.string.conference_address_example);
-		jid.setAdapter(new KnownHostsAdapter(this, android.R.layout.simple_list_item_1, mKnownConferenceHosts));
+		jid.setAdapter(new KnownHostsAdapter(this, R.layout.simple_list_item, mKnownConferenceHosts));
 		if (prefilledJid != null) {
 			jid.append(prefilledJid);
 		}
@@ -487,16 +487,15 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 
 	public static void populateAccountSpinner(Context context, List<String> accounts, Spinner spinner) {
 		if (accounts.size() > 0) {
-			ArrayAdapter<String> adapter = new ArrayAdapter<>(context,
-					android.R.layout.simple_spinner_item, accounts);
-			adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+			ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.simple_list_item, accounts);
+			adapter.setDropDownViewResource(R.layout.simple_list_item);
 			spinner.setAdapter(adapter);
 			spinner.setEnabled(true);
 		} else {
 			ArrayAdapter<String> adapter = new ArrayAdapter<>(context,
-					android.R.layout.simple_spinner_item,
+					R.layout.simple_list_item,
 					Arrays.asList(new String[]{context.getString(R.string.no_accounts)}));
-			adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+			adapter.setDropDownViewResource(R.layout.simple_list_item);
 			spinner.setAdapter(adapter);
 			spinner.setEnabled(false);
 		}

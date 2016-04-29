@@ -50,7 +50,7 @@ public class EnterJidDialog {
 		jabberIdDesc.setText(R.string.account_settings_jabber_id);
 		final Spinner spinner = (Spinner) dialogView.findViewById(R.id.account);
 		final AutoCompleteTextView jid = (AutoCompleteTextView) dialogView.findViewById(R.id.jid);
-		jid.setAdapter(new KnownHostsAdapter(context, android.R.layout.simple_list_item_1, knownHosts));
+		jid.setAdapter(new KnownHostsAdapter(context, R.layout.simple_list_item, knownHosts));
 		if (prefilledJid != null) {
 			jid.append(prefilledJid);
 			if (!allowEditJid) {
@@ -67,10 +67,10 @@ public class EnterJidDialog {
 			StartConversationActivity.populateAccountSpinner(context, activatedAccounts, spinner);
 		} else {
 			ArrayAdapter<String> adapter = new ArrayAdapter<>(context,
-				android.R.layout.simple_spinner_item,
+					R.layout.simple_list_item,
 					new String[] { account });
 			spinner.setEnabled(false);
-			adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+			adapter.setDropDownViewResource(R.layout.simple_list_item);
 			spinner.setAdapter(adapter);
 		}
 
