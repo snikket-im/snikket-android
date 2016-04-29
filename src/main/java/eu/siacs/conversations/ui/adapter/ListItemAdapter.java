@@ -106,12 +106,12 @@ public class ListItemAdapter extends ArrayAdapter<ListItem> {
 
 		@Override
 		protected Bitmap doInBackground(ListItem... params) {
-			return activity.avatarService().get(params[0], activity.getPixel(48));
+			return activity.avatarService().get(params[0], activity.getPixel(48), isCancelled());
 		}
 
 		@Override
 		protected void onPostExecute(Bitmap bitmap) {
-			if (bitmap != null) {
+			if (bitmap != null && !isCancelled()) {
 				final ImageView imageView = imageViewReference.get();
 				if (imageView != null) {
 					imageView.setImageBitmap(bitmap);
@@ -125,6 +125,7 @@ public class ListItemAdapter extends ArrayAdapter<ListItem> {
 		if (cancelPotentialWork(item, imageView)) {
 			final Bitmap bm = activity.avatarService().get(item,activity.getPixel(48),true);
 			if (bm != null) {
+				cancelPotentialWork(item, imageView);
 				imageView.setImageBitmap(bm);
 				imageView.setBackgroundColor(0x00000000);
 			} else {

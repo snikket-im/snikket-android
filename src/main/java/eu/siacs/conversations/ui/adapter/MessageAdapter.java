@@ -754,7 +754,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 
 		@Override
 		protected void onPostExecute(Bitmap bitmap) {
-			if (bitmap != null) {
+			if (bitmap != null && !isCancelled()) {
 				final ImageView imageView = imageViewReference.get();
 				if (imageView != null) {
 					imageView.setImageBitmap(bitmap);
@@ -768,6 +768,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		if (cancelPotentialWork(message, imageView)) {
 			final Bitmap bm = activity.avatarService().get(message, activity.getPixel(48), true);
 			if (bm != null) {
+				cancelPotentialWork(message, imageView);
 				imageView.setImageBitmap(bm);
 				imageView.setBackgroundColor(0x00000000);
 			} else {

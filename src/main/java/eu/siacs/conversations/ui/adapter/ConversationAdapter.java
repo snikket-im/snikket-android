@@ -126,12 +126,12 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 
 		@Override
 		protected Bitmap doInBackground(Conversation... params) {
-			return activity.avatarService().get(params[0], activity.getPixel(56));
+			return activity.avatarService().get(params[0], activity.getPixel(56), isCancelled());
 		}
 
 		@Override
 		protected void onPostExecute(Bitmap bitmap) {
-			if (bitmap != null) {
+			if (bitmap != null && !isCancelled()) {
 				final ImageView imageView = imageViewReference.get();
 				if (imageView != null) {
 					imageView.setImageBitmap(bitmap);
@@ -145,6 +145,7 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 		if (cancelPotentialWork(conversation, imageView)) {
 			final Bitmap bm = activity.avatarService().get(conversation, activity.getPixel(56), true);
 			if (bm != null) {
+				cancelPotentialWork(conversation, imageView);
 				imageView.setImageBitmap(bm);
 				imageView.setBackgroundColor(0x00000000);
 			} else {
