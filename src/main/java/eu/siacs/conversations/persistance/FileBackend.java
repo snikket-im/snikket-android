@@ -348,7 +348,6 @@ public class FileBackend {
 	public Bitmap getThumbnail(Message message, int size, boolean cacheOnly) throws FileNotFoundException {
 		final String uuid = message.getUuid();
 		final LruCache<String,Bitmap> cache = mXmppConnectionService.getBitmapCache();
-		Log.d(Config.LOGTAG,"get thumbnail for "+uuid+" cacheOnly="+Boolean.toString(cacheOnly));
 		Bitmap thumbnail = cache.get(uuid);
 		if ((thumbnail == null) && (!cacheOnly)) {
 			synchronized (cache) {
