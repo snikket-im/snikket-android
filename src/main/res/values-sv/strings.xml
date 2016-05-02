@@ -103,10 +103,18 @@
   <string name="pref_xmpp_resource_summary">Namnet klienten identifierar sig med</string>
   <string name="pref_accept_files">Acceptera filer</string>
   <string name="pref_accept_files_summary">Acceptera automatiskt filer som är mindre än…</string>
+  <string name="pref_attachments">Bifogningar</string>
+  <string name="pref_return_to_previous">Snabbdelning</string>
+  <string name="pref_return_to_previous_summary">Återvänd genast till föregående aktivitet istället för att öppna konversationen efter att ha delat något</string>
   <string name="pref_notification_settings">Notifiering</string>
   <string name="pref_notifications">Notifieringar</string>
   <string name="pref_notifications_summary">Notifiera när meddelande tagits emot</string>
   <string name="pref_vibrate">Vibrera</string>
+  <string name="pref_vibrate_summary">Vibrera när meddelande tagits emot</string>
+  <string name="pref_led">LED notifieringar</string>
+  <string name="pref_led_summary">Blinka med notifieringsljuset när ett meddelande tagits emot</string>
+  <string name="pref_sound">Meddelandesignal</string>
+  <string name="pref_sound_summary">Spela ljud när meddelande tagits emot</string>
   <string name="pref_notification_grace_period">Notifieringsfrist</string>
   <string name="pref_notification_grace_period_summary">Inaktivera notifieringar en kort stund efter att en carbon copy tagits emot</string>
   <string name="pref_advanced_options">Avancerat</string>
@@ -543,6 +551,7 @@
   <string name="shared_file_with_x">Delade fil med %s</string>
   <string name="shared_image_with_x">Delade bild med %s</string>
   <string name="shared_images_with_x">Delade bilder med %s</string>
+  <string name="shared_text_with_x">Delade text med %s</string>
   <string name="no_storage_permission">Conversations behöver access till extern lagring</string>
   <string name="sync_with_contacts">Synkronisera med kontakter</string>
   <string name="sync_with_contacts_long">Conversations vill matcha din XMPP-kontaktlista med dina kontakter för att visa deras namn och profilbild.\n\nConversations läser endast dina kontakter för att matcha dem lokalt utan att ladda upp dem till din server.\n\nDu kommer nu få frågan om tillåtelse för att använda kontakterna.</string>
@@ -574,4 +583,7 @@
   <string name="no_keys_just_confirm">Du litar redan på denna kontakt. Genom att välja \'klar\' bekräftar du att %s är med i denna konferens.</string>
   <string name="select_image_and_crop">Välj bild och beskär</string>
   <string name="this_account_is_disabled">Du har deaktiverat detta konto</string>
+  <string name="security_error_invalid_file_access">Säkerhetsfel: Ogiltig filaccess</string>
+  <string name="no_application_to_share_uri">Ingen applikation kunde hittas för att dela URI</string>
+  <string name="share_uri_with">Dela URI med...</string>
 </resources>

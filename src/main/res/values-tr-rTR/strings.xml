@@ -71,6 +71,8 @@
   <string name="send_failed">ulaştırılamadı</string>
   <string name="send_rejected">reddedildi</string>
   <string name="preparing_image">Görüntü, iletilmek üzere hazırlanıyor</string>
+  <string name="preparing_images">Resimler iletilmek üzere hazırlanıyor</string>
+  <string name="sharing_files_please_wait">Dosyalar Paylaşılıyor. Lütfen bekleyin...</string>
   <string name="action_clear_history">Geçmişi sil</string>
   <string name="clear_conversation_history">Sohbet geçmişini sil</string>
   <string name="clear_histor_msg">Bu sohbetteki bütün iletileri silmek istiyor musunuz?\n\n<b>Uyarı:</b>Başka cihazlardaki ya da sunuculardaki iletiler bundan etkilenmeyecektir.</string>
@@ -101,10 +103,17 @@
   <string name="pref_xmpp_resource_summary">İstemci kimliği</string>
   <string name="pref_accept_files">Dosyaları kabul et</string>
   <string name="pref_accept_files_summary">…‘den küçük olan dosyaları otomatik olarak kabul et</string>
+  <string name="pref_attachments">Ekler</string>
+  <string name="pref_return_to_previous">Hızlı Paylaşım</string>
   <string name="pref_notification_settings">Bildirim</string>
   <string name="pref_notifications">Bildirimler</string>
   <string name="pref_notifications_summary">Yeni ileti geldiğinde bildir</string>
   <string name="pref_vibrate">Titreşim</string>
+  <string name="pref_vibrate_summary">Yeni ileti geldiğinde titret</string>
+  <string name="pref_led">LED Bildirim</string>
+  <string name="pref_led_summary">Yeni bir ileti geldiğinde bildirim ışığı yanıp sönsün</string>
+  <string name="pref_sound">Zil sesi</string>
+  <string name="pref_sound_summary">Yeni bir ileti geldiğinde sesli bildir</string>
   <string name="pref_notification_grace_period">Bildirim mühleti</string>
   <string name="pref_notification_grace_period_summary">Karbon kopya alındıktan sonra kısa bir süre için bildirimleri kapa</string>
   <string name="pref_advanced_options">Gelişmiş</string>
@@ -348,6 +357,7 @@
   <string name="choose_file">Dosya seç</string>
   <string name="receiving_x_file">%1$s alıyor/(%2$d%% tamamlandı)</string>
   <string name="download_x_file">%s indir</string>
+  <string name="delete_x_file">Sil %s</string>
   <string name="file">dosya</string>
   <string name="open_x_file">%s aç</string>
   <string name="sending_file">gönderiyor (%1$d%% tamamlandı)</string>
@@ -536,6 +546,8 @@
   <string name="load_more_messages">Daha fazla ileti yükle</string>
   <string name="shared_file_with_x">%s ile paylaşılan dosyalar</string>
   <string name="shared_image_with_x">%s ile paylaşılan resim</string>
+  <string name="shared_images_with_x">%s ile paylaşılan resimler</string>
+  <string name="shared_text_with_x">%s ile paylaşılan metin</string>
   <string name="no_storage_permission">Conversations’ın harici depolama alanına erişmesi gerek </string>
   <string name="sync_with_contacts">Kişilerle senkronize et</string>
   <string name="sync_with_contacts_long">Conversations XMPP listenizi telefon rehberinizle eşleştirerek kişilerin tam isimlerini ve avatarlarını göstermek istiyor. \n\n Conversations telefon rehberinizi sadece okuyacak ve onları sunucunuza yüklemeden eşleştirecek. \n\n Şimdi telefon rehberinize erişilmesine izin vermeniz istenecek.\n\n</string>
@@ -567,4 +579,7 @@
   <string name="no_keys_just_confirm">Bu kişiye zaten güveniyor durumdasınız. \"tamam\" seçeneğini işaretleyerek, sadece %s \'in bu grup sohbete katılabileceğini teyid ediyorsunuz.</string>
   <string name="select_image_and_crop">Resmi seçip kırpın</string>
   <string name="this_account_is_disabled">Bu hesabı devre dışı bıraktınız</string>
+  <string name="security_error_invalid_file_access">Güvenlik hatası: Geçersiz dosya erişimi</string>
+  <string name="no_application_to_share_uri">URI paylaşmak için uygulama bulunamadı</string>
+  <string name="share_uri_with">URI paylaş ile...</string>
 </resources>

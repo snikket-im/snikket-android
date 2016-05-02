@@ -103,6 +103,9 @@
   <string name="pref_xmpp_resource_summary">Име са којим се овај клијент идентификује</string>
   <string name="pref_accept_files">Прихватај фајлове</string>
   <string name="pref_accept_files_summary">Аутоматски прихватај фајлове мање од…</string>
+  <string name="pref_attachments">Прилози</string>
+  <string name="pref_return_to_previous">Брзо дељење</string>
+  <string name="pref_return_to_previous_summary">Враћање на претходну активност уместо отварања преписке након дељења</string>
   <string name="pref_notification_settings">Обавештење</string>
   <string name="pref_notifications">Обавештења</string>
   <string name="pref_notifications_summary">Обавести кад стигне нова порука</string>
@@ -551,6 +554,7 @@
   <string name="shared_file_with_x">Подељен фајл са %s</string>
   <string name="shared_image_with_x">Подељена слика са %s</string>
   <string name="shared_images_with_x">Подељене слике са %s</string>
+  <string name="shared_text_with_x">Подељен текст са %s</string>
   <string name="no_storage_permission">Конверзацији је потребан приступ спољашњем складишту</string>
   <string name="sync_with_contacts">Синхронизуј са контактима</string>
   <string name="sync_with_contacts_long">Конверзација жели да поклапи ваш ИксМПП именик са контактима на вашем уређају да би приказала њихова пуна имена и аватаре.\n\nКонверзација ће само да очита ваше контакте и упореди их локално без отпремања на сервер.\n\nСада ћете бити упитани за дозволу приступа вашим контактима.</string>
@@ -583,4 +587,21 @@
   <string name="select_image_and_crop">Изабери слику и опсеци</string>
   <string name="this_account_is_disabled">Искључили сте овај налог</string>
   <string name="security_error_invalid_file_access">Безбедносна грешка: неисправан приступ фајлу</string>
+  <string name="no_application_to_share_uri">Нема апликације за дељење веза</string>
+  <string name="share_uri_with">Подели везу помоћу…</string>
+  <string name="your_full_jid_will_be">Ваш пуни Џабер ИД ће бити: %s</string>
+  <string name="create_account">Направи налог</string>
+  <string name="use_own_provider">Користићу сопствени провајдер</string>
+  <string name="pick_your_username">Одредите ваше корисничко име</string>
+  <string name="pref_manually_change_presence">Ручно промени присутност</string>
+  <string name="pref_manually_change_presence_summary">Тапните ваш аватар да промените присутност</string>
+  <string name="change_presence">Промени присутност</string>
+  <string name="status_message">Порука стања</string>
+  <string name="all_accounts_on_this_device">Постави за све налоге на овом уређају</string>
+  <string name="presence_chat">Слободан за ћаскање</string>
+  <string name="presence_online">На вези</string>
+  <string name="presence_away">Одсутан</string>
+  <string name="presence_xa">Недоступан</string>
+  <string name="presence_dnd">Заузет</string>
+  <string name="secure_password_generated">Безбедна лозинка је направљена</string>
 </resources>

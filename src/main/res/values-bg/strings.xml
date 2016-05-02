@@ -103,6 +103,9 @@
   <string name="pref_xmpp_resource_summary">Името, с което се определя този клиент</string>
   <string name="pref_accept_files">Приемане на файлове</string>
   <string name="pref_accept_files_summary">Автоматично приемане на файлове с размер, по-малък от…</string>
+  <string name="pref_attachments">Притурки</string>
+  <string name="pref_return_to_previous">Бързо споделяне</string>
+  <string name="pref_return_to_previous_summary">Моментално връщане към предишното действие, вместо отваряне на разговора отново след споделяне на нещо</string>
   <string name="pref_notification_settings">Известие</string>
   <string name="pref_notifications">Известия</string>
   <string name="pref_notifications_summary">Известяване при получаване на ново съобщение</string>
@@ -548,6 +551,7 @@
   <string name="shared_file_with_x">Файлът е споделен с %s</string>
   <string name="shared_image_with_x">Изображението е споделено с %s</string>
   <string name="shared_images_with_x">Изображения, споделени с %s</string>
+  <string name="shared_text_with_x">Текстът е споделен с %s</string>
   <string name="no_storage_permission">Conversations се нуждае от достъп до външно място за съхранение</string>
   <string name="sync_with_contacts">Синхронизиране с контактите</string>
   <string name="sync_with_contacts_long">Conversations иска да съчетае Вашия списък в XMPP с контактите Ви, за да показва пълните им имена и снимки..\n\nConversations единствено ще чете контактите Ви и ще ги използва вътрешно, без да ги качва на сървъра Ви.\n\nЩе бъдете помолен/а за позволение за достъп до контактите Ви.</string>
@@ -580,4 +584,23 @@
   <string name="select_image_and_crop">Изберете изображение и изрежете</string>
   <string name="this_account_is_disabled">Вие сте деактивирали този профил</string>
   <string name="security_error_invalid_file_access">Грешка в сигурността: неправилен достъп до файл</string>
+  <string name="no_application_to_share_uri">Няма намерено приложение за споделяне на адреса</string>
+  <string name="share_uri_with">Споделяне на адреса с…</string>
+  <string name="welcome_text">XMPP е протокол, който не е обвързан с конкретен доставчик. Можете да използвате клиента с всеки сървър, който работи с протокола XMPP.\nЗа Ваше удобство, ние предоставяме лесен начин да си създадете профил в conversations.im — сървър, пригоден да работи добре с Conversations.</string>
+  <string name="magic_create_text">Ще преминем заедно с Вас през процеса за създаване на профил в conversations.im.\nАко изберете да използвате conversations.im, ще можете да общувате с потребители, използващи други сървъри, като им дадете своя пълен Jabber идентификатор.</string>
+  <string name="your_full_jid_will_be">Вашият пълен Jabber идентификатор ще бъде: %s</string>
+  <string name="create_account">Създаване на профил</string>
+  <string name="use_own_provider">Използване на собствен сървър</string>
+  <string name="pick_your_username">Изберете потребителското си име</string>
+  <string name="pref_manually_change_presence">Ръчна промяна на присъствието</string>
+  <string name="pref_manually_change_presence_summary">Докоснете аватара си, за да промените присъствието си</string>
+  <string name="change_presence">Промяна на присъствието</string>
+  <string name="status_message">Съобщение за състоянието</string>
+  <string name="all_accounts_on_this_device">Задаване за всички профили на това устройство</string>
+  <string name="presence_chat">Свободен за разговор</string>
+  <string name="presence_online">На линия</string>
+  <string name="presence_away">Отсъстващ</string>
+  <string name="presence_xa">Недостъпен</string>
+  <string name="presence_dnd">Зает</string>
+  <string name="secure_password_generated">Беше създадена сигурна парола</string>
 </resources>

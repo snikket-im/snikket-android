@@ -103,6 +103,9 @@
   <string name="pref_xmpp_resource_summary">Der Name, mit dem sich der Client selbst identifiziert</string>
   <string name="pref_accept_files">Dateien annehmen</string>
   <string name="pref_accept_files_summary">Dateien automatisch annehmen, die kleiner sind als …</string>
+  <string name="pref_attachments">Anhänge</string>
+  <string name="pref_return_to_previous">Schnell-Teilen</string>
+  <string name="pref_return_to_previous_summary">Nach dem teilen sofort wieder zur letzten App zurückkehren anstatt die Unterhalt zu öffnen</string>
   <string name="pref_notification_settings">Benachrichtigung</string>
   <string name="pref_notifications">Benachrichtigungen</string>
   <string name="pref_notifications_summary">Benachrichtigen bei Erhalt einer neuen Nachricht</string>
@@ -548,6 +551,7 @@
   <string name="shared_file_with_x">Datei mit %s geteilt</string>
   <string name="shared_image_with_x">Bild mit %s geteilt</string>
   <string name="shared_images_with_x">Bilder mit %s geteilt</string>
+  <string name="shared_text_with_x">Text mit %s geteilt</string>
   <string name="no_storage_permission">Conversations benötigt Zugriff auf externen Speicher</string>
   <string name="sync_with_contacts">Mit Kontakten synchronisieren</string>
   <string name="sync_with_contacts_long">Conversations möchte deine XMPP-Kontaktliste mit deinen Kontakten abgleichen, um deren vollständige Namen und Avatare anzuzeigen.\n\nConversations wird deine Kontakte nur lokal lesen und abgleichen und überträgt diese nicht auf den Server.\n\nDu wirst nun gefragt, ob du den Zugriff auf deine Kontakte erlauben möchtest.</string>
@@ -580,4 +584,23 @@
   <string name="select_image_and_crop">Bild auswählen und zuschneiden</string>
   <string name="this_account_is_disabled">Du hast dieses Konto deaktiviert</string>
   <string name="security_error_invalid_file_access">Sicherheitsfehler: Dateizugriff nicht erlaubt</string>
+  <string name="no_application_to_share_uri">Keine Anwendung zum Teilen der URI gefunden</string>
+  <string name="share_uri_with">Teile URI mit…</string>
+  <string name="welcome_text">XMPP ist ein providerunabhängiges Protokoll. Du kannst diesen Klienten mit einem beliebigen XMPP-Server deiner Wahl nutzen.\nWir haben jedoch eine einfache Möglichkeit geschaffen, ein Konto auf conversations.im zu erstellen; ein Provider, der speziell für den Einsatz mit Conversations geeignet ist.</string>
+  <string name="magic_create_text">Wir führen dich durch den Prozess ein Konto auf conversations.im zu erstellen.\nWenn du conversations.im als Provider nutzt, kannst du mit Nutzern anderer Provider kommunizieren, indem du ihnen deine vollständige Jabber-ID gibst.</string>
+  <string name="your_full_jid_will_be">Deine vollständige Jabber ID lautet: %s</string>
+  <string name="create_account">Konto erstellen</string>
+  <string name="use_own_provider">Nutze eigenen Provider</string>
+  <string name="pick_your_username">Wähle deinen Benutzernamen</string>
+  <string name="pref_manually_change_presence">Ändere Status</string>
+  <string name="pref_manually_change_presence_summary">Tippe auf deinen Avatar, um deinen Status zu ändern</string>
+  <string name="change_presence">Status ändern</string>
+  <string name="status_message">Statusnachricht</string>
+  <string name="all_accounts_on_this_device">Für alle Konten dieses Gerätes festlegen</string>
+  <string name="presence_chat">Frei zum chatten</string>
+  <string name="presence_online">Online</string>
+  <string name="presence_away">Weg</string>
+  <string name="presence_xa">Nicht verfügbar</string>
+  <string name="presence_dnd">Beschäftigt</string>
+  <string name="secure_password_generated">Ein sicheres Passwort wurde erstellt</string>
 </resources>

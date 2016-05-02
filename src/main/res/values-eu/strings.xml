@@ -103,10 +103,18 @@
   <string name="pref_xmpp_resource_summary">Bezero honek bere burua aurkezteko erabiltzen duen izena</string>
   <string name="pref_accept_files">Fitxategiak onartu</string>
   <string name="pref_accept_files_summary">Hurrengo tamaina baino fitxategi txikiagoak automatikoki onartu…</string>
+  <string name="pref_attachments">Eranskinak</string>
+  <string name="pref_return_to_previous">Partekatze azkarra</string>
+  <string name="pref_return_to_previous_summary">Zuzenean aurreko aktibitatera itzuli elkarrizketa ireki beharrean zerbait partekatu ondoren</string>
   <string name="pref_notification_settings">Jakinarazpena</string>
   <string name="pref_notifications">Jakinarazpenak</string>
   <string name="pref_notifications_summary">Mezu berri bat heltzerakoan jakinarazi</string>
   <string name="pref_vibrate">Dardaratu</string>
+  <string name="pref_vibrate_summary">Mezu berri bat heltzerakoan dardartu</string>
+  <string name="pref_led">LED jakinarazpena</string>
+  <string name="pref_led_summary">Mezu berri bat heltzerakoan jakinarazpenen argia keinu egin</string>
+  <string name="pref_sound">Dei-tonua</string>
+  <string name="pref_sound_summary">Mezu berri bat heltzerakoan dei-tonua jo</string>
   <string name="pref_notification_grace_period">Jakinarazpenen grazia epea</string>
   <string name="pref_notification_grace_period_summary">Jakinarazpenak denbora labur baterako ezgaitu ikatz-kopia bat jaso ondoren</string>
   <string name="pref_advanced_options">Aurreratua</string>
@@ -543,6 +551,7 @@
   <string name="shared_file_with_x">Fitxategia %s(r)ekin partekatu da</string>
   <string name="shared_image_with_x">Irudia %s(r)ekin partekatu da</string>
   <string name="shared_images_with_x">Irudiak %s(r)ekin partekatu dira</string>
+  <string name="shared_text_with_x">Testua %s(r)ekin partekatu da</string>
   <string name="no_storage_permission">Conversationsek kanpoko biltegirako sarbidea behar du</string>
   <string name="sync_with_contacts">Kontaktuekin sinkronizatu</string>
   <string name="sync_with_contacts_long">Conversationsek zure XMPP zerrenda eta zure kontaktuak uztartu nahi ditu haien izenak eta argazkiak erakusteko.\n\nConversationsek zure kontaktuak modu lokalean soilik irakurri eta uztartuko ditu, zure zerbitzarira kargatu gabe.\n\nJarraian baimenak eskatuko zaizkizu zure kontaktuetara sartu ahal izateko.</string>
@@ -574,4 +583,7 @@
   <string name="no_keys_just_confirm">Kontaktu honetaz fidatzen zara dagoeneko. \'Eginda\' hautatuz %s konferentzia honen kidea dela egiaztatzen duzu besterik gabe.</string>
   <string name="select_image_and_crop">Irudia hautatu eta moztu</string>
   <string name="this_account_is_disabled">Kontu hau ezgaitu duzu</string>
+  <string name="security_error_invalid_file_access">Segurtasun akatsa: fitxategi sarrera baliogabea</string>
+  <string name="no_application_to_share_uri">Ez da aplikaziorik aurkitu URIa partekatzeko</string>
+  <string name="share_uri_with">URIa honekin partekatu...</string>
 </resources>

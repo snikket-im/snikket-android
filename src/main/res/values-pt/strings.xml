@@ -103,10 +103,18 @@
   <string name="pref_xmpp_resource_summary">O nome pelo qual este cliente se identifica</string>
   <string name="pref_accept_files">Aceitar ficheiros</string>
   <string name="pref_accept_files_summary">Automaticamente aceitar ficheiros menores que...</string>
+  <string name="pref_attachments">Anexos</string>
+  <string name="pref_return_to_previous">Partilha Rápida</string>
+  <string name="pref_return_to_previous_summary">Voltar imediatamente à atividade anterior em vez de abrir a conversação depois de partilhar alguma coisa</string>
   <string name="pref_notification_settings">Notificação</string>
   <string name="pref_notifications">Notificações</string>
   <string name="pref_notifications_summary">Notificar quando uma nova mensagem for recebida</string>
   <string name="pref_vibrate">Vibrar</string>
+  <string name="pref_vibrate_summary">Vibrar quando uma nova mensagem for recebida</string>
+  <string name="pref_led">Notificação LED</string>
+  <string name="pref_led_summary">Piscar luz de notificação quando uma nova mensagem for recebida</string>
+  <string name="pref_sound">Tom de toque</string>
+  <string name="pref_sound_summary">Tocar som quando uma nova mensagem for recebida</string>
   <string name="pref_notification_grace_period">Período de carência da notificação</string>
   <string name="pref_notification_grace_period_summary">Desativar notificações por um curto período após a copia oculta ser recebida</string>
   <string name="pref_advanced_options">Avançadas</string>
@@ -543,6 +551,7 @@
   <string name="shared_file_with_x">Ficheiro partilhado com %s</string>
   <string name="shared_image_with_x">Imagem partilhada com %s</string>
   <string name="shared_images_with_x">Imagens partilhadas com %s</string>
+  <string name="shared_text_with_x">Mensagem partilhada com %s</string>
   <string name="no_storage_permission">Conversations necessita de acesso ao armazenamento externo</string>
   <string name="sync_with_contacts">Sincronizar com contactos</string>
   <string name="sync_with_contacts_long">A aplicação Conversations deseja fazer a correspondência entre a sua lista de contactos XMPP e os seus contactos para mostrar os seus nomes completos e os seus avatares.\n\nA aplicação Conversations irá apenas ler os seus contactos e fazer a correspondência localmente sem enviar os dados para o seu servidor.\n\nIrá agora ser-lhe pedido para dar permissão para aceder aos seus contactos.</string>
@@ -574,4 +583,7 @@
   <string name="no_keys_just_confirm">Já confia neste contacto. Ao selecionar \'Concluído\' apenas está a confirmar que %s faz parte desta conferência.</string>
   <string name="select_image_and_crop">Selecione imagem e corte</string>
   <string name="this_account_is_disabled">Desativou esta conta</string>
+  <string name="security_error_invalid_file_access">Erro de segurança: Acesso ao ficheiro inválido</string>
+  <string name="no_application_to_share_uri">Não foi encontrada nenhuma aplicação para partilhar o URI</string>
+  <string name="share_uri_with">Partilhar URI com...</string>
 </resources>
