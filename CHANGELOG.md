@@ -1,5 +1,9 @@
 ###Changelog
 
+####Version 1.12.0
+* new welcome screen that makes it easier to register account
+* expert setting to modify presence
+
 ####Version 1.11.7
 * Share xmpp uri from conference details
 * add setting to allow quick sharing
