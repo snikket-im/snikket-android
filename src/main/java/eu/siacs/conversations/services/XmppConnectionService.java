@@ -51,6 +51,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
@@ -555,6 +556,9 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		}
 		this.wakeLock.acquire();
 
+		boolean pingNow = false;
+		HashSet<Account> pingCandidates = new HashSet<>();
+
 		for (Account account : accounts) {
 			if (!account.isOptionSet(Account.OPTION_DISABLED)) {
 				if (!hasInternetConnection()) {
@@ -583,12 +587,13 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 								int secs = (int) (pingTimeoutIn / 1000);
 								this.scheduleWakeUpCall(secs, account.getUuid().hashCode());
 							}
-						} else if (msToNextPing <= 0) {
-							account.getXmppConnection().sendPing();
-							Log.d(Config.LOGTAG, account.getJid().toBareJid() + " send ping");
-							this.scheduleWakeUpCall(Config.PING_TIMEOUT, account.getUuid().hashCode());
 						} else {
-							this.scheduleWakeUpCall((int) (msToNextPing / 1000), account.getUuid().hashCode());
+							pingCandidates.add(account);
+							if (msToNextPing <= 0) {
+								pingNow = true;
+							} else {
+								this.scheduleWakeUpCall((int) (msToNextPing / 1000), account.getUuid().hashCode());
+							}
 						}
 					} else if (account.getStatus() == Account.State.OFFLINE) {
 						reconnectAccount(account, true, interactive);
@@ -615,6 +620,13 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 				if (mOnAccountUpdate != null) {
 					mOnAccountUpdate.onAccountUpdate();
 				}
+			}
+		}
+		if (pingNow) {
+			for (Account account : pingCandidates) {
+				account.getXmppConnection().sendPing();
+				Log.d(Config.LOGTAG, account.getJid().toBareJid() + " send ping");
+				this.scheduleWakeUpCall(Config.PING_TIMEOUT, account.getUuid().hashCode());
 			}
 		}
 		if (wakeLock.isHeld()) {
