@@ -28,10 +28,11 @@ public class PresenceTemplate extends AbstractEntity {
 
 	@Override
 	public ContentValues getContentValues() {
+		final String show = status.toShowString();
 		ContentValues values = new ContentValues();
 		values.put(LAST_USED, lastUsed);
 		values.put(MESSAGE, statusMessage);
-		values.put(STATUS, status.toShowString());
+		values.put(STATUS, show == null ? "" : show);
 		values.put(UUID, uuid);
 		return values;
 	}
