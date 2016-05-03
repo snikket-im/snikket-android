@@ -5,7 +5,7 @@
 		<item>Mobile</item>
 		<item>Phone</item>
 		<item>Tablet</item>
-		<item>Conversations</item>
+		<item>@string/app_name</item>
 		<item>Android</item>
 	</string-array>
 	<string-array name="filesizes">
