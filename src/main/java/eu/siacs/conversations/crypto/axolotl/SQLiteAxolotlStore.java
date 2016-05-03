@@ -125,15 +125,15 @@ public class SQLiteAxolotlStore implements AxolotlStore {
 	}
 
 	private int loadCurrentPreKeyId() {
-		String regIdString = this.account.getKey(JSONKEY_CURRENT_PREKEY_ID);
-		int reg_id;
-		if (regIdString != null) {
-			reg_id = Integer.valueOf(regIdString);
+		String prekeyIdString = this.account.getKey(JSONKEY_CURRENT_PREKEY_ID);
+		int prekey_id;
+		if (prekeyIdString != null) {
+			prekey_id = Integer.valueOf(prekeyIdString);
 		} else {
 			Log.w(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Could not retrieve current prekey id for account " + account.getJid());
-			reg_id = 0;
+			prekey_id = 0;
 		}
-		return reg_id;
+		return prekey_id;
 	}
 
 	public void regenerate() {
