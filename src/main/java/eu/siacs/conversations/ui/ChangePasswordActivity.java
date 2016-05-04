@@ -88,6 +88,7 @@ public class ChangePasswordActivity extends XmppActivity implements XmppConnecti
 		Intent intent = getIntent();
 		String password = intent != null ? intent.getStringExtra("password") : null;
 		if (password != null) {
+			this.mNewPassword.getEditableText().clear();
 			this.mNewPassword.getEditableText().append(password);
 		}
 	}
