@@ -350,7 +350,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 	public void registerDevices(final Jid jid, @NonNull final Set<Integer> deviceIds) {
 		if (jid.toBareJid().equals(account.getJid().toBareJid())) {
 			if (!deviceIds.isEmpty()) {
-				Log.d(Config.LOGTAG, getLogprefix(account) + "Received non-empty own device list. Resetting publish attemps and pepBroken status.");
+				Log.d(Config.LOGTAG, getLogprefix(account) + "Received non-empty own device list. Resetting publish attempts and pepBroken status.");
 				pepBroken = false;
 				numPublishTriesOnEmptyPep = 0;
 			}

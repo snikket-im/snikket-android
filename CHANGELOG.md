@@ -171,7 +171,7 @@
 
 ####Version 1.4.0
 * send button turns into quick action button to offer faster access to take photo, send location or record audio
-* visually seperate merged messages
+* visually separate merged messages
 * faster reconnects of failed accounts after network switches 
 * r/o vcard avatars for contacts
 * various bug fixes
@@ -264,7 +264,7 @@
 * Download HTTP images
 * Show avatars in MUC tiles
 * Disabled SSLv3
-* Performance improvments
+* Performance improvements
 * bug fixes
 
 ####Version 0.7.3
@@ -313,7 +313,7 @@
 ####Version 0.4
 * OTR file encryption
 * keep OTR messages and files on device until both parties or online at the same time
-* XEP-0333. Mark wether the other party has read your messages
+* XEP-0333. Mark whether the other party has read your messages
 * Delayed messages are now tagged properly
 * Share images from the Gallery
 * Infinit history scrolling

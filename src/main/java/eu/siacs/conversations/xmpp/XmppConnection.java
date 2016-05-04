@@ -485,7 +485,7 @@ public class XmppConnection implements Runnable {
 				if ("true".equals(enabled.getAttribute("resume"))) {
 					this.streamId = enabled.getAttribute("id");
 					Log.d(Config.LOGTAG, account.getJid().toBareJid().toString()
-							+ ": stream managment(" + smVersion
+							+ ": stream management(" + smVersion
 							+ ") enabled (resumable)");
 				} else {
 					Log.d(Config.LOGTAG, account.getJid().toBareJid().toString()
