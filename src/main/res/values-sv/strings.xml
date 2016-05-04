@@ -586,4 +586,21 @@
   <string name="security_error_invalid_file_access">Säkerhetsfel: Ogiltig filaccess</string>
   <string name="no_application_to_share_uri">Ingen applikation kunde hittas för att dela URI</string>
   <string name="share_uri_with">Dela URI med...</string>
+  <string name="welcome_text">XMPP är ett leverantörsoberoende protokoll. Du kan använda denna klient med vilken XMPP server du vill.\nFör din bekvämlighet har vi gjort det enkelt att skapa ett konto hos conversations.im; en leverantör speciellt anpassad för att användas med Conversations.</string>
+  <string name="magic_create_text">Du kommer nu att få hjälp med att skapa ett konto på conversations.im.\nNär conversations.im väljs som leverantör kommer du kunna kommunicera med användare hos andra leverantörer genom att ge dem ditt Jabber ID.</string>
+  <string name="your_full_jid_will_be">Ditt jabber ID blir: %s</string>
+  <string name="create_account">Skapa konto</string>
+  <string name="use_own_provider">Använd min egen leverantör</string>
+  <string name="pick_your_username">Välj användarnamn</string>
+  <string name="pref_manually_change_presence">Ändra tillgänglighet manuellt</string>
+  <string name="pref_manually_change_presence_summary">Tryck på din avatarbild för att ändra tillgänglighet</string>
+  <string name="change_presence">Ändra tillgänglighet</string>
+  <string name="status_message">Statusmeddelande</string>
+  <string name="all_accounts_on_this_device">Använd för alla konton på den här enheten</string>
+  <string name="presence_chat">Tillgänglig</string>
+  <string name="presence_online">Online</string>
+  <string name="presence_away">Borta</string>
+  <string name="presence_xa">Ej tillgänglig</string>
+  <string name="presence_dnd">Upptagen</string>
+  <string name="secure_password_generated">Ett säkert lösenord har genererats</string>
 </resources>

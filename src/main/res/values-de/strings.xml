@@ -105,7 +105,7 @@
   <string name="pref_accept_files_summary">Dateien automatisch annehmen, die kleiner sind als …</string>
   <string name="pref_attachments">Anhänge</string>
   <string name="pref_return_to_previous">Schnell-Teilen</string>
-  <string name="pref_return_to_previous_summary">Nach dem teilen sofort wieder zur letzten App zurückkehren anstatt die Unterhalt zu öffnen</string>
+  <string name="pref_return_to_previous_summary">Nach dem Teilen sofort wieder zur vorherigen App zurückkehren anstatt die Unterhaltung zu öffnen</string>
   <string name="pref_notification_settings">Benachrichtigung</string>
   <string name="pref_notifications">Benachrichtigungen</string>
   <string name="pref_notifications_summary">Benachrichtigen bei Erhalt einer neuen Nachricht</string>

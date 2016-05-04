@@ -590,6 +590,8 @@ Emitent</string>
   <string name="security_error_invalid_file_access">Eroare de securitate.: Acces fisier invalid</string>
   <string name="no_application_to_share_uri">Nu s-a gasit nici o aplicatie care sa partajeze URI</string>
   <string name="share_uri_with">Partajeaza URI cu...</string>
+  <string name="welcome_text">XMPP este un protocol independent ce nu depinde de un anume furnizor. Aveți posibilitatea sa utilizati acest client cu orice server XMPP doriti.\nTotusi pentru confortul dumneavoastra am facilitat crearea unui cont pe conversations.im; un furnizor potrivit pentru utilizarea cu aplicatia Conversations.</string>
+  <string name="magic_create_text">Va vom ghida prin procesul de creare al unui cont pe conversations.im.\nCand alegeti conversations.im ca furnizor veti putea comunica cu utilizatorii altor furnizori oferindu-le ID-ul dumneavoastra Jabber.</string>
   <string name="your_full_jid_will_be">ID-ul Jabber va fi: %s</string>
   <string name="create_account">Creeaza cont</string>
   <string name="use_own_provider">Foloseste furnizorul meu</string>
