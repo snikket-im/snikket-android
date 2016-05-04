@@ -266,7 +266,7 @@ public class JingleConnection implements Transferable {
 											@Override
 											public void established() {
 												Log.d(Config.LOGTAG,
-														"succesfully connected to our own primary candidate");
+														"successfully connected to our own primary candidate");
 												mergeCandidate(candidate);
 												sendInitRequest();
 											}
@@ -594,7 +594,7 @@ public class JingleConnection implements Transferable {
 						this.connect();
 					} else {
 						Log.d(Config.LOGTAG,
-								"ignoring because file is already in transmission or we havent sent our candidate yet");
+								"ignoring because file is already in transmission or we haven't sent our candidate yet");
 					}
 					return true;
 				} else {

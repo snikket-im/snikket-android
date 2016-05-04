@@ -282,7 +282,7 @@ manage accounts and choose renew PGP announcement from the contextual menu.
 
 #### How does the encryption for conferences work?
 
-For conferences only OMEMO and OpenPGP are suppored as encryption method. (OTR
+For conferences only OMEMO and OpenPGP are supported as encryption method. (OTR
 does not work with multiple participants).
 
 ##### OMEMO

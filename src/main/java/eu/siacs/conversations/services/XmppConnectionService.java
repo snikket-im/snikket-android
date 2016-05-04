@@ -2528,7 +2528,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 								callback.success(avatar);
 							}
 							Log.d(Config.LOGTAG, account.getJid().toBareJid()
-									+ ": succesfuly fetched pep avatar for " + avatar.owner);
+									+ ": successfully fetched pep avatar for " + avatar.owner);
 							return;
 						}
 					} else {
