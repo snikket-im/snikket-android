@@ -1,5 +1,8 @@
 ###Changelog
 
+####Version 1.12.1
+* small bug fixes
+
 ####Version 1.12.0
 * new welcome screen that makes it easier to register account
 * expert setting to modify presence
