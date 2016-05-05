@@ -93,7 +93,8 @@ public class Account extends AbstractEntity {
 		REGISTRATION_NOT_SUPPORTED(true),
 		SECURITY_ERROR(true),
 		INCOMPATIBLE_SERVER(true),
-		TOR_NOT_AVAILABLE(true);
+		TOR_NOT_AVAILABLE(true),
+		BIND_FAILURE(true);
 
 		private final boolean isError;
 
@@ -139,6 +140,8 @@ public class Account extends AbstractEntity {
 					return R.string.account_status_incompatible_server;
 				case TOR_NOT_AVAILABLE:
 					return R.string.account_status_tor_unavailable;
+				case BIND_FAILURE:
+					return R.string.account_status_bind_failure;
 				default:
 					return R.string.account_status_unknown;
 			}

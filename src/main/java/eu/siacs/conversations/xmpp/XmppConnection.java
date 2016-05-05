@@ -906,22 +906,23 @@ public class XmppConnection implements Runnable {
 					if (jid != null && jid.getContent() != null) {
 						try {
 							account.setResource(Jid.fromString(jid.getContent()).getResourcepart());
+							if (streamFeatures.hasChild("session")) {
+								sendStartSession();
+							} else {
+								sendPostBindInitialization();
+							}
+							return;
 						} catch (final InvalidJidException e) {
-							// TODO: Handle the case where an external JID is technically invalid?
-						}
-						if (streamFeatures.hasChild("session")) {
-							sendStartSession();
-						} else {
-							sendPostBindInitialization();
+							Log.d(Config.LOGTAG,account.getJid().toBareJid()+": server reported invalid jid ("+jid.getContent()+") on bind");
 						}
 					} else {
 						Log.d(Config.LOGTAG, account.getJid() + ": disconnecting because of bind failure. (no jid)");
-						disconnect(true);
 					}
 				} else {
 					Log.d(Config.LOGTAG, account.getJid() + ": disconnecting because of bind failure (" + packet.toString());
-					disconnect(true);
 				}
+				forceCloseSocket();
+				changeStatus(Account.State.BIND_FAILURE);
 			}
 		});
 	}
