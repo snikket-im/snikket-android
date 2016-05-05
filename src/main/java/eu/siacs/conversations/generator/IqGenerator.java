@@ -303,8 +303,10 @@ public class IqGenerator extends AbstractGenerator {
 
 		register.setTo(account.getServer());
 		register.setId(id);
-		register.query("jabber:iq:register").addChild(data);
-
+		Element query = register.query("jabber:iq:register");
+		if (data != null) {
+			query.addChild(data);
+		}
 		return register;
 	}
 

@@ -3002,9 +3002,10 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	}
 
 	public void sendCreateAccountWithCaptchaPacket(Account account, String id, Data data) {
-		XmppConnection connection = account.getXmppConnection();
+		final XmppConnection connection = account.getXmppConnection();
 		if (connection != null) {
-			connection.sendCaptchaRegistryRequest(id, data);
+			IqPacket request = mIqGenerator.generateCreateAccountWithCaptcha(account, id, data);
+			sendIqPacket(account, request, connection.registrationResponseListener);
 		}
 	}
 

@@ -176,28 +176,24 @@ public class XmppConnection implements Runnable {
 	};
 	private Identity mServerIdentity = Identity.UNKNOWN;
 
-	private OnIqPacketReceived createPacketReceiveHandler() {
-		return new OnIqPacketReceived() {
-			@Override
-			public void onIqPacketReceived(Account account, IqPacket packet) {
-				if (packet.getType() == IqPacket.TYPE.RESULT) {
-					account.setOption(Account.OPTION_REGISTER,
-							false);
-					forceCloseSocket();
-					changeStatus(Account.State.REGISTRATION_SUCCESSFUL);
-				} else if (packet.hasChild("error")
-						&& (packet.findChild("error")
-						.hasChild("conflict"))) {
-					forceCloseSocket();
-					changeStatus(Account.State.REGISTRATION_CONFLICT);
-				} else {
-					forceCloseSocket();
-					changeStatus(Account.State.REGISTRATION_FAILED);
-					Log.d(Config.LOGTAG, packet.toString());
-				}
+	public final OnIqPacketReceived registrationResponseListener =  new OnIqPacketReceived() {
+		@Override
+		public void onIqPacketReceived(Account account, IqPacket packet) {
+			if (packet.getType() == IqPacket.TYPE.RESULT) {
+				account.setOption(Account.OPTION_REGISTER, false);
+				forceCloseSocket();
+				changeStatus(Account.State.REGISTRATION_SUCCESSFUL);
+			} else if (packet.hasChild("error")
+					&& (packet.findChild("error").hasChild("conflict"))) {
+				forceCloseSocket();
+				changeStatus(Account.State.REGISTRATION_CONFLICT);
+			} else {
+				forceCloseSocket();
+				changeStatus(Account.State.REGISTRATION_FAILED);
+				Log.d(Config.LOGTAG, packet.toString());
 			}
-		};
-	}
+		}
+	};
 
 	public XmppConnection(final Account account, final XmppConnectionService service) {
 		this.account = account;
@@ -809,15 +805,6 @@ public class XmppConnection implements Runnable {
 		return mechanisms;
 	}
 
-	public void sendCaptchaRegistryRequest(String id, Data data) {
-		if (data == null) {
-			setAccountCreationFailed("");
-		} else {
-			IqPacket request = getIqGenerator().generateCreateAccountWithCaptcha(account, id, data);
-			sendIqPacket(request, createPacketReceiveHandler());
-		}
-	}
-
 	private void sendRegistryRequest() {
 		final IqPacket register = new IqPacket(IqPacket.TYPE.GET);
 		register.query("jabber:iq:register");
@@ -835,7 +822,7 @@ public class XmppConnection implements Runnable {
 					final Element password = new Element("password").setContent(account.getPassword());
 					register.query("jabber:iq:register").addChild(username);
 					register.query().addChild(password);
-					sendIqPacket(register, createPacketReceiveHandler());
+					sendIqPacket(register, registrationResponseListener);
 				} else if (packet.getType() == IqPacket.TYPE.RESULT
 						&& (packet.query().hasChild("x", "jabber:x:data"))) {
 					final Data data = Data.parse(packet.query().findChild("x", "jabber:x:data"));
