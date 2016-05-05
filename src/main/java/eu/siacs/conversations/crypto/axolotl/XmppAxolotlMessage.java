@@ -158,7 +158,6 @@ public class XmppAxolotlMessage {
 			IvParameterSpec ivSpec = new IvParameterSpec(iv);
 			Cipher cipher = Cipher.getInstance(CIPHERMODE, PROVIDER);
 			cipher.init(Cipher.ENCRYPT_MODE, secretKey, ivSpec);
-			this.innerKey = secretKey.getEncoded();
 			this.ciphertext = cipher.doFinal(plaintext.getBytes());
 		} catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException
 				| IllegalBlockSizeException | BadPaddingException | NoSuchProviderException
