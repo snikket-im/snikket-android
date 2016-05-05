@@ -1,7 +1,9 @@
 package eu.siacs.conversations.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,6 +19,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import android.util.Log;
+
+import org.openintents.openpgp.util.OpenPgpApi;
 
 import java.util.List;
 import java.util.concurrent.RunnableFuture;
@@ -42,6 +46,14 @@ public class SetPresenceActivity extends XmppActivity implements View.OnClickLis
 	protected Spinner mShowSpinner;
 	protected CheckBox mAllAccounts;
 	protected LinearLayout mTemplatesView;
+	private Pair<Integer, Intent> mPostponedActivityResult;
+
+	private Runnable onPresenceChanged = new Runnable() {
+		@Override
+		public void run() {
+			finish();
+		}
+	};
 
 	protected void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -83,16 +95,37 @@ public class SetPresenceActivity extends XmppActivity implements View.OnClickLis
 		}
 	}
 
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (resultCode == RESULT_OK) {
+			if (xmppConnectionServiceBound && mAccount != null) {
+				if (requestCode == REQUEST_ANNOUNCE_PGP) {
+					announcePgp(mAccount, null, onPresenceChanged);
+				}
+				this.mPostponedActivityResult = null;
+			} else {
+				this.mPostponedActivityResult = new Pair<>(requestCode, data);
+			}
+		}
+	}
+
 	private void executeChangePresence() {
 		Presence.Status status = getStatusFromSpinner();
 		boolean allAccounts = mAllAccounts.isChecked();
 		String statusMessage = mStatusMessage.getText().toString().trim();
-		if (allAccounts) {
+		if (allAccounts && noAccountUsesPgp()) {
 			xmppConnectionService.changeStatus(status, statusMessage);
+			finish();
 		} else if (mAccount != null) {
-			xmppConnectionService.changeStatus(mAccount, status, statusMessage);
+			if (mAccount.getPgpId() == 0) {
+				xmppConnectionService.changeStatus(mAccount, status, statusMessage, true);
+				finish();
+			} else {
+				xmppConnectionService.changeStatus(mAccount, status, statusMessage, false);
+				announcePgp(mAccount, null, onPresenceChanged);
+			}
 		}
-		finish();
 	}
 
 	private Presence.Status getStatusFromSpinner() {
@@ -145,6 +178,12 @@ public class SetPresenceActivity extends XmppActivity implements View.OnClickLis
 				mStatusMessage.append(message);
 			}
 			mTemplates = xmppConnectionService.databaseBackend.getPresenceTemplates();
+			if (this.mPostponedActivityResult != null) {
+				this.onActivityResult(mPostponedActivityResult.first, RESULT_OK, mPostponedActivityResult.second);
+			}
+			boolean e = noAccountUsesPgp();
+			mAllAccounts.setEnabled(e);
+			mAllAccounts.setTextColor(e ? getPrimaryTextColor() : getSecondaryTextColor());
 		}
 		redrawTemplates();
 	}

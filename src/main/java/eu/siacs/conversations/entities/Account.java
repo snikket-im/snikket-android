@@ -478,10 +478,10 @@ public class Account extends AbstractEntity {
 			try {
 				return keys.getLong(KEY_PGP_ID);
 			} catch (JSONException e) {
-				return -1;
+				return 0;
 			}
 		} else {
-			return -1;
+			return 0;
 		}
 	}
 

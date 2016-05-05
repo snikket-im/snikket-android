@@ -3258,18 +3258,18 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		return pending;
 	}
 
-	public void changeStatus(Account account, Presence.Status status, String statusMessage) {
+	public void changeStatus(Account account, Presence.Status status, String statusMessage, boolean send) {
 		if (!statusMessage.isEmpty()) {
 			databaseBackend.insertPresenceTemplate(new PresenceTemplate(status, statusMessage));
 		}
-		changeStatusReal(account, status, statusMessage);
+		changeStatusReal(account, status, statusMessage, send);
 	}
 
-	private void changeStatusReal(Account account, Presence.Status status, String statusMessage) {
+	private void changeStatusReal(Account account, Presence.Status status, String statusMessage, boolean send) {
 		account.setPresenceStatus(status);
 		account.setPresenceStatusMessage(statusMessage);
 		databaseBackend.updateAccount(account);
-		if (!account.isOptionSet(Account.OPTION_DISABLED)) {
+		if (!account.isOptionSet(Account.OPTION_DISABLED) && send) {
 			sendPresence(account);
 		}
 	}
@@ -3279,7 +3279,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 			databaseBackend.insertPresenceTemplate(new PresenceTemplate(status, statusMessage));
 		}
 		for(Account account : getAccounts()) {
-			changeStatusReal(account, status, statusMessage);
+			changeStatusReal(account, status, statusMessage, true);
 		}
 	}
 

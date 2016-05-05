@@ -1188,7 +1188,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 			return;
 		}
 		if (conversation.getAccount().getPgpSignature() == null) {
-			activity.announcePgp(conversation.getAccount(), conversation);
+			activity.announcePgp(conversation.getAccount(), conversation, activity.onOpenPGPKeyPublished);
 			return;
 		}
 		if (conversation.getMode() == Conversation.MODE_SINGLE) {
