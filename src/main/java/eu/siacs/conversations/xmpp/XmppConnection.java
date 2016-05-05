@@ -1555,7 +1555,12 @@ public class XmppConnection implements Runnable {
 				if (items.size() > 0) {
 					try {
 						long maxsize = Long.parseLong(items.get(0).getValue().getExtendedDiscoInformation(Xmlns.HTTP_UPLOAD, "max-file-size"));
-						return filesize <= maxsize;
+						if(filesize <= maxsize) {
+							return true;
+						} else {
+							Log.d(Config.LOGTAG,account.getJid().toBareJid()+": http upload is not available for files with size "+filesize+" (max is "+maxsize+")");
+							return false;
+						}
 					} catch (Exception e) {
 						return true;
 					}

@@ -134,10 +134,12 @@ public class FileBackend {
 
 	public static boolean allFilesUnderSize(Context context, List<Uri> uris, long max) {
 		if (max <= 0) {
+			Log.d(Config.LOGTAG,"server did not report max file size for http upload");
 			return true; //exception to be compatible with HTTP Upload < v0.2
 		}
 		for(Uri uri : uris) {
 			if (FileBackend.getFileSize(context, uri) > max) {
+				Log.d(Config.LOGTAG,"not all files are under "+max+" bytes. suggesting falling back to jingle");
 				return false;
 			}
 		}
