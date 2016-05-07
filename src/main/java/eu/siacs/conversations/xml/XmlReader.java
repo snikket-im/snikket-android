@@ -96,17 +96,8 @@ public class XmlReader {
 				} catch (RuntimeException re) {
 				}
 			}
-		} catch (ArrayIndexOutOfBoundsException e) {
-			throw new IOException(
-					"xml parser mishandled ArrayIndexOufOfBounds", e);
-		} catch (StringIndexOutOfBoundsException e) {
-			throw new IOException(
-					"xml parser mishandled StringIndexOufOfBounds", e);
-		} catch (NullPointerException e) {
-			throw new IOException("xml parser mishandled NullPointerException",
-					e);
-		} catch (IndexOutOfBoundsException e) {
-			throw new IOException("xml parser mishandled IndexOutOfBound", e);
+		} catch (Exception e) {
+			throw new IOException("xml parser mishandled "+e.getClass().getName(), e);
 		}
 		return null;
 	}
