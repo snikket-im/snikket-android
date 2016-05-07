@@ -185,13 +185,17 @@ public class ScramSha1 extends SaslMechanism {
 				state = State.RESPONSE_SENT;
 				return Base64.encodeToString(clientFinalMessage.getBytes(), Base64.NO_WRAP);
 			case RESPONSE_SENT:
-				final String clientCalculatedServerFinalMessage = "v=" +
-					Base64.encodeToString(serverSignature, Base64.NO_WRAP);
-				if (challenge == null || !clientCalculatedServerFinalMessage.equals(new String(Base64.decode(challenge, Base64.DEFAULT)))) {
+				try {
+					final String clientCalculatedServerFinalMessage = "v=" +
+							Base64.encodeToString(serverSignature, Base64.NO_WRAP);
+					if (!clientCalculatedServerFinalMessage.equals(new String(Base64.decode(challenge, Base64.DEFAULT)))) {
+						throw new Exception();
+					};
+					state = State.VALID_SERVER_RESPONSE;
+					return "";
+				} catch(Exception e) {
 					throw new AuthenticationException("Server final message does not match calculated final message");
 				}
-				state = State.VALID_SERVER_RESPONSE;
-				return "";
 			default:
 				throw new InvalidStateException(state);
 		}
