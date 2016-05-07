@@ -1,5 +1,8 @@
 ###Changelog
 
+####Version 1.12.2
+* fixed pgp presence signing
+
 ####Version 1.12.1
 * small bug fixes
 
