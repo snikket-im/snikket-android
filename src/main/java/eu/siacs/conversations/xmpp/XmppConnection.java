@@ -537,12 +537,18 @@ public class XmppConnection implements Runnable {
 				try {
 					final int serverSequence = Integer.parseInt(ack.getAttribute("h"));
 					acknowledgeStanzaUpTo(serverSequence);
-				} catch (NumberFormatException e) {
+				} catch (NumberFormatException | NullPointerException e) {
 					Log.d(Config.LOGTAG,account.getJid().toBareJid()+": server send ack without sequence number");
 				}
 			} else if (nextTag.isStart("failed")) {
-				tagReader.readElement(nextTag);
-				Log.d(Config.LOGTAG, account.getJid().toBareJid().toString() + ": resumption failed");
+				Element failed = tagReader.readElement(nextTag);
+				try {
+					final int serverCount = Integer.parseInt(failed.getAttribute("h"));
+					Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": resumption failed but server acknowledged stanza #"+h);
+					acknowledgeStanzaUpTo(serverCount);
+				} catch (NumberFormatException | NullPointerException e) {
+					Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": resumption failed");
+				}
 				resetStreamId();
 				if (account.getStatus() != Account.State.ONLINE) {
 					sendBindRequest();
