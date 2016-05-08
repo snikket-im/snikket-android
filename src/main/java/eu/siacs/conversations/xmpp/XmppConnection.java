@@ -544,7 +544,7 @@ public class XmppConnection implements Runnable {
 				Element failed = tagReader.readElement(nextTag);
 				try {
 					final int serverCount = Integer.parseInt(failed.getAttribute("h"));
-					Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": resumption failed but server acknowledged stanza #"+h);
+					Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": resumption failed but server acknowledged stanza #"+serverCount);
 					acknowledgeStanzaUpTo(serverCount);
 				} catch (NumberFormatException | NullPointerException e) {
 					Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": resumption failed");
