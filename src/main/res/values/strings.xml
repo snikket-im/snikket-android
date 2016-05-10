@@ -542,6 +542,7 @@
 	<string name="pref_use_white_background_summary">Show received messages as black text on a white background</string>
 	<string name="account_status_tor_unavailable">Tor network unavailable</string>
 	<string name="account_status_bind_failure">Bind failure</string>
+	<string name="account_status_host_unknown">Domain not recognized</string>
 	<string name="server_info_broken">Broken</string>
 	<string name="pref_presence_settings">Presence</string>
 	<string name="pref_away_when_screen_off">Away when screen is off</string>

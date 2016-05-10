@@ -880,6 +880,7 @@ public class XmppConnection implements Runnable {
 	}
 
 	public void resetEverything() {
+		resetAttemptCount();
 		resetStreamId();
 		clearIqCallbacks();
 		mStanzaQueue.clear();
@@ -1173,15 +1174,20 @@ public class XmppConnection implements Runnable {
 	private void processStreamError(final Tag currentTag)
 		throws XmlPullParserException, IOException {
 		final Element streamError = tagReader.readElement(currentTag);
-		if (streamError != null && streamError.hasChild("conflict")) {
+		if (streamError == null) {
+			return;
+		}
+		Log.d(Config.LOGTAG,account.getJid().toBareJid()+": stream error "+streamError.toString());
+		if (streamError.hasChild("conflict")) {
 			final String resource = account.getResource().split("\\.")[0];
 			account.setResource(resource + "." + nextRandomId());
 			Log.d(Config.LOGTAG,
 					account.getJid().toBareJid() + ": switching resource due to conflict ("
 					+ account.getResource() + ")");
-		} else if (streamError != null) {
-			Log.d(Config.LOGTAG,account.getJid().toBareJid()+": stream error "+streamError.toString());
+		} else if (streamError.hasChild("host-unknown")) {
+			changeStatus(Account.State.HOST_UNKNOWN);
 		}
+		forceCloseSocket();
 	}
 
 	private void sendStartStream() throws IOException {
