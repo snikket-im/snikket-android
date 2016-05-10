@@ -631,11 +631,7 @@ public class Message extends AbstractEntity {
 			boolean encrypted = ref != null && ref.matches("([A-Fa-f0-9]{2}){48}");
 
 			if (encrypted) {
-				if (MimeUtils.guessMimeTypeFromExtension(extension) != null) {
-					return Decision.MUST;
-				} else {
-					return Decision.NEVER;
-				}
+				return Decision.MUST;
 			} else if (Transferable.VALID_IMAGE_EXTENSIONS.contains(extension)
 					|| Transferable.WELL_KNOWN_EXTENSIONS.contains(extension)) {
 				return Decision.SHOULD;
