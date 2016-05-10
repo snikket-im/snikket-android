@@ -168,6 +168,10 @@ public class XmppAxolotlSession {
 				try {
 					try {
 						PreKeyWhisperMessage message = new PreKeyWhisperMessage(encryptedKey);
+						if (!message.getPreKeyId().isPresent()) {
+							Log.w(Config.LOGTAG, AxolotlService.getLogprefix(account) + "PreKeyWhisperMessage did not contain a PreKeyId");
+							break;
+						}
 						Log.i(Config.LOGTAG, AxolotlService.getLogprefix(account) + "PreKeyWhisperMessage received, new session ID:" + message.getSignedPreKeyId() + "/" + message.getPreKeyId());
 						IdentityKey msgIdentityKey = message.getIdentityKey();
 						if (this.identityKey != null && !this.identityKey.equals(msgIdentityKey)) {
@@ -175,9 +179,7 @@ public class XmppAxolotlSession {
 						} else {
 							this.identityKey = msgIdentityKey;
 							plaintext = cipher.decrypt(message);
-							if (message.getPreKeyId().isPresent()) {
-								preKeyId = message.getPreKeyId().get();
-							}
+							preKeyId = message.getPreKeyId().get();
 						}
 					} catch (InvalidMessageException | InvalidVersionException e) {
 						Log.i(Config.LOGTAG, AxolotlService.getLogprefix(account) + "WhisperMessage received");
