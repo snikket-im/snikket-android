@@ -48,16 +48,12 @@ public abstract class AbstractParser {
 		return dateFormat.parse(timestamp);
 	}
 
-	protected void updateLastseen(final AbstractStanza packet, final Account account, final boolean presenceOverwrite) {
-		updateLastseen(getTimestamp(packet), account, packet.getFrom(), presenceOverwrite);
-	}
-
-	protected void updateLastseen(long timestamp, final Account account, final Jid from, final boolean presenceOverwrite) {
+	protected void updateLastseen(long timestamp, final Account account, final Jid from) {
 		final String presence = from == null || from.isBareJid() ? "" : from.getResourcepart();
 		final Contact contact = account.getRoster().getContact(from);
 		if (timestamp >= contact.lastseen.time) {
 			contact.lastseen.time = timestamp;
-			if (!presence.isEmpty() && presenceOverwrite) {
+			if (!presence.isEmpty()) {
 				contact.lastseen.presence = presence;
 			}
 		}

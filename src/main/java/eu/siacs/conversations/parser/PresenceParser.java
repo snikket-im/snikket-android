@@ -211,7 +211,6 @@ public class PresenceParser extends AbstractParser implements
 				contact.setPgpKeyId(pgp.fetchKeyId(account, msg, x.getContent()));
 			}
 			boolean online = sizeBefore < contact.getPresences().size();
-			updateLastseen(packet, account, false);
 			mXmppConnectionService.onContactStatusChanged.onContactStatusChanged(contact, online);
 		} else if (type.equals("unavailable")) {
 			if (from.isBareJid()) {

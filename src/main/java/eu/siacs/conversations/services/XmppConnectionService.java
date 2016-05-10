@@ -2817,17 +2817,15 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	}
 
 	public boolean displayCaptchaRequest(Account account, String id, Data data, Bitmap captcha) {
-		boolean rc = false;
 		if (mOnCaptchaRequested != null) {
 			DisplayMetrics metrics = getApplicationContext().getResources().getDisplayMetrics();
 			Bitmap scaled = Bitmap.createScaledBitmap(captcha, (int) (captcha.getWidth() * metrics.scaledDensity),
 					(int) (captcha.getHeight() * metrics.scaledDensity), false);
 
 			mOnCaptchaRequested.onCaptchaRequested(account, id, data, scaled);
-			rc = true;
+			return true;
 		}
-
-		return rc;
+		return false;
 	}
 
 	public void updateBlocklistUi(final OnUpdateBlocklist.Status status) {
