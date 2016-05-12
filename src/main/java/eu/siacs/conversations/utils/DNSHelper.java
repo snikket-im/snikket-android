@@ -12,6 +12,7 @@ import android.os.Parcelable;
 import android.util.Log;
 
 import java.io.IOException;
+import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
@@ -77,9 +78,9 @@ public class DNSHelper {
 			LinkProperties linkProperties = connectivityManager.getLinkProperties(networks[i]);
 			if (linkProperties != null) {
 				if (hasDefaultRoute(linkProperties)) {
-					servers.addAll(0, linkProperties.getDnsServers());
+					servers.addAll(0, getIPv4First(linkProperties.getDnsServers()));
 				} else {
-					servers.addAll(linkProperties.getDnsServers());
+					servers.addAll(getIPv4First(linkProperties.getDnsServers()));
 				}
 			}
 		}
@@ -87,6 +88,18 @@ public class DNSHelper {
 			Log.d(Config.LOGTAG, "used lollipop variant to discover dns servers in " + networks.length + " networks");
 		}
 		return servers.size() > 0 ? servers : getDnsServersPreLollipop();
+	}
+
+	private static List<InetAddress> getIPv4First(List<InetAddress> in) {
+		List<InetAddress> out = new ArrayList<>();
+		for(InetAddress addr : in) {
+			if (addr instanceof Inet4Address) {
+				out.add(0, addr);
+			} else {
+				out.add(addr);
+			}
+		}
+		return out;
 	}
 
 	@TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -155,7 +168,7 @@ public class DNSHelper {
 	public static Bundle queryDNS(String host, InetAddress dnsServer) {
 		Bundle bundle = new Bundle();
 		try {
-			client.setTimeout(Config.PING_TIMEOUT * 1000);
+			client.setTimeout(Config.SOCKET_TIMEOUT * 1000);
 			final String qname = "_xmpp-client._tcp." + host;
 			final String tlsQname = "_xmpps-client._tcp." + host;
 			Log.d(Config.LOGTAG, "using dns server: " + dnsServer.getHostAddress() + " to look up " + host);
