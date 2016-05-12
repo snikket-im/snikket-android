@@ -44,7 +44,7 @@ public class PresenceGenerator extends AbstractGenerator {
 		}
 		packet.setFrom(account.getJid());
 		String sig = account.getPgpSignature();
-		if (sig != null) {
+		if (sig != null && mXmppConnectionService.getPgpEngine() != null) {
 			packet.addChild("x", "jabber:x:signed").setContent(sig);
 		}
 		String capHash = getCapHash();

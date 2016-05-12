@@ -118,7 +118,7 @@ public class SetPresenceActivity extends XmppActivity implements View.OnClickLis
 			xmppConnectionService.changeStatus(status, statusMessage);
 			finish();
 		} else if (mAccount != null) {
-			if (mAccount.getPgpId() == 0) {
+			if (mAccount.getPgpId() == 0 && hasPgp()) {
 				xmppConnectionService.changeStatus(mAccount, status, statusMessage, true);
 				finish();
 			} else {
