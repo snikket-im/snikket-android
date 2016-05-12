@@ -280,6 +280,10 @@ public class XmppConnection implements Runnable {
 				final Bundle result = DNSHelper.getSRVRecord(account.getServer(), mXmppConnectionService);
 				final ArrayList<Parcelable>values = result.getParcelableArrayList("values");
 				for(Iterator<Parcelable> iterator = values.iterator(); iterator.hasNext();) {
+					if (Thread.currentThread().isInterrupted()) {
+						Log.d(Config.LOGTAG,account.getJid().toBareJid()+": Thread was interrupted");
+						return;
+					}
 					final Bundle namePort = (Bundle) iterator.next();
 					try {
 						String srvRecordServer;
@@ -1334,7 +1338,12 @@ public class XmppConnection implements Runnable {
 		}
 	}
 
+	public void interrupt() {
+		Thread.currentThread().interrupt();
+	}
+
 	public void disconnect(final boolean force) {
+		interrupt();
 		Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": disconnecting force="+Boolean.valueOf(force));
 		if (force) {
 			forceCloseSocket();

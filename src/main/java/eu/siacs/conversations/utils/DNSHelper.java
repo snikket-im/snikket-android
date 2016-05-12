@@ -51,14 +51,19 @@ public class DNSHelper {
         final String host = jid.getDomainpart();
 		final List<InetAddress> servers = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ? getDnsServers(context) : getDnsServersPreLollipop();
 		Bundle b = new Bundle();
+		boolean interrupted = false;
 		for(InetAddress server : servers) {
+			if (Thread.currentThread().isInterrupted()) {
+				interrupted = true;
+				break;
+			}
 			b = queryDNS(host, server);
 			if (b.containsKey("values")) {
 				return b;
 			}
 		}
 		if (!b.containsKey("values")) {
-			Log.d(Config.LOGTAG,"all dns queries failed. provide fallback A record");
+			Log.d(Config.LOGTAG,(interrupted ? "Thread interrupted during DNS query" :"all dns queries failed") + ". provide fallback A record");
 			ArrayList<Parcelable> values = new ArrayList<>();
 			values.add(createNamePortBundle(host, 5222, false));
 			b.putParcelableArrayList("values",values);
