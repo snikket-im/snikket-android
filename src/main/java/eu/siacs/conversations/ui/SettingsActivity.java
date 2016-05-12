@@ -14,7 +14,6 @@ import android.preference.Preference;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
-import android.util.Log;
 import android.widget.Toast;
 
 import java.security.KeyStoreException;
@@ -46,6 +45,13 @@ public class SettingsActivity extends XmppActivity implements
 			mSettingsFragment = new SettingsFragment();
 			fm.beginTransaction().replace(android.R.id.content, mSettingsFragment).commit();
 		}
+
+		this.mTheme = findTheme();
+		setTheme(this.mTheme);
+
+		int bgcolor = getPrimaryBackgroundColor();
+		getWindow().getDecorView().setBackgroundColor(bgcolor);
+
 	}
 
 	@Override

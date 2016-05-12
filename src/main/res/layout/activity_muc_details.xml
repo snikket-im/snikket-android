@@ -3,7 +3,7 @@
 			xmlns:app="http://schemas.android.com/apk/res-auto"
 			android:layout_width="fill_parent"
 			android:layout_height="fill_parent"
-			android:background="@color/grey200">
+			android:background="?attr/color_background_secondary">
 
 	<LinearLayout
 		android:id="@+id/muc_main_layout"
@@ -18,7 +18,7 @@
 			android:layout_marginRight="@dimen/activity_horizontal_margin"
 			android:layout_marginTop="@dimen/activity_vertical_margin"
 			android:layout_marginBottom="@dimen/activity_vertical_margin"
-			android:background="@drawable/infocard_border"
+			android:background="?attr/infocard_border"
 			android:orientation="vertical"
 			android:padding="@dimen/infocard_padding">
 
@@ -28,7 +28,7 @@
 				android:layout_height="wrap_content"
 				android:layout_marginBottom="16dp"
 				android:text="@string/account_settings_example_jabber_id"
-				android:textColor="@color/black87"
+				android:textColor="?attr/color_text_primary"
 				android:textSize="?attr/TextSizeHeadline"
 				android:textStyle="bold"/>
 
@@ -58,7 +58,7 @@
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:singleLine="true"
-						android:textColor="@color/black87"
+						android:textColor="?attr/color_text_primary"
 						android:textSize="?attr/TextSizeHeadline"/>
 
 					<TextView
@@ -66,7 +66,7 @@
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:singleLine="true"
-						android:textColor="@color/black87"
+						android:textColor="?attr/color_text_primary"
 						android:textSize="?attr/TextSizeBody"/>
 				</LinearLayout>
 
@@ -78,7 +78,8 @@
 					android:layout_centerVertical="true"
 					android:background="?android:selectableItemBackground"
 					android:padding="@dimen/image_button_padding"
-					android:src="?attr/icon_edit_dark"/>
+					android:alpha="?attr/icon_alpha"
+					android:src="?attr/icon_edit_body"/>
 			</RelativeLayout>
 
 			<RelativeLayout
@@ -90,7 +91,7 @@
 				android:layout_height="wrap_content"
 				android:text="@string/private_conference"
 				android:layout_centerVertical="true"
-				android:textColor="@color/black87"
+				android:textColor="?attr/color_text_primary"
 				android:textSize="?attr/TextSizeBody"
 				android:layout_alignParentLeft="true"
 				android:layout_toLeftOf="@+id/change_conference_button"
@@ -105,6 +106,7 @@
 				android:layout_centerVertical="true"
 				android:background="?android:selectableItemBackground"
 				android:padding="@dimen/image_button_padding"
+				android:alpha="?attr/icon_alpha"
 				android:src="?attr/icon_settings"/>
 				</RelativeLayout>
 
@@ -117,7 +119,7 @@
 					android:layout_height="wrap_content"
 					android:text="@string/notify_on_all_messages"
 					android:layout_centerVertical="true"
-					android:textColor="@color/black87"
+					android:textColor="?attr/color_text_primary"
 					android:textSize="?attr/TextSizeBody"
 					android:layout_alignParentLeft="true"
 					android:layout_toLeftOf="@+id/notification_status_button"
@@ -132,7 +134,7 @@
 					android:layout_centerVertical="true"
 					android:background="?android:selectableItemBackground"
 					android:padding="@dimen/image_button_padding"
-					android:src="@drawable/ic_notifications_grey600_24dp"/>
+					android:src="?attr/icon_notifications"/>
 			</RelativeLayout>
 
 			<TableLayout
@@ -150,7 +152,7 @@
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:text="@string/server_info_mam"
-						android:textColor="@color/black87"
+						android:textColor="?attr/color_text_primary"
 						android:textSize="?attr/TextSizeBody" />
 
 					<TextView
@@ -158,7 +160,7 @@
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:layout_gravity="right"
-						android:textColor="@color/black87"
+						android:textColor="?attr/color_text_primary"
 						android:textSize="?attr/TextSizeBody" />
 				</TableRow>
 
@@ -171,7 +173,7 @@
 				android:layout_gravity="right"
 				android:layout_marginTop="32dp"
 				android:text="@string/using_account"
-				android:textColor="@color/black54"
+				android:textColor="?attr/color_text_secondary"
 				android:textSize="?attr/TextSizeInfo"/>
 		</LinearLayout>
 
@@ -183,7 +185,7 @@
 			android:layout_marginRight="@dimen/activity_horizontal_margin"
 			android:layout_marginTop="@dimen/activity_vertical_margin"
 			android:layout_marginBottom="@dimen/activity_vertical_margin"
-			android:background="@drawable/infocard_border"
+			android:background="?attr/infocard_border"
 			android:orientation="vertical"
 			android:padding="@dimen/infocard_padding">
 

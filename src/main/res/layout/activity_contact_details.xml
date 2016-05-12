@@ -2,7 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/grey200" >
+    android:background="?attr/color_background_secondary" >
 
     <LinearLayout
         android:id="@+id/details_main_layout"
@@ -17,7 +17,7 @@
             android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:layout_marginTop="@dimen/activity_vertical_margin"
             android:layout_marginBottom="@dimen/activity_vertical_margin"
-            android:background="@drawable/infocard_border"
+            android:background="?attr/infocard_border"
             android:padding="@dimen/infocard_padding" >
 
             <QuickContactBadge
@@ -40,7 +40,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/account_settings_example_jabber_id"
-                    android:textColor="@color/black87"
+                    android:textColor="?attr/color_text_primary"
                     android:textSize="?attr/TextSizeHeadline"
                     android:textStyle="bold" />
 
@@ -66,7 +66,7 @@
                     android:id="@+id/status_message"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/black87"
+                    android:textColor="?attr/color_text_secondary"
                     android:textStyle="italic"
                     android:textSize="?attr/TextSizeBody" />
 
@@ -83,7 +83,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:text="@string/send_presence_updates"
-                    android:textColor="@color/black87"
+                    android:textColor="?attr/color_text_primary"
                     android:textSize="?attr/TextSizeBody" />
 
                 <CheckBox
@@ -91,7 +91,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/receive_presence_updates"
-                    android:textColor="@color/black87"
+                    android:textColor="?attr/color_text_primary"
                     android:textSize="?attr/TextSizeBody" />
             </LinearLayout>
 
@@ -103,7 +103,7 @@
                 android:layout_below="@+id/details_jidbox"
                 android:layout_marginTop="32dp"
                 android:text="@string/using_account"
-                android:textColor="@color/black54"
+                android:textColor="?attr/color_text_secondary"
                 android:textSize="?attr/TextSizeInfo" />
         </RelativeLayout>
 
@@ -115,7 +115,7 @@
             android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:layout_marginTop="@dimen/activity_vertical_margin"
             android:layout_marginBottom="@dimen/activity_vertical_margin"
-            android:background="@drawable/infocard_border"
+            android:background="?attr/infocard_border"
             android:divider="?android:dividerHorizontal"
             android:orientation="vertical"
             android:padding="@dimen/infocard_padding"

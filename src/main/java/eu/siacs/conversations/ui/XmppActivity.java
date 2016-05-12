@@ -21,6 +21,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
+import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Point;
@@ -379,6 +380,7 @@ public abstract class XmppActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		metrics = getResources().getDisplayMetrics();
 		ExceptionHelper.init(getApplicationContext());
+
 		mPrimaryTextColor = getResources().getColor(R.color.black87);
 		mSecondaryTextColor = getResources().getColor(R.color.black54);
 		mTertiaryTextColor = getResources().getColor(R.color.black12);
@@ -388,14 +390,38 @@ public abstract class XmppActivity extends Activity {
 		mPrimaryColor = getResources().getColor(R.color.primary);
 		mPrimaryBackgroundColor = getResources().getColor(R.color.grey50);
 		mSecondaryBackgroundColor = getResources().getColor(R.color.grey200);
+
+		if(isDarkTheme()) {
+			mPrimaryTextColor = getResources().getColor(R.color.white);
+			mSecondaryTextColor = getResources().getColor(R.color.white70);
+			mTertiaryTextColor = getResources().getColor(R.color.white12);
+			mPrimaryBackgroundColor = getResources().getColor(R.color.grey800);
+			mSecondaryBackgroundColor = getResources().getColor(R.color.grey900);
+		}
+
 		this.mTheme = findTheme();
 		setTheme(this.mTheme);
+
 		this.mUsingEnterKey = usingEnterKey();
 		mUseSubject = getPreferences().getBoolean("use_subject", true);
 		final ActionBar ab = getActionBar();
 		if (ab!=null) {
 			ab.setDisplayHomeAsUpEnabled(true);
 		}
+	}
+
+	public boolean isDarkTheme() {
+		return getPreferences().getString("theme", "light").equals("dark");
+	}
+
+	public int getThemeResource(int r_attr_name, int r_drawable_def) {
+		int[] attrs = {	r_attr_name };
+		TypedArray ta = this.getTheme().obtainStyledAttributes(attrs);
+
+		int res = ta.getResourceId(0, r_drawable_def);
+		ta.recycle();
+
+		return res;
 	}
 
 	protected boolean isOptimizingBattery() {
@@ -1077,10 +1103,19 @@ public abstract class XmppActivity extends Activity {
 	}
 
 	protected int findTheme() {
-		if (getPreferences().getBoolean("use_larger_font", false)) {
-			return R.style.ConversationsTheme_LargerText;
+		Boolean dark   = getPreferences().getString("theme", "light").equals("dark");
+		Boolean larger = getPreferences().getBoolean("use_larger_font", false);
+
+		if(dark) {
+			if(larger)
+				return R.style.ConversationsTheme_Dark_LargerText;
+			else
+				return R.style.ConversationsTheme_Dark;
 		} else {
-			return R.style.ConversationsTheme;
+			if (larger)
+				return R.style.ConversationsTheme_LargerText;
+			else
+				return R.style.ConversationsTheme;
 		}
 	}
 
@@ -1098,6 +1133,7 @@ public abstract class XmppActivity extends Activity {
 			final int width = (size.x < size.y ? size.x : size.y);
 			Bitmap bitmap = createQrCodeBitmap(uri, width);
 			ImageView view = new ImageView(this);
+			view.setBackgroundColor(Color.WHITE);
 			view.setImageBitmap(bitmap);
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			builder.setView(view);

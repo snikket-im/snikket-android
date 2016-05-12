@@ -13,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/your_account"
-        android:textColor="@color/black87"
+        android:textColor="?attr/color_text_primary"
         android:textSize="?attr/TextSizeBody" />
 
     <Spinner
@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="@string/conference_address"
-        android:textColor="@color/black87"
+        android:textColor="?attr/color_text_primary"
         android:textSize="?attr/TextSizeBody" />
 
     <AutoCompleteTextView
@@ -36,8 +36,8 @@
         android:layout_height="wrap_content"
         android:hint="@string/conference_address_example"
         android:inputType="textEmailAddress"
-        android:textColor="@color/black87"
-        android:textColorHint="@color/black54"
+        android:textColor="?attr/color_text_primary"
+        android:textColorHint="?attr/color_text_secondary"
         android:textSize="?attr/TextSizeBody"/>
 
     <CheckBox
@@ -47,7 +47,7 @@
         android:layout_marginTop="8dp"
         android:checked="true"
         android:text="@string/save_as_bookmark"
-        android:textColor="@color/black87"
+        android:textColor="?attr/color_text_primary"
         android:textSize="?attr/TextSizeBody"/>
 
 </LinearLayout>

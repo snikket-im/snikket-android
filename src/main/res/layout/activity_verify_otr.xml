@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/grey50">
+                android:background="?attr/color_background_primary">
 
 	<ScrollView
 		android:layout_width="fill_parent"
@@ -34,7 +34,7 @@
 					android:id="@+id/your_fingerprint"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:textColor="@color/black87"
+					android:textColor="?attr/color_text_primary"
 					android:textSize="?attr/TextSizeBody"
 					android:typeface="monospace"
 					android:fontFamily="monospace"/>
@@ -43,7 +43,7 @@
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:text="@string/your_fingerprint"
-					android:textColor="@color/black54"
+					android:textColor="?attr/color_text_secondary"
 					android:textSize="?attr/TextSizeInfo"/>
 
 				<TextView
@@ -51,7 +51,7 @@
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:layout_marginTop="20dp"
-					android:textColor="@color/black87"
+					android:textColor="?attr/color_text_primary"
 					android:textSize="?attr/TextSizeBody"
 					android:typeface="monospace"
 					android:fontFamily="monospace"/>
@@ -61,7 +61,7 @@
 					android:layout_height="wrap_content"
 					android:layout_marginBottom="20dp"
 					android:text="@string/remote_fingerprint"
-					android:textColor="@color/black54"
+					android:textColor="?attr/color_text_secondary"
 					android:textSize="?attr/TextSizeInfo"/>
 
 			</LinearLayout>
@@ -79,7 +79,7 @@
 					android:layout_height="wrap_content"
 					android:layout_gravity="center_horizontal"
 					android:text="@string/verified"
-					android:textColor="@color/black87"
+					android:textColor="?attr/color_text_primary"
 					android:textSize="?attr/TextSizeHeadline"
 					android:textStyle="bold"
 					android:visibility="gone"/>
@@ -89,7 +89,7 @@
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:layout_marginBottom="8dp"
-					android:textColor="@color/black87"
+					android:textColor="?attr/color_text_primary"
 					android:textSize="?attr/TextSizeBody"
 					android:textStyle="bold"
 					android:visibility="gone"/>
@@ -101,8 +101,8 @@
 					android:layout_marginBottom="8dp"
 					android:hint="@string/shared_secret_hint"
 					android:inputType="textAutoComplete"
-					android:textColor="@color/black87"
-					android:textColorHint="@color/black54"
+					android:textColor="?attr/color_text_primary"
+					android:textColorHint="?attr/color_text_secondary"
 					android:textSize="?attr/TextSizeBody"/>
 
 				<EditText
@@ -112,8 +112,8 @@
 					android:layout_marginTop="8dp"
 					android:hint="@string/shared_secret_secret"
 					android:inputType="textPassword"
-					android:textColor="@color/black87"
-					android:textColorHint="@color/black54"
+					android:textColor="?attr/color_text_primary"
+					android:textColorHint="?attr/color_text_secondary"
 					android:textSize="?attr/TextSizeBody"/>
 			</LinearLayout>
 		</LinearLayout>
@@ -139,7 +139,7 @@
 			android:layout_height="fill_parent"
 			android:layout_marginBottom="7dp"
 			android:layout_marginTop="7dp"
-			android:background="@color/black12"/>
+			android:background="?attr/divider"/>
 
 		<Button
 			android:id="@+id/right_button"

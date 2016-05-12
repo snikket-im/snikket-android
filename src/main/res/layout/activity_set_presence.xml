@@ -2,7 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:background="@color/grey200"
+            android:background="?attr/color_background_secondary"
             android:id="@+id/scroll_view">
 
     <LinearLayout
@@ -17,7 +17,7 @@
             android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:layout_marginTop="@dimen/activity_vertical_margin"
             android:layout_marginBottom="@dimen/activity_vertical_margin"
-            android:background="@drawable/infocard_border"
+            android:background="?attr/infocard_border"
             android:padding="@dimen/infocard_padding"
             android:orientation="vertical">
             <EditText
@@ -26,7 +26,7 @@
                 android:inputType="textMultiLine"
                 android:hint="@string/status_message"
                 android:id="@+id/presence_status_message"
-                android:textColor="@color/black87"
+                android:textColor="?attr/color_text_primary"
                 android:layout_marginBottom="8dp"
                 android:textSize="?attr/TextSizeBody"/>
             <Spinner
@@ -41,7 +41,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/all_accounts_on_this_device"
                 android:id="@+id/all_accounts"
-                android:textColor="@color/black87"
+                android:textColor="?attr/color_text_primary"
                 android:textSize="?attr/TextSizeBody"/>
             <Button
                 android:id="@+id/change_presence"
@@ -62,7 +62,7 @@
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:layout_marginBottom="@dimen/activity_vertical_margin"
-        android:background="@drawable/infocard_border"
+        android:background="?attr/infocard_border"
         android:padding="@dimen/infocard_padding"
         android:orientation="vertical"
         android:divider="?android:dividerHorizontal"

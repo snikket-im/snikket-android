@@ -21,7 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/presence_status_message"
-        android:textColor="@color/black87"
+        android:textColor="?attr/color_text_primary"
         android:textSize="?attr/TextSizeBody"/>
     <TextView
         android:id="@+id/status"
@@ -45,5 +45,6 @@
         android:layout_alignParentEnd="true"
         android:background="?android:selectableItemBackground"
         android:padding="@dimen/image_button_padding"
+        android:alpha="?attr/icon_alpha"
         android:src="?attr/icon_remove"/>
 </RelativeLayout>

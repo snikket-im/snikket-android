@@ -80,7 +80,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		}
 	};
 	private boolean mIndicateReceived = false;
-	private boolean mUseWhiteBackground = false;
+	private boolean mUseGreenBackground = false;
 
 	public MessageAdapter(ConversationActivity activity, List<Message> messages) {
 		super(activity, 0, messages);
@@ -294,7 +294,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		viewHolder.messageBody.setText(span);
 	}
 
-	private void displayTextMessage(final ViewHolder viewHolder, final Message message, boolean darkBackground) {
+	private void displayTextMessage(final ViewHolder viewHolder, final Message message, boolean darkBackground, int type) {
 		if (viewHolder.download_button != null) {
 			viewHolder.download_button.setVisibility(View.GONE);
 		}
@@ -388,7 +388,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		}
 		viewHolder.messageBody.setTextColor(this.getMessageTextColor(darkBackground, true));
 		viewHolder.messageBody.setLinkTextColor(this.getMessageTextColor(darkBackground, true));
-		viewHolder.messageBody.setHighlightColor(activity.getResources().getColor(darkBackground ? R.color.grey800 : R.color.grey500));
+		viewHolder.messageBody.setHighlightColor(activity.getResources().getColor(darkBackground ? (type == SENT || !mUseGreenBackground ? R.color.black26 : R.color.grey800) : R.color.grey500));
 		viewHolder.messageBody.setTypeface(null, Typeface.NORMAL);
 		viewHolder.messageBody.setOnLongClickListener(openContextMenu);
 	}
@@ -556,7 +556,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 			}
 		}
 
-		boolean darkBackground = (type == RECEIVED && (!isInValidSession || !mUseWhiteBackground));
+		boolean darkBackground = type == RECEIVED && (!isInValidSession || mUseGreenBackground) || activity.isDarkTheme();
 
 		if (type == STATUS) {
 			if ("LOAD_MORE".equals(message.getBody())) {
@@ -672,14 +672,15 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 									UIHelper.getFileDescriptionString(activity, message)));
 				}
 			} else {
-				displayTextMessage(viewHolder, message, darkBackground);
+				displayTextMessage(viewHolder, message, darkBackground, type);
 			}
 		}
 
 		if (type == RECEIVED) {
 			if(isInValidSession) {
-				if (mUseWhiteBackground) {
-					viewHolder.message_box.setBackgroundResource(R.drawable.message_bubble_received_white);
+				if (!mUseGreenBackground) {
+					int bubble = activity.getThemeResource(R.attr.message_bubble_received_monochrome, R.drawable.message_bubble_received_white);
+					viewHolder.message_box.setBackgroundResource(bubble);
 				} else {
 					viewHolder.message_box.setBackgroundResource(R.drawable.message_bubble_received);
 				}
@@ -734,7 +735,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 
 	public void updatePreferences() {
 		this.mIndicateReceived = activity.indicateReceived();
-		this.mUseWhiteBackground = activity.useWhiteBackground();
+		this.mUseGreenBackground = activity.useGreenBackground();
 	}
 
 	public interface OnContactPictureClicked {

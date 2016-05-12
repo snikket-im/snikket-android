@@ -412,7 +412,7 @@
 	<string name="enable_notifications">Enable notifications</string>
 	<string name="conference_with">Create conference with…</string>
 	<string name="no_conference_server_found">No conference server found</string>
-	<string name="conference_creation_failed">Conference creation failed!</string>s
+	<string name="conference_creation_failed">Conference creation failed!</string>
 	<string name="secret_accepted">Secret accepted!</string>
 	<string name="reset">Reset</string>
 	<string name="account_image_description">Account avatar</string>
@@ -656,4 +656,10 @@
 	<string name="pref_broadcast_last_activity">Broadcast Last User Interaction</string>
 	<string name="pref_broadcast_last_activity_summary">Let all your contacts know when use Conversations</string>
 	<string name="pref_privacy">Privacy</string>
+	<string name="pref_theme_options">Theme</string>
+	<string name="pref_theme_options_summary">Select the color palette</string>
+	<string name="pref_theme_light">Light theme</string>
+	<string name="pref_theme_dark">Dark theme</string>
+	<string name="pref_use_green_background">Green Background</string>
+	<string name="pref_use_green_background_summary">Use green background for received messages</string>
 </resources>

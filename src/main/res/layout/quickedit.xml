@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
-        android:textColor="@color/black87" >
+        android:textColor="?attr/color_text_primary" >
 
         <requestFocus />
     </EditText>
