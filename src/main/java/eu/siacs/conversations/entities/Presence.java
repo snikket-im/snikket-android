@@ -40,11 +40,11 @@ public class Presence implements Comparable {
 		}
 	}
 
-	protected final Status status;
-	protected ServiceDiscoveryResult disco;
-	protected final String ver;
-	protected final String hash;
-	protected final String message;
+	private final Status status;
+	private ServiceDiscoveryResult disco;
+	private final String ver;
+	private final String hash;
+	private final String message;
 
 	private Presence(Status status, String ver, String hash, String message) {
 		this.status = status;
@@ -79,7 +79,15 @@ public class Presence implements Comparable {
 		return this.hash;
 	}
 
+	public String getMessage() {
+		return this.message;
+	}
+
 	public void setServiceDiscoveryResult(ServiceDiscoveryResult disco) {
 		this.disco = disco;
+	}
+
+	public ServiceDiscoveryResult getServiceDiscoveryResult() {
+		return disco;
 	}
 }

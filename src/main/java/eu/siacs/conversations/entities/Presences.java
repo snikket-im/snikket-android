@@ -64,11 +64,24 @@ public class Presences {
 		ArrayList<String> messages = new ArrayList<>();
 		synchronized (this.presences) {
 			for(Presence presence : this.presences.values()) {
-				if (presence.message != null && !presence.message.trim().isEmpty()) {
-					messages.add(presence.message.trim());
+				String message = presence.getMessage();
+				if (message != null && !message.trim().isEmpty()) {
+					messages.add(message.trim());
 				}
 			}
 		}
 		return messages;
+	}
+
+	public boolean allOrNonSupport(String namespace) {
+		synchronized (this.presences) {
+			for(Presence presence : this.presences.values()) {
+				ServiceDiscoveryResult disco = presence.getServiceDiscoveryResult();
+				if (disco == null || !disco.getFeatures().contains(namespace)) {
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 }

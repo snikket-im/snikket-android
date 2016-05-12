@@ -33,7 +33,7 @@ public abstract class AbstractGenerator {
 			"urn:xmpp:ping",
 			"jabber:iq:version",
 			"http://jabber.org/protocol/chatstates",
-			AxolotlService.PEP_DEVICE_LIST+"+notify"};
+			AxolotlService.PEP_DEVICE_LIST_NOTIFY};
 	private final String[] MESSAGE_CONFIRMATION_FEATURES = {
 			"urn:xmpp:chat-markers:0",
 			"urn:xmpp:receipts"
