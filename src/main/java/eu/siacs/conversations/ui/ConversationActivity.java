@@ -953,6 +953,9 @@ public class ConversationActivity extends XmppActivity
 		if (modifier && key == KeyEvent.KEYCODE_TAB && isConversationsOverviewHideable()) {
 			toggleConversationsOverview();
 			return true;
+		} else if (modifier && key == KeyEvent.KEYCODE_SPACE) {
+			startActivity(new Intent(this, StartConversationActivity.class));
+			return true;
 		} else if (modifier && key == downKey) {
 			if (isConversationsOverviewHideable() && !isConversationsOverviewVisable()) {
 				showConversationsOverview();

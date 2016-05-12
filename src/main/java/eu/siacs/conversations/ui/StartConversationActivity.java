@@ -91,7 +91,6 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 	private List<String> mKnownHosts;
 	private List<String> mKnownConferenceHosts;
 	private Invite mPendingInvite = null;
-	private Menu mOptionsMenu;
 	private EditText mSearchEditText;
 	private AtomicBoolean mRequestedContactsPermission = new AtomicBoolean(false);
 	private final int REQUEST_SYNC_CONTACTS = 0x3b28cf;
@@ -116,9 +115,7 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 
 		@Override
 		public boolean onMenuItemActionCollapse(MenuItem item) {
-			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-			imm.hideSoftInputFromWindow(mSearchEditText.getWindowToken(),
-					InputMethodManager.HIDE_IMPLICIT_ONLY);
+			hideKeyboard();
 			mSearchEditText.setText("");
 			filter(null);
 			return true;
@@ -167,6 +164,28 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 		@Override
 		public void onTextChanged(CharSequence s, int start, int before,
 				int count) {
+		}
+	};
+
+	private  TextView.OnEditorActionListener mSearchDone = new TextView.OnEditorActionListener() {
+		@Override
+		public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+			if (getActionBar().getSelectedNavigationIndex() == 0) {
+				if (contacts.size() == 1) {
+					openConversationForContact((Contact) contacts.get(0));
+				} else {
+					hideKeyboard();
+					mContactsListFragment.getListView().requestFocus();
+				}
+			} else {
+				if (conferences.size() == 1) {
+					openConversationsForBookmark((Bookmark) conferences.get(0));
+				} else {
+					hideKeyboard();
+					mConferenceListFragment.getListView().requestFocus();
+				}
+			}
+			return true;
 		}
 	};
 	private MenuItem mMenuSearchView;
@@ -260,6 +279,10 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 
 	protected void openConversationForContact(int position) {
 		Contact contact = (Contact) contacts.get(position);
+		openConversationForContact(contact);
+	}
+
+	protected void openConversationForContact(Contact contact) {
 		Conversation conversation = xmppConnectionService
 			.findOrCreateConversation(contact.getAccount(),
 					contact.getJid(), false);
@@ -277,6 +300,10 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 
 	protected void openConversationForBookmark(int position) {
 		Bookmark bookmark = (Bookmark) conferences.get(position);
+		openConversationsForBookmark(bookmark);
+	}
+
+	protected void openConversationsForBookmark(Bookmark bookmark) {
 		Jid jid = bookmark.getJid();
 		if (jid == null) {
 			Toast.makeText(this,R.string.invalid_jid,Toast.LENGTH_SHORT).show();
@@ -503,7 +530,6 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		this.mOptionsMenu = menu;
 		getMenuInflater().inflate(R.menu.start_conversation, menu);
 		MenuItem menuCreateContact = menu.findItem(R.id.action_create_contact);
 		MenuItem menuCreateConference = menu.findItem(R.id.action_join_conference);
@@ -515,6 +541,7 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 		mSearchEditText = (EditText) mSearchView
 			.findViewById(R.id.search_field);
 		mSearchEditText.addTextChangedListener(mSearchTextWatcher);
+		mSearchEditText.setOnEditorActionListener(mSearchDone);
 		if (getActionBar().getSelectedNavigationIndex() == 0) {
 			menuCreateConference.setVisible(false);
 		} else {
@@ -554,10 +581,24 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 	@Override
 	public boolean onKeyUp(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_SEARCH && !event.isLongPress()) {
-			mOptionsMenu.findItem(R.id.action_search).expandActionView();
+			openSearch();
 			return true;
 		}
+		int c = event.getUnicodeChar();
+		if (c > 32) {
+			if (mSearchEditText != null && !mSearchEditText.isFocused()) {
+				openSearch();
+				mSearchEditText.append(Character.toString((char) c));
+				return true;
+			}
+		}
 		return super.onKeyUp(keyCode, event);
+	}
+
+	private void openSearch() {
+		if (mMenuSearchView != null) {
+			mMenuSearchView.expandActionView();
+		}
 	}
 
 	@Override
