@@ -851,7 +851,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 
 	public XmppConnection createConnection(final Account account) {
 		final SharedPreferences sharedPref = getPreferences();
-		account.setResource(sharedPref.getString("resource", "mobile")
+		account.setResource(sharedPref.getString("resource", getString(R.string.default_resource))
 				.toLowerCase(Locale.getDefault()));
 		final XmppConnection connection = new XmppConnection(account, this);
 		connection.setOnMessagePacketReceivedListener(this.mMessageParser);

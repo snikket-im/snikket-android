@@ -9,7 +9,7 @@
             android:title="@string/pref_grant_presence_updates"/>
 
         <ListPreference
-            android:defaultValue="Mobile"
+            android:defaultValue="@string/default_resource"
             android:entries="@array/resources"
             android:entryValues="@array/resources"
             android:key="resource"
