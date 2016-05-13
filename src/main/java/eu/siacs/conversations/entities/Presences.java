@@ -75,9 +75,9 @@ public class Presences {
 		ArrayList<String> messages = new ArrayList<>();
 		synchronized (this.presences) {
 			for(Presence presence : this.presences.values()) {
-				String message = presence.getMessage();
-				if (message != null && !message.trim().isEmpty()) {
-					messages.add(message.trim());
+				String message = presence.getMessage() == null ? null : presence.getMessage().trim();
+				if (message != null && !message.isEmpty() && !messages.contains(message)) {
+					messages.add(message);
 				}
 			}
 		}
