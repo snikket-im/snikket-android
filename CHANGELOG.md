@@ -1,5 +1,11 @@
 ###Changelog
 
+####Version 1.12.3
+* make omemo default when all resources support it
+* show presence of other resources as template
+* start typing in StartConversationsActivity to search
+* various bug fixes and improvements
+
 ####Version 1.12.2
 * fixed pgp presence signing
 
