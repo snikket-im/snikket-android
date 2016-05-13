@@ -683,6 +683,7 @@ public class Conversation extends AbstractEntity implements Blockable {
 					&& axolotlService != null
 					&& mode == MODE_SINGLE
 					&& axolotlService.isConversationAxolotlCapable(this)
+					&& getAccount().getSelfContact().getPresences().allOrNonSupport(AxolotlService.PEP_DEVICE_LIST_NOTIFY)
 					&& getContact().getPresences().allOrNonSupport(AxolotlService.PEP_DEVICE_LIST_NOTIFY)) {
 				return Message.ENCRYPTION_AXOLOTL;
 			}
