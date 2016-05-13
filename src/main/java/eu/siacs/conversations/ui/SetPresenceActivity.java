@@ -118,7 +118,7 @@ public class SetPresenceActivity extends XmppActivity implements View.OnClickLis
 			xmppConnectionService.changeStatus(status, statusMessage);
 			finish();
 		} else if (mAccount != null) {
-			if (mAccount.getPgpId() == 0 && hasPgp()) {
+			if (mAccount.getPgpId() == 0 || !hasPgp()) {
 				xmppConnectionService.changeStatus(mAccount, status, statusMessage, true);
 				finish();
 			} else {
@@ -177,7 +177,7 @@ public class SetPresenceActivity extends XmppActivity implements View.OnClickLis
 			if (mStatusMessage.getText().length() == 0 && message != null) {
 				mStatusMessage.append(message);
 			}
-			mTemplates = xmppConnectionService.databaseBackend.getPresenceTemplates();
+			mTemplates = xmppConnectionService.getPresenceTemplates(mAccount);
 			if (this.mPostponedActivityResult != null) {
 				this.onActivityResult(mPostponedActivityResult.first, RESULT_OK, mPostponedActivityResult.second);
 			}

@@ -53,4 +53,24 @@ public class PresenceTemplate extends AbstractEntity {
 	public String getStatusMessage() {
 		return statusMessage;
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		PresenceTemplate template = (PresenceTemplate) o;
+
+		if (statusMessage != null ? !statusMessage.equals(template.statusMessage) : template.statusMessage != null)
+			return false;
+		return status == template.status;
+
+	}
+
+	@Override
+	public int hashCode() {
+		int result = statusMessage != null ? statusMessage.hashCode() : 0;
+		result = 31 * result + status.hashCode();
+		return result;
+	}
 }

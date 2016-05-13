@@ -1315,10 +1315,8 @@ public class XmppConnection implements Runnable {
 						}
 						socket.close();
 						Log.d(Config.LOGTAG,account.getJid().toBareJid()+": closed tcp without closing stream");
-					} catch (IOException e) {
-						e.printStackTrace();
-					} catch (InterruptedException e) {
-						e.printStackTrace();
+					} catch (IOException | InterruptedException e) {
+						return;
 					}
 				}
 			}).start();

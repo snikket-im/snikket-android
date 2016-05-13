@@ -3290,6 +3290,16 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		}
 	}
 
+	public List<PresenceTemplate> getPresenceTemplates(Account account) {
+		List<PresenceTemplate> templates = databaseBackend.getPresenceTemplates();
+		for(PresenceTemplate template : account.getSelfContact().getPresences().asTemplates()) {
+			if (!templates.contains(template)) {
+				templates.add(0, template);
+			}
+		}
+		return templates;
+	}
+
 	public interface OnMamPreferencesFetched {
 		void onPreferencesFetched(Element prefs);
 		void onPreferencesFetchFailed();

@@ -79,6 +79,10 @@ public class Account extends AbstractEntity {
 		}
 	}
 
+	public Contact getSelfContact() {
+		return getRoster().getContact(jid);
+	}
+
 	public enum State {
 		DISABLED,
 		OFFLINE,

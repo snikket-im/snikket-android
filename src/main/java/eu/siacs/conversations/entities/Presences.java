@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import eu.siacs.conversations.xml.Element;
 
@@ -51,6 +52,16 @@ public class Presences {
 			final String[] presencesArray = new String[presences.size()];
 			presences.keySet().toArray(presencesArray);
 			return presencesArray;
+		}
+	}
+
+	public List<PresenceTemplate> asTemplates() {
+		synchronized (this.presences) {
+			ArrayList<PresenceTemplate> templates = new ArrayList<>(presences.size());
+			for(Presence p : presences.values()) {
+				templates.add(new PresenceTemplate(p.getStatus(),p.getMessage()));
+			}
+			return templates;
 		}
 	}
 
