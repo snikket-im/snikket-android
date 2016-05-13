@@ -171,7 +171,7 @@ public class PresenceParser extends AbstractParser implements
 	public void parseContactPresence(final PresencePacket packet, final Account account) {
 		final PresenceGenerator mPresenceGenerator = mXmppConnectionService.getPresenceGenerator();
 		final Jid from = packet.getFrom();
-		if (from == null) {
+		if (from == null || from.equals(account.getJid())) {
 			return;
 		}
 		final String type = packet.getAttribute("type");
@@ -199,7 +199,7 @@ public class PresenceParser extends AbstractParser implements
 			final String message = packet.findChildContent("status");
 			final Presence presence = Presence.parse(show, caps, message);
 			contact.updatePresence(resource, presence);
-			if (presence.hasCaps() && !from.equals(account.getJid())) {
+			if (presence.hasCaps()) {
 				mXmppConnectionService.fetchCaps(account, from, presence);
 			}
 
