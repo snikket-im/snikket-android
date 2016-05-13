@@ -5,6 +5,7 @@
 * **Server name:** eg conversations.im, jabber.at or self hosted
 * **Server software:** ejabberd 16.04 or prosody 0.10 (if known)
 * **Installed server modules:** eg Stream Managment, CSI, MAM
+* **Conversations source:** eg PlayStore, PlayStore Beta Channel, F-Droid, self build (latest HEAD)
 
 
 #### Steps to reproduce
