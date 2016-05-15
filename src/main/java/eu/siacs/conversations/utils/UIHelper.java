@@ -249,7 +249,7 @@ public class UIHelper {
 		}
 	}
 
-	private static String getDisplayedMucCounterpart(final Jid counterpart) {
+	public static String getDisplayedMucCounterpart(final Jid counterpart) {
 		if (counterpart==null) {
 			return "";
 		} else if (!counterpart.isBareJid()) {
