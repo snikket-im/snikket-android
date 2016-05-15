@@ -1,5 +1,6 @@
 package eu.siacs.conversations.parser;
 
+import android.text.Html;
 import android.util.Log;
 import android.util.Pair;
 
@@ -7,6 +8,9 @@ import net.java.otr4j.session.Session;
 import net.java.otr4j.session.SessionStatus;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
 
@@ -20,6 +24,8 @@ import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.MucOptions;
+import eu.siacs.conversations.entities.Presence;
+import eu.siacs.conversations.entities.ServiceDiscoveryResult;
 import eu.siacs.conversations.http.HttpConnectionManager;
 import eu.siacs.conversations.services.MessageArchiveService;
 import eu.siacs.conversations.services.XmppConnectionService;
@@ -31,8 +37,10 @@ import eu.siacs.conversations.xmpp.jid.Jid;
 import eu.siacs.conversations.xmpp.pep.Avatar;
 import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
 
-public class MessageParser extends AbstractParser implements
-		OnMessagePacketReceived {
+public class MessageParser extends AbstractParser implements OnMessagePacketReceived {
+
+	private static final List<String> CLIENTS_SENDING_HTML_IN_OTR = Arrays.asList(new String[]{"Pidgin","Adium"});
+
 	public MessageParser(XmppConnectionService service) {
 		super(service);
 	}
@@ -95,6 +103,11 @@ public class MessageParser extends AbstractParser implements
 				conversation.setSymmetricKey(CryptoHelper.hexToBytes(key));
 				return null;
 			}
+			if (clientMightSendHtml(conversation.getAccount(), from)) {
+				Log.d(Config.LOGTAG,conversation.getAccount().getJid().toBareJid()+": received OTR message from bad behaving client. escaping HTML…");
+				body = Html.fromHtml(body).toString();
+			}
+
 			final OtrService otrService = conversation.getAccount().getOtrService();
 			Message finishedMessage = new Message(conversation, body, Message.ENCRYPTION_OTR, Message.STATUS_RECEIVED);
 			finishedMessage.setFingerprint(otrService.getFingerprint(otrSession.getRemotePublicKey()));
@@ -105,6 +118,30 @@ public class MessageParser extends AbstractParser implements
 			conversation.resetOtrSession();
 			return null;
 		}
+	}
+
+	private static boolean clientMightSendHtml(Account account, Jid from) {
+		String resource = from.getResourcepart();
+		if (resource == null) {
+			return false;
+		}
+		Presence presence = account.getRoster().getContact(from).getPresences().getPresences().get(resource);
+		ServiceDiscoveryResult disco = presence == null ? null : presence.getServiceDiscoveryResult();
+		if (disco == null) {
+			return false;
+		}
+		return hasIdentityKnowForSendingHtml(disco.getIdentities());
+	}
+
+	private static boolean hasIdentityKnowForSendingHtml(List<ServiceDiscoveryResult.Identity> identities) {
+		for(ServiceDiscoveryResult.Identity identity : identities) {
+			if (identity.getName() != null) {
+				if (CLIENTS_SENDING_HTML_IN_OTR.contains(identity.getName())) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	private Message parseAxolotlChat(Element axolotlMessage, Jid from,  Conversation conversation, int status) {
@@ -311,7 +348,7 @@ public class MessageParser extends AbstractParser implements
 		}
 		
 		boolean isTypeGroupChat = packet.getType() == MessagePacket.TYPE_GROUPCHAT;
-		boolean isProperlyAddressed = (to != null ) && (!to.isBareJid() || account.countPresences() <= 1);
+		boolean isProperlyAddressed = (to != null ) && (!to.isBareJid() || account.countPresences() == 0);
 		boolean isMucStatusMessage = from.isBareJid() && mucUserElement != null && mucUserElement.hasChild("status");
 		if (packet.fromAccount(account)) {
 			status = Message.STATUS_SEND;

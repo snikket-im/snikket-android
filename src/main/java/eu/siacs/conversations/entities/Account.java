@@ -450,7 +450,7 @@ public class Account extends AbstractEntity {
 	}
 
 	public int countPresences() {
-		return this.getRoster().getContact(this.getJid().toBareJid()).getPresences().size();
+		return this.getSelfContact().getPresences().size();
 	}
 
 	public String getPgpSignature() {
