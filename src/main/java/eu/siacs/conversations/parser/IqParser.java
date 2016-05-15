@@ -268,6 +268,11 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
 
 	@Override
 	public void onIqPacketReceived(final Account account, final IqPacket packet) {
+		if (Config.EXTENDED_IQ_LOGGING && (packet.getType() == IqPacket.TYPE.GET || packet.getType() == IqPacket.TYPE.SET)) {
+			Element first = packet.getChildren().size() > 0 ? packet.getChildren().get(0) : null;
+			Log.d(Config.LOGTAG,account.getJid().toBareJid()+": IQ request from "+packet.getFrom()+(first == null ? "" : " "+first));
+		}
+
 		if (packet.getType() == IqPacket.TYPE.ERROR || packet.getType() == IqPacket.TYPE.TIMEOUT) {
 			return;
 		} else if (packet.hasChild("query", Xmlns.ROSTER) && packet.fromServer(account)) {
