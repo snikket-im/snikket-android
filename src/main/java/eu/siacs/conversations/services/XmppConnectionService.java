@@ -1838,8 +1838,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 					final MucOptions mucOptions = conversation.getMucOptions();
 					final Jid joinJid = mucOptions.getSelf().getFullJid();
 					Log.d(Config.LOGTAG, account.getJid().toBareJid().toString() + ": joining conversation " + joinJid.toString());
-					PresencePacket packet = new PresencePacket();
-					packet.setFrom(conversation.getAccount().getJid());
+					PresencePacket packet = mPresenceGenerator.selfPresence(account, Presence.Status.ONLINE);
 					packet.setTo(joinJid);
 					Element x = packet.addChild("x", "http://jabber.org/protocol/muc");
 					if (conversation.getMucOptions().getPassword() != null) {
@@ -1852,10 +1851,6 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 					} else {
 						// Fallback to muc history
 						x.addChild("history").setAttribute("since", PresenceGenerator.getTimestamp(conversation.getLastMessageTransmitted()));
-					}
-					String sig = account.getPgpSignature();
-					if (sig != null) {
-						packet.addChild("x", "jabber:x:signed").setContent(sig);
 					}
 					sendPresencePacket(account, packet);
 					if (onConferenceJoined != null) {
