@@ -246,7 +246,7 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 			if (c != null && (c.getProfilePhoto() != null || c.getAvatar() != null)) {
 				return get(c, size, cachedOnly);
 			} else if (message.getConversation().getMode() == Conversation.MODE_MULTI){
-				MucOptions.User user = conversation.getMucOptions().findUser(message.getCounterpart().getResourcepart());
+				MucOptions.User user = conversation.getMucOptions().findUserByFullJid(message.getCounterpart());
 				if (user != null) {
 					return getImpl(user,size,cachedOnly);
 				}

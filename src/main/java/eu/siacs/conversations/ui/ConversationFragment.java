@@ -461,12 +461,12 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 			public void onContactPictureClicked(Message message) {
 				if (message.getStatus() <= Message.STATUS_RECEIVED) {
 					if (message.getConversation().getMode() == Conversation.MODE_MULTI) {
-						if (message.getCounterpart() != null) {
-							String user = message.getCounterpart().isBareJid() ? message.getCounterpart().toString() : message.getCounterpart().getResourcepart();
+						Jid user = message.getCounterpart();
+						if (user != null && !user.isBareJid()) {
 							if (!message.getConversation().getMucOptions().isUserInRoom(user)) {
-								Toast.makeText(activity,activity.getString(R.string.user_has_left_conference,user),Toast.LENGTH_SHORT).show();
+								Toast.makeText(activity,activity.getString(R.string.user_has_left_conference,user.getResourcepart()),Toast.LENGTH_SHORT).show();
 							}
-							highlightInConference(user);
+							highlightInConference(user.getResourcepart());
 						}
 					} else {
 						if (!message.getContact().isSelf()) {
@@ -495,14 +495,12 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 					public void onContactPictureLongClicked(Message message) {
 						if (message.getStatus() <= Message.STATUS_RECEIVED) {
 							if (message.getConversation().getMode() == Conversation.MODE_MULTI) {
-								if (message.getCounterpart() != null) {
-									String user = message.getCounterpart().getResourcepart();
-									if (user != null) {
-										if (message.getConversation().getMucOptions().isUserInRoom(user)) {
-											privateMessageWith(message.getCounterpart());
-										} else {
-											Toast.makeText(activity, activity.getString(R.string.user_has_left_conference, user), Toast.LENGTH_SHORT).show();
-										}
+								Jid user = message.getCounterpart();
+								if (user != null && !user.isBareJid()) {
+									if (message.getConversation().getMucOptions().isUserInRoom(user)) {
+										privateMessageWith(user);
+									} else {
+										Toast.makeText(activity, activity.getString(R.string.user_has_left_conference, user.getResourcepart()), Toast.LENGTH_SHORT).show();
 									}
 								}
 							}

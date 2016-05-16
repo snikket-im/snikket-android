@@ -14,15 +14,12 @@ import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.entities.Presence;
-import eu.siacs.conversations.entities.ServiceDiscoveryResult;
 import eu.siacs.conversations.generator.PresenceGenerator;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xml.Element;
-import eu.siacs.conversations.xmpp.OnIqPacketReceived;
 import eu.siacs.conversations.xmpp.OnPresencePacketReceived;
 import eu.siacs.conversations.xmpp.jid.Jid;
 import eu.siacs.conversations.xmpp.pep.Avatar;
-import eu.siacs.conversations.xmpp.stanzas.IqPacket;
 import eu.siacs.conversations.xmpp.stanzas.PresencePacket;
 
 public class PresenceParser extends AbstractParser implements
@@ -67,11 +64,7 @@ public class PresenceParser extends AbstractParser implements
 						MucOptions.User user = new MucOptions.User(mucOptions, from);
 						user.setAffiliation(item.getAttribute("affiliation"));
 						user.setRole(item.getAttribute("role"));
-						Jid real = item.getAttributeAsJid("jid");
-						if (real != null) {
-							user.setJid(real);
-							mucOptions.putMember(real.toBareJid());
-						}
+						user.setRealJid(item.getAttributeAsJid("jid"));
 						if (codes.contains(MucOptions.STATUS_CODE_SELF_PRESENCE) || packet.getFrom().equals(mucOptions.getConversation().getJid())) {
 							mucOptions.setOnline();
 							mucOptions.setSelf(user);
@@ -127,7 +120,7 @@ public class PresenceParser extends AbstractParser implements
 						Log.d(Config.LOGTAG, "unknown error in conference: " + packet);
 					}
 				} else if (!from.isBareJid()){
-					MucOptions.User user = mucOptions.deleteUser(from.getResourcepart());
+					MucOptions.User user = mucOptions.deleteUser(from);
 					if (user != null) {
 						mXmppConnectionService.getAvatarService().clear(user);
 					}

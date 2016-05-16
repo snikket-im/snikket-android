@@ -42,7 +42,6 @@ import android.preference.PreferenceManager;
 import android.text.InputType;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -68,7 +67,6 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.concurrent.RejectedExecutionException;
-import java.util.concurrent.RunnableFuture;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
@@ -481,7 +479,7 @@ public abstract class XmppActivity extends Activity {
 		List<String> contacts = new ArrayList<>();
 		if (conversation.getMode() == Conversation.MODE_MULTI) {
 			for (MucOptions.User user : conversation.getMucOptions().getUsers()) {
-				Jid jid = user.getJid();
+				Jid jid = user.getRealJid();
 				if (jid != null) {
 					contacts.add(jid.toBareJid().toString());
 				}

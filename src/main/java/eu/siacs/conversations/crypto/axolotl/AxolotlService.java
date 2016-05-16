@@ -643,7 +643,6 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 			jids = Arrays.asList(conversation.getJid().toBareJid());
 		} else {
 			jids = conversation.getMucOptions().getMembers();
-			jids.remove(account.getJid().toBareJid());
 		}
 		return jids;
 	}

@@ -402,7 +402,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 			} else if (axolotlEncrypted != null && Config.supportOmemo()) {
 				Jid origin;
 				if (conversation.getMode() == Conversation.MODE_MULTI) {
-					origin = conversation.getMucOptions().getTrueCounterpart(counterpart.getResourcepart());
+					origin = conversation.getMucOptions().getTrueCounterpart(counterpart);
 					if (origin == null) {
 						Log.d(Config.LOGTAG,"axolotl message in non anonymous conference received");
 						return;
@@ -430,7 +430,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 			message.setOob(isOob);
 			message.markable = packet.hasChild("markable", "urn:xmpp:chat-markers:0");
 			if (conversation.getMode() == Conversation.MODE_MULTI) {
-				Jid trueCounterpart = conversation.getMucOptions().getTrueCounterpart(counterpart.getResourcepart());
+				Jid trueCounterpart = conversation.getMucOptions().getTrueCounterpart(counterpart);
 				message.setTrueCounterpart(trueCounterpart);
 				if (!isTypeGroupChat) {
 					message.setType(Message.TYPE_PRIVATE);
