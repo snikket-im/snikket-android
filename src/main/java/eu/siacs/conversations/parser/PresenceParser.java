@@ -140,9 +140,11 @@ public class PresenceParser extends AbstractParser implements
 				} else if (error != null && error.hasChild("forbidden")) {
 					mucOptions.setError(MucOptions.Error.BANNED);
 				} else if (error != null && error.hasChild("registration-required")) {
-					mucOptions.setError(MucOptions.Error.BANNED);
+					mucOptions.setError(MucOptions.Error.MEMBERS_ONLY);
 				}
 			}
+		} else {
+			Log.d(Config.LOGTAG,mucOptions.getAccount().getJid().toBareJid()+": "+packet);
 		}
 	}
 

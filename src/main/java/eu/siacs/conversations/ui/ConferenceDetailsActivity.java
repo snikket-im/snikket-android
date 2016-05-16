@@ -438,7 +438,9 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 				return true;
 			case R.id.ban_from_conference:
 				xmppConnectionService.changeAffiliationInConference(mConversation,mSelectedUser.getRealJid(), MucOptions.Affiliation.OUTCAST,this);
-				xmppConnectionService.changeRoleInConference(mConversation,mSelectedUser.getName(), MucOptions.Role.NONE,this);
+				if (mSelectedUser.getRole() != MucOptions.Role.NONE) {
+					xmppConnectionService.changeRoleInConference(mConversation, mSelectedUser.getName(), MucOptions.Role.NONE, this);
+				}
 				return true;
 			case R.id.send_private_message:
 				privateMsgInMuc(mConversation,mSelectedUser.getName());
@@ -451,7 +453,9 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 	private void removeFromRoom(final User user) {
 		if (mConversation.getMucOptions().membersOnly()) {
 			xmppConnectionService.changeAffiliationInConference(mConversation,user.getRealJid(), MucOptions.Affiliation.NONE,this);
-			xmppConnectionService.changeRoleInConference(mConversation,mSelectedUser.getName(), MucOptions.Role.NONE,ConferenceDetailsActivity.this);
+			if (user.getRole() != MucOptions.Role.NONE) {
+				xmppConnectionService.changeRoleInConference(mConversation, mSelectedUser.getName(), MucOptions.Role.NONE, ConferenceDetailsActivity.this);
+			}
 		} else {
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			builder.setTitle(R.string.ban_from_conference);
@@ -461,7 +465,9 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					xmppConnectionService.changeAffiliationInConference(mConversation,user.getRealJid(), MucOptions.Affiliation.OUTCAST,ConferenceDetailsActivity.this);
-					xmppConnectionService.changeRoleInConference(mConversation,mSelectedUser.getName(), MucOptions.Role.NONE,ConferenceDetailsActivity.this);
+					if (user.getRole() != MucOptions.Role.NONE) {
+						xmppConnectionService.changeRoleInConference(mConversation, mSelectedUser.getName(), MucOptions.Role.NONE, ConferenceDetailsActivity.this);
+					}
 				}
 			});
 			builder.create().show();

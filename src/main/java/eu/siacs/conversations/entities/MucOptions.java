@@ -28,10 +28,12 @@ public class MucOptions {
 
 	public void changeAffiliation(Jid jid, Affiliation affiliation) {
 		User user = findUserByRealJid(jid);
-		if (user != null) {
+		if (user != null && user.getRole() == Role.NONE) {
 			users.remove(user);
-			user.affiliation = affiliation;
-			users.add(user);
+			if (affiliation.ranks(Affiliation.MEMBER)) {
+				user.affiliation = affiliation;
+				users.add(user);
+			}
 		}
 	}
 

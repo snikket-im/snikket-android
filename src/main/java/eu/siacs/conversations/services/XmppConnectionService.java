@@ -2198,6 +2198,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 			public void onIqPacketReceived(Account account, IqPacket packet) {
 				if (packet.getType() == IqPacket.TYPE.RESULT) {
 					conference.getMucOptions().changeAffiliation(jid, affiliation);
+					getAvatarService().clear(conference);
 					callback.onAffiliationChangedSuccessful(jid);
 				} else {
 					callback.onAffiliationChangeFailed(jid, R.string.could_not_change_affiliation);
