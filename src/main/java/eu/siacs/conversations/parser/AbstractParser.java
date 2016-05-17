@@ -8,8 +8,11 @@ import java.util.Locale;
 
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
+import eu.siacs.conversations.entities.Conversation;
+import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xml.Element;
+import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
 import eu.siacs.conversations.xmpp.stanzas.AbstractStanza;
 
@@ -65,5 +68,25 @@ public abstract class AbstractParser {
 			return null;
 		}
 		return item.findChildContent("data", "urn:xmpp:avatar:data");
+	}
+
+	public static MucOptions.User parseItem(Conversation conference, Element item) {
+		final String local = conference.getJid().getLocalpart();
+		final String domain = conference.getJid().getDomainpart();
+		String affiliation = item.getAttribute("affiliation");
+		String role = item.getAttribute("role");
+		String nick = item.getAttribute("nick");
+		Jid fullJid;
+		try {
+			fullJid = nick != null ? Jid.fromParts(local, domain, nick) : null;
+		} catch (InvalidJidException e) {
+			fullJid = null;
+		}
+		Jid realJid = item.getAttributeAsJid("jid");
+		MucOptions.User user = new MucOptions.User(conference.getMucOptions(), fullJid);
+		user.setRealJid(realJid);
+		user.setAffiliation(affiliation);
+		user.setRole(role);
+		return user;
 	}
 }

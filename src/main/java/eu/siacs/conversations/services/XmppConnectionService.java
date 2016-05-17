@@ -83,6 +83,7 @@ import eu.siacs.conversations.generator.IqGenerator;
 import eu.siacs.conversations.generator.MessageGenerator;
 import eu.siacs.conversations.generator.PresenceGenerator;
 import eu.siacs.conversations.http.HttpConnectionManager;
+import eu.siacs.conversations.parser.AbstractParser;
 import eu.siacs.conversations.parser.IqParser;
 import eu.siacs.conversations.parser.MessageParser;
 import eu.siacs.conversations.parser.PresenceParser;
@@ -1902,22 +1903,11 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 
 				Element query = packet.query("http://jabber.org/protocol/muc#admin");
 				if (packet.getType() == IqPacket.TYPE.RESULT && query != null) {
-					final String local = conversation.getJid().getLocalpart();
-					final String domain = conversation.getJid().getDomainpart();
 					for(Element child : query.getChildren()) {
 						if ("item".equals(child.getName())) {
-							String affiliation = child.getAttribute("affiliation");
-							String role = child.getAttribute("role");
-							String nick = child.getAttribute("nick");
-							Jid fullJid;
-							try {
-								fullJid = nick != null ? Jid.fromParts(local, domain, nick) : null;
-							} catch (InvalidJidException e) {
-								fullJid = null;
-							}
-							Jid realJid = child.getAttributeAsJid("jid");
-							if (realJid != null && !realJid.equals(account.getJid().toBareJid())) {
-								conversation.getMucOptions().putMember(fullJid, realJid, affiliation, role);
+							MucOptions.User user = AbstractParser.parseItem(conversation,child);
+							if (!user.realJidMatchesAccount()) {
+								conversation.getMucOptions().addUser(user);
 							}
 						}
 					}

@@ -143,8 +143,6 @@ public class PresenceParser extends AbstractParser implements
 					mucOptions.setError(MucOptions.Error.MEMBERS_ONLY);
 				}
 			}
-		} else {
-			Log.d(Config.LOGTAG,mucOptions.getAccount().getJid().toBareJid()+": "+packet);
 		}
 	}
 

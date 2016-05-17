@@ -274,6 +274,10 @@ public class MucOptions {
 		public String toString() {
 			return "[fulljid:"+String.valueOf(fullJid)+",realjid:"+String.valueOf(realJid)+",affiliation"+affiliation.toString()+"]";
 		}
+
+		public boolean realJidMatchesAccount() {
+			return realJid != null && realJid.equals(options.account.getJid().toBareJid());
+		}
 	}
 
 	private Account account;
@@ -587,14 +591,6 @@ public class MucOptions {
 
 	public Conversation getConversation() {
 		return this.conversation;
-	}
-
-	public void putMember(Jid fullJid, Jid realJid, String affiliation, String role) {
-		User user = new User(this, fullJid);
-		user.setRealJid(realJid);
-		user.setAffiliation(affiliation);
-		user.setRole(role);
-		addUser(user);
 	}
 
 	public List<Jid> getMembers() {
