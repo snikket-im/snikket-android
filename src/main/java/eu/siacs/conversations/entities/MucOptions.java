@@ -349,7 +349,7 @@ public class MucOptions {
 		User user = findUserByFullJid(jid);
 		if (user != null) {
 			users.remove(user);
-			if (user.affiliation.ranks(Affiliation.MEMBER)) {
+			if (user.affiliation.ranks(Affiliation.MEMBER) && user.realJid != null) {
 				user.role = Role.NONE;
 				user.avatar = null;
 				user.fullJid = null;
@@ -417,7 +417,21 @@ public class MucOptions {
 	}
 
 	public ArrayList<User> getUsers() {
-		return new ArrayList<>(users);
+		return getUsers(true);
+	}
+
+	public ArrayList<User> getUsers(boolean includeOffline) {
+		if (includeOffline) {
+			return new ArrayList<>(users);
+		} else {
+			ArrayList<User> onlineUsers = new ArrayList<>();
+			for(User user : users) {
+				if(user.getRole().ranks(Role.PARTICIPANT)) {
+					onlineUsers.add(user);
+				}
+			}
+			return onlineUsers;
+		}
 	}
 
 	public List<User> getUsers(int max) {
