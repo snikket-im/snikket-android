@@ -133,7 +133,7 @@ public class MucOptions {
 
 	}
 
-	public static class User {
+	public static class User implements Comparable<User> {
 		private Role role = Role.NONE;
 		private Affiliation affiliation = Affiliation.NONE;
 		private Jid realJid;
@@ -222,7 +222,13 @@ public class MucOptions {
 		}
 
 		public Contact getContact() {
-			return getAccount().getRoster().getContactFromRoster(getRealJid());
+			if (fullJid != null) {
+				return getAccount().getRoster().getContactFromRoster(realJid);
+			} else if (realJid != null){
+				return getAccount().getRoster().getContact(realJid);
+			} else {
+				return null;
+			}
 		}
 
 		public boolean setAvatar(Avatar avatar) {
@@ -277,6 +283,21 @@ public class MucOptions {
 
 		public boolean realJidMatchesAccount() {
 			return realJid != null && realJid.equals(options.account.getJid().toBareJid());
+		}
+
+		@Override
+		public int compareTo(User another) {
+			Contact ourContact = getContact();
+			Contact anotherContact = another.getContact();
+			if (ourContact != null && anotherContact != null) {
+				return ourContact.compareTo(anotherContact);
+			} else if (ourContact == null && anotherContact != null) {
+				return getName().compareToIgnoreCase(anotherContact.getDisplayName());
+			} else if (ourContact != null) {
+				return ourContact.getDisplayName().compareToIgnoreCase(another.getName());
+			} else {
+				return getName().compareToIgnoreCase(another.getName());
+			}
 		}
 	}
 

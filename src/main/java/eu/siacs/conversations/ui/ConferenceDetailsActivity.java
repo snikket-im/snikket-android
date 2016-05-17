@@ -579,12 +579,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 		LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		membersView.removeAllViews();
 		final ArrayList<User> users = mucOptions.getUsers();
-		Collections.sort(users,new Comparator<User>() {
-			@Override
-			public int compare(User l, User r) {
-				return l.getName() == null || r.getName() == null ? 0 : l.getName().compareToIgnoreCase(r.getName());
-			}
-		});
+		Collections.sort(users);
 		for (final User user : users) {
 			View view = inflater.inflate(R.layout.contact, membersView,false);
 			this.setListItemBackgroundOnView(view);

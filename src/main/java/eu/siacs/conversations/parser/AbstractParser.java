@@ -83,7 +83,7 @@ public abstract class AbstractParser {
 			fullJid = null;
 		}
 		Jid realJid = item.getAttributeAsJid("jid");
-		MucOptions.User user = new MucOptions.User(conference.getMucOptions(), fullJid);
+		MucOptions.User user = new MucOptions.User(conference.getMucOptions(), nick == null ? null : fullJid);
 		user.setRealJid(realJid);
 		user.setAffiliation(affiliation);
 		user.setRole(role);
