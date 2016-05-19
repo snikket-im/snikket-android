@@ -28,11 +28,13 @@ public class MucOptions {
 
 	public void changeAffiliation(Jid jid, Affiliation affiliation) {
 		User user = findUserByRealJid(jid);
-		if (user != null && user.getRole() == Role.NONE) {
-			users.remove(user);
-			if (affiliation.ranks(Affiliation.MEMBER)) {
-				user.affiliation = affiliation;
-				users.add(user);
+		synchronized (users) {
+			if (user != null && user.getRole() == Role.NONE) {
+				users.remove(user);
+				if (affiliation.ranks(Affiliation.MEMBER)) {
+					user.affiliation = affiliation;
+					users.add(user);
+				}
 			}
 		}
 	}
@@ -153,10 +155,6 @@ public class MucOptions {
 
 		public void setRealJid(Jid jid) {
 			this.realJid = jid != null ? jid.toBareJid() : null;
-		}
-
-		public Jid getRealJid() {
-			return this.realJid;
 		}
 
 		public Role getRole() {
@@ -299,10 +297,14 @@ public class MucOptions {
 				return getName().compareToIgnoreCase(another.getName());
 			}
 		}
+
+		public Jid getRealJid() {
+			return realJid;
+		}
 	}
 
 	private Account account;
-	private final Set<User> users = Collections.synchronizedSet(new HashSet<User>());
+	private final Set<User> users = new HashSet<>();
 	private final List<String> features = new ArrayList<>();
 	private Data form = new Data();
 	private Conversation conversation;
@@ -373,12 +375,14 @@ public class MucOptions {
 	public User deleteUser(Jid jid) {
 		User user = findUserByFullJid(jid);
 		if (user != null) {
-			users.remove(user);
-			if (user.affiliation.ranks(Affiliation.MEMBER) && user.realJid != null) {
-				user.role = Role.NONE;
-				user.avatar = null;
-				user.fullJid = null;
-				users.add(user);
+			synchronized (users) {
+				users.remove(user);
+				if (user.affiliation.ranks(Affiliation.MEMBER) && user.realJid != null) {
+					user.role = Role.NONE;
+					user.avatar = null;
+					user.fullJid = null;
+					users.add(user);
+				}
 			}
 		}
 		return user;
@@ -389,28 +393,40 @@ public class MucOptions {
 		if (user.fullJid == null && user.realJid != null) {
 			old = findUserByRealJid(user.realJid);
 			if (old != null) {
-				return; //don't add. user already exists
+				if (old.fullJid != null) {
+					return; //don't add. user already exists
+				} else {
+					synchronized (users) {
+						users.remove(old);
+					}
+				}
 			}
 		} else if (user.realJid != null) {
 			old = findUserByRealJid(user.realJid);
-			if (old != null && old.fullJid == null) {
-				users.remove(old);
+			synchronized (users) {
+				if (old != null && old.fullJid == null) {
+					users.remove(old);
+				}
 			}
 		}
 		old = findUserByFullJid(user.getFullJid());
-		if (old != null) {
-			users.remove(old);
+		synchronized (this.users) {
+			if (old != null) {
+				users.remove(old);
+			}
+			this.users.add(user);
 		}
-		this.users.add(user);
 	}
 
 	public User findUserByFullJid(Jid jid) {
 		if (jid == null) {
 			return null;
 		}
-		for(User user : users) {
-			if (jid.equals(user.getFullJid())) {
-				return user;
+		synchronized (users) {
+			for (User user : users) {
+				if (jid.equals(user.getFullJid())) {
+					return user;
+				}
 			}
 		}
 		return null;
@@ -420,9 +436,11 @@ public class MucOptions {
 		if (jid == null) {
 			return null;
 		}
-		for(User user : users) {
-			if (jid.equals(user.getRealJid())) {
-				return user;
+		synchronized (users) {
+			for (User user : users) {
+				if (jid.equals(user.realJid)) {
+					return user;
+				}
 			}
 		}
 		return null;
@@ -446,16 +464,18 @@ public class MucOptions {
 	}
 
 	public ArrayList<User> getUsers(boolean includeOffline) {
-		if (includeOffline) {
-			return new ArrayList<>(users);
-		} else {
-			ArrayList<User> onlineUsers = new ArrayList<>();
-			for(User user : users) {
-				if(user.getRole().ranks(Role.PARTICIPANT)) {
-					onlineUsers.add(user);
+		synchronized (users) {
+			if (includeOffline) {
+				return new ArrayList<>(users);
+			} else {
+				ArrayList<User> onlineUsers = new ArrayList<>();
+				for (User user : users) {
+					if (user.getRole().ranks(Role.PARTICIPANT)) {
+						onlineUsers.add(user);
+					}
 				}
+				return onlineUsers;
 			}
-			return onlineUsers;
 		}
 	}
 
@@ -465,7 +485,9 @@ public class MucOptions {
 	}
 
 	public int getUserCount() {
-		return this.users.size();
+		synchronized (users) {
+			return users.size();
+		}
 	}
 
 	public String getProposedNick() {
@@ -501,7 +523,9 @@ public class MucOptions {
 	}
 
 	public void setOffline() {
-		this.users.clear();
+		synchronized (users) {
+			this.users.clear();
+		}
 		this.error = Error.NO_RESPONSE;
 		this.isOnline = false;
 	}
@@ -519,7 +543,7 @@ public class MucOptions {
 	}
 
 	public String createNameFromParticipants() {
-		if (users.size() >= 2) {
+		if (getUserCount() >= 2) {
 			List<String> names = new ArrayList<>();
 			for (User user : getUsers(5)) {
 				Contact contact = user.getContact();
@@ -558,18 +582,22 @@ public class MucOptions {
 	}
 
 	public boolean pgpKeysInUse() {
-		for (User user : this.users) {
-			if (user.getPgpKeyId() != 0) {
-				return true;
+		synchronized (users) {
+			for (User user : users) {
+				if (user.getPgpKeyId() != 0) {
+					return true;
+				}
 			}
 		}
 		return false;
 	}
 
 	public boolean everybodyHasKeys() {
-		for (User user : this.users) {
-			if (user.getPgpKeyId() == 0) {
-				return false;
+		synchronized (users) {
+			for (User user : users) {
+				if (user.getPgpKeyId() == 0) {
+					return false;
+				}
 			}
 		}
 		return true;
@@ -588,7 +616,7 @@ public class MucOptions {
 			return account.getJid().toBareJid();
 		}
 		User user = findUserByFullJid(jid);
-		return user == null ? null : user.getRealJid();
+		return user == null ? null : user.realJid;
 	}
 
 	public String getPassword() {
@@ -616,9 +644,11 @@ public class MucOptions {
 
 	public List<Jid> getMembers() {
 		ArrayList<Jid> members = new ArrayList<>();
-		for(User user : users) {
-			if (user.affiliation.ranks(Affiliation.MEMBER) && user.getRealJid() != null) {
-				members.add(user.getRealJid());
+		synchronized (users) {
+			for (User user : users) {
+				if (user.affiliation.ranks(Affiliation.MEMBER) && user.realJid != null) {
+					members.add(user.realJid);
+				}
 			}
 		}
 		return members;
