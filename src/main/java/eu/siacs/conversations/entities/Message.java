@@ -492,6 +492,9 @@ public class Message extends AbstractEntity {
 		Message current = this;
 		while(current.mergeable(current.next())) {
 			current = current.next();
+			if (current == null) {
+				break;
+			}
 			body.append(MERGE_SEPARATOR);
 			body.append(current.getBody().trim());
 		}
@@ -507,6 +510,9 @@ public class Message extends AbstractEntity {
 		Message current = this;
 		while(current.mergeable(current.next())) {
 			current = current.next();
+			if (current == null) {
+				break;
+			}
 			status = current.status;
 		}
 		return status;
@@ -517,6 +523,9 @@ public class Message extends AbstractEntity {
 		Message current = this;
 		while(current.mergeable(current.next())) {
 			current = current.next();
+			if (current == null) {
+				break;
+			}
 			time = current.timeSent;
 		}
 		return time;
