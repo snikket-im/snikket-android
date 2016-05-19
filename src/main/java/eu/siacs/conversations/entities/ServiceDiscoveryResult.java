@@ -146,7 +146,7 @@ public class ServiceDiscoveryResult {
 		this.hash = hash;
 		this.ver = ver;
 
-		JSONArray identities = o.optJSONArray("identites");
+		JSONArray identities = o.optJSONArray("identities");
 		if (identities != null) {
 			for (int i = 0; i < identities.length(); i++) {
 				this.identities.add(new Identity(identities.getJSONObject(i)));
@@ -158,6 +158,54 @@ public class ServiceDiscoveryResult {
 				this.features.add(features.getString(i));
 			}
 		}
+		JSONArray forms = o.optJSONArray("forms");
+		if (forms != null) {
+			for(int i = 0; i < forms.length(); i++) {
+				this.forms.add(createFormFromJSONObject(forms.getJSONObject(i)));
+			}
+		}
+	}
+
+	private static Data createFormFromJSONObject(JSONObject o) {
+		Data data = new Data();
+		JSONArray names = o.names();
+		for(int i = 0; i < names.length(); ++i) {
+			try {
+				String name = names.getString(i);
+				JSONArray jsonValues = o.getJSONArray(name);
+				ArrayList<String> values = new ArrayList<>(jsonValues.length());
+				for(int j = 0; j < jsonValues.length(); ++j) {
+					values.add(jsonValues.getString(j));
+				}
+				data.put(name, values);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return data;
+	}
+
+	private static JSONObject createJSONFromForm(Data data) {
+		JSONObject object = new JSONObject();
+		for(Field field : data.getFields()) {
+			try {
+				JSONArray jsonValues = new JSONArray();
+				for(String value : field.getValues()) {
+					jsonValues.put(value);
+				}
+				object.put(field.getFieldName(), jsonValues);
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		try {
+			JSONArray jsonValues = new JSONArray();
+			jsonValues.put(data.getFormType());
+			object.put(Data.FORM_TYPE, jsonValues);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return object;
 	}
 
 	public String getVer() {
@@ -274,9 +322,15 @@ public class ServiceDiscoveryResult {
 			for(Identity id : this.getIdentities()) {
 				ids.put(id.toJSON());
 			}
-			o.put("identites", ids);
+			o.put("identities", ids);
 
 			o.put("features", new JSONArray(this.getFeatures()));
+
+			JSONArray forms = new JSONArray();
+			for(Data data : this.forms) {
+				forms.put(createJSONFromForm(data));
+			}
+			o.put("forms", forms);
 
 			return o;
 		} catch(JSONException e) {

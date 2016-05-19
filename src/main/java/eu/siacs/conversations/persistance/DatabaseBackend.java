@@ -52,7 +52,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 	private static DatabaseBackend instance = null;
 
 	private static final String DATABASE_NAME = "history";
-	private static final int DATABASE_VERSION = 26;
+	private static final int DATABASE_VERSION = 27;
 
 	private static String CREATE_CONTATCS_STATEMENT = "create table "
 			+ Contact.TABLENAME + "(" + Contact.ACCOUNT + " TEXT, "
@@ -401,6 +401,10 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 
 		if (oldVersion <  26 && newVersion >= 26) {
 			db.execSQL(CREATE_PRESENCE_TEMPLATES_STATEMENT);
+		}
+
+		if (oldVersion < 27 && newVersion >= 27) {
+			db.execSQL("DELETE FROM "+ServiceDiscoveryResult.TABLENAME);
 		}
 	}
 

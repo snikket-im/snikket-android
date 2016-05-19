@@ -9,7 +9,7 @@ import eu.siacs.conversations.xml.Element;
 
 public class Data extends Element {
 
-	private static final String FORM_TYPE = "FORM_TYPE";
+	public static final String FORM_TYPE = "FORM_TYPE";
 
 	public Data() {
 		super("x");
