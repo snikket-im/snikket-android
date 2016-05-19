@@ -216,6 +216,20 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 
 	private static class FetchStatusMap extends AxolotlAddressMap<FetchStatus> {
 
+		public void clearErrorFor(Jid jid) {
+			synchronized (MAP_LOCK) {
+				Map<Integer, FetchStatus> devices = this.map.get(jid.toBareJid().toString());
+				if (devices == null) {
+					return;
+				}
+				for(Map.Entry<Integer, FetchStatus> entry : devices.entrySet()) {
+					if (entry.getValue() == FetchStatus.ERROR) {
+						Log.d(Config.LOGTAG,"resetting error for "+jid.toBareJid()+"("+entry.getKey()+")");
+						entry.setValue(FetchStatus.TIMEOUT);
+					}
+				}
+			}
+		}
 	}
 
 	public static String getLogprefix(Account account) {
@@ -318,6 +332,10 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 	public void resetBrokenness() {
 		this.pepBroken = false;
 		numPublishTriesOnEmptyPep = 0;
+	}
+
+	public void clearErrorsInFetchStatusMap(Jid jid) {
+		fetchStatusMap.clearErrorFor(jid);
 	}
 
 	public void regenerateKeys(boolean wipeOther) {

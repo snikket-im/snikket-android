@@ -54,6 +54,7 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
 				final String name = item.getAttribute("name");
 				final String subscription = item.getAttribute("subscription");
 				final Contact contact = account.getRoster().getContact(jid);
+				boolean bothPre = contact.getOption(Contact.Options.TO) && contact.getOption(Contact.Options.FROM);
 				if (!contact.getOption(Contact.Options.DIRTY_PUSH)) {
 					contact.setServerName(name);
 					contact.parseGroupsFromElement(item);
@@ -67,6 +68,14 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
 						contact.setOption(Contact.Options.IN_ROSTER);
 						contact.resetOption(Contact.Options.DIRTY_PUSH);
 						contact.parseSubscriptionFromElement(item);
+					}
+				}
+				boolean both = contact.getOption(Contact.Options.TO) && contact.getOption(Contact.Options.FROM);
+				if ((both != bothPre) && both) {
+					Log.d(Config.LOGTAG,account.getJid().toBareJid()+": gained mutual presence subscription with "+contact.getJid());
+					AxolotlService axolotlService = account.getAxolotlService();
+					if (axolotlService != null) {
+						axolotlService.clearErrorsInFetchStatusMap(contact.getJid());
 					}
 				}
 				mXmppConnectionService.getAvatarService().clear(contact);
@@ -268,7 +277,7 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
 
 	@Override
 	public void onIqPacketReceived(final Account account, final IqPacket packet) {
-		if (Config.EXTENDED_IQ_LOGGING && (packet.getType() == IqPacket.TYPE.GET || packet.getType() == IqPacket.TYPE.SET)) {
+		if (Config.BACKGROUND_STANZA_LOGGING && (packet.getType() == IqPacket.TYPE.GET || packet.getType() == IqPacket.TYPE.SET)) {
 			Element first = packet.getChildren().size() > 0 ? packet.getChildren().get(0) : null;
 			Log.d(Config.LOGTAG,account.getJid().toBareJid()+": IQ request from "+packet.getFrom()+(first == null ? "" : " "+first));
 		}
