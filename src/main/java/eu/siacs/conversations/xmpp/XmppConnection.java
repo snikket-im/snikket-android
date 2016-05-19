@@ -1027,7 +1027,7 @@ public class XmppConnection implements Runnable {
 		final String ver = caps == null ? null : caps.getAttribute("ver");
 		ServiceDiscoveryResult discoveryResult = null;
 		if (hash != null && ver != null) {
-			discoveryResult = mXmppConnectionService.databaseBackend.findDiscoveryResult(hash, ver);
+			discoveryResult = mXmppConnectionService.getCachedServiceDiscoveryResult(new Pair<>(hash, ver));
 		}
 		if (discoveryResult == null) {
 			sendServiceDiscoveryInfo(account.getServer());
