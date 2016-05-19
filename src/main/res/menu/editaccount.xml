@@ -34,6 +34,11 @@
         android:title="@string/mam_prefs"/>
 
     <item
+        android:id="@+id/action_show_password"
+        android:showAsAction="never"
+        android:title="@string/show_password"/>
+
+    <item
         android:id="@+id/action_change_password_on_server"
         android:showAsAction="never"
         android:title="@string/change_password"/>

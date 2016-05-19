@@ -507,6 +507,7 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 		final MenuItem showBlocklist = menu.findItem(R.id.action_show_block_list);
 		final MenuItem showMoreInfo = menu.findItem(R.id.action_server_info_show_more);
 		final MenuItem changePassword = menu.findItem(R.id.action_change_password_on_server);
+		final MenuItem showPassword = menu.findItem(R.id.action_show_password);
 		final MenuItem clearDevices = menu.findItem(R.id.action_clear_devices);
 		final MenuItem renewCertificate = menu.findItem(R.id.action_renew_certificate);
 		final MenuItem mamPrefs = menu.findItem(R.id.action_mam_prefs);
@@ -534,6 +535,13 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 			clearDevices.setVisible(false);
 			mamPrefs.setVisible(false);
 			changePresence.setVisible(false);
+		}
+
+		if (mAccount != null) {
+			showPassword.setVisible(mAccount.isOptionSet(Account.OPTION_MAGIC_CREATE)
+					&& !mAccount.isOptionSet(Account.OPTION_REGISTER));
+		} else {
+			showPassword.setVisible(false);
 		}
 		return super.onCreateOptionsMenu(menu);
 	}
@@ -641,6 +649,9 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 				break;
 			case R.id.action_change_presence:
 				changePresence();
+				break;
+			case R.id.action_show_password:
+				showPassword();
 				break;
 		}
 		return super.onOptionsItemSelected(item);
@@ -898,6 +909,17 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 		this.mFetchingMamPrefsToast = Toast.makeText(this, R.string.fetching_mam_prefs, Toast.LENGTH_LONG);
 		this.mFetchingMamPrefsToast.show();
 		xmppConnectionService.fetchMamPreferences(mAccount, this);
+	}
+
+	private void showPassword() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		View view = getLayoutInflater().inflate(R.layout.dialog_show_password, null);
+		TextView password = (TextView) view.findViewById(R.id.password);
+		password.setText(mAccount.getPassword());
+		builder.setTitle(R.string.password);
+		builder.setView(view);
+		builder.setPositiveButton(R.string.cancel, null);
+		builder.create().show();
 	}
 
 	@Override
