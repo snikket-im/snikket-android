@@ -641,23 +641,6 @@ public class Conversation extends AbstractEntity implements Blockable {
 		return this.nextCounterpart;
 	}
 
-	private int getMostRecentlyUsedOutgoingEncryption() {
-		synchronized (this.messages) {
-			for(int i = this.messages.size() -1; i >= 0; --i) {
-				final Message m = this.messages.get(i);
-				if (!m.isCarbon() && m.getStatus() != Message.STATUS_RECEIVED) {
-					final int e = m.getEncryption();
-					if (e == Message.ENCRYPTION_DECRYPTED || e == Message.ENCRYPTION_DECRYPTION_FAILED) {
-						return Message.ENCRYPTION_PGP;
-					} else {
-						return e;
-					}
-				}
-			}
-		}
-		return Message.ENCRYPTION_NONE;
-	}
-
 	private int getMostRecentlyUsedIncomingEncryption() {
 		synchronized (this.messages) {
 			for(int i = this.messages.size() -1; i >= 0; --i) {
@@ -686,12 +669,8 @@ public class Conversation extends AbstractEntity implements Blockable {
 					&& getAccount().getSelfContact().getPresences().allOrNonSupport(AxolotlService.PEP_DEVICE_LIST_NOTIFY)
 					&& getContact().getPresences().allOrNonSupport(AxolotlService.PEP_DEVICE_LIST_NOTIFY)) {
 				return Message.ENCRYPTION_AXOLOTL;
-			}
-			int outgoing = this.getMostRecentlyUsedOutgoingEncryption();
-			if (outgoing == Message.ENCRYPTION_NONE) {
-				next = this.getMostRecentlyUsedIncomingEncryption();
 			} else {
-				next = outgoing;
+				next = this.getMostRecentlyUsedIncomingEncryption();
 			}
 		}
 
