@@ -14,8 +14,10 @@ import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.util.List;
 
 import eu.siacs.conversations.Config;
@@ -116,6 +118,16 @@ public class ExceptionHelper {
 			return true;
 		} catch (final IOException ignored) {
 			return false;
+		}
+	}
+
+	public static void writeToStacktraceFile(Context context, String msg) {
+		try {
+			OutputStream os = context.openFileOutput("stacktrace.txt", Context.MODE_PRIVATE);
+			os.write(msg.getBytes());
+			os.flush();
+			os.close();
+		} catch (IOException ignored) {
 		}
 	}
 }

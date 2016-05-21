@@ -47,7 +47,10 @@ public class DNSHelper {
 
 	protected static Client client = new Client();
 
+	protected static Context context;
+
 	public static Bundle getSRVRecord(final Jid jid, Context context) throws IOException {
+		DNSHelper.context = context;
         final String host = jid.getDomainpart();
 		final List<InetAddress> servers = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ? getDnsServers(context) : getDnsServersPreLollipop();
 		Bundle b = new Bundle();

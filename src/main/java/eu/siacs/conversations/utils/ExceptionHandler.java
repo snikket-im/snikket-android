@@ -27,19 +27,7 @@ public class ExceptionHandler implements UncaughtExceptionHandler {
 		ex.printStackTrace(printWriter);
 		String stacktrace = result.toString();
 		printWriter.close();
-		try {
-			OutputStream os = context.openFileOutput("stacktrace.txt",
-					Context.MODE_PRIVATE);
-			os.write(stacktrace.getBytes());
-			os.flush();
-			os.close();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		ExceptionHelper.writeToStacktraceFile(context, stacktrace);
 		this.defaultHandler.uncaughtException(thread, ex);
 	}
 
