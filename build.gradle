@@ -54,8 +54,8 @@ android {
 	defaultConfig {
 		minSdkVersion 14
 		targetSdkVersion 23
-		versionCode 144
-		versionName "1.12.3"
+		versionCode 145
+		versionName "1.12.4"
 		archivesBaseName += "-$versionName"
 		applicationId "eu.siacs.conversations"
 	}

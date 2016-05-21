@@ -1,5 +1,9 @@
 ###Changelog
 
+####Version 1.12.4
+* show offline members in conference (needs server support)
+* various bug fixes
+
 ####Version 1.12.3
 * make omemo default when all resources support it
 * show presence of other resources as template
