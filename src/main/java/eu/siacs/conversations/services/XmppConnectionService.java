@@ -1908,6 +1908,9 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 							MucOptions.User user = AbstractParser.parseItem(conversation,child);
 							if (!user.realJidMatchesAccount()) {
 								conversation.getMucOptions().addUser(user);
+								getAvatarService().clear(conversation);
+								updateMucRosterUi();
+								updateConversationUi();
 							}
 						}
 					}
