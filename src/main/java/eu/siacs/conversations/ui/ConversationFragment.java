@@ -123,27 +123,6 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 
 		}
 
-		private int getIndexOf(String uuid, List<Message> messages) {
-			if (uuid == null) {
-				return messages.size() - 1;
-			}
-			for(int i = 0; i < messages.size(); ++i) {
-				if (uuid.equals(messages.get(i).getUuid())) {
-					return i;
-				} else {
-					Message next = messages.get(i);
-					while(next != null && next.wasMergedIntoPrevious()) {
-						if (uuid.equals(next.getUuid())) {
-							return i;
-						}
-						next = next.next();
-					}
-
-				}
-			}
-			return 0;
-		}
-
 		@Override
 		public void onScroll(AbsListView view, int firstVisibleItem,
 							 int visibleItemCount, int totalItemCount) {
@@ -212,6 +191,28 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 			}
 		}
 	};
+
+	private int getIndexOf(String uuid, List<Message> messages) {
+		if (uuid == null) {
+			return messages.size() - 1;
+		}
+		for(int i = 0; i < messages.size(); ++i) {
+			if (uuid.equals(messages.get(i).getUuid())) {
+				return i;
+			} else {
+				Message next = messages.get(i);
+				while(next != null && next.wasMergedIntoPrevious()) {
+					if (uuid.equals(next.getUuid())) {
+						return i;
+					}
+					next = next.next();
+				}
+
+			}
+		}
+		return 0;
+	}
+
 	private final int KEYCHAIN_UNLOCK_NOT_REQUIRED = 0;
 	private final int KEYCHAIN_UNLOCK_REQUIRED = 1;
 	private final int KEYCHAIN_UNLOCK_PENDING = 2;
@@ -796,9 +797,15 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 		this.messagesView.setAdapter(messageListAdapter);
 		updateMessages();
 		this.messagesLoaded = true;
-		int size = this.messageList.size();
-		if (size > 0) {
-			messagesView.setSelection(size - 1);
+		synchronized (this.messageList) {
+			final Message first = conversation.getFirstUnreadMessage();
+			final int pos;
+			if (first == null) {
+				pos = Math.max(0,this.messageList.size() - 1);
+			} else {
+				pos = getIndexOf(first.getUuid(), this.messageList);
+			}
+			messagesView.setSelection(pos);
 		}
 	}
 

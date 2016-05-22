@@ -96,6 +96,21 @@ public class Conversation extends AbstractEntity implements Blockable {
 		this.messagesLeftOnServer = value;
 	}
 
+
+	public Message getFirstUnreadMessage() {
+		Message first = null;
+		synchronized (this.messages) {
+			for (int i = messages.size() - 1; i >= 0; --i) {
+				if (messages.get(i).isRead()) {
+					return first;
+				} else {
+					first = messages.get(i);
+				}
+			}
+		}
+		return first;
+	}
+
 	public Message findUnsentMessageWithUuid(String uuid) {
 		synchronized(this.messages) {
 			for (final Message message : this.messages) {
