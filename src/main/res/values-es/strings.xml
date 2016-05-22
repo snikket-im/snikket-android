@@ -166,6 +166,8 @@
   <string name="mgmt_account_disable">Deshabilitar temporalmente</string>
   <string name="mgmt_account_publish_avatar">Imagen de perfil</string>
   <string name="mgmt_account_publish_pgp">Publicar clave pública OpenPGP</string>
+  <string name="openpgp_has_been_published">Clave pública OpenPGP ha sido publicada.</string>
+  <string name="republish_pgp_keys">¡Recuerda republicar tus claves públicas OpenPGP!</string>
   <string name="mgmt_account_enable">Habilitar</string>
   <string name="mgmt_account_are_you_sure">¿Estás seguro?</string>
   <string name="mgmt_account_delete_confirm_text">Si eliminas tu cuenta tu historial completo de conversaciones se perderá</string>
@@ -413,7 +415,7 @@
   <string name="disable_all_accounts">Deshabilitar todas las cuentas</string>
   <string name="perform_action_with">Realizar acción con</string>
   <string name="no_affiliation">Sin afiliación</string>
-  <string name="no_role">Sin rol</string>
+  <string name="no_role">Desconectado</string>
   <string name="outcast">Rechazado</string>
   <string name="member">Miembro</string>
   <string name="advanced_mode">Modo avanzado</string>
@@ -507,6 +509,8 @@
   <string name="pref_use_white_background">Usar fondo blanco</string>
   <string name="pref_use_white_background_summary">Mostrar mensajes recibidos en texto negro con fondo blanco</string>
   <string name="account_status_tor_unavailable">Red Tor no disponible.</string>
+  <string name="account_status_bind_failure">Fallo de enlace</string>
+  <string name="account_status_host_unknown">Servidor desconocido</string>
   <string name="server_info_broken">Error</string>
   <string name="pref_presence_settings">Presencia</string>
   <string name="pref_away_when_screen_off">Ausente con pantalla apagada</string>
@@ -525,9 +529,8 @@
   <string name="server_side_mam_prefs">Preferencias de archivado en servidor</string>
   <string name="fetching_mam_prefs">Buscando preferencias de archivado. Por favor, espera...</string>
   <string name="unable_to_fetch_mam_prefs">No se ha podido conseguir las preferencias de archivado</string>
-  <string name="captcha_ocr">Texto captcha</string>
   <string name="captcha_required">Captcha requerido</string>
-  <string name="captcha_hint">Introduce el texto de la imagen</string>
+  <string name="captcha_hint">Introduce el texto de la imagen de arriba</string>
   <string name="certificate_chain_is_not_trusted">La cadena de certificados no es de confianza</string>
   <string name="jid_does_not_match_certificate">El identificador Jabber no coincide con el del certificado</string>
   <string name="action_renew_certificate">Renovar certificado</string>
@@ -590,7 +593,7 @@
   <string name="magic_create_text">Te guiaremos durante el proceso de creación de la cuenta en conversations.im.\nCuando selecciones conversations.im como proveedor, podrás comunicarte con usuarios de otros servidores mediante tu identificador Jabber.</string>
   <string name="your_full_jid_will_be">Tu identificador Jabber será: %s</string>
   <string name="create_account">Crear cuenta</string>
-  <string name="use_own_provider">Usar mi propio proveedor</string>
+  <string name="use_own_provider">Usar otro proveedor de mi elección</string>
   <string name="pick_your_username">Selecciona tu nombre de usuario</string>
   <string name="pref_manually_change_presence">Cambiar manualmente tu estado</string>
   <string name="pref_manually_change_presence_summary">Toca tu imagen para cambiar tu estado</string>
@@ -603,4 +606,6 @@
   <string name="presence_xa">No disponible</string>
   <string name="presence_dnd">Ocupado</string>
   <string name="secure_password_generated">Se ha generado una contraseña segura</string>
+  <string name="device_does_not_support_battery_op">Tu dispositivo no soporta la opción de optimización de batería</string>
+  <string name="show_password">Mostrar contraseña</string>
 </resources>

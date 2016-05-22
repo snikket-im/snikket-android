@@ -166,6 +166,8 @@
   <string name="mgmt_account_disable">Dezactivare temporara</string>
   <string name="mgmt_account_publish_avatar">Publica avatar</string>
   <string name="mgmt_account_publish_pgp">Publica cheia publica OpenPGP</string>
+  <string name="openpgp_has_been_published">Cheia publica OpenPGP a fost publicata.</string>
+  <string name="republish_pgp_keys">Amintiti-va sa va republicati cheile publice OpenPGP!</string>
   <string name="mgmt_account_enable">Activeaza cont</string>
   <string name="mgmt_account_are_you_sure">Esti sigur?</string>
   <string name="mgmt_account_delete_confirm_text">Daca iti stergi contul intregul istoric de conversatii va fi pierdut</string>
@@ -413,7 +415,6 @@
   <string name="disable_all_accounts">Dezactiveaza toate conturile</string>
   <string name="perform_action_with">Efectuaza actiune cu</string>
   <string name="no_affiliation">Fara afiliere</string>
-  <string name="no_role">Fara rol</string>
   <string name="outcast">proscris</string>
   <string name="member">Membru</string>
   <string name="advanced_mode">Mod avansat</string>
@@ -509,6 +510,7 @@
   <string name="pref_use_white_background">Foloseste un fundal alb</string>
   <string name="pref_use_white_background_summary">Arata mesajele primite cu negru pe fond alb</string>
   <string name="account_status_tor_unavailable">Reteaua Tor nu este disponibila</string>
+  <string name="account_status_bind_failure">Eroare de conexiune</string>
   <string name="server_info_broken">Deteriorat</string>
   <string name="pref_presence_settings">Setari de prezenta</string>
   <string name="pref_away_when_screen_off">Plecat cand ecranul este oprit</string>
@@ -527,9 +529,8 @@
   <string name="server_side_mam_prefs">Preferinte arhivare pe server</string>
   <string name="fetching_mam_prefs">Descarc preferinte arhivare. Va rugam asteptati...</string>
   <string name="unable_to_fetch_mam_prefs">Nu s-au putut descarca preferintele de arhivare</string>
-  <string name="captcha_ocr">Text captcha de verificare</string>
   <string name="captcha_required">Text captcha de verificare necesar</string>
-  <string name="captcha_hint">introdu textul din imagine</string>
+  <string name="captcha_hint">Introduceti textul din imaginea de mai sus</string>
   <string name="certificate_chain_is_not_trusted">Seria de certificate nu este de incredere</string>
   <string name="jid_does_not_match_certificate">ID-ul Jabber nu corespunde cu certificatul</string>
   <string name="action_renew_certificate">Innoieste certificatul</string>
@@ -607,4 +608,5 @@ Emitent</string>
   <string name="presence_xa">Indisponibil</string>
   <string name="presence_dnd">Ocupat</string>
   <string name="secure_password_generated">O parola sigura a fost generata</string>
+  <string name="device_does_not_support_battery_op">Dispozitivul dumneavoastra nu suporta dezactivarea optimizarii de baterie pentru aceasta aplicatie</string>
 </resources>

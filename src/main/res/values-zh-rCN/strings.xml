@@ -413,7 +413,6 @@
   <string name="disable_all_accounts">禁用所有账户</string>
   <string name="perform_action_with">选择一个操作</string>
   <string name="no_affiliation">没有从属关系</string>
-  <string name="no_role">没有角色</string>
   <string name="outcast">抛弃</string>
   <string name="member">成员</string>
   <string name="advanced_mode">高级模式</string>
@@ -523,9 +522,7 @@
   <string name="server_side_mam_prefs">服务端压缩设置</string>
   <string name="fetching_mam_prefs">正在获取压缩设置。请稍后...</string>
   <string name="unable_to_fetch_mam_prefs">获取压缩设置失败</string>
-  <string name="captcha_ocr">验证码</string>
   <string name="captcha_required">需要验证码</string>
-  <string name="captcha_hint">输入图片中的文字</string>
   <string name="certificate_chain_is_not_trusted">证书链不受信任</string>
   <string name="jid_does_not_match_certificate">Jabber ID 与证书不匹配</string>
   <string name="action_renew_certificate">更新证书</string>

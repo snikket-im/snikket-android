@@ -412,7 +412,6 @@
   <string name="disable_all_accounts">Bütün hesapları devre dışı bırak</string>
   <string name="perform_action_with">Kullanarak tamamla</string>
   <string name="no_affiliation">Ortaklık yok</string>
-  <string name="no_role">Rol yok</string>
   <string name="outcast">Bağlantısız</string>
   <string name="member">Üye</string>
   <string name="advanced_mode">Gelişmiş kip</string>
@@ -522,9 +521,7 @@
   <string name="server_side_mam_prefs">Sunucu tarafı arşivleme tercihleri</string>
   <string name="fetching_mam_prefs">Arşivleme tercihleri alınıyor. Lütfen bekleyin...</string>
   <string name="unable_to_fetch_mam_prefs">Arşivleme tercihleri alınamadı</string>
-  <string name="captcha_ocr">Captcha metni</string>
   <string name="captcha_required">Captcha gerekli</string>
-  <string name="captcha_hint">resimdeki metni girin</string>
   <string name="certificate_chain_is_not_trusted">Sertifika zinciri güvenilir değil</string>
   <string name="jid_does_not_match_certificate">Jabber ID sertifikayla eşleşmiyor</string>
   <string name="action_renew_certificate">Sertifikayı yenile</string>

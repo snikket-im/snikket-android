@@ -166,6 +166,8 @@
   <string name="mgmt_account_disable">Inaktivera tillfälligt</string>
   <string name="mgmt_account_publish_avatar">Publicera avatarbild</string>
   <string name="mgmt_account_publish_pgp">Publicera OpenPGP publik nyckel</string>
+  <string name="openpgp_has_been_published">OpenPGP-nyckel har publicerats.</string>
+  <string name="republish_pgp_keys">Kom ihåg att återpublicera dina publika OpenPGP nycklar.</string>
   <string name="mgmt_account_enable">Aktivera</string>
   <string name="mgmt_account_are_you_sure">Är du säker?</string>
   <string name="mgmt_account_delete_confirm_text">Om du tar bort kontot kommer all konversationshistorik att försvinna</string>
@@ -413,7 +415,6 @@
   <string name="disable_all_accounts">Deaktivera alla konton</string>
   <string name="perform_action_with">Utför åtgärden med</string>
   <string name="no_affiliation">Ingen anknytning</string>
-  <string name="no_role">Ingen roll</string>
   <string name="outcast">Utstött</string>
   <string name="member">Medlem</string>
   <string name="advanced_mode">Avancerat läge</string>
@@ -507,6 +508,7 @@
   <string name="pref_use_white_background">Använd vit bakgrund</string>
   <string name="pref_use_white_background_summary">Visa mottagna meddelanden som svart text på vit bakgrund</string>
   <string name="account_status_tor_unavailable">Tor-nätverk ej tillgängligt</string>
+  <string name="account_status_bind_failure">Bind-fel</string>
   <string name="server_info_broken">Sönder</string>
   <string name="pref_presence_settings">Tillgänglighet</string>
   <string name="pref_away_when_screen_off">Status borta när skärmen är av</string>
@@ -525,9 +527,8 @@
   <string name="server_side_mam_prefs">Arkiveringsinställningar på servern</string>
   <string name="fetching_mam_prefs">Hämtar arkiveringsinställningar, vänta...</string>
   <string name="unable_to_fetch_mam_prefs">Kan ej hämta arkiveringsinställningar</string>
-  <string name="captcha_ocr">CAPTCHA-text</string>
   <string name="captcha_required">CAPTCHA krävs</string>
-  <string name="captcha_hint">skriv in texten från bilden</string>
+  <string name="captcha_hint">Skriv i texten från bilden ovan</string>
   <string name="certificate_chain_is_not_trusted">Certifikatskedjan är inte betrodd</string>
   <string name="jid_does_not_match_certificate">Jabber-ID matchar inte certifikat</string>
   <string name="action_renew_certificate">Förnya certifikat</string>
@@ -603,4 +604,5 @@
   <string name="presence_xa">Ej tillgänglig</string>
   <string name="presence_dnd">Upptagen</string>
   <string name="secure_password_generated">Ett säkert lösenord har genererats</string>
+  <string name="device_does_not_support_battery_op">Din enhet stödjer inte deaktivering av batterioptimeringar</string>
 </resources>

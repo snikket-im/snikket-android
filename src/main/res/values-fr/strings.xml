@@ -166,6 +166,8 @@
   <string name="mgmt_account_disable">Désactiver temporairement</string>
   <string name="mgmt_account_publish_avatar">Publier un avatar</string>
   <string name="mgmt_account_publish_pgp">Publier la clef publique OpenPGP</string>
+  <string name="openpgp_has_been_published">La clef public OpenPGP a été publiée</string>
+  <string name="republish_pgp_keys">N\'oubliez pas de republier votre clef public OpenPGP !</string>
   <string name="mgmt_account_enable">Activer</string>
   <string name="mgmt_account_are_you_sure">Êtes-vous sûr ?</string>
   <string name="mgmt_account_delete_confirm_text">Si vous supprimez votre compte, votre historique de conversations sera perdu !</string>
@@ -413,7 +415,6 @@
   <string name="disable_all_accounts">Désactiver tous les comptes</string>
   <string name="perform_action_with">Faire une action avec</string>
   <string name="no_affiliation">Aucune affiliation</string>
-  <string name="no_role">Aucun rôle</string>
   <string name="outcast">Banni</string>
   <string name="member">Membre</string>
   <string name="advanced_mode">Mode expert</string>
@@ -507,6 +508,7 @@
   <string name="pref_use_white_background">Utiliser un fond blanc</string>
   <string name="pref_use_white_background_summary">Afficher les messages reçus en texte noir sur fond blanc.</string>
   <string name="account_status_tor_unavailable">Réseau Tor inaccessible</string>
+  <string name="account_status_bind_failure">La liaison a échoué</string>
   <string name="server_info_broken">Détraqué</string>
   <string name="pref_presence_settings">Présence</string>
   <string name="pref_away_when_screen_off">Absent quand l\'écran est éteint</string>
@@ -518,16 +520,15 @@
   <string name="pref_show_connection_options">Paramètres de connexion avancés</string>
   <string name="pref_show_connection_options_summary">Montrer le nom d\'hôte et le port lors du paramétrage d\'un compte</string>
   <string name="hostname_example">xmpp.example.com</string>
-  <string name="action_add_account_with_certificate">Ajouter un compte avec un certificat</string>
+  <string name="action_add_account_with_certificate">Compte avec certificat</string>
   <string name="unable_to_parse_certificate">Impossible d\'analyser le certificat</string>
   <string name="authenticate_with_certificate">Laisser vide pour s\'identifier avec un certificat</string>
   <string name="mam_prefs">Paramètres d\'archivage</string>
   <string name="server_side_mam_prefs">Paramètres d\'archivage du serveur</string>
   <string name="fetching_mam_prefs">Récupération des paramètres d\'archivage en cours...</string>
   <string name="unable_to_fetch_mam_prefs">Impossible de récupérer les paramètres d\'archivage</string>
-  <string name="captcha_ocr">Texte du captcha</string>
   <string name="captcha_required">Captcha obligatoire</string>
-  <string name="captcha_hint">Saisissez le texte dans l\'image</string>
+  <string name="captcha_hint">Entrez le texte de l\'image ci-dessus</string>
   <string name="certificate_chain_is_not_trusted">La chaîne de certificats n\'est pas digne de confiance</string>
   <string name="jid_does_not_match_certificate">L\'identifiant ne correspond pas au certificat</string>
   <string name="action_renew_certificate">Renouveler le certificat</string>

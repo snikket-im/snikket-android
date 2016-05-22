@@ -397,7 +397,6 @@
   <string name="disable_all_accounts">Отключить все учётные записи</string>
   <string name="perform_action_with">Взаимодействовать с</string>
   <string name="no_affiliation">Не является участником</string>
-  <string name="no_role">Нет роли</string>
   <string name="outcast">Заблокированный пользователь</string>
   <string name="member">Участник</string>
   <string name="advanced_mode">Расширенный режим</string>
@@ -508,9 +507,7 @@
   <string name="unable_to_parse_certificate">Невозможно разобрать сертификат</string>
   <string name="authenticate_with_certificate">Оставить пустым для входа с сертификатом</string>
   <string name="mam_prefs">Настройки архивирования</string>
-  <string name="captcha_ocr">Проверочный текст</string>
   <string name="captcha_required">Необходима проверка</string>
-  <string name="captcha_hint">введите текст с картинки</string>
   <string name="certificate_chain_is_not_trusted">Цепочка сертификата не доверена</string>
   <string name="jid_does_not_match_certificate">Jabber ID не соответствует сертификату</string>
   <string name="action_renew_certificate">Обновить сертификат</string>

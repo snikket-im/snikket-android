@@ -388,7 +388,6 @@
   <string name="disable_all_accounts">Tắt toàn bộ tài khoản</string>
   <string name="perform_action_with">Thực hiện thao tác với</string>
   <string name="no_affiliation">Không có quan hệ gì</string>
-  <string name="no_role">Không có phận sự gì</string>
   <string name="outcast">Kẻ bị ruồng bỏ</string>
   <string name="member">Thành viên</string>
   <string name="advanced_mode">Chế độ nâng cao</string>
@@ -485,9 +484,7 @@
   <string name="action_add_account_with_certificate">Thêm tài khoản với chứng nhận</string>
   <string name="unable_to_parse_certificate">Không thể phân tích chứng nhận</string>
   <string name="authenticate_with_certificate">Bỏ trống để xác minh với chứng nhận</string>
-  <string name="captcha_ocr">Các ký tự xác minh</string>
   <string name="captcha_required">Yêu cầu hình xác minh</string>
-  <string name="captcha_hint">nhập văn bản từ hình</string>
   <string name="certificate_chain_is_not_trusted">Chuỗi chứng nhận không được tin tưởng</string>
   <string name="jid_does_not_match_certificate">ID Jabber không khớp với chứng nhận</string>
   <string name="action_renew_certificate">Gia hạn chứng nhận</string>

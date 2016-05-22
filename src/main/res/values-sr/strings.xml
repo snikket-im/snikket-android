@@ -166,6 +166,8 @@
   <string name="mgmt_account_disable">Привремено искључи</string>
   <string name="mgmt_account_publish_avatar">Објави аватар</string>
   <string name="mgmt_account_publish_pgp">Објави ОпенПГП јавни кључ</string>
+  <string name="openpgp_has_been_published">ОпенПГП јавни кључ је објављен.</string>
+  <string name="republish_pgp_keys">Не заборавите да поново објавите ваше ОпенПГП јавне кључеве!</string>
   <string name="mgmt_account_enable">Укључи налог</string>
   <string name="mgmt_account_are_you_sure">Да ли сте сигурни?</string>
   <string name="mgmt_account_delete_confirm_text">Ако обришете ваш налог изгубићете сав историјат преписке</string>
@@ -413,7 +415,7 @@
   <string name="disable_all_accounts">Искључи све налоге</string>
   <string name="perform_action_with">Изврши радњу са</string>
   <string name="no_affiliation">Без припадности</string>
-  <string name="no_role">Без улоге</string>
+  <string name="no_role">Ван везе</string>
   <string name="outcast">Изгнаник</string>
   <string name="member">Члан</string>
   <string name="advanced_mode">Напредни режим</string>
@@ -509,6 +511,8 @@
   <string name="pref_use_white_background">Користи белу позадину</string>
   <string name="pref_use_white_background_summary">Приказ примљених порука црним текстом на белој позадини</string>
   <string name="account_status_tor_unavailable">Тор мрежа недоступна</string>
+  <string name="account_status_bind_failure">Неуспех свезивања</string>
+  <string name="account_status_host_unknown">Непознат домаћин</string>
   <string name="server_info_broken">Оштећен</string>
   <string name="pref_presence_settings">Присутност</string>
   <string name="pref_away_when_screen_off">Одсутан кад је екран искључен</string>
@@ -527,9 +531,8 @@
   <string name="server_side_mam_prefs">Серверске поставке архивисања</string>
   <string name="fetching_mam_prefs">Добављам поставке архивисања, сачекајте…</string>
   <string name="unable_to_fetch_mam_prefs">Не могох да добавим поставке архивисања</string>
-  <string name="captcha_ocr">Текст стопке</string>
   <string name="captcha_required">Потребна стопка</string>
-  <string name="captcha_hint">унесите текст са слике</string>
+  <string name="captcha_hint">Унесите текст са слике изнад</string>
   <string name="certificate_chain_is_not_trusted">Ланац сертификата није поуздан</string>
   <string name="jid_does_not_match_certificate">Џабер ИД не одговара сертификату</string>
   <string name="action_renew_certificate">Обнови сертификат</string>
@@ -589,6 +592,7 @@
   <string name="security_error_invalid_file_access">Безбедносна грешка: неисправан приступ фајлу</string>
   <string name="no_application_to_share_uri">Нема апликације за дељење веза</string>
   <string name="share_uri_with">Подели везу помоћу…</string>
+  <string name="magic_create_text">Водићемо вас кроз процес прављења налога на conversations.im.\nАко изаберете conversations.im за даваоца услуге моћи ћете да комуницирате са другим корисницима ако им дате ваш Џабер ИД.</string>
   <string name="your_full_jid_will_be">Ваш пуни Џабер ИД ће бити: %s</string>
   <string name="create_account">Направи налог</string>
   <string name="use_own_provider">Користићу сопствени провајдер</string>
@@ -604,4 +608,6 @@
   <string name="presence_xa">Недоступан</string>
   <string name="presence_dnd">Заузет</string>
   <string name="secure_password_generated">Безбедна лозинка је направљена</string>
+  <string name="device_does_not_support_battery_op">Ваш уређај не подржава искључивање оптимизације батерије</string>
+  <string name="show_password">Прикажи лозинку</string>
 </resources>

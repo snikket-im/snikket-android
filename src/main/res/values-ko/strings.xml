@@ -388,7 +388,6 @@
   <string name="disable_all_accounts">모든 계정 해제 </string>
   <string name="perform_action_with">다음으로 동작을 수행 </string>
   <string name="no_affiliation">관련 없음 </string>
-  <string name="no_role">역할 없음 </string>
   <string name="outcast">추방됨 </string>
   <string name="member">멤버 </string>
   <string name="advanced_mode">고급 모드 </string>
@@ -484,9 +483,7 @@
   <string name="pref_xa_on_silent_mode_summary">기기가 음소거 모드일때는 사용할 수 없음으로 상태를 표시함</string>
   <string name="action_add_account_with_certificate">인증서가 있는 계정 추가</string>
   <string name="unable_to_parse_certificate">인증서를 분석할 수 없음</string>
-  <string name="captcha_ocr">Captcha 텍스트</string>
   <string name="captcha_required">Captcha가 필요함</string>
-  <string name="captcha_hint">이미지로부터 텍스트 입력</string>
   <string name="certificate_chain_is_not_trusted">인증서 체인을 신뢰할 수 없습니다</string>
   <string name="jid_does_not_match_certificate">Jabber ID가 인증서와 일치하지 않습니다</string>
   <string name="action_renew_certificate">인증서 갱신</string>

@@ -1,2 +1,17 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<resources/>
+<resources>
+  <string name="action_settings">تنظیمات</string>
+  <string name="action_add">مکالمه جدید</string>
+  <string name="action_accounts">مدیریت حساب های کاربری</string>
+  <string name="action_end_conversation">اتمام مکالمه</string>
+  <string name="action_contact_details">جزییات مخاطب</string>
+  <string name="action_muc_details">جزییات کنفرانس</string>
+  <string name="action_secure">مکالمه امن</string>
+  <string name="action_add_account">اضافه کردن حساب کاربری</string>
+  <string name="action_edit_contact">تغییر نام</string>
+  <string name="action_add_phone_book">اضافه کردن به لیست ادرس ها</string>
+  <string name="action_delete_contact">حذف از لیست نام ها</string>
+  <string name="action_block_contact">بلاک مخاطب</string>
+  <string name="action_unblock_contact">غیر بلاک کردن مخاطب</string>
+  <string name="action_block_domain">بلاک کردن محدوده</string>
+</resources>

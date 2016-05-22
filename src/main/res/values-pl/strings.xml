@@ -401,7 +401,6 @@
   <string name="disable_all_accounts">Wyłącz wszystkie konta</string>
   <string name="perform_action_with">Użyj</string>
   <string name="no_affiliation">Brak stanowiska</string>
-  <string name="no_role">Brak funkcji</string>
   <string name="outcast">Wykluczony</string>
   <string name="member">Członek</string>
   <string name="advanced_mode">Tryb zaawansowany</string>
@@ -512,9 +511,7 @@
   <string name="server_side_mam_prefs">Preferencje archiwizacji po stronie serwera</string>
   <string name="fetching_mam_prefs">Pobieranie preferencji archiwizacji. Proszę czekać...</string>
   <string name="unable_to_fetch_mam_prefs">Nie można pobrać preferencji archiwizacji</string>
-  <string name="captcha_ocr">Captcha</string>
   <string name="captcha_required">Captcha wymagana</string>
-  <string name="captcha_hint">przepisz tekst z obrazka</string>
   <string name="certificate_chain_is_not_trusted">Łańcuch certyfikatu nie jest zaufany</string>
   <string name="jid_does_not_match_certificate">Jabber ID nie odpowiada certyfikatowi</string>
   <string name="action_renew_certificate">Odnów certyfikat</string>

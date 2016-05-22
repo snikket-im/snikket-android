@@ -166,6 +166,8 @@
   <string name="mgmt_account_disable">Desabilitar temporariamente</string>
   <string name="mgmt_account_publish_avatar">Publicar o avatar</string>
   <string name="mgmt_account_publish_pgp">Publicar a chave pública OpenPGP</string>
+  <string name="openpgp_has_been_published">A chave pública do OpenPGP foi publicada. </string>
+  <string name="republish_pgp_keys">Lembre-se de republicar suas chaves públicas OpenPGP!</string>
   <string name="mgmt_account_enable">Habilitar a conta</string>
   <string name="mgmt_account_are_you_sure">Tem certeza?</string>
   <string name="mgmt_account_delete_confirm_text">Se você excluir a sua conta todo o seu histórico de conversas será perdido</string>
@@ -413,7 +415,6 @@
   <string name="disable_all_accounts">Desabilitar todas as contas</string>
   <string name="perform_action_with">Realizar a ação com</string>
   <string name="no_affiliation">Sem afiliação</string>
-  <string name="no_role">Sem papel</string>
   <string name="outcast">Banido</string>
   <string name="member">Membro</string>
   <string name="advanced_mode">Modo avançado</string>
@@ -507,6 +508,7 @@
   <string name="pref_use_white_background">Usar fundo branco</string>
   <string name="pref_use_white_background_summary">Exibe a mensagens recebidas como texto preto em um fundo branco.</string>
   <string name="account_status_tor_unavailable">Rede Tor não disponível</string>
+  <string name="account_status_bind_failure">Falha na associação</string>
   <string name="server_info_broken">Quebrado</string>
   <string name="pref_presence_settings">Presença</string>
   <string name="pref_away_when_screen_off">Afastado quando a tela estiver desligada</string>
@@ -525,9 +527,8 @@
   <string name="server_side_mam_prefs">Preferências de arquivamento no servidor</string>
   <string name="fetching_mam_prefs">Obtendo as preferências de arquivamento. Por favor aguarde...</string>
   <string name="unable_to_fetch_mam_prefs">Não foi possível obter as preferências de arquivamento</string>
-  <string name="captcha_ocr">Texto captcha</string>
   <string name="captcha_required">Captcha obrigatório</string>
-  <string name="captcha_hint">digite o texto da imagem</string>
+  <string name="captcha_hint">Digite o texto da imagem acima</string>
   <string name="certificate_chain_is_not_trusted">A cadeia de certificação não é confiável</string>
   <string name="jid_does_not_match_certificate">O ID Jaber não corresponde ao certificado</string>
   <string name="action_renew_certificate">Renovar o certificado</string>
@@ -586,4 +587,22 @@
   <string name="security_error_invalid_file_access">Erro de segurança: Acesso inválido ao arquivo</string>
   <string name="no_application_to_share_uri">Não foi encontrada nenhuma aplicação para compartilhar a URI</string>
   <string name="share_uri_with">Compartilhar a URI com...</string>
+  <string name="welcome_text">O XMPP é um protocolo independente de provedor. Você pode usar esse cliente com qualquer servidor que você escolher.\nEntretanto, para sua conveniência, nós simplificamos o processo de criação de uma conta em conversations.im, um provedor especialmente configurado para usar com o Conversations.</string>
+  <string name="magic_create_text">Nós guiaremos você ao longo do processo de criar uma conta em conversations.im.\nAo usar esse provedor você também poderá se comunicar com usuários de outros provedores. Basta fornecê-los a sua identificação Jabber completa.</string>
+  <string name="your_full_jid_will_be">Sua ID Jabber será: %s</string>
+  <string name="create_account">Criar conta</string>
+  <string name="use_own_provider">Usar meu próprio provedor</string>
+  <string name="pick_your_username">Selecione seu nome de usuário</string>
+  <string name="pref_manually_change_presence">Alterar a presença manualmente</string>
+  <string name="pref_manually_change_presence_summary">Toque o seu avatar para alterar a sua presença</string>
+  <string name="change_presence">Alterar a presença</string>
+  <string name="status_message">Mensagem de status</string>
+  <string name="all_accounts_on_this_device">Definir para todas as contas deste dispositivo</string>
+  <string name="presence_chat">Livre para conversar</string>
+  <string name="presence_online">Conectado</string>
+  <string name="presence_away">Afastado</string>
+  <string name="presence_xa">Indisponível</string>
+  <string name="presence_dnd">Ocupado</string>
+  <string name="secure_password_generated">Foi gerada uma senha segura</string>
+  <string name="device_does_not_support_battery_op">Seu dispositivo não suporta a desativação da otimização de bateria</string>
 </resources>

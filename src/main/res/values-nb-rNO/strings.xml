@@ -388,7 +388,6 @@
   <string name="disable_all_accounts">Koble fra alle kontoer</string>
   <string name="perform_action_with">Utfør handling med</string>
   <string name="no_affiliation">Ingen tilknytning</string>
-  <string name="no_role">Ingen rolle</string>
   <string name="outcast">Fredløs</string>
   <string name="member">Medlem</string>
   <string name="advanced_mode">Avansert modus</string>
@@ -487,9 +486,7 @@
   <string name="action_add_account_with_certificate">Legg til konto med sertifikat</string>
   <string name="unable_to_parse_certificate">Kunne ikke behandle sertifikat</string>
   <string name="authenticate_with_certificate">La stå tom for bekreftelse med sertifikat</string>
-  <string name="captcha_ocr">CAPTCHA-tekst</string>
   <string name="captcha_required">CAPTCHA-påkrevd</string>
-  <string name="captcha_hint">skriv inn teksten på bildet</string>
   <string name="certificate_chain_is_not_trusted">Sertifikat-kjeden er ikke betrodd</string>
   <string name="jid_does_not_match_certificate">Jabber-ID-en samsvarer ikke med sertifikatet</string>
   <string name="action_renew_certificate">Forny sertifikat</string>

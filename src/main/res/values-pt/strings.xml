@@ -413,7 +413,6 @@
   <string name="disable_all_accounts">Desativar todas as contas</string>
   <string name="perform_action_with">Realizar a ação com</string>
   <string name="no_affiliation">Sem afiliação</string>
-  <string name="no_role">Sem papel</string>
   <string name="outcast">Banido</string>
   <string name="member">Membro</string>
   <string name="advanced_mode">Modo avançado</string>
@@ -525,9 +524,7 @@
   <string name="server_side_mam_prefs">Preferências de arquivamento do servidor</string>
   <string name="fetching_mam_prefs">Obtendo as preferências de arquivamento. Por favor espere...</string>
   <string name="unable_to_fetch_mam_prefs">Não foi possível obter as preferências de arquivamento</string>
-  <string name="captcha_ocr">Texto Captcha</string>
   <string name="captcha_required">Captcha obrigatório</string>
-  <string name="captcha_hint">insira o texto da imagem</string>
   <string name="certificate_chain_is_not_trusted">A cadeia de certificados não é confiável</string>
   <string name="jid_does_not_match_certificate">O ID Jabber não coincide com o certificado</string>
   <string name="action_renew_certificate">Renovar certificado</string>

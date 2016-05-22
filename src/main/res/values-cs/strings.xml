@@ -166,6 +166,8 @@
   <string name="mgmt_account_disable">Dočasně vypnout</string>
   <string name="mgmt_account_publish_avatar">Zveřejnit avatar</string>
   <string name="mgmt_account_publish_pgp">Zveřejnit OpenPGP klíč</string>
+  <string name="openpgp_has_been_published">Veřejný OpenPGP klíč byl zveřejněn.</string>
+  <string name="republish_pgp_keys">Nezapomeňte znovuzveřejnit své veřejné OpenPGP klíče!</string>
   <string name="mgmt_account_enable">Povolit účet</string>
   <string name="mgmt_account_are_you_sure">Jste si jisti?</string>
   <string name="mgmt_account_delete_confirm_text">Pokud smažete svůj účet celá historie konverzací bude ztracena</string>
@@ -413,7 +415,7 @@
   <string name="disable_all_accounts">Vypnout všechny účty</string>
   <string name="perform_action_with">Provést akci s</string>
   <string name="no_affiliation">Nepřidružený</string>
-  <string name="no_role">Bez role</string>
+  <string name="no_role">Offline</string>
   <string name="outcast">Vyloučený</string>
   <string name="member">Člen</string>
   <string name="advanced_mode">Pokročilý mód</string>
@@ -509,6 +511,8 @@
   <string name="pref_use_white_background">Použít bílé pozadí</string>
   <string name="pref_use_white_background_summary">Zobrazovat přijaté zprávy jako černý text na bílém pozadí</string>
   <string name="account_status_tor_unavailable">Tor síť není dostupná</string>
+  <string name="account_status_bind_failure">Bind chyba</string>
+  <string name="account_status_host_unknown">Host neznámý</string>
   <string name="server_info_broken">Rozbité</string>
   <string name="pref_presence_settings">Stav</string>
   <string name="pref_away_when_screen_off">Pryč při vypnuté obrazovce</string>
@@ -527,9 +531,8 @@
   <string name="server_side_mam_prefs">Nastavení archivace na serveru</string>
   <string name="fetching_mam_prefs">Získávání nastavení archivace. Chvíli strpení...</string>
   <string name="unable_to_fetch_mam_prefs">Nelze získat nastavení archivace</string>
-  <string name="captcha_ocr">Captcha text</string>
   <string name="captcha_required">Captcha vyžadována</string>
-  <string name="captcha_hint">opište text z obrázku</string>
+  <string name="captcha_hint">Zadejte text z obrázku výše</string>
   <string name="certificate_chain_is_not_trusted">Řetězec certifikátů není důvěryhodný</string>
   <string name="jid_does_not_match_certificate">Jabber ID neodpovídá certifikátu</string>
   <string name="action_renew_certificate">Obnovit certifikát</string>
@@ -589,4 +592,23 @@
   <string name="security_error_invalid_file_access">Chyba zabezpečení: Neplatný přístup k souboru</string>
   <string name="no_application_to_share_uri">Nebyla nalezena aplikace pro sdílení URI</string>
   <string name="share_uri_with">Sdílet URI s...</string>
+  <string name="welcome_text">XMPP je protokol nezávislý na poskytovateli. Tohoto klienta můžete použít s jakýmkoliv XMPP serverem dle svého výběru.\nPro lepší uživatelskou přívětivost jsme připravili možnost vytvořit účet u conversations.im; speciálné připraveného poskytovatele pro použití s aplikací Conversations.</string>
+  <string name="magic_create_text">Provedeme vás procesem založení uživatelského účtu u conversations.im.\nVybráním conversations.im za svého poskytovatele budete moci komunikovat s uživateli u jiných poskytovatelů poté co jim sdělíte své Jabber ID.</string>
+  <string name="your_full_jid_will_be">Vaše celé Jabber ID bude: %s</string>
+  <string name="create_account">Vytvořit účet</string>
+  <string name="use_own_provider">Použít vlastního provozovatele</string>
+  <string name="pick_your_username">Zadejte své uživatelské jméno</string>
+  <string name="pref_manually_change_presence">Ručně změnit dostupnost</string>
+  <string name="pref_manually_change_presence_summary">Dotykem na avatar změnit svou dostupnost</string>
+  <string name="change_presence">Změnit dostupnost</string>
+  <string name="status_message">Stavová zpráva</string>
+  <string name="all_accounts_on_this_device">Nastavit pro všechny účty na tomto přístroji</string>
+  <string name="presence_chat">Volný pro chat</string>
+  <string name="presence_online">Online</string>
+  <string name="presence_away">Pryč</string>
+  <string name="presence_xa">Nedostupný</string>
+  <string name="presence_dnd">Zaneprázdněný</string>
+  <string name="secure_password_generated">Bylo vygenerováno bezpečné heslo</string>
+  <string name="device_does_not_support_battery_op">Tento přístroj nepodporuje vypnutí možnosti optimalizace využití baterie</string>
+  <string name="show_password">Zobrazit heslo</string>
 </resources>
