@@ -243,7 +243,7 @@ public class ContactDetailsActivity extends XmppActivity implements OnAccountUpd
 				break;
 			case R.id.action_edit_contact:
 				if (contact.getSystemAccount() == null) {
-					quickEdit(contact.getDisplayName(), new OnValueEdited() {
+					quickEdit(contact.getDisplayName(), 0, new OnValueEdited() {
 
 						@Override
 						public void onValueEdited(String value) {

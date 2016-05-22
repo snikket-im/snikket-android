@@ -662,18 +662,19 @@ public abstract class XmppActivity extends Activity {
 		builder.create().show();
 	}
 
-	protected void quickEdit(String previousValue, OnValueEdited callback) {
-		quickEdit(previousValue, callback, false);
+	protected void quickEdit(String previousValue, int hint, OnValueEdited callback) {
+		quickEdit(previousValue, callback, hint, false);
 	}
 
-	protected void quickPasswordEdit(String previousValue,
-			OnValueEdited callback) {
-		quickEdit(previousValue, callback, true);
+	protected void quickPasswordEdit(String previousValue, OnValueEdited callback) {
+		quickEdit(previousValue, callback, R.string.password, true);
 	}
 
 	@SuppressLint("InflateParams")
 	private void quickEdit(final String previousValue,
-			final OnValueEdited callback, boolean password) {
+						   final OnValueEdited callback,
+						   final int hint,
+						   boolean password) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		View view = getLayoutInflater().inflate(R.layout.quickedit, null);
 		final EditText editor = (EditText) view.findViewById(R.id.editor);
@@ -682,7 +683,7 @@ public abstract class XmppActivity extends Activity {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				String value = editor.getText().toString();
-				if (!previousValue.equals(value) && value.trim().length() > 0) {
+				if (!value.equals(previousValue) && value.trim().length() > 0) {
 					callback.onValueEdited(value);
 				}
 			}
@@ -690,13 +691,18 @@ public abstract class XmppActivity extends Activity {
 		if (password) {
 			editor.setInputType(InputType.TYPE_CLASS_TEXT
 					| InputType.TYPE_TEXT_VARIATION_PASSWORD);
-			editor.setHint(R.string.password);
 			builder.setPositiveButton(R.string.accept, mClickListener);
 		} else {
 			builder.setPositiveButton(R.string.edit, mClickListener);
 		}
+		if (hint != 0) {
+			editor.setHint(hint);
+		}
 		editor.requestFocus();
-		editor.setText(previousValue);
+		editor.setText("");
+		if (previousValue != null) {
+			editor.getText().append(previousValue);
+		}
 		builder.setView(view);
 		builder.setNegativeButton(R.string.cancel, null);
 		builder.create().show();
