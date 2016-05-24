@@ -183,14 +183,21 @@ public class XmppConnection implements Runnable {
 				account.setOption(Account.OPTION_REGISTER, false);
 				forceCloseSocket();
 				changeStatus(Account.State.REGISTRATION_SUCCESSFUL);
-			} else if (packet.hasChild("error")
-					&& (packet.findChild("error").hasChild("conflict"))) {
-				forceCloseSocket();
-				changeStatus(Account.State.REGISTRATION_CONFLICT);
 			} else {
-				forceCloseSocket();
-				changeStatus(Account.State.REGISTRATION_FAILED);
-				Log.d(Config.LOGTAG, packet.toString());
+				Element error = packet.findChild("error");
+				if (error != null && error.hasChild("conflict")) {
+					forceCloseSocket();
+					changeStatus(Account.State.REGISTRATION_CONFLICT);
+				} else if (error != null
+						&& "wait".equals(error.getAttribute("type"))
+						&& error.hasChild("resource-constraint")) {
+					forceCloseSocket();
+					changeStatus(Account.State.REGISTRATION_PLEASE_WAIT);
+				} else {
+					forceCloseSocket();
+					changeStatus(Account.State.REGISTRATION_FAILED);
+					Log.d(Config.LOGTAG, packet.toString());
+				}
 			}
 		}
 	};
