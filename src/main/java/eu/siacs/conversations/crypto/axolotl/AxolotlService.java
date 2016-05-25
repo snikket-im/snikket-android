@@ -75,7 +75,9 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 
 	@Override
 	public void onAdvancedStreamFeaturesAvailable(Account account) {
-		if (account.getXmppConnection() != null && account.getXmppConnection().getFeatures().pep()) {
+		if (Config.supportOmemo()
+				&& account.getXmppConnection() != null
+				&& account.getXmppConnection().getFeatures().pep()) {
 			publishBundlesIfNeeded(true, false);
 		} else {
 			Log.d(Config.LOGTAG,account.getJid().toBareJid()+": skipping OMEMO initialization");
