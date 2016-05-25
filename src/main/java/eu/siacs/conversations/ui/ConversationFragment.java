@@ -390,8 +390,11 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 		} else {
 			switch (conversation.getNextEncryption()) {
 				case Message.ENCRYPTION_NONE:
-					mEditMessage
-							.setHint(getString(R.string.send_unencrypted_message));
+					if (Config.multipleEncryptionChoices()) {
+						mEditMessage.setHint(getString(R.string.send_unencrypted_message));
+					} else {
+						mEditMessage.setHint(getString(R.string.send_message_to_x,conversation.getName()));
+					}
 					break;
 				case Message.ENCRYPTION_OTR:
 					mEditMessage.setHint(getString(R.string.send_otr_message));

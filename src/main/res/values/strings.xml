@@ -81,6 +81,7 @@
 	<string name="also_end_conversation">End this conversation afterwards</string>
 	<string name="choose_presence">Choose presence to contact</string>
 	<string name="send_unencrypted_message">Send unencrypted message</string>
+	<string name="send_message_to_x">Send message to %s</string>
 	<string name="send_otr_message">Send OTR encrypted message</string>
 	<string name="send_omemo_message">Send OMEMO encrypted message</string>
 	<string name="send_omemo_x509_message">Send v\\OMEMO encrypted message</string>

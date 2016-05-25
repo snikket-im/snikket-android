@@ -390,35 +390,39 @@ public class ContactDetailsActivity extends XmppActivity implements OnAccountUpd
 		keys.removeAllViews();
 		boolean hasKeys = false;
 		LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		for(final String otrFingerprint : contact.getOtrFingerprints()) {
-			hasKeys = true;
-			View view = inflater.inflate(R.layout.contact_key, keys, false);
-			TextView key = (TextView) view.findViewById(R.id.key);
-			TextView keyType = (TextView) view.findViewById(R.id.key_type);
-			ImageButton removeButton = (ImageButton) view
-				.findViewById(R.id.button_remove);
-			removeButton.setVisibility(View.VISIBLE);
-			keyType.setText("OTR Fingerprint");
-			key.setText(CryptoHelper.prettifyFingerprint(otrFingerprint));
-			keys.addView(view);
-			removeButton.setOnClickListener(new OnClickListener() {
+		if (Config.supportOtr()) {
+			for (final String otrFingerprint : contact.getOtrFingerprints()) {
+				hasKeys = true;
+				View view = inflater.inflate(R.layout.contact_key, keys, false);
+				TextView key = (TextView) view.findViewById(R.id.key);
+				TextView keyType = (TextView) view.findViewById(R.id.key_type);
+				ImageButton removeButton = (ImageButton) view
+						.findViewById(R.id.button_remove);
+				removeButton.setVisibility(View.VISIBLE);
+				keyType.setText("OTR Fingerprint");
+				key.setText(CryptoHelper.prettifyFingerprint(otrFingerprint));
+				keys.addView(view);
+				removeButton.setOnClickListener(new OnClickListener() {
 
-				@Override
-				public void onClick(View v) {
-					confirmToDeleteFingerprint(otrFingerprint);
-				}
-			});
+					@Override
+					public void onClick(View v) {
+						confirmToDeleteFingerprint(otrFingerprint);
+					}
+				});
+			}
 		}
-		for (final String fingerprint : contact.getAccount().getAxolotlService().getFingerprintsForContact(contact)) {
-			boolean highlight = fingerprint.equals(messageFingerprint);
-			hasKeys |= addFingerprintRow(keys, contact.getAccount(), fingerprint, highlight, new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					onOmemoKeyClicked(contact.getAccount(), fingerprint);
-				}
-			});
+		if (Config.supportOmemo()) {
+			for (final String fingerprint : contact.getAccount().getAxolotlService().getFingerprintsForContact(contact)) {
+				boolean highlight = fingerprint.equals(messageFingerprint);
+				hasKeys |= addFingerprintRow(keys, contact.getAccount(), fingerprint, highlight, new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						onOmemoKeyClicked(contact.getAccount(), fingerprint);
+					}
+				});
+			}
 		}
-		if (contact.getPgpKeyId() != 0) {
+		if (Config.supportOpenPgp() && contact.getPgpKeyId() != 0) {
 			hasKeys = true;
 			View view = inflater.inflate(R.layout.contact_key, keys, false);
 			TextView key = (TextView) view.findViewById(R.id.key);

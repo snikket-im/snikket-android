@@ -523,7 +523,7 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 			}
 			mamPrefs.setVisible(mAccount.getXmppConnection().getFeatures().mam());
 			Set<Integer> otherDevices = mAccount.getAxolotlService().getOwnDeviceIds();
-			if (otherDevices == null || otherDevices.isEmpty()) {
+			if (otherDevices == null || otherDevices.isEmpty() || Config.supportOmemo()) {
 				clearDevices.setVisible(false);
 			}
 			changePresence.setVisible(manuallyChangePresence());
@@ -776,7 +776,7 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 				this.mServerInfoPush.setText(R.string.server_info_unavailable);
 			}
 			final String otrFingerprint = this.mAccount.getOtrFingerprint();
-			if (otrFingerprint != null) {
+			if (otrFingerprint != null && Config.supportOtr()) {
 				this.mOtrFingerprintBox.setVisibility(View.VISIBLE);
 				this.mOtrFingerprint.setText(CryptoHelper.prettifyFingerprint(otrFingerprint));
 				this.mOtrFingerprintToClipboardButton
@@ -798,10 +798,10 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 			} else {
 				this.mOtrFingerprintBox.setVisibility(View.GONE);
 			}
-			final String axolotlFingerprint = this.mAccount.getAxolotlService().getOwnFingerprint();
-			if (axolotlFingerprint != null) {
+			final String ownAxolotlFingerprint = this.mAccount.getAxolotlService().getOwnFingerprint();
+			if (ownAxolotlFingerprint != null && Config.supportOmemo()) {
 				this.mAxolotlFingerprintBox.setVisibility(View.VISIBLE);
-				this.mAxolotlFingerprint.setText(CryptoHelper.prettifyFingerprint(axolotlFingerprint.substring(2)));
+				this.mAxolotlFingerprint.setText(CryptoHelper.prettifyFingerprint(ownAxolotlFingerprint.substring(2)));
 				this.mAxolotlFingerprintToClipboardButton
 						.setVisibility(View.VISIBLE);
 				this.mAxolotlFingerprintToClipboardButton
@@ -810,7 +810,7 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 							@Override
 							public void onClick(final View v) {
 
-								if (copyTextToClipboard(axolotlFingerprint.substring(2), R.string.omemo_fingerprint)) {
+								if (copyTextToClipboard(ownAxolotlFingerprint.substring(2), R.string.omemo_fingerprint)) {
 									Toast.makeText(
 											EditAccountActivity.this,
 											R.string.toast_message_omemo_fingerprint,
@@ -833,17 +833,16 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 			} else {
 				this.mAxolotlFingerprintBox.setVisibility(View.GONE);
 			}
-			final String ownFingerprint = mAccount.getAxolotlService().getOwnFingerprint();
 			boolean hasKeys = false;
 			keys.removeAllViews();
 			for (final String fingerprint : mAccount.getAxolotlService().getFingerprintsForOwnSessions()) {
-				if (ownFingerprint.equals(fingerprint)) {
+				if (ownAxolotlFingerprint.equals(fingerprint)) {
 					continue;
 				}
 				boolean highlight = fingerprint.equals(messageFingerprint);
 				hasKeys |= addFingerprintRow(keys, mAccount, fingerprint, highlight, null);
 			}
-			if (hasKeys) {
+			if (hasKeys && Config.supportOmemo()) {
 				keysCard.setVisibility(View.VISIBLE);
 			} else {
 				keysCard.setVisibility(View.GONE);
