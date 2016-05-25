@@ -369,6 +369,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 
 		if ((body != null || pgpEncrypted != null || axolotlEncrypted != null) && !isMucStatusMessage) {
 			Conversation conversation = mXmppConnectionService.findOrCreateConversation(account, counterpart.toBareJid(), isTypeGroupChat, query);
+			final boolean conversationMultiMode = conversation.getMode() == Conversation.MODE_MULTI;
 			if (isTypeGroupChat) {
 				if (counterpart.getResourcepart().equals(conversation.getMucOptions().getActualNick())) {
 					status = Message.STATUS_SEND_RECEIVED;
@@ -388,7 +389,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 			}
 			Message message;
 			if (body != null && body.startsWith("?OTR") && Config.supportOtr()) {
-				if (!isForwarded && !isTypeGroupChat && isProperlyAddressed) {
+				if (!isForwarded && !isTypeGroupChat && isProperlyAddressed && !conversationMultiMode) {
 					message = parseOtrChat(body, from, remoteMsgId, conversation);
 					if (message == null) {
 						return;
@@ -401,7 +402,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 				message = new Message(conversation, pgpEncrypted, Message.ENCRYPTION_PGP, status);
 			} else if (axolotlEncrypted != null && Config.supportOmemo()) {
 				Jid origin;
-				if (conversation.getMode() == Conversation.MODE_MULTI) {
+				if (conversationMultiMode) {
 					origin = conversation.getMucOptions().getTrueCounterpart(counterpart);
 					if (origin == null) {
 						Log.d(Config.LOGTAG,"axolotl message in non anonymous conference received");
@@ -429,7 +430,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 			message.setTime(timestamp);
 			message.setOob(isOob);
 			message.markable = packet.hasChild("markable", "urn:xmpp:chat-markers:0");
-			if (conversation.getMode() == Conversation.MODE_MULTI) {
+			if (conversationMultiMode) {
 				Jid trueCounterpart = conversation.getMucOptions().getTrueCounterpart(counterpart);
 				message.setTrueCounterpart(trueCounterpart);
 				if (!isTypeGroupChat) {
@@ -449,7 +450,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 							|| replacedMessage.getFingerprint().equals(message.getFingerprint());
 					final boolean trueCountersMatch = replacedMessage.getTrueCounterpart() != null
 							&& replacedMessage.getTrueCounterpart().equals(message.getTrueCounterpart());
-					if (fingerprintsMatch && (trueCountersMatch || conversation.getMode() == Conversation.MODE_SINGLE)) {
+					if (fingerprintsMatch && (trueCountersMatch || !conversationMultiMode)) {
 						Log.d(Config.LOGTAG, "replaced message '" + replacedMessage.getBody() + "' with '" + message.getBody() + "'");
 						final String uuid = replacedMessage.getUuid();
 						replacedMessage.setUuid(UUID.randomUUID().toString());
