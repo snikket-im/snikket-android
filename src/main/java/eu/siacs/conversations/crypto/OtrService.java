@@ -122,7 +122,7 @@ public class OtrService extends OtrCryptoEngineImpl implements OtrEngineHost {
 
 	@Override
 	public String getFallbackMessage(SessionID arg0) {
-		return "I would like to start a private (OTR encrypted) conversation but your client doesn’t seem to support that";
+		return MessageGenerator.OTR_FALLBACK_MESSAGE;
 	}
 
 	@Override
