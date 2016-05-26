@@ -280,7 +280,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 			case R.id.action_edit_subject:
 				if (mConversation != null) {
 					quickEdit(mConversation.getMucOptions().getSubject(),
-							R.string.action_edit_subject,
+							R.string.edit_subject_hint,
 							this.onSubjectEdited);
 				}
 				break;

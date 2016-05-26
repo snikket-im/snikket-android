@@ -250,6 +250,7 @@
 	<string name="bookmark_already_exists">This bookmark already exists</string>
 	<string name="you">You</string>
 	<string name="action_edit_subject">Edit conference subject</string>
+	<string name="edit_subject_hint">The subject of this conference</string>
 	<string name="joining_conference">Joining conference…</string>
 	<string name="leave">Leave</string>
 	<string name="contact_added_you">Contact added you to contact list</string>
