@@ -64,7 +64,7 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 
 	public Bitmap get(final MucOptions.User user, final int size, boolean cachedOnly) {
 		Contact c = user.getContact();
-		if (c != null && (c.getProfilePhoto() != null || c.getAvatar() != null)) {
+		if (c != null && (c.getProfilePhoto() != null || c.getAvatar() != null || user.getAvatar() == null)) {
 			return get(c, size, cachedOnly);
 		} else {
 			return getImpl(user, size, cachedOnly);
