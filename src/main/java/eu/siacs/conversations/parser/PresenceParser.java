@@ -14,6 +14,7 @@ import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.entities.Presence;
+import eu.siacs.conversations.generator.IqGenerator;
 import eu.siacs.conversations.generator.PresenceGenerator;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xml.Element;
@@ -76,6 +77,15 @@ public class PresenceParser extends AbstractParser implements
 							}
 						} else {
 							mucOptions.addUser(user);
+						}
+						if (codes.contains(MucOptions.STATUS_CODE_ROOM_CREATED)) {
+							Log.d(Config.LOGTAG,mucOptions.getAccount().getJid().toBareJid()
+									+": room '"
+									+mucOptions.getConversation().getJid().toBareJid()
+									+"' created. pushing default configuration");
+							mXmppConnectionService.pushConferenceConfiguration(mucOptions.getConversation(),
+									IqGenerator.defaultRoomConfiguration(),
+									null);
 						}
 						if (mXmppConnectionService.getPgpEngine() != null) {
 							Element signed = packet.findChild("x", "jabber:x:signed");

@@ -1,6 +1,7 @@
 package eu.siacs.conversations.generator;
 
 
+import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
 
@@ -342,5 +343,14 @@ public class IqGenerator extends AbstractGenerator {
 		packet.setTo(conversation.getJid().toBareJid());
 		packet.query("http://jabber.org/protocol/muc#admin").addChild("item").setAttribute("affiliation",affiliation);
 		return packet;
+	}
+
+	public static Bundle defaultRoomConfiguration() {
+		Bundle options = new Bundle();
+		options.putString("muc#roomconfig_persistentroom", "1");
+		options.putString("muc#roomconfig_membersonly", "1");
+		options.putString("muc#roomconfig_publicroom", "0");
+		options.putString("muc#roomconfig_whois", "anyone");
+		return options;
 	}
 }

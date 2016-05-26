@@ -2034,7 +2034,10 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		return null;
 	}
 
-	public void createAdhocConference(final Account account, final Iterable<Jid> jids, final UiCallback<Conversation> callback) {
+	public void createAdhocConference(final Account account,
+									  final String subject,
+									  final Iterable<Jid> jids,
+									  final UiCallback<Conversation> callback) {
 		Log.d(Config.LOGTAG, account.getJid().toBareJid().toString() + ": creating adhoc conference with " + jids.toString());
 		if (account.getStatus() == Account.State.ONLINE) {
 			try {
@@ -2045,20 +2048,18 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 					}
 					return;
 				}
-				String name = new BigInteger(75, getRNG()).toString(32);
-				Jid jid = Jid.fromParts(name, server, null);
+				String localpart = new BigInteger(75, getRNG()).toString(32);
+				Jid jid = Jid.fromParts(localpart, server, null);
 				final Conversation conversation = findOrCreateConversation(account, jid, true);
 				joinMuc(conversation, new OnConferenceJoined() {
 					@Override
 					public void onConferenceJoined(final Conversation conversation) {
-						Bundle options = new Bundle();
-						options.putString("muc#roomconfig_persistentroom", "1");
-						options.putString("muc#roomconfig_membersonly", "1");
-						options.putString("muc#roomconfig_publicroom", "0");
-						options.putString("muc#roomconfig_whois", "anyone");
-						pushConferenceConfiguration(conversation, options, new OnConferenceOptionsPushed() {
+						pushConferenceConfiguration(conversation, IqGenerator.defaultRoomConfiguration(), new OnConferenceOptionsPushed() {
 							@Override
 							public void onPushSucceeded() {
+								if (subject != null && !subject.trim().isEmpty()) {
+									pushSubjectToConference(conversation, subject);
+								}
 								for (Jid invite : jids) {
 									invite(conversation, invite);
 								}
