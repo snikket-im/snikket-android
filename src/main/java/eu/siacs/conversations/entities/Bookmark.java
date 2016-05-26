@@ -50,9 +50,8 @@ public class Bookmark extends Element implements ListItem {
 
 	@Override
 	public String getDisplayName() {
-		if (this.mJoinedConversation != null
-				&& (this.mJoinedConversation.getMucOptions().getSubject() != null)) {
-			return this.mJoinedConversation.getMucOptions().getSubject();
+		if (this.mJoinedConversation != null) {
+			return this.mJoinedConversation.getName();
 		} else if (getBookmarkName() != null) {
 			return getBookmarkName();
 		} else {

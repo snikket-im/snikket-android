@@ -13,10 +13,20 @@
         android:showAsAction="always"
         android:title="@string/create_contact" />
     <item
-        android:id="@+id/action_join_conference"
+        android:id="@+id/action_conference"
         android:icon="?attr/icon_add_group"
         android:showAsAction="always"
-        android:title="@string/join_conference" />
+        android:title="@string/join_or_create_conference">
+        <menu>
+            <item
+                android:id="@+id/action_join_conference"
+                android:title="@string/join_conference"/>
+            <item
+                android:id="@+id/action_create_conference"
+                android:title="@string/create_conference"/>
+
+        </menu>
+    </item>
     <item
         android:id="@+id/action_scan_qr_code"
         android:showAsAction="never"

@@ -26,6 +26,7 @@ import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.security.KeyChain;
+import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.LruCache;
@@ -2048,8 +2049,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 					}
 					return;
 				}
-				String localpart = new BigInteger(75, getRNG()).toString(32);
-				Jid jid = Jid.fromParts(localpart, server, null);
+				final Jid jid = Jid.fromParts(new BigInteger(64, getRNG()).toString(Character.MAX_RADIX), server, null);
 				final Conversation conversation = findOrCreateConversation(account, jid, true);
 				joinMuc(conversation, new OnConferenceJoined() {
 					@Override
@@ -2058,7 +2058,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 							@Override
 							public void onPushSucceeded() {
 								if (subject != null && !subject.trim().isEmpty()) {
-									pushSubjectToConference(conversation, subject);
+									pushSubjectToConference(conversation, subject.trim());
 								}
 								for (Jid invite : jids) {
 									invite(conversation, invite);
@@ -2066,6 +2066,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 								if (account.countPresences() > 1) {
 									directInvite(conversation, account.getJid().toBareJid());
 								}
+								saveConversationAsBookmark(conversation, subject);
 								if (callback != null) {
 									callback.success(conversation);
 								}
@@ -2073,6 +2074,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 
 							@Override
 							public void onPushFailed() {
+								archiveConversation(conversation);
 								if (callback != null) {
 									callback.error(R.string.conference_creation_failed, conversation);
 								}
@@ -3304,6 +3306,21 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 			}
 		}
 		return templates;
+	}
+
+	public void saveConversationAsBookmark(Conversation conversation, String name) {
+		Account account = conversation.getAccount();
+		Bookmark bookmark = new Bookmark(account, conversation.getJid().toBareJid());
+		if (!conversation.getJid().isBareJid()) {
+			bookmark.setNick(conversation.getJid().getResourcepart());
+		}
+		if (name != null && !name.trim().isEmpty()) {
+			bookmark.setBookmarkName(name.trim());
+		}
+		bookmark.setAutojoin(getPreferences().getBoolean("autojoin",true));
+		account.getBookmarks().add(bookmark);
+		pushBookmarks(account);
+		conversation.setBookmark(bookmark);
 	}
 
 	public interface OnMamPreferencesFetched {

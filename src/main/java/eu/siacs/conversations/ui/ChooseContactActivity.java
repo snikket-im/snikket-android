@@ -77,6 +77,8 @@ public class ChooseContactActivity extends AbstractSearchableListItemActivity {
 							String[] selection = getSelectedContactJids();
 							data.putExtra("contacts", selection);
 							data.putExtra("multiple", true);
+							data.putExtra(EXTRA_ACCOUNT,request.getStringExtra(EXTRA_ACCOUNT));
+							data.putExtra("subject", request.getStringExtra("subject"));
 							setResult(RESULT_OK, data);
 							finish();
 							return true;
@@ -121,6 +123,7 @@ public class ChooseContactActivity extends AbstractSearchableListItemActivity {
 				data.putExtra("conversation",
 						request.getStringExtra("conversation"));
 				data.putExtra("multiple", false);
+				data.putExtra("subject", request.getStringExtra("subject"));
 				setResult(RESULT_OK, data);
 				finish();
 			}
@@ -194,6 +197,7 @@ public class ChooseContactActivity extends AbstractSearchableListItemActivity {
 				data.putExtra("conversation",
 						request.getStringExtra("conversation"));
 				data.putExtra("multiple", false);
+				data.putExtra("subject", request.getStringExtra("subject"));
 				setResult(RESULT_OK, data);
 				finish();
 

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              android:paddingBottom="8dp"
+              android:paddingLeft="24dp"
+              android:paddingRight="24dp"
+              android:paddingTop="16dp">
+
+    <TextView
+        android:id="@+id/your_account"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/your_account"
+        android:textColor="@color/black87"
+        android:textSize="?attr/TextSizeBody" />
+
+    <Spinner
+        android:id="@+id/account"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/conference_subject"
+        android:textColor="@color/black87"
+        android:textSize="?attr/TextSizeBody" />
+
+    <EditText
+        android:id="@+id/subject"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/edit_subject_hint"
+        android:inputType="textAutoComplete"
+        android:textColor="@color/black87"
+        android:textColorHint="@color/black54"
+        android:textSize="?attr/TextSizeBody"/>
+
+</LinearLayout>
