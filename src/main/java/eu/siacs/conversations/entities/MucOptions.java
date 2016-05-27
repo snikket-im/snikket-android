@@ -18,6 +18,8 @@ import eu.siacs.conversations.xmpp.pep.Avatar;
 @SuppressLint("DefaultLocale")
 public class MucOptions {
 
+	private boolean mAutoPushConfiguration = true;
+
 	public Account getAccount() {
 		return this.conversation.getAccount();
 	}
@@ -37,6 +39,14 @@ public class MucOptions {
 				}
 			}
 		}
+	}
+
+	public void flagNoAutoPushConfiguration() {
+		mAutoPushConfiguration = false;
+	}
+
+	public boolean autoPushConfiguration() {
+		return mAutoPushConfiguration;
 	}
 
 	public enum Affiliation {

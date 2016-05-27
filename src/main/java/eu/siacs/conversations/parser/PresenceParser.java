@@ -78,7 +78,7 @@ public class PresenceParser extends AbstractParser implements
 						} else {
 							mucOptions.addUser(user);
 						}
-						if (codes.contains(MucOptions.STATUS_CODE_ROOM_CREATED)) {
+						if (codes.contains(MucOptions.STATUS_CODE_ROOM_CREATED) && mucOptions.autoPushConfiguration()) {
 							Log.d(Config.LOGTAG,mucOptions.getAccount().getJid().toBareJid()
 									+": room '"
 									+mucOptions.getConversation().getJid().toBareJid()

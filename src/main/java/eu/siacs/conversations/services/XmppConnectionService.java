@@ -1832,6 +1832,9 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		account.pendingConferenceLeaves.remove(conversation);
 		if (account.getStatus() == Account.State.ONLINE) {
 			conversation.resetMucOptions();
+			if (onConferenceJoined != null) {
+				conversation.getMucOptions().flagNoAutoPushConfiguration();
+			}
 			conversation.setHasMessagesLeftOnServer(false);
 			fetchConferenceConfiguration(conversation, new OnConferenceConfigurationFetched() {
 
