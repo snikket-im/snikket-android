@@ -556,6 +556,7 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 				intent.putExtra("show_enter_jid", true);
 				intent.putExtra("subject", subject.getText().toString());
 				intent.putExtra(EXTRA_ACCOUNT, account.getJid().toBareJid().toString());
+				intent.putExtra(ChooseContactActivity.EXTRA_TITLE_RES_ID,R.string.choose_participants);
 				startActivityForResult(intent, REQUEST_CREATE_CONFERENCE);
 			}
 		});
