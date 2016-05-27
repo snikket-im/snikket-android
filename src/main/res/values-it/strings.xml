@@ -365,7 +365,6 @@
   <string name="conference_with">Crea conferenza con…</string>
   <string name="no_conference_server_found">Nessun server per conferenza trovato</string>
   <string name="conference_creation_failed">Creazione della conferenza fallita!</string>
-  <string name="conference_created">Conferenza creata!</string>
   <string name="secret_accepted">Segreto accettato!</string>
   <string name="reset">Reset</string>
   <string name="account_image_description">Avatar utente</string>

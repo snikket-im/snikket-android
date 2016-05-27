@@ -337,7 +337,6 @@
   <string name="conference_with">Vytvoriť skupinovú konverzáciu s…</string>
   <string name="no_conference_server_found">Nenašiel sa server na skupinovú konverzáciu</string>
   <string name="conference_creation_failed">Vytvorenie skupinovej konverzácie zlyhalo!</string>
-  <string name="conference_created">Skupinová konverzácia vytvorená!</string>
   <string name="secret_accepted">Tajomstvo prijaté!</string>
   <string name="reset">Vymazať</string>
   <string name="account_image_description">Avatar účtu</string>

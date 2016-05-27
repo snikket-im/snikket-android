@@ -321,7 +321,6 @@
   <string name="conference_with">Crear una conferència de conversació amb ...</string>
   <string name="no_conference_server_found">Servidor de la conferència de conversació no trobat</string>
   <string name="conference_creation_failed">la creació de la conferència de conversació ha fallat</string>
-  <string name="conference_created">Conferència de la conversació creada</string>
   <string name="secret_accepted">Aceptació del secret</string>
   <string name="reset">Reset</string>
   <string name="account_image_description">Avatar del compte</string>

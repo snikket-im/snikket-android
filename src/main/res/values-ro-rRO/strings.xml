@@ -379,7 +379,6 @@
   <string name="conference_with">Creeaza conferinta cu...</string>
   <string name="no_conference_server_found">Serverul conferintei nu a fost gasita</string>
   <string name="conference_creation_failed">Conferinta nu a putut fi creata!</string>
-  <string name="conference_created">Conferinta a fost creata!</string>
   <string name="secret_accepted">Secret acceptat!</string>
   <string name="reset">Reseteaza</string>
   <string name="account_image_description">Avatar cont</string>
@@ -415,6 +414,7 @@
   <string name="disable_all_accounts">Dezactiveaza toate conturile</string>
   <string name="perform_action_with">Efectuaza actiune cu</string>
   <string name="no_affiliation">Fara afiliere</string>
+  <string name="no_role">Deconectat</string>
   <string name="outcast">proscris</string>
   <string name="member">Membru</string>
   <string name="advanced_mode">Mod avansat</string>
@@ -511,6 +511,7 @@
   <string name="pref_use_white_background_summary">Arata mesajele primite cu negru pe fond alb</string>
   <string name="account_status_tor_unavailable">Reteaua Tor nu este disponibila</string>
   <string name="account_status_bind_failure">Eroare de conexiune</string>
+  <string name="account_status_host_unknown">Gazda necunoscuta</string>
   <string name="server_info_broken">Deteriorat</string>
   <string name="pref_presence_settings">Setari de prezenta</string>
   <string name="pref_away_when_screen_off">Plecat cand ecranul este oprit</string>
@@ -609,4 +610,5 @@ Emitent</string>
   <string name="presence_dnd">Ocupat</string>
   <string name="secure_password_generated">O parola sigura a fost generata</string>
   <string name="device_does_not_support_battery_op">Dispozitivul dumneavoastra nu suporta dezactivarea optimizarii de baterie pentru aceasta aplicatie</string>
+  <string name="show_password">Arata parola</string>
 </resources>

@@ -379,7 +379,6 @@
   <string name="conference_with">Започване на беседа с…</string>
   <string name="no_conference_server_found">Не е открит сървър за беседата</string>
   <string name="conference_creation_failed">Неуспешно създаване на беседа!</string>
-  <string name="conference_created">Беседата беше създадена!</string>
   <string name="secret_accepted">Тайната е приета!</string>
   <string name="reset">Възстановяване</string>
   <string name="account_image_description">Аватар на профила</string>
@@ -415,6 +414,7 @@
   <string name="disable_all_accounts">Деактивиране на всички профили</string>
   <string name="perform_action_with">Изпълнение на действието с</string>
   <string name="no_affiliation">Няма принадлежност</string>
+  <string name="no_role">Извън линия</string>
   <string name="outcast">Отхвърлен</string>
   <string name="member">Член</string>
   <string name="advanced_mode">Разширен режим</string>
@@ -454,7 +454,7 @@
   <string name="pdf_document">PDF документ</string>
   <string name="apk">Приложение за Андроид</string>
   <string name="vcard">Контакт</string>
-  <string name="received_x_file">Получи %s</string>
+  <string name="received_x_file">Получихте %s</string>
   <string name="disable_foreground_service">Изключване на услугата на преден план</string>
   <string name="touch_to_open_conversations">Докоснете, за да отворите Conversations</string>
   <string name="avatar_has_been_published">Аватарът беше публикуван!</string>
@@ -509,6 +509,7 @@
   <string name="pref_use_white_background_summary">Показване на получените съобщения с черен текст на бял фон</string>
   <string name="account_status_tor_unavailable">Мрежата на Тор е недостъпна</string>
   <string name="account_status_bind_failure">Грешка при свързване</string>
+  <string name="account_status_host_unknown">Сървърът е непознат</string>
   <string name="server_info_broken">Повредено</string>
   <string name="pref_presence_settings">Присъствие</string>
   <string name="pref_away_when_screen_off">Отсъстващ, когато екранът е изключен</string>
@@ -605,4 +606,5 @@
   <string name="presence_dnd">Зает</string>
   <string name="secure_password_generated">Беше създадена сигурна парола</string>
   <string name="device_does_not_support_battery_op">Устройството Ви не поддържа изключването на оптимизациите за използването на батерията</string>
+  <string name="show_password">Показване на паролата</string>
 </resources>

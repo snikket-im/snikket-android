@@ -321,7 +321,6 @@
   <string name="conference_with">Δημιουργία συνδιάσκεψης με...</string>
   <string name="no_conference_server_found">Δεν βρέθηκε διακομιστής συνδιάσκεψης</string>
   <string name="conference_creation_failed">Η δημιουργία συνδιάσκεψης απέτυχε!</string>
-  <string name="conference_created">Η συνδιάσκεψη δημιουργήθηκε!</string>
   <string name="secret_accepted">Το μυστικό έγινε δεκτό!</string>
   <string name="reset">Επαναφορά</string>
   <string name="account_image_description">Εικόνα προφίλ λογαριασμού</string>

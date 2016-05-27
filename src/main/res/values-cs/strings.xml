@@ -379,7 +379,6 @@
   <string name="conference_with">Vytvořit konferenci s…</string>
   <string name="no_conference_server_found">Nebyl nalezen konferenční server</string>
   <string name="conference_creation_failed">Vytvoření konference selhalo!</string>
-  <string name="conference_created">Konference vytvořena!</string>
   <string name="secret_accepted">Tajemství souhlasí!</string>
   <string name="reset">Reset</string>
   <string name="account_image_description">Avatar účtu</string>

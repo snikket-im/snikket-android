@@ -333,7 +333,6 @@
   <string name="conference_with">Buat conference dengan...</string>
   <string name="no_conference_server_found">Tidak ada server conference ditemukan</string>
   <string name="conference_creation_failed">Pembuatan conference gagal!</string>
-  <string name="conference_created">Conference dibuat!</string>
   <string name="secret_accepted">Rahasia disetujui!</string>
   <string name="reset">Ulang</string>
   <string name="account_image_description">Avatar akun</string>

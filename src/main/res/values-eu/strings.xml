@@ -379,7 +379,6 @@
   <string name="conference_with">Konferentzia sortu honekin…</string>
   <string name="no_conference_server_found">Ez da konferentzia zerbitzaririk aurkitu</string>
   <string name="conference_creation_failed">Konferentzia sortzeak huts egin du!</string>
-  <string name="conference_created">Konferentzia sortu da!</string>
   <string name="secret_accepted">Sekretua onartu da!</string>
   <string name="reset">Berrezarri</string>
   <string name="account_image_description">Kontuaren profileko argazkia</string>

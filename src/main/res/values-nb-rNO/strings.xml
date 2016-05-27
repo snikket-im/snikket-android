@@ -352,7 +352,6 @@
   <string name="conference_with">Opprett konferanse med…</string>
   <string name="no_conference_server_found">Ingen konferanse-tjener funnet</string>
   <string name="conference_creation_failed">Opprettelse av konferanse feilet!</string>
-  <string name="conference_created">Konferanse opprettet!</string>
   <string name="secret_accepted">Hemmelighet godtatt!</string>
   <string name="reset">Tilbakestill</string>
   <string name="account_image_description">Konto-avatar</string>

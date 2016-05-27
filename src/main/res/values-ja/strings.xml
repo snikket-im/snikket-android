@@ -379,7 +379,6 @@
   <string name="conference_with">…と会議を作成</string>
   <string name="no_conference_server_found">会議サーバーが見つかりません</string>
   <string name="conference_creation_failed">会議の作成に失敗しました!</string>
-  <string name="conference_created">会議を作成しました!</string>
   <string name="secret_accepted">秘密を受取ました!</string>
   <string name="reset">リセット</string>
   <string name="account_image_description">アカウント アバター</string>

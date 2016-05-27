@@ -232,7 +232,6 @@
   <string name="conference_with">انشاء غرفة بــ </string>
   <string name="no_conference_server_found">سيرفر الغرف غير موجود</string>
   <string name="conference_creation_failed">فشل انشاء الغرفة</string>
-  <string name="conference_created">تم انشاء الرغرفة بنجاح</string>
   <string name="secret_accepted">الاجابة السريّة مقبولة</string>
   <string name="reset">إعادة تعيين</string>
   <string name="account_image_description">الصورة الرمزية للحساب</string>

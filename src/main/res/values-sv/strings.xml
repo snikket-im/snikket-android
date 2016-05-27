@@ -379,7 +379,6 @@
   <string name="conference_with">Skapa konferens med…</string>
   <string name="no_conference_server_found">Ingen konferensserver hittad</string>
   <string name="conference_creation_failed">Kunde inte skapa konferens</string>
-  <string name="conference_created">Konferens skapad!</string>
   <string name="secret_accepted">Hemlighet accepterad!</string>
   <string name="reset">Återställ</string>
   <string name="account_image_description">Kontots avatarbild</string>
@@ -415,6 +414,7 @@
   <string name="disable_all_accounts">Deaktivera alla konton</string>
   <string name="perform_action_with">Utför åtgärden med</string>
   <string name="no_affiliation">Ingen anknytning</string>
+  <string name="no_role">Offline</string>
   <string name="outcast">Utstött</string>
   <string name="member">Medlem</string>
   <string name="advanced_mode">Avancerat läge</string>
@@ -509,6 +509,7 @@
   <string name="pref_use_white_background_summary">Visa mottagna meddelanden som svart text på vit bakgrund</string>
   <string name="account_status_tor_unavailable">Tor-nätverk ej tillgängligt</string>
   <string name="account_status_bind_failure">Bind-fel</string>
+  <string name="account_status_host_unknown">Server okänd</string>
   <string name="server_info_broken">Sönder</string>
   <string name="pref_presence_settings">Tillgänglighet</string>
   <string name="pref_away_when_screen_off">Status borta när skärmen är av</string>
@@ -605,4 +606,5 @@
   <string name="presence_dnd">Upptagen</string>
   <string name="secure_password_generated">Ett säkert lösenord har genererats</string>
   <string name="device_does_not_support_battery_op">Din enhet stödjer inte deaktivering av batterioptimeringar</string>
+  <string name="show_password">Visa lösenord</string>
 </resources>

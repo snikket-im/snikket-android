@@ -377,7 +377,6 @@
   <string name="conference_with">Criar conferência com...</string>
   <string name="no_conference_server_found">Não foi encontrado nenhum servidor de conferências</string>
   <string name="conference_creation_failed">Criação de conferência falhou!</string>
-  <string name="conference_created">Conferência criada!</string>
   <string name="secret_accepted">Segredo aceite!</string>
   <string name="reset">Restaurar</string>
   <string name="account_image_description">Avatar da conta</string>

@@ -341,7 +341,6 @@
   <string name="conference_with">צור ועידה עם...</string>
   <string name="no_conference_server_found">לא נמצא שרת ועידות</string>
   <string name="conference_creation_failed">יצירת הועידה נכשלה!</string>
-  <string name="conference_created">הועידה נוצרה!</string>
   <string name="secret_accepted">הסוד התקבל!</string>
   <string name="reset">איפוס</string>
   <string name="account_image_description">תמונת פרופיל</string>

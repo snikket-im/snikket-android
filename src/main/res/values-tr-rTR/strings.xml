@@ -376,7 +376,6 @@
   <string name="conference_with">… ile grup sohbet başlat</string>
   <string name="no_conference_server_found">Bir grup sohbet sunucusu bulunamadı</string>
   <string name="conference_creation_failed">Grup sohbet başlatılamadı!</string>
-  <string name="conference_created">Grup sohbet başladıldı!</string>
   <string name="secret_accepted">Gizli bilgi kabul edildi!</string>
   <string name="reset">Sıfırla</string>
   <string name="account_image_description">Hesap avatarı</string>

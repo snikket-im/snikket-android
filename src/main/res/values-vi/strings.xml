@@ -352,7 +352,6 @@
   <string name="conference_with">Tạo diễn đàn với...</string>
   <string name="no_conference_server_found">Không tìm thấy máy chủ diễn đàn nào</string>
   <string name="conference_creation_failed">Tạo diễn đàn thất bại!</string>
-  <string name="conference_created">Đã tạo diễn đàn!</string>
   <string name="secret_accepted">Đã chấp thuận bí mật!</string>
   <string name="reset">Cài lại</string>
   <string name="account_image_description">Ảnh đại diện tài khoản</string>

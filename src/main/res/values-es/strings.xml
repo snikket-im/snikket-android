@@ -379,7 +379,6 @@
   <string name="conference_with">Crear conversación en grupo</string>
   <string name="no_conference_server_found">No se ha encontrado el servidor para crear la conversación</string>
   <string name="conference_creation_failed">¡La creación de la conversación ha fallado!</string>
-  <string name="conference_created">¡Conversación en grupo creada!</string>
   <string name="secret_accepted">¡Secreto aceptado!</string>
   <string name="reset">Reinicializar</string>
   <string name="account_image_description">Imagen de perfil</string>

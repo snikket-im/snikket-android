@@ -352,7 +352,6 @@
   <string name="conference_with">회의 생성 </string>
   <string name="no_conference_server_found">회의 서버가 발견되지 않았습니다 </string>
   <string name="conference_creation_failed">회의 생성 실패 </string>
-  <string name="conference_created">회의 생성됨 </string>
   <string name="secret_accepted">비밀 접수됨 </string>
   <string name="reset">초기화 </string>
   <string name="account_image_description">계정 아바타 </string>

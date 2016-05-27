@@ -166,8 +166,8 @@
   <string name="mgmt_account_disable">Vorübergehend abschalten</string>
   <string name="mgmt_account_publish_avatar">Avatar veröffentlichen</string>
   <string name="mgmt_account_publish_pgp">Öffentlichen OpenPGP-Schlüssel veröffentlichen</string>
-  <string name="openpgp_has_been_published">Öffentlicher OpenPGP Schlüssel wurde veröffentlicht.</string>
-  <string name="republish_pgp_keys">Deine öffentliche OpenPGP Schlüssel müssen veröffentlicht werden!</string>
+  <string name="openpgp_has_been_published">Öffentlicher OpenPGP-Schlüssel wurde veröffentlicht.</string>
+  <string name="republish_pgp_keys">Deine öffentliche OpenPGP-Schlüssel müssen veröffentlicht werden!</string>
   <string name="mgmt_account_enable">Konto aktivieren </string>
   <string name="mgmt_account_are_you_sure">Bist du dir sicher?</string>
   <string name="mgmt_account_delete_confirm_text">Wenn du dein Konto löschst, gehen alle Gesprächsverläufe verloren</string>
@@ -379,7 +379,6 @@
   <string name="conference_with">Konferenz erstellen mit…</string>
   <string name="no_conference_server_found">Kein Konferenz-Server gefunden</string>
   <string name="conference_creation_failed">Erstellen der Konferenz fehlgeschlagen!</string>
-  <string name="conference_created">Konferenz erstellt!</string>
   <string name="secret_accepted">Schlüssel akzeptiert!</string>
   <string name="reset">Zurücksetzen</string>
   <string name="account_image_description">Konto-Avatar</string>
@@ -530,7 +529,7 @@
   <string name="fetching_mam_prefs">Archivierungseinstellungen werden abgerufen. Bitte warten …</string>
   <string name="unable_to_fetch_mam_prefs">Archivierungseinstellungen konnten nicht abgerufen werden</string>
   <string name="captcha_required">Captcha erforderlich</string>
-  <string name="captcha_hint">Gib den Text vom obigen Bild ein</string>
+  <string name="captcha_hint">Gib den Text von obigem Bild ein</string>
   <string name="certificate_chain_is_not_trusted">Zertifikat wird nicht vertraut</string>
   <string name="jid_does_not_match_certificate">Jabber-ID stimmt nicht dem Zertifikat überein</string>
   <string name="action_renew_certificate">Zertifikat erneuern</string>
@@ -590,7 +589,7 @@
   <string name="no_application_to_share_uri">Keine Anwendung zum Teilen der URI gefunden</string>
   <string name="share_uri_with">Teile URI mit…</string>
   <string name="welcome_text">XMPP ist ein providerunabhängiges Protokoll. Du kannst diesen Klienten mit einem beliebigen XMPP-Server deiner Wahl nutzen.\nWir haben jedoch eine einfache Möglichkeit geschaffen, ein Konto auf conversations.im zu erstellen; ein Provider, der speziell für den Einsatz mit Conversations geeignet ist.</string>
-  <string name="magic_create_text">Wir führen dich durch den Prozess ein Konto auf conversations.im zu erstellen.\nWenn du conversations.im als Provider nutzt, kannst du mit Nutzern anderer Provider kommunizieren, indem du ihnen deine vollständige Jabber-ID gibst.</string>
+  <string name="magic_create_text">Wir führen dich durch den Prozess der Kontoerstellung auf conversations.im.\nWenn du conversations.im als Anbieter wählst, kannst du mit Nutzern anderer Anbieter kommunizieren, indem du ihnen deine vollständige Jabber-ID gibst.</string>
   <string name="your_full_jid_will_be">Deine vollständige Jabber ID lautet: %s</string>
   <string name="create_account">Konto erstellen</string>
   <string name="use_own_provider">Nutze eigenen Provider</string>
@@ -606,6 +605,6 @@
   <string name="presence_xa">Nicht verfügbar</string>
   <string name="presence_dnd">Beschäftigt</string>
   <string name="secure_password_generated">Ein sicheres Passwort wurde erstellt</string>
-  <string name="device_does_not_support_battery_op">Dein Gerät unterstützt keine Batterieoptimierungen</string>
+  <string name="device_does_not_support_battery_op">Dein Gerät unterstützt kein Ausschalten der Batterieoptimierung</string>
   <string name="show_password">Passwort anzeigen</string>
 </resources>

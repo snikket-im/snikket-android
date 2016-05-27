@@ -379,7 +379,6 @@
   <string name="conference_with">Направи групно ћаскање са…</string>
   <string name="no_conference_server_found">Сервер групног ћаскања није нађен</string>
   <string name="conference_creation_failed">Прављење групног ћаскања није успело!</string>
-  <string name="conference_created">Групно ћаскање направљено!</string>
   <string name="secret_accepted">Тајна прихваћена!</string>
   <string name="reset">Ресетуј</string>
   <string name="account_image_description">Аватар налога</string>

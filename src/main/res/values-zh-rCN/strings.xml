@@ -377,7 +377,6 @@
   <string name="conference_with">与…创建讨论组</string>
   <string name="no_conference_server_found">无法找到讨论组服务器</string>
   <string name="conference_creation_failed">讨论组创建失败！</string>
-  <string name="conference_created">讨论组已创建！</string>
   <string name="secret_accepted">秘密被接受！</string>
   <string name="reset">重置</string>
   <string name="account_image_description">账户头像</string>

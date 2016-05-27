@@ -362,7 +362,6 @@
   <string name="conference_with">Создать конференцию с...</string>
   <string name="no_conference_server_found">Сервер конференции не был найден</string>
   <string name="conference_creation_failed">Не удалось создать конференцию!</string>
-  <string name="conference_created">Конференция создана!</string>
   <string name="secret_accepted">Секретный ключ принят!</string>
   <string name="reset">Сброс</string>
   <string name="account_image_description">Изображение учётной записи</string>
