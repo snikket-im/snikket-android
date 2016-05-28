@@ -19,7 +19,7 @@ public class Message extends AbstractEntity {
 
 	public static final String TABLENAME = "messages";
 
-	public static final String MERGE_SEPARATOR = " \u200B\n\n";
+	public static final String MERGE_SEPARATOR = "\n\u0004\n";
 
 	public static final int STATUS_RECEIVED = 0;
 	public static final int STATUS_UNSEND = 1;
