@@ -767,6 +767,9 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		toggleForegroundService();
 		updateUnreadCountBadge();
 		toggleScreenEventReceiver();
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+			scheduleNextIdlePing();
+		}
 	}
 
 	@Override
@@ -858,6 +861,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 
 	@TargetApi(Build.VERSION_CODES.M)
 	private void scheduleNextIdlePing() {
+		Log.d(Config.LOGTAG,"schedule next idle ping");
 		AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 		Intent intent = new Intent(this, EventReceiver.class);
 		intent.setAction(ACTION_IDLE_PING);
