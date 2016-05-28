@@ -1,6 +1,7 @@
 package eu.siacs.conversations.services;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -26,7 +27,6 @@ import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.security.KeyChain;
-import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.LruCache;
@@ -129,6 +129,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 	public static final String ACTION_DISABLE_FOREGROUND = "disable_foreground";
 	public static final String ACTION_TRY_AGAIN = "try_again";
 	public static final String ACTION_DISABLE_ACCOUNT = "disable_account";
+	public static final String ACTION_IDLE_PING = "idle_ping";
 	private static final String ACTION_MERGE_PHONE_CONTACTS = "merge_phone_contacts";
 	public static final String ACTION_GCM_TOKEN_REFRESH = "gcm_token_refresh";
 	public static final String ACTION_GCM_MESSAGE_RECEIVED = "gcm_message_received";
@@ -552,8 +553,14 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 				case ACTION_GCM_TOKEN_REFRESH:
 					refreshAllGcmTokens();
 					break;
+				case ACTION_IDLE_PING:
+					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+						scheduleNextIdlePing();
+					}
+					break;
 				case ACTION_GCM_MESSAGE_RECEIVED:
 					Log.d(Config.LOGTAG,"gcm push message arrived in service. extras="+intent.getExtras());
+					break;
 			}
 		}
 		this.wakeLock.acquire();
@@ -628,7 +635,7 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		if (pingNow) {
 			for (Account account : pingCandidates) {
 				account.getXmppConnection().sendPing();
-				Log.d(Config.LOGTAG, account.getJid().toBareJid() + " send ping");
+				Log.d(Config.LOGTAG, account.getJid().toBareJid() + " send ping (action="+action+")");
 				this.scheduleWakeUpCall(Config.PING_TIMEOUT, account.getUuid().hashCode());
 			}
 		}
@@ -842,14 +849,22 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 
 	public void scheduleWakeUpCall(int seconds, int requestCode) {
 		final long timeToWake = SystemClock.elapsedRealtime() + (seconds < 0 ? 1 : seconds + 1) * 1000;
-
-		Context context = getApplicationContext();
-		AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-
-		Intent intent = new Intent(context, EventReceiver.class);
+		AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+		Intent intent = new Intent(this, EventReceiver.class);
 		intent.setAction("ping");
-		PendingIntent alarmIntent = PendingIntent.getBroadcast(context, requestCode, intent, 0);
+		PendingIntent alarmIntent = PendingIntent.getBroadcast(this, requestCode, intent, 0);
 		alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, timeToWake, alarmIntent);
+	}
+
+	@TargetApi(Build.VERSION_CODES.M)
+	private void scheduleNextIdlePing() {
+		AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+		Intent intent = new Intent(this, EventReceiver.class);
+		intent.setAction(ACTION_IDLE_PING);
+		alarmManager.setAndAllowWhileIdle(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+				SystemClock.elapsedRealtime()+(Config.IDLE_PING_INTERVAL * 1000),
+				PendingIntent.getBroadcast(this,0,intent,0)
+				);
 	}
 
 	public XmppConnection createConnection(final Account account) {
