@@ -76,7 +76,7 @@ public final class Config {
 
 	public static final int REFRESH_UI_INTERVAL = 500;
 
-	public static final int MAX_DISPLAY_MESSAGE_CHARS = 2 * 1024;
+	public static final int MAX_DISPLAY_MESSAGE_CHARS = 4096;
 
 	public static final boolean DISABLE_PROXY_LOOKUP = false; //useful to debug ibb
 	public static final boolean DISABLE_HTTP_UPLOAD = false;

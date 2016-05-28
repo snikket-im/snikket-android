@@ -19,7 +19,6 @@ import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
 import android.text.util.Linkify;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -311,8 +310,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 				body = message.getMergedBody();
 			}
 			if (body.length() > Config.MAX_DISPLAY_MESSAGE_CHARS) {
-				Log.d(Config.LOGTAG,"not showing complete message of length "+body.length());
-				body = body.substring(0, Config.MAX_DISPLAY_MESSAGE_CHARS);
+				body = body.substring(0, Config.MAX_DISPLAY_MESSAGE_CHARS)+"\u2026";
 			}
 			final SpannableString formattedBody = new SpannableString(body);
 			int i = body.indexOf(Message.MERGE_SEPARATOR);
