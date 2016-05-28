@@ -356,10 +356,15 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 			while (matcher.find()) {
 				urlCount++;
 			}
+			Matcher geoMatcher = GeoHelper.GEO_URI.matcher(body);
+			while (matcher.find()) {
+				urlCount++;
+			}
 			viewHolder.messageBody.setTextIsSelectable(urlCount <= 1);
 			viewHolder.messageBody.setAutoLinkMask(0);
 			Linkify.addLinks(viewHolder.messageBody, Linkify.WEB_URLS);
 			Linkify.addLinks(viewHolder.messageBody, XMPP_PATTERN, "xmpp");
+			Linkify.addLinks(viewHolder.messageBody, GeoHelper.GEO_URI, "geo");
 		} else {
 			viewHolder.messageBody.setText("");
 			viewHolder.messageBody.setTextIsSelectable(false);
