@@ -9,6 +9,7 @@ import org.bouncycastle.asn1.x500.style.IETFUtils;
 import org.bouncycastle.cert.jcajce.JcaX509CertificateHolder;
 
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateParsingException;
 import java.security.cert.X509Certificate;
@@ -184,9 +185,7 @@ public final class CryptoHelper {
 				//ignored
 			}
 			try {
-				MessageDigest md = MessageDigest.getInstance("SHA-1");
-				byte[] fingerprint = md.digest(certificate.getEncoded());
-				information.putString("sha1", prettifyFingerprintCert(bytesToHex(fingerprint)));
+				information.putString("sha1", getFingerprintCert(certificate.getEncoded()));
 			} catch (Exception e) {
 
 			}
@@ -194,6 +193,12 @@ public final class CryptoHelper {
 		} catch (CertificateEncodingException e) {
 			return information;
 		}
+	}
+
+	public static String getFingerprintCert(byte[] input) throws NoSuchAlgorithmException {
+		MessageDigest md = MessageDigest.getInstance("SHA-1");
+		byte[] fingerprint = md.digest(input);
+		return prettifyFingerprintCert(bytesToHex(fingerprint));
 	}
 
 	public static int encryptionTypeToText(int encryption) {

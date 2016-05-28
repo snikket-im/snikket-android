@@ -36,6 +36,8 @@ public final class Config {
 
 	public static final String LOGTAG = "conversations";
 
+	public static final String BUG_REPORTS = "bugs@conversations.im";
+
 
 	public static final String DOMAIN_LOCK = null; //only allow account creation for this domain
 	public static final String MAGIC_CREATE_DOMAIN = "conversations.im";

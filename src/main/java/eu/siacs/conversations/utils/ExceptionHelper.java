@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.content.pm.Signature;
 import android.preference.PreferenceManager;
 import android.text.format.DateUtils;
 import android.util.Log;
@@ -18,6 +19,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import eu.siacs.conversations.Config;
@@ -31,6 +34,7 @@ import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
 
 public class ExceptionHelper {
+	private static SimpleDateFormat DATE_FORMATs = new SimpleDateFormat("yyyy-MM-dd");
 	public static void init(Context context) {
 		if (!(Thread.getDefaultUncaughtExceptionHandler() instanceof ExceptionHandler)) {
 			Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(
@@ -43,7 +47,7 @@ public class ExceptionHelper {
 			final SharedPreferences preferences = PreferenceManager
 					.getDefaultSharedPreferences(activity);
 			boolean neverSend = preferences.getBoolean("never_send", false);
-			if (neverSend) {
+			if (neverSend || Config.BUG_REPORTS == null) {
 				return false;
 			}
 			List<Account> accounts = service.getAccounts();
@@ -63,16 +67,18 @@ public class ExceptionHelper {
 			BufferedReader stacktrace = new BufferedReader(inputStreamReader);
 			final StringBuilder report = new StringBuilder();
 			PackageManager pm = activity.getPackageManager();
-			PackageInfo packageInfo = null;
+			PackageInfo packageInfo;
 			try {
-				packageInfo = pm.getPackageInfo(activity.getPackageName(), 0);
+				packageInfo = pm.getPackageInfo(activity.getPackageName(), PackageManager.GET_SIGNATURES);
 				report.append("Version: " + packageInfo.versionName + '\n');
-				report.append("Last Update: "
-						+ DateUtils.formatDateTime(activity,
-						packageInfo.lastUpdateTime,
-						DateUtils.FORMAT_SHOW_TIME
-								| DateUtils.FORMAT_SHOW_DATE) + '\n');
-			} catch (NameNotFoundException e) {
+				report.append("Last Update: " + DATE_FORMATs.format(new Date(packageInfo.lastUpdateTime)) + '\n');
+				Signature[] signatures = packageInfo.signatures;
+				if (signatures != null && signatures.length >= 1) {
+					report.append("SHA-1: " + CryptoHelper.getFingerprintCert(packageInfo.signatures[0].toByteArray()) + "\n");
+				}
+				report.append('\n');
+			} catch (Exception e) {
+				e.printStackTrace();
 				return false;
 			}
 			String line;
@@ -97,7 +103,7 @@ public class ExceptionHelper {
 							Conversation conversation = null;
 							try {
 								conversation = service.findOrCreateConversation(finalAccount,
-										Jid.fromString("bugs@siacs.eu"), false);
+										Jid.fromString(Config.BUG_REPORTS), false);
 							} catch (final InvalidJidException ignored) {
 							}
 							Message message = new Message(conversation, report
