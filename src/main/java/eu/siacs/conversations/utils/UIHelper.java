@@ -184,8 +184,12 @@ public class UIHelper {
 				return new Pair<>(getFileDescriptionString(context,message),true);
 			}
 		} else {
-			if (message.getBody().startsWith(Message.ME_COMMAND)) {
-				return new Pair<>(message.getBody().replaceAll("^" + Message.ME_COMMAND,
+			String body = message.getBody();
+			if (body.length() > 256) {
+				body = body.substring(0,256);
+			}
+			if (body.startsWith(Message.ME_COMMAND)) {
+				return new Pair<>(body.replaceAll("^" + Message.ME_COMMAND,
 						UIHelper.getMessageDisplayName(message) + " "), false);
 			} else if (GeoHelper.isGeoUri(message.getBody())) {
 				if (message.getStatus() == Message.STATUS_RECEIVED) {
@@ -197,7 +201,7 @@ public class UIHelper {
 				return new Pair<>(context.getString(R.string.x_file_offered_for_download,
 						getFileDescriptionString(context,message)),true);
 			} else{
-				return new Pair<>(message.getBody().trim(), false);
+				return new Pair<>(body.trim(), false);
 			}
 		}
 	}
