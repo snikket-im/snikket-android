@@ -464,6 +464,7 @@ public class Message extends AbstractEntity {
 						this.getCounterpart().equals(message.getCounterpart()) &&
 						this.edited() == message.edited() &&
 						(message.getTimeSent() - this.getTimeSent()) <= (Config.MESSAGE_MERGE_WINDOW * 1000) &&
+						this.getBody().length() + message.getBody().length() <= Config.MAX_DISPLAY_MESSAGE_CHARS &&
 						!GeoHelper.isGeoUri(message.getBody()) &&
 						!GeoHelper.isGeoUri(this.body) &&
 						message.treatAsDownloadable() == Decision.NEVER &&
