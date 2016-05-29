@@ -699,7 +699,6 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 			if (xmppConnectionServiceBound) {
 				this.mPostponedActivityResult = null;
 				if (requestCode == REQUEST_CREATE_CONFERENCE) {
-					Log.d(Config.LOGTAG,"account jid: "+ intent.getStringExtra(EXTRA_ACCOUNT));
 					Account account = extractAccount(intent);
 					final String subject = intent.getStringExtra("subject");
 					List<Jid> jids = new ArrayList<>();
@@ -719,7 +718,7 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 							//ignored
 						}
 					}
-					if (account != null && jids.size() > 1) {
+					if (account != null && jids.size() > 0) {
 						xmppConnectionService.createAdhocConference(account, subject, jids, mAdhocConferenceCallback);
 						mToast = Toast.makeText(this, R.string.creating_conference,Toast.LENGTH_LONG);
 						mToast.show();
