@@ -80,6 +80,7 @@
   <string name="also_end_conversation">Окончај ову преписку након тога</string>
   <string name="choose_presence">Избор присутности за контакта</string>
   <string name="send_unencrypted_message">Пошаљи нешифровану поруку</string>
+  <string name="send_message_to_x">Пошаљи поруку за %s</string>
   <string name="send_otr_message">Пошаљи ОТР шифровану поруку</string>
   <string name="send_omemo_message">Пошаљи ОМЕМО шифровану поруку</string>
   <string name="send_omemo_x509_message">Пошаљи v\\ОМЕМО шифровану поруку</string>
@@ -248,6 +249,7 @@
   <string name="bookmark_already_exists">Овај обележивач већ постоји</string>
   <string name="you">Ви</string>
   <string name="action_edit_subject">Уреди предмет групног ћаскања</string>
+  <string name="edit_subject_hint">Предмет групног ћаскања</string>
   <string name="joining_conference">Придружујем се групном ћаскању…</string>
   <string name="leave">Напусти</string>
   <string name="contact_added_you">Контакт вас је додао на списак контаката</string>
@@ -609,4 +611,10 @@
   <string name="secure_password_generated">Безбедна лозинка је направљена</string>
   <string name="device_does_not_support_battery_op">Ваш уређај не подржава искључивање оптимизације батерије</string>
   <string name="show_password">Прикажи лозинку</string>
+  <string name="registration_please_wait">Регистрација није успела: покушајте поново касније</string>
+  <string name="create_conference">Направи групно ћаскање</string>
+  <string name="join_or_create_conference">Придружи се или направи групно ћаскање</string>
+  <string name="conference_subject">Предмет</string>
+  <string name="choose_participants">Додај учеснике</string>
+  <string name="creating_conference">Правим групно ћаскање…</string>
 </resources>

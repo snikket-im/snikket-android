@@ -80,6 +80,7 @@
   <string name="also_end_conversation">Poté ukončit tuto konverzaci</string>
   <string name="choose_presence">Vybrat aktualizaci stavu pro kontakt</string>
   <string name="send_unencrypted_message">Odeslat nešifrovanou zprávu</string>
+  <string name="send_message_to_x">Odeslat zprávu pro %s</string>
   <string name="send_otr_message">Poslat OTR šifrovanou zprávu</string>
   <string name="send_omemo_message">Poslat OMEMO šifrovanou zprávu</string>
   <string name="send_omemo_x509_message">Odeslat v\\OMEMO šifrovanou zprávu</string>
@@ -248,6 +249,7 @@
   <string name="bookmark_already_exists">Tato záložka již existuje</string>
   <string name="you">Já</string>
   <string name="action_edit_subject">Upravit jméno konference</string>
+  <string name="edit_subject_hint">Předmět této konference</string>
   <string name="joining_conference">Připojování ke konferenci...</string>
   <string name="leave">Odejít</string>
   <string name="contact_added_you">Kontakt přidán do seznamu</string>
@@ -610,4 +612,10 @@
   <string name="secure_password_generated">Bylo vygenerováno bezpečné heslo</string>
   <string name="device_does_not_support_battery_op">Tento přístroj nepodporuje vypnutí možnosti optimalizace využití baterie</string>
   <string name="show_password">Zobrazit heslo</string>
+  <string name="registration_please_wait">Registrace selhala: Zkuste znovu později</string>
+  <string name="create_conference">Vytvořit konferenci</string>
+  <string name="join_or_create_conference">Vytvořit nebo se připojit ke konferenci</string>
+  <string name="conference_subject">Předmět</string>
+  <string name="choose_participants">Vybrat účastníky</string>
+  <string name="creating_conference">Vytváření konference...</string>
 </resources>

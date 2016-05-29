@@ -80,6 +80,7 @@
   <string name="also_end_conversation">Además, terminar esta conversación</string>
   <string name="choose_presence">Selecciona recurso del contacto</string>
   <string name="send_unencrypted_message">Enviar mensaje sin cifrar</string>
+  <string name="send_message_to_x">Enviar mensaje a %s</string>
   <string name="send_otr_message">Enviar mensaje cifrado con OTR</string>
   <string name="send_omemo_message">Enviar mensaje cifrado con OMEMO </string>
   <string name="send_omemo_x509_message">Enviar mensaje cifrado v\\OMEMO</string>
@@ -248,6 +249,7 @@
   <string name="bookmark_already_exists">Este marcador ya existe</string>
   <string name="you">Tú</string>
   <string name="action_edit_subject">Editar asunto de la conversación</string>
+  <string name="edit_subject_hint">El asunto de esta conversación</string>
   <string name="joining_conference">Uniéndose a conversación...</string>
   <string name="leave">Salir</string>
   <string name="contact_added_you">El contacto te ha añadido a su lista de contactos</string>
@@ -607,4 +609,10 @@
   <string name="secure_password_generated">Se ha generado una contraseña segura</string>
   <string name="device_does_not_support_battery_op">Tu dispositivo no soporta la opción de optimización de batería</string>
   <string name="show_password">Mostrar contraseña</string>
+  <string name="registration_please_wait">El registro falló. Prueba de nuevo más tarde</string>
+  <string name="create_conference">Crear conversación en grupo</string>
+  <string name="join_or_create_conference">Unirse o crear conversación en grupo</string>
+  <string name="conference_subject">Asunto</string>
+  <string name="choose_participants">Elige a los participantes</string>
+  <string name="creating_conference">Creando conversación...</string>
 </resources>

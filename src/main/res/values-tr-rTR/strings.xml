@@ -80,6 +80,7 @@
   <string name="also_end_conversation">Sonrasında bu sohbeti sonlandır</string>
   <string name="choose_presence">Kaynak kişiyi seçin</string>
   <string name="send_unencrypted_message">Şifrelenmemiş ileti gönder</string>
+  <string name="send_message_to_x">%s kişisine mesaj gönder</string>
   <string name="send_otr_message">OTR ile şifrelenmiş ileti gönder</string>
   <string name="send_omemo_message">OMEMO ile şifrelenmiş ileti gönder</string>
   <string name="send_omemo_x509_message">v\\OMEMO ile şifrelenmiş ileti gönder</string>
@@ -105,6 +106,7 @@
   <string name="pref_accept_files_summary">…‘den küçük olan dosyaları otomatik olarak kabul et</string>
   <string name="pref_attachments">Ekler</string>
   <string name="pref_return_to_previous">Hızlı Paylaşım</string>
+  <string name="pref_return_to_previous_summary">Bir şey paylaştıktan sonra bir grup sohbetine dönmek yerine önceki etkinliğe dön</string>
   <string name="pref_notification_settings">Bildirim</string>
   <string name="pref_notifications">Bildirimler</string>
   <string name="pref_notifications_summary">Yeni ileti geldiğinde bildir</string>
@@ -165,6 +167,8 @@
   <string name="mgmt_account_disable">Geçici olarak devre dışı bırak</string>
   <string name="mgmt_account_publish_avatar">Avatar yayınla</string>
   <string name="mgmt_account_publish_pgp">OpenPGP genel anahtarını yayınla</string>
+  <string name="openpgp_has_been_published">OpenPGP genel anahtar yayınlandı.</string>
+  <string name="republish_pgp_keys">OpenPGP genel anahtarınızı yeniden yayınlamayı unutmayın!</string>
   <string name="mgmt_account_enable">Hesabı etkinleştir</string>
   <string name="mgmt_account_are_you_sure">Emin misiniz?</string>
   <string name="mgmt_account_delete_confirm_text">Hesabınızı silerseniz bütün sohbet geçmişiniz silinecek</string>
@@ -245,6 +249,7 @@
   <string name="bookmark_already_exists">Bu yer imi zaten mevcut</string>
   <string name="you">Siz</string>
   <string name="action_edit_subject">Grup sohbet konusunu düzenle</string>
+  <string name="edit_subject_hint">Bu grup sohbetin konusu</string>
   <string name="joining_conference">Grup sohbete katiliyor</string>
   <string name="leave">Ayrıl</string>
   <string name="contact_added_you">Kişi sizi listesine ekledi</string>
@@ -411,6 +416,7 @@
   <string name="disable_all_accounts">Bütün hesapları devre dışı bırak</string>
   <string name="perform_action_with">Kullanarak tamamla</string>
   <string name="no_affiliation">Ortaklık yok</string>
+  <string name="no_role">Çevrimdışı</string>
   <string name="outcast">Bağlantısız</string>
   <string name="member">Üye</string>
   <string name="advanced_mode">Gelişmiş kip</string>
@@ -502,6 +508,8 @@
   <string name="pref_use_white_background">Beyaz arka plan kullan</string>
   <string name="pref_use_white_background_summary">Alınan iletileri beyaz arka plan üzerinde siyah yazıyla göster</string>
   <string name="account_status_tor_unavailable">Tor ağına erişilemiyor</string>
+  <string name="account_status_bind_failure">Bağlantı başarısız</string>
+  <string name="account_status_host_unknown">Bilinmeyen sunucu</string>
   <string name="server_info_broken">Bozuk</string>
   <string name="pref_presence_settings">Durum</string>
   <string name="pref_away_when_screen_off">Ekran kapandığında uzakta</string>
@@ -521,6 +529,7 @@
   <string name="fetching_mam_prefs">Arşivleme tercihleri alınıyor. Lütfen bekleyin...</string>
   <string name="unable_to_fetch_mam_prefs">Arşivleme tercihleri alınamadı</string>
   <string name="captcha_required">Captcha gerekli</string>
+  <string name="captcha_hint">Resimdeki yazıyı girin</string>
   <string name="certificate_chain_is_not_trusted">Sertifika zinciri güvenilir değil</string>
   <string name="jid_does_not_match_certificate">Jabber ID sertifikayla eşleşmiyor</string>
   <string name="action_renew_certificate">Sertifikayı yenile</string>
@@ -578,4 +587,29 @@
   <string name="security_error_invalid_file_access">Güvenlik hatası: Geçersiz dosya erişimi</string>
   <string name="no_application_to_share_uri">URI paylaşmak için uygulama bulunamadı</string>
   <string name="share_uri_with">URI paylaş ile...</string>
+  <string name="welcome_text">XMPP sağlayıcıdan bağımsız bir protokoldür. Bu istemciyi tercih ettiğiniz herhangi bir  XMMP sunucusuyla kullanabilirsiniz.\n Kullanılabilirlik sağlamak için conversation.im sağlayıcısında hesap oluşturmayı daha kolay hale getirdik; Conversation için özelleşmiş bir servis sağlayıcı. </string>
+  <string name="magic_create_text">conversation.im sağlayıcısında hesap açma sürecinde size yol göstereceğiz.\nconversation.im i bir servis sağlayıcı olarak kullandığınızda diğer sağlayıcıları kullanan kullanıcılar tam Jabber kimliğinizi vererek iletişim kurabilirsiniz. </string>
+  <string name="your_full_jid_will_be">Tam Jabber kimliğiniz %s olacak</string>
+  <string name="create_account">Hesap Oluştur</string>
+  <string name="use_own_provider">Kendi sağlayıcımı kullan</string>
+  <string name="pick_your_username">Kullanıcı adınızı seçin</string>
+  <string name="pref_manually_change_presence">Durumunuzu elle değiştirin</string>
+  <string name="pref_manually_change_presence_summary">Durumunuzu değiştirmek için avatarınıza dokunun</string>
+  <string name="change_presence">Durum Değiştir</string>
+  <string name="status_message">Durum iletisi</string>
+  <string name="all_accounts_on_this_device">Bu cihazdaki tüm hesaplara uygula</string>
+  <string name="presence_chat">Sohbet için uygun</string>
+  <string name="presence_online">Çevrimiçi</string>
+  <string name="presence_away">Uzakta</string>
+  <string name="presence_xa">Mevcut Değil</string>
+  <string name="presence_dnd">Meşgul</string>
+  <string name="secure_password_generated">Güvenli bir parola oluşturuldu</string>
+  <string name="device_does_not_support_battery_op">Cihazınız pil optimizasyonunu devre dışı bırakmayı desteklemiyor</string>
+  <string name="show_password">Parola göster</string>
+  <string name="registration_please_wait">Hesap oluşturulamadı: Sonra tekrar deneyin</string>
+  <string name="create_conference">Grup Sohbet başlat</string>
+  <string name="join_or_create_conference">Grup Sohbete katıl veya başlat</string>
+  <string name="conference_subject">Konu</string>
+  <string name="choose_participants">Katılımcıları seç</string>
+  <string name="creating_conference">Grup Sohbet başlatılıyor...</string>
 </resources>

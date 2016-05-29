@@ -80,6 +80,7 @@
   <string name="also_end_conversation">Приключване на този разговор след това</string>
   <string name="choose_presence">Изберете присъствие за контакта</string>
   <string name="send_unencrypted_message">Изпр. на нешифр. съобщение</string>
+  <string name="send_message_to_x">Изпращане на съобщение до %s</string>
   <string name="send_otr_message">Изпр. на съобщение, шифр. чрез OTP</string>
   <string name="send_omemo_message">Изпр. на съобщение, шифр. чрез OMEMO</string>
   <string name="send_omemo_x509_message">Изпр. на съобщение, шифр. чрез v\\OMEMO</string>
@@ -248,6 +249,7 @@
   <string name="bookmark_already_exists">Вече съществува такава отметка</string>
   <string name="you">Вие</string>
   <string name="action_edit_subject">Редактиране на темата на беседата</string>
+  <string name="edit_subject_hint">Темата на тази беседа</string>
   <string name="joining_conference">Присъединяване към беседата…</string>
   <string name="leave">Напускане</string>
   <string name="contact_added_you">Контактът е добавен във Вашия списък от контакти</string>
@@ -607,4 +609,10 @@
   <string name="secure_password_generated">Беше създадена сигурна парола</string>
   <string name="device_does_not_support_battery_op">Устройството Ви не поддържа изключването на оптимизациите за използването на батерията</string>
   <string name="show_password">Показване на паролата</string>
+  <string name="registration_please_wait">Неуспешна регистрация. Опитайте отново по-късно</string>
+  <string name="create_conference">Създаване на беседа</string>
+  <string name="join_or_create_conference">Присъединяване към или създаване на беседа</string>
+  <string name="conference_subject">Тема</string>
+  <string name="choose_participants">Изберете участниците</string>
+  <string name="creating_conference">Създаване на беседа…</string>
 </resources>

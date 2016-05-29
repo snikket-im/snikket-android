@@ -80,6 +80,7 @@
   <string name="also_end_conversation">その後、この会話を終了</string>
   <string name="choose_presence">連絡する参加を選択</string>
   <string name="send_unencrypted_message">暗号化されていないメッセージを送信</string>
+  <string name="send_message_to_x">メッセージを %s に送信</string>
   <string name="send_otr_message">OTR 暗号化メッセージを送信</string>
   <string name="send_omemo_message">OMEMO 暗号化メッセージを送信</string>
   <string name="send_omemo_x509_message">v\\OMEMO 暗号化メッセージを送信</string>
@@ -247,7 +248,8 @@
   <string name="delete_bookmark">ブックマークを削除</string>
   <string name="bookmark_already_exists">このブックマークはすでに存在します</string>
   <string name="you">あなた</string>
-  <string name="action_edit_subject">会議の件名を編集</string>
+  <string name="action_edit_subject">会議の主題を編集</string>
+  <string name="edit_subject_hint">この会議の主題</string>
   <string name="joining_conference">会議に参加中…</string>
   <string name="leave">退出</string>
   <string name="contact_added_you">連絡先があなたを連絡先リストに追加しました</string>
@@ -307,7 +309,7 @@
   <string name="pref_use_send_button_to_indicate_status_summary">送信ボタンに連絡先ステータスを示す色が付きます</string>
   <string name="pref_expert_options_other">その他</string>
   <string name="pref_conference_name">会議名</string>
-  <string name="pref_conference_name_summary">会議を識別するために JID の代わりにルームのテーマを使用します</string>
+  <string name="pref_conference_name_summary">会議を識別するために JID の代わりにルームの主題を使用します</string>
   <string name="pref_autojoin">自動的に会議に参加</string>
   <string name="pref_autojoin_summary">会議ブックマークの自動参加フラグを尊重します</string>
   <string name="toast_message_otr_fingerprint">OTR フィンガープリントをクリップボードにコピーしました!</string>
@@ -555,7 +557,7 @@
   <string name="sync_with_contacts">連絡先と同期</string>
   <string name="sync_with_contacts_long">Conversations はフルネームやアバターを表示するために、連絡先と XMPP 名簿と一致するようにしたいです。\n\nConversations は、サーバーにアップロードすることはなく、ローカルで連絡先を読んで一致させるだけです。\n\n今、連絡先へのアクセス許可を付与するように求められます。</string>
   <string name="certificate_information">証明書情報</string>
-  <string name="certificate_subject">表題</string>
+  <string name="certificate_subject">主題</string>
   <string name="certificate_issuer">発行者</string>
   <string name="certificate_cn">一般名称</string>
   <string name="certificate_o">組織</string>
@@ -604,4 +606,10 @@
   <string name="secure_password_generated">安全なパスワードが生成されました</string>
   <string name="device_does_not_support_battery_op">お使いのデバイスはバッテリー最適化の停止をサポートしていません</string>
   <string name="show_password">パスワードを表示</string>
+  <string name="registration_please_wait">登録に失敗しました: 後でもう一度試してください</string>
+  <string name="create_conference">会議を作成</string>
+  <string name="join_or_create_conference">会議に参加または作成</string>
+  <string name="conference_subject">主題</string>
+  <string name="choose_participants">参加者を選択</string>
+  <string name="creating_conference">会議の作成中…</string>
 </resources>

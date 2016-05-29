@@ -80,6 +80,7 @@
   <string name="also_end_conversation">Diese Unterhaltung danach beenden</string>
   <string name="choose_presence">Ressource des Kontakts auswählen</string>
   <string name="send_unencrypted_message">Unverschlüsselt schreiben…</string>
+  <string name="send_message_to_x">Sende Nachricht an %s</string>
   <string name="send_otr_message">OTR-verschlüsselt schreiben…</string>
   <string name="send_omemo_message">OMEMO-verschlüsselt schreiben…</string>
   <string name="send_omemo_x509_message">v\\OMEMO-verschlüsselte Nachricht senden</string>
@@ -247,7 +248,8 @@
   <string name="delete_bookmark">Von Kontaktliste entfernen</string>
   <string name="bookmark_already_exists">Die Konferenz befindet sich bereits auf deiner Kontaktliste</string>
   <string name="you">Du</string>
-  <string name="action_edit_subject">Konferenz-Thema bearbeiten</string>
+  <string name="action_edit_subject">Thema dieser Konferenz bearbeiten</string>
+  <string name="edit_subject_hint">Thema dieser Konferenz</string>
   <string name="joining_conference">Konferenz wird betreten…</string>
   <string name="leave">Verlassen</string>
   <string name="contact_added_you">Der Kontakt hat dich zur Kontaktliste hinzugefügt</string>
@@ -307,7 +309,7 @@
   <string name="pref_use_send_button_to_indicate_status_summary">\"Senden\"-Schaltfläche einfärben, um den Online-Status des Kontakts anzuzeigen</string>
   <string name="pref_expert_options_other">Sonstiges</string>
   <string name="pref_conference_name">Konferenz-Name</string>
-  <string name="pref_conference_name_summary">Konferenz-Thema statt Raum-JID als Namen verwenden</string>
+  <string name="pref_conference_name_summary">Thema von Konferenzen anstatt JID als Namen verwenden</string>
   <string name="pref_autojoin">Konferenzen automatisch beitreten</string>
   <string name="pref_autojoin_summary">Autojoin-Flag in Konferenzlesezeichen beachten</string>
   <string name="toast_message_otr_fingerprint">OTR-Fingerabdruck in die Zwischenablage kopiert!</string>
@@ -607,4 +609,10 @@
   <string name="secure_password_generated">Ein sicheres Passwort wurde erstellt</string>
   <string name="device_does_not_support_battery_op">Dein Gerät unterstützt kein Ausschalten der Batterieoptimierung</string>
   <string name="show_password">Passwort anzeigen</string>
+  <string name="registration_please_wait">Fehlgeschlagen: Bitte später versuchen.</string>
+  <string name="create_conference">Konferenz erstellen</string>
+  <string name="join_or_create_conference">Konferenz betreten oder erstellen</string>
+  <string name="conference_subject">Thema</string>
+  <string name="choose_participants">Mitglieder wählen</string>
+  <string name="creating_conference">Erstelle Konferenz…</string>
 </resources>
