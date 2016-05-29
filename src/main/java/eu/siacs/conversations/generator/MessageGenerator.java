@@ -12,6 +12,7 @@ import java.util.TimeZone;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.crypto.axolotl.XmppAxolotlMessage;
 import eu.siacs.conversations.entities.Account;
+import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.services.XmppConnectionService;
@@ -81,7 +82,8 @@ public class MessageGenerator extends AbstractGenerator {
 	}
 
 	private static boolean recipientSupportsOmemo(Message message) {
-		return message.getContact().getPresences().allOrNonSupport(AxolotlService.PEP_DEVICE_LIST_NOTIFY);
+		Contact c = message.getContact();
+		return c != null && c.getPresences().allOrNonSupport(AxolotlService.PEP_DEVICE_LIST_NOTIFY);
 	}
 
 	public static void addMessageHints(MessagePacket packet) {
