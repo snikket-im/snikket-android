@@ -4,6 +4,7 @@ import android.net.Uri;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.List;
 
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
@@ -32,8 +33,13 @@ public class XmppUri {
 
 	protected void parse(Uri uri) {
 		String scheme = uri.getScheme();
-		if ("xmpp".equalsIgnoreCase(scheme)) {
-			// sample: xmpp:jid@foo.com
+		String host = uri.getHost();
+		List<String> segments = uri.getPathSegments();
+		if ("https".equalsIgnoreCase(scheme) && "conversations.im".equalsIgnoreCase(host) && segments.size() >= 3) {
+			// sample : https://conversations.im/i/foo/bar.com
+			jid = segments.get(1)+"@"+segments.get(2);
+		} else if ("xmpp".equalsIgnoreCase(scheme)) {
+			// sample: xmpp:foo@bar.com
 			muc = "join".equalsIgnoreCase(uri.getQuery());
 			if (uri.getAuthority() != null) {
 				jid = uri.getAuthority();
@@ -42,7 +48,7 @@ public class XmppUri {
 			}
 			fingerprint = parseFingerprint(uri.getQuery());
 		} else if ("imto".equalsIgnoreCase(scheme)) {
-			// sample: imto://xmpp/jid@foo.com
+			// sample: imto://xmpp/foo@bar.com
 			try {
 				jid = URLDecoder.decode(uri.getEncodedPath(), "UTF-8").split("/")[1];
 			} catch (final UnsupportedEncodingException ignored) {
