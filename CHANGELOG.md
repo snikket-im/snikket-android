@@ -1,5 +1,11 @@
 ###Changelog
 
+####Version 1.12.5
+* new create conference dialog
+* show first unread message on top
+* show geo uri as links
+* circumvent long message DOS
+
 ####Version 1.12.4
 * show offline members in conference (needs server support)
 * various bug fixes
