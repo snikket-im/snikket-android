@@ -49,6 +49,8 @@ public final class Config {
 	public static final boolean SHOW_CONNECTED_ACCOUNTS = false; //show number of connected accounts in foreground notification
 	public static final boolean SHOW_DISABLE_FOREGROUND = true; //if set to true the foreground notification has a button to disable it
 
+	public static final boolean ALWAYS_NOTIFY_BY_DEFAULT = false;
+
 	public static final int PING_MAX_INTERVAL = 300;
 	public static final int IDLE_PING_INTERVAL = 600; //540 is minimum according to docs;
 	public static final int PING_MIN_INTERVAL = 30;
