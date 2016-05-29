@@ -1,5 +1,8 @@
 ###Changelog
 
+####Version 1.12.7
+* bug fixes
+
 ####Version 1.12.6
 * bug fixes
 
