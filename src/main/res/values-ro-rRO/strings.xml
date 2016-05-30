@@ -80,6 +80,7 @@
   <string name="also_end_conversation">Dupa, incheie conversatia</string>
   <string name="choose_presence">Alege prezenta pentru a contacta</string>
   <string name="send_unencrypted_message">Trimite mesaje necriptate</string>
+  <string name="send_message_to_x">Trimite mesaj catre %s</string>
   <string name="send_otr_message">Trimite mesaj criptat cu OTR</string>
   <string name="send_omemo_message">Trimite mesaj criptat cu OMEMO</string>
   <string name="send_omemo_x509_message">Trimite mesaj criptat cu v\\OMEMO</string>
@@ -248,6 +249,7 @@
   <string name="bookmark_already_exists">Acest semn de carte exista</string>
   <string name="you">Tu</string>
   <string name="action_edit_subject">Editeaza titlul conferintei</string>
+  <string name="edit_subject_hint">Subiectul acestei conferinte</string>
   <string name="joining_conference">Alatura-te conferintei</string>
   <string name="leave">Paraseste</string>
   <string name="contact_added_you">Contactul a fost adaugat in lista </string>
@@ -611,4 +613,10 @@ Emitent</string>
   <string name="secure_password_generated">O parola sigura a fost generata</string>
   <string name="device_does_not_support_battery_op">Dispozitivul dumneavoastra nu suporta dezactivarea optimizarii de baterie pentru aceasta aplicatie</string>
   <string name="show_password">Arata parola</string>
+  <string name="registration_please_wait">Inregistrarea a esuat: Incercati mai tarziu</string>
+  <string name="create_conference">Creeaza conferinta</string>
+  <string name="join_or_create_conference">Alatura-te sau creeaza conferinta</string>
+  <string name="conference_subject">Subiect</string>
+  <string name="choose_participants">Alege participanti</string>
+  <string name="creating_conference">Se creeaza conferinta...</string>
 </resources>
