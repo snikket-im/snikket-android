@@ -35,9 +35,18 @@ public class XmppUri {
 		String scheme = uri.getScheme();
 		String host = uri.getHost();
 		List<String> segments = uri.getPathSegments();
-		if ("https".equalsIgnoreCase(scheme) && "conversations.im".equalsIgnoreCase(host) && segments.size() >= 3) {
-			// sample : https://conversations.im/i/foo/bar.com
-			jid = segments.get(1)+"@"+segments.get(2);
+		if ("https".equalsIgnoreCase(scheme) && "conversations.im".equalsIgnoreCase(host)) {
+			if (segments.size() >= 2 && segments.get(1).contains("@")) {
+				// sample : https://conversations.im/i/foo@bar.com
+				try {
+					jid = Jid.fromString(segments.get(1)).toString();
+				} catch (Exception e) {
+					jid = null;
+				}
+			} else if (segments.size() >= 3) {
+				// sample : https://conversations.im/i/foo/bar.com
+				jid = segments.get(1) + "@" + segments.get(2);
+			}
 		} else if ("xmpp".equalsIgnoreCase(scheme)) {
 			// sample: xmpp:foo@bar.com
 			muc = "join".equalsIgnoreCase(uri.getQuery());
