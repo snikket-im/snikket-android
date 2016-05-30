@@ -3124,6 +3124,16 @@ public class XmppConnectionService extends Service implements OnPhoneContactsLoa
 		return contacts;
 	}
 
+	public Conversation findFirstMuc(Jid jid) {
+		for(Conversation conversation : getConversations()) {
+			if (conversation.getJid().toBareJid().equals(jid.toBareJid())
+					&& conversation.getMode() == Conversation.MODE_MULTI) {
+				return conversation;
+			}
+		}
+		return null;
+	}
+
 	public NotificationService getNotificationService() {
 		return this.mNotificationService;
 	}

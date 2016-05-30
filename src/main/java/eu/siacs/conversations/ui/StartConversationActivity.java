@@ -846,7 +846,16 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 
 	private boolean handleJid(Invite invite) {
 		List<Contact> contacts = xmppConnectionService.findContacts(invite.getJid());
-		if (contacts.size() == 0) {
+		if (invite.isMuc()) {
+			Conversation muc = xmppConnectionService.findFirstMuc(invite.getJid());
+			if (muc != null) {
+				switchToConversation(muc);
+				return true;
+			} else {
+				showJoinConferenceDialog(invite.getJid().toBareJid().toString());
+				return false;
+			}
+		} else if (contacts.size() == 0) {
 			showCreateContactDialog(invite.getJid().toString(),invite.getFingerprint());
 			return false;
 		} else if (contacts.size() == 1) {
@@ -1020,13 +1029,13 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 
 		boolean invite() {
 			if (jid != null) {
-				if (muc) {
-					showJoinConferenceDialog(jid);
-				} else {
-					return handleJid(this);
-				}
+				return handleJid(this);
 			}
 			return false;
+		}
+
+		public boolean isMuc() {
+			return muc;
 		}
 	}
 }

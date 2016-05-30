@@ -47,6 +47,7 @@ public class XmppUri {
 				// sample : https://conversations.im/i/foo/bar.com
 				jid = segments.get(1) + "@" + segments.get(2);
 			}
+			muc = segments.size() > 1 && "j".equalsIgnoreCase(segments.get(0));
 		} else if ("xmpp".equalsIgnoreCase(scheme)) {
 			// sample: xmpp:foo@bar.com
 			muc = "join".equalsIgnoreCase(uri.getQuery());
