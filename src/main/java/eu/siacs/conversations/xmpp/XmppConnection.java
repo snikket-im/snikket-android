@@ -924,7 +924,8 @@ public class XmppConnection implements Runnable {
 					if (jid != null && jid.getContent() != null) {
 						try {
 							account.setResource(Jid.fromString(jid.getContent()).getResourcepart());
-							if (streamFeatures.hasChild("session")) {
+							if (streamFeatures.hasChild("session")
+									&& !streamFeatures.findChild("session").hasChild("optional")) {
 								sendStartSession();
 							} else {
 								sendPostBindInitialization();
@@ -990,6 +991,7 @@ public class XmppConnection implements Runnable {
 	}
 
 	private void sendStartSession() {
+		Log.d(Config.LOGTAG,account.getJid().toBareJid()+": sending legacy session to outdated server");
 		final IqPacket startSession = new IqPacket(IqPacket.TYPE.SET);
 		startSession.addChild("session", "urn:ietf:params:xml:ns:xmpp-session");
 		this.sendUnmodifiedIqPacket(startSession, new OnIqPacketReceived() {
