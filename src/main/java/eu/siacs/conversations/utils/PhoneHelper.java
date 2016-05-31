@@ -13,12 +13,14 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.provider.ContactsContract.Profile;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.RejectedExecutionException;
 
 public class PhoneHelper {
 
-	public static void loadPhoneContacts(Context context, final List<Bundle> phoneContacts, final OnPhoneContactsLoadedListener listener) {
+	public static void loadPhoneContacts(Context context, final OnPhoneContactsLoadedListener listener) {
+		final List<Bundle> phoneContacts = new ArrayList<>();
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
 				&& context.checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
 			listener.onPhoneContactsLoaded(phoneContacts);
