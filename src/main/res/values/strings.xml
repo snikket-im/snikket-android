@@ -648,4 +648,5 @@
 	<string name="conference_subject">Subject</string>
 	<string name="choose_participants">Choose participants</string>
 	<string name="creating_conference">Creating conference…</string>
+	<string name="invite_again">Invite again</string>
 </resources>
