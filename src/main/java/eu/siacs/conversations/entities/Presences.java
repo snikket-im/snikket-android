@@ -59,7 +59,9 @@ public class Presences {
 		synchronized (this.presences) {
 			ArrayList<PresenceTemplate> templates = new ArrayList<>(presences.size());
 			for(Presence p : presences.values()) {
-				templates.add(new PresenceTemplate(p.getStatus(),p.getMessage()));
+				if (p.getMessage() != null && !p.getMessage().trim().isEmpty()) {
+					templates.add(new PresenceTemplate(p.getStatus(), p.getMessage()));
+				}
 			}
 			return templates;
 		}
