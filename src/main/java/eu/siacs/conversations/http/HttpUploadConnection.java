@@ -215,6 +215,7 @@ public class HttpUploadConnection implements Transferable {
 						mXmppConnectionService.resendMessage(message, delayed);
 					}
 				} else {
+					Log.d(Config.LOGTAG,"http upload failed because response code was "+code);
 					fail();
 				}
 			} catch (IOException e) {
