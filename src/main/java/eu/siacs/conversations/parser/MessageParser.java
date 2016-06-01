@@ -534,7 +534,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 				}
 			}
 		} else if (!packet.hasChild("body")){ //no body
-			if (Config.BACKGROUND_STANZA_LOGGING && !mXmppConnectionService.checkListeners()) {
+			if (Config.BACKGROUND_STANZA_LOGGING && mXmppConnectionService.checkListeners()) {
 				Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": " + packet+ " (carbon="+Boolean.toString(isCarbon)+")");
 			}
 			Conversation conversation = mXmppConnectionService.find(account, from.toBareJid());
