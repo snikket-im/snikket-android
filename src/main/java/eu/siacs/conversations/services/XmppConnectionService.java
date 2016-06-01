@@ -545,8 +545,9 @@ public class XmppConnectionService extends Service {
 						refreshAllPresences();
 					}
 					break;
-				case Intent.ACTION_SCREEN_OFF:
 				case Intent.ACTION_SCREEN_ON:
+					deactivateGracePeriod();
+				case Intent.ACTION_SCREEN_OFF:
 					if (awayWhenScreenOff()) {
 						refreshAllPresences();
 					}
@@ -3057,6 +3058,12 @@ public class XmppConnectionService extends Service {
 			packet = mPresenceGenerator.selfPresence(account, getTargetPresence());
 		}
 		sendPresencePacket(account, packet);
+	}
+
+	private void deactivateGracePeriod() {
+		for(Account account : getAccounts()) {
+			account.deactivateGracePeriod();
+		}
 	}
 
 	public void refreshAllPresences() {
