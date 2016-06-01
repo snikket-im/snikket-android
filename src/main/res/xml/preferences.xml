@@ -36,6 +36,25 @@
             android:key="show_notification"
             android:summary="@string/pref_notifications_summary"
             android:title="@string/pref_notifications"/>
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:dependency="show_notification"
+            android:key="vibrate_on_notification"
+            android:summary="@string/pref_vibrate_summary"
+            android:title="@string/pref_vibrate"/>
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:dependency="show_notification"
+            android:key="led"
+            android:title="@string/pref_led"
+            android:summary="@string/pref_led_summary"/>
+        <RingtonePreference
+            android:defaultValue="content://settings/system/notification_sound"
+            android:dependency="show_notification"
+            android:key="notification_ringtone"
+            android:ringtoneType="notification"
+            android:summary="@string/pref_sound_summary"
+            android:title="@string/pref_sound"/>
         <PreferenceScreen
             android:dependency="show_notification"
             android:key="quiet_hours"
@@ -59,25 +78,15 @@
                 android:positiveButtonText="@string/set"
                 android:title="@string/title_pref_quiet_hours_end_time"/>
         </PreferenceScreen>
-        <CheckBoxPreference
-            android:defaultValue="true"
+        <ListPreference
             android:dependency="show_notification"
-            android:key="vibrate_on_notification"
-            android:summary="@string/pref_vibrate_summary"
-            android:title="@string/pref_vibrate"/>
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:dependency="show_notification"
-            android:key="led"
-            android:title="@string/pref_led"
-            android:summary="@string/pref_led_summary"/>
-        <RingtonePreference
-            android:defaultValue="content://settings/system/notification_sound"
-            android:dependency="show_notification"
-            android:key="notification_ringtone"
-            android:ringtoneType="notification"
-            android:summary="@string/pref_sound_summary"
-            android:title="@string/pref_sound"/>
+            android:key="grace_period_length"
+            android:title="@string/pref_notification_grace_period"
+            android:summary="@string/pref_notification_grace_period_summary"
+            android:defaultValue="144"
+            android:entries="@array/grace_periods"
+            android:entryValues="@array/grace_periods_values"
+            />
     </PreferenceCategory>
     <PreferenceCategory
         android:title="@string/pref_attachments">

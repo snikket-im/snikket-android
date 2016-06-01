@@ -542,9 +542,8 @@ public class Account extends AbstractEntity {
 		return this.avatar;
 	}
 
-	public void activateGracePeriod() {
-		this.mEndGracePeriod = SystemClock.elapsedRealtime()
-			+ (Config.CARBON_GRACE_PERIOD * 1000);
+	public void activateGracePeriod(long duration) {
+		this.mEndGracePeriod = SystemClock.elapsedRealtime() + duration;
 	}
 
 	public void deactivateGracePeriod() {
