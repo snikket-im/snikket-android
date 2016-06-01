@@ -80,6 +80,7 @@
   <string name="also_end_conversation">Avsluta denna konversation efteråt</string>
   <string name="choose_presence">Välj tillgänglighet till kontakt</string>
   <string name="send_unencrypted_message">Skicka okrypterat meddelande</string>
+  <string name="send_message_to_x">Skicka meddelande till %s</string>
   <string name="send_otr_message">Skicka OTR-krypterat meddelande</string>
   <string name="send_omemo_message">Skicka OMEMO-krypterat meddelande</string>
   <string name="send_omemo_x509_message">Skicka v\\OMEMO-krypterat meddelande</string>
@@ -248,6 +249,7 @@
   <string name="bookmark_already_exists">Detta bokmärke finns redan</string>
   <string name="you">Du</string>
   <string name="action_edit_subject">Ändra konferensämne</string>
+  <string name="edit_subject_hint">Ämnet för denna konferens</string>
   <string name="joining_conference">Går med i konferens...</string>
   <string name="leave">Lämna</string>
   <string name="contact_added_you">Kontakten lade till dig i sin kontaktlista</string>
@@ -607,4 +609,10 @@
   <string name="secure_password_generated">Ett säkert lösenord har genererats</string>
   <string name="device_does_not_support_battery_op">Din enhet stödjer inte deaktivering av batterioptimeringar</string>
   <string name="show_password">Visa lösenord</string>
+  <string name="registration_please_wait">Registreringfel: Försök igen senare</string>
+  <string name="create_conference">Skapa konferens</string>
+  <string name="join_or_create_conference">Gå med i eller skapa konferens</string>
+  <string name="conference_subject">Ämne</string>
+  <string name="choose_participants">Välj deltagare</string>
+  <string name="creating_conference">Skapar konferens...</string>
 </resources>

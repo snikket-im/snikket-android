@@ -80,6 +80,7 @@
   <string name="also_end_conversation">Dit gesprek na afloop beëindigen</string>
   <string name="choose_presence">Kies aanwezigheid om te tonen aan contact</string>
   <string name="send_unencrypted_message">Verstuur onversleuteld bericht</string>
+  <string name="send_message_to_x">Bericht sturen naar %s</string>
   <string name="send_otr_message">Verstuur OTR-versleuteld bericht</string>
   <string name="send_omemo_message">Verstuur OMEMO-versleuteld bericht</string>
   <string name="send_omemo_x509_message">Verstuur v\\OMEMO-versleuteld bericht</string>
@@ -248,6 +249,7 @@
   <string name="bookmark_already_exists">Deze bladwijzer bestaat al</string>
   <string name="you">Jij</string>
   <string name="action_edit_subject">Onderwerp van groepsgesprek bewerken</string>
+  <string name="edit_subject_hint">Het onderwerp van dit groepsgesprek</string>
   <string name="joining_conference">Deelnemen aan groepsgesprek…</string>
   <string name="leave">Verlaten</string>
   <string name="contact_added_you">Contact heeft je toegevoegd aan zijn/haar contacten</string>
@@ -607,4 +609,10 @@
   <string name="secure_password_generated">Een veilig wachtwoord is aangemaakt</string>
   <string name="device_does_not_support_battery_op">Je apparaat ondersteunt het uitschakelen van batterij-optimalisatie niet</string>
   <string name="show_password">Wachtwoord weergeven</string>
+  <string name="registration_please_wait">Registratie mislukt: probeer later opnieuw</string>
+  <string name="create_conference">Groepsgesprek aanmaken</string>
+  <string name="join_or_create_conference">Deelnemen aan groepsgesprek of een aanmaken</string>
+  <string name="conference_subject">Onderwerp</string>
+  <string name="choose_participants">Kies deelnemers</string>
+  <string name="creating_conference">Aanmaken van groepsgesprek…</string>
 </resources>
