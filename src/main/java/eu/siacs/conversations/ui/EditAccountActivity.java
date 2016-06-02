@@ -523,7 +523,7 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 			}
 			mamPrefs.setVisible(mAccount.getXmppConnection().getFeatures().mam());
 			Set<Integer> otherDevices = mAccount.getAxolotlService().getOwnDeviceIds();
-			if (otherDevices == null || otherDevices.isEmpty() || Config.supportOmemo()) {
+			if (otherDevices == null || otherDevices.isEmpty() || !Config.supportOmemo()) {
 				clearDevices.setVisible(false);
 			}
 			changePresence.setVisible(manuallyChangePresence());
