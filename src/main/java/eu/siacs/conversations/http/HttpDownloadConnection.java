@@ -140,12 +140,18 @@ public class HttpDownloadConnection implements Transferable {
 		mXmppConnectionService.updateConversationUi();
 	}
 
+	private class WriteException extends IOException {
+
+	}
+
 	private void showToastForException(Exception e) {
 		e.printStackTrace();
 		if (e instanceof java.net.UnknownHostException) {
 			mXmppConnectionService.showErrorToastInUi(R.string.download_failed_server_not_found);
 		} else if (e instanceof java.net.ConnectException) {
 			mXmppConnectionService.showErrorToastInUi(R.string.download_failed_could_not_connect);
+		} else if (e instanceof WriteException) {
+			mXmppConnectionService.showErrorToastInUi(R.string.download_failed_could_not_write_file);
 		} else if (!(e instanceof  CancellationException)) {
 			mXmppConnectionService.showErrorToastInUi(R.string.download_failed_file_not_found);
 		}
@@ -284,11 +290,15 @@ public class HttpDownloadConnection implements Transferable {
 					file.createNewFile();
 					os = AbstractConnectionManager.createOutputStream(file, true);
 				}
-				int count = -1;
+				int count;
 				byte[] buffer = new byte[1024];
 				while ((count = is.read(buffer)) != -1) {
 					transmitted += count;
-					os.write(buffer, 0, count);
+					try {
+						os.write(buffer, 0, count);
+					} catch (IOException e) {
+						throw new WriteException();
+					}
 					updateProgress((int) ((((double) transmitted) / expected) * 100));
 					if (canceled) {
 						throw new CancellationException();
