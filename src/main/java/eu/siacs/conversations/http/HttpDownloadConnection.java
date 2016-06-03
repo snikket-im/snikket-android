@@ -304,16 +304,14 @@ public class HttpDownloadConnection implements Transferable {
 						throw new CancellationException();
 					}
 				}
+				try {
+					os.flush();
+				} catch (IOException e) {
+					throw new WriteException();
+				}
 			} catch (CancellationException | IOException e) {
 				throw e;
 			} finally {
-				if (os != null) {
-					try {
-						os.flush();
-					} catch (final IOException ignored) {
-
-					}
-				}
 				FileBackend.close(os);
 				FileBackend.close(is);
 				wakeLock.release();
