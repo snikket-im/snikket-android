@@ -504,8 +504,8 @@ public class MucOptions {
 	public String getProposedNick() {
 		if (conversation.getBookmark() != null
 				&& conversation.getBookmark().getNick() != null
-				&& !conversation.getBookmark().getNick().isEmpty()) {
-			return conversation.getBookmark().getNick();
+				&& !conversation.getBookmark().getNick().trim().isEmpty()) {
+			return conversation.getBookmark().getNick().trim();
 		} else if (!conversation.getJid().isBareJid()) {
 			return conversation.getJid().getResourcepart();
 		} else {
