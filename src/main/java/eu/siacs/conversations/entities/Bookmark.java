@@ -52,8 +52,9 @@ public class Bookmark extends Element implements ListItem {
 	public String getDisplayName() {
 		if (this.mJoinedConversation != null) {
 			return this.mJoinedConversation.getName();
-		} else if (getBookmarkName() != null) {
-			return getBookmarkName();
+		} else if (getBookmarkName() != null
+				&& !getBookmarkName().trim().isEmpty()) {
+			return getBookmarkName().trim();
 		} else {
 			return this.getJid().getLocalpart();
 		}
