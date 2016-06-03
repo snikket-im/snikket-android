@@ -1562,7 +1562,12 @@ public class XmppConnectionService extends Service {
 				}
 			}
 			if (account.getXmppConnection() != null) {
-				this.disconnect(account, true);
+				new Thread(new Runnable() {
+					@Override
+					public void run() {
+						disconnect(account, true);
+					}
+				});
 			}
 			Runnable runnable = new Runnable() {
 				@Override
