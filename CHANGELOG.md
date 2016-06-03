@@ -1,5 +1,8 @@
 ###Changelog
 
+####Version 1.12.9
+* make grace period configurable
+
 ####Version 1.12.8
 * more bug fixes :-(
 
