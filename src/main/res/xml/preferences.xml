@@ -15,6 +15,8 @@
             android:key="resource"
             android:summary="@string/pref_xmpp_resource_summary"
             android:title="@string/pref_xmpp_resource"/>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/pref_privacy">
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="confirm_messages"
@@ -26,11 +28,13 @@
             android:key="chat_states"
             android:summary="@string/pref_chat_states_summary"
             android:title="@string/pref_chat_states"/>
-
-    </PreferenceCategory>
-    <PreferenceCategory
-        android:key="notifications"
-        android:title="@string/pref_notification_settings">
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="last_activity"
+            android:title="@string/pref_broadcast_last_activity"
+            android:summary="@string/pref_broadcast_last_activity_summary"/>
+        </PreferenceCategory>
+    <PreferenceCategory android:title="@string/pref_notification_settings">
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="show_notification"
@@ -88,8 +92,7 @@
             android:entryValues="@array/grace_periods_values"
             />
     </PreferenceCategory>
-    <PreferenceCategory
-        android:title="@string/pref_attachments">
+    <PreferenceCategory android:title="@string/pref_attachments">
         <ListPreference
             android:defaultValue="524288"
             android:entries="@array/filesizes"

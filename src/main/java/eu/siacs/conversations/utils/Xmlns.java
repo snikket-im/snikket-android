@@ -1,7 +1,5 @@
 package eu.siacs.conversations.utils;
 
-import eu.siacs.conversations.Config;
-
 public final class Xmlns {
 	public static final String BLOCKING = "urn:xmpp:blocking";
 	public static final String ROSTER = "jabber:iq:roster";

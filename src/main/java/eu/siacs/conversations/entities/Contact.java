@@ -34,7 +34,6 @@ public class Contact implements ListItem, Blockable {
 	public static final String LAST_PRESENCE = "last_presence";
 	public static final String LAST_TIME = "last_time";
 	public static final String GROUPS = "groups";
-	public Lastseen lastseen = new Lastseen();
 	protected String accountUuid;
 	protected String systemName;
 	protected String serverName;
@@ -50,9 +49,14 @@ public class Contact implements ListItem, Blockable {
 	protected Account account;
 	protected Avatar avatar;
 
+	private boolean mActive = false;
+	private long mLastseen = 0;
+	private String mLastPresence = null;
+
 	public Contact(final String account, final String systemName, final String serverName,
 			final Jid jid, final int subscription, final String photoUri,
-			final String systemAccount, final String keys, final String avatar, final Lastseen lastseen, final String groups) {
+			final String systemAccount, final String keys, final String avatar, final long lastseen,
+				   final String presence, final String groups) {
 		this.accountUuid = account;
 		this.systemName = systemName;
 		this.serverName = serverName;
@@ -75,7 +79,8 @@ public class Contact implements ListItem, Blockable {
 		} catch (JSONException e) {
 			this.groups = new JSONArray();
 		}
-		this.lastseen = lastseen;
+		this.mLastseen = lastseen;
+		this.mLastPresence = presence;
 	}
 
 	public Contact(final Jid jid) {
@@ -83,9 +88,6 @@ public class Contact implements ListItem, Blockable {
 	}
 
 	public static Contact fromCursor(final Cursor cursor) {
-		final Lastseen lastseen = new Lastseen(
-				cursor.getString(cursor.getColumnIndex(LAST_PRESENCE)),
-				cursor.getLong(cursor.getColumnIndex(LAST_TIME)));
 		final Jid jid;
 		try {
 			jid = Jid.fromString(cursor.getString(cursor.getColumnIndex(JID)), true);
@@ -102,7 +104,8 @@ public class Contact implements ListItem, Blockable {
 				cursor.getString(cursor.getColumnIndex(SYSTEMACCOUNT)),
 				cursor.getString(cursor.getColumnIndex(KEYS)),
 				cursor.getString(cursor.getColumnIndex(AVATAR)),
-				lastseen,
+				cursor.getLong(cursor.getColumnIndex(LAST_TIME)),
+				cursor.getString(cursor.getColumnIndex(LAST_PRESENCE)),
 				cursor.getString(cursor.getColumnIndex(GROUPS)));
 	}
 
@@ -197,8 +200,8 @@ public class Contact implements ListItem, Blockable {
 			values.put(PHOTOURI, photoUri);
 			values.put(KEYS, keys.toString());
 			values.put(AVATAR, avatar == null ? null : avatar.getFilename());
-			values.put(LAST_PRESENCE, lastseen.presence);
-			values.put(LAST_TIME, lastseen.time);
+			values.put(LAST_PRESENCE, mLastPresence);
+			values.put(LAST_TIME, mLastseen);
 			values.put(GROUPS, groups.toString());
 			return values;
 		}
@@ -517,18 +520,32 @@ public class Contact implements ListItem, Blockable {
 		this.commonName = cn;
 	}
 
-	public static class Lastseen {
-		public long time;
-		public String presence;
+	public void flagActive() {
+		this.mActive = true;
+	}
 
-		public Lastseen() {
-			this(null, 0);
-		}
+	public void flagInactive() {
+		this.mActive = false;
+	}
 
-		public Lastseen(final String presence, final long time) {
-			this.presence = presence;
-			this.time = time;
-		}
+	public boolean isActive() {
+		return this.mActive;
+	}
+
+	public void setLastseen(long timestamp) {
+		this.mLastseen = Math.max(timestamp, mLastseen);
+	}
+
+	public long getLastseen() {
+		return this.mLastseen;
+	}
+
+	public void setLastPresence(String presence) {
+		this.mLastPresence = presence;
+	}
+
+	public String getLastPresence() {
+		return this.mLastPresence;
 	}
 
 	public final class Options {

@@ -107,12 +107,10 @@ public class UIHelper {
 			.get(Calendar.DAY_OF_YEAR);
 	}
 
-	public static String lastseen(Context context, long time) {
-		if (time == 0) {
-			return context.getString(R.string.never_seen);
-		}
+	public static String lastseen(Context context, boolean active, long time) {
 		long difference = (System.currentTimeMillis() - time) / 1000;
-		if (difference < 60) {
+		active = active && difference <= 300;
+		if (active || difference < 60) {
 			return context.getString(R.string.last_seen_now);
 		} else if (difference < 60 * 2) {
 			return context.getString(R.string.last_seen_min);

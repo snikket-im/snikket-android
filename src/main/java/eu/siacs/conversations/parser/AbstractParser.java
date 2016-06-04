@@ -1,9 +1,7 @@
 package eu.siacs.conversations.parser;
 
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Locale;
 
 import eu.siacs.conversations.entities.Account;
@@ -14,7 +12,6 @@ import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
-import eu.siacs.conversations.xmpp.stanzas.AbstractStanza;
 
 public abstract class AbstractParser {
 
@@ -24,42 +21,48 @@ public abstract class AbstractParser {
 		this.mXmppConnectionService = service;
 	}
 
-	public static Long getTimestamp(Element element, Long defaultValue) {
+	public static Long parseTimestamp(Element element, Long d) {
 		Element delay = element.findChild("delay","urn:xmpp:delay");
 		if (delay != null) {
 			String stamp = delay.getAttribute("stamp");
 			if (stamp != null) {
 				try {
-					return AbstractParser.parseTimestamp(delay.getAttribute("stamp")).getTime();
+					return AbstractParser.parseTimestamp(delay.getAttribute("stamp"));
 				} catch (ParseException e) {
-					return defaultValue;
+					return d;
 				}
 			}
 		}
-		return defaultValue;
+		return d;
 	}
 
-	protected long getTimestamp(Element packet) {
-		return getTimestamp(packet,System.currentTimeMillis());
+	public static long parseTimestamp(Element element) {
+		return parseTimestamp(element, System.currentTimeMillis());
 	}
 
-	public static Date parseTimestamp(String timestamp) throws ParseException {
+	public static long parseTimestamp(String timestamp) throws ParseException {
 		timestamp = timestamp.replace("Z", "+0000");
 		SimpleDateFormat dateFormat;
+		long ms;
+		if (timestamp.charAt(19) == '.' && timestamp.length() >= 25) {
+			String millis = timestamp.substring(19,timestamp.length() - 5);
+			try {
+				double fractions = Double.parseDouble("0" + millis);
+				ms = Math.round(1000 * fractions);
+			} catch (NumberFormatException e) {
+				ms = 0;
+			}
+		} else {
+			ms = 0;
+		}
 		timestamp = timestamp.substring(0,19)+timestamp.substring(timestamp.length() -5,timestamp.length());
 		dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ",Locale.US);
-		return dateFormat.parse(timestamp);
+		return Math.min(dateFormat.parse(timestamp).getTime()+ms, System.currentTimeMillis());
 	}
 
-	protected void updateLastseen(long timestamp, final Account account, final Jid from) {
-		final String presence = from == null || from.isBareJid() ? "" : from.getResourcepart();
+	protected void updateLastseen(final Account account, final Jid from) {
 		final Contact contact = account.getRoster().getContact(from);
-		if (timestamp >= contact.lastseen.time) {
-			contact.lastseen.time = timestamp;
-			if (!presence.isEmpty()) {
-				contact.lastseen.presence = presence;
-			}
-		}
+		contact.setLastPresence(from.isBareJid() ? "" : from.getResourcepart());
 	}
 
 	protected String avatarData(Element items) {

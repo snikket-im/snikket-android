@@ -83,7 +83,7 @@ public class MessagePacket extends AbstractAcknowledgeableStanza {
 		if (packet == null) {
 			return null;
 		}
-		Long timestamp = AbstractParser.getTimestamp(forwarded,null);
+		Long timestamp = AbstractParser.parseTimestamp(forwarded, null);
 		return new Pair(packet,timestamp);
 	}
 

@@ -2,6 +2,7 @@ package eu.siacs.conversations.parser;
 
 import android.util.Log;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -204,6 +205,20 @@ public class PresenceParser extends AbstractParser implements
 			contact.updatePresence(resource, presence);
 			if (presence.hasCaps()) {
 				mXmppConnectionService.fetchCaps(account, from, presence);
+			}
+
+			final Element idle = packet.findChild("idle","urn:xmpp:idle:1");
+			if (idle != null) {
+				contact.flagInactive();
+				String since = idle.getAttribute("since");
+				try {
+					contact.setLastseen(AbstractParser.parseTimestamp(since));
+				} catch (NullPointerException | ParseException e) {
+					contact.setLastseen(System.currentTimeMillis());
+				}
+			} else {
+				contact.flagActive();
+				contact.setLastseen(AbstractParser.parseTimestamp(packet));
 			}
 
 			PgpEngine pgp = mXmppConnectionService.getPgpEngine();

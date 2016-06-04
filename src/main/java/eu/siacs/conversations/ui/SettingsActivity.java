@@ -162,7 +162,8 @@ public class SettingsActivity extends XmppActivity implements
 				"away_when_screen_off",
 				"allow_message_correction",
 				"treat_vibrate_as_silent",
-				"manually_change_presence");
+				"manually_change_presence",
+				"last_activity");
 		if (name.equals("resource")) {
 			String resource = preferences.getString("resource", "mobile")
 					.toLowerCase(Locale.US);

@@ -20,7 +20,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.FileObserver;
 import android.os.IBinder;
-import android.os.Looper;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.os.SystemClock;
@@ -80,6 +79,7 @@ import eu.siacs.conversations.entities.Roster;
 import eu.siacs.conversations.entities.ServiceDiscoveryResult;
 import eu.siacs.conversations.entities.Transferable;
 import eu.siacs.conversations.entities.TransferablePlaceholder;
+import eu.siacs.conversations.generator.AbstractGenerator;
 import eu.siacs.conversations.generator.IqGenerator;
 import eu.siacs.conversations.generator.MessageGenerator;
 import eu.siacs.conversations.generator.PresenceGenerator;
@@ -141,6 +141,9 @@ public class XmppConnectionService extends Service {
 	private final List<Conversation> conversations = new CopyOnWriteArrayList<>();
 	private final IqGenerator mIqGenerator = new IqGenerator(this);
 	private final List<String> mInProgressAvatarFetches = new ArrayList<>();
+
+	private long mLastActivity = 0;
+
 	public DatabaseBackend databaseBackend;
 	private ContentObserver contactObserver = new ContentObserver(null) {
 		@Override
@@ -1584,6 +1587,7 @@ public class XmppConnectionService extends Service {
 
 	public void setOnConversationListChangedListener(OnConversationUpdate listener) {
 		synchronized (this) {
+			this.mLastActivity = System.currentTimeMillis();
 			if (checkListeners()) {
 				switchToForeground();
 			}
@@ -1796,15 +1800,21 @@ public class XmppConnectionService extends Service {
 	}
 
 	private void switchToForeground() {
+		final boolean broadcastLastActivity = broadcastLastActivity();
 		for (Conversation conversation : getConversations()) {
 			conversation.setIncomingChatState(ChatState.ACTIVE);
 		}
 		for (Account account : getAccounts()) {
 			if (account.getStatus() == Account.State.ONLINE) {
 				account.deactivateGracePeriod();
-				XmppConnection connection = account.getXmppConnection();
-				if (connection != null && connection.getFeatures().csi()) {
-					connection.sendActive();
+				final XmppConnection connection = account.getXmppConnection();
+				if (connection != null ) {
+					if (connection.getFeatures().csi()) {
+						connection.sendActive();
+					}
+					if (broadcastLastActivity) {
+						sendPresence(account, false); //send new presence but don't include idle because we are not
+					}
 				}
 			}
 		}
@@ -1812,12 +1822,16 @@ public class XmppConnectionService extends Service {
 	}
 
 	private void switchToBackground() {
+		final boolean broadcastLastActivity = broadcastLastActivity();
 		for (Account account : getAccounts()) {
 			if (account.getStatus() == Account.State.ONLINE) {
 				XmppConnection connection = account.getXmppConnection();
 				if (connection != null) {
 					if (connection.getFeatures().csi()) {
 						connection.sendInactive();
+					}
+					if (broadcastLastActivity) {
+						sendPresence(account, broadcastLastActivity);
 					}
 					if (Config.CLOSE_TCP_WHEN_SWITCHING_TO_BACKGROUND && mPushManagementService.available(account)) {
 						connection.waitForPush();
@@ -2253,6 +2267,7 @@ public class XmppConnectionService extends Service {
 	private void disconnect(Account account, boolean force) {
 		if ((account.getStatus() == Account.State.ONLINE)
 				|| (account.getStatus() == Account.State.DISABLED)) {
+			final XmppConnection connection = account.getXmppConnection();
 			if (!force) {
 				List<Conversation> conversations = getConversations();
 				for (Conversation conversation : conversations) {
@@ -2270,7 +2285,7 @@ public class XmppConnectionService extends Service {
 				}
 				sendOfflinePresence(account);
 			}
-			account.getXmppConnection().disconnect(force);
+			connection.disconnect(force);
 		}
 	}
 
@@ -2814,6 +2829,10 @@ public class XmppConnectionService extends Service {
 		return getPreferences().getBoolean("show_connection_options", false);
 	}
 
+	public boolean broadcastLastActivity() {
+		return getPreferences().getBoolean("last_activity", false);
+	}
+
 	public int unreadCount() {
 		int count = 0;
 		for (Conversation conversation : getConversations()) {
@@ -3052,6 +3071,10 @@ public class XmppConnectionService extends Service {
 	}
 
 	public void sendPresence(final Account account) {
+		sendPresence(account, checkListeners() && broadcastLastActivity());
+	}
+
+	private void sendPresence(final Account account, final boolean includeIdleTimestamp) {
 		PresencePacket packet;
 		if (manuallyChangePresence()) {
 			packet =  mPresenceGenerator.selfPresence(account, account.getPresenceStatus());
@@ -3061,6 +3084,10 @@ public class XmppConnectionService extends Service {
 			}
 		} else {
 			packet = mPresenceGenerator.selfPresence(account, getTargetPresence());
+		}
+		if (mLastActivity > 0 && includeIdleTimestamp) {
+			long since = Math.min(mLastActivity, System.currentTimeMillis()); //don't send future dates
+			packet.addChild("idle","urn:xmpp:idle:1").setAttribute("since", AbstractGenerator.getTimestamp(since));
 		}
 		sendPresencePacket(account, packet);
 	}
@@ -3072,9 +3099,10 @@ public class XmppConnectionService extends Service {
 	}
 
 	public void refreshAllPresences() {
+		boolean includeIdleTimestamp = checkListeners() && broadcastLastActivity();
 		for (Account account : getAccounts()) {
 			if (!account.isOptionSet(Account.OPTION_DISABLED)) {
-				sendPresence(account);
+				sendPresence(account, includeIdleTimestamp);
 			}
 		}
 	}

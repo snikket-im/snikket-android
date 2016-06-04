@@ -19,6 +19,7 @@
 * XEP-0280: Message Carbons
 * XEP-0308: Last Message Correction
 * XEP-0313: Message Archive Management
+* XEP-0319: Last User Interaction in Presence
 * XEP-0333: Chat Markers
 * XEP-0352: Client State Indication
 * XEP-0357: Push Notifications

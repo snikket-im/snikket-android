@@ -7,12 +7,12 @@ import android.util.Pair;
 import net.java.otr4j.session.Session;
 import net.java.otr4j.session.SessionStatus;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
 
@@ -32,6 +32,7 @@ import eu.siacs.conversations.http.HttpConnectionManager;
 import eu.siacs.conversations.services.MessageArchiveService;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.CryptoHelper;
+import eu.siacs.conversations.utils.Xmlns;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.OnMessagePacketReceived;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
@@ -328,7 +329,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 		}
 
 		if (timestamp == null) {
-			timestamp = AbstractParser.getTimestamp(packet, System.currentTimeMillis());
+			timestamp = AbstractParser.parseTimestamp(packet);
 		}
 		final String body = packet.getBody();
 		final Element mucUserElement = packet.findChild("x", "http://jabber.org/protocol/muc#user");
@@ -439,7 +440,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 					message.setType(Message.TYPE_PRIVATE);
 				}
 			} else {
-				updateLastseen(timestamp, account, from);
+				updateLastseen(account, from);
 			}
 
 			if (replacementId != null && mXmppConnectionService.allowMessageCorrection()) {
@@ -601,7 +602,6 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 					mXmppConnectionService.markRead(conversation);
 				}
 			} else {
-				updateLastseen(timestamp, account, from);
 				final Message displayedMessage = mXmppConnectionService.markMessage(account, from.toBareJid(), displayed.getAttribute("id"), Message.STATUS_SEND_DISPLAYED);
 				Message message = displayedMessage == null ? null : displayedMessage.prev();
 				while (message != null
