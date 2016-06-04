@@ -1827,11 +1827,11 @@ public class XmppConnectionService extends Service {
 			if (account.getStatus() == Account.State.ONLINE) {
 				XmppConnection connection = account.getXmppConnection();
 				if (connection != null) {
-					if (connection.getFeatures().csi()) {
-						connection.sendInactive();
-					}
 					if (broadcastLastActivity) {
 						sendPresence(account, broadcastLastActivity);
+					}
+					if (connection.getFeatures().csi()) {
+						connection.sendInactive();
 					}
 					if (Config.CLOSE_TCP_WHEN_SWITCHING_TO_BACKGROUND && mPushManagementService.available(account)) {
 						connection.waitForPush();
