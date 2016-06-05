@@ -702,7 +702,7 @@ public class MemorizingTrustManager implements X509TrustManager {
 		}
 		@Override
 		public boolean verify(String hostname, SSLSession session) {
-			return verify(hostname, session, true);
+			return verify(hostname, session, false);
 		}
 		
 		
