@@ -637,6 +637,9 @@ public class XmppConnection implements Runnable {
 		}
 		++stanzasReceived;
 		lastPacketReceived = SystemClock.elapsedRealtime();
+		if (Config.BACKGROUND_STANZA_LOGGING && mXmppConnectionService.checkListeners()) {
+			Log.d(Config.LOGTAG,"[background stanza] "+element);
+		}
 		return element;
 	}
 

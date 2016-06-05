@@ -83,7 +83,7 @@ public final class Config {
 	public static final boolean DISABLE_HTTP_UPLOAD = false;
 	public static final boolean DISABLE_STRING_PREP = false; // setting to true might increase startup performance
 	public static final boolean EXTENDED_SM_LOGGING = false; // log stanza counts
-	public static final boolean BACKGROUND_STANZA_LOGGING = false;
+	public static final boolean BACKGROUND_STANZA_LOGGING = false; //log all stanzas that were received while the app is in background
 	public static final boolean RESET_ATTEMPT_COUNT_ON_NETWORK_CHANGE = true; //setting to true might increase power consumption
 
 	public static final boolean ENCRYPT_ON_HTTP_UPLOADED = false;
