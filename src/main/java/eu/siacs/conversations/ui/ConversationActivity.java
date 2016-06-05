@@ -949,7 +949,7 @@ public class ConversationActivity extends XmppActivity
 				upKey = KeyEvent.KEYCODE_DPAD_UP;
 				downKey = KeyEvent.KEYCODE_DPAD_DOWN;
 		}
-		final boolean modifier = event.isCtrlPressed() || event.isAltPressed();
+		final boolean modifier = event.isCtrlPressed() || (event.getMetaState() & KeyEvent.META_ALT_LEFT_ON) != 0;
 		if (modifier && key == KeyEvent.KEYCODE_TAB && isConversationsOverviewHideable()) {
 			toggleConversationsOverview();
 			return true;
