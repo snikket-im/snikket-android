@@ -120,6 +120,9 @@ My Bitcoin Address is: `1NxSU1YxYzJVDpX1rcESAA3NJki7kRgeeu`
 #### How do I create an account?
 XMPP, like email, is a federated protocol, which means that there is not one company you can create an *official XMPP account* with. Instead there are hundreds, or even thousands, of providers out there. One of those providers is our very own [conversations.im](https://account.conversations.im). If you don’t like to use *conversations.im* use a web search engine of your choice to find another provider. Or maybe your university has one. Or you can run your own. Or ask a friend to run one. Once you've found one, you can use Conversations to create an account. Just select *register new account* on server within the create account dialog.
 
+##### Running your own
+If you have a server somewhere and are willing to put some work in, the best alternative-in the spirit of federation-is to run your own. We recommand either [Prosody](https://prosody.im/) or [ejabberd](https://www.ejabberd.im/). Both of which have their own strengths. Ejabberd is slightly more mature nowadays but Prosody is arguably easier to set up. (For prosody you need a couple of so called [community modules](https://modules.prosody.im/) from which most of them are maintained by the same people that develop Prosody.)
+
 #### Where can I set up a custom hostname / port
 Conversations will automatically look up the SRV records for your domain name
 which can point to any hostname port combination. If your server doesn’t provide
