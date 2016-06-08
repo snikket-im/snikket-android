@@ -116,8 +116,6 @@
   <string name="pref_led_summary">Мигане на индикаторния светодиод при получаване на ново съобщение</string>
   <string name="pref_sound">Тон на звънене</string>
   <string name="pref_sound_summary">Изпълнение на звук при получаване на ново съобщение</string>
-  <string name="pref_notification_grace_period">Продължителност на отсрочване на известията</string>
-  <string name="pref_notification_grace_period_summary">Изключва известията за кратко, след като бъде получено копие на съобщение</string>
   <string name="pref_advanced_options">Разширени</string>
   <string name="pref_never_send_crash">Никога да не се изпращат доклади за сривове</string>
   <string name="pref_never_send_crash_summary">Изпращайки проследявания на стека, Вие помагате за непрекъснатото развитие на Conversations</string>
@@ -615,4 +613,5 @@
   <string name="conference_subject">Тема</string>
   <string name="choose_participants">Изберете участниците</string>
   <string name="creating_conference">Създаване на беседа…</string>
+  <string name="invite_again">Канене отново</string>
 </resources>

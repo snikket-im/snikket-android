@@ -116,8 +116,6 @@
   <string name="pref_led_summary">Yeni bir ileti geldiğinde bildirim ışığı yanıp sönsün</string>
   <string name="pref_sound">Zil sesi</string>
   <string name="pref_sound_summary">Yeni bir ileti geldiğinde sesli bildir</string>
-  <string name="pref_notification_grace_period">Bildirim mühleti</string>
-  <string name="pref_notification_grace_period_summary">Karbon kopya alındıktan sonra kısa bir süre için bildirimleri kapa</string>
   <string name="pref_advanced_options">Gelişmiş</string>
   <string name="pref_never_send_crash">Asla çöküş raporu gönderme</string>
   <string name="pref_never_send_crash_summary">Çöküş raporu göndermeniz Conversations\n’ın geliştirilmesine katkıda bulunacaktır.</string>
@@ -612,4 +610,5 @@
   <string name="conference_subject">Konu</string>
   <string name="choose_participants">Katılımcıları seç</string>
   <string name="creating_conference">Grup Sohbet başlatılıyor...</string>
+  <string name="invite_again">Yeniden davet et</string>
 </resources>

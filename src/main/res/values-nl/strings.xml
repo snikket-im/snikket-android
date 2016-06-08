@@ -116,8 +116,6 @@
   <string name="pref_led_summary">Meldingslicht knipperen wanneer een nieuw bericht ontvangen wordt</string>
   <string name="pref_sound">Beltoon</string>
   <string name="pref_sound_summary">Geluid afspelen wanneer een nieuw bericht ontvangen wordt</string>
-  <string name="pref_notification_grace_period">Uitstelperiode voor meldingen</string>
-  <string name="pref_notification_grace_period_summary">Schakel meldingen voor korte tijd uit als er een carbon copy wordt ontvangen</string>
   <string name="pref_advanced_options">Geavanceerd</string>
   <string name="pref_never_send_crash">Verstuur nooit crashrapportages</string>
   <string name="pref_never_send_crash_summary">Door crashrapportages te versturen help je de ontwikkeling van Conversations</string>
@@ -615,4 +613,5 @@
   <string name="conference_subject">Onderwerp</string>
   <string name="choose_participants">Kies deelnemers</string>
   <string name="creating_conference">Aanmaken van groepsgesprek…</string>
+  <string name="invite_again">Opnieuw uitnodigen</string>
 </resources>

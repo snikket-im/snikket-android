@@ -80,6 +80,7 @@
   <string name="also_end_conversation">Fermer cette conversation ensuite</string>
   <string name="choose_presence">Choisir la dispo. donnée au contact</string>
   <string name="send_unencrypted_message">Envoyer un message non chiffré</string>
+  <string name="send_message_to_x">Envoyer un message à %s</string>
   <string name="send_otr_message">Envoyer un message chiffré avec OTR</string>
   <string name="send_omemo_message">Envoyer un message chiffré avec OMEMO</string>
   <string name="send_omemo_x509_message">Envoyer un message chiffré avec \\OMEMO</string>
@@ -115,8 +116,6 @@
   <string name="pref_led_summary">Faire clignoter la LED lors de la réception d\'un message</string>
   <string name="pref_sound">Sonnerie</string>
   <string name="pref_sound_summary">Jouer un son lors de la réception d\'un message</string>
-  <string name="pref_notification_grace_period">Période sans notification</string>
-  <string name="pref_notification_grace_period_summary">Désactiver momentanément les notifications après l\'arrivée d\'une copie carbone.</string>
   <string name="pref_advanced_options">Avancé</string>
   <string name="pref_never_send_crash">Ne pas envoyer de rapports d\'erreurs</string>
   <string name="pref_never_send_crash_summary">En envoyant des logs vous aidez le développement de Conversations.</string>
@@ -248,6 +247,7 @@
   <string name="bookmark_already_exists">Le favori existe déjà</string>
   <string name="you">Vous</string>
   <string name="action_edit_subject">Modifier le sujet de la conférence</string>
+  <string name="edit_subject_hint">Sujet de cette conférence</string>
   <string name="joining_conference">Connexion à la conférence...</string>
   <string name="leave">Partir</string>
   <string name="contact_added_you">Votre correspondant vous a ajouté dans sa liste de contacts</string>
@@ -607,4 +607,11 @@
   <string name="secure_password_generated">Un mot de passe fort a été généré</string>
   <string name="device_does_not_support_battery_op">Les optimisations de batterie ne peuvent pas être désactivées sur votre appareil</string>
   <string name="show_password">Afficher le mot de passe</string>
+  <string name="registration_please_wait">L\'enregistrement a échoué: Réessayer plus tard</string>
+  <string name="create_conference">Créer une conférence</string>
+  <string name="join_or_create_conference">Rejoindre ou créer une conférence</string>
+  <string name="conference_subject">Objet</string>
+  <string name="choose_participants">Choisir les participants</string>
+  <string name="creating_conference">Création de la conférence...</string>
+  <string name="invite_again">Inviter à nouveau</string>
 </resources>

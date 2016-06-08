@@ -80,8 +80,6 @@
   <string name="pref_notifications">通知</string>
   <string name="pref_notifications_summary">收到新訊息時通知</string>
   <string name="pref_vibrate">震動</string>
-  <string name="pref_notification_grace_period">通知限期</string>
-  <string name="pref_notification_grace_period_summary">收到副本後，關閉通知一小段時間</string>
   <string name="pref_never_send_crash">總是不發送故障報告</string>
   <string name="pref_never_send_crash_summary">發送「堆疊追蹤」給 Conversations 的開發人員能幫助改進本程式</string>
   <string name="pref_confirm_messages">確認訊息</string>

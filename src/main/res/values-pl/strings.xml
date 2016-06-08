@@ -115,8 +115,6 @@
   <string name="pref_led_summary">Migaj lampką powiadamiającą gdy nadejdzie wiadomość</string>
   <string name="pref_sound">Dzwonek</string>
   <string name="pref_sound_summary">Odtwórz dźwięk gdy nadejdzie wiadomość</string>
-  <string name="pref_notification_grace_period">Opóźnienie powiadomień</string>
-  <string name="pref_notification_grace_period_summary">Wyłącz powiadomienia przez krótki czas po otrzymaniu kopii wiadomości</string>
   <string name="pref_advanced_options">Zaawansowane</string>
   <string name="pref_never_send_crash">Nie wysyłaj raportów awarii</string>
   <string name="pref_never_send_crash_summary">Wysyłając ślady stosu pomagasz rozwijać Conversations</string>

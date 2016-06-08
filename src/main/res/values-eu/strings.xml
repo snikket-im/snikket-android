@@ -80,6 +80,7 @@
   <string name="also_end_conversation">Elkarrizketa hau jarraian amaitu</string>
   <string name="choose_presence">Hautatu agerpena kontaktuarentzat</string>
   <string name="send_unencrypted_message">Enkriptatu gabeko mezua bidali</string>
+  <string name="send_message_to_x">%s(r)i mezua bidali</string>
   <string name="send_otr_message">OTRz enkriptatutako mezua bidali</string>
   <string name="send_omemo_message">OMEMOz enkriptatutako mezua bidali</string>
   <string name="send_omemo_x509_message">v\\OMEMOz enkriptatutako mezua bidali</string>
@@ -115,8 +116,6 @@
   <string name="pref_led_summary">Mezu berri bat heltzerakoan jakinarazpenen argia keinu egin</string>
   <string name="pref_sound">Dei-tonua</string>
   <string name="pref_sound_summary">Mezu berri bat heltzerakoan dei-tonua jo</string>
-  <string name="pref_notification_grace_period">Jakinarazpenen grazia epea</string>
-  <string name="pref_notification_grace_period_summary">Jakinarazpenak denbora labur baterako ezgaitu ikatz-kopia bat jaso ondoren</string>
   <string name="pref_advanced_options">Aurreratua</string>
   <string name="pref_never_send_crash">Gelditze txostenik ez bidali inoiz</string>
   <string name="pref_never_send_crash_summary">Akats harraskak bidaliz Conversationsen garapenean laguntzen duzu</string>
@@ -248,6 +247,7 @@
   <string name="bookmark_already_exists">Laster-marka hau existitzen da dagoeneko</string>
   <string name="you">Zu</string>
   <string name="action_edit_subject">Konferentziaren gaia editatu</string>
+  <string name="edit_subject_hint">Konferentzia honen gaia</string>
   <string name="joining_conference">Konferentziara batzen...</string>
   <string name="leave">Alde egin</string>
   <string name="contact_added_you">Kontaktuak bere zerrendara gehitu zaitu</string>
@@ -414,6 +414,7 @@
   <string name="disable_all_accounts">Kontu guztiak ezgaitu</string>
   <string name="perform_action_with">Ekintza honekin egin</string>
   <string name="no_affiliation">Afiliaziorik ez</string>
+  <string name="no_role">Lineaz kanpo</string>
   <string name="outcast">Baztertutakoa</string>
   <string name="member">Kidea</string>
   <string name="advanced_mode">Modu aurreratua</string>
@@ -508,6 +509,7 @@
   <string name="pref_use_white_background_summary">Jasotako mezuak testu beltza atzeko-plano zuri baten gainean bezala erakutsi</string>
   <string name="account_status_tor_unavailable">Tor sarea ez dago eskuragarri</string>
   <string name="account_status_bind_failure">Estekatzeak hust egin du</string>
+  <string name="account_status_host_unknown">Ostalari ezezaguna</string>
   <string name="server_info_broken">Hondatuta</string>
   <string name="pref_presence_settings">Presentzia</string>
   <string name="pref_away_when_screen_off">Urrun pantaila itzalita dagoenean</string>
@@ -586,6 +588,9 @@
   <string name="security_error_invalid_file_access">Segurtasun akatsa: fitxategi sarrera baliogabea</string>
   <string name="no_application_to_share_uri">Ez da aplikaziorik aurkitu URIa partekatzeko</string>
   <string name="share_uri_with">URIa honekin partekatu...</string>
+  <string name="welcome_text">XMPP hornitzaleez independiente den protokolo bat da. Bezero hau aukeratzen duzun edozein XMPP zerbitzariarekin erabili dezakezu.\nHala ere zure erosotasunerako conversations.im-en, Conversationsekin bereziki erabiltzeko egokia den hornitzaile batean, kontu bat sortzea erraz egin dugu.</string>
+  <string name="magic_create_text">conversations.im-en kontu bat sortzeko prozesuan zehar gidatuko zaitugu.\nconversations.im hornitzaile bezala aukeratzerakoan beste hornitzaileen erabiltzaileekin komunikatzeko gai izango zara haiei zure Jabber ID osoa emanez.</string>
+  <string name="your_full_jid_will_be">Zure Jabber ID osoa %s izango da</string>
   <string name="create_account">Kontua sortu</string>
   <string name="use_own_provider">Nire hornitzale propioa erabili</string>
   <string name="pick_your_username">Aukeratu zure erabiltzaile izena</string>
@@ -601,4 +606,12 @@
   <string name="presence_dnd">Lanpetuta</string>
   <string name="secure_password_generated">Pasahitz seguru bat sortu da</string>
   <string name="device_does_not_support_battery_op">Zure gailuak ez du bateria optimizatzeko aukerarik ematen</string>
+  <string name="show_password">Pasahitza erakutsi</string>
+  <string name="registration_please_wait">Erregistroak huts egin du: saiatu berriz beranduago</string>
+  <string name="create_conference">Konferentzia sortu</string>
+  <string name="join_or_create_conference">Konferentzia batera batu edo sortu</string>
+  <string name="conference_subject">Gaia</string>
+  <string name="choose_participants">Parte hartzaileak hautatu</string>
+  <string name="creating_conference">Konferentzia sortzen…</string>
+  <string name="invite_again">Berriz gonbidatu</string>
 </resources>

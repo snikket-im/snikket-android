@@ -47,7 +47,7 @@
   <string name="change_password_on_server">Промени лозинку на серверу</string>
   <string name="share_with">Подели помоћу…</string>
   <string name="start_conversation">Почни преписку</string>
-  <string name="invite_contact">Позови контакта</string>
+  <string name="invite_contact">Пошаљи позивницу контакту</string>
   <string name="contacts">Контакти</string>
   <string name="cancel">Одустани</string>
   <string name="set">Постави</string>
@@ -116,8 +116,6 @@
   <string name="pref_led_summary">Трептање ЛЕД светла кад стигне нова порука</string>
   <string name="pref_sound">Звук</string>
   <string name="pref_sound_summary">Пуштање звука кад стигне нова порука</string>
-  <string name="pref_notification_grace_period">Период одгоде обавештења</string>
-  <string name="pref_notification_grace_period_summary">Искључи обавештења на кратко по примању карбон копије</string>
   <string name="pref_advanced_options">Напредно</string>
   <string name="pref_never_send_crash">Никад не шаљи извештаје о паду</string>
   <string name="pref_never_send_crash_summary">Слањем контратрага помажете текући развој Конверзације</string>
@@ -617,4 +615,5 @@
   <string name="conference_subject">Предмет</string>
   <string name="choose_participants">Додај учеснике</string>
   <string name="creating_conference">Правим групно ћаскање…</string>
+  <string name="invite_again">Пошаљи поново</string>
 </resources>

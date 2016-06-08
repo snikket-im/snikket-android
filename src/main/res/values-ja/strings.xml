@@ -116,8 +116,6 @@
   <string name="pref_led_summary">新しいメッセージが届いたときに通知ライトを点滅します</string>
   <string name="pref_sound">着信音</string>
   <string name="pref_sound_summary">新しいメッセージが届いたときにサウンドを再生します</string>
-  <string name="pref_notification_grace_period">通知猶予期間</string>
-  <string name="pref_notification_grace_period_summary">カーボンコピーを受信した後、短時間、通知を無効にします</string>
   <string name="pref_advanced_options">詳細</string>
   <string name="pref_never_send_crash">クラッシュレポートを送信しない</string>
   <string name="pref_never_send_crash_summary">スタックトレースを送信することで、あなたは Conversations の継続的な開発を支援しています</string>
@@ -612,4 +610,5 @@
   <string name="conference_subject">主題</string>
   <string name="choose_participants">参加者を選択</string>
   <string name="creating_conference">会議の作成中…</string>
+  <string name="invite_again">もう一度招待</string>
 </resources>

@@ -116,8 +116,6 @@
   <string name="pref_led_summary">Blinka med notifieringsljuset när ett meddelande tagits emot</string>
   <string name="pref_sound">Meddelandesignal</string>
   <string name="pref_sound_summary">Spela ljud när meddelande tagits emot</string>
-  <string name="pref_notification_grace_period">Notifieringsfrist</string>
-  <string name="pref_notification_grace_period_summary">Inaktivera notifieringar en kort stund efter att en carbon copy tagits emot</string>
   <string name="pref_advanced_options">Avancerat</string>
   <string name="pref_never_send_crash">Skicka aldrig krasch-rapporter</string>
   <string name="pref_never_send_crash_summary">Genom att skicka in stack traces hjälper du utvecklarna av Conversations</string>

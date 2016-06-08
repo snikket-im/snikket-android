@@ -96,8 +96,6 @@
   <string name="pref_notifications">Ειδοποιήσεις</string>
   <string name="pref_notifications_summary">Ειδοποίηση όταν λαμβάνεται ένα νέο μήνυμα</string>
   <string name="pref_vibrate">Δόνηση</string>
-  <string name="pref_notification_grace_period">Περίοδος χάριτος ειδοποιήσεων</string>
-  <string name="pref_notification_grace_period_summary">Απενεργοποίηση ειδοποιήσεων για λίγο χρόνο μετά από τη λήψη ακριβούς αντιγράφου</string>
   <string name="pref_never_send_crash">Να μην αποστέλλονται αναφορές λαθών</string>
   <string name="pref_never_send_crash_summary">Στέλνοντας ίχνη στοίβας βοηθάτε την συνεχόμενη ανάπτυξη του Conversations</string>
   <string name="pref_confirm_messages">Επιβεβαίωση μηνυμάτων</string>

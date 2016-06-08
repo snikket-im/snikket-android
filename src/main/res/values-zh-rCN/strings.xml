@@ -115,8 +115,6 @@
   <string name="pref_led_summary">收到新消息时闪烁通知灯</string>
   <string name="pref_sound">铃声</string>
   <string name="pref_sound_summary">收到新消息时响铃</string>
-  <string name="pref_notification_grace_period">通知限期</string>
-  <string name="pref_notification_grace_period_summary">接收副本短时间内关闭通知</string>
   <string name="pref_advanced_options">高级</string>
   <string name="pref_never_send_crash">总不发送崩溃报告</string>
   <string name="pref_never_send_crash_summary">发送堆栈跟踪帮助 Conversations 开发人员</string>

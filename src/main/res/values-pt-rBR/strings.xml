@@ -115,8 +115,6 @@
   <string name="pref_led_summary">Pisca a luz de notificação ao receber uma nova mensagem.</string>
   <string name="pref_sound">Toque</string>
   <string name="pref_sound_summary">Toca um som ao receber uma nova mensagem.</string>
-  <string name="pref_notification_grace_period">Tempo de espera da notificação</string>
-  <string name="pref_notification_grace_period_summary">Desativa as notificações por um curto período após uma cópia da mensagem ser recebida.</string>
   <string name="pref_advanced_options">Avançado</string>
   <string name="pref_never_send_crash">Nunca enviar relatórios de erros</string>
   <string name="pref_never_send_crash_summary">Ao enviar os stack traces você está colaborando com o desenvolvimento do Conversations.</string>

@@ -116,8 +116,6 @@
   <string name="pref_led_summary">Blinke bei Erhalt einer neuen Nachricht</string>
   <string name="pref_sound">Benachrichtigungston</string>
   <string name="pref_sound_summary">Benachrichtigungston wiedergeben</string>
-  <string name="pref_notification_grace_period">Gnadenfrist</string>
-  <string name="pref_notification_grace_period_summary">Deaktiviere Benachrichtigungen für eine kurze Zeit nach Erhalt einer Nachricht, die von einem anderen deiner Clients kommt.</string>
   <string name="pref_advanced_options">Erweitert</string>
   <string name="pref_never_send_crash">Niemals Absturzberichte senden</string>
   <string name="pref_never_send_crash_summary">Wenn du Absturzberichte einschickst, hilfst du Conversations stetig zu verbessern</string>
@@ -250,7 +248,7 @@
   <string name="you">Du</string>
   <string name="action_edit_subject">Thema dieser Konferenz bearbeiten</string>
   <string name="edit_subject_hint">Thema dieser Konferenz</string>
-  <string name="joining_conference">Konferenz wird betreten…</string>
+  <string name="joining_conference">Konferenz wird beigetreten…</string>
   <string name="leave">Verlassen</string>
   <string name="contact_added_you">Der Kontakt hat dich zur Kontaktliste hinzugefügt</string>
   <string name="add_back">Auch hinzufügen</string>
@@ -591,7 +589,7 @@
   <string name="no_application_to_share_uri">Keine Anwendung zum Teilen der URI gefunden</string>
   <string name="share_uri_with">Teile URI mit…</string>
   <string name="welcome_text">XMPP ist ein providerunabhängiges Protokoll. Du kannst diesen Klienten mit einem beliebigen XMPP-Server deiner Wahl nutzen.\nWir haben jedoch eine einfache Möglichkeit geschaffen, ein Konto auf conversations.im zu erstellen; ein Provider, der speziell für den Einsatz mit Conversations geeignet ist.</string>
-  <string name="magic_create_text">Wir führen dich durch den Prozess der Kontoerstellung auf conversations.im.\nWenn du conversations.im als Anbieter wählst, kannst du mit Nutzern anderer Anbieter kommunizieren, indem du ihnen deine vollständige Jabber-ID gibst.</string>
+  <string name="magic_create_text">Wir führen dich durch den Prozess der Kontoerstellung auf conversations.im.\nWenn du conversations.im als Provider wählst, kannst du mit Nutzern anderer Anbieter kommunizieren, indem du ihnen deine vollständige Jabber-ID gibst.</string>
   <string name="your_full_jid_will_be">Deine vollständige Jabber ID lautet: %s</string>
   <string name="create_account">Konto erstellen</string>
   <string name="use_own_provider">Nutze eigenen Provider</string>
@@ -611,8 +609,9 @@
   <string name="show_password">Passwort anzeigen</string>
   <string name="registration_please_wait">Fehlgeschlagen: Bitte später versuchen.</string>
   <string name="create_conference">Konferenz erstellen</string>
-  <string name="join_or_create_conference">Konferenz betreten oder erstellen</string>
+  <string name="join_or_create_conference">Konferenz beitreten oder erstellen</string>
   <string name="conference_subject">Thema</string>
   <string name="choose_participants">Mitglieder wählen</string>
   <string name="creating_conference">Erstelle Konferenz…</string>
+  <string name="invite_again">Erneut einladen</string>
 </resources>

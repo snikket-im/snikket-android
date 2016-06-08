@@ -61,8 +61,6 @@
   <string name="pref_notifications">Notificacións</string>
   <string name="pref_notifications_summary">Notifica cuando chega unha nova mensaxe</string>
   <string name="pref_vibrate">Tremer</string>
-  <string name="pref_notification_grace_period">Notificacións Carbons</string>
-  <string name="pref_notification_grace_period_summary">Deshabilita as notificacións durante un corto periodo de tiempo despois de recibir a copia da mensaxe carbón</string>
   <string name="pref_never_send_crash">Nunca enviar informe de erros</string>
   <string name="pref_never_send_crash_summary">Enviando volcados de pilas axudas al desenrolo de Conversations</string>
   <string name="openpgp_error">OpenKeychain reportou un erro</string>

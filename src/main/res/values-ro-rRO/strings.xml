@@ -116,8 +116,6 @@
   <string name="pref_led_summary">Clipeste lumina de notificare atunci cand un nou mesaj este primit</string>
   <string name="pref_sound">Ton de apel</string>
   <string name="pref_sound_summary">Notificare sonora atunci cand un nou mesaj este primit</string>
-  <string name="pref_notification_grace_period">Perioada de gratie notificari </string>
-  <string name="pref_notification_grace_period_summary">Opreste notificari pentru o scurta perioada dupa ce o copie a mesajului a fost primita</string>
   <string name="pref_advanced_options">Optiuni avansate</string>
   <string name="pref_never_send_crash">Nu trimite rapoarte de erori</string>
   <string name="pref_never_send_crash_summary">Trimitand date ajuti la dezvoltarea aplicatiei Conversations\n<b>Atentie:</b> Se va utiliza contul XMPP pentru a trimite informatii catre programatori.</string>
@@ -619,4 +617,5 @@ Emitent</string>
   <string name="conference_subject">Subiect</string>
   <string name="choose_participants">Alege participanti</string>
   <string name="creating_conference">Se creeaza conferinta...</string>
+  <string name="invite_again">Trimite din nou invitatia</string>
 </resources>
