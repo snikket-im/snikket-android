@@ -6,7 +6,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/grey50">
+        android:background="?attr/color_background_primary">
 
         <LinearLayout
             android:id="@+id/linearLayout"
@@ -28,7 +28,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/pick_your_username"
-                android:textColor="@color/black87"
+                android:textColor="?attr/color_text_primary"
                 android:textSize="?attr/TextSizeHeadline"
                 android:textStyle="bold"/>
             <TextView
@@ -36,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="@string/magic_create_text"
-                android:textColor="@color/black87"
+                android:textColor="?attr/color_text_primary"
                 android:textSize="?attr/TextSizeBody"/>
             <EditText
                 android:id="@+id/username"
@@ -52,7 +52,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="@string/your_full_jid_will_be"
-                android:textColor="@color/black54"
+                android:textColor="?attr/color_text_secondary"
                 android:textSize="?attr/TextSizeInfo"
                 android:visibility="invisible"/>
             <Button

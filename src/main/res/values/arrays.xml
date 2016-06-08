@@ -8,6 +8,14 @@
 		<item>@string/app_name</item>
 		<item>Android</item>
 	</string-array>
+	<string-array name="themes">
+		<item>@string/pref_theme_light</item>
+		<item>@string/pref_theme_dark</item>
+	</string-array>
+	<string-array name="themes_values">
+		<item>light</item>
+		<item>dark</item>
+	</string-array>
 	<string-array name="filesizes">
 		<item>@string/never</item>
 		<item>256 KiB</item>

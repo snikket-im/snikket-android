@@ -16,7 +16,7 @@
             android:id="@+id/key"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/black87"
+            android:textColor="?attr/color_text_primary"
             android:layout_alignParentLeft="true"
             android:layout_toLeftOf="@+id/tgl_trust"
             android:textSize="?attr/TextSizeBody"
@@ -27,7 +27,7 @@
             android:id="@+id/key_type"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/black54"
+            android:textColor="?attr/color_text_secondary"
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/key"
             android:maxLines="1"
@@ -40,7 +40,7 @@
             android:layout_alignParentRight="true"
             android:layout_below="@+id/key"
             android:visibility="gone"
-            android:textColor="@color/black54"
+            android:textColor="?attr/color_text_secondary"
             android:textSize="?attr/TextSizeInfo"/>
 
     <ImageButton
@@ -52,6 +52,7 @@
         android:layout_centerVertical="true"
         android:background="?android:selectableItemBackground"
         android:padding="@dimen/image_button_padding"
+        android:alpha="?attr/icon_alpha"
         android:src="?attr/icon_remove"
         android:visibility="gone" />
 

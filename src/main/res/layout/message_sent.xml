@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_toLeftOf="@+id/message_photo"
-        android:background="@drawable/message_bubble_sent"
+        android:background="?attr/message_bubble_sent"
         android:minHeight="53dp"
         android:layout_marginLeft="-4dp"
         android:longClickable="true">
@@ -55,7 +55,7 @@
                 android:layout_height="wrap_content"
                 android:autoLink="web"
                 android:textColorLink="@color/black87"
-                android:textColor="@color/black87"
+                android:textColor="?attr/color_text_primary"
                 android:textColorHighlight="@color/grey500"
                 android:textSize="?attr/TextSizeBody" />
 
@@ -80,7 +80,7 @@
                     android:layout_gravity="center_vertical"
                     android:gravity="center_vertical"
                     android:text="@string/sending"
-                    android:textColor="@color/black54"
+                    android:textColor="?attr/color_text_secondary"
                     android:textSize="?attr/TextSizeInfo" />
 
                 <ImageView

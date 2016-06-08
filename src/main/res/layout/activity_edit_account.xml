@@ -4,7 +4,7 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/grey200">
+                android:background="?attr/color_background_secondary">
 
     <ScrollView
         android:layout_width="fill_parent"
@@ -26,7 +26,7 @@
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
                 android:layout_marginTop="@dimen/activity_vertical_margin"
-                android:background="@drawable/infocard_border"
+                android:background="?attr/infocard_border"
                 android:orientation="vertical"
                 android:padding="@dimen/infocard_padding">
                 <com.makeramen.roundedimageview.RoundedImageView
@@ -47,7 +47,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/account_settings_jabber_id"
-                        android:textColor="@color/black87"
+                        android:textColor="?attr/color_text_primary"
                         android:textSize="?attr/TextSizeBody"/>
 
                     <AutoCompleteTextView
@@ -56,8 +56,8 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/account_settings_example_jabber_id"
                         android:inputType="textEmailAddress"
-                        android:textColor="@color/black87"
-                        android:textColorHint="@color/black54"
+                        android:textColor="?attr/color_text_primary"
+                        android:textColorHint="?attr/color_text_secondary"
                         android:textSize="?attr/TextSizeBody"/>
 
                     <TextView
@@ -65,7 +65,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:text="@string/account_settings_password"
-                        android:textColor="@color/black87"
+                        android:textColor="?attr/color_text_primary"
                         android:textSize="?attr/TextSizeBody"/>
 
                     <EditText
@@ -74,8 +74,8 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/password"
                         android:inputType="textPassword"
-                        android:textColor="@color/black87"
-                        android:textColorHint="@color/black54"
+                        android:textColor="?attr/color_text_primary"
+                        android:textColorHint="?attr/color_text_secondary"
                         android:textSize="?attr/TextSizeBody"/>
 
                     <LinearLayout
@@ -95,7 +95,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/account_settings_hostname"
-                                android:textColor="@color/black87"
+                                android:textColor="?attr/color_text_primary"
                                 android:textSize="?attr/TextSizeBody"/>
                             <EditText
                                 android:id="@+id/hostname"
@@ -103,8 +103,8 @@
                                 android:layout_height="wrap_content"
                                 android:hint="@string/hostname_or_onion"
                                 android:inputType="textNoSuggestions"
-                                android:textColor="@color/black87"
-                                android:textColorHint="@color/black54"
+                                android:textColor="?attr/color_text_primary"
+                                android:textColorHint="?attr/color_text_secondary"
                                 android:textSize="?attr/TextSizeBody"/>
                         </LinearLayout>
                         <LinearLayout
@@ -117,7 +117,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/account_settings_port"
-                                android:textColor="@color/black87"
+                                android:textColor="?attr/color_text_primary"
                                 android:textSize="?attr/TextSizeBody"/>
                             <EditText
                                 android:id="@+id/port"
@@ -125,8 +125,8 @@
                                 android:layout_height="match_parent"
                                 android:inputType="number"
                                 android:maxLength="5"
-                                android:textColor="@color/black87"
-                                android:textColorHint="@color/black54"
+                                android:textColor="?attr/color_text_primary"
+                                android:textColorHint="?attr/color_text_secondary"
                                 android:textSize="?attr/TextSizeBody"/>
                         </LinearLayout>
                     </LinearLayout>
@@ -136,7 +136,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:text="@string/register_account"
-                        android:textColor="@color/black87"
+                        android:textColor="?attr/color_text_primary"
                         android:textSize="?attr/TextSizeBody"/>
 
                     <TextView
@@ -144,7 +144,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/account_settings_confirm_password"
-                        android:textColor="@color/black87"
+                        android:textColor="?attr/color_text_primary"
                         android:textSize="?attr/TextSizeBody"
                         android:visibility="gone"/>
 
@@ -155,8 +155,8 @@
                         android:layout_marginTop="8dp"
                         android:hint="@string/confirm_password"
                         android:inputType="textPassword"
-                        android:textColor="@color/black87"
-                        android:textColorHint="@color/black54"
+                        android:textColor="?attr/color_text_primary"
+                        android:textColorHint="?attr/color_text_secondary"
                         android:textSize="?attr/TextSizeBody"
                         android:visibility="gone"/>
                 </LinearLayout>
@@ -170,7 +170,7 @@
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
                 android:layout_marginTop="@dimen/activity_vertical_margin"
-                android:background="@drawable/infocard_border"
+                android:background="?attr/infocard_border"
                 android:orientation="vertical"
                 android:padding="@dimen/infocard_padding"
                 android:visibility="gone">
@@ -179,7 +179,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/battery_optimizations_enabled"
-                    android:textColor="@color/black87"
+                    android:textColor="?attr/color_text_primary"
                     android:textSize="?attr/TextSizeHeadline"
                     android:textStyle="bold"/>
                 <TextView
@@ -190,7 +190,7 @@
                     android:layout_marginBottom="8dp"
                     android:layout_marginTop="8dp"
                     android:text="@string/battery_optimizations_enabled_explained"
-                    android:textColor="@color/black87"
+                    android:textColor="?attr/color_text_primary"
                     android:textSize="?attr/TextSizeBody"/>
                 <Button
                     android:id="@+id/batt_op_disable"
@@ -213,7 +213,7 @@
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
                 android:layout_marginTop="@dimen/activity_vertical_margin"
-                android:background="@drawable/infocard_border"
+                android:background="?attr/infocard_border"
                 android:orientation="vertical"
                 android:padding="@dimen/infocard_padding"
                 android:visibility="gone">
@@ -232,7 +232,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/server_info_session_established"
-                            android:textColor="@color/black87"
+                            android:textColor="?attr/color_text_primary"
                             android:textSize="?attr/TextSizeBody"/>
 
                         <TextView
@@ -240,7 +240,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="right"
-                            android:textColor="@color/black87"
+                            android:textColor="?attr/color_text_primary"
                             android:textSize="?attr/TextSizeBody"
                             tools:ignore="RtlHardcoded"/>
                     </TableRow>
@@ -261,7 +261,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/server_info_pep"
-                            android:textColor="@color/black87"
+                            android:textColor="?attr/color_text_primary"
                             android:textSize="?attr/TextSizeBody"/>
 
                         <TextView
@@ -269,7 +269,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="right"
-                            android:textColor="@color/black87"
+                            android:textColor="?attr/color_text_primary"
                             android:textSize="?attr/TextSizeBody"
                             tools:ignore="RtlHardcoded"/>
                     </TableRow>
@@ -282,7 +282,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/server_info_blocking"
-                            android:textColor="@color/black87"
+                            android:textColor="?attr/color_text_primary"
                             android:textSize="?attr/TextSizeBody"/>
 
                         <TextView
@@ -290,7 +290,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="right"
-                            android:textColor="@color/black87"
+                            android:textColor="?attr/color_text_primary"
                             android:textSize="?attr/TextSizeBody"
                             tools:ignore="RtlHardcoded"/>
                     </TableRow>
@@ -303,7 +303,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/server_info_stream_management"
-                            android:textColor="@color/black87"
+                            android:textColor="?attr/color_text_primary"
                             android:textSize="?attr/TextSizeBody"/>
 
                         <TextView
@@ -311,7 +311,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="right"
-                            android:textColor="@color/black87"
+                            android:textColor="?attr/color_text_primary"
                             android:textSize="?attr/TextSizeBody"
                             tools:ignore="RtlHardcoded"/>
                     </TableRow>
@@ -324,7 +324,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/server_info_roster_version"
-                            android:textColor="@color/black87"
+                            android:textColor="?attr/color_text_primary"
                             android:textSize="?attr/TextSizeBody"/>
 
                         <TextView
@@ -332,7 +332,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="right"
-                            android:textColor="@color/black87"
+                            android:textColor="?attr/color_text_primary"
                             android:textSize="?attr/TextSizeBody"
                             tools:ignore="RtlHardcoded"/>
                     </TableRow>
@@ -345,7 +345,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/server_info_carbon_messages"
-                            android:textColor="@color/black87"
+                            android:textColor="?attr/color_text_primary"
                             android:textSize="?attr/TextSizeBody"/>
 
                         <TextView
@@ -353,7 +353,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="right"
-                            android:textColor="@color/black87"
+                            android:textColor="?attr/color_text_primary"
                             android:textSize="?attr/TextSizeBody"
                             tools:ignore="RtlHardcoded"/>
                     </TableRow>
@@ -366,7 +366,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/server_info_mam"
-                            android:textColor="@color/black87"
+                            android:textColor="?attr/color_text_primary"
                             android:textSize="?attr/TextSizeBody"/>
 
                         <TextView
@@ -374,7 +374,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="right"
-                            android:textColor="@color/black87"
+                            android:textColor="?attr/color_text_primary"
                             android:textSize="?attr/TextSizeBody"
                             tools:ignore="RtlHardcoded"/>
                     </TableRow>
@@ -387,7 +387,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/server_info_csi"
-                            android:textColor="@color/black87"
+                            android:textColor="?attr/color_text_primary"
                             android:textSize="?attr/TextSizeBody"/>
 
                         <TextView
@@ -395,7 +395,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="right"
-                            android:textColor="@color/black87"
+                            android:textColor="?attr/color_text_primary"
                             android:textSize="?attr/TextSizeBody"
                             tools:ignore="RtlHardcoded"/>
                     </TableRow>
@@ -408,7 +408,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/server_info_push"
-                            android:textColor="@color/black87"
+                            android:textColor="?attr/color_text_primary"
                             android:textSize="?attr/TextSizeBody"/>
 
                         <TextView
@@ -416,7 +416,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="right"
-                            android:textColor="@color/black87"
+                            android:textColor="?attr/color_text_primary"
                             android:textSize="?attr/TextSizeBody"/>
                     </TableRow>
                     <TableRow
@@ -427,7 +427,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/server_info_http_upload"
-                            android:textColor="@color/black87"
+                            android:textColor="?attr/color_text_primary"
                             android:textSize="?attr/TextSizeBody"/>
 
                         <TextView
@@ -435,7 +435,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="right"
-                            android:textColor="@color/black87"
+                            android:textColor="?attr/color_text_primary"
                             android:textSize="?attr/TextSizeBody"/>
                     </TableRow>
                 </TableLayout>
@@ -458,7 +458,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="monospace"
-                            android:textColor="@color/black87"
+                            android:textColor="?attr/color_text_primary"
                             android:textSize="?attr/TextSizeBody"
                             android:typeface="monospace"/>
 
@@ -466,7 +466,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/otr_fingerprint"
-                            android:textColor="@color/black54"
+                            android:textColor="?attr/color_text_secondary"
                             android:textSize="?attr/TextSizeInfo"/>
                     </LinearLayout>
 
@@ -480,6 +480,7 @@
                         android:contentDescription="@string/copy_otr_clipboard_description"
                         android:padding="@dimen/image_button_padding"
                         android:src="?attr/icon_copy"
+                        android:alpha="?attr/icon_alpha"
                         android:visibility="visible"/>
                 </RelativeLayout>
                 <RelativeLayout
@@ -500,7 +501,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="monospace"
-                            android:textColor="@color/black87"
+                            android:textColor="?attr/color_text_primary"
                             android:textSize="?attr/TextSizeBody"
                             android:typeface="monospace"/>
 
@@ -508,7 +509,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/this_device_omemo_fingerprint"
-                            android:textColor="@color/black54"
+                            android:textColor="?attr/color_text_secondary"
                             android:textSize="?attr/TextSizeInfo"/>
                     </LinearLayout>
 
@@ -528,6 +529,7 @@
                             android:contentDescription="@string/copy_omemo_clipboard_description"
                             android:padding="@dimen/image_button_padding"
                             android:src="?attr/icon_copy"
+                            android:alpha="?attr/icon_alpha"
                             android:visibility="visible"/>
                         <ImageButton
                             android:id="@+id/action_regenerate_axolotl_key"
@@ -536,6 +538,7 @@
                             android:background="?android:selectableItemBackground"
                             android:contentDescription="@string/regenerate_omemo_key"
                             android:padding="@dimen/image_button_padding"
+                            android:alpha="?attr/icon_alpha"
                             android:src="?attr/icon_refresh"
                             android:visibility="gone"/>
 
@@ -550,7 +553,7 @@
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
                 android:layout_marginTop="@dimen/activity_vertical_margin"
-                android:background="@drawable/infocard_border"
+                android:background="?attr/infocard_border"
                 android:orientation="vertical"
                 android:padding="@dimen/infocard_padding"
                 android:visibility="gone">
@@ -560,7 +563,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/other_devices"
-                    android:textColor="@color/black87"
+                    android:textColor="?attr/color_text_primary"
                     android:textSize="?attr/TextSizeHeadline"
                     android:textStyle="bold"/>
 
@@ -593,14 +596,14 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/cancel"
-            android:textColor="@color/black87"/>
+            android:textColor="?attr/color_text_primary"/>
 
         <View
             android:layout_width="1dp"
             android:layout_height="fill_parent"
             android:layout_marginBottom="7dp"
             android:layout_marginTop="7dp"
-            android:background="@color/black12"/>
+            android:background="?attr/divider"/>
 
         <Button
             android:id="@+id/save_button"
@@ -610,7 +613,7 @@
             android:layout_weight="1"
             android:enabled="false"
             android:text="@string/save"
-            android:textColor="@color/black54"/>
+            android:textColor="?attr/color_text_secondary"/>
     </LinearLayout>
 
 </RelativeLayout>

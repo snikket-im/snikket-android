@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender.SendIntentException;
+import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -998,7 +999,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 					case DND:
 						return R.drawable.ic_send_text_dnd;
 					default:
-						return R.drawable.ic_send_text_offline;
+						return activity.getThemeResource(R.attr.ic_send_text_offline, R.drawable.ic_send_text_offline);
 				}
 			case TAKE_PHOTO:
 				switch (status) {
@@ -1011,7 +1012,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 					case DND:
 						return R.drawable.ic_send_photo_dnd;
 					default:
-						return R.drawable.ic_send_photo_offline;
+						return activity.getThemeResource(R.attr.ic_send_photo_offline, R.drawable.ic_send_photo_offline);
 				}
 			case RECORD_VOICE:
 				switch (status) {
@@ -1024,7 +1025,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 					case DND:
 						return R.drawable.ic_send_voice_dnd;
 					default:
-						return R.drawable.ic_send_voice_offline;
+						return activity.getThemeResource(R.attr.ic_send_voice_offline, R.drawable.ic_send_voice_offline);
 				}
 			case SEND_LOCATION:
 				switch (status) {
@@ -1037,7 +1038,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 					case DND:
 						return R.drawable.ic_send_location_dnd;
 					default:
-						return R.drawable.ic_send_location_offline;
+						return activity.getThemeResource(R.attr.ic_send_location_offline, R.drawable.ic_send_location_offline);
 				}
 			case CANCEL:
 				switch (status) {
@@ -1050,7 +1051,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 					case DND:
 						return R.drawable.ic_send_cancel_dnd;
 					default:
-						return R.drawable.ic_send_cancel_offline;
+						return activity.getThemeResource(R.attr.ic_send_cancel_offline, R.drawable.ic_send_cancel_offline);
 				}
 			case CHOOSE_PICTURE:
 				switch (status) {
@@ -1063,10 +1064,10 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 					case DND:
 						return R.drawable.ic_send_picture_dnd;
 					default:
-						return R.drawable.ic_send_picture_offline;
+						return activity.getThemeResource(R.attr.ic_send_picture_offline, R.drawable.ic_send_picture_offline);
 				}
 		}
-		return R.drawable.ic_send_text_offline;
+		return activity.getThemeResource(R.attr.ic_send_text_offline, R.drawable.ic_send_text_offline);
 	}
 
 	public void updateSendButton() {

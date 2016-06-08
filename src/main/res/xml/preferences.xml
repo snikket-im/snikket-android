@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="?attr/color_background_secondary">
 
     <PreferenceCategory android:title="@string/pref_general">
         <CheckBoxPreference
@@ -114,16 +115,23 @@
             android:summary="@string/pref_return_to_previous_summary"/>
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/pref_ui_options">
+        <ListPreference
+            android:defaultValue="light"
+            android:entries="@array/themes"
+            android:entryValues="@array/themes_values"
+            android:key="theme"
+            android:summary="@string/pref_theme_options_summary"
+            android:title="@string/pref_theme_options"/>
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="use_subject"
             android:summary="@string/pref_conference_name_summary"
             android:title="@string/pref_conference_name"/>
         <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="use_white_background"
-            android:summary="@string/pref_use_white_background_summary"
-            android:title="@string/pref_use_white_background"/>
+            android:defaultValue="true"
+            android:key="use_green_background"
+            android:summary="@string/pref_use_green_background_summary"
+            android:title="@string/pref_use_green_background"/>
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="use_larger_font"

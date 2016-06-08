@@ -6,7 +6,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/grey50">
+        android:background="?attr/color_background_primary">
 
         <LinearLayout
             android:id="@+id/linearLayout"
@@ -28,7 +28,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/welcome_header"
-                android:textColor="@color/black87"
+                android:textColor="?attr/color_text_primary"
                 android:textSize="?attr/TextSizeHeadline"
                 android:textStyle="bold"/>
             <TextView
@@ -36,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="@string/welcome_text"
-                android:textColor="@color/black87"
+                android:textColor="?attr/color_text_primary"
                 android:textSize="?attr/TextSizeBody"/>
             <Button
                 android:id="@+id/create_account"
@@ -53,7 +53,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:text="@string/use_own_provider"
-                android:textColor="@color/black54"/>
+                android:textColor="?attr/color_text_secondary"/>
         </LinearLayout>
         <RelativeLayout
             android:layout_width="match_parent"

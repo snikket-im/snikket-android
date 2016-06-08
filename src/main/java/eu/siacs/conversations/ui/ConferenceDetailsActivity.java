@@ -559,18 +559,23 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 			}
 		}
 
+		int ic_notifications = 		  getThemeResource(R.attr.icon_notifications, R.drawable.ic_notifications_black54_24dp);
+		int ic_notifications_off = 	  getThemeResource(R.attr.icon_notifications_off, R.drawable.ic_notifications_off_black54_24dp);
+		int ic_notifications_paused = getThemeResource(R.attr.icon_notifications_paused, R.drawable.ic_notifications_paused_black54_24dp);
+		int ic_notifications_none =	  getThemeResource(R.attr.icon_notifications_none, R.drawable.ic_notifications_none_black54_24dp);
+
 		long mutedTill = mConversation.getLongAttribute(Conversation.ATTRIBUTE_MUTED_TILL,0);
 		if (mutedTill == Long.MAX_VALUE) {
 			mNotifyStatusText.setText(R.string.notify_never);
-			mNotifyStatusButton.setImageResource(R.drawable.ic_notifications_off_grey600_24dp);
+			mNotifyStatusButton.setImageResource(ic_notifications_off);
 		} else if (System.currentTimeMillis() < mutedTill) {
 			mNotifyStatusText.setText(R.string.notify_paused);
-			mNotifyStatusButton.setImageResource(R.drawable.ic_notifications_paused_grey600_24dp);
+			mNotifyStatusButton.setImageResource(ic_notifications_paused);
 		} else if (mConversation.alwaysNotify()) {
-			mNotifyStatusButton.setImageResource(R.drawable.ic_notifications_grey600_24dp);
+			mNotifyStatusButton.setImageResource(ic_notifications);
 			mNotifyStatusText.setText(R.string.notify_on_all_messages);
 		} else {
-			mNotifyStatusButton.setImageResource(R.drawable.ic_notifications_none_grey600_24dp);
+			mNotifyStatusButton.setImageResource(ic_notifications_none);
 			mNotifyStatusText.setText(R.string.notify_only_when_highlighted);
 		}
 

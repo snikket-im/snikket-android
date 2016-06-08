@@ -6,6 +6,12 @@
         <item name="android:colorPrimaryDark">@color/primary_dark</item>
         <item name="android:colorAccent">@color/accent</item>
 
+        <item name="attr/color_text_primary">@color/black87</item>
+        <item name="attr/color_text_secondary">@color/black54</item>
+
+        <item name="attr/color_background_primary">@color/grey50</item>
+        <item name="attr/color_background_secondary">@color/grey200</item>
+
         <item name="android:windowActionModeOverlay">true</item>
         <item name="android:actionModeBackground">@color/accent</item>
 
@@ -13,27 +19,106 @@
         <item name="TextSizeBody">14sp</item>
         <item name="TextSizeHeadline">20sp</item>
 
+        <item name="attr/infocard_border">@drawable/infocard_border</item>
+        <item name="attr/divider">@color/black12</item>
+
+        <item name="attr/ic_send_cancel_offline">@drawable/ic_send_cancel_offline</item>
+        <item name="attr/ic_send_location_offline">@drawable/ic_send_location_offline</item>
+        <item name="attr/ic_send_photo_offline">@drawable/ic_send_photo_offline</item>
+        <item name="attr/ic_send_picture_offline">@drawable/ic_send_picture_offline</item>
+        <item name="attr/ic_send_text_offline">@drawable/ic_send_text_offline</item>
+        <item name="attr/ic_send_voice_offline">@drawable/ic_send_voice_offline</item>
+
+        <item name="attr/message_bubble_received_monochrome">@drawable/message_bubble_received_white</item>
+        <item name="attr/message_bubble_sent">@drawable/message_bubble_sent</item>
+
+        <item name="attr/icon_alpha">0.54</item>
+
         <item name="attr/icon_add_group">@drawable/ic_group_add_white_24dp</item>
         <item name="attr/icon_add_person">@drawable/ic_person_add_white_24dp</item>
         <item name="attr/icon_cancel">@drawable/ic_cancel_white_24dp</item>
-        <item name="attr/icon_copy">@drawable/ic_content_copy_grey600_24dp</item>
+        <item name="attr/icon_copy">@drawable/ic_content_copy_black_24dp</item>
         <item name="attr/icon_discard">@drawable/ic_delete_white_24dp</item>
         <item name="attr/icon_download">@drawable/ic_file_download_white_24dp</item>
         <item name="attr/icon_edit">@drawable/ic_edit_white_24dp</item>
-        <item name="attr/icon_edit_dark">@drawable/ic_edit_grey600_24dp</item>
+        <item name="attr/icon_edit_body">@drawable/ic_edit_black_24dp</item>
         <item name="attr/icon_done">@drawable/ic_done_black_24dp</item>
         <item name="attr/icon_group">@drawable/ic_group_white_24dp</item>
         <item name="attr/icon_new">@drawable/ic_add_white_24dp</item>
-        <item name="attr/icon_refresh">@drawable/ic_refresh_grey600_24dp</item>
+        <item name="attr/icon_refresh">@drawable/ic_refresh_black_24dp</item>
         <item name="attr/icon_new_attachment">@drawable/ic_attach_file_white_24dp</item>
         <item name="attr/icon_not_secure">@drawable/ic_lock_open_white_24dp</item>
-        <item name="attr/icon_remove">@drawable/ic_delete_grey600_24dp</item>
+        <item name="attr/icon_remove">@drawable/ic_delete_black_24dp</item>
         <item name="attr/icon_search">@drawable/ic_search_white_24dp</item>
         <item name="attr/icon_secure">@drawable/ic_lock_open_white_24dp</item>
-        <item name="attr/icon_settings">@drawable/ic_settings_grey600_24dp</item>
+        <item name="attr/icon_settings">@drawable/ic_settings_black_24dp</item>
         <item name="attr/icon_import_export">@drawable/ic_import_export_white_24dp</item>
         <item name="attr/icon_share">@drawable/ic_share_white_24dp</item>
 
+        <item name="attr/icon_notifications">@drawable/ic_notifications_black54_24dp</item>
+        <item name="attr/icon_notifications_off">@drawable/ic_notifications_off_black54_24dp</item>
+        <item name="attr/icon_notifications_paused">@drawable/ic_notifications_paused_black54_24dp</item>
+        <item name="attr/icon_notifications_none">@drawable/ic_notifications_none_black54_24dp</item>
+    </style>
+
+    <style name="ConversationsTheme.Dark" parent="android:Theme.Material">
+        <item name="android:colorPrimary">@color/primary</item>
+        <item name="android:colorPrimaryDark">@color/primary_dark</item>
+        <item name="android:colorAccent">@color/accent</item>
+
+        <item name="attr/color_text_primary">@color/white</item>
+        <item name="attr/color_text_secondary">@color/white70</item>
+
+        <item name="attr/color_background_primary">@color/grey800</item>
+        <item name="attr/color_background_secondary">@color/grey900</item>
+
+        <item name="android:windowActionModeOverlay">true</item>
+        <item name="android:actionModeBackground">@color/accent</item>
+
+        <item name="TextSizeInfo">12sp</item>
+        <item name="TextSizeBody">14sp</item>
+        <item name="TextSizeHeadline">20sp</item>
+
+        <item name="attr/infocard_border">@drawable/infocard_border_dark</item>
+        <item name="attr/divider">@color/white12</item>
+
+        <item name="attr/ic_send_cancel_offline">@drawable/ic_send_cancel_offline_white</item>
+        <item name="attr/ic_send_location_offline">@drawable/ic_send_location_offline_white</item>
+        <item name="attr/ic_send_photo_offline">@drawable/ic_send_photo_offline_white</item>
+        <item name="attr/ic_send_picture_offline">@drawable/ic_send_picture_offline_white</item>
+        <item name="attr/ic_send_text_offline">@drawable/ic_send_text_offline_white</item>
+        <item name="attr/ic_send_voice_offline">@drawable/ic_send_voice_offline_white</item>
+
+        <item name="attr/message_bubble_received_monochrome">@drawable/message_bubble_received_grey</item>
+        <item name="attr/message_bubble_sent">@drawable/message_bubble_sent_grey</item>
+
+        <item name="attr/icon_alpha">1.0</item>
+
+        <item name="attr/icon_add_group">@drawable/ic_group_add_white_24dp</item>
+        <item name="attr/icon_add_person">@drawable/ic_person_add_white_24dp</item>
+        <item name="attr/icon_cancel">@drawable/ic_cancel_white_24dp</item>
+        <item name="attr/icon_copy">@drawable/ic_content_copy_white_24dp</item>
+        <item name="attr/icon_discard">@drawable/ic_delete_white_24dp</item>
+        <item name="attr/icon_download">@drawable/ic_file_download_white_24dp</item>
+        <item name="attr/icon_edit">@drawable/ic_edit_white_24dp</item>
+        <item name="attr/icon_edit_body">@drawable/ic_edit_white_24dp</item>
+        <item name="attr/icon_done">@drawable/ic_done_black_24dp</item>
+        <item name="attr/icon_group">@drawable/ic_group_white_24dp</item>
+        <item name="attr/icon_new">@drawable/ic_add_white_24dp</item>
+        <item name="attr/icon_refresh">@drawable/ic_refresh_white_24dp</item>
+        <item name="attr/icon_new_attachment">@drawable/ic_attach_file_white_24dp</item>
+        <item name="attr/icon_not_secure">@drawable/ic_lock_open_white_24dp</item>
+        <item name="attr/icon_remove">@drawable/ic_delete_white_24dp</item>
+        <item name="attr/icon_search">@drawable/ic_search_white_24dp</item>
+        <item name="attr/icon_secure">@drawable/ic_lock_open_white_24dp</item>
+        <item name="attr/icon_settings">@drawable/ic_settings_white_24dp</item>
+        <item name="attr/icon_import_export">@drawable/ic_import_export_white_24dp</item>
+        <item name="attr/icon_share">@drawable/ic_share_white_24dp</item>
+
+        <item name="attr/icon_notifications">@drawable/ic_notifications_white_24dp</item>
+        <item name="attr/icon_notifications_off">@drawable/ic_notifications_off_white_24dp</item>
+        <item name="attr/icon_notifications_paused">@drawable/ic_notifications_paused_white_24dp</item>
+        <item name="attr/icon_notifications_none">@drawable/ic_notifications_none_white_24dp</item>
     </style>
 
 </resources>

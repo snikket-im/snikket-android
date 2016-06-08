@@ -9,10 +9,12 @@
 	<color name="black12">#1f000000</color>
 	<color name="white">#ffffffff</color>
 	<color name="white70">#b2ffffff</color>
+	<color name="white12">#1fffffff</color>
 	<color name="grey50">#fffafafa</color>
 	<color name="grey200">#ffeeeeee</color>
 	<color name="grey500">#ff9e9e9e</color>
 	<color name="grey800">#ff424242</color>
+	<color name="grey900">#ff282828</color>
 	<color name="red500">#fff44336</color>
 	<color name="red800">#ffc62828</color>
 	<color name="orange500">#ffff9800</color>

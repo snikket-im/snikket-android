@@ -3,7 +3,7 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/grey200" >
+                android:background="?attr/color_background_secondary" >
     <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -23,7 +23,7 @@
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
                 android:layout_marginTop="@dimen/activity_vertical_margin"
                 android:layout_marginBottom="@dimen/activity_vertical_margin"
-                android:background="@drawable/infocard_border"
+                android:background="?attr/infocard_border"
                 android:orientation="vertical"
                 android:padding="@dimen/infocard_padding"
                 android:visibility="gone">
@@ -32,7 +32,7 @@
                     android:id="@+id/key_error_message_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/black87"
+                    android:textColor="?attr/color_text_primary"
                     android:textSize="?attr/TextSizeHeadline"
                     android:textStyle="bold"
                     android:text="@string/error_trustkeys_title"/>
@@ -41,7 +41,7 @@
                     android:id="@+id/key_error_message"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/black87"
+                    android:textColor="?attr/color_text_primary"
                     android:textSize="?attr/TextSizeBody"
                     android:padding="8dp"/>
 
@@ -55,7 +55,7 @@
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
                 android:layout_marginTop="@dimen/activity_vertical_margin"
                 android:layout_marginBottom="@dimen/activity_vertical_margin"
-                android:background="@drawable/infocard_border"
+                android:background="?attr/infocard_border"
                 android:orientation="vertical"
                 android:padding="@dimen/infocard_padding"
                 android:visibility="gone">
@@ -64,7 +64,7 @@
                     android:id="@+id/own_keys_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/black87"
+                    android:textColor="?attr/color_text_primary"
                     android:textSize="?attr/TextSizeHeadline"
                     android:textStyle="bold"/>
 
@@ -107,14 +107,14 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/cancel"
-            android:textColor="@color/black87" />
+            android:textColor="?attr/color_text_primary" />
 
         <View
             android:layout_width="1dp"
             android:layout_height="fill_parent"
             android:layout_marginBottom="7dp"
             android:layout_marginTop="7dp"
-            android:background="@color/black12" />
+            android:background="?attr/divider" />
 
         <Button
             android:id="@+id/save_button"
@@ -123,7 +123,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:enabled="true"
-            android:textColor="@color/black54"
+            android:textColor="?attr/color_text_secondary"
             android:text="@string/done"/>
     </LinearLayout>
 </RelativeLayout>

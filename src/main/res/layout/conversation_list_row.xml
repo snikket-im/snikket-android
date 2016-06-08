@@ -13,7 +13,7 @@
         android:id="@+id/swipeable_item"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@color/grey50">
+        android:background="?attr/color_background_primary">
 
         <RelativeLayout
             android:layout_width="fill_parent"
@@ -46,7 +46,7 @@
                     android:paddingRight="4dp"
                     android:singleLine="true"
                     android:text="Awesome groupchat"
-                    android:textColor="@color/black87"
+                    android:textColor="?attr/color_text_primary"
                     android:textSize="?attr/TextSizeHeadline"
                     android:typeface="sans"/>
 
@@ -70,7 +70,7 @@
                             android:scrollHorizontally="false"
                             android:singleLine="true"
                             android:text="This is a placeholder text to show the last messages"
-                            android:textColor="@color/black87"
+                            android:textColor="?attr/color_text_primary"
                             android:textSize="?attr/TextSizeBody"/>
 
                         <com.makeramen.roundedimageview.RoundedImageView
@@ -89,7 +89,7 @@
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="4dp"
-                        android:src="@drawable/ic_notifications_grey600_24dp"
+                        android:src="?attr/icon_notifications"
                         />
                 </RelativeLayout>
 
@@ -101,7 +101,7 @@
                     android:layout_alignParentRight="true"
                     android:gravity="right"
                     android:text="23:42"
-                    android:textColor="@color/black54"
+                    android:textColor="?attr/color_text_secondary"
                     android:textSize="?attr/TextSizeInfo"/>
             </RelativeLayout>
         </RelativeLayout>

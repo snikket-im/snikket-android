@@ -5,15 +5,33 @@
     <attr name="TextSizeBody" format="dimension" />
     <attr name="TextSizeHeadline" format="dimension" />
 
+    <attr name="color_text_primary" format="reference|color" />
+    <attr name="color_text_secondary" format="reference|color" />
+
+    <attr name="color_background_secondary" format="reference|color" />
+    <attr name="color_background_primary" format="reference|color" />
+
+    <attr name="infocard_border" format="reference"/>
+    <attr name="ic_send_cancel_offline" format="reference"/>
+    <attr name="ic_send_location_offline" format="reference"/>
+    <attr name="ic_send_photo_offline" format="reference"/>
+    <attr name="ic_send_picture_offline" format="reference"/>
+    <attr name="ic_send_text_offline" format="reference"/>
+    <attr name="ic_send_voice_offline" format="reference"/>
+
+    <attr name="message_bubble_received_monochrome" format="reference"/>
+    <attr name="message_bubble_sent" format="reference"/>
+
+    <attr name="icon_alpha" format="float"/>
+
     <attr name="icon_add_group" format="reference"/>
     <attr name="icon_add_person" format="reference"/>
     <attr name="icon_cancel" format="reference"/>
-    <attr name="icon_chat" format="reference"/>
     <attr name="icon_copy" format="reference"/>
     <attr name="icon_discard" format="reference"/>
     <attr name="icon_download" format="reference"/>
     <attr name="icon_edit" format="reference"/>
-    <attr name="icon_edit_dark" format="reference"/>
+    <attr name="icon_edit_body" format="reference"/>
     <attr name="icon_done" format="reference"/>
     <attr name="icon_group" format="reference"/>
     <attr name="icon_new" format="reference"/>
@@ -26,5 +44,10 @@
     <attr name="icon_settings" format="reference"/>
     <attr name="icon_share" format="reference"/>
     <attr name="icon_import_export" format="reference"/>
+
+    <attr name="icon_notifications" format="reference"/>
+    <attr name="icon_notifications_off" format="reference"/>
+    <attr name="icon_notifications_paused" format="reference"/>
+    <attr name="icon_notifications_none" format="reference"/>
 
 </resources>
