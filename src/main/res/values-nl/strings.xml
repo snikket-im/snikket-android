@@ -116,6 +116,8 @@
   <string name="pref_led_summary">Meldingslicht knipperen wanneer een nieuw bericht ontvangen wordt</string>
   <string name="pref_sound">Beltoon</string>
   <string name="pref_sound_summary">Geluid afspelen wanneer een nieuw bericht ontvangen wordt</string>
+  <string name="pref_notification_grace_period">Uitstelperiode</string>
+  <string name="pref_notification_grace_period_summary">Hoe lang Conversations stil blijft na activiteit op een ander apparaat waar te nemen</string>
   <string name="pref_advanced_options">Geavanceerd</string>
   <string name="pref_never_send_crash">Verstuur nooit crashrapportages</string>
   <string name="pref_never_send_crash_summary">Door crashrapportages te versturen help je de ontwikkeling van Conversations</string>
@@ -505,6 +507,7 @@
   <string name="download_failed_server_not_found">Downloaden mislukt: server niet gevonden</string>
   <string name="download_failed_file_not_found">Downloaden mislukt: bestand niet gevonden</string>
   <string name="download_failed_could_not_connect">Downloaden mislukt: kon geen verbinding maken met host</string>
+  <string name="download_failed_could_not_write_file">Download mislukt: kon bestand niet schrijven</string>
   <string name="pref_use_white_background">Gebruik witte achtergrond</string>
   <string name="pref_use_white_background_summary">Toon ontvangen berichten als zwarte tekst op een witte achtergrond</string>
   <string name="account_status_tor_unavailable">Tor-netwerk niet beschikbaar</string>
@@ -614,4 +617,16 @@
   <string name="choose_participants">Kies deelnemers</string>
   <string name="creating_conference">Aanmaken van groepsgesprek…</string>
   <string name="invite_again">Opnieuw uitnodigen</string>
+  <string name="gp_short">Kort</string>
+  <string name="gp_medium">Gemiddeld</string>
+  <string name="gp_long">Lang</string>
+  <string name="pref_broadcast_last_activity">Laatste gebruikersinteractie uitzenden</string>
+  <string name="pref_broadcast_last_activity_summary">Laat al je contacten weten wanneer je Conversations gebruikt</string>
+  <string name="pref_privacy">Privacy</string>
+  <string name="pref_theme_options">Thema</string>
+  <string name="pref_theme_options_summary">Kies het kleurenpalet</string>
+  <string name="pref_theme_light">Licht thema</string>
+  <string name="pref_theme_dark">Donker thema</string>
+  <string name="pref_use_green_background">Groene achtergrond</string>
+  <string name="pref_use_green_background_summary">Gebruik groene achtergrond voor ontvangen berichten</string>
 </resources>

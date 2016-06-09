@@ -116,6 +116,8 @@
   <string name="pref_led_summary">Мигане на индикаторния светодиод при получаване на ново съобщение</string>
   <string name="pref_sound">Тон на звънене</string>
   <string name="pref_sound_summary">Изпълнение на звук при получаване на ново съобщение</string>
+  <string name="pref_notification_grace_period">Продължителност на пренебрегване</string>
+  <string name="pref_notification_grace_period_summary">Времето, през което Conversations няма да прави нищо, след като забележи дейност на друго устройство</string>
   <string name="pref_advanced_options">Разширени</string>
   <string name="pref_never_send_crash">Никога да не се изпращат доклади за сривове</string>
   <string name="pref_never_send_crash_summary">Изпращайки проследявания на стека, Вие помагате за непрекъснатото развитие на Conversations</string>
@@ -505,6 +507,7 @@
   <string name="download_failed_server_not_found">Неуспешно сваляне: Сървърът не е открит</string>
   <string name="download_failed_file_not_found">Неуспешно сваляне: Файлът не е открит</string>
   <string name="download_failed_could_not_connect">Неуспешно сваляне: Неуспешна връзка със сървъра</string>
+  <string name="download_failed_could_not_write_file">Неуспешно сваляне: Файлът не може да бъде записан</string>
   <string name="pref_use_white_background">Използване на бял фон</string>
   <string name="pref_use_white_background_summary">Показване на получените съобщения с черен текст на бял фон</string>
   <string name="account_status_tor_unavailable">Мрежата на Тор е недостъпна</string>
@@ -614,4 +617,16 @@
   <string name="choose_participants">Изберете участниците</string>
   <string name="creating_conference">Създаване на беседа…</string>
   <string name="invite_again">Канене отново</string>
+  <string name="gp_short">Кратко</string>
+  <string name="gp_medium">Средно</string>
+  <string name="gp_long">Дълго</string>
+  <string name="pref_broadcast_last_activity">Известяване за последното действие на потребителя</string>
+  <string name="pref_broadcast_last_activity_summary">Така всичките Ви контакти ще знаят кога използвате Conversations</string>
+  <string name="pref_privacy">Поверителност</string>
+  <string name="pref_theme_options">Тема</string>
+  <string name="pref_theme_options_summary">Изберете цветовата схема</string>
+  <string name="pref_theme_light">Светла тема</string>
+  <string name="pref_theme_dark">Тъмна тема</string>
+  <string name="pref_use_green_background">Зелен фон</string>
+  <string name="pref_use_green_background_summary">Получените съобщения ще бъдат на зелен фон</string>
 </resources>

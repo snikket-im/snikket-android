@@ -77,7 +77,7 @@
   <string name="delete_messages">Удалить сообщения</string>
   <string name="also_end_conversation">Закончить эту беседу впоследствии</string>
   <string name="choose_presence">Укажите статус для контакта</string>
-  <string name="send_unencrypted_message">Отправить не зашифрованное сообщение</string>
+  <string name="send_unencrypted_message">Отправить нешифрованное сообщение</string>
   <string name="send_otr_message">Отправить OTR защифрованное сообщение</string>
   <string name="send_omemo_message">Отправить OMEMO защифрованное сообщение</string>
   <string name="send_omemo_x509_message">Послать v\\OMEMO зашифрованное сообщение</string>

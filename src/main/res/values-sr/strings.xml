@@ -116,6 +116,8 @@
   <string name="pref_led_summary">Трептање ЛЕД светла кад стигне нова порука</string>
   <string name="pref_sound">Звук</string>
   <string name="pref_sound_summary">Пуштање звука кад стигне нова порука</string>
+  <string name="pref_notification_grace_period">Период одгоде</string>
+  <string name="pref_notification_grace_period_summary">Период тишине након што Конверзација запази активност на другом уређају</string>
   <string name="pref_advanced_options">Напредно</string>
   <string name="pref_never_send_crash">Никад не шаљи извештаје о паду</string>
   <string name="pref_never_send_crash_summary">Слањем контратрага помажете текући развој Конверзације</string>
@@ -259,7 +261,7 @@
   <string name="publishing">Објављујем…</string>
   <string name="error_publish_avatar_server_reject">Сервер је одбио вашу објаву</string>
   <string name="error_publish_avatar_converting">Дошло је до грешке при прекодирању слике</string>
-  <string name="error_saving_avatar">Нисам могао да сачувам аватар на диск</string>
+  <string name="error_saving_avatar">Не могох да сачувам аватар на диск</string>
   <string name="or_long_press_for_default">(или притисните дуго да вратите подразумевани)</string>
   <string name="error_publish_avatar_no_server_support">Ваш сервер не подржава објаву аватара</string>
   <string name="private_message">шапну</string>
@@ -289,7 +291,7 @@
   <string name="pref_allow_message_correction">Дозволи исправљање порука</string>
   <string name="pref_allow_message_correction_summary">Дозвољава вашим контактима да ретроактивно уређују њихове поруке</string>
   <string name="pref_dont_save_encrypted">Не успремај шифроване поруке</string>
-  <string name="pref_dont_save_encrypted_summary">Упозорење: Ово може да доведе до губитка порука</string>
+  <string name="pref_dont_save_encrypted_summary">Упозорење: Ово би могло да доведе до губитка порука</string>
   <string name="pref_expert_options">Поставке за стручњаке</string>
   <string name="pref_expert_options_summary">Будите пажљиви са овим</string>
   <string name="title_activity_about">О Конверзацији</string>
@@ -370,7 +372,7 @@
   <string name="file_transmission_failed">пренос фајла није успео</string>
   <string name="file_deleted">Фајл је обрисан</string>
   <string name="no_application_found_to_open_file">Нема апликације која може да отвори фајл</string>
-  <string name="could_not_verify_fingerprint">Не могу да оверим отисак</string>
+  <string name="could_not_verify_fingerprint">Не могох да оверим отисак</string>
   <string name="manually_verify">Овери ручно</string>
   <string name="are_you_sure_verify_fingerprint">Желите ли заиста да оверите ОТР отисак вашег контакта?</string>
   <string name="pref_show_dynamic_tags">Прикажи динамичке ознаке</string>
@@ -398,7 +400,7 @@
   <string name="no_more_history_on_server">Нема више историјата на серверу</string>
   <string name="updating">Ажурирам…</string>
   <string name="password_changed">Лозинка промењена!</string>
-  <string name="could_not_change_password">Нисам могао да променим лозинку</string>
+  <string name="could_not_change_password">Не могох да променим лозинку</string>
   <string name="otr_session_not_started">Пошаљите поруку да бисте започели шифровано ћаскање</string>
   <string name="ask_question">Постави питање</string>
   <string name="smp_explain_question">Ако ви и ваш контакт имате заједничку тајну коју нико не зна (као што је лична шала или једноставно шта сте јели последњи пут кад сте се срели) можете употребити ту тајну да међусобно оверите отиске.\n\nВи дате наговештај или питање за вашег контакта који ће дати одговор (осетљив на велика и мала слова).</string>
@@ -423,11 +425,11 @@
   <string name="grant_admin_privileges">Одобри админ. привилегије</string>
   <string name="remove_admin_privileges">Одобри админ. привилегије</string>
   <string name="remove_from_room">Уклони из групног ћаскања</string>
-  <string name="could_not_change_affiliation">Не могу да изменим припадност за %s</string>
+  <string name="could_not_change_affiliation">Не могох да изменим припадност за %s</string>
   <string name="ban_from_conference">Забрани на групном ћаскању</string>
   <string name="removing_from_public_conference">Покушавате да уклоните %s са групног ћаскања. Једини начин да то урадите је да забраните тог корисника заувек.</string>
   <string name="ban_now">Забрани одмах</string>
-  <string name="could_not_change_role">Не могу да изменим улогу за %s</string>
+  <string name="could_not_change_role">Не могох да изменим улогу за %s</string>
   <string name="public_conference">Јавно доступно групно ћаскање</string>
   <string name="private_conference">Лично, само за чланове</string>
   <string name="conference_options">Опције групног ћаскања</string>
@@ -436,7 +438,7 @@
   <string name="moderated">Уређивана</string>
   <string name="you_are_not_participating">Не учествујете</string>
   <string name="modified_conference_options">Поставке групног ћаскања измењене!</string>
-  <string name="could_not_modify_conference_options">Не могу да изменим поставке групног ћаскања</string>
+  <string name="could_not_modify_conference_options">Не могох да изменим поставке групног ћаскања</string>
   <string name="never">никад</string>
   <string name="thirty_minutes">30 минута</string>
   <string name="one_hour">1 сат</string>
@@ -506,7 +508,8 @@
   <string name="invalid_conference_name">Ово није исправан назив за групно ћаскање</string>
   <string name="download_failed_server_not_found">Преузимање није успело: сервер није нађен</string>
   <string name="download_failed_file_not_found">Преузимање није успело: фајл није нађен</string>
-  <string name="download_failed_could_not_connect">Преузимање није успело: не могу да се повежем са домаћином</string>
+  <string name="download_failed_could_not_connect">Преузимање није успело: не могох да се повежем са домаћином</string>
+  <string name="download_failed_could_not_write_file">Преузимање није успело: не могох да упишем фајл</string>
   <string name="pref_use_white_background">Користи белу позадину</string>
   <string name="pref_use_white_background_summary">Приказ примљених порука црним текстом на белој позадини</string>
   <string name="account_status_tor_unavailable">Тор мрежа недоступна</string>
@@ -616,4 +619,15 @@
   <string name="choose_participants">Додај учеснике</string>
   <string name="creating_conference">Правим групно ћаскање…</string>
   <string name="invite_again">Пошаљи поново</string>
+  <string name="gp_short">Кратак</string>
+  <string name="gp_medium">Средњи</string>
+  <string name="gp_long">Дуг</string>
+  <string name="pref_broadcast_last_activity_summary">Обзнаните контакту кад користите Конверзацију</string>
+  <string name="pref_privacy">Приватност</string>
+  <string name="pref_theme_options">Тема</string>
+  <string name="pref_theme_options_summary">Избор палете боја</string>
+  <string name="pref_theme_light">Светла тема</string>
+  <string name="pref_theme_dark">Тамна тема</string>
+  <string name="pref_use_green_background">Зелена позадина</string>
+  <string name="pref_use_green_background_summary">Зелена позадина за примљене поруке</string>
 </resources>

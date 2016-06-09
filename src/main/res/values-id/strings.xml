@@ -9,6 +9,7 @@
   <string name="action_secure">Amankan Percakapan</string>
   <string name="action_add_account">Tambah Akun</string>
   <string name="action_edit_contact">Ubah Nama</string>
+  <string name="action_add_phone_book">Tambahkan ke daftar kontak</string>
   <string name="action_delete_contact">Hapus dari roster</string>
   <string name="action_block_contact">Blokir kontak</string>
   <string name="action_unblock_contact">Batal blokir kontak</string>
@@ -70,6 +71,8 @@
   <string name="send_failed">pengiriman gagal</string>
   <string name="send_rejected">ditolak</string>
   <string name="preparing_image">Mempersiapkan gambar untuk transmisi</string>
+  <string name="preparing_images">Mempersiapkan gambar untuk transmisi</string>
+  <string name="sharing_files_please_wait">Membagikan berkas. Mohon tunggu…</string>
   <string name="action_clear_history">Bersihkan riwayat</string>
   <string name="clear_conversation_history">Hapus Riwayat Percakapan</string>
   <string name="clear_histor_msg">Apakah Anda ingin menghapus semua pesan dalam Percakapan ini\n\n<b>Peringatan:</b>ini tidak akan mempengaruhi pesan yang disimpan pada perangkat atau server lain.</string>
@@ -97,10 +100,16 @@
   <string name="pref_xmpp_resource_summary">Identifikasi nama klien ini dengan</string>
   <string name="pref_accept_files">Terima berkas</string>
   <string name="pref_accept_files_summary">Otomatis menerima berkas lebih kecil dari...</string>
+  <string name="pref_attachments">Lampiran</string>
+  <string name="pref_return_to_previous">Bagikan Cepat</string>
   <string name="pref_notification_settings">Notif</string>
   <string name="pref_notifications">Notifikasi</string>
   <string name="pref_notifications_summary">Notifikasikan jika pesan baru tiba</string>
   <string name="pref_vibrate">Getar</string>
+  <string name="pref_vibrate_summary">Aktifkan getar ketika pesan masuk</string>
+  <string name="pref_led">Notifikasi LED</string>
+  <string name="pref_sound">Nada dering</string>
+  <string name="pref_sound_summary">Deringkan ketika pesan masuk</string>
   <string name="pref_advanced_options">Lanjutan</string>
   <string name="pref_never_send_crash">Jangan kirim laporan kerusakan</string>
   <string name="pref_never_send_crash_summary">Dengan mengirimkan kesalahan Anda membantu pengembangan Aplikasi Conversations</string>
@@ -177,6 +186,9 @@
   <string name="server_info_blocking">XEP-0191: Blocking Command</string>
   <string name="server_info_roster_version">XEP-0237: Roster Versioning</string>
   <string name="server_info_stream_management">XEP-0198: Stream Management</string>
+  <string name="server_info_pep">XEP-0163: PEP (Avatars / OMEMO)</string>
+  <string name="server_info_http_upload">XEP-0363: HTTP File Upload</string>
+  <string name="server_info_push">XEP-0357: Push</string>
   <string name="server_info_available">tersedia</string>
   <string name="server_info_unavailable">tidak tersedia</string>
   <string name="missing_public_keys">Pemberitahuan kunci publik tidak ditemukan</string>
@@ -207,6 +219,7 @@
   <string name="block_contact">Blokir kontak</string>
   <string name="unblock_contact">Lepas blokir kontak</string>
   <string name="create">Buat</string>
+  <string name="select">Pilih</string>
   <string name="contact_already_exists">Kontak ini sudah ada</string>
   <string name="join">Gabung</string>
   <string name="conference_address">Alamat conference</string>
@@ -313,6 +326,7 @@
   <string name="choose_file">Pilih berkas</string>
   <string name="receiving_x_file">Menerima %1$s (%2$d%% terselesaikan)</string>
   <string name="download_x_file">Mengunduh %s</string>
+  <string name="delete_x_file">Hapus %s</string>
   <string name="file">berkas</string>
   <string name="open_x_file">Buka %s</string>
   <string name="sending_file">mengirim (%1$d%% terselesaikan)</string>
@@ -336,6 +350,7 @@
   <string name="account_image_description">Avatar akun</string>
   <string name="copy_otr_clipboard_description">Salin OTR fingerprint ke clipboard</string>
   <string name="clear_other_devices">Bersihkan perangkat</string>
+  <string name="error_trustkeys_title">Error</string>
   <string name="fetching_history_from_server">Mengambil data dari server</string>
   <string name="no_more_history_on_server">Tidak ada data lagi di server</string>
   <string name="updating">Merubah...</string>
@@ -356,6 +371,7 @@
   <string name="disable_all_accounts">Menonaktifkan semua account</string>
   <string name="perform_action_with">Lakukan aksi dengan</string>
   <string name="no_affiliation">Tidak ada afiliasi</string>
+  <string name="no_role">Offline</string>
   <string name="outcast">Orang buangan</string>
   <string name="member">Member</string>
   <string name="advanced_mode">Mode lanjut</string>
@@ -373,6 +389,7 @@
   <string name="private_conference">Rahasia, hanya member conference</string>
   <string name="conference_options">Opsi conference</string>
   <string name="non_anonymous">Non Anonymous</string>
+  <string name="you_are_not_participating">Anda tidak berpartisipasi</string>
   <string name="modified_conference_options">Opsi conference dimodifikasi!</string>
   <string name="could_not_modify_conference_options">Tidak dapat merubah pengaturan conference</string>
   <string name="never">Tidak pernah</string>
@@ -381,6 +398,7 @@
   <string name="two_hours">2 jam</string>
   <string name="eight_hours">8 jam</string>
   <string name="until_further_notice">Sampai pemberitahuan selanjutnya</string>
+  <string name="pref_input_options">Masukan</string>
   <string name="pref_enter_is_send">Enter untuk mengirim</string>
   <string name="pref_enter_is_send_summary">Gunakan enter untuk mengrim pesan</string>
   <string name="pref_display_enter_key">Tampilkan masukan kunci</string>
@@ -448,6 +466,10 @@
   <string name="pref_use_tor">Hubungkan via Tor</string>
   <string name="account_settings_hostname">Hostname</string>
   <string name="account_settings_port">Port</string>
+  <plurals name="x_messages">
+    <item quantity="other">%d pesan</item>
+  </plurals>
+  <string name="sync_with_contacts">Sinkronkan dengan kontak</string>
   <string name="certificate_information">Informasi Sertifikat</string>
   <string name="certificate_subject">Subjek</string>
   <string name="certificate_cn">Nama Umum</string>
@@ -455,6 +477,7 @@
   <string name="certificate_sha1">SHA-1</string>
   <string name="certicate_info_not_available">(Tidak tersedia)</string>
   <string name="certificate_not_found">Tidak ada sertifikat ditemukan</string>
+  <string name="notify_on_all_messages">Tampilkan notifikasi untuk semua pesan</string>
   <string name="pref_picture_compression">Kompres Gambar</string>
   <string name="pref_picture_compression_summary">Rubah ukuran dan kompres gambar</string>
   <string name="always">Selalu</string>
@@ -466,4 +489,35 @@
   <string name="this_field_is_required">Bagian ini wajib diisi</string>
   <string name="correct_message">Perbaiki pesan</string>
   <string name="send_corrected_message">Kirim perbaikan pesan</string>
+  <string name="select_image_and_crop">Pilih gambar dan sesuaikan</string>
+  <string name="share_uri_with">Bagikan URI dengan...</string>
+  <string name="your_full_jid_will_be">Jabber ID anda akan seperti: %s</string>
+  <string name="create_account">Buat Akun</string>
+  <string name="pick_your_username">Pilih username anda</string>
+  <string name="pref_manually_change_presence">Ubah kehadiran manual</string>
+  <string name="pref_manually_change_presence_summary">Sentuh avatar untuk mengubah kehadiran</string>
+  <string name="change_presence">Ubah Kehadiran</string>
+  <string name="status_message">Status</string>
+  <string name="presence_chat">Tersedia</string>
+  <string name="presence_online">Online</string>
+  <string name="presence_away">Pergi</string>
+  <string name="presence_xa">Tidak Tersedia</string>
+  <string name="presence_dnd">Sibuk</string>
+  <string name="secure_password_generated">Password aman berhasil dibuat</string>
+  <string name="show_password">Tampilkan password</string>
+  <string name="registration_please_wait">Registrasi gagal: Coba lagi nanti</string>
+  <string name="create_conference">Buat grup</string>
+  <string name="join_or_create_conference">Gabung atau buat grup</string>
+  <string name="conference_subject">Subjek</string>
+  <string name="choose_participants">Undang user</string>
+  <string name="creating_conference">Buat grup...</string>
+  <string name="invite_again">Undang lagi</string>
+  <string name="gp_short">Pendek</string>
+  <string name="gp_medium">Sedang</string>
+  <string name="gp_long">Panjang</string>
+  <string name="pref_theme_options">Tema</string>
+  <string name="pref_theme_light">Tema Terang</string>
+  <string name="pref_theme_dark">Tema Gelap</string>
+  <string name="pref_use_green_background">Latar Hijau</string>
+  <string name="pref_use_green_background_summary">Gunakan latar hijau untuk pesan masuk</string>
 </resources>

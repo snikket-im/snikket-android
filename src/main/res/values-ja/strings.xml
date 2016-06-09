@@ -116,6 +116,8 @@
   <string name="pref_led_summary">新しいメッセージが届いたときに通知ライトを点滅します</string>
   <string name="pref_sound">着信音</string>
   <string name="pref_sound_summary">新しいメッセージが届いたときにサウンドを再生します</string>
+  <string name="pref_notification_grace_period">猶予期間</string>
+  <string name="pref_notification_grace_period_summary">別のデバイスで活動を見た後、Conversations を静かにする時間の長さ</string>
   <string name="pref_advanced_options">詳細</string>
   <string name="pref_never_send_crash">クラッシュレポートを送信しない</string>
   <string name="pref_never_send_crash_summary">スタックトレースを送信することで、あなたは Conversations の継続的な開発を支援しています</string>
@@ -503,6 +505,7 @@
   <string name="download_failed_server_not_found">ダウンロードに失敗しました: サーバーが見つかりません</string>
   <string name="download_failed_file_not_found">ダウンロードに失敗しました: ファイルが見つかりません</string>
   <string name="download_failed_could_not_connect">ダウンロードに失敗しました: ホストに接続できませんでした</string>
+  <string name="download_failed_could_not_write_file">ダウンロードに失敗しました: ファイルに書き込みできません</string>
   <string name="pref_use_white_background">白い背景を使用する</string>
   <string name="pref_use_white_background_summary">白地に黒の文字で、受け取ったメッセージを表示します</string>
   <string name="account_status_tor_unavailable">Tor ネットワークが利用できません</string>
@@ -611,4 +614,16 @@
   <string name="choose_participants">参加者を選択</string>
   <string name="creating_conference">会議の作成中…</string>
   <string name="invite_again">もう一度招待</string>
+  <string name="gp_short">短</string>
+  <string name="gp_medium">中</string>
+  <string name="gp_long">長</string>
+  <string name="pref_broadcast_last_activity">最後のユーザー対話をブロードキャスト</string>
+  <string name="pref_broadcast_last_activity_summary">Conversations を使用するとき、すべての連絡先に知らせましょう</string>
+  <string name="pref_privacy">プライバシー</string>
+  <string name="pref_theme_options">テーマ</string>
+  <string name="pref_theme_options_summary">カラーパレットの選択</string>
+  <string name="pref_theme_light">ライトテーマ</string>
+  <string name="pref_theme_dark">ダークテーマ</string>
+  <string name="pref_use_green_background">緑の背景</string>
+  <string name="pref_use_green_background_summary">受信したメッセージに緑の背景を使用します</string>
 </resources>

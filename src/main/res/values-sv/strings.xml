@@ -116,6 +116,8 @@
   <string name="pref_led_summary">Blinka med notifieringsljuset när ett meddelande tagits emot</string>
   <string name="pref_sound">Meddelandesignal</string>
   <string name="pref_sound_summary">Spela ljud när meddelande tagits emot</string>
+  <string name="pref_notification_grace_period">Skonfrist</string>
+  <string name="pref_notification_grace_period_summary">Hur lång tid Conversations är tyst efter aktivitet på en annan enhet</string>
   <string name="pref_advanced_options">Avancerat</string>
   <string name="pref_never_send_crash">Skicka aldrig krasch-rapporter</string>
   <string name="pref_never_send_crash_summary">Genom att skicka in stack traces hjälper du utvecklarna av Conversations</string>
@@ -505,6 +507,7 @@
   <string name="download_failed_server_not_found">Nerladdning gick fel: Server hittades inte</string>
   <string name="download_failed_file_not_found">Nerladdning gick fel: Filen hittades inte</string>
   <string name="download_failed_could_not_connect">Nerladdningen gick fel: Kunder inte ansluta till server</string>
+  <string name="download_failed_could_not_write_file">Nerladdning gick fel: Kunde inte skriva fil</string>
   <string name="pref_use_white_background">Använd vit bakgrund</string>
   <string name="pref_use_white_background_summary">Visa mottagna meddelanden som svart text på vit bakgrund</string>
   <string name="account_status_tor_unavailable">Tor-nätverk ej tillgängligt</string>
@@ -613,4 +616,17 @@
   <string name="conference_subject">Ämne</string>
   <string name="choose_participants">Välj deltagare</string>
   <string name="creating_conference">Skapar konferens...</string>
+  <string name="invite_again">Bjud in igen</string>
+  <string name="gp_short">Kort</string>
+  <string name="gp_medium">Medium</string>
+  <string name="gp_long">Lång</string>
+  <string name="pref_broadcast_last_activity">Meddela din senaste aktivit</string>
+  <string name="pref_broadcast_last_activity_summary">Låt alla dina kontakter veta när du använder Conversations</string>
+  <string name="pref_privacy">Privatliv</string>
+  <string name="pref_theme_options">Tema</string>
+  <string name="pref_theme_options_summary">Välj färgschema</string>
+  <string name="pref_theme_light">Ljust tema</string>
+  <string name="pref_theme_dark">Mörkt tema</string>
+  <string name="pref_use_green_background">Grön bakgrund</string>
+  <string name="pref_use_green_background_summary">Använd grön bakgrund för mottagna meddelanden</string>
 </resources>

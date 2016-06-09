@@ -116,6 +116,8 @@
   <string name="pref_led_summary">La luz parpadea cuando llega un nuevo mensaje</string>
   <string name="pref_sound">Tono</string>
   <string name="pref_sound_summary">Reproduce tono con la notificación</string>
+  <string name="pref_notification_grace_period">Periodo de gracia</string>
+  <string name="pref_notification_grace_period_summary">Periodo de tiempo en el que Conversations deshabilita las notificaciones tras ver que tienes actividad en otro de tus dispositivos</string>
   <string name="pref_advanced_options">Avanzado</string>
   <string name="pref_never_send_crash">Nunca informar de errores</string>
   <string name="pref_never_send_crash_summary">Si envías registros de error ayudas al desarrollo de Conversations</string>
@@ -505,6 +507,7 @@
   <string name="download_failed_server_not_found">Error al descargar: Servidor no encontrado</string>
   <string name="download_failed_file_not_found">Error al descargar: Archivo no encontrado</string>
   <string name="download_failed_could_not_connect">Error al descargar: No se ha podido conectar con el servidor</string>
+  <string name="download_failed_could_not_write_file">Falló la descarga: No se puede escribir el fichero</string>
   <string name="pref_use_white_background">Usar fondo blanco</string>
   <string name="pref_use_white_background_summary">Mostrar mensajes recibidos en texto negro con fondo blanco</string>
   <string name="account_status_tor_unavailable">Red Tor no disponible.</string>
@@ -614,4 +617,16 @@
   <string name="choose_participants">Elige a los participantes</string>
   <string name="creating_conference">Creando conversación...</string>
   <string name="invite_again">Invitar de nuevo</string>
+  <string name="gp_short">Corto</string>
+  <string name="gp_medium">Medianoc</string>
+  <string name="gp_long">Largo</string>
+  <string name="pref_broadcast_last_activity">Informar de tu última interacción</string>
+  <string name="pref_broadcast_last_activity_summary">Informar a tus contactos cuando usas Conversations</string>
+  <string name="pref_privacy">Privacidad</string>
+  <string name="pref_theme_options">Tema</string>
+  <string name="pref_theme_options_summary">Selecciona el color de la paleta</string>
+  <string name="pref_theme_light">Tema claro</string>
+  <string name="pref_theme_dark">Tema oscuro</string>
+  <string name="pref_use_green_background">Fondo verde</string>
+  <string name="pref_use_green_background_summary">Usar fondo verde para mensajes recibidos</string>
 </resources>

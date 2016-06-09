@@ -116,6 +116,8 @@
   <string name="pref_led_summary">Blinke bei Erhalt einer neuen Nachricht</string>
   <string name="pref_sound">Benachrichtigungston</string>
   <string name="pref_sound_summary">Benachrichtigungston wiedergeben</string>
+  <string name="pref_notification_grace_period">Gnadenfrist</string>
+  <string name="pref_notification_grace_period_summary">Deaktiviere Benachrichtigungen für eine kurze Zeit nach Erhalt einer Nachricht, die von einem anderen deiner Clients kommt.</string>
   <string name="pref_advanced_options">Erweitert</string>
   <string name="pref_never_send_crash">Niemals Absturzberichte senden</string>
   <string name="pref_never_send_crash_summary">Wenn du Absturzberichte einschickst, hilfst du Conversations stetig zu verbessern</string>
@@ -505,6 +507,7 @@
   <string name="download_failed_server_not_found">Download fehlgeschlagen: Server nicht gefunden</string>
   <string name="download_failed_file_not_found">Download fehlgeschlagen: Datei nicht gefunden</string>
   <string name="download_failed_could_not_connect">Download fehlgeschlagen: keine Verbindung zum Host</string>
+  <string name="download_failed_could_not_write_file">Download fehlgeschlagen: Datei kann nicht gespeichert werden</string>
   <string name="pref_use_white_background">Weißen Hintergrund benutzen</string>
   <string name="pref_use_white_background_summary">Empfangene Nachrichten als schwarzen Text auf weißem Hintergrund anzeigen</string>
   <string name="account_status_tor_unavailable">Tor-Netzwerk nicht verfügbar</string>
@@ -614,4 +617,16 @@
   <string name="choose_participants">Mitglieder wählen</string>
   <string name="creating_conference">Erstelle Konferenz…</string>
   <string name="invite_again">Erneut einladen</string>
+  <string name="gp_short">kurz</string>
+  <string name="gp_medium">mittel</string>
+  <string name="gp_long">lang</string>
+  <string name="pref_broadcast_last_activity">Letzte Benutzeraktivität teilen</string>
+  <string name="pref_broadcast_last_activity_summary">Informiere deine Kontakte, wann du Conversations nutzt</string>
+  <string name="pref_privacy">Privatsphäre</string>
+  <string name="pref_theme_options">Design</string>
+  <string name="pref_theme_options_summary">Wähle die Farbpalette aus</string>
+  <string name="pref_theme_light">Helles Design</string>
+  <string name="pref_theme_dark">Dunkles Design</string>
+  <string name="pref_use_green_background">Grüner Hintergrund</string>
+  <string name="pref_use_green_background_summary">Nutze grünen Hintergrund für empfangene Nachrichten</string>
 </resources>
