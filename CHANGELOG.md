@@ -1,5 +1,9 @@
 ###Changelog
 
+####Version 1.13.0
+* configurable dark theme
+* opt-in to share Last User Interaction
+
 ####Version 1.12.9
 * make grace period configurable
 
