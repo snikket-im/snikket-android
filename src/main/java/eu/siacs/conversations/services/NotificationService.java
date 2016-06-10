@@ -170,7 +170,7 @@ public class NotificationService {
 	}
 
 	private void setNotificationColor(final Builder mBuilder) {
-		mBuilder.setColor(mXmppConnectionService.getResources().getColor(R.color.primary));
+		mBuilder.setColor(mXmppConnectionService.getResources().getColor(R.color.primary500));
 	}
 
 	public void updateNotification(final boolean notify) {

@@ -387,7 +387,7 @@ public abstract class XmppActivity extends Activity {
 		mColorRed = getResources().getColor(R.color.red800);
 		mColorOrange = getResources().getColor(R.color.orange500);
 		mColorGreen = getResources().getColor(R.color.green500);
-		mPrimaryColor = getResources().getColor(R.color.primary);
+		mPrimaryColor = getResources().getColor(R.color.primary500);
 		mPrimaryBackgroundColor = getResources().getColor(R.color.grey50);
 		mSecondaryBackgroundColor = getResources().getColor(R.color.grey200);
 

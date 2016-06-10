@@ -128,15 +128,15 @@
     </style>
 
     <style name="ConversationsActionBar" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
-        <item name="android:background">@color/primary</item>
-        <item name="android:backgroundStacked">@color/primary_dark</item>
+        <item name="android:background">@color/primary500</item>
+        <item name="android:backgroundStacked">@color/primary700</item>
         <item name="android:displayOptions">showHome|homeAsUp|showTitle</item>
         <item name="android:icon">@android:color/transparent</item>
     </style>
 
     <style name="ConversationsActionBar.Dark" parent="@android:style/Widget.Holo.ActionBar.Solid">
-        <item name="android:background">@color/primary</item>
-        <item name="android:backgroundStacked">@color/primary_dark</item>
+        <item name="android:background">@color/primary800</item>
+        <item name="android:backgroundStacked">@color/primary900</item>
         <item name="android:displayOptions">showHome|homeAsUp|showTitle</item>
         <item name="android:icon">@android:color/transparent</item>
     </style>

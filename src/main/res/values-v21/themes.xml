@@ -2,8 +2,8 @@
 <resources>
 
     <style name="ConversationsTheme" parent="@android:style/Theme.Material.Light.DarkActionBar">
-        <item name="android:colorPrimary">@color/primary</item>
-        <item name="android:colorPrimaryDark">@color/primary_dark</item>
+        <item name="android:colorPrimary">@color/primary500</item>
+        <item name="android:colorPrimaryDark">@color/primary700</item>
         <item name="android:colorAccent">@color/accent</item>
 
         <item name="attr/color_text_primary">@color/black87</item>
@@ -62,8 +62,8 @@
     </style>
 
     <style name="ConversationsTheme.Dark" parent="android:Theme.Material">
-        <item name="android:colorPrimary">@color/primary</item>
-        <item name="android:colorPrimaryDark">@color/primary_dark</item>
+        <item name="android:colorPrimary">@color/primary800</item>
+        <item name="android:colorPrimaryDark">@color/primary900</item>
         <item name="android:colorAccent">@color/accent</item>
 
         <item name="attr/color_text_primary">@color/white</item>

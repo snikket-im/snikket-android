@@ -7,7 +7,7 @@
     <View
         android:layout_width="fill_parent"
         android:layout_height="match_parent"
-        android:background="@color/primary"/>
+        android:background="@color/primary500"/>
 
     <FrameLayout
         android:id="@+id/swipeable_item"
