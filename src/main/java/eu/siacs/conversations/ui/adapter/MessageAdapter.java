@@ -678,12 +678,13 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 
 		if (type == RECEIVED) {
 			if(isInValidSession) {
+				int bubble;
 				if (!mUseGreenBackground) {
-					int bubble = activity.getThemeResource(R.attr.message_bubble_received_monochrome, R.drawable.message_bubble_received_white);
-					viewHolder.message_box.setBackgroundResource(bubble);
+					bubble = activity.getThemeResource(R.attr.message_bubble_received_monochrome, R.drawable.message_bubble_received_white);
 				} else {
-					viewHolder.message_box.setBackgroundResource(R.drawable.message_bubble_received);
+					bubble = activity.getThemeResource(R.attr.message_bubble_received_green, R.drawable.message_bubble_received);
 				}
+				viewHolder.message_box.setBackgroundResource(bubble);
 				viewHolder.encryption.setVisibility(View.GONE);
 			} else {
 				viewHolder.message_box.setBackgroundResource(R.drawable.message_bubble_received_warning);

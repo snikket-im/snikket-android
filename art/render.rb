@@ -12,7 +12,7 @@ resolutions = {
 
 images = {
 	'conversations_baloon.svg' => ['ic_launcher', 48],
-    'conversations_baloon.svg' => ['main_logo', 200],
+   'conversations_baloon.svg' => ['main_logo', 200],
 	'conversations_mono.svg' => ['ic_notification', 24],
 	'ic_received_indicator.svg' => ['ic_received_indicator', 12],
 	'ic_send_text_offline.svg' => ['ic_send_text_offline', 36],
@@ -56,6 +56,7 @@ images = {
 	'md_switch_thumb_on_pressed.svg' => ['switch_thumb_on_pressed', 48],
 	'message_bubble_received.svg' => ['message_bubble_received.9', 0],
 	'message_bubble_received_grey.svg' => ['message_bubble_received_grey.9', 0],
+   'message_bubble_received_dark.svg' => ['message_bubble_received_dark.9', 0],
 	'message_bubble_received_warning.svg' => ['message_bubble_received_warning.9', 0],
 	'message_bubble_received_white.svg' => ['message_bubble_received_white.9', 0],
 	'message_bubble_sent.svg' => ['message_bubble_sent.9', 0],

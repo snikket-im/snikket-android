@@ -21,6 +21,7 @@
 
     <attr name="message_bubble_received_monochrome" format="reference"/>
     <attr name="message_bubble_sent" format="reference"/>
+    <attr name="message_bubble_received_green" format="reference"/>
 
     <attr name="icon_alpha" format="float"/>
 
