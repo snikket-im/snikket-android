@@ -39,6 +39,8 @@
         <item name="attr/message_bubble_sent">@drawable/message_bubble_sent</item>
         <item name="attr/message_bubble_received_green">@drawable/message_bubble_received</item>
 
+        <item name="attr/conversations_overview_background">@color/primary700</item>
+
         <item name="attr/icon_alpha">1.0</item>
 
         <item name="attr/icon_group">@drawable/ic_action_group</item>
@@ -86,6 +88,8 @@
         <item name="attr/message_bubble_received_monochrome">@drawable/message_bubble_received_grey</item>
         <item name="attr/message_bubble_sent">@drawable/message_bubble_sent_grey</item>
         <item name="attr/message_bubble_received_green">@drawable/message_bubble_received_dark</item>
+
+        <item name="attr/conversations_overview_background">@color/primary900</item>
 
         <item name="attr/icon_alpha">1.0</item>
 

@@ -7,7 +7,7 @@
     <View
         android:layout_width="fill_parent"
         android:layout_height="match_parent"
-        android:background="@color/primary500"/>
+        android:background="?attr/conversations_overview_background"/>
 
     <FrameLayout
         android:id="@+id/swipeable_item"
