@@ -116,6 +116,8 @@
   <string name="pref_led_summary">Clipeste lumina de notificare atunci cand un nou mesaj este primit</string>
   <string name="pref_sound">Ton de apel</string>
   <string name="pref_sound_summary">Notificare sonora atunci cand un nou mesaj este primit</string>
+  <string name="pref_notification_grace_period">Perioada de gratie</string>
+  <string name="pref_notification_grace_period_summary">Durata de timp cat Conversations pastreaza linistea dupa ce a observat activitate pe un alt dispozitiv</string>
   <string name="pref_advanced_options">Optiuni avansate</string>
   <string name="pref_never_send_crash">Nu trimite rapoarte de erori</string>
   <string name="pref_never_send_crash_summary">Trimitand date ajuti la dezvoltarea aplicatiei Conversations\n<b>Atentie:</b> Se va utiliza contul XMPP pentru a trimite informatii catre programatori.</string>
@@ -507,6 +509,7 @@
   <string name="download_failed_server_not_found">Descarcarea a esuat: Serverul nu a fost gasit</string>
   <string name="download_failed_file_not_found">Descarcare esuata: Fisierul nu a fost gasit</string>
   <string name="download_failed_could_not_connect">Descarcarea a esuat. Nu s-a putut realiza conexiunea cu gazda.</string>
+  <string name="download_failed_could_not_write_file">Descarcare esuata: Nu s-a putut scrie fisierul</string>
   <string name="pref_use_white_background">Foloseste un fundal alb</string>
   <string name="pref_use_white_background_summary">Arata mesajele primite cu negru pe fond alb</string>
   <string name="account_status_tor_unavailable">Reteaua Tor nu este disponibila</string>
@@ -618,4 +621,16 @@ Emitent</string>
   <string name="choose_participants">Alege participanti</string>
   <string name="creating_conference">Se creeaza conferinta...</string>
   <string name="invite_again">Trimite din nou invitatia</string>
+  <string name="gp_short">Scurt</string>
+  <string name="gp_medium">Mediu</string>
+  <string name="gp_long">Lung</string>
+  <string name="pref_broadcast_last_activity">Notifica momentul ultimei interactiuni cu aplicatia</string>
+  <string name="pref_broadcast_last_activity_summary">Anunta contactele cand folosesti Conversations</string>
+  <string name="pref_privacy">Intimitate</string>
+  <string name="pref_theme_options">Tema</string>
+  <string name="pref_theme_options_summary">Selectie paleta culori interfata</string>
+  <string name="pref_theme_light">Tema luminoasa</string>
+  <string name="pref_theme_dark">Tema intunecata</string>
+  <string name="pref_use_green_background">Fundal verde</string>
+  <string name="pref_use_green_background_summary">Foloseste la mesajele primite un fundal verde</string>
 </resources>

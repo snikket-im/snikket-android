@@ -116,6 +116,8 @@
   <string name="pref_led_summary">Blikat při přijetí nové zprávy</string>
   <string name="pref_sound">Tón upozornění</string>
   <string name="pref_sound_summary">Přehrát zvuk při přijetí nové zprávy</string>
+  <string name="pref_notification_grace_period">Časová lhůta</string>
+  <string name="pref_notification_grace_period_summary">Časová lhůta po kterou bude Conversations v tichém režimu při spatření aktivity na jiném přístroji</string>
   <string name="pref_advanced_options">Rozšířené</string>
   <string name="pref_never_send_crash">Neodesílat detaily o pádu aplikace</string>
   <string name="pref_never_send_crash_summary">Zasláním detailů o důvodu selhání pomůžete dalšímu vývoji aplikace Konverzace</string>
@@ -507,6 +509,7 @@
   <string name="download_failed_server_not_found">Stahování selhalo: Server nenalezen</string>
   <string name="download_failed_file_not_found">Stahování selhalo: Soubor nenalezen</string>
   <string name="download_failed_could_not_connect">Stahování selhalo: Nelze se připojit k hostu</string>
+  <string name="download_failed_could_not_write_file">Stažení selhalo: Nelze zapsat soubor</string>
   <string name="pref_use_white_background">Použít bílé pozadí</string>
   <string name="pref_use_white_background_summary">Zobrazovat přijaté zprávy jako černý text na bílém pozadí</string>
   <string name="account_status_tor_unavailable">Tor síť není dostupná</string>
@@ -617,4 +620,16 @@
   <string name="choose_participants">Vybrat účastníky</string>
   <string name="creating_conference">Vytváření konference...</string>
   <string name="invite_again">Pozvat znovu</string>
+  <string name="gp_short">Krátký</string>
+  <string name="gp_medium">Střední</string>
+  <string name="gp_long">Dlouhý</string>
+  <string name="pref_broadcast_last_activity">Odeslat poslední uživatelskou interakci</string>
+  <string name="pref_broadcast_last_activity_summary">Dát vědět všem kontaktům kdy používáte Conversations</string>
+  <string name="pref_privacy">Soukromí</string>
+  <string name="pref_theme_options">Vzhled</string>
+  <string name="pref_theme_options_summary">Vybrat paletu barev</string>
+  <string name="pref_theme_light">Světlý vzhled</string>
+  <string name="pref_theme_dark">Tmavý vzhled</string>
+  <string name="pref_use_green_background">Zelené pozadí</string>
+  <string name="pref_use_green_background_summary">Použít zelené pozadí pro přijaté zprávy</string>
 </resources>

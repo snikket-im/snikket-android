@@ -618,7 +618,7 @@
   <string name="creating_conference">Creando conversación...</string>
   <string name="invite_again">Invitar de nuevo</string>
   <string name="gp_short">Corto</string>
-  <string name="gp_medium">Medianoc</string>
+  <string name="gp_medium">Medio</string>
   <string name="gp_long">Largo</string>
   <string name="pref_broadcast_last_activity">Informar de tu última interacción</string>
   <string name="pref_broadcast_last_activity_summary">Informar a tus contactos cuando usas Conversations</string>

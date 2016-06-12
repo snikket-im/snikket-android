@@ -622,6 +622,7 @@
   <string name="gp_short">Кратак</string>
   <string name="gp_medium">Средњи</string>
   <string name="gp_long">Дуг</string>
+  <string name="pref_broadcast_last_activity">Објављуј последњу активност</string>
   <string name="pref_broadcast_last_activity_summary">Обзнаните контакту кад користите Конверзацију</string>
   <string name="pref_privacy">Приватност</string>
   <string name="pref_theme_options">Тема</string>
