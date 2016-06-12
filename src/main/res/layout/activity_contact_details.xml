@@ -58,7 +58,7 @@
                     android:layout_marginTop="4dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/black54"
+                    android:textColor="?attr/color_text_primary"
                     android:textSize="?attr/TextSizeBody" />
 
                 <TextView
