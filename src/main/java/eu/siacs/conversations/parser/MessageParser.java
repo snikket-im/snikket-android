@@ -434,7 +434,21 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 			message.setOob(isOob);
 			message.markable = packet.hasChild("markable", "urn:xmpp:chat-markers:0");
 			if (conversationMultiMode) {
-				Jid trueCounterpart = conversation.getMucOptions().getTrueCounterpart(counterpart);
+				final Element item = mucUserElement == null ? null : mucUserElement.findChild("item");
+				Jid trueCounterpart;
+				if (Config.PARSE_REAL_JID_FROM_MUC_MAM && query != null && item != null) {
+					trueCounterpart = item.getAttributeAsJid("jid");
+					if (trueCounterpart != null) {
+						if (trueCounterpart.toBareJid().equals(account.getJid().toBareJid())) {
+							status = isTypeGroupChat ? Message.STATUS_SEND_RECEIVED : Message.STATUS_SEND;
+						} else {
+							status = Message.STATUS_RECEIVED;
+						}
+						message.setStatus(status);
+					}
+				} else {
+					trueCounterpart = conversation.getMucOptions().getTrueCounterpart(counterpart);
+				}
 				message.setTrueCounterpart(trueCounterpart);
 				if (!isTypeGroupChat) {
 					message.setType(Message.TYPE_PRIVATE);
