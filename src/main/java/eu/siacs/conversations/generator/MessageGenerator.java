@@ -73,10 +73,10 @@ public class MessageGenerator extends AbstractGenerator {
 		if (axolotlMessage == null) {
 			return null;
 		}
+		packet.setAxolotlMessage(axolotlMessage.toElement());
 		if (!recipientSupportsOmemo(message)) {
 			packet.setBody(OMEMO_FALLBACK_MESSAGE);
 		}
-		packet.setAxolotlMessage(axolotlMessage.toElement());
 		packet.addChild("store", "urn:xmpp:hints");
 		return packet;
 	}
