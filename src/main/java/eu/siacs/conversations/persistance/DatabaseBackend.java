@@ -1135,6 +1135,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		} else {
 			cursor.moveToFirst();
 			byte[] certificate = cursor.getBlob(cursor.getColumnIndex(SQLiteAxolotlStore.CERTIFICATE));
+			cursor.close();
 			if (certificate == null || certificate.length == 0) {
 				return null;
 			}
