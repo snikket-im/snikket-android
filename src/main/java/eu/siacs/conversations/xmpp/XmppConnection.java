@@ -1356,8 +1356,8 @@ public class XmppConnection implements Runnable {
 		interrupt();
 		Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": disconnecting force="+Boolean.valueOf(force));
 		if (force) {
+			tagWriter.forceClose();
 			forceCloseSocket();
-			return;
 		} else {
 			if (tagWriter.isActive()) {
 				tagWriter.finish();

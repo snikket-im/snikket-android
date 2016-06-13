@@ -9,7 +9,6 @@ import eu.siacs.conversations.xmpp.stanzas.AbstractStanza;
 
 public class TagWriter {
 
-	private OutputStream plainOutputStream;
 	private OutputStreamWriter outputStream;
 	private boolean finshed = false;
 	private LinkedBlockingQueue<AbstractStanza> writeQueue = new LinkedBlockingQueue<AbstractStanza>();
@@ -24,15 +23,9 @@ public class TagWriter {
 				}
 				try {
 					AbstractStanza output = writeQueue.take();
-					if (outputStream == null) {
-						shouldStop = true;
-					} else {
-						outputStream.write(output.toString());
-						outputStream.flush();
-					}
-				} catch (IOException e) {
-					shouldStop = true;
-				} catch (InterruptedException e) {
+					outputStream.write(output.toString());
+					outputStream.flush();
+				} catch (Exception e) {
 					shouldStop = true;
 				}
 			}
@@ -46,15 +39,7 @@ public class TagWriter {
 		if (out == null) {
 			throw new IOException();
 		}
-		this.plainOutputStream = out;
 		this.outputStream = new OutputStreamWriter(out);
-	}
-
-	public OutputStream getOutputStream() throws IOException {
-		if (this.plainOutputStream == null) {
-			throw new IOException();
-		}
-		return this.plainOutputStream;
 	}
 
 	public TagWriter beginDocument() throws IOException {
@@ -110,5 +95,10 @@ public class TagWriter {
 
 	public boolean isActive() {
 		return outputStream != null;
+	}
+
+	public void forceClose() {
+		finish();
+		outputStream = null;
 	}
 }
