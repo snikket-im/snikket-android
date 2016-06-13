@@ -50,6 +50,10 @@ public class PgpDecryptionService {
         continueDecryption();
     }
 
+    public synchronized void discard(List<Message> discards) {
+        this.messages.removeAll(discards);
+    }
+
 	protected synchronized void decryptNext() {
 		if (pendingIntent == null
                 && getOpenPgpApi() != null

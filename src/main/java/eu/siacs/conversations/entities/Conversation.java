@@ -22,6 +22,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import eu.siacs.conversations.Config;
+import eu.siacs.conversations.crypto.PgpDecryptionService;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
@@ -206,7 +207,13 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 			final int size = messages.size();
 			final int maxsize = Config.PAGE_SIZE * Config.MAX_NUM_PAGES;
 			if (size > maxsize) {
-				this.messages.subList(0, size - maxsize).clear();
+				List<Message> discards = this.messages.subList(0, size - maxsize);
+				final PgpDecryptionService pgpDecryptionService = account.getPgpDecryptionService();
+				if (pgpDecryptionService != null) {
+					pgpDecryptionService.discard(discards);
+				}
+				discards.clear();
+				untieMessages();
 			}
 		}
 	}
@@ -949,9 +956,13 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 					}
 				}
 			});
-			for(Message message : this.messages) {
-				message.untie();
-			}
+			untieMessages();
+		}
+	}
+
+	private void untieMessages() {
+		for(Message message : this.messages) {
+			message.untie();
 		}
 	}
 
