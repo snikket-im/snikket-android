@@ -9,12 +9,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender.SendIntentException;
-import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.Nullable;
 import android.text.InputType;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Gravity;
@@ -214,49 +211,25 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 		}
 		return -1;
 	}
-
-	private final int KEYCHAIN_UNLOCK_NOT_REQUIRED = 0;
-	private final int KEYCHAIN_UNLOCK_REQUIRED = 1;
-	private final int KEYCHAIN_UNLOCK_PENDING = 2;
-	private int keychainUnlock = KEYCHAIN_UNLOCK_NOT_REQUIRED;
 	protected OnClickListener clickToDecryptListener = new OnClickListener() {
 
 		@Override
 		public void onClick(View v) {
-			if (keychainUnlock == KEYCHAIN_UNLOCK_REQUIRED
-					&& activity.hasPgp() && !conversation.getAccount().getPgpDecryptionService().isRunning()) {
-				keychainUnlock = KEYCHAIN_UNLOCK_PENDING;
-				updateSnackBar(conversation);
-				Message message = getLastPgpDecryptableMessage();
-				if (message != null) {
-					activity.xmppConnectionService.getPgpEngine().decrypt(message, new UiCallback<Message>() {
-						@Override
-						public void success(Message object) {
-							conversation.getAccount().getPgpDecryptionService().onKeychainUnlocked();
-							keychainUnlock = KEYCHAIN_UNLOCK_NOT_REQUIRED;
-						}
-
-						@Override
-						public void error(int errorCode, Message object) {
-							keychainUnlock = KEYCHAIN_UNLOCK_NOT_REQUIRED;
-						}
-
-						@Override
-						public void userInputRequried(PendingIntent pi, Message object) {
-							try {
-								activity.startIntentSenderForResult(pi.getIntentSender(),
-										ConversationActivity.REQUEST_DECRYPT_PGP, null, 0, 0, 0);
-							} catch (SendIntentException e) {
-								keychainUnlock = KEYCHAIN_UNLOCK_NOT_REQUIRED;
-								updatePgpMessages();
-							}
-						}
-					});
+			PendingIntent pendingIntent = conversation.getAccount().getPgpDecryptionService().getPendingIntent();
+			if (pendingIntent != null) {
+				try {
+					activity.startIntentSenderForResult(pendingIntent.getIntentSender(),
+                            ConversationActivity.REQUEST_DECRYPT_PGP,
+                            null,
+                            0,
+                            0,
+                            0);
+				} catch (SendIntentException e) {
+					Toast.makeText(activity,R.string.unable_to_connect_to_keychain, Toast.LENGTH_SHORT).show();
+					conversation.getAccount().getPgpDecryptionService().continueDecryption(true);
 				}
-			} else {
-				keychainUnlock = KEYCHAIN_UNLOCK_NOT_REQUIRED;
-				updatePgpMessages();
 			}
+			updateSnackBar(conversation);
 		}
 	};
 	protected OnClickListener clickToVerify = new OnClickListener() {
@@ -722,7 +695,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 		message.setEncryption(Message.ENCRYPTION_PGP);
 		activity.updateConversationList();
 		updateMessages();
-		conversation.getAccount().getPgpDecryptionService().add(message);
+		conversation.getAccount().getPgpDecryptionService().decrypt(message);
 	}
 
 	protected void privateMessageWith(final Jid counterpart) {
@@ -789,7 +762,6 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 			this.conversation.trim();
 		}
 
-		this.keychainUnlock = KEYCHAIN_UNLOCK_NOT_REQUIRED;
 		this.conversation = conversation;
 		boolean canWrite = this.conversation.getMode() == Conversation.MODE_SINGLE || this.conversation.getMucOptions().participating();
 		this.mEditMessage.setEnabled(canWrite);
@@ -909,7 +881,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 				default:
 					break;
 			}
-		} else if (keychainUnlock == KEYCHAIN_UNLOCK_REQUIRED) {
+		} else if (account.hasPendingPgpIntent(conversation)) {
 			showSnackbar(R.string.openpgp_messages_found, R.string.decrypt, clickToDecryptListener);
 		} else if (mode == Conversation.MODE_SINGLE
 				&& conversation.smpRequested()) {
@@ -932,7 +904,6 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 			final ConversationActivity activity = (ConversationActivity) getActivity();
 			if (this.conversation != null) {
 				conversation.populateWithMessages(ConversationFragment.this.messageList);
-				updatePgpMessages();
 				updateSnackBar(conversation);
 				updateStatusMessages();
 				this.messageListAdapter.notifyDataSetChanged();
@@ -943,29 +914,6 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 				this.updateSendButton();
 			}
 		}
-	}
-
-	public void updatePgpMessages() {
-		if (keychainUnlock != KEYCHAIN_UNLOCK_PENDING) {
-			if (getLastPgpDecryptableMessage() != null
-					&& !conversation.getAccount().getPgpDecryptionService().isRunning()) {
-				keychainUnlock = KEYCHAIN_UNLOCK_REQUIRED;
-			} else {
-				keychainUnlock = KEYCHAIN_UNLOCK_NOT_REQUIRED;
-			}
-		}
-	}
-
-	@Nullable
-	private Message getLastPgpDecryptableMessage() {
-		for (final Message message : this.messageList) {
-			if (message.getEncryption() == Message.ENCRYPTION_PGP
-					&& (message.getStatus() == Message.STATUS_RECEIVED || message.getStatus() >= Message.STATUS_SEND)
-					&& message.getTransferable() == null) {
-				return message;
-			}
-		}
-		return null;
 	}
 
 	private void messageSent() {
@@ -1424,9 +1372,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 	                                final Intent data) {
 		if (resultCode == Activity.RESULT_OK) {
 			if (requestCode == ConversationActivity.REQUEST_DECRYPT_PGP) {
-				activity.getSelectedConversation().getAccount().getPgpDecryptionService().onKeychainUnlocked();
-				keychainUnlock = KEYCHAIN_UNLOCK_NOT_REQUIRED;
-				updatePgpMessages();
+				activity.getSelectedConversation().getAccount().getPgpDecryptionService().continueDecryption(true);
 			} else if (requestCode == ConversationActivity.REQUEST_TRUST_KEYS_TEXT) {
 				final String body = mEditMessage.getText().toString();
 				Message message = new Message(conversation, body, conversation.getNextEncryption());
@@ -1434,11 +1380,6 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 			} else if (requestCode == ConversationActivity.REQUEST_TRUST_KEYS_MENU) {
 				int choice = data.getIntExtra("choice", ConversationActivity.ATTACHMENT_CHOICE_INVALID);
 				activity.selectPresenceToAttachFile(choice, conversation.getNextEncryption());
-			}
-		} else {
-			if (requestCode == ConversationActivity.REQUEST_DECRYPT_PGP) {
-				keychainUnlock = KEYCHAIN_UNLOCK_NOT_REQUIRED;
-				updatePgpMessages();
 			}
 		}
 	}

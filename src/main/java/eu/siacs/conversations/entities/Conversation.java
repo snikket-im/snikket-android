@@ -932,7 +932,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 		synchronized (this.messages) {
 			this.messages.addAll(index, messages);
 		}
-		account.getPgpDecryptionService().addAll(messages);
+		account.getPgpDecryptionService().decrypt(messages);
 	}
 
 	public void sort() {

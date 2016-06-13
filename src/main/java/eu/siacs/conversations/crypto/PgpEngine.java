@@ -38,96 +38,6 @@ public class PgpEngine {
 		this.mXmppConnectionService = service;
 	}
 
-	public void decrypt(final Message message, final UiCallback<Message> callback) {
-		Intent params = new Intent();
-		params.setAction(OpenPgpApi.ACTION_DECRYPT_VERIFY);
-		final String uuid = message.getUuid();
-		if (message.getType() == Message.TYPE_TEXT) {
-			InputStream is = new ByteArrayInputStream(message.getBody().getBytes());
-			final OutputStream os = new ByteArrayOutputStream();
-			api.executeApiAsync(params, is, os, new IOpenPgpCallback() {
-
-				@Override
-				public void onReturn(Intent result) {
-					notifyPgpDecryptionService(message.getConversation().getAccount(), OpenPgpApi.ACTION_DECRYPT_VERIFY, result);
-					switch (result.getIntExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_ERROR)) {
-					case OpenPgpApi.RESULT_CODE_SUCCESS:
-						try {
-							os.flush();
-							if (message.getEncryption() == Message.ENCRYPTION_PGP
-									&& message.getUuid().equals(uuid)) {
-								message.setBody(os.toString());
-								message.setEncryption(Message.ENCRYPTION_DECRYPTED);
-								final HttpConnectionManager manager = mXmppConnectionService.getHttpConnectionManager();
-								if (message.trusted()
-										&& message.treatAsDownloadable() != Message.Decision.NEVER
-										&& manager.getAutoAcceptFileSize() > 0) {
-									manager.createNewDownloadConnection(message);
-								}
-								mXmppConnectionService.updateMessage(message);
-								callback.success(message);
-							}
-						} catch (IOException e) {
-							callback.error(R.string.openpgp_error, message);
-							return;
-						}
-
-						return;
-					case OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED:
-						callback.userInputRequried((PendingIntent) result
-								.getParcelableExtra(OpenPgpApi.RESULT_INTENT),
-								message);
-						return;
-					case OpenPgpApi.RESULT_CODE_ERROR:
-						callback.error(R.string.openpgp_error, message);
-                    }
-				}
-			});
-		} else if (message.getType() == Message.TYPE_IMAGE || message.getType() == Message.TYPE_FILE) {
-			try {
-				final DownloadableFile inputFile = this.mXmppConnectionService
-						.getFileBackend().getFile(message, false);
-				final DownloadableFile outputFile = this.mXmppConnectionService
-						.getFileBackend().getFile(message, true);
-				outputFile.getParentFile().mkdirs();
-				outputFile.createNewFile();
-				InputStream is = new FileInputStream(inputFile);
-				OutputStream os = new FileOutputStream(outputFile);
-				api.executeApiAsync(params, is, os, new IOpenPgpCallback() {
-
-					@Override
-					public void onReturn(Intent result) {
-						notifyPgpDecryptionService(message.getConversation().getAccount(), OpenPgpApi.ACTION_DECRYPT_VERIFY, result);
-						switch (result.getIntExtra(OpenPgpApi.RESULT_CODE,
-								OpenPgpApi.RESULT_CODE_ERROR)) {
-						case OpenPgpApi.RESULT_CODE_SUCCESS:
-							URL url = message.getFileParams().url;
-							mXmppConnectionService.getFileBackend().updateFileParams(message,url);
-							message.setEncryption(Message.ENCRYPTION_DECRYPTED);
-							PgpEngine.this.mXmppConnectionService
-									.updateMessage(message);
-							inputFile.delete();
-							mXmppConnectionService.getFileBackend().updateMediaScanner(outputFile);
-							callback.success(message);
-							return;
-						case OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED:
-							callback.userInputRequried(
-									(PendingIntent) result
-											.getParcelableExtra(OpenPgpApi.RESULT_INTENT),
-									message);
-							return;
-						case OpenPgpApi.RESULT_CODE_ERROR:
-							callback.error(R.string.openpgp_error, message);
-						}
-					}
-				});
-			} catch (final IOException e) {
-				callback.error(R.string.error_decrypting_file, message);
-			}
-
-		}
-	}
-
 	public void encrypt(final Message message, final UiCallback<Message> callback) {
 		Intent params = new Intent();
 		params.setAction(OpenPgpApi.ACTION_ENCRYPT);
@@ -156,7 +66,6 @@ public class PgpEngine {
 
 				@Override
 				public void onReturn(Intent result) {
-					notifyPgpDecryptionService(message.getConversation().getAccount(), OpenPgpApi.ACTION_ENCRYPT, result);
 					switch (result.getIntExtra(OpenPgpApi.RESULT_CODE,
 							OpenPgpApi.RESULT_CODE_ERROR)) {
 					case OpenPgpApi.RESULT_CODE_SUCCESS:
@@ -202,7 +111,6 @@ public class PgpEngine {
 
 					@Override
 					public void onReturn(Intent result) {
-						notifyPgpDecryptionService(message.getConversation().getAccount(), OpenPgpApi.ACTION_ENCRYPT, result);
 						switch (result.getIntExtra(OpenPgpApi.RESULT_CODE,
 								OpenPgpApi.RESULT_CODE_ERROR)) {
 						case OpenPgpApi.RESULT_CODE_SUCCESS:
@@ -257,7 +165,6 @@ public class PgpEngine {
 		InputStream is = new ByteArrayInputStream(pgpSig.toString().getBytes());
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
 		Intent result = api.executeApi(params, is, os);
-		notifyPgpDecryptionService(account, OpenPgpApi.ACTION_DECRYPT_VERIFY, result);
 		switch (result.getIntExtra(OpenPgpApi.RESULT_CODE,
 				OpenPgpApi.RESULT_CODE_ERROR)) {
 		case OpenPgpApi.RESULT_CODE_SUCCESS:
@@ -315,7 +222,6 @@ public class PgpEngine {
 
 			@Override
 			public void onReturn(Intent result) {
-				notifyPgpDecryptionService(account, OpenPgpApi.ACTION_SIGN, result);
 				switch (result.getIntExtra(OpenPgpApi.RESULT_CODE, 0)) {
 				case OpenPgpApi.RESULT_CODE_SUCCESS:
 					StringBuilder signatureBuilder = new StringBuilder();
@@ -396,18 +302,5 @@ public class PgpEngine {
 		Intent result = api.executeApi(params, null, null);
 		return (PendingIntent) result
 				.getParcelableExtra(OpenPgpApi.RESULT_INTENT);
-	}
-
-	private void notifyPgpDecryptionService(Account account, String action, final Intent result) {
-		switch (result.getIntExtra(OpenPgpApi.RESULT_CODE, 0)) {
-			case OpenPgpApi.RESULT_CODE_SUCCESS:
-				if (OpenPgpApi.ACTION_SIGN.equals(action)) {
-					account.getPgpDecryptionService().onKeychainUnlocked();
-				}
-				break;
-			case OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED:
-				account.getPgpDecryptionService().onKeychainLocked();
-				break;
-		}
 	}
 }

@@ -7,7 +7,6 @@ import android.util.Pair;
 import net.java.otr4j.session.Session;
 import net.java.otr4j.session.SessionStatus;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,7 +31,6 @@ import eu.siacs.conversations.http.HttpConnectionManager;
 import eu.siacs.conversations.services.MessageArchiveService;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.CryptoHelper;
-import eu.siacs.conversations.utils.Xmlns;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.OnMessagePacketReceived;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
@@ -484,7 +482,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 							sendMessageReceipts(account, packet);
 						}
 						if (replacedMessage.getEncryption() == Message.ENCRYPTION_PGP) {
-							conversation.getAccount().getPgpDecryptionService().add(replacedMessage);
+							conversation.getAccount().getPgpDecryptionService().decrypt(replacedMessage);
 						}
 						return;
 					} else {
@@ -508,7 +506,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 			}
 
 			if (message.getEncryption() == Message.ENCRYPTION_PGP) {
-				conversation.getAccount().getPgpDecryptionService().add(message);
+				conversation.getAccount().getPgpDecryptionService().decrypt(message);
 			}
 
 			if (query == null || query.getWith() == null) { //either no mam or catchup

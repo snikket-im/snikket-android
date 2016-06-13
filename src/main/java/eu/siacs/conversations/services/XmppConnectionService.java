@@ -49,7 +49,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -62,6 +61,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import de.duenndns.ssl.MemorizingTrustManager;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
+import eu.siacs.conversations.crypto.PgpDecryptionService;
 import eu.siacs.conversations.crypto.PgpEngine;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.crypto.axolotl.XmppAxolotlMessage;
@@ -381,6 +381,16 @@ public class XmppConnectionService extends Service {
 			return null;
 		}
 
+	}
+
+	public OpenPgpApi getOpenPgpApi() {
+		if (!Config.supportOpenPgp()) {
+			return null;
+		} else if (pgpServiceConnection != null && pgpServiceConnection.isBound()) {
+			return new OpenPgpApi(this, pgpServiceConnection.getService());
+		} else {
+			return null;
+		}
 	}
 
 	public FileBackend getFileBackend() {
@@ -754,8 +764,9 @@ public class XmppConnectionService extends Service {
 				@Override
 				public void onBound(IOpenPgpService2 service) {
 					for (Account account : accounts) {
-						if (account.getPgpDecryptionService() != null) {
-							account.getPgpDecryptionService().onOpenPgpServiceBound();
+						final PgpDecryptionService pgp = account.getPgpDecryptionService();
+						if(pgp != null) {
+							pgp.continueDecryption(true);
 						}
 					}
 				}
