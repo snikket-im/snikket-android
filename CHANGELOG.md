@@ -1,5 +1,9 @@
 ###Changelog
 
+####Version 1.13.1
+* changed some colors in dark theme
+* fixed fall-back message for OMEMO
+
 ####Version 1.13.0
 * configurable dark theme
 * opt-in to share Last User Interaction
