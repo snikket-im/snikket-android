@@ -506,22 +506,24 @@ public class XmppConnection implements Runnable {
 				final Element resumed = tagReader.readElement(nextTag);
 				final String h = resumed.getAttribute("h");
 				try {
-					final int serverCount = Integer.parseInt(h);
-					if (serverCount != stanzasSent) {
-						Log.d(Config.LOGTAG, account.getJid().toBareJid().toString()
-								+ ": session resumed with lost packages");
-						stanzasSent = serverCount;
-					} else {
-						Log.d(Config.LOGTAG, account.getJid().toBareJid().toString() + ": session resumed");
-					}
-					acknowledgeStanzaUpTo(serverCount);
 					ArrayList<AbstractAcknowledgeableStanza> failedStanzas = new ArrayList<>();
-					for(int i = 0; i < this.mStanzaQueue.size(); ++i) {
-						failedStanzas.add(mStanzaQueue.valueAt(i));
+					synchronized (this.mStanzaQueue) {
+						final int serverCount = Integer.parseInt(h);
+						if (serverCount != stanzasSent) {
+							Log.d(Config.LOGTAG, account.getJid().toBareJid().toString()
+									+ ": session resumed with lost packages");
+							stanzasSent = serverCount;
+						} else {
+							Log.d(Config.LOGTAG, account.getJid().toBareJid().toString() + ": session resumed");
+						}
+						acknowledgeStanzaUpTo(serverCount);
+						for (int i = 0; i < this.mStanzaQueue.size(); ++i) {
+							failedStanzas.add(mStanzaQueue.valueAt(i));
+						}
+						mStanzaQueue.clear();
 					}
-					mStanzaQueue.clear();
-					Log.d(Config.LOGTAG,"resending "+failedStanzas.size()+" stanzas");
-					for(AbstractAcknowledgeableStanza packet : failedStanzas) {
+					Log.d(Config.LOGTAG, "resending " + failedStanzas.size() + " stanzas");
+					for (AbstractAcknowledgeableStanza packet : failedStanzas) {
 						if (packet instanceof MessagePacket) {
 							MessagePacket message = (MessagePacket) packet;
 							mXmppConnectionService.markMessage(account,
@@ -546,8 +548,10 @@ public class XmppConnection implements Runnable {
 				final Element ack = tagReader.readElement(nextTag);
 				lastPacketReceived = SystemClock.elapsedRealtime();
 				try {
-					final int serverSequence = Integer.parseInt(ack.getAttribute("h"));
-					acknowledgeStanzaUpTo(serverSequence);
+					synchronized (this.mStanzaQueue) {
+						final int serverSequence = Integer.parseInt(ack.getAttribute("h"));
+						acknowledgeStanzaUpTo(serverSequence);
+					}
 				} catch (NumberFormatException | NullPointerException e) {
 					Log.d(Config.LOGTAG,account.getJid().toBareJid()+": server send ack without sequence number");
 				}
@@ -556,7 +560,9 @@ public class XmppConnection implements Runnable {
 				try {
 					final int serverCount = Integer.parseInt(failed.getAttribute("h"));
 					Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": resumption failed but server acknowledged stanza #"+serverCount);
-					acknowledgeStanzaUpTo(serverCount);
+					synchronized (this.mStanzaQueue) {
+						acknowledgeStanzaUpTo(serverCount);
+					}
 				} catch (NumberFormatException | NullPointerException e) {
 					Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": resumption failed");
 				}
@@ -1020,8 +1026,10 @@ public class XmppConnection implements Runnable {
 		if (smVersion != 0) {
 			final EnablePacket enable = new EnablePacket(smVersion);
 			tagWriter.writeStanzaAsync(enable);
-			stanzasSent = 0;
-			mStanzaQueue.clear();
+			synchronized (this.mStanzaQueue) {
+				stanzasSent = 0;
+				mStanzaQueue.clear();
+			}
 		}
 		features.carbonsEnabled = false;
 		features.blockListRequested = false;
@@ -1256,8 +1264,10 @@ public class XmppConnection implements Runnable {
 		tagWriter.writeStanzaAsync(packet);
 		if (packet instanceof AbstractAcknowledgeableStanza) {
 			AbstractAcknowledgeableStanza stanza = (AbstractAcknowledgeableStanza) packet;
-			++stanzasSent;
-			this.mStanzaQueue.put(stanzasSent, stanza);
+			synchronized (this.mStanzaQueue) {
+				++stanzasSent;
+				this.mStanzaQueue.append(stanzasSent, stanza);
+			}
 			if (stanza instanceof MessagePacket && stanza.getId() != null && getFeatures().sm()) {
 				if (Config.EXTENDED_SM_LOGGING) {
 					Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": requesting ack for message stanza #" + stanzasSent);
