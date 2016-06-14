@@ -99,6 +99,9 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 						key(contact, size));
 			}
 		}
+		for(Conversation conversation : mXmppConnectionService.findAllConferencesWith(contact)) {
+			clear(conversation);
+		}
 	}
 
 	private String key(Contact contact, int size) {

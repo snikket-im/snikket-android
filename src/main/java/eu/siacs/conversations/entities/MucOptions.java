@@ -449,7 +449,7 @@ public class MucOptions {
 		return null;
 	}
 
-	public User findUserByRealJid(Jid jid) {
+	private User findUserByRealJid(Jid jid) {
 		if (jid == null) {
 			return null;
 		}
@@ -461,6 +461,10 @@ public class MucOptions {
 			}
 		}
 		return null;
+	}
+
+	public boolean isContactInRoom(Contact contact) {
+		return findUserByRealJid(contact.getJid().toBareJid()) != null;
 	}
 
 	public boolean isUserInRoom(Jid jid) {

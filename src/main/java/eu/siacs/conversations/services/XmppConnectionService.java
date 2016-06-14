@@ -1352,6 +1352,17 @@ public class XmppConnectionService extends Service {
 		return this.accounts;
 	}
 
+	public List<Conversation> findAllConferencesWith(Contact contact) {
+		ArrayList<Conversation> results = new ArrayList<>();
+		for(Conversation conversation : conversations) {
+			if (conversation.getMode() == Conversation.MODE_MULTI
+					&& conversation.getMucOptions().isContactInRoom(contact)) {
+				results.add(conversation);
+			}
+		}
+		return results;
+	}
+
 	public Conversation find(final Iterable<Conversation> haystack, final Contact contact) {
 		for (final Conversation conversation : haystack) {
 			if (conversation.getContact() == contact) {
