@@ -483,6 +483,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 							sendMessageReceipts(account, packet);
 						}
 						if (replacedMessage.getEncryption() == Message.ENCRYPTION_PGP) {
+							conversation.getAccount().getPgpDecryptionService().discard(replacedMessage);
 							conversation.getAccount().getPgpDecryptionService().decrypt(replacedMessage, false);
 						}
 						return;

@@ -64,6 +64,11 @@ public class PgpDecryptionService {
         this.pendingNotifications.removeAll(discards);
     }
 
+    public synchronized void discard(Message message) {
+        this.messages.remove(message);
+        this.pendingNotifications.remove(message);
+    }
+
 	protected synchronized void decryptNext() {
 		if (pendingIntent == null
                 && getOpenPgpApi() != null
