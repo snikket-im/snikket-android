@@ -1542,21 +1542,30 @@ public class ConversationActivity extends XmppActivity
 				new UiCallback<Message>() {
 
 					@Override
-					public void userInputRequried(PendingIntent pi,
-												  Message message) {
-						ConversationActivity.this.runIntent(pi,
-								ConversationActivity.REQUEST_SEND_MESSAGE);
+					public void userInputRequried(PendingIntent pi,Message message) {
+						ConversationActivity.this.runIntent(pi,ConversationActivity.REQUEST_SEND_MESSAGE);
 					}
 
 					@Override
 					public void success(Message message) {
 						message.setEncryption(Message.ENCRYPTION_DECRYPTED);
 						xmppConnectionService.sendMessage(message);
+						if (mConversationFragment != null) {
+							mConversationFragment.messageSent();
+						}
 					}
 
 					@Override
-					public void error(int error, Message message) {
-
+					public void error(final int error, Message message) {
+						runOnUiThread(new Runnable() {
+							@Override
+							public void run() {
+								Toast.makeText(ConversationActivity.this,
+										R.string.unable_to_connect_to_keychain,
+										Toast.LENGTH_SHORT
+								).show();
+							}
+						});
 					}
 				});
 	}
