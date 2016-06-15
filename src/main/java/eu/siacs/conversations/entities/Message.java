@@ -377,7 +377,7 @@ public class Message extends AbstractEntity {
 		this.transferable = transferable;
 	}
 
-	public boolean equals(Message message) {
+	public boolean similar(Message message) {
 		if (this.serverMsgId != null && message.getServerMsgId() != null) {
 			return this.serverMsgId.equals(message.getServerMsgId());
 		} else if (this.body == null || this.counterpart == null) {

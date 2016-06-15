@@ -695,7 +695,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 		message.setEncryption(Message.ENCRYPTION_PGP);
 		activity.updateConversationList();
 		updateMessages();
-		conversation.getAccount().getPgpDecryptionService().decrypt(message);
+		conversation.getAccount().getPgpDecryptionService().decrypt(message, false);
 	}
 
 	protected void privateMessageWith(final Jid counterpart) {

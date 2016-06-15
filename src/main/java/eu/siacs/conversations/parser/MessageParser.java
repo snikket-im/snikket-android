@@ -342,6 +342,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 		final Jid to = packet.getTo();
 		final Jid from = packet.getFrom();
 		final String remoteMsgId = packet.getId();
+		boolean notify = false;
 
 		if (from == null) {
 			Log.d(Config.LOGTAG,"no from in: "+packet.toString());
@@ -482,7 +483,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 							sendMessageReceipts(account, packet);
 						}
 						if (replacedMessage.getEncryption() == Message.ENCRYPTION_PGP) {
-							conversation.getAccount().getPgpDecryptionService().decrypt(replacedMessage);
+							conversation.getAccount().getPgpDecryptionService().decrypt(replacedMessage, false);
 						}
 						return;
 					} else {
@@ -505,10 +506,6 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 				conversation.add(message);
 			}
 
-			if (message.getEncryption() == Message.ENCRYPTION_PGP) {
-				conversation.getAccount().getPgpDecryptionService().decrypt(message);
-			}
-
 			if (query == null || query.getWith() == null) { //either no mam or catchup
 				if (status == Message.STATUS_SEND || status == Message.STATUS_SEND_RECEIVED) {
 					mXmppConnectionService.markRead(conversation);
@@ -517,7 +514,12 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 					}
 				} else {
 					message.markUnread();
+					notify = true;
 				}
+			}
+
+			if (message.getEncryption() == Message.ENCRYPTION_PGP) {
+				notify = conversation.getAccount().getPgpDecryptionService().decrypt(message, notify);
 			}
 
 			if (query == null) {
@@ -541,7 +543,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 			final HttpConnectionManager manager = this.mXmppConnectionService.getHttpConnectionManager();
 			if (message.trusted() && message.treatAsDownloadable() != Message.Decision.NEVER && manager.getAutoAcceptFileSize() > 0) {
 				manager.createNewDownloadConnection(message);
-			} else if (!message.isRead()) {
+			} else if (notify) {
 				if (query == null) {
 					mXmppConnectionService.getNotificationService().push(message);
 				} else if (query.getWith() == null) { // mam catchup

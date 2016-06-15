@@ -99,9 +99,16 @@ public class JingleConnection implements Transferable {
 				mXmppConnectionService.markMessage(message,Message.STATUS_RECEIVED);
 				if (acceptedAutomatically) {
 					message.markUnread();
-					JingleConnection.this.mXmppConnectionService.getNotificationService().push(message);
+					if (message.getEncryption() == Message.ENCRYPTION_PGP) {
+						account.getPgpDecryptionService().decrypt(message, true);
+					} else {
+						JingleConnection.this.mXmppConnectionService.getNotificationService().push(message);
+					}
 				}
 			} else {
+				if (message.getEncryption() == Message.ENCRYPTION_PGP) {
+					account.getPgpDecryptionService().decrypt(message, false);
+				}
 				if (message.getEncryption() == Message.ENCRYPTION_PGP || message.getEncryption() == Message.ENCRYPTION_DECRYPTED) {
 					file.delete();
 				}
@@ -109,8 +116,6 @@ public class JingleConnection implements Transferable {
 			Log.d(Config.LOGTAG,"successfully transmitted file:" + file.getAbsolutePath()+" ("+file.getSha1Sum()+")");
 			if (message.getEncryption() != Message.ENCRYPTION_PGP) {
 				mXmppConnectionService.getFileBackend().updateMediaScanner(file);
-			} else {
-				account.getPgpDecryptionService().decrypt(message);
 			}
 		}
 

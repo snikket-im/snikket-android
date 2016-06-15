@@ -774,7 +774,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 	public boolean hasDuplicateMessage(Message message) {
 		synchronized (this.messages) {
 			for (int i = this.messages.size() - 1; i >= 0; --i) {
-				if (this.messages.get(i).equals(message)) {
+				if (this.messages.get(i).similar(message)) {
 					return true;
 				}
 			}

@@ -14,6 +14,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.util.ArrayDeque;
+import java.util.HashSet;
 import java.util.List;
 
 import eu.siacs.conversations.entities.Conversation;
@@ -28,6 +29,7 @@ public class PgpDecryptionService {
     private OpenPgpApi openPgpApi = null;
 
 	protected final ArrayDeque<Message> messages = new ArrayDeque();
+    protected final HashSet<Message> pendingNotifications = new HashSet<>();
 	Message currentMessage;
     private PendingIntent pendingIntent;
 
@@ -36,9 +38,16 @@ public class PgpDecryptionService {
         this.mXmppConnectionService = service;
     }
 
-	public synchronized void decrypt(final Message message) {
+	public synchronized boolean decrypt(final Message message, boolean notify) {
         messages.add(message);
-		continueDecryption();
+        if (notify && pendingIntent == null) {
+            pendingNotifications.add(message);
+            continueDecryption();
+            return false;
+        } else {
+            continueDecryption();
+            return notify;
+        }
 	}
 
     public synchronized void decrypt(final List<Message> list) {
@@ -52,6 +61,7 @@ public class PgpDecryptionService {
 
     public synchronized void discard(List<Message> discards) {
         this.messages.removeAll(discards);
+        this.pendingNotifications.removeAll(discards);
     }
 
 	protected synchronized void decryptNext() {
@@ -113,9 +123,11 @@ public class PgpDecryptionService {
                     mXmppConnectionService.updateMessage(message);
                     break;
                 case OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED:
-                    messages.addFirst(message);
-                    currentMessage = null;
-                    storePendingIntent((PendingIntent) result.getParcelableExtra(OpenPgpApi.RESULT_INTENT));
+                    synchronized (PgpDecryptionService.this) {
+                        messages.addFirst(message);
+                        currentMessage = null;
+                        storePendingIntent((PendingIntent) result.getParcelableExtra(OpenPgpApi.RESULT_INTENT));
+                    }
                     break;
                 case OpenPgpApi.RESULT_CODE_ERROR:
                     message.setEncryption(Message.ENCRYPTION_DECRYPTION_FAILED);
@@ -141,9 +153,11 @@ public class PgpDecryptionService {
                         mXmppConnectionService.updateMessage(message);
                         break;
                     case OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED:
-                        messages.addFirst(message);
-                        currentMessage = null;
-                        storePendingIntent((PendingIntent) result.getParcelableExtra(OpenPgpApi.RESULT_INTENT));
+                        synchronized (PgpDecryptionService.this) {
+                            messages.addFirst(message);
+                            currentMessage = null;
+                            storePendingIntent((PendingIntent) result.getParcelableExtra(OpenPgpApi.RESULT_INTENT));
+                        }
                         break;
                     case OpenPgpApi.RESULT_CODE_ERROR:
                         message.setEncryption(Message.ENCRYPTION_DECRYPTION_FAILED);
@@ -154,6 +168,13 @@ public class PgpDecryptionService {
                 message.setEncryption(Message.ENCRYPTION_DECRYPTION_FAILED);
                 mXmppConnectionService.updateMessage(message);
             }
+        }
+        notifyIfPending(message);
+    }
+
+    private synchronized void notifyIfPending(Message message) {
+        if (pendingNotifications.remove(message)) {
+            mXmppConnectionService.getNotificationService().push(message);
         }
     }
 

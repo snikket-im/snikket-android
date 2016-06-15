@@ -126,11 +126,12 @@ public class HttpDownloadConnection implements Transferable {
 		mXmppConnectionService.getFileBackend().updateMediaScanner(file);
 		message.setTransferable(null);
 		mHttpConnectionManager.finishConnection(this);
+		boolean notify = acceptedAutomatically && !message.isRead();
 		if (message.getEncryption() == Message.ENCRYPTION_PGP) {
-			message.getConversation().getAccount().getPgpDecryptionService().decrypt(message);
+			notify = message.getConversation().getAccount().getPgpDecryptionService().decrypt(message, notify);
 		}
 		mXmppConnectionService.updateConversationUi();
-		if (acceptedAutomatically) {
+		if (notify) {
 			mXmppConnectionService.getNotificationService().push(message);
 		}
 	}
