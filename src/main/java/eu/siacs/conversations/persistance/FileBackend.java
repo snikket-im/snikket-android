@@ -14,6 +14,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.os.ParcelFileDescriptor;
+import android.provider.MediaStore;
 import android.provider.OpenableColumns;
 import android.system.Os;
 import android.system.StructStat;
@@ -248,11 +249,31 @@ public class FileBackend {
 	}
 
 	public void copyFileToPrivateStorage(Message message, Uri uri) throws FileCopyException {
-		Log.d(Config.LOGTAG, "copy " + uri.toString() + " to private storage");
 		String mime = mXmppConnectionService.getContentResolver().getType(uri);
+		Log.d(Config.LOGTAG, "copy " + uri.toString() + " to private storage (mime="+mime+")");
 		String extension = MimeTypeMap.getSingleton().getExtensionFromMimeType(mime);
+		if (extension == null) {
+			extension = getExtensionFromUri(uri);
+		}
 		message.setRelativeFilePath(message.getUuid() + "." + extension);
 		copyFileToPrivateStorage(mXmppConnectionService.getFileBackend().getFile(message), uri);
+	}
+
+	private String getExtensionFromUri(Uri uri) {
+		String[] projection = {MediaStore.MediaColumns.DATA};
+		String filename = null;
+		Cursor cursor = mXmppConnectionService.getContentResolver().query(uri, projection, null, null, null);
+		if (cursor != null) {
+			try {
+				if (cursor.moveToFirst()) {
+					filename = cursor.getString(0);
+				}
+			} finally {
+				cursor.close();
+			}
+		}
+		int pos = filename == null ? -1 : filename.lastIndexOf('.');
+		return pos > 0 ? filename.substring(pos+1) : null;
 	}
 
 	private void copyImageToPrivateStorage(File file, Uri image, int sampleSize) throws FileCopyException {
