@@ -1191,7 +1191,15 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 
 							@Override
 							public void error(int error, Contact contact) {
-								System.out.println();
+								activity.runOnUiThread(new Runnable() {
+									@Override
+									public void run() {
+										Toast.makeText(activity,
+												R.string.unable_to_connect_to_keychain,
+												Toast.LENGTH_SHORT
+										).show();
+									}
+								});
 							}
 						});
 
