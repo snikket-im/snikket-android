@@ -365,7 +365,9 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 			return;
 		}
 
-		if (extractChatState(mXmppConnectionService.find(account, counterpart.toBareJid()), packet)) {
+		if (!isTypeGroupChat
+				&& query == null
+				&& extractChatState(mXmppConnectionService.find(account, counterpart.toBareJid()), packet)) {
 			mXmppConnectionService.updateConversationUi();
 		}
 
