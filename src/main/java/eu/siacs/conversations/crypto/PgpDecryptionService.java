@@ -104,57 +104,28 @@ public class PgpDecryptionService {
     }
 
     private void executeApi(Message message) {
-        Intent params = new Intent();
-        params.setAction(OpenPgpApi.ACTION_DECRYPT_VERIFY);
-        if (message.getType() == Message.TYPE_TEXT) {
-            InputStream is = new ByteArrayInputStream(message.getBody().getBytes());
-            final OutputStream os = new ByteArrayOutputStream();
-            Intent result = getOpenPgpApi().executeApi(params, is, os);
-            switch (result.getIntExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_ERROR)) {
-                case OpenPgpApi.RESULT_CODE_SUCCESS:
-                    try {
-                        os.flush();
-                        message.setBody(os.toString());
-                        message.setEncryption(Message.ENCRYPTION_DECRYPTED);
-                        final HttpConnectionManager manager = mXmppConnectionService.getHttpConnectionManager();
-                        if (message.trusted()
-                                && message.treatAsDownloadable() != Message.Decision.NEVER
-                                && manager.getAutoAcceptFileSize() > 0) {
-                            manager.createNewDownloadConnection(message);
-                        }
-                    } catch (IOException e) {
-                        message.setEncryption(Message.ENCRYPTION_DECRYPTION_FAILED);
-                    }
-                    mXmppConnectionService.updateMessage(message);
-                    break;
-                case OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED:
-                    synchronized (PgpDecryptionService.this) {
-                        messages.addFirst(message);
-                        currentMessage = null;
-                        storePendingIntent((PendingIntent) result.getParcelableExtra(OpenPgpApi.RESULT_INTENT));
-                    }
-                    break;
-                case OpenPgpApi.RESULT_CODE_ERROR:
-                    message.setEncryption(Message.ENCRYPTION_DECRYPTION_FAILED);
-                    mXmppConnectionService.updateMessage(message);
-                    break;
-            }
-        } else if (message.getType() == Message.TYPE_IMAGE || message.getType() == Message.TYPE_FILE) {
-            try {
-                final DownloadableFile inputFile = mXmppConnectionService.getFileBackend().getFile(message, false);
-                final DownloadableFile outputFile = mXmppConnectionService.getFileBackend().getFile(message, true);
-                outputFile.getParentFile().mkdirs();
-                outputFile.createNewFile();
-                InputStream is = new FileInputStream(inputFile);
-                OutputStream os = new FileOutputStream(outputFile);
+        synchronized (message) {
+            Intent params = new Intent();
+            params.setAction(OpenPgpApi.ACTION_DECRYPT_VERIFY);
+            if (message.getType() == Message.TYPE_TEXT) {
+                InputStream is = new ByteArrayInputStream(message.getBody().getBytes());
+                final OutputStream os = new ByteArrayOutputStream();
                 Intent result = getOpenPgpApi().executeApi(params, is, os);
                 switch (result.getIntExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_ERROR)) {
                     case OpenPgpApi.RESULT_CODE_SUCCESS:
-                        URL url = message.getFileParams().url;
-                        mXmppConnectionService.getFileBackend().updateFileParams(message,url);
-                        message.setEncryption(Message.ENCRYPTION_DECRYPTED);
-                        inputFile.delete();
-                        mXmppConnectionService.getFileBackend().updateMediaScanner(outputFile);
+                        try {
+                            os.flush();
+                            message.setBody(os.toString());
+                            message.setEncryption(Message.ENCRYPTION_DECRYPTED);
+                            final HttpConnectionManager manager = mXmppConnectionService.getHttpConnectionManager();
+                            if (message.trusted()
+                                    && message.treatAsDownloadable() != Message.Decision.NEVER
+                                    && manager.getAutoAcceptFileSize() > 0) {
+                                manager.createNewDownloadConnection(message);
+                            }
+                        } catch (IOException e) {
+                            message.setEncryption(Message.ENCRYPTION_DECRYPTION_FAILED);
+                        }
                         mXmppConnectionService.updateMessage(message);
                         break;
                     case OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED:
@@ -169,9 +140,40 @@ public class PgpDecryptionService {
                         mXmppConnectionService.updateMessage(message);
                         break;
                 }
-            } catch (final IOException e) {
-                message.setEncryption(Message.ENCRYPTION_DECRYPTION_FAILED);
-                mXmppConnectionService.updateMessage(message);
+            } else if (message.getType() == Message.TYPE_IMAGE || message.getType() == Message.TYPE_FILE) {
+                try {
+                    final DownloadableFile inputFile = mXmppConnectionService.getFileBackend().getFile(message, false);
+                    final DownloadableFile outputFile = mXmppConnectionService.getFileBackend().getFile(message, true);
+                    outputFile.getParentFile().mkdirs();
+                    outputFile.createNewFile();
+                    InputStream is = new FileInputStream(inputFile);
+                    OutputStream os = new FileOutputStream(outputFile);
+                    Intent result = getOpenPgpApi().executeApi(params, is, os);
+                    switch (result.getIntExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_ERROR)) {
+                        case OpenPgpApi.RESULT_CODE_SUCCESS:
+                            URL url = message.getFileParams().url;
+                            mXmppConnectionService.getFileBackend().updateFileParams(message, url);
+                            message.setEncryption(Message.ENCRYPTION_DECRYPTED);
+                            inputFile.delete();
+                            mXmppConnectionService.getFileBackend().updateMediaScanner(outputFile);
+                            mXmppConnectionService.updateMessage(message);
+                            break;
+                        case OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED:
+                            synchronized (PgpDecryptionService.this) {
+                                messages.addFirst(message);
+                                currentMessage = null;
+                                storePendingIntent((PendingIntent) result.getParcelableExtra(OpenPgpApi.RESULT_INTENT));
+                            }
+                            break;
+                        case OpenPgpApi.RESULT_CODE_ERROR:
+                            message.setEncryption(Message.ENCRYPTION_DECRYPTION_FAILED);
+                            mXmppConnectionService.updateMessage(message);
+                            break;
+                    }
+                } catch (final IOException e) {
+                    message.setEncryption(Message.ENCRYPTION_DECRYPTION_FAILED);
+                    mXmppConnectionService.updateMessage(message);
+                }
             }
         }
         notifyIfPending(message);

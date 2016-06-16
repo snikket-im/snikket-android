@@ -468,23 +468,25 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 							&& replacedMessage.getTrueCounterpart().equals(message.getTrueCounterpart());
 					if (fingerprintsMatch && (trueCountersMatch || !conversationMultiMode)) {
 						Log.d(Config.LOGTAG, "replaced message '" + replacedMessage.getBody() + "' with '" + message.getBody() + "'");
-						final String uuid = replacedMessage.getUuid();
-						replacedMessage.setUuid(UUID.randomUUID().toString());
-						replacedMessage.setBody(message.getBody());
-						replacedMessage.setEdited(replacedMessage.getRemoteMsgId());
-						replacedMessage.setRemoteMsgId(remoteMsgId);
-						replacedMessage.setEncryption(message.getEncryption());
-						if (replacedMessage.getStatus() == Message.STATUS_RECEIVED) {
-							replacedMessage.markUnread();
-						}
-						mXmppConnectionService.updateMessage(replacedMessage, uuid);
-						mXmppConnectionService.getNotificationService().updateNotification(false);
-						if (mXmppConnectionService.confirmMessages() && remoteMsgId != null && !isForwarded && !isTypeGroupChat) {
-							sendMessageReceipts(account, packet);
-						}
-						if (replacedMessage.getEncryption() == Message.ENCRYPTION_PGP) {
-							conversation.getAccount().getPgpDecryptionService().discard(replacedMessage);
-							conversation.getAccount().getPgpDecryptionService().decrypt(replacedMessage, false);
+						synchronized (replacedMessage) {
+							final String uuid = replacedMessage.getUuid();
+							replacedMessage.setUuid(UUID.randomUUID().toString());
+							replacedMessage.setBody(message.getBody());
+							replacedMessage.setEdited(replacedMessage.getRemoteMsgId());
+							replacedMessage.setRemoteMsgId(remoteMsgId);
+							replacedMessage.setEncryption(message.getEncryption());
+							if (replacedMessage.getStatus() == Message.STATUS_RECEIVED) {
+								replacedMessage.markUnread();
+							}
+							mXmppConnectionService.updateMessage(replacedMessage, uuid);
+							mXmppConnectionService.getNotificationService().updateNotification(false);
+							if (mXmppConnectionService.confirmMessages() && remoteMsgId != null && !isForwarded && !isTypeGroupChat) {
+								sendMessageReceipts(account, packet);
+							}
+							if (replacedMessage.getEncryption() == Message.ENCRYPTION_PGP) {
+								conversation.getAccount().getPgpDecryptionService().discard(replacedMessage);
+								conversation.getAccount().getPgpDecryptionService().decrypt(replacedMessage, false);
+							}
 						}
 						return;
 					} else {
