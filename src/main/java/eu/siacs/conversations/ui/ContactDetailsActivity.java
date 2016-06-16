@@ -419,8 +419,13 @@ public class ContactDetailsActivity extends XmppActivity implements OnAccountUpd
 				ImageButton removeButton = (ImageButton) view
 						.findViewById(R.id.button_remove);
 				removeButton.setVisibility(View.VISIBLE);
-				keyType.setText("OTR Fingerprint");
 				key.setText(CryptoHelper.prettifyFingerprint(otrFingerprint));
+				if (otrFingerprint != null && otrFingerprint.equals(messageFingerprint)) {
+					keyType.setText(R.string.otr_fingerprint_selected_message);
+					keyType.setTextColor(getResources().getColor(R.color.accent));
+				} else {
+					keyType.setText(R.string.otr_fingerprint);
+				}
 				keys.addView(view);
 				removeButton.setOnClickListener(new OnClickListener() {
 
@@ -447,7 +452,10 @@ public class ContactDetailsActivity extends XmppActivity implements OnAccountUpd
 			View view = inflater.inflate(R.layout.contact_key, keys, false);
 			TextView key = (TextView) view.findViewById(R.id.key);
 			TextView keyType = (TextView) view.findViewById(R.id.key_type);
-			keyType.setText("PGP Key ID");
+			keyType.setText(R.string.openpgp_key_id);
+			if ("pgp".equals(messageFingerprint)) {
+				keyType.setTextColor(getResources().getColor(R.color.accent));
+			}
 			key.setText(OpenPgpUtils.convertKeyIdToHex(contact.getPgpKeyId()));
 			view.setOnClickListener(new OnClickListener() {
 

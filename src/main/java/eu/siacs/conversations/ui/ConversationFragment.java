@@ -449,7 +449,14 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 						}
 					} else {
 						if (!message.getContact().isSelf()) {
-							activity.switchToContactDetails(message.getContact(), message.getFingerprint());
+							String fingerprint;
+							if (message.getEncryption() == Message.ENCRYPTION_PGP
+									|| message.getEncryption() == Message.ENCRYPTION_DECRYPTED) {
+								fingerprint = "pgp";
+							} else {
+								fingerprint = message.getFingerprint();
+							}
+							activity.switchToContactDetails(message.getContact(), fingerprint);
 						}
 					}
 				} else {
@@ -461,7 +468,14 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 					} else {
 						intent = new Intent(activity, EditAccountActivity.class);
 						intent.putExtra("jid", account.getJid().toBareJid().toString());
-						intent.putExtra("fingerprint", message.getFingerprint());
+						String fingerprint;
+						if (message.getEncryption() == Message.ENCRYPTION_PGP
+								|| message.getEncryption() == Message.ENCRYPTION_DECRYPTED) {
+							fingerprint = "pgp";
+						} else {
+							fingerprint = message.getFingerprint();
+						}
+						intent.putExtra("fingerprint", fingerprint);
 					}
 					startActivity(intent);
 				}

@@ -219,6 +219,8 @@
 	<string name="reception_failed">Reception failed</string>
 	<string name="your_fingerprint">Your fingerprint</string>
 	<string name="otr_fingerprint">OTR fingerprint</string>
+	<string name="otr_fingerprint_selected_message">OTR fingerprint of message</string>
+	<string name="openpgp_key_id">OpenPGP Key ID</string>
 	<string name="omemo_fingerprint">OMEMO fingerprint</string>
 	<string name="omemo_fingerprint_x509">v\\OMEMO fingerprint</string>
 	<string name="omemo_fingerprint_selected_message">OMEMO fingerprint of message</string>
