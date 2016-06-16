@@ -216,7 +216,7 @@ public class HttpDownloadConnection implements Transferable {
 				String contentLength = connection.getHeaderField("Content-Length");
 				connection.disconnect();
 				if (contentLength == null) {
-					throw new IOException();
+					throw new IOException("no content-length found in HEAD response");
 				}
 				return Long.parseLong(contentLength, 10);
 			} catch (IOException e) {
