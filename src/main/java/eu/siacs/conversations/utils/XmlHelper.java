@@ -7,7 +7,7 @@ public class XmlHelper {
 		content = content.replace(">", "&gt;");
 		content = content.replace("\"", "&quot;");
 		content = content.replace("'", "&apos;");
-		content = content.replaceAll("\\p{Cc}&&[^\n\r\t]", "");
+		content = content.replaceAll("[\\p{Cntrl}&&[^\n\t\r]]", "");
 		return content;
 	}
 }
