@@ -7,9 +7,11 @@
 * XEP-0115: Entity Capabilities
 * XEP-0163: Personal Eventing Protocol (avatars and nicks)
 * XEP-0166: Jingle (only used for file transfer)
+* XEP-0172: User Nickname
 * XEP-0184: Message Delivery Receipts (reply only)
 * XEP-0191: Blocking command
 * XEP-0198: Stream Management
+* XEP-0199: XMPP Ping
 * XEP-0234: Jingle File Transfer
 * XEP-0237: Roster Versioning
 * XEP-0245: The /me Command
