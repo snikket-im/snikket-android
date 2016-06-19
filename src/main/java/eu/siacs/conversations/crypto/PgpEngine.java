@@ -256,7 +256,7 @@ public class PgpEngine {
 							account);
 					return;
 				case OpenPgpApi.RESULT_CODE_ERROR:
-					callback.error(R.string.openpgp_error, account);
+					callback.error(R.string.unable_to_connect_to_keychain, account);
                 }
 			}
 		});

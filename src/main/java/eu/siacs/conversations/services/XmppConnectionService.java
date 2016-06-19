@@ -452,7 +452,12 @@ public class XmppConnectionService extends Service {
 						getFileBackend().copyFileToPrivateStorage(message, uri);
 						getFileBackend().updateFileParams(message);
 						if (message.getEncryption() == Message.ENCRYPTION_DECRYPTED) {
-							getPgpEngine().encrypt(message, callback);
+							final PgpEngine pgpEngine = getPgpEngine();
+							if (pgpEngine != null) {
+								pgpEngine.encrypt(message, callback);
+							} else if (callback != null){
+								callback.error(R.string.unable_to_connect_to_keychain, null);
+							}
 						} else {
 							callback.success(message);
 						}
@@ -492,7 +497,12 @@ public class XmppConnectionService extends Service {
 				try {
 					getFileBackend().copyImageToPrivateStorage(message, uri);
 					if (conversation.getNextEncryption() == Message.ENCRYPTION_PGP) {
-						getPgpEngine().encrypt(message, callback);
+						final PgpEngine pgpEngine = getPgpEngine();
+						if (pgpEngine != null) {
+							pgpEngine.encrypt(message, callback);
+						} else if (callback != null){
+							callback.error(R.string.unable_to_connect_to_keychain, null);
+						}
 					} else {
 						callback.success(message);
 					}
