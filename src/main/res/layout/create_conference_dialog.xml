@@ -13,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/your_account"
-        android:textColor="@color/black87"
+        android:textColor="?attr/color_text_primary"
         android:textSize="?attr/TextSizeBody" />
 
     <Spinner
@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="@string/conference_subject"
-        android:textColor="@color/black87"
+        android:textColor="?attr/color_text_primary"
         android:textSize="?attr/TextSizeBody" />
 
     <EditText
@@ -35,8 +35,8 @@
         android:layout_height="wrap_content"
         android:hint="@string/edit_subject_hint"
         android:inputType="textAutoComplete"
-        android:textColor="@color/black87"
-        android:textColorHint="@color/black54"
+        android:textColor="?attr/color_text_primary"
+        android:textColorHint="?attr/color_text_secondary"
         android:textSize="?attr/TextSizeBody"/>
 
 </LinearLayout>
