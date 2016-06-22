@@ -153,8 +153,8 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 			String hostname = null;
 			int numericPort = 5222;
 			if (mShowOptions) {
-				hostname = mHostname.getText().toString();
-				final String port = mPort.getText().toString();
+				hostname = mHostname.getText().toString().replaceAll("\\s","");
+				final String port = mPort.getText().toString().replaceAll("\\s","");
 				if (hostname.contains(" ")) {
 					mHostname.setError(getString(R.string.not_valid_hostname));
 					mHostname.requestFocus();
