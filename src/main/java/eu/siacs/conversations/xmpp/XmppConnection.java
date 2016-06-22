@@ -1024,9 +1024,9 @@ public class XmppConnection implements Runnable {
 			smVersion = 2;
 		}
 		if (smVersion != 0) {
-			final EnablePacket enable = new EnablePacket(smVersion);
-			tagWriter.writeStanzaAsync(enable);
 			synchronized (this.mStanzaQueue) {
+				final EnablePacket enable = new EnablePacket(smVersion);
+				tagWriter.writeStanzaAsync(enable);
 				stanzasSent = 0;
 				mStanzaQueue.clear();
 			}
@@ -1261,18 +1261,18 @@ public class XmppConnection implements Runnable {
 			disconnect(true);
 			return;
 		}
-		tagWriter.writeStanzaAsync(packet);
-		if (packet instanceof AbstractAcknowledgeableStanza) {
-			AbstractAcknowledgeableStanza stanza = (AbstractAcknowledgeableStanza) packet;
-			synchronized (this.mStanzaQueue) {
+		synchronized (this.mStanzaQueue) {
+			tagWriter.writeStanzaAsync(packet);
+			if (packet instanceof AbstractAcknowledgeableStanza) {
+				AbstractAcknowledgeableStanza stanza = (AbstractAcknowledgeableStanza) packet;
 				++stanzasSent;
 				this.mStanzaQueue.append(stanzasSent, stanza);
-			}
-			if (stanza instanceof MessagePacket && stanza.getId() != null && getFeatures().sm()) {
-				if (Config.EXTENDED_SM_LOGGING) {
-					Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": requesting ack for message stanza #" + stanzasSent);
+				if (stanza instanceof MessagePacket && stanza.getId() != null && getFeatures().sm()) {
+					if (Config.EXTENDED_SM_LOGGING) {
+						Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": requesting ack for message stanza #" + stanzasSent);
+					}
+					tagWriter.writeStanzaAsync(new RequestPacket(this.smVersion));
 				}
-				tagWriter.writeStanzaAsync(new RequestPacket(this.smVersion));
 			}
 		}
 	}
