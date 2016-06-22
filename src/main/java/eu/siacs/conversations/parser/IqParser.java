@@ -315,6 +315,10 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
 			}
 			// Update the UI
 			mXmppConnectionService.updateBlocklistUi(OnUpdateBlocklist.Status.BLOCKED);
+			if (packet.getType() == IqPacket.TYPE.SET) {
+				final IqPacket response = packet.generateResponse(IqPacket.TYPE.RESULT);
+				mXmppConnectionService.sendIqPacket(account, response, null);
+			}
 		} else if (packet.hasChild("unblock", Xmlns.BLOCKING) &&
 				packet.fromServer(account) && packet.getType() == IqPacket.TYPE.SET) {
 			Log.d(Config.LOGTAG, "Received unblock update from server");
@@ -335,6 +339,8 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
 				account.getBlocklist().removeAll(jids);
 			}
 			mXmppConnectionService.updateBlocklistUi(OnUpdateBlocklist.Status.UNBLOCKED);
+			final IqPacket response = packet.generateResponse(IqPacket.TYPE.RESULT);
+			mXmppConnectionService.sendIqPacket(account, response, null);
 		} else if (packet.hasChild("open", "http://jabber.org/protocol/ibb")
 				|| packet.hasChild("data", "http://jabber.org/protocol/ibb")) {
 			mXmppConnectionService.getJingleConnectionManager()
