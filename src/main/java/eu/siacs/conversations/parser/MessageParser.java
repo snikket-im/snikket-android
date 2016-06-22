@@ -391,7 +391,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 					status = Message.STATUS_RECEIVED;
 				}
 			}
-			Message message;
+			final Message message;
 			if (body != null && body.startsWith("?OTR") && Config.supportOtr()) {
 				if (!isForwarded && !isTypeGroupChat && isProperlyAddressed && !conversationMultiMode) {
 					message = parseOtrChat(body, from, remoteMsgId, conversation);
@@ -407,7 +407,8 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 			} else if (axolotlEncrypted != null && Config.supportOmemo()) {
 				Jid origin;
 				if (conversationMultiMode) {
-					origin = conversation.getMucOptions().getTrueCounterpart(counterpart);
+					final Jid fallback = conversation.getMucOptions().getTrueCounterpart(counterpart);
+					origin = getTrueCounterpart(query != null ? mucUserElement : null, fallback);
 					if (origin == null) {
 						Log.d(Config.LOGTAG,"axolotl message in non anonymous conference received");
 						return;
@@ -435,21 +436,14 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 			message.setOob(isOob);
 			message.markable = packet.hasChild("markable", "urn:xmpp:chat-markers:0");
 			if (conversationMultiMode) {
-				final Element item = mucUserElement == null ? null : mucUserElement.findChild("item");
-				Jid trueCounterpart;
-				if (Config.PARSE_REAL_JID_FROM_MUC_MAM && query != null && item != null) {
-					trueCounterpart = item.getAttributeAsJid("jid");
-					if (trueCounterpart != null) {
-						if (trueCounterpart.toBareJid().equals(account.getJid().toBareJid())) {
-							status = isTypeGroupChat ? Message.STATUS_SEND_RECEIVED : Message.STATUS_SEND;
-						} else {
-							status = Message.STATUS_RECEIVED;
-						}
-						message.setStatus(status);
-					}
+				final Jid fallback = conversation.getMucOptions().getTrueCounterpart(counterpart);
+				Jid trueCounterpart = getTrueCounterpart(query != null ? mucUserElement : null, fallback);
+				if (trueCounterpart != null && trueCounterpart.toBareJid().equals(account.getJid().toBareJid())) {
+					status = isTypeGroupChat ? Message.STATUS_SEND_RECEIVED : Message.STATUS_SEND;
 				} else {
-					trueCounterpart = conversation.getMucOptions().getTrueCounterpart(counterpart);
+					status = Message.STATUS_RECEIVED;
 				}
+				message.setStatus(status);
 				message.setTrueCounterpart(trueCounterpart);
 				if (!isTypeGroupChat) {
 					message.setType(Message.TYPE_PRIVATE);
@@ -639,6 +633,12 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 			Contact contact = account.getRoster().getContact(from);
 			contact.setPresenceName(nick);
 		}
+	}
+
+	private static Jid getTrueCounterpart(Element mucUserElement, Jid fallback) {
+		final Element item = mucUserElement == null ? null : mucUserElement.findChild("item");
+		Jid result = item == null ? null : item.getAttributeAsJid("jid");
+		return result != null && Config.PARSE_REAL_JID_FROM_MUC_MAM ? result : fallback;
 	}
 
 	private void sendMessageReceipts(Account account, MessagePacket packet) {
