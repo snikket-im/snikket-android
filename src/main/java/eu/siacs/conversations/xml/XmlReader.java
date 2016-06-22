@@ -22,8 +22,7 @@ public class XmlReader {
 	public XmlReader(WakeLock wakeLock) {
 		this.parser = Xml.newPullParser();
 		try {
-			this.parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES,
-					true);
+			this.parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, true);
 		} catch (XmlPullParserException e) {
 			Log.d(Config.LOGTAG, "error setting namespace feature on parser");
 		}
@@ -42,13 +41,6 @@ public class XmlReader {
 		}
 	}
 
-	public InputStream getInputStream() throws IOException {
-		if (this.is == null) {
-			throw new IOException();
-		}
-		return is;
-	}
-
 	public void reset() throws IOException {
 		if (this.is == null) {
 			throw new IOException();
@@ -65,11 +57,11 @@ public class XmlReader {
 			try {
 				wakeLock.release();
 			} catch (RuntimeException re) {
+				Log.d(Config.LOGTAG,"runtime exception releasing wakelock before reading tag "+re.getMessage());
 			}
 		}
 		try {
-			while (this.is != null
-					&& parser.next() != XmlPullParser.END_DOCUMENT) {
+			while (this.is != null && parser.next() != XmlPullParser.END_DOCUMENT) {
 				wakeLock.acquire();
 				if (parser.getEventType() == XmlPullParser.START_TAG) {
 					Tag tag = Tag.start(parser.getName());
@@ -83,21 +75,22 @@ public class XmlReader {
 					}
 					return tag;
 				} else if (parser.getEventType() == XmlPullParser.END_TAG) {
-					Tag tag = Tag.end(parser.getName());
-					return tag;
+					return Tag.end(parser.getName());
 				} else if (parser.getEventType() == XmlPullParser.TEXT) {
-					Tag tag = Tag.no(parser.getText());
-					return tag;
+					return Tag.no(parser.getText());
 				}
 			}
+
+		} catch (Exception e) {
+			throw new IOException("xml parser mishandled "+e.getClass().getName(), e);
+		} finally {
 			if (wakeLock.isHeld()) {
 				try {
 					wakeLock.release();
 				} catch (RuntimeException re) {
+					Log.d(Config.LOGTAG,"runtime exception releasing wakelock after exception "+re.getMessage());
 				}
 			}
-		} catch (Exception e) {
-			throw new IOException("xml parser mishandled "+e.getClass().getName(), e);
 		}
 		return null;
 	}
@@ -108,13 +101,13 @@ public class XmlReader {
 		element.setAttributes(currentTag.getAttributes());
 		Tag nextTag = this.readTag();
 		if (nextTag == null) {
-			throw new IOException("unterupted mid tag");
+			throw new IOException("interrupted mid tag");
 		}
 		if (nextTag.isNo()) {
 			element.setContent(nextTag.getName());
 			nextTag = this.readTag();
 			if (nextTag == null) {
-				throw new IOException("unterupted mid tag");
+				throw new IOException("interrupted mid tag");
 			}
 		}
 		while (!nextTag.isEnd(element.getName())) {
@@ -124,7 +117,7 @@ public class XmlReader {
 			}
 			nextTag = this.readTag();
 			if (nextTag == null) {
-				throw new IOException("unterupted mid tag");
+				throw new IOException("interrupted mid tag");
 			}
 		}
 		return element;
