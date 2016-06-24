@@ -1464,13 +1464,20 @@ public class ConversationActivity extends XmppActivity
 			}
 
 			@Override
-			public void error(int errorCode, Message message) {
-				replaceToast(getString(errorCode));
+			public void error(final int errorCode, Message message) {
+				hidePrepareFileToast(prepareFileToast);
+				runOnUiThread(new Runnable() {
+					@Override
+					public void run() {
+						replaceToast(getString(errorCode));
+					}
+				});
+
 			}
 
 			@Override
 			public void userInputRequried(PendingIntent pi, Message message) {
-
+				hidePrepareFileToast(prepareFileToast);
 			}
 		});
 	}
@@ -1496,8 +1503,14 @@ public class ConversationActivity extends XmppActivity
 					}
 
 					@Override
-					public void error(int error, Message message) {
-						replaceToast(getString(error));
+					public void error(final int error, Message message) {
+						hidePrepareFileToast(prepareFileToast);
+						runOnUiThread(new Runnable() {
+							@Override
+							public void run() {
+								replaceToast(getString(error));
+							}
+						});
 					}
 				});
 	}
