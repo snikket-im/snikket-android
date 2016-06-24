@@ -268,6 +268,8 @@ public class FileBackend {
 				if (cursor.moveToFirst()) {
 					filename = cursor.getString(0);
 				}
+			} catch (Exception e) {
+				filename = null;
 			} finally {
 				cursor.close();
 			}
