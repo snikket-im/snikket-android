@@ -80,6 +80,7 @@
   <string name="also_end_conversation">结束此会话以后</string>
   <string name="choose_presence">添加在线用户至联系人</string>
   <string name="send_unencrypted_message">发送未加密的信息</string>
+  <string name="send_message_to_x">发信息给 %s</string>
   <string name="send_otr_message">发送 OTR 加密信息</string>
   <string name="send_omemo_message">发送 OMEMO 加密信息</string>
   <string name="send_omemo_x509_message">发送 v\\OMEMO 加密信息</string>
@@ -115,6 +116,8 @@
   <string name="pref_led_summary">收到新消息时闪烁通知灯</string>
   <string name="pref_sound">铃声</string>
   <string name="pref_sound_summary">收到新消息时响铃</string>
+  <string name="pref_notification_grace_period">静默期限</string>
+  <string name="pref_notification_grace_period_summary">发现在其它设备上的活动后，Conversations保持安静的时间</string>
   <string name="pref_advanced_options">高级</string>
   <string name="pref_never_send_crash">总不发送崩溃报告</string>
   <string name="pref_never_send_crash_summary">发送堆栈跟踪帮助 Conversations 开发人员</string>
@@ -164,6 +167,8 @@
   <string name="mgmt_account_disable">暂时不可用</string>
   <string name="mgmt_account_publish_avatar">发布头像</string>
   <string name="mgmt_account_publish_pgp">发布 OpenPGP 公钥</string>
+  <string name="openpgp_has_been_published">OpenPGP 公钥已发布</string>
+  <string name="republish_pgp_keys">记得重新发布OpenPGP公钥</string>
   <string name="mgmt_account_enable">启用账户</string>
   <string name="mgmt_account_are_you_sure">确定?</string>
   <string name="mgmt_account_delete_confirm_text">如果删除用户，所有会话信息将会丢失</string>
@@ -244,11 +249,12 @@
   <string name="bookmark_already_exists">该书签已存在</string>
   <string name="you">你</string>
   <string name="action_edit_subject">编辑讨论组主题</string>
+  <string name="edit_subject_hint">讨论组主题</string>
   <string name="joining_conference">加入讨论组…</string>
   <string name="leave">离开</string>
   <string name="contact_added_you">联系人已添加你到联系人列表</string>
   <string name="add_back">反向添加</string>
-  <string name="contact_has_read_up_to_this_point">目前读到 %s 处</string>
+  <string name="contact_has_read_up_to_this_point">%s 已读此句</string>
   <string name="publish">发布</string>
   <string name="touch_to_choose_picture">点击头像可从相册中选择头像 </string>
   <string name="publish_avatar_explanation">请注意: 所有关注您最新动态的人将看到该图像。</string>
@@ -410,6 +416,7 @@
   <string name="disable_all_accounts">禁用所有账户</string>
   <string name="perform_action_with">选择一个操作</string>
   <string name="no_affiliation">没有从属关系</string>
+  <string name="no_role">离线</string>
   <string name="outcast">抛弃</string>
   <string name="member">成员</string>
   <string name="advanced_mode">高级模式</string>
@@ -498,9 +505,12 @@
   <string name="download_failed_server_not_found">下载失败：未找到服务器</string>
   <string name="download_failed_file_not_found">下载失败：未找到文件</string>
   <string name="download_failed_could_not_connect">下载失败：无法连接到服务器</string>
+  <string name="download_failed_could_not_write_file">下载失败：不能写入文件</string>
   <string name="pref_use_white_background">使用白色背景</string>
   <string name="pref_use_white_background_summary">收到的消息将显示为白底黑字</string>
   <string name="account_status_tor_unavailable">Tor network 不可用</string>
+  <string name="account_status_bind_failure">绑定失败</string>
+  <string name="account_status_host_unknown">主机未知</string>
   <string name="server_info_broken">损坏</string>
   <string name="pref_presence_settings">存在</string>
   <string name="pref_away_when_screen_off">关闭屏幕时离开</string>
@@ -520,6 +530,7 @@
   <string name="fetching_mam_prefs">正在获取压缩设置。请稍后...</string>
   <string name="unable_to_fetch_mam_prefs">获取压缩设置失败</string>
   <string name="captcha_required">需要验证码</string>
+  <string name="captcha_hint">输入上图中的文字</string>
   <string name="certificate_chain_is_not_trusted">证书链不受信任</string>
   <string name="jid_does_not_match_certificate">Jabber ID 与证书不匹配</string>
   <string name="action_renew_certificate">更新证书</string>
@@ -596,4 +607,25 @@
   <string name="presence_xa">离线</string>
   <string name="presence_dnd">忙碌</string>
   <string name="secure_password_generated">安全密码已生成</string>
+  <string name="device_does_not_support_battery_op">该设备不支持禁用电池优化</string>
+  <string name="show_password">显示密码</string>
+  <string name="registration_please_wait">注册失败：请重试</string>
+  <string name="create_conference">创建讨论组</string>
+  <string name="join_or_create_conference">加入创建讨论组</string>
+  <string name="conference_subject">主题</string>
+  <string name="choose_participants">选择成员</string>
+  <string name="creating_conference">正在创建讨论组…</string>
+  <string name="invite_again">重新邀请</string>
+  <string name="gp_short">短</string>
+  <string name="gp_medium">中</string>
+  <string name="gp_long">长</string>
+  <string name="pref_broadcast_last_activity">广播最后打开该应用的时间</string>
+  <string name="pref_broadcast_last_activity_summary">让你的所有联系人知道你使用Conversations的时间</string>
+  <string name="pref_privacy">隐私</string>
+  <string name="pref_theme_options">主题</string>
+  <string name="pref_theme_options_summary">选择调色板</string>
+  <string name="pref_theme_light">明亮主题</string>
+  <string name="pref_theme_dark">黑暗主题</string>
+  <string name="pref_use_green_background">绿色背景</string>
+  <string name="pref_use_green_background_summary">接收到的消息使用绿色背景</string>
 </resources>

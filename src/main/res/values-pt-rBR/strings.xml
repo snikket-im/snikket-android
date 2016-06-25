@@ -80,6 +80,7 @@
   <string name="also_end_conversation">Encerrar essa conversa em seguida</string>
   <string name="choose_presence">Selecione a presença para esse contato</string>
   <string name="send_unencrypted_message">Enviar mensagem não criptografada</string>
+  <string name="send_message_to_x">Enviar mensagem para %s</string>
   <string name="send_otr_message">Enviar mensagem criptografada via OTR</string>
   <string name="send_omemo_message">Enviar mensagem criptografada via OMEMO</string>
   <string name="send_omemo_x509_message">Enviar mensagem criptografada via v\\OMEMO</string>
@@ -115,6 +116,8 @@
   <string name="pref_led_summary">Pisca a luz de notificação ao receber uma nova mensagem.</string>
   <string name="pref_sound">Toque</string>
   <string name="pref_sound_summary">Toca um som ao receber uma nova mensagem.</string>
+  <string name="pref_notification_grace_period">Período de espera</string>
+  <string name="pref_notification_grace_period_summary">Espaço de tempo em que o Conversations ficará sem notificações, após alguma atividade em outro dispositivo.</string>
   <string name="pref_advanced_options">Avançado</string>
   <string name="pref_never_send_crash">Nunca enviar relatórios de erros</string>
   <string name="pref_never_send_crash_summary">Ao enviar os stack traces você está colaborando com o desenvolvimento do Conversations.</string>
@@ -246,6 +249,7 @@
   <string name="bookmark_already_exists">Esse favorito já existe</string>
   <string name="you">Você</string>
   <string name="action_edit_subject">Editar o assunto da conferência</string>
+  <string name="edit_subject_hint">O assunto desta conferência</string>
   <string name="joining_conference">Entrando na conferência...</string>
   <string name="leave">Sair</string>
   <string name="contact_added_you">O contato foi adicionado à sua lista de contatos</string>
@@ -412,6 +416,7 @@
   <string name="disable_all_accounts">Desabilitar todas as contas</string>
   <string name="perform_action_with">Realizar a ação com</string>
   <string name="no_affiliation">Sem afiliação</string>
+  <string name="no_role">Desconectado</string>
   <string name="outcast">Banido</string>
   <string name="member">Membro</string>
   <string name="advanced_mode">Modo avançado</string>
@@ -502,10 +507,12 @@
   <string name="download_failed_server_not_found">Não foi possível fazer o download: servidor não encontrado</string>
   <string name="download_failed_file_not_found">Não foi possível fazer o download: arquivo não encontrado</string>
   <string name="download_failed_could_not_connect">Não foi possível fazer o download: não foi possível conectar ao host</string>
+  <string name="download_failed_could_not_write_file">Falha no download: não foi possível salvar o arquivo</string>
   <string name="pref_use_white_background">Usar fundo branco</string>
   <string name="pref_use_white_background_summary">Exibe a mensagens recebidas como texto preto em um fundo branco.</string>
   <string name="account_status_tor_unavailable">Rede Tor não disponível</string>
   <string name="account_status_bind_failure">Falha na associação</string>
+  <string name="account_status_host_unknown">Host desconhecido</string>
   <string name="server_info_broken">Quebrado</string>
   <string name="pref_presence_settings">Presença</string>
   <string name="pref_away_when_screen_off">Afastado quando a tela estiver desligada</string>
@@ -602,4 +609,24 @@
   <string name="presence_dnd">Ocupado</string>
   <string name="secure_password_generated">Foi gerada uma senha segura</string>
   <string name="device_does_not_support_battery_op">Seu dispositivo não suporta a desativação da otimização de bateria</string>
+  <string name="show_password">Exibir a senha</string>
+  <string name="registration_please_wait">Não foi possível efetuar o registro. Por favor, tente novamente mais tarde</string>
+  <string name="create_conference">Criar uma conferência</string>
+  <string name="join_or_create_conference">Entrar ou criar uma conferência</string>
+  <string name="conference_subject">Assunto</string>
+  <string name="choose_participants">Selecione os participantes</string>
+  <string name="creating_conference">Criando a conferência</string>
+  <string name="invite_again">Convidar novamente</string>
+  <string name="gp_short">Curto</string>
+  <string name="gp_medium">Médio</string>
+  <string name="gp_long">Longo</string>
+  <string name="pref_broadcast_last_activity">Anunciar a sua última interação</string>
+  <string name="pref_broadcast_last_activity_summary">Permite que os seus contatos saibam quando você usa o Conversations</string>
+  <string name="pref_privacy">Privacidade</string>
+  <string name="pref_theme_options">Tema</string>
+  <string name="pref_theme_options_summary">Selecione a paleta de cores</string>
+  <string name="pref_theme_light">Tema claro</string>
+  <string name="pref_theme_dark">Tema escuro</string>
+  <string name="pref_use_green_background">Fundo verde</string>
+  <string name="pref_use_green_background_summary">Usa um fundo verde no recebimento de mensagens.</string>
 </resources>
