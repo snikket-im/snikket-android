@@ -1,5 +1,8 @@
 ###Changelog
 
+####Version 1.13.3
+* bug fixes
+
 ####Version 1.13.2
 * new PGP decryption logic
 * bug fixes
