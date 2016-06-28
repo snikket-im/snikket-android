@@ -420,6 +420,9 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 				if (message == null) {
 					return;
 				}
+				if (conversationMultiMode) {
+					message.setTrueCounterpart(origin);
+				}
 			} else {
 				message = new Message(conversation, body, Message.ENCRYPTION_NONE, status);
 			}
@@ -437,11 +440,16 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 			message.markable = packet.hasChild("markable", "urn:xmpp:chat-markers:0");
 			if (conversationMultiMode) {
 				final Jid fallback = conversation.getMucOptions().getTrueCounterpart(counterpart);
-				Jid trueCounterpart = getTrueCounterpart(query != null ? mucUserElement : null, fallback);
+				Jid trueCounterpart;
+				if (message.getEncryption() == Message.ENCRYPTION_AXOLOTL) {
+					trueCounterpart = message.getTrueCounterpart();
+				} else if (Config.PARSE_REAL_JID_FROM_MUC_MAM) {
+					trueCounterpart = getTrueCounterpart(query != null ? mucUserElement : null, fallback);
+				} else {
+					trueCounterpart = fallback;
+				}
 				if (trueCounterpart != null && trueCounterpart.toBareJid().equals(account.getJid().toBareJid())) {
 					status = isTypeGroupChat ? Message.STATUS_SEND_RECEIVED : Message.STATUS_SEND;
-				} else {
-					status = Message.STATUS_RECEIVED;
 				}
 				message.setStatus(status);
 				message.setTrueCounterpart(trueCounterpart);
@@ -638,7 +646,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 	private static Jid getTrueCounterpart(Element mucUserElement, Jid fallback) {
 		final Element item = mucUserElement == null ? null : mucUserElement.findChild("item");
 		Jid result = item == null ? null : item.getAttributeAsJid("jid");
-		return result != null && Config.PARSE_REAL_JID_FROM_MUC_MAM ? result : fallback;
+		return result != null ? result : fallback;
 	}
 
 	private void sendMessageReceipts(Account account, MessagePacket packet) {
