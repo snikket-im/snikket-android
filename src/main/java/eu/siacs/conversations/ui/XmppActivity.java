@@ -981,9 +981,10 @@ public abstract class XmppActivity extends Activity {
 		if (requestCode == REQUEST_INVITE_TO_CONVERSATION && resultCode == RESULT_OK) {
 			mPendingConferenceInvite = ConferenceInvite.parse(data);
 			if (xmppConnectionServiceBound && mPendingConferenceInvite != null) {
-				mPendingConferenceInvite.execute(this);
-				mToast = Toast.makeText(this, R.string.creating_conference,Toast.LENGTH_LONG);
-				mToast.show();
+				if (mPendingConferenceInvite.execute(this)) {
+					mToast = Toast.makeText(this, R.string.creating_conference, Toast.LENGTH_LONG);
+					mToast.show();
+				}
 				mPendingConferenceInvite = null;
 			}
 		}
@@ -1218,19 +1219,21 @@ public abstract class XmppActivity extends Activity {
 			return invite;
 		}
 
-		public void execute(XmppActivity activity) {
+		public boolean execute(XmppActivity activity) {
 			XmppConnectionService service = activity.xmppConnectionService;
 			Conversation conversation = service.findConversationByUuid(this.uuid);
 			if (conversation == null) {
-				return;
+				return false;
 			}
 			if (conversation.getMode() == Conversation.MODE_MULTI) {
 				for (Jid jid : jids) {
 					service.invite(conversation, jid);
 				}
+				return false;
 			} else {
 				jids.add(conversation.getJid().toBareJid());
 				service.createAdhocConference(conversation.getAccount(), null, jids, activity.adhocCallback);
+				return true;
 			}
 		}
 	}
