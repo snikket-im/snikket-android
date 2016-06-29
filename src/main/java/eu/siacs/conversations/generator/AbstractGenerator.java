@@ -16,11 +16,13 @@ import eu.siacs.conversations.Config;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.PhoneHelper;
+import eu.siacs.conversations.xmpp.jingle.stanzas.Content;
 
 public abstract class AbstractGenerator {
 	private final String[] FEATURES = {
 			"urn:xmpp:jingle:1",
-			"urn:xmpp:jingle:apps:file-transfer:3",
+			Content.Version.FT_3.getNamespace(),
+			Content.Version.FT_4.getNamespace(),
 			"urn:xmpp:jingle:transports:s5b:1",
 			"urn:xmpp:jingle:transports:ibb:1",
 			"http://jabber.org/protocol/muc",

@@ -22,6 +22,7 @@ import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.SocksSocketFactory;
+import eu.siacs.conversations.xmpp.jingle.stanzas.Content;
 
 public class JingleSocks5Transport extends JingleTransport {
 	private JingleCandidate candidate;
@@ -40,7 +41,12 @@ public class JingleSocks5Transport extends JingleTransport {
 		try {
 			MessageDigest mDigest = MessageDigest.getInstance("SHA-1");
 			StringBuilder destBuilder = new StringBuilder();
-			destBuilder.append(jingleConnection.getSessionId());
+			if (jingleConnection.getFtVersion() == Content.Version.FT_3) {
+				Log.d(Config.LOGTAG,this.connection.getAccount().getJid().toBareJid()+": using session Id instead of transport Id for proxy destination");
+				destBuilder.append(jingleConnection.getSessionId());
+			} else {
+				destBuilder.append(jingleConnection.getTransportId());
+			}
 			if (candidate.isOurs()) {
 				destBuilder.append(jingleConnection.getAccount().getJid());
 				destBuilder.append(jingleConnection.getCounterPart());

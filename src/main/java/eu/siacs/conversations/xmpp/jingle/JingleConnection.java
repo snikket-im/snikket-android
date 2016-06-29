@@ -21,6 +21,7 @@ import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.entities.Message;
+import eu.siacs.conversations.entities.Presence;
 import eu.siacs.conversations.entities.Transferable;
 import eu.siacs.conversations.entities.TransferablePlaceholder;
 import eu.siacs.conversations.persistance.FileBackend;
@@ -44,6 +45,8 @@ public class JingleConnection implements Transferable {
 	protected static final int JINGLE_STATUS_FINISHED = 4;
 	protected static final int JINGLE_STATUS_TRANSMITTING = 5;
 	protected static final int JINGLE_STATUS_FAILED = 99;
+
+	private Content.Version ftVersion = Content.Version.FT_3;
 
 	private int ibbBlockSize = 8192;
 
@@ -238,12 +241,14 @@ public class JingleConnection implements Transferable {
 		this.contentCreator = "initiator";
 		this.contentName = this.mJingleConnectionManager.nextRandomId();
 		this.message = message;
+		this.account = message.getConversation().getAccount();
+		upgradeNamespace();
 		this.message.setTransferable(this);
 		this.mStatus = Transferable.STATUS_UPLOADING;
-		this.account = message.getConversation().getAccount();
 		this.initiator = this.account.getJid();
 		this.responder = this.message.getCounterpart();
 		this.sessionId = this.mJingleConnectionManager.nextRandomId();
+		this.transportId = this.mJingleConnectionManager.nextRandomId();
 		if (this.candidates.size() > 0) {
 			this.sendInitRequest();
 		} else {
@@ -287,6 +292,20 @@ public class JingleConnection implements Transferable {
 
 	}
 
+	private void upgradeNamespace() {
+		Jid jid = this.message.getCounterpart();
+		String resource = jid != null ?jid.getResourcepart() : null;
+		if (resource != null) {
+			Presence presence = this.account.getRoster().getContact(jid).getPresences().getPresences().get(resource);
+			if (presence != null) {
+				List<String> features = presence.getServiceDiscoveryResult().getFeatures();
+				if (features.contains(Content.Version.FT_4.getNamespace())) {
+					this.ftVersion = Content.Version.FT_4;
+				}
+			}
+		}
+	}
+
 	public void init(Account account, JinglePacket packet) {
 		this.mJingleStatus = JINGLE_STATUS_INITIATED;
 		Conversation conversation = this.mXmppConnectionService
@@ -307,7 +326,13 @@ public class JingleConnection implements Transferable {
 		this.contentName = content.getAttribute("name");
 		this.transportId = content.getTransportId();
 		this.mergeCandidates(JingleCandidate.parse(content.socks5transport().getChildren()));
-		this.fileOffer = packet.getJingleContent().getFileOffer();
+		this.ftVersion = content.getVersion();
+		if (ftVersion == null) {
+			this.sendCancel();
+			this.fail();
+			return;
+		}
+		this.fileOffer = content.getFileOffer(this.ftVersion);
 
 		mXmppConnectionService.sendIqPacket(account,packet.generateResponse(IqPacket.TYPE.RESULT),null);
 
@@ -431,24 +456,23 @@ public class JingleConnection implements Transferable {
 					this.file.setKeyAndIv(conversation.getSymmetricKey());
 					pair = AbstractConnectionManager.createInputStream(this.file, false);
 					this.file.setExpectedSize(pair.second);
-					content.setFileOffer(this.file, true);
+					content.setFileOffer(this.file, true, this.ftVersion);
 				} else if (message.getEncryption() == Message.ENCRYPTION_AXOLOTL) {
 					this.file.setKey(mXmppAxolotlMessage.getInnerKey());
 					this.file.setIv(mXmppAxolotlMessage.getIV());
 					pair = AbstractConnectionManager.createInputStream(this.file, true);
 					this.file.setExpectedSize(pair.second);
-					content.setFileOffer(this.file, false).addChild(mXmppAxolotlMessage.toElement());
+					content.setFileOffer(this.file, false, this.ftVersion).addChild(mXmppAxolotlMessage.toElement());
 				} else {
 					pair = AbstractConnectionManager.createInputStream(this.file, false);
 					this.file.setExpectedSize(pair.second);
-					content.setFileOffer(this.file, false);
+					content.setFileOffer(this.file, false, this.ftVersion);
 				}
 			} catch (FileNotFoundException e) {
 				cancel();
 				return;
 			}
 			this.mFileInputStream = pair.first;
-			this.transportId = this.mJingleConnectionManager.nextRandomId();
 			content.setTransportId(this.transportId);
 			content.socks5transport().setChildren(getCandidatesAsElements());
 			packet.setContent(content);
@@ -488,7 +512,7 @@ public class JingleConnection implements Transferable {
 			public void onPrimaryCandidateFound(boolean success, final JingleCandidate candidate) {
 				final JinglePacket packet = bootstrapPacket("session-accept");
 				final Content content = new Content(contentCreator,contentName);
-				content.setFileOffer(fileOffer);
+				content.setFileOffer(fileOffer, ftVersion);
 				content.setTransportId(transportId);
 				if (success && candidate != null && !equalCandidateExists(candidate)) {
 					final JingleSocks5Transport socksConnection = new JingleSocks5Transport(
@@ -626,13 +650,20 @@ public class JingleConnection implements Transferable {
 			this.mJingleStatus = JINGLE_STATUS_TRANSMITTING;
 			if (connection.needsActivation()) {
 				if (connection.getCandidate().isOurs()) {
+					final String sid;
+					if (ftVersion == Content.Version.FT_3) {
+						Log.d(Config.LOGTAG,account.getJid().toBareJid()+": use session ID instead of transport ID to activate proxy");
+						sid = getSessionId();
+					} else {
+						sid = getTransportId();
+					}
 					Log.d(Config.LOGTAG, "candidate "
 							+ connection.getCandidate().getCid()
 							+ " was our proxy. going to activate");
 					IqPacket activation = new IqPacket(IqPacket.TYPE.SET);
 					activation.setTo(connection.getCandidate().getJid());
 					activation.query("http://jabber.org/protocol/bytestreams")
-							.setAttribute("sid", this.getSessionId());
+							.setAttribute("sid", sid);
 					activation.query().addChild("activate")
 							.setContent(this.getCounterPart().toString());
 					mXmppConnectionService.sendIqPacket(account,activation,
@@ -973,6 +1004,14 @@ public class JingleConnection implements Transferable {
 	public void updateProgress(int i) {
 		this.mProgress = i;
 		mXmppConnectionService.updateConversationUi();
+	}
+
+	public String getTransportId() {
+		return this.transportId;
+	}
+
+	public Content.Version getFtVersion() {
+		return this.ftVersion;
 	}
 
 	interface OnProxyActivated {

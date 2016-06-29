@@ -5,11 +5,22 @@ import eu.siacs.conversations.xml.Element;
 
 public class Content extends Element {
 
-	private String transportId;
+	public enum Version {
+		FT_3("urn:xmpp:jingle:apps:file-transfer:3"),
+		FT_4("urn:xmpp:jingle:apps:file-transfer:4");
 
-	private Content(String name) {
-		super(name);
+		private final String namespace;
+
+		Version(String namespace) {
+			this.namespace = namespace;
+		}
+
+		public String getNamespace() {
+			return namespace;
+		}
 	}
+
+	private String transportId;
 
 	public Content() {
 		super("content");
@@ -21,15 +32,28 @@ public class Content extends Element {
 		this.setAttribute("name", name);
 	}
 
+	public Version getVersion() {
+		if (hasChild("description", Version.FT_3.namespace)) {
+			return Version.FT_3;
+		} else if (hasChild("description" , Version.FT_4.namespace)) {
+			return Version.FT_4;
+		}
+		return null;
+	}
+
 	public void setTransportId(String sid) {
 		this.transportId = sid;
 	}
 
-	public Element setFileOffer(DownloadableFile actualFile, boolean otr) {
-		Element description = this.addChild("description",
-				"urn:xmpp:jingle:apps:file-transfer:3");
-		Element offer = description.addChild("offer");
-		Element file = offer.addChild("file");
+	public Element setFileOffer(DownloadableFile actualFile, boolean otr, Version version) {
+		Element description = this.addChild("description", version.namespace);
+		Element file;
+		if (version == Version.FT_3) {
+			Element offer = description.addChild("offer");
+			file = offer.addChild("file");
+		} else {
+			file = description.addChild("file");
+		}
 		file.addChild("size").setContent(Long.toString(actualFile.getExpectedSize()));
 		if (otr) {
 			file.addChild("name").setContent(actualFile.getName() + ".otr");
@@ -39,27 +63,29 @@ public class Content extends Element {
 		return file;
 	}
 
-	public Element getFileOffer() {
-		Element description = this.findChild("description",
-				"urn:xmpp:jingle:apps:file-transfer:3");
+	public Element getFileOffer(Version version) {
+		Element description = this.findChild("description", version.namespace);
 		if (description == null) {
 			return null;
 		}
-		Element offer = description.findChild("offer");
-		if (offer == null) {
-			return null;
+		if (version == Version.FT_3) {
+			Element offer = description.findChild("offer");
+			if (offer == null) {
+				return null;
+			}
+			return offer.findChild("file");
+		} else {
+			return description.findChild("file");
 		}
-		return offer.findChild("file");
 	}
 
-	public void setFileOffer(Element fileOffer) {
-		Element description = this.findChild("description",
-				"urn:xmpp:jingle:apps:file-transfer:3");
-		if (description == null) {
-			description = this.addChild("description",
-					"urn:xmpp:jingle:apps:file-transfer:3");
+	public void setFileOffer(Element fileOffer, Version version) {
+		Element description = this.addChild("description", version.namespace);
+		if (version == Version.FT_3) {
+			description.addChild("offer").addChild(fileOffer);
+		} else {
+			description.addChild(fileOffer);
 		}
-		description.addChild(fileOffer);
 	}
 
 	public String getTransportId() {
