@@ -99,7 +99,7 @@ public class XmppAxolotlMessage {
 				case KEYTAG:
 					try {
 						Integer recipientId = Integer.parseInt(keyElement.getAttribute(REMOTEID));
-						byte[] key = Base64.decode(keyElement.getContent(), Base64.DEFAULT);
+						byte[] key = Base64.decode(keyElement.getContent().trim(), Base64.DEFAULT);
 						this.keys.put(recipientId, key);
 					} catch (NumberFormatException e) {
 						throw new IllegalArgumentException(e);
@@ -109,7 +109,7 @@ public class XmppAxolotlMessage {
 					if (this.iv != null) {
 						throw new IllegalArgumentException("Duplicate iv entry");
 					}
-					iv = Base64.decode(keyElement.getContent(), Base64.DEFAULT);
+					iv = Base64.decode(keyElement.getContent().trim(), Base64.DEFAULT);
 					break;
 				default:
 					Log.w(Config.LOGTAG, "Unexpected element in header: " + keyElement.toString());
@@ -118,7 +118,7 @@ public class XmppAxolotlMessage {
 		}
 		Element payloadElement = axolotlMessage.findChild(PAYLOAD);
 		if (payloadElement != null) {
-			ciphertext = Base64.decode(payloadElement.getContent(), Base64.DEFAULT);
+			ciphertext = Base64.decode(payloadElement.getContent().trim(), Base64.DEFAULT);
 		}
 	}
 

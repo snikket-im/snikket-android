@@ -146,17 +146,23 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 	}
 
 	private Message parseAxolotlChat(Element axolotlMessage, Jid from,  Conversation conversation, int status) {
-		Message finishedMessage = null;
 		AxolotlService service = conversation.getAccount().getAxolotlService();
-		XmppAxolotlMessage xmppAxolotlMessage = XmppAxolotlMessage.fromElement(axolotlMessage, from.toBareJid());
+		XmppAxolotlMessage xmppAxolotlMessage;
+		try {
+			xmppAxolotlMessage = XmppAxolotlMessage.fromElement(axolotlMessage, from.toBareJid());
+		} catch (Exception e) {
+			Log.d(Config.LOGTAG,conversation.getAccount().getJid().toBareJid()+": invalid omemo message received "+e.getMessage());
+			return null;
+		}
 		XmppAxolotlMessage.XmppAxolotlPlaintextMessage plaintextMessage = service.processReceivingPayloadMessage(xmppAxolotlMessage);
 		if(plaintextMessage != null) {
-			finishedMessage = new Message(conversation, plaintextMessage.getPlaintext(), Message.ENCRYPTION_AXOLOTL, status);
+			Message finishedMessage = new Message(conversation, plaintextMessage.getPlaintext(), Message.ENCRYPTION_AXOLOTL, status);
 			finishedMessage.setFingerprint(plaintextMessage.getFingerprint());
 			Log.d(Config.LOGTAG, AxolotlService.getLogprefix(finishedMessage.getConversation().getAccount())+" Received Message with session fingerprint: "+plaintextMessage.getFingerprint());
+			return finishedMessage;
+		} else {
+			return null;
 		}
-
-		return finishedMessage;
 	}
 
 	private class Invite {
