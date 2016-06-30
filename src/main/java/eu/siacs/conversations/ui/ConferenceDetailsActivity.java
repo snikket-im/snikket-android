@@ -405,6 +405,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
+		Jid jid = mSelectedUser.getRealJid();
 		switch (item.getItemId()) {
 			case R.id.action_contact_details:
 				Contact contact = mSelectedUser.getContact();
@@ -416,28 +417,31 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 				startConversation(mSelectedUser);
 				return true;
 			case R.id.give_admin_privileges:
-				xmppConnectionService.changeAffiliationInConference(mConversation,mSelectedUser.getRealJid(), MucOptions.Affiliation.ADMIN,this);
+				xmppConnectionService.changeAffiliationInConference(mConversation, jid, MucOptions.Affiliation.ADMIN,this);
 				return true;
 			case R.id.give_membership:
-				xmppConnectionService.changeAffiliationInConference(mConversation,mSelectedUser.getRealJid(), MucOptions.Affiliation.MEMBER,this);
+				xmppConnectionService.changeAffiliationInConference(mConversation, jid, MucOptions.Affiliation.MEMBER,this);
 				return true;
 			case R.id.remove_membership:
-				xmppConnectionService.changeAffiliationInConference(mConversation,mSelectedUser.getRealJid(), MucOptions.Affiliation.NONE,this);
+				xmppConnectionService.changeAffiliationInConference(mConversation, jid, MucOptions.Affiliation.NONE,this);
 				return true;
 			case R.id.remove_admin_privileges:
-				xmppConnectionService.changeAffiliationInConference(mConversation,mSelectedUser.getRealJid(), MucOptions.Affiliation.MEMBER,this);
+				xmppConnectionService.changeAffiliationInConference(mConversation, jid, MucOptions.Affiliation.MEMBER,this);
 				return true;
 			case R.id.remove_from_room:
 				removeFromRoom(mSelectedUser);
 				return true;
 			case R.id.ban_from_conference:
-				xmppConnectionService.changeAffiliationInConference(mConversation,mSelectedUser.getRealJid(), MucOptions.Affiliation.OUTCAST,this);
+				xmppConnectionService.changeAffiliationInConference(mConversation,jid, MucOptions.Affiliation.OUTCAST,this);
 				if (mSelectedUser.getRole() != MucOptions.Role.NONE) {
 					xmppConnectionService.changeRoleInConference(mConversation, mSelectedUser.getName(), MucOptions.Role.NONE, this);
 				}
 				return true;
 			case R.id.send_private_message:
 				privateMsgInMuc(mConversation,mSelectedUser.getName());
+				return true;
+			case R.id.invite:
+				xmppConnectionService.directInvite(mConversation, jid);
 				return true;
 			default:
 				return super.onContextItemSelected(item);
