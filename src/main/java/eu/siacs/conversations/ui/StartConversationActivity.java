@@ -56,7 +56,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.RunnableFuture;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import eu.siacs.conversations.Config;
@@ -893,8 +892,7 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 		for (Account account : xmppConnectionService.getAccounts()) {
 			if (account.getStatus() != Account.State.DISABLED) {
 				for (Contact contact : account.getRoster().getContacts()) {
-					Presence p = contact.getPresences().getMostAvailablePresence();
-					Presence.Status s = p == null ? Presence.Status.OFFLINE : p.getStatus();
+					Presence.Status s = contact.getShownStatus();
 					if (contact.showInRoster() && contact.match(this, needle)
 							&& (!this.mHideOfflineContacts
 							|| (needle != null && !needle.trim().isEmpty())

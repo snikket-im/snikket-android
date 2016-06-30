@@ -1083,7 +1083,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 		if (activity.useSendButtonToIndicateStatus() && c != null
 				&& c.getAccount().getStatus() == Account.State.ONLINE) {
 			if (c.getMode() == Conversation.MODE_SINGLE) {
-				status = c.getContact().getMostAvailableStatus();
+				status = c.getContact().getShownStatus();
 			} else {
 				status = c.getMucOptions().online() ? Presence.Status.ONLINE : Presence.Status.OFFLINE;
 			}

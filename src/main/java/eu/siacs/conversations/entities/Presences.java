@@ -34,11 +34,18 @@ public class Presences {
 		}
 	}
 
-	public Presence getMostAvailablePresence() {
+	public Presence.Status getShownStatus() {
+		Presence.Status status = Presence.Status.OFFLINE;
 		synchronized (this.presences) {
-			if (presences.size() < 1) { return null; }
-			return Collections.min(presences.values());
+			for(Presence p : presences.values()) {
+				if (p.getStatus() == Presence.Status.DND) {
+					return p.getStatus();
+				} else if (p.getStatus().compareTo(status) < 0){
+					status = p.getStatus();
+				}
+			}
 		}
+		return status;
 	}
 
 	public int size() {

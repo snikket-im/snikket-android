@@ -148,7 +148,7 @@ public class Contact implements ListItem, Blockable {
 		for (final String group : getGroups()) {
 			tags.add(new Tag(group, UIHelper.getColorForName(group)));
 		}
-		Presence.Status status = getMostAvailableStatus();
+		Presence.Status status = getShownStatus();
 		if (status != Presence.Status.OFFLINE) {
 			tags.add(UIHelper.getTagForStatus(context, status));
 		}
@@ -237,13 +237,8 @@ public class Contact implements ListItem, Blockable {
 		this.resetOption(Options.PENDING_SUBSCRIPTION_REQUEST);
 	}
 
-	public Presence.Status getMostAvailableStatus() {
-		Presence p = this.presences.getMostAvailablePresence();
-		if (p == null) {
-			return Presence.Status.OFFLINE;
-		}
-
-		return p.getStatus();
+	public Presence.Status getShownStatus() {
+		return this.presences.getShownStatus();
 	}
 
 	public boolean setPhotoUri(String uri) {
