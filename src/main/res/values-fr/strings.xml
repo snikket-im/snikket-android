@@ -104,7 +104,7 @@
   <string name="pref_xmpp_resource_summary">Nom utilisé par ce client pour s\'identifier</string>
   <string name="pref_accept_files">Accepter les fichiers</string>
   <string name="pref_accept_files_summary">Accepter automatiquement les fichiers plus petits que…</string>
-  <string name="pref_attachments">Pièce jointe</string>
+  <string name="pref_attachments">Pièces jointes</string>
   <string name="pref_return_to_previous">Partage rapide</string>
   <string name="pref_return_to_previous_summary">Ne pas ouvrir la conversation après avoir partagé quelque chose depuis une autre application</string>
   <string name="pref_notification_settings">Notification</string>
@@ -116,7 +116,7 @@
   <string name="pref_led_summary">Faire clignoter la LED lors de la réception d\'un message</string>
   <string name="pref_sound">Sonnerie</string>
   <string name="pref_sound_summary">Jouer un son lors de la réception d\'un message</string>
-  <string name="pref_notification_grace_period">Délai sans notification</string>
+  <string name="pref_notification_grace_period">Période sans notification</string>
   <string name="pref_notification_grace_period_summary">Durée d\'inactivité de Conversations après avoir repéré un changement sur un autre périphérique</string>
   <string name="pref_advanced_options">Avancé</string>
   <string name="pref_never_send_crash">Ne pas envoyer de rapports d\'erreurs</string>
@@ -507,7 +507,7 @@
   <string name="download_failed_server_not_found">Échec du téléchargement : impossible de trouver le serveur</string>
   <string name="download_failed_file_not_found">Échec du téléchargement : impossible de trouver le fichier</string>
   <string name="download_failed_could_not_connect">Échec du téléchargement : impossible de se connecter à l\'hôte</string>
-  <string name="download_failed_could_not_write_file">Téléchargement échoué: Ecriture impossible</string>
+  <string name="download_failed_could_not_write_file">Échec du téléchargement : Écriture impossible</string>
   <string name="pref_use_white_background">Utiliser un fond blanc</string>
   <string name="pref_use_white_background_summary">Afficher les messages reçus en texte noir sur fond blanc.</string>
   <string name="account_status_tor_unavailable">Réseau Tor inaccessible</string>
@@ -610,7 +610,7 @@
   <string name="secure_password_generated">Un mot de passe fort a été généré</string>
   <string name="device_does_not_support_battery_op">Les optimisations de batterie ne peuvent pas être désactivées sur votre appareil</string>
   <string name="show_password">Afficher le mot de passe</string>
-  <string name="registration_please_wait">L\'enregistrement a échoué: Réessayer plus tard</string>
+  <string name="registration_please_wait">L\'enregistrement a échoué : Réessayer plus tard</string>
   <string name="create_conference">Créer une conférence</string>
   <string name="join_or_create_conference">Rejoindre ou créer une conférence</string>
   <string name="conference_subject">Objet</string>
