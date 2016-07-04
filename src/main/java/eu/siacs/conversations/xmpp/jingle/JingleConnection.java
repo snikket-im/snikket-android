@@ -22,6 +22,7 @@ import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.Presence;
+import eu.siacs.conversations.entities.ServiceDiscoveryResult;
 import eu.siacs.conversations.entities.Transferable;
 import eu.siacs.conversations.entities.TransferablePlaceholder;
 import eu.siacs.conversations.persistance.FileBackend;
@@ -297,8 +298,9 @@ public class JingleConnection implements Transferable {
 		String resource = jid != null ?jid.getResourcepart() : null;
 		if (resource != null) {
 			Presence presence = this.account.getRoster().getContact(jid).getPresences().getPresences().get(resource);
-			if (presence != null) {
-				List<String> features = presence.getServiceDiscoveryResult().getFeatures();
+			ServiceDiscoveryResult result = presence != null ? presence.getServiceDiscoveryResult() : null;
+			if (result != null) {
+				List<String> features = result.getFeatures();
 				if (features.contains(Content.Version.FT_4.getNamespace())) {
 					this.ftVersion = Content.Version.FT_4;
 				}
