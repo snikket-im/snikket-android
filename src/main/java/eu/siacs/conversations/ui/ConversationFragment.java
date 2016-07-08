@@ -1369,8 +1369,9 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 		}
 		List<String> completions = new ArrayList<>();
 		for(MucOptions.User user : conversation.getMucOptions().getUsers()) {
-			if (user.getName().startsWith(incomplete)) {
-				completions.add(user.getName()+(firstWord ? ": " : " "));
+			String name = user.getName();
+			if (name != null && name.startsWith(incomplete)) {
+				completions.add(name+(firstWord ? ": " : " "));
 			}
 		}
 		Collections.sort(completions);
