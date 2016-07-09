@@ -1,6 +1,9 @@
 ###Changelog
 
-###Version 1.13.4
+####Version 1.1.3.5
+* bug fixes
+
+####Version 1.13.4
 * support jingle ft:4
 * show contact as DND if one resource is
 * bug fixes
