@@ -10,6 +10,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.RectF;
+import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -380,19 +381,41 @@ public class FileBackend {
 				if (thumbnail != null) {
 					return thumbnail;
 				}
-				File file = getFile(message);
-				BitmapFactory.Options options = new BitmapFactory.Options();
-				options.inSampleSize = calcSampleSize(file, size);
-				Bitmap fullsize = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
-				if (fullsize == null) {
-					throw new FileNotFoundException();
+				DownloadableFile file = getFile(message);
+				if (file.getMimeType().startsWith("video/")) {
+					thumbnail = getVideoPreview(file, size);
+				} else {
+					Bitmap fullsize = getFullsizeImagePreview(file, size);
+					if (fullsize == null) {
+						throw new FileNotFoundException();
+					}
+					thumbnail = resize(fullsize, size);
+					thumbnail = rotate(thumbnail, getRotation(file));
 				}
-				thumbnail = resize(fullsize, size);
-				thumbnail = rotate(thumbnail, getRotation(file));
 				this.mXmppConnectionService.getBitmapCache().put(uuid, thumbnail);
 			}
 		}
 		return thumbnail;
+	}
+
+	private Bitmap getFullsizeImagePreview(File file, int size) {
+		BitmapFactory.Options options = new BitmapFactory.Options();
+		options.inSampleSize = calcSampleSize(file, size);
+		return BitmapFactory.decodeFile(file.getAbsolutePath(), options);
+	}
+
+	private Bitmap getVideoPreview(File file, int size) {
+		MediaMetadataRetriever metadataRetriever = new MediaMetadataRetriever();
+		metadataRetriever.setDataSource(file.getAbsolutePath());
+		Bitmap frame = metadataRetriever.getFrameAtTime(0);
+		metadataRetriever.release();
+		frame = resize(frame, size);
+		Canvas canvas = new Canvas(frame);
+		Bitmap play = BitmapFactory.decodeResource(mXmppConnectionService.getResources(), R.drawable.play_video);
+		float x = (frame.getWidth() - play.getWidth()) / 2.0f;
+		float y = (frame.getHeight() - play.getHeight()) / 2.0f;
+		canvas.drawBitmap(play,x,y,null);
+		return frame;
 	}
 
 	public Uri getTakePhotoUri() {
@@ -656,26 +679,95 @@ public class FileBackend {
 
 	public void updateFileParams(Message message, URL url) {
 		DownloadableFile file = getFile(message);
-		if (message.getType() == Message.TYPE_IMAGE || file.getMimeType().startsWith("image/")) {
-			BitmapFactory.Options options = new BitmapFactory.Options();
-			options.inJustDecodeBounds = true;
-			BitmapFactory.decodeFile(file.getAbsolutePath(), options);
-			int rotation = getRotation(file);
-			boolean rotated = rotation == 90 || rotation == 270;
-			int imageHeight = rotated ? options.outWidth : options.outHeight;
-			int imageWidth = rotated ? options.outHeight : options.outWidth;
-			if (url == null) {
-				message.setBody(Long.toString(file.getSize()) + '|' + imageWidth + '|' + imageHeight);
-			} else {
-				message.setBody(url.toString()+"|"+Long.toString(file.getSize()) + '|' + imageWidth + '|' + imageHeight);
-			}
-		} else {
-			if (url != null) {
-				message.setBody(url.toString()+"|"+Long.toString(file.getSize()));
-			} else {
-				message.setBody(Long.toString(file.getSize()));
+		boolean image = message.getType() == Message.TYPE_IMAGE || file.getMimeType().startsWith("image/");
+		boolean video = message.getMimeType().startsWith("video/");
+		if (image || video) {
+			try {
+				Dimensions dimensions = image ? getImageDimensions(file) : getVideoDimensions(file);
+				if (url == null) {
+					message.setBody(Long.toString(file.getSize()) + '|' + dimensions.width + '|' + dimensions.height);
+				} else {
+					message.setBody(url.toString() + "|" + Long.toString(file.getSize()) + '|' + dimensions.width + '|' + dimensions.height);
+				}
+				return;
+			} catch (NotAVideoFile notAVideoFile) {
+				Log.d(Config.LOGTAG,"file with mime type "+file.getMimeType()+" was not a video file");
+				//fall threw
 			}
 		}
+		if (url != null) {
+			message.setBody(url.toString()+"|"+Long.toString(file.getSize()));
+		} else {
+			message.setBody(Long.toString(file.getSize()));
+		}
+
+	}
+
+	private Dimensions getImageDimensions(File file) {
+		BitmapFactory.Options options = new BitmapFactory.Options();
+		options.inJustDecodeBounds = true;
+		BitmapFactory.decodeFile(file.getAbsolutePath(), options);
+		int rotation = getRotation(file);
+		boolean rotated = rotation == 90 || rotation == 270;
+		int imageHeight = rotated ? options.outWidth : options.outHeight;
+		int imageWidth = rotated ? options.outHeight : options.outWidth;
+		return new Dimensions(imageHeight, imageWidth);
+	}
+
+	private Dimensions getVideoDimensions(File file) throws NotAVideoFile {
+		MediaMetadataRetriever metadataRetriever = new MediaMetadataRetriever();
+		metadataRetriever.setDataSource(file.getAbsolutePath());
+		String hasVideo = metadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_HAS_VIDEO);
+		if (hasVideo == null) {
+			throw new NotAVideoFile();
+		}
+		int rotation = extractRotationFromMediaRetriever(metadataRetriever);
+		boolean rotated = rotation == 90 || rotation == 270;
+		int height;
+		try {
+			String h = metadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_HEIGHT);
+			height = Integer.parseInt(h);
+		} catch (Exception e) {
+			height = -1;
+		}
+		int width;
+		try {
+			String w = metadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_WIDTH);
+			width = Integer.parseInt(w);
+		} catch (Exception e) {
+			width = -1;
+		}
+		metadataRetriever.release();
+		Log.d(Config.LOGTAG,"extracted video dims "+width+"x"+height);
+		return rotated ? new Dimensions(width, height) : new Dimensions(height, width);
+	}
+
+	private int extractRotationFromMediaRetriever(MediaMetadataRetriever metadataRetriever) {
+		int rotation;
+		if (Build.VERSION.SDK_INT >= 17) {
+			String r = metadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_ROTATION);
+			try {
+				rotation = Integer.parseInt(r);
+			} catch (Exception e) {
+				rotation = 0;
+			}
+		} else {
+			rotation = 0;
+		}
+		return rotation;
+	}
+
+	private class Dimensions {
+		public final int width;
+		public final int height;
+
+		public Dimensions(int height, int width) {
+			this.width = width;
+			this.height = height;
+		}
+	}
+
+	private class NotAVideoFile extends Exception {
 
 	}
 

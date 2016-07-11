@@ -13,6 +13,7 @@ resolutions = {
 images = {
 	'ic_launcher.svg' => ['ic_launcher', 48],
 	'main_logo.svg' => ['main_logo', 200],
+	'play_video.svg' => ['play_video', 96],
 	'conversations_mono.svg' => ['ic_notification', 24],
 	'ic_received_indicator.svg' => ['ic_received_indicator', 12],
 	'ic_send_text_offline.svg' => ['ic_send_text_offline', 36],
