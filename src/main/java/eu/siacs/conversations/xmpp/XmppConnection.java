@@ -117,9 +117,7 @@ public class XmppConnection implements Runnable {
 	private long lastSessionStarted = 0;
 	private long lastDiscoStarted = 0;
 	private AtomicInteger mPendingServiceDiscoveries = new AtomicInteger(0);
-	private AtomicBoolean mIsServiceItemsDiscoveryPending = new AtomicBoolean(true);
-	private boolean mWaitForDisco = true;
-	private final ArrayList<String> mPendingServiceDiscoveriesIds = new ArrayList<>();
+	private AtomicBoolean mWaitForDisco = new AtomicBoolean(true);
 	private boolean mInteractive = false;
 	private int attempt = 0;
 	private final Hashtable<String, Pair<IqPacket, OnIqPacketReceived>> packetCallbacks = new Hashtable<>();
@@ -977,25 +975,8 @@ public class XmppConnection implements Runnable {
 	}
 
 	public void sendDiscoTimeout() {
-		final IqPacket failurePacket = new IqPacket(IqPacket.TYPE.ERROR); //don't use timeout
-		final ArrayList<OnIqPacketReceived> callbacks = new ArrayList<>();
-		synchronized (this.mPendingServiceDiscoveriesIds) {
-			for(String id : mPendingServiceDiscoveriesIds) {
-				synchronized (this.packetCallbacks) {
-					Pair<IqPacket, OnIqPacketReceived> pair = this.packetCallbacks.remove(id);
-					if (pair != null) {
-						callbacks.add(pair.second);
-					}
-				}
-			}
-			this.mPendingServiceDiscoveriesIds.clear();
-		}
-		if (callbacks.size() > 0) {
-			Log.d(Config.LOGTAG,account.getJid().toBareJid()+": sending disco timeout");
-			resetStreamId(); //we don't want to live with this for ever
-		}
-		for(OnIqPacketReceived callback : callbacks) {
-			callback.onIqPacketReceived(account,failurePacket);
+		if (mWaitForDisco.compareAndSet(true, false)) {
+			finalizeBind();
 		}
 	}
 
@@ -1037,8 +1018,7 @@ public class XmppConnection implements Runnable {
 			this.disco.clear();
 		}
 		mPendingServiceDiscoveries.set(0);
-		mIsServiceItemsDiscoveryPending.set(true);
-		mWaitForDisco = mServerIdentity != Identity.NIMBUZZ;
+		mWaitForDisco.set(mServerIdentity != Identity.NIMBUZZ);
 		lastDiscoStarted = SystemClock.elapsedRealtime();
 		Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": starting service discovery");
 		mXmppConnectionService.scheduleWakeUpCall(Config.CONNECT_DISCO_TIMEOUT, account.getUuid().hashCode());
@@ -1057,7 +1037,8 @@ public class XmppConnection implements Runnable {
 		}
 		sendServiceDiscoveryInfo(account.getJid().toBareJid());
 		sendServiceDiscoveryItems(account.getServer());
-		if (!mWaitForDisco) {
+
+		if (!mWaitForDisco.get()) {
 			finalizeBind();
 		}
 		this.lastSessionStarted = SystemClock.elapsedRealtime();
@@ -1068,7 +1049,7 @@ public class XmppConnection implements Runnable {
 		final IqPacket iq = new IqPacket(IqPacket.TYPE.GET);
 		iq.setTo(jid);
 		iq.query("http://jabber.org/protocol/disco#info");
-		String id = this.sendIqPacket(iq, new OnIqPacketReceived() {
+		this.sendIqPacket(iq, new OnIqPacketReceived() {
 
 			@Override
 			public void onIqPacketReceived(final Account account, final IqPacket packet) {
@@ -1109,16 +1090,12 @@ public class XmppConnection implements Runnable {
 				}
 				if (packet.getType() != IqPacket.TYPE.TIMEOUT) {
 					if (mPendingServiceDiscoveries.decrementAndGet() == 0
-							&& !mIsServiceItemsDiscoveryPending.get()
-							&& mWaitForDisco) {
+							&& mWaitForDisco.compareAndSet(true, false)) {
 						finalizeBind();
 					}
 				}
 			}
 		});
-		synchronized (this.mPendingServiceDiscoveriesIds) {
-			this.mPendingServiceDiscoveriesIds.add(id);
-		}
 	}
 
 	private void finalizeBind() {
@@ -1143,10 +1120,11 @@ public class XmppConnection implements Runnable {
 	}
 
 	private void sendServiceDiscoveryItems(final Jid server) {
+		mPendingServiceDiscoveries.incrementAndGet();
 		final IqPacket iq = new IqPacket(IqPacket.TYPE.GET);
 		iq.setTo(server.toDomainJid());
 		iq.query("http://jabber.org/protocol/disco#items");
-		String id = this.sendIqPacket(iq, new OnIqPacketReceived() {
+		this.sendIqPacket(iq, new OnIqPacketReceived() {
 
 			@Override
 			public void onIqPacketReceived(final Account account, final IqPacket packet) {
@@ -1164,16 +1142,13 @@ public class XmppConnection implements Runnable {
 					Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": could not query disco items of " + server);
 				}
 				if (packet.getType() != IqPacket.TYPE.TIMEOUT) {
-					mIsServiceItemsDiscoveryPending.set(false);
-					if (mPendingServiceDiscoveries.get() == 0 && mWaitForDisco) {
+					if (mPendingServiceDiscoveries.decrementAndGet() == 0
+							&& mWaitForDisco.compareAndSet(true, false)) {
 						finalizeBind();
 					}
 				}
 			}
 		});
-		synchronized (this.mPendingServiceDiscoveriesIds) {
-			this.mPendingServiceDiscoveriesIds.add(id);
-		}
 	}
 
 	private void sendEnableCarbons() {
