@@ -435,19 +435,19 @@ public class XmppConnectionService extends Service {
 		}
 		message.setCounterpart(conversation.getNextCounterpart());
 		message.setType(Message.TYPE_FILE);
-		String path = getFileBackend().getOriginalPath(uri);
-		if (path != null) {
-			message.setRelativeFilePath(path);
-			getFileBackend().updateFileParams(message);
-			if (message.getEncryption() == Message.ENCRYPTION_DECRYPTED) {
-				getPgpEngine().encrypt(message, callback);
-			} else {
-				callback.success(message);
-			}
-		} else {
-			mFileAddingExecutor.execute(new Runnable() {
-				@Override
-				public void run() {
+		final String path = getFileBackend().getOriginalPath(uri);
+		mFileAddingExecutor.execute(new Runnable() {
+			@Override
+			public void run() {
+				if (path != null) {
+					message.setRelativeFilePath(path);
+					getFileBackend().updateFileParams(message);
+					if (message.getEncryption() == Message.ENCRYPTION_DECRYPTED) {
+						getPgpEngine().encrypt(message, callback);
+					} else {
+						callback.success(message);
+					}
+				} else {
 					try {
 						getFileBackend().copyFileToPrivateStorage(message, uri);
 						getFileBackend().updateFileParams(message);
@@ -455,7 +455,7 @@ public class XmppConnectionService extends Service {
 							final PgpEngine pgpEngine = getPgpEngine();
 							if (pgpEngine != null) {
 								pgpEngine.encrypt(message, callback);
-							} else if (callback != null){
+							} else if (callback != null) {
 								callback.error(R.string.unable_to_connect_to_keychain, null);
 							}
 						} else {
@@ -465,8 +465,8 @@ public class XmppConnectionService extends Service {
 						callback.error(e.getResId(), message);
 					}
 				}
-			});
-		}
+			}
+		});
 	}
 
 	public void attachImageToConversation(final Conversation conversation, final Uri uri, final UiCallback<Message> callback) {
