@@ -277,6 +277,7 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
 
 	@Override
 	public void onIqPacketReceived(final Account account, final IqPacket packet) {
+		final boolean isGet = packet.getType() == IqPacket.TYPE.GET;
 		if (packet.getType() == IqPacket.TYPE.ERROR || packet.getType() == IqPacket.TYPE.TIMEOUT) {
 			return;
 		} else if (packet.hasChild("query", Xmlns.ROSTER) && packet.fromServer(account)) {
@@ -348,12 +349,23 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
 		} else if (packet.hasChild("query", "http://jabber.org/protocol/disco#info")) {
 			final IqPacket response = mXmppConnectionService.getIqGenerator().discoResponse(packet);
 			mXmppConnectionService.sendIqPacket(account, response, null);
-		} else if (packet.hasChild("query","jabber:iq:version")) {
+		} else if (packet.hasChild("query","jabber:iq:version") && isGet) {
 			final IqPacket response = mXmppConnectionService.getIqGenerator().versionResponse(packet);
 			mXmppConnectionService.sendIqPacket(account,response,null);
-		} else if (packet.hasChild("ping", "urn:xmpp:ping")) {
+		} else if (packet.hasChild("ping", "urn:xmpp:ping") && isGet) {
 			final IqPacket response = packet.generateResponse(IqPacket.TYPE.RESULT);
 			mXmppConnectionService.sendIqPacket(account, response, null);
+		} else if (packet.hasChild("time","urn:xmpp:time") && isGet) {
+			final IqPacket response;
+			if (mXmppConnectionService.useTorToConnect()) {
+				response = packet.generateResponse(IqPacket.TYPE.ERROR);
+				final Element error = response.addChild("error");
+				error.setAttribute("type","cancel");
+				error.addChild("not-allowed","urn:ietf:params:xml:ns:xmpp-stanzas");
+			} else {
+				response = mXmppConnectionService.getIqGenerator().entityTimeResponse(packet);
+			}
+			mXmppConnectionService.sendIqPacket(account,response, null);
 		} else {
 			if (packet.getType() == IqPacket.TYPE.GET || packet.getType() == IqPacket.TYPE.SET) {
 				final IqPacket response = packet.generateResponse(IqPacket.TYPE.ERROR);

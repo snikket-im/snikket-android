@@ -15,6 +15,7 @@ import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.TimeZone;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
@@ -58,6 +59,19 @@ public class IqGenerator extends AbstractGenerator {
 		Element query = packet.query("jabber:iq:version");
 		query.addChild("name").setContent(IDENTITY_NAME);
 		query.addChild("version").setContent(getIdentityVersion());
+		return packet;
+	}
+
+	public IqPacket entityTimeResponse(IqPacket request) {
+		final IqPacket packet = request.generateResponse(IqPacket.TYPE.RESULT);
+		Element time = packet.addChild("time","urn:xmpp:time");
+		final long now = System.currentTimeMillis();
+		time.addChild("utc").setContent(getTimestamp(now));
+		TimeZone ourTimezone = TimeZone.getDefault();
+		long offsetSeconds = ourTimezone.getOffset(now) / 1000;
+		long offsetMinutes = offsetSeconds % (60 * 60);
+		long offsetHours = offsetSeconds / (60 * 60);
+		time.addChild("tzo").setContent(String.format("%02d",offsetHours)+":"+String.format("%02d",offsetMinutes));
 		return packet;
 	}
 
