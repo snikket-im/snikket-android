@@ -378,7 +378,7 @@ public class Message extends AbstractEntity {
 	}
 
 	public boolean similar(Message message) {
-		if (this.serverMsgId != null && message.getServerMsgId() != null) {
+		if (type != TYPE_PRIVATE && this.serverMsgId != null && message.getServerMsgId() != null) {
 			return this.serverMsgId.equals(message.getServerMsgId());
 		} else if (this.body == null || this.counterpart == null) {
 			return false;
