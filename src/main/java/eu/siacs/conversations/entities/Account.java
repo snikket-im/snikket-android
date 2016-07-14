@@ -321,7 +321,9 @@ public class Account extends AbstractEntity {
 	}
 
 	public boolean hasErrorStatus() {
-		return getXmppConnection() != null && getStatus().isError() && getXmppConnection().getAttempt() >= 3;
+		return getXmppConnection() != null
+				&& (getStatus().isError() || getStatus() == State.CONNECTING)
+				&& getXmppConnection().getAttempt() >= 3;
 	}
 
 	public void setPresenceStatus(Presence.Status status) {
