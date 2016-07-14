@@ -108,7 +108,9 @@ public class Account extends AbstractEntity {
 		TOR_NOT_AVAILABLE(true),
 		BIND_FAILURE(true),
 		HOST_UNKNOWN(true),
-		REGISTRATION_PLEASE_WAIT(true);
+		REGISTRATION_PLEASE_WAIT(true),
+		STREAM_ERROR(true),
+		POLICY_VIOLATION(true);
 
 		private final boolean isError;
 
@@ -158,8 +160,12 @@ public class Account extends AbstractEntity {
 					return R.string.account_status_bind_failure;
 				case HOST_UNKNOWN:
 					return R.string.account_status_host_unknown;
+				case POLICY_VIOLATION:
+					return R.string.account_status_policy_violation;
 				case REGISTRATION_PLEASE_WAIT:
 					return R.string.registration_please_wait;
+				case STREAM_ERROR:
+					return R.string.account_status_stream_error;
 				default:
 					return R.string.account_status_unknown;
 			}

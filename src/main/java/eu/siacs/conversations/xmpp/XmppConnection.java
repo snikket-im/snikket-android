@@ -361,6 +361,12 @@ public class XmppConnection implements Runnable {
 			this.changeStatus(Account.State.SERVER_NOT_FOUND);
 		} catch (final SocksSocketFactory.SocksProxyNotFoundException e) {
 			this.changeStatus(Account.State.TOR_NOT_AVAILABLE);
+		} catch(final StreamErrorHostUnknown e) {
+			this.changeStatus(Account.State.HOST_UNKNOWN);
+		} catch(final StreamErrorPolicyViolation e) {
+			this.changeStatus(Account.State.POLICY_VIOLATION);
+		} catch(final StreamError e) {
+			this.changeStatus(Account.State.STREAM_ERROR);
 		} catch (final IOException | XmlPullParserException | NoSuchAlgorithmException e) {
 			Log.d(Config.LOGTAG, account.getJid().toBareJid().toString() + ": " + e.getMessage());
 			this.changeStatus(Account.State.OFFLINE);
@@ -1176,17 +1182,21 @@ public class XmppConnection implements Runnable {
 		if (streamError == null) {
 			return;
 		}
-		Log.d(Config.LOGTAG,account.getJid().toBareJid()+": stream error "+streamError.toString());
 		if (streamError.hasChild("conflict")) {
 			final String resource = account.getResource().split("\\.")[0];
 			account.setResource(resource + "." + nextRandomId());
 			Log.d(Config.LOGTAG,
 					account.getJid().toBareJid() + ": switching resource due to conflict ("
 					+ account.getResource() + ")");
+			throw new IOException();
 		} else if (streamError.hasChild("host-unknown")) {
-			changeStatus(Account.State.HOST_UNKNOWN);
+			throw new StreamErrorHostUnknown();
+		} else if (streamError.hasChild("policy-violation")) {
+			throw new StreamErrorPolicyViolation();
+		} else {
+			Log.d(Config.LOGTAG,account.getJid().toBareJid()+": stream error "+streamError.toString());
+			throw new StreamError();
 		}
-		forceCloseSocket();
 	}
 
 	private void sendStartStream() throws IOException {
@@ -1482,6 +1492,18 @@ public class XmppConnection implements Runnable {
 	}
 
 	private class IncompatibleServerException extends IOException {
+
+	}
+
+	private class StreamErrorHostUnknown extends StreamError {
+
+	}
+
+	private class StreamErrorPolicyViolation extends StreamError {
+
+	}
+
+	private class StreamError extends IOException {
 
 	}
 
