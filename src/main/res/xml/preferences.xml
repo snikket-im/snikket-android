@@ -179,7 +179,7 @@
                     android:summary="@string/pref_remove_trusted_certificates_summary"
                     android:title="@string/pref_remove_trusted_certificates_title"/>
                 <CheckBoxPreference
-                    android:defaultValue="false"
+                    android:defaultValue="true"
                     android:key="allow_message_correction"
                     android:title="@string/pref_allow_message_correction"
                     android:summary="@string/pref_allow_message_correction_summary"/>
