@@ -252,7 +252,7 @@ public class VerifyOTRActivity extends XmppActivity implements XmppConnectionSer
 	}
 
 	protected void updateView() {
-		if (this.mConversation.hasValidOtrSession()) {
+		if (this.mConversation != null && this.mConversation.hasValidOtrSession()) {
 			final ActionBar actionBar = getActionBar();
 			this.mVerificationExplain.setText(R.string.no_otr_session_found);
 			invalidateOptionsMenu();
