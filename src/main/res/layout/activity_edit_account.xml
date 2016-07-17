@@ -506,6 +506,7 @@
                             android:typeface="monospace"/>
 
                         <TextView
+                            android:id="@+id/own_fingerprint_desc"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/this_device_omemo_fingerprint"
