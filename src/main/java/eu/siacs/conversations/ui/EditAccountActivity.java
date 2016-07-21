@@ -235,6 +235,7 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 
 		@Override
 		public void onClick(final View v) {
+			deleteMagicCreatedAccountAndReturnIfNecessary();
 			finish();
 		}
 	};
@@ -259,6 +260,29 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 			updateAccountInformation(false);
 		}
 		updateSaveButton();
+	}
+
+	@Override
+	public boolean onNavigateUp() {
+		deleteMagicCreatedAccountAndReturnIfNecessary();
+		return super.onNavigateUp();
+	}
+
+	@Override
+	public void onBackPressed() {
+		deleteMagicCreatedAccountAndReturnIfNecessary();
+		super.onBackPressed();
+	}
+
+	private void deleteMagicCreatedAccountAndReturnIfNecessary() {
+		if (Config.MAGIC_CREATE_DOMAIN != null
+				&& mAccount != null
+				&& mAccount.isOptionSet(Account.OPTION_MAGIC_CREATE)
+				&& mAccount.isOptionSet(Account.OPTION_REGISTER)
+				&& xmppConnectionService.getAccounts().size() == 1) {
+			xmppConnectionService.deleteAccount(mAccount);
+			startActivity(new Intent(EditAccountActivity.this, WelcomeActivity.class));
+		}
 	}
 
 	@Override
@@ -594,13 +618,7 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 				updateAccountInformation(true);
 			}
 		}
-		if ((Config.MAGIC_CREATE_DOMAIN == null && this.xmppConnectionService.getAccounts().size() == 0)
-				|| (this.mAccount != null && this.mAccount == xmppConnectionService.getPendingAccount())) {
-			if (getActionBar() != null) {
-				getActionBar().setDisplayHomeAsUpEnabled(false);
-				getActionBar().setDisplayShowHomeEnabled(false);
-				getActionBar().setHomeButtonEnabled(false);
-			}
+		if (Config.MAGIC_CREATE_DOMAIN == null && this.xmppConnectionService.getAccounts().size() == 0) {
 			this.mCancelButton.setEnabled(false);
 			this.mCancelButton.setTextColor(getSecondaryTextColor());
 		}
