@@ -406,10 +406,16 @@ public class FileBackend {
 
 	private Bitmap getVideoPreview(File file, int size) {
 		MediaMetadataRetriever metadataRetriever = new MediaMetadataRetriever();
-		metadataRetriever.setDataSource(file.getAbsolutePath());
-		Bitmap frame = metadataRetriever.getFrameAtTime(0);
-		metadataRetriever.release();
-		frame = resize(frame, size);
+		Bitmap frame;
+		try {
+			metadataRetriever.setDataSource(file.getAbsolutePath());
+			frame = metadataRetriever.getFrameAtTime(0);
+			metadataRetriever.release();
+			frame = resize(frame, size);
+		} catch(IllegalArgumentException e) {
+			frame = Bitmap.createBitmap(size,size, Bitmap.Config.ARGB_8888);
+			frame.eraseColor(0xff000000);
+		}
 		Canvas canvas = new Canvas(frame);
 		Bitmap play = BitmapFactory.decodeResource(mXmppConnectionService.getResources(), R.drawable.play_video);
 		float x = (frame.getWidth() - play.getWidth()) / 2.0f;
@@ -679,8 +685,9 @@ public class FileBackend {
 
 	public void updateFileParams(Message message, URL url) {
 		DownloadableFile file = getFile(message);
-		boolean image = message.getType() == Message.TYPE_IMAGE || file.getMimeType().startsWith("image/");
-		boolean video = message.getMimeType().startsWith("video/");
+		final String mime = file.getMimeType();
+		boolean image = message.getType() == Message.TYPE_IMAGE || (mime != null && mime.startsWith("image/"));
+		boolean video = mime != null && mime.startsWith("video/");
 		if (image || video) {
 			try {
 				Dimensions dimensions = image ? getImageDimensions(file) : getVideoDimensions(file);
