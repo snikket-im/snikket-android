@@ -13,6 +13,7 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 import eu.siacs.conversations.Config;
+import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.PhoneHelper;
@@ -49,7 +50,6 @@ public abstract class AbstractGenerator {
 			"urn:xmpp:otr:0"
 	};
 	private String mVersion = null;
-	protected final String IDENTITY_NAME = "Conversations";
 	protected final String IDENTITY_TYPE = "phone";
 
 	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US);
@@ -68,7 +68,7 @@ public abstract class AbstractGenerator {
 	}
 
 	public String getIdentityName() {
-		return IDENTITY_NAME + " " + getIdentityVersion();
+		return mXmppConnectionService.getString(R.string.app_name) + " " + getIdentityVersion();
 	}
 
 	public String getCapHash() {
