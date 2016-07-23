@@ -18,7 +18,7 @@ import android.net.Uri;
 import android.os.Binder;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.FileObserver;
+import android.os.Environment;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
@@ -70,6 +70,7 @@ import eu.siacs.conversations.entities.Blockable;
 import eu.siacs.conversations.entities.Bookmark;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
+import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.entities.MucOptions.OnRenameListener;
@@ -91,6 +92,7 @@ import eu.siacs.conversations.parser.PresenceParser;
 import eu.siacs.conversations.persistance.DatabaseBackend;
 import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.ui.UiCallback;
+import eu.siacs.conversations.utils.ConversationsFileObserver;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.ExceptionHelper;
 import eu.siacs.conversations.utils.OnPhoneContactsLoadedListener;
@@ -211,14 +213,14 @@ public class XmppConnectionService extends Service {
 	private MessageArchiveService mMessageArchiveService = new MessageArchiveService(this);
 	private PushManagementService mPushManagementService = new PushManagementService(this);
 	private OnConversationUpdate mOnConversationUpdate = null;
-	private final FileObserver fileObserver = new FileObserver(
-			FileBackend.getConversationsImageDirectory()) {
 
+
+	private final ConversationsFileObserver fileObserver = new ConversationsFileObserver(
+			Environment.getExternalStorageDirectory().getAbsolutePath()
+	) {
 		@Override
 		public void onEvent(int event, String path) {
-			if (event == FileObserver.DELETE) {
-				markFileDeleted(path.split("\\.")[0]);
-			}
+			markFileDeleted(path);
 		}
 	};
 	private final OnJinglePacketReceived jingleListener = new OnJinglePacketReceived() {
@@ -768,7 +770,6 @@ public class XmppConnectionService extends Service {
 
 		getContentResolver().registerContentObserver(ContactsContract.Contacts.CONTENT_URI, true, contactObserver);
 		this.fileObserver.startWatching();
-
 		if (Config.supportOpenPgp()) {
 			this.pgpServiceConnection = new OpenPgpServiceConnection(getApplicationContext(), "org.sufficientlysecure.keychain", new OpenPgpServiceConnection.OnBound() {
 				@Override
@@ -814,6 +815,7 @@ public class XmppConnectionService extends Service {
 		} catch (IllegalArgumentException e) {
 			//ignored
 		}
+		fileObserver.stopWatching();
 		super.onDestroy();
 	}
 
@@ -1284,21 +1286,23 @@ public class XmppConnectionService extends Service {
 		});
 	}
 
-	private void markFileDeleted(String uuid) {
+	private void markFileDeleted(final String path) {
 		for (Conversation conversation : getConversations()) {
-			Message message = conversation.findMessageWithFileAndUuid(uuid);
-			if (message != null) {
-				if (!getFileBackend().isFileAvailable(message)) {
-					message.setTransferable(new TransferablePlaceholder(Transferable.STATUS_DELETED));
-					final int s = message.getStatus();
-					if (s == Message.STATUS_WAITING || s == Message.STATUS_OFFERED || s == Message.STATUS_UNSEND) {
-						markMessage(message, Message.STATUS_SEND_FAILED);
-					} else {
-						updateConversationUi();
+			conversation.findMessagesWithFiles(new Conversation.OnMessageFound() {
+				@Override
+				public void onMessageFound(Message message) {
+					DownloadableFile file = fileBackend.getFile(message);
+					if (file.getAbsolutePath().equals(path) && !file.exists()) {
+						message.setTransferable(new TransferablePlaceholder(Transferable.STATUS_DELETED));
+						final int s = message.getStatus();
+						if (s == Message.STATUS_WAITING || s == Message.STATUS_OFFERED || s == Message.STATUS_UNSEND) {
+							markMessage(message, Message.STATUS_SEND_FAILED);
+						} else {
+							updateConversationUi();
+						}
 					}
 				}
-				return;
-			}
+			});
 		}
 	}
 
