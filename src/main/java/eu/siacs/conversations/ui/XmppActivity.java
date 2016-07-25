@@ -471,7 +471,7 @@ public abstract class XmppActivity extends Activity {
 	private void switchToConversation(Conversation conversation, String text, String nick, boolean pm, boolean newTask) {
 		Intent viewConversationIntent = new Intent(this,
 				ConversationActivity.class);
-		viewConversationIntent.setAction(Intent.ACTION_VIEW);
+		viewConversationIntent.setAction(ConversationActivity.ACTION_VIEW_CONVERSATION);
 		viewConversationIntent.putExtra(ConversationActivity.CONVERSATION,
 				conversation.getUuid());
 		if (text != null) {
@@ -481,7 +481,6 @@ public abstract class XmppActivity extends Activity {
 			viewConversationIntent.putExtra(ConversationActivity.NICK, nick);
 			viewConversationIntent.putExtra(ConversationActivity.PRIVATE_MESSAGE,pm);
 		}
-		viewConversationIntent.setType(ConversationActivity.VIEW_CONVERSATION);
 		if (newTask) {
 			viewConversationIntent.setFlags(viewConversationIntent.getFlags()
 					| Intent.FLAG_ACTIVITY_NEW_TASK

@@ -158,9 +158,9 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 	public Message findMessageWithFileAndUuid(final String uuid) {
 		synchronized (this.messages) {
 			for (final Message message : this.messages) {
-				if ((message.getType() == Message.TYPE_IMAGE || message.getType() == Message.TYPE_FILE)
+				if (message.getUuid().equals(uuid)
 						&& message.getEncryption() != Message.ENCRYPTION_PGP
-						&& message.getUuid().equals(uuid)) {
+						&& (message.getType() == Message.TYPE_IMAGE || message.getType() == Message.TYPE_FILE || message.treatAsDownloadable() != Message.Decision.NEVER)) {
 					return message;
 				}
 			}

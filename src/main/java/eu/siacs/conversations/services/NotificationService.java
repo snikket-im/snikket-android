@@ -374,8 +374,10 @@ public class NotificationService {
 
 	private Message getFirstDownloadableMessage(final Iterable<Message> messages) {
 		for (final Message message : messages) {
-			if ((message.getType() == Message.TYPE_FILE || message.getType() == Message.TYPE_IMAGE) &&
-					message.getTransferable() != null) {
+			if (message.getTransferable() != null
+					&& (message.getType() == Message.TYPE_FILE
+							|| message.getType() == Message.TYPE_IMAGE
+							|| message.treatAsDownloadable() != Message.Decision.NEVER)) {
 				return message;
 			}
 		}
@@ -413,28 +415,23 @@ public class NotificationService {
 	}
 
 	private PendingIntent createContentIntent(final String conversationUuid, final String downloadMessageUuid) {
-		final TaskStackBuilder stackBuilder = TaskStackBuilder
-				.create(mXmppConnectionService);
-		stackBuilder.addParentStack(ConversationActivity.class);
-
-		final Intent viewConversationIntent = new Intent(mXmppConnectionService,
-				ConversationActivity.class);
-		if (downloadMessageUuid != null) {
-			viewConversationIntent.setAction(ConversationActivity.ACTION_DOWNLOAD);
-		} else {
-			viewConversationIntent.setAction(Intent.ACTION_VIEW);
-		}
+		final Intent viewConversationIntent = new Intent(mXmppConnectionService,ConversationActivity.class);
+		viewConversationIntent.setAction(ConversationActivity.ACTION_VIEW_CONVERSATION);
 		if (conversationUuid != null) {
 			viewConversationIntent.putExtra(ConversationActivity.CONVERSATION, conversationUuid);
-			viewConversationIntent.setType(ConversationActivity.VIEW_CONVERSATION);
 		}
 		if (downloadMessageUuid != null) {
-			viewConversationIntent.putExtra(ConversationActivity.MESSAGE, downloadMessageUuid);
+			viewConversationIntent.putExtra(ConversationActivity.EXTRA_DOWNLOAD_UUID, downloadMessageUuid);
+			return PendingIntent.getActivity(mXmppConnectionService,
+					57,
+					viewConversationIntent,
+					PendingIntent.FLAG_UPDATE_CURRENT);
+		} else {
+			return PendingIntent.getActivity(mXmppConnectionService,
+					58,
+					viewConversationIntent,
+					PendingIntent.FLAG_UPDATE_CURRENT);
 		}
-
-		stackBuilder.addNextIntent(viewConversationIntent);
-
-		return stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 	}
 
 	private PendingIntent createDownloadIntent(final Message message) {

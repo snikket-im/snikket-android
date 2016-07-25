@@ -69,11 +69,9 @@ import eu.siacs.conversations.xmpp.jid.Jid;
 public class ConversationActivity extends XmppActivity
 	implements OnAccountUpdate, OnConversationUpdate, OnRosterUpdate, OnUpdateBlocklist, XmppConnectionService.OnShowErrorToast {
 
-	public static final String ACTION_DOWNLOAD = "eu.siacs.conversations.action.DOWNLOAD";
-
-	public static final String VIEW_CONVERSATION = "viewConversation";
+	public static final String ACTION_VIEW_CONVERSATION = "eu.siacs.conversations.action.VIEW";
 	public static final String CONVERSATION = "conversationUuid";
-	public static final String MESSAGE = "messageUuid";
+	public static final String EXTRA_DOWNLOAD_UUID = "eu.siacs.conversations.download_uuid";
 	public static final String TEXT = "text";
 	public static final String NICK = "nick";
 	public static final String PRIVATE_MESSAGE = "pm";
@@ -1040,13 +1038,14 @@ public class ConversationActivity extends XmppActivity
 
 	@Override
 	protected void onNewIntent(final Intent intent) {
-		if (xmppConnectionServiceBound) {
-			if (intent != null && VIEW_CONVERSATION.equals(intent.getType())) {
+		if (intent != null && ACTION_VIEW_CONVERSATION.equals(intent.getAction())) {
+			mOpenConverstaion = null;
+			if (xmppConnectionServiceBound) {
 				handleViewConversationIntent(intent);
-				setIntent(new Intent());
+				intent.setAction(Intent.ACTION_MAIN);
+			} else {
+				setIntent(intent);
 			}
-		} else {
-			setIntent(intent);
 		}
 	}
 
@@ -1128,6 +1127,8 @@ public class ConversationActivity extends XmppActivity
 			mPendingConferenceInvite = null;
 		}
 
+		final Intent intent = getIntent();
+
 		if (xmppConnectionService.getAccounts().size() == 0) {
 			if (mRedirected.compareAndSet(false, true)) {
 				if (Config.X509_VERIFICATION) {
@@ -1143,17 +1144,14 @@ public class ConversationActivity extends XmppActivity
 			if (mRedirected.compareAndSet(false, true)) {
 				Account pendingAccount = xmppConnectionService.getPendingAccount();
 				if (pendingAccount == null) {
-					Intent intent = new Intent(this, StartConversationActivity.class);
+					Intent startConversationActivity = new Intent(this, StartConversationActivity.class);
 					intent.putExtra("init", true);
-					startActivity(intent);
+					startActivity(startConversationActivity);
 				} else {
 					switchToAccount(pendingAccount, true);
 				}
 				finish();
 			}
-		} else if (getIntent() != null && VIEW_CONVERSATION.equals(getIntent().getType())) {
-			clearPending();
-			handleViewConversationIntent(getIntent());
 		} else if (selectConversationByUuid(mOpenConverstaion)) {
 			if (mPanelOpen) {
 				showConversationsOverview();
@@ -1165,6 +1163,10 @@ public class ConversationActivity extends XmppActivity
 			}
 			this.mConversationFragment.reInit(getSelectedConversation());
 			mOpenConverstaion = null;
+		} else if (intent != null && ACTION_VIEW_CONVERSATION.equals(intent.getAction())) {
+			clearPending();
+			handleViewConversationIntent(intent);
+			intent.setAction(Intent.ACTION_MAIN);
 		} else if (getSelectedConversation() == null) {
 			showConversationsOverview();
 			clearPending();
@@ -1200,12 +1202,11 @@ public class ConversationActivity extends XmppActivity
 		if (!ExceptionHelper.checkForCrash(this, this.xmppConnectionService)) {
 			openBatteryOptimizationDialogIfNeeded();
 		}
-		setIntent(new Intent());
 	}
 
 	private void handleViewConversationIntent(final Intent intent) {
 		final String uuid = intent.getStringExtra(CONVERSATION);
-		final String downloadUuid = intent.getStringExtra(MESSAGE);
+		final String downloadUuid = intent.getStringExtra(EXTRA_DOWNLOAD_UUID);
 		final String text = intent.getStringExtra(TEXT);
 		final String nick = intent.getStringExtra(NICK);
 		final boolean pm = intent.getBooleanExtra(PRIVATE_MESSAGE, false);
