@@ -34,6 +34,7 @@ import java.security.Principal;
 import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -182,20 +183,24 @@ public class XmppConnection implements Runnable {
 				forceCloseSocket();
 				changeStatus(Account.State.REGISTRATION_SUCCESSFUL);
 			} else {
+				final List<String> PASSWORD_TOO_WEAK_MSGS = Arrays.asList(
+						"The password is too weak",
+						"Please use a longer password.");
 				Element error = packet.findChild("error");
-				if (error != null && error.hasChild("conflict")) {
-					forceCloseSocket();
-					changeStatus(Account.State.REGISTRATION_CONFLICT);
-				} else if (error != null
-						&& "wait".equals(error.getAttribute("type"))
-						&& error.hasChild("resource-constraint")) {
-					forceCloseSocket();
-					changeStatus(Account.State.REGISTRATION_PLEASE_WAIT);
-				} else {
-					forceCloseSocket();
-					changeStatus(Account.State.REGISTRATION_FAILED);
-					Log.d(Config.LOGTAG, packet.toString());
+				Account.State state = Account.State.REGISTRATION_FAILED;
+				if (error != null) {
+					if (error.hasChild("conflict")) {
+						state = Account.State.REGISTRATION_CONFLICT;
+					} else if (error.hasChild("resource-constraint")
+							&& "wait".equals(error.getAttribute("type"))) {
+						state = Account.State.REGISTRATION_PLEASE_WAIT;
+					} else if (error.hasChild("not-acceptable")
+							&& PASSWORD_TOO_WEAK_MSGS.contains(error.findChildContent("text"))) {
+						state = Account.State.REGISTRATION_PASSWORD_TOO_WEAK;
+					}
 				}
+				changeStatus(state);
+				forceCloseSocket();
 			}
 		}
 	};

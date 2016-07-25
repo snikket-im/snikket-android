@@ -110,7 +110,8 @@ public class Account extends AbstractEntity {
 		HOST_UNKNOWN(true),
 		REGISTRATION_PLEASE_WAIT(true),
 		STREAM_ERROR(true),
-		POLICY_VIOLATION(true);
+		POLICY_VIOLATION(true),
+		REGISTRATION_PASSWORD_TOO_WEAK(true);
 
 		private final boolean isError;
 
@@ -118,11 +119,11 @@ public class Account extends AbstractEntity {
 			return this.isError;
 		}
 
-		private State(final boolean isError) {
+		State(final boolean isError) {
 			this.isError = isError;
 		}
 
-		private State() {
+		State() {
 			this(false);
 		}
 
@@ -164,6 +165,8 @@ public class Account extends AbstractEntity {
 					return R.string.account_status_policy_violation;
 				case REGISTRATION_PLEASE_WAIT:
 					return R.string.registration_please_wait;
+				case REGISTRATION_PASSWORD_TOO_WEAK:
+					return R.string.registration_password_too_weak;
 				case STREAM_ERROR:
 					return R.string.account_status_stream_error;
 				default:

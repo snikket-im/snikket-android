@@ -648,6 +648,7 @@
 	<string name="device_does_not_support_battery_op">Your device does not support opting out of battery optimization</string>
 	<string name="show_password">Show password</string>
 	<string name="registration_please_wait">Registration failed: Try again later</string>
+	<string name="registration_password_too_weak">Registration failed: Password too weak</string>
 	<string name="create_conference">Create conference</string>
 	<string name="join_or_create_conference">Join or create conference</string>
 	<string name="conference_subject">Subject</string>
