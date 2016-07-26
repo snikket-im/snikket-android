@@ -1287,18 +1287,23 @@ public class XmppConnectionService extends Service {
 	}
 
 	private void markFileDeleted(final String path) {
+		Log.d(Config.LOGTAG,"deleted file "+path);
 		for (Conversation conversation : getConversations()) {
 			conversation.findMessagesWithFiles(new Conversation.OnMessageFound() {
 				@Override
 				public void onMessageFound(Message message) {
 					DownloadableFile file = fileBackend.getFile(message);
-					if (file.getAbsolutePath().equals(path) && !file.exists()) {
-						message.setTransferable(new TransferablePlaceholder(Transferable.STATUS_DELETED));
-						final int s = message.getStatus();
-						if (s == Message.STATUS_WAITING || s == Message.STATUS_OFFERED || s == Message.STATUS_UNSEND) {
-							markMessage(message, Message.STATUS_SEND_FAILED);
+					if (file.getAbsolutePath().equals(path)) {
+						if (file.exists()) {
+							message.setTransferable(new TransferablePlaceholder(Transferable.STATUS_DELETED));
+							final int s = message.getStatus();
+							if (s == Message.STATUS_WAITING || s == Message.STATUS_OFFERED || s == Message.STATUS_UNSEND) {
+								markMessage(message, Message.STATUS_SEND_FAILED);
+							} else {
+								updateConversationUi();
+							}
 						} else {
-							updateConversationUi();
+							Log.d(Config.LOGTAG,"found matching message for file "+path+" but file still exists");
 						}
 					}
 				}
