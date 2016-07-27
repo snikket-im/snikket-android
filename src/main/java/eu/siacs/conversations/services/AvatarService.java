@@ -298,7 +298,7 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 		}
 		bitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
 		Canvas canvas = new Canvas(bitmap);
-		final String trimmedName = name.trim();
+		final String trimmedName = name == null ? "" : name.trim();
 		drawTile(canvas, trimmedName, 0, 0, size, size);
 		mXmppConnectionService.getBitmapCache().put(KEY, bitmap);
 		return bitmap;
