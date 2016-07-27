@@ -512,7 +512,6 @@
   <string name="pref_use_white_background_summary">Afficher les messages reçus en texte noir sur fond blanc.</string>
   <string name="account_status_tor_unavailable">Réseau Tor inaccessible</string>
   <string name="account_status_bind_failure">La liaison a échoué</string>
-  <string name="account_status_host_unknown">Hôte inconnu</string>
   <string name="server_info_broken">Détraqué</string>
   <string name="pref_presence_settings">Disponibilité</string>
   <string name="pref_away_when_screen_off">Absent quand l\'écran est éteint</string>

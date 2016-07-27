@@ -507,7 +507,6 @@
   <string name="pref_use_white_background_summary">Pokazuj otrzymane wiadomości jako czarny tekst na białym tle</string>
   <string name="account_status_tor_unavailable">Sieć TOR jest niedostepna</string>
   <string name="account_status_bind_failure">Błąd połączenia (zasób)</string>
-  <string name="account_status_host_unknown">Nieznana nazwa hosta</string>
   <string name="server_info_broken">Zepsute</string>
   <string name="pref_presence_settings">Obecność</string>
   <string name="pref_away_when_screen_off">Status \"Oddalony\" gdy wyświetlacz jest wyłączony</string>

@@ -507,7 +507,6 @@
   <string name="pref_use_white_background_summary">Alınan iletileri beyaz arka plan üzerinde siyah yazıyla göster</string>
   <string name="account_status_tor_unavailable">Tor ağına erişilemiyor</string>
   <string name="account_status_bind_failure">Bağlantı başarısız</string>
-  <string name="account_status_host_unknown">Bilinmeyen sunucu</string>
   <string name="server_info_broken">Bozuk</string>
   <string name="pref_presence_settings">Durum</string>
   <string name="pref_away_when_screen_off">Ekran kapandığında uzakta</string>

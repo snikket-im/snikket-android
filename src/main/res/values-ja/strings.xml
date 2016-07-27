@@ -510,7 +510,6 @@
   <string name="pref_use_white_background_summary">白地に黒の文字で、受け取ったメッセージを表示します</string>
   <string name="account_status_tor_unavailable">Tor ネットワークが利用できません</string>
   <string name="account_status_bind_failure">バインド失敗</string>
-  <string name="account_status_host_unknown">ホストが不明</string>
   <string name="server_info_broken">壊れています</string>
   <string name="pref_presence_settings">参加</string>
   <string name="pref_away_when_screen_off">画面がオフのときは離席</string>

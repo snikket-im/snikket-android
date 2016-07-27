@@ -514,7 +514,6 @@
   <string name="pref_use_white_background_summary">Arata mesajele primite cu negru pe fond alb</string>
   <string name="account_status_tor_unavailable">Reteaua Tor nu este disponibila</string>
   <string name="account_status_bind_failure">Eroare de conexiune</string>
-  <string name="account_status_host_unknown">Gazda necunoscuta</string>
   <string name="server_info_broken">Deteriorat</string>
   <string name="pref_presence_settings">Setari de prezenta</string>
   <string name="pref_away_when_screen_off">Plecat cand ecranul este oprit</string>

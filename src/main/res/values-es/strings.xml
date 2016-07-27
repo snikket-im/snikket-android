@@ -512,7 +512,6 @@
   <string name="pref_use_white_background_summary">Mostrar mensajes recibidos en texto negro con fondo blanco</string>
   <string name="account_status_tor_unavailable">Red Tor no disponible.</string>
   <string name="account_status_bind_failure">Fallo de enlace</string>
-  <string name="account_status_host_unknown">Servidor desconocido</string>
   <string name="server_info_broken">Error</string>
   <string name="pref_presence_settings">Presencia</string>
   <string name="pref_away_when_screen_off">Ausente con pantalla apagada</string>

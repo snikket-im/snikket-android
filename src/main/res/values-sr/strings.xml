@@ -514,7 +514,6 @@
   <string name="pref_use_white_background_summary">Приказ примљених порука црним текстом на белој позадини</string>
   <string name="account_status_tor_unavailable">Тор мрежа недоступна</string>
   <string name="account_status_bind_failure">Неуспех свезивања</string>
-  <string name="account_status_host_unknown">Непознат домаћин</string>
   <string name="server_info_broken">Оштећен</string>
   <string name="pref_presence_settings">Присутност</string>
   <string name="pref_away_when_screen_off">Одсутан кад је екран искључен</string>

@@ -512,7 +512,6 @@
   <string name="pref_use_white_background_summary">Visa mottagna meddelanden som svart text på vit bakgrund</string>
   <string name="account_status_tor_unavailable">Tor-nätverk ej tillgängligt</string>
   <string name="account_status_bind_failure">Bind-fel</string>
-  <string name="account_status_host_unknown">Server okänd</string>
   <string name="server_info_broken">Sönder</string>
   <string name="pref_presence_settings">Tillgänglighet</string>
   <string name="pref_away_when_screen_off">Status borta när skärmen är av</string>

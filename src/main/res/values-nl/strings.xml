@@ -512,7 +512,6 @@
   <string name="pref_use_white_background_summary">Toon ontvangen berichten als zwarte tekst op een witte achtergrond</string>
   <string name="account_status_tor_unavailable">Tor-netwerk niet beschikbaar</string>
   <string name="account_status_bind_failure">Bindingsfout</string>
-  <string name="account_status_host_unknown">Onbekende host</string>
   <string name="server_info_broken">Gebroken</string>
   <string name="pref_presence_settings">Aanwezigheid</string>
   <string name="pref_away_when_screen_off">Even weg wanneer scherm uit staat</string>

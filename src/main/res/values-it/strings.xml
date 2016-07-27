@@ -116,6 +116,8 @@
   <string name="pref_led_summary">Luce di notifica lampeggiante quando arriva un nuovo messaggio</string>
   <string name="pref_sound">Suono di notifica</string>
   <string name="pref_sound_summary">Esegui un suono quando arriva un nuovo messaggio</string>
+  <string name="pref_notification_grace_period">Periodo di grazia</string>
+  <string name="pref_notification_grace_period_summary">Il periodo di tempo in cui Conversations resta silenzioso quando vede attività su un altro dispositivo</string>
   <string name="pref_advanced_options">Avanzate</string>
   <string name="pref_never_send_crash">Non inviare mai segnalazioni di errore</string>
   <string name="pref_never_send_crash_summary">Se scegli di inviare una segnalazione dell’errore aiuterai lo sviluppo di Conversations</string>
@@ -502,13 +504,13 @@
   <string name="invalid_username">Questo non è un nome utente valido</string>
   <string name="conference_name">Nome conferenza</string>
   <string name="invalid_conference_name">Questo non è un nome di conferenza valido</string>
-  <string name="download_failed_server_not_found">Download fallito: Server non trovato</string>
-  <string name="download_failed_file_not_found">Download fallito: File non trovato</string>
-  <string name="download_failed_could_not_connect">Download fallito: Impossibile connettersi all\'host</string>
+  <string name="download_failed_server_not_found">Scaricamento fallito: server non trovato</string>
+  <string name="download_failed_file_not_found">Scaricamento fallito: file non trovato</string>
+  <string name="download_failed_could_not_connect">Scaricamento fallito: impossibile connettersi all\'host</string>
+  <string name="download_failed_could_not_write_file">Scaricamento fallito: scrittura del file impossibile</string>
   <string name="pref_use_white_background">Usa sfondo bianco</string>
   <string name="pref_use_white_background_summary">Mostra i messaggi ricevuti con testo nero su sfondo bianco</string>
   <string name="account_status_tor_unavailable">Rete Tor non disponibile</string>
-  <string name="account_status_host_unknown">Host sconosciuto</string>
   <string name="server_info_broken">Rotto</string>
   <string name="pref_presence_settings">Presenza</string>
   <string name="pref_away_when_screen_off">\"Non disponibile\" a schermo spento</string>
@@ -613,4 +615,16 @@
   <string name="choose_participants">Scegli i partecipanti</string>
   <string name="creating_conference">Creazione conferenza...</string>
   <string name="invite_again">Invita di nuovo</string>
+  <string name="gp_short">Breve</string>
+  <string name="gp_medium">Medio</string>
+  <string name="gp_long">Lungo</string>
+  <string name="pref_broadcast_last_activity">Trasmetti ultima interazione utente</string>
+  <string name="pref_broadcast_last_activity_summary">Fai sapere ai tuoi contatti quando usi Conversations</string>
+  <string name="pref_privacy">Privacy</string>
+  <string name="pref_theme_options">Tema</string>
+  <string name="pref_theme_options_summary">Seleziona il colore</string>
+  <string name="pref_theme_light">Tema chiaro</string>
+  <string name="pref_theme_dark">Tema scuro</string>
+  <string name="pref_use_green_background">Sfondo verde</string>
+  <string name="pref_use_green_background_summary">Usa sfondo verde per messaggi ricevuti</string>
 </resources>

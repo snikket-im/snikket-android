@@ -512,7 +512,6 @@
   <string name="pref_use_white_background_summary">Jasotako mezuak testu beltza atzeko-plano zuri baten gainean bezala erakutsi</string>
   <string name="account_status_tor_unavailable">Tor sarea ez dago eskuragarri</string>
   <string name="account_status_bind_failure">Estekatzeak hust egin du</string>
-  <string name="account_status_host_unknown">Ostalari ezezaguna</string>
   <string name="server_info_broken">Hondatuta</string>
   <string name="pref_presence_settings">Presentzia</string>
   <string name="pref_away_when_screen_off">Urrun pantaila itzalita dagoenean</string>

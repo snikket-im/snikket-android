@@ -510,7 +510,6 @@
   <string name="pref_use_white_background_summary">收到的消息将显示为白底黑字</string>
   <string name="account_status_tor_unavailable">Tor network 不可用</string>
   <string name="account_status_bind_failure">绑定失败</string>
-  <string name="account_status_host_unknown">主机未知</string>
   <string name="server_info_broken">损坏</string>
   <string name="pref_presence_settings">存在</string>
   <string name="pref_away_when_screen_off">关闭屏幕时离开</string>

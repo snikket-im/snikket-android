@@ -512,7 +512,6 @@
   <string name="pref_use_white_background_summary">Показване на получените съобщения с черен текст на бял фон</string>
   <string name="account_status_tor_unavailable">Мрежата на Тор е недостъпна</string>
   <string name="account_status_bind_failure">Грешка при свързване</string>
-  <string name="account_status_host_unknown">Сървърът е непознат</string>
   <string name="server_info_broken">Повредено</string>
   <string name="pref_presence_settings">Присъствие</string>
   <string name="pref_away_when_screen_off">Отсъстващ, когато екранът е изключен</string>

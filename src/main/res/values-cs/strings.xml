@@ -514,7 +514,6 @@
   <string name="pref_use_white_background_summary">Zobrazovat přijaté zprávy jako černý text na bílém pozadí</string>
   <string name="account_status_tor_unavailable">Tor síť není dostupná</string>
   <string name="account_status_bind_failure">Bind chyba</string>
-  <string name="account_status_host_unknown">Host neznámý</string>
   <string name="server_info_broken">Rozbité</string>
   <string name="pref_presence_settings">Stav</string>
   <string name="pref_away_when_screen_off">Pryč při vypnuté obrazovce</string>
