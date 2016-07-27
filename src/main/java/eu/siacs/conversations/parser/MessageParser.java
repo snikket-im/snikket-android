@@ -40,7 +40,7 @@ import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
 
 public class MessageParser extends AbstractParser implements OnMessagePacketReceived {
 
-	private static final List<String> CLIENTS_SENDING_HTML_IN_OTR = Arrays.asList(new String[]{"Pidgin","Adium"});
+	private static final List<String> CLIENTS_SENDING_HTML_IN_OTR = Arrays.asList("Pidgin","Adium","Trillian");
 
 	public MessageParser(XmppConnectionService service) {
 		super(service);
