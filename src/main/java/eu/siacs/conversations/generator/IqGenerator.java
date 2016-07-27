@@ -60,6 +60,11 @@ public class IqGenerator extends AbstractGenerator {
 		Element query = packet.query("jabber:iq:version");
 		query.addChild("name").setContent(mXmppConnectionService.getString(R.string.app_name));
 		query.addChild("version").setContent(getIdentityVersion());
+		if ("chromium".equals(android.os.Build.BRAND)) {
+			query.addChild("os").setContent("Chromium");
+		} else{
+			query.addChild("os").setContent("Android");
+		}
 		return packet;
 	}
 
