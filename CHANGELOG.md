@@ -1,5 +1,8 @@
 ###Changelog
 
+####Version 1.13.7
+* bug fixes
+
 ####Version 1.13.6
 * thumbnails for videos
 * bug fixes
