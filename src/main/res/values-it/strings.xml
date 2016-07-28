@@ -157,7 +157,9 @@
   <string name="account_status_regis_success">Registrazione completata</string>
   <string name="account_status_regis_not_sup">Il Server non supporta la registrazione</string>
   <string name="account_status_security_error">Errore di sicurezza</string>
+  <string name="account_status_policy_violation">Violazione della policy</string>
   <string name="account_status_incompatible_server">Server non compatibile</string>
+  <string name="account_status_stream_error">Errore di stream</string>
   <string name="encryption_choice_unencrypted">Non cifrato</string>
   <string name="encryption_choice_otr">OTR</string>
   <string name="encryption_choice_pgp">OpenPGP</string>
@@ -218,13 +220,15 @@
   <string name="reception_failed">Ricezione fallita</string>
   <string name="your_fingerprint">La tua impronta</string>
   <string name="otr_fingerprint">Impronta OTR</string>
-  <string name="omemo_fingerprint">Fingerprint OMEMO</string>
-  <string name="omemo_fingerprint_x509">v\\OMEMO fingerprint</string>
-  <string name="omemo_fingerprint_selected_message">Fingerprint OMEMO del messaggio</string>
-  <string name="omemo_fingerprint_x509_selected_message">Fingerprint v\\OMEMO del messaggio</string>
-  <string name="this_device_omemo_fingerprint">Propria fingerprint OMEMO</string>
+  <string name="otr_fingerprint_selected_message">Impronta OTR del messaggio</string>
+  <string name="openpgp_key_id">ID chiave OpenPGP</string>
+  <string name="omemo_fingerprint">Impronta OMEMO</string>
+  <string name="omemo_fingerprint_x509">v\\OMEMO impronta</string>
+  <string name="omemo_fingerprint_selected_message">Impronta OMEMO del messaggio</string>
+  <string name="omemo_fingerprint_x509_selected_message">Impronta v\\OMEMO del messaggio</string>
+  <string name="this_device_omemo_fingerprint">Propria impronta OMEMO</string>
   <string name="other_devices">Altri dispositivi</string>
-  <string name="trust_omemo_fingerprints">Fidati delle Fingerprint OMEMO</string>
+  <string name="trust_omemo_fingerprints">Fidati delle impronte OMEMO</string>
   <string name="fetching_keys">Ricezione chiavi...</string>
   <string name="done">Fatto</string>
   <string name="verify">Verifica</string>
@@ -313,7 +317,7 @@
   <string name="pref_autojoin">Entra automaticamente in conferenza</string>
   <string name="pref_autojoin_summary">Rispetta l\'opzione di entrata automatica nei segnalibri di conferenze</string>
   <string name="toast_message_otr_fingerprint">Impronta OTR copiata!</string>
-  <string name="toast_message_omemo_fingerprint">Fingerprint OMEMO copiata negli appunti|</string>
+  <string name="toast_message_omemo_fingerprint">impronta OMEMO copiata negli appunti|</string>
   <string name="conference_banned">Sei stato bandito da questa conferenza</string>
   <string name="conference_members_only">Questa conferenza è solo per membri</string>
   <string name="conference_kicked">Sei stato buttato fuori dalla conferenza</string>
@@ -385,7 +389,7 @@
   <string name="reset">Reset</string>
   <string name="account_image_description">Avatar utente</string>
   <string name="copy_otr_clipboard_description">Copia impronta OTR</string>
-  <string name="copy_omemo_clipboard_description">Copia fingerprint OMEMO negli appunti</string>
+  <string name="copy_omemo_clipboard_description">Copia impronta OMEMO negli appunti</string>
   <string name="regenerate_omemo_key">Rigenera chiave OMEMO</string>
   <string name="wipe_omemo_pep">Cancella altri dispositivi da PEP</string>
   <string name="clear_other_devices">Pulisci dispositivi</string>
@@ -403,11 +407,11 @@
   <string name="could_not_change_password">Impossibile cambiare la password</string>
   <string name="otr_session_not_started">Invia un messaggio per avviare una conversazione cifrata</string>
   <string name="ask_question">Fai una domanda</string>
-  <string name="smp_explain_question">Se condividi con il tuo contatto un segreto in comune non conosciuto da altri (come uno scherzo privato o semplicemente quel che avete mangiato l\'ultima volta insieme) potete usarlo per verificare le vostre fingerprint.\n\nInvia un suggerimento o una domanda al tuo contatto il quale dovrà rispondere con una risposta controllando le maiuscole.</string>
-  <string name="smp_explain_answer">Il tuo contatto vorrebbe verificare la tua identità. Dovrai rispondere correttamente alla sua domanda con una risposta che condividete. Il tuo contatto ti ha fornito il suggerimento o la domanda seguente.</string>
+  <string name="smp_explain_question">Se condividi con il tuo contatto un segreto in comune non conosciuto da altri (come uno scherzo privato o semplicemente quel che avete mangiato l\'ultima volta insieme) potete usarlo per verificare le vostre impronte.\n\nInvia un suggerimento o una domanda al tuo contatto il quale dovrà rispondere con una risposta controllando le maiuscole.</string>
+  <string name="smp_explain_answer">Il tuo contatto vorrebbe verificare la tua impronta. Dovrai rispondere correttamente alla sua domanda con una risposta che condividete. Il tuo contatto ti ha fornito il suggerimento o la domanda seguente.</string>
   <string name="shared_secret_hint_should_not_be_empty">Il suggerimento non dovrebbe essere vuoto</string>
   <string name="shared_secret_can_not_be_empty">Il segreto condiviso non può essere vuoto</string>
-  <string name="manual_verification_explanation">Compara attentamente l’impronta mostrata sotto con l’impronta del tuo contatto.\nPuoi usare qualsiasi forma di comunicazione fidata come una e-mail cifrata o una chiamata telefonica per confrontare le impronte.</string>
+  <string name="manual_verification_explanation">Confronta attentamente l’impronta mostrata sotto con l’impronta del tuo contatto.\nPuoi usare qualsiasi forma di comunicazione fidata come una e-mail cifrata o una chiamata telefonica per confrontare le impronte.</string>
   <string name="change_password">Cambia password</string>
   <string name="current_password">Password attuale</string>
   <string name="new_password">Nuova password</string>
@@ -511,6 +515,7 @@
   <string name="pref_use_white_background">Usa sfondo bianco</string>
   <string name="pref_use_white_background_summary">Mostra i messaggi ricevuti con testo nero su sfondo bianco</string>
   <string name="account_status_tor_unavailable">Rete Tor non disponibile</string>
+  <string name="account_status_host_unknown">Server non responsabile per il dominio</string>
   <string name="server_info_broken">Rotto</string>
   <string name="pref_presence_settings">Presenza</string>
   <string name="pref_away_when_screen_off">\"Non disponibile\" a schermo spento</string>
@@ -609,6 +614,7 @@
   <string name="device_does_not_support_battery_op">Il tuo dispositivo non supporta l\'esclusione per l\'ottimizzazione della batteria</string>
   <string name="show_password">Mostra la password</string>
   <string name="registration_please_wait">Registrazione fallita: riprova più tardi</string>
+  <string name="registration_password_too_weak">Registrazione fallita: password troppo debole</string>
   <string name="create_conference">Crea conferenza</string>
   <string name="join_or_create_conference">Entra o crea una conferenza</string>
   <string name="conference_subject">Soggetto</string>
@@ -627,4 +633,6 @@
   <string name="pref_theme_dark">Tema scuro</string>
   <string name="pref_use_green_background">Sfondo verde</string>
   <string name="pref_use_green_background_summary">Usa sfondo verde per messaggi ricevuti</string>
+  <string name="unable_to_connect_to_keychain">Impossibile connettersi a OpenKeychain</string>
+  <string name="this_device_is_no_longer_in_use">Questo dispositivo non è più in uso</string>
 </resources>

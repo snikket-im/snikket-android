@@ -157,7 +157,9 @@
   <string name="account_status_regis_success">Registrering klar</string>
   <string name="account_status_regis_not_sup">Servern stödjer inte registrering</string>
   <string name="account_status_security_error">Säkerhetsfel</string>
+  <string name="account_status_policy_violation">Kränkning av policy</string>
   <string name="account_status_incompatible_server">Inkompatibel server</string>
+  <string name="account_status_stream_error">Strömningsfel</string>
   <string name="encryption_choice_unencrypted">Okrypterat</string>
   <string name="encryption_choice_otr">OTR</string>
   <string name="encryption_choice_pgp">OpenPGP</string>
@@ -218,6 +220,8 @@
   <string name="reception_failed">Mottagning misslyckades</string>
   <string name="your_fingerprint">Ditt fingeravtryck</string>
   <string name="otr_fingerprint">OTR-fingeravtryck</string>
+  <string name="otr_fingerprint_selected_message">Meddelandets OTR-fingeravtryck</string>
+  <string name="openpgp_key_id">OpenPGP-nyckel-ID</string>
   <string name="omemo_fingerprint">OMEMO-fingeravtryck</string>
   <string name="omemo_fingerprint_x509">v\\OMEMO-fingeravtryck</string>
   <string name="omemo_fingerprint_selected_message">Meddelandets OMEMO-fingeravtryck</string>
@@ -512,6 +516,7 @@
   <string name="pref_use_white_background_summary">Visa mottagna meddelanden som svart text på vit bakgrund</string>
   <string name="account_status_tor_unavailable">Tor-nätverk ej tillgängligt</string>
   <string name="account_status_bind_failure">Bind-fel</string>
+  <string name="account_status_host_unknown">Servern är inte ansvarig för domänen</string>
   <string name="server_info_broken">Sönder</string>
   <string name="pref_presence_settings">Tillgänglighet</string>
   <string name="pref_away_when_screen_off">Status borta när skärmen är av</string>
@@ -610,6 +615,7 @@
   <string name="device_does_not_support_battery_op">Din enhet stödjer inte deaktivering av batterioptimeringar</string>
   <string name="show_password">Visa lösenord</string>
   <string name="registration_please_wait">Registreringfel: Försök igen senare</string>
+  <string name="registration_password_too_weak">Registreringsfel: Lösenordet är för svagt</string>
   <string name="create_conference">Skapa konferens</string>
   <string name="join_or_create_conference">Gå med i eller skapa konferens</string>
   <string name="conference_subject">Ämne</string>
@@ -628,4 +634,6 @@
   <string name="pref_theme_dark">Mörkt tema</string>
   <string name="pref_use_green_background">Grön bakgrund</string>
   <string name="pref_use_green_background_summary">Använd grön bakgrund för mottagna meddelanden</string>
+  <string name="unable_to_connect_to_keychain">Kan inte ansluta till OpenKeychain</string>
+  <string name="this_device_is_no_longer_in_use">Denna enhet används inte längre</string>
 </resources>

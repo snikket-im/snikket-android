@@ -2,7 +2,7 @@
 <resources>
   <string name="action_settings">Налаштування</string>
   <string name="action_add">Нова розмова</string>
-  <string name="action_accounts">Впорядкувати обліові записи</string>
+  <string name="action_accounts">Впорядкувати облікові записи</string>
   <string name="action_end_conversation">Завершити цю розмову</string>
   <string name="action_contact_details">Деталі контакту</string>
   <string name="action_muc_details">Деталі конференції</string>
@@ -20,7 +20,7 @@
   <string name="title_activity_conference_details">Деталі конференції</string>
   <string name="title_activity_contact_details">Деталі контакту</string>
   <string name="title_activity_sharewith">Поділитися в Розмови</string>
-  <string name="title_activity_start_conversation">Розпочати розмову</string>
+  <string name="title_activity_start_conversation">Почати розмову</string>
   <string name="title_activity_choose_contact">Вибрати контакт</string>
   <string name="title_activity_block_list">Список блокування</string>
   <string name="just_now">щойно</string>
@@ -46,7 +46,7 @@
   <string name="register_account">Зареєструвати новий обліковий запис на сервері</string>
   <string name="change_password_on_server">Змінити пароль на сервері</string>
   <string name="share_with">Поділитися з…</string>
-  <string name="start_conversation">Розпочати розмову</string>
+  <string name="start_conversation">Почати розмову</string>
   <string name="invite_contact">Запросити контакт</string>
   <string name="contacts">Контакти</string>
   <string name="cancel">Скасувати</string>
@@ -157,7 +157,9 @@
   <string name="account_status_regis_success">Реєстрацію виконано</string>
   <string name="account_status_regis_not_sup">Сервер не підтримує режстрацію</string>
   <string name="account_status_security_error">Помилка безпеки</string>
+  <string name="account_status_policy_violation">Порушення політики</string>
   <string name="account_status_incompatible_server">Несумісний сервер</string>
+  <string name="account_status_stream_error">Помилка потоку</string>
   <string name="encryption_choice_unencrypted">Незашифровано</string>
   <string name="encryption_choice_otr">OTR</string>
   <string name="encryption_choice_pgp">OpenPGP</string>
@@ -192,17 +194,17 @@
   <string name="muc_details_conference">Конференція</string>
   <string name="muc_details_other_members">Інші учасники</string>
   <string name="server_info_show_more">Інформація про сервер</string>
-  <string name="server_info_mam">XEP-0313: управління архівом повідомлень</string>
+  <string name="server_info_mam">XEP-0313: управління архівом</string>
   <string name="server_info_carbon_messages">XEP-0280: копії повідомлень</string>
   <string name="server_info_csi">XEP-0352: індикація стану клієнта</string>
   <string name="server_info_blocking">XEP-0191: команди блокування</string>
   <string name="server_info_roster_version">XEP-0237: зміни списку розмов</string>
   <string name="server_info_stream_management">XEP-0198: управління потоком</string>
-  <string name="server_info_pep">XEP-0163: протокол персональних подій (аватари / OMEMO)</string>
-  <string name="server_info_http_upload">XEP-0363: вивантаження файлів по HTTP</string>
+  <string name="server_info_pep">XEP-0163: персональне (аватари, OMEMO)</string>
+  <string name="server_info_http_upload">XEP-0363: обмін файлами по HTTP</string>
   <string name="server_info_push">XEP-0357: проштовхувані повідомлення</string>
-  <string name="server_info_available">достуний</string>
-  <string name="server_info_unavailable">недоступний</string>
+  <string name="server_info_available">є</string>
+  <string name="server_info_unavailable">нема</string>
   <string name="missing_public_keys">Не вистачає повідомлення публічного ключа.</string>
   <string name="last_seen_now">востаннє бачили щойно</string>
   <string name="last_seen_min">востаннє бачили 1 хвилину тому</string>
@@ -218,6 +220,8 @@
   <string name="reception_failed">Не вдалося отримати</string>
   <string name="your_fingerprint">Ваш відбиток</string>
   <string name="otr_fingerprint">Відбиток OTR</string>
+  <string name="otr_fingerprint_selected_message">OTR-відбиток повідомлення</string>
+  <string name="openpgp_key_id">Ідентифікатор ключа OpenPGP</string>
   <string name="omemo_fingerprint">Відбиток OMEMO</string>
   <string name="omemo_fingerprint_x509">Відбиток v\\OMEMO</string>
   <string name="omemo_fingerprint_selected_message">Відбиток OMEMO повідомлення</string>
@@ -253,7 +257,7 @@
   <string name="joining_conference">Долучаюся до концеренції…</string>
   <string name="leave">Залишити</string>
   <string name="contact_added_you">Контакт додано до Вашого списку контактів</string>
-  <string name="add_back">Додати назад</string>
+  <string name="add_back">Також додати</string>
   <string name="contact_has_read_up_to_this_point">%s дочитав до цього місця</string>
   <string name="publish">Опублікувати</string>
   <string name="touch_to_choose_picture">Торкніться аватару, щоб вибрати зображення з галереї</string>
@@ -288,9 +292,9 @@
   <string name="pref_security_settings">Безпека</string>
   <string name="pref_force_encryption">Вимагати шифрування від відправника до отримувача</string>
   <string name="pref_force_encryption_summary">Завжди надсилати зашифровані повідомлення (крім конференцій)</string>
-  <string name="pref_allow_message_correction">Дозволити коригування повідомлень</string>
-  <string name="pref_allow_message_correction_summary">Дозволити контактам редагувати свої повідомлення опісля</string>
-  <string name="pref_dont_save_encrypted">Не зберігати зашифровані повідомлення</string>
+  <string name="pref_allow_message_correction">Дозволити міняти повідомлення</string>
+  <string name="pref_allow_message_correction_summary">Дозволити контактам редагувати свої повідомлення після відправки</string>
+  <string name="pref_dont_save_encrypted">Не зберігати шифровані повідомлення</string>
   <string name="pref_dont_save_encrypted_summary">Попередження: Це може призвести до втрати повідомлень</string>
   <string name="pref_expert_options">Експертні налаштування</string>
   <string name="pref_expert_options_summary">Будь ласка, будьте обережними з цим</string>
@@ -301,16 +305,16 @@
   <string name="title_pref_quiet_hours_end_time">Час завершення</string>
   <string name="title_pref_enable_quiet_hours">Задіяти години тиші</string>
   <string name="pref_quiet_hours_summary">Сповіщення не звучатимуть під час годин тиші</string>
-  <string name="pref_use_larger_font">Щбільшити розмір шрифту</string>
+  <string name="pref_use_larger_font">Збільшити розмір шрифту</string>
   <string name="pref_use_larger_font_summary">Використовувати більші розміри шрифтів у всій програмі</string>
-  <string name="pref_use_send_button_to_indicate_status">Кнопка відправки відображає статус</string>
+  <string name="pref_use_send_button_to_indicate_status">Кнопка відправки показує стан</string>
   <string name="pref_use_indicate_received">Просити повідомлення про доставку</string>
   <string name="pref_use_indicate_received_summary">Отримані повідомлення будуть позначені зеленою галочкою, якщо ця функція підтримується</string>
   <string name="pref_use_send_button_to_indicate_status_summary">Змінювати колір кнопки відправлення на позначення статусу контакта</string>
   <string name="pref_expert_options_other">Інше</string>
   <string name="pref_conference_name">Назва конференції</string>
   <string name="pref_conference_name_summary">Використовувати тему кімнати замість JID для ідентифікації конференцій</string>
-  <string name="pref_autojoin">Автоматично долучатися до конфернцій</string>
+  <string name="pref_autojoin">Одразу долучатися до конференцій</string>
   <string name="pref_autojoin_summary">Виконувати автоматичне долучення до конференції, якщо закладка пропонує</string>
   <string name="toast_message_otr_fingerprint">Відбиток OTR скопійовано до комірки обміну!</string>
   <string name="toast_message_omemo_fingerprint">Відбиток OMEMO скопійовано до комірки обміну!</string>
@@ -335,7 +339,7 @@
   <string name="image_transmission_failed">Передача зображення не відбулася</string>
   <string name="scan_qr_code">Сканувати QR код</string>
   <string name="show_qr_code">Показати QR код</string>
-  <string name="show_block_list">Показати список блокуванн</string>
+  <string name="show_block_list">Показати список блокування</string>
   <string name="account_details">Деталі облікового запису</string>
   <string name="verify_otr">Перевірити OTR</string>
   <string name="remote_fingerprint">Віддалені відбитки</string>
@@ -498,7 +502,7 @@
   <string name="none">Жодної</string>
   <string name="recently_used">Остання, що використана</string>
   <string name="choose_quick_action">Вибрати швидку дію</string>
-  <string name="search_for_contacts_or_groups">Шукати контакти або групи</string>
+  <string name="search_for_contacts_or_groups">Шукати контакти і групи</string>
   <string name="send_private_message">Відправити приватне повідомлення</string>
   <string name="user_has_left_conference">%s залишив конференцію!</string>
   <string name="username">Ім\'я користувача</string>
@@ -514,6 +518,7 @@
   <string name="pref_use_white_background_summary">Відображати отримані повідомлення чорним по білому</string>
   <string name="account_status_tor_unavailable">Мережа Tor не доступна</string>
   <string name="account_status_bind_failure">Прив\'язка не спрацювала</string>
+  <string name="account_status_host_unknown">Сервер не відповідає за домен</string>
   <string name="server_info_broken">Поламано</string>
   <string name="pref_presence_settings">Присутність</string>
   <string name="pref_away_when_screen_off">Відійшов, якщо екран викнуто</string>
@@ -525,7 +530,7 @@
   <string name="pref_show_connection_options">Розширені налаштування з\'єднання</string>
   <string name="pref_show_connection_options_summary">Показати налаштування імені хосту та порту при налаштуванні облікового запису</string>
   <string name="hostname_example">xmpp.example.com</string>
-  <string name="action_add_account_with_certificate">Додати обліковий запис із сертифікатом</string>
+  <string name="action_add_account_with_certificate">Додати обліковку з сертифікатом</string>
   <string name="unable_to_parse_certificate">Не можу розпізнати сертифікат</string>
   <string name="authenticate_with_certificate">Залиште порожнім, щоб авторизувати без сертифіката</string>
   <string name="mam_prefs">Налаштування збереження</string>
@@ -613,6 +618,7 @@
   <string name="device_does_not_support_battery_op">Ваш пристрій не підтримує відключення оптимізації батареї</string>
   <string name="show_password">Показати пароль</string>
   <string name="registration_please_wait">Реєстрація не вдалася: Спробуйте ще раз пізніше</string>
+  <string name="registration_password_too_weak">Реєстрація не відбулася: пароль занадто слабкий.</string>
   <string name="create_conference">Створити конференцію</string>
   <string name="join_or_create_conference">Приєднатися до конференції або створити концеренцію</string>
   <string name="conference_subject">Тема</string>
@@ -631,4 +637,6 @@
   <string name="pref_theme_dark">Темна тема</string>
   <string name="pref_use_green_background">Зелене тло</string>
   <string name="pref_use_green_background_summary">Використовувати зелене тло для отриманих повідомлень</string>
+  <string name="unable_to_connect_to_keychain">Не можу зв\'язатися з OpenKeychain</string>
+  <string name="this_device_is_no_longer_in_use">Цей пристрій більше не використовується</string>
 </resources>

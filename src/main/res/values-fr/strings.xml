@@ -158,6 +158,7 @@
   <string name="account_status_regis_not_sup">Le serveur ne permet pas l\'enregistrement</string>
   <string name="account_status_security_error">Erreur de sécurité</string>
   <string name="account_status_incompatible_server">Serveur incompatible</string>
+  <string name="account_status_stream_error">Erreur de flux</string>
   <string name="encryption_choice_unencrypted">Non chiffré</string>
   <string name="encryption_choice_otr">OTR</string>
   <string name="encryption_choice_pgp">OpenPGP</string>
@@ -218,6 +219,8 @@
   <string name="reception_failed">Échec lors de la réception</string>
   <string name="your_fingerprint">Votre empreinte</string>
   <string name="otr_fingerprint">Empreinte OTR</string>
+  <string name="otr_fingerprint_selected_message">Empreinte OTR du message</string>
+  <string name="openpgp_key_id">ID Clef OpenPGP</string>
   <string name="omemo_fingerprint">Empreinte OMEMO</string>
   <string name="omemo_fingerprint_x509">v\\Empreinte OMEMO</string>
   <string name="omemo_fingerprint_selected_message">Empreinte OMEMO du message</string>
@@ -610,6 +613,7 @@
   <string name="device_does_not_support_battery_op">Les optimisations de batterie ne peuvent pas être désactivées sur votre appareil</string>
   <string name="show_password">Afficher le mot de passe</string>
   <string name="registration_please_wait">L\'enregistrement a échoué : Réessayer plus tard</string>
+  <string name="registration_password_too_weak">L\'enregistrement a échoué : Le mot de passe est trop faible</string>
   <string name="create_conference">Créer une conférence</string>
   <string name="join_or_create_conference">Rejoindre ou créer une conférence</string>
   <string name="conference_subject">Objet</string>
@@ -628,4 +632,6 @@
   <string name="pref_theme_dark">Thème Sombre</string>
   <string name="pref_use_green_background">Fond Vert</string>
   <string name="pref_use_green_background_summary">Utiliser un fond vert pour les messages reçus</string>
+  <string name="unable_to_connect_to_keychain">Connection à OpenKeychain impossible</string>
+  <string name="this_device_is_no_longer_in_use">Ce périphérique n\'est plus utilisé</string>
 </resources>

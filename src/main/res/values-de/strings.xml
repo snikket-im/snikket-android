@@ -610,6 +610,7 @@
   <string name="device_does_not_support_battery_op">Dein Gerät unterstützt kein Ausschalten der Batterieoptimierung</string>
   <string name="show_password">Passwort anzeigen</string>
   <string name="registration_please_wait">Fehlgeschlagen: Bitte später versuchen.</string>
+  <string name="registration_password_too_weak">Registrierung fehlgeschlagen; Passwort zu schwach</string>
   <string name="create_conference">Konferenz erstellen</string>
   <string name="join_or_create_conference">Konferenz beitreten oder erstellen</string>
   <string name="conference_subject">Thema</string>
@@ -628,4 +629,5 @@
   <string name="pref_theme_dark">Dunkles Design</string>
   <string name="pref_use_green_background">Grüner Hintergrund</string>
   <string name="pref_use_green_background_summary">Für empfangene Nachrichten grünen Hintergrund verwenden</string>
+  <string name="this_device_is_no_longer_in_use">Dieses Gerät ist nicht länger in Benutzung</string>
 </resources>

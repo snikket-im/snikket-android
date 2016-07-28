@@ -157,7 +157,9 @@
   <string name="account_status_regis_success">登録が完了しました</string>
   <string name="account_status_regis_not_sup">サーバーが登録をサポートしていません</string>
   <string name="account_status_security_error">セキュリティ エラー</string>
+  <string name="account_status_policy_violation">ポリシー違反</string>
   <string name="account_status_incompatible_server">互換性のないサーバー</string>
+  <string name="account_status_stream_error">ストリーム エラー</string>
   <string name="encryption_choice_unencrypted">暗号化されていない</string>
   <string name="encryption_choice_otr">OTR</string>
   <string name="encryption_choice_pgp">OpenPGP</string>
@@ -218,6 +220,8 @@
   <string name="reception_failed">受信に失敗しました</string>
   <string name="your_fingerprint">あなたのフィンガープリント</string>
   <string name="otr_fingerprint">OTR フィンガープリント</string>
+  <string name="otr_fingerprint_selected_message">メッセージの OTR フィンガープリント</string>
+  <string name="openpgp_key_id">OpenPGP 鍵 ID</string>
   <string name="omemo_fingerprint">OMEMO フィンガープリント</string>
   <string name="omemo_fingerprint_x509">v\\OMEMO フィンガープリント</string>
   <string name="omemo_fingerprint_selected_message">メッセージの OMEMO フィンガープリント</string>
@@ -510,6 +514,7 @@
   <string name="pref_use_white_background_summary">白地に黒の文字で、受け取ったメッセージを表示します</string>
   <string name="account_status_tor_unavailable">Tor ネットワークが利用できません</string>
   <string name="account_status_bind_failure">バインド失敗</string>
+  <string name="account_status_host_unknown">サーバーがドメインに対応しません</string>
   <string name="server_info_broken">壊れています</string>
   <string name="pref_presence_settings">参加</string>
   <string name="pref_away_when_screen_off">画面がオフのときは離席</string>
@@ -607,6 +612,7 @@
   <string name="device_does_not_support_battery_op">お使いのデバイスはバッテリー最適化の停止をサポートしていません</string>
   <string name="show_password">パスワードを表示</string>
   <string name="registration_please_wait">登録に失敗しました: 後でもう一度試してください</string>
+  <string name="registration_password_too_weak">登録に失敗しました: パスワードが弱すぎます</string>
   <string name="create_conference">会議を作成</string>
   <string name="join_or_create_conference">会議に参加または作成</string>
   <string name="conference_subject">主題</string>
@@ -625,4 +631,6 @@
   <string name="pref_theme_dark">ダークテーマ</string>
   <string name="pref_use_green_background">緑の背景</string>
   <string name="pref_use_green_background_summary">受信したメッセージに緑の背景を使用します</string>
+  <string name="unable_to_connect_to_keychain">OpenKeychain に接続できません</string>
+  <string name="this_device_is_no_longer_in_use">このデバイスは、現在使用されていません</string>
 </resources>

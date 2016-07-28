@@ -157,7 +157,9 @@
   <string name="account_status_regis_success">Registro completado</string>
   <string name="account_status_regis_not_sup">El servidor no soporta registros</string>
   <string name="account_status_security_error">Error de seguridad</string>
+  <string name="account_status_policy_violation">Policy violation</string>
   <string name="account_status_incompatible_server">Servidor incompatible</string>
+  <string name="account_status_stream_error">Stream error</string>
   <string name="encryption_choice_unencrypted">Sin cifrado</string>
   <string name="encryption_choice_otr">OTR</string>
   <string name="encryption_choice_pgp">OpenPGP</string>
@@ -218,6 +220,8 @@
   <string name="reception_failed">Error al recibir</string>
   <string name="your_fingerprint">Tu huella digital</string>
   <string name="otr_fingerprint">Huella digital OTR</string>
+  <string name="otr_fingerprint_selected_message">Huella digital del mensaje OTR</string>
+  <string name="openpgp_key_id">OpenPGP Key ID</string>
   <string name="omemo_fingerprint">Huella digital OMEMO</string>
   <string name="omemo_fingerprint_x509">Huella digital v\\OMEMO</string>
   <string name="omemo_fingerprint_selected_message">Huella digital OMEMO del mensaje</string>
@@ -512,6 +516,7 @@
   <string name="pref_use_white_background_summary">Mostrar mensajes recibidos en texto negro con fondo blanco</string>
   <string name="account_status_tor_unavailable">Red Tor no disponible.</string>
   <string name="account_status_bind_failure">Fallo de enlace</string>
+  <string name="account_status_host_unknown">El servidor no es responsable del dominio</string>
   <string name="server_info_broken">Error</string>
   <string name="pref_presence_settings">Presencia</string>
   <string name="pref_away_when_screen_off">Ausente con pantalla apagada</string>
@@ -610,6 +615,7 @@
   <string name="device_does_not_support_battery_op">Tu dispositivo no soporta la opción de optimización de batería</string>
   <string name="show_password">Mostrar contraseña</string>
   <string name="registration_please_wait">El registro falló. Prueba de nuevo más tarde</string>
+  <string name="registration_password_too_weak">Error en el registro: La contraseña es demasiado débil</string>
   <string name="create_conference">Crear conversación en grupo</string>
   <string name="join_or_create_conference">Unirse o crear conversación en grupo</string>
   <string name="conference_subject">Asunto</string>
@@ -628,4 +634,6 @@
   <string name="pref_theme_dark">Tema oscuro</string>
   <string name="pref_use_green_background">Fondo verde</string>
   <string name="pref_use_green_background_summary">Usar fondo verde para mensajes recibidos</string>
+  <string name="unable_to_connect_to_keychain">No se ha podido conectar a OpenKeychain</string>
+  <string name="this_device_is_no_longer_in_use">Este dispositivo ya no está en uso</string>
 </resources>
