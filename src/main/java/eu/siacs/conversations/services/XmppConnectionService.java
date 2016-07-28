@@ -196,7 +196,7 @@ public class XmppConnectionService extends Service {
 					if (contact.getPresences().size() >= 1) {
 						if (conversation.hasValidOtrSession()) {
 							String otrResource = conversation.getOtrSession().getSessionID().getUserID();
-							if (!(Arrays.asList(contact.getPresences().asStringArray()).contains(otrResource))) {
+							if (!(Arrays.asList(contact.getPresences().toResourceArray()).contains(otrResource))) {
 								conversation.endOtrIfNeeded();
 							}
 						}

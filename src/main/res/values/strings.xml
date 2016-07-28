@@ -79,7 +79,7 @@
 	<string name="clear_histor_msg">Do you want to delete all messages within this Conversation?\n\n<b>Warning:</b> This will not influence messages stored on other devices or servers.</string>
 	<string name="delete_messages">Delete messages</string>
 	<string name="also_end_conversation">End this conversation afterwards</string>
-	<string name="choose_presence">Choose presence to contact</string>
+	<string name="choose_presence">Choose device</string>
 	<string name="send_unencrypted_message">Send unencrypted message</string>
 	<string name="send_message_to_x">Send message to %s</string>
 	<string name="send_otr_message">Send OTR encrypted message</string>
@@ -669,4 +669,9 @@
 	<string name="pref_use_green_background_summary">Use green background for received messages</string>
 	<string name="unable_to_connect_to_keychain">Unable to connect to OpenKeychain</string>
 	<string name="this_device_is_no_longer_in_use">This device is no longer in use</string>
+	<string name="type_pc">Computer</string>
+	<string name="type_phone">Mobile phone</string>
+	<string name="type_tablet">Tablet</string>
+	<string name="type_web">Web browser</string>
+	<string name="type_console">Console</string>
 </resources>

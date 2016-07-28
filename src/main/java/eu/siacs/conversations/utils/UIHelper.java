@@ -18,6 +18,7 @@ import eu.siacs.conversations.entities.ListItem;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.Presence;
 import eu.siacs.conversations.entities.Transferable;
+import eu.siacs.conversations.ui.XmppActivity;
 import eu.siacs.conversations.xmpp.jid.Jid;
 
 public class UIHelper {
@@ -284,6 +285,23 @@ public class UIHelper {
 				return new ListItem.Tag(context.getString(R.string.presence_dnd), 0xfff44336);
 			default:
 				return new ListItem.Tag(context.getString(R.string.presence_online), 0xff259b24);
+		}
+	}
+
+	public static String tranlasteType(Context context, String type) {
+		switch (type.toLowerCase()) {
+			case "pc":
+				return context.getString(R.string.type_pc);
+			case "phone":
+				return context.getString(R.string.type_phone);
+			case "tablet":
+				return context.getString(R.string.type_tablet);
+			case "web":
+				return context.getString(R.string.type_web);
+			case "console":
+				return context.getString(R.string.type_console);
+			default:
+				return type;
 		}
 	}
 }

@@ -62,7 +62,7 @@ public abstract class AbstractParser {
 
 	protected void updateLastseen(final Account account, final Jid from) {
 		final Contact contact = account.getRoster().getContact(from);
-		contact.setLastPresence(from.isBareJid() ? "" : from.getResourcepart());
+		contact.setLastResource(from.isBareJid() ? "" : from.getResourcepart());
 	}
 
 	protected String avatarData(Element items) {

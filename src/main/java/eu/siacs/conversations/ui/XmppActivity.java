@@ -44,6 +44,7 @@ import android.preference.PreferenceManager;
 import android.text.InputType;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.Pair;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -66,9 +67,13 @@ import net.java.otr4j.session.SessionID;
 import java.io.FileNotFoundException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.RejectedExecutionException;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
@@ -78,13 +83,16 @@ import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.MucOptions;
+import eu.siacs.conversations.entities.Presence;
 import eu.siacs.conversations.entities.Presences;
+import eu.siacs.conversations.entities.ServiceDiscoveryResult;
 import eu.siacs.conversations.services.AvatarService;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.services.XmppConnectionService.XmppConnectionBinder;
 import eu.siacs.conversations.ui.widget.Switch;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.ExceptionHelper;
+import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.OnKeyStatusUpdated;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
@@ -940,7 +948,7 @@ public abstract class XmppActivity extends Activity {
 		} else 	if (!contact.showInRoster()) {
 			showAddToRosterDialog(conversation);
 		} else {
-			Presences presences = contact.getPresences();
+			final Presences presences = contact.getPresences();
 			if (presences.size() == 0) {
 				if (!contact.getOption(Contact.Options.TO)
 						&& !contact.getOption(Contact.Options.ASKING)
@@ -954,7 +962,7 @@ public abstract class XmppActivity extends Activity {
 					listener.onPresenceSelected();
 				}
 			} else if (presences.size() == 1) {
-				String presence = presences.asStringArray()[0];
+				String presence = presences.toResourceArray()[0];
 				try {
 					conversation.setNextCounterpart(Jid.fromParts(contact.getJid().getLocalpart(),contact.getJid().getDomainpart(),presence));
 				} catch (InvalidJidException e) {
@@ -962,49 +970,72 @@ public abstract class XmppActivity extends Activity {
 				}
 				listener.onPresenceSelected();
 			} else {
-				final StringBuilder presence = new StringBuilder();
-				AlertDialog.Builder builder = new AlertDialog.Builder(this);
-				builder.setTitle(getString(R.string.choose_presence));
-				final String[] presencesArray = presences.asStringArray();
-				int preselectedPresence = 0;
-				for (int i = 0; i < presencesArray.length; ++i) {
-					if (presencesArray[i].equals(contact.getLastPresence())) {
-						preselectedPresence = i;
-						break;
-					}
-				}
-				presence.append(presencesArray[preselectedPresence]);
-				builder.setSingleChoiceItems(presencesArray,
-						preselectedPresence,
-						new DialogInterface.OnClickListener() {
-
-							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
-								presence.delete(0, presence.length());
-								presence.append(presencesArray[which]);
-							}
-						});
-				builder.setNegativeButton(R.string.cancel, null);
-				builder.setPositiveButton(R.string.ok, new OnClickListener() {
-
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						try {
-							conversation.setNextCounterpart(Jid.fromParts(contact.getJid().getLocalpart(),contact.getJid().getDomainpart(),presence.toString()));
-						} catch (InvalidJidException e) {
-							conversation.setNextCounterpart(null);
-						}
-						listener.onPresenceSelected();
-					}
-				});
-				builder.create().show();
+				showPresenceSelectionDialog(presences,conversation,listener);
 			}
 		}
 	}
 
-	protected void onActivityResult(int requestCode, int resultCode,
-			final Intent data) {
+	private void showPresenceSelectionDialog(Presences presences, final Conversation conversation, final OnPresenceSelected listener) {
+		final Contact contact = conversation.getContact();
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle(getString(R.string.choose_presence));
+		final String[] resourceArray = presences.toResourceArray();
+		Pair<Map<String, String>, Map<String, String>> typeAndName = presences.toTypeAndNameMap();
+		final Map<String,String> resourceTypeMap = typeAndName.first;
+		final Map<String,String> resourceNameMap = typeAndName.second;
+		final String[] readableIdentities = new String[resourceArray.length];
+		final AtomicInteger selectedResource = new AtomicInteger(0);
+		for (int i = 0; i < resourceArray.length; ++i) {
+			String resource = resourceArray[i];
+			if (resource.equals(contact.getLastResource())) {
+				selectedResource.set(i);
+			}
+			String type = resourceTypeMap.get(resource);
+			String name = resourceNameMap.get(resource);
+			if (type != null) {
+				if (Collections.frequency(resourceTypeMap.values(),type) == 1) {
+					readableIdentities[i] = UIHelper.tranlasteType(this,type);
+				} else if (name != null) {
+					if (Collections.frequency(resourceNameMap.values(), name) == 1
+							|| CryptoHelper.UUID_PATTERN.matcher(resource).matches()) {
+						readableIdentities[i] = UIHelper.tranlasteType(this,type) + "  (" + name+")";
+					} else {
+						readableIdentities[i] = UIHelper.tranlasteType(this,type) + " (" + name +" / " + resource+")";
+					}
+				} else {
+					readableIdentities[i] = UIHelper.tranlasteType(this,type) + " (" + resource+")";
+				}
+			} else {
+				readableIdentities[i] = resource;
+			}
+		}
+		builder.setSingleChoiceItems(readableIdentities,
+				selectedResource.get(),
+				new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						selectedResource.set(which);
+					}
+				});
+		builder.setNegativeButton(R.string.cancel, null);
+		builder.setPositiveButton(R.string.ok, new OnClickListener() {
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				try {
+					Jid next = Jid.fromParts(contact.getJid().getLocalpart(),contact.getJid().getDomainpart(),resourceArray[selectedResource.get()]);
+					conversation.setNextCounterpart(next);
+				} catch (InvalidJidException e) {
+					conversation.setNextCounterpart(null);
+				}
+				listener.onPresenceSelected();
+			}
+		});
+		builder.create().show();
+	}
+
+	protected void onActivityResult(int requestCode, int resultCode, final Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (requestCode == REQUEST_INVITE_TO_CONVERSATION && resultCode == RESULT_OK) {
 			mPendingConferenceInvite = ConferenceInvite.parse(data);

@@ -1,7 +1,10 @@
 package eu.siacs.conversations.entities;
 
+import android.util.Pair;
+
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
@@ -54,7 +57,7 @@ public class Presences {
 		}
 	}
 
-	public String[] asStringArray() {
+	public String[] toResourceArray() {
 		synchronized (this.presences) {
 			final String[] presencesArray = new String[presences.size()];
 			presences.keySet().toArray(presencesArray);
@@ -103,5 +106,29 @@ public class Presences {
 			}
 		}
 		return true;
+	}
+
+	public Pair<Map<String, String>,Map<String,String>> toTypeAndNameMap() {
+		Map<String,String> typeMap = new HashMap<>();
+		Map<String,String> nameMap = new HashMap<>();
+		synchronized (this.presences) {
+			for(Map.Entry<String,Presence> presenceEntry : this.presences.entrySet()) {
+				String resource = presenceEntry.getKey();
+				Presence presence = presenceEntry.getValue();
+				ServiceDiscoveryResult serviceDiscoveryResult = presence == null ? null : presence.getServiceDiscoveryResult();
+				if (serviceDiscoveryResult != null && serviceDiscoveryResult.getIdentities().size() > 0) {
+					ServiceDiscoveryResult.Identity identity = serviceDiscoveryResult.getIdentities().get(0);
+					String type = identity.getType();
+					String name = identity.getName();
+					if (type != null) {
+						typeMap.put(resource,type);
+					}
+					if (name != null) {
+						nameMap.put(resource, name);
+					}
+				}
+			}
+		}
+		return new Pair(typeMap,nameMap);
 	}
 }

@@ -526,11 +526,11 @@ public class Contact implements ListItem, Blockable {
 		return this.mLastseen;
 	}
 
-	public void setLastPresence(String presence) {
-		this.mLastPresence = presence;
+	public void setLastResource(String resource) {
+		this.mLastPresence = resource;
 	}
 
-	public String getLastPresence() {
+	public String getLastResource() {
 		return this.mLastPresence;
 	}
 
