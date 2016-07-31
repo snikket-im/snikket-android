@@ -50,7 +50,6 @@ public abstract class AbstractGenerator {
 			"urn:xmpp:otr:0"
 	};
 	private String mVersion = null;
-	protected final String IDENTITY_TYPE = "phone";
 
 	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US);
 
@@ -71,9 +70,17 @@ public abstract class AbstractGenerator {
 		return mXmppConnectionService.getString(R.string.app_name) + " " + getIdentityVersion();
 	}
 
+	public String getIdentityType() {
+		if ("chromium".equals(android.os.Build.BRAND)) {
+			return "pc";
+		} else {
+			return mXmppConnectionService.getString(R.string.default_resource).toLowerCase();
+		}
+	}
+
 	public String getCapHash() {
 		StringBuilder s = new StringBuilder();
-		s.append("client/" + IDENTITY_TYPE + "//" + getIdentityName() + "<");
+		s.append("client/" + getIdentityType() + "//" + getIdentityName() + "<");
 		MessageDigest md;
 		try {
 			md = MessageDigest.getInstance("SHA-1");

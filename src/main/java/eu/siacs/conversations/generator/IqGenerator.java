@@ -47,7 +47,7 @@ public class IqGenerator extends AbstractGenerator {
 		query.setAttribute("node", request.query().getAttribute("node"));
 		final Element identity = query.addChild("identity");
 		identity.setAttribute("category", "client");
-		identity.setAttribute("type", IDENTITY_TYPE);
+		identity.setAttribute("type", getIdentityType());
 		identity.setAttribute("name", getIdentityName());
 		for (final String feature : getFeatures()) {
 			query.addChild("feature").setAttribute("var", feature);
@@ -61,7 +61,7 @@ public class IqGenerator extends AbstractGenerator {
 		query.addChild("name").setContent(mXmppConnectionService.getString(R.string.app_name));
 		query.addChild("version").setContent(getIdentityVersion());
 		if ("chromium".equals(android.os.Build.BRAND)) {
-			query.addChild("os").setContent("Chromium");
+			query.addChild("os").setContent("Chrome OS");
 		} else{
 			query.addChild("os").setContent("Android");
 		}
