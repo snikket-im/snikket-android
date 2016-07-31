@@ -728,7 +728,11 @@ public class FileBackend {
 
 	private Dimensions getVideoDimensions(File file) throws NotAVideoFile {
 		MediaMetadataRetriever metadataRetriever = new MediaMetadataRetriever();
-		metadataRetriever.setDataSource(file.getAbsolutePath());
+		try {
+			metadataRetriever.setDataSource(file.getAbsolutePath());
+		} catch (Exception e) {
+			throw new NotAVideoFile();
+		}
 		String hasVideo = metadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_HAS_VIDEO);
 		if (hasVideo == null) {
 			throw new NotAVideoFile();
