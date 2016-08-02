@@ -417,7 +417,7 @@ public class FileBackend {
 			frame = metadataRetriever.getFrameAtTime(0);
 			metadataRetriever.release();
 			frame = resize(frame, size);
-		} catch(IllegalArgumentException e) {
+		} catch(IllegalArgumentException  | NullPointerException e) {
 			frame = Bitmap.createBitmap(size,size, Bitmap.Config.ARGB_8888);
 			frame.eraseColor(0xff000000);
 		}
