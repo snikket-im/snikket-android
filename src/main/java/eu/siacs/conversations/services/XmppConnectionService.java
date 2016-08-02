@@ -721,10 +721,15 @@ public class XmppConnectionService extends Service {
 
 	private boolean isPhoneSilenced() {
 		AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-		if (treatVibrateAsSilent()) {
-			return audioManager.getRingerMode() != AudioManager.RINGER_MODE_NORMAL;
-		} else {
-			return audioManager.getRingerMode() == AudioManager.RINGER_MODE_SILENT;
+		try {
+			if (treatVibrateAsSilent()) {
+				return audioManager.getRingerMode() != AudioManager.RINGER_MODE_NORMAL;
+			} else {
+				return audioManager.getRingerMode() == AudioManager.RINGER_MODE_SILENT;
+			}
+		} catch (Throwable throwable) {
+			Log.d(Config.LOGTAG,"platform bug in isPhoneSilenced ("+ throwable.getMessage()+")");
+			return false;
 		}
 	}
 
