@@ -81,8 +81,8 @@ public class XmlReader {
 				}
 			}
 
-		} catch (Exception e) {
-			throw new IOException("xml parser mishandled "+e.getClass().getName(), e);
+		} catch (Throwable throwable) {
+			throw new IOException("xml parser mishandled "+throwable.getClass().getName(), throwable);
 		} finally {
 			if (wakeLock.isHeld()) {
 				try {
