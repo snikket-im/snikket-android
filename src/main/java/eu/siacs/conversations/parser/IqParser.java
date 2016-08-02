@@ -204,13 +204,15 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
 				Log.d(Config.LOGTAG, AxolotlService.LOGPREFIX+" : "+"Encountered unexpected tag in prekeys list: " + preKeyPublicElement);
 				continue;
 			}
-			Integer preKeyId = Integer.valueOf(preKeyPublicElement.getAttribute("preKeyId"));
+			Integer preKeyId = null;
 			try {
-				ECPublicKey preKeyPublic = Curve.decodePoint(Base64.decode(preKeyPublicElement.getContent(), Base64.DEFAULT), 0);
+				preKeyId = Integer.valueOf(preKeyPublicElement.getAttribute("preKeyId"));
+				final ECPublicKey preKeyPublic = Curve.decodePoint(Base64.decode(preKeyPublicElement.getContent(), Base64.DEFAULT), 0);
 				preKeyRecords.put(preKeyId, preKeyPublic);
+			} catch (NumberFormatException e) {
+				Log.e(Config.LOGTAG, AxolotlService.LOGPREFIX+" : "+"could not parse preKeyId from preKey "+preKeyPublicElement.toString());
 			} catch (Throwable e) {
 				Log.e(Config.LOGTAG, AxolotlService.LOGPREFIX+" : "+"Invalid preKeyPublic (ID="+preKeyId+") in PEP: "+ e.getMessage()+", skipping...");
-				continue;
 			}
 		}
 		return preKeyRecords;
