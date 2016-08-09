@@ -60,7 +60,10 @@ public final class Config {
 	public static final int CONNECT_DISCO_TIMEOUT = 20;
 	public static final int MINI_GRACE_PERIOD = 750;
 
-	public static final boolean CLOSE_TCP_WHEN_SWITCHING_TO_BACKGROUND = false;
+	public static final boolean PUSH_MODE = false; 	//closes the tcp connection when going to background
+													//and after PING_MIN_INTERVAL of inactivity
+													//very experimental. only enable this if you want
+													//to around with GCM push
 
 	public static final int AVATAR_SIZE = 192;
 	public static final Bitmap.CompressFormat AVATAR_FORMAT = Bitmap.CompressFormat.WEBP;
