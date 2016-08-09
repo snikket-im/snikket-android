@@ -1327,8 +1327,9 @@ public class XmppConnection implements Runnable {
 						}
 						socket.close();
 						Log.d(Config.LOGTAG,account.getJid().toBareJid()+": closed tcp without closing stream");
+						changeStatus(Account.State.OFFLINE);
 					} catch (IOException | InterruptedException e) {
-						return;
+						Log.d(Config.LOGTAG,account.getJid().toBareJid()+": error while closing socket for waitForPush()");
 					}
 				}
 			}).start();
