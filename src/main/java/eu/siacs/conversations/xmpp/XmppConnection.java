@@ -46,6 +46,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.X509KeyManager;
@@ -271,9 +272,30 @@ public class XmppConnection implements Runnable {
 				socket = SocksSocketFactory.createSocketOverTor(destination, account.getPort());
 				startXmpp();
 			} else if (extended && account.getHostname() != null && !account.getHostname().isEmpty()) {
-				socket = new Socket();
+
+				InetSocketAddress address = new InetSocketAddress(account.getHostname(), account.getPort());
+
+				features.encryptionEnabled = account.getPort() == 5223;
+
 				try {
-					socket.connect(new InetSocketAddress(account.getHostname(), account.getPort()), Config.SOCKET_TIMEOUT * 1000);
+					if (features.encryptionEnabled) {
+						try {
+							final TlsFactoryVerifier tlsFactoryVerifier = getTlsFactoryVerifier();
+							socket = tlsFactoryVerifier.factory.createSocket();
+							socket.connect(address, Config.SOCKET_TIMEOUT * 1000);
+							final SSLSession session = ((SSLSocket) socket).getSession();
+							if (!tlsFactoryVerifier.verifier.verify(account.getServer().getDomainpart(),session)) {
+								Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": TLS certificate verification failed");
+								throw new SecurityException();
+							}
+						} catch (KeyManagementException e) {
+							features.encryptionEnabled = false;
+							socket = new Socket();
+						}
+					} else {
+						socket = new Socket();
+						socket.connect(address, Config.SOCKET_TIMEOUT * 1000);
+					}
 				} catch (IOException e) {
 					throw new UnknownHostException();
 				}
