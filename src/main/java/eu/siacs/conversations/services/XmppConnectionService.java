@@ -193,15 +193,12 @@ public class XmppConnectionService extends Service {
 						sendUnsentMessages(conversation);
 					}
 				} else {
-					if (contact.getPresences().size() >= 1) {
-						if (conversation.hasValidOtrSession()) {
-							String otrResource = conversation.getOtrSession().getSessionID().getUserID();
-							if (!(Arrays.asList(contact.getPresences().toResourceArray()).contains(otrResource))) {
-								conversation.endOtrIfNeeded();
-							}
+					//check if the resource we are haveing a conversation with is still online
+					if (conversation.hasValidOtrSession()) {
+						String otrResource = conversation.getOtrSession().getSessionID().getUserID();
+						if (!(Arrays.asList(contact.getPresences().toResourceArray()).contains(otrResource))) {
+							conversation.endOtrIfNeeded();
 						}
-					} else {
-						conversation.endOtrIfNeeded();
 					}
 				}
 			}
