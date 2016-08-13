@@ -784,7 +784,12 @@ public class XmppConnectionService extends Service {
 		restoreFromDatabase();
 
 		getContentResolver().registerContentObserver(ContactsContract.Contacts.CONTENT_URI, true, contactObserver);
-		this.fileObserver.startWatching();
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				fileObserver.startWatching();
+			}
+		}).start();
 		if (Config.supportOpenPgp()) {
 			this.pgpServiceConnection = new OpenPgpServiceConnection(getApplicationContext(), "org.sufficientlysecure.keychain", new OpenPgpServiceConnection.OnBound() {
 				@Override
