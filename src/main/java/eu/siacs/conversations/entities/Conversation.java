@@ -803,19 +803,18 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 	}
 
 	public long getLastMessageTransmitted() {
-		long last_clear = getLastClearHistory();
-		if (last_clear != 0) {
-			return last_clear;
-		}
+		final long last_clear = getLastClearHistory();
+		long last_received = 0;
 		synchronized (this.messages) {
 			for(int i = this.messages.size() - 1; i >= 0; --i) {
 				Message message = this.messages.get(i);
 				if (message.getStatus() == Message.STATUS_RECEIVED || message.isCarbon()) {
-					return message.getTimeSent();
+					last_received = message.getTimeSent();
+					break;
 				}
 			}
 		}
-		return 0;
+		return Math.max(last_clear,last_received);
 	}
 
 	public void setMutedTill(long value) {
