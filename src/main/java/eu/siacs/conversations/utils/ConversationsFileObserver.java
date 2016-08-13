@@ -37,13 +37,33 @@ public abstract class ConversationsFileObserver {
             }
             for(File file : files) {
                 if (file.isDirectory() && !file.getName().equals(".") && !file.getName().equals("..")) {
-                    stack.push(file.getPath());
+                    final String currentPath = file.getAbsolutePath();
+                    if (depth(file) <= 8 && !stack.contains(currentPath) && !observing(currentPath)) {
+                        stack.push(currentPath);
+                    }
                 }
             }
         }
         for(FileObserver observer : mObservers) {
             observer.startWatching();
         }
+    }
+
+    private static int depth(File file) {
+        int depth = 0;
+        while((file = file.getParentFile()) != null) {
+            depth++;
+        }
+        return depth;
+    }
+
+    private boolean observing(String path) {
+        for(SingleFileObserver observer : mObservers) {
+            if(path.equals(observer.path)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public synchronized void stopWatching() {
