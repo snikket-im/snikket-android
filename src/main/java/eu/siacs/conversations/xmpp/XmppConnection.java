@@ -384,6 +384,8 @@ public class XmppConnection implements Runnable {
 			this.changeStatus(Account.State.SECURITY_ERROR);
 		} catch (final UnauthorizedException e) {
 			this.changeStatus(Account.State.UNAUTHORIZED);
+		} catch (final PaymentRequiredException e) {
+			this.changeStatus(Account.State.PAYMENT_REQUIRED);
 		} catch (final UnknownHostException | ConnectException e) {
 			this.changeStatus(Account.State.SERVER_NOT_FOUND);
 		} catch (final SocksSocketFactory.SocksProxyNotFoundException e) {
@@ -505,7 +507,16 @@ public class XmppConnection implements Runnable {
 				}
 				break;
 			} else if (nextTag.isStart("failure")) {
-				throw new UnauthorizedException();
+				final Element failure = tagReader.readElement(nextTag);
+				final String accountDisabled = failure.findChildContent("account-disabled");
+				if (accountDisabled != null
+						&& accountDisabled.contains("renew")
+						&& Config.MAGIC_CREATE_DOMAIN != null
+						&& accountDisabled.contains(Config.MAGIC_CREATE_DOMAIN)) {
+					throw new PaymentRequiredException();
+				} else {
+					throw new UnauthorizedException();
+				}
 			} else if (nextTag.isStart("challenge")) {
 				final String challenge = tagReader.readElement(nextTag).getContent();
 				final Element response = new Element("response");
@@ -1532,6 +1543,10 @@ public class XmppConnection implements Runnable {
 	}
 
 	private class StreamError extends IOException {
+
+	}
+
+	private class PaymentRequiredException extends IOException {
 
 	}
 

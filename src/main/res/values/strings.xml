@@ -674,4 +674,5 @@
 	<string name="type_tablet">Tablet</string>
 	<string name="type_web">Web browser</string>
 	<string name="type_console">Console</string>
+	<string name="payment_required">Payment required</string>
 </resources>

@@ -111,7 +111,8 @@ public class Account extends AbstractEntity {
 		REGISTRATION_PLEASE_WAIT(true),
 		STREAM_ERROR(true),
 		POLICY_VIOLATION(true),
-		REGISTRATION_PASSWORD_TOO_WEAK(true);
+		REGISTRATION_PASSWORD_TOO_WEAK(true),
+		PAYMENT_REQUIRED(true);
 
 		private final boolean isError;
 
@@ -169,6 +170,8 @@ public class Account extends AbstractEntity {
 					return R.string.registration_password_too_weak;
 				case STREAM_ERROR:
 					return R.string.account_status_stream_error;
+				case PAYMENT_REQUIRED:
+					return R.string.payment_required;
 				default:
 					return R.string.account_status_unknown;
 			}
