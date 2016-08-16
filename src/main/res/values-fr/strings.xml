@@ -157,6 +157,7 @@
   <string name="account_status_regis_success">Enregistrement réussi</string>
   <string name="account_status_regis_not_sup">Le serveur ne permet pas l\'enregistrement</string>
   <string name="account_status_security_error">Erreur de sécurité</string>
+  <string name="account_status_policy_violation">Violation de politique</string>
   <string name="account_status_incompatible_server">Serveur incompatible</string>
   <string name="account_status_stream_error">Erreur de flux</string>
   <string name="encryption_choice_unencrypted">Non chiffré</string>
@@ -515,6 +516,7 @@
   <string name="pref_use_white_background_summary">Afficher les messages reçus en texte noir sur fond blanc.</string>
   <string name="account_status_tor_unavailable">Réseau Tor inaccessible</string>
   <string name="account_status_bind_failure">La liaison a échoué</string>
+  <string name="account_status_host_unknown">Le serveur n\'est pas responsable du domaine</string>
   <string name="server_info_broken">Détraqué</string>
   <string name="pref_presence_settings">Disponibilité</string>
   <string name="pref_away_when_screen_off">Absent quand l\'écran est éteint</string>

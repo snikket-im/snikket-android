@@ -157,7 +157,9 @@
   <string name="account_status_regis_success">Erregistroa burutu da</string>
   <string name="account_status_regis_not_sup">Zerbitzariak ez du erregistratzea onartzen</string>
   <string name="account_status_security_error">Segurtasun akatsa</string>
+  <string name="account_status_policy_violation">Politikaren urraketa</string>
   <string name="account_status_incompatible_server">Zerbitzari ez bateragarria</string>
+  <string name="account_status_stream_error">Akatsa korrontean</string>
   <string name="encryption_choice_unencrypted">Enkriptatu gabe</string>
   <string name="encryption_choice_otr">OTR</string>
   <string name="encryption_choice_pgp">OpenPGP</string>
@@ -218,6 +220,8 @@
   <string name="reception_failed">Jasotzeak huts egin du</string>
   <string name="your_fingerprint">Zure hatz-marka</string>
   <string name="otr_fingerprint">OTR hatz-marka</string>
+  <string name="otr_fingerprint_selected_message">Mezuaren OTR hatz-marka</string>
+  <string name="openpgp_key_id">OpenPGP gakoaren nortasuna</string>
   <string name="omemo_fingerprint">OMEMO hatz-marka</string>
   <string name="omemo_fingerprint_x509">v\\OMEMO hatz-marka</string>
   <string name="omemo_fingerprint_selected_message">Mezuaren OMEMO hatz-marka</string>
@@ -512,6 +516,7 @@
   <string name="pref_use_white_background_summary">Jasotako mezuak testu beltza atzeko-plano zuri baten gainean bezala erakutsi</string>
   <string name="account_status_tor_unavailable">Tor sarea ez dago eskuragarri</string>
   <string name="account_status_bind_failure">Estekatzeak hust egin du</string>
+  <string name="account_status_host_unknown">Zerbitzaria ez da domeinuaren erantzule</string>
   <string name="server_info_broken">Hondatuta</string>
   <string name="pref_presence_settings">Presentzia</string>
   <string name="pref_away_when_screen_off">Urrun pantaila itzalita dagoenean</string>
@@ -610,6 +615,7 @@
   <string name="device_does_not_support_battery_op">Zure gailuak ez du bateria optimizatzeko aukerarik ematen</string>
   <string name="show_password">Pasahitza erakutsi</string>
   <string name="registration_please_wait">Erregistroak huts egin du: saiatu berriz beranduago</string>
+  <string name="registration_password_too_weak">Erregistroa huts egin du: pasahitza ahulegia da</string>
   <string name="create_conference">Konferentzia sortu</string>
   <string name="join_or_create_conference">Konferentzia batera batu edo sortu</string>
   <string name="conference_subject">Gaia</string>
@@ -628,4 +634,6 @@
   <string name="pref_theme_dark">Gai iluna</string>
   <string name="pref_use_green_background">Atzealde berdea</string>
   <string name="pref_use_green_background_summary">Atzealde berdea erabili jasotako mezuentzat</string>
+  <string name="unable_to_connect_to_keychain">Ezin izan da OpenKeychainekin konektatu</string>
+  <string name="this_device_is_no_longer_in_use">Gailu hau ez da gehiago erabiltzen</string>
 </resources>

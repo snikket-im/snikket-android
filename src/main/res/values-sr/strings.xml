@@ -157,7 +157,9 @@
   <string name="account_status_regis_success">Регистрација завршена</string>
   <string name="account_status_regis_not_sup">Сервер не подржава регистрацију</string>
   <string name="account_status_security_error">Безбедносна грешка</string>
+  <string name="account_status_policy_violation">Нарушавање полисе</string>
   <string name="account_status_incompatible_server">Некомпатибилан сервер</string>
+  <string name="account_status_stream_error">Грешка тока</string>
   <string name="encryption_choice_unencrypted">Нешифровано</string>
   <string name="encryption_choice_otr">ОТР</string>
   <string name="encryption_choice_pgp">ОпенПГП</string>
@@ -218,6 +220,8 @@
   <string name="reception_failed">Примање није успело</string>
   <string name="your_fingerprint">Ваш отисак</string>
   <string name="otr_fingerprint">ОТР отисак</string>
+  <string name="otr_fingerprint_selected_message">ОТР отисак поруке</string>
+  <string name="openpgp_key_id">ИД ОпенПГП кључа</string>
   <string name="omemo_fingerprint">ОМЕМО отисак</string>
   <string name="omemo_fingerprint_x509">v\\ОМЕМО отисак</string>
   <string name="omemo_fingerprint_selected_message">ОМЕМО отисак поруке</string>
@@ -514,6 +518,7 @@
   <string name="pref_use_white_background_summary">Приказ примљених порука црним текстом на белој позадини</string>
   <string name="account_status_tor_unavailable">Тор мрежа недоступна</string>
   <string name="account_status_bind_failure">Неуспех свезивања</string>
+  <string name="account_status_host_unknown">Сервер није одговоран за домен</string>
   <string name="server_info_broken">Оштећен</string>
   <string name="pref_presence_settings">Присутност</string>
   <string name="pref_away_when_screen_off">Одсутан кад је екран искључен</string>
@@ -612,6 +617,7 @@
   <string name="device_does_not_support_battery_op">Ваш уређај не подржава искључивање оптимизације батерије</string>
   <string name="show_password">Прикажи лозинку</string>
   <string name="registration_please_wait">Регистрација није успела: покушајте поново касније</string>
+  <string name="registration_password_too_weak">Регистрација није успела: лозинка преслаба</string>
   <string name="create_conference">Направи групно ћаскање</string>
   <string name="join_or_create_conference">Придружи се или направи групно ћаскање</string>
   <string name="conference_subject">Предмет</string>
@@ -630,4 +636,6 @@
   <string name="pref_theme_dark">Тамна тема</string>
   <string name="pref_use_green_background">Зелена позадина</string>
   <string name="pref_use_green_background_summary">Зелена позадина за примљене поруке</string>
+  <string name="unable_to_connect_to_keychain">Не могох да се повежем са Отвореним кључарником</string>
+  <string name="this_device_is_no_longer_in_use">Овај уређај више није у употреби</string>
 </resources>

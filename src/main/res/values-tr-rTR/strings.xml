@@ -116,6 +116,8 @@
   <string name="pref_led_summary">Yeni bir ileti geldiğinde bildirim ışığı yanıp sönsün</string>
   <string name="pref_sound">Zil sesi</string>
   <string name="pref_sound_summary">Yeni bir ileti geldiğinde sesli bildir</string>
+  <string name="pref_notification_grace_period">Mühlet</string>
+  <string name="pref_notification_grace_period_summary">Başka bir cihaz üstünde etkinlik algılandığında Conversations\'ın sessiz kalma süresi</string>
   <string name="pref_advanced_options">Gelişmiş</string>
   <string name="pref_never_send_crash">Asla çöküş raporu gönderme</string>
   <string name="pref_never_send_crash_summary">Çöküş raporu göndermeniz Conversations\n’ın geliştirilmesine katkıda bulunacaktır.</string>
@@ -155,7 +157,9 @@
   <string name="account_status_regis_success">Hesap oluşturuldu</string>
   <string name="account_status_regis_not_sup">Sunucu hesap oluşturma işlemini desteklemiyor</string>
   <string name="account_status_security_error">Güvenlik hatası</string>
+  <string name="account_status_policy_violation">Politika ihlali</string>
   <string name="account_status_incompatible_server">Sunucu uyuşmazlığı</string>
+  <string name="account_status_stream_error">Akış hatası</string>
   <string name="encryption_choice_unencrypted">Şifrelenmemiş</string>
   <string name="encryption_choice_otr">OTR</string>
   <string name="encryption_choice_pgp">OpenPGP</string>
@@ -216,6 +220,8 @@
   <string name="reception_failed">Alınamadı</string>
   <string name="your_fingerprint">Parmak iziniz</string>
   <string name="otr_fingerprint">OTR parmak izi</string>
+  <string name="otr_fingerprint_selected_message">İletinin OTR parmak izi</string>
+  <string name="openpgp_key_id">OpenPGP Anahtar ID</string>
   <string name="omemo_fingerprint">OMEMO parmak izi</string>
   <string name="omemo_fingerprint_x509">v\\OMEMO parmak izi</string>
   <string name="omemo_fingerprint_selected_message">İletinin OMEMO parmak izi</string>
@@ -503,10 +509,12 @@
   <string name="download_failed_server_not_found">İndirme başarısız: Sunucu bulunamadı</string>
   <string name="download_failed_file_not_found">İndirme başarısız: Dosya bulunamadı</string>
   <string name="download_failed_could_not_connect">İndirme başarısız: Sunucuya bağlanılamadı</string>
+  <string name="download_failed_could_not_write_file">İndirme başarısız: Dosya yazılamıyor</string>
   <string name="pref_use_white_background">Beyaz arka plan kullan</string>
   <string name="pref_use_white_background_summary">Alınan iletileri beyaz arka plan üzerinde siyah yazıyla göster</string>
   <string name="account_status_tor_unavailable">Tor ağına erişilemiyor</string>
   <string name="account_status_bind_failure">Bağlantı başarısız</string>
+  <string name="account_status_host_unknown">Sunucu alan adı için sorumlu değil</string>
   <string name="server_info_broken">Bozuk</string>
   <string name="pref_presence_settings">Durum</string>
   <string name="pref_away_when_screen_off">Ekran kapandığında uzakta</string>
@@ -604,10 +612,25 @@
   <string name="device_does_not_support_battery_op">Cihazınız pil optimizasyonunu devre dışı bırakmayı desteklemiyor</string>
   <string name="show_password">Parola göster</string>
   <string name="registration_please_wait">Hesap oluşturulamadı: Sonra tekrar deneyin</string>
+  <string name="registration_password_too_weak">Kayıt Başarısız: Parola çok zayıf</string>
   <string name="create_conference">Grup Sohbet başlat</string>
   <string name="join_or_create_conference">Grup Sohbete katıl veya başlat</string>
   <string name="conference_subject">Konu</string>
   <string name="choose_participants">Katılımcıları seç</string>
   <string name="creating_conference">Grup Sohbet başlatılıyor...</string>
   <string name="invite_again">Yeniden davet et</string>
+  <string name="gp_short">Kısa</string>
+  <string name="gp_medium">Orta</string>
+  <string name="gp_long">Uzun</string>
+  <string name="pref_broadcast_last_activity">Son kullanıcı etkileşimini yayınla</string>
+  <string name="pref_broadcast_last_activity_summary">Tüm kişileriniz ne zaman Conversations kullandığınızı görsün</string>
+  <string name="pref_privacy">Mahremiyet</string>
+  <string name="pref_theme_options">Tema</string>
+  <string name="pref_theme_options_summary">Renk paletini seçin</string>
+  <string name="pref_theme_light">Açık tema</string>
+  <string name="pref_theme_dark">Koyu tema</string>
+  <string name="pref_use_green_background">Yeşil arka plan</string>
+  <string name="pref_use_green_background_summary">Gelen iletiler için yeşil arka plan kullan</string>
+  <string name="unable_to_connect_to_keychain">OpenKeychain\'e bağlanılamıyor</string>
+  <string name="this_device_is_no_longer_in_use">Bu cihaz artık kullanılmıyor</string>
 </resources>

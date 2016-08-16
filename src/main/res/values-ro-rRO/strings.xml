@@ -101,7 +101,7 @@
   <string name="contacts_have_no_pgp_keys">Conversations nu poate cripta mesajele tale pentru contactele tale care nu isi anunta cheia publica.\n\n<small>Te rog cere contactelor sa configureze OpenPGP.</small></string>
   <string name="pref_general">General</string>
   <string name="pref_xmpp_resource">Nume client XMPP</string>
-  <string name="pref_xmpp_resource_summary">Numele cu care acest client se identifica</string>
+  <string name="pref_xmpp_resource_summary">Identificatorul acestui client</string>
   <string name="pref_accept_files">Accepta fisiere</string>
   <string name="pref_accept_files_summary">Accepta automat fisiere mai mici decat...</string>
   <string name="pref_attachments">Atasamente</string>
@@ -157,7 +157,9 @@
   <string name="account_status_regis_success">Inregistrare completa</string>
   <string name="account_status_regis_not_sup">Acest server nu permite inregistrarea</string>
   <string name="account_status_security_error">Eroare de securitate</string>
+  <string name="account_status_policy_violation">Incalcare conditii serviciu</string>
   <string name="account_status_incompatible_server">Server incompatibil</string>
+  <string name="account_status_stream_error">Eroare de date</string>
   <string name="encryption_choice_unencrypted">Ne criptat</string>
   <string name="encryption_choice_otr">OTR</string>
   <string name="encryption_choice_pgp">OpenGPG</string>
@@ -218,6 +220,8 @@
   <string name="reception_failed">Receptie esuata</string>
   <string name="your_fingerprint">Amprenta ta</string>
   <string name="otr_fingerprint">Amprenta OTR</string>
+  <string name="otr_fingerprint_selected_message">Amprenta OTR a mesajului</string>
+  <string name="openpgp_key_id">ID cheie OpenPGP</string>
   <string name="omemo_fingerprint">Amprenta OMEMO</string>
   <string name="omemo_fingerprint_x509">Amprenta v\\OMEMO</string>
   <string name="omemo_fingerprint_selected_message">Amprenta OMEMO a mesajului</string>
@@ -514,6 +518,7 @@
   <string name="pref_use_white_background_summary">Arata mesajele primite cu negru pe fond alb</string>
   <string name="account_status_tor_unavailable">Reteaua Tor nu este disponibila</string>
   <string name="account_status_bind_failure">Eroare de conexiune</string>
+  <string name="account_status_host_unknown">Gazda fara domeniu</string>
   <string name="server_info_broken">Deteriorat</string>
   <string name="pref_presence_settings">Setari de prezenta</string>
   <string name="pref_away_when_screen_off">Plecat cand ecranul este oprit</string>
@@ -614,6 +619,7 @@ Emitent</string>
   <string name="device_does_not_support_battery_op">Dispozitivul dumneavoastra nu suporta dezactivarea optimizarii de baterie pentru aceasta aplicatie</string>
   <string name="show_password">Arata parola</string>
   <string name="registration_please_wait">Inregistrarea a esuat: Incercati mai tarziu</string>
+  <string name="registration_password_too_weak">Inregistrare esuata: Parola slaba</string>
   <string name="create_conference">Creeaza conferinta</string>
   <string name="join_or_create_conference">Alatura-te sau creeaza conferinta</string>
   <string name="conference_subject">Subiect</string>
@@ -623,7 +629,7 @@ Emitent</string>
   <string name="gp_short">Scurt</string>
   <string name="gp_medium">Mediu</string>
   <string name="gp_long">Lung</string>
-  <string name="pref_broadcast_last_activity">Notifica momentul ultimei interactiuni cu aplicatia</string>
+  <string name="pref_broadcast_last_activity">Notifica ultima interactiune</string>
   <string name="pref_broadcast_last_activity_summary">Anunta contactele cand folosesti Conversations</string>
   <string name="pref_privacy">Intimitate</string>
   <string name="pref_theme_options">Tema</string>
@@ -632,4 +638,6 @@ Emitent</string>
   <string name="pref_theme_dark">Tema intunecata</string>
   <string name="pref_use_green_background">Fundal verde</string>
   <string name="pref_use_green_background_summary">Foloseste la mesajele primite un fundal verde</string>
+  <string name="unable_to_connect_to_keychain">Nu s-a putut contacta OpenKeychain</string>
+  <string name="this_device_is_no_longer_in_use">Acest dispozitiv nu mai este in uz</string>
 </resources>
