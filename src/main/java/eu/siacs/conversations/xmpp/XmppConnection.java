@@ -284,7 +284,7 @@ public class XmppConnection implements Runnable {
 							socket = tlsFactoryVerifier.factory.createSocket();
 							socket.connect(address, Config.SOCKET_TIMEOUT * 1000);
 							final SSLSession session = ((SSLSocket) socket).getSession();
-							if (!tlsFactoryVerifier.verifier.verify(account.getServer().getDomainpart(),session)) {
+							if (!tlsFactoryVerifier.verifier.verify(account.getServer().getDomainpart(), session)) {
 								Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": TLS certificate verification failed");
 								throw new SecurityException();
 							}
@@ -310,10 +310,10 @@ public class XmppConnection implements Runnable {
 				startXmpp();
 			} else {
 				final Bundle result = DNSHelper.getSRVRecord(account.getServer(), mXmppConnectionService);
-				final ArrayList<Parcelable>values = result.getParcelableArrayList("values");
-				for(Iterator<Parcelable> iterator = values.iterator(); iterator.hasNext();) {
+				final ArrayList<Parcelable> values = result.getParcelableArrayList("values");
+				for (Iterator<Parcelable> iterator = values.iterator(); iterator.hasNext(); ) {
 					if (Thread.currentThread().isInterrupted()) {
-						Log.d(Config.LOGTAG,account.getJid().toBareJid()+": Thread was interrupted");
+						Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": Thread was interrupted");
 						return;
 					}
 					final Bundle namePort = (Bundle) iterator.next();
@@ -367,10 +367,10 @@ public class XmppConnection implements Runnable {
 
 						if (startXmpp())
 							break; // successfully connected to server that speaks xmpp
-					} catch(final SecurityException e) {
+					} catch (final SecurityException e) {
 						throw e;
 					} catch (final Throwable e) {
-						Log.d(Config.LOGTAG, account.getJid().toBareJid().toString() + ": " + e.getMessage() +"("+e.getClass().getName()+")");
+						Log.d(Config.LOGTAG, account.getJid().toBareJid().toString() + ": " + e.getMessage() + "(" + e.getClass().getName() + ")");
 						if (!iterator.hasNext()) {
 							throw new UnknownHostException();
 						}
@@ -378,6 +378,8 @@ public class XmppConnection implements Runnable {
 				}
 			}
 			processStream();
+		} catch (final java.lang.SecurityException e) {
+			this.changeStatus(Account.State.MISSING_INTERNET_PERMISSION);
 		} catch (final IncompatibleServerException e) {
 			this.changeStatus(Account.State.INCOMPATIBLE_SERVER);
 		} catch (final SecurityException e) {

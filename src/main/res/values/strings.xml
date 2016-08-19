@@ -675,4 +675,5 @@
 	<string name="type_web">Web browser</string>
 	<string name="type_console">Console</string>
 	<string name="payment_required">Payment required</string>
+	<string name="missing_internet_permission">Missing internet permission</string>
 </resources>
