@@ -1268,9 +1268,11 @@ public class ConversationActivity extends XmppActivity
 		}
 		Uri uri = intent.getData();
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2 && uri == null) {
-			ClipData clipData = intent.getClipData();
-			for (int i = 0; i < clipData.getItemCount(); ++i) {
-				uris.add(clipData.getItemAt(i).getUri());
+			final ClipData clipData = intent.getClipData();
+			if (clipData != null) {
+				for (int i = 0; i < clipData.getItemCount(); ++i) {
+					uris.add(clipData.getItemAt(i).getUri());
+				}
 			}
 		} else {
 			uris.add(uri);
