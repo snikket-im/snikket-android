@@ -78,7 +78,7 @@
   <string name="clear_histor_msg">Vuoi cancellare tutti i messaggi di questa Conversazione?\n\n<b>Attenzione:</b> Questo non influenzerà i messaggi presenti su altri dispositivi o server.</string>
   <string name="delete_messages">Elimina messaggi</string>
   <string name="also_end_conversation">Termina questa conversazione successivamente</string>
-  <string name="choose_presence">Choose presence to contact</string>
+  <string name="choose_presence">Scegli un dispositivo</string>
   <string name="send_unencrypted_message">Invia messaggio non cifrato</string>
   <string name="send_message_to_x">Invia messaggio a %s</string>
   <string name="send_otr_message">Messaggio OTR</string>
@@ -360,8 +360,6 @@
   <string name="conversations_foreground_service">Conversations</string>
   <string name="pref_keep_foreground_service">Mantieni il servizio in primo piano</string>
   <string name="pref_keep_foreground_service_summary">Evita che il sistema operativo chiuda la connessione</string>
-  <string name="pref_export_logs">Esporta Log</string>
-  <string name="pref_export_logs_summary">Scrivi i log su card SD</string>
   <string name="notification_export_logs_title">Scrittura log su card SD</string>
   <string name="choose_file">Scegli file</string>
   <string name="receiving_x_file">Ricezione di %1$s file (%2$d%% completato)</string>
@@ -635,4 +633,10 @@
   <string name="pref_use_green_background_summary">Usa sfondo verde per messaggi ricevuti</string>
   <string name="unable_to_connect_to_keychain">Impossibile connettersi a OpenKeychain</string>
   <string name="this_device_is_no_longer_in_use">Questo dispositivo non è più in uso</string>
+  <string name="type_pc">Computer</string>
+  <string name="type_phone">Cellulare</string>
+  <string name="type_tablet">Tablet</string>
+  <string name="type_web">Browser web</string>
+  <string name="type_console">Console</string>
+  <string name="payment_required">Necessario pagamento</string>
 </resources>

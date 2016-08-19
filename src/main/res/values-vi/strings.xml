@@ -76,7 +76,6 @@
   <string name="clear_histor_msg">Bạn có muốn xoá toàn bộ tin nhắn trong hội thoại này?\n\n<b>Cảnh báo:</b> Thao tác này sẽ không ảnh hưởng đến tin nhắn đã lưu trên các thiết bị hoặc máy chủ khác.</string>
   <string name="delete_messages">Xoá tin nhắn</string>
   <string name="also_end_conversation">Dừng hội thoại này sau đó</string>
-  <string name="choose_presence">Chọn sự hiện diện đối với liên hệ</string>
   <string name="send_unencrypted_message">Gửi tin nhắn không mã hoá</string>
   <string name="send_otr_message">Gửi tin nhắn mã hoá OTR</string>
   <string name="send_omemo_message">Gửi tin nhắn mã hoá OMEMO</string>
@@ -326,8 +325,6 @@
   <string name="conversations_foreground_service">Conversations</string>
   <string name="pref_keep_foreground_service">Giữ dịch vụ luôn chạy</string>
   <string name="pref_keep_foreground_service_summary">Ngăn hệ điều hành ngắt kết nối của bạn</string>
-  <string name="pref_export_logs">Xuất nhật ký</string>
-  <string name="pref_export_logs_summary">Chép nhật ký vào thẻ SD</string>
   <string name="notification_export_logs_title">Đang chép nhật ký vào thẻ SD</string>
   <string name="choose_file">Chọn tập tin</string>
   <string name="receiving_x_file">Đang nhận %1$s (đã hoàn tất %2$d%%)</string>

@@ -72,7 +72,6 @@
   <string name="clear_conversation_history">حذف سجل المحفوظات للمحادثة</string>
   <string name="clear_histor_msg">هل ترغب بحذف جميع الرسائل في تلك المحادثة?\n\n<b>تنويه:</b> هذا لن يؤثر على الرسائل المخزنة على الأجهزة أو أي أماكن أخرى.</string>
   <string name="delete_messages">حذف الرسائل</string>
-  <string name="choose_presence">اختيار ظهورك لجهات الإتصال</string>
   <string name="send_otr_message">OTRارساله رساله مشفره عبر</string>
   <string name="send_pgp_message">OpenPGPارساله رساله مشفره عبر</string>
   <string name="your_nick_has_been_changed">تم تغيير لقبك بنجاح</string>

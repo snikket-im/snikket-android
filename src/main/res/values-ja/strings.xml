@@ -78,7 +78,7 @@
   <string name="clear_histor_msg">この会話のすべてのメッセージを削除しますか?\n\n<b>警告:</b> これは、他のデバイスやサーバーに保存されているメッセージには影響しません。</string>
   <string name="delete_messages">メッセージを削除</string>
   <string name="also_end_conversation">その後、この会話を終了</string>
-  <string name="choose_presence">連絡する参加を選択</string>
+  <string name="choose_presence">デバイスを選択</string>
   <string name="send_unencrypted_message">暗号化されていないメッセージを送信</string>
   <string name="send_message_to_x">メッセージを %s に送信</string>
   <string name="send_otr_message">OTR 暗号化メッセージを送信</string>
@@ -360,8 +360,6 @@
   <string name="conversations_foreground_service">Conversations</string>
   <string name="pref_keep_foreground_service">サービスをフォアグラウンドに保持</string>
   <string name="pref_keep_foreground_service_summary">オペレーティングシステムが接続を切断するのを防止します</string>
-  <string name="pref_export_logs">ログをエクスポート</string>
-  <string name="pref_export_logs_summary">ログを SD カードに書き込みます</string>
   <string name="notification_export_logs_title">ログを SD カードに書き込み中</string>
   <string name="choose_file">ファイルの選択</string>
   <string name="receiving_x_file">%1$s 受信中 (%2$d%% 完了)</string>
@@ -633,4 +631,10 @@
   <string name="pref_use_green_background_summary">受信したメッセージに緑の背景を使用します</string>
   <string name="unable_to_connect_to_keychain">OpenKeychain に接続できません</string>
   <string name="this_device_is_no_longer_in_use">このデバイスは、現在使用されていません</string>
+  <string name="type_pc">コンピューター</string>
+  <string name="type_phone">携帯電話</string>
+  <string name="type_tablet">タブレット</string>
+  <string name="type_web">Web ブラウザー</string>
+  <string name="type_console">コンソール</string>
+  <string name="payment_required">支払が必要です</string>
 </resources>

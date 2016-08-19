@@ -78,7 +78,7 @@
   <string name="clear_histor_msg">Желите ли да обришете све поруке ове преписке?\n\n<b>Упозорење:</b> Ово неће утицати на поруке складиштене на осталим уређајима или серверима.</string>
   <string name="delete_messages">Обриши поруке</string>
   <string name="also_end_conversation">Окончај ову преписку након тога</string>
-  <string name="choose_presence">Избор присутности за контакта</string>
+  <string name="choose_presence">Изаберите уређај</string>
   <string name="send_unencrypted_message">Пошаљи нешифровану поруку</string>
   <string name="send_message_to_x">Пошаљи поруку за %s</string>
   <string name="send_otr_message">Пошаљи ОТР шифровану поруку</string>
@@ -360,8 +360,6 @@
   <string name="conversations_foreground_service">Конверзација</string>
   <string name="pref_keep_foreground_service">Држи сервис у првом плану</string>
   <string name="pref_keep_foreground_service_summary">Спречава оперативни систем да прекине вашу везу</string>
-  <string name="pref_export_logs">Извези записе</string>
-  <string name="pref_export_logs_summary">Упис записа на СД картицу</string>
   <string name="notification_export_logs_title">Уписујем записе на СД картицу</string>
   <string name="choose_file">Изабери фајл</string>
   <string name="receiving_x_file">Примам %1$s (%2$d%% завршено)</string>
@@ -638,4 +636,10 @@
   <string name="pref_use_green_background_summary">Зелена позадина за примљене поруке</string>
   <string name="unable_to_connect_to_keychain">Не могох да се повежем са Отвореним кључарником</string>
   <string name="this_device_is_no_longer_in_use">Овај уређај више није у употреби</string>
+  <string name="type_pc">Рачунар</string>
+  <string name="type_phone">Мобилни телефон</string>
+  <string name="type_tablet">Таблет</string>
+  <string name="type_web">Веб прегледач</string>
+  <string name="type_console">Конзола</string>
+  <string name="payment_required">Захтевано је плаћање</string>
 </resources>

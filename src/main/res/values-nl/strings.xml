@@ -78,7 +78,7 @@
   <string name="clear_histor_msg">Wil je alle berichten in dit gesprek verwijderen?\n\n<b>Waarschuwing:</b> Dit zal geen invloed hebben op de berichten opgeslagen op andere apparaten of servers.</string>
   <string name="delete_messages">Berichten verwijderen</string>
   <string name="also_end_conversation">Dit gesprek na afloop beëindigen</string>
-  <string name="choose_presence">Kies aanwezigheid om te tonen aan contact</string>
+  <string name="choose_presence">Apparaat kiezen</string>
   <string name="send_unencrypted_message">Verstuur onversleuteld bericht</string>
   <string name="send_message_to_x">Bericht sturen naar %s</string>
   <string name="send_otr_message">Verstuur OTR-versleuteld bericht</string>
@@ -157,7 +157,9 @@
   <string name="account_status_regis_success">Registratie voltooid</string>
   <string name="account_status_regis_not_sup">Server ondersteunt geen registratie</string>
   <string name="account_status_security_error">Fout bij beveiliging</string>
+  <string name="account_status_policy_violation">Beleidsschending</string>
   <string name="account_status_incompatible_server">Incompatibele server</string>
+  <string name="account_status_stream_error">Fout bij stream</string>
   <string name="encryption_choice_unencrypted">Onversleuteld</string>
   <string name="encryption_choice_otr">OTR</string>
   <string name="encryption_choice_pgp">OpenPGP</string>
@@ -218,6 +220,8 @@
   <string name="reception_failed">Ontvangen mislukt</string>
   <string name="your_fingerprint">Jouw vingerafdruk</string>
   <string name="otr_fingerprint">OTR-vingerafdruk</string>
+  <string name="otr_fingerprint_selected_message">OTR-vingerafdruk van bericht</string>
+  <string name="openpgp_key_id">OpenPGP-sleutel-ID</string>
   <string name="omemo_fingerprint">OMEMO-vingerafdruk</string>
   <string name="omemo_fingerprint_x509">v\\OMEMO-vingerafdruk</string>
   <string name="omemo_fingerprint_selected_message">OMEMO-vingerafdruk van bericht</string>
@@ -356,8 +360,6 @@
   <string name="conversations_foreground_service">Conversations</string>
   <string name="pref_keep_foreground_service">Dienst in voorgrond houden</string>
   <string name="pref_keep_foreground_service_summary">Belet het besturingssysteem van je verbinding te onderbreken</string>
-  <string name="pref_export_logs">Exporteer logs</string>
-  <string name="pref_export_logs_summary">Schrijf logs naar SD-kaart</string>
   <string name="notification_export_logs_title">Logs schrijven naar SD-kaart</string>
   <string name="choose_file">Bestand kiezen</string>
   <string name="receiving_x_file">Ontvangen van %1$s (%2$d%% voltooid)</string>
@@ -512,6 +514,7 @@
   <string name="pref_use_white_background_summary">Toon ontvangen berichten als zwarte tekst op een witte achtergrond</string>
   <string name="account_status_tor_unavailable">Tor-netwerk niet beschikbaar</string>
   <string name="account_status_bind_failure">Bindingsfout</string>
+  <string name="account_status_host_unknown">Server niet verantwoordelijk voor domein</string>
   <string name="server_info_broken">Gebroken</string>
   <string name="pref_presence_settings">Aanwezigheid</string>
   <string name="pref_away_when_screen_off">Even weg wanneer scherm uit staat</string>
@@ -610,6 +613,7 @@
   <string name="device_does_not_support_battery_op">Je apparaat ondersteunt het uitschakelen van batterij-optimalisatie niet</string>
   <string name="show_password">Wachtwoord weergeven</string>
   <string name="registration_please_wait">Registratie mislukt: probeer later opnieuw</string>
+  <string name="registration_password_too_weak">Registratie mislukt: wachtwoord te zwak</string>
   <string name="create_conference">Groepsgesprek aanmaken</string>
   <string name="join_or_create_conference">Deelnemen aan groepsgesprek of een aanmaken</string>
   <string name="conference_subject">Onderwerp</string>
@@ -628,4 +632,12 @@
   <string name="pref_theme_dark">Donker thema</string>
   <string name="pref_use_green_background">Groene achtergrond</string>
   <string name="pref_use_green_background_summary">Gebruik groene achtergrond voor ontvangen berichten</string>
+  <string name="unable_to_connect_to_keychain">Verbinden met OpenKeychain mislukt</string>
+  <string name="this_device_is_no_longer_in_use">Dit apparaat wordt niet meer gebruikt</string>
+  <string name="type_pc">Computer</string>
+  <string name="type_phone">GSM</string>
+  <string name="type_tablet">Tablet</string>
+  <string name="type_web">Webbrowser</string>
+  <string name="type_console">Console</string>
+  <string name="payment_required">Betaling vereist</string>
 </resources>

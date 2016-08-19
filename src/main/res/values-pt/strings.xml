@@ -78,7 +78,6 @@
   <string name="clear_histor_msg">Deseja remover todas as mensagens nesta conversa?\n\n&lt;b&gt;Aviso:&lt;b&gt; Isto não irá influenciar mensagens guardadas noutros dispositivos ou servidores.</string>
   <string name="delete_messages">Remover mensagens</string>
   <string name="also_end_conversation">Terminar esta conversa depois</string>
-  <string name="choose_presence">Escolha a presença do contacto</string>
   <string name="send_unencrypted_message">Enviar mensagem não cifrada</string>
   <string name="send_otr_message">Enviar mensagem cifrada com OTR</string>
   <string name="send_omemo_message">Enviar mensagem cifrada com OMEMO</string>
@@ -350,8 +349,6 @@
   <string name="conversations_foreground_service">Conversations</string>
   <string name="pref_keep_foreground_service">Manter o serviço em primeiro plano</string>
   <string name="pref_keep_foreground_service_summary">Previne o sistema operativo de terminar a sua conexão</string>
-  <string name="pref_export_logs">Exportar os Logs</string>
-  <string name="pref_export_logs_summary">Escrever os logs para o cartão SD</string>
   <string name="notification_export_logs_title">A escrever os logs para o cartão SD</string>
   <string name="choose_file">Escolher ficheiro</string>
   <string name="receiving_x_file">A receber %1$s (%2$d%% concluído)</string>

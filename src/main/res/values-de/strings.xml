@@ -78,7 +78,7 @@
   <string name="clear_histor_msg">Möchtest du alle Nachrichten in dieser Unterhaltung löschen?\n\n<b>Achtung:</b> Dies beeinflusst nicht Nachrichten, die auf anderen Geräten oder Servern gespeichert sind.</string>
   <string name="delete_messages">Nachrichten löschen</string>
   <string name="also_end_conversation">Diese Unterhaltung danach beenden</string>
-  <string name="choose_presence">Ressource des Kontakts auswählen</string>
+  <string name="choose_presence">Gerät auswählen</string>
   <string name="send_unencrypted_message">Unverschlüsselt schreiben…</string>
   <string name="send_message_to_x">Sende Nachricht an %s</string>
   <string name="send_otr_message">OTR-verschlüsselt schreiben…</string>
@@ -218,6 +218,8 @@
   <string name="reception_failed">Empfang fehlgeschlagen</string>
   <string name="your_fingerprint">Dein Fingerabdruck</string>
   <string name="otr_fingerprint">OTR-Fingerabdruck</string>
+  <string name="otr_fingerprint_selected_message">OTR Fingerabdruck der Nachricht</string>
+  <string name="openpgp_key_id">OpenPGP Schlüssel-ID</string>
   <string name="omemo_fingerprint">OMEMO-Fingerabdruck</string>
   <string name="omemo_fingerprint_x509">v\\OMEMO-Fingerabdruck</string>
   <string name="omemo_fingerprint_selected_message">OMEMO-Fingerabdruck der Nachricht</string>
@@ -356,8 +358,6 @@
   <string name="conversations_foreground_service">Conversations</string>
   <string name="pref_keep_foreground_service">Dienst im Vordergrund ausführen</string>
   <string name="pref_keep_foreground_service_summary">Verhindert, dass Android Conversations beendet und die Verbindung unterbricht</string>
-  <string name="pref_export_logs">Chats exportieren</string>
-  <string name="pref_export_logs_summary">Chats auf SD-Karte schreiben</string>
   <string name="notification_export_logs_title">Chats werden auf SD-Karte geschrieben</string>
   <string name="choose_file">Datei auswählen</string>
   <string name="receiving_x_file">Empfange %1$s (%2$d%% abgeschlossen)</string>
@@ -629,5 +629,12 @@
   <string name="pref_theme_dark">Dunkles Design</string>
   <string name="pref_use_green_background">Grüner Hintergrund</string>
   <string name="pref_use_green_background_summary">Für empfangene Nachrichten grünen Hintergrund verwenden</string>
+  <string name="unable_to_connect_to_keychain">Kann nicht mit OpenKeychain verbinden</string>
   <string name="this_device_is_no_longer_in_use">Dieses Gerät ist nicht länger in Benutzung</string>
+  <string name="type_pc">Computer</string>
+  <string name="type_phone">Mobiltelefon</string>
+  <string name="type_tablet">Tablet</string>
+  <string name="type_web">Webbrowser</string>
+  <string name="type_console">Kommandozeile</string>
+  <string name="payment_required">Bezahlung erforderlich</string>
 </resources>

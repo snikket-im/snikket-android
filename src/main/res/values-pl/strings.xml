@@ -78,7 +78,6 @@
   <string name="clear_histor_msg">Czy na pewno usunąć wszystkie wiadomości powiązane z konwersacją?\n\n<b>Uwaga:</b> Działanie nie wpływa na wiadomości przechowywane na innych urządzeniach lub serwerach.</string>
   <string name="delete_messages">Usuń wiadomości</string>
   <string name="also_end_conversation">po czym zakończ tę rozmowę</string>
-  <string name="choose_presence">Wybierz widoczność dla kontaktu</string>
   <string name="send_unencrypted_message">Wyślij wiadomość bez szyfrowania</string>
   <string name="send_otr_message">Wyślij zaszyfrowaną wiadomość (OTR)</string>
   <string name="send_omemo_message">Wyślij wiadomość zaszyfrowaną OMEMO</string>
@@ -351,8 +350,6 @@
   <string name="conversations_foreground_service">Conversations</string>
   <string name="pref_keep_foreground_service">Usługa na pierwszym planie</string>
   <string name="pref_keep_foreground_service_summary">Uniemożliwia systemowi przerwanie połączenia</string>
-  <string name="pref_export_logs">Wyeksportuj historię rozmów</string>
-  <string name="pref_export_logs_summary">Zapisz historię na karcie SD</string>
   <string name="notification_export_logs_title">Zapisywanie historii na karcie SD...</string>
   <string name="choose_file">Wybierz plik</string>
   <string name="receiving_x_file">Odbieranie %1$s (ukończono %2$d%%)</string>

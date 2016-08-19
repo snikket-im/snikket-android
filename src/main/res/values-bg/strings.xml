@@ -78,7 +78,7 @@
   <string name="clear_histor_msg">Искате ли да изтриете всички съобщения от този разговор?\n\n<b>Внимание:</b> Това няма да изтрие съобщенията, съхранявани на други устройства или на сървърите.</string>
   <string name="delete_messages">Изтриване на съобщенията</string>
   <string name="also_end_conversation">Приключване на този разговор след това</string>
-  <string name="choose_presence">Изберете присъствие за контакта</string>
+  <string name="choose_presence">Изберете устройство</string>
   <string name="send_unencrypted_message">Изпр. на нешифр. съобщение</string>
   <string name="send_message_to_x">Изпращане на съобщение до %s</string>
   <string name="send_otr_message">Изпр. на съобщение, шифр. чрез OTP</string>
@@ -360,8 +360,6 @@
   <string name="conversations_foreground_service">Conversations</string>
   <string name="pref_keep_foreground_service">Услугата да е на преден план</string>
   <string name="pref_keep_foreground_service_summary">Предотвратява прекъсването на връзката Ви от операционната система</string>
-  <string name="pref_export_logs">Изнасяне на журналите</string>
-  <string name="pref_export_logs_summary">Записване на журналите в картата с памет</string>
   <string name="notification_export_logs_title">Записване на журналите в картата с памет</string>
   <string name="choose_file">Изберете файл</string>
   <string name="receiving_x_file">Получаване на %1$s (%2$d%% завършено)</string>
@@ -636,4 +634,10 @@
   <string name="pref_use_green_background_summary">Получените съобщения ще бъдат на зелен фон</string>
   <string name="unable_to_connect_to_keychain">Неуспешно свързване с OpenKeychain</string>
   <string name="this_device_is_no_longer_in_use">Това устройство вече не се използва</string>
+  <string name="type_pc">Компютър</string>
+  <string name="type_phone">Мобилен телефон</string>
+  <string name="type_tablet">Таблет</string>
+  <string name="type_web">Браузър</string>
+  <string name="type_console">Конзола</string>
+  <string name="payment_required">Изисква се плащане</string>
 </resources>

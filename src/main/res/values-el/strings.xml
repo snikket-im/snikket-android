@@ -72,7 +72,6 @@
   <string name="clear_conversation_history">Καθαρισμός ιστορικού Συζήτησης</string>
   <string name="clear_histor_msg">Θέλετε να σβήσετε όλα τα μηνύματα αυτής της Συζήτησης;\n\n<b>Προειδοποίηση:</b> Αυτό δεν θα επηρεάσει τα μηνύματα που είναι αποθηκευμένα σε άλλες συσκευές ή άλλους διακομιστές.</string>
   <string name="delete_messages">Διαγραφή μηνυμάτων</string>
-  <string name="choose_presence">Επιλέξτε παρουσία για επικοινωνία</string>
   <string name="send_otr_message">Αποστολή κρυπτογραφημένου μηνύματος OTR</string>
   <string name="send_pgp_message">Αποστολή κρυπτογραφημένου μηνύματος OpenPGP</string>
   <string name="your_nick_has_been_changed">Το ψευδώνυμό σας έχει αλλάξει</string>

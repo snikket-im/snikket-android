@@ -78,7 +78,7 @@
   <string name="clear_histor_msg">Doresti sa stergi toate mesajele din aceasta conversatie?\n\n<b>Atentie:</b> Aceasta actiune nu va influenta mesajele aflate pe alte telefoane/tabelete/servere.</string>
   <string name="delete_messages">Sterge mesajele</string>
   <string name="also_end_conversation">Dupa, incheie conversatia</string>
-  <string name="choose_presence">Alege prezenta pentru a contacta</string>
+  <string name="choose_presence">Alege dispozitiv</string>
   <string name="send_unencrypted_message">Trimite mesaje necriptate</string>
   <string name="send_message_to_x">Trimite mesaj catre %s</string>
   <string name="send_otr_message">Trimite mesaj criptat cu OTR</string>
@@ -360,8 +360,6 @@
   <string name="conversations_foreground_service">Conversations</string>
   <string name="pref_keep_foreground_service">Pastreaza serviciul activ in prim plan</string>
   <string name="pref_keep_foreground_service_summary">Previne inchiderea conexiunii de catre sistemul de operare.</string>
-  <string name="pref_export_logs">Exporta jurnale</string>
-  <string name="pref_export_logs_summary">Scrie jurnal pe card SD</string>
   <string name="notification_export_logs_title">Se scrie jurnal pe card SD</string>
   <string name="choose_file">Alege un fisier</string>
   <string name="receiving_x_file">Primesc %1$s (%2$d%% complet)</string>
@@ -546,8 +544,8 @@
   <string name="verified_omemo_key_with_certificate">Verifica cheia OMEMO cu un certificat</string>
   <string name="device_does_not_support_certificates">Dispozitivul nu permite selectia unui certificat pentru client!</string>
   <string name="pref_connection_options">Optiuni conexiune</string>
-  <string name="pref_use_tor">Conectare prin TOR</string>
-  <string name="pref_use_tor_summary">Trimite toate conexiunile prin reteaua Tor. Necesita OrBot</string>
+  <string name="pref_use_tor">Conectare prin Tor</string>
+  <string name="pref_use_tor_summary">Trimite toate conexiunile prin reteaua Tor. Necesita Orbot</string>
   <string name="account_settings_hostname">Nume gazda</string>
   <string name="account_settings_port">Port</string>
   <string name="hostname_or_onion">Adresa server- sau .onion</string>
@@ -640,4 +638,10 @@ Emitent</string>
   <string name="pref_use_green_background_summary">Foloseste la mesajele primite un fundal verde</string>
   <string name="unable_to_connect_to_keychain">Nu s-a putut contacta OpenKeychain</string>
   <string name="this_device_is_no_longer_in_use">Acest dispozitiv nu mai este in uz</string>
+  <string name="type_pc">PC</string>
+  <string name="type_phone">Telefon mobil</string>
+  <string name="type_tablet">Tableta</string>
+  <string name="type_web">Navigator internet</string>
+  <string name="type_console">Consola</string>
+  <string name="payment_required">Este necesara o plata</string>
 </resources>

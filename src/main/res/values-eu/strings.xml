@@ -78,7 +78,6 @@
   <string name="clear_histor_msg">Elkarrizketa honetako mezu guztiak ezabatu nahi al dituzu?\n\n<b>Abisua:</b> Honek ez du beste gailu edo zerbitzarietan gordetako mezuetan eraginik izango.</string>
   <string name="delete_messages">Mezuak ezabatu</string>
   <string name="also_end_conversation">Elkarrizketa hau jarraian amaitu</string>
-  <string name="choose_presence">Hautatu agerpena kontaktuarentzat</string>
   <string name="send_unencrypted_message">Enkriptatu gabeko mezua bidali</string>
   <string name="send_message_to_x">%s(r)i mezua bidali</string>
   <string name="send_otr_message">OTRz enkriptatutako mezua bidali</string>
@@ -360,8 +359,6 @@
   <string name="conversations_foreground_service">Conversations</string>
   <string name="pref_keep_foreground_service">Zerbitzua atzeko planoan mantendu</string>
   <string name="pref_keep_foreground_service_summary">Sistema eragileak zure konexioa hiltzea galarazten du</string>
-  <string name="pref_export_logs">Erregistroak esportatu</string>
-  <string name="pref_export_logs_summary">Erregistroak SD txartelean gorde</string>
   <string name="notification_export_logs_title">Erregistroak SD txartelean gordetzen</string>
   <string name="choose_file">Fitxategia aukeratu</string>
   <string name="receiving_x_file">%1$s jasotzen (%2$d%% osatua)</string>

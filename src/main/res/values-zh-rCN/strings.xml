@@ -78,7 +78,6 @@
   <string name="clear_histor_msg">删除该会话中所有信息？\n\n<b>注:</b> 该操作不会影响其他设备或服务器保存的信息。</string>
   <string name="delete_messages">删除消息</string>
   <string name="also_end_conversation">结束此会话以后</string>
-  <string name="choose_presence">添加在线用户至联系人</string>
   <string name="send_unencrypted_message">发送未加密的信息</string>
   <string name="send_message_to_x">发信息给 %s</string>
   <string name="send_otr_message">发送 OTR 加密信息</string>
@@ -356,8 +355,6 @@
   <string name="conversations_foreground_service">Conversations</string>
   <string name="pref_keep_foreground_service">保持前台服务</string>
   <string name="pref_keep_foreground_service_summary">防止操作系统中断你的连接</string>
-  <string name="pref_export_logs">导出日志</string>
-  <string name="pref_export_logs_summary">将日志写入 SD 卡</string>
   <string name="notification_export_logs_title">正在将日志写入 SD 卡</string>
   <string name="choose_file">选择文件</string>
   <string name="receiving_x_file">接收中 %1$s (已完成 %2$d%%)</string>

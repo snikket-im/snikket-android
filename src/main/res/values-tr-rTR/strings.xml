@@ -78,7 +78,7 @@
   <string name="clear_histor_msg">Bu sohbetteki bütün iletileri silmek istiyor musunuz?\n\n<b>Uyarı:</b>Başka cihazlardaki ya da sunuculardaki iletiler bundan etkilenmeyecektir.</string>
   <string name="delete_messages">İletileri sil</string>
   <string name="also_end_conversation">Sonrasında bu sohbeti sonlandır</string>
-  <string name="choose_presence">Kaynak kişiyi seçin</string>
+  <string name="choose_presence">Cihaz seç</string>
   <string name="send_unencrypted_message">Şifrelenmemiş ileti gönder</string>
   <string name="send_message_to_x">%s kişisine mesaj gönder</string>
   <string name="send_otr_message">OTR ile şifrelenmiş ileti gönder</string>
@@ -360,8 +360,6 @@
   <string name="conversations_foreground_service">Conversations</string>
   <string name="pref_keep_foreground_service">Ön planda çalışmaya devam etsin</string>
   <string name="pref_keep_foreground_service_summary">İşletim sisteminin bağlantınızı koparmasına engel olur</string>
-  <string name="pref_export_logs">Kayıtları dışa aktar</string>
-  <string name="pref_export_logs_summary">Kayıtları SD karta yaz</string>
   <string name="notification_export_logs_title">Kayıtları SD karta yazıyor</string>
   <string name="choose_file">Dosya seç</string>
   <string name="receiving_x_file">%1$s alıyor/(%2$d%% tamamlandı)</string>
@@ -633,4 +631,10 @@
   <string name="pref_use_green_background_summary">Gelen iletiler için yeşil arka plan kullan</string>
   <string name="unable_to_connect_to_keychain">OpenKeychain\'e bağlanılamıyor</string>
   <string name="this_device_is_no_longer_in_use">Bu cihaz artık kullanılmıyor</string>
+  <string name="type_pc">Bilgisayar</string>
+  <string name="type_phone">Mobil telefon</string>
+  <string name="type_tablet">Tablet</string>
+  <string name="type_web">Web tarayıcı</string>
+  <string name="type_console">Konsol</string>
+  <string name="payment_required">Ödeme gerekli</string>
 </resources>

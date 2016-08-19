@@ -41,7 +41,6 @@
   <string name="clear_conversation_history">Limpar historial de conversa</string>
   <string name="clear_histor_msg">¿Queres borrar todas as mensaxes desta conversa?\n\n<b>Ollo:</b> Isto non afectará ás mensaxes gardadas noutros dispositivos ou servidores.</string>
   <string name="delete_messages">Borrar mensaxes</string>
-  <string name="choose_presence">Selecciona recurso del contacto</string>
   <string name="send_otr_message">Enviar mensaxe cifrado con OTR</string>
   <string name="send_pgp_message">Enviar mensaxe cifrado con OpenPGP</string>
   <string name="your_nick_has_been_changed">Modificouse o teu apodo</string>

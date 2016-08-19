@@ -78,7 +78,6 @@
   <string name="clear_histor_msg">Бажаєте видалити всі повідомлення з цієї розмови?\n\n<b>Увага:</b> Це не вплине на повідомлення, які знаходяться на інших пристроях або серверах.</string>
   <string name="delete_messages">Видалити повідомлення</string>
   <string name="also_end_conversation">Завершити цю розмову опісля</string>
-  <string name="choose_presence">Вибрати присутність для контакту</string>
   <string name="send_unencrypted_message">Відправити незашифроване повідомлення</string>
   <string name="send_message_to_x">Відправити повідомлення до %s</string>
   <string name="send_otr_message">Відправити повідомлення, зашифроване OTR</string>
@@ -360,8 +359,6 @@
   <string name="conversations_foreground_service">Розмови</string>
   <string name="pref_keep_foreground_service">Підтримувати сервіс на першому плані</string>
   <string name="pref_keep_foreground_service_summary">Не дає операційній системі припиняти Ваш зв\'язок</string>
-  <string name="pref_export_logs">Експортувати журнали</string>
-  <string name="pref_export_logs_summary">Записати журнали на носій</string>
   <string name="notification_export_logs_title">Записую журнали на носій</string>
   <string name="choose_file">Вибрати файл</string>
   <string name="receiving_x_file">Отримання %1$s (%2$d%% завершено)</string>

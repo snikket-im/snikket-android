@@ -76,7 +76,6 @@
   <string name="clear_histor_msg">Ønsker du å slette alle meldinger i denne samtalen?\n\n<b>Advarsel:</b> Dette har ingen innvirkning på meldinger lagret på andre enheter eller tjenere.</string>
   <string name="delete_messages">Slett meldinger</string>
   <string name="also_end_conversation">Avslutt denne samtalen etterpå</string>
-  <string name="choose_presence">Velg tilgjengelighetsoppdatering til kontakt</string>
   <string name="send_unencrypted_message">Send ukryptert melding</string>
   <string name="send_otr_message">Send OTR-kryptert melding</string>
   <string name="send_omemo_message">Send OMEMO-kryptert melding</string>
@@ -326,8 +325,6 @@
   <string name="conversations_foreground_service">Conversations</string>
   <string name="pref_keep_foreground_service">Behold tjenesten i forgrunnen</string>
   <string name="pref_keep_foreground_service_summary">Forhindrer operativsystemet fra å drepe tilkoblingen din</string>
-  <string name="pref_export_logs">Eksporter loggføringer</string>
-  <string name="pref_export_logs_summary">Skriv loggføringer til SD-kort</string>
   <string name="notification_export_logs_title">Skriver loggføringer til SD-kort</string>
   <string name="choose_file">Velg fil</string>
   <string name="receiving_x_file">Mottak av %1$s (%2$d%% fullført)</string>

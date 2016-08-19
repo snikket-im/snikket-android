@@ -78,7 +78,6 @@
   <string name="clear_histor_msg">Вы хотите удалить все сообщения в этой беседе?\n\n<b>Предупреждение:</b> Данная операция не повлияет на сообщения, хранящиеся на других устройствах.</string>
   <string name="delete_messages">Удалить сообщения</string>
   <string name="also_end_conversation">Закончить эту беседу впоследствии</string>
-  <string name="choose_presence">Укажите статус для контакта</string>
   <string name="send_unencrypted_message">Отправить нешифрованное сообщение</string>
   <string name="send_message_to_x">Отправить сообщение для %s</string>
   <string name="send_otr_message">Отправить OTR защифрованное сообщение</string>
@@ -356,8 +355,6 @@
   <string name="conversations_foreground_service">Диалоги</string>
   <string name="pref_keep_foreground_service">Оставить службу на переднем плане</string>
   <string name="pref_keep_foreground_service_summary">Не позволяет операционной системе закрыть ваше соединение</string>
-  <string name="pref_export_logs">Экспорт истории</string>
-  <string name="pref_export_logs_summary">Записать историю на SD карту</string>
   <string name="notification_export_logs_title">Запись истории на SD карту</string>
   <string name="choose_file">Выберите файл</string>
   <string name="receiving_x_file">Получение %1$s (%2$d%% выполнено)</string>

@@ -75,7 +75,6 @@
   <string name="clear_histor_msg">האם ברצונך למחוק את כל ההודעות בשיחה זאת?\n\n<b>אזהרה:</b> פעולה זו לא תשפיע על הודעות מאוחסנות על מכשירים או שרתים אחרים.</string>
   <string name="delete_messages">מחק הודעות</string>
   <string name="also_end_conversation">סיים את השיחה לאחר מכן</string>
-  <string name="choose_presence">בחר נוכחות לאיש קשר</string>
   <string name="send_unencrypted_message">שלח הודעה בלתי מוצפנת</string>
   <string name="send_otr_message">שלח הודעה בהצפנת OTR</string>
   <string name="send_omemo_message">של הודעה בהצפנת OMEMO</string>
@@ -315,8 +314,6 @@
   <string name="no_otr_session_found">לא נמצא OTR Session תקין</string>
   <string name="pref_keep_foreground_service">השאר שירות ב Foreground</string>
   <string name="pref_keep_foreground_service_summary">מונע ממערכת ההפעלה לנתק את החיבור לשרת</string>
-  <string name="pref_export_logs">ייצא Logs</string>
-  <string name="pref_export_logs_summary">יצוא logs לכרטיס הזיכרון</string>
   <string name="notification_export_logs_title">מייצא logs לכרטיס זיכרון</string>
   <string name="choose_file">בחר קובץ</string>
   <string name="receiving_x_file">מקבל %1$s ( הושלם %2$d%% )</string>
