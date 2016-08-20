@@ -1,5 +1,8 @@
 ###Changelog
 
+####Version 1.13.9
+* bug fixes
+
 ####Version 1.13.8
 * show identities instead of resources in selection dialog
 * allow TLS direct connect when port is set to 5223
