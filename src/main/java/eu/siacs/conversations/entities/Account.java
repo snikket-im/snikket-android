@@ -302,7 +302,8 @@ public class Account extends AbstractEntity {
 	}
 
 	public boolean isOnion() {
-		return getServer().toString().toLowerCase().endsWith(".onion");
+		final Jid server = getServer();
+		return server != null && server.toString().toLowerCase().endsWith(".onion");
 	}
 
 	public void setPort(int port) {

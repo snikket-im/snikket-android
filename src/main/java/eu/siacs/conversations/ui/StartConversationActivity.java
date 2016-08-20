@@ -815,8 +815,13 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 		switch (intent.getAction()) {
 			case Intent.ACTION_SENDTO:
 			case Intent.ACTION_VIEW:
-				Log.d(Config.LOGTAG, "received uri=" + intent.getData());
-				return new Invite(intent.getData()).invite();
+				Uri uri = intent.getData();
+				if (uri != null) {
+					Log.d(Config.LOGTAG, "received uri=" + intent.getData());
+					return new Invite(intent.getData()).invite();
+				} else {
+					return false;
+				}
 			case NfcAdapter.ACTION_NDEF_DISCOVERED:
 				for (Parcelable message : getIntent().getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES)) {
 					if (message instanceof NdefMessage) {

@@ -313,6 +313,9 @@ public class ContactDetailsActivity extends XmppActivity implements OnAccountUpd
 	}
 
 	private void populateView() {
+		if (contact == null) {
+			return;
+		}
 		invalidateOptionsMenu();
 		setTitle(contact.getDisplayName());
 		if (contact.showInRoster()) {
