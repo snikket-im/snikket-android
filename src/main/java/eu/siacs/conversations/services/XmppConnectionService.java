@@ -3111,7 +3111,7 @@ public class XmppConnectionService extends Service {
 		final XmppConnection connection = account.getXmppConnection();
 		if (connection != null) {
 			IqPacket request = mIqGenerator.generateCreateAccountWithCaptcha(account, id, data);
-			sendIqPacket(account, request, connection.registrationResponseListener);
+			connection.sendUnmodifiedIqPacket(request, connection.registrationResponseListener);
 		}
 	}
 

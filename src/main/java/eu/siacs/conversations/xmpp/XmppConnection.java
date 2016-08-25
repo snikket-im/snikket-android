@@ -879,7 +879,7 @@ public class XmppConnection implements Runnable {
 		final IqPacket register = new IqPacket(IqPacket.TYPE.GET);
 		register.query("jabber:iq:register");
 		register.setTo(account.getServer());
-		sendIqPacket(register, new OnIqPacketReceived() {
+		sendUnmodifiedIqPacket(register, new OnIqPacketReceived() {
 
 			@Override
 			public void onIqPacketReceived(final Account account, final IqPacket packet) {
@@ -892,7 +892,8 @@ public class XmppConnection implements Runnable {
 					final Element password = new Element("password").setContent(account.getPassword());
 					register.query("jabber:iq:register").addChild(username);
 					register.query().addChild(password);
-					sendIqPacket(register, registrationResponseListener);
+					register.setFrom(account.getJid().toBareJid());
+					sendUnmodifiedIqPacket(register, registrationResponseListener);
 				} else if (packet.getType() == IqPacket.TYPE.RESULT
 						&& (packet.query().hasChild("x", "jabber:x:data"))) {
 					final Data data = Data.parse(packet.query().findChild("x", "jabber:x:data"));
@@ -1258,7 +1259,7 @@ public class XmppConnection implements Runnable {
 		return this.sendUnmodifiedIqPacket(packet, callback);
 	}
 
-	private synchronized String sendUnmodifiedIqPacket(final IqPacket packet, final OnIqPacketReceived callback) {
+	public synchronized String sendUnmodifiedIqPacket(final IqPacket packet, final OnIqPacketReceived callback) {
 		if (packet.getId() == null) {
 			final String id = nextRandomId();
 			packet.setAttribute("id", id);

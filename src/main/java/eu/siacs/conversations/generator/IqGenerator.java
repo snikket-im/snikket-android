@@ -321,7 +321,7 @@ public class IqGenerator extends AbstractGenerator {
 
 	public IqPacket generateCreateAccountWithCaptcha(Account account, String id, Data data) {
 		final IqPacket register = new IqPacket(IqPacket.TYPE.SET);
-
+		register.setFrom(account.getJid().toBareJid());
 		register.setTo(account.getServer());
 		register.setId(id);
 		Element query = register.query("jabber:iq:register");
