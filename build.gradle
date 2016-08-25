@@ -1,116 +1,117 @@
 // Top-level build file where you can add configuration options common to all
 // sub-projects/modules.
 buildscript {
-	repositories {
-		jcenter()
-		mavenCentral()
-	}
-	dependencies {
-		classpath 'com.android.tools.build:gradle:2.0.0'
-	}
+    repositories {
+        jcenter()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:2.0.0'
+    }
 }
 
 apply plugin: 'com.android.application'
 
 repositories {
-	jcenter()
-	mavenCentral()
+    jcenter()
+    mavenCentral()
 }
 
 configurations {
-	playstoreCompile
+    playstoreCompile
 }
 
 dependencies {
-	compile project(':libs:MemorizingTrustManager')
-	compile 'org.sufficientlysecure:openpgp-api:10.0'
-	compile 'com.soundcloud.android:android-crop:1.0.1@aar'
-	compile 'com.android.support:support-v13:24.2.0'
-	compile 'org.bouncycastle:bcprov-jdk15on:1.52'
-	compile 'org.bouncycastle:bcmail-jdk15on:1.52'
-	compile 'org.jitsi:org.otr4j:0.22'
-	compile 'org.gnu.inet:libidn:1.15'
-	compile 'com.google.zxing:core:3.2.1'
-	compile 'com.google.zxing:android-integration:3.2.1'
-	compile 'de.measite.minidns:minidns:0.1.7'
-	compile 'de.timroes.android:EnhancedListView:0.3.4'
-	compile 'me.leolin:ShortcutBadger:1.1.4@aar'
-	compile 'com.kyleduo.switchbutton:library:1.2.8'
-	compile 'org.whispersystems:axolotl-android:1.3.4'
-	compile 'com.makeramen:roundedimageview:2.2.0'
-	playstoreCompile 'com.google.android.gms:play-services-gcm:9.4.0'
+    compile project(':libs:MemorizingTrustManager')
+    playstoreCompile 'com.google.android.gms:play-services-gcm:9.4.0'
+    compile 'org.sufficientlysecure:openpgp-api:10.0'
+    compile 'com.soundcloud.android:android-crop:1.0.1@aar'
+    compile 'com.android.support:support-v13:24.2.0'
+    compile 'org.bouncycastle:bcprov-jdk15on:1.52'
+    compile 'org.bouncycastle:bcmail-jdk15on:1.52'
+    compile 'org.jitsi:org.otr4j:0.22'
+    compile 'org.gnu.inet:libidn:1.15'
+    compile 'com.google.zxing:core:3.2.1'
+    compile 'com.google.zxing:android-integration:3.2.1'
+    compile 'de.measite.minidns:minidns:0.1.7'
+    compile 'de.timroes.android:EnhancedListView:0.3.4'
+    compile 'me.leolin:ShortcutBadger:1.1.4@aar'
+    compile 'com.kyleduo.switchbutton:library:1.2.8'
+    compile 'org.whispersystems:axolotl-android:1.3.4'
+    compile 'com.makeramen:roundedimageview:2.2.0'
+    compile 'com.google.android.gms:play-services-gcm:9.4.0'
 }
 
 ext {
-	travisBuild = System.getenv("TRAVIS") == "true"
-	// allows for -Dpre-dex=false to be set
-	preDexEnabled = "true".equals(System.getProperty("pre-dex", "true"))
+    travisBuild = System.getenv("TRAVIS") == "true"
+    // allows for -Dpre-dex=false to be set
+    preDexEnabled = "true".equals(System.getProperty("pre-dex", "true"))
 }
 
 android {
-	compileSdkVersion 24
-	buildToolsVersion "23.0.3"
+    compileSdkVersion 24
+    buildToolsVersion "23.0.3"
 
-	defaultConfig {
-		minSdkVersion 14
-		targetSdkVersion 24
-		versionCode 168
-		versionName "1.13.9"
-		archivesBaseName += "-$versionName"
-		applicationId "eu.siacs.conversations"
-	}
+    defaultConfig {
+        minSdkVersion 14
+        targetSdkVersion 24
+        versionCode 168
+        versionName "1.13.9"
+        archivesBaseName += "-$versionName"
+        applicationId "eu.siacs.conversations"
+    }
 
-	dexOptions {
-		// Skip pre-dexing when running on Travis CI or when disabled via -Dpre-dex=false.
-		preDexLibraries = preDexEnabled && !travisBuild
-	}
+    dexOptions {
+        // Skip pre-dexing when running on Travis CI or when disabled via -Dpre-dex=false.
+        preDexLibraries = preDexEnabled && !travisBuild
+    }
 
-	compileOptions {
-		sourceCompatibility JavaVersion.VERSION_1_7
-		targetCompatibility JavaVersion.VERSION_1_7
-	}
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
 
-   productFlavors {
-		playstore
-		free
-	}
-	if (project.hasProperty('mStoreFile') &&
-			project.hasProperty('mStorePassword') &&
-			project.hasProperty('mKeyAlias') &&
-			project.hasProperty('mKeyPassword')) {
-		signingConfigs {
-			release {
-				storeFile file(mStoreFile)
-					storePassword mStorePassword
-					keyAlias mKeyAlias
-					keyPassword mKeyPassword
-			}
-		}
-		buildTypes.release.signingConfig = signingConfigs.release
-	} else {
-		buildTypes.release.signingConfig = null
-	}
+    productFlavors {
+        playstore
+        free
+    }
+    if (project.hasProperty('mStoreFile') &&
+            project.hasProperty('mStorePassword') &&
+            project.hasProperty('mKeyAlias') &&
+            project.hasProperty('mKeyPassword')) {
+        signingConfigs {
+            release {
+                storeFile file(mStoreFile)
+                storePassword mStorePassword
+                keyAlias mKeyAlias
+                keyPassword mKeyPassword
+            }
+        }
+        buildTypes.release.signingConfig = signingConfigs.release
+    } else {
+        buildTypes.release.signingConfig = null
+    }
 
-	lintOptions {
-		disable 'ExtraTranslation', 'MissingTranslation', 'InvalidPackage', 'MissingQuantity', 'AppCompatResource'
-	}
+    lintOptions {
+        disable 'ExtraTranslation', 'MissingTranslation', 'InvalidPackage', 'MissingQuantity', 'AppCompatResource'
+    }
 
-	subprojects {
+    subprojects {
 
-		afterEvaluate {
-			if (getPlugins().hasPlugin('android') ||
-					getPlugins().hasPlugin('android-library')) {
+        afterEvaluate {
+            if (getPlugins().hasPlugin('android') ||
+                    getPlugins().hasPlugin('android-library')) {
 
-				configure(android.lintOptions) {
-					disable 'AndroidGradlePluginVersion', 'MissingTranslation'
-				}
-			}
+                configure(android.lintOptions) {
+                    disable 'AndroidGradlePluginVersion', 'MissingTranslation'
+                }
+            }
 
-		}
-	}
+        }
+    }
 
-	packagingOptions {
-		exclude 'META-INF/BCKEY.DSA'
-		exclude 'META-INF/BCKEY.SF'
-	}
+    packagingOptions {
+        exclude 'META-INF/BCKEY.DSA'
+        exclude 'META-INF/BCKEY.SF'
+    }
 }
