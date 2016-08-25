@@ -699,6 +699,7 @@ public class XmppConnectionService extends Service {
 
 	private void directReply(Conversation conversation, String body) {
 		Message message = new Message(conversation,body,conversation.getNextEncryption());
+		message.markUnread();
 		if (message.getEncryption() == Message.ENCRYPTION_PGP) {
 			getPgpEngine().encrypt(message, new UiCallback<Message>() {
 				@Override
