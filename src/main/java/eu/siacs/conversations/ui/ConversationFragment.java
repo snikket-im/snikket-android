@@ -363,31 +363,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 		} else if (multi && !conversation.getMucOptions().participating()) {
 			this.mEditMessage.setHint(R.string.you_are_not_participating);
 		} else {
-			switch (conversation.getNextEncryption()) {
-				case Message.ENCRYPTION_NONE:
-					if (Config.multipleEncryptionChoices()) {
-						mEditMessage.setHint(getString(R.string.send_unencrypted_message));
-					} else {
-						mEditMessage.setHint(getString(R.string.send_message_to_x,conversation.getName()));
-					}
-					break;
-				case Message.ENCRYPTION_OTR:
-					mEditMessage.setHint(getString(R.string.send_otr_message));
-					break;
-				case Message.ENCRYPTION_AXOLOTL:
-					AxolotlService axolotlService = conversation.getAccount().getAxolotlService();
-					if (axolotlService != null && axolotlService.trustedSessionVerified(conversation)) {
-						mEditMessage.setHint(getString(R.string.send_omemo_x509_message));
-					} else {
-						mEditMessage.setHint(getString(R.string.send_omemo_message));
-					}
-					break;
-				case Message.ENCRYPTION_PGP:
-					mEditMessage.setHint(getString(R.string.send_pgp_message));
-					break;
-				default:
-					break;
-			}
+			this.mEditMessage.setHint(UIHelper.getMessageHint(activity,conversation));
 			getActivity().invalidateOptionsMenu();
 		}
 	}

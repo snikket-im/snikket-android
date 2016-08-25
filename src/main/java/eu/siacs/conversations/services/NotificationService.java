@@ -13,6 +13,7 @@ import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationCompat.BigPictureStyle;
 import android.support.v4.app.NotificationCompat.Builder;
+import android.support.v4.app.RemoteInput;
 import android.support.v4.app.TaskStackBuilder;
 import android.text.Html;
 import android.util.DisplayMetrics;
@@ -118,6 +119,13 @@ public class NotificationService {
 		}
 	}
 
+	public void pushFromDirectReply(final Message message) {
+		synchronized (notifications) {
+			pushToStack(message);
+			updateNotification(false);
+		}
+	}
+
 	public void finishBacklog(boolean notify) {
 		synchronized (notifications) {
 			mXmppConnectionService.updateUnreadCountBadge();
@@ -170,6 +178,8 @@ public class NotificationService {
 	public void clear(final Conversation conversation) {
 		synchronized (notifications) {
 			notifications.remove(conversation.getUuid());
+			final NotificationManager nm = (NotificationManager) mXmppConnectionService.getSystemService(Context.NOTIFICATION_SERVICE);
+			nm.cancel(conversation.getUuid(), NOTIFICATION_ID);
 			updateNotification(false);
 		}
 	}
@@ -190,7 +200,7 @@ public class NotificationService {
 				this.markLastNotification();
 			}
 			final Builder mBuilder;
-			if (notifications.size() == 1) {
+			if (notifications.size() == 1 && Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
 				mBuilder = buildSingleConversations(notifications.values().iterator().next());
 				modifyForSoundVibrationAndLight(mBuilder, notify, preferences);
 				notificationManager.notify(NOTIFICATION_ID, mBuilder.build());
@@ -202,7 +212,7 @@ public class NotificationService {
 					Builder singleBuilder = buildSingleConversations(entry.getValue());
 					singleBuilder.setGroup(CONVERSATIONS_GROUP);
 					modifyForSoundVibrationAndLight(singleBuilder,notify,preferences);
-					notificationManager.notify(entry.getKey().hashCode() % 435301 ,singleBuilder.build());
+					notificationManager.notify(entry.getKey(), NOTIFICATION_ID ,singleBuilder.build());
 				}
 			}
 		}
@@ -294,14 +304,19 @@ public class NotificationService {
 				} else {
 					modifyForTextOnly(mBuilder, messages);
 				}
-				if ((message = getFirstDownloadableMessage(messages)) != null) {
-					mBuilder.addAction(
-							Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ?
-									R.drawable.ic_file_download_white_24dp : R.drawable.ic_action_download,
-							mXmppConnectionService.getResources().getString(R.string.download_x_file,
-									UIHelper.getFileDescriptionString(mXmppConnectionService, message)),
-							createDownloadIntent(message)
-					);
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+					RemoteInput remoteInput = new RemoteInput.Builder("text_reply").setLabel(UIHelper.getMessageHint(mXmppConnectionService, conversation)).build();
+					NotificationCompat.Action action = new NotificationCompat.Action.Builder(R.drawable.ic_send_text_offline, "Reply", createReplyIntent(conversation)).addRemoteInput(remoteInput).build();
+					mBuilder.addAction(action);
+					if ((message = getFirstDownloadableMessage(messages)) != null) {
+						mBuilder.addAction(
+								Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ?
+										R.drawable.ic_file_download_white_24dp : R.drawable.ic_action_download,
+								mXmppConnectionService.getResources().getString(R.string.download_x_file,
+										UIHelper.getFileDescriptionString(mXmppConnectionService, message)),
+								createDownloadIntent(message)
+						);
+					}
 				}
 				if ((message = getFirstLocationMessage(messages)) != null) {
 					mBuilder.addAction(R.drawable.ic_room_white_24dp,
@@ -332,8 +347,9 @@ public class NotificationService {
 			final BigPictureStyle bigPictureStyle = new NotificationCompat.BigPictureStyle();
 			bigPictureStyle.bigPicture(bitmap);
 			if (tmp.size() > 0) {
-				bigPictureStyle.setSummaryText(getMergedBodies(tmp));
-				builder.setContentText(UIHelper.getMessagePreview(mXmppConnectionService, tmp.get(0)).first);
+				CharSequence text = getMergedBodies(tmp);
+				bigPictureStyle.setSummaryText(text);
+				builder.setContentText(text);
 			} else {
 				builder.setContentText(mXmppConnectionService.getString(
 						R.string.received_x_file,
@@ -354,7 +370,7 @@ public class NotificationService {
 			}
 			for (Message message : messages) {
 				String sender = message.getStatus() == Message.STATUS_RECEIVED ? UIHelper.getMessageDisplayName(message) : null;
-				messagingStyle.addMessage(message.getBody().trim(), message.getTimeSent(), sender);
+				messagingStyle.addMessage(UIHelper.getMessagePreview(mXmppConnectionService,message).first, message.getTimeSent(), sender);
 			}
 			builder.setStyle(messagingStyle);
 		} else {
@@ -364,15 +380,19 @@ public class NotificationService {
 	}
 
 	private Message getImage(final Iterable<Message> messages) {
+		Message image = null;
 		for (final Message message : messages) {
+			if (message.getStatus() != Message.STATUS_RECEIVED) {
+				return null;
+			}
 			if (message.getType() != Message.TYPE_TEXT
 					&& message.getTransferable() == null
 					&& message.getEncryption() != Message.ENCRYPTION_PGP
 					&& message.getFileParams().height > 0) {
-				return message;
+				image = message;
 			}
 		}
-		return null;
+		return image;
 	}
 
 	private Message getFirstDownloadableMessage(final Iterable<Message> messages) {
@@ -448,9 +468,16 @@ public class NotificationService {
 		intent.setAction(XmppConnectionService.ACTION_CLEAR_NOTIFICATION);
 		if (conversation != null) {
 			intent.putExtra("uuid", conversation.getUuid());
-			return PendingIntent.getService(mXmppConnectionService, conversation.getUuid().hashCode() % 47528, intent, 0);
+			return PendingIntent.getService(mXmppConnectionService, conversation.getUuid().hashCode() % 247527, intent, 0);
 		}
 		return PendingIntent.getService(mXmppConnectionService, 0, intent, 0);
+	}
+
+	private PendingIntent createReplyIntent(Conversation conversation) {
+		final Intent intent = new Intent(mXmppConnectionService, XmppConnectionService.class);
+		intent.setAction(XmppConnectionService.ACTION_REPLY_TO_CONVERSATION);
+		intent.putExtra("uuid",conversation.getUuid());
+		return PendingIntent.getService(mXmppConnectionService, conversation.getUuid().hashCode() % 402361, intent, 0);
 	}
 
 	private PendingIntent createDisableForeground() {

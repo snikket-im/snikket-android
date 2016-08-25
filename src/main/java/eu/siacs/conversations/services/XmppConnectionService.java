@@ -26,6 +26,7 @@ import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.security.KeyChain;
+import android.support.v4.app.RemoteInput;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.LruCache;
@@ -128,6 +129,7 @@ import me.leolin.shortcutbadger.ShortcutBadger;
 
 public class XmppConnectionService extends Service {
 
+	public static final String ACTION_REPLY_TO_CONVERSATION = "reply_to_conversations";
 	public static final String ACTION_CLEAR_NOTIFICATION = "clear_notification";
 	public static final String ACTION_DISABLE_FOREGROUND = "disable_foreground";
 	public static final String ACTION_TRY_AGAIN = "try_again";
@@ -526,6 +528,7 @@ public class XmppConnectionService extends Service {
 		final String action = intent == null ? null : intent.getAction();
 		boolean interactive = false;
 		if (action != null) {
+			final Conversation c = findConversationByUuid(intent.getStringExtra("uuid"));
 			switch (action) {
 				case ConnectivityManager.CONNECTIVITY_ACTION:
 					if (hasInternetConnection() && Config.RESET_ATTEMPT_COUNT_ON_NETWORK_CHANGE) {
@@ -541,7 +544,6 @@ public class XmppConnectionService extends Service {
 					logoutAndSave(true);
 					return START_NOT_STICKY;
 				case ACTION_CLEAR_NOTIFICATION:
-					final Conversation c = findConversationByUuid(intent.getStringExtra("uuid"));
 					if (c != null) {
 						mNotificationService.clear(c);
 					} else {
@@ -566,6 +568,14 @@ public class XmppConnectionService extends Service {
 						}
 					} catch (final InvalidJidException ignored) {
 						break;
+					}
+					break;
+				case ACTION_REPLY_TO_CONVERSATION:
+					Bundle remoteInput = RemoteInput.getResultsFromIntent(intent);
+					if (remoteInput != null && c != null) {
+
+						String body = remoteInput.getString("text_reply");
+						directReply(c,body);
 					}
 					break;
 				case AudioManager.RINGER_MODE_CHANGED_ACTION:
@@ -685,6 +695,33 @@ public class XmppConnectionService extends Service {
 			}
 		}
 		return START_STICKY;
+	}
+
+	private void directReply(Conversation conversation, String body) {
+		Message message = new Message(conversation,body,conversation.getNextEncryption());
+		if (message.getEncryption() == Message.ENCRYPTION_PGP) {
+			getPgpEngine().encrypt(message, new UiCallback<Message>() {
+				@Override
+				public void success(Message message) {
+					message.setEncryption(Message.ENCRYPTION_DECRYPTED);
+					sendMessage(message);
+					mNotificationService.pushFromDirectReply(message);
+				}
+
+				@Override
+				public void error(int errorCode, Message object) {
+
+				}
+
+				@Override
+				public void userInputRequried(PendingIntent pi, Message object) {
+
+				}
+			});
+		} else {
+			sendMessage(message);
+			mNotificationService.pushFromDirectReply(message);
+		}
 	}
 
 	private boolean xaOnSilentMode() {
