@@ -510,11 +510,12 @@ public class XmppConnection implements Runnable {
 				break;
 			} else if (nextTag.isStart("failure")) {
 				final Element failure = tagReader.readElement(nextTag);
-				final String accountDisabled = failure.findChildContent("account-disabled");
-				if (accountDisabled != null
-						&& accountDisabled.contains("renew")
+				final String text = failure.findChildContent("text");
+				if (failure.hasChild("account-disabled")
+						&& text != null
+						&& text.contains("renew")
 						&& Config.MAGIC_CREATE_DOMAIN != null
-						&& accountDisabled.contains(Config.MAGIC_CREATE_DOMAIN)) {
+						&& text.contains(Config.MAGIC_CREATE_DOMAIN)) {
 					throw new PaymentRequiredException();
 				} else {
 					throw new UnauthorizedException();
