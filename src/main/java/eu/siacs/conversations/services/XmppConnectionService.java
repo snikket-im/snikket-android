@@ -541,7 +541,12 @@ public class XmppConnectionService extends Service {
 					logoutAndSave(true);
 					return START_NOT_STICKY;
 				case ACTION_CLEAR_NOTIFICATION:
-					mNotificationService.clear();
+					final Conversation c = findConversationByUuid(intent.getStringExtra("uuid"));
+					if (c != null) {
+						mNotificationService.clear(c);
+					} else {
+						mNotificationService.clear();
+					}
 					break;
 				case ACTION_DISABLE_FOREGROUND:
 					getPreferences().edit().putBoolean("keep_foreground_service", false).commit();
