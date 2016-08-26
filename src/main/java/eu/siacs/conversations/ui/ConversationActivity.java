@@ -1066,9 +1066,6 @@ public class ConversationActivity extends XmppActivity
 		listView.discardUndo();
 		super.onPause();
 		this.mActivityPaused = true;
-		if (this.xmppConnectionServiceBound) {
-			this.xmppConnectionService.getNotificationService().setIsInForeground(false);
-		}
 	}
 
 	@Override
@@ -1080,9 +1077,6 @@ public class ConversationActivity extends XmppActivity
 			recreate();
 		}
 		this.mActivityPaused = false;
-		if (this.xmppConnectionServiceBound) {
-			this.xmppConnectionService.getNotificationService().setIsInForeground(true);
-		}
 
 		if (!isConversationsOverviewVisable() || !isConversationsOverviewHideable()) {
 			sendReadMarkerIfNecessary(getSelectedConversation());
