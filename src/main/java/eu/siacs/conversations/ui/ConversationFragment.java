@@ -818,6 +818,19 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 		}
 	};
 
+	private OnClickListener mAllowPresenceSubscription = new OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			final Contact contact = conversation == null ? null : conversation.getContact();
+			if (contact != null) {
+				activity.xmppConnectionService.sendPresencePacket(contact.getAccount(),
+						activity.xmppConnectionService.getPresenceGenerator()
+								.sendPresenceUpdatesTo(contact));
+				hideSnackbar();
+			}
+		}
+	};
+
 	private OnClickListener mAnswerSmpClickListener = new OnClickListener() {
 		@Override
 		public void onClick(View view) {
@@ -840,6 +853,8 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 			showSnackbar(R.string.contact_blocked, R.string.unblock, this.mUnblockClickListener);
 		} else if (!contact.showInRoster() && contact.getOption(Contact.Options.PENDING_SUBSCRIPTION_REQUEST)) {
 			showSnackbar(R.string.contact_added_you, R.string.add_back, this.mAddBackClickListener);
+		} else if (contact.getOption(Contact.Options.PENDING_SUBSCRIPTION_REQUEST)) {
+			showSnackbar(R.string.contact_asks_for_presence_subscription, R.string.allow, this.mAllowPresenceSubscription);
 		} else if (mode == Conversation.MODE_MULTI
 				&& !conversation.getMucOptions().online()
 				&& account.getStatus() == Account.State.ONLINE) {

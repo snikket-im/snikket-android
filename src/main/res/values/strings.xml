@@ -677,4 +677,6 @@
 	<string name="payment_required">Payment required</string>
 	<string name="missing_internet_permission">Missing internet permission</string>
 	<string name="me">Me</string>
+	<string name="contact_asks_for_presence_subscription">Contact asks for presence subscription</string>
+	<string name="allow">Allow</string>
 </resources>
