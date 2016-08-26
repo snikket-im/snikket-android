@@ -1,5 +1,6 @@
 package eu.siacs.conversations.ui;
 
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.PendingIntent;
@@ -241,6 +242,8 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 	};
 	private Toast mFetchingMamPrefsToast;
 	private TableRow mPushRow;
+	private String mSavedInstanceAccount;
+	private boolean mSavedInstanceInit = false;
 
 	public void refreshUiReal() {
 		invalidateOptionsMenu();
@@ -449,6 +452,10 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 	@Override
 	protected void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		if (savedInstanceState != null) {
+			this.mSavedInstanceAccount = savedInstanceState.getString("account");
+			this.mSavedInstanceInit = savedInstanceState.getBoolean("initMode", false);
+		}
 		setContentView(R.layout.activity_edit_account);
 		this.mAccountJid = (AutoCompleteTextView) findViewById(R.id.account_jid);
 		this.mAccountJid.addTextChangedListener(this.mTextWatcher);
@@ -581,7 +588,8 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 			} catch (final InvalidJidException | NullPointerException ignored) {
 				this.jidToEdit = null;
 			}
-			this.mInitMode = getIntent().getBooleanExtra("init", false) || this.jidToEdit == null;
+			boolean init = getIntent().getBooleanExtra("init", false);
+			this.mInitMode = init || this.jidToEdit == null;
 			this.messageFingerprint = getIntent().getStringExtra("fingerprint");
 			if (!mInitMode) {
 				this.mRegisterNew.setVisibility(View.GONE);
@@ -590,8 +598,13 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 				}
 			} else {
 				this.mAvatar.setVisibility(View.GONE);
-				if (getActionBar() != null) {
-					getActionBar().setTitle(R.string.action_add_account);
+				ActionBar ab = getActionBar();
+				if (ab != null) {
+					if (init && Config.MAGIC_CREATE_DOMAIN == null) {
+						ab.setDisplayShowHomeEnabled(false);
+						ab.setDisplayHomeAsUpEnabled(false);
+					}
+					ab.setTitle(R.string.action_add_account);
 				}
 			}
 		}
@@ -603,21 +616,41 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 	}
 
 	@Override
-	protected void onBackendConnected() {
-		if (this.jidToEdit != null) {
-			this.mAccount = xmppConnectionService.findAccountByJid(jidToEdit);
-			if (this.mAccount != null) {
-				this.mInitMode |= this.mAccount.isOptionSet(Account.OPTION_REGISTER);
-				this.mUsernameMode |= mAccount.isOptionSet(Account.OPTION_MAGIC_CREATE) && mAccount.isOptionSet(Account.OPTION_REGISTER);
-				if (this.mAccount.getPrivateKeyAlias() != null) {
-					this.mPassword.setHint(R.string.authenticate_with_certificate);
-					if (this.mInitMode) {
-						this.mPassword.requestFocus();
-					}
-				}
-				updateAccountInformation(true);
-			}
+	public void onSaveInstanceState(final Bundle savedInstanceState) {
+		if (mAccount != null) {
+			savedInstanceState.putString("account", mAccount.getJid().toBareJid().toString());
+			savedInstanceState.putBoolean("initMode", mInitMode);
 		}
+		super.onSaveInstanceState(savedInstanceState);
+	}
+
+	@Override
+	protected void onBackendConnected() {
+		if (mSavedInstanceAccount != null) {
+			try {
+				this.mAccount = xmppConnectionService.findAccountByJid(Jid.fromString(mSavedInstanceAccount));
+				this.mInitMode = mSavedInstanceInit;
+			} catch (InvalidJidException e) {
+				this.mAccount = null;
+			}
+
+		} else if (this.jidToEdit != null) {
+			this.mAccount = xmppConnectionService.findAccountByJid(jidToEdit);
+		}
+
+		if (mAccount != null) {
+			this.mInitMode |= this.mAccount.isOptionSet(Account.OPTION_REGISTER);
+			this.mUsernameMode |= mAccount.isOptionSet(Account.OPTION_MAGIC_CREATE) && mAccount.isOptionSet(Account.OPTION_REGISTER);
+			if (this.mAccount.getPrivateKeyAlias() != null) {
+				this.mPassword.setHint(R.string.authenticate_with_certificate);
+				if (this.mInitMode) {
+					this.mPassword.requestFocus();
+				}
+			}
+			updateAccountInformation(true);
+		}
+
+
 		if (Config.MAGIC_CREATE_DOMAIN == null && this.xmppConnectionService.getAccounts().size() == 0) {
 			this.mCancelButton.setEnabled(false);
 			this.mCancelButton.setTextColor(getSecondaryTextColor());
