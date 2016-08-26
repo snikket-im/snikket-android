@@ -746,6 +746,16 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 								}
 							}
 						});
+						if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+							builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+								@Override
+								public void onDismiss(DialogInterface dialog) {
+									if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+										requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, REQUEST_SYNC_CONTACTS);
+									}
+								}
+							});
+						}
 						builder.create().show();
 					} else {
 						requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, 0);
