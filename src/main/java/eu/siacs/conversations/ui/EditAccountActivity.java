@@ -626,10 +626,12 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 
 	@Override
 	protected void onBackendConnected() {
+		boolean init = true;
 		if (mSavedInstanceAccount != null) {
 			try {
 				this.mAccount = xmppConnectionService.findAccountByJid(Jid.fromString(mSavedInstanceAccount));
 				this.mInitMode = mSavedInstanceInit;
+				init = false;
 			} catch (InvalidJidException e) {
 				this.mAccount = null;
 			}
@@ -647,7 +649,7 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 					this.mPassword.requestFocus();
 				}
 			}
-			updateAccountInformation(true);
+			updateAccountInformation(init);
 		}
 
 
