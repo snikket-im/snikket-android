@@ -10,7 +10,6 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.provider.ContactsContract;
 import android.provider.ContactsContract.CommonDataKinds;
 import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.Intents;
@@ -137,7 +136,8 @@ public class ContactDetailsActivity extends XmppActivity implements OnAccountUpd
 
 		@Override
 		public void onClick(View v) {
-			if (contact.getSystemAccount() == null) {
+			Uri systemAccount = contact.getSystemAccount();
+			if (systemAccount == null) {
 				AlertDialog.Builder builder = new AlertDialog.Builder(
 						ContactDetailsActivity.this);
 				builder.setTitle(getString(R.string.action_add_phone_book));
@@ -147,12 +147,9 @@ public class ContactDetailsActivity extends XmppActivity implements OnAccountUpd
 				builder.setPositiveButton(getString(R.string.add), addToPhonebook);
 				builder.create().show();
 			} else {
-					String[] systemAccount = contact.getSystemAccount().split("#");
-					long id = Long.parseLong(systemAccount[0]);
-					Uri uri = ContactsContract.Contacts.getLookupUri(id, systemAccount[1]);
-					Intent intent = new Intent(Intent.ACTION_VIEW);
-					intent.setData(uri);
-					startActivity(intent);
+				Intent intent = new Intent(Intent.ACTION_VIEW);
+				intent.setData(systemAccount);
+				startActivity(intent);
 			}
 		}
 	};
@@ -253,7 +250,8 @@ public class ContactDetailsActivity extends XmppActivity implements OnAccountUpd
 							removeFromRoster).create().show();
 				break;
 			case R.id.action_edit_contact:
-				if (contact.getSystemAccount() == null) {
+				Uri systemAccount = contact.getSystemAccount();
+				if (systemAccount == null) {
 					quickEdit(contact.getDisplayName(), 0, new OnValueEdited() {
 
 						@Override
@@ -266,10 +264,7 @@ public class ContactDetailsActivity extends XmppActivity implements OnAccountUpd
 					});
 				} else {
 					Intent intent = new Intent(Intent.ACTION_EDIT);
-					String[] systemAccount = contact.getSystemAccount().split("#");
-					long id = Long.parseLong(systemAccount[0]);
-					Uri uri = Contacts.getLookupUri(id, systemAccount[1]);
-					intent.setDataAndType(uri, Contacts.CONTENT_ITEM_TYPE);
+					intent.setDataAndType(systemAccount, Contacts.CONTENT_ITEM_TYPE);
 					intent.putExtra("finishActivityOnSaveCompleted", true);
 					startActivity(intent);
 				}

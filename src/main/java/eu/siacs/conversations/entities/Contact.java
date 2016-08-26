@@ -3,6 +3,8 @@ package eu.siacs.conversations.entities;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.net.Uri;
+import android.provider.ContactsContract;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -265,8 +267,18 @@ public class Contact implements ListItem, Blockable {
 		this.presenceName = presenceName;
 	}
 
-	public String getSystemAccount() {
-		return systemAccount;
+	public Uri getSystemAccount() {
+		if (systemAccount == null) {
+			return null;
+		} else {
+			String[] parts = systemAccount.split("#");
+			if (parts.length != 2) {
+				return null;
+			} else {
+				long id = Long.parseLong(parts[0]);
+				return ContactsContract.Contacts.getLookupUri(id, parts[1]);
+			}
+		}
 	}
 
 	public void setSystemAccount(String account) {
