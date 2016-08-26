@@ -28,6 +28,8 @@ import android.widget.QuickContactBadge;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.wefika.flowlayout.FlowLayout;
+
 import org.openintents.openpgp.util.OpenPgpUtils;
 
 import java.security.cert.X509Certificate;
@@ -113,7 +115,7 @@ public class ContactDetailsActivity extends XmppActivity implements OnAccountUpd
 	private Button addContactButton;
 	private QuickContactBadge badge;
 	private LinearLayout keys;
-	private LinearLayout tags;
+	private FlowLayout tags;
 	private boolean showDynamicTags = false;
 	private boolean showLastSeen = false;
 	private String messageFingerprint;
@@ -215,7 +217,7 @@ public class ContactDetailsActivity extends XmppActivity implements OnAccountUpd
 			}
 		});
 		keys = (LinearLayout) findViewById(R.id.details_contact_keys);
-		tags = (LinearLayout) findViewById(R.id.tags);
+		tags = (FlowLayout) findViewById(R.id.tags);
 		if (getActionBar() != null) {
 			getActionBar().setHomeButtonEnabled(true);
 			getActionBar().setDisplayHomeAsUpEnabled(true);

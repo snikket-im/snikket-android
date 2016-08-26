@@ -38,13 +38,13 @@
             android:singleLine="true"
             android:textColor="?attr/color_text_primary"
             android:textSize="?attr/TextSizeBody" />
-        <LinearLayout
+        <com.wefika.flowlayout.FlowLayout
             android:id="@+id/tags"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:layout_marginLeft="-2dp"
             android:orientation="horizontal">
-        </LinearLayout>
+        </com.wefika.flowlayout.FlowLayout>
         <TextView
             android:id="@+id/key"
             android:layout_width="wrap_content"

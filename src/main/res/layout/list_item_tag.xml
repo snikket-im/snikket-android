@@ -9,5 +9,6 @@
     android:textSize="?attr/TextSizeInfo"
     android:textColor="@color/white"
     android:textAllCaps="true"
-    android:layout_marginRight="8dp"
+    android:maxLines="1"
+    android:layout_margin="2dp"
 />

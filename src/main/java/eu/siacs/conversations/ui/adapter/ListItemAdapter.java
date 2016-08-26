@@ -16,6 +16,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.wefika.flowlayout.FlowLayout;
+
 import java.lang.ref.WeakReference;
 import java.util.List;
 import java.util.concurrent.RejectedExecutionException;
@@ -60,7 +62,7 @@ public class ListItemAdapter extends ArrayAdapter<ListItem> {
 		TextView tvName = (TextView) view.findViewById(R.id.contact_display_name);
 		TextView tvJid = (TextView) view.findViewById(R.id.contact_jid);
 		ImageView picture = (ImageView) view.findViewById(R.id.contact_photo);
-		LinearLayout tagLayout = (LinearLayout) view.findViewById(R.id.tags);
+		FlowLayout tagLayout = (FlowLayout) view.findViewById(R.id.tags);
 
 		List<ListItem.Tag> tags = item.getTags(activity);
 		if (tags.size() == 0 || !this.showDynamicTags) {
