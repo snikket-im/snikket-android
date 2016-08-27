@@ -171,6 +171,9 @@ public class NotificationService {
 
 	public void clear() {
 		synchronized (notifications) {
+			for(ArrayList<Message> messages : notifications.values()) {
+				markAsReadIfHasDirectReply(messages);
+			}
 			notifications.clear();
 			updateNotification(false);
 		}
@@ -178,10 +181,24 @@ public class NotificationService {
 
 	public void clear(final Conversation conversation) {
 		synchronized (notifications) {
+			markAsReadIfHasDirectReply(conversation);
 			notifications.remove(conversation.getUuid());
 			final NotificationManager nm = (NotificationManager) mXmppConnectionService.getSystemService(Context.NOTIFICATION_SERVICE);
 			nm.cancel(conversation.getUuid(), NOTIFICATION_ID);
 			updateNotification(false);
+		}
+	}
+
+	private void markAsReadIfHasDirectReply(final Conversation conversation) {
+		markAsReadIfHasDirectReply(notifications.get(conversation.getUuid()));
+	}
+
+	private void markAsReadIfHasDirectReply(final ArrayList<Message> messages) {
+		if (messages != null && messages.size() > 0) {
+			Message last = messages.get(messages.size() - 1);
+			if (last.getStatus() != Message.STATUS_RECEIVED) {
+				mXmppConnectionService.markRead(last.getConversation(), false);
+			}
 		}
 	}
 

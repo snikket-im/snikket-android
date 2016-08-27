@@ -3022,7 +3022,13 @@ public class XmppConnectionService extends Service {
 	}
 
 	public boolean markRead(final Conversation conversation) {
-		mNotificationService.clear(conversation);
+		return markRead(conversation,true);
+	}
+
+	public boolean markRead(final Conversation conversation, boolean clear) {
+		if (clear) {
+			mNotificationService.clear(conversation);
+		}
 		final List<Message> readMessages = conversation.markRead();
 		if (readMessages.size() > 0) {
 			Runnable runnable = new Runnable() {
