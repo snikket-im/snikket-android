@@ -389,7 +389,8 @@ public class JingleConnection implements Transferable {
 				conversation.add(message);
 				mXmppConnectionService.updateConversationUi();
 				if (mJingleConnectionManager.hasStoragePermission()
-						&& size < this.mJingleConnectionManager.getAutoAcceptFileSize()) {
+						&& size < this.mJingleConnectionManager.getAutoAcceptFileSize()
+						&& mXmppConnectionService.isDataSaverDisabled()) {
 					Log.d(Config.LOGTAG, "auto accepting file from "+ packet.getFrom());
 					this.acceptedAutomatically = true;
 					this.sendAccept();

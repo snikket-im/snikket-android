@@ -105,7 +105,7 @@ public class PresenceParser extends AbstractParser implements
 								if (user.setAvatar(avatar)) {
 									mXmppConnectionService.getAvatarService().clear(user);
 								}
-							} else {
+							} else if (mXmppConnectionService.isDataSaverDisabled()) {
 								mXmppConnectionService.fetchAvatar(mucOptions.getAccount(), avatar);
 							}
 						}
@@ -192,7 +192,7 @@ public class PresenceParser extends AbstractParser implements
 						mXmppConnectionService.updateConversationUi();
 						mXmppConnectionService.updateRosterUi();
 					}
-				} else {
+				} else if (mXmppConnectionService.isDataSaverDisabled()){
 					mXmppConnectionService.fetchAvatar(account, avatar);
 				}
 			}

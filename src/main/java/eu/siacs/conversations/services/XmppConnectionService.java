@@ -697,6 +697,16 @@ public class XmppConnectionService extends Service {
 		return START_STICKY;
 	}
 
+	public boolean isDataSaverDisabled() {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+			ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+			return !connectivityManager.isActiveNetworkMetered()
+					|| connectivityManager.getRestrictBackgroundStatus() == ConnectivityManager.RESTRICT_BACKGROUND_STATUS_DISABLED;
+		} else {
+			return true;
+		}
+	}
+
 	private void directReply(Conversation conversation, String body) {
 		Message message = new Message(conversation,body,conversation.getNextEncryption());
 		message.markUnread();
