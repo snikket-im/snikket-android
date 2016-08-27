@@ -1,5 +1,11 @@
 ###Changelog
 
+####Version 1.14.0
+* Improvments for N
+* Quick Reply to Notifications on N
+* Don't download avatars and files when data saver is on
+* bug fixes
+
 ####Version 1.13.9
 * bug fixes
 
