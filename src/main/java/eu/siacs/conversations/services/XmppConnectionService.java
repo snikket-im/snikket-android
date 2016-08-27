@@ -854,9 +854,11 @@ public class XmppConnectionService extends Service {
 		toggleForegroundService();
 		updateUnreadCountBadge();
 		toggleScreenEventReceiver();
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
-				&& !Config.PUSH_MODE) {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Config.PUSH_MODE) {
 			scheduleNextIdlePing();
+		}
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+			registerReceiver(this.mEventReceiver,new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 		}
 	}
 
