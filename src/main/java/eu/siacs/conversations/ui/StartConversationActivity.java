@@ -793,7 +793,9 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 		}
 		final Intent intent = getIntent();
 		final ActionBar ab = getActionBar();
-		if (intent != null && intent.getBooleanExtra("init",false) && ab != null) {
+		boolean init = intent != null && intent.getBooleanExtra("init", false);
+		boolean noConversations = xmppConnectionService.getConversations().size() == 0;
+		if ((init || noConversations) && ab != null) {
 			ab.setDisplayShowHomeEnabled(false);
 			ab.setDisplayHomeAsUpEnabled(false);
 			ab.setHomeButtonEnabled(false);
