@@ -4,6 +4,7 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.util.Log;
 
+import org.openintents.openpgp.OpenPgpError;
 import org.openintents.openpgp.OpenPgpSignatureResult;
 import org.openintents.openpgp.util.OpenPgpApi;
 import org.openintents.openpgp.util.OpenPgpApi.IOpenPgpCallback;
@@ -15,7 +16,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.URL;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
@@ -24,7 +24,6 @@ import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.entities.Message;
-import eu.siacs.conversations.http.HttpConnectionManager;
 import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.ui.UiCallback;
@@ -92,6 +91,7 @@ public class PgpEngine {
 								message);
 						break;
 					case OpenPgpApi.RESULT_CODE_ERROR:
+						logError(conversation.getAccount(), (OpenPgpError) result.getParcelableExtra(OpenPgpApi.RESULT_ERROR));
 						callback.error(R.string.openpgp_error, message);
 						break;
 					}
@@ -129,6 +129,7 @@ public class PgpEngine {
 									message);
 							break;
 						case OpenPgpApi.RESULT_CODE_ERROR:
+							logError(conversation.getAccount(), (OpenPgpError) result.getParcelableExtra(OpenPgpApi.RESULT_ERROR));
 							callback.error(R.string.openpgp_error, message);
 							break;
 						}
@@ -178,6 +179,7 @@ public class PgpEngine {
 		case OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED:
 			return 0;
 		case OpenPgpApi.RESULT_CODE_ERROR:
+			logError(account, (OpenPgpError) result.getParcelableExtra(OpenPgpApi.RESULT_ERROR));
 			return 0;
 		}
 		return 0;
@@ -200,6 +202,7 @@ public class PgpEngine {
 								account);
 						return;
 					case OpenPgpApi.RESULT_CODE_ERROR:
+						logError(account, (OpenPgpError) result.getParcelableExtra(OpenPgpApi.RESULT_ERROR));
 						callback.error(R.string.openpgp_error, account);
 				}
 			}
@@ -256,6 +259,7 @@ public class PgpEngine {
 							account);
 					return;
 				case OpenPgpApi.RESULT_CODE_ERROR:
+					logError(account, (OpenPgpError) result.getParcelableExtra(OpenPgpApi.RESULT_ERROR));
 					callback.error(R.string.unable_to_connect_to_keychain, account);
                 }
 			}
@@ -280,27 +284,30 @@ public class PgpEngine {
 							contact);
 					return;
 				case OpenPgpApi.RESULT_CODE_ERROR:
+					logError(contact.getAccount(), (OpenPgpError) result.getParcelableExtra(OpenPgpApi.RESULT_ERROR));
 					callback.error(R.string.openpgp_error, contact);
                 }
 			}
 		});
 	}
 
-	public PendingIntent getIntentForKey(Contact contact) {
-		Intent params = new Intent();
-		params.setAction(OpenPgpApi.ACTION_GET_KEY);
-		params.putExtra(OpenPgpApi.EXTRA_KEY_ID, contact.getPgpKeyId());
-		Intent result = api.executeApi(params, null, null);
-		return (PendingIntent) result
-				.getParcelableExtra(OpenPgpApi.RESULT_INTENT);
+	private static void logError(Account account, OpenPgpError error) {
+		if (error != null) {
+			Log.d(Config.LOGTAG,account.getJid().toBareJid().toString()+": OpenKeychain error '"+error.getMessage()+"' code="+error.getErrorId());
+		} else {
+			Log.d(Config.LOGTAG,account.getJid().toBareJid().toString()+": OpenKeychain error with no message");
+		}
 	}
 
-	public PendingIntent getIntentForKey(Account account, long pgpKeyId) {
+	public PendingIntent getIntentForKey(Contact contact) {
+		return getIntentForKey(contact.getPgpKeyId());
+	}
+
+	public PendingIntent getIntentForKey(long pgpKeyId) {
 		Intent params = new Intent();
 		params.setAction(OpenPgpApi.ACTION_GET_KEY);
 		params.putExtra(OpenPgpApi.EXTRA_KEY_ID, pgpKeyId);
 		Intent result = api.executeApi(params, null, null);
-		return (PendingIntent) result
-				.getParcelableExtra(OpenPgpApi.RESULT_INTENT);
+		return (PendingIntent) result.getParcelableExtra(OpenPgpApi.RESULT_INTENT);
 	}
 }

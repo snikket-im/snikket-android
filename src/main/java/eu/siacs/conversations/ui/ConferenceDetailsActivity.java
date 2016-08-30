@@ -637,12 +637,10 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 	private void viewPgpKey(User user) {
 		PgpEngine pgp = xmppConnectionService.getPgpEngine();
 		if (pgp != null) {
-			PendingIntent intent = pgp.getIntentForKey(
-					mConversation.getAccount(), user.getPgpKeyId());
+			PendingIntent intent = pgp.getIntentForKey(user.getPgpKeyId());
 			if (intent != null) {
 				try {
-					startIntentSenderForResult(intent.getIntentSender(), 0,
-							null, 0, 0, 0);
+					startIntentSenderForResult(intent.getIntentSender(), 0, null, 0, 0, 0);
 				} catch (SendIntentException ignored) {
 
 				}
