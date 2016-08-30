@@ -209,7 +209,7 @@ public class JingleInbandTransport extends JingleTransport {
 			} else {
 				connection.updateProgress((int) ((((double) (this.fileSize - this.remainingSize)) / this.fileSize) * 100));
 			}
-		} catch (IOException e) {
+		} catch (Exception e) {
 			Log.d(Config.LOGTAG,account.getJid().toBareJid()+": "+e.getMessage());
 			FileBackend.close(fileOutputStream);
 			this.onFileTransmissionStatusChanged.onFileTransferAborted();
