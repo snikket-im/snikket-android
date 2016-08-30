@@ -445,6 +445,7 @@ public class ConversationActivity extends XmppActivity
 						break;
 					case ATTACHMENT_CHOICE_TAKE_PHOTO:
 						Uri uri = xmppConnectionService.getFileBackend().getTakePhotoUri();
+						intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
 						intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
 						intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
 						mPendingImageUris.clear();
