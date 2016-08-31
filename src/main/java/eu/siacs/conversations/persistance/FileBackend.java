@@ -451,11 +451,11 @@ public class FileBackend {
 				return null;
 			}
 			ByteArrayOutputStream mByteArrayOutputStream = new ByteArrayOutputStream();
-			Base64OutputStream mBase64OutputSttream = new Base64OutputStream(
+			Base64OutputStream mBase64OutputStream = new Base64OutputStream(
 					mByteArrayOutputStream, Base64.DEFAULT);
 			MessageDigest digest = MessageDigest.getInstance("SHA-1");
 			DigestOutputStream mDigestOutputStream = new DigestOutputStream(
-					mBase64OutputSttream, digest);
+					mBase64OutputStream, digest);
 			if (!bm.compress(format, 75, mDigestOutputStream)) {
 				return null;
 			}
