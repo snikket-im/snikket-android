@@ -51,7 +51,6 @@
         </activity>
         <activity
             android:name=".ui.StartConversationActivity"
-            android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_start_conversation"
             android:launchMode="singleTask">
             <intent-filter>

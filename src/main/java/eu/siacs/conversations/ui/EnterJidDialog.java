@@ -1,6 +1,7 @@
 package eu.siacs.conversations.ui;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -120,8 +121,9 @@ public class EnterJidDialog {
 		this.listener = listener;
 	}
 
-	public void show() {
+	public Dialog show() {
 		this.dialog.show();
 		this.dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(this.dialogOnClick);
+		return this.dialog;
 	}
 }
