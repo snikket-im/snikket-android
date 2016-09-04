@@ -1124,10 +1124,18 @@ public class XmppConnectionService extends Service {
 						String decryptedBody = message.getBody();
 						message.setBody(pgpBody);
 						message.setEncryption(Message.ENCRYPTION_PGP);
-						databaseBackend.createMessage(message);
-						saveInDb = false;
-						message.setBody(decryptedBody);
-						message.setEncryption(Message.ENCRYPTION_DECRYPTED);
+						if (message.edited()) {
+							message.setBody(decryptedBody);
+							message.setEncryption(Message.ENCRYPTION_DECRYPTED);
+							databaseBackend.updateMessage(message, message.getEditedId());
+							updateConversationUi();
+							return;
+						} else {
+							databaseBackend.createMessage(message);
+							saveInDb = false;
+							message.setBody(decryptedBody);
+							message.setEncryption(Message.ENCRYPTION_DECRYPTED);
+						}
 					}
 					break;
 				case Message.ENCRYPTION_OTR:
