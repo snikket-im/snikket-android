@@ -11,6 +11,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.support.v4.content.FileProvider;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -716,21 +717,30 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		if (mime == null) {
 			mime = "*/*";
 		}
-		Uri uri = FileProvider.getUriForFile(activity,"eu.siacs.conversations.files",file);
+		Uri uri;
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+			try {
+				uri = FileProvider.getUriForFile(activity, "eu.siacs.conversations.files", file);
+			} catch (IllegalArgumentException e) {
+				Toast.makeText(activity,activity.getString(R.string.no_permission_to_access_x,file.getAbsolutePath()), Toast.LENGTH_SHORT).show();
+				return;
+			}
+			openIntent.setDataAndType(uri, mime);
+			openIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+		} else {
+			uri = Uri.fromFile(file);
+		}
 		openIntent.setDataAndType(uri, mime);
-		openIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 		PackageManager manager = activity.getPackageManager();
-		List<ResolveInfo> infos = manager.queryIntentActivities(openIntent, 0);
-		if (infos.size() == 0) {
+		List<ResolveInfo> info = manager.queryIntentActivities(openIntent, 0);
+		if (info.size() == 0) {
 			openIntent.setDataAndType(Uri.fromFile(file),"*/*");
 		}
 		try {
 			getContext().startActivity(openIntent);
-			return;
 		}  catch (ActivityNotFoundException e) {
-			//ignored
+			Toast.makeText(activity,R.string.no_application_found_to_open_file,Toast.LENGTH_SHORT).show();
 		}
-		Toast.makeText(activity,R.string.no_application_found_to_open_file,Toast.LENGTH_SHORT).show();
 	}
 
 	public void showLocation(Message message) {
