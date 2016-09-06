@@ -321,10 +321,12 @@ public class NotificationService {
 				} else {
 					modifyForTextOnly(mBuilder, messages);
 				}
+				RemoteInput remoteInput = new RemoteInput.Builder("text_reply").setLabel(UIHelper.getMessageHint(mXmppConnectionService, conversation)).build();
+				NotificationCompat.Action action = new NotificationCompat.Action.Builder(R.drawable.ic_send_text_offline, "Reply", createReplyIntent(conversation)).addRemoteInput(remoteInput).build();
 				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-					RemoteInput remoteInput = new RemoteInput.Builder("text_reply").setLabel(UIHelper.getMessageHint(mXmppConnectionService, conversation)).build();
-					NotificationCompat.Action action = new NotificationCompat.Action.Builder(R.drawable.ic_send_text_offline, "Reply", createReplyIntent(conversation)).addRemoteInput(remoteInput).build();
 					mBuilder.addAction(action);
+				} else {
+					mBuilder.extend(new NotificationCompat.WearableExtender().addAction(action));
 				}
 				if ((message = getFirstDownloadableMessage(messages)) != null) {
 					mBuilder.addAction(
