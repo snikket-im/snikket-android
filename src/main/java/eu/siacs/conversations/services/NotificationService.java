@@ -71,28 +71,6 @@ public class NotificationService {
 		);
 	}
 
-	public void notifyPebble(final Message message) {
-		final Intent i = new Intent("com.getpebble.action.SEND_NOTIFICATION");
-
-		final Conversation conversation = message.getConversation();
-		final JSONObject jsonData = new JSONObject(new HashMap<String, String>(2) {{
-			put("title", conversation.getName());
-			put("body", message.getBody());
-		}});
-		final String notificationData = new JSONArray().put(jsonData).toString();
-
-		i.putExtra("messageType", "PEBBLE_ALERT");
-		i.putExtra("sender", "Conversations"); /* XXX: Shouldn't be hardcoded, e.g., AbstractGenerator.APP_NAME); */
-		i.putExtra("notificationData", notificationData);
-		// notify Pebble App
-		i.setPackage("com.getpebble.android");
-		mXmppConnectionService.sendBroadcast(i);
-		// notify Gadgetbridge
-		i.setPackage("nodomain.freeyourgadget.gadgetbridge");
-		mXmppConnectionService.sendBroadcast(i);
-	}
-
-
 	public boolean notificationsEnabled() {
 		return mXmppConnectionService.getPreferences().getBoolean("show_notification", true);
 	}
@@ -163,9 +141,6 @@ public class NotificationService {
 					&& !account.inGracePeriod()
 					&& !this.inMiniGracePeriod(account);
 			updateNotification(doNotify);
-			if (doNotify) {
-				notifyPebble(message);
-			}
 		}
 	}
 
