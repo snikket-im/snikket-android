@@ -288,6 +288,9 @@ To use OpenPGP you have to install the open source app
 [OpenKeychain](http://www.openkeychain.org) and then long press on the account in
 manage accounts and choose renew PGP announcement from the contextual menu.
 
+#### OMEMO is grayed out. What do I do?
+OMEMO has two requirments: Your server and the server of your contact need to support PEP. Both of you can verify that indivually by opening your account details and selecting ```Server info``` from the menu. The appearing table should list PEP as available. The second requirement is mutal presence subscription. You can verify that be going into the contact details and see if the both check boxes *Send presence updates* and *Receive presence updates* are checked.
+
 #### How does the encryption for conferences work?
 
 For conferences only OMEMO and OpenPGP are supported as encryption method. (OTR
@@ -342,7 +345,7 @@ There are two build flavors available. *free* and *playstore*. Unless you know w
 
 [![Build Status](https://travis-ci.org/siacs/Conversations.svg?branch=development)](https://travis-ci.org/siacs/Conversations)
 
-### How do I update/add external libraries?
+#### How do I update/add external libraries?
 
 If the library you want to update is in Maven Central or JCenter (or has its own
 Maven repo), add it or update its version in `build.gradle`. If the library is
