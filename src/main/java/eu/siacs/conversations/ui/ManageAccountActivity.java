@@ -318,12 +318,16 @@ public class ManageAccountActivity extends XmppActivity implements OnAccountUpda
 
 	private void disableAccount(Account account) {
 		account.setOption(Account.OPTION_DISABLED, true);
-		xmppConnectionService.updateAccount(account);
+		if (!xmppConnectionService.updateAccount(account)) {
+			Toast.makeText(this,R.string.unable_to_update_account,Toast.LENGTH_SHORT).show();
+		}
 	}
 
 	private void enableAccount(Account account) {
 		account.setOption(Account.OPTION_DISABLED, false);
-		xmppConnectionService.updateAccount(account);
+		if (!xmppConnectionService.updateAccount(account)) {
+			Toast.makeText(this,R.string.unable_to_update_account,Toast.LENGTH_SHORT).show();
+		}
 	}
 
 	private void publishOpenPGPPublicKey(Account account) {

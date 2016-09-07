@@ -1381,8 +1381,10 @@ public class XmppConnection implements Runnable {
 			try {
 				socket.close();
 			} catch (IOException e) {
-				e.printStackTrace();
+				Log.d(Config.LOGTAG,account.getJid().toBareJid()+": io exception "+e.getMessage()+" during force close");
 			}
+		} else {
+			Log.d(Config.LOGTAG,account.getJid().toBareJid()+": socket was null during force close");
 		}
 	}
 
@@ -1407,7 +1409,11 @@ public class XmppConnection implements Runnable {
 							Log.d(Config.LOGTAG, account.getJid().toBareJid()+": waiting for tag writer to finish");
 							warned = true;
 						}
-						Thread.sleep(200);
+						try {
+							Thread.sleep(200);
+						} catch(InterruptedException e) {
+							Log.d(Config.LOGTAG,account.getJid().toBareJid()+": sleep interrupted");
+						}
 						i++;
 					}
 					if (warned) {
@@ -1417,8 +1423,8 @@ public class XmppConnection implements Runnable {
 					tagWriter.writeTag(Tag.end("stream:stream"));
 				} catch (final IOException e) {
 					Log.d(Config.LOGTAG,account.getJid().toBareJid()+": io exception during disconnect ("+e.getMessage()+")");
-				} catch (final InterruptedException e) {
-					Log.d(Config.LOGTAG, "interrupted");
+				} finally {
+					forceCloseSocket();
 				}
 			}
 		}

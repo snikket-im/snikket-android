@@ -607,17 +607,18 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		return list;
 	}
 
-	public void updateAccount(Account account) {
+	public boolean updateAccount(Account account) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		String[] args = {account.getUuid()};
-		db.update(Account.TABLENAME, account.getContentValues(), Account.UUID
-				+ "=?", args);
+		final int rows = db.update(Account.TABLENAME, account.getContentValues(), Account.UUID + "=?", args);
+		return rows == 1;
 	}
 
-	public void deleteAccount(Account account) {
+	public boolean deleteAccount(Account account) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		String[] args = {account.getUuid()};
-		db.delete(Account.TABLENAME, Account.UUID + "=?", args);
+		final int rows = db.delete(Account.TABLENAME, Account.UUID + "=?", args);
+		return rows == 1;
 	}
 
 	public boolean hasEnabledAccounts() {

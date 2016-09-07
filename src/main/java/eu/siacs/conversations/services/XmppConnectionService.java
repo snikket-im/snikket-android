@@ -1642,12 +1642,17 @@ public class XmppConnectionService extends Service {
 		}
 	}
 
-	public void updateAccount(final Account account) {
-		this.statusListener.onStatusChanged(account);
-		databaseBackend.updateAccount(account);
-		reconnectAccountInBackground(account);
-		updateAccountUi();
-		getNotificationService().updateErrorNotification();
+	public boolean updateAccount(final Account account) {
+		if (databaseBackend.updateAccount(account)) {
+			this.statusListener.onStatusChanged(account);
+			databaseBackend.updateAccount(account);
+			reconnectAccountInBackground(account);
+			updateAccountUi();
+			getNotificationService().updateErrorNotification();
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	public void updateAccountPasswordOnServer(final Account account, final String newPassword, final OnAccountPasswordChanged callback) {
@@ -1685,12 +1690,14 @@ public class XmppConnectionService extends Service {
 					public void run() {
 						disconnect(account, true);
 					}
-				});
+				}).start();
 			}
 			Runnable runnable = new Runnable() {
 				@Override
 				public void run() {
-					databaseBackend.deleteAccount(account);
+					if (!databaseBackend.deleteAccount(account)) {
+						Log.d(Config.LOGTAG,account.getJid().toBareJid()+": unable to delete account");
+					}
 				}
 			};
 			mDatabaseExecutor.execute(runnable);
@@ -3240,7 +3247,8 @@ public class XmppConnectionService extends Service {
 		}
 	}
 
-	public void sendOfflinePresence(final Account account) {
+	private void sendOfflinePresence(final Account account) {
+		Log.d(Config.LOGTAG,account.getJid().toBareJid()+": sending offline presence");
 		sendPresencePacket(account, mPresenceGenerator.sendOfflinePresence(account));
 	}
 

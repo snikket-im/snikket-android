@@ -681,4 +681,5 @@
 	<string name="allow">Allow</string>
 	<string name="no_permission_to_access_x">No permission to access %s</string>
 	<string name="remote_server_not_found">Remote server not found</string>
+	<string name="unable_to_update_account">Unable to update account</string>
 </resources>
