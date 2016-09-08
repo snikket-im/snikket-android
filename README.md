@@ -308,6 +308,9 @@ The owner of a conference can make a public conference private by going into the
 details and hit the settings button (the one with the gears) and select both *private* and
 *members only*.
 
+If OMEMO is grayed out long pressing the lock icon will reveal some quick hints on why OMEMO
+is disabled.
+
 ##### OpenPGP
 
 Every participant has to announce their OpenPGP key (see answer above).

@@ -15,6 +15,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.v4.widget.SlidingPaneLayout;
@@ -65,6 +66,8 @@ import eu.siacs.conversations.utils.ExceptionHelper;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
+
+import static eu.siacs.conversations.crypto.axolotl.AxolotlService.AxolotlCapability.MISSING_PRESENCE;
 
 public class ConversationActivity extends XmppActivity
 	implements OnAccountUpdate, OnConversationUpdate, OnRosterUpdate, OnUpdateBlocklist, XmppConnectionService.OnShowErrorToast {
@@ -421,7 +424,45 @@ public class ConversationActivity extends XmppActivity
 				}
 			}
 		}
+		if (Config.supportOmemo()) {
+			new Handler().post(new Runnable() {
+				@Override
+				public void run() {
+					View view = findViewById(R.id.action_security);
+					if (view != null) {
+						view.setOnLongClickListener(new View.OnLongClickListener() {
+							@Override
+							public boolean onLongClick(View v) {
+								return quickOmemoDebugger(getSelectedConversation());
+							}
+						});
+					}
+				}
+			});
+		}
 		return super.onCreateOptionsMenu(menu);
+	}
+
+	private boolean quickOmemoDebugger(Conversation c) {
+		if (c != null) {
+			AxolotlService axolotlService = c.getAccount().getAxolotlService();
+			Pair<AxolotlService.AxolotlCapability,Jid> capabilityJidPair = axolotlService.isConversationAxolotlCapableDetailed(c);
+			switch (capabilityJidPair.first) {
+				case MISSING_PRESENCE:
+					Toast.makeText(ConversationActivity.this,getString(R.string.missing_presence_subscription_with_x,capabilityJidPair.second.toBareJid().toString()),Toast.LENGTH_SHORT).show();
+					return true;
+				case MISSING_KEYS:
+					Toast.makeText(ConversationActivity.this,getString(R.string.missing_keys_from_x,capabilityJidPair.second.toBareJid().toString()),Toast.LENGTH_SHORT).show();
+					return true;
+				case WRONG_CONFIGURATION:
+					Toast.makeText(ConversationActivity.this,R.string.wrong_conference_configuration, Toast.LENGTH_SHORT).show();
+					return true;
+				case NO_MEMBERS:
+					Toast.makeText(ConversationActivity.this,R.string.this_conference_has_no_members, Toast.LENGTH_SHORT).show();
+					return true;
+			}
+		}
+		return false;
 	}
 
 	protected void selectPresenceToAttachFile(final int attachmentChoice, final int encryption) {
