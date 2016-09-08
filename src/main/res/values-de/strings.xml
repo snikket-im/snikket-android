@@ -157,7 +157,9 @@
   <string name="account_status_regis_success">Registrierung abgeschlossen</string>
   <string name="account_status_regis_not_sup">Der Server unterstützt keine Registrierung</string>
   <string name="account_status_security_error">Sicherheitsfehler</string>
+  <string name="account_status_policy_violation">Verstoß gegen die Richtlinien</string>
   <string name="account_status_incompatible_server">Inkompatibler Server</string>
+  <string name="account_status_stream_error">Datenstromfehler</string>
   <string name="encryption_choice_unencrypted">Unverschlüsselt</string>
   <string name="encryption_choice_otr">OTR</string>
   <string name="encryption_choice_pgp">OpenPGP</string>
@@ -358,6 +360,8 @@
   <string name="conversations_foreground_service">Conversations</string>
   <string name="pref_keep_foreground_service">Dienst im Vordergrund ausführen</string>
   <string name="pref_keep_foreground_service_summary">Verhindert, dass Android Conversations beendet und die Verbindung unterbricht</string>
+  <string name="pref_export_logs">Nachrichtenverlauf exportieren</string>
+  <string name="pref_export_logs_summary">Chatverlauf auf SD-Karte schreiben</string>
   <string name="notification_export_logs_title">Chats werden auf SD-Karte geschrieben</string>
   <string name="choose_file">Datei auswählen</string>
   <string name="receiving_x_file">Empfange %1$s (%2$d%% abgeschlossen)</string>
@@ -512,6 +516,7 @@
   <string name="pref_use_white_background_summary">Empfangene Nachrichten als schwarzen Text auf weißem Hintergrund anzeigen</string>
   <string name="account_status_tor_unavailable">Tor-Netzwerk nicht verfügbar</string>
   <string name="account_status_bind_failure">Bindungsfehler</string>
+  <string name="account_status_host_unknown">Server haftet nicht für die Domain</string>
   <string name="server_info_broken">Fehlerhaft</string>
   <string name="pref_presence_settings">Status</string>
   <string name="pref_away_when_screen_off">Abwesend bei abgeschaltetem Bildschirm</string>
@@ -637,4 +642,9 @@
   <string name="type_web">Webbrowser</string>
   <string name="type_console">Kommandozeile</string>
   <string name="payment_required">Bezahlung erforderlich</string>
+  <string name="missing_internet_permission">Keine Berechtigungen für den Zugriff auf das Internet</string>
+  <string name="me">Ich</string>
+  <string name="allow">Erlauben</string>
+  <string name="no_permission_to_access_x">Keine Berechtigung um auf %s zuzugreifen</string>
+  <string name="remote_server_not_found">Remote-Server nicht gefunden</string>
 </resources>

@@ -114,7 +114,7 @@
   <string name="pref_vibrate_summary">Trillen wanneer een nieuw bericht ontvangen wordt</string>
   <string name="pref_led">LED-melding</string>
   <string name="pref_led_summary">Meldingslicht knipperen wanneer een nieuw bericht ontvangen wordt</string>
-  <string name="pref_sound">Beltoon</string>
+  <string name="pref_sound">Meldingstoon</string>
   <string name="pref_sound_summary">Geluid afspelen wanneer een nieuw bericht ontvangen wordt</string>
   <string name="pref_notification_grace_period">Uitstelperiode</string>
   <string name="pref_notification_grace_period_summary">Hoe lang Conversations stil blijft na activiteit op een ander apparaat waar te nemen</string>
@@ -360,6 +360,8 @@
   <string name="conversations_foreground_service">Conversations</string>
   <string name="pref_keep_foreground_service">Dienst in voorgrond houden</string>
   <string name="pref_keep_foreground_service_summary">Belet het besturingssysteem van je verbinding te onderbreken</string>
+  <string name="pref_export_logs">Geschiedenis exporteren</string>
+  <string name="pref_export_logs_summary">Gespreksgeschiedenis schrijven naar SD-kaart</string>
   <string name="notification_export_logs_title">Logs schrijven naar SD-kaart</string>
   <string name="choose_file">Bestand kiezen</string>
   <string name="receiving_x_file">Ontvangen van %1$s (%2$d%% voltooid)</string>
@@ -468,7 +470,7 @@
   <string name="disable_account">Account uitschakelen</string>
   <string name="contact_is_typing">%s is aan het typen…</string>
   <string name="contact_has_stopped_typing">%s is gestopt met typen</string>
-  <string name="pref_chat_states">Aan-het-typen-meldingen</string>
+  <string name="pref_chat_states">\'Aan het typen\' meldingen</string>
   <string name="pref_chat_states_summary">Laat je contacten weten wanneer je een nieuw bericht aan het schrijven bent</string>
   <string name="send_location">Locatie versturen</string>
   <string name="show_location">Locatie weergeven</string>
@@ -640,4 +642,5 @@
   <string name="type_web">Webbrowser</string>
   <string name="type_console">Console</string>
   <string name="payment_required">Betaling vereist</string>
+  <string name="missing_internet_permission">Internetmachtiging ontbreekt</string>
 </resources>

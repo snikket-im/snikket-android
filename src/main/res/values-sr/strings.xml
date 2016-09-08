@@ -360,6 +360,8 @@
   <string name="conversations_foreground_service">Конверзација</string>
   <string name="pref_keep_foreground_service">Држи сервис у првом плану</string>
   <string name="pref_keep_foreground_service_summary">Спречава оперативни систем да прекине вашу везу</string>
+  <string name="pref_export_logs">Извези историјат</string>
+  <string name="pref_export_logs_summary">Упис историјата преписки на СД картицу</string>
   <string name="notification_export_logs_title">Уписујем записе на СД картицу</string>
   <string name="choose_file">Изабери фајл</string>
   <string name="receiving_x_file">Примам %1$s (%2$d%% завршено)</string>
@@ -596,6 +598,7 @@
   <string name="security_error_invalid_file_access">Безбедносна грешка: неисправан приступ фајлу</string>
   <string name="no_application_to_share_uri">Нема апликације за дељење веза</string>
   <string name="share_uri_with">Подели везу помоћу…</string>
+  <string name="welcome_text">ИксМПП је протокол независан од провајдера. Можете да користите овог клијента са било којим ИксМПП сервером.\nИпак, због погодности смо олакшали стварање налога на conversations.im, провајдер посебно прилагођен за коришћење са Конверзацијом.</string>
   <string name="magic_create_text">Водићемо вас кроз процес прављења налога на conversations.im.\nАко изаберете conversations.im за даваоца услуге моћи ћете да комуницирате са другим корисницима ако им дате ваш Џабер ИД.</string>
   <string name="your_full_jid_will_be">Ваш пуни Џабер ИД ће бити: %s</string>
   <string name="create_account">Направи налог</string>
@@ -642,4 +645,10 @@
   <string name="type_web">Веб прегледач</string>
   <string name="type_console">Конзола</string>
   <string name="payment_required">Захтевано је плаћање</string>
+  <string name="missing_internet_permission">Недостаје дозвола за интернет</string>
+  <string name="me">Ја</string>
+  <string name="contact_asks_for_presence_subscription">Контакт пита за претплату на ажурирање присутности</string>
+  <string name="allow">Дозволи</string>
+  <string name="no_permission_to_access_x">Нема дозвола за приступ %s</string>
+  <string name="remote_server_not_found">Удаљени сервер није нађен</string>
 </resources>

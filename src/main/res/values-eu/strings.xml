@@ -78,6 +78,7 @@
   <string name="clear_histor_msg">Elkarrizketa honetako mezu guztiak ezabatu nahi al dituzu?\n\n<b>Abisua:</b> Honek ez du beste gailu edo zerbitzarietan gordetako mezuetan eraginik izango.</string>
   <string name="delete_messages">Mezuak ezabatu</string>
   <string name="also_end_conversation">Elkarrizketa hau jarraian amaitu</string>
+  <string name="choose_presence">Gailua aukeratu</string>
   <string name="send_unencrypted_message">Enkriptatu gabeko mezua bidali</string>
   <string name="send_message_to_x">%s(r)i mezua bidali</string>
   <string name="send_otr_message">OTRz enkriptatutako mezua bidali</string>
@@ -359,6 +360,8 @@
   <string name="conversations_foreground_service">Conversations</string>
   <string name="pref_keep_foreground_service">Zerbitzua atzeko planoan mantendu</string>
   <string name="pref_keep_foreground_service_summary">Sistema eragileak zure konexioa hiltzea galarazten du</string>
+  <string name="pref_export_logs">Historia esportatu</string>
+  <string name="pref_export_logs_summary">Elkarrizketen historiaren erregistroak SD txartelean gorde</string>
   <string name="notification_export_logs_title">Erregistroak SD txartelean gordetzen</string>
   <string name="choose_file">Fitxategia aukeratu</string>
   <string name="receiving_x_file">%1$s jasotzen (%2$d%% osatua)</string>
@@ -633,4 +636,11 @@
   <string name="pref_use_green_background_summary">Atzealde berdea erabili jasotako mezuentzat</string>
   <string name="unable_to_connect_to_keychain">Ezin izan da OpenKeychainekin konektatu</string>
   <string name="this_device_is_no_longer_in_use">Gailu hau ez da gehiago erabiltzen</string>
+  <string name="type_pc">Ordenagailua</string>
+  <string name="type_phone">Mugikorra</string>
+  <string name="type_tablet">Tableta</string>
+  <string name="type_web">Web nabigatzailea</string>
+  <string name="type_console">Kontsola</string>
+  <string name="payment_required">Ordainketa beharrezkoa da</string>
+  <string name="missing_internet_permission">Interneterako baimena falta da</string>
 </resources>

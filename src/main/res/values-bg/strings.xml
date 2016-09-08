@@ -360,6 +360,8 @@
   <string name="conversations_foreground_service">Conversations</string>
   <string name="pref_keep_foreground_service">Услугата да е на преден план</string>
   <string name="pref_keep_foreground_service_summary">Предотвратява прекъсването на връзката Ви от операционната система</string>
+  <string name="pref_export_logs">Изнасяне на историята</string>
+  <string name="pref_export_logs_summary">Записване на журналите на разговорите в картата с памет</string>
   <string name="notification_export_logs_title">Записване на журналите в картата с памет</string>
   <string name="choose_file">Изберете файл</string>
   <string name="receiving_x_file">Получаване на %1$s (%2$d%% завършено)</string>
@@ -640,4 +642,9 @@
   <string name="type_web">Браузър</string>
   <string name="type_console">Конзола</string>
   <string name="payment_required">Изисква се плащане</string>
+  <string name="missing_internet_permission">Липсва разрешение за използване на връзката с Интернет</string>
+  <string name="contact_asks_for_presence_subscription">Контакт моли за абонамент за присъствието</string>
+  <string name="allow">Позволяване</string>
+  <string name="no_permission_to_access_x">Няма позволение за достъп до %s</string>
+  <string name="remote_server_not_found">Отдалеченият сървър не е намерен</string>
 </resources>

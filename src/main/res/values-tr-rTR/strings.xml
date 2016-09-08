@@ -360,6 +360,8 @@
   <string name="conversations_foreground_service">Conversations</string>
   <string name="pref_keep_foreground_service">Ön planda çalışmaya devam etsin</string>
   <string name="pref_keep_foreground_service_summary">İşletim sisteminin bağlantınızı koparmasına engel olur</string>
+  <string name="pref_export_logs">Geçmişi dışarı aktar</string>
+  <string name="pref_export_logs_summary">Conversations geçmiş kayıtlarını SD karta yaz</string>
   <string name="notification_export_logs_title">Kayıtları SD karta yazıyor</string>
   <string name="choose_file">Dosya seç</string>
   <string name="receiving_x_file">%1$s alıyor/(%2$d%% tamamlandı)</string>
@@ -637,4 +639,9 @@
   <string name="type_web">Web tarayıcı</string>
   <string name="type_console">Konsol</string>
   <string name="payment_required">Ödeme gerekli</string>
+  <string name="missing_internet_permission">Eksik internet yetkisi</string>
+  <string name="me">Ben</string>
+  <string name="contact_asks_for_presence_subscription">Kişi sizi eklemek istiyor</string>
+  <string name="allow">İzin ver</string>
+  <string name="no_permission_to_access_x">%s e erişim hakkınız yok</string>
 </resources>

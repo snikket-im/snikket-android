@@ -360,6 +360,8 @@
   <string name="conversations_foreground_service">Conversations</string>
   <string name="pref_keep_foreground_service">Servicio en primer plano</string>
   <string name="pref_keep_foreground_service_summary">Mantener el servicio en primer plano previene que el sistema cierre la conexión</string>
+  <string name="pref_export_logs">Exportar historial</string>
+  <string name="pref_export_logs_summary">Escribir historial de conversación en la tarjeta SD</string>
   <string name="notification_export_logs_title">Escribiendo logs en la tarjeta SD</string>
   <string name="choose_file">Seleccionar archivo</string>
   <string name="receiving_x_file">Recibiendo %1$s (%2$d%% completado)</string>
@@ -640,4 +642,10 @@
   <string name="type_web">Navegador</string>
   <string name="type_console">Consola</string>
   <string name="payment_required">Pago requerido</string>
+  <string name="missing_internet_permission">Falta permiso de acceso a internet</string>
+  <string name="me">Yo</string>
+  <string name="contact_asks_for_presence_subscription">El contacto solicita ver tus actualizaciones de estado</string>
+  <string name="allow">Permitir</string>
+  <string name="no_permission_to_access_x">Sin permiso de acceso a %s</string>
+  <string name="remote_server_not_found">Servidor no encontrado</string>
 </resources>

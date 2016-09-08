@@ -360,6 +360,8 @@
   <string name="conversations_foreground_service">Conversations</string>
   <string name="pref_keep_foreground_service">サービスをフォアグラウンドに保持</string>
   <string name="pref_keep_foreground_service_summary">オペレーティングシステムが接続を切断するのを防止します</string>
+  <string name="pref_export_logs">履歴をエクスポート</string>
+  <string name="pref_export_logs_summary">会話履歴ログを SD カードに書き込みます</string>
   <string name="notification_export_logs_title">ログを SD カードに書き込み中</string>
   <string name="choose_file">ファイルの選択</string>
   <string name="receiving_x_file">%1$s 受信中 (%2$d%% 完了)</string>
@@ -637,4 +639,10 @@
   <string name="type_web">Web ブラウザー</string>
   <string name="type_console">コンソール</string>
   <string name="payment_required">支払が必要です</string>
+  <string name="missing_internet_permission">インターネットアクセス許可が不足しています</string>
+  <string name="me">自分</string>
+  <string name="contact_asks_for_presence_subscription">連絡先が、参加サブスクリプションを問い合わせしています</string>
+  <string name="allow">許可</string>
+  <string name="no_permission_to_access_x">%s にアクセスする権限がありません</string>
+  <string name="remote_server_not_found">リモートサーバーが見つかりません</string>
 </resources>

@@ -360,6 +360,8 @@
   <string name="conversations_foreground_service">Conversations</string>
   <string name="pref_keep_foreground_service">Mantieni il servizio in primo piano</string>
   <string name="pref_keep_foreground_service_summary">Evita che il sistema operativo chiuda la connessione</string>
+  <string name="pref_export_logs">Esporta la cronologia</string>
+  <string name="pref_export_logs_summary">Scrivi la cronologia delle conversazioni nella scheda SD</string>
   <string name="notification_export_logs_title">Scrittura log su card SD</string>
   <string name="choose_file">Scegli file</string>
   <string name="receiving_x_file">Ricezione di %1$s file (%2$d%% completato)</string>
@@ -513,6 +515,7 @@
   <string name="pref_use_white_background">Usa sfondo bianco</string>
   <string name="pref_use_white_background_summary">Mostra i messaggi ricevuti con testo nero su sfondo bianco</string>
   <string name="account_status_tor_unavailable">Rete Tor non disponibile</string>
+  <string name="account_status_bind_failure">Bind fallito</string>
   <string name="account_status_host_unknown">Server non responsabile per il dominio</string>
   <string name="server_info_broken">Rotto</string>
   <string name="pref_presence_settings">Presenza</string>
@@ -639,4 +642,10 @@
   <string name="type_web">Browser web</string>
   <string name="type_console">Console</string>
   <string name="payment_required">Necessario pagamento</string>
+  <string name="missing_internet_permission">Autorizzazione internet mancante</string>
+  <string name="me">Io</string>
+  <string name="contact_asks_for_presence_subscription">Il contatto chiede la sottoscrizione della presenza</string>
+  <string name="allow">Consenti</string>
+  <string name="no_permission_to_access_x">Nessuna autorizzazione per accedere a %s</string>
+  <string name="remote_server_not_found">Server remoto non trovato</string>
 </resources>

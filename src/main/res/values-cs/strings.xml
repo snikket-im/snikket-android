@@ -360,6 +360,8 @@
   <string name="conversations_foreground_service">Conversations</string>
   <string name="pref_keep_foreground_service">Ponechat službu v popředí</string>
   <string name="pref_keep_foreground_service_summary">Zamezit operačnímu systému v ukončení připojení</string>
+  <string name="pref_export_logs">Exportovat historii</string>
+  <string name="pref_export_logs_summary">Zapsat logy konverzací na SD kartu</string>
   <string name="notification_export_logs_title">Zapisování logů na SD kartu</string>
   <string name="choose_file">Vybrat soubor</string>
   <string name="receiving_x_file">Přijímám %1$s (%2$d%% dokončeno)</string>
@@ -643,4 +645,10 @@
   <string name="type_web">Prohlížeč</string>
   <string name="type_console">Konzole</string>
   <string name="payment_required">Vyžadována platba</string>
+  <string name="missing_internet_permission">Chybí oprávnění pro internet</string>
+  <string name="me">Já</string>
+  <string name="contact_asks_for_presence_subscription">Kontakt žádá informace o změnách stavu</string>
+  <string name="allow">Povolit</string>
+  <string name="no_permission_to_access_x">Chybí oprávnění přistupovat k %s</string>
+  <string name="remote_server_not_found">Vzdálený server nebyl nalezen</string>
 </resources>

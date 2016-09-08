@@ -78,6 +78,7 @@
   <string name="clear_histor_msg">Voulez-vous supprimer tous les messages de cette conversation ?\n\n<b>Attention :</b> Les messages seront supprimés uniquement sur cet appareil.</string>
   <string name="delete_messages">Supprimer les messages</string>
   <string name="also_end_conversation">Fermer cette conversation ensuite</string>
+  <string name="choose_presence">Choisir l\'appareil</string>
   <string name="send_unencrypted_message">Envoyer un message non chiffré</string>
   <string name="send_message_to_x">Envoyer un message à %s</string>
   <string name="send_otr_message">Envoyer un message chiffré avec OTR</string>
@@ -359,6 +360,8 @@
   <string name="conversations_foreground_service">Conversations</string>
   <string name="pref_keep_foreground_service">Garder le service au 1er plan</string>
   <string name="pref_keep_foreground_service_summary">Évite que le système ne ferme votre connexion.</string>
+  <string name="pref_export_logs">Exporter l\'historique</string>
+  <string name="pref_export_logs_summary">Sauvegarder l\'historique des conversations sur la carte SD</string>
   <string name="notification_export_logs_title">Sauvegarde des historiques sur la carte SD...</string>
   <string name="choose_file">Choix du fichier</string>
   <string name="receiving_x_file">Réception %1$s (%2$d%% complété)</string>
@@ -633,4 +636,11 @@
   <string name="pref_use_green_background_summary">Utiliser un fond vert pour les messages reçus</string>
   <string name="unable_to_connect_to_keychain">Connection à OpenKeychain impossible</string>
   <string name="this_device_is_no_longer_in_use">Ce périphérique n\'est plus utilisé</string>
+  <string name="type_pc">Ordinateur</string>
+  <string name="type_phone">Smartphone</string>
+  <string name="type_tablet">Tablette</string>
+  <string name="type_web">Navigateur Internet</string>
+  <string name="type_console">Console</string>
+  <string name="payment_required">Paiement Obligatoire</string>
+  <string name="missing_internet_permission">Permission Internet Manquante</string>
 </resources>
