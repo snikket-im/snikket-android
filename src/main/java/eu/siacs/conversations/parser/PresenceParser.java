@@ -184,10 +184,16 @@ public class PresenceParser extends AbstractParser implements
 			final String resource = from.isBareJid() ? "" : from.getResourcepart();
 			contact.setPresenceName(packet.findChildContent("nick", "http://jabber.org/protocol/nick"));
 			Avatar avatar = Avatar.parsePresence(packet.findChild("x", "vcard-temp:x:update"));
-			if (avatar != null && !contact.isSelf()) {
+			if (avatar != null && (!contact.isSelf() || account.getAvatar() == null)) {
 				avatar.owner = from.toBareJid();
 				if (mXmppConnectionService.getFileBackend().isAvatarCached(avatar)) {
-					if (contact.setAvatar(avatar)) {
+					if (avatar.owner.equals(account.getJid().toBareJid())) {
+						account.setAvatar(avatar.getFilename());
+						mXmppConnectionService.databaseBackend.updateAccount(account);
+						mXmppConnectionService.getAvatarService().clear(account);
+						mXmppConnectionService.updateConversationUi();
+						mXmppConnectionService.updateAccountUi();
+					} else if (contact.setAvatar(avatar)) {
 						mXmppConnectionService.getAvatarService().clear(contact);
 						mXmppConnectionService.updateConversationUi();
 						mXmppConnectionService.updateRosterUi();
