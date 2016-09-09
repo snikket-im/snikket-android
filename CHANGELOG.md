@@ -1,5 +1,9 @@
 ###Changelog
 
+####Version 1.14.1
+* Press lock icon to see why OMEMO is deactivated
+* bug fixes
+
 ####Version 1.14.0
 * Improvments for N
 * Quick Reply to Notifications on N
