@@ -268,7 +268,7 @@ public class XmppConnection implements Runnable {
 				} else {
 					destination = account.getHostname();
 				}
-				Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": connect to " + destination + " via TOR");
+				Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": connect to " + destination + " via Tor");
 				socket = SocksSocketFactory.createSocketOverTor(destination, account.getPort());
 				startXmpp();
 			} else if (extended && account.getHostname() != null && !account.getHostname().isEmpty()) {
