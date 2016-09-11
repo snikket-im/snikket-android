@@ -376,7 +376,7 @@ public class NotificationService {
 			builder.setStyle(messagingStyle);
 		} else {
 			builder.setStyle(new NotificationCompat.BigTextStyle().bigText(getMergedBodies(messages)));
-			builder.setContentText(UIHelper.getMessagePreview(mXmppConnectionService, messages.get(0)).first);
+			builder.setContentText(UIHelper.getMessagePreview(mXmppConnectionService, messages.get((messages.size()-1))).first);
 		}
 	}
 
