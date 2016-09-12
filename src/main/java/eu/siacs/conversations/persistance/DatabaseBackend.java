@@ -52,7 +52,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 	private static DatabaseBackend instance = null;
 
 	private static final String DATABASE_NAME = "history";
-	private static final int DATABASE_VERSION = 27;
+	private static final int DATABASE_VERSION = 28;
 
 	private static String CREATE_CONTATCS_STATEMENT = "create table "
 			+ Contact.TABLENAME + "(" + Contact.ACCOUNT + " TEXT, "
@@ -250,86 +250,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 			db.execSQL("update " + Account.TABLENAME + " set " + Account.ROSTERVERSION + " = NULL");
 		}
 		if (oldVersion < 14 && newVersion >= 14) {
-			// migrate db to new, canonicalized JID domainpart representation
-
-			// Conversation table
-			Cursor cursor = db.rawQuery("select * from " + Conversation.TABLENAME, new String[0]);
-			while (cursor.moveToNext()) {
-				String newJid;
-				try {
-					newJid = Jid.fromString(
-							cursor.getString(cursor.getColumnIndex(Conversation.CONTACTJID))
-					).toString();
-				} catch (InvalidJidException ignored) {
-					Log.e(Config.LOGTAG, "Failed to migrate Conversation CONTACTJID "
-							+ cursor.getString(cursor.getColumnIndex(Conversation.CONTACTJID))
-							+ ": " + ignored + ". Skipping...");
-					continue;
-				}
-
-				String updateArgs[] = {
-						newJid,
-						cursor.getString(cursor.getColumnIndex(Conversation.UUID)),
-				};
-				db.execSQL("update " + Conversation.TABLENAME
-						+ " set " + Conversation.CONTACTJID + " = ? "
-						+ " where " + Conversation.UUID + " = ?", updateArgs);
-			}
-			cursor.close();
-
-			// Contact table
-			cursor = db.rawQuery("select * from " + Contact.TABLENAME, new String[0]);
-			while (cursor.moveToNext()) {
-				String newJid;
-				try {
-					newJid = Jid.fromString(
-							cursor.getString(cursor.getColumnIndex(Contact.JID))
-					).toString();
-				} catch (InvalidJidException ignored) {
-					Log.e(Config.LOGTAG, "Failed to migrate Contact JID "
-							+ cursor.getString(cursor.getColumnIndex(Contact.JID))
-							+ ": " + ignored + ". Skipping...");
-					continue;
-				}
-
-				String updateArgs[] = {
-						newJid,
-						cursor.getString(cursor.getColumnIndex(Contact.ACCOUNT)),
-						cursor.getString(cursor.getColumnIndex(Contact.JID)),
-				};
-				db.execSQL("update " + Contact.TABLENAME
-						+ " set " + Contact.JID + " = ? "
-						+ " where " + Contact.ACCOUNT + " = ? "
-						+ " AND " + Contact.JID + " = ?", updateArgs);
-			}
-			cursor.close();
-
-			// Account table
-			cursor = db.rawQuery("select * from " + Account.TABLENAME, new String[0]);
-			while (cursor.moveToNext()) {
-				String newServer;
-				try {
-					newServer = Jid.fromParts(
-							cursor.getString(cursor.getColumnIndex(Account.USERNAME)),
-							cursor.getString(cursor.getColumnIndex(Account.SERVER)),
-							"mobile"
-					).getDomainpart();
-				} catch (InvalidJidException ignored) {
-					Log.e(Config.LOGTAG, "Failed to migrate Account SERVER "
-							+ cursor.getString(cursor.getColumnIndex(Account.SERVER))
-							+ ": " + ignored + ". Skipping...");
-					continue;
-				}
-
-				String updateArgs[] = {
-						newServer,
-						cursor.getString(cursor.getColumnIndex(Account.UUID)),
-				};
-				db.execSQL("update " + Account.TABLENAME
-						+ " set " + Account.SERVER + " = ? "
-						+ " where " + Account.UUID + " = ?", updateArgs);
-			}
-			cursor.close();
+			canonicalizeJids(db);
 		}
 		if (oldVersion < 15 && newVersion >= 15) {
 			recreateAxolotlDb(db);
@@ -406,6 +327,93 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		if (oldVersion < 27 && newVersion >= 27) {
 			db.execSQL("DELETE FROM "+ServiceDiscoveryResult.TABLENAME);
 		}
+
+		if (oldVersion < 28 && newVersion >= 28) {
+			canonicalizeJids(db);
+		}
+	}
+
+	private void canonicalizeJids(SQLiteDatabase db) {
+		// migrate db to new, canonicalized JID domainpart representation
+
+		// Conversation table
+		Cursor cursor = db.rawQuery("select * from " + Conversation.TABLENAME, new String[0]);
+		while (cursor.moveToNext()) {
+			String newJid;
+			try {
+				newJid = Jid.fromString(
+						cursor.getString(cursor.getColumnIndex(Conversation.CONTACTJID))
+				).toString();
+			} catch (InvalidJidException ignored) {
+				Log.e(Config.LOGTAG, "Failed to migrate Conversation CONTACTJID "
+						+ cursor.getString(cursor.getColumnIndex(Conversation.CONTACTJID))
+						+ ": " + ignored + ". Skipping...");
+				continue;
+			}
+
+			String updateArgs[] = {
+					newJid,
+					cursor.getString(cursor.getColumnIndex(Conversation.UUID)),
+			};
+			db.execSQL("update " + Conversation.TABLENAME
+					+ " set " + Conversation.CONTACTJID + " = ? "
+					+ " where " + Conversation.UUID + " = ?", updateArgs);
+		}
+		cursor.close();
+
+		// Contact table
+		cursor = db.rawQuery("select * from " + Contact.TABLENAME, new String[0]);
+		while (cursor.moveToNext()) {
+			String newJid;
+			try {
+				newJid = Jid.fromString(
+						cursor.getString(cursor.getColumnIndex(Contact.JID))
+				).toString();
+			} catch (InvalidJidException ignored) {
+				Log.e(Config.LOGTAG, "Failed to migrate Contact JID "
+						+ cursor.getString(cursor.getColumnIndex(Contact.JID))
+						+ ": " + ignored + ". Skipping...");
+				continue;
+			}
+
+			String updateArgs[] = {
+					newJid,
+					cursor.getString(cursor.getColumnIndex(Contact.ACCOUNT)),
+					cursor.getString(cursor.getColumnIndex(Contact.JID)),
+			};
+			db.execSQL("update " + Contact.TABLENAME
+					+ " set " + Contact.JID + " = ? "
+					+ " where " + Contact.ACCOUNT + " = ? "
+					+ " AND " + Contact.JID + " = ?", updateArgs);
+		}
+		cursor.close();
+
+		// Account table
+		cursor = db.rawQuery("select * from " + Account.TABLENAME, new String[0]);
+		while (cursor.moveToNext()) {
+			String newServer;
+			try {
+				newServer = Jid.fromParts(
+						cursor.getString(cursor.getColumnIndex(Account.USERNAME)),
+						cursor.getString(cursor.getColumnIndex(Account.SERVER)),
+						"mobile"
+				).getDomainpart();
+			} catch (InvalidJidException ignored) {
+				Log.e(Config.LOGTAG, "Failed to migrate Account SERVER "
+						+ cursor.getString(cursor.getColumnIndex(Account.SERVER))
+						+ ": " + ignored + ". Skipping...");
+				continue;
+			}
+
+			String updateArgs[] = {
+					newServer,
+					cursor.getString(cursor.getColumnIndex(Account.UUID)),
+			};
+			db.execSQL("update " + Account.TABLENAME
+					+ " set " + Account.SERVER + " = ? "
+					+ " where " + Account.UUID + " = ?", updateArgs);
+		}
+		cursor.close();
 	}
 
 	public static synchronized DatabaseBackend getInstance(Context context) {
