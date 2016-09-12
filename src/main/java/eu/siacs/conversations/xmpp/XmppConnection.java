@@ -981,7 +981,7 @@ public class XmppConnection implements Runnable {
 					final Element jid = bind.findChild("jid");
 					if (jid != null && jid.getContent() != null) {
 						try {
-							account.setResource(Jid.fromString(jid.getContent()).getResourcepart());
+							account.setJid(Jid.fromString(jid.getContent()));
 							if (streamFeatures.hasChild("session")
 									&& !streamFeatures.findChild("session").hasChild("optional")) {
 								sendStartSession();
