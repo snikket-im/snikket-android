@@ -981,7 +981,10 @@ public class XmppConnection implements Runnable {
 					final Element jid = bind.findChild("jid");
 					if (jid != null && jid.getContent() != null) {
 						try {
-							account.setJid(Jid.fromString(jid.getContent()));
+							if (account.setJid(Jid.fromString(jid.getContent()))) {
+								Log.d(Config.LOGTAG,account.getJid().toBareJid()+": bare jid changed during bind. updating database");
+								mXmppConnectionService.databaseBackend.updateAccount(account);
+							}
 							if (streamFeatures.hasChild("session")
 									&& !streamFeatures.findChild("session").hasChild("optional")) {
 								sendStartSession();
