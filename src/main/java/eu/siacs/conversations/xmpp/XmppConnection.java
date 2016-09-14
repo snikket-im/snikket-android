@@ -55,6 +55,7 @@ import javax.net.ssl.X509TrustManager;
 import de.duenndns.ssl.MemorizingTrustManager;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.crypto.XmppDomainVerifier;
+import eu.siacs.conversations.crypto.sasl.Anonymous;
 import eu.siacs.conversations.crypto.sasl.DigestMd5;
 import eu.siacs.conversations.crypto.sasl.External;
 import eu.siacs.conversations.crypto.sasl.Plain;
@@ -841,6 +842,8 @@ public class XmppConnection implements Runnable {
 			saslMechanism = new Plain(tagWriter, account);
 		} else if (mechanisms.contains("DIGEST-MD5")) {
 			saslMechanism = new DigestMd5(tagWriter, account, mXmppConnectionService.getRNG());
+		} else if (mechanisms.contains("ANONYMOUS")) {
+			saslMechanism = new Anonymous(tagWriter, account, mXmppConnectionService.getRNG());
 		}
 		if (saslMechanism != null) {
 			final JSONObject keys = account.getKeys();
@@ -978,7 +981,7 @@ public class XmppConnection implements Runnable {
 					final Element jid = bind.findChild("jid");
 					if (jid != null && jid.getContent() != null) {
 						try {
-							account.setResource(Jid.fromString(jid.getContent()).getResourcepart());
+							account.setJid(Jid.fromString(jid.getContent()));
 							if (streamFeatures.hasChild("session")
 									&& !streamFeatures.findChild("session").hasChild("optional")) {
 								sendStartSession();
