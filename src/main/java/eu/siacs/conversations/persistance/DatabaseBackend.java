@@ -11,6 +11,7 @@ import android.util.Base64;
 import android.util.Log;
 import android.util.Pair;
 
+import org.json.JSONObject;
 import org.whispersystems.libaxolotl.AxolotlAddress;
 import org.whispersystems.libaxolotl.IdentityKey;
 import org.whispersystems.libaxolotl.IdentityKeyPair;
@@ -44,6 +45,7 @@ import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.PresenceTemplate;
 import eu.siacs.conversations.entities.Roster;
 import eu.siacs.conversations.entities.ServiceDiscoveryResult;
+import eu.siacs.conversations.generator.AbstractGenerator;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
 
@@ -727,21 +729,37 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		}
 	}
 
+	public Pair<Long,String> getLastClearDate(Account account) {
+		SQLiteDatabase db = this.getReadableDatabase();
+		String[] columns = {Conversation.ATTRIBUTES};
+		String selection = Conversation.ACCOUNT + "=?";
+		String[] args = {account.getUuid()};
+		Cursor cursor = db.query(Conversation.TABLENAME,columns,selection,args,null,null,null);
+		long maxClearDate = 0;
+		while (cursor.moveToNext()) {
+			try {
+				final JSONObject jsonObject = new JSONObject(cursor.getString(0));
+				maxClearDate = Math.max(maxClearDate, jsonObject.getLong(Conversation.ATTRIBUTE_LAST_CLEAR_HISTORY));
+			} catch (Exception e) {
+				//ignored
+			}
+		}
+		cursor.close();
+		return new Pair<>(maxClearDate,null);
+	}
+
 	private Cursor getCursorForSession(Account account, AxolotlAddress contact) {
 		final SQLiteDatabase db = this.getReadableDatabase();
-		String[] columns = null;
 		String[] selectionArgs = {account.getUuid(),
 				contact.getName(),
 				Integer.toString(contact.getDeviceId())};
-		Cursor cursor = db.query(SQLiteAxolotlStore.SESSION_TABLENAME,
-				columns,
+		return db.query(SQLiteAxolotlStore.SESSION_TABLENAME,
+				null,
 				SQLiteAxolotlStore.ACCOUNT + " = ? AND "
 						+ SQLiteAxolotlStore.NAME + " = ? AND "
 						+ SQLiteAxolotlStore.DEVICE_ID + " = ? ",
 				selectionArgs,
 				null, null, null);
-
-		return cursor;
 	}
 
 	public SessionRecord loadSession(Account account, AxolotlAddress contact) {

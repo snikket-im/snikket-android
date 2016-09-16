@@ -3340,6 +3340,7 @@ public class XmppConnectionService extends Service {
 			@Override
 			public void run() {
 				databaseBackend.deleteMessagesInConversation(conversation);
+				databaseBackend.updateConversation(conversation);
 			}
 		};
 		mDatabaseExecutor.execute(runnable);

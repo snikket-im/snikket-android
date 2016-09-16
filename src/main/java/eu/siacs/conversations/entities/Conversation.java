@@ -53,6 +53,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 	public static final String ATTRIBUTE_MUTED_TILL = "muted_till";
 	public static final String ATTRIBUTE_ALWAYS_NOTIFY = "always_notify";
 	public static final String ATTRIBUTE_CRYPTO_TARGETS = "crypto_targets";
+	public static final String ATTRIBUTE_LAST_CLEAR_HISTORY = "last_clear_history";
 
 	private String name;
 	private String contactUuid;
@@ -332,11 +333,11 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 	}
 
 	public void setLastClearHistory(long time) {
-		setAttribute("last_clear_history",String.valueOf(time));
+		setAttribute(ATTRIBUTE_LAST_CLEAR_HISTORY,String.valueOf(time));
 	}
 
 	public long getLastClearHistory() {
-		return getLongAttribute("last_clear_history", 0);
+		return getLongAttribute(ATTRIBUTE_LAST_CLEAR_HISTORY, 0);
 	}
 
 	public List<Jid> getAcceptedCryptoTargets() {
