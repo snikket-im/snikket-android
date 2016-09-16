@@ -5,6 +5,10 @@
         android:id="@+id/copy_text"
         android:title="@string/copy_text"
         android:visible="false"/>
+     <item
+        android:id="@+id/select_text"
+        android:title="@string/select_text"
+        android:visible="false"/>
     <item
         android:id="@+id/retry_decryption"
         android:title="Retry decryption"

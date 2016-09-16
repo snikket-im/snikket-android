@@ -325,6 +325,7 @@
   <string name="check_x_filesize_on_host">Проверьте размер %1$s на %2$s</string>
   <string name="message_options">Опции сообщения</string>
   <string name="copy_text">Копировать текст</string>
+  <string name="select_text">Выбрать текст</string>
   <string name="copy_original_url">Копировать адрес ссылки</string>
   <string name="send_again">Отправить ещё раз</string>
   <string name="file_url">URL файла</string>

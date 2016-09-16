@@ -736,6 +736,15 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		this.mUseGreenBackground = activity.useGreenBackground();
 	}
 
+	public TextView getMessageBody(View view) {
+		final Object tag = view.getTag();
+		if (tag instanceof ViewHolder) {
+			final ViewHolder viewHolder = (ViewHolder) tag;
+			return viewHolder.messageBody;
+		}
+		return null;
+	}
+
 	public interface OnContactPictureClicked {
 		void onContactPictureClicked(Message message);
 	}
