@@ -579,8 +579,11 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 				cancelTransmission.setVisible(true);
 			}
 			if (treatAsFile) {
-				deleteFile.setVisible(true);
-				deleteFile.setTitle(activity.getString(R.string.delete_x_file,UIHelper.getFileDescriptionString(activity, m)));
+				String path = m.getRelativeFilePath();
+				if (path == null || !path.startsWith("/")) {
+					deleteFile.setVisible(true);
+					deleteFile.setTitle(activity.getString(R.string.delete_x_file, UIHelper.getFileDescriptionString(activity, m)));
+				}
 			}
 		}
 	}
