@@ -651,4 +651,9 @@
   <string name="allow">Povolit</string>
   <string name="no_permission_to_access_x">Chybí oprávnění přistupovat k %s</string>
   <string name="remote_server_not_found">Vzdálený server nebyl nalezen</string>
+  <string name="unable_to_update_account">Nelze aktualizovat účet</string>
+  <string name="missing_presence_subscription_with_x">Chybí informace o změnách stavu od %s.</string>
+  <string name="missing_keys_from_x">Chybí OMEMO klíče od %s.</string>
+  <string name="wrong_conference_configuration">Toto není soukromá, neanonymní  konference.</string>
+  <string name="this_conference_has_no_members">V této konferenci nejsou žádní členové.</string>
 </resources>

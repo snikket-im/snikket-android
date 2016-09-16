@@ -648,4 +648,9 @@
   <string name="allow">Consenti</string>
   <string name="no_permission_to_access_x">Nessuna autorizzazione per accedere a %s</string>
   <string name="remote_server_not_found">Server remoto non trovato</string>
+  <string name="unable_to_update_account">Impossibile aggiornare l\'account</string>
+  <string name="missing_presence_subscription_with_x">Sottoscrizione della presenza con %s mancante.</string>
+  <string name="missing_keys_from_x">Chiavi OMEMO da %s mancanti.</string>
+  <string name="wrong_conference_configuration">Questa non è un conferenza privata/anonima.</string>
+  <string name="this_conference_has_no_members">Non ci sono membri in questa conferenza.</string>
 </resources>

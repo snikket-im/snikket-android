@@ -129,7 +129,7 @@
   <string name="accept">Aceitar</string>
   <string name="error">Ocorreu um erro</string>
   <string name="pref_grant_presence_updates">Permitir atualizações de presença</string>
-  <string name="pref_grant_presence_updates_summary">Permite e solicita atualizações de presença aos contatos que você criar.</string>
+  <string name="pref_grant_presence_updates_summary">Permite e solicita atualizações de presença aos contatos que você criar</string>
   <string name="subscriptions">Inscrições</string>
   <string name="your_account">Sua conta</string>
   <string name="keys">Chaves</string>
@@ -644,7 +644,13 @@
   <string name="payment_required">É necessário efetuar pagamento</string>
   <string name="missing_internet_permission">Permissões de Internet ausentes</string>
   <string name="me">Eu</string>
+  <string name="contact_asks_for_presence_subscription">O contato está solicitando atualizações de presença</string>
   <string name="allow">Permitir</string>
   <string name="no_permission_to_access_x">Sem permissão para acessar %s</string>
   <string name="remote_server_not_found">O servidor remoto não foi encontrado</string>
+  <string name="unable_to_update_account">Não foi possível atualizar a conta</string>
+  <string name="missing_presence_subscription_with_x">Sem permissão para atualizações de presença de %s.</string>
+  <string name="missing_keys_from_x">Sem chaves OMEMO para %s.</string>
+  <string name="wrong_conference_configuration">Essa conferência não é privada nem anônima.</string>
+  <string name="this_conference_has_no_members">Não existem ninguém nessa conferência.</string>
 </resources>

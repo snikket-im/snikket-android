@@ -643,4 +643,14 @@
   <string name="type_console">Console</string>
   <string name="payment_required">Betaling vereist</string>
   <string name="missing_internet_permission">Internetmachtiging ontbreekt</string>
+  <string name="me">Ik</string>
+  <string name="contact_asks_for_presence_subscription">De contactpersoon vraagt om aanwezigheidsupdates</string>
+  <string name="allow">Toestaan</string>
+  <string name="no_permission_to_access_x">Geen toestemming om toegang te krijgen tot %s</string>
+  <string name="remote_server_not_found">Externe server niet gevonden</string>
+  <string name="unable_to_update_account">Kan account niet bijwerken</string>
+  <string name="missing_presence_subscription_with_x">Geen aanwezigheidsupdates van %s.</string>
+  <string name="missing_keys_from_x">Geen OMEMO sleutels van %s.</string>
+  <string name="wrong_conference_configuration">Dit is geen privé, niet-anoniem groepsgesprek.</string>
+  <string name="this_conference_has_no_members">Er neemt niemand deel aan dit groepsgesprek.</string>
 </resources>

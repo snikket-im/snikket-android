@@ -652,4 +652,9 @@ Emitent</string>
   <string name="allow">Permite</string>
   <string name="no_permission_to_access_x">Nu exista permisiunea de a accesa %s</string>
   <string name="remote_server_not_found">Serverul nu a fost gasit</string>
+  <string name="unable_to_update_account">Nu se poate actualiza contul</string>
+  <string name="missing_presence_subscription_with_x">Lipsesc actualizarile de prezenta cu %s.</string>
+  <string name="missing_keys_from_x">Cheie OMEMO lipsa din %s.</string>
+  <string name="wrong_conference_configuration">Aceasta este o conferinta care nu este privata si nu este anonima.</string>
+  <string name="this_conference_has_no_members">Conferinta nu are nici un membru.</string>
 </resources>

@@ -643,8 +643,14 @@
   <string name="type_console">Конзола</string>
   <string name="payment_required">Изисква се плащане</string>
   <string name="missing_internet_permission">Липсва разрешение за използване на връзката с Интернет</string>
+  <string name="me">Аз</string>
   <string name="contact_asks_for_presence_subscription">Контакт моли за абонамент за присъствието</string>
   <string name="allow">Позволяване</string>
   <string name="no_permission_to_access_x">Няма позволение за достъп до %s</string>
   <string name="remote_server_not_found">Отдалеченият сървър не е намерен</string>
+  <string name="unable_to_update_account">Неуспешно обновяване на профила</string>
+  <string name="missing_presence_subscription_with_x">Липсва абонамент за присъствието на %s.</string>
+  <string name="missing_keys_from_x">Липсват ключове OMEMO от %s.</string>
+  <string name="wrong_conference_configuration">Това не е лична, не-анонимна беседа.</string>
+  <string name="this_conference_has_no_members">Няма участници в тази беседа.</string>
 </resources>

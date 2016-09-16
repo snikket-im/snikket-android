@@ -644,4 +644,10 @@
   <string name="contact_asks_for_presence_subscription">Kişi sizi eklemek istiyor</string>
   <string name="allow">İzin ver</string>
   <string name="no_permission_to_access_x">%s e erişim hakkınız yok</string>
+  <string name="remote_server_not_found">Uzak sunucu bulunamadı</string>
+  <string name="unable_to_update_account">Hesap güncellenemiyor</string>
+  <string name="missing_presence_subscription_with_x">%s ile durum bildirimi aboneliği eksik.</string>
+  <string name="missing_keys_from_x">%s den eksik OMEMO anahtarları var.</string>
+  <string name="wrong_conference_configuration">Bu özel ve anonim olmayan bir sohbet.</string>
+  <string name="this_conference_has_no_members">Bu konferansta herhangi bir üye yok. </string>
 </resources>

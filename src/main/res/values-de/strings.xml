@@ -644,7 +644,13 @@
   <string name="payment_required">Bezahlung erforderlich</string>
   <string name="missing_internet_permission">Keine Berechtigungen für den Zugriff auf das Internet</string>
   <string name="me">Ich</string>
+  <string name="contact_asks_for_presence_subscription">Kontakt möchte Online-Status abbonieren</string>
   <string name="allow">Erlauben</string>
   <string name="no_permission_to_access_x">Keine Berechtigung um auf %s zuzugreifen</string>
   <string name="remote_server_not_found">Remote-Server nicht gefunden</string>
+  <string name="unable_to_update_account">Konto kann nicht aktualisiert werden.</string>
+  <string name="missing_presence_subscription_with_x">Fehlender Online-Status von %s.</string>
+  <string name="missing_keys_from_x">OMEMO-Schlüssel von %s fehlen.</string>
+  <string name="wrong_conference_configuration">Dies ist keine private, nicht-anonyme Konferenz.</string>
+  <string name="this_conference_has_no_members">Diese Konferenz enthält keine Teilnehmer.</string>
 </resources>

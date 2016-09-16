@@ -116,7 +116,7 @@
   <string name="pref_led_summary">Blinka med notifieringsljuset när ett meddelande tagits emot</string>
   <string name="pref_sound">Meddelandesignal</string>
   <string name="pref_sound_summary">Spela ljud när meddelande tagits emot</string>
-  <string name="pref_notification_grace_period">Skonfrist</string>
+  <string name="pref_notification_grace_period">Notifieringsfrist</string>
   <string name="pref_notification_grace_period_summary">Hur lång tid Conversations är tyst efter aktivitet på en annan enhet</string>
   <string name="pref_advanced_options">Avancerat</string>
   <string name="pref_never_send_crash">Skicka aldrig krasch-rapporter</string>
@@ -165,13 +165,13 @@
   <string name="encryption_choice_pgp">OpenPGP</string>
   <string name="encryption_choice_omemo">OMEMO</string>
   <string name="mgmt_account_edit">Ändra konto</string>
-  <string name="mgmt_account_delete">Ta bort</string>
+  <string name="mgmt_account_delete">Ta bort konto</string>
   <string name="mgmt_account_disable">Inaktivera tillfälligt</string>
   <string name="mgmt_account_publish_avatar">Publicera avatarbild</string>
   <string name="mgmt_account_publish_pgp">Publicera OpenPGP publik nyckel</string>
   <string name="openpgp_has_been_published">OpenPGP-nyckel har publicerats.</string>
   <string name="republish_pgp_keys">Kom ihåg att återpublicera dina publika OpenPGP nycklar.</string>
-  <string name="mgmt_account_enable">Aktivera</string>
+  <string name="mgmt_account_enable">Aktivera konto</string>
   <string name="mgmt_account_are_you_sure">Är du säker?</string>
   <string name="mgmt_account_delete_confirm_text">Om du tar bort kontot kommer all konversationshistorik att försvinna</string>
   <string name="attach_record_voice">Spela in röst</string>
@@ -643,4 +643,14 @@
   <string name="type_console">Konsoll</string>
   <string name="payment_required">Betalning krävs</string>
   <string name="missing_internet_permission">Saknar internet-tillåtelse</string>
+  <string name="me">Jag</string>
+  <string name="contact_asks_for_presence_subscription">Kontakt ber om tillgänglighetsuppdateringar</string>
+  <string name="allow">Tillåt</string>
+  <string name="no_permission_to_access_x">Saknar rättigheter för access till %s</string>
+  <string name="remote_server_not_found">Fjärrserver hittas inte</string>
+  <string name="unable_to_update_account">Kan inte uppdatera konto</string>
+  <string name="missing_presence_subscription_with_x">Saknar tillgänglighetsuppdateringar från %s.</string>
+  <string name="missing_keys_from_x">Saknar OMEMO nyckel från %s.</string>
+  <string name="wrong_conference_configuration">Detta är inte en privat, icke-anonym konferens.</string>
+  <string name="this_conference_has_no_members">Det finns inga medlemmar i denna konferens.</string>
 </resources>

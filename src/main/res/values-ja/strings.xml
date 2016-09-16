@@ -645,4 +645,9 @@
   <string name="allow">許可</string>
   <string name="no_permission_to_access_x">%s にアクセスする権限がありません</string>
   <string name="remote_server_not_found">リモートサーバーが見つかりません</string>
+  <string name="unable_to_update_account">アカウントを更新できません</string>
+  <string name="missing_presence_subscription_with_x">%s の、参加サブスクリプションが見つかりません。</string>
+  <string name="missing_keys_from_x">%s からの OMEMO 鍵が見つかりません。</string>
+  <string name="wrong_conference_configuration">これはプライベートではない、非匿名の会議です。</string>
+  <string name="this_conference_has_no_members">この会議にメンバーはいません</string>
 </resources>
