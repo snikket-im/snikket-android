@@ -93,14 +93,14 @@ public class PhoneHelper {
 
 			try {
 				return (super.loadInBackground());
-			} catch (SecurityException e) {
+			} catch (Throwable e) {
 				return(null);
 			}
 		}
 
 	}
 
-	public static Uri getSefliUri(Context context) {
+	public static Uri getSelfiUri(Context context) {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
 				&& context.checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
 			return null;
