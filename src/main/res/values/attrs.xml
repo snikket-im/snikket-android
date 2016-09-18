@@ -53,4 +53,7 @@
     <attr name="icon_notifications_paused" format="reference"/>
     <attr name="icon_notifications_none" format="reference"/>
 
+    <attr name="dialog_horizontal_padding" format="dimension"/>
+    <attr name="dialog_vertical_padding" format="dimension"/>
+
 </resources>

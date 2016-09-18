@@ -43,6 +43,9 @@
 
         <item name="attr/icon_alpha">1.0</item>
 
+        <item name="attr/dialog_horizontal_padding">16dp</item>
+        <item name="attr/dialog_vertical_padding">16dp</item>
+
         <item name="attr/icon_group">@drawable/ic_action_group</item>
         <item name="attr/icon_new">@drawable/ic_action_new</item>
         <item name="attr/icon_new_attachment">@drawable/ic_action_new_attachment</item>
@@ -92,6 +95,9 @@
         <item name="attr/conversations_overview_background">@color/primary900</item>
 
         <item name="attr/icon_alpha">1.0</item>
+
+        <item name="attr/dialog_horizontal_padding">16dp</item>
+        <item name="attr/dialog_vertical_padding">16dp</item>
 
         <item name="attr/icon_add_group">@drawable/ic_action_add_group</item>
         <item name="attr/icon_add_person">@drawable/ic_action_add_person</item>

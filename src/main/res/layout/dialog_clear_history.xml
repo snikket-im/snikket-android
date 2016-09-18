@@ -3,11 +3,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="8dp" >
+    android:paddingLeft="?attr/dialog_horizontal_padding"
+    android:paddingRight="?attr/dialog_horizontal_padding"
+    android:paddingBottom="?attr/dialog_vertical_padding"
+    android:paddingTop="?attr/dialog_vertical_padding">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="?attr/color_text_primary"
         android:paddingBottom="8dp"
         android:text="@string/clear_histor_msg"
         android:textSize="?attr/TextSizeBody" />
@@ -15,6 +19,7 @@
     <CheckBox
         android:id="@+id/end_conversation_checkbox"
         android:layout_width="wrap_content"
+        android:textColor="?attr/color_text_primary"
         android:layout_height="wrap_content"
         android:text="@string/also_end_conversation" />
 
