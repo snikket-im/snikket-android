@@ -115,7 +115,11 @@ public class PgpDecryptionService {
                     case OpenPgpApi.RESULT_CODE_SUCCESS:
                         try {
                             os.flush();
-                            message.setBody(os.toString());
+                            final String body = os.toString();
+                            if (body == null) {
+                                throw new IOException("body was null");
+                            }
+                            message.setBody(body);
                             message.setEncryption(Message.ENCRYPTION_DECRYPTED);
                             final HttpConnectionManager manager = mXmppConnectionService.getHttpConnectionManager();
                             if (message.trusted()

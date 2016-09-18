@@ -181,9 +181,7 @@ public class UIHelper {
 			}
 		} else {
 			String body = message.getBody();
-			if (body == null) {
-				body = "";
-			} else if (body.length() > 256) {
+			if (body.length() > 256) {
 				body = body.substring(0,256);
 			}
 			if (body.startsWith(Message.ME_COMMAND)) {
