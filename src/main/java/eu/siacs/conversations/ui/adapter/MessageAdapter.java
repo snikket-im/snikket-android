@@ -53,6 +53,7 @@ import eu.siacs.conversations.entities.Message.FileParams;
 import eu.siacs.conversations.entities.Transferable;
 import eu.siacs.conversations.ui.ConversationActivity;
 import eu.siacs.conversations.ui.widget.ClickableMovementMethod;
+import eu.siacs.conversations.ui.widget.ListSelectionManager;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.GeoHelper;
 import eu.siacs.conversations.utils.UIHelper;
@@ -85,6 +86,8 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 	};
 	private boolean mIndicateReceived = false;
 	private boolean mUseGreenBackground = false;
+
+	private final ListSelectionManager listSelectionManager = new ListSelectionManager();
 
 	public MessageAdapter(ConversationActivity activity, List<Message> messages) {
 		super(activity, 0, messages);
@@ -361,6 +364,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 			viewHolder.messageBody.setText(formattedBody);
 			viewHolder.messageBody.setTextIsSelectable(true);
 			viewHolder.messageBody.setMovementMethod(ClickableMovementMethod.getInstance());
+			listSelectionManager.onUpdate(viewHolder.messageBody, message);
 		} else {
 			viewHolder.messageBody.setText("");
 			viewHolder.messageBody.setTextIsSelectable(false);
@@ -534,6 +538,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 					viewHolder = null;
 					break;
 			}
+			if (viewHolder.messageBody != null) listSelectionManager.onCreate(viewHolder.messageBody);
 			view.setTag(viewHolder);
 		} else {
 			viewHolder = (ViewHolder) view.getTag();
@@ -682,6 +687,13 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		displayStatus(viewHolder, message, type, darkBackground);
 
 		return view;
+	}
+
+	@Override
+	public void notifyDataSetChanged() {
+		listSelectionManager.onBeforeNotifyDataSetChanged();
+		super.notifyDataSetChanged();
+		listSelectionManager.onAfterNotifyDataSetChanged();
 	}
 
 	public void openDownloadable(Message message) {

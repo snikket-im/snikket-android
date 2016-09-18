@@ -12,8 +12,6 @@ import android.content.IntentSender.SendIntentException;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.InputType;
-import android.text.Selection;
-import android.text.Spannable;
 import android.util.Log;
 import android.util.Pair;
 import android.view.ContextMenu;
@@ -40,8 +38,6 @@ import android.widget.Toast;
 
 import net.java.otr4j.session.SessionStatus;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -66,6 +62,7 @@ import eu.siacs.conversations.ui.XmppActivity.OnValueEdited;
 import eu.siacs.conversations.ui.adapter.MessageAdapter;
 import eu.siacs.conversations.ui.adapter.MessageAdapter.OnContactPictureClicked;
 import eu.siacs.conversations.ui.adapter.MessageAdapter.OnContactPictureLongClicked;
+import eu.siacs.conversations.ui.widget.ListSelectionManager;
 import eu.siacs.conversations.utils.GeoHelper;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.XmppConnection;
@@ -553,7 +550,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 					&& !GeoHelper.isGeoUri(m.getBody())
 					&& m.treatAsDownloadable() != Message.Decision.MUST) {
 				copyText.setVisible(true);
-				selectText.setVisible(METHOD_START_SELECTION != null);
+				selectText.setVisible(ListSelectionManager.isSupported());
 			}
 			if (m.getEncryption() == Message.ENCRYPTION_DECRYPTION_FAILED) {
 				retryDecryption.setVisible(true);
@@ -677,13 +674,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 				final View view = this.messagesView.getChildAt(index - first);
 				final TextView messageBody = this.messageListAdapter.getMessageBody(view);
 				if (messageBody != null) {
-					final Spannable text = (Spannable) messageBody.getText();
-					Selection.setSelection(text, 0, text.length());
-					try {
-						Object editor = FIELD_EDITOR != null ? FIELD_EDITOR.get(messageBody) : messageBody;
-						METHOD_START_SELECTION.invoke(editor);
-					} catch (Exception e) {
-					}
+					ListSelectionManager.startSelection(messageBody);
 				}
 			}
 		}
@@ -1461,33 +1452,6 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 				activity.selectPresenceToAttachFile(choice, conversation.getNextEncryption());
 			}
 		}
-	}
-
-	private static final Field FIELD_EDITOR;
-	private static final Method METHOD_START_SELECTION;
-
-	static {
-		Field editor;
-		try {
-			editor = TextView.class.getDeclaredField("mEditor");
-			editor.setAccessible(true);
-		} catch (Exception e) {
-			editor = null;
-		}
-		FIELD_EDITOR = editor;
-		Class<?> editorClass = editor != null ? editor.getType() : TextView.class;
-		String[] startSelectionNames = {"startSelectionActionMode", "startSelectionActionModeWithSelection"};
-		Method startSelection = null;
-		for (String startSelectionName : startSelectionNames) {
-			try {
-				startSelection = editorClass.getDeclaredMethod(startSelectionName);
-				startSelection.setAccessible(true);
-				break;
-			} catch (Exception e) {
-				startSelection = null;
-			}
-		}
-		METHOD_START_SELECTION = startSelection;
 	}
 
 }
