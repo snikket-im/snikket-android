@@ -282,7 +282,12 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
     @Override
     public void onStart() {
         super.onStart();
-        askForContactsPermissions();
+        final int theme = findTheme();
+        if (this.mTheme != theme) {
+            recreate();
+        } else {
+            askForContactsPermissions();
+        }
     }
 
     @Override

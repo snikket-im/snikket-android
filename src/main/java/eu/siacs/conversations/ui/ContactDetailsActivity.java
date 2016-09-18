@@ -227,9 +227,14 @@ public class ContactDetailsActivity extends XmppActivity implements OnAccountUpd
 	@Override
 	public void onStart() {
 		super.onStart();
-		final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-		this.showDynamicTags = preferences.getBoolean("show_dynamic_tags",false);
-		this.showLastSeen = preferences.getBoolean("last_activity", false);
+		final int theme = findTheme();
+		if (this.mTheme != theme) {
+			recreate();
+		} else {
+			final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+			this.showDynamicTags = preferences.getBoolean("show_dynamic_tags", false);
+			this.showLastSeen = preferences.getBoolean("last_activity", false);
+		}
 	}
 
 	@Override

@@ -587,7 +587,10 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 	@Override
 	protected void onStart() {
 		super.onStart();
-		if (getIntent() != null) {
+		final int theme = findTheme();
+		if (this.mTheme != theme) {
+			recreate();
+		} else if (getIntent() != null) {
 			try {
 				this.jidToEdit = Jid.fromString(getIntent().getStringExtra("jid"));
 			} catch (final InvalidJidException | NullPointerException ignored) {
