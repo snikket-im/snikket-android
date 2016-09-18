@@ -254,10 +254,14 @@ public class IqGenerator extends AbstractGenerator {
 		return iq;
 	}
 
-	public IqPacket generateSetBlockRequest(final Jid jid) {
+	public IqPacket generateSetBlockRequest(final Jid jid, boolean reportSpam) {
 		final IqPacket iq = new IqPacket(IqPacket.TYPE.SET);
 		final Element block = iq.addChild("block", Xmlns.BLOCKING);
-		block.addChild("item").setAttribute("jid", jid.toBareJid().toString());
+		final Element item = block.addChild("item").setAttribute("jid", jid.toBareJid().toString());
+		if (reportSpam) {
+			item.addChild("report", "urn:xmpp:reporting:0").addChild("spam");
+		}
+		Log.d(Config.LOGTAG,iq.toString());
 		return iq;
 	}
 

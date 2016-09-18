@@ -3346,10 +3346,10 @@ public class XmppConnectionService extends Service {
 		mDatabaseExecutor.execute(runnable);
 	}
 
-	public void sendBlockRequest(final Blockable blockable) {
+	public void sendBlockRequest(final Blockable blockable, boolean reportSpam) {
 		if (blockable != null && blockable.getBlockedJid() != null) {
 			final Jid jid = blockable.getBlockedJid();
-			this.sendIqPacket(blockable.getAccount(), getIqGenerator().generateSetBlockRequest(jid), new OnIqPacketReceived() {
+			this.sendIqPacket(blockable.getAccount(), getIqGenerator().generateSetBlockRequest(jid, reportSpam), new OnIqPacketReceived() {
 
 				@Override
 				public void onIqPacketReceived(final Account account, final IqPacket packet) {

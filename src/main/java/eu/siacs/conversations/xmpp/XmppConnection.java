@@ -1600,6 +1600,10 @@ public class XmppConnection implements Runnable {
 			return hasDiscoFeature(account.getServer(), Xmlns.BLOCKING);
 		}
 
+		public boolean spamReporting() {
+			return hasDiscoFeature(account.getServer(), "urn:xmpp:reporting:reason:spam:0");
+		}
+
 		public boolean register() {
 			return hasDiscoFeature(account.getServer(), Xmlns.REGISTER);
 		}
